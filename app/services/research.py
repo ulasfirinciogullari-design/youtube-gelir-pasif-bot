@@ -53,18 +53,26 @@ def _parse_json_payload(text: str) -> dict:
     return data
 
 
+def _target_scene_count(duration_minutes: float) -> int:
+    if duration_minutes <= 0.6:
+        return 5
+    if duration_minutes <= 1.1:
+        return 7
+    if duration_minutes <= 3.1:
+        return max(8, int(round(duration_minutes * 5)))
+    return min(28, max(12, int(round(duration_minutes * 4))))
+
+
 def research_and_script(topic: str, duration_minutes: float, language: str) -> dict:
     if not settings.openai_api_key:
         raise RuntimeError('OPENAI_API_KEY is not configured')
 
     client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
 
-    # Empirical target for natural Turkish TTS at ~0.98x speed: about 120 spoken words/minute.
-    # A 30-second preview therefore targets ~60 words, not 95+.
     target_words = max(55, int(round(duration_minutes * 120)))
     min_words = max(45, int(round(target_words * 0.90)))
     max_words = max(min_words + 5, int(round(target_words * 1.06)))
-    target_scenes = min(24, max(3, int(round(duration_minutes * 6))))
+    target_scenes = _target_scene_count(duration_minutes)
     max_ai_scenes = 0 if duration_minutes <= 0.5 else (1 if duration_minutes <= 1.5 else 2)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
 
@@ -77,7 +85,7 @@ def research_and_script(topic: str, duration_minutes: float, language: str) -> d
 Language: {language_name}
 Topic: {topic}
 HARD NARRATION BUDGET: {min_words}-{max_words} total spoken words. Do not exceed {max_words} words.
-Target scene count: about {target_scenes} scenes.
+Create EXACTLY {target_scenes} scenes.
 Maximum premium AI-video scenes: {max_ai_scenes}.
 
 Return ONLY valid JSON with exactly these top-level keys:
@@ -94,6 +102,7 @@ STORY RULES:
 - Natural spoken Turkish: concise sentences, deliberate punctuation, varied rhythm.
 - No robotic listicle language or generic AI phrasing.
 - The entire narration across all scenes MUST remain inside {min_words}-{max_words} words.
+- Each scene should carry one clear thought that can stay on one strong hero visual; do not fragment ideas merely to create more cuts.
 
 DIRECTING RULES:
 - Give each scene 2-3 DISTINCT English stock-video search phrases matching the exact spoken idea.
@@ -101,6 +110,7 @@ DIRECTING RULES:
 - Never use generic laptop typing, office worker, skyline, random phone or abstract tech footage unless the sentence literally calls for it.
 - For technical concepts that stock footage cannot honestly visualize, set ai_prompt to a precise cinematic visualization prompt instead of inventing loosely related B-roll.
 - ai_prompt must be null in most scenes and non-null in at most {max_ai_scenes} scenes.
+- Do not plan subtitles, lower thirds or on-screen sentences. The master video will contain no text.
 
 FACT RULES:
 - Use web research when useful.
@@ -109,4 +119,8 @@ FACT RULES:
 - sources must contain URLs.
 ''',
     )
-    return _parse_json_payload(response.output_text)
+    package = _parse_json_payload(response.output_text)
+    if abs(len(package['scenes']) - target_scenes) > 1:
+        raise RuntimeError(f'Scene-count gate rejected storyboard: {len(package["scenes"])} scenes; target {target_scenes}')
+    package['target_scene_count'] = target_scenes
+    return package
