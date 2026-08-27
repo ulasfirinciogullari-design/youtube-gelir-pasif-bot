@@ -15,9 +15,12 @@ def _json(text: str) -> dict:
     return data
 
 
+def _word_count(text: str) -> int:
+    return len(re.findall(r"\b[\wÇĞİÖŞÜçğıöşü'-]+\b", text or '', flags=re.UNICODE))
+
+
 def _clean_scene(scene: dict, idx: int) -> dict:
     narration = str(scene.get('narration') or '').strip()
-    tts_text = str(scene.get('tts_text') or narration).strip()
     queries = scene.get('visual_queries') or []
     if isinstance(queries, str):
         queries = [queries]
@@ -31,42 +34,51 @@ def _clean_scene(scene: dict, idx: int) -> dict:
     return {
         'index': idx,
         'narration': narration,
-        'tts_text': tts_text,
+        # One textual source of truth. Phonetic substitutions happen later in voice.py.
+        'tts_text': narration,
         'visual_queries': queries,
         'ai_prompt': str(scene.get('ai_prompt') or '').strip() or None,
-        'overlay_text': str(scene.get('overlay_text') or '').strip() or None,
+        # Continuous subtitles are the only text layer for now.
+        'overlay_text': None,
         'pace': pace,
         'transition': transition,
     }
 
 
-def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str) -> dict:
-    if not settings.openai_api_key:
-        return package
+def _clean_package(revised: dict, original: dict) -> dict:
+    scenes = revised.get('scenes') or []
+    cleaned = [_clean_scene(s, i) for i, s in enumerate(scenes) if isinstance(s, dict)]
+    cleaned = [s for s in cleaned if s['narration'] and s['visual_queries']]
+    if len(cleaned) < 3:
+        raise RuntimeError('Director produced too few usable scenes')
+    out = dict(original)
+    out['title'] = revised.get('title') or original.get('title')
+    out['thumbnail_text'] = revised.get('thumbnail_text') or original.get('thumbnail_text')
+    out['description'] = revised.get('description') or original.get('description')
+    out['scenes'] = cleaned
+    out['narration'] = ' '.join(s['narration'] for s in cleaned)
+    out['tts_narration'] = out['narration']
+    out['visual_queries'] = [q for s in cleaned for q in s['visual_queries']]
+    out['ai_scenes'] = [s['ai_prompt'] for s in cleaned if s.get('ai_prompt')]
+    out['overlay_phrases'] = []
+    out['director_qc'] = revised.get('qc_summary') or []
+    return out
 
-    scenes = package.get('scenes') or []
-    if not scenes:
-        return package
 
-    client = OpenAI(api_key=settings.openai_api_key, timeout=75.0, max_retries=1)
-    compact = {
-        'title': package.get('title'),
-        'thumbnail_text': package.get('thumbnail_text'),
-        'description': package.get('description'),
-        'scenes': scenes,
-        'sources': package.get('sources', []),
-    }
-    language_name = 'Turkish' if language.lower().startswith('tr') else language
-
+def _run_director(client: OpenAI, compact: dict, topic: str, language_name: str, duration_minutes: float, min_words: int, max_words: int, correction: bool = False) -> dict:
+    correction_note = (
+        f'CRITICAL CORRECTION: the previous version violated the duration budget. Rewrite the SAME factual story to {min_words}-{max_words} TOTAL spoken words. Do not add facts. '
+        if correction else ''
+    )
     response = client.responses.create(
         model=settings.openai_model,
         reasoning={'effort': 'low'},
         input=f'''You are the FINAL EDITORIAL DIRECTOR for a premium faceless YouTube video.
 Topic: {topic}
 Language: {language_name}
-Target duration: about {duration_minutes} minutes.
-
-Below is a researched storyboard draft. Do NOT add new factual claims. You may rewrite wording, bridges, pacing and visual directions only while preserving the facts and source-supported meaning.
+Requested duration: {duration_minutes} minutes.
+HARD spoken-word budget: {min_words}-{max_words} total words across every scene.
+{correction_note}
 
 DRAFT JSON:
 {json.dumps(compact, ensure_ascii=False)}
@@ -75,42 +87,70 @@ Return ONLY valid JSON with exactly these keys:
 title, thumbnail_text, description, scenes, qc_summary.
 
 Each scene must contain exactly:
-narration, tts_text, visual_queries, ai_prompt, overlay_text, pace, transition.
+narration, visual_queries, ai_prompt, pace, transition.
 
 EDITORIAL QC RULES:
-- The video must feel like one coherent story. Repair every abrupt subject jump.
-- Every scene must either continue, explain, contrast, escalate, or pay off the previous scene.
-- Delete filler and robotic listicle language. Keep spoken Turkish natural and confident.
-- Punctuation must create human breathing and emphasis. Avoid long breathless sentences.
-- tts_text must preserve the same meaning but optimize pronunciation. OLED must appear as "oled" in tts_text and must be spoken as one Turkish word, never O-L-E-D.
-- Technical acronyms that Turkish speakers commonly pronounce as words should be written in their spoken form in tts_text.
-- visual_queries must match the EXACT scene meaning and describe concrete visible footage. Reject generic "technology", random laptop, random phone typing, office worker, abstract future, or unrelated city B-roll unless the sentence truly calls for it.
-- Give each scene 2-3 distinct English visual queries using different shot ideas: macro, close-up, demonstration, infrastructure, human interaction, moving camera, cutaway, or detail.
-- ai_prompt should remain null unless stock footage genuinely cannot show the concept.
-- overlay_text should be short and rare, only when it adds comprehension.
-- pace must be fast, normal, or slow. Use fast for hooks/reveals, slow for an important explanation, normal otherwise. Do not make every scene the same pace.
-- transition must be cut, match, or dip. Use mostly cut. Use match only when two scenes have a visual relationship. Use dip sparingly for a real topic shift.
-- The final scene must provide a payoff or memorable closing thought, not an abrupt ending.
-- qc_summary is a short list of the main fixes you made.
+- One coherent story; repair abrupt subject jumps.
+- Every scene continues, explains, contrasts, escalates or pays off the previous scene.
+- Delete filler and robotic listicle wording.
+- Spoken Turkish must be natural, concise and punctuated for real breaths.
+- Do not create separate on-screen copy; subtitles will come directly from narration.
+- visual_queries must match the EXACT spoken meaning and describe concrete visible footage.
+- Reject generic laptop typing, random phone, office worker, skyline, fireworks, charts or abstract tech footage unless literally relevant.
+- Use 2-3 distinct visual queries per scene from different shot ideas.
+- ai_prompt should be null unless stock footage cannot honestly show the concept.
+- pace: fast / normal / slow; vary it intentionally.
+- transition: mostly cut; match only with a real visual relationship; dip sparingly.
+- Final scene must provide a payoff.
+- TOTAL narration word count MUST be between {min_words} and {max_words}.
+- qc_summary is a short list of fixes.
 ''',
     )
+    return _json(response.output_text)
 
-    revised = _json(response.output_text)
-    revised_scenes = revised.get('scenes') or []
-    cleaned = [_clean_scene(s, i) for i, s in enumerate(revised_scenes) if isinstance(s, dict)]
-    cleaned = [s for s in cleaned if s['narration'] and s['visual_queries']]
-    if len(cleaned) < max(4, len(scenes) // 2):
+
+def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str) -> dict:
+    if not settings.openai_api_key:
+        return package
+    scenes = package.get('scenes') or []
+    if not scenes:
         return package
 
-    out = dict(package)
-    out['title'] = revised.get('title') or package.get('title')
-    out['thumbnail_text'] = revised.get('thumbnail_text') or package.get('thumbnail_text')
-    out['description'] = revised.get('description') or package.get('description')
-    out['scenes'] = cleaned
-    out['narration'] = ' '.join(s['narration'] for s in cleaned)
-    out['tts_narration'] = ' '.join(s['tts_text'] for s in cleaned)
-    out['visual_queries'] = [q for s in cleaned for q in s['visual_queries']]
-    out['ai_scenes'] = [s['ai_prompt'] for s in cleaned if s.get('ai_prompt')]
-    out['overlay_phrases'] = [s['overlay_text'] for s in cleaned if s.get('overlay_text')]
-    out['director_qc'] = revised.get('qc_summary') or []
+    client = OpenAI(api_key=settings.openai_api_key, timeout=75.0, max_retries=1)
+    target_words = max(55, int(round(duration_minutes * 120)))
+    min_words = max(45, int(round(target_words * 0.88)))
+    max_words = max(min_words + 5, int(round(target_words * 1.08)))
+    language_name = 'Turkish' if language.lower().startswith('tr') else language
+
+    compact = {
+        'title': package.get('title'),
+        'thumbnail_text': package.get('thumbnail_text'),
+        'description': package.get('description'),
+        'scenes': scenes,
+        'sources': package.get('sources', []),
+    }
+
+    revised = _run_director(client, compact, topic, language_name, duration_minutes, min_words, max_words)
+    out = _clean_package(revised, package)
+    words = _word_count(out['narration'])
+
+    # One bounded correction pass only when duration is materially wrong.
+    if words < min_words or words > max_words:
+        correction_input = {
+            'title': out.get('title'),
+            'thumbnail_text': out.get('thumbnail_text'),
+            'description': out.get('description'),
+            'scenes': out.get('scenes'),
+            'sources': package.get('sources', []),
+            'current_word_count': words,
+        }
+        revised = _run_director(client, correction_input, topic, language_name, duration_minutes, min_words, max_words, correction=True)
+        out = _clean_package(revised, package)
+        words = _word_count(out['narration'])
+
+    if words < int(min_words * 0.90) or words > int(max_words * 1.05):
+        raise RuntimeError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
+
+    out['narration_word_count'] = words
+    out['target_word_range'] = [min_words, max_words]
     return out
