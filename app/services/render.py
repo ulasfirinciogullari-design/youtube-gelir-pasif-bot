@@ -24,41 +24,73 @@ def _srt_timestamp(seconds: float) -> str:
     return f'{h:02}:{m:02}:{s:02},{milli:03}'
 
 
+def _caption_chunks(narration: str, max_words: int = 8) -> list[str]:
+    clauses = [p.strip() for p in re.split(r'(?<=[.!?…])\s+|(?<=[,;:])\s+', narration) if p.strip()]
+    chunks: list[str] = []
+    for clause in clauses or [narration.strip()]:
+        words = clause.split()
+        while words:
+            take = words[:max_words]
+            words = words[max_words:]
+            chunks.append(' '.join(take))
+    return [c for c in chunks if c]
+
+
 def make_srt(narration: str, total_duration: float, output_path: str | Path) -> str:
-    # Sentence-level subtitles, timed proportionally to text length.
-    parts = [p.strip() for p in re.split(r'(?<=[.!?])\s+', narration) if p.strip()]
-    if not parts:
-        parts = [narration.strip()]
-    weights = [max(len(p), 1) for p in parts]
-    total_weight = sum(weights)
+    parts = _caption_chunks(narration)
+    weights = [max(len(p.replace(' ', '')), 1) for p in parts]
+    total_weight = sum(weights) or 1
     cursor = 0.0
     lines = []
     for idx, (part, weight) in enumerate(zip(parts, weights), start=1):
-        duration = total_duration * weight / total_weight
+        duration = max(0.55, total_duration * weight / total_weight)
         start = cursor
         end = min(total_duration, cursor + duration)
         cursor = end
-        lines.extend([
-            str(idx),
-            f'{_srt_timestamp(start)} --> {_srt_timestamp(end)}',
-            part,
-            '',
-        ])
+        lines.extend([str(idx), f'{_srt_timestamp(start)} --> {_srt_timestamp(end)}', part, ''])
+        if cursor >= total_duration:
+            break
     path = Path(output_path)
     path.write_text('\n'.join(lines), encoding='utf-8')
     return str(path)
 
 
-def normalize_clip(input_path: str | Path, output_path: str | Path, duration: float) -> str:
-    # Loop short clips if needed, crop to 16:9 and normalize to 720p/30 fps.
+def normalize_clip(input_path: str | Path, output_path: str | Path, duration: float, shot_index: int) -> str:
+    # Slightly overscale and vary crop position so repeated stock footage does not feel static.
+    offsets = [
+        '(iw-1920)/2:(ih-1080)/2',
+        '0:(ih-1080)/2',
+        '(iw-1920):(ih-1080)/2',
+        '(iw-1920)/2:0',
+        '(iw-1920)/2:(ih-1080)',
+    ]
+    crop_xy = offsets[shot_index % len(offsets)]
+    vf = (
+        'scale=2050:1153:force_original_aspect_ratio=increase,'
+        f'crop=1920:1080:{crop_xy},'
+        'fps=30,setpts=PTS/1.025,format=yuv420p'
+    )
     _run([
         'ffmpeg', '-y', '-stream_loop', '-1', '-i', str(input_path),
-        '-t', f'{duration:.3f}',
-        '-vf', "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=30,format=yuv420p",
-        '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20',
-        str(output_path),
+        '-t', f'{duration:.3f}', '-vf', vf,
+        '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', str(output_path),
     ])
     return str(output_path)
+
+
+def _build_shot_order(visual_paths: list[str], desired_shots: int) -> list[str]:
+    if len(visual_paths) == 1:
+        return [visual_paths[0]] * desired_shots
+    ordered: list[str] = []
+    cycle = 0
+    while len(ordered) < desired_shots:
+        batch = visual_paths[:] if cycle % 2 == 0 else list(reversed(visual_paths))
+        if batch:
+            rotate = cycle % len(batch)
+            batch = batch[rotate:] + batch[:rotate]
+        ordered.extend(batch)
+        cycle += 1
+    return ordered[:desired_shots]
 
 
 def render_video(voice_path: str | Path, visual_paths: list[str], narration: str, output_path: str | Path) -> dict:
@@ -70,15 +102,15 @@ def render_video(voice_path: str | Path, visual_paths: list[str], narration: str
     work.mkdir(parents=True, exist_ok=True)
     voice_duration = media_duration(voice_path)
 
-    # Keep shots moving: aim around 6 seconds each, but use whatever clips we have.
-    desired_shots = max(1, int(math.ceil(voice_duration / 6.0)))
-    ordered = [visual_paths[i % len(visual_paths)] for i in range(desired_shots)]
+    target_shot_seconds = 3.2
+    desired_shots = max(1, int(math.ceil(voice_duration / target_shot_seconds)))
+    ordered = _build_shot_order(visual_paths, desired_shots)
     shot_duration = voice_duration / len(ordered)
 
     normalized = []
     for idx, clip in enumerate(ordered):
         seg = work / f'norm_{idx:03d}.mp4'
-        normalize_clip(clip, seg, shot_duration + 0.10)
+        normalize_clip(clip, seg, shot_duration + 0.08, idx)
         normalized.append(seg)
 
     concat_file = work / 'concat.txt'
@@ -91,17 +123,22 @@ def render_video(voice_path: str | Path, visual_paths: list[str], narration: str
 
     srt = work / 'captions.srt'
     make_srt(narration, voice_duration, srt)
-    # Burn subtitles for retention. Use a conservative mobile-readable style.
     subtitle_filter = (
-        f"subtitles={srt.as_posix()}:force_style='FontName=DejaVu Sans,FontSize=18,"
-        "PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=2,Shadow=0,"
-        "Alignment=2,MarginV=42'"
+        f"subtitles={srt.as_posix()}:force_style='FontName=DejaVu Sans,FontSize=32,Bold=1,"
+        "PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,"
+        "Alignment=2,MarginV=72'"
     )
     _run([
         'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path),
         '-vf', subtitle_filter,
-        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
-        '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart',
-        str(output),
+        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18',
+        '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', str(output),
     ])
-    return {'path': str(output), 'duration': voice_duration, 'shots': len(ordered), 'srt': str(srt)}
+    return {
+        'path': str(output),
+        'duration': voice_duration,
+        'shots': len(ordered),
+        'unique_visuals': len(set(visual_paths)),
+        'resolution': '1920x1080',
+        'srt': str(srt),
+    }
