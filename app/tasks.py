@@ -4,6 +4,7 @@ import shutil
 
 from app.celery_app import celery
 from app.services.research import research_and_script
+from app.services.director import direct_and_qc
 from app.services.voice import synthesize_scene_sequence
 from app.services.pexels import find_broll, download_broll
 from app.services.runway import generate_scene, download_generated_scene
@@ -24,17 +25,21 @@ def run_video_pipeline(
     work.mkdir(parents=True, exist_ok=True)
 
     try:
-        self.update_state(state='PROGRESS', meta={'stage': 'research', 'progress': 8})
-        package = research_and_script(topic, duration_minutes, language)
+        self.update_state(state='PROGRESS', meta={'stage': 'research', 'progress': 7})
+        draft = research_and_script(topic, duration_minutes, language)
+        (work / 'draft.json').write_text(json.dumps(draft, ensure_ascii=False, indent=2), encoding='utf-8')
+
+        self.update_state(state='PROGRESS', meta={'stage': 'director_qc', 'progress': 14})
+        package = direct_and_qc(draft, topic, duration_minutes, language)
         scenes = package['scenes']
         (work / 'package.json').write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding='utf-8')
 
-        self.update_state(state='PROGRESS', meta={'stage': 'voice', 'progress': 22})
+        self.update_state(state='PROGRESS', meta={'stage': 'voice', 'progress': 24})
         voice_result = synthesize_scene_sequence(scenes, task_id)
         voice_path = voice_result['path']
         scene_durations = voice_result['scene_durations']
 
-        self.update_state(state='PROGRESS', meta={'stage': 'broll', 'progress': 36})
+        self.update_state(state='PROGRESS', meta={'stage': 'broll', 'progress': 38})
         scene_visuals: list[list[str]] = [[] for _ in scenes]
         credits: list[dict] = []
         seen_ids: set[int | str] = set()
@@ -43,10 +48,10 @@ def run_video_pipeline(
             queries = [q for q in scene.get('visual_queries', []) if isinstance(q, str) and q.strip()][:3]
             for query_idx, query in enumerate(queries):
                 try:
-                    candidates = find_broll(query, per_page=14)
+                    candidates = find_broll(query, per_page=16)
                     if not candidates:
                         continue
-                    start = (scene_idx + query_idx) % min(5, len(candidates))
+                    start = (scene_idx * 2 + query_idx) % min(6, len(candidates))
                     ordered_candidates = candidates[start:] + candidates[:start]
                     item = next((c for c in ordered_candidates if c.get('pexels_id') not in seen_ids), None)
                     if not item:
@@ -67,7 +72,7 @@ def run_video_pipeline(
                 except Exception:
                     continue
 
-        self.update_state(state='PROGRESS', meta={'stage': 'ai_scene', 'progress': 55})
+        self.update_state(state='PROGRESS', meta={'stage': 'ai_scene', 'progress': 56})
         runway_errors: list[str] = []
         runway_scenes_used = 0
         max_runway = 1 if duration_minutes <= 1.5 else 2
@@ -84,7 +89,7 @@ def run_video_pipeline(
             except Exception as exc:
                 runway_errors.append(f'scene {scene_idx}: {str(exc)[:400]}')
 
-        # Fill rare empty scenes from the nearest scene rather than random global footage.
+        # Empty scenes inherit only from the nearest scene, never random global footage.
         for idx, paths in enumerate(scene_visuals):
             if paths:
                 continue
@@ -105,7 +110,7 @@ def run_video_pipeline(
         if not visual_paths:
             raise RuntimeError('No usable visuals were found from Pexels or Runway')
 
-        self.update_state(state='PROGRESS', meta={'stage': 'render', 'progress': 68})
+        self.update_state(state='PROGRESS', meta={'stage': 'render', 'progress': 70})
         rendered = render_video(
             voice_path=voice_path,
             visual_paths=visual_paths,
@@ -116,7 +121,7 @@ def run_video_pipeline(
             scene_visual_paths=scene_visuals,
         )
 
-        self.update_state(state='PROGRESS', meta={'stage': 'upload', 'progress': 90})
+        self.update_state(state='PROGRESS', meta={'stage': 'upload', 'progress': 91})
         object_key = f'videos/{task_id}/final.mp4'
         upload_file(rendered['path'], object_key, 'video/mp4')
         metadata_key = f'videos/{task_id}/metadata.json'
@@ -129,6 +134,7 @@ def run_video_pipeline(
             'thumbnail_text': package.get('thumbnail_text'),
             'description': package.get('description'),
             'sources': package.get('sources', []),
+            'director_qc': package.get('director_qc', []),
             'scenes': scenes,
             'scene_durations': scene_durations,
             'spoken_texts': voice_result.get('spoken_texts', []),
@@ -157,6 +163,7 @@ def run_video_pipeline(
             'runway_scenes_used': runway_scenes_used,
             'resolution': rendered.get('resolution'),
             'scene_synced': rendered.get('scene_synced'),
+            'director_qc_applied': bool(package.get('director_qc')),
         }
     finally:
         shutil.rmtree(work, ignore_errors=True)
