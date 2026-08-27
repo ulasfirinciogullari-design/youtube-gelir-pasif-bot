@@ -1,12 +1,17 @@
 from html import escape
 from urllib.parse import quote
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import HTMLResponse, Response
+from fastapi.responses import HTMLResponse, Response, RedirectResponse
 from pydantic import BaseModel, Field
 from app.tasks import run_video_pipeline
-from app.services.voice import list_turkish_voice_candidates, audition_shared_voice
+from app.services.voice import (
+    list_turkish_voice_candidates,
+    audition_shared_voice,
+    save_selected_voice,
+    get_selected_voice,
+)
 
-app = FastAPI(title='YouTube 7/24 Content Factory', version='0.3.0')
+app = FastAPI(title='YouTube 7/24 Content Factory', version='0.4.0')
 
 AUDITION_TEXT = (
     'Bazen her gün kullandığımız teknolojilerin arkasında, fark etmediğimiz kadar şaşırtıcı bir dünya vardır. '
@@ -21,7 +26,7 @@ class JobCreate(BaseModel):
 
 @app.get('/health')
 def health():
-    return {'ok': True, 'version': '0.3.0'}
+    return {'ok': True, 'version': '0.4.0', 'selected_voice': get_selected_voice()}
 
 @app.post('/jobs')
 def create_job(payload: JobCreate):
@@ -59,19 +64,35 @@ def voice_sample(
             ),
         ) from exc
 
-@app.get('/voice-audition', response_class=HTMLResponse)
-def voice_audition_page():
+@app.get('/voice-audition/select/{public_owner_id}/{voice_id}')
+def select_voice(
+    public_owner_id: str,
+    voice_id: str,
+    name: str = Query(default='Selected voice', max_length=100),
+):
     try:
-        voices = list_turkish_voice_candidates(16)
+        save_selected_voice(public_owner_id, voice_id, name)
+        return RedirectResponse('/voice-audition?selected=1', status_code=303)
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail='Voice selection failed: ' + str(exc)) from exc
+
+@app.get('/voice-audition', response_class=HTMLResponse)
+def voice_audition_page(selected: int = Query(default=0)):
+    try:
+        voices = list_turkish_voice_candidates(24)
     except Exception as exc:
         return HTMLResponse(
             '<html><body style="font-family:system-ui;padding:20px">'
             '<h2>Ses listesi yüklenemedi</h2>'
-            '<p>ElevenLabs API anahtarının <b>Voices Read/Write</b> yetkisini kontrol et.</p>'
+            '<p>ElevenLabs API anahtarının <b>Voices Write</b> yetkisini kontrol et.</p>'
             f'<pre style="white-space:pre-wrap">{escape(str(exc))}</pre>'
             '</body></html>',
             status_code=502,
         )
+
+    selected_voice = get_selected_voice()
+    selected_id = selected_voice.get('voice_id')
+    selected_name = escape(selected_voice.get('name') or '')
 
     cards = []
     for idx, voice in enumerate(voices, start=1):
@@ -81,23 +102,39 @@ def voice_audition_page():
         gender = escape(str(voice.get('gender') or ''))
         age = escape(str(voice.get('age') or ''))
         use_case = escape(str(voice.get('use_case') or ''))
-        voice_id = escape(voice.get('voice_id') or '')
-        owner_id = escape(voice.get('public_owner_id') or '')
+        voice_id_raw = voice.get('voice_id') or ''
+        owner_id_raw = voice.get('public_owner_id') or ''
+        voice_id = escape(voice_id_raw)
+        owner_id = escape(owner_id_raw)
         preview = escape(voice.get('preview_url') or '')
-        sample_url = (
-            f'/voice-audition/sample/{owner_id}/{voice_id}?name={quote(name_raw)}'
-        )
+        sample_url = f'/voice-audition/sample/{owner_id}/{voice_id}?name={quote(name_raw)}'
+        select_url = f'/voice-audition/select/{owner_id}/{voice_id}?name={quote(name_raw)}'
+        chosen = voice_id_raw == selected_id
+        chosen_badge = '<div class="chosen">✓ SEÇİLİ</div>' if chosen else ''
+        select_label = 'Seçili ses' if chosen else 'Bu sesi seç'
         cards.append(f'''
-        <article class="card">
+        <article class="card {'is-chosen' if chosen else ''}">
           <div class="rank">#{idx}</div>
+          {chosen_badge}
           <h2>{name}</h2>
           <div class="meta">{gender} · {age} · {use_case}</div>
           <p>{desc}</p>
           <div class="label">Hazır Türkçe önizleme</div>
           <audio controls preload="none" src="{preview}"></audio>
           <a class="same" href="{sample_url}" target="_blank">Aynı paragrafı bu sesle dinle</a>
+          <a class="select" href="{select_url}">{select_label}</a>
         </article>
         ''')
+
+    success = ''
+    if selected and selected_name:
+        success = f'<div class="success">✓ <b>{selected_name}</b> varsayılan ses olarak kaydedildi. Worker artık bu sesi kullanacak.</div>'
+
+    current = (
+        f'<div class="current">Şu an seçili ses: <b>{selected_name}</b></div>'
+        if selected_name else
+        '<div class="current">Henüz varsayılan ses seçilmedi.</div>'
+    )
 
     html = f'''
     <!doctype html>
@@ -109,21 +146,30 @@ def voice_audition_page():
       <style>
         body {{ font-family: system-ui, sans-serif; margin:0; background:#0f1116; color:#f5f7fb; }}
         main {{ max-width:900px; margin:auto; padding:18px; }}
-        .note {{ background:#1b2230; padding:14px; border-radius:12px; margin-bottom:18px; line-height:1.45; }}
+        .note,.current,.success {{ padding:14px; border-radius:12px; margin-bottom:14px; line-height:1.45; }}
+        .note {{ background:#1b2230; }}
+        .current {{ background:#222835; }}
+        .success {{ background:#15351f; }}
         .grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }}
-        .card {{ background:#171a22; border:1px solid #2c3240; padding:16px; border-radius:16px; }}
+        .card {{ position:relative; background:#171a22; border:1px solid #2c3240; padding:16px; border-radius:16px; }}
+        .card.is-chosen {{ border:2px solid #78e08f; }}
+        .chosen {{ position:absolute; right:12px; top:12px; background:#78e08f; color:#102016; padding:5px 8px; border-radius:8px; font-size:.75rem; font-weight:800; }}
         .rank {{ opacity:.55; font-weight:700; }}
         h2 {{ margin:.25rem 0; font-size:1.2rem; }}
         .meta {{ opacity:.72; font-size:.9rem; margin:.4rem 0; }}
         .label {{ font-size:.82rem; opacity:.65; margin-top:8px; }}
         audio {{ width:100%; margin:6px 0 10px; }}
-        .same {{ display:block; text-decoration:none; background:#f4f5f7; color:#101217; padding:11px 12px; border-radius:10px; text-align:center; margin-top:6px; font-weight:700; }}
+        .same,.select {{ display:block; text-decoration:none; padding:11px 12px; border-radius:10px; text-align:center; margin-top:7px; font-weight:700; }}
+        .same {{ background:#f4f5f7; color:#101217; }}
+        .select {{ background:#725cff; color:white; }}
       </style>
     </head>
     <body><main>
       <h1>Türkçe Ses Karşılaştırma</h1>
+      {success}
+      {current}
       <div class="note">
-        Üstteki oynatıcı ses sahibinin hazır önizlemesidir. <b>Aynı paragrafı bu sesle dinle</b> düğmesi ise tüm adaylara tam olarak aynı Türkçe metni okutur; doğru karşılaştırma budur.
+        Önizlemeyi dinle. İstersen aynı paragrafla test et. Beğendiğin seste <b>Bu sesi seç</b> düğmesine bas; seçim Redis'e kaydolur ve video worker aynı sesi kullanır.
       </div>
       <div class="grid">{''.join(cards)}</div>
     </main></body></html>
