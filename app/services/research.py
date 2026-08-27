@@ -18,7 +18,7 @@ def _parse_json_payload(text: str) -> dict:
         raise RuntimeError('OpenAI response JSON is not an object')
 
     scenes = data.get('scenes') or []
-    if not isinstance(scenes, list) or len(scenes) < 4:
+    if not isinstance(scenes, list) or len(scenes) < 3:
         raise RuntimeError('OpenAI response is missing a usable scene plan')
 
     clean_scenes = []
@@ -28,7 +28,6 @@ def _parse_json_payload(text: str) -> dict:
         narration = str(scene.get('narration') or '').strip()
         if not narration:
             continue
-        tts_text = str(scene.get('tts_text') or narration).strip()
         queries = scene.get('visual_queries') or []
         if isinstance(queries, str):
             queries = [queries]
@@ -36,21 +35,21 @@ def _parse_json_payload(text: str) -> dict:
         clean_scenes.append({
             'index': idx,
             'narration': narration,
-            'tts_text': tts_text,
+            'tts_text': narration,
             'visual_queries': queries,
             'ai_prompt': str(scene.get('ai_prompt') or '').strip() or None,
-            'overlay_text': str(scene.get('overlay_text') or '').strip() or None,
+            'overlay_text': None,
         })
 
-    if len(clean_scenes) < 4:
+    if len(clean_scenes) < 3:
         raise RuntimeError('OpenAI scene plan has too few valid scenes')
 
     data['scenes'] = clean_scenes
     data['narration'] = ' '.join(s['narration'] for s in clean_scenes)
-    data['tts_narration'] = ' '.join(s['tts_text'] for s in clean_scenes)
+    data['tts_narration'] = data['narration']
     data['visual_queries'] = [q for s in clean_scenes for q in s['visual_queries']]
     data['ai_scenes'] = [s['ai_prompt'] for s in clean_scenes if s.get('ai_prompt')]
-    data['overlay_phrases'] = [s['overlay_text'] for s in clean_scenes if s.get('overlay_text')]
+    data['overlay_phrases'] = []
     return data
 
 
@@ -59,9 +58,14 @@ def research_and_script(topic: str, duration_minutes: float, language: str) -> d
         raise RuntimeError('OPENAI_API_KEY is not configured')
 
     client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
-    target_words = max(95, int(duration_minutes * 150))
-    target_scenes = min(32, max(8, int(round(duration_minutes * 8))))
-    max_ai_scenes = 1 if duration_minutes <= 1.5 else 2
+
+    # Empirical target for natural Turkish TTS at ~0.98x speed: about 120 spoken words/minute.
+    # A 30-second preview therefore targets ~60 words, not 95+.
+    target_words = max(55, int(round(duration_minutes * 120)))
+    min_words = max(45, int(round(target_words * 0.90)))
+    max_words = max(min_words + 5, int(round(target_words * 1.06)))
+    target_scenes = min(24, max(3, int(round(duration_minutes * 6))))
+    max_ai_scenes = 0 if duration_minutes <= 0.5 else (1 if duration_minutes <= 1.5 else 2)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
 
     response = client.responses.create(
@@ -69,44 +73,34 @@ def research_and_script(topic: str, duration_minutes: float, language: str) -> d
         reasoning={'effort': 'low'},
         tools=[{'type': 'web_search', 'search_context_size': 'low'}],
         tool_choice='auto',
-        input=f'''Research the current web and act as BOTH a senior YouTube writer and a video director.
+        input=f'''Research the current web and act as a senior YouTube writer/director.
 Language: {language_name}
 Topic: {topic}
-Narration target: about {target_words} words.
+HARD NARRATION BUDGET: {min_words}-{max_words} total spoken words. Do not exceed {max_words} words.
 Target scene count: about {target_scenes} scenes.
 Maximum premium AI-video scenes: {max_ai_scenes}.
 
 Return ONLY valid JSON with exactly these top-level keys:
 title, thumbnail_text, description, scenes, sources.
 
-Each item in scenes MUST contain exactly:
-narration, tts_text, visual_queries, ai_prompt, overlay_text.
+Each scene must contain exactly:
+narration, visual_queries, ai_prompt.
 
-STORY / CONTINUITY RULES:
-- The whole video must feel like ONE coherent story, not unrelated facts pasted together.
-- Every scene must naturally follow the previous scene. Use cause/effect, contrast, escalation or a clear bridge.
-- Never jump to a new subject without explaining why it follows from the previous point.
-- The first scene is the hook. The final scene must feel like a payoff, not an abrupt stop.
-- Avoid generic AI phrasing, listicle filler and repeated "peki" / "ama işin ilginç yanı" patterns.
-- Spoken Turkish should sound like a confident human narrator.
-- Use punctuation deliberately: commas for short breaths, full stops for clear pauses, occasional dashes for emphasis.
-- Prefer short and medium sentences. Do not make every sentence the same length.
-
-TTS / PRONUNCIATION RULES:
-- tts_text contains the SAME meaning as narration but is optimized purely for Turkish speech.
-- Write abbreviations the way a Turkish narrator should pronounce them when necessary.
-- IMPORTANT: OLED must be spoken as the Turkish word "oled", NOT letter-by-letter.
-- If a technical term is commonly pronounced as a word in Turkish, write its spoken form in tts_text.
-- Add punctuation where a human speaker would actually breathe. Do not make the voice rush through transitions.
+STORY RULES:
+- Write ONE coherent story, not a pile of unrelated facts.
+- Every scene must clearly continue, explain, contrast or pay off the previous one.
+- The first scene is an immediate hook. No greeting or filler.
+- The final scene is a payoff, not a sudden stop.
+- Natural spoken Turkish: concise sentences, deliberate punctuation, varied rhythm.
+- No robotic listicle language or generic AI phrasing.
+- The entire narration across all scenes MUST remain inside {min_words}-{max_words} words.
 
 DIRECTING RULES:
-- Each scene must have 2 or 3 DISTINCT English visual_queries that visually match THAT scene's exact spoken content.
-- visual_queries must describe concrete visible subjects/actions, not abstract ideas.
-- Prefer close-ups, macro details, demonstrations, human interaction, infrastructure, moving cameras and unusual angles.
-- Do not use generic phone/laptop B-roll unless the sentence is actually about that device.
-- ai_prompt is null for most scenes. Use it only where stock footage cannot communicate the idea well.
-- Across the entire video, ai_prompt may be non-null in at most {max_ai_scenes} scenes.
-- overlay_text is null unless a very short 2-5 word on-screen phrase genuinely strengthens that exact scene.
+- Give each scene 2-3 DISTINCT English stock-video search phrases matching the exact spoken idea.
+- Queries must describe concrete visible subjects/actions.
+- Never use generic laptop typing, office worker, skyline, random phone or abstract tech footage unless the sentence literally calls for it.
+- For technical concepts that stock footage cannot honestly visualize, set ai_prompt to a precise cinematic visualization prompt instead of inventing loosely related B-roll.
+- ai_prompt must be null in most scenes and non-null in at most {max_ai_scenes} scenes.
 
 FACT RULES:
 - Use web research when useful.
