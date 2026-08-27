@@ -24,7 +24,7 @@ def _srt_timestamp(seconds: float) -> str:
     return f'{h:02}:{m:02}:{s:02},{milli:03}'
 
 
-def _caption_chunks(narration: str, max_words: int = 6) -> list[str]:
+def _caption_chunks(narration: str, max_words: int = 8) -> list[str]:
     clauses = [p.strip() for p in re.split(r'(?<=[.!?…])\s+|(?<=[,;:])\s+', narration) if p.strip()]
     chunks: list[str] = []
     for clause in clauses or [narration.strip()]:
@@ -42,7 +42,6 @@ def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_durat
     cursor = 0.0
     lines: list[str] = []
     caption_index = 1
-
     for scene_idx, scene in enumerate(scenes):
         if scene_idx >= len(scene_durations):
             break
@@ -63,16 +62,10 @@ def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_durat
                 end = min(scene_end, local_cursor + scene_duration * weight / total_weight)
             if end <= local_cursor:
                 continue
-            lines.extend([
-                str(caption_index),
-                f'{_srt_timestamp(local_cursor)} --> {_srt_timestamp(end)}',
-                part,
-                '',
-            ])
+            lines.extend([str(caption_index), f'{_srt_timestamp(local_cursor)} --> {_srt_timestamp(end)}', part, ''])
             caption_index += 1
             local_cursor = end
         cursor = scene_end
-
     path = Path(output_path)
     path.write_text('\n'.join(lines), encoding='utf-8')
     return str(path)
@@ -91,39 +84,24 @@ def _pace_target(scene: dict | None) -> float:
     return 2.45
 
 
-def normalize_clip(
-    input_path: str | Path,
-    output_path: str | Path,
-    duration: float,
-    shot_index: int,
-    transition: str = 'cut',
-) -> str:
+def normalize_clip(input_path: str | Path, output_path: str | Path, duration: float, shot_index: int, transition: str = 'cut') -> str:
     offsets = [
-        '(iw-1920)/2:(ih-1080)/2',
-        '0:(ih-1080)/2',
-        '(iw-1920):(ih-1080)/2',
-        '(iw-1920)/2:0',
-        '(iw-1920)/2:(ih-1080)',
+        '(iw-1920)/2:(ih-1080)/2', '0:(ih-1080)/2', '(iw-1920):(ih-1080)/2',
+        '(iw-1920)/2:0', '(iw-1920)/2:(ih-1080)',
     ]
     crop_xy = offsets[shot_index % len(offsets)]
     speed = 1.012 + (shot_index % 4) * 0.008
     filters = [
         'scale=2070:1165:force_original_aspect_ratio=increase',
-        f'crop=1920:1080:{crop_xy}',
-        'fps=30',
-        f'setpts=PTS/{speed:.3f}',
+        f'crop=1920:1080:{crop_xy}', 'fps=30', f'setpts=PTS/{speed:.3f}',
     ]
     if transition == 'dip' and duration >= 0.8:
         fade_out = max(0.2, duration - 0.16)
-        filters.extend([
-            'fade=t=in:st=0:d=0.10',
-            f'fade=t=out:st={fade_out:.3f}:d=0.14',
-        ])
+        filters.extend(['fade=t=in:st=0:d=0.10', f'fade=t=out:st={fade_out:.3f}:d=0.14'])
     filters.append('format=yuv420p')
     _run([
-        'ffmpeg', '-y', '-stream_loop', '-1', '-i', str(input_path),
-        '-t', f'{duration:.3f}', '-vf', ','.join(filters),
-        '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', str(output_path),
+        'ffmpeg', '-y', '-stream_loop', '-1', '-i', str(input_path), '-t', f'{duration:.3f}',
+        '-vf', ','.join(filters), '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', str(output_path),
     ])
     return str(output_path)
 
@@ -144,22 +122,15 @@ def _build_shot_order(visual_paths: list[str], desired_shots: int) -> list[str]:
     return ordered[:desired_shots]
 
 
-def _scene_timeline(
-    scenes: list[dict],
-    scene_visual_paths: list[list[str]],
-    scene_durations: list[float],
-    voice_duration: float,
-    fallback_visuals: list[str],
-) -> list[tuple[str, float, str, int]]:
+def _scene_timeline(scenes: list[dict], scene_visual_paths: list[list[str]], scene_durations: list[float], voice_duration: float, fallback_visuals: list[str]) -> list[tuple[str, float, str, int]]:
     raw_total = sum(scene_durations) or voice_duration or 1.0
     scale = voice_duration / raw_total
     timeline: list[tuple[str, float, str, int]] = []
-
     for idx, raw_duration in enumerate(scene_durations):
         duration = max(0.4, raw_duration * scale)
         scene = scenes[idx] if idx < len(scenes) else {}
         paths = scene_visual_paths[idx] if idx < len(scene_visual_paths) else []
-        paths = [p for p in paths if p] or fallback_visuals
+        paths = [p for p in paths if p]
         if not paths:
             continue
         target = _pace_target(scene)
@@ -172,18 +143,9 @@ def _scene_timeline(
     return timeline
 
 
-def render_video(
-    voice_path: str | Path,
-    visual_paths: list[str],
-    narration: str,
-    output_path: str | Path,
-    scenes: list[dict] | None = None,
-    scene_durations: list[float] | None = None,
-    scene_visual_paths: list[list[str]] | None = None,
-) -> dict:
+def render_video(voice_path: str | Path, visual_paths: list[str], narration: str, output_path: str | Path, scenes: list[dict] | None = None, scene_durations: list[float] | None = None, scene_visual_paths: list[list[str]] | None = None) -> dict:
     if not visual_paths:
         raise RuntimeError('No visual clips were provided to renderer')
-
     output = Path(output_path)
     work = output.parent
     work.mkdir(parents=True, exist_ok=True)
@@ -196,7 +158,6 @@ def render_video(
         order = _build_shot_order(visual_paths, desired_shots)
         per_shot = voice_duration / len(order)
         timeline = [(path, per_shot, 'cut', 0) for path in order]
-
     if not timeline:
         raise RuntimeError('Renderer could not build a visual timeline')
 
@@ -209,10 +170,7 @@ def render_video(
     concat_file = work / 'concat.txt'
     concat_file.write_text('\n'.join(f"file '{p.as_posix()}'" for p in normalized), encoding='utf-8')
     silent_video = work / 'silent.mp4'
-    _run([
-        'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat_file),
-        '-t', f'{voice_duration:.3f}', '-c', 'copy', str(silent_video)
-    ])
+    _run(['ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat_file), '-t', f'{voice_duration:.3f}', '-c', 'copy', str(silent_video)])
 
     srt = work / 'captions.srt'
     if scenes and scene_durations:
@@ -220,19 +178,16 @@ def render_video(
     else:
         make_srt(narration, voice_duration, srt)
 
-    # ONE text layer only. No separate overlay text is rendered. This prevents
-    # duplicate/mismatched text and guarantees captions come from narration.
+    # Restrained long-form subtitle treatment: one text layer, smaller type, soft translucent box.
     caption_filter = (
-        f"subtitles={srt.as_posix()}:force_style='FontName=DejaVu Sans,FontSize=31,Bold=1,"
-        "PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,"
-        "Alignment=2,MarginV=72'"
+        f"subtitles={srt.as_posix()}:force_style='FontName=DejaVu Sans,FontSize=25,Bold=0,"
+        "PrimaryColour=&H00FFFFFF,OutlineColour=&H33000000,BackColour=&H70000000,"
+        "BorderStyle=3,Outline=1,Shadow=0,Alignment=2,MarginV=50'"
     )
-
     _run([
-        'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path),
-        '-vf', caption_filter,
-        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18',
-        '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', str(output),
+        'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path), '-vf', caption_filter,
+        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-c:a', 'aac', '-b:a', '192k',
+        '-shortest', '-movflags', '+faststart', str(output),
     ])
 
     pace_counts = {'fast': 0, 'normal': 0, 'slow': 0}
@@ -246,15 +201,10 @@ def render_video(
             transition_counts[transition] += 1
 
     return {
-        'path': str(output),
-        'duration': voice_duration,
-        'shots': len(timeline),
-        'unique_visuals': len(set(visual_paths)),
-        'resolution': '1920x1080',
+        'path': str(output), 'duration': voice_duration, 'shots': len(timeline),
+        'unique_visuals': len(set(visual_paths)), 'resolution': '1920x1080',
         'scene_synced': bool(scenes and scene_durations and scene_visual_paths),
-        'pace_counts': pace_counts,
-        'transition_counts': transition_counts,
-        'overlays_used': 0,
-        'single_text_layer': True,
+        'pace_counts': pace_counts, 'transition_counts': transition_counts,
+        'overlays_used': 0, 'single_text_layer': True, 'subtitle_style': 'restrained_longform',
         'srt': str(srt),
     }
