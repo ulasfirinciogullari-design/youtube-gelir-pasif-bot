@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+celery[redis]
+redis
+sqlalchemy
+psycopg[binary]
+pydantic
+pydantic-settings
+httpx
+cryptography
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+openai
+runwayml
+python-multipart
