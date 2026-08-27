@@ -145,7 +145,12 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
 
         self.update_state(state='PROGRESS', meta={'stage': 'voice_and_visuals', 'progress': 24})
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
-            voice_future = stage_pool.submit(synthesize_scene_sequence, scenes, task_id)
+            voice_future = stage_pool.submit(
+                synthesize_scene_sequence,
+                scenes,
+                task_id,
+                duration_minutes * 60,
+            )
             broll_future = stage_pool.submit(_collect_broll, scenes, work)
             voice_result = voice_future.result()
             broll_result = broll_future.result()
@@ -179,7 +184,6 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
                 continue
 
             if not review:
-                # Unreviewed long-form scene: one calm hero shot, never an unchecked pool.
                 scene_visuals[scene_idx] = [{'path': _visual_path(paths[0]), 'start_fraction': 0.25}]
                 continue
 
@@ -209,7 +213,6 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
                     'replacement_count': len(replacements),
                 })
             else:
-                # Do not silently keep a QC-rejected visual.
                 scene_visuals[scene_idx] = []
 
         self.update_state(state='PROGRESS', meta={'stage': 'ai_scene', 'progress': 62})
@@ -289,6 +292,9 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
             'scene_durations': scene_durations,
             'spoken_texts': voice_result.get('spoken_texts', []),
             'voice_name': voice_result.get('voice_name'),
+            'voice_duration_before_fit': voice_result.get('duration_before_fit'),
+            'voice_duration_after_fit': voice_result.get('duration_after_fit'),
+            'voice_tempo_rate': voice_result.get('tempo_rate'),
             'stock_credits': credits,
             'runway_scenes_used': runway_scenes_used,
             'runway_errors': runway_errors,
@@ -318,6 +324,9 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
             'visual_replacements': len(visual_replacements),
             'average_visual_qc_score': avg_visual_score,
             'narration_word_count': package.get('narration_word_count'),
+            'voice_duration_before_fit': voice_result.get('duration_before_fit'),
+            'voice_duration_after_fit': voice_result.get('duration_after_fit'),
+            'voice_tempo_rate': voice_result.get('tempo_rate'),
         }
     finally:
         shutil.rmtree(work, ignore_errors=True)
