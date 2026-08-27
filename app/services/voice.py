@@ -1,6 +1,7 @@
 from pathlib import Path
 import re
 import subprocess
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import httpx
 import redis
 from app.config import settings
@@ -101,12 +102,18 @@ def get_selected_voice() -> dict:
     return {'voice_id': None, 'name': None, 'public_owner_id': None, 'source': None}
 
 
+# Only pronunciation changes belong here. The wording shown in captions remains the
+# original narration; this function changes how the same words are fed to TTS.
+_TURKISH_PRONUNCIATION_RULES = [
+    (r'\bO\s*[-.]?\s*L\s*[-.]?\s*E\s*[-.]?\s*D\b', 'oled'),
+    (r'\bOLED\b', 'oled'),
+]
+
+
 def normalize_turkish_tts(text: str) -> str:
     text = (text or '').strip()
-    # Turkish tech pronunciation overrides. OLED is pronounced as one word: "oled".
-    text = re.sub(r'\bO\s*[-.]?\s*L\s*[-.]?\s*E\s*[-.]?\s*D\b', 'oled', text, flags=re.IGNORECASE)
-    text = re.sub(r'\bOLED\b', 'oled', text, flags=re.IGNORECASE)
-    # Clean spacing around punctuation so the TTS engine can interpret pauses reliably.
+    for pattern, replacement in _TURKISH_PRONUNCIATION_RULES:
+        text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
     text = re.sub(r'\s+([,.;:!?])', r'\1', text)
     text = re.sub(r'([,.;:!?])(?=\S)', r'\1 ', text)
     text = re.sub(r'\s{2,}', ' ', text).strip()
@@ -129,11 +136,11 @@ def synthesize_voice_with_id(text: str, voice_id: str, previous_text: str | None
         'model_id': 'eleven_multilingual_v2',
         'apply_text_normalization': 'on',
         'voice_settings': {
-            'stability': 0.46,
-            'similarity_boost': 0.78,
+            'stability': 0.43,
+            'similarity_boost': 0.80,
             'style': 0.0,
             'use_speaker_boost': True,
-            'speed': 0.98,
+            'speed': 0.97,
         },
     }
     if previous_text:
@@ -168,40 +175,72 @@ def _selected_voice_or_raise() -> dict:
     return selected
 
 
-def synthesize_scene_sequence(scenes: list[dict], job_id: str, pause_seconds: float = 0.18) -> dict:
+def _scene_pause(scene: dict, is_last: bool) -> float:
+    if is_last:
+        return 0.0
+    pace = str(scene.get('pace') or 'normal').lower()
+    transition = str(scene.get('transition') or 'cut').lower()
+    if transition == 'dip' or pace == 'slow':
+        return 0.34
+    if pace == 'fast':
+        return 0.14
+    return 0.22
+
+
+def synthesize_scene_sequence(scenes: list[dict], job_id: str) -> dict:
     selected = _selected_voice_or_raise()
     voice_id = selected['voice_id']
-    spoken = [normalize_turkish_tts(str(s.get('tts_text') or s.get('narration') or '')) for s in scenes]
+
+    # IMPORTANT: TTS starts from the exact narration shown to the viewer. We only
+    # apply pronunciation substitutions such as OLED -> oled; we do not rewrite
+    # the sentence into a different caption/voice version.
+    source_texts = [str(s.get('narration') or '').strip() for s in scenes]
+    spoken = [normalize_turkish_tts(text) for text in source_texts]
     if not all(spoken):
-        raise RuntimeError('One or more scenes are missing TTS text')
+        raise RuntimeError('One or more scenes are missing narration')
 
     work = Path('/tmp') / f'{job_id}_voice'
     work.mkdir(parents=True, exist_ok=True)
-    chunk_paths: list[Path] = []
-    raw_durations: list[float] = []
+    chunk_paths = [work / f'scene_{idx:03d}.mp3' for idx in range(len(scenes))]
 
-    for idx, text in enumerate(spoken):
-        previous_text = spoken[idx - 1] if idx > 0 else None
-        next_text = spoken[idx + 1] if idx + 1 < len(spoken) else None
-        path = work / f'scene_{idx:03d}.mp3'
-        path.write_bytes(synthesize_voice_with_id(text, voice_id, previous_text, next_text))
-        chunk_paths.append(path)
-        raw_durations.append(_media_duration(path))
+    def make_scene(idx: int):
+        previous_text = source_texts[idx - 1] if idx > 0 else None
+        next_text = source_texts[idx + 1] if idx + 1 < len(source_texts) else None
+        audio = synthesize_voice_with_id(source_texts[idx], voice_id, previous_text, next_text)
+        chunk_paths[idx].write_bytes(audio)
+        return idx, _media_duration(chunk_paths[idx])
 
-    silence = work / 'pause.mp3'
-    subprocess.run([
-        'ffmpeg', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
-        '-t', f'{pause_seconds:.3f}', '-c:a', 'libmp3lame', '-b:a', '128k', str(silence),
-    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # Scene TTS requests are independent once previous/next context is supplied.
+    # Parallel generation removes the biggest serial bottleneck in short videos.
+    raw_durations = [0.0] * len(scenes)
+    workers = min(4, max(1, len(scenes)))
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        futures = [executor.submit(make_scene, idx) for idx in range(len(scenes))]
+        for future in as_completed(futures):
+            idx, duration = future.result()
+            raw_durations[idx] = duration
+
+    pause_cache: dict[float, Path] = {}
+    def pause_file(seconds: float) -> Path:
+        rounded = round(seconds, 2)
+        if rounded in pause_cache:
+            return pause_cache[rounded]
+        path = work / f'pause_{int(rounded * 1000):03d}.mp3'
+        subprocess.run([
+            'ffmpeg', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
+            '-t', f'{rounded:.3f}', '-c:a', 'libmp3lame', '-b:a', '128k', str(path),
+        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        pause_cache[rounded] = path
+        return path
 
     concat_entries: list[str] = []
     scene_durations: list[float] = []
     for idx, path in enumerate(chunk_paths):
         concat_entries.append(f"file '{path.as_posix()}'")
-        duration = raw_durations[idx]
-        if idx + 1 < len(chunk_paths):
-            concat_entries.append(f"file '{silence.as_posix()}'")
-            duration += pause_seconds
+        pause = _scene_pause(scenes[idx], idx + 1 == len(chunk_paths))
+        duration = raw_durations[idx] + pause
+        if pause > 0:
+            concat_entries.append(f"file '{pause_file(pause).as_posix()}'")
         scene_durations.append(duration)
 
     concat = work / 'concat.txt'
@@ -228,5 +267,5 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str, pause_seconds: fl
 
 
 def synthesize_voice(text: str, job_id: str) -> str:
-    result = synthesize_scene_sequence([{'narration': text, 'tts_text': text}], job_id, pause_seconds=0.0)
+    result = synthesize_scene_sequence([{'narration': text}], job_id)
     return result['path']
