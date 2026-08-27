@@ -24,15 +24,8 @@ def _redis():
 
 def list_turkish_voice_candidates(page_size: int = 20) -> list[dict]:
     response = httpx.get(
-        f'{ELEVENLABS_BASE}/shared-voices',
-        headers=_headers(),
-        params={
-            'language': 'tr',
-            'page_size': min(max(page_size, 1), 100),
-            'sort': 'trending',
-            'include_custom_rates': 'false',
-            'include_live_moderated': 'false',
-        },
+        f'{ELEVENLABS_BASE}/shared-voices', headers=_headers(),
+        params={'language': 'tr', 'page_size': min(max(page_size, 1), 100), 'sort': 'trending', 'include_custom_rates': 'false', 'include_live_moderated': 'false'},
         timeout=30,
     )
     response.raise_for_status()
@@ -47,24 +40,16 @@ def list_turkish_voice_candidates(page_size: int = 20) -> list[dict]:
         if not preview_url:
             continue
         candidates.append({
-            'voice_id': voice.get('voice_id'),
-            'public_owner_id': voice.get('public_owner_id'),
-            'name': voice.get('name'),
-            'gender': voice.get('gender'),
-            'age': voice.get('age'),
-            'accent': voice.get('accent'),
-            'description': voice.get('description'),
-            'use_case': voice.get('use_case'),
-            'category': voice.get('category'),
-            'preview_url': preview_url,
-            'rate': voice.get('rate'),
+            'voice_id': voice.get('voice_id'), 'public_owner_id': voice.get('public_owner_id'),
+            'name': voice.get('name'), 'gender': voice.get('gender'), 'age': voice.get('age'),
+            'accent': voice.get('accent'), 'description': voice.get('description'), 'use_case': voice.get('use_case'),
+            'category': voice.get('category'), 'preview_url': preview_url, 'rate': voice.get('rate'),
         })
     return candidates
 
 
 def voice_is_available(voice_id: str) -> bool:
-    response = httpx.get(f'{ELEVENLABS_BASE}/voices/{voice_id}', headers=_headers(), timeout=20)
-    return response.status_code == 200
+    return httpx.get(f'{ELEVENLABS_BASE}/voices/{voice_id}', headers=_headers(), timeout=20).status_code == 200
 
 
 def ensure_shared_voice_added(public_owner_id: str, voice_id: str, name: str | None = None) -> None:
@@ -73,8 +58,7 @@ def ensure_shared_voice_added(public_owner_id: str, voice_id: str, name: str | N
     response = httpx.post(
         f'{ELEVENLABS_BASE}/voices/add/{public_owner_id}/{voice_id}',
         headers={**_headers(), 'Content-Type': 'application/json'},
-        json={'new_name': (name or f'Audition {voice_id[:8]}')[:100], 'bookmarked': True},
-        timeout=30,
+        json={'new_name': (name or f'Audition {voice_id[:8]}')[:100], 'bookmarked': True}, timeout=30,
     )
     response.raise_for_status()
 
@@ -102,8 +86,6 @@ def get_selected_voice() -> dict:
     return {'voice_id': None, 'name': None, 'public_owner_id': None, 'source': None}
 
 
-# Only pronunciation changes belong here. The wording shown in captions remains the
-# original narration; this function changes how the same words are fed to TTS.
 _TURKISH_PRONUNCIATION_RULES = [
     (r'\bO\s*[-.]?\s*L\s*[-.]?\s*E\s*[-.]?\s*D\b', 'oled'),
     (r'\bOLED\b', 'oled'),
@@ -123,10 +105,7 @@ def normalize_turkish_tts(text: str) -> str:
 
 
 def _media_duration(path: str | Path) -> float:
-    out = subprocess.check_output([
-        'ffprobe', '-v', 'error', '-show_entries', 'format=duration',
-        '-of', 'default=noprint_wrappers=1:nokey=1', str(path)
-    ], text=True).strip()
+    out = subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', str(path)], text=True).strip()
     return float(out)
 
 
@@ -136,24 +115,21 @@ def synthesize_voice_with_id(text: str, voice_id: str, previous_text: str | None
         'model_id': 'eleven_multilingual_v2',
         'apply_text_normalization': 'on',
         'voice_settings': {
-            'stability': 0.43,
+            'stability': 0.40,
             'similarity_boost': 0.80,
             'style': 0.0,
             'use_speaker_boost': True,
-            'speed': 0.97,
+            'speed': 0.99,
         },
     }
     if previous_text:
         body['previous_text'] = normalize_turkish_tts(previous_text)[-600:]
     if next_text:
         body['next_text'] = normalize_turkish_tts(next_text)[:600]
-
     response = httpx.post(
         f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}',
         headers={**_headers(), 'Accept': 'audio/mpeg', 'Content-Type': 'application/json'},
-        params={'output_format': 'mp3_44100_128'},
-        json=body,
-        timeout=180,
+        params={'output_format': 'mp3_44100_128'}, json=body, timeout=180,
     )
     response.raise_for_status()
     return response.content
@@ -181,19 +157,15 @@ def _scene_pause(scene: dict, is_last: bool) -> float:
     pace = str(scene.get('pace') or 'normal').lower()
     transition = str(scene.get('transition') or 'cut').lower()
     if transition == 'dip' or pace == 'slow':
-        return 0.34
+        return 0.50
     if pace == 'fast':
-        return 0.14
-    return 0.22
+        return 0.18
+    return 0.32
 
 
 def synthesize_scene_sequence(scenes: list[dict], job_id: str) -> dict:
     selected = _selected_voice_or_raise()
     voice_id = selected['voice_id']
-
-    # IMPORTANT: TTS starts from the exact narration shown to the viewer. We only
-    # apply pronunciation substitutions such as OLED -> oled; we do not rewrite
-    # the sentence into a different caption/voice version.
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
     spoken = [normalize_turkish_tts(text) for text in source_texts]
     if not all(spoken):
@@ -210,11 +182,8 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str) -> dict:
         chunk_paths[idx].write_bytes(audio)
         return idx, _media_duration(chunk_paths[idx])
 
-    # Scene TTS requests are independent once previous/next context is supplied.
-    # Parallel generation removes the biggest serial bottleneck in short videos.
     raw_durations = [0.0] * len(scenes)
-    workers = min(4, max(1, len(scenes)))
-    with ThreadPoolExecutor(max_workers=workers) as executor:
+    with ThreadPoolExecutor(max_workers=min(4, max(1, len(scenes)))) as executor:
         futures = [executor.submit(make_scene, idx) for idx in range(len(scenes))]
         for future in as_completed(futures):
             idx, duration = future.result()
@@ -227,8 +196,8 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str) -> dict:
             return pause_cache[rounded]
         path = work / f'pause_{int(rounded * 1000):03d}.mp3'
         subprocess.run([
-            'ffmpeg', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
-            '-t', f'{rounded:.3f}', '-c:a', 'libmp3lame', '-b:a', '128k', str(path),
+            'ffmpeg', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo', '-t', f'{rounded:.3f}',
+            '-c:a', 'libmp3lame', '-b:a', '128k', str(path),
         ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         pause_cache[rounded] = path
         return path
@@ -247,25 +216,16 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str) -> dict:
     concat.write_text('\n'.join(concat_entries), encoding='utf-8')
     raw_output = work / 'joined.mp3'
     subprocess.run([
-        'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat),
-        '-c:a', 'libmp3lame', '-b:a', '192k', str(raw_output),
+        'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat), '-c:a', 'libmp3lame', '-b:a', '192k', str(raw_output),
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     output = Path('/tmp') / f'{job_id}.mp3'
     subprocess.run([
-        'ffmpeg', '-y', '-i', str(raw_output),
-        '-af', 'loudnorm=I=-16:TP=-1.5:LRA=7',
+        'ffmpeg', '-y', '-i', str(raw_output), '-af', 'loudnorm=I=-16:TP=-1.5:LRA=7',
         '-c:a', 'libmp3lame', '-b:a', '192k', str(output),
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-    return {
-        'path': str(output),
-        'scene_durations': scene_durations,
-        'spoken_texts': spoken,
-        'voice_name': selected.get('name'),
-    }
+    return {'path': str(output), 'scene_durations': scene_durations, 'spoken_texts': spoken, 'voice_name': selected.get('name')}
 
 
 def synthesize_voice(text: str, job_id: str) -> str:
-    result = synthesize_scene_sequence([{'narration': text}], job_id)
-    return result['path']
+    return synthesize_scene_sequence([{'narration': text}], job_id)['path']
