@@ -5,6 +5,7 @@ import shutil
 from app.celery_app import celery
 from app.services.research import research_and_script
 from app.services.director import direct_and_qc
+from app.services.visual_qc import review_scene_visuals
 from app.services.voice import synthesize_scene_sequence
 from app.services.pexels import find_broll, download_broll
 from app.services.runway import generate_scene, download_generated_scene
@@ -68,11 +69,64 @@ def run_video_pipeline(
                         'creator_url': item.get('creator_url'),
                         'page_url': item.get('page_url'),
                         'pexels_id': item.get('pexels_id'),
+                        'selected_by': 'initial_search',
                     })
                 except Exception:
                     continue
 
-        self.update_state(state='PROGRESS', meta={'stage': 'ai_scene', 'progress': 56})
+        self.update_state(state='PROGRESS', meta={'stage': 'visual_qc', 'progress': 49})
+        visual_qc = {'reviews': []}
+        visual_replacements: list[dict] = []
+        try:
+            visual_qc = review_scene_visuals(
+                scenes,
+                scene_visuals,
+                work,
+                max_scenes=12 if duration_minutes <= 2 else 10,
+            )
+            for review in visual_qc.get('reviews') or []:
+                scene_idx = int(review.get('scene_index', -1))
+                score = int(review.get('score', 100))
+                if scene_idx < 0 or scene_idx >= len(scene_visuals) or score >= 72:
+                    continue
+                replacements: list[str] = []
+                for retry_idx, query in enumerate(review.get('retry_queries') or []):
+                    try:
+                        candidates = find_broll(str(query), per_page=18)
+                        item = next((c for c in candidates if c.get('pexels_id') not in seen_ids), None)
+                        if not item:
+                            continue
+                        seen_ids.add(item.get('pexels_id'))
+                        path = work / f'qc_s{scene_idx:02d}_{retry_idx:02d}.mp4'
+                        download_broll(item, path)
+                        replacements.append(str(path))
+                        credits.append({
+                            'source': 'Pexels',
+                            'scene_index': scene_idx,
+                            'query': str(query),
+                            'creator_name': item.get('creator_name'),
+                            'creator_url': item.get('creator_url'),
+                            'page_url': item.get('page_url'),
+                            'pexels_id': item.get('pexels_id'),
+                            'selected_by': 'visual_qc_retry',
+                        })
+                    except Exception:
+                        continue
+                if replacements:
+                    old_first = scene_visuals[scene_idx][0] if scene_visuals[scene_idx] else None
+                    remaining = scene_visuals[scene_idx][1:] if scene_visuals[scene_idx] else []
+                    scene_visuals[scene_idx] = replacements + remaining
+                    visual_replacements.append({
+                        'scene_index': scene_idx,
+                        'score': score,
+                        'reason': review.get('reason'),
+                        'old_first': old_first,
+                        'replacement_count': len(replacements),
+                    })
+        except Exception as exc:
+            visual_qc = {'reviews': [], 'error': str(exc)[:600]}
+
+        self.update_state(state='PROGRESS', meta={'stage': 'ai_scene', 'progress': 60})
         runway_errors: list[str] = []
         runway_scenes_used = 0
         max_runway = 1 if duration_minutes <= 1.5 else 2
@@ -110,7 +164,7 @@ def run_video_pipeline(
         if not visual_paths:
             raise RuntimeError('No usable visuals were found from Pexels or Runway')
 
-        self.update_state(state='PROGRESS', meta={'stage': 'render', 'progress': 70})
+        self.update_state(state='PROGRESS', meta={'stage': 'render', 'progress': 73})
         rendered = render_video(
             voice_path=voice_path,
             visual_paths=visual_paths,
@@ -121,7 +175,7 @@ def run_video_pipeline(
             scene_visual_paths=scene_visuals,
         )
 
-        self.update_state(state='PROGRESS', meta={'stage': 'upload', 'progress': 91})
+        self.update_state(state='PROGRESS', meta={'stage': 'upload', 'progress': 92})
         object_key = f'videos/{task_id}/final.mp4'
         upload_file(rendered['path'], object_key, 'video/mp4')
         metadata_key = f'videos/{task_id}/metadata.json'
@@ -135,6 +189,8 @@ def run_video_pipeline(
             'description': package.get('description'),
             'sources': package.get('sources', []),
             'director_qc': package.get('director_qc', []),
+            'visual_qc': visual_qc,
+            'visual_replacements': visual_replacements,
             'scenes': scenes,
             'scene_durations': scene_durations,
             'spoken_texts': voice_result.get('spoken_texts', []),
@@ -164,6 +220,8 @@ def run_video_pipeline(
             'resolution': rendered.get('resolution'),
             'scene_synced': rendered.get('scene_synced'),
             'director_qc_applied': bool(package.get('director_qc')),
+            'visual_qc_reviews': len(visual_qc.get('reviews') or []),
+            'visual_replacements': len(visual_replacements),
         }
     finally:
         shutil.rmtree(work, ignore_errors=True)
