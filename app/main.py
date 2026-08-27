@@ -1,5 +1,6 @@
 from html import escape
 from urllib.parse import quote
+from pathlib import Path
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse, Response, RedirectResponse
 from pydantic import BaseModel, Field
@@ -9,13 +10,20 @@ from app.services.voice import (
     audition_shared_voice,
     save_selected_voice,
     get_selected_voice,
+    synthesize_voice,
 )
 
-app = FastAPI(title='YouTube 7/24 Content Factory', version='0.4.0')
+app = FastAPI(title='YouTube 7/24 Content Factory', version='0.5.0')
 
 AUDITION_TEXT = (
     'Bazen her gün kullandığımız teknolojilerin arkasında, fark etmediğimiz kadar şaşırtıcı bir dünya vardır. '
     'Bugün, telefonunuzdan internete kadar günlük hayatın içinde saklanan ilginç ayrıntılara birlikte bakacağız.'
+)
+
+VOICE_TEST_TEXT = (
+    'Merhaba. Bu, YouTube içerik fabrikamızın gerçek ses testidir. '
+    'Bundan sonra videoların anlatımı doğal, akıcı ve anlaşılır olacak. '
+    'Seçtiğimiz sesin uzun videolarda da yorucu olmaması ve Türkçe kelimeleri temiz telaffuz etmesi gerekiyor.'
 )
 
 class JobCreate(BaseModel):
@@ -26,7 +34,20 @@ class JobCreate(BaseModel):
 
 @app.get('/health')
 def health():
-    return {'ok': True, 'version': '0.4.0', 'selected_voice': get_selected_voice()}
+    return {'ok': True, 'version': '0.5.0', 'selected_voice': get_selected_voice()}
+
+@app.get('/voice-test')
+def voice_test():
+    try:
+        output_path = Path(synthesize_voice(VOICE_TEST_TEXT, 'selected-voice-test'))
+        audio = output_path.read_bytes()
+        try:
+            output_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+        return Response(content=audio, media_type='audio/mpeg')
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail='Selected voice test failed: ' + str(exc)) from exc
 
 @app.post('/jobs')
 def create_job(payload: JobCreate):
@@ -131,7 +152,7 @@ def voice_audition_page(selected: int = Query(default=0)):
         success = f'<div class="success">✓ <b>{selected_name}</b> varsayılan ses olarak kaydedildi. Worker artık bu sesi kullanacak.</div>'
 
     current = (
-        f'<div class="current">Şu an seçili ses: <b>{selected_name}</b></div>'
+        f'<div class="current">Şu an seçili ses: <b>{selected_name}</b> · <a href="/voice-test" target="_blank">gerçek ses testini dinle</a></div>'
         if selected_name else
         '<div class="current">Henüz varsayılan ses seçilmedi.</div>'
     )
@@ -146,6 +167,7 @@ def voice_audition_page(selected: int = Query(default=0)):
       <style>
         body {{ font-family: system-ui, sans-serif; margin:0; background:#0f1116; color:#f5f7fb; }}
         main {{ max-width:900px; margin:auto; padding:18px; }}
+        a {{ color:inherit; }}
         .note,.current,.success {{ padding:14px; border-radius:12px; margin-bottom:14px; line-height:1.45; }}
         .note {{ background:#1b2230; }}
         .current {{ background:#222835; }}
