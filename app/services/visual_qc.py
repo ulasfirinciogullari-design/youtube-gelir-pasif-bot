@@ -37,11 +37,12 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
     content: list[dict] = [{
         'type': 'input_text',
         'text': (
-            'You are a senior YouTube picture editor. Review each supplied representative video frame against its scene narration. '
-            'Score 0-100 using three criteria: exact semantic relevance to the spoken sentence, visual interest/retention value, and professional visual quality. '
-            'A generic laptop, random phone typing, office worker, skyline or abstract tech shot should score poorly unless it exactly matches the narration. '
-            'If score is below 72, give 2 better concrete ENGLISH stock-video search queries. Do not invent new facts. '
-            'Return ONLY JSON: {"reviews":[{"scene_index":0,"score":0,"reason":"...","retry_queries":["...","..."]}]}'
+            'You are a demanding senior YouTube picture editor. For each scene, compare ALL supplied candidate frames and choose the best candidate. '
+            'Judge exact semantic relevance to the spoken sentence first, then visual interest/retention, then professional image quality. '
+            'Generic or metaphorically loose footage must score poorly. Examples of BAD mismatches: fireworks for camera burst, financial charts for audio codecs, city skyline for 5G optimization, random phone typing for encryption, unrelated towers for indoor GPS. '
+            'A candidate should score 80+ only when a professional editor could confidently put it under that exact narration. '
+            'If the BEST candidate for a scene is below 80, provide 2 concrete ENGLISH retry search queries that would visualize the sentence literally. '
+            'Return ONLY JSON: {"reviews":[{"scene_index":0,"best_candidate_index":0,"score":0,"reason":"...","retry_queries":["...","..."]}]}'
         ),
     }]
 
@@ -50,21 +51,25 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
         if included >= max_scenes:
             break
         paths = scene_visuals[idx] if idx < len(scene_visuals) else []
+        paths = [p for p in paths if p][:3]
         if not paths:
             continue
-        frame = _frame(paths[0], frame_dir / f'scene_{idx:02d}.jpg')
-        if not frame:
-            continue
-        encoded = base64.b64encode(frame.read_bytes()).decode('ascii')
+
         content.append({
             'type': 'input_text',
-            'text': f'SCENE {idx}\nNarration: {str(scene.get("narration") or "").strip()}\nCurrent search queries: {json.dumps(scene.get("visual_queries") or [], ensure_ascii=False)}',
+            'text': f'SCENE {idx}\nNarration: {str(scene.get("narration") or "").strip()}\nSearch queries: {json.dumps(scene.get("visual_queries") or [], ensure_ascii=False)}',
         })
-        content.append({
-            'type': 'input_image',
-            'image_url': f'data:image/jpeg;base64,{encoded}',
-        })
-        included += 1
+        candidate_count = 0
+        for candidate_idx, path in enumerate(paths):
+            frame = _frame(path, frame_dir / f'scene_{idx:02d}_candidate_{candidate_idx:02d}.jpg')
+            if not frame:
+                continue
+            encoded = base64.b64encode(frame.read_bytes()).decode('ascii')
+            content.append({'type': 'input_text', 'text': f'CANDIDATE {candidate_idx}'})
+            content.append({'type': 'input_image', 'image_url': f'data:image/jpeg;base64,{encoded}'})
+            candidate_count += 1
+        if candidate_count:
+            included += 1
 
     if not included:
         return {'reviews': []}
@@ -82,6 +87,7 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
             continue
         try:
             scene_index = int(review.get('scene_index'))
+            best_candidate_index = int(review.get('best_candidate_index', 0))
             score = int(review.get('score'))
         except Exception:
             continue
@@ -90,6 +96,7 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
             retry_queries = [retry_queries]
         reviews.append({
             'scene_index': scene_index,
+            'best_candidate_index': max(0, best_candidate_index),
             'score': max(0, min(score, 100)),
             'reason': str(review.get('reason') or '')[:500],
             'retry_queries': [str(q).strip() for q in retry_queries if str(q).strip()][:2],
