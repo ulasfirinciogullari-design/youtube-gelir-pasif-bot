@@ -24,7 +24,7 @@ def _srt_timestamp(seconds: float) -> str:
     return f'{h:02}:{m:02}:{s:02},{milli:03}'
 
 
-def _caption_chunks(narration: str, max_words: int = 8) -> list[str]:
+def _caption_chunks(narration: str, max_words: int = 7) -> list[str]:
     clauses = [p.strip() for p in re.split(r'(?<=[.!?…])\s+|(?<=[,;:])\s+', narration) if p.strip()]
     chunks: list[str] = []
     for clause in clauses or [narration.strip()]:
@@ -36,27 +36,58 @@ def _caption_chunks(narration: str, max_words: int = 8) -> list[str]:
     return [c for c in chunks if c]
 
 
-def make_srt(narration: str, total_duration: float, output_path: str | Path) -> str:
-    parts = _caption_chunks(narration)
-    weights = [max(len(p.replace(' ', '')), 1) for p in parts]
-    total_weight = sum(weights) or 1
+def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_duration: float, output_path: str | Path) -> str:
+    raw_total = sum(scene_durations) or total_duration or 1.0
+    scale = total_duration / raw_total if raw_total else 1.0
     cursor = 0.0
-    lines = []
-    for idx, (part, weight) in enumerate(zip(parts, weights), start=1):
-        duration = max(0.55, total_duration * weight / total_weight)
-        start = cursor
-        end = min(total_duration, cursor + duration)
-        cursor = end
-        lines.extend([str(idx), f'{_srt_timestamp(start)} --> {_srt_timestamp(end)}', part, ''])
-        if cursor >= total_duration:
+    lines: list[str] = []
+    caption_index = 1
+
+    for scene_idx, scene in enumerate(scenes):
+        if scene_idx >= len(scene_durations):
             break
+        scene_duration = max(0.2, scene_durations[scene_idx] * scale)
+        narration = str(scene.get('narration') or '').strip()
+        parts = _caption_chunks(narration)
+        if not parts:
+            cursor += scene_duration
+            continue
+        weights = [max(len(p.replace(' ', '')), 1) for p in parts]
+        total_weight = sum(weights) or 1
+        local_cursor = cursor
+        scene_end = min(total_duration, cursor + scene_duration)
+        for part_idx, (part, weight) in enumerate(zip(parts, weights)):
+            if part_idx == len(parts) - 1:
+                end = scene_end
+            else:
+                end = min(scene_end, local_cursor + scene_duration * weight / total_weight)
+            if end <= local_cursor:
+                continue
+            lines.extend([
+                str(caption_index),
+                f'{_srt_timestamp(local_cursor)} --> {_srt_timestamp(end)}',
+                part,
+                '',
+            ])
+            caption_index += 1
+            local_cursor = end
+        cursor = scene_end
+
     path = Path(output_path)
     path.write_text('\n'.join(lines), encoding='utf-8')
     return str(path)
 
 
+def make_srt(narration: str, total_duration: float, output_path: str | Path) -> str:
+    return make_scene_srt(
+        [{'narration': narration}],
+        [total_duration],
+        total_duration,
+        output_path,
+    )
+
+
 def normalize_clip(input_path: str | Path, output_path: str | Path, duration: float, shot_index: int) -> str:
-    # Slightly overscale and vary crop position so repeated stock footage does not feel static.
     offsets = [
         '(iw-1920)/2:(ih-1080)/2',
         '0:(ih-1080)/2',
@@ -65,10 +96,11 @@ def normalize_clip(input_path: str | Path, output_path: str | Path, duration: fl
         '(iw-1920)/2:(ih-1080)',
     ]
     crop_xy = offsets[shot_index % len(offsets)]
+    speed = 1.02 + (shot_index % 3) * 0.01
     vf = (
         'scale=2050:1153:force_original_aspect_ratio=increase,'
         f'crop=1920:1080:{crop_xy},'
-        'fps=30,setpts=PTS/1.025,format=yuv420p'
+        f'fps=30,setpts=PTS/{speed:.3f},format=yuv420p'
     )
     _run([
         'ffmpeg', '-y', '-stream_loop', '-1', '-i', str(input_path),
@@ -79,21 +111,54 @@ def normalize_clip(input_path: str | Path, output_path: str | Path, duration: fl
 
 
 def _build_shot_order(visual_paths: list[str], desired_shots: int) -> list[str]:
+    if not visual_paths:
+        return []
     if len(visual_paths) == 1:
         return [visual_paths[0]] * desired_shots
     ordered: list[str] = []
     cycle = 0
     while len(ordered) < desired_shots:
         batch = visual_paths[:] if cycle % 2 == 0 else list(reversed(visual_paths))
-        if batch:
-            rotate = cycle % len(batch)
-            batch = batch[rotate:] + batch[:rotate]
+        rotate = cycle % len(batch)
+        batch = batch[rotate:] + batch[:rotate]
         ordered.extend(batch)
         cycle += 1
     return ordered[:desired_shots]
 
 
-def render_video(voice_path: str | Path, visual_paths: list[str], narration: str, output_path: str | Path) -> dict:
+def _scene_timeline(
+    scene_visual_paths: list[list[str]],
+    scene_durations: list[float],
+    voice_duration: float,
+    fallback_visuals: list[str],
+    target_shot_seconds: float = 3.0,
+) -> list[tuple[str, float]]:
+    raw_total = sum(scene_durations) or voice_duration or 1.0
+    scale = voice_duration / raw_total
+    timeline: list[tuple[str, float]] = []
+
+    for idx, raw_duration in enumerate(scene_durations):
+        duration = max(0.4, raw_duration * scale)
+        paths = scene_visual_paths[idx] if idx < len(scene_visual_paths) else []
+        paths = [p for p in paths if p] or fallback_visuals
+        if not paths:
+            continue
+        desired = max(1, int(math.ceil(duration / target_shot_seconds)))
+        order = _build_shot_order(paths, desired)
+        per_shot = duration / len(order)
+        timeline.extend((path, per_shot) for path in order)
+    return timeline
+
+
+def render_video(
+    voice_path: str | Path,
+    visual_paths: list[str],
+    narration: str,
+    output_path: str | Path,
+    scenes: list[dict] | None = None,
+    scene_durations: list[float] | None = None,
+    scene_visual_paths: list[list[str]] | None = None,
+) -> dict:
     if not visual_paths:
         raise RuntimeError('No visual clips were provided to renderer')
 
@@ -102,15 +167,27 @@ def render_video(voice_path: str | Path, visual_paths: list[str], narration: str
     work.mkdir(parents=True, exist_ok=True)
     voice_duration = media_duration(voice_path)
 
-    target_shot_seconds = 3.2
-    desired_shots = max(1, int(math.ceil(voice_duration / target_shot_seconds)))
-    ordered = _build_shot_order(visual_paths, desired_shots)
-    shot_duration = voice_duration / len(ordered)
+    if scenes and scene_durations and scene_visual_paths:
+        timeline = _scene_timeline(
+            scene_visual_paths,
+            scene_durations,
+            voice_duration,
+            visual_paths,
+            target_shot_seconds=3.0,
+        )
+    else:
+        desired_shots = max(1, int(math.ceil(voice_duration / 3.2)))
+        order = _build_shot_order(visual_paths, desired_shots)
+        per_shot = voice_duration / len(order)
+        timeline = [(path, per_shot) for path in order]
 
-    normalized = []
-    for idx, clip in enumerate(ordered):
+    if not timeline:
+        raise RuntimeError('Renderer could not build a visual timeline')
+
+    normalized: list[Path] = []
+    for idx, (clip, shot_duration) in enumerate(timeline):
         seg = work / f'norm_{idx:03d}.mp4'
-        normalize_clip(clip, seg, shot_duration + 0.08, idx)
+        normalize_clip(clip, seg, shot_duration + 0.06, idx)
         normalized.append(seg)
 
     concat_file = work / 'concat.txt'
@@ -122,7 +199,11 @@ def render_video(voice_path: str | Path, visual_paths: list[str], narration: str
     ])
 
     srt = work / 'captions.srt'
-    make_srt(narration, voice_duration, srt)
+    if scenes and scene_durations:
+        make_scene_srt(scenes, scene_durations, voice_duration, srt)
+    else:
+        make_srt(narration, voice_duration, srt)
+
     subtitle_filter = (
         f"subtitles={srt.as_posix()}:force_style='FontName=DejaVu Sans,FontSize=32,Bold=1,"
         "PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,"
@@ -137,8 +218,9 @@ def render_video(voice_path: str | Path, visual_paths: list[str], narration: str
     return {
         'path': str(output),
         'duration': voice_duration,
-        'shots': len(ordered),
+        'shots': len(timeline),
         'unique_visuals': len(set(visual_paths)),
         'resolution': '1920x1080',
+        'scene_synced': bool(scenes and scene_durations and scene_visual_paths),
         'srt': str(srt),
     }
