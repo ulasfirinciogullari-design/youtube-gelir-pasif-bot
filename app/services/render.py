@@ -24,6 +24,14 @@ def _srt_timestamp(seconds: float) -> str:
     return f'{h:02}:{m:02}:{s:02},{milli:03}'
 
 
+def _ass_timestamp(seconds: float) -> str:
+    cs = max(0, int(round(seconds * 100)))
+    h, rem = divmod(cs, 360000)
+    m, rem = divmod(rem, 6000)
+    s, c = divmod(rem, 100)
+    return f'{h}:{m:02}:{s:02}.{c:02}'
+
+
 def _caption_chunks(narration: str, max_words: int = 7) -> list[str]:
     clauses = [p.strip() for p in re.split(r'(?<=[.!?…])\s+|(?<=[,;:])\s+', narration) if p.strip()]
     chunks: list[str] = []
@@ -79,15 +87,65 @@ def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_durat
 
 
 def make_srt(narration: str, total_duration: float, output_path: str | Path) -> str:
-    return make_scene_srt(
-        [{'narration': narration}],
-        [total_duration],
-        total_duration,
-        output_path,
-    )
+    return make_scene_srt([{'narration': narration}], [total_duration], total_duration, output_path)
 
 
-def normalize_clip(input_path: str | Path, output_path: str | Path, duration: float, shot_index: int) -> str:
+def make_overlay_ass(scenes: list[dict], scene_durations: list[float], total_duration: float, output_path: str | Path) -> str | None:
+    raw_total = sum(scene_durations) or total_duration or 1.0
+    scale = total_duration / raw_total if raw_total else 1.0
+    cursor = 0.0
+    events: list[str] = []
+    for idx, scene in enumerate(scenes):
+        if idx >= len(scene_durations):
+            break
+        duration = max(0.2, scene_durations[idx] * scale)
+        text = str(scene.get('overlay_text') or '').strip()
+        if text:
+            safe = text.replace('{', '').replace('}', '').replace('\n', ' ').strip()
+            start = cursor + min(0.18, duration * 0.08)
+            end = min(cursor + duration - 0.08, start + min(1.55, max(0.8, duration * 0.35)))
+            if end > start:
+                events.append(
+                    f'Dialogue: 0,{_ass_timestamp(start)},{_ass_timestamp(end)},Overlay,,0,0,0,,{safe}'
+                )
+        cursor += duration
+    if not events:
+        return None
+    ass = '''[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Overlay,DejaVu Sans,50,&H00FFFFFF,&H000000FF,&H00101010,&H60000000,-1,0,0,0,100,100,0,0,3,1,0,8,90,90,92,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+''' + '\n'.join(events) + '\n'
+    path = Path(output_path)
+    path.write_text(ass, encoding='utf-8')
+    return str(path)
+
+
+def _pace_target(scene: dict | None) -> float:
+    pace = str((scene or {}).get('pace') or 'normal').lower()
+    if pace == 'fast':
+        return 1.75
+    if pace == 'slow':
+        return 3.8
+    return 2.65
+
+
+def normalize_clip(
+    input_path: str | Path,
+    output_path: str | Path,
+    duration: float,
+    shot_index: int,
+    transition: str = 'cut',
+) -> str:
     offsets = [
         '(iw-1920)/2:(ih-1080)/2',
         '0:(ih-1080)/2',
@@ -96,15 +154,23 @@ def normalize_clip(input_path: str | Path, output_path: str | Path, duration: fl
         '(iw-1920)/2:(ih-1080)',
     ]
     crop_xy = offsets[shot_index % len(offsets)]
-    speed = 1.02 + (shot_index % 3) * 0.01
-    vf = (
-        'scale=2050:1153:force_original_aspect_ratio=increase,'
-        f'crop=1920:1080:{crop_xy},'
-        f'fps=30,setpts=PTS/{speed:.3f},format=yuv420p'
-    )
+    speed = 1.015 + (shot_index % 4) * 0.009
+    filters = [
+        'scale=2070:1165:force_original_aspect_ratio=increase',
+        f'crop=1920:1080:{crop_xy}',
+        'fps=30',
+        f'setpts=PTS/{speed:.3f}',
+    ]
+    if transition == 'dip' and duration >= 0.8:
+        fade_out = max(0.2, duration - 0.16)
+        filters.extend([
+            'fade=t=in:st=0:d=0.10',
+            f'fade=t=out:st={fade_out:.3f}:d=0.14',
+        ])
+    filters.append('format=yuv420p')
     _run([
         'ffmpeg', '-y', '-stream_loop', '-1', '-i', str(input_path),
-        '-t', f'{duration:.3f}', '-vf', vf,
+        '-t', f'{duration:.3f}', '-vf', ','.join(filters),
         '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', str(output_path),
     ])
     return str(output_path)
@@ -127,26 +193,30 @@ def _build_shot_order(visual_paths: list[str], desired_shots: int) -> list[str]:
 
 
 def _scene_timeline(
+    scenes: list[dict],
     scene_visual_paths: list[list[str]],
     scene_durations: list[float],
     voice_duration: float,
     fallback_visuals: list[str],
-    target_shot_seconds: float = 3.0,
-) -> list[tuple[str, float]]:
+) -> list[tuple[str, float, str, int]]:
     raw_total = sum(scene_durations) or voice_duration or 1.0
     scale = voice_duration / raw_total
-    timeline: list[tuple[str, float]] = []
+    timeline: list[tuple[str, float, str, int]] = []
 
     for idx, raw_duration in enumerate(scene_durations):
         duration = max(0.4, raw_duration * scale)
+        scene = scenes[idx] if idx < len(scenes) else {}
         paths = scene_visual_paths[idx] if idx < len(scene_visual_paths) else []
         paths = [p for p in paths if p] or fallback_visuals
         if not paths:
             continue
-        desired = max(1, int(math.ceil(duration / target_shot_seconds)))
+        target = _pace_target(scene)
+        desired = max(1, int(math.ceil(duration / target)))
         order = _build_shot_order(paths, desired)
         per_shot = duration / len(order)
-        timeline.extend((path, per_shot) for path in order)
+        transition = str(scene.get('transition') or 'cut').lower()
+        for path in order:
+            timeline.append((path, per_shot, transition, idx))
     return timeline
 
 
@@ -168,26 +238,20 @@ def render_video(
     voice_duration = media_duration(voice_path)
 
     if scenes and scene_durations and scene_visual_paths:
-        timeline = _scene_timeline(
-            scene_visual_paths,
-            scene_durations,
-            voice_duration,
-            visual_paths,
-            target_shot_seconds=3.0,
-        )
+        timeline = _scene_timeline(scenes, scene_visual_paths, scene_durations, voice_duration, visual_paths)
     else:
-        desired_shots = max(1, int(math.ceil(voice_duration / 3.2)))
+        desired_shots = max(1, int(math.ceil(voice_duration / 2.8)))
         order = _build_shot_order(visual_paths, desired_shots)
         per_shot = voice_duration / len(order)
-        timeline = [(path, per_shot) for path in order]
+        timeline = [(path, per_shot, 'cut', 0) for path in order]
 
     if not timeline:
         raise RuntimeError('Renderer could not build a visual timeline')
 
     normalized: list[Path] = []
-    for idx, (clip, shot_duration) in enumerate(timeline):
+    for idx, (clip, shot_duration, transition, _scene_idx) in enumerate(timeline):
         seg = work / f'norm_{idx:03d}.mp4'
-        normalize_clip(clip, seg, shot_duration + 0.06, idx)
+        normalize_clip(clip, seg, shot_duration + 0.05, idx, transition)
         normalized.append(seg)
 
     concat_file = work / 'concat.txt'
@@ -204,17 +268,35 @@ def render_video(
     else:
         make_srt(narration, voice_duration, srt)
 
-    subtitle_filter = (
+    caption_filter = (
         f"subtitles={srt.as_posix()}:force_style='FontName=DejaVu Sans,FontSize=32,Bold=1,"
         "PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,"
         "Alignment=2,MarginV=72'"
     )
+    filters = [caption_filter]
+    overlay_path = None
+    if scenes and scene_durations:
+        overlay_path = make_overlay_ass(scenes, scene_durations, voice_duration, work / 'overlays.ass')
+        if overlay_path:
+            filters.append(f'subtitles={Path(overlay_path).as_posix()}')
+
     _run([
         'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path),
-        '-vf', subtitle_filter,
+        '-vf', ','.join(filters),
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18',
         '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', str(output),
     ])
+
+    pace_counts = {'fast': 0, 'normal': 0, 'slow': 0}
+    transition_counts = {'cut': 0, 'match': 0, 'dip': 0}
+    for scene in scenes or []:
+        pace = str(scene.get('pace') or 'normal').lower()
+        transition = str(scene.get('transition') or 'cut').lower()
+        if pace in pace_counts:
+            pace_counts[pace] += 1
+        if transition in transition_counts:
+            transition_counts[transition] += 1
+
     return {
         'path': str(output),
         'duration': voice_duration,
@@ -222,5 +304,8 @@ def render_video(
         'unique_visuals': len(set(visual_paths)),
         'resolution': '1920x1080',
         'scene_synced': bool(scenes and scene_durations and scene_visual_paths),
+        'pace_counts': pace_counts,
+        'transition_counts': transition_counts,
+        'overlays_used': sum(1 for s in (scenes or []) if s.get('overlay_text')),
         'srt': str(srt),
     }
