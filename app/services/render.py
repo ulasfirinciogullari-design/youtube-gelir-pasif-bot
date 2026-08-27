@@ -24,15 +24,7 @@ def _srt_timestamp(seconds: float) -> str:
     return f'{h:02}:{m:02}:{s:02},{milli:03}'
 
 
-def _ass_timestamp(seconds: float) -> str:
-    cs = max(0, int(round(seconds * 100)))
-    h, rem = divmod(cs, 360000)
-    m, rem = divmod(rem, 6000)
-    s, c = divmod(rem, 100)
-    return f'{h}:{m:02}:{s:02}.{c:02}'
-
-
-def _caption_chunks(narration: str, max_words: int = 7) -> list[str]:
+def _caption_chunks(narration: str, max_words: int = 6) -> list[str]:
     clauses = [p.strip() for p in re.split(r'(?<=[.!?…])\s+|(?<=[,;:])\s+', narration) if p.strip()]
     chunks: list[str] = []
     for clause in clauses or [narration.strip()]:
@@ -90,53 +82,13 @@ def make_srt(narration: str, total_duration: float, output_path: str | Path) -> 
     return make_scene_srt([{'narration': narration}], [total_duration], total_duration, output_path)
 
 
-def make_overlay_ass(scenes: list[dict], scene_durations: list[float], total_duration: float, output_path: str | Path) -> str | None:
-    raw_total = sum(scene_durations) or total_duration or 1.0
-    scale = total_duration / raw_total if raw_total else 1.0
-    cursor = 0.0
-    events: list[str] = []
-    for idx, scene in enumerate(scenes):
-        if idx >= len(scene_durations):
-            break
-        duration = max(0.2, scene_durations[idx] * scale)
-        text = str(scene.get('overlay_text') or '').strip()
-        if text:
-            safe = text.replace('{', '').replace('}', '').replace('\n', ' ').strip()
-            start = cursor + min(0.18, duration * 0.08)
-            end = min(cursor + duration - 0.08, start + min(1.55, max(0.8, duration * 0.35)))
-            if end > start:
-                events.append(
-                    f'Dialogue: 0,{_ass_timestamp(start)},{_ass_timestamp(end)},Overlay,,0,0,0,,{safe}'
-                )
-        cursor += duration
-    if not events:
-        return None
-    ass = '''[Script Info]
-ScriptType: v4.00+
-PlayResX: 1920
-PlayResY: 1080
-WrapStyle: 2
-ScaledBorderAndShadow: yes
-
-[V4+ Styles]
-Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
-Style: Overlay,DejaVu Sans,50,&H00FFFFFF,&H000000FF,&H00101010,&H60000000,-1,0,0,0,100,100,0,0,3,1,0,8,90,90,92,1
-
-[Events]
-Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
-''' + '\n'.join(events) + '\n'
-    path = Path(output_path)
-    path.write_text(ass, encoding='utf-8')
-    return str(path)
-
-
 def _pace_target(scene: dict | None) -> float:
     pace = str((scene or {}).get('pace') or 'normal').lower()
     if pace == 'fast':
-        return 1.75
+        return 1.65
     if pace == 'slow':
-        return 3.8
-    return 2.65
+        return 3.6
+    return 2.45
 
 
 def normalize_clip(
@@ -154,7 +106,7 @@ def normalize_clip(
         '(iw-1920)/2:(ih-1080)',
     ]
     crop_xy = offsets[shot_index % len(offsets)]
-    speed = 1.015 + (shot_index % 4) * 0.009
+    speed = 1.012 + (shot_index % 4) * 0.008
     filters = [
         'scale=2070:1165:force_original_aspect_ratio=increase',
         f'crop=1920:1080:{crop_xy}',
@@ -240,7 +192,7 @@ def render_video(
     if scenes and scene_durations and scene_visual_paths:
         timeline = _scene_timeline(scenes, scene_visual_paths, scene_durations, voice_duration, visual_paths)
     else:
-        desired_shots = max(1, int(math.ceil(voice_duration / 2.8)))
+        desired_shots = max(1, int(math.ceil(voice_duration / 2.6)))
         order = _build_shot_order(visual_paths, desired_shots)
         per_shot = voice_duration / len(order)
         timeline = [(path, per_shot, 'cut', 0) for path in order]
@@ -268,21 +220,17 @@ def render_video(
     else:
         make_srt(narration, voice_duration, srt)
 
+    # ONE text layer only. No separate overlay text is rendered. This prevents
+    # duplicate/mismatched text and guarantees captions come from narration.
     caption_filter = (
-        f"subtitles={srt.as_posix()}:force_style='FontName=DejaVu Sans,FontSize=32,Bold=1,"
+        f"subtitles={srt.as_posix()}:force_style='FontName=DejaVu Sans,FontSize=31,Bold=1,"
         "PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,"
         "Alignment=2,MarginV=72'"
     )
-    filters = [caption_filter]
-    overlay_path = None
-    if scenes and scene_durations:
-        overlay_path = make_overlay_ass(scenes, scene_durations, voice_duration, work / 'overlays.ass')
-        if overlay_path:
-            filters.append(f'subtitles={Path(overlay_path).as_posix()}')
 
     _run([
         'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path),
-        '-vf', ','.join(filters),
+        '-vf', caption_filter,
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18',
         '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', str(output),
     ])
@@ -306,6 +254,7 @@ def render_video(
         'scene_synced': bool(scenes and scene_durations and scene_visual_paths),
         'pace_counts': pace_counts,
         'transition_counts': transition_counts,
-        'overlays_used': sum(1 for s in (scenes or []) if s.get('overlay_text')),
+        'overlays_used': 0,
+        'single_text_layer': True,
         'srt': str(srt),
     }
