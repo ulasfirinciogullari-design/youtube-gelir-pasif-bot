@@ -101,48 +101,51 @@ def get_selected_voice() -> dict:
     return {'voice_id': None, 'name': None, 'public_owner_id': None, 'source': None}
 
 
-def _split_for_tts(text: str, max_chars: int = 700) -> list[str]:
-    sentences = [s.strip() for s in re.split(r'(?<=[.!?…])\s+', (text or '').strip()) if s.strip()]
-    if not sentences:
-        return [text.strip()]
-    chunks: list[str] = []
-    current = ''
-    for sentence in sentences:
-        candidate = f'{current} {sentence}'.strip()
-        if current and len(candidate) > max_chars:
-            chunks.append(current)
-            current = sentence
-        else:
-            current = candidate
-    if current:
-        chunks.append(current)
-    return chunks
+def normalize_turkish_tts(text: str) -> str:
+    text = (text or '').strip()
+    # Turkish tech pronunciation overrides. OLED is pronounced as one word: "oled".
+    text = re.sub(r'\bO\s*[-.]?\s*L\s*[-.]?\s*E\s*[-.]?\s*D\b', 'oled', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bOLED\b', 'oled', text, flags=re.IGNORECASE)
+    # Clean spacing around punctuation so the TTS engine can interpret pauses reliably.
+    text = re.sub(r'\s+([,.;:!?])', r'\1', text)
+    text = re.sub(r'([,.;:!?])(?=\S)', r'\1 ', text)
+    text = re.sub(r'\s{2,}', ' ', text).strip()
+    if text and text[-1] not in '.!?…':
+        text += '.'
+    return text
+
+
+def _media_duration(path: str | Path) -> float:
+    out = subprocess.check_output([
+        'ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+        '-of', 'default=noprint_wrappers=1:nokey=1', str(path)
+    ], text=True).strip()
+    return float(out)
 
 
 def synthesize_voice_with_id(text: str, voice_id: str, previous_text: str | None = None, next_text: str | None = None) -> bytes:
-    params = {
-        'output_format': 'mp3_44100_128',
+    body = {
+        'text': normalize_turkish_tts(text),
+        'model_id': 'eleven_multilingual_v2',
         'apply_text_normalization': 'on',
+        'voice_settings': {
+            'stability': 0.46,
+            'similarity_boost': 0.78,
+            'style': 0.0,
+            'use_speaker_boost': True,
+            'speed': 0.98,
+        },
     }
     if previous_text:
-        params['previous_text'] = previous_text[-500:]
+        body['previous_text'] = normalize_turkish_tts(previous_text)[-600:]
     if next_text:
-        params['next_text'] = next_text[:500]
+        body['next_text'] = normalize_turkish_tts(next_text)[:600]
+
     response = httpx.post(
         f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}',
         headers={**_headers(), 'Accept': 'audio/mpeg', 'Content-Type': 'application/json'},
-        params=params,
-        json={
-            'text': text,
-            'model_id': 'eleven_multilingual_v2',
-            'voice_settings': {
-                'stability': 0.52,
-                'similarity_boost': 0.78,
-                'style': 0.0,
-                'use_speaker_boost': True,
-                'speed': 1.03,
-            },
-        },
+        params={'output_format': 'mp3_44100_128'},
+        json=body,
         timeout=180,
     )
     response.raise_for_status()
@@ -154,7 +157,7 @@ def audition_shared_voice(text: str, public_owner_id: str, voice_id: str, name: 
     return synthesize_voice_with_id(text, voice_id)
 
 
-def synthesize_voice(text: str, job_id: str) -> str:
+def _selected_voice_or_raise() -> dict:
     selected = get_selected_voice()
     voice_id = selected.get('voice_id')
     if not voice_id:
@@ -162,28 +165,52 @@ def synthesize_voice(text: str, job_id: str) -> str:
     owner_id = selected.get('public_owner_id')
     if owner_id:
         ensure_shared_voice_added(owner_id, voice_id, selected.get('name'))
+    return selected
 
-    chunks = _split_for_tts(text)
+
+def synthesize_scene_sequence(scenes: list[dict], job_id: str, pause_seconds: float = 0.18) -> dict:
+    selected = _selected_voice_or_raise()
+    voice_id = selected['voice_id']
+    spoken = [normalize_turkish_tts(str(s.get('tts_text') or s.get('narration') or '')) for s in scenes]
+    if not all(spoken):
+        raise RuntimeError('One or more scenes are missing TTS text')
+
     work = Path('/tmp') / f'{job_id}_voice'
     work.mkdir(parents=True, exist_ok=True)
     chunk_paths: list[Path] = []
-    for idx, chunk in enumerate(chunks):
-        previous_text = chunks[idx - 1] if idx > 0 else None
-        next_text = chunks[idx + 1] if idx + 1 < len(chunks) else None
-        path = work / f'chunk_{idx:03d}.mp3'
-        path.write_bytes(synthesize_voice_with_id(chunk, voice_id, previous_text, next_text))
-        chunk_paths.append(path)
+    raw_durations: list[float] = []
 
+    for idx, text in enumerate(spoken):
+        previous_text = spoken[idx - 1] if idx > 0 else None
+        next_text = spoken[idx + 1] if idx + 1 < len(spoken) else None
+        path = work / f'scene_{idx:03d}.mp3'
+        path.write_bytes(synthesize_voice_with_id(text, voice_id, previous_text, next_text))
+        chunk_paths.append(path)
+        raw_durations.append(_media_duration(path))
+
+    silence = work / 'pause.mp3'
+    subprocess.run([
+        'ffmpeg', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
+        '-t', f'{pause_seconds:.3f}', '-c:a', 'libmp3lame', '-b:a', '128k', str(silence),
+    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    concat_entries: list[str] = []
+    scene_durations: list[float] = []
+    for idx, path in enumerate(chunk_paths):
+        concat_entries.append(f"file '{path.as_posix()}'")
+        duration = raw_durations[idx]
+        if idx + 1 < len(chunk_paths):
+            concat_entries.append(f"file '{silence.as_posix()}'")
+            duration += pause_seconds
+        scene_durations.append(duration)
+
+    concat = work / 'concat.txt'
+    concat.write_text('\n'.join(concat_entries), encoding='utf-8')
     raw_output = work / 'joined.mp3'
-    if len(chunk_paths) == 1:
-        raw_output.write_bytes(chunk_paths[0].read_bytes())
-    else:
-        concat = work / 'concat.txt'
-        concat.write_text('\n'.join(f"file '{p.as_posix()}'" for p in chunk_paths), encoding='utf-8')
-        subprocess.run([
-            'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat),
-            '-c:a', 'libmp3lame', '-b:a', '192k', str(raw_output),
-        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run([
+        'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat),
+        '-c:a', 'libmp3lame', '-b:a', '192k', str(raw_output),
+    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     output = Path('/tmp') / f'{job_id}.mp3'
     subprocess.run([
@@ -191,4 +218,15 @@ def synthesize_voice(text: str, job_id: str) -> str:
         '-af', 'loudnorm=I=-16:TP=-1.5:LRA=7',
         '-c:a', 'libmp3lame', '-b:a', '192k', str(output),
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return str(output)
+
+    return {
+        'path': str(output),
+        'scene_durations': scene_durations,
+        'spoken_texts': spoken,
+        'voice_name': selected.get('name'),
+    }
+
+
+def synthesize_voice(text: str, job_id: str) -> str:
+    result = synthesize_scene_sequence([{'narration': text, 'tts_text': text}], job_id, pause_seconds=0.0)
+    return result['path']
