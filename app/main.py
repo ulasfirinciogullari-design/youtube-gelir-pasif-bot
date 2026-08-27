@@ -15,7 +15,7 @@ from app.services.voice import (
     get_selected_voice,
 )
 
-app = FastAPI(title='YouTube 7/24 Content Factory', version='0.7.0')
+app = FastAPI(title='YouTube 7/24 Content Factory', version='0.8.0')
 
 
 class JobCreate(BaseModel):
@@ -26,7 +26,6 @@ class JobCreate(BaseModel):
 
 
 def _require_factory_token(x_factory_token: str | None):
-    # Fail closed if the owner has not configured a production token yet.
     if not settings.factory_api_token:
         raise HTTPException(status_code=503, detail='FACTORY_API_TOKEN is not configured')
     if x_factory_token != settings.factory_api_token:
@@ -37,7 +36,7 @@ def _require_factory_token(x_factory_token: str | None):
 def health():
     return {
         'ok': True,
-        'version': '0.7.0',
+        'version': '0.8.0',
         'selected_voice': get_selected_voice(),
         'factory_locked': not bool(settings.factory_api_token),
         'bucket_configured': bool(settings.bucket and settings.endpoint),
@@ -73,6 +72,60 @@ def job_status(task_id: str, x_factory_token: str | None = Header(default=None))
         return {'task_id': task_id, 'state': state, **result}
     info = task.info if isinstance(task.info, dict) else {}
     return {'task_id': task_id, 'state': state, **info}
+
+
+@app.get('/factory', response_class=HTMLResponse)
+def factory_panel():
+    selected_voice = get_selected_voice().get('name') or 'seçilmedi'
+    return HTMLResponse(f'''<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YouTube Video Fabrikası</title>
+<style>
+body{{font-family:system-ui;margin:0;background:#0f1116;color:#f5f7fb}}main{{max-width:720px;margin:auto;padding:20px}}
+.card{{background:#181c25;border:1px solid #2b3240;border-radius:16px;padding:18px;margin-bottom:14px}}
+label{{display:block;margin:12px 0 5px;font-weight:700}}input,textarea,select,button{{width:100%;box-sizing:border-box;border-radius:10px;border:1px solid #3b4352;padding:12px;font-size:16px}}
+input,textarea,select{{background:#10141c;color:white}}button{{margin-top:16px;background:#725cff;color:white;border:0;font-weight:800}}
+button:disabled{{opacity:.55}}#status{{white-space:pre-wrap;word-break:break-word;line-height:1.45}}a{{color:#9dc1ff}}
+.small{{opacity:.7;font-size:.9rem}}
+</style></head><body><main>
+<h1>🎬 Video Fabrikası</h1>
+<div class="card"><b>Seçili ses:</b> {escape(selected_voice)}<br><span class="small">Token tarayıcıdan sadece X-Factory-Token header'ı olarak gönderilir; URL'ye yazılmaz.</span></div>
+<div class="card">
+<label>FACTORY_API_TOKEN</label><input id="token" type="password" autocomplete="off" placeholder="Railway'e koyduğun token">
+<label>Konu</label><textarea id="topic" rows="4">Telefonunda her gün kullandığın 7 teknolojinin şaşırtıcı gerçeği</textarea>
+<label>Süre</label><select id="duration"><option value="1">1 dk test</option><option value="3">3 dk</option><option value="5" selected>5 dk</option></select>
+<label>Dil</label><select id="lang"><option value="tr" selected>Türkçe</option><option value="en">English</option></select>
+<button id="start" onclick="startJob()">Videoyu üret</button>
+</div>
+<div class="card"><h3>Durum</h3><div id="status">Hazır.</div></div>
+<script>
+const s=document.getElementById('status');
+async function api(url,options={{}}){{
+  options.headers=Object.assign({{'X-Factory-Token':document.getElementById('token').value}},options.headers||{{}});
+  const r=await fetch(url,options); const text=await r.text(); let data; try{{data=JSON.parse(text)}}catch{{data={{raw:text}}}}
+  if(!r.ok) throw new Error(data.detail||data.error||text||('HTTP '+r.status)); return data;
+}}
+async function startJob(){{
+ const b=document.getElementById('start'); b.disabled=true; s.textContent='Görev oluşturuluyor…';
+ try{{
+   const body={{topic:document.getElementById('topic').value,duration_minutes:Number(document.getElementById('duration').value),language:document.getElementById('lang').value}};
+   const d=await api('/jobs',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify(body)}});
+   s.textContent='Görev: '+d.task_id+'\nKuyrukta…'; poll(d.task_id);
+ }}catch(e){{s.textContent='HATA: '+e.message;b.disabled=false;}}
+}}
+async function poll(id){{
+ try{{
+   const d=await api('/jobs/'+id); s.textContent=JSON.stringify(d,null,2);
+   if(d.state==='SUCCESS'){{
+      document.getElementById('start').disabled=false;
+      if(d.download_url) s.innerHTML='<b>Video hazır ✅</b><br><a href="'+d.download_url+'" target="_blank">Videoyu aç / indir</a><pre>'+JSON.stringify(d,null,2)+'</pre>';
+      return;
+   }}
+   if(d.state==='FAILURE'){{document.getElementById('start').disabled=false;return;}}
+   setTimeout(()=>poll(id),5000);
+ }}catch(e){{s.textContent='Durum hatası: '+e.message;document.getElementById('start').disabled=false;}}
+}}
+</script></main></body></html>''')
 
 
 @app.get('/voice-audition/candidates')
