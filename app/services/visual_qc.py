@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 import base64
 import json
@@ -5,6 +6,9 @@ import re
 import subprocess
 from openai import OpenAI
 from app.config import settings
+
+
+MOMENT_FRACTIONS = [0.18, 0.50, 0.82]
 
 
 def _parse(text: str) -> dict:
@@ -16,10 +20,20 @@ def _parse(text: str) -> dict:
     return data if isinstance(data, dict) else {'reviews': []}
 
 
-def _frame(video_path: str, output_path: Path) -> Path | None:
+@lru_cache(maxsize=256)
+def _duration(video_path: str) -> float:
+    out = subprocess.check_output([
+        'ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+        '-of', 'default=noprint_wrappers=1:nokey=1', video_path,
+    ], text=True).strip()
+    return max(0.1, float(out))
+
+
+def _frame(video_path: str, output_path: Path, fraction: float) -> Path | None:
     try:
+        seconds = max(0.0, _duration(video_path) * fraction)
         subprocess.run([
-            'ffmpeg', '-y', '-ss', '0.8', '-i', video_path,
+            'ffmpeg', '-y', '-ss', f'{seconds:.3f}', '-i', video_path,
             '-frames:v', '1', '-vf', 'scale=640:-2', '-q:v', '5', str(output_path),
         ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         return output_path if output_path.exists() and output_path.stat().st_size else None
@@ -37,12 +51,11 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
     content: list[dict] = [{
         'type': 'input_text',
         'text': (
-            'You are a demanding senior YouTube picture editor. For each scene, compare ALL supplied candidate frames and choose the best candidate. '
-            'Judge exact semantic relevance to the spoken sentence first, then visual interest/retention, then professional image quality. '
-            'Generic or metaphorically loose footage must score poorly. Examples of BAD mismatches: fireworks for camera burst, financial charts for audio codecs, city skyline for 5G optimization, random phone typing for encryption, unrelated towers for indoor GPS. '
-            'A candidate should score 80+ only when a professional editor could confidently put it under that exact narration. '
-            'If the BEST candidate for a scene is below 80, provide 2 concrete ENGLISH retry search queries that would visualize the sentence literally. '
-            'Return ONLY JSON: {"reviews":[{"scene_index":0,"best_candidate_index":0,"score":0,"reason":"...","retry_queries":["...","..."]}]}'
+            'You are a demanding senior YouTube picture editor. For each scene, compare ALL supplied candidate clips AND multiple moments inside each clip. '
+            'Choose the exact candidate and exact moment a professional editor should use. Judge literal semantic relevance first, then visual interest, composition, motion and production quality. '
+            'Generic or metaphorically loose footage must score poorly. Never approve fireworks for camera burst, finance charts for audio codecs, a skyline for network optimization, random typing for encryption, or unrelated towers for indoor GPS. '
+            'A score of 80+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 80, provide two concrete ENGLISH retry queries that visualize the sentence literally. '
+            'Return ONLY JSON: {"reviews":[{"scene_index":0,"best_candidate_index":0,"best_moment_index":0,"score":0,"reason":"...","retry_queries":["...","..."]}]}'
         ),
     }]
 
@@ -59,22 +72,30 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
             'type': 'input_text',
             'text': f'SCENE {idx}\nNarration: {str(scene.get("narration") or "").strip()}\nSearch queries: {json.dumps(scene.get("visual_queries") or [], ensure_ascii=False)}',
         })
-        candidate_count = 0
+        image_count = 0
         for candidate_idx, path in enumerate(paths):
-            frame = _frame(path, frame_dir / f'scene_{idx:02d}_candidate_{candidate_idx:02d}.jpg')
-            if not frame:
-                continue
-            encoded = base64.b64encode(frame.read_bytes()).decode('ascii')
-            content.append({'type': 'input_text', 'text': f'CANDIDATE {candidate_idx}'})
-            content.append({'type': 'input_image', 'image_url': f'data:image/jpeg;base64,{encoded}'})
-            candidate_count += 1
-        if candidate_count:
+            for moment_idx, fraction in enumerate(MOMENT_FRACTIONS):
+                frame = _frame(
+                    path,
+                    frame_dir / f'scene_{idx:02d}_candidate_{candidate_idx:02d}_moment_{moment_idx:02d}.jpg',
+                    fraction,
+                )
+                if not frame:
+                    continue
+                encoded = base64.b64encode(frame.read_bytes()).decode('ascii')
+                content.append({
+                    'type': 'input_text',
+                    'text': f'CANDIDATE {candidate_idx} — MOMENT {moment_idx} — approximately {int(fraction * 100)}% into clip',
+                })
+                content.append({'type': 'input_image', 'image_url': f'data:image/jpeg;base64,{encoded}'})
+                image_count += 1
+        if image_count:
             included += 1
 
     if not included:
         return {'reviews': []}
 
-    client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
+    client = OpenAI(api_key=settings.openai_api_key, timeout=120.0, max_retries=1)
     response = client.responses.create(
         model=settings.openai_model,
         reasoning={'effort': 'low'},
@@ -88,17 +109,21 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
         try:
             scene_index = int(review.get('scene_index'))
             best_candidate_index = int(review.get('best_candidate_index', 0))
+            best_moment_index = int(review.get('best_moment_index', 0))
             score = int(review.get('score'))
         except Exception:
             continue
         retry_queries = review.get('retry_queries') or []
         if isinstance(retry_queries, str):
             retry_queries = [retry_queries]
+        best_moment_index = min(max(best_moment_index, 0), len(MOMENT_FRACTIONS) - 1)
         reviews.append({
             'scene_index': scene_index,
             'best_candidate_index': max(0, best_candidate_index),
+            'best_moment_index': best_moment_index,
+            'best_start_fraction': MOMENT_FRACTIONS[best_moment_index],
             'score': max(0, min(score, 100)),
             'reason': str(review.get('reason') or '')[:500],
             'retry_queries': [str(q).strip() for q in retry_queries if str(q).strip()][:2],
         })
-    return {'reviews': reviews}
+    return {'reviews': reviews, 'moment_fractions': MOMENT_FRACTIONS}
