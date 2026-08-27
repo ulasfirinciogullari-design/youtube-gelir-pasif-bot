@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import re
 import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -77,7 +78,13 @@ def _collect_broll(scenes: list[dict], work: Path) -> dict:
     return {'scene_visuals': scene_visuals, 'credits': credits, 'seen_ids': seen_ids}
 
 
-def _retry_bad_scene(scene_idx: int, retry_queries: list[str], seen_ids: set, work: Path, credits: list[dict]) -> list[str]:
+def _retry_bad_scene(
+    scene_idx: int,
+    retry_queries: list[str],
+    seen_ids: set,
+    work: Path,
+    credits: list[dict],
+) -> list[dict]:
     replacement_candidates: list[tuple[str, dict]] = []
     if not retry_queries:
         return []
@@ -94,13 +101,12 @@ def _retry_bad_scene(scene_idx: int, retry_queries: list[str], seen_ids: set, wo
                 seen_ids.add(item.get('pexels_id'))
                 replacement_candidates.append((query, item))
 
-    replacements: list[str] = []
-    # Keep only one replacement until it passes a later full-quality production review.
+    replacements: list[dict] = []
     for retry_idx, (query, item) in enumerate(replacement_candidates[:1]):
         try:
             path = work / f'qc_s{scene_idx:02d}_{retry_idx:02d}.mp4'
             download_broll(item, path)
-            replacements.append(str(path))
+            replacements.append({'path': str(path), 'start_fraction': 0.35})
             credits.append({
                 'source': 'Pexels',
                 'scene_index': scene_idx,
@@ -114,6 +120,12 @@ def _retry_bad_scene(scene_idx: int, retry_queries: list[str], seen_ids: set, wo
         except Exception:
             continue
     return replacements
+
+
+def _visual_path(spec: str | dict) -> str:
+    if isinstance(spec, dict):
+        return str(spec.get('path') or '')
+    return str(spec)
 
 
 @celery.task(bind=True, autoretry_for=(Exception,), retry_backoff=True, max_retries=2)
@@ -140,7 +152,7 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
 
         voice_path = voice_result['path']
         scene_durations = voice_result['scene_durations']
-        scene_visuals = broll_result['scene_visuals']
+        scene_visuals: list[list[str | dict]] = broll_result['scene_visuals']
         credits = broll_result['credits']
         seen_ids = broll_result['seen_ids']
 
@@ -152,7 +164,6 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
             max_scenes=len(scenes) if duration_minutes <= 1 else min(10, len(scenes)),
         )
         visual_replacements: list[dict] = []
-        unresolved_scenes: list[int] = []
 
         reviews_by_scene = {
             int(r.get('scene_index')): r
@@ -160,24 +171,30 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
             if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
         }
 
-        for scene_idx, scene in enumerate(scenes):
+        for scene_idx, _scene in enumerate(scenes):
             review = reviews_by_scene.get(scene_idx)
-            paths = scene_visuals[scene_idx]
+            paths = [p for p in scene_visuals[scene_idx] if _visual_path(p)]
             if not paths:
-                unresolved_scenes.append(scene_idx)
+                scene_visuals[scene_idx] = []
                 continue
+
             if not review:
-                # For unreviewed long-form scenes, retain only the first candidate; never cycle through an unchecked pool.
-                scene_visuals[scene_idx] = [paths[0]]
+                # Unreviewed long-form scene: one calm hero shot, never an unchecked pool.
+                scene_visuals[scene_idx] = [{'path': _visual_path(paths[0]), 'start_fraction': 0.25}]
                 continue
 
             best_idx = int(review.get('best_candidate_index', 0))
             score = int(review.get('score', 0))
             best_idx = min(max(best_idx, 0), len(paths) - 1)
-            best_path = paths[best_idx]
+            best_path = _visual_path(paths[best_idx])
+            try:
+                best_fraction = float(review.get('best_start_fraction', 0.25))
+            except Exception:
+                best_fraction = 0.25
+            best_fraction = max(0.0, min(best_fraction, 0.95))
 
             if score >= 80:
-                scene_visuals[scene_idx] = [best_path]
+                scene_visuals[scene_idx] = [{'path': best_path, 'start_fraction': best_fraction}]
                 continue
 
             retry_queries = [str(q).strip() for q in (review.get('retry_queries') or [])[:2] if str(q).strip()]
@@ -192,14 +209,14 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
                     'replacement_count': len(replacements),
                 })
             else:
-                unresolved_scenes.append(scene_idx)
+                # Do not silently keep a QC-rejected visual.
+                scene_visuals[scene_idx] = []
 
         self.update_state(state='PROGRESS', meta={'stage': 'ai_scene', 'progress': 62})
         runway_errors: list[str] = []
         runway_scenes_used = 0
         max_runway = 0 if duration_minutes <= 0.6 else (1 if duration_minutes <= 2 else 2)
 
-        # Use Runway only when explicitly storyboarded and allowed by the duration mode.
         for scene_idx, scene in enumerate(scenes):
             prompt = scene.get('ai_prompt')
             if not prompt or runway_scenes_used >= max_runway:
@@ -208,20 +225,17 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
                 url = generate_scene(str(prompt), duration=5)
                 runway_path = work / f'runway_s{scene_idx:02d}.mp4'
                 download_generated_scene(url, runway_path)
-                scene_visuals[scene_idx] = [str(runway_path)]
+                scene_visuals[scene_idx] = [{'path': str(runway_path), 'start_fraction': 0.0}]
                 runway_scenes_used += 1
-                if scene_idx in unresolved_scenes:
-                    unresolved_scenes.remove(scene_idx)
             except Exception as exc:
                 runway_errors.append(f'scene {scene_idx}: {str(exc)[:400]}')
 
-        # Professional gate: never borrow an unrelated neighboring/global visual just to finish a render.
-        unresolved_scenes = sorted(set(idx for idx in unresolved_scenes if not scene_visuals[idx]))
+        unresolved_scenes = [idx for idx, specs in enumerate(scene_visuals) if not any(_visual_path(s) for s in specs)]
         if unresolved_scenes:
             raise RuntimeError(f'Visual quality gate rejected unresolved scenes: {unresolved_scenes}')
 
-        visual_paths = [p for paths in scene_visuals for p in paths]
-        if not visual_paths:
+        visual_specs = [spec for specs in scene_visuals for spec in specs if _visual_path(spec)]
+        if not visual_specs:
             raise RuntimeError('No quality-approved visuals were available')
 
         reviews = visual_qc.get('reviews') or []
@@ -231,7 +245,7 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
         self.update_state(state='PROGRESS', meta={'stage': 'render', 'progress': 74})
         rendered = render_video(
             voice_path=voice_path,
-            visual_paths=visual_paths,
+            visual_paths=visual_specs,
             narration=package['narration'],
             output_path=work / 'final.mp4',
             scenes=scenes,
@@ -239,7 +253,6 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
             scene_visual_paths=scene_visuals,
         )
 
-        # Final duration guard. 30 sec can vary slightly, but never become a 98 sec video again.
         requested_seconds = duration_minutes * 60
         actual_seconds = float(rendered.get('duration') or 0)
         if actual_seconds > requested_seconds * 1.22 or actual_seconds < requested_seconds * 0.70:
@@ -248,6 +261,12 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
         self.update_state(state='PROGRESS', meta={'stage': 'upload', 'progress': 92})
         object_key = f'videos/{task_id}/final.mp4'
         upload_file(rendered['path'], object_key, 'video/mp4')
+
+        safe_language = re.sub(r'[^a-zA-Z0-9_-]+', '', language or 'tr') or 'tr'
+        caption_key = f'videos/{task_id}/captions.{safe_language}.srt'
+        upload_file(rendered['srt'], caption_key, 'application/x-subrip')
+        caption_url = presigned_download_url(caption_key, 86400)
+
         metadata_key = f'videos/{task_id}/metadata.json'
         meta_path = work / 'metadata.json'
         meta_path.write_text(json.dumps({
@@ -266,12 +285,15 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
             'visual_replacements': visual_replacements,
             'average_visual_qc_score': avg_visual_score,
             'scenes': scenes,
+            'scene_visual_specs': scene_visuals,
             'scene_durations': scene_durations,
             'spoken_texts': voice_result.get('spoken_texts', []),
             'voice_name': voice_result.get('voice_name'),
             'stock_credits': credits,
             'runway_scenes_used': runway_scenes_used,
             'runway_errors': runway_errors,
+            'caption_key': caption_key,
+            'burned_subtitles': False,
             'render': rendered,
         }, ensure_ascii=False, indent=2), encoding='utf-8')
         upload_file(meta_path, metadata_key, 'application/json')
@@ -281,12 +303,16 @@ def run_video_pipeline(self, topic: str, duration_minutes: float = 5, language: 
             'task_id': task_id, 'channel_id': channel_id,
             'title': package.get('title'), 'video_key': object_key,
             'download_url': presigned_download_url(object_key, 86400),
-            'metadata_key': metadata_key, 'duration': rendered.get('duration'),
+            'metadata_key': metadata_key,
+            'caption_key': caption_key,
+            'caption_url': caption_url,
+            'burned_subtitles': False,
+            'text_layers': 0,
+            'duration': rendered.get('duration'),
             'shots': rendered.get('shots'), 'scenes': len(scenes),
             'unique_visuals': rendered.get('unique_visuals'),
             'runway_scenes_used': runway_scenes_used, 'resolution': rendered.get('resolution'),
             'scene_synced': rendered.get('scene_synced'),
-            'single_text_layer': rendered.get('single_text_layer'),
             'director_qc_applied': bool(package.get('director_qc')),
             'visual_qc_reviews': len(reviews),
             'visual_replacements': len(visual_replacements),
