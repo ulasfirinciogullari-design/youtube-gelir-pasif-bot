@@ -1,14 +1,21 @@
 from pathlib import Path
 import httpx
+import redis
 from app.config import settings
 
 ELEVENLABS_BASE = 'https://api.elevenlabs.io/v1'
+SELECTED_VOICE_ID_KEY = 'youtube_factory:selected_voice_id'
+SELECTED_VOICE_NAME_KEY = 'youtube_factory:selected_voice_name'
 
 
 def _headers() -> dict[str, str]:
     if not settings.elevenlabs_api_key:
         raise RuntimeError('ELEVENLABS_API_KEY is not configured')
     return {'xi-api-key': settings.elevenlabs_api_key}
+
+
+def _redis():
+    return redis.Redis.from_url(settings.redis_url, decode_responses=True)
 
 
 def list_turkish_voice_candidates(page_size: int = 20) -> list[dict]:
@@ -53,11 +60,6 @@ def list_turkish_voice_candidates(page_size: int = 20) -> list[dict]:
 
 
 def ensure_shared_voice_added(public_owner_id: str, voice_id: str, name: str | None = None) -> None:
-    """Save a Voice Library voice into My Voices before API synthesis.
-
-    ElevenLabs requires shared/library voices to be added to My Voices before
-    they can be used from synthesis APIs. This operation requires Voices Write.
-    """
     response = httpx.post(
         f'{ELEVENLABS_BASE}/voices/add/{public_owner_id}/{voice_id}',
         headers={**_headers(), 'Content-Type': 'application/json'},
@@ -70,14 +72,39 @@ def ensure_shared_voice_added(public_owner_id: str, voice_id: str, name: str | N
     if response.status_code == 200:
         return
 
-    # If it was already added, ElevenLabs may return a validation/conflict error.
-    # We only ignore explicit duplicate/already-exists responses.
     body = response.text.lower()
     if response.status_code in (400, 409, 422) and any(
         marker in body for marker in ('already', 'exists', 'duplicate')
     ):
         return
     response.raise_for_status()
+
+
+def save_selected_voice(public_owner_id: str, voice_id: str, name: str) -> dict:
+    ensure_shared_voice_added(public_owner_id, voice_id, name)
+    client = _redis()
+    client.set(SELECTED_VOICE_ID_KEY, voice_id)
+    client.set(SELECTED_VOICE_NAME_KEY, name)
+    return {'voice_id': voice_id, 'name': name}
+
+
+def get_selected_voice() -> dict:
+    try:
+        client = _redis()
+        voice_id = client.get(SELECTED_VOICE_ID_KEY)
+        name = client.get(SELECTED_VOICE_NAME_KEY)
+        if voice_id:
+            return {'voice_id': voice_id, 'name': name or 'Selected voice', 'source': 'redis'}
+    except Exception:
+        pass
+
+    if settings.elevenlabs_voice_id:
+        return {
+            'voice_id': settings.elevenlabs_voice_id,
+            'name': 'Environment voice',
+            'source': 'environment',
+        }
+    return {'voice_id': None, 'name': None, 'source': None}
 
 
 def synthesize_voice_with_id(text: str, voice_id: str) -> bytes:
@@ -111,8 +138,10 @@ def audition_shared_voice(text: str, public_owner_id: str, voice_id: str, name: 
 
 
 def synthesize_voice(text: str, job_id: str) -> str:
-    if not settings.elevenlabs_voice_id:
-        raise RuntimeError('ELEVENLABS_VOICE_ID is not configured')
+    selected = get_selected_voice()
+    voice_id = selected.get('voice_id')
+    if not voice_id:
+        raise RuntimeError('No ElevenLabs voice has been selected')
     output = Path('/tmp') / f'{job_id}.mp3'
-    output.write_bytes(synthesize_voice_with_id(text, settings.elevenlabs_voice_id))
+    output.write_bytes(synthesize_voice_with_id(text, voice_id))
     return str(output)
