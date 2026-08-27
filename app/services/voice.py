@@ -119,7 +119,7 @@ def synthesize_voice_with_id(text: str, voice_id: str, previous_text: str | None
             'similarity_boost': 0.80,
             'style': 0.0,
             'use_speaker_boost': True,
-            'speed': 0.99,
+            'speed': 1.01,
         },
     }
     if previous_text:
@@ -151,11 +151,17 @@ def _selected_voice_or_raise() -> dict:
     return selected
 
 
-def _scene_pause(scene: dict, is_last: bool) -> float:
+def _scene_pause(scene: dict, is_last: bool, short_preview: bool) -> float:
     if is_last:
         return 0.0
     pace = str(scene.get('pace') or 'normal').lower()
     transition = str(scene.get('transition') or 'cut').lower()
+    if short_preview:
+        if transition == 'dip' or pace == 'slow':
+            return 0.30
+        if pace == 'fast':
+            return 0.10
+        return 0.16
     if transition == 'dip' or pace == 'slow':
         return 0.50
     if pace == 'fast':
@@ -163,7 +169,31 @@ def _scene_pause(scene: dict, is_last: bool) -> float:
     return 0.32
 
 
-def synthesize_scene_sequence(scenes: list[dict], job_id: str) -> dict:
+def _fit_duration(output: Path, scene_durations: list[float], target_seconds: float | None) -> tuple[list[float], float, float, float]:
+    """Gently speed an overlong narration instead of wasting the completed job."""
+    before = _media_duration(output)
+    after = before
+    tempo_rate = 1.0
+    if target_seconds and target_seconds > 0 and before > target_seconds * 1.03:
+        desired = target_seconds * 0.99
+        requested_rate = before / desired
+        # The script budget should keep this near 1.0. 1.20 is a safety ceiling,
+        # not the normal operating mode, and prevents another 30-minute failure.
+        tempo_rate = min(max(requested_rate, 1.0), 1.20)
+        fitted = output.with_name(output.stem + '_fitted.mp3')
+        subprocess.run([
+            'ffmpeg', '-y', '-i', str(output),
+            '-af', f'atempo={tempo_rate:.6f}',
+            '-c:a', 'libmp3lame', '-b:a', '192k', str(fitted),
+        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        fitted.replace(output)
+        after = _media_duration(output)
+        scale = after / before if before else 1.0
+        scene_durations = [duration * scale for duration in scene_durations]
+    return scene_durations, before, after, tempo_rate
+
+
+def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: float | None = None) -> dict:
     selected = _selected_voice_or_raise()
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
@@ -204,9 +234,10 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str) -> dict:
 
     concat_entries: list[str] = []
     scene_durations: list[float] = []
+    short_preview = bool(target_seconds and target_seconds <= 40)
     for idx, path in enumerate(chunk_paths):
         concat_entries.append(f"file '{path.as_posix()}'")
-        pause = _scene_pause(scenes[idx], idx + 1 == len(chunk_paths))
+        pause = _scene_pause(scenes[idx], idx + 1 == len(chunk_paths), short_preview)
         duration = raw_durations[idx] + pause
         if pause > 0:
             concat_entries.append(f"file '{pause_file(pause).as_posix()}'")
@@ -224,7 +255,17 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str) -> dict:
         'ffmpeg', '-y', '-i', str(raw_output), '-af', 'loudnorm=I=-16:TP=-1.5:LRA=7',
         '-c:a', 'libmp3lame', '-b:a', '192k', str(output),
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return {'path': str(output), 'scene_durations': scene_durations, 'spoken_texts': spoken, 'voice_name': selected.get('name')}
+
+    scene_durations, before_fit, after_fit, tempo_rate = _fit_duration(output, scene_durations, target_seconds)
+    return {
+        'path': str(output),
+        'scene_durations': scene_durations,
+        'spoken_texts': spoken,
+        'voice_name': selected.get('name'),
+        'duration_before_fit': before_fit,
+        'duration_after_fit': after_fit,
+        'tempo_rate': tempo_rate,
+    }
 
 
 def synthesize_voice(text: str, job_id: str) -> str:
