@@ -16,4 +16,11 @@ class Settings(BaseSettings):
     google_redirect_uri: str = ''
     youtube_default_privacy: str = 'private'
 
+    # Railway Storage Bucket / S3-compatible credentials.
+    bucket: str = ''
+    access_key_id: str = ''
+    secret_access_key: str = ''
+    endpoint: str = ''
+    region: str = 'auto'
+
 settings = Settings()
