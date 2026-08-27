@@ -15,3 +15,4 @@ google-auth-httplib2
 openai
 runwayml
 python-multipart
+boto3
