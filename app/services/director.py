@@ -19,6 +19,16 @@ def _word_count(text: str) -> int:
     return len(re.findall(r"\b[\wÇĞİÖŞÜçğıöşü'-]+\b", text or '', flags=re.UNICODE))
 
 
+def _target_scene_count(duration_minutes: float) -> int:
+    if duration_minutes <= 0.6:
+        return 5
+    if duration_minutes <= 1.1:
+        return 7
+    if duration_minutes <= 3.1:
+        return max(8, int(round(duration_minutes * 5)))
+    return min(28, max(12, int(round(duration_minutes * 4))))
+
+
 def _clean_scene(scene: dict, idx: int) -> dict:
     narration = str(scene.get('narration') or '').strip()
     queries = scene.get('visual_queries') or []
@@ -34,11 +44,12 @@ def _clean_scene(scene: dict, idx: int) -> dict:
     return {
         'index': idx,
         'narration': narration,
-        # One textual source of truth. Phonetic substitutions happen later in voice.py.
+        # The viewer transcript and voice start from the same wording. Only
+        # pronunciation substitutions happen later in voice.py.
         'tts_text': narration,
         'visual_queries': queries,
         'ai_prompt': str(scene.get('ai_prompt') or '').strip() or None,
-        # Continuous subtitles are the only text layer for now.
+        # Master exports contain no burned captions or overlay text.
         'overlay_text': None,
         'pace': pace,
         'transition': transition,
@@ -65,9 +76,19 @@ def _clean_package(revised: dict, original: dict) -> dict:
     return out
 
 
-def _run_director(client: OpenAI, compact: dict, topic: str, language_name: str, duration_minutes: float, min_words: int, max_words: int, correction: bool = False) -> dict:
+def _run_director(
+    client: OpenAI,
+    compact: dict,
+    topic: str,
+    language_name: str,
+    duration_minutes: float,
+    min_words: int,
+    max_words: int,
+    target_scenes: int,
+    correction: bool = False,
+) -> dict:
     correction_note = (
-        f'CRITICAL CORRECTION: the previous version violated the duration budget. Rewrite the SAME factual story to {min_words}-{max_words} TOTAL spoken words. Do not add facts. '
+        f'CRITICAL CORRECTION: rewrite the SAME factual story to {min_words}-{max_words} TOTAL spoken words and exactly {target_scenes} scenes. Do not add facts. '
         if correction else ''
     )
     response = client.responses.create(
@@ -78,6 +99,7 @@ Topic: {topic}
 Language: {language_name}
 Requested duration: {duration_minutes} minutes.
 HARD spoken-word budget: {min_words}-{max_words} total words across every scene.
+HARD scene budget: exactly {target_scenes} scenes.
 {correction_note}
 
 DRAFT JSON:
@@ -94,12 +116,13 @@ EDITORIAL QC RULES:
 - Every scene continues, explains, contrasts, escalates or pays off the previous scene.
 - Delete filler and robotic listicle wording.
 - Spoken Turkish must be natural, concise and punctuated for real breaths.
-- Do not create separate on-screen copy; subtitles will come directly from narration.
+- Keep exactly {target_scenes} scenes. Each scene carries one complete thought and should work under one strong hero visual.
+- Do not create subtitles, lower thirds, overlay copy or on-screen sentences. The master MP4 is text-free.
 - visual_queries must match the EXACT spoken meaning and describe concrete visible footage.
 - Reject generic laptop typing, random phone, office worker, skyline, fireworks, charts or abstract tech footage unless literally relevant.
 - Use 2-3 distinct visual queries per scene from different shot ideas.
 - ai_prompt should be null unless stock footage cannot honestly show the concept.
-- pace: fast / normal / slow; vary it intentionally.
+- pace: fast / normal / slow; vary it intentionally, but pacing must come from the story rather than frantic cutting.
 - transition: mostly cut; match only with a real visual relationship; dip sparingly.
 - Final scene must provide a payoff.
 - TOTAL narration word count MUST be between {min_words} and {max_words}.
@@ -120,6 +143,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     target_words = max(55, int(round(duration_minutes * 120)))
     min_words = max(45, int(round(target_words * 0.88)))
     max_words = max(min_words + 5, int(round(target_words * 1.08)))
+    target_scenes = _target_scene_count(duration_minutes)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
 
     compact = {
@@ -130,12 +154,15 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         'sources': package.get('sources', []),
     }
 
-    revised = _run_director(client, compact, topic, language_name, duration_minutes, min_words, max_words)
+    revised = _run_director(
+        client, compact, topic, language_name, duration_minutes,
+        min_words, max_words, target_scenes,
+    )
     out = _clean_package(revised, package)
     words = _word_count(out['narration'])
+    scene_count = len(out['scenes'])
 
-    # One bounded correction pass only when duration is materially wrong.
-    if words < min_words or words > max_words:
+    if words < min_words or words > max_words or abs(scene_count - target_scenes) > 1:
         correction_input = {
             'title': out.get('title'),
             'thumbnail_text': out.get('thumbnail_text'),
@@ -143,14 +170,22 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             'scenes': out.get('scenes'),
             'sources': package.get('sources', []),
             'current_word_count': words,
+            'current_scene_count': scene_count,
         }
-        revised = _run_director(client, correction_input, topic, language_name, duration_minutes, min_words, max_words, correction=True)
+        revised = _run_director(
+            client, correction_input, topic, language_name, duration_minutes,
+            min_words, max_words, target_scenes, correction=True,
+        )
         out = _clean_package(revised, package)
         words = _word_count(out['narration'])
+        scene_count = len(out['scenes'])
 
     if words < int(min_words * 0.90) or words > int(max_words * 1.05):
         raise RuntimeError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
+    if abs(scene_count - target_scenes) > 1:
+        raise RuntimeError(f'Scene-count gate rejected final edit: {scene_count} scenes; target {target_scenes}')
 
     out['narration_word_count'] = words
     out['target_word_range'] = [min_words, max_words]
+    out['target_scene_count'] = target_scenes
     return out
