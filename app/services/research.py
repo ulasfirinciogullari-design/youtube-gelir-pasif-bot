@@ -55,12 +55,27 @@ def _parse_json_payload(text: str) -> dict:
 
 def _target_scene_count(duration_minutes: float) -> int:
     if duration_minutes <= 0.6:
-        return 5
+        return 4
     if duration_minutes <= 1.1:
-        return 7
+        return 6
     if duration_minutes <= 3.1:
-        return max(8, int(round(duration_minutes * 5)))
-    return min(28, max(12, int(round(duration_minutes * 4))))
+        return max(8, int(round(duration_minutes * 4.5)))
+    return min(28, max(12, int(round(duration_minutes * 3.5))))
+
+
+def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
+    """Calibrated for the selected Turkish ElevenLabs voice, including pauses."""
+    if duration_minutes <= 0.6:
+        target = 40
+    elif duration_minutes <= 1.1:
+        target = 82
+    elif duration_minutes <= 3.1:
+        target = int(round(duration_minutes * 92))
+    else:
+        target = int(round(duration_minutes * 100))
+    minimum = max(30, int(round(target * 0.88)))
+    maximum = max(minimum + 4, int(round(target * 1.06)))
+    return target, minimum, maximum
 
 
 def research_and_script(topic: str, duration_minutes: float, language: str) -> dict:
@@ -68,10 +83,7 @@ def research_and_script(topic: str, duration_minutes: float, language: str) -> d
         raise RuntimeError('OPENAI_API_KEY is not configured')
 
     client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
-
-    target_words = max(55, int(round(duration_minutes * 120)))
-    min_words = max(45, int(round(target_words * 0.90)))
-    max_words = max(min_words + 5, int(round(target_words * 1.06)))
+    target_words, min_words, max_words = _target_word_budget(duration_minutes)
     target_scenes = _target_scene_count(duration_minutes)
     max_ai_scenes = 0 if duration_minutes <= 0.5 else (1 if duration_minutes <= 1.5 else 2)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
@@ -84,7 +96,7 @@ def research_and_script(topic: str, duration_minutes: float, language: str) -> d
         input=f'''Research the current web and act as a senior YouTube writer/director.
 Language: {language_name}
 Topic: {topic}
-HARD NARRATION BUDGET: {min_words}-{max_words} total spoken words. Do not exceed {max_words} words.
+HARD NARRATION BUDGET: {min_words}-{max_words} total spoken words; aim for {target_words}. Never exceed {max_words}.
 Create EXACTLY {target_scenes} scenes.
 Maximum premium AI-video scenes: {max_ai_scenes}.
 
@@ -102,15 +114,15 @@ STORY RULES:
 - Natural spoken Turkish: concise sentences, deliberate punctuation, varied rhythm.
 - No robotic listicle language or generic AI phrasing.
 - The entire narration across all scenes MUST remain inside {min_words}-{max_words} words.
-- Each scene should carry one clear thought that can stay on one strong hero visual; do not fragment ideas merely to create more cuts.
+- Each scene should carry one complete thought that can stay on one strong hero visual.
 
 DIRECTING RULES:
 - Give each scene 2-3 DISTINCT English stock-video search phrases matching the exact spoken idea.
 - Queries must describe concrete visible subjects/actions.
 - Never use generic laptop typing, office worker, skyline, random phone or abstract tech footage unless the sentence literally calls for it.
-- For technical concepts that stock footage cannot honestly visualize, set ai_prompt to a precise cinematic visualization prompt instead of inventing loosely related B-roll.
+- For concepts stock footage cannot honestly visualize, set ai_prompt to a precise visualization prompt.
 - ai_prompt must be null in most scenes and non-null in at most {max_ai_scenes} scenes.
-- Do not plan subtitles, lower thirds or on-screen sentences. The master video will contain no text.
+- Do not plan subtitles, lower thirds or on-screen sentences. The master video contains no text.
 
 FACT RULES:
 - Use web research when useful.
@@ -123,4 +135,5 @@ FACT RULES:
     if abs(len(package['scenes']) - target_scenes) > 1:
         raise RuntimeError(f'Scene-count gate rejected storyboard: {len(package["scenes"])} scenes; target {target_scenes}')
     package['target_scene_count'] = target_scenes
+    package['target_word_range'] = [min_words, max_words]
     return package
