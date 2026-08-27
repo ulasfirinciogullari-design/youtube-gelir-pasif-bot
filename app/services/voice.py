@@ -6,6 +6,7 @@ from app.config import settings
 ELEVENLABS_BASE = 'https://api.elevenlabs.io/v1'
 SELECTED_VOICE_ID_KEY = 'youtube_factory:selected_voice_id'
 SELECTED_VOICE_NAME_KEY = 'youtube_factory:selected_voice_name'
+SELECTED_VOICE_OWNER_KEY = 'youtube_factory:selected_voice_owner_id'
 
 
 def _headers() -> dict[str, str]:
@@ -59,7 +60,20 @@ def list_turkish_voice_candidates(page_size: int = 20) -> list[dict]:
     return candidates
 
 
+def voice_is_available(voice_id: str) -> bool:
+    response = httpx.get(
+        f'{ELEVENLABS_BASE}/voices/{voice_id}',
+        headers=_headers(),
+        timeout=20,
+    )
+    return response.status_code == 200
+
+
 def ensure_shared_voice_added(public_owner_id: str, voice_id: str, name: str | None = None) -> None:
+    # If the voice is already available in My Voices, do nothing.
+    if voice_is_available(voice_id):
+        return
+
     response = httpx.post(
         f'{ELEVENLABS_BASE}/voices/add/{public_owner_id}/{voice_id}',
         headers={**_headers(), 'Content-Type': 'application/json'},
@@ -69,23 +83,16 @@ def ensure_shared_voice_added(public_owner_id: str, voice_id: str, name: str | N
         },
         timeout=30,
     )
-    if response.status_code == 200:
-        return
-
-    body = response.text.lower()
-    if response.status_code in (400, 409, 422) and any(
-        marker in body for marker in ('already', 'exists', 'duplicate')
-    ):
-        return
     response.raise_for_status()
 
 
 def save_selected_voice(public_owner_id: str, voice_id: str, name: str) -> dict:
-    ensure_shared_voice_added(public_owner_id, voice_id, name)
+    # Selection itself should never depend on ElevenLabs network calls.
     client = _redis()
     client.set(SELECTED_VOICE_ID_KEY, voice_id)
     client.set(SELECTED_VOICE_NAME_KEY, name)
-    return {'voice_id': voice_id, 'name': name}
+    client.set(SELECTED_VOICE_OWNER_KEY, public_owner_id)
+    return {'voice_id': voice_id, 'name': name, 'public_owner_id': public_owner_id}
 
 
 def get_selected_voice() -> dict:
@@ -93,8 +100,14 @@ def get_selected_voice() -> dict:
         client = _redis()
         voice_id = client.get(SELECTED_VOICE_ID_KEY)
         name = client.get(SELECTED_VOICE_NAME_KEY)
+        owner_id = client.get(SELECTED_VOICE_OWNER_KEY)
         if voice_id:
-            return {'voice_id': voice_id, 'name': name or 'Selected voice', 'source': 'redis'}
+            return {
+                'voice_id': voice_id,
+                'name': name or 'Selected voice',
+                'public_owner_id': owner_id,
+                'source': 'redis',
+            }
     except Exception:
         pass
 
@@ -102,9 +115,10 @@ def get_selected_voice() -> dict:
         return {
             'voice_id': settings.elevenlabs_voice_id,
             'name': 'Environment voice',
+            'public_owner_id': None,
             'source': 'environment',
         }
-    return {'voice_id': None, 'name': None, 'source': None}
+    return {'voice_id': None, 'name': None, 'public_owner_id': None, 'source': None}
 
 
 def synthesize_voice_with_id(text: str, voice_id: str) -> bytes:
@@ -142,6 +156,11 @@ def synthesize_voice(text: str, job_id: str) -> str:
     voice_id = selected.get('voice_id')
     if not voice_id:
         raise RuntimeError('No ElevenLabs voice has been selected')
+
+    owner_id = selected.get('public_owner_id')
+    if owner_id:
+        ensure_shared_voice_added(owner_id, voice_id, selected.get('name'))
+
     output = Path('/tmp') / f'{job_id}.mp3'
     output.write_bytes(synthesize_voice_with_id(text, voice_id))
     return str(output)
