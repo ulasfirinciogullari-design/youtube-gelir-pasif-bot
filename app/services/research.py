@@ -18,6 +18,8 @@ def _parse_json_payload(text: str) -> dict:
         raise RuntimeError('OpenAI response JSON is not an object')
     if not str(data.get('narration') or '').strip():
         raise RuntimeError('OpenAI response is missing narration')
+    if not str(data.get('tts_narration') or '').strip():
+        data['tts_narration'] = data['narration']
     return data
 
 
@@ -25,38 +27,51 @@ def research_and_script(topic: str, duration_minutes: float, language: str) -> d
     if not settings.openai_api_key:
         raise RuntimeError('OPENAI_API_KEY is not configured')
 
-    # Keep the synchronous worker request bounded so a bad upstream call does not
-    # leave a Celery task stuck at the research stage indefinitely.
-    client = OpenAI(
-        api_key=settings.openai_api_key,
-        timeout=75.0,
-        max_retries=1,
-    )
-    target_words = max(90, int(duration_minutes * 145))
+    client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
+    target_words = max(95, int(duration_minutes * 155))
+    target_shots = min(55, max(18, int(duration_minutes * 18)))
+    ai_count = 2 if duration_minutes <= 1.5 else 3
+
+    language_name = 'Turkish' if language.lower().startswith('tr') else language
     response = client.responses.create(
         model=settings.openai_model,
         reasoning={'effort': 'low'},
-        tools=[{
-            'type': 'web_search',
-            'search_context_size': 'low',
-        }],
+        tools=[{'type': 'web_search', 'search_context_size': 'low'}],
         tool_choice='auto',
-        input=f'''Research the current web and create an original, high-retention faceless YouTube package.
-Language: {language}
+        input=f'''Research the current web and build a PREMIUM faceless YouTube package.
+Language: {language_name}
 Topic: {topic}
 Narration target: about {target_words} words.
+Target visual cuts: about {target_shots} shots.
 
-Return ONLY valid JSON with these keys:
-title, thumbnail_text, hook, narration, description, visual_queries, ai_scenes, sources.
+Return ONLY valid JSON with exactly these keys:
+title, thumbnail_text, hook, narration, tts_narration, description, visual_queries, ai_scenes, overlay_phrases, sources.
 
-Rules:
-- Use current web research when useful; do not over-research simple facts.
-- Do not invent facts.
+SCRIPT RULES:
+- Write like an excellent human Turkish YouTube narrator, not like an article or AI list.
+- Hook immediately. No greeting, no "bugün size", no filler introduction.
+- Use short spoken sentences, mostly 6-14 words. Vary sentence length for rhythm.
+- Add mini-surprises, contrast and curiosity every 10-15 seconds.
+- Avoid repetitive numbered-list cadence. Connect facts naturally.
+- narration is the clean transcript viewers would read.
+- tts_narration MUST contain the same factual content, but be optimized for Turkish pronunciation.
+- In tts_narration, expand or rewrite abbreviations, symbols, dates and numbers when that improves pronunciation.
+- Avoid awkward English/Turkish code-switching when a natural Turkish wording exists.
+- Use punctuation deliberately so a narrator knows where to pause and emphasize.
+
+VISUAL RULES:
+- visual_queries must contain about {target_shots} DISTINCT English Pexels search phrases.
+- Every query must describe a concrete visible subject/action, not abstract words like "technology" or "future".
+- Change visual subject frequently. Do not repeat the same phone/laptop shot over and over.
+- Prefer macro shots, human interaction, unusual angles, infrastructure, close-ups, moving cameras and real-world demonstrations.
+- ai_scenes must contain exactly {ai_count} cinematic text-to-video prompts for concepts stock footage cannot show well.
+- Each AI prompt: 16:9, realistic/cinematic, strong camera motion, no visible text/logos, one clear visual idea.
+- overlay_phrases: 4-8 very short punchy Turkish phrases (2-5 words), not full sentences.
+
+FACT RULES:
+- Use current web research when useful.
+- Do not invent facts or statistics.
 - Do not copy source wording.
-- Make the first 15 seconds unusually strong.
-- visual_queries must be English B-roll search phrases.
-- Return 5-8 concise visual_queries for a 1 minute test.
-- ai_scenes should contain at most 1 short premium scene prompt for a 1 minute test.
 - sources must contain source URLs.
 ''',
     )
