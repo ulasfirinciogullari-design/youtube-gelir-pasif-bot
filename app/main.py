@@ -1,56 +1,52 @@
 from html import escape
 from urllib.parse import quote
-from pathlib import Path
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import HTMLResponse, Response, RedirectResponse
+from fastapi import FastAPI, HTTPException, Query, Header
+from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
+from celery.result import AsyncResult
+
+from app.config import settings
+from app.celery_app import celery
 from app.tasks import run_video_pipeline
+from app.services.storage import presigned_download_url
 from app.services.voice import (
     list_turkish_voice_candidates,
-    audition_shared_voice,
     save_selected_voice,
     get_selected_voice,
-    synthesize_voice,
 )
 
-app = FastAPI(title='YouTube 7/24 Content Factory', version='0.5.0')
+app = FastAPI(title='YouTube 7/24 Content Factory', version='0.7.0')
 
-AUDITION_TEXT = (
-    'Bazen her gün kullandığımız teknolojilerin arkasında, fark etmediğimiz kadar şaşırtıcı bir dünya vardır. '
-    'Bugün, telefonunuzdan internete kadar günlük hayatın içinde saklanan ilginç ayrıntılara birlikte bakacağız.'
-)
-
-VOICE_TEST_TEXT = (
-    'Merhaba. Bu, YouTube içerik fabrikamızın gerçek ses testidir. '
-    'Bundan sonra videoların anlatımı doğal, akıcı ve anlaşılır olacak. '
-    'Seçtiğimiz sesin uzun videolarda da yorucu olmaması ve Türkçe kelimeleri temiz telaffuz etmesi gerekiyor.'
-)
 
 class JobCreate(BaseModel):
-    topic: str = Field(min_length=2)
-    duration_minutes: float = 5
-    language: str = 'tr'
+    topic: str = Field(min_length=2, max_length=500)
+    duration_minutes: float = Field(default=5, ge=0.5, le=30)
+    language: str = Field(default='tr', min_length=2, max_length=10)
     channel_id: str | None = None
+
+
+def _require_factory_token(x_factory_token: str | None):
+    # Fail closed if the owner has not configured a production token yet.
+    if not settings.factory_api_token:
+        raise HTTPException(status_code=503, detail='FACTORY_API_TOKEN is not configured')
+    if x_factory_token != settings.factory_api_token:
+        raise HTTPException(status_code=401, detail='Invalid factory token')
+
 
 @app.get('/health')
 def health():
-    return {'ok': True, 'version': '0.5.0', 'selected_voice': get_selected_voice()}
+    return {
+        'ok': True,
+        'version': '0.7.0',
+        'selected_voice': get_selected_voice(),
+        'factory_locked': not bool(settings.factory_api_token),
+        'bucket_configured': bool(settings.bucket and settings.endpoint),
+    }
 
-@app.get('/voice-test')
-def voice_test():
-    try:
-        output_path = Path(synthesize_voice(VOICE_TEST_TEXT, 'selected-voice-test'))
-        audio = output_path.read_bytes()
-        try:
-            output_path.unlink(missing_ok=True)
-        except Exception:
-            pass
-        return Response(content=audio, media_type='audio/mpeg')
-    except Exception as exc:
-        raise HTTPException(status_code=502, detail='Selected voice test failed: ' + str(exc)) from exc
 
 @app.post('/jobs')
-def create_job(payload: JobCreate):
+def create_job(payload: JobCreate, x_factory_token: str | None = Header(default=None)):
+    _require_factory_token(x_factory_token)
     task = run_video_pipeline.delay(
         payload.topic,
         payload.duration_minutes,
@@ -59,6 +55,26 @@ def create_job(payload: JobCreate):
     )
     return {'task_id': task.id, 'status': 'queued'}
 
+
+@app.get('/jobs/{task_id}')
+def job_status(task_id: str, x_factory_token: str | None = Header(default=None)):
+    _require_factory_token(x_factory_token)
+    task = AsyncResult(task_id, app=celery)
+    state = task.state
+    if state == 'FAILURE':
+        return {'task_id': task_id, 'state': state, 'error': str(task.result)}
+    if state == 'SUCCESS':
+        result = task.result if isinstance(task.result, dict) else {'result': str(task.result)}
+        if result.get('video_key'):
+            try:
+                result['download_url'] = presigned_download_url(result['video_key'], 86400)
+            except Exception:
+                pass
+        return {'task_id': task_id, 'state': state, **result}
+    info = task.info if isinstance(task.info, dict) else {}
+    return {'task_id': task_id, 'state': state, **info}
+
+
 @app.get('/voice-audition/candidates')
 def voice_candidates(limit: int = Query(default=12, ge=1, le=50)):
     try:
@@ -66,24 +82,6 @@ def voice_candidates(limit: int = Query(default=12, ge=1, le=50)):
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f'ElevenLabs voice lookup failed: {exc}') from exc
 
-@app.get('/voice-audition/sample/{public_owner_id}/{voice_id}')
-def voice_sample(
-    public_owner_id: str,
-    voice_id: str,
-    name: str = Query(default='Audition voice', max_length=100),
-    text: str = Query(default=AUDITION_TEXT, min_length=10, max_length=500),
-):
-    try:
-        audio = audition_shared_voice(text, public_owner_id, voice_id, name)
-        return Response(content=audio, media_type='audio/mpeg')
-    except Exception as exc:
-        raise HTTPException(
-            status_code=502,
-            detail=(
-                'Voice audition failed. The ElevenLabs API key must have Text to Speech Access and Voices Write. '
-                'Error: ' + str(exc)
-            ),
-        ) from exc
 
 @app.get('/voice-audition/select/{public_owner_id}/{voice_id}')
 def select_voice(
@@ -97,6 +95,7 @@ def select_voice(
     except Exception as exc:
         raise HTTPException(status_code=502, detail='Voice selection failed: ' + str(exc)) from exc
 
+
 @app.get('/voice-audition', response_class=HTMLResponse)
 def voice_audition_page(selected: int = Query(default=0)):
     try:
@@ -105,7 +104,6 @@ def voice_audition_page(selected: int = Query(default=0)):
         return HTMLResponse(
             '<html><body style="font-family:system-ui;padding:20px">'
             '<h2>Ses listesi yüklenemedi</h2>'
-            '<p>ElevenLabs API anahtarının <b>Voices Write</b> yetkisini kontrol et.</p>'
             f'<pre style="white-space:pre-wrap">{escape(str(exc))}</pre>'
             '</body></html>',
             status_code=502,
@@ -114,7 +112,6 @@ def voice_audition_page(selected: int = Query(default=0)):
     selected_voice = get_selected_voice()
     selected_id = selected_voice.get('voice_id')
     selected_name = escape(selected_voice.get('name') or '')
-
     cards = []
     for idx, voice in enumerate(voices, start=1):
         name_raw = voice.get('name') or 'Unnamed voice'
@@ -125,75 +122,34 @@ def voice_audition_page(selected: int = Query(default=0)):
         use_case = escape(str(voice.get('use_case') or ''))
         voice_id_raw = voice.get('voice_id') or ''
         owner_id_raw = voice.get('public_owner_id') or ''
-        voice_id = escape(voice_id_raw)
-        owner_id = escape(owner_id_raw)
         preview = escape(voice.get('preview_url') or '')
-        sample_url = f'/voice-audition/sample/{owner_id}/{voice_id}?name={quote(name_raw)}'
-        select_url = f'/voice-audition/select/{owner_id}/{voice_id}?name={quote(name_raw)}'
+        select_url = f'/voice-audition/select/{quote(owner_id_raw)}/{quote(voice_id_raw)}?name={quote(name_raw)}'
         chosen = voice_id_raw == selected_id
-        chosen_badge = '<div class="chosen">✓ SEÇİLİ</div>' if chosen else ''
-        select_label = 'Seçili ses' if chosen else 'Bu sesi seç'
+        badge = '<div class="chosen">✓ SEÇİLİ</div>' if chosen else ''
         cards.append(f'''
         <article class="card {'is-chosen' if chosen else ''}">
-          <div class="rank">#{idx}</div>
-          {chosen_badge}
-          <h2>{name}</h2>
-          <div class="meta">{gender} · {age} · {use_case}</div>
-          <p>{desc}</p>
-          <div class="label">Hazır Türkçe önizleme</div>
+          {badge}<div class="rank">#{idx}</div><h2>{name}</h2>
+          <div class="meta">{gender} · {age} · {use_case}</div><p>{desc}</p>
           <audio controls preload="none" src="{preview}"></audio>
-          <a class="same" href="{sample_url}" target="_blank">Aynı paragrafı bu sesle dinle</a>
-          <a class="select" href="{select_url}">{select_label}</a>
-        </article>
-        ''')
+          <a class="select" href="{select_url}">{'Seçili ses' if chosen else 'Bu sesi seç'}</a>
+        </article>''')
 
-    success = ''
-    if selected and selected_name:
-        success = f'<div class="success">✓ <b>{selected_name}</b> varsayılan ses olarak kaydedildi. Worker artık bu sesi kullanacak.</div>'
-
-    current = (
-        f'<div class="current">Şu an seçili ses: <b>{selected_name}</b> · <a href="/voice-test" target="_blank">gerçek ses testini dinle</a></div>'
-        if selected_name else
-        '<div class="current">Henüz varsayılan ses seçilmedi.</div>'
+    success = (
+        f'<div class="success">✓ <b>{selected_name}</b> varsayılan ses olarak kaydedildi.</div>'
+        if selected and selected_name else ''
     )
-
-    html = f'''
-    <!doctype html>
-    <html lang="tr">
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Türkçe Ses Karşılaştırma</title>
-      <style>
-        body {{ font-family: system-ui, sans-serif; margin:0; background:#0f1116; color:#f5f7fb; }}
-        main {{ max-width:900px; margin:auto; padding:18px; }}
-        a {{ color:inherit; }}
-        .note,.current,.success {{ padding:14px; border-radius:12px; margin-bottom:14px; line-height:1.45; }}
-        .note {{ background:#1b2230; }}
-        .current {{ background:#222835; }}
-        .success {{ background:#15351f; }}
-        .grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }}
-        .card {{ position:relative; background:#171a22; border:1px solid #2c3240; padding:16px; border-radius:16px; }}
-        .card.is-chosen {{ border:2px solid #78e08f; }}
-        .chosen {{ position:absolute; right:12px; top:12px; background:#78e08f; color:#102016; padding:5px 8px; border-radius:8px; font-size:.75rem; font-weight:800; }}
-        .rank {{ opacity:.55; font-weight:700; }}
-        h2 {{ margin:.25rem 0; font-size:1.2rem; }}
-        .meta {{ opacity:.72; font-size:.9rem; margin:.4rem 0; }}
-        .label {{ font-size:.82rem; opacity:.65; margin-top:8px; }}
-        audio {{ width:100%; margin:6px 0 10px; }}
-        .same,.select {{ display:block; text-decoration:none; padding:11px 12px; border-radius:10px; text-align:center; margin-top:7px; font-weight:700; }}
-        .same {{ background:#f4f5f7; color:#101217; }}
-        .select {{ background:#725cff; color:white; }}
-      </style>
-    </head>
-    <body><main>
-      <h1>Türkçe Ses Karşılaştırma</h1>
-      {success}
-      {current}
-      <div class="note">
-        Önizlemeyi dinle. İstersen aynı paragrafla test et. Beğendiğin seste <b>Bu sesi seç</b> düğmesine bas; seçim Redis'e kaydolur ve video worker aynı sesi kullanır.
-      </div>
-      <div class="grid">{''.join(cards)}</div>
-    </main></body></html>
-    '''
-    return HTMLResponse(html)
+    current = (
+        f'<div class="current">Şu an seçili ses: <b>{selected_name}</b></div>'
+        if selected_name else '<div class="current">Henüz varsayılan ses seçilmedi.</div>'
+    )
+    return HTMLResponse(f'''
+    <!doctype html><html lang="tr"><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Türkçe Ses Karşılaştırma</title><style>
+    body{{font-family:system-ui;margin:0;background:#0f1116;color:#f5f7fb}} main{{max-width:900px;margin:auto;padding:18px}}
+    .current,.success{{padding:14px;border-radius:12px;margin-bottom:14px}} .current{{background:#222835}} .success{{background:#15351f}}
+    .grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}} .card{{position:relative;background:#171a22;border:1px solid #2c3240;padding:16px;border-radius:16px}}
+    .is-chosen{{border:2px solid #78e08f}} .chosen{{position:absolute;right:12px;top:12px;background:#78e08f;color:#102016;padding:5px 8px;border-radius:8px;font-size:.75rem;font-weight:800}}
+    .rank,.meta{{opacity:.65}} h2{{margin:.25rem 0}} audio{{width:100%;margin:8px 0}} .select{{display:block;text-decoration:none;background:#725cff;color:white;padding:11px;border-radius:10px;text-align:center;font-weight:700}}
+    </style></head><body><main><h1>Türkçe Ses Karşılaştırma</h1>{success}{current}<div class="grid">{''.join(cards)}</div></main></body></html>
+    ''')
