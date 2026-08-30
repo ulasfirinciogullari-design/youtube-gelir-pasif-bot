@@ -89,6 +89,8 @@ def get_selected_voice() -> dict:
 _TURKISH_PRONUNCIATION_RULES = [
     (r'\bO\s*[-.]?\s*L\s*[-.]?\s*E\s*[-.]?\s*D\b', 'oled'),
     (r'\bOLED\b', 'oled'),
+    (r'\bGPS\b', 'ci pi es'),
+    (r'\bQR\b', 'kare kod'),
 ]
 
 
@@ -170,16 +172,24 @@ def _scene_pause(scene: dict, is_last: bool, short_preview: bool) -> float:
 
 
 def _fit_duration(output: Path, scene_durations: list[float], target_seconds: float | None) -> tuple[list[float], float, float, float]:
-    """Gently speed an overlong narration instead of wasting the completed job."""
+    """Gently fit a near-target narration without making the voice sound rushed."""
     before = _media_duration(output)
     after = before
     tempo_rate = 1.0
-    if target_seconds and target_seconds > 0 and before > target_seconds * 1.03:
+    outside_tolerance = bool(
+        target_seconds and target_seconds > 0
+        and (before > target_seconds * 1.03 or before < target_seconds * 0.97)
+    )
+    if outside_tolerance:
         desired = target_seconds * 0.99
         requested_rate = before / desired
-        # The script budget should keep this near 1.0. 1.20 is a safety ceiling,
-        # not the normal operating mode, and prevents another 30-minute failure.
-        tempo_rate = min(max(requested_rate, 1.0), 1.20)
+        # Large tempo changes hide a bad script budget and sound synthetic.
+        if requested_rate < 0.92 or requested_rate > 1.12:
+            raise RuntimeError(
+                f'Narration needs {requested_rate:.3f}x tempo to fit {target_seconds:.1f}s; '
+                'rewrite the script instead of distorting the voice'
+            )
+        tempo_rate = requested_rate
         fitted = output.with_name(output.stem + '_fitted.mp3')
         subprocess.run([
             'ffmpeg', '-y', '-i', str(output),
@@ -252,7 +262,7 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: f
 
     output = Path('/tmp') / f'{job_id}.mp3'
     subprocess.run([
-        'ffmpeg', '-y', '-i', str(raw_output), '-af', 'loudnorm=I=-16:TP=-1.5:LRA=7',
+        'ffmpeg', '-y', '-i', str(raw_output), '-af', 'loudnorm=I=-15:TP=-1.0:LRA=7',
         '-c:a', 'libmp3lame', '-b:a', '192k', str(output),
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
