@@ -1414,7 +1414,17 @@ def run_video_pipeline(
         requested_seconds = duration_minutes * 60
         actual_seconds = float(rendered.get('duration') or 0)
         if options.get('mode') == 'preview':
-            duration_ok = abs(actual_seconds - requested_seconds) <= 0.5
+            # MP3/AAC encoder padding and mux timebases can shift a short
+            # master by several hundred milliseconds. Keep the preview gate
+            # tight, but do not reject a publishable 29.4-second "30s" file.
+            preview_tolerance_seconds = min(
+                1.0,
+                max(0.75, requested_seconds * 0.02),
+            )
+            duration_ok = (
+                abs(actual_seconds - requested_seconds)
+                <= preview_tolerance_seconds
+            )
         else:
             duration_ok = requested_seconds * 0.70 <= actual_seconds <= requested_seconds * 1.22
         if not duration_ok:
