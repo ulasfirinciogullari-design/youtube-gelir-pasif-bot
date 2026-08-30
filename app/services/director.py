@@ -1,3 +1,4 @@
+import hashlib
 import json
 import re
 from openai import OpenAI
@@ -28,10 +29,11 @@ def _word_count(text: str) -> int:
 
 
 _TURKISH_SHORT_TTS_UNSAFE_PATTERN = re.compile(
-    r"\b(?:oled\w*|gps\w*|qr\w*|wi(?:[-‑ ]?fi)\w*|"
-    r"reed(?:[-‑ ]?solomon)\w*)\b",
+    r"\b(?:(?:oled|gps|qr)(?:['’]?[A-Za-zÇĞİÖŞÜçğıöşü]+)|"
+    r"wi(?:[-‑ ]?fi)\w*|reed(?:[-‑ ]?solomon)\w*)\b",
     flags=re.IGNORECASE | re.UNICODE,
 )
+_TURKISH_SHORT_NORMALIZED_INITIALISMS = {'oled', 'gps', 'qr'}
 _TURKISH_SHORT_GENERIC_INITIALISM_PATTERN = re.compile(
     r"(?<![\w])(?:[A-ZÇĞİÖŞÜ]{2,6})(?:['’]?[A-Za-zÇĞİÖŞÜçğıöşü]{0,8})?(?![\w])",
     flags=re.UNICODE,
@@ -61,6 +63,8 @@ def _short_spoken_quality_issues(
             *{
                 match.group(0)
                 for match in _TURKISH_SHORT_GENERIC_INITIALISM_PATTERN.finditer(narration)
+                if match.group(0).casefold()
+                not in _TURKISH_SHORT_NORMALIZED_INITIALISMS
             },
         })
         if unsafe_terms:
@@ -124,6 +128,68 @@ def _short_story_quality_issues(
             'answering one human question: ' + ', '.join(mechanism_families)
         )
     return issues
+
+
+_SHORT_STORY_QC_VERSION = 1
+
+
+def _short_story_fingerprint(package: dict) -> str:
+    material = {
+        'title': package.get('title'),
+        'thumbnail_text': package.get('thumbnail_text'),
+        'description': package.get('description'),
+        'scenes': [
+            {
+                'index': scene.get('index'),
+                'narration': scene.get('narration'),
+                'tts_text': scene.get('tts_text'),
+                'visual_queries': scene.get('visual_queries') or [],
+                'ai_prompt': scene.get('ai_prompt'),
+                'pace': scene.get('pace'),
+                'transition': scene.get('transition'),
+            }
+            for scene in (package.get('scenes') or [])
+            if isinstance(scene, dict)
+        ],
+        'stock_scene_qc': package.get('stock_scene_qc'),
+    }
+    encoded = json.dumps(
+        material,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(',', ':'),
+        default=str,
+    ).encode('utf-8')
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def short_story_package_is_approved(package: dict) -> bool:
+    if not isinstance(package, dict):
+        return False
+    qc = package.get('short_story_qc')
+    stock_qc = package.get('stock_scene_qc')
+    if not isinstance(qc, dict) or not isinstance(stock_qc, dict):
+        return False
+    if qc.get('version') != _SHORT_STORY_QC_VERSION:
+        return False
+    if int(stock_qc.get('version') or 0) < 3:
+        return False
+    story_review = stock_qc.get('story_review')
+    ending_review = stock_qc.get('ending_pair_review')
+    if (
+        not isinstance(story_review, dict)
+        or story_review.get('accepted') is not True
+        or not isinstance(ending_review, dict)
+        or ending_review.get('accepted') is not True
+        or qc.get('story_review_accepted') is not True
+        or qc.get('ending_pair_accepted') is not True
+    ):
+        return False
+    fingerprint = str(qc.get('fingerprint') or '')
+    return (
+        len(fingerprint) == 64
+        and fingerprint == _short_story_fingerprint(package)
+    )
 
 
 def _target_scene_count(duration_minutes: float, pace: str) -> int:
@@ -257,9 +323,9 @@ def _run_director(
     if duration_minutes <= 0.6 and str(language_name).casefold().startswith('turk'):
         short_language_note = (
             'TURKISH SPOKEN-SURFACE — HIGHEST PRIORITY: write native, breath-friendly Turkish. '
-            'Never speak raw abbreviations or foreign algorithm names such as OLED, GPS, QR, Wi-Fi or Reed-Solomon, '
-            'and never attach Turkish suffixes to them. Use natural meaning-first phrases such as organik ekran, '
-            'uydu konumu, kare kod, kablosuz ağ or hata düzeltme yöntemi. '
+            'Standalone OLED, GPS and QR are allowed only when paired with a natural Turkish noun because the voice layer normalizes them. '
+            'Never attach Turkish suffixes directly to abbreviations, and never speak raw Wi-Fi or Reed-Solomon. '
+            'Prefer meaning-first phrases such as OLED ekran, GPS sinyali, QR kodu, kablosuz ağ or hata düzeltme yöntemi. '
             'Avoid translated noun stacks, inverted word order and phrases like “siyah yerde”, '
             '“hücresel zamanlama tamamlar konumu” or “okunur yine kolayca”. '
             'Precise technical English is allowed in visual_queries and ai_prompt because those fields are not spoken. '
@@ -317,7 +383,7 @@ narration, visual_queries, ai_prompt, pace, transition.
 EDITORIAL QC RULES:
 - Produce one coherent story. Repair every abrupt subject jump.
 - For a short preview, commit to one narrow human situation, one curiosity hook, one recurring person or object, one causal mini-story and one visible everyday payoff.
-- A broad topic is not a story. Never create a sampler of unrelated mechanisms or facts; at most one technical mechanism family may drive a short preview unless the user's topic explicitly asks for a comparison.
+- A broad topic is not a story. Never create a sampler of unrelated mechanisms or facts; at most one technical mechanism family may drive a short preview.
 - Every scene must continue, explain, contrast, escalate or pay off the previous scene.
 - Remove filler, robotic listicle wording and repetitive transition phrases.
 - Spoken {language_name} must sound natural, confident and punctuated for real breaths.
@@ -349,6 +415,7 @@ def _repair_short_stock_scenes(
     package: dict,
     language_name: str,
     duration_minutes: float,
+    topic: str = '',
 ) -> dict:
     if duration_minutes > 0.6:
         return package
@@ -694,6 +761,10 @@ NON-NEGOTIABLE RULES:
             'same_actor_or_object_thread',
             'human_payoff_visible',
             'natural_spoken_language',
+            'directly_answers_requested_topic',
+            'one_specific_useful_reveal',
+            'causal_claim_supported',
+            'hook_payoff_same_promise',
         }
         ending_boolean_keys = {
             'same_immediate_location',
@@ -704,6 +775,9 @@ NON-NEGOTIABLE RULES:
         critic_shape = {
             'story_review': {
                 **{key: True for key in sorted(story_boolean_keys)},
+                'central_question': 'one precise human question',
+                'causal_answer': 'one supported causal reveal',
+                'visible_payoff': 'one visible everyday benefit',
                 'reason': 'brief evidence-based whole-story verdict',
             },
             'ending_pair': {
@@ -735,8 +809,13 @@ NON-NEGOTIABLE RULES:
             ],
         }
         critic_context = {
+            'requested_topic': str(topic or '')[:1200],
             'title': package.get('title'),
             'description': package.get('description'),
+            'sources': [
+                str(source)[:600]
+                for source in (package.get('sources') or [])[:6]
+            ],
             'candidate_story_in_order': candidate_story,
             'candidate_stock_scenes': [
                 {
@@ -765,7 +844,12 @@ Review the WHOLE story before reviewing individual stock shots. Set each story_r
 - causal_scene_chain: every scene advances the same cause-and-effect answer rather than merely sharing a broad topic.
 - same_actor_or_object_thread: one recognisable person or object gives the story continuity.
 - human_payoff_visible: the last beat visibly delivers an everyday benefit that earns the hook.
-- natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese or raw abbreviations.
+- natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese, unsafe suffix-attached abbreviations or unsupported foreign terms.
+- directly_answers_requested_topic: the actual hook, reveal and payoff directly answer the supplied topic rather than drifting to a merely coherent side story.
+- one_specific_useful_reveal: the viewer learns one non-obvious, useful or genuinely surprising thing worth thirty seconds.
+- causal_claim_supported: the central cause-and-effect explanation is supported by the supplied research sources and does not overclaim them.
+- hook_payoff_same_promise: the ending visibly fulfills the exact curiosity opened by the hook.
+central_question, causal_answer and visible_payoff must each be one short, concrete, non-empty summary grounded in the candidate story.
 A whole-story failure is fatal: do not approve a polished shot plan for a bad idea.
 
 Review ending_pair jointly. The positions must match the supplied final two indexes exactly.
@@ -805,7 +889,13 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             )
         story_review = critic.get('story_review') if isinstance(critic, dict) else None
         ending_pair = critic.get('ending_pair') if isinstance(critic, dict) else None
-        expected_story_keys = {'reason', *story_boolean_keys}
+        expected_story_keys = {
+            'central_question',
+            'causal_answer',
+            'visible_payoff',
+            'reason',
+            *story_boolean_keys,
+        }
         expected_ending_keys = {
             'penultimate_position',
             'final_position',
@@ -824,9 +914,20 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     if story_review.get(key) is not True
                 )
                 story_reason = str(story_review.get('reason') or '').strip()
+                story_summaries = {
+                    key: str(story_review.get(key) or '').strip()
+                    for key in (
+                        'central_question',
+                        'causal_answer',
+                        'visible_payoff',
+                    )
+                }
                 if not story_reason:
                     failed_story_checks.append('missing_evidence')
                     story_reason = 'critic omitted whole-story evidence'
+                for key, value in story_summaries.items():
+                    if not value:
+                        failed_story_checks.append(f'missing_{key}')
                 if failed_story_checks:
                     story_failure = (
                         f'{", ".join(failed_story_checks)}; {story_reason[:180]}'
@@ -1197,6 +1298,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             out,
             language_name,
             duration_minutes,
+            topic,
         )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
@@ -1235,4 +1337,22 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     out['ai_scene_count'] = ai_scene_count
     out['max_ai_scene_count'] = preview_ai_limit
     out['studio_options'] = options
+    if options.get('mode') == 'preview' and duration_minutes <= 0.6:
+        stock_qc = out.get('stock_scene_qc') or {}
+        story_review = stock_qc.get('story_review') or {}
+        ending_review = stock_qc.get('ending_pair_review') or {}
+        if (
+            int(stock_qc.get('version') or 0) < 3
+            or story_review.get('accepted') is not True
+            or ending_review.get('accepted') is not True
+        ):
+            raise RuntimeError(
+                'Short-preview QC attestation is missing before paid media'
+            )
+        out['short_story_qc'] = {
+            'version': _SHORT_STORY_QC_VERSION,
+            'story_review_accepted': True,
+            'ending_pair_accepted': True,
+        }
+        out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
     return out
