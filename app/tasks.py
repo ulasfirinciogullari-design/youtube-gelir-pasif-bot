@@ -209,8 +209,8 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     if not original and not hints:
         return ''
 
-    narration = str(scene.get('narration') or '').strip()[:180]
-    visible_action = '; '.join(hint[:100] for hint in hints)[:150]
+    narration = _truncate_utf16(str(scene.get('narration') or '').strip(), 180)
+    visible_action = _truncate_utf16('; '.join(hint[:100] for hint in hints), 150)
     combined = f'{narration} {original} {visible_action}'.lower()
     mechanism_guardrails: list[str] = []
     oled_claim = bool(re.search(
