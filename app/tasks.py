@@ -492,6 +492,17 @@ def _apply_visual_review(
     scene_visuals[scene_idx] = [chosen]
 
 
+def _preview_duration_within_gate(
+    actual_seconds: float,
+    requested_seconds: float,
+) -> bool:
+    requested = max(0.1, float(requested_seconds))
+    # MP3/AAC encoder padding and mux timebases can shift a short master by
+    # several hundred milliseconds. Cap the allowance at one second.
+    tolerance = min(1.0, max(0.75, requested * 0.02))
+    return abs(float(actual_seconds) - requested) <= tolerance
+
+
 def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float) -> int:
     if options.get('mode') == 'preview':
         return min(3, scene_count) if duration_minutes <= 0.6 else 0
@@ -1414,16 +1425,9 @@ def run_video_pipeline(
         requested_seconds = duration_minutes * 60
         actual_seconds = float(rendered.get('duration') or 0)
         if options.get('mode') == 'preview':
-            # MP3/AAC encoder padding and mux timebases can shift a short
-            # master by several hundred milliseconds. Keep the preview gate
-            # tight, but do not reject a publishable 29.4-second "30s" file.
-            preview_tolerance_seconds = min(
-                1.0,
-                max(0.75, requested_seconds * 0.02),
-            )
-            duration_ok = (
-                abs(actual_seconds - requested_seconds)
-                <= preview_tolerance_seconds
+            duration_ok = _preview_duration_within_gate(
+                actual_seconds,
+                requested_seconds,
             )
         else:
             duration_ok = requested_seconds * 0.70 <= actual_seconds <= requested_seconds * 1.22
