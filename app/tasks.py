@@ -154,6 +154,7 @@ def _collect_broll(scenes: list[dict], work: Path) -> dict:
             scene_query_results,
             selection_seen_ids,
             3,
+            allow_seen_fallback=False,
         )
         for candidate_idx, (query, item) in enumerate(selected):
             candidate_id = item.get('pexels_id') or item.get('download_url')
