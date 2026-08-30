@@ -98,9 +98,11 @@ def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
 
 
 def _max_ai_scenes(scene_count: int, options: dict) -> int:
-    if options.get('mode') == 'preview':
-        return 0
     mix = options.get('visual_mix') or 'balanced'
+    if options.get('mode') == 'preview':
+        if mix == 'real_first':
+            return min(1, scene_count)
+        return min(3, max(1, math.ceil(scene_count * 0.50)))
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
     if mix == 'ai_first':
