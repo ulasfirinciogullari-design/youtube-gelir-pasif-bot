@@ -118,8 +118,20 @@ def _run_director(
     pace_profile = str(options.get('pace') or 'balanced')
     visual_mix = str(options.get('visual_mix') or 'balanced')
     reference_url = str(options.get('reference_url') or '').strip()
+    current_words = int(compact.get('current_word_count') or 0)
+    short_quota_note = ''
+    if duration_minutes <= 0.6 and target_scenes > 0:
+        base, extra = divmod(target_words, target_scenes)
+        quotas = [base + (1 if i < extra else 0) for i in range(target_scenes)]
+        short_quota_note = (
+            f'SHORT PREVIEW — HIGHEST PRIORITY: return exactly {target_scenes} scenes. '
+            f'Scene narration word counts must be exactly {quotas}; total exactly {target_words}. '
+            'Count hyphenated or apostrophe compounds as one word. '
+        )
     correction_note = (
-        f'CRITICAL CORRECTION: rewrite the SAME factual story to {min_words}-{max_words} TOTAL spoken words, aiming for {target_words}, and approximately {target_scenes} scenes. Do not add facts. '
+        f'CRITICAL CORRECTION: the server counted {current_words} words. '
+        f'Rewrite the SAME factual story to exactly {target_words} total words '
+        f'(hard allowed range {min_words}-{max_words}); do not add facts. '
         if correction else ''
     )
     reference_note = (
@@ -128,7 +140,7 @@ def _run_director(
     )
     response = client.responses.create(
         model=settings.openai_model,
-        reasoning={'effort': 'low'},
+        reasoning={'effort': 'medium' if correction else 'low'},
         input=f'''You are the FINAL EDITORIAL DIRECTOR for a premium faceless YouTube video.
 Topic: {topic}
 Language: {language_name}
@@ -138,6 +150,7 @@ Studio pace profile: {pace_profile}
 Studio visual mix: {visual_mix}
 {reference_note}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
+{short_quota_note}
 Target scene budget: approximately {target_scenes} scenes, never more than one scene away.
 {correction_note}
 
@@ -203,7 +216,9 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     words = _word_count(out['narration'])
     scene_count = len(out['scenes'])
 
-    if words < min_words or words > max_words or abs(scene_count - target_scenes) > 1:
+    for correction_attempt in range(3):
+        if min_words <= words <= max_words and abs(scene_count - target_scenes) <= 1:
+            break
         correction_input = {
             'title': out.get('title'),
             'thumbnail_text': out.get('thumbnail_text'),
@@ -212,6 +227,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             'sources': package.get('sources', []),
             'current_word_count': words,
             'current_scene_count': scene_count,
+            'correction_attempt': correction_attempt + 1,
         }
         revised = _run_director(
             client, correction_input, topic, language_name, duration_minutes,
@@ -221,7 +237,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
 
-    if words < int(min_words * 0.92) or words > int(max_words * 1.03):
+    if words < min_words or words > max_words:
         raise RuntimeError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
     if abs(scene_count - target_scenes) > 1:
         raise RuntimeError(f'Scene-count gate rejected final edit: {scene_count} scenes; target {target_scenes}')
