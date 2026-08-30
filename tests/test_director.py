@@ -11,6 +11,11 @@ openai_stub = types.ModuleType('openai')
 openai_stub.OpenAI = object
 sys.modules.setdefault('openai', openai_stub)
 
+httpx_stub = types.ModuleType('httpx')
+httpx_stub.Timeout = lambda *args, **kwargs: object()
+httpx_stub.post = lambda *args, **kwargs: None
+sys.modules.setdefault('httpx', httpx_stub)
+
 config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace(
     openai_api_key='test-openai-key',
