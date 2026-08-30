@@ -3,6 +3,11 @@ import json
 import re
 from openai import OpenAI
 from app.config import settings
+from app.services.gemini_critic import (
+    GEMINI_DEFAULT_MODEL,
+    run_optional_gemini_critic,
+    setting_is_enabled,
+)
 from app.services.source_evidence import normalize_evidence_sources
 
 STYLE_NOTES = {
@@ -12,6 +17,16 @@ STYLE_NOTES = {
     'cinematic': 'cinematic essay with controlled reveals and recurring visual motifs',
     'explainer': 'clear causal explainer with demonstrations and comparisons',
 }
+
+
+class _NaturalSpokenLanguageRepairRequired(RuntimeError):
+    """A bounded whole-story copy edit is required before media work starts."""
+
+    def __init__(self, evidence: str):
+        self.evidence = str(evidence or '').strip()
+        super().__init__(
+            'Independent critic requested a natural spoken-language repair'
+        )
 
 
 def _json(text: str) -> dict:
@@ -198,6 +213,33 @@ def short_story_package_is_approved(
         or not isinstance(stock_qc, dict)
     ):
         return False
+    if setting_is_enabled(
+        getattr(settings, 'gemini_critic_enabled', False)
+    ):
+        if not str(getattr(settings, 'gemini_api_key', '') or '').strip():
+            return False
+        gemini_qc = stock_qc.get('gemini_critic')
+        target_positions = stock_qc.get('target_positions')
+        configured_model = str(
+            getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL)
+            or GEMINI_DEFAULT_MODEL
+        ).strip()
+        if (
+            not isinstance(gemini_qc, dict)
+            or set(gemini_qc.keys()) != {
+                'accepted',
+                'model',
+                'contract',
+                'reviewed_scene_count',
+            }
+            or gemini_qc.get('accepted') is not True
+            or gemini_qc.get('model') != configured_model
+            or gemini_qc.get('contract') != 'openai-story-stock-v1'
+            or type(gemini_qc.get('reviewed_scene_count')) is not int
+            or not isinstance(target_positions, list)
+            or gemini_qc.get('reviewed_scene_count') != len(target_positions)
+        ):
+            return False
     if (
         type(qc.get('version')) is not int
         or qc.get('version') != _SHORT_STORY_QC_VERSION
@@ -334,9 +376,15 @@ def _run_director(
     if duration_minutes <= 0.6 and target_scenes > 0:
         base, extra = divmod(target_words, target_scenes)
         quotas = [base + (1 if i < extra else 0) for i in range(target_scenes)]
+        scene_ranges = [
+            [max(5, quota - 2), quota + 2]
+            for quota in quotas
+        ]
         short_quota_note = (
             f'SHORT PREVIEW — HIGHEST PRIORITY: return exactly {target_scenes} scenes. '
-            f'Scene narration word counts must be exactly {quotas}; total exactly {target_words}. '
+            f'Aim for scene narration word counts near {quotas}, using these allowed ranges {scene_ranges}. '
+            f'The HARD total is {min_words}-{max_words} words; aim for {target_words}. '
+            'Never pad a sentence with adverbs, time words or empty qualifiers merely to hit a count. '
             'Count hyphenated or apostrophe compounds as one word. '
         )
         short_visual_note = (
@@ -382,8 +430,8 @@ def _run_director(
     if correction:
         correction_note = (
             f'CRITICAL CORRECTION: the server counted {current_words} words. '
-            f'Rewrite to exactly {target_words} total words '
-            f'(hard allowed range {min_words}-{max_words}). '
+            f'Rewrite within the hard allowed range {min_words}-{max_words} total words; '
+            f'aim for {target_words} without padding individual scenes. '
             'Preserve the supported topic and useful facts, but DROP unrelated mechanisms, examples and draft wording '
             'whenever needed to create one focused human story. Do not add unsupported facts. '
         )
@@ -460,6 +508,8 @@ def _repair_short_stock_scenes(
     language_name: str,
     duration_minutes: float,
     topic: str = '',
+    *,
+    allow_natural_language_repair: bool = True,
 ) -> dict:
     if duration_minutes > 0.6:
         return package
@@ -467,6 +517,12 @@ def _repair_short_stock_scenes(
     scenes = package.get('scenes') or []
     if len(scenes) < 3:
         return package
+
+    target_total_words, minimum_total_words, maximum_total_words = (
+        _target_word_budget(duration_minutes)
+    )
+    minimum_scene_words = 5
+    maximum_scene_words = 11
 
     stock_positions = sorted({
         *[
@@ -490,7 +546,13 @@ def _repair_short_stock_scenes(
         position: {
             'position': position,
             'role': role_by_position[position],
-            'word_count': _word_count(scenes[position].get('narration') or ''),
+            'current_word_count': _word_count(
+                scenes[position].get('narration') or ''
+            ),
+            'allowed_word_count': [
+                minimum_scene_words,
+                maximum_scene_words,
+            ],
             'current_narration': scenes[position].get('narration'),
             'current_visual_queries': scenes[position].get('visual_queries') or [],
         }
@@ -518,10 +580,6 @@ def _repair_short_stock_scenes(
         r'sihir\w*|mucize\w*|görünmeyen|gizli\s+sistem\w*|sessiz\s+ortak\w*)\b',
         flags=re.IGNORECASE,
     )
-    original_total_words = _word_count(
-        package.get('narration')
-        or ' '.join(str(scene.get('narration') or '') for scene in scenes)
-    )
     original_ai_count = sum(
         1 for scene in scenes if str(scene.get('ai_prompt') or '').strip()
     )
@@ -530,11 +588,11 @@ def _repair_short_stock_scenes(
         target = targets_by_position[position]
         narration = str(row.get('narration') or '').strip()
         got_words = _word_count(narration)
-        expected_words = int(target['word_count'])
-        if got_words != expected_words:
+        allowed_words = target['allowed_word_count']
+        if not allowed_words[0] <= got_words <= allowed_words[1]:
             return None, (
                 f'position {position} has {got_words} narration words; '
-                f'expected {expected_words}'
+                f'expected {allowed_words[0]}-{allowed_words[1]}'
             )
         if (
             ';' in narration
@@ -646,6 +704,11 @@ def _repair_short_stock_scenes(
         }
         generation_context = {
             'title': package.get('title'),
+            'whole_story_word_budget': {
+                'minimum': minimum_total_words,
+                'target': target_total_words,
+                'maximum': maximum_total_words,
+            },
             'complete_original_story_in_order': original_story,
             'complete_current_story_in_order': current_story,
             'accepted_stock_scenes_locked': [
@@ -672,7 +735,8 @@ Return ONLY JSON in exactly this shape:
 
 NON-NEGOTIABLE RULES:
 - Return exactly the requested positions and no others. Never rewrite an accepted locked stock scene or an AI-routed mechanism scene.
-- Preserve the exact requested narration word count for every returned position.
+- Respect each requested scene's allowed_word_count range. Keep the complete story within whole_story_word_budget; exact per-scene equality is neither required nor desirable.
+- Never add empty padding such as "bugün", "şimdi", "sakinlikle" or "dikkatlice" unless that word changes the visible action and sounds necessary in normal speech.
 - Each narration describes ONE visible human or physical action in ONE ordinary location.
 - Every spoken clause must be literally visible in the same common five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
 - Use one simple sentence. Do not combine distinct actions, even with a conjunction, gerund, sequence or subordinate clause.
@@ -690,6 +754,7 @@ NON-NEGOTIABLE RULES:
 - Never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
 - A payoff must visibly complete the preceding action and show the everyday benefit, not merely state a conclusion.
 - Keep the spoken narration natural and easy to pronounce in {language_name}; for Turkish, use meaning-first native wording and never raw technical abbreviations.
+- When validation_feedback names natural_spoken_language, rewrite formal, translated or textbook-like wording as something a Turkish speaker would naturally say aloud while preserving the exact visible meaning.
 ''',
         )
 
@@ -783,6 +848,32 @@ NON-NEGOTIABLE RULES:
                 continue
             break
 
+        candidate_total_words = sum(
+            _word_count(
+                accepted_rows[position]['narration']
+                if position in accepted_rows
+                else str(scene.get('narration') or '')
+            )
+            for position, scene in enumerate(scenes)
+        )
+        if not minimum_total_words <= candidate_total_words <= maximum_total_words:
+            total_error = (
+                f'complete story has {candidate_total_words} narration words; '
+                f'expected {minimum_total_words}-{maximum_total_words}'
+            )
+            last_failures = {
+                position: total_error
+                for position in request_positions
+            }
+            if attempt == 0:
+                pending_positions = list(request_positions)
+                feedback_by_position = dict(last_failures)
+                for position in request_positions:
+                    failed_candidates[position] = dict(accepted_rows[position])
+                    accepted_rows.pop(position, None)
+                continue
+            break
+
         candidate_story = [
             {
                 'position': position,
@@ -822,6 +913,9 @@ NON-NEGOTIABLE RULES:
                 'central_question': 'one precise human question',
                 'causal_answer': 'one supported causal reveal',
                 'visible_payoff': 'one visible everyday benefit',
+                'natural_spoken_language_evidence': (
+                    'PASS, or scene N plus an exact quote and the spoken-language issue'
+                ),
                 'reason': 'brief evidence-based whole-story verdict',
             },
             'ending_pair': {
@@ -901,6 +995,8 @@ Review the WHOLE story before reviewing individual stock shots. Set each story_r
 - causal_claim_supported: independently verify the central cause-and-effect explanation against the supplied source URLs and evidence. Use bounded web search when the evidence is insufficient; false if the claim cannot be verified or overstates a source.
 - hook_payoff_same_promise: the ending visibly fulfills the exact curiosity opened by the hook.
 central_question, causal_answer and visible_payoff must each be one short, concrete, non-empty summary grounded in the candidate story.
+natural_spoken_language_evidence must begin with PASS when natural_spoken_language is true. When it is false, it must name the scene position, quote the exact offending words and explain the concrete spoken-language problem. Never use the general reason to hide or contradict this language evidence.
+If any story_review boolean is false, the general reason must name the failed key and discuss only concrete failure evidence, not summarize checks that passed.
 A whole-story failure is fatal: do not approve a polished shot plan for a bad idea.
 
 Review ending_pair jointly. The positions must match the supplied final two indexes exactly.
@@ -944,6 +1040,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             'central_question',
             'causal_answer',
             'visible_payoff',
+            'natural_spoken_language_evidence',
             'reason',
             *story_boolean_keys,
         }
@@ -955,6 +1052,8 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             *ending_boolean_keys,
         }
         story_failure = ''
+        failed_story_checks: list[str] = []
+        natural_language_evidence = ''
         if not critic_global_error:
             if not isinstance(story_review, dict) or set(story_review.keys()) != expected_story_keys:
                 critic_global_error = 'whole-story critic returned the wrong fields'
@@ -965,6 +1064,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     if story_review.get(key) is not True
                 )
                 story_reason = str(story_review.get('reason') or '').strip()
+                natural_language_evidence = str(
+                    story_review.get('natural_spoken_language_evidence') or ''
+                ).strip()
                 story_summaries = {
                     key: str(story_review.get(key) or '').strip()
                     for key in (
@@ -976,12 +1078,49 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 if not story_reason:
                     failed_story_checks.append('missing_evidence')
                     story_reason = 'critic omitted whole-story evidence'
+                if not natural_language_evidence:
+                    failed_story_checks.append(
+                        'missing_natural_spoken_language_evidence'
+                    )
+                elif story_review.get('natural_spoken_language') is True:
+                    if not re.match(
+                        r'^pass\b',
+                        natural_language_evidence,
+                        flags=re.IGNORECASE,
+                    ):
+                        failed_story_checks.append(
+                            'inconsistent_natural_spoken_language_evidence'
+                        )
+                elif (
+                    re.match(
+                        r'^pass\b',
+                        natural_language_evidence,
+                        flags=re.IGNORECASE,
+                    )
+                    or not re.search(
+                        r'\bscene\s+\d+\b',
+                        natural_language_evidence,
+                        flags=re.IGNORECASE,
+                    )
+                    or not any(
+                        quote in natural_language_evidence
+                        for quote in ('"', '“', '”')
+                    )
+                ):
+                    failed_story_checks.append(
+                        'inconsistent_natural_spoken_language_evidence'
+                    )
                 for key, value in story_summaries.items():
                     if not value:
                         failed_story_checks.append(f'missing_{key}')
                 if failed_story_checks:
+                    failure_reason = (
+                        natural_language_evidence
+                        if failed_story_checks == ['natural_spoken_language']
+                        else story_reason
+                    )
                     story_failure = (
-                        f'{", ".join(failed_story_checks)}; {story_reason[:180]}'
+                        f'{", ".join(failed_story_checks)}; {failure_reason[:180]}'
                     )
             if not critic_global_error and (
                 not isinstance(ending_pair, dict)
@@ -994,6 +1133,13 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 critic_global_error = 'ending-pair critic returned an invalid contract'
 
         if story_failure:
+            if (
+                allow_natural_language_repair
+                and failed_story_checks == ['natural_spoken_language']
+            ):
+                raise _NaturalSpokenLanguageRepairRequired(
+                    natural_language_evidence
+                )
             failure_details = {
                 'generator_calls': generator_calls,
                 'critic_calls': critic_calls,
@@ -1123,7 +1269,19 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                         })
                         review['reason'] = pair_failure[:160]
 
+        gemini_attestation = None
         if not critic_failures:
+            gemini_attestation = run_optional_gemini_critic(
+                critic_context,
+                critic_shape,
+                enabled=getattr(settings, 'gemini_critic_enabled', False),
+                api_key=getattr(settings, 'gemini_api_key', ''),
+                model=getattr(
+                    settings,
+                    'gemini_model',
+                    GEMINI_DEFAULT_MODEL,
+                ),
+            )
             final_critic_reviews = parsed_reviews
             repaired = dict(package)
             repaired_scenes = [dict(scene) for scene in scenes]
@@ -1165,9 +1323,17 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 for scene in repaired_scenes
             )
             repaired['tts_narration'] = repaired['narration']
-            if _word_count(repaired['narration']) != original_total_words:
+            repaired_total_words = _word_count(repaired['narration'])
+            if not (
+                minimum_total_words
+                <= repaired_total_words
+                <= maximum_total_words
+            ):
                 last_failures = {
-                    position: 'repair changed the package total word count'
+                    position: (
+                        f'repair produced {repaired_total_words} total words; '
+                        f'expected {minimum_total_words}-{maximum_total_words}'
+                    )
                     for position in stock_positions
                 }
                 break
@@ -1198,7 +1364,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     'verified single-action coverage.'
                 ),
             ]
-            repaired['stock_scene_qc'] = {
+            stock_scene_qc = {
                 'version': 3,
                 'target_positions': stock_positions,
                 'roles': [
@@ -1226,6 +1392,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     for position in stock_positions
                 ],
             }
+            if gemini_attestation is not None:
+                stock_scene_qc['gemini_critic'] = gemini_attestation
+            repaired['stock_scene_qc'] = stock_scene_qc
             return repaired
 
         last_failures = dict(critic_failures)
@@ -1346,13 +1515,81 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         )
 
     if options.get('mode') == 'preview' and duration_minutes <= 0.6:
-        out = _repair_short_stock_scenes(
-            client,
-            out,
-            language_name,
-            duration_minutes,
-            topic,
-        )
+        try:
+            out = _repair_short_stock_scenes(
+                client,
+                out,
+                language_name,
+                duration_minutes,
+                topic,
+            )
+        except _NaturalSpokenLanguageRepairRequired as exc:
+            natural_language_feedback = (
+                'The independent critic set natural_spoken_language=false. '
+                'Rewrite the complete narration as idiomatic, conversational '
+                f'{language_name} without changing the supported causal claim, '
+                'actor/object thread, visual actions, route count or ending '
+                'location. Do not add filler to satisfy a scene quota. '
+                f'Critic evidence: {exc.evidence[:320]}'
+            )
+            correction_input = {
+                'title': out.get('title'),
+                'thumbnail_text': out.get('thumbnail_text'),
+                'description': out.get('description'),
+                'scenes': out.get('scenes'),
+                'sources': package.get('sources', []),
+                'current_word_count': words,
+                'current_scene_count': scene_count,
+                'current_ai_scene_count': ai_scene_count,
+                'max_ai_scene_count': preview_ai_limit,
+                'correction_attempt': 'natural_spoken_language',
+                'narration_quality_issues': [natural_language_feedback],
+            }
+            revised = _run_director(
+                client,
+                correction_input,
+                topic,
+                language_name,
+                duration_minutes,
+                target_words,
+                min_words,
+                max_words,
+                target_scenes,
+                options,
+                correction=True,
+            )
+            out = _clean_package(revised, package)
+            words = _word_count(out['narration'])
+            scene_count = len(out['scenes'])
+            ai_scene_count = sum(
+                1 for scene in out['scenes'] if scene.get('ai_prompt')
+            )
+            short_editorial_issues = _short_story_quality_issues(
+                out,
+                language_name,
+            )
+            corrected_shape_is_safe = (
+                min_words <= words <= max_words
+                and abs(scene_count - target_scenes) <= 1
+                and (
+                    preview_ai_limit is None
+                    or ai_scene_count <= preview_ai_limit
+                )
+                and not short_editorial_issues
+            )
+            if not corrected_shape_is_safe:
+                raise RuntimeError(
+                    'Natural spoken-language repair violated a deterministic '
+                    'short-preview gate before paid media'
+                )
+            out = _repair_short_stock_scenes(
+                client,
+                out,
+                language_name,
+                duration_minutes,
+                topic,
+                allow_natural_language_repair=False,
+            )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
@@ -1410,3 +1647,4 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         }
         out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
     return out
+

@@ -4,22 +4,36 @@ import sys
 import types
 import unittest
 from types import SimpleNamespace
+from unittest.mock import patch
 
 
 openai_stub = types.ModuleType('openai')
 openai_stub.OpenAI = object
 sys.modules.setdefault('openai', openai_stub)
 
+httpx_stub = types.ModuleType('httpx')
+httpx_stub.Timeout = lambda *args, **kwargs: object()
+httpx_stub.post = lambda *args, **kwargs: None
+sys.modules.setdefault('httpx', httpx_stub)
+
 config_stub = types.ModuleType('app.config')
-config_stub.settings = SimpleNamespace(openai_model='test-model')
+config_stub.settings = SimpleNamespace(
+    openai_api_key='test-openai-key',
+    openai_model='test-model',
+    gemini_critic_enabled=False,
+    gemini_api_key='',
+    gemini_model='gemini-3.1-pro-preview',
+)
 sys.modules['app.config'] = config_stub
 
 from app.services.director import (
+    _NaturalSpokenLanguageRepairRequired,
     _repair_short_stock_scenes,
     _short_spoken_quality_issues,
     _short_story_fingerprint,
     _short_story_quality_issues,
     _word_count,
+    direct_and_qc,
     short_story_package_is_approved,
 )
 
@@ -59,6 +73,26 @@ class SequencedResponses:
 class FakeClient:
     def __init__(self, outputs):
         self.responses = SequencedResponses(outputs)
+
+
+class FakeGeminiResponse:
+    def __init__(self, verdict=None, *, status_code=200, raw_text=None):
+        self.status_code = status_code
+        self.verdict = verdict
+        self.raw_text = raw_text
+
+    def json(self):
+        output_text = (
+            self.raw_text
+            if self.raw_text is not None
+            else json.dumps(self.verdict, ensure_ascii=False)
+        )
+        return {
+            'candidates': [{
+                'finishReason': 'STOP',
+                'content': {'parts': [{'text': output_text}]},
+            }],
+        }
 
 
 def _scene(index, narration, queries, ai_prompt=None):
@@ -145,11 +179,78 @@ def make_short_package():
     }
 
 
+def make_coherent_battery_package():
+    scenes = [
+        _scene(
+            0,
+            'Otobüs bekleyen genç adam telefonunun düşen piline bakar.',
+            ['young man checks phone at bus stop', 'commuter checks low phone battery'],
+        ),
+        _scene(
+            1,
+            'Soğukta pil elektrik vermekte kısa süre daha zorlanır.',
+            ['cold smartphone in commuters hand', 'person holds phone in winter'],
+        ),
+        _scene(
+            2,
+            'Gerilim düşünce telefon kalan gücü olduğundan az hesaplar.',
+            ['battery voltage drop scientific visualization', 'cold battery voltage animation'],
+            'cinematic macro battery voltage visualization without text',
+        ),
+        _scene(
+            3,
+            'Genç adam telefonu otobüs durağında iç cebine koyar.',
+            ['man puts phone in inner coat pocket', 'commuter pockets phone at bus stop'],
+        ),
+        _scene(
+            4,
+            'Telefon aynı otobüs durağında iç cebinde yavaşça ısınır.',
+            ['phone warming inside coat pocket', 'commuter waits with phone in coat'],
+        ),
+        _scene(
+            5,
+            'Genç aynı otobüs durağında telefonunu yeniden kullanır.',
+            ['young man uses phone at bus stop', 'commuter checks working phone outside'],
+        ),
+    ]
+    narration = ' '.join(scene['narration'] for scene in scenes)
+    assert 45 <= _word_count(narration) <= 51
+    return {
+        'title': 'Soğukta Düşen Pil',
+        'description': 'Tek bir gündelik pil sorusunu anlatır.',
+        'thumbnail_text': 'PİL NEDEN DÜŞÜYOR?',
+        'sources': [
+            {
+                'url': 'https://example.com/cold-battery-evidence',
+                'evidence': 'Cold conditions can temporarily reduce battery performance.',
+            },
+            {
+                'url': 'https://example.org/voltage-evidence',
+                'evidence': 'Lower available voltage can affect the displayed charge estimate.',
+            },
+        ],
+        'scenes': scenes,
+        'narration': narration,
+        'tts_narration': narration,
+        'visual_queries': [
+            query
+            for scene in scenes
+            for query in scene['visual_queries']
+        ],
+        'ai_scenes': [
+            scene['ai_prompt']
+            for scene in scenes
+            if scene.get('ai_prompt')
+        ],
+        'director_qc': [],
+    }
+
+
 def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
     rows = {
         0: {
             'position': 0,
-            'narration': 'Evde genç adam telefonunu masadan dikkatlice eline alır.',
+            'narration': 'Genç adam evde masadaki telefonunu tek eliyle alır.',
             'visual_queries': [
                 'young man picks up smartphone at home',
                 'man picks up phone from home table',
@@ -158,7 +259,7 @@ def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
         },
         4: {
             'position': 4,
-            'narration': 'Kasiyer kafede müşteriye sıcak kahvesini sakinlikle uzatır bugün.',
+            'narration': 'Kasiyer aynı kafe tezgâhında müşteriye sıcak kahveyi uzatır.',
             'visual_queries': [
                 'barista hands customer coffee inside cafe',
                 'cafe cashier hands hot coffee to customer',
@@ -168,9 +269,9 @@ def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
         5: {
             'position': 5,
             'narration': (
-                'Kadın aynı kafe tezgâhında sıcak kahvesine memnuniyetle gülümser.'
+                'Kadın aynı kafe tezgâhında önündeki sıcak kahveye gülümser.'
                 if final_variant
-                else 'Müşteri aynı kafe tezgâhında sıcak kahvesine gülümser bugün.'
+                else 'Müşteri aynı kafe tezgâhında uzatılan sıcak kahveye gülümser.'
             ),
             'visual_queries': (
                 [
@@ -219,12 +320,24 @@ def critic_payload(failures=None, story_failures=None, ending_failures=None):
         'central_question': 'Why does the familiar action work?',
         'causal_answer': 'One supported mechanism makes the action reliable.',
         'visible_payoff': 'The same person visibly completes the useful action.',
+        'natural_spoken_language_evidence': (
+            'PASS: every sentence is idiomatic and breath-friendly.'
+        ),
         'reason': 'One human situation follows a single causal question to a visible payoff.',
     }
     for key in story_failures:
         story_review[key] = False
     if story_failures:
         story_review['reason'] = 'The draft samples unrelated mechanisms instead of one story.'
+    if 'natural_spoken_language' in story_failures:
+        story_review['natural_spoken_language_evidence'] = (
+            'scene 2: "voltaj sarkması gerçekleşir" is textbook-like '
+            'rather than conversational Turkish.'
+        )
+        if story_failures == ['natural_spoken_language']:
+            story_review['reason'] = (
+                'natural_spoken_language failed at the quoted scene wording.'
+            )
     ending_pair = {
         'penultimate_position': 4,
         'final_position': 5,
@@ -256,6 +369,11 @@ def critic_payload(failures=None, story_failures=None, ending_failures=None):
 
 
 class ShortStockRepairTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.gemini_critic_enabled = False
+        config_stub.settings.gemini_api_key = ''
+        config_stub.settings.gemini_model = 'gemini-3.1-pro-preview'
+
     def test_repairs_all_null_and_final_positions_only(self):
         package = make_short_package()
         original = copy.deepcopy(package)
@@ -284,6 +402,61 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(result['ai_scene_count'] if 'ai_scene_count' in result else 3, 3)
         self.assertEqual(len(result['ai_scenes']), 3)
 
+    def test_relaxed_scene_word_counts_keep_hard_total_duration_range(self):
+        generated = valid_generator_payload()
+        generated['scenes'][0]['narration'] = (
+            'Genç adam evde telefonunu masadan alır.'
+        )
+        generated['scenes'][1]['narration'] = (
+            'Kasiyer aynı kafe tezgâhında müşteriye sıcak kahve '
+            'fincanını uzatır.'
+        )
+        generated['scenes'][2]['narration'] = (
+            'Müşteri aynı kafe tezgâhında kahvesine gülümser.'
+        )
+        client = FakeClient([generated, critic_payload()])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+        )
+
+        self.assertEqual(
+            [_word_count(result['scenes'][position]['narration']) for position in (0, 4, 5)],
+            [6, 9, 6],
+        )
+        self.assertEqual(_word_count(result['narration']), 45)
+        self.assertEqual(len(client.responses.calls), 2)
+
+    def test_relaxed_scene_counts_still_reject_out_of_range_total(self):
+        generated = valid_generator_payload()
+        generated['scenes'][0]['narration'] = (
+            'Genç adam evde telefonunu alır.'
+        )
+        generated['scenes'][1]['narration'] = (
+            'Kasiyer müşteriye sıcak kahve uzatır.'
+        )
+        generated['scenes'][2]['narration'] = (
+            'Müşteri kafe tezgâhında kahvesine gülümser.'
+        )
+        client = FakeClient([copy.deepcopy(generated), copy.deepcopy(generated)])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'fully stock-safe short-preview scenes',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(len(client.responses.calls), 2)
+        self.assertTrue(all('tools' not in call for call in client.responses.calls))
+
     def test_second_attempt_rewrites_only_critic_rejection(self):
         first = valid_generator_payload()
         second = valid_generator_payload((5,), final_variant=True)
@@ -304,7 +477,7 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(len(client.responses.calls), 4)
         second_generator_input = client.responses.calls[2]['input']
         self.assertIn(
-            '"previous_narration": "Kasiyer kafede müşteriye sıcak kahvesini sakinlikle uzatır bugün."',
+            '"previous_narration": "Kasiyer aynı kafe tezgâhında müşteriye sıcak kahveyi uzatır."',
             second_generator_input,
         )
         self.assertNotIn(
@@ -373,10 +546,63 @@ class ShortStockRepairTests(unittest.TestCase):
             client.responses.calls[1]['input'],
         )
 
+    def test_natural_only_story_rejection_carries_tied_critic_evidence(self):
+        verdict = critic_payload(
+            story_failures=['natural_spoken_language']
+        )
+        expected_evidence = verdict['story_review'][
+            'natural_spoken_language_evidence'
+        ]
+        verdict['story_review']['reason'] = (
+            'The same person follows one clear causal chain to a visible payoff.'
+        )
+        client = FakeClient([
+            valid_generator_payload(),
+            verdict,
+        ])
+
+        with self.assertRaises(
+            _NaturalSpokenLanguageRepairRequired
+        ) as error:
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(error.exception.evidence, expected_evidence)
+        self.assertEqual(len(client.responses.calls), 2)
+
+    def test_natural_language_false_with_pass_evidence_fails_closed(self):
+        verdict = critic_payload(
+            story_failures=['natural_spoken_language']
+        )
+        verdict['story_review']['natural_spoken_language_evidence'] = (
+            'PASS: the narration sounds natural.'
+        )
+        client = FakeClient([
+            valid_generator_payload(),
+            verdict,
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'inconsistent_natural_spoken_language_evidence',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(len(client.responses.calls), 2)
+
     def test_deterministic_failure_retries_only_bad_position(self):
         first = valid_generator_payload()
         first['scenes'][0]['narration'] = (
-            'Evde genç adam telefonunu masadan dikkatlice; eline alır.'
+            'Genç adam evde masadaki telefonunu; tek eliyle alır.'
         )
         client = FakeClient([
             first,
@@ -445,6 +671,213 @@ class ShortStockRepairTests(unittest.TestCase):
 
         self.assertIs(result, package)
         self.assertEqual(client.responses.calls, [])
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_gemini_disabled_preserves_existing_behavior(self, gemini_post):
+        client = FakeClient([valid_generator_payload(), critic_payload()])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+        )
+
+        gemini_post.assert_not_called()
+        self.assertNotIn('gemini_critic', result['stock_scene_qc'])
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_gemini_enabled_accepts_and_binds_attestation(self, gemini_post):
+        secret = 'gemini-secret-must-not-leak'
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = secret
+        gemini_post.return_value = FakeGeminiResponse(critic_payload())
+        client = FakeClient([valid_generator_payload(), critic_payload()])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+            'one useful phone story',
+        )
+
+        attestation = result['stock_scene_qc']['gemini_critic']
+        self.assertTrue(attestation['accepted'])
+        self.assertEqual(attestation['model'], 'gemini-3.1-pro-preview')
+        request = gemini_post.call_args
+        self.assertNotIn(secret, request.args[0])
+        self.assertNotIn(secret, json.dumps(request.kwargs['json']))
+        self.assertIs(request.kwargs['json']['store'], False)
+        self.assertEqual(
+            request.kwargs['json']['generationConfig']['maxOutputTokens'],
+            4096,
+        )
+        self.assertNotIn(
+            'temperature',
+            request.kwargs['json']['generationConfig'],
+        )
+        self.assertEqual(
+            request.kwargs['json']['generationConfig']['thinkingConfig'],
+            {'thinkingLevel': 'medium'},
+        )
+
+        result['short_story_qc'] = {
+            'version': 1,
+            'requested_topic': 'one useful phone story',
+            'story_review_accepted': True,
+            'ending_pair_accepted': True,
+        }
+        result['short_story_qc']['fingerprint'] = _short_story_fingerprint(result)
+        self.assertTrue(short_story_package_is_approved(result))
+
+        missing_attestation = copy.deepcopy(result)
+        missing_attestation['stock_scene_qc'].pop('gemini_critic')
+        missing_attestation['short_story_qc']['fingerprint'] = (
+            _short_story_fingerprint(missing_attestation)
+        )
+        self.assertFalse(short_story_package_is_approved(missing_attestation))
+
+        result['stock_scene_qc']['gemini_critic']['model'] = 'changed-model'
+        self.assertFalse(short_story_package_is_approved(result))
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_gemini_enabled_rejection_vetoes_before_paid_media(self, gemini_post):
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = 'test-gemini-key'
+        gemini_post.return_value = FakeGeminiResponse(
+            critic_payload(story_failures=['one_specific_useful_reveal'])
+        )
+        client = FakeClient([valid_generator_payload(), critic_payload()])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'Gemini critic rejected the story before paid media',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(len(client.responses.calls), 2)
+        self.assertEqual(gemini_post.call_count, 1)
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_gemini_malformed_json_fails_closed(self, gemini_post):
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = 'test-gemini-key'
+        gemini_post.return_value = FakeGeminiResponse(raw_text='not-json')
+        client = FakeClient([valid_generator_payload(), critic_payload()])
+
+        with self.assertRaisesRegex(RuntimeError, 'invalid JSON'):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_gemini_network_failure_is_bounded_and_never_logs_key(self, gemini_post):
+        secret = 'do-not-log-this-gemini-key'
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = secret
+        gemini_post.side_effect = OSError(
+            f'network failed while handling {secret}'
+        )
+        client = FakeClient([valid_generator_payload(), critic_payload()])
+
+        with patch('builtins.print') as print_mock, patch(
+            'logging.Logger._log'
+        ) as log_mock, self.assertRaisesRegex(
+            RuntimeError,
+            'Gemini critic request failed',
+        ) as error:
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(gemini_post.call_count, 2)
+        self.assertNotIn(secret, str(error.exception))
+        print_mock.assert_not_called()
+        log_mock.assert_not_called()
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_natural_language_only_failure_gets_one_full_story_repair_and_rereview(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        original = make_coherent_battery_package()
+        corrected = make_coherent_battery_package()
+        corrected['scenes'][2]['narration'] = (
+            'Soğuk pil yüzünden telefon yüzdeyi olduğundan düşük gösterir.'
+        )
+        corrected['scenes'][2]['tts_text'] = corrected['scenes'][2]['narration']
+        corrected['narration'] = ' '.join(
+            scene['narration'] for scene in corrected['scenes']
+        )
+        corrected['tts_narration'] = corrected['narration']
+
+        def director_payload(package):
+            return {
+                'title': package['title'],
+                'thumbnail_text': package['thumbnail_text'],
+                'description': package['description'],
+                'scenes': copy.deepcopy(package['scenes']),
+                'qc_summary': [],
+            }
+
+        approved = copy.deepcopy(corrected)
+        approved['stock_scene_qc'] = {
+            'version': 3,
+            'story_review': {'accepted': True},
+            'ending_pair_review': {'accepted': True},
+        }
+        evidence = (
+            'scene 2: "gerilim düşünce" sounds textbook-like in this '
+            'spoken sentence.'
+        )
+        run_director.side_effect = [
+            director_payload(original),
+            director_payload(corrected),
+        ]
+        repair_stock_scenes.side_effect = [
+            _NaturalSpokenLanguageRepairRequired(evidence),
+            approved,
+        ]
+        openai_class.return_value = object()
+
+        result = direct_and_qc(
+            original,
+            'Soğukta telefon pili neden birden düşer?',
+            0.5,
+            'tr',
+            {'mode': 'preview', 'pace': 'balanced'},
+        )
+
+        self.assertEqual(run_director.call_count, 2)
+        self.assertEqual(repair_stock_scenes.call_count, 2)
+        second_review = repair_stock_scenes.call_args_list[1]
+        self.assertFalse(
+            second_review.kwargs['allow_natural_language_repair']
+        )
+        correction_context = run_director.call_args_list[1].args[1]
+        self.assertIn(
+            'natural_spoken_language=false',
+            correction_context['narration_quality_issues'][0],
+        )
+        self.assertIn(evidence, correction_context['narration_quality_issues'][0])
+        self.assertGreaterEqual(result['narration_word_count'], 45)
+        self.assertLessEqual(result['narration_word_count'], 51)
 
 
 class ShortSpokenQualityTests(unittest.TestCase):
@@ -635,3 +1068,4 @@ class ShortStoryApprovalTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
