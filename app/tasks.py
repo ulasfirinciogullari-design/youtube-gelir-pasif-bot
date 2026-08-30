@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from app.celery_app import celery
 from app.services.audio_design import generate_music_bed, mix_voice_and_music
-from app.services.director import direct_and_qc
+from app.services.director import direct_and_qc, short_story_package_is_approved
 from app.services.pexels import find_broll, download_broll
 from app.services.render import render_video
 from app.services.research import research_and_script
@@ -537,6 +537,15 @@ def _prepare_package(
     approved_package: dict | None,
 ) -> dict:
     if approved_package:
+        if (
+            options.get('mode') == 'preview'
+            and duration_minutes <= 0.6
+            and not short_story_package_is_approved(approved_package)
+        ):
+            raise FinalVisualQualityError(
+                'Onaylı kısa storyboard güncel hikâye ve telaffuz '
+                'denetiminden geçmiyor; ücretli medya başlatılmadı.'
+            )
         set_stage(celery_task, task_id, 'approved_plan', 12, 'Onaylı storyboard kilitlendi.')
         package = dict(approved_package)
         package['studio_options'] = options
