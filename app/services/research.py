@@ -138,8 +138,11 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
             'Do not split, repeat or conclude that invisible mechanism in adjacent stock scenes.\n'
             '- For OLED, a whole-screen dim, black fade, hand turning a display off or generic dark phone is never proof. '
             'Do not narrate lower power use unless the same continuous shot includes a real physical power meter whose indicator visibly falls.\n'
-            '- Every scene with ai_prompt set to null must narrate only a literal, realistically filmable action that its stock queries visibly show. '
-            'When all three AI slots are used, make the closing scene a filmable human payoff instead of combining error correction, invisible signals or other abstract mechanisms.\n'
+            '- Every scene with ai_prompt set to null must narrate only one literal, realistically filmable subject and action that one ordinary stock clip can visibly show. '
+            'It must never recap, compare or recombine pixel behavior, invisible signals, timing geometry, error correction, algebra or several earlier mechanisms. '
+            'When all three AI slots are used, make both the penultimate and closing scenes separate filmable human actions.\n'
+            '- Before returning, audit each ai_prompt-null scene against its English stock queries. All named subjects, actions and context must realistically coexist '
+            'in one commonly available stock clip; otherwise rewrite that scene and its queries.\n'
             '- Treat ai_prompt as free fallback metadata, not a promise to generate. Give a precise fallback ai_prompt to any scene whose exact stock coverage is uncertain; '
             'the worker will rank current stock quality and submit at most three paid generations. '
             'The story must still have no more than three scenes that truly depend on AI, while every other scene remains publishable with its literal stock plan.\n'
@@ -185,6 +188,7 @@ STORY RULES:
 - Spoken {language_name} must sound like an excellent human narrator: concise, deliberate punctuation, varied sentence length and natural bridges.
 - The complete narration must remain inside {min_words}-{max_words} words.
 - Each scene carries one complete idea that can live under one strong hero visual.
+- A stock-only scene may not summarize several earlier mechanisms or invisible abstractions; it must describe one subject performing one visible action in one ordinary location.
 
 VISUAL DIRECTING RULES:
 - Give every scene 2-3 DISTINCT English search phrases that literally visualize the exact narration.
