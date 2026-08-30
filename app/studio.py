@@ -71,7 +71,7 @@ def _require_auth(cookie_token: str | None) -> None:
 
 
 def _service_statuses() -> list[tuple[str, bool]]:
-    return [
+    statuses = [
         ('OpenAI', bool(settings.openai_api_key)),
         ('ElevenLabs', bool(settings.elevenlabs_api_key)),
         ('Pexels', bool(settings.pexels_api_key)),
@@ -79,6 +79,12 @@ def _service_statuses() -> list[tuple[str, bool]]:
         ('Storage', bool(settings.bucket and settings.endpoint)),
         ('Redis', bool(settings.redis_url)),
     ]
+    if getattr(settings, 'gemini_critic_enabled', False):
+        statuses.insert(
+            1,
+            ('Gemini critic', bool(getattr(settings, 'gemini_api_key', ''))),
+        )
+    return statuses
 
 
 def _nav(active: str) -> str:
@@ -399,3 +405,4 @@ def studio_logout():
     response = RedirectResponse('/studio', status_code=303)
     response.delete_cookie(COOKIE_NAME)
     return response
+
