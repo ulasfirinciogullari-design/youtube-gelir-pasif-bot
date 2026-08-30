@@ -128,6 +128,20 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
         f'Reference URL: {reference_url}\nAnalyze only its structural rhythm, hook pattern and information architecture. Do not copy wording, branding, signature devices or protected creative expression.'
         if reference_url else 'No reference video was supplied.'
     )
+    if mode == 'preview' and duration_minutes <= 0.6:
+        preview_ai_routing_note = (
+            '- For this short technology preview, route these mechanisms to AI whenever they appear: OLED emissive pixels reaching true black while physical power use visibly falls; '
+            'indoor phone positioning jointly assisted by Wi-Fi and cellular signals when satellite GPS is weak; '
+            'a worn or damaged QR code being successfully scanned because error correction survives the damage.\n'
+            '- All stock-filmable scenes must set ai_prompt to null and provide 2-3 concrete, realistically filmable English stock queries.'
+        )
+    elif mode == 'preview':
+        preview_ai_routing_note = (
+            '- For this preview duration every ai_prompt value MUST be null. '
+            'Make every scene literally stock-filmable and preserve this rule during revisions.'
+        )
+    else:
+        preview_ai_routing_note = ''
 
     response = client.responses.create(
         model=settings.openai_model,
@@ -169,8 +183,7 @@ VISUAL DIRECTING RULES:
 - Vary shot grammar across the video: establishing, macro, detail, human interaction, physical demonstration, infrastructure and controlled camera motion.
 - If stock footage cannot honestly communicate a technical idea, use a precise cinematic ai_prompt instead of metaphorically unrelated B-roll.
 - ai_prompt must be non-null only when literal stock cannot show the named mechanism, and in at most {max_ai_scenes} scenes.
-- For a short technology preview, route these mechanisms to AI whenever they appear: OLED emissive pixels reaching true black while physical power use visibly falls; indoor phone positioning jointly assisted by Wi-Fi and cellular signals when satellite GPS is weak; a worn or damaged QR code being successfully scanned because error correction survives the damage.
-- All stock-filmable scenes must set ai_prompt to null and provide 2-3 concrete, realistically filmable English stock queries.
+{preview_ai_routing_note}
 - Every non-null ai_prompt must describe one continuous five-second 16:9 photorealistic shot with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
 - The master video is text-free: do not plan captions, lower thirds or on-screen sentences.
 
