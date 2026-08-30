@@ -24,6 +24,10 @@ class FinalVisualQualityError(RuntimeError):
     """A bounded semantic-quality rejection that should not rerun the whole pipeline."""
 
 
+class PreRunwayRetryableError(RuntimeError):
+    """A pre-paid preflight rejection that may safely regenerate the automatic plan."""
+
+
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value = dict(options or {})
     value.setdefault('mode', 'preview' if duration_minutes <= 1 else 'production')
@@ -493,6 +497,16 @@ def run_video_pipeline(
             if isinstance(review, dict)
             and str(review.get('scene_index', '')).lstrip('-').isdigit()
         }
+        missing_pre_runway_reviews = [
+            int(idx)
+            for idx in (pre_runway_qc.get('missing_review_indices') or [])
+            if str(idx).lstrip('-').isdigit()
+        ]
+        if missing_pre_runway_reviews:
+            raise PreRunwayRetryableError(
+                'Pre-Runway visual QC was incomplete before any paid submission: '
+                + json.dumps({'missing_scene_indices': missing_pre_runway_reviews}, separators=(',', ':'))
+            )
         ranked_runway_candidates: list[dict] = []
         prompt_candidates: dict[int, str] = {}
         for scene_idx, scene in enumerate(scenes):
@@ -520,6 +534,7 @@ def run_video_pipeline(
         if (
             options.get('mode') == 'preview'
             and duration_minutes <= 0.6
+            and runway_submission_cap > 0
             and len(ranked_runway_candidates) > runway_submission_cap
         ):
             preflight_details = [
@@ -531,7 +546,7 @@ def run_video_pipeline(
                 }
                 for item in ranked_runway_candidates
             ]
-            raise RuntimeError(
+            preflight_message = (
                 'Short-preview visual plan exceeds bounded Runway budget before any paid submission: '
                 + json.dumps({
                     'required_scenes': len(ranked_runway_candidates),
@@ -539,6 +554,9 @@ def run_video_pipeline(
                     'candidates': preflight_details,
                 }, separators=(',', ':'))
             )
+            if approved_package is not None:
+                raise FinalVisualQualityError(preflight_message)
+            raise PreRunwayRetryableError(preflight_message)
         selected_runway = ranked_runway_candidates[:runway_submission_cap]
         selected_runway_indices = {item['scene_index'] for item in selected_runway}
         runway_rank = {
@@ -873,6 +891,18 @@ def run_video_pipeline(
         mark_success(task_id, result)
         return result
     except Exception as exc:
+        if (
+            isinstance(exc, PreRunwayRetryableError)
+            and int(getattr(self.request, 'retries', 0) or 0) < int(self.max_retries or 0)
+        ):
+            set_stage(
+                self,
+                task_id,
+                'plan_retry',
+                6,
+                'Görsel plan bütçeyi aştı; ücretli üretim olmadan yeni storyboard hazırlanıyor.',
+            )
+            raise
         if runway_attempts > 0 and not isinstance(exc, FinalVisualQualityError):
             bounded_error = FinalVisualQualityError(
                 f'Post-Runway pipeline failed after {runway_attempts} bounded submissions: {type(exc).__name__}'
