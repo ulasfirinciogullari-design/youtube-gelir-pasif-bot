@@ -373,9 +373,64 @@ def run_video_pipeline(
             idx for idx in range(min(len(scenes), len(scene_visuals)))
             if idx not in final_reviews or int(final_reviews[idx].get('score', 0)) < quality_threshold
         ]
+
+        # Give the exact final review one bounded, scene-specific rescue pass.
+        # This reuses its evidence-based retry queries instead of restarting the
+        # entire script, voice and candidate pipeline for a stock-search miss.
+        rescued_final_scenes: list[int] = []
+        for scene_idx in rejected_final_scenes:
+            review = final_reviews.get(scene_idx) or {}
+            retry_queries = [
+                str(q).strip()
+                for q in (review.get('retry_queries') or [])[:2]
+                if str(q).strip()
+            ]
+            old_best = _visual_path(scene_visuals[scene_idx][0]) if scene_visuals[scene_idx] else ''
+            replacements = _retry_bad_scene(scene_idx, retry_queries, seen_ids, work, credits)
+            if not replacements:
+                continue
+            scene_visuals[scene_idx] = replacements
+            rescued_final_scenes.append(scene_idx)
+            visual_replacements.append({
+                'scene_index': scene_idx,
+                'score': int(review.get('score', 0)),
+                'reason': review.get('reason'),
+                'old_best': old_best,
+                'replacement_count': len(replacements),
+                'stage': 'final_visual_qc_rescue',
+            })
+
+        if rescued_final_scenes:
+            set_stage(self, task_id, 'final_visual_qc_rescue', 72, 'Reddedilen sahneler daha kesin aramalarla son kez yenileniyor.')
+            final_visual_qc = review_scene_visuals(
+                scenes,
+                scene_visuals,
+                work / 'final_visual_qc_rescue',
+                len(scenes),
+            )
+            final_reviews = {
+                int(r.get('scene_index')): r
+                for r in (final_visual_qc.get('reviews') or [])
+                if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
+            }
+            rejected_final_scenes = [
+                idx for idx in range(min(len(scenes), len(scene_visuals)))
+                if idx not in final_reviews or int(final_reviews[idx].get('score', 0)) < quality_threshold
+            ]
+
         visual_qc['final_reviews'] = final_visual_qc.get('reviews') or []
         if rejected_final_scenes:
-            raise RuntimeError(f'Final visual quality gate rejected scenes: {rejected_final_scenes}')
+            rejected_details = {
+                idx: {
+                    'score': int((final_reviews.get(idx) or {}).get('score', 0)),
+                    'reason': str((final_reviews.get(idx) or {}).get('reason') or 'missing review')[:180],
+                }
+                for idx in rejected_final_scenes
+            }
+            raise RuntimeError(
+                'Final visual quality gate rejected scenes: '
+                + json.dumps(rejected_details, ensure_ascii=False, separators=(',', ':'))
+            )
 
         unresolved_scenes = [idx for idx, specs in enumerate(scene_visuals) if not any(_visual_path(s) for s in specs)]
         if unresolved_scenes:
