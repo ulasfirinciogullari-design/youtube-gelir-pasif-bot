@@ -30,7 +30,7 @@ def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value.setdefault('music', 'off' if value['mode'] == 'preview' else 'auto')
     value.setdefault('subtitles', 'sidecar')
     value.setdefault('reference_url', None)
-    value.setdefault('quality_threshold', 84 if value['mode'] == 'production' else 78)
+    value.setdefault('quality_threshold', 84 if value['mode'] == 'production' else 86)
     if value['mode'] == 'preview':
         value['music'] = 'off'
     return value
@@ -355,6 +355,28 @@ def run_video_pipeline(
             except Exception as exc:
                 runway_errors.append(f'scene {scene_idx}: {str(exc)[:400]}')
 
+        # Re-review the exact clips that will be rendered. Retry search results
+        # and generated clips never bypass the final semantic quality gate.
+        set_stage(self, task_id, 'final_visual_qc', 69, 'Seçilen final görüntüler anlatıyla son kez eşleştiriliyor.')
+        final_visual_qc = review_scene_visuals(
+            scenes,
+            scene_visuals,
+            work / 'final_visual_qc',
+            len(scenes),
+        )
+        final_reviews = {
+            int(r.get('scene_index')): r
+            for r in (final_visual_qc.get('reviews') or [])
+            if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
+        }
+        rejected_final_scenes = [
+            idx for idx in range(min(len(scenes), len(scene_visuals)))
+            if idx not in final_reviews or int(final_reviews[idx].get('score', 0)) < quality_threshold
+        ]
+        visual_qc['final_reviews'] = final_visual_qc.get('reviews') or []
+        if rejected_final_scenes:
+            raise RuntimeError(f'Final visual quality gate rejected scenes: {rejected_final_scenes}')
+
         unresolved_scenes = [idx for idx, specs in enumerate(scene_visuals) if not any(_visual_path(s) for s in specs)]
         if unresolved_scenes:
             raise RuntimeError(f'Visual quality gate rejected unresolved scenes: {unresolved_scenes}')
@@ -403,8 +425,20 @@ def run_video_pipeline(
 
         requested_seconds = duration_minutes * 60
         actual_seconds = float(rendered.get('duration') or 0)
-        if actual_seconds > requested_seconds * 1.22 or actual_seconds < requested_seconds * 0.70:
+        if options.get('mode') == 'preview':
+            duration_ok = abs(actual_seconds - requested_seconds) <= 0.5
+        else:
+            duration_ok = requested_seconds * 0.70 <= actual_seconds <= requested_seconds * 1.22
+        if not duration_ok:
             raise RuntimeError(f'Final duration gate rejected render: {actual_seconds:.1f}s for requested {requested_seconds:.1f}s')
+
+        max_freeze_seconds = float(rendered.get('max_freeze_seconds') or 0)
+        freeze_limit = 5.0 if options.get('mode') == 'preview' else 6.0
+        if max_freeze_seconds > freeze_limit:
+            raise RuntimeError(
+                f'Final motion gate rejected {max_freeze_seconds:.1f}s static interval '
+                f'(limit {freeze_limit:.1f}s)'
+            )
 
         set_stage(self, task_id, 'upload', 92, 'Final master ve üretim dosyaları kalıcı depolamaya yükleniyor.')
         object_key = f'videos/{task_id}/final.mp4'
