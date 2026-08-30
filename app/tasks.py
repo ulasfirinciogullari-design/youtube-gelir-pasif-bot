@@ -178,9 +178,11 @@ def _visual_path(spec: str | dict) -> str:
 
 
 def _max_runway_scenes(options: dict, scene_count: int) -> int:
-    if options.get('mode') == 'preview':
-        return 0
     mix = options.get('visual_mix') or 'balanced'
+    if options.get('mode') == 'preview':
+        if mix == 'real_first':
+            return min(1, scene_count)
+        return min(3, max(1, math.ceil(scene_count * 0.50)))
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
     if mix == 'ai_first':
@@ -364,6 +366,7 @@ def run_video_pipeline(
 
         set_stage(self, task_id, 'ai_scene', 61, 'Stok görüntünün anlatamadığı sahneler için özgün görüntüler hazırlanıyor.')
         runway_errors: list[str] = []
+        runway_failed_scenes: list[int] = []
         runway_scenes_used = 0
         max_runway = _max_runway_scenes(options, len(scenes))
         for scene_idx, scene in enumerate(scenes):
@@ -377,6 +380,7 @@ def run_video_pipeline(
                 scene_visuals[scene_idx] = [{'path': str(runway_path), 'start_fraction': 0.0}]
                 runway_scenes_used += 1
             except Exception as exc:
+                runway_failed_scenes.append(scene_idx)
                 runway_errors.append(f'scene {scene_idx}: {str(exc)[:400]}')
 
         # Re-review the exact clips that will be rendered. Retry search results
@@ -466,6 +470,14 @@ def run_video_pipeline(
 
         visual_qc['final_reviews'] = final_visual_qc.get('reviews') or []
         if rejected_final_scenes:
+            failed_required_scenes = [
+                idx for idx in rejected_final_scenes
+                if idx in runway_failed_scenes
+            ]
+            if failed_required_scenes:
+                raise RuntimeError(
+                    f'Runway generation failed for quality-required scenes: {failed_required_scenes}'
+                )
             rejected_details = {
                 idx: {
                     'score': int((final_reviews.get(idx) or {}).get('score', 0)),
