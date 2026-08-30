@@ -492,6 +492,30 @@ def _apply_visual_review(
     scene_visuals[scene_idx] = [chosen]
 
 
+def _preview_duration_within_gate(
+    actual_seconds: float,
+    requested_seconds: float,
+    voice_seconds: float,
+) -> bool:
+    try:
+        actual = float(actual_seconds)
+        requested = float(requested_seconds)
+        voice = float(voice_seconds)
+    except Exception:
+        return False
+    if actual <= 0 or requested <= 0 or voice <= 0:
+        return False
+
+    # MP3/AAC encoder padding and mux timebases can shift a short master by
+    # several hundred milliseconds. Cap target drift at one second, but allow
+    # at most 250 ms against the fitted voice so a final word cannot be hidden
+    # by the broader target tolerance.
+    target_tolerance = min(1.0, max(0.75, requested * 0.02))
+    target_ok = abs(actual - requested) <= target_tolerance
+    voice_complete = actual + 0.25 >= voice
+    return target_ok and voice_complete
+
+
 def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float) -> int:
     if options.get('mode') == 'preview':
         return min(3, scene_count) if duration_minutes <= 0.6 else 0
@@ -1414,7 +1438,11 @@ def run_video_pipeline(
         requested_seconds = duration_minutes * 60
         actual_seconds = float(rendered.get('duration') or 0)
         if options.get('mode') == 'preview':
-            duration_ok = abs(actual_seconds - requested_seconds) <= 0.5
+            duration_ok = _preview_duration_within_gate(
+                actual_seconds,
+                requested_seconds,
+                voice_result.get('duration_after_fit'),
+            )
         else:
             duration_ok = requested_seconds * 0.70 <= actual_seconds <= requested_seconds * 1.22
         if not duration_ok:
