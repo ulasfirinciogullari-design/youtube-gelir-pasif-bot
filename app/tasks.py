@@ -375,7 +375,8 @@ def run_video_pipeline(
 ):
     task_id = self.request.id
     options = _normalized_options(options, duration_minutes)
-    work = Path('/tmp/youtube_factory') / task_id
+    retry_number = int(getattr(self.request, 'retries', 0) or 0)
+    work = Path('/tmp/youtube_factory') / f'{task_id}_attempt_{retry_number}'
     work.mkdir(parents=True, exist_ok=True)
     update_job(task_id, kind='render', spec=_task_spec(topic, duration_minutes, language, channel_id, options))
     runway_attempts = 0
