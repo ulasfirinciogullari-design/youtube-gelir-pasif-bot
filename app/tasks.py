@@ -20,6 +20,10 @@ from app.services.visual_qc import review_scene_visuals
 from app.services.voice import synthesize_scene_sequence
 
 
+class FinalVisualQualityError(RuntimeError):
+    """A bounded semantic-quality rejection that should not rerun the whole pipeline."""
+
+
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value = dict(options or {})
     value.setdefault('mode', 'preview' if duration_minutes <= 1 else 'production')
@@ -222,7 +226,13 @@ def plan_video_pipeline(
         raise
 
 
-@celery.task(bind=True, autoretry_for=(Exception,), retry_backoff=True, max_retries=2)
+@celery.task(
+    bind=True,
+    autoretry_for=(Exception,),
+    dont_autoretry_for=(FinalVisualQualityError,),
+    retry_backoff=True,
+    max_retries=2,
+)
 def run_video_pipeline(
     self,
     topic: str,
@@ -427,9 +437,16 @@ def run_video_pipeline(
                 }
                 for idx in rejected_final_scenes
             }
-            raise RuntimeError(
-                'Final visual quality gate rejected scenes: '
-                + json.dumps(rejected_details, ensure_ascii=False, separators=(',', ':'))
+            diagnostics = {
+                'stage': 'after_rescue',
+                'accepted': len(scenes) - len(rejected_final_scenes),
+                'total': len(scenes),
+                'replaced': len(rescued_final_scenes),
+                'rejected': rejected_details,
+            }
+            raise FinalVisualQualityError(
+                'Final visual quality gate rejected: '
+                + json.dumps(diagnostics, ensure_ascii=False, separators=(',', ':'))
             )
 
         unresolved_scenes = [idx for idx, specs in enumerate(scene_visuals) if not any(_visual_path(s) for s in specs)]
