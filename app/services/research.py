@@ -3,6 +3,7 @@ import math
 import re
 from openai import OpenAI
 from app.config import settings
+from app.services.source_evidence import normalize_evidence_sources
 
 STYLE_DIRECTIONS = {
     'documentary': 'Premium documentary: authoritative but accessible, concrete details, restrained cinematic tension.',
@@ -58,32 +59,16 @@ def _parse_json_payload(text: str) -> dict:
     if len(clean_scenes) < 3:
         raise RuntimeError('OpenAI scene plan has too few valid scenes')
 
-    raw_sources = data.get('sources')
-    if not isinstance(raw_sources, list) or not raw_sources:
-        raise RuntimeError('OpenAI response is missing evidence-backed sources')
-    clean_sources: list[dict] = []
-    seen_source_urls: set[str] = set()
-    for source in raw_sources[:8]:
-        if not isinstance(source, dict):
-            raise RuntimeError('Each research source must include url and evidence')
-        url = str(source.get('url') or '').strip()
-        evidence = str(source.get('evidence') or '').strip()
-        if (
-            not url.startswith(('https://', 'http://'))
-            or len(evidence) < 12
-        ):
-            raise RuntimeError(
-                'Each research source needs a valid URL and concrete evidence'
-            )
-        if url in seen_source_urls:
-            continue
-        seen_source_urls.add(url)
-        clean_sources.append({
-            'url': url,
-            'evidence': evidence[:600],
-        })
-    if not clean_sources:
-        raise RuntimeError('OpenAI response has no usable research evidence')
+    try:
+        clean_sources = normalize_evidence_sources(
+            data.get('sources'),
+            min_count=2,
+            max_count=5,
+        )
+    except ValueError as exc:
+        raise RuntimeError(
+            f'OpenAI response has invalid research sources: {exc}'
+        ) from exc
 
     data['sources'] = clean_sources
     data['scenes'] = clean_scenes
@@ -193,6 +178,7 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
         },
         tools=[{'type': 'web_search', 'search_context_size': 'low'}],
         tool_choice='auto',
+        max_tool_calls=2,
         input=f'''Research the current web and act as a senior YouTube writer and storyboard director.
 Language: {language_name}
 Topic: {topic}
