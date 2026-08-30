@@ -84,7 +84,7 @@ class RankedBrollSelectionTests(unittest.TestCase):
 
         self.assertEqual(
             [item['pexels_id'] for _query, item in selected],
-            [1, 2],
+            [1],
         )
 
     def test_network_completion_order_cannot_reorder_downloaded_candidates(self):
@@ -136,7 +136,12 @@ class RankedBrollSelectionTests(unittest.TestCase):
 
     def test_failed_download_is_not_marked_seen(self):
         def fake_find(query, _limit):
-            return [candidate(1), candidate(2), candidate(3)] if query == 'only' else []
+            return [
+                candidate(1),
+                candidate(2),
+                candidate(3),
+                candidate(4),
+            ] if query == 'only' else []
 
         def fake_download(item, _path):
             if item['pexels_id'] == 2:
@@ -168,10 +173,14 @@ class RankedBrollSelectionTests(unittest.TestCase):
 
         self.assertEqual(
             [Path(spec['path']).name for spec in replacements],
-            ['failure_s05_00.mp4', 'failure_s05_02.mp4'],
+            [
+                'failure_s05_00.mp4',
+                'failure_s05_02.mp4',
+                'failure_s05_03.mp4',
+            ],
         )
-        self.assertEqual([entry['pexels_id'] for entry in credits], [1, 3])
-        self.assertEqual(seen_ids, {1, 3})
+        self.assertEqual([entry['pexels_id'] for entry in credits], [1, 3, 4])
+        self.assertEqual(seen_ids, {1, 3, 4})
         self.assertNotIn(2, seen_ids)
 
 
