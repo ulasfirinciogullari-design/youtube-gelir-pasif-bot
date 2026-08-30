@@ -34,7 +34,12 @@ def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value.setdefault('music', 'off' if value['mode'] == 'preview' else 'auto')
     value.setdefault('subtitles', 'sidecar')
     value.setdefault('reference_url', None)
-    value.setdefault('quality_threshold', 84 if value['mode'] == 'production' else 86)
+    quality_floor = 84 if value['mode'] == 'production' else 86
+    try:
+        requested_quality = int(value.get('quality_threshold', quality_floor))
+    except Exception:
+        requested_quality = quality_floor
+    value['quality_threshold'] = max(quality_floor, requested_quality)
     if value['mode'] == 'preview':
         value['music'] = 'off'
     return value
@@ -668,9 +673,22 @@ def run_video_pipeline(
                 final_audio_path = voice_path
                 audio_design.update({'mixed': False, 'mix_error': str(exc)[:600]})
 
-        reviews = visual_qc.get('reviews') or []
-        scores = [int(r.get('score', 0)) for r in reviews if isinstance(r, dict) and str(r.get('score', '')).isdigit()]
+        initial_reviews = visual_qc.get('reviews') or []
+        initial_scores = [
+            int(review.get('score', 0))
+            for review in initial_reviews
+            if isinstance(review, dict) and str(review.get('score', '')).isdigit()
+        ]
+        initial_avg_visual_score = round(sum(initial_scores) / len(initial_scores), 1) if initial_scores else None
+        reviews = [final_reviews[idx] for idx in sorted(final_reviews)]
+        scores = [
+            int(review.get('score', 0))
+            for review in reviews
+            if isinstance(review, dict) and str(review.get('score', '')).isdigit()
+        ]
         avg_visual_score = round(sum(scores) / len(scores), 1) if scores else None
+        visual_qc['initial_average_score'] = initial_avg_visual_score
+        visual_qc['average_final_score'] = avg_visual_score
 
         set_stage(self, task_id, 'render', 76, 'Onaylı ses ve sahneler final kurguya alınıyor.')
         rendered = render_video(
@@ -729,6 +747,7 @@ def run_video_pipeline(
             'director_qc': package.get('director_qc', []),
             'visual_qc': visual_qc,
             'visual_replacements': visual_replacements,
+            'initial_average_visual_qc_score': initial_avg_visual_score,
             'average_visual_qc_score': avg_visual_score,
             'scenes': scenes,
             'scene_visual_specs': scene_visuals,
@@ -782,6 +801,7 @@ def run_video_pipeline(
             'director_qc_applied': bool(package.get('director_qc')),
             'visual_qc_reviews': len(reviews),
             'visual_replacements': len(visual_replacements),
+            'initial_average_visual_qc_score': initial_avg_visual_score,
             'average_visual_qc_score': avg_visual_score,
             'narration_word_count': package.get('narration_word_count'),
             'voice_duration_before_fit': voice_result.get('duration_before_fit'),
