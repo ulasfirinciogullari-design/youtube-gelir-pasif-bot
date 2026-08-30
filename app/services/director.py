@@ -245,10 +245,22 @@ def _repair_short_stock_endings(
         'previous_scene_narration': scenes[-3].get('narration'),
         'endings_to_replace': targets,
     }
+    response_shape = {
+        'scenes': [
+            {
+                'position': position,
+                'narration': '...',
+                'visual_queries': ['...', '...'],
+                'ai_prompt': None,
+            }
+            for position in ending_positions
+        ],
+    }
     mechanism_pattern = re.compile(
-        r'\b(?:oled|pixel|piksel|alt\s*piksel|altpiksel|gps|wi[-‑]?fi|cellular|'
-        r'hücresel|qr|error\s+correction|hata\s+düzelt|algebra|cebir|signal|'
-        r'sinyal|timing|zamanlama|konum)\b',
+        r'\b(?:oled|pixels?|piksel\w*|alt\s*piksel\w*|altpiksel\w*|gps|'
+        r'wi[-‑]?fi|cellular|hücresel\w*|qr|error\s+correction|hata\s+düzelt\w*|'
+        r'algebra|cebir\w*|signals?|sinyal\w*|timing|zamanlama\w*|'
+        r'location\s+systems?|konum\w*)\b',
         flags=re.IGNORECASE,
     )
     validation_error = ''
@@ -262,8 +274,8 @@ Language of spoken narration: {language_name}
 Story context:
 {json.dumps(context, ensure_ascii=False)}
 
-Return ONLY JSON:
-{{"scenes":[{{"position":0,"narration":"...","visual_queries":["...","..."],"ai_prompt":null}}]}}
+Return ONLY JSON in exactly this shape:
+{json.dumps(response_shape, ensure_ascii=False)}
 
 NON-NEGOTIABLE RULES:
 - Return exactly the two requested positions and no others.
@@ -279,7 +291,11 @@ NON-NEGOTIABLE RULES:
 {f'Previous response failed validation: {validation_error}' if validation_error else ''}
 ''',
         )
-        data = _json(response.output_text)
+        try:
+            data = _json(response.output_text)
+        except Exception:
+            validation_error = 'response was not valid JSON'
+            continue
         rows = data.get('scenes') or []
         if not isinstance(rows, list) or len(rows) != 2:
             validation_error = 'expected exactly two scene objects'
@@ -314,8 +330,8 @@ NON-NEGOTIABLE RULES:
             if mechanism_pattern.search(narration):
                 row_error = f'position {position} contains technical recap'
                 break
-            if row.get('ai_prompt') is not None:
-                row_error = f'position {position} must keep ai_prompt null'
+            if 'ai_prompt' not in row or row.get('ai_prompt') is not None:
+                row_error = f'position {position} must explicitly keep ai_prompt null'
                 break
             queries = row.get('visual_queries') or []
             if isinstance(queries, str):
