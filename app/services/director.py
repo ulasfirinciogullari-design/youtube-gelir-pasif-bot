@@ -130,15 +130,15 @@ def _run_director(
             'Count hyphenated or apostrophe compounds as one word. '
         )
         short_visual_note = (
-            'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: at most three scenes may have a non-null ai_prompt. '
-            'Reserve those scenes for facts stock footage cannot literally show, especially pixel-level OLED true-black or power behavior, '
+            'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: ai_prompt values are free fallback candidates, not promised generations. '
+            f'Up to {target_scenes} scenes may carry a non-null fallback, while the worker will submit at most three paid Runway generations after measuring the exact current stock clips. '
+            'Structure the story so no more than three scenes truly depend on AI. '
+            'Reserve those dependencies for facts stock footage cannot literally show, especially pixel-level OLED true-black or power behavior, '
             'invisible indoor Wi-Fi/cellular/GPS assistance, or damaged QR error recovery. '
-            'When the story includes those three hard concepts, assign one AI scene to each and no others. '
-            'Compress each hard mechanism and its complete causal explanation into its single AI scene; never split, repeat or conclude it in a neighboring stock scene. '
-            'All remaining scenes must set ai_prompt to null and narrate a plainly filmable real-world action whose exact subject and action appear in its stock queries. '
-            'A null-ai scene must not mention pixel-level OLED emission or power change, indoor signal fusion, damaged-QR error recovery, or another invisible mechanism. '
-            'Move that clause into the corresponding AI scene or rewrite it as a visible human setup or payoff. '
-            'When all three AI slots are used, the final scene must close on a concrete filmable action, not combine invisible networks or error correction. '
+            'Compress each hard mechanism and its complete causal explanation into one scene; never split, repeat or conclude it in a neighboring stock scene. '
+            'Every other scene must remain publishable with a plainly filmable real-world action whose exact subject and action appear in its stock queries, '
+            'even when it also carries a fallback ai_prompt for uncertain stock coverage. '
+            'When the three true AI dependencies are used, the final scene must close on a concrete filmable action, not combine invisible networks or error correction. '
             'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
         )
@@ -238,7 +238,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
     preview_ai_limit = None
     if options.get('mode') == 'preview':
-        preview_ai_limit = min(3, target_scenes) if duration_minutes <= 0.6 else 0
+        preview_ai_limit = target_scenes if duration_minutes <= 0.6 else 0
 
     for correction_attempt in range(3):
         ai_count_ok = preview_ai_limit is None or ai_scene_count <= preview_ai_limit
