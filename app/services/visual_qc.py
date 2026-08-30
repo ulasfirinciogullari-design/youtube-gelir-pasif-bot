@@ -29,6 +29,12 @@ def _duration(video_path: str) -> float:
     return max(0.1, float(out))
 
 
+def _spec_path(spec: str | dict) -> str:
+    if isinstance(spec, dict):
+        return str(spec.get('path') or '').strip()
+    return str(spec or '').strip()
+
+
 def _frame(video_path: str, output_path: Path, fraction: float) -> Path | None:
     try:
         seconds = max(0.0, _duration(video_path) * fraction)
@@ -41,7 +47,7 @@ def _frame(video_path: str, output_path: Path, fraction: float) -> Path | None:
         return None
 
 
-def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], work_dir: str | Path, max_scenes: int = 12) -> dict:
+def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str | dict]], work_dir: str | Path, max_scenes: int = 12) -> dict:
     if not settings.openai_api_key:
         return {'reviews': []}
 
@@ -65,8 +71,8 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
     for idx, scene in enumerate(scenes):
         if included >= max_scenes:
             break
-        paths = scene_visuals[idx] if idx < len(scene_visuals) else []
-        paths = [p for p in paths if p][:3]
+        raw_specs = scene_visuals[idx] if idx < len(scene_visuals) else []
+        paths = [p for p in (_spec_path(spec) for spec in raw_specs) if p][:3]
         if not paths:
             continue
 
