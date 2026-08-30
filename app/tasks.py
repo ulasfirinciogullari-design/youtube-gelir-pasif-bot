@@ -412,16 +412,30 @@ def run_video_pipeline(
 
         if rescued_final_scenes:
             set_stage(self, task_id, 'final_visual_qc_rescue', 72, 'Reddedilen sahneler daha kesin aramalarla son kez yenileniyor.')
-            final_visual_qc = review_scene_visuals(
-                scenes,
-                scene_visuals,
+            rescue_qc = review_scene_visuals(
+                [scenes[idx] for idx in rescued_final_scenes],
+                [scene_visuals[idx] for idx in rescued_final_scenes],
                 work / 'final_visual_qc_rescue',
-                len(scenes),
+                len(rescued_final_scenes),
             )
-            final_reviews = {
+            rescue_reviews = {
                 int(r.get('scene_index')): r
-                for r in (final_visual_qc.get('reviews') or [])
+                for r in (rescue_qc.get('reviews') or [])
                 if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
+            }
+            # Preserve the already-approved decisions; only replace the review
+            # for each clip that actually changed during the rescue.
+            for scene_idx in rescued_final_scenes:
+                final_reviews.pop(scene_idx, None)
+            for position, scene_idx in enumerate(rescued_final_scenes):
+                if position not in rescue_reviews:
+                    continue
+                mapped_review = dict(rescue_reviews[position])
+                mapped_review['scene_index'] = scene_idx
+                final_reviews[scene_idx] = mapped_review
+            final_visual_qc = {
+                'reviews': [final_reviews[idx] for idx in sorted(final_reviews)],
+                'moment_fractions': rescue_qc.get('moment_fractions'),
             }
             rejected_final_scenes = [
                 idx for idx in range(min(len(scenes), len(scene_visuals)))
