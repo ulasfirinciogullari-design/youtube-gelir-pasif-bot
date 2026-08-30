@@ -119,27 +119,38 @@ def _retry_bad_scene(
     seen_ids: set,
     work: Path,
     credits: list[dict],
+    file_prefix: str = 'qc',
 ) -> list[dict]:
     replacement_candidates: list[tuple[str, dict]] = []
     if not retry_queries:
         return []
+
+    search_errors: list[Exception] = []
+    successful_searches = 0
     with ThreadPoolExecutor(max_workers=min(2, len(retry_queries))) as retry_pool:
         retry_map = {retry_pool.submit(find_broll, query, 18): query for query in retry_queries}
         for future in as_completed(retry_map):
             query = retry_map[future]
             try:
                 candidates = future.result() or []
-            except Exception:
+                successful_searches += 1
+            except Exception as exc:
+                search_errors.append(exc)
                 continue
-            item = next((c for c in candidates if c.get('pexels_id') not in seen_ids), None)
+            item = next((candidate for candidate in candidates if candidate.get('pexels_id') not in seen_ids), None)
             if item:
                 seen_ids.add(item.get('pexels_id'))
                 replacement_candidates.append((query, item))
 
+    if successful_searches == 0 and search_errors:
+        raise RuntimeError(f'Pexels retry search failed for scene {scene_idx}') from search_errors[0]
+
     replacements: list[dict] = []
+    download_errors: list[Exception] = []
+    safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
     for retry_idx, (query, item) in enumerate(replacement_candidates[:1]):
         try:
-            path = work / f'qc_s{scene_idx:02d}_{retry_idx:02d}.mp4'
+            path = work / f'{safe_prefix}_s{scene_idx:02d}_{retry_idx:02d}.mp4'
             download_broll(item, path)
             replacements.append({'path': str(path), 'start_fraction': 0.35})
             credits.append({
@@ -150,10 +161,13 @@ def _retry_bad_scene(
                 'creator_url': item.get('creator_url'),
                 'page_url': item.get('page_url'),
                 'pexels_id': item.get('pexels_id'),
-                'selected_by': 'visual_qc_retry',
+                'selected_by': 'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue' else 'visual_qc_retry',
             })
-        except Exception:
-            continue
+        except Exception as exc:
+            download_errors.append(exc)
+
+    if replacement_candidates and not replacements and download_errors:
+        raise RuntimeError(f'Pexels retry download failed for scene {scene_idx}') from download_errors[0]
     return replacements
 
 
@@ -396,7 +410,10 @@ def run_video_pipeline(
                 if str(q).strip()
             ]
             old_best = _visual_path(scene_visuals[scene_idx][0]) if scene_visuals[scene_idx] else ''
-            replacements = _retry_bad_scene(scene_idx, retry_queries, seen_ids, work, credits)
+            replacements = _retry_bad_scene(
+                scene_idx, retry_queries, seen_ids, work, credits,
+                file_prefix='final_qc_rescue',
+            )
             if not replacements:
                 continue
             scene_visuals[scene_idx] = replacements
@@ -433,6 +450,11 @@ def run_video_pipeline(
                 mapped_review = dict(rescue_reviews[position])
                 mapped_review['scene_index'] = scene_idx
                 final_reviews[scene_idx] = mapped_review
+                try:
+                    approved_fraction = float(mapped_review.get('best_start_fraction', 0.35))
+                except Exception:
+                    approved_fraction = 0.35
+                scene_visuals[scene_idx][0]['start_fraction'] = max(0.0, min(approved_fraction, 0.95))
             final_visual_qc = {
                 'reviews': [final_reviews[idx] for idx in sorted(final_reviews)],
                 'moment_fractions': rescue_qc.get('moment_fractions'),
