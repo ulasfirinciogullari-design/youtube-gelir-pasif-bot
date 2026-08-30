@@ -140,7 +140,7 @@ def _normalize_spec(
         'music': music,
         'subtitles': subtitles,
         'reference_url': reference_url.strip() or None,
-        'quality_threshold': 84 if mode == 'production' else 78,
+        'quality_threshold': 84 if mode == 'production' else 86,
     }
 
 
