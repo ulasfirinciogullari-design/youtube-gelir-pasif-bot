@@ -977,7 +977,8 @@ def run_video_pipeline(
         return result
     except Exception as exc:
         if (
-            isinstance(exc, PreRunwayRetryableError)
+            runway_attempts == 0
+            and not isinstance(exc, FinalVisualQualityError)
             and int(getattr(self.request, 'retries', 0) or 0) < int(self.max_retries or 0)
         ):
             set_stage(
