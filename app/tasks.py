@@ -353,6 +353,15 @@ def plan_video_pipeline(
         mark_success(task_id, result, state='AWAITING_APPROVAL')
         return result
     except Exception as exc:
+        if int(getattr(self.request, 'retries', 0) or 0) < int(self.max_retries or 0):
+            set_stage(
+                self,
+                task_id,
+                'plan_retry',
+                62,
+                'Storyboard denetimi yenileniyor; ücretli medya üretimi başlamadı.',
+            )
+            raise
         mark_failure(task_id, exc)
         raise
 
