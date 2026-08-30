@@ -173,6 +173,7 @@ def _retry_bad_scene(
                 'selected_by': (
                     'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue'
                     else 'pre_runway_budget_rescue' if safe_prefix == 'pre_runway_budget_rescue'
+                    else 'pre_runway_stock_contract' if safe_prefix == 'pre_runway_stock_contract'
                     else 'visual_qc_retry'
                 ),
             })
