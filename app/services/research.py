@@ -97,12 +97,10 @@ def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
     return target, minimum, maximum
 
 
-def _max_ai_scenes(scene_count: int, options: dict) -> int:
-    mix = options.get('visual_mix') or 'balanced'
+def _max_ai_scenes(scene_count: int, options: dict, duration_minutes: float) -> int:
     if options.get('mode') == 'preview':
-        if mix == 'real_first':
-            return min(1, scene_count)
-        return min(3, max(1, math.ceil(scene_count * 0.50)))
+        return min(3, scene_count) if duration_minutes <= 0.6 else 0
+    mix = options.get('visual_mix') or 'balanced'
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
     if mix == 'ai_first':
@@ -124,7 +122,7 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     client = OpenAI(api_key=settings.openai_api_key, timeout=105.0, max_retries=1)
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
     target_scenes = _target_scene_count(duration_minutes, pace)
-    max_ai_scenes = _max_ai_scenes(target_scenes, options)
+    max_ai_scenes = _max_ai_scenes(target_scenes, options, duration_minutes)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
     reference_note = (
         f'Reference URL: {reference_url}\nAnalyze only its structural rhythm, hook pattern and information architecture. Do not copy wording, branding, signature devices or protected creative expression.'
@@ -170,7 +168,10 @@ VISUAL DIRECTING RULES:
 - Reject generic typing, office workers, skylines, random phones, abstract charts or vague futuristic imagery unless literally required.
 - Vary shot grammar across the video: establishing, macro, detail, human interaction, physical demonstration, infrastructure and controlled camera motion.
 - If stock footage cannot honestly communicate a technical idea, use a precise cinematic ai_prompt instead of metaphorically unrelated B-roll.
-- ai_prompt must be null in most scenes and non-null in at most {max_ai_scenes} scenes.
+- ai_prompt must be non-null only when literal stock cannot show the named mechanism, and in at most {max_ai_scenes} scenes.
+- For a short technology preview, route these mechanisms to AI whenever they appear: OLED emissive pixels reaching true black while physical power use visibly falls; indoor phone positioning jointly assisted by Wi-Fi and cellular signals when satellite GPS is weak; a worn or damaged QR code being successfully scanned because error correction survives the damage.
+- All stock-filmable scenes must set ai_prompt to null and provide 2-3 concrete, realistically filmable English stock queries.
+- Every non-null ai_prompt must describe one continuous five-second 16:9 photorealistic shot with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
 - The master video is text-free: do not plan captions, lower thirds or on-screen sentences.
 
 FACT RULES:
