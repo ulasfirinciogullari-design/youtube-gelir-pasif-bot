@@ -69,7 +69,7 @@ def _parse_json_payload(text: str) -> dict:
 
 def _target_scene_count(duration_minutes: float, pace: str) -> int:
     if duration_minutes <= 0.6:
-        base = 4
+        base = max(5, int(round(duration_minutes * 12)))
     elif duration_minutes <= 1.1:
         base = 6
     elif duration_minutes <= 3.1:
@@ -85,14 +85,14 @@ def _target_scene_count(duration_minutes: float, pace: str) -> int:
 
 def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
     if duration_minutes <= 0.6:
-        target = 40
+        target = max(44, int(round(duration_minutes * 96)))
     elif duration_minutes <= 1.1:
         target = 82
     elif duration_minutes <= 3.1:
         target = int(round(duration_minutes * 92))
     else:
         target = int(round(duration_minutes * 100))
-    minimum = max(30, int(round(target * 0.88)))
+    minimum = max(30, int(round(target * (0.94 if duration_minutes <= 0.6 else 0.88))))
     maximum = max(minimum + 4, int(round(target * 1.06)))
     return target, minimum, maximum
 
