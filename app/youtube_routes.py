@@ -3,7 +3,7 @@ from __future__ import annotations
 from html import escape
 import json
 
-from fastapi import APIRouter, Cookie, Form, HTTPException, Request
+from fastapi import APIRouter, Cookie, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.config import settings
@@ -83,7 +83,7 @@ def youtube_home(
         if youtube.get('url'):
             action = f'<a class="btn success" target="_blank" href="{escape(str(youtube.get("url")), quote=True)}">YouTube’da aç</a>'
         elif status.get('connected'):
-            action = f'''<form class="inline" method="post" action="/studio/youtube/publish/{escape(str(job.get('task_id') or ''))}"><select name="privacy_status"><option value="private" selected>Gizli</option><option value="unlisted">Liste dışı</option><option value="public">Herkese açık</option></select><button type="submit">YouTube’a yükle</button></form>'''
+            action = f'''<form class="inline" method="post" action="/studio/youtube/publish/{escape(str(job.get('task_id') or ''))}"><button type="submit">Gizli olarak YouTube’a yükle</button></form>'''
         else:
             action = '<span class="tiny">Önce hesabı bağla</span>'
         rows.append(f'<div class="job"><div><div class="job-title">{topic}</div><div class="tiny">{duration} sn · {escape(str(job.get("task_id") or ""))}</div></div><div>{action}</div></div>')
@@ -127,7 +127,6 @@ def youtube_disconnect(studio_token: str | None = Cookie(default=None, alias=COO
 @router.post('/studio/youtube/publish/{source_task_id}')
 def youtube_publish(
     source_task_id: str,
-    privacy_status: str = Form('private'),
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
@@ -136,7 +135,7 @@ def youtube_publish(
     source = get_job(source_task_id)
     if not source or source.get('state') != 'SUCCESS':
         raise HTTPException(status_code=404, detail='Yayınlanabilir tamamlanmış video bulunamadı')
-    privacy_status = privacy_status if privacy_status in {'private', 'unlisted', 'public'} else 'private'
+    privacy_status = 'private'
     task = publish_video_pipeline.delay(source_task_id, privacy_status)
     source_spec = source.get('spec') or {}
     create_job(task.id, {
