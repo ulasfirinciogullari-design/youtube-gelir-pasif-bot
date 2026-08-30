@@ -17,8 +17,10 @@ sys.modules['app.config'] = config_stub
 from app.services.director import (
     _repair_short_stock_scenes,
     _short_spoken_quality_issues,
+    _short_story_fingerprint,
     _short_story_quality_issues,
     _word_count,
+    short_story_package_is_approved,
 )
 
 
@@ -191,6 +193,10 @@ def critic_payload(failures=None, story_failures=None, ending_failures=None):
         'same_actor_or_object_thread',
         'human_payoff_visible',
         'natural_spoken_language',
+        'directly_answers_requested_topic',
+        'one_specific_useful_reveal',
+        'causal_claim_supported',
+        'hook_payoff_same_promise',
     }
     ending_boolean_keys = {
         'same_immediate_location',
@@ -200,6 +206,9 @@ def critic_payload(failures=None, story_failures=None, ending_failures=None):
     }
     story_review = {
         **{key: True for key in story_boolean_keys},
+        'central_question': 'Why does the familiar action work?',
+        'causal_answer': 'One supported mechanism makes the action reliable.',
+        'visible_payoff': 'The same person visibly completes the useful action.',
         'reason': 'One human situation follows a single causal question to a visible payoff.',
     }
     for key in story_failures:
@@ -327,7 +336,13 @@ class ShortStockRepairTests(unittest.TestCase):
     def test_whole_story_rejection_stops_before_local_retry(self):
         client = FakeClient([
             valid_generator_payload(),
-            critic_payload(story_failures=['not_fact_montage']),
+            critic_payload(
+                story_failures=[
+                    'not_fact_montage',
+                    'directly_answers_requested_topic',
+                ],
+                ending_failures=['same_immediate_location'],
+            ),
         ])
 
         with self.assertRaisesRegex(
@@ -339,8 +354,13 @@ class ShortStockRepairTests(unittest.TestCase):
                 make_short_package(),
                 'Turkish',
                 0.5,
+                'A specific requested phone topic',
             )
         self.assertEqual(len(client.responses.calls), 2)
+        self.assertIn(
+            '"requested_topic": "A specific requested phone topic"',
+            client.responses.calls[1]['input'],
+        )
 
     def test_deterministic_failure_retries_only_bad_position(self):
         first = valid_generator_payload()
@@ -374,6 +394,25 @@ class ShortStockRepairTests(unittest.TestCase):
         ])
 
         with self.assertRaisesRegex(RuntimeError, r'"generator_calls":2'):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+        self.assertEqual(len(client.responses.calls), 4)
+
+    def test_ending_pair_boolean_position_is_rejected(self):
+        invalid = critic_payload()
+        invalid['ending_pair']['penultimate_position'] = True
+        client = FakeClient([
+            valid_generator_payload(),
+            invalid,
+            valid_generator_payload(),
+            invalid,
+        ])
+
+        with self.assertRaises(RuntimeError):
             _repair_short_stock_scenes(
                 client,
                 make_short_package(),
@@ -430,6 +469,33 @@ class ShortSpokenQualityTests(unittest.TestCase):
             [],
         )
 
+    def test_allows_voice_normalized_standalone_terms_but_rejects_suffixes(self):
+        safe = {
+            'scenes': [
+                {'narration': 'OLED ekran siyah pikselleri tek tek kapatır.'},
+                {'narration': 'GPS sinyali açık havada konumu doğrular.'},
+                {'narration': 'QR kodu kasada hızla okunur.'},
+            ],
+        }
+        unsafe = {
+            'scenes': [
+                {'narration': "OLED'de görüntü kararır."},
+                {'narration': 'GPSle konum bulunur.'},
+                {'narration': "QR'ın kareleri eksiktir."},
+                {'narration': "WiFi'den sinyal gelir."},
+                {'narration': 'ReedSolomonla veri onarılır.'},
+            ],
+        }
+
+        self.assertEqual(
+            _short_spoken_quality_issues(safe, 'Turkish'),
+            [],
+        )
+        self.assertEqual(
+            len(_short_spoken_quality_issues(unsafe, 'Turkish')),
+            5,
+        )
+
     def test_non_turkish_is_noop(self):
         package = {
             'scenes': [
@@ -441,6 +507,42 @@ class ShortSpokenQualityTests(unittest.TestCase):
             _short_story_quality_issues(package, 'English'),
             [],
         )
+
+
+class ShortStoryApprovalTests(unittest.TestCase):
+    def _approved_package(self):
+        client = FakeClient([
+            valid_generator_payload(),
+            critic_payload(),
+        ])
+        package = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+            'one useful phone story',
+        )
+        package['short_story_qc'] = {
+            'version': 1,
+            'story_review_accepted': True,
+            'ending_pair_accepted': True,
+        }
+        package['short_story_qc']['fingerprint'] = _short_story_fingerprint(
+            package,
+        )
+        return package
+
+    def test_approved_short_package_fingerprint_accepts_exact_material(self):
+        package = self._approved_package()
+
+        self.assertTrue(short_story_package_is_approved(package))
+
+    def test_approved_short_package_fingerprint_rejects_mutation_or_missing_qc(self):
+        package = self._approved_package()
+        package['scenes'][0]['narration'] = 'Değiştirilmiş anlatım.'
+
+        self.assertFalse(short_story_package_is_approved(package))
+        self.assertFalse(short_story_package_is_approved({'scenes': []}))
 
 
 if __name__ == '__main__':
