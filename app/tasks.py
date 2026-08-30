@@ -213,14 +213,21 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     visible_action = '; '.join(hint[:100] for hint in hints)[:150]
     combined = f'{narration} {original} {visible_action}'.lower()
     mechanism_guardrails: list[str] = []
-    oled_terms = ('oled', 'true black', 'true-black', 'gerçek siyah', 'emissive')
-    if any(term in combined for term in oled_terms):
+    oled_claim = bool(re.search(
+        r'\b(?:oled|true[ -]black)\b|gerçek siyah|emissive\s+(?:pixel|display|screen)',
+        combined,
+    ))
+    if oled_claim:
         mechanism_guardrails.append(
             'OLED proof: extreme macro of a real subpixel matrix; emitters in a shaped black region are '
             'visibly off while adjacent RGB subpixels stay lit. Never use a whole-screen dim or fade, '
             'hand-only tap, digital noise or generic dark phone.'
         )
-        if any(term in combined for term in ('power', 'energy', 'watt', 'consumption', 'güç', 'enerji', 'tüket')):
+        power_claim = bool(re.search(
+            r'\b(?:power|energy|watt(?:age)?|consumption)\b|güç|enerji|tüket',
+            combined,
+        ))
+        if power_claim:
             mechanism_guardrails.append(
                 'If power use is spoken, show a real physical meter visibly falling in the same shot.'
             )
