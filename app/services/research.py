@@ -133,7 +133,7 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
             '- SHORT-PREVIEW STORY CONTRACT: first narrow the broad topic to ONE everyday human situation, ONE central curiosity or problem, '
             'ONE recurring person or object, ONE technical reveal and ONE visible everyday benefit. Do not make a sampler, listicle or montage of unrelated facts.\n'
             '- Treat technical mechanisms mentioned elsewhere in this prompt only as conditional visual-validation examples, never as an idea menu or checklist. '
-            'At most one mechanism family may drive this 30-second story unless the user explicitly asked for a comparison.\n'
+            'At most one mechanism family may drive this 30-second story.\n'
             '- Contain the chosen hard mechanism and its complete causal explanation inside ONE corresponding AI scene. '
             'Do not split, repeat or conclude that invisible mechanism in adjacent stock scenes.\n'
             '- Every scene with ai_prompt set to null must narrate only one literal, realistically filmable subject and action that one ordinary stock clip can visibly show. '
@@ -192,7 +192,7 @@ STORY RULES:
 - Hook immediately. No greeting, channel intro or filler.
 - The final scene must resolve the central curiosity through a visible human action and leave a memorable payoff, not merely a closing thought.
 - Spoken {language_name} must sound like an excellent human narrator: concise, deliberate punctuation, varied sentence length and natural bridges.
-- For Turkish short previews, never speak raw abbreviations or foreign algorithm names such as OLED, GPS, QR, Wi-Fi or Reed-Solomon, and never attach Turkish suffixes to them. Use native meaning-first phrases such as organik ekran, uydu konumu, kare kod, kablosuz ağ or hata düzeltme yöntemi. Technical English remains allowed in visual_queries and ai_prompt.
+- For Turkish short previews, standalone OLED, GPS and QR are allowed only with a natural Turkish noun because the voice layer normalizes them. Never attach Turkish suffixes directly to abbreviations, and never speak raw Wi-Fi or Reed-Solomon. Prefer OLED ekran, GPS sinyali, QR kodu, kablosuz ağ or hata düzeltme yöntemi. Technical English remains allowed in visual_queries and ai_prompt.
 - For Turkish, reject translated noun stacks, inverted word order and phrases like “siyah yerde”, “hücresel zamanlama tamamlar konumu” or “okunur yine kolayca”.
 - The complete narration must remain inside {min_words}-{max_words} words.
 - Each scene carries one complete idea that can live under one strong hero visual.
