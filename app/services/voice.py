@@ -86,7 +86,16 @@ def get_selected_voice() -> dict:
     return {'voice_id': None, 'name': None, 'public_owner_id': None, 'source': None}
 
 
+def _normalize_qr_code_phrase(match: re.Match) -> str:
+    suffix = str(match.group('suffix') or '').casefold()
+    return f'kare kod{suffix}'
+
+
 _TURKISH_PRONUNCIATION_RULES = [
+    (
+        r'\bQR\s+KOD(?P<suffix>[A-ZÇĞİÖŞÜa-zçğıöşü]*)\b',
+        _normalize_qr_code_phrase,
+    ),
     (r'\bO\s*[-.]?\s*L\s*[-.]?\s*E\s*[-.]?\s*D\b', 'oled'),
     (r'\bOLED\b', 'oled'),
     (r'\bGPS\b', 'ci pi es'),

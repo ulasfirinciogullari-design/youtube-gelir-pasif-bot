@@ -3,6 +3,7 @@ import math
 import re
 from openai import OpenAI
 from app.config import settings
+from app.services.source_evidence import normalize_evidence_sources
 
 STYLE_DIRECTIONS = {
     'documentary': 'Premium documentary: authoritative but accessible, concrete details, restrained cinematic tension.',
@@ -58,6 +59,18 @@ def _parse_json_payload(text: str) -> dict:
     if len(clean_scenes) < 3:
         raise RuntimeError('OpenAI scene plan has too few valid scenes')
 
+    try:
+        clean_sources = normalize_evidence_sources(
+            data.get('sources'),
+            min_count=2,
+            max_count=5,
+        )
+    except ValueError as exc:
+        raise RuntimeError(
+            f'OpenAI response has invalid research sources: {exc}'
+        ) from exc
+
+    data['sources'] = clean_sources
     data['scenes'] = clean_scenes
     data['narration'] = ' '.join(s['narration'] for s in clean_scenes)
     data['tts_narration'] = data['narration']
@@ -130,23 +143,20 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     )
     if mode == 'preview' and duration_minutes <= 0.6:
         preview_ai_routing_note = (
-            '- For this short technology preview, route these mechanisms to AI whenever they appear: an extreme macro OLED subpixel matrix where emitters '
-            'inside a shaped black image region are visibly unlit while adjacent colored subpixels remain illuminated; indoor phone positioning jointly assisted '
-            'by Wi-Fi and cellular signals when satellite GPS is weak; '
-            'a worn or damaged QR code being successfully scanned because error correction survives the damage.\n'
-            '- Contain each hard mechanism and its complete causal explanation inside ONE corresponding AI scene. '
+            '- SHORT-PREVIEW STORY CONTRACT: first narrow the broad topic to ONE everyday human situation, ONE central curiosity or problem, '
+            'ONE recurring person or object, ONE technical reveal and ONE visible everyday benefit. Do not make a sampler, listicle or montage of unrelated facts.\n'
+            '- Treat technical mechanisms mentioned elsewhere in this prompt only as conditional visual-validation examples, never as an idea menu or checklist. '
+            'At most one mechanism family may drive this 30-second story.\n'
+            '- Contain the chosen hard mechanism and its complete causal explanation inside ONE corresponding AI scene. '
             'Do not split, repeat or conclude that invisible mechanism in adjacent stock scenes.\n'
-            '- For OLED, a whole-screen dim, black fade, hand turning a display off or generic dark phone is never proof. '
-            'Do not narrate lower power use unless the same continuous shot includes a real physical power meter whose indicator visibly falls.\n'
             '- Every scene with ai_prompt set to null must narrate only one literal, realistically filmable subject and action that one ordinary stock clip can visibly show. '
-            'It must never recap, compare or recombine pixel behavior, invisible signals, timing geometry, error correction, algebra or several earlier mechanisms. '
-            'For every short preview, regardless of fallback prompt count, make the penultimate and closing scenes separate, independently filmable human or physical '
-            'actions in one ordinary location. An ai_prompt may remain fallback metadata, but it never excuses an abstract ending.\n'
+            'It must never recap, compare or recombine several mechanisms or abstract claims.\n'
+            '- Make the penultimate action and closing payoff two consecutive visible beats by the same person or object, seconds apart in the SAME named micro-location '
+            '(the same counter, table, desk, doorway or room). Repeat that location anchor in both scenes and both query sets; no exit, travel, new room or later-time jump.\n'
             '- Before returning, audit each ai_prompt-null scene against its English stock queries. All named subjects, actions and context must realistically coexist '
             'in one commonly available stock clip; otherwise rewrite that scene and its queries.\n'
             '- Treat ai_prompt as free fallback metadata, not a promise to generate. Give a precise fallback ai_prompt to any scene whose exact stock coverage is uncertain; '
-            'the worker will rank current stock quality and submit at most three paid generations. '
-            'The story must still have no more than three scenes that truly depend on AI, while every other scene remains publishable with its literal stock plan.\n'
+            'the worker will rank current stock quality and submit at most three paid generations. Fewer AI scenes are preferable when literal stock proves the story.\n'
             '- All stock-filmable scenes must provide 2-3 concrete, realistically filmable English stock queries even when they also carry a fallback ai_prompt.'
         )
     elif mode == 'preview':
@@ -159,9 +169,16 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
 
     response = client.responses.create(
         model=settings.openai_model,
-        reasoning={'effort': 'low'},
+        reasoning={
+            'effort': (
+                'medium'
+                if mode == 'preview' and duration_minutes <= 0.6
+                else 'low'
+            )
+        },
         tools=[{'type': 'web_search', 'search_context_size': 'low'}],
         tool_choice='auto',
+        max_tool_calls=2,
         input=f'''Research the current web and act as a senior YouTube writer and storyboard director.
 Language: {language_name}
 Topic: {topic}
@@ -181,12 +198,20 @@ title, thumbnail_text, description, scenes, sources.
 Each scene must contain exactly:
 narration, visual_queries, ai_prompt.
 
+sources must contain 2-5 objects, each with exactly:
+url, evidence.
+evidence is one concise paraphrased sentence from that URL that directly supports the story's central causal reveal.
+
 STORY RULES:
 - Write ONE coherent story, not a pile of facts or a numbered list.
+- For a short preview, silently define one sentence that states: a person or familiar object wants something, meets one obstacle, learns one cause, and receives one visible benefit. Every scene must serve that sentence.
+- A broad topic is not an angle. Narrow it to the strongest useful or surprising human question; discard unrelated research facts even when they are individually interesting.
 - Every scene must continue, explain, contrast, escalate or pay off the previous scene.
 - Hook immediately. No greeting, channel intro or filler.
-- The final scene must resolve the central curiosity and leave a memorable closing thought.
+- The final scene must resolve the central curiosity through a visible human action and leave a memorable payoff, not merely a closing thought.
 - Spoken {language_name} must sound like an excellent human narrator: concise, deliberate punctuation, varied sentence length and natural bridges.
+- For Turkish short previews, standalone OLED, GPS and QR are allowed only with a natural Turkish noun because the voice layer normalizes them. Never attach Turkish suffixes directly to abbreviations, and never speak raw Wi-Fi or Reed-Solomon. Prefer OLED ekran, GPS sinyali, QR kodu, kablosuz ağ or hata düzeltme yöntemi. Technical English remains allowed in visual_queries and ai_prompt.
+- For Turkish, reject translated noun stacks, inverted word order and phrases like “siyah yerde”, “hücresel zamanlama tamamlar konumu” or “okunur yine kolayca”.
 - The complete narration must remain inside {min_words}-{max_words} words.
 - Each scene carries one complete idea that can live under one strong hero visual.
 - A stock-only scene may not summarize several earlier mechanisms or invisible abstractions; it must describe one subject performing one visible action in one ordinary location.
@@ -197,8 +222,8 @@ VISUAL DIRECTING RULES:
 - Reject generic typing, office workers, skylines, random phones, abstract charts or vague futuristic imagery unless literally required.
 - Vary shot grammar across the video: establishing, macro, detail, human interaction, physical demonstration, infrastructure and controlled camera motion.
 - If stock footage cannot honestly communicate a technical idea, use a precise cinematic ai_prompt instead of metaphorically unrelated B-roll.
-- For OLED or true black, the narration, stock queries and ai_prompt must require black-region subpixel emitters visibly unlit beside illuminated colored subpixels; whole-screen darkness is insufficient.
-- If a short OLED narration claims lower power use, require a real physical meter visibly dropping in the same shot; otherwise rewrite the spoken claim to the directly visible emissive-pixel fact.
+- CONDITIONAL VALIDATION EXAMPLE, not a story suggestion: only if the user's topic and the chosen single story already require OLED or true black, the narration, stock queries and ai_prompt must show black-region subpixel emitters visibly unlit beside illuminated colored subpixels; whole-screen darkness is insufficient.
+- In that same conditional OLED case, if narration claims lower power use, require a real physical meter visibly dropping in the same shot; otherwise rewrite the spoken claim to the directly visible emissive-pixel fact.
 - ai_prompt may be non-null when literal stock is unlikely to reliably show the named subject, action or mechanism, and in at most {max_ai_scenes} scenes.
 {preview_ai_routing_note}
 - Every non-null ai_prompt must describe one continuous five-second 16:9 photorealistic shot with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
@@ -208,7 +233,8 @@ FACT RULES:
 - Use current web research where useful.
 - Do not invent claims or statistics.
 - Do not copy source wording.
-- sources must contain URLs.
+- sources must be evidence records from pages actually used, never a bare URL list.
+- Every evidence sentence must directly support the central causal claim; omit interesting but unused sources.
 ''',
     )
     package = _parse_json_payload(response.output_text)
