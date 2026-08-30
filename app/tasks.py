@@ -209,38 +209,45 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     if not original and not hints:
         return ''
 
-    narration = str(scene.get('narration') or '').strip()[:300]
-    visible_action = '; '.join(hint[:160] for hint in hints)
+    narration = str(scene.get('narration') or '').strip()[:180]
+    visible_action = '; '.join(hint[:100] for hint in hints)[:150]
     combined = f'{narration} {original} {visible_action}'.lower()
     mechanism_guardrails: list[str] = []
     oled_terms = ('oled', 'true black', 'true-black', 'gerçek siyah', 'emissive')
     if any(term in combined for term in oled_terms):
         mechanism_guardrails.append(
-            'For OLED or true black, use an extreme macro optical view of a real OLED subpixel matrix: '
-            'the red, green and blue emitters inside a shaped black image region are visibly unlit while '
-            'adjacent colored subpixels remain illuminated. Never substitute a hand-only interaction, '
-            'a whole-screen dim, a black fade, digital noise or a generic dark phone.'
+            'OLED proof: extreme macro of a real subpixel matrix; emitters in a shaped black region are '
+            'visibly off while adjacent RGB subpixels stay lit. Never use a whole-screen dim or fade, '
+            'hand-only tap, digital noise or generic dark phone.'
         )
         if any(term in combined for term in ('power', 'energy', 'watt', 'consumption', 'güç', 'enerji', 'tüket')):
             mechanism_guardrails.append(
-                'Because the narration claims lower power use, keep a real physical power meter in the '
-                'same continuous shot and make its indicator visibly fall when those subpixels extinguish.'
+                'If power use is spoken, show a real physical meter visibly falling in the same shot.'
             )
 
-    guardrail_clause = ' '.join(mechanism_guardrails)
-    original_clause = f'Core shot direction: {original[:480]}. ' if original else ''
-    evidence_clause = (
-        f'Also satisfy this reviewer evidence: {visible_action}. '
-        if visible_action else ''
+    opening = 'One continuous five-second photorealistic 16:9 documentary shot. '
+    guardrail_clause = (' '.join(mechanism_guardrails) + ' ') if mechanism_guardrails else ''
+    narration_clause = f'Literal narration to prove: {narration}. ' if narration else ''
+    evidence_clause = f'QC evidence to satisfy: {visible_action}. ' if visible_action else ''
+    closing = 'Subtle camera motion; no text, logos, charts, glitch, watermark or metaphor.'
+    required = opening + guardrail_clause + narration_clause + evidence_clause + closing
+    original_label = 'Core shot direction: '
+    remaining_units = max(
+        0,
+        1000
+        - len(required.encode('utf-16-le')) // 2
+        - len(original_label.encode('utf-16-le')) // 2
+        - 2,
     )
+    original_value = _truncate_utf16(original, remaining_units) if original and remaining_units else ''
+    original_clause = f'{original_label}{original_value}. ' if original_value else ''
     return _truncate_utf16(
-        'A single continuous five-second photorealistic 16:9 documentary shot. '
-        f'{guardrail_clause} '
-        f'{original_clause}'
-        f'{evidence_clause}'
-        f'It must literally demonstrate this narration: {narration}. '
-        'Controlled camera motion, no captions, logos, watermarks, charts, '
-        'fake interface text, random glitch or metaphor.'
+        opening
+        + guardrail_clause
+        + narration_clause
+        + evidence_clause
+        + original_clause
+        + closing
     )
 
 
