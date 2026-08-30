@@ -53,6 +53,7 @@ def review_scene_visuals(
     work_dir: str | Path,
     max_scenes: int = 12,
     _missing_review_attempts: int = 2,
+    _candidate_limit: int = 3,
 ) -> dict:
     if not settings.openai_api_key:
         return {'reviews': [], 'missing_review_indices': []}
@@ -79,7 +80,12 @@ def review_scene_visuals(
         if len(included_indices) >= max_scenes:
             break
         raw_specs = scene_visuals[idx] if idx < len(scene_visuals) else []
-        paths = [p for p in (_spec_path(spec) for spec in raw_specs) if p][:3]
+        candidate_limit = max(1, min(int(_candidate_limit or 3), 4))
+        paths = [
+            p
+            for p in (_spec_path(spec) for spec in raw_specs)
+            if p
+        ][:candidate_limit]
         if not paths:
             continue
 
@@ -170,6 +176,7 @@ def review_scene_visuals(
             work / f'missing_reviews_{_missing_review_attempts}',
             len(missing_indices),
             _missing_review_attempts=_missing_review_attempts - 1,
+            _candidate_limit=_candidate_limit,
         )
         retry_reviews = {
             int(review.get('scene_index')): review
