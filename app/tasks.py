@@ -24,6 +24,10 @@ class FinalVisualQualityError(RuntimeError):
     """A bounded semantic-quality rejection that should not rerun the whole pipeline."""
 
 
+class PreRunwayRetryableError(RuntimeError):
+    """A pre-paid preflight rejection that may safely regenerate the automatic plan."""
+
+
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value = dict(options or {})
     value.setdefault('mode', 'preview' if duration_minutes <= 1 else 'production')
@@ -166,7 +170,11 @@ def _retry_bad_scene(
                 'creator_url': item.get('creator_url'),
                 'page_url': item.get('page_url'),
                 'pexels_id': item.get('pexels_id'),
-                'selected_by': 'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue' else 'visual_qc_retry',
+                'selected_by': (
+                    'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue'
+                    else 'pre_runway_budget_rescue' if safe_prefix == 'pre_runway_budget_rescue'
+                    else 'visual_qc_retry'
+                ),
             })
         except Exception as exc:
             download_errors.append(exc)
@@ -367,7 +375,8 @@ def run_video_pipeline(
 ):
     task_id = self.request.id
     options = _normalized_options(options, duration_minutes)
-    work = Path('/tmp/youtube_factory') / task_id
+    retry_number = int(getattr(self.request, 'retries', 0) or 0)
+    work = Path('/tmp/youtube_factory') / f'{task_id}_attempt_{retry_number}'
     work.mkdir(parents=True, exist_ok=True)
     update_job(task_id, kind='render', spec=_task_spec(topic, duration_minutes, language, channel_id, options))
     runway_attempts = 0
@@ -493,30 +502,147 @@ def run_video_pipeline(
             if isinstance(review, dict)
             and str(review.get('scene_index', '')).lstrip('-').isdigit()
         }
-        ranked_runway_candidates: list[dict] = []
-        prompt_candidates: dict[int, str] = {}
-        for scene_idx, scene in enumerate(scenes):
-            current_review = current_reviews.get(scene_idx)
-            prompt = _runway_prompt_for_scene(scene, current_review)
-            if not prompt:
-                continue
-            prompt_candidates[scene_idx] = prompt
-            if current_review and scene_visuals[scene_idx]:
-                _apply_visual_review(scene_visuals, scene_idx, current_review)
-            has_visual = any(_visual_path(spec) for spec in scene_visuals[scene_idx])
-            stock_score = int((current_review or {}).get('score', -1))
-            if not has_visual or stock_score < quality_threshold:
-                ranked_runway_candidates.append({
+        missing_pre_runway_reviews = [
+            int(idx)
+            for idx in (pre_runway_qc.get('missing_review_indices') or [])
+            if str(idx).lstrip('-').isdigit()
+        ]
+        if missing_pre_runway_reviews:
+            raise PreRunwayRetryableError(
+                'Pre-Runway visual QC was incomplete before any paid submission: '
+                + json.dumps({'missing_scene_indices': missing_pre_runway_reviews}, separators=(',', ':'))
+            )
+        def rank_runway_candidates() -> tuple[dict[int, str], list[dict]]:
+            prompts: dict[int, str] = {}
+            ranked: list[dict] = []
+            for candidate_scene_idx, scene in enumerate(scenes):
+                candidate_review = current_reviews.get(candidate_scene_idx)
+                prompt = _runway_prompt_for_scene(scene, candidate_review)
+                if not prompt:
+                    continue
+                prompts[candidate_scene_idx] = prompt
+                if candidate_review and scene_visuals[candidate_scene_idx]:
+                    _apply_visual_review(scene_visuals, candidate_scene_idx, candidate_review)
+                has_visual = any(_visual_path(spec) for spec in scene_visuals[candidate_scene_idx])
+                stock_score = int((candidate_review or {}).get('score', -1))
+                if not has_visual or stock_score < quality_threshold:
+                    ranked.append({
+                        'scene_index': candidate_scene_idx,
+                        'has_visual': has_visual,
+                        'stock_score': stock_score,
+                    })
+            ranked.sort(key=lambda item: (
+                0 if not item['has_visual'] else 1,
+                item['stock_score'],
+                item['scene_index'],
+            ))
+            return prompts, ranked
+
+        prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
+        is_bounded_short_preview = (
+            options.get('mode') == 'preview'
+            and duration_minutes <= 0.6
+            and runway_submission_cap > 0
+        )
+
+        # Before rejecting an over-budget plan, give only the overflow scenes
+        # one bounded stock rescue. The three weakest scenes remain reserved
+        # for Runway; better-ranked overflow scenes get a final free chance.
+        if is_bounded_short_preview and len(ranked_runway_candidates) > runway_submission_cap:
+            overflow_candidates = ranked_runway_candidates[runway_submission_cap:]
+            budget_rescued_scenes: list[int] = []
+            for candidate in overflow_candidates:
+                scene_idx = int(candidate['scene_index'])
+                review = current_reviews.get(scene_idx) or {}
+                retry_queries = [
+                    str(query).strip()
+                    for query in (review.get('retry_queries') or [])[:2]
+                    if str(query).strip()
+                ]
+                replacements = _retry_bad_scene(
+                    scene_idx,
+                    retry_queries,
+                    seen_ids,
+                    work,
+                    credits,
+                    file_prefix='pre_runway_budget_rescue',
+                )
+                if not replacements:
+                    continue
+                existing_specs = list(scene_visuals[scene_idx])
+                scene_visuals[scene_idx] = [*replacements, *existing_specs][:3]
+                budget_rescued_scenes.append(scene_idx)
+                visual_replacements.append({
                     'scene_index': scene_idx,
-                    'has_visual': has_visual,
-                    'stock_score': stock_score,
+                    'score': int(review.get('score', 0)),
+                    'reason': review.get('reason'),
+                    'old_best': _visual_path(existing_specs[0]) if existing_specs else '',
+                    'replacement_count': len(replacements),
+                    'stage': 'pre_runway_budget_rescue',
                 })
 
-        ranked_runway_candidates.sort(key=lambda item: (
-            0 if not item['has_visual'] else 1,
-            item['stock_score'],
-            item['scene_index'],
-        ))
+            if budget_rescued_scenes:
+                set_stage(
+                    self,
+                    task_id,
+                    'pre_runway_budget_rescue',
+                    62,
+                    'Runway bütçesini aşan stok sahneleri daha kesin aramalarla yenileniyor.',
+                )
+                budget_rescue_qc = review_scene_visuals(
+                    [scenes[idx] for idx in budget_rescued_scenes],
+                    [scene_visuals[idx] for idx in budget_rescued_scenes],
+                    work / 'pre_runway_budget_rescue',
+                    len(budget_rescued_scenes),
+                )
+                budget_reviews = {
+                    int(review.get('scene_index')): review
+                    for review in (budget_rescue_qc.get('reviews') or [])
+                    if isinstance(review, dict)
+                    and str(review.get('scene_index', '')).lstrip('-').isdigit()
+                }
+                missing_budget_positions = [
+                    position
+                    for position in range(len(budget_rescued_scenes))
+                    if position not in budget_reviews
+                ]
+                if missing_budget_positions:
+                    raise PreRunwayRetryableError(
+                        'Pre-Runway stock rescue QC was incomplete before any paid submission: '
+                        + json.dumps({'missing_positions': missing_budget_positions}, separators=(',', ':'))
+                    )
+                for position, scene_idx in enumerate(budget_rescued_scenes):
+                    rescued_review = budget_reviews.get(position)
+                    if not rescued_review:
+                        continue
+                    mapped_review = dict(rescued_review)
+                    mapped_review['scene_index'] = scene_idx
+                    current_reviews[scene_idx] = mapped_review
+                    if scene_visuals[scene_idx]:
+                        _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
+                prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
+
+        if is_bounded_short_preview and len(ranked_runway_candidates) > runway_submission_cap:
+            preflight_details = [
+                {
+                    'scene_index': int(item['scene_index']),
+                    'stock_score': int(item['stock_score']),
+                    'has_visual': bool(item['has_visual']),
+                    'authored_ai_prompt': bool(scenes[int(item['scene_index'])].get('ai_prompt')),
+                }
+                for item in ranked_runway_candidates
+            ]
+            preflight_message = (
+                'Short-preview visual plan exceeds bounded Runway budget before any paid submission: '
+                + json.dumps({
+                    'required_scenes': len(ranked_runway_candidates),
+                    'submission_cap': runway_submission_cap,
+                    'candidates': preflight_details,
+                }, separators=(',', ':'))
+            )
+            if approved_package is not None:
+                raise FinalVisualQualityError(preflight_message)
+            raise PreRunwayRetryableError(preflight_message)
         selected_runway = ranked_runway_candidates[:runway_submission_cap]
         selected_runway_indices = {item['scene_index'] for item in selected_runway}
         runway_rank = {
@@ -851,6 +977,19 @@ def run_video_pipeline(
         mark_success(task_id, result)
         return result
     except Exception as exc:
+        if (
+            runway_attempts == 0
+            and not isinstance(exc, FinalVisualQualityError)
+            and int(getattr(self.request, 'retries', 0) or 0) < int(self.max_retries or 0)
+        ):
+            set_stage(
+                self,
+                task_id,
+                'plan_retry',
+                6,
+                'Görsel ön kontrol yenileniyor; ücretli üretim başlamadan yeni storyboard hazırlanıyor.',
+            )
+            raise
         if runway_attempts > 0 and not isinstance(exc, FinalVisualQualityError):
             bounded_error = FinalVisualQualityError(
                 f'Post-Runway pipeline failed after {runway_attempts} bounded submissions: {type(exc).__name__}'
