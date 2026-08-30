@@ -258,14 +258,6 @@ def _repair_short_stock_scenes(
             'word_count': _word_count(scenes[position].get('narration') or ''),
             'current_narration': scenes[position].get('narration'),
             'current_visual_queries': scenes[position].get('visual_queries') or [],
-            'previous_narration': (
-                scenes[position - 1].get('narration')
-                if position > 0 else None
-            ),
-            'next_narration': (
-                scenes[position + 1].get('narration')
-                if position + 1 < len(scenes) else None
-            ),
         }
         for position in stock_positions
     }
@@ -364,9 +356,34 @@ def _repair_short_stock_scenes(
 
     for attempt in range(2):
         request_positions = list(pending_positions)
+        current_story = [
+            {
+                'position': position,
+                'route': 'stock' if position in stock_positions else 'ai',
+                'role': role_by_position.get(position),
+                'narration': (
+                    accepted_rows[position]['narration']
+                    if position in accepted_rows
+                    else scene.get('narration')
+                ),
+            }
+            for position, scene in enumerate(scenes)
+        ]
+        current_narrations = {
+            row['position']: row.get('narration')
+            for row in current_story
+        }
         request_targets = [
             {
                 **targets_by_position[position],
+                'previous_narration': (
+                    current_narrations.get(position - 1)
+                    if position > 0 else None
+                ),
+                'next_narration': (
+                    current_narrations.get(position + 1)
+                    if position + 1 < len(scenes) else None
+                ),
                 'previous_failed_candidate': failed_candidates.get(position),
                 'validation_feedback': feedback_by_position.get(position),
             }
@@ -386,6 +403,7 @@ def _repair_short_stock_scenes(
         generation_context = {
             'title': package.get('title'),
             'complete_original_story_in_order': original_story,
+            'complete_current_story_in_order': current_story,
             'accepted_stock_scenes_locked': [
                 {
                     'position': position,
