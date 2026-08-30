@@ -138,6 +138,11 @@ def _run_director(
             'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
         )
+    elif options.get('mode') == 'preview':
+        short_visual_note = (
+            'PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: every ai_prompt MUST be null for this duration. '
+            'Make every scene literally stock-filmable and preserve this assignment during all corrections. '
+        )
     correction_note = (
         f'CRITICAL CORRECTION: the server counted {current_words} words. '
         f'Rewrite the SAME factual story to exactly {target_words} total words '
