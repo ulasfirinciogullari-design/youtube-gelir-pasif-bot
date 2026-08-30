@@ -146,6 +146,8 @@ def _run_director(
             'error correction or algebra. An ai_prompt may remain fallback metadata, but it never excuses an abstract ending. '
             'Every ai_prompt-null scene must be fully provable by one ordinary stock clip; if all named nouns and actions are unlikely to coexist in that clip, '
             'rewrite the narration and its queries before returning. '
+            'Every spoken clause in an ai_prompt-null scene must be literally visible in that same clip; never append abstract phrases such as magic happening, '
+            'more working than the viewer can see, hidden systems or silent partners. '
             'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
         )
@@ -197,6 +199,7 @@ EDITORIAL QC RULES:
 - Spoken {language_name} must sound natural, confident and punctuated for real breaths.
 - Each scene contains one complete thought that can remain under one excellent hero visual.
 - Never make an ai_prompt-null scene recap several earlier mechanisms or invisible abstractions; it must narrate one visible subject performing one visible action in one ordinary location.
+- Every clause of every ai_prompt-null narration must be directly visible in that one clip; remove magic-like hooks, hidden-system claims and spoken conclusions.
 - Before returning, audit every ai_prompt-null scene against its queries: all named subjects, actions and context must realistically coexist in a single stock clip.
 - Match the selected Studio style without imitating a named creator.
 - Apply the global pace profile, but still vary individual scene pace intentionally.
@@ -217,7 +220,7 @@ EDITORIAL QC RULES:
     return _json(response.output_text)
 
 
-def _repair_short_stock_endings(
+def _repair_short_stock_scenes(
     client: OpenAI,
     package: dict,
     language_name: str,
@@ -227,29 +230,46 @@ def _repair_short_stock_endings(
         return package
 
     scenes = package.get('scenes') or []
-    if len(scenes) < 4:
+    if len(scenes) < 3:
         return package
 
-    ending_positions = [len(scenes) - 2, len(scenes) - 1]
+    stock_positions = [
+        position
+        for position, scene in enumerate(scenes)
+        if not str(scene.get('ai_prompt') or '').strip()
+    ]
+    if not stock_positions:
+        return package
+
     targets = [
         {
             'position': position,
             'word_count': _word_count(scenes[position].get('narration') or ''),
             'current_narration': scenes[position].get('narration'),
             'current_visual_queries': scenes[position].get('visual_queries') or [],
+            'previous_narration': (
+                scenes[position - 1].get('narration')
+                if position > 0 else None
+            ),
+            'next_narration': (
+                scenes[position + 1].get('narration')
+                if position + 1 < len(scenes) else None
+            ),
         }
-        for position in ending_positions
+        for position in stock_positions
+    ]
+    original_story = [
+        {
+            'position': position,
+            'route': 'ai' if str(scene.get('ai_prompt') or '').strip() else 'stock',
+            'narration': scene.get('narration'),
+        }
+        for position, scene in enumerate(scenes)
     ]
     context = {
         'title': package.get('title'),
-        'story_narrations_before_endings': [
-            {
-                'position': position,
-                'narration': scene.get('narration'),
-            }
-            for position, scene in enumerate(scenes[:-2])
-        ],
-        'endings_to_replace': targets,
+        'complete_story_in_order': original_story,
+        'stock_scenes_to_replace': targets,
     }
     response_shape = {
         'scenes': [
@@ -259,7 +279,7 @@ def _repair_short_stock_endings(
                 'visual_queries': ['...', '...'],
                 'ai_prompt': None,
             }
-            for position in ending_positions
+            for position in stock_positions
         ],
     }
     mechanism_pattern = re.compile(
@@ -269,6 +289,11 @@ def _repair_short_stock_endings(
         r'location\s+(?:systems?|services?|data|tracking|determination)|'
         r'konum\s+(?:sistem\w*|servis\w*|veri\w*|belirle\w*|takip\w*)|'
         r'(?:uydu|wi[-‑]?fi|hücresel)\s+(?:konumla\w*|sinyal\w*))\b',
+        flags=re.IGNORECASE,
+    )
+    abstract_pattern = re.compile(
+        r'\b(?:magic|magical|miracle|invisible|hidden\s+systems?|silent\s+partners?|'
+        r'sihir\w*|mucize\w*|görünmeyen|gizli\s+sistem\w*|sessiz\s+ortak\w*)\b',
         flags=re.IGNORECASE,
     )
     original_total_words = _word_count(
@@ -281,7 +306,7 @@ def _repair_short_stock_endings(
         response = client.responses.create(
             model=settings.openai_model,
             reasoning={'effort': 'medium' if attempt else 'low'},
-            input=f'''You are repairing ONLY the final two stock-footage scenes of a 30-second premium YouTube story.
+            input=f'''You are repairing EVERY stock-routed scene of a 30-second premium YouTube story before footage search.
 Language of spoken narration: {language_name}
 Story context:
 {json.dumps(context, ensure_ascii=False)}
@@ -290,18 +315,22 @@ Return ONLY JSON in exactly this shape:
 {json.dumps(response_shape, ensure_ascii=False)}
 
 NON-NEGOTIABLE RULES:
-- Return exactly the two requested positions and no others.
-- Preserve the exact requested narration word count for each position.
+- Return exactly the requested stock positions and no others. Never rewrite an AI-routed mechanism scene.
+- Preserve the exact requested narration word count for every position.
 - Each narration describes ONE visible human or physical action in ONE ordinary location.
-- Use one simple sentence. Do not combine distinct actions, even with a conjunction, gerund or subordinate clause.
+- Every spoken clause must be literally visible in the same normal five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
+- Use one simple sentence. Do not combine distinct actions, even with a conjunction, gerund, sequence or subordinate clause.
 - Do not use a semicolon or colon to join actions.
-- These are human-payoff shots, not technical recap. Do not mention OLED, pixels, GPS, Wi-Fi, cellular signals, location systems, QR, error correction, timing, algebra or invisible mechanisms.
+- Do not mention or recap OLED, pixels, GPS, Wi-Fi, cellular signals, location systems, QR, error correction, timing, algebra or invisible mechanisms.
 - ai_prompt must be JSON null.
 - Give exactly 2-3 simple ENGLISH stock search phrases per scene.
-- Every search phrase must describe the SAME single action as its narration, include the actor or object and ordinary setting, and contain 3-9 English words.
-- Keep the two scenes semantically faithful to the supplied story. Add no new claim, product or unrelated activity.
-- Scene {ending_positions[0]} must naturally continue the preceding story; scene {ending_positions[1]} must naturally follow scene {ending_positions[0]} and provide its human payoff.
-- Keep the spoken narration natural in {language_name}.
+- First choose one canonical actor/object, one action verb phrase and one ordinary setting. Repeat that same semantic contract in every query; vary only framing or camera distance.
+- Every query must contain 3-9 English words and depict the narration's exact same single action.
+- Keep each scene faithful to its current role and add no new factual claim, product or unrelated activity.
+- Position 0, when requested, must be a concrete everyday action that opens naturally into the next technical scene.
+- Every middle stock scene must connect its immediate neighbors without repeating their mechanism.
+- The final stock scene must follow the preceding scene and deliver a visible human payoff, not a spoken conclusion.
+- Keep the spoken narration natural and easy to pronounce in {language_name}.
 {f'Previous response failed validation: {validation_error}' if validation_error else ''}
 ''',
         )
@@ -314,8 +343,10 @@ NON-NEGOTIABLE RULES:
             validation_error = 'response must contain exactly the scenes key'
             continue
         rows = data.get('scenes')
-        if not isinstance(rows, list) or len(rows) != 2:
-            validation_error = 'expected exactly two scene objects'
+        if not isinstance(rows, list) or len(rows) != len(stock_positions):
+            validation_error = (
+                f'expected exactly {len(stock_positions)} stock scene objects'
+            )
             continue
 
         expected_row_keys = {'position', 'narration', 'visual_queries', 'ai_prompt'}
@@ -323,21 +354,27 @@ NON-NEGOTIABLE RULES:
         mapping_error = ''
         for row in rows:
             if not isinstance(row, dict) or set(row.keys()) != expected_row_keys:
-                mapping_error = 'each scene must contain exactly position, narration, visual_queries and ai_prompt'
+                mapping_error = (
+                    'each scene must contain exactly position, narration, '
+                    'visual_queries and ai_prompt'
+                )
                 break
             position = row.get('position')
             if type(position) is not int:
                 mapping_error = 'scene position must be an integer'
                 break
-            if position not in ending_positions:
-                mapping_error = f'unexpected scene position {position}'
+            if position not in stock_positions:
+                mapping_error = f'unexpected stock scene position {position}'
                 break
             if position in rows_by_position:
-                mapping_error = f'duplicate scene position {position}'
+                mapping_error = f'duplicate stock scene position {position}'
                 break
             rows_by_position[position] = row
-        if mapping_error or set(rows_by_position) != set(ending_positions):
-            validation_error = mapping_error or 'requested scene positions were not returned exactly once'
+        if mapping_error or set(rows_by_position) != set(stock_positions):
+            validation_error = (
+                mapping_error
+                or 'requested stock scene positions were not returned exactly once'
+            )
             continue
 
         repaired_rows: dict[int, dict] = {}
@@ -364,12 +401,17 @@ NON-NEGOTIABLE RULES:
             if mechanism_pattern.search(narration):
                 row_error = f'position {position} contains technical recap'
                 break
+            if abstract_pattern.search(narration):
+                row_error = f'position {position} contains an unfilmable abstraction'
+                break
             if row.get('ai_prompt') is not None:
                 row_error = f'position {position} must explicitly keep ai_prompt null'
                 break
             queries = row.get('visual_queries')
             if not isinstance(queries, list) or not 2 <= len(queries) <= 3:
-                row_error = f'position {position} must contain exactly two or three stock queries'
+                row_error = (
+                    f'position {position} must contain exactly two or three stock queries'
+                )
                 break
             if any(not isinstance(query, str) or not query.strip() for query in queries):
                 row_error = f'position {position} contains an invalid stock query'
@@ -379,7 +421,9 @@ NON-NEGOTIABLE RULES:
                 row_error = f'position {position} contains duplicate stock queries'
                 break
             if any(not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9 '\-]*", query) for query in queries):
-                row_error = f'position {position} stock queries must use plain English search text'
+                row_error = (
+                    f'position {position} stock queries must use plain English search text'
+                )
                 break
             query_lengths = [
                 len(re.findall(r"[A-Za-z0-9'-]+", query))
@@ -397,6 +441,18 @@ NON-NEGOTIABLE RULES:
             validation_error = row_error
             continue
 
+        candidate_story = [
+            {
+                'position': position,
+                'route': 'stock' if position in repaired_rows else 'ai',
+                'narration': (
+                    repaired_rows[position]['narration']
+                    if position in repaired_rows
+                    else scene.get('narration')
+                ),
+            }
+            for position, scene in enumerate(scenes)
+        ]
         critic_shape = {
             'scenes': [
                 {
@@ -404,45 +460,47 @@ NON-NEGOTIABLE RULES:
                     'single_sentence': True,
                     'single_visible_action': True,
                     'single_ordinary_location': True,
+                    'all_spoken_meaning_visible': True,
                     'all_named_subjects_coexist': True,
                     'queries_are_english': True,
                     'queries_match_same_action': True,
                     'continues_story': True,
                     'reason': 'brief evidence-based verdict',
                 }
-                for position in ending_positions
+                for position in stock_positions
             ],
         }
         critic_context = {
             'title': package.get('title'),
-            'story_narrations_before_endings': context['story_narrations_before_endings'],
-            'candidate_endings': [
+            'candidate_story_in_order': candidate_story,
+            'candidate_stock_scenes': [
                 {
                     'position': position,
                     **repaired_rows[position],
                 }
-                for position in ending_positions
+                for position in stock_positions
             ],
         }
         critic_response = client.responses.create(
             model=settings.openai_model,
             reasoning={'effort': 'medium'},
             input=f'''Act as an independent, fail-closed stock-shot feasibility critic. Do not rewrite anything.
-Evaluate the two candidate endings below against the complete short story.
+Evaluate every stock-routed candidate against its exact narration, queries, adjacent scenes and the complete short story.
 {json.dumps(critic_context, ensure_ascii=False)}
 
 Return ONLY JSON in exactly this shape:
 {json.dumps(critic_shape, ensure_ascii=False)}
 
-For EACH position, set every boolean independently. If evidence is ambiguous, set it false.
+For EACH requested position, set every boolean independently. If evidence is ambiguous, set it false.
 - single_sentence: narration contains only one sentence.
 - single_visible_action: narration requires exactly one visible action, not two actions joined by a conjunction, gerund, sequence or implied cut.
 - single_ordinary_location: narration and every query can share one ordinary physical setting.
+- all_spoken_meaning_visible: every spoken clause is directly visible in that single clip; abstract hooks, comparisons, mysteries, technical implications and spoken conclusions fail.
 - all_named_subjects_coexist: one normal five-second stock clip can visibly contain every named subject and object.
 - queries_are_english: every query is idiomatic English stock-search text.
-- queries_match_same_action: every query depicts the narration's exact same actor/object, single action and setting; separate query actions fail.
-- continues_story: the first ending follows the earlier story without adding an unrelated fact; the final ending follows the first and delivers the title/story's human payoff.
-The reason must name the concrete evidence for the verdict. Approval is allowed only when all seven booleans are true.
+- queries_match_same_action: every query depicts the narration's exact same actor/object, single action and setting; queries that split actions or settings fail.
+- continues_story: the scene preserves its role and connects its immediate neighbors; position 0 must visibly open into the next scene, and the final position must visibly pay off the preceding story.
+The reason must name the concrete evidence for the verdict. Approval is allowed only when all eight booleans are true.
 ''',
         )
         try:
@@ -454,14 +512,17 @@ The reason must name the concrete evidence for the verdict. Approval is allowed 
             validation_error = 'independent stock-shot critic returned an invalid object'
             continue
         critic_rows = critic.get('scenes')
-        if not isinstance(critic_rows, list) or len(critic_rows) != 2:
-            validation_error = 'independent stock-shot critic did not review exactly two scenes'
+        if not isinstance(critic_rows, list) or len(critic_rows) != len(stock_positions):
+            validation_error = (
+                'independent stock-shot critic did not review every stock scene'
+            )
             continue
 
         critic_boolean_keys = {
             'single_sentence',
             'single_visible_action',
             'single_ordinary_location',
+            'all_spoken_meaning_visible',
             'all_named_subjects_coexist',
             'queries_are_english',
             'queries_match_same_action',
@@ -475,8 +536,8 @@ The reason must name the concrete evidence for the verdict. Approval is allowed 
                 critic_error = 'independent critic returned the wrong fields'
                 break
             position = row.get('position')
-            if type(position) is not int or position not in ending_positions:
-                critic_error = 'independent critic returned an invalid position'
+            if type(position) is not int or position not in stock_positions:
+                critic_error = 'independent critic returned an invalid stock position'
                 break
             if position in critic_by_position:
                 critic_error = f'independent critic repeated position {position}'
@@ -497,13 +558,16 @@ The reason must name the concrete evidence for the verdict. Approval is allowed 
                 )
                 break
             critic_by_position[position] = row
-        if critic_error or set(critic_by_position) != set(ending_positions):
-            validation_error = critic_error or 'independent critic missed a requested position'
+        if critic_error or set(critic_by_position) != set(stock_positions):
+            validation_error = (
+                critic_error
+                or 'independent critic missed a requested stock position'
+            )
             continue
 
         repaired = dict(package)
         repaired_scenes = [dict(scene) for scene in scenes]
-        for position in ending_positions:
+        for position in stock_positions:
             repaired_scenes[position]['narration'] = repaired_rows[position]['narration']
             repaired_scenes[position]['tts_text'] = repaired_rows[position]['narration']
             repaired_scenes[position]['visual_queries'] = repaired_rows[position]['visual_queries']
@@ -529,12 +593,15 @@ The reason must name the concrete evidence for the verdict. Approval is allowed 
             qc_summary = [str(qc_summary)]
         repaired['director_qc'] = [
             *qc_summary,
-            'Locked the final two short-preview scenes to independently verified single-action stock coverage.',
+            (
+                'Locked every stock-routed short-preview scene to independently '
+                'verified single-action coverage.'
+            ),
         ]
         return repaired
 
     raise RuntimeError(
-        'Director could not produce two stock-safe short-preview endings: '
+        'Director could not produce fully stock-safe short-preview scenes: '
         + validation_error[:240]
     )
 
@@ -598,7 +665,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
 
     if options.get('mode') == 'preview' and duration_minutes <= 0.6:
-        out = _repair_short_stock_endings(
+        out = _repair_short_stock_scenes(
             client,
             out,
             language_name,
