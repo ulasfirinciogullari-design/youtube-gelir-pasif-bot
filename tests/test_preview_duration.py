@@ -25,14 +25,21 @@ duration_ok = _load_duration_gate()
 
 class PreviewDurationGateTests(unittest.TestCase):
     def test_accepts_live_29_4_second_preview_for_30_second_request(self):
-        self.assertTrue(duration_ok(29.4, 30.0))
+        self.assertTrue(duration_ok(29.4, 30.0, 29.42))
 
     def test_rejects_materially_short_30_second_preview(self):
-        self.assertFalse(duration_ok(28.9, 30.0))
+        self.assertFalse(duration_ok(28.9, 30.0, 28.92))
 
     def test_sixty_second_preview_allowance_never_exceeds_one_second(self):
-        self.assertTrue(duration_ok(59.0, 60.0))
-        self.assertFalse(duration_ok(58.9, 60.0))
+        self.assertTrue(duration_ok(59.0, 60.0, 59.05))
+        self.assertFalse(duration_ok(58.9, 60.0, 58.95))
+
+    def test_rejects_target_tolerance_that_would_truncate_voice(self):
+        self.assertFalse(duration_ok(29.4, 30.0, 30.0))
+        self.assertFalse(duration_ok(59.0, 60.0, 60.0))
+
+    def test_missing_voice_duration_fails_closed(self):
+        self.assertFalse(duration_ok(29.4, 30.0, 0))
 
 
 if __name__ == '__main__':
