@@ -177,12 +177,10 @@ def _visual_path(spec: str | dict) -> str:
     return str(spec)
 
 
-def _max_runway_scenes(options: dict, scene_count: int) -> int:
-    mix = options.get('visual_mix') or 'balanced'
+def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float) -> int:
     if options.get('mode') == 'preview':
-        if mix == 'real_first':
-            return min(1, scene_count)
-        return min(3, max(1, math.ceil(scene_count * 0.50)))
+        return min(3, scene_count) if duration_minutes <= 0.6 else 0
+    mix = options.get('visual_mix') or 'balanced'
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
     if mix == 'ai_first':
@@ -368,10 +366,14 @@ def run_video_pipeline(
         runway_errors: list[str] = []
         runway_failed_scenes: list[int] = []
         runway_scenes_used = 0
-        max_runway = _max_runway_scenes(options, len(scenes))
+        max_runway = _max_runway_scenes(options, len(scenes), duration_minutes)
         for scene_idx, scene in enumerate(scenes):
             prompt = scene.get('ai_prompt')
             if not prompt or runway_scenes_used >= max_runway:
+                continue
+            stock_review = reviews_by_scene.get(scene_idx) or {}
+            stock_score = int(stock_review.get('score', 0))
+            if scene_visuals[scene_idx] and stock_score >= quality_threshold:
                 continue
             try:
                 url = generate_scene(str(prompt), duration=5)
