@@ -120,6 +120,7 @@ def _run_director(
     reference_url = str(options.get('reference_url') or '').strip()
     current_words = int(compact.get('current_word_count') or 0)
     short_quota_note = ''
+    short_visual_note = ''
     if duration_minutes <= 0.6 and target_scenes > 0:
         base, extra = divmod(target_words, target_scenes)
         quotas = [base + (1 if i < extra else 0) for i in range(target_scenes)]
@@ -127,6 +128,20 @@ def _run_director(
             f'SHORT PREVIEW — HIGHEST PRIORITY: return exactly {target_scenes} scenes. '
             f'Scene narration word counts must be exactly {quotas}; total exactly {target_words}. '
             'Count hyphenated or apostrophe compounds as one word. '
+        )
+        short_visual_note = (
+            'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: at most three scenes may have a non-null ai_prompt. '
+            'Reserve those scenes for facts stock footage cannot literally show, especially pixel-level OLED true-black or power behavior, '
+            'invisible indoor Wi-Fi/cellular/GPS assistance, or damaged QR error recovery. '
+            'When the story includes those three hard concepts, assign one AI scene to each and no others. '
+            'All remaining scenes must set ai_prompt to null and narrate a plainly filmable real-world action. '
+            'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
+            'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
+        )
+    elif options.get('mode') == 'preview':
+        short_visual_note = (
+            'PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: every ai_prompt MUST be null for this duration. '
+            'Make every scene literally stock-filmable and preserve this assignment during all corrections. '
         )
     correction_note = (
         f'CRITICAL CORRECTION: the server counted {current_words} words. '
@@ -151,6 +166,7 @@ Studio visual mix: {visual_mix}
 {reference_note}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_quota_note}
+{short_visual_note}
 Target scene budget: approximately {target_scenes} scenes, never more than one scene away.
 {correction_note}
 
@@ -215,9 +231,14 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     out = _clean_package(revised, package)
     words = _word_count(out['narration'])
     scene_count = len(out['scenes'])
+    ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
+    preview_ai_limit = None
+    if options.get('mode') == 'preview':
+        preview_ai_limit = min(3, target_scenes) if duration_minutes <= 0.6 else 0
 
     for correction_attempt in range(3):
-        if min_words <= words <= max_words and abs(scene_count - target_scenes) <= 1:
+        ai_count_ok = preview_ai_limit is None or ai_scene_count <= preview_ai_limit
+        if min_words <= words <= max_words and abs(scene_count - target_scenes) <= 1 and ai_count_ok:
             break
         correction_input = {
             'title': out.get('title'),
@@ -227,6 +248,8 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             'sources': package.get('sources', []),
             'current_word_count': words,
             'current_scene_count': scene_count,
+            'current_ai_scene_count': ai_scene_count,
+            'max_ai_scene_count': preview_ai_limit,
             'correction_attempt': correction_attempt + 1,
         }
         revised = _run_director(
@@ -236,14 +259,21 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         out = _clean_package(revised, package)
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
+        ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
 
     if words < min_words or words > max_words:
         raise RuntimeError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
     if abs(scene_count - target_scenes) > 1:
         raise RuntimeError(f'Scene-count gate rejected final edit: {scene_count} scenes; target {target_scenes}')
+    if preview_ai_limit is not None and ai_scene_count > preview_ai_limit:
+        raise RuntimeError(
+            f'Preview AI-scene gate rejected {ai_scene_count} scenes; maximum {preview_ai_limit}'
+        )
 
     out['narration_word_count'] = words
     out['target_word_range'] = [min_words, max_words]
     out['target_scene_count'] = target_scenes
+    out['ai_scene_count'] = ai_scene_count
+    out['max_ai_scene_count'] = preview_ai_limit
     out['studio_options'] = options
     return out

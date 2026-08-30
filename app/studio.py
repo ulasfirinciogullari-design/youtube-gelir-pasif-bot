@@ -200,7 +200,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
 <form action="/studio/start" method="post" class="card" id="studio-form">
 <h2>1. Üretim seviyesi</h2>
 <div class="choice-grid">
-<div class="choice"><input id="mode-preview" name="mode" value="preview" type="radio" checked><label for="mode-preview"><b>⚡ Hızlı önizleme</b><span>30–60 saniye. Runway ve müzik kapalı; fikir, metin ve görsel yön hızlı test edilir.</span></label></div>
+<div class="choice"><input id="mode-preview" name="mode" value="preview" type="radio" checked><label for="mode-preview"><b>⚡ Hızlı önizleme</b><span>30–60 saniye. Müzik kapalı; 30 saniyelik testte yalnız stokla dürüstçe anlatılamayan en fazla 3 sahnede Runway kullanılabilir.</span></label></div>
 <div class="choice"><input id="mode-production" name="mode" value="production" type="radio"><label for="mode-production"><b>🏆 Yayın kalitesi</b><span>4–5 dakikalık profesyonel akış, sıkı QC, özgün AI sahneleri ve mümkünse müzik tasarımı.</span></label></div>
 </div>
 <label class="field">Video konusu ve yönetmen talimatı</label>

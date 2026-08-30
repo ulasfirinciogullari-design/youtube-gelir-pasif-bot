@@ -177,9 +177,9 @@ def _visual_path(spec: str | dict) -> str:
     return str(spec)
 
 
-def _max_runway_scenes(options: dict, scene_count: int) -> int:
+def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float) -> int:
     if options.get('mode') == 'preview':
-        return 0
+        return min(3, scene_count) if duration_minutes <= 0.6 else 0
     mix = options.get('visual_mix') or 'balanced'
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
@@ -364,11 +364,16 @@ def run_video_pipeline(
 
         set_stage(self, task_id, 'ai_scene', 61, 'Stok görüntünün anlatamadığı sahneler için özgün görüntüler hazırlanıyor.')
         runway_errors: list[str] = []
+        runway_failed_scenes: list[int] = []
         runway_scenes_used = 0
-        max_runway = _max_runway_scenes(options, len(scenes))
+        max_runway = _max_runway_scenes(options, len(scenes), duration_minutes)
         for scene_idx, scene in enumerate(scenes):
             prompt = scene.get('ai_prompt')
             if not prompt or runway_scenes_used >= max_runway:
+                continue
+            stock_review = reviews_by_scene.get(scene_idx) or {}
+            stock_score = int(stock_review.get('score', 0))
+            if scene_visuals[scene_idx] and stock_score >= quality_threshold:
                 continue
             try:
                 url = generate_scene(str(prompt), duration=5)
@@ -377,6 +382,7 @@ def run_video_pipeline(
                 scene_visuals[scene_idx] = [{'path': str(runway_path), 'start_fraction': 0.0}]
                 runway_scenes_used += 1
             except Exception as exc:
+                runway_failed_scenes.append(scene_idx)
                 runway_errors.append(f'scene {scene_idx}: {str(exc)[:400]}')
 
         # Re-review the exact clips that will be rendered. Retry search results
@@ -466,6 +472,14 @@ def run_video_pipeline(
 
         visual_qc['final_reviews'] = final_visual_qc.get('reviews') or []
         if rejected_final_scenes:
+            failed_required_scenes = [
+                idx for idx in rejected_final_scenes
+                if idx in runway_failed_scenes
+            ]
+            if failed_required_scenes:
+                raise RuntimeError(
+                    f'Runway generation failed for quality-required scenes: {failed_required_scenes}'
+                )
             rejected_details = {
                 idx: {
                     'score': int((final_reviews.get(idx) or {}).get('score', 0)),
