@@ -120,6 +120,7 @@ def _run_director(
     reference_url = str(options.get('reference_url') or '').strip()
     current_words = int(compact.get('current_word_count') or 0)
     short_quota_note = ''
+    short_visual_note = ''
     if duration_minutes <= 0.6 and target_scenes > 0:
         base, extra = divmod(target_words, target_scenes)
         quotas = [base + (1 if i < extra else 0) for i in range(target_scenes)]
@@ -127,6 +128,15 @@ def _run_director(
             f'SHORT PREVIEW — HIGHEST PRIORITY: return exactly {target_scenes} scenes. '
             f'Scene narration word counts must be exactly {quotas}; total exactly {target_words}. '
             'Count hyphenated or apostrophe compounds as one word. '
+        )
+        short_visual_note = (
+            'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: at most three scenes may have a non-null ai_prompt. '
+            'Reserve those scenes for facts stock footage cannot literally show, especially pixel-level OLED true-black or power behavior, '
+            'invisible indoor Wi-Fi/cellular/GPS assistance, or damaged QR error recovery. '
+            'When the story includes those three hard concepts, assign one AI scene to each and no others. '
+            'All remaining scenes must set ai_prompt to null and narrate a plainly filmable real-world action. '
+            'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
+            'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
         )
     correction_note = (
         f'CRITICAL CORRECTION: the server counted {current_words} words. '
@@ -151,6 +161,7 @@ Studio visual mix: {visual_mix}
 {reference_note}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_quota_note}
+{short_visual_note}
 Target scene budget: approximately {target_scenes} scenes, never more than one scene away.
 {correction_note}
 
