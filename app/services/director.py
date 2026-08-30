@@ -29,7 +29,7 @@ def _word_count(text: str) -> int:
 
 def _target_scene_count(duration_minutes: float, pace: str) -> int:
     if duration_minutes <= 0.6:
-        base = 4
+        base = max(5, int(round(duration_minutes * 12)))
     elif duration_minutes <= 1.1:
         base = 6
     elif duration_minutes <= 3.1:
@@ -45,14 +45,14 @@ def _target_scene_count(duration_minutes: float, pace: str) -> int:
 
 def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
     if duration_minutes <= 0.6:
-        target = 40
+        target = max(44, int(round(duration_minutes * 96)))
     elif duration_minutes <= 1.1:
         target = 82
     elif duration_minutes <= 3.1:
         target = int(round(duration_minutes * 92))
     else:
         target = int(round(duration_minutes * 100))
-    minimum = max(30, int(round(target * 0.86)))
+    minimum = max(30, int(round(target * (0.94 if duration_minutes <= 0.6 else 0.86))))
     maximum = max(minimum + 4, int(round(target * 1.06)))
     return target, minimum, maximum
 
@@ -159,8 +159,9 @@ EDITORIAL QC RULES:
 - Match the selected Studio style without imitating a named creator.
 - Apply the global pace profile, but still vary individual scene pace intentionally.
 - The master video is text-free. Do not create subtitles, lower thirds or overlay copy.
-- visual_queries must literally match the exact spoken meaning and name concrete visible footage.
-- Reject generic typing, random phones, office workers, skylines, fireworks, finance charts or abstract tech footage unless literally relevant.
+- visual_queries must literally match the exact spoken meaning and name the visible subject, action and context in the same phrase.
+- Never search for an abstract property alone: keep the named subject attached (for example, a damaged QR code being scanned, not a generic software error; OLED pixel microscopy, not digital glitch footage).
+- Reject generic typing, code errors, random phones, office workers, skylines, fireworks, finance charts, digital noise or abstract tech footage unless literally required by the narration.
 - Give every scene 2-3 search options with different shot grammar.
 - ai_prompt is null unless stock footage cannot honestly show the concept.
 - pace is fast, normal or slow. transition is mostly cut; use match only for a real visual relationship and dip sparingly.

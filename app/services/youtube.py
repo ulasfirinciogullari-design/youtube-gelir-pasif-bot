@@ -27,8 +27,8 @@ def upload_video_with_credentials(
     tags: list[str] | None = None,
     category_id: str = '28',
 ) -> dict:
-    if privacy_status not in {'private', 'unlisted', 'public'}:
-        privacy_status = 'private'
+    if privacy_status != 'private':
+        raise ValueError('Initial YouTube uploads must use private visibility')
     youtube = _service(credentials)
     snippet = {
         'title': (title or 'Video')[:100],

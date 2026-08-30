@@ -19,6 +19,9 @@ def publish_video_pipeline(
     privacy_status: str = 'private',
 ):
     task_id = self.request.id
+    # Initial uploads are always private. Public release is a separate,
+    # deliberately confirmed future operation.
+    privacy_status = 'private'
     work = Path('/tmp/youtube_publish') / task_id
     work.mkdir(parents=True, exist_ok=True)
     try:
