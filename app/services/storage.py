@@ -40,6 +40,15 @@ def upload_file(local_path: str | Path, object_key: str, content_type: str = 'vi
     return {'bucket': settings.bucket, 'key': object_key, 'size': path.stat().st_size}
 
 
+def download_file(object_key: str, local_path: str | Path) -> str:
+    output = Path(local_path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    _client().download_file(settings.bucket, object_key, str(output))
+    if not output.exists() or output.stat().st_size == 0:
+        raise RuntimeError(f'Object download returned an empty file: {object_key}')
+    return str(output)
+
+
 def presigned_download_url(object_key: str, expires_seconds: int = 86400) -> str:
     return _client().generate_presigned_url(
         'get_object',
