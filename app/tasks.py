@@ -121,7 +121,11 @@ def _select_ranked_broll_candidates(
     return selected
 
 
-def _collect_broll(scenes: list[dict], work: Path) -> dict:
+def _collect_broll(
+    scenes: list[dict],
+    work: Path,
+    strict_duration: bool = False,
+) -> dict:
     scene_visuals: list[list[dict]] = [[] for _ in scenes]
     credits: list[dict] = []
     seen_ids: set[int | str] = set()
@@ -160,7 +164,7 @@ def _collect_broll(scenes: list[dict], work: Path) -> dict:
             selection_seen_ids,
             3,
             allow_seen_fallback=False,
-            allow_short_fallback=False,
+            allow_short_fallback=not strict_duration,
         )
         for candidate_idx, (query, item) in enumerate(selected):
             candidate_id = item.get('pexels_id') or item.get('download_url')
@@ -232,6 +236,7 @@ def _download_ranked_broll_candidates(
     max_candidates: int,
     search_limit: int,
     minimum_duration: float = 5.0,
+    allow_short_fallback: bool = False,
 ) -> list[dict]:
     normalized_queries: list[str] = []
     query_keys: set[str] = set()
@@ -275,7 +280,7 @@ def _download_ranked_broll_candidates(
         attempt_limit,
         minimum_duration=max(0.1, float(minimum_duration)),
         allow_seen_fallback=False,
-        allow_short_fallback=False,
+        allow_short_fallback=allow_short_fallback,
     )
     if not ranked:
         return []
@@ -353,6 +358,7 @@ def _retry_bad_scene(
     file_prefix: str = 'qc',
     max_replacements: int = 1,
     minimum_duration: float = 5.0,
+    allow_short_fallback: bool = True,
 ) -> list[dict]:
     safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
     selected_by = (
@@ -373,6 +379,7 @@ def _retry_bad_scene(
         max_candidates=max_replacements,
         search_limit=18,
         minimum_duration=minimum_duration,
+        allow_short_fallback=allow_short_fallback,
     )
 
 def _visual_path(spec: str | dict) -> str:
@@ -586,6 +593,10 @@ def run_video_pipeline(
         scenes = package['scenes']
         (work / 'package.json').write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding='utf-8')
 
+        strict_short_preview_duration = (
+            options.get('mode') == 'preview'
+            and duration_minutes <= 0.6
+        )
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
             voice_future = stage_pool.submit(
@@ -594,34 +605,40 @@ def run_video_pipeline(
                 task_id,
                 duration_minutes * 60,
             )
-            broll_future = stage_pool.submit(_collect_broll, scenes, work)
+            broll_future = stage_pool.submit(
+                _collect_broll,
+                scenes,
+                work,
+                strict_short_preview_duration,
+            )
             voice_result = voice_future.result()
             broll_result = broll_future.result()
 
         voice_path = voice_result['path']
         scene_durations = voice_result['scene_durations']
         scene_visuals: list[list[str | dict]] = broll_result['scene_visuals']
-        for scene_idx, specs in enumerate(scene_visuals):
-            try:
-                required_source_duration = max(
-                    5.0,
-                    float(scene_durations[scene_idx]) + 0.35,
-                )
-            except Exception:
-                required_source_duration = 5.0
-            duration_safe_specs: list[str | dict] = []
-            for spec in specs:
+        if strict_short_preview_duration:
+            for scene_idx, specs in enumerate(scene_visuals):
                 try:
-                    source_duration = float(
-                        spec.get('source_duration') or 0
-                        if isinstance(spec, dict)
-                        else 0
+                    required_source_duration = max(
+                        5.0,
+                        float(scene_durations[scene_idx]) + 0.35,
                     )
                 except Exception:
-                    source_duration = 0.0
-                if source_duration >= required_source_duration:
-                    duration_safe_specs.append(spec)
-            scene_visuals[scene_idx] = duration_safe_specs
+                    required_source_duration = 5.0
+                duration_safe_specs: list[str | dict] = []
+                for spec in specs:
+                    try:
+                        source_duration = float(
+                            spec.get('source_duration') or 0
+                            if isinstance(spec, dict)
+                            else 0
+                        )
+                    except Exception:
+                        source_duration = 0.0
+                    if source_duration >= required_source_duration:
+                        duration_safe_specs.append(spec)
+                scene_visuals[scene_idx] = duration_safe_specs
         credits = broll_result['credits']
         seen_ids = broll_result['seen_ids']
 
@@ -694,6 +711,7 @@ def run_video_pipeline(
                             5.0,
                             float(scene_durations[scene_idx]) + 0.35,
                         ),
+                        allow_short_fallback=False,
                     )
                     scene_visuals[scene_idx] = duration_refill
                     if duration_refill:
@@ -751,6 +769,7 @@ def run_video_pipeline(
                 work,
                 credits,
                 minimum_duration=max(5.0, float(scene_durations[scene_idx]) + 0.35),
+                allow_short_fallback=not strict_short_preview_duration,
             )
             scene_visuals[scene_idx] = [*replacements, best_spec][:3]
             if replacements:
@@ -1087,6 +1106,7 @@ def run_video_pipeline(
                         5.0,
                         float(scene_durations[scene_idx]) + 0.35,
                     ),
+                    allow_short_fallback=False,
                 )
                 if not replacements:
                     continue
@@ -1246,6 +1266,7 @@ def run_video_pipeline(
                     5.0,
                     float(scene_durations[scene_idx]) + 0.35,
                 ),
+                allow_short_fallback=not is_bounded_short_preview,
             )
             if not replacements:
                 continue
