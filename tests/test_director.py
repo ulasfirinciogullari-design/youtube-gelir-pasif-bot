@@ -237,6 +237,15 @@ class ShortStockRepairTests(unittest.TestCase):
         )
 
         self.assertEqual(len(client.responses.calls), 4)
+        second_generator_input = client.responses.calls[2]['input']
+        self.assertIn(
+            '"previous_narration": "Kasiyer kafede müşteriye sıcak kahvesini sakinlikle uzatır bugün."',
+            second_generator_input,
+        )
+        self.assertNotIn(
+            '"previous_narration": "Kasada telefonumu okuyucuya tutup ödemeyi sessizce tamamlarım bugün."',
+            second_generator_input,
+        )
         self.assertEqual(result['scenes'][0]['narration'], first['scenes'][0]['narration'])
         self.assertEqual(result['scenes'][4]['narration'], first['scenes'][1]['narration'])
         self.assertEqual(result['scenes'][5]['narration'], second['scenes'][0]['narration'])
