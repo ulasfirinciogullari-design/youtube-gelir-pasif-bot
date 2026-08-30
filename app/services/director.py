@@ -3,6 +3,7 @@ import json
 import re
 from openai import OpenAI
 from app.config import settings
+from app.services.source_evidence import normalize_evidence_sources
 
 STYLE_NOTES = {
     'documentary': 'authoritative premium documentary, restrained and evidence-led',
@@ -181,18 +182,18 @@ def short_story_package_is_approved(
     sources = package.get('sources')
     qc = package.get('short_story_qc')
     stock_qc = package.get('stock_scene_qc')
+    try:
+        normalize_evidence_sources(
+            sources,
+            min_count=2,
+            max_count=5,
+        )
+    except ValueError:
+        return False
     if (
         not isinstance(scenes, list)
         or not scenes
         or not all(isinstance(scene, dict) for scene in scenes)
-        or not isinstance(sources, list)
-        or not sources
-        or not all(
-            isinstance(source, dict)
-            and str(source.get('url') or '').startswith(('https://', 'http://'))
-            and bool(str(source.get('evidence') or '').strip())
-            for source in sources
-        )
         or not isinstance(qc, dict)
         or not isinstance(stock_qc, dict)
     ):
@@ -879,6 +880,7 @@ NON-NEGOTIABLE RULES:
             reasoning={'effort': 'medium'},
             tools=[{'type': 'web_search', 'search_context_size': 'low'}],
             tool_choice='auto',
+            max_tool_calls=1,
             input=f'''Act as an independent, fail-closed stock-shot feasibility critic. Do not rewrite anything.
 Evaluate every stock-routed candidate against its exact narration, queries, role, adjacent scenes and complete short story.
 {json.dumps(critic_context, ensure_ascii=False)}
