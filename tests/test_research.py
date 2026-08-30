@@ -17,7 +17,7 @@ config_stub.settings = SimpleNamespace(
 sys.modules['app.config'] = config_stub
 
 import app.services.research as research_module
-from app.services.research import _parse_json_payload
+from app.services.research import _max_ai_scenes, _parse_json_payload
 
 
 def valid_research_payload():
@@ -47,6 +47,26 @@ def valid_research_payload():
 
 
 class ResearchEvidenceContractTests(unittest.TestCase):
+    def test_ai_first_short_preview_authorship_matches_runway_cap(self):
+        self.assertEqual(
+            _max_ai_scenes(
+                5,
+                {'mode': 'preview', 'visual_mix': 'ai_first'},
+                0.5,
+            ),
+            3,
+        )
+        for visual_mix in ('balanced', 'real_first'):
+            with self.subTest(visual_mix=visual_mix):
+                self.assertEqual(
+                    _max_ai_scenes(
+                        5,
+                        {'mode': 'preview', 'visual_mix': visual_mix},
+                        0.5,
+                    ),
+                    5,
+                )
+
     def test_accepts_structured_url_and_evidence_records(self):
         result = _parse_json_payload(
             json.dumps(valid_research_payload()),

@@ -3,6 +3,7 @@ import math
 import re
 from openai import OpenAI
 from app.config import settings
+from app.services.visual_routing import preview_authored_ai_limit
 from app.services.source_evidence import normalize_evidence_sources
 
 STYLE_DIRECTIONS = {
@@ -111,8 +112,15 @@ def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
 
 
 def _max_ai_scenes(scene_count: int, options: dict, duration_minutes: float) -> int:
+    preview_limit = preview_authored_ai_limit(
+        options,
+        scene_count,
+        duration_minutes,
+    )
+    if preview_limit is not None:
+        return preview_limit
     if options.get('mode') == 'preview':
-        return scene_count if duration_minutes <= 0.6 else 0
+        return 0
     mix = options.get('visual_mix') or 'balanced'
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))

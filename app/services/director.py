@@ -8,6 +8,7 @@ from app.services.gemini_critic import (
     run_optional_gemini_critic,
     setting_is_enabled,
 )
+from app.services.visual_routing import preview_authored_ai_limit
 from app.services.source_evidence import normalize_evidence_sources
 
 STYLE_NOTES = {
@@ -374,6 +375,20 @@ def _run_director(
     short_visual_note = ''
     short_language_note = ''
     if duration_minutes <= 0.6 and target_scenes > 0:
+        authored_ai_limit = preview_authored_ai_limit(
+            options,
+            target_scenes,
+            duration_minutes,
+        )
+        if authored_ai_limit is None:
+            authored_ai_limit = target_scenes
+        ai_first_routing_note = (
+            f'The selected AI-first mix may carry at most {authored_ai_limit} non-null ai_prompt values. '
+            'Preserve deliberate AI routes already present in the draft, including a user-requested AI ending pair, '
+            'unless doing so would exceed that limit. Do not downgrade an authored AI route merely because stock might exist. '
+            if visual_mix == 'ai_first'
+            else ''
+        )
         base, extra = divmod(target_words, target_scenes)
         quotas = [base + (1 if i < extra else 0) for i in range(target_scenes)]
         scene_ranges = [
@@ -389,7 +404,8 @@ def _run_director(
         )
         short_visual_note = (
             'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: ai_prompt values are free fallback candidates, not promised generations. '
-            f'Up to {target_scenes} scenes may carry a non-null fallback, while the worker will submit at most three paid Runway generations after measuring the exact current stock clips. '
+            f'Up to {authored_ai_limit} scenes may carry a non-null fallback, while the worker will submit at most three paid Runway generations after measuring the exact current stock clips. '
+            f'{ai_first_routing_note}'
             'Before writing, silently choose ONE precise everyday curiosity a real person would willingly spend thirty seconds to resolve. '
             'The supplied topic is broad context, never permission to make a technology-trivia sampler. '
             'Use one recurring person or object, one immediate goal or problem, one causal reveal, and one visible everyday payoff. '
@@ -524,15 +540,11 @@ def _repair_short_stock_scenes(
     minimum_scene_words = 5
     maximum_scene_words = 11
 
-    stock_positions = sorted({
-        *[
-            position
-            for position, scene in enumerate(scenes)
-            if not str(scene.get('ai_prompt') or '').strip()
-        ],
-        len(scenes) - 2,
-        len(scenes) - 1,
-    })
+    stock_positions = [
+        position
+        for position, scene in enumerate(scenes)
+        if not str(scene.get('ai_prompt') or '').strip()
+    ]
     role_by_position = {
         position: (
             'hook' if position == 0
@@ -1258,6 +1270,25 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     f'ending pair: {", ".join(ending_failed_checks)}; '
                     f'{ending_reason[:160]}'
                 )
+                ai_routed_ending_positions = [
+                    position
+                    for position in ending_positions
+                    if position not in stock_positions
+                ]
+                if ai_routed_ending_positions:
+                    raise RuntimeError(
+                        'Director rejected an AI-routed short-preview ending '
+                        'before paid media: '
+                        + json.dumps(
+                            {
+                                'positions': ai_routed_ending_positions,
+                                'failed_checks': ending_failed_checks,
+                                'reason': ending_reason[:180],
+                            },
+                            ensure_ascii=False,
+                            separators=(',', ':'),
+                        )
+                    )
                 for position in ending_positions:
                     critic_failures[position] = pair_failure
                     review = parsed_reviews.get(position)
@@ -1456,7 +1487,13 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
     preview_ai_limit = None
     if options.get('mode') == 'preview':
-        preview_ai_limit = target_scenes if duration_minutes <= 0.6 else 0
+        preview_ai_limit = preview_authored_ai_limit(
+            options,
+            target_scenes,
+            duration_minutes,
+        )
+        if preview_ai_limit is None:
+            preview_ai_limit = 0
 
     short_editorial_issues = (
         _short_story_quality_issues(out, language_name)
@@ -1647,4 +1684,3 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         }
         out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
     return out
-

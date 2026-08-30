@@ -137,13 +137,11 @@ def make_short_package():
             4,
             'Kasada telefonumu okuyucuya tutup ödemeyi sessizce tamamlarım bugün.',
             ['customer paying by phone checkout', 'phone held over payment reader'],
-            'checkout fallback',
         ),
         _scene(
             5,
             'Sonra mağazadan çıkar kahvemi alıp telefonumu cebime koyarım.',
             ['person exiting shop with coffee', 'person putting phone in pocket'],
-            'ending fallback',
         ),
     ]
     narration = ' '.join(scene['narration'] for scene in scenes)
@@ -246,6 +244,70 @@ def make_coherent_battery_package():
     }
 
 
+def make_ai_first_five_scene_package():
+    scenes = [
+        _scene(
+            0,
+            'Elif aynı otobüs durağında kapanan telefon ekranına bakar.',
+            ['woman looks at phone at bus stop', 'woman checks phone at winter bus stop'],
+        ),
+        _scene(
+            1,
+            'Soğuk pilin iç direncini artırır, yük altında gerilim düşer ve telefon kapanır.',
+            ['cold battery internal resistance macro', 'smartphone battery voltage sag visualization'],
+            'cinematic macro of a cold smartphone battery voltage sag without text',
+        ),
+        _scene(
+            2,
+            'Elif telefonu aynı otobüs durağında montunun içine koyar.',
+            ['woman puts phone inside coat at bus stop', 'commuter pockets phone at winter bus stop'],
+        ),
+        _scene(
+            3,
+            'Elif aynı otobüs durağı bankında telefonunu cebinden yavaşça çıkarır.',
+            ['woman removes phone at bus stop bench', 'commuter takes phone from coat by bench'],
+            'same woman slowly removes her phone beside the same winter bus stop bench',
+        ),
+        _scene(
+            4,
+            'Aynı otobüs durağı bankında telefonun ekranı yeniden açılır.',
+            ['phone screen lights at bus stop bench', 'woman sees phone turn on by bench'],
+            'close shot at the same bus stop bench as the phone screen lights without readable text',
+        ),
+    ]
+    narration = ' '.join(scene['narration'] for scene in scenes)
+    assert _word_count(narration) == 45
+    return {
+        'title': 'Soğukta Kapanan Telefon',
+        'description': 'Tek bir gündelik pil sorusunu görünür bir sonuca bağlar.',
+        'thumbnail_text': 'SOĞUKTA NEDEN KAPANIR?',
+        'sources': [
+            {
+                'url': 'https://example.com/cold-battery-evidence',
+                'evidence': 'Cold can raise internal resistance and reduce loaded voltage.',
+            },
+            {
+                'url': 'https://example.org/voltage-evidence',
+                'evidence': 'A loaded voltage drop can make a device shut down.',
+            },
+        ],
+        'scenes': scenes,
+        'narration': narration,
+        'tts_narration': narration,
+        'visual_queries': [
+            query
+            for scene in scenes
+            for query in scene['visual_queries']
+        ],
+        'ai_scenes': [
+            scene['ai_prompt']
+            for scene in scenes
+            if scene.get('ai_prompt')
+        ],
+        'director_qc': [],
+    }
+
+
 def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
     rows = {
         0: {
@@ -292,7 +354,43 @@ def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
     return {'scenes': [copy.deepcopy(rows[position]) for position in positions]}
 
 
-def critic_payload(failures=None, story_failures=None, ending_failures=None):
+def valid_ai_first_generator_payload():
+    return {
+        'scenes': [
+            {
+                'position': 0,
+                'narration': (
+                    'Elif aynı otobüs durağında kapanan telefon ekranına bakar.'
+                ),
+                'visual_queries': [
+                    'woman looks at phone at bus stop',
+                    'woman checks phone at winter bus stop',
+                ],
+                'ai_prompt': None,
+            },
+            {
+                'position': 2,
+                'narration': (
+                    'Elif telefonu aynı otobüs durağında montunun içine koyar.'
+                ),
+                'visual_queries': [
+                    'woman puts phone inside coat at bus stop',
+                    'commuter pockets phone at winter bus stop',
+                ],
+                'ai_prompt': None,
+            },
+        ],
+    }
+
+
+def critic_payload(
+    failures=None,
+    story_failures=None,
+    ending_failures=None,
+    *,
+    stock_positions=(0, 4, 5),
+    scene_count=6,
+):
     failures = failures or {}
     story_failures = story_failures or []
     ending_failures = ending_failures or []
@@ -339,8 +437,8 @@ def critic_payload(failures=None, story_failures=None, ending_failures=None):
                 'natural_spoken_language failed at the quoted scene wording.'
             )
     ending_pair = {
-        'penultimate_position': 4,
-        'final_position': 5,
+        'penultimate_position': scene_count - 2,
+        'final_position': scene_count - 1,
         **{key: True for key in ending_boolean_keys},
         'location_anchor': 'same cafe counter',
         'reason': 'The same customer receives and enjoys coffee at the same counter.',
@@ -350,7 +448,7 @@ def critic_payload(failures=None, story_failures=None, ending_failures=None):
     if ending_failures:
         ending_pair['reason'] = 'The final beat jumps away from the preceding location.'
     rows = []
-    for position in (0, 4, 5):
+    for position in stock_positions:
         row = {
             'position': position,
             **{key: True for key in CRITIC_BOOLEAN_KEYS},
@@ -401,6 +499,60 @@ class ShortStockRepairTests(unittest.TestCase):
             self.assertIsNone(result['scenes'][position]['ai_prompt'])
         self.assertEqual(result['ai_scene_count'] if 'ai_scene_count' in result else 3, 3)
         self.assertEqual(len(result['ai_scenes']), 3)
+
+    def test_ai_first_preserves_authored_ai_ending_and_repairs_only_stock(self):
+        package = make_ai_first_five_scene_package()
+        original = copy.deepcopy(package)
+        client = FakeClient([
+            valid_ai_first_generator_payload(),
+            critic_payload(stock_positions=(0, 2), scene_count=5),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+        )
+
+        self.assertEqual(
+            result['stock_scene_qc']['target_positions'],
+            [0, 2],
+        )
+        self.assertEqual(
+            result['stock_scene_qc']['ending_pair_review']['positions'],
+            [3, 4],
+        )
+        for position in (1, 3, 4):
+            self.assertEqual(result['scenes'][position], original['scenes'][position])
+            self.assertTrue(result['scenes'][position]['ai_prompt'])
+        self.assertEqual(len(result['ai_scenes']), 3)
+        self.assertEqual(_word_count(result['narration']), 45)
+
+    def test_ai_first_ending_rejection_fails_closed_without_stock_rewrite(self):
+        client = FakeClient([
+            valid_ai_first_generator_payload(),
+            critic_payload(
+                ending_failures=['same_immediate_location'],
+                stock_positions=(0, 2),
+                scene_count=5,
+            ),
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'AI-routed short-preview ending before paid media',
+        ) as error:
+            _repair_short_stock_scenes(
+                client,
+                make_ai_first_five_scene_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertNotIsInstance(error.exception, KeyError)
+        self.assertIn('"positions":[3,4]', str(error.exception))
+        self.assertEqual(len(client.responses.calls), 2)
 
     def test_relaxed_scene_word_counts_keep_hard_total_duration_range(self):
         generated = valid_generator_payload()
@@ -1068,4 +1220,3 @@ class ShortStoryApprovalTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
