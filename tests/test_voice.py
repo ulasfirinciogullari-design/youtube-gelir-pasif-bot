@@ -2,6 +2,7 @@ import sys
 import types
 import unittest
 from types import SimpleNamespace
+from unittest.mock import patch
 
 
 config_stub = types.ModuleType('app.config')
@@ -11,9 +12,43 @@ sys.modules.setdefault('httpx', types.ModuleType('httpx'))
 sys.modules.setdefault('redis', types.ModuleType('redis'))
 
 from app.services.voice import normalize_turkish_tts
+from app.services.voice import _voice_speed
+from app.services.voice import synthesize_voice_with_id
+import app.services.voice as voice_module
+
+
+class _FakeVoiceResponse:
+    content = b'voice-bytes'
+
+    def raise_for_status(self):
+        return None
 
 
 class TurkishVoiceNormalizationTests(unittest.TestCase):
+    def test_short_preview_uses_clearer_deliberate_voice_speed(self):
+        self.assertEqual(_voice_speed(30), 0.90)
+        self.assertEqual(_voice_speed(40), 0.90)
+        self.assertEqual(_voice_speed(60), 1.01)
+        self.assertEqual(_voice_speed(None), 1.01)
+
+    @patch.object(voice_module.httpx, 'post', create=True)
+    def test_selected_speed_is_sent_to_elevenlabs(self, post):
+        config_stub.settings.elevenlabs_api_key = 'test-key'
+        post.return_value = _FakeVoiceResponse()
+
+        audio = synthesize_voice_with_id(
+            'Elif telefonu cebine koyar.',
+            'test-voice',
+            speed=0.90,
+        )
+
+        self.assertEqual(audio, b'voice-bytes')
+        request = post.call_args
+        self.assertEqual(
+            request.kwargs['json']['voice_settings']['speed'],
+            0.90,
+        )
+
     def test_qr_code_phrases_do_not_duplicate_code_word(self):
         cases = {
             'QR kod kasada okunur': 'kare kod kasada okunur.',
@@ -55,3 +90,4 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

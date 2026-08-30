@@ -120,7 +120,19 @@ def _media_duration(path: str | Path) -> float:
     return float(out)
 
 
-def synthesize_voice_with_id(text: str, voice_id: str, previous_text: str | None = None, next_text: str | None = None) -> bytes:
+def _voice_speed(target_seconds: float | None = None) -> float:
+    """Keep short Turkish previews deliberate without slowing long-form work."""
+    return 0.90 if target_seconds and target_seconds <= 40 else 1.01
+
+
+def synthesize_voice_with_id(
+    text: str,
+    voice_id: str,
+    previous_text: str | None = None,
+    next_text: str | None = None,
+    *,
+    speed: float = 1.01,
+) -> bytes:
     body = {
         'text': normalize_turkish_tts(text),
         'model_id': 'eleven_multilingual_v2',
@@ -130,7 +142,7 @@ def synthesize_voice_with_id(text: str, voice_id: str, previous_text: str | None
             'similarity_boost': 0.80,
             'style': 0.0,
             'use_speaker_boost': True,
-            'speed': 1.01,
+            'speed': speed,
         },
     }
     if previous_text:
@@ -223,11 +235,18 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: f
     work = Path('/tmp') / f'{job_id}_voice'
     work.mkdir(parents=True, exist_ok=True)
     chunk_paths = [work / f'scene_{idx:03d}.mp3' for idx in range(len(scenes))]
+    selected_speed = _voice_speed(target_seconds)
 
     def make_scene(idx: int):
         previous_text = source_texts[idx - 1] if idx > 0 else None
         next_text = source_texts[idx + 1] if idx + 1 < len(source_texts) else None
-        audio = synthesize_voice_with_id(source_texts[idx], voice_id, previous_text, next_text)
+        audio = synthesize_voice_with_id(
+            source_texts[idx],
+            voice_id,
+            previous_text,
+            next_text,
+            speed=selected_speed,
+        )
         chunk_paths[idx].write_bytes(audio)
         return idx, _media_duration(chunk_paths[idx])
 
@@ -289,3 +308,4 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: f
 
 def synthesize_voice(text: str, job_id: str) -> str:
     return synthesize_scene_sequence([{'narration': text}], job_id)['path']
+
