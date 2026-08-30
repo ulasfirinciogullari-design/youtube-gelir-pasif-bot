@@ -166,13 +166,26 @@ def _short_story_fingerprint(package: dict) -> str:
 def short_story_package_is_approved(package: dict) -> bool:
     if not isinstance(package, dict):
         return False
+    scenes = package.get('scenes')
     qc = package.get('short_story_qc')
     stock_qc = package.get('stock_scene_qc')
-    if not isinstance(qc, dict) or not isinstance(stock_qc, dict):
+    if (
+        not isinstance(scenes, list)
+        or not scenes
+        or not all(isinstance(scene, dict) for scene in scenes)
+        or not isinstance(qc, dict)
+        or not isinstance(stock_qc, dict)
+    ):
         return False
-    if qc.get('version') != _SHORT_STORY_QC_VERSION:
+    if (
+        type(qc.get('version')) is not int
+        or qc.get('version') != _SHORT_STORY_QC_VERSION
+    ):
         return False
-    if int(stock_qc.get('version') or 0) < 3:
+    if (
+        type(stock_qc.get('version')) is not int
+        or stock_qc.get('version') < 3
+    ):
         return False
     story_review = stock_qc.get('story_review')
     ending_review = stock_qc.get('ending_pair_review')
