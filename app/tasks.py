@@ -517,6 +517,28 @@ def run_video_pipeline(
             item['stock_score'],
             item['scene_index'],
         ))
+        if (
+            options.get('mode') == 'preview'
+            and duration_minutes <= 0.6
+            and len(ranked_runway_candidates) > runway_submission_cap
+        ):
+            preflight_details = [
+                {
+                    'scene_index': int(item['scene_index']),
+                    'stock_score': int(item['stock_score']),
+                    'has_visual': bool(item['has_visual']),
+                    'authored_ai_prompt': bool(scenes[int(item['scene_index'])].get('ai_prompt')),
+                }
+                for item in ranked_runway_candidates
+            ]
+            raise RuntimeError(
+                'Short-preview visual plan exceeds bounded Runway budget before any paid submission: '
+                + json.dumps({
+                    'required_scenes': len(ranked_runway_candidates),
+                    'submission_cap': runway_submission_cap,
+                    'candidates': preflight_details,
+                }, separators=(',', ':'))
+            )
         selected_runway = ranked_runway_candidates[:runway_submission_cap]
         selected_runway_indices = {item['scene_index'] for item in selected_runway}
         runway_rank = {
