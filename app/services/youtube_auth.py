@@ -118,7 +118,12 @@ def load_credentials(*, refresh: bool = True) -> Credentials | None:
 def build_authorization_url(redirect_uri: str) -> str:
     redirect_uri = settings.google_redirect_uri or redirect_uri
     state = secrets.token_urlsafe(32)
-    flow = Flow.from_client_config(_client_config(), scopes=SCOPES, state=state)
+    flow = Flow.from_client_config(
+        _client_config(),
+        scopes=SCOPES,
+        state=state,
+        autogenerate_code_verifier=True,
+    )
     flow.redirect_uri = redirect_uri
     authorization_url, _ = flow.authorization_url(
         access_type='offline',
@@ -128,7 +133,10 @@ def build_authorization_url(redirect_uri: str) -> str:
     _redis().setex(
         STATE_PREFIX + state,
         STATE_TTL,
-        json.dumps({'redirect_uri': redirect_uri}, ensure_ascii=False),
+        json.dumps({
+            'redirect_uri': redirect_uri,
+            'code_verifier': flow.code_verifier,
+        }, ensure_ascii=False),
     )
     return authorization_url
 
@@ -140,7 +148,12 @@ def complete_authorization(authorization_response: str, state: str) -> dict:
         raise RuntimeError('OAuth state expired or invalid')
     state_payload = json.loads(raw_state)
     redirect_uri = state_payload.get('redirect_uri') or settings.google_redirect_uri
-    flow = Flow.from_client_config(_client_config(), scopes=SCOPES, state=state)
+    flow = Flow.from_client_config(
+        _client_config(),
+        scopes=SCOPES,
+        state=state,
+        code_verifier=state_payload.get('code_verifier'),
+    )
     flow.redirect_uri = redirect_uri
     flow.fetch_token(authorization_response=authorization_response)
     credentials = flow.credentials
