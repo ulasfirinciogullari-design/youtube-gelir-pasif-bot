@@ -224,7 +224,10 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
             'hand-only tap, digital noise or generic dark phone.'
         )
         power_claim = bool(re.search(
-            r'\b(?:power|energy|watt(?:age)?|consumption)\b|güç|enerji|tüket',
+            r'\b(?:power\s+(?:use|usage|draw|consumption)|energy\s+(?:use|usage|consumption)|'
+            r'watt(?:age)?|uses?\s+less\s+(?:power|energy)|lower\s+power)\b|'
+            r'(?:güç|enerji).{0,24}tüket|daha\s+az\s+(?:güç|enerji)|'
+            r'(?:güç|enerji)\s+kullanım',
             combined,
         ))
         if power_claim:
