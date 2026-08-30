@@ -80,6 +80,7 @@ class RankedBrollSelectionTests(unittest.TestCase):
             {4},
             5,
             allow_seen_fallback=False,
+            allow_short_fallback=False,
         )
 
         self.assertEqual(
