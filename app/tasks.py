@@ -59,6 +59,63 @@ def _task_spec(topic: str, duration_minutes: float, language: str, channel_id: s
     }
 
 
+def _select_ranked_broll_candidates(
+    query_results: list[tuple[str, list[dict]]],
+    seen_ids: set,
+    limit: int,
+    minimum_duration: float = 5.0,
+    allow_seen_fallback: bool = True,
+) -> list[tuple[str, dict]]:
+    """Select a stable relevance-first, query-diverse Pexels candidate pool."""
+    limit = max(1, int(limit))
+    selected: list[tuple[str, dict]] = []
+    selected_ids: set = set()
+
+    def candidate_key(item: dict):
+        return item.get('pexels_id') or item.get('download_url')
+
+    def usable(item: dict, require_unseen: bool, require_duration: bool) -> bool:
+        key = candidate_key(item)
+        if not key or key in selected_ids:
+            return False
+        if require_unseen and key in seen_ids:
+            return False
+        width = int(item.get('width') or 0)
+        height = int(item.get('height') or 0)
+        if width and height and width < height:
+            return False
+        try:
+            duration = float(item.get('duration') or 0)
+        except Exception:
+            duration = 0
+        if require_duration and duration and duration < minimum_duration:
+            return False
+        return bool(item.get('download_url'))
+
+    max_rank = max(
+        (len(candidates) for _query, candidates in query_results),
+        default=0,
+    )
+    # Prefer globally new, >=5-second clips. Duration may relax when needed;
+    # global uniqueness relaxes only for callers that explicitly permit it.
+    selection_phases = [(True, True), (True, False)]
+    if allow_seen_fallback:
+        selection_phases.extend([(False, True), (False, False)])
+    for require_unseen, require_duration in selection_phases:
+        for rank in range(max_rank):
+            for query, candidates in query_results:
+                if rank >= len(candidates):
+                    continue
+                item = candidates[rank]
+                if not usable(item, require_unseen, require_duration):
+                    continue
+                selected.append((query, item))
+                selected_ids.add(candidate_key(item))
+                if len(selected) >= limit:
+                    return selected
+    return selected
+
+
 def _collect_broll(scenes: list[dict], work: Path) -> dict:
     scene_visuals: list[list[str]] = [[] for _ in scenes]
     credits: list[dict] = []
@@ -83,43 +140,168 @@ def _collect_broll(scenes: list[dict], work: Path) -> dict:
                 search_results[key] = []
 
     download_specs: list[tuple[int, int, str, dict, Path]] = []
-    for scene_idx, query_idx, query in requests:
-        candidates = search_results.get((scene_idx, query_idx, query)) or []
-        if not candidates:
-            continue
-        start = (scene_idx * 2 + query_idx) % min(6, len(candidates))
-        ordered = candidates[start:] + candidates[:start]
-        item = next((c for c in ordered if c.get('pexels_id') not in seen_ids), None)
-        if not item:
-            continue
-        seen_ids.add(item.get('pexels_id'))
-        path = work / f'pexels_s{scene_idx:02d}_{query_idx:02d}.mp4'
-        download_specs.append((scene_idx, query_idx, query, item, path))
+    selection_seen_ids = set(seen_ids)
+    for scene_idx in range(len(scenes)):
+        scene_query_results = [
+            (
+                query,
+                search_results.get((request_scene_idx, query_idx, query)) or [],
+            )
+            for request_scene_idx, query_idx, query in requests
+            if request_scene_idx == scene_idx
+        ]
+        selected = _select_ranked_broll_candidates(
+            scene_query_results,
+            selection_seen_ids,
+            3,
+        )
+        for candidate_idx, (query, item) in enumerate(selected):
+            candidate_id = item.get('pexels_id') or item.get('download_url')
+            if candidate_id:
+                selection_seen_ids.add(candidate_id)
+            path = work / f'pexels_s{scene_idx:02d}_{candidate_idx:02d}.mp4'
+            download_specs.append((
+                scene_idx,
+                candidate_idx,
+                query,
+                item,
+                path,
+            ))
 
     def download_one(spec):
         scene_idx, query_idx, query, item, path = spec
         download_broll(item, path)
         return scene_idx, query_idx, query, item, path
 
+    downloaded: list[tuple[int, int, str, dict, Path]] = []
     with ThreadPoolExecutor(max_workers=min(6, max(1, len(download_specs)))) as executor:
         futures = [executor.submit(download_one, spec) for spec in download_specs]
         for future in as_completed(futures):
             try:
-                scene_idx, _query_idx, query, item, path = future.result()
+                downloaded.append(future.result())
             except Exception:
                 continue
-            scene_visuals[scene_idx].append(str(path))
-            credits.append({
-                'source': 'Pexels',
-                'scene_index': scene_idx,
-                'query': query,
-                'creator_name': item.get('creator_name'),
-                'creator_url': item.get('creator_url'),
-                'page_url': item.get('page_url'),
-                'pexels_id': item.get('pexels_id'),
-                'selected_by': 'candidate_pool',
-            })
+
+    # Network completion order must never change the candidate indices later
+    # consumed by visual QC.
+    for scene_idx, candidate_idx, query, item, path in sorted(
+        downloaded,
+        key=lambda result: (result[0], result[1]),
+    ):
+        candidate_id = item.get('pexels_id') or item.get('download_url')
+        if candidate_id:
+            seen_ids.add(candidate_id)
+        scene_visuals[scene_idx].append(str(path))
+        credits.append({
+            'source': 'Pexels',
+            'scene_index': scene_idx,
+            'query': query,
+            'creator_name': item.get('creator_name'),
+            'creator_url': item.get('creator_url'),
+            'page_url': item.get('page_url'),
+            'pexels_id': item.get('pexels_id'),
+            'selected_by': 'candidate_pool',
+        })
     return {'scene_visuals': scene_visuals, 'credits': credits, 'seen_ids': seen_ids}
+
+
+def _download_ranked_broll_candidates(
+    scene_idx: int,
+    queries: list[str],
+    seen_ids: set,
+    work: Path,
+    credits: list[dict],
+    *,
+    file_prefix: str,
+    selected_by: str,
+    max_candidates: int,
+    search_limit: int,
+) -> list[dict]:
+    normalized_queries: list[str] = []
+    query_keys: set[str] = set()
+    for raw_query in queries:
+        query = str(raw_query or '').strip()
+        key = query.casefold()
+        if not query or key in query_keys:
+            continue
+        query_keys.add(key)
+        normalized_queries.append(query)
+        if len(normalized_queries) >= 3:
+            break
+    if not normalized_queries or max_candidates <= 0:
+        return []
+
+    search_results: dict[int, list[dict]] = {}
+    search_errors: list[Exception] = []
+    with ThreadPoolExecutor(max_workers=min(3, len(normalized_queries))) as retry_pool:
+        future_map = {
+            retry_pool.submit(find_broll, query, search_limit): query_idx
+            for query_idx, query in enumerate(normalized_queries)
+        }
+        for future in as_completed(future_map):
+            query_idx = future_map[future]
+            try:
+                search_results[query_idx] = future.result() or []
+            except Exception as exc:
+                search_errors.append(exc)
+
+    if not search_results and search_errors:
+        raise RuntimeError(f'Pexels retry search failed for scene {scene_idx}') from search_errors[0]
+
+    ranked = _select_ranked_broll_candidates(
+        [
+            (query, search_results.get(query_idx, []))
+            for query_idx, query in enumerate(normalized_queries)
+        ],
+        seen_ids,
+        min(5, max(1, int(max_candidates))),
+        allow_seen_fallback=False,
+    )
+    if not ranked:
+        return []
+
+    safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
+    download_errors: list[Exception] = []
+
+    def download_one(candidate_idx: int, query: str, item: dict):
+        path = work / f'{safe_prefix}_s{scene_idx:02d}_{candidate_idx:02d}.mp4'
+        download_broll(item, path)
+        return candidate_idx, query, item, path
+
+    downloaded: dict[int, tuple[str, dict, Path]] = {}
+    with ThreadPoolExecutor(max_workers=min(5, len(ranked))) as download_pool:
+        future_map = {
+            download_pool.submit(download_one, candidate_idx, query, item): candidate_idx
+            for candidate_idx, (query, item) in enumerate(ranked)
+        }
+        for future in as_completed(future_map):
+            try:
+                candidate_idx, query, item, path = future.result()
+                downloaded[candidate_idx] = (query, item, path)
+            except Exception as exc:
+                download_errors.append(exc)
+
+    replacements: list[dict] = []
+    for candidate_idx in sorted(downloaded):
+        query, item, path = downloaded[candidate_idx]
+        candidate_id = item.get('pexels_id') or item.get('download_url')
+        if candidate_id:
+            seen_ids.add(candidate_id)
+        replacements.append({'path': str(path), 'start_fraction': 0.35})
+        credits.append({
+            'source': 'Pexels',
+            'scene_index': scene_idx,
+            'query': query,
+            'creator_name': item.get('creator_name'),
+            'creator_url': item.get('creator_url'),
+            'page_url': item.get('page_url'),
+            'pexels_id': item.get('pexels_id'),
+            'selected_by': selected_by,
+        })
+
+    if ranked and not replacements and download_errors:
+        raise RuntimeError(f'Pexels retry download failed for scene {scene_idx}') from download_errors[0]
+    return replacements
 
 
 def _retry_bad_scene(
@@ -129,61 +311,26 @@ def _retry_bad_scene(
     work: Path,
     credits: list[dict],
     file_prefix: str = 'qc',
+    max_replacements: int = 1,
 ) -> list[dict]:
-    replacement_candidates: list[tuple[str, dict]] = []
-    if not retry_queries:
-        return []
-
-    search_errors: list[Exception] = []
-    successful_searches = 0
-    with ThreadPoolExecutor(max_workers=min(2, len(retry_queries))) as retry_pool:
-        retry_map = {retry_pool.submit(find_broll, query, 18): query for query in retry_queries}
-        for future in as_completed(retry_map):
-            query = retry_map[future]
-            try:
-                candidates = future.result() or []
-                successful_searches += 1
-            except Exception as exc:
-                search_errors.append(exc)
-                continue
-            item = next((candidate for candidate in candidates if candidate.get('pexels_id') not in seen_ids), None)
-            if item:
-                seen_ids.add(item.get('pexels_id'))
-                replacement_candidates.append((query, item))
-
-    if successful_searches == 0 and search_errors:
-        raise RuntimeError(f'Pexels retry search failed for scene {scene_idx}') from search_errors[0]
-
-    replacements: list[dict] = []
-    download_errors: list[Exception] = []
     safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
-    for retry_idx, (query, item) in enumerate(replacement_candidates[:1]):
-        try:
-            path = work / f'{safe_prefix}_s{scene_idx:02d}_{retry_idx:02d}.mp4'
-            download_broll(item, path)
-            replacements.append({'path': str(path), 'start_fraction': 0.35})
-            credits.append({
-                'source': 'Pexels',
-                'scene_index': scene_idx,
-                'query': query,
-                'creator_name': item.get('creator_name'),
-                'creator_url': item.get('creator_url'),
-                'page_url': item.get('page_url'),
-                'pexels_id': item.get('pexels_id'),
-                'selected_by': (
-                    'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue'
-                    else 'pre_runway_budget_rescue' if safe_prefix == 'pre_runway_budget_rescue'
-                    else 'pre_runway_stock_contract' if safe_prefix == 'pre_runway_stock_contract'
-                    else 'visual_qc_retry'
-                ),
-            })
-        except Exception as exc:
-            download_errors.append(exc)
-
-    if replacement_candidates and not replacements and download_errors:
-        raise RuntimeError(f'Pexels retry download failed for scene {scene_idx}') from download_errors[0]
-    return replacements
-
+    selected_by = (
+        'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue'
+        else 'pre_runway_budget_rescue' if safe_prefix == 'pre_runway_budget_rescue'
+        else 'pre_runway_stock_contract' if safe_prefix == 'pre_runway_stock_contract'
+        else 'visual_qc_retry'
+    )
+    return _download_ranked_broll_candidates(
+        scene_idx,
+        retry_queries[:2],
+        seen_ids,
+        work,
+        credits,
+        file_prefix=safe_prefix,
+        selected_by=selected_by,
+        max_candidates=max_replacements,
+        search_limit=18,
+    )
 
 def _visual_path(spec: str | dict) -> str:
     if isinstance(spec, dict):
@@ -477,10 +624,22 @@ def run_video_pipeline(
                 scene_visuals[scene_idx] = [{'path': best_path, 'start_fraction': best_fraction}]
                 continue
 
+            best_spec = {'path': best_path, 'start_fraction': best_fraction}
+            is_short_preview_stock = (
+                options.get('mode') == 'preview'
+                and duration_minutes <= 0.6
+                and not str(_scene.get('ai_prompt') or '').strip()
+            )
+            if is_short_preview_stock:
+                # Preserve the evidence-backed incumbent. The bounded stock
+                # tournament below compares it with a wider deterministic pool.
+                scene_visuals[scene_idx] = [best_spec]
+                continue
+
             retry_queries = [str(q).strip() for q in (review.get('retry_queries') or [])[:2] if str(q).strip()]
             replacements = _retry_bad_scene(scene_idx, retry_queries, seen_ids, work, credits)
+            scene_visuals[scene_idx] = [*replacements, best_spec][:3]
             if replacements:
-                scene_visuals[scene_idx] = replacements
                 visual_replacements.append({
                     'scene_index': scene_idx,
                     'score': score,
@@ -488,8 +647,6 @@ def run_video_pipeline(
                     'old_best': best_path,
                     'replacement_count': len(replacements),
                 })
-            else:
-                scene_visuals[scene_idx] = []
 
         set_stage(self, task_id, 'ai_scene', 61, 'Güncel stok kalitesi ölçülüyor; en zor sahneler özgün görüntüye ayrılıyor.')
         runway_errors: list[str] = []
@@ -529,10 +686,10 @@ def run_video_pipeline(
             and runway_submission_cap > 0
         )
 
-        # A stock-routed short-preview scene is a contract: its complete
-        # narration must already pass the 86-point real-footage gate. Give
-        # each failed contract one bounded Pexels rescue, then fail closed
-        # before paid generation rather than silently consuming a Runway slot.
+        # A stock-routed short-preview scene is a contract: real footage
+        # must clear the same semantic gate before any paid Runway request.
+        # Compare the incumbent with a bounded relevance-first Pexels pool in
+        # at most two batches of three candidates, preserving the best result.
         if is_bounded_short_preview:
             stock_contract_candidates = [
                 scene_idx
@@ -544,104 +701,197 @@ def run_video_pipeline(
                     or int(current_reviews[scene_idx].get('score', 0)) < quality_threshold
                 )
             ]
-            rescued_stock_contracts: list[int] = []
+            stock_candidate_pools: dict[int, list[dict]] = {}
+            stock_best_results: dict[int, dict] = {}
+
             for scene_idx in stock_contract_candidates:
                 review = current_reviews.get(scene_idx) or {}
-                raw_retry_queries = (
-                    (review.get('retry_queries') or [])
-                    or (scenes[scene_idx].get('visual_queries') or [])
-                )
+                incumbent_specs = [
+                    dict(spec) if isinstance(spec, dict) else {'path': _visual_path(spec), 'start_fraction': 0.35}
+                    for spec in scene_visuals[scene_idx][:1]
+                    if _visual_path(spec)
+                ]
+                incumbent = incumbent_specs[0] if incumbent_specs else None
+                stock_best_results[scene_idx] = {
+                    'score': int(review.get('score', -1)),
+                    'review': dict(review) if review else None,
+                    'spec': incumbent,
+                }
+
+                raw_retry_queries = review.get('retry_queries') or []
                 if isinstance(raw_retry_queries, str):
                     raw_retry_queries = [raw_retry_queries]
-                retry_queries = [
-                    str(query).strip()
-                    for query in raw_retry_queries[:2]
-                    if str(query).strip()
-                ]
-                replacements = _retry_bad_scene(
+                raw_visual_queries = scenes[scene_idx].get('visual_queries') or []
+                if isinstance(raw_visual_queries, str):
+                    raw_visual_queries = [raw_visual_queries]
+                query_pool: list[str] = []
+                query_keys: set[str] = set()
+                for raw_query in [*raw_retry_queries, *raw_visual_queries]:
+                    query = str(raw_query or '').strip()
+                    key = query.casefold()
+                    if not query or key in query_keys:
+                        continue
+                    query_keys.add(key)
+                    query_pool.append(query)
+                    if len(query_pool) >= 3:
+                        break
+
+                new_specs = _download_ranked_broll_candidates(
                     scene_idx,
-                    retry_queries,
+                    query_pool,
                     seen_ids,
                     work,
                     credits,
-                    file_prefix='pre_runway_stock_contract',
+                    file_prefix='pre_runway_stock_tournament',
+                    selected_by='pre_runway_stock_tournament',
+                    max_candidates=5,
+                    search_limit=24,
                 )
-                if not replacements:
-                    continue
-                existing_specs = list(scene_visuals[scene_idx])
-                scene_visuals[scene_idx] = [*replacements, *existing_specs][:3]
-                rescued_stock_contracts.append(scene_idx)
-                visual_replacements.append({
-                    'scene_index': scene_idx,
-                    'score': int(review.get('score', 0)),
-                    'reason': review.get('reason'),
-                    'old_best': _visual_path(existing_specs[0]) if existing_specs else '',
-                    'replacement_count': len(replacements),
-                    'stage': 'pre_runway_stock_contract',
-                })
+                frozen_pool: list[dict] = []
+                frozen_paths: set[str] = set()
+                for spec in [*incumbent_specs, *new_specs]:
+                    path = _visual_path(spec)
+                    if not path or path in frozen_paths:
+                        continue
+                    frozen_paths.add(path)
+                    frozen_pool.append(
+                        dict(spec) if isinstance(spec, dict)
+                        else {'path': path, 'start_fraction': 0.35}
+                    )
+                stock_candidate_pools[scene_idx] = frozen_pool
+                if new_specs:
+                    visual_replacements.append({
+                        'scene_index': scene_idx,
+                        'score': int(review.get('score', -1)),
+                        'reason': review.get('reason'),
+                        'old_best': _visual_path(incumbent) if incumbent else '',
+                        'replacement_count': len(new_specs),
+                        'stage': 'pre_runway_stock_tournament',
+                    })
 
-            if rescued_stock_contracts:
+            for round_index, (candidate_start, candidate_end) in enumerate(((0, 3), (3, 6)), start=1):
+                active_scenes = [
+                    scene_idx
+                    for scene_idx in stock_contract_candidates
+                    if int(stock_best_results[scene_idx].get('score', -1)) < quality_threshold
+                    and stock_candidate_pools.get(scene_idx, [])[candidate_start:candidate_end]
+                    and (
+                        candidate_start > 0
+                        or len(stock_candidate_pools.get(scene_idx, [])) > 1
+                        or stock_best_results[scene_idx].get('spec') is None
+                    )
+                ]
+                if not active_scenes:
+                    continue
+
                 set_stage(
                     self,
                     task_id,
-                    'pre_runway_stock_contract',
-                    59,
-                    'Stok sahneleri tek çekim sözleşmesine göre son kez yenileniyor.',
+                    f'pre_runway_stock_tournament_{round_index}',
+                    62,
+                    f'Stok sahneleri alaka sıralı adaylarla karşılaştırılıyor ({round_index}/2).',
                 )
-                stock_contract_qc = review_scene_visuals(
-                    [scenes[idx] for idx in rescued_stock_contracts],
-                    [scene_visuals[idx] for idx in rescued_stock_contracts],
-                    work / 'pre_runway_stock_contract',
-                    len(rescued_stock_contracts),
+                round_visuals = [
+                    stock_candidate_pools[scene_idx][candidate_start:candidate_end]
+                    for scene_idx in active_scenes
+                ]
+                round_qc = review_scene_visuals(
+                    [scenes[scene_idx] for scene_idx in active_scenes],
+                    round_visuals,
+                    work / f'pre_runway_stock_tournament_{round_index}',
+                    len(active_scenes),
                 )
-                stock_contract_reviews = {
+                round_reviews = {
                     int(review.get('scene_index')): review
-                    for review in (stock_contract_qc.get('reviews') or [])
+                    for review in (round_qc.get('reviews') or [])
                     if isinstance(review, dict)
                     and str(review.get('scene_index', '')).lstrip('-').isdigit()
                 }
-                missing_stock_contract_positions = [
+                missing_positions = [
                     position
-                    for position in range(len(rescued_stock_contracts))
-                    if position not in stock_contract_reviews
+                    for position in range(len(active_scenes))
+                    if position not in round_reviews
                 ]
-                if missing_stock_contract_positions:
+                if missing_positions:
                     raise PreRunwayRetryableError(
-                        'Stock-contract rescue QC was incomplete before any paid submission: '
+                        'Stock-tournament QC was incomplete before any paid submission: '
                         + json.dumps(
-                            {'missing_positions': missing_stock_contract_positions},
+                            {
+                                'round': round_index,
+                                'missing_positions': missing_positions,
+                            },
                             separators=(',', ':'),
                         )
                     )
-                for position, scene_idx in enumerate(rescued_stock_contracts):
-                    mapped_review = dict(stock_contract_reviews[position])
-                    mapped_review['scene_index'] = scene_idx
-                    current_reviews[scene_idx] = mapped_review
-                    if scene_visuals[scene_idx]:
-                        _apply_visual_review(
-                            scene_visuals,
-                            scene_idx,
-                            mapped_review,
-                            default_fraction=0.35,
-                        )
 
-            failed_stock_contracts = [
-                {
+                for position, scene_idx in enumerate(active_scenes):
+                    local_review = dict(round_reviews[position])
+                    candidate_batch = list(round_visuals[position])
+                    reviewed_wrapper = [candidate_batch]
+                    _apply_visual_review(
+                        reviewed_wrapper,
+                        0,
+                        local_review,
+                        default_fraction=0.35,
+                    )
+                    chosen_spec = reviewed_wrapper[0][0] if reviewed_wrapper[0] else None
+                    score = int(local_review.get('score', -1))
+                    if chosen_spec is not None and (
+                        stock_best_results[scene_idx].get('spec') is None
+                        or score > int(stock_best_results[scene_idx].get('score', -1))
+                    ):
+                        mapped_review = dict(local_review)
+                        mapped_review['scene_index'] = scene_idx
+                        mapped_review['best_candidate_index'] = 0
+                        mapped_review['best_start_fraction'] = chosen_spec.get('start_fraction', 0.35)
+                        stock_best_results[scene_idx] = {
+                            'score': score,
+                            'review': mapped_review,
+                            'spec': chosen_spec,
+                        }
+
+            for scene_idx in stock_contract_candidates:
+                best_result = stock_best_results[scene_idx]
+                best_spec = best_result.get('spec')
+                best_review = best_result.get('review')
+                scene_visuals[scene_idx] = [best_spec] if best_spec else []
+                if best_review:
+                    current_reviews[scene_idx] = best_review
+                visual_replacements.append({
                     'scene_index': scene_idx,
-                    'stock_score': int((current_reviews.get(scene_idx) or {}).get('score', -1)),
-                    'has_visual': any(
-                        _visual_path(spec)
-                        for spec in scene_visuals[scene_idx]
-                    ),
-                }
-                for scene_idx, scene in enumerate(scenes)
-                if not str(scene.get('ai_prompt') or '').strip()
-                and (
-                    scene_idx not in current_reviews
-                    or not any(_visual_path(spec) for spec in scene_visuals[scene_idx])
-                    or int(current_reviews[scene_idx].get('score', 0)) < quality_threshold
+                    'score': int(best_result.get('score', -1)),
+                    'reason': (best_review or {}).get('reason'),
+                    'old_best': '',
+                    'replacement_count': len(stock_candidate_pools.get(scene_idx, [])),
+                    'stage': 'pre_runway_stock_tournament_result',
+                })
+
+            failed_stock_contracts = []
+            for scene_idx, scene in enumerate(scenes):
+                if str(scene.get('ai_prompt') or '').strip():
+                    continue
+                review = current_reviews.get(scene_idx) or {}
+                has_visual = any(
+                    _visual_path(spec)
+                    for spec in scene_visuals[scene_idx]
                 )
-            ]
+                score = int(review.get('score', -1))
+                if has_visual and score >= quality_threshold:
+                    continue
+                raw_retry_queries = review.get('retry_queries') or []
+                if isinstance(raw_retry_queries, str):
+                    raw_retry_queries = [raw_retry_queries]
+                failed_stock_contracts.append({
+                    'scene_index': scene_idx,
+                    'stock_score': score,
+                    'has_visual': has_visual,
+                    'reason': str(review.get('reason') or 'missing review')[:240],
+                    'retry_queries': [
+                        str(query).strip()[:120]
+                        for query in raw_retry_queries[:3]
+                        if str(query).strip()
+                    ],
+                })
             if failed_stock_contracts:
                 stock_contract_message = (
                     'Short-preview stock contract failed before any paid submission: '
@@ -650,6 +900,7 @@ def run_video_pipeline(
                             'quality_threshold': quality_threshold,
                             'failures': failed_stock_contracts,
                         },
+                        ensure_ascii=False,
                         separators=(',', ':'),
                     )
                 )
