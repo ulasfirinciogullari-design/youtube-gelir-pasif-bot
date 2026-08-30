@@ -65,6 +65,7 @@ def _select_ranked_broll_candidates(
     limit: int,
     minimum_duration: float = 5.0,
     allow_seen_fallback: bool = True,
+    allow_short_fallback: bool = True,
 ) -> list[tuple[str, dict]]:
     """Select a stable relevance-first, query-diverse Pexels candidate pool."""
     limit = max(1, int(limit))
@@ -88,7 +89,7 @@ def _select_ranked_broll_candidates(
             duration = float(item.get('duration') or 0)
         except Exception:
             duration = 0
-        if require_duration and duration and duration < minimum_duration:
+        if require_duration and duration < minimum_duration:
             return False
         return bool(item.get('download_url'))
 
@@ -98,9 +99,13 @@ def _select_ranked_broll_candidates(
     )
     # Prefer globally new, >=5-second clips. Duration may relax when needed;
     # global uniqueness relaxes only for callers that explicitly permit it.
-    selection_phases = [(True, True), (True, False)]
+    selection_phases = [(True, True)]
+    if allow_short_fallback:
+        selection_phases.append((True, False))
     if allow_seen_fallback:
-        selection_phases.extend([(False, True), (False, False)])
+        selection_phases.append((False, True))
+        if allow_short_fallback:
+            selection_phases.append((False, False))
     for require_unseen, require_duration in selection_phases:
         for rank in range(max_rank):
             for query, candidates in query_results:
@@ -117,7 +122,7 @@ def _select_ranked_broll_candidates(
 
 
 def _collect_broll(scenes: list[dict], work: Path) -> dict:
-    scene_visuals: list[list[str]] = [[] for _ in scenes]
+    scene_visuals: list[list[dict]] = [[] for _ in scenes]
     credits: list[dict] = []
     seen_ids: set[int | str] = set()
     requests: list[tuple[int, int, str]] = []
@@ -155,6 +160,7 @@ def _collect_broll(scenes: list[dict], work: Path) -> dict:
             selection_seen_ids,
             3,
             allow_seen_fallback=False,
+            allow_short_fallback=False,
         )
         for candidate_idx, (query, item) in enumerate(selected):
             candidate_id = item.get('pexels_id') or item.get('download_url')
@@ -192,7 +198,15 @@ def _collect_broll(scenes: list[dict], work: Path) -> dict:
         candidate_id = item.get('pexels_id') or item.get('download_url')
         if candidate_id:
             seen_ids.add(candidate_id)
-        scene_visuals[scene_idx].append(str(path))
+        try:
+            source_duration = float(item.get('duration') or 0)
+        except Exception:
+            source_duration = 0.0
+        scene_visuals[scene_idx].append({
+            'path': str(path),
+            'start_fraction': 0.25,
+            'source_duration': source_duration,
+        })
         credits.append({
             'source': 'Pexels',
             'scene_index': scene_idx,
@@ -217,6 +231,7 @@ def _download_ranked_broll_candidates(
     selected_by: str,
     max_candidates: int,
     search_limit: int,
+    minimum_duration: float = 5.0,
 ) -> list[dict]:
     normalized_queries: list[str] = []
     query_keys: set[str] = set()
@@ -249,14 +264,18 @@ def _download_ranked_broll_candidates(
     if not search_results and search_errors:
         raise RuntimeError(f'Pexels retry search failed for scene {scene_idx}') from search_errors[0]
 
+    success_target = min(5, max(1, int(max_candidates)))
+    attempt_limit = min(7, success_target + 2)
     ranked = _select_ranked_broll_candidates(
         [
             (query, search_results.get(query_idx, []))
             for query_idx, query in enumerate(normalized_queries)
         ],
         seen_ids,
-        min(5, max(1, int(max_candidates))),
+        attempt_limit,
+        minimum_duration=max(0.1, float(minimum_duration)),
         allow_seen_fallback=False,
+        allow_short_fallback=False,
     )
     if not ranked:
         return []
@@ -270,10 +289,11 @@ def _download_ranked_broll_candidates(
         return candidate_idx, query, item, path
 
     downloaded: dict[int, tuple[str, dict, Path]] = {}
-    with ThreadPoolExecutor(max_workers=min(5, len(ranked))) as download_pool:
+    initial_batch = list(enumerate(ranked[:success_target]))
+    with ThreadPoolExecutor(max_workers=min(5, len(initial_batch))) as download_pool:
         future_map = {
             download_pool.submit(download_one, candidate_idx, query, item): candidate_idx
-            for candidate_idx, (query, item) in enumerate(ranked)
+            for candidate_idx, (query, item) in initial_batch
         }
         for future in as_completed(future_map):
             try:
@@ -282,13 +302,32 @@ def _download_ranked_broll_candidates(
             except Exception as exc:
                 download_errors.append(exc)
 
+    # A transient CDN failure must not silently shrink the QC pool. Backfill
+    # from at most two further ranked candidates, stopping at the success cap.
+    for candidate_idx, (query, item) in enumerate(ranked[success_target:], start=success_target):
+        if len(downloaded) >= success_target:
+            break
+        try:
+            _candidate_idx, _query, _item, path = download_one(candidate_idx, query, item)
+            downloaded[candidate_idx] = (_query, _item, path)
+        except Exception as exc:
+            download_errors.append(exc)
+
     replacements: list[dict] = []
     for candidate_idx in sorted(downloaded):
         query, item, path = downloaded[candidate_idx]
         candidate_id = item.get('pexels_id') or item.get('download_url')
         if candidate_id:
             seen_ids.add(candidate_id)
-        replacements.append({'path': str(path), 'start_fraction': 0.35})
+        try:
+            source_duration = float(item.get('duration') or 0)
+        except Exception:
+            source_duration = 0.0
+        replacements.append({
+            'path': str(path),
+            'start_fraction': 0.35,
+            'source_duration': source_duration,
+        })
         credits.append({
             'source': 'Pexels',
             'scene_index': scene_idx,
@@ -313,6 +352,7 @@ def _retry_bad_scene(
     credits: list[dict],
     file_prefix: str = 'qc',
     max_replacements: int = 1,
+    minimum_duration: float = 5.0,
 ) -> list[dict]:
     safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
     selected_by = (
@@ -331,6 +371,7 @@ def _retry_bad_scene(
         selected_by=selected_by,
         max_candidates=max_replacements,
         search_limit=18,
+        minimum_duration=minimum_duration,
     )
 
 def _visual_path(spec: str | dict) -> str:
@@ -559,6 +600,27 @@ def run_video_pipeline(
         voice_path = voice_result['path']
         scene_durations = voice_result['scene_durations']
         scene_visuals: list[list[str | dict]] = broll_result['scene_visuals']
+        for scene_idx, specs in enumerate(scene_visuals):
+            try:
+                required_source_duration = max(
+                    5.0,
+                    float(scene_durations[scene_idx]) + 0.35,
+                )
+            except Exception:
+                required_source_duration = 5.0
+            duration_safe_specs: list[str | dict] = []
+            for spec in specs:
+                try:
+                    source_duration = float(
+                        spec.get('source_duration') or 0
+                        if isinstance(spec, dict)
+                        else 0
+                    )
+                except Exception:
+                    source_duration = 0.0
+                if source_duration >= required_source_duration:
+                    duration_safe_specs.append(spec)
+            scene_visuals[scene_idx] = duration_safe_specs
         credits = broll_result['credits']
         seen_ids = broll_result['seen_ids']
 
@@ -608,7 +670,9 @@ def run_video_pipeline(
                 continue
 
             if not review:
-                scene_visuals[scene_idx] = [{'path': _visual_path(paths[0]), 'start_fraction': 0.25}]
+                first_spec = dict(paths[0]) if isinstance(paths[0], dict) else {'path': _visual_path(paths[0])}
+                first_spec['start_fraction'] = 0.25
+                scene_visuals[scene_idx] = [first_spec]
                 continue
 
             best_idx = int(review.get('best_candidate_index', 0))
@@ -620,12 +684,16 @@ def run_video_pipeline(
             except Exception:
                 best_fraction = 0.25
             best_fraction = max(0.0, min(best_fraction, 0.95))
+            best_spec = (
+                dict(paths[best_idx])
+                if isinstance(paths[best_idx], dict)
+                else {'path': best_path}
+            )
+            best_spec['start_fraction'] = best_fraction
 
             if score >= quality_threshold:
-                scene_visuals[scene_idx] = [{'path': best_path, 'start_fraction': best_fraction}]
+                scene_visuals[scene_idx] = [best_spec]
                 continue
-
-            best_spec = {'path': best_path, 'start_fraction': best_fraction}
             is_short_preview_stock = (
                 options.get('mode') == 'preview'
                 and duration_minutes <= 0.6
@@ -638,7 +706,14 @@ def run_video_pipeline(
                 continue
 
             retry_queries = [str(q).strip() for q in (review.get('retry_queries') or [])[:2] if str(q).strip()]
-            replacements = _retry_bad_scene(scene_idx, retry_queries, seen_ids, work, credits)
+            replacements = _retry_bad_scene(
+                scene_idx,
+                retry_queries,
+                seen_ids,
+                work,
+                credits,
+                minimum_duration=max(5.0, float(scene_durations[scene_idx]) + 0.35),
+            )
             scene_visuals[scene_idx] = [*replacements, best_spec][:3]
             if replacements:
                 visual_replacements.append({
@@ -747,6 +822,10 @@ def run_video_pipeline(
                     selected_by='pre_runway_stock_tournament',
                     max_candidates=5,
                     search_limit=24,
+                    minimum_duration=max(
+                        5.0,
+                        float(scene_durations[scene_idx]) + 0.35,
+                    ),
                 )
                 frozen_pool: list[dict] = []
                 frozen_paths: set[str] = set()
@@ -801,6 +880,7 @@ def run_video_pipeline(
                     round_visuals,
                     work / f'pre_runway_stock_tournament_{round_index}',
                     len(active_scenes),
+                    _missing_review_attempts=0,
                 )
                 round_reviews = {
                     int(review.get('scene_index')): review
@@ -965,6 +1045,10 @@ def run_video_pipeline(
                     work,
                     credits,
                     file_prefix='pre_runway_budget_rescue',
+                    minimum_duration=max(
+                        5.0,
+                        float(scene_durations[scene_idx]) + 0.35,
+                    ),
                 )
                 if not replacements:
                     continue
@@ -1120,6 +1204,10 @@ def run_video_pipeline(
             replacements = _retry_bad_scene(
                 scene_idx, retry_queries, seen_ids, work, credits,
                 file_prefix='final_qc_rescue',
+                minimum_duration=max(
+                    5.0,
+                    float(scene_durations[scene_idx]) + 0.35,
+                ),
             )
             if not replacements:
                 continue
