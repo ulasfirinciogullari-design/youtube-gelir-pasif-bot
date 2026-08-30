@@ -20,6 +20,10 @@ from app.services.visual_qc import review_scene_visuals
 from app.services.voice import synthesize_scene_sequence
 
 
+class FinalVisualQualityError(RuntimeError):
+    """A bounded semantic-quality rejection that should not rerun the whole pipeline."""
+
+
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value = dict(options or {})
     value.setdefault('mode', 'preview' if duration_minutes <= 1 else 'production')
@@ -115,27 +119,38 @@ def _retry_bad_scene(
     seen_ids: set,
     work: Path,
     credits: list[dict],
+    file_prefix: str = 'qc',
 ) -> list[dict]:
     replacement_candidates: list[tuple[str, dict]] = []
     if not retry_queries:
         return []
+
+    search_errors: list[Exception] = []
+    successful_searches = 0
     with ThreadPoolExecutor(max_workers=min(2, len(retry_queries))) as retry_pool:
         retry_map = {retry_pool.submit(find_broll, query, 18): query for query in retry_queries}
         for future in as_completed(retry_map):
             query = retry_map[future]
             try:
                 candidates = future.result() or []
-            except Exception:
+                successful_searches += 1
+            except Exception as exc:
+                search_errors.append(exc)
                 continue
-            item = next((c for c in candidates if c.get('pexels_id') not in seen_ids), None)
+            item = next((candidate for candidate in candidates if candidate.get('pexels_id') not in seen_ids), None)
             if item:
                 seen_ids.add(item.get('pexels_id'))
                 replacement_candidates.append((query, item))
 
+    if successful_searches == 0 and search_errors:
+        raise RuntimeError(f'Pexels retry search failed for scene {scene_idx}') from search_errors[0]
+
     replacements: list[dict] = []
+    download_errors: list[Exception] = []
+    safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
     for retry_idx, (query, item) in enumerate(replacement_candidates[:1]):
         try:
-            path = work / f'qc_s{scene_idx:02d}_{retry_idx:02d}.mp4'
+            path = work / f'{safe_prefix}_s{scene_idx:02d}_{retry_idx:02d}.mp4'
             download_broll(item, path)
             replacements.append({'path': str(path), 'start_fraction': 0.35})
             credits.append({
@@ -146,10 +161,13 @@ def _retry_bad_scene(
                 'creator_url': item.get('creator_url'),
                 'page_url': item.get('page_url'),
                 'pexels_id': item.get('pexels_id'),
-                'selected_by': 'visual_qc_retry',
+                'selected_by': 'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue' else 'visual_qc_retry',
             })
-        except Exception:
-            continue
+        except Exception as exc:
+            download_errors.append(exc)
+
+    if replacement_candidates and not replacements and download_errors:
+        raise RuntimeError(f'Pexels retry download failed for scene {scene_idx}') from download_errors[0]
     return replacements
 
 
@@ -222,7 +240,13 @@ def plan_video_pipeline(
         raise
 
 
-@celery.task(bind=True, autoretry_for=(Exception,), retry_backoff=True, max_retries=2)
+@celery.task(
+    bind=True,
+    autoretry_for=(Exception,),
+    dont_autoretry_for=(FinalVisualQualityError,),
+    retry_backoff=True,
+    max_retries=2,
+)
 def run_video_pipeline(
     self,
     topic: str,
@@ -373,9 +397,93 @@ def run_video_pipeline(
             idx for idx in range(min(len(scenes), len(scene_visuals)))
             if idx not in final_reviews or int(final_reviews[idx].get('score', 0)) < quality_threshold
         ]
+
+        # Give the exact final review one bounded, scene-specific rescue pass.
+        # This reuses its evidence-based retry queries instead of restarting the
+        # entire script, voice and candidate pipeline for a stock-search miss.
+        rescued_final_scenes: list[int] = []
+        for scene_idx in rejected_final_scenes:
+            review = final_reviews.get(scene_idx) or {}
+            retry_queries = [
+                str(q).strip()
+                for q in (review.get('retry_queries') or [])[:2]
+                if str(q).strip()
+            ]
+            old_best = _visual_path(scene_visuals[scene_idx][0]) if scene_visuals[scene_idx] else ''
+            replacements = _retry_bad_scene(
+                scene_idx, retry_queries, seen_ids, work, credits,
+                file_prefix='final_qc_rescue',
+            )
+            if not replacements:
+                continue
+            scene_visuals[scene_idx] = replacements
+            rescued_final_scenes.append(scene_idx)
+            visual_replacements.append({
+                'scene_index': scene_idx,
+                'score': int(review.get('score', 0)),
+                'reason': review.get('reason'),
+                'old_best': old_best,
+                'replacement_count': len(replacements),
+                'stage': 'final_visual_qc_rescue',
+            })
+
+        if rescued_final_scenes:
+            set_stage(self, task_id, 'final_visual_qc_rescue', 72, 'Reddedilen sahneler daha kesin aramalarla son kez yenileniyor.')
+            rescue_qc = review_scene_visuals(
+                [scenes[idx] for idx in rescued_final_scenes],
+                [scene_visuals[idx] for idx in rescued_final_scenes],
+                work / 'final_visual_qc_rescue',
+                len(rescued_final_scenes),
+            )
+            rescue_reviews = {
+                int(r.get('scene_index')): r
+                for r in (rescue_qc.get('reviews') or [])
+                if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
+            }
+            # Preserve the already-approved decisions; only replace the review
+            # for each clip that actually changed during the rescue.
+            for scene_idx in rescued_final_scenes:
+                final_reviews.pop(scene_idx, None)
+            for position, scene_idx in enumerate(rescued_final_scenes):
+                if position not in rescue_reviews:
+                    continue
+                mapped_review = dict(rescue_reviews[position])
+                mapped_review['scene_index'] = scene_idx
+                final_reviews[scene_idx] = mapped_review
+                try:
+                    approved_fraction = float(mapped_review.get('best_start_fraction', 0.35))
+                except Exception:
+                    approved_fraction = 0.35
+                scene_visuals[scene_idx][0]['start_fraction'] = max(0.0, min(approved_fraction, 0.95))
+            final_visual_qc = {
+                'reviews': [final_reviews[idx] for idx in sorted(final_reviews)],
+                'moment_fractions': rescue_qc.get('moment_fractions'),
+            }
+            rejected_final_scenes = [
+                idx for idx in range(min(len(scenes), len(scene_visuals)))
+                if idx not in final_reviews or int(final_reviews[idx].get('score', 0)) < quality_threshold
+            ]
+
         visual_qc['final_reviews'] = final_visual_qc.get('reviews') or []
         if rejected_final_scenes:
-            raise RuntimeError(f'Final visual quality gate rejected scenes: {rejected_final_scenes}')
+            rejected_details = {
+                idx: {
+                    'score': int((final_reviews.get(idx) or {}).get('score', 0)),
+                    'reason': str((final_reviews.get(idx) or {}).get('reason') or 'missing review')[:180],
+                }
+                for idx in rejected_final_scenes
+            }
+            diagnostics = {
+                'stage': 'after_rescue',
+                'accepted': len(scenes) - len(rejected_final_scenes),
+                'total': len(scenes),
+                'replaced': len(rescued_final_scenes),
+                'rejected': rejected_details,
+            }
+            raise FinalVisualQualityError(
+                'Final visual quality gate rejected: '
+                + json.dumps(diagnostics, ensure_ascii=False, separators=(',', ':'))
+            )
 
         unresolved_scenes = [idx for idx, specs in enumerate(scene_visuals) if not any(_visual_path(s) for s in specs)]
         if unresolved_scenes:
