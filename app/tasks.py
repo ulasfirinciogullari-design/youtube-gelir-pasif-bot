@@ -540,7 +540,10 @@ def _prepare_package(
         if (
             options.get('mode') == 'preview'
             and duration_minutes <= 0.6
-            and not short_story_package_is_approved(approved_package)
+            and not short_story_package_is_approved(
+                approved_package,
+                topic,
+            )
         ):
             raise FinalVisualQualityError(
                 'Onaylı kısa storyboard güncel hikâye ve telaffuz '
