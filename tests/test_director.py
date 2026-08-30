@@ -14,7 +14,12 @@ config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace(openai_model='test-model')
 sys.modules['app.config'] = config_stub
 
-from app.services.director import _repair_short_stock_scenes, _word_count
+from app.services.director import (
+    _repair_short_stock_scenes,
+    _short_spoken_quality_issues,
+    _short_story_quality_issues,
+    _word_count,
+)
 
 
 CRITIC_BOOLEAN_KEYS = {
@@ -151,19 +156,19 @@ def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
         5: {
             'position': 5,
             'narration': (
-                'Kadın kafeden kahve bardağıyla günbatımında yavaşça dışarı çıkar.'
+                'Kadın aynı kafe tezgâhında sıcak kahvesine memnuniyetle gülümser.'
                 if final_variant
-                else 'Müşteri kafeden kahvesiyle akşam ışığında sakince dışarı çıkar.'
+                else 'Müşteri aynı kafe tezgâhında sıcak kahvesine gülümser bugün.'
             ),
             'visual_queries': (
                 [
-                    'woman exits cafe holding coffee at sunset',
-                    'customer leaves coffee shop carrying cup',
+                    'woman smiles at coffee by cafe counter',
+                    'happy customer with coffee at cafe counter',
                 ]
                 if final_variant
                 else [
-                    'customer exits cafe carrying coffee at dusk',
-                    'person leaves coffee shop holding cup',
+                    'customer smiles at coffee by cafe counter',
+                    'happy person with cup at cafe counter',
                 ]
             ),
             'ai_prompt': None,
@@ -174,8 +179,44 @@ def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
     return {'scenes': [copy.deepcopy(rows[position]) for position in positions]}
 
 
-def critic_payload(failures=None):
+def critic_payload(failures=None, story_failures=None, ending_failures=None):
     failures = failures or {}
+    story_failures = story_failures or []
+    ending_failures = ending_failures or []
+    story_boolean_keys = {
+        'single_human_situation',
+        'single_central_question',
+        'not_fact_montage',
+        'causal_scene_chain',
+        'same_actor_or_object_thread',
+        'human_payoff_visible',
+        'natural_spoken_language',
+    }
+    ending_boolean_keys = {
+        'same_immediate_location',
+        'continuous_visible_action_chain',
+        'same_actor_or_object_thread',
+        'everyday_benefit_visible',
+    }
+    story_review = {
+        **{key: True for key in story_boolean_keys},
+        'reason': 'One human situation follows a single causal question to a visible payoff.',
+    }
+    for key in story_failures:
+        story_review[key] = False
+    if story_failures:
+        story_review['reason'] = 'The draft samples unrelated mechanisms instead of one story.'
+    ending_pair = {
+        'penultimate_position': 4,
+        'final_position': 5,
+        **{key: True for key in ending_boolean_keys},
+        'location_anchor': 'same cafe counter',
+        'reason': 'The same customer receives and enjoys coffee at the same counter.',
+    }
+    for key in ending_failures:
+        ending_pair[key] = False
+    if ending_failures:
+        ending_pair['reason'] = 'The final beat jumps away from the preceding location.'
     rows = []
     for position in (0, 4, 5):
         row = {
@@ -188,7 +229,11 @@ def critic_payload(failures=None):
         if failures.get(position):
             row['reason'] = 'The exact narration or queries do not satisfy this stock contract.'
         rows.append(row)
-    return {'scenes': rows}
+    return {
+        'story_review': story_review,
+        'ending_pair': ending_pair,
+        'scenes': rows,
+    }
 
 
 class ShortStockRepairTests(unittest.TestCase):
@@ -252,6 +297,51 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(result['stock_scene_qc']['generator_calls'], 2)
         self.assertEqual(result['stock_scene_qc']['critic_calls'], 2)
 
+    def test_ending_pair_failure_rewrites_both_final_positions(self):
+        client = FakeClient([
+            valid_generator_payload(),
+            critic_payload(ending_failures=['same_immediate_location']),
+            valid_generator_payload((4, 5), final_variant=True),
+            critic_payload(),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+        )
+
+        self.assertEqual(len(client.responses.calls), 4)
+        second_generator_input = client.responses.calls[2]['input']
+        self.assertIn(
+            '"stock_positions_to_rewrite": [{"position": 4',
+            second_generator_input,
+        )
+        self.assertIn('"position": 5', second_generator_input)
+        self.assertEqual(
+            result['stock_scene_qc']['ending_pair_review']['location_anchor'],
+            'same cafe counter',
+        )
+
+    def test_whole_story_rejection_stops_before_local_retry(self):
+        client = FakeClient([
+            valid_generator_payload(),
+            critic_payload(story_failures=['not_fact_montage']),
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'incoherent short-preview story before paid media',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+        self.assertEqual(len(client.responses.calls), 2)
+
     def test_deterministic_failure_retries_only_bad_position(self):
         first = valid_generator_payload()
         first['scenes'][0]['narration'] = (
@@ -305,6 +395,52 @@ class ShortStockRepairTests(unittest.TestCase):
 
         self.assertIs(result, package)
         self.assertEqual(client.responses.calls, [])
+
+
+class ShortSpokenQualityTests(unittest.TestCase):
+    def test_rejects_live_unsafe_turkish_wording_and_fact_montage(self):
+        package = {
+            'scenes': [
+                {'narration': 'OLEDde siyah yerde alt pikseller susar.'},
+                {'narration': 'GPS zayıflayınca WiFi ve hücresel zamanlama tamamlar konumu.'},
+                {'narration': 'Yıpranmış QR ReedSolomonla okunur yine kolayca.'},
+            ],
+        }
+
+        spoken = _short_spoken_quality_issues(package, 'Turkish')
+        story = _short_story_quality_issues(package, 'Turkish')
+
+        self.assertGreaterEqual(len(spoken), 6)
+        self.assertTrue(any('scene 0' in issue for issue in spoken))
+        self.assertTrue(any('scene 1' in issue for issue in spoken))
+        self.assertTrue(any('scene 2' in issue for issue in spoken))
+        self.assertTrue(any('mixes unrelated mechanism families' in issue for issue in story))
+
+    def test_accepts_native_single_mechanism_turkish(self):
+        package = {
+            'scenes': [
+                {'narration': 'Metroda uydu sinyali zayıflayınca harita kısa süre bekler.'},
+                {'narration': 'Kablosuz ağ ve baz istasyonları konum hesabına destek olur.'},
+                {'narration': 'Harita aynı metro girişinde doğru yönü yeniden gösterir.'},
+            ],
+        }
+
+        self.assertEqual(
+            _short_story_quality_issues(package, 'Turkish'),
+            [],
+        )
+
+    def test_non_turkish_is_noop(self):
+        package = {
+            'scenes': [
+                {'narration': 'OLED, GPS, Wi-Fi and QR appear together.'},
+            ],
+        }
+
+        self.assertEqual(
+            _short_story_quality_issues(package, 'English'),
+            [],
+        )
 
 
 if __name__ == '__main__':
