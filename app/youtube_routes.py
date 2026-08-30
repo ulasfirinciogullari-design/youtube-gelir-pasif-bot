@@ -111,7 +111,14 @@ def youtube_connect(
 @router.get('/studio/youtube/callback', name='youtube_oauth_callback')
 def youtube_oauth_callback(request: Request, state: str):
     try:
-        complete_authorization(str(request.url), state)
+        # Railway terminates TLS before forwarding to the app, so request.url
+        # can appear as http internally. Rebuild the authorization response
+        # from the configured public HTTPS callback and the exact query string.
+        callback_base = settings.google_redirect_uri or str(request.url).split('?', 1)[0]
+        if callback_base.startswith('http://'):
+            callback_base = 'https://' + callback_base[len('http://'):]
+        authorization_response = f"{callback_base.split('?', 1)[0]}?{request.url.query}"
+        complete_authorization(authorization_response, state)
         return RedirectResponse('/studio/youtube?connected=1', status_code=303)
     except Exception as exc:
         return _shell(f'<div class="hero"><h1>Bağlantı kurulamadı</h1></div><div class="notice"><pre>{escape(str(exc))}</pre></div><div class="actions"><a class="btn secondary" href="/studio/youtube">Geri dön</a></div>')
