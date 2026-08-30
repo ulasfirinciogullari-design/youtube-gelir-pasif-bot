@@ -18,6 +18,23 @@ def media_duration(path: str | Path) -> float:
     return float(out)
 
 
+def max_freeze_duration(path: str | Path, minimum_seconds: float = 2.0) -> float:
+    """Measure the longest near-static interval in a rendered master."""
+    completed = subprocess.run([
+        'ffmpeg', '-hide_banner', '-nostats', '-i', str(path),
+        '-map', '0:v:0', '-vf',
+        f'scale=320:-2,freezedetect=n=-40dB:d={minimum_seconds:.2f}',
+        '-an', '-f', 'null', '-',
+    ], capture_output=True, text=True, check=False)
+    durations = [
+        float(value) for value in re.findall(
+            r'lavfi\.freezedetect\.freeze_duration:\s*([0-9.]+)',
+            completed.stderr or '',
+        )
+    ]
+    return max(durations, default=0.0)
+
+
 def _srt_timestamp(seconds: float) -> str:
     ms = int(round(seconds * 1000))
     h, rem = divmod(ms, 3600000)
@@ -26,16 +43,29 @@ def _srt_timestamp(seconds: float) -> str:
     return f'{h:02}:{m:02}:{s:02},{milli:03}'
 
 
-def _caption_chunks(narration: str, max_words: int = 6) -> list[str]:
+def _caption_chunks(narration: str, max_words: int = 7) -> list[str]:
     clauses = [p.strip() for p in re.split(r'(?<=[.!?…])\s+|(?<=[,;:])\s+', narration) if p.strip()]
-    chunks: list[str] = []
+    raw: list[str] = []
     for clause in clauses or [narration.strip()]:
         words = clause.split()
         while words:
             take = words[:max_words]
             words = words[max_words:]
-            chunks.append(' '.join(take))
-    return [c for c in chunks if c]
+            raw.append(' '.join(take))
+
+    # Never flash one- or two-word subtitles. Merge short fragments into the
+    # previous thought while keeping normal cues compact.
+    chunks: list[str] = []
+    for part in (c for c in raw if c):
+        if chunks and len(part.split()) < 3 and len((chunks[-1] + ' ' + part).split()) <= max_words + 2:
+            chunks[-1] = f'{chunks[-1]} {part}'
+        else:
+            chunks.append(part)
+    if len(chunks) > 1 and len(chunks[-1].split()) < 3:
+        chunks[-2] = f'{chunks[-2]} {chunks[-1]}'
+        chunks.pop()
+    return chunks
+
 
 
 def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_duration: float, output_path: str | Path) -> str:
@@ -132,6 +162,7 @@ def normalize_clip(
         'scale=2050:1153:force_original_aspect_ratio=increase',
         f'crop=1920:1080:{crop_xy}',
         'fps=30',
+        'setsar=1',
         f'setpts=PTS/{speed:.3f}',
     ]
     if transition == 'dip' and duration >= 1.2:
@@ -216,7 +247,8 @@ def render_video(
     normalized: list[Path] = []
     for idx, (visual_spec, shot_duration, transition, _scene_idx) in enumerate(timeline):
         seg = work / f'norm_{idx:03d}.mp4'
-        normalize_clip(visual_spec, seg, shot_duration + 0.05, idx, transition)
+        segment_duration = shot_duration + (0.05 if idx == len(timeline) - 1 else 0.0)
+        normalize_clip(visual_spec, seg, segment_duration, idx, transition)
         normalized.append(seg)
 
     concat_file = work / 'concat.txt'
@@ -224,7 +256,8 @@ def render_video(
     silent_video = work / 'silent.mp4'
     _run([
         'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat_file),
-        '-t', f'{voice_duration:.3f}', '-c', 'copy', str(silent_video)
+        '-t', f'{voice_duration:.3f}', '-vf', 'fps=30,setsar=1,format=yuv420p',
+        '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', str(silent_video)
     ])
 
     # Captions are exported as a sidecar SRT for YouTube language tracks. The
@@ -245,7 +278,8 @@ def render_video(
 
     return {
         'path': str(output),
-        'duration': voice_duration,
+        'duration': media_duration(output),
+        'max_freeze_seconds': max_freeze_duration(output),
         'shots': len(timeline),
         'unique_visuals': len({_spec_path(spec) for spec in visual_paths if _spec_path(spec)}),
         'resolution': '1920x1080',
