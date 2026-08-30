@@ -58,6 +58,34 @@ def _parse_json_payload(text: str) -> dict:
     if len(clean_scenes) < 3:
         raise RuntimeError('OpenAI scene plan has too few valid scenes')
 
+    raw_sources = data.get('sources')
+    if not isinstance(raw_sources, list) or not raw_sources:
+        raise RuntimeError('OpenAI response is missing evidence-backed sources')
+    clean_sources: list[dict] = []
+    seen_source_urls: set[str] = set()
+    for source in raw_sources[:8]:
+        if not isinstance(source, dict):
+            raise RuntimeError('Each research source must include url and evidence')
+        url = str(source.get('url') or '').strip()
+        evidence = str(source.get('evidence') or '').strip()
+        if (
+            not url.startswith(('https://', 'http://'))
+            or len(evidence) < 12
+        ):
+            raise RuntimeError(
+                'Each research source needs a valid URL and concrete evidence'
+            )
+        if url in seen_source_urls:
+            continue
+        seen_source_urls.add(url)
+        clean_sources.append({
+            'url': url,
+            'evidence': evidence[:600],
+        })
+    if not clean_sources:
+        raise RuntimeError('OpenAI response has no usable research evidence')
+
+    data['sources'] = clean_sources
     data['scenes'] = clean_scenes
     data['narration'] = ' '.join(s['narration'] for s in clean_scenes)
     data['tts_narration'] = data['narration']
@@ -184,6 +212,10 @@ title, thumbnail_text, description, scenes, sources.
 Each scene must contain exactly:
 narration, visual_queries, ai_prompt.
 
+sources must contain 2-5 objects, each with exactly:
+url, evidence.
+evidence is one concise paraphrased sentence from that URL that directly supports the story's central causal reveal.
+
 STORY RULES:
 - Write ONE coherent story, not a pile of facts or a numbered list.
 - For a short preview, silently define one sentence that states: a person or familiar object wants something, meets one obstacle, learns one cause, and receives one visible benefit. Every scene must serve that sentence.
@@ -215,7 +247,8 @@ FACT RULES:
 - Use current web research where useful.
 - Do not invent claims or statistics.
 - Do not copy source wording.
-- sources must contain URLs.
+- sources must be evidence records from pages actually used, never a bare URL list.
+- Every evidence sentence must directly support the central causal claim; omit interesting but unused sources.
 ''',
     )
     package = _parse_json_payload(response.output_text)
