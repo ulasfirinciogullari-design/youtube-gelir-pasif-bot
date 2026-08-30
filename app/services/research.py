@@ -204,8 +204,8 @@ VISUAL DIRECTING RULES:
 - Reject generic typing, office workers, skylines, random phones, abstract charts or vague futuristic imagery unless literally required.
 - Vary shot grammar across the video: establishing, macro, detail, human interaction, physical demonstration, infrastructure and controlled camera motion.
 - If stock footage cannot honestly communicate a technical idea, use a precise cinematic ai_prompt instead of metaphorically unrelated B-roll.
-- For OLED or true black, the narration, stock queries and ai_prompt must require black-region subpixel emitters visibly unlit beside illuminated colored subpixels; whole-screen darkness is insufficient.
-- If a short OLED narration claims lower power use, require a real physical meter visibly dropping in the same shot; otherwise rewrite the spoken claim to the directly visible emissive-pixel fact.
+- CONDITIONAL VALIDATION EXAMPLE, not a story suggestion: only if the user's topic and the chosen single story already require OLED or true black, the narration, stock queries and ai_prompt must show black-region subpixel emitters visibly unlit beside illuminated colored subpixels; whole-screen darkness is insufficient.
+- In that same conditional OLED case, if narration claims lower power use, require a real physical meter visibly dropping in the same shot; otherwise rewrite the spoken claim to the directly visible emissive-pixel fact.
 - ai_prompt may be non-null when literal stock is unlikely to reliably show the named subject, action or mechanism, and in at most {max_ai_scenes} scenes.
 {preview_ai_routing_note}
 - Every non-null ai_prompt must describe one continuous five-second 16:9 photorealistic shot with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
