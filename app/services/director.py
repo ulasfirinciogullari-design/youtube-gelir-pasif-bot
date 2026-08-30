@@ -27,6 +27,102 @@ def _word_count(text: str) -> int:
     return len(re.findall(r"\b[\wÇĞİÖŞÜçğıöşü'-]+\b", text or '', flags=re.UNICODE))
 
 
+_TURKISH_SHORT_TTS_UNSAFE_PATTERN = re.compile(
+    r"\b(?:oled\w*|gps\w*|qr\w*|wi(?:[-‑ ]?fi)\w*|"
+    r"reed(?:[-‑ ]?solomon)\w*)\b",
+    flags=re.IGNORECASE | re.UNICODE,
+)
+_TURKISH_SHORT_GENERIC_INITIALISM_PATTERN = re.compile(
+    r"(?<![\w])(?:[A-ZÇĞİÖŞÜ]{2,6})(?:['’]?[A-Za-zÇĞİÖŞÜçğıöşü]{0,8})?(?![\w])",
+    flags=re.UNICODE,
+)
+_TURKISH_SHORT_TRANSLATIONESE_PATTERNS = (
+    (re.compile(r'\bsiyah\s+yerde\b', flags=re.IGNORECASE), 'unnatural “siyah yerde” phrasing'),
+    (re.compile(r'\bhücresel\s+zamanlama\b', flags=re.IGNORECASE), 'unnatural “hücresel zamanlama” noun stack'),
+    (re.compile(r'\btamamlar\s+konumu\b', flags=re.IGNORECASE), 'inverted “tamamlar konumu” phrasing'),
+    (re.compile(r'\bokunur\s+yine\s+kolayca\b', flags=re.IGNORECASE), 'translated “okunur yine kolayca” phrasing'),
+)
+
+
+def _short_spoken_quality_issues(
+    package: dict,
+    language_name: str,
+) -> list[str]:
+    if not str(language_name or '').casefold().startswith('turk'):
+        return []
+    issues: list[str] = []
+    for scene_idx, scene in enumerate(package.get('scenes') or []):
+        narration = str(scene.get('narration') or '').strip()
+        unsafe_terms = sorted({
+            *{
+                match.group(0)
+                for match in _TURKISH_SHORT_TTS_UNSAFE_PATTERN.finditer(narration)
+            },
+            *{
+                match.group(0)
+                for match in _TURKISH_SHORT_GENERIC_INITIALISM_PATTERN.finditer(narration)
+            },
+        })
+        if unsafe_terms:
+            issues.append(
+                f'scene {scene_idx} uses TTS-unsafe raw term(s): '
+                + ', '.join(unsafe_terms)
+            )
+        for pattern, reason in _TURKISH_SHORT_TRANSLATIONESE_PATTERNS:
+            if pattern.search(narration):
+                issues.append(f'scene {scene_idx} has {reason}')
+    return issues
+
+
+_TURKISH_SHORT_STORY_FAMILIES = (
+    (
+        'display-pixel mechanism',
+        re.compile(r'\b(?:oled\w*|alt\s*piksel\w*|altpiksel\w*)\b', flags=re.IGNORECASE),
+    ),
+    (
+        'positioning-network mechanism',
+        re.compile(
+            r'\b(?:gps\w*|wi(?:[-‑ ]?fi)\w*|hücresel\w*|'
+            r'baz\s+istasyon\w*|uydu\s+sinyal\w*|konum\s+hesab\w*)\b',
+            flags=re.IGNORECASE,
+        ),
+    ),
+    (
+        'code-recovery mechanism',
+        re.compile(
+            r'\b(?:qr\w*|kare\s+kod\w*|reed(?:[-‑ ]?solomon)\w*|'
+            r'hata\s+düzelt\w*)\b',
+            flags=re.IGNORECASE,
+        ),
+    ),
+)
+
+
+def _short_story_quality_issues(
+    package: dict,
+    language_name: str,
+) -> list[str]:
+    issues = _short_spoken_quality_issues(package, language_name)
+    if not str(language_name or '').casefold().startswith('turk'):
+        return issues
+
+    narration = ' '.join(
+        str(scene.get('narration') or '')
+        for scene in (package.get('scenes') or [])
+    )
+    mechanism_families = [
+        label
+        for label, pattern in _TURKISH_SHORT_STORY_FAMILIES
+        if pattern.search(narration)
+    ]
+    if len(mechanism_families) > 1:
+        issues.append(
+            'short preview mixes unrelated mechanism families instead of '
+            'answering one human question: ' + ', '.join(mechanism_families)
+        )
+    return issues
+
+
 def _target_scene_count(duration_minutes: float, pace: str) -> int:
     if duration_minutes <= 0.6:
         base = max(5, int(round(duration_minutes * 12)))
@@ -121,6 +217,7 @@ def _run_director(
     current_words = int(compact.get('current_word_count') or 0)
     short_quota_note = ''
     short_visual_note = ''
+    short_language_note = ''
     if duration_minutes <= 0.6 and target_scenes > 0:
         base, extra = divmod(target_words, target_scenes)
         quotas = [base + (1 if i < extra else 0) for i in range(target_scenes)]
@@ -132,18 +229,16 @@ def _run_director(
         short_visual_note = (
             'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: ai_prompt values are free fallback candidates, not promised generations. '
             f'Up to {target_scenes} scenes may carry a non-null fallback, while the worker will submit at most three paid Runway generations after measuring the exact current stock clips. '
-            'Structure the story so no more than three scenes truly depend on AI. '
-            'Reserve those dependencies for facts stock footage cannot literally show, especially an extreme macro OLED subpixel matrix '
-            'with black-region emitters visibly unlit beside illuminated colored subpixels, invisible indoor Wi-Fi/cellular/GPS assistance, '
-            'or damaged QR error recovery. '
-            'For OLED, reject whole-screen dimming, black fades or a hand merely turning a screen off. '
-            'Do not narrate a power-use drop unless the same shot includes a real physical power meter visibly falling. '
-            'Compress each hard mechanism and its complete causal explanation into one scene; never split, repeat or conclude it in a neighboring stock scene. '
+            'Before writing, silently choose ONE precise everyday curiosity a real person would willingly spend thirty seconds to resolve. '
+            'The supplied topic is broad context, never permission to make a technology-trivia sampler. '
+            'Use one recurring person or object, one immediate goal or problem, one causal reveal, and one visible everyday payoff. '
+            'Every scene must advance that same question; never mix unrelated mechanisms, products or clever facts merely because they fit the topic. '
+            'Structure the story so no more than three scenes truly depend on AI, and reserve those dependencies only for the single chosen mechanism that stock cannot literally show. '
+            'Compress that mechanism and its complete causal explanation into one scene; never split, repeat or conclude it in a neighboring stock scene. '
             'Every other scene must remain publishable with a plainly filmable real-world action whose exact subject and action appear in its stock queries, '
             'even when it also carries a fallback ai_prompt for uncertain stock coverage. '
-            'For every short preview, regardless of fallback prompt count, the penultimate and final scenes must each be one independently filmable '
-            'human or physical action in one ordinary location; they must not summarize, compare or recombine invisible networks, pixel behavior, '
-            'error correction or algebra. An ai_prompt may remain fallback metadata, but it never excuses an abstract ending. '
+            'The penultimate action and visible payoff must happen seconds apart to the same person or object in the SAME named ordinary micro-location, '
+            'such as the same café counter, desk or doorway. Repeat that location phrase in both scenes; never jump between home, store, street, a new room or a later time. '
             'Every ai_prompt-null scene must be fully provable by one ordinary stock clip; if all named nouns and actions are unlikely to coexist in that clip, '
             'rewrite the narration and its queries before returning. '
             'Every spoken clause in an ai_prompt-null scene must be literally visible in that same clip; never append abstract phrases such as magic happening, '
@@ -156,12 +251,35 @@ def _run_director(
             'PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: every ai_prompt MUST be null for this duration. '
             'Make every scene literally stock-filmable and preserve this assignment during all corrections. '
         )
-    correction_note = (
-        f'CRITICAL CORRECTION: the server counted {current_words} words. '
-        f'Rewrite the SAME factual story to exactly {target_words} total words '
-        f'(hard allowed range {min_words}-{max_words}); do not add facts. '
-        if correction else ''
-    )
+    if duration_minutes <= 0.6 and str(language_name).casefold().startswith('turk'):
+        short_language_note = (
+            'TURKISH SPOKEN-SURFACE — HIGHEST PRIORITY: write native, breath-friendly Turkish. '
+            'Never speak raw abbreviations or foreign algorithm names such as OLED, GPS, QR, Wi-Fi or Reed-Solomon, '
+            'and never attach Turkish suffixes to them. Use natural meaning-first phrases such as organik ekran, '
+            'uydu konumu, kare kod, kablosuz ağ or hata düzeltme yöntemi. '
+            'Avoid translated noun stacks, inverted word order and phrases like “siyah yerde”, '
+            '“hücresel zamanlama tamamlar konumu” or “okunur yine kolayca”. '
+            'Precise technical English is allowed in visual_queries and ai_prompt because those fields are not spoken. '
+        )
+
+    correction_issues = compact.get('narration_quality_issues') or []
+    if not isinstance(correction_issues, list):
+        correction_issues = [str(correction_issues)]
+    correction_note = ''
+    if correction:
+        correction_note = (
+            f'CRITICAL CORRECTION: the server counted {current_words} words. '
+            f'Rewrite to exactly {target_words} total words '
+            f'(hard allowed range {min_words}-{max_words}). '
+            'Preserve the supported topic and useful facts, but DROP unrelated mechanisms, examples and draft wording '
+            'whenever needed to create one focused human story. Do not add unsupported facts. '
+        )
+        if correction_issues:
+            correction_note += (
+                'The previous draft failed these editorial gates; repair every item: '
+                + json.dumps(correction_issues, ensure_ascii=False)
+                + '. '
+            )
     reference_note = (
         f'Reference URL: {reference_url}. Use only high-level information architecture and pacing inspiration; never copy wording, signature creative devices or branding.'
         if reference_url else 'No external reference structure was supplied.'
@@ -180,6 +298,7 @@ Studio visual mix: {visual_mix}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_quota_note}
 {short_visual_note}
+{short_language_note}
 Target scene budget: approximately {target_scenes} scenes, never more than one scene away.
 {correction_note}
 
@@ -194,6 +313,8 @@ narration, visual_queries, ai_prompt, pace, transition.
 
 EDITORIAL QC RULES:
 - Produce one coherent story. Repair every abrupt subject jump.
+- For a short preview, commit to one narrow human situation, one curiosity hook, one recurring person or object, one causal mini-story and one visible everyday payoff.
+- A broad topic is not a story. Never create a sampler of unrelated mechanisms or facts; at most one technical mechanism family may drive a short preview unless the user's topic explicitly asks for a comparison.
 - Every scene must continue, explain, contrast, escalate or pay off the previous scene.
 - Remove filler, robotic listicle wording and repetitive transition phrases.
 - Spoken {language_name} must sound natural, confident and punctuated for real breaths.
@@ -311,6 +432,15 @@ def _repair_short_stock_scenes(
             return None, f'position {position} contains technical recap'
         if abstract_pattern.search(narration):
             return None, f'position {position} contains an unfilmable abstraction'
+        spoken_issues = _short_spoken_quality_issues(
+            {'scenes': [{'narration': narration}]},
+            language_name,
+        )
+        if spoken_issues:
+            return None, (
+                f'position {position} has unsafe spoken wording: '
+                + '; '.join(spoken_issues)
+            )
         if row.get('ai_prompt') is not None:
             return None, f'position {position} must explicitly keep ai_prompt null'
 
@@ -441,8 +571,11 @@ NON-NEGOTIABLE RULES:
 - Keep each scene faithful to its supplied role and add no new fact, product or unrelated activity.
 - A hook must be one concrete everyday action that opens naturally into the next technical scene.
 - A bridge or penultimate scene must connect its immediate neighbors without repeating their mechanism.
-- A payoff must follow the preceding scene and provide a visible human result, not a spoken conclusion.
-- Keep the spoken narration natural and easy to pronounce in {language_name}.
+- The penultimate and payoff scenes are one continuous two-beat action by the same person or object, seconds apart in the SAME named micro-location.
+- Repeat the same concrete location phrase in both ending narrations and both query sets. A venue-level match is insufficient if one shot is at a counter and the other is outside.
+- Never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
+- A payoff must visibly complete the preceding action and show the everyday benefit, not merely state a conclusion.
+- Keep the spoken narration natural and easy to pronounce in {language_name}; for Turkish, use meaning-first native wording and never raw technical abbreviations.
 ''',
         )
 
@@ -549,7 +682,34 @@ NON-NEGOTIABLE RULES:
             }
             for position, scene in enumerate(scenes)
         ]
+        ending_positions = [len(scenes) - 2, len(scenes) - 1]
+        story_boolean_keys = {
+            'single_human_situation',
+            'single_central_question',
+            'not_fact_montage',
+            'causal_scene_chain',
+            'same_actor_or_object_thread',
+            'human_payoff_visible',
+            'natural_spoken_language',
+        }
+        ending_boolean_keys = {
+            'same_immediate_location',
+            'continuous_visible_action_chain',
+            'same_actor_or_object_thread',
+            'everyday_benefit_visible',
+        }
         critic_shape = {
+            'story_review': {
+                **{key: True for key in sorted(story_boolean_keys)},
+                'reason': 'brief evidence-based whole-story verdict',
+            },
+            'ending_pair': {
+                'penultimate_position': ending_positions[0],
+                'final_position': ending_positions[1],
+                **{key: True for key in sorted(ending_boolean_keys)},
+                'location_anchor': 'same exact counter, table, doorway or room',
+                'reason': 'brief evidence-based ending-pair verdict',
+            },
             'scenes': [
                 {
                     'position': position,
@@ -573,6 +733,7 @@ NON-NEGOTIABLE RULES:
         }
         critic_context = {
             'title': package.get('title'),
+            'description': package.get('description'),
             'candidate_story_in_order': candidate_story,
             'candidate_stock_scenes': [
                 {
@@ -594,6 +755,23 @@ Evaluate every stock-routed candidate against its exact narration, queries, role
 Return ONLY JSON in exactly this shape:
 {json.dumps(critic_shape, ensure_ascii=False)}
 
+Review the WHOLE story before reviewing individual stock shots. Set each story_review boolean independently and false whenever evidence is ambiguous.
+- single_human_situation: the short follows one concrete everyday situation a person can care about.
+- single_central_question: one curiosity or problem is opened and resolved.
+- not_fact_montage: the story is not a sampler, listicle or collage of unrelated mechanisms, products or clever facts.
+- causal_scene_chain: every scene advances the same cause-and-effect answer rather than merely sharing a broad topic.
+- same_actor_or_object_thread: one recognisable person or object gives the story continuity.
+- human_payoff_visible: the last beat visibly delivers an everyday benefit that earns the hook.
+- natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese or raw abbreviations.
+A whole-story failure is fatal: do not approve a polished shot plan for a bad idea.
+
+Review ending_pair jointly. The positions must match the supplied final two indexes exactly.
+- same_immediate_location: both beats occur in the same named micro-location, such as the same café counter, desk, doorway or room. Same venue but counter-to-street is false.
+- continuous_visible_action_chain: the payoff is the immediately following visible action, seconds later, with no exit, travel, new room, new day or time-of-day jump.
+- same_actor_or_object_thread: the same person or object carries both ending beats.
+- everyday_benefit_visible: the final action visibly completes the preceding action and shows the benefit.
+location_anchor must name the exact shared micro-location; reason must cite concrete evidence.
+
 For EACH requested position, set every boolean independently. If evidence is ambiguous, set it false.
 - single_sentence: narration contains only one sentence.
 - single_visible_action: narration requires exactly one visible action, not two actions joined by a conjunction, gerund, sequence or implied cut.
@@ -608,7 +786,7 @@ For EACH requested position, set every boolean independently. If evidence is amb
 - leads_to_next: it leads naturally to the next scene; for the final position this boundary check is true.
 - preserves_story_role: hook, bridge, penultimate or payoff behavior matches the supplied role.
 - adds_no_new_fact: it introduces no unsupported claim, product or unrelated activity.
-The reason must name concrete evidence for the verdict. Approval requires all thirteen booleans to be true.
+The reason must name concrete evidence for the verdict. Individual shot approval requires all thirteen booleans to be true.
 ''',
         )
 
@@ -618,10 +796,61 @@ The reason must name concrete evidence for the verdict. Approval requires all th
         except Exception:
             critic = {}
             critic_global_error = 'independent stock-shot critic returned invalid JSON'
-        if critic and set(critic.keys()) != {'scenes'}:
+        if critic and set(critic.keys()) != {'story_review', 'ending_pair', 'scenes'}:
             critic_global_error = (
                 'independent stock-shot critic returned an invalid object'
             )
+        story_review = critic.get('story_review') if isinstance(critic, dict) else None
+        ending_pair = critic.get('ending_pair') if isinstance(critic, dict) else None
+        expected_story_keys = {'reason', *story_boolean_keys}
+        expected_ending_keys = {
+            'penultimate_position',
+            'final_position',
+            'location_anchor',
+            'reason',
+            *ending_boolean_keys,
+        }
+        story_failure = ''
+        if not critic_global_error:
+            if not isinstance(story_review, dict) or set(story_review.keys()) != expected_story_keys:
+                story_failure = 'whole-story critic returned the wrong fields'
+            else:
+                failed_story_checks = sorted(
+                    key
+                    for key in story_boolean_keys
+                    if story_review.get(key) is not True
+                )
+                story_reason = str(story_review.get('reason') or '').strip()
+                if not story_reason:
+                    failed_story_checks.append('missing_evidence')
+                    story_reason = 'critic omitted whole-story evidence'
+                if failed_story_checks:
+                    story_failure = (
+                        f'{", ".join(failed_story_checks)}; {story_reason[:180]}'
+                    )
+            if (
+                not isinstance(ending_pair, dict)
+                or set(ending_pair.keys()) != expected_ending_keys
+                or ending_pair.get('penultimate_position') != ending_positions[0]
+                or ending_pair.get('final_position') != ending_positions[1]
+            ):
+                critic_global_error = 'ending-pair critic returned an invalid contract'
+
+        if story_failure:
+            failure_details = {
+                'generator_calls': generator_calls,
+                'critic_calls': critic_calls,
+                'reason': story_failure[:220],
+            }
+            raise RuntimeError(
+                'Director rejected an incoherent short-preview story before paid media: '
+                + json.dumps(
+                    failure_details,
+                    ensure_ascii=False,
+                    separators=(',', ':'),
+                )
+            )
+
         critic_rows = critic.get('scenes') if isinstance(critic, dict) else None
         if not critic_global_error and (
             not isinstance(critic_rows, list)
@@ -703,6 +932,40 @@ The reason must name concrete evidence for the verdict. Approval requires all th
                         f'{", ".join(failed_checks)}; {reason[:160]}'
                     )
 
+        ending_failed_checks: list[str] = []
+        ending_reason = ''
+        ending_location_anchor = ''
+        if not critic_global_error:
+            ending_failed_checks = sorted(
+                key
+                for key in ending_boolean_keys
+                if ending_pair.get(key) is not True
+            )
+            ending_reason = str(ending_pair.get('reason') or '').strip()
+            ending_location_anchor = str(
+                ending_pair.get('location_anchor') or ''
+            ).strip()
+            if not ending_reason:
+                ending_failed_checks.append('missing_evidence')
+                ending_reason = 'critic omitted ending-pair evidence'
+            if not ending_location_anchor:
+                ending_failed_checks.append('missing_location_anchor')
+            if ending_failed_checks:
+                pair_failure = (
+                    f'ending pair: {", ".join(ending_failed_checks)}; '
+                    f'{ending_reason[:160]}'
+                )
+                for position in ending_positions:
+                    critic_failures[position] = pair_failure
+                    review = parsed_reviews.get(position)
+                    if review is not None:
+                        review['accepted'] = False
+                        review['failed_checks'] = sorted({
+                            *review.get('failed_checks', []),
+                            *[f'ending_pair.{key}' for key in ending_failed_checks],
+                        })
+                        review['reason'] = pair_failure[:160]
+
         if not critic_failures:
             final_critic_reviews = parsed_reviews
             repaired = dict(package)
@@ -779,7 +1042,7 @@ The reason must name concrete evidence for the verdict. Approval requires all th
                 ),
             ]
             repaired['stock_scene_qc'] = {
-                'version': 2,
+                'version': 3,
                 'target_positions': stock_positions,
                 'roles': [
                     {
@@ -791,6 +1054,16 @@ The reason must name concrete evidence for the verdict. Approval requires all th
                 'generator_calls': generator_calls,
                 'critic_calls': critic_calls,
                 'attempts_used': generator_calls,
+                'story_review': {
+                    'accepted': True,
+                    'reason': str(story_review.get('reason') or '')[:180],
+                },
+                'ending_pair_review': {
+                    'accepted': True,
+                    'positions': ending_positions,
+                    'location_anchor': ending_location_anchor[:120],
+                    'reason': ending_reason[:180],
+                },
                 'reviews': [
                     final_critic_reviews[position]
                     for position in stock_positions
@@ -859,9 +1132,19 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     if options.get('mode') == 'preview':
         preview_ai_limit = target_scenes if duration_minutes <= 0.6 else 0
 
+    short_editorial_issues = (
+        _short_story_quality_issues(out, language_name)
+        if duration_minutes <= 0.6 else []
+    )
+
     for correction_attempt in range(3):
         ai_count_ok = preview_ai_limit is None or ai_scene_count <= preview_ai_limit
-        if min_words <= words <= max_words and abs(scene_count - target_scenes) <= 1 and ai_count_ok:
+        if (
+            min_words <= words <= max_words
+            and abs(scene_count - target_scenes) <= 1
+            and ai_count_ok
+            and not short_editorial_issues
+        ):
             break
         correction_input = {
             'title': out.get('title'),
@@ -874,6 +1157,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             'current_ai_scene_count': ai_scene_count,
             'max_ai_scene_count': preview_ai_limit,
             'correction_attempt': correction_attempt + 1,
+            'narration_quality_issues': short_editorial_issues,
         }
         revised = _run_director(
             client, correction_input, topic, language_name, duration_minutes,
@@ -883,6 +1167,26 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
+        short_editorial_issues = (
+            _short_story_quality_issues(out, language_name)
+            if duration_minutes <= 0.6 else []
+        )
+
+    if short_editorial_issues:
+        failure_details = {
+            'issues': [
+                str(issue)[:220]
+                for issue in short_editorial_issues[:12]
+            ],
+        }
+        raise RuntimeError(
+            'Short-preview editorial gate rejected narration before paid media: '
+            + json.dumps(
+                failure_details,
+                ensure_ascii=False,
+                separators=(',', ':'),
+            )
+        )
 
     if options.get('mode') == 'preview' and duration_minutes <= 0.6:
         out = _repair_short_stock_scenes(
@@ -894,6 +1198,24 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
+        short_editorial_issues = _short_story_quality_issues(
+            out,
+            language_name,
+        )
+        if short_editorial_issues:
+            raise RuntimeError(
+                'Short-preview stock repair reintroduced unsafe narration: '
+                + json.dumps(
+                    {
+                        'issues': [
+                            str(issue)[:220]
+                            for issue in short_editorial_issues[:12]
+                        ],
+                    },
+                    ensure_ascii=False,
+                    separators=(',', ':'),
+                )
+            )
 
     if words < min_words or words > max_words:
         raise RuntimeError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
