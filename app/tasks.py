@@ -359,6 +359,7 @@ def _retry_bad_scene(
         'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue'
         else 'pre_runway_budget_rescue' if safe_prefix == 'pre_runway_budget_rescue'
         else 'pre_runway_stock_contract' if safe_prefix == 'pre_runway_stock_contract'
+        else 'pre_runway_duration_refill' if safe_prefix == 'duration_refill'
         else 'visual_qc_retry'
     )
     return _download_ranked_broll_candidates(
@@ -667,6 +668,43 @@ def run_video_pipeline(
             paths = [p for p in scene_visuals[scene_idx] if _visual_path(p)]
             if not paths:
                 scene_visuals[scene_idx] = []
+                is_short_preview_authored_ai = (
+                    options.get('mode') == 'preview'
+                    and duration_minutes <= 0.6
+                    and bool(str(_scene.get('ai_prompt') or '').strip())
+                )
+                if is_short_preview_authored_ai:
+                    raw_refill_queries = _scene.get('visual_queries') or []
+                    if isinstance(raw_refill_queries, str):
+                        raw_refill_queries = [raw_refill_queries]
+                    refill_queries = [
+                        str(query).strip()
+                        for query in raw_refill_queries[:2]
+                        if str(query).strip()
+                    ]
+                    duration_refill = _retry_bad_scene(
+                        scene_idx,
+                        refill_queries,
+                        seen_ids,
+                        work,
+                        credits,
+                        file_prefix='duration_refill',
+                        max_replacements=3,
+                        minimum_duration=max(
+                            5.0,
+                            float(scene_durations[scene_idx]) + 0.35,
+                        ),
+                    )
+                    scene_visuals[scene_idx] = duration_refill
+                    if duration_refill:
+                        visual_replacements.append({
+                            'scene_index': scene_idx,
+                            'score': -1,
+                            'reason': 'Initial candidates were shorter than the narration.',
+                            'old_best': '',
+                            'replacement_count': len(duration_refill),
+                            'stage': 'pre_runway_duration_refill',
+                        })
                 continue
 
             if not review:
