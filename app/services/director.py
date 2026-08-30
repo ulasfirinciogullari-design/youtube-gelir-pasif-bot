@@ -141,7 +141,10 @@ def _run_director(
             'Compress each hard mechanism and its complete causal explanation into one scene; never split, repeat or conclude it in a neighboring stock scene. '
             'Every other scene must remain publishable with a plainly filmable real-world action whose exact subject and action appear in its stock queries, '
             'even when it also carries a fallback ai_prompt for uncertain stock coverage. '
-            'When the three true AI dependencies are used, the final scene must close on a concrete filmable action, not combine invisible networks or error correction. '
+            'When the three true AI dependencies are used, both the penultimate and final scenes must each close on one concrete filmable human action, '
+            'not summarize, compare or recombine invisible networks, pixel behavior, error correction or algebra. '
+            'Every ai_prompt-null scene must be fully provable by one ordinary stock clip; if all named nouns and actions are unlikely to coexist in that clip, '
+            'rewrite the narration and its queries before returning. '
             'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
         )
@@ -192,6 +195,8 @@ EDITORIAL QC RULES:
 - Remove filler, robotic listicle wording and repetitive transition phrases.
 - Spoken {language_name} must sound natural, confident and punctuated for real breaths.
 - Each scene contains one complete thought that can remain under one excellent hero visual.
+- Never make an ai_prompt-null scene recap several earlier mechanisms or invisible abstractions; it must narrate one visible subject performing one visible action in one ordinary location.
+- Before returning, audit every ai_prompt-null scene against its queries: all named subjects, actions and context must realistically coexist in a single stock clip.
 - Match the selected Studio style without imitating a named creator.
 - Apply the global pace profile, but still vary individual scene pace intentionally.
 - The master video is text-free. Do not create subtitles, lower thirds or overlay copy.
