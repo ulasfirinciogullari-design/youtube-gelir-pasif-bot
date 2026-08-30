@@ -217,6 +217,164 @@ EDITORIAL QC RULES:
     return _json(response.output_text)
 
 
+def _repair_short_stock_endings(
+    client: OpenAI,
+    package: dict,
+    language_name: str,
+    duration_minutes: float,
+) -> dict:
+    if duration_minutes > 0.6:
+        return package
+
+    scenes = package.get('scenes') or []
+    if len(scenes) < 4:
+        return package
+
+    ending_positions = [len(scenes) - 2, len(scenes) - 1]
+    targets = [
+        {
+            'position': position,
+            'word_count': _word_count(scenes[position].get('narration') or ''),
+            'current_narration': scenes[position].get('narration'),
+            'current_visual_queries': scenes[position].get('visual_queries') or [],
+        }
+        for position in ending_positions
+    ]
+    context = {
+        'title': package.get('title'),
+        'previous_scene_narration': scenes[-3].get('narration'),
+        'endings_to_replace': targets,
+    }
+    mechanism_pattern = re.compile(
+        r'\b(?:oled|pixel|piksel|alt\s*piksel|altpiksel|gps|wi[-‑]?fi|cellular|'
+        r'hücresel|qr|error\s+correction|hata\s+düzelt|algebra|cebir|signal|'
+        r'sinyal|timing|zamanlama|konum)\b',
+        flags=re.IGNORECASE,
+    )
+    validation_error = ''
+
+    for attempt in range(2):
+        response = client.responses.create(
+            model=settings.openai_model,
+            reasoning={'effort': 'medium' if attempt else 'low'},
+            input=f'''You are repairing ONLY the final two stock-footage scenes of a 30-second premium YouTube story.
+Language of spoken narration: {language_name}
+Story context:
+{json.dumps(context, ensure_ascii=False)}
+
+Return ONLY JSON:
+{{"scenes":[{{"position":0,"narration":"...","visual_queries":["...","..."],"ai_prompt":null}}]}}
+
+NON-NEGOTIABLE RULES:
+- Return exactly the two requested positions and no others.
+- Preserve the exact requested narration word count for each position.
+- Each narration describes ONE visible human or physical action in ONE ordinary location.
+- Use one simple sentence. Do not use a semicolon or colon to join actions.
+- These are human-payoff shots, not technical recap. Do not mention OLED, pixels, GPS, Wi-Fi, cellular signals, location systems, QR, error correction, timing, algebra or invisible mechanisms.
+- ai_prompt must be JSON null.
+- Give 2-3 simple ENGLISH stock search phrases per scene.
+- Every search phrase must describe the SAME action as its narration, include the actor/object and ordinary setting, and contain 3-9 English words.
+- Prefer common stock actions such as a cashier handing over coffee or a person putting a smartphone into a pocket when they fit the supplied story; do not force both actions into one scene.
+- Keep the two scenes narratively connected to the preceding scene and natural in {language_name}.
+{f'Previous response failed validation: {validation_error}' if validation_error else ''}
+''',
+        )
+        data = _json(response.output_text)
+        rows = data.get('scenes') or []
+        if not isinstance(rows, list) or len(rows) != 2:
+            validation_error = 'expected exactly two scene objects'
+            continue
+
+        rows_by_position: dict[int, dict] = {}
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            try:
+                position = int(row.get('position'))
+            except Exception:
+                continue
+            if position in ending_positions and position not in rows_by_position:
+                rows_by_position[position] = row
+
+        repaired_rows: dict[int, dict] = {}
+        row_error = ''
+        for target in targets:
+            position = int(target['position'])
+            row = rows_by_position.get(position)
+            if not row:
+                row_error = f'missing position {position}'
+                break
+            narration = str(row.get('narration') or '').strip()
+            if _word_count(narration) != int(target['word_count']):
+                row_error = f'position {position} has wrong word count'
+                break
+            if ';' in narration or ':' in narration:
+                row_error = f'position {position} joins multiple actions'
+                break
+            if mechanism_pattern.search(narration):
+                row_error = f'position {position} contains technical recap'
+                break
+            if row.get('ai_prompt') is not None:
+                row_error = f'position {position} must keep ai_prompt null'
+                break
+            queries = row.get('visual_queries') or []
+            if isinstance(queries, str):
+                queries = [queries]
+            queries = [str(query).strip() for query in queries if str(query).strip()][:3]
+            if len(queries) < 2:
+                row_error = f'position {position} has too few stock queries'
+                break
+            query_lengths = [
+                len(re.findall(r"[A-Za-z0-9'-]+", query))
+                for query in queries
+            ]
+            if any(length < 3 or length > 9 for length in query_lengths):
+                row_error = f'position {position} stock query is not concise'
+                break
+            repaired_rows[position] = {
+                'narration': narration,
+                'visual_queries': queries,
+            }
+
+        if row_error:
+            validation_error = row_error
+            continue
+
+        repaired = dict(package)
+        repaired_scenes = [dict(scene) for scene in scenes]
+        for position in ending_positions:
+            repaired_scenes[position]['narration'] = repaired_rows[position]['narration']
+            repaired_scenes[position]['tts_text'] = repaired_rows[position]['narration']
+            repaired_scenes[position]['visual_queries'] = repaired_rows[position]['visual_queries']
+            repaired_scenes[position]['ai_prompt'] = None
+        repaired['scenes'] = repaired_scenes
+        repaired['narration'] = ' '.join(scene['narration'] for scene in repaired_scenes)
+        repaired['tts_narration'] = repaired['narration']
+        repaired['visual_queries'] = [
+            query
+            for scene in repaired_scenes
+            for query in (scene.get('visual_queries') or [])
+        ]
+        repaired['ai_scenes'] = [
+            scene['ai_prompt']
+            for scene in repaired_scenes
+            if scene.get('ai_prompt')
+        ]
+        qc_summary = repaired.get('director_qc') or []
+        if not isinstance(qc_summary, list):
+            qc_summary = [str(qc_summary)]
+        repaired['director_qc'] = [
+            *qc_summary,
+            'Locked the final two short-preview scenes to single-action stock coverage.',
+        ]
+        return repaired
+
+    raise RuntimeError(
+        'Director could not produce two stock-safe short-preview endings: '
+        + validation_error[:240]
+    )
+
+
 def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
     if not settings.openai_api_key:
         return package
@@ -272,6 +430,17 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             target_words, min_words, max_words, target_scenes, options, correction=True,
         )
         out = _clean_package(revised, package)
+        words = _word_count(out['narration'])
+        scene_count = len(out['scenes'])
+        ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
+
+    if duration_minutes <= 0.6:
+        out = _repair_short_stock_endings(
+            client,
+            out,
+            language_name,
+            duration_minutes,
+        )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
