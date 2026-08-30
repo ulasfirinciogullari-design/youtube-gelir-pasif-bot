@@ -594,22 +594,22 @@ def run_video_pipeline(
                     work / 'pre_runway_budget_rescue',
                     len(budget_rescued_scenes),
                 )
-                missing_budget_reviews = [
-                    int(idx)
-                    for idx in (budget_rescue_qc.get('missing_review_indices') or [])
-                    if str(idx).lstrip('-').isdigit()
-                ]
-                if missing_budget_reviews:
-                    raise PreRunwayRetryableError(
-                        'Pre-Runway stock rescue QC was incomplete before any paid submission: '
-                        + json.dumps({'missing_positions': missing_budget_reviews}, separators=(',', ':'))
-                    )
                 budget_reviews = {
                     int(review.get('scene_index')): review
                     for review in (budget_rescue_qc.get('reviews') or [])
                     if isinstance(review, dict)
                     and str(review.get('scene_index', '')).lstrip('-').isdigit()
                 }
+                missing_budget_positions = [
+                    position
+                    for position in range(len(budget_rescued_scenes))
+                    if position not in budget_reviews
+                ]
+                if missing_budget_positions:
+                    raise PreRunwayRetryableError(
+                        'Pre-Runway stock rescue QC was incomplete before any paid submission: '
+                        + json.dumps({'missing_positions': missing_budget_positions}, separators=(',', ':'))
+                    )
                 for position, scene_idx in enumerate(budget_rescued_scenes):
                     rescued_review = budget_reviews.get(position)
                     if not rescued_review:
@@ -985,7 +985,7 @@ def run_video_pipeline(
                 task_id,
                 'plan_retry',
                 6,
-                'Görsel plan bütçeyi aştı; ücretli üretim olmadan yeni storyboard hazırlanıyor.',
+                'Görsel ön kontrol yenileniyor; ücretli üretim başlamadan yeni storyboard hazırlanıyor.',
             )
             raise
         if runway_attempts > 0 and not isinstance(exc, FinalVisualQualityError):
