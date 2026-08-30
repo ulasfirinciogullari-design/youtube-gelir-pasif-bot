@@ -196,9 +196,6 @@ def _truncate_utf16(text: str, limit: int = 1000) -> str:
 
 def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     original = str(scene.get('ai_prompt') or '').strip()
-    if original:
-        return _truncate_utf16(original)
-
     review = review or {}
     retry_queries = review.get('retry_queries') or []
     if isinstance(retry_queries, str):
@@ -209,15 +206,39 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         if isinstance(visual_queries, str):
             visual_queries = [visual_queries]
         hints = [str(q).strip() for q in visual_queries if str(q).strip()][:2]
-    if not hints:
+    if not original and not hints:
         return ''
 
-    narration = str(scene.get('narration') or '').strip()[:320]
-    visible_action = '; '.join(hint[:180] for hint in hints)
+    narration = str(scene.get('narration') or '').strip()[:300]
+    visible_action = '; '.join(hint[:160] for hint in hints)
+    combined = f'{narration} {original} {visible_action}'.lower()
+    mechanism_guardrails: list[str] = []
+    oled_terms = ('oled', 'true black', 'true-black', 'gerçek siyah', 'emissive')
+    if any(term in combined for term in oled_terms):
+        mechanism_guardrails.append(
+            'For OLED or true black, use an extreme macro optical view of a real OLED subpixel matrix: '
+            'the red, green and blue emitters inside a shaped black image region are visibly unlit while '
+            'adjacent colored subpixels remain illuminated. Never substitute a hand-only interaction, '
+            'a whole-screen dim, a black fade, digital noise or a generic dark phone.'
+        )
+        if any(term in combined for term in ('power', 'energy', 'watt', 'consumption', 'güç', 'enerji', 'tüket')):
+            mechanism_guardrails.append(
+                'Because the narration claims lower power use, keep a real physical power meter in the '
+                'same continuous shot and make its indicator visibly fall when those subpixels extinguish.'
+            )
+
+    guardrail_clause = ' '.join(mechanism_guardrails)
+    original_clause = f'Core shot direction: {original[:480]}. ' if original else ''
+    evidence_clause = (
+        f'Also satisfy this reviewer evidence: {visible_action}. '
+        if visible_action else ''
+    )
     return _truncate_utf16(
         'A single continuous five-second photorealistic 16:9 documentary shot. '
-        f'Literally show this subject and visible action: {visible_action}. '
-        f'It must directly demonstrate this narration: {narration}. '
+        f'{guardrail_clause} '
+        f'{original_clause}'
+        f'{evidence_clause}'
+        f'It must literally demonstrate this narration: {narration}. '
         'Controlled camera motion, no captions, logos, watermarks, charts, '
         'fake interface text, random glitch or metaphor.'
     )
