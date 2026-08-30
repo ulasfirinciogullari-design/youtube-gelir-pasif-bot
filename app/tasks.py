@@ -546,12 +546,15 @@ def run_video_pipeline(
             rescued_stock_contracts: list[int] = []
             for scene_idx in stock_contract_candidates:
                 review = current_reviews.get(scene_idx) or {}
+                raw_retry_queries = (
+                    (review.get('retry_queries') or [])
+                    or (scenes[scene_idx].get('visual_queries') or [])
+                )
+                if isinstance(raw_retry_queries, str):
+                    raw_retry_queries = [raw_retry_queries]
                 retry_queries = [
                     str(query).strip()
-                    for query in (
-                        (review.get('retry_queries') or [])
-                        or (scenes[scene_idx].get('visual_queries') or [])
-                    )[:2]
+                    for query in raw_retry_queries[:2]
                     if str(query).strip()
                 ]
                 replacements = _retry_bad_scene(
