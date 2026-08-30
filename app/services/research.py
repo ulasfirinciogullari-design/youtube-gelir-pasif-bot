@@ -99,7 +99,7 @@ def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
 
 def _max_ai_scenes(scene_count: int, options: dict, duration_minutes: float) -> int:
     if options.get('mode') == 'preview':
-        return min(3, scene_count) if duration_minutes <= 0.6 else 0
+        return scene_count if duration_minutes <= 0.6 else 0
     mix = options.get('visual_mix') or 'balanced'
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
@@ -137,7 +137,10 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
             'Do not split, repeat or conclude that invisible mechanism in adjacent stock scenes.\n'
             '- Every scene with ai_prompt set to null must narrate only a literal, realistically filmable action that its stock queries visibly show. '
             'When all three AI slots are used, make the closing scene a filmable human payoff instead of combining error correction, invisible signals or other abstract mechanisms.\n'
-            '- All stock-filmable scenes must set ai_prompt to null and provide 2-3 concrete, realistically filmable English stock queries.'
+            '- Treat ai_prompt as free fallback metadata, not a promise to generate. Give a precise fallback ai_prompt to any scene whose exact stock coverage is uncertain; '
+            'the worker will rank current stock quality and submit at most three paid generations. '
+            'The story must still have no more than three scenes that truly depend on AI, while every other scene remains publishable with its literal stock plan.\n'
+            '- All stock-filmable scenes must provide 2-3 concrete, realistically filmable English stock queries even when they also carry a fallback ai_prompt.'
         )
     elif mode == 'preview':
         preview_ai_routing_note = (
@@ -163,7 +166,7 @@ Visual mix: {visual_mix}
 
 HARD NARRATION BUDGET: {min_words}-{max_words} total spoken words; aim for {target_words}. Never exceed {max_words}.
 Create EXACTLY {target_scenes} scenes.
-Maximum bespoke AI-video scenes: {max_ai_scenes}.
+Maximum scenes that may carry an AI fallback prompt: {max_ai_scenes}. Paid generation is selected later from measured stock quality.
 
 Return ONLY valid JSON with exactly these top-level keys:
 title, thumbnail_text, description, scenes, sources.
@@ -186,7 +189,7 @@ VISUAL DIRECTING RULES:
 - Reject generic typing, office workers, skylines, random phones, abstract charts or vague futuristic imagery unless literally required.
 - Vary shot grammar across the video: establishing, macro, detail, human interaction, physical demonstration, infrastructure and controlled camera motion.
 - If stock footage cannot honestly communicate a technical idea, use a precise cinematic ai_prompt instead of metaphorically unrelated B-roll.
-- ai_prompt must be non-null only when literal stock cannot show the named mechanism, and in at most {max_ai_scenes} scenes.
+- ai_prompt may be non-null when literal stock is unlikely to reliably show the named subject, action or mechanism, and in at most {max_ai_scenes} scenes.
 {preview_ai_routing_note}
 - Every non-null ai_prompt must describe one continuous five-second 16:9 photorealistic shot with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
 - The master video is text-free: do not plan captions, lower thirds or on-screen sentences.
