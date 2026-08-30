@@ -173,6 +173,7 @@ def _retry_bad_scene(
                 'selected_by': (
                     'final_visual_qc_rescue' if safe_prefix == 'final_qc_rescue'
                     else 'pre_runway_budget_rescue' if safe_prefix == 'pre_runway_budget_rescue'
+                    else 'pre_runway_stock_contract' if safe_prefix == 'pre_runway_stock_contract'
                     else 'visual_qc_retry'
                 ),
             })
@@ -521,12 +522,154 @@ def run_video_pipeline(
                 'Pre-Runway visual QC was incomplete before any paid submission: '
                 + json.dumps({'missing_scene_indices': missing_pre_runway_reviews}, separators=(',', ':'))
             )
+
+        is_bounded_short_preview = (
+            options.get('mode') == 'preview'
+            and duration_minutes <= 0.6
+            and runway_submission_cap > 0
+        )
+
+        # A stock-routed short-preview scene is a contract: its complete
+        # narration must already pass the 86-point real-footage gate. Give
+        # each failed contract one bounded Pexels rescue, then fail closed
+        # before paid generation rather than silently consuming a Runway slot.
+        if is_bounded_short_preview:
+            stock_contract_candidates = [
+                scene_idx
+                for scene_idx, scene in enumerate(scenes)
+                if not str(scene.get('ai_prompt') or '').strip()
+                and (
+                    scene_idx not in current_reviews
+                    or not any(_visual_path(spec) for spec in scene_visuals[scene_idx])
+                    or int(current_reviews[scene_idx].get('score', 0)) < quality_threshold
+                )
+            ]
+            rescued_stock_contracts: list[int] = []
+            for scene_idx in stock_contract_candidates:
+                review = current_reviews.get(scene_idx) or {}
+                raw_retry_queries = (
+                    (review.get('retry_queries') or [])
+                    or (scenes[scene_idx].get('visual_queries') or [])
+                )
+                if isinstance(raw_retry_queries, str):
+                    raw_retry_queries = [raw_retry_queries]
+                retry_queries = [
+                    str(query).strip()
+                    for query in raw_retry_queries[:2]
+                    if str(query).strip()
+                ]
+                replacements = _retry_bad_scene(
+                    scene_idx,
+                    retry_queries,
+                    seen_ids,
+                    work,
+                    credits,
+                    file_prefix='pre_runway_stock_contract',
+                )
+                if not replacements:
+                    continue
+                existing_specs = list(scene_visuals[scene_idx])
+                scene_visuals[scene_idx] = [*replacements, *existing_specs][:3]
+                rescued_stock_contracts.append(scene_idx)
+                visual_replacements.append({
+                    'scene_index': scene_idx,
+                    'score': int(review.get('score', 0)),
+                    'reason': review.get('reason'),
+                    'old_best': _visual_path(existing_specs[0]) if existing_specs else '',
+                    'replacement_count': len(replacements),
+                    'stage': 'pre_runway_stock_contract',
+                })
+
+            if rescued_stock_contracts:
+                set_stage(
+                    self,
+                    task_id,
+                    'pre_runway_stock_contract',
+                    59,
+                    'Stok sahneleri tek çekim sözleşmesine göre son kez yenileniyor.',
+                )
+                stock_contract_qc = review_scene_visuals(
+                    [scenes[idx] for idx in rescued_stock_contracts],
+                    [scene_visuals[idx] for idx in rescued_stock_contracts],
+                    work / 'pre_runway_stock_contract',
+                    len(rescued_stock_contracts),
+                )
+                stock_contract_reviews = {
+                    int(review.get('scene_index')): review
+                    for review in (stock_contract_qc.get('reviews') or [])
+                    if isinstance(review, dict)
+                    and str(review.get('scene_index', '')).lstrip('-').isdigit()
+                }
+                missing_stock_contract_positions = [
+                    position
+                    for position in range(len(rescued_stock_contracts))
+                    if position not in stock_contract_reviews
+                ]
+                if missing_stock_contract_positions:
+                    raise PreRunwayRetryableError(
+                        'Stock-contract rescue QC was incomplete before any paid submission: '
+                        + json.dumps(
+                            {'missing_positions': missing_stock_contract_positions},
+                            separators=(',', ':'),
+                        )
+                    )
+                for position, scene_idx in enumerate(rescued_stock_contracts):
+                    mapped_review = dict(stock_contract_reviews[position])
+                    mapped_review['scene_index'] = scene_idx
+                    current_reviews[scene_idx] = mapped_review
+                    if scene_visuals[scene_idx]:
+                        _apply_visual_review(
+                            scene_visuals,
+                            scene_idx,
+                            mapped_review,
+                            default_fraction=0.35,
+                        )
+
+            failed_stock_contracts = [
+                {
+                    'scene_index': scene_idx,
+                    'stock_score': int((current_reviews.get(scene_idx) or {}).get('score', -1)),
+                    'has_visual': any(
+                        _visual_path(spec)
+                        for spec in scene_visuals[scene_idx]
+                    ),
+                }
+                for scene_idx, scene in enumerate(scenes)
+                if not str(scene.get('ai_prompt') or '').strip()
+                and (
+                    scene_idx not in current_reviews
+                    or not any(_visual_path(spec) for spec in scene_visuals[scene_idx])
+                    or int(current_reviews[scene_idx].get('score', 0)) < quality_threshold
+                )
+            ]
+            if failed_stock_contracts:
+                stock_contract_message = (
+                    'Short-preview stock contract failed before any paid submission: '
+                    + json.dumps(
+                        {
+                            'quality_threshold': quality_threshold,
+                            'failures': failed_stock_contracts,
+                        },
+                        separators=(',', ':'),
+                    )
+                )
+                if approved_package is not None:
+                    raise FinalVisualQualityError(stock_contract_message)
+                raise PreRunwayRetryableError(stock_contract_message)
+
         def rank_runway_candidates() -> tuple[dict[int, str], list[dict]]:
             prompts: dict[int, str] = {}
             ranked: list[dict] = []
             for candidate_scene_idx, scene in enumerate(scenes):
                 candidate_review = current_reviews.get(candidate_scene_idx)
-                prompt = _runway_prompt_for_scene(scene, candidate_review)
+                prompt = (
+                    _runway_prompt_for_scene(scene, candidate_review)
+                    if (
+                        not is_bounded_short_preview
+                        or str(scene.get('ai_prompt') or '').strip()
+                    )
+                    else ''
+                )
                 if not prompt:
                     continue
                 prompts[candidate_scene_idx] = prompt
@@ -548,11 +691,6 @@ def run_video_pipeline(
             return prompts, ranked
 
         prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
-        is_bounded_short_preview = (
-            options.get('mode') == 'preview'
-            and duration_minutes <= 0.6
-            and runway_submission_cap > 0
-        )
 
         # Before rejecting an over-budget plan, give only the overflow scenes
         # one bounded stock rescue. The three weakest scenes remain reserved
@@ -918,6 +1056,7 @@ def run_video_pipeline(
             'description': package.get('description'),
             'sources': package.get('sources', []),
             'director_qc': package.get('director_qc', []),
+            'stock_scene_qc': package.get('stock_scene_qc'),
             'visual_qc': visual_qc,
             'visual_replacements': visual_replacements,
             'initial_average_visual_qc_score': initial_avg_visual_score,
@@ -972,6 +1111,7 @@ def run_video_pipeline(
             'resolution': rendered.get('resolution'),
             'scene_synced': rendered.get('scene_synced'),
             'director_qc_applied': bool(package.get('director_qc')),
+            'stock_scene_qc_applied': bool(package.get('stock_scene_qc')),
             'visual_qc_reviews': len(reviews),
             'visual_replacements': len(visual_replacements),
             'initial_average_visual_qc_score': initial_avg_visual_score,
