@@ -226,9 +226,14 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     out = _clean_package(revised, package)
     words = _word_count(out['narration'])
     scene_count = len(out['scenes'])
+    ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
+    preview_ai_limit = None
+    if options.get('mode') == 'preview':
+        preview_ai_limit = min(3, target_scenes) if duration_minutes <= 0.6 else 0
 
     for correction_attempt in range(3):
-        if min_words <= words <= max_words and abs(scene_count - target_scenes) <= 1:
+        ai_count_ok = preview_ai_limit is None or ai_scene_count <= preview_ai_limit
+        if min_words <= words <= max_words and abs(scene_count - target_scenes) <= 1 and ai_count_ok:
             break
         correction_input = {
             'title': out.get('title'),
@@ -238,6 +243,8 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             'sources': package.get('sources', []),
             'current_word_count': words,
             'current_scene_count': scene_count,
+            'current_ai_scene_count': ai_scene_count,
+            'max_ai_scene_count': preview_ai_limit,
             'correction_attempt': correction_attempt + 1,
         }
         revised = _run_director(
@@ -247,14 +254,21 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         out = _clean_package(revised, package)
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
+        ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
 
     if words < min_words or words > max_words:
         raise RuntimeError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
     if abs(scene_count - target_scenes) > 1:
         raise RuntimeError(f'Scene-count gate rejected final edit: {scene_count} scenes; target {target_scenes}')
+    if preview_ai_limit is not None and ai_scene_count > preview_ai_limit:
+        raise RuntimeError(
+            f'Preview AI-scene gate rejected {ai_scene_count} scenes; maximum {preview_ai_limit}'
+        )
 
     out['narration_word_count'] = words
     out['target_word_range'] = [min_words, max_words]
     out['target_scene_count'] = target_scenes
+    out['ai_scene_count'] = ai_scene_count
+    out['max_ai_scene_count'] = preview_ai_limit
     out['studio_options'] = options
     return out
