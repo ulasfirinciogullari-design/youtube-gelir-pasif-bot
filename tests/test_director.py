@@ -118,6 +118,12 @@ def make_short_package():
         'title': 'Telefonun Sessiz Günü',
         'description': 'test',
         'thumbnail_text': 'test',
+        'sources': [
+            {
+                'url': 'https://example.com/phone-evidence',
+                'evidence': 'A concrete source sentence supports the selected phone mechanism.',
+            },
+        ],
         'scenes': scenes,
         'narration': narration,
         'tts_narration': narration,
@@ -524,6 +530,7 @@ class ShortStoryApprovalTests(unittest.TestCase):
         )
         package['short_story_qc'] = {
             'version': 1,
+            'requested_topic': 'one useful phone story',
             'story_review_accepted': True,
             'ending_pair_accepted': True,
         }
@@ -535,7 +542,18 @@ class ShortStoryApprovalTests(unittest.TestCase):
     def test_approved_short_package_fingerprint_accepts_exact_material(self):
         package = self._approved_package()
 
-        self.assertTrue(short_story_package_is_approved(package))
+        self.assertTrue(
+            short_story_package_is_approved(
+                package,
+                'one useful phone story',
+            )
+        )
+        self.assertFalse(
+            short_story_package_is_approved(
+                package,
+                'a different requested topic',
+            )
+        )
 
     def test_approved_short_package_rejects_malformed_versions_and_scenes(self):
         for bad_version in ('v3', {}, True, None):
@@ -551,6 +569,22 @@ class ShortStoryApprovalTests(unittest.TestCase):
         package = self._approved_package()
         package['scenes'].append('not a scene object')
         self.assertFalse(short_story_package_is_approved(package))
+
+    def test_approved_short_package_binds_research_evidence(self):
+        package = self._approved_package()
+        package['sources'] = [
+            {
+                'url': 'https://example.com/unrelated',
+                'evidence': 'An unrelated source sentence replaces the audited evidence.',
+            },
+        ]
+
+        self.assertFalse(
+            short_story_package_is_approved(
+                package,
+                'one useful phone story',
+            )
+        )
 
     def test_approved_short_package_fingerprint_rejects_mutation_or_missing_qc(self):
         package = self._approved_package()
