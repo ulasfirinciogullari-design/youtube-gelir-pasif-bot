@@ -123,6 +123,10 @@ def make_short_package():
                 'url': 'https://example.com/phone-evidence',
                 'evidence': 'A concrete source sentence supports the selected phone mechanism.',
             },
+            {
+                'url': 'https://example.org/second-phone-source',
+                'evidence': 'A second independent sentence confirms the same causal mechanism.',
+            },
         ],
         'scenes': scenes,
         'narration': narration,
@@ -268,6 +272,7 @@ class ShortStockRepairTests(unittest.TestCase):
         )
 
         self.assertEqual(len(client.responses.calls), 2)
+        self.assertEqual(client.responses.calls[1]['max_tool_calls'], 1)
         self.assertEqual(result['stock_scene_qc']['target_positions'], [0, 4, 5])
         self.assertEqual(result['stock_scene_qc']['generator_calls'], 1)
         self.assertEqual(result['stock_scene_qc']['critic_calls'], 1)
@@ -555,6 +560,36 @@ class ShortStoryApprovalTests(unittest.TestCase):
             )
         )
 
+    def test_approved_short_package_rejects_malformed_evidence(self):
+        invalid_sources = [
+            [
+                {
+                    'url': 'https://',
+                    'evidence': 'A sentence that is long enough but has no URL host.',
+                },
+                {
+                    'url': 'https://example.org/valid',
+                    'evidence': 'A second valid-looking record cannot rescue the malformed one.',
+                },
+            ],
+            [
+                {
+                    'url': 'https://example.com/invalid-type',
+                    'evidence': ['not', 'a', 'sentence'],
+                },
+                {
+                    'url': 'https://example.org/valid',
+                    'evidence': 'A second valid-looking record cannot rescue the malformed one.',
+                },
+            ],
+        ]
+
+        for sources in invalid_sources:
+            with self.subTest(sources=sources):
+                package = self._approved_package()
+                package['sources'] = sources
+                self.assertFalse(short_story_package_is_approved(package))
+
     def test_approved_short_package_rejects_malformed_versions_and_scenes(self):
         for bad_version in ('v3', {}, True, None):
             with self.subTest(version=bad_version):
@@ -576,6 +611,10 @@ class ShortStoryApprovalTests(unittest.TestCase):
             {
                 'url': 'https://example.com/unrelated',
                 'evidence': 'An unrelated source sentence replaces the audited evidence.',
+            },
+            {
+                'url': 'https://example.org/another-unrelated',
+                'evidence': 'Another unrelated sentence replaces the second audited source.',
             },
         ]
 
