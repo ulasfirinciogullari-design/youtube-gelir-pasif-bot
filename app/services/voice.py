@@ -122,7 +122,7 @@ def _media_duration(path: str | Path) -> float:
 
 def _voice_speed(target_seconds: float | None = None) -> float:
     """Keep short Turkish previews deliberate without slowing long-form work."""
-    return 0.90 if target_seconds and target_seconds <= 40 else 1.01
+    return 0.88 if target_seconds and target_seconds <= 40 else 1.01
 
 
 def synthesize_voice_with_id(
