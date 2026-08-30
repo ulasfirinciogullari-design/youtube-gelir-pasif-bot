@@ -233,17 +233,28 @@ def _repair_short_stock_scenes(
     if len(scenes) < 3:
         return package
 
-    stock_positions = [
-        position
-        for position, scene in enumerate(scenes)
-        if not str(scene.get('ai_prompt') or '').strip()
-    ]
-    if not stock_positions:
-        return package
-
-    targets = [
-        {
+    stock_positions = sorted({
+        *[
+            position
+            for position, scene in enumerate(scenes)
+            if not str(scene.get('ai_prompt') or '').strip()
+        ],
+        len(scenes) - 2,
+        len(scenes) - 1,
+    })
+    role_by_position = {
+        position: (
+            'hook' if position == 0
+            else 'payoff' if position == len(scenes) - 1
+            else 'penultimate' if position == len(scenes) - 2
+            else 'bridge'
+        )
+        for position in stock_positions
+    }
+    targets_by_position = {
+        position: {
             'position': position,
+            'role': role_by_position[position],
             'word_count': _word_count(scenes[position].get('narration') or ''),
             'current_narration': scenes[position].get('narration'),
             'current_visual_queries': scenes[position].get('visual_queries') or [],
@@ -257,7 +268,7 @@ def _repair_short_stock_scenes(
             ),
         }
         for position in stock_positions
-    ]
+    }
     original_story = [
         {
             'position': position,
@@ -266,22 +277,6 @@ def _repair_short_stock_scenes(
         }
         for position, scene in enumerate(scenes)
     ]
-    context = {
-        'title': package.get('title'),
-        'complete_story_in_order': original_story,
-        'stock_scenes_to_replace': targets,
-    }
-    response_shape = {
-        'scenes': [
-            {
-                'position': position,
-                'narration': '...',
-                'visual_queries': ['...', '...'],
-                'ai_prompt': None,
-            }
-            for position in stock_positions
-        ],
-    }
     mechanism_pattern = re.compile(
         r'\b(?:oled|pixels?|piksel\w*|alt\s*piksel\w*|altpiksel\w*|gps|'
         r'wi[-‑]?fi|cellular|hücresel\w*|qr|error\s+correction|hata\s+düzelt\w*|'
@@ -300,25 +295,124 @@ def _repair_short_stock_scenes(
         package.get('narration')
         or ' '.join(str(scene.get('narration') or '') for scene in scenes)
     )
-    validation_error = ''
+    original_ai_count = sum(
+        1 for scene in scenes if str(scene.get('ai_prompt') or '').strip()
+    )
+
+    def validate_generated_row(position: int, row: dict) -> tuple[dict | None, str]:
+        target = targets_by_position[position]
+        narration = str(row.get('narration') or '').strip()
+        got_words = _word_count(narration)
+        expected_words = int(target['word_count'])
+        if got_words != expected_words:
+            return None, (
+                f'position {position} has {got_words} narration words; '
+                f'expected {expected_words}'
+            )
+        if (
+            ';' in narration
+            or ':' in narration
+            or not re.fullmatch(r'[^.!?…\r\n]+(?:[.!?…]+)?', narration)
+        ):
+            return None, f'position {position} must contain one simple sentence'
+        if mechanism_pattern.search(narration):
+            return None, f'position {position} contains technical recap'
+        if abstract_pattern.search(narration):
+            return None, f'position {position} contains an unfilmable abstraction'
+        if row.get('ai_prompt') is not None:
+            return None, f'position {position} must explicitly keep ai_prompt null'
+
+        queries = row.get('visual_queries')
+        if not isinstance(queries, list) or not 2 <= len(queries) <= 3:
+            return None, (
+                f'position {position} must contain exactly two or three stock queries'
+            )
+        if any(not isinstance(query, str) or not query.strip() for query in queries):
+            return None, f'position {position} contains an invalid stock query'
+        queries = [query.strip() for query in queries]
+        if len({query.casefold() for query in queries}) != len(queries):
+            return None, f'position {position} contains duplicate stock queries'
+        if any(
+            not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9 '\-]*", query)
+            for query in queries
+        ):
+            return None, (
+                f'position {position} stock queries must use plain English search text'
+            )
+        query_lengths = [
+            len(re.findall(r"[A-Za-z0-9'-]+", query))
+            for query in queries
+        ]
+        if any(length < 3 or length > 9 for length in query_lengths):
+            return None, f'position {position} stock query is not concise'
+        return {
+            'narration': narration,
+            'visual_queries': queries,
+        }, ''
+
+    accepted_rows: dict[int, dict] = {}
+    failed_candidates: dict[int, dict] = {}
+    pending_positions = list(stock_positions)
+    feedback_by_position: dict[int, str] = {}
+    final_critic_reviews: dict[int, dict] = {}
+    generator_calls = 0
+    critic_calls = 0
+    last_failures: dict[int, str] = {
+        position: 'not reviewed yet'
+        for position in stock_positions
+    }
 
     for attempt in range(2):
+        request_positions = list(pending_positions)
+        request_targets = [
+            {
+                **targets_by_position[position],
+                'previous_failed_candidate': failed_candidates.get(position),
+                'validation_feedback': feedback_by_position.get(position),
+            }
+            for position in request_positions
+        ]
+        response_shape = {
+            'scenes': [
+                {
+                    'position': position,
+                    'narration': '...',
+                    'visual_queries': ['...', '...'],
+                    'ai_prompt': None,
+                }
+                for position in request_positions
+            ],
+        }
+        generation_context = {
+            'title': package.get('title'),
+            'complete_original_story_in_order': original_story,
+            'accepted_stock_scenes_locked': [
+                {
+                    'position': position,
+                    'role': role_by_position[position],
+                    **accepted_rows[position],
+                }
+                for position in sorted(accepted_rows)
+            ],
+            'stock_positions_to_rewrite': request_targets,
+        }
+        generator_calls += 1
         response = client.responses.create(
             model=settings.openai_model,
             reasoning={'effort': 'medium' if attempt else 'low'},
-            input=f'''You are repairing EVERY stock-routed scene of a 30-second premium YouTube story before footage search.
+            input=f'''You are repairing the requested stock-routed scenes of a 30-second premium YouTube story before footage search.
 Language of spoken narration: {language_name}
 Story context:
-{json.dumps(context, ensure_ascii=False)}
+{json.dumps(generation_context, ensure_ascii=False)}
 
 Return ONLY JSON in exactly this shape:
 {json.dumps(response_shape, ensure_ascii=False)}
 
 NON-NEGOTIABLE RULES:
-- Return exactly the requested stock positions and no others. Never rewrite an AI-routed mechanism scene.
-- Preserve the exact requested narration word count for every position.
+- Return exactly the requested positions and no others. Never rewrite an accepted locked stock scene or an AI-routed mechanism scene.
+- Preserve the exact requested narration word count for every returned position.
 - Each narration describes ONE visible human or physical action in ONE ordinary location.
-- Every spoken clause must be literally visible in the same normal five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
+- Every spoken clause must be literally visible in the same common five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
 - Use one simple sentence. Do not combine distinct actions, even with a conjunction, gerund, sequence or subordinate clause.
 - Do not use a semicolon or colon to join actions.
 - Do not mention or recap OLED, pixels, GPS, Wi-Fi, cellular signals, location systems, QR, error correction, timing, algebra or invisible mechanisms.
@@ -326,128 +420,112 @@ NON-NEGOTIABLE RULES:
 - Give exactly 2-3 simple ENGLISH stock search phrases per scene.
 - First choose one canonical actor/object, one action verb phrase and one ordinary setting. Repeat that same semantic contract in every query; vary only framing or camera distance.
 - Every query must contain 3-9 English words and depict the narration's exact same single action.
-- Keep each scene faithful to its current role and add no new factual claim, product or unrelated activity.
-- Position 0, when requested, must be a concrete everyday action that opens naturally into the next technical scene.
-- Every middle stock scene must connect its immediate neighbors without repeating their mechanism.
-- The final stock scene must follow the preceding scene and deliver a visible human payoff, not a spoken conclusion.
+- Keep each scene faithful to its supplied role and add no new fact, product or unrelated activity.
+- A hook must be one concrete everyday action that opens naturally into the next technical scene.
+- A bridge or penultimate scene must connect its immediate neighbors without repeating their mechanism.
+- A payoff must follow the preceding scene and provide a visible human result, not a spoken conclusion.
 - Keep the spoken narration natural and easy to pronounce in {language_name}.
-{f'Previous response failed validation: {validation_error}' if validation_error else ''}
 ''',
         )
+
+        global_generation_error = ''
         try:
             data = _json(response.output_text)
         except Exception:
-            validation_error = 'response was not valid JSON'
-            continue
-        if set(data.keys()) != {'scenes'}:
-            validation_error = 'response must contain exactly the scenes key'
-            continue
-        rows = data.get('scenes')
-        if not isinstance(rows, list) or len(rows) != len(stock_positions):
-            validation_error = (
-                f'expected exactly {len(stock_positions)} stock scene objects'
+            data = {}
+            global_generation_error = 'response was not valid JSON'
+        if data and set(data.keys()) != {'scenes'}:
+            global_generation_error = 'response must contain exactly the scenes key'
+        rows = data.get('scenes') if isinstance(data, dict) else None
+        if not global_generation_error and (
+            not isinstance(rows, list)
+            or len(rows) != len(request_positions)
+        ):
+            global_generation_error = (
+                f'expected exactly {len(request_positions)} requested scene objects'
             )
-            continue
 
         expected_row_keys = {'position', 'narration', 'visual_queries', 'ai_prompt'}
         rows_by_position: dict[int, dict] = {}
-        mapping_error = ''
-        for row in rows:
-            if not isinstance(row, dict) or set(row.keys()) != expected_row_keys:
-                mapping_error = (
-                    'each scene must contain exactly position, narration, '
-                    'visual_queries and ai_prompt'
-                )
-                break
-            position = row.get('position')
-            if type(position) is not int:
-                mapping_error = 'scene position must be an integer'
-                break
-            if position not in stock_positions:
-                mapping_error = f'unexpected stock scene position {position}'
-                break
-            if position in rows_by_position:
-                mapping_error = f'duplicate stock scene position {position}'
-                break
-            rows_by_position[position] = row
-        if mapping_error or set(rows_by_position) != set(stock_positions):
-            validation_error = (
-                mapping_error
-                or 'requested stock scene positions were not returned exactly once'
-            )
-            continue
-
-        repaired_rows: dict[int, dict] = {}
-        row_error = ''
-        for target in targets:
-            position = int(target['position'])
-            row = rows_by_position[position]
-            narration = str(row.get('narration') or '').strip()
-            got_words = _word_count(narration)
-            expected_words = int(target['word_count'])
-            if got_words != expected_words:
-                row_error = (
-                    f'position {position} has {got_words} narration words; '
-                    f'expected {expected_words}'
-                )
-                break
+        if not global_generation_error:
+            for row in rows:
+                if not isinstance(row, dict) or set(row.keys()) != expected_row_keys:
+                    global_generation_error = (
+                        'each scene must contain exactly position, narration, '
+                        'visual_queries and ai_prompt'
+                    )
+                    break
+                position = row.get('position')
+                if type(position) is not int:
+                    global_generation_error = 'scene position must be an integer'
+                    break
+                if position not in request_positions:
+                    global_generation_error = (
+                        f'unexpected requested scene position {position}'
+                    )
+                    break
+                if position in rows_by_position:
+                    global_generation_error = f'duplicate scene position {position}'
+                    break
+                rows_by_position[position] = row
             if (
-                ';' in narration
-                or ':' in narration
-                or not re.fullmatch(r'[^.!?…\r\n]+(?:[.!?…]+)?', narration)
+                not global_generation_error
+                and set(rows_by_position) != set(request_positions)
             ):
-                row_error = f'position {position} must contain one simple sentence'
-                break
-            if mechanism_pattern.search(narration):
-                row_error = f'position {position} contains technical recap'
-                break
-            if abstract_pattern.search(narration):
-                row_error = f'position {position} contains an unfilmable abstraction'
-                break
-            if row.get('ai_prompt') is not None:
-                row_error = f'position {position} must explicitly keep ai_prompt null'
-                break
-            queries = row.get('visual_queries')
-            if not isinstance(queries, list) or not 2 <= len(queries) <= 3:
-                row_error = (
-                    f'position {position} must contain exactly two or three stock queries'
+                global_generation_error = (
+                    'requested scene positions were not returned exactly once'
                 )
-                break
-            if any(not isinstance(query, str) or not query.strip() for query in queries):
-                row_error = f'position {position} contains an invalid stock query'
-                break
-            queries = [query.strip() for query in queries]
-            if len({query.casefold() for query in queries}) != len(queries):
-                row_error = f'position {position} contains duplicate stock queries'
-                break
-            if any(not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9 '\-]*", query) for query in queries):
-                row_error = (
-                    f'position {position} stock queries must use plain English search text'
-                )
-                break
-            query_lengths = [
-                len(re.findall(r"[A-Za-z0-9'-]+", query))
-                for query in queries
-            ]
-            if any(length < 3 or length > 9 for length in query_lengths):
-                row_error = f'position {position} stock query is not concise'
-                break
-            repaired_rows[position] = {
-                'narration': narration,
-                'visual_queries': queries,
-            }
 
-        if row_error:
-            validation_error = row_error
-            continue
+        deterministic_errors: dict[int, str] = {}
+        if global_generation_error:
+            deterministic_errors = {
+                position: global_generation_error
+                for position in request_positions
+            }
+        else:
+            for position in request_positions:
+                candidate, error = validate_generated_row(
+                    position,
+                    rows_by_position[position],
+                )
+                if error:
+                    deterministic_errors[position] = error
+                    failed_candidates[position] = {
+                        'narration': rows_by_position[position].get('narration'),
+                        'visual_queries': rows_by_position[position].get('visual_queries'),
+                    }
+                elif candidate:
+                    accepted_rows[position] = candidate
+                    failed_candidates.pop(position, None)
+
+        if deterministic_errors:
+            pending_positions = sorted(deterministic_errors)
+            feedback_by_position = deterministic_errors
+            last_failures = dict(deterministic_errors)
+            if attempt == 0:
+                continue
+            break
+
+        if set(accepted_rows) != set(stock_positions):
+            missing = sorted(set(stock_positions) - set(accepted_rows))
+            last_failures = {
+                position: 'candidate was not available for full-story review'
+                for position in missing
+            }
+            pending_positions = missing
+            feedback_by_position = dict(last_failures)
+            if attempt == 0:
+                continue
+            break
 
         candidate_story = [
             {
                 'position': position,
-                'route': 'stock' if position in repaired_rows else 'ai',
+                'route': 'stock' if position in stock_positions else 'ai',
+                'role': role_by_position.get(position),
                 'narration': (
-                    repaired_rows[position]['narration']
-                    if position in repaired_rows
+                    accepted_rows[position]['narration']
+                    if position in accepted_rows
                     else scene.get('narration')
                 ),
             }
@@ -461,10 +539,15 @@ NON-NEGOTIABLE RULES:
                     'single_visible_action': True,
                     'single_ordinary_location': True,
                     'all_spoken_meaning_visible': True,
+                    'no_invisible_or_abstract_claim': True,
                     'all_named_subjects_coexist': True,
                     'queries_are_english': True,
                     'queries_match_same_action': True,
-                    'continues_story': True,
+                    'common_stock_clip_feasible': True,
+                    'continues_from_previous': True,
+                    'leads_to_next': True,
+                    'preserves_story_role': True,
+                    'adds_no_new_fact': True,
                     'reason': 'brief evidence-based verdict',
                 }
                 for position in stock_positions
@@ -476,16 +559,18 @@ NON-NEGOTIABLE RULES:
             'candidate_stock_scenes': [
                 {
                     'position': position,
-                    **repaired_rows[position],
+                    'role': role_by_position[position],
+                    **accepted_rows[position],
                 }
                 for position in stock_positions
             ],
         }
+        critic_calls += 1
         critic_response = client.responses.create(
             model=settings.openai_model,
             reasoning={'effort': 'medium'},
             input=f'''Act as an independent, fail-closed stock-shot feasibility critic. Do not rewrite anything.
-Evaluate every stock-routed candidate against its exact narration, queries, adjacent scenes and the complete short story.
+Evaluate every stock-routed candidate against its exact narration, queries, role, adjacent scenes and complete short story.
 {json.dumps(critic_context, ensure_ascii=False)}
 
 Return ONLY JSON in exactly this shape:
@@ -495,114 +580,231 @@ For EACH requested position, set every boolean independently. If evidence is amb
 - single_sentence: narration contains only one sentence.
 - single_visible_action: narration requires exactly one visible action, not two actions joined by a conjunction, gerund, sequence or implied cut.
 - single_ordinary_location: narration and every query can share one ordinary physical setting.
-- all_spoken_meaning_visible: every spoken clause is directly visible in that single clip; abstract hooks, comparisons, mysteries, technical implications and spoken conclusions fail.
+- all_spoken_meaning_visible: every spoken clause is directly visible in that single clip.
+- no_invisible_or_abstract_claim: there is no magic-like hook, comparison, mystery, technical implication or spoken conclusion.
 - all_named_subjects_coexist: one normal five-second stock clip can visibly contain every named subject and object.
 - queries_are_english: every query is idiomatic English stock-search text.
-- queries_match_same_action: every query depicts the narration's exact same actor/object, single action and setting; queries that split actions or settings fail.
-- continues_story: the scene preserves its role and connects its immediate neighbors; position 0 must visibly open into the next scene, and the final position must visibly pay off the preceding story.
-The reason must name the concrete evidence for the verdict. Approval is allowed only when all eight booleans are true.
+- queries_match_same_action: every query depicts the narration's exact same actor/object, action and setting.
+- common_stock_clip_feasible: the exact shot is realistically common in stock libraries, not merely imaginable.
+- continues_from_previous: it follows the previous scene; for position 0 this boundary check is true.
+- leads_to_next: it leads naturally to the next scene; for the final position this boundary check is true.
+- preserves_story_role: hook, bridge, penultimate or payoff behavior matches the supplied role.
+- adds_no_new_fact: it introduces no unsupported claim, product or unrelated activity.
+The reason must name concrete evidence for the verdict. Approval requires all thirteen booleans to be true.
 ''',
         )
+
+        critic_global_error = ''
         try:
             critic = _json(critic_response.output_text)
         except Exception:
-            validation_error = 'independent stock-shot critic returned invalid JSON'
-            continue
-        if set(critic.keys()) != {'scenes'}:
-            validation_error = 'independent stock-shot critic returned an invalid object'
-            continue
-        critic_rows = critic.get('scenes')
-        if not isinstance(critic_rows, list) or len(critic_rows) != len(stock_positions):
-            validation_error = (
+            critic = {}
+            critic_global_error = 'independent stock-shot critic returned invalid JSON'
+        if critic and set(critic.keys()) != {'scenes'}:
+            critic_global_error = (
+                'independent stock-shot critic returned an invalid object'
+            )
+        critic_rows = critic.get('scenes') if isinstance(critic, dict) else None
+        if not critic_global_error and (
+            not isinstance(critic_rows, list)
+            or len(critic_rows) != len(stock_positions)
+        ):
+            critic_global_error = (
                 'independent stock-shot critic did not review every stock scene'
             )
-            continue
 
         critic_boolean_keys = {
             'single_sentence',
             'single_visible_action',
             'single_ordinary_location',
             'all_spoken_meaning_visible',
+            'no_invisible_or_abstract_claim',
             'all_named_subjects_coexist',
             'queries_are_english',
             'queries_match_same_action',
-            'continues_story',
+            'common_stock_clip_feasible',
+            'continues_from_previous',
+            'leads_to_next',
+            'preserves_story_role',
+            'adds_no_new_fact',
         }
         expected_critic_keys = {'position', 'reason', *critic_boolean_keys}
         critic_by_position: dict[int, dict] = {}
-        critic_error = ''
-        for row in critic_rows:
-            if not isinstance(row, dict) or set(row.keys()) != expected_critic_keys:
-                critic_error = 'independent critic returned the wrong fields'
-                break
-            position = row.get('position')
-            if type(position) is not int or position not in stock_positions:
-                critic_error = 'independent critic returned an invalid stock position'
-                break
-            if position in critic_by_position:
-                critic_error = f'independent critic repeated position {position}'
-                break
-            if not str(row.get('reason') or '').strip():
-                critic_error = f'independent critic omitted evidence for position {position}'
-                break
-            failed_checks = [
-                key
-                for key in critic_boolean_keys
-                if row.get(key) is not True
-            ]
-            if failed_checks:
-                critic_error = (
-                    f'independent critic rejected position {position}: '
-                    f'{", ".join(sorted(failed_checks))}; '
-                    f'{str(row.get("reason") or "")[:160]}'
+        if not critic_global_error:
+            for row in critic_rows:
+                if not isinstance(row, dict) or set(row.keys()) != expected_critic_keys:
+                    critic_global_error = 'independent critic returned the wrong fields'
+                    break
+                position = row.get('position')
+                if type(position) is not int or position not in stock_positions:
+                    critic_global_error = (
+                        'independent critic returned an invalid stock position'
+                    )
+                    break
+                if position in critic_by_position:
+                    critic_global_error = (
+                        f'independent critic repeated position {position}'
+                    )
+                    break
+                critic_by_position[position] = row
+            if (
+                not critic_global_error
+                and set(critic_by_position) != set(stock_positions)
+            ):
+                critic_global_error = (
+                    'independent critic missed a requested stock position'
                 )
-                break
-            critic_by_position[position] = row
-        if critic_error or set(critic_by_position) != set(stock_positions):
-            validation_error = (
-                critic_error
-                or 'independent critic missed a requested stock position'
+
+        critic_failures: dict[int, str] = {}
+        parsed_reviews: dict[int, dict] = {}
+        if critic_global_error:
+            critic_failures = {
+                position: critic_global_error
+                for position in stock_positions
+            }
+        else:
+            for position in stock_positions:
+                row = critic_by_position[position]
+                failed_checks = sorted(
+                    key
+                    for key in critic_boolean_keys
+                    if row.get(key) is not True
+                )
+                reason = str(row.get('reason') or '').strip()
+                if not reason:
+                    failed_checks.append('missing_evidence')
+                    reason = 'critic omitted evidence'
+                parsed_reviews[position] = {
+                    'position': position,
+                    'accepted': not failed_checks,
+                    'failed_checks': failed_checks,
+                    'reason': reason[:160],
+                }
+                if failed_checks:
+                    critic_failures[position] = (
+                        f'{", ".join(failed_checks)}; {reason[:160]}'
+                    )
+
+        if not critic_failures:
+            final_critic_reviews = parsed_reviews
+            repaired = dict(package)
+            repaired_scenes = [dict(scene) for scene in scenes]
+            for position in stock_positions:
+                repaired_scenes[position]['narration'] = accepted_rows[position]['narration']
+                repaired_scenes[position]['tts_text'] = accepted_rows[position]['narration']
+                repaired_scenes[position]['visual_queries'] = accepted_rows[position]['visual_queries']
+                repaired_scenes[position]['ai_prompt'] = None
+
+            non_target_positions = [
+                position
+                for position in range(len(scenes))
+                if position not in stock_positions
+            ]
+            invariants_ok = (
+                len(repaired_scenes) == len(scenes)
+                and all(
+                    repaired_scenes[position] == scenes[position]
+                    for position in non_target_positions
+                )
+                and [
+                    scene.get('index')
+                    for scene in repaired_scenes
+                ] == [
+                    scene.get('index')
+                    for scene in scenes
+                ]
             )
-            continue
+            if not invariants_ok:
+                last_failures = {
+                    position: 'repair changed a non-target scene or scene index'
+                    for position in stock_positions
+                }
+                break
 
-        repaired = dict(package)
-        repaired_scenes = [dict(scene) for scene in scenes]
-        for position in stock_positions:
-            repaired_scenes[position]['narration'] = repaired_rows[position]['narration']
-            repaired_scenes[position]['tts_text'] = repaired_rows[position]['narration']
-            repaired_scenes[position]['visual_queries'] = repaired_rows[position]['visual_queries']
-            repaired_scenes[position]['ai_prompt'] = None
-        repaired['scenes'] = repaired_scenes
-        repaired['narration'] = ' '.join(scene['narration'] for scene in repaired_scenes)
-        repaired['tts_narration'] = repaired['narration']
-        if _word_count(repaired['narration']) != original_total_words:
-            validation_error = 'repair changed the package total word count'
-            continue
-        repaired['visual_queries'] = [
-            query
-            for scene in repaired_scenes
-            for query in (scene.get('visual_queries') or [])
-        ]
-        repaired['ai_scenes'] = [
-            scene['ai_prompt']
-            for scene in repaired_scenes
-            if scene.get('ai_prompt')
-        ]
-        qc_summary = repaired.get('director_qc') or []
-        if not isinstance(qc_summary, list):
-            qc_summary = [str(qc_summary)]
-        repaired['director_qc'] = [
-            *qc_summary,
-            (
-                'Locked every stock-routed short-preview scene to independently '
-                'verified single-action coverage.'
-            ),
-        ]
-        return repaired
+            repaired['scenes'] = repaired_scenes
+            repaired['narration'] = ' '.join(
+                scene['narration']
+                for scene in repaired_scenes
+            )
+            repaired['tts_narration'] = repaired['narration']
+            if _word_count(repaired['narration']) != original_total_words:
+                last_failures = {
+                    position: 'repair changed the package total word count'
+                    for position in stock_positions
+                }
+                break
+            repaired['visual_queries'] = [
+                query
+                for scene in repaired_scenes
+                for query in (scene.get('visual_queries') or [])
+            ]
+            repaired['ai_scenes'] = [
+                scene['ai_prompt']
+                for scene in repaired_scenes
+                if scene.get('ai_prompt')
+            ]
+            if len(repaired['ai_scenes']) > original_ai_count:
+                last_failures = {
+                    position: 'repair increased the authored AI-scene count'
+                    for position in stock_positions
+                }
+                break
 
+            qc_summary = repaired.get('director_qc') or []
+            if not isinstance(qc_summary, list):
+                qc_summary = [str(qc_summary)]
+            repaired['director_qc'] = [
+                *qc_summary,
+                (
+                    'Locked every short-preview stock scene to independently '
+                    'verified single-action coverage.'
+                ),
+            ]
+            repaired['stock_scene_qc'] = {
+                'version': 2,
+                'target_positions': stock_positions,
+                'roles': [
+                    {
+                        'position': position,
+                        'role': role_by_position[position],
+                    }
+                    for position in stock_positions
+                ],
+                'generator_calls': generator_calls,
+                'critic_calls': critic_calls,
+                'attempts_used': generator_calls,
+                'reviews': [
+                    final_critic_reviews[position]
+                    for position in stock_positions
+                ],
+            }
+            return repaired
+
+        last_failures = dict(critic_failures)
+        if attempt == 0:
+            pending_positions = sorted(critic_failures)
+            feedback_by_position = dict(critic_failures)
+            for position in pending_positions:
+                failed_candidates[position] = dict(accepted_rows[position])
+                accepted_rows.pop(position, None)
+            continue
+        break
+
+    failure_details = {
+        'positions': stock_positions,
+        'generator_calls': generator_calls,
+        'critic_calls': critic_calls,
+        'failures': [
+            {
+                'position': position,
+                'reason': str(reason)[:140],
+            }
+            for position, reason in sorted(last_failures.items())
+        ],
+    }
     raise RuntimeError(
         'Director could not produce fully stock-safe short-preview scenes: '
-        + validation_error[:240]
+        + json.dumps(failure_details, ensure_ascii=False, separators=(',', ':'))
     )
 
 def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
