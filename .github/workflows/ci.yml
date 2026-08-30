@@ -15,6 +15,8 @@ jobs:
           python-version: '3.12'
       - name: Compile Python sources
         run: python -m compileall -q app
+      - name: Run focused unit tests
+        run: python -m unittest discover -s tests -v
       - name: Validate required files
         run: |
           test -f Dockerfile
