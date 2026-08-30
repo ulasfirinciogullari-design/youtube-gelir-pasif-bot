@@ -47,9 +47,15 @@ def _frame(video_path: str, output_path: Path, fraction: float) -> Path | None:
         return None
 
 
-def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str | dict]], work_dir: str | Path, max_scenes: int = 12) -> dict:
+def review_scene_visuals(
+    scenes: list[dict],
+    scene_visuals: list[list[str | dict]],
+    work_dir: str | Path,
+    max_scenes: int = 12,
+    _missing_review_attempts: int = 2,
+) -> dict:
     if not settings.openai_api_key:
-        return {'reviews': []}
+        return {'reviews': [], 'missing_review_indices': []}
 
     work = Path(work_dir)
     frame_dir = work / 'visual_qc'
@@ -67,19 +73,20 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str | dict
         ),
     }]
 
-    included = 0
+    included_indices: list[int] = []
+    unreviewable_indices: list[int] = []
     for idx, scene in enumerate(scenes):
-        if included >= max_scenes:
+        if len(included_indices) >= max_scenes:
             break
         raw_specs = scene_visuals[idx] if idx < len(scene_visuals) else []
         paths = [p for p in (_spec_path(spec) for spec in raw_specs) if p][:3]
         if not paths:
             continue
 
-        content.append({
+        scene_content: list[dict] = [{
             'type': 'input_text',
             'text': f'SCENE {idx}\nNarration: {str(scene.get("narration") or "").strip()}\nSearch queries: {json.dumps(scene.get("visual_queries") or [], ensure_ascii=False)}',
-        })
+        }]
         image_count = 0
         for candidate_idx, path in enumerate(paths):
             for moment_idx, fraction in enumerate(MOMENT_FRACTIONS):
@@ -91,17 +98,34 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str | dict
                 if not frame:
                     continue
                 encoded = base64.b64encode(frame.read_bytes()).decode('ascii')
-                content.append({
+                scene_content.append({
                     'type': 'input_text',
                     'text': f'CANDIDATE {candidate_idx} — MOMENT {moment_idx} — approximately {int(fraction * 100)}% into clip',
                 })
-                content.append({'type': 'input_image', 'image_url': f'data:image/jpeg;base64,{encoded}'})
+                scene_content.append({'type': 'input_image', 'image_url': f'data:image/jpeg;base64,{encoded}'})
                 image_count += 1
         if image_count:
-            included += 1
+            included_indices.append(idx)
+            content.extend(scene_content)
+        else:
+            unreviewable_indices.append(idx)
 
-    if not included:
-        return {'reviews': []}
+    if not included_indices:
+        return {
+            'reviews': [],
+            'moment_fractions': MOMENT_FRACTIONS,
+            'included_scene_indices': [],
+            'unreviewable_scene_indices': unreviewable_indices,
+            'missing_review_indices': [],
+        }
+
+    content.append({
+        'type': 'input_text',
+        'text': (
+            'Return exactly one review for every required scene ID, with no duplicates '
+            f'and no extra IDs. Required scene IDs: {included_indices}'
+        ),
+    })
 
     client = OpenAI(api_key=settings.openai_api_key, timeout=120.0, max_retries=1)
     response = client.responses.create(
@@ -110,7 +134,8 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str | dict
         input=[{'role': 'user', 'content': content}],
     )
     data = _parse(response.output_text)
-    reviews = []
+    reviews_by_scene: dict[int, dict] = {}
+    included_set = set(included_indices)
     for review in data.get('reviews') or []:
         if not isinstance(review, dict):
             continue
@@ -121,11 +146,13 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str | dict
             score = int(review.get('score'))
         except Exception:
             continue
+        if scene_index not in included_set or scene_index in reviews_by_scene:
+            continue
         retry_queries = review.get('retry_queries') or []
         if isinstance(retry_queries, str):
             retry_queries = [retry_queries]
         best_moment_index = min(max(best_moment_index, 0), len(MOMENT_FRACTIONS) - 1)
-        reviews.append({
+        reviews_by_scene[scene_index] = {
             'scene_index': scene_index,
             'best_candidate_index': max(0, best_candidate_index),
             'best_moment_index': best_moment_index,
@@ -133,5 +160,35 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str | dict
             'score': max(0, min(score, 100)),
             'reason': str(review.get('reason') or '')[:500],
             'retry_queries': [str(q).strip() for q in retry_queries if str(q).strip()][:2],
-        })
-    return {'reviews': reviews, 'moment_fractions': MOMENT_FRACTIONS}
+        }
+
+    missing_indices = [idx for idx in included_indices if idx not in reviews_by_scene]
+    if missing_indices and _missing_review_attempts > 0:
+        retry_qc = review_scene_visuals(
+            [scenes[idx] for idx in missing_indices],
+            [scene_visuals[idx] for idx in missing_indices],
+            work / f'missing_reviews_{_missing_review_attempts}',
+            len(missing_indices),
+            _missing_review_attempts=_missing_review_attempts - 1,
+        )
+        retry_reviews = {
+            int(review.get('scene_index')): review
+            for review in (retry_qc.get('reviews') or [])
+            if isinstance(review, dict) and str(review.get('scene_index', '')).lstrip('-').isdigit()
+        }
+        for position, scene_index in enumerate(missing_indices):
+            retried = retry_reviews.get(position)
+            if not retried:
+                continue
+            mapped = dict(retried)
+            mapped['scene_index'] = scene_index
+            reviews_by_scene[scene_index] = mapped
+
+    missing_indices = [idx for idx in included_indices if idx not in reviews_by_scene]
+    return {
+        'reviews': [reviews_by_scene[idx] for idx in sorted(reviews_by_scene)],
+        'moment_fractions': MOMENT_FRACTIONS,
+        'included_scene_indices': included_indices,
+        'unreviewable_scene_indices': unreviewable_indices,
+        'missing_review_indices': missing_indices,
+    }
