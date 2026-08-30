@@ -133,11 +133,19 @@ def _short_story_quality_issues(
 _SHORT_STORY_QC_VERSION = 1
 
 
+def _normalize_short_story_topic(topic: str) -> str:
+    return re.sub(r'\s+', ' ', str(topic or '')).strip().casefold()
+
+
 def _short_story_fingerprint(package: dict) -> str:
     material = {
         'title': package.get('title'),
         'thumbnail_text': package.get('thumbnail_text'),
         'description': package.get('description'),
+        'requested_topic': _normalize_short_story_topic(
+            (package.get('short_story_qc') or {}).get('requested_topic')
+        ),
+        'sources': package.get('sources') or [],
         'scenes': [
             {
                 'index': scene.get('index'),
@@ -163,16 +171,28 @@ def _short_story_fingerprint(package: dict) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def short_story_package_is_approved(package: dict) -> bool:
+def short_story_package_is_approved(
+    package: dict,
+    topic: str | None = None,
+) -> bool:
     if not isinstance(package, dict):
         return False
     scenes = package.get('scenes')
+    sources = package.get('sources')
     qc = package.get('short_story_qc')
     stock_qc = package.get('stock_scene_qc')
     if (
         not isinstance(scenes, list)
         or not scenes
         or not all(isinstance(scene, dict) for scene in scenes)
+        or not isinstance(sources, list)
+        or not sources
+        or not all(
+            isinstance(source, dict)
+            and str(source.get('url') or '').startswith(('https://', 'http://'))
+            and bool(str(source.get('evidence') or '').strip())
+            for source in sources
+        )
         or not isinstance(qc, dict)
         or not isinstance(stock_qc, dict)
     ):
@@ -196,6 +216,16 @@ def short_story_package_is_approved(package: dict) -> bool:
         or ending_review.get('accepted') is not True
         or qc.get('story_review_accepted') is not True
         or qc.get('ending_pair_accepted') is not True
+    ):
+        return False
+    attested_topic = _normalize_short_story_topic(
+        qc.get('requested_topic')
+    )
+    if not attested_topic:
+        return False
+    if (
+        topic is not None
+        and attested_topic != _normalize_short_story_topic(topic)
     ):
         return False
     fingerprint = str(qc.get('fingerprint') or '')
@@ -826,8 +856,12 @@ NON-NEGOTIABLE RULES:
             'title': package.get('title'),
             'description': package.get('description'),
             'sources': [
-                str(source)[:600]
+                {
+                    'url': str(source.get('url') or '')[:500],
+                    'evidence': str(source.get('evidence') or '')[:500],
+                }
                 for source in (package.get('sources') or [])[:6]
+                if isinstance(source, dict)
             ],
             'candidate_story_in_order': candidate_story,
             'candidate_stock_scenes': [
@@ -843,6 +877,8 @@ NON-NEGOTIABLE RULES:
         critic_response = client.responses.create(
             model=settings.openai_model,
             reasoning={'effort': 'medium'},
+            tools=[{'type': 'web_search', 'search_context_size': 'low'}],
+            tool_choice='auto',
             input=f'''Act as an independent, fail-closed stock-shot feasibility critic. Do not rewrite anything.
 Evaluate every stock-routed candidate against its exact narration, queries, role, adjacent scenes and complete short story.
 {json.dumps(critic_context, ensure_ascii=False)}
@@ -860,7 +896,7 @@ Review the WHOLE story before reviewing individual stock shots. Set each story_r
 - natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese, unsafe suffix-attached abbreviations or unsupported foreign terms.
 - directly_answers_requested_topic: the actual hook, reveal and payoff directly answer the supplied topic rather than drifting to a merely coherent side story.
 - one_specific_useful_reveal: the viewer learns one non-obvious, useful or genuinely surprising thing worth thirty seconds.
-- causal_claim_supported: the central cause-and-effect explanation is supported by the supplied research sources and does not overclaim them.
+- causal_claim_supported: independently verify the central cause-and-effect explanation against the supplied source URLs and evidence. Use bounded web search when the evidence is insufficient; false if the claim cannot be verified or overstates a source.
 - hook_payoff_same_promise: the ending visibly fulfills the exact curiosity opened by the hook.
 central_question, causal_answer and visible_payoff must each be one short, concrete, non-empty summary grounded in the candidate story.
 A whole-story failure is fatal: do not approve a polished shot plan for a bad idea.
@@ -1366,6 +1402,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             )
         out['short_story_qc'] = {
             'version': _SHORT_STORY_QC_VERSION,
+            'requested_topic': _normalize_short_story_topic(topic),
             'story_review_accepted': True,
             'ending_pair_accepted': True,
         }
