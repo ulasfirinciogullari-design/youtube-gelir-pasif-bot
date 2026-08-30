@@ -537,6 +537,21 @@ class ShortStoryApprovalTests(unittest.TestCase):
 
         self.assertTrue(short_story_package_is_approved(package))
 
+    def test_approved_short_package_rejects_malformed_versions_and_scenes(self):
+        for bad_version in ('v3', {}, True, None):
+            with self.subTest(version=bad_version):
+                package = self._approved_package()
+                package['stock_scene_qc']['version'] = bad_version
+                self.assertFalse(short_story_package_is_approved(package))
+
+        package = self._approved_package()
+        package['short_story_qc']['version'] = True
+        self.assertFalse(short_story_package_is_approved(package))
+
+        package = self._approved_package()
+        package['scenes'].append('not a scene object')
+        self.assertFalse(short_story_package_is_approved(package))
+
     def test_approved_short_package_fingerprint_rejects_mutation_or_missing_qc(self):
         package = self._approved_package()
         package['scenes'][0]['narration'] = 'Değiştirilmiş anlatım.'
