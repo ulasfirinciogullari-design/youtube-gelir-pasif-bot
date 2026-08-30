@@ -906,7 +906,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
         story_failure = ''
         if not critic_global_error:
             if not isinstance(story_review, dict) or set(story_review.keys()) != expected_story_keys:
-                story_failure = 'whole-story critic returned the wrong fields'
+                critic_global_error = 'whole-story critic returned the wrong fields'
             else:
                 failed_story_checks = sorted(
                     key
@@ -932,9 +932,11 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     story_failure = (
                         f'{", ".join(failed_story_checks)}; {story_reason[:180]}'
                     )
-            if (
+            if not critic_global_error and (
                 not isinstance(ending_pair, dict)
                 or set(ending_pair.keys()) != expected_ending_keys
+                or type(ending_pair.get('penultimate_position')) is not int
+                or type(ending_pair.get('final_position')) is not int
                 or ending_pair.get('penultimate_position') != ending_positions[0]
                 or ending_pair.get('final_position') != ending_positions[1]
             ):
