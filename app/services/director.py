@@ -3,6 +3,14 @@ import re
 from openai import OpenAI
 from app.config import settings
 
+STYLE_NOTES = {
+    'documentary': 'authoritative premium documentary, restrained and evidence-led',
+    'technology': 'modern technology documentary, precise, visual and human',
+    'story': 'story-led narrative with escalation and payoff',
+    'cinematic': 'cinematic essay with controlled reveals and recurring visual motifs',
+    'explainer': 'clear causal explainer with demonstrations and comparisons',
+}
+
 
 def _json(text: str) -> dict:
     raw = (text or '').strip()
@@ -19,14 +27,20 @@ def _word_count(text: str) -> int:
     return len(re.findall(r"\b[\wÇĞİÖŞÜçğıöşü'-]+\b", text or '', flags=re.UNICODE))
 
 
-def _target_scene_count(duration_minutes: float) -> int:
+def _target_scene_count(duration_minutes: float, pace: str) -> int:
     if duration_minutes <= 0.6:
-        return 4
-    if duration_minutes <= 1.1:
-        return 6
-    if duration_minutes <= 3.1:
-        return max(8, int(round(duration_minutes * 4.5)))
-    return min(28, max(12, int(round(duration_minutes * 3.5))))
+        base = 4
+    elif duration_minutes <= 1.1:
+        base = 6
+    elif duration_minutes <= 3.1:
+        base = max(8, int(round(duration_minutes * 4.5)))
+    else:
+        base = min(28, max(12, int(round(duration_minutes * 3.5))))
+    if pace == 'calm':
+        return max(3, int(round(base * 0.82)))
+    if pace == 'dynamic':
+        return min(32, max(3, int(round(base * 1.12))))
+    return base
 
 
 def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
@@ -97,11 +111,20 @@ def _run_director(
     min_words: int,
     max_words: int,
     target_scenes: int,
+    options: dict,
     correction: bool = False,
 ) -> dict:
+    style = str(options.get('content_style') or 'documentary')
+    pace_profile = str(options.get('pace') or 'balanced')
+    visual_mix = str(options.get('visual_mix') or 'balanced')
+    reference_url = str(options.get('reference_url') or '').strip()
     correction_note = (
-        f'CRITICAL CORRECTION: rewrite the SAME factual story to {min_words}-{max_words} TOTAL spoken words, aiming for {target_words}, and exactly {target_scenes} scenes. Do not add facts. '
+        f'CRITICAL CORRECTION: rewrite the SAME factual story to {min_words}-{max_words} TOTAL spoken words, aiming for {target_words}, and approximately {target_scenes} scenes. Do not add facts. '
         if correction else ''
+    )
+    reference_note = (
+        f'Reference URL: {reference_url}. Use only high-level information architecture and pacing inspiration; never copy wording, signature creative devices or branding.'
+        if reference_url else 'No external reference structure was supplied.'
     )
     response = client.responses.create(
         model=settings.openai_model,
@@ -110,8 +133,12 @@ def _run_director(
 Topic: {topic}
 Language: {language_name}
 Requested duration: {duration_minutes} minutes.
+Studio style: {STYLE_NOTES.get(style, STYLE_NOTES['documentary'])}
+Studio pace profile: {pace_profile}
+Studio visual mix: {visual_mix}
+{reference_note}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
-HARD scene budget: exactly {target_scenes} scenes.
+Target scene budget: approximately {target_scenes} scenes, never more than one scene away.
 {correction_note}
 
 DRAFT JSON:
@@ -124,36 +151,39 @@ Each scene must contain exactly:
 narration, visual_queries, ai_prompt, pace, transition.
 
 EDITORIAL QC RULES:
-- One coherent story; repair abrupt subject jumps.
-- Every scene continues, explains, contrasts, escalates or pays off the previous scene.
-- Delete filler and robotic listicle wording.
-- Spoken Turkish must be concise, natural and punctuated for human breaths.
-- Keep exactly {target_scenes} scenes. Each scene carries one complete thought under one strong hero visual.
-- Do not create subtitles, lower thirds, overlay copy or on-screen sentences.
-- visual_queries must match the EXACT spoken meaning and describe concrete visible footage.
-- Reject generic laptop typing, random phone, office worker, skyline, fireworks, charts or abstract tech footage unless literally relevant.
-- Use 2-3 distinct visual queries per scene.
-- ai_prompt should be null unless stock footage cannot honestly show the concept.
-- pace may be fast, normal or slow, but pacing comes from the story rather than frantic cutting.
-- transition is mostly cut; match only with a real visual relationship; dip sparingly.
-- Final scene must provide a payoff.
-- TOTAL narration word count MUST be between {min_words} and {max_words}.
-- qc_summary is a short list of fixes.
+- Produce one coherent story. Repair every abrupt subject jump.
+- Every scene must continue, explain, contrast, escalate or pay off the previous scene.
+- Remove filler, robotic listicle wording and repetitive transition phrases.
+- Spoken {language_name} must sound natural, confident and punctuated for real breaths.
+- Each scene contains one complete thought that can remain under one excellent hero visual.
+- Match the selected Studio style without imitating a named creator.
+- Apply the global pace profile, but still vary individual scene pace intentionally.
+- The master video is text-free. Do not create subtitles, lower thirds or overlay copy.
+- visual_queries must literally match the exact spoken meaning and name concrete visible footage.
+- Reject generic typing, random phones, office workers, skylines, fireworks, finance charts or abstract tech footage unless literally relevant.
+- Give every scene 2-3 search options with different shot grammar.
+- ai_prompt is null unless stock footage cannot honestly show the concept.
+- pace is fast, normal or slow. transition is mostly cut; use match only for a real visual relationship and dip sparingly.
+- Final scene must resolve the central curiosity and provide a memorable payoff.
+- Total narration word count must be between {min_words} and {max_words}.
+- qc_summary is a short list of the main editorial repairs.
 ''',
     )
     return _json(response.output_text)
 
 
-def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str) -> dict:
+def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
     if not settings.openai_api_key:
         return package
     scenes = package.get('scenes') or []
     if not scenes:
         return package
 
-    client = OpenAI(api_key=settings.openai_api_key, timeout=75.0, max_retries=1)
+    options = dict(options or package.get('studio_options') or {})
+    pace_profile = str(options.get('pace') or 'balanced')
+    client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
-    target_scenes = _target_scene_count(duration_minutes)
+    target_scenes = _target_scene_count(duration_minutes, pace_profile)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
 
     compact = {
@@ -166,7 +196,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
 
     revised = _run_director(
         client, compact, topic, language_name, duration_minutes,
-        target_words, min_words, max_words, target_scenes,
+        target_words, min_words, max_words, target_scenes, options,
     )
     out = _clean_package(revised, package)
     words = _word_count(out['narration'])
@@ -184,7 +214,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         }
         revised = _run_director(
             client, correction_input, topic, language_name, duration_minutes,
-            target_words, min_words, max_words, target_scenes, correction=True,
+            target_words, min_words, max_words, target_scenes, options, correction=True,
         )
         out = _clean_package(revised, package)
         words = _word_count(out['narration'])
@@ -198,4 +228,5 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     out['narration_word_count'] = words
     out['target_word_range'] = [min_words, max_words]
     out['target_scene_count'] = target_scenes
+    out['studio_options'] = options
     return out
