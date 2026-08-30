@@ -53,8 +53,10 @@ def review_scene_visuals(scenes: list[dict], scene_visuals: list[list[str]], wor
         'text': (
             'You are a demanding senior YouTube picture editor. For each scene, compare ALL supplied candidate clips AND multiple moments inside each clip. '
             'Choose the exact candidate and exact moment a professional editor should use. Judge literal semantic relevance first, then visual interest, composition, motion and production quality. '
-            'Generic or metaphorically loose footage must score poorly. Never approve fireworks for camera burst, finance charts for audio codecs, a skyline for network optimization, random typing for encryption, or unrelated towers for indoor GPS. '
-            'A score of 80+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 80, provide two concrete ENGLISH retry queries that visualize the sentence literally. '
+            'Generic, metaphorically loose or keyword-only footage must score poorly. The named subject and the spoken action must both be visible. '
+            'Never approve digital glitch/noise for OLED pixels, programming tracebacks for QR error correction, fireworks for camera burst, finance charts for audio codecs, a skyline for network optimization, random typing for encryption, or unrelated towers for indoor GPS. '
+            'If the sampled moments are nearly identical, the clip is effectively static; any shot likely to remain static for more than six seconds must score 40 or lower. '
+            'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
             'Return ONLY JSON: {"reviews":[{"scene_index":0,"best_candidate_index":0,"best_moment_index":0,"score":0,"reason":"...","retry_queries":["...","..."]}]}'
         ),
     }]
