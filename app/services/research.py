@@ -133,6 +133,10 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
             '- For this short technology preview, route these mechanisms to AI whenever they appear: OLED emissive pixels reaching true black while physical power use visibly falls; '
             'indoor phone positioning jointly assisted by Wi-Fi and cellular signals when satellite GPS is weak; '
             'a worn or damaged QR code being successfully scanned because error correction survives the damage.\n'
+            '- Contain each hard mechanism and its complete causal explanation inside ONE corresponding AI scene. '
+            'Do not split, repeat or conclude that invisible mechanism in adjacent stock scenes.\n'
+            '- Every scene with ai_prompt set to null must narrate only a literal, realistically filmable action that its stock queries visibly show. '
+            'When all three AI slots are used, make the closing scene a filmable human payoff instead of combining error correction, invisible signals or other abstract mechanisms.\n'
             '- All stock-filmable scenes must set ai_prompt to null and provide 2-3 concrete, realistically filmable English stock queries.'
         )
     elif mode == 'preview':

@@ -134,7 +134,11 @@ def _run_director(
             'Reserve those scenes for facts stock footage cannot literally show, especially pixel-level OLED true-black or power behavior, '
             'invisible indoor Wi-Fi/cellular/GPS assistance, or damaged QR error recovery. '
             'When the story includes those three hard concepts, assign one AI scene to each and no others. '
-            'All remaining scenes must set ai_prompt to null and narrate a plainly filmable real-world action. '
+            'Compress each hard mechanism and its complete causal explanation into its single AI scene; never split, repeat or conclude it in a neighboring stock scene. '
+            'All remaining scenes must set ai_prompt to null and narrate a plainly filmable real-world action whose exact subject and action appear in its stock queries. '
+            'A null-ai scene must not mention pixel-level OLED emission or power change, indoor signal fusion, damaged-QR error recovery, or another invisible mechanism. '
+            'Move that clause into the corresponding AI scene or rewrite it as a visible human setup or payoff. '
+            'When all three AI slots are used, the final scene must close on a concrete filmable action, not combine invisible networks or error correction. '
             'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
         )
