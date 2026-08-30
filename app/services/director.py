@@ -133,8 +133,11 @@ def _run_director(
             'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: ai_prompt values are free fallback candidates, not promised generations. '
             f'Up to {target_scenes} scenes may carry a non-null fallback, while the worker will submit at most three paid Runway generations after measuring the exact current stock clips. '
             'Structure the story so no more than three scenes truly depend on AI. '
-            'Reserve those dependencies for facts stock footage cannot literally show, especially pixel-level OLED true-black or power behavior, '
-            'invisible indoor Wi-Fi/cellular/GPS assistance, or damaged QR error recovery. '
+            'Reserve those dependencies for facts stock footage cannot literally show, especially an extreme macro OLED subpixel matrix '
+            'with black-region emitters visibly unlit beside illuminated colored subpixels, invisible indoor Wi-Fi/cellular/GPS assistance, '
+            'or damaged QR error recovery. '
+            'For OLED, reject whole-screen dimming, black fades or a hand merely turning a screen off. '
+            'Do not narrate a power-use drop unless the same shot includes a real physical power meter visibly falling. '
             'Compress each hard mechanism and its complete causal explanation into one scene; never split, repeat or conclude it in a neighboring stock scene. '
             'Every other scene must remain publishable with a plainly filmable real-world action whose exact subject and action appear in its stock queries, '
             'even when it also carries a fallback ai_prompt for uncertain stock coverage. '
@@ -194,6 +197,8 @@ EDITORIAL QC RULES:
 - The master video is text-free. Do not create subtitles, lower thirds or overlay copy.
 - visual_queries must literally match the exact spoken meaning and name the visible subject, action and context in the same phrase.
 - Never search for an abstract property alone: keep the named subject attached (for example, a damaged QR code being scanned, not a generic software error; OLED pixel microscopy, not digital glitch footage).
+- For OLED or true black, narration, stock queries and ai_prompt must require black-region subpixel emitters visibly unlit beside illuminated colored subpixels; a whole-screen fade or hand turning a screen off is not evidence.
+- Never claim lower OLED power use in a short scene unless a real physical power meter visibly falls in that same continuous shot.
 - Reject generic typing, code errors, random phones, office workers, skylines, fireworks, finance charts, digital noise or abstract tech footage unless literally required by the narration.
 - Give every scene 2-3 search options with different shot grammar.
 - ai_prompt is null unless stock footage cannot honestly show the concept.

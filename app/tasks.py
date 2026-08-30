@@ -196,9 +196,6 @@ def _truncate_utf16(text: str, limit: int = 1000) -> str:
 
 def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     original = str(scene.get('ai_prompt') or '').strip()
-    if original:
-        return _truncate_utf16(original)
-
     review = review or {}
     retry_queries = review.get('retry_queries') or []
     if isinstance(retry_queries, str):
@@ -209,17 +206,58 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         if isinstance(visual_queries, str):
             visual_queries = [visual_queries]
         hints = [str(q).strip() for q in visual_queries if str(q).strip()][:2]
-    if not hints:
+    if not original and not hints:
         return ''
 
-    narration = str(scene.get('narration') or '').strip()[:320]
-    visible_action = '; '.join(hint[:180] for hint in hints)
+    narration = _truncate_utf16(str(scene.get('narration') or '').strip(), 180)
+    visible_action = _truncate_utf16('; '.join(hint[:100] for hint in hints), 150)
+    combined = f'{narration} {original} {visible_action}'.lower()
+    mechanism_guardrails: list[str] = []
+    oled_claim = bool(re.search(
+        r'\b(?:oled|true[ -]black)\b|gerçek siyah|emissive\s+(?:pixel|display|screen)',
+        combined,
+    ))
+    if oled_claim:
+        mechanism_guardrails.append(
+            'OLED proof: extreme macro of a real subpixel matrix; emitters in a shaped black region are '
+            'visibly off while adjacent RGB subpixels stay lit. Never use a whole-screen dim or fade, '
+            'hand-only tap, digital noise or generic dark phone.'
+        )
+        power_claim = bool(re.search(
+            r'\b(?:power\s+(?:use|usage|draw|consumption)|energy\s+(?:use|usage|consumption)|'
+            r'watt(?:age)?|uses?\s+less\s+(?:power|energy)|lower\s+power)\b|'
+            r'(?:güç|enerji).{0,24}tüket|daha\s+az\s+(?:güç|enerji)|'
+            r'(?:güç|enerji)\s+kullanım',
+            combined,
+        ))
+        if power_claim:
+            mechanism_guardrails.append(
+                'If power use is spoken, show a real physical meter visibly falling in the same shot.'
+            )
+
+    opening = 'One continuous five-second photorealistic 16:9 documentary shot. '
+    guardrail_clause = (' '.join(mechanism_guardrails) + ' ') if mechanism_guardrails else ''
+    narration_clause = f'Literal narration to prove: {narration}. ' if narration else ''
+    evidence_clause = f'QC evidence to satisfy: {visible_action}. ' if visible_action else ''
+    closing = 'Subtle camera motion; no text, logos, charts, glitch, watermark or metaphor.'
+    required = opening + guardrail_clause + narration_clause + evidence_clause + closing
+    original_label = 'Core shot direction: '
+    remaining_units = max(
+        0,
+        1000
+        - len(required.encode('utf-16-le')) // 2
+        - len(original_label.encode('utf-16-le')) // 2
+        - 2,
+    )
+    original_value = _truncate_utf16(original, remaining_units) if original and remaining_units else ''
+    original_clause = f'{original_label}{original_value}. ' if original_value else ''
     return _truncate_utf16(
-        'A single continuous five-second photorealistic 16:9 documentary shot. '
-        f'Literally show this subject and visible action: {visible_action}. '
-        f'It must directly demonstrate this narration: {narration}. '
-        'Controlled camera motion, no captions, logos, watermarks, charts, '
-        'fake interface text, random glitch or metaphor.'
+        opening
+        + guardrail_clause
+        + narration_clause
+        + evidence_clause
+        + original_clause
+        + closing
     )
 
 

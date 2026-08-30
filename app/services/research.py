@@ -130,11 +130,14 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     )
     if mode == 'preview' and duration_minutes <= 0.6:
         preview_ai_routing_note = (
-            '- For this short technology preview, route these mechanisms to AI whenever they appear: OLED emissive pixels reaching true black while physical power use visibly falls; '
-            'indoor phone positioning jointly assisted by Wi-Fi and cellular signals when satellite GPS is weak; '
+            '- For this short technology preview, route these mechanisms to AI whenever they appear: an extreme macro OLED subpixel matrix where emitters '
+            'inside a shaped black image region are visibly unlit while adjacent colored subpixels remain illuminated; indoor phone positioning jointly assisted '
+            'by Wi-Fi and cellular signals when satellite GPS is weak; '
             'a worn or damaged QR code being successfully scanned because error correction survives the damage.\n'
             '- Contain each hard mechanism and its complete causal explanation inside ONE corresponding AI scene. '
             'Do not split, repeat or conclude that invisible mechanism in adjacent stock scenes.\n'
+            '- For OLED, a whole-screen dim, black fade, hand turning a display off or generic dark phone is never proof. '
+            'Do not narrate lower power use unless the same continuous shot includes a real physical power meter whose indicator visibly falls.\n'
             '- Every scene with ai_prompt set to null must narrate only a literal, realistically filmable action that its stock queries visibly show. '
             'When all three AI slots are used, make the closing scene a filmable human payoff instead of combining error correction, invisible signals or other abstract mechanisms.\n'
             '- Treat ai_prompt as free fallback metadata, not a promise to generate. Give a precise fallback ai_prompt to any scene whose exact stock coverage is uncertain; '
@@ -189,6 +192,8 @@ VISUAL DIRECTING RULES:
 - Reject generic typing, office workers, skylines, random phones, abstract charts or vague futuristic imagery unless literally required.
 - Vary shot grammar across the video: establishing, macro, detail, human interaction, physical demonstration, infrastructure and controlled camera motion.
 - If stock footage cannot honestly communicate a technical idea, use a precise cinematic ai_prompt instead of metaphorically unrelated B-roll.
+- For OLED or true black, the narration, stock queries and ai_prompt must require black-region subpixel emitters visibly unlit beside illuminated colored subpixels; whole-screen darkness is insufficient.
+- If a short OLED narration claims lower power use, require a real physical meter visibly dropping in the same shot; otherwise rewrite the spoken claim to the directly visible emissive-pixel fact.
 - ai_prompt may be non-null when literal stock is unlikely to reliably show the named subject, action or mechanism, and in at most {max_ai_scenes} scenes.
 {preview_ai_routing_note}
 - Every non-null ai_prompt must describe one continuous five-second 16:9 photorealistic shot with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
