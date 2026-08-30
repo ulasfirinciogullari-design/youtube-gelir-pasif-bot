@@ -177,6 +177,72 @@ def _visual_path(spec: str | dict) -> str:
     return str(spec)
 
 
+def _truncate_utf16(text: str, limit: int = 1000) -> str:
+    result: list[str] = []
+    units = 0
+    for char in str(text or ''):
+        char_units = 2 if ord(char) > 0xFFFF else 1
+        if units + char_units > limit:
+            break
+        result.append(char)
+        units += char_units
+    return ''.join(result).strip()
+
+
+def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
+    original = str(scene.get('ai_prompt') or '').strip()
+    if original:
+        return _truncate_utf16(original)
+
+    review = review or {}
+    retry_queries = review.get('retry_queries') or []
+    if isinstance(retry_queries, str):
+        retry_queries = [retry_queries]
+    hints = [str(q).strip() for q in retry_queries if str(q).strip()][:2]
+    if not hints:
+        visual_queries = scene.get('visual_queries') or []
+        if isinstance(visual_queries, str):
+            visual_queries = [visual_queries]
+        hints = [str(q).strip() for q in visual_queries if str(q).strip()][:2]
+    if not hints:
+        return ''
+
+    narration = str(scene.get('narration') or '').strip()[:320]
+    visible_action = '; '.join(hint[:180] for hint in hints)
+    return _truncate_utf16(
+        'A single continuous five-second photorealistic 16:9 documentary shot. '
+        f'Literally show this subject and visible action: {visible_action}. '
+        f'It must directly demonstrate this narration: {narration}. '
+        'Controlled camera motion, no captions, logos, watermarks, charts, '
+        'fake interface text, random glitch or metaphor.'
+    )
+
+
+def _apply_visual_review(
+    scene_visuals: list[list[str | dict]],
+    scene_idx: int,
+    review: dict,
+    default_fraction: float = 0.25,
+) -> None:
+    if scene_idx < 0 or scene_idx >= len(scene_visuals):
+        return
+    specs = [spec for spec in scene_visuals[scene_idx] if _visual_path(spec)]
+    if not specs:
+        return
+    try:
+        best_idx = int(review.get('best_candidate_index', 0))
+    except Exception:
+        best_idx = 0
+    best_idx = min(max(best_idx, 0), len(specs) - 1)
+    chosen = dict(specs[best_idx]) if isinstance(specs[best_idx], dict) else {'path': _visual_path(specs[best_idx])}
+    try:
+        fraction = float(review.get('best_start_fraction', chosen.get('start_fraction', default_fraction)))
+    except Exception:
+        fraction = default_fraction
+    chosen['start_fraction'] = max(0.0, min(fraction, 0.95))
+    scene_visuals[scene_idx] = [chosen]
+
+
 def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float) -> int:
     if options.get('mode') == 'preview':
         return min(3, scene_count) if duration_minutes <= 0.6 else 0
@@ -261,6 +327,7 @@ def run_video_pipeline(
     work = Path('/tmp/youtube_factory') / task_id
     work.mkdir(parents=True, exist_ok=True)
     update_job(task_id, kind='render', spec=_task_spec(topic, duration_minutes, language, channel_id, options))
+    runway_attempts = 0
 
     try:
         package = _prepare_package(self, task_id, topic, duration_minutes, language, options, approved_package)
@@ -362,28 +429,91 @@ def run_video_pipeline(
             else:
                 scene_visuals[scene_idx] = []
 
-        set_stage(self, task_id, 'ai_scene', 61, 'Stok görüntünün anlatamadığı sahneler için özgün görüntüler hazırlanıyor.')
+        set_stage(self, task_id, 'ai_scene', 61, 'Güncel stok kalitesi ölçülüyor; en zor sahneler özgün görüntüye ayrılıyor.')
         runway_errors: list[str] = []
         runway_failed_scenes: list[int] = []
+        runway_generated_scenes: list[int] = []
         runway_scenes_used = 0
-        max_runway = _max_runway_scenes(options, len(scenes), duration_minutes)
+        runway_submission_cap = _max_runway_scenes(options, len(scenes), duration_minutes)
+
+        # Score the exact clips selected after stock retries. Paid Runway slots
+        # are ranked by current evidence, never scene order or stale scores.
+        pre_runway_qc = review_scene_visuals(
+            scenes,
+            scene_visuals,
+            work / 'pre_runway_visual_qc',
+            len(scenes),
+        )
+        current_reviews = {
+            int(review.get('scene_index')): review
+            for review in (pre_runway_qc.get('reviews') or [])
+            if isinstance(review, dict)
+            and str(review.get('scene_index', '')).lstrip('-').isdigit()
+        }
+        ranked_runway_candidates: list[dict] = []
+        prompt_candidates: dict[int, str] = {}
         for scene_idx, scene in enumerate(scenes):
-            prompt = scene.get('ai_prompt')
-            if not prompt or runway_scenes_used >= max_runway:
+            current_review = current_reviews.get(scene_idx)
+            prompt = _runway_prompt_for_scene(scene, current_review)
+            if not prompt:
                 continue
-            stock_review = reviews_by_scene.get(scene_idx) or {}
-            stock_score = int(stock_review.get('score', 0))
-            if scene_visuals[scene_idx] and stock_score >= quality_threshold:
-                continue
+            prompt_candidates[scene_idx] = prompt
+            if current_review and scene_visuals[scene_idx]:
+                _apply_visual_review(scene_visuals, scene_idx, current_review)
+            has_visual = any(_visual_path(spec) for spec in scene_visuals[scene_idx])
+            stock_score = int((current_review or {}).get('score', -1))
+            if not has_visual or stock_score < quality_threshold:
+                ranked_runway_candidates.append({
+                    'scene_index': scene_idx,
+                    'has_visual': has_visual,
+                    'stock_score': stock_score,
+                })
+
+        ranked_runway_candidates.sort(key=lambda item: (
+            0 if not item['has_visual'] else 1,
+            item['stock_score'],
+            item['scene_index'],
+        ))
+        selected_runway = ranked_runway_candidates[:runway_submission_cap]
+        selected_runway_indices = {item['scene_index'] for item in selected_runway}
+        runway_rank = {
+            item['scene_index']: position + 1
+            for position, item in enumerate(ranked_runway_candidates)
+        }
+        runway_allocation = []
+        for scene_idx in sorted(prompt_candidates):
+            current_review = current_reviews.get(scene_idx) or {}
+            has_visual = any(_visual_path(spec) for spec in scene_visuals[scene_idx])
+            stock_score = int(current_review.get('score', -1))
+            selected = scene_idx in selected_runway_indices
+            runway_allocation.append({
+                'scene_index': scene_idx,
+                'stock_score': stock_score,
+                'has_visual': has_visual,
+                'rank': runway_rank.get(scene_idx),
+                'selected': selected,
+                'reason': (
+                    'selected_for_generation' if selected
+                    else 'stock_approved' if has_visual and stock_score >= quality_threshold
+                    else 'submission_cap'
+                ),
+            })
+
+        for candidate in selected_runway:
+            scene_idx = int(candidate['scene_index'])
+            runway_attempts += 1
+            stock_fallback = list(scene_visuals[scene_idx])
             try:
-                url = generate_scene(str(prompt), duration=5)
+                url = generate_scene(prompt_candidates[scene_idx], duration=5)
                 runway_path = work / f'runway_s{scene_idx:02d}.mp4'
                 download_generated_scene(url, runway_path)
-                scene_visuals[scene_idx] = [{'path': str(runway_path), 'start_fraction': 0.0}]
+                runway_spec = {'path': str(runway_path), 'start_fraction': 0.0}
+                scene_visuals[scene_idx] = [runway_spec, *stock_fallback][:3]
                 runway_scenes_used += 1
+                runway_generated_scenes.append(scene_idx)
             except Exception as exc:
                 runway_failed_scenes.append(scene_idx)
-                runway_errors.append(f'scene {scene_idx}: {str(exc)[:400]}')
+                runway_errors.append(f'scene {scene_idx}: {type(exc).__name__}: {str(exc)[:320]}')
 
         # Re-review the exact clips that will be rendered. Retry search results
         # and generated clips never bypass the final semantic quality gate.
@@ -403,6 +533,9 @@ def run_video_pipeline(
             idx for idx in range(min(len(scenes), len(scene_visuals)))
             if idx not in final_reviews or int(final_reviews[idx].get('score', 0)) < quality_threshold
         ]
+        for scene_idx, review in final_reviews.items():
+            if scene_idx not in rejected_final_scenes:
+                _apply_visual_review(scene_visuals, scene_idx, review)
 
         # Give the exact final review one bounded, scene-specific rescue pass.
         # This reuses its evidence-based retry queries instead of restarting the
@@ -422,7 +555,11 @@ def run_video_pipeline(
             )
             if not replacements:
                 continue
-            scene_visuals[scene_idx] = replacements
+            existing_specs = list(scene_visuals[scene_idx])
+            if scene_idx in runway_generated_scenes and existing_specs:
+                scene_visuals[scene_idx] = [existing_specs[0], *replacements, *existing_specs[1:]][:3]
+            else:
+                scene_visuals[scene_idx] = [*replacements, *existing_specs][:3]
             rescued_final_scenes.append(scene_idx)
             visual_replacements.append({
                 'scene_index': scene_idx,
@@ -456,11 +593,8 @@ def run_video_pipeline(
                 mapped_review = dict(rescue_reviews[position])
                 mapped_review['scene_index'] = scene_idx
                 final_reviews[scene_idx] = mapped_review
-                try:
-                    approved_fraction = float(mapped_review.get('best_start_fraction', 0.35))
-                except Exception:
-                    approved_fraction = 0.35
-                scene_visuals[scene_idx][0]['start_fraction'] = max(0.0, min(approved_fraction, 0.95))
+                if int(mapped_review.get('score', 0)) >= quality_threshold:
+                    _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
             final_visual_qc = {
                 'reviews': [final_reviews[idx] for idx in sorted(final_reviews)],
                 'moment_fractions': rescue_qc.get('moment_fractions'),
@@ -477,8 +611,12 @@ def run_video_pipeline(
                 if idx in runway_failed_scenes
             ]
             if failed_required_scenes:
-                raise RuntimeError(
-                    f'Runway generation failed for quality-required scenes: {failed_required_scenes}'
+                raise FinalVisualQualityError(
+                    'Runway generation failed within the bounded submission budget: '
+                    + json.dumps({
+                        'attempts': runway_attempts,
+                        'failed_scenes': failed_required_scenes,
+                    }, separators=(',', ':'))
                 )
             rejected_details = {
                 idx: {
@@ -602,7 +740,13 @@ def run_video_pipeline(
             'voice_tempo_rate': voice_result.get('tempo_rate'),
             'audio_design': audio_design,
             'stock_credits': credits,
+            'runway_submission_cap': runway_submission_cap,
+            'runway_attempts': runway_attempts,
+            'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
+            'runway_success_scene_indices': sorted(runway_generated_scenes),
+            'runway_failure_scene_indices': sorted(runway_failed_scenes),
             'runway_scenes_used': runway_scenes_used,
+            'runway_allocation': runway_allocation,
             'runway_errors': runway_errors,
             'caption_key': caption_key,
             'burned_subtitles': False,
@@ -628,6 +772,10 @@ def run_video_pipeline(
             'shots': rendered.get('shots'),
             'scenes': len(scenes),
             'unique_visuals': rendered.get('unique_visuals'),
+            'runway_submission_cap': runway_submission_cap,
+            'runway_attempts': runway_attempts,
+            'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
+            'runway_success_scene_indices': sorted(runway_generated_scenes),
             'runway_scenes_used': runway_scenes_used,
             'resolution': rendered.get('resolution'),
             'scene_synced': rendered.get('scene_synced'),
@@ -645,6 +793,12 @@ def run_video_pipeline(
         mark_success(task_id, result)
         return result
     except Exception as exc:
+        if runway_attempts > 0 and not isinstance(exc, FinalVisualQualityError):
+            bounded_error = FinalVisualQualityError(
+                f'Post-Runway pipeline failed after {runway_attempts} bounded submissions: {type(exc).__name__}'
+            )
+            mark_failure(task_id, bounded_error)
+            raise bounded_error from exc
         mark_failure(task_id, exc)
         raise
     finally:
