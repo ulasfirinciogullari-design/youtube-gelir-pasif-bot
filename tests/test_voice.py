@@ -7,6 +7,8 @@ from types import SimpleNamespace
 config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace()
 sys.modules['app.config'] = config_stub
+sys.modules.setdefault('httpx', types.ModuleType('httpx'))
+sys.modules.setdefault('redis', types.ModuleType('redis'))
 
 from app.services.voice import normalize_turkish_tts
 
@@ -19,6 +21,9 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
             'QR kodunu kameraya gösterir': 'kare kodunu kameraya gösterir.',
             'QR kodunda çizik vardır': 'kare kodunda çizik vardır.',
             'QR koduyla ödeme yapar': 'kare koduyla ödeme yapar.',
+            'QR kodları rafta görünür': 'kare kodları rafta görünür.',
+            'QR kodlarla giriş yapılır': 'kare kodlarla giriş yapılır.',
+            'QR kodlarında çizik vardır': 'kare kodlarında çizik vardır.',
         }
 
         for source, expected in cases.items():
