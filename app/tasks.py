@@ -18,6 +18,10 @@ from app.services.storage import upload_file, presigned_download_url
 from app.services.studio_state import mark_failure, mark_success, set_stage, update_job
 from app.services.visual_qc import review_scene_visuals
 from app.services.voice import synthesize_scene_sequence
+from app.services.visual_routing import (
+    SHORT_PREVIEW_RUNWAY_CAP,
+    should_rank_runway_candidate,
+)
 
 
 class FinalVisualQualityError(RuntimeError):
@@ -518,7 +522,10 @@ def _preview_duration_within_gate(
 
 def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float) -> int:
     if options.get('mode') == 'preview':
-        return min(3, scene_count) if duration_minutes <= 0.6 else 0
+        return (
+            min(SHORT_PREVIEW_RUNWAY_CAP, scene_count)
+            if duration_minutes <= 0.6 else 0
+        )
     mix = options.get('visual_mix') or 'balanced'
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
@@ -1102,7 +1109,16 @@ def run_video_pipeline(
                     _apply_visual_review(scene_visuals, candidate_scene_idx, candidate_review)
                 has_visual = any(_visual_path(spec) for spec in scene_visuals[candidate_scene_idx])
                 stock_score = int((candidate_review or {}).get('score', -1))
-                if not has_visual or stock_score < quality_threshold:
+                if should_rank_runway_candidate(
+                    options,
+                    duration_minutes,
+                    authored_ai_prompt=bool(
+                        str(scene.get('ai_prompt') or '').strip()
+                    ),
+                    has_visual=has_visual,
+                    stock_score=stock_score,
+                    quality_threshold=quality_threshold,
+                ):
                     ranked.append({
                         'scene_index': candidate_scene_idx,
                         'has_visual': has_visual,
