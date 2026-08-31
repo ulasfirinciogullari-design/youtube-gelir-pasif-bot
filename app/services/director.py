@@ -828,8 +828,8 @@ def _short_story_quality_issues(
 
 
 _SHORT_STORY_QC_VERSION = 4
-_STOCK_SCENE_QC_VERSION = 6
-_STORY_STOCK_CONTRACT = 'openai-story-stock-v2'
+_STOCK_SCENE_QC_VERSION = 7
+_STORY_STOCK_CONTRACT = 'openai-story-stock-v3'
 
 
 def _normalize_short_story_topic(topic: str) -> str:
@@ -1385,6 +1385,7 @@ def _repair_short_stock_scenes(
     duration_minutes: float,
     topic: str = '',
     *,
+    content_style: str = 'documentary',
     allow_natural_language_repair: bool = True,
     allow_explicit_brief_repair: bool = True,
 ) -> dict:
@@ -1393,6 +1394,51 @@ def _repair_short_stock_scenes(
 
     plan_provider = _studio_plan_provider()
     requested_brief = _story_brief_for_qc(topic)
+    normalized_content_style = str(
+        content_style or 'documentary'
+    ).strip().casefold()
+    documentary_broll = normalized_content_style == 'documentary'
+    documentary_writer_rule = (
+        'DOCUMENTARY B-ROLL EXCEPTION: verified historical dates, elapsed '
+        'durations and scale facts such as counts, capacities or totals may '
+        'remain in voice-over without making the numeral readable in the '
+        'clip. The supplied source evidence must explicitly support the exact '
+        'fact. Each query must honestly illustrate the same named subject '
+        'when available, otherwise the same specific object class, activity '
+        'and relevant setting. Modern establishing footage may illustrate a '
+        'still-existing subject, but it must not masquerade as archive footage '
+        'of a past event. This narrow exception never covers an unsupported '
+        'claim, prediction, causal or technical mechanism, contradiction, '
+        'wrong subject or era, or generic wallpaper footage.'
+        if documentary_broll
+        else (
+            'NO DOCUMENTARY B-ROLL EXCEPTION: every spoken claim must be '
+            'directly visible in the same stock clip.'
+        )
+    )
+    documentary_critic_rule = (
+        'DOCUMENTARY B-ROLL SEMANTICS ARE ACTIVE. A verified historical year, '
+        'elapsed duration, count, capacity or total does not need to appear '
+        'as readable text, a chart or a literal quantity in the clip. For '
+        'all_spoken_meaning_visible and no_invisible_or_abstract_claim, treat '
+        'that narrow fact as satisfied only when its exact value is explicitly '
+        'supported by supplied source evidence and the queries honestly show '
+        'the same named subject when available, otherwise the same specific '
+        'object class, activity and relevant setting. The B-roll illustrates '
+        'the sourced narration; it is not itself evidence of the numeral. '
+        'Set the relevant booleans false for an unsupported or overstated '
+        'fact, a causal or technical mechanism that remains invisible, a '
+        'wrong or contradictory subject, action, place or era, footage that '
+        'pretends to be archive evidence, or generic wallpaper with no '
+        'specific visual connection. Under this rule, queries_match_same_action '
+        'and common_stock_clip_feasible may pass honest contextual B-roll even '
+        'when it cannot literally contain millions of items or display a year.'
+        if documentary_broll
+        else (
+            'DOCUMENTARY B-ROLL SEMANTICS ARE NOT ACTIVE. Apply the literal '
+            'single-clip visibility rules without exception.'
+        )
+    )
 
     scenes = package.get('scenes') or []
     if len(scenes) < 3:
@@ -1621,6 +1667,7 @@ def _repair_short_stock_scenes(
         }
         generation_context = {
             'requested_brief': requested_brief,
+            'content_style': normalized_content_style,
             'title': package.get('title'),
             'whole_story_word_budget': {
                 'minimum': minimum_total_words,
@@ -1648,13 +1695,14 @@ Return ONLY JSON in exactly this shape:
 {json.dumps(response_shape, ensure_ascii=False)}
 
 NON-NEGOTIABLE RULES:
+- {documentary_writer_rule}
 - Return exactly the requested positions and no others. Never rewrite an accepted locked stock scene or an AI-routed mechanism scene.
 - When a target contains locked_narration, copy that narration exactly, character for character. Repair only visual_queries; never paraphrase, punctuate, pad or otherwise edit the locked spoken text.
 - Preserve every explicit positive, negative, routing and continuity constraint in requested_brief. Never introduce an actor, object, action, setting, screen state or payoff that the brief forbids.
 - Respect each requested scene's allowed_word_count range. Keep the complete story within whole_story_word_budget; exact per-scene equality is neither required nor desirable.
 - Never add empty padding such as "bugün", "şimdi", "sakinlikle" or "dikkatlice" unless that word changes the visible action and sounds necessary in normal speech.
 - Each narration describes ONE visible human or physical action in ONE ordinary location.
-- Every spoken clause must be literally visible in the same common five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
+- Except only as allowed by the documentary B-roll rule above, every spoken clause must be literally visible in the same common five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
 - {CONTINUITY_DEICTIC_RULE}
 - Use one simple sentence. Do not combine distinct actions, even with a conjunction, gerund, sequence or subordinate clause.
 - Do not use a semicolon or colon to join actions.
@@ -1919,6 +1967,7 @@ NON-NEGOTIABLE RULES:
         }
         critic_context = {
             'requested_topic': requested_brief,
+            'content_style': normalized_content_style,
             'title': package.get('title'),
             'description': package.get('description'),
             'sources': [
@@ -1947,6 +1996,7 @@ Return ONLY JSON in exactly this shape:
 {json.dumps(critic_shape, ensure_ascii=False)}
 
 Review the WHOLE story before reviewing individual stock shots. Set each story_review boolean independently and false whenever evidence is ambiguous.
+{documentary_critic_rule}
 - all_explicit_brief_constraints_preserved: every explicit structural, routing, continuity, required-element and forbidden-element constraint in requested_topic is obeyed by the complete candidate story, including narration, visual queries and ai_prompt routes. False if any explicit constraint is omitted, contradicted or replaced by a generic payoff. A wardrobe, camera or framing constraint is preserved when it is explicit in the applicable visual_queries or ai_prompt; never require production-only metadata to be spoken merely to prove compliance.
 - single_human_situation: the short follows one concrete everyday situation a person can care about.
 - single_central_question: one curiosity or problem is opened and resolved.
@@ -1976,9 +2026,9 @@ For EACH requested position, set every boolean independently. If evidence is amb
 - single_sentence: narration contains only one sentence.
 - single_visible_action: narration requires exactly one visible action, not two actions joined by a conjunction, gerund, sequence or implied cut.
 - single_ordinary_location: narration and every query can share one ordinary physical setting.
-- all_spoken_meaning_visible: every spoken clause is directly visible in that single clip.
+- all_spoken_meaning_visible: every spoken clause is directly visible in that single clip, except for the narrow sourced documentary B-roll semantics above when active.
 - Apply this exact narrow semantic rule when judging all_spoken_meaning_visible: {CONTINUITY_DEICTIC_RULE}
-- no_invisible_or_abstract_claim: there is no magic-like hook, comparison, mystery, technical implication or spoken conclusion.
+- no_invisible_or_abstract_claim: there is no magic-like hook, comparison, mystery, technical implication or spoken conclusion. A sourced documentary date, duration, count, capacity or total is not an invisible abstraction when the active documentary rule is fully satisfied.
 - all_named_subjects_coexist: one normal five-second stock clip can visibly contain every named subject and object.
 - queries_are_english: every query is idiomatic English stock-search text.
 - queries_match_same_action: every query depicts the narration's exact same actor/object, action and setting.
@@ -2483,6 +2533,8 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             ]
             stock_scene_qc = {
                 'version': _STOCK_SCENE_QC_VERSION,
+                'content_style': normalized_content_style,
+                'documentary_broll_semantics': documentary_broll,
                 'target_positions': stock_positions,
                 'roles': [
                     {
@@ -2849,6 +2901,9 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 language_name,
                 duration_minutes,
                 topic,
+                content_style=str(
+                    options.get('content_style') or 'documentary'
+                ),
             )
         except _WholeStoryRepairRequired as exc:
             if isinstance(exc, _NaturalSpokenLanguageRepairRequired):
@@ -2956,6 +3011,9 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 language_name,
                 duration_minutes,
                 topic,
+                content_style=str(
+                    options.get('content_style') or 'documentary'
+                ),
                 allow_natural_language_repair=False,
                 allow_explicit_brief_repair=False,
             )

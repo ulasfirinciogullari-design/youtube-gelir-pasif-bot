@@ -507,6 +507,88 @@ class AudioQCTests(unittest.TestCase):
             'Gemini speech-to-text returned invalid word annotations',
         )
 
+    def test_gemini_punctuated_number_annotation_preserves_sequence_gate(self):
+        for number in ('4,8', '4.8'):
+            with self.subTest(number=number):
+                interaction = _gemini_interaction(number, number)
+                with tempfile.TemporaryDirectory() as temporary:
+                    audio_path = Path(temporary) / 'voice.mp3'
+                    audio_path.write_bytes(b'audio')
+                    with (
+                        patch.object(audio_qc.settings, 'openai_api_key', ''),
+                        patch.object(
+                            audio_qc.settings,
+                            'gemini_api_key',
+                            'gemini-key',
+                        ),
+                        patch.object(
+                            audio_qc.settings,
+                            'elevenlabs_api_key',
+                            '',
+                        ),
+                        patch.object(
+                            audio_qc.httpx,
+                            'post',
+                            return_value=_Response(interaction),
+                        ),
+                    ):
+                        result = audio_qc.verify_audio_narration(
+                            audio_path,
+                            number,
+                        )
+
+                self.assertTrue(result['pass'])
+                self.assertEqual(result['provider'], 'gemini')
+                self.assertEqual(len(result['word_timestamps']), 1)
+                self.assertTrue(
+                    result['mismatch_details']['timestamp_sequence_match']
+                )
+
+    def test_gemini_whitespace_separated_multiword_annotation_is_invalid(self):
+        interaction = _gemini_interaction('Merhaba d\u00fcnya')
+        interaction['steps'][0]['content'][0]['annotations'] = [{
+            'type': 'word_info',
+            'text': 'Merhaba d\u00fcnya',
+            'start_offset': '0.000s',
+            'end_offset': '0.800s',
+        }]
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Merhaba d\u00fcnya',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text returned invalid word annotations',
+        )
+
+    def test_gemini_empty_or_non_numeric_compound_annotation_is_invalid(self):
+        for invalid_word in ('', ' , ', 'Merhaba,d\u00fcnya'):
+            with self.subTest(invalid_word=invalid_word):
+                interaction = _gemini_interaction('Beklenen', invalid_word)
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc._gemini_interaction_payload(
+                        _Response(interaction)
+                    )
+                self.assertEqual(
+                    str(caught.exception),
+                    'Gemini speech-to-text returned invalid word annotations',
+                )
+
     def test_gemini_inconsistent_word_annotations_fail_closed(self):
         with tempfile.TemporaryDirectory() as temporary:
             audio_path = Path(temporary) / 'voice.mp3'
