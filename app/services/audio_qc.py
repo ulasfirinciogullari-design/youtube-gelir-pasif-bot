@@ -340,6 +340,26 @@ def _gemini_duration_seconds(value: Any) -> float | None:
     return _finite_time(value[:-1])
 
 
+def _valid_gemini_annotation_text(value: Any) -> bool:
+    if not isinstance(value, str) or not value.strip():
+        return False
+    tokens = _tokens(value)
+    if len(tokens) == 1:
+        return True
+    if len(tokens) < 2 or not all(token.isdecimal() for token in tokens):
+        return False
+    # A decimal/grouping separator can split one numeric annotation into
+    # several comparison tokens (for example ``4,8`` -> ``4 8``). Accept
+    # that single annotated span, but never a whitespace-separated phrase or
+    # control-character-delimited value.
+    normalized = unicodedata.normalize('NFKC', value).strip()
+    return all(
+        character.isdecimal()
+        or unicodedata.category(character).startswith(('P', 'S'))
+        for character in normalized
+    )
+
+
 def _gemini_interaction_payload(response: Any) -> dict[str, Any]:
     status_code = getattr(response, 'status_code', None)
     if not isinstance(status_code, int) or not 200 <= status_code < 300:
@@ -430,7 +450,7 @@ def _gemini_interaction_payload(response: Any) -> dict[str, Any]:
             if (
                 not isinstance(word, str)
                 or not word.strip()
-                or len(_tokens(word)) != 1
+                or not _valid_gemini_annotation_text(word)
                 or start is None
                 or end is None
                 or end <= start
