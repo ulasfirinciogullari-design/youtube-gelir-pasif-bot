@@ -659,6 +659,60 @@ _TURKISH_SHORT_STORY_FAMILIES = (
     ),
 )
 
+_TURKISH_SHORT_SEATBELT_PATTERN = re.compile(
+    r'\b(?:emniyet\s+)?kemer\w*\b',
+    flags=re.IGNORECASE | re.UNICODE,
+)
+_TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN = re.compile(
+    r'\b(?:(?:metal\s+)?dil\w*|toka\w*|yuva\w*)\b',
+    flags=re.IGNORECASE | re.UNICODE,
+)
+_TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN = re.compile(
+    r'\b(?:tak|sok|geçir|kilitle|birleştir|bağla)\w*\b',
+    flags=re.IGNORECASE | re.UNICODE,
+)
+_ENGLISH_SHORT_SEATBELT_PATTERN = re.compile(
+    r'\b(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)\b',
+    flags=re.IGNORECASE,
+)
+_ENGLISH_SHORT_SEATBELT_HARDWARE_PATTERN = re.compile(
+    r'\b(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue)|'
+    r'buckle|buckle\s+receiver|receiver\s+slot)\b',
+    flags=re.IGNORECASE,
+)
+_ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN = re.compile(
+    r'\b(?:insert|push|slide|guide|move|place|put)\w*\b'
+    r'.{0,80}\b(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue))\b'
+    r'.{0,48}\b(?:into|to|in)\b.{0,48}\b(?:buckle|receiver|slot)\b|'
+    r'\b(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue))\b'
+    r'.{0,80}\b(?:enter|slide|move|push|insert)\w*\b'
+    r'.{0,48}\b(?:into|to|in)\b.{0,48}\b(?:buckle|receiver|slot)\b|'
+    r'\b(?:connect|fasten)\w*\b.{0,64}\b'
+    r'(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue)|'
+    r'seat\s*[- ]?belt|seatbelt)\b.{0,64}\b(?:buckle|receiver|slot)\b|'
+    r'\b(?:buckles|buckling|fastens|fastening)\b.{0,48}\b'
+    r'(?:seat\s*[- ]?belt|seatbelt)\b|'
+    r'\b(?:buckle|fasten)\s+(?:the|this|a|your)\s+'
+    r'(?:seat\s*[- ]?belt|seatbelt)\b',
+    flags=re.IGNORECASE,
+)
+_ENGLISH_SHORT_SAFE_SEATBELT_STATE_FRAGMENT_PATTERN = re.compile(
+    r'\balready\s*[- ]?(?:fastened|buckled)\b',
+    flags=re.IGNORECASE,
+)
+_ENGLISH_SHORT_SAFE_SEATBELT_PAYOFF_PATTERN = re.compile(
+    r'\b(?:'
+    r'already\s*[- ]?(?:fastened|buckled)\b.{0,32}\b'
+    r'(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)|'
+    r'(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)\b'
+    r'.{0,32}\balready\s*[- ]?(?:fastened|buckled)|'
+    r'(?:visibly\s+)?wear(?:s|ing)\b.{0,48}\b'
+    r'(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)|'
+    r'(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)\b'
+    r'.{0,48}\bacross\s+(?:the\s+)?chest)\b',
+    flags=re.IGNORECASE,
+)
+
 
 def _short_story_quality_issues(
     package: dict,
@@ -682,10 +736,98 @@ def _short_story_quality_issues(
             'short preview mixes unrelated mechanism families instead of '
             'answering one human question: ' + ', '.join(mechanism_families)
         )
+    story_contract = ' '.join(
+        f"{str(scene.get('narration') or '')} "
+        f"{str(scene.get('ai_prompt') or '')}"
+        for scene in (package.get('scenes') or [])
+        if isinstance(scene, dict)
+    )
+    seatbelt_story = bool(
+        _TURKISH_SHORT_SEATBELT_PATTERN.search(story_contract)
+        or _ENGLISH_SHORT_SEATBELT_PATTERN.search(story_contract)
+    )
+    for scene_idx, scene in enumerate(package.get('scenes') or []):
+        if not isinstance(scene, dict) or not str(
+            scene.get('ai_prompt') or ''
+        ).strip():
+            continue
+        scene_narration = str(scene.get('narration') or '')
+        ai_prompt = str(scene.get('ai_prompt') or '')
+        complete_contract = f'{scene_narration} {ai_prompt}'
+        active_prompt = (
+            _ENGLISH_SHORT_SAFE_SEATBELT_STATE_FRAGMENT_PATTERN.sub(
+                '', ai_prompt
+            )
+        )
+        hardware_contract = bool(
+            _TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                complete_contract
+            )
+            or _ENGLISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                complete_contract
+            )
+        )
+        connection_action = bool(
+            _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+                active_prompt
+            )
+        )
+        safe_ai_payoff = bool(
+            _ENGLISH_SHORT_SAFE_SEATBELT_PAYOFF_PATTERN.search(ai_prompt)
+        )
+        narration_precision_action = bool(
+            (
+                _TURKISH_SHORT_SEATBELT_PATTERN.search(scene_narration)
+                or _ENGLISH_SHORT_SEATBELT_PATTERN.search(scene_narration)
+            )
+            and (
+                _TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                    scene_narration
+                )
+                or _ENGLISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                    scene_narration
+                )
+            )
+            and (
+                _TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+                    scene_narration
+                )
+                or _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+                    scene_narration
+                )
+            )
+        )
+        if (
+            narration_precision_action
+            or (
+                seatbelt_story
+                and hardware_contract
+                and connection_action
+            )
+        ):
+            issues.append(
+                f'scene {scene_idx} assigns paid AI video a precision '
+                'seat-belt latch insertion; rewrite the payoff as the same '
+                'driver visibly wearing an already-fastened three-point belt '
+                'after the preceding mechanism scene, without narrating the '
+                'small metal tongue entering the buckle'
+            )
+            continue
+        if (
+            scene_idx == len(package.get('scenes') or []) - 1
+            and seatbelt_story
+            and not safe_ai_payoff
+        ):
+            issues.append(
+                f'scene {scene_idx} has an AI-routed seat-belt payoff without '
+                'a stable visible result; require the prompt to show the same '
+                'driver visibly wearing an already-fastened three-point belt '
+                'across the chest before preparing to drive'
+            )
     return issues
 
 
-_SHORT_STORY_QC_VERSION = 3
+_SHORT_STORY_QC_VERSION = 4
 _STOCK_SCENE_QC_VERSION = 6
 _STORY_STOCK_CONTRACT = 'openai-story-stock-v2'
 
@@ -1203,6 +1345,7 @@ EDITORIAL QC RULES:
 - Never search for an abstract property alone: keep the named subject attached (for example, a damaged QR code being scanned, not a generic software error; OLED pixel microscopy, not digital glitch footage).
 - CONDITIONAL VALIDATION EXAMPLE, not a story suggestion: only if the user's topic and the chosen single story already require OLED or true black, narration, stock queries and ai_prompt must show black-region subpixel emitters visibly unlit beside illuminated colored subpixels; a whole-screen fade or hand turning a screen off is not evidence.
 - In that same conditional OLED case, never claim lower power use in a short scene unless a real physical power meter visibly falls in that same continuous shot.
+- For a short seat-belt story, never ask paid AI video to animate the small metal latch plate entering the buckle. Explain the internal locking mechanism in the preceding technical scene, then make the payoff show the same driver visibly wearing an already-fastened three-point belt across the chest and preparing to drive. Do not narrate the precision insertion in that AI scene.
 - Reject generic typing, code errors, random phones, office workers, skylines, fireworks, finance charts, digital noise or abstract tech footage unless literally required by the narration.
 - Give every scene 2-3 search options with different shot grammar.
 - ai_prompt is null unless stock footage cannot honestly show the concept.
