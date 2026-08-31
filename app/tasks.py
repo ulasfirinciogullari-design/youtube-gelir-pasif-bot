@@ -45,6 +45,7 @@ class PexelsRetryError(RuntimeError):
 
 
 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
+SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 1
 _TRANSIENT_PEXELS_HTTP_STATUS_CODES = {408, 425, 429}
 
 
@@ -487,7 +488,7 @@ def _final_pexels_rescue_queries(
     scene: dict,
     review: dict,
     *,
-    provider_outage_stock_fallback: bool,
+    forced_stock_fallback: bool,
 ) -> list[str]:
     """Keep final rescue bounded while allowing a recovered provider retry."""
     raw_retry_queries = review.get('retry_queries') or []
@@ -498,7 +499,7 @@ def _final_pexels_rescue_queries(
         for query in raw_retry_queries[:2]
         if str(query).strip()
     ]
-    if retry_queries or not provider_outage_stock_fallback:
+    if retry_queries or not forced_stock_fallback:
         return retry_queries
 
     raw_visual_queries = scene.get('visual_queries') or []
@@ -876,23 +877,35 @@ def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float)
     return min(4, max(1, math.ceil(scene_count * 0.24)))
 
 
-def _allocate_short_preview_provider_outage_runway(
+def _allocate_short_preview_forced_stock_runway(
     ranked_candidates: list[dict],
     base_submission_cap: int,
     provider_outage_stock_scenes: set[int],
+    stock_quality_fallback_scenes: set[int],
     quality_threshold: int,
-) -> tuple[list[dict], list[dict], list[int], bool]:
-    """Reserve emergency paid slots only for typed Pexels-outage scenes.
+) -> tuple[
+    list[dict],
+    list[dict],
+    list[int],
+    list[int],
+    bool,
+    bool,
+    list[int],
+]:
+    """Reserve bounded emergency slots for forced short-preview STOCK scenes.
 
-    The ordinary short-preview cap continues to cover every non-outage scene.
+    The ordinary short-preview cap continues to cover every non-forced scene.
     Within that cap, clips without an approved visual are mandatory and already
     approved AI-first upgrades are optional. Every extra selected candidate is
-    therefore an explicit stock scene whose bounded Pexels access failed, with
-    a global maximum of two such emergency slots per preview.
+    therefore an explicit STOCK scene forced either by a typed provider outage
+    or by one semantic failure after the full unchanged stock tournament.
     """
     base_cap = max(0, int(base_submission_cap))
     outage_indices = {int(index) for index in provider_outage_stock_scenes}
+    quality_indices = {int(index) for index in stock_quality_fallback_scenes}
+    overlapping_forced_scenes = sorted(outage_indices & quality_indices)
     outage_candidates: list[dict] = []
+    quality_candidates: list[dict] = []
     required_base_candidates: list[dict] = []
     optional_base_candidates: list[dict] = []
     ranked_indices: set[int] = set()
@@ -902,6 +915,9 @@ def _allocate_short_preview_provider_outage_runway(
         ranked_indices.add(scene_idx)
         if scene_idx in outage_indices:
             outage_candidates.append(candidate)
+            continue
+        if scene_idx in quality_indices:
+            quality_candidates.append(candidate)
             continue
         has_visual = bool(candidate.get('has_visual'))
         stock_score = int(candidate.get('stock_score', -1))
@@ -917,16 +933,24 @@ def _allocate_short_preview_provider_outage_runway(
     outage_cap_exceeded = (
         len(outage_indices) > SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
     )
+    quality_cap_exceeded = (
+        len(quality_indices) > SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
+    )
     selected = [
         *selected_base,
         *outage_candidates[:SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP],
+        *quality_candidates[:SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP],
     ]
     missing_outage_scenes = sorted(outage_indices - ranked_indices)
+    missing_quality_scenes = sorted(quality_indices - ranked_indices)
     return (
         selected,
         required_base_candidates,
         missing_outage_scenes,
+        missing_quality_scenes,
         outage_cap_exceeded,
+        quality_cap_exceeded,
+        overlapping_forced_scenes,
     )
 
 
@@ -1327,6 +1351,7 @@ def run_video_pipeline(
             and runway_submission_cap > 0
         )
         provider_outage_stock_scenes: set[int] = set()
+        stock_quality_fallback_scenes: set[int] = set()
 
         # A stock-routed short-preview scene is a contract: real footage
         # must clear the same semantic gate before any paid Runway request.
@@ -1564,12 +1589,33 @@ def run_video_pipeline(
                         if str(query).strip()
                     ],
                 })
-            if failed_stock_contracts:
+            semantic_stock_quality_failures = [
+                failure
+                for failure in failed_stock_contracts
+                if bool(failure.get('has_visual'))
+                and int(failure.get('stock_score', -1)) >= 0
+                and int(failure['scene_index']) in current_reviews
+            ]
+            unroutable_stock_failures = [
+                failure
+                for failure in failed_stock_contracts
+                if failure not in semantic_stock_quality_failures
+            ]
+            if (
+                unroutable_stock_failures
+                or len(semantic_stock_quality_failures)
+                > SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
+            ):
                 stock_contract_message = (
-                    'Short-preview stock contract failed before any paid submission: '
+                    'Short-preview stock-quality fallback exceeds its hard cap '
+                    'or lacks semantic stock evidence before any paid submission: '
                     + json.dumps(
                         {
                             'quality_threshold': quality_threshold,
+                            'stock_quality_emergency_cap': (
+                                SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
+                            ),
+                            'unroutable_failures': unroutable_stock_failures,
                             'failures': failed_stock_contracts,
                         },
                         ensure_ascii=False,
@@ -1579,6 +1625,28 @@ def run_video_pipeline(
                 if approved_package is not None:
                     raise FinalVisualQualityError(stock_contract_message)
                 raise PreRunwayRetryableError(stock_contract_message)
+
+            for failure in semantic_stock_quality_failures:
+                scene_idx = int(failure['scene_index'])
+                old_best = (
+                    _visual_path(scene_visuals[scene_idx][0])
+                    if scene_visuals[scene_idx]
+                    else ''
+                )
+                # The full bounded tournament has completed without clearing
+                # the unchanged threshold. Quarantine its incumbent so a paid
+                # generated clip (or a later re-qualified final rescue) is
+                # mandatory; the low-score stock clip can never be rendered.
+                scene_visuals[scene_idx] = []
+                stock_quality_fallback_scenes.add(scene_idx)
+                visual_replacements.append({
+                    'scene_index': scene_idx,
+                    'score': int(failure.get('stock_score', -1)),
+                    'reason': failure.get('reason'),
+                    'old_best': old_best,
+                    'replacement_count': 0,
+                    'stage': 'pre_runway_stock_quality_fallback',
+                })
 
             # Do not spend an emergency slot if an incumbent unexpectedly
             # cleared the unchanged threshold despite the provider outage.
@@ -1603,6 +1671,7 @@ def run_video_pipeline(
                         not is_bounded_short_preview
                         or str(scene.get('ai_prompt') or '').strip()
                         or candidate_scene_idx in provider_outage_stock_scenes
+                        or candidate_scene_idx in stock_quality_fallback_scenes
                     )
                     else ''
                 )
@@ -1630,6 +1699,9 @@ def run_video_pipeline(
                         'provider_outage_stock_fallback': (
                             candidate_scene_idx in provider_outage_stock_scenes
                         ),
+                        'stock_quality_fallback': (
+                            candidate_scene_idx in stock_quality_fallback_scenes
+                        ),
                     })
             ranked.sort(key=lambda item: (
                 0 if not item['has_visual'] else 1,
@@ -1646,6 +1718,7 @@ def run_video_pipeline(
         if (
             is_bounded_short_preview
             and not provider_outage_stock_scenes
+            and not stock_quality_fallback_scenes
             and len(ranked_runway_candidates) > runway_submission_cap
         ):
             overflow_candidates = ranked_runway_candidates[runway_submission_cap:]
@@ -1730,16 +1803,23 @@ def run_video_pipeline(
 
         runway_effective_submission_cap = runway_submission_cap
         selected_runway: list[dict]
-        if is_bounded_short_preview and provider_outage_stock_scenes:
+        if is_bounded_short_preview and (
+            provider_outage_stock_scenes
+            or stock_quality_fallback_scenes
+        ):
             (
                 selected_runway,
                 required_base_candidates,
                 missing_outage_scenes,
+                missing_quality_scenes,
                 outage_cap_exceeded,
-            ) = _allocate_short_preview_provider_outage_runway(
+                quality_cap_exceeded,
+                overlapping_forced_scenes,
+            ) = _allocate_short_preview_forced_stock_runway(
                 ranked_runway_candidates,
                 runway_submission_cap,
                 provider_outage_stock_scenes,
+                stock_quality_fallback_scenes,
                 quality_threshold,
             )
             runway_effective_submission_cap = min(
@@ -1748,17 +1828,24 @@ def run_video_pipeline(
                 + min(
                     len(provider_outage_stock_scenes),
                     SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP,
+                )
+                + min(
+                    len(stock_quality_fallback_scenes),
+                    SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP,
                 ),
             )
             allocation_is_incomplete = (
                 len(required_base_candidates) > runway_submission_cap
                 or bool(missing_outage_scenes)
+                or bool(missing_quality_scenes)
                 or outage_cap_exceeded
+                or quality_cap_exceeded
+                or bool(overlapping_forced_scenes)
                 or len(selected_runway) > runway_effective_submission_cap
             )
             if allocation_is_incomplete:
                 preflight_message = (
-                    'Short-preview provider-outage fallback cannot produce a '
+                    'Short-preview forced STOCK fallback cannot produce a '
                     'complete video within its bounded paid allocation: '
                     + json.dumps(
                         {
@@ -1767,11 +1854,21 @@ def run_video_pipeline(
                             'provider_outage_emergency_cap': (
                                 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
                             ),
+                            'stock_quality_emergency_cap': (
+                                SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
+                            ),
                             'provider_outage_stock_scenes': sorted(
                                 provider_outage_stock_scenes
                             ),
+                            'stock_quality_fallback_scenes': sorted(
+                                stock_quality_fallback_scenes
+                            ),
                             'missing_outage_scenes': missing_outage_scenes,
-                            'required_non_outage_scenes': [
+                            'missing_quality_scenes': missing_quality_scenes,
+                            'overlapping_forced_scenes': (
+                                overlapping_forced_scenes
+                            ),
+                            'required_non_forced_scenes': [
                                 int(item['scene_index'])
                                 for item in required_base_candidates
                             ],
@@ -1825,6 +1922,8 @@ def run_video_pipeline(
                 'reason': (
                     'provider_outage_stock_fallback'
                     if selected and scene_idx in provider_outage_stock_scenes
+                    else 'stock_quality_fallback'
+                    if selected and scene_idx in stock_quality_fallback_scenes
                     else 'selected_for_generation' if selected
                     else 'stock_approved' if has_visual and stock_score >= quality_threshold
                     else 'submission_cap'
@@ -1966,8 +2065,9 @@ def run_video_pipeline(
             retry_queries = _final_pexels_rescue_queries(
                 scenes[scene_idx],
                 review,
-                provider_outage_stock_fallback=(
+                forced_stock_fallback=(
                     scene_idx in provider_outage_stock_scenes
+                    or scene_idx in stock_quality_fallback_scenes
                 ),
             )
             old_best = _visual_path(scene_visuals[scene_idx][0]) if scene_visuals[scene_idx] else ''
@@ -1981,6 +2081,7 @@ def run_video_pipeline(
                 allow_short_fallback=not is_bounded_short_preview,
                 tolerate_pexels_failure=(
                     scene_idx in provider_outage_stock_scenes
+                    or scene_idx in stock_quality_fallback_scenes
                 ),
             )
             if not replacements:
@@ -2224,8 +2325,14 @@ def run_video_pipeline(
             'provider_outage_emergency_cap': (
                 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
             ),
+            'stock_quality_emergency_cap': (
+                SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
+            ),
             'provider_outage_stock_scene_indices': sorted(
                 provider_outage_stock_scenes
+            ),
+            'stock_quality_fallback_scene_indices': sorted(
+                stock_quality_fallback_scenes
             ),
             'runway_attempts': runway_attempts,
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
@@ -2266,8 +2373,14 @@ def run_video_pipeline(
             'provider_outage_emergency_cap': (
                 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
             ),
+            'stock_quality_emergency_cap': (
+                SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
+            ),
             'provider_outage_stock_scene_indices': sorted(
                 provider_outage_stock_scenes
+            ),
+            'stock_quality_fallback_scene_indices': sorted(
+                stock_quality_fallback_scenes
             ),
             'runway_attempts': runway_attempts,
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
