@@ -1,7 +1,32 @@
 from pathlib import Path
+
 import httpx
-from runwayml import RunwayML
+from runwayml import RateLimitError, RunwayML
+
 from app.config import settings
+
+
+def _create_text_to_video_task(client, prompt_text: str, seconds: int):
+    """Create one paid task, falling back only after a rejected Gen-4.5 create.
+
+    Task polling deliberately remains outside this function. A rate limit while
+    polling an accepted task must never cause a second paid task submission.
+    """
+    try:
+        return client.text_to_video.create(
+            model='gen4.5',
+            prompt_text=prompt_text,
+            ratio='1280:720',
+            duration=seconds,
+        )
+    except RateLimitError:
+        return client.text_to_video.create(
+            model='seedance2_fast',
+            prompt_text=prompt_text,
+            ratio='1280:720',
+            duration=seconds,
+            audio=False,
+        )
 
 
 def generate_scene(prompt: str, duration: int = 5) -> str:
@@ -16,12 +41,8 @@ def generate_scene(prompt: str, duration: int = 5) -> str:
 
     seconds = max(2, min(int(round(duration)), 10))
     client = RunwayML(api_key=settings.runwayml_api_secret)
-    completed = client.text_to_video.create(
-        model='gen4.5',
-        prompt_text=prompt_text,
-        ratio='1280:720',
-        duration=seconds,
-    ).wait_for_task_output(timeout=600)
+    created = _create_text_to_video_task(client, prompt_text, seconds)
+    completed = created.wait_for_task_output(timeout=600)
     output = completed.output or []
     if not output:
         raise RuntimeError('Runway returned no video output')
@@ -37,3 +58,4 @@ def download_generated_scene(url: str, output_path: str | Path) -> str:
             for chunk in response.iter_bytes():
                 f.write(chunk)
     return str(output)
+
