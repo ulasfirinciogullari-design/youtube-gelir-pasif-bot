@@ -309,6 +309,42 @@ _TURKISH_SHORT_TRANSLATIONESE_PATTERNS = (
     (re.compile(r'\bhücresel\s+zamanlama\b', flags=re.IGNORECASE), 'unnatural “hücresel zamanlama” noun stack'),
     (re.compile(r'\btamamlar\s+konumu\b', flags=re.IGNORECASE), 'inverted “tamamlar konumu” phrasing'),
     (re.compile(r'\bokunur\s+yine\s+kolayca\b', flags=re.IGNORECASE), 'translated “okunur yine kolayca” phrasing'),
+    (
+        re.compile(
+            r'\b(?:sıkışan|hapsolan)\s+ısı\b',
+            flags=re.IGNORECASE | re.UNICODE,
+        ),
+        (
+            'translated energy wording such as “sıkışan ısı”; '
+            'say that hot air stays inside or becomes trapped'
+        ),
+    ),
+    (
+        re.compile(
+            r'\b(?:(?:açılan|oluşan)\s+(?:hava\s+)?boşluk|'
+            r'ısı|sıcaklık)\s+(?:fanı|motoru|cihazı)\s+'
+            r'(?:hızlandır|yavaşlat)\w*\b',
+            flags=re.IGNORECASE | re.UNICODE,
+        ),
+        (
+            'translated inanimate-cause wording; express the temperature or '
+            'airflow change as a natural condition instead'
+        ),
+    ),
+)
+_TURKISH_SHORT_WARDROBE_METADATA_PATTERN = re.compile(
+    r'\b(?:(?:açık|koyu)\s+)?'
+    r'(?:beyaz|siyah|gri|füme|lacivert|mavi|kırmızı|yeşil|'
+    r'sarı|kahverengi|bej|turuncu|mor|pembe)\s+'
+    r'(?:tişörtlü|gömlekli|ceketli|kazaklı|montlu|kapüşonlu)\b',
+    flags=re.IGNORECASE | re.UNICODE,
+)
+_TURKISH_SHORT_CAMERA_METADATA_PATTERN = re.compile(
+    r'\b(?:kadraj\w*|yakın\s+plan\w*|geniş\s+plan\w*|'
+    r'(?:alçak|yüksek)\s+açı\w*|üstten\s+çekim\w*|'
+    r'(?:önden|arkadan|yandan)\s+'
+    r'(?:izliyor|seyrediyor|görünüyor|gösteriliyor|çekiliyor))\b',
+    flags=re.IGNORECASE | re.UNICODE,
 )
 
 
@@ -341,6 +377,21 @@ def _short_spoken_quality_issues(
         for pattern, reason in _TURKISH_SHORT_TRANSLATIONESE_PATTERNS:
             if pattern.search(narration):
                 issues.append(f'scene {scene_idx} has {reason}')
+        camera_metadata = _TURKISH_SHORT_CAMERA_METADATA_PATTERN.search(
+            narration
+        )
+        if camera_metadata:
+            issues.append(
+                f'scene {scene_idx} has production-only camera direction or '
+                'framing in narration; keep camera and framing instructions '
+                'in visual_queries or ai_prompt'
+            )
+            if _TURKISH_SHORT_WARDROBE_METADATA_PATTERN.search(narration):
+                issues.append(
+                    f'scene {scene_idx} has wardrobe wording paired with '
+                    'camera/framing metadata in narration; keep wardrobe '
+                    'continuity in visual_queries or ai_prompt'
+                )
     return issues
 
 
@@ -724,6 +775,11 @@ def _run_director(
             'Prefer meaning-first phrases such as OLED ekran, GPS sinyali, QR kodu, kablosuz ağ or hata düzeltme yöntemi. '
             'Avoid translated noun stacks, inverted word order and phrases like “siyah yerde”, '
             '“hücresel zamanlama tamamlar konumu” or “okunur yine kolayca”. '
+            'Express cause and effect through natural Turkish conditions: say “sıcak hava içeride kalınca” or “sıcak hava sıkışınca”, '
+            'never translated energy-agent phrases such as “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”. '
+            'Keep purely visual production metadata out of speech: wardrobe and color continuity, camera direction, shot size, '
+            'face visibility and framing belong in visual_queries or ai_prompt unless the story itself causally depends on them. '
+            'Never narrate phrases such as “koyu lacivert tişörtlü Mert” or “arkadan izliyor” merely to control the picture. '
             'Precise technical English is allowed in visual_queries and ai_prompt because those fields are not spoken. '
         )
 
@@ -791,6 +847,8 @@ EDITORIAL QC RULES:
 - Every scene must continue, explain, contrast, escalate or pay off the previous scene.
 - Remove filler, robotic listicle wording and repetitive transition phrases.
 - Spoken {language_name} must sound natural, confident and punctuated for real breaths.
+- In Turkish narration, reject translated energy or geometry as a grammatical agent. Prefer a natural condition such as hot air remaining trapped and the fan then speeding up or slowing down.
+- Do not verbalize production-only wardrobe, color-continuity, camera-direction, shot-size, face-visibility or framing notes. Preserve those requirements in visual_queries or ai_prompt instead; narration should contain them only when they change the story's human meaning.
 - Each scene contains one complete thought that can remain under one excellent hero visual.
 - Never make an ai_prompt-null scene recap several earlier mechanisms or invisible abstractions; it must narrate one visible subject performing one visible action in one ordinary location.
 - Every clause of every ai_prompt-null narration must be directly visible in that one clip; remove magic-like hooks, hidden-system claims and spoken conclusions.
@@ -798,7 +856,7 @@ EDITORIAL QC RULES:
 - Match the selected Studio style without imitating a named creator.
 - Apply the global pace profile, but still vary individual scene pace intentionally.
 - The master video is text-free. Do not create subtitles, lower thirds or overlay copy.
-- visual_queries must literally match the exact spoken meaning and name the visible subject, action and context in the same phrase.
+- visual_queries must literally match the exact spoken meaning and name the visible subject, action and context in the same phrase, while also carrying applicable silent visual-production constraints from the Topic without forcing those constraints into narration.
 - Never search for an abstract property alone: keep the named subject attached (for example, a damaged QR code being scanned, not a generic software error; OLED pixel microscopy, not digital glitch footage).
 - CONDITIONAL VALIDATION EXAMPLE, not a story suggestion: only if the user's topic and the chosen single story already require OLED or true black, narration, stock queries and ai_prompt must show black-region subpixel emitters visibly unlit beside illuminated colored subpixels; a whole-screen fade or hand turning a screen off is not evidence.
 - In that same conditional OLED case, never claim lower power use in a short scene unless a real physical power meter visibly falls in that same continuous shot.
@@ -1086,6 +1144,8 @@ NON-NEGOTIABLE RULES:
 - Never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
 - A payoff must visibly complete the preceding action and show the everyday benefit, not merely state a conclusion.
 - Keep the spoken narration natural and easy to pronounce in {language_name}; for Turkish, use meaning-first native wording and never raw technical abbreviations.
+- In Turkish, express causality as a natural condition. Use wording such as “sıcak hava içeride kalınca” or “sıcak hava sıkışınca”; never write translated energy-agent phrases such as “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”.
+- Keep production-only wardrobe, color-continuity, camera-direction, shot-size, face-visibility and framing notes in visual_queries, not spoken narration. Phrases such as “koyu lacivert tişörtlü Mert” or “arkadan izliyor” are not human narration when they exist only to control the picture.
 - When validation_feedback names natural_spoken_language, rewrite formal, translated or textbook-like wording as something a Turkish speaker would naturally say aloud while preserving the exact visible meaning.
 '''
 
@@ -1359,14 +1419,14 @@ Return ONLY JSON in exactly this shape:
 {json.dumps(critic_shape, ensure_ascii=False)}
 
 Review the WHOLE story before reviewing individual stock shots. Set each story_review boolean independently and false whenever evidence is ambiguous.
-- all_explicit_brief_constraints_preserved: every explicit structural, routing, continuity, required-element and forbidden-element constraint in requested_topic is obeyed by the complete candidate story, including narration, visual queries and ai_prompt routes. False if any explicit constraint is omitted, contradicted or replaced by a generic payoff.
+- all_explicit_brief_constraints_preserved: every explicit structural, routing, continuity, required-element and forbidden-element constraint in requested_topic is obeyed by the complete candidate story, including narration, visual queries and ai_prompt routes. False if any explicit constraint is omitted, contradicted or replaced by a generic payoff. A wardrobe, camera or framing constraint is preserved when it is explicit in the applicable visual_queries or ai_prompt; never require production-only metadata to be spoken merely to prove compliance.
 - single_human_situation: the short follows one concrete everyday situation a person can care about.
 - single_central_question: one curiosity or problem is opened and resolved.
 - not_fact_montage: the story is not a sampler, listicle or collage of unrelated mechanisms, products or clever facts.
 - causal_scene_chain: every scene advances the same cause-and-effect answer rather than merely sharing a broad topic.
 - same_actor_or_object_thread: one recognisable person or object gives the story continuity.
 - human_payoff_visible: the last beat visibly delivers an everyday benefit that earns the hook.
-- natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese, unsafe suffix-attached abbreviations or unsupported foreign terms.
+- natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese, unsafe suffix-attached abbreviations or unsupported foreign terms. For Turkish, this is false when heat, energy or an opened gap becomes an awkward translated grammatical agent, as in “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”; natural causality says that hot air stays trapped and the fan then changes speed. It is also false when narration verbalizes wardrobe/color continuity, camera direction, shot size, face visibility or framing solely to control production, as in “koyu lacivert tişörtlü Mert ... arkadan izliyor”. Keep that metadata in visual fields unless it changes the story's human meaning.
 - directly_answers_requested_topic: the actual hook, reveal and payoff directly answer the supplied topic rather than drifting to a merely coherent side story.
 - one_specific_useful_reveal: the viewer learns one non-obvious, useful or genuinely surprising thing worth thirty seconds.
 - causal_claim_supported: independently verify the central cause-and-effect explanation against the supplied source URLs and evidence. Use bounded web search when the evidence is insufficient; false if the claim cannot be verified or overstates a source.

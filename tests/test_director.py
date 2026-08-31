@@ -658,6 +658,11 @@ class ExplicitSceneCountTests(unittest.TestCase):
             'Never assume a later generation can see an earlier prompt',
             prompt,
         )
+        self.assertIn('“sıkışan ısı fanı hızlandırıyor”', prompt)
+        self.assertIn('“açılan boşluk fanı yavaşlatıyor”', prompt)
+        self.assertIn('purely visual production metadata out of speech', prompt)
+        self.assertIn('“koyu lacivert tişörtlü Mert”', prompt)
+        self.assertIn('“arkadan izliyor”', prompt)
 
     def test_six_scene_output_for_explicit_five_is_repaired_then_rejected_before_critic(self):
         package = make_coherent_battery_package()
@@ -785,6 +790,11 @@ class ShortStockRepairTests(unittest.TestCase):
             'all_explicit_brief_constraints_preserved',
             critic_input,
         )
+        self.assertIn('“sıkışan ısı fanı hızlandırıyor”', writer_input)
+        self.assertIn('“arkadan izliyor”', writer_input)
+        self.assertIn('production-only metadata to be spoken', critic_input)
+        self.assertIn('“açılan boşluk fanı yavaşlatıyor”', critic_input)
+        self.assertIn('“koyu lacivert tişörtlü Mert ... arkadan izliyor”', critic_input)
 
     def test_explicit_brief_constraint_rejection_is_fatal_before_media(self):
         verdict = critic_payload(
@@ -1843,8 +1853,9 @@ class ShortStockRepairTests(unittest.TestCase):
             'ending_pair_review': {'accepted': True},
         }
         evidence = (
-            'scene 2: "gerilim düşünce" sounds textbook-like in this '
-            'spoken sentence.'
+            'scene 4: "Koyu lacivert tişörtlü Mert dizisini arkadan '
+            'izliyor" verbalizes wardrobe and camera metadata that belongs '
+            'only in the visual fields.'
         )
         run_director.side_effect = [
             director_payload(original),
@@ -2243,6 +2254,88 @@ class GeminiPlanProviderTests(unittest.TestCase):
 
 
 class ShortSpokenQualityTests(unittest.TestCase):
+    def test_rejects_translated_causality_and_spoken_production_metadata(self):
+        unsafe = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Yorgan hava girişini kapattığı için sıkışan ısı '
+                        'fanı hızlandırıyor.'
+                    ),
+                },
+                {
+                    'narration': (
+                        'Mert laptopu kaldırınca açılan boşluk fanı '
+                        'yavaşlatıyor.'
+                    ),
+                },
+                {
+                    'narration': (
+                        'Koyu lacivert tişörtlü Mert dizisini aynı masada '
+                        'arkadan izliyor.'
+                    ),
+                    'visual_queries': [
+                        'navy shirt man watches laptop rear view',
+                    ],
+                },
+            ],
+        }
+        safe = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Yorgan hava girişini kapatıyor; sıcak hava içeride '
+                        'kalınca fan hızlanıyor.'
+                    ),
+                },
+                {
+                    'narration': (
+                        'Mert laptopu kaldırıyor; altta hava boşluğu açılınca '
+                        'fan yavaşlıyor.'
+                    ),
+                },
+                {
+                    'narration': (
+                        'Mert dizisine aynı masada, bu kez sessizce devam ediyor.'
+                    ),
+                    'visual_queries': [
+                        'navy shirt man watches laptop rear view',
+                    ],
+                },
+            ],
+        }
+
+        issues = _short_spoken_quality_issues(unsafe, 'Turkish')
+
+        self.assertTrue(any('scene 0' in issue and 'energy' in issue for issue in issues))
+        self.assertTrue(any('scene 1' in issue and 'inanimate-cause' in issue for issue in issues))
+        self.assertTrue(any('scene 2' in issue and 'wardrobe' in issue for issue in issues))
+        self.assertTrue(any('scene 2' in issue and 'camera direction' in issue for issue in issues))
+        self.assertEqual(_short_spoken_quality_issues(safe, 'Turkish'), [])
+
+    def test_allows_story_meaningful_colored_clothing_without_camera_language(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Kırmızı tişörtlü koşucu finişte takım arkadaşını '
+                        'hemen buluyor.'
+                    ),
+                },
+                {
+                    'narration': (
+                        'Lacivert montlu şüpheli kalabalığın arasına '
+                        'karışıyor.'
+                    ),
+                },
+            ],
+        }
+
+        self.assertEqual(
+            _short_spoken_quality_issues(package, 'Turkish'),
+            [],
+        )
+
     def test_rejects_live_unsafe_turkish_wording_and_fact_montage(self):
         package = {
             'scenes': [

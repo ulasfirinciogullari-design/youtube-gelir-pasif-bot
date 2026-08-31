@@ -698,6 +698,8 @@ def run_video_pipeline(
                 scene_visuals,
                 work,
                 len(scenes) if duration_minutes <= 1 else min(14, len(scenes)),
+                topic=topic,
+                story_scenes=scenes,
             )
             music_future = None
             if should_generate_music:
@@ -838,6 +840,8 @@ def run_video_pipeline(
             scene_visuals,
             work / 'pre_runway_visual_qc',
             len(scenes),
+            topic=topic,
+            story_scenes=scenes,
         )
         current_reviews = {
             int(review.get('scene_index')): review
@@ -981,6 +985,8 @@ def run_video_pipeline(
                     work / f'pre_runway_stock_tournament_{round_index}',
                     len(active_scenes),
                     _missing_review_attempts=0,
+                    topic=topic,
+                    story_scenes=scenes,
                 )
                 round_reviews = {
                     int(review.get('scene_index')): review
@@ -1187,6 +1193,8 @@ def run_video_pipeline(
                     [scene_visuals[idx] for idx in budget_rescued_scenes],
                     work / 'pre_runway_budget_rescue',
                     len(budget_rescued_scenes),
+                    topic=topic,
+                    story_scenes=scenes,
                 )
                 budget_reviews = {
                     int(review.get('scene_index')): review
@@ -1285,6 +1293,8 @@ def run_video_pipeline(
             scene_visuals,
             work / 'final_visual_qc',
             len(scenes),
+            topic=topic,
+            story_scenes=scenes,
         )
         final_reviews = {
             int(r.get('scene_index')): r
@@ -1344,6 +1354,8 @@ def run_video_pipeline(
                 [scene_visuals[idx] for idx in rescued_final_scenes],
                 work / 'final_visual_qc_rescue',
                 len(rescued_final_scenes),
+                topic=topic,
+                story_scenes=scenes,
             )
             rescue_reviews = {
                 int(r.get('scene_index')): r
