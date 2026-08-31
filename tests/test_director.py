@@ -320,6 +320,38 @@ def make_ai_first_five_scene_package():
     }
 
 
+def make_explicit_ai_macro_return_package():
+    package = make_ai_first_five_scene_package()
+    package['scenes'][3]['narration'] = (
+        'Makro kesitte aynı telefonun pili gerilim düşerken açıkça görünür.'
+    )
+    package['scenes'][3]['tts_text'] = package['scenes'][3]['narration']
+    package['scenes'][3]['visual_queries'] = [
+        'macro cutaway of same phone battery under load',
+        'photorealistic smartphone battery voltage drop macro',
+    ]
+    package['scenes'][3]['ai_prompt'] = (
+        'photorealistic macro cutaway inside the same phone battery as its '
+        'voltage drops under load, no text'
+    )
+    package['narration'] = ' '.join(
+        scene['narration'] for scene in package['scenes']
+    )
+    package['tts_narration'] = package['narration']
+    package['visual_queries'] = [
+        query
+        for scene in package['scenes']
+        for query in scene['visual_queries']
+    ]
+    package['ai_scenes'] = [
+        scene['ai_prompt']
+        for scene in package['scenes']
+        if scene.get('ai_prompt')
+    ]
+    assert _word_count(package['narration']) == 45
+    return package
+
+
 def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
     rows = {
         0: {
@@ -402,6 +434,7 @@ def critic_payload(
     *,
     stock_positions=(0, 4, 5),
     scene_count=6,
+    technical_insert_return_valid=True,
 ):
     failures = failures or {}
     story_failures = story_failures or []
@@ -425,6 +458,7 @@ def critic_payload(
         'continuous_visible_action_chain',
         'same_actor_or_object_thread',
         'everyday_benefit_visible',
+        'explicit_technical_insert_return_contract_satisfied',
     }
     story_review = {
         **{key: True for key in story_boolean_keys},
@@ -456,6 +490,9 @@ def critic_payload(
         'location_anchor': 'same cafe counter',
         'reason': 'The same customer receives and enjoys coffee at the same counter.',
     }
+    ending_pair['explicit_technical_insert_return_contract_satisfied'] = (
+        technical_insert_return_valid
+    )
     for key in ending_failures:
         ending_pair[key] = False
     if ending_failures:
@@ -1541,6 +1578,240 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertNotIsInstance(error.exception, KeyError)
         self.assertIn('"positions":[3,4]', str(error.exception))
         self.assertEqual(len(client.responses.calls), 2)
+
+    def test_explicit_ai_macro_insert_may_return_to_same_enclosing_setting(self):
+        topic = '''Tam olarak beş sahne kullan.
+1) STOCK: Elif aynı telefonla otobüs durağında bekler.
+2) AI: Aynı telefonun soğukta kapanmasını göster.
+3) STOCK: Elif telefonu aynı durağın bankında montuna koyar.
+4) AI: Aynı telefon pilinin mekanizmasını makro kesitte göster.
+5) AI: Aynı otobüs durağı bankına ve aynı telefona hemen dön.'''
+        verdict = critic_payload(
+            ending_failures=['same_immediate_location'],
+            stock_positions=(0, 2),
+            scene_count=5,
+            technical_insert_return_valid=True,
+        )
+        verdict['ending_pair']['location_anchor'] = (
+            'same enclosing winter bus stop bench and same phone'
+        )
+        verdict['ending_pair']['reason'] = (
+            'The camera enters the same phone battery, then immediately '
+            'returns to that phone at the same bus stop bench.'
+        )
+        client = FakeClient([
+            valid_ai_first_generator_payload(),
+            verdict,
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_explicit_ai_macro_return_package(),
+            'Turkish',
+            0.5,
+            topic=topic,
+        )
+
+        ending_review = result['stock_scene_qc']['ending_pair_review']
+        self.assertTrue(ending_review['accepted'])
+        self.assertTrue(ending_review['technical_insert_return_exception'])
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_gemini_may_attest_only_the_scoped_macro_insert_location_false(
+        self,
+        gemini_post,
+    ):
+        topic = '''Tam olarak beş sahne kullan.
+1) STOCK: Elif aynı telefonla otobüs durağında bekler.
+2) AI: Aynı telefonun soğukta kapanmasını göster.
+3) STOCK: Elif telefonu aynı durağın bankında montuna koyar.
+4) AI: Aynı telefon pilinin mekanizmasını makro kesitte göster.
+5) AI: Aynı otobüs durağı bankına ve aynı telefona hemen dön.'''
+        verdict = critic_payload(
+            ending_failures=['same_immediate_location'],
+            stock_positions=(0, 2),
+            scene_count=5,
+            technical_insert_return_valid=True,
+        )
+        verdict['ending_pair']['location_anchor'] = (
+            'same enclosing winter bus stop bench and same phone'
+        )
+        verdict['ending_pair']['reason'] = (
+            'The camera enters the same phone battery, then immediately '
+            'returns to that phone at the same bus stop bench.'
+        )
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = 'test-gemini-key'
+        gemini_post.return_value = FakeGeminiResponse(copy.deepcopy(verdict))
+        client = FakeClient([
+            valid_ai_first_generator_payload(),
+            copy.deepcopy(verdict),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_explicit_ai_macro_return_package(),
+            'Turkish',
+            0.5,
+            topic=topic,
+        )
+
+        self.assertTrue(result['stock_scene_qc']['gemini_critic']['accepted'])
+        trusted_instruction = gemini_post.call_args.kwargs['json'][
+            'systemInstruction'
+        ]['parts'][0]['text']
+        self.assertIn(
+            'brief AI-routes both final beats',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'Only same_immediate_location may then be false',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'Set the contract field false for a stock-routed ending',
+            trusted_instruction,
+        )
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_macro_insert_scope_does_not_allow_other_gemini_false_checks(
+        self,
+        gemini_post,
+    ):
+        topic = '''Tam olarak beş sahne kullan.
+1) STOCK: Elif aynı telefonla otobüs durağında bekler.
+2) AI: Aynı telefonun soğukta kapanmasını göster.
+3) STOCK: Elif telefonu aynı durağın bankında montuna koyar.
+4) AI: Aynı telefon pilinin mekanizmasını makro kesitte göster.
+5) AI: Aynı otobüs durağı bankına ve aynı telefona hemen dön.'''
+        openai_verdict = critic_payload(
+            ending_failures=['same_immediate_location'],
+            stock_positions=(0, 2),
+            scene_count=5,
+            technical_insert_return_valid=True,
+        )
+        openai_verdict['ending_pair']['location_anchor'] = (
+            'same enclosing winter bus stop bench and same phone'
+        )
+        openai_verdict['ending_pair']['reason'] = (
+            'The camera enters the same phone battery, then immediately '
+            'returns to that phone at the same bus stop bench.'
+        )
+        gemini_verdict = copy.deepcopy(openai_verdict)
+        gemini_verdict['ending_pair']['same_actor_or_object_thread'] = False
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = 'test-gemini-key'
+        gemini_post.return_value = FakeGeminiResponse(gemini_verdict)
+        client = FakeClient([
+            valid_ai_first_generator_payload(),
+            openai_verdict,
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            r'Gemini critic rejected.*same_actor_or_object_thread',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_explicit_ai_macro_return_package(),
+                'Turkish',
+                0.5,
+                topic=topic,
+            )
+
+    def test_explicit_macro_return_still_requires_critic_attestation(self):
+        topic = '''Tam olarak beş sahne kullan.
+1) STOCK: Elif aynı telefonla otobüs durağında bekler.
+2) AI: Aynı telefonun soğukta kapanmasını göster.
+3) STOCK: Elif telefonu aynı durağın bankında montuna koyar.
+4) AI: Aynı telefon pilinin mekanizmasını makro kesitte göster.
+5) AI: Aynı otobüs durağı bankına ve aynı telefona hemen dön.'''
+        client = FakeClient([
+            valid_ai_first_generator_payload(),
+            critic_payload(
+                stock_positions=(0, 2),
+                scene_count=5,
+                technical_insert_return_valid=False,
+            ),
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'AI-routed short-preview ending before paid media',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_explicit_ai_macro_return_package(),
+                'Turkish',
+                0.5,
+                topic=topic,
+            )
+
+    def test_macro_return_claim_without_explicit_numbered_route_fails_closed(self):
+        client = FakeClient([
+            valid_ai_first_generator_payload(),
+            critic_payload(
+                ending_failures=['same_immediate_location'],
+                stock_positions=(0, 2),
+                scene_count=5,
+                technical_insert_return_valid=True,
+            ),
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'AI-routed short-preview ending before paid media',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_ai_first_five_scene_package(),
+                'Turkish',
+                0.5,
+                topic='A macro insert eventually returns to the same object.',
+            )
+
+    def test_explicit_ai_return_cannot_bypass_a_stock_routed_final_candidate(self):
+        topic = '''Tam olarak beş sahne kullan.
+1) STOCK: Elif aynı telefonla otobüs durağında bekler.
+2) AI: Aynı telefonun soğukta kapanmasını göster.
+3) STOCK: Elif telefonu aynı durağın bankında montuna koyar.
+4) AI: Aynı telefon pilinin mekanizmasını makro kesitte göster.
+5) AI: Aynı otobüs durağı bankına ve aynı telefona hemen dön.'''
+        package = make_explicit_ai_macro_return_package()
+        package['scenes'][4]['ai_prompt'] = None
+        package['ai_scenes'] = [
+            scene['ai_prompt']
+            for scene in package['scenes']
+            if scene.get('ai_prompt')
+        ]
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 4,
+            'narration': package['scenes'][4]['narration'],
+            'visual_queries': package['scenes'][4]['visual_queries'],
+            'ai_prompt': None,
+        })
+        client = FakeClient([
+            generated,
+            critic_payload(
+                ending_failures=['same_immediate_location'],
+                stock_positions=(0, 2, 4),
+                scene_count=5,
+                technical_insert_return_valid=True,
+            ),
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'AI-routed short-preview ending before paid media',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                package,
+                'Turkish',
+                0.5,
+                topic=topic,
+            )
 
     def test_relaxed_scene_word_counts_keep_hard_total_duration_range(self):
         generated = valid_generator_payload()
@@ -3367,4 +3638,3 @@ class ShortStoryApprovalTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
