@@ -31,6 +31,16 @@ if _previous_redis_module is None:
     sys.modules.pop('redis', None)
 else:
     sys.modules['redis'] = _previous_redis_module
+# Keep the local references above for these tests, but do not leak a module
+# bound to the temporary config/Redis stubs into later test imports.
+sys.modules.pop('app.services.voice', None)
+services_package = sys.modules.get('app.services')
+if services_package is not None and getattr(
+    services_package,
+    'voice',
+    None,
+) is voice_module:
+    delattr(services_package, 'voice')
 
 
 class _FakeVoiceResponse:
@@ -41,6 +51,9 @@ class _FakeVoiceResponse:
 
 
 class TurkishVoiceNormalizationTests(unittest.TestCase):
+    def test_temporary_voice_import_does_not_leak_to_later_tests(self):
+        self.assertNotIn('app.services.voice', sys.modules)
+
     def test_short_preview_always_fits_content_before_reserved_tail(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / 'voice.mp3'
