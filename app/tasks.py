@@ -10,7 +10,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.celery_app import celery
 from app.services.audio_design import generate_music_bed, mix_voice_and_music
 from app.services.audio_qc import verify_audio_narration
-from app.services.director import direct_and_qc, short_story_package_is_approved
+from app.services.director import (
+    ImmutableNarrationSceneBudgetError,
+    direct_and_qc,
+    short_story_package_is_approved,
+)
 from app.services.pexels import find_broll, download_broll
 from app.services.render import render_video
 from app.services.research import research_and_script
@@ -704,7 +708,13 @@ def _prepare_package(
     return direct_and_qc(draft, topic, duration_minutes, language, options)
 
 
-@celery.task(bind=True, autoretry_for=(Exception,), retry_backoff=True, max_retries=1)
+@celery.task(
+    bind=True,
+    autoretry_for=(Exception,),
+    dont_autoretry_for=(ImmutableNarrationSceneBudgetError,),
+    retry_backoff=True,
+    max_retries=1,
+)
 def plan_video_pipeline(
     self,
     topic: str,
@@ -731,7 +741,11 @@ def plan_video_pipeline(
         mark_success(task_id, result, state='AWAITING_APPROVAL')
         return result
     except Exception as exc:
-        if int(getattr(self.request, 'retries', 0) or 0) < int(self.max_retries or 0):
+        if (
+            not isinstance(exc, ImmutableNarrationSceneBudgetError)
+            and int(getattr(self.request, 'retries', 0) or 0)
+            < int(self.max_retries or 0)
+        ):
             set_stage(
                 self,
                 task_id,
@@ -747,7 +761,10 @@ def plan_video_pipeline(
 @celery.task(
     bind=True,
     autoretry_for=(Exception,),
-    dont_autoretry_for=(FinalVisualQualityError,),
+    dont_autoretry_for=(
+        FinalVisualQualityError,
+        ImmutableNarrationSceneBudgetError,
+    ),
     retry_backoff=True,
     max_retries=2,
 )
@@ -1886,9 +1903,16 @@ def run_video_pipeline(
         mark_success(task_id, result)
         return result
     except Exception as exc:
+        terminal_pre_media_error = isinstance(
+            exc,
+            (
+                FinalVisualQualityError,
+                ImmutableNarrationSceneBudgetError,
+            ),
+        )
         if (
             runway_attempts == 0
-            and not isinstance(exc, FinalVisualQualityError)
+            and not terminal_pre_media_error
             and int(getattr(self.request, 'retries', 0) or 0) < int(self.max_retries or 0)
         ):
             set_stage(
@@ -1899,7 +1923,7 @@ def run_video_pipeline(
                 'Görsel ön kontrol yenileniyor; ücretli üretim başlamadan yeni storyboard hazırlanıyor.',
             )
             raise
-        if runway_attempts > 0 and not isinstance(exc, FinalVisualQualityError):
+        if runway_attempts > 0 and not terminal_pre_media_error:
             bounded_error = FinalVisualQualityError(
                 f'Post-Runway pipeline failed after {runway_attempts} bounded submissions: {type(exc).__name__}'
             )
@@ -1909,4 +1933,3 @@ def run_video_pipeline(
         raise
     finally:
         shutil.rmtree(work, ignore_errors=True)
-
