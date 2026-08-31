@@ -34,6 +34,7 @@ def _load_prompt_functions():
         '_preflight_runway_candidates_before_paid',
         '_generated_visual_spec',
         '_render_target_duration',
+        '_max_runway_scenes',
     }
     definitions = [
         node
@@ -46,6 +47,7 @@ def _load_prompt_functions():
         'Path': Path,
         'FinalVisualQualityError': FinalVisualQualityError,
         'PreRunwayRetryableError': PreRunwayRetryableError,
+        'SHORT_PREVIEW_RUNWAY_CAP': 3,
     }
     exec(
         compile(
@@ -66,6 +68,7 @@ def _load_prompt_functions():
         namespace['_preflight_runway_candidates_before_paid'],
         namespace['_generated_visual_spec'],
         namespace['_render_target_duration'],
+        namespace['_max_runway_scenes'],
     )
 
 
@@ -80,6 +83,7 @@ def _load_prompt_functions():
     preflight_runway_candidates_before_paid,
     generated_visual_spec,
     render_target_duration,
+    max_runway_scenes,
 ) = (
     _load_prompt_functions()
 )
