@@ -25,6 +25,78 @@ STYLE_NOTES = {
     'explainer': 'clear causal explainer with demonstrations and comparisons',
 }
 
+_EXPLICIT_SCENE_COUNT_WORDS = {
+    'bir': 1,
+    'iki': 2,
+    'üç': 3,
+    'uc': 3,
+    'dört': 4,
+    'dort': 4,
+    'beş': 5,
+    'bes': 5,
+    'altı': 6,
+    'alti': 6,
+    'yedi': 7,
+    'sekiz': 8,
+    'dokuz': 9,
+    'on': 10,
+    'one': 1,
+    'two': 2,
+    'three': 3,
+    'four': 4,
+    'five': 5,
+    'six': 6,
+    'seven': 7,
+    'eight': 8,
+    'nine': 9,
+    'ten': 10,
+}
+_EXPLICIT_SCENE_COUNT_PATTERN = re.compile(
+    r'\b(?:tam(?:\s+olarak)?|exactly)\s+'
+    r'(?P<count>\d{1,2}|bir|iki|üç|uc|dört|dort|beş|bes|altı|alti|'
+    r'yedi|sekiz|dokuz|on|one|two|three|four|five|six|seven|eight|nine|ten)'
+    r'\s+(?:sahne(?:li|lik)?|scenes?)\b',
+    flags=re.IGNORECASE,
+)
+_MAX_STORY_BRIEF_CHARS = 8000
+
+
+def _explicit_scene_count_from_brief(brief: str) -> int | None:
+    """Read only an unmistakable exact scene-count instruction from a brief."""
+    normalized = re.sub(r'\s+', ' ', str(brief or '')).strip().casefold()
+    requested_counts: list[int] = []
+    for match in _EXPLICIT_SCENE_COUNT_PATTERN.finditer(normalized):
+        token = match.group('count')
+        count = (
+            int(token)
+            if token.isdigit()
+            else _EXPLICIT_SCENE_COUNT_WORDS[token]
+        )
+        requested_counts.append(count)
+    if not requested_counts:
+        return None
+    unique_counts = set(requested_counts)
+    if len(unique_counts) != 1:
+        raise RuntimeError(
+            'User brief contains conflicting explicit scene counts'
+        )
+    requested = requested_counts[0]
+    if not 3 <= requested <= 32:
+        raise RuntimeError(
+            'User brief explicit scene count must be between 3 and 32'
+        )
+    return requested
+
+
+def _story_brief_for_qc(brief: str) -> str:
+    """Keep the complete user brief available to every pre-media quality gate."""
+    value = str(brief or '').strip()
+    if len(value) > _MAX_STORY_BRIEF_CHARS:
+        raise RuntimeError(
+            'User brief is too long for complete pre-media constraint review'
+        )
+    return value
+
 
 def _studio_plan_provider() -> str:
     provider = str(
@@ -37,9 +109,16 @@ def _studio_plan_provider() -> str:
     return provider
 
 
-def _director_json_schema(target_scenes: int) -> dict:
-    minimum_scenes = max(3, int(target_scenes) - 1)
-    maximum_scenes = max(minimum_scenes, int(target_scenes) + 1)
+def _director_json_schema(
+    target_scenes: int,
+    *,
+    exact_scene_count: bool = False,
+) -> dict:
+    if exact_scene_count:
+        minimum_scenes = maximum_scenes = int(target_scenes)
+    else:
+        minimum_scenes = max(3, int(target_scenes) - 1)
+        maximum_scenes = max(minimum_scenes, int(target_scenes) + 1)
     scene_schema = {
         'type': 'object',
         'properties': {
@@ -413,6 +492,19 @@ def _target_scene_count(duration_minutes: float, pace: str) -> int:
     return base
 
 
+def _scene_count_matches(
+    actual: int,
+    target: int,
+    *,
+    exact_scene_count: bool,
+) -> bool:
+    return (
+        actual == target
+        if exact_scene_count
+        else abs(actual - target) <= 1
+    )
+
+
 def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
     if duration_minutes <= 0.6:
         target = max(44, int(round(duration_minutes * 96)))
@@ -483,6 +575,7 @@ def _run_director(
     target_scenes: int,
     options: dict,
     correction: bool = False,
+    exact_scene_count: bool = False,
 ) -> dict:
     style = str(options.get('content_style') or 'documentary')
     pace_profile = str(options.get('pace') or 'balanced')
@@ -579,6 +672,15 @@ def _run_director(
         f'Reference URL: {reference_url}. Use only high-level information architecture and pacing inspiration; never copy wording, signature creative devices or branding.'
         if reference_url else 'No external reference structure was supplied.'
     )
+    scene_budget_note = (
+        f'USER-BRIEF HARD CONSTRAINT: return exactly {target_scenes} scenes; '
+        'one fewer or one extra scene is invalid.'
+        if exact_scene_count
+        else (
+            f'Target scene budget: approximately {target_scenes} scenes, '
+            'never more than one scene away.'
+        )
+    )
     prompt = f'''You are the FINAL EDITORIAL DIRECTOR for a premium faceless YouTube video.
 Topic: {topic}
 Language: {language_name}
@@ -591,7 +693,7 @@ HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_quota_note}
 {short_visual_note}
 {short_language_note}
-Target scene budget: approximately {target_scenes} scenes, never more than one scene away.
+{scene_budget_note}
 {correction_note}
 
 DRAFT JSON:
@@ -638,7 +740,10 @@ EDITORIAL QC RULES:
                 getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL)
                 or GEMINI_DEFAULT_MODEL
             ),
-            json_schema=_director_json_schema(target_scenes),
+            json_schema=_director_json_schema(
+                target_scenes,
+                exact_scene_count=exact_scene_count,
+            ),
             google_search=False,
             thinking_level=reasoning_effort,
         )
@@ -663,6 +768,7 @@ def _repair_short_stock_scenes(
         return package
 
     plan_provider = _studio_plan_provider()
+    requested_brief = _story_brief_for_qc(topic)
 
     scenes = package.get('scenes') or []
     if len(scenes) < 3:
@@ -850,6 +956,7 @@ def _repair_short_stock_scenes(
             ],
         }
         generation_context = {
+            'requested_brief': requested_brief,
             'title': package.get('title'),
             'whole_story_word_budget': {
                 'minimum': minimum_total_words,
@@ -878,6 +985,7 @@ Return ONLY JSON in exactly this shape:
 
 NON-NEGOTIABLE RULES:
 - Return exactly the requested positions and no others. Never rewrite an accepted locked stock scene or an AI-routed mechanism scene.
+- Preserve every explicit positive, negative, routing and continuity constraint in requested_brief. Never introduce an actor, object, action, setting, screen state or payoff that the brief forbids.
 - Respect each requested scene's allowed_word_count range. Keep the complete story within whole_story_word_budget; exact per-scene equality is neither required nor desirable.
 - Never add empty padding such as "bugün", "şimdi", "sakinlikle" or "dikkatlice" unless that word changes the visible action and sounds necessary in normal speech.
 - Each narration describes ONE visible human or physical action in ONE ordinary location.
@@ -1068,6 +1176,7 @@ NON-NEGOTIABLE RULES:
         ]
         ending_positions = [len(scenes) - 2, len(scenes) - 1]
         story_boolean_keys = {
+            'all_explicit_brief_constraints_preserved',
             'single_human_situation',
             'single_central_question',
             'not_fact_montage',
@@ -1141,7 +1250,7 @@ NON-NEGOTIABLE RULES:
             ],
         }
         critic_context = {
-            'requested_topic': str(topic or '')[:1200],
+            'requested_topic': requested_brief,
             'title': package.get('title'),
             'description': package.get('description'),
             'sources': [
@@ -1170,6 +1279,7 @@ Return ONLY JSON in exactly this shape:
 {json.dumps(critic_shape, ensure_ascii=False)}
 
 Review the WHOLE story before reviewing individual stock shots. Set each story_review boolean independently and false whenever evidence is ambiguous.
+- all_explicit_brief_constraints_preserved: every explicit structural, routing, continuity, required-element and forbidden-element constraint in requested_topic is obeyed by the complete candidate story, including narration, visual queries and ai_prompt routes. False if any explicit constraint is omitted, contradicted or replaced by a generic payoff.
 - single_human_situation: the short follows one concrete everyday situation a person can care about.
 - single_central_question: one curiosity or problem is opened and resolved.
 - not_fact_montage: the story is not a sampler, listicle or collage of unrelated mechanisms, products or clever facts.
@@ -1722,10 +1832,25 @@ The reason must name concrete evidence for the verdict. Individual shot approval
 
 def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
     provider = _studio_plan_provider()
-    if provider == 'openai' and not settings.openai_api_key:
-        return package
+    explicit_scene_count = _explicit_scene_count_from_brief(topic)
     scenes = package.get('scenes') or []
+    if provider == 'openai' and not settings.openai_api_key:
+        if (
+            explicit_scene_count is not None
+            and len(scenes) != explicit_scene_count
+        ):
+            raise RuntimeError(
+                'User-brief scene-count gate rejected package without a '
+                f'director: {len(scenes)} scenes; required exactly '
+                f'{explicit_scene_count}'
+            )
+        return package
     if not scenes:
+        if explicit_scene_count is not None:
+            raise RuntimeError(
+                'User-brief scene-count gate rejected an empty package; '
+                f'required exactly {explicit_scene_count}'
+            )
         return package
 
     options = dict(options or package.get('studio_options') or {})
@@ -1740,7 +1865,12 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         else None
     )
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
-    target_scenes = _target_scene_count(duration_minutes, pace_profile)
+    exact_scene_count = explicit_scene_count is not None
+    target_scenes = (
+        explicit_scene_count
+        if explicit_scene_count is not None
+        else _target_scene_count(duration_minutes, pace_profile)
+    )
     language_name = 'Turkish' if language.lower().startswith('tr') else language
 
     compact = {
@@ -1754,6 +1884,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     revised = _run_director(
         client, compact, topic, language_name, duration_minutes,
         target_words, min_words, max_words, target_scenes, options,
+        exact_scene_count=exact_scene_count,
     )
     out = _clean_package(revised, package)
     words = _word_count(out['narration'])
@@ -1778,7 +1909,11 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         ai_count_ok = preview_ai_limit is None or ai_scene_count <= preview_ai_limit
         if (
             min_words <= words <= max_words
-            and abs(scene_count - target_scenes) <= 1
+            and _scene_count_matches(
+                scene_count,
+                target_scenes,
+                exact_scene_count=exact_scene_count,
+            )
             and ai_count_ok
             and not short_editorial_issues
         ):
@@ -1799,6 +1934,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         revised = _run_director(
             client, correction_input, topic, language_name, duration_minutes,
             target_words, min_words, max_words, target_scenes, options, correction=True,
+            exact_scene_count=exact_scene_count,
         )
         out = _clean_package(revised, package)
         words = _word_count(out['narration'])
@@ -1823,6 +1959,12 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 ensure_ascii=False,
                 separators=(',', ':'),
             )
+        )
+
+    if exact_scene_count and scene_count != target_scenes:
+        raise RuntimeError(
+            'User-brief scene-count gate rejected final director edit before '
+            f'paid media: {scene_count} scenes; required exactly {target_scenes}'
         )
 
     if options.get('mode') == 'preview' and duration_minutes <= 0.6:
@@ -1868,6 +2010,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 target_scenes,
                 options,
                 correction=True,
+                exact_scene_count=exact_scene_count,
             )
             out = _clean_package(revised, package)
             words = _word_count(out['narration'])
@@ -1881,7 +2024,11 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             )
             corrected_shape_is_safe = (
                 min_words <= words <= max_words
-                and abs(scene_count - target_scenes) <= 1
+                and _scene_count_matches(
+                    scene_count,
+                    target_scenes,
+                    exact_scene_count=exact_scene_count,
+                )
                 and (
                     preview_ai_limit is None
                     or ai_scene_count <= preview_ai_limit
@@ -1925,8 +2072,20 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
 
     if words < min_words or words > max_words:
         raise RuntimeError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
-    if abs(scene_count - target_scenes) > 1:
-        raise RuntimeError(f'Scene-count gate rejected final edit: {scene_count} scenes; target {target_scenes}')
+    if not _scene_count_matches(
+        scene_count,
+        target_scenes,
+        exact_scene_count=exact_scene_count,
+    ):
+        requirement = (
+            f'required exactly {target_scenes}'
+            if exact_scene_count
+            else f'target {target_scenes}'
+        )
+        raise RuntimeError(
+            f'Scene-count gate rejected final edit: {scene_count} scenes; '
+            + requirement
+        )
     if preview_ai_limit is not None and ai_scene_count > preview_ai_limit:
         raise RuntimeError(
             f'Preview AI-scene gate rejected {ai_scene_count} scenes; maximum {preview_ai_limit}'
