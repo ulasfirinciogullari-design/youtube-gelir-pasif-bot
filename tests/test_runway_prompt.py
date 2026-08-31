@@ -34,6 +34,7 @@ def _load_prompt_functions():
         '_preflight_runway_candidates_before_paid',
         '_generated_visual_spec',
         '_render_target_duration',
+        '_max_runway_scenes',
     }
     definitions = [
         node
@@ -46,6 +47,7 @@ def _load_prompt_functions():
         'Path': Path,
         'FinalVisualQualityError': FinalVisualQualityError,
         'PreRunwayRetryableError': PreRunwayRetryableError,
+        'SHORT_PREVIEW_RUNWAY_CAP': 3,
     }
     exec(
         compile(
@@ -66,6 +68,7 @@ def _load_prompt_functions():
         namespace['_preflight_runway_candidates_before_paid'],
         namespace['_generated_visual_spec'],
         namespace['_render_target_duration'],
+        namespace['_max_runway_scenes'],
     )
 
 
@@ -80,6 +83,7 @@ def _load_prompt_functions():
     preflight_runway_candidates_before_paid,
     generated_visual_spec,
     render_target_duration,
+    max_runway_scenes,
 ) = (
     _load_prompt_functions()
 )
@@ -101,6 +105,42 @@ class RunwayPromptTests(unittest.TestCase):
         )
         self.assertTrue(generated_visual_spec('preview.mp4')['forbid_loop'])
         self.assertTrue(generated_visual_spec('production.mp4')['forbid_loop'])
+
+    def test_real_first_short_preview_caps_initial_runway_spend_at_one_scene(self):
+        self.assertEqual(
+            max_runway_scenes(
+                {'mode': 'preview', 'visual_mix': 'real_first'},
+                5,
+                0.5,
+            ),
+            1,
+        )
+        for visual_mix in ('balanced', 'ai_first'):
+            with self.subTest(visual_mix=visual_mix):
+                self.assertEqual(
+                    max_runway_scenes(
+                        {'mode': 'preview', 'visual_mix': visual_mix},
+                        5,
+                        0.5,
+                    ),
+                    3,
+                )
+        self.assertEqual(
+            max_runway_scenes(
+                {'mode': 'preview', 'visual_mix': 'real_first'},
+                5,
+                0.61,
+            ),
+            0,
+        )
+        self.assertEqual(
+            max_runway_scenes(
+                {'mode': 'production', 'visual_mix': 'real_first'},
+                20,
+                10.0,
+            ),
+            2,
+        )
 
     def test_all_single_pass_candidates_are_preflighted_before_paid_calls(self):
         paid_provider = Mock()
