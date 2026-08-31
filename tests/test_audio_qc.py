@@ -8,7 +8,10 @@ from unittest.mock import patch
 
 
 config_stub = types.ModuleType('app.config')
-config_stub.settings = SimpleNamespace(elevenlabs_api_key='')
+config_stub.settings = SimpleNamespace(
+    openai_api_key='',
+    elevenlabs_api_key='',
+)
 _previous_config_module = sys.modules.get('app.config')
 sys.modules['app.config'] = config_stub
 
@@ -61,8 +64,19 @@ def _words(*values: str) -> list[dict]:
     ]
 
 
+def _openai_words(*values: str) -> list[dict]:
+    return [
+        {
+            'word': value,
+            'start': index * 0.4,
+            'end': (index + 1) * 0.4,
+        }
+        for index, value in enumerate(values)
+    ]
+
+
 class _Response:
-    def __init__(self, payload: dict, status_code: int = 200):
+    def __init__(self, payload, status_code: int = 200):
         self._payload = payload
         self.status_code = status_code
 
@@ -131,8 +145,11 @@ class AudioQCTests(unittest.TestCase):
         self.assertEqual(result['mismatch_details']['missing_words'], ['\u00e7ok'])
         self.assertEqual(result['mismatch_details']['unexpected_words'], [])
 
-    def test_missing_key_is_explicitly_unavailable(self):
-        with patch.object(audio_qc.settings, 'elevenlabs_api_key', ''):
+    def test_missing_keys_are_explicitly_unavailable(self):
+        with (
+            patch.object(audio_qc.settings, 'openai_api_key', ''),
+            patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+        ):
             result = audio_qc.verify_audio_narration(
                 'not-read-without-a-key.mp3',
                 'Beklenen anlat\u0131m',
@@ -141,9 +158,140 @@ class AudioQCTests(unittest.TestCase):
         self.assertFalse(result['available'])
         self.assertIsNone(result['pass'])
         self.assertIsNone(result['score'])
-        self.assertEqual(result['reason'], 'elevenlabs_api_key_missing')
+        self.assertIsNone(result['provider'])
+        self.assertEqual(result['reason'], 'speech_to_text_keys_missing')
 
-    def test_http_request_uses_official_multipart_contract(self):
+    def test_openai_primary_uses_official_multipart_contract(self):
+        payload = {
+            'text': 'Merhaba d\u00fcnya',
+            'language': 'turkish',
+            'words': _openai_words('Merhaba', 'd\u00fcnya'),
+        }
+        captured = {}
+
+        def fake_post(url, **kwargs):
+            captured['url'] = url
+            captured.update(kwargs)
+            captured['audio'] = kwargs['files']['file'][1].read()
+            return _Response(payload)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio-bytes')
+            with (
+                patch.object(
+                    audio_qc.settings,
+                    'openai_api_key',
+                    'openai-unit-test-secret',
+                ),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'unused-fallback-secret',
+                ),
+                patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Merhaba d\u00fcnya',
+                )
+
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['provider'], 'openai')
+        self.assertEqual(result['language_code'], 'turkish')
+        self.assertEqual(result['word_timestamps'], [
+            {'text': 'Merhaba', 'start': 0.0, 'end': 0.4},
+            {'text': 'd\u00fcnya', 'start': 0.4, 'end': 0.8},
+        ])
+        self.assertEqual(
+            captured['url'],
+            'https://api.openai.com/v1/audio/transcriptions',
+        )
+        self.assertEqual(captured['headers'], {
+            'Authorization': 'Bearer openai-unit-test-secret',
+        })
+        self.assertEqual(captured['data'], {
+            'model': 'whisper-1',
+            'language': 'tr',
+            'response_format': 'verbose_json',
+            'timestamp_granularities[]': 'word',
+            'temperature': '0',
+        })
+        self.assertEqual(captured['files']['file'][0], 'voice.mp3')
+        self.assertEqual(captured['files']['file'][2], 'audio/mpeg')
+        self.assertEqual(captured['audio'], b'audio-bytes')
+
+    def test_openai_transport_error_falls_back_to_elevenlabs(self):
+        calls = []
+
+        def fake_post(url, **kwargs):
+            calls.append(url)
+            if url == audio_qc.OPENAI_AUDIO_TRANSCRIPTIONS_URL:
+                raise RuntimeError('provider transport details')
+            return _Response({
+                'text': 'Merhaba d\u00fcnya',
+                'language_code': 'tur',
+                'words': _words('Merhaba', 'd\u00fcnya'),
+            })
+
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'openai-key'),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'eleven-key',
+                ),
+                patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Merhaba d\u00fcnya',
+                )
+
+        self.assertEqual(calls, [
+            audio_qc.OPENAI_AUDIO_TRANSCRIPTIONS_URL,
+            audio_qc.ELEVENLABS_SPEECH_TO_TEXT_URL,
+        ])
+        self.assertEqual(result['provider'], 'elevenlabs')
+        self.assertTrue(result['pass'])
+
+    def test_openai_protocol_error_falls_back_to_elevenlabs(self):
+        responses = iter([
+            _Response(['not', 'an', 'object']),
+            _Response({
+                'text': 'Beklenen anlat\u0131m',
+                'language_code': 'tur',
+                'words': _words('Beklenen', 'anlat\u0131m'),
+            }),
+        ])
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.wav'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'openai-key'),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'eleven-key',
+                ),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    side_effect=lambda *args, **kwargs: next(responses),
+                ),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Beklenen anlat\u0131m',
+                )
+
+        self.assertEqual(result['provider'], 'elevenlabs')
+        self.assertTrue(result['pass'])
+
+    def test_elevenlabs_fallback_uses_official_multipart_contract(self):
         payload = {
             'text': 'Merhaba d\u00fcnya',
             'language_code': 'tur',
@@ -162,6 +310,7 @@ class AudioQCTests(unittest.TestCase):
             audio_path = Path(temporary) / 'voice.mp3'
             audio_path.write_bytes(b'audio-bytes')
             with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
                 patch.object(
                     audio_qc.settings,
                     'elevenlabs_api_key',
@@ -175,6 +324,7 @@ class AudioQCTests(unittest.TestCase):
                 )
 
         self.assertTrue(result['pass'])
+        self.assertEqual(result['provider'], 'elevenlabs')
         self.assertEqual(
             captured['url'],
             'https://api.elevenlabs.io/v1/speech-to-text',
@@ -191,42 +341,46 @@ class AudioQCTests(unittest.TestCase):
         self.assertEqual(captured['files']['file'][2], 'audio/mpeg')
         self.assertEqual(captured['audio'], b'audio-bytes')
 
-    def test_transport_and_http_errors_do_not_expose_secrets(self):
-        secret = 'never-leak-this-api-key'
+    def test_both_provider_errors_raise_one_secret_safe_error(self):
+        openai_secret = 'never-leak-openai-key'
+        elevenlabs_secret = 'never-leak-elevenlabs-key'
+
+        def fake_post(url, **kwargs):
+            if url == audio_qc.OPENAI_AUDIO_TRANSCRIPTIONS_URL:
+                return _Response(
+                    {'detail': f'unauthorized: {openai_secret}'},
+                    status_code=401,
+                )
+            raise RuntimeError(f'network error: {elevenlabs_secret}')
+
         with tempfile.TemporaryDirectory() as temporary:
             audio_path = Path(temporary) / 'voice.mp3'
             audio_path.write_bytes(b'audio')
-            with patch.object(audio_qc.settings, 'elevenlabs_api_key', secret):
-                with patch.object(
-                    audio_qc.httpx,
-                    'post',
-                    side_effect=RuntimeError(f'network error: {secret}'),
-                ):
-                    with self.assertRaises(audio_qc.AudioQCError) as caught:
-                        audio_qc.verify_audio_narration(
-                            audio_path,
-                            'Beklenen metin',
-                        )
-                self.assertNotIn(secret, str(caught.exception))
+            with (
+                patch.object(
+                    audio_qc.settings,
+                    'openai_api_key',
+                    openai_secret,
+                ),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    elevenlabs_secret,
+                ),
+                patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Beklenen metin',
+                    )
 
-                with patch.object(
-                    audio_qc.httpx,
-                    'post',
-                    return_value=_Response(
-                        {'detail': f'unauthorized: {secret}'},
-                        status_code=401,
-                    ),
-                ):
-                    with self.assertRaises(audio_qc.AudioQCError) as caught:
-                        audio_qc.verify_audio_narration(
-                            audio_path,
-                            'Beklenen metin',
-                        )
-                self.assertEqual(
-                    str(caught.exception),
-                    'ElevenLabs speech-to-text failed with HTTP 401',
-                )
-                self.assertNotIn(secret, str(caught.exception))
+        self.assertEqual(
+            str(caught.exception),
+            'Audio QC transcription failed for all configured providers',
+        )
+        self.assertNotIn(openai_secret, str(caught.exception))
+        self.assertNotIn(elevenlabs_secret, str(caught.exception))
 
 
 if __name__ == '__main__':
