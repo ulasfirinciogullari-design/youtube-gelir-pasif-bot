@@ -3,6 +3,7 @@ import sys
 import types
 import unittest
 from types import SimpleNamespace
+from unittest.mock import patch
 
 
 openai_stub = types.ModuleType('openai')
@@ -13,6 +14,9 @@ config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace(
     openai_api_key='test-key',
     openai_model='test-model',
+    studio_plan_provider='openai',
+    gemini_api_key='',
+    gemini_model='gemini-3.1-pro-preview',
 )
 sys.modules['app.config'] = config_stub
 
@@ -47,6 +51,13 @@ def valid_research_payload():
 
 
 class ResearchEvidenceContractTests(unittest.TestCase):
+    def setUp(self):
+        research_module.settings.openai_api_key = 'test-key'
+        research_module.settings.openai_model = 'test-model'
+        research_module.settings.studio_plan_provider = 'openai'
+        research_module.settings.gemini_api_key = ''
+        research_module.settings.gemini_model = 'gemini-3.1-pro-preview'
+
     def test_ai_first_short_preview_authorship_matches_runway_cap(self):
         self.assertEqual(
             _max_ai_scenes(
@@ -147,6 +158,94 @@ class ResearchEvidenceContractTests(unittest.TestCase):
             'web_search',
         )
 
+    def test_gemini_provider_uses_search_schema_without_constructing_openai(self):
+        payload = valid_research_payload()
+        payload['scenes'] = [
+            {
+                'narration': f'Visible action number {index}.',
+                'visual_queries': [
+                    f'visible action close view {index}',
+                    f'visible action wide view {index}',
+                ],
+                'ai_prompt': None,
+            }
+            for index in range(5)
+        ]
+        secret = 'gemini-plan-secret'
+        research_module.settings.studio_plan_provider = 'gemini'
+        research_module.settings.openai_api_key = ''
+        research_module.settings.gemini_api_key = secret
+
+        with patch.object(
+            research_module,
+            'OpenAI',
+            side_effect=AssertionError('OpenAI must not be constructed'),
+        ) as openai_class, patch.object(
+            research_module,
+            'generate_gemini_json',
+            return_value=payload,
+        ) as gemini_generate:
+            result = research_module.research_and_script(
+                'one useful phone story',
+                0.5,
+                'tr',
+                {
+                    'mode': 'preview',
+                    'pace': 'calm',
+                    'visual_mix': 'ai_first',
+                },
+            )
+
+        openai_class.assert_not_called()
+        self.assertEqual(len(result['scenes']), 5)
+        request = gemini_generate.call_args
+        self.assertEqual(request.kwargs['api_key'], secret)
+        self.assertTrue(request.kwargs['google_search'])
+        self.assertEqual(request.kwargs['thinking_level'], 'medium')
+        schema = request.kwargs['json_schema']
+        self.assertEqual(
+            set(schema['properties']),
+            {'title', 'thumbnail_text', 'description', 'scenes', 'sources'},
+        )
+        self.assertFalse(schema['additionalProperties'])
+        self.assertEqual(schema['properties']['scenes']['minItems'], 4)
+        self.assertEqual(schema['properties']['scenes']['maxItems'], 6)
+        scene_schema = schema['properties']['scenes']['items']
+        self.assertEqual(
+            scene_schema['properties']['visual_queries']['minItems'],
+            2,
+        )
+        self.assertEqual(
+            scene_schema['properties']['visual_queries']['maxItems'],
+            3,
+        )
+        self.assertEqual(
+            scene_schema['properties']['ai_prompt']['type'],
+            ['string', 'null'],
+        )
+        self.assertEqual(schema['properties']['sources']['minItems'], 2)
+        self.assertEqual(schema['properties']['sources']['maxItems'], 5)
+        self.assertNotIn(secret, request.args[0])
+        self.assertNotIn(secret, json.dumps(schema))
+
+    def test_invalid_plan_provider_fails_before_any_model_client(self):
+        research_module.settings.studio_plan_provider = 'unexpected-provider'
+        with patch.object(research_module, 'OpenAI') as openai_class, patch.object(
+            research_module,
+            'generate_gemini_json',
+        ) as gemini_generate, self.assertRaisesRegex(
+            RuntimeError,
+            'STUDIO_PLAN_PROVIDER',
+        ):
+            research_module.research_and_script(
+                'topic',
+                0.5,
+                'tr',
+            )
+
+        openai_class.assert_not_called()
+        gemini_generate.assert_not_called()
+
     def test_rejects_empty_evidence(self):
         invalid = valid_research_payload()
         invalid['sources'][0]['evidence'] = ''
@@ -157,3 +256,4 @@ class ResearchEvidenceContractTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
