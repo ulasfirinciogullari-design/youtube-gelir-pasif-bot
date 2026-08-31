@@ -92,6 +92,7 @@ def _nav(active: str) -> str:
     links = [
         ('studio', '/studio', '＋ Yeni üretim'),
         ('history', '/studio/history', '◷ Geçmiş'),
+        ('youtube', '/studio/youtube', '▶ YouTube'),
         ('voices', '/voice-audition', '🎙 Sesler'),
         ('legacy', '/factory', 'Eski panel'),
     ]
@@ -401,9 +402,41 @@ def studio_retry(task_id: str, studio_token: str | None = Cookie(default=None, a
     return RedirectResponse(f'/studio/job/{task.id}', status_code=303)
 
 
-@router.get('/studio/logout')
-def studio_logout():
+@router.post('/studio/logout')
+def studio_logout(
+    request: Request,
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    _require_auth(studio_token)
+    # Logout mutates the global OAuth generation, so it needs the same strict
+    # same-origin proof as disconnect/publish rather than being a CSRF-able GET.
+    from app.youtube_routes import _require_same_origin
+
+    _require_same_origin(request)
+    # A Studio logout also revokes every still-pending OAuth callback.  The
+    # short-lived callback cookie is removed as a second, browser-local guard;
+    # logout itself must remain available if Redis is temporarily unavailable.
+    try:
+        from app.services.youtube_auth import invalidate_pending_authorizations
+
+        invalidate_pending_authorizations()
+    except Exception:
+        pass
     response = RedirectResponse('/studio', status_code=303)
     response.delete_cookie(COOKIE_NAME)
+    response.delete_cookie(
+        'youtube_oauth_browser_binding',
+        path='/studio/youtube/callback',
+        secure=True,
+        httponly=True,
+        samesite='lax',
+    )
     return response
 
+
+# The application already mounts this Studio router in app.main. Nesting the
+# YouTube router here keeps the OAuth callback and private-upload lifecycle
+# available without a second, easy-to-forget mount point.
+from app.youtube_routes import router as youtube_router  # noqa: E402
+
+router.include_router(youtube_router)
