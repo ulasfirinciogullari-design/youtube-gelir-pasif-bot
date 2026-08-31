@@ -198,7 +198,12 @@ def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
         target = int(round(duration_minutes * 92))
     else:
         target = int(round(duration_minutes * 100))
-    minimum = max(30, int(round(target * (0.94 if duration_minutes <= 0.6 else 0.88))))
+    # A natural Turkish voice can land near 0.9x fit at the old 45-word
+    # minimum. Allow a concise 40-word story instead of time-warping it.
+    minimum = max(
+        30,
+        int(round(target * (0.83 if duration_minutes <= 0.6 else 0.88))),
+    )
     maximum = max(minimum + 4, int(round(target * 1.06)))
     return target, minimum, maximum
 

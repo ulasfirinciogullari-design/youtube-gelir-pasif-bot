@@ -841,7 +841,12 @@ def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
         target = int(round(duration_minutes * 92))
     else:
         target = int(round(duration_minutes * 100))
-    minimum = max(30, int(round(target * (0.94 if duration_minutes <= 0.6 else 0.86))))
+    # Keep the 30-second narrator natural: concise 40-word scripts are safer
+    # than accepting the post-synthesis tempo distortion rejected downstream.
+    minimum = max(
+        30,
+        int(round(target * (0.83 if duration_minutes <= 0.6 else 0.86))),
+    )
     maximum = max(minimum + 4, int(round(target * 1.06)))
     return target, minimum, maximum
 
