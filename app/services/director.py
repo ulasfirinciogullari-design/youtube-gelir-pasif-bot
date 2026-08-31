@@ -1,6 +1,7 @@
 import hashlib
 import json
 import re
+import unicodedata
 from openai import OpenAI
 from app.config import settings
 from app.services.gemini_critic import (
@@ -58,13 +59,35 @@ _EXPLICIT_SCENE_COUNT_PATTERN = re.compile(
     r'\s+(?:sahne(?:li|lik)?|scenes?)\b',
     flags=re.IGNORECASE,
 )
+_EXPLICIT_SCENE_COUNT_NEGATED_BEFORE = re.compile(
+    r"(?:\bnot\s+|\b(?:never|do\s+not|don't|dont)\s+"
+    r'(?:(?:return|use|write|create|make|produce|require)\s+)?)$',
+    flags=re.IGNORECASE,
+)
+_EXPLICIT_SCENE_COUNT_NEGATED_AFTER = re.compile(
+    r"^\s*(?:değil|degil|olmasın|olmasin|istemiyorum|istenmiyor|"
+    r'kullanma(?:yın|yin)?|yazma(?:yın|yin)?|yapma(?:yın|yin)?|yerine\b|'
+    r"(?:is|are|was|were)\s+not\b|(?:isn't|aren't|wasn't|weren't)\b|"
+    r'(?:should|must)\s+not\b)',
+    flags=re.IGNORECASE,
+)
 _MAX_STORY_BRIEF_CHARS = 8000
 
 
 def _explicit_scene_count_from_brief(brief: str) -> int | None:
     """Read only an unmistakable exact scene-count instruction from a brief."""
-    normalized = re.sub(r'\s+', ' ', str(brief or '')).strip().casefold()
+    folded = unicodedata.normalize(
+        'NFKD',
+        str(brief or '').casefold(),
+    )
+    folded = ''.join(
+        character
+        for character in folded
+        if not unicodedata.combining(character)
+    )
+    normalized = re.sub(r'\s+', ' ', folded).strip()
     requested_counts: list[int] = []
+    negated_counts: list[int] = []
     for match in _EXPLICIT_SCENE_COUNT_PATTERN.finditer(normalized):
         token = match.group('count')
         count = (
@@ -72,11 +95,19 @@ def _explicit_scene_count_from_brief(brief: str) -> int | None:
             if token.isdigit()
             else _EXPLICIT_SCENE_COUNT_WORDS[token]
         )
+        before = normalized[max(0, match.start() - 80):match.start()]
+        after = normalized[match.end():match.end() + 80]
+        if (
+            _EXPLICIT_SCENE_COUNT_NEGATED_BEFORE.search(before)
+            or _EXPLICIT_SCENE_COUNT_NEGATED_AFTER.match(after)
+        ):
+            negated_counts.append(count)
+            continue
         requested_counts.append(count)
     if not requested_counts:
         return None
     unique_counts = set(requested_counts)
-    if len(unique_counts) != 1:
+    if len(unique_counts) != 1 or unique_counts.intersection(negated_counts):
         raise RuntimeError(
             'User brief contains conflicting explicit scene counts'
         )
@@ -344,7 +375,9 @@ def _short_story_quality_issues(
     return issues
 
 
-_SHORT_STORY_QC_VERSION = 1
+_SHORT_STORY_QC_VERSION = 2
+_STOCK_SCENE_QC_VERSION = 4
+_STORY_STOCK_CONTRACT = 'openai-story-stock-v2'
 
 
 def _normalize_short_story_topic(topic: str) -> str:
@@ -411,6 +444,23 @@ def short_story_package_is_approved(
         or not isinstance(stock_qc, dict)
     ):
         return False
+    approval_brief = (
+        topic
+        if topic is not None
+        else qc.get('requested_topic')
+    )
+    try:
+        _story_brief_for_qc(approval_brief)
+        explicit_scene_count = _explicit_scene_count_from_brief(
+            approval_brief
+        )
+    except RuntimeError:
+        return False
+    if (
+        explicit_scene_count is not None
+        and len(scenes) != explicit_scene_count
+    ):
+        return False
     if setting_is_enabled(
         getattr(settings, 'gemini_critic_enabled', False)
     ):
@@ -432,7 +482,7 @@ def short_story_package_is_approved(
             }
             or gemini_qc.get('accepted') is not True
             or gemini_qc.get('model') != configured_model
-            or gemini_qc.get('contract') != 'openai-story-stock-v1'
+            or gemini_qc.get('contract') != _STORY_STOCK_CONTRACT
             or type(gemini_qc.get('reviewed_scene_count')) is not int
             or not isinstance(target_positions, list)
             or gemini_qc.get('reviewed_scene_count') != len(target_positions)
@@ -445,7 +495,7 @@ def short_story_package_is_approved(
         return False
     if (
         type(stock_qc.get('version')) is not int
-        or stock_qc.get('version') < 3
+        or stock_qc.get('version') < _STOCK_SCENE_QC_VERSION
     ):
         return False
     story_review = stock_qc.get('story_review')
@@ -1667,7 +1717,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 gemini_attestation = {
                     'accepted': True,
                     'model': selected_model,
-                    'contract': 'openai-story-stock-v1',
+                    'contract': _STORY_STOCK_CONTRACT,
                     'reviewed_scene_count': len(
                         critic_shape.get('scenes') or []
                     ),
@@ -1688,6 +1738,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                         GEMINI_DEFAULT_MODEL,
                     ),
                 )
+                if gemini_attestation is not None:
+                    gemini_attestation = dict(gemini_attestation)
+                    gemini_attestation['contract'] = _STORY_STOCK_CONTRACT
             final_critic_reviews = parsed_reviews
             repaired = dict(package)
             repaired_scenes = [dict(scene) for scene in scenes]
@@ -1771,7 +1824,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 ),
             ]
             stock_scene_qc = {
-                'version': 3,
+                'version': _STOCK_SCENE_QC_VERSION,
                 'target_positions': stock_positions,
                 'roles': [
                     {
@@ -1831,6 +1884,8 @@ The reason must name concrete evidence for the verdict. Individual shot approval
     )
 
 def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
+    if duration_minutes <= 0.6:
+        _story_brief_for_qc(topic)
     provider = _studio_plan_provider()
     explicit_scene_count = _explicit_scene_count_from_brief(topic)
     scenes = package.get('scenes') or []
@@ -2102,7 +2157,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         story_review = stock_qc.get('story_review') or {}
         ending_review = stock_qc.get('ending_pair_review') or {}
         if (
-            int(stock_qc.get('version') or 0) < 3
+            int(stock_qc.get('version') or 0) < _STOCK_SCENE_QC_VERSION
             or story_review.get('accepted') is not True
             or ending_review.get('accepted') is not True
         ):

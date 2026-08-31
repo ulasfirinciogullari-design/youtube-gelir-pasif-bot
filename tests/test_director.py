@@ -508,6 +508,62 @@ class ExplicitSceneCountTests(unittest.TestCase):
                 'Tam iki sahne kullan.'
             )
 
+    def test_negated_counts_are_ignored_and_turkish_uppercase_is_normalized(self):
+        self.assertIsNone(
+            director_module._explicit_scene_count_from_brief(
+                'Tam beş sahne olmasın.'
+            )
+        )
+        self.assertIsNone(
+            director_module._explicit_scene_count_from_brief(
+                'Exactly five scenes is not required.'
+            )
+        )
+        self.assertEqual(
+            director_module._explicit_scene_count_from_brief(
+                'Do not return exactly five scenes; return exactly 6 scenes.'
+            ),
+            6,
+        )
+        self.assertEqual(
+            director_module._explicit_scene_count_from_brief(
+                'TAM SEKİZ SAHNE KULLAN.'
+            ),
+            8,
+        )
+        self.assertEqual(
+            director_module._explicit_scene_count_from_brief(
+                'Do not add text. Exactly five scenes.'
+            ),
+            5,
+        )
+        with self.assertRaisesRegex(RuntimeError, 'conflicting'):
+            director_module._explicit_scene_count_from_brief(
+                'Tam beş sahne olmasın; ardından tam beş sahne kullan.'
+            )
+
+    def test_oversized_short_brief_fails_before_provider_or_model_construction(self):
+        with (
+            patch.object(director_module, '_studio_plan_provider') as provider,
+            patch.object(director_module, 'OpenAI') as openai_class,
+            patch.object(director_module, '_run_director') as run_director,
+            self.assertRaisesRegex(
+                RuntimeError,
+                'too long for complete pre-media constraint review',
+            ),
+        ):
+            direct_and_qc(
+                make_coherent_battery_package(),
+                'x' * (director_module._MAX_STORY_BRIEF_CHARS + 1),
+                0.5,
+                'tr',
+                {'mode': 'preview'},
+            )
+
+        provider.assert_not_called()
+        openai_class.assert_not_called()
+        run_director.assert_not_called()
+
     def test_exact_count_tightens_schema_and_trusted_director_instruction(self):
         relaxed = director_module._director_json_schema(5)
         exact = director_module._director_json_schema(
@@ -1362,13 +1418,21 @@ class ShortStockRepairTests(unittest.TestCase):
         )
 
         result['short_story_qc'] = {
-            'version': 1,
+            'version': director_module._SHORT_STORY_QC_VERSION,
             'requested_topic': 'one useful phone story',
             'story_review_accepted': True,
             'ending_pair_accepted': True,
         }
         result['short_story_qc']['fingerprint'] = _short_story_fingerprint(result)
         self.assertTrue(short_story_package_is_approved(result))
+        self.assertEqual(
+            result['stock_scene_qc']['version'],
+            director_module._STOCK_SCENE_QC_VERSION,
+        )
+        self.assertEqual(
+            result['stock_scene_qc']['gemini_critic']['contract'],
+            director_module._STORY_STOCK_CONTRACT,
+        )
 
         missing_attestation = copy.deepcopy(result)
         missing_attestation['stock_scene_qc'].pop('gemini_critic')
@@ -1679,7 +1743,7 @@ class ShortStockRepairTests(unittest.TestCase):
 
         approved = copy.deepcopy(corrected)
         approved['stock_scene_qc'] = {
-            'version': 3,
+            'version': director_module._STOCK_SCENE_QC_VERSION,
             'story_review': {'accepted': True},
             'ending_pair_review': {'accepted': True},
         }
@@ -2088,7 +2152,7 @@ class ShortStoryApprovalTests(unittest.TestCase):
             'one useful phone story',
         )
         package['short_story_qc'] = {
-            'version': 1,
+            'version': director_module._SHORT_STORY_QC_VERSION,
             'requested_topic': 'one useful phone story',
             'story_review_accepted': True,
             'ending_pair_accepted': True,
@@ -2097,6 +2161,47 @@ class ShortStoryApprovalTests(unittest.TestCase):
             package,
         )
         return package
+
+    def test_old_contract_and_exact_count_mismatch_cannot_use_approval_fast_path(self):
+        old_package = self._approved_package()
+        old_package['short_story_qc']['version'] = 1
+        old_package['stock_scene_qc']['version'] = 3
+        old_package['short_story_qc']['fingerprint'] = _short_story_fingerprint(
+            old_package,
+        )
+        self.assertFalse(
+            short_story_package_is_approved(
+                old_package,
+                'one useful phone story',
+            )
+        )
+
+        wrong_scene_count = self._approved_package()
+        exact_brief = 'Tam beş sahne kullan.'
+        wrong_scene_count['short_story_qc']['requested_topic'] = exact_brief
+        wrong_scene_count['short_story_qc']['fingerprint'] = (
+            _short_story_fingerprint(wrong_scene_count)
+        )
+        self.assertEqual(len(wrong_scene_count['scenes']), 6)
+        self.assertFalse(
+            short_story_package_is_approved(
+                wrong_scene_count,
+                exact_brief,
+            )
+        )
+
+        oversized = self._approved_package()
+        oversized_brief = 'x' * (director_module._MAX_STORY_BRIEF_CHARS + 1)
+        oversized['short_story_qc']['requested_topic'] = oversized_brief
+        oversized['short_story_qc']['fingerprint'] = _short_story_fingerprint(
+            oversized,
+        )
+        self.assertFalse(
+            short_story_package_is_approved(
+                oversized,
+                oversized_brief,
+            )
+        )
 
     def test_approved_short_package_fingerprint_accepts_exact_material(self):
         package = self._approved_package()
