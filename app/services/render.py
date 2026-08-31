@@ -230,6 +230,7 @@ def normalize_clip(
     ]
     crop_xy = offsets[shot_index % len(offsets)]
     speed = 1.008 + (shot_index % 3) * 0.006
+    segment_frames = max(1, int(round(duration * FPS)))
     forbid_loop = _spec_forbids_loop(visual_spec)
     required_source_end = start_seconds + duration * speed + 0.04
     if forbid_loop and source_duration + 0.04 < required_source_end:
@@ -241,9 +242,11 @@ def normalize_clip(
     filters = [
         'scale=2050:1153:force_original_aspect_ratio=increase',
         f'crop=1920:1080:{crop_xy}',
-        f'fps={FPS}',
         'setsar=1',
-        f'setpts=PTS/{speed:.3f}',
+        f'setpts=(PTS-STARTPTS)/{speed:.3f}',
+        f'fps={FPS}',
+        f'trim=end_frame={segment_frames}',
+        f'setpts=N/({FPS}*TB)',
     ]
     if transition == 'dip' and duration >= 1.2:
         fade_out = max(0.3, duration - 0.18)
@@ -258,10 +261,17 @@ def normalize_clip(
         input_args = ['-stream_loop', '-1', '-i', input_path]
     _run([
         'ffmpeg', '-y', '-ss', f'{start_seconds:.3f}', *input_args,
-        '-t', f'{duration:.3f}', '-vf', ','.join(filters),
-        '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
+        '-vf', ','.join(filters),
+        '-frames:v', str(segment_frames), '-an',
+        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
         str(output_path),
     ])
+    actual_frames = video_frame_count(output_path)
+    if actual_frames != segment_frames:
+        raise RuntimeError(
+            'Normalized clip frame gate rejected segment: '
+            f'{actual_frames} frames for {segment_frames} frame target'
+        )
     return str(output_path)
 
 
@@ -301,6 +311,32 @@ def _scene_timeline(
         for spec in chosen:
             timeline.append((spec, per_shot, transition, idx))
     return timeline
+
+
+def _timeline_frame_counts(
+    timeline: list[tuple[str | dict, float, str, int]],
+    voice_duration: float,
+) -> list[int]:
+    """Allocate CFR frames cumulatively so independent rounding cannot drift."""
+    shot_count = len(timeline)
+    total_frames = max(shot_count, int(round(voice_duration * FPS)))
+    raw_total = sum(max(0.0, shot[1]) for shot in timeline) or 1.0
+    counts: list[int] = []
+    previous_end = 0
+    cumulative = 0.0
+
+    for idx, shot in enumerate(timeline):
+        cumulative += max(0.0, shot[1])
+        remaining = shot_count - idx - 1
+        if idx == shot_count - 1:
+            frame_end = total_frames
+        else:
+            proportional_end = int(round(total_frames * cumulative / raw_total))
+            frame_end = max(previous_end + 1, proportional_end)
+            frame_end = min(frame_end, total_frames - remaining)
+        counts.append(frame_end - previous_end)
+        previous_end = frame_end
+    return counts
 
 
 def render_video(
@@ -350,11 +386,10 @@ def render_video(
         raise RuntimeError('Renderer could not build a visual timeline')
 
     normalized: list[Path] = []
-    for idx, (visual_spec, shot_duration, transition, _scene_idx) in enumerate(timeline):
+    timeline_frame_counts = _timeline_frame_counts(timeline, voice_duration)
+    for idx, (visual_spec, _shot_duration, transition, _scene_idx) in enumerate(timeline):
         segment = work / f'norm_{idx:03d}.mp4'
-        segment_duration = shot_duration + (
-            0.05 if idx == len(timeline) - 1 else 0.0
-        )
+        segment_duration = timeline_frame_counts[idx] / FPS
         normalize_clip(
             visual_spec,
             segment,
@@ -370,8 +405,13 @@ def render_video(
         encoding='utf-8',
     )
     silent_video = work / 'silent.mp4'
-    pad_seconds = max(0.25, master_duration - voice_duration + 0.20)
+    voice_frames = sum(timeline_frame_counts)
+    pad_seconds = max(
+        0.25,
+        (target_frames - voice_frames) / FPS + 0.20,
+    )
     video_filter = ','.join([
+        'setpts=PTS-STARTPTS',
         f'fps={FPS}',
         'setsar=1',
         'format=yuv420p',
@@ -385,6 +425,12 @@ def render_video(
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
         str(silent_video),
     ])
+    silent_frames = video_frame_count(silent_video)
+    if silent_frames != target_frames:
+        raise RuntimeError(
+            'Silent master frame gate rejected render: '
+            f'{silent_frames} frames for {target_frames} frame target'
+        )
 
     srt = work / 'captions.srt'
     if scenes and scene_durations:
@@ -405,11 +451,18 @@ def render_video(
         '-af', audio_filter, '-c:a', 'aac', '-b:a', '192k',
         '-t', f'{master_duration:.3f}', '-movflags', '+faststart', str(output),
     ])
+    final_frames = video_frame_count(output)
+    if final_frames != target_frames:
+        raise RuntimeError(
+            'Final master frame gate rejected render: '
+            f'{final_frames} frames for {target_frames} frame target'
+        )
+    final_duration = media_duration(output)
 
     return {
         'path': str(output),
-        'duration': media_duration(output),
-        'frame_count': video_frame_count(output),
+        'duration': final_duration,
+        'frame_count': final_frames,
         'fps': FPS,
         'ending_silence_seconds': ending_silence_duration(output),
         'max_freeze_seconds': max_freeze_duration(output),
