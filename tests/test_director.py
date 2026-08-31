@@ -3390,7 +3390,7 @@ class WholeStoryRepairDiagnosticTests(unittest.TestCase):
         self.assertEqual(shape['target_scene_count'], 6)
         self.assertIs(shape['exact_scene_count'], True)
         self.assertEqual(shape['ai_scene_count'], 5)
-        self.assertEqual(shape['max_ai_scene_count'], 3)
+        self.assertEqual(shape['max_ai_scene_count'], 4)
         self.assertGreater(shape['short_editorial_issue_count'], 0)
         self.assertIn(
             'tts_unsafe_raw_terms',
@@ -4251,3 +4251,4 @@ class ShortStoryApprovalTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

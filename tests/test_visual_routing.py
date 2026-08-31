@@ -10,15 +10,15 @@ from app.services.visual_routing import (
 
 
 class ShortPreviewVisualRoutingTests(unittest.TestCase):
-    def test_ai_first_five_scene_preview_is_bounded_to_three_authored_ai(self):
-        self.assertEqual(SHORT_PREVIEW_RUNWAY_CAP, 3)
+    def test_ai_first_five_scene_preview_is_bounded_to_four_authored_ai(self):
+        self.assertEqual(SHORT_PREVIEW_RUNWAY_CAP, 4)
         self.assertEqual(
             preview_authored_ai_limit(
                 {'mode': 'preview', 'visual_mix': 'ai_first'},
                 5,
                 0.5,
             ),
-            3,
+            4,
         )
 
     def test_balanced_and_real_first_preview_limits_are_unchanged(self):
