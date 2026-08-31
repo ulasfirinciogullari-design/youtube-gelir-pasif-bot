@@ -40,9 +40,26 @@ def generate_scene(prompt: str, duration: int = 5) -> str:
         raise ValueError('Runway prompt exceeds 1000 UTF-16 code units')
 
     seconds = max(2, min(int(round(duration)), 10))
-    client = RunwayML(api_key=settings.runwayml_api_secret)
-    created = _create_text_to_video_task(client, prompt_text, seconds)
-    completed = created.wait_for_task_output(timeout=600)
+    # Paid task creation is never retried implicitly: an ambiguous timeout may
+    # mean the provider accepted the POST even though its response was lost.
+    create_client = RunwayML(
+        api_key=settings.runwayml_api_secret,
+        max_retries=0,
+    )
+    created = _create_text_to_video_task(
+        create_client,
+        prompt_text,
+        seconds,
+    )
+    task_id = str(getattr(created, 'id', '') or '').strip()
+    if not task_id:
+        raise RuntimeError('Runway returned no task id')
+
+    # Retrieval is read-only, so the SDK's bounded default retries are safe.
+    poll_client = RunwayML(api_key=settings.runwayml_api_secret)
+    completed = poll_client.tasks.retrieve(
+        task_id,
+    ).wait_for_task_output(timeout=600)
     output = completed.output or []
     if not output:
         raise RuntimeError('Runway returned no video output')
