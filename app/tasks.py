@@ -451,7 +451,10 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
                 'Power proof: a real physical meter visibly falls in the same shot.'
             )
 
-    opening = 'One continuous five-second photorealistic 16:9 documentary shot. '
+    opening = (
+        'One continuous photorealistic 16:9 documentary shot for the full '
+        'requested duration. '
+    )
     temporal_clause = (
         f'PRIMARY EVENT: {_truncate_utf16(primary_event, 140)}. '
         'Show a clear START state, then the named PHYSICAL ACTION or CAUSE, '
@@ -558,6 +561,23 @@ def _preview_duration_within_gate(
     target_ok = abs(actual - requested) <= target_tolerance
     voice_complete = actual + 0.25 >= voice
     return target_ok and voice_complete
+
+
+def _runway_generation_seconds(scene_duration: float) -> int:
+    """Buy enough source footage for one pass after the renderer's speed-up."""
+    try:
+        required = max(0.0, float(scene_duration)) * 1.02 + 0.20
+    except Exception:
+        required = 5.0
+    return max(5, min(10, int(math.ceil(required))))
+
+
+def _runway_single_pass_supported(scene_duration: float) -> bool:
+    try:
+        required = max(0.0, float(scene_duration)) * 1.02 + 0.20
+    except Exception:
+        return False
+    return required <= 10.0
 
 
 def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float) -> int:
@@ -1316,14 +1336,32 @@ def run_video_pipeline(
             scene_idx = int(candidate['scene_index'])
             runway_attempts += 1
             stock_fallback = list(scene_visuals[scene_idx])
+            if (
+                strict_short_preview_duration
+                and not _runway_single_pass_supported(
+                    scene_durations[scene_idx]
+                )
+            ):
+                raise FinalVisualQualityError(
+                    'Short-preview AI scene exceeds the ten-second single-pass '
+                    f'limit at scene {scene_idx}; split the storyboard scene '
+                    'before paid generation'
+                )
             try:
-                url = generate_scene(prompt_candidates[scene_idx], duration=5)
+                generation_seconds = _runway_generation_seconds(
+                    scene_durations[scene_idx]
+                )
+                url = generate_scene(
+                    prompt_candidates[scene_idx],
+                    duration=generation_seconds,
+                )
                 runway_path = work / f'runway_s{scene_idx:02d}.mp4'
                 download_generated_scene(url, runway_path)
                 runway_spec = {
                     'path': str(runway_path),
                     'start_fraction': 0.0,
                     'preserve_start_fraction': True,
+                    'forbid_loop': strict_short_preview_duration,
                 }
                 scene_visuals[scene_idx] = [runway_spec, *stock_fallback][:3]
                 runway_scenes_used += 1
@@ -1384,14 +1422,31 @@ def run_video_pipeline(
             runway_attempts += 1
             existing_specs = list(scene_visuals[scene_idx])
             old_best = _visual_path(existing_specs[0]) if existing_specs else ''
+            if (
+                strict_short_preview_duration
+                and not _runway_single_pass_supported(
+                    scene_durations[scene_idx]
+                )
+            ):
+                raise FinalVisualQualityError(
+                    'Short-preview AI repair exceeds the ten-second '
+                    f'single-pass limit at scene {scene_idx}'
+                )
             try:
-                repair_url = generate_scene(repair_prompt, duration=5)
+                generation_seconds = _runway_generation_seconds(
+                    scene_durations[scene_idx]
+                )
+                repair_url = generate_scene(
+                    repair_prompt,
+                    duration=generation_seconds,
+                )
                 repair_path = work / f'runway_repair_s{scene_idx:02d}.mp4'
                 download_generated_scene(repair_url, repair_path)
                 repair_spec = {
                     'path': str(repair_path),
                     'start_fraction': 0.0,
                     'preserve_start_fraction': True,
+                    'forbid_loop': strict_short_preview_duration,
                 }
                 scene_visuals[scene_idx] = [repair_spec, *existing_specs][:3]
                 final_runway_repair_scenes.append(scene_idx)
@@ -1565,6 +1620,10 @@ def run_video_pipeline(
         visual_qc['initial_average_score'] = initial_avg_visual_score
         visual_qc['average_final_score'] = avg_visual_score
 
+        requested_seconds = duration_minutes * 60
+        render_target_duration = (
+            requested_seconds if options.get('mode') == 'preview' else None
+        )
         set_stage(self, task_id, 'render', 76, 'Onaylı ses ve sahneler final kurguya alınıyor.')
         rendered = render_video(
             voice_path=final_audio_path,
@@ -1574,9 +1633,9 @@ def run_video_pipeline(
             scenes=scenes,
             scene_durations=scene_durations,
             scene_visual_paths=scene_visuals,
+            target_duration=render_target_duration,
         )
 
-        requested_seconds = duration_minutes * 60
         actual_seconds = float(rendered.get('duration') or 0)
         if options.get('mode') == 'preview':
             duration_ok = _preview_duration_within_gate(
@@ -1588,6 +1647,21 @@ def run_video_pipeline(
             duration_ok = requested_seconds * 0.70 <= actual_seconds <= requested_seconds * 1.22
         if not duration_ok:
             raise RuntimeError(f'Final duration gate rejected render: {actual_seconds:.1f}s for requested {requested_seconds:.1f}s')
+
+        if strict_short_preview_duration:
+            expected_frames = int(round(requested_seconds * 30))
+            actual_frames = int(rendered.get('frame_count') or 0)
+            ending_silence = float(rendered.get('ending_silence_seconds') or 0)
+            if actual_frames != expected_frames:
+                raise RuntimeError(
+                    'Final frame gate rejected render: '
+                    f'{actual_frames} frames, expected {expected_frames}'
+                )
+            if not 0.30 <= ending_silence <= 0.90:
+                raise RuntimeError(
+                    'Final breathing-room gate rejected render: '
+                    f'{ending_silence:.3f}s ending silence'
+                )
 
         max_freeze_seconds = float(rendered.get('max_freeze_seconds') or 0)
         freeze_limit = 5.0 if options.get('mode') == 'preview' else 6.0
