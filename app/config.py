@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     app_encryption_key: str = ''
     openai_api_key: str = ''
     openai_model: str = 'gpt-5'
+    studio_plan_provider: str = 'openai'
     gemini_critic_enabled: bool = False
     gemini_api_key: str = ''
     gemini_model: str = 'gemini-3.1-pro-preview'

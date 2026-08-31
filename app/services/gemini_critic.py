@@ -64,7 +64,16 @@ def _contract_schema(value: Any) -> dict:
         }
     if isinstance(value, list):
         if not value:
-            raise GeminiCriticError('Gemini critic contract contains an empty list')
+            return {
+                'type': 'array',
+                'items': {
+                    'type': 'object',
+                    'properties': {},
+                    'additionalProperties': False,
+                },
+                'minItems': 0,
+                'maxItems': 0,
+            }
         return {
             'type': 'array',
             'items': _contract_schema(value[0]),
@@ -272,3 +281,4 @@ def run_optional_gemini_critic(
         'contract': 'openai-story-stock-v1',
         'reviewed_scene_count': len(critic_contract.get('scenes') or []),
     }
+
