@@ -1,4 +1,5 @@
 import ast
+import json
 import math
 from pathlib import Path
 import re
@@ -26,6 +27,8 @@ def _load_prompt_functions():
         '_runway_prompt_for_scene',
         '_apply_visual_review',
         '_runway_generation_seconds',
+        '_runway_failure_diagnostic',
+        '_runway_failure_payload',
         '_runway_single_pass_supported',
         '_validate_runway_single_pass_candidates',
         '_preflight_runway_candidates_before_paid',
@@ -56,6 +59,8 @@ def _load_prompt_functions():
         namespace['_runway_prompt_for_scene'],
         namespace['_apply_visual_review'],
         namespace['_runway_generation_seconds'],
+        namespace['_runway_failure_diagnostic'],
+        namespace['_runway_failure_payload'],
         namespace['_runway_single_pass_supported'],
         namespace['_validate_runway_single_pass_candidates'],
         namespace['_preflight_runway_candidates_before_paid'],
@@ -68,6 +73,8 @@ def _load_prompt_functions():
     runway_prompt,
     apply_visual_review,
     runway_generation_seconds,
+    runway_failure_diagnostic,
+    runway_failure_payload,
     runway_single_pass_supported,
     validate_runway_single_pass_candidates,
     preflight_runway_candidates_before_paid,
@@ -172,6 +179,92 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertNotIn('generate_scene(repair_prompt, duration=5)', source)
         self.assertEqual(source.count("'forbid_loop': True"), 1)
         self.assertNotIn('five-second photorealistic', source)
+
+    def test_runway_failure_diagnostic_never_serializes_exception_message(self):
+        secret = (
+            'sk-live-secret-value '
+            'https://media.example/video.mp4?X-Amz-Signature=secret '
+            'PROMPT: private authored scene'
+        )
+        diagnostic = runway_failure_diagnostic(
+            'initial_generation',
+            2,
+            RuntimeError(secret),
+        )
+
+        self.assertEqual(
+            diagnostic,
+            {
+                'stage': 'initial_generation',
+                'scene_index': 2,
+                'exception_class': 'RuntimeError',
+            },
+        )
+        serialized = json.dumps(diagnostic)
+        self.assertNotIn(secret, serialized)
+        self.assertNotIn('sk-live-secret-value', serialized)
+        self.assertNotIn('X-Amz-Signature', serialized)
+        self.assertNotIn('private authored scene', serialized)
+
+    def test_public_runway_failure_payload_filters_fields_and_scenes(self):
+        secret = 'key=super-secret&url=https://private.example/generated.mp4'
+        payload = runway_failure_payload(
+            3,
+            [1],
+            [
+                {
+                    **runway_failure_diagnostic(
+                        'final_repair',
+                        1,
+                        TimeoutError(secret),
+                    ),
+                    'message': secret,
+                    'url': 'https://private.example/generated.mp4',
+                    'prompt': 'private authored scene',
+                },
+                runway_failure_diagnostic(
+                    'initial_generation',
+                    2,
+                    RuntimeError(secret),
+                ),
+                {
+                    'stage': 'final_repair',
+                    'scene_index': 1,
+                    'exception_class': secret,
+                },
+            ],
+        )
+
+        self.assertEqual(payload['attempts'], 3)
+        self.assertEqual(payload['failed_scenes'], [1])
+        self.assertEqual(
+            payload['failures'],
+            [
+                {
+                    'stage': 'final_repair',
+                    'scene_index': 1,
+                    'exception_class': 'TimeoutError',
+                },
+                {
+                    'stage': 'final_repair',
+                    'scene_index': 1,
+                    'exception_class': 'Exception',
+                },
+            ],
+        )
+        serialized = json.dumps(payload)
+        self.assertNotIn('super-secret', serialized)
+        self.assertNotIn('private.example', serialized)
+        self.assertNotIn('private authored scene', serialized)
+
+        source = (
+            Path(__file__).resolve().parents[1]
+            / 'app'
+            / 'tasks.py'
+        ).read_text(encoding='utf-8')
+        self.assertNotIn('runway_errors', source)
+        self.assertNotIn("str(exc)[:320]", source)
+        self.assertIn("'runway_failure_diagnostics'", source)
 
     def test_primary_event_precedes_identity_and_requires_visible_change(self):
         prompt = runway_prompt(
@@ -294,4 +387,3 @@ class RunwayPromptTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

@@ -613,6 +613,88 @@ def _runway_generation_seconds(scene_duration: float) -> int:
     return max(5, min(10, int(math.ceil(required))))
 
 
+def _runway_failure_diagnostic(
+    stage: str,
+    scene_index: int,
+    exc: BaseException,
+) -> dict:
+    """Return the deliberately tiny, secret-safe Runway failure surface."""
+    safe_stage = (
+        stage
+        if stage in {'initial_generation', 'final_repair'}
+        else 'unknown'
+    )
+    try:
+        safe_scene_index = int(scene_index)
+    except Exception:
+        safe_scene_index = -1
+    exception_class = str(
+        getattr(type(exc), '__name__', '') or 'Exception'
+    )
+    if not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,127}', exception_class):
+        exception_class = 'Exception'
+    return {
+        'stage': safe_stage,
+        'scene_index': safe_scene_index,
+        'exception_class': exception_class,
+    }
+
+
+def _runway_failure_payload(
+    attempts: int,
+    failed_scene_indices: list[int],
+    diagnostics: list[dict],
+) -> dict:
+    """Build the public failure payload from allow-listed diagnostic fields."""
+    failed_scenes: list[int] = []
+    for raw_index in failed_scene_indices:
+        try:
+            scene_index = int(raw_index)
+        except Exception:
+            continue
+        if scene_index not in failed_scenes:
+            failed_scenes.append(scene_index)
+    failed_scenes.sort()
+    failed_scene_set = set(failed_scenes)
+
+    safe_diagnostics: list[dict] = []
+    for diagnostic in diagnostics:
+        if not isinstance(diagnostic, dict):
+            continue
+        try:
+            scene_index = int(diagnostic.get('scene_index'))
+        except Exception:
+            continue
+        if scene_index not in failed_scene_set:
+            continue
+        stage = str(diagnostic.get('stage') or '')
+        if stage not in {'initial_generation', 'final_repair'}:
+            continue
+        exception_class = str(
+            diagnostic.get('exception_class') or 'Exception'
+        )
+        if not re.fullmatch(
+            r'[A-Za-z_][A-Za-z0-9_]{0,127}',
+            exception_class,
+        ):
+            exception_class = 'Exception'
+        safe_diagnostics.append({
+            'stage': stage,
+            'scene_index': scene_index,
+            'exception_class': exception_class,
+        })
+
+    try:
+        safe_attempts = max(0, int(attempts))
+    except Exception:
+        safe_attempts = 0
+    return {
+        'attempts': safe_attempts,
+        'failed_scenes': failed_scenes,
+        'failures': safe_diagnostics,
+    }
+
+
 def _runway_single_pass_supported(scene_duration: float) -> bool:
     try:
         required = max(0.0, float(scene_duration)) * 1.02 + 0.20
@@ -1032,7 +1114,7 @@ def run_video_pipeline(
                 })
 
         set_stage(self, task_id, 'ai_scene', 61, 'Güncel stok kalitesi ölçülüyor; en zor sahneler özgün görüntüye ayrılıyor.')
-        runway_errors: list[str] = []
+        runway_failure_diagnostics: list[dict] = []
         runway_failed_scenes: list[int] = []
         runway_generated_scenes: list[int] = []
         runway_scenes_used = 0
@@ -1502,7 +1584,13 @@ def run_video_pipeline(
                 runway_generated_scenes.append(scene_idx)
             except Exception as exc:
                 runway_failed_scenes.append(scene_idx)
-                runway_errors.append(f'scene {scene_idx}: {type(exc).__name__}: {str(exc)[:320]}')
+                runway_failure_diagnostics.append(
+                    _runway_failure_diagnostic(
+                        'initial_generation',
+                        scene_idx,
+                        exc,
+                    )
+                )
 
         # Re-review the exact clips that will be rendered. Retry search results
         # and generated clips never bypass the final semantic quality gate.
@@ -1585,9 +1673,12 @@ def run_video_pipeline(
                 })
             except Exception as exc:
                 final_runway_repair_failures.append(scene_idx)
-                runway_errors.append(
-                    f'final repair scene {scene_idx}: '
-                    f'{type(exc).__name__}: {str(exc)[:320]}'
+                runway_failure_diagnostics.append(
+                    _runway_failure_diagnostic(
+                        'final_repair',
+                        scene_idx,
+                        exc,
+                    )
                 )
 
         # Give every still-rejected clip one bounded free stock rescue. AI
@@ -1669,15 +1760,22 @@ def run_video_pipeline(
         if rejected_final_scenes:
             failed_required_scenes = [
                 idx for idx in rejected_final_scenes
-                if idx in runway_failed_scenes
+                if (
+                    idx in runway_failed_scenes
+                    or idx in final_runway_repair_failures
+                )
             ]
             if failed_required_scenes:
                 raise FinalVisualQualityError(
                     'Runway generation failed within the bounded submission budget: '
-                    + json.dumps({
-                        'attempts': runway_attempts,
-                        'failed_scenes': failed_required_scenes,
-                    }, separators=(',', ':'))
+                    + json.dumps(
+                        _runway_failure_payload(
+                            runway_attempts,
+                            failed_required_scenes,
+                            runway_failure_diagnostics,
+                        ),
+                        separators=(',', ':'),
+                    )
                 )
             rejected_details = {
                 idx: {
@@ -1851,7 +1949,7 @@ def run_video_pipeline(
             'final_runway_repair_scene_indices': sorted(final_runway_repair_scenes),
             'final_runway_repair_failure_scene_indices': sorted(final_runway_repair_failures),
             'runway_allocation': runway_allocation,
-            'runway_errors': runway_errors,
+            'runway_failure_diagnostics': runway_failure_diagnostics,
             'caption_key': caption_key,
             'burned_subtitles': False,
             'render': rendered,
