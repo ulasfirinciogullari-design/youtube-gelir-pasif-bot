@@ -681,7 +681,21 @@ _ENGLISH_SHORT_SEATBELT_HARDWARE_PATTERN = re.compile(
     flags=re.IGNORECASE,
 )
 _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN = re.compile(
-    r'\b(?:insert|fasten|buckle|latch|connect|push|slide|enter)\w*\b',
+    r'\b(?:insert|push|slide|guide|move|place|put)\w*\b'
+    r'.{0,80}\b(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue))\b'
+    r'.{0,48}\b(?:into|to|in)\b.{0,48}\b(?:buckle|receiver|slot)\b|'
+    r'\b(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue))\b'
+    r'.{0,80}\b(?:enter|slide|move|push|insert)\w*\b'
+    r'.{0,48}\b(?:into|to|in)\b.{0,48}\b(?:buckle|receiver|slot)\b|'
+    r'\b(?:connect|fasten)\w*\b.{0,64}\b'
+    r'(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue)|'
+    r'seat\s*[- ]?belt|seatbelt)\b.{0,64}\b(?:buckle|receiver|slot)\b|'
+    r'\b(?:buckle|fasten)(?:s|d|ed|ing)?\b.{0,48}\b'
+    r'(?:seat\s*[- ]?belt|seatbelt)\b',
+    flags=re.IGNORECASE,
+)
+_ENGLISH_SHORT_SAFE_SEATBELT_STATE_FRAGMENT_PATTERN = re.compile(
+    r'\balready\s*[- ]?(?:fastened|buckled)\b',
     flags=re.IGNORECASE,
 )
 _ENGLISH_SHORT_SAFE_SEATBELT_PAYOFF_PATTERN = re.compile(
@@ -728,6 +742,13 @@ def _short_story_quality_issues(
         scene_narration = str(scene.get('narration') or '')
         ai_prompt = str(scene.get('ai_prompt') or '')
         complete_contract = f'{scene_narration} {ai_prompt}'
+        active_contract = (
+            f'{scene_narration} '
+            + _ENGLISH_SHORT_SAFE_SEATBELT_STATE_FRAGMENT_PATTERN.sub(
+                '',
+                ai_prompt,
+            )
+        )
         seatbelt_contract = bool(
             _TURKISH_SHORT_SEATBELT_PATTERN.search(complete_contract)
             or _ENGLISH_SHORT_SEATBELT_PATTERN.search(complete_contract)
@@ -742,10 +763,10 @@ def _short_story_quality_issues(
         )
         connection_action = bool(
             _TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
-                complete_contract
+                active_contract
             )
             or _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
-                complete_contract
+                active_contract
             )
         )
         safe_ai_payoff = bool(
@@ -779,7 +800,6 @@ def _short_story_quality_issues(
                 seatbelt_contract
                 and hardware_contract
                 and connection_action
-                and not safe_ai_payoff
             )
         ):
             issues.append(
