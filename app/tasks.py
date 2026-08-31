@@ -46,6 +46,14 @@ class PexelsRetryError(RuntimeError):
 
 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
 SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 1
+MANUAL_QA_PREVIEW_STOCK_FLOOR = 60
+MANUAL_QA_PREVIEW_GENERATED_FLOOR = 65
+MANUAL_QA_PUBLISH_QUALITY_THRESHOLD = 86
+_MANUAL_QA_CLEAR_VISUAL_FIELDS = (
+    'prominent_readable_text_or_logo_visible',
+    'major_visual_artifact_visible',
+    'effectively_static_or_frozen',
+)
 _TRANSIENT_PEXELS_HTTP_STATUS_CODES = {408, 425, 429}
 
 
@@ -260,6 +268,8 @@ def _collect_broll(
             'path': str(path),
             'start_fraction': 0.25,
             'source_duration': source_duration,
+            'source_type': 'stock',
+            'stock_provider': 'pexels',
         })
         credits.append({
             'source': 'Pexels',
@@ -425,6 +435,8 @@ def _download_ranked_broll_candidates(
             'path': str(path),
             'start_fraction': 0.35,
             'source_duration': source_duration,
+            'source_type': 'stock',
+            'stock_provider': 'pexels',
         })
         credits.append({
             'source': 'Pexels',
@@ -516,6 +528,157 @@ def _visual_path(spec: str | dict) -> str:
     if isinstance(spec, dict):
         return str(spec.get('path') or '')
     return str(spec)
+
+
+def _is_generated_visual_spec(spec: str | dict | None) -> bool:
+    if not isinstance(spec, dict):
+        return False
+    return (
+        spec.get('generated') is True
+        or str(spec.get('source_type') or '').casefold() == 'generated'
+        or (
+            spec.get('forbid_loop') is True
+            and spec.get('preserve_start_fraction') is True
+        )
+    )
+
+
+def _reviewed_visual_spec(
+    specs: list[str | dict],
+    review: dict,
+) -> str | dict | None:
+    if not specs:
+        return None
+    try:
+        candidate_idx = int(review.get('best_candidate_index', 0))
+    except Exception:
+        return None
+    if candidate_idx < 0 or candidate_idx >= len(specs):
+        return None
+    return specs[candidate_idx]
+
+
+def _manual_qa_visual_source_type(
+    visual_spec: str | dict | None,
+) -> str | None:
+    if (
+        not isinstance(visual_spec, dict)
+        or not str(visual_spec.get('path') or '').strip()
+    ):
+        return None
+    if _is_generated_visual_spec(visual_spec):
+        return 'generated'
+    if (
+        str(visual_spec.get('source_type') or '').casefold() == 'stock'
+        and str(visual_spec.get('stock_provider') or '').casefold()
+        == 'pexels'
+    ):
+        return 'stock'
+    return None
+
+
+def _manual_qa_preview_passes(
+    options: dict,
+    duration_minutes: float,
+    scene: dict,
+    review: dict,
+    visual_spec: str | dict | None,
+) -> bool:
+    """Fail closed for a private-review-only, exact 30-second preview clip."""
+    quality_threshold = options.get('quality_threshold')
+    if (
+        options.get('mode') != 'preview'
+        or duration_minutes > 0.5
+        or type(quality_threshold) is not int
+        or quality_threshold != MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
+    ):
+        return False
+    source_type = _manual_qa_visual_source_type(visual_spec)
+    if source_type is None:
+        return False
+    floor = (
+        MANUAL_QA_PREVIEW_GENERATED_FLOOR
+        if source_type == 'generated'
+        else MANUAL_QA_PREVIEW_STOCK_FLOOR
+    )
+    score = review.get('score')
+    return (
+        type(score) is int
+        and floor <= score < MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
+        and review.get('evidence_gate_passed') is True
+        and review.get('editorial_gate_passed') is True
+        and review.get('subject_visible') is True
+        and review.get('spoken_action_visible') is True
+        and review.get('unexplained_reset') is False
+        and all(
+            review.get(field) is False
+            for field in _MANUAL_QA_CLEAR_VISUAL_FIELDS
+        )
+    )
+
+
+def _manual_qa_preview_record(
+    scene_idx: int,
+    review: dict,
+    visual_spec: str | dict | None,
+) -> dict:
+    retry_queries = review.get('retry_queries') or []
+    if isinstance(retry_queries, str):
+        retry_queries = [retry_queries]
+    if not isinstance(retry_queries, list):
+        retry_queries = []
+    return {
+        'scene_index': int(scene_idx),
+        'score': int(review.get('score', 0)),
+        'source_type': _manual_qa_visual_source_type(visual_spec),
+        'retry_queries': [
+            str(query).strip()[:240]
+            for query in retry_queries[:2]
+            if str(query).strip()
+        ],
+        'manual_reason': str(review.get('reason') or '')[:500],
+    }
+
+
+def _manual_qa_preview_decisions(
+    options: dict,
+    duration_minutes: float,
+    scenes: list[dict],
+    reviews: dict[int, dict],
+    scene_visuals: list[list[str | dict]],
+    scene_indices: list[int] | set[int],
+) -> tuple[dict[int, dict], list[int]]:
+    """Classify exact low-score clips without mutating pipeline state."""
+    accepted: dict[int, dict] = {}
+    rejected: list[int] = []
+    for scene_idx in sorted(set(scene_indices)):
+        if (
+            scene_idx < 0
+            or scene_idx >= len(scenes)
+            or scene_idx >= len(scene_visuals)
+        ):
+            rejected.append(scene_idx)
+            continue
+        review = reviews.get(scene_idx) or {}
+        selected_spec = _reviewed_visual_spec(
+            scene_visuals[scene_idx],
+            review,
+        )
+        if not _manual_qa_preview_passes(
+            options,
+            duration_minutes,
+            scenes[scene_idx],
+            review,
+            selected_spec,
+        ):
+            rejected.append(scene_idx)
+            continue
+        accepted[scene_idx] = _manual_qa_preview_record(
+            scene_idx,
+            review,
+            selected_spec,
+        )
+    return accepted, rejected
 
 
 def _truncate_utf16(text: str, limit: int = 1000) -> str:
@@ -689,6 +852,8 @@ def _generated_visual_spec(
         'start_fraction': 0.0,
         'preserve_start_fraction': True,
         'forbid_loop': True,
+        'generated': True,
+        'source_type': 'generated',
     }
 
 
@@ -1352,6 +1517,29 @@ def run_video_pipeline(
         )
         provider_outage_stock_scenes: set[int] = set()
         stock_quality_fallback_scenes: set[int] = set()
+        manual_qa_preview_scenes: set[int] = set()
+        manual_qa_preview_scores: dict[int, int] = {}
+        manual_qa_preview_records: dict[int, dict] = {}
+
+        def register_manual_qa_preview(
+            scene_idx: int,
+            review: dict,
+            visual_spec: str | dict | None,
+        ) -> None:
+            manual_qa_preview_scenes.add(scene_idx)
+            manual_qa_preview_scores[scene_idx] = int(review['score'])
+            manual_qa_preview_records[scene_idx] = (
+                _manual_qa_preview_record(
+                    scene_idx,
+                    review,
+                    visual_spec,
+                )
+            )
+            # Forced sets describe unresolved paid fallbacks. Preserve their
+            # history separately, but never expose an accepted manual-QA clip
+            # as simultaneously unresolved.
+            provider_outage_stock_scenes.discard(scene_idx)
+            stock_quality_fallback_scenes.discard(scene_idx)
 
         # A stock-routed short-preview scene is a contract: real footage
         # must clear the same semantic gate before any paid Runway request.
@@ -1589,6 +1777,31 @@ def run_video_pipeline(
                         if str(query).strip()
                     ],
                 })
+
+            remaining_stock_contract_failures: list[dict] = []
+            for failure in failed_stock_contracts:
+                scene_idx = int(failure['scene_index'])
+                review = current_reviews.get(scene_idx) or {}
+                selected_spec = _reviewed_visual_spec(
+                    scene_visuals[scene_idx],
+                    review,
+                )
+                if _manual_qa_preview_passes(
+                    options,
+                    duration_minutes,
+                    scenes[scene_idx],
+                    review,
+                    selected_spec,
+                ):
+                    register_manual_qa_preview(
+                        scene_idx,
+                        review,
+                        selected_spec,
+                    )
+                    continue
+                remaining_stock_contract_failures.append(failure)
+            failed_stock_contracts = remaining_stock_contract_failures
+
             semantic_stock_quality_failures = [
                 failure
                 for failure in failed_stock_contracts
@@ -1659,6 +1872,30 @@ def run_video_pipeline(
                     >= quality_threshold
                 )
             }
+            manual_prepass_forced_overlap = manual_qa_preview_scenes & (
+                provider_outage_stock_scenes
+                | stock_quality_fallback_scenes
+            )
+            if manual_prepass_forced_overlap:
+                raise FinalVisualQualityError(
+                    'Manual-QA stock prepass must remain disjoint from forced '
+                    'Runway allocation: '
+                    + json.dumps(
+                        {
+                            'scene_indices': sorted(
+                                manual_prepass_forced_overlap
+                            )
+                        },
+                        separators=(',', ':'),
+                    )
+                )
+
+        provider_outage_stock_fallback_history = set(
+            provider_outage_stock_scenes
+        )
+        stock_quality_fallback_history = set(
+            stock_quality_fallback_scenes
+        )
 
         def rank_runway_candidates() -> tuple[dict[int, str], list[dict]]:
             prompts: dict[int, str] = {}
@@ -1982,9 +2219,85 @@ def run_video_pipeline(
             for r in (final_visual_qc.get('reviews') or [])
             if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
         }
+        manual_qa_prepass_scenes = set(manual_qa_preview_scenes)
+        manual_qa_preview_scenes.clear()
+        manual_qa_preview_scores.clear()
+        manual_qa_preview_records.clear()
+        terminal_manual_qa_failures: list[dict] = []
+        for scene_idx in sorted(manual_qa_prepass_scenes):
+            review = final_reviews.get(scene_idx) or {}
+            score = int(review.get('score', -1))
+            if score >= quality_threshold:
+                continue
+            selected_spec = _reviewed_visual_spec(
+                scene_visuals[scene_idx],
+                review,
+            )
+            if _manual_qa_preview_passes(
+                options,
+                duration_minutes,
+                scenes[scene_idx],
+                review,
+                selected_spec,
+            ):
+                register_manual_qa_preview(
+                    scene_idx,
+                    review,
+                    selected_spec,
+                )
+                continue
+            terminal_manual_qa_failures.append({
+                'scene_index': scene_idx,
+                'score': score,
+                'reason': str(review.get('reason') or 'missing review')[:240],
+            })
+        if terminal_manual_qa_failures:
+            raise FinalVisualQualityError(
+                'Manual-QA preview failed exact final revalidation: '
+                + json.dumps(
+                    {'failures': terminal_manual_qa_failures},
+                    ensure_ascii=False,
+                    separators=(',', ':'),
+                )
+            )
+        # Generated clips do not exist during the stock prepass. Admit them
+        # only after the exact final clip has supplied all hard-evidence and
+        # artifact booleans. Forced stock fallbacks use the generated floor;
+        # a recovered, positively-proven Pexels clip uses the stock floor.
+        final_manual_candidates = [
+            scene_idx
+            for scene_idx, review in final_reviews.items()
+            if (
+                scene_idx not in manual_qa_prepass_scenes
+                and int(review.get('score', 0)) < quality_threshold
+            )
+        ]
+        accepted_final_manual, _rejected_final_manual = (
+            _manual_qa_preview_decisions(
+                options,
+                duration_minutes,
+                scenes,
+                final_reviews,
+                scene_visuals,
+                final_manual_candidates,
+            )
+        )
+        for scene_idx in accepted_final_manual:
+            review = final_reviews[scene_idx]
+            register_manual_qa_preview(
+                scene_idx,
+                review,
+                _reviewed_visual_spec(scene_visuals[scene_idx], review),
+            )
         rejected_final_scenes = [
             idx for idx in range(min(len(scenes), len(scene_visuals)))
-            if idx not in final_reviews or int(final_reviews[idx].get('score', 0)) < quality_threshold
+            if (
+                idx not in final_reviews
+                or (
+                    int(final_reviews[idx].get('score', 0)) < quality_threshold
+                    and idx not in manual_qa_preview_scenes
+                )
+            )
         ]
         for scene_idx, review in final_reviews.items():
             if scene_idx not in rejected_final_scenes:
@@ -2126,15 +2439,42 @@ def run_video_pipeline(
                 mapped_review = dict(rescue_reviews[position])
                 mapped_review['scene_index'] = scene_idx
                 final_reviews[scene_idx] = mapped_review
-                if int(mapped_review.get('score', 0)) >= quality_threshold:
+                selected_spec = _reviewed_visual_spec(
+                    scene_visuals[scene_idx],
+                    mapped_review,
+                )
+                rescued_manual_qa_pass = _manual_qa_preview_passes(
+                    options,
+                    duration_minutes,
+                    scenes[scene_idx],
+                    mapped_review,
+                    selected_spec,
+                )
+                if (
+                    int(mapped_review.get('score', 0)) >= quality_threshold
+                    or rescued_manual_qa_pass
+                ):
                     _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
+                if rescued_manual_qa_pass:
+                    register_manual_qa_preview(
+                        scene_idx,
+                        mapped_review,
+                        selected_spec,
+                    )
             final_visual_qc = {
                 'reviews': [final_reviews[idx] for idx in sorted(final_reviews)],
                 'moment_fractions': rescue_qc.get('moment_fractions'),
             }
             rejected_final_scenes = [
                 idx for idx in range(min(len(scenes), len(scene_visuals)))
-                if idx not in final_reviews or int(final_reviews[idx].get('score', 0)) < quality_threshold
+                if (
+                    idx not in final_reviews
+                    or (
+                        int(final_reviews[idx].get('score', 0))
+                        < quality_threshold
+                        and idx not in manual_qa_preview_scenes
+                    )
+                )
             ]
 
         visual_qc['final_reviews'] = final_visual_qc.get('reviews') or []
@@ -2181,6 +2521,50 @@ def run_video_pipeline(
         if unresolved_scenes:
             raise RuntimeError(f'Visual quality gate rejected unresolved scenes: {unresolved_scenes}')
 
+        final_manual_forced_overlap = manual_qa_preview_scenes & (
+            provider_outage_stock_scenes
+            | stock_quality_fallback_scenes
+        )
+        if final_manual_forced_overlap:
+            raise FinalVisualQualityError(
+                'Accepted manual-QA scenes cannot remain unresolved forced '
+                'fallbacks: '
+                + json.dumps(
+                    {'scene_indices': sorted(final_manual_forced_overlap)},
+                    separators=(',', ':'),
+                )
+            )
+        manual_qa_scene_indices = sorted(manual_qa_preview_scenes)
+        manual_qa_scene_scores = {
+            str(scene_idx): int(manual_qa_preview_scores[scene_idx])
+            for scene_idx in manual_qa_scene_indices
+        }
+        manual_qa_scene_reviews = [
+            manual_qa_preview_records[scene_idx]
+            for scene_idx in manual_qa_scene_indices
+        ]
+        manual_qa_scene_source_types = {
+            str(item['scene_index']): item['source_type']
+            for item in manual_qa_scene_reviews
+        }
+        manual_qa_scene_retry_queries = {
+            str(item['scene_index']): item['retry_queries']
+            for item in manual_qa_scene_reviews
+        }
+        manual_qa_scene_reasons = {
+            str(item['scene_index']): item['manual_reason']
+            for item in manual_qa_scene_reviews
+        }
+        manual_qa_floors = {
+            'stock': MANUAL_QA_PREVIEW_STOCK_FLOOR,
+            'generated': MANUAL_QA_PREVIEW_GENERATED_FLOOR,
+        }
+        manual_qa_required = bool(manual_qa_scene_indices)
+        quality_disposition = (
+            'manual_qa_preview'
+            if manual_qa_required
+            else 'automated_qc_pass'
+        )
         visual_specs = [spec for specs in scene_visuals for spec in specs if _visual_path(spec)]
         if not visual_specs:
             raise RuntimeError('No quality-approved visuals were available')
@@ -2306,6 +2690,19 @@ def run_video_pipeline(
             'director_qc': package.get('director_qc', []),
             'stock_scene_qc': package.get('stock_scene_qc'),
             'visual_qc': visual_qc,
+            'quality_disposition': quality_disposition,
+            'manual_qa_required': manual_qa_required,
+            'manual_qa_floor': MANUAL_QA_PREVIEW_STOCK_FLOOR,
+            'manual_qa_floors': manual_qa_floors,
+            'manual_qa_scene_indices': manual_qa_scene_indices,
+            'manual_qa_scene_scores': manual_qa_scene_scores,
+            'manual_qa_scene_source_types': manual_qa_scene_source_types,
+            'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries,
+            'manual_qa_scene_reasons': manual_qa_scene_reasons,
+            'manual_qa_scene_reviews': manual_qa_scene_reviews,
+            'publish_quality_threshold': (
+                MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
+            ),
             'visual_replacements': visual_replacements,
             'initial_average_visual_qc_score': initial_avg_visual_score,
             'average_visual_qc_score': avg_visual_score,
@@ -2331,8 +2728,14 @@ def run_video_pipeline(
             'provider_outage_stock_scene_indices': sorted(
                 provider_outage_stock_scenes
             ),
+            'provider_outage_stock_fallback_history_scene_indices': sorted(
+                provider_outage_stock_fallback_history
+            ),
             'stock_quality_fallback_scene_indices': sorted(
                 stock_quality_fallback_scenes
+            ),
+            'stock_quality_fallback_history_scene_indices': sorted(
+                stock_quality_fallback_history
             ),
             'runway_attempts': runway_attempts,
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
@@ -2368,6 +2771,19 @@ def run_video_pipeline(
             'shots': rendered.get('shots'),
             'scenes': len(scenes),
             'unique_visuals': rendered.get('unique_visuals'),
+            'quality_disposition': quality_disposition,
+            'manual_qa_required': manual_qa_required,
+            'manual_qa_floor': MANUAL_QA_PREVIEW_STOCK_FLOOR,
+            'manual_qa_floors': manual_qa_floors,
+            'manual_qa_scene_indices': manual_qa_scene_indices,
+            'manual_qa_scene_scores': manual_qa_scene_scores,
+            'manual_qa_scene_source_types': manual_qa_scene_source_types,
+            'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries,
+            'manual_qa_scene_reasons': manual_qa_scene_reasons,
+            'manual_qa_scene_reviews': manual_qa_scene_reviews,
+            'publish_quality_threshold': (
+                MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
+            ),
             'runway_submission_cap': runway_submission_cap,
             'runway_effective_submission_cap': runway_effective_submission_cap,
             'provider_outage_emergency_cap': (
@@ -2379,8 +2795,14 @@ def run_video_pipeline(
             'provider_outage_stock_scene_indices': sorted(
                 provider_outage_stock_scenes
             ),
+            'provider_outage_stock_fallback_history_scene_indices': sorted(
+                provider_outage_stock_fallback_history
+            ),
             'stock_quality_fallback_scene_indices': sorted(
                 stock_quality_fallback_scenes
+            ),
+            'stock_quality_fallback_history_scene_indices': sorted(
+                stock_quality_fallback_history
             ),
             'runway_attempts': runway_attempts,
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],

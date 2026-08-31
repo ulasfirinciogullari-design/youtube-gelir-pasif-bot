@@ -43,6 +43,12 @@ _EVIDENCE_BOOLEAN_FIELDS = (
     'location_continuity_matches',
 )
 
+_MANUAL_QA_VISUAL_BOOLEAN_FIELDS = (
+    'prominent_readable_text_or_logo_visible',
+    'major_visual_artifact_visible',
+    'effectively_static_or_frozen',
+)
+
 
 _CONNECTION_ACTION_PATTERN = re.compile(
     r'\b(?:insert(?:s|ed|ing)?|plug(?:s|ged|ging)?|attach(?:es|ed|ing)?|'
@@ -145,6 +151,16 @@ def _normalized_evidence(
     }, gate_passed
 
 
+def _normalized_manual_qa_visual_flags(review: dict) -> dict | None:
+    values = {
+        field: review.get(field)
+        for field in _MANUAL_QA_VISUAL_BOOLEAN_FIELDS
+    }
+    if any(type(value) is not bool for value in values.values()):
+        return None
+    return values
+
+
 def _studio_plan_provider() -> str:
     provider = str(
         getattr(settings, 'studio_plan_provider', 'openai') or ''
@@ -211,7 +227,10 @@ def _review_json_schema(
                         },
                         **{
                             field: {'type': 'boolean'}
-                            for field in _EVIDENCE_BOOLEAN_FIELDS
+                            for field in (
+                                *_EVIDENCE_BOOLEAN_FIELDS,
+                                *_MANUAL_QA_VISUAL_BOOLEAN_FIELDS,
+                            )
                         },
                         'evidence_moment_indices': {
                             'type': 'array',
@@ -233,6 +252,7 @@ def _review_json_schema(
                         'reason',
                         'retry_queries',
                         *_EVIDENCE_BOOLEAN_FIELDS,
+                        *_MANUAL_QA_VISUAL_BOOLEAN_FIELDS,
                         'evidence_moment_indices',
                     ],
                     'additionalProperties': False,
@@ -391,6 +411,17 @@ def _review_gemini_batches(
         ):
             merged['score'] = min(int(merged.get('score', 0)), 40)
             merged['evidence_gate_passed'] = False
+        for field in _MANUAL_QA_VISUAL_BOOLEAN_FIELDS:
+            merged[field] = bool(
+                previous.get(field) is True
+                or current.get(field) is True
+            )
+        merged['editorial_gate_passed'] = all(
+            merged.get(field) is False
+            for field in _MANUAL_QA_VISUAL_BOOLEAN_FIELDS
+        )
+        if not merged['editorial_gate_passed']:
+            merged['score'] = min(int(merged.get('score', 0)), 40)
         return merged
 
     reviews_by_index: dict[int, dict] = {}
@@ -578,8 +609,9 @@ def review_scene_visuals(
             'A locally relevant candidate that omits or contradicts an explicit visual constraint, or breaks required cross-scene continuity, must score 40 or lower. '
             'Never approve digital glitch/noise for OLED pixels, programming tracebacks for QR error correction, fireworks for camera burst, finance charts for audio codecs, a skyline for network optimization, random typing for encryption, or unrelated towers for indoor GPS. '
             'If the sampled moments are nearly identical, the clip is effectively static; any shot likely to remain static for more than six seconds must score 40 or lower. '
+            'Set prominent_readable_text_or_logo_visible=true for any prominent readable text, watermark or logo. Set major_visual_artifact_visible=true for warped anatomy, object morphing, broken physics, severe flicker or another major generation/edit artifact. Set effectively_static_or_frozen=true when the selected clip is effectively a still or frozen shot. If any of these three fields is true, the score must be 40 or lower. '
             'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
-            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"evidence_moment_indices\":[0]}]}'
+            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"prominent_readable_text_or_logo_visible\":false,\"major_visual_artifact_visible\":false,\"effectively_static_or_frozen\":false,\"evidence_moment_indices\":[0]}]}'
         ),
     }]
     gemini_parts: list[dict] = []
@@ -812,6 +844,7 @@ def review_scene_visuals(
                 'reason',
                 'retry_queries',
                 *_EVIDENCE_BOOLEAN_FIELDS,
+                *_MANUAL_QA_VISUAL_BOOLEAN_FIELDS,
                 'evidence_moment_indices',
             }
             if set(review) != expected_fields:
@@ -863,20 +896,36 @@ def review_scene_visuals(
                     scenes[scene_index]
                 ),
             )
-            if evidence_result is None:
+            manual_qa_visual_flags = _normalized_manual_qa_visual_flags(
+                review
+            )
+            if (
+                evidence_result is None
+                or manual_qa_visual_flags is None
+            ):
                 continue
             evidence, evidence_gate_passed = evidence_result
+            editorial_gate_passed = all(
+                value is False
+                for value in manual_qa_visual_flags.values()
+            )
             reviews_by_scene[scene_index] = {
                 'scene_index': scene_index,
                 'best_candidate_index': best_candidate_index,
                 'best_moment_index': best_moment_index,
                 'best_start_fraction': MOMENT_FRACTIONS[best_moment_index],
-                'score': score if evidence_gate_passed else min(score, 40),
+                'score': (
+                    score
+                    if evidence_gate_passed and editorial_gate_passed
+                    else min(score, 40)
+                ),
                 'raw_score': score,
                 'reason': reason.strip(),
                 'retry_queries': [query.strip() for query in retry_queries],
                 **evidence,
+                **manual_qa_visual_flags,
                 'evidence_gate_passed': evidence_gate_passed,
+                'editorial_gate_passed': editorial_gate_passed,
             }
             continue
 
@@ -904,6 +953,15 @@ def review_scene_visuals(
                 scenes[scene_index]
             ),
         )
+        manual_qa_visual_flags = _normalized_manual_qa_visual_flags(review)
+        if manual_qa_visual_flags is None:
+            # Legacy/free-form OpenAI responses remain diagnosable, but every
+            # missing or malformed manual-QA flag is normalized to the unsafe
+            # value so the private-preview exception can never accept it.
+            manual_qa_visual_flags = {
+                field: True
+                for field in _MANUAL_QA_VISUAL_BOOLEAN_FIELDS
+            }
         evidence, evidence_gate_passed = (
             evidence_result
             if evidence_result is not None
@@ -919,6 +977,10 @@ def review_scene_visuals(
             )
         )
         bounded_score = max(0, min(score, 100))
+        editorial_gate_passed = all(
+            value is False
+            for value in manual_qa_visual_flags.values()
+        )
         reviews_by_scene[scene_index] = {
             'scene_index': scene_index,
             'best_candidate_index': max(0, best_candidate_index),
@@ -926,14 +988,16 @@ def review_scene_visuals(
             'best_start_fraction': MOMENT_FRACTIONS[best_moment_index],
             'score': (
                 bounded_score
-                if evidence_gate_passed
+                if evidence_gate_passed and editorial_gate_passed
                 else min(bounded_score, 40)
             ),
             'raw_score': bounded_score,
             'reason': str(review.get('reason') or '')[:500],
             'retry_queries': [str(q).strip() for q in retry_queries if str(q).strip()][:2],
             **evidence,
+            **manual_qa_visual_flags,
             'evidence_gate_passed': evidence_gate_passed,
+            'editorial_gate_passed': editorial_gate_passed,
         }
 
     missing_indices = [idx for idx in included_indices if idx not in reviews_by_scene]
@@ -1031,3 +1095,4 @@ def review_scene_visuals(
         'unreviewable_scene_indices': unreviewable_indices,
         'missing_review_indices': missing_indices,
     }
+
