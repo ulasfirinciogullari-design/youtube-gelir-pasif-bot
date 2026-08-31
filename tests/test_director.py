@@ -42,6 +42,14 @@ from app.services.director import (
 )
 
 
+class PreviewNarrationBudgetTests(unittest.TestCase):
+    def test_thirty_second_budget_allows_natural_forty_word_story(self):
+        self.assertEqual(
+            director_module._target_word_budget(0.5),
+            (48, 40, 51),
+        )
+
+
 CRITIC_BOOLEAN_KEYS = {
     'single_sentence',
     'single_visible_action',
@@ -2695,7 +2703,7 @@ class WholeStoryRepairDiagnosticTests(unittest.TestCase):
         )
         shape = diagnostics['post_repair_shape']
         self.assertEqual(shape['narration_word_count'], 20)
-        self.assertEqual(shape['required_narration_word_range'], [45, 51])
+        self.assertEqual(shape['required_narration_word_range'], [40, 51])
         self.assertEqual(shape['scene_count'], 5)
         self.assertEqual(shape['target_scene_count'], 6)
         self.assertIs(shape['exact_scene_count'], True)
