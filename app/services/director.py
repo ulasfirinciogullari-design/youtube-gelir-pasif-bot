@@ -671,6 +671,25 @@ _TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN = re.compile(
     r'\b(?:tak|sok|geçir|kilitle|birleştir|bağla)\w*\b',
     flags=re.IGNORECASE | re.UNICODE,
 )
+_ENGLISH_SHORT_SEATBELT_PATTERN = re.compile(
+    r'\b(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)\b',
+    flags=re.IGNORECASE,
+)
+_ENGLISH_SHORT_SEATBELT_HARDWARE_PATTERN = re.compile(
+    r'\b(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue)|'
+    r'buckle|buckle\s+receiver|receiver\s+slot)\b',
+    flags=re.IGNORECASE,
+)
+_ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN = re.compile(
+    r'\b(?:insert|fasten|buckle|latch|connect|push|slide|enter)\w*\b',
+    flags=re.IGNORECASE,
+)
+_ENGLISH_SHORT_SAFE_SEATBELT_PAYOFF_PATTERN = re.compile(
+    r'\b(?:already\s*[- ]?(?:fastened|buckled)|'
+    r'(?:visibly\s+)?wear(?:s|ing)\b.{0,80}\b(?:seat\s*[- ]?belt|seatbelt)|'
+    r'(?:seat\s*[- ]?belt|seatbelt)\b.{0,80}\bacross\s+(?:the\s+)?chest)\b',
+    flags=re.IGNORECASE,
+)
 
 
 def _short_story_quality_issues(
@@ -701,14 +720,32 @@ def _short_story_quality_issues(
         ).strip():
             continue
         scene_narration = str(scene.get('narration') or '')
+        ai_prompt = str(scene.get('ai_prompt') or '')
+        complete_contract = f'{scene_narration} {ai_prompt}'
+        seatbelt_contract = bool(
+            _TURKISH_SHORT_SEATBELT_PATTERN.search(complete_contract)
+            or _ENGLISH_SHORT_SEATBELT_PATTERN.search(complete_contract)
+        )
+        hardware_contract = bool(
+            _TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                complete_contract
+            )
+            or _ENGLISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                complete_contract
+            )
+        )
+        connection_action = bool(
+            _TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+                complete_contract
+            )
+            or _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+                complete_contract
+            )
+        )
         if (
-            _TURKISH_SHORT_SEATBELT_PATTERN.search(scene_narration)
-            and _TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
-                scene_narration
-            )
-            and _TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
-                scene_narration
-            )
+            seatbelt_contract
+            and hardware_contract
+            and connection_action
         ):
             issues.append(
                 f'scene {scene_idx} assigns paid AI video a precision '
@@ -716,6 +753,20 @@ def _short_story_quality_issues(
                 'driver visibly wearing an already-fastened three-point belt '
                 'after the preceding mechanism scene, without narrating the '
                 'small metal tongue entering the buckle'
+            )
+            continue
+        if (
+            scene_idx == len(package.get('scenes') or []) - 1
+            and seatbelt_contract
+            and not _ENGLISH_SHORT_SAFE_SEATBELT_PAYOFF_PATTERN.search(
+                ai_prompt
+            )
+        ):
+            issues.append(
+                f'scene {scene_idx} has an AI-routed seat-belt payoff without '
+                'a stable visible result; require the prompt to show the same '
+                'driver visibly wearing an already-fastened three-point belt '
+                'across the chest before preparing to drive'
             )
     return issues
 
