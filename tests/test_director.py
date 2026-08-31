@@ -194,7 +194,13 @@ class PreviewNarrationBudgetTests(unittest.TestCase):
                         'ai_prompt': (
                             None
                             if position == 0
-                            else f'AI seat belt action scene {position}'
+                            else (
+                                'Same driver visibly wears an already-fastened '
+                                'three-point seat belt across the chest and '
+                                'places both hands on the steering wheel.'
+                                if position == 3 and 'göğsünde' in narration
+                                else f'AI seat belt action scene {position}'
+                            )
                         ),
                         'pace': 'normal',
                         'transition': 'cut',
@@ -3594,8 +3600,7 @@ class ShortSpokenQualityTests(unittest.TestCase):
             'scenes': [
                 {
                     'narration': (
-                        'Sürücü kemeri yeniden çekiyor, metal dili tokaya '
-                        'takıp yola hazırlanıyor.'
+                        'Sürücü sonunda güvenle yola hazırlanıyor.'
                     ),
                     'ai_prompt': (
                         'Driver inserts a metal seat-belt latch plate into '
@@ -3609,6 +3614,27 @@ class ShortSpokenQualityTests(unittest.TestCase):
 
         self.assertEqual(len(issues), 1)
         self.assertIn('precision seat-belt latch insertion', issues[0])
+
+    def test_rejects_seatbelt_payoff_without_safe_prompt_contract(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Sürücü kemerin göğsünde düzgün durduğunu '
+                        'kontrol edip yola hazırlanıyor.'
+                    ),
+                    'ai_prompt': (
+                        'Same driver sits in the car and places both hands '
+                        'on the steering wheel.'
+                    ),
+                },
+            ],
+        }
+
+        issues = _short_story_quality_issues(package, 'Turkish')
+
+        self.assertEqual(len(issues), 1)
+        self.assertIn('without a stable visible result', issues[0])
 
     def test_allows_ai_seatbelt_payoff_with_already_fastened_belt(self):
         package = {
