@@ -20,6 +20,7 @@ from app.services.visual_qc import review_scene_visuals
 from app.services.voice import synthesize_scene_sequence
 from app.services.visual_routing import (
     SHORT_PREVIEW_RUNWAY_CAP,
+    preview_runway_repair_indices,
     should_rank_runway_candidate,
 )
 
@@ -421,6 +422,12 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
 
     narration = _truncate_utf16(str(scene.get('narration') or '').strip(), 180)
     visible_action = _truncate_utf16('; '.join(hint[:100] for hint in hints), 150)
+    primary_event = _truncate_utf16(
+        ' / '.join(
+            value for value in (visible_action, narration) if value
+        ),
+        280,
+    )
     combined = f'{narration} {original} {visible_action}'.lower()
     mechanism_guardrails: list[str] = []
     oled_claim = bool(re.search(
@@ -429,9 +436,8 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     ))
     if oled_claim:
         mechanism_guardrails.append(
-            'OLED proof: extreme macro of a real subpixel matrix; emitters in a shaped black region are '
-            'visibly off while adjacent RGB subpixels stay lit. Never use a whole-screen dim or fade, '
-            'hand-only tap, digital noise or generic dark phone.'
+            'OLED proof: macro real subpixels; shaped-black emitters off while '
+            'adjacent RGB stays lit; never whole-display fade, tap or noise.'
         )
         power_claim = bool(re.search(
             r'\b(?:power\s+(?:use|usage|draw|consumption)|energy\s+(?:use|usage|consumption)|'
@@ -442,31 +448,57 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         ))
         if power_claim:
             mechanism_guardrails.append(
-                'If power use is spoken, show a real physical meter visibly falling in the same shot.'
+                'Power proof: a real physical meter visibly falls in the same shot.'
             )
 
     opening = 'One continuous five-second photorealistic 16:9 documentary shot. '
-    guardrail_clause = (' '.join(mechanism_guardrails) + ' ') if mechanism_guardrails else ''
-    narration_clause = f'Literal narration to prove: {narration}. ' if narration else ''
-    evidence_clause = f'QC evidence to satisfy: {visible_action}. ' if visible_action else ''
-    closing = 'Subtle camera motion; no text, logos, charts, glitch, watermark or metaphor.'
-    required = opening + guardrail_clause + narration_clause + evidence_clause + closing
-    original_label = 'Core shot direction: '
-    remaining_units = max(
-        0,
-        1000
-        - len(required.encode('utf-16-le')) // 2
-        - len(original_label.encode('utf-16-le')) // 2
-        - 2,
+    temporal_clause = (
+        f'PRIMARY EVENT: {_truncate_utf16(primary_event, 140)}. '
+        'Show a clear START state, then the named PHYSICAL ACTION or CAUSE, '
+        'then hold the visibly CHANGED RESULT in the same take. A static '
+        'final-only shot fails. '
+    ) if primary_event else ''
+    raw_guardrail_clause = (
+        ' '.join(mechanism_guardrails) if mechanism_guardrails else ''
     )
-    original_value = _truncate_utf16(original, remaining_units) if original and remaining_units else ''
+    closing = (
+        'Keep subject, identity, background and exposure continuous; no cuts, '
+        'text, logos, charts, glitch, watermark or metaphor.'
+    )
+    original_label = 'Core shot direction: '
+    fixed_units = len(
+        (opening + temporal_clause + original_label + closing).encode(
+            'utf-16-le'
+        )
+    ) // 2
+    shared_budget = max(
+        0,
+        1000 - fixed_units - 3,
+    )
+    original_units = len(original.encode('utf-16-le')) // 2
+    minimum_original = min(original_units, 360)
+    guardrail_units = len(raw_guardrail_clause.encode('utf-16-le')) // 2
+    guardrail_budget = min(
+        guardrail_units,
+        220,
+        max(0, shared_budget - minimum_original),
+    )
+    original_budget = max(0, shared_budget - guardrail_budget)
+    original_value = (
+        _truncate_utf16(original, original_budget)
+        if original and original_budget else ''
+    )
     original_clause = f'{original_label}{original_value}. ' if original_value else ''
+    guardrail_value = _truncate_utf16(
+        raw_guardrail_clause,
+        guardrail_budget,
+    )
+    guardrail_clause = f'{guardrail_value} ' if guardrail_value else ''
     return _truncate_utf16(
         opening
-        + guardrail_clause
-        + narration_clause
-        + evidence_clause
+        + temporal_clause
         + original_clause
+        + guardrail_clause
         + closing
     )
 
@@ -488,6 +520,14 @@ def _apply_visual_review(
         best_idx = 0
     best_idx = min(max(best_idx, 0), len(specs) - 1)
     chosen = dict(specs[best_idx]) if isinstance(specs[best_idx], dict) else {'path': _visual_path(specs[best_idx])}
+    if chosen.get('preserve_start_fraction'):
+        try:
+            locked_fraction = float(chosen.get('start_fraction', 0.0))
+        except Exception:
+            locked_fraction = 0.0
+        chosen['start_fraction'] = max(0.0, min(locked_fraction, 0.95))
+        scene_visuals[scene_idx] = [chosen]
+        return
     try:
         fraction = float(review.get('best_start_fraction', chosen.get('start_fraction', default_fraction)))
     except Exception:
@@ -630,6 +670,9 @@ def run_video_pipeline(
     work.mkdir(parents=True, exist_ok=True)
     update_job(task_id, kind='render', spec=_task_spec(topic, duration_minutes, language, channel_id, options))
     runway_attempts = 0
+    final_runway_repair_attempts = 0
+    final_runway_repair_scenes: list[int] = []
+    final_runway_repair_failures: list[int] = []
 
     try:
         package = _prepare_package(self, task_id, topic, duration_minutes, language, options, approved_package)
@@ -1277,7 +1320,11 @@ def run_video_pipeline(
                 url = generate_scene(prompt_candidates[scene_idx], duration=5)
                 runway_path = work / f'runway_s{scene_idx:02d}.mp4'
                 download_generated_scene(url, runway_path)
-                runway_spec = {'path': str(runway_path), 'start_fraction': 0.0}
+                runway_spec = {
+                    'path': str(runway_path),
+                    'start_fraction': 0.0,
+                    'preserve_start_fraction': True,
+                }
                 scene_visuals[scene_idx] = [runway_spec, *stock_fallback][:3]
                 runway_scenes_used += 1
                 runway_generated_scenes.append(scene_idx)
@@ -1309,11 +1356,65 @@ def run_video_pipeline(
             if scene_idx not in rejected_final_scenes:
                 _apply_visual_review(scene_visuals, scene_idx, review)
 
-        # Give the exact final review one bounded, scene-specific rescue pass.
-        # This reuses its evidence-based retry queries instead of restarting the
-        # entire script, voice and candidate pipeline for a stock-search miss.
-        rescued_final_scenes: list[int] = []
+        # A final critic has now seen the exact generated clips. Spend at most
+        # two evidence-led repair submissions on authored AI scenes, instead of
+        # rerunning the whole paid pipeline or accepting a static non-event.
+        final_runway_repair_candidates = preview_runway_repair_indices(
+            options,
+            duration_minutes,
+            rejected_final_scenes,
+            scenes,
+            runway_generated_scenes,
+            final_reviews,
+        )
+        if final_runway_repair_candidates:
+            set_stage(
+                self,
+                task_id,
+                'final_visual_qc_ai_repair',
+                71,
+                'Reddedilen özgün sahnelerde hareket kanıtı hedefli olarak yenileniyor.',
+            )
+        for scene_idx in final_runway_repair_candidates:
+            review = final_reviews.get(scene_idx) or {}
+            repair_prompt = _runway_prompt_for_scene(scenes[scene_idx], review)
+            if not repair_prompt:
+                continue
+            final_runway_repair_attempts += 1
+            runway_attempts += 1
+            existing_specs = list(scene_visuals[scene_idx])
+            old_best = _visual_path(existing_specs[0]) if existing_specs else ''
+            try:
+                repair_url = generate_scene(repair_prompt, duration=5)
+                repair_path = work / f'runway_repair_s{scene_idx:02d}.mp4'
+                download_generated_scene(repair_url, repair_path)
+                repair_spec = {
+                    'path': str(repair_path),
+                    'start_fraction': 0.0,
+                    'preserve_start_fraction': True,
+                }
+                scene_visuals[scene_idx] = [repair_spec, *existing_specs][:3]
+                final_runway_repair_scenes.append(scene_idx)
+                visual_replacements.append({
+                    'scene_index': scene_idx,
+                    'score': int(review.get('score', 0)),
+                    'old_best': old_best,
+                    'replacement_count': 1,
+                    'stage': 'final_visual_qc_ai_repair',
+                })
+            except Exception as exc:
+                final_runway_repair_failures.append(scene_idx)
+                runway_errors.append(
+                    f'final repair scene {scene_idx}: '
+                    f'{type(exc).__name__}: {str(exc)[:320]}'
+                )
+
+        # Give every still-rejected clip one bounded free stock rescue. AI
+        # scenes already changed above go straight back to exact-clip QC.
+        rescued_final_scenes: list[int] = list(final_runway_repair_scenes)
         for scene_idx in rejected_final_scenes:
+            if scene_idx in final_runway_repair_scenes:
+                continue
             review = final_reviews.get(scene_idx) or {}
             retry_queries = [
                 str(q).strip()
@@ -1348,7 +1449,7 @@ def run_video_pipeline(
             })
 
         if rescued_final_scenes:
-            set_stage(self, task_id, 'final_visual_qc_rescue', 72, 'Reddedilen sahneler daha kesin aramalarla son kez yenileniyor.')
+            set_stage(self, task_id, 'final_visual_qc_rescue', 74, 'Reddedilen sahneler daha kesin görüntülerle son kez denetleniyor.')
             rescue_qc = review_scene_visuals(
                 [scenes[idx] for idx in rescued_final_scenes],
                 [scene_visuals[idx] for idx in rescued_final_scenes],
@@ -1544,6 +1645,9 @@ def run_video_pipeline(
             'runway_success_scene_indices': sorted(runway_generated_scenes),
             'runway_failure_scene_indices': sorted(runway_failed_scenes),
             'runway_scenes_used': runway_scenes_used,
+            'final_runway_repair_attempts': final_runway_repair_attempts,
+            'final_runway_repair_scene_indices': sorted(final_runway_repair_scenes),
+            'final_runway_repair_failure_scene_indices': sorted(final_runway_repair_failures),
             'runway_allocation': runway_allocation,
             'runway_errors': runway_errors,
             'caption_key': caption_key,
@@ -1575,6 +1679,9 @@ def run_video_pipeline(
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
             'runway_success_scene_indices': sorted(runway_generated_scenes),
             'runway_scenes_used': runway_scenes_used,
+            'final_runway_repair_attempts': final_runway_repair_attempts,
+            'final_runway_repair_scene_indices': sorted(final_runway_repair_scenes),
+            'final_runway_repair_failure_scene_indices': sorted(final_runway_repair_failures),
             'resolution': rendered.get('resolution'),
             'scene_synced': rendered.get('scene_synced'),
             'director_qc_applied': bool(package.get('director_qc')),
@@ -1616,3 +1723,4 @@ def run_video_pipeline(
         raise
     finally:
         shutil.rmtree(work, ignore_errors=True)
+
