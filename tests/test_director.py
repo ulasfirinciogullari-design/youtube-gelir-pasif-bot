@@ -1490,6 +1490,199 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertIn('locked_narration', writer_input)
         self.assertIn('Repair only visual_queries', writer_input)
 
+    def test_documentary_broll_keeps_sourced_dates_and_scale_in_voiceover(self):
+        narrations = [
+            '1997 yılında bu konteyner gemisi ilk seferine çıktı.',
+            'İlk rotasında iki liman arasında 62 konteyner taşıdı.',
+            'Kariyeri boyunca toplam 4,8 milyon ton yük taşıdı.',
+            'Gemi farklı ülkelerdeki yoğun limanlara binlerce kez uğradı.',
+            'Gemi 29 yıl sonra aynı limana yeniden döndü.',
+            'Gemi son yolculuğunu aynı limanda böylece tamamladı.',
+        ]
+        queries = [
+            [
+                'container ship on maiden voyage',
+                'cargo vessel sailing from port',
+            ],
+            [
+                'container ship loaded in harbor',
+                'cargo ship carrying stacked containers',
+            ],
+            [
+                'container ship carrying heavy cargo',
+                'loaded cargo vessel at sea',
+            ],
+            [
+                'container ship entering busy port',
+                'cargo vessel arriving crowded harbor',
+            ],
+            [
+                'old container ship returning to port',
+                'cargo vessel arriving same harbor',
+            ],
+            [
+                'old cargo ship at home harbor',
+                'container vessel final port arrival',
+            ],
+        ]
+        scenes = [
+            _scene(position, narration, queries[position])
+            for position, narration in enumerate(narrations)
+        ]
+        complete_narration = ' '.join(narrations)
+        self.assertEqual(_word_count(complete_narration), 48)
+        package = {
+            'title': 'Bir Konteyner Gemisinin 29 Yılı',
+            'description': 'Kaynaklı bir denizcilik mikro belgeseli.',
+            'thumbnail_text': '29 YIL DENİZDE',
+            'sources': [
+                {
+                    'url': 'https://example.com/ship-history',
+                    'evidence': (
+                        'The vessel entered service in 1997, called at busy '
+                        'ports in multiple countries thousands of times, and '
+                        'returned to the same home port for its final voyage '
+                        '29 years later.'
+                    ),
+                },
+                {
+                    'url': 'https://example.org/ship-capacity',
+                    'evidence': (
+                        'The first route carried 62 containers; lifetime '
+                        'cargo total was 4.8 million tonnes.'
+                    ),
+                },
+            ],
+            'scenes': scenes,
+            'narration': complete_narration,
+            'tts_narration': complete_narration,
+            'visual_queries': [query for row in queries for query in row],
+            'ai_scenes': [],
+            'director_qc': [],
+        }
+        generated = {
+            'scenes': [
+                {
+                    'position': position,
+                    'narration': narration,
+                    'visual_queries': queries[position],
+                    'ai_prompt': None,
+                }
+                for position, narration in enumerate(narrations)
+            ],
+        }
+        client = FakeClient([
+            generated,
+            critic_payload(
+                stock_positions=tuple(range(6)),
+                scene_count=6,
+            ),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+            topic=(
+                'Konuşma metni tam olarak şu altı cümle olsun: '
+                f'“{complete_narration}”'
+            ),
+            content_style='documentary',
+        )
+
+        self.assertEqual(result['narration'], complete_narration)
+        self.assertIn('1997', result['narration'])
+        self.assertIn('62', result['narration'])
+        self.assertIn('4,8 milyon', result['narration'])
+        self.assertIn('29 yıl', result['narration'])
+        self.assertTrue(
+            result['stock_scene_qc']['documentary_broll_semantics']
+        )
+        self.assertEqual(
+            result['stock_scene_qc']['content_style'],
+            'documentary',
+        )
+        writer_input = client.responses.calls[0]['input']
+        critic_input = client.responses.calls[1]['input']
+        self.assertIn('DOCUMENTARY B-ROLL EXCEPTION', writer_input)
+        self.assertIn(
+            'without making the numeral readable in the clip',
+            writer_input,
+        )
+        self.assertIn('DOCUMENTARY B-ROLL SEMANTICS ARE ACTIVE', critic_input)
+        self.assertIn(
+            'exact value is explicitly supported by supplied source evidence',
+            critic_input,
+        )
+        self.assertIn('wrong or contradictory subject', critic_input)
+        self.assertIn('generic wallpaper', critic_input)
+
+    def test_documentary_broll_exception_never_overrides_critic_failures(self):
+        failure_matrix = {
+            'unsupported_fact': ['adds_no_new_fact'],
+            'wrong_or_contradictory_era': ['queries_match_same_action'],
+            'irrelevant_wallpaper': ['preserves_story_role'],
+            'invisible_causal_mechanism': [
+                'all_spoken_meaning_visible',
+                'no_invisible_or_abstract_claim',
+            ],
+        }
+
+        for case, failed_checks in failure_matrix.items():
+            with self.subTest(case=case):
+                rejected = critic_payload({0: failed_checks})
+                client = FakeClient([
+                    valid_generator_payload(),
+                    copy.deepcopy(rejected),
+                    valid_generator_payload((0,)),
+                    copy.deepcopy(rejected),
+                ])
+
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    'fully stock-safe short-preview scenes',
+                ):
+                    _repair_short_stock_scenes(
+                        client,
+                        make_short_package(),
+                        'Turkish',
+                        0.5,
+                        content_style='documentary',
+                    )
+
+                self.assertEqual(len(client.responses.calls), 4)
+                retry_input = client.responses.calls[2]['input']
+                for failed_check in failed_checks:
+                    self.assertIn(failed_check, retry_input)
+
+    def test_non_documentary_style_keeps_literal_stock_semantics(self):
+        client = FakeClient([
+            valid_generator_payload(),
+            critic_payload(),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+            content_style='technology',
+        )
+
+        self.assertFalse(
+            result['stock_scene_qc']['documentary_broll_semantics']
+        )
+        self.assertIn(
+            'NO DOCUMENTARY B-ROLL EXCEPTION: every spoken claim must be '
+            'directly visible in the same stock clip',
+            client.responses.calls[0]['input'],
+        )
+        self.assertIn(
+            'DOCUMENTARY B-ROLL SEMANTICS ARE NOT ACTIVE',
+            client.responses.calls[1]['input'],
+        )
+
     def test_ordinary_quoted_forbidden_examples_are_not_narration_locks(self):
         brief = (
             'Kıyafet ve kamera bilgisini seslendirme; örneğin '
@@ -2949,6 +3142,13 @@ class ShortStockRepairTests(unittest.TestCase):
 
         self.assertEqual(run_director.call_count, 2)
         self.assertEqual(repair_stock_scenes.call_count, 2)
+        self.assertEqual(
+            [
+                call.kwargs['content_style']
+                for call in repair_stock_scenes.call_args_list
+            ],
+            ['documentary', 'documentary'],
+        )
         second_review = repair_stock_scenes.call_args_list[1]
         self.assertFalse(
             second_review.kwargs['allow_natural_language_repair']
