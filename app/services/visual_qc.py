@@ -30,6 +30,11 @@ _EVIDENCE_BOOLEAN_FIELDS = (
     'spoken_action_visible',
     'physical_causality_applicable',
     'target_contact_visible',
+    'connection_action_applicable',
+    'moving_connector_visible',
+    'receiving_interface_visible',
+    'connector_visibly_joins_target',
+    'connection_persists_after_release',
     'state_change_applicable',
     'state_changed_after_action',
     'final_state_persists',
@@ -39,9 +44,41 @@ _EVIDENCE_BOOLEAN_FIELDS = (
 )
 
 
+_CONNECTION_ACTION_PATTERN = re.compile(
+    r'\b(?:insert(?:s|ed|ing)?|plug(?:s|ged|ging)?|attach(?:es|ed|ing)?|'
+    r'fasten(?:s|ed|ing)?|buckle(?:s|d|ing)?|latch(?:es|ed|ing)?|'
+    r'connect(?:s|ed|ing)?)\b|'
+    r'\b(?:toka(?:ya|yı|yi|sı|si)?|soket(?:e|i)?|fiş(?:e|i)?|yuva(?:ya|yı)?|'
+    r'kemer(?:i|ini)?)\b.{0,48}\b(?:tak(?:ıyor|iyor|mak|ar|tı|ti|ıl|il)|'
+    r'sok(?:uyor|mak|ar|tu|ul)|bağla(?:r|mak|dı|nıyor)?|'
+    r'yerleştir(?:iyor|mek|ir|di)?|kilitle(?:r|mek|di|niyor)?)\b',
+    flags=re.IGNORECASE,
+)
+
+
+def _connection_action_required(scene: dict) -> bool:
+    text = ' '.join(
+        [
+            str(scene.get('narration') or ''),
+            str(scene.get('ai_prompt') or ''),
+            *[
+                str(query or '')
+                for query in (
+                    [scene.get('visual_queries')]
+                    if isinstance(scene.get('visual_queries'), str)
+                    else scene.get('visual_queries') or []
+                )
+            ],
+        ]
+    )
+    return bool(_CONNECTION_ACTION_PATTERN.search(text))
+
+
 def _normalized_evidence(
     review: dict,
     available_moment_indices: set[int],
+    *,
+    connection_required: bool = False,
 ) -> tuple[dict, bool] | None:
     values = {field: review.get(field) for field in _EVIDENCE_BOOLEAN_FIELDS}
     if any(type(value) is not bool for value in values.values()):
@@ -61,10 +98,15 @@ def _normalized_evidence(
     if (
         values['physical_causality_applicable']
         or values['state_change_applicable']
+        or connection_required
+        or values['connection_action_applicable']
     ):
         required_moments = 3
     elif values['location_continuity_applicable']:
         required_moments = 2
+    connection_applicable = bool(
+        connection_required or values['connection_action_applicable']
+    )
     gate_passed = bool(
         values['subject_visible']
         and values['spoken_action_visible']
@@ -72,6 +114,16 @@ def _normalized_evidence(
         and (
             not values['physical_causality_applicable']
             or values['target_contact_visible']
+        )
+        and (
+            not connection_applicable
+            or (
+                values['connection_action_applicable']
+                and values['moving_connector_visible']
+                and values['receiving_interface_visible']
+                and values['connector_visibly_joins_target']
+                and values['connection_persists_after_release']
+            )
         )
         and (
             not values['state_change_applicable']
@@ -88,6 +140,7 @@ def _normalized_evidence(
     )
     return {
         **values,
+        'connection_action_applicable': connection_applicable,
         'evidence_moment_indices': moments,
     }, gate_passed
 
@@ -514,6 +567,7 @@ def review_scene_visuals(
             'Generic, metaphorically loose or keyword-only footage must score poorly. The named subject and the spoken action must both be visible. '
             'Treat explicit indoor/outdoor state, destination type, viewpoint and direction of travel as literal requirements; a station, mall or transit concourse cannot substitute for an exterior office approach. '
             'For any physical cause such as cover, block, press, insert, unplug, remove or reveal, require timestamped visual proof of the target before contact, real contact or occlusion at the named target, and the result only after that contact. A hand merely near, below or beside the target fails. '
+            'For every narrated insertion, fastening, latching, plugging, buckling or attachment, set connection_action_applicable=true. The distinct moving connector and the receiving interface must both be visibly identifiable before contact; their actual joining must remain visible, and the completed connection must persist after the hand releases. A loose strap, cable, cover, hand or blur hiding the interface is not proof and must fail. '
             'For a display, light or other state change, compare before and after moments and require the affected element itself to change while unrelated exposure remains stable; never infer the change from the narration or prompt. '
             'The final state must persist through the end of the shot. Any unexplained reset, repeated action, return to an earlier position, or visible loop must score 40 or lower. '
             'Require adjacent scenes to preserve spatial continuity unless the narration explicitly establishes a move: interior/exterior, location class, architecture, light and travel direction must remain compatible. '
@@ -525,7 +579,7 @@ def review_scene_visuals(
             'Never approve digital glitch/noise for OLED pixels, programming tracebacks for QR error correction, fireworks for camera burst, finance charts for audio codecs, a skyline for network optimization, random typing for encryption, or unrelated towers for indoor GPS. '
             'If the sampled moments are nearly identical, the clip is effectively static; any shot likely to remain static for more than six seconds must score 40 or lower. '
             'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
-            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"evidence_moment_indices\":[0]}]}'
+            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"evidence_moment_indices\":[0]}]}'
         ),
     }]
     gemini_parts: list[dict] = []
@@ -802,6 +856,9 @@ def review_scene_visuals(
             evidence_result = _normalized_evidence(
                 review,
                 available_moments[scene_index][best_candidate_index],
+                connection_required=_connection_action_required(
+                    scenes[scene_index]
+                ),
             )
             if evidence_result is None:
                 continue
@@ -840,6 +897,9 @@ def review_scene_visuals(
         evidence_result = _normalized_evidence(
             review,
             available_moments[scene_index][best_candidate_index],
+            connection_required=_connection_action_required(
+                scenes[scene_index]
+            ),
         )
         evidence, evidence_gate_passed = (
             evidence_result
