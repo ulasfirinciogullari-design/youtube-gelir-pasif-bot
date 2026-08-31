@@ -170,6 +170,68 @@ def _explicit_scene_count_from_brief(brief: str) -> int | None:
     return requested
 
 
+def _has_explicit_technical_insert_return_contract(
+    brief: str,
+    scenes: list[dict],
+) -> bool:
+    """Recognize only a numbered AI macro-to-same-setting ending contract."""
+    scene_count = len(scenes)
+    if _explicit_scene_count_from_brief(brief) != scene_count:
+        return False
+
+    numbered_markers = list(re.finditer(
+        r'(?m)^\s*(?P<number>\d{1,2})[.)]\s*',
+        str(brief or ''),
+    ))
+    sections: dict[int, str] = {}
+    for index, marker in enumerate(numbered_markers):
+        number = int(marker.group('number'))
+        end = (
+            numbered_markers[index + 1].start()
+            if index + 1 < len(numbered_markers)
+            else len(str(brief or ''))
+        )
+        if number in sections:
+            return False
+        sections[number] = str(brief or '')[marker.end():end]
+
+    if set(sections) != set(range(1, scene_count + 1)):
+        return False
+
+    def fold(value: str) -> str:
+        decomposed = unicodedata.normalize('NFKD', value.casefold())
+        return ''.join(
+            character
+            for character in decomposed
+            if not unicodedata.combining(character)
+        )
+
+    penultimate = fold(sections[scene_count - 1])
+    final = fold(sections[scene_count])
+    if not all(isinstance(scene, dict) for scene in scenes[-2:]):
+        return False
+    penultimate_prompt = fold(str(scenes[-2].get('ai_prompt') or ''))
+    final_prompt = fold(str(scenes[-1].get('ai_prompt') or ''))
+    ai_route = re.compile(r'^\s*ai\s*:', flags=re.IGNORECASE)
+    technical_insert = re.compile(
+        r'\b(?:macro|makro|cutaway|cross[ -]?section|kesit|mechanism|'
+        r'mekanizma|retractor|makara|internal|inside|icindeki|icinde)\b',
+        flags=re.IGNORECASE,
+    )
+    explicit_return = re.compile(
+        r'\b(?:same|ayni|return\w*|back\s+to|geri\s+don\w*)\b',
+        flags=re.IGNORECASE,
+    )
+    return bool(
+        ai_route.search(penultimate)
+        and ai_route.search(final)
+        and technical_insert.search(penultimate)
+        and technical_insert.search(penultimate_prompt)
+        and explicit_return.search(final)
+        and explicit_return.search(final_prompt)
+    )
+
+
 def _story_brief_for_qc(brief: str) -> str:
     """Keep the complete user brief available to every pre-media quality gate."""
     value = str(brief or '').strip()
@@ -619,7 +681,7 @@ def _short_story_quality_issues(
 
 
 _SHORT_STORY_QC_VERSION = 3
-_STOCK_SCENE_QC_VERSION = 5
+_STOCK_SCENE_QC_VERSION = 6
 _STORY_STOCK_CONTRACT = 'openai-story-stock-v2'
 
 
@@ -1131,6 +1193,12 @@ def _repair_short_stock_scenes(
     scenes = package.get('scenes') or []
     if len(scenes) < 3:
         return package
+    explicit_technical_insert_return_contract = (
+        _has_explicit_technical_insert_return_contract(
+            requested_brief,
+            scenes,
+        )
+    )
 
     exact_narration_lock = _exact_narration_lock_from_brief(requested_brief)
     locked_narration_by_position: dict[int, str] = {}
@@ -1589,6 +1657,7 @@ NON-NEGOTIABLE RULES:
             'continuous_visible_action_chain',
             'same_actor_or_object_thread',
             'everyday_benefit_visible',
+            'explicit_technical_insert_return_contract_satisfied',
         }
         critic_boolean_keys = {
             'single_sentence',
@@ -1696,6 +1765,7 @@ Review ending_pair jointly. The positions must match the supplied final two inde
 - continuous_visible_action_chain: the payoff is the immediately following visible action, seconds later, with no exit, travel, new room, new day or time-of-day jump.
 - same_actor_or_object_thread: the same person or object carries both ending beats.
 - everyday_benefit_visible: the final action visibly completes the preceding action and shows the benefit.
+- explicit_technical_insert_return_contract_satisfied: true when requested_topic has no explicit numbered technical-insert return contract. When requested_topic does explicitly number and AI-route the penultimate beat as a technical macro, cutaway, cross-section or inside-the-mechanism insert and the final beat straight back to the same enclosing ordinary setting, set this true only if the candidate obeys that exact route, the insert reveals the mechanism of the same recurring object, and there is no travel, new room, new day or unrelated venue. Otherwise false. A satisfied narrow insert may have same_immediate_location=false because the camera temporarily enters the object; ordinary location changes, implicit routes and generic thematic continuity never qualify for the exception.
 location_anchor must name the exact shared micro-location; reason must cite concrete evidence.
 
 For EACH requested position, set every boolean independently. If evidence is ambiguous, set it false.
@@ -2008,6 +2078,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
         ending_failed_checks: list[str] = []
         ending_reason = ''
         ending_location_anchor = ''
+        technical_insert_return_exception_applied = False
         if not critic_global_error:
             ending_failed_checks = sorted(
                 key
@@ -2023,6 +2094,15 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 ending_reason = 'critic omitted ending-pair evidence'
             if not ending_location_anchor:
                 ending_failed_checks.append('missing_location_anchor')
+            if (
+                ending_failed_checks == ['same_immediate_location']
+                and explicit_technical_insert_return_contract
+                and ending_pair.get(
+                    'explicit_technical_insert_return_contract_satisfied'
+                ) is True
+            ):
+                ending_failed_checks = []
+                technical_insert_return_exception_applied = True
             if ending_failed_checks:
                 pair_failure = (
                     f'ending pair: {", ".join(ending_failed_checks)}; '
@@ -2090,6 +2170,13 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                         settings,
                         'gemini_model',
                         GEMINI_DEFAULT_MODEL,
+                    ),
+                    allowed_false_paths=(
+                        frozenset({
+                            '$.ending_pair.same_immediate_location',
+                        })
+                        if technical_insert_return_exception_applied
+                        else frozenset()
                     ),
                 )
                 if gemini_attestation is not None:
@@ -2207,6 +2294,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 'ending_pair_review': {
                     'accepted': True,
                     'positions': ending_positions,
+                    'technical_insert_return_exception': (
+                        technical_insert_return_exception_applied
+                    ),
                     'location_anchor': ending_location_anchor[:120],
                     'reason': ending_reason[:180],
                 },
@@ -2703,4 +2793,3 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         }
         out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
     return out
-
