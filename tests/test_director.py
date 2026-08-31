@@ -207,7 +207,7 @@ def make_coherent_battery_package():
         ),
         _scene(
             5,
-            'Genç aynı otobüs durağında telefonunu yeniden kullanır.',
+            'Genç aynı otobüs durağında açılan telefon ekranına bakar.',
             ['young man uses phone at bus stop', 'commuter checks working phone outside'],
         ),
     ]
@@ -248,7 +248,7 @@ def make_ai_first_five_scene_package():
     scenes = [
         _scene(
             0,
-            'Elif aynı otobüs durağında kapanan telefon ekranına bakar.',
+            'Elif soğuk otobüs durağında kapanan telefon ekranına bakar.',
             ['woman looks at phone at bus stop', 'woman checks phone at winter bus stop'],
         ),
         _scene(
@@ -259,12 +259,12 @@ def make_ai_first_five_scene_package():
         ),
         _scene(
             2,
-            'Elif telefonu aynı otobüs durağında montunun içine koyar.',
+            'Elif telefonu soğuk otobüs durağında montunun içine koyar.',
             ['woman puts phone inside coat at bus stop', 'commuter pockets phone at winter bus stop'],
         ),
         _scene(
             3,
-            'Elif aynı otobüs durağı bankında telefonunu cebinden yavaşça çıkarır.',
+            'Elif soğuk otobüs durağı bankında telefonunu cebinden yavaşça çıkarır.',
             ['woman removes phone at bus stop bench', 'commuter takes phone from coat by bench'],
             'same woman slowly removes her phone beside the same winter bus stop bench',
         ),
@@ -321,7 +321,7 @@ def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
         },
         4: {
             'position': 4,
-            'narration': 'Kasiyer aynı kafe tezgâhında müşteriye sıcak kahveyi uzatır.',
+            'narration': 'Kasiyer kafe tezgâhında müşteriye sıcak kahve fincanını uzatır.',
             'visual_queries': [
                 'barista hands customer coffee inside cafe',
                 'cafe cashier hands hot coffee to customer',
@@ -360,7 +360,7 @@ def valid_ai_first_generator_payload():
             {
                 'position': 0,
                 'narration': (
-                    'Elif aynı otobüs durağında kapanan telefon ekranına bakar.'
+                    'Elif soğuk otobüs durağında kapanan telefon ekranına bakar.'
                 ),
                 'visual_queries': [
                     'woman looks at phone at bus stop',
@@ -371,7 +371,7 @@ def valid_ai_first_generator_payload():
             {
                 'position': 2,
                 'narration': (
-                    'Elif telefonu aynı otobüs durağında montunun içine koyar.'
+                    'Elif telefonu soğuk otobüs durağında montunun içine koyar.'
                 ),
                 'visual_queries': [
                     'woman puts phone inside coat at bus stop',
@@ -560,7 +560,7 @@ class ShortStockRepairTests(unittest.TestCase):
             'Genç adam evde telefonunu masadan alır.'
         )
         generated['scenes'][1]['narration'] = (
-            'Kasiyer aynı kafe tezgâhında müşteriye sıcak kahve '
+            'Kasiyer kafe tezgâhında bekleyen müşteriye sıcak kahve '
             'fincanını uzatır.'
         )
         generated['scenes'][2]['narration'] = (
@@ -629,7 +629,7 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(len(client.responses.calls), 4)
         second_generator_input = client.responses.calls[2]['input']
         self.assertIn(
-            '"previous_narration": "Kasiyer aynı kafe tezgâhında müşteriye sıcak kahveyi uzatır."',
+            '"previous_narration": "Kasiyer kafe tezgâhında müşteriye sıcak kahve fincanını uzatır."',
             second_generator_input,
         )
         self.assertNotIn(
@@ -641,6 +641,97 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(result['scenes'][5]['narration'], second['scenes'][0]['narration'])
         self.assertEqual(result['stock_scene_qc']['generator_calls'], 2)
         self.assertEqual(result['stock_scene_qc']['critic_calls'], 2)
+
+    def test_grounded_same_micro_location_uses_one_shared_narrow_rule(self):
+        client = FakeClient([
+            valid_generator_payload(),
+            critic_payload(),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+        )
+
+        self.assertIn(
+            'kafe tezgâhında',
+            result['scenes'][4]['narration'],
+        )
+        self.assertIn(
+            'aynı kafe tezgâhında',
+            result['scenes'][5]['narration'],
+        )
+        for prompt in (
+            client.responses.calls[0]['input'],
+            client.responses.calls[1]['input'],
+        ):
+            self.assertIn(
+                'only adjacent-continuity deictic exception is literal '
+                '"same/aynı"',
+                prompt,
+            )
+            self.assertIn(
+                'immediately preceding scene explicitly establishes a '
+                'compatible concrete anchor',
+                prompt,
+            )
+            self.assertIn(
+                '"same/aynı" is not evidence by itself',
+                prompt,
+            )
+            self.assertIn('"there/orada"', prompt)
+            self.assertIn('"this time/bu kez"', prompt)
+            self.assertIn('mental states', prompt)
+
+    def test_ungrounded_same_location_and_unrelated_claim_fail_closed(self):
+        first = valid_generator_payload()
+        first['scenes'][1]['narration'] = (
+            'Kasiyer mutfakta müşteriye sıcak kahve fincanını uzatır.'
+        )
+        first['scenes'][1]['visual_queries'] = [
+            'barista hands customer coffee in kitchen',
+            'server gives coffee inside kitchen',
+        ]
+        first['scenes'][2]['narration'] = (
+            'Müşteri aynı kafe tezgâhında kahvenin faydasını düşünür.'
+        )
+        retry = {
+            'scenes': copy.deepcopy(first['scenes'][1:]),
+        }
+        rejected = critic_payload(
+            {
+                5: [
+                    'all_spoken_meaning_visible',
+                    'no_invisible_or_abstract_claim',
+                ],
+            },
+            ending_failures=['same_immediate_location'],
+        )
+        client = FakeClient([
+            first,
+            rejected,
+            retry,
+            rejected,
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'fully stock-safe short-preview scenes',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(len(client.responses.calls), 4)
+        self.assertIn(
+            'ending pair: same_immediate_location',
+            client.responses.calls[2]['input'],
+        )
 
     def test_ending_pair_failure_rewrites_both_final_positions(self):
         client = FakeClient([
@@ -861,6 +952,28 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertNotIn(secret, request.args[0])
         self.assertNotIn(secret, json.dumps(request.kwargs['json']))
         self.assertIs(request.kwargs['json']['store'], False)
+        trusted_instruction = request.kwargs['json'][
+            'systemInstruction'
+        ]['parts'][0]['text']
+        self.assertIn(
+            'only adjacent-continuity deictic exception is literal '
+            '"same/aynı"',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'immediately preceding scene explicitly establishes a '
+            'compatible concrete anchor',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'ending_pair.same_immediate_location may be true only when both '
+            'adjacent beats and their queries contain compatible concrete '
+            'micro-location anchors',
+            trusted_instruction,
+        )
+        self.assertIn('"there/orada"', trusted_instruction)
+        self.assertIn('"this time/bu kez"', trusted_instruction)
+        self.assertIn('"again/yeniden"', trusted_instruction)
         self.assertEqual(
             request.kwargs['json']['generationConfig']['maxOutputTokens'],
             4096,
