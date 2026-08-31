@@ -46,6 +46,7 @@ STAGE_LABELS = {
     'director_qc': 'Senaryo yönetmeni',
     'approved_plan': 'Onaylı storyboard',
     'voice_and_visuals': 'Ses ve görsel toplama',
+    'audio_qc': 'Ses ve telaffuz denetimi',
     'visual_qc': 'Görsel kalite kontrolü',
     'audio_design': 'Müzik ve ses tasarımı',
     'ai_scene': 'Özgün AI sahneleri',
