@@ -3636,6 +3636,34 @@ class ShortSpokenQualityTests(unittest.TestCase):
         self.assertEqual(len(issues), 1)
         self.assertIn('without a stable visible result', issues[0])
 
+    def test_prior_seatbelt_context_still_requires_safe_final_payoff(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Emniyet kemeri sert çekilince makaranın içinde '
+                        'kilitleniyor.'
+                    ),
+                    'ai_prompt': (
+                        'Macro view of a seat-belt retractor pawl stopping '
+                        'the spool.'
+                    ),
+                },
+                {
+                    'narration': 'Sürücü artık güvenle yola hazırlanıyor.',
+                    'ai_prompt': (
+                        'Same driver places both hands on the steering wheel.'
+                    ),
+                },
+            ],
+        }
+
+        issues = _short_story_quality_issues(package, 'Turkish')
+
+        self.assertEqual(len(issues), 1)
+        self.assertIn('scene 1', issues[0])
+        self.assertIn('without a stable visible result', issues[0])
+
     def test_unrelated_already_fastened_phrase_cannot_approve_payoff(self):
         package = {
             'scenes': [
