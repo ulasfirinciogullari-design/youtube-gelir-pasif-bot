@@ -2,7 +2,9 @@ import unittest
 
 from app.services.visual_routing import (
     SHORT_PREVIEW_RUNWAY_CAP,
+    SHORT_PREVIEW_RUNWAY_REPAIR_CAP,
     preview_authored_ai_limit,
+    preview_runway_repair_indices,
     should_rank_runway_candidate,
 )
 
@@ -68,6 +70,71 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
                     )
                 )
 
+    def test_final_ai_repairs_are_evidence_led_and_bounded(self):
+        scenes = [
+            {'ai_prompt': 'scene zero'},
+            {'ai_prompt': None},
+            {'ai_prompt': 'scene two'},
+            {'ai_prompt': 'scene three'},
+        ]
+        self.assertEqual(SHORT_PREVIEW_RUNWAY_REPAIR_CAP, 2)
+        self.assertEqual(
+            preview_runway_repair_indices(
+                {'mode': 'preview', 'visual_mix': 'ai_first'},
+                0.5,
+                [0, 1, 2, 3],
+                scenes,
+                {0, 2, 3},
+                {
+                    0: {'score': 40},
+                    1: {'score': 20},
+                    2: {'score': 30},
+                    3: {'score': 50},
+                },
+            ),
+            [2, 0],
+        )
+
+    def test_repairs_never_expand_beyond_short_preview_or_paid_submissions(self):
+        scenes = [{'ai_prompt': 'scene zero'}, {'ai_prompt': 'scene one'}]
+        self.assertEqual(
+            preview_runway_repair_indices(
+                {'mode': 'preview'},
+                0.5,
+                [0, 1],
+                scenes,
+                {1},
+                {0: {'score': 20}, 1: {'score': 40}},
+            ),
+            [1],
+        )
+        self.assertEqual(
+            preview_runway_repair_indices(
+                {'mode': 'production'},
+                0.5,
+                [0, 1],
+                scenes,
+                {0, 1},
+                {0: {'score': 20}, 1: {'score': 40}},
+            ),
+            [],
+        )
+
+    def test_repair_requires_a_real_final_review_and_successful_base_clip(self):
+        scenes = [{'ai_prompt': 'scene zero'}, {'ai_prompt': 'scene one'}]
+        self.assertEqual(
+            preview_runway_repair_indices(
+                {'mode': 'preview'},
+                0.5,
+                [0, 1],
+                scenes,
+                {0},
+                {1: {'score': 10}},
+            ),
+            [],
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
+
