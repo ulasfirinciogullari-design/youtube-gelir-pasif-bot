@@ -26,8 +26,8 @@ class _FakeVoiceResponse:
 
 class TurkishVoiceNormalizationTests(unittest.TestCase):
     def test_short_preview_uses_clearer_deliberate_voice_speed(self):
-        self.assertEqual(_voice_speed(30), 0.84)
-        self.assertEqual(_voice_speed(40), 0.84)
+        self.assertEqual(_voice_speed(30), 0.92)
+        self.assertEqual(_voice_speed(40), 0.92)
         self.assertEqual(_voice_speed(60), 1.01)
         self.assertEqual(_voice_speed(None), 1.01)
 
@@ -90,3 +90,4 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
