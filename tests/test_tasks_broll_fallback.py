@@ -1,4 +1,5 @@
 import ast
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 import re
 import unittest
@@ -42,6 +43,42 @@ def _load_retry_boundary():
     return namespace
 
 
+def _load_search_boundary():
+    tree = ast.parse(
+        SOURCE_PATH.read_text(encoding='utf-8'),
+        filename=str(SOURCE_PATH),
+    )
+    definitions = [
+        node
+        for node in tree.body
+        if (
+            isinstance(node, ast.ClassDef)
+            and node.name == 'PexelsRetryError'
+        ) or (
+            isinstance(node, ast.FunctionDef)
+            and node.name == '_download_ranked_broll_candidates'
+        )
+    ]
+    namespace = {
+        'Path': Path,
+        're': re,
+        'ThreadPoolExecutor': ThreadPoolExecutor,
+        'as_completed': as_completed,
+        'find_broll': Mock(),
+        '_select_ranked_broll_candidates': Mock(return_value=[]),
+        'download_broll': Mock(),
+    }
+    exec(
+        compile(
+            ast.Module(body=definitions, type_ignores=[]),
+            str(SOURCE_PATH),
+            'exec',
+        ),
+        namespace,
+    )
+    return namespace
+
+
 def _retry_call(retry_bad_scene, **kwargs):
     return retry_bad_scene(
         2,
@@ -54,6 +91,53 @@ def _retry_call(retry_bad_scene, **kwargs):
 
 
 class ShortPreviewBrollFallbackTests(unittest.TestCase):
+    def test_parallel_search_burst_gets_one_sequential_second_chance(self):
+        namespace = _load_search_boundary()
+        find_broll = Mock(side_effect=[
+            RuntimeError('parallel disconnect one'),
+            RuntimeError('parallel disconnect two'),
+            [],
+            [],
+        ])
+        namespace['find_broll'] = find_broll
+
+        result = namespace['_download_ranked_broll_candidates'](
+            2,
+            ['container ship at sea', 'cargo vessel ocean aerial'],
+            set(),
+            Path('/tmp/test-pexels-search-fallback'),
+            [],
+            file_prefix='stock',
+            selected_by='test',
+            max_candidates=3,
+            search_limit=18,
+        )
+
+        self.assertEqual(result, [])
+        self.assertEqual(find_broll.call_count, 4)
+        namespace['_select_ranked_broll_candidates'].assert_called_once()
+
+    def test_persistent_parallel_and_sequential_search_failure_stays_strict(self):
+        namespace = _load_search_boundary()
+        find_broll = Mock(side_effect=RuntimeError('provider unavailable'))
+        namespace['find_broll'] = find_broll
+
+        with self.assertRaises(namespace['PexelsRetryError']) as caught:
+            namespace['_download_ranked_broll_candidates'](
+                2,
+                ['container ship at sea', 'cargo vessel ocean aerial'],
+                set(),
+                Path('/tmp/test-pexels-search-fallback'),
+                [],
+                file_prefix='stock',
+                selected_by='test',
+                max_candidates=3,
+                search_limit=18,
+            )
+
+        self.assertEqual(find_broll.call_count, 4)
+        self.assertIsInstance(caught.exception.__cause__, RuntimeError)
+
     def test_empty_authored_ai_scene_tolerates_pexels_evidence_failure(self):
         namespace = _load_retry_boundary()
         pexels_error = namespace['PexelsRetryError'](
