@@ -28,6 +28,7 @@ config_stub.settings = SimpleNamespace(
 sys.modules['app.config'] = config_stub
 
 import app.services.director as director_module
+director_module.settings = config_stub.settings
 from app.services.director import (
     _NaturalSpokenLanguageRepairRequired,
     _WholeStoryRepairRequired,
@@ -504,10 +505,34 @@ class ExplicitSceneCountTests(unittest.TestCase):
             director_module._explicit_scene_count_from_brief(
                 'Tam beş sahne yaz, fakat exactly 6 scenes return.'
             )
-        with self.assertRaisesRegex(RuntimeError, 'between 3 and 32'):
+        with self.assertRaisesRegex(RuntimeError, 'between 3 and 70'):
             director_module._explicit_scene_count_from_brief(
                 'Tam iki sahne kullan.'
             )
+        self.assertEqual(
+            director_module._explicit_scene_count_from_brief(
+                'Return exactly 35 scenes.'
+            ),
+            35,
+        )
+        for unsupported in (71, 100):
+            with self.subTest(unsupported=unsupported), self.assertRaisesRegex(
+                RuntimeError,
+                'between 3 and 70',
+            ):
+                director_module._explicit_scene_count_from_brief(
+                    f'Return exactly {unsupported} scenes.'
+                )
+
+    def test_production_sized_exact_narration_lock_is_supported(self):
+        locked = ' '.join(
+            'A person performs one visible action nearby.'
+            for _index in range(35)
+        )
+        self.assertEqual(
+            director_module._infer_exact_narration_scene_count(locked),
+            35,
+        )
 
     def test_negated_counts_are_ignored_and_turkish_uppercase_is_normalized(self):
         self.assertIsNone(
@@ -663,6 +688,67 @@ class ExplicitSceneCountTests(unittest.TestCase):
         self.assertIn('purely visual production metadata out of speech', prompt)
         self.assertIn('“koyu lacivert tişörtlü Mert”', prompt)
         self.assertIn('“arkadan izliyor”', prompt)
+
+    def test_production_scene_target_is_seven_per_minute_for_every_pace_and_capped(self):
+        for pace in ('calm', 'balanced', 'dynamic'):
+            with self.subTest(pace=pace):
+                self.assertEqual(
+                    director_module._target_scene_count(2.0, pace),
+                    14,
+                )
+                self.assertEqual(
+                    director_module._target_scene_count(5.0, pace),
+                    35,
+                )
+        self.assertEqual(
+            director_module._target_scene_count(8.0, 'balanced'),
+            56,
+        )
+        self.assertEqual(
+            director_module._target_scene_count(10.0, 'calm'),
+            70,
+        )
+        self.assertEqual(
+            director_module._target_scene_count(20.0, 'dynamic'),
+            70,
+        )
+
+    def test_production_director_prompt_is_single_pass_and_keeps_exact_count(self):
+        package = make_ai_first_five_scene_package()
+        payload = {
+            'title': package['title'],
+            'thumbnail_text': package['thumbnail_text'],
+            'description': package['description'],
+            'scenes': copy.deepcopy(package['scenes']),
+            'qc_summary': [],
+        }
+        client = FakeClient([payload])
+
+        director_module._run_director(
+            client,
+            package,
+            'Return exactly 5 scenes about one visible process.',
+            'Turkish',
+            5.0,
+            500,
+            430,
+            530,
+            5,
+            {'mode': 'production', 'pace': 'calm'},
+            exact_scene_count=True,
+        )
+
+        prompt = client.responses.calls[0]['input']
+        self.assertIn(
+            'USER-BRIEF HARD CONSTRAINT: return exactly 5 scenes',
+            prompt,
+        )
+        self.assertIn('preferably keep each scene narration at 5-14 words', prompt)
+        self.assertIn('one continuous 5-10-second shot', prompt)
+        self.assertIn(
+            "never overrides a user brief's explicit exact scene count",
+            prompt,
+        )
 
     def test_six_scene_output_for_explicit_five_is_repaired_then_rejected_before_critic(self):
         package = make_coherent_battery_package()
