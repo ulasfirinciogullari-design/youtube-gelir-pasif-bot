@@ -655,6 +655,7 @@ def _repair_short_stock_scenes(
         return {
             'narration': narration,
             'visual_queries': queries,
+            'ai_prompt': None,
         }, ''
 
     accepted_rows: dict[int, dict] = {}
@@ -897,6 +898,16 @@ NON-NEGOTIABLE RULES:
                     accepted_rows[position]['narration']
                     if position in accepted_rows
                     else scene.get('narration')
+                ),
+                'visual_queries': (
+                    accepted_rows[position]['visual_queries']
+                    if position in accepted_rows
+                    else scene.get('visual_queries') or []
+                ),
+                'ai_prompt': (
+                    accepted_rows[position]['ai_prompt']
+                    if position in accepted_rows
+                    else scene.get('ai_prompt')
                 ),
             }
             for position, scene in enumerate(scenes)
