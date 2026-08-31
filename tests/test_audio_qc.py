@@ -291,6 +291,170 @@ class AudioQCTests(unittest.TestCase):
         self.assertEqual(result['provider'], 'elevenlabs')
         self.assertTrue(result['pass'])
 
+    def test_openai_nonempty_transcript_requires_word_timestamps(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            for words in (None, []):
+                with self.subTest(words=words):
+                    payload = {
+                        'text': 'Beklenen anlat\u0131m',
+                        'language': 'turkish',
+                    }
+                    if words is not None:
+                        payload['words'] = words
+                    with (
+                        patch.object(
+                            audio_qc.settings,
+                            'openai_api_key',
+                            'openai-key',
+                        ),
+                        patch.object(
+                            audio_qc.settings,
+                            'elevenlabs_api_key',
+                            '',
+                        ),
+                        patch.object(
+                            audio_qc.httpx,
+                            'post',
+                            return_value=_Response(payload),
+                        ),
+                    ):
+                        with self.assertRaises(
+                            audio_qc.AudioQCError
+                        ) as caught:
+                            audio_qc.verify_audio_narration(
+                                audio_path,
+                                'Beklenen anlat\u0131m',
+                            )
+
+                    self.assertEqual(
+                        str(caught.exception),
+                        'OpenAI speech-to-text returned incomplete word '
+                        'timestamps',
+                    )
+
+    def test_openai_mismatch_uses_exact_elevenlabs_fallback(self):
+        responses = iter([
+            _Response({
+                'text': 'Merhaba b\u00fcy\u00fck d\u00fcnya',
+                'language': 'turkish',
+                'words': _openai_words('Merhaba', 'b\u00fcy\u00fck', 'd\u00fcnya'),
+            }),
+            _Response({
+                'text': 'Merhaba g\u00fczel d\u00fcnya',
+                'language_code': 'tur',
+                'words': _words('Merhaba', 'g\u00fczel', 'd\u00fcnya'),
+            }),
+        ])
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'openai-key'),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'eleven-key',
+                ),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    side_effect=lambda *args, **kwargs: next(responses),
+                ),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Merhaba g\u00fczel d\u00fcnya',
+                )
+
+        self.assertEqual(result['provider'], 'elevenlabs')
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['score'], 100.0)
+
+    def test_openai_mismatch_survives_elevenlabs_provider_error(self):
+        fallback_secret = 'never-leak-fallback-error'
+
+        def fake_post(url, **kwargs):
+            if url == audio_qc.OPENAI_AUDIO_TRANSCRIPTIONS_URL:
+                return _Response({
+                    'text': 'Merhaba b\u00fcy\u00fck d\u00fcnya',
+                    'language': 'turkish',
+                    'words': _openai_words(
+                        'Merhaba',
+                        'b\u00fcy\u00fck',
+                        'd\u00fcnya',
+                    ),
+                })
+            raise RuntimeError(f'fallback failed: {fallback_secret}')
+
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'openai-key'),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'eleven-key',
+                ),
+                patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Merhaba g\u00fczel d\u00fcnya',
+                )
+
+        self.assertEqual(result['provider'], 'openai')
+        self.assertFalse(result['pass'])
+        self.assertEqual(
+            result['mismatch_details']['missing_words'],
+            ['g\u00fczel'],
+        )
+        self.assertEqual(
+            result['mismatch_details']['unexpected_words'],
+            ['b\u00fcy\u00fck'],
+        )
+        self.assertNotIn(fallback_secret, str(result))
+
+    def test_two_mismatches_return_the_higher_score(self):
+        responses = iter([
+            _Response({
+                'text': 'Bug\u00fcn hava g\u00fczel',
+                'language': 'turkish',
+                'words': _openai_words('Bug\u00fcn', 'hava', 'g\u00fczel'),
+            }),
+            _Response({
+                'text': 'Bug\u00fcn r\u00fczgar sert',
+                'language_code': 'tur',
+                'words': _words('Bug\u00fcn', 'r\u00fczgar', 'sert'),
+            }),
+        ])
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'openai-key'),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'eleven-key',
+                ),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    side_effect=lambda *args, **kwargs: next(responses),
+                ),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Bug\u00fcn hava \u00e7ok g\u00fczel',
+                )
+
+        self.assertEqual(result['provider'], 'openai')
+        self.assertFalse(result['pass'])
+        self.assertEqual(result['score'], 75.0)
+
     def test_elevenlabs_fallback_uses_official_multipart_contract(self):
         payload = {
             'text': 'Merhaba d\u00fcnya',
