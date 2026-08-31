@@ -60,13 +60,22 @@ _EXPLICIT_SCENE_COUNT_PATTERN = re.compile(
     flags=re.IGNORECASE,
 )
 _EXPLICIT_SCENE_COUNT_NEGATED_BEFORE = re.compile(
-    r"(?:\bnot\s+|\b(?:never|do\s+not|don't|dont)\s+"
-    r'(?:(?:return|use|write|create|make|produce|require)\s+)?)$',
+    r"(?:\bnot\s+|\b(?:never|do\s+not|don't|dont|must\s+not|"
+    r'should\s+not|need\s+not)\s+'
+    r'(?:(?:return|use|write|create|make|produce|require|want|need)\s+)?)$',
     flags=re.IGNORECASE,
 )
 _EXPLICIT_SCENE_COUNT_NEGATED_AFTER = re.compile(
-    r"^\s*(?:değil|degil|olmasın|olmasin|istemiyorum|istenmiyor|"
-    r'kullanma(?:yın|yin)?|yazma(?:yın|yin)?|yapma(?:yın|yin)?|yerine\b|'
+    r"^\s*(?:değil\b|degil\b|olmasın\b|olmasin\b|istemiyorum\b|"
+    r'istenmiyor\b|kullanma(?:yın(?:ız)?|yin(?:iz)?)?\b|'
+    r'yazma(?:yın(?:ız)?|yin(?:iz)?)?\b|'
+    r'yapma(?:yın(?:ız)?|yin(?:iz)?)?\b|yerine\b|'
+    r'(?:zorunlu|sart|gerekli|mecbur)\s+(?:değil|degil)\b|'
+    r'olmas(?:ına|ina)\s+gerek\s+yok\b|'
+    r'olmas(?:ını|ini)\s+istemiyorum\b|'
+    r'olmas(?:ı|i)\s+gerekmiyor\b|'
+    r'olmamal(?:ı|i)\b|'
+    r'(?:kullan|yaz|yap)(?:ılmasın|ilmasin|ılmamalı|ilmamali)\b|'
     r"(?:is|are|was|were)\s+not\b|(?:isn't|aren't|wasn't|weren't)\b|"
     r'(?:should|must)\s+not\b)',
     flags=re.IGNORECASE,
