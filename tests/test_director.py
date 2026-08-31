@@ -397,6 +397,7 @@ def critic_payload(
     story_failures = story_failures or []
     ending_failures = ending_failures or []
     story_boolean_keys = {
+        'all_explicit_brief_constraints_preserved',
         'single_human_situation',
         'single_central_question',
         'not_fact_montage',
@@ -468,6 +469,160 @@ def critic_payload(
     }
 
 
+class ExplicitSceneCountTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        config_stub.settings.openai_model = 'test-model'
+
+    def test_reads_live_tam_bes_sahne_brief_without_confusing_other_counts(self):
+        brief = (
+            '30 saniyelik tek mekân hikâyesi. Tam beş sahne ve doğal '
+            '50–60 Türkçe kelime kullan; bu beş anlatı vuruşunu koru. '
+            'Yalnız sahne 1, 2 ve 3 ai_prompt taşısın; sahne 4 ve 5 null olsun.'
+        )
+
+        self.assertEqual(
+            director_module._explicit_scene_count_from_brief(brief),
+            5,
+        )
+        self.assertEqual(
+            director_module._explicit_scene_count_from_brief(
+                'Return exactly 6 scenes with one continuous story.'
+            ),
+            6,
+        )
+        self.assertIsNone(
+            director_module._explicit_scene_count_from_brief(
+                'Beş anlatı vuruşunu koru; sahne 1, 2 ve 3 yapay görsel kullansın.'
+            )
+        )
+
+    def test_conflicting_or_unsupported_explicit_counts_fail_closed(self):
+        with self.assertRaisesRegex(RuntimeError, 'conflicting'):
+            director_module._explicit_scene_count_from_brief(
+                'Tam beş sahne yaz, fakat exactly 6 scenes return.'
+            )
+        with self.assertRaisesRegex(RuntimeError, 'between 3 and 32'):
+            director_module._explicit_scene_count_from_brief(
+                'Tam iki sahne kullan.'
+            )
+
+    def test_exact_count_tightens_schema_and_trusted_director_instruction(self):
+        relaxed = director_module._director_json_schema(5)
+        exact = director_module._director_json_schema(
+            5,
+            exact_scene_count=True,
+        )
+        self.assertEqual(
+            (
+                relaxed['properties']['scenes']['minItems'],
+                relaxed['properties']['scenes']['maxItems'],
+            ),
+            (4, 6),
+        )
+        self.assertEqual(
+            (
+                exact['properties']['scenes']['minItems'],
+                exact['properties']['scenes']['maxItems'],
+            ),
+            (5, 5),
+        )
+
+        package = make_ai_first_five_scene_package()
+        payload = {
+            'title': package['title'],
+            'thumbnail_text': package['thumbnail_text'],
+            'description': package['description'],
+            'scenes': copy.deepcopy(package['scenes']),
+            'qc_summary': [],
+        }
+        client = FakeClient([payload])
+        director_module._run_director(
+            client,
+            package,
+            'Tam beş sahne kullan.',
+            'Turkish',
+            0.5,
+            48,
+            45,
+            51,
+            5,
+            {'mode': 'preview', 'pace': 'balanced'},
+            exact_scene_count=True,
+        )
+        prompt = client.responses.calls[0]['input']
+        self.assertIn(
+            'USER-BRIEF HARD CONSTRAINT: return exactly 5 scenes',
+            prompt,
+        )
+        self.assertNotIn(
+            'Target scene budget: approximately 5 scenes',
+            prompt,
+        )
+
+    def test_six_scene_output_for_explicit_five_is_repaired_then_rejected_before_critic(self):
+        package = make_coherent_battery_package()
+        payload = {
+            'title': package['title'],
+            'thumbnail_text': package['thumbnail_text'],
+            'description': package['description'],
+            'scenes': copy.deepcopy(package['scenes']),
+            'qc_summary': [],
+        }
+        brief = (
+            '30 saniyelik tek mekân hikâyesi anlat. Tam beş sahne ve '
+            'doğal Türkçe kullan.'
+        )
+
+        with (
+            patch.object(director_module, 'OpenAI', return_value=object()),
+            patch.object(
+                director_module,
+                '_run_director',
+                return_value=payload,
+            ) as run_director,
+            patch.object(
+                director_module,
+                '_short_story_quality_issues',
+                return_value=[],
+            ),
+            patch.object(
+                director_module,
+                '_repair_short_stock_scenes',
+            ) as repair_stock,
+            self.assertRaisesRegex(
+                RuntimeError,
+                'required exactly 5',
+            ),
+        ):
+            direct_and_qc(
+                package,
+                brief,
+                0.5,
+                'tr',
+                {'mode': 'preview', 'pace': 'balanced'},
+            )
+
+        self.assertEqual(run_director.call_count, 4)
+        self.assertTrue(all(
+            call.kwargs['exact_scene_count'] is True
+            and call.args[8] == 5
+            for call in run_director.call_args_list
+        ))
+        repair_stock.assert_not_called()
+
+    def test_explicit_count_is_still_enforced_when_openai_director_is_disabled(self):
+        config_stub.settings.openai_api_key = ''
+        with self.assertRaisesRegex(RuntimeError, 'required exactly 5'):
+            direct_and_qc(
+                make_coherent_battery_package(),
+                'Tam beş sahne kullan.',
+                0.5,
+                'tr',
+            )
+
+
 class ShortStockRepairTests(unittest.TestCase):
     def setUp(self):
         config_stub.settings.studio_plan_provider = 'openai'
@@ -502,6 +657,72 @@ class ShortStockRepairTests(unittest.TestCase):
             self.assertIsNone(result['scenes'][position]['ai_prompt'])
         self.assertEqual(result['ai_scene_count'] if 'ai_scene_count' in result else 3, 3)
         self.assertEqual(len(result['ai_scenes']), 3)
+
+    def test_complete_long_brief_reaches_writer_and_critic_without_tail_truncation(self):
+        marker = (
+            'No smiling face, bright or readable screen, logo, extra laptop, '
+            'office, advice or on-screen text.'
+        )
+        brief = ('single-room continuity context ' * 48) + marker
+        self.assertGreater(len(brief), 1200)
+        client = FakeClient([
+            valid_generator_payload(),
+            critic_payload(),
+        ])
+
+        _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+            topic=brief,
+        )
+
+        writer_input = client.responses.calls[0]['input']
+        critic_input = client.responses.calls[1]['input']
+        self.assertIn(marker, writer_input)
+        self.assertIn(marker, critic_input)
+        self.assertIn('requested_brief', writer_input)
+        self.assertIn(
+            'all_explicit_brief_constraints_preserved',
+            critic_input,
+        )
+
+    def test_explicit_brief_constraint_rejection_is_fatal_before_media(self):
+        verdict = critic_payload(
+            story_failures=['all_explicit_brief_constraints_preserved']
+        )
+        client = FakeClient([
+            valid_generator_payload(),
+            verdict,
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'all_explicit_brief_constraints_preserved',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+                topic='No smiling face or readable screen.',
+            )
+
+    def test_oversized_brief_fails_instead_of_silently_truncating_constraints(self):
+        client = FakeClient([])
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'too long for complete pre-media constraint review',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+                topic='x' * (director_module._MAX_STORY_BRIEF_CHARS + 1),
+            )
+        self.assertEqual(client.responses.calls, [])
 
     def test_ai_first_preserves_authored_ai_ending_and_repairs_only_stock(self):
         package = make_ai_first_five_scene_package()
