@@ -733,6 +733,154 @@ class ShortStockRepairTests(unittest.TestCase):
         config_stub.settings.gemini_api_key = ''
         config_stub.settings.gemini_model = 'gemini-3.1-pro-preview'
 
+    @staticmethod
+    def _locked_ai_first_payload(package):
+        return {
+            'scenes': [
+                {
+                    'position': 0,
+                    'narration': package['scenes'][0]['narration'],
+                    'visual_queries': [
+                        'woman checks silent phone outdoors',
+                        'commuter examines phone at bus stop',
+                    ],
+                    'ai_prompt': None,
+                },
+                {
+                    'position': 2,
+                    'narration': package['scenes'][2]['narration'],
+                    'visual_queries': [
+                        'woman places phone inside winter coat',
+                        'commuter pockets phone at bus stop',
+                    ],
+                    'ai_prompt': None,
+                },
+            ],
+        }
+
+    @staticmethod
+    def _complete_narration(package):
+        return ' '.join(
+            scene['narration']
+            for scene in package['scenes']
+        )
+
+    def test_exact_turkish_narration_lock_preserves_text_and_repairs_queries(self):
+        package = make_ai_first_five_scene_package()
+        original = copy.deepcopy(package)
+        block = self._complete_narration(package)
+        brief = (
+            'Konuşma metni tam olarak şu beş cümle ve 45 kelime olsun; '
+            'hiçbir kıyafet, kamera veya kadraj talimatını seslendirme: '
+            f'“{block}”'
+        )
+        client = FakeClient([
+            self._locked_ai_first_payload(package),
+            critic_payload(stock_positions=(0, 2), scene_count=5),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+            topic=brief,
+        )
+
+        self.assertEqual(
+            [scene['narration'] for scene in result['scenes']],
+            [scene['narration'] for scene in original['scenes']],
+        )
+        self.assertEqual(result['narration'], block)
+        self.assertNotEqual(
+            result['scenes'][0]['visual_queries'],
+            original['scenes'][0]['visual_queries'],
+        )
+        self.assertNotEqual(
+            result['scenes'][2]['visual_queries'],
+            original['scenes'][2]['visual_queries'],
+        )
+        writer_input = client.responses.calls[0]['input']
+        self.assertIn('locked_narration', writer_input)
+        self.assertIn('Repair only visual_queries', writer_input)
+
+    def test_ordinary_quoted_forbidden_examples_are_not_narration_locks(self):
+        brief = (
+            'Kıyafet ve kamera bilgisini seslendirme; örneğin '
+            '“arkadan izliyor” veya “koyu lacivert tişörtlü Mert” deme.'
+        )
+
+        self.assertIsNone(
+            director_module._exact_narration_lock_from_brief(brief)
+        )
+
+    def test_equivalent_english_exact_narration_lock_is_honored(self):
+        package = make_ai_first_five_scene_package()
+        block = self._complete_narration(package)
+        client = FakeClient([
+            self._locked_ai_first_payload(package),
+            critic_payload(stock_positions=(0, 2), scene_count=5),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+            topic=f'The spoken narration must be exactly: "{block}"',
+        )
+
+        self.assertEqual(result['narration'], block)
+
+    def test_exact_narration_lock_mismatch_fails_before_model_calls(self):
+        package = make_ai_first_five_scene_package()
+        block = self._complete_narration(package)
+        client = FakeClient([])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'Exact spoken-narration lock does not match',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                package,
+                'Turkish',
+                0.5,
+                topic=(
+                    'Seslendirme metni tam olarak şöyle okunsun: '
+                    f'«{block} Fazladan cümle.»'
+                ),
+            )
+
+        self.assertEqual(client.responses.calls, [])
+
+    def test_stock_writer_cannot_change_exact_locked_narration(self):
+        package = make_ai_first_five_scene_package()
+        block = self._complete_narration(package)
+        first = self._locked_ai_first_payload(package)
+        first['scenes'][0]['narration'] += ' Bugün.'
+        second = {
+            'scenes': [copy.deepcopy(first['scenes'][0])],
+        }
+        client = FakeClient([first, second])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'changed exact locked narration',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                package,
+                'Turkish',
+                0.5,
+                topic=(
+                    'Anlatım metni aynen şu olsun: '
+                    f'“{block}”'
+                ),
+            )
+
+        self.assertEqual(len(client.responses.calls), 2)
+
     def test_repairs_all_null_and_final_positions_only(self):
         package = make_short_package()
         original = copy.deepcopy(package)
@@ -758,6 +906,10 @@ class ShortStockRepairTests(unittest.TestCase):
             self.assertEqual(result['scenes'][position], original['scenes'][position])
         for position in (0, 4, 5):
             self.assertIsNone(result['scenes'][position]['ai_prompt'])
+        self.assertNotEqual(
+            result['scenes'][0]['narration'],
+            original['scenes'][0]['narration'],
+        )
         self.assertEqual(result['ai_scene_count'] if 'ai_scene_count' in result else 3, 3)
         self.assertEqual(len(result['ai_scenes']), 3)
 
@@ -1973,6 +2125,161 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertLessEqual(result['narration_word_count'], 51)
 
 
+class WholeStoryRepairDiagnosticTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        config_stub.settings.openai_model = 'test-model'
+        config_stub.settings.gemini_critic_enabled = False
+
+    def test_diagnostics_redact_untrusted_check_and_issue_text(self):
+        secret = 'diagnostic-secret-must-not-leak'
+        source_url = 'https://private.example.invalid/sensitive-source'
+
+        diagnostics = director_module._whole_story_repair_diagnostics(
+            failed_checks=[
+                'natural_spoken_language',
+                f'{secret} {source_url}',
+            ],
+            words=12,
+            min_words=45,
+            max_words=51,
+            scene_count=4,
+            target_scenes=5,
+            exact_scene_count=True,
+            ai_scene_count=4,
+            preview_ai_limit=3,
+            short_editorial_issues=[
+                f'scene 0 uses TTS-unsafe raw term(s): {secret}',
+            ],
+        )
+
+        encoded = json.dumps(diagnostics, ensure_ascii=False)
+        self.assertNotIn(secret, encoded)
+        self.assertNotIn(source_url, encoded)
+        self.assertEqual(
+            diagnostics['critic_failed_checks'],
+            ['natural_spoken_language', 'unknown_story_check'],
+        )
+        self.assertEqual(
+            diagnostics['failed_deterministic_gates'],
+            [
+                'narration_word_count',
+                'scene_count',
+                'ai_scene_count',
+                'short_editorial_issues',
+            ],
+        )
+        self.assertEqual(
+            diagnostics['post_repair_shape'][
+                'short_editorial_issue_categories'
+            ],
+            ['tts_unsafe_raw_terms'],
+        )
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_failed_repair_reports_only_bounded_shape_diagnostics(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        secret = 'whole-story-secret-must-not-leak'
+        source_url = 'https://private.example.invalid/source-with-token'
+        raw_prompt = f'RAW MODEL PROMPT {secret} {source_url}'
+        original = make_coherent_battery_package()
+        original['sources'][0] = {
+            'url': source_url,
+            'evidence': f'private source evidence {secret}',
+        }
+        corrected = copy.deepcopy(original)
+        corrected['scenes'] = corrected['scenes'][:5]
+        for scene in corrected['scenes']:
+            scene['narration'] = "QR'ın GPS'i OLED'in içinde."
+            scene['tts_text'] = scene['narration']
+            scene['ai_prompt'] = raw_prompt
+
+        def director_payload(package):
+            return {
+                'title': package['title'],
+                'thumbnail_text': package['thumbnail_text'],
+                'description': package['description'],
+                'scenes': copy.deepcopy(package['scenes']),
+                'qc_summary': [],
+            }
+
+        evidence = (
+            'all_explicit_brief_constraints_preserved; '
+            f'{secret}; {source_url}; {raw_prompt}'
+        )
+        run_director.side_effect = [
+            director_payload(original),
+            director_payload(corrected),
+        ]
+        repair_stock_scenes.side_effect = _WholeStoryRepairRequired(
+            ['all_explicit_brief_constraints_preserved'],
+            evidence,
+        )
+        openai_class.return_value = object()
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'Whole-story critic repair violated a deterministic',
+        ) as error:
+            direct_and_qc(
+                original,
+                (
+                    'Tam altı sahne kullan. Keep diagnostics private. '
+                    f'{secret} {source_url}'
+                ),
+                0.5,
+                'tr',
+                {
+                    'mode': 'preview',
+                    'pace': 'balanced',
+                    'visual_mix': 'ai_first',
+                },
+            )
+
+        message = str(error.exception)
+        self.assertNotIn(secret, message)
+        self.assertNotIn(source_url, message)
+        self.assertNotIn('RAW MODEL PROMPT', message)
+        diagnostics = json.loads(
+            message.split('before paid media: ', 1)[1]
+        )
+        self.assertEqual(
+            diagnostics['critic_failed_checks'],
+            ['all_explicit_brief_constraints_preserved'],
+        )
+        self.assertEqual(
+            diagnostics['failed_deterministic_gates'],
+            [
+                'narration_word_count',
+                'scene_count',
+                'ai_scene_count',
+                'short_editorial_issues',
+            ],
+        )
+        shape = diagnostics['post_repair_shape']
+        self.assertEqual(shape['narration_word_count'], 20)
+        self.assertEqual(shape['required_narration_word_range'], [45, 51])
+        self.assertEqual(shape['scene_count'], 5)
+        self.assertEqual(shape['target_scene_count'], 6)
+        self.assertIs(shape['exact_scene_count'], True)
+        self.assertEqual(shape['ai_scene_count'], 5)
+        self.assertEqual(shape['max_ai_scene_count'], 3)
+        self.assertGreater(shape['short_editorial_issue_count'], 0)
+        self.assertIn(
+            'tts_unsafe_raw_terms',
+            shape['short_editorial_issue_categories'],
+        )
+        self.assertEqual(run_director.call_count, 2)
+        self.assertEqual(repair_stock_scenes.call_count, 1)
+
+
 class GeminiPlanProviderTests(unittest.TestCase):
     def setUp(self):
         config_stub.settings.studio_plan_provider = 'gemini'
@@ -2564,3 +2871,4 @@ class ShortStoryApprovalTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
