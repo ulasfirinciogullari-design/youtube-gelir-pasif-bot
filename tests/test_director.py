@@ -3459,6 +3459,7 @@ class GeminiPlanProviderTests(unittest.TestCase):
         second_critic = generate.call_args_list[2]
         self.assertEqual(first_critic.args, second_critic.args)
         self.assertEqual(first_critic.kwargs, second_critic.kwargs)
+        self.assertFalse(first_critic.kwargs['retry_once'])
 
     def test_invalid_provider_fails_before_model_construction(self):
         config_stub.settings.studio_plan_provider = 'automatic'

@@ -2052,6 +2052,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                         json_schema=critic_schema,
                         google_search=False,
                         thinking_level='medium',
+                        # This critic owns its own two-attempt loop below.
+                        # Keep total protocol attempts bounded to two.
+                        retry_once=False,
                     )
                 except GeminiGenerationError:
                     critic_global_error = (

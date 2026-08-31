@@ -200,7 +200,7 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertEqual(kwargs['model'], 'gemini-test')
         self.assertEqual(kwargs['thinking_level'], 'low')
         self.assertEqual(kwargs['timeout'], 120.0)
-        self.assertTrue(kwargs['retry_once'])
+        self.assertFalse(kwargs['retry_once'])
         self.assertIn(
             'demanding senior YouTube picture editor',
             kwargs['system_instruction'],
@@ -1432,4 +1432,3 @@ class VisualQcProviderTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

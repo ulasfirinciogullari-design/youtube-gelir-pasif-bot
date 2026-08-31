@@ -762,7 +762,10 @@ def review_scene_visuals(
                     json_schema=review_schema,
                     thinking_level='low',
                     timeout=120.0,
-                    retry_once=True,
+                    # This caller already owns the two-attempt protocol loop.
+                    # Disable the helper's protocol retry so one malformed
+                    # response cannot multiply into four paid requests.
+                    retry_once=False,
                     system_instruction=gemini_system_instruction,
                 )
                 break
@@ -1028,4 +1031,3 @@ def review_scene_visuals(
         'unreviewable_scene_indices': unreviewable_indices,
         'missing_review_indices': missing_indices,
     }
-

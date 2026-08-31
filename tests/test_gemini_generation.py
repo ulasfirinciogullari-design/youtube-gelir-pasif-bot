@@ -305,7 +305,11 @@ class GeminiJsonGenerationTests(unittest.TestCase):
                     else GeminiProtocolError
                 )
                 with self.assertRaises(expected_error):
-                    generate_gemini_json('prompt', api_key='test-key')
+                    generate_gemini_json(
+                        'prompt',
+                        api_key='test-key',
+                        retry_once=False,
+                    )
                 self.assertEqual(post.call_count, 1)
 
     @patch('app.services.gemini_generation.httpx.post')
@@ -449,6 +453,93 @@ class GeminiJsonGenerationTests(unittest.TestCase):
         self.assertEqual(rejected.json_calls, 0)
 
     @patch('app.services.gemini_generation.httpx.post')
+    def test_retries_malformed_json_then_returns_valid_response(self, post):
+        post.side_effect = [
+            FakeResponse(gemini_response('not-json')),
+            FakeResponse(gemini_response('{"answer":"recovered"}')),
+        ]
+
+        result = generate_gemini_json('prompt', api_key='test-key')
+
+        self.assertEqual(result, {'answer': 'recovered'})
+        self.assertEqual(post.call_count, 2)
+
+    @patch('app.services.gemini_generation.httpx.post')
+    def test_protocol_retry_is_bounded_to_two_malformed_responses(self, post):
+        post.side_effect = [
+            FakeResponse(gemini_response('not-json-one')),
+            FakeResponse(gemini_response('not-json-two')),
+        ]
+
+        with self.assertRaisesRegex(
+            GeminiProtocolError,
+            '^Gemini returned invalid JSON$',
+        ):
+            generate_gemini_json('prompt', api_key='test-key')
+
+        self.assertEqual(post.call_count, 2)
+
+    @patch('app.services.gemini_generation.httpx.post')
+    def test_retry_once_false_does_not_retry_malformed_json(self, post):
+        post.return_value = FakeResponse(gemini_response('not-json'))
+
+        with self.assertRaises(GeminiProtocolError):
+            generate_gemini_json(
+                'prompt',
+                api_key='test-key',
+                retry_once=False,
+            )
+
+        self.assertEqual(post.call_count, 1)
+
+    @patch('app.services.gemini_generation.httpx.post')
+    def test_safety_and_non_stop_responses_remain_fail_fast(self, post):
+        payloads = [
+            {
+                'candidates': [{
+                    'finishReason': 'SAFETY',
+                    'safetyRatings': [{'blocked': True}],
+                    'content': {'parts': [{'text': '{"answer":"unsafe"}'}]},
+                }],
+            },
+            {
+                'candidates': [{
+                    'finishReason': 'MAX_TOKENS',
+                    'content': {'parts': [{'text': '{"answer":"partial"}'}]},
+                }],
+            },
+        ]
+
+        for payload in payloads:
+            with self.subTest(payload=payload):
+                post.reset_mock()
+                post.return_value = FakeResponse(payload)
+                with self.assertRaises(GeminiGenerationError) as raised:
+                    generate_gemini_json('prompt', api_key='test-key')
+                self.assertNotIsInstance(
+                    raised.exception,
+                    GeminiProtocolError,
+                )
+                self.assertEqual(post.call_count, 1)
+
+    @patch('app.services.gemini_generation.httpx.post')
+    def test_protocol_retry_never_exposes_key_or_malformed_output(self, post):
+        secret = 'gemini-protocol-secret-must-not-leak'
+        malformed_output = f'not-json-containing-{secret}'
+        post.side_effect = [
+            FakeResponse(gemini_response(malformed_output)),
+            FakeResponse(gemini_response(malformed_output)),
+        ]
+
+        with self.assertRaises(GeminiProtocolError) as raised:
+            generate_gemini_json('prompt', api_key=secret)
+
+        rendered_error = str(raised.exception)
+        self.assertNotIn(secret, rendered_error)
+        self.assertNotIn(malformed_output, rendered_error)
+        self.assertEqual(post.call_count, 2)
+
+    @patch('app.services.gemini_generation.httpx.post')
     def test_errors_never_expose_key_or_upstream_body(self, post):
         secret = 'gemini-secret-must-not-leak'
         upstream_body = f'upstream echoed {secret}'
@@ -469,4 +560,3 @@ class GeminiJsonGenerationTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
