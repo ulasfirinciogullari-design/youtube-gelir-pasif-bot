@@ -26,7 +26,7 @@ from app.services.studio_state import mark_failure, mark_success, set_stage, upd
 from app.services.visual_qc import review_scene_visuals
 from app.services.voice import synthesize_scene_sequence
 from app.services.visual_routing import (
-    SHORT_PREVIEW_RUNWAY_CAP,
+    preview_paid_ai_limit,
     preview_runway_repair_indices,
     should_rank_runway_candidate,
 )
@@ -1033,8 +1033,12 @@ def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float)
     if options.get('mode') == 'preview':
         if duration_minutes > 0.6:
             return 0
-        preview_cap = 1 if mix == 'real_first' else SHORT_PREVIEW_RUNWAY_CAP
-        return min(preview_cap, scene_count)
+        preview_limit = preview_paid_ai_limit(
+            options,
+            scene_count,
+            duration_minutes,
+        )
+        return int(preview_limit or 0)
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
     if mix == 'ai_first':
@@ -1204,6 +1208,11 @@ def plan_video_pipeline(
 
 @celery.task(
     bind=True,
+    # Paid media calls are intentionally at-most-once. The project-wide
+    # Celery setting uses late acknowledgements, which can redeliver the whole
+    # pipeline after a worker loss and duplicate an accepted provider charge.
+    # Explicit pre-media retries below still enqueue normally through Celery.
+    acks_late=False,
     autoretry_for=(Exception,),
     dont_autoretry_for=(
         FinalVisualQualityError,
