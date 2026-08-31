@@ -294,7 +294,55 @@ def _review_gemini_batches(
     topic: str = '',
     story_scenes: list[dict] | None = None,
 ) -> dict:
+    def merge_boundary_review(previous: dict, current: dict) -> dict:
+        previous_selection = (
+            previous.get('best_candidate_index'),
+            previous.get('best_moment_index'),
+        )
+        current_selection = (
+            current.get('best_candidate_index'),
+            current.get('best_moment_index'),
+        )
+        if previous_selection != current_selection:
+            merged = dict(previous)
+            merged['score'] = min(
+                int(previous.get('score', 0)),
+                int(current.get('score', 0)),
+                40,
+            )
+            merged['raw_score'] = min(
+                int(previous.get('raw_score', previous.get('score', 0))),
+                int(current.get('raw_score', current.get('score', 0))),
+            )
+            merged['evidence_gate_passed'] = False
+            merged['reason'] = (
+                str(previous.get('reason') or '')
+                + ' Boundary review selected a different candidate or moment; '
+                'no single edit is proven against both adjacent scenes.'
+            )[:500]
+            merged['retry_queries'] = list(dict.fromkeys([
+                *list(previous.get('retry_queries') or []),
+                *list(current.get('retry_queries') or []),
+            ]))[:2]
+            return merged
+
+        previous_score = int(previous.get('score', 0))
+        current_score = int(current.get('score', 0))
+        merged = dict(
+            previous if previous_score <= current_score else current
+        )
+        merged['score'] = min(previous_score, current_score)
+        if not (
+            previous.get('evidence_gate_passed') is True
+            and current.get('evidence_gate_passed') is True
+        ):
+            merged['score'] = min(int(merged.get('score', 0)), 40)
+            merged['evidence_gate_passed'] = False
+        return merged
+
     reviews_by_index: dict[int, dict] = {}
+    expected_window_counts: dict[int, int] = {}
+    reviewed_window_counts: dict[int, int] = {}
     included_indices: set[int] = set()
     unreviewable_indices: set[int] = set()
     missing_indices: set[int] = set()
@@ -333,6 +381,23 @@ def _review_gemini_batches(
                 return None
             return batch_start + value
 
+        expected_local_indices = {
+            local_index
+            for key in (
+                'included_scene_indices',
+                'unreviewable_scene_indices',
+            )
+            for local_index in (batch_result.get(key) or [])
+            if remap_index(local_index) is not None
+        }
+        for local_index in expected_local_indices:
+            original_index = remap_index(local_index)
+            if original_index is None:
+                continue
+            expected_window_counts[original_index] = (
+                expected_window_counts.get(original_index, 0) + 1
+            )
+
         for review in batch_result.get('reviews') or []:
             if not isinstance(review, dict):
                 continue
@@ -341,7 +406,15 @@ def _review_gemini_batches(
                 continue
             mapped = dict(review)
             mapped['scene_index'] = original_index
-            reviews_by_index[original_index] = mapped
+            previous = reviews_by_index.get(original_index)
+            reviews_by_index[original_index] = (
+                merge_boundary_review(previous, mapped)
+                if previous is not None
+                else mapped
+            )
+            reviewed_window_counts[original_index] = (
+                reviewed_window_counts.get(original_index, 0) + 1
+            )
 
         for target, key in (
             (included_indices, 'included_scene_indices'),
@@ -358,9 +431,29 @@ def _review_gemini_batches(
         batch_start = batch_end - 1
         batch_number += 1
 
-    reviewed_indices = set(reviews_by_index)
-    missing_indices.difference_update(reviewed_indices)
-    unreviewable_indices.difference_update(reviewed_indices)
+    fully_reviewed_indices = {
+        index
+        for index, expected_count in expected_window_counts.items()
+        if reviewed_window_counts.get(index, 0) >= expected_count
+    }
+    coverage_missing_indices = (
+        set(expected_window_counts) - fully_reviewed_indices
+    )
+    missing_indices.update(coverage_missing_indices)
+    for index in coverage_missing_indices:
+        review = reviews_by_index.get(index)
+        if review is None:
+            continue
+        review['score'] = min(int(review.get('score', 0)), 40)
+        review['evidence_gate_passed'] = False
+        review['reason'] = (
+            str(review.get('reason') or '')
+            + ' An adjacent boundary review was missing or unreviewable.'
+        )[:500]
+    missing_indices.difference_update(
+        fully_reviewed_indices - coverage_missing_indices
+    )
+    unreviewable_indices.difference_update(fully_reviewed_indices)
 
     return {
         'reviews': [
@@ -782,11 +875,25 @@ def review_scene_visuals(
 
     missing_indices = [idx for idx in included_indices if idx not in reviews_by_scene]
     if missing_indices and _missing_review_attempts > 0:
+        retry_context_indices = sorted({
+            context_index
+            for missing_index in missing_indices
+            for context_index in (
+                missing_index - 1,
+                missing_index,
+                missing_index + 1,
+            )
+            if 0 <= context_index < len(scenes)
+        })
+        retry_local_position = {
+            scene_index: position
+            for position, scene_index in enumerate(retry_context_indices)
+        }
         retry_qc = review_scene_visuals(
-            [scenes[idx] for idx in missing_indices],
-            [scene_visuals[idx] for idx in missing_indices],
+            [scenes[idx] for idx in retry_context_indices],
+            [scene_visuals[idx] for idx in retry_context_indices],
             work / f'missing_reviews_{_missing_review_attempts}',
-            len(missing_indices),
+            len(retry_context_indices),
             _missing_review_attempts=_missing_review_attempts - 1,
             topic=topic,
             story_scenes=complete_story,
@@ -796,12 +903,57 @@ def review_scene_visuals(
             for review in (retry_qc.get('reviews') or [])
             if isinstance(review, dict) and str(review.get('scene_index', '')).lstrip('-').isdigit()
         }
-        for position, scene_index in enumerate(missing_indices):
-            retried = retry_reviews.get(position)
+        for scene_index in missing_indices:
+            retried = retry_reviews.get(
+                retry_local_position[scene_index]
+            )
             if not retried:
                 continue
             mapped = dict(retried)
             mapped['scene_index'] = scene_index
+            neighbor_failures: list[str] = []
+            for neighbor_index in (
+                scene_index - 1,
+                scene_index + 1,
+            ):
+                accepted_neighbor = reviews_by_scene.get(neighbor_index)
+                if accepted_neighbor is None:
+                    continue
+                retry_neighbor_position = retry_local_position.get(
+                    neighbor_index
+                )
+                retried_neighbor = retry_reviews.get(
+                    retry_neighbor_position
+                )
+                if not isinstance(retried_neighbor, dict):
+                    neighbor_failures.append(
+                        f'adjacent scene {neighbor_index} was missing'
+                    )
+                    continue
+                accepted_selection = (
+                    accepted_neighbor.get('best_candidate_index'),
+                    accepted_neighbor.get('best_moment_index'),
+                )
+                retry_selection = (
+                    retried_neighbor.get('best_candidate_index'),
+                    retried_neighbor.get('best_moment_index'),
+                )
+                if retry_selection != accepted_selection:
+                    neighbor_failures.append(
+                        f'adjacent scene {neighbor_index} changed selection'
+                    )
+            if neighbor_failures:
+                mapped['score'] = min(
+                    int(mapped.get('score', 0)),
+                    40,
+                )
+                mapped['evidence_gate_passed'] = False
+                mapped['reason'] = (
+                    str(mapped.get('reason') or '')
+                    + ' Missing-review retry failed closed because '
+                    + '; '.join(neighbor_failures)
+                    + '.'
+                )[:500]
             reviews_by_scene[scene_index] = mapped
 
     missing_indices = [idx for idx in included_indices if idx not in reviews_by_scene]
