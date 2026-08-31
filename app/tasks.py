@@ -281,9 +281,24 @@ def _download_ranked_broll_candidates(
                 search_errors.append(exc)
 
     if not search_results and search_errors:
-        raise PexelsRetryError(
-            f'Pexels retry search failed for scene {scene_idx}'
-        ) from search_errors[0]
+        # A burst of parallel read-only searches can be disconnected by the
+        # provider even though the same endpoint is healthy. Give every query
+        # one bounded sequential second chance before declaring that provider
+        # evidence is unavailable. This never lowers the visual-quality gate
+        # and never creates a paid-media request.
+        sequential_errors: list[Exception] = []
+        for query_idx, query in enumerate(normalized_queries):
+            try:
+                search_results[query_idx] = (
+                    find_broll(query, search_limit) or []
+                )
+            except Exception as exc:
+                sequential_errors.append(exc)
+        if not search_results:
+            final_errors = sequential_errors or search_errors
+            raise PexelsRetryError(
+                f'Pexels retry search failed for scene {scene_idx}'
+            ) from final_errors[0]
 
     success_target = min(5, max(1, int(max_candidates)))
     attempt_limit = min(7, success_target + 2)
