@@ -7,7 +7,57 @@ class RateLimitError(Exception):
     pass
 
 
-def _load_runway_create_functions():
+class _Settings:
+    runwayml_api_secret = 'configured-test-key'
+
+
+class _CreatedTask:
+    def __init__(self, task_id='task-123'):
+        self.id = task_id
+        self.direct_wait_calls = []
+
+    def wait_for_task_output(self, **kwargs):
+        self.direct_wait_calls.append(kwargs)
+        raise AssertionError('create response must not poll with create client')
+
+
+class _RetrievedTask:
+    def __init__(self, output):
+        self.output = output
+        self.wait_calls = []
+
+    def wait_for_task_output(self, **kwargs):
+        self.wait_calls.append(kwargs)
+        return self
+
+
+class _RunwayClientFactory:
+    def __init__(self, create_outcomes, retrieved_task=None):
+        self.create_outcomes = list(create_outcomes)
+        self.retrieved_task = retrieved_task or _RetrievedTask(['video-url'])
+        self.init_calls = []
+        self.create_resources = []
+        self.retrieve_calls = []
+
+    def __call__(self, **kwargs):
+        self.init_calls.append(kwargs)
+        if kwargs.get('max_retries') == 0:
+            resource = _FakeTextToVideo(self.create_outcomes)
+            self.create_resources.append(resource)
+            return type('CreateClient', (), {'text_to_video': resource})()
+
+        factory = self
+
+        class _Tasks:
+            @staticmethod
+            def retrieve(task_id):
+                factory.retrieve_calls.append(task_id)
+                return factory.retrieved_task
+
+        return type('PollClient', (), {'tasks': _Tasks()})()
+
+
+def _load_runway_functions(runway_client_factory=None):
     source_path = (
         Path(__file__).resolve().parents[1]
         / 'app'
@@ -18,13 +68,17 @@ def _load_runway_create_functions():
         source_path.read_text(encoding='utf-8'),
         filename=str(source_path),
     )
-    names = {'_create_text_to_video_task'}
+    names = {'_create_text_to_video_task', 'generate_scene'}
     definitions = [
         node
         for node in tree.body
         if isinstance(node, ast.FunctionDef) and node.name in names
     ]
-    namespace = {'RateLimitError': RateLimitError}
+    namespace = {
+        'RateLimitError': RateLimitError,
+        'RunwayML': runway_client_factory or _RunwayClientFactory([object()]),
+        'settings': _Settings(),
+    }
     exec(
         compile(
             ast.Module(body=definitions, type_ignores=[]),
@@ -33,10 +87,10 @@ def _load_runway_create_functions():
         ),
         namespace,
     )
-    return namespace['_create_text_to_video_task']
-
-
-create_text_to_video_task = _load_runway_create_functions()
+    return (
+        namespace['_create_text_to_video_task'],
+        namespace['generate_scene'],
+    )
 
 
 class _FakeTextToVideo:
@@ -55,6 +109,9 @@ class _FakeTextToVideo:
 class _FakeClient:
     def __init__(self, outcomes):
         self.text_to_video = _FakeTextToVideo(outcomes)
+
+
+create_text_to_video_task, _unused_generate_scene = _load_runway_functions()
 
 
 class RunwayQuotaFallbackTests(unittest.TestCase):
@@ -154,16 +211,83 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'created = _create_text_to_video_task(',
             generate_start,
         )
-        wait_start = source.index(
-            'completed = created.wait_for_task_output(timeout=600)',
+        retrieve_start = source.index(
+            'completed = poll_client.tasks.retrieve(',
             create_start,
+        )
+        wait_start = source.index(
+            ').wait_for_task_output(timeout=600)',
+            retrieve_start,
         )
 
         self.assertNotIn(
             '.wait_for_task_output(',
             source[helper_start:generate_start],
         )
-        self.assertLess(create_start, wait_start)
+        self.assertLess(create_start, retrieve_start)
+        self.assertLess(retrieve_start, wait_start)
+
+    def test_paid_create_disables_sdk_retries_and_polling_uses_read_client(self):
+        created_task = _CreatedTask()
+        retrieved_task = _RetrievedTask(['video-url'])
+        factory = _RunwayClientFactory(
+            [created_task],
+            retrieved_task=retrieved_task,
+        )
+        _, generate_scene = _load_runway_functions(factory)
+
+        result = generate_scene('safe prompt', duration=7)
+
+        self.assertEqual(result, 'video-url')
+        self.assertEqual(
+            factory.init_calls,
+            [
+                {
+                    'api_key': 'configured-test-key',
+                    'max_retries': 0,
+                },
+                {'api_key': 'configured-test-key'},
+            ],
+        )
+        self.assertEqual(
+            factory.create_resources[0].calls[0]['model'],
+            'gen4.5',
+        )
+        self.assertEqual(factory.retrieve_calls, ['task-123'])
+        self.assertEqual(retrieved_task.wait_calls, [{'timeout': 600}])
+        self.assertEqual(created_task.direct_wait_calls, [])
+
+    def test_poll_rate_limit_never_submits_fallback_or_second_create(self):
+        created_task = _CreatedTask()
+        poll_error = RateLimitError('secret read response')
+        factory = _RunwayClientFactory([created_task])
+
+        class _FailingTasks:
+            @staticmethod
+            def retrieve(task_id):
+                factory.retrieve_calls.append(task_id)
+                raise poll_error
+
+        original_call = factory.__call__
+
+        def build_client(**kwargs):
+            if kwargs.get('max_retries') == 0:
+                return original_call(**kwargs)
+            factory.init_calls.append(kwargs)
+            return type('PollClient', (), {'tasks': _FailingTasks()})()
+
+        _, generate_scene = _load_runway_functions(build_client)
+
+        with self.assertRaises(RateLimitError) as raised:
+            generate_scene('safe prompt', duration=7)
+
+        self.assertIs(raised.exception, poll_error)
+        self.assertEqual(len(factory.create_resources), 1)
+        self.assertEqual(len(factory.create_resources[0].calls), 1)
+        self.assertEqual(
+            factory.create_resources[0].calls[0]['model'],
+            'gen4.5',
+        )
 
     def test_pipeline_submits_selected_runway_scenes_serially(self):
         source = (
