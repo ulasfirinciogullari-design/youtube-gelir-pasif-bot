@@ -690,7 +690,9 @@ _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN = re.compile(
     r'\b(?:connect|fasten)\w*\b.{0,64}\b'
     r'(?:latch\s+(?:plate|tongue)|metal\s+(?:plate|tongue)|'
     r'seat\s*[- ]?belt|seatbelt)\b.{0,64}\b(?:buckle|receiver|slot)\b|'
-    r'\b(?:buckle|fasten)(?:s|d|ed|ing)?\b.{0,48}\b'
+    r'\b(?:buckles|buckling|fastens|fastening)\b.{0,48}\b'
+    r'(?:seat\s*[- ]?belt|seatbelt)\b|'
+    r'\b(?:buckle|fasten)\s+(?:the|this|a|your)\s+'
     r'(?:seat\s*[- ]?belt|seatbelt)\b',
     flags=re.IGNORECASE,
 )
