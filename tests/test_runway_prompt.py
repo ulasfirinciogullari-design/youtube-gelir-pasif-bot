@@ -138,6 +138,30 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertLess(initial_preflight, initial_loop)
         self.assertLess(repair_preflight, repair_loop)
 
+    def test_audio_transcript_gate_runs_before_any_paid_runway_submission(self):
+        source = (
+            Path(__file__).resolve().parents[1]
+            / 'app'
+            / 'tasks.py'
+        ).read_text(encoding='utf-8')
+
+        audio_gate = source.index('audio_qc = verify_audio_narration(')
+        audio_rejection = source.index(
+            "if not audio_qc.get('available') or not audio_qc.get('pass'):"
+        )
+        initial_runway_loop = source.index(
+            'for candidate in selected_runway:'
+        )
+
+        self.assertLess(audio_gate, audio_rejection)
+        self.assertLess(audio_rejection, initial_runway_loop)
+        self.assertIn("'audio_qc': audio_qc", source)
+        self.assertIn("audio_mismatch.get('operations')", source)
+        self.assertNotIn(
+            "(audio_qc.get('mismatch_details') or [])[:6]",
+            source,
+        )
+
     def test_initial_and_repair_generation_never_use_fixed_five_seconds(self):
         source = (
             Path(__file__).resolve().parents[1]
@@ -201,6 +225,28 @@ class RunwayPromptTests(unittest.TestCase):
         )
         self.assertIn('OLED proof:', prompt)
         self.assertIn('real physical meter visibly falls', prompt)
+
+    def test_connection_action_requires_visible_connector_socket_and_release(self):
+        prompt = runway_prompt(
+            {
+                'narration': (
+                    'Sürücü kemeri yeniden yavaşça çekip tokaya takıyor.'
+                ),
+                'visual_queries': [
+                    'metal seat belt tongue visibly enters buckle slot'
+                ],
+                'ai_prompt': (
+                    'Macro shot inside a car showing one seat belt fastening.'
+                ),
+            },
+            None,
+        )
+
+        self.assertIn('Connection proof:', prompt)
+        self.assertIn('distinct moving connector', prompt)
+        self.assertIn('receiving socket before contact', prompt)
+        self.assertIn('release the hand', prompt)
+        self.assertIn('loose strap', prompt)
 
     def test_long_event_and_mechanism_keep_authored_contract_and_closing(self):
         authored = (
