@@ -38,6 +38,10 @@ class PreRunwayRetryableError(RuntimeError):
     """A pre-paid preflight rejection that may safely regenerate the automatic plan."""
 
 
+class PexelsRetryError(RuntimeError):
+    """A bounded Pexels retry could not produce provider evidence."""
+
+
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value = dict(options or {})
     value.setdefault('mode', 'preview' if duration_minutes <= 1 else 'production')
@@ -277,7 +281,9 @@ def _download_ranked_broll_candidates(
                 search_errors.append(exc)
 
     if not search_results and search_errors:
-        raise RuntimeError(f'Pexels retry search failed for scene {scene_idx}') from search_errors[0]
+        raise PexelsRetryError(
+            f'Pexels retry search failed for scene {scene_idx}'
+        ) from search_errors[0]
 
     success_target = min(5, max(1, int(max_candidates)))
     attempt_limit = min(7, success_target + 2)
@@ -355,7 +361,9 @@ def _download_ranked_broll_candidates(
         })
 
     if ranked and not replacements and download_errors:
-        raise RuntimeError(f'Pexels retry download failed for scene {scene_idx}') from download_errors[0]
+        raise PexelsRetryError(
+            f'Pexels retry download failed for scene {scene_idx}'
+        ) from download_errors[0]
     return replacements
 
 
@@ -369,6 +377,7 @@ def _retry_bad_scene(
     max_replacements: int = 1,
     minimum_duration: float = 5.0,
     allow_short_fallback: bool = True,
+    tolerate_pexels_failure: bool = False,
 ) -> list[dict]:
     safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
     selected_by = (
@@ -378,19 +387,24 @@ def _retry_bad_scene(
         else 'pre_runway_duration_refill' if safe_prefix == 'duration_refill'
         else 'visual_qc_retry'
     )
-    return _download_ranked_broll_candidates(
-        scene_idx,
-        retry_queries[:2],
-        seen_ids,
-        work,
-        credits,
-        file_prefix=safe_prefix,
-        selected_by=selected_by,
-        max_candidates=max_replacements,
-        search_limit=18,
-        minimum_duration=minimum_duration,
-        allow_short_fallback=allow_short_fallback,
-    )
+    try:
+        return _download_ranked_broll_candidates(
+            scene_idx,
+            retry_queries[:2],
+            seen_ids,
+            work,
+            credits,
+            file_prefix=safe_prefix,
+            selected_by=selected_by,
+            max_candidates=max_replacements,
+            search_limit=18,
+            minimum_duration=minimum_duration,
+            allow_short_fallback=allow_short_fallback,
+        )
+    except PexelsRetryError:
+        if not tolerate_pexels_failure:
+            raise
+        return []
 
 def _visual_path(spec: str | dict) -> str:
     if isinstance(spec, dict):
@@ -1013,15 +1027,14 @@ def run_video_pipeline(
         quality_threshold = int(options.get('quality_threshold') or 80)
 
         for scene_idx, _scene in enumerate(scenes):
+            is_short_preview_authored_ai = (
+                strict_short_preview_duration
+                and bool(str(_scene.get('ai_prompt') or '').strip())
+            )
             review = reviews_by_scene.get(scene_idx)
             paths = [p for p in scene_visuals[scene_idx] if _visual_path(p)]
             if not paths:
                 scene_visuals[scene_idx] = []
-                is_short_preview_authored_ai = (
-                    options.get('mode') == 'preview'
-                    and duration_minutes <= 0.6
-                    and bool(str(_scene.get('ai_prompt') or '').strip())
-                )
                 if is_short_preview_authored_ai:
                     raw_refill_queries = _scene.get('visual_queries') or []
                     if isinstance(raw_refill_queries, str):
@@ -1044,6 +1057,7 @@ def run_video_pipeline(
                             float(scene_durations[scene_idx]) + 0.35,
                         ),
                         allow_short_fallback=False,
+                        tolerate_pexels_failure=True,
                     )
                     scene_visuals[scene_idx] = duration_refill
                     if duration_refill:
@@ -1102,6 +1116,7 @@ def run_video_pipeline(
                 credits,
                 minimum_duration=max(5.0, float(scene_durations[scene_idx]) + 0.35),
                 allow_short_fallback=not strict_short_preview_duration,
+                tolerate_pexels_failure=is_short_preview_authored_ai,
             )
             scene_visuals[scene_idx] = [*replacements, best_spec][:3]
             if replacements:
