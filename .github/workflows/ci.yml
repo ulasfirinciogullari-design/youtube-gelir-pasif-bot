@@ -13,8 +13,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install test runner
-        run: python -m pip install --disable-pip-version-check pytest==9.1.1
+      - name: Install application and test dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt pytest==9.1.1
       - name: Compile Python sources
         run: python -m compileall -q app
       - name: Run complete test suite
