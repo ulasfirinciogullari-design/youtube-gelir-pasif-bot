@@ -100,6 +100,24 @@ _EXACT_NARRATION_PREFIX_PATTERN = re.compile(
     r')(?:\s*:?\s*|\s*;\s*[^:“"«]{1,240}:\s*)$',
     flags=re.IGNORECASE | re.UNICODE,
 )
+_EXACT_NARRATION_SENTENCE_PATTERN = re.compile(
+    r'[^.!?…]+(?:[.!?…]+)(?=\s+|$)',
+    flags=re.UNICODE,
+)
+_EXACT_NARRATION_LIST_MARKER_PATTERN = re.compile(
+    r'(?:^|\s)(?:\d{1,2}[.)]|[A-Za-zÇĞİÖŞÜçğıöşü][.)]|[-•])\s+',
+    flags=re.UNICODE,
+)
+_EXACT_NARRATION_ABBREVIATION_BOUNDARY_PATTERN = re.compile(
+    r'\b(?:dr|prof|doç|sn|say|mr|mrs|ms|örn|vb|vs|bkz|no)\.\s+'
+    r'(?=[A-ZÇĞİÖŞÜ])|'
+    r'\b[A-ZÇĞİÖŞÜ]\.\s+(?=[A-ZÇĞİÖŞÜ])',
+    flags=re.IGNORECASE | re.UNICODE,
+)
+_EXACT_NARRATION_MID_CLAUSE_ELLIPSIS_PATTERN = re.compile(
+    r'(?:\.{3}|…)\s+(?=[a-zçğıöşü])',
+    flags=re.UNICODE,
+)
 
 
 def _explicit_scene_count_from_brief(brief: str) -> int | None:
@@ -194,6 +212,80 @@ def _exact_narration_lock_from_brief(brief: str) -> str | None:
             'User brief contains conflicting exact spoken-narration locks'
         )
     return locked_blocks[0]
+
+
+def _split_exact_narration_lock(
+    locked_narration: str,
+    expected_scene_count: int,
+) -> list[str]:
+    normalized = _normalize_exact_narration(locked_narration)
+    if (
+        _EXACT_NARRATION_LIST_MARKER_PATTERN.search(normalized)
+        or _EXACT_NARRATION_ABBREVIATION_BOUNDARY_PATTERN.search(normalized)
+        or _EXACT_NARRATION_MID_CLAUSE_ELLIPSIS_PATTERN.search(normalized)
+    ):
+        raise RuntimeError(
+            'Exact spoken-narration lock cannot be segmented unambiguously '
+            'into the returned scene count'
+        )
+    scenes = [
+        match.group(0).strip()
+        for match in _EXACT_NARRATION_SENTENCE_PATTERN.finditer(normalized)
+    ]
+    reconstructed = _normalize_exact_narration(' '.join(scenes))
+    if (
+        expected_scene_count < 1
+        or len(scenes) != expected_scene_count
+        or reconstructed != normalized
+        or any(_word_count(scene) < 5 for scene in scenes)
+    ):
+        raise RuntimeError(
+            'Exact spoken-narration lock cannot be segmented unambiguously '
+            'into the returned scene count'
+        )
+    return scenes
+
+
+def _apply_exact_narration_lock(
+    package: dict,
+    brief: str,
+    *,
+    expected_scene_count: int | None = None,
+) -> dict:
+    """Restore an explicit spoken contract without changing visual planning."""
+    locked_narration = _exact_narration_lock_from_brief(brief)
+    if locked_narration is None:
+        return package
+    scenes = package.get('scenes') if isinstance(package, dict) else None
+    if not isinstance(scenes, list) or not all(
+        isinstance(scene, dict) for scene in scenes
+    ):
+        raise RuntimeError(
+            'Exact spoken-narration lock requires a valid returned scene plan'
+        )
+    immutable_scene_count = (
+        expected_scene_count
+        if type(expected_scene_count) is int
+        else len(scenes)
+    )
+    locked_scenes = _split_exact_narration_lock(
+        locked_narration,
+        immutable_scene_count,
+    )
+    if len(scenes) != immutable_scene_count:
+        raise RuntimeError(
+            'Exact spoken-narration lock cannot be segmented unambiguously '
+            'into the returned scene count'
+        )
+    out = dict(package)
+    out_scenes = [dict(scene) for scene in scenes]
+    for position, narration in enumerate(locked_scenes):
+        out_scenes[position]['narration'] = narration
+        out_scenes[position]['tts_text'] = narration
+    out['scenes'] = out_scenes
+    out['narration'] = ' '.join(locked_scenes)
+    out['tts_narration'] = out['narration']
+    return out
 
 
 def _studio_plan_provider() -> str:
@@ -2238,7 +2330,11 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         target_words, min_words, max_words, target_scenes, options,
         exact_scene_count=exact_scene_count,
     )
-    out = _clean_package(revised, package)
+    out = _apply_exact_narration_lock(
+        _clean_package(revised, package),
+        topic,
+        expected_scene_count=(target_scenes if exact_scene_count else None),
+    )
     words = _word_count(out['narration'])
     scene_count = len(out['scenes'])
     ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
@@ -2288,7 +2384,11 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             target_words, min_words, max_words, target_scenes, options, correction=True,
             exact_scene_count=exact_scene_count,
         )
-        out = _clean_package(revised, package)
+        out = _apply_exact_narration_lock(
+            _clean_package(revised, package),
+            topic,
+            expected_scene_count=(target_scenes if exact_scene_count else None),
+        )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
@@ -2380,7 +2480,13 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 correction=True,
                 exact_scene_count=exact_scene_count,
             )
-            out = _clean_package(revised, package)
+            out = _apply_exact_narration_lock(
+                _clean_package(revised, package),
+                topic,
+                expected_scene_count=(
+                    target_scenes if exact_scene_count else None
+                ),
+            )
             words = _word_count(out['narration'])
             scene_count = len(out['scenes'])
             ai_scene_count = sum(
