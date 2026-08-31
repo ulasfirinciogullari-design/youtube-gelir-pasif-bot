@@ -18,6 +18,7 @@ sys.modules.setdefault('httpx', httpx_stub)
 
 config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace(
+    studio_plan_provider='openai',
     openai_api_key='test-openai-key',
     openai_model='test-model',
     gemini_critic_enabled=False,
@@ -26,6 +27,7 @@ config_stub.settings = SimpleNamespace(
 )
 sys.modules['app.config'] = config_stub
 
+import app.services.director as director_module
 from app.services.director import (
     _NaturalSpokenLanguageRepairRequired,
     _repair_short_stock_scenes,
@@ -468,6 +470,7 @@ def critic_payload(
 
 class ShortStockRepairTests(unittest.TestCase):
     def setUp(self):
+        config_stub.settings.studio_plan_provider = 'openai'
         config_stub.settings.gemini_critic_enabled = False
         config_stub.settings.gemini_api_key = ''
         config_stub.settings.gemini_model = 'gemini-3.1-pro-preview'
@@ -528,6 +531,71 @@ class ShortStockRepairTests(unittest.TestCase):
             self.assertTrue(result['scenes'][position]['ai_prompt'])
         self.assertEqual(len(result['ai_scenes']), 3)
         self.assertEqual(_word_count(result['narration']), 45)
+
+    def test_all_ai_story_skips_empty_writer_but_keeps_whole_story_critic(self):
+        package = make_ai_first_five_scene_package()
+        original = copy.deepcopy(package)
+        for position, scene in enumerate(package['scenes']):
+            scene['ai_prompt'] = (
+                scene.get('ai_prompt')
+                or f'Photorealistic continuous scene {position}, no text.'
+            )
+        package['ai_scenes'] = [
+            scene['ai_prompt'] for scene in package['scenes']
+        ]
+        client = FakeClient([
+            critic_payload(stock_positions=(), scene_count=5),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+        )
+
+        self.assertEqual(len(client.responses.calls), 1)
+        self.assertIn('tools', client.responses.calls[0])
+        self.assertEqual(result['stock_scene_qc']['target_positions'], [])
+        self.assertEqual(result['stock_scene_qc']['generator_calls'], 0)
+        self.assertEqual(result['stock_scene_qc']['critic_calls'], 1)
+        self.assertEqual(result['scenes'], package['scenes'])
+        self.assertNotEqual(original['scenes'], package['scenes'])
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_all_ai_story_supports_enabled_optional_gemini_attestation(
+        self, gemini_post
+    ):
+        package = make_ai_first_five_scene_package()
+        for position, scene in enumerate(package['scenes']):
+            scene['ai_prompt'] = (
+                scene.get('ai_prompt')
+                or f'Photorealistic continuous scene {position}, no text.'
+            )
+        package['ai_scenes'] = [
+            scene['ai_prompt'] for scene in package['scenes']
+        ]
+        verdict = critic_payload(stock_positions=(), scene_count=5)
+        client = FakeClient([verdict])
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = 'test-gemini-key'
+        gemini_post.return_value = FakeGeminiResponse(verdict)
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+        )
+
+        self.assertEqual(len(client.responses.calls), 1)
+        self.assertEqual(gemini_post.call_count, 1)
+        self.assertEqual(
+            result['stock_scene_qc']['gemini_critic'][
+                'reviewed_scene_count'
+            ],
+            0,
+        )
 
     def test_ai_first_ending_rejection_fails_closed_without_stock_rewrite(self):
         client = FakeClient([
@@ -628,6 +696,7 @@ class ShortStockRepairTests(unittest.TestCase):
 
         self.assertEqual(len(client.responses.calls), 4)
         second_generator_input = client.responses.calls[2]['input']
+        self.assertNotIn('tools', client.responses.calls[2])
         self.assertIn(
             '"previous_narration": "Kasiyer kafe tezgâhında müşteriye sıcak kahve fincanını uzatır."',
             second_generator_input,
@@ -785,7 +854,7 @@ class ShortStockRepairTests(unittest.TestCase):
         with self.assertRaisesRegex(
             RuntimeError,
             'incoherent short-preview story before paid media',
-        ):
+        ) as error:
             _repair_short_stock_scenes(
                 client,
                 make_short_package(),
@@ -794,6 +863,7 @@ class ShortStockRepairTests(unittest.TestCase):
                 'A specific requested phone topic',
             )
         self.assertEqual(len(client.responses.calls), 2)
+        self.assertIn('"critic_calls":1', str(error.exception))
         self.assertIn(
             '"requested_topic": "A specific requested phone topic"',
             client.responses.calls[1]['input'],
@@ -875,6 +945,67 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(result['stock_scene_qc']['critic_calls'], 1)
         self.assertNotIn(';', result['scenes'][0]['narration'])
 
+    def test_generator_retry_does_not_consume_critic_protocol_retry(self):
+        secret = 'critic-retry-secret-must-not-leak'
+        config_stub.settings.gemini_api_key = secret
+        first = valid_generator_payload()
+        first['scenes'][0]['narration'] = (
+            'Genç adam evde masadaki telefonunu; tek eliyle alır.'
+        )
+        invalid_critic = critic_payload()
+        invalid_critic['story_review']['unexpected_field'] = 'schema drift'
+        client = FakeClient([
+            first,
+            valid_generator_payload((0,)),
+            invalid_critic,
+            critic_payload(),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+        )
+
+        self.assertEqual(result['stock_scene_qc']['generator_calls'], 2)
+        self.assertEqual(result['stock_scene_qc']['critic_calls'], 2)
+        first_critic_call = client.responses.calls[2]
+        second_critic_call = client.responses.calls[3]
+        self.assertEqual(first_critic_call, second_critic_call)
+        self.assertNotIn(secret, json.dumps(first_critic_call))
+        self.assertNotIn(secret, json.dumps(second_critic_call))
+
+    def test_two_invalid_critic_contracts_fail_without_generator_rewrite(self):
+        invalid_critic = critic_payload()
+        invalid_critic['story_review']['unexpected_field'] = 'schema drift'
+        client = FakeClient([
+            valid_generator_payload(),
+            copy.deepcopy(invalid_critic),
+            copy.deepcopy(invalid_critic),
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            r'"generator_calls":1,"critic_calls":2',
+        ) as error:
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertIn(
+            'whole-story critic returned the wrong fields',
+            str(error.exception),
+        )
+        self.assertEqual(len(client.responses.calls), 3)
+        self.assertEqual(
+            client.responses.calls[1],
+            client.responses.calls[2],
+        )
+
     def test_two_critic_rejections_fail_closed_at_four_calls(self):
         client = FakeClient([
             valid_generator_payload(),
@@ -897,19 +1028,21 @@ class ShortStockRepairTests(unittest.TestCase):
         invalid['ending_pair']['penultimate_position'] = True
         client = FakeClient([
             valid_generator_payload(),
-            invalid,
-            valid_generator_payload(),
-            invalid,
+            copy.deepcopy(invalid),
+            copy.deepcopy(invalid),
         ])
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaisesRegex(
+            RuntimeError,
+            r'"generator_calls":1,"critic_calls":2',
+        ):
             _repair_short_stock_scenes(
                 client,
                 make_short_package(),
                 'Turkish',
                 0.5,
             )
-        self.assertEqual(len(client.responses.calls), 4)
+        self.assertEqual(len(client.responses.calls), 3)
 
     def test_longer_duration_is_noop_without_calls(self):
         package = make_short_package()
@@ -1367,6 +1500,286 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertLessEqual(result['narration_word_count'], 51)
 
 
+class GeminiPlanProviderTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.studio_plan_provider = 'gemini'
+        config_stub.settings.openai_api_key = ''
+        config_stub.settings.openai_model = 'test-model'
+        config_stub.settings.gemini_api_key = 'test-gemini-key'
+        config_stub.settings.gemini_model = 'gemini-3.1-pro-preview'
+        config_stub.settings.gemini_critic_enabled = False
+
+    def tearDown(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        config_stub.settings.gemini_api_key = ''
+
+    def _director_payload(self):
+        package = make_ai_first_five_scene_package()
+        return {
+            'title': package['title'],
+            'thumbnail_text': package['thumbnail_text'],
+            'description': package['description'],
+            'scenes': [
+                {
+                    'narration': scene['narration'],
+                    'visual_queries': scene['visual_queries'],
+                    'ai_prompt': scene['ai_prompt'],
+                    'pace': scene['pace'],
+                    'transition': scene['transition'],
+                }
+                for scene in package['scenes']
+            ],
+            'qc_summary': ['Kept one causal story.'],
+        }
+
+    def test_director_uses_explicit_schema_without_search(self):
+        compact = make_ai_first_five_scene_package()
+        payload = self._director_payload()
+
+        with patch.object(
+            director_module,
+            'generate_gemini_json',
+            return_value=payload,
+        ) as generate:
+            result = director_module._run_director(
+                None,
+                compact,
+                'Soğukta telefon neden kapanır?',
+                'Turkish',
+                0.5,
+                48,
+                45,
+                51,
+                5,
+                {
+                    'mode': 'preview',
+                    'pace': 'balanced',
+                    'visual_mix': 'ai_first',
+                },
+            )
+
+        self.assertEqual(result, payload)
+        request = generate.call_args
+        self.assertFalse(request.kwargs['google_search'])
+        self.assertEqual(request.kwargs['thinking_level'], 'low')
+        schema = request.kwargs['json_schema']
+        self.assertFalse(schema['additionalProperties'])
+        self.assertEqual(
+            set(schema['required']),
+            {
+                'title',
+                'thumbnail_text',
+                'description',
+                'scenes',
+                'qc_summary',
+            },
+        )
+        self.assertEqual(schema['properties']['scenes']['minItems'], 4)
+        self.assertEqual(schema['properties']['scenes']['maxItems'], 6)
+        scene = schema['properties']['scenes']['items']
+        self.assertEqual(
+            scene['properties']['pace']['enum'],
+            ['fast', 'normal', 'slow'],
+        )
+        self.assertEqual(
+            scene['properties']['transition']['enum'],
+            ['cut', 'match', 'dip'],
+        )
+        self.assertEqual(
+            scene['properties']['ai_prompt']['type'],
+            ['string', 'null'],
+        )
+        self.assertNotIn(
+            config_stub.settings.gemini_api_key,
+            request.args[0] + json.dumps(schema),
+        )
+
+    def test_direct_and_qc_never_constructs_openai_for_gemini(self):
+        with patch.object(director_module, 'OpenAI') as openai_class, patch.object(
+            director_module,
+            '_run_director',
+            side_effect=RuntimeError('stop-after-provider-selection'),
+        ) as run_director, self.assertRaisesRegex(
+            RuntimeError,
+            'stop-after-provider-selection',
+        ):
+            direct_and_qc(
+                make_coherent_battery_package(),
+                'Soğukta telefon pili neden düşer?',
+                0.5,
+                'tr',
+                {'mode': 'preview', 'pace': 'balanced'},
+            )
+
+        openai_class.assert_not_called()
+        self.assertIsNone(run_director.call_args.args[0])
+
+    def test_stock_writer_and_primary_critic_use_schemas_without_double_veto(self):
+        with patch.object(
+            director_module,
+            'generate_gemini_json',
+            side_effect=[valid_generator_payload(), critic_payload()],
+        ) as generate, patch.object(
+            director_module,
+            'run_optional_gemini_critic',
+        ) as optional_critic:
+            result = _repair_short_stock_scenes(
+                None,
+                make_short_package(),
+                'Turkish',
+                0.5,
+                'one useful phone story',
+            )
+
+        self.assertEqual(generate.call_count, 2)
+        optional_critic.assert_not_called()
+        writer_request, critic_request = generate.call_args_list
+        self.assertFalse(writer_request.kwargs['google_search'])
+        writer_schema = writer_request.kwargs['json_schema']
+        writer_scenes = writer_schema['properties']['scenes']
+        self.assertEqual(writer_scenes['minItems'], 3)
+        self.assertEqual(writer_scenes['maxItems'], 3)
+        writer_row = writer_scenes['items']
+        self.assertEqual(
+            writer_row['properties']['position']['enum'],
+            [0, 4, 5],
+        )
+        self.assertEqual(
+            writer_row['properties']['ai_prompt'],
+            {'type': 'null'},
+        )
+        self.assertFalse(critic_request.kwargs['google_search'])
+        critic_schema = critic_request.kwargs['json_schema']
+        self.assertEqual(
+            set(critic_schema['required']),
+            {'story_review', 'ending_pair', 'scenes'},
+        )
+        self.assertEqual(
+            critic_schema['properties']['story_review']['properties'][
+                'not_fact_montage'
+            ]['type'],
+            'boolean',
+        )
+        attestation = result['stock_scene_qc']['gemini_critic']
+        self.assertTrue(attestation['accepted'])
+        self.assertEqual(attestation['reviewed_scene_count'], 3)
+        self.assertEqual(attestation['model'], 'gemini-3.1-pro-preview')
+
+    def test_all_ai_story_uses_zero_item_critic_schema_without_writer_call(self):
+        package = make_ai_first_five_scene_package()
+        for position, scene in enumerate(package['scenes']):
+            scene['ai_prompt'] = (
+                scene.get('ai_prompt')
+                or f'Photorealistic continuous scene {position}, no text.'
+            )
+        package['ai_scenes'] = [
+            scene['ai_prompt'] for scene in package['scenes']
+        ]
+        verdict = critic_payload(stock_positions=(), scene_count=5)
+
+        with patch.object(
+            director_module,
+            'generate_gemini_json',
+            return_value=verdict,
+        ) as generate, patch.object(
+            director_module,
+            'run_optional_gemini_critic',
+        ) as optional_critic:
+            result = _repair_short_stock_scenes(
+                None,
+                package,
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(generate.call_count, 1)
+        optional_critic.assert_not_called()
+        request = generate.call_args
+        schema = request.kwargs['json_schema']
+        scene_schema = schema['properties']['scenes']
+        self.assertEqual(scene_schema['minItems'], 0)
+        self.assertEqual(scene_schema['maxItems'], 0)
+        self.assertEqual(result['stock_scene_qc']['target_positions'], [])
+        self.assertEqual(result['stock_scene_qc']['generator_calls'], 0)
+        self.assertEqual(result['stock_scene_qc']['critic_calls'], 1)
+        self.assertEqual(
+            result['stock_scene_qc']['gemini_critic'][
+                'reviewed_scene_count'
+            ],
+            0,
+        )
+
+    def test_false_critic_boolean_is_a_semantic_rejection_not_schema_failure(self):
+        verdict = critic_payload(story_failures=['not_fact_montage'])
+        with patch.object(
+            director_module,
+            'generate_gemini_json',
+            side_effect=[valid_generator_payload(), verdict],
+        ) as generate, self.assertRaisesRegex(
+            RuntimeError,
+            'incoherent short-preview story before paid media',
+        ) as error:
+            _repair_short_stock_scenes(
+                None,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(generate.call_count, 2)
+        self.assertIn('not_fact_montage', str(error.exception))
+        self.assertNotIn('invalid JSON', str(error.exception))
+
+    def test_invalid_primary_critic_retry_reuses_immutable_request(self):
+        generation_error = director_module.GeminiGenerationError(
+            'Gemini response failed schema validation'
+        )
+        with patch.object(
+            director_module,
+            'generate_gemini_json',
+            side_effect=[
+                valid_generator_payload(),
+                generation_error,
+                generation_error,
+            ],
+        ) as generate, self.assertRaisesRegex(
+            RuntimeError,
+            r'"generator_calls":1,"critic_calls":2',
+        ):
+            _repair_short_stock_scenes(
+                None,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(generate.call_count, 3)
+        first_critic = generate.call_args_list[1]
+        second_critic = generate.call_args_list[2]
+        self.assertEqual(first_critic.args, second_critic.args)
+        self.assertEqual(first_critic.kwargs, second_critic.kwargs)
+
+    def test_invalid_provider_fails_before_model_construction(self):
+        config_stub.settings.studio_plan_provider = 'automatic'
+        with patch.object(director_module, 'OpenAI') as openai_class, patch.object(
+            director_module,
+            'generate_gemini_json',
+        ) as generate, self.assertRaisesRegex(
+            RuntimeError,
+            'STUDIO_PLAN_PROVIDER must be openai or gemini',
+        ):
+            direct_and_qc(
+                make_coherent_battery_package(),
+                'test',
+                0.5,
+                'tr',
+            )
+
+        openai_class.assert_not_called()
+        generate.assert_not_called()
+
+
 class ShortSpokenQualityTests(unittest.TestCase):
     def test_rejects_live_unsafe_turkish_wording_and_fact_montage(self):
         package = {
@@ -1555,3 +1968,4 @@ class ShortStoryApprovalTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
