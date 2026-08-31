@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import types
 
+from fastapi import FastAPI
 import pytest
 
 
@@ -1060,9 +1061,25 @@ def test_studio_router_mounts_secure_youtube_lifecycle(monkeypatch):
     sys.modules.pop('app.studio', None)
 
     studio = importlib.import_module('app.studio')
+    mounted_app = FastAPI()
+    mounted_app.include_router(studio.router)
+    http_methods = {
+        'delete',
+        'get',
+        'head',
+        'options',
+        'patch',
+        'post',
+        'put',
+        'trace',
+    }
     methods_by_path = {
-        route.path: set(route.methods or set())
-        for route in studio.router.routes
+        path: {
+            method.upper()
+            for method in operations
+            if method.lower() in http_methods
+        }
+        for path, operations in mounted_app.openapi()['paths'].items()
     }
 
     assert methods_by_path['/studio/youtube/connect'] == {'POST'}
