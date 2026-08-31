@@ -38,6 +38,7 @@ class RenderQualityTests(unittest.TestCase):
         with (
             patch.object(render_module, 'media_duration', return_value=10.0),
             patch.object(render_module, '_run', side_effect=commands.append),
+            patch.object(render_module, 'video_frame_count', return_value=270),
         ):
             render_module.normalize_clip(
                 {'path': 'generated.mp4', 'forbid_loop': True},
@@ -48,6 +49,13 @@ class RenderQualityTests(unittest.TestCase):
 
         self.assertEqual(len(commands), 1)
         self.assertNotIn('-stream_loop', commands[0])
+        video_filter = commands[0][commands[0].index('-vf') + 1]
+        self.assertIn('setpts=(PTS-STARTPTS)/1.008', video_filter)
+        self.assertIn('trim=end_frame=270', video_filter)
+        self.assertIn('setpts=N/(30*TB)', video_filter)
+        self.assertNotIn('tpad=', video_filter)
+        self.assertEqual(commands[0][commands[0].index('-frames:v') + 1], '270')
+        self.assertNotIn('-t', commands[0])
 
         with (
             patch.object(render_module, 'media_duration', return_value=5.0),
@@ -61,6 +69,41 @@ class RenderQualityTests(unittest.TestCase):
                     0,
                 )
         run.assert_not_called()
+
+    def test_generated_decode_shortfall_fails_instead_of_freezing_tail(self):
+        commands = []
+        with (
+            patch.object(render_module, 'media_duration', return_value=10.0),
+            patch.object(render_module, '_run', side_effect=commands.append),
+            patch.object(render_module, 'video_frame_count', return_value=269),
+        ):
+            with self.assertRaisesRegex(RuntimeError, 'frame gate'):
+                render_module.normalize_clip(
+                    {'path': 'generated.mp4', 'forbid_loop': True},
+                    'normalized.mp4',
+                    9.0,
+                    0,
+                )
+
+        self.assertEqual(len(commands), 1)
+        video_filter = commands[0][commands[0].index('-vf') + 1]
+        self.assertNotIn('tpad=', video_filter)
+
+    def test_timeline_uses_cumulative_rounding_without_frame_drift(self):
+        timeline = [
+            ('a.mp4', 4.2137, 'cut', 0),
+            ('b.mp4', 4.2137, 'cut', 1),
+            ('c.mp4', 4.2137, 'cut', 2),
+            ('d.mp4', 4.2137, 'cut', 3),
+            ('e.mp4', 4.2137, 'cut', 4),
+            ('f.mp4', 4.2137, 'cut', 5),
+            ('g.mp4', 4.2138, 'cut', 6),
+        ]
+
+        counts = render_module._timeline_frame_counts(timeline, 29.496)
+
+        self.assertEqual(sum(counts), 885)
+        self.assertTrue(all(count > 0 for count in counts))
 
     def test_master_command_pins_frames_and_pads_audio_without_shortest(self):
         commands = []
@@ -92,7 +135,10 @@ class RenderQualityTests(unittest.TestCase):
                 )
 
         silent_command, mux_command = commands
-        self.assertIn('trim=end_frame=900', silent_command[silent_command.index('-vf') + 1])
+        silent_filter = silent_command[silent_command.index('-vf') + 1]
+        self.assertTrue(silent_filter.startswith('setpts=PTS-STARTPTS,'))
+        self.assertIn('tpad=stop_mode=clone:stop_duration=0.700', silent_filter)
+        self.assertIn('trim=end_frame=900', silent_filter)
         self.assertEqual(silent_command[silent_command.index('-frames:v') + 1], '900')
         self.assertNotIn('-shortest', mux_command)
         audio_filter = mux_command[mux_command.index('-af') + 1]
@@ -101,6 +147,39 @@ class RenderQualityTests(unittest.TestCase):
         self.assertEqual(mux_command[mux_command.index('-frames:v') + 1], '900')
         self.assertEqual(result['frame_count'], 900)
         self.assertEqual(result['ending_silence_seconds'], 0.5)
+
+    def test_short_concat_fails_before_mux_instead_of_becoming_long_freeze(self):
+        commands = []
+
+        def fake_normalize(_spec, output, *_args, **_kwargs):
+            Path(output).write_bytes(b'clip')
+            return str(output)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            voice = work / 'voice.wav'
+            visual = work / 'visual.mp4'
+            voice.write_bytes(b'voice')
+            visual.write_bytes(b'visual')
+            with (
+                patch.object(render_module, 'media_duration', return_value=29.5),
+                patch.object(render_module, 'normalize_clip', side_effect=fake_normalize),
+                patch.object(render_module, '_run', side_effect=commands.append),
+                patch.object(render_module, 'video_frame_count', return_value=792),
+            ):
+                with self.assertRaisesRegex(RuntimeError, 'Silent master frame gate'):
+                    render_module.render_video(
+                        voice,
+                        [str(visual)],
+                        'Test narration.',
+                        work / 'final.mp4',
+                        target_duration=30.0,
+                    )
+
+        self.assertEqual(len(commands), 1)
+        silent_filter = commands[0][commands[0].index('-vf') + 1]
+        self.assertIn('tpad=stop_mode=clone:stop_duration=0.700', silent_filter)
+        self.assertNotIn('stop_duration=30.', silent_filter)
 
     @unittest.skipUnless(
         shutil.which('ffmpeg') and shutil.which('ffprobe'),
