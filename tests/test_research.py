@@ -78,6 +78,117 @@ class ResearchEvidenceContractTests(unittest.TestCase):
                     5,
                 )
 
+    def test_production_scene_target_is_seven_per_minute_for_every_pace_and_capped(self):
+        for pace in ('calm', 'balanced', 'dynamic'):
+            with self.subTest(pace=pace):
+                self.assertEqual(
+                    research_module._target_scene_count(2.0, pace),
+                    14,
+                )
+                self.assertEqual(
+                    research_module._target_scene_count(5.0, pace),
+                    35,
+                )
+        self.assertEqual(
+            research_module._target_scene_count(8.0, 'balanced'),
+            56,
+        )
+        self.assertEqual(
+            research_module._target_scene_count(10.0, 'calm'),
+            70,
+        )
+        self.assertEqual(
+            research_module._target_scene_count(20.0, 'dynamic'),
+            70,
+        )
+
+    def test_production_prompt_is_single_pass_but_explicit_count_stays_authoritative(self):
+        payload = valid_research_payload()
+        payload['scenes'] = [
+            {
+                'narration': f'Visible action number {index}.',
+                'visual_queries': [
+                    f'visible action close view {index}',
+                    f'visible action wide view {index}',
+                ],
+                'ai_prompt': None,
+            }
+            for index in range(5)
+        ]
+        research_module.settings.studio_plan_provider = 'gemini'
+        research_module.settings.openai_api_key = ''
+        research_module.settings.gemini_api_key = 'test-gemini-key'
+
+        with patch.object(
+            research_module,
+            'generate_gemini_json',
+            return_value=payload,
+        ) as gemini_generate:
+            result = research_module.research_and_script(
+                'Return exactly 5 scenes about one visible process.',
+                5.0,
+                'tr',
+                {'mode': 'production', 'pace': 'calm'},
+            )
+
+        prompt = gemini_generate.call_args.args[0]
+        schema = gemini_generate.call_args.kwargs['json_schema']
+        self.assertEqual(result['target_scene_count'], 5)
+        self.assertIn('Create EXACTLY 5 scenes', prompt)
+        self.assertIn('preferably keep each scene narration at 5-14 words', prompt)
+        self.assertIn('one continuous 5-10-second shot', prompt)
+        self.assertIn('scene-length shot, normally 5-10 seconds', prompt)
+        self.assertNotIn('sustains the complete requested duration', prompt)
+        self.assertIn(
+            "never overrides a user brief's explicit exact scene count",
+            prompt,
+        )
+        self.assertEqual(schema['properties']['scenes']['minItems'], 5)
+        self.assertEqual(schema['properties']['scenes']['maxItems'], 5)
+
+    def test_non_explicit_production_prompt_and_schema_use_approximate_scene_budget(self):
+        payload = valid_research_payload()
+        payload['scenes'] = [
+            {
+                'narration': f'Visible production action number {index}.',
+                'visual_queries': [
+                    f'production action close view {index}',
+                    f'production action wide view {index}',
+                ],
+                'ai_prompt': None,
+            }
+            for index in range(14)
+        ]
+        research_module.settings.studio_plan_provider = 'gemini'
+        research_module.settings.openai_api_key = ''
+        research_module.settings.gemini_api_key = 'test-gemini-key'
+
+        with patch.object(
+            research_module,
+            'generate_gemini_json',
+            return_value=payload,
+        ) as gemini_generate:
+            result = research_module.research_and_script(
+                'Explain one visible production process.',
+                2.0,
+                'tr',
+                {'mode': 'production', 'pace': 'calm'},
+            )
+
+        prompt = gemini_generate.call_args.args[0]
+        schema = gemini_generate.call_args.kwargs['json_schema']
+        self.assertEqual(result['target_scene_count'], 14)
+        self.assertIn(
+            'Target scene budget: approximately 14 scenes; return 13-15 scenes',
+            prompt,
+        )
+        self.assertNotIn('Create EXACTLY 14 scenes', prompt)
+        self.assertIn('preferably keep each scene narration at 5-14 words', prompt)
+        self.assertIn('scene-length shot, normally 5-10 seconds', prompt)
+        self.assertNotIn('sustains the complete requested duration', prompt)
+        self.assertEqual(schema['properties']['scenes']['minItems'], 13)
+        self.assertEqual(schema['properties']['scenes']['maxItems'], 15)
+
     def test_accepts_structured_url_and_evidence_records(self):
         result = _parse_json_payload(
             json.dumps(valid_research_payload()),
@@ -271,7 +382,7 @@ class ResearchEvidenceContractTests(unittest.TestCase):
         request = gemini_generate.call_args
         prompt = request.args[0]
         schema = request.kwargs['json_schema']
-        self.assertIn('Create EXACTLY 5 scenes.', prompt)
+        self.assertIn('Create EXACTLY 5 scenes', prompt)
         self.assertIn('Topic is the authoritative production contract', prompt)
         self.assertIn('Every non-null ai_prompt is standalone', prompt)
         self.assertEqual(schema['properties']['scenes']['minItems'], 5)
@@ -338,3 +449,4 @@ class ResearchEvidenceContractTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

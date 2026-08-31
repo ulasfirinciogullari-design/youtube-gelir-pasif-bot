@@ -39,7 +39,25 @@ def _review(
     score=92,
     reason='The named subject and action are both visible.',
     retry_queries=None,
+    evidence_moments=None,
+    **evidence_overrides,
 ):
+    evidence = {
+        'subject_visible': True,
+        'spoken_action_visible': True,
+        'physical_causality_applicable': False,
+        'target_contact_visible': False,
+        'state_change_applicable': False,
+        'state_changed_after_action': False,
+        'final_state_persists': False,
+        'unexplained_reset': False,
+        'location_continuity_applicable': False,
+        'location_continuity_matches': False,
+        'evidence_moment_indices': (
+            [moment] if evidence_moments is None else evidence_moments
+        ),
+    }
+    evidence.update(evidence_overrides)
     return {
         'scene_index': scene_index,
         'best_candidate_index': candidate,
@@ -47,6 +65,7 @@ def _review(
         'score': score,
         'reason': reason,
         'retry_queries': retry_queries or [],
+        **evidence,
     }
 
 
@@ -144,7 +163,7 @@ class VisualQcProviderTests(unittest.TestCase):
             )
 
         gemini.assert_not_called()
-        self.assertEqual(run.call_count, 9)
+        self.assertEqual(run.call_count, 15)
         self.assertEqual(result['unreviewable_scene_indices'], [0])
         self.assertEqual(result['missing_review_indices'], [0])
 
@@ -181,6 +200,9 @@ class VisualQcProviderTests(unittest.TestCase):
             'demanding senior YouTube picture editor',
             kwargs['system_instruction'],
         )
+        self.assertIn('real contact or occlusion', kwargs['system_instruction'])
+        self.assertIn('visible loop must score 40 or lower', kwargs['system_instruction'])
+        self.assertIn('spatial continuity', kwargs['system_instruction'])
         self.assertIn(
             'Required scene IDs: [0]',
             kwargs['system_instruction'],
@@ -199,7 +221,7 @@ class VisualQcProviderTests(unittest.TestCase):
         image_parts = [
             part for part in parts if set(part) == {'image_bytes'}
         ]
-        self.assertEqual(len(image_parts), 3)
+        self.assertEqual(len(image_parts), 5)
         self.assertTrue(all(
             part['image_bytes'] == JPEG_BYTES for part in image_parts
         ))
@@ -219,6 +241,39 @@ class VisualQcProviderTests(unittest.TestCase):
         )
         self.assertEqual(result['missing_review_indices'], [])
         self.assertEqual(result['reviews'][0]['best_start_fraction'], 0.50)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_high_score_cannot_override_failed_physical_evidence(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        gemini.return_value = {
+            'reviews': [_review(
+                score=96,
+                reason='The hand misses the target and the clip visibly resets.',
+                evidence_moments=[0, 1, 2],
+                physical_causality_applicable=True,
+                target_contact_visible=False,
+                unexplained_reset=True,
+            )],
+        }
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                self.scenes,
+                self.visuals,
+                self.work / 'failed_evidence',
+                _missing_review_attempts=0,
+            )
+
+        review = result['reviews'][0]
+        self.assertEqual(review['raw_score'], 96)
+        self.assertEqual(review['score'], 40)
+        self.assertFalse(review['evidence_gate_passed'])
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
@@ -430,7 +485,7 @@ class VisualQcProviderTests(unittest.TestCase):
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc.OpenAI')
     @patch('app.services.visual_qc._frame')
-    def test_openai_payload_and_lenient_normalization_remain_unchanged(
+    def test_openai_missing_structured_evidence_fails_closed(
         self, frame, openai, gemini
     ):
         frame.return_value = self.frame
@@ -471,8 +526,9 @@ class VisualQcProviderTests(unittest.TestCase):
             [part['type'] for part in content[2:4]],
             ['input_text', 'input_image'],
         )
-        self.assertEqual(result['reviews'][0]['score'], 100)
-        self.assertEqual(result['reviews'][0]['best_moment_index'], 2)
+        self.assertEqual(result['reviews'][0]['score'], 40)
+        self.assertFalse(result['reviews'][0]['evidence_gate_passed'])
+        self.assertEqual(result['reviews'][0]['best_moment_index'], 4)
         self.assertEqual(result['reviews'][0]['retry_queries'], ['retry'])
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
@@ -484,7 +540,7 @@ class VisualQcProviderTests(unittest.TestCase):
         invalid_review_sets = [
             [_review(True)],
             [_review(candidate=True)],
-            [_review(moment=3)],
+            [_review(moment=5)],
             [_review(score=True)],
             [_review(score=101)],
             [_review(reason='   ')],
@@ -540,7 +596,7 @@ class VisualQcProviderTests(unittest.TestCase):
                     _review(3, candidate=1),
                 ],
             },
-            {'reviews': [_review(0, candidate=0, moment=2)]},
+            {'reviews': [_review(1, candidate=0, moment=2)]},
         ]
 
         with (
@@ -595,7 +651,7 @@ class VisualQcProviderTests(unittest.TestCase):
                 'reviews': [_review(scene_index) for scene_index in scene_ids],
             }
 
-        for scene_count, expected_calls in ((14, 3), (18, 3)):
+        for scene_count, expected_calls in ((14, 5), (18, 6)):
             with self.subTest(scene_count=scene_count):
                 gemini.reset_mock()
                 gemini.side_effect = complete_batch
@@ -686,6 +742,401 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    def test_overlap_selection_conflict_fails_closed(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        call_number = 0
+
+        def verdict(_parts, **kwargs):
+            nonlocal call_number
+            call_number += 1
+            scene_ids = (
+                kwargs['json_schema']['properties']['reviews']['items']
+                ['properties']['scene_index']['enum']
+            )
+            return {
+                'reviews': [
+                    _review(
+                        scene_index,
+                        moment=(
+                            2
+                            if call_number == 2 and scene_index == 0
+                            else 0
+                        ),
+                    )
+                    for scene_index in scene_ids
+                ],
+            }
+
+        gemini.side_effect = verdict
+        scenes = [
+            {'narration': f'scene {index}', 'visual_queries': []}
+            for index in range(5)
+        ]
+        visuals = [[f'scene-{index}.mp4'] for index in range(5)]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                scenes,
+                visuals,
+                self.work / 'overlap_selection_conflict',
+                max_scenes=5,
+                _missing_review_attempts=0,
+            )
+
+        overlap_review = result['reviews'][3]
+        self.assertEqual(gemini.call_count, 2)
+        self.assertEqual(overlap_review['scene_index'], 3)
+        self.assertEqual(overlap_review['score'], 40)
+        self.assertFalse(overlap_review['evidence_gate_passed'])
+        self.assertIn(
+            'Boundary review selected a different candidate or moment',
+            overlap_review['reason'],
+        )
+        self.assertEqual(result['missing_review_indices'], [])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_missing_overlap_window_preserves_missing_and_fails_closed(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        call_number = 0
+
+        def verdict(_parts, **kwargs):
+            nonlocal call_number
+            call_number += 1
+            scene_ids = (
+                kwargs['json_schema']['properties']['reviews']['items']
+                ['properties']['scene_index']['enum']
+            )
+            return {
+                'reviews': [
+                    _review(scene_index)
+                    for scene_index in scene_ids
+                    if not (call_number == 2 and scene_index == 0)
+                ],
+            }
+
+        gemini.side_effect = verdict
+        scenes = [
+            {'narration': f'scene {index}', 'visual_queries': []}
+            for index in range(5)
+        ]
+        visuals = [[f'scene-{index}.mp4'] for index in range(5)]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                scenes,
+                visuals,
+                self.work / 'missing_overlap_window',
+                max_scenes=5,
+                _missing_review_attempts=0,
+            )
+
+        overlap_review = result['reviews'][3]
+        self.assertEqual(gemini.call_count, 2)
+        self.assertEqual(result['missing_review_indices'], [3])
+        self.assertEqual(overlap_review['score'], 40)
+        self.assertFalse(overlap_review['evidence_gate_passed'])
+        self.assertIn(
+            'adjacent boundary review was missing or unreviewable',
+            overlap_review['reason'],
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_missing_review_retry_carries_real_neighbor_frames_and_schema_ids(
+        self, frame, gemini
+    ):
+        def write_unique_frame(video_path, output_path, _fraction):
+            output_path.write_bytes(
+                b'\xff\xd8\xff'
+                + Path(str(video_path)).name.encode('utf-8')
+                + b'\xff\xd9'
+            )
+            return output_path
+
+        frame.side_effect = write_unique_frame
+        call_number = 0
+
+        def verdict(_parts, **kwargs):
+            nonlocal call_number
+            call_number += 1
+            scene_ids = (
+                kwargs['json_schema']['properties']['reviews']['items']
+                ['properties']['scene_index']['enum']
+            )
+            if call_number == 1:
+                return {
+                    'reviews': [
+                        _review(scene_index)
+                        for scene_index in scene_ids
+                        if scene_index != 1
+                    ],
+                }
+            return {
+                'reviews': [
+                    _review(
+                        scene_index,
+                        moment=2 if scene_index == 1 else 0,
+                    )
+                    for scene_index in scene_ids
+                ],
+            }
+
+        gemini.side_effect = verdict
+        scenes = [
+            {'narration': f'scene {index}', 'visual_queries': []}
+            for index in range(4)
+        ]
+        visuals = [[f'scene-{index}.mp4'] for index in range(4)]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                scenes,
+                visuals,
+                self.work / 'missing_retry_neighbors',
+                max_scenes=4,
+                _missing_review_attempts=1,
+                story_scenes=scenes,
+            )
+
+        self.assertEqual(gemini.call_count, 2)
+        retry_call = gemini.call_args_list[1]
+        retry_schema_ids = (
+            retry_call.kwargs['json_schema']['properties']['reviews']['items']
+            ['properties']['scene_index']['enum']
+        )
+        self.assertEqual(retry_schema_ids, [0, 1, 2])
+        retry_text = '\n'.join(
+            part['text'] for part in retry_call.args[0] if 'text' in part
+        )
+        self.assertIn('REVIEW SCENE ID 0\n', retry_text)
+        self.assertIn('REVIEW SCENE ID 1\n', retry_text)
+        self.assertIn('REVIEW SCENE ID 2\n', retry_text)
+        self.assertNotIn('REVIEW SCENE ID 3\n', retry_text)
+        retry_images = [
+            part['image_bytes']
+            for part in retry_call.args[0]
+            if set(part) == {'image_bytes'}
+        ]
+        for scene_index in (0, 1, 2):
+            self.assertTrue(any(
+                f'scene-{scene_index}.mp4'.encode('utf-8') in image
+                for image in retry_images
+            ))
+        self.assertFalse(any(
+            b'scene-3.mp4' in image for image in retry_images
+        ))
+        self.assertEqual(result['reviews'][1]['best_start_fraction'], 0.82)
+        self.assertEqual(result['missing_review_indices'], [])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_missing_retry_accepts_target_when_neighbor_selections_match(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        call_number = 0
+
+        def verdict(_parts, **kwargs):
+            nonlocal call_number
+            call_number += 1
+            scene_ids = (
+                kwargs['json_schema']['properties']['reviews']['items']
+                ['properties']['scene_index']['enum']
+            )
+            if call_number == 1:
+                return {
+                    'reviews': [
+                        _review(scene_index)
+                        for scene_index in scene_ids
+                        if scene_index != 1
+                    ],
+                }
+            return {
+                'reviews': [
+                    _review(
+                        scene_index,
+                        moment=2 if scene_index == 1 else 0,
+                    )
+                    for scene_index in scene_ids
+                ],
+            }
+
+        gemini.side_effect = verdict
+        scenes = [
+            {'narration': f'scene {index}', 'visual_queries': []}
+            for index in range(3)
+        ]
+        visuals = [[f'scene-{index}.mp4'] for index in range(3)]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                scenes,
+                visuals,
+                self.work / 'matching_retry_neighbors',
+                _missing_review_attempts=1,
+            )
+
+        target_review = result['reviews'][1]
+        self.assertEqual(gemini.call_count, 2)
+        self.assertEqual(target_review['scene_index'], 1)
+        self.assertEqual(target_review['best_moment_index'], 2)
+        self.assertEqual(target_review['score'], 92)
+        self.assertTrue(target_review['evidence_gate_passed'])
+        self.assertEqual(result['reviews'][0]['best_moment_index'], 0)
+        self.assertEqual(result['reviews'][2]['best_moment_index'], 0)
+        self.assertEqual(result['missing_review_indices'], [])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_missing_retry_clamps_target_when_neighbor_is_missing_or_changes(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scenes = [
+            {'narration': f'scene {index}', 'visual_queries': []}
+            for index in range(3)
+        ]
+        visuals = [[f'scene-{index}.mp4'] for index in range(3)]
+
+        for neighbor_failure in ('missing', 'changed'):
+            with self.subTest(neighbor_failure=neighbor_failure):
+                call_number = 0
+
+                def verdict(_parts, **kwargs):
+                    nonlocal call_number
+                    call_number += 1
+                    scene_ids = (
+                        kwargs['json_schema']['properties']['reviews']['items']
+                        ['properties']['scene_index']['enum']
+                    )
+                    if call_number == 1:
+                        return {
+                            'reviews': [
+                                _review(scene_index)
+                                for scene_index in scene_ids
+                                if scene_index != 1
+                            ],
+                        }
+                    return {
+                        'reviews': [
+                            _review(
+                                scene_index,
+                                moment=(
+                                    2
+                                    if (
+                                        neighbor_failure == 'changed'
+                                        and scene_index == 0
+                                    )
+                                    or scene_index == 1
+                                    else 0
+                                ),
+                            )
+                            for scene_index in scene_ids
+                            if not (
+                                neighbor_failure == 'missing'
+                                and scene_index == 0
+                            )
+                        ],
+                    }
+
+                gemini.reset_mock()
+                gemini.side_effect = verdict
+                with (
+                    patch.object(
+                        settings,
+                        'studio_plan_provider',
+                        'gemini',
+                    ),
+                    patch.object(settings, 'gemini_api_key', 'test-key'),
+                ):
+                    result = review_scene_visuals(
+                        scenes,
+                        visuals,
+                        self.work / f'{neighbor_failure}_retry_neighbor',
+                        _missing_review_attempts=1,
+                    )
+
+                target_review = result['reviews'][1]
+                self.assertEqual(gemini.call_count, 2)
+                self.assertEqual(target_review['score'], 40)
+                self.assertFalse(target_review['evidence_gate_passed'])
+                self.assertIn(
+                    'Missing-review retry failed closed',
+                    target_review['reason'],
+                )
+                self.assertEqual(
+                    result['reviews'][0]['best_moment_index'],
+                    0,
+                )
+                self.assertEqual(
+                    result['reviews'][2]['best_moment_index'],
+                    0,
+                )
+                self.assertEqual(result['missing_review_indices'], [])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_batched_scene_without_visuals_is_not_coverage_missing(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+
+        def complete_batch(_parts, **kwargs):
+            scene_ids = (
+                kwargs['json_schema']['properties']['reviews']['items']
+                ['properties']['scene_index']['enum']
+            )
+            return {
+                'reviews': [_review(scene_index) for scene_index in scene_ids],
+            }
+
+        gemini.side_effect = complete_batch
+        scenes = [
+            {'narration': f'scene {index}', 'visual_queries': []}
+            for index in range(5)
+        ]
+        visuals = [[f'scene-{index}.mp4'] for index in range(5)]
+        visuals[2] = []
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                scenes,
+                visuals,
+                self.work / 'pathless_coverage',
+                max_scenes=5,
+                _missing_review_attempts=0,
+            )
+
+        self.assertEqual(gemini.call_count, 2)
+        self.assertEqual(
+            [review['scene_index'] for review in result['reviews']],
+            [0, 1, 3, 4],
+        )
+        self.assertEqual(result['included_scene_indices'], [0, 1, 3, 4])
+        self.assertEqual(result['missing_review_indices'], [])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
     def test_later_batch_missing_review_retry_maps_to_global_scene_id(
         self, frame, gemini
     ):
@@ -704,11 +1155,19 @@ class VisualQcProviderTests(unittest.TestCase):
                     'reviews': [
                         _review(scene_index)
                         for scene_index in scene_ids
-                        if scene_index != 4
+                        if scene_index != 1
                     ],
                 }
             if call_number == 3:
-                return {'reviews': [_review(0, moment=2)]}
+                return {
+                    'reviews': [
+                        _review(
+                            scene_index,
+                            moment=2 if scene_index == 1 else 0,
+                        )
+                        for scene_index in scene_ids
+                    ],
+                }
             return {
                 'reviews': [_review(scene_index) for scene_index in scene_ids],
             }
@@ -732,13 +1191,13 @@ class VisualQcProviderTests(unittest.TestCase):
                 _missing_review_attempts=1,
             )
 
-        self.assertEqual(gemini.call_count, 4)
+        self.assertEqual(gemini.call_count, 6)
         self.assertEqual(result['missing_review_indices'], [])
         self.assertEqual(
             [review['scene_index'] for review in result['reviews']],
             list(range(14)),
         )
-        self.assertEqual(result['reviews'][10]['best_start_fraction'], 0.82)
+        self.assertEqual(result['reviews'][4]['best_start_fraction'], 0.82)
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
@@ -782,7 +1241,7 @@ class VisualQcProviderTests(unittest.TestCase):
                 _missing_review_attempts=0,
             )
 
-        self.assertEqual(gemini.call_count, 4)
+        self.assertEqual(gemini.call_count, 6)
         self.assertEqual(
             gemini.call_args_list[1],
             gemini.call_args_list[2],
@@ -914,3 +1373,4 @@ class VisualQcProviderTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

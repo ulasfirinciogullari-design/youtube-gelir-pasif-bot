@@ -5,17 +5,60 @@ import re
 import subprocess
 
 
+FPS = 30
+
+
 def _run(cmd: list[str]):
-    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(
+        cmd,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
 
 @lru_cache(maxsize=256)
 def media_duration(path: str | Path) -> float:
     out = subprocess.check_output([
         'ffprobe', '-v', 'error', '-show_entries', 'format=duration',
-        '-of', 'default=noprint_wrappers=1:nokey=1', str(path)
+        '-of', 'default=noprint_wrappers=1:nokey=1', str(path),
     ], text=True).strip()
     return float(out)
+
+
+def video_frame_count(path: str | Path) -> int:
+    out = subprocess.check_output([
+        'ffprobe', '-v', 'error', '-count_frames', '-select_streams', 'v:0',
+        '-show_entries', 'stream=nb_read_frames',
+        '-of', 'default=noprint_wrappers=1:nokey=1', str(path),
+    ], text=True).strip()
+    try:
+        return int(out)
+    except (TypeError, ValueError):
+        return 0
+
+
+def ending_silence_duration(path: str | Path, noise_db: int = -45) -> float:
+    """Measure only a silence interval that reaches the end of the master."""
+    completed = subprocess.run([
+        'ffmpeg', '-hide_banner', '-nostats', '-i', str(path),
+        '-map', '0:a:0', '-af', f'silencedetect=noise={noise_db}dB:d=0.10',
+        '-vn', '-f', 'null', '-',
+    ], capture_output=True, text=True, check=False)
+    starts = [
+        float(value)
+        for value in re.findall(r'silence_start:\s*([0-9.]+)', completed.stderr or '')
+    ]
+    ends = [
+        float(value)
+        for value in re.findall(r'silence_end:\s*([0-9.]+)', completed.stderr or '')
+    ]
+    if not starts or not ends:
+        return 0.0
+    total = media_duration(path)
+    if ends[-1] + 0.08 < total:
+        return 0.0
+    return max(0.0, ends[-1] - starts[-1])
 
 
 def max_freeze_duration(path: str | Path, minimum_seconds: float = 2.0) -> float:
@@ -44,7 +87,11 @@ def _srt_timestamp(seconds: float) -> str:
 
 
 def _caption_chunks(narration: str, max_words: int = 7) -> list[str]:
-    clauses = [p.strip() for p in re.split(r'(?<=[.!?…])\s+|(?<=[,;:])\s+', narration) if p.strip()]
+    clauses = [
+        part.strip()
+        for part in re.split(r'(?<=[.!?…])\s+|(?<=[,;:])\s+', narration)
+        if part.strip()
+    ]
     raw: list[str] = []
     for clause in clauses or [narration.strip()]:
         words = clause.split()
@@ -53,11 +100,13 @@ def _caption_chunks(narration: str, max_words: int = 7) -> list[str]:
             words = words[max_words:]
             raw.append(' '.join(take))
 
-    # Never flash one- or two-word subtitles. Merge short fragments into the
-    # previous thought while keeping normal cues compact.
     chunks: list[str] = []
-    for part in (c for c in raw if c):
-        if chunks and len(part.split()) < 3 and len((chunks[-1] + ' ' + part).split()) <= max_words + 2:
+    for part in (candidate for candidate in raw if candidate):
+        if (
+            chunks
+            and len(part.split()) < 3
+            and len((chunks[-1] + ' ' + part).split()) <= max_words + 2
+        ):
             chunks[-1] = f'{chunks[-1]} {part}'
         else:
             chunks.append(part)
@@ -67,8 +116,12 @@ def _caption_chunks(narration: str, max_words: int = 7) -> list[str]:
     return chunks
 
 
-
-def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_duration: float, output_path: str | Path) -> str:
+def make_scene_srt(
+    scenes: list[dict],
+    scene_durations: list[float],
+    total_duration: float,
+    output_path: str | Path,
+) -> str:
     """Create a sidecar SRT. It is never burned into the master video."""
     raw_total = sum(scene_durations) or total_duration or 1.0
     scale = total_duration / raw_total if raw_total else 1.0
@@ -85,7 +138,7 @@ def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_durat
         if not parts:
             cursor += scene_duration
             continue
-        weights = [max(len(p.replace(' ', '')), 1) for p in parts]
+        weights = [max(len(part.replace(' ', '')), 1) for part in parts]
         total_weight = sum(weights) or 1
         local_cursor = cursor
         scene_end = min(total_duration, cursor + scene_duration)
@@ -93,7 +146,10 @@ def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_durat
             if part_idx == len(parts) - 1:
                 end = scene_end
             else:
-                end = min(scene_end, local_cursor + scene_duration * weight / total_weight)
+                end = min(
+                    scene_end,
+                    local_cursor + scene_duration * weight / total_weight,
+                )
             if end <= local_cursor:
                 continue
             lines.extend([
@@ -111,8 +167,17 @@ def make_scene_srt(scenes: list[dict], scene_durations: list[float], total_durat
     return str(path)
 
 
-def make_srt(narration: str, total_duration: float, output_path: str | Path) -> str:
-    return make_scene_srt([{'narration': narration}], [total_duration], total_duration, output_path)
+def make_srt(
+    narration: str,
+    total_duration: float,
+    output_path: str | Path,
+) -> str:
+    return make_scene_srt(
+        [{'narration': narration}],
+        [total_duration],
+        total_duration,
+        output_path,
+    )
 
 
 def _spec_path(spec: str | dict) -> str:
@@ -131,6 +196,10 @@ def _spec_start_fraction(spec: str | dict) -> float:
     return max(0.0, min(value, 0.95))
 
 
+def _spec_forbids_loop(spec: str | dict) -> bool:
+    return bool(isinstance(spec, dict) and spec.get('forbid_loop'))
+
+
 def normalize_clip(
     visual_spec: str | dict,
     output_path: str | Path,
@@ -138,7 +207,7 @@ def normalize_clip(
     shot_index: int,
     transition: str = 'cut',
 ) -> str:
-    """Render one deliberately chosen excerpt, rather than always starting at 0:00."""
+    """Render one chosen excerpt and never loop generated action footage."""
     input_path = _spec_path(visual_spec)
     if not input_path:
         raise RuntimeError('Visual spec is missing a path')
@@ -147,7 +216,10 @@ def normalize_clip(
     fraction = _spec_start_fraction(visual_spec)
     max_start = max(0.0, source_duration - duration - 0.08)
     desired_center = source_duration * fraction
-    start_seconds = min(max_start, max(0.0, desired_center - duration * 0.40))
+    start_seconds = min(
+        max_start,
+        max(0.0, desired_center - duration * 0.40),
+    )
 
     offsets = [
         '(iw-1920)/2:(ih-1080)/2',
@@ -158,10 +230,18 @@ def normalize_clip(
     ]
     crop_xy = offsets[shot_index % len(offsets)]
     speed = 1.008 + (shot_index % 3) * 0.006
+    forbid_loop = _spec_forbids_loop(visual_spec)
+    required_source_end = start_seconds + duration * speed + 0.04
+    if forbid_loop and source_duration + 0.04 < required_source_end:
+        raise RuntimeError(
+            'Generated clip is too short for a single-pass scene: '
+            f'{source_duration:.3f}s source for {duration:.3f}s segment'
+        )
+
     filters = [
         'scale=2050:1153:force_original_aspect_ratio=increase',
         f'crop=1920:1080:{crop_xy}',
-        'fps=30',
+        f'fps={FPS}',
         'setsar=1',
         f'setpts=PTS/{speed:.3f}',
     ]
@@ -173,10 +253,14 @@ def normalize_clip(
         ])
     filters.append('format=yuv420p')
 
+    input_args = ['-i', input_path]
+    if not forbid_loop:
+        input_args = ['-stream_loop', '-1', '-i', input_path]
     _run([
-        'ffmpeg', '-y', '-ss', f'{start_seconds:.3f}', '-stream_loop', '-1', '-i', input_path,
+        'ffmpeg', '-y', '-ss', f'{start_seconds:.3f}', *input_args,
         '-t', f'{duration:.3f}', '-vf', ','.join(filters),
-        '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', str(output_path),
+        '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
+        str(output_path),
     ])
     return str(output_path)
 
@@ -188,7 +272,7 @@ def _scene_timeline(
     voice_duration: float,
     fallback_visuals: list[str | dict],
 ) -> list[tuple[str | dict, float, str, int]]:
-    """Use long, intentional scene shots. Do not manufacture rapid cuts from one clip."""
+    """Use long, intentional scene shots. Do not manufacture rapid cuts."""
     raw_total = sum(scene_durations) or voice_duration or 1.0
     scale = voice_duration / raw_total
     timeline: list[tuple[str | dict, float, str, int]] = []
@@ -196,12 +280,15 @@ def _scene_timeline(
     for idx, raw_duration in enumerate(scene_durations):
         duration = max(0.4, raw_duration * scale)
         scene = scenes[idx] if idx < len(scenes) else {}
-        specs = scene_visual_paths[idx] if idx < len(scene_visual_paths) else []
+        specs = (
+            scene_visual_paths[idx]
+            if idx < len(scene_visual_paths)
+            else []
+        )
         specs = [spec for spec in specs if _spec_path(spec)] or fallback_visuals
         if not specs:
             continue
 
-        # One hero shot per short scene; at most two for a genuinely long scene.
         if duration < 6.5 or len(specs) == 1:
             chosen = specs[:1]
         elif duration < 11.0:
@@ -224,6 +311,7 @@ def render_video(
     scenes: list[dict] | None = None,
     scene_durations: list[float] | None = None,
     scene_visual_paths: list[list[str | dict]] | None = None,
+    target_duration: float | None = None,
 ) -> dict:
     if not visual_paths:
         raise RuntimeError('No visual clips were provided to renderer')
@@ -232,9 +320,26 @@ def render_video(
     work = output.parent
     work.mkdir(parents=True, exist_ok=True)
     voice_duration = media_duration(voice_path)
+    master_duration = (
+        float(target_duration)
+        if target_duration and target_duration > 0
+        else voice_duration
+    )
+    if target_duration and voice_duration > master_duration + 0.08:
+        raise RuntimeError(
+            'Narration exceeds the fixed master duration: '
+            f'{voice_duration:.3f}s voice for {master_duration:.3f}s master'
+        )
+    target_frames = max(1, int(round(master_duration * FPS)))
 
     if scenes and scene_durations and scene_visual_paths:
-        timeline = _scene_timeline(scenes, scene_visual_paths, scene_durations, voice_duration, visual_paths)
+        timeline = _scene_timeline(
+            scenes,
+            scene_visual_paths,
+            scene_durations,
+            voice_duration,
+            visual_paths,
+        )
     else:
         desired_shots = max(1, int(math.ceil(voice_duration / 5.0)))
         chosen = visual_paths[:desired_shots] or visual_paths[:1]
@@ -246,46 +351,81 @@ def render_video(
 
     normalized: list[Path] = []
     for idx, (visual_spec, shot_duration, transition, _scene_idx) in enumerate(timeline):
-        seg = work / f'norm_{idx:03d}.mp4'
-        segment_duration = shot_duration + (0.05 if idx == len(timeline) - 1 else 0.0)
-        normalize_clip(visual_spec, seg, segment_duration, idx, transition)
-        normalized.append(seg)
+        segment = work / f'norm_{idx:03d}.mp4'
+        segment_duration = shot_duration + (
+            0.05 if idx == len(timeline) - 1 else 0.0
+        )
+        normalize_clip(
+            visual_spec,
+            segment,
+            segment_duration,
+            idx,
+            transition,
+        )
+        normalized.append(segment)
 
     concat_file = work / 'concat.txt'
-    concat_file.write_text('\n'.join(f"file '{p.as_posix()}'" for p in normalized), encoding='utf-8')
+    concat_file.write_text(
+        '\n'.join(f"file '{path.as_posix()}'" for path in normalized),
+        encoding='utf-8',
+    )
     silent_video = work / 'silent.mp4'
+    pad_seconds = max(0.25, master_duration - voice_duration + 0.20)
+    video_filter = ','.join([
+        f'fps={FPS}',
+        'setsar=1',
+        'format=yuv420p',
+        f'tpad=stop_mode=clone:stop_duration={pad_seconds:.3f}',
+        f'trim=end_frame={target_frames}',
+        f'setpts=N/({FPS}*TB)',
+    ])
     _run([
         'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat_file),
-        '-t', f'{voice_duration:.3f}', '-vf', 'fps=30,setsar=1,format=yuv420p',
-        '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', str(silent_video)
+        '-vf', video_filter, '-frames:v', str(target_frames), '-an',
+        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
+        str(silent_video),
     ])
 
-    # Captions are exported as a sidecar SRT for YouTube language tracks. The
-    # master MP4 contains zero text layers.
     srt = work / 'captions.srt'
     if scenes and scene_durations:
         make_scene_srt(scenes, scene_durations, voice_duration, srt)
     else:
         make_srt(narration, voice_duration, srt)
 
-    # No video re-encode and no subtitle filter: faster, cleaner master output.
+    audio_filter = ','.join([
+        'aresample=48000',
+        f'apad=whole_dur={master_duration:.3f}',
+        f'atrim=duration={master_duration:.3f}',
+        'asetpts=N/SR/TB',
+    ])
     _run([
         'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path),
         '-map', '0:v:0', '-map', '1:a:0',
-        '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k',
-        '-shortest', '-movflags', '+faststart', str(output),
+        '-c:v', 'copy', '-frames:v', str(target_frames),
+        '-af', audio_filter, '-c:a', 'aac', '-b:a', '192k',
+        '-t', f'{master_duration:.3f}', '-movflags', '+faststart', str(output),
     ])
 
     return {
         'path': str(output),
         'duration': media_duration(output),
+        'frame_count': video_frame_count(output),
+        'fps': FPS,
+        'ending_silence_seconds': ending_silence_duration(output),
         'max_freeze_seconds': max_freeze_duration(output),
         'shots': len(timeline),
-        'unique_visuals': len({_spec_path(spec) for spec in visual_paths if _spec_path(spec)}),
+        'unique_visuals': len({
+            _spec_path(spec)
+            for spec in visual_paths
+            if _spec_path(spec)
+        }),
         'resolution': '1920x1080',
-        'scene_synced': bool(scenes and scene_durations and scene_visual_paths),
+        'scene_synced': bool(
+            scenes and scene_durations and scene_visual_paths
+        ),
         'text_layers': 0,
         'burned_subtitles': False,
         'caption_format': 'srt',
         'srt': str(srt),
     }
+

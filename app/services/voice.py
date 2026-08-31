@@ -193,16 +193,29 @@ def _scene_pause(scene: dict, is_last: bool, short_preview: bool) -> float:
 
 
 def _fit_duration(output: Path, scene_durations: list[float], target_seconds: float | None) -> tuple[list[float], float, float, float]:
-    """Gently fit a near-target narration without making the voice sound rushed."""
+    """Fit narration while reserving a natural tail on short previews."""
     before = _media_duration(output)
     after = before
     tempo_rate = 1.0
-    outside_tolerance = bool(
-        target_seconds and target_seconds > 0
-        and (before > target_seconds * 1.03 or before < target_seconds * 0.97)
+    short_preview = bool(target_seconds and 0 < target_seconds <= 40)
+    desired = (
+        max(1.0, float(target_seconds) - 0.50)
+        if short_preview
+        else float(target_seconds) * 0.99
+        if target_seconds and target_seconds > 0
+        else before
     )
-    if outside_tolerance:
-        desired = target_seconds * 0.99
+    needs_fit = bool(
+        target_seconds and target_seconds > 0
+        and (
+            (short_preview and abs(before - desired) > 0.015)
+            or (
+                not short_preview
+                and (before > target_seconds * 1.03 or before < target_seconds * 0.97)
+            )
+        )
+    )
+    if needs_fit:
         requested_rate = before / desired
         # Large tempo changes hide a bad script budget and sound synthetic.
         if requested_rate < 0.92 or requested_rate > 1.12:
@@ -295,6 +308,9 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: f
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     scene_durations, before_fit, after_fit, tempo_rate = _fit_duration(output, scene_durations, target_seconds)
+    reserved_tail_seconds = (
+        0.50 if target_seconds and 0 < target_seconds <= 40 else 0.0
+    )
     return {
         'path': str(output),
         'scene_durations': scene_durations,
@@ -303,6 +319,12 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: f
         'duration_before_fit': before_fit,
         'duration_after_fit': after_fit,
         'tempo_rate': tempo_rate,
+        'content_target_seconds': (
+            float(target_seconds) - reserved_tail_seconds
+            if target_seconds and target_seconds > 0
+            else after_fit
+        ),
+        'reserved_tail_seconds': reserved_tail_seconds,
     }
 
 

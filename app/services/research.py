@@ -22,10 +22,13 @@ STYLE_DIRECTIONS = {
     'explainer': 'High-end explainer: crystal-clear causal logic, demonstrations and comparisons, no filler.',
 }
 PACE_DIRECTIONS = {
-    'calm': 'Use fewer, longer scenes and give important ideas room to breathe. Do not rush.',
+    'calm': 'Use measured delivery and give important ideas room to breathe without reducing the required scene count. Do not rush.',
     'balanced': 'Alternate concise reveals with clear explanations. Rhythm should feel edited, not frantic.',
     'dynamic': 'Front-load momentum and use sharper scene turns, while preserving comprehension and continuity.',
 }
+
+_PRODUCTION_SCENES_PER_MINUTE = 7.0
+_MAX_PRODUCTION_SCENES = 70
 
 
 def _studio_plan_provider() -> str:
@@ -165,14 +168,20 @@ def _parse_json_payload(text: str) -> dict:
 
 
 def _target_scene_count(duration_minutes: float, pace: str) -> int:
+    if duration_minutes > 1.1:
+        # Production clips are single-pass. Keep the spoken beat short enough
+        # for one 5-10 second shot even when the requested pace is calm.
+        return min(
+            _MAX_PRODUCTION_SCENES,
+            max(
+                8,
+                int(round(duration_minutes * _PRODUCTION_SCENES_PER_MINUTE)),
+            ),
+        )
     if duration_minutes <= 0.6:
         base = max(5, int(round(duration_minutes * 12)))
-    elif duration_minutes <= 1.1:
-        base = 6
-    elif duration_minutes <= 3.1:
-        base = max(8, int(round(duration_minutes * 4.5)))
     else:
-        base = min(28, max(12, int(round(duration_minutes * 3.5))))
+        base = 6
     if pace == 'calm':
         return max(3, int(round(base * 0.82)))
     if pace == 'dynamic':
@@ -270,6 +279,25 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     else:
         preview_ai_routing_note = ''
 
+    production_scene_note = (
+        'PRODUCTION SINGLE-PASS SCENE CONTRACT: distribute spoken narration '
+        'evenly across scenes; preferably keep each scene narration at 5-14 '
+        'words. Every scene must be fully visualizable in one continuous '
+        '5-10-second shot without looping or combining multiple shots. This '
+        "preference never overrides a user brief's explicit exact scene count."
+        if duration_minutes > 1.1
+        else ''
+    )
+    scene_budget_note = (
+        f'USER-BRIEF HARD CONSTRAINT: Create EXACTLY {target_scenes} scenes; '
+        'one fewer or one extra scene is invalid.'
+        if exact_scene_count
+        else (
+            f'Target scene budget: approximately {target_scenes} scenes; '
+            f'return {max(3, target_scenes - 1)}-{target_scenes + 1} scenes.'
+        )
+    )
+
     reasoning_effort = (
         'medium'
         if mode == 'preview' and duration_minutes <= 0.6
@@ -285,8 +313,9 @@ Visual mix: {visual_mix}
 {reference_note}
 
 HARD NARRATION BUDGET: {min_words}-{max_words} total spoken words; aim for {target_words}. Never exceed {max_words}.
-Create EXACTLY {target_scenes} scenes.
+{scene_budget_note}
 Maximum scenes that may carry an AI fallback prompt: {max_ai_scenes}. Paid generation is selected later from measured stock quality.
+{production_scene_note}
 
 Return ONLY valid JSON with exactly these top-level keys:
 title, thumbnail_text, description, scenes, sources.
@@ -323,7 +352,7 @@ VISUAL DIRECTING RULES:
 - In that same conditional OLED case, if narration claims lower power use, require a real physical meter visibly dropping in the same shot; otherwise rewrite the spoken claim to the directly visible emissive-pixel fact.
 - ai_prompt may be non-null when literal stock is unlikely to reliably show the named subject, action or mechanism, and in at most {max_ai_scenes} scenes.
 {preview_ai_routing_note}
-- Every non-null ai_prompt must describe one continuous five-second 16:9 photorealistic shot with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
+- Every non-null ai_prompt must describe one continuous 16:9 photorealistic scene-length shot, normally 5-10 seconds, with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
 - Every non-null ai_prompt is standalone. Repeat inside that scene's own prompt every applicable object identity, dimension, brand state, color, wardrobe, room, lighting, continuity and forbidden-element constraint from Topic; never rely on an earlier scene prompt to carry it forward.
 - The master video is text-free: do not plan captions, lower thirds or on-screen sentences.
 
@@ -386,3 +415,4 @@ FACT RULES:
     package['target_word_range'] = [min_words, max_words]
     package['studio_options'] = options
     return package
+
