@@ -316,6 +316,29 @@ def _safe_system_instruction(value: Any) -> str | None:
     return value
 
 
+def _decode_gemini_json_response(
+    response: Any,
+    safe_schema: dict | None,
+) -> dict:
+    try:
+        response_payload = response.json()
+        output_text = _extract_output_text(response_payload)
+        output = json.loads(
+            output_text,
+            object_pairs_hook=_reject_duplicate_keys,
+            parse_constant=_reject_non_finite,
+        )
+    except GeminiGenerationError:
+        raise
+    except Exception:
+        raise GeminiProtocolError('Gemini returned invalid JSON') from None
+    if not isinstance(output, dict):
+        raise GeminiProtocolError('Gemini JSON output is not an object')
+    if safe_schema is not None and not _matches_schema(output, safe_schema):
+        raise GeminiProtocolError('Gemini JSON output violated its schema')
+    return output
+
+
 def _generate_gemini_json_from_parts(
     parts: list[dict],
     *,
@@ -395,27 +418,14 @@ def _generate_gemini_json_from_parts(
             continue
         if type(status_code) is not int or not 200 <= status_code < 300:
             raise GeminiGenerationError('Gemini generation request was rejected')
-        break
+        try:
+            return _decode_gemini_json_response(response, safe_schema)
+        except GeminiProtocolError:
+            if attempt + 1 < attempts:
+                continue
+            raise
 
-    if response is None:
-        raise GeminiGenerationError('Gemini generation request failed')
-    try:
-        response_payload = response.json()
-        output_text = _extract_output_text(response_payload)
-        output = json.loads(
-            output_text,
-            object_pairs_hook=_reject_duplicate_keys,
-            parse_constant=_reject_non_finite,
-        )
-    except GeminiGenerationError:
-        raise
-    except Exception:
-        raise GeminiProtocolError('Gemini returned invalid JSON') from None
-    if not isinstance(output, dict):
-        raise GeminiProtocolError('Gemini JSON output is not an object')
-    if safe_schema is not None and not _matches_schema(output, safe_schema):
-        raise GeminiProtocolError('Gemini JSON output violated its schema')
-    return output
+    raise GeminiGenerationError('Gemini generation request failed')
 
 
 def generate_gemini_json(
@@ -471,4 +481,3 @@ def generate_gemini_multimodal_json(
         retry_once=retry_once,
         system_instruction=safe_system_instruction,
     )
-
