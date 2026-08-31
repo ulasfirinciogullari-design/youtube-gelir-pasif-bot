@@ -1007,6 +1007,113 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertFalse(short_story_package_is_approved(result))
 
     @patch('app.services.gemini_critic.httpx.post')
+    def test_stock_ai_ending_exposes_both_concrete_anchors_to_critics(
+        self,
+        gemini_post,
+    ):
+        secret = 'gemini-anchor-secret-must-not-leak'
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = secret
+        package = make_ai_first_five_scene_package()
+        package['scenes'][3]['ai_prompt'] = None
+        package['scenes'][4]['narration'] = (
+            'Aynı otobüs durağı bankında telefonun parlak ekranı açılır.'
+        )
+        package['scenes'][4]['tts_text'] = package['scenes'][4]['narration']
+        package['scenes'][4]['visual_queries'] = [
+            'phone screen lights at bus stop bench',
+            'woman sees phone turn on by bench',
+        ]
+        package['scenes'][4]['ai_prompt'] = (
+            'same woman and phone at the same winter bus stop bench as the '
+            'screen lights without readable text'
+        )
+        package['narration'] = ' '.join(
+            scene['narration'] for scene in package['scenes']
+        )
+        package['tts_narration'] = package['narration']
+        package['ai_scenes'] = [
+            scene['ai_prompt']
+            for scene in package['scenes']
+            if scene.get('ai_prompt')
+        ]
+
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 3,
+            'narration': (
+                'Elif soğuk otobüs durağı bankında telefonunu '
+                'cebinden yavaşça çıkarır.'
+            ),
+            'visual_queries': [
+                'woman removes phone at bus stop bench',
+                'commuter takes phone from coat by bench',
+            ],
+            'ai_prompt': None,
+        })
+        verdict = critic_payload(
+            stock_positions=(0, 2, 3),
+            scene_count=5,
+        )
+        verdict['ending_pair']['location_anchor'] = (
+            'same winter bus stop bench'
+        )
+        verdict['ending_pair']['reason'] = (
+            'Both adjacent beats and queries name the same bus stop bench.'
+        )
+        gemini_post.return_value = FakeGeminiResponse(copy.deepcopy(verdict))
+        client = FakeClient([
+            generated,
+            copy.deepcopy(verdict),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+            'cold phone at a bus stop',
+        )
+
+        expected_stock_ending = {
+            'position': 3,
+            'route': 'stock',
+            'role': 'penultimate',
+            'narration': generated['scenes'][2]['narration'],
+            'visual_queries': generated['scenes'][2]['visual_queries'],
+            'ai_prompt': None,
+        }
+        expected_ai_ending = {
+            'position': 4,
+            'route': 'ai',
+            'role': None,
+            'narration': package['scenes'][4]['narration'],
+            'visual_queries': package['scenes'][4]['visual_queries'],
+            'ai_prompt': package['scenes'][4]['ai_prompt'],
+        }
+        openai_critic_input = client.responses.calls[1]['input']
+        self.assertIn(
+            json.dumps(expected_stock_ending, ensure_ascii=False),
+            openai_critic_input,
+        )
+        self.assertIn(
+            json.dumps(expected_ai_ending, ensure_ascii=False),
+            openai_critic_input,
+        )
+
+        request_body = gemini_post.call_args.kwargs['json']
+        gemini_user_payload = json.loads(
+            request_body['contents'][0]['parts'][0]['text']
+        )
+        gemini_story = gemini_user_payload[
+            'critic_context'
+        ]['candidate_story_in_order']
+        self.assertEqual(gemini_story[3], expected_stock_ending)
+        self.assertEqual(gemini_story[4], expected_ai_ending)
+        self.assertNotIn(secret, json.dumps(request_body))
+        self.assertTrue(result['stock_scene_qc']['gemini_critic']['accepted'])
+
+    @patch('app.services.gemini_critic.httpx.post')
     def test_gemini_enabled_rejection_vetoes_before_paid_media(self, gemini_post):
         config_stub.settings.gemini_critic_enabled = True
         config_stub.settings.gemini_api_key = 'test-gemini-key'
