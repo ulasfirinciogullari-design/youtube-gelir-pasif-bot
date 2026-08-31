@@ -177,7 +177,7 @@ class PreviewNarrationBudgetTests(unittest.TestCase):
             'Sürücü yola çıkmadan önce emniyet kemerini omzuna doğru sakince hemen çekmeye başlıyor.',
             'Kemer yavaşça uzarken sürücü onu sertçe çekince mekanizma aniden kilitlenip tamamen duruyor.',
             'Ani hız makaranın içindeki kilidi dişli çarka geçiriyor ve kemerin dönüşünü hemen durduruyor.',
-            'Sürücü kemeri yavaşça çekip metal dili kırmızı düğmeli tokaya takıyor ve güvenle hazırlanıyor.',
+            'Sürücü kemerin göğsünde düzgün durduğunu kontrol edip ellerini direksiyona koyarak güvenle yola hazırlanıyor.',
         ]
 
         def payload(narrations):
@@ -237,10 +237,14 @@ class PreviewNarrationBudgetTests(unittest.TestCase):
 
         self.assertEqual(run_director.call_count, 2)
         correction_input = run_director.call_args_list[1].args[1]
-        self.assertIn(
-            'hard AI single-pass maximum is 13',
-            correction_input['narration_quality_issues'][0],
-        )
+        self.assertTrue(any(
+            'hard AI single-pass maximum is 13' in issue
+            for issue in correction_input['narration_quality_issues']
+        ))
+        self.assertTrue(any(
+            'precision seat-belt latch insertion' in issue
+            for issue in correction_input['narration_quality_issues']
+        ))
         self.assertEqual(
             [
                 _word_count(scene['narration'])
@@ -3577,6 +3581,49 @@ class ShortSpokenQualityTests(unittest.TestCase):
                 {'narration': 'Metroda uydu sinyali zayıflayınca harita kısa süre bekler.'},
                 {'narration': 'Kablosuz ağ ve baz istasyonları konum hesabına destek olur.'},
                 {'narration': 'Harita aynı metro girişinde doğru yönü yeniden gösterir.'},
+            ],
+        }
+
+        self.assertEqual(
+            _short_story_quality_issues(package, 'Turkish'),
+            [],
+        )
+
+    def test_rejects_precision_seatbelt_insertion_in_ai_scene(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Sürücü kemeri yeniden çekiyor, metal dili tokaya '
+                        'takıp yola hazırlanıyor.'
+                    ),
+                    'ai_prompt': (
+                        'Driver inserts a metal seat-belt latch plate into '
+                        'the buckle.'
+                    ),
+                },
+            ],
+        }
+
+        issues = _short_story_quality_issues(package, 'Turkish')
+
+        self.assertEqual(len(issues), 1)
+        self.assertIn('precision seat-belt latch insertion', issues[0])
+
+    def test_allows_ai_seatbelt_payoff_with_already_fastened_belt(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Sürücü kemerin göğsünde düzgün durduğunu '
+                        'kontrol edip yola hazırlanıyor.'
+                    ),
+                    'ai_prompt': (
+                        'Same driver visibly wears an already-fastened '
+                        'three-point seat belt and places both hands on the '
+                        'steering wheel.'
+                    ),
+                },
             ],
         }
 
