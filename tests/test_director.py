@@ -30,9 +30,12 @@ sys.modules['app.config'] = config_stub
 import app.services.director as director_module
 director_module.settings = config_stub.settings
 from app.services.director import (
+    ImmutableNarrationSceneBudgetError,
     _NaturalSpokenLanguageRepairRequired,
     _WholeStoryRepairRequired,
     _repair_short_stock_scenes,
+    _short_preview_scene_budget_issues,
+    _short_preview_scene_word_ranges,
     _short_spoken_quality_issues,
     _short_story_fingerprint,
     _short_story_quality_issues,
@@ -48,6 +51,204 @@ class PreviewNarrationBudgetTests(unittest.TestCase):
             director_module._target_word_budget(0.5),
             (48, 40, 51),
         )
+
+    def test_four_scene_preview_has_hard_balanced_single_pass_ceilings(self):
+        self.assertEqual(
+            _short_preview_scene_word_ranges(48, 4),
+            [[10, 14], [10, 14], [10, 14], [10, 14]],
+        )
+        balanced = {
+            'scenes': [
+                {
+                    'narration': text,
+                    'ai_prompt': (
+                        None if position == 0 else f'AI scene {position}'
+                    ),
+                }
+                for position, text in enumerate((
+                    'Sürücü yola çıkmadan önce emniyet kemerini omzuna doğru sakince hemen çekmeye başlıyor.',
+                    'Kemer yavaşça uzarken sürücü onu sertçe çekince mekanizma aniden kilitlenip tamamen duruyor.',
+                    'Ani hız makaranın içindeki kilidi dişli çarka geçiriyor ve kemerin dönüşünü hemen durduruyor.',
+                    'Sürücü kemeri yavaşça çekip metal dili kırmızı düğmeli tokaya takıyor ve güvenle hazırlanıyor.',
+                ))
+            ],
+        }
+        self.assertEqual(
+            [
+                _word_count(scene['narration'])
+                for scene in balanced['scenes']
+            ],
+            [12, 12, 13, 13],
+        )
+        self.assertEqual(
+            _short_preview_scene_budget_issues(balanced, 48, 4),
+            [],
+        )
+
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_oversized_exact_scene_fails_before_voice_or_visual_media(
+        self,
+        openai_class,
+        run_director,
+    ):
+        narrations = [
+            'Sürücü yola çıkmadan önce emniyet kemerini omzuna doğru sakince çekiyor.',
+            'Kemer yavaşça uzarken, tek sert çekişte aniden kilitlenip olduğu yerde kalıyor.',
+            'Ani hız, makaranın içindeki kilidi dişli çarka geçirip dönüşü hemen durduruyor.',
+            'Sürücü kemeri yeniden yavaşça çekip metal dili kırmızı düğmeli tokaya tek hamlede takıyor ve sonunda güvenle yola hazırlanıyor.',
+        ]
+        self.assertEqual(
+            [_word_count(text) for text in narrations],
+            [10, 11, 11, 18],
+        )
+        package = {
+            'title': 'Emniyet Kemeri',
+            'thumbnail_text': 'NASIL KİLİTLENİYOR?',
+            'description': 'Tek bir emniyet kemeri mekanizması.',
+            'sources': [],
+            'scenes': [
+                _scene(
+                    position,
+                    narration,
+                    [f'seat belt visible action {position}'],
+                    None if position == 0 else f'AI scene {position}',
+                )
+                for position, narration in enumerate(narrations)
+            ],
+        }
+        exact = ' '.join(narrations)
+        brief = (
+            'Tam dört sahne kullan. Konuşma metni tam olarak şöyle '
+            f'olsun: “{exact}”'
+        )
+        run_director.return_value = {
+            'title': package['title'],
+            'thumbnail_text': package['thumbnail_text'],
+            'description': package['description'],
+            'scenes': [
+                {
+                    'narration': f'Yönetmen sahne {position} metnini değiştirir.',
+                    'visual_queries': scene['visual_queries'],
+                    'ai_prompt': scene['ai_prompt'],
+                    'pace': 'normal',
+                    'transition': 'cut',
+                }
+                for position, scene in enumerate(package['scenes'])
+            ],
+            'qc_summary': [],
+        }
+
+        with self.assertRaisesRegex(
+            ImmutableNarrationSceneBudgetError,
+            r'scene 3 narration has 18 words.*maximum is 13',
+        ):
+            direct_and_qc(
+                package,
+                brief,
+                0.5,
+                'tr',
+                {
+                    'mode': 'preview',
+                    'pace': 'balanced',
+                    'visual_mix': 'ai_first',
+                },
+            )
+
+        openai_class.assert_called_once()
+        run_director.assert_called_once()
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_unlocked_oversized_ai_scene_is_rebalanced_by_director(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        initial_narrations = [
+            'Sürücü yola çıkmadan önce emniyet kemerini omzuna doğru sakince çekiyor.',
+            'Kemer yavaşça uzarken, tek sert çekişte aniden kilitlenip olduğu yerde kalıyor.',
+            'Ani hız, makaranın içindeki kilidi dişli çarka geçirip dönüşü hemen durduruyor.',
+            'Sürücü kemeri yeniden yavaşça çekip metal dili kırmızı düğmeli tokaya tek hamlede takıyor ve sonunda güvenle yola hazırlanıyor.',
+        ]
+        balanced_narrations = [
+            'Sürücü yola çıkmadan önce emniyet kemerini omzuna doğru sakince hemen çekmeye başlıyor.',
+            'Kemer yavaşça uzarken sürücü onu sertçe çekince mekanizma aniden kilitlenip tamamen duruyor.',
+            'Ani hız makaranın içindeki kilidi dişli çarka geçiriyor ve kemerin dönüşünü hemen durduruyor.',
+            'Sürücü kemeri yavaşça çekip metal dili kırmızı düğmeli tokaya takıyor ve güvenle hazırlanıyor.',
+        ]
+
+        def payload(narrations):
+            return {
+                'title': 'Emniyet Kemeri',
+                'thumbnail_text': 'NASIL KİLİTLENİYOR?',
+                'description': 'Tek bir emniyet kemeri mekanizması.',
+                'scenes': [
+                    {
+                        'narration': narration,
+                        'visual_queries': [
+                            f'seat belt visible action {position}',
+                        ],
+                        'ai_prompt': (
+                            None
+                            if position == 0
+                            else f'AI seat belt action scene {position}'
+                        ),
+                        'pace': 'normal',
+                        'transition': 'cut',
+                    }
+                    for position, narration in enumerate(narrations)
+                ],
+                'qc_summary': [],
+            }
+
+        package = payload(initial_narrations)
+        package['sources'] = []
+        run_director.side_effect = [
+            payload(initial_narrations),
+            payload(balanced_narrations),
+        ]
+
+        def approve(_client, candidate, *_args, **_kwargs):
+            approved = copy.deepcopy(candidate)
+            approved['stock_scene_qc'] = {
+                'version': director_module._STOCK_SCENE_QC_VERSION,
+                'story_review': {'accepted': True},
+                'ending_pair_review': {'accepted': True},
+            }
+            return approved
+
+        repair_stock_scenes.side_effect = approve
+        openai_class.return_value = object()
+
+        result = direct_and_qc(
+            package,
+            'Tam dört sahne kullan ve tek bir emniyet kemeri hikâyesi anlat.',
+            0.5,
+            'tr',
+            {
+                'mode': 'preview',
+                'pace': 'balanced',
+                'visual_mix': 'ai_first',
+            },
+        )
+
+        self.assertEqual(run_director.call_count, 2)
+        correction_input = run_director.call_args_list[1].args[1]
+        self.assertIn(
+            'hard AI single-pass maximum is 13',
+            correction_input['narration_quality_issues'][0],
+        )
+        self.assertEqual(
+            [
+                _word_count(scene['narration'])
+                for scene in result['scenes']
+            ],
+            [12, 12, 13, 13],
+        )
+        repair_stock_scenes.assert_called_once()
 
 
 CRITIC_BOOLEAN_KEYS = {
