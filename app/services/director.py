@@ -28,6 +28,11 @@ STYLE_NOTES = {
 
 _PRODUCTION_SCENES_PER_MINUTE = 7.0
 _MAX_PRODUCTION_SCENES = 70
+_SHORT_PREVIEW_AI_SCENE_MAX_WORDS = 13
+
+
+class ImmutableNarrationSceneBudgetError(RuntimeError):
+    """An exact narration cannot fit the requested single-pass scene plan."""
 
 _EXPLICIT_SCENE_COUNT_WORDS = {
     'bir': 1,
@@ -913,6 +918,58 @@ def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
     return target, minimum, maximum
 
 
+def _short_preview_scene_word_ranges(
+    target_words: int,
+    target_scenes: int,
+) -> list[list[int]]:
+    """Return the same balanced scene contract shown to the director."""
+    if target_scenes < 1:
+        return []
+    base, extra = divmod(max(0, int(target_words)), int(target_scenes))
+    quotas = [
+        base + (1 if position < extra else 0)
+        for position in range(target_scenes)
+    ]
+    return [
+        [max(5, quota - 2), quota + 2]
+        for quota in quotas
+    ]
+
+
+def _short_preview_scene_budget_issues(
+    package: dict,
+    target_words: int,
+    target_scenes: int,
+) -> list[str]:
+    """Reject oversized spoken beats before any voice or visual provider call.
+
+    The real synthesized duration remains the final authority in the worker.
+    This deterministic editorial ceiling prevents a clearly unbalanced AI
+    scene from predictably reaching that paid-media preflight.
+    """
+    scenes = package.get('scenes') if isinstance(package, dict) else None
+    if not isinstance(scenes, list) or len(scenes) != target_scenes:
+        return []
+    ranges = _short_preview_scene_word_ranges(target_words, target_scenes)
+    issues: list[str] = []
+    for position, scene in enumerate(scenes):
+        if not isinstance(scene, dict):
+            continue
+        if not str(scene.get('ai_prompt') or '').strip():
+            continue
+        words = _word_count(scene.get('narration') or '')
+        maximum = min(
+            ranges[position][1],
+            _SHORT_PREVIEW_AI_SCENE_MAX_WORDS,
+        )
+        if words > maximum:
+            issues.append(
+                f'scene {position} narration has {words} words; hard '
+                f'AI single-pass maximum is {maximum}'
+            )
+    return issues
+
+
 def _clean_scene(scene: dict, idx: int) -> dict:
     narration = str(scene.get('narration') or '').strip()
     queries = scene.get('visual_queries') or []
@@ -996,13 +1053,17 @@ def _run_director(
         )
         base, extra = divmod(target_words, target_scenes)
         quotas = [base + (1 if i < extra else 0) for i in range(target_scenes)]
-        scene_ranges = [
-            [max(5, quota - 2), quota + 2]
-            for quota in quotas
-        ]
+        scene_ranges = _short_preview_scene_word_ranges(
+            target_words,
+            target_scenes,
+        )
         short_quota_note = (
             f'SHORT PREVIEW — HIGHEST PRIORITY: return exactly {target_scenes} scenes. '
             f'Aim for scene narration word counts near {quotas}, using these allowed ranges {scene_ranges}. '
+            f'Every scene with a non-null ai_prompt has a HARD maximum of '
+            f'{_SHORT_PREVIEW_AI_SCENE_MAX_WORDS} spoken words so its action '
+            'fits one Runway shot without looping; never compensate for a '
+            'short scene by making an AI-routed scene longer. '
             f'The HARD total is {min_words}-{max_words} words; aim for {target_words}. '
             'Never pad a sentence with adverbs, time words or empty qualifiers merely to hit a count. '
             'Count hyphenated or apostrophe compounds as one word. '
@@ -2457,6 +2518,15 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         if explicit_scene_count is not None
         else locked_scene_count
     )
+    options = dict(options or package.get('studio_options') or {})
+    pace_profile = str(options.get('pace') or 'balanced')
+    target_words, min_words, max_words = _target_word_budget(duration_minutes)
+    exact_scene_count = immutable_scene_count is not None
+    target_scenes = (
+        immutable_scene_count
+        if immutable_scene_count is not None
+        else _target_scene_count(duration_minutes, pace_profile)
+    )
     scenes = package.get('scenes') or []
     if provider == 'openai' and not settings.openai_api_key:
         if (
@@ -2468,11 +2538,28 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 f'director: {len(scenes)} scenes; required exactly '
                 f'{immutable_scene_count}'
             )
-        return _apply_exact_narration_lock(
+        locked_package = _apply_exact_narration_lock(
             package,
             topic,
             expected_scene_count=immutable_scene_count,
         )
+        locked_budget_issues = (
+            _short_preview_scene_budget_issues(
+                locked_package,
+                target_words,
+                target_scenes,
+            )
+            if exact_narration is not None and duration_minutes <= 0.6
+            else []
+        )
+        if locked_budget_issues:
+            raise ImmutableNarrationSceneBudgetError(
+                'Exact spoken-narration lock has an oversized short-preview '
+                'AI scene and cannot be rewritten or safely rendered as one '
+                'single-pass shot: '
+                + '; '.join(locked_budget_issues)
+            )
+        return locked_package
     if not scenes:
         if immutable_scene_count is not None:
             raise RuntimeError(
@@ -2481,8 +2568,6 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             )
         return package
 
-    options = dict(options or package.get('studio_options') or {})
-    pace_profile = str(options.get('pace') or 'balanced')
     client = (
         OpenAI(
             api_key=settings.openai_api_key,
@@ -2492,14 +2577,27 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         if provider == 'openai'
         else None
     )
-    target_words, min_words, max_words = _target_word_budget(duration_minutes)
-    exact_scene_count = immutable_scene_count is not None
-    target_scenes = (
-        immutable_scene_count
-        if immutable_scene_count is not None
-        else _target_scene_count(duration_minutes, pace_profile)
-    )
     language_name = 'Turkish' if language.lower().startswith('tr') else language
+
+    def short_preview_issues(candidate: dict) -> list[str]:
+        if duration_minutes > 0.6:
+            return []
+        budget_issues = _short_preview_scene_budget_issues(
+            candidate,
+            target_words,
+            target_scenes,
+        )
+        if exact_narration is not None and budget_issues:
+            raise ImmutableNarrationSceneBudgetError(
+                'Exact spoken-narration lock has an oversized short-preview '
+                'AI scene and cannot be rewritten or safely rendered as one '
+                'single-pass shot: '
+                + '; '.join(budget_issues)
+            )
+        return [
+            *_short_story_quality_issues(candidate, language_name),
+            *budget_issues,
+        ]
 
     compact = {
         'title': package.get('title'),
@@ -2532,10 +2630,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         if preview_ai_limit is None:
             preview_ai_limit = 0
 
-    short_editorial_issues = (
-        _short_story_quality_issues(out, language_name)
-        if duration_minutes <= 0.6 else []
-    )
+    short_editorial_issues = short_preview_issues(out)
 
     for correction_attempt in range(3):
         ai_count_ok = preview_ai_limit is None or ai_scene_count <= preview_ai_limit
@@ -2576,10 +2671,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
-        short_editorial_issues = (
-            _short_story_quality_issues(out, language_name)
-            if duration_minutes <= 0.6 else []
-        )
+        short_editorial_issues = short_preview_issues(out)
 
     if short_editorial_issues:
         failure_details = {
@@ -2676,10 +2768,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             ai_scene_count = sum(
                 1 for scene in out['scenes'] if scene.get('ai_prompt')
             )
-            short_editorial_issues = _short_story_quality_issues(
-                out,
-                language_name,
-            )
+            short_editorial_issues = short_preview_issues(out)
             corrected_shape_is_safe = (
                 min_words <= words <= max_words
                 and _scene_count_matches(
@@ -2727,10 +2816,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
-        short_editorial_issues = _short_story_quality_issues(
-            out,
-            language_name,
-        )
+        short_editorial_issues = short_preview_issues(out)
         if short_editorial_issues:
             raise RuntimeError(
                 'Short-preview stock repair reintroduced unsafe narration: '
