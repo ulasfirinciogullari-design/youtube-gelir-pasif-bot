@@ -1,20 +1,27 @@
 import sys
+import tempfile
 import types
 import unittest
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
 
 config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace()
+_previous_config_module = sys.modules.get('app.config')
 sys.modules['app.config'] = config_stub
-sys.modules.setdefault('httpx', types.ModuleType('httpx'))
-sys.modules.setdefault('redis', types.ModuleType('redis'))
 
 from app.services.voice import normalize_turkish_tts
 from app.services.voice import _voice_speed
+from app.services.voice import _fit_duration
 from app.services.voice import synthesize_voice_with_id
 import app.services.voice as voice_module
+
+if _previous_config_module is None:
+    sys.modules.pop('app.config', None)
+else:
+    sys.modules['app.config'] = _previous_config_module
 
 
 class _FakeVoiceResponse:
@@ -25,6 +32,45 @@ class _FakeVoiceResponse:
 
 
 class TurkishVoiceNormalizationTests(unittest.TestCase):
+    def test_short_preview_always_fits_content_before_reserved_tail(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'raw')
+
+            def fake_ffmpeg(command, **_kwargs):
+                Path(command[-1]).write_bytes(b'fitted')
+
+            with (
+                patch.object(
+                    voice_module,
+                    '_media_duration',
+                    side_effect=[30.048, 29.52],
+                ),
+                patch.object(
+                    voice_module.subprocess,
+                    'run',
+                    side_effect=fake_ffmpeg,
+                ) as run,
+            ):
+                durations, before, after, rate = _fit_duration(
+                    output,
+                    [9.0, 6.0, 9.0, 6.0],
+                    30.0,
+                )
+
+        self.assertEqual(before, 30.048)
+        self.assertEqual(after, 29.52)
+        self.assertAlmostEqual(rate, 30.048 / 29.5, places=6)
+        self.assertAlmostEqual(
+            sum(durations),
+            30.0 * 29.52 / 30.048,
+            places=6,
+        )
+        self.assertIn(
+            f'atempo={rate:.6f}',
+            run.call_args.args[0],
+        )
+
     def test_short_preview_uses_clearer_deliberate_voice_speed(self):
         self.assertEqual(_voice_speed(30), 0.92)
         self.assertEqual(_voice_speed(40), 0.92)
