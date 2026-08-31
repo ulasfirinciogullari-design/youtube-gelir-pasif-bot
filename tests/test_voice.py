@@ -26,8 +26,8 @@ class _FakeVoiceResponse:
 
 class TurkishVoiceNormalizationTests(unittest.TestCase):
     def test_short_preview_uses_clearer_deliberate_voice_speed(self):
-        self.assertEqual(_voice_speed(30), 0.88)
-        self.assertEqual(_voice_speed(40), 0.88)
+        self.assertEqual(_voice_speed(30), 0.84)
+        self.assertEqual(_voice_speed(40), 0.84)
         self.assertEqual(_voice_speed(60), 1.01)
         self.assertEqual(_voice_speed(None), 1.01)
 
@@ -39,14 +39,14 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         audio = synthesize_voice_with_id(
             'Elif telefonu cebine koyar.',
             'test-voice',
-            speed=0.88,
+            speed=0.84,
         )
 
         self.assertEqual(audio, b'voice-bytes')
         request = post.call_args
         self.assertEqual(
             request.kwargs['json']['voice_settings']['speed'],
-            0.88,
+            0.84,
         )
 
     def test_qr_code_phrases_do_not_duplicate_code_word(self):
@@ -90,4 +90,3 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

@@ -122,7 +122,7 @@ def _media_duration(path: str | Path) -> float:
 
 def _voice_speed(target_seconds: float | None = None) -> float:
     """Keep short Turkish previews deliberate without slowing long-form work."""
-    return 0.88 if target_seconds and target_seconds <= 40 else 1.01
+    return 0.84 if target_seconds and target_seconds <= 40 else 1.01
 
 
 def synthesize_voice_with_id(
@@ -308,4 +308,3 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: f
 
 def synthesize_voice(text: str, job_id: str) -> str:
     return synthesize_scene_sequence([{'narration': text}], job_id)['path']
-
