@@ -537,6 +537,34 @@ class ExplicitSceneCountTests(unittest.TestCase):
             ),
             5,
         )
+        for positive_brief in (
+            'Tam beş sahne kullanmak istiyorum.',
+            'Tam beş sahne yapmak istiyorum.',
+            'Tam beş sahne olmasını istiyorum.',
+        ):
+            with self.subTest(positive_brief=positive_brief):
+                self.assertEqual(
+                    director_module._explicit_scene_count_from_brief(
+                        positive_brief
+                    ),
+                    5,
+                )
+        for negative_brief in (
+            'Must not use exactly five scenes.',
+            "I don't want exactly five scenes.",
+            'Tam beş sahne zorunlu değil.',
+            'Tam beş sahne şart değil.',
+            'Tam beş sahne olmasına gerek yok.',
+            'Tam beş sahne olmasını istemiyorum.',
+            'Tam beş sahne olmamalı.',
+            'Tam beş sahne kullanılmasın.',
+        ):
+            with self.subTest(negative_brief=negative_brief):
+                self.assertIsNone(
+                    director_module._explicit_scene_count_from_brief(
+                        negative_brief
+                    )
+                )
         with self.assertRaisesRegex(RuntimeError, 'conflicting'):
             director_module._explicit_scene_count_from_brief(
                 'Tam beş sahne olmasın; ardından tam beş sahne kullan.'
