@@ -13,6 +13,9 @@ _GEMINI_ENDPOINT = (
 _MODEL_PATTERN = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$')
 _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 _TIMEOUT = httpx.Timeout(60.0, connect=5.0)
+_ALLOWED_SCOPED_FALSE_PATHS = frozenset({
+    '$.ending_pair.same_immediate_location',
+})
 CONTINUITY_DEICTIC_RULE = (
     'The only adjacent-continuity deictic exception is literal "same/aynı" '
     'immediately attached to a concrete actor, object or named micro-location. '
@@ -31,7 +34,18 @@ CONTINUITY_DEICTIC_RULE = (
     'exception to "there/orada", "this time/bu kez", "again/yeniden", '
     'continuation language, comparisons, mental states, time jumps, identity, '
     'technical, causal, result or abstract claims; reject those under the '
-    'ordinary strict single-clip rules.'
+    'ordinary strict single-clip rules. A separate fail-closed technical-insert '
+    'ending rule applies only when the required contract contains '
+    'explicit_technical_insert_return_contract_satisfied. Set that field true '
+    'when no explicit numbered technical-insert return is requested. When it is '
+    'requested, set it true only if the brief AI-routes both final beats, the '
+    'penultimate AI prompt enters the same recurring object for a macro, cutaway, '
+    'cross-section or inside-the-mechanism reveal, and the final AI prompt returns '
+    'seconds later to that same object, person and named enclosing micro-location. '
+    'Only same_immediate_location may then be false because the camera temporarily '
+    'enters the object; every other ending boolean must remain true. Set the '
+    'contract field false for a stock-routed ending, an implicit route, a different '
+    'object or setting, travel, a new room, a time jump or ambiguous evidence.'
 )
 
 
@@ -117,7 +131,12 @@ def _extract_output_text(payload: Any) -> str:
     return texts[0].strip()
 
 
-def _validate_contract(actual: Any, expected: Any, path: str = '$') -> list[str]:
+def _validate_contract(
+    actual: Any,
+    expected: Any,
+    path: str = '$',
+    allowed_false_paths: frozenset[str] = frozenset(),
+) -> list[str]:
     if isinstance(expected, dict):
         if not isinstance(actual, dict) or set(actual.keys()) != set(expected.keys()):
             raise GeminiCriticError(
@@ -126,7 +145,12 @@ def _validate_contract(actual: Any, expected: Any, path: str = '$') -> list[str]
         rejected: list[str] = []
         for key, expected_value in expected.items():
             rejected.extend(
-                _validate_contract(actual[key], expected_value, f'{path}.{key}')
+                _validate_contract(
+                    actual[key],
+                    expected_value,
+                    f'{path}.{key}',
+                    allowed_false_paths,
+                )
             )
         return rejected
     if isinstance(expected, list):
@@ -137,7 +161,12 @@ def _validate_contract(actual: Any, expected: Any, path: str = '$') -> list[str]
         rejected: list[str] = []
         for index, (actual_item, expected_item) in enumerate(zip(actual, expected)):
             rejected.extend(
-                _validate_contract(actual_item, expected_item, f'{path}[{index}]')
+                _validate_contract(
+                    actual_item,
+                    expected_item,
+                    f'{path}[{index}]',
+                    allowed_false_paths,
+                )
             )
         return rejected
     if type(expected) is bool:
@@ -145,7 +174,7 @@ def _validate_contract(actual: Any, expected: Any, path: str = '$') -> list[str]
             raise GeminiCriticError(
                 f'Gemini critic violated the required contract at {path}'
             )
-        return [] if actual else [path]
+        return [] if actual or path in allowed_false_paths else [path]
     if type(expected) is int:
         if type(actual) is not int or actual != expected:
             raise GeminiCriticError(
@@ -168,6 +197,7 @@ def _request_verdict(
     critic_contract: dict,
     api_key: str,
     model: str,
+    allowed_false_paths: frozenset[str] = frozenset(),
 ) -> dict:
     if not api_key:
         raise GeminiCriticError(
@@ -249,7 +279,11 @@ def _request_verdict(
         raise GeminiCriticError('Gemini critic returned invalid JSON') from None
     if not isinstance(verdict, dict):
         raise GeminiCriticError('Gemini critic verdict is not a JSON object')
-    rejected_checks = _validate_contract(verdict, critic_contract)
+    rejected_checks = _validate_contract(
+        verdict,
+        critic_contract,
+        allowed_false_paths=allowed_false_paths,
+    )
     if rejected_checks:
         raise GeminiCriticRejected(
             'Gemini critic rejected the story before paid media: '
@@ -265,15 +299,21 @@ def run_optional_gemini_critic(
     enabled: Any = False,
     api_key: str = '',
     model: str = GEMINI_DEFAULT_MODEL,
+    allowed_false_paths: frozenset[str] = frozenset(),
 ) -> dict | None:
     if not setting_is_enabled(enabled):
         return None
+    if not allowed_false_paths.issubset(_ALLOWED_SCOPED_FALSE_PATHS):
+        raise GeminiCriticError(
+            'Gemini critic received an unsupported scoped exception'
+        )
     selected_model = str(model or GEMINI_DEFAULT_MODEL).strip()
     _request_verdict(
         critic_context,
         critic_contract,
         str(api_key or '').strip(),
         selected_model,
+        allowed_false_paths,
     )
     return {
         'accepted': True,
@@ -281,4 +321,3 @@ def run_optional_gemini_critic(
         'contract': 'openai-story-stock-v1',
         'reviewed_scene_count': len(critic_contract.get('scenes') or []),
     }
-
