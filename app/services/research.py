@@ -7,6 +7,10 @@ from app.services.gemini_generation import (
     GEMINI_DEFAULT_MODEL,
     generate_gemini_json,
 )
+from app.services.director import (
+    _explicit_scene_count_from_brief,
+    _story_brief_for_qc,
+)
 from app.services.visual_routing import preview_authored_ai_limit
 from app.services.source_evidence import normalize_evidence_sources
 
@@ -35,9 +39,16 @@ def _studio_plan_provider() -> str:
     return provider
 
 
-def _research_json_schema(target_scenes: int) -> dict:
-    minimum_scenes = max(3, int(target_scenes) - 1)
-    maximum_scenes = max(minimum_scenes, int(target_scenes) + 1)
+def _research_json_schema(
+    target_scenes: int,
+    *,
+    exact_scene_count: bool = False,
+) -> dict:
+    if exact_scene_count:
+        minimum_scenes = maximum_scenes = int(target_scenes)
+    else:
+        minimum_scenes = max(3, int(target_scenes) - 1)
+        maximum_scenes = max(minimum_scenes, int(target_scenes) + 1)
     scene_schema = {
         'type': 'object',
         'properties': {
@@ -213,8 +224,19 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     visual_mix = str(options.get('visual_mix') or 'balanced')
     reference_url = str(options.get('reference_url') or '').strip()
 
+    requested_brief = (
+        _story_brief_for_qc(topic)
+        if duration_minutes <= 0.6
+        else str(topic or '').strip()
+    )
+    explicit_scene_count = _explicit_scene_count_from_brief(requested_brief)
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
-    target_scenes = _target_scene_count(duration_minutes, pace)
+    target_scenes = (
+        explicit_scene_count
+        if explicit_scene_count is not None
+        else _target_scene_count(duration_minutes, pace)
+    )
+    exact_scene_count = explicit_scene_count is not None
     max_ai_scenes = _max_ai_scenes(target_scenes, options, duration_minutes)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
     reference_note = (
@@ -223,12 +245,13 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     )
     if mode == 'preview' and duration_minutes <= 0.6:
         preview_ai_routing_note = (
+            '- EXPLICIT USER-BRIEF OVERRIDE: explicit numbered scene beats, route assignments and continuity constraints in Topic override generic story-shaping heuristics below. Follow them exactly and do not merge or move a required beat merely to prefer one mechanism scene.\n'
             '- SHORT-PREVIEW STORY CONTRACT: first narrow the broad topic to ONE everyday human situation, ONE central curiosity or problem, '
             'ONE recurring person or object, ONE technical reveal and ONE visible everyday benefit. Do not make a sampler, listicle or montage of unrelated facts.\n'
             '- Treat technical mechanisms mentioned elsewhere in this prompt only as conditional visual-validation examples, never as an idea menu or checklist. '
             'At most one mechanism family may drive this 30-second story.\n'
-            '- Contain the chosen hard mechanism and its complete causal explanation inside ONE corresponding AI scene. '
-            'Do not split, repeat or conclude that invisible mechanism in adjacent stock scenes.\n'
+            '- Unless Topic explicitly assigns a multi-scene causal demonstration, contain the chosen hard mechanism and its complete causal explanation inside ONE corresponding AI scene. '
+            'Never merge, split, repeat or move explicit numbered beats from Topic.\n'
             '- Every scene with ai_prompt set to null must narrate only one literal, realistically filmable subject and action that one ordinary stock clip can visibly show. '
             'It must never recap, compare or recombine several mechanisms or abstract claims.\n'
             '- Make the penultimate action and closing payoff two consecutive visible beats by the same person or object, seconds apart in the SAME named micro-location '
@@ -276,6 +299,7 @@ url, evidence.
 evidence is one concise paraphrased sentence from that URL that directly supports the story's central causal reveal.
 
 STORY RULES:
+- Topic is the authoritative production contract. Explicit scene counts, numbered beats, routes, visible attributes, continuity anchors and forbidden elements override generic heuristics in this prompt.
 - Write ONE coherent story, not a pile of facts or a numbered list.
 - For a short preview, silently define one sentence that states: a person or familiar object wants something, meets one obstacle, learns one cause, and receives one visible benefit. Every scene must serve that sentence.
 - A broad topic is not an angle. Narrow it to the strongest useful or surprising human question; discard unrelated research facts even when they are individually interesting.
@@ -300,6 +324,7 @@ VISUAL DIRECTING RULES:
 - ai_prompt may be non-null when literal stock is unlikely to reliably show the named subject, action or mechanism, and in at most {max_ai_scenes} scenes.
 {preview_ai_routing_note}
 - Every non-null ai_prompt must describe one continuous five-second 16:9 photorealistic shot with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
+- Every non-null ai_prompt is standalone. Repeat inside that scene's own prompt every applicable object identity, dimension, brand state, color, wardrobe, room, lighting, continuity and forbidden-element constraint from Topic; never rely on an earlier scene prompt to carry it forward.
 - The master video is text-free: do not plan captions, lower thirds or on-screen sentences.
 
 FACT RULES:
@@ -317,7 +342,10 @@ FACT RULES:
                 getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL)
                 or GEMINI_DEFAULT_MODEL
             ),
-            json_schema=_research_json_schema(target_scenes),
+            json_schema=_research_json_schema(
+                target_scenes,
+                exact_scene_count=exact_scene_count,
+            ),
             google_search=True,
             thinking_level=reasoning_effort,
         )
@@ -338,10 +366,23 @@ FACT RULES:
         )
         output_text = response.output_text
     package = _parse_json_payload(output_text)
-    if abs(len(package['scenes']) - target_scenes) > 1:
-        raise RuntimeError(f'Scene-count gate rejected storyboard: {len(package["scenes"])} scenes; target {target_scenes}')
+    if (
+        exact_scene_count
+        and len(package['scenes']) != target_scenes
+    ) or (
+        not exact_scene_count
+        and abs(len(package['scenes']) - target_scenes) > 1
+    ):
+        requirement = (
+            f'required exactly {target_scenes}'
+            if exact_scene_count
+            else f'target {target_scenes}'
+        )
+        raise RuntimeError(
+            'Scene-count gate rejected storyboard: '
+            f'{len(package["scenes"])} scenes; {requirement}'
+        )
     package['target_scene_count'] = target_scenes
     package['target_word_range'] = [min_words, max_words]
     package['studio_options'] = options
     return package
-
