@@ -681,6 +681,16 @@ class ShortStockRepairTests(unittest.TestCase):
                 '"same/aynı" is not evidence by itself',
                 prompt,
             )
+            self.assertIn(
+                'When an ending scene has a non-null ai_prompt, that prompt '
+                'must also explicitly preserve the same concrete '
+                'micro-location anchor, actor or object and visible action',
+                prompt,
+            )
+            self.assertIn(
+                'a missing or conflicting AI-prompt anchor is false',
+                prompt,
+            )
             self.assertIn('"there/orada"', prompt)
             self.assertIn('"this time/bu kez"', prompt)
             self.assertIn('mental states', prompt)
@@ -971,6 +981,16 @@ class ShortStockRepairTests(unittest.TestCase):
             'micro-location anchors',
             trusted_instruction,
         )
+        self.assertIn(
+            'When an ending scene has a non-null ai_prompt, that prompt must '
+            'also explicitly preserve the same concrete micro-location '
+            'anchor, actor or object and visible action',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'a missing or conflicting AI-prompt anchor is false',
+            trusted_instruction,
+        )
         self.assertIn('"there/orada"', trusted_instruction)
         self.assertIn('"this time/bu kez"', trusted_instruction)
         self.assertIn('"again/yeniden"', trusted_instruction)
@@ -1112,6 +1132,101 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(gemini_story[4], expected_ai_ending)
         self.assertNotIn(secret, json.dumps(request_body))
         self.assertTrue(result['stock_scene_qc']['gemini_critic']['accepted'])
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_conflicting_ai_prompt_ending_anchor_fails_closed(
+        self,
+        gemini_post,
+    ):
+        secret = 'gemini-conflicting-anchor-secret'
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = secret
+        package = make_ai_first_five_scene_package()
+        package['scenes'][3]['ai_prompt'] = None
+        package['scenes'][4]['narration'] = (
+            'Aynı sert çalışma masasında telefonun parlak ekranı açılır.'
+        )
+        package['scenes'][4]['tts_text'] = package['scenes'][4]['narration']
+        package['scenes'][4]['visual_queries'] = [
+            'phone screen lights on home work desk',
+            'woman sees phone turn on at desk',
+        ]
+        package['scenes'][4]['ai_prompt'] = (
+            'same woman and phone outside on a city street as the screen '
+            'lights without readable text'
+        )
+        package['narration'] = ' '.join(
+            scene['narration'] for scene in package['scenes']
+        )
+        package['tts_narration'] = package['narration']
+        package['ai_scenes'] = [
+            scene['ai_prompt']
+            for scene in package['scenes']
+            if scene.get('ai_prompt')
+        ]
+
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 3,
+            'narration': (
+                'Elif evdeki sert çalışma masasında telefonunu '
+                'cebinden yavaşça çıkarır.'
+            ),
+            'visual_queries': [
+                'woman removes phone beside home work desk',
+                'woman takes phone from pocket at desk',
+            ],
+            'ai_prompt': None,
+        })
+        openai_verdict = critic_payload(
+            stock_positions=(0, 2, 3),
+            scene_count=5,
+        )
+        gemini_verdict = critic_payload(
+            ending_failures=['same_immediate_location'],
+            stock_positions=(0, 2, 3),
+            scene_count=5,
+        )
+        gemini_verdict['ending_pair']['location_anchor'] = (
+            'conflicting work desk and city street'
+        )
+        gemini_verdict['ending_pair']['reason'] = (
+            'Narration and queries require the same work desk, but the '
+            'AI prompt moves the final beat to a city street.'
+        )
+        gemini_post.return_value = FakeGeminiResponse(gemini_verdict)
+        client = FakeClient([
+            generated,
+            openai_verdict,
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            r'Gemini critic rejected.*ending_pair\.same_immediate_location',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                package,
+                'Turkish',
+                0.5,
+                'cold phone at a work desk',
+            )
+
+        openai_critic_input = client.responses.calls[1]['input']
+        self.assertIn(package['scenes'][4]['ai_prompt'], openai_critic_input)
+        self.assertIn(
+            'a missing or conflicting AI-prompt anchor is false',
+            openai_critic_input,
+        )
+        request_body = gemini_post.call_args.kwargs['json']
+        self.assertNotIn(secret, json.dumps(request_body))
+        trusted_instruction = request_body[
+            'systemInstruction'
+        ]['parts'][0]['text']
+        self.assertIn(
+            'a missing or conflicting AI-prompt anchor is false',
+            trusted_instruction,
+        )
 
     @patch('app.services.gemini_critic.httpx.post')
     def test_gemini_enabled_rejection_vetoes_before_paid_media(self, gemini_post):
