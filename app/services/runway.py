@@ -130,7 +130,7 @@ def _create_text_to_video_task(client, prompt_text: str, seconds: int):
         )
 
 
-def generate_scene(prompt: str, duration: int = 5) -> str:
+def generate_scene(prompt: str, duration: int = 5) -> dict:
     if not settings.runwayml_api_secret:
         raise RuntimeError('RUNWAYML_API_SECRET is not configured')
 
@@ -157,7 +157,10 @@ def generate_scene(prompt: str, duration: int = 5) -> str:
         # This catch deliberately covers only paid task creation. Once Runway
         # has accepted a task, no polling or download error may start a second
         # paid generation with another provider.
-        return _generate_gemini_video_uri(prompt_text, seconds)
+        return {
+            'url': _generate_gemini_video_uri(prompt_text, seconds),
+            'provider': 'gemini_veo',
+        }
     task_id = str(getattr(created, 'id', '') or '').strip()
     if not task_id:
         raise RuntimeError('Runway returned no task id')
@@ -170,7 +173,10 @@ def generate_scene(prompt: str, duration: int = 5) -> str:
     output = completed.output or []
     if not output:
         raise RuntimeError('Runway returned no video output')
-    return str(output[0])
+    return {
+        'url': str(output[0]),
+        'provider': 'runway',
+    }
 
 
 def download_generated_scene(url: str, output_path: str | Path) -> str:
