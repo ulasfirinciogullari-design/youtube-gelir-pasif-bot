@@ -3724,6 +3724,28 @@ class ShortSpokenQualityTests(unittest.TestCase):
             [],
         )
 
+    def test_english_takes_the_wheel_is_not_turkish_latch_action(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Sürücü kemerin göğsünde düzgün durduğunu '
+                        'kontrol edip yola hazırlanıyor.'
+                    ),
+                    'ai_prompt': (
+                        'Same driver visibly wears an already-fastened '
+                        'three-point seat belt across the chest, red buckle '
+                        'visible, and takes the steering wheel.'
+                    ),
+                },
+            ],
+        }
+
+        self.assertEqual(
+            _short_story_quality_issues(package, 'Turkish'),
+            [],
+        )
+
     def test_allows_voice_normalized_standalone_terms_but_rejects_suffixes(self):
         safe = {
             'scenes': [
