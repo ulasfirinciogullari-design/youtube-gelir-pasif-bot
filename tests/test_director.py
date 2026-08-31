@@ -3702,6 +3702,28 @@ class ShortSpokenQualityTests(unittest.TestCase):
             [],
         )
 
+    def test_retractor_lock_narration_does_not_poison_static_payoff(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Sürücü kilitlenen emniyet kemerinin göğsünde '
+                        'düzgün durduğunu kontrol ediyor.'
+                    ),
+                    'ai_prompt': (
+                        'Same driver visibly wears an already-fastened '
+                        'three-point seat belt across the chest, with the red '
+                        'buckle visible by the hip.'
+                    ),
+                },
+            ],
+        }
+
+        self.assertEqual(
+            _short_story_quality_issues(package, 'Turkish'),
+            [],
+        )
+
     def test_allows_voice_normalized_standalone_terms_but_rejects_suffixes(self):
         safe = {
             'scenes': [
