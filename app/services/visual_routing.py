@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-SHORT_PREVIEW_RUNWAY_CAP = 3
+SHORT_PREVIEW_RUNWAY_CAP = 4
 SHORT_PREVIEW_RUNWAY_REPAIR_CAP = 2
 
 
