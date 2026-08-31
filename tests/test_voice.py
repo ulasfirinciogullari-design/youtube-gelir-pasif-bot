@@ -12,6 +12,11 @@ config_stub.settings = SimpleNamespace()
 _previous_config_module = sys.modules.get('app.config')
 sys.modules['app.config'] = config_stub
 
+redis_stub = types.ModuleType('redis')
+redis_stub.Redis = SimpleNamespace(from_url=lambda *_args, **_kwargs: None)
+_previous_redis_module = sys.modules.get('redis')
+sys.modules['redis'] = redis_stub
+
 from app.services.voice import normalize_turkish_tts
 from app.services.voice import _voice_speed
 from app.services.voice import _fit_duration
@@ -22,6 +27,10 @@ if _previous_config_module is None:
     sys.modules.pop('app.config', None)
 else:
     sys.modules['app.config'] = _previous_config_module
+if _previous_redis_module is None:
+    sys.modules.pop('redis', None)
+else:
+    sys.modules['redis'] = _previous_redis_module
 
 
 class _FakeVoiceResponse:
