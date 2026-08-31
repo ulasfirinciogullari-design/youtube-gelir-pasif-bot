@@ -207,7 +207,7 @@ def make_coherent_battery_package():
         ),
         _scene(
             5,
-            'Genç aynı otobüs durağında telefonunu yeniden kullanır.',
+            'Genç aynı otobüs durağında açılan telefon ekranına bakar.',
             ['young man uses phone at bus stop', 'commuter checks working phone outside'],
         ),
     ]
@@ -248,7 +248,7 @@ def make_ai_first_five_scene_package():
     scenes = [
         _scene(
             0,
-            'Elif aynı otobüs durağında kapanan telefon ekranına bakar.',
+            'Elif soğuk otobüs durağında kapanan telefon ekranına bakar.',
             ['woman looks at phone at bus stop', 'woman checks phone at winter bus stop'],
         ),
         _scene(
@@ -259,12 +259,12 @@ def make_ai_first_five_scene_package():
         ),
         _scene(
             2,
-            'Elif telefonu aynı otobüs durağında montunun içine koyar.',
+            'Elif telefonu soğuk otobüs durağında montunun içine koyar.',
             ['woman puts phone inside coat at bus stop', 'commuter pockets phone at winter bus stop'],
         ),
         _scene(
             3,
-            'Elif aynı otobüs durağı bankında telefonunu cebinden yavaşça çıkarır.',
+            'Elif soğuk otobüs durağı bankında telefonunu cebinden yavaşça çıkarır.',
             ['woman removes phone at bus stop bench', 'commuter takes phone from coat by bench'],
             'same woman slowly removes her phone beside the same winter bus stop bench',
         ),
@@ -321,7 +321,7 @@ def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
         },
         4: {
             'position': 4,
-            'narration': 'Kasiyer aynı kafe tezgâhında müşteriye sıcak kahveyi uzatır.',
+            'narration': 'Kasiyer kafe tezgâhında müşteriye sıcak kahve fincanını uzatır.',
             'visual_queries': [
                 'barista hands customer coffee inside cafe',
                 'cafe cashier hands hot coffee to customer',
@@ -360,7 +360,7 @@ def valid_ai_first_generator_payload():
             {
                 'position': 0,
                 'narration': (
-                    'Elif aynı otobüs durağında kapanan telefon ekranına bakar.'
+                    'Elif soğuk otobüs durağında kapanan telefon ekranına bakar.'
                 ),
                 'visual_queries': [
                     'woman looks at phone at bus stop',
@@ -371,7 +371,7 @@ def valid_ai_first_generator_payload():
             {
                 'position': 2,
                 'narration': (
-                    'Elif telefonu aynı otobüs durağında montunun içine koyar.'
+                    'Elif telefonu soğuk otobüs durağında montunun içine koyar.'
                 ),
                 'visual_queries': [
                     'woman puts phone inside coat at bus stop',
@@ -560,7 +560,7 @@ class ShortStockRepairTests(unittest.TestCase):
             'Genç adam evde telefonunu masadan alır.'
         )
         generated['scenes'][1]['narration'] = (
-            'Kasiyer aynı kafe tezgâhında müşteriye sıcak kahve '
+            'Kasiyer kafe tezgâhında bekleyen müşteriye sıcak kahve '
             'fincanını uzatır.'
         )
         generated['scenes'][2]['narration'] = (
@@ -629,7 +629,7 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(len(client.responses.calls), 4)
         second_generator_input = client.responses.calls[2]['input']
         self.assertIn(
-            '"previous_narration": "Kasiyer aynı kafe tezgâhında müşteriye sıcak kahveyi uzatır."',
+            '"previous_narration": "Kasiyer kafe tezgâhında müşteriye sıcak kahve fincanını uzatır."',
             second_generator_input,
         )
         self.assertNotIn(
@@ -641,6 +641,107 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertEqual(result['scenes'][5]['narration'], second['scenes'][0]['narration'])
         self.assertEqual(result['stock_scene_qc']['generator_calls'], 2)
         self.assertEqual(result['stock_scene_qc']['critic_calls'], 2)
+
+    def test_grounded_same_micro_location_uses_one_shared_narrow_rule(self):
+        client = FakeClient([
+            valid_generator_payload(),
+            critic_payload(),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            make_short_package(),
+            'Turkish',
+            0.5,
+        )
+
+        self.assertIn(
+            'kafe tezgâhında',
+            result['scenes'][4]['narration'],
+        )
+        self.assertIn(
+            'aynı kafe tezgâhında',
+            result['scenes'][5]['narration'],
+        )
+        for prompt in (
+            client.responses.calls[0]['input'],
+            client.responses.calls[1]['input'],
+        ):
+            self.assertIn(
+                'only adjacent-continuity deictic exception is literal '
+                '"same/aynı"',
+                prompt,
+            )
+            self.assertIn(
+                'immediately preceding scene explicitly establishes a '
+                'compatible concrete anchor',
+                prompt,
+            )
+            self.assertIn(
+                '"same/aynı" is not evidence by itself',
+                prompt,
+            )
+            self.assertIn(
+                'When an ending scene has a non-null ai_prompt, that prompt '
+                'must also explicitly preserve the same concrete '
+                'micro-location anchor, actor or object and visible action',
+                prompt,
+            )
+            self.assertIn(
+                'a missing or conflicting AI-prompt anchor is false',
+                prompt,
+            )
+            self.assertIn('"there/orada"', prompt)
+            self.assertIn('"this time/bu kez"', prompt)
+            self.assertIn('mental states', prompt)
+
+    def test_ungrounded_same_location_and_unrelated_claim_fail_closed(self):
+        first = valid_generator_payload()
+        first['scenes'][1]['narration'] = (
+            'Kasiyer mutfakta müşteriye sıcak kahve fincanını uzatır.'
+        )
+        first['scenes'][1]['visual_queries'] = [
+            'barista hands customer coffee in kitchen',
+            'server gives coffee inside kitchen',
+        ]
+        first['scenes'][2]['narration'] = (
+            'Müşteri aynı kafe tezgâhında kahvenin faydasını düşünür.'
+        )
+        retry = {
+            'scenes': copy.deepcopy(first['scenes'][1:]),
+        }
+        rejected = critic_payload(
+            {
+                5: [
+                    'all_spoken_meaning_visible',
+                    'no_invisible_or_abstract_claim',
+                ],
+            },
+            ending_failures=['same_immediate_location'],
+        )
+        client = FakeClient([
+            first,
+            rejected,
+            retry,
+            rejected,
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'fully stock-safe short-preview scenes',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+            )
+
+        self.assertEqual(len(client.responses.calls), 4)
+        self.assertIn(
+            'ending pair: same_immediate_location',
+            client.responses.calls[2]['input'],
+        )
 
     def test_ending_pair_failure_rewrites_both_final_positions(self):
         client = FakeClient([
@@ -861,6 +962,38 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertNotIn(secret, request.args[0])
         self.assertNotIn(secret, json.dumps(request.kwargs['json']))
         self.assertIs(request.kwargs['json']['store'], False)
+        trusted_instruction = request.kwargs['json'][
+            'systemInstruction'
+        ]['parts'][0]['text']
+        self.assertIn(
+            'only adjacent-continuity deictic exception is literal '
+            '"same/aynı"',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'immediately preceding scene explicitly establishes a '
+            'compatible concrete anchor',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'ending_pair.same_immediate_location may be true only when both '
+            'adjacent beats and their queries contain compatible concrete '
+            'micro-location anchors',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'When an ending scene has a non-null ai_prompt, that prompt must '
+            'also explicitly preserve the same concrete micro-location '
+            'anchor, actor or object and visible action',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'a missing or conflicting AI-prompt anchor is false',
+            trusted_instruction,
+        )
+        self.assertIn('"there/orada"', trusted_instruction)
+        self.assertIn('"this time/bu kez"', trusted_instruction)
+        self.assertIn('"again/yeniden"', trusted_instruction)
         self.assertEqual(
             request.kwargs['json']['generationConfig']['maxOutputTokens'],
             4096,
@@ -892,6 +1025,208 @@ class ShortStockRepairTests(unittest.TestCase):
 
         result['stock_scene_qc']['gemini_critic']['model'] = 'changed-model'
         self.assertFalse(short_story_package_is_approved(result))
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_stock_ai_ending_exposes_both_concrete_anchors_to_critics(
+        self,
+        gemini_post,
+    ):
+        secret = 'gemini-anchor-secret-must-not-leak'
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = secret
+        package = make_ai_first_five_scene_package()
+        package['scenes'][3]['ai_prompt'] = None
+        package['scenes'][4]['narration'] = (
+            'Aynı otobüs durağı bankında telefonun parlak ekranı açılır.'
+        )
+        package['scenes'][4]['tts_text'] = package['scenes'][4]['narration']
+        package['scenes'][4]['visual_queries'] = [
+            'phone screen lights at bus stop bench',
+            'woman sees phone turn on by bench',
+        ]
+        package['scenes'][4]['ai_prompt'] = (
+            'same woman and phone at the same winter bus stop bench as the '
+            'screen lights without readable text'
+        )
+        package['narration'] = ' '.join(
+            scene['narration'] for scene in package['scenes']
+        )
+        package['tts_narration'] = package['narration']
+        package['ai_scenes'] = [
+            scene['ai_prompt']
+            for scene in package['scenes']
+            if scene.get('ai_prompt')
+        ]
+
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 3,
+            'narration': (
+                'Elif soğuk otobüs durağı bankında telefonunu '
+                'cebinden yavaşça çıkarır.'
+            ),
+            'visual_queries': [
+                'woman removes phone at bus stop bench',
+                'commuter takes phone from coat by bench',
+            ],
+            'ai_prompt': None,
+        })
+        verdict = critic_payload(
+            stock_positions=(0, 2, 3),
+            scene_count=5,
+        )
+        verdict['ending_pair']['location_anchor'] = (
+            'same winter bus stop bench'
+        )
+        verdict['ending_pair']['reason'] = (
+            'Both adjacent beats and queries name the same bus stop bench.'
+        )
+        gemini_post.return_value = FakeGeminiResponse(copy.deepcopy(verdict))
+        client = FakeClient([
+            generated,
+            copy.deepcopy(verdict),
+        ])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+            'cold phone at a bus stop',
+        )
+
+        expected_stock_ending = {
+            'position': 3,
+            'route': 'stock',
+            'role': 'penultimate',
+            'narration': generated['scenes'][2]['narration'],
+            'visual_queries': generated['scenes'][2]['visual_queries'],
+            'ai_prompt': None,
+        }
+        expected_ai_ending = {
+            'position': 4,
+            'route': 'ai',
+            'role': None,
+            'narration': package['scenes'][4]['narration'],
+            'visual_queries': package['scenes'][4]['visual_queries'],
+            'ai_prompt': package['scenes'][4]['ai_prompt'],
+        }
+        openai_critic_input = client.responses.calls[1]['input']
+        self.assertIn(
+            json.dumps(expected_stock_ending, ensure_ascii=False),
+            openai_critic_input,
+        )
+        self.assertIn(
+            json.dumps(expected_ai_ending, ensure_ascii=False),
+            openai_critic_input,
+        )
+
+        request_body = gemini_post.call_args.kwargs['json']
+        gemini_user_payload = json.loads(
+            request_body['contents'][0]['parts'][0]['text']
+        )
+        gemini_story = gemini_user_payload[
+            'critic_context'
+        ]['candidate_story_in_order']
+        self.assertEqual(gemini_story[3], expected_stock_ending)
+        self.assertEqual(gemini_story[4], expected_ai_ending)
+        self.assertNotIn(secret, json.dumps(request_body))
+        self.assertTrue(result['stock_scene_qc']['gemini_critic']['accepted'])
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_conflicting_ai_prompt_ending_anchor_fails_closed(
+        self,
+        gemini_post,
+    ):
+        secret = 'gemini-conflicting-anchor-secret'
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = secret
+        package = make_ai_first_five_scene_package()
+        package['scenes'][3]['ai_prompt'] = None
+        package['scenes'][4]['narration'] = (
+            'Aynı sert çalışma masasında telefonun parlak ekranı açılır.'
+        )
+        package['scenes'][4]['tts_text'] = package['scenes'][4]['narration']
+        package['scenes'][4]['visual_queries'] = [
+            'phone screen lights on home work desk',
+            'woman sees phone turn on at desk',
+        ]
+        package['scenes'][4]['ai_prompt'] = (
+            'same woman and phone outside on a city street as the screen '
+            'lights without readable text'
+        )
+        package['narration'] = ' '.join(
+            scene['narration'] for scene in package['scenes']
+        )
+        package['tts_narration'] = package['narration']
+        package['ai_scenes'] = [
+            scene['ai_prompt']
+            for scene in package['scenes']
+            if scene.get('ai_prompt')
+        ]
+
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 3,
+            'narration': (
+                'Elif evdeki sert çalışma masasında telefonunu '
+                'cebinden yavaşça çıkarır.'
+            ),
+            'visual_queries': [
+                'woman removes phone beside home work desk',
+                'woman takes phone from pocket at desk',
+            ],
+            'ai_prompt': None,
+        })
+        openai_verdict = critic_payload(
+            stock_positions=(0, 2, 3),
+            scene_count=5,
+        )
+        gemini_verdict = critic_payload(
+            ending_failures=['same_immediate_location'],
+            stock_positions=(0, 2, 3),
+            scene_count=5,
+        )
+        gemini_verdict['ending_pair']['location_anchor'] = (
+            'conflicting work desk and city street'
+        )
+        gemini_verdict['ending_pair']['reason'] = (
+            'Narration and queries require the same work desk, but the '
+            'AI prompt moves the final beat to a city street.'
+        )
+        gemini_post.return_value = FakeGeminiResponse(gemini_verdict)
+        client = FakeClient([
+            generated,
+            openai_verdict,
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            r'Gemini critic rejected.*ending_pair\.same_immediate_location',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                package,
+                'Turkish',
+                0.5,
+                'cold phone at a work desk',
+            )
+
+        openai_critic_input = client.responses.calls[1]['input']
+        self.assertIn(package['scenes'][4]['ai_prompt'], openai_critic_input)
+        self.assertIn(
+            'a missing or conflicting AI-prompt anchor is false',
+            openai_critic_input,
+        )
+        request_body = gemini_post.call_args.kwargs['json']
+        self.assertNotIn(secret, json.dumps(request_body))
+        trusted_instruction = request_body[
+            'systemInstruction'
+        ]['parts'][0]['text']
+        self.assertIn(
+            'a missing or conflicting AI-prompt anchor is false',
+            trusted_instruction,
+        )
 
     @patch('app.services.gemini_critic.httpx.post')
     def test_gemini_enabled_rejection_vetoes_before_paid_media(self, gemini_post):

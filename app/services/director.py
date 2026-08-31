@@ -4,6 +4,7 @@ import re
 from openai import OpenAI
 from app.config import settings
 from app.services.gemini_critic import (
+    CONTINUITY_DEICTIC_RULE,
     GEMINI_DEFAULT_MODEL,
     run_optional_gemini_critic,
     setting_is_enabled,
@@ -654,6 +655,7 @@ def _repair_short_stock_scenes(
         return {
             'narration': narration,
             'visual_queries': queries,
+            'ai_prompt': None,
         }, ''
 
     accepted_rows: dict[int, dict] = {}
@@ -751,6 +753,7 @@ NON-NEGOTIABLE RULES:
 - Never add empty padding such as "bugün", "şimdi", "sakinlikle" or "dikkatlice" unless that word changes the visible action and sounds necessary in normal speech.
 - Each narration describes ONE visible human or physical action in ONE ordinary location.
 - Every spoken clause must be literally visible in the same common five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
+- {CONTINUITY_DEICTIC_RULE}
 - Use one simple sentence. Do not combine distinct actions, even with a conjunction, gerund, sequence or subordinate clause.
 - Do not use a semicolon or colon to join actions.
 - Do not mention or recap OLED, pixels, GPS, Wi-Fi, cellular signals, location systems, QR, error correction, timing, algebra or invisible mechanisms.
@@ -762,7 +765,7 @@ NON-NEGOTIABLE RULES:
 - A hook must be one concrete everyday action that opens naturally into the next technical scene.
 - A bridge or penultimate scene must connect its immediate neighbors without repeating their mechanism.
 - The penultimate and payoff scenes are one continuous two-beat action by the same person or object, seconds apart in the SAME named micro-location.
-- Repeat the same concrete location phrase in both ending narrations and both query sets. A venue-level match is insufficient if one shot is at a counter and the other is outside.
+- Name the same concrete micro-location in both ending query sets and establish it explicitly in the penultimate narration. The payoff narration may use a minimal deictic under the adjacent-continuity rule above, but it must not invent or widen the referent. A venue-level match is insufficient if one shot is at a counter and the other is outside.
 - Never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
 - A payoff must visibly complete the preceding action and show the everyday benefit, not merely state a conclusion.
 - Keep the spoken narration natural and easy to pronounce in {language_name}; for Turkish, use meaning-first native wording and never raw technical abbreviations.
@@ -896,6 +899,16 @@ NON-NEGOTIABLE RULES:
                     if position in accepted_rows
                     else scene.get('narration')
                 ),
+                'visual_queries': (
+                    accepted_rows[position]['visual_queries']
+                    if position in accepted_rows
+                    else scene.get('visual_queries') or []
+                ),
+                'ai_prompt': (
+                    accepted_rows[position]['ai_prompt']
+                    if position in accepted_rows
+                    else scene.get('ai_prompt')
+                ),
             }
             for position, scene in enumerate(scenes)
         ]
@@ -1023,6 +1036,7 @@ For EACH requested position, set every boolean independently. If evidence is amb
 - single_visible_action: narration requires exactly one visible action, not two actions joined by a conjunction, gerund, sequence or implied cut.
 - single_ordinary_location: narration and every query can share one ordinary physical setting.
 - all_spoken_meaning_visible: every spoken clause is directly visible in that single clip.
+- Apply this exact narrow semantic rule when judging all_spoken_meaning_visible: {CONTINUITY_DEICTIC_RULE}
 - no_invisible_or_abstract_claim: there is no magic-like hook, comparison, mystery, technical implication or spoken conclusion.
 - all_named_subjects_coexist: one normal five-second stock clip can visibly contain every named subject and object.
 - queries_are_english: every query is idiomatic English stock-search text.
