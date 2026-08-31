@@ -7,6 +7,8 @@ import re
 import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+import httpx
+
 from app.celery_app import celery
 from app.services.audio_design import generate_music_bed, mix_voice_and_music
 from app.services.audio_qc import verify_audio_narration
@@ -40,6 +42,39 @@ class PreRunwayRetryableError(RuntimeError):
 
 class PexelsRetryError(RuntimeError):
     """A bounded Pexels retry could not produce provider evidence."""
+
+
+SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
+_TRANSIENT_PEXELS_HTTP_STATUS_CODES = {408, 425, 429}
+
+
+def _is_transient_pexels_provider_error(exc: Exception) -> bool:
+    """Return true only for temporary provider/transport failures.
+
+    Authentication, authorization, request-shape, decoding, configuration,
+    programming, and local filesystem failures must remain visible and must
+    never authorize a paid fallback.
+    """
+    if isinstance(
+        exc,
+        (
+            httpx.TimeoutException,
+            httpx.NetworkError,
+            httpx.RemoteProtocolError,
+        ),
+    ):
+        return True
+    if not isinstance(exc, httpx.HTTPStatusError):
+        return False
+    response = getattr(exc, 'response', None)
+    try:
+        status_code = int(response.status_code)
+    except Exception:
+        return False
+    return (
+        status_code in _TRANSIENT_PEXELS_HTTP_STATUS_CODES
+        or 500 <= status_code <= 599
+    )
 
 
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
@@ -280,6 +315,17 @@ def _download_ranked_broll_candidates(
             except Exception as exc:
                 search_errors.append(exc)
 
+    non_transient_search_error = next(
+        (
+            exc
+            for exc in search_errors
+            if not _is_transient_pexels_provider_error(exc)
+        ),
+        None,
+    )
+    if non_transient_search_error is not None:
+        raise non_transient_search_error
+
     if not search_results and search_errors:
         # A burst of parallel read-only searches can be disconnected by the
         # provider even though the same endpoint is healthy. Give every query
@@ -293,6 +339,8 @@ def _download_ranked_broll_candidates(
                     find_broll(query, search_limit) or []
                 )
             except Exception as exc:
+                if not _is_transient_pexels_provider_error(exc):
+                    raise
                 sequential_errors.append(exc)
         if not search_results:
             final_errors = sequential_errors or search_errors
@@ -338,6 +386,17 @@ def _download_ranked_broll_candidates(
             except Exception as exc:
                 download_errors.append(exc)
 
+    non_transient_download_error = next(
+        (
+            exc
+            for exc in download_errors
+            if not _is_transient_pexels_provider_error(exc)
+        ),
+        None,
+    )
+    if non_transient_download_error is not None:
+        raise non_transient_download_error
+
     # A transient CDN failure must not silently shrink the QC pool. Backfill
     # from at most two further ranked candidates, stopping at the success cap.
     for candidate_idx, (query, item) in enumerate(ranked[success_target:], start=success_target):
@@ -347,6 +406,8 @@ def _download_ranked_broll_candidates(
             _candidate_idx, _query, _item, path = download_one(candidate_idx, query, item)
             downloaded[candidate_idx] = (_query, _item, path)
         except Exception as exc:
+            if not _is_transient_pexels_provider_error(exc):
+                raise
             download_errors.append(exc)
 
     replacements: list[dict] = []
@@ -420,6 +481,35 @@ def _retry_bad_scene(
         if not tolerate_pexels_failure:
             raise
         return []
+
+
+def _final_pexels_rescue_queries(
+    scene: dict,
+    review: dict,
+    *,
+    provider_outage_stock_fallback: bool,
+) -> list[str]:
+    """Keep final rescue bounded while allowing a recovered provider retry."""
+    raw_retry_queries = review.get('retry_queries') or []
+    if isinstance(raw_retry_queries, str):
+        raw_retry_queries = [raw_retry_queries]
+    retry_queries = [
+        str(query).strip()
+        for query in raw_retry_queries[:2]
+        if str(query).strip()
+    ]
+    if retry_queries or not provider_outage_stock_fallback:
+        return retry_queries
+
+    raw_visual_queries = scene.get('visual_queries') or []
+    if isinstance(raw_visual_queries, str):
+        raw_visual_queries = [raw_visual_queries]
+    return [
+        str(query).strip()
+        for query in raw_visual_queries[:2]
+        if str(query).strip()
+    ]
+
 
 def _visual_path(spec: str | dict) -> str:
     if isinstance(spec, dict):
@@ -784,6 +874,60 @@ def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float)
     if mix == 'ai_first':
         return min(6, max(2, math.ceil(scene_count * 0.40)))
     return min(4, max(1, math.ceil(scene_count * 0.24)))
+
+
+def _allocate_short_preview_provider_outage_runway(
+    ranked_candidates: list[dict],
+    base_submission_cap: int,
+    provider_outage_stock_scenes: set[int],
+    quality_threshold: int,
+) -> tuple[list[dict], list[dict], list[int], bool]:
+    """Reserve emergency paid slots only for typed Pexels-outage scenes.
+
+    The ordinary short-preview cap continues to cover every non-outage scene.
+    Within that cap, clips without an approved visual are mandatory and already
+    approved AI-first upgrades are optional. Every extra selected candidate is
+    therefore an explicit stock scene whose bounded Pexels access failed, with
+    a global maximum of two such emergency slots per preview.
+    """
+    base_cap = max(0, int(base_submission_cap))
+    outage_indices = {int(index) for index in provider_outage_stock_scenes}
+    outage_candidates: list[dict] = []
+    required_base_candidates: list[dict] = []
+    optional_base_candidates: list[dict] = []
+    ranked_indices: set[int] = set()
+
+    for candidate in ranked_candidates:
+        scene_idx = int(candidate.get('scene_index', -1))
+        ranked_indices.add(scene_idx)
+        if scene_idx in outage_indices:
+            outage_candidates.append(candidate)
+            continue
+        has_visual = bool(candidate.get('has_visual'))
+        stock_score = int(candidate.get('stock_score', -1))
+        if not has_visual or stock_score < int(quality_threshold):
+            required_base_candidates.append(candidate)
+        else:
+            optional_base_candidates.append(candidate)
+
+    selected_base = [
+        *required_base_candidates,
+        *optional_base_candidates,
+    ][:base_cap]
+    outage_cap_exceeded = (
+        len(outage_indices) > SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
+    )
+    selected = [
+        *selected_base,
+        *outage_candidates[:SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP],
+    ]
+    missing_outage_scenes = sorted(outage_indices - ranked_indices)
+    return (
+        selected,
+        required_base_candidates,
+        missing_outage_scenes,
+        outage_cap_exceeded,
+    )
 
 
 def _prepare_package(
@@ -1182,11 +1326,14 @@ def run_video_pipeline(
             and duration_minutes <= 0.6
             and runway_submission_cap > 0
         )
+        provider_outage_stock_scenes: set[int] = set()
 
         # A stock-routed short-preview scene is a contract: real footage
         # must clear the same semantic gate before any paid Runway request.
-        # Compare the incumbent with a bounded relevance-first Pexels pool in
-        # at most two batches of three candidates, preserving the best result.
+        # The sole exception is a typed provider-access failure after Pexels'
+        # bounded retries; that scene remains unapproved and must instead pass
+        # generated-clip QC. Compare every reachable stock candidate in at most
+        # two batches of three, preserving the best result.
         if is_bounded_short_preview:
             stock_contract_candidates = [
                 scene_idx
@@ -1233,21 +1380,37 @@ def run_video_pipeline(
                     if len(query_pool) >= 3:
                         break
 
-                new_specs = _download_ranked_broll_candidates(
-                    scene_idx,
-                    query_pool,
-                    seen_ids,
-                    work,
-                    credits,
-                    file_prefix='pre_runway_stock_tournament',
-                    selected_by='pre_runway_stock_tournament',
-                    max_candidates=5,
-                    search_limit=24,
-                    minimum_duration=max(
-                        5.0,
-                        float(scene_durations[scene_idx]) + 0.35,
-                    ),
-                )
+                try:
+                    new_specs = _download_ranked_broll_candidates(
+                        scene_idx,
+                        query_pool,
+                        seen_ids,
+                        work,
+                        credits,
+                        file_prefix='pre_runway_stock_tournament',
+                        selected_by='pre_runway_stock_tournament',
+                        max_candidates=5,
+                        search_limit=24,
+                        minimum_duration=max(
+                            5.0,
+                            float(scene_durations[scene_idx]) + 0.35,
+                        ),
+                    )
+                except PexelsRetryError:
+                    # This typed error is emitted only after the bounded search
+                    # or download attempts are exhausted. Do not approve the
+                    # incumbent and do not catch any unrelated exception: mark
+                    # this explicit STOCK scene for generated-clip fallback.
+                    provider_outage_stock_scenes.add(scene_idx)
+                    incumbent_specs = []
+                    incumbent = None
+                    scene_visuals[scene_idx] = []
+                    stock_best_results[scene_idx] = {
+                        'score': -1,
+                        'review': dict(review) if review else None,
+                        'spec': None,
+                    }
+                    new_specs = []
                 frozen_pool: list[dict] = []
                 frozen_paths: set[str] = set()
                 for spec in [*incumbent_specs, *new_specs]:
@@ -1382,6 +1545,11 @@ def run_video_pipeline(
                 score = int(review.get('score', -1))
                 if has_visual and score >= quality_threshold:
                     continue
+                if scene_idx in provider_outage_stock_scenes:
+                    # Provider outage is not a stock-quality pass. The scene is
+                    # carried into the paid allocation and must still clear the
+                    # exact generated-clip gate below.
+                    continue
                 raw_retry_queries = review.get('retry_queries') or []
                 if isinstance(raw_retry_queries, str):
                     raw_retry_queries = [raw_retry_queries]
@@ -1412,6 +1580,18 @@ def run_video_pipeline(
                     raise FinalVisualQualityError(stock_contract_message)
                 raise PreRunwayRetryableError(stock_contract_message)
 
+            # Do not spend an emergency slot if an incumbent unexpectedly
+            # cleared the unchanged threshold despite the provider outage.
+            provider_outage_stock_scenes = {
+                scene_idx
+                for scene_idx in provider_outage_stock_scenes
+                if not (
+                    any(_visual_path(spec) for spec in scene_visuals[scene_idx])
+                    and int((current_reviews.get(scene_idx) or {}).get('score', -1))
+                    >= quality_threshold
+                )
+            }
+
         def rank_runway_candidates() -> tuple[dict[int, str], list[dict]]:
             prompts: dict[int, str] = {}
             ranked: list[dict] = []
@@ -1422,6 +1602,7 @@ def run_video_pipeline(
                     if (
                         not is_bounded_short_preview
                         or str(scene.get('ai_prompt') or '').strip()
+                        or candidate_scene_idx in provider_outage_stock_scenes
                     )
                     else ''
                 )
@@ -1446,6 +1627,9 @@ def run_video_pipeline(
                         'scene_index': candidate_scene_idx,
                         'has_visual': has_visual,
                         'stock_score': stock_score,
+                        'provider_outage_stock_fallback': (
+                            candidate_scene_idx in provider_outage_stock_scenes
+                        ),
                     })
             ranked.sort(key=lambda item: (
                 0 if not item['has_visual'] else 1,
@@ -1459,7 +1643,11 @@ def run_video_pipeline(
         # Before rejecting an over-budget plan, give only the overflow scenes
         # one bounded stock rescue. The three weakest scenes remain reserved
         # for Runway; better-ranked overflow scenes get a final free chance.
-        if is_bounded_short_preview and len(ranked_runway_candidates) > runway_submission_cap:
+        if (
+            is_bounded_short_preview
+            and not provider_outage_stock_scenes
+            and len(ranked_runway_candidates) > runway_submission_cap
+        ):
             overflow_candidates = ranked_runway_candidates[runway_submission_cap:]
             budget_rescued_scenes: list[int] = []
             for candidate in overflow_candidates:
@@ -1540,7 +1728,61 @@ def run_video_pipeline(
                         _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
                 prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
 
-        if is_bounded_short_preview and len(ranked_runway_candidates) > runway_submission_cap:
+        runway_effective_submission_cap = runway_submission_cap
+        selected_runway: list[dict]
+        if is_bounded_short_preview and provider_outage_stock_scenes:
+            (
+                selected_runway,
+                required_base_candidates,
+                missing_outage_scenes,
+                outage_cap_exceeded,
+            ) = _allocate_short_preview_provider_outage_runway(
+                ranked_runway_candidates,
+                runway_submission_cap,
+                provider_outage_stock_scenes,
+                quality_threshold,
+            )
+            runway_effective_submission_cap = min(
+                len(scenes),
+                runway_submission_cap
+                + min(
+                    len(provider_outage_stock_scenes),
+                    SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP,
+                ),
+            )
+            allocation_is_incomplete = (
+                len(required_base_candidates) > runway_submission_cap
+                or bool(missing_outage_scenes)
+                or outage_cap_exceeded
+                or len(selected_runway) > runway_effective_submission_cap
+            )
+            if allocation_is_incomplete:
+                preflight_message = (
+                    'Short-preview provider-outage fallback cannot produce a '
+                    'complete video within its bounded paid allocation: '
+                    + json.dumps(
+                        {
+                            'base_submission_cap': runway_submission_cap,
+                            'effective_submission_cap': runway_effective_submission_cap,
+                            'provider_outage_emergency_cap': (
+                                SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
+                            ),
+                            'provider_outage_stock_scenes': sorted(
+                                provider_outage_stock_scenes
+                            ),
+                            'missing_outage_scenes': missing_outage_scenes,
+                            'required_non_outage_scenes': [
+                                int(item['scene_index'])
+                                for item in required_base_candidates
+                            ],
+                        },
+                        separators=(',', ':'),
+                    )
+                )
+                if approved_package is not None:
+                    raise FinalVisualQualityError(preflight_message)
+                raise PreRunwayRetryableError(preflight_message)
+        elif is_bounded_short_preview and len(ranked_runway_candidates) > runway_submission_cap:
             preflight_details = [
                 {
                     'scene_index': int(item['scene_index']),
@@ -1561,7 +1803,8 @@ def run_video_pipeline(
             if approved_package is not None:
                 raise FinalVisualQualityError(preflight_message)
             raise PreRunwayRetryableError(preflight_message)
-        selected_runway = ranked_runway_candidates[:runway_submission_cap]
+        else:
+            selected_runway = ranked_runway_candidates[:runway_submission_cap]
         selected_runway_indices = {item['scene_index'] for item in selected_runway}
         runway_rank = {
             item['scene_index']: position + 1
@@ -1580,7 +1823,9 @@ def run_video_pipeline(
                 'rank': runway_rank.get(scene_idx),
                 'selected': selected,
                 'reason': (
-                    'selected_for_generation' if selected
+                    'provider_outage_stock_fallback'
+                    if selected and scene_idx in provider_outage_stock_scenes
+                    else 'selected_for_generation' if selected
                     else 'stock_approved' if has_visual and stock_score >= quality_threshold
                     else 'submission_cap'
                 ),
@@ -1718,11 +1963,13 @@ def run_video_pipeline(
             if scene_idx in final_runway_repair_scenes:
                 continue
             review = final_reviews.get(scene_idx) or {}
-            retry_queries = [
-                str(q).strip()
-                for q in (review.get('retry_queries') or [])[:2]
-                if str(q).strip()
-            ]
+            retry_queries = _final_pexels_rescue_queries(
+                scenes[scene_idx],
+                review,
+                provider_outage_stock_fallback=(
+                    scene_idx in provider_outage_stock_scenes
+                ),
+            )
             old_best = _visual_path(scene_visuals[scene_idx][0]) if scene_visuals[scene_idx] else ''
             replacements = _retry_bad_scene(
                 scene_idx, retry_queries, seen_ids, work, credits,
@@ -1732,6 +1979,9 @@ def run_video_pipeline(
                     float(scene_durations[scene_idx]) + 0.35,
                 ),
                 allow_short_fallback=not is_bounded_short_preview,
+                tolerate_pexels_failure=(
+                    scene_idx in provider_outage_stock_scenes
+                ),
             )
             if not replacements:
                 continue
@@ -1970,6 +2220,13 @@ def run_video_pipeline(
             'audio_design': audio_design,
             'stock_credits': credits,
             'runway_submission_cap': runway_submission_cap,
+            'runway_effective_submission_cap': runway_effective_submission_cap,
+            'provider_outage_emergency_cap': (
+                SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
+            ),
+            'provider_outage_stock_scene_indices': sorted(
+                provider_outage_stock_scenes
+            ),
             'runway_attempts': runway_attempts,
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
             'runway_success_scene_indices': sorted(runway_generated_scenes),
@@ -2005,6 +2262,13 @@ def run_video_pipeline(
             'scenes': len(scenes),
             'unique_visuals': rendered.get('unique_visuals'),
             'runway_submission_cap': runway_submission_cap,
+            'runway_effective_submission_cap': runway_effective_submission_cap,
+            'provider_outage_emergency_cap': (
+                SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
+            ),
+            'provider_outage_stock_scene_indices': sorted(
+                provider_outage_stock_scenes
+            ),
             'runway_attempts': runway_attempts,
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
             'runway_success_scene_indices': sorted(runway_generated_scenes),
@@ -2061,3 +2325,4 @@ def run_video_pipeline(
         raise
     finally:
         shutil.rmtree(work, ignore_errors=True)
+
