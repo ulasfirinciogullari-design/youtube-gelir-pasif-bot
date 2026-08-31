@@ -50,6 +50,78 @@ _GEMINI_AUDIO_MIME_ALIASES = {
     'audio/x-wav': 'audio/wav',
     'video/webm': 'audio/webm',
 }
+_COMPARISON_TOKEN_PATTERN = re.compile(
+    r'(?:[+\-\u2212\u00b1]\s*)?\d+(?:[,.]\d+)?[^\W\d_]*'
+    r'|[+\-\u2212\u00b1](?=\s*[+\-\u2212\u00b1]\s*\d)'
+    r'|(?<=\d)\s*[/:×÷*\u2044\u2215]\s*(?=\d)'
+    r'|[^\W\d_]+'
+    r'|[%‰₺$€£¥]'
+)
+_DIGIT_TOKEN_PATTERN = re.compile(
+    r'(?P<sign>[+\-\u2212\u00b1]?)(?P<integer>\d+)'
+    r'(?:(?P<separator>[,.])(?P<fraction>\d+))?'
+    r'(?P<suffix>[^\W\d_]*)$'
+)
+_NUMBER_UNITS = {
+    's\u0131f\u0131r': 0,
+    'bir': 1,
+    'iki': 2,
+    '\u00fc\u00e7': 3,
+    'd\u00f6rt': 4,
+    'be\u015f': 5,
+    'alt\u0131': 6,
+    'yedi': 7,
+    'sekiz': 8,
+    'dokuz': 9,
+}
+_NUMBER_TENS = {
+    'on': 10,
+    'yirmi': 20,
+    'otuz': 30,
+    'k\u0131rk': 40,
+    'elli': 50,
+    'altm\u0131\u015f': 60,
+    'yetmi\u015f': 70,
+    'seksen': 80,
+    'doksan': 90,
+}
+_NUMBER_SCALES = {
+    'bin': 1_000,
+    'milyon': 1_000_000,
+    'milyar': 1_000_000_000,
+    'trilyon': 1_000_000_000_000,
+}
+_NUMBER_WORDS = frozenset({
+    *_NUMBER_UNITS,
+    *_NUMBER_TENS,
+    *_NUMBER_SCALES,
+    'y\u00fcz',
+    'virg\u00fcl',
+})
+# Only the locative suffix needed for forms such as ``yedi-de``/``1997'de``
+# is detached from unambiguous unit/tens words. Broader suffix guessing would
+# reinterpret ordinary Turkish words such as ``onda`` or ``yüzde`` as numbers.
+_NUMBER_SUFFIXES = frozenset({'da', 'de', 'ta', 'te'})
+_NUMBER_BASES_BY_LENGTH = tuple(
+    sorted(
+        (set(_NUMBER_UNITS) | set(_NUMBER_TENS)) - {'bir', 'on'},
+        key=len,
+        reverse=True,
+    )
+)
+_PROPER_NAME_SUFFIXES = frozenset({
+    '',
+    'da',
+    'de',
+    'daki',
+    'deki',
+    'dan',
+    'den',
+    'ya',
+    'ye',
+    'nun',
+    'nin',
+})
 
 
 class AudioQCError(RuntimeError):
@@ -64,11 +136,17 @@ def _elevenlabs_headers(api_key: str) -> dict[str, str]:
     return {'xi-api-key': api_key}
 
 
-def normalize_turkish_transcript(text: str) -> str:
-    """Normalize Turkish casing and punctuation without folding letters."""
+def _turkish_lower(text: str) -> str:
     value = unicodedata.normalize('NFKC', str(text or ''))
     # Python's default lower/casefold rules are not Turkish-locale aware.
-    value = value.translate(str.maketrans({'I': '\u0131', '\u0130': 'i'})).casefold()
+    return value.translate(
+        str.maketrans({'I': '\u0131', '\u0130': 'i'})
+    ).casefold()
+
+
+def normalize_turkish_transcript(text: str) -> str:
+    """Normalize Turkish casing and punctuation without folding letters."""
+    value = _turkish_lower(text)
 
     normalized: list[str] = []
     for character in value:
@@ -86,6 +164,218 @@ def normalize_turkish_transcript(text: str) -> str:
 def _tokens(text: str) -> list[str]:
     normalized = normalize_turkish_transcript(text)
     return normalized.split() if normalized else []
+
+
+def _orthographic_fold(token: str) -> str:
+    decomposed = unicodedata.normalize('NFD', token)
+    folded = unicodedata.normalize('NFC', ''.join(
+        character
+        for character in decomposed
+        if character != '\u0302'
+    ))
+
+    # Turkish circumflexes are inconsistently retained in modern orthography.
+    # Keep every other diacritic lexical; for example ``oldu`` and ``\u00f6ld\u00fc``
+    # must remain different. Gemini's Tokio/Tokyo spelling is the sole alias.
+    for suffix in _PROPER_NAME_SUFFIXES:
+        if folded == f'tokio{suffix}':
+            return f'tokyo{suffix}'
+    return folded
+
+
+def _comparison_lexical_tokens(text: str) -> list[str]:
+    value = _turkish_lower(text)
+    value = value.translate({ord(character): None for character in _APOSTROPHES})
+    return _COMPARISON_TOKEN_PATTERN.findall(value)
+
+
+def _ascii_digits(value: str) -> str:
+    return ''.join(str(unicodedata.decimal(character)) for character in value)
+
+
+def _numeric_key(value: str, suffix: str = '') -> str:
+    return f'\x00number:{value}:{suffix}'
+
+
+def _canonical_digit_token(token: str) -> str | None:
+    compact_token = re.sub(r'\s+', '', token)
+    match = _DIGIT_TOKEN_PATTERN.fullmatch(compact_token)
+    if match is None:
+        return None
+    suffix = _orthographic_fold(match.group('suffix'))
+    if suffix and suffix not in _NUMBER_SUFFIXES:
+        return None
+
+    sign = match.group('sign')
+    if sign == '\u2212':
+        sign = '-'
+    integer = _ascii_digits(match.group('integer'))
+    fraction = match.group('fraction')
+    if fraction is not None:
+        value = f'{sign}{integer},{_ascii_digits(fraction)}'
+    else:
+        value = f'{sign}{integer}'
+    return _numeric_key(value, suffix)
+
+
+def _parse_under_thousand(words: list[str]) -> int | None:
+    if words == ['s\u0131f\u0131r']:
+        return 0
+    if not words:
+        return None
+
+    value = 0
+    index = 0
+    if (
+        len(words) >= 2
+        and words[0] in _NUMBER_UNITS
+        and _NUMBER_UNITS[words[0]] > 0
+        and words[1] == 'y\u00fcz'
+    ):
+        value += _NUMBER_UNITS[words[0]] * 100
+        index = 2
+    elif words[0] == 'y\u00fcz':
+        value = 100
+        index = 1
+
+    if index < len(words) and words[index] in _NUMBER_TENS:
+        value += _NUMBER_TENS[words[index]]
+        index += 1
+    if (
+        index < len(words)
+        and words[index] in _NUMBER_UNITS
+        and _NUMBER_UNITS[words[index]] > 0
+    ):
+        value += _NUMBER_UNITS[words[index]]
+        index += 1
+    if index != len(words):
+        return None
+    return value if value > 0 else None
+
+
+def _parse_integer_words(words: list[str]) -> int | None:
+    if not words:
+        return None
+    if not any(word in _NUMBER_SCALES for word in words):
+        return _parse_under_thousand(words)
+
+    total = 0
+    group: list[str] = []
+    previous_scale = math.inf
+    for word in words:
+        scale = _NUMBER_SCALES.get(word)
+        if scale is None:
+            group.append(word)
+            continue
+        if scale >= previous_scale:
+            return None
+        if group:
+            group_value = _parse_under_thousand(group)
+            if group_value is None or group_value == 0:
+                return None
+        elif word == 'bin':
+            group_value = 1
+        else:
+            return None
+        total += group_value * scale
+        group = []
+        previous_scale = scale
+
+    if group:
+        group_value = _parse_under_thousand(group)
+        if group_value is None:
+            return None
+        total += group_value
+    return total if total > 0 else None
+
+
+def _parse_number_words(words: list[str]) -> str | None:
+    decimal_positions = [
+        index for index, word in enumerate(words) if word == 'virg\u00fcl'
+    ]
+    if not decimal_positions:
+        integer = _parse_integer_words(words)
+        return str(integer) if integer is not None else None
+    if len(decimal_positions) != 1:
+        return None
+
+    decimal_index = decimal_positions[0]
+    integer = _parse_integer_words(words[:decimal_index])
+    fraction_words = words[decimal_index + 1:]
+    if integer is None or not fraction_words:
+        return None
+    if all(word in _NUMBER_UNITS for word in fraction_words):
+        fraction = ''.join(
+            str(_NUMBER_UNITS[word]) for word in fraction_words
+        )
+    else:
+        # A following scale word is normally the unit of the decimal phrase
+        # (``dört virgül sekiz milyon``), not part of its fractional digits.
+        fraction_value = _parse_under_thousand(fraction_words)
+        if fraction_value is None:
+            return None
+        fraction = str(fraction_value)
+    return f'{integer},{fraction}'
+
+
+def _split_number_word(token: str) -> tuple[str, str] | None:
+    folded = _orthographic_fold(token)
+    if folded in _NUMBER_WORDS:
+        return folded, ''
+    for base in _NUMBER_BASES_BY_LENGTH:
+        if folded.startswith(base):
+            suffix = folded[len(base):]
+            if suffix in _NUMBER_SUFFIXES:
+                return base, suffix
+    return None
+
+
+def _number_word_unit(
+    tokens: list[str],
+    start: int,
+) -> tuple[str, int] | None:
+    words: list[str] = []
+    suffixes: list[str] = []
+    for token in tokens[start:]:
+        split = _split_number_word(token)
+        if split is None:
+            break
+        word, suffix = split
+        words.append(word)
+        suffixes.append(suffix)
+        if suffix:
+            break
+
+    for consumed in range(len(words), 0, -1):
+        number = _parse_number_words(words[:consumed])
+        if number is None:
+            continue
+        suffix = suffixes[consumed - 1]
+        return _numeric_key(number, suffix), consumed
+    return None
+
+
+def _comparison_units(text: str) -> list[tuple[str, tuple[str, ...]]]:
+    tokens = _comparison_lexical_tokens(text)
+    units: list[tuple[str, tuple[str, ...]]] = []
+    index = 0
+    while index < len(tokens):
+        digit_key = _canonical_digit_token(tokens[index])
+        if digit_key is not None:
+            units.append((digit_key, (tokens[index],)))
+            index += 1
+            continue
+
+        word_unit = _number_word_unit(tokens, index)
+        if word_unit is not None:
+            number_key, consumed = word_unit
+            units.append((number_key, tuple(tokens[index:index + consumed])))
+            index += consumed
+            continue
+
+        units.append((_orthographic_fold(tokens[index]), (tokens[index],)))
+        index += 1
+    return units
 
 
 def _edit_distance(expected: list[str], heard: list[str]) -> int:
@@ -108,7 +398,22 @@ def _edit_distance(expected: list[str], heard: list[str]) -> int:
 def _mismatch_details(
     expected_tokens: list[str],
     heard_tokens: list[str],
+    *,
+    expected_sources: list[tuple[str, ...]] | None = None,
+    heard_sources: list[tuple[str, ...]] | None = None,
 ) -> dict[str, Any]:
+    expected_sources = expected_sources or [
+        (token,) for token in expected_tokens
+    ]
+    heard_sources = heard_sources or [(token,) for token in heard_tokens]
+
+    def source_slice(
+        sources: list[tuple[str, ...]],
+        start: int,
+        end: int,
+    ) -> list[str]:
+        return [token for source in sources[start:end] for token in source]
+
     matcher = SequenceMatcher(
         None,
         expected_tokens,
@@ -123,8 +428,16 @@ def _mismatch_details(
     ):
         if operation == 'equal':
             continue
-        expected_slice = expected_tokens[expected_start:expected_end]
-        heard_slice = heard_tokens[heard_start:heard_end]
+        expected_slice = source_slice(
+            expected_sources,
+            expected_start,
+            expected_end,
+        )
+        heard_slice = source_slice(
+            heard_sources,
+            heard_start,
+            heard_end,
+        )
         operations.append({
             'operation': operation,
             'expected_range': [expected_start, expected_end],
@@ -204,10 +517,14 @@ def compare_transcript(
 ) -> dict[str, Any]:
     expected_normalized = normalize_turkish_transcript(expected_narration)
     transcript_normalized = normalize_turkish_transcript(transcript)
-    expected_tokens = _tokens(expected_narration)
-    heard_tokens = _tokens(transcript)
-    if not expected_tokens:
+    if not _tokens(expected_narration):
         raise ValueError('Expected narration must contain at least one word')
+    surface_heard_tokens = _comparison_lexical_tokens(transcript)
+
+    expected_units = _comparison_units(expected_narration)
+    heard_units = _comparison_units(transcript)
+    expected_tokens = [unit[0] for unit in expected_units]
+    heard_tokens = [unit[0] for unit in heard_units]
 
     distance = _edit_distance(expected_tokens, heard_tokens)
     denominator = max(len(expected_tokens), len(heard_tokens), 1)
@@ -216,9 +533,19 @@ def compare_transcript(
     ending_times = [
         item['end'] for item in timestamps if item['end'] is not None
     ]
-    details = _mismatch_details(expected_tokens, heard_tokens)
+    details = _mismatch_details(
+        expected_tokens,
+        heard_tokens,
+        expected_sources=[unit[1] for unit in expected_units],
+        heard_sources=[unit[1] for unit in heard_units],
+    )
     details['timestamp_sequence_match'] = (
-        _tokens(' '.join(item['text'] for item in timestamps)) == heard_tokens
+        [
+            token
+            for item in timestamps
+            for token in _comparison_lexical_tokens(item['text'])
+        ]
+        == surface_heard_tokens
         if words is not None
         else None
     )
@@ -343,21 +670,21 @@ def _gemini_duration_seconds(value: Any) -> float | None:
 def _valid_gemini_annotation_text(value: Any) -> bool:
     if not isinstance(value, str) or not value.strip():
         return False
-    tokens = _tokens(value)
-    if len(tokens) == 1:
-        return True
-    if len(tokens) < 2 or not all(token.isdecimal() for token in tokens):
-        return False
-    # A decimal/grouping separator can split one numeric annotation into
-    # several comparison tokens (for example ``4,8`` -> ``4 8``). Accept
-    # that single annotated span, but never a whitespace-separated phrase or
-    # control-character-delimited value.
     normalized = unicodedata.normalize('NFKC', value).strip()
-    return all(
-        character.isdecimal()
-        or unicodedata.category(character).startswith(('P', 'S'))
+    if re.fullmatch(
+        r'[+\-\u2212\u00b1]?\d+(?:[,.]\d+)?',
+        normalized,
+    ):
+        return True
+    tokens = _tokens(value)
+    if len(tokens) == 1 and all(
+        character.isalnum()
+        or unicodedata.category(character).startswith('M')
+        or character in _APOSTROPHES
         for character in normalized
-    )
+    ):
+        return True
+    return False
 
 
 def _gemini_interaction_payload(response: Any) -> dict[str, Any]:
@@ -448,9 +775,7 @@ def _gemini_interaction_payload(response: Any) -> dict[str, Any]:
             )
             end = _gemini_duration_seconds(annotation.get('end_offset'))
             if (
-                not isinstance(word, str)
-                or not word.strip()
-                or not _valid_gemini_annotation_text(word)
+                not _valid_gemini_annotation_text(word)
                 or start is None
                 or end is None
                 or end <= start
