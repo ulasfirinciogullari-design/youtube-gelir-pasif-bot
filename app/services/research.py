@@ -3,6 +3,10 @@ import math
 import re
 from openai import OpenAI
 from app.config import settings
+from app.services.gemini_generation import (
+    GEMINI_DEFAULT_MODEL,
+    generate_gemini_json,
+)
 from app.services.visual_routing import preview_authored_ai_limit
 from app.services.source_evidence import normalize_evidence_sources
 
@@ -18,6 +22,74 @@ PACE_DIRECTIONS = {
     'balanced': 'Alternate concise reveals with clear explanations. Rhythm should feel edited, not frantic.',
     'dynamic': 'Front-load momentum and use sharper scene turns, while preserving comprehension and continuity.',
 }
+
+
+def _studio_plan_provider() -> str:
+    provider = str(
+        getattr(settings, 'studio_plan_provider', 'openai') or ''
+    ).strip().casefold()
+    if provider not in {'openai', 'gemini'}:
+        raise RuntimeError(
+            'STUDIO_PLAN_PROVIDER must be openai or gemini'
+        )
+    return provider
+
+
+def _research_json_schema(target_scenes: int) -> dict:
+    minimum_scenes = max(3, int(target_scenes) - 1)
+    maximum_scenes = max(minimum_scenes, int(target_scenes) + 1)
+    scene_schema = {
+        'type': 'object',
+        'properties': {
+            'narration': {'type': 'string'},
+            'visual_queries': {
+                'type': 'array',
+                'items': {'type': 'string'},
+                'minItems': 2,
+                'maxItems': 3,
+            },
+            'ai_prompt': {'type': ['string', 'null']},
+        },
+        'required': ['narration', 'visual_queries', 'ai_prompt'],
+        'additionalProperties': False,
+    }
+    source_schema = {
+        'type': 'object',
+        'properties': {
+            'url': {'type': 'string'},
+            'evidence': {'type': 'string'},
+        },
+        'required': ['url', 'evidence'],
+        'additionalProperties': False,
+    }
+    return {
+        'type': 'object',
+        'properties': {
+            'title': {'type': 'string'},
+            'thumbnail_text': {'type': 'string'},
+            'description': {'type': 'string'},
+            'scenes': {
+                'type': 'array',
+                'items': scene_schema,
+                'minItems': minimum_scenes,
+                'maxItems': maximum_scenes,
+            },
+            'sources': {
+                'type': 'array',
+                'items': source_schema,
+                'minItems': 2,
+                'maxItems': 5,
+            },
+        },
+        'required': [
+            'title',
+            'thumbnail_text',
+            'description',
+            'scenes',
+            'sources',
+        ],
+        'additionalProperties': False,
+    }
 
 
 def _parse_json_payload(text: str) -> dict:
@@ -130,7 +202,8 @@ def _max_ai_scenes(scene_count: int, options: dict, duration_minutes: float) -> 
 
 
 def research_and_script(topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
-    if not settings.openai_api_key:
+    provider = _studio_plan_provider()
+    if provider == 'openai' and not settings.openai_api_key:
         raise RuntimeError('OPENAI_API_KEY is not configured')
 
     options = dict(options or {})
@@ -140,7 +213,6 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     visual_mix = str(options.get('visual_mix') or 'balanced')
     reference_url = str(options.get('reference_url') or '').strip()
 
-    client = OpenAI(api_key=settings.openai_api_key, timeout=105.0, max_retries=1)
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
     target_scenes = _target_scene_count(duration_minutes, pace)
     max_ai_scenes = _max_ai_scenes(target_scenes, options, duration_minutes)
@@ -175,19 +247,12 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     else:
         preview_ai_routing_note = ''
 
-    response = client.responses.create(
-        model=settings.openai_model,
-        reasoning={
-            'effort': (
-                'medium'
-                if mode == 'preview' and duration_minutes <= 0.6
-                else 'low'
-            )
-        },
-        tools=[{'type': 'web_search', 'search_context_size': 'low'}],
-        tool_choice='auto',
-        max_tool_calls=2,
-        input=f'''Research the current web and act as a senior YouTube writer and storyboard director.
+    reasoning_effort = (
+        'medium'
+        if mode == 'preview' and duration_minutes <= 0.6
+        else 'low'
+    )
+    prompt = f'''Research the current web and act as a senior YouTube writer and storyboard director.
 Language: {language_name}
 Topic: {topic}
 Production mode: {mode}
@@ -243,12 +308,40 @@ FACT RULES:
 - Do not copy source wording.
 - sources must be evidence records from pages actually used, never a bare URL list.
 - Every evidence sentence must directly support the central causal claim; omit interesting but unused sources.
-''',
-    )
-    package = _parse_json_payload(response.output_text)
+'''
+    if provider == 'gemini':
+        generated = generate_gemini_json(
+            prompt,
+            api_key=str(getattr(settings, 'gemini_api_key', '') or ''),
+            model=str(
+                getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL)
+                or GEMINI_DEFAULT_MODEL
+            ),
+            json_schema=_research_json_schema(target_scenes),
+            google_search=True,
+            thinking_level=reasoning_effort,
+        )
+        output_text = json.dumps(generated, ensure_ascii=False)
+    else:
+        client = OpenAI(
+            api_key=settings.openai_api_key,
+            timeout=105.0,
+            max_retries=1,
+        )
+        response = client.responses.create(
+            model=settings.openai_model,
+            reasoning={'effort': reasoning_effort},
+            tools=[{'type': 'web_search', 'search_context_size': 'low'}],
+            tool_choice='auto',
+            max_tool_calls=2,
+            input=prompt,
+        )
+        output_text = response.output_text
+    package = _parse_json_payload(output_text)
     if abs(len(package['scenes']) - target_scenes) > 1:
         raise RuntimeError(f'Scene-count gate rejected storyboard: {len(package["scenes"])} scenes; target {target_scenes}')
     package['target_scene_count'] = target_scenes
     package['target_word_range'] = [min_words, max_words]
     package['studio_options'] = options
     return package
+
