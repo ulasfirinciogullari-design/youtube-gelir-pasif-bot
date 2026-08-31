@@ -685,9 +685,15 @@ _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN = re.compile(
     flags=re.IGNORECASE,
 )
 _ENGLISH_SHORT_SAFE_SEATBELT_PAYOFF_PATTERN = re.compile(
-    r'\b(?:already\s*[- ]?(?:fastened|buckled)|'
-    r'(?:visibly\s+)?wear(?:s|ing)\b.{0,80}\b(?:seat\s*[- ]?belt|seatbelt)|'
-    r'(?:seat\s*[- ]?belt|seatbelt)\b.{0,80}\bacross\s+(?:the\s+)?chest)\b',
+    r'\b(?:'
+    r'already\s*[- ]?(?:fastened|buckled)\b.{0,32}\b'
+    r'(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)|'
+    r'(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)\b'
+    r'.{0,32}\balready\s*[- ]?(?:fastened|buckled)|'
+    r'(?:visibly\s+)?wear(?:s|ing)\b.{0,48}\b'
+    r'(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)|'
+    r'(?:seat\s*[- ]?belt|seatbelt|three\s*[- ]?point\s+belt)\b'
+    r'.{0,48}\bacross\s+(?:the\s+)?chest)\b',
     flags=re.IGNORECASE,
 )
 
@@ -742,10 +748,39 @@ def _short_story_quality_issues(
                 complete_contract
             )
         )
+        safe_ai_payoff = bool(
+            _ENGLISH_SHORT_SAFE_SEATBELT_PAYOFF_PATTERN.search(ai_prompt)
+        )
+        narration_precision_action = bool(
+            (
+                _TURKISH_SHORT_SEATBELT_PATTERN.search(scene_narration)
+                or _ENGLISH_SHORT_SEATBELT_PATTERN.search(scene_narration)
+            )
+            and (
+                _TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                    scene_narration
+                )
+                or _ENGLISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                    scene_narration
+                )
+            )
+            and (
+                _TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+                    scene_narration
+                )
+                or _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+                    scene_narration
+                )
+            )
+        )
         if (
-            seatbelt_contract
-            and hardware_contract
-            and connection_action
+            narration_precision_action
+            or (
+                seatbelt_contract
+                and hardware_contract
+                and connection_action
+                and not safe_ai_payoff
+            )
         ):
             issues.append(
                 f'scene {scene_idx} assigns paid AI video a precision '
@@ -758,9 +793,7 @@ def _short_story_quality_issues(
         if (
             scene_idx == len(package.get('scenes') or []) - 1
             and seatbelt_contract
-            and not _ENGLISH_SHORT_SAFE_SEATBELT_PAYOFF_PATTERN.search(
-                ai_prompt
-            )
+            and not safe_ai_payoff
         ):
             issues.append(
                 f'scene {scene_idx} has an AI-routed seat-belt payoff without '
