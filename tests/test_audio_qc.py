@@ -12,12 +12,32 @@ config_stub.settings = SimpleNamespace(elevenlabs_api_key='')
 _previous_config_module = sys.modules.get('app.config')
 sys.modules['app.config'] = config_stub
 
+# The lightweight CI unit-test job intentionally does not install runtime
+# dependencies. Keep this module collectable there while retaining the real
+# httpx module whenever it is available.
+try:
+    import httpx as _httpx_for_tests
+except ModuleNotFoundError:
+    _httpx_for_tests = types.ModuleType('httpx')
+    _httpx_for_tests.Timeout = lambda *args, **kwargs: SimpleNamespace(
+        args=args,
+        kwargs=kwargs,
+    )
+    _httpx_for_tests.post = lambda *args, **kwargs: None
+
+_previous_httpx_module = sys.modules.get('httpx')
+sys.modules['httpx'] = _httpx_for_tests
+
 import app.services.audio_qc as audio_qc
 
 if _previous_config_module is None:
     sys.modules.pop('app.config', None)
 else:
     sys.modules['app.config'] = _previous_config_module
+if _previous_httpx_module is None:
+    sys.modules.pop('httpx', None)
+else:
+    sys.modules['httpx'] = _previous_httpx_module
 # Keep this test module self-contained when files are collected in any order.
 sys.modules.pop('app.services.audio_qc', None)
 services_package = sys.modules.get('app.services')
