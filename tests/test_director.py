@@ -726,6 +726,258 @@ class ExplicitSceneCountTests(unittest.TestCase):
             )
 
 
+class ExactNarrationDirectorLockTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        config_stub.settings.openai_model = 'test-model'
+
+    @staticmethod
+    def _locked_brief(package, narration=None):
+        block = narration or ' '.join(
+            scene['narration']
+            for scene in package['scenes']
+        )
+        return (
+            'Tam altı sahne kullan. Konuşma metni tam olarak şu altı '
+            'cümle olsun; prodüksiyon notlarını seslendirme: '
+            f'“{block}”'
+        )
+
+    @staticmethod
+    def _director_payload(package, *, all_ai=False, marker='director-marker'):
+        scenes = []
+        for position, scene in enumerate(package['scenes']):
+            scenes.append({
+                'narration': (
+                    f'Yönetmen sahne {position} metnini tamamen değiştiriyor.'
+                ),
+                'visual_queries': (
+                    [f'{marker} visible action {position}', f'backup action view {position}']
+                    if position == 0
+                    else copy.deepcopy(scene['visual_queries'])
+                ),
+                'ai_prompt': (
+                    f'paid visual contract for scene {position}'
+                    if all_ai
+                    else scene.get('ai_prompt')
+                ),
+                'pace': scene['pace'],
+                'transition': scene['transition'],
+            })
+        return {
+            'title': package['title'],
+            'thumbnail_text': package['thumbnail_text'],
+            'description': package['description'],
+            'scenes': scenes,
+            'qc_summary': [],
+        }
+
+    @staticmethod
+    def _approve(candidate):
+        approved = copy.deepcopy(candidate)
+        approved['stock_scene_qc'] = {
+            'version': director_module._STOCK_SCENE_QC_VERSION,
+            'story_review': {'accepted': True},
+            'ending_pair_review': {'accepted': True},
+        }
+        return approved
+
+    def test_exact_lock_split_rejects_false_sentence_boundaries(self):
+        ambiguous_blocks = (
+            'Dr. Ayşe telefonu açtı\nEkran söndü.',
+            (
+                '1) Ayşe telefonu masada iki eliyle açıyor. '
+                '2) Ekran masada bir anda yeniden aydınlanıyor.'
+            ),
+        )
+
+        for block in ambiguous_blocks:
+            with self.subTest(block=block), self.assertRaisesRegex(
+                RuntimeError,
+                'cannot be segmented unambiguously',
+            ):
+                director_module._split_exact_narration_lock(block, 2)
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_initial_director_paraphrase_is_restored_before_stock_repair(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        package = make_coherent_battery_package()
+        expected = [scene['narration'] for scene in package['scenes']]
+        revised = self._director_payload(package, marker='initial-lock-marker')
+        run_director.return_value = revised
+        repair_stock_scenes.side_effect = (
+            lambda _client, candidate, *_args, **_kwargs: self._approve(candidate)
+        )
+        openai_class.return_value = object()
+
+        result = direct_and_qc(
+            package,
+            self._locked_brief(package),
+            0.5,
+            'tr',
+            {'mode': 'preview', 'pace': 'balanced'},
+        )
+
+        repaired_input = repair_stock_scenes.call_args.args[1]
+        self.assertEqual(
+            [scene['narration'] for scene in repaired_input['scenes']],
+            expected,
+        )
+        self.assertEqual(
+            [scene['tts_text'] for scene in repaired_input['scenes']],
+            expected,
+        )
+        self.assertEqual(result['narration'], ' '.join(expected))
+        self.assertEqual(
+            result['scenes'][0]['visual_queries'],
+            revised['scenes'][0]['visual_queries'],
+        )
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_every_director_correction_path_reapplies_exact_narration(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        package = make_coherent_battery_package()
+        expected = [scene['narration'] for scene in package['scenes']]
+        initial = self._director_payload(
+            package,
+            all_ai=True,
+            marker='initial-correction-marker',
+        )
+        corrected = self._director_payload(
+            package,
+            marker='ordinary-correction-marker',
+        )
+        whole_story = self._director_payload(
+            package,
+            marker='whole-story-marker',
+        )
+        run_director.side_effect = [initial, corrected, whole_story]
+        repair_calls = 0
+
+        def repair(_client, candidate, *_args, **_kwargs):
+            nonlocal repair_calls
+            repair_calls += 1
+            if repair_calls == 1:
+                raise _WholeStoryRepairRequired(
+                    ['all_explicit_brief_constraints_preserved'],
+                    'visible constraint omitted',
+                )
+            return self._approve(candidate)
+
+        repair_stock_scenes.side_effect = repair
+        openai_class.return_value = object()
+
+        result = direct_and_qc(
+            package,
+            self._locked_brief(package),
+            0.5,
+            'tr',
+            {
+                'mode': 'preview',
+                'pace': 'balanced',
+                'visual_mix': 'ai_first',
+            },
+        )
+
+        self.assertEqual(run_director.call_count, 3)
+        correction_input = run_director.call_args_list[1].args[1]
+        self.assertEqual(
+            [scene['narration'] for scene in correction_input['scenes']],
+            expected,
+        )
+        first_review = repair_stock_scenes.call_args_list[0].args[1]
+        second_review = repair_stock_scenes.call_args_list[1].args[1]
+        self.assertEqual(
+            [scene['narration'] for scene in first_review['scenes']],
+            expected,
+        )
+        self.assertEqual(
+            [scene['narration'] for scene in second_review['scenes']],
+            expected,
+        )
+        self.assertEqual(result['narration'], ' '.join(expected))
+        self.assertEqual(
+            result['scenes'][0]['visual_queries'],
+            whole_story['scenes'][0]['visual_queries'],
+        )
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_exact_narration_scene_mismatch_fails_before_stock_or_media(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        package = make_coherent_battery_package()
+        revised = self._director_payload(package)
+        revised['scenes'] = revised['scenes'][:-1]
+        run_director.return_value = revised
+        openai_class.return_value = object()
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'cannot be segmented unambiguously',
+        ):
+            direct_and_qc(
+                package,
+                self._locked_brief(package),
+                0.5,
+                'tr',
+                {'mode': 'preview', 'pace': 'balanced'},
+            )
+
+        repair_stock_scenes.assert_not_called()
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_unsafe_exact_locked_speech_is_restored_then_rejected(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        package = make_coherent_battery_package()
+        unsafe_scenes = [scene['narration'] for scene in package['scenes']]
+        unsafe_scenes[1] = (
+            'Sıkışan ısı fanı hızlandırıyor, cihaz yatağın '
+            'üstünde uğulduyor.'
+        )
+        unsafe_block = ' '.join(unsafe_scenes)
+        run_director.return_value = self._director_payload(package)
+        openai_class.return_value = object()
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'Short-preview editorial gate rejected narration',
+        ):
+            direct_and_qc(
+                package,
+                self._locked_brief(package, unsafe_block),
+                0.5,
+                'tr',
+                {'mode': 'preview', 'pace': 'balanced'},
+            )
+
+        self.assertEqual(run_director.call_count, 4)
+        repair_stock_scenes.assert_not_called()
+
+
 class ShortStockRepairTests(unittest.TestCase):
     def setUp(self):
         config_stub.settings.studio_plan_provider = 'openai'
