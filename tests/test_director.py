@@ -3657,6 +3657,28 @@ class ShortSpokenQualityTests(unittest.TestCase):
         self.assertEqual(len(issues), 1)
         self.assertIn('without a stable visible result', issues[0])
 
+    def test_safe_result_cannot_hide_prompt_side_latch_insertion(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Sürücü kemerin göğsünde düzgün durduğunu '
+                        'kontrol edip yola hazırlanıyor.'
+                    ),
+                    'ai_prompt': (
+                        'Driver inserts the metal seat-belt latch plate into '
+                        'the buckle, then visibly wears the already-fastened '
+                        'three-point belt across the chest.'
+                    ),
+                },
+            ],
+        }
+
+        issues = _short_story_quality_issues(package, 'Turkish')
+
+        self.assertEqual(len(issues), 1)
+        self.assertIn('precision seat-belt latch insertion', issues[0])
+
     def test_allows_ai_seatbelt_payoff_with_already_fastened_belt(self):
         package = {
             'scenes': [
@@ -3668,7 +3690,8 @@ class ShortSpokenQualityTests(unittest.TestCase):
                     'ai_prompt': (
                         'Same driver visibly wears an already-fastened '
                         'three-point seat belt and places both hands on the '
-                        'steering wheel.'
+                        'steering wheel, with the red buckle visible by the '
+                        'hip.'
                     ),
                 },
             ],
