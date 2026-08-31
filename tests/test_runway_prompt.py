@@ -47,7 +47,14 @@ def _load_prompt_functions():
         'Path': Path,
         'FinalVisualQualityError': FinalVisualQualityError,
         'PreRunwayRetryableError': PreRunwayRetryableError,
-        'SHORT_PREVIEW_RUNWAY_CAP': 4,
+        'preview_paid_ai_limit': lambda options, scene_count, duration: (
+            min(
+                1 if (options.get('visual_mix') or 'balanced') == 'real_first' else 4,
+                scene_count,
+            )
+            if options.get('mode') == 'preview' and duration <= 0.6
+            else None
+        ),
     }
     exec(
         compile(
