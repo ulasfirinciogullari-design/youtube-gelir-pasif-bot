@@ -3774,6 +3774,28 @@ class ShortSpokenQualityTests(unittest.TestCase):
             [],
         )
 
+    def test_static_buckle_before_seatbelt_is_not_buckling_action(self):
+        package = {
+            'scenes': [
+                {
+                    'narration': (
+                        'Sürücü kemerin göğsünde düzgün durduğunu '
+                        'kontrol edip yola hazırlanıyor.'
+                    ),
+                    'ai_prompt': (
+                        'The red buckle is visible at his hip while the same '
+                        'driver visibly wears an already-fastened seat belt '
+                        'across the chest.'
+                    ),
+                },
+            ],
+        }
+
+        self.assertEqual(
+            _short_story_quality_issues(package, 'Turkish'),
+            [],
+        )
+
     def test_allows_voice_normalized_standalone_terms_but_rejects_suffixes(self):
         safe = {
             'scenes': [
