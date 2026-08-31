@@ -13,9 +13,10 @@ import httpx
 from app.config import settings
 
 
-ELEVENLABS_SPEECH_TO_TEXT_URL = (
-    'https://api.elevenlabs.io/v1/speech-to-text'
+OPENAI_AUDIO_TRANSCRIPTIONS_URL = (
+    'https://api.openai.com/v1/audio/transcriptions'
 )
+ELEVENLABS_SPEECH_TO_TEXT_URL = 'https://api.elevenlabs.io/v1/speech-to-text'
 _SPEECH_TO_TEXT_TIMEOUT = httpx.Timeout(180.0, connect=10.0)
 _APOSTROPHES = frozenset("'\u2018\u2019\u02bc\u0060\u00b4")
 
@@ -24,10 +25,11 @@ class AudioQCError(RuntimeError):
     """A secret-safe failure while obtaining an audio-QC transcript."""
 
 
-def _headers() -> dict[str, str]:
-    api_key = str(getattr(settings, 'elevenlabs_api_key', '') or '')
-    if not api_key:
-        raise AudioQCError('ElevenLabs speech-to-text is not configured')
+def _openai_headers(api_key: str) -> dict[str, str]:
+    return {'Authorization': f'Bearer {api_key}'}
+
+
+def _elevenlabs_headers(api_key: str) -> dict[str, str]:
     return {'xi-api-key': api_key}
 
 
@@ -137,7 +139,9 @@ def _word_timestamps(words: Any) -> list[dict[str, Any]]:
         word_type = str(item.get('type') or 'word')
         if word_type != 'word':
             continue
-        text = str(item.get('text') or '').strip()
+        # ElevenLabs uses ``text`` while OpenAI's verbose transcription uses
+        # ``word`` for the same value.
+        text = str(item.get('text') or item.get('word') or '').strip()
         if not text:
             continue
         timestamps.append({
@@ -165,6 +169,7 @@ def compare_transcript(
     language_code: str | None = None,
     language_probability: Any = None,
     words: Any = None,
+    provider: str | None = None,
 ) -> dict[str, Any]:
     expected_normalized = normalize_turkish_transcript(expected_narration)
     transcript_normalized = normalize_turkish_transcript(transcript)
@@ -188,6 +193,7 @@ def compare_transcript(
     )
 
     return {
+        'provider': str(provider or '') or None,
         'available': True,
         'pass': bool(details['exact_match']),
         'score': score,
@@ -204,6 +210,7 @@ def compare_transcript(
 
 def _unavailable_result() -> dict[str, Any]:
     return {
+        'provider': None,
         'available': False,
         'pass': None,
         'score': None,
@@ -215,28 +222,88 @@ def _unavailable_result() -> dict[str, Any]:
         'word_timestamps': [],
         'ending_word_time': None,
         'mismatch_details': None,
-        'reason': 'elevenlabs_api_key_missing',
+        'reason': 'speech_to_text_keys_missing',
     }
 
 
-def verify_audio_narration(
-    audio_path: str | Path,
+def _response_payload(response: Any, provider_name: str) -> dict[str, Any]:
+    status_code = getattr(response, 'status_code', None)
+    if not isinstance(status_code, int) or not 200 <= status_code < 300:
+        safe_status = status_code if isinstance(status_code, int) else 'unknown'
+        raise AudioQCError(
+            f'{provider_name} speech-to-text failed with HTTP {safe_status}'
+        ) from None
+    try:
+        payload = response.json()
+    except Exception:
+        raise AudioQCError(
+            f'{provider_name} speech-to-text returned invalid JSON'
+        ) from None
+    if not isinstance(payload, dict):
+        raise AudioQCError(
+            f'{provider_name} speech-to-text returned an invalid payload'
+        )
+    if not isinstance(payload.get('text'), str):
+        raise AudioQCError(
+            f'{provider_name} speech-to-text returned an invalid transcript'
+        )
+    words = payload.get('words')
+    if words is not None and not isinstance(words, list):
+        raise AudioQCError(
+            f'{provider_name} speech-to-text returned invalid word timestamps'
+        )
+    return payload
+
+
+def _verify_with_openai(
+    path: Path,
     expected_narration: str,
+    api_key: str,
 ) -> dict[str, Any]:
-    """Transcribe an audio master and compare it with its spoken contract."""
-    if not str(getattr(settings, 'elevenlabs_api_key', '') or ''):
-        return _unavailable_result()
+    content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
+    try:
+        with path.open('rb') as audio_file:
+            response = httpx.post(
+                OPENAI_AUDIO_TRANSCRIPTIONS_URL,
+                headers=_openai_headers(api_key),
+                data={
+                    'model': 'whisper-1',
+                    'language': 'tr',
+                    'response_format': 'verbose_json',
+                    'timestamp_granularities[]': 'word',
+                    'temperature': '0',
+                },
+                files={
+                    'file': (path.name, audio_file, content_type),
+                },
+                timeout=_SPEECH_TO_TEXT_TIMEOUT,
+            )
+    except Exception:
+        raise AudioQCError(
+            'OpenAI speech-to-text transport failed'
+        ) from None
 
-    path = Path(audio_path)
-    if not path.is_file():
-        raise AudioQCError('Audio QC input file is unavailable')
+    payload = _response_payload(response, 'OpenAI')
+    return compare_transcript(
+        expected_narration,
+        payload['text'],
+        language_code=payload.get('language'),
+        words=payload.get('words'),
+        provider='openai',
+    )
 
+
+def _verify_with_elevenlabs(
+    path: Path,
+    expected_narration: str,
+    api_key: str,
+) -> dict[str, Any]:
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
         with path.open('rb') as audio_file:
             response = httpx.post(
                 ELEVENLABS_SPEECH_TO_TEXT_URL,
-                headers=_headers(),
+                headers=_elevenlabs_headers(api_key),
                 data={
                     'model_id': 'scribe_v2',
                     'language_code': 'tur',
@@ -254,28 +321,63 @@ def verify_audio_narration(
             'ElevenLabs speech-to-text transport failed'
         ) from None
 
-    status_code = getattr(response, 'status_code', None)
-    if not isinstance(status_code, int) or not 200 <= status_code < 300:
-        safe_status = status_code if isinstance(status_code, int) else 'unknown'
-        raise AudioQCError(
-            f'ElevenLabs speech-to-text failed with HTTP {safe_status}'
-        ) from None
-    try:
-        payload = response.json()
-    except Exception:
-        raise AudioQCError(
-            'ElevenLabs speech-to-text returned invalid JSON'
-        ) from None
-    if not isinstance(payload, dict):
-        raise AudioQCError(
-            'ElevenLabs speech-to-text returned an invalid payload'
-        )
-
+    payload = _response_payload(response, 'ElevenLabs')
     return compare_transcript(
         expected_narration,
-        str(payload.get('text') or ''),
+        payload['text'],
         language_code=payload.get('language_code'),
         language_probability=payload.get('language_probability'),
         words=payload.get('words'),
+        provider='elevenlabs',
     )
+
+
+def verify_audio_narration(
+    audio_path: str | Path,
+    expected_narration: str,
+) -> dict[str, Any]:
+    """Transcribe an audio master and compare it with its spoken contract."""
+    openai_api_key = str(getattr(settings, 'openai_api_key', '') or '')
+    elevenlabs_api_key = str(
+        getattr(settings, 'elevenlabs_api_key', '') or ''
+    )
+    if not openai_api_key and not elevenlabs_api_key:
+        return _unavailable_result()
+
+    if not _tokens(expected_narration):
+        raise ValueError('Expected narration must contain at least one word')
+
+    path = Path(audio_path)
+    if not path.is_file():
+        raise AudioQCError('Audio QC input file is unavailable')
+
+    provider_errors: list[AudioQCError] = []
+    if openai_api_key:
+        try:
+            return _verify_with_openai(
+                path,
+                expected_narration,
+                openai_api_key,
+            )
+        except AudioQCError as exc:
+            # OpenAI is primary, but a provider failure must not block the
+            # independent ElevenLabs verification path.
+            provider_errors.append(exc)
+
+    if elevenlabs_api_key:
+        try:
+            return _verify_with_elevenlabs(
+                path,
+                expected_narration,
+                elevenlabs_api_key,
+            )
+        except AudioQCError as exc:
+            provider_errors.append(exc)
+
+    if len(provider_errors) == 1:
+        raise provider_errors[0] from None
+
+    raise AudioQCError(
+        'Audio QC transcription failed for all configured providers'
+    ) from None
 
