@@ -257,14 +257,26 @@ def _stock_writer_json_schema(request_positions: list[int]) -> dict:
     }
 
 
-class _NaturalSpokenLanguageRepairRequired(RuntimeError):
+class _WholeStoryRepairRequired(RuntimeError):
+    """One bounded whole-story repair is required before media work starts."""
+
+    def __init__(self, failed_checks: list[str], evidence: str):
+        self.failed_checks = [
+            str(check or '').strip()
+            for check in (failed_checks or [])
+            if str(check or '').strip()
+        ]
+        self.evidence = str(evidence or '').strip()
+        super().__init__(
+            'Independent critic requested a bounded whole-story repair'
+        )
+
+
+class _NaturalSpokenLanguageRepairRequired(_WholeStoryRepairRequired):
     """A bounded whole-story copy edit is required before media work starts."""
 
     def __init__(self, evidence: str):
-        self.evidence = str(evidence or '').strip()
-        super().__init__(
-            'Independent critic requested a natural spoken-language repair'
-        )
+        super().__init__(['natural_spoken_language'], evidence)
 
 
 def _json(text: str) -> dict:
@@ -676,12 +688,15 @@ def _run_director(
             'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: ai_prompt values are free fallback candidates, not promised generations. '
             f'Up to {authored_ai_limit} scenes may carry a non-null fallback, while the worker will submit at most three paid Runway generations after measuring the exact current stock clips. '
             f'{ai_first_routing_note}'
+            'EXPLICIT USER-BRIEF OVERRIDE: explicit numbered scene beats, route assignments and continuity constraints in the user topic override generic story-shaping heuristics below. '
+            'Follow them exactly and never merge or move a required beat merely to prefer one mechanism scene. '
             'Before writing, silently choose ONE precise everyday curiosity a real person would willingly spend thirty seconds to resolve. '
             'The supplied topic is broad context, never permission to make a technology-trivia sampler. '
             'Use one recurring person or object, one immediate goal or problem, one causal reveal, and one visible everyday payoff. '
             'Every scene must advance that same question; never mix unrelated mechanisms, products or clever facts merely because they fit the topic. '
             'Structure the story so no more than three scenes truly depend on AI, and reserve those dependencies only for the single chosen mechanism that stock cannot literally show. '
-            'Compress that mechanism and its complete causal explanation into one scene; never split, repeat or conclude it in a neighboring stock scene. '
+            'Unless the explicit user topic assigns a multi-scene causal demonstration, compress that mechanism and its complete causal explanation into one scene. '
+            'Never merge, split, repeat or move explicit numbered beats from the user topic. '
             'Every other scene must remain publishable with a plainly filmable real-world action whose exact subject and action appear in its stock queries, '
             'even when it also carries a fallback ai_prompt for uncertain stock coverage. '
             'The penultimate action and visible payoff must happen seconds apart to the same person or object in the SAME named ordinary micro-location, '
@@ -692,6 +707,9 @@ def _run_director(
             'more working than the viewer can see, hidden systems or silent partners. '
             'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
+            'Treat each non-null ai_prompt as a standalone paid-generation contract: repeat every visible identity, size, color, '
+            'wardrobe, setting, continuity and forbidden-element constraint from the user topic that applies to that numbered scene. '
+            'Never rely on an earlier scene prompt to carry a shared constraint forward. '
         )
     elif options.get('mode') == 'preview':
         short_visual_note = (
@@ -766,6 +784,8 @@ narration, visual_queries, ai_prompt, pace, transition.
 
 EDITORIAL QC RULES:
 - Produce one coherent story. Repair every abrupt subject jump.
+- Treat the complete Topic as a literal production contract. Before returning, silently audit every numbered scene against every explicit positive, negative, routing and continuity constraint in it.
+- Every non-null ai_prompt is a standalone paid-generation instruction. Restate all applicable visible object identity, dimensions, brand state, color, wardrobe, room, lighting, continuity and forbidden elements inside that scene's own prompt, even when this repeats earlier prompts. Never assume a later generation can see an earlier prompt.
 - For a short preview, commit to one narrow human situation, one curiosity hook, one recurring person or object, one causal mini-story and one visible everyday payoff.
 - A broad topic is not a story. Never create a sampler of unrelated mechanisms or facts; at most one technical mechanism family may drive a short preview.
 - Every scene must continue, explain, contrast, escalate or pay off the previous scene.
@@ -822,6 +842,7 @@ def _repair_short_stock_scenes(
     topic: str = '',
     *,
     allow_natural_language_repair: bool = True,
+    allow_explicit_brief_repair: bool = True,
 ) -> dict:
     if duration_minutes > 0.6:
         return package
@@ -1614,6 +1635,15 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 raise _NaturalSpokenLanguageRepairRequired(
                     natural_language_evidence
                 )
+            if (
+                allow_explicit_brief_repair
+                and failed_story_checks
+                == ['all_explicit_brief_constraints_preserved']
+            ):
+                raise _WholeStoryRepairRequired(
+                    sorted(set(failed_story_checks)),
+                    story_failure,
+                )
             failure_details = {
                 'generator_calls': generator_calls,
                 'critic_calls': critic_calls,
@@ -2040,15 +2070,31 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 duration_minutes,
                 topic,
             )
-        except _NaturalSpokenLanguageRepairRequired as exc:
-            natural_language_feedback = (
-                'The independent critic set natural_spoken_language=false. '
-                'Rewrite the complete narration as idiomatic, conversational '
-                f'{language_name} without changing the supported causal claim, '
-                'actor/object thread, visual actions, route count or ending '
-                'location. Do not add filler to satisfy a scene quota. '
-                f'Critic evidence: {exc.evidence[:320]}'
-            )
+        except _WholeStoryRepairRequired as exc:
+            if isinstance(exc, _NaturalSpokenLanguageRepairRequired):
+                whole_story_feedback = (
+                    'The independent critic set natural_spoken_language=false. '
+                    'Rewrite the complete narration as idiomatic, conversational '
+                    f'{language_name} without changing the supported causal claim, '
+                    'actor/object thread, visual actions, route count or ending '
+                    'location. Do not add filler to satisfy a scene quota. '
+                    f'Critic evidence: {exc.evidence[:320]}'
+                )
+            else:
+                failed_checks = ', '.join(exc.failed_checks)
+                whole_story_feedback = (
+                    'The independent fail-closed critic rejected the complete '
+                    f'story on these checks: {failed_checks}. Repair every cited '
+                    'omission or contradiction while preserving all already valid '
+                    'facts, scene positions, route assignments and word limits. '
+                    'For all_explicit_brief_constraints_preserved, rebuild a '
+                    'scene-by-scene checklist from the complete user Topic and '
+                    'make each non-null ai_prompt independently repeat every '
+                    'applicable visible identity, dimension, brand state, color, '
+                    'wardrobe, setting, continuity and forbidden-element '
+                    'constraint. Do not weaken or paraphrase away a requirement. '
+                    f'Critic evidence: {exc.evidence[:480]}'
+                )
             correction_input = {
                 'title': out.get('title'),
                 'thumbnail_text': out.get('thumbnail_text'),
@@ -2059,8 +2105,8 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 'current_scene_count': scene_count,
                 'current_ai_scene_count': ai_scene_count,
                 'max_ai_scene_count': preview_ai_limit,
-                'correction_attempt': 'natural_spoken_language',
-                'narration_quality_issues': [natural_language_feedback],
+                'correction_attempt': 'whole_story_critic',
+                'narration_quality_issues': [whole_story_feedback],
             }
             revised = _run_director(
                 client,
@@ -2101,7 +2147,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             )
             if not corrected_shape_is_safe:
                 raise RuntimeError(
-                    'Natural spoken-language repair violated a deterministic '
+                    'Whole-story critic repair violated a deterministic '
                     'short-preview gate before paid media'
                 )
             out = _repair_short_stock_scenes(
@@ -2111,6 +2157,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 duration_minutes,
                 topic,
                 allow_natural_language_repair=False,
+                allow_explicit_brief_repair=False,
             )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
@@ -2181,4 +2228,3 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         }
         out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
     return out
-
