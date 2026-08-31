@@ -26,6 +26,9 @@ STYLE_NOTES = {
     'explainer': 'clear causal explainer with demonstrations and comparisons',
 }
 
+_PRODUCTION_SCENES_PER_MINUTE = 7.0
+_MAX_PRODUCTION_SCENES = 70
+
 _EXPLICIT_SCENE_COUNT_WORDS = {
     'bir': 1,
     'iki': 2,
@@ -54,7 +57,7 @@ _EXPLICIT_SCENE_COUNT_WORDS = {
 }
 _EXPLICIT_SCENE_COUNT_PATTERN = re.compile(
     r'\b(?:tam(?:\s+olarak)?|exactly)\s+'
-    r'(?P<count>\d{1,2}|bir|iki|üç|uc|dört|dort|beş|bes|altı|alti|'
+    r'(?P<count>\d{1,3}|bir|iki|üç|uc|dört|dort|beş|bes|altı|alti|'
     r'yedi|sekiz|dokuz|on|one|two|three|four|five|six|seven|eight|nine|ten)'
     r'\s+(?:sahne(?:li|lik)?|scenes?)\b',
     flags=re.IGNORECASE,
@@ -159,9 +162,10 @@ def _explicit_scene_count_from_brief(brief: str) -> int | None:
             'User brief contains conflicting explicit scene counts'
         )
     requested = requested_counts[0]
-    if not 3 <= requested <= 32:
+    if not 3 <= requested <= _MAX_PRODUCTION_SCENES:
         raise RuntimeError(
-            'User brief explicit scene count must be between 3 and 32'
+            'User brief explicit scene count must be between 3 and '
+            f'{_MAX_PRODUCTION_SCENES}'
         )
     return requested
 
@@ -253,10 +257,10 @@ def _infer_exact_narration_scene_count(locked_narration: str) -> int:
     proposed_count = len(
         list(_EXACT_NARRATION_SENTENCE_PATTERN.finditer(normalized))
     )
-    if not 3 <= proposed_count <= 32:
+    if not 3 <= proposed_count <= _MAX_PRODUCTION_SCENES:
         raise RuntimeError(
-            'Exact spoken-narration lock must contain between 3 and 32 '
-            'unambiguous scene sentences'
+            'Exact spoken-narration lock must contain between 3 and '
+            f'{_MAX_PRODUCTION_SCENES} unambiguous scene sentences'
         )
     return len(
         _split_exact_narration_lock(locked_narration, proposed_count)
@@ -794,14 +798,20 @@ def short_story_package_is_approved(
 
 
 def _target_scene_count(duration_minutes: float, pace: str) -> int:
+    if duration_minutes > 1.1:
+        # Production clips are single-pass. Keep the spoken beat short enough
+        # for one 5-10 second shot even when the requested pace is calm.
+        return min(
+            _MAX_PRODUCTION_SCENES,
+            max(
+                8,
+                int(round(duration_minutes * _PRODUCTION_SCENES_PER_MINUTE)),
+            ),
+        )
     if duration_minutes <= 0.6:
         base = max(5, int(round(duration_minutes * 12)))
-    elif duration_minutes <= 1.1:
-        base = 6
-    elif duration_minutes <= 3.1:
-        base = max(8, int(round(duration_minutes * 4.5)))
     else:
-        base = min(28, max(12, int(round(duration_minutes * 3.5))))
+        base = 6
     if pace == 'calm':
         return max(3, int(round(base * 0.82)))
     if pace == 'dynamic':
@@ -951,7 +961,7 @@ def _run_director(
             'rewrite the narration and its queries before returning. '
             'Every spoken clause in an ai_prompt-null scene must be literally visible in that same clip; never append abstract phrases such as magic happening, '
             'more working than the viewer can see, hidden systems or silent partners. '
-            'Each non-null ai_prompt must be a concrete English prompt for one cinematic five-second 16:9 shot, '
+            'Each non-null ai_prompt must be a concrete English prompt for one continuous cinematic 16:9 scene-length shot, normally 5-10 seconds, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
             'Treat each non-null ai_prompt as a standalone paid-generation contract: repeat every visible identity, size, color, '
             'wardrobe, setting, continuity and forbidden-element constraint from the user topic that applies to that numbered scene. '
@@ -1009,6 +1019,15 @@ def _run_director(
             'never more than one scene away.'
         )
     )
+    production_scene_note = (
+        'PRODUCTION SINGLE-PASS SCENE CONTRACT: distribute spoken narration '
+        'evenly across scenes; preferably keep each scene narration at 5-14 '
+        'words. Every scene must be fully visualizable in one continuous '
+        '5-10-second shot without looping or combining multiple shots. This '
+        "preference never overrides a user brief's explicit exact scene count."
+        if duration_minutes > 1.1
+        else ''
+    )
     prompt = f'''You are the FINAL EDITORIAL DIRECTOR for a premium faceless YouTube video.
 Topic: {topic}
 Language: {language_name}
@@ -1022,6 +1041,7 @@ HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_visual_note}
 {short_language_note}
 {scene_budget_note}
+{production_scene_note}
 {correction_note}
 
 DRAFT JSON:
