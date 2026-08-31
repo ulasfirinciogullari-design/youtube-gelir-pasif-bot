@@ -47,6 +47,11 @@ def _review(
         'spoken_action_visible': True,
         'physical_causality_applicable': False,
         'target_contact_visible': False,
+        'connection_action_applicable': False,
+        'moving_connector_visible': False,
+        'receiving_interface_visible': False,
+        'connector_visibly_joins_target': False,
+        'connection_persists_after_release': False,
         'state_change_applicable': False,
         'state_changed_after_action': False,
         'final_state_persists': False,
@@ -201,6 +206,14 @@ class VisualQcProviderTests(unittest.TestCase):
             kwargs['system_instruction'],
         )
         self.assertIn('real contact or occlusion', kwargs['system_instruction'])
+        self.assertIn(
+            'distinct moving connector and the receiving interface',
+            kwargs['system_instruction'],
+        )
+        self.assertIn(
+            'loose strap, cable, cover, hand or blur',
+            kwargs['system_instruction'],
+        )
         self.assertIn('visible loop must score 40 or lower', kwargs['system_instruction'])
         self.assertIn('spatial continuity', kwargs['system_instruction'])
         self.assertIn(
@@ -239,6 +252,10 @@ class VisualQcProviderTests(unittest.TestCase):
             ['scene_index']['enum'],
             [0],
         )
+        self.assertIn(
+            'connector_visibly_joins_target',
+            schema['properties']['reviews']['items']['properties'],
+        )
         self.assertEqual(result['missing_review_indices'], [])
         self.assertEqual(result['reviews'][0]['best_start_fraction'], 0.50)
 
@@ -272,6 +289,48 @@ class VisualQcProviderTests(unittest.TestCase):
 
         review = result['reviews'][0]
         self.assertEqual(review['raw_score'], 96)
+        self.assertEqual(review['score'], 40)
+        self.assertFalse(review['evidence_gate_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_narrated_connection_fails_without_visible_connector_and_join(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scene = {
+            'narration': 'Sürücü kemeri yavaşça çekip tokaya takıyor.',
+            'visual_queries': ['metal seat belt tongue enters buckle'],
+        }
+        gemini.return_value = {
+            'reviews': [_review(
+                score=98,
+                reason='A loose strap covers the buckle but no tongue is shown.',
+                evidence_moments=[0, 1, 2],
+                physical_causality_applicable=True,
+                target_contact_visible=True,
+                connection_action_applicable=False,
+                moving_connector_visible=False,
+                receiving_interface_visible=True,
+                connector_visibly_joins_target=False,
+                connection_persists_after_release=False,
+            )],
+        }
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                [scene],
+                self.visuals,
+                self.work / 'failed_connection',
+                _missing_review_attempts=0,
+            )
+
+        review = result['reviews'][0]
+        self.assertTrue(review['connection_action_applicable'])
+        self.assertEqual(review['raw_score'], 98)
         self.assertEqual(review['score'], 40)
         self.assertFalse(review['evidence_gate_passed'])
 
