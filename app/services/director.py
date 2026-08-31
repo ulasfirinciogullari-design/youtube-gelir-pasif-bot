@@ -734,6 +734,16 @@ def _short_story_quality_issues(
             'short preview mixes unrelated mechanism families instead of '
             'answering one human question: ' + ', '.join(mechanism_families)
         )
+    story_contract = ' '.join(
+        f"{str(scene.get('narration') or '')} "
+        f"{str(scene.get('ai_prompt') or '')}"
+        for scene in (package.get('scenes') or [])
+        if isinstance(scene, dict)
+    )
+    seatbelt_story = bool(
+        _TURKISH_SHORT_SEATBELT_PATTERN.search(story_contract)
+        or _ENGLISH_SHORT_SEATBELT_PATTERN.search(story_contract)
+    )
     for scene_idx, scene in enumerate(package.get('scenes') or []):
         if not isinstance(scene, dict) or not str(
             scene.get('ai_prompt') or ''
@@ -746,10 +756,6 @@ def _short_story_quality_issues(
             _ENGLISH_SHORT_SAFE_SEATBELT_STATE_FRAGMENT_PATTERN.sub(
                 '', ai_prompt
             )
-        )
-        seatbelt_contract = bool(
-            _TURKISH_SHORT_SEATBELT_PATTERN.search(complete_contract)
-            or _ENGLISH_SHORT_SEATBELT_PATTERN.search(complete_contract)
         )
         hardware_contract = bool(
             _TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
@@ -792,7 +798,7 @@ def _short_story_quality_issues(
         if (
             narration_precision_action
             or (
-                seatbelt_contract
+                seatbelt_story
                 and hardware_contract
                 and connection_action
             )
@@ -807,7 +813,7 @@ def _short_story_quality_issues(
             continue
         if (
             scene_idx == len(package.get('scenes') or []) - 1
-            and seatbelt_contract
+            and seatbelt_story
             and not safe_ai_payoff
         ):
             issues.append(
