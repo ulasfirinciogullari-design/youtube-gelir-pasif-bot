@@ -255,6 +255,20 @@ def _response_payload(response: Any, provider_name: str) -> dict[str, Any]:
     return payload
 
 
+def _require_word_timing_evidence(
+    result: dict[str, Any],
+    provider_name: str,
+) -> dict[str, Any]:
+    if str(result.get('transcript') or '').strip() and (
+        not result.get('word_timestamps')
+        or result.get('ending_word_time') is None
+    ):
+        raise AudioQCError(
+            f'{provider_name} speech-to-text returned incomplete word timestamps'
+        )
+    return result
+
+
 def _verify_with_openai(
     path: Path,
     expected_narration: str,
@@ -284,12 +298,15 @@ def _verify_with_openai(
         ) from None
 
     payload = _response_payload(response, 'OpenAI')
-    return compare_transcript(
-        expected_narration,
-        payload['text'],
-        language_code=payload.get('language'),
-        words=payload.get('words'),
-        provider='openai',
+    return _require_word_timing_evidence(
+        compare_transcript(
+            expected_narration,
+            payload['text'],
+            language_code=payload.get('language'),
+            words=payload.get('words'),
+            provider='openai',
+        ),
+        'OpenAI',
     )
 
 
@@ -322,13 +339,16 @@ def _verify_with_elevenlabs(
         ) from None
 
     payload = _response_payload(response, 'ElevenLabs')
-    return compare_transcript(
-        expected_narration,
-        payload['text'],
-        language_code=payload.get('language_code'),
-        language_probability=payload.get('language_probability'),
-        words=payload.get('words'),
-        provider='elevenlabs',
+    return _require_word_timing_evidence(
+        compare_transcript(
+            expected_narration,
+            payload['text'],
+            language_code=payload.get('language_code'),
+            language_probability=payload.get('language_probability'),
+            words=payload.get('words'),
+            provider='elevenlabs',
+        ),
+        'ElevenLabs',
     )
 
 
@@ -352,9 +372,10 @@ def verify_audio_narration(
         raise AudioQCError('Audio QC input file is unavailable')
 
     provider_errors: list[AudioQCError] = []
+    mismatch_results: list[dict[str, Any]] = []
     if openai_api_key:
         try:
-            return _verify_with_openai(
+            openai_result = _verify_with_openai(
                 path,
                 expected_narration,
                 openai_api_key,
@@ -363,16 +384,32 @@ def verify_audio_narration(
             # OpenAI is primary, but a provider failure must not block the
             # independent ElevenLabs verification path.
             provider_errors.append(exc)
+        else:
+            if openai_result['pass']:
+                return openai_result
+            mismatch_results.append(openai_result)
 
     if elevenlabs_api_key:
         try:
-            return _verify_with_elevenlabs(
+            elevenlabs_result = _verify_with_elevenlabs(
                 path,
                 expected_narration,
                 elevenlabs_api_key,
             )
         except AudioQCError as exc:
             provider_errors.append(exc)
+        else:
+            if elevenlabs_result['pass']:
+                return elevenlabs_result
+            mismatch_results.append(elevenlabs_result)
+
+    if mismatch_results:
+        # Keep the most useful mismatch diagnosis. ``max`` preserves OpenAI
+        # on a score tie because it is evaluated first.
+        return max(
+            mismatch_results,
+            key=lambda result: float(result.get('score') or 0.0),
+        )
 
     if len(provider_errors) == 1:
         raise provider_errors[0] from None
