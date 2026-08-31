@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from app.celery_app import celery
 from app.services.audio_design import generate_music_bed, mix_voice_and_music
+from app.services.audio_qc import verify_audio_narration
 from app.services.director import direct_and_qc, short_story_package_is_approved
 from app.services.pexels import find_broll, download_broll
 from app.services.render import render_video
@@ -430,6 +431,23 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     )
     combined = f'{narration} {original} {visible_action}'.lower()
     mechanism_guardrails: list[str] = []
+    connection_claim = bool(re.search(
+        r'\b(?:insert(?:s|ed|ing)?|plug(?:s|ged|ging)?|attach(?:es|ed|ing)?|'
+        r'fasten(?:s|ed|ing)?|buckle(?:s|d|ing)?|latch(?:es|ed|ing)?|'
+        r'connect(?:s|ed|ing)?)\b|'
+        r'\b(?:toka(?:ya|yı|yi|sı|si)?|soket(?:e|i)?|fiş(?:e|i)?|'
+        r'yuva(?:ya|yı)?|kemer(?:i|ini)?)\b.{0,48}\b'
+        r'(?:tak(?:ıyor|iyor|mak|ar|tı|ti|ıl|il)|sok(?:uyor|mak|ar|tu|ul)|'
+        r'bağla(?:r|mak|dı|nıyor)?|yerleştir(?:iyor|mek|ir|di)?|'
+        r'kilitle(?:r|mek|di|niyor)?)\b',
+        combined,
+    ))
+    if connection_claim:
+        mechanism_guardrails.append(
+            'Connection proof: show the distinct moving connector and receiving '
+            'socket before contact, visibly join them, release the hand, and hold '
+            'the connected result; loose strap or a hand hiding the interface fails.'
+        )
     oled_claim = bool(re.search(
         r'\b(?:oled|true[ -]black)\b|gerçek siyah|emissive\s+(?:pixel|display|screen)',
         combined,
@@ -781,6 +799,54 @@ def run_video_pipeline(
 
         voice_path = voice_result['path']
         scene_durations = voice_result['scene_durations']
+        expected_spoken_narration = ' '.join(
+            str(text or '').strip()
+            for text in (voice_result.get('spoken_texts') or [])
+            if str(text or '').strip()
+        )
+        set_stage(
+            self,
+            task_id,
+            'audio_qc',
+            38,
+            'Anlatım metni, telaffuz ve kelime zamanları gerçek ses üzerinden denetleniyor.',
+        )
+        audio_qc = verify_audio_narration(
+            voice_path,
+            expected_spoken_narration,
+        )
+        audio_mismatch = (
+            audio_qc.get('mismatch_details')
+            if isinstance(audio_qc.get('mismatch_details'), dict)
+            else {}
+        )
+        if not audio_qc.get('available') or not audio_qc.get('pass'):
+            raise RuntimeError(
+                'Audio narration QA rejected before paid media: '
+                + json.dumps(
+                    {
+                        'available': bool(audio_qc.get('available')),
+                        'score': audio_qc.get('score'),
+                        'reason': audio_qc.get('reason'),
+                        'mismatch_details': {
+                            'missing_words': (
+                                audio_mismatch.get('missing_words') or []
+                            )[:8],
+                            'unexpected_words': (
+                                audio_mismatch.get('unexpected_words') or []
+                            )[:8],
+                            'operations': (
+                                audio_mismatch.get('operations') or []
+                            )[:4],
+                            'sequence_ratio': audio_mismatch.get(
+                                'sequence_ratio'
+                            ),
+                        },
+                    },
+                    ensure_ascii=False,
+                    separators=(',', ':'),
+                )
+            )
         scene_visuals: list[list[str | dict]] = broll_result['scene_visuals']
         if strict_short_preview_duration:
             for scene_idx, specs in enumerate(scene_visuals):
@@ -1755,6 +1821,7 @@ def run_video_pipeline(
             'voice_duration_before_fit': voice_result.get('duration_before_fit'),
             'voice_duration_after_fit': voice_result.get('duration_after_fit'),
             'voice_tempo_rate': voice_result.get('tempo_rate'),
+            'audio_qc': audio_qc,
             'audio_design': audio_design,
             'stock_credits': credits,
             'runway_submission_cap': runway_submission_cap,
@@ -1812,6 +1879,7 @@ def run_video_pipeline(
             'voice_duration_before_fit': voice_result.get('duration_before_fit'),
             'voice_duration_after_fit': voice_result.get('duration_after_fit'),
             'voice_tempo_rate': voice_result.get('tempo_rate'),
+            'audio_qc': audio_qc,
             'audio_design': audio_design,
             'studio_options': options,
         }
