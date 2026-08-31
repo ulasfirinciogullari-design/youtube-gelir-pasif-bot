@@ -659,6 +659,19 @@ _TURKISH_SHORT_STORY_FAMILIES = (
     ),
 )
 
+_TURKISH_SHORT_SEATBELT_PATTERN = re.compile(
+    r'\b(?:emniyet\s+)?kemer\w*\b',
+    flags=re.IGNORECASE | re.UNICODE,
+)
+_TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN = re.compile(
+    r'\b(?:(?:metal\s+)?dil\w*|toka\w*|yuva\w*)\b',
+    flags=re.IGNORECASE | re.UNICODE,
+)
+_TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN = re.compile(
+    r'\b(?:tak|sok|geçir|kilitle|birleştir|bağla)\w*\b',
+    flags=re.IGNORECASE | re.UNICODE,
+)
+
 
 def _short_story_quality_issues(
     package: dict,
@@ -682,10 +695,32 @@ def _short_story_quality_issues(
             'short preview mixes unrelated mechanism families instead of '
             'answering one human question: ' + ', '.join(mechanism_families)
         )
+    for scene_idx, scene in enumerate(package.get('scenes') or []):
+        if not isinstance(scene, dict) or not str(
+            scene.get('ai_prompt') or ''
+        ).strip():
+            continue
+        scene_narration = str(scene.get('narration') or '')
+        if (
+            _TURKISH_SHORT_SEATBELT_PATTERN.search(scene_narration)
+            and _TURKISH_SHORT_SEATBELT_HARDWARE_PATTERN.search(
+                scene_narration
+            )
+            and _TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+                scene_narration
+            )
+        ):
+            issues.append(
+                f'scene {scene_idx} assigns paid AI video a precision '
+                'seat-belt latch insertion; rewrite the payoff as the same '
+                'driver visibly wearing an already-fastened three-point belt '
+                'after the preceding mechanism scene, without narrating the '
+                'small metal tongue entering the buckle'
+            )
     return issues
 
 
-_SHORT_STORY_QC_VERSION = 3
+_SHORT_STORY_QC_VERSION = 4
 _STOCK_SCENE_QC_VERSION = 6
 _STORY_STOCK_CONTRACT = 'openai-story-stock-v2'
 
@@ -1203,6 +1238,7 @@ EDITORIAL QC RULES:
 - Never search for an abstract property alone: keep the named subject attached (for example, a damaged QR code being scanned, not a generic software error; OLED pixel microscopy, not digital glitch footage).
 - CONDITIONAL VALIDATION EXAMPLE, not a story suggestion: only if the user's topic and the chosen single story already require OLED or true black, narration, stock queries and ai_prompt must show black-region subpixel emitters visibly unlit beside illuminated colored subpixels; a whole-screen fade or hand turning a screen off is not evidence.
 - In that same conditional OLED case, never claim lower power use in a short scene unless a real physical power meter visibly falls in that same continuous shot.
+- For a short seat-belt story, never ask paid AI video to animate the small metal latch plate entering the buckle. Explain the internal locking mechanism in the preceding technical scene, then make the payoff show the same driver visibly wearing an already-fastened three-point belt across the chest and preparing to drive. Do not narrate the precision insertion in that AI scene.
 - Reject generic typing, code errors, random phones, office workers, skylines, fireworks, finance charts, digital noise or abstract tech footage unless literally required by the narration.
 - Give every scene 2-3 search options with different shot grammar.
 - ai_prompt is null unless stock footage cannot honestly show the concept.
