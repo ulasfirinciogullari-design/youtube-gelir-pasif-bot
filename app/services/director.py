@@ -6,8 +6,13 @@ from app.config import settings
 from app.services.gemini_critic import (
     CONTINUITY_DEICTIC_RULE,
     GEMINI_DEFAULT_MODEL,
+    _contract_schema,
     run_optional_gemini_critic,
     setting_is_enabled,
+)
+from app.services.gemini_generation import (
+    GeminiGenerationError,
+    generate_gemini_json,
 )
 from app.services.visual_routing import preview_authored_ai_limit
 from app.services.source_evidence import normalize_evidence_sources
@@ -19,6 +24,118 @@ STYLE_NOTES = {
     'cinematic': 'cinematic essay with controlled reveals and recurring visual motifs',
     'explainer': 'clear causal explainer with demonstrations and comparisons',
 }
+
+
+def _studio_plan_provider() -> str:
+    provider = str(
+        getattr(settings, 'studio_plan_provider', 'openai') or ''
+    ).strip().casefold()
+    if provider not in {'openai', 'gemini'}:
+        raise RuntimeError(
+            'STUDIO_PLAN_PROVIDER must be openai or gemini'
+        )
+    return provider
+
+
+def _director_json_schema(target_scenes: int) -> dict:
+    minimum_scenes = max(3, int(target_scenes) - 1)
+    maximum_scenes = max(minimum_scenes, int(target_scenes) + 1)
+    scene_schema = {
+        'type': 'object',
+        'properties': {
+            'narration': {'type': 'string'},
+            'visual_queries': {
+                'type': 'array',
+                'items': {'type': 'string'},
+                'minItems': 2,
+                'maxItems': 3,
+            },
+            'ai_prompt': {'type': ['string', 'null']},
+            'pace': {
+                'type': 'string',
+                'enum': ['fast', 'normal', 'slow'],
+            },
+            'transition': {
+                'type': 'string',
+                'enum': ['cut', 'match', 'dip'],
+            },
+        },
+        'required': [
+            'narration',
+            'visual_queries',
+            'ai_prompt',
+            'pace',
+            'transition',
+        ],
+        'additionalProperties': False,
+    }
+    return {
+        'type': 'object',
+        'properties': {
+            'title': {'type': 'string'},
+            'thumbnail_text': {'type': 'string'},
+            'description': {'type': 'string'},
+            'scenes': {
+                'type': 'array',
+                'items': scene_schema,
+                'minItems': minimum_scenes,
+                'maxItems': maximum_scenes,
+            },
+            'qc_summary': {
+                'type': 'array',
+                'items': {'type': 'string'},
+            },
+        },
+        'required': [
+            'title',
+            'thumbnail_text',
+            'description',
+            'scenes',
+            'qc_summary',
+        ],
+        'additionalProperties': False,
+    }
+
+
+def _stock_writer_json_schema(request_positions: list[int]) -> dict:
+    row_schema = {
+        'type': 'object',
+        'properties': {
+            'position': {
+                'type': 'integer',
+                'enum': list(request_positions),
+            },
+            'narration': {'type': 'string'},
+            'visual_queries': {
+                'type': 'array',
+                'items': {'type': 'string'},
+                'minItems': 2,
+                'maxItems': 3,
+            },
+            'ai_prompt': {'type': 'null'},
+        },
+        'required': [
+            'position',
+            'narration',
+            'visual_queries',
+            'ai_prompt',
+        ],
+        'additionalProperties': False,
+    }
+    expected_count = len(request_positions)
+    return {
+        'type': 'object',
+        'properties': {
+            'scenes': {
+                'type': 'array',
+                'items': row_schema,
+                'minItems': expected_count,
+                'maxItems': expected_count,
+            },
+        },
+        'required': ['scenes'],
+        'additionalProperties': False,
+    }
 
 
 class _NaturalSpokenLanguageRepairRequired(RuntimeError):
@@ -462,10 +579,7 @@ def _run_director(
         f'Reference URL: {reference_url}. Use only high-level information architecture and pacing inspiration; never copy wording, signature creative devices or branding.'
         if reference_url else 'No external reference structure was supplied.'
     )
-    response = client.responses.create(
-        model=settings.openai_model,
-        reasoning={'effort': 'medium' if correction else 'low'},
-        input=f'''You are the FINAL EDITORIAL DIRECTOR for a premium faceless YouTube video.
+    prompt = f'''You are the FINAL EDITORIAL DIRECTOR for a premium faceless YouTube video.
 Topic: {topic}
 Language: {language_name}
 Requested duration: {duration_minutes} minutes.
@@ -514,7 +628,24 @@ EDITORIAL QC RULES:
 - Final scene must resolve the central curiosity and provide a memorable payoff.
 - Total narration word count must be between {min_words} and {max_words}.
 - qc_summary is a short list of the main editorial repairs.
-''',
+'''
+    reasoning_effort = 'medium' if correction else 'low'
+    if _studio_plan_provider() == 'gemini':
+        return generate_gemini_json(
+            prompt,
+            api_key=str(getattr(settings, 'gemini_api_key', '') or ''),
+            model=str(
+                getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL)
+                or GEMINI_DEFAULT_MODEL
+            ),
+            json_schema=_director_json_schema(target_scenes),
+            google_search=False,
+            thinking_level=reasoning_effort,
+        )
+    response = client.responses.create(
+        model=settings.openai_model,
+        reasoning={'effort': reasoning_effort},
+        input=prompt,
     )
     return _json(response.output_text)
 
@@ -530,6 +661,8 @@ def _repair_short_stock_scenes(
 ) -> dict:
     if duration_minutes > 0.6:
         return package
+
+    plan_provider = _studio_plan_provider()
 
     scenes = package.get('scenes') or []
     if len(scenes) < 3:
@@ -735,11 +868,7 @@ def _repair_short_stock_scenes(
             ],
             'stock_positions_to_rewrite': request_targets,
         }
-        generator_calls += 1
-        response = client.responses.create(
-            model=settings.openai_model,
-            reasoning={'effort': 'medium' if attempt else 'low'},
-            input=f'''You are repairing the requested stock-routed scenes of a 30-second premium YouTube story before footage search.
+        generator_input = f'''You are repairing the requested stock-routed scenes of a 30-second premium YouTube story before footage search.
 Language of spoken narration: {language_name}
 Story context:
 {json.dumps(generation_context, ensure_ascii=False)}
@@ -770,14 +899,39 @@ NON-NEGOTIABLE RULES:
 - A payoff must visibly complete the preceding action and show the everyday benefit, not merely state a conclusion.
 - Keep the spoken narration natural and easy to pronounce in {language_name}; for Turkish, use meaning-first native wording and never raw technical abbreviations.
 - When validation_feedback names natural_spoken_language, rewrite formal, translated or textbook-like wording as something a Turkish speaker would naturally say aloud while preserving the exact visible meaning.
-''',
-        )
+'''
+
+        if not request_positions:
+            data = {'scenes': []}
+        else:
+            generator_calls += 1
+            if plan_provider == 'gemini':
+                data = generate_gemini_json(
+                    generator_input,
+                    api_key=str(
+                        getattr(settings, 'gemini_api_key', '') or ''
+                    ),
+                    model=str(
+                        getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL)
+                        or GEMINI_DEFAULT_MODEL
+                    ),
+                    json_schema=_stock_writer_json_schema(request_positions),
+                    google_search=False,
+                    thinking_level='medium' if attempt else 'low',
+                )
+            else:
+                response = client.responses.create(
+                    model=settings.openai_model,
+                    reasoning={'effort': 'medium' if attempt else 'low'},
+                    input=generator_input,
+                )
+                try:
+                    data = _json(response.output_text)
+                except Exception:
+                    data = {}
 
         global_generation_error = ''
-        try:
-            data = _json(response.output_text)
-        except Exception:
-            data = {}
+        if not data:
             global_generation_error = 'response was not valid JSON'
         if data and set(data.keys()) != {'scenes'}:
             global_generation_error = 'response must contain exactly the scenes key'
@@ -932,6 +1086,21 @@ NON-NEGOTIABLE RULES:
             'same_actor_or_object_thread',
             'everyday_benefit_visible',
         }
+        critic_boolean_keys = {
+            'single_sentence',
+            'single_visible_action',
+            'single_ordinary_location',
+            'all_spoken_meaning_visible',
+            'no_invisible_or_abstract_claim',
+            'all_named_subjects_coexist',
+            'queries_are_english',
+            'queries_match_same_action',
+            'common_stock_clip_feasible',
+            'continues_from_previous',
+            'leads_to_next',
+            'preserves_story_role',
+            'adds_no_new_fact',
+        }
         critic_shape = {
             'story_review': {
                 **{key: True for key in sorted(story_boolean_keys)},
@@ -993,14 +1162,7 @@ NON-NEGOTIABLE RULES:
                 for position in stock_positions
             ],
         }
-        critic_calls += 1
-        critic_response = client.responses.create(
-            model=settings.openai_model,
-            reasoning={'effort': 'medium'},
-            tools=[{'type': 'web_search', 'search_context_size': 'low'}],
-            tool_choice='auto',
-            max_tool_calls=1,
-            input=f'''Act as an independent, fail-closed stock-shot feasibility critic. Do not rewrite anything.
+        critic_input = f'''Act as an independent, fail-closed stock-shot feasibility critic. Do not rewrite anything.
 Evaluate every stock-routed candidate against its exact narration, queries, role, adjacent scenes and complete short story.
 {json.dumps(critic_context, ensure_ascii=False)}
 
@@ -1047,21 +1209,16 @@ For EACH requested position, set every boolean independently. If evidence is amb
 - preserves_story_role: hook, bridge, penultimate or payoff behavior matches the supplied role.
 - adds_no_new_fact: it introduces no unsupported claim, product or unrelated activity.
 The reason must name concrete evidence for the verdict. Individual shot approval requires all thirteen booleans to be true.
-''',
-        )
-
-        critic_global_error = ''
-        try:
-            critic = _json(critic_response.output_text)
-        except Exception:
-            critic = {}
-            critic_global_error = 'independent stock-shot critic returned invalid JSON'
-        if critic and set(critic.keys()) != {'story_review', 'ending_pair', 'scenes'}:
-            critic_global_error = (
-                'independent stock-shot critic returned an invalid object'
-            )
-        story_review = critic.get('story_review') if isinstance(critic, dict) else None
-        ending_pair = critic.get('ending_pair') if isinstance(critic, dict) else None
+'''
+        critic_request = {
+            'model': settings.openai_model,
+            'reasoning': {'effort': 'medium'},
+            'tools': [{'type': 'web_search', 'search_context_size': 'low'}],
+            'tool_choice': 'auto',
+            'max_tool_calls': 1,
+            'input': critic_input,
+        }
+        critic_schema = _contract_schema(critic_shape)
         expected_story_keys = {
             'central_question',
             'causal_answer',
@@ -1077,88 +1234,210 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             'reason',
             *ending_boolean_keys,
         }
+        expected_critic_keys = {'position', 'reason', *critic_boolean_keys}
+        critic = {}
+        story_review = None
+        ending_pair = None
         story_failure = ''
         failed_story_checks: list[str] = []
         natural_language_evidence = ''
-        if not critic_global_error:
-            if not isinstance(story_review, dict) or set(story_review.keys()) != expected_story_keys:
-                critic_global_error = 'whole-story critic returned the wrong fields'
+        critic_rows = None
+        critic_by_position: dict[int, dict] = {}
+        critic_global_error = ''
+
+        for critic_attempt in range(2):
+            critic_calls += 1
+            critic = {}
+            story_review = None
+            ending_pair = None
+            story_failure = ''
+            failed_story_checks = []
+            natural_language_evidence = ''
+            critic_rows = None
+            critic_by_position = {}
+            critic_global_error = ''
+            if plan_provider == 'gemini':
+                try:
+                    critic = generate_gemini_json(
+                        critic_input,
+                        api_key=str(
+                            getattr(settings, 'gemini_api_key', '') or ''
+                        ),
+                        model=str(
+                            getattr(
+                                settings,
+                                'gemini_model',
+                                GEMINI_DEFAULT_MODEL,
+                            ) or GEMINI_DEFAULT_MODEL
+                        ),
+                        json_schema=critic_schema,
+                        google_search=False,
+                        thinking_level='medium',
+                    )
+                except GeminiGenerationError:
+                    critic_global_error = (
+                        'independent stock-shot critic returned invalid JSON'
+                    )
             else:
-                failed_story_checks = sorted(
-                    key
-                    for key in story_boolean_keys
-                    if story_review.get(key) is not True
+                critic_response = client.responses.create(**critic_request)
+                try:
+                    critic = _json(critic_response.output_text)
+                except Exception:
+                    critic_global_error = (
+                        'independent stock-shot critic returned invalid JSON'
+                    )
+            if (
+                critic
+                and set(critic.keys()) != {'story_review', 'ending_pair', 'scenes'}
+            ):
+                critic_global_error = (
+                    'independent stock-shot critic returned an invalid object'
                 )
-                story_reason = str(story_review.get('reason') or '').strip()
-                natural_language_evidence = str(
-                    story_review.get('natural_spoken_language_evidence') or ''
-                ).strip()
-                story_summaries = {
-                    key: str(story_review.get(key) or '').strip()
-                    for key in (
-                        'central_question',
-                        'causal_answer',
-                        'visible_payoff',
+            story_review = (
+                critic.get('story_review')
+                if isinstance(critic, dict)
+                else None
+            )
+            ending_pair = (
+                critic.get('ending_pair')
+                if isinstance(critic, dict)
+                else None
+            )
+            if not critic_global_error:
+                if (
+                    not isinstance(story_review, dict)
+                    or set(story_review.keys()) != expected_story_keys
+                ):
+                    critic_global_error = (
+                        'whole-story critic returned the wrong fields'
                     )
-                }
-                if not story_reason:
-                    failed_story_checks.append('missing_evidence')
-                    story_reason = 'critic omitted whole-story evidence'
-                if not natural_language_evidence:
-                    failed_story_checks.append(
-                        'missing_natural_spoken_language_evidence'
+                else:
+                    failed_story_checks = sorted(
+                        key
+                        for key in story_boolean_keys
+                        if story_review.get(key) is not True
                     )
-                elif story_review.get('natural_spoken_language') is True:
-                    if not re.match(
-                        r'^pass\b',
-                        natural_language_evidence,
-                        flags=re.IGNORECASE,
+                    story_reason = str(
+                        story_review.get('reason') or ''
+                    ).strip()
+                    natural_language_evidence = str(
+                        story_review.get('natural_spoken_language_evidence') or ''
+                    ).strip()
+                    story_summaries = {
+                        key: str(story_review.get(key) or '').strip()
+                        for key in (
+                            'central_question',
+                            'causal_answer',
+                            'visible_payoff',
+                        )
+                    }
+                    if not story_reason:
+                        failed_story_checks.append('missing_evidence')
+                        story_reason = 'critic omitted whole-story evidence'
+                    if not natural_language_evidence:
+                        failed_story_checks.append(
+                            'missing_natural_spoken_language_evidence'
+                        )
+                    elif story_review.get('natural_spoken_language') is True:
+                        if not re.match(
+                            r'^pass\b',
+                            natural_language_evidence,
+                            flags=re.IGNORECASE,
+                        ):
+                            failed_story_checks.append(
+                                'inconsistent_natural_spoken_language_evidence'
+                            )
+                    elif (
+                        re.match(
+                            r'^pass\b',
+                            natural_language_evidence,
+                            flags=re.IGNORECASE,
+                        )
+                        or not re.search(
+                            r'\bscene\s+\d+\b',
+                            natural_language_evidence,
+                            flags=re.IGNORECASE,
+                        )
+                        or not any(
+                            quote in natural_language_evidence
+                            for quote in ('"', '“', '”')
+                        )
                     ):
                         failed_story_checks.append(
                             'inconsistent_natural_spoken_language_evidence'
                         )
-                elif (
-                    re.match(
-                        r'^pass\b',
-                        natural_language_evidence,
-                        flags=re.IGNORECASE,
-                    )
-                    or not re.search(
-                        r'\bscene\s+\d+\b',
-                        natural_language_evidence,
-                        flags=re.IGNORECASE,
-                    )
-                    or not any(
-                        quote in natural_language_evidence
-                        for quote in ('"', '“', '”')
-                    )
+                    for key, value in story_summaries.items():
+                        if not value:
+                            failed_story_checks.append(f'missing_{key}')
+                    if failed_story_checks:
+                        failure_reason = (
+                            natural_language_evidence
+                            if failed_story_checks == ['natural_spoken_language']
+                            else story_reason
+                        )
+                        story_failure = (
+                            f'{", ".join(failed_story_checks)}; '
+                            f'{failure_reason[:180]}'
+                        )
+                if not critic_global_error and (
+                    not isinstance(ending_pair, dict)
+                    or set(ending_pair.keys()) != expected_ending_keys
+                    or type(ending_pair.get('penultimate_position')) is not int
+                    or type(ending_pair.get('final_position')) is not int
+                    or ending_pair.get('penultimate_position') != ending_positions[0]
+                    or ending_pair.get('final_position') != ending_positions[1]
                 ):
-                    failed_story_checks.append(
-                        'inconsistent_natural_spoken_language_evidence'
+                    critic_global_error = (
+                        'ending-pair critic returned an invalid contract'
                     )
-                for key, value in story_summaries.items():
-                    if not value:
-                        failed_story_checks.append(f'missing_{key}')
-                if failed_story_checks:
-                    failure_reason = (
-                        natural_language_evidence
-                        if failed_story_checks == ['natural_spoken_language']
-                        else story_reason
-                    )
-                    story_failure = (
-                        f'{", ".join(failed_story_checks)}; {failure_reason[:180]}'
-                    )
+            critic_rows = (
+                critic.get('scenes')
+                if isinstance(critic, dict)
+                else None
+            )
             if not critic_global_error and (
-                not isinstance(ending_pair, dict)
-                or set(ending_pair.keys()) != expected_ending_keys
-                or type(ending_pair.get('penultimate_position')) is not int
-                or type(ending_pair.get('final_position')) is not int
-                or ending_pair.get('penultimate_position') != ending_positions[0]
-                or ending_pair.get('final_position') != ending_positions[1]
+                not isinstance(critic_rows, list)
+                or len(critic_rows) != len(stock_positions)
             ):
-                critic_global_error = 'ending-pair critic returned an invalid contract'
+                critic_global_error = (
+                    'independent stock-shot critic did not review every stock scene'
+                )
+            if not critic_global_error:
+                for row in critic_rows:
+                    if (
+                        not isinstance(row, dict)
+                        or set(row.keys()) != expected_critic_keys
+                    ):
+                        critic_global_error = (
+                            'independent critic returned the wrong fields'
+                        )
+                        break
+                    position = row.get('position')
+                    if (
+                        type(position) is not int
+                        or position not in stock_positions
+                    ):
+                        critic_global_error = (
+                            'independent critic returned an invalid stock position'
+                        )
+                        break
+                    if position in critic_by_position:
+                        critic_global_error = (
+                            f'independent critic repeated position {position}'
+                        )
+                        break
+                    critic_by_position[position] = row
+                if (
+                    not critic_global_error
+                    and set(critic_by_position) != set(stock_positions)
+                ):
+                    critic_global_error = (
+                        'independent critic missed a requested stock position'
+                    )
+            if not critic_global_error:
+                break
 
-        if story_failure:
+        if not critic_global_error and story_failure:
             if (
                 allow_natural_language_repair
                 and failed_story_checks == ['natural_spoken_language']
@@ -1180,57 +1459,6 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 )
             )
 
-        critic_rows = critic.get('scenes') if isinstance(critic, dict) else None
-        if not critic_global_error and (
-            not isinstance(critic_rows, list)
-            or len(critic_rows) != len(stock_positions)
-        ):
-            critic_global_error = (
-                'independent stock-shot critic did not review every stock scene'
-            )
-
-        critic_boolean_keys = {
-            'single_sentence',
-            'single_visible_action',
-            'single_ordinary_location',
-            'all_spoken_meaning_visible',
-            'no_invisible_or_abstract_claim',
-            'all_named_subjects_coexist',
-            'queries_are_english',
-            'queries_match_same_action',
-            'common_stock_clip_feasible',
-            'continues_from_previous',
-            'leads_to_next',
-            'preserves_story_role',
-            'adds_no_new_fact',
-        }
-        expected_critic_keys = {'position', 'reason', *critic_boolean_keys}
-        critic_by_position: dict[int, dict] = {}
-        if not critic_global_error:
-            for row in critic_rows:
-                if not isinstance(row, dict) or set(row.keys()) != expected_critic_keys:
-                    critic_global_error = 'independent critic returned the wrong fields'
-                    break
-                position = row.get('position')
-                if type(position) is not int or position not in stock_positions:
-                    critic_global_error = (
-                        'independent critic returned an invalid stock position'
-                    )
-                    break
-                if position in critic_by_position:
-                    critic_global_error = (
-                        f'independent critic repeated position {position}'
-                    )
-                    break
-                critic_by_position[position] = row
-            if (
-                not critic_global_error
-                and set(critic_by_position) != set(stock_positions)
-            ):
-                critic_global_error = (
-                    'independent critic missed a requested stock position'
-                )
-
         critic_failures: dict[int, str] = {}
         parsed_reviews: dict[int, dict] = {}
         if critic_global_error:
@@ -1238,6 +1466,8 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 position: critic_global_error
                 for position in stock_positions
             }
+            last_failures = dict(critic_failures)
+            break
         else:
             for position in stock_positions:
                 row = critic_by_position[position]
@@ -1316,17 +1546,38 @@ The reason must name concrete evidence for the verdict. Individual shot approval
 
         gemini_attestation = None
         if not critic_failures:
-            gemini_attestation = run_optional_gemini_critic(
-                critic_context,
-                critic_shape,
-                enabled=getattr(settings, 'gemini_critic_enabled', False),
-                api_key=getattr(settings, 'gemini_api_key', ''),
-                model=getattr(
-                    settings,
-                    'gemini_model',
-                    GEMINI_DEFAULT_MODEL,
-                ),
-            )
+            if plan_provider == 'gemini':
+                selected_model = str(
+                    getattr(
+                        settings,
+                        'gemini_model',
+                        GEMINI_DEFAULT_MODEL,
+                    ) or GEMINI_DEFAULT_MODEL
+                ).strip()
+                gemini_attestation = {
+                    'accepted': True,
+                    'model': selected_model,
+                    'contract': 'openai-story-stock-v1',
+                    'reviewed_scene_count': len(
+                        critic_shape.get('scenes') or []
+                    ),
+                }
+            else:
+                gemini_attestation = run_optional_gemini_critic(
+                    critic_context,
+                    critic_shape,
+                    enabled=getattr(
+                        settings,
+                        'gemini_critic_enabled',
+                        False,
+                    ),
+                    api_key=getattr(settings, 'gemini_api_key', ''),
+                    model=getattr(
+                        settings,
+                        'gemini_model',
+                        GEMINI_DEFAULT_MODEL,
+                    ),
+                )
             final_critic_reviews = parsed_reviews
             repaired = dict(package)
             repaired_scenes = [dict(scene) for scene in scenes]
@@ -1470,7 +1721,8 @@ The reason must name concrete evidence for the verdict. Individual shot approval
     )
 
 def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
-    if not settings.openai_api_key:
+    provider = _studio_plan_provider()
+    if provider == 'openai' and not settings.openai_api_key:
         return package
     scenes = package.get('scenes') or []
     if not scenes:
@@ -1478,7 +1730,15 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
 
     options = dict(options or package.get('studio_options') or {})
     pace_profile = str(options.get('pace') or 'balanced')
-    client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
+    client = (
+        OpenAI(
+            api_key=settings.openai_api_key,
+            timeout=90.0,
+            max_retries=1,
+        )
+        if provider == 'openai'
+        else None
+    )
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
     target_scenes = _target_scene_count(duration_minutes, pace_profile)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
@@ -1698,3 +1958,4 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         }
         out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
     return out
+
