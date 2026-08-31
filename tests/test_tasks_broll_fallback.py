@@ -121,6 +121,53 @@ def _load_outage_allocation_boundary():
     return namespace['_allocate_short_preview_forced_stock_runway']
 
 
+def _load_manual_qa_boundary():
+    tree = ast.parse(
+        SOURCE_PATH.read_text(encoding='utf-8'),
+        filename=str(SOURCE_PATH),
+    )
+    constant_names = {
+        'MANUAL_QA_PREVIEW_STOCK_FLOOR',
+        'MANUAL_QA_PREVIEW_GENERATED_FLOOR',
+        'MANUAL_QA_PUBLISH_QUALITY_THRESHOLD',
+        '_MANUAL_QA_CLEAR_VISUAL_FIELDS',
+    }
+    function_names = {
+        '_is_generated_visual_spec',
+        '_reviewed_visual_spec',
+        '_manual_qa_visual_source_type',
+        '_manual_qa_preview_passes',
+        '_manual_qa_preview_record',
+        '_manual_qa_preview_decisions',
+        '_generated_visual_spec',
+    }
+    definitions = [
+        node
+        for node in tree.body
+        if (
+            isinstance(node, ast.Assign)
+            and any(
+                isinstance(target, ast.Name)
+                and target.id in constant_names
+                for target in node.targets
+            )
+        ) or (
+            isinstance(node, ast.FunctionDef)
+            and node.name in function_names
+        )
+    ]
+    namespace = {'Path': Path}
+    exec(
+        compile(
+            ast.Module(body=definitions, type_ignores=[]),
+            str(SOURCE_PATH),
+            'exec',
+        ),
+        namespace,
+    )
+    return namespace
+
+
 def _retry_call(retry_bad_scene, **kwargs):
     return retry_bad_scene(
         2,
@@ -149,7 +196,374 @@ def _http_status_error(status_code):
     )
 
 
+def _manual_review(score=68, **overrides):
+    review = {
+        'best_candidate_index': 0,
+        'score': score,
+        'reason': 'The exact subject and narrated action are visible.',
+        'retry_queries': ['closer literal action query'],
+        'evidence_gate_passed': True,
+        'editorial_gate_passed': True,
+        'subject_visible': True,
+        'spoken_action_visible': True,
+        'unexplained_reset': False,
+        'prominent_readable_text_or_logo_visible': False,
+        'major_visual_artifact_visible': False,
+        'effectively_static_or_frozen': False,
+    }
+    review.update(overrides)
+    return review
+
+
+def _manual_options(**overrides):
+    options = {
+        'mode': 'preview',
+        'quality_threshold': 86,
+    }
+    options.update(overrides)
+    return options
+
+
+def _stock_spec(path='/tmp/real-stock.mp4'):
+    return {
+        'path': path,
+        'source_duration': 9.0,
+        'source_type': 'stock',
+        'stock_provider': 'pexels',
+    }
+
+
 class ShortPreviewBrollFallbackTests(unittest.TestCase):
+    def test_manual_qa_source_floors_and_positive_provenance_are_exact(self):
+        namespace = _load_manual_qa_boundary()
+        passes = namespace['_manual_qa_preview_passes']
+        scene = {'ai_prompt': ''}
+        stock_spec = _stock_spec()
+        generated = namespace['_generated_visual_spec']('/tmp/runway.mp4')
+
+        for spec, score, expected in (
+            (stock_spec, 59, False),
+            (stock_spec, 60, True),
+            (stock_spec, 85, True),
+            (generated, 64, False),
+            (generated, 65, True),
+            (generated, 85, True),
+            (generated, 86, False),
+        ):
+            with self.subTest(score=score):
+                self.assertIs(
+                    passes(
+                        _manual_options(),
+                        0.5,
+                        scene,
+                        _manual_review(score),
+                        spec,
+                    ),
+                    expected,
+                )
+
+        self.assertFalse(
+            passes(
+                _manual_options(),
+                0.5,
+                scene,
+                _manual_review(75),
+                '/tmp/opaque.mp4',
+            )
+        )
+        self.assertFalse(
+            passes(
+                _manual_options(),
+                0.5,
+                scene,
+                _manual_review(75),
+                {'path': '/tmp/unproven.mp4'},
+            )
+        )
+        self.assertFalse(
+            passes(
+                _manual_options(),
+                0.5,
+                scene,
+                _manual_review(75),
+                {'path': '/tmp/partial-generated.mp4', 'forbid_loop': True},
+            )
+        )
+
+    def test_manual_qa_requires_explicit_hard_and_editorial_evidence(self):
+        namespace = _load_manual_qa_boundary()
+        passes = namespace['_manual_qa_preview_passes']
+        scene = {'ai_prompt': ''}
+        stock_spec = _stock_spec()
+
+        for field, bad_value in (
+            ('evidence_gate_passed', False),
+            ('editorial_gate_passed', False),
+            ('subject_visible', False),
+            ('spoken_action_visible', False),
+            ('unexplained_reset', True),
+            ('prominent_readable_text_or_logo_visible', True),
+            ('major_visual_artifact_visible', True),
+            ('effectively_static_or_frozen', True),
+        ):
+            with self.subTest(field=field):
+                self.assertFalse(
+                    passes(
+                        _manual_options(),
+                        0.5,
+                        scene,
+                        _manual_review(**{field: bad_value}),
+                        stock_spec,
+                    )
+                )
+
+        for missing_field in (
+            'evidence_gate_passed',
+            'editorial_gate_passed',
+            'subject_visible',
+            'spoken_action_visible',
+            'unexplained_reset',
+            'prominent_readable_text_or_logo_visible',
+            'major_visual_artifact_visible',
+            'effectively_static_or_frozen',
+        ):
+            with self.subTest(missing_field=missing_field):
+                review = _manual_review()
+                review.pop(missing_field)
+                self.assertFalse(
+                    passes(
+                        _manual_options(),
+                        0.5,
+                        scene,
+                        review,
+                        stock_spec,
+                    )
+                )
+
+        retry_review = _manual_review(
+            68,
+            retry_queries=['literal storm ship', 'container vessel waves'],
+        )
+        self.assertTrue(
+            passes(
+                _manual_options(), 0.5, scene, retry_review, stock_spec
+            )
+        )
+        record = namespace['_manual_qa_preview_record'](
+            1, retry_review, stock_spec
+        )
+        self.assertEqual(
+            record['retry_queries'],
+            ['literal storm ship', 'container vessel waves'],
+        )
+
+    def test_manual_qa_allows_exact_generated_but_excludes_non_preview_modes(self):
+        namespace = _load_manual_qa_boundary()
+        passes = namespace['_manual_qa_preview_passes']
+        generated = namespace['_generated_visual_spec']('/tmp/runway.mp4')
+        review = _manual_review(68)
+        stock_spec = _stock_spec()
+
+        self.assertTrue(
+            passes(_manual_options(), 0.5, {'ai_prompt': 'hero shot'}, review, stock_spec)
+        )
+        self.assertTrue(
+            passes(_manual_options(), 0.5, {'ai_prompt': ''}, review, generated)
+        )
+        self.assertFalse(
+            passes(
+                _manual_options(mode='production'),
+                0.5,
+                {'ai_prompt': ''},
+                review,
+                stock_spec,
+            )
+        )
+        self.assertFalse(
+            passes(_manual_options(), 0.50001, {'ai_prompt': ''}, review, stock_spec)
+        )
+        self.assertFalse(
+            passes(
+                _manual_options(quality_threshold=87),
+                0.5,
+                {'ai_prompt': ''},
+                review,
+                stock_spec,
+            )
+        )
+
+    def test_forced_generated_and_recovered_stock_use_their_source_floors(self):
+        namespace = _load_manual_qa_boundary()
+        passes = namespace['_manual_qa_preview_passes']
+        generated = namespace['_generated_visual_spec']('/tmp/runway.mp4')
+        stock_spec = _stock_spec('/tmp/recovered-pexels.mp4')
+        args = (
+            _manual_options(),
+            0.5,
+            {'ai_prompt': ''},
+        )
+
+        self.assertTrue(
+            passes(*args, _manual_review(65), generated)
+        )
+        self.assertTrue(
+            passes(*args, _manual_review(60), stock_spec)
+        )
+
+    def test_live_seven_scene_matrix_rejects_only_gate_failed_scene_two(self):
+        namespace = _load_manual_qa_boundary()
+        decide = namespace['_manual_qa_preview_decisions']
+        generated_spec = namespace['_generated_visual_spec']
+        scores = [75, 65, 40, 68, 60, 65, 67]
+        generated_indices = {0, 3, 6}
+        scenes = [
+            {'ai_prompt': 'authored hero'} if index in generated_indices
+            else {'ai_prompt': ''}
+            for index in range(len(scores))
+        ]
+        visuals = [
+            [generated_spec(f'/tmp/generated-{index}.mp4')]
+            if index in generated_indices
+            else [_stock_spec(f'/tmp/stock-{index}.mp4')]
+            for index in range(len(scores))
+        ]
+        reviews = {
+            index: _manual_review(
+                score,
+                evidence_gate_passed=(index != 2),
+                subject_visible=(index != 2),
+            )
+            for index, score in enumerate(scores)
+        }
+
+        accepted, rejected = decide(
+            _manual_options(),
+            0.5,
+            scenes,
+            reviews,
+            visuals,
+            set(range(len(scores))),
+        )
+
+        self.assertEqual(sorted(accepted), [0, 1, 3, 4, 5, 6])
+        self.assertEqual(rejected, [2])
+        self.assertNotIn(2, accepted)
+        self.assertEqual(
+            {index: record['source_type'] for index, record in accepted.items()},
+            {
+                0: 'generated',
+                1: 'stock',
+                3: 'generated',
+                4: 'stock',
+                5: 'stock',
+                6: 'generated',
+            },
+        )
+
+        repair = Mock()
+        render = Mock()
+        if rejected:
+            repair(rejected)
+        else:
+            render()
+        repair.assert_called_once_with([2])
+        render.assert_not_called()
+
+    def test_accepted_generated_floor_skips_repair_and_reaches_render(self):
+        namespace = _load_manual_qa_boundary()
+        decide = namespace['_manual_qa_preview_decisions']
+        generated = namespace['_generated_visual_spec']('/tmp/runway.mp4')
+        accepted, rejected = decide(
+            _manual_options(),
+            0.5,
+            [{'ai_prompt': 'hero'}],
+            {0: _manual_review(65)},
+            [[generated]],
+            [0],
+        )
+        repair = Mock()
+        render = Mock()
+        if rejected:
+            repair(rejected)
+        else:
+            render()
+        self.assertEqual(list(accepted), [0])
+        repair.assert_not_called()
+        render.assert_called_once_with()
+
+    def test_manual_prepass_final_failure_is_terminal_before_any_repair(self):
+        namespace = _load_manual_qa_boundary()
+        passes = namespace['_manual_qa_preview_passes']
+        scene = {'ai_prompt': ''}
+        stock_spec = _stock_spec()
+
+        self.assertTrue(
+            passes(
+                _manual_options(), 0.5, scene, _manual_review(68), stock_spec
+            )
+        )
+        self.assertFalse(
+            passes(
+                _manual_options(),
+                0.5,
+                scene,
+                _manual_review(68, subject_visible=False),
+                stock_spec,
+            )
+        )
+
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+        terminal = source.index(
+            'Manual-QA preview failed exact final revalidation'
+        )
+        repair = source.index('final_runway_repair_candidates =', terminal)
+        self.assertLess(terminal, repair)
+
+    def test_manual_and_forced_sets_are_explicitly_disjoint(self):
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+
+        self.assertIn(
+            'manual_prepass_forced_overlap = manual_qa_preview_scenes & (',
+            source,
+        )
+        self.assertIn(
+            'final_manual_forced_overlap = manual_qa_preview_scenes & (',
+            source,
+        )
+        self.assertIn('provider_outage_stock_scenes.discard(scene_idx)', source)
+        self.assertIn('stock_quality_fallback_scenes.discard(scene_idx)', source)
+
+    def test_manual_qa_metadata_contract_is_explicit(self):
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+
+        self.assertIn("'manual_qa_preview'", source)
+        self.assertIn("'quality_disposition': quality_disposition", source)
+        self.assertIn("'manual_qa_required': manual_qa_required", source)
+        self.assertIn("'manual_qa_floor': MANUAL_QA_PREVIEW_STOCK_FLOOR", source)
+        self.assertIn("'manual_qa_floors': manual_qa_floors", source)
+        self.assertIn("'manual_qa_scene_indices': manual_qa_scene_indices", source)
+        self.assertIn("'manual_qa_scene_scores': manual_qa_scene_scores", source)
+        self.assertIn(
+            "'manual_qa_scene_source_types': manual_qa_scene_source_types",
+            source,
+        )
+        self.assertIn(
+            "'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries",
+            source,
+        )
+        self.assertIn(
+            "'manual_qa_scene_reasons': manual_qa_scene_reasons",
+            source,
+        )
+        self.assertIn(
+            "'manual_qa_scene_reviews': manual_qa_scene_reviews",
+            source,
+        )
+        self.assertIn(
+            "'publish_quality_threshold': (",
+            source,
+        )
+
     def test_recovered_provider_rescue_uses_original_outage_scene_queries(self):
         namespace = _load_retry_boundary()
         recovered_spec = {
