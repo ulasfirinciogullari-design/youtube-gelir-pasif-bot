@@ -798,7 +798,8 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
         ambiguous_blocks = (
             'Dr. Ayşe telefonu açtı\nEkran söndü.',
             (
-                'Uzm. Ayşe telefonu masada iki eliyle açıyor. '
+                'Bugün klinikte görev yapan deneyimli Uzm. '
+                'Ayşe telefonu masada iki eliyle açıyor. '
                 'Ekran masada bir anda yeniden aydınlanıyor.'
             ),
             (
@@ -812,7 +813,15 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
                 RuntimeError,
                 'cannot be segmented unambiguously',
             ):
-                director_module._split_exact_narration_lock(block, 2)
+                inferred_count = len(list(
+                    director_module._EXACT_NARRATION_SENTENCE_PATTERN.finditer(
+                        director_module._normalize_exact_narration(block)
+                    )
+                ))
+                director_module._split_exact_narration_lock(
+                    block,
+                    inferred_count,
+                )
 
     def test_empty_exact_narration_quote_is_rejected(self):
         with self.assertRaisesRegex(
