@@ -744,12 +744,12 @@ def _preflight_runway_candidates_before_paid(
 
 
 def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float) -> int:
-    if options.get('mode') == 'preview':
-        return (
-            min(SHORT_PREVIEW_RUNWAY_CAP, scene_count)
-            if duration_minutes <= 0.6 else 0
-        )
     mix = options.get('visual_mix') or 'balanced'
+    if options.get('mode') == 'preview':
+        if duration_minutes > 0.6:
+            return 0
+        preview_cap = 1 if mix == 'real_first' else SHORT_PREVIEW_RUNWAY_CAP
+        return min(preview_cap, scene_count)
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
     if mix == 'ai_first':
