@@ -47,7 +47,7 @@ def _load_prompt_functions():
         'Path': Path,
         'FinalVisualQualityError': FinalVisualQualityError,
         'PreRunwayRetryableError': PreRunwayRetryableError,
-        'SHORT_PREVIEW_RUNWAY_CAP': 3,
+        'SHORT_PREVIEW_RUNWAY_CAP': 4,
     }
     exec(
         compile(
@@ -123,7 +123,7 @@ class RunwayPromptTests(unittest.TestCase):
                         5,
                         0.5,
                     ),
-                    3,
+                    4,
                 )
         self.assertEqual(
             max_runway_scenes(
@@ -427,3 +427,4 @@ class RunwayPromptTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
