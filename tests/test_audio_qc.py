@@ -144,6 +144,144 @@ class AudioQCTests(unittest.TestCase):
             'istanbulda \u0131\u011fd\u0131r\u0131n havas\u0131 g\u00fczel',
         )
 
+    def test_spoken_turkish_numbers_match_digit_transcriptions(self):
+        cases = (
+            ('Yirmi dokuz y\u0131l', '29 y\u0131l'),
+            (
+                'Bin dokuz y\u00fcz doksan yedide sefere \u00e7\u0131kt\u0131',
+                "1997'de sefere \u00e7\u0131kt\u0131",
+            ),
+            ('Altm\u0131\u015f iki konteyner', '62 konteyner'),
+            (
+                'D\u00f6rt virg\u00fcl sekiz milyon ton',
+                '4,8 milyon ton',
+            ),
+        )
+
+        for expected, heard in cases:
+            with self.subTest(expected=expected, heard=heard):
+                result = audio_qc.compare_transcript(expected, heard)
+
+                self.assertTrue(result['pass'])
+                self.assertEqual(result['score'], 100.0)
+                self.assertTrue(result['mismatch_details']['exact_match'])
+                self.assertEqual(
+                    result['mismatch_details']['operations'],
+                    [],
+                )
+
+    def test_circumflex_and_explicit_tokio_alias_are_tolerated(self):
+        result = audio_qc.compare_transcript(
+            'Tokio h\u00e2l\u00e2 sakin',
+            'Tokyo hala sakin',
+        )
+
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['score'], 100.0)
+
+    def test_lexical_turkish_diacritics_are_not_folded(self):
+        result = audio_qc.compare_transcript('O oldu', 'O \u00f6ld\u00fc')
+
+        self.assertFalse(result['pass'])
+        self.assertEqual(
+            result['mismatch_details']['missing_words'],
+            ['oldu'],
+        )
+        self.assertEqual(
+            result['mismatch_details']['unexpected_words'],
+            ['\u00f6ld\u00fc'],
+        )
+
+    def test_numeric_normalization_fails_closed(self):
+        cases = (
+            ('Yirmi dokuz y\u0131l', '30 y\u0131l'),
+            (
+                'Bin dokuz y\u00fcz doksan yedide ba\u015flad\u0131',
+                '1998de basladi',
+            ),
+            ('D\u00f6rt virg\u00fcl sekiz milyon', '4,9 milyon'),
+            ('D\u00f6rt virg\u00fcl sekiz milyon ton', '4,8 ton'),
+            ('\u0130ki \u00fc\u00e7 numara', '23 numara'),
+            ('Yirmi dokuz y\u0131l', '029 y\u0131l'),
+            ('Yirmi dokuz derece', '-29 derece'),
+            ('Yirmi dokuz ki\u015fi', '%29 kisi'),
+            ('Onda sorun var', "10'da sorun var"),
+            ('Tokio liman\u0131', 'Kyoto limani'),
+        )
+
+        for expected, heard in cases:
+            with self.subTest(expected=expected, heard=heard):
+                result = audio_qc.compare_transcript(expected, heard)
+
+                self.assertFalse(result['pass'])
+                self.assertLess(result['score'], 100.0)
+                self.assertFalse(result['mismatch_details']['exact_match'])
+
+    def test_attached_and_spaced_numeric_signs_fail_closed(self):
+        for heard in (
+            '-29 derece',
+            '- 29 derece',
+            '+29 derece',
+            '+ 29 derece',
+            '\u221229 derece',
+            '\u2212 29 derece',
+            '\u00b129 derece',
+            '\u00b1 29 derece',
+        ):
+            with self.subTest(heard=heard):
+                result = audio_qc.compare_transcript(
+                    'Yirmi dokuz derece',
+                    heard,
+                )
+
+                self.assertFalse(result['pass'])
+                self.assertLess(result['score'], 100.0)
+
+    def test_repeated_numeric_signs_fail_closed(self):
+        for heard in (
+            '--29 derece',
+            '+-29 derece',
+            '\u2212-29 derece',
+            '-+29 derece',
+        ):
+            with self.subTest(heard=heard):
+                result = audio_qc.compare_transcript('-29 derece', heard)
+
+                self.assertFalse(result['pass'])
+                self.assertLess(result['score'], 100.0)
+
+    def test_non_decimal_numeric_operators_are_not_discarded(self):
+        for heard in (
+            '4/8',
+            '4 / 8',
+            '4:8',
+            '4\u00d78',
+            '4\u00f78',
+            '4\u20448',
+            '4\u22158',
+        ):
+            with self.subTest(heard=heard):
+                result = audio_qc.compare_transcript('D\u00f6rt sekiz', heard)
+
+                self.assertFalse(result['pass'])
+                self.assertLess(result['score'], 100.0)
+
+    def test_wrong_number_diagnostics_preserve_spoken_source_words(self):
+        result = audio_qc.compare_transcript(
+            'Gemi yirmi dokuz y\u0131l sonra d\u00f6nd\u00fc',
+            'Gemi 30 y\u0131l sonra d\u00f6nd\u00fc',
+        )
+
+        self.assertFalse(result['pass'])
+        self.assertEqual(
+            result['mismatch_details']['missing_words'],
+            ['yirmi', 'dokuz'],
+        )
+        self.assertEqual(
+            result['mismatch_details']['unexpected_words'],
+            ['30'],
+        )
+
     def test_replacement_reports_both_sides(self):
         result = audio_qc.compare_transcript(
             'Merhaba g\u00fczel d\u00fcnya',
@@ -475,40 +613,8 @@ class AudioQCTests(unittest.TestCase):
         )
         self.assertNotIn('do not expose', str(caught.exception))
 
-    def test_gemini_word_annotation_must_normalize_to_one_token(self):
-        interaction = _gemini_interaction('Merhaba d\u00fcnya')
-        interaction['steps'][0]['content'][0]['annotations'] = [{
-            'type': 'word_info',
-            'text': 'Merhaba d\u00fcnya',
-            'start_offset': '0.000s',
-            'end_offset': '0.800s',
-        }]
-        with tempfile.TemporaryDirectory() as temporary:
-            audio_path = Path(temporary) / 'voice.mp3'
-            audio_path.write_bytes(b'audio')
-            with (
-                patch.object(audio_qc.settings, 'openai_api_key', ''),
-                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
-                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
-                patch.object(
-                    audio_qc.httpx,
-                    'post',
-                    return_value=_Response(interaction),
-                ),
-            ):
-                with self.assertRaises(audio_qc.AudioQCError) as caught:
-                    audio_qc.verify_audio_narration(
-                        audio_path,
-                        'Merhaba d\u00fcnya',
-                    )
-
-        self.assertEqual(
-            str(caught.exception),
-            'Gemini speech-to-text returned invalid word annotations',
-        )
-
     def test_gemini_punctuated_number_annotation_preserves_sequence_gate(self):
-        for number in ('4,8', '4.8'):
+        for number in ('4,8', '4.8', '-29', '+29', '\u221229', '\u00b129'):
             with self.subTest(number=number):
                 interaction = _gemini_interaction(number, number)
                 with tempfile.TemporaryDirectory() as temporary:
@@ -544,6 +650,151 @@ class AudioQCTests(unittest.TestCase):
                     result['mismatch_details']['timestamp_sequence_match']
                 )
 
+    def test_gemini_digit_normalization_keeps_timestamp_evidence(self):
+        interaction = _gemini_interaction(
+            '1997de 62 konteyner, 4,8 milyon ton ve 29 y\u0131l Tokyo.',
+            '1997de',
+            '62',
+            'konteyner',
+            '4,8',
+            'milyon',
+            'ton',
+            've',
+            '29',
+            'y\u0131l',
+            'Tokyo',
+        )
+        expected = (
+            'Bin dokuz y\u00fcz doksan yedide altm\u0131\u015f iki konteyner, '
+            'd\u00f6rt virg\u00fcl sekiz milyon ton ve yirmi dokuz y\u0131l '
+            'Tokio.'
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    expected,
+                )
+
+        self.assertEqual(result['provider'], 'gemini')
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['score'], 100.0)
+        self.assertTrue(
+            result['mismatch_details']['timestamp_sequence_match']
+        )
+
+    def test_gemini_semantic_but_lexically_wrong_annotations_fail_closed(self):
+        interaction = _gemini_interaction(
+            '29 y\u0131l',
+            'yirmi',
+            'dokuz',
+            'y\u0131l',
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Yirmi dokuz y\u0131l',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text returned inconsistent word timestamps',
+        )
+
+    def test_gemini_decimal_split_across_annotations_fails_closed(self):
+        interaction = _gemini_interaction(
+            '4,8 milyon',
+            '4',
+            '8',
+            'milyon',
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'D\u00f6rt virg\u00fcl sekiz milyon',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text returned inconsistent word timestamps',
+        )
+
+    def test_gemini_numeric_operators_cannot_hide_split_annotations(self):
+        for transcript in ('4/8', '4:8', '4\u00d78'):
+            with self.subTest(transcript=transcript):
+                interaction = _gemini_interaction(transcript, '4', '8')
+                with tempfile.TemporaryDirectory() as temporary:
+                    audio_path = Path(temporary) / 'voice.mp3'
+                    audio_path.write_bytes(b'audio')
+                    with (
+                        patch.object(audio_qc.settings, 'openai_api_key', ''),
+                        patch.object(
+                            audio_qc.settings,
+                            'gemini_api_key',
+                            'gemini-key',
+                        ),
+                        patch.object(
+                            audio_qc.settings,
+                            'elevenlabs_api_key',
+                            '',
+                        ),
+                        patch.object(
+                            audio_qc.httpx,
+                            'post',
+                            return_value=_Response(interaction),
+                        ),
+                    ):
+                        with self.assertRaises(
+                            audio_qc.AudioQCError
+                        ) as caught:
+                            audio_qc.verify_audio_narration(
+                                audio_path,
+                                transcript,
+                            )
+
+                self.assertEqual(
+                    str(caught.exception),
+                    'Gemini speech-to-text returned inconsistent word '
+                    'timestamps',
+                )
+
     def test_gemini_whitespace_separated_multiword_annotation_is_invalid(self):
         interaction = _gemini_interaction('Merhaba d\u00fcnya')
         interaction['steps'][0]['content'][0]['annotations'] = [{
@@ -577,7 +828,19 @@ class AudioQCTests(unittest.TestCase):
         )
 
     def test_gemini_empty_or_non_numeric_compound_annotation_is_invalid(self):
-        for invalid_word in ('', ' , ', 'Merhaba,d\u00fcnya'):
+        for invalid_word in (
+            '',
+            ' , ',
+            'Merhaba,d\u00fcnya',
+            '4+8',
+            '4/8',
+            '4:8',
+            '4%8',
+            '4\u20ba8',
+            '%29',
+            '29%',
+            'Beklenen!',
+        ):
             with self.subTest(invalid_word=invalid_word):
                 interaction = _gemini_interaction('Beklenen', invalid_word)
                 with self.assertRaises(audio_qc.AudioQCError) as caught:
