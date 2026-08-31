@@ -4,6 +4,7 @@ from app.services.visual_routing import (
     SHORT_PREVIEW_RUNWAY_CAP,
     SHORT_PREVIEW_RUNWAY_REPAIR_CAP,
     preview_authored_ai_limit,
+    preview_paid_ai_limit,
     preview_runway_repair_indices,
     should_rank_runway_candidate,
 )
@@ -32,6 +33,33 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
                     ),
                     5,
                 )
+
+    def test_paid_preview_limit_matches_worker_budget_for_every_mix(self):
+        self.assertEqual(
+            preview_paid_ai_limit(
+                {'mode': 'preview', 'visual_mix': 'real_first'},
+                7,
+                0.5,
+            ),
+            1,
+        )
+        for visual_mix in ('balanced', 'ai_first'):
+            with self.subTest(visual_mix=visual_mix):
+                self.assertEqual(
+                    preview_paid_ai_limit(
+                        {'mode': 'preview', 'visual_mix': visual_mix},
+                        7,
+                        0.5,
+                    ),
+                    4,
+                )
+        self.assertIsNone(
+            preview_paid_ai_limit(
+                {'mode': 'production', 'visual_mix': 'ai_first'},
+                7,
+                0.5,
+            )
+        )
 
     def test_ai_first_authored_scene_is_ranked_even_with_approved_stock(self):
         common = {
