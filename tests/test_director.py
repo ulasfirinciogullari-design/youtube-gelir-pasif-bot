@@ -30,6 +30,7 @@ sys.modules['app.config'] = config_stub
 import app.services.director as director_module
 from app.services.director import (
     _NaturalSpokenLanguageRepairRequired,
+    _WholeStoryRepairRequired,
     _repair_short_stock_scenes,
     _short_spoken_quality_issues,
     _short_story_fingerprint,
@@ -622,10 +623,14 @@ class ExplicitSceneCountTests(unittest.TestCase):
             'qc_summary': [],
         }
         client = FakeClient([payload])
+        brief = (
+            'Tam beş sahne kullan. Her AI sahnesinde aynı unbranded matte '
+            'silver 14-inch laptop görünmeli.'
+        )
         director_module._run_director(
             client,
             package,
-            'Tam beş sahne kullan.',
+            brief,
             'Turkish',
             0.5,
             48,
@@ -642,6 +647,15 @@ class ExplicitSceneCountTests(unittest.TestCase):
         )
         self.assertNotIn(
             'Target scene budget: approximately 5 scenes',
+            prompt,
+        )
+        self.assertIn(brief, prompt)
+        self.assertIn('standalone paid-generation instruction', prompt)
+        self.assertIn('dimensions', prompt)
+        self.assertIn('brand state', prompt)
+        self.assertIn('forbidden elements', prompt)
+        self.assertIn(
+            'Never assume a later generation can see an earlier prompt',
             prompt,
         )
 
@@ -791,6 +805,7 @@ class ShortStockRepairTests(unittest.TestCase):
                 'Turkish',
                 0.5,
                 topic='No smiling face or readable screen.',
+                allow_explicit_brief_repair=False,
             )
 
     def test_oversized_brief_fails_instead_of_silently_truncating_constraints(self):
@@ -1173,6 +1188,58 @@ class ShortStockRepairTests(unittest.TestCase):
             '"requested_topic": "A specific requested phone topic"',
             client.responses.calls[1]['input'],
         )
+
+    def test_explicit_brief_rejection_requests_one_bounded_full_repair(self):
+        verdict = critic_payload(
+            story_failures=['all_explicit_brief_constraints_preserved']
+        )
+        verdict['story_review']['reason'] = (
+            'Scene 1 omits unbranded and Scene 2 omits 14-inch from ai_prompt.'
+        )
+        client = FakeClient([
+            valid_generator_payload(),
+            verdict,
+        ])
+
+        with self.assertRaises(_WholeStoryRepairRequired) as error:
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+                'Every AI prompt must repeat unbranded matte silver 14-inch laptop.',
+            )
+
+        self.assertEqual(
+            error.exception.failed_checks,
+            ['all_explicit_brief_constraints_preserved'],
+        )
+        self.assertIn('unbranded', error.exception.evidence)
+        self.assertEqual(len(client.responses.calls), 2)
+
+    def test_second_explicit_brief_rejection_fails_closed(self):
+        client = FakeClient([
+            valid_generator_payload(),
+            critic_payload(
+                story_failures=['all_explicit_brief_constraints_preserved']
+            ),
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'incoherent short-preview story before paid media',
+        ) as error:
+            _repair_short_stock_scenes(
+                client,
+                make_short_package(),
+                'Turkish',
+                0.5,
+                'Every AI prompt must repeat unbranded matte silver 14-inch laptop.',
+                allow_explicit_brief_repair=False,
+            )
+
+        self.assertEqual(len(client.responses.calls), 2)
+        self.assertIn('"critic_calls":1', str(error.exception))
 
     def test_natural_only_story_rejection_carries_tied_critic_evidence(self):
         verdict = critic_payload(
@@ -1812,6 +1879,88 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertGreaterEqual(result['narration_word_count'], 45)
         self.assertLessEqual(result['narration_word_count'], 51)
 
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_explicit_brief_failure_gets_one_full_story_repair_and_rereview(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        original = make_coherent_battery_package()
+        corrected = copy.deepcopy(original)
+        corrected['scenes'][2]['ai_prompt'] = (
+            'standalone shot of the same unbranded matte silver 14-inch phone '
+            'battery mechanism, no logo or readable text'
+        )
+
+        def director_payload(package):
+            return {
+                'title': package['title'],
+                'thumbnail_text': package['thumbnail_text'],
+                'description': package['description'],
+                'scenes': copy.deepcopy(package['scenes']),
+                'qc_summary': [],
+            }
+
+        approved = copy.deepcopy(corrected)
+        approved['stock_scene_qc'] = {
+            'version': director_module._STOCK_SCENE_QC_VERSION,
+            'story_review': {'accepted': True},
+            'ending_pair_review': {'accepted': True},
+        }
+        evidence = (
+            'all_explicit_brief_constraints_preserved; Scene 2 ai_prompt '
+            'omits required "unbranded" and "14-inch" identity attributes.'
+        )
+        run_director.side_effect = [
+            director_payload(original),
+            director_payload(corrected),
+        ]
+        repair_stock_scenes.side_effect = [
+            _WholeStoryRepairRequired(
+                ['all_explicit_brief_constraints_preserved'],
+                evidence,
+            ),
+            approved,
+        ]
+        openai_class.return_value = object()
+
+        result = direct_and_qc(
+            original,
+            (
+                'Tam altı sahne kullan. Her AI sahnesinde aynı markasız mat '
+                'gümüş 14 inç cihazı koru.'
+            ),
+            0.5,
+            'tr',
+            {'mode': 'preview', 'pace': 'balanced'},
+        )
+
+        self.assertEqual(run_director.call_count, 2)
+        self.assertEqual(repair_stock_scenes.call_count, 2)
+        second_review = repair_stock_scenes.call_args_list[1]
+        self.assertFalse(
+            second_review.kwargs['allow_natural_language_repair']
+        )
+        self.assertFalse(
+            second_review.kwargs['allow_explicit_brief_repair']
+        )
+        correction_context = run_director.call_args_list[1].args[1]
+        self.assertEqual(
+            correction_context['correction_attempt'],
+            'whole_story_critic',
+        )
+        feedback = correction_context['narration_quality_issues'][0]
+        self.assertIn('all_explicit_brief_constraints_preserved', feedback)
+        self.assertIn('unbranded', feedback)
+        self.assertIn('14-inch', feedback)
+        self.assertIn('scene-by-scene checklist', feedback)
+        self.assertIn('brand state', feedback)
+        self.assertGreaterEqual(result['narration_word_count'], 45)
+        self.assertLessEqual(result['narration_word_count'], 51)
+
 
 class GeminiPlanProviderTests(unittest.TestCase):
     def setUp(self):
@@ -2322,4 +2471,3 @@ class ShortStoryApprovalTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

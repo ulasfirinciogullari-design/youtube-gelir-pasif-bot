@@ -228,6 +228,88 @@ class ResearchEvidenceContractTests(unittest.TestCase):
         self.assertNotIn(secret, request.args[0])
         self.assertNotIn(secret, json.dumps(schema))
 
+    def test_explicit_scene_count_controls_first_research_prompt_schema_and_gate(self):
+        payload = valid_research_payload()
+        payload['scenes'] = [
+            {
+                'narration': f'Visible action number {index}.',
+                'visual_queries': [
+                    f'visible action close view {index}',
+                    f'visible action wide view {index}',
+                ],
+                'ai_prompt': (
+                    f'standalone unbranded silver laptop shot {index}'
+                    if index < 3 else None
+                ),
+            }
+            for index in range(5)
+        ]
+        research_module.settings.studio_plan_provider = 'gemini'
+        research_module.settings.openai_api_key = ''
+        research_module.settings.gemini_api_key = 'test-gemini-key'
+        brief = (
+            'Tam beş sahne kullan. İlk üç sahne AI olsun. '
+            'Her AI sahnesinde aynı markasız mat gümüş 14 inç laptopu koru.'
+        )
+
+        with patch.object(
+            research_module,
+            'generate_gemini_json',
+            return_value=payload,
+        ) as gemini_generate:
+            result = research_module.research_and_script(
+                brief,
+                0.5,
+                'tr',
+                {
+                    'mode': 'preview',
+                    'pace': 'balanced',
+                    'visual_mix': 'ai_first',
+                },
+            )
+
+        request = gemini_generate.call_args
+        prompt = request.args[0]
+        schema = request.kwargs['json_schema']
+        self.assertIn('Create EXACTLY 5 scenes.', prompt)
+        self.assertIn('Topic is the authoritative production contract', prompt)
+        self.assertIn('Every non-null ai_prompt is standalone', prompt)
+        self.assertEqual(schema['properties']['scenes']['minItems'], 5)
+        self.assertEqual(schema['properties']['scenes']['maxItems'], 5)
+        self.assertEqual(result['target_scene_count'], 5)
+
+    def test_explicit_scene_count_rejects_mismatched_research_payload(self):
+        payload = valid_research_payload()
+        payload['scenes'] = [
+            {
+                'narration': f'Visible action number {index}.',
+                'visual_queries': [
+                    f'visible action close view {index}',
+                    f'visible action wide view {index}',
+                ],
+                'ai_prompt': None,
+            }
+            for index in range(6)
+        ]
+        research_module.settings.studio_plan_provider = 'gemini'
+        research_module.settings.openai_api_key = ''
+        research_module.settings.gemini_api_key = 'test-gemini-key'
+
+        with patch.object(
+            research_module,
+            'generate_gemini_json',
+            return_value=payload,
+        ), self.assertRaisesRegex(
+            RuntimeError,
+            'required exactly 5',
+        ):
+            research_module.research_and_script(
+                'Tam beş sahne kullan.',
+                0.5,
+                'tr',
+                {'mode': 'preview', 'pace': 'balanced'},
+            )
+
     def test_invalid_plan_provider_fails_before_any_model_client(self):
         research_module.settings.studio_plan_provider = 'unexpected-provider'
         with patch.object(research_module, 'OpenAI') as openai_class, patch.object(
@@ -256,4 +338,3 @@ class ResearchEvidenceContractTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
