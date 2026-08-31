@@ -102,6 +102,42 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertTrue(generated_visual_spec('preview.mp4')['forbid_loop'])
         self.assertTrue(generated_visual_spec('production.mp4')['forbid_loop'])
 
+    def test_real_first_short_preview_caps_initial_runway_spend_at_one_scene(self):
+        self.assertEqual(
+            max_runway_scenes(
+                {'mode': 'preview', 'visual_mix': 'real_first'},
+                5,
+                0.5,
+            ),
+            1,
+        )
+        for visual_mix in ('balanced', 'ai_first'):
+            with self.subTest(visual_mix=visual_mix):
+                self.assertEqual(
+                    max_runway_scenes(
+                        {'mode': 'preview', 'visual_mix': visual_mix},
+                        5,
+                        0.5,
+                    ),
+                    3,
+                )
+        self.assertEqual(
+            max_runway_scenes(
+                {'mode': 'preview', 'visual_mix': 'real_first'},
+                5,
+                0.61,
+            ),
+            0,
+        )
+        self.assertEqual(
+            max_runway_scenes(
+                {'mode': 'production', 'visual_mix': 'real_first'},
+                20,
+                10.0,
+            ),
+            2,
+        )
+
     def test_all_single_pass_candidates_are_preflighted_before_paid_calls(self):
         paid_provider = Mock()
         with self.assertRaises(FinalVisualQualityError):
