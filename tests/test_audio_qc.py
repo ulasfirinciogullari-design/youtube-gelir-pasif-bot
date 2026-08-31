@@ -650,6 +650,45 @@ class AudioQCTests(unittest.TestCase):
                     result['mismatch_details']['timestamp_sequence_match']
                 )
 
+    def test_gemini_trailing_sentence_punctuation_is_benign(self):
+        transcript = (
+            'Sa\u00e7\u0131ld\u0131. Ba\u015flad\u0131. Kaybetti. Vard\u0131. '
+            'Ay\u0131r\u0131yor. Topluyor. Ta\u015f\u0131yor.'
+        )
+        interaction = _gemini_interaction(
+            transcript,
+            'Sa\u00e7\u0131ld\u0131.',
+            'Ba\u015flad\u0131.',
+            'Kaybetti.',
+            'Vard\u0131.',
+            'Ay\u0131r\u0131yor.',
+            'Topluyor.',
+            'Ta\u015f\u0131yor.',
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    transcript,
+                )
+
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['provider'], 'gemini')
+        self.assertTrue(
+            result['mismatch_details']['timestamp_sequence_match']
+        )
+
     def test_gemini_digit_normalization_keeps_timestamp_evidence(self):
         interaction = _gemini_interaction(
             '1997de 62 konteyner, 4,8 milyon ton ve 29 y\u0131l Tokyo.',
@@ -839,7 +878,18 @@ class AudioQCTests(unittest.TestCase):
             '4\u20ba8',
             '%29',
             '29%',
-            'Beklenen!',
+            '4+8.',
+            '4/8!',
+            '4%8?',
+            '4\u20ba8;',
+            '--29.',
+            '++29!',
+            '+-29?',
+            '-+29,',
+            '\u2212-29\u2026',
+            'Sa\u00e7\u0131ld\u0131..',
+            '4,8,.',
+            'kelime,.:;!?\u2026',
         ):
             with self.subTest(invalid_word=invalid_word):
                 interaction = _gemini_interaction('Beklenen', invalid_word)
@@ -1223,6 +1273,228 @@ class AudioQCTests(unittest.TestCase):
                     self.assertEqual(
                         str(caught.exception),
                         'OpenAI speech-to-text returned incomplete word '
+                        'timestamps',
+                    )
+
+    def test_openai_overlapping_or_duplicate_word_times_fail_closed(self):
+        cases = (
+            (
+                {'word': 'Merhaba', 'start': 0.0, 'end': 1.0},
+                {'word': 'd\u00fcnya', 'start': 0.0, 'end': 1.0},
+            ),
+            (
+                {'word': 'Merhaba', 'start': 0.0, 'end': 1.0},
+                {'word': 'd\u00fcnya', 'start': 0.5, 'end': 1.5},
+            ),
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            for words in cases:
+                with self.subTest(words=words):
+                    payload = {
+                        'text': 'Merhaba d\u00fcnya',
+                        'language': 'turkish',
+                        'words': list(words),
+                    }
+                    with (
+                        patch.object(
+                            audio_qc.settings,
+                            'openai_api_key',
+                            'openai-key',
+                        ),
+                        patch.object(audio_qc.settings, 'gemini_api_key', ''),
+                        patch.object(
+                            audio_qc.settings,
+                            'elevenlabs_api_key',
+                            '',
+                        ),
+                        patch.object(
+                            audio_qc.httpx,
+                            'post',
+                            return_value=_Response(payload),
+                        ),
+                    ):
+                        with self.assertRaises(
+                            audio_qc.AudioQCError
+                        ) as caught:
+                            audio_qc.verify_audio_narration(
+                                audio_path,
+                                'Merhaba d\u00fcnya',
+                            )
+
+                    self.assertEqual(
+                        str(caught.exception),
+                        'OpenAI speech-to-text returned incomplete word '
+                        'timestamps',
+                    )
+
+    def test_openai_malformed_word_entries_fail_closed(self):
+        malformed_entries = (
+            None,
+            {'word': '', 'start': 0.4, 'end': 0.8},
+            {'word': ' ', 'start': 0.4, 'end': 0.8},
+            {'type': 'unknown', 'text': 'd\u00fcnya', 'start': 0.4, 'end': 0.8},
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            for malformed in malformed_entries:
+                with self.subTest(malformed=malformed):
+                    payload = {
+                        'text': 'Merhaba d\u00fcnya',
+                        'language': 'turkish',
+                        'words': [
+                            {'word': 'Merhaba', 'start': 0.0, 'end': 0.4},
+                            malformed,
+                            {'word': 'd\u00fcnya', 'start': 0.8, 'end': 1.2},
+                        ],
+                    }
+                    with (
+                        patch.object(
+                            audio_qc.settings,
+                            'openai_api_key',
+                            'openai-key',
+                        ),
+                        patch.object(audio_qc.settings, 'gemini_api_key', ''),
+                        patch.object(
+                            audio_qc.settings,
+                            'elevenlabs_api_key',
+                            '',
+                        ),
+                        patch.object(
+                            audio_qc.httpx,
+                            'post',
+                            return_value=_Response(payload),
+                        ),
+                    ):
+                        with self.assertRaises(
+                            audio_qc.AudioQCError
+                        ) as caught:
+                            audio_qc.verify_audio_narration(
+                                audio_path,
+                                'Merhaba d\u00fcnya',
+                            )
+
+                    self.assertEqual(
+                        str(caught.exception),
+                        'OpenAI speech-to-text returned incomplete word '
+                        'timestamps',
+                    )
+
+    def test_openai_word_boundary_split_keeps_exact_timestamp_evidence(self):
+        payload = {
+            'text': 'Okyanusa sa\u00e7\u0131ld\u0131.',
+            'language': 'turkish',
+            'words': _openai_words('Okyanus', 'a', 'sa\u00e7\u0131ld\u0131'),
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'openai-key'),
+                patch.object(audio_qc.settings, 'gemini_api_key', ''),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(payload),
+                ),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    "Okyanus'a sa\u00e7\u0131ld\u0131.",
+                )
+
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['provider'], 'openai')
+        self.assertTrue(
+            result['mismatch_details']['timestamp_sequence_match']
+        )
+
+    def test_openai_word_boundary_merge_keeps_exact_timestamp_evidence(self):
+        payload = {
+            'text': 'Okyanus a sa\u00e7\u0131ld\u0131.',
+            'language': 'turkish',
+            'words': _openai_words('Okyanusa', 'sa\u00e7\u0131ld\u0131'),
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'openai-key'),
+                patch.object(audio_qc.settings, 'gemini_api_key', ''),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(payload),
+                ),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Okyanus a sa\u00e7\u0131ld\u0131.',
+                )
+
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['provider'], 'openai')
+        self.assertTrue(
+            result['mismatch_details']['timestamp_sequence_match']
+        )
+
+    def test_openai_boundary_tolerance_preserves_numeric_and_lexical_data(self):
+        cases = (
+            ('4,8', ('4', '8')),
+            ('4.8', ('4', '8')),
+            ('4 8', ('4/8',)),
+            ('4 8', ('48',)),
+            ('4, 8', ('48',)),
+            ('2 9 y\u0131l', ('29', 'y\u0131l')),
+            ('4/8', ('4', '8')),
+            ('4+8', ('4', '8')),
+            ('-29', ('29',)),
+            ('29', ('-29',)),
+            ('\u00f6ld\u00fc', ('oldu',)),
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            for transcript, words in cases:
+                with self.subTest(transcript=transcript, words=words):
+                    payload = {
+                        'text': transcript,
+                        'language': 'turkish',
+                        'words': _openai_words(*words),
+                    }
+                    with (
+                        patch.object(
+                            audio_qc.settings,
+                            'openai_api_key',
+                            'openai-key',
+                        ),
+                        patch.object(audio_qc.settings, 'gemini_api_key', ''),
+                        patch.object(
+                            audio_qc.settings,
+                            'elevenlabs_api_key',
+                            '',
+                        ),
+                        patch.object(
+                            audio_qc.httpx,
+                            'post',
+                            return_value=_Response(payload),
+                        ),
+                    ):
+                        with self.assertRaises(
+                            audio_qc.AudioQCError
+                        ) as caught:
+                            audio_qc.verify_audio_narration(
+                                audio_path,
+                                transcript,
+                            )
+
+                    self.assertEqual(
+                        str(caught.exception),
+                        'OpenAI speech-to-text returned inconsistent word '
                         'timestamps',
                     )
 

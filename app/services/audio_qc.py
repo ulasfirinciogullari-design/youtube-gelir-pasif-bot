@@ -122,6 +122,7 @@ _PROPER_NAME_SUFFIXES = frozenset({
     'nun',
     'nin',
 })
+_GEMINI_ANNOTATION_TRAILING_PUNCTUATION = '.,!?;:\u2026'
 
 
 class AudioQCError(RuntimeError):
@@ -187,6 +188,36 @@ def _comparison_lexical_tokens(text: str) -> list[str]:
     value = _turkish_lower(text)
     value = value.translate({ord(character): None for character in _APOSTROPHES})
     return _COMPARISON_TOKEN_PATTERN.findall(value)
+
+
+def _timestamp_boundary_sequence(tokens: list[str]) -> tuple[str, ...]:
+    """Collapse only adjacent alphabetic tokens for boundary comparison.
+
+    Providers may split or merge an otherwise identical Turkish word (for
+    example ``okyanusa`` versus ``okyanus``, ``a``).  Numeric, sign, operator,
+    and currency tokens stay separate so ``2`` + ``9`` can never prove a
+    timestamp for ``29`` and punctuation cannot manufacture a decimal.
+    """
+    sequence: list[str] = []
+    alphabetic_run: list[str] = []
+
+    def flush_alphabetic_run() -> None:
+        if alphabetic_run:
+            sequence.append(''.join(alphabetic_run))
+            alphabetic_run.clear()
+
+    for token in tokens:
+        if token and all(
+            character.isalpha()
+            or unicodedata.category(character).startswith('M')
+            for character in token
+        ):
+            alphabetic_run.append(token)
+            continue
+        flush_alphabetic_run()
+        sequence.append(token)
+    flush_alphabetic_run()
+    return tuple(sequence)
 
 
 def _ascii_digits(value: str) -> str:
@@ -479,15 +510,26 @@ def _word_timestamps(words: Any) -> list[dict[str, Any]]:
     timestamps: list[dict[str, Any]] = []
     for item in words:
         if not isinstance(item, dict):
+            return []
+        raw_word_type = item.get('type')
+        if raw_word_type is not None and not isinstance(raw_word_type, str):
+            return []
+        word_type = raw_word_type or 'word'
+        if word_type == 'spacing':
+            spacing = item.get('text')
+            if not isinstance(spacing, str) or spacing.strip():
+                return []
             continue
-        word_type = str(item.get('type') or 'word')
         if word_type != 'word':
-            continue
+            return []
         # ElevenLabs uses ``text`` while OpenAI's verbose transcription uses
         # ``word`` for the same value.
-        text = str(item.get('text') or item.get('word') or '').strip()
-        if not text:
-            continue
+        raw_text = item.get('text')
+        if raw_text is None:
+            raw_text = item.get('word')
+        if not isinstance(raw_text, str) or not raw_text.strip():
+            return []
+        text = raw_text.strip()
         timestamps.append({
             'text': text,
             'start': _finite_time(item.get('start')),
@@ -539,13 +581,17 @@ def compare_transcript(
         expected_sources=[unit[1] for unit in expected_units],
         heard_sources=[unit[1] for unit in heard_units],
     )
+    timestamp_tokens = [
+        token
+        for item in timestamps
+        for token in _comparison_lexical_tokens(item['text'])
+    ]
     details['timestamp_sequence_match'] = (
-        [
-            token
-            for item in timestamps
-            for token in _comparison_lexical_tokens(item['text'])
-        ]
-        == surface_heard_tokens
+        (
+            timestamp_tokens == surface_heard_tokens
+            or _timestamp_boundary_sequence(timestamp_tokens)
+            == _timestamp_boundary_sequence(surface_heard_tokens)
+        )
         if words is not None
         else None
     )
@@ -625,7 +671,6 @@ def _require_word_timing_evidence(
             or result.get('ending_word_time') is None
             or float(result.get('ending_word_time') or 0.0) <= 0
         )
-        previous_start = -1.0
         previous_end = -1.0
         if isinstance(timestamps, list):
             for item in timestamps:
@@ -635,12 +680,10 @@ def _require_word_timing_evidence(
                     start is None
                     or end is None
                     or end <= start
-                    or start < previous_start
-                    or end < previous_end
+                    or start < previous_end
                 ):
                     invalid_timing = True
                     break
-                previous_start = start
                 previous_end = end
         if invalid_timing:
             raise AudioQCError(
@@ -671,12 +714,22 @@ def _valid_gemini_annotation_text(value: Any) -> bool:
     if not isinstance(value, str) or not value.strip():
         return False
     normalized = unicodedata.normalize('NFKC', value).strip()
+    if normalized[-1] in _GEMINI_ANNOTATION_TRAILING_PUNCTUATION:
+        normalized = normalized[:-1]
+        if (
+            not normalized
+            or normalized[-1].isspace()
+            or normalized[-1] in _GEMINI_ANNOTATION_TRAILING_PUNCTUATION
+        ):
+            return False
+    if not normalized:
+        return False
     if re.fullmatch(
         r'[+\-\u2212\u00b1]?\d+(?:[,.]\d+)?',
         normalized,
     ):
         return True
-    tokens = _tokens(value)
+    tokens = _tokens(normalized)
     if len(tokens) == 1 and all(
         character.isalnum()
         or unicodedata.category(character).startswith('M')
