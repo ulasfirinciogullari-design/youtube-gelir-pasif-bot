@@ -745,6 +745,17 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
         )
 
     @staticmethod
+    def _locked_brief_without_scene_count(package):
+        block = ' '.join(
+            scene['narration']
+            for scene in package['scenes']
+        )
+        return (
+            'Konuşma metni tam olarak şöyle olsun: '
+            f'“{block}”'
+        )
+
+    @staticmethod
     def _director_payload(package, *, all_ai=False, marker='director-marker'):
         scenes = []
         for position, scene in enumerate(package['scenes']):
@@ -787,6 +798,10 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
         ambiguous_blocks = (
             'Dr. Ayşe telefonu açtı\nEkran söndü.',
             (
+                'Uzm. Ayşe telefonu masada iki eliyle açıyor. '
+                'Ekran masada bir anda yeniden aydınlanıyor.'
+            ),
+            (
                 '1) Ayşe telefonu masada iki eliyle açıyor. '
                 '2) Ekran masada bir anda yeniden aydınlanıyor.'
             ),
@@ -798,6 +813,39 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
                 'cannot be segmented unambiguously',
             ):
                 director_module._split_exact_narration_lock(block, 2)
+
+    def test_empty_exact_narration_quote_is_rejected(self):
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'exact spoken-narration lock is empty',
+        ):
+            director_module._exact_narration_lock_from_brief(
+                'Konuşma metni tam olarak şöyle olsun: “”'
+            )
+
+    def test_production_exact_lock_is_recognized_as_four_scenes_and_45_words(self):
+        block = (
+            'Dizinin en heyecanlı yerinde, yataktaki laptop birden uçak gibi '
+            'uğuldamaya başlıyor. Yorgan alttaki hava girişini kapatıyor; '
+            'sıcak hava içeride kalınca fan daha da hızlanıyor. Mert laptopu '
+            'ahşap masaya alıyor; alttaki hava girişi açılınca fanın sesi '
+            'hemen düşüyor. Mert yatağın yanındaki ahşap masada dizisini '
+            'rahatça izliyor.'
+        )
+        brief = (
+            'Tam dört sahne kullan. Konuşma metni tam olarak şu dört '
+            'cümle ve 45 kelime olsun; hiçbir kıyafet, kamera veya kadraj '
+            f'talimatını seslendirme: “{block}”'
+        )
+
+        locked = director_module._exact_narration_lock_from_brief(brief)
+
+        self.assertEqual(locked, block)
+        self.assertEqual(
+            director_module._infer_exact_narration_scene_count(locked),
+            4,
+        )
+        self.assertEqual(_word_count(locked), 45)
 
     @patch('app.services.director._repair_short_stock_scenes')
     @patch('app.services.director._run_director')
@@ -941,6 +989,41 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
                 {'mode': 'preview', 'pace': 'balanced'},
             )
 
+        repair_stock_scenes.assert_not_called()
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_exact_lock_without_count_makes_sentence_count_immutable(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        package = make_coherent_battery_package()
+        revised = self._director_payload(package)
+        revised['scenes'] = revised['scenes'][:-1]
+        run_director.return_value = revised
+        openai_class.return_value = object()
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'cannot be segmented unambiguously',
+        ):
+            direct_and_qc(
+                package,
+                self._locked_brief_without_scene_count(package),
+                0.5,
+                'tr',
+                {'mode': 'preview', 'pace': 'balanced'},
+            )
+
+        self.assertEqual(run_director.call_count, 1)
+        self.assertEqual(run_director.call_args.args[8], 6)
+        self.assertIs(
+            run_director.call_args.kwargs['exact_scene_count'],
+            True,
+        )
         repair_stock_scenes.assert_not_called()
 
     @patch('app.services.director._repair_short_stock_scenes')
@@ -2991,10 +3074,29 @@ class ShortStoryApprovalTests(unittest.TestCase):
         )
         return package
 
+    def _approved_exact_package(self):
+        package = self._approved_package()
+        locked_narration = ' '.join(
+            scene['narration'] for scene in package['scenes']
+        )
+        brief = (
+            'Konuşma metni tam olarak şöyle olsun: '
+            f'“{locked_narration}”'
+        )
+        package['short_story_qc']['requested_topic'] = brief
+        package['short_story_qc']['fingerprint'] = _short_story_fingerprint(
+            package,
+        )
+        return package, brief
+
     def test_old_contract_and_exact_count_mismatch_cannot_use_approval_fast_path(self):
         old_package = self._approved_package()
-        old_package['short_story_qc']['version'] = 1
-        old_package['stock_scene_qc']['version'] = 3
+        old_package['short_story_qc']['version'] = (
+            director_module._SHORT_STORY_QC_VERSION - 1
+        )
+        old_package['stock_scene_qc']['version'] = (
+            director_module._STOCK_SCENE_QC_VERSION - 1
+        )
         old_package['short_story_qc']['fingerprint'] = _short_story_fingerprint(
             old_package,
         )
@@ -3031,6 +3133,45 @@ class ShortStoryApprovalTests(unittest.TestCase):
                 oversized_brief,
             )
         )
+
+    def test_exact_lock_rejects_old_fingerprint_and_recomputed_paraphrase(self):
+        package, brief = self._approved_exact_package()
+        self.assertTrue(short_story_package_is_approved(package, brief))
+        old_valid_fingerprint = package['short_story_qc']['fingerprint']
+
+        package['scenes'][0]['narration'] = (
+            'Telefon sahibi ekrana bakıp cihazını hemen açıyor.'
+        )
+        package['scenes'][0]['tts_text'] = package['scenes'][0]['narration']
+        package['narration'] = ' '.join(
+            scene['narration'] for scene in package['scenes']
+        )
+        package['tts_narration'] = package['narration']
+
+        self.assertEqual(
+            package['short_story_qc']['fingerprint'],
+            old_valid_fingerprint,
+        )
+        self.assertFalse(short_story_package_is_approved(package, brief))
+
+        package['short_story_qc']['fingerprint'] = _short_story_fingerprint(
+            package,
+        )
+        self.assertFalse(short_story_package_is_approved(package, brief))
+
+    def test_exact_lock_approval_fails_closed_on_ambiguous_segmentation(self):
+        package = self._approved_package()
+        brief = (
+            'Konuşma metni tam olarak şöyle olsun: '
+            '“Dr. Ayşe telefonu açtı ve ekrana baktı. '
+            'Ekran söndü, sonra yeniden aydınlandı.”'
+        )
+        package['short_story_qc']['requested_topic'] = brief
+        package['short_story_qc']['fingerprint'] = _short_story_fingerprint(
+            package,
+        )
+
+        self.assertFalse(short_story_package_is_approved(package, brief))
 
     def test_approved_short_package_fingerprint_accepts_exact_material(self):
         package = self._approved_package()
