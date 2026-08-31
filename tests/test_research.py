@@ -58,6 +58,12 @@ class ResearchEvidenceContractTests(unittest.TestCase):
         research_module.settings.gemini_api_key = ''
         research_module.settings.gemini_model = 'gemini-3.1-pro-preview'
 
+    def test_thirty_second_budget_allows_natural_forty_word_story(self):
+        self.assertEqual(
+            research_module._target_word_budget(0.5),
+            (48, 40, 51),
+        )
+
     def test_ai_first_short_preview_authorship_matches_runway_cap(self):
         self.assertEqual(
             _max_ai_scenes(
