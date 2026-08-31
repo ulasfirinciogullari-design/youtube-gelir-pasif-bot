@@ -58,6 +58,9 @@ def _review(
         'unexplained_reset': False,
         'location_continuity_applicable': False,
         'location_continuity_matches': False,
+        'prominent_readable_text_or_logo_visible': False,
+        'major_visual_artifact_visible': False,
+        'effectively_static_or_frozen': False,
         'evidence_moment_indices': (
             [moment] if evidence_moments is None else evidence_moments
         ),
@@ -256,6 +259,14 @@ class VisualQcProviderTests(unittest.TestCase):
             'connector_visibly_joins_target',
             schema['properties']['reviews']['items']['properties'],
         )
+        required_fields = set(
+            schema['properties']['reviews']['items']['required']
+        )
+        self.assertTrue({
+            'prominent_readable_text_or_logo_visible',
+            'major_visual_artifact_visible',
+            'effectively_static_or_frozen',
+        }.issubset(required_fields))
         self.assertEqual(result['missing_review_indices'], [])
         self.assertEqual(result['reviews'][0]['best_start_fraction'], 0.50)
 
@@ -291,6 +302,37 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertEqual(review['raw_score'], 96)
         self.assertEqual(review['score'], 40)
         self.assertFalse(review['evidence_gate_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_high_score_cannot_override_explicit_editorial_artifact(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        gemini.return_value = {
+            'reviews': [_review(
+                score=96,
+                reason='The action is visible but anatomy visibly warps.',
+                major_visual_artifact_visible=True,
+            )],
+        }
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                self.scenes,
+                self.visuals,
+                self.work / 'failed_editorial_artifact',
+                _missing_review_attempts=0,
+            )
+
+        review = result['reviews'][0]
+        self.assertEqual(review['raw_score'], 96)
+        self.assertEqual(review['score'], 40)
+        self.assertTrue(review['evidence_gate_passed'])
+        self.assertFalse(review['editorial_gate_passed'])
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
@@ -606,6 +648,12 @@ class VisualQcProviderTests(unittest.TestCase):
             [_review(1)],
             [_review(), _review(score=91)],
             [{**_review(), 'extra': 'not allowed'}],
+            [{
+                key: value
+                for key, value in _review().items()
+                if key != 'major_visual_artifact_visible'
+            }],
+            [{**_review(), 'effectively_static_or_frozen': 'false'}],
         ]
 
         with (
@@ -1432,3 +1480,4 @@ class VisualQcProviderTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
