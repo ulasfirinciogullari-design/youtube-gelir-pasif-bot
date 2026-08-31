@@ -104,10 +104,11 @@ def _load_outage_allocation_boundary():
         node
         for node in tree.body
         if isinstance(node, ast.FunctionDef)
-        and node.name == '_allocate_short_preview_provider_outage_runway'
+        and node.name == '_allocate_short_preview_forced_stock_runway'
     )
     namespace = {
         'SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP': 2,
+        'SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP': 1,
     }
     exec(
         compile(
@@ -117,7 +118,7 @@ def _load_outage_allocation_boundary():
         ),
         namespace,
     )
-    return namespace['_allocate_short_preview_provider_outage_runway']
+    return namespace['_allocate_short_preview_forced_stock_runway']
 
 
 def _retry_call(retry_bad_scene, **kwargs):
@@ -167,7 +168,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
                 ]
             },
             {},
-            provider_outage_stock_fallback=True,
+            forced_stock_fallback=True,
         )
 
         replacements = namespace['_retry_bad_scene'](
@@ -193,6 +194,48 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             queries,
         )
 
+    def test_stock_quality_fallback_uses_same_bounded_final_rescue(self):
+        namespace = _load_retry_boundary()
+        recovered_spec = {
+            'path': '/tmp/recovered-quality-stock.mp4',
+            'start_fraction': 0.35,
+            'source_duration': 9.0,
+        }
+        download_candidates = Mock(return_value=[recovered_spec])
+        namespace['_download_ranked_broll_candidates'] = download_candidates
+        queries = namespace['_final_pexels_rescue_queries'](
+            {
+                'visual_queries': [
+                    'cargo ship rough storm sea',
+                    'large freight ship ocean waves',
+                    'third query is outside the bound',
+                ]
+            },
+            {},
+            forced_stock_fallback=True,
+        )
+
+        replacements = namespace['_retry_bad_scene'](
+            1,
+            queries,
+            set(),
+            Path('/tmp/test-stock-quality-final-rescue'),
+            [],
+            file_prefix='final_qc_rescue',
+            tolerate_pexels_failure=True,
+        )
+
+        self.assertEqual(len(queries), 2)
+        self.assertEqual(replacements, [recovered_spec])
+        self.assertEqual(download_candidates.call_args.args[1], queries)
+
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+        final_rescue = source[source.index('# Give every still-rejected clip'):]
+        self.assertGreaterEqual(
+            final_rescue.count('scene_idx in stock_quality_fallback_scenes'),
+            2,
+        )
+
     def test_persistent_outage_rescue_remains_empty_and_unaccepted(self):
         namespace = _load_retry_boundary()
         typed_outage = namespace['PexelsRetryError'](
@@ -203,7 +246,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         queries = namespace['_final_pexels_rescue_queries'](
             {'visual_queries': ['plastic cleanup beach']},
             {},
-            provider_outage_stock_fallback=True,
+            forced_stock_fallback=True,
         )
 
         replacements = namespace['_retry_bad_scene'](
@@ -227,7 +270,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         queries = namespace['_final_pexels_rescue_queries'](
             {'visual_queries': ['plastic cleanup beach']},
             {},
-            provider_outage_stock_fallback=False,
+            forced_stock_fallback=False,
         )
 
         self.assertEqual(queries, [])
@@ -238,7 +281,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         queries = namespace['_final_pexels_rescue_queries'](
             {'visual_queries': ['original broad query']},
             {'retry_queries': ['critic exact query']},
-            provider_outage_stock_fallback=True,
+            forced_stock_fallback=True,
         )
 
         self.assertEqual(queries, ['critic exact query'])
@@ -257,9 +300,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             },
         ]
 
-        selected, required_base, missing, cap_exceeded = allocate(
-            ranked, 3, {2}, 86
-        )
+        (
+            selected, required_base, missing, missing_quality,
+            cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 3, {2}, set(), 86)
 
         self.assertEqual([item['scene_index'] for item in required_base], [0, 1])
         self.assertEqual([item['scene_index'] for item in selected], [0, 1, 3, 2])
@@ -268,7 +312,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             [2],
         )
         self.assertEqual(missing, [])
+        self.assertEqual(missing_quality, [])
         self.assertFalse(cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
 
     def test_multiple_provider_outages_each_receive_one_bounded_extra_slot(self):
         allocate = _load_outage_allocation_boundary()
@@ -280,9 +327,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             {'scene_index': 5, 'has_visual': True, 'stock_score': 30},
         ]
 
-        selected, required_base, missing, cap_exceeded = allocate(
-            ranked, 3, {4, 5}, 86
-        )
+        (
+            selected, required_base, missing, missing_quality,
+            cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 3, {4, 5}, set(), 86)
 
         self.assertEqual(len(required_base), 2)
         self.assertEqual([item['scene_index'] for item in selected], [0, 1, 2, 4, 5])
@@ -291,7 +339,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             {4, 5},
         )
         self.assertEqual(missing, [])
+        self.assertEqual(missing_quality, [])
         self.assertFalse(cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
 
     def test_outage_allocation_exposes_incomplete_base_or_missing_outage(self):
         allocate = _load_outage_allocation_boundary()
@@ -300,14 +351,18 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             for index in range(4)
         ]
 
-        selected, required_base, missing, cap_exceeded = allocate(
-            ranked, 3, {9}, 86
-        )
+        (
+            selected, required_base, missing, missing_quality,
+            cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 3, {9}, set(), 86)
 
         self.assertEqual(len(selected), 3)
         self.assertEqual(len(required_base), 4)
         self.assertEqual(missing, [9])
+        self.assertEqual(missing_quality, [])
         self.assertFalse(cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
 
     def test_more_than_two_provider_outages_never_allocate_a_third_extra_slot(self):
         allocate = _load_outage_allocation_boundary()
@@ -316,14 +371,102 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             for index in range(5)
         ]
 
-        selected, required_base, missing, cap_exceeded = allocate(
-            ranked, 2, {2, 3, 4}, 86
-        )
+        (
+            selected, required_base, missing, missing_quality,
+            cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 2, {2, 3, 4}, set(), 86)
 
         self.assertEqual([item['scene_index'] for item in required_base], [0, 1])
         self.assertEqual([item['scene_index'] for item in selected], [0, 1, 2, 3])
         self.assertEqual(missing, [])
+        self.assertEqual(missing_quality, [])
         self.assertTrue(cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
+
+    def test_one_stock_quality_failure_gets_exactly_one_extra_paid_slot(self):
+        allocate = _load_outage_allocation_boundary()
+        ranked = [
+            {'scene_index': 0, 'has_visual': False, 'stock_score': -1},
+            {'scene_index': 1, 'has_visual': True, 'stock_score': 40},
+            {'scene_index': 2, 'has_visual': True, 'stock_score': 91},
+            {
+                'scene_index': 3,
+                'has_visual': False,
+                'stock_score': 68,
+                'stock_quality_fallback': True,
+            },
+        ]
+
+        (
+            selected, required_base, missing_outage, missing_quality,
+            outage_cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 3, set(), {3}, 86)
+
+        self.assertEqual([item['scene_index'] for item in required_base], [0, 1])
+        self.assertEqual([item['scene_index'] for item in selected], [0, 1, 2, 3])
+        self.assertEqual([item['scene_index'] for item in selected[3:]], [3])
+        self.assertEqual(missing_outage, [])
+        self.assertEqual(missing_quality, [])
+        self.assertFalse(outage_cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
+
+    def test_two_stock_quality_failures_exceed_cap_before_selection(self):
+        allocate = _load_outage_allocation_boundary()
+        ranked = [
+            {'scene_index': 0, 'has_visual': False, 'stock_score': -1},
+            {'scene_index': 2, 'has_visual': False, 'stock_score': 68},
+            {'scene_index': 3, 'has_visual': False, 'stock_score': 61},
+        ]
+
+        (
+            selected, _required_base, _missing_outage, missing_quality,
+            _outage_cap_exceeded, quality_cap_exceeded, _overlap,
+        ) = allocate(ranked, 1, set(), {2, 3}, 86)
+
+        self.assertEqual([item['scene_index'] for item in selected], [0, 2])
+        self.assertEqual(missing_quality, [])
+        self.assertTrue(quality_cap_exceeded)
+
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+        cap_check = source.index(
+            'len(semantic_stock_quality_failures)\n'
+            '                > SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP'
+        )
+        quarantine = source.index(
+            'for failure in semantic_stock_quality_failures:',
+            cap_check,
+        )
+        paid_generation = source.index('for candidate in selected_runway:', quarantine)
+        self.assertLess(cap_check, quarantine)
+        self.assertLess(quarantine, paid_generation)
+        self.assertIn('or quality_cap_exceeded', source)
+        self.assertIn('unroutable_stock_failures', source)
+
+    def test_provider_outage_and_quality_fallback_caps_combine_without_using_base(self):
+        allocate = _load_outage_allocation_boundary()
+        ranked = [
+            {'scene_index': 0, 'has_visual': False, 'stock_score': -1},
+            {'scene_index': 1, 'has_visual': True, 'stock_score': 50},
+            {'scene_index': 2, 'has_visual': True, 'stock_score': 90},
+            {'scene_index': 3, 'has_visual': False, 'stock_score': -1},
+            {'scene_index': 4, 'has_visual': False, 'stock_score': 68},
+        ]
+
+        (
+            selected, required_base, missing_outage, missing_quality,
+            outage_cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 3, {3}, {4}, 86)
+
+        self.assertEqual([item['scene_index'] for item in required_base], [0, 1])
+        self.assertEqual([item['scene_index'] for item in selected], [0, 1, 2, 3, 4])
+        self.assertEqual([item['scene_index'] for item in selected[3:]], [3, 4])
+        self.assertEqual(missing_outage, [])
+        self.assertEqual(missing_quality, [])
+        self.assertFalse(outage_cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
 
     def test_provider_outage_quarantines_low_score_stock_incumbent(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')
@@ -348,6 +491,61 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             generation,
         )
 
+    def test_stock_quality_fallback_quarantines_incumbent_after_full_tournament(self):
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+        contract_start = source.index('stock_contract_candidates = [')
+        tournament_start = source.index(
+            'for round_index, (candidate_start, candidate_end)',
+            contract_start,
+        )
+        quarantine_start = source.index(
+            'for failure in semantic_stock_quality_failures:',
+            tournament_start,
+        )
+        ranking_start = source.index(
+            'def rank_runway_candidates()',
+            quarantine_start,
+        )
+        quarantine = source[quarantine_start:ranking_start]
+
+        self.assertLess(tournament_start, quarantine_start)
+        self.assertIn('scene_visuals[scene_idx] = []', quarantine)
+        self.assertIn('stock_quality_fallback_scenes.add(scene_idx)', quarantine)
+        self.assertIn(
+            "'stage': 'pre_runway_stock_quality_fallback'",
+            quarantine,
+        )
+        self.assertNotIn('quality_threshold =', quarantine)
+
+    def test_stock_quality_fallback_is_short_preview_only_and_keeps_final_gate(self):
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+        bounded_preview = source.index('if is_bounded_short_preview:')
+        quality_fallback = source.index(
+            'stock_quality_fallback_scenes.add(scene_idx)',
+            bounded_preview,
+        )
+        ranking = source.index('def rank_runway_candidates()', quality_fallback)
+        final_gate = source.index(
+            "int(final_reviews[idx].get('score', 0)) < quality_threshold",
+            ranking,
+        )
+
+        self.assertLess(bounded_preview, quality_fallback)
+        self.assertLess(quality_fallback, ranking)
+        self.assertLess(ranking, final_gate)
+        self.assertIn(
+            'options.get(\'mode\') == \'preview\'\n'
+            '            and duration_minutes <= 0.6',
+            source,
+        )
+        self.assertIn(
+            "if has_visual and score >= quality_threshold:",
+            source,
+        )
+        self.assertIn("if bool(failure.get('has_visual'))", source)
+        self.assertIn("and int(failure.get('stock_score', -1)) >= 0", source)
+        self.assertIn("and int(failure['scene_index']) in current_reviews", source)
+
     def test_emergency_cap_is_global_and_present_in_preflight_diagnostics(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')
 
@@ -355,8 +553,16 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             'SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2',
             source,
         )
+        self.assertIn(
+            'SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 1',
+            source,
+        )
         self.assertIn("'provider_outage_emergency_cap': (", source)
+        self.assertIn("'stock_quality_emergency_cap': (", source)
         self.assertIn('or outage_cap_exceeded', source)
+        self.assertIn('or quality_cap_exceeded', source)
+        self.assertIn("else 'stock_quality_fallback'", source)
+        self.assertIn("'stock_quality_fallback_scene_indices': sorted(", source)
 
     def test_parallel_search_burst_gets_one_sequential_second_chance(self):
         namespace = _load_search_boundary()
@@ -647,11 +853,20 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             for value in tolerant_values
         ))
         self.assertTrue(any(
-            isinstance(value, ast.Compare)
-            and isinstance(value.ops[0], ast.In)
-            and isinstance(value.comparators[0], ast.Name)
-            and value.comparators[0].id == 'provider_outage_stock_scenes'
+            isinstance(node, ast.Compare)
+            and isinstance(node.ops[0], ast.In)
+            and isinstance(node.comparators[0], ast.Name)
+            and node.comparators[0].id == 'provider_outage_stock_scenes'
             for value in tolerant_values
+            for node in ast.walk(value)
+        ))
+        self.assertTrue(any(
+            isinstance(node, ast.Compare)
+            and isinstance(node.ops[0], ast.In)
+            and isinstance(node.comparators[0], ast.Name)
+            and node.comparators[0].id == 'stock_quality_fallback_scenes'
+            for value in tolerant_values
+            for node in ast.walk(value)
         ))
 
         source = SOURCE_PATH.read_text(encoding='utf-8')
