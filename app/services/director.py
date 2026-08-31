@@ -760,10 +760,7 @@ def _short_story_quality_issues(
             )
         )
         connection_action = bool(
-            _TURKISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
-                active_prompt
-            )
-            or _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
+            _ENGLISH_SHORT_PRECISION_CONNECTION_ACTION_PATTERN.search(
                 active_prompt
             )
         )
