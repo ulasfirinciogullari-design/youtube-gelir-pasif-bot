@@ -82,7 +82,7 @@ _EXPLICIT_SCENE_COUNT_NEGATED_AFTER = re.compile(
 )
 _MAX_STORY_BRIEF_CHARS = 8000
 _EXACT_NARRATION_QUOTE_PATTERN = re.compile(
-    r'“(?P<curly>[^”]+)”|"(?P<straight>[^"]+)"|«(?P<guillemet>[^»]+)»',
+    r'“(?P<curly>[^”]*)”|"(?P<straight>[^"]*)"|«(?P<guillemet>[^»]*)»',
     flags=re.DOTALL,
 )
 _EXACT_NARRATION_PREFIX_PATTERN = re.compile(
@@ -109,7 +109,8 @@ _EXACT_NARRATION_LIST_MARKER_PATTERN = re.compile(
     flags=re.UNICODE,
 )
 _EXACT_NARRATION_ABBREVIATION_BOUNDARY_PATTERN = re.compile(
-    r'\b(?:dr|prof|doç|sn|say|mr|mrs|ms|örn|vb|vs|bkz|no)\.\s+'
+    r'\b(?:dr|prof|doç|av|uzm|op|yrd|arş|ast|gen|alb|sn|say|'
+    r'mr|mrs|ms|jr|sr|örn|vb|vs|bkz|no|st|cad|sok|mah|apt|tel)\.\s+'
     r'(?=[A-ZÇĞİÖŞÜ])|'
     r'\b[A-ZÇĞİÖŞÜ]\.\s+(?=[A-ZÇĞİÖŞÜ])',
     flags=re.IGNORECASE | re.UNICODE,
@@ -244,6 +245,22 @@ def _split_exact_narration_lock(
             'into the returned scene count'
         )
     return scenes
+
+
+def _infer_exact_narration_scene_count(locked_narration: str) -> int:
+    """Count only sentence boundaries that pass the strict lock splitter."""
+    normalized = _normalize_exact_narration(locked_narration)
+    proposed_count = len(
+        list(_EXACT_NARRATION_SENTENCE_PATTERN.finditer(normalized))
+    )
+    if not 3 <= proposed_count <= 32:
+        raise RuntimeError(
+            'Exact spoken-narration lock must contain between 3 and 32 '
+            'unambiguous scene sentences'
+        )
+    return len(
+        _split_exact_narration_lock(locked_narration, proposed_count)
+    )
 
 
 def _apply_exact_narration_lock(
@@ -597,8 +614,8 @@ def _short_story_quality_issues(
     return issues
 
 
-_SHORT_STORY_QC_VERSION = 2
-_STOCK_SCENE_QC_VERSION = 4
+_SHORT_STORY_QC_VERSION = 3
+_STOCK_SCENE_QC_VERSION = 5
 _STORY_STOCK_CONTRACT = 'openai-story-stock-v2'
 
 
@@ -611,6 +628,8 @@ def _short_story_fingerprint(package: dict) -> str:
         'title': package.get('title'),
         'thumbnail_text': package.get('thumbnail_text'),
         'description': package.get('description'),
+        'narration': package.get('narration'),
+        'tts_narration': package.get('tts_narration'),
         'requested_topic': _normalize_short_story_topic(
             (package.get('short_story_qc') or {}).get('requested_topic')
         ),
@@ -676,6 +695,14 @@ def short_story_package_is_approved(
         explicit_scene_count = _explicit_scene_count_from_brief(
             approval_brief
         )
+        exact_narration = _exact_narration_lock_from_brief(
+            approval_brief
+        )
+        exact_scene_narrations = (
+            _split_exact_narration_lock(exact_narration, len(scenes))
+            if exact_narration is not None
+            else None
+        )
     except RuntimeError:
         return False
     if (
@@ -683,6 +710,24 @@ def short_story_package_is_approved(
         and len(scenes) != explicit_scene_count
     ):
         return False
+    if exact_scene_narrations is not None:
+        actual_scene_narrations = [
+            _normalize_exact_narration(scene.get('narration'))
+            for scene in scenes
+        ]
+        actual_scene_tts = [
+            _normalize_exact_narration(scene.get('tts_text'))
+            for scene in scenes
+        ]
+        if (
+            actual_scene_narrations != exact_scene_narrations
+            or actual_scene_tts != exact_scene_narrations
+            or _normalize_exact_narration(package.get('narration'))
+            != exact_narration
+            or _normalize_exact_narration(package.get('tts_narration'))
+            != exact_narration
+        ):
+            return False
     if setting_is_enabled(
         getattr(settings, 'gemini_critic_enabled', False)
     ):
@@ -2277,23 +2322,47 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         _story_brief_for_qc(topic)
     provider = _studio_plan_provider()
     explicit_scene_count = _explicit_scene_count_from_brief(topic)
+    exact_narration = _exact_narration_lock_from_brief(topic)
+    locked_scene_count = (
+        _infer_exact_narration_scene_count(exact_narration)
+        if exact_narration is not None
+        else None
+    )
+    if (
+        explicit_scene_count is not None
+        and locked_scene_count is not None
+        and explicit_scene_count != locked_scene_count
+    ):
+        raise RuntimeError(
+            'User brief exact scene count conflicts with the unambiguous '
+            'exact spoken-narration sentence count'
+        )
+    immutable_scene_count = (
+        explicit_scene_count
+        if explicit_scene_count is not None
+        else locked_scene_count
+    )
     scenes = package.get('scenes') or []
     if provider == 'openai' and not settings.openai_api_key:
         if (
-            explicit_scene_count is not None
-            and len(scenes) != explicit_scene_count
+            immutable_scene_count is not None
+            and len(scenes) != immutable_scene_count
         ):
             raise RuntimeError(
                 'User-brief scene-count gate rejected package without a '
                 f'director: {len(scenes)} scenes; required exactly '
-                f'{explicit_scene_count}'
+                f'{immutable_scene_count}'
             )
-        return package
+        return _apply_exact_narration_lock(
+            package,
+            topic,
+            expected_scene_count=immutable_scene_count,
+        )
     if not scenes:
-        if explicit_scene_count is not None:
+        if immutable_scene_count is not None:
             raise RuntimeError(
                 'User-brief scene-count gate rejected an empty package; '
-                f'required exactly {explicit_scene_count}'
+                f'required exactly {immutable_scene_count}'
             )
         return package
 
@@ -2309,10 +2378,10 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         else None
     )
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
-    exact_scene_count = explicit_scene_count is not None
+    exact_scene_count = immutable_scene_count is not None
     target_scenes = (
-        explicit_scene_count
-        if explicit_scene_count is not None
+        immutable_scene_count
+        if immutable_scene_count is not None
         else _target_scene_count(duration_minutes, pace_profile)
     )
     language_name = 'Turkish' if language.lower().startswith('tr') else language
