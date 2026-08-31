@@ -272,7 +272,10 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
         result = generate_scene('safe prompt', duration=7)
 
-        self.assertEqual(result, 'video-url')
+        self.assertEqual(
+            result,
+            {'url': 'video-url', 'provider': 'runway'},
+        )
         self.assertEqual(
             factory.init_calls,
             [
@@ -341,7 +344,13 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
         self.assertEqual(
             result,
-            'https://generativelanguage.googleapis.com/v1beta/files/video',
+            {
+                'url': (
+                    'https://generativelanguage.googleapis.com/'
+                    'v1beta/files/video'
+                ),
+                'provider': 'gemini_veo',
+            },
         )
         gemini_video_uri.assert_called_once_with('safe prompt', 5)
         self.assertEqual(len(factory.init_calls), 1)
