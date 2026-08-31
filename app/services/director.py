@@ -81,6 +81,25 @@ _EXPLICIT_SCENE_COUNT_NEGATED_AFTER = re.compile(
     flags=re.IGNORECASE,
 )
 _MAX_STORY_BRIEF_CHARS = 8000
+_EXACT_NARRATION_QUOTE_PATTERN = re.compile(
+    r'“(?P<curly>[^”]+)”|"(?P<straight>[^"]+)"|«(?P<guillemet>[^»]+)»',
+    flags=re.DOTALL,
+)
+_EXACT_NARRATION_PREFIX_PATTERN = re.compile(
+    r'(?:'
+    r'(?:(?:konuşma|seslendirme|anlatım|anlatıcı)\s+metni)\s+'
+    r'(?:tam\s+olarak|aynen)\s+(?:(?:şu|şöyle|aşağıdaki)\s+)?'
+    r'[^:“"«]{0,120}\b(?:olsun|kullanılsın|okunsun)'
+    r'|'
+    r'(?:(?:spoken\s+narration|spoken\s+text|voiceover(?:\s+text)?|'
+    r'narration)\s+(?:must|should|shall)\s+be\s+'
+    r'(?:exactly|verbatim)(?:\s+(?:this|the\s+following))?'
+    r'|use\s+(?:exactly\s+|verbatim\s+)?(?:this|the\s+following)\s+'
+    r'(?:spoken\s+narration|spoken\s+text|voiceover(?:\s+text)?|narration)'
+    r'(?:\s+(?:exactly|verbatim))?)'
+    r')(?:\s*:?\s*|\s*;\s*[^:“"«]{1,240}:\s*)$',
+    flags=re.IGNORECASE | re.UNICODE,
+)
 
 
 def _explicit_scene_count_from_brief(brief: str) -> int | None:
@@ -136,6 +155,45 @@ def _story_brief_for_qc(brief: str) -> str:
             'User brief is too long for complete pre-media constraint review'
         )
     return value
+
+
+def _normalize_exact_narration(value: str) -> str:
+    return re.sub(
+        r'\s+',
+        ' ',
+        unicodedata.normalize('NFC', str(value or '')),
+    ).strip()
+
+
+def _exact_narration_lock_from_brief(brief: str) -> str | None:
+    """Read only an unmistakable exact quoted spoken-narration contract."""
+    value = _story_brief_for_qc(brief)
+    locked_blocks: list[str] = []
+    for match in _EXACT_NARRATION_QUOTE_PATTERN.finditer(value):
+        prefix = value[max(0, match.start() - 280):match.start()]
+        if not _EXACT_NARRATION_PREFIX_PATTERN.search(prefix):
+            continue
+        block = next(
+            (
+                group
+                for group in match.groups()
+                if isinstance(group, str)
+            ),
+            '',
+        )
+        normalized = _normalize_exact_narration(block)
+        if not normalized:
+            raise RuntimeError(
+                'User brief exact spoken-narration lock is empty'
+            )
+        locked_blocks.append(normalized)
+    if not locked_blocks:
+        return None
+    if len(set(locked_blocks)) != 1:
+        raise RuntimeError(
+            'User brief contains conflicting exact spoken-narration locks'
+        )
+    return locked_blocks[0]
 
 
 def _studio_plan_provider() -> str:
@@ -912,6 +970,26 @@ def _repair_short_stock_scenes(
     if len(scenes) < 3:
         return package
 
+    exact_narration_lock = _exact_narration_lock_from_brief(requested_brief)
+    locked_narration_by_position: dict[int, str] = {}
+    if exact_narration_lock is not None:
+        complete_scene_narration = _normalize_exact_narration(
+            ' '.join(
+                str(scene.get('narration') or '').strip()
+                for scene in scenes
+                if isinstance(scene, dict)
+            )
+        )
+        if complete_scene_narration != exact_narration_lock:
+            raise RuntimeError(
+                'Exact spoken-narration lock does not match the complete '
+                'candidate story before stock repair'
+            )
+        locked_narration_by_position = {
+            position: str(scene.get('narration') or '').strip()
+            for position, scene in enumerate(scenes)
+        }
+
     target_total_words, minimum_total_words, maximum_total_words = (
         _target_word_budget(duration_minutes)
     )
@@ -948,6 +1026,11 @@ def _repair_short_stock_scenes(
         }
         for position in stock_positions
     }
+    for position in stock_positions:
+        if position in locked_narration_by_position:
+            targets_by_position[position]['locked_narration'] = (
+                locked_narration_by_position[position]
+            )
     original_story = [
         {
             'position': position,
@@ -977,6 +1060,15 @@ def _repair_short_stock_scenes(
     def validate_generated_row(position: int, row: dict) -> tuple[dict | None, str]:
         target = targets_by_position[position]
         narration = str(row.get('narration') or '').strip()
+        locked_narration = target.get('locked_narration')
+        if (
+            isinstance(locked_narration, str)
+            and narration != locked_narration
+        ):
+            return None, (
+                f'position {position} changed exact locked narration; only '
+                'visual_queries may be repaired'
+            )
         got_words = _word_count(narration)
         allowed_words = target['allowed_word_count']
         if not allowed_words[0] <= got_words <= allowed_words[1]:
@@ -1123,6 +1215,7 @@ Return ONLY JSON in exactly this shape:
 
 NON-NEGOTIABLE RULES:
 - Return exactly the requested positions and no others. Never rewrite an accepted locked stock scene or an AI-routed mechanism scene.
+- When a target contains locked_narration, copy that narration exactly, character for character. Repair only visual_queries; never paraphrase, punctuate, pad or otherwise edit the locked spoken text.
 - Preserve every explicit positive, negative, routing and continuity constraint in requested_brief. Never introduce an actor, object, action, setting, screen state or payoff that the brief forbids.
 - Respect each requested scene's allowed_word_count range. Keep the complete story within whole_story_word_budget; exact per-scene equality is neither required nor desirable.
 - Never add empty padding such as "bugün", "şimdi", "sakinlikle" or "dikkatlice" unless that word changes the visible action and sounds necessary in normal speech.
@@ -1881,6 +1974,16 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 for scene in repaired_scenes
             )
             repaired['tts_narration'] = repaired['narration']
+            if (
+                exact_narration_lock is not None
+                and _normalize_exact_narration(repaired['narration'])
+                != exact_narration_lock
+            ):
+                last_failures = {
+                    position: 'repair changed exact locked narration'
+                    for position in stock_positions
+                }
+                break
             repaired_total_words = _word_count(repaired['narration'])
             if not (
                 minimum_total_words
@@ -1981,6 +2084,101 @@ The reason must name concrete evidence for the verdict. Individual shot approval
         'Director could not produce fully stock-safe short-preview scenes: '
         + json.dumps(failure_details, ensure_ascii=False, separators=(',', ':'))
     )
+
+
+_SAFE_WHOLE_STORY_CHECK_NAMES = frozenset({
+    'all_explicit_brief_constraints_preserved',
+    'single_human_situation',
+    'single_central_question',
+    'not_fact_montage',
+    'causal_scene_chain',
+    'same_actor_or_object_thread',
+    'human_payoff_visible',
+    'natural_spoken_language',
+    'directly_answers_requested_topic',
+    'one_specific_useful_reveal',
+    'causal_claim_supported',
+    'hook_payoff_same_promise',
+})
+
+
+def _safe_short_editorial_issue_categories(issues: list[str]) -> list[str]:
+    categories: set[str] = set()
+    for raw_issue in issues or []:
+        issue = str(raw_issue or '').casefold()
+        if 'tts-unsafe raw term' in issue:
+            categories.add('tts_unsafe_raw_terms')
+        elif 'wardrobe wording paired with' in issue:
+            categories.add('wardrobe_camera_metadata_in_narration')
+        elif 'production-only camera direction' in issue:
+            categories.add('camera_metadata_in_narration')
+        elif 'mixes unrelated mechanism families' in issue:
+            categories.add('mixed_mechanism_families')
+        elif 'translated' in issue or 'translation' in issue:
+            categories.add('translationese')
+        else:
+            categories.add('other_short_editorial_issue')
+    return sorted(categories)[:8]
+
+
+def _whole_story_repair_diagnostics(
+    *,
+    failed_checks: list[str],
+    words: int,
+    min_words: int,
+    max_words: int,
+    scene_count: int,
+    target_scenes: int,
+    exact_scene_count: bool,
+    ai_scene_count: int,
+    preview_ai_limit: int | None,
+    short_editorial_issues: list[str],
+) -> dict:
+    supplied_check_names = {str(check) for check in (failed_checks or [])}
+    safe_failed_checks = sorted(
+        supplied_check_names.intersection(_SAFE_WHOLE_STORY_CHECK_NAMES)
+    )
+    if len(safe_failed_checks) != len(supplied_check_names):
+        safe_failed_checks.append('unknown_story_check')
+
+    failed_deterministic_gates: list[str] = []
+    if not min_words <= words <= max_words:
+        failed_deterministic_gates.append('narration_word_count')
+    if not _scene_count_matches(
+        scene_count,
+        target_scenes,
+        exact_scene_count=exact_scene_count,
+    ):
+        failed_deterministic_gates.append('scene_count')
+    if preview_ai_limit is not None and ai_scene_count > preview_ai_limit:
+        failed_deterministic_gates.append('ai_scene_count')
+    if short_editorial_issues:
+        failed_deterministic_gates.append('short_editorial_issues')
+
+    return {
+        'critic_failed_checks': safe_failed_checks[:16],
+        'failed_deterministic_gates': failed_deterministic_gates,
+        'post_repair_shape': {
+            'narration_word_count': int(words),
+            'required_narration_word_range': [int(min_words), int(max_words)],
+            'scene_count': int(scene_count),
+            'target_scene_count': int(target_scenes),
+            'exact_scene_count': bool(exact_scene_count),
+            'ai_scene_count': int(ai_scene_count),
+            'max_ai_scene_count': (
+                int(preview_ai_limit)
+                if preview_ai_limit is not None
+                else None
+            ),
+            'short_editorial_issue_count': len(short_editorial_issues or []),
+            'short_editorial_issue_categories': (
+                _safe_short_editorial_issue_categories(
+                    short_editorial_issues
+                )
+            ),
+        },
+    }
+
 
 def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
     if duration_minutes <= 0.6:
@@ -2206,9 +2404,26 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 and not short_editorial_issues
             )
             if not corrected_shape_is_safe:
+                diagnostics = _whole_story_repair_diagnostics(
+                    failed_checks=exc.failed_checks,
+                    words=words,
+                    min_words=min_words,
+                    max_words=max_words,
+                    scene_count=scene_count,
+                    target_scenes=target_scenes,
+                    exact_scene_count=exact_scene_count,
+                    ai_scene_count=ai_scene_count,
+                    preview_ai_limit=preview_ai_limit,
+                    short_editorial_issues=short_editorial_issues,
+                )
                 raise RuntimeError(
                     'Whole-story critic repair violated a deterministic '
-                    'short-preview gate before paid media'
+                    'short-preview gate before paid media: '
+                    + json.dumps(
+                        diagnostics,
+                        ensure_ascii=False,
+                        separators=(',', ':'),
+                    )
                 )
             out = _repair_short_stock_scenes(
                 client,
@@ -2288,3 +2503,4 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         }
         out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
     return out
+
