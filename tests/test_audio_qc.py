@@ -1,3 +1,4 @@
+import base64
 import sys
 import tempfile
 import types
@@ -10,6 +11,7 @@ from unittest.mock import patch
 config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace(
     openai_api_key='',
+    gemini_api_key='',
     elevenlabs_api_key='',
 )
 _previous_config_module = sys.modules.get('app.config')
@@ -73,6 +75,29 @@ def _openai_words(*values: str) -> list[dict]:
         }
         for index, value in enumerate(values)
     ]
+
+
+def _gemini_interaction(transcript: str, *values: str) -> dict:
+    annotations = [
+        {
+            'type': 'word_info',
+            'text': value,
+            'start_offset': f'{index * 0.4:.3f}s',
+            'end_offset': f'{(index + 1) * 0.4:.3f}s',
+        }
+        for index, value in enumerate(values)
+    ]
+    return {
+        'status': 'completed',
+        'steps': [{
+            'type': 'model_output',
+            'content': [{
+                'type': 'text',
+                'text': transcript,
+                'annotations': annotations,
+            }],
+        }],
+    }
 
 
 class _Response:
@@ -148,6 +173,7 @@ class AudioQCTests(unittest.TestCase):
     def test_missing_keys_are_explicitly_unavailable(self):
         with (
             patch.object(audio_qc.settings, 'openai_api_key', ''),
+            patch.object(audio_qc.settings, 'gemini_api_key', ''),
             patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
         ):
             result = audio_qc.verify_audio_narration(
@@ -220,6 +246,527 @@ class AudioQCTests(unittest.TestCase):
         self.assertEqual(captured['files']['file'][0], 'voice.mp3')
         self.assertEqual(captured['files']['file'][2], 'audio/mpeg')
         self.assertEqual(captured['audio'], b'audio-bytes')
+
+    def test_openai_http_error_uses_gemini_interactions_before_elevenlabs(self):
+        captured = {}
+        calls = []
+
+        def fake_post(url, **kwargs):
+            calls.append(url)
+            if url == audio_qc.OPENAI_AUDIO_TRANSCRIPTIONS_URL:
+                return _Response({'detail': 'rate limited'}, status_code=429)
+            if url == audio_qc.GEMINI_INTERACTIONS_URL:
+                captured.update(kwargs)
+                interaction = _gemini_interaction(
+                    'Merhaba d\u00fcnya',
+                    'Merhaba',
+                    'd\u00fcnya',
+                )
+                interaction['steps'].insert(0, {
+                    'type': 'tool_output',
+                    'content': [{
+                        'type': 'text',
+                        'text': 'ignore this non-model text',
+                        'annotations': [{
+                            'type': 'word_info',
+                            'text': 'ignore',
+                            'start_offset': '0.000s',
+                            'end_offset': '0.100s',
+                        }],
+                    }],
+                })
+                interaction['steps'][1]['content'] = [
+                    {
+                        'type': 'text',
+                        'text': 'Merhaba ',
+                        'annotations': [{
+                            'type': 'word_info',
+                            'text': 'Merhaba',
+                            'start_offset': '0.000s',
+                            'end_offset': '0.400s',
+                        }],
+                    },
+                    {
+                        'type': 'thought',
+                        'text': 'ignore this thought text',
+                        'annotations': [{
+                            'type': 'word_info',
+                            'text': 'ignore',
+                            'start_offset': '0.400s',
+                            'end_offset': '0.500s',
+                        }],
+                    },
+                    {
+                        'type': 'text',
+                        'text': 'd\u00fcnya',
+                        'annotations': [{
+                            'type': 'word_info',
+                            'text': 'd\u00fcnya',
+                            'start_offset': '0.400s',
+                            'end_offset': '0.800s',
+                        }],
+                    },
+                ]
+                return _Response(interaction)
+            raise AssertionError('ElevenLabs must not run after an exact result')
+
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio-bytes')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'openai-key'),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'eleven-key',
+                ),
+                patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Merhaba d\u00fcnya',
+                )
+
+        self.assertEqual(calls, [
+            audio_qc.OPENAI_AUDIO_TRANSCRIPTIONS_URL,
+            audio_qc.GEMINI_INTERACTIONS_URL,
+        ])
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['provider'], 'gemini')
+        self.assertEqual(result['language_code'], 'tr-TR')
+        self.assertEqual(result['ending_word_time'], 0.8)
+        self.assertEqual(captured['headers'], {
+            'x-goog-api-key': 'gemini-key',
+            'Content-Type': 'application/json',
+        })
+        body = captured['json']
+        self.assertEqual(body['model'], 'gemini-3.5-transcribe')
+        self.assertIs(body['store'], False)
+        self.assertEqual(body['input'][0]['type'], 'audio')
+        self.assertEqual(body['input'][0]['mime_type'], 'audio/mpeg')
+        self.assertEqual(
+            base64.b64decode(body['input'][0]['data']),
+            b'audio-bytes',
+        )
+        self.assertEqual(body['generation_config'], {
+            'transcription_config': {
+                'language_codes': ['tr-TR'],
+                'mode': {
+                    'type': 'verbatim',
+                    'timestamp_granularities': ['word'],
+                },
+            },
+        })
+        self.assertNotIn('Merhaba', str(body))
+
+    def test_gemini_missing_word_annotations_falls_back_to_elevenlabs(self):
+        calls = []
+
+        def fake_post(url, **kwargs):
+            calls.append(url)
+            if url == audio_qc.GEMINI_INTERACTIONS_URL:
+                return _Response(_gemini_interaction('Beklenen anlat\u0131m'))
+            return _Response({
+                'text': 'Beklenen anlat\u0131m',
+                'language_code': 'tur',
+                'words': _words('Beklenen', 'anlat\u0131m'),
+            })
+
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'eleven-key',
+                ),
+                patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Beklenen anlat\u0131m',
+                )
+
+        self.assertEqual(calls, [
+            audio_qc.GEMINI_INTERACTIONS_URL,
+            audio_qc.ELEVENLABS_SPEECH_TO_TEXT_URL,
+        ])
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['provider'], 'elevenlabs')
+
+    def test_gemini_uses_only_last_model_output_then_falls_back(self):
+        interaction = _gemini_interaction('d\u00fcnya', 'd\u00fcnya')
+        interaction['steps'].insert(
+            0,
+            _gemini_interaction('Merhaba ', 'Merhaba')['steps'][0],
+        )
+        calls = []
+
+        def fake_post(url, **kwargs):
+            calls.append(url)
+            if url == audio_qc.GEMINI_INTERACTIONS_URL:
+                return _Response(interaction)
+            return _Response({
+                'text': 'Merhaba d\u00fcnya',
+                'language_code': 'tur',
+                'words': _words('Merhaba', 'd\u00fcnya'),
+            })
+
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(
+                    audio_qc.settings,
+                    'elevenlabs_api_key',
+                    'eleven-key',
+                ),
+                patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            ):
+                result = audio_qc.verify_audio_narration(
+                    audio_path,
+                    'Merhaba d\u00fcnya',
+                )
+
+        self.assertEqual(calls, [
+            audio_qc.GEMINI_INTERACTIONS_URL,
+            audio_qc.ELEVENLABS_SPEECH_TO_TEXT_URL,
+        ])
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['provider'], 'elevenlabs')
+
+    def test_gemini_model_output_error_rejects_exact_content(self):
+        interaction = _gemini_interaction(
+            'Merhaba d\u00fcnya',
+            'Merhaba',
+            'd\u00fcnya',
+        )
+        interaction['steps'][-1]['error'] = {
+            'message': 'do not expose this detail',
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Merhaba d\u00fcnya',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text reported an interaction error',
+        )
+        self.assertNotIn('do not expose', str(caught.exception))
+
+    def test_gemini_word_annotation_must_normalize_to_one_token(self):
+        interaction = _gemini_interaction('Merhaba d\u00fcnya')
+        interaction['steps'][0]['content'][0]['annotations'] = [{
+            'type': 'word_info',
+            'text': 'Merhaba d\u00fcnya',
+            'start_offset': '0.000s',
+            'end_offset': '0.800s',
+        }]
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Merhaba d\u00fcnya',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text returned invalid word annotations',
+        )
+
+    def test_gemini_inconsistent_word_annotations_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(_gemini_interaction(
+                        'Merhaba d\u00fcnya',
+                        'Merhaba',
+                        'yanl\u0131\u015f',
+                    )),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Merhaba d\u00fcnya',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text returned inconsistent word timestamps',
+        )
+
+    def test_gemini_http_error_does_not_expose_secret_response(self):
+        secret = 'never-leak-gemini-key-or-response'
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', secret),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(
+                        {'detail': f'unauthorized: {secret}'},
+                        status_code=401,
+                    ),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Beklenen anlat\u0131m',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text failed with HTTP 401',
+        )
+        self.assertNotIn(secret, str(caught.exception))
+
+    def test_gemini_transport_error_does_not_expose_exception_details(self):
+        secret = 'never-leak-gemini-transport-detail'
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    side_effect=RuntimeError(secret),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Beklenen anlat\u0131m',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text transport failed',
+        )
+        self.assertNotIn(secret, str(caught.exception))
+
+    def test_gemini_unsupported_file_fails_before_network(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.txt'
+            audio_path.write_bytes(b'not-audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(audio_qc.httpx, 'post') as post,
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Beklenen anlat\u0131m',
+                    )
+
+        post.assert_not_called()
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text audio format is unsupported',
+        )
+
+    def test_gemini_empty_file_fails_before_network(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(audio_qc.httpx, 'post') as post,
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Beklenen anlat\u0131m',
+                    )
+
+        post.assert_not_called()
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text audio input is empty',
+        )
+
+    def test_gemini_limit_plus_one_file_fails_before_network(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'12345')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(audio_qc, '_GEMINI_MAX_RAW_AUDIO_BYTES', 4),
+                patch.object(audio_qc.httpx, 'post') as post,
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Beklenen anlat\u0131m',
+                    )
+
+        post.assert_not_called()
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text inline audio exceeds the safe size limit',
+        )
+
+    def test_gemini_non_completed_status_fails_closed(self):
+        interaction = _gemini_interaction('Beklenen', 'Beklenen')
+        interaction['status'] = 'in_progress'
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(audio_path, 'Beklenen')
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text did not finish safely',
+        )
+
+    def test_gemini_malformed_duration_fails_closed(self):
+        interaction = _gemini_interaction('Beklenen', 'Beklenen')
+        annotation = interaction['steps'][0]['content'][0]['annotations'][0]
+        annotation['end_offset'] = 'not-a-duration'
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(audio_path, 'Beklenen')
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text returned invalid word annotations',
+        )
+
+    def test_gemini_nonmonotonic_word_annotations_fail_closed(self):
+        interaction = _gemini_interaction(
+            'Merhaba d\u00fcnya',
+            'Merhaba',
+            'd\u00fcnya',
+        )
+        second = interaction['steps'][0]['content'][0]['annotations'][1]
+        second['start_offset'] = '0.100s'
+        second['end_offset'] = '0.300s'
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Merhaba d\u00fcnya',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text returned incomplete word timestamps',
+        )
+
+    def test_gemini_final_word_end_must_be_positive(self):
+        interaction = _gemini_interaction('Beklenen', 'Beklenen')
+        annotation = interaction['steps'][0]['content'][0]['annotations'][0]
+        annotation['start_offset'] = '0s'
+        annotation['end_offset'] = '0s'
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response(interaction),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(audio_path, 'Beklenen')
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text returned invalid word annotations',
+        )
 
     def test_openai_transport_error_falls_back_to_elevenlabs(self):
         calls = []
@@ -505,8 +1052,9 @@ class AudioQCTests(unittest.TestCase):
         self.assertEqual(captured['files']['file'][2], 'audio/mpeg')
         self.assertEqual(captured['audio'], b'audio-bytes')
 
-    def test_both_provider_errors_raise_one_secret_safe_error(self):
+    def test_all_provider_errors_raise_one_secret_safe_error(self):
         openai_secret = 'never-leak-openai-key'
+        gemini_secret = 'never-leak-gemini-key'
         elevenlabs_secret = 'never-leak-elevenlabs-key'
 
         def fake_post(url, **kwargs):
@@ -514,6 +1062,11 @@ class AudioQCTests(unittest.TestCase):
                 return _Response(
                     {'detail': f'unauthorized: {openai_secret}'},
                     status_code=401,
+                )
+            if url == audio_qc.GEMINI_INTERACTIONS_URL:
+                return _Response(
+                    {'detail': f'forbidden: {gemini_secret}'},
+                    status_code=403,
                 )
             raise RuntimeError(f'network error: {elevenlabs_secret}')
 
@@ -525,6 +1078,11 @@ class AudioQCTests(unittest.TestCase):
                     audio_qc.settings,
                     'openai_api_key',
                     openai_secret,
+                ),
+                patch.object(
+                    audio_qc.settings,
+                    'gemini_api_key',
+                    gemini_secret,
                 ),
                 patch.object(
                     audio_qc.settings,
@@ -544,9 +1102,9 @@ class AudioQCTests(unittest.TestCase):
             'Audio QC transcription failed for all configured providers',
         )
         self.assertNotIn(openai_secret, str(caught.exception))
+        self.assertNotIn(gemini_secret, str(caught.exception))
         self.assertNotIn(elevenlabs_secret, str(caught.exception))
 
 
 if __name__ == '__main__':
     unittest.main()
-

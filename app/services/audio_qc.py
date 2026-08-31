@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 from difflib import SequenceMatcher
 import math
 import mimetypes
@@ -16,9 +17,39 @@ from app.config import settings
 OPENAI_AUDIO_TRANSCRIPTIONS_URL = (
     'https://api.openai.com/v1/audio/transcriptions'
 )
+GEMINI_INTERACTIONS_URL = (
+    'https://generativelanguage.googleapis.com/v1beta/interactions'
+)
 ELEVENLABS_SPEECH_TO_TEXT_URL = 'https://api.elevenlabs.io/v1/speech-to-text'
 _SPEECH_TO_TEXT_TIMEOUT = httpx.Timeout(180.0, connect=10.0)
 _APOSTROPHES = frozenset("'\u2018\u2019\u02bc\u0060\u00b4")
+# Gemini's inline request limit is 20 MB including base64 and JSON overhead.
+_GEMINI_MAX_RAW_AUDIO_BYTES = 14 * 1024 * 1024
+_GEMINI_TRANSCRIBE_MODEL = 'gemini-3.5-transcribe'
+_GEMINI_DURATION_PATTERN = re.compile(r'^(?:0|[1-9]\d*)(?:\.\d{1,9})?s$')
+_GEMINI_SUPPORTED_AUDIO_MIME_TYPES = frozenset({
+    'audio/aac',
+    'audio/aiff',
+    'audio/alaw',
+    'audio/flac',
+    'audio/l16',
+    'audio/m4a',
+    'audio/mp3',
+    'audio/mpeg',
+    'audio/mulaw',
+    'audio/ogg',
+    'audio/opus',
+    'audio/wav',
+    'audio/webm',
+})
+_GEMINI_AUDIO_MIME_ALIASES = {
+    'audio/mp4': 'audio/m4a',
+    'audio/x-aiff': 'audio/aiff',
+    'audio/x-flac': 'audio/flac',
+    'audio/x-m4a': 'audio/m4a',
+    'audio/x-wav': 'audio/wav',
+    'video/webm': 'audio/webm',
+}
 
 
 class AudioQCError(RuntimeError):
@@ -259,14 +290,168 @@ def _require_word_timing_evidence(
     result: dict[str, Any],
     provider_name: str,
 ) -> dict[str, Any]:
-    if str(result.get('transcript') or '').strip() and (
-        not result.get('word_timestamps')
-        or result.get('ending_word_time') is None
-    ):
-        raise AudioQCError(
-            f'{provider_name} speech-to-text returned incomplete word timestamps'
+    if str(result.get('transcript') or '').strip():
+        timestamps = result.get('word_timestamps')
+        invalid_timing = (
+            not isinstance(timestamps, list)
+            or not timestamps
+            or result.get('ending_word_time') is None
+            or float(result.get('ending_word_time') or 0.0) <= 0
         )
+        previous_start = -1.0
+        previous_end = -1.0
+        if isinstance(timestamps, list):
+            for item in timestamps:
+                start = item.get('start') if isinstance(item, dict) else None
+                end = item.get('end') if isinstance(item, dict) else None
+                if (
+                    start is None
+                    or end is None
+                    or end <= start
+                    or start < previous_start
+                    or end < previous_end
+                ):
+                    invalid_timing = True
+                    break
+                previous_start = start
+                previous_end = end
+        if invalid_timing:
+            raise AudioQCError(
+                f'{provider_name} speech-to-text returned incomplete word '
+                'timestamps'
+            )
+        mismatch_details = result.get('mismatch_details')
+        if (
+            not isinstance(mismatch_details, dict)
+            or mismatch_details.get('timestamp_sequence_match') is not True
+        ):
+            raise AudioQCError(
+                f'{provider_name} speech-to-text returned inconsistent word '
+                'timestamps'
+            )
     return result
+
+
+def _gemini_duration_seconds(value: Any) -> float | None:
+    if not isinstance(value, str) or not _GEMINI_DURATION_PATTERN.fullmatch(
+        value
+    ):
+        return None
+    return _finite_time(value[:-1])
+
+
+def _gemini_interaction_payload(response: Any) -> dict[str, Any]:
+    status_code = getattr(response, 'status_code', None)
+    if not isinstance(status_code, int) or not 200 <= status_code < 300:
+        safe_status = status_code if isinstance(status_code, int) else 'unknown'
+        raise AudioQCError(
+            f'Gemini speech-to-text failed with HTTP {safe_status}'
+        ) from None
+    try:
+        envelope = response.json()
+    except Exception:
+        raise AudioQCError(
+            'Gemini speech-to-text returned invalid JSON'
+        ) from None
+    if not isinstance(envelope, dict):
+        raise AudioQCError(
+            'Gemini speech-to-text returned an invalid response envelope'
+        )
+    if envelope.get('error') is not None:
+        raise AudioQCError(
+            'Gemini speech-to-text reported an interaction error'
+        )
+    if str(envelope.get('status') or '').casefold() != 'completed':
+        raise AudioQCError(
+            'Gemini speech-to-text did not finish safely'
+        )
+    steps = envelope.get('steps')
+    if not isinstance(steps, list):
+        raise AudioQCError(
+            'Gemini speech-to-text returned invalid word annotations'
+        )
+    model_output_steps: list[dict[str, Any]] = []
+    for step in steps:
+        if not isinstance(step, dict):
+            raise AudioQCError(
+                'Gemini speech-to-text returned invalid word annotations'
+            )
+        if step.get('type') == 'model_output':
+            model_output_steps.append(step)
+    if not model_output_steps:
+        raise AudioQCError(
+            'Gemini speech-to-text omitted its transcript'
+        )
+
+    model_output_step = model_output_steps[-1]
+    if model_output_step.get('error') is not None:
+        raise AudioQCError(
+            'Gemini speech-to-text reported an interaction error'
+        )
+    content = model_output_step.get('content')
+    if not isinstance(content, list):
+        raise AudioQCError(
+            'Gemini speech-to-text returned invalid word annotations'
+        )
+    transcript_parts: list[str] = []
+    normalized_words: list[dict[str, Any]] = []
+    for content_item in content:
+        if not isinstance(content_item, dict):
+            raise AudioQCError(
+                'Gemini speech-to-text returned invalid word annotations'
+            )
+        if content_item.get('type') != 'text':
+            continue
+        text = content_item.get('text')
+        if not isinstance(text, str):
+            raise AudioQCError(
+                'Gemini speech-to-text returned an invalid transcript'
+            )
+        transcript_parts.append(text)
+        annotations = content_item.get('annotations')
+        if annotations is None:
+            continue
+        if not isinstance(annotations, list):
+            raise AudioQCError(
+                'Gemini speech-to-text returned invalid word annotations'
+            )
+        for annotation in annotations:
+            if not isinstance(annotation, dict):
+                raise AudioQCError(
+                    'Gemini speech-to-text returned invalid word annotations'
+                )
+            if annotation.get('type') != 'word_info':
+                continue
+            word = annotation.get('text')
+            start = _gemini_duration_seconds(
+                annotation.get('start_offset')
+            )
+            end = _gemini_duration_seconds(annotation.get('end_offset'))
+            if (
+                not isinstance(word, str)
+                or not word.strip()
+                or len(_tokens(word)) != 1
+                or start is None
+                or end is None
+                or end <= start
+            ):
+                raise AudioQCError(
+                    'Gemini speech-to-text returned invalid word annotations'
+                )
+            normalized_words.append({
+                'word': word.strip(),
+                'start': start,
+                'end': end,
+            })
+    if not transcript_parts:
+        raise AudioQCError(
+            'Gemini speech-to-text omitted its transcript'
+        )
+    return {
+        'text': ''.join(transcript_parts),
+        'language_code': 'tr-TR',
+        'words': normalized_words,
+    }
 
 
 def _verify_with_openai(
@@ -307,6 +492,81 @@ def _verify_with_openai(
             provider='openai',
         ),
         'OpenAI',
+    )
+
+
+def _verify_with_gemini(
+    path: Path,
+    expected_narration: str,
+    api_key: str,
+) -> dict[str, Any]:
+    guessed_content_type = mimetypes.guess_type(path.name)[0] or ''
+    content_type = _GEMINI_AUDIO_MIME_ALIASES.get(
+        guessed_content_type,
+        guessed_content_type,
+    )
+    if content_type not in _GEMINI_SUPPORTED_AUDIO_MIME_TYPES:
+        raise AudioQCError(
+            'Gemini speech-to-text audio format is unsupported'
+        )
+    try:
+        audio_bytes = path.read_bytes()
+    except Exception:
+        raise AudioQCError(
+            'Gemini speech-to-text could not read the audio input'
+        ) from None
+    if not audio_bytes:
+        raise AudioQCError(
+            'Gemini speech-to-text audio input is empty'
+        )
+    if len(audio_bytes) > _GEMINI_MAX_RAW_AUDIO_BYTES:
+        raise AudioQCError(
+            'Gemini speech-to-text inline audio exceeds the safe size limit'
+        )
+
+    request_body = {
+        'model': _GEMINI_TRANSCRIBE_MODEL,
+        'input': [{
+            'type': 'audio',
+            'data': base64.b64encode(audio_bytes).decode('ascii'),
+            'mime_type': content_type,
+        }],
+        'store': False,
+        'generation_config': {
+            'transcription_config': {
+                'language_codes': ['tr-TR'],
+                'mode': {
+                    'type': 'verbatim',
+                    'timestamp_granularities': ['word'],
+                },
+            },
+        },
+    }
+    try:
+        response = httpx.post(
+            GEMINI_INTERACTIONS_URL,
+            headers={
+                'x-goog-api-key': api_key,
+                'Content-Type': 'application/json',
+            },
+            json=request_body,
+            timeout=_SPEECH_TO_TEXT_TIMEOUT,
+        )
+    except Exception:
+        raise AudioQCError(
+            'Gemini speech-to-text transport failed'
+        ) from None
+
+    payload = _gemini_interaction_payload(response)
+    return _require_word_timing_evidence(
+        compare_transcript(
+            expected_narration,
+            payload['text'],
+            language_code=payload.get('language_code'),
+            words=payload.get('words'),
+            provider='gemini',
+        ),
+        'Gemini',
     )
 
 
@@ -358,10 +618,11 @@ def verify_audio_narration(
 ) -> dict[str, Any]:
     """Transcribe an audio master and compare it with its spoken contract."""
     openai_api_key = str(getattr(settings, 'openai_api_key', '') or '')
+    gemini_api_key = str(getattr(settings, 'gemini_api_key', '') or '')
     elevenlabs_api_key = str(
         getattr(settings, 'elevenlabs_api_key', '') or ''
     )
-    if not openai_api_key and not elevenlabs_api_key:
+    if not openai_api_key and not gemini_api_key and not elevenlabs_api_key:
         return _unavailable_result()
 
     if not _tokens(expected_narration):
@@ -389,6 +650,20 @@ def verify_audio_narration(
                 return openai_result
             mismatch_results.append(openai_result)
 
+    if gemini_api_key:
+        try:
+            gemini_result = _verify_with_gemini(
+                path,
+                expected_narration,
+                gemini_api_key,
+            )
+        except AudioQCError as exc:
+            provider_errors.append(exc)
+        else:
+            if gemini_result['pass']:
+                return gemini_result
+            mismatch_results.append(gemini_result)
+
     if elevenlabs_api_key:
         try:
             elevenlabs_result = _verify_with_elevenlabs(
@@ -405,7 +680,7 @@ def verify_audio_narration(
 
     if mismatch_results:
         # Keep the most useful mismatch diagnosis. ``max`` preserves OpenAI
-        # on a score tie because it is evaluated first.
+        # and then Gemini on score ties because they are evaluated first.
         return max(
             mismatch_results,
             key=lambda result: float(result.get('score') or 0.0),
@@ -417,4 +692,3 @@ def verify_audio_narration(
     raise AudioQCError(
         'Audio QC transcription failed for all configured providers'
     ) from None
-
