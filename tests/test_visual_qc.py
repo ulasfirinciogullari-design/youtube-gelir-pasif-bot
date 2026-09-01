@@ -64,6 +64,8 @@ def _review(
         'prominent_readable_text_or_logo_visible': False,
         'major_visual_artifact_visible': False,
         'effectively_static_or_frozen': False,
+        'authored_identity_or_material_conflict_visible': False,
+        'manufactured_object_cues_visible': False,
         'evidence_moment_indices': (
             [moment] if evidence_moments is None else evidence_moments
         ),
@@ -247,6 +249,18 @@ class VisualQcProviderTests(unittest.TestCase):
             kwargs['system_instruction'],
         )
         self.assertIn(
+            'clearly molded, painted, sewn or deliberately stylized toy eyes',
+            kwargs['system_instruction'],
+        )
+        self.assertIn(
+            'woven fabric, plush pile or stitching',
+            kwargs['system_instruction'],
+        )
+        self.assertNotIn(
+            'anatomical eyes, gills, texture or suckers',
+            kwargs['system_instruction'],
+        )
+        self.assertIn(
             'Required scene IDs: [0]',
             kwargs['system_instruction'],
         )
@@ -293,9 +307,102 @@ class VisualQcProviderTests(unittest.TestCase):
             'prominent_readable_text_or_logo_visible',
             'major_visual_artifact_visible',
             'effectively_static_or_frozen',
+            'authored_identity_or_material_conflict_visible',
+            'manufactured_object_cues_visible',
         }.issubset(required_fields))
         self.assertEqual(result['missing_review_indices'], [])
         self.assertEqual(result['reviews'][0]['best_start_fraction'], 0.50)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_toy_scene_identity_conflict_or_missing_cues_is_hard_capped(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        toy_scene = [{
+            'narration': 'Bu Lego ahtapotu kıyıda bulundu.',
+            'ai_prompt': 'Small orange plastic toy octopus, no humans.',
+            'visual_queries': ['orange Lego octopus toy on wet sand'],
+        }]
+        gemini.side_effect = [
+            {'reviews': [_review(
+                score=96,
+                authored_identity_or_material_conflict_visible=True,
+                manufactured_object_cues_visible=True,
+            )]},
+            {'reviews': [_review(
+                score=96,
+                authored_identity_or_material_conflict_visible=False,
+                manufactured_object_cues_visible=False,
+            )]},
+        ]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            conflict = review_scene_visuals(
+                toy_scene,
+                self.visuals,
+                self.work / 'toy_conflict',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+            missing_cues = review_scene_visuals(
+                toy_scene,
+                self.visuals,
+                self.work / 'toy_missing_cues',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        for review in (conflict, missing_cues):
+            self.assertTrue(review['manufactured_replica_required'])
+            self.assertFalse(review['identity_gate_passed'])
+            self.assertFalse(review['editorial_gate_passed'])
+            self.assertEqual(review['raw_score'], 96)
+            self.assertEqual(review['score'], 40)
+        system_instruction = gemini.call_args_list[0].kwargs[
+            'system_instruction'
+        ]
+        self.assertIn(
+            'MANUFACTURED_REPLICA_REQUIRED_SCENE_IDS: [0]',
+            system_instruction,
+        )
+        self.assertIn(
+            'natural, live, dead or biological animal can never substitute',
+            system_instruction,
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_real_animal_scene_does_not_require_manufactured_cues(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        gemini.return_value = {'reviews': [_review(
+            score=92,
+            manufactured_object_cues_visible=False,
+        )]}
+        real_animal_scene = [{
+            'narration': 'Canlı ahtapot resifte yüzüyor.',
+            'ai_prompt': 'Wild octopus swimming in a natural reef.',
+            'visual_queries': ['wild octopus underwater'],
+        }]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                real_animal_scene,
+                self.visuals,
+                self.work / 'real_animal',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertFalse(review['manufactured_replica_required'])
+        self.assertTrue(review['identity_gate_passed'])
+        self.assertTrue(review['editorial_gate_passed'])
+        self.assertEqual(review['score'], 92)
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')

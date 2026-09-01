@@ -242,6 +242,10 @@ def _manual_review(score=68, **overrides):
         'retry_queries': ['closer literal action query'],
         'evidence_gate_passed': True,
         'editorial_gate_passed': True,
+        'identity_gate_passed': True,
+        'manufactured_replica_required': False,
+        'authored_identity_or_material_conflict_visible': False,
+        'manufactured_object_cues_visible': False,
         'subject_visible': True,
         'spoken_action_visible': True,
         'unexplained_reset': False,
@@ -409,12 +413,14 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             for field, bad_value in (
                 ('evidence_gate_passed', False),
                 ('editorial_gate_passed', False),
+                ('identity_gate_passed', False),
                 ('subject_visible', False),
                 ('spoken_action_visible', False),
                 ('unexplained_reset', True),
                 ('prominent_readable_text_or_logo_visible', True),
                 ('major_visual_artifact_visible', True),
                 ('effectively_static_or_frozen', True),
+                ('authored_identity_or_material_conflict_visible', True),
             ):
                 with self.subTest(spec=spec, field=field):
                     self.assertFalse(
@@ -430,12 +436,14 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             for missing_field in (
                 'evidence_gate_passed',
                 'editorial_gate_passed',
+                'identity_gate_passed',
                 'subject_visible',
                 'spoken_action_visible',
                 'unexplained_reset',
                 'prominent_readable_text_or_logo_visible',
                 'major_visual_artifact_visible',
                 'effectively_static_or_frozen',
+                'authored_identity_or_material_conflict_visible',
             ):
                 with self.subTest(spec=spec, missing_field=missing_field):
                     review = _manual_review(60)

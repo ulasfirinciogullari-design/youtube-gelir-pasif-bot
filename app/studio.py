@@ -10,7 +10,12 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
 from app.celery_app import celery
 from app.config import settings
-from app.tasks import plan_video_pipeline, run_video_pipeline
+from app.tasks import (
+    UnsupportedLanguageError,
+    normalize_pipeline_language,
+    plan_video_pipeline,
+    run_video_pipeline,
+)
 from app.services.studio_state import (
     create_job,
     get_job,
@@ -126,6 +131,10 @@ def _normalize_spec(
     subtitles: str,
     reference_url: str,
 ) -> dict:
+    try:
+        language = normalize_pipeline_language(language)
+    except UnsupportedLanguageError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from None
     mode = mode if mode in {'preview', 'production'} else 'preview'
     workflow = workflow if workflow in {'auto', 'storyboard'} else 'auto'
     content_style = content_style if content_style in STYLE_LABELS else 'documentary'
@@ -138,7 +147,7 @@ def _normalize_spec(
     return {
         'topic': topic.strip(),
         'duration_minutes': float(duration_minutes),
-        'language': language.strip() or 'tr',
+        'language': language,
         'channel_id': channel_id.strip() or None,
         'mode': mode,
         'workflow': workflow,

@@ -3,8 +3,13 @@ import json
 import math
 from pathlib import Path
 import re
+from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock
+
+import httpx
+
+from app.services.visual_identity import manufactured_replica_guardrail
 
 
 class FinalVisualQualityError(RuntimeError):
@@ -12,6 +17,22 @@ class FinalVisualQualityError(RuntimeError):
 
 
 class PreRunwayRetryableError(RuntimeError):
+    pass
+
+
+class FinalAudioQualityError(RuntimeError):
+    pass
+
+
+class VoiceQualityError(RuntimeError):
+    pass
+
+
+class VoiceScriptFitError(VoiceQualityError):
+    pass
+
+
+class UnsupportedLanguageError(ValueError):
     pass
 
 
@@ -35,6 +56,9 @@ def _load_prompt_functions():
         '_generated_visual_spec',
         '_render_target_duration',
         '_max_runway_scenes',
+        '_short_preview_voice_duration_qc',
+        '_synthesize_voice_candidate',
+        'normalize_pipeline_language',
     }
     definitions = [
         node
@@ -44,9 +68,33 @@ def _load_prompt_functions():
     namespace = {
         're': re,
         'math': math,
+        'json': json,
         'Path': Path,
         'FinalVisualQualityError': FinalVisualQualityError,
         'PreRunwayRetryableError': PreRunwayRetryableError,
+        'FinalAudioQualityError': FinalAudioQualityError,
+        'VoiceQualityError': VoiceQualityError,
+        'VoiceScriptFitError': VoiceScriptFitError,
+        'UnsupportedLanguageError': UnsupportedLanguageError,
+        'SUPPORTED_PIPELINE_LANGUAGES': frozenset({
+            'tr', 'en', 'de', 'es', 'ar',
+        }),
+        'httpx': httpx,
+        'time': SimpleNamespace(sleep=lambda _seconds: None),
+        'is_transient_voice_http_error': lambda exc: bool(
+            isinstance(exc, httpx.RequestError)
+            or (
+                isinstance(exc, httpx.HTTPStatusError)
+                and (
+                    exc.response.status_code in {408, 425, 429}
+                    or exc.response.status_code >= 500
+                )
+            )
+        ),
+        'voice_http_retry_delay_seconds': lambda _exc, _retry_index: 0.0,
+        'MAX_AUDIO_GENERATION_ATTEMPTS': 3,
+        'synthesize_scene_sequence': None,
+        'manufactured_replica_guardrail': manufactured_replica_guardrail,
         'preview_paid_ai_limit': lambda options, scene_count, duration: (
             min(
                 1 if (options.get('visual_mix') or 'balanced') == 'real_first' else 4,
@@ -76,6 +124,9 @@ def _load_prompt_functions():
         namespace['_generated_visual_spec'],
         namespace['_render_target_duration'],
         namespace['_max_runway_scenes'],
+        namespace['_short_preview_voice_duration_qc'],
+        namespace['_synthesize_voice_candidate'],
+        namespace['normalize_pipeline_language'],
     )
 
 
@@ -91,12 +142,185 @@ def _load_prompt_functions():
     generated_visual_spec,
     render_target_duration,
     max_runway_scenes,
+    short_preview_voice_duration_qc,
+    synthesize_voice_candidate,
+    normalize_pipeline_language,
 ) = (
     _load_prompt_functions()
 )
 
 
 class RunwayPromptTests(unittest.TestCase):
+    def test_pipeline_language_is_validated_before_provider_work(self):
+        for language in ('tr', 'en', 'de', 'es', 'ar', ' TR '):
+            with self.subTest(language=language):
+                self.assertIn(
+                    normalize_pipeline_language(language),
+                    {'tr', 'en', 'de', 'es', 'ar'},
+                )
+        for language in ('fr', 'xx', 'en-US', ''):
+            with self.subTest(language=language):
+                with self.assertRaises(UnsupportedLanguageError):
+                    normalize_pipeline_language(language)
+
+    def test_short_preview_voice_duration_gate_rejects_thin_script(self):
+        self.assertTrue(short_preview_voice_duration_qc(
+            {'duration_after_fit': 29.5},
+            30.0,
+        )['pass'])
+        rejected = short_preview_voice_duration_qc(
+            {'duration_after_fit': 27.0},
+            30.0,
+        )
+        self.assertFalse(rejected['pass'])
+        self.assertEqual(rejected['reason'], 'short_form_script_too_thin')
+        self.assertFalse(rejected['retryable'])
+        self.assertEqual(rejected['minimum_seconds'], 29.3)
+
+        near_boundary = short_preview_voice_duration_qc(
+            {'duration_after_fit': 29.0},
+            30.0,
+        )
+        self.assertFalse(near_boundary['pass'])
+        self.assertTrue(near_boundary['retryable'])
+
+    def test_voice_synthesis_quality_retries_use_three_distinct_seeds(self):
+        calls = []
+
+        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+            calls.append(generation_attempt)
+            if generation_attempt < 2:
+                raise VoiceQualityError('alignment defect')
+            return {'path': 'voice.mp3'}
+
+        globals_dict = synthesize_voice_candidate.__globals__
+        previous = globals_dict['synthesize_scene_sequence']
+        globals_dict['synthesize_scene_sequence'] = synthesize
+        try:
+            result = synthesize_voice_candidate([], 'job', 30.0)
+        finally:
+            globals_dict['synthesize_scene_sequence'] = previous
+
+        self.assertEqual(calls, [0, 1, 2])
+        self.assertEqual(result['_generation_attempt'], 2)
+        self.assertEqual(result['_generation_attempts_used'], 3)
+        self.assertEqual(len(result['_synthesis_quality_errors']), 2)
+
+    def test_voice_synthesis_quality_exhaustion_is_terminal(self):
+        calls = []
+
+        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+            calls.append(generation_attempt)
+            raise VoiceQualityError('deterministic fit defect')
+
+        globals_dict = synthesize_voice_candidate.__globals__
+        previous = globals_dict['synthesize_scene_sequence']
+        globals_dict['synthesize_scene_sequence'] = synthesize
+        try:
+            with self.assertRaises(FinalAudioQualityError):
+                synthesize_voice_candidate([], 'job', 30.0)
+        finally:
+            globals_dict['synthesize_scene_sequence'] = previous
+
+        self.assertEqual(calls, [0, 1, 2])
+
+    def test_voice_structural_fit_error_is_terminal_without_seed_retry(self):
+        calls = []
+
+        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+            calls.append(generation_attempt)
+            raise VoiceScriptFitError('script is structurally too long')
+
+        globals_dict = synthesize_voice_candidate.__globals__
+        previous = globals_dict['synthesize_scene_sequence']
+        globals_dict['synthesize_scene_sequence'] = synthesize
+        try:
+            with self.assertRaises(FinalAudioQualityError):
+                synthesize_voice_candidate([], 'job', 30.0)
+        finally:
+            globals_dict['synthesize_scene_sequence'] = previous
+
+        self.assertEqual(calls, [0])
+
+    def test_transient_voice_provider_error_consumes_same_three_attempt_budget(self):
+        calls = []
+        request = httpx.Request('POST', 'https://voice.example.invalid')
+        response = httpx.Response(429, request=request)
+
+        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+            calls.append(generation_attempt)
+            raise httpx.HTTPStatusError(
+                'rate limited',
+                request=request,
+                response=response,
+            )
+
+        globals_dict = synthesize_voice_candidate.__globals__
+        previous = globals_dict['synthesize_scene_sequence']
+        globals_dict['synthesize_scene_sequence'] = synthesize
+        try:
+            with self.assertRaises(FinalAudioQualityError):
+                synthesize_voice_candidate([], 'job', 30.0)
+        finally:
+            globals_dict['synthesize_scene_sequence'] = previous
+
+        self.assertEqual(calls, [0, 1, 2])
+
+    def test_long_form_exhausted_scene_retry_never_restarts_full_batch(self):
+        calls = []
+        request = httpx.Request('POST', 'https://voice.example.invalid')
+        response = httpx.Response(429, request=request)
+
+        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+            calls.append(generation_attempt)
+            raise httpx.HTTPStatusError(
+                'rate limited',
+                request=request,
+                response=response,
+            )
+
+        globals_dict = synthesize_voice_candidate.__globals__
+        previous = globals_dict['synthesize_scene_sequence']
+        globals_dict['synthesize_scene_sequence'] = synthesize
+        try:
+            with self.assertRaises(FinalAudioQualityError):
+                synthesize_voice_candidate([], 'job', 60.0)
+        finally:
+            globals_dict['synthesize_scene_sequence'] = previous
+
+        self.assertEqual(calls, [0])
+
+    def test_toy_replica_prompt_keeps_manufactured_identity_guardrail(self):
+        prompt = runway_prompt(
+            {
+                'narration': 'Bu Lego ahtapotu kıyıda bulundu.',
+                'ai_prompt': (
+                    'Small vintage orange plastic toy octopus on wet sand, '
+                    'no humans. ' * 30
+                ),
+                'visual_queries': ['orange Lego octopus toy Cornwall beach'],
+            },
+            {'retry_queries': ['weathered orange toy on wet sand']},
+        )
+
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 1000)
+        self.assertIn('MANUFACTURED IDENTITY', prompt)
+        self.assertIn('Require 2+ clear manufactured cues', prompt)
+        self.assertIn('Never a live or dead biological original', prompt)
+        self.assertIn('no person, human or hand', prompt)
+
+    def test_real_animal_scene_does_not_receive_replica_guardrail(self):
+        prompt = runway_prompt(
+            {
+                'narration': 'Canlı ahtapot kayalıkların arasında yüzüyor.',
+                'ai_prompt': 'Wild octopus swimming through a natural reef.',
+                'visual_queries': ['wild octopus underwater reef'],
+            },
+            None,
+        )
+
+        self.assertNotIn('MANUFACTURED IDENTITY', prompt)
+
     def test_scene_duration_buys_enough_single_pass_footage(self):
         self.assertEqual(runway_generation_seconds(9.108), 10)
         self.assertEqual(runway_generation_seconds(8.986), 10)
@@ -216,19 +440,48 @@ class RunwayPromptTests(unittest.TestCase):
         ).read_text(encoding='utf-8')
 
         audio_gate = source.index('audio_qc = verify_audio_narration(')
+        prosody_gate = source.index('audio_prosody_qc = verify_audio_prosody(')
         audio_rejection = source.index(
-            'raise FinalAudioQualityError('
+            'raise FinalAudioQualityError(',
+            audio_gate,
         )
         initial_runway_loop = source.index(
             'for candidate in selected_runway:'
         )
 
         self.assertLess(audio_gate, audio_rejection)
+        self.assertLess(prosody_gate, audio_rejection)
         self.assertLess(audio_rejection, initial_runway_loop)
         self.assertIn('MAX_AUDIO_GENERATION_ATTEMPTS = 3', source)
         self.assertIn('generation_attempt=generation_attempt', source)
         self.assertIn("'audio_generation_attempts': audio_generation_attempts", source)
         self.assertIn("'audio_qc': audio_qc", source)
+        self.assertIn("'audio_prosody_qc': audio_prosody_qc", source)
+        self.assertIn("'audio_qc_retry_history': audio_qc_retry_history", source)
+        self.assertIn(
+            "str(language or '').lower().startswith('tr')",
+            source,
+        )
+        self.assertIn(
+            "'reason': 'not_applicable_non_turkish_or_long_form'",
+            source,
+        )
+        self.assertIn(
+            "audio_duration_qc.get('retryable') is True",
+            source,
+        )
+        self.assertIn(
+            "and audio_qc.get('available') is True",
+            source,
+        )
+        self.assertIn(
+            "and audio_duration_qc.get('available') is True",
+            source,
+        )
+        self.assertIn(
+            "'selected_audio_generation_attempt': (",
+            source,
+        )
         self.assertIn("audio_mismatch.get('operations')", source)
         self.assertNotIn(
             "(audio_qc.get('mismatch_details') or [])[:6]",

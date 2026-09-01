@@ -108,9 +108,9 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
             run.call_args.args[0],
         )
 
-    def test_short_preview_uses_clearer_deliberate_voice_speed(self):
-        self.assertEqual(_voice_speed(30), 0.92)
-        self.assertEqual(_voice_speed(40), 0.92)
+    def test_short_preview_uses_natural_default_voice_speed(self):
+        self.assertEqual(_voice_speed(30), 1.0)
+        self.assertEqual(_voice_speed(40), 1.0)
         self.assertEqual(_voice_speed(60), 1.01)
         self.assertEqual(_voice_speed(None), 1.01)
 
@@ -147,35 +147,52 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertAlmostEqual(sum(durations), 29.50, places=6)
         self.assertIn(f'atempo={rate:.6f}', run.call_args.args[0])
 
-    def test_short_preview_rejects_out_of_range_tempo_in_both_directions(self):
-        cases = [
-            (27.0, '0.915x'),
-            (33.2, '1.125x'),
-        ]
+    def test_short_preview_never_stretches_an_under_length_voice(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'raw')
+            with (
+                patch.object(
+                    voice_module,
+                    '_media_duration',
+                    return_value=27.0,
+                ),
+                patch.object(voice_module.subprocess, 'run') as run,
+            ):
+                durations, before, after, rate = _fit_duration(
+                    output,
+                    [27.0],
+                    30.0,
+                )
+                unchanged = output.read_bytes()
 
-        for measured_duration, expected_rate in cases:
-            with self.subTest(measured_duration=measured_duration):
-                with tempfile.TemporaryDirectory() as tmp:
-                    output = Path(tmp) / 'voice.mp3'
-                    output.write_bytes(b'raw')
-                    with (
-                        patch.object(
-                            voice_module,
-                            '_media_duration',
-                            return_value=measured_duration,
-                        ),
-                        patch.object(
-                            voice_module.subprocess,
-                            'run',
-                        ) as run,
-                    ):
-                        with self.assertRaisesRegex(
-                            RuntimeError,
-                            expected_rate,
-                        ):
-                            _fit_duration(output, [measured_duration], 30.0)
-                        run.assert_not_called()
-                        self.assertEqual(output.read_bytes(), b'raw')
+        run.assert_not_called()
+        self.assertEqual(durations, [27.0])
+        self.assertEqual((before, after, rate), (27.0, 27.0, 1.0))
+        self.assertEqual(unchanged, b'raw')
+
+    def test_short_preview_rejects_excessive_compression(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'raw')
+            with (
+                patch.object(
+                    voice_module,
+                    '_media_duration',
+                    return_value=33.2,
+                ),
+                patch.object(voice_module.subprocess, 'run') as run,
+            ):
+                with self.assertRaisesRegex(RuntimeError, '1.125x'):
+                    _fit_duration(output, [33.2], 30.0)
+        run.assert_not_called()
+
+    def test_intermediate_scene_does_not_gain_unwritten_terminal_pause(self):
+        self.assertEqual(
+            normalize_turkish_tts('Bir', ensure_terminal=False),
+            'Bir',
+        )
+        self.assertEqual(normalize_turkish_tts('Son'), 'Son.')
 
     def test_continuous_narration_join_retains_exact_scene_spans(self):
         narration, spans = _join_scene_narration([
@@ -402,8 +419,8 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
 
     def test_short_preview_uses_one_continuous_timestamp_take(self):
         scenes = [
-            {'narration': 'Bir'},
-            {'narration': 'İki'},
+            {'narration': 'Bir.'},
+            {'narration': 'İki.'},
         ]
         narration = 'Bir. İki.'
         alignment = {
@@ -478,7 +495,7 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         timestamp_synthesis.assert_called_once_with(
             narration,
             'voice-id',
-            speed=0.92,
+            speed=1.0,
             seed=expected_seed,
         )
         segmented_synthesis.assert_not_called()
@@ -523,6 +540,123 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertNotEqual(initial, next_attempt)
         self.assertNotEqual(initial, next_scene)
         self.assertTrue(0 <= initial <= 4_294_967_295)
+
+    def test_long_form_transient_retry_reuses_same_scene_seed(self):
+        request = voice_module.httpx.Request(
+            'POST',
+            'https://voice.example.invalid',
+        )
+        response = voice_module.httpx.Response(
+            429,
+            request=request,
+            headers={'Retry-After': '0'},
+        )
+        error = voice_module.httpx.HTTPStatusError(
+            'rate limited',
+            request=request,
+            response=response,
+        )
+        source_texts = ['Birinci sahne.', 'İkinci sahne.', 'Üçüncü sahne.']
+        with tempfile.TemporaryDirectory() as tmp:
+            chunk = Path(tmp) / 'scene_001.mp3'
+            with (
+                patch.object(
+                    voice_module,
+                    'synthesize_voice_with_id',
+                    side_effect=[error, b'voice-bytes'],
+                ) as synthesize,
+                patch.object(voice_module, '_media_duration', return_value=1.25),
+                patch.object(voice_module.time, 'sleep') as sleep,
+            ):
+                result = voice_module._synthesize_long_form_scene(
+                    1,
+                    source_texts,
+                    chunk,
+                    'voice-id',
+                    1.01,
+                    2,
+                )
+
+        self.assertEqual(result, (1, 1.25))
+        self.assertEqual(synthesize.call_count, 2)
+        self.assertEqual(
+            synthesize.call_args_list[0].kwargs['seed'],
+            synthesize.call_args_list[1].kwargs['seed'],
+        )
+        sleep.assert_called_once_with(0.0)
+
+    def test_long_form_scene_retry_is_bounded_and_nontransient_is_immediate(self):
+        source_texts = ['Tek sahne.']
+        request = voice_module.httpx.Request(
+            'POST',
+            'https://voice.example.invalid',
+        )
+        transient_response = voice_module.httpx.Response(
+            503,
+            request=request,
+        )
+        transient = voice_module.httpx.HTTPStatusError(
+            'unavailable',
+            request=request,
+            response=transient_response,
+        )
+        auth_response = voice_module.httpx.Response(401, request=request)
+        auth = voice_module.httpx.HTTPStatusError(
+            'unauthorized',
+            request=request,
+            response=auth_response,
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            chunk = Path(tmp) / 'scene.mp3'
+            with (
+                patch.object(
+                    voice_module,
+                    'synthesize_voice_with_id',
+                    side_effect=[transient, transient, transient],
+                ) as transient_synthesis,
+                patch.object(voice_module.time, 'sleep') as transient_sleep,
+            ):
+                with self.assertRaises(voice_module.httpx.HTTPStatusError):
+                    voice_module._synthesize_long_form_scene(
+                        0, source_texts, chunk, 'voice-id', 1.01, 0
+                    )
+            self.assertEqual(transient_synthesis.call_count, 3)
+            self.assertEqual(transient_sleep.call_count, 2)
+
+            with (
+                patch.object(
+                    voice_module,
+                    'synthesize_voice_with_id',
+                    side_effect=auth,
+                ) as auth_synthesis,
+                patch.object(voice_module.time, 'sleep') as auth_sleep,
+            ):
+                with self.assertRaises(voice_module.httpx.HTTPStatusError):
+                    voice_module._synthesize_long_form_scene(
+                        0, source_texts, chunk, 'voice-id', 1.01, 0
+                    )
+            self.assertEqual(auth_synthesis.call_count, 1)
+            auth_sleep.assert_not_called()
+
+    def test_voice_retry_after_is_bounded(self):
+        request = voice_module.httpx.Request(
+            'POST',
+            'https://voice.example.invalid',
+        )
+        response = voice_module.httpx.Response(
+            429,
+            request=request,
+            headers={'Retry-After': '30'},
+        )
+        error = voice_module.httpx.HTTPStatusError(
+            'rate limited',
+            request=request,
+            response=response,
+        )
+        self.assertEqual(
+            voice_module.voice_http_retry_delay_seconds(error, 0),
+            8.0,
+        )
 
     def test_qr_code_phrases_do_not_duplicate_code_word(self):
         cases = {

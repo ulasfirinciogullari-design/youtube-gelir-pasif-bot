@@ -1044,22 +1044,30 @@ def _scene_count_matches(
     )
 
 
-def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
+def _target_word_budget(
+    duration_minutes: float,
+    *,
+    allow_legacy_short_lock: bool = False,
+) -> tuple[int, int, int]:
     if duration_minutes <= 0.6:
-        target = max(44, int(round(duration_minutes * 96)))
+        target = max(52, int(round(duration_minutes * 112)))
     elif duration_minutes <= 1.1:
         target = 82
     elif duration_minutes <= 3.1:
         target = int(round(duration_minutes * 92))
     else:
         target = int(round(duration_minutes * 100))
-    # Keep the 30-second narrator natural: concise 40-word scripts are safer
-    # than accepting the post-synthesis tempo distortion rejected downstream.
+    # New short scripts must fill natural 1.0x speech. Exact legacy narration
+    # locks remain eligible for an honest synthesized-duration check; the
+    # worker rejects an under-length lock instead of silently time-stretching.
+    short_minimum_ratio = 0.71 if allow_legacy_short_lock else 0.93
     minimum = max(
         30,
-        int(round(target * (0.83 if duration_minutes <= 0.6 else 0.86))),
+        int(round(target * (
+            short_minimum_ratio if duration_minutes <= 0.6 else 0.86
+        ))),
     )
-    maximum = max(minimum + 4, int(round(target * 1.06)))
+    maximum = max(minimum + 4, int(round(target * 1.07)))
     return target, minimum, maximum
 
 
@@ -1398,6 +1406,7 @@ def _repair_short_stock_scenes(
     content_style: str = 'documentary',
     allow_natural_language_repair: bool = True,
     allow_explicit_brief_repair: bool = True,
+    allow_legacy_short_budget: bool = True,
 ) -> dict:
     if duration_minutes > 0.6:
         return package
@@ -1481,7 +1490,10 @@ def _repair_short_stock_scenes(
         }
 
     target_total_words, minimum_total_words, maximum_total_words = (
-        _target_word_budget(duration_minutes)
+        _target_word_budget(
+            duration_minutes,
+            allow_legacy_short_lock=allow_legacy_short_budget,
+        )
     )
     minimum_scene_words = 5
     maximum_scene_words = 11
@@ -2728,7 +2740,10 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     )
     options = dict(options or package.get('studio_options') or {})
     pace_profile = str(options.get('pace') or 'balanced')
-    target_words, min_words, max_words = _target_word_budget(duration_minutes)
+    target_words, min_words, max_words = _target_word_budget(
+        duration_minutes,
+        allow_legacy_short_lock=exact_narration is not None,
+    )
     exact_scene_count = immutable_scene_count is not None
     target_scenes = (
         immutable_scene_count
@@ -2914,6 +2929,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 content_style=str(
                     options.get('content_style') or 'documentary'
                 ),
+                allow_legacy_short_budget=(exact_narration is not None),
             )
         except _WholeStoryRepairRequired as exc:
             if isinstance(exc, _NaturalSpokenLanguageRepairRequired):
@@ -3026,6 +3042,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 ),
                 allow_natural_language_repair=False,
                 allow_explicit_brief_repair=False,
+                allow_legacy_short_budget=(exact_narration is not None),
             )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])

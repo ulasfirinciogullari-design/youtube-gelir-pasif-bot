@@ -5,6 +5,7 @@ import hashlib
 import math
 import re
 import subprocess
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import httpx
 import redis
@@ -24,6 +25,14 @@ _SHORT_PREVIEW_BOUNDARY_BREATH_SIDE = 0.18
 _SHORT_PREVIEW_LONG_TAIL = 0.28
 _SHORT_PREVIEW_RETAINED_TAIL = 0.20
 _SHORT_PREVIEW_COMPACTION_TOLERANCE = 0.18
+
+
+class VoiceQualityError(RuntimeError):
+    """A bounded synthesized-voice defect that may use a different seed."""
+
+
+class VoiceScriptFitError(VoiceQualityError):
+    """A structural script-duration mismatch that a new seed cannot repair."""
 
 
 def _headers() -> dict[str, str]:
@@ -117,14 +126,18 @@ _TURKISH_PRONUNCIATION_RULES = [
 ]
 
 
-def normalize_turkish_tts(text: str) -> str:
+def normalize_turkish_tts(
+    text: str,
+    *,
+    ensure_terminal: bool = True,
+) -> str:
     text = (text or '').strip()
     for pattern, replacement in _TURKISH_PRONUNCIATION_RULES:
         text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
     text = re.sub(r'\s+([,.;:!?])', r'\1', text)
     text = re.sub(r'([,.;:!?])(?=\S)', r'\1 ', text)
     text = re.sub(r'\s{2,}', ' ', text).strip()
-    if text and text[-1] not in '.!?…':
+    if ensure_terminal and text and text[-1] not in '.!?…':
         text += '.'
     return text
 
@@ -135,8 +148,8 @@ def _media_duration(path: str | Path) -> float:
 
 
 def _voice_speed(target_seconds: float | None = None) -> float:
-    """Keep short Turkish previews clear while avoiding post-render tempo warping."""
-    return 0.92 if target_seconds and target_seconds <= 40 else 1.01
+    """Use ElevenLabs' natural speed for short Turkish previews."""
+    return 1.0 if target_seconds and target_seconds <= 40 else 1.01
 
 
 def _voice_request_body(
@@ -211,28 +224,39 @@ def synthesize_voice_with_timestamps(
         timeout=180,
     )
     response.raise_for_status()
-    payload = response.json()
+    try:
+        payload = response.json()
+    except ValueError:
+        raise VoiceQualityError(
+            'ElevenLabs timestamp response is not valid JSON'
+        ) from None
     if not isinstance(payload, dict):
-        raise RuntimeError('ElevenLabs timestamp response is not a JSON object')
+        raise VoiceQualityError(
+            'ElevenLabs timestamp response is not a JSON object'
+        )
     encoded_audio = payload.get('audio_base64')
     alignment = payload.get('alignment')
     if not isinstance(encoded_audio, str) or not encoded_audio:
-        raise RuntimeError('ElevenLabs timestamp response is missing audio')
+        raise VoiceQualityError('ElevenLabs timestamp response is missing audio')
     if not isinstance(alignment, dict):
-        raise RuntimeError('ElevenLabs timestamp response is missing source alignment')
+        raise VoiceQualityError(
+            'ElevenLabs timestamp response is missing source alignment'
+        )
     try:
         audio = base64.b64decode(encoded_audio, validate=True)
     except (ValueError, binascii.Error) as exc:
-        raise RuntimeError('ElevenLabs timestamp response contains invalid audio') from exc
+        raise VoiceQualityError(
+            'ElevenLabs timestamp response contains invalid audio'
+        ) from exc
     if not audio:
-        raise RuntimeError('ElevenLabs timestamp response contains empty audio')
+        raise VoiceQualityError('ElevenLabs timestamp response contains empty audio')
     return audio, alignment
 
 
 def _join_scene_narration(spoken: list[str]) -> tuple[str, list[tuple[int, int]]]:
     """Join normalized scenes once while retaining exact character spans."""
     if not spoken or not all(spoken):
-        raise RuntimeError('One or more scenes are missing narration')
+        raise VoiceScriptFitError('One or more scenes are missing narration')
     spans: list[tuple[int, int]] = []
     cursor = 0
     for index, text in enumerate(spoken):
@@ -254,39 +278,55 @@ def _scene_durations_from_alignment(
     characters = alignment.get('characters')
     end_times = alignment.get('character_end_times_seconds')
     if not isinstance(characters, list) or not isinstance(end_times, list):
-        raise RuntimeError('ElevenLabs source alignment is incomplete')
+        raise VoiceQualityError('ElevenLabs source alignment is incomplete')
     if len(characters) != len(end_times) or not characters:
-        raise RuntimeError('ElevenLabs source alignment lengths do not match')
+        raise VoiceQualityError(
+            'ElevenLabs source alignment lengths do not match'
+        )
     if not all(isinstance(character, str) for character in characters):
-        raise RuntimeError('ElevenLabs source alignment contains invalid characters')
+        raise VoiceQualityError(
+            'ElevenLabs source alignment contains invalid characters'
+        )
     if ''.join(characters) != narration:
-        raise RuntimeError('ElevenLabs source alignment does not match narration')
+        raise VoiceQualityError(
+            'ElevenLabs source alignment does not match narration'
+        )
 
     numeric_end_times: list[float] = []
     for value in end_times:
         if isinstance(value, bool) or not isinstance(value, (int, float)):
-            raise RuntimeError('ElevenLabs source alignment contains invalid timing')
+            raise VoiceQualityError(
+                'ElevenLabs source alignment contains invalid timing'
+            )
         timing = float(value)
         if not math.isfinite(timing) or timing < 0:
-            raise RuntimeError('ElevenLabs source alignment contains invalid timing')
+            raise VoiceQualityError(
+                'ElevenLabs source alignment contains invalid timing'
+            )
         if numeric_end_times and timing < numeric_end_times[-1]:
-            raise RuntimeError('ElevenLabs source alignment timing is not monotonic')
+            raise VoiceQualityError(
+                'ElevenLabs source alignment timing is not monotonic'
+            )
         numeric_end_times.append(timing)
 
     if not math.isfinite(media_duration) or media_duration <= 0:
-        raise RuntimeError('Continuous narration has invalid media duration')
+        raise VoiceQualityError('Continuous narration has invalid media duration')
     if numeric_end_times[-1] > media_duration + 0.25:
-        raise RuntimeError('ElevenLabs source alignment exceeds narration duration')
+        raise VoiceQualityError(
+            'ElevenLabs source alignment exceeds narration duration'
+        )
 
     boundaries: list[float] = []
     previous_end = -1
     for index, (start, end) in enumerate(spans):
         if start < 0 or end <= start or end > len(narration):
-            raise RuntimeError('Narration scene span is invalid')
+            raise VoiceQualityError('Narration scene span is invalid')
         if index == 0 and start != 0:
-            raise RuntimeError('Narration scene spans do not start at zero')
+            raise VoiceQualityError(
+                'Narration scene spans do not start at zero'
+            )
         if index and start != previous_end + 1:
-            raise RuntimeError('Narration scene spans are not contiguous')
+            raise VoiceQualityError('Narration scene spans are not contiguous')
         previous_end = end
         boundary = (
             media_duration
@@ -294,12 +334,14 @@ def _scene_durations_from_alignment(
             else numeric_end_times[end - 1]
         )
         if boundaries and boundary <= boundaries[-1]:
-            raise RuntimeError('Narration scene timing is not increasing')
+            raise VoiceQualityError('Narration scene timing is not increasing')
         if not boundaries and boundary <= 0:
-            raise RuntimeError('Narration scene timing is not increasing')
+            raise VoiceQualityError('Narration scene timing is not increasing')
         boundaries.append(boundary)
     if not boundaries or previous_end != len(narration):
-        raise RuntimeError('Narration scene spans do not cover the source text')
+        raise VoiceQualityError(
+            'Narration scene spans do not cover the source text'
+        )
 
     durations: list[float] = []
     cursor = 0.0
@@ -331,9 +373,13 @@ def _short_preview_audio_edit_plan(
     raw_starts = alignment.get('character_start_times_seconds')
     raw_ends = alignment.get('character_end_times_seconds')
     if not isinstance(raw_starts, list) or not isinstance(raw_ends, list):
-        raise RuntimeError('ElevenLabs source alignment is missing start timing')
+        raise VoiceQualityError(
+            'ElevenLabs source alignment is missing start timing'
+        )
     if len(raw_starts) != len(narration) or len(raw_ends) != len(narration):
-        raise RuntimeError('ElevenLabs source alignment lengths do not match')
+        raise VoiceQualityError(
+            'ElevenLabs source alignment lengths do not match'
+        )
 
     starts: list[float] = []
     ends: list[float] = []
@@ -344,7 +390,7 @@ def _short_preview_audio_edit_plan(
             or isinstance(raw_end, bool)
             or not isinstance(raw_end, (int, float))
         ):
-            raise RuntimeError(
+            raise VoiceQualityError(
                 'ElevenLabs source alignment contains invalid timing'
             )
         start = float(raw_start)
@@ -357,7 +403,7 @@ def _short_preview_audio_edit_plan(
             or (starts and start < starts[-1])
             or (ends and end < ends[-1])
         ):
-            raise RuntimeError(
+            raise VoiceQualityError(
                 'ElevenLabs source alignment timing is not monotonic'
             )
         starts.append(start)
@@ -376,7 +422,9 @@ def _short_preview_audio_edit_plan(
         for index in indices:
             if narration[index].isalnum():
                 return index
-        raise RuntimeError('Narration scene is missing a spoken character')
+        raise VoiceQualityError(
+            'Narration scene is missing a spoken character'
+        )
 
     for scene_index in range(len(spans) - 1):
         previous_end_index = lexical_index(
@@ -390,13 +438,15 @@ def _short_preview_audio_edit_plan(
         previous_end = ends[previous_end_index]
         next_start = starts[next_start_index]
         if next_start + 0.02 < previous_end:
-            raise RuntimeError('ElevenLabs scene alignment overlaps')
+            raise VoiceQualityError('ElevenLabs scene alignment overlaps')
         gap = max(0.0, next_start - previous_end)
         if gap > _SHORT_PREVIEW_LONG_BOUNDARY_PAUSE:
             cut_start = previous_end + _SHORT_PREVIEW_BOUNDARY_BREATH_SIDE
             cut_end = next_start - _SHORT_PREVIEW_BOUNDARY_BREATH_SIDE
             if cut_end <= cut_start:
-                raise RuntimeError('ElevenLabs boundary pause cannot be compacted')
+                raise VoiceQualityError(
+                    'ElevenLabs boundary pause cannot be compacted'
+                )
             cuts.append((cut_start, cut_end))
             raw_boundaries.append(cut_start)
             interior_pause_count += 1
@@ -422,7 +472,9 @@ def _short_preview_audio_edit_plan(
             not 0 <= cut_start < cut_end <= media_duration
             or cut_start < previous_cut_end
         ):
-            raise RuntimeError('Short-preview audio edit plan is invalid')
+            raise VoiceQualityError(
+                'Short-preview audio edit plan is invalid'
+            )
         previous_cut_end = cut_end
 
     def removed_before(boundary: float) -> float:
@@ -440,7 +492,7 @@ def _short_preview_audio_edit_plan(
     cursor = 0.0
     for boundary in adjusted_boundaries:
         if boundary <= cursor:
-            raise RuntimeError(
+            raise VoiceQualityError(
                 'Compacted narration scene timing is not increasing'
             )
         durations.append(boundary - cursor)
@@ -449,7 +501,9 @@ def _short_preview_audio_edit_plan(
     removed_seconds = sum(end - start for start, end in cuts)
     expected_duration = media_duration - removed_seconds
     if abs(sum(durations) - expected_duration) > 1e-6:
-        raise RuntimeError('Short-preview audio edit plan does not cover media')
+        raise VoiceQualityError(
+            'Short-preview audio edit plan does not cover media'
+        )
     return {
         'cuts': cuts,
         'scene_durations': durations,
@@ -481,7 +535,9 @@ def _apply_short_preview_audio_edit_plan(
     if media_duration > cursor + 1e-6:
         keep_ranges.append((cursor, media_duration))
     if not keep_ranges:
-        raise RuntimeError('Short-preview audio edit removed the whole narration')
+        raise VoiceQualityError(
+            'Short-preview audio edit removed the whole narration'
+        )
 
     filters: list[str] = []
     labels: list[str] = []
@@ -513,7 +569,9 @@ def _apply_short_preview_audio_edit_plan(
         or abs(actual_duration - expected_duration)
         > _SHORT_PREVIEW_COMPACTION_TOLERANCE
     ):
-        raise RuntimeError('Short-preview audio compaction duration is invalid')
+        raise VoiceQualityError(
+            'Short-preview audio compaction duration is invalid'
+        )
     compacted.replace(path)
     scale = actual_duration / expected_duration
     return [duration * scale for duration in durations], actual_duration
@@ -537,6 +595,79 @@ def _deterministic_scene_seed(
         str(generation_attempt),
     )).encode('utf-8')
     return int.from_bytes(hashlib.sha256(material).digest()[:4], 'big')
+
+
+def is_transient_voice_http_error(exc: BaseException) -> bool:
+    if isinstance(exc, httpx.RequestError):
+        return True
+    if not isinstance(exc, httpx.HTTPStatusError):
+        return False
+    status_code = int(exc.response.status_code)
+    return status_code in {408, 425, 429} or status_code >= 500
+
+
+def voice_http_retry_delay_seconds(
+    exc: BaseException,
+    retry_index: int,
+) -> float:
+    response = getattr(exc, 'response', None)
+    headers = getattr(response, 'headers', None)
+    raw_retry_after = (
+        headers.get('Retry-After')
+        if headers is not None and hasattr(headers, 'get')
+        else None
+    )
+    try:
+        retry_after = float(raw_retry_after)
+    except (TypeError, ValueError):
+        retry_after = float(2 ** max(0, int(retry_index)))
+    if not math.isfinite(retry_after) or retry_after < 0:
+        retry_after = float(2 ** max(0, int(retry_index)))
+    return min(8.0, retry_after)
+
+
+def _synthesize_long_form_scene(
+    idx: int,
+    source_texts: list[str],
+    chunk_path: Path,
+    voice_id: str,
+    selected_speed: float,
+    generation_attempt: int,
+) -> tuple[int, float]:
+    previous_text = source_texts[idx - 1] if idx > 0 else None
+    next_text = (
+        source_texts[idx + 1]
+        if idx + 1 < len(source_texts)
+        else None
+    )
+    seed = _deterministic_scene_seed(
+        voice_id,
+        source_texts[idx],
+        idx,
+        generation_attempt,
+    )
+    for provider_attempt in range(3):
+        try:
+            audio = synthesize_voice_with_id(
+                source_texts[idx],
+                voice_id,
+                previous_text,
+                next_text,
+                speed=selected_speed,
+                seed=seed,
+            )
+            chunk_path.write_bytes(audio)
+            return idx, _media_duration(chunk_path)
+        except httpx.HTTPError as exc:
+            if (
+                not is_transient_voice_http_error(exc)
+                or provider_attempt >= 2
+            ):
+                raise
+            time.sleep(
+                voice_http_retry_delay_seconds(exc, provider_attempt)
+            )
+    raise RuntimeError('Voice scene retry budget was exhausted')
 
 
 def audition_shared_voice(text: str, public_owner_id: str, voice_id: str, name: str | None = None) -> bytes:
@@ -589,7 +720,10 @@ def _fit_duration(output: Path, scene_durations: list[float], target_seconds: fl
     needs_fit = bool(
         target_seconds and target_seconds > 0
         and (
-            (short_preview and abs(before - desired) > 0.015)
+            # Never slow an under-length short narration merely to fill the
+            # timeline. That hides a thin script budget and produces robotic
+            # phrase spacing. Only a small overrun may be compressed.
+            (short_preview and before > desired + 0.015)
             or (
                 not short_preview
                 and (before > target_seconds * 1.03 or before < target_seconds * 0.97)
@@ -600,7 +734,7 @@ def _fit_duration(output: Path, scene_durations: list[float], target_seconds: fl
         requested_rate = before / desired
         # Large tempo changes hide a bad script budget and sound synthetic.
         if requested_rate < 0.92 or requested_rate > 1.12:
-            raise RuntimeError(
+            raise VoiceScriptFitError(
                 f'Narration needs {requested_rate:.3f}x tempo to fit {target_seconds:.1f}s; '
                 'rewrite the script instead of distorting the voice'
             )
@@ -628,15 +762,21 @@ def synthesize_scene_sequence(
     selected = _selected_voice_or_raise()
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
-    spoken = [normalize_turkish_tts(text) for text in source_texts]
+    short_preview = bool(target_seconds and 0 < target_seconds <= 40)
+    spoken = [
+        normalize_turkish_tts(
+            text,
+            ensure_terminal=(not short_preview or index + 1 == len(scenes)),
+        )
+        for index, text in enumerate(source_texts)
+    ]
     if not all(spoken):
-        raise RuntimeError('One or more scenes are missing narration')
+        raise VoiceScriptFitError('One or more scenes are missing narration')
 
     work = Path('/tmp') / f'{job_id}_voice'
     work.mkdir(parents=True, exist_ok=True)
     selected_speed = _voice_speed(target_seconds)
     raw_output = work / 'joined.mp3'
-    short_preview = bool(target_seconds and 0 < target_seconds <= 40)
     removed_silence_seconds = 0.0
     compacted_boundary_pause_count = 0
     compacted_trailing_silence = False
@@ -676,28 +816,20 @@ def synthesize_scene_sequence(
     else:
         chunk_paths = [work / f'scene_{idx:03d}.mp3' for idx in range(len(scenes))]
 
-        def make_scene(idx: int):
-            previous_text = source_texts[idx - 1] if idx > 0 else None
-            next_text = source_texts[idx + 1] if idx + 1 < len(source_texts) else None
-            audio = synthesize_voice_with_id(
-                source_texts[idx],
-                voice_id,
-                previous_text,
-                next_text,
-                speed=selected_speed,
-                seed=_deterministic_scene_seed(
-                    voice_id,
-                    source_texts[idx],
-                    idx,
-                    generation_attempt,
-                ),
-            )
-            chunk_paths[idx].write_bytes(audio)
-            return idx, _media_duration(chunk_paths[idx])
-
         raw_durations = [0.0] * len(scenes)
         with ThreadPoolExecutor(max_workers=min(4, max(1, len(scenes)))) as executor:
-            futures = [executor.submit(make_scene, idx) for idx in range(len(scenes))]
+            futures = [
+                executor.submit(
+                    _synthesize_long_form_scene,
+                    idx,
+                    source_texts,
+                    chunk_paths[idx],
+                    voice_id,
+                    selected_speed,
+                    generation_attempt,
+                )
+                for idx in range(len(scenes))
+            ]
             for future in as_completed(futures):
                 idx, duration = future.result()
                 raw_durations[idx] = duration

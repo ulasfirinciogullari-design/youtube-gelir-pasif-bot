@@ -6,13 +6,17 @@ import json
 import math
 import re
 import shutil
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import httpx
 
 from app.celery_app import celery
 from app.services.audio_design import generate_music_bed, mix_voice_and_music
-from app.services.audio_qc import verify_audio_narration
+from app.services.audio_qc import (
+    verify_audio_narration,
+    verify_audio_prosody,
+)
 from app.services.director import (
     ImmutableNarrationSceneBudgetError,
     direct_and_qc,
@@ -29,7 +33,14 @@ from app.services.runway import (
 from app.services.storage import download_file, upload_file, presigned_download_url
 from app.services.studio_state import mark_failure, mark_success, set_stage, update_job
 from app.services.visual_qc import review_scene_visuals
-from app.services.voice import synthesize_scene_sequence
+from app.services.voice import (
+    VoiceQualityError,
+    VoiceScriptFitError,
+    is_transient_voice_http_error,
+    synthesize_scene_sequence,
+    voice_http_retry_delay_seconds,
+)
+from app.services.visual_identity import manufactured_replica_guardrail
 from app.services.visual_routing import (
     preview_paid_ai_limit,
     preview_runway_repair_indices,
@@ -43,6 +54,22 @@ class FinalVisualQualityError(RuntimeError):
 
 class FinalAudioQualityError(RuntimeError):
     """A bounded exact-transcript rejection before any paid video request."""
+
+
+class UnsupportedLanguageError(ValueError):
+    """A terminal language contract rejection before any provider call."""
+
+
+SUPPORTED_PIPELINE_LANGUAGES = frozenset({'tr', 'en', 'de', 'es', 'ar'})
+
+
+def normalize_pipeline_language(language: str) -> str:
+    normalized = str(language or '').strip().casefold()
+    if normalized not in SUPPORTED_PIPELINE_LANGUAGES:
+        raise UnsupportedLanguageError(
+            'Supported languages are tr, en, de, es and ar'
+        )
+    return normalized
 
 
 class PreRunwayRetryableError(RuntimeError):
@@ -222,8 +249,175 @@ _MANUAL_QA_CLEAR_VISUAL_FIELDS = (
     'prominent_readable_text_or_logo_visible',
     'major_visual_artifact_visible',
     'effectively_static_or_frozen',
+    'authored_identity_or_material_conflict_visible',
 )
 _TRANSIENT_PEXELS_HTTP_STATUS_CODES = {408, 425, 429}
+
+
+def _short_preview_voice_duration_qc(
+    voice_result: dict,
+    target_seconds: float,
+) -> dict:
+    if not 0 < float(target_seconds) <= 40:
+        return {
+            'available': True,
+            'pass': True,
+            'retryable': False,
+            'duration_seconds': voice_result.get('duration_after_fit'),
+            'minimum_seconds': None,
+            'maximum_seconds': None,
+            'reason': None,
+        }
+    duration = voice_result.get('duration_after_fit')
+    if isinstance(duration, bool) or not isinstance(duration, (int, float)):
+        return {
+            'available': False,
+            'pass': False,
+            'retryable': False,
+            'duration_seconds': None,
+            'minimum_seconds': round(float(target_seconds) - 0.70, 3),
+            'maximum_seconds': round(float(target_seconds) - 0.25, 3),
+            'reason': 'voice_duration_missing',
+        }
+    duration_seconds = float(duration)
+    minimum = float(target_seconds) - 0.70
+    maximum = float(target_seconds) - 0.25
+    passed = bool(
+        math.isfinite(duration_seconds)
+        and minimum <= duration_seconds <= maximum
+    )
+    deficit = max(0.0, minimum - duration_seconds)
+    excess = max(0.0, duration_seconds - maximum)
+    retryable = bool(not passed and max(deficit, excess) <= 0.65)
+    if passed:
+        reason = None
+    elif deficit > 0.65:
+        reason = 'short_form_script_too_thin'
+    elif excess > 0.65:
+        reason = 'short_form_script_too_dense'
+    else:
+        reason = 'short_form_duration_near_boundary'
+    return {
+        'available': True,
+        'pass': passed,
+        'retryable': retryable,
+        'duration_seconds': round(duration_seconds, 3),
+        'minimum_seconds': round(minimum, 3),
+        'maximum_seconds': round(maximum, 3),
+        'reason': reason,
+    }
+
+
+def _synthesize_voice_candidate(
+    scenes: list[dict],
+    task_id: str,
+    target_seconds: float,
+    *,
+    start_attempt: int = 0,
+) -> dict:
+    """Use bounded new seeds for synthesis defects without rerunning the job."""
+    quality_errors: list[dict] = []
+    for generation_attempt in range(
+        max(0, int(start_attempt)),
+        MAX_AUDIO_GENERATION_ATTEMPTS,
+    ):
+        attempt_task_id = (
+            task_id
+            if generation_attempt == 0
+            else f'{task_id}_audio_retry_{generation_attempt}'
+        )
+        try:
+            result = synthesize_scene_sequence(
+                scenes,
+                attempt_task_id,
+                target_seconds,
+                generation_attempt=generation_attempt,
+            )
+        except VoiceScriptFitError as exc:
+            raise FinalAudioQualityError(
+                'Voice script duration rejected before paid media: '
+                + json.dumps(
+                    {
+                        'generation_attempt': generation_attempt,
+                        'reason': str(exc)[:240],
+                    },
+                    ensure_ascii=False,
+                    separators=(',', ':'),
+                )
+            ) from None
+        except VoiceQualityError as exc:
+            quality_errors.append({
+                'generation_attempt': generation_attempt,
+                'reason': str(exc)[:240],
+            })
+            continue
+        except httpx.HTTPError as exc:
+            status_code = (
+                exc.response.status_code
+                if isinstance(exc, httpx.HTTPStatusError)
+                else None
+            )
+            retryable = is_transient_voice_http_error(exc)
+            if retryable:
+                quality_errors.append({
+                    'generation_attempt': generation_attempt,
+                    'reason': (
+                        f'voice_provider_http_{status_code}'
+                        if status_code is not None
+                        else 'voice_provider_transport'
+                    ),
+                })
+                if target_seconds > 40:
+                    raise FinalAudioQualityError(
+                        'Long-form voice scene retry budget was exhausted '
+                        'before paid media'
+                    ) from None
+                if generation_attempt < MAX_AUDIO_GENERATION_ATTEMPTS - 1:
+                    time.sleep(
+                        voice_http_retry_delay_seconds(
+                            exc,
+                            generation_attempt,
+                        )
+                    )
+                continue
+            raise FinalAudioQualityError(
+                'Voice provider rejected synthesis before paid media: '
+                + json.dumps(
+                    {
+                        'generation_attempt': generation_attempt,
+                        'status_code': status_code,
+                    },
+                    separators=(',', ':'),
+                )
+            ) from None
+        except Exception as exc:
+            raise FinalAudioQualityError(
+                'Voice synthesis failed safely before paid media: '
+                + json.dumps(
+                    {
+                        'generation_attempt': generation_attempt,
+                        'error_type': type(exc).__name__[:80],
+                    },
+                    separators=(',', ':'),
+                )
+            ) from None
+        return {
+            **result,
+            '_generation_attempt': generation_attempt,
+            '_generation_attempts_used': generation_attempt + 1,
+            '_synthesis_quality_errors': quality_errors,
+        }
+    raise FinalAudioQualityError(
+        'Voice synthesis quality rejected before paid media: '
+        + json.dumps(
+            {
+                'generation_attempts': MAX_AUDIO_GENERATION_ATTEMPTS,
+                'quality_errors': quality_errors,
+            },
+            ensure_ascii=False,
+            separators=(',', ':'),
+        )
+    )
 
 
 def _is_transient_pexels_provider_error(exc: Exception) -> bool:
@@ -776,6 +970,7 @@ def _manual_qa_preview_passes(
         and floor <= score < MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
         and review.get('evidence_gate_passed') is True
         and review.get('editorial_gate_passed') is True
+        and review.get('identity_gate_passed') is True
         and review.get('subject_visible') is True
         and review.get('spoken_action_visible') is True
         and review.get('unexplained_reset') is False
@@ -812,6 +1007,10 @@ def _manual_qa_preview_record(
 _MANUAL_QA_DIAGNOSTIC_BOOLEAN_FIELDS = (
     'evidence_gate_passed',
     'editorial_gate_passed',
+    'identity_gate_passed',
+    'manufactured_replica_required',
+    'authored_identity_or_material_conflict_visible',
+    'manufactured_object_cues_visible',
     'subject_visible',
     'spoken_action_visible',
     'physical_causality_applicable',
@@ -1092,8 +1291,18 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         'text, logos, charts, glitch, watermark or metaphor.'
     )
     original_label = 'Core shot direction: '
+    identity_guardrail = manufactured_replica_guardrail(scene)
+    identity_clause = (
+        f'{identity_guardrail} ' if identity_guardrail else ''
+    )
     fixed_units = len(
-        (opening + temporal_clause + original_label + closing).encode(
+        (
+            opening
+            + temporal_clause
+            + original_label
+            + identity_clause
+            + closing
+        ).encode(
             'utf-16-le'
         )
     ) // 2
@@ -1124,6 +1333,7 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         opening
         + temporal_clause
         + original_clause
+        + identity_clause
         + guardrail_clause
         + closing
     )
@@ -1135,6 +1345,7 @@ def _image_motion_prompt_for_scene(
 ) -> str:
     """Build one literal, evidence-led documentary keyframe prompt."""
     review = review or {}
+    identity_guardrail = manufactured_replica_guardrail(scene)
     retry_queries = review.get('retry_queries') or []
     if isinstance(retry_queries, str):
         retry_queries = [retry_queries]
@@ -1154,27 +1365,38 @@ def _image_motion_prompt_for_scene(
         'Depict the single most evidence-rich decisive instant: '
     )
     closing = (
-        ' Literal named subject, true scale, material, physical condition and '
-        'setting must be clear. One coherent real-world moment with natural '
-        'cinematic light and foreground-to-background depth, composed for a '
-        'subtle centered camera push-in. No storyboard, split screen, collage, '
-        'illustration, CGI look, metaphor, text, logo, watermark, border or '
-        'letterbox.'
+        ' Literal subject, scale, material, condition and setting must be '
+        'clear in one coherent photoreal documentary frame with natural light '
+        'and depth, composed for a subtle centered push-in. No storyboard, '
+        'split screen, collage, illustration, CGI, metaphor, text, logo, '
+        'watermark, border or letterbox.'
     )
-    narration = _truncate_utf16(
-        str(scene.get('narration') or '').strip(),
-        180,
+    narration = (
+        ''
+        if identity_guardrail
+        else _truncate_utf16(
+            str(scene.get('narration') or '').strip(),
+            180,
+        )
     )
     evidence = _truncate_utf16(
         '; '.join(_truncate_utf16(hint, 100) for hint in hints),
-        180,
+        100 if identity_guardrail else 180,
     )
-    context_prefix = f'NARRATION: {narration}. '
+    context_prefix = f'NARRATION: {narration}. ' if narration else ''
     if evidence:
         context_prefix += f'REVIEW-LED VISIBLE ATTRIBUTES: {evidence}. '
     context_prefix += 'CORE VISUAL: '
+    identity_clause = (
+        f' {identity_guardrail}' if identity_guardrail else ''
+    )
     fixed_units = len(
-        (opening + context_prefix + closing).encode('utf-16-le')
+        (
+            opening
+            + context_prefix
+            + identity_clause
+            + closing
+        ).encode('utf-16-le')
     ) // 2
     visual_budget = max(0, 1000 - fixed_units)
     core_visual = _truncate_utf16(
@@ -1182,7 +1404,11 @@ def _image_motion_prompt_for_scene(
         visual_budget,
     )
     return _truncate_utf16(
-        opening + context_prefix + core_visual + closing,
+        opening
+        + context_prefix
+        + core_visual
+        + identity_clause
+        + closing,
         1000,
     )
 
@@ -1588,7 +1814,10 @@ def _prepare_package(
 @celery.task(
     bind=True,
     autoretry_for=(Exception,),
-    dont_autoretry_for=(ImmutableNarrationSceneBudgetError,),
+    dont_autoretry_for=(
+        ImmutableNarrationSceneBudgetError,
+        UnsupportedLanguageError,
+    ),
     retry_backoff=True,
     max_retries=1,
 )
@@ -1600,6 +1829,7 @@ def plan_video_pipeline(
     channel_id: str | None = None,
     options: dict | None = None,
 ):
+    language = normalize_pipeline_language(language)
     task_id = self.request.id
     options = _normalized_options(options, duration_minutes)
     update_job(task_id, kind='plan', spec=_task_spec(topic, duration_minutes, language, channel_id, options))
@@ -1647,6 +1877,7 @@ def plan_video_pipeline(
         FinalVisualQualityError,
         FinalAudioQualityError,
         ImmutableNarrationSceneBudgetError,
+        UnsupportedLanguageError,
     ),
     retry_backoff=True,
     max_retries=2,
@@ -1660,6 +1891,7 @@ def run_video_pipeline(
     options: dict | None = None,
     approved_package: dict | None = None,
 ):
+    language = normalize_pipeline_language(language)
     task_id = self.request.id
     options = _normalized_options(options, duration_minutes)
     retry_number = int(getattr(self.request, 'retries', 0) or 0)
@@ -1698,7 +1930,7 @@ def run_video_pipeline(
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
             voice_future = stage_pool.submit(
-                synthesize_scene_sequence,
+                _synthesize_voice_candidate,
                 scenes,
                 task_id,
                 duration_minutes * 60,
@@ -1726,13 +1958,109 @@ def run_video_pipeline(
             38,
             'Anlatım metni, telaffuz ve kelime zamanları gerçek ses üzerinden denetleniyor.',
         )
-        audio_generation_attempts = 1
+        audio_generation_attempts = int(
+            voice_result.get('_generation_attempts_used') or 1
+        )
+        audio_qc_retry_history: list[dict] = []
+        selected_audio_generation_attempt = int(
+            voice_result.get('_generation_attempt') or 0
+        )
+        audio_synthesis_quality_errors: list[dict] = list(
+            voice_result.get('_synthesis_quality_errors') or []
+        )
+        short_form_prosody_required = bool(
+            0 < duration_minutes * 60 <= 40
+            and str(language or '').lower().startswith('tr')
+        )
+        audio_prosody_qc: dict = {
+            'available': False,
+            'pass': False,
+            'provider': None,
+            'reason': 'not_run',
+            'scores': None,
+            'issues': [],
+            'summary': None,
+        }
+        audio_duration_qc: dict = {}
         while True:
             audio_qc = verify_audio_narration(
                 voice_path,
                 expected_spoken_narration,
+                language=language,
             )
-            if audio_qc.get('available') and audio_qc.get('pass'):
+            audio_duration_qc = _short_preview_voice_duration_qc(
+                voice_result,
+                duration_minutes * 60,
+            )
+            transcript_passed = bool(
+                audio_qc.get('available') is True
+                and audio_qc.get('pass') is True
+            )
+            duration_passed = bool(
+                audio_duration_qc.get('available') is True
+                and audio_duration_qc.get('pass') is True
+            )
+            if (
+                transcript_passed
+                and duration_passed
+                and short_form_prosody_required
+            ):
+                audio_prosody_qc = verify_audio_prosody(
+                    voice_path,
+                    expected_spoken_narration,
+                    audio_duration_seconds=voice_result.get(
+                        'duration_after_fit'
+                    ),
+                    transcript_evidence=audio_qc,
+                )
+            elif transcript_passed and duration_passed:
+                audio_prosody_qc = {
+                    'available': True,
+                    'pass': True,
+                    'provider': None,
+                    'reason': 'not_applicable_non_turkish_or_long_form',
+                    'scores': None,
+                    'issues': [],
+                    'summary': None,
+                }
+            else:
+                audio_prosody_qc = {
+                    'available': False,
+                    'pass': False,
+                    'provider': None,
+                    'reason': (
+                        'not_run_transcript_rejected'
+                        if not transcript_passed
+                        else 'not_run_duration_rejected'
+                    ),
+                    'scores': None,
+                    'issues': [],
+                    'summary': None,
+                }
+            prosody_passed = bool(
+                audio_prosody_qc.get('available') is True
+                and audio_prosody_qc.get('pass') is True
+            )
+            audio_qc_retry_history.append({
+                'generation_attempt': int(
+                    voice_result.get('_generation_attempt')
+                    if voice_result.get('_generation_attempt') is not None
+                    else audio_generation_attempts - 1
+                ),
+                'transcript': {
+                    'available': audio_qc.get('available') is True,
+                    'pass': audio_qc.get('pass') is True,
+                    'provider': audio_qc.get('provider'),
+                    'score': audio_qc.get('score'),
+                    'reason': audio_qc.get('reason'),
+                },
+                'duration': dict(audio_duration_qc),
+                'prosody': dict(audio_prosody_qc),
+            })
+            if transcript_passed and duration_passed and prosody_passed:
+                selected_audio_generation_attempt = (
+                    audio_generation_attempts - 1
+                )
                 break
             audio_mismatch = (
                 audio_qc.get('mismatch_details')
@@ -1740,10 +2068,26 @@ def run_video_pipeline(
                 else {}
             )
             can_regenerate = (
-                audio_qc.get('available') is True
-                and audio_qc.get('pass') is False
-                and audio_generation_attempts
-                < MAX_AUDIO_GENERATION_ATTEMPTS
+                audio_generation_attempts < MAX_AUDIO_GENERATION_ATTEMPTS
+                and audio_qc.get('available') is True
+                and audio_duration_qc.get('available') is True
+                and (
+                    (
+                        audio_qc.get('available') is True
+                        and audio_qc.get('pass') is False
+                    )
+                    or (
+                        audio_duration_qc.get('available') is True
+                        and audio_duration_qc.get('pass') is False
+                        and audio_duration_qc.get('retryable') is True
+                    )
+                    or (
+                        transcript_passed
+                        and duration_passed
+                        and audio_prosody_qc.get('available') is True
+                        and audio_prosody_qc.get('pass') is False
+                    )
+                )
             )
             if not can_regenerate:
                 raise FinalAudioQualityError(
@@ -1754,6 +2098,38 @@ def run_video_pipeline(
                             'score': audio_qc.get('score'),
                             'reason': audio_qc.get('reason'),
                             'generation_attempts': audio_generation_attempts,
+                            'duration_qc': audio_duration_qc,
+                            'prosody_qc': {
+                                'available': audio_prosody_qc.get(
+                                    'available'
+                                ),
+                                'pass': audio_prosody_qc.get('pass'),
+                                'reason': audio_prosody_qc.get('reason'),
+                                'scores': audio_prosody_qc.get('scores'),
+                                'issues': (
+                                    audio_prosody_qc.get('issues') or []
+                                )[:3],
+                            },
+                            'attempt_reasons': [
+                                {
+                                    'generation_attempt': item.get(
+                                        'generation_attempt'
+                                    ),
+                                    'transcript_reason': (
+                                        item.get('transcript') or {}
+                                    ).get('reason'),
+                                    'duration_reason': (
+                                        item.get('duration') or {}
+                                    ).get('reason'),
+                                    'prosody_reason': (
+                                        item.get('prosody') or {}
+                                    ).get('reason'),
+                                }
+                                for item in audio_qc_retry_history[-3:]
+                            ],
+                            'synthesis_quality_errors': (
+                                audio_synthesis_quality_errors[-3:]
+                            ),
                             'mismatch_details': {
                                 'missing_words': (
                                     audio_mismatch.get('missing_words') or []
@@ -1773,21 +2149,26 @@ def run_video_pipeline(
                         separators=(',', ':'),
                     )
                 )
-            generation_attempt = audio_generation_attempts
             set_stage(
                 self,
                 task_id,
                 'audio_qc_retry',
                 38,
-                'Telaffuzu birebir tutmayan ses güvenli biçimde yeniden üretiliyor.',
+                'Anlaşılır ama doğal duyulmayan ses farklı bir güvenli seed ile yeniden üretiliyor.',
             )
-            voice_result = synthesize_scene_sequence(
+            voice_result = _synthesize_voice_candidate(
                 scenes,
-                f'{task_id}_audio_retry_{generation_attempt}',
+                task_id,
                 duration_minutes * 60,
-                generation_attempt=generation_attempt,
+                start_attempt=audio_generation_attempts,
             )
-            audio_generation_attempts += 1
+            audio_generation_attempts = int(
+                voice_result.get('_generation_attempts_used')
+                or audio_generation_attempts + 1
+            )
+            audio_synthesis_quality_errors.extend(
+                voice_result.get('_synthesis_quality_errors') or []
+            )
             voice_path = voice_result['path']
             scene_durations = voice_result['scene_durations']
             expected_spoken_narration = ' '.join(
@@ -2873,6 +3254,7 @@ def run_video_pipeline(
                     == manual_qa_prepass_identities.get(scene_idx)
                     and final_review.get('subject_visible') is True
                     and final_review.get('spoken_action_visible') is True
+                    and final_review.get('identity_gate_passed') is True
                     and final_review.get('unexplained_reset') is False
                     and all(
                         final_review.get(field) is False
@@ -3589,7 +3971,16 @@ def run_video_pipeline(
                 'compacted_trailing_silence'
             ),
             'audio_generation_attempts': audio_generation_attempts,
+            'selected_audio_generation_attempt': (
+                selected_audio_generation_attempt
+            ),
+            'audio_qc_retry_history': audio_qc_retry_history,
+            'audio_synthesis_quality_errors': (
+                audio_synthesis_quality_errors
+            ),
             'audio_qc': audio_qc,
+            'audio_duration_qc': audio_duration_qc,
+            'audio_prosody_qc': audio_prosody_qc,
             'audio_design': audio_design,
             'stock_credits': credits,
             'runway_submission_cap': runway_submission_cap,
@@ -3713,6 +4104,16 @@ def run_video_pipeline(
                 'compacted_trailing_silence'
             ),
             'audio_qc': audio_qc,
+            'audio_duration_qc': audio_duration_qc,
+            'audio_prosody_qc': audio_prosody_qc,
+            'audio_generation_attempts': audio_generation_attempts,
+            'selected_audio_generation_attempt': (
+                selected_audio_generation_attempt
+            ),
+            'audio_qc_retry_history': audio_qc_retry_history,
+            'audio_synthesis_quality_errors': (
+                audio_synthesis_quality_errors
+            ),
             'audio_design': audio_design,
             'studio_options': options,
         }

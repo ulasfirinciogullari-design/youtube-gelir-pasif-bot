@@ -1051,6 +1051,10 @@ def test_studio_router_mounts_secure_youtube_lifecycle(monkeypatch):
 
     celery_module.celery = Celery()
     tasks_module = types.ModuleType('app.tasks')
+    tasks_module.UnsupportedLanguageError = ValueError
+    tasks_module.normalize_pipeline_language = (
+        lambda language: str(language or '').strip().casefold()
+    )
     tasks_module.plan_video_pipeline = types.SimpleNamespace(delay=lambda *_a, **_k: None)
     tasks_module.run_video_pipeline = types.SimpleNamespace(delay=lambda *_a, **_k: None)
     storage_module = types.ModuleType('app.services.storage')
