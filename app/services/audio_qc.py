@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import base64
 from difflib import SequenceMatcher
 import json
 import math
@@ -9,6 +8,7 @@ from pathlib import Path
 import re
 import unicodedata
 from typing import Any
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -26,12 +26,18 @@ OPENAI_AUDIO_TRANSCRIPTIONS_URL = (
 GEMINI_INTERACTIONS_URL = (
     'https://generativelanguage.googleapis.com/v1beta/interactions'
 )
+GEMINI_FILES_UPLOAD_URL = (
+    'https://generativelanguage.googleapis.com/upload/v1beta/files'
+)
 ELEVENLABS_SPEECH_TO_TEXT_URL = 'https://api.elevenlabs.io/v1/speech-to-text'
 _SPEECH_TO_TEXT_TIMEOUT = httpx.Timeout(180.0, connect=10.0)
 _APOSTROPHES = frozenset("'\u2018\u2019\u02bc\u0060\u00b4")
-# Gemini's inline request limit is 20 MB including base64 and JSON overhead.
+# Audio QC inputs are intentionally bounded even though the Files API accepts
+# larger uploads. Preview narration masters are normally far below this cap.
 _GEMINI_MAX_RAW_AUDIO_BYTES = 14 * 1024 * 1024
 _GEMINI_TRANSCRIBE_MODEL = 'gemini-3.5-transcribe'
+_GEMINI_API_HOST = 'generativelanguage.googleapis.com'
+_GEMINI_FILE_NAME_PATTERN = re.compile(r'^files/[A-Za-z0-9_-]{1,256}$')
 _GEMINI_DURATION_PATTERN = re.compile(r'^(?:0|[1-9]\d*)(?:\.\d{1,9})?s$')
 _GEMINI_SUPPORTED_AUDIO_MIME_TYPES = frozenset({
     'audio/aac',
@@ -1400,6 +1406,153 @@ def _verify_with_openai(
     )
 
 
+def _validated_gemini_upload_url(value: Any) -> str:
+    if not isinstance(value, str) or not value:
+        raise AudioQCError(
+            'Gemini speech-to-text file upload did not provide a session'
+        )
+    try:
+        parsed = urlsplit(value)
+        port = parsed.port
+    except (TypeError, ValueError):
+        raise AudioQCError(
+            'Gemini speech-to-text file upload provided an invalid session'
+        ) from None
+    if (
+        parsed.scheme != 'https'
+        or parsed.hostname != _GEMINI_API_HOST
+        or port is not None
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.path != '/upload/v1beta/files'
+        or parsed.fragment
+    ):
+        raise AudioQCError(
+            'Gemini speech-to-text file upload provided an invalid session'
+        )
+    return value
+
+
+def _gemini_file_resource(response: Any) -> dict[str, str]:
+    status_code = getattr(response, 'status_code', None)
+    if not isinstance(status_code, int) or not 200 <= status_code < 300:
+        safe_status = status_code if isinstance(status_code, int) else 'unknown'
+        raise AudioQCError(
+            'Gemini speech-to-text file upload failed with HTTP '
+            f'{safe_status}'
+        ) from None
+    try:
+        envelope = response.json()
+    except Exception:
+        raise AudioQCError(
+            'Gemini speech-to-text file upload returned invalid JSON'
+        ) from None
+    file_resource = envelope.get('file') if isinstance(envelope, dict) else None
+    if not isinstance(file_resource, dict):
+        raise AudioQCError(
+            'Gemini speech-to-text file upload returned an invalid resource'
+        )
+    name = file_resource.get('name')
+    uri = file_resource.get('uri')
+    mime_type = file_resource.get('mimeType')
+    try:
+        parsed_uri = urlsplit(uri) if isinstance(uri, str) else None
+        uri_port = parsed_uri.port if parsed_uri is not None else None
+    except (TypeError, ValueError):
+        parsed_uri = None
+        uri_port = None
+    if (
+        not isinstance(name, str)
+        or _GEMINI_FILE_NAME_PATTERN.fullmatch(name) is None
+        or parsed_uri is None
+        or parsed_uri.scheme != 'https'
+        or parsed_uri.hostname != _GEMINI_API_HOST
+        or uri_port is not None
+        or parsed_uri.username is not None
+        or parsed_uri.password is not None
+        or parsed_uri.path != f'/v1beta/{name}'
+        or parsed_uri.fragment
+        or mime_type not in _GEMINI_SUPPORTED_AUDIO_MIME_TYPES
+    ):
+        raise AudioQCError(
+            'Gemini speech-to-text file upload returned an invalid resource'
+        )
+    if str(file_resource.get('state') or '').casefold() == 'failed':
+        raise AudioQCError(
+            'Gemini speech-to-text file upload could not be processed'
+        )
+    return {'name': name, 'uri': uri, 'mime_type': mime_type}
+
+
+def _upload_gemini_audio_file(
+    audio_bytes: bytes,
+    content_type: str,
+    api_key: str,
+) -> dict[str, str]:
+    try:
+        start_response = httpx.post(
+            GEMINI_FILES_UPLOAD_URL,
+            headers={
+                'x-goog-api-key': api_key,
+                'X-Goog-Upload-Protocol': 'resumable',
+                'X-Goog-Upload-Command': 'start',
+                'X-Goog-Upload-Header-Content-Length': str(len(audio_bytes)),
+                'X-Goog-Upload-Header-Content-Type': content_type,
+                'Content-Type': 'application/json',
+            },
+            json={'file': {'displayName': 'audio-qc-narration'}},
+            timeout=_SPEECH_TO_TEXT_TIMEOUT,
+        )
+    except Exception:
+        raise AudioQCError(
+            'Gemini speech-to-text file upload start failed'
+        ) from None
+    status_code = getattr(start_response, 'status_code', None)
+    if not isinstance(status_code, int) or not 200 <= status_code < 300:
+        safe_status = status_code if isinstance(status_code, int) else 'unknown'
+        raise AudioQCError(
+            'Gemini speech-to-text file upload start failed with HTTP '
+            f'{safe_status}'
+        ) from None
+    headers = getattr(start_response, 'headers', None)
+    try:
+        upload_url = headers.get('x-goog-upload-url')
+    except Exception:
+        upload_url = None
+    upload_url = _validated_gemini_upload_url(upload_url)
+    try:
+        upload_response = httpx.post(
+            upload_url,
+            headers={
+                'Content-Length': str(len(audio_bytes)),
+                'X-Goog-Upload-Offset': '0',
+                'X-Goog-Upload-Command': 'upload, finalize',
+            },
+            content=audio_bytes,
+            timeout=_SPEECH_TO_TEXT_TIMEOUT,
+        )
+    except Exception:
+        raise AudioQCError(
+            'Gemini speech-to-text file upload transport failed'
+        ) from None
+    return _gemini_file_resource(upload_response)
+
+
+def _delete_gemini_file(name: str, api_key: str) -> None:
+    if _GEMINI_FILE_NAME_PATTERN.fullmatch(str(name or '')) is None:
+        return
+    try:
+        httpx.delete(
+            f'https://{_GEMINI_API_HOST}/v1beta/{name}',
+            headers={'x-goog-api-key': api_key},
+            timeout=_SPEECH_TO_TEXT_TIMEOUT,
+        )
+    except Exception:
+        # Cleanup is best-effort and must never replace the transcription
+        # result or expose a resumable upload token through exception text.
+        return
+
+
 def _verify_with_gemini(
     path: Path,
     expected_narration: str,
@@ -1427,15 +1580,20 @@ def _verify_with_gemini(
         )
     if len(audio_bytes) > _GEMINI_MAX_RAW_AUDIO_BYTES:
         raise AudioQCError(
-            'Gemini speech-to-text inline audio exceeds the safe size limit'
+            'Gemini speech-to-text audio exceeds the safe size limit'
         )
 
+    uploaded_file = _upload_gemini_audio_file(
+        audio_bytes,
+        content_type,
+        api_key,
+    )
     request_body = {
         'model': _GEMINI_TRANSCRIBE_MODEL,
         'input': [{
             'type': 'audio',
-            'data': base64.b64encode(audio_bytes).decode('ascii'),
-            'mime_type': content_type,
+            'uri': uploaded_file['uri'],
+            'mime_type': uploaded_file['mime_type'],
         }],
         'store': False,
         'generation_config': {
@@ -1449,32 +1607,35 @@ def _verify_with_gemini(
         },
     }
     try:
-        response = httpx.post(
-            GEMINI_INTERACTIONS_URL,
-            headers={
-                'x-goog-api-key': api_key,
-                'Content-Type': 'application/json',
-            },
-            json=request_body,
-            timeout=_SPEECH_TO_TEXT_TIMEOUT,
-        )
-    except Exception:
-        raise AudioQCError(
-            'Gemini speech-to-text transport failed'
-        ) from None
+        try:
+            response = httpx.post(
+                GEMINI_INTERACTIONS_URL,
+                headers={
+                    'x-goog-api-key': api_key,
+                    'Content-Type': 'application/json',
+                },
+                json=request_body,
+                timeout=_SPEECH_TO_TEXT_TIMEOUT,
+            )
+        except Exception:
+            raise AudioQCError(
+                'Gemini speech-to-text transport failed'
+            ) from None
 
-    payload = _gemini_interaction_payload(response)
-    return _require_word_timing_evidence(
-        compare_transcript(
-            expected_narration,
-            payload['text'],
-            language_code=language_codes['bcp47'],
-            words=payload.get('words'),
-            provider='gemini',
-            comparison_language=language_codes['bcp47'],
-        ),
-        'Gemini',
-    )
+        payload = _gemini_interaction_payload(response)
+        return _require_word_timing_evidence(
+            compare_transcript(
+                expected_narration,
+                payload['text'],
+                language_code=language_codes['bcp47'],
+                words=payload.get('words'),
+                provider='gemini',
+                comparison_language=language_codes['bcp47'],
+            ),
+            'Gemini',
+        )
+    finally:
+        _delete_gemini_file(uploaded_file['name'], api_key)
 
 
 def _verify_with_elevenlabs(
