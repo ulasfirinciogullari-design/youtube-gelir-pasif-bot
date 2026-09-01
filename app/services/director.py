@@ -240,6 +240,38 @@ def _has_explicit_technical_insert_return_contract(
     )
 
 
+def _has_explicit_exterior_establishing_coda(
+    content_style: str,
+    scenes: list[dict],
+) -> bool:
+    """Require the final visual contract to explicitly name an exterior coda."""
+    if content_style not in {'documentary', 'explainer'} or len(scenes) < 2:
+        return False
+    final = scenes[-1]
+    if not isinstance(final, dict):
+        return False
+    visual_contract = ' '.join([
+        str(final.get('narration') or ''),
+        str(final.get('ai_prompt') or ''),
+        *[
+            str(query or '')
+            for query in (final.get('visual_queries') or [])
+        ],
+    ])
+    folded = unicodedata.normalize('NFKD', visual_contract.casefold())
+    folded = ''.join(
+        character
+        for character in folded
+        if not unicodedata.combining(character)
+    )
+    return bool(re.search(
+        r'\b(?:exterior|outside|external|establishing(?:\s+shot)?|aerial|'
+        r'dis\s+(?:cekim|plan|gorunum)|genis\s+plan)\b',
+        folded,
+        flags=re.IGNORECASE,
+    ))
+
+
 def _story_brief_for_qc(brief: str) -> str:
     """Keep the complete user brief available to every pre-media quality gate."""
     value = str(brief or '').strip()
@@ -831,8 +863,8 @@ def _short_story_quality_issues(
 
 
 _SHORT_STORY_QC_VERSION = 4
-_STOCK_SCENE_QC_VERSION = 7
-_STORY_STOCK_CONTRACT = 'openai-story-stock-v3'
+_STOCK_SCENE_QC_VERSION = 8
+_STORY_STOCK_CONTRACT = 'openai-story-stock-v4'
 
 
 def _normalize_short_story_topic(topic: str) -> str:
@@ -1468,6 +1500,12 @@ def _repair_short_stock_scenes(
             scenes,
         )
     )
+    explicit_exterior_establishing_coda = (
+        _has_explicit_exterior_establishing_coda(
+            normalized_content_style,
+            scenes,
+        )
+    )
 
     exact_narration_lock = _exact_narration_lock_from_brief(requested_brief)
     locked_narration_by_position: dict[int, str] = {}
@@ -1736,10 +1774,11 @@ NON-NEGOTIABLE RULES:
 - Keep each scene faithful to its supplied role and add no new fact, product or unrelated activity.
 - A hook must be one concrete everyday action that opens naturally into the next technical scene.
 - A bridge or penultimate scene must connect its immediate neighbors without repeating their mechanism.
-- The penultimate and payoff scenes are one continuous two-beat action by the same person or object, seconds apart in the SAME named micro-location.
-- Name the same concrete micro-location in both ending query sets and establish it explicitly in the penultimate narration. The payoff narration may use a minimal deictic under the adjacent-continuity rule above, but it must not invent or widen the referent. A venue-level match is insufficient if one shot is at a counter and the other is outside.
-- Never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
-- A payoff must visibly complete the preceding action and show the everyday benefit, not merely state a conclusion.
+- DOCUMENTARY/EXPLAINER EXTERIOR CODA: only for a documentary or explainer, the final beat may be an exterior establishing shot of the same primary object or event already carried by the penultimate beat. It may cut from an interior or detail view to the enclosing exterior context, but it must preserve the exact subject/event thread, introduce no new person, object, product or event, add no unrelated location, travel beat, day or time jump, and visibly remain relevant to the same sourced explanation. This is never a shortcut for a product demonstration, tutorial, procedure, before/after result or physical action whose completion must be shown continuously.
+- Outside that narrow exterior coda, the penultimate and payoff scenes are one continuous two-beat action by the same person or object, seconds apart in the SAME named micro-location.
+- Outside that narrow exterior coda, name the same concrete micro-location in both ending query sets and establish it explicitly in the penultimate narration. The payoff narration may use a minimal deictic under the adjacent-continuity rule above, but it must not invent or widen the referent. A venue-level match is insufficient if one shot is at a counter and the other is outside.
+- Outside that narrow exterior coda, never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
+- Outside the narrow exterior coda, a payoff must visibly complete the preceding action and show the everyday benefit, not merely state a conclusion. A valid coda must instead visibly contextualize the same object/event and human benefit without claiming that a discontinuous physical action was completed.
 - Keep the spoken narration natural and easy to pronounce in {language_name}; for Turkish, use meaning-first native wording and never raw technical abbreviations.
 - In Turkish, express causality as a natural condition. Use wording such as “sıcak hava içeride kalınca” or “sıcak hava sıkışınca”; never write translated energy-agent phrases such as “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”.
 - Keep production-only wardrobe, color-continuity, camera-direction, shot-size, face-visibility and framing notes in visual_queries, not spoken narration. Phrases such as “koyu lacivert tişörtlü Mert” or “arkadan izliyor” are not human narration when they exist only to control the picture.
@@ -1932,6 +1971,7 @@ NON-NEGOTIABLE RULES:
             'same_actor_or_object_thread',
             'everyday_benefit_visible',
             'explicit_technical_insert_return_contract_satisfied',
+            'documentary_exterior_establishing_coda_satisfied',
         }
         critic_boolean_keys = {
             'single_sentence',
@@ -2040,9 +2080,10 @@ Review ending_pair jointly. The positions must match the supplied final two inde
 - same_immediate_location: both beats occur in the same named micro-location, such as the same café counter, desk, doorway or room. Same venue but counter-to-street is false.
 - continuous_visible_action_chain: the payoff is the immediately following visible action, seconds later, with no exit, travel, new room, new day or time-of-day jump.
 - same_actor_or_object_thread: the same person or object carries both ending beats.
-- everyday_benefit_visible: the final action visibly completes the preceding action and shows the benefit.
+- everyday_benefit_visible: for an ordinary ending, the final action visibly completes the preceding action and shows the benefit. For the narrow documentary/explainer exterior coda, the shot must instead visibly contextualize the same sourced human benefit and object/event without claiming that a discontinuous physical action was completed.
 - explicit_technical_insert_return_contract_satisfied: true when requested_topic has no explicit numbered technical-insert return contract. When requested_topic does explicitly number and AI-route the penultimate beat as a technical macro, cutaway, cross-section or inside-the-mechanism insert and the final beat straight back to the same enclosing ordinary setting, set this true only if the candidate obeys that exact route, the insert reveals the mechanism of the same recurring object, and there is no travel, new room, new day or unrelated venue. Otherwise false. A satisfied narrow insert may have same_immediate_location=false because the camera temporarily enters the object; ordinary location changes, implicit routes and generic thematic continuity never qualify for the exception.
-location_anchor must name the exact shared micro-location; reason must cite concrete evidence.
+- documentary_exterior_establishing_coda_satisfied: true when the final beat does not attempt an exterior establishing coda. When it does, set this true only if content_style is documentary or explainer and the final beat is an exterior establishing coda of the same primary object or event already carried by the penultimate beat. An interior-to-enclosing-exterior camera-vantage cut is allowed, but the subject and event thread must be unchanged, the shot must remain visibly relevant to the same sourced explanation, and it must introduce no new person, object, product or event and no unrelated location, travel beat, day or time jump. Set false for product demonstrations, tutorials, procedures, before/after results, physical actions whose completion must be shown continuously, merely similar stock subjects, unrelated location jumps, identity ambiguity or thematic-only montage. At most same_immediate_location and continuous_visible_action_chain may then be false; same_actor_or_object_thread, everyday_benefit_visible and every other ending boolean must remain true.
+location_anchor must name the exact shared micro-location for an ordinary ending. For the narrow exterior coda it must instead name the same primary object/event anchor and the precise interior/detail-to-exterior vantage change. reason must cite concrete evidence.
 
 For EACH requested position, set every boolean independently. If evidence is ambiguous, set it false.
 - single_sentence: narration contains only one sentence.
@@ -2358,6 +2399,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
         ending_reason = ''
         ending_location_anchor = ''
         technical_insert_return_exception_applied = False
+        documentary_exterior_coda_exception_applied = False
         if not critic_global_error:
             ending_failed_checks = sorted(
                 key
@@ -2382,6 +2424,25 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             ):
                 ending_failed_checks = []
                 technical_insert_return_exception_applied = True
+            documentary_coda_false_checks = {
+                'same_immediate_location',
+                'continuous_visible_action_chain',
+            }
+            if (
+                ending_failed_checks
+                and set(ending_failed_checks).issubset(
+                    documentary_coda_false_checks
+                )
+                and normalized_content_style in {'documentary', 'explainer'}
+                and explicit_exterior_establishing_coda
+                and ending_pair.get(
+                    'documentary_exterior_establishing_coda_satisfied'
+                ) is True
+                and ending_pair.get('same_actor_or_object_thread') is True
+                and ending_pair.get('everyday_benefit_visible') is True
+            ):
+                ending_failed_checks = []
+                documentary_exterior_coda_exception_applied = True
             if ending_failed_checks:
                 pair_failure = (
                     f'ending pair: {", ".join(ending_failed_checks)}; '
@@ -2455,6 +2516,11 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                             '$.ending_pair.same_immediate_location',
                         })
                         if technical_insert_return_exception_applied
+                        else frozenset({
+                            '$.ending_pair.same_immediate_location',
+                            '$.ending_pair.continuous_visible_action_chain',
+                        })
+                        if documentary_exterior_coda_exception_applied
                         else frozenset()
                     ),
                 )
@@ -2577,6 +2643,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     'positions': ending_positions,
                     'technical_insert_return_exception': (
                         technical_insert_return_exception_applied
+                    ),
+                    'documentary_exterior_establishing_coda_exception': (
+                        documentary_exterior_coda_exception_applied
                     ),
                     'location_anchor': ending_location_anchor[:120],
                     'reason': ending_reason[:180],
