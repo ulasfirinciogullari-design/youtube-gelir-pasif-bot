@@ -401,29 +401,57 @@ def render_video(
         )
         normalized.append(segment)
 
-    concat_file = work / 'concat.txt'
-    concat_file.write_text(
-        '\n'.join(f"file '{path.as_posix()}'" for path in normalized),
-        encoding='utf-8',
-    )
     silent_video = work / 'silent.mp4'
     voice_frames = sum(timeline_frame_counts)
-    pad_seconds = max(
-        0.25,
-        (target_frames - voice_frames) / FPS + 0.20,
-    )
-    video_filter = ','.join([
-        'setpts=PTS-STARTPTS',
-        f'fps={FPS}',
+    pad_frames = max(0, target_frames - voice_frames)
+
+    # Decode every normalized segment as an independent input.  The concat
+    # demuxer can stop cleanly at a mid-list MP4 boundary when otherwise valid
+    # H.264 segments carry different container metadata, leaving FFmpeg with a
+    # successful but truncated master.  The concat filter joins decoded CFR
+    # streams instead, while the exact frame gate below remains authoritative.
+    input_args: list[str] = []
+    segment_filters: list[str] = []
+    segment_labels: list[str] = []
+    for idx, path in enumerate(normalized):
+        input_args.extend(['-i', str(path)])
+        label = f'v{idx}'
+        segment_labels.append(f'[{label}]')
+        segment_filters.append(
+            f'[{idx}:v]trim=end_frame={timeline_frame_counts[idx]},'
+            f'settb=expr=1/{FPS},setpts=N,'
+            f'setsar=1,format=yuv420p[{label}]'
+        )
+
+    if len(normalized) == 1:
+        joined_label = segment_labels[0]
+    else:
+        segment_filters.append(
+            ''.join(segment_labels)
+            + f'concat=n={len(normalized)}:v=1:a=0[joined]'
+        )
+        joined_label = '[joined]'
+
+    master_filters = []
+    if pad_frames:
+        master_filters.append(
+            f'tpad=stop_mode=clone:stop={pad_frames}'
+        )
+    master_filters.append(f'trim=end_frame={target_frames}')
+    master_filters.extend([
+        f'settb=expr=1/{FPS}',
+        'setpts=N',
         'setsar=1',
         'format=yuv420p',
-        f'tpad=stop_mode=clone:stop_duration={pad_seconds:.3f}',
-        f'trim=end_frame={target_frames}',
-        f'setpts=N/({FPS}*TB)',
     ])
+    segment_filters.append(
+        joined_label + ','.join(master_filters) + '[master]'
+    )
+    filter_complex = ';'.join(segment_filters)
     _run([
-        'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat_file),
-        '-vf', video_filter, '-frames:v', str(target_frames), '-an',
+        'ffmpeg', '-y', *input_args,
+        '-filter_complex', filter_complex, '-map', '[master]',
+        '-frames:v', str(target_frames), '-an',
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
         str(silent_video),
     ])
