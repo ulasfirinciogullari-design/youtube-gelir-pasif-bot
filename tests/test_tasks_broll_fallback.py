@@ -123,6 +123,38 @@ def _load_outage_allocation_boundary():
     return namespace['_allocate_short_preview_forced_stock_runway']
 
 
+def _load_stock_tournament_review_boundary():
+    tree = ast.parse(
+        SOURCE_PATH.read_text(encoding='utf-8'),
+        filename=str(SOURCE_PATH),
+    )
+    definitions = [
+        node
+        for node in tree.body
+        if (
+            isinstance(node, ast.ClassDef)
+            and node.name == 'PreRunwayRetryableError'
+        ) or (
+            isinstance(node, ast.FunctionDef)
+            and node.name == '_review_stock_tournament_round'
+        )
+    ]
+    namespace = {
+        'Path': Path,
+        'json': __import__('json'),
+        'review_scene_visuals': Mock(),
+    }
+    exec(
+        compile(
+            ast.Module(body=definitions, type_ignores=[]),
+            str(SOURCE_PATH),
+            'exec',
+        ),
+        namespace,
+    )
+    return namespace
+
+
 def _load_manual_qa_boundary():
     tree = ast.parse(
         SOURCE_PATH.read_text(encoding='utf-8'),
@@ -240,6 +272,74 @@ def _stock_spec(path='/tmp/real-stock.mp4'):
 
 
 class ShortPreviewBrollFallbackTests(unittest.TestCase):
+    def test_stock_tournament_reviews_each_scene_in_a_bounded_request(self):
+        namespace = _load_stock_tournament_review_boundary()
+        review_round = namespace['_review_stock_tournament_round']
+        reviewer = namespace['review_scene_visuals']
+        reviewer.side_effect = [
+            {'reviews': [{'scene_index': 0, 'score': 81}]},
+            {'reviews': [{'scene_index': 0, 'score': 92}]},
+        ]
+        scenes = [
+            {'narration': 'zero'},
+            {'narration': 'one'},
+            {'narration': 'two'},
+        ]
+        round_visuals = [
+            [{'path': '/tmp/two-a.mp4'}, {'path': '/tmp/two-b.mp4'}],
+            [{'path': '/tmp/zero-a.mp4'}],
+        ]
+
+        reviews = review_round(
+            scenes,
+            [2, 0],
+            round_visuals,
+            Path('/tmp/tournament'),
+            1,
+            'literal topic',
+        )
+
+        self.assertEqual(sorted(reviews), [0, 1])
+        self.assertEqual(reviews[0]['score'], 81)
+        self.assertEqual(reviews[1]['score'], 92)
+        self.assertEqual(reviewer.call_count, 2)
+        first_args, first_kwargs = reviewer.call_args_list[0]
+        second_args, second_kwargs = reviewer.call_args_list[1]
+        self.assertEqual(first_args[0], [scenes[2]])
+        self.assertEqual(first_args[1], [round_visuals[0]])
+        self.assertEqual(first_args[3], 1)
+        self.assertEqual(first_args[2], Path('/tmp/tournament/scene_02'))
+        self.assertEqual(second_args[0], [scenes[0]])
+        self.assertEqual(second_args[1], [round_visuals[1]])
+        self.assertEqual(second_args[2], Path('/tmp/tournament/scene_00'))
+        self.assertEqual(first_kwargs['_missing_review_attempts'], 0)
+        self.assertEqual(first_kwargs['story_scenes'], scenes)
+        self.assertEqual(second_kwargs['topic'], 'literal topic')
+
+    def test_stock_tournament_missing_single_scene_review_fails_closed(self):
+        namespace = _load_stock_tournament_review_boundary()
+        review_round = namespace['_review_stock_tournament_round']
+        namespace['review_scene_visuals'].side_effect = [
+            {'reviews': [{'scene_index': 0, 'score': 88}]},
+            {'reviews': []},
+        ]
+
+        with self.assertRaises(
+            namespace['PreRunwayRetryableError']
+        ) as caught:
+            review_round(
+                [{'narration': 'zero'}, {'narration': 'one'}],
+                [0, 1],
+                [[{'path': '/tmp/a.mp4'}], [{'path': '/tmp/b.mp4'}]],
+                Path('/tmp/tournament'),
+                2,
+                'literal topic',
+            )
+
+        self.assertIn('"round":2', str(caught.exception))
+        self.assertIn('"scene_index":1', str(caught.exception))
+        self.assertEqual(namespace['review_scene_visuals'].call_count, 2)
+
     def test_manual_qa_source_floors_and_positive_provenance_are_exact(self):
         namespace = _load_manual_qa_boundary()
         passes = namespace['_manual_qa_preview_passes']
