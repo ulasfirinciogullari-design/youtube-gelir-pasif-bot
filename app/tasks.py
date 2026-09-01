@@ -2841,15 +2841,10 @@ def run_video_pipeline(
             for scene_idx, selected_spec, final_review
             in terminal_manual_qa_candidates
         ]
-        if terminal_manual_qa_failures:
-            raise FinalVisualQualityError(
-                'Manual-QA preview failed exact final revalidation: '
-                + json.dumps(
-                    {'failures': terminal_manual_qa_failures},
-                    ensure_ascii=False,
-                    separators=(',', ':'),
-                )
-            )
+        terminal_manual_qa_failure_scene_indices = {
+            int(item['scene_index'])
+            for item in terminal_manual_qa_failures
+        }
         # Generated clips do not exist during the stock prepass. Admit them
         # only after the exact final clip has supplied all hard-evidence and
         # artifact booleans. Forced stock fallbacks use the generated floor;
@@ -2918,6 +2913,9 @@ def run_video_pipeline(
                 scenes,
                 runway_generated_scenes,
                 final_reviews,
+                exact_revalidation_scene_indices=(
+                    terminal_manual_qa_failure_scene_indices
+                ),
             )
         )
         _preflight_runway_candidates_before_paid(
@@ -3332,6 +3330,9 @@ def run_video_pipeline(
             'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries,
             'manual_qa_scene_reasons': manual_qa_scene_reasons,
             'manual_qa_scene_reviews': manual_qa_scene_reviews,
+            'manual_qa_exact_revalidation_failures': (
+                terminal_manual_qa_failures
+            ),
             'publish_quality_threshold': (
                 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
             ),
@@ -3424,6 +3425,9 @@ def run_video_pipeline(
             'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries,
             'manual_qa_scene_reasons': manual_qa_scene_reasons,
             'manual_qa_scene_reviews': manual_qa_scene_reviews,
+            'manual_qa_exact_revalidation_failures': (
+                terminal_manual_qa_failures
+            ),
             'publish_quality_threshold': (
                 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
             ),

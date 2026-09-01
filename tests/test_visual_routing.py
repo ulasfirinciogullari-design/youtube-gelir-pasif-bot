@@ -123,6 +123,29 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
             [2, 0],
         )
 
+    def test_exact_stock_revalidation_failure_gets_priority_in_same_cap(self):
+        scenes = [
+            {'ai_prompt': None},
+            {'ai_prompt': 'authored scene one'},
+            {'ai_prompt': 'authored scene two'},
+        ]
+        self.assertEqual(
+            preview_runway_repair_indices(
+                {'mode': 'preview', 'visual_mix': 'ai_first'},
+                0.5,
+                [0, 1, 2],
+                scenes,
+                {1, 2},
+                {
+                    0: {'score': 38},
+                    1: {'score': 20},
+                    2: {'score': 10},
+                },
+                exact_revalidation_scene_indices={0},
+            ),
+            [0, 2],
+        )
+
     def test_repairs_never_expand_beyond_short_preview_or_paid_submissions(self):
         scenes = [{'ai_prompt': 'scene zero'}, {'ai_prompt': 'scene one'}]
         self.assertEqual(
