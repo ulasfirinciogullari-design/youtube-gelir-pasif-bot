@@ -1750,6 +1750,16 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 (Path(tmp) / 'motion.mp4.part.source.jpg').exists()
             )
             self.assertNotIn('_inline_image', descriptor)
+            render_args = fake_subprocess.run.call_args.args[0]
+            render_filter = render_args[render_args.index('-vf') + 1]
+            self.assertIn(
+                'scale=in_range=full:out_range=tv,format=yuv420p',
+                render_filter,
+            )
+            self.assertEqual(
+                render_args[render_args.index('-color_range') + 1],
+                'tv',
+            )
 
     @unittest.skipUnless(
         shutil.which('ffmpeg') and shutil.which('ffprobe'),
@@ -1806,12 +1816,16 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             probe = subprocess.check_output([
                 'ffprobe', '-v', 'error', '-count_frames',
                 '-select_streams', 'v:0',
-                '-show_entries', 'stream=width,height,nb_read_frames',
+                '-show_entries', (
+                    'stream=width,height,pix_fmt,color_range,nb_read_frames'
+                ),
                 '-of', 'json', str(output),
             ], text=True)
             stream = json.loads(probe)['streams'][0]
             self.assertEqual(stream['width'], 1280)
             self.assertEqual(stream['height'], 720)
+            self.assertEqual(stream['pix_fmt'], 'yuv420p')
+            self.assertEqual(stream['color_range'], 'tv')
             self.assertEqual(int(stream['nb_read_frames']), 150)
 
     def test_image_prompt_preserves_review_evidence_and_closing_guardrails(self):
