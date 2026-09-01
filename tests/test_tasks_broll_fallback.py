@@ -351,6 +351,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             (stock_spec, 59, False),
             (stock_spec, 60, True),
             (stock_spec, 85, True),
+            (stock_spec, 86, False),
             (generated, 59, False),
             (generated, 60, True),
             (generated, 64, True),
@@ -563,6 +564,9 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
                 review,
                 stock_spec,
             )
+        )
+        self.assertFalse(
+            passes(_manual_options(), 0.49999, {'ai_prompt': ''}, review, stock_spec)
         )
         self.assertFalse(
             passes(_manual_options(), 0.50001, {'ai_prompt': ''}, review, stock_spec)

@@ -753,7 +753,7 @@ def _manual_qa_preview_passes(
     quality_threshold = options.get('quality_threshold')
     if (
         options.get('mode') != 'preview'
-        or duration_minutes > 0.5
+        or duration_minutes != 0.5
         or type(quality_threshold) is not int
         or quality_threshold != MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
     ):
