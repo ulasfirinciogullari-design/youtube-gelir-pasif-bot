@@ -530,7 +530,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             post_kwargs['json']['parameters'],
             {
                 'aspectRatio': '16:9',
-                'durationSeconds': '6',
+                'durationSeconds': 6,
                 'resolution': '720p',
             },
         )
