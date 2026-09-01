@@ -96,6 +96,7 @@ _RECOVERED_MEDIA_KEY_PATTERN = re.compile(
 )
 _RECOVERED_MEDIA_PROVIDERS = {
     'runway',
+    'fal_seedance_2_fast',
     'gemini_veo',
     'gemini_veo_fast',
     'gemini_veo_standard',
@@ -4083,6 +4084,12 @@ def run_video_pipeline(
                         'quota_fallback_chain'
                     ),
                     'fallback_reason': generated_scene.get('fallback_reason'),
+                    'provider_fallback_from': generated_scene.get(
+                        'provider_fallback_from'
+                    ),
+                    'provider_request_id': generated_scene.get(
+                        'provider_request_id'
+                    ),
                     'source_media_type': generated_scene.get(
                         'source_media_type'
                     ),
@@ -4480,6 +4487,12 @@ def run_video_pipeline(
                     ),
                     'quota_fallback_chain': repair_scene.get(
                         'quota_fallback_chain'
+                    ),
+                    'provider_fallback_from': repair_scene.get(
+                        'provider_fallback_from'
+                    ),
+                    'provider_request_id': repair_scene.get(
+                        'provider_request_id'
                     ),
                     'fallback_reason': repair_scene.get('fallback_reason'),
                     'source_media_type': repair_scene.get(

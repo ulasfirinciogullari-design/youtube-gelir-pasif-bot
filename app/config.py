@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     elevenlabs_voice_id: str = ''
     pexels_api_key: str = ''
     runwayml_api_secret: str = ''
+    fal_key: str = ''
     google_client_id: str = ''
     google_client_secret: str = ''
     google_redirect_uri: str = ''

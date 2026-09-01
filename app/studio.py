@@ -93,6 +93,7 @@ def _service_statuses() -> list[tuple[str, bool]]:
         ('ElevenLabs', bool(settings.elevenlabs_api_key)),
         ('Pexels', bool(settings.pexels_api_key)),
         ('Runway', bool(settings.runwayml_api_secret)),
+        ('Fal video', bool(getattr(settings, 'fal_key', ''))),
         ('Storage', bool(settings.bucket and settings.endpoint)),
         ('Redis', bool(settings.redis_url)),
     ]
