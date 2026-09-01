@@ -1349,6 +1349,7 @@ def _import_publish_tasks_with_stubs(monkeypatch):
     state_module = types.ModuleType('app.services.studio_state')
     for name in (
         'create_job',
+        'claim_retry_dispatch',
         'get_job',
         'list_jobs',
         'mark_failure',
@@ -2231,14 +2232,17 @@ def test_studio_router_mounts_secure_youtube_lifecycle(monkeypatch):
     storage_module.download_file = lambda *_a, **_k: None
     state_module = types.ModuleType('app.services.studio_state')
     for name in (
+        'claim_retry_dispatch',
         'create_job',
         'consume_repair_checkpoint',
         'get_job',
         'list_jobs',
         'mark_failure',
+        'mark_retry_dispatch',
         'mark_success',
         'save_repair_checkpoint',
         'set_stage',
+        'sync_repair_checkpoint_state',
         'update_job',
     ):
         setattr(state_module, name, lambda *_a, **_k: None)

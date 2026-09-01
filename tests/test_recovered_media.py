@@ -44,6 +44,7 @@ def _load_recovery_boundary():
         '_validated_recovered_voice',
         '_stage_scene_repair_artifacts',
         '_persist_scene_repair_checkpoint',
+        '_prepare_package',
         '_require_recovered_media_coverage',
     }
     definitions = [
@@ -75,6 +76,8 @@ def _load_recovery_boundary():
         'upload_file': lambda *_args, **_kwargs: None,
         'save_repair_checkpoint': lambda *_args, **_kwargs: None,
         'update_job': lambda *_args, **_kwargs: None,
+        'set_stage': lambda *_args, **_kwargs: None,
+        'short_story_package_is_approved': lambda *_args, **_kwargs: True,
     }
     exec(
         compile(
@@ -294,6 +297,47 @@ class RecoveredGeneratedMediaTests(unittest.TestCase):
         with self.assertRaises(FinalVisualQualityError):
             validate(self.repair_contract(), 7, 'e' * 64)
 
+    def test_consecutive_scene_repair_preserves_original_package_hash(self):
+        prepare = self.boundary['_prepare_package']
+        package_hash = self.boundary['_recovery_package_sha256']
+        validate = self.boundary['_validated_recovered_generated_media']
+        original_options = {
+            'mode': 'preview',
+            'workflow': 'auto',
+            'visual_mix': 'balanced',
+        }
+        approved = {
+            'title': 'Locked repair story',
+            'scenes': [{}, {}, {}, {}, {}, {}, {}],
+            'studio_options': original_options,
+        }
+        expected_hash = package_hash(approved)
+        contract = self.repair_contract()
+        contract['package_sha256'] = expected_hash
+        approved['_recovered_generated_media'] = contract
+        approved['_recovered_voice'] = {
+            'version': 1,
+            'source_task_id': self.source_task_id,
+            'package_sha256': expected_hash,
+        }
+
+        prepared = prepare(
+            object(),
+            '11111111-1111-4111-8111-111111111111',
+            'Locked repair story',
+            0.5,
+            'tr',
+            {
+                **original_options,
+                'workflow': 'scene_repair',
+            },
+            approved,
+        )
+
+        assert prepared['studio_options'] == original_options
+        assert package_hash(prepared) == expected_hash
+        validate(contract, 7, package_hash(prepared))
+
     def test_checkpoint_clip_verifies_exact_size_and_checksum(self):
         validate_clip = self.boundary['_validate_recovered_generated_clip']
         with tempfile.TemporaryDirectory() as tmp:
@@ -398,7 +442,8 @@ class RecoveredGeneratedMediaTests(unittest.TestCase):
         self.assertEqual(media['repair_scene_indices'], [1])
         self.assertTrue(approved['_recovered_voice']['sha256'])
         self.assertEqual(len(uploads), 2)
-        self.assertTrue(updates[0][1]['repair_available'])
+        self.assertEqual(updates[0][1]['repair_scene_indices'], [1])
+        self.assertIn('yalnızca reddedilen', updates[0][1]['repair_message'])
 
 
 if __name__ == '__main__':

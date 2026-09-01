@@ -10,6 +10,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import httpx
+from celery.exceptions import Ignore
 
 from app.celery_app import celery
 from app.services.audio_design import generate_music_bed, mix_voice_and_music
@@ -33,6 +34,7 @@ from app.services.runway import (
 )
 from app.services.storage import download_file, upload_file, presigned_download_url
 from app.services.studio_state import (
+    acquire_retry_child_execution,
     mark_failure,
     mark_success,
     save_repair_checkpoint,
@@ -810,16 +812,19 @@ def _persist_scene_repair_checkpoint(
         len(scene_durations),
         package_sha256,
     )
-    save_repair_checkpoint(source_task_id, checkpoint)
+    # Publish the non-sensitive UI description before the checkpoint.  The
+    # final save atomically makes the private package available and clears any
+    # earlier claim marker, so a concurrent consumer can never be overwritten
+    # by a late ``repair_available=True`` job update.
     update_job(
         source_task_id,
-        repair_available=True,
         repair_scene_indices=rejected,
         repair_message=(
             'Kabul edilen ses ve sahneler kilitlendi; yalnızca reddedilen '
             'sahne yeniden üretilecek.'
         ),
     )
+    save_repair_checkpoint(source_task_id, checkpoint)
     return True
 
 
@@ -2641,13 +2646,39 @@ def _prepare_package(
             )
         set_stage(celery_task, task_id, 'approved_plan', 12, 'Onaylı storyboard kilitlendi.')
         package = dict(approved_package)
-        package['studio_options'] = options
+        if not (
+            package.get('_recovered_generated_media') is not None
+            or package.get('_recovered_voice') is not None
+        ):
+            package['studio_options'] = options
+        # Recovery contracts bind the exact server-approved package hash,
+        # including its original studio_options. ``scene_repair`` is runtime
+        # dispatch metadata, not a storyboard mutation; replacing the original
+        # options here would invalidate an otherwise authentic checkpoint.
         return package
 
     set_stage(celery_task, task_id, 'research', 7, 'Güncel araştırma ve ilk storyboard hazırlanıyor.')
     draft = research_and_script(topic, duration_minutes, language, options)
     set_stage(celery_task, task_id, 'director_qc', 14, 'Senaryo yönetmeni akışı, ritmi ve görsel dili düzeltiyor.')
     return direct_and_qc(draft, topic, duration_minutes, language, options)
+
+
+def _guard_retry_child_execution(
+    celery_task,
+    task_id: str,
+    retry_dispatch_source_id: str | None,
+) -> None:
+    """Drop only duplicate initial deliveries; allow Celery's own retries."""
+    retry_number = int(getattr(celery_task.request, 'retries', 0) or 0)
+    if (
+        retry_dispatch_source_id
+        and retry_number == 0
+        and not acquire_retry_child_execution(
+            task_id,
+            retry_dispatch_source_id,
+        )
+    ):
+        raise Ignore()
 
 
 @celery.task(
@@ -2667,9 +2698,15 @@ def plan_video_pipeline(
     language: str = 'tr',
     channel_id: str | None = None,
     options: dict | None = None,
+    retry_dispatch_source_id: str | None = None,
 ):
     language = normalize_pipeline_language(language)
     task_id = self.request.id
+    _guard_retry_child_execution(
+        self,
+        task_id,
+        retry_dispatch_source_id,
+    )
     options = _normalized_options(options, duration_minutes)
     update_job(task_id, kind='plan', spec=_task_spec(topic, duration_minutes, language, channel_id, options))
     try:
@@ -2729,11 +2766,17 @@ def run_video_pipeline(
     channel_id: str | None = None,
     options: dict | None = None,
     approved_package: dict | None = None,
+    retry_dispatch_source_id: str | None = None,
 ):
     language = normalize_pipeline_language(language)
     task_id = self.request.id
-    options = _normalized_options(options, duration_minutes)
     retry_number = int(getattr(self.request, 'retries', 0) or 0)
+    _guard_retry_child_execution(
+        self,
+        task_id,
+        retry_dispatch_source_id,
+    )
+    options = _normalized_options(options, duration_minutes)
     work = Path('/tmp/youtube_factory') / f'{task_id}_attempt_{retry_number}'
     work.mkdir(parents=True, exist_ok=True)
     update_job(task_id, kind='render', spec=_task_spec(topic, duration_minutes, language, channel_id, options))
