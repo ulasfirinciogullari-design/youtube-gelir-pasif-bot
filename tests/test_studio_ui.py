@@ -35,11 +35,13 @@ def ui_modules(monkeypatch):
     tasks_module.run_video_pipeline = types.SimpleNamespace(delay=lambda *_a, **_k: None)
 
     state_module = types.ModuleType('app.services.studio_state')
+    state_module.consume_repair_checkpoint = lambda *_a, **_k: None
     state_module.create_job = lambda *_a, **_k: None
     state_module.get_job = lambda *_a, **_k: None
     state_module.list_jobs = lambda *_a, **_k: []
     state_module.mark_failure = lambda *_a, **_k: {}
     state_module.mark_success = lambda *_a, **_k: {}
+    state_module.save_repair_checkpoint = lambda *_a, **_k: None
     state_module.update_job = lambda *_a, **_k: {}
 
     voice_module = types.ModuleType('app.services.voice')
