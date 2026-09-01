@@ -59,7 +59,10 @@ def _generate_gemini_video_uri(prompt_text: str, seconds: int) -> str:
                 'instances': [{'prompt': prompt_text}],
                 'parameters': {
                     'aspectRatio': '16:9',
-                    'durationSeconds': str(duration),
+                    # The live REST endpoint rejects JSON strings here even
+                    # though older documentation tables displayed quoted
+                    # values. Send the schema's numeric duration type.
+                    'durationSeconds': duration,
                     'resolution': '720p',
                 },
             },
