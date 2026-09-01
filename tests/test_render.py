@@ -41,6 +41,95 @@ class RenderQualityTests(unittest.TestCase):
         )
         self.assertIn('[top_band][bottom_band]vstack=inputs=2', filter_complex)
 
+    def test_horizontal_letterbox_detector_fails_closed_on_probe_error(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            media = Path(tmp) / 'unreadable.mp4'
+            media.write_bytes(b'video')
+            completed = subprocess.CompletedProcess(
+                args=[],
+                returncode=1,
+                stdout='',
+                stderr='decoder failure',
+            )
+            with patch.object(
+                render_module.subprocess,
+                'run',
+                return_value=completed,
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    'letterbox inspection failed',
+                ):
+                    render_module.max_horizontal_letterbox_duration(media)
+
+    def test_symmetric_letterbox_crop_requires_repeated_full_width_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            media = Path(tmp) / 'letterboxed.mp4'
+            media.write_bytes(b'video')
+            completed = subprocess.CompletedProcess(
+                args=[],
+                returncode=0,
+                stdout='',
+                stderr='\n'.join([
+                    'crop=1280:540:0:90',
+                    'crop=1280:540:0:90',
+                    'crop=1280:540:0:90',
+                    'crop=1280:540:0:90',
+                    # One transient dark edge must not override the stable bars.
+                    'crop=1100:500:80:110',
+                ]),
+            )
+            with (
+                patch.object(
+                    render_module.subprocess,
+                    'check_output',
+                    return_value='1280x720\n',
+                ),
+                patch.object(
+                    render_module.subprocess,
+                    'run',
+                    return_value=completed,
+                ) as run,
+            ):
+                crop = render_module.detect_symmetric_letterbox_crop(
+                    media,
+                    start_seconds=1.25,
+                )
+
+        self.assertEqual(crop, (540, 90))
+        command = run.call_args.args[0]
+        self.assertEqual(command[command.index('-ss') + 1], '1.250')
+        self.assertIn(
+            'cropdetect=limit=24:round=2:reset=0',
+            command[command.index('-vf') + 1],
+        )
+
+    def test_symmetric_letterbox_crop_rejects_single_dark_frame(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            media = Path(tmp) / 'dark-frame.mp4'
+            media.write_bytes(b'video')
+            completed = subprocess.CompletedProcess(
+                args=[],
+                returncode=0,
+                stdout='',
+                stderr='crop=1280:540:0:90',
+            )
+            with (
+                patch.object(
+                    render_module.subprocess,
+                    'check_output',
+                    return_value='1280x720\n',
+                ),
+                patch.object(
+                    render_module.subprocess,
+                    'run',
+                    return_value=completed,
+                ),
+            ):
+                crop = render_module.detect_symmetric_letterbox_crop(media)
+
+        self.assertIsNone(crop)
+
     def test_fixed_master_never_silently_truncates_overlong_narration(self):
         with tempfile.TemporaryDirectory() as tmp:
             work = Path(tmp)
@@ -169,6 +258,105 @@ class RenderQualityTests(unittest.TestCase):
                 )
 
         self.assertEqual(len(commands), 2)
+
+    def test_persistent_letterbox_uses_measured_crop_then_rechecks_gate(self):
+        commands = []
+        with (
+            patch.object(render_module, 'media_duration', return_value=10.0),
+            patch.object(render_module, '_run', side_effect=commands.append),
+            patch.object(render_module, 'video_frame_count', return_value=270),
+            patch.object(
+                render_module,
+                'max_horizontal_letterbox_duration',
+                side_effect=[3.5, 1.2, 0.0],
+            ),
+            patch.object(
+                render_module,
+                'detect_symmetric_letterbox_crop',
+                return_value=(540, 90),
+            ) as detect_crop,
+        ):
+            render_module.normalize_clip(
+                {'path': 'generated.mp4', 'forbid_loop': True},
+                'normalized.mp4',
+                9.0,
+                0,
+            )
+
+        self.assertEqual(len(commands), 3)
+        crop_filter = commands[2][commands[2].index('-vf') + 1]
+        self.assertTrue(crop_filter.startswith('crop=iw:540:0:90,'))
+        self.assertIn('scale=2050:1153:', crop_filter)
+        detect_crop.assert_called_once_with(
+            'generated.mp4',
+            start_seconds=0.0,
+            sample_seconds=2.5,
+        )
+
+    def test_measured_crop_does_not_bypass_failed_output_inspection(self):
+        commands = []
+        with (
+            patch.object(render_module, 'media_duration', return_value=10.0),
+            patch.object(render_module, '_run', side_effect=commands.append),
+            patch.object(render_module, 'video_frame_count', return_value=270),
+            patch.object(
+                render_module,
+                'max_horizontal_letterbox_duration',
+                side_effect=[
+                    3.5,
+                    1.2,
+                    RuntimeError('Horizontal letterbox inspection failed'),
+                ],
+            ),
+            patch.object(
+                render_module,
+                'detect_symmetric_letterbox_crop',
+                return_value=(540, 90),
+            ),
+        ):
+            with self.assertRaisesRegex(
+                RuntimeError,
+                'letterbox inspection failed',
+            ):
+                render_module.normalize_clip(
+                    {'path': 'generated.mp4', 'forbid_loop': True},
+                    'normalized.mp4',
+                    9.0,
+                    0,
+                )
+
+        self.assertEqual(len(commands), 3)
+
+    def test_measured_crop_still_enforces_exact_frame_gate(self):
+        commands = []
+        with (
+            patch.object(render_module, 'media_duration', return_value=10.0),
+            patch.object(render_module, '_run', side_effect=commands.append),
+            patch.object(
+                render_module,
+                'video_frame_count',
+                side_effect=[270, 270, 269],
+            ),
+            patch.object(
+                render_module,
+                'max_horizontal_letterbox_duration',
+                side_effect=[3.5, 1.2],
+            ),
+            patch.object(
+                render_module,
+                'detect_symmetric_letterbox_crop',
+                return_value=(540, 90),
+            ),
+        ):
+            with self.assertRaisesRegex(RuntimeError, 'frame gate'):
+                render_module.normalize_clip(
+                    {'path': 'generated.mp4', 'forbid_loop': True},
+                    'normalized.mp4',
+                    9.0,
+                    0,
+                )
+
+        self.assertEqual(len(commands), 3)
 
     @unittest.skipUnless(
         shutil.which('ffmpeg') and shutil.which('ffprobe'),

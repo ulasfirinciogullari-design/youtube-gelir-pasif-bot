@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import json
+import re
 import time
 from typing import Any
 
@@ -176,10 +177,17 @@ def mark_success(task_id: str, result: dict, *, state: str = 'SUCCESS') -> dict:
 
 
 def mark_failure(task_id: str, error: Exception | str) -> dict:
+    current = get_job(task_id) or {}
+    failure_stage = str(
+        current.get('failure_stage') or current.get('stage') or 'unknown'
+    ).strip()
+    if not re.fullmatch(r'[a-z0-9_]{1,64}', failure_stage):
+        failure_stage = 'unknown'
     return update_job(
         task_id,
         state='FAILURE',
         stage='failed',
+        failure_stage=failure_stage,
         progress=100,
         message='Görev başarısız oldu.',
         error=str(error),
