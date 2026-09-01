@@ -168,6 +168,12 @@ class RunwayPromptTests(unittest.TestCase):
             {'duration_after_fit': 29.5},
             30.0,
         )['pass'])
+        natural_ending_hold = short_preview_voice_duration_qc(
+            {'duration_after_fit': 28.728},
+            30.0,
+        )
+        self.assertTrue(natural_ending_hold['pass'])
+        self.assertEqual(natural_ending_hold['minimum_seconds'], 28.7)
         rejected = short_preview_voice_duration_qc(
             {'duration_after_fit': 27.0},
             30.0,
@@ -175,10 +181,10 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertFalse(rejected['pass'])
         self.assertEqual(rejected['reason'], 'short_form_script_too_thin')
         self.assertFalse(rejected['retryable'])
-        self.assertEqual(rejected['minimum_seconds'], 29.3)
+        self.assertEqual(rejected['minimum_seconds'], 28.7)
 
         near_boundary = short_preview_voice_duration_qc(
-            {'duration_after_fit': 29.0},
+            {'duration_after_fit': 28.5},
             30.0,
         )
         self.assertFalse(near_boundary['pass'])

@@ -268,6 +268,11 @@ def _short_preview_voice_duration_qc(
             'maximum_seconds': None,
             'reason': None,
         }
+    # A natural short may finish speaking before the final frame. Preserve up
+    # to 1.30 seconds for a closing breath and visual hold instead of forcing
+    # speech to be time-stretched into the entire 30-second edit.
+    minimum = float(target_seconds) - 1.30
+    maximum = float(target_seconds) - 0.25
     duration = voice_result.get('duration_after_fit')
     if isinstance(duration, bool) or not isinstance(duration, (int, float)):
         return {
@@ -275,13 +280,11 @@ def _short_preview_voice_duration_qc(
             'pass': False,
             'retryable': False,
             'duration_seconds': None,
-            'minimum_seconds': round(float(target_seconds) - 0.70, 3),
-            'maximum_seconds': round(float(target_seconds) - 0.25, 3),
+            'minimum_seconds': round(minimum, 3),
+            'maximum_seconds': round(maximum, 3),
             'reason': 'voice_duration_missing',
         }
     duration_seconds = float(duration)
-    minimum = float(target_seconds) - 0.70
-    maximum = float(target_seconds) - 0.25
     passed = bool(
         math.isfinite(duration_seconds)
         and minimum <= duration_seconds <= maximum
