@@ -108,6 +108,7 @@ class FakePipeline:
 class FakeRedis:
     def __init__(self):
         self.values = {}
+        self.sets = {}
         self.expirations = {}
 
     def get(self, key):
@@ -136,6 +137,30 @@ class FakeRedis:
         self.values[key] = str(value)
         return value
 
+    def sadd(self, key, *members):
+        values = self.sets.setdefault(key, set())
+        before = len(values)
+        values.update(map(str, members))
+        return len(values) - before
+
+    def srem(self, key, *members):
+        values = self.sets.setdefault(key, set())
+        before = len(values)
+        values.difference_update(map(str, members))
+        return before - len(values)
+
+    def smembers(self, key):
+        return set(self.sets.get(key, set()))
+
+    def scard(self, key):
+        return len(self.sets.get(key, set()))
+
+    def sismember(self, key, member):
+        return str(member) in self.sets.get(key, set())
+
+    def exists(self, key):
+        return int(key in self.values or key in self.sets)
+
     def pipeline(self, transaction=True):
         del transaction
         return FakePipeline(self)
@@ -151,31 +176,68 @@ class FakeRedis:
             return self.incr(keys[0])
 
         if script == youtube_auth._COMMIT_CONNECTION_SCRIPT:
-            expected, encrypted, channel_json = map(str, args)
+            expected, channel_id, encrypted, channel_json, maximum = map(str, args)
             if str(self.values.get(keys[0], '0')) != expected:
                 return 0
-            self.values[keys[1]] = encrypted
-            self.values[keys[2]] = channel_json
-            self.delete(keys[3], keys[4])
+            if not self.sismember(keys[1], channel_id) and self.scard(keys[1]) >= int(maximum):
+                return -1
+            self.values[keys[2]] = encrypted
+            self.values[keys[3]] = channel_json
+            self.sadd(keys[1], channel_id)
+            self.delete(*keys[4:])
             self.incr(keys[0])
             return 1
 
         if script == youtube_auth._CLEAR_IF_CREDENTIAL_MATCHES_SCRIPT:
             if self.values.get(keys[0]) != args[0]:
                 return 0
-            self.delete(*keys)
+            self.delete(keys[0], keys[1])
+            self.srem(keys[2], args[1])
             return 1
 
         if script == youtube_auth._CLEAR_IF_CHANNEL_MATCHES_SCRIPT:
             if self.values.get(keys[1]) != args[0]:
                 return 0
-            self.delete(*keys)
+            self.delete(keys[0], keys[1])
+            self.srem(keys[2], args[1])
             return 1
 
         if script == youtube_auth._UPDATE_CHANNEL_IF_CURRENT_SCRIPT:
             if not self.values.get(keys[0]) or self.values.get(keys[1]) != args[0]:
                 return 0
             self.values[keys[1]] = args[1]
+            return 1
+
+        if script == youtube_auth._DISCONNECT_IF_CURRENT_SCRIPT:
+            if self.values.get(keys[0]) != args[0] or self.values.get(keys[1]) != args[1]:
+                return 0
+            self.delete(keys[0], keys[1])
+            self.srem(keys[2], args[2])
+            self.incr(keys[3])
+            return 1
+
+        if script == youtube_auth._MIGRATE_V2_SCRIPT:
+            channel_id, old_credential, old_channel, new_credential, new_channel, maximum = map(str, args)
+            if self.exists(keys[1]) or self.exists(keys[2]):
+                return 2
+            if not self.sismember(keys[0], channel_id) and self.scard(keys[0]) >= int(maximum):
+                return -1
+            if self.values.get(keys[3]) != old_credential or self.values.get(keys[4]) != old_channel:
+                return 0
+            self.values[keys[1]] = new_credential
+            self.values[keys[2]] = new_channel
+            self.sadd(keys[0], channel_id)
+            self.delete(*keys[3:])
+            return 1
+
+        if script == youtube_auth._CLEAR_STALE_V2_IF_V3_CURRENT_SCRIPT:
+            if self.values.get(keys[0]) != args[0] or self.values.get(keys[1]) != args[1]:
+                return 0
+            if not self.sismember(keys[2], args[4]):
+                return 0
+            if self.values.get(keys[3]) != args[2] or self.values.get(keys[4]) != args[3]:
+                return 0
+            self.delete(*keys[3:])
             return 1
 
         if script == publish_state._CAS_RECORD:
@@ -221,6 +283,31 @@ def _configure_auth(monkeypatch, client):
         raising=False,
     )
     monkeypatch.setattr(youtube_auth, '_redis', lambda: client)
+
+
+def _seed_v3_connection(
+    client,
+    channel_id,
+    connection_id,
+    *,
+    refresh_token='refresh-token',
+    title='Channel',
+):
+    client.values[youtube_auth._credential_key(channel_id)] = youtube_auth._encrypt_json({
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': connection_id,
+        'refresh_token': refresh_token,
+        'scopes': youtube_auth.SCOPES,
+    })
+    client.values[youtube_auth._channel_key(channel_id)] = json.dumps({
+        'id': channel_id,
+        'title': title,
+        'connection_id': connection_id,
+        'connected_at': '2026-09-01T00:00:00+00:00',
+        'verified_at': '2026-09-01T00:00:00+00:00',
+    })
+    client.sadd(youtube_auth.CHANNEL_INDEX_KEY, channel_id)
 
 
 def test_oauth_state_is_encrypted_one_use_and_channel_is_verified(monkeypatch):
@@ -323,11 +410,17 @@ def test_oauth_state_is_encrypted_one_use_and_channel_is_verified(monkeypatch):
     }]
     assert flow_instances[-1].fetched_code == 'authorization-code'
     assert state_key not in client.values
-    encrypted_credentials = client.values[youtube_auth.CREDENTIAL_KEY]
+    encrypted_credentials = client.values[
+        youtube_auth._credential_key('UC_verified')
+    ]
     assert 'refresh-secret-value' not in encrypted_credentials
     assert 'temporary-access' not in encrypted_credentials
     payload = youtube_auth._decrypt_json(encrypted_credentials)
+    assert payload['version'] == 3
+    assert payload['channel_id'] == 'UC_verified'
+    assert payload['connection_id'] == channel['connection_id']
     assert payload['refresh_token'] == 'refresh-secret-value'
+    assert client.smembers(youtube_auth.CHANNEL_INDEX_KEY) == {'UC_verified'}
 
     with pytest.raises(youtube_auth.OAuthStateError):
         youtube_auth.complete_authorization(
@@ -340,11 +433,28 @@ def test_oauth_state_is_encrypted_one_use_and_channel_is_verified(monkeypatch):
 def test_invalid_grant_clears_stored_connection(monkeypatch):
     client = FakeRedis()
     _configure_auth(monkeypatch, client)
-    client.values[youtube_auth.CREDENTIAL_KEY] = youtube_auth._encrypt_json({
-        'version': 2,
+    channel_id = 'UC_revoked_channel'
+    connection_id = 'connection-id-revoked'
+    credential_key = youtube_auth._credential_key(channel_id)
+    channel_key = youtube_auth._channel_key(channel_id)
+    client.values[credential_key] = youtube_auth._encrypt_json({
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': connection_id,
         'refresh_token': 'revoked-refresh-token',
     })
-    client.values[youtube_auth.CHANNEL_KEY] = json.dumps({'id': 'UC_old'})
+    client.values[channel_key] = json.dumps({
+        'id': channel_id,
+        'title': 'Old',
+        'connection_id': connection_id,
+    })
+    client.sadd(youtube_auth.CHANNEL_INDEX_KEY, channel_id)
+    _seed_v3_connection(
+        client,
+        'UC_healthy_other_channel',
+        'connection-id-healthy-other',
+        refresh_token='healthy-other-token',
+    )
 
     class RevokedCredentials(BaseCredentials):
         def refresh(self, _request):
@@ -357,19 +467,36 @@ def test_invalid_grant_clears_stored_connection(monkeypatch):
     )
 
     with pytest.raises(youtube_auth.AuthorizationRevokedError):
-        youtube_auth.load_credentials(refresh=True)
-    assert youtube_auth.CREDENTIAL_KEY not in client.values
-    assert youtube_auth.CHANNEL_KEY not in client.values
+        youtube_auth.load_credentials(
+            channel_id,
+            expected_connection_id=connection_id,
+            refresh=True,
+        )
+    assert credential_key not in client.values
+    assert channel_key not in client.values
+    assert client.smembers(youtube_auth.CHANNEL_INDEX_KEY) == {'UC_healthy_other_channel'}
+    assert youtube_auth.get_channel_info('UC_healthy_other_channel')['id'] == 'UC_healthy_other_channel'
 
 
 def test_disconnect_deletes_locally_and_revokes_without_url_secret(monkeypatch):
     client = FakeRedis()
     _configure_auth(monkeypatch, client)
-    client.values[youtube_auth.CREDENTIAL_KEY] = youtube_auth._encrypt_json({
-        'version': 2,
+    channel_id = 'UC_disconnect_channel'
+    connection_id = 'connection-id-disconnect'
+    credential_key = youtube_auth._credential_key(channel_id)
+    channel_key = youtube_auth._channel_key(channel_id)
+    client.values[credential_key] = youtube_auth._encrypt_json({
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': connection_id,
         'refresh_token': 'refresh-token-to-revoke',
     })
-    client.values[youtube_auth.CHANNEL_KEY] = json.dumps({'id': 'UC_old'})
+    client.values[channel_key] = json.dumps({
+        'id': channel_id,
+        'title': 'Old',
+        'connection_id': connection_id,
+    })
+    client.sadd(youtube_auth.CHANNEL_INDEX_KEY, channel_id)
     request = {}
 
     class Response:
@@ -380,12 +507,16 @@ def test_disconnect_deletes_locally_and_revokes_without_url_secret(monkeypatch):
         return Response()
 
     monkeypatch.setattr(youtube_auth.httpx, 'post', post)
-    assert youtube_auth.disconnect(revoke=True) is True
+    assert youtube_auth.disconnect(
+        channel_id,
+        expected_connection_id=connection_id,
+        revoke=True,
+    ) is True
     assert request['url'] == youtube_auth.REVOCATION_URI
     assert 'refresh-token-to-revoke' not in request['url']
     assert request['data'] == {'token': 'refresh-token-to-revoke'}
-    assert youtube_auth.CREDENTIAL_KEY not in client.values
-    assert youtube_auth.CHANNEL_KEY not in client.values
+    assert credential_key not in client.values
+    assert channel_key not in client.values
 
 
 def test_new_connect_and_disconnect_invalidate_stale_oauth_callbacks(monkeypatch):
@@ -496,45 +627,429 @@ def test_failed_new_callback_does_not_clear_existing_connection(monkeypatch):
 def test_channel_refresh_is_bound_to_reserved_channel_and_connection(monkeypatch):
     client = FakeRedis()
     _configure_auth(monkeypatch, client)
-    client.values[youtube_auth.CREDENTIAL_KEY] = 'encrypted-credential-present'
-    client.values[youtube_auth.CHANNEL_KEY] = json.dumps({
-        'id': 'UC_reserved',
+    channel_id = 'UC_reserved_channel'
+    connection_id = 'connection-id-reserved'
+    client.values[youtube_auth._credential_key(channel_id)] = youtube_auth._encrypt_json({
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': connection_id,
+        'refresh_token': 'refresh-token-reserved',
+    })
+    client.values[youtube_auth._channel_key(channel_id)] = json.dumps({
+        'id': channel_id,
         'title': 'Reserved channel',
-        'connection_id': 'connection-id-reserved',
+        'connection_id': connection_id,
         'connected_at': '2026-08-31T00:00:00+00:00',
     })
+    client.sadd(youtube_auth.CHANNEL_INDEX_KEY, channel_id)
 
-    with pytest.raises(youtube_auth.YouTubeAuthError, match='target channel changed'):
-        youtube_auth.refresh_channel_info(
-            object(),
-            expected_channel_id='UC_different',
-            expected_connection_id='connection-id-reserved',
-        )
     with pytest.raises(youtube_auth.YouTubeAuthError, match='connection changed'):
         youtube_auth.refresh_channel_info(
+            channel_id,
             object(),
-            expected_channel_id='UC_reserved',
             expected_connection_id='connection-id-different',
+        )
+    with pytest.raises(youtube_auth.YouTubeAuthError, match='connection changed'):
+        youtube_auth.load_credentials(
+            channel_id,
+            expected_connection_id='connection-id-different',
+            refresh=False,
         )
 
     monkeypatch.setattr(
         youtube_auth,
         '_channel_from_credentials',
         lambda _credentials: {
-            'id': 'UC_reserved',
+            'id': channel_id,
             'title': 'Reserved channel refreshed',
             'connected_at': 'new-value-must-not-replace-original',
             'verified_at': '2026-08-31T01:00:00+00:00',
         },
     )
     refreshed = youtube_auth.refresh_channel_info(
+        channel_id,
         object(),
-        expected_channel_id='UC_reserved',
-        expected_connection_id='connection-id-reserved',
+        expected_connection_id=connection_id,
     )
-    assert refreshed['id'] == 'UC_reserved'
-    assert refreshed['connection_id'] == 'connection-id-reserved'
+    assert refreshed['id'] == channel_id
+    assert refreshed['connection_id'] == connection_id
     assert refreshed['connected_at'] == '2026-08-31T00:00:00+00:00'
+
+
+def test_v2_singleton_migrates_atomically_and_idempotently(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    channel_id = 'UC_migrated_channel'
+    connection_id = 'connection-id-migrated'
+    client.values[youtube_auth.CREDENTIAL_KEY] = youtube_auth._encrypt_json({
+        'version': 2,
+        'refresh_token': 'migrated-refresh-token',
+        'scopes': youtube_auth.SCOPES,
+    })
+    client.values[youtube_auth.CHANNEL_KEY] = json.dumps({
+        'id': channel_id,
+        'title': 'Migrated channel',
+        'connection_id': connection_id,
+        'connected_at': '2026-08-31T00:00:00+00:00',
+    })
+
+    first = youtube_auth.list_connections()
+    second = youtube_auth.list_connections()
+
+    assert [item['id'] for item in first] == [channel_id]
+    assert second == first
+    assert youtube_auth.CREDENTIAL_KEY not in client.values
+    assert youtube_auth.CHANNEL_KEY not in client.values
+    encrypted = client.values[youtube_auth._credential_key(channel_id)]
+    payload = youtube_auth._decrypt_json(encrypted)
+    assert payload == {
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': connection_id,
+        'refresh_token': 'migrated-refresh-token',
+        'scopes': youtube_auth.SCOPES,
+    }
+
+
+def test_v2_migration_repairs_stale_index_membership(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    channel_id = 'UC_stale_index_channel'
+    client.sadd(youtube_auth.CHANNEL_INDEX_KEY, channel_id)
+    client.values[youtube_auth.CREDENTIAL_KEY] = youtube_auth._encrypt_json({
+        'version': 2,
+        'refresh_token': 'stale-index-refresh',
+    })
+    client.values[youtube_auth.CHANNEL_KEY] = json.dumps({
+        'id': channel_id,
+        'title': 'Recovered from v2',
+        'connection_id': 'connection-id-stale-index',
+    })
+
+    connections = youtube_auth.list_connections()
+
+    assert [item['id'] for item in connections] == [channel_id]
+    assert youtube_auth._credential_key(channel_id) in client.values
+    assert youtube_auth._channel_key(channel_id) in client.values
+
+
+def test_v2_migration_never_overwrites_newer_v3_generation(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    channel_id = 'UC_existing_v3_channel'
+    _seed_v3_connection(
+        client,
+        channel_id,
+        'connection-id-newer-v3',
+        refresh_token='newer-v3-token',
+    )
+    existing_cipher = client.values[youtube_auth._credential_key(channel_id)]
+    client.values[youtube_auth.CREDENTIAL_KEY] = youtube_auth._encrypt_json({
+        'version': 2,
+        'refresh_token': 'stale-v2-token',
+    })
+    client.values[youtube_auth.CHANNEL_KEY] = json.dumps({
+        'id': channel_id,
+        'title': 'Stale singleton',
+        'connection_id': 'connection-id-stale-v2',
+    })
+    client.values[youtube_auth.LEGACY_CREDENTIAL_KEY] = 'legacy-credential'
+    client.values[youtube_auth.LEGACY_CHANNEL_KEY] = 'legacy-channel'
+
+    youtube_auth._migrate_v2_connection(client)
+
+    assert client.values[youtube_auth._credential_key(channel_id)] == existing_cipher
+    assert youtube_auth._decrypt_json(existing_cipher)['refresh_token'] == 'newer-v3-token'
+    assert youtube_auth.CREDENTIAL_KEY not in client.values
+    assert youtube_auth.CHANNEL_KEY not in client.values
+    assert youtube_auth.LEGACY_CREDENTIAL_KEY not in client.values
+    assert youtube_auth.LEGACY_CHANNEL_KEY not in client.values
+
+
+def test_partial_v3_record_never_triggers_stale_v2_cleanup_or_overwrite(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    channel_id = 'UC_partial_v3_channel'
+    partial_cipher = youtube_auth._encrypt_json({
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': 'connection-id-partial-v3',
+        'refresh_token': 'partial-v3-token',
+    })
+    client.values[youtube_auth._credential_key(channel_id)] = partial_cipher
+    client.sadd(youtube_auth.CHANNEL_INDEX_KEY, channel_id)
+    old_cipher = youtube_auth._encrypt_json({
+        'version': 2,
+        'refresh_token': 'fallback-v2-token',
+    })
+    old_channel = json.dumps({
+        'id': channel_id,
+        'title': 'Fallback v2',
+        'connection_id': 'connection-id-fallback-v2',
+    })
+    client.values[youtube_auth.CREDENTIAL_KEY] = old_cipher
+    client.values[youtube_auth.CHANNEL_KEY] = old_channel
+
+    youtube_auth._migrate_v2_connection(client)
+
+    assert client.values[youtube_auth._credential_key(channel_id)] == partial_cipher
+    assert youtube_auth._channel_key(channel_id) not in client.values
+    assert client.values[youtube_auth.CREDENTIAL_KEY] == old_cipher
+    assert client.values[youtube_auth.CHANNEL_KEY] == old_channel
+
+
+@pytest.mark.parametrize(
+    'bad_refresh_token',
+    [None, '', 12345, 'x' * 4097],
+    ids=['missing', 'empty', 'wrong-type', 'too-long'],
+)
+def test_unusable_v3_token_preserves_v2_and_legacy_records(
+    monkeypatch,
+    bad_refresh_token,
+):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    channel_id = 'UC_unusable_v3_token'
+    connection_id = 'connection-id-unusable-v3'
+    v3_payload = {
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': connection_id,
+    }
+    if bad_refresh_token is not None:
+        v3_payload['refresh_token'] = bad_refresh_token
+    v3_cipher = youtube_auth._encrypt_json(v3_payload)
+    v3_channel_raw = json.dumps({
+        'id': channel_id,
+        'title': 'Unusable v3 token',
+        'connection_id': connection_id,
+    })
+    client.values[youtube_auth._credential_key(channel_id)] = v3_cipher
+    client.values[youtube_auth._channel_key(channel_id)] = v3_channel_raw
+    client.sadd(youtube_auth.CHANNEL_INDEX_KEY, channel_id)
+
+    old_cipher = youtube_auth._encrypt_json({
+        'version': 2,
+        'refresh_token': 'healthy-v2-token',
+    })
+    old_channel_raw = json.dumps({
+        'id': channel_id,
+        'title': 'Healthy v2 fallback',
+        'connection_id': 'connection-id-healthy-v2',
+    })
+    client.values[youtube_auth.CREDENTIAL_KEY] = old_cipher
+    client.values[youtube_auth.CHANNEL_KEY] = old_channel_raw
+    client.values[youtube_auth.LEGACY_CREDENTIAL_KEY] = 'legacy-credential'
+    client.values[youtube_auth.LEGACY_CHANNEL_KEY] = 'legacy-channel'
+
+    youtube_auth._migrate_v2_connection(client)
+
+    assert client.values[youtube_auth._credential_key(channel_id)] == v3_cipher
+    assert client.values[youtube_auth._channel_key(channel_id)] == v3_channel_raw
+    assert client.values[youtube_auth.CREDENTIAL_KEY] == old_cipher
+    assert client.values[youtube_auth.CHANNEL_KEY] == old_channel_raw
+    assert client.values[youtube_auth.LEGACY_CREDENTIAL_KEY] == 'legacy-credential'
+    assert client.values[youtube_auth.LEGACY_CHANNEL_KEY] == 'legacy-channel'
+
+
+def test_inflight_new_callback_migrates_v2_before_adding_channel(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    old_channel_id = 'UC_deployed_v2_channel'
+    client.values[youtube_auth.CREDENTIAL_KEY] = youtube_auth._encrypt_json({
+        'version': 2,
+        'refresh_token': 'deployed-v2-refresh',
+    })
+    client.values[youtube_auth.CHANNEL_KEY] = json.dumps({
+        'id': old_channel_id,
+        'title': 'Existing before deploy',
+        'connection_id': 'connection-id-before-deploy',
+    })
+    client.values[youtube_auth.AUTH_EPOCH_KEY] = '90'
+
+    youtube_auth._persist_connection(
+        BaseCredentials(refresh_token='new-channel-refresh'),
+        {
+            'id': 'UC_new_callback_channel',
+            'title': 'New callback',
+            'connection_id': 'connection-id-new-callback',
+        },
+        expected_epoch=90,
+    )
+
+    assert client.smembers(youtube_auth.CHANNEL_INDEX_KEY) == {
+        old_channel_id,
+        'UC_new_callback_channel',
+    }
+    assert youtube_auth.get_channel_info(old_channel_id)['title'] == 'Existing before deploy'
+
+
+def test_atomic_connection_cap_allows_only_one_of_two_tenth_channels(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    for index in range(9):
+        _seed_v3_connection(
+            client,
+            f'UC_seed_channel_{index:02d}',
+            f'connection-id-seed-{index:02d}',
+        )
+    client.values[youtube_auth.AUTH_EPOCH_KEY] = '40'
+    credentials = BaseCredentials(refresh_token='new-refresh-token')
+
+    first = {
+        'id': 'UC_tenth_candidate_a',
+        'title': 'Candidate A',
+        'connection_id': 'connection-id-candidate-a',
+    }
+    second = {
+        'id': 'UC_tenth_candidate_b',
+        'title': 'Candidate B',
+        'connection_id': 'connection-id-candidate-b',
+    }
+    youtube_auth._persist_connection(credentials, first, expected_epoch=40)
+    with pytest.raises(youtube_auth.YouTubeAuthError, match='limit'):
+        youtube_auth._persist_connection(credentials, second, expected_epoch=41)
+
+    assert client.scard(youtube_auth.CHANNEL_INDEX_KEY) == 10
+    assert client.sismember(youtube_auth.CHANNEL_INDEX_KEY, first['id'])
+    assert not client.sismember(youtube_auth.CHANNEL_INDEX_KEY, second['id'])
+
+
+def test_full_cap_rejects_addition_but_allows_same_channel_reconnect(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    for index in range(10):
+        _seed_v3_connection(
+            client,
+            f'UC_full_channel_{index:02d}',
+            f'connection-id-full-{index:02d}',
+        )
+    client.values[youtube_auth.AUTH_EPOCH_KEY] = '70'
+    credentials = BaseCredentials(refresh_token='replacement-token')
+    with pytest.raises(youtube_auth.YouTubeAuthError, match='limit'):
+        youtube_auth._persist_connection(
+            credentials,
+            {
+                'id': 'UC_over_limit_channel',
+                'title': 'Over limit',
+                'connection_id': 'connection-id-over-limit',
+            },
+            expected_epoch=70,
+        )
+    assert client.values[youtube_auth.AUTH_EPOCH_KEY] == '70'
+
+    youtube_auth._persist_connection(
+        credentials,
+        {
+            'id': 'UC_full_channel_00',
+            'title': 'Reconnected',
+            'connection_id': 'connection-id-reconnected',
+        },
+        expected_epoch=70,
+    )
+    assert client.scard(youtube_auth.CHANNEL_INDEX_KEY) == 10
+    payload = youtube_auth._decrypt_json(
+        client.values[youtube_auth._credential_key('UC_full_channel_00')]
+    )
+    assert payload['connection_id'] == 'connection-id-reconnected'
+
+
+def test_targeted_disconnect_preserves_other_channel(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    _seed_v3_connection(client, 'UC_target_one', 'connection-id-target-one')
+    _seed_v3_connection(client, 'UC_target_two', 'connection-id-target-two')
+
+    youtube_auth.disconnect(
+        'UC_target_one',
+        expected_connection_id='connection-id-target-one',
+        revoke=False,
+    )
+
+    assert youtube_auth.get_channel_info('UC_target_one') is None
+    assert youtube_auth.get_channel_info('UC_target_two')['connection_id'] == 'connection-id-target-two'
+    assert client.smembers(youtube_auth.CHANNEL_INDEX_KEY) == {'UC_target_two'}
+
+
+def test_two_channel_generations_persist_and_load_independently(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    _seed_v3_connection(
+        client,
+        'UC_persist_channel_a',
+        'connection-id-persist-a',
+        refresh_token='persist-token-a',
+        title='Duplicate title',
+    )
+    _seed_v3_connection(
+        client,
+        'UC_persist_channel_b',
+        'connection-id-persist-b',
+        refresh_token='persist-token-b',
+        title='Duplicate title',
+    )
+    seen_tokens = []
+    monkeypatch.setattr(
+        youtube_auth,
+        '_credential_from_refresh_token',
+        lambda token: seen_tokens.append(token) or BaseCredentials(refresh_token=token),
+    )
+
+    connections = youtube_auth.list_connections()
+    youtube_auth.load_credentials(
+        'UC_persist_channel_a',
+        expected_connection_id='connection-id-persist-a',
+        refresh=False,
+    )
+    youtube_auth.load_credentials(
+        'UC_persist_channel_b',
+        expected_connection_id='connection-id-persist-b',
+        refresh=False,
+    )
+
+    assert {item['id'] for item in connections} == {
+        'UC_persist_channel_a',
+        'UC_persist_channel_b',
+    }
+    assert seen_tokens == ['persist-token-a', 'persist-token-b']
+
+
+def test_stale_disconnect_and_revocation_cleanup_cannot_remove_reconnect(monkeypatch):
+    client = FakeRedis()
+    _configure_auth(monkeypatch, client)
+    channel_id = 'UC_reconnected_channel'
+    _seed_v3_connection(
+        client,
+        channel_id,
+        'connection-id-old-generation',
+        refresh_token='old-generation-token',
+    )
+    old_cipher = client.values[youtube_auth._credential_key(channel_id)]
+    client.values[youtube_auth.AUTH_EPOCH_KEY] = '120'
+    youtube_auth._persist_connection(
+        BaseCredentials(refresh_token='new-generation-token'),
+        {
+            'id': channel_id,
+            'title': 'Reconnected channel',
+            'connection_id': 'connection-id-new-generation',
+        },
+        expected_epoch=120,
+    )
+
+    youtube_auth._clear_connection_if_credential_matches(channel_id, old_cipher)
+    with pytest.raises(youtube_auth.YouTubeAuthError, match='connection changed'):
+        youtube_auth.disconnect(
+            channel_id,
+            expected_connection_id='connection-id-old-generation',
+            revoke=False,
+        )
+
+    current = youtube_auth.get_channel_info(channel_id)
+    assert current['connection_id'] == 'connection-id-new-generation'
+    payload = youtube_auth._decrypt_json(
+        client.values[youtube_auth._credential_key(channel_id)]
+    )
+    assert payload['refresh_token'] == 'new-generation-token'
 
 
 def test_resumable_video_upload_is_forced_private(monkeypatch, tmp_path):
@@ -675,6 +1190,51 @@ def test_preflight_failure_can_be_safely_reserved_again(monkeypatch):
     assert record['publish_task_id'] == second_task
     assert record['side_effect_possible'] is False
 
+    newer_generation, created = publish_state.reserve_upload(
+        source,
+        first_task,
+        target_channel_id=reservation['target_channel_id'],
+        connection_id='connection-id-new-generation',
+    )
+    assert created is True
+    assert newer_generation['target_channel_id'] == reservation['target_channel_id']
+    assert newer_generation['connection_id'] == 'connection-id-new-generation'
+
+
+def test_failed_or_reserved_upload_cannot_change_target_channel(monkeypatch):
+    client = FakeRedis()
+    monkeypatch.setattr(publish_state, '_redis', lambda: client)
+    source = 'source-task-target-lock'
+    first_task = 'publish-task-target-a'
+    second_task = 'publish-task-target-b'
+    original, created = publish_state.reserve_upload(
+        source,
+        first_task,
+        target_channel_id='UC_target_channel_a',
+        connection_id='connection-id-target-a',
+    )
+    assert created is True
+
+    mismatch, created = publish_state.reserve_upload(
+        source,
+        second_task,
+        target_channel_id='UC_target_channel_b',
+        connection_id='connection-id-target-b',
+    )
+    assert created is False
+    assert mismatch == original
+
+    publish_state.mark_upload_preflight_failed(source, first_task, 'oauth_missing')
+    still_mismatch, created = publish_state.reserve_upload(
+        source,
+        second_task,
+        target_channel_id='UC_target_channel_b',
+        connection_id='connection-id-target-b',
+    )
+    assert created is False
+    assert still_mismatch['target_channel_id'] == 'UC_target_channel_a'
+    assert still_mismatch['connection_id'] == 'connection-id-target-a'
+
 
 def test_completed_upload_is_terminal_against_late_worker_failure(monkeypatch):
     client = FakeRedis()
@@ -779,15 +1339,19 @@ def test_publish_pipeline_crosses_registry_boundary_before_private_insert(
             'result': {'video_key': 'videos/source/final.mp4', 'title': 'Title'},
         },
     )
-    monkeypatch.setattr(module, 'load_credentials', lambda **_k: object())
-    def refresh_channel(_credentials, **kwargs):
+    credential_loads = []
+    def load_target(channel_id, **kwargs):
+        credential_loads.append((channel_id, kwargs.get('expected_connection_id')))
+        return object()
+    monkeypatch.setattr(module, 'load_credentials', load_target)
+    def refresh_channel(channel_id, _credentials, **kwargs):
         events.append((
             'channel-verified',
-            kwargs['expected_channel_id'],
+            channel_id,
             kwargs['expected_connection_id'],
         ))
         return {
-            'id': kwargs['expected_channel_id'],
+            'id': channel_id,
             'connection_id': kwargs['expected_connection_id'],
             'title': 'Channel',
         }
@@ -817,13 +1381,20 @@ def test_publish_pipeline_crosses_registry_boundary_before_private_insert(
         'mark_upload_completed',
         lambda *_a: events.append('registry-complete'),
     )
-    monkeypatch.setattr(module, 'update_job', lambda *_a, **_k: None)
+    source_updates = []
+    monkeypatch.setattr(
+        module,
+        'update_job',
+        lambda task_id, **kwargs: source_updates.append((task_id, kwargs)),
+    )
     monkeypatch.setattr(module, 'mark_success', lambda *_a, **_k: None)
     monkeypatch.setattr(module, 'mark_failure', lambda *_a, **_k: None)
 
     result = module.publish_video_pipeline(Task(), source_id, 'public')
 
     assert result['privacy_status'] == 'private'
+    assert result['target_channel_id'] == 'UC_verified'
+    assert result['connection_id'] == 'connection-id-7777'
     assert module._test_task_options == {
         'bind': True,
         'acks_late': True,
@@ -834,6 +1405,10 @@ def test_publish_pipeline_crosses_registry_boundary_before_private_insert(
         'UC_verified',
         'connection-id-7777',
     ) in events
+    assert credential_loads == [('UC_verified', 'connection-id-7777')]
+    youtube_attribution = source_updates[-1][1]['result']['youtube']
+    assert youtube_attribution['target_channel_id'] == 'UC_verified'
+    assert youtube_attribution['connection_id'] == 'connection-id-7777'
     assert events.index('registry-started') < events.index(('insert', 'private'))
     assert events.index('registry-complete') > events.index(('insert', 'private'))
     assert events[-1] == 'release'
@@ -877,11 +1452,11 @@ def test_publish_pipeline_marks_uncertain_and_never_retries_insert(
             'result': {'video_key': 'videos/source/final.mp4'},
         },
     )
-    monkeypatch.setattr(module, 'load_credentials', lambda **_k: object())
+    monkeypatch.setattr(module, 'load_credentials', lambda *_a, **_k: object())
     monkeypatch.setattr(
         module,
         'refresh_channel_info',
-        lambda _c, **_kwargs: {'id': 'UC_verified'},
+        lambda *_a, **_kwargs: {'id': 'UC_verified'},
     )
 
     def download(_key, path):
@@ -915,6 +1490,71 @@ def test_publish_pipeline_marks_uncertain_and_never_retries_insert(
     with pytest.raises(RuntimeError, match='uncertain'):
         module.publish_video_pipeline(Task(), source_id)
     assert events == ['started', 'uncertain']
+
+
+def test_stale_reserved_connection_fails_before_any_youtube_insert(
+    monkeypatch,
+    tmp_path,
+):
+    module = _import_publish_tasks_with_stubs(monkeypatch)
+    monkeypatch.setattr(module, 'Path', lambda _value: tmp_path / 'youtube_publish')
+    source_id = 'source-task-stale-channel'
+    publish_id = 'publish-task-stale-channel'
+    events = []
+
+    class Task:
+        request = types.SimpleNamespace(id=publish_id)
+
+        def update_state(self, **_kwargs):
+            pass
+
+    monkeypatch.setattr(
+        module,
+        'get_upload_record',
+        lambda *_a: {
+            'publish_task_id': publish_id,
+            'status': 'queued',
+            'side_effect_possible': False,
+            'target_channel_id': 'UC_stale_target_a',
+            'connection_id': 'connection-id-stale-a',
+        },
+    )
+    monkeypatch.setattr(module, 'acquire_execution_lock', lambda *_a: 'lock-token')
+    monkeypatch.setattr(module, 'release_execution_lock', lambda *_a: None)
+    monkeypatch.setattr(
+        module,
+        'get_job',
+        lambda _task: {
+            'state': 'SUCCESS',
+            'spec': {},
+            'result': {'video_key': 'videos/source/final.mp4'},
+        },
+    )
+
+    def reject_stale(channel_id, **kwargs):
+        events.append(('credential-check', channel_id, kwargs['expected_connection_id']))
+        raise RuntimeError('YouTube connection changed before upload')
+
+    monkeypatch.setattr(module, 'load_credentials', reject_stale)
+    monkeypatch.setattr(
+        module,
+        'upload_video_with_credentials',
+        lambda *_a, **_k: events.append('insert'),
+    )
+    monkeypatch.setattr(
+        module,
+        'mark_upload_preflight_failed',
+        lambda *_a: events.append('preflight-failed'),
+    )
+    monkeypatch.setattr(module, 'mark_failure', lambda *_a, **_k: None)
+
+    with pytest.raises(RuntimeError, match='preflight'):
+        module.publish_video_pipeline(Task(), source_id)
+
+    assert events == [
+        ('credential-check', 'UC_stale_target_a', 'connection-id-stale-a'),
+        'preflight-failed',
+    ]
 
 
 def test_completed_registry_reconciles_source_without_second_insert(
@@ -981,8 +1621,12 @@ def test_completed_registry_reconciles_source_without_second_insert(
 
     assert result['idempotent_replay'] is True
     assert result['youtube_video_id'] == 'YT_COMPLETE_1'
+    assert result['target_channel_id'] == 'UC_original'
+    assert result['connection_id'] == 'connection-id-original'
     assert updates[0][0] == source_id
     assert updates[0][1]['result']['youtube']['video_id'] == 'YT_COMPLETE_1'
+    assert updates[0][1]['result']['youtube']['target_channel_id'] == 'UC_original'
+    assert updates[0][1]['result']['youtube']['connection_id'] == 'connection-id-original'
     assert successes[0][0] == recovery_task_id
 
 
@@ -1040,6 +1684,176 @@ def test_mutating_youtube_routes_require_exact_same_origin(monkeypatch):
         base_url='https://studio-fallback.example.test/',
         headers={'origin': 'https://studio-fallback.example.test'},
     ))
+
+
+def test_youtube_home_uses_server_populated_channel_id_selector(monkeypatch):
+    module = _import_publish_tasks_with_stubs(monkeypatch)
+    module.publish_video_pipeline = types.SimpleNamespace(apply_async=lambda **_k: None)
+    sys.modules.pop('app.youtube_routes', None)
+    routes = importlib.import_module('app.youtube_routes')
+    monkeypatch.setattr(
+        routes.settings,
+        'factory_api_token',
+        'studio-secret',
+        raising=False,
+    )
+    connections = [
+        {
+            'id': 'UC_duplicate_title_one',
+            'title': 'Aynı Kanal Adı',
+            'connection_id': 'connection-id-one',
+        },
+        {
+            'id': 'UC_duplicate_title_two',
+            'title': 'Aynı Kanal Adı',
+            'connection_id': 'connection-id-two',
+        },
+    ]
+    monkeypatch.setattr(
+        routes,
+        'connection_status',
+        lambda **_kwargs: {
+            'configured': True,
+            'connected': True,
+            'requires_reconnect': False,
+            'connections': connections,
+            'connection_count': 2,
+            'connection_limit': 10,
+        },
+    )
+    monkeypatch.setattr(
+        routes,
+        '_completed_jobs',
+        lambda: [{
+            'task_id': 'source-task-selector',
+            'state': 'SUCCESS',
+            'kind': 'render',
+            'spec': {'topic': 'Selector test'},
+            'result': {'video_key': 'videos/test/final.mp4', 'duration': 30},
+        }],
+    )
+
+    response = routes.youtube_home(studio_token='studio-secret')
+    body = response.body.decode('utf-8')
+
+    assert 'name="youtube_channel_id"' in body
+    assert 'value="UC_duplicate_title_one"' in body
+    assert 'value="UC_duplicate_title_two"' in body
+    assert body.count('Aynı Kanal Adı') == 4  # two cards and two selector options
+    assert 'name="channel_id"' not in body
+
+
+def test_unknown_or_cross_target_publish_never_queues(monkeypatch):
+    module = _import_publish_tasks_with_stubs(monkeypatch)
+    queued = []
+    module.publish_video_pipeline = types.SimpleNamespace(
+        apply_async=lambda **kwargs: queued.append(kwargs),
+    )
+    sys.modules.pop('app.youtube_routes', None)
+    routes = importlib.import_module('app.youtube_routes')
+    monkeypatch.setattr(routes.settings, 'factory_api_token', 'studio-secret', raising=False)
+    monkeypatch.setattr(
+        routes.settings,
+        'google_redirect_uri',
+        'https://studio.example.test/studio/youtube/callback',
+        raising=False,
+    )
+    request = types.SimpleNamespace(
+        headers={'origin': 'https://studio.example.test'},
+        base_url='https://studio.example.test/',
+    )
+    reserve_calls = []
+    monkeypatch.setattr(
+        routes,
+        'get_job',
+        lambda _task_id: {
+            'state': 'SUCCESS',
+            'spec': {'topic': 'Target safety'},
+            'result': {'video_key': 'videos/source/final.mp4'},
+        },
+    )
+
+    monkeypatch.setattr(
+        routes,
+        'connection_status',
+        lambda **_kwargs: {
+            'configured': True,
+            'connected': True,
+            'channel': None,
+            'connections': [],
+        },
+    )
+    monkeypatch.setattr(
+        routes,
+        'reserve_upload',
+        lambda *_a, **_k: reserve_calls.append((_a, _k)),
+    )
+    with pytest.raises(routes.HTTPException) as unknown:
+        routes.youtube_publish(
+            'source-task-unknown-target',
+            request,
+            youtube_channel_id='UC_tampered_unknown',
+            studio_token='studio-secret',
+        )
+    assert unknown.value.status_code == 409
+    assert reserve_calls == []
+    assert queued == []
+
+    monkeypatch.setattr(
+        routes,
+        'connection_status',
+        lambda **_kwargs: {
+            'configured': True,
+            'connected': True,
+            'channel': {
+                'id': 'UC_requested_channel_b',
+                'connection_id': 'connection-id-requested-b',
+            },
+            'connections': [],
+        },
+    )
+
+    def existing_target_a(*args, **kwargs):
+        reserve_calls.append((args, kwargs))
+        return ({
+            'status': 'reserved',
+            'publish_task_id': 'publish-task-existing-a',
+            'target_channel_id': 'UC_existing_channel_a',
+            'connection_id': 'connection-id-existing-a',
+        }, False)
+
+    monkeypatch.setattr(routes, 'reserve_upload', existing_target_a)
+    with pytest.raises(routes.HTTPException) as mismatch:
+        routes.youtube_publish(
+            'source-task-cross-target',
+            request,
+            youtube_channel_id='UC_requested_channel_b',
+            studio_token='studio-secret',
+        )
+    assert mismatch.value.status_code == 409
+    assert queued == []
+
+    monkeypatch.setattr(
+        routes,
+        'reserve_upload',
+        lambda *_a, **_k: ({
+            'status': 'queued',
+            'publish_task_id': 'publish-task-same-target-old-generation',
+            'target_channel_id': 'UC_requested_channel_b',
+            'connection_id': 'connection-id-older-b',
+        }, False),
+    )
+    same_target = routes.youtube_publish(
+        'source-task-same-target',
+        request,
+        youtube_channel_id='UC_requested_channel_b',
+        studio_token='studio-secret',
+    )
+    assert same_target.status_code == 303
+    assert same_target.headers['location'].endswith(
+        '/publish-task-same-target-old-generation'
+    )
+    assert queued == []
 
 
 def test_studio_router_mounts_secure_youtube_lifecycle(monkeypatch):
