@@ -24,6 +24,10 @@ class FinalAudioQualityError(RuntimeError):
     pass
 
 
+class AudioQCError(RuntimeError):
+    pass
+
+
 class VoiceQualityError(RuntimeError):
     pass
 
@@ -59,6 +63,7 @@ def _load_prompt_functions():
         '_short_preview_voice_duration_qc',
         '_strict_short_preview_render_qc',
         '_synthesize_voice_candidate',
+        '_verify_audio_narration_with_retry',
         'normalize_pipeline_language',
     }
     definitions = [
@@ -74,6 +79,7 @@ def _load_prompt_functions():
         'FinalVisualQualityError': FinalVisualQualityError,
         'PreRunwayRetryableError': PreRunwayRetryableError,
         'FinalAudioQualityError': FinalAudioQualityError,
+        'AudioQCError': AudioQCError,
         'VoiceQualityError': VoiceQualityError,
         'VoiceScriptFitError': VoiceScriptFitError,
         'UnsupportedLanguageError': UnsupportedLanguageError,
@@ -94,7 +100,10 @@ def _load_prompt_functions():
         ),
         'voice_http_retry_delay_seconds': lambda _exc, _retry_index: 0.0,
         'MAX_AUDIO_GENERATION_ATTEMPTS': 3,
+        'AUDIO_QC_PROVIDER_ATTEMPTS': 2,
+        'AUDIO_QC_PROVIDER_RETRY_DELAY_SECONDS': 1.0,
         'synthesize_scene_sequence': None,
+        'verify_audio_narration': None,
         'manufactured_replica_guardrail': manufactured_replica_guardrail,
         'preview_paid_ai_limit': lambda options, scene_count, duration: (
             min(
@@ -128,6 +137,7 @@ def _load_prompt_functions():
         namespace['_short_preview_voice_duration_qc'],
         namespace['_strict_short_preview_render_qc'],
         namespace['_synthesize_voice_candidate'],
+        namespace['_verify_audio_narration_with_retry'],
         namespace['normalize_pipeline_language'],
     )
 
@@ -147,6 +157,7 @@ def _load_prompt_functions():
     short_preview_voice_duration_qc,
     strict_short_preview_render_qc,
     synthesize_voice_candidate,
+    verify_audio_narration_with_retry,
     normalize_pipeline_language,
 ) = (
     _load_prompt_functions()
@@ -496,7 +507,9 @@ class RunwayPromptTests(unittest.TestCase):
             / 'tasks.py'
         ).read_text(encoding='utf-8')
 
-        audio_gate = source.index('audio_qc = verify_audio_narration(')
+        audio_gate = source.index(
+            'audio_qc = _verify_audio_narration_with_retry('
+        )
         prosody_gate = source.index('audio_prosody_qc = verify_audio_prosody(')
         audio_rejection = source.index(
             'raise FinalAudioQualityError(',
@@ -510,6 +523,9 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertLess(prosody_gate, audio_rejection)
         self.assertLess(audio_rejection, initial_runway_loop)
         self.assertIn('MAX_AUDIO_GENERATION_ATTEMPTS = 3', source)
+        self.assertIn('AUDIO_QC_PROVIDER_ATTEMPTS = 2', source)
+        self.assertIn('except AudioQCError:', source)
+        self.assertIn('bounded same-audio retry before paid media', source)
         self.assertIn('generation_attempt=generation_attempt', source)
         self.assertIn("'audio_generation_attempts': audio_generation_attempts", source)
         self.assertIn("'audio_qc': audio_qc", source)
@@ -544,6 +560,75 @@ class RunwayPromptTests(unittest.TestCase):
             "(audio_qc.get('mismatch_details') or [])[:6]",
             source,
         )
+
+    def test_audio_provider_outage_retries_the_same_audio_once(self):
+        expected_result = {
+            'available': True,
+            'pass': True,
+            'provider': 'gemini',
+        }
+        verifier = Mock(side_effect=[
+            AudioQCError('temporary provider outage'),
+            expected_result,
+        ])
+        sleep = Mock()
+        function_globals = verify_audio_narration_with_retry.__globals__
+        previous_verifier = function_globals['verify_audio_narration']
+        previous_time = function_globals['time']
+        function_globals['verify_audio_narration'] = verifier
+        function_globals['time'] = SimpleNamespace(sleep=sleep)
+        try:
+            result = verify_audio_narration_with_retry(
+                'immutable-voice.mp3',
+                'Beklenen anlatım',
+                language='tr',
+            )
+        finally:
+            function_globals['verify_audio_narration'] = previous_verifier
+            function_globals['time'] = previous_time
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(verifier.call_count, 2)
+        self.assertEqual(
+            [item.args for item in verifier.call_args_list],
+            [
+                ('immutable-voice.mp3', 'Beklenen anlatım'),
+                ('immutable-voice.mp3', 'Beklenen anlatım'),
+            ],
+        )
+        self.assertEqual(
+            [item.kwargs for item in verifier.call_args_list],
+            [{'language': 'tr'}, {'language': 'tr'}],
+        )
+        sleep.assert_called_once_with(1.0)
+
+    def test_exhausted_audio_provider_outage_is_terminal_and_secret_safe(self):
+        secret = 'never-expose-provider-detail'
+        verifier = Mock(side_effect=[
+            AudioQCError(secret),
+            AudioQCError(secret),
+        ])
+        sleep = Mock()
+        function_globals = verify_audio_narration_with_retry.__globals__
+        previous_verifier = function_globals['verify_audio_narration']
+        previous_time = function_globals['time']
+        function_globals['verify_audio_narration'] = verifier
+        function_globals['time'] = SimpleNamespace(sleep=sleep)
+        try:
+            with self.assertRaises(FinalAudioQualityError) as caught:
+                verify_audio_narration_with_retry(
+                    'immutable-voice.mp3',
+                    'Beklenen anlatım',
+                    language='tr',
+                )
+        finally:
+            function_globals['verify_audio_narration'] = previous_verifier
+            function_globals['time'] = previous_time
+
+        self.assertEqual(verifier.call_count, 2)
+        sleep.assert_called_once_with(1.0)
+        self.assertIn('bounded same-audio retry', str(caught.exception))
+        self.assertNotIn(secret, str(caught.exception))
 
     def test_initial_and_repair_generation_never_use_fixed_five_seconds(self):
         source = (

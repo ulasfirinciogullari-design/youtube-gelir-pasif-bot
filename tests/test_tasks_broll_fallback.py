@@ -132,6 +132,13 @@ def _load_stock_tournament_review_boundary():
         node
         for node in tree.body
         if (
+            isinstance(node, ast.Assign)
+            and any(
+                isinstance(target, ast.Name)
+                and target.id == 'STOCK_TOURNAMENT_GEMINI_MODEL'
+                for target in node.targets
+            )
+        ) or (
             isinstance(node, ast.ClassDef)
             and node.name == 'PreRunwayRetryableError'
         ) or (
@@ -318,6 +325,14 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         self.assertEqual(second_args[2], Path('/tmp/tournament/scene_00'))
         self.assertEqual(first_kwargs['_missing_review_attempts'], 0)
         self.assertEqual(first_kwargs['story_scenes'], scenes)
+        self.assertEqual(
+            first_kwargs['gemini_model_override'],
+            'gemini-3.7-flash',
+        )
+        self.assertEqual(
+            second_kwargs['gemini_model_override'],
+            'gemini-3.7-flash',
+        )
         self.assertEqual(second_kwargs['topic'], 'literal topic')
 
     def test_stock_tournament_missing_single_scene_review_fails_closed(self):
