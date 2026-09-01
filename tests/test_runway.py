@@ -19,7 +19,9 @@ class RateLimitError(Exception):
 
 
 class BadRequestError(Exception):
-    pass
+    def __init__(self, message, *, body=None):
+        super().__init__(message)
+        self.body = body
 
 
 class GeminiVideoTerminalError(RuntimeError):
@@ -32,6 +34,20 @@ class GeminiVideoQuotaError(RuntimeError):
 
 class GeminiImageAttemptedError(RuntimeError):
     pass
+
+
+class RunwayCreateRejectedError(RuntimeError):
+    pass
+
+
+def _safe_runway_fallback_error():
+    return BadRequestError(
+        'secret provider response that must not be inspected',
+        body={
+            'error': {'code': 'CAPACITY_UNAVAILABLE'},
+            'detail': 'secret provider diagnostic',
+        },
+    )
 
 
 class FalVideoError(RuntimeError):
@@ -123,6 +139,8 @@ def _load_runway_functions(
         '_generate_gemini_image_descriptor',
         '_generate_gemini_video_uri',
         '_create_text_to_video_task',
+        '_normalize_runway_provider_code',
+        '_runway_create_error_allows_provider_fallback',
         'generate_scene',
     }
     definitions = [
@@ -138,6 +156,7 @@ def _load_runway_functions(
         'GeminiVideoTerminalError': GeminiVideoTerminalError,
         'GeminiVideoQuotaError': GeminiVideoQuotaError,
         'GeminiImageAttemptedError': GeminiImageAttemptedError,
+        'RunwayCreateRejectedError': RunwayCreateRejectedError,
         'FalVideoError': FalVideoError,
         'fal_error_allows_provider_fallback': (
             fal_error_allows_provider_fallback
@@ -174,6 +193,27 @@ def _load_runway_functions(
         '_MAX_GENERATED_IMAGE_PIXELS': 8_388_608,
         '_GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS': 10 * 60,
         '_GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL': {},
+        '_RUNWAY_SAFE_PROVIDER_FALLBACK_CODES': frozenset({
+            'capacity_exhausted',
+            'capacity_unavailable',
+            'billing_limit_exceeded',
+            'concurrency_limit_exceeded',
+            'credit_balance_exhausted',
+            'credits_exhausted',
+            'insufficient_credits',
+            'insufficient_credit_balance',
+            'model_disabled',
+            'model_not_available',
+            'model_not_enabled',
+            'model_not_supported',
+            'model_temporarily_unavailable',
+            'model_unavailable',
+            'model_unsupported',
+            'no_eligible_model',
+            'not_enough_credits',
+            'quota_exceeded',
+            'unsupported_model',
+        }),
     }
     exec(
         compile(
@@ -477,9 +517,137 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'gen4.5',
         )
 
+    def test_unclassified_create_bad_request_stops_before_other_providers(self):
+        secret = 'secret unclassified provider response'
+        factory = _RunwayClientFactory([
+            BadRequestError(secret, body={
+                'error': 'Validation of body failed',
+                'issues': [{
+                    'code': 'custom',
+                    'path': ['promptText'],
+                    'message': 'secret validation detail',
+                }],
+            }),
+        ])
+        fal_video = Mock()
+        gemini_video_uri = Mock()
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            fal_video=fal_video,
+            fal_key='configured-fal-key',
+        )
+
+        with self.assertRaises(RunwayCreateRejectedError) as raised:
+            generate_scene('safe prompt', duration=5)
+
+        self.assertNotIn(secret, str(raised.exception))
+        self.assertNotIn('secret validation detail', str(raised.exception))
+        fal_video.assert_not_called()
+        gemini_video_uri.assert_not_called()
+        self.assertEqual(len(factory.create_resources[0].calls), 1)
+
+    def test_terminal_runway_codes_never_authorize_provider_hopping(self):
+        cases = [
+            {'failureCode': 'SAFETY.INPUT.TEXT'},
+            {'code': 'INPUT_PREPROCESSING.SAFETY.TEXT'},
+            {'error': {'failure_code': 'ASSET.INVALID'}},
+            {'error': {'code': 'VALIDATION_ERROR'}},
+        ]
+        for body in cases:
+            with self.subTest(body=body):
+                secret = 'secret terminal provider detail'
+                body = {**body, 'detail': secret}
+                factory = _RunwayClientFactory([
+                    BadRequestError(secret, body=body),
+                ])
+                fal_video = Mock()
+                gemini_video_uri = Mock()
+                _, generate_scene = _load_runway_functions(
+                    factory,
+                    gemini_video_uri=gemini_video_uri,
+                    fal_video=fal_video,
+                    fal_key='configured-fal-key',
+                )
+
+                with self.assertRaises(RunwayCreateRejectedError) as raised:
+                    generate_scene('safe prompt', duration=5)
+
+                self.assertNotIn(secret, str(raised.exception))
+                fal_video.assert_not_called()
+                gemini_video_uri.assert_not_called()
+                self.assertEqual(len(factory.create_resources[0].calls), 1)
+
+    def test_only_explicit_capacity_or_model_codes_allow_provider_hopping(self):
+        cases = [
+            {'code': 'CAPACITY_UNAVAILABLE'},
+            {'error': 'Not enough credits'},
+            {'error': {'errorCode': 'MODEL_UNAVAILABLE'}},
+            {'error': {'reason': 'UNSUPPORTED_MODEL'}},
+        ]
+        for body in cases:
+            with self.subTest(body=body):
+                factory = _RunwayClientFactory([
+                    BadRequestError(
+                        'secret safe fallback detail',
+                        body=body,
+                    ),
+                ])
+                fal_video = Mock(return_value={
+                    'url': 'https://v3.fal.media/files/example/video.mp4',
+                    'provider': 'fal_seedance_2_fast',
+                    'provider_attempts': 1,
+                    'provider_request_id': (
+                        '123e4567-e89b-12d3-a456-426614174000'
+                    ),
+                })
+                gemini_video_uri = Mock()
+                _, generate_scene = _load_runway_functions(
+                    factory,
+                    gemini_video_uri=gemini_video_uri,
+                    fal_video=fal_video,
+                    fal_key='configured-fal-key',
+                )
+
+                result = generate_scene('safe prompt', duration=5)
+
+                self.assertEqual(result['provider'], 'fal_seedance_2_fast')
+                self.assertNotIn(
+                    'secret safe fallback detail',
+                    str(result),
+                )
+                fal_video.assert_called_once_with('safe prompt', 5)
+                gemini_video_uri.assert_not_called()
+
+    def test_free_form_capacity_message_does_not_authorize_fallback(self):
+        factory = _RunwayClientFactory([
+            BadRequestError(
+                'secret capacity unavailable',
+                body={
+                    'error': 'capacity unavailable for secret account',
+                    'message': 'secret provider message',
+                },
+            ),
+        ])
+        fal_video = Mock()
+        gemini_video_uri = Mock()
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            fal_video=fal_video,
+            fal_key='configured-fal-key',
+        )
+
+        with self.assertRaises(RunwayCreateRejectedError) as raised:
+            generate_scene('safe prompt', duration=5)
+
+        self.assertNotIn('secret', str(raised.exception))
+        fal_video.assert_not_called()
+        gemini_video_uri.assert_not_called()
+
     def test_configured_fal_runs_after_runway_rejection_before_gemini(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         fal_video = Mock(return_value={
             'url': 'https://v3.fal.media/files/example/video.mp4',
@@ -506,7 +674,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_definitive_fal_quota_rejection_falls_through_to_gemini(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         fal_video = Mock(side_effect=FalVideoError(
             'Fal quota unavailable',
@@ -534,7 +702,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_ambiguous_fal_submit_never_starts_gemini(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         ambiguous_error = FalVideoError(
             'Fal submission state is ambiguous',
@@ -558,7 +726,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_create_bad_request_uses_one_gemini_fallback(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         gemini_video_uri = Mock(
             return_value=(
@@ -591,7 +759,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_definitive_gemini_rejection_gets_one_bounded_retry(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         gemini_video_uri = Mock(side_effect=[
             GeminiVideoTerminalError('definitive provider rejection'),
@@ -610,7 +778,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_exhausted_lite_quota_switches_once_to_fast_model(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         fast_uri = (
             'https://generativelanguage.googleapis.com/v1beta/files/fast-video'
@@ -640,7 +808,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_exhausted_fast_quota_switches_once_to_standard_model(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         standard_uri = (
             'https://generativelanguage.googleapis.com/v1beta/'
@@ -673,7 +841,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_all_veo_quotas_use_one_explicit_private_image_fallback(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         gemini_video_uri = Mock(side_effect=[
             GeminiVideoQuotaError('definitive Lite quota rejection'),
@@ -725,7 +893,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_later_scene_skips_models_in_process_quota_cooldown(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         gemini_video_uri = Mock(side_effect=[
             GeminiVideoQuotaError('definitive Lite quota rejection'),
@@ -766,7 +934,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_image_fallback_is_disabled_without_private_preview_flag(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         gemini_video_uri = Mock(side_effect=[
             GeminiVideoQuotaError('definitive Lite quota rejection'),
@@ -793,7 +961,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         for duration in (9, 10):
             with self.subTest(duration=duration):
                 factory = _RunwayClientFactory([
-                    BadRequestError('secret insufficient-credit response'),
+                    _safe_runway_fallback_error(),
                 ])
                 gemini_video_uri = Mock()
                 gemini_image_descriptor = Mock(return_value={
@@ -832,7 +1000,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_ambiguous_standard_failure_never_starts_image_fallback(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         ambiguous_error = TimeoutError('ambiguous Standard operation')
         gemini_video_uri = Mock(side_effect=[
@@ -860,7 +1028,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_failed_paid_image_returns_attempt_receipt_for_scene_reservation(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         gemini_video_uri = Mock(side_effect=[
             GeminiVideoQuotaError('definitive Lite quota rejection'),
@@ -891,7 +1059,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_ambiguous_fast_failure_never_starts_standard_fallback(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         ambiguous_error = TimeoutError('ambiguous Fast operation')
         gemini_video_uri = Mock(side_effect=[
@@ -917,7 +1085,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
     def test_ambiguous_gemini_failure_is_never_retried(self):
         factory = _RunwayClientFactory([
-            BadRequestError('secret insufficient-credit response'),
+            _safe_runway_fallback_error(),
         ])
         ambiguous_error = TimeoutError('ambiguous accepted operation')
         gemini_video_uri = Mock(side_effect=ambiguous_error)

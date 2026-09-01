@@ -41,6 +41,27 @@ _FAL_TRANSIENT_ERROR_TYPES = frozenset({
 })
 
 
+def _fal_error_is_policy(error_types: set[str]) -> bool:
+    """Recognize policy codes before HTTP auth/status classification.
+
+    Fal may attach a moderation type to a 401 or 403 response.  The status is
+    therefore not sufficient to decide that another provider may be tried.
+    Only machine-readable type fields are inspected; free-form provider text
+    is deliberately ignored.
+    """
+    for value in error_types:
+        normalized = re.sub(r'[^a-z0-9]+', '_', value.casefold()).strip('_')
+        tokens = set(normalized.split('_'))
+        if (
+            normalized.startswith('content_policy')
+            or normalized.startswith('content_moderation')
+            or 'safety' in tokens
+            or normalized == 'unsafe_content'
+        ):
+            return True
+    return False
+
+
 class FalVideoError(RuntimeError):
     """Base error carrying only content-free provider state."""
 
@@ -105,15 +126,28 @@ def _fal_error_types(payload: object) -> set[str]:
     error_types: set[str] = set()
     if not isinstance(payload, dict):
         return error_types
-    top_level = payload.get('error_type')
-    if isinstance(top_level, str) and top_level.strip():
-        error_types.add(top_level.strip().casefold())
+    for field in ('error_type', 'type', 'code'):
+        top_level = payload.get(field)
+        if isinstance(top_level, str) and top_level.strip():
+            error_types.add(top_level.strip().casefold())
     detail = payload.get('detail')
-    if isinstance(detail, list):
-        for item in detail[:32]:
-            if not isinstance(item, dict):
-                continue
-            value = item.get('type')
+    detail_items = (
+        detail[:32]
+        if isinstance(detail, list)
+        else [detail]
+        if isinstance(detail, dict)
+        else []
+    )
+    for item in detail_items:
+        if not isinstance(item, dict):
+            continue
+        value = item.get('type')
+        if isinstance(value, str) and value.strip():
+            error_types.add(value.strip().casefold())
+    error = payload.get('error')
+    if isinstance(error, dict):
+        for field in ('error_type', 'type', 'code'):
+            value = error.get(field)
             if isinstance(value, str) and value.strip():
                 error_types.add(value.strip().casefold())
     return error_types
@@ -124,6 +158,8 @@ def _raise_submit_rejection(response: object) -> None:
     status_code = getattr(response, 'status_code', None)
     status = status_code if type(status_code) is int else 0
     error_types = _fal_error_types(_safe_json(response))
+    if _fal_error_is_policy(error_types):
+        raise FalVideoPolicyError('Fal video content policy rejected the input')
     if status in {401, 403}:
         raise FalVideoAuthError(
             'Fal video authentication was rejected',
@@ -134,8 +170,6 @@ def _raise_submit_rejection(response: object) -> None:
             'Fal video capacity or balance is unavailable',
             safe_to_fallback=True,
         )
-    if 'content_policy_violation' in error_types:
-        raise FalVideoPolicyError('Fal video content policy rejected the input')
     if status in {400, 404, 409, 422}:
         raise FalVideoRejectedError(
             'Fal video create was definitively rejected',
@@ -155,6 +189,11 @@ def _raise_accepted_request_error(
     status_code = getattr(response, 'status_code', None)
     status = status_code if type(status_code) is int else 0
     error_types = _fal_error_types(_safe_json(response))
+    if _fal_error_is_policy(error_types):
+        raise FalVideoPolicyError(
+            'Fal video content policy rejected the input',
+            request_id=request_id,
+        )
     if status in {401, 403}:
         raise FalVideoAuthError(
             'Fal video result authorization failed',
@@ -163,11 +202,6 @@ def _raise_accepted_request_error(
     if status in {402, 429}:
         raise FalVideoQuotaError(
             'Fal video result is temporarily unavailable',
-            request_id=request_id,
-        )
-    if 'content_policy_violation' in error_types:
-        raise FalVideoPolicyError(
-            'Fal video content policy rejected the input',
             request_id=request_id,
         )
     if error_types & _FAL_TRANSIENT_ERROR_TYPES or status >= 500:
@@ -257,7 +291,7 @@ def _completed_error(
     error_types = _fal_error_types(payload)
     if not payload.get('error') and not error_types:
         return None
-    if 'content_policy_violation' in error_types:
+    if _fal_error_is_policy(error_types):
         return FalVideoPolicyError(
             'Fal video content policy rejected the input',
             request_id=request_id,
