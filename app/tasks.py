@@ -2916,6 +2916,19 @@ def run_video_pipeline(
             ):
                 _apply_visual_review(scene_visuals, scene_idx, review)
 
+        # Quarantine every exact-stock failure before repair selection. The
+        # repair cap may select only a subset (or none in recovery mode), but
+        # no rejected incumbent may survive into the later fresh-stock rescue.
+        terminal_manual_qa_old_best: dict[int, str] = {}
+        for scene_idx in sorted(terminal_manual_qa_failure_scene_indices):
+            incumbent_specs = list(scene_visuals[scene_idx])
+            terminal_manual_qa_old_best[scene_idx] = (
+                _visual_path(incumbent_specs[0])
+                if incumbent_specs
+                else ''
+            )
+            scene_visuals[scene_idx] = []
+
         # A final critic has now seen the exact generated clips. Spend at most
         # two evidence-led repair submissions on authored AI scenes, instead of
         # rerunning the whole paid pipeline or accepting a static non-event.
@@ -2950,13 +2963,10 @@ def run_video_pipeline(
         for scene_idx in final_runway_repair_candidates:
             review = final_reviews.get(scene_idx) or {}
             existing_specs = list(scene_visuals[scene_idx])
-            old_best = _visual_path(existing_specs[0]) if existing_specs else ''
-            if scene_idx in terminal_manual_qa_failure_scene_indices:
-                # The exact stock cut failed revalidation. Never let that
-                # incumbent re-enter the repair tournament; if AI generation
-                # fails, the later stock rescue must start from fresh results.
-                existing_specs = []
-                scene_visuals[scene_idx] = []
+            old_best = (
+                terminal_manual_qa_old_best.get(scene_idx)
+                or (_visual_path(existing_specs[0]) if existing_specs else '')
+            )
             repair_prompt = _runway_prompt_for_scene(scenes[scene_idx], review)
             if not repair_prompt:
                 continue
@@ -3027,7 +3037,14 @@ def run_video_pipeline(
                     or scene_idx in stock_quality_fallback_scenes
                 ),
             )
-            old_best = _visual_path(scene_visuals[scene_idx][0]) if scene_visuals[scene_idx] else ''
+            old_best = (
+                terminal_manual_qa_old_best.get(scene_idx)
+                or (
+                    _visual_path(scene_visuals[scene_idx][0])
+                    if scene_visuals[scene_idx]
+                    else ''
+                )
+            )
             replacements = _retry_bad_scene(
                 scene_idx, retry_queries, seen_ids, work, credits,
                 file_prefix='final_qc_rescue',

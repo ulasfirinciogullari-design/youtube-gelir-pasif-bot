@@ -146,6 +146,29 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
             [0, 2],
         )
 
+    def test_three_exact_stock_failures_still_use_only_two_repairs(self):
+        scenes = [
+            {'ai_prompt': None},
+            {'ai_prompt': None},
+            {'ai_prompt': None},
+        ]
+        self.assertEqual(
+            preview_runway_repair_indices(
+                {'mode': 'preview', 'visual_mix': 'ai_first'},
+                0.5,
+                [0, 1, 2],
+                scenes,
+                set(),
+                {
+                    0: {'score': 35},
+                    1: {'score': 25},
+                    2: {'score': 15},
+                },
+                exact_revalidation_scene_indices={0, 1, 2},
+            ),
+            [2, 1],
+        )
+
     def test_repairs_never_expand_beyond_short_preview_or_paid_submissions(self):
         scenes = [{'ai_prompt': 'scene zero'}, {'ai_prompt': 'scene one'}]
         self.assertEqual(

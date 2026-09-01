@@ -716,19 +716,26 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             source[exact_failure:repair],
         )
 
+        quarantine = source.index(
+            'for scene_idx in sorted(terminal_manual_qa_failure_scene_indices):',
+            exact_failure,
+        )
+        recovery_skip = source.index(
+            'if recovered_generated_media', quarantine
+        )
         repair_loop = source.index(
             'for scene_idx in final_runway_repair_candidates:', repair
         )
-        prompt = source.index(
+        self.assertLess(quarantine, repair)
+        self.assertLess(quarantine, recovery_skip)
+        quarantine_block = source[quarantine:repair]
+        self.assertIn('terminal_manual_qa_old_best', quarantine_block)
+        self.assertIn('scene_visuals[scene_idx] = []', quarantine_block)
+
+        repair_prompt = source.index(
             'repair_prompt = _runway_prompt_for_scene(', repair_loop
         )
-        quarantine = source[repair_loop:prompt]
-        self.assertIn(
-            'if scene_idx in terminal_manual_qa_failure_scene_indices:',
-            quarantine,
-        )
-        self.assertIn('existing_specs = []', quarantine)
-        self.assertIn('scene_visuals[scene_idx] = []', quarantine)
+        self.assertLess(quarantine, repair_prompt)
 
     def test_manual_prepass_disagreement_gets_one_bounded_blind_vote(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')
