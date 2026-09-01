@@ -912,6 +912,29 @@ def _manual_qa_failure_diagnostic(
     return diagnostic
 
 
+def _manual_qa_review_matches_locked_cut(
+    review: dict,
+    visual_spec: str | dict | None,
+) -> bool:
+    """Require a one-candidate tie-breaker to select the pre-approved cut."""
+    if not isinstance(visual_spec, dict):
+        return False
+    if review.get('best_candidate_index') != 0:
+        return False
+    try:
+        reviewed_fraction = round(
+            float(review.get('best_start_fraction')),
+            6,
+        )
+        locked_fraction = round(
+            float(visual_spec.get('start_fraction', 0.35)),
+            6,
+        )
+    except (TypeError, ValueError):
+        return False
+    return reviewed_fraction == locked_fraction
+
+
 def _manual_qa_preview_decisions(
     options: dict,
     duration_minutes: float,
@@ -2679,35 +2702,36 @@ def run_video_pipeline(
         # the named subject and action, and no hard artifact/reset veto exists.
         # A blind third review must independently clear every unchanged gate.
         adjudication_reviews: dict[int, dict] = {}
-        adjudication_eligible = bool(terminal_manual_qa_candidates) and (
-            len(terminal_manual_qa_candidates) <= 2
-        )
-        for scene_idx, selected_spec, final_review in (
-            terminal_manual_qa_candidates
-        ):
-            adjudication_eligible = adjudication_eligible and bool(
-                _manual_qa_visual_identity(selected_spec)
-                == manual_qa_prepass_identities.get(scene_idx)
-                and final_review.get('subject_visible') is True
-                and final_review.get('spoken_action_visible') is True
-                and final_review.get('unexplained_reset') is False
-                and all(
-                    final_review.get(field) is False
-                    for field in _MANUAL_QA_CLEAR_VISUAL_FIELDS
+        eligible_adjudication_candidates = []
+        if len(terminal_manual_qa_candidates) <= 2:
+            eligible_adjudication_candidates = [
+                (scene_idx, selected_spec, final_review)
+                for scene_idx, selected_spec, final_review
+                in terminal_manual_qa_candidates
+                if (
+                    _manual_qa_visual_identity(selected_spec)
+                    == manual_qa_prepass_identities.get(scene_idx)
+                    and final_review.get('subject_visible') is True
+                    and final_review.get('spoken_action_visible') is True
+                    and final_review.get('unexplained_reset') is False
+                    and all(
+                        final_review.get(field) is False
+                        for field in _MANUAL_QA_CLEAR_VISUAL_FIELDS
+                    )
                 )
-            )
-        if adjudication_eligible:
+            ]
+        if eligible_adjudication_candidates:
             adjudication_qc = review_scene_visuals(
                 [
                     scenes[scene_idx]
-                    for scene_idx, _, _ in terminal_manual_qa_candidates
+                    for scene_idx, _, _ in eligible_adjudication_candidates
                 ],
                 [
                     [selected_spec]
-                    for _, selected_spec, _ in terminal_manual_qa_candidates
+                    for _, selected_spec, _ in eligible_adjudication_candidates
                 ],
                 work / 'manual_qa_final_adjudication',
-                len(terminal_manual_qa_candidates),
+                len(eligible_adjudication_candidates),
                 _missing_review_attempts=0,
                 topic=topic,
                 story_scenes=scenes,
@@ -2718,9 +2742,9 @@ def run_video_pipeline(
                 local_index = local_review.get('scene_index')
                 if (
                     type(local_index) is int
-                    and 0 <= local_index < len(terminal_manual_qa_candidates)
+                    and 0 <= local_index < len(eligible_adjudication_candidates)
                 ):
-                    scene_idx = terminal_manual_qa_candidates[local_index][0]
+                    scene_idx = eligible_adjudication_candidates[local_index][0]
                     mapped = dict(local_review)
                     mapped['scene_index'] = scene_idx
                     adjudication_reviews[scene_idx] = mapped
@@ -2732,13 +2756,19 @@ def run_video_pipeline(
             adjudication_review = adjudication_reviews.get(scene_idx) or {}
             adjudication_score = int(adjudication_review.get('score', -1))
             adjudication_passes = (
-                adjudication_score >= quality_threshold
-                or _manual_qa_preview_passes(
-                    options,
-                    duration_minutes,
-                    scenes[scene_idx],
+                _manual_qa_review_matches_locked_cut(
                     adjudication_review,
                     selected_spec,
+                )
+                and (
+                    adjudication_score >= quality_threshold
+                    or _manual_qa_preview_passes(
+                        options,
+                        duration_minutes,
+                        scenes[scene_idx],
+                        adjudication_review,
+                        selected_spec,
+                    )
                 )
             )
             if adjudication_passes:
@@ -2801,13 +2831,22 @@ def run_video_pipeline(
                 final_manual_candidates,
             )
         )
+        final_manual_reviews_applied: set[int] = set()
         for scene_idx in accepted_final_manual:
-            review = final_reviews[scene_idx]
+            review = dict(final_reviews[scene_idx])
+            _apply_visual_review(scene_visuals, scene_idx, review)
+            review['best_candidate_index'] = 0
+            final_reviews[scene_idx] = review
             register_manual_qa_preview(
                 scene_idx,
                 review,
-                _reviewed_visual_spec(scene_visuals[scene_idx], review),
+                (
+                    scene_visuals[scene_idx][0]
+                    if scene_visuals[scene_idx]
+                    else None
+                ),
             )
+            final_manual_reviews_applied.add(scene_idx)
         rejected_final_scenes = [
             idx for idx in range(min(len(scenes), len(scene_visuals)))
             if (
@@ -2822,6 +2861,7 @@ def run_video_pipeline(
             if (
                 scene_idx not in rejected_final_scenes
                 and scene_idx not in manual_qa_preserve_exact_cut_scenes
+                and scene_idx not in final_manual_reviews_applied
             ):
                 _apply_visual_review(scene_visuals, scene_idx, review)
 
