@@ -220,6 +220,66 @@ class FalVideoQueueTests(unittest.TestCase):
                 )
                 self.assertNotIn('private-test-key', str(raised.exception))
 
+    def test_policy_machine_type_precedes_submit_auth_status(self):
+        cases = [
+            (
+                401,
+                {'detail': [{
+                    'type': 'content_policy_violation',
+                    'message': 'secret moderation detail',
+                }]},
+            ),
+            (
+                403,
+                {
+                    'error_type': 'SAFETY.VIOLATION',
+                    'error': 'secret moderation detail',
+                },
+            ),
+        ]
+        for status, payload in cases:
+            with self.subTest(status=status, payload=payload):
+                client = _Client(_Response(status, payload))
+                namespace = _load_namespace(client)
+
+                with self.assertRaises(
+                    namespace['FalVideoPolicyError']
+                ) as raised:
+                    namespace['generate_fal_video']('safe prompt', 5)
+
+                self.assertFalse(raised.exception.safe_to_fallback)
+                self.assertIsNone(raised.exception.request_id)
+                self.assertNotIn(
+                    'secret moderation detail',
+                    str(raised.exception),
+                )
+                self.assertEqual(len(client.post_calls), 1)
+                self.assertEqual(client.get_calls, [])
+
+    def test_policy_machine_type_precedes_accepted_request_auth_status(self):
+        client = _Client(
+            _Response(payload=_created_payload()),
+            [_Response(403, {
+                'detail': [{
+                    'type': 'safety_violation',
+                    'message': 'secret accepted-request detail',
+                }],
+            })],
+        )
+        namespace = _load_namespace(client)
+
+        with self.assertRaises(namespace['FalVideoPolicyError']) as raised:
+            namespace['generate_fal_video']('safe prompt', 5)
+
+        self.assertFalse(raised.exception.safe_to_fallback)
+        self.assertEqual(raised.exception.request_id, REQUEST_ID)
+        self.assertNotIn(
+            'secret accepted-request detail',
+            str(raised.exception),
+        )
+        self.assertEqual(len(client.post_calls), 1)
+        self.assertEqual(len(client.get_calls), 1)
+
     def test_ambiguous_post_is_never_retried_or_fallen_through(self):
         client = _Client(_TimeoutException('secret transport detail'))
         namespace = _load_namespace(client)

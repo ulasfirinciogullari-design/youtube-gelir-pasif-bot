@@ -42,6 +42,27 @@ _MAX_GENERATED_IMAGE_PIXELS = 8_388_608
 _IMAGE_MOTION_FPS = 30
 _GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS = 10 * 60
 _GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL: dict[str, float] = {}
+_RUNWAY_SAFE_PROVIDER_FALLBACK_CODES = frozenset({
+    'capacity_exhausted',
+    'capacity_unavailable',
+    'billing_limit_exceeded',
+    'concurrency_limit_exceeded',
+    'credit_balance_exhausted',
+    'credits_exhausted',
+    'insufficient_credits',
+    'insufficient_credit_balance',
+    'model_disabled',
+    'model_not_available',
+    'model_not_enabled',
+    'model_not_supported',
+    'model_temporarily_unavailable',
+    'model_unavailable',
+    'model_unsupported',
+    'no_eligible_model',
+    'not_enough_credits',
+    'quota_exceeded',
+    'unsupported_model',
+})
 
 
 class GeminiVideoTerminalError(RuntimeError):
@@ -54,6 +75,69 @@ class GeminiVideoQuotaError(RuntimeError):
 
 class GeminiImageAttemptedError(RuntimeError):
     """A paid image create was attempted but yielded no usable descriptor."""
+
+
+class RunwayCreateRejectedError(RuntimeError):
+    """Runway definitively rejected create without authorizing provider hop."""
+
+
+def _normalize_runway_provider_code(value: object) -> str:
+    """Normalize one bounded machine code, never an arbitrary error body."""
+    if not isinstance(value, str):
+        return ''
+    stripped = value.strip()
+    if (
+        not stripped
+        or len(stripped) > 96
+        or re.fullmatch(r'[A-Za-z0-9 .:_-]+', stripped) is None
+    ):
+        return ''
+    return re.sub(r'[^a-z0-9]+', '_', stripped.casefold()).strip('_')
+
+
+def _runway_create_error_allows_provider_fallback(exc: BaseException) -> bool:
+    """Allow a new paid provider only for explicit pre-acceptance codes.
+
+    Runway documents 400 as an input error that should not be retried.  A
+    BadRequest therefore fails closed unless its structured SDK ``body``
+    carries an exact capacity or model-availability code.  The official
+    top-level ``error`` string is accepted only when its entire normalized
+    value equals one of those codes.  We never inspect ``str(exc)`` or
+    detail/message fields, which can contain prompts or sensitive diagnostics.
+    """
+    body = getattr(exc, 'body', None)
+    candidates: list[object] = []
+    if isinstance(body, dict):
+        for field in (
+            'code',
+            'errorCode',
+            'error_code',
+            'failureCode',
+            'failure_code',
+            'reason',
+            'type',
+        ):
+            candidates.append(body.get(field))
+        error = body.get('error')
+        if isinstance(error, str):
+            candidates.append(error)
+        elif isinstance(error, dict):
+            for field in (
+                'code',
+                'errorCode',
+                'error_code',
+                'failureCode',
+                'failure_code',
+                'reason',
+                'type',
+            ):
+                candidates.append(error.get(field))
+    codes = {
+        normalized
+        for value in candidates
+        if (normalized := _normalize_runway_provider_code(value))
+    }
+    return bool(codes & _RUNWAY_SAFE_PROVIDER_FALLBACK_CODES)
 
 
 def _is_daily_gemini_quota_rejection(response: object) -> bool:
@@ -498,10 +582,14 @@ def generate_scene(
             prompt_text,
             seconds,
         )
-    except BadRequestError:
+    except BadRequestError as exc:
         # This catch deliberately covers only paid task creation. Once Runway
         # has accepted a task, no polling or download error may start a second
         # paid generation with another provider.
+        if not _runway_create_error_allows_provider_fallback(exc):
+            raise RunwayCreateRejectedError(
+                'Runway video create was definitively rejected'
+            ) from None
         fal_fallback_from = None
         if str(getattr(settings, 'fal_key', '') or '').strip():
             try:
