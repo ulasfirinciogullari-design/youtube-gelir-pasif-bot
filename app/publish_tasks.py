@@ -5,10 +5,12 @@ from pathlib import Path
 import json
 import re
 import shutil
+from uuid import uuid4
 
 from app.celery_app import celery
 from app.services.storage import download_file
 from app.services.studio_state import (
+    create_job,
     get_job,
     mark_failure,
     mark_success,
@@ -16,20 +18,180 @@ from app.services.studio_state import (
     update_job,
 )
 from app.services.youtube import (
+    set_video_release_with_credentials,
     upload_caption_with_credentials,
+    upload_thumbnail_with_credentials,
     upload_video_with_credentials,
 )
-from app.services.youtube_auth import load_credentials, refresh_channel_info
+from app.services.youtube_auth import (
+    connection_status,
+    load_credentials,
+    refresh_channel_info,
+)
+from app.services.youtube_automation import (
+    MetadataValidationError,
+    automated_quality_approved,
+    build_publish_plan,
+    list_channel_profiles,
+    select_channel_profile,
+    validate_publish_plan,
+)
 from app.services.youtube_publish_state import (
     UploadAlreadyInProgress,
+    UploadReservationError,
     acquire_execution_lock,
     get_upload_record,
+    mark_release_blocked,
+    mark_release_completed,
+    mark_release_ready,
+    mark_release_started,
+    mark_release_uncertain,
     mark_upload_completed,
+    mark_upload_enqueued,
     mark_upload_preflight_failed,
     mark_upload_started,
     mark_upload_uncertain,
     release_execution_lock,
+    reserve_upload,
 )
+
+
+def _set_source_automation(source_task_id: str, **automation: object) -> None:
+    source = get_job(source_task_id)
+    if not source or not isinstance(source.get('result'), dict):
+        return
+    result = dict(source['result'])
+    current = (
+        dict(result.get('youtube_automation'))
+        if isinstance(result.get('youtube_automation'), dict)
+        else {}
+    )
+    current.update(automation)
+    result['youtube_automation'] = current
+    update_job(source_task_id, result=result)
+
+
+def queue_automatic_publish(source_task_id: str) -> dict:
+    """Route one approved final and enqueue exactly one autonomous publish job."""
+    source_task_id = str(source_task_id or '').strip()
+    source = get_job(source_task_id)
+    if not source or not automated_quality_approved(source):
+        return {'status': 'quality_blocked'}
+    try:
+        status = connection_status()
+        connections = (
+            status.get('connections')
+            if isinstance(status.get('connections'), list)
+            else []
+        )
+        connected_ids = {
+            str(item.get('id') or '')
+            for item in connections
+            if isinstance(item, dict)
+        }
+        profile = select_channel_profile(
+            source,
+            list_channel_profiles(),
+            connected_channel_ids=connected_ids,
+        )
+        if not profile:
+            _set_source_automation(source_task_id, status='no_unique_route')
+            return {'status': 'no_unique_route'}
+        target_channel_id = str(profile.get('channel_id') or '')
+        channel = next(
+            (
+                item
+                for item in connections
+                if isinstance(item, dict)
+                and str(item.get('id') or '') == target_channel_id
+            ),
+            None,
+        )
+        connection_id = str((channel or {}).get('connection_id') or '')
+        if not connection_id:
+            _set_source_automation(source_task_id, status='connection_missing')
+            return {'status': 'connection_missing'}
+        plan = build_publish_plan(source_task_id, source, profile)
+    except Exception as exc:
+        _set_source_automation(
+            source_task_id,
+            status='metadata_blocked',
+            error_code=_safe_error_code(exc),
+        )
+        return {'status': 'metadata_blocked', 'error_code': _safe_error_code(exc)}
+
+    task_id = str(uuid4())
+    try:
+        reservation, created = reserve_upload(
+            source_task_id,
+            task_id,
+            target_channel_id=target_channel_id,
+            connection_id=connection_id,
+            publish_plan=plan,
+        )
+    except Exception as exc:
+        _set_source_automation(
+            source_task_id,
+            status='reservation_blocked',
+            error_code=_safe_error_code(exc),
+        )
+        return {'status': 'reservation_blocked', 'error_code': _safe_error_code(exc)}
+    if not created:
+        return {
+            'status': str(reservation.get('status') or 'already_reserved'),
+            'publish_task_id': reservation.get('publish_task_id'),
+        }
+
+    create_job(
+        task_id,
+        {
+            'topic': (source.get('spec') or {}).get('topic') or plan['title'],
+            'source_task_id': source_task_id,
+            'privacy_status': 'private',
+            'mode': 'autonomous_publish',
+            'target_channel_id': target_channel_id,
+            'connection_id': connection_id,
+            'profile_revision': plan.get('profile_revision'),
+            'release_mode': plan.get('release_mode'),
+            'series': plan.get('series'),
+        },
+        kind='publish',
+        parent_id=source_task_id,
+    )
+    try:
+        publish_video_pipeline.apply_async(
+            args=(source_task_id, 'private'),
+            task_id=task_id,
+        )
+    except Exception as exc:
+        mark_upload_preflight_failed(source_task_id, task_id, 'queue_unavailable')
+        mark_failure(task_id, 'YouTube autonomous upload could not be queued')
+        _set_source_automation(
+            source_task_id,
+            status='queue_blocked',
+            error_code=_safe_error_code(exc),
+        )
+        return {'status': 'queue_blocked', 'error_code': _safe_error_code(exc)}
+    try:
+        mark_upload_enqueued(source_task_id, task_id)
+    except UploadReservationError:
+        # The new worker may legitimately cross the reservation boundary before
+        # this process records apply_async's success. Never move it backwards.
+        pass
+    _set_source_automation(
+        source_task_id,
+        status='queued',
+        publish_task_id=task_id,
+        target_channel_id=target_channel_id,
+        profile_revision=plan.get('profile_revision'),
+        release_mode=plan.get('release_mode'),
+        series=plan.get('series'),
+    )
+    return {
+        'status': 'queued',
+        'publish_task_id': task_id,
+        'target_channel_id': target_channel_id,
+    }
 
 
 def _safe_error_code(exc: Exception) -> str:
@@ -50,6 +212,8 @@ def _result_from_existing_record(
         raise UploadAlreadyInProgress('A YouTube upload is already reserved')
     if not target_channel_id or not connection_id:
         raise RuntimeError('YouTube upload target is missing')
+    release_status = str(record.get('release_status') or 'private')
+    privacy_status = str(record.get('privacy_status') or 'private')
     return {
         'status': 'complete',
         'stage': 'complete',
@@ -58,7 +222,9 @@ def _result_from_existing_record(
         'source_task_id': source_task_id,
         'youtube_video_id': video_id,
         'youtube_url': f'https://www.youtube.com/watch?v={video_id}',
-        'privacy_status': 'private',
+        'privacy_status': privacy_status,
+        'release_status': release_status,
+        'scheduled_publish_at': record.get('scheduled_publish_at'),
         'target_channel_id': target_channel_id,
         'connection_id': connection_id,
         'idempotent_replay': True,
@@ -72,6 +238,10 @@ def _reconcile_source_upload(
     target_channel_id: str,
     connection_id: str,
     uploaded_at: str | None = None,
+    privacy_status: str = 'private',
+    release_status: str = 'private',
+    scheduled_publish_at: str | None = None,
+    publish_plan: dict | None = None,
 ) -> None:
     source = get_job(source_task_id)
     if not source:
@@ -96,7 +266,9 @@ def _reconcile_source_upload(
     youtube.update({
         'video_id': video_id,
         'url': f'https://www.youtube.com/watch?v={video_id}',
-        'privacy_status': 'private',
+        'privacy_status': str(privacy_status or 'private'),
+        'release_status': str(release_status or 'private'),
+        'scheduled_publish_at': scheduled_publish_at,
         'uploaded_at': (
             uploaded_at
             or youtube.get('uploaded_at')
@@ -106,6 +278,14 @@ def _reconcile_source_upload(
         'connection_id': str(connection_id or ''),
         'reconciled': True,
     })
+    if isinstance(publish_plan, dict):
+        youtube.update({
+            'title': publish_plan.get('title'),
+            'default_language': publish_plan.get('default_language'),
+            'category_id': publish_plan.get('category_id'),
+            'series': publish_plan.get('series'),
+            'profile_revision': publish_plan.get('profile_revision'),
+        })
     source_result['youtube'] = youtube
     update_job(source_task_id, result=source_result)
 
@@ -126,6 +306,7 @@ def publish_video_pipeline(
     lock_token: str | None = None
     upload_started = False
     upload_completed = False
+    release_started = False
     try:
         reservation = get_upload_record(source_task_id)
         if not reservation:
@@ -138,6 +319,14 @@ def publish_video_pipeline(
                 target_channel_id=result['target_channel_id'],
                 connection_id=result['connection_id'],
                 uploaded_at=reservation.get('completed_at'),
+                privacy_status=result['privacy_status'],
+                release_status=result['release_status'],
+                scheduled_publish_at=result.get('scheduled_publish_at'),
+                publish_plan=(
+                    reservation.get('publish_plan')
+                    if isinstance(reservation.get('publish_plan'), dict)
+                    else None
+                ),
             )
             mark_success(task_id, result)
             return result
@@ -165,6 +354,14 @@ def publish_video_pipeline(
             connection_id = str(reservation.get('connection_id') or '')
             if not target_channel_id or not connection_id:
                 raise RuntimeError('YouTube upload target is missing')
+            prior_target = str(prior_youtube.get('target_channel_id') or '')
+            prior_connection = str(prior_youtube.get('connection_id') or '')
+            if prior_target and prior_target != target_channel_id:
+                raise RuntimeError('YouTube upload attribution conflicts with reservation')
+            if prior_connection and prior_connection != connection_id:
+                raise RuntimeError('YouTube connection changed before reconciliation')
+            mark_upload_started(source_task_id, task_id)
+            upload_started = True
             mark_upload_completed(source_task_id, task_id, prior_video_id)
             upload_completed = True
             _reconcile_source_upload(
@@ -173,6 +370,14 @@ def publish_video_pipeline(
                 target_channel_id=target_channel_id,
                 connection_id=connection_id,
                 uploaded_at=prior_youtube.get('uploaded_at'),
+                privacy_status=str(prior_youtube.get('privacy_status') or 'private'),
+                release_status=str(prior_youtube.get('release_status') or 'private'),
+                scheduled_publish_at=prior_youtube.get('scheduled_publish_at'),
+                publish_plan=(
+                    reservation.get('publish_plan')
+                    if isinstance(reservation.get('publish_plan'), dict)
+                    else None
+                ),
             )
             result = {
                 'status': 'complete',
@@ -182,7 +387,9 @@ def publish_video_pipeline(
                 'source_task_id': source_task_id,
                 'youtube_video_id': prior_video_id,
                 'youtube_url': f'https://www.youtube.com/watch?v={prior_video_id}',
-                'privacy_status': 'private',
+                'privacy_status': str(prior_youtube.get('privacy_status') or 'private'),
+                'release_status': str(prior_youtube.get('release_status') or 'private'),
+                'scheduled_publish_at': prior_youtube.get('scheduled_publish_at'),
                 'target_channel_id': target_channel_id,
                 'connection_id': connection_id,
                 'idempotent_replay': True,
@@ -230,13 +437,56 @@ def publish_video_pipeline(
             except Exception:
                 metadata = {}
 
-        title = str(metadata.get('title') or source_result.get('title') or 'Video')[:100]
-        description = str(metadata.get('description') or '')
-        sources = metadata.get('sources') or []
-        if isinstance(sources, list) and sources:
-            source_lines = [str(item).strip() for item in sources[:20] if str(item).strip()]
-            if source_lines:
-                description += '\n\nKaynaklar:\n' + '\n'.join(source_lines)
+        raw_plan = reservation.get('publish_plan')
+        publish_plan = (
+            validate_publish_plan(raw_plan)
+            if isinstance(raw_plan, dict)
+            else None
+        )
+        if publish_plan:
+            if publish_plan['source_task_id'] != source_task_id:
+                raise MetadataValidationError('Publish plan source changed')
+            if publish_plan['target_channel_id'] != target_channel_id:
+                raise MetadataValidationError('Publish plan target changed')
+            title = publish_plan['title']
+            description = publish_plan['description']
+            tags = publish_plan['tags']
+            category_id = publish_plan['category_id']
+            language = publish_plan['default_language']
+            thumbnail_key = publish_plan.get('thumbnail_key')
+            require_thumbnail = bool(publish_plan.get('require_thumbnail'))
+            quality_snapshot = publish_plan.get('quality_snapshot')
+            release_allowed = bool(
+                automated_quality_approved(source)
+                and isinstance(quality_snapshot, dict)
+                and quality_snapshot.get('quality_disposition') == 'automated_qc_pass'
+                and quality_snapshot.get('manual_qa_required') is False
+            )
+            requested_release_mode = str(publish_plan.get('release_mode') or 'private')
+            release_mode = requested_release_mode if release_allowed else 'private'
+            publish_at = publish_plan.get('publish_at') if release_mode == 'scheduled' else None
+        else:
+            # Older completed finals do not have an immutable automation plan.
+            # They remain private and use only their stored, pre-upload metadata.
+            title = str(metadata.get('title') or source_result.get('title') or 'Video')[:100]
+            description = str(metadata.get('description') or '')
+            sources = metadata.get('sources') or []
+            if isinstance(sources, list) and sources:
+                source_lines = [
+                    str(item).strip()
+                    for item in sources[:20]
+                    if str(item).strip()
+                ]
+                if source_lines:
+                    description += '\n\nKaynaklar:\n' + '\n'.join(source_lines)
+            tags = []
+            category_id = '28'
+            language = str((source.get('spec') or {}).get('language') or 'tr')
+            thumbnail_key = None
+            require_thumbnail = False
+            release_mode = 'private'
+            publish_at = None
+        language = re.sub(r'[^A-Za-z0-9_-]+', '', language)[:24] or 'tr'
 
         # Persist the side-effect boundary before videos.insert. If anything
         # after this point fails without a video ID, the reservation becomes
@@ -273,6 +523,9 @@ def publish_video_pipeline(
             title,
             description,
             privacy_status=privacy_status,
+            tags=tags,
+            category_id=category_id,
+            default_language=language,
             progress_callback=report_progress,
         )
         video_id = str(youtube_response.get('id') or '').strip()
@@ -281,14 +534,22 @@ def publish_video_pipeline(
 
         # This is the first write after the remote side effect and therefore is
         # intentionally done before optional captions or dashboard updates.
-        mark_upload_completed(source_task_id, task_id, video_id)
+        if release_mode == 'private':
+            mark_upload_completed(source_task_id, task_id, video_id)
+        else:
+            mark_upload_completed(
+                source_task_id,
+                task_id,
+                video_id,
+                release_mode=release_mode,
+                publish_at=publish_at,
+            )
         upload_completed = True
 
         caption_result = None
         caption_error_code = None
         caption_key = source_result.get('caption_key')
-        language = str((source.get('spec') or {}).get('language') or 'tr')
-        language = re.sub(r'[^A-Za-z0-9_-]+', '', language)[:12] or 'tr'
+        caption_language = language[:12]
         if caption_key:
             set_stage(
                 self,
@@ -298,17 +559,88 @@ def publish_video_pipeline(
                 'Ayrı altyazı parçası YouTube’a ekleniyor.',
             )
             try:
-                caption_path = work / f'captions.{language}.srt'
+                caption_path = work / f'captions.{caption_language}.srt'
                 download_file(caption_key, caption_path)
                 caption_result = upload_caption_with_credentials(
                     credentials,
                     video_id,
                     str(caption_path),
-                    language,
-                    name=f'{language.upper()} captions',
+                    caption_language,
+                    name=f'{caption_language.upper()} captions',
                 )
             except Exception as exc:
                 caption_error_code = _safe_error_code(exc)
+
+        thumbnail_result = None
+        thumbnail_error_code = None
+        if thumbnail_key:
+            set_stage(
+                self,
+                task_id,
+                'youtube_thumbnail',
+                88,
+                'Özel küçük resim YouTube’a ekleniyor.',
+            )
+            try:
+                suffix = Path(str(thumbnail_key)).suffix.casefold()
+                suffix = suffix if suffix in {'.jpg', '.jpeg', '.png'} else '.jpg'
+                thumbnail_path = work / f'thumbnail{suffix}'
+                download_file(thumbnail_key, thumbnail_path)
+                thumbnail_result = upload_thumbnail_with_credentials(
+                    credentials,
+                    video_id,
+                    str(thumbnail_path),
+                )
+            except Exception as exc:
+                thumbnail_error_code = _safe_error_code(exc)
+
+        release_status = 'private'
+        final_privacy_status = 'private'
+        release_error_code = None
+        scheduled_publish_at = None
+        if release_mode in {'public', 'scheduled'}:
+            asset_error = (
+                caption_error_code
+                or thumbnail_error_code
+                or ('thumbnail_required' if require_thumbnail and not thumbnail_result else None)
+            )
+            if asset_error:
+                release_error_code = str(asset_error)
+                mark_release_blocked(source_task_id, task_id, release_error_code)
+                release_status = 'blocked'
+            else:
+                mark_release_ready(source_task_id, task_id)
+                set_stage(
+                    self,
+                    task_id,
+                    'youtube_release',
+                    94,
+                    (
+                        'Video güvenli yayın saatine planlanıyor.'
+                        if release_mode == 'scheduled'
+                        else 'Kalite onaylı video herkese açılıyor.'
+                    ),
+                )
+                mark_release_started(source_task_id, task_id)
+                release_started = True
+                set_video_release_with_credentials(
+                    credentials,
+                    video_id,
+                    release_mode,
+                    publish_at=publish_at,
+                )
+                mark_release_completed(
+                    source_task_id,
+                    task_id,
+                    release_mode,
+                    publish_at=publish_at,
+                )
+                release_started = False
+                release_status = release_mode
+                final_privacy_status = (
+                    'public' if release_mode == 'public' else 'private'
+                )
+                scheduled_publish_at = publish_at
 
         uploaded_at = datetime.now(timezone.utc).isoformat()
         youtube_url = f'https://www.youtube.com/watch?v={video_id}'
@@ -320,24 +652,45 @@ def publish_video_pipeline(
             'source_task_id': source_task_id,
             'youtube_video_id': video_id,
             'youtube_url': youtube_url,
-            'privacy_status': 'private',
+            'privacy_status': final_privacy_status,
+            'release_status': release_status,
+            'scheduled_publish_at': scheduled_publish_at,
+            'release_error_code': release_error_code,
             'uploaded_at': uploaded_at,
             'caption_uploaded': bool(caption_result),
             'caption_error_code': caption_error_code,
+            'thumbnail_uploaded': bool(thumbnail_result),
+            'thumbnail_error_code': thumbnail_error_code,
             'target_channel_id': target_channel_id,
             'connection_id': connection_id,
             'channel': channel,
+            'series': publish_plan.get('series') if publish_plan else None,
+            'profile_revision': (
+                publish_plan.get('profile_revision') if publish_plan else None
+            ),
         }
         source_result = dict(source_result)
         source_result['youtube'] = {
             'video_id': video_id,
             'url': youtube_url,
-            'privacy_status': 'private',
+            'privacy_status': final_privacy_status,
+            'release_status': release_status,
+            'scheduled_publish_at': scheduled_publish_at,
+            'release_error_code': release_error_code,
             'uploaded_at': uploaded_at,
             'caption_uploaded': bool(caption_result),
             'caption_error_code': caption_error_code,
+            'thumbnail_uploaded': bool(thumbnail_result),
+            'thumbnail_error_code': thumbnail_error_code,
             'target_channel_id': target_channel_id,
             'connection_id': connection_id,
+            'title': title,
+            'default_language': language,
+            'category_id': category_id,
+            'series': publish_plan.get('series') if publish_plan else None,
+            'profile_revision': (
+                publish_plan.get('profile_revision') if publish_plan else None
+            ),
         }
         update_job(source_task_id, result=source_result)
         mark_success(task_id, result)
@@ -345,16 +698,22 @@ def publish_video_pipeline(
     except Exception as exc:
         error_code = _safe_error_code(exc)
         try:
-            if upload_started and not upload_completed:
+            if release_started:
+                mark_release_uncertain(source_task_id, task_id, error_code)
+            elif upload_started and not upload_completed:
                 mark_upload_uncertain(source_task_id, task_id, error_code)
             elif not upload_completed:
                 mark_upload_preflight_failed(source_task_id, task_id, error_code)
         except Exception:
             pass
         safe_error = RuntimeError(
-            'YouTube upload outcome is uncertain; automatic retry is blocked'
-            if upload_started and not upload_completed
-            else 'YouTube private upload preflight failed'
+            'YouTube release outcome is uncertain; the private upload ID is preserved'
+            if release_started
+            else (
+                'YouTube upload outcome is uncertain; automatic retry is blocked'
+                if upload_started and not upload_completed
+                else 'YouTube private upload preflight failed'
+            )
         )
         mark_failure(task_id, safe_error)
         raise safe_error from None

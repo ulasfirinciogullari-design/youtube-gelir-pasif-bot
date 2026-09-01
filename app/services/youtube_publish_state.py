@@ -98,11 +98,20 @@ def reserve_upload(
     *,
     target_channel_id: str,
     connection_id: str,
+    publish_plan: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any], bool]:
     source_task_id = _safe_id(source_task_id, 'source_task_id')
     publish_task_id = _safe_id(publish_task_id, 'publish_task_id')
     target_channel_id = _safe_id(target_channel_id, 'target_channel_id')
     connection_id = _safe_id(connection_id, 'connection_id')
+    if publish_plan is not None:
+        from app.services.youtube_automation import validate_publish_plan
+
+        publish_plan = validate_publish_plan(publish_plan)
+        if publish_plan.get('source_task_id') != source_task_id:
+            raise ValueError('publish_plan source does not match reservation')
+        if publish_plan.get('target_channel_id') != target_channel_id:
+            raise ValueError('publish_plan target does not match reservation')
     key = _key(source_task_id)
     record = {
         'version': 2,
@@ -112,6 +121,7 @@ def reserve_upload(
         'side_effect_possible': False,
         'target_channel_id': target_channel_id,
         'connection_id': connection_id,
+        'publish_plan': publish_plan,
         'created_at': _now(),
         'updated_at': _now(),
     }
@@ -173,6 +183,8 @@ def _mutate_owned_record(
     *,
     require_side_effect_possible: bool | None = None,
     require_statuses: set[str] | None = None,
+    require_release_side_effect_possible: bool | None = None,
+    require_release_statuses: set[str] | None = None,
     **updates: Any,
 ) -> dict[str, Any]:
     source_task_id = _safe_id(source_task_id, 'source_task_id')
@@ -198,6 +210,21 @@ def _mutate_owned_record(
             if require_statuses and record.get('status') not in require_statuses:
                 raise UploadReservationError(
                     'YouTube upload reservation is not in the required state'
+                )
+            if (
+                require_release_side_effect_possible is not None
+                and bool(record.get('release_side_effect_possible'))
+                is not require_release_side_effect_possible
+            ):
+                raise UploadReservationError(
+                    'YouTube release crossed its side-effect boundary'
+                )
+            if (
+                require_release_statuses
+                and record.get('release_status') not in require_release_statuses
+            ):
+                raise UploadReservationError(
+                    'YouTube release is not in the required state'
                 )
             record.update(updates)
             record['updated_at'] = _now()
@@ -253,18 +280,138 @@ def mark_upload_completed(
     source_task_id: str,
     publish_task_id: str,
     video_id: str,
+    *,
+    release_mode: str = 'private',
+    publish_at: str | None = None,
 ) -> dict[str, Any]:
     video_id = str(video_id or '').strip()
     if not _VIDEO_ID_PATTERN.fullmatch(video_id):
         raise ValueError('video_id is invalid')
+    release_mode = str(release_mode or 'private').strip().casefold()
+    if release_mode not in {'private', 'public', 'scheduled'}:
+        raise ValueError('release_mode is invalid')
+    try:
+        return _mutate_owned_record(
+            source_task_id,
+            publish_task_id,
+            require_statuses={'uploading', 'uncertain'},
+            status='complete',
+            side_effect_possible=True,
+            youtube_video_id=video_id,
+            requested_release_mode=release_mode,
+            requested_publish_at=(str(publish_at) if publish_at else None),
+            release_status=(
+                'private'
+                if release_mode == 'private'
+                else 'awaiting_assets'
+            ),
+            release_side_effect_possible=False,
+            completed_at=_now(),
+        )
+    except UploadReservationError:
+        record = get_upload_record(source_task_id)
+        if (
+            record
+            and record.get('publish_task_id') == publish_task_id
+            and record.get('status') == 'complete'
+            and record.get('youtube_video_id') == video_id
+        ):
+            return record
+        raise
+
+
+def mark_release_ready(
+    source_task_id: str,
+    publish_task_id: str,
+) -> dict[str, Any]:
     return _mutate_owned_record(
         source_task_id,
         publish_task_id,
-        status='complete',
-        side_effect_possible=True,
-        youtube_video_id=video_id,
-        completed_at=_now(),
+        require_statuses={'complete'},
+        require_release_side_effect_possible=False,
+        require_release_statuses={'awaiting_assets', 'ready'},
+        release_status='ready',
+        release_ready_at=_now(),
     )
+
+
+def mark_release_started(
+    source_task_id: str,
+    publish_task_id: str,
+) -> dict[str, Any]:
+    return _mutate_owned_record(
+        source_task_id,
+        publish_task_id,
+        require_statuses={'complete'},
+        require_release_statuses={'ready', 'releasing', 'uncertain'},
+        release_status='releasing',
+        release_side_effect_possible=True,
+        release_started_at=_now(),
+    )
+
+
+def mark_release_completed(
+    source_task_id: str,
+    publish_task_id: str,
+    release_mode: str,
+    *,
+    publish_at: str | None = None,
+) -> dict[str, Any]:
+    release_mode = str(release_mode or '').strip().casefold()
+    if release_mode not in {'public', 'scheduled'}:
+        raise ValueError('release_mode is invalid')
+    return _mutate_owned_record(
+        source_task_id,
+        publish_task_id,
+        require_statuses={'complete'},
+        require_release_statuses={'releasing', 'ready'},
+        release_status=release_mode,
+        release_side_effect_possible=True,
+        privacy_status=('public' if release_mode == 'public' else 'private'),
+        scheduled_publish_at=(str(publish_at) if publish_at else None),
+        release_completed_at=_now(),
+    )
+
+
+def mark_release_blocked(
+    source_task_id: str,
+    publish_task_id: str,
+    error_code: str,
+) -> dict[str, Any]:
+    return _mutate_owned_record(
+        source_task_id,
+        publish_task_id,
+        require_statuses={'complete'},
+        require_release_side_effect_possible=False,
+        require_release_statuses={'awaiting_assets', 'ready'},
+        release_status='blocked',
+        release_side_effect_possible=False,
+        release_error_code=str(error_code or 'release_blocked')[:80],
+        release_blocked_at=_now(),
+    )
+
+
+def mark_release_uncertain(
+    source_task_id: str,
+    publish_task_id: str,
+    error_code: str,
+) -> dict[str, Any]:
+    try:
+        return _mutate_owned_record(
+            source_task_id,
+            publish_task_id,
+            require_statuses={'complete'},
+            require_release_statuses={'releasing', 'uncertain'},
+            release_status='uncertain',
+            release_side_effect_possible=True,
+            release_error_code=str(error_code or 'release_uncertain')[:80],
+            release_failed_at=_now(),
+        )
+    except UploadReservationError:
+        record = get_upload_record(source_task_id)
+        if record and record.get('release_status') in {'public', 'scheduled'}:
+            return record
+        raise
 
 
 def mark_upload_preflight_failed(

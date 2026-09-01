@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
@@ -44,6 +45,7 @@ def upload_video_with_credentials(
     privacy_status: str = PRIVATE_STATUS,
     tags: list[str] | None = None,
     category_id: str = '28',
+    default_language: str | None = None,
     progress_callback: Callable[[float], None] | None = None,
 ) -> dict:
     path = _video_file(file_path)
@@ -73,6 +75,10 @@ def upload_video_with_credentials(
     }
     if normalized_tags:
         snippet['tags'] = normalized_tags
+    normalized_language = str(default_language or '').strip()[:24]
+    if normalized_language:
+        snippet['defaultLanguage'] = normalized_language
+        snippet['defaultAudioLanguage'] = normalized_language
 
     request = youtube.videos().insert(
         part='snippet,status',
@@ -110,6 +116,103 @@ def upload_video_with_credentials(
         raise RuntimeError('YouTube did not preserve private upload visibility')
     if progress_callback:
         progress_callback(1.0)
+    return response
+
+
+def upload_thumbnail_with_credentials(
+    credentials: Credentials,
+    video_id: str,
+    thumbnail_path: str,
+) -> dict:
+    video_id = str(video_id or '').strip()
+    if not video_id:
+        raise ValueError('video_id is required')
+    path = _video_file(thumbnail_path)
+    suffix = path.suffix.casefold()
+    mimetype = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+    }.get(suffix)
+    if not mimetype:
+        raise ValueError('YouTube thumbnail must be JPEG or PNG')
+    return _service(credentials).thumbnails().set(
+        videoId=video_id,
+        media_body=MediaFileUpload(
+            str(path),
+            mimetype=mimetype,
+            resumable=False,
+        ),
+    ).execute(num_retries=2)
+
+
+def get_video_status_with_credentials(
+    credentials: Credentials,
+    video_id: str,
+) -> dict:
+    video_id = str(video_id or '').strip()
+    if not video_id:
+        raise ValueError('video_id is required')
+    response = _service(credentials).videos().list(
+        part='status',
+        id=video_id,
+        maxResults=1,
+    ).execute(num_retries=2)
+    items = response.get('items') if isinstance(response, dict) else None
+    if not isinstance(items, list) or len(items) != 1:
+        raise RuntimeError('YouTube video status could not be verified')
+    item = items[0] if isinstance(items[0], dict) else {}
+    status = item.get('status') if isinstance(item.get('status'), dict) else {}
+    return dict(status)
+
+
+def set_video_release_with_credentials(
+    credentials: Credentials,
+    video_id: str,
+    release_mode: str,
+    *,
+    publish_at: str | None = None,
+) -> dict:
+    video_id = str(video_id or '').strip()
+    if not video_id:
+        raise ValueError('video_id is required')
+    release_mode = str(release_mode or '').strip().casefold()
+    status = {'selfDeclaredMadeForKids': False}
+    if release_mode == 'public':
+        status['privacyStatus'] = 'public'
+    elif release_mode == 'scheduled':
+        try:
+            scheduled = datetime.fromisoformat(str(publish_at or ''))
+        except (TypeError, ValueError) as exc:
+            raise ValueError('publish_at is invalid') from exc
+        if scheduled.tzinfo is None:
+            raise ValueError('publish_at is invalid')
+        scheduled = scheduled.astimezone(timezone.utc)
+        if scheduled <= datetime.now(timezone.utc):
+            raise ValueError('publish_at must be in the future')
+        status.update({
+            'privacyStatus': 'private',
+            'publishAt': scheduled.isoformat().replace('+00:00', 'Z'),
+        })
+    else:
+        raise ValueError('release_mode must be public or scheduled')
+    response = _service(credentials).videos().update(
+        part='status',
+        body={'id': video_id, 'status': status},
+    ).execute(num_retries=3)
+    if not isinstance(response, dict):
+        raise RuntimeError('YouTube release did not return a video resource')
+    response_status = (
+        response.get('status')
+        if isinstance(response.get('status'), dict)
+        else {}
+    )
+    expected_privacy = 'public' if release_mode == 'public' else 'private'
+    if (
+        response_status.get('privacyStatus')
+        and response_status.get('privacyStatus') != expected_privacy
+    ):
+        raise RuntimeError('YouTube release status did not match the request')
     return response
 
 

@@ -1095,11 +1095,14 @@ def test_resumable_video_upload_is_forced_private(monkeypatch, tmp_path):
         'Title',
         'Description',
         privacy_status='private',
+        default_language='tr',
         progress_callback=progress.append,
     )
 
     assert result['id'] == 'youtube-id'
     assert insert_calls[0]['body']['status']['privacyStatus'] == 'private'
+    assert insert_calls[0]['body']['snippet']['defaultLanguage'] == 'tr'
+    assert insert_calls[0]['body']['snippet']['defaultAudioLanguage'] == 'tr'
     assert insert_calls[0]['notifySubscribers'] is False
     assert media_calls[0][1]['resumable'] is True
     assert media_calls[0][1]['chunksize'] == youtube_service.UPLOAD_CHUNK_SIZE
@@ -1114,6 +1117,41 @@ def test_resumable_video_upload_is_forced_private(monkeypatch, tmp_path):
             'Description',
             privacy_status='public',
         )
+
+
+def test_release_api_supports_public_and_future_schedule(monkeypatch):
+    updates = []
+
+    class Request:
+        def __init__(self, body):
+            self.body = body
+
+        def execute(self, **_kwargs):
+            return self.body
+
+    class Videos:
+        def update(self, **kwargs):
+            updates.append(kwargs)
+            return Request(kwargs['body'])
+
+    class YouTube:
+        def videos(self):
+            return Videos()
+
+    monkeypatch.setattr(youtube_service, '_service', lambda _credentials: YouTube())
+    public = youtube_service.set_video_release_with_credentials(
+        object(), 'YT_RELEASE_PUBLIC', 'public'
+    )
+    scheduled = youtube_service.set_video_release_with_credentials(
+        object(),
+        'YT_RELEASE_SCHEDULED',
+        'scheduled',
+        publish_at='2099-01-01T12:00:00+00:00',
+    )
+    assert public['status']['privacyStatus'] == 'public'
+    assert scheduled['status']['privacyStatus'] == 'private'
+    assert scheduled['status']['publishAt'] == '2099-01-01T12:00:00Z'
+    assert all(call['part'] == 'status' for call in updates)
 
 
 def test_upload_reservation_blocks_concurrent_and_uncertain_duplicates(monkeypatch):
@@ -1267,6 +1305,35 @@ def test_completed_upload_is_terminal_against_late_worker_failure(monkeypatch):
     assert publish_state.get_upload_record(source)['youtube_video_id'] == 'YT_COMPLETE_2'
 
 
+def test_release_registry_is_one_way_and_idempotent(monkeypatch):
+    client = FakeRedis()
+    monkeypatch.setattr(publish_state, '_redis', lambda: client)
+    source = 'source-task-release'
+    task = 'publish-task-release'
+    publish_state.reserve_upload(
+        source,
+        task,
+        target_channel_id='UC_release_channel',
+        connection_id='connection-release',
+    )
+    publish_state.mark_upload_enqueued(source, task)
+    publish_state.mark_upload_started(source, task)
+    publish_state.mark_upload_completed(
+        source,
+        task,
+        'YT_RELEASE_1',
+        release_mode='public',
+    )
+    publish_state.mark_release_ready(source, task)
+    publish_state.mark_release_started(source, task)
+    completed = publish_state.mark_release_completed(source, task, 'public')
+    assert completed['release_status'] == 'public'
+    assert completed['privacy_status'] == 'public'
+    with pytest.raises(publish_state.UploadReservationError):
+        publish_state.mark_release_started(source, task)
+    assert publish_state.get_upload_record(source)['release_status'] == 'public'
+
+
 def _import_publish_tasks_with_stubs(monkeypatch):
     celery_module = types.ModuleType('app.celery_app')
     task_options = {}
@@ -1412,6 +1479,295 @@ def test_publish_pipeline_crosses_registry_boundary_before_private_insert(
     assert events.index('registry-started') < events.index(('insert', 'private'))
     assert events.index('registry-complete') > events.index(('insert', 'private'))
     assert events[-1] == 'release'
+
+
+def test_automated_publish_starts_private_then_releases_only_exact_qc_pass(
+    monkeypatch,
+    tmp_path,
+):
+    module = _import_publish_tasks_with_stubs(monkeypatch)
+    monkeypatch.setattr(module, 'Path', lambda _value: tmp_path / 'youtube_publish')
+    source_id = 'source-task-auto-release'
+    publish_id = 'publish-task-auto-release'
+    events = []
+    plan = {
+        'schema_version': 1,
+        'source_task_id': source_id,
+        'target_channel_id': 'UC_auto_release',
+        'profile_revision': 'profile-revision-one',
+        'profile_snapshot': {'release_mode': 'public'},
+        'title': 'Kabin Işıkları Neden Kısılır? (1/8)',
+        'description': 'Uçuş güvenliğinin görünmeyen ayrıntısı.\n\n#Havacılık',
+        'tags': ['havacılık', 'bilim'],
+        'hashtags': ['Havacılık'],
+        'category_id': '28',
+        'default_language': 'tr',
+        'thumbnail_key': None,
+        'require_thumbnail': False,
+        'release_mode': 'public',
+        'publish_at': None,
+        'series': {'id': 'ucak', 'name': 'Uçak', 'number': 1, 'total': 8},
+        'quality_snapshot': {
+            'quality_disposition': 'automated_qc_pass',
+            'manual_qa_required': False,
+        },
+        'created_at': '2026-09-02T00:00:00+00:00',
+    }
+
+    class Task:
+        request = types.SimpleNamespace(id=publish_id)
+
+        def update_state(self, **_kwargs):
+            pass
+
+    monkeypatch.setattr(module, 'get_upload_record', lambda *_a: {
+        'publish_task_id': publish_id,
+        'status': 'queued',
+        'side_effect_possible': False,
+        'target_channel_id': 'UC_auto_release',
+        'connection_id': 'connection-auto-release',
+        'publish_plan': plan,
+    })
+    monkeypatch.setattr(module, 'acquire_execution_lock', lambda *_a: 'lock')
+    monkeypatch.setattr(module, 'release_execution_lock', lambda *_a: None)
+    source = {
+        'state': 'SUCCESS',
+        'kind': 'render',
+        'spec': {'language': 'tr'},
+        'result': {
+            'video_key': 'videos/source/final.mp4',
+            'quality_disposition': 'automated_qc_pass',
+            'manual_qa_required': False,
+        },
+    }
+    monkeypatch.setattr(module, 'get_job', lambda *_a: source)
+    monkeypatch.setattr(module, 'load_credentials', lambda *_a, **_k: object())
+    monkeypatch.setattr(
+        module,
+        'refresh_channel_info',
+        lambda channel_id, *_a, **_k: {'id': channel_id, 'title': 'Auto'},
+    )
+
+    def download(_key, path):
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        Path(path).write_bytes(b'video')
+
+    monkeypatch.setattr(module, 'download_file', download)
+    monkeypatch.setattr(module, 'set_stage', lambda *_a, **_k: None)
+    monkeypatch.setattr(module, 'mark_upload_started', lambda *_a: events.append('upload-start'))
+
+    def upload(_credentials, _path, title, _description, **kwargs):
+        events.append(('insert', kwargs['privacy_status'], title, kwargs['tags']))
+        return {'id': 'YT_AUTO_RELEASE', 'status': {'privacyStatus': 'private'}}
+
+    monkeypatch.setattr(module, 'upload_video_with_credentials', upload)
+    monkeypatch.setattr(
+        module,
+        'mark_upload_completed',
+        lambda *_a, **kwargs: events.append(('upload-complete', kwargs['release_mode'])),
+    )
+    monkeypatch.setattr(module, 'mark_release_ready', lambda *_a: events.append('release-ready'))
+    monkeypatch.setattr(module, 'mark_release_started', lambda *_a: events.append('release-start'))
+    monkeypatch.setattr(
+        module,
+        'set_video_release_with_credentials',
+        lambda _credentials, video_id, mode, **_kwargs: events.append(
+            ('release', video_id, mode)
+        ),
+    )
+    monkeypatch.setattr(
+        module,
+        'mark_release_completed',
+        lambda *_a, **_k: events.append('release-complete'),
+    )
+    monkeypatch.setattr(module, 'update_job', lambda *_a, **_k: None)
+    monkeypatch.setattr(module, 'mark_success', lambda *_a, **_k: None)
+    monkeypatch.setattr(module, 'mark_failure', lambda *_a, **_k: None)
+
+    result = module.publish_video_pipeline(Task(), source_id)
+
+    assert result['privacy_status'] == 'public'
+    assert result['release_status'] == 'public'
+    assert events.index(('insert', 'private', plan['title'], plan['tags'])) < events.index(
+        ('release', 'YT_AUTO_RELEASE', 'public')
+    )
+    assert events[-1] == 'release-complete'
+
+
+def test_public_plan_is_forced_private_when_source_quality_is_manual(monkeypatch, tmp_path):
+    module = _import_publish_tasks_with_stubs(monkeypatch)
+    monkeypatch.setattr(module, 'Path', lambda _value: tmp_path / 'youtube_publish')
+    source_id = 'source-task-manual-gate'
+    publish_id = 'publish-task-manual-gate'
+    plan = {
+        'schema_version': 1,
+        'source_task_id': source_id,
+        'target_channel_id': 'UC_manual_gate',
+        'profile_revision': 'profile-revision-one',
+        'profile_snapshot': {'release_mode': 'public'},
+        'title': 'Manual gate',
+        'description': 'Must remain private.',
+        'tags': [],
+        'hashtags': [],
+        'category_id': '28',
+        'default_language': 'tr',
+        'thumbnail_key': None,
+        'require_thumbnail': False,
+        'release_mode': 'public',
+        'publish_at': None,
+        'series': None,
+        'quality_snapshot': {
+            'quality_disposition': 'automated_qc_pass',
+            'manual_qa_required': False,
+        },
+        'created_at': '2026-09-02T00:00:00+00:00',
+    }
+    source = {
+        'state': 'SUCCESS',
+        'kind': 'render',
+        'spec': {'language': 'tr'},
+        'result': {
+            'video_key': 'videos/source/final.mp4',
+            'quality_disposition': 'manual_qa_preview',
+            'manual_qa_required': True,
+        },
+    }
+
+    class Task:
+        request = types.SimpleNamespace(id=publish_id)
+
+        def update_state(self, **_kwargs):
+            pass
+
+    monkeypatch.setattr(module, 'get_upload_record', lambda *_a: {
+        'publish_task_id': publish_id,
+        'status': 'queued',
+        'side_effect_possible': False,
+        'target_channel_id': 'UC_manual_gate',
+        'connection_id': 'connection-manual-gate',
+        'publish_plan': plan,
+    })
+    monkeypatch.setattr(module, 'get_job', lambda *_a: source)
+    monkeypatch.setattr(module, 'acquire_execution_lock', lambda *_a: 'lock')
+    monkeypatch.setattr(module, 'release_execution_lock', lambda *_a: None)
+    monkeypatch.setattr(module, 'load_credentials', lambda *_a, **_k: object())
+    monkeypatch.setattr(module, 'refresh_channel_info', lambda *_a, **_k: {'id': 'UC_manual_gate'})
+    monkeypatch.setattr(module, 'set_stage', lambda *_a, **_k: None)
+
+    def download(_key, path):
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        Path(path).write_bytes(b'video')
+
+    monkeypatch.setattr(module, 'download_file', download)
+    monkeypatch.setattr(module, 'mark_upload_started', lambda *_a: None)
+    monkeypatch.setattr(
+        module,
+        'upload_video_with_credentials',
+        lambda *_a, **_k: {'id': 'YT_MANUAL_GATE'},
+    )
+    completion_calls = []
+    monkeypatch.setattr(
+        module,
+        'mark_upload_completed',
+        lambda *args, **kwargs: completion_calls.append((args, kwargs)),
+    )
+    monkeypatch.setattr(
+        module,
+        'set_video_release_with_credentials',
+        lambda *_a, **_k: (_ for _ in ()).throw(AssertionError('must remain private')),
+    )
+    monkeypatch.setattr(module, 'update_job', lambda *_a, **_k: None)
+    monkeypatch.setattr(module, 'mark_success', lambda *_a, **_k: None)
+    monkeypatch.setattr(module, 'mark_failure', lambda *_a, **_k: None)
+
+    result = module.publish_video_pipeline(Task(), source_id)
+    assert result['privacy_status'] == 'private'
+    assert result['release_status'] == 'private'
+    assert completion_calls[0][1] == {}
+
+
+def test_automatic_router_freezes_channel_generation_before_enqueue(monkeypatch):
+    module = _import_publish_tasks_with_stubs(monkeypatch)
+    source_id = 'source-task-auto-router'
+    source = {
+        'state': 'SUCCESS',
+        'kind': 'render',
+        'spec': {'topic': 'Uçak', 'language': 'tr', 'channel_id': 'merak-tr'},
+        'result': {
+            'video_key': 'videos/source/final.mp4',
+            'quality_disposition': 'automated_qc_pass',
+            'manual_qa_required': False,
+            'publish_metadata': {'title': 'Uçak', 'description': 'Açıklama'},
+        },
+    }
+    profile = {
+        'channel_id': 'UC_router_channel',
+        'profile_revision': 'revision-router',
+        'auto_publish': True,
+    }
+    plan = {
+        'schema_version': 1,
+        'source_task_id': source_id,
+        'target_channel_id': 'UC_router_channel',
+        'title': 'Uçak',
+        'description': 'Açıklama',
+        'tags': [],
+        'hashtags': [],
+        'category_id': '28',
+        'default_language': 'tr',
+        'release_mode': 'public',
+        'publish_at': None,
+        'series': None,
+        'profile_revision': 'revision-router',
+        'quality_snapshot': {
+            'quality_disposition': 'automated_qc_pass',
+            'manual_qa_required': False,
+        },
+    }
+    events = []
+    monkeypatch.setattr(module, 'get_job', lambda *_a: source)
+    monkeypatch.setattr(module, 'update_job', lambda *_a, **_k: None)
+    monkeypatch.setattr(module, 'connection_status', lambda: {'connections': [{
+        'id': 'UC_router_channel',
+        'connection_id': 'connection-router-generation',
+    }]})
+    monkeypatch.setattr(module, 'list_channel_profiles', lambda: [profile])
+    monkeypatch.setattr(module, 'select_channel_profile', lambda *_a, **_k: profile)
+    monkeypatch.setattr(module, 'build_publish_plan', lambda *_a, **_k: plan)
+
+    def reserve(source_task_id, publish_task_id, **snapshot):
+        events.append(('reserve', source_task_id, publish_task_id, snapshot))
+        return ({'status': 'reserved', 'publish_task_id': publish_task_id}, True)
+
+    monkeypatch.setattr(module, 'reserve_upload', reserve)
+    monkeypatch.setattr(
+        module,
+        'create_job',
+        lambda task_id, spec, **kwargs: events.append(('job', task_id, spec, kwargs)),
+    )
+    module.publish_video_pipeline = types.SimpleNamespace(
+        apply_async=lambda **kwargs: events.append(('enqueue', kwargs)),
+    )
+    monkeypatch.setattr(
+        module,
+        'mark_upload_enqueued',
+        lambda *_a: (_ for _ in ()).throw(
+            module.UploadReservationError('worker already started')
+        ),
+    )
+    monkeypatch.setattr(
+        module,
+        'mark_upload_preflight_failed',
+        lambda *_a: events.append('must-not-fail-after-enqueue'),
+    )
+
+    routed = module.queue_automatic_publish(source_id)
+    assert routed['status'] == 'queued'
+    reservation = next(event for event in events if event[0] == 'reserve')[3]
+    assert reservation['target_channel_id'] == 'UC_router_channel'
+    assert reservation['connection_id'] == 'connection-router-generation'
+    assert reservation['publish_plan'] is plan
+    assert 'must-not-fail-after-enqueue' not in events
 
 
 def test_publish_pipeline_marks_uncertain_and_never_retries_insert(
@@ -1923,6 +2279,7 @@ def test_studio_router_mounts_secure_youtube_lifecycle(monkeypatch):
     assert methods_by_path['/studio/youtube/callback'] == {'GET'}
     assert methods_by_path['/studio/youtube/status'] == {'GET'}
     assert methods_by_path['/studio/youtube/disconnect'] == {'POST'}
+    assert methods_by_path['/studio/youtube/profile/{youtube_channel_id}'] == {'POST'}
     assert methods_by_path['/studio/youtube/publish/{source_task_id}'] == {'POST'}
     assert methods_by_path['/studio/logout'] == {'POST'}
     assert all('public' not in path for path in methods_by_path)

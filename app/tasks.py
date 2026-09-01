@@ -4935,6 +4935,8 @@ def run_video_pipeline(
             'title': package.get('title'),
             'thumbnail_text': package.get('thumbnail_text'),
             'description': package.get('description'),
+            'tags': package.get('tags', []),
+            'hashtags': package.get('hashtags', []),
             'sources': package.get('sources', []),
             'director_qc': package.get('director_qc', []),
             'stock_scene_qc': package.get('stock_scene_qc'),
@@ -5038,6 +5040,14 @@ def run_video_pipeline(
             'task_id': task_id,
             'channel_id': channel_id,
             'title': package.get('title'),
+            'publish_metadata': {
+                'title': package.get('title'),
+                'description': package.get('description'),
+                'thumbnail_text': package.get('thumbnail_text'),
+                'tags': package.get('tags', []),
+                'hashtags': package.get('hashtags', []),
+                'sources': package.get('sources', []),
+            },
             'video_key': object_key,
             'download_url': presigned_download_url(object_key, 86400),
             'metadata_key': metadata_key,
@@ -5135,6 +5145,14 @@ def run_video_pipeline(
             'studio_options': options,
         }
         mark_success(task_id, result)
+        try:
+            # Autonomous routing is best-effort after the render is durably
+            # successful. A profile/queue outage must never invalidate media.
+            from app.publish_tasks import queue_automatic_publish
+
+            queue_automatic_publish(task_id)
+        except Exception:
+            pass
         return result
     except Exception as exc:
         terminal_pre_media_error = isinstance(
