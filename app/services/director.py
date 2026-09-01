@@ -1599,16 +1599,17 @@ def _repair_short_stock_scenes(
 
     def validate_generated_row(position: int, row: dict) -> tuple[dict | None, str]:
         target = targets_by_position[position]
-        narration = str(row.get('narration') or '').strip()
         locked_narration = target.get('locked_narration')
-        if (
-            isinstance(locked_narration, str)
-            and narration != locked_narration
-        ):
-            return None, (
-                f'position {position} changed exact locked narration; only '
-                'visual_queries may be repaired'
-            )
+        # Exact narration is immutable input, not model output.  The stock
+        # writer is asked to echo it only so mixed locked/unlocked requests can
+        # share one response contract, but an imperfect echo must never turn a
+        # visual-query repair into a narration rewrite (or exhaust the bounded
+        # repair budget before the independent critic can review the visuals).
+        narration = (
+            locked_narration
+            if isinstance(locked_narration, str)
+            else str(row.get('narration') or '').strip()
+        )
         got_words = _word_count(narration)
         allowed_words = target['allowed_word_count']
         if not allowed_words[0] <= got_words <= allowed_words[1]:

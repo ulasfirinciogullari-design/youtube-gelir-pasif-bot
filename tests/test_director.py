@@ -1859,32 +1859,64 @@ class ShortStockRepairTests(unittest.TestCase):
 
         self.assertEqual(client.responses.calls, [])
 
-    def test_stock_writer_cannot_change_exact_locked_narration(self):
+    def test_stock_writer_output_cannot_change_exact_locked_narration(self):
         package = make_ai_first_five_scene_package()
+        package['scenes'][0]['ai_prompt'] = (
+            'same woman looking at the silent phone at the winter bus stop'
+        )
+        package['scenes'][3]['ai_prompt'] = None
+        package['scenes'][4]['ai_prompt'] = None
+        package['ai_scenes'] = [
+            scene['ai_prompt']
+            for scene in package['scenes']
+            if scene.get('ai_prompt')
+        ]
         block = self._complete_narration(package)
-        first = self._locked_ai_first_payload(package)
-        first['scenes'][0]['narration'] += ' Bugün.'
-        second = {
-            'scenes': [copy.deepcopy(first['scenes'][0])],
+        generated = {
+            'scenes': [
+                {
+                    'position': position,
+                    'narration': (
+                        package['scenes'][position]['narration'] + ' Bugün.'
+                        if position == 3
+                        else package['scenes'][position]['narration']
+                    ),
+                    'visual_queries': copy.deepcopy(
+                        package['scenes'][position]['visual_queries']
+                    ),
+                    'ai_prompt': None,
+                }
+                for position in (2, 3, 4)
+            ],
         }
-        client = FakeClient([first, second])
+        client = FakeClient([
+            generated,
+            critic_payload(stock_positions=(2, 3, 4), scene_count=5),
+        ])
 
-        with self.assertRaisesRegex(
-            RuntimeError,
-            'changed exact locked narration',
-        ):
-            _repair_short_stock_scenes(
-                client,
-                package,
-                'Turkish',
-                0.5,
-                topic=(
-                    'Anlatım metni aynen şu olsun: '
-                    f'“{block}”'
-                ),
-            )
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+            topic=(
+                'Anlatım metni aynen şu olsun: '
+                f'“{block}”'
+            ),
+        )
 
         self.assertEqual(len(client.responses.calls), 2)
+        self.assertEqual(result['narration'], block)
+        self.assertEqual(
+            result['scenes'][3]['narration'],
+            package['scenes'][3]['narration'],
+        )
+        self.assertNotIn(
+            package['scenes'][3]['narration'] + ' Bugün.',
+            client.responses.calls[1]['input'],
+        )
+        self.assertEqual(result['stock_scene_qc']['generator_calls'], 1)
+        self.assertEqual(result['stock_scene_qc']['critic_calls'], 1)
 
     def test_repairs_all_null_and_final_positions_only(self):
         package = make_short_package()
