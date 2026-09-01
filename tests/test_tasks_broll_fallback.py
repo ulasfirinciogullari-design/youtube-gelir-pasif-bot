@@ -143,6 +143,7 @@ def _load_manual_qa_boundary():
         '_manual_qa_preview_record',
         '_manual_qa_visual_identity',
         '_manual_qa_failure_diagnostic',
+        '_manual_qa_review_matches_locked_cut',
         '_manual_qa_preview_decisions',
         '_generated_visual_spec',
     }
@@ -419,6 +420,25 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         self.assertNotIn('path', result)
         self.assertNotIn('arbitrary_secret', result)
 
+    def test_manual_qa_tie_breaker_must_choose_the_locked_cut(self):
+        namespace = _load_manual_qa_boundary()
+        matches = namespace['_manual_qa_review_matches_locked_cut']
+        spec = _stock_spec()
+        spec['start_fraction'] = 0.18
+
+        self.assertTrue(matches(
+            {'best_candidate_index': 0, 'best_start_fraction': 0.18},
+            spec,
+        ))
+        self.assertFalse(matches(
+            {'best_candidate_index': 0, 'best_start_fraction': 0.50},
+            spec,
+        ))
+        self.assertFalse(matches(
+            {'best_candidate_index': 1, 'best_start_fraction': 0.18},
+            spec,
+        ))
+
     def test_manual_qa_allows_exact_generated_but_excludes_non_preview_modes(self):
         namespace = _load_manual_qa_boundary()
         passes = namespace['_manual_qa_preview_passes']
@@ -592,11 +612,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         self.assertLess(final_review, adjudication)
         self.assertLess(adjudication, terminal)
         self.assertIn('len(terminal_manual_qa_candidates) <= 2', source)
-        self.assertIn(
-            '_manual_qa_visual_identity(selected_spec)\n'
-            '                == manual_qa_prepass_identities.get(scene_idx)',
-            source,
-        )
+        self.assertIn('eligible_adjudication_candidates = [', source)
+        self.assertIn('_manual_qa_review_matches_locked_cut(', source)
+        self.assertIn('_manual_qa_visual_identity(selected_spec)', source)
+        self.assertIn('manual_qa_prepass_identities.get(scene_idx)', source)
         self.assertIn("final_review.get('subject_visible') is True", source)
         self.assertIn("final_review.get('spoken_action_visible') is True", source)
         self.assertIn("_missing_review_attempts=0", source[adjudication:terminal])
@@ -604,6 +623,8 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             'scene_idx not in manual_qa_preserve_exact_cut_scenes',
             source,
         )
+        self.assertIn("review['best_candidate_index'] = 0", source)
+        self.assertIn('final_manual_reviews_applied.add(scene_idx)', source)
 
     def test_manual_and_forced_sets_are_explicitly_disjoint(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')
