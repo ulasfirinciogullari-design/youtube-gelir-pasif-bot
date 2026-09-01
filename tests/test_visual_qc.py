@@ -220,6 +220,14 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertIn('visible loop must score 40 or lower', kwargs['system_instruction'])
         self.assertIn('spatial continuity', kwargs['system_instruction'])
         self.assertIn(
+            'explicitly correct every visibly failed authored attribute',
+            kwargs['system_instruction'],
+        )
+        self.assertIn(
+            'physical scale or quantity, age or condition',
+            kwargs['system_instruction'],
+        )
+        self.assertIn(
             'Required scene IDs: [0]',
             kwargs['system_instruction'],
         )
