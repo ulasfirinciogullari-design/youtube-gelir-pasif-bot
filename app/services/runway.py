@@ -11,6 +11,7 @@ from app.config import settings
 
 _GEMINI_VIDEO_BASE = 'https://generativelanguage.googleapis.com/v1beta'
 _GEMINI_VIDEO_MODEL = 'veo-3.1-lite-generate-preview'
+_GEMINI_VIDEO_FAST_MODEL = 'veo-3.1-fast-generate-preview'
 _GEMINI_OPERATION_PATTERN = re.compile(
     r'^(?:models/[A-Za-z0-9._-]+/)?operations/[A-Za-z0-9._~/-]+$'
 )
@@ -25,6 +26,10 @@ class GeminiVideoTerminalError(RuntimeError):
     """A definitive completed-operation rejection that is safe to resubmit."""
 
 
+class GeminiVideoQuotaError(RuntimeError):
+    """A definitive model-create quota rejection with no accepted operation."""
+
+
 def _gemini_video_duration(seconds: int) -> int:
     """Map the requested single-pass shot to a supported Veo duration."""
     if seconds <= 4:
@@ -36,7 +41,11 @@ def _gemini_video_duration(seconds: int) -> int:
     raise RuntimeError('Gemini video fallback cannot satisfy this shot duration')
 
 
-def _generate_gemini_video_uri(prompt_text: str, seconds: int) -> str:
+def _generate_gemini_video_uri(
+    prompt_text: str,
+    seconds: int,
+    model_name: str = _GEMINI_VIDEO_MODEL,
+) -> str:
     """Create exactly one Gemini Veo task and return its trusted media URI."""
     if not settings.gemini_api_key:
         raise RuntimeError('Gemini video fallback is not configured')
@@ -46,10 +55,12 @@ def _generate_gemini_video_uri(prompt_text: str, seconds: int) -> str:
         'x-goog-api-key': settings.gemini_api_key,
         'Content-Type': 'application/json',
     }
-    endpoint = (
-        f'{_GEMINI_VIDEO_BASE}/models/{_GEMINI_VIDEO_MODEL}'
-        ':predictLongRunning'
-    )
+    if model_name not in {
+        _GEMINI_VIDEO_MODEL,
+        _GEMINI_VIDEO_FAST_MODEL,
+    }:
+        raise ValueError('Unsupported Gemini video fallback model')
+    endpoint = f'{_GEMINI_VIDEO_BASE}/models/{model_name}:predictLongRunning'
     request_payload = {
         'instances': [{'prompt': prompt_text}],
         'parameters': {
@@ -65,8 +76,8 @@ def _generate_gemini_video_uri(prompt_text: str, seconds: int) -> str:
         timeout=httpx.Timeout(60.0, connect=10.0),
         follow_redirects=False,
     ) as client:
-        # A create request is never retried: an ambiguous network failure may
-        # mean that the paid operation was accepted.
+        # A create request is retried only after an explicit 429 response;
+        # ambiguous network failures may mean the paid operation was accepted.
         created = client.post(
             endpoint,
             headers=headers,
@@ -90,6 +101,10 @@ def _generate_gemini_video_uri(prompt_text: str, seconds: int) -> str:
                 headers=headers,
                 json=request_payload,
             )
+            if getattr(created, 'status_code', None) == 429:
+                raise GeminiVideoQuotaError(
+                    'Gemini video model quota is exhausted'
+                )
         created.raise_for_status()
         created_payload = created.json()
         operation_name = str(
@@ -185,20 +200,41 @@ def generate_scene(prompt: str, duration: int = 5) -> dict:
         # This catch deliberately covers only paid task creation. Once Runway
         # has accepted a task, no polling or download error may start a second
         # paid generation with another provider.
-        provider_attempts = 1
+        def generate_with_gemini_model(
+            model_name: str | None = None,
+        ) -> tuple[str, int]:
+            provider_attempts = 1
+            call_args = (
+                (prompt_text, seconds)
+                if model_name is None
+                else (prompt_text, seconds, model_name)
+            )
+            try:
+                return _generate_gemini_video_uri(*call_args), provider_attempts
+            except GeminiVideoTerminalError:
+                # The provider explicitly completed the operation with an
+                # error, so a single resubmission is not ambiguous.
+                provider_attempts = 2
+                return _generate_gemini_video_uri(*call_args), provider_attempts
+
+        provider = 'gemini_veo'
+        quota_fallback_from = None
         try:
-            video_uri = _generate_gemini_video_uri(prompt_text, seconds)
-        except GeminiVideoTerminalError:
-            # The provider explicitly completed the operation with an error,
-            # so there is no ambiguous accepted job to orphan or duplicate.
-            # One bounded retry absorbs transient generation-side rejection;
-            # transport, polling, URI and download failures never enter here.
-            provider_attempts = 2
-            video_uri = _generate_gemini_video_uri(prompt_text, seconds)
+            video_uri, provider_attempts = generate_with_gemini_model()
+        except GeminiVideoQuotaError:
+            # Lite and Fast have separate model quotas. This switch occurs
+            # only after both bounded Lite create requests were explicitly
+            # rejected, so no Lite operation can exist or incur a charge.
+            provider = 'gemini_veo_fast'
+            quota_fallback_from = 'gemini_veo'
+            video_uri, provider_attempts = generate_with_gemini_model(
+                _GEMINI_VIDEO_FAST_MODEL
+            )
         return {
             'url': video_uri,
-            'provider': 'gemini_veo',
+            'provider': provider,
             'provider_attempts': provider_attempts,
+            'quota_fallback_from': quota_fallback_from,
         }
     task_id = str(getattr(created, 'id', '') or '').strip()
     if not task_id:
