@@ -116,8 +116,17 @@ class RunwayPromptTests(unittest.TestCase):
             generated_visual_spec(
                 'gemini.mp4',
                 provider='gemini_veo',
+                provider_attempts=2,
             )['generation_provider'],
             'gemini_veo',
+        )
+        self.assertEqual(
+            generated_visual_spec(
+                'gemini.mp4',
+                provider='gemini_veo',
+                provider_attempts=2,
+            )['generation_provider_attempts'],
+            2,
         )
 
     def test_real_first_short_preview_caps_initial_runway_spend_at_one_scene(self):
