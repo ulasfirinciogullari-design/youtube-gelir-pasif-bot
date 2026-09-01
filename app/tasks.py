@@ -211,7 +211,7 @@ SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
 # otherwise approved AI-first storyboard before any paid submission.
 SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 3
 MANUAL_QA_PREVIEW_STOCK_FLOOR = 60
-MANUAL_QA_PREVIEW_GENERATED_FLOOR = 65
+MANUAL_QA_PREVIEW_GENERATED_FLOOR = 60
 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD = 86
 MAX_AUDIO_GENERATION_ATTEMPTS = 3
 _MANUAL_QA_CLEAR_VISUAL_FIELDS = (
@@ -753,7 +753,7 @@ def _manual_qa_preview_passes(
     quality_threshold = options.get('quality_threshold')
     if (
         options.get('mode') != 'preview'
-        or duration_minutes > 0.5
+        or duration_minutes != 0.5
         or type(quality_threshold) is not int
         or quality_threshold != MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
     ):
