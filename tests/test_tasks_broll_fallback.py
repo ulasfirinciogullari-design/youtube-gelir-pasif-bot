@@ -110,7 +110,7 @@ def _load_outage_allocation_boundary():
     )
     namespace = {
         'SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP': 2,
-        'SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP': 2,
+        'SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP': 3,
     }
     exec(
         compile(
@@ -1093,7 +1093,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         self.assertEqual(missing_quality, [])
         self.assertFalse(quality_cap_exceeded)
 
-    def test_three_stock_quality_failures_exceed_cap_before_selection(self):
+    def test_three_stock_quality_failures_receive_three_bounded_extra_slots(self):
         allocate = _load_outage_allocation_boundary()
         ranked = [
             {'scene_index': 0, 'has_visual': False, 'stock_score': -1},
@@ -1107,7 +1107,32 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             _outage_cap_exceeded, quality_cap_exceeded, _overlap,
         ) = allocate(ranked, 1, set(), {2, 3, 4}, 86)
 
-        self.assertEqual([item['scene_index'] for item in selected], [0, 2, 3])
+        self.assertEqual(
+            [item['scene_index'] for item in selected],
+            [0, 2, 3, 4],
+        )
+        self.assertEqual(missing_quality, [])
+        self.assertFalse(quality_cap_exceeded)
+
+    def test_four_stock_quality_failures_exceed_cap_before_selection(self):
+        allocate = _load_outage_allocation_boundary()
+        ranked = [
+            {'scene_index': 0, 'has_visual': False, 'stock_score': -1},
+            {'scene_index': 2, 'has_visual': False, 'stock_score': 68},
+            {'scene_index': 3, 'has_visual': False, 'stock_score': 61},
+            {'scene_index': 4, 'has_visual': False, 'stock_score': 55},
+            {'scene_index': 5, 'has_visual': False, 'stock_score': 48},
+        ]
+
+        (
+            selected, _required_base, _missing_outage, missing_quality,
+            _outage_cap_exceeded, quality_cap_exceeded, _overlap,
+        ) = allocate(ranked, 1, set(), {2, 3, 4, 5}, 86)
+
+        self.assertEqual(
+            [item['scene_index'] for item in selected],
+            [0, 2, 3, 4],
+        )
         self.assertEqual(missing_quality, [])
         self.assertTrue(quality_cap_exceeded)
 
@@ -1236,7 +1261,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             source,
         )
         self.assertIn(
-            'SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 2',
+            'SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 3',
             source,
         )
         self.assertIn("'provider_outage_emergency_cap': (", source)
