@@ -696,7 +696,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
 
         source = SOURCE_PATH.read_text(encoding='utf-8')
         exact_failure = source.index(
-            'terminal_manual_qa_failure_scene_indices = {'
+            'terminal_manual_qa_failure_scene_indices: set[int] = set()'
         )
         repair = source.index(
             'final_runway_repair_candidates =', exact_failure
@@ -711,10 +711,22 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             '                    terminal_manual_qa_failure_scene_indices',
             source[repair:stock_rescue],
         )
-        self.assertNotIn(
-            'Manual-QA preview failed exact final revalidation',
-            source,
+        self.assertIn(
+            "_manual_qa_visual_source_type(selected_spec) == 'stock'",
+            source[exact_failure:repair],
         )
+
+        repair_loop = source.index(
+            'for scene_idx in final_runway_repair_candidates:', repair
+        )
+        generation = source.index('repair_scene = generate_scene(', repair_loop)
+        quarantine = source[repair_loop:generation]
+        self.assertIn(
+            'if scene_idx in terminal_manual_qa_failure_scene_indices:',
+            quarantine,
+        )
+        self.assertIn('existing_specs = []', quarantine)
+        self.assertIn('scene_visuals[scene_idx] = []', quarantine)
 
     def test_manual_prepass_disagreement_gets_one_bounded_blind_vote(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')
@@ -741,9 +753,12 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         self.assertIn("review['best_candidate_index'] = 0", source)
         self.assertIn('final_manual_reviews_applied.add(scene_idx)', source)
         self.assertIn(
-            "'manual_qa_exact_revalidation_failures': (",
+            "'manual_qa_exact_revalidation_history': (",
             source,
         )
+        self.assertIn("'resolution': (", source)
+        self.assertIn("'generated_repair'", source)
+        self.assertIn("'fresh_stock_rescue'", source)
 
     def test_manual_and_forced_sets_are_explicitly_disjoint(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')

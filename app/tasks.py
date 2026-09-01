@@ -2841,10 +2841,26 @@ def run_video_pipeline(
             for scene_idx, selected_spec, final_review
             in terminal_manual_qa_candidates
         ]
-        terminal_manual_qa_failure_scene_indices = {
-            int(item['scene_index'])
-            for item in terminal_manual_qa_failures
-        }
+        terminal_manual_qa_failure_scene_indices: set[int] = set()
+        unroutable_terminal_manual_qa_failures: list[dict] = []
+        for candidate, diagnostic in zip(
+            terminal_manual_qa_candidates,
+            terminal_manual_qa_failures,
+        ):
+            scene_idx, selected_spec, _final_review = candidate
+            if _manual_qa_visual_source_type(selected_spec) == 'stock':
+                terminal_manual_qa_failure_scene_indices.add(scene_idx)
+            else:
+                unroutable_terminal_manual_qa_failures.append(diagnostic)
+        if unroutable_terminal_manual_qa_failures:
+            raise FinalVisualQualityError(
+                'Manual-QA preview failed exact final revalidation: '
+                + json.dumps(
+                    {'failures': unroutable_terminal_manual_qa_failures},
+                    ensure_ascii=False,
+                    separators=(',', ':'),
+                )
+            )
         # Generated clips do not exist during the stock prepass. Admit them
         # only after the exact final clip has supplied all hard-evidence and
         # artifact booleans. Forced stock fallbacks use the generated floor;
@@ -2940,6 +2956,12 @@ def run_video_pipeline(
             runway_attempts += 1
             existing_specs = list(scene_visuals[scene_idx])
             old_best = _visual_path(existing_specs[0]) if existing_specs else ''
+            if scene_idx in terminal_manual_qa_failure_scene_indices:
+                # The exact stock cut failed revalidation. Never let that
+                # incumbent re-enter the repair tournament; if AI generation
+                # fails, the later stock rescue must start from fresh results.
+                existing_specs = []
+                scene_visuals[scene_idx] = []
             try:
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
@@ -3165,6 +3187,21 @@ def run_video_pipeline(
                 )
             )
         manual_qa_scene_indices = sorted(manual_qa_preview_scenes)
+        manual_qa_exact_revalidation_history = []
+        for failure in terminal_manual_qa_failures:
+            scene_idx = int(failure['scene_index'])
+            history_item = dict(failure)
+            history_item.update({
+                'resolved': True,
+                'resolution': (
+                    'generated_repair'
+                    if scene_idx in final_runway_repair_scenes
+                    else 'fresh_stock_rescue'
+                    if scene_idx in rescued_final_scenes
+                    else 'revalidated'
+                ),
+            })
+            manual_qa_exact_revalidation_history.append(history_item)
         manual_qa_scene_scores = {
             str(scene_idx): int(manual_qa_preview_scores[scene_idx])
             for scene_idx in manual_qa_scene_indices
@@ -3330,8 +3367,8 @@ def run_video_pipeline(
             'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries,
             'manual_qa_scene_reasons': manual_qa_scene_reasons,
             'manual_qa_scene_reviews': manual_qa_scene_reviews,
-            'manual_qa_exact_revalidation_failures': (
-                terminal_manual_qa_failures
+            'manual_qa_exact_revalidation_history': (
+                manual_qa_exact_revalidation_history
             ),
             'publish_quality_threshold': (
                 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
@@ -3425,8 +3462,8 @@ def run_video_pipeline(
             'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries,
             'manual_qa_scene_reasons': manual_qa_scene_reasons,
             'manual_qa_scene_reviews': manual_qa_scene_reviews,
-            'manual_qa_exact_revalidation_failures': (
-                terminal_manual_qa_failures
+            'manual_qa_exact_revalidation_history': (
+                manual_qa_exact_revalidation_history
             ),
             'publish_quality_threshold': (
                 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
