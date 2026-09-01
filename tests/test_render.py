@@ -172,10 +172,18 @@ class RenderQualityTests(unittest.TestCase):
                 )
 
         silent_command, mux_command = commands
-        silent_filter = silent_command[silent_command.index('-vf') + 1]
-        self.assertTrue(silent_filter.startswith('setpts=PTS-STARTPTS,'))
-        self.assertIn('tpad=stop_mode=clone:stop_duration=0.700', silent_filter)
+        silent_filter = silent_command[
+            silent_command.index('-filter_complex') + 1
+        ]
+        self.assertIn(
+            'trim=end_frame=885,settb=expr=1/30,setpts=N',
+            silent_filter,
+        )
+        self.assertIn('tpad=stop_mode=clone:stop=15', silent_filter)
         self.assertIn('trim=end_frame=900', silent_filter)
+        self.assertNotIn('stop_duration=', silent_filter)
+        self.assertNotIn('stop=-1', silent_filter)
+        self.assertNotIn('setpts=N/(30*TB)', silent_filter)
         self.assertEqual(silent_command[silent_command.index('-frames:v') + 1], '900')
         self.assertNotIn('-shortest', mux_command)
         audio_filter = mux_command[mux_command.index('-af') + 1]
@@ -214,9 +222,11 @@ class RenderQualityTests(unittest.TestCase):
                     )
 
         self.assertEqual(len(commands), 1)
-        silent_filter = commands[0][commands[0].index('-vf') + 1]
-        self.assertIn('tpad=stop_mode=clone:stop_duration=0.700', silent_filter)
-        self.assertNotIn('stop_duration=30.', silent_filter)
+        silent_filter = commands[0][
+            commands[0].index('-filter_complex') + 1
+        ]
+        self.assertIn('tpad=stop_mode=clone:stop=15', silent_filter)
+        self.assertNotIn('stop_duration=', silent_filter)
 
     @unittest.skipUnless(
         shutil.which('ffmpeg') and shutil.which('ffprobe'),
