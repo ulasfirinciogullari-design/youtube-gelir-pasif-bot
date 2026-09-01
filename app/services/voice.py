@@ -1,4 +1,5 @@
 from pathlib import Path
+import hashlib
 import re
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -132,6 +133,7 @@ def synthesize_voice_with_id(
     next_text: str | None = None,
     *,
     speed: float = 1.01,
+    seed: int | None = None,
 ) -> bytes:
     body = {
         'text': normalize_turkish_tts(text),
@@ -145,6 +147,10 @@ def synthesize_voice_with_id(
             'speed': speed,
         },
     }
+    if seed is not None:
+        if type(seed) is not int or not 0 <= seed <= 4_294_967_295:
+            raise ValueError('ElevenLabs seed must be an unsigned 32-bit integer')
+        body['seed'] = seed
     if previous_text:
         body['previous_text'] = normalize_turkish_tts(previous_text)[-600:]
     if next_text:
@@ -156,6 +162,26 @@ def synthesize_voice_with_id(
     )
     response.raise_for_status()
     return response.content
+
+
+def _deterministic_scene_seed(
+    voice_id: str,
+    text: str,
+    scene_index: int,
+    generation_attempt: int,
+) -> int:
+    """Produce stable but independently retryable ElevenLabs scene seeds."""
+    if type(scene_index) is not int or scene_index < 0:
+        raise ValueError('scene_index must be a non-negative integer')
+    if type(generation_attempt) is not int or generation_attempt < 0:
+        raise ValueError('generation_attempt must be a non-negative integer')
+    material = '\x1f'.join((
+        str(voice_id or '').strip(),
+        normalize_turkish_tts(text),
+        str(scene_index),
+        str(generation_attempt),
+    )).encode('utf-8')
+    return int.from_bytes(hashlib.sha256(material).digest()[:4], 'big')
 
 
 def audition_shared_voice(text: str, public_owner_id: str, voice_id: str, name: str | None = None) -> bytes:
@@ -237,7 +263,13 @@ def _fit_duration(output: Path, scene_durations: list[float], target_seconds: fl
     return scene_durations, before, after, tempo_rate
 
 
-def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: float | None = None) -> dict:
+def synthesize_scene_sequence(
+    scenes: list[dict],
+    job_id: str,
+    target_seconds: float | None = None,
+    *,
+    generation_attempt: int = 0,
+) -> dict:
     selected = _selected_voice_or_raise()
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
@@ -259,6 +291,12 @@ def synthesize_scene_sequence(scenes: list[dict], job_id: str, target_seconds: f
             previous_text,
             next_text,
             speed=selected_speed,
+            seed=_deterministic_scene_seed(
+                voice_id,
+                source_texts[idx],
+                idx,
+                generation_attempt,
+            ),
         )
         chunk_paths[idx].write_bytes(audio)
         return idx, _media_duration(chunk_paths[idx])
