@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import hashlib
 import json
 import math
 import re
@@ -34,6 +35,10 @@ from app.services.visual_routing import (
 
 class FinalVisualQualityError(RuntimeError):
     """A bounded semantic-quality rejection that should not rerun the whole pipeline."""
+
+
+class FinalAudioQualityError(RuntimeError):
+    """A bounded exact-transcript rejection before any paid video request."""
 
 
 class PreRunwayRetryableError(RuntimeError):
@@ -203,6 +208,7 @@ SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 1
 MANUAL_QA_PREVIEW_STOCK_FLOOR = 60
 MANUAL_QA_PREVIEW_GENERATED_FLOOR = 65
 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD = 86
+MAX_AUDIO_GENERATION_ATTEMPTS = 3
 _MANUAL_QA_CLEAR_VISUAL_FIELDS = (
     'prominent_readable_text_or_logo_visible',
     'major_visual_artifact_visible',
@@ -794,6 +800,118 @@ def _manual_qa_preview_record(
     }
 
 
+_MANUAL_QA_DIAGNOSTIC_BOOLEAN_FIELDS = (
+    'evidence_gate_passed',
+    'editorial_gate_passed',
+    'subject_visible',
+    'spoken_action_visible',
+    'physical_causality_applicable',
+    'target_contact_visible',
+    'connection_action_applicable',
+    'moving_connector_visible',
+    'receiving_interface_visible',
+    'connector_visibly_joins_target',
+    'connection_persists_after_release',
+    'state_change_applicable',
+    'state_changed_after_action',
+    'final_state_persists',
+    'unexplained_reset',
+    'location_continuity_applicable',
+    'location_continuity_matches',
+    *_MANUAL_QA_CLEAR_VISUAL_FIELDS,
+)
+
+
+def _manual_qa_visual_identity(
+    visual_spec: str | dict | None,
+) -> tuple[object, ...] | None:
+    """Internal content-and-cut identity; never serialize source paths."""
+    source_type = _manual_qa_visual_source_type(visual_spec)
+    if source_type is None:
+        return None
+    if not isinstance(visual_spec, dict):
+        return None
+    path = str(visual_spec.get('path') or '').strip()
+    if not path:
+        return None
+    try:
+        clip = Path(path)
+        size = clip.stat().st_size
+        digest = hashlib.sha256()
+        with clip.open('rb') as file_handle:
+            for chunk in iter(lambda: file_handle.read(1024 * 1024), b''):
+                digest.update(chunk)
+        start_fraction = round(
+            float(visual_spec.get('start_fraction', 0.35)),
+            6,
+        )
+        source_duration = round(
+            float(visual_spec.get('source_duration', 0.0)),
+            6,
+        )
+    except (OSError, TypeError, ValueError):
+        return None
+    if (
+        size < 1
+        or not 0.0 <= start_fraction <= 0.95
+        or source_duration < 0.0
+    ):
+        return None
+    return (
+        digest.hexdigest(),
+        size,
+        start_fraction,
+        source_duration,
+        source_type,
+        str(visual_spec.get('stock_provider') or '').casefold(),
+        str(visual_spec.get('generation_provider') or '').casefold(),
+        visual_spec.get('forbid_loop') is True,
+        visual_spec.get('preserve_full_clip') is True,
+    )
+
+
+def _manual_qa_failure_diagnostic(
+    scene_idx: int,
+    review: dict,
+    visual_spec: str | dict | None,
+) -> dict:
+    """Return an allow-listed, secret-safe exact-QC failure record."""
+    source_type = _manual_qa_visual_source_type(visual_spec)
+    diagnostic: dict = {
+        'scene_index': int(scene_idx),
+        'failure_code': 'manual_qa_exact_revalidation_failed',
+        'source_type': source_type,
+        'manual_qa_floor': (
+            MANUAL_QA_PREVIEW_GENERATED_FLOOR
+            if source_type == 'generated'
+            else MANUAL_QA_PREVIEW_STOCK_FLOOR
+            if source_type == 'stock'
+            else None
+        ),
+    }
+    for field in (
+        'score',
+        'raw_score',
+        'best_candidate_index',
+        'best_moment_index',
+    ):
+        value = review.get(field)
+        diagnostic[field] = value if type(value) is int else None
+    for field in _MANUAL_QA_DIAGNOSTIC_BOOLEAN_FIELDS:
+        value = review.get(field)
+        diagnostic[field] = value if type(value) is bool else None
+    moments = review.get('evidence_moment_indices')
+    diagnostic['evidence_moment_indices'] = (
+        list(moments)
+        if (
+            isinstance(moments, list)
+            and all(type(value) is int for value in moments)
+        )
+        else None
+    )
+    return diagnostic
+
+
 def _manual_qa_preview_decisions(
     options: dict,
     duration_minutes: float,
@@ -1374,6 +1492,7 @@ def plan_video_pipeline(
     autoretry_for=(Exception,),
     dont_autoretry_for=(
         FinalVisualQualityError,
+        FinalAudioQualityError,
         ImmutableNarrationSceneBudgetError,
     ),
     retry_backoff=True,
@@ -1454,41 +1573,74 @@ def run_video_pipeline(
             38,
             'Anlatım metni, telaffuz ve kelime zamanları gerçek ses üzerinden denetleniyor.',
         )
-        audio_qc = verify_audio_narration(
-            voice_path,
-            expected_spoken_narration,
-        )
-        audio_mismatch = (
-            audio_qc.get('mismatch_details')
-            if isinstance(audio_qc.get('mismatch_details'), dict)
-            else {}
-        )
-        if not audio_qc.get('available') or not audio_qc.get('pass'):
-            raise RuntimeError(
-                'Audio narration QA rejected before paid media: '
-                + json.dumps(
-                    {
-                        'available': bool(audio_qc.get('available')),
-                        'score': audio_qc.get('score'),
-                        'reason': audio_qc.get('reason'),
-                        'mismatch_details': {
-                            'missing_words': (
-                                audio_mismatch.get('missing_words') or []
-                            )[:8],
-                            'unexpected_words': (
-                                audio_mismatch.get('unexpected_words') or []
-                            )[:8],
-                            'operations': (
-                                audio_mismatch.get('operations') or []
-                            )[:4],
-                            'sequence_ratio': audio_mismatch.get(
-                                'sequence_ratio'
-                            ),
+        audio_generation_attempts = 1
+        while True:
+            audio_qc = verify_audio_narration(
+                voice_path,
+                expected_spoken_narration,
+            )
+            if audio_qc.get('available') and audio_qc.get('pass'):
+                break
+            audio_mismatch = (
+                audio_qc.get('mismatch_details')
+                if isinstance(audio_qc.get('mismatch_details'), dict)
+                else {}
+            )
+            can_regenerate = (
+                audio_qc.get('available') is True
+                and audio_qc.get('pass') is False
+                and audio_generation_attempts
+                < MAX_AUDIO_GENERATION_ATTEMPTS
+            )
+            if not can_regenerate:
+                raise FinalAudioQualityError(
+                    'Audio narration QA rejected before paid media: '
+                    + json.dumps(
+                        {
+                            'available': bool(audio_qc.get('available')),
+                            'score': audio_qc.get('score'),
+                            'reason': audio_qc.get('reason'),
+                            'generation_attempts': audio_generation_attempts,
+                            'mismatch_details': {
+                                'missing_words': (
+                                    audio_mismatch.get('missing_words') or []
+                                )[:8],
+                                'unexpected_words': (
+                                    audio_mismatch.get('unexpected_words') or []
+                                )[:8],
+                                'operations': (
+                                    audio_mismatch.get('operations') or []
+                                )[:4],
+                                'sequence_ratio': audio_mismatch.get(
+                                    'sequence_ratio'
+                                ),
+                            },
                         },
-                    },
-                    ensure_ascii=False,
-                    separators=(',', ':'),
+                        ensure_ascii=False,
+                        separators=(',', ':'),
+                    )
                 )
+            generation_attempt = audio_generation_attempts
+            set_stage(
+                self,
+                task_id,
+                'audio_qc_retry',
+                38,
+                'Telaffuzu birebir tutmayan ses güvenli biçimde yeniden üretiliyor.',
+            )
+            voice_result = synthesize_scene_sequence(
+                scenes,
+                f'{task_id}_audio_retry_{generation_attempt}',
+                duration_minutes * 60,
+                generation_attempt=generation_attempt,
+            )
+            audio_generation_attempts += 1
+            voice_path = voice_result['path']
+            scene_durations = voice_result['scene_durations']
+            expected_spoken_narration = ' '.join(
+                str(text or '').strip()
+                for text in (voice_result.get('spoken_texts') or [])
+                if str(text or '').strip()
             )
         scene_visuals: list[list[str | dict]] = broll_result['scene_visuals']
         if strict_short_preview_duration:
@@ -1703,6 +1855,7 @@ def run_video_pipeline(
         manual_qa_preview_scenes: set[int] = set()
         manual_qa_preview_scores: dict[int, int] = {}
         manual_qa_preview_records: dict[int, dict] = {}
+        manual_qa_preview_identities: dict[int, tuple[object, ...]] = {}
 
         def register_manual_qa_preview(
             scene_idx: int,
@@ -1718,6 +1871,12 @@ def run_video_pipeline(
                     visual_spec,
                 )
             )
+            identity = _manual_qa_visual_identity(visual_spec)
+            if identity is None:
+                raise FinalVisualQualityError(
+                    'Manual-QA accepted a visual without an exact identity'
+                )
+            manual_qa_preview_identities[scene_idx] = identity
             # Forced sets describe unresolved paid fallbacks. Preserve their
             # history separately, but never expose an accepted manual-QA clip
             # as simultaneously unresolved.
@@ -2481,10 +2640,14 @@ def run_video_pipeline(
             if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
         }
         manual_qa_prepass_scenes = set(manual_qa_preview_scenes)
+        manual_qa_prepass_scores = dict(manual_qa_preview_scores)
+        manual_qa_prepass_identities = dict(manual_qa_preview_identities)
         manual_qa_preview_scenes.clear()
         manual_qa_preview_scores.clear()
         manual_qa_preview_records.clear()
-        terminal_manual_qa_failures: list[dict] = []
+        manual_qa_preview_identities.clear()
+        manual_qa_preserve_exact_cut_scenes: set[int] = set()
+        terminal_manual_qa_candidates: list[tuple[int, dict, dict]] = []
         for scene_idx in sorted(manual_qa_prepass_scenes):
             review = final_reviews.get(scene_idx) or {}
             score = int(review.get('score', -1))
@@ -2507,11 +2670,106 @@ def run_video_pipeline(
                     selected_spec,
                 )
                 continue
-            terminal_manual_qa_failures.append({
-                'scene_index': scene_idx,
-                'score': score,
-                'reason': str(review.get('reason') or 'missing review')[:240],
-            })
+            terminal_manual_qa_candidates.append(
+                (scene_idx, selected_spec, review)
+            )
+
+        # Resolve only a bounded 1-1 critic disagreement: the exact same clip
+        # and cut already passed preflight, the final critic still sees both
+        # the named subject and action, and no hard artifact/reset veto exists.
+        # A blind third review must independently clear every unchanged gate.
+        adjudication_reviews: dict[int, dict] = {}
+        adjudication_eligible = bool(terminal_manual_qa_candidates) and (
+            len(terminal_manual_qa_candidates) <= 2
+        )
+        for scene_idx, selected_spec, final_review in (
+            terminal_manual_qa_candidates
+        ):
+            adjudication_eligible = adjudication_eligible and bool(
+                _manual_qa_visual_identity(selected_spec)
+                == manual_qa_prepass_identities.get(scene_idx)
+                and final_review.get('subject_visible') is True
+                and final_review.get('spoken_action_visible') is True
+                and final_review.get('unexplained_reset') is False
+                and all(
+                    final_review.get(field) is False
+                    for field in _MANUAL_QA_CLEAR_VISUAL_FIELDS
+                )
+            )
+        if adjudication_eligible:
+            adjudication_qc = review_scene_visuals(
+                [
+                    scenes[scene_idx]
+                    for scene_idx, _, _ in terminal_manual_qa_candidates
+                ],
+                [
+                    [selected_spec]
+                    for _, selected_spec, _ in terminal_manual_qa_candidates
+                ],
+                work / 'manual_qa_final_adjudication',
+                len(terminal_manual_qa_candidates),
+                _missing_review_attempts=0,
+                topic=topic,
+                story_scenes=scenes,
+            )
+            for local_review in adjudication_qc.get('reviews') or []:
+                if not isinstance(local_review, dict):
+                    continue
+                local_index = local_review.get('scene_index')
+                if (
+                    type(local_index) is int
+                    and 0 <= local_index < len(terminal_manual_qa_candidates)
+                ):
+                    scene_idx = terminal_manual_qa_candidates[local_index][0]
+                    mapped = dict(local_review)
+                    mapped['scene_index'] = scene_idx
+                    adjudication_reviews[scene_idx] = mapped
+
+        remaining_manual_qa_candidates: list[tuple[int, dict, dict]] = []
+        for scene_idx, selected_spec, final_review in (
+            terminal_manual_qa_candidates
+        ):
+            adjudication_review = adjudication_reviews.get(scene_idx) or {}
+            adjudication_score = int(adjudication_review.get('score', -1))
+            adjudication_passes = (
+                adjudication_score >= quality_threshold
+                or _manual_qa_preview_passes(
+                    options,
+                    duration_minutes,
+                    scenes[scene_idx],
+                    adjudication_review,
+                    selected_spec,
+                )
+            )
+            if adjudication_passes:
+                accepted_review = dict(adjudication_review)
+                accepted_review['score'] = min(
+                    int(manual_qa_prepass_scores[scene_idx]),
+                    adjudication_score,
+                )
+                if accepted_review['score'] >= quality_threshold:
+                    continue
+                register_manual_qa_preview(
+                    scene_idx,
+                    accepted_review,
+                    selected_spec,
+                )
+                manual_qa_preserve_exact_cut_scenes.add(scene_idx)
+                continue
+            remaining_manual_qa_candidates.append(
+                (scene_idx, selected_spec, final_review)
+            )
+        terminal_manual_qa_candidates = remaining_manual_qa_candidates
+
+        terminal_manual_qa_failures = [
+            _manual_qa_failure_diagnostic(
+                scene_idx,
+                adjudication_reviews.get(scene_idx) or final_review,
+                selected_spec,
+            )
+            for scene_idx, selected_spec, final_review
+            in terminal_manual_qa_candidates
+        ]
         if terminal_manual_qa_failures:
             raise FinalVisualQualityError(
                 'Manual-QA preview failed exact final revalidation: '
@@ -2561,7 +2819,10 @@ def run_video_pipeline(
             )
         ]
         for scene_idx, review in final_reviews.items():
-            if scene_idx not in rejected_final_scenes:
+            if (
+                scene_idx not in rejected_final_scenes
+                and scene_idx not in manual_qa_preserve_exact_cut_scenes
+            ):
                 _apply_visual_review(scene_visuals, scene_idx, review)
 
         # A final critic has now seen the exact generated clips. Spend at most
@@ -2997,6 +3258,7 @@ def run_video_pipeline(
             'voice_duration_before_fit': voice_result.get('duration_before_fit'),
             'voice_duration_after_fit': voice_result.get('duration_after_fit'),
             'voice_tempo_rate': voice_result.get('tempo_rate'),
+            'audio_generation_attempts': audio_generation_attempts,
             'audio_qc': audio_qc,
             'audio_design': audio_design,
             'stock_credits': credits,
@@ -3119,6 +3381,7 @@ def run_video_pipeline(
             exc,
             (
                 FinalVisualQualityError,
+                FinalAudioQualityError,
                 ImmutableNarrationSceneBudgetError,
             ),
         )
