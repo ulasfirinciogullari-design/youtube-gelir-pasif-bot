@@ -141,7 +141,7 @@ def _load_runway_functions(
             'https://generativelanguage.googleapis.com/v1beta/interactions'
         ),
         '_GEMINI_IMAGE_MIME_TYPE': 'image/jpeg',
-        '_IMAGE_MOTION_RECIPE_VERSION': 'center-push-v1',
+        '_IMAGE_MOTION_RECIPE_VERSION': 'diagonal-push-v2',
         '_GEMINI_OPERATION_PATTERN': re.compile(
             r'^(?:models/[A-Za-z0-9._-]+/)?operations/[A-Za-z0-9._~/-]+$'
         ),
@@ -187,6 +187,7 @@ def _load_image_namespace(fake_httpx=None, fake_subprocess=None):
         '_probe_single_jpeg_frame',
         '_decode_gemini_image',
         '_generate_gemini_image_descriptor',
+        '_image_motion_filter',
         '_render_gemini_image_motion',
         'download_generated_scene',
     }
@@ -215,7 +216,7 @@ def _load_image_namespace(fake_httpx=None, fake_subprocess=None):
             'https://generativelanguage.googleapis.com/v1beta/interactions'
         ),
         '_GEMINI_IMAGE_MIME_TYPE': 'image/jpeg',
-        '_IMAGE_MOTION_RECIPE_VERSION': 'center-push-v1',
+        '_IMAGE_MOTION_RECIPE_VERSION': 'diagonal-push-v2',
         '_MAX_GENERATED_VIDEO_BYTES': 100 * 1024 * 1024,
         '_MIN_GENERATED_IMAGE_BYTES': 10 * 1024,
         '_MAX_GENERATED_IMAGE_BYTES': 12 * 1024 * 1024,
@@ -586,7 +587,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'motion_seconds': 5,
             'source_media_type': 'image',
             'synthetic_motion': True,
-            'motion_recipe_version': 'center-push-v1',
+            'motion_recipe_version': 'diagonal-push-v2',
             'image_sha256': 'a' * 64,
             'prompt_sha256': 'b' * 64,
             'image_model': 'gemini-3.1-flash-image',
@@ -657,7 +658,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                     'motion_seconds': duration,
                     'source_media_type': 'image',
                     'synthetic_motion': True,
-                    'motion_recipe_version': 'center-push-v1',
+                    'motion_recipe_version': 'diagonal-push-v2',
                     'image_sha256': 'a' * 64,
                     'prompt_sha256': 'b' * 64,
                     'image_model': 'gemini-3.1-flash-image',
@@ -1720,6 +1721,62 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, 'invalid media'):
                     decode(mime_type, encoded)
 
+    def test_image_motion_filter_is_dynamic_hash_deterministic_and_bounded(self):
+        namespace = _load_image_namespace()
+        build_filter = namespace['_image_motion_filter']
+        expected_directions = {
+            '00': (0.490, 0.060, 0.495, 0.025),
+            '01': (0.510, -0.060, 0.495, 0.025),
+            '02': (0.490, 0.060, 0.505, -0.025),
+            '03': (0.510, -0.060, 0.505, -0.025),
+        }
+
+        for prefix, expected in expected_directions.items():
+            with self.subTest(prefix=prefix):
+                x_start, x_delta, y_start, y_delta = expected
+                digest = prefix + ('a' * 62)
+                motion_filter = build_filter(digest, 150)
+                self.assertEqual(motion_filter, build_filter(digest, 150))
+                self.assertIn(
+                    'scale=2560:1440:force_original_aspect_ratio=increase:'
+                    'flags=lanczos,crop=2560:1440',
+                    motion_filter,
+                )
+                self.assertIn("z='1.06+0.18*on/149'", motion_filter)
+                self.assertIn(
+                    f"x='iw*({x_start:.3f}+({x_delta:.3f})*on/149)"
+                    "-iw/(2*zoom)'",
+                    motion_filter,
+                )
+                self.assertIn(
+                    f"y='ih*({y_start:.3f}+({y_delta:.3f})*on/149)"
+                    "-ih/(2*zoom)'",
+                    motion_filter,
+                )
+                self.assertIn('d=150:s=1280x720:fps=30', motion_filter)
+                self.assertNotIn('0.08*on', motion_filter)
+                for start, delta in (
+                    (x_start, x_delta),
+                    (y_start, y_delta),
+                ):
+                    focal_centers = [
+                        start + delta * frame / 149
+                        for frame in range(150)
+                    ]
+                    comparisons = zip(focal_centers, focal_centers[1:])
+                    if delta > 0:
+                        self.assertTrue(all(left < right for left, right in comparisons))
+                    else:
+                        self.assertTrue(all(left > right for left, right in comparisons))
+
+        ten_second_filter = build_filter('ff' + ('0' * 62), 300)
+        self.assertIn("z='1.06+0.18*on/299'", ten_second_filter)
+        self.assertIn('d=300:s=1280x720:fps=30', ten_second_filter)
+        for digest, frames in (('bad', 150), ('0' * 64, 149), ('0' * 64, 301)):
+            with self.subTest(digest=digest[:3], frames=frames):
+                with self.assertRaisesRegex(RuntimeError, 'descriptor'):
+                    build_filter(digest, frames)
+
     def test_image_motion_render_failure_preserves_target_and_cleans_parts(self):
         fake_subprocess = Mock()
         fake_subprocess.run.return_value = Mock(returncode=1)
@@ -1734,7 +1791,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'motion_seconds': 5,
             'source_media_type': 'image',
             'synthetic_motion': True,
-            'motion_recipe_version': 'center-push-v1',
+            'motion_recipe_version': 'diagonal-push-v2',
             'image_sha256': hashlib.sha256(image_bytes).hexdigest(),
         }
         with tempfile.TemporaryDirectory() as tmp:
@@ -1796,7 +1853,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 'motion_seconds': 5,
                 'source_media_type': 'image',
                 'synthetic_motion': True,
-                'motion_recipe_version': 'center-push-v1',
+                'motion_recipe_version': 'diagonal-push-v2',
                 'image_sha256': hashlib.sha256(image_bytes).hexdigest(),
             }
 
