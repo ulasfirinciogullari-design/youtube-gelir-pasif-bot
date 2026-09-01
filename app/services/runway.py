@@ -630,21 +630,23 @@ def _image_motion_filter(image_sha256: str, frame_count: int) -> str:
     ):
         raise RuntimeError('Gemini image-motion descriptor is invalid')
     direction = int(image_sha256[:2], 16)
-    x_start, x_end = (
-        (0.28, 0.72) if direction & 1 == 0 else (0.72, 0.28)
+    focal_x_start, focal_x_end = (
+        (0.49, 0.55) if direction & 1 == 0 else (0.51, 0.45)
     )
-    y_start, y_end = (
-        (0.42, 0.58) if direction & 2 == 0 else (0.58, 0.42)
+    focal_y_start, focal_y_end = (
+        (0.495, 0.52) if direction & 2 == 0 else (0.505, 0.48)
     )
     final_frame = frame_count - 1
+    focal_x_delta = focal_x_end - focal_x_start
+    focal_y_delta = focal_y_end - focal_y_start
     return (
         'scale=2560:1440:force_original_aspect_ratio=increase:flags=lanczos,'
         'crop=2560:1440,'
         f"zoompan=z='1.06+0.18*on/{final_frame}':"
-        f"x='(iw-iw/zoom)*({x_start:.2f}+({x_end - x_start:.2f})*"
-        f"on/{final_frame})':"
-        f"y='(ih-ih/zoom)*({y_start:.2f}+({y_end - y_start:.2f})*"
-        f"on/{final_frame})':"
+        f"x='iw*({focal_x_start:.3f}+({focal_x_delta:.3f})*"
+        f"on/{final_frame})-iw/(2*zoom)':"
+        f"y='ih*({focal_y_start:.3f}+({focal_y_delta:.3f})*"
+        f"on/{final_frame})-ih/(2*zoom)':"
         f'd={frame_count}:s=1280x720:fps={_IMAGE_MOTION_FPS},'
         'setsar=1,scale=in_range=full:out_range=tv,format=yuv420p'
     )

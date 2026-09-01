@@ -1725,14 +1725,15 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         namespace = _load_image_namespace()
         build_filter = namespace['_image_motion_filter']
         expected_directions = {
-            '00': ('0.28+(0.44)', '0.42+(0.16)'),
-            '01': ('0.72+(-0.44)', '0.42+(0.16)'),
-            '02': ('0.28+(0.44)', '0.58+(-0.16)'),
-            '03': ('0.72+(-0.44)', '0.58+(-0.16)'),
+            '00': (0.490, 0.060, 0.495, 0.025),
+            '01': (0.510, -0.060, 0.495, 0.025),
+            '02': (0.490, 0.060, 0.505, -0.025),
+            '03': (0.510, -0.060, 0.505, -0.025),
         }
 
-        for prefix, (expected_x, expected_y) in expected_directions.items():
+        for prefix, expected in expected_directions.items():
             with self.subTest(prefix=prefix):
+                x_start, x_delta, y_start, y_delta = expected
                 digest = prefix + ('a' * 62)
                 motion_filter = build_filter(digest, 150)
                 self.assertEqual(motion_filter, build_filter(digest, 150))
@@ -1742,10 +1743,31 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                     motion_filter,
                 )
                 self.assertIn("z='1.06+0.18*on/149'", motion_filter)
-                self.assertIn(expected_x + '*on/149', motion_filter)
-                self.assertIn(expected_y + '*on/149', motion_filter)
+                self.assertIn(
+                    f"x='iw*({x_start:.3f}+({x_delta:.3f})*on/149)"
+                    "-iw/(2*zoom)'",
+                    motion_filter,
+                )
+                self.assertIn(
+                    f"y='ih*({y_start:.3f}+({y_delta:.3f})*on/149)"
+                    "-ih/(2*zoom)'",
+                    motion_filter,
+                )
                 self.assertIn('d=150:s=1280x720:fps=30', motion_filter)
                 self.assertNotIn('0.08*on', motion_filter)
+                for start, delta in (
+                    (x_start, x_delta),
+                    (y_start, y_delta),
+                ):
+                    focal_centers = [
+                        start + delta * frame / 149
+                        for frame in range(150)
+                    ]
+                    comparisons = zip(focal_centers, focal_centers[1:])
+                    if delta > 0:
+                        self.assertTrue(all(left < right for left, right in comparisons))
+                    else:
+                        self.assertTrue(all(left > right for left, right in comparisons))
 
         ten_second_filter = build_filter('ff' + ('0' * 62), 300)
         self.assertIn("z='1.06+0.18*on/299'", ten_second_filter)
