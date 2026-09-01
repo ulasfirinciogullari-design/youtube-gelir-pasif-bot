@@ -673,7 +673,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         repair.assert_not_called()
         render.assert_called_once_with()
 
-    def test_manual_prepass_final_failure_is_terminal_before_any_repair(self):
+    def test_manual_prepass_final_failure_gets_bounded_ai_repair(self):
         namespace = _load_manual_qa_boundary()
         passes = namespace['_manual_qa_preview_passes']
         scene = {'ai_prompt': ''}
@@ -695,18 +695,54 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         )
 
         source = SOURCE_PATH.read_text(encoding='utf-8')
-        terminal = source.index(
-            'Manual-QA preview failed exact final revalidation'
+        exact_failure = source.index(
+            'terminal_manual_qa_failure_scene_indices: set[int] = set()'
         )
-        repair = source.index('final_runway_repair_candidates =', terminal)
-        self.assertLess(terminal, repair)
+        repair = source.index(
+            'final_runway_repair_candidates =', exact_failure
+        )
+        stock_rescue = source.index(
+            'for scene_idx in rejected_final_scenes:', repair
+        )
+        self.assertLess(exact_failure, repair)
+        self.assertLess(repair, stock_rescue)
+        self.assertIn(
+            'exact_revalidation_scene_indices=(\n'
+            '                    terminal_manual_qa_failure_scene_indices',
+            source[repair:stock_rescue],
+        )
+        self.assertIn(
+            "_manual_qa_visual_source_type(selected_spec) == 'stock'",
+            source[exact_failure:repair],
+        )
+
+        quarantine = source.index(
+            'for scene_idx in sorted(terminal_manual_qa_failure_scene_indices):',
+            exact_failure,
+        )
+        recovery_skip = source.index(
+            'if recovered_generated_media', quarantine
+        )
+        repair_loop = source.index(
+            'for scene_idx in final_runway_repair_candidates:', repair
+        )
+        self.assertLess(quarantine, repair)
+        self.assertLess(quarantine, recovery_skip)
+        quarantine_block = source[quarantine:repair]
+        self.assertIn('terminal_manual_qa_old_best', quarantine_block)
+        self.assertIn('scene_visuals[scene_idx] = []', quarantine_block)
+
+        repair_prompt = source.index(
+            'repair_prompt = _runway_prompt_for_scene(', repair_loop
+        )
+        self.assertLess(quarantine, repair_prompt)
 
     def test_manual_prepass_disagreement_gets_one_bounded_blind_vote(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')
         final_review = source.index("work / 'final_visual_qc'")
         adjudication = source.index("work / 'manual_qa_final_adjudication'")
         terminal = source.index(
-            'Manual-QA preview failed exact final revalidation'
+            'terminal_manual_qa_failures = ['
         )
 
         self.assertLess(final_review, adjudication)
@@ -725,6 +761,13 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         )
         self.assertIn("review['best_candidate_index'] = 0", source)
         self.assertIn('final_manual_reviews_applied.add(scene_idx)', source)
+        self.assertIn(
+            "'manual_qa_exact_revalidation_history': (",
+            source,
+        )
+        self.assertIn("'resolution': (", source)
+        self.assertIn("'generated_repair'", source)
+        self.assertIn("'fresh_stock_rescue'", source)
 
     def test_manual_and_forced_sets_are_explicitly_disjoint(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')

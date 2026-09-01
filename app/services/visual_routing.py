@@ -58,30 +58,46 @@ def preview_runway_repair_indices(
     scenes: list[dict],
     generated_scene_indices: set[int] | list[int],
     final_reviews: dict[int, dict],
+    *,
+    exact_revalidation_scene_indices: set[int] | list[int] | None = None,
 ) -> list[int]:
-    """Select a bounded set of authored AI shots for evidence-led repair.
+    """Select a bounded set of evidence-led final repairs.
 
-    A repair is allowed only after the exact generated clip has failed the
-    final visual gate. Keeping the selector pure makes the paid limit easy to
-    verify independently from the worker orchestration.
+    Ordinarily, a repair is allowed only after the exact generated clip has
+    failed the final visual gate. A stock clip that passed the manual prepass
+    may also enter the same bounded budget when exact revalidation later finds
+    a hard veto such as prominent text or a missing subject/action. Keeping the
+    selector pure makes the paid limit easy to verify independently from the
+    worker orchestration.
     """
     if options.get('mode') != 'preview' or duration_minutes > 0.6:
         return []
 
     generated = {int(index) for index in generated_scene_indices}
+    exact_revalidation = {
+        int(index) for index in (exact_revalidation_scene_indices or [])
+    }
     eligible: list[int] = []
     for raw_index in rejected_scene_indices:
         index = int(raw_index)
         if (
-            index not in generated
-            or index < 0
+            index < 0
             or index >= len(scenes)
-            or not str((scenes[index] or {}).get('ai_prompt') or '').strip()
             or index not in final_reviews
+            or (
+                index not in exact_revalidation
+                and (
+                    index not in generated
+                    or not str(
+                        (scenes[index] or {}).get('ai_prompt') or ''
+                    ).strip()
+                )
+            )
         ):
             continue
         eligible.append(index)
     eligible.sort(key=lambda index: (
+        0 if index in exact_revalidation else 1,
         int((final_reviews.get(index) or {}).get('score', 0)),
         index,
     ))

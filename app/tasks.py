@@ -2841,11 +2841,22 @@ def run_video_pipeline(
             for scene_idx, selected_spec, final_review
             in terminal_manual_qa_candidates
         ]
-        if terminal_manual_qa_failures:
+        terminal_manual_qa_failure_scene_indices: set[int] = set()
+        unroutable_terminal_manual_qa_failures: list[dict] = []
+        for candidate, diagnostic in zip(
+            terminal_manual_qa_candidates,
+            terminal_manual_qa_failures,
+        ):
+            scene_idx, selected_spec, _final_review = candidate
+            if _manual_qa_visual_source_type(selected_spec) == 'stock':
+                terminal_manual_qa_failure_scene_indices.add(scene_idx)
+            else:
+                unroutable_terminal_manual_qa_failures.append(diagnostic)
+        if unroutable_terminal_manual_qa_failures:
             raise FinalVisualQualityError(
                 'Manual-QA preview failed exact final revalidation: '
                 + json.dumps(
-                    {'failures': terminal_manual_qa_failures},
+                    {'failures': unroutable_terminal_manual_qa_failures},
                     ensure_ascii=False,
                     separators=(',', ':'),
                 )
@@ -2905,6 +2916,19 @@ def run_video_pipeline(
             ):
                 _apply_visual_review(scene_visuals, scene_idx, review)
 
+        # Quarantine every exact-stock failure before repair selection. The
+        # repair cap may select only a subset (or none in recovery mode), but
+        # no rejected incumbent may survive into the later fresh-stock rescue.
+        terminal_manual_qa_old_best: dict[int, str] = {}
+        for scene_idx in sorted(terminal_manual_qa_failure_scene_indices):
+            incumbent_specs = list(scene_visuals[scene_idx])
+            terminal_manual_qa_old_best[scene_idx] = (
+                _visual_path(incumbent_specs[0])
+                if incumbent_specs
+                else ''
+            )
+            scene_visuals[scene_idx] = []
+
         # A final critic has now seen the exact generated clips. Spend at most
         # two evidence-led repair submissions on authored AI scenes, instead of
         # rerunning the whole paid pipeline or accepting a static non-event.
@@ -2918,6 +2942,9 @@ def run_video_pipeline(
                 scenes,
                 runway_generated_scenes,
                 final_reviews,
+                exact_revalidation_scene_indices=(
+                    terminal_manual_qa_failure_scene_indices
+                ),
             )
         )
         _preflight_runway_candidates_before_paid(
@@ -2932,16 +2959,19 @@ def run_video_pipeline(
                 'final_visual_qc_ai_repair',
                 71,
                 'Reddedilen özgün sahnelerde hareket kanıtı hedefli olarak yenileniyor.',
-            )
+        )
         for scene_idx in final_runway_repair_candidates:
             review = final_reviews.get(scene_idx) or {}
+            existing_specs = list(scene_visuals[scene_idx])
+            old_best = (
+                terminal_manual_qa_old_best.get(scene_idx)
+                or (_visual_path(existing_specs[0]) if existing_specs else '')
+            )
             repair_prompt = _runway_prompt_for_scene(scenes[scene_idx], review)
             if not repair_prompt:
                 continue
             final_runway_repair_attempts += 1
             runway_attempts += 1
-            existing_specs = list(scene_visuals[scene_idx])
-            old_best = _visual_path(existing_specs[0]) if existing_specs else ''
             try:
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
@@ -3007,7 +3037,14 @@ def run_video_pipeline(
                     or scene_idx in stock_quality_fallback_scenes
                 ),
             )
-            old_best = _visual_path(scene_visuals[scene_idx][0]) if scene_visuals[scene_idx] else ''
+            old_best = (
+                terminal_manual_qa_old_best.get(scene_idx)
+                or (
+                    _visual_path(scene_visuals[scene_idx][0])
+                    if scene_visuals[scene_idx]
+                    else ''
+                )
+            )
             replacements = _retry_bad_scene(
                 scene_idx, retry_queries, seen_ids, work, credits,
                 file_prefix='final_qc_rescue',
@@ -3167,6 +3204,21 @@ def run_video_pipeline(
                 )
             )
         manual_qa_scene_indices = sorted(manual_qa_preview_scenes)
+        manual_qa_exact_revalidation_history = []
+        for failure in terminal_manual_qa_failures:
+            scene_idx = int(failure['scene_index'])
+            history_item = dict(failure)
+            history_item.update({
+                'resolved': True,
+                'resolution': (
+                    'generated_repair'
+                    if scene_idx in final_runway_repair_scenes
+                    else 'fresh_stock_rescue'
+                    if scene_idx in rescued_final_scenes
+                    else 'revalidated'
+                ),
+            })
+            manual_qa_exact_revalidation_history.append(history_item)
         manual_qa_scene_scores = {
             str(scene_idx): int(manual_qa_preview_scores[scene_idx])
             for scene_idx in manual_qa_scene_indices
@@ -3332,6 +3384,9 @@ def run_video_pipeline(
             'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries,
             'manual_qa_scene_reasons': manual_qa_scene_reasons,
             'manual_qa_scene_reviews': manual_qa_scene_reviews,
+            'manual_qa_exact_revalidation_history': (
+                manual_qa_exact_revalidation_history
+            ),
             'publish_quality_threshold': (
                 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
             ),
@@ -3424,6 +3479,9 @@ def run_video_pipeline(
             'manual_qa_scene_retry_queries': manual_qa_scene_retry_queries,
             'manual_qa_scene_reasons': manual_qa_scene_reasons,
             'manual_qa_scene_reviews': manual_qa_scene_reviews,
+            'manual_qa_exact_revalidation_history': (
+                manual_qa_exact_revalidation_history
+            ),
             'publish_quality_threshold': (
                 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
             ),
