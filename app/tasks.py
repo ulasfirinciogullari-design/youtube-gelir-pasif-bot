@@ -204,7 +204,12 @@ def _require_recovered_media_coverage(
 
 
 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
-SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 1
+# A seven-scene mixed preview can legitimately expose two different semantic
+# stock misses after the full tournament (for example, a rare object close-up
+# and its shoreline payoff). Keep both replacements bounded and fail closed on
+# a third instead of discarding an otherwise approved storyboard before any
+# paid submission.
+SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 2
 MANUAL_QA_PREVIEW_STOCK_FLOOR = 60
 MANUAL_QA_PREVIEW_GENERATED_FLOOR = 65
 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD = 86
