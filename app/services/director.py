@@ -15,7 +15,10 @@ from app.services.gemini_generation import (
     GeminiGenerationError,
     generate_gemini_json,
 )
-from app.services.visual_routing import preview_authored_ai_limit
+from app.services.visual_routing import (
+    preview_authored_ai_limit,
+    preview_paid_ai_limit,
+)
 from app.services.source_evidence import normalize_evidence_sources
 
 STYLE_NOTES = {
@@ -1186,6 +1189,13 @@ def _run_director(
         )
         if authored_ai_limit is None:
             authored_ai_limit = target_scenes
+        paid_dependency_limit = preview_paid_ai_limit(
+            options,
+            target_scenes,
+            duration_minutes,
+        )
+        if paid_dependency_limit is None:
+            paid_dependency_limit = target_scenes
         ai_first_routing_note = (
             f'The selected AI-first mix may carry at most {authored_ai_limit} non-null ai_prompt values. '
             'Preserve deliberate AI routes already present in the draft, including a user-requested AI ending pair, '
@@ -1212,7 +1222,7 @@ def _run_director(
         )
         short_visual_note = (
             'SHORT PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: ai_prompt values are free fallback candidates, not promised generations. '
-            f'Up to {authored_ai_limit} scenes may carry a non-null fallback, while the worker will submit at most three paid Runway generations after measuring the exact current stock clips. '
+            f'Up to {authored_ai_limit} scenes may carry a non-null fallback, while the worker will submit at most {paid_dependency_limit} paid primary generations after measuring the exact current stock clips. '
             f'{ai_first_routing_note}'
             'EXPLICIT USER-BRIEF OVERRIDE: explicit numbered scene beats, route assignments and continuity constraints in the user topic override generic story-shaping heuristics below. '
             'Follow them exactly and never merge or move a required beat merely to prefer one mechanism scene. '
@@ -1220,7 +1230,7 @@ def _run_director(
             'The supplied topic is broad context, never permission to make a technology-trivia sampler. '
             'Use one recurring person or object, one immediate goal or problem, one causal reveal, and one visible everyday payoff. '
             'Every scene must advance that same question; never mix unrelated mechanisms, products or clever facts merely because they fit the topic. '
-            'Structure the story so no more than three scenes truly depend on AI, and reserve those dependencies only for the single chosen mechanism that stock cannot literally show. '
+            f'Structure the story so no more than {paid_dependency_limit} scenes truly depend on AI, and reserve those dependencies only for the single chosen mechanism that stock cannot literally show. '
             'Unless the explicit user topic assigns a multi-scene causal demonstration, compress that mechanism and its complete causal explanation into one scene. '
             'Never merge, split, repeat or move explicit numbered beats from the user topic. '
             'Every other scene must remain publishable with a plainly filmable real-world action whose exact subject and action appear in its stock queries, '
@@ -3083,3 +3093,4 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         }
         out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
     return out
+

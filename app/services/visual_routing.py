@@ -18,6 +18,19 @@ def preview_authored_ai_limit(
     return scene_count
 
 
+def preview_paid_ai_limit(
+    options: dict,
+    scene_count: int,
+    duration_minutes: float,
+) -> int | None:
+    """Return the worker's paid primary-generation cap for a short preview."""
+    if options.get('mode') != 'preview' or duration_minutes > 0.6:
+        return None
+    mix = options.get('visual_mix') or 'balanced'
+    cap = 1 if mix == 'real_first' else SHORT_PREVIEW_RUNWAY_CAP
+    return min(cap, scene_count)
+
+
 def should_rank_runway_candidate(
     options: dict,
     duration_minutes: float,

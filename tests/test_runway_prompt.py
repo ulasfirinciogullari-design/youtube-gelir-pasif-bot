@@ -47,7 +47,14 @@ def _load_prompt_functions():
         'Path': Path,
         'FinalVisualQualityError': FinalVisualQualityError,
         'PreRunwayRetryableError': PreRunwayRetryableError,
-        'SHORT_PREVIEW_RUNWAY_CAP': 4,
+        'preview_paid_ai_limit': lambda options, scene_count, duration: (
+            min(
+                1 if (options.get('visual_mix') or 'balanced') == 'real_first' else 4,
+                scene_count,
+            )
+            if options.get('mode') == 'preview' and duration <= 0.6
+            else None
+        ),
     }
     exec(
         compile(
@@ -105,6 +112,13 @@ class RunwayPromptTests(unittest.TestCase):
         )
         self.assertTrue(generated_visual_spec('preview.mp4')['forbid_loop'])
         self.assertTrue(generated_visual_spec('production.mp4')['forbid_loop'])
+        self.assertEqual(
+            generated_visual_spec(
+                'gemini.mp4',
+                provider='gemini_veo',
+            )['generation_provider'],
+            'gemini_veo',
+        )
 
     def test_real_first_short_preview_caps_initial_runway_spend_at_one_scene(self):
         self.assertEqual(

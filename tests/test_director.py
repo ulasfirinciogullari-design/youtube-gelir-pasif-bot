@@ -945,6 +945,54 @@ class ExplicitSceneCountTests(unittest.TestCase):
         self.assertIn('“koyu lacivert tişörtlü Mert”', prompt)
         self.assertIn('“arkadan izliyor”', prompt)
 
+    def test_short_preview_prompt_distinguishes_authored_and_paid_ai_limits(self):
+        package = make_ai_first_five_scene_package()
+        payload = {
+            'title': package['title'],
+            'thumbnail_text': package['thumbnail_text'],
+            'description': package['description'],
+            'scenes': copy.deepcopy(package['scenes']),
+            'qc_summary': [],
+        }
+        expected = {
+            'real_first': (5, 1),
+            'balanced': (5, 4),
+            'ai_first': (4, 4),
+        }
+        for visual_mix, (authored_limit, paid_limit) in expected.items():
+            with self.subTest(visual_mix=visual_mix):
+                client = FakeClient([copy.deepcopy(payload)])
+                director_module._run_director(
+                    client,
+                    package,
+                    'Tam beş sahne kullan.',
+                    'Turkish',
+                    0.5,
+                    48,
+                    45,
+                    51,
+                    5,
+                    {
+                        'mode': 'preview',
+                        'pace': 'balanced',
+                        'visual_mix': visual_mix,
+                    },
+                    exact_scene_count=True,
+                )
+                prompt = client.responses.calls[0]['input']
+                self.assertIn(
+                    f'Up to {authored_limit} scenes may carry a non-null fallback',
+                    prompt,
+                )
+                self.assertIn(
+                    f'worker will submit at most {paid_limit} paid primary generations',
+                    prompt,
+                )
+                self.assertIn(
+                    f'no more than {paid_limit} scenes truly depend on AI',
+                    prompt,
+                )
+
     def test_production_scene_target_is_seven_per_minute_for_every_pace_and_capped(self):
         for pace in ('calm', 'balanced', 'dynamic'):
             with self.subTest(pace=pace):

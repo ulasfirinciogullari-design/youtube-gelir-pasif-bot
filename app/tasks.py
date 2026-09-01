@@ -26,7 +26,7 @@ from app.services.studio_state import mark_failure, mark_success, set_stage, upd
 from app.services.visual_qc import review_scene_visuals
 from app.services.voice import synthesize_scene_sequence
 from app.services.visual_routing import (
-    SHORT_PREVIEW_RUNWAY_CAP,
+    preview_paid_ai_limit,
     preview_runway_repair_indices,
     should_rank_runway_candidate,
 )
@@ -846,6 +846,7 @@ def _apply_visual_review(
 
 def _generated_visual_spec(
     path: str | Path,
+    provider: str = 'unknown',
 ) -> dict:
     return {
         'path': str(path),
@@ -854,6 +855,7 @@ def _generated_visual_spec(
         'forbid_loop': True,
         'generated': True,
         'source_type': 'generated',
+        'generation_provider': str(provider),
     }
 
 
@@ -1033,8 +1035,12 @@ def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float)
     if options.get('mode') == 'preview':
         if duration_minutes > 0.6:
             return 0
-        preview_cap = 1 if mix == 'real_first' else SHORT_PREVIEW_RUNWAY_CAP
-        return min(preview_cap, scene_count)
+        preview_limit = preview_paid_ai_limit(
+            options,
+            scene_count,
+            duration_minutes,
+        )
+        return int(preview_limit or 0)
     if mix == 'real_first':
         return min(2, max(1, math.ceil(scene_count * 0.10)))
     if mix == 'ai_first':
@@ -1204,6 +1210,11 @@ def plan_video_pipeline(
 
 @celery.task(
     bind=True,
+    # Paid video-generation calls are intentionally at-most-once. The project-wide
+    # Celery setting uses late acknowledgements, which can redeliver the whole
+    # pipeline after a worker loss and duplicate an accepted provider charge.
+    # Explicit pre-media retries below still enqueue normally through Celery.
+    acks_late=False,
     autoretry_for=(Exception,),
     dont_autoretry_for=(
         FinalVisualQualityError,
@@ -1480,6 +1491,7 @@ def run_video_pipeline(
         runway_failure_diagnostics: list[dict] = []
         runway_failed_scenes: list[int] = []
         runway_generated_scenes: list[int] = []
+        generated_video_provider_records: list[dict] = []
         runway_scenes_used = 0
         runway_submission_cap = _max_runway_scenes(options, len(scenes), duration_minutes)
 
@@ -2181,18 +2193,27 @@ def run_video_pipeline(
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
                 )
-                url = generate_scene(
+                generated_scene = generate_scene(
                     prompt_candidates[scene_idx],
                     duration=generation_seconds,
                 )
                 runway_path = work / f'runway_s{scene_idx:02d}.mp4'
-                download_generated_scene(url, runway_path)
+                download_generated_scene(
+                    str(generated_scene['url']),
+                    runway_path,
+                )
                 runway_spec = _generated_visual_spec(
                     runway_path,
+                    provider=str(generated_scene['provider']),
                 )
                 scene_visuals[scene_idx] = [runway_spec, *stock_fallback][:3]
                 runway_scenes_used += 1
                 runway_generated_scenes.append(scene_idx)
+                generated_video_provider_records.append({
+                    'stage': 'initial_generation',
+                    'scene_index': scene_idx,
+                    'provider': str(generated_scene['provider']),
+                })
             except Exception as exc:
                 runway_failed_scenes.append(scene_idx)
                 runway_failure_diagnostics.append(
@@ -2340,17 +2361,26 @@ def run_video_pipeline(
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
                 )
-                repair_url = generate_scene(
+                repair_scene = generate_scene(
                     repair_prompt,
                     duration=generation_seconds,
                 )
                 repair_path = work / f'runway_repair_s{scene_idx:02d}.mp4'
-                download_generated_scene(repair_url, repair_path)
+                download_generated_scene(
+                    str(repair_scene['url']),
+                    repair_path,
+                )
                 repair_spec = _generated_visual_spec(
                     repair_path,
+                    provider=str(repair_scene['provider']),
                 )
                 scene_visuals[scene_idx] = [repair_spec, *existing_specs][:3]
                 final_runway_repair_scenes.append(scene_idx)
+                generated_video_provider_records.append({
+                    'stage': 'final_repair',
+                    'scene_index': scene_idx,
+                    'provider': str(repair_scene['provider']),
+                })
                 visual_replacements.append({
                     'scene_index': scene_idx,
                     'score': int(review.get('score', 0)),
@@ -2738,6 +2768,7 @@ def run_video_pipeline(
                 stock_quality_fallback_history
             ),
             'runway_attempts': runway_attempts,
+            'video_generation_provider_records': generated_video_provider_records,
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
             'runway_success_scene_indices': sorted(runway_generated_scenes),
             'runway_failure_scene_indices': sorted(runway_failed_scenes),
@@ -2805,6 +2836,7 @@ def run_video_pipeline(
                 stock_quality_fallback_history
             ),
             'runway_attempts': runway_attempts,
+            'video_generation_provider_records': generated_video_provider_records,
             'runway_submission_scene_indices': [item['scene_index'] for item in selected_runway],
             'runway_success_scene_indices': sorted(runway_generated_scenes),
             'runway_scenes_used': runway_scenes_used,
