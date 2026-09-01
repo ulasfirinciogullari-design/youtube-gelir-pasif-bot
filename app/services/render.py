@@ -101,6 +101,8 @@ def max_horizontal_letterbox_duration(
         ),
         '-an', '-f', 'null', '-',
     ], capture_output=True, text=True, check=False)
+    if completed.returncode != 0:
+        raise RuntimeError('Horizontal letterbox inspection failed')
     durations = [
         float(value)
         for value in re.findall(
@@ -109,6 +111,84 @@ def max_horizontal_letterbox_duration(
         )
     ]
     return max(durations, default=0.0)
+
+
+def detect_symmetric_letterbox_crop(
+    path: str | Path,
+    *,
+    start_seconds: float = 0.0,
+    sample_seconds: float = 2.5,
+) -> tuple[int, int] | None:
+    """Return a stable vertical content crop for genuine symmetric bars.
+
+    This is deliberately conservative.  The crop is accepted only when
+    FFmpeg repeatedly detects full-width content with near-symmetric top and
+    bottom bars.  Dark scenery or a single black frame therefore cannot turn
+    into an aggressive automatic crop.
+    """
+    media_path = Path(path)
+    if not media_path.is_file():
+        return None
+    try:
+        dimensions = subprocess.check_output([
+            'ffprobe', '-v', 'error', '-select_streams', 'v:0',
+            '-show_entries', 'stream=width,height',
+            '-of', 'csv=p=0:s=x', str(media_path),
+        ], text=True).strip()
+        width_text, height_text = dimensions.split('x', 1)
+        width, height = int(width_text), int(height_text)
+    except (OSError, subprocess.SubprocessError, TypeError, ValueError):
+        return None
+    if width < 16 or height < 16:
+        return None
+
+    completed = subprocess.run([
+        'ffmpeg', '-hide_banner', '-nostats',
+        '-ss', f'{max(0.0, float(start_seconds)):.3f}',
+        '-i', str(media_path),
+        '-t', f'{max(0.5, min(float(sample_seconds), 3.0)):.3f}',
+        '-vf', 'fps=6,cropdetect=limit=24:round=2:reset=0',
+        '-an', '-f', 'null', '-',
+    ], capture_output=True, text=True, check=False)
+    if completed.returncode != 0:
+        return None
+
+    detections = [
+        tuple(int(value) for value in match)
+        for match in re.findall(
+            r'crop=(\d+):(\d+):(\d+):(\d+)',
+            completed.stderr or '',
+        )
+    ]
+    if not detections:
+        return None
+
+    minimum_bar = max(4, int(round(height * 0.015)))
+    maximum_bar = max(minimum_bar, int(round(height * 0.25)))
+    symmetry_tolerance = max(4, int(round(height * 0.02)))
+    counts: dict[tuple[int, int], int] = {}
+    for detected_width, detected_height, x, y in detections:
+        bottom = height - y - detected_height
+        if (
+            detected_width < width - 4
+            or x > 2
+            or detected_height < int(round(height * 0.55))
+            or y < minimum_bar
+            or bottom < minimum_bar
+            or y > maximum_bar
+            or bottom > maximum_bar
+            or abs(y - bottom) > symmetry_tolerance
+        ):
+            continue
+        key = (detected_height, y)
+        counts[key] = counts.get(key, 0) + 1
+
+    if not counts:
+        return None
+    crop, occurrences = max(counts.items(), key=lambda item: item[1])
+    if occurrences < 3 or occurrences * 2 < len(detections):
+        return None
+    return crop
 
 
 def _srt_timestamp(seconds: float) -> str:
@@ -276,8 +356,15 @@ def normalize_clip(
     if not forbid_loop:
         input_args = ['-stream_loop', '-1', '-i', input_path]
 
-    def render_attempt(scale_geometry: str) -> None:
-        filters = [
+    def render_attempt(
+        scale_geometry: str,
+        source_crop: tuple[int, int] | None = None,
+    ) -> None:
+        filters = []
+        if source_crop is not None:
+            crop_height, crop_y = source_crop
+            filters.append(f'crop=iw:{crop_height}:0:{crop_y}')
+        filters.extend([
             f'scale={scale_geometry}:force_original_aspect_ratio=increase',
             f'crop=1920:1080:{crop_xy}',
             'setsar=1',
@@ -287,7 +374,7 @@ def normalize_clip(
             # for valid fractional targets such as 124/30 seconds.
             f'fps={FPS}',
             f'trim=end_frame={segment_frames}',
-        ]
+        ])
         if transition == 'dip' and duration >= 1.2:
             fade_out = max(0.3, duration - 0.18)
             filters.extend([
@@ -316,9 +403,23 @@ def normalize_clip(
         # them without paying for or looping another generated clip.
         render_attempt('2304:1296')
         if max_horizontal_letterbox_duration(output_path) > 0.25:
-            raise RuntimeError(
-                'Normalized clip letterbox gate rejected persistent black bars'
+            source_crop = detect_symmetric_letterbox_crop(
+                input_path,
+                start_seconds=start_seconds,
+                sample_seconds=min(duration * speed, 2.5),
             )
+            if source_crop is not None:
+                # A measured crop is safer than blind zooming: it removes only
+                # stable, symmetric encoded bars and the same hard output gate
+                # below verifies that the result is actually clean.
+                render_attempt('2050:1153', source_crop)
+            if (
+                source_crop is None
+                or max_horizontal_letterbox_duration(output_path) > 0.25
+            ):
+                raise RuntimeError(
+                    'Normalized clip letterbox gate rejected persistent black bars'
+                )
     return str(output_path)
 
 
