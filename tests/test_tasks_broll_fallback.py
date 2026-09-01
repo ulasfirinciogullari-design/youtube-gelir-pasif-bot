@@ -1,7 +1,9 @@
 import ast
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import hashlib
 from pathlib import Path
 import re
+import tempfile
 import unittest
 from unittest.mock import Mock
 
@@ -131,6 +133,7 @@ def _load_manual_qa_boundary():
         'MANUAL_QA_PREVIEW_GENERATED_FLOOR',
         'MANUAL_QA_PUBLISH_QUALITY_THRESHOLD',
         '_MANUAL_QA_CLEAR_VISUAL_FIELDS',
+        '_MANUAL_QA_DIAGNOSTIC_BOOLEAN_FIELDS',
     }
     function_names = {
         '_is_generated_visual_spec',
@@ -138,6 +141,8 @@ def _load_manual_qa_boundary():
         '_manual_qa_visual_source_type',
         '_manual_qa_preview_passes',
         '_manual_qa_preview_record',
+        '_manual_qa_visual_identity',
+        '_manual_qa_failure_diagnostic',
         '_manual_qa_preview_decisions',
         '_generated_visual_spec',
     }
@@ -156,7 +161,7 @@ def _load_manual_qa_boundary():
             and node.name in function_names
         )
     ]
-    namespace = {'Path': Path}
+    namespace = {'Path': Path, 'hashlib': hashlib}
     exec(
         compile(
             ast.Module(body=definitions, type_ignores=[]),
@@ -357,6 +362,63 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             ['literal storm ship', 'container vessel waves'],
         )
 
+    def test_manual_qa_identity_binds_content_cut_and_source_contract(self):
+        namespace = _load_manual_qa_boundary()
+        identity = namespace['_manual_qa_visual_identity']
+        with tempfile.TemporaryDirectory() as tmp:
+            first = Path(tmp) / 'first.mp4'
+            second = Path(tmp) / 'second.mp4'
+            first.write_bytes(b'exact-private-preview-clip')
+            second.write_bytes(b'exact-private-preview-clip')
+            first_spec = _stock_spec(str(first))
+            first_spec['start_fraction'] = 0.35
+            same_spec = _stock_spec(str(second))
+            same_spec['start_fraction'] = 0.35
+
+            self.assertEqual(identity(first_spec), identity(same_spec))
+
+            changed_cut = dict(same_spec, start_fraction=0.36)
+            self.assertNotEqual(identity(first_spec), identity(changed_cut))
+            second.write_bytes(b'different-private-preview-clip')
+            self.assertNotEqual(identity(first_spec), identity(same_spec))
+
+    def test_manual_qa_failure_diagnostic_is_exact_and_secret_safe(self):
+        namespace = _load_manual_qa_boundary()
+        diagnostic = namespace['_manual_qa_failure_diagnostic']
+        secret = (
+            'sk-never-leak '
+            'https://storage.example/private.mp4?X-Amz-Signature=never'
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            clip = Path(tmp) / 'stock.mp4'
+            clip.write_bytes(b'video-bytes')
+            review = _manual_review(
+                40,
+                raw_score=92,
+                best_moment_index=2,
+                evidence_moment_indices=[0, 1, 2],
+                location_continuity_applicable=True,
+                location_continuity_matches=False,
+                evidence_gate_passed=False,
+                reason=secret,
+                arbitrary_secret=secret,
+                path=secret,
+            )
+            result = diagnostic(4, review, _stock_spec(str(clip)))
+
+        serialized = repr(result)
+        self.assertEqual(result['scene_index'], 4)
+        self.assertEqual(result['source_type'], 'stock')
+        self.assertEqual(result['manual_qa_floor'], 60)
+        self.assertEqual(result['score'], 40)
+        self.assertEqual(result['raw_score'], 92)
+        self.assertIs(result['location_continuity_matches'], False)
+        self.assertEqual(result['evidence_moment_indices'], [0, 1, 2])
+        self.assertNotIn(secret, serialized)
+        self.assertNotIn('reason', result)
+        self.assertNotIn('path', result)
+        self.assertNotIn('arbitrary_secret', result)
+
     def test_manual_qa_allows_exact_generated_but_excludes_non_preview_modes(self):
         namespace = _load_manual_qa_boundary()
         passes = namespace['_manual_qa_preview_passes']
@@ -518,6 +580,30 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         )
         repair = source.index('final_runway_repair_candidates =', terminal)
         self.assertLess(terminal, repair)
+
+    def test_manual_prepass_disagreement_gets_one_bounded_blind_vote(self):
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+        final_review = source.index("work / 'final_visual_qc'")
+        adjudication = source.index("work / 'manual_qa_final_adjudication'")
+        terminal = source.index(
+            'Manual-QA preview failed exact final revalidation'
+        )
+
+        self.assertLess(final_review, adjudication)
+        self.assertLess(adjudication, terminal)
+        self.assertIn('len(terminal_manual_qa_candidates) <= 2', source)
+        self.assertIn(
+            '_manual_qa_visual_identity(selected_spec)\n'
+            '                == manual_qa_prepass_identities.get(scene_idx)',
+            source,
+        )
+        self.assertIn("final_review.get('subject_visible') is True", source)
+        self.assertIn("final_review.get('spoken_action_visible') is True", source)
+        self.assertIn("_missing_review_attempts=0", source[adjudication:terminal])
+        self.assertIn(
+            'scene_idx not in manual_qa_preserve_exact_cut_scenes',
+            source,
+        )
 
     def test_manual_and_forced_sets_are_explicitly_disjoint(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')
