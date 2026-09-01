@@ -217,7 +217,7 @@ class RunwayPromptTests(unittest.TestCase):
 
         audio_gate = source.index('audio_qc = verify_audio_narration(')
         audio_rejection = source.index(
-            "if not audio_qc.get('available') or not audio_qc.get('pass'):"
+            'raise FinalAudioQualityError('
         )
         initial_runway_loop = source.index(
             'for candidate in selected_runway:'
@@ -225,6 +225,9 @@ class RunwayPromptTests(unittest.TestCase):
 
         self.assertLess(audio_gate, audio_rejection)
         self.assertLess(audio_rejection, initial_runway_loop)
+        self.assertIn('MAX_AUDIO_GENERATION_ATTEMPTS = 3', source)
+        self.assertIn('generation_attempt=generation_attempt', source)
+        self.assertIn("'audio_generation_attempts': audio_generation_attempts", source)
         self.assertIn("'audio_qc': audio_qc", source)
         self.assertIn("audio_mismatch.get('operations')", source)
         self.assertNotIn(
