@@ -719,8 +719,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         repair_loop = source.index(
             'for scene_idx in final_runway_repair_candidates:', repair
         )
-        generation = source.index('repair_scene = generate_scene(', repair_loop)
-        quarantine = source[repair_loop:generation]
+        prompt = source.index(
+            'repair_prompt = _runway_prompt_for_scene(', repair_loop
+        )
+        quarantine = source[repair_loop:prompt]
         self.assertIn(
             'if scene_idx in terminal_manual_qa_failure_scene_indices:',
             quarantine,

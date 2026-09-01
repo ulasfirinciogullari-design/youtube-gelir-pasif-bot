@@ -2946,14 +2946,9 @@ def run_video_pipeline(
                 'final_visual_qc_ai_repair',
                 71,
                 'Reddedilen özgün sahnelerde hareket kanıtı hedefli olarak yenileniyor.',
-            )
+        )
         for scene_idx in final_runway_repair_candidates:
             review = final_reviews.get(scene_idx) or {}
-            repair_prompt = _runway_prompt_for_scene(scenes[scene_idx], review)
-            if not repair_prompt:
-                continue
-            final_runway_repair_attempts += 1
-            runway_attempts += 1
             existing_specs = list(scene_visuals[scene_idx])
             old_best = _visual_path(existing_specs[0]) if existing_specs else ''
             if scene_idx in terminal_manual_qa_failure_scene_indices:
@@ -2962,6 +2957,11 @@ def run_video_pipeline(
                 # fails, the later stock rescue must start from fresh results.
                 existing_specs = []
                 scene_visuals[scene_idx] = []
+            repair_prompt = _runway_prompt_for_scene(scenes[scene_idx], review)
+            if not repair_prompt:
+                continue
+            final_runway_repair_attempts += 1
+            runway_attempts += 1
             try:
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
