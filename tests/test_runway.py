@@ -152,6 +152,8 @@ def _load_runway_functions(
         '_MIN_GENERATED_IMAGE_BYTES': 10 * 1024,
         '_MAX_GENERATED_IMAGE_BYTES': 12 * 1024 * 1024,
         '_MAX_GENERATED_IMAGE_PIXELS': 8_388_608,
+        '_GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS': 10 * 60,
+        '_GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL': {},
     }
     exec(
         compile(
@@ -621,6 +623,47 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'safe image prompt',
             5,
         )
+
+    def test_later_scene_skips_models_in_process_quota_cooldown(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        gemini_video_uri = Mock(side_effect=[
+            GeminiVideoQuotaError('definitive Lite quota rejection'),
+            GeminiVideoQuotaError('definitive Fast quota rejection'),
+            GeminiVideoQuotaError('definitive Standard quota rejection'),
+        ])
+        descriptor = {
+            '_inline_image': {
+                'mime_type': 'image/jpeg',
+                'data': 'private-inline-data',
+            },
+            'motion_seconds': 5,
+            'source_media_type': 'image',
+            'synthetic_motion': True,
+            'motion_recipe_version': 'diagonal-push-v2',
+            'image_sha256': 'a' * 64,
+            'prompt_sha256': 'b' * 64,
+            'image_model': 'gemini-3.1-flash-image',
+        }
+        gemini_image_descriptor = Mock(return_value=descriptor)
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            gemini_image_descriptor=gemini_image_descriptor,
+        )
+
+        for scene_number in range(2):
+            result = generate_scene(
+                f'safe video prompt {scene_number}',
+                duration=5,
+                allow_image_motion=True,
+                image_prompt=f'safe image prompt {scene_number}',
+            )
+            self.assertEqual(result['provider'], 'gemini_image_motion')
+
+        self.assertEqual(gemini_video_uri.call_count, 3)
+        self.assertEqual(gemini_image_descriptor.call_count, 2)
 
     def test_image_fallback_is_disabled_without_private_preview_flag(self):
         factory = _RunwayClientFactory([
