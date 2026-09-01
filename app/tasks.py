@@ -18,10 +18,10 @@ from app.services.director import (
     short_story_package_is_approved,
 )
 from app.services.pexels import find_broll, download_broll
-from app.services.render import render_video
+from app.services.render import media_duration, render_video, video_frame_count
 from app.services.research import research_and_script
 from app.services.runway import generate_scene, download_generated_scene
-from app.services.storage import upload_file, presigned_download_url
+from app.services.storage import download_file, upload_file, presigned_download_url
 from app.services.studio_state import mark_failure, mark_success, set_stage, update_job
 from app.services.visual_qc import review_scene_visuals
 from app.services.voice import synthesize_scene_sequence
@@ -42,6 +42,160 @@ class PreRunwayRetryableError(RuntimeError):
 
 class PexelsRetryError(RuntimeError):
     """A bounded Pexels retry could not produce provider evidence."""
+
+
+_RECOVERED_MEDIA_SOURCE_PATTERN = re.compile(
+    r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+)
+_RECOVERED_MEDIA_KEY_PATTERN = re.compile(
+    r'^recovery/(?P<source>[0-9a-f-]{36})/raw/'
+    r'(?:clip-[0-9]{2}|scene-[0-9]{2}-(?:initial|repair-[0-9]{2}))\.mp4$'
+)
+_RECOVERED_MEDIA_PROVIDERS = {
+    'runway',
+    'gemini_veo',
+    'gemini_veo_fast',
+    'gemini_veo_standard',
+}
+_MAX_RECOVERED_VIDEO_BYTES = 100 * 1024 * 1024
+
+
+def _validated_recovered_generated_media(
+    raw: object,
+    scene_count: int,
+) -> dict | None:
+    """Validate a server-authored, Storage-only paid-media recovery contract."""
+    if raw is None:
+        return None
+    if not isinstance(raw, dict) or set(raw) != {
+        'version',
+        'recovery_only',
+        'source_task_id',
+        'provider',
+        'scenes',
+    }:
+        raise FinalVisualQualityError(
+            'Recovered generated-media contract is malformed'
+        )
+    source_task_id = str(raw.get('source_task_id') or '').strip().lower()
+    provider = str(raw.get('provider') or '').strip()
+    raw_scenes = raw.get('scenes')
+    if (
+        raw.get('version') != 1
+        or raw.get('recovery_only') is not True
+        or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(source_task_id)
+        or provider not in _RECOVERED_MEDIA_PROVIDERS
+        or not isinstance(raw_scenes, dict)
+        or not raw_scenes
+    ):
+        raise FinalVisualQualityError(
+            'Recovered generated-media contract is invalid'
+        )
+
+    scenes: dict[int, list[str]] = {}
+    seen_object_keys: set[str] = set()
+    for raw_scene_idx, raw_keys in raw_scenes.items():
+        try:
+            scene_idx = int(raw_scene_idx)
+        except (TypeError, ValueError) as exc:
+            raise FinalVisualQualityError(
+                'Recovered generated-media scene index is invalid'
+            ) from exc
+        if (
+            str(scene_idx) != str(raw_scene_idx)
+            or not 0 <= scene_idx < int(scene_count)
+            or scene_idx in scenes
+            or not isinstance(raw_keys, list)
+            or not 1 <= len(raw_keys) <= 3
+        ):
+            raise FinalVisualQualityError(
+                'Recovered generated-media scene mapping is invalid'
+            )
+        keys: list[str] = []
+        for raw_key in raw_keys:
+            key = str(raw_key or '').strip()
+            match = _RECOVERED_MEDIA_KEY_PATTERN.fullmatch(key)
+            if (
+                not match
+                or match.group('source') != source_task_id
+                or key in keys
+                or key in seen_object_keys
+            ):
+                raise FinalVisualQualityError(
+                    'Recovered generated-media object key is invalid'
+                )
+            keys.append(key)
+            seen_object_keys.add(key)
+        scenes[scene_idx] = keys
+
+    return {
+        'version': 1,
+        'recovery_only': True,
+        'source_task_id': source_task_id,
+        'provider': provider,
+        'scenes': scenes,
+    }
+
+
+def _validate_recovered_generated_clip(
+    path: str | Path,
+    minimum_duration: float,
+) -> None:
+    """Fail closed on an empty, oversized, non-MP4 or too-short checkpoint."""
+    clip = Path(path)
+    try:
+        size = clip.stat().st_size
+    except OSError as exc:
+        raise FinalVisualQualityError(
+            'Recovered generated-media clip is unavailable'
+        ) from exc
+    if not 1024 <= size <= _MAX_RECOVERED_VIDEO_BYTES:
+        raise FinalVisualQualityError(
+            'Recovered generated-media clip size is invalid'
+        )
+    with clip.open('rb') as file_handle:
+        header = file_handle.read(12)
+    if len(header) < 12 or header[4:8] != b'ftyp':
+        raise FinalVisualQualityError(
+            'Recovered generated-media clip is not a valid MP4 file'
+        )
+    try:
+        minimum = float(minimum_duration)
+        duration = float(media_duration(clip))
+        frames = int(video_frame_count(clip))
+    except Exception as exc:
+        raise FinalVisualQualityError(
+            'Recovered generated-media clip could not be probed'
+        ) from exc
+    if (
+        not math.isfinite(minimum)
+        or minimum <= 0
+        or not math.isfinite(duration)
+        or duration + 0.04 < minimum
+        or frames < max(1, int(math.floor(minimum * 12)))
+    ):
+        raise FinalVisualQualityError(
+            'Recovered generated-media clip is too short'
+        )
+
+
+def _require_recovered_media_coverage(
+    recovered_generated_media: dict | None,
+    selected_scene_indices: list[int],
+) -> None:
+    """A recovery-only run may never fall through to a new paid create."""
+    if not recovered_generated_media:
+        return
+    selected = set(int(index) for index in selected_scene_indices)
+    recovered = set(recovered_generated_media['scenes'])
+    missing = sorted(selected - recovered)
+    unexpected = sorted(recovered - selected)
+    if missing or unexpected:
+        raise FinalVisualQualityError(
+            'Recovered generated-media contract does not exactly match '
+            'selected paid scenes: '
+            f'missing={missing},unexpected={unexpected}'
+        )
 
 
 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
@@ -1247,6 +1401,21 @@ def run_video_pipeline(
 
     try:
         package = _prepare_package(self, task_id, topic, duration_minutes, language, options, approved_package)
+        raw_recovered_generated_media = package.pop(
+            '_recovered_generated_media',
+            None,
+        )
+        if (
+            raw_recovered_generated_media is not None
+            and approved_package is None
+        ):
+            raise FinalVisualQualityError(
+                'Recovered generated media requires an approved storyboard'
+            )
+        recovered_generated_media = _validated_recovered_generated_media(
+            raw_recovered_generated_media,
+            len(package.get('scenes') or []),
+        )
         scenes = package['scenes']
         (work / 'package.json').write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding='utf-8')
 
@@ -2187,10 +2356,70 @@ def run_video_pipeline(
             approved_package,
         )
 
+        _require_recovered_media_coverage(
+            recovered_generated_media,
+            [int(item['scene_index']) for item in selected_runway],
+        )
+
         for candidate in selected_runway:
             scene_idx = int(candidate['scene_index'])
-            runway_attempts += 1
             stock_fallback = list(scene_visuals[scene_idx])
+            if recovered_generated_media:
+                recovered_specs: list[dict] = []
+                for recovered_idx, object_key in enumerate(
+                    recovered_generated_media['scenes'][scene_idx]
+                ):
+                    recovered_path = (
+                        work
+                        / f'recovered_s{scene_idx:02d}_{recovered_idx:02d}.mp4'
+                    )
+                    try:
+                        download_file(object_key, recovered_path)
+                        _validate_recovered_generated_clip(
+                            recovered_path,
+                            minimum_duration=max(
+                                5.0,
+                                float(scene_durations[scene_idx]) + 0.35,
+                            ),
+                        )
+                    except FinalVisualQualityError:
+                        raise
+                    except Exception as exc:
+                        raise FinalVisualQualityError(
+                            'Recovered generated-media clip download failed '
+                            f'for scene {scene_idx}'
+                        ) from exc
+                    recovered_spec = _generated_visual_spec(
+                        recovered_path,
+                        provider=recovered_generated_media['provider'],
+                        provider_attempts=1,
+                    )
+                    recovered_spec.update({
+                        'generation_recovered': True,
+                        'recovered_from_task_id': (
+                            recovered_generated_media['source_task_id']
+                        ),
+                    })
+                    recovered_specs.append(recovered_spec)
+                scene_visuals[scene_idx] = [
+                    *recovered_specs,
+                    *stock_fallback,
+                ][:3]
+                runway_scenes_used += 1
+                runway_generated_scenes.append(scene_idx)
+                generated_video_provider_records.append({
+                    'stage': 'recovered_generation',
+                    'scene_index': scene_idx,
+                    'provider': recovered_generated_media['provider'],
+                    'provider_attempts': 1,
+                    'recovered_from_task_id': (
+                        recovered_generated_media['source_task_id']
+                    ),
+                    'recovered_candidate_count': len(recovered_specs),
+                })
+                continue
+
+            runway_attempts += 1
             try:
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
@@ -2338,13 +2567,17 @@ def run_video_pipeline(
         # A final critic has now seen the exact generated clips. Spend at most
         # two evidence-led repair submissions on authored AI scenes, instead of
         # rerunning the whole paid pipeline or accepting a static non-event.
-        final_runway_repair_candidates = preview_runway_repair_indices(
-            options,
-            duration_minutes,
-            rejected_final_scenes,
-            scenes,
-            runway_generated_scenes,
-            final_reviews,
+        final_runway_repair_candidates = (
+            []
+            if recovered_generated_media
+            else preview_runway_repair_indices(
+                options,
+                duration_minutes,
+                rejected_final_scenes,
+                scenes,
+                runway_generated_scenes,
+                final_reviews,
+            )
         )
         _preflight_runway_candidates_before_paid(
             [int(index) for index in final_runway_repair_candidates],
