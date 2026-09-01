@@ -27,6 +27,52 @@ _GEMINI_FRAME_REENCODE_ATTEMPTS = (
     (240, 16),
 )
 
+# Gemini's JSON schema can validate the score and explanation independently,
+# but JSON Schema cannot prove that their meanings agree. Keep this detector
+# deliberately high precision: it is only a trigger for one fresh full visual
+# review of the exact selected clip, never an approval signal.
+_CLEARLY_POSITIVE_REASON_PATTERNS = (
+    re.compile(
+        r'\b(?:match(?:es|ed)?|align(?:s|ed)?)\b.{0,100}'
+        r'\b(?:prompt|narration|requirements?|brief|scene)\b.{0,80}'
+        r'\b(?:well|closely|fully|exactly|perfectly|clearly)\b',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
+        r'\b(?:well|closely|fully|exactly|perfectly|clearly)\b.{0,40}'
+        r'\b(?:match(?:es|ed)?|align(?:s|ed)?|satisf(?:y|ies|ied)|'
+        r'fulfill(?:s|ed)?|meet(?:s|ing)?)\b.{0,100}'
+        r'\b(?:prompt|narration|requirements?|brief|scene)\b',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
+        r'\b(?:meet(?:s|ing)?|satisf(?:y|ies|ied)|fulfill(?:s|ed)?)\b'
+        r'.{0,100}\b(?:prompt|narration|requirements?|brief|scene)\b',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
+        r'\b(?:named|required|requested)\s+subject\b.{0,80}'
+        r'\b(?:action|event)\b.{0,40}'
+        r'\b(?:both\s+)?(?:clearly\s+)?visible\b',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
+        r'\b(?:prompt|anlatım|gereksinimler?|sahne)\b.{0,100}'
+        r'\b(?:tam(?:amen)?|açıkça|mükemmel(?: biçimde)?|iyi)\b.{0,40}'
+        r'\b(?:uyumlu|karşılıyor|eşleşiyor)\b',
+        flags=re.IGNORECASE,
+    ),
+)
+_NEGATIVE_REASON_MARKERS = re.compile(
+    r"\b(?:but|however|although|yet|except|despite|missing|omit(?:s|ted)?|"
+    r"fail(?:s|ed|ure)?|not|no|without|lack(?:s|ed)?|poor|weak|unrelated|"
+    r"mismatch(?:es|ed)?|contradict(?:s|ed|ion)?|artifact|warp(?:s|ed|ing)?|"
+    r"static|frozen|reset|unclear|barely|insufficient|cannot|can't|doesn't|"
+    r"isn't|different|unreviewable|ama|ancak|fakat|rağmen|değil|yok|eksik|"
+    r"uyumsuz|başarısız|bulanık|sabit|donuk|donmuş|bozuk|hata|görünmüyor)\b",
+    flags=re.IGNORECASE,
+)
+
 _EVIDENCE_BOOLEAN_FIELDS = (
     'subject_visible',
     'spoken_action_visible',
@@ -67,6 +113,53 @@ _CONNECTION_ACTION_PATTERN = re.compile(
     r'yerleştir(?:iyor|mek|ir|di)?|kilitle(?:r|mek|di|niyor)?)\b',
     flags=re.IGNORECASE,
 )
+
+
+def _clearly_positive_review_reason(reason: object) -> bool:
+    """Return true only for an unqualified, explicit success explanation."""
+    if not isinstance(reason, str):
+        return False
+    normalized = ' '.join(reason.split())
+    if not normalized or _NEGATIVE_REASON_MARKERS.search(normalized):
+        return False
+    return any(
+        pattern.search(normalized)
+        for pattern in _CLEARLY_POSITIVE_REASON_PATTERNS
+    )
+
+
+def _score_reason_conflicts(review: dict) -> bool:
+    """Detect the narrow hard-reject/clear-success contradiction."""
+    score = review.get('score')
+    return (
+        type(score) is int
+        and score <= 40
+        and _clearly_positive_review_reason(review.get('reason'))
+    )
+
+
+def _mark_unresolved_score_reason_conflict(
+    review: dict,
+    *,
+    revalidation_missing: bool,
+) -> dict:
+    failed = dict(review)
+    failed['score'] = min(int(failed.get('score', 0)), 40)
+    failed['score_reason_revalidated'] = True
+    failed['score_reason_consistency_passed'] = False
+    suffix = (
+        ' Independent same-media re-review was unavailable; the hard '
+        'rejection was retained fail-closed.'
+        if revalidation_missing
+        else (
+            ' Independent same-media re-review repeated the score/explanation '
+            'conflict; the hard rejection was retained fail-closed.'
+        )
+    )
+    failed['reason'] = (
+        str(failed.get('reason') or '').rstrip() + suffix
+    )[:500]
+    return failed
 
 
 def _connection_action_required(scene: dict) -> bool:
@@ -425,6 +518,8 @@ def _review_gemini_batches(
     topic: str = '',
     story_scenes: list[dict] | None = None,
     gemini_model_override: str | None = None,
+    score_reason_consistency_attempts: int = 1,
+    gemini_thinking_level: str = 'low',
 ) -> dict:
     def merge_boundary_review(previous: dict, current: dict) -> dict:
         def merge_identity_fields(merged: dict) -> bool:
@@ -552,6 +647,10 @@ def _review_gemini_batches(
             topic=topic,
             story_scenes=story_scenes,
             gemini_model_override=gemini_model_override,
+            _score_reason_consistency_attempts=(
+                score_reason_consistency_attempts
+            ),
+            _gemini_thinking_level=gemini_thinking_level,
         )
 
         def remap_index(value: object) -> int | None:
@@ -659,6 +758,8 @@ def review_scene_visuals(
     topic: str = '',
     story_scenes: list[dict] | None = None,
     gemini_model_override: str | None = None,
+    _score_reason_consistency_attempts: int = 1,
+    _gemini_thinking_level: str = 'low',
 ) -> dict:
     provider = _studio_plan_provider()
     if provider == 'openai' and not settings.openai_api_key:
@@ -687,6 +788,10 @@ def review_scene_visuals(
             topic=topic,
             story_scenes=complete_story,
             gemini_model_override=gemini_model_override,
+            score_reason_consistency_attempts=(
+                _score_reason_consistency_attempts
+            ),
+            gemini_thinking_level=_gemini_thinking_level,
         )
     frame_dir = work / 'visual_qc'
     frame_dir.mkdir(parents=True, exist_ok=True)
@@ -713,6 +818,7 @@ def review_scene_visuals(
             'Only a candidate whose exact scene_index and candidate_index pair appears in the server-authored TRUSTED_IMAGE_MOTION_PROFILE_ALLOWLIST appended to this instruction may use the following rule. For that exact candidate only, a materially changing monotonic documentary camera push and pan across the sampled moments counts as clip motion; do not mark it frozen solely because the underlying subject pose is fixed. Such a candidate may score 60 through 85 only when the named subject and narrated action are unambiguous in the decisive authored still and every evidence and editorial gate passes. Never infer physical causality, a connection, a state change, or native object motion from camera movement. If its framing barely changes, mark it effectively static and score 40 or lower. '
             'If the sampled moments are nearly identical, the clip is effectively static; any shot likely to remain static for more than six seconds must score 40 or lower. '
             'Set prominent_readable_text_or_logo_visible=true for any prominent readable text, watermark or logo. Set major_visual_artifact_visible=true for warped anatomy, object morphing, broken physics, severe flicker or another major generation/edit artifact. Set effectively_static_or_frozen=true when the selected clip is effectively a still or frozen shot. If any of these three fields is true, the score must be 40 or lower. '
+            'The score and reason must agree. A score of 40 or lower is a hard rejection: its reason must name at least one concrete visible failure and must not claim that the candidate matches, aligns with, satisfies or fulfills the prompt, narration, scene or requirements. If a hard gate forces the score to 40 or lower, explicitly name that failed gate in the reason. '
             'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
             'Each retry query must describe only the desired replacement shot and explicitly correct every visibly failed authored attribute that applies: subject identity, physical scale or quantity, age or condition, material, color or shape, setting or surface, and physical action; never include meta-instructions. '
             'Every review object must include both authored_identity_or_material_conflict_visible and manufactured_object_cues_visible as booleans. '
@@ -932,7 +1038,7 @@ def review_scene_visuals(
                         )
                     ),
                     json_schema=review_schema,
-                    thinking_level='low',
+                    thinking_level=_gemini_thinking_level,
                     timeout=120.0,
                     # This caller already owns the two-attempt protocol loop.
                     # Disable the helper's protocol retry so one malformed
@@ -1195,6 +1301,113 @@ def review_scene_visuals(
             'editorial_gate_passed': editorial_gate_passed,
         }
 
+    # A valid JSON object can still be semantically self-contradictory. Only
+    # the narrow hard-reject/clear-success case earns one independent review,
+    # and that review sees the exact selected media rather than another search
+    # candidate. The original positive prose is never used as approval
+    # evidence. A missing or still-contradictory second verdict remains a hard
+    # rejection so downstream repair/checkpoint logic stays fail-closed.
+    if _score_reason_consistency_attempts > 0:
+        contradictory_scene_indices = [
+            scene_index
+            for scene_index, review in reviews_by_scene.items()
+            if _score_reason_conflicts(review)
+        ]
+        for scene_index in contradictory_scene_indices:
+            initial_review = dict(reviews_by_scene[scene_index])
+            candidate_specs = [
+                spec
+                for spec in (
+                    scene_visuals[scene_index]
+                    if scene_index < len(scene_visuals)
+                    else []
+                )
+                if _spec_path(spec)
+            ][:3]
+            selected_candidate_index = initial_review.get(
+                'best_candidate_index'
+            )
+            if (
+                type(selected_candidate_index) is not int
+                or selected_candidate_index < 0
+                or selected_candidate_index >= len(candidate_specs)
+            ):
+                reviews_by_scene[scene_index] = (
+                    _mark_unresolved_score_reason_conflict(
+                        initial_review,
+                        revalidation_missing=True,
+                    )
+                )
+                continue
+
+            try:
+                consistency_qc = review_scene_visuals(
+                    [scenes[scene_index]],
+                    [[candidate_specs[selected_candidate_index]]],
+                    work
+                    / 'score_reason_consistency_revalidation'
+                    / f'scene_{scene_index:02d}',
+                    1,
+                    _missing_review_attempts=0,
+                    topic=topic,
+                    story_scenes=complete_story,
+                    gemini_model_override=gemini_model_override,
+                    _score_reason_consistency_attempts=(
+                        _score_reason_consistency_attempts - 1
+                    ),
+                    _gemini_thinking_level=(
+                        'medium'
+                        if provider == 'gemini'
+                        else _gemini_thinking_level
+                    ),
+                )
+            except Exception:
+                consistency_qc = {'reviews': []}
+
+            revalidated_reviews = [
+                review
+                for review in (consistency_qc.get('reviews') or [])
+                if (
+                    isinstance(review, dict)
+                    and review.get('scene_index') == 0
+                    and review.get('best_candidate_index') == 0
+                )
+            ]
+            if len(revalidated_reviews) != 1:
+                reviews_by_scene[scene_index] = (
+                    _mark_unresolved_score_reason_conflict(
+                        initial_review,
+                        revalidation_missing=True,
+                    )
+                )
+                continue
+
+            revalidated = dict(revalidated_reviews[0])
+            revalidated['scene_index'] = scene_index
+            revalidated['best_candidate_index'] = selected_candidate_index
+            revalidated['score_reason_revalidated'] = True
+            revalidated['score_reason_initial_score'] = int(
+                initial_review.get('score', 0)
+            )
+            revalidated['score_reason_initial_raw_score'] = int(
+                initial_review.get(
+                    'raw_score', initial_review.get('score', 0)
+                )
+            )
+            revalidated['score_reason_initial_reason'] = str(
+                initial_review.get('reason') or ''
+            )[:500]
+            if _score_reason_conflicts(revalidated):
+                reviews_by_scene[scene_index] = (
+                    _mark_unresolved_score_reason_conflict(
+                        revalidated,
+                        revalidation_missing=False,
+                    )
+                )
+                continue
+            revalidated['score_reason_consistency_passed'] = True
+            reviews_by_scene[scene_index] = revalidated
+
     missing_indices = [idx for idx in included_indices if idx not in reviews_by_scene]
     if missing_indices and _missing_review_attempts > 0:
         retry_context_indices = sorted({
@@ -1220,6 +1433,10 @@ def review_scene_visuals(
             topic=topic,
             story_scenes=complete_story,
             gemini_model_override=gemini_model_override,
+            _score_reason_consistency_attempts=(
+                _score_reason_consistency_attempts
+            ),
+            _gemini_thinking_level=_gemini_thinking_level,
         )
         retry_reviews = {
             int(review.get('scene_index')): review
