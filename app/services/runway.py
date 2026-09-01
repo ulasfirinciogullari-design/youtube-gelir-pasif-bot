@@ -12,6 +12,7 @@ from app.config import settings
 _GEMINI_VIDEO_BASE = 'https://generativelanguage.googleapis.com/v1beta'
 _GEMINI_VIDEO_MODEL = 'veo-3.1-lite-generate-preview'
 _GEMINI_VIDEO_FAST_MODEL = 'veo-3.1-fast-generate-preview'
+_GEMINI_VIDEO_STANDARD_MODEL = 'veo-3.1-generate-preview'
 _GEMINI_OPERATION_PATTERN = re.compile(
     r'^(?:models/[A-Za-z0-9._-]+/)?operations/[A-Za-z0-9._~/-]+$'
 )
@@ -58,6 +59,7 @@ def _generate_gemini_video_uri(
     if model_name not in {
         _GEMINI_VIDEO_MODEL,
         _GEMINI_VIDEO_FAST_MODEL,
+        _GEMINI_VIDEO_STANDARD_MODEL,
     }:
         raise ValueError('Unsupported Gemini video fallback model')
     endpoint = f'{_GEMINI_VIDEO_BASE}/models/{model_name}:predictLongRunning'
@@ -222,14 +224,25 @@ def generate_scene(prompt: str, duration: int = 5) -> dict:
         try:
             video_uri, provider_attempts = generate_with_gemini_model()
         except GeminiVideoQuotaError:
-            # Lite and Fast have separate model quotas. This switch occurs
-            # only after both bounded Lite create requests were explicitly
-            # rejected, so no Lite operation can exist or incur a charge.
+            # Rate limits are reported per model. This switch occurs only
+            # after both bounded Lite create requests were explicitly rejected,
+            # so no Lite operation can exist or incur a charge.
             provider = 'gemini_veo_fast'
             quota_fallback_from = 'gemini_veo'
-            video_uri, provider_attempts = generate_with_gemini_model(
-                _GEMINI_VIDEO_FAST_MODEL
-            )
+            try:
+                video_uri, provider_attempts = generate_with_gemini_model(
+                    _GEMINI_VIDEO_FAST_MODEL
+                )
+            except GeminiVideoQuotaError:
+                # Standard is the final bounded model fallback. It is reached
+                # only after two explicit Fast create rejections, before any
+                # Fast operation can exist. Ambiguous failures never arrive
+                # here and therefore never submit another paid generation.
+                provider = 'gemini_veo_standard'
+                quota_fallback_from = 'gemini_veo_fast'
+                video_uri, provider_attempts = generate_with_gemini_model(
+                    _GEMINI_VIDEO_STANDARD_MODEL
+                )
         return {
             'url': video_uri,
             'provider': provider,
