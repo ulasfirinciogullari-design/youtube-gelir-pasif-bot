@@ -244,9 +244,11 @@ def normalize_clip(
         f'crop=1920:1080:{crop_xy}',
         'setsar=1',
         f'setpts=(PTS-STARTPTS)/{speed:.3f}',
+        # The speed transform already zero-bases timestamps. Rewriting PTS a
+        # second time after trim makes FFmpeg drop the last frame for valid
+        # fractional targets such as 124/30 seconds.
         f'fps={FPS}',
         f'trim=end_frame={segment_frames}',
-        f'setpts=N/({FPS}*TB)',
     ]
     if transition == 'dip' and duration >= 1.2:
         fade_out = max(0.3, duration - 0.18)

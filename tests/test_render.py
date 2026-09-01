@@ -52,7 +52,7 @@ class RenderQualityTests(unittest.TestCase):
         video_filter = commands[0][commands[0].index('-vf') + 1]
         self.assertIn('setpts=(PTS-STARTPTS)/1.008', video_filter)
         self.assertIn('trim=end_frame=270', video_filter)
-        self.assertIn('setpts=N/(30*TB)', video_filter)
+        self.assertNotIn('setpts=N/(30*TB)', video_filter)
         self.assertNotIn('tpad=', video_filter)
         self.assertEqual(commands[0][commands[0].index('-frames:v') + 1], '270')
         self.assertNotIn('-t', commands[0])
@@ -88,6 +88,43 @@ class RenderQualityTests(unittest.TestCase):
         self.assertEqual(len(commands), 1)
         video_filter = commands[0][commands[0].index('-vf') + 1]
         self.assertNotIn('tpad=', video_filter)
+
+    @unittest.skipUnless(
+        shutil.which('ffmpeg') and shutil.which('ffprobe'),
+        'ffmpeg and ffprobe are required',
+    )
+    def test_fractional_segment_target_keeps_all_124_frames(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            source = work / 'source.mp4'
+            output = work / 'normalized.mp4'
+            try:
+                subprocess.run([
+                    'ffmpeg', '-y', '-f', 'lavfi', '-i',
+                    'testsrc2=size=640x360:rate=24:duration=6',
+                    '-an', '-c:v', 'libx264', '-preset', 'ultrafast',
+                    '-pix_fmt', 'yuv420p', str(source),
+                ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except OSError:
+                self.skipTest('ffmpeg execution is blocked by the local sandbox')
+
+            render_module.normalize_clip(
+                {
+                    'path': str(source),
+                    'forbid_loop': True,
+                    'start_fraction': 0.0,
+                },
+                output,
+                124 / render_module.FPS,
+                0,
+            )
+
+            self.assertEqual(render_module.video_frame_count(output), 124)
+            self.assertAlmostEqual(
+                render_module.media_duration(output),
+                124 / render_module.FPS,
+                places=3,
+            )
 
     def test_timeline_uses_cumulative_rounding_without_frame_drift(self):
         timeline = [
