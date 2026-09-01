@@ -351,12 +351,13 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             (stock_spec, 59, False),
             (stock_spec, 60, True),
             (stock_spec, 85, True),
-            (generated, 64, False),
-            (generated, 65, True),
+            (generated, 59, False),
+            (generated, 60, True),
+            (generated, 64, True),
             (generated, 85, True),
             (generated, 86, False),
         ):
-            with self.subTest(score=score):
+            with self.subTest(spec=spec, score=score):
                 self.assertIs(
                     passes(
                         _manual_options(),
@@ -401,50 +402,52 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         passes = namespace['_manual_qa_preview_passes']
         scene = {'ai_prompt': ''}
         stock_spec = _stock_spec()
+        generated = namespace['_generated_visual_spec']('/tmp/runway.mp4')
 
-        for field, bad_value in (
-            ('evidence_gate_passed', False),
-            ('editorial_gate_passed', False),
-            ('subject_visible', False),
-            ('spoken_action_visible', False),
-            ('unexplained_reset', True),
-            ('prominent_readable_text_or_logo_visible', True),
-            ('major_visual_artifact_visible', True),
-            ('effectively_static_or_frozen', True),
-        ):
-            with self.subTest(field=field):
-                self.assertFalse(
-                    passes(
-                        _manual_options(),
-                        0.5,
-                        scene,
-                        _manual_review(**{field: bad_value}),
-                        stock_spec,
+        for spec in (stock_spec, generated):
+            for field, bad_value in (
+                ('evidence_gate_passed', False),
+                ('editorial_gate_passed', False),
+                ('subject_visible', False),
+                ('spoken_action_visible', False),
+                ('unexplained_reset', True),
+                ('prominent_readable_text_or_logo_visible', True),
+                ('major_visual_artifact_visible', True),
+                ('effectively_static_or_frozen', True),
+            ):
+                with self.subTest(spec=spec, field=field):
+                    self.assertFalse(
+                        passes(
+                            _manual_options(),
+                            0.5,
+                            scene,
+                            _manual_review(60, **{field: bad_value}),
+                            spec,
+                        )
                     )
-                )
 
-        for missing_field in (
-            'evidence_gate_passed',
-            'editorial_gate_passed',
-            'subject_visible',
-            'spoken_action_visible',
-            'unexplained_reset',
-            'prominent_readable_text_or_logo_visible',
-            'major_visual_artifact_visible',
-            'effectively_static_or_frozen',
-        ):
-            with self.subTest(missing_field=missing_field):
-                review = _manual_review()
-                review.pop(missing_field)
-                self.assertFalse(
-                    passes(
-                        _manual_options(),
-                        0.5,
-                        scene,
-                        review,
-                        stock_spec,
+            for missing_field in (
+                'evidence_gate_passed',
+                'editorial_gate_passed',
+                'subject_visible',
+                'spoken_action_visible',
+                'unexplained_reset',
+                'prominent_readable_text_or_logo_visible',
+                'major_visual_artifact_visible',
+                'effectively_static_or_frozen',
+            ):
+                with self.subTest(spec=spec, missing_field=missing_field):
+                    review = _manual_review(60)
+                    review.pop(missing_field)
+                    self.assertFalse(
+                        passes(
+                            _manual_options(),
+                            0.5,
+                            scene,
+                            review,
+                            spec,
+                        )
                     )
-                )
 
         retry_review = _manual_review(
             68,
