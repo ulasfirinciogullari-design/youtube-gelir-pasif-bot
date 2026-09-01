@@ -20,6 +20,7 @@ sys.modules['redis'] = redis_stub
 from app.services.voice import normalize_turkish_tts
 from app.services.voice import _voice_speed
 from app.services.voice import _fit_duration
+from app.services.voice import _deterministic_scene_seed
 from app.services.voice import synthesize_voice_with_id
 import app.services.voice as voice_module
 
@@ -116,6 +117,40 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
             request.kwargs['json']['voice_settings']['speed'],
             0.84,
         )
+
+    @patch.object(voice_module.httpx, 'post', create=True)
+    def test_seed_is_sent_as_top_level_elevenlabs_request_field(self, post):
+        config_stub.settings.elevenlabs_api_key = 'test-key'
+        post.return_value = _FakeVoiceResponse()
+
+        synthesize_voice_with_id(
+            'Altmış iki konteyner.',
+            'test-voice',
+            seed=4_294_967_295,
+        )
+
+        request_body = post.call_args.kwargs['json']
+        self.assertEqual(request_body['seed'], 4_294_967_295)
+        self.assertNotIn('seed', request_body['voice_settings'])
+
+    def test_scene_seed_is_stable_bounded_and_changes_per_retry(self):
+        initial = _deterministic_scene_seed(
+            'voice-id', 'Altmış iki konteyner.', 2, 0
+        )
+        repeated = _deterministic_scene_seed(
+            'voice-id', 'Altmış iki konteyner.', 2, 0
+        )
+        next_attempt = _deterministic_scene_seed(
+            'voice-id', 'Altmış iki konteyner.', 2, 1
+        )
+        next_scene = _deterministic_scene_seed(
+            'voice-id', 'Altmış iki konteyner.', 3, 0
+        )
+
+        self.assertEqual(initial, repeated)
+        self.assertNotEqual(initial, next_attempt)
+        self.assertNotEqual(initial, next_scene)
+        self.assertTrue(0 <= initial <= 4_294_967_295)
 
     def test_qr_code_phrases_do_not_duplicate_code_word(self):
         cases = {
