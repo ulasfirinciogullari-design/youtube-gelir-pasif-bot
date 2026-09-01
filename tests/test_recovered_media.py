@@ -96,6 +96,17 @@ class RecoveredGeneratedMediaTests(unittest.TestCase):
         self.assertTrue(result['recovery_only'])
         self.assertEqual(result['provider'], 'gemini_veo_fast')
 
+    def test_private_image_motion_and_unknown_providers_are_not_recoverable(self):
+        validate = self.boundary['_validated_recovered_generated_media']
+        image_contract = self.contract()
+        image_contract['provider'] = 'gemini_image_motion'
+        with self.assertRaises(FinalVisualQualityError):
+            validate(image_contract, 7)
+        unknown = self.contract()
+        unknown['provider'] = 'untrusted_generator'
+        with self.assertRaises(FinalVisualQualityError):
+            validate(unknown, 7)
+
     def test_foreign_prefix_or_extra_field_fails_closed(self):
         validate = self.boundary['_validated_recovered_generated_media']
         foreign = self.contract()

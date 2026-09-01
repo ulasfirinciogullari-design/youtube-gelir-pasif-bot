@@ -21,7 +21,11 @@ from app.services.director import (
 from app.services.pexels import find_broll, download_broll
 from app.services.render import media_duration, render_video, video_frame_count
 from app.services.research import research_and_script
-from app.services.runway import generate_scene, download_generated_scene
+from app.services.runway import (
+    GeminiImageAttemptedError,
+    download_generated_scene,
+    generate_scene,
+)
 from app.services.storage import download_file, upload_file, presigned_download_url
 from app.services.studio_state import mark_failure, mark_success, set_stage, update_job
 from app.services.visual_qc import review_scene_visuals
@@ -1125,6 +1129,64 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     )
 
 
+def _image_motion_prompt_for_scene(
+    scene: dict,
+    review: dict | None = None,
+) -> str:
+    """Build one literal, evidence-led documentary keyframe prompt."""
+    review = review or {}
+    retry_queries = review.get('retry_queries') or []
+    if isinstance(retry_queries, str):
+        retry_queries = [retry_queries]
+    hints = [str(value).strip() for value in retry_queries if str(value).strip()][:2]
+    if not hints:
+        visual_queries = scene.get('visual_queries') or []
+        if isinstance(visual_queries, str):
+            visual_queries = [visual_queries]
+        hints = [
+            str(value).strip()
+            for value in visual_queries
+            if str(value).strip()
+        ][:2]
+
+    opening = (
+        'One edge-to-edge photorealistic 16:9 documentary keyframe. '
+        'Depict the single most evidence-rich decisive instant: '
+    )
+    closing = (
+        ' Literal named subject, true scale, material, physical condition and '
+        'setting must be clear. One coherent real-world moment with natural '
+        'cinematic light and foreground-to-background depth, composed for a '
+        'subtle centered camera push-in. No storyboard, split screen, collage, '
+        'illustration, CGI look, metaphor, text, logo, watermark, border or '
+        'letterbox.'
+    )
+    narration = _truncate_utf16(
+        str(scene.get('narration') or '').strip(),
+        180,
+    )
+    evidence = _truncate_utf16(
+        '; '.join(_truncate_utf16(hint, 100) for hint in hints),
+        180,
+    )
+    context_prefix = f'NARRATION: {narration}. '
+    if evidence:
+        context_prefix += f'REVIEW-LED VISIBLE ATTRIBUTES: {evidence}. '
+    context_prefix += 'CORE VISUAL: '
+    fixed_units = len(
+        (opening + context_prefix + closing).encode('utf-16-le')
+    ) // 2
+    visual_budget = max(0, 1000 - fixed_units)
+    core_visual = _truncate_utf16(
+        str(scene.get('ai_prompt') or '').strip(),
+        visual_budget,
+    )
+    return _truncate_utf16(
+        opening + context_prefix + core_visual + closing,
+        1000,
+    )
+
+
 def _apply_visual_review(
     scene_visuals: list[list[str | dict]],
     scene_idx: int,
@@ -1905,6 +1967,7 @@ def run_video_pipeline(
         runway_failure_diagnostics: list[dict] = []
         runway_failed_scenes: list[int] = []
         runway_generated_scenes: list[int] = []
+        image_motion_submission_scenes: set[int] = set()
         generated_video_provider_records: list[dict] = []
         runway_scenes_used = 0
         runway_submission_cap = _max_runway_scenes(options, len(scenes), duration_minutes)
@@ -1940,6 +2003,12 @@ def run_video_pipeline(
             options.get('mode') == 'preview'
             and duration_minutes <= 0.6
             and runway_submission_cap > 0
+        )
+        is_private_image_motion_preview = (
+            is_bounded_short_preview
+            and duration_minutes == 0.5
+            and options.get('quality_threshold')
+            == MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
         )
         provider_outage_stock_scenes: set[int] = set()
         stock_quality_fallback_scenes: set[int] = set()
@@ -2654,10 +2723,20 @@ def run_video_pipeline(
                 generated_scene = generate_scene(
                     prompt_candidates[scene_idx],
                     duration=generation_seconds,
+                    allow_image_motion=is_private_image_motion_preview,
+                    image_prompt=_image_motion_prompt_for_scene(
+                        scenes[scene_idx],
+                        current_reviews.get(scene_idx),
+                    ),
                 )
+                if generated_scene.get('provider') == 'gemini_image_motion':
+                    # Record the paid image submission before any local
+                    # decode/render step. A local failure must not make the
+                    # same scene eligible for a second image create.
+                    image_motion_submission_scenes.add(scene_idx)
                 runway_path = work / f'runway_s{scene_idx:02d}.mp4'
                 download_generated_scene(
-                    str(generated_scene['url']),
+                    generated_scene,
                     runway_path,
                 )
                 runway_spec = _generated_visual_spec(
@@ -2667,6 +2746,14 @@ def run_video_pipeline(
                         generated_scene.get('provider_attempts') or 1
                     ),
                 )
+                if generated_scene.get('synthetic_motion') is True:
+                    runway_spec.update({
+                        'synthetic_motion_only': True,
+                        'motion_recipe_version': generated_scene.get(
+                            'motion_recipe_version'
+                        ),
+                        'source_media_type': 'image',
+                    })
                 scene_visuals[scene_idx] = [runway_spec, *stock_fallback][:3]
                 runway_scenes_used += 1
                 runway_generated_scenes.append(scene_idx)
@@ -2680,8 +2767,26 @@ def run_video_pipeline(
                     'quota_fallback_from': generated_scene.get(
                         'quota_fallback_from'
                     ),
+                    'quota_fallback_chain': generated_scene.get(
+                        'quota_fallback_chain'
+                    ),
+                    'fallback_reason': generated_scene.get('fallback_reason'),
+                    'source_media_type': generated_scene.get(
+                        'source_media_type'
+                    ),
+                    'synthetic_motion': generated_scene.get(
+                        'synthetic_motion'
+                    ),
+                    'motion_recipe_version': generated_scene.get(
+                        'motion_recipe_version'
+                    ),
+                    'image_model': generated_scene.get('image_model'),
+                    'image_sha256': generated_scene.get('image_sha256'),
+                    'prompt_sha256': generated_scene.get('prompt_sha256'),
                 })
             except Exception as exc:
+                if isinstance(exc, GeminiImageAttemptedError):
+                    image_motion_submission_scenes.add(scene_idx)
                 runway_failed_scenes.append(scene_idx)
                 runway_failure_diagnostics.append(
                     _runway_failure_diagnostic(
@@ -2993,10 +3098,20 @@ def run_video_pipeline(
                 repair_scene = generate_scene(
                     repair_prompt,
                     duration=generation_seconds,
+                    allow_image_motion=(
+                        is_private_image_motion_preview
+                        and scene_idx not in image_motion_submission_scenes
+                    ),
+                    image_prompt=_image_motion_prompt_for_scene(
+                        scenes[scene_idx],
+                        review,
+                    ),
                 )
+                if repair_scene.get('provider') == 'gemini_image_motion':
+                    image_motion_submission_scenes.add(scene_idx)
                 repair_path = work / f'runway_repair_s{scene_idx:02d}.mp4'
                 download_generated_scene(
-                    str(repair_scene['url']),
+                    repair_scene,
                     repair_path,
                 )
                 repair_spec = _generated_visual_spec(
@@ -3006,6 +3121,14 @@ def run_video_pipeline(
                         repair_scene.get('provider_attempts') or 1
                     ),
                 )
+                if repair_scene.get('synthetic_motion') is True:
+                    repair_spec.update({
+                        'synthetic_motion_only': True,
+                        'motion_recipe_version': repair_scene.get(
+                            'motion_recipe_version'
+                        ),
+                        'source_media_type': 'image',
+                    })
                 scene_visuals[scene_idx] = [repair_spec, *existing_specs][:3]
                 final_runway_repair_scenes.append(scene_idx)
                 generated_video_provider_records.append({
@@ -3018,6 +3141,20 @@ def run_video_pipeline(
                     'quota_fallback_from': repair_scene.get(
                         'quota_fallback_from'
                     ),
+                    'quota_fallback_chain': repair_scene.get(
+                        'quota_fallback_chain'
+                    ),
+                    'fallback_reason': repair_scene.get('fallback_reason'),
+                    'source_media_type': repair_scene.get(
+                        'source_media_type'
+                    ),
+                    'synthetic_motion': repair_scene.get('synthetic_motion'),
+                    'motion_recipe_version': repair_scene.get(
+                        'motion_recipe_version'
+                    ),
+                    'image_model': repair_scene.get('image_model'),
+                    'image_sha256': repair_scene.get('image_sha256'),
+                    'prompt_sha256': repair_scene.get('prompt_sha256'),
                 })
                 visual_replacements.append({
                     'scene_index': scene_idx,
@@ -3027,6 +3164,8 @@ def run_video_pipeline(
                     'stage': 'final_visual_qc_ai_repair',
                 })
             except Exception as exc:
+                if isinstance(exc, GeminiImageAttemptedError):
+                    image_motion_submission_scenes.add(scene_idx)
                 final_runway_repair_failures.append(scene_idx)
                 runway_failure_diagnostics.append(
                     _runway_failure_diagnostic(
@@ -3203,6 +3342,31 @@ def run_video_pipeline(
         unresolved_scenes = [idx for idx, specs in enumerate(scene_visuals) if not any(_visual_path(s) for s in specs)]
         if unresolved_scenes:
             raise RuntimeError(f'Visual quality gate rejected unresolved scenes: {unresolved_scenes}')
+
+        # Synthetic camera motion over a still image can satisfy pixel-motion
+        # probes without proving real temporal action. Even when the semantic
+        # critic approves it, keep that exact clip private-review-only.
+        for scene_idx in range(min(len(scenes), len(scene_visuals))):
+            selected_spec = (
+                scene_visuals[scene_idx][0]
+                if scene_visuals[scene_idx]
+                else None
+            )
+            if (
+                isinstance(selected_spec, dict)
+                and selected_spec.get('generation_provider')
+                == 'gemini_image_motion'
+            ):
+                review = final_reviews.get(scene_idx)
+                if not isinstance(review, dict):
+                    raise FinalVisualQualityError(
+                        'Gemini image-motion clip is missing final review'
+                    )
+                register_manual_qa_preview(
+                    scene_idx,
+                    review,
+                    selected_spec,
+                )
 
         final_manual_forced_overlap = manual_qa_preview_scenes & (
             provider_outage_stock_scenes
