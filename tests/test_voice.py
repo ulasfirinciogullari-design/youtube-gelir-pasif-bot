@@ -1,3 +1,4 @@
+import base64
 import sys
 import tempfile
 import types
@@ -20,8 +21,12 @@ sys.modules['redis'] = redis_stub
 from app.services.voice import normalize_turkish_tts
 from app.services.voice import _voice_speed
 from app.services.voice import _fit_duration
+from app.services.voice import _join_scene_narration
+from app.services.voice import _scene_durations_from_alignment
 from app.services.voice import _deterministic_scene_seed
+from app.services.voice import synthesize_scene_sequence
 from app.services.voice import synthesize_voice_with_id
+from app.services.voice import synthesize_voice_with_timestamps
 import app.services.voice as voice_module
 
 if _previous_config_module is None:
@@ -49,6 +54,14 @@ class _FakeVoiceResponse:
 
     def raise_for_status(self):
         return None
+
+
+class _FakeTimestampResponse(_FakeVoiceResponse):
+    def __init__(self, payload):
+        self.payload = payload
+
+    def json(self):
+        return self.payload
 
 
 class TurkishVoiceNormalizationTests(unittest.TestCase):
@@ -100,6 +113,128 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertEqual(_voice_speed(60), 1.01)
         self.assertEqual(_voice_speed(None), 1.01)
 
+    def test_near_unity_short_preview_fit_uses_only_minimal_tempo_change(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'raw')
+
+            def fake_ffmpeg(command, **_kwargs):
+                Path(command[-1]).write_bytes(b'fitted')
+
+            with (
+                patch.object(
+                    voice_module,
+                    '_media_duration',
+                    side_effect=[29.56, 29.50],
+                ),
+                patch.object(
+                    voice_module.subprocess,
+                    'run',
+                    side_effect=fake_ffmpeg,
+                ) as run,
+            ):
+                durations, before, after, rate = _fit_duration(
+                    output,
+                    [10.0, 9.0, 10.56],
+                    30.0,
+                )
+
+        self.assertEqual(before, 29.56)
+        self.assertEqual(after, 29.50)
+        self.assertAlmostEqual(rate, 29.56 / 29.5, places=6)
+        self.assertLess(abs(rate - 1.0), 0.01)
+        self.assertAlmostEqual(sum(durations), 29.50, places=6)
+        self.assertIn(f'atempo={rate:.6f}', run.call_args.args[0])
+
+    def test_short_preview_rejects_out_of_range_tempo_in_both_directions(self):
+        cases = [
+            (27.0, '0.915x'),
+            (33.2, '1.125x'),
+        ]
+
+        for measured_duration, expected_rate in cases:
+            with self.subTest(measured_duration=measured_duration):
+                with tempfile.TemporaryDirectory() as tmp:
+                    output = Path(tmp) / 'voice.mp3'
+                    output.write_bytes(b'raw')
+                    with (
+                        patch.object(
+                            voice_module,
+                            '_media_duration',
+                            return_value=measured_duration,
+                        ),
+                        patch.object(
+                            voice_module.subprocess,
+                            'run',
+                        ) as run,
+                    ):
+                        with self.assertRaisesRegex(
+                            RuntimeError,
+                            expected_rate,
+                        ):
+                            _fit_duration(output, [measured_duration], 30.0)
+                        run.assert_not_called()
+                        self.assertEqual(output.read_bytes(), b'raw')
+
+    def test_continuous_narration_join_retains_exact_scene_spans(self):
+        narration, spans = _join_scene_narration([
+            'Bir.',
+            'İki kelime.',
+            'Son.',
+        ])
+
+        self.assertEqual(narration, 'Bir. İki kelime. Son.')
+        self.assertEqual(spans, [(0, 4), (5, 16), (17, 21)])
+        self.assertEqual(
+            [narration[start:end] for start, end in spans],
+            ['Bir.', 'İki kelime.', 'Son.'],
+        )
+
+    def test_source_alignment_yields_real_scene_durations(self):
+        narration, spans = _join_scene_narration([
+            'Bir.',
+            'İki kelime.',
+            'Son.',
+        ])
+        alignment = {
+            'characters': list(narration),
+            'character_end_times_seconds': [
+                round((index + 1) * 0.1, 2)
+                for index in range(len(narration))
+            ],
+        }
+
+        durations = _scene_durations_from_alignment(
+            narration,
+            spans,
+            alignment,
+            2.30,
+        )
+
+        self.assertEqual(len(durations), 3)
+        self.assertAlmostEqual(durations[0], 0.40, places=6)
+        self.assertAlmostEqual(durations[1], 1.20, places=6)
+        self.assertAlmostEqual(durations[2], 0.70, places=6)
+        self.assertAlmostEqual(sum(durations), 2.30, places=6)
+
+    def test_source_alignment_mismatch_fails_closed(self):
+        narration, spans = _join_scene_narration(['Bir.', 'İki.'])
+        alignment = {
+            'characters': list('Bir. Iki.'),
+            'character_end_times_seconds': [
+                round((index + 1) * 0.1, 2)
+                for index in range(len(narration))
+            ],
+        }
+
+        with self.assertRaisesRegex(RuntimeError, 'does not match narration'):
+            _scene_durations_from_alignment(
+                narration,
+                spans,
+                alignment,
+                1.0,
+            )
+
     @patch.object(voice_module.httpx, 'post', create=True)
     def test_selected_speed_is_sent_to_elevenlabs(self, post):
         config_stub.settings.elevenlabs_api_key = 'test-key'
@@ -117,6 +252,174 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
             request.kwargs['json']['voice_settings']['speed'],
             0.84,
         )
+
+    @patch.object(voice_module.httpx, 'post', create=True)
+    def test_elevenlabs_request_profile_remains_fixed(self, post):
+        config_stub.settings.elevenlabs_api_key = 'test-key'
+        post.return_value = _FakeVoiceResponse()
+
+        synthesize_voice_with_id(
+            'Altmış iki konteyner.',
+            'test-voice',
+            previous_text='Fırtına başladı.',
+            next_text='Parçalar kıyıya ulaştı.',
+            speed=0.92,
+        )
+
+        request = post.call_args
+        self.assertEqual(
+            request.kwargs['json'],
+            {
+                'text': 'Altmış iki konteyner.',
+                'model_id': 'eleven_multilingual_v2',
+                'apply_text_normalization': 'on',
+                'voice_settings': {
+                    'stability': 0.40,
+                    'similarity_boost': 0.80,
+                    'style': 0.0,
+                    'use_speaker_boost': True,
+                    'speed': 0.92,
+                },
+                'previous_text': 'Fırtına başladı.',
+                'next_text': 'Parçalar kıyıya ulaştı.',
+            },
+        )
+        self.assertEqual(
+            request.kwargs['params'],
+            {'output_format': 'mp3_44100_128'},
+        )
+        self.assertEqual(request.kwargs['timeout'], 180)
+
+    @patch.object(voice_module.httpx, 'post', create=True)
+    def test_timestamp_request_is_single_and_keeps_voice_profile(self, post):
+        config_stub.settings.elevenlabs_api_key = 'test-key'
+        alignment = {
+            'characters': list('Bir. İki.'),
+            'character_start_times_seconds': [0.0] * 9,
+            'character_end_times_seconds': [0.1] * 9,
+        }
+        post.return_value = _FakeTimestampResponse({
+            'audio_base64': base64.b64encode(b'continuous-voice').decode(),
+            'alignment': alignment,
+        })
+
+        audio, actual_alignment = synthesize_voice_with_timestamps(
+            'Bir. İki.',
+            'test-voice',
+            speed=0.92,
+            seed=123,
+        )
+
+        self.assertEqual(audio, b'continuous-voice')
+        self.assertIs(actual_alignment, alignment)
+        post.assert_called_once()
+        request = post.call_args
+        self.assertTrue(request.args[0].endswith(
+            '/text-to-speech/test-voice/with-timestamps'
+        ))
+        self.assertEqual(
+            request.kwargs['json'],
+            {
+                'text': 'Bir. İki.',
+                'model_id': 'eleven_multilingual_v2',
+                'apply_text_normalization': 'on',
+                'voice_settings': {
+                    'stability': 0.40,
+                    'similarity_boost': 0.80,
+                    'style': 0.0,
+                    'use_speaker_boost': True,
+                    'speed': 0.92,
+                },
+                'seed': 123,
+            },
+        )
+        self.assertEqual(
+            request.kwargs['params'],
+            {'output_format': 'mp3_44100_128'},
+        )
+        self.assertEqual(request.kwargs['timeout'], 180)
+
+    def test_short_preview_uses_one_continuous_timestamp_take(self):
+        scenes = [
+            {'narration': 'Bir'},
+            {'narration': 'İki'},
+        ]
+        narration = 'Bir. İki.'
+        alignment = {
+            'characters': list(narration),
+            'character_end_times_seconds': [
+                3.0, 6.0, 9.0, 12.0,
+                12.1,
+                16.0, 20.0, 24.0, 27.0,
+            ],
+        }
+        expected_seed = _deterministic_scene_seed(
+            'voice-id',
+            narration,
+            0,
+            3,
+        )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            real_path = Path
+
+            def mapped_path(value):
+                if str(value).replace('\\', '/') == '/tmp':
+                    return real_path(tmp)
+                return real_path(value)
+
+            def fake_ffmpeg(command, **_kwargs):
+                real_path(command[-1]).write_bytes(b'normalized')
+
+            with (
+                patch.object(
+                    voice_module,
+                    '_selected_voice_or_raise',
+                    return_value={'voice_id': 'voice-id', 'name': 'Mustafa'},
+                ),
+                patch.object(
+                    voice_module,
+                    'synthesize_voice_with_timestamps',
+                    return_value=(b'continuous', alignment),
+                ) as timestamp_synthesis,
+                patch.object(
+                    voice_module,
+                    'synthesize_voice_with_id',
+                ) as segmented_synthesis,
+                patch.object(
+                    voice_module,
+                    '_media_duration',
+                    return_value=29.5,
+                ),
+                patch.object(
+                    voice_module,
+                    'Path',
+                    side_effect=mapped_path,
+                ),
+                patch.object(
+                    voice_module.subprocess,
+                    'run',
+                    side_effect=fake_ffmpeg,
+                ) as run,
+            ):
+                result = synthesize_scene_sequence(
+                    scenes,
+                    'continuous-test',
+                    30.0,
+                    generation_attempt=3,
+                )
+
+        timestamp_synthesis.assert_called_once_with(
+            narration,
+            'voice-id',
+            speed=0.92,
+            seed=expected_seed,
+        )
+        segmented_synthesis.assert_not_called()
+        self.assertEqual(run.call_count, 1)
+        self.assertEqual(result['spoken_texts'], ['Bir.', 'İki.'])
+        self.assertEqual(result['scene_durations'], [12.0, 17.5])
+        self.assertEqual(result['tempo_rate'], 1.0)
 
     @patch.object(voice_module.httpx, 'post', create=True)
     def test_seed_is_sent_as_top_level_elevenlabs_request_field(self, post):
@@ -193,4 +496,3 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

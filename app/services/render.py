@@ -69,9 +69,42 @@ def max_freeze_duration(path: str | Path, minimum_seconds: float = 2.0) -> float
         f'scale=320:-2,freezedetect=n=-40dB:d={minimum_seconds:.2f}',
         '-an', '-f', 'null', '-',
     ], capture_output=True, text=True, check=False)
+    if completed.returncode != 0:
+        raise RuntimeError('Horizontal letterbox inspection failed')
     durations = [
         float(value) for value in re.findall(
             r'lavfi\.freezedetect\.freeze_duration:\s*([0-9.]+)',
+            completed.stderr or '',
+        )
+    ]
+    return max(durations, default=0.0)
+
+
+def max_horizontal_letterbox_duration(
+    path: str | Path,
+    minimum_seconds: float = 0.25,
+    band_height: int = 24,
+) -> float:
+    """Measure sustained black bands touching both horizontal frame edges."""
+    media_path = Path(path)
+    if not media_path.is_file():
+        return 0.0
+    band_height = max(2, int(band_height))
+    completed = subprocess.run([
+        'ffmpeg', '-hide_banner', '-nostats', '-i', str(media_path),
+        '-filter_complex', (
+            '[0:v]split=2[top][bottom];'
+            f'[top]crop=iw:{band_height}:0:0[top_band];'
+            f'[bottom]crop=iw:{band_height}:0:ih-{band_height}[bottom_band];'
+            '[top_band][bottom_band]vstack=inputs=2,'
+            f'blackdetect=d={minimum_seconds:.2f}:pix_th=0.10:pic_th=0.95'
+        ),
+        '-an', '-f', 'null', '-',
+    ], capture_output=True, text=True, check=False)
+    durations = [
+        float(value)
+        for value in re.findall(
+            r'black_duration:([0-9.]+)',
             completed.stderr or '',
         )
     ]
@@ -239,41 +272,53 @@ def normalize_clip(
             f'{source_duration:.3f}s source for {duration:.3f}s segment'
         )
 
-    filters = [
-        'scale=2050:1153:force_original_aspect_ratio=increase',
-        f'crop=1920:1080:{crop_xy}',
-        'setsar=1',
-        f'setpts=(PTS-STARTPTS)/{speed:.3f}',
-        # The speed transform already zero-bases timestamps. Rewriting PTS a
-        # second time after trim makes FFmpeg drop the last frame for valid
-        # fractional targets such as 124/30 seconds.
-        f'fps={FPS}',
-        f'trim=end_frame={segment_frames}',
-    ]
-    if transition == 'dip' and duration >= 1.2:
-        fade_out = max(0.3, duration - 0.18)
-        filters.extend([
-            'fade=t=in:st=0:d=0.12',
-            f'fade=t=out:st={fade_out:.3f}:d=0.16',
-        ])
-    filters.append('format=yuv420p')
-
     input_args = ['-i', input_path]
     if not forbid_loop:
         input_args = ['-stream_loop', '-1', '-i', input_path]
-    _run([
-        'ffmpeg', '-y', '-ss', f'{start_seconds:.3f}', *input_args,
-        '-vf', ','.join(filters),
-        '-frames:v', str(segment_frames), '-an',
-        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
-        str(output_path),
-    ])
-    actual_frames = video_frame_count(output_path)
-    if actual_frames != segment_frames:
-        raise RuntimeError(
-            'Normalized clip frame gate rejected segment: '
-            f'{actual_frames} frames for {segment_frames} frame target'
-        )
+
+    def render_attempt(scale_geometry: str) -> None:
+        filters = [
+            f'scale={scale_geometry}:force_original_aspect_ratio=increase',
+            f'crop=1920:1080:{crop_xy}',
+            'setsar=1',
+            f'setpts=(PTS-STARTPTS)/{speed:.3f}',
+            # The speed transform already zero-bases timestamps. Rewriting
+            # PTS a second time after trim makes FFmpeg drop the last frame
+            # for valid fractional targets such as 124/30 seconds.
+            f'fps={FPS}',
+            f'trim=end_frame={segment_frames}',
+        ]
+        if transition == 'dip' and duration >= 1.2:
+            fade_out = max(0.3, duration - 0.18)
+            filters.extend([
+                'fade=t=in:st=0:d=0.12',
+                f'fade=t=out:st={fade_out:.3f}:d=0.16',
+            ])
+        filters.append('format=yuv420p')
+        _run([
+            'ffmpeg', '-y', '-ss', f'{start_seconds:.3f}', *input_args,
+            '-vf', ','.join(filters),
+            '-frames:v', str(segment_frames), '-an',
+            '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
+            str(output_path),
+        ])
+        actual_frames = video_frame_count(output_path)
+        if actual_frames != segment_frames:
+            raise RuntimeError(
+                'Normalized clip frame gate rejected segment: '
+                f'{actual_frames} frames for {segment_frames} frame target'
+            )
+
+    render_attempt('2050:1153')
+    if max_horizontal_letterbox_duration(output_path) > 0.25:
+        # Some otherwise usable generated clips arrive with cinematic black
+        # bars encoded into the picture. One bounded stronger overscan removes
+        # them without paying for or looping another generated clip.
+        render_attempt('2304:1296')
+        if max_horizontal_letterbox_duration(output_path) > 0.25:
+            raise RuntimeError(
+                'Normalized clip letterbox gate rejected persistent black bars'
+            )
     return str(output_path)
 
 
@@ -472,6 +517,9 @@ def render_video(
         'aresample=48000',
         f'apad=whole_dur={master_duration:.3f}',
         f'atrim=duration={master_duration:.3f}',
+        'loudnorm=I=-15:TP=-1.0:LRA=7',
+        'aresample=48000',
+        f'atrim=duration={master_duration:.3f}',
         'asetpts=N/SR/TB',
     ])
     _run([
@@ -511,4 +559,3 @@ def render_video(
         'caption_format': 'srt',
         'srt': str(srt),
     }
-

@@ -9,6 +9,38 @@ import app.services.render as render_module
 
 
 class RenderQualityTests(unittest.TestCase):
+    def test_horizontal_letterbox_detector_uses_both_frame_edges(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            media = Path(tmp) / 'letterboxed.mp4'
+            media.write_bytes(b'video')
+            completed = subprocess.CompletedProcess(
+                args=[],
+                returncode=0,
+                stdout='',
+                stderr=(
+                    'black_start:4.366667 black_end:7.933333 '
+                    'black_duration:3.566667'
+                ),
+            )
+            with patch.object(
+                render_module.subprocess,
+                'run',
+                return_value=completed,
+            ) as run:
+                duration = render_module.max_horizontal_letterbox_duration(
+                    media
+                )
+
+        self.assertAlmostEqual(duration, 3.566667)
+        command = run.call_args.args[0]
+        filter_complex = command[command.index('-filter_complex') + 1]
+        self.assertIn('[top]crop=iw:24:0:0[top_band]', filter_complex)
+        self.assertIn(
+            '[bottom]crop=iw:24:0:ih-24[bottom_band]',
+            filter_complex,
+        )
+        self.assertIn('[top_band][bottom_band]vstack=inputs=2', filter_complex)
+
     def test_fixed_master_never_silently_truncates_overlong_narration(self):
         with tempfile.TemporaryDirectory() as tmp:
             work = Path(tmp)
@@ -88,6 +120,55 @@ class RenderQualityTests(unittest.TestCase):
         self.assertEqual(len(commands), 1)
         video_filter = commands[0][commands[0].index('-vf') + 1]
         self.assertNotIn('tpad=', video_filter)
+
+    def test_letterboxed_clip_gets_one_bounded_stronger_overscan(self):
+        commands = []
+        with (
+            patch.object(render_module, 'media_duration', return_value=10.0),
+            patch.object(render_module, '_run', side_effect=commands.append),
+            patch.object(render_module, 'video_frame_count', return_value=270),
+            patch.object(
+                render_module,
+                'max_horizontal_letterbox_duration',
+                side_effect=[3.5, 0.0],
+            ),
+        ):
+            render_module.normalize_clip(
+                {'path': 'generated.mp4', 'forbid_loop': True},
+                'normalized.mp4',
+                9.0,
+                0,
+            )
+
+        self.assertEqual(len(commands), 2)
+        first_filter = commands[0][commands[0].index('-vf') + 1]
+        retry_filter = commands[1][commands[1].index('-vf') + 1]
+        self.assertIn('scale=2050:1153:', first_filter)
+        self.assertIn('scale=2304:1296:', retry_filter)
+        self.assertNotIn('-stream_loop', commands[0])
+        self.assertNotIn('-stream_loop', commands[1])
+
+    def test_persistent_letterbox_fails_closed_after_one_retry(self):
+        commands = []
+        with (
+            patch.object(render_module, 'media_duration', return_value=10.0),
+            patch.object(render_module, '_run', side_effect=commands.append),
+            patch.object(render_module, 'video_frame_count', return_value=270),
+            patch.object(
+                render_module,
+                'max_horizontal_letterbox_duration',
+                side_effect=[3.5, 1.2],
+            ),
+        ):
+            with self.assertRaisesRegex(RuntimeError, 'letterbox gate'):
+                render_module.normalize_clip(
+                    {'path': 'generated.mp4', 'forbid_loop': True},
+                    'normalized.mp4',
+                    9.0,
+                    0,
+                )
+
+        self.assertEqual(len(commands), 2)
 
     @unittest.skipUnless(
         shutil.which('ffmpeg') and shutil.which('ffprobe'),
@@ -189,6 +270,11 @@ class RenderQualityTests(unittest.TestCase):
         audio_filter = mux_command[mux_command.index('-af') + 1]
         self.assertIn('apad=whole_dur=30.000', audio_filter)
         self.assertIn('atrim=duration=30.000', audio_filter)
+        self.assertIn('loudnorm=I=-15:TP=-1.0:LRA=7', audio_filter)
+        self.assertGreater(
+            audio_filter.rfind('aresample=48000'),
+            audio_filter.index('loudnorm='),
+        )
         self.assertEqual(mux_command[mux_command.index('-frames:v') + 1], '900')
         self.assertEqual(result['frame_count'], 900)
         self.assertEqual(result['ending_silence_seconds'], 0.5)
@@ -283,4 +369,3 @@ class RenderQualityTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
