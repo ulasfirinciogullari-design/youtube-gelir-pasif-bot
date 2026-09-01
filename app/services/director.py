@@ -100,7 +100,7 @@ _EXACT_NARRATION_PREFIX_PATTERN = re.compile(
     r'(?:'
     r'(?:(?:konuşma|seslendirme|anlatım|anlatıcı)\s+metni)\s+'
     r'(?:tam\s+olarak|aynen)\s+(?:(?:şu|şöyle|aşağıdaki)\s+)?'
-    r'[^:“"«]{0,120}\b(?:olsun|kullanılsın|okunsun)'
+    r'[^:“"«]{0,120}\b(?:olsun|kullanılsın|okunsun|şöyledir|şudur|budur)'
     r'|'
     r'(?:(?:spoken\s+narration|spoken\s+text|voiceover(?:\s+text)?|'
     r'narration)\s+(?:must|should|shall)\s+be\s+'

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
 from html import escape
 import json
+import re
 import secrets
 from urllib.parse import urlparse
 from uuid import uuid4
@@ -40,8 +42,93 @@ OAUTH_BINDING_COOKIE = 'youtube_oauth_browser_binding'
 OAUTH_CALLBACK_PATH = '/studio/youtube/callback'
 
 CSS = r'''
-*{box-sizing:border-box}html{background:#080b11}body{margin:0;color:#eef2f8;font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at 10% 0,#263668 0,transparent 34%),#080b11;min-height:100vh}.wrap{max-width:1050px;margin:auto;padding:20px 20px 80px}a{color:inherit;text-decoration:none}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #293143}.brand{font-weight:950}.nav{display:flex;gap:8px;flex-wrap:wrap}.nav a{padding:9px 12px;border:1px solid #344056;border-radius:999px;background:#111824;font-size:13px;font-weight:800}.hero{padding:34px 0 20px}.hero h1{font-size:40px;margin:0 0 8px;letter-spacing:-.04em}.muted{color:#9ba7b8}.card{background:rgba(19,24,35,.95);border:1px solid #2c3547;border-radius:20px;padding:18px;margin-bottom:14px}.btn,button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:13px;padding:12px 15px;background:#ff0033;color:white;font:inherit;font-weight:900;cursor:pointer}select{min-width:230px;border:1px solid #38445a;border-radius:13px;padding:11px 12px;background:#101722;color:#eef2f8;font:inherit;font-weight:800}.btn.secondary{background:#172030;border:1px solid #38445a}.btn.success{background:#198958}.btn.danger{background:#8e3540}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.badge{display:inline-flex;padding:7px 10px;border-radius:999px;border:1px solid #354055;background:#101722;font-size:12px;font-weight:850;margin:3px}.job{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid #303a4d;border-radius:14px;background:#0d131d;margin-bottom:9px}.job-title{font-weight:900}.tiny{font-size:12px;color:#8996a8}form.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.notice{border:1px solid #6e5f22;background:#2a2411;color:#f4df89;border-radius:14px;padding:13px}.progress{height:13px;border:1px solid #344054;background:#090e16;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#ff0033,#ff8b33);transition:width .35s ease}pre{white-space:pre-wrap;word-break:break-word;background:#090e16;border:1px solid #2d3748;border-radius:14px;padding:14px}@media(max-width:650px){.wrap{padding:10px 10px 70px}.hero h1{font-size:31px}.top{align-items:flex-start}.job{grid-template-columns:1fr}.actions .btn,form.inline button,form.inline select{width:100%}}
+:root{color-scheme:dark;--bg:#090c11;--surface:#111721;--surface-2:#0d131c;--line:#273142;--line-strong:#39465c;--text:#f3f6fb;--muted:#9da9ba;--accent:#f0445d;--good:#51d593;--warn:#f5cd68;--bad:#ff7d88}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;background:radial-gradient(circle at 10% -10%,rgba(83,95,162,.25),transparent 34%),radial-gradient(circle at 95% 0,rgba(127,42,66,.14),transparent 28%),var(--bg)}a{color:inherit;text-decoration:none}button,select{font:inherit}.skip-link{position:fixed;left:12px;top:8px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:10px;background:#fff;color:#111;font-weight:800}.skip-link:focus{transform:none}.wrap{max-width:1120px;margin:auto;padding:0 22px 72px}.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px;background:rgba(9,12,17,.9);backdrop-filter:blur(18px);border-bottom:1px solid rgba(57,70,92,.7)}.brand{font-weight:900;font-size:17px;letter-spacing:-.02em}.nav{display:flex;gap:6px;flex-wrap:wrap}.nav a{padding:8px 11px;border:1px solid transparent;border-radius:10px;color:var(--muted);font-size:13px;font-weight:750}.nav a:hover{color:var(--text);background:#151c28}.nav a.active,.nav a[aria-current=page]{color:#fff;background:#281b22;border-color:#62303d}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:38px 0 22px}.hero-copy{max-width:720px}.hero-tools{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}.eyebrow{margin-bottom:8px;color:#ff9aaa;font-size:12px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.hero h1{font-size:clamp(32px,5vw,46px);line-height:1.05;margin:0 0 10px;letter-spacing:-.045em}.muted{color:var(--muted)}.tiny{font-size:12px;color:#8f9bad}.card{background:rgba(17,23,33,.95);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:0 20px 55px rgba(0,0,0,.15)}.card h2,.card h3{margin:0 0 8px;letter-spacing:-.02em}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.section-kicker{display:block;margin-bottom:4px;color:#8e9aad;font-size:12px;font-weight:800}.btn,button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border:1px solid transparent;border-radius:11px;padding:10px 14px;background:var(--accent);color:white;font-weight:850;cursor:pointer}.btn:hover,button:hover{filter:brightness(1.08)}.btn.secondary{background:#171f2c;border-color:#364258}.btn.success{background:#167d51}.btn.danger{background:#782c36}.btn.small,button.small{min-height:36px;padding:7px 11px;font-size:12px}select{min-width:230px;border:1px solid var(--line-strong);border-radius:11px;padding:10px 12px;background:#0a1018;color:var(--text);font-weight:750;outline:none}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;border:1px solid #354055;background:#111824;font-size:12px;font-weight:750}.badge.good{border-color:#275a42;background:#10291e;color:#9de7bc}.badge.ready{border-color:#2c6549;background:#123423;color:#8fe8b5}.channel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.channel-card{padding:15px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2)}.channel-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.channel-title{font-weight:850}.channel-metrics{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.channel-actions{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}form.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.notice{border:1px solid #6b5b23;background:#29230f;color:#f5df88;border-radius:12px;padding:12px 14px;font-size:13px}.notice.success{border-color:#285d45;background:#10291e;color:#9ee7bd}.video-list{display:grid;gap:10px}.video-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,auto);gap:12px 18px;align-items:start;padding:15px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2)}.video-card:hover{border-color:#3b4960}.video-main{min-width:0}.video-title{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;font-size:15px;font-weight:850;line-height:1.35}.video-meta{display:flex;gap:6px 12px;align-items:center;flex-wrap:wrap;margin-top:7px;color:#929fb0;font-size:12px}.video-meta span{white-space:nowrap}.video-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.video-actions form{justify-content:flex-end}.brief-details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:9px}.brief-details>summary{width:max-content;max-width:100%;cursor:pointer;color:#9eabc0;font-size:12px;font-weight:750}.brief-full{margin-top:9px;max-height:180px;overflow:auto;padding:11px;border-radius:10px;background:#090e15;color:#c7d0dc;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}.empty{padding:22px;border:1px dashed var(--line-strong);border-radius:13px;color:var(--muted);text-align:center}.progress{height:10px;border:1px solid #344054;background:#090e16;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#f0445d,#f29452);transition:width .35s ease}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#090e16;border:1px solid var(--line);border-radius:12px;padding:13px;max-height:260px;overflow:auto}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid rgba(118,170,255,.62);outline-offset:3px}
+@media(max-width:760px){.hero{align-items:flex-start;flex-direction:column}.hero-tools{justify-content:flex-start}.channel-grid{grid-template-columns:1fr}.video-card{grid-template-columns:1fr}.video-actions,.video-actions form{justify-content:flex-start}}
+@media(max-width:650px){.wrap{padding:0 12px 56px}.top{position:static;align-items:flex-start;flex-direction:column;padding:14px 0}.nav{width:100%;overflow-x:auto;flex-wrap:nowrap}.nav a{white-space:nowrap}.hero{padding:28px 0 18px}.hero h1{font-size:32px}.card{padding:16px}.section-head{flex-direction:column}.video-actions form,.video-actions select,.video-actions button,.actions .btn{width:100%}}
+@media(prefers-reduced-motion:reduce){.bar{transition:none}}
 '''
+
+
+_UI_URL_RE = re.compile(r'(?i)\bhttps?://\S+')
+_UI_SECRET_RE = re.compile(
+    r'(?i)\b(api[_ -]?key|authorization|bearer|token|secret)\b\s*[:=]\s*\S+'
+)
+_TR_MONTHS = (
+    '', 'Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
+    'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara',
+)
+
+
+def _plain_text(value) -> str:
+    return ' '.join(str(value or '').split())
+
+
+def _safe_ui_text(value) -> str:
+    text = _UI_URL_RE.sub('[bağlantı gizlendi]', _plain_text(value))
+    return _UI_SECRET_RE.sub(lambda match: f'{match.group(1)}=[gizlendi]', text)
+
+
+def _ellipsize(value, limit: int) -> str:
+    text = _plain_text(value)
+    if len(text) <= limit:
+        return text
+    shortened = text[: max(1, limit - 1)].rsplit(' ', 1)[0].rstrip(' ,;:-')
+    return f'{shortened or text[: max(1, limit - 1)]}…'
+
+
+def _ready_title(job: dict) -> str:
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    package = result.get('package') if isinstance(result.get('package'), dict) else {}
+    for candidate in (
+        result.get('title'),
+        package.get('title'),
+        spec.get('title'),
+    ):
+        title = _safe_ui_text(candidate)
+        if title:
+            return _ellipsize(title, 96)
+    return _ellipsize(_safe_ui_text(spec.get('topic')), 96) or 'Hazır video'
+
+
+def _ready_brief(job: dict) -> str:
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    return _safe_ui_text(spec.get('topic'))
+
+
+def _ready_duration(job: dict) -> str:
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    try:
+        seconds = float(result.get('duration') or 0)
+    except (TypeError, ValueError):
+        seconds = 0
+    if seconds <= 0:
+        try:
+            seconds = float(spec.get('duration_minutes') or 0) * 60
+        except (TypeError, ValueError):
+            seconds = 0
+    if seconds <= 0:
+        return ''
+    if seconds < 90:
+        return f'{round(seconds):d} sn'
+    minutes = seconds / 60
+    return f'{minutes:.0f} dk' if minutes.is_integer() else f'{minutes:.1f} dk'
+
+
+def _ready_date(job: dict) -> str:
+    raw = str(job.get('created_at') or job.get('updated_at') or '').strip()
+    if not raw:
+        return ''
+    try:
+        value = datetime.fromisoformat(raw.replace('Z', '+00:00'))
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=timezone.utc)
+        value = value.astimezone(timezone(timedelta(hours=3)))
+    except (TypeError, ValueError):
+        return ''
+    return f'{value.day} {_TR_MONTHS[value.month]} {value.year} · {value:%H:%M}'
 
 
 def _valid_token(value: str | None) -> bool:
@@ -116,10 +203,14 @@ def _shell(
 ) -> HTMLResponse:
     response = HTMLResponse(
         '<!doctype html><html lang="tr"><head><meta charset="utf-8">'
-        '<meta name="viewport" content="width=device-width,initial-scale=1">'
-        f'<title>{escape(title)}</title><style>{CSS}</style></head><body><div class="wrap">'
-        '<div class="top"><a class="brand" href="/studio">🎬 YouTube Studio V2</a><nav class="nav"><a href="/studio">Yeni üretim</a><a href="/studio/history">Geçmiş</a><a href="/studio/youtube">YouTube</a></nav></div>'
-        f'{body}</div>{script}</body></html>',
+        '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+        '<meta name="theme-color" content="#090c11">'
+        f'<title>{escape(title)}</title><style>{CSS}</style></head><body>'
+        '<a class="skip-link" href="#main-content">İçeriğe geç</a><div class="wrap">'
+        '<header class="top"><a class="brand" href="/studio">🎬 YouTube Studio V2</a>'
+        '<nav class="nav" aria-label="Ana menü"><a href="/studio">Yeni üretim</a>'
+        '<a href="/studio/history">Geçmiş</a><a class="active" aria-current="page" href="/studio/youtube">YouTube</a></nav></header>'
+        f'<main id="main-content" tabindex="-1">{body}</main></div>{script}</body></html>',
         status_code=status_code,
     )
     response.headers['Cache-Control'] = 'no-store'
@@ -157,50 +248,71 @@ def youtube_home(
     connections = status.get('connections') if isinstance(status.get('connections'), list) else []
 
     if status.get('configured'):
-        cards = []
+        channel_cards = []
         for channel in connections:
             channel_id = str(channel.get('id') or '')
             connection_id = str(channel.get('connection_id') or '')
-            cards.append(f'''
-<div class="card"><h2>Bağlı kanal ✅</h2><p><b>{escape(str(channel.get('title') or 'YouTube kanalı'))}</b></p><div><span class="badge">{escape(str(channel.get('subscriber_count') or '—'))} abone</span><span class="badge">{escape(str(channel.get('video_count') or '—'))} video</span><span class="badge">{escape(str(channel.get('view_count') or '—'))} görüntülenme</span><span class="badge">…{escape(channel_id[-6:])}</span></div><div class="actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger" type="submit">Bağlantıyı kaldır</button></form></div></div>''')
+            channel_cards.append(f'''
+<article class="channel-card"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Yüklemeye hazır</div></div><span class="badge good">● Bağlı</span></div><div class="channel-metrics"><span class="badge">{escape(str(channel.get('subscriber_count') or '—'))} abone</span><span class="badge">{escape(str(channel.get('video_count') or '—'))} video</span><span class="badge">{escape(str(channel.get('view_count') or '—'))} izlenme</span></div><div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
         count = int(status.get('connection_count') or len(connections))
         limit = int(status.get('connection_limit') or 10)
-        if count < limit:
-            cards.append(f'<div class="card"><h2>Yeni kanal bağla</h2><p class="muted">{count}/{limit} kanal bağlı. Google izin ekranında eklenecek YouTube kanalını seç.</p><form class="inline" method="post" action="/studio/youtube/connect"><button type="submit">Google ile başka kanal bağla</button></form></div>')
-        else:
-            cards.append(f'<div class="notice">Kanal sınırı dolu ({count}/{limit}). Yeni kanal eklemek için bir bağlantıyı kaldır.</div>')
+        connection_notice = ''
         if not connections and status.get('requires_reconnect'):
-            cards.insert(0, '<div class="notice">En az bir YouTube bağlantısı yenilenmeli.</div>')
-        account_card = ''.join(cards)
+            connection_notice = '<div class="notice" role="alert">En az bir YouTube bağlantısı yenilenmeli.</div>'
+        if count < limit:
+            connect_action = f'<div class="actions"><form class="inline" method="post" action="/studio/youtube/connect"><button type="submit">+ Google ile kanal bağla</button></form><span class="tiny">{count}/{limit} kanal kullanılıyor</span></div>'
+        else:
+            connect_action = f'<div class="notice">Kanal sınırı dolu ({count}/{limit}). Yeni kanal için önce bir bağlantıyı kaldır.</div>'
+        empty_channels = '<div class="empty">Henüz bağlı kanal yok.</div>' if not channel_cards else ''
+        account_card = f'''<section class="card"><div class="section-head"><div><span class="section-kicker">HESAPLAR</span><h2>Bağlı kanallar</h2><div class="muted">Her video yükleme anında tek bir hedef kanala sabitlenir.</div></div><span class="badge">{count}/{limit}</span></div>{connection_notice}<div class="channel-grid">{''.join(channel_cards)}</div>{empty_channels}{connect_action}</section>'''
     else:
-        callback = escape(str(settings.google_redirect_uri or '/studio/youtube/callback'))
-        account_card = f'''
-<div class="notice"><b>Google OAuth ayarları eksik.</b><p>Google istemcisi, yönlendirme adresi ve ayrı şifreleme anahtarı güvenli ortam değişkenleri olarak tanımlanmalı.</p><p>Yönlendirme adresi:</p><pre>{callback}</pre></div>'''
+        account_card = '''
+<div class="notice" role="alert"><b>Google bağlantı ayarları eksik.</b><p>Google istemcisi, yönlendirme adresi ve ayrı şifreleme anahtarı Railway’de güvenli ortam değişkenleri olarak tanımlanmalı.</p></div>'''
 
     rows = []
-    for job in _completed_jobs():
+    for index, job in enumerate(_completed_jobs(), start=1):
         result = job.get('result') or {}
         spec = job.get('spec') or {}
-        topic = escape(str(spec.get('topic') or result.get('title') or 'Video'))
-        duration = escape(str(round(float(result.get('duration') or 0), 1)))
+        raw_title = _ready_title(job)
+        title = escape(raw_title)
+        brief = _ready_brief(job)
+        duration = _ready_duration(job)
+        created = _ready_date(job)
+        channel_label = _ellipsize(_safe_ui_text(spec.get('channel_id')), 42)
         youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
         if youtube.get('url'):
             action = f'<a class="btn success" target="_blank" rel="noopener noreferrer" href="{escape(str(youtube.get("url")), quote=True)}">YouTube’da aç</a>'
+            ready_state = '<span class="badge good">Gizli yüklendi</span>'
         elif connections:
             options = ''.join(
-                f'<option value="{escape(str(item.get("id") or ""), quote=True)}">{escape(str(item.get("title") or "YouTube kanalı"))} · …{escape(str(item.get("id") or "")[-6:])}</option>'
+                f'<option value="{escape(str(item.get("id") or ""), quote=True)}">{escape(_ellipsize(_safe_ui_text(item.get("title") or "YouTube kanalı"), 60))}</option>'
                 for item in connections
             )
-            action = f'''<form class="inline" method="post" action="/studio/youtube/publish/{escape(str(job.get('task_id') or ''))}"><select name="youtube_channel_id" required>{options}</select><button type="submit">Seçili kanala gizli yükle</button></form>'''
+            selector_id = f'target-channel-{index}'
+            action = f'''<form class="inline" method="post" action="/studio/youtube/publish/{escape(str(job.get('task_id') or ''), quote=True)}"><label class="sr-only" for="{selector_id}">Hedef YouTube kanalı</label><select id="{selector_id}" name="youtube_channel_id" required aria-label="Hedef YouTube kanalı">{options}</select><button type="submit">Gizli yükle</button></form>'''
+            ready_state = '<span class="badge ready">Hazır</span>'
         else:
-            action = '<span class="tiny">Önce hesabı bağla</span>'
-        rows.append(
-            f'<div class="job"><div><div class="job-title">{topic}</div><div class="tiny">{duration} sn · {escape(str(job.get("task_id") or ""))}</div></div><div>{action}</div></div>'
+            action = '<span class="tiny">Önce bir YouTube kanalı bağla</span>'
+            ready_state = '<span class="badge ready">Hazır</span>'
+        metadata = [value for value in (duration, created) if value]
+        metadata.append(
+            f'Kanal etiketi: {channel_label}'
+            if channel_label else 'Hedef kanal yüklerken seçilecek'
         )
-    jobs_html = ''.join(rows) or '<div class="card muted">Yüklenebilir tamamlanmış video henüz yok.</div>'
-    success = '<div class="notice" style="border-color:#276744;background:#112d21;color:#8be5b4">YouTube hesabı ve kanal kimliği başarıyla doğrulandı.</div>' if connected else ''
+        meta_html = ''.join(f'<span>{escape(value)}</span>' for value in metadata)
+        details = ''
+        if brief and _plain_text(brief) != _plain_text(raw_title):
+            details = (
+                '<details class="brief-details"><summary>Yaratıcı talimatı gör</summary>'
+                f'<div class="brief-full">{escape(brief)}</div></details>'
+            )
+        rows.append(
+            f'<article class="video-card"><div class="video-main"><div class="video-title">{title}</div><div class="video-meta" aria-label="Video bilgileri">{meta_html}</div></div><div class="video-actions">{ready_state}{action}</div>{details}</article>'
+        )
+    jobs_html = ''.join(rows) or '<div class="empty">Yüklenebilir tamamlanmış video henüz yok.</div>'
+    success = '<div class="notice success" role="status">YouTube kanalı başarıyla bağlandı.</div>' if connected else ''
     body = f'''
-<div class="hero"><h1>YouTube yayın merkezi</h1><div class="muted">En fazla 10 kanal bağlanabilir. Her final yalnızca seçilen tek kanala ve önce gizli olarak yüklenir.</div></div>{success}{account_card}<div class="card"><h2>Hazır videolar</h2><p class="muted">Hedef kanal yükleme başlatılırken sabitlenir; aynı final ikinci kez gönderilmez.</p>{jobs_html}</div>'''
+<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Hazır videoyu seçtiğin kanala güvenle gönder. Her yükleme önce gizli kalır.</div></div><div class="hero-tools"><span class="badge good">🔒 Yalnızca gizli yükleme</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{account_card}<section class="card"><div class="section-head"><div><span class="section-kicker">YAYINA HAZIR</span><h2>Hazır videolar</h2><div class="muted">Başlık ve temel bilgiler önde; uzun talimat istenirse açılır.</div></div><span class="badge">{len(rows)} video</span></div><div class="video-list">{jobs_html}</div></section>'''
     return _shell(body, same_origin_forms=True)
 
 
@@ -427,10 +539,10 @@ def youtube_publish_status(
 ):
     _require_auth(studio_token)
     body = f'''
-<div class="hero"><h1>YouTube’a yükleniyor</h1><div class="muted">Görev: {escape(task_id)}</div></div><div class="card"><div id="stage"><b>Başlatılıyor…</b></div><div class="progress" style="margin:14px 0"><div class="bar" id="bar"></div></div><div class="muted" id="message">Final master hazırlanıyor.</div><div id="result"></div></div><div class="actions"><a class="btn secondary" href="/studio/youtube">← Yayın merkezine dön</a></div>'''
+<div class="hero"><div class="hero-copy"><div class="eyebrow">Gizli yükleme</div><h1>YouTube’a gönderiliyor</h1><div class="muted">Video hedef kanala aktarılıyor. Bu sayfa kendiliğinden güncellenir.</div></div><div class="hero-tools"><span class="badge good">🔒 Gizli</span></div></div><div class="card" aria-live="polite"><div id="stage"><b>Başlatılıyor…</b></div><div class="progress" id="progress" role="progressbar" aria-label="YouTube yükleme ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="margin:14px 0"><div class="bar" id="bar"></div></div><div class="muted" id="message">Final master hazırlanıyor.</div><div id="result"></div></div><div class="actions"><a class="btn secondary" href="/studio/youtube">← Yayın merkezine dön</a></div>'''
     safe_id = json.dumps(task_id)
     script = f'''<script>
 const id={safe_id};const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]));
-async function poll(){{try{{const r=await fetch(`/studio/api/job/${{encodeURIComponent(id)}}`,{{cache:'no-store'}});const j=await r.json();const p=Math.max(0,Math.min(100,Number(j.progress||0)));document.getElementById('bar').style.width=p+'%';document.getElementById('stage').innerHTML='<b>'+esc(j.stage_label||j.stage||j.state)+'</b> · %'+p;document.getElementById('message').textContent=j.message||'';if(j.state==='FAILURE'){{document.getElementById('result').innerHTML='<div class="notice">Yükleme tamamlanamadı. Tekrar yükleme başlatılmadan önce sonuç güvenle doğrulanmalıdır.</div>';return}}if(j.state==='SUCCESS'){{const x=j.result||{{}};document.getElementById('result').innerHTML=`<div class="actions"><a class="btn success" target="_blank" rel="noopener noreferrer" href="${{esc(x.youtube_url)}}">▶ YouTube’da aç</a><a class="btn secondary" href="/studio/youtube">Yayın merkezine dön</a></div>`;return}}setTimeout(poll,3000)}}catch(e){{document.getElementById('message').textContent='Durum geçici olarak alınamadı.';setTimeout(poll,5000)}}}}
+async function poll(){{try{{const r=await fetch(`/studio/api/job/${{encodeURIComponent(id)}}`,{{cache:'no-store'}});const j=await r.json();const p=Math.max(0,Math.min(100,Number(j.progress||0)));document.getElementById('bar').style.width=p+'%';document.getElementById('progress').setAttribute('aria-valuenow',String(p));document.getElementById('stage').innerHTML='<b>'+esc(j.stage_label||j.stage||j.state)+'</b> · %'+p;document.getElementById('message').textContent=j.message||'';if(j.state==='FAILURE'){{document.getElementById('result').innerHTML='<div class="notice" role="alert">Yükleme tamamlanamadı. Tekrar yükleme başlatılmadan önce sonuç güvenle doğrulanmalıdır.</div>';return}}if(j.state==='SUCCESS'){{const x=j.result||{{}};document.getElementById('result').innerHTML=`<div class="actions"><a class="btn success" target="_blank" rel="noopener noreferrer" href="${{esc(x.youtube_url)}}">▶ YouTube’da aç</a><a class="btn secondary" href="/studio/youtube">Yayın merkezine dön</a></div>`;return}}setTimeout(poll,3000)}}catch(e){{document.getElementById('message').textContent='Durum geçici olarak alınamadı.';setTimeout(poll,5000)}}}}
 poll();</script>'''
     return _shell(body, title='YouTube yükleme', script=script)

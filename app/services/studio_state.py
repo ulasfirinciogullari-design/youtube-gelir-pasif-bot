@@ -14,6 +14,11 @@ JOB_PREFIX = 'youtube_studio:job:'
 JOB_INDEX = 'youtube_studio:jobs'
 JOB_TTL_SECONDS = 60 * 60 * 24 * 90
 MAX_INDEXED_JOBS = 500
+REPAIR_CHECKPOINT_PREFIX = 'youtube_studio:repair_checkpoint:'
+REPAIR_CHECKPOINT_TTL_SECONDS = 60 * 60 * 24 * 30
+_TASK_ID_PATTERN = re.compile(
+    r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+)
 
 
 def _client() -> redis.Redis:
@@ -30,6 +35,60 @@ def _json_default(value: Any) -> str:
 
 def _job_key(task_id: str) -> str:
     return JOB_PREFIX + task_id
+
+
+def _repair_checkpoint_key(task_id: str) -> str:
+    normalized = str(task_id or '').strip().lower()
+    if not _TASK_ID_PATTERN.fullmatch(normalized):
+        raise ValueError('valid task_id is required')
+    return REPAIR_CHECKPOINT_PREFIX + normalized
+
+
+def save_repair_checkpoint(task_id: str, checkpoint: dict) -> dict:
+    """Persist one private, server-authored scene-repair checkpoint.
+
+    This payload deliberately lives outside the public Studio job record.  A
+    job exposes only the boolean ``repair_available`` flag; storyboard, object
+    keys and integrity metadata never cross the polling API boundary.
+    """
+    key = _repair_checkpoint_key(task_id)
+    normalized_task_id = str(task_id).strip().lower()
+    if (
+        not isinstance(checkpoint, dict)
+        or checkpoint.get('version') != 1
+        or checkpoint.get('source_task_id') != normalized_task_id
+        or not isinstance(checkpoint.get('approved_package'), dict)
+    ):
+        raise ValueError('repair checkpoint is invalid')
+    encoded = json.dumps(
+        checkpoint,
+        ensure_ascii=False,
+        separators=(',', ':'),
+        default=_json_default,
+    )
+    _client().setex(key, REPAIR_CHECKPOINT_TTL_SECONDS, encoded)
+    return checkpoint
+
+
+def consume_repair_checkpoint(task_id: str) -> dict | None:
+    """Atomically claim a repair package so one click means one paid repair."""
+    key = _repair_checkpoint_key(task_id)
+    raw = _client().getdel(key)
+    if not raw:
+        return None
+    try:
+        checkpoint = json.loads(raw)
+    except Exception:
+        return None
+    normalized_task_id = str(task_id).strip().lower()
+    if (
+        not isinstance(checkpoint, dict)
+        or checkpoint.get('version') != 1
+        or checkpoint.get('source_task_id') != normalized_task_id
+        or not isinstance(checkpoint.get('approved_package'), dict)
+    ):
+        return None
+    return checkpoint
 
 
 def get_job(task_id: str) -> dict | None:

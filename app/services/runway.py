@@ -34,6 +34,8 @@ _MIN_GENERATED_IMAGE_BYTES = 10 * 1024
 _MAX_GENERATED_IMAGE_BYTES = 12 * 1024 * 1024
 _MAX_GENERATED_IMAGE_PIXELS = 8_388_608
 _IMAGE_MOTION_FPS = 30
+_GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS = 10 * 60
+_GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL: dict[str, float] = {}
 
 
 class GeminiVideoTerminalError(RuntimeError):
@@ -497,6 +499,14 @@ def generate_scene(
         def generate_with_gemini_model(
             model_name: str | None = None,
         ) -> tuple[str, int]:
+            selected_model = model_name or _GEMINI_VIDEO_MODEL
+            if time.monotonic() < _GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL.get(
+                selected_model,
+                0.0,
+            ):
+                raise GeminiVideoQuotaError(
+                    'Gemini video model is in a local quota cooldown'
+                )
             provider_attempts = 1
             call_args = (
                 (prompt_text, seconds)
@@ -504,12 +514,25 @@ def generate_scene(
                 else (prompt_text, seconds, model_name)
             )
             try:
-                return _generate_gemini_video_uri(*call_args), provider_attempts
-            except GeminiVideoTerminalError:
-                # The provider explicitly completed the operation with an
-                # error, so a single resubmission is not ambiguous.
-                provider_attempts = 2
-                return _generate_gemini_video_uri(*call_args), provider_attempts
+                try:
+                    video_uri = _generate_gemini_video_uri(*call_args)
+                except GeminiVideoTerminalError:
+                    # The provider explicitly completed the operation with an
+                    # error, so a single resubmission is not ambiguous.
+                    provider_attempts = 2
+                    video_uri = _generate_gemini_video_uri(*call_args)
+            except GeminiVideoQuotaError:
+                # A typed quota rejection is definitive rather than an
+                # ambiguous create response. Remember that per-model result
+                # briefly so later scenes in this worker skip the same dead
+                # quota path instead of paying another backoff penalty before
+                # the image fallback.
+                _GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL[selected_model] = (
+                    time.monotonic() + _GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS
+                )
+                raise
+            _GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL.pop(selected_model, None)
+            return video_uri, provider_attempts
 
         def generate_image_motion_result(
             *,
