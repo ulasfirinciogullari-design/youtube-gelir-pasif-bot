@@ -847,6 +847,7 @@ def _apply_visual_review(
 def _generated_visual_spec(
     path: str | Path,
     provider: str = 'unknown',
+    provider_attempts: int = 1,
 ) -> dict:
     return {
         'path': str(path),
@@ -856,6 +857,7 @@ def _generated_visual_spec(
         'generated': True,
         'source_type': 'generated',
         'generation_provider': str(provider),
+        'generation_provider_attempts': max(1, int(provider_attempts)),
     }
 
 
@@ -2205,6 +2207,9 @@ def run_video_pipeline(
                 runway_spec = _generated_visual_spec(
                     runway_path,
                     provider=str(generated_scene['provider']),
+                    provider_attempts=int(
+                        generated_scene.get('provider_attempts') or 1
+                    ),
                 )
                 scene_visuals[scene_idx] = [runway_spec, *stock_fallback][:3]
                 runway_scenes_used += 1
@@ -2213,6 +2218,9 @@ def run_video_pipeline(
                     'stage': 'initial_generation',
                     'scene_index': scene_idx,
                     'provider': str(generated_scene['provider']),
+                    'provider_attempts': int(
+                        generated_scene.get('provider_attempts') or 1
+                    ),
                 })
             except Exception as exc:
                 runway_failed_scenes.append(scene_idx)
@@ -2373,6 +2381,9 @@ def run_video_pipeline(
                 repair_spec = _generated_visual_spec(
                     repair_path,
                     provider=str(repair_scene['provider']),
+                    provider_attempts=int(
+                        repair_scene.get('provider_attempts') or 1
+                    ),
                 )
                 scene_visuals[scene_idx] = [repair_spec, *existing_specs][:3]
                 final_runway_repair_scenes.append(scene_idx)
@@ -2380,6 +2391,9 @@ def run_video_pipeline(
                     'stage': 'final_repair',
                     'scene_index': scene_idx,
                     'provider': str(repair_scene['provider']),
+                    'provider_attempts': int(
+                        repair_scene.get('provider_attempts') or 1
+                    ),
                 })
                 visual_replacements.append({
                     'scene_index': scene_idx,
