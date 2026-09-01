@@ -3341,6 +3341,15 @@ def run_video_pipeline(
             'voice_duration_before_fit': voice_result.get('duration_before_fit'),
             'voice_duration_after_fit': voice_result.get('duration_after_fit'),
             'voice_tempo_rate': voice_result.get('tempo_rate'),
+            'voice_removed_silence_seconds': voice_result.get(
+                'removed_silence_seconds'
+            ),
+            'voice_compacted_boundary_pause_count': voice_result.get(
+                'compacted_boundary_pause_count'
+            ),
+            'voice_compacted_trailing_silence': voice_result.get(
+                'compacted_trailing_silence'
+            ),
             'audio_generation_attempts': audio_generation_attempts,
             'audio_qc': audio_qc,
             'audio_design': audio_design,
@@ -3453,6 +3462,15 @@ def run_video_pipeline(
             'voice_duration_before_fit': voice_result.get('duration_before_fit'),
             'voice_duration_after_fit': voice_result.get('duration_after_fit'),
             'voice_tempo_rate': voice_result.get('tempo_rate'),
+            'voice_removed_silence_seconds': voice_result.get(
+                'removed_silence_seconds'
+            ),
+            'voice_compacted_boundary_pause_count': voice_result.get(
+                'compacted_boundary_pause_count'
+            ),
+            'voice_compacted_trailing_silence': voice_result.get(
+                'compacted_trailing_silence'
+            ),
             'audio_qc': audio_qc,
             'audio_design': audio_design,
             'studio_options': options,

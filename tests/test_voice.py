@@ -23,6 +23,7 @@ from app.services.voice import _voice_speed
 from app.services.voice import _fit_duration
 from app.services.voice import _join_scene_narration
 from app.services.voice import _scene_durations_from_alignment
+from app.services.voice import _short_preview_audio_edit_plan
 from app.services.voice import _deterministic_scene_seed
 from app.services.voice import synthesize_scene_sequence
 from app.services.voice import synthesize_voice_with_id
@@ -235,6 +236,66 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
                 1.0,
             )
 
+    def test_short_preview_edit_plan_compacts_only_aligned_dead_air(self):
+        narration, spans = _join_scene_narration([
+            'Bir.',
+            'İki.',
+            'Son.',
+        ])
+        alignment = {
+            'characters': list(narration),
+            'character_start_times_seconds': [
+                0.0, 0.1, 0.2, 0.3, 0.4,
+                1.3, 1.4, 1.5, 1.6, 1.7,
+                2.6, 2.7, 2.8, 2.9,
+            ],
+            'character_end_times_seconds': [
+                0.1, 0.2, 0.3, 0.4, 0.45,
+                1.4, 1.5, 1.6, 1.7, 1.75,
+                2.7, 2.8, 2.9, 3.0,
+            ],
+        }
+
+        plan = _short_preview_audio_edit_plan(
+            narration,
+            spans,
+            alignment,
+            3.6,
+        )
+
+        self.assertEqual(plan['interior_pause_count'], 2)
+        self.assertTrue(plan['tail_trimmed'])
+        self.assertEqual(len(plan['cuts']), 3)
+        self.assertAlmostEqual(plan['cuts'][0][0], 0.48, places=6)
+        self.assertAlmostEqual(plan['cuts'][0][1], 1.12, places=6)
+        self.assertAlmostEqual(plan['cuts'][1][0], 1.78, places=6)
+        self.assertAlmostEqual(plan['cuts'][1][1], 2.42, places=6)
+        self.assertAlmostEqual(plan['cuts'][2][0], 3.10, places=6)
+        self.assertAlmostEqual(sum(plan['scene_durations']), 1.82, places=6)
+        self.assertAlmostEqual(
+            plan['removed_silence_seconds'],
+            1.78,
+            places=6,
+        )
+
+    def test_short_preview_edit_plan_rejects_missing_start_alignment(self):
+        narration, spans = _join_scene_narration(['Bir.', 'İki.'])
+        alignment = {
+            'characters': list(narration),
+            'character_end_times_seconds': [
+                round((index + 1) * 0.1, 2)
+                for index in range(len(narration))
+            ],
+        }
+
+        with self.assertRaisesRegex(RuntimeError, 'missing start timing'):
+            _short_preview_audio_edit_plan(
+                narration,
+                spans,
+                alignment,
+                1.0,
+            )
+
     @patch.object(voice_module.httpx, 'post', create=True)
     def test_selected_speed_is_sent_to_elevenlabs(self, post):
         config_stub.settings.elevenlabs_api_key = 'test-key'
@@ -347,10 +408,15 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         narration = 'Bir. İki.'
         alignment = {
             'characters': list(narration),
+            'character_start_times_seconds': [
+                0.0, 3.0, 6.0, 9.0,
+                9.3,
+                9.5, 16.0, 20.0, 29.3,
+            ],
             'character_end_times_seconds': [
-                3.0, 6.0, 9.0, 12.0,
-                12.1,
-                16.0, 20.0, 24.0, 27.0,
+                3.0, 6.0, 9.0, 9.3,
+                9.4,
+                16.0, 20.0, 29.3, 29.35,
             ],
         }
         expected_seed = _deterministic_scene_seed(
@@ -418,8 +484,11 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         segmented_synthesis.assert_not_called()
         self.assertEqual(run.call_count, 1)
         self.assertEqual(result['spoken_texts'], ['Bir.', 'İki.'])
-        self.assertEqual(result['scene_durations'], [12.0, 17.5])
+        self.assertEqual(result['scene_durations'], [9.25, 20.25])
         self.assertEqual(result['tempo_rate'], 1.0)
+        self.assertEqual(result['removed_silence_seconds'], 0.0)
+        self.assertEqual(result['compacted_boundary_pause_count'], 0)
+        self.assertFalse(result['compacted_trailing_silence'])
 
     @patch.object(voice_module.httpx, 'post', create=True)
     def test_seed_is_sent_as_top_level_elevenlabs_request_field(self, post):

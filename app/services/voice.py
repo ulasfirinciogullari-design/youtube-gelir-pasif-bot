@@ -15,6 +15,16 @@ SELECTED_VOICE_ID_KEY = 'youtube_factory:selected_voice_id'
 SELECTED_VOICE_NAME_KEY = 'youtube_factory:selected_voice_name'
 SELECTED_VOICE_OWNER_KEY = 'youtube_factory:selected_voice_owner_id'
 
+# ElevenLabs can insert documentary-length sentence gaps even inside a
+# 30-second continuous take. Keep a short, natural breath on each side of a
+# scene cut, but remove only alignment-proven dead air. The final tail is
+# bounded separately so captions and the detected spoken ending stay aligned.
+_SHORT_PREVIEW_LONG_BOUNDARY_PAUSE = 0.64
+_SHORT_PREVIEW_BOUNDARY_BREATH_SIDE = 0.18
+_SHORT_PREVIEW_LONG_TAIL = 0.28
+_SHORT_PREVIEW_RETAINED_TAIL = 0.20
+_SHORT_PREVIEW_COMPACTION_TOLERANCE = 0.18
+
 
 def _headers() -> dict[str, str]:
     if not settings.elevenlabs_api_key:
@@ -299,6 +309,216 @@ def _scene_durations_from_alignment(
     return durations
 
 
+def _short_preview_audio_edit_plan(
+    narration: str,
+    spans: list[tuple[int, int]],
+    alignment: dict,
+    media_duration: float,
+) -> dict:
+    """Plan bounded cuts using exact ElevenLabs character alignment.
+
+    No waveform threshold or transcript guess is used: an edit is allowed only
+    between the final spoken character in one scene and the first spoken
+    character of the next scene, or after the final aligned word.
+    """
+    # Reuse the strict source/end-time/span validation before reading starts.
+    _scene_durations_from_alignment(
+        narration,
+        spans,
+        alignment,
+        media_duration,
+    )
+    raw_starts = alignment.get('character_start_times_seconds')
+    raw_ends = alignment.get('character_end_times_seconds')
+    if not isinstance(raw_starts, list) or not isinstance(raw_ends, list):
+        raise RuntimeError('ElevenLabs source alignment is missing start timing')
+    if len(raw_starts) != len(narration) or len(raw_ends) != len(narration):
+        raise RuntimeError('ElevenLabs source alignment lengths do not match')
+
+    starts: list[float] = []
+    ends: list[float] = []
+    for raw_start, raw_end in zip(raw_starts, raw_ends):
+        if (
+            isinstance(raw_start, bool)
+            or not isinstance(raw_start, (int, float))
+            or isinstance(raw_end, bool)
+            or not isinstance(raw_end, (int, float))
+        ):
+            raise RuntimeError(
+                'ElevenLabs source alignment contains invalid timing'
+            )
+        start = float(raw_start)
+        end = float(raw_end)
+        if (
+            not math.isfinite(start)
+            or not math.isfinite(end)
+            or start < 0
+            or end < start
+            or (starts and start < starts[-1])
+            or (ends and end < ends[-1])
+        ):
+            raise RuntimeError(
+                'ElevenLabs source alignment timing is not monotonic'
+            )
+        starts.append(start)
+        ends.append(end)
+
+    cuts: list[tuple[float, float]] = []
+    raw_boundaries: list[float] = []
+    interior_pause_count = 0
+
+    def lexical_index(start: int, end: int, *, reverse: bool) -> int:
+        indices = (
+            range(end - 1, start - 1, -1)
+            if reverse
+            else range(start, end)
+        )
+        for index in indices:
+            if narration[index].isalnum():
+                return index
+        raise RuntimeError('Narration scene is missing a spoken character')
+
+    for scene_index in range(len(spans) - 1):
+        previous_end_index = lexical_index(
+            *spans[scene_index],
+            reverse=True,
+        )
+        next_start_index = lexical_index(
+            *spans[scene_index + 1],
+            reverse=False,
+        )
+        previous_end = ends[previous_end_index]
+        next_start = starts[next_start_index]
+        if next_start + 0.02 < previous_end:
+            raise RuntimeError('ElevenLabs scene alignment overlaps')
+        gap = max(0.0, next_start - previous_end)
+        if gap > _SHORT_PREVIEW_LONG_BOUNDARY_PAUSE:
+            cut_start = previous_end + _SHORT_PREVIEW_BOUNDARY_BREATH_SIDE
+            cut_end = next_start - _SHORT_PREVIEW_BOUNDARY_BREATH_SIDE
+            if cut_end <= cut_start:
+                raise RuntimeError('ElevenLabs boundary pause cannot be compacted')
+            cuts.append((cut_start, cut_end))
+            raw_boundaries.append(cut_start)
+            interior_pause_count += 1
+        else:
+            # Put the visual cut halfway through a normal breath so the next
+            # shot leads the following sentence by only a small amount.
+            raw_boundaries.append(previous_end + gap / 2.0)
+
+    final_spoken_index = lexical_index(*spans[-1], reverse=True)
+    final_aligned_end = min(media_duration, ends[final_spoken_index])
+    tail = max(0.0, media_duration - final_aligned_end)
+    tail_trimmed = tail > _SHORT_PREVIEW_LONG_TAIL
+    if tail_trimmed:
+        final_boundary = final_aligned_end + _SHORT_PREVIEW_RETAINED_TAIL
+        cuts.append((final_boundary, media_duration))
+    else:
+        final_boundary = media_duration
+    raw_boundaries.append(final_boundary)
+
+    previous_cut_end = 0.0
+    for cut_start, cut_end in cuts:
+        if (
+            not 0 <= cut_start < cut_end <= media_duration
+            or cut_start < previous_cut_end
+        ):
+            raise RuntimeError('Short-preview audio edit plan is invalid')
+        previous_cut_end = cut_end
+
+    def removed_before(boundary: float) -> float:
+        return sum(
+            cut_end - cut_start
+            for cut_start, cut_end in cuts
+            if cut_end <= boundary + 1e-9
+        )
+
+    adjusted_boundaries = [
+        boundary - removed_before(boundary)
+        for boundary in raw_boundaries
+    ]
+    durations: list[float] = []
+    cursor = 0.0
+    for boundary in adjusted_boundaries:
+        if boundary <= cursor:
+            raise RuntimeError(
+                'Compacted narration scene timing is not increasing'
+            )
+        durations.append(boundary - cursor)
+        cursor = boundary
+
+    removed_seconds = sum(end - start for start, end in cuts)
+    expected_duration = media_duration - removed_seconds
+    if abs(sum(durations) - expected_duration) > 1e-6:
+        raise RuntimeError('Short-preview audio edit plan does not cover media')
+    return {
+        'cuts': cuts,
+        'scene_durations': durations,
+        'expected_duration': expected_duration,
+        'removed_silence_seconds': removed_seconds,
+        'interior_pause_count': interior_pause_count,
+        'tail_trimmed': tail_trimmed,
+    }
+
+
+def _apply_short_preview_audio_edit_plan(
+    path: Path,
+    media_duration: float,
+    plan: dict,
+) -> tuple[list[float], float]:
+    """Apply a finite, prevalidated set of alignment-safe audio cuts."""
+    cuts = list(plan.get('cuts') or [])
+    durations = [float(value) for value in plan.get('scene_durations') or []]
+    expected_duration = float(plan.get('expected_duration') or media_duration)
+    if not cuts:
+        return durations, media_duration
+
+    keep_ranges: list[tuple[float, float]] = []
+    cursor = 0.0
+    for cut_start, cut_end in cuts:
+        if cut_start > cursor + 1e-6:
+            keep_ranges.append((cursor, cut_start))
+        cursor = cut_end
+    if media_duration > cursor + 1e-6:
+        keep_ranges.append((cursor, media_duration))
+    if not keep_ranges:
+        raise RuntimeError('Short-preview audio edit removed the whole narration')
+
+    filters: list[str] = []
+    labels: list[str] = []
+    for index, (start, end) in enumerate(keep_ranges):
+        label = f'keep{index}'
+        labels.append(f'[{label}]')
+        filters.append(
+            f'[0:a]atrim=start={start:.6f}:end={end:.6f},'
+            f'asetpts=PTS-STARTPTS[{label}]'
+        )
+    if len(labels) == 1:
+        filters.append(labels[0] + 'anull[compacted]')
+    else:
+        filters.append(
+            ''.join(labels)
+            + f'concat=n={len(labels)}:v=0:a=1[compacted]'
+        )
+    compacted = path.with_name(path.stem + '_compacted.mp3')
+    subprocess.run([
+        'ffmpeg', '-y', '-i', str(path),
+        '-filter_complex', ';'.join(filters),
+        '-map', '[compacted]', '-c:a', 'libmp3lame', '-b:a', '192k',
+        str(compacted),
+    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    actual_duration = _media_duration(compacted)
+    if (
+        not math.isfinite(actual_duration)
+        or actual_duration <= 0
+        or abs(actual_duration - expected_duration)
+        > _SHORT_PREVIEW_COMPACTION_TOLERANCE
+    ):
+        raise RuntimeError('Short-preview audio compaction duration is invalid')
+    compacted.replace(path)
+    scale = actual_duration / expected_duration
+    return [duration * scale for duration in durations], actual_duration
+
+
 def _deterministic_scene_seed(
     voice_id: str,
     text: str,
@@ -417,6 +637,9 @@ def synthesize_scene_sequence(
     selected_speed = _voice_speed(target_seconds)
     raw_output = work / 'joined.mp3'
     short_preview = bool(target_seconds and 0 < target_seconds <= 40)
+    removed_silence_seconds = 0.0
+    compacted_boundary_pause_count = 0
+    compacted_trailing_silence = False
     if short_preview:
         narration, spans = _join_scene_narration(spoken)
         audio, alignment = synthesize_voice_with_timestamps(
@@ -431,12 +654,25 @@ def synthesize_scene_sequence(
             ),
         )
         raw_output.write_bytes(audio)
-        scene_durations = _scene_durations_from_alignment(
+        raw_media_duration = _media_duration(raw_output)
+        edit_plan = _short_preview_audio_edit_plan(
             narration,
             spans,
             alignment,
-            _media_duration(raw_output),
+            raw_media_duration,
         )
+        scene_durations, _ = _apply_short_preview_audio_edit_plan(
+            raw_output,
+            raw_media_duration,
+            edit_plan,
+        )
+        removed_silence_seconds = float(
+            edit_plan['removed_silence_seconds']
+        )
+        compacted_boundary_pause_count = int(
+            edit_plan['interior_pause_count']
+        )
+        compacted_trailing_silence = bool(edit_plan['tail_trimmed'])
     else:
         chunk_paths = [work / f'scene_{idx:03d}.mp3' for idx in range(len(scenes))]
 
@@ -513,6 +749,9 @@ def synthesize_scene_sequence(
         'duration_before_fit': before_fit,
         'duration_after_fit': after_fit,
         'tempo_rate': tempo_rate,
+        'removed_silence_seconds': removed_silence_seconds,
+        'compacted_boundary_pause_count': compacted_boundary_pause_count,
+        'compacted_trailing_silence': compacted_trailing_silence,
         'content_target_seconds': (
             float(target_seconds) - reserved_tail_seconds
             if target_seconds and target_seconds > 0
