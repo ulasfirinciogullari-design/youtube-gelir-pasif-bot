@@ -277,6 +277,116 @@ def _unavailable_prosody_result(reason: str) -> dict[str, Any]:
     }
 
 
+def _validate_prosody_review(
+    output: Any,
+    expected_narration: str,
+    *,
+    audio_duration_seconds: float | None,
+    transcript_evidence: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    """Bind a model review to trusted transcript timing or reject it."""
+    if not isinstance(output, dict):
+        return None
+    passed = output.get('pass')
+    summary = output.get('summary')
+    scores = output.get('scores')
+    issues = output.get('issues')
+    if (
+        type(passed) is not bool
+        or not isinstance(summary, str)
+        or not summary.strip()
+        or not isinstance(scores, dict)
+        or set(scores) != set(_PROSODY_SCORE_FIELDS)
+        or any(
+            type(scores.get(field)) is not int
+            or not 0 <= scores[field] <= 100
+            for field in _PROSODY_SCORE_FIELDS
+        )
+        or not isinstance(issues, list)
+        or len(issues) > 5
+    ):
+        return None
+
+    timestamp_evidence: tuple[list[dict[str, Any]], str] | None = None
+    if issues:
+        timestamp_evidence = _validated_prosody_timestamp_evidence(
+            transcript_evidence
+        )
+        if timestamp_evidence is None:
+            return None
+
+    normalized_issues: list[dict[str, Any]] = []
+    for issue in issues:
+        if not isinstance(issue, dict) or set(issue) != {
+            'code',
+            'start_seconds',
+            'end_seconds',
+            'phrase',
+            'detail',
+        }:
+            return None
+        start = issue.get('start_seconds')
+        end = issue.get('end_seconds')
+        phrase = issue.get('phrase')
+        detail = issue.get('detail')
+        if (
+            issue.get('code') not in _PROSODY_REASON_CODES
+            or type(start) not in (int, float)
+            or type(end) not in (int, float)
+            or not math.isfinite(float(start))
+            or not math.isfinite(float(end))
+            or float(start) < 0
+            or float(end) <= float(start)
+            or (
+                audio_duration_seconds is not None
+                and float(end) > audio_duration_seconds + 0.25
+            )
+            or not isinstance(phrase, str)
+            or not phrase.strip()
+            or not isinstance(detail, str)
+            or not detail.strip()
+        ):
+            return None
+        assert timestamp_evidence is not None
+        bound_timestamp = _bind_prosody_issue_timestamp(
+            expected_narration,
+            phrase,
+            float(start),
+            float(end),
+            timestamp_evidence[0],
+            audio_duration_seconds=audio_duration_seconds,
+        )
+        if bound_timestamp is None:
+            return None
+        normalized_issues.append({
+            'code': issue['code'],
+            'start_seconds': round(bound_timestamp[0], 3),
+            'end_seconds': round(bound_timestamp[1], 3),
+            'phrase': phrase.strip()[:160],
+            'detail': detail.strip()[:300],
+        })
+
+    if (passed and normalized_issues) or (not passed and not normalized_issues):
+        return None
+    return {
+        'available': True,
+        'pass': passed,
+        'provider': 'gemini',
+        'reason': None if passed else normalized_issues[0]['code'],
+        'scores': {field: scores[field] for field in _PROSODY_SCORE_FIELDS},
+        'issues': normalized_issues,
+        'summary': summary.strip()[:400],
+        'timestamp_source': (
+            'stt_word_timestamps' if normalized_issues else None
+        ),
+        'timestamp_provider': (
+            timestamp_evidence[1]
+            if normalized_issues and timestamp_evidence is not None
+            else None
+        ),
+    }
+
+
 def verify_audio_prosody(
     audio_path: str | Path,
     expected_narration: str,
@@ -327,131 +437,57 @@ def verify_audio_prosody(
         + json.dumps(str(expected_narration), ensure_ascii=False)
         + '\n</UNTRUSTED_EXPECTED_NARRATION>'
     )
-    try:
-        output = generate_gemini_audio_json(
-            audio_bytes,
-            content_type,
-            prompt,
-            api_key=api_key,
-            model=str(
-                getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL)
-                or GEMINI_DEFAULT_MODEL
-            ),
-            json_schema=_PROSODY_REVIEW_SCHEMA,
-            thinking_level='medium',
-            timeout=120.0,
-            retry_once=True,
-            system_instruction=_PROSODY_SYSTEM_INSTRUCTION,
-        )
-    except GeminiGenerationError:
-        return _unavailable_prosody_result('gemini_prosody_review_failed')
-
-    passed = output.get('pass')
-    summary = output.get('summary')
-    scores = output.get('scores')
-    issues = output.get('issues')
-    if (
-        type(passed) is not bool
-        or not isinstance(summary, str)
-        or not summary.strip()
-        or not isinstance(scores, dict)
-        or set(scores) != set(_PROSODY_SCORE_FIELDS)
-        or any(
-            type(scores.get(field)) is not int
-            or not 0 <= scores[field] <= 100
-            for field in _PROSODY_SCORE_FIELDS
-        )
-        or not isinstance(issues, list)
-        or len(issues) > 5
-    ):
-        return _unavailable_prosody_result('gemini_prosody_protocol_invalid')
-
-    timestamp_evidence: tuple[list[dict[str, Any]], str] | None = None
-    if issues:
-        timestamp_evidence = _validated_prosody_timestamp_evidence(
-            transcript_evidence
-        )
-        if timestamp_evidence is None:
-            return _unavailable_prosody_result(
-                'gemini_prosody_protocol_invalid'
+    saw_protocol_invalid = False
+    for review_attempt in range(2):
+        review_prompt = prompt
+        if review_attempt and saw_protocol_invalid:
+            review_prompt += (
+                '\nThe preceding review could not be bound to the required '
+                'protocol. Re-listen independently. Keep the audible verdict; '
+                'do not change it merely to satisfy the schema. If rejecting, '
+                'cite an exact phrase from the expected narration and its '
+                'approximate audible interval so the server can bind it to '
+                'trusted speech-to-text word timestamps.'
             )
-
-    normalized_issues: list[dict[str, Any]] = []
-    for issue in issues:
-        if not isinstance(issue, dict) or set(issue) != {
-            'code',
-            'start_seconds',
-            'end_seconds',
-            'phrase',
-            'detail',
-        }:
-            return _unavailable_prosody_result(
-                'gemini_prosody_protocol_invalid'
+        try:
+            output = generate_gemini_audio_json(
+                audio_bytes,
+                content_type,
+                review_prompt,
+                api_key=api_key,
+                model=str(
+                    getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL)
+                    or GEMINI_DEFAULT_MODEL
+                ),
+                json_schema=_PROSODY_REVIEW_SCHEMA,
+                thinking_level='medium',
+                timeout=120.0,
+                # This outer loop is the sole retry budget. It also repairs
+                # schema-valid but ungrounded semantic output without ever
+                # synthesizing another paid ElevenLabs take.
+                retry_once=False,
+                system_instruction=_PROSODY_SYSTEM_INSTRUCTION,
             )
-        start = issue.get('start_seconds')
-        end = issue.get('end_seconds')
-        phrase = issue.get('phrase')
-        detail = issue.get('detail')
-        if (
-            issue.get('code') not in _PROSODY_REASON_CODES
-            or type(start) not in (int, float)
-            or type(end) not in (int, float)
-            or not math.isfinite(float(start))
-            or not math.isfinite(float(end))
-            or float(start) < 0
-            or float(end) <= float(start)
-            or (
-                bounded_audio_duration is not None
-                and float(end) > bounded_audio_duration + 0.25
-            )
-            or not isinstance(phrase, str)
-            or not phrase.strip()
-            or not isinstance(detail, str)
-            or not detail.strip()
-        ):
-            return _unavailable_prosody_result(
-                'gemini_prosody_protocol_invalid'
-            )
-        assert timestamp_evidence is not None
-        bound_timestamp = _bind_prosody_issue_timestamp(
+        except GeminiGenerationError:
+            continue
+        validated = _validate_prosody_review(
+            output,
             expected_narration,
-            phrase,
-            float(start),
-            float(end),
-            timestamp_evidence[0],
             audio_duration_seconds=bounded_audio_duration,
+            transcript_evidence=transcript_evidence,
         )
-        if bound_timestamp is None:
-            return _unavailable_prosody_result(
-                'gemini_prosody_protocol_invalid'
-            )
-        normalized_issues.append({
-            'code': issue['code'],
-            'start_seconds': round(bound_timestamp[0], 3),
-            'end_seconds': round(bound_timestamp[1], 3),
-            'phrase': phrase.strip()[:160],
-            'detail': detail.strip()[:300],
-        })
+        if validated is not None:
+            validated['review_attempts'] = review_attempt + 1
+            return validated
+        saw_protocol_invalid = True
 
-    if (passed and normalized_issues) or (not passed and not normalized_issues):
-        return _unavailable_prosody_result('gemini_prosody_protocol_invalid')
-    return {
-        'available': True,
-        'pass': passed,
-        'provider': 'gemini',
-        'reason': None if passed else normalized_issues[0]['code'],
-        'scores': {field: scores[field] for field in _PROSODY_SCORE_FIELDS},
-        'issues': normalized_issues,
-        'summary': summary.strip()[:400],
-        'timestamp_source': (
-            'stt_word_timestamps' if normalized_issues else None
-        ),
-        'timestamp_provider': (
-            timestamp_evidence[1]
-            if normalized_issues and timestamp_evidence is not None
-            else None
-        ),
-    }
+    unavailable = _unavailable_prosody_result(
+        'gemini_prosody_protocol_invalid'
+        if saw_protocol_invalid
+        else 'gemini_prosody_review_failed'
+    )
+    unavailable['review_attempts'] = 2
+    return unavailable
 
 
 def _openai_headers(api_key: str) -> dict[str, str]:

@@ -268,6 +268,11 @@ def _short_preview_voice_duration_qc(
             'maximum_seconds': None,
             'reason': None,
         }
+    # A natural short may finish speaking before the final frame. Preserve up
+    # to 1.30 seconds for a closing breath and visual hold instead of forcing
+    # speech to be time-stretched into the entire 30-second edit.
+    minimum = float(target_seconds) - 1.30
+    maximum = float(target_seconds) - 0.25
     duration = voice_result.get('duration_after_fit')
     if isinstance(duration, bool) or not isinstance(duration, (int, float)):
         return {
@@ -275,13 +280,11 @@ def _short_preview_voice_duration_qc(
             'pass': False,
             'retryable': False,
             'duration_seconds': None,
-            'minimum_seconds': round(float(target_seconds) - 0.70, 3),
-            'maximum_seconds': round(float(target_seconds) - 0.25, 3),
+            'minimum_seconds': round(minimum, 3),
+            'maximum_seconds': round(maximum, 3),
             'reason': 'voice_duration_missing',
         }
     duration_seconds = float(duration)
-    minimum = float(target_seconds) - 0.70
-    maximum = float(target_seconds) - 0.25
     passed = bool(
         math.isfinite(duration_seconds)
         and minimum <= duration_seconds <= maximum
@@ -305,6 +308,83 @@ def _short_preview_voice_duration_qc(
         'minimum_seconds': round(minimum, 3),
         'maximum_seconds': round(maximum, 3),
         'reason': reason,
+    }
+
+
+def _strict_short_preview_render_qc(
+    rendered: dict,
+    requested_seconds: float,
+    voice_duration_seconds: float,
+) -> dict:
+    """Keep the fixed master and its audible ending aligned fail-closed."""
+    voice_gate = _short_preview_voice_duration_qc(
+        {'duration_after_fit': voice_duration_seconds},
+        requested_seconds,
+    )
+    try:
+        requested = float(requested_seconds)
+        voice_duration = float(voice_duration_seconds)
+        actual_frames = int(rendered.get('frame_count') or 0)
+        ending_silence = float(
+            rendered.get('ending_silence_seconds') or 0
+        )
+    except (TypeError, ValueError, OverflowError):
+        return {
+            'pass': False,
+            'reason': 'final_render_metrics_invalid',
+            'expected_frames': None,
+            'actual_frames': None,
+            'ending_silence_seconds': None,
+            'minimum_ending_silence_seconds': None,
+            'maximum_ending_silence_seconds': None,
+        }
+    if (
+        not math.isfinite(requested)
+        or not math.isfinite(voice_duration)
+        or not math.isfinite(ending_silence)
+        or voice_gate.get('pass') is not True
+    ):
+        return {
+            'pass': False,
+            'reason': 'final_voice_duration_invalid',
+            'expected_frames': None,
+            'actual_frames': actual_frames,
+            'ending_silence_seconds': ending_silence,
+            'minimum_ending_silence_seconds': None,
+            'maximum_ending_silence_seconds': None,
+        }
+
+    expected_frames = int(round(requested * 30))
+    expected_hold = max(0.0, requested - voice_duration)
+    # AAC priming, mux timebases and a small natural voice tail make silence
+    # detection approximate. The bounds remain tied to the fitted voice, so a
+    # genuinely excessive silent ending cannot hide behind that tolerance.
+    minimum_ending_silence = max(0.15, expected_hold - 0.12)
+    maximum_ending_silence = min(1.55, expected_hold + 0.25)
+    if actual_frames != expected_frames:
+        reason = 'final_frame_count_mismatch'
+    elif not (
+        minimum_ending_silence
+        <= ending_silence
+        <= maximum_ending_silence
+    ):
+        reason = 'final_ending_silence_out_of_bounds'
+    else:
+        reason = None
+    return {
+        'pass': reason is None,
+        'reason': reason,
+        'expected_frames': expected_frames,
+        'actual_frames': actual_frames,
+        'ending_silence_seconds': round(ending_silence, 3),
+        'minimum_ending_silence_seconds': round(
+            minimum_ending_silence,
+            3,
+        ),
+        'maximum_ending_silence_seconds': round(
+            maximum_ending_silence,
+            3,
+        ),
     }
 
 
@@ -3883,18 +3963,25 @@ def run_video_pipeline(
             raise RuntimeError(f'Final duration gate rejected render: {actual_seconds:.1f}s for requested {requested_seconds:.1f}s')
 
         if strict_short_preview_duration:
-            expected_frames = int(round(requested_seconds * 30))
-            actual_frames = int(rendered.get('frame_count') or 0)
-            ending_silence = float(rendered.get('ending_silence_seconds') or 0)
-            if actual_frames != expected_frames:
+            final_render_qc = _strict_short_preview_render_qc(
+                rendered,
+                requested_seconds,
+                voice_result.get('duration_after_fit'),
+            )
+            if final_render_qc.get('reason') == 'final_frame_count_mismatch':
                 raise RuntimeError(
                     'Final frame gate rejected render: '
-                    f'{actual_frames} frames, expected {expected_frames}'
+                    f"{final_render_qc.get('actual_frames')} frames, expected "
+                    f"{final_render_qc.get('expected_frames')}"
                 )
-            if not 0.30 <= ending_silence <= 0.90:
+            if final_render_qc.get('pass') is not True:
                 raise RuntimeError(
                     'Final breathing-room gate rejected render: '
-                    f'{ending_silence:.3f}s ending silence'
+                    + json.dumps(
+                        final_render_qc,
+                        ensure_ascii=False,
+                        separators=(',', ':'),
+                    )
                 )
 
         max_freeze_seconds = float(rendered.get('max_freeze_seconds') or 0)

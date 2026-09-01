@@ -57,6 +57,7 @@ def _load_prompt_functions():
         '_render_target_duration',
         '_max_runway_scenes',
         '_short_preview_voice_duration_qc',
+        '_strict_short_preview_render_qc',
         '_synthesize_voice_candidate',
         'normalize_pipeline_language',
     }
@@ -125,6 +126,7 @@ def _load_prompt_functions():
         namespace['_render_target_duration'],
         namespace['_max_runway_scenes'],
         namespace['_short_preview_voice_duration_qc'],
+        namespace['_strict_short_preview_render_qc'],
         namespace['_synthesize_voice_candidate'],
         namespace['normalize_pipeline_language'],
     )
@@ -143,6 +145,7 @@ def _load_prompt_functions():
     render_target_duration,
     max_runway_scenes,
     short_preview_voice_duration_qc,
+    strict_short_preview_render_qc,
     synthesize_voice_candidate,
     normalize_pipeline_language,
 ) = (
@@ -168,6 +171,12 @@ class RunwayPromptTests(unittest.TestCase):
             {'duration_after_fit': 29.5},
             30.0,
         )['pass'])
+        natural_ending_hold = short_preview_voice_duration_qc(
+            {'duration_after_fit': 28.728},
+            30.0,
+        )
+        self.assertTrue(natural_ending_hold['pass'])
+        self.assertEqual(natural_ending_hold['minimum_seconds'], 28.7)
         rejected = short_preview_voice_duration_qc(
             {'duration_after_fit': 27.0},
             30.0,
@@ -175,14 +184,62 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertFalse(rejected['pass'])
         self.assertEqual(rejected['reason'], 'short_form_script_too_thin')
         self.assertFalse(rejected['retryable'])
-        self.assertEqual(rejected['minimum_seconds'], 29.3)
+        self.assertEqual(rejected['minimum_seconds'], 28.7)
 
         near_boundary = short_preview_voice_duration_qc(
-            {'duration_after_fit': 29.0},
+            {'duration_after_fit': 28.5},
             30.0,
         )
         self.assertFalse(near_boundary['pass'])
         self.assertTrue(near_boundary['retryable'])
+
+    def test_short_preview_duration_policy_integrates_final_render_tail(self):
+        rendered = {
+            'duration': 30.0,
+            'frame_count': 900,
+            # 30.000 - 28.728 = 1.272 seconds of intentional final hold.
+            'ending_silence_seconds': 1.272,
+        }
+        accepted = strict_short_preview_render_qc(
+            rendered,
+            30.0,
+            28.728,
+        )
+        self.assertTrue(accepted['pass'])
+        self.assertEqual(accepted['expected_frames'], 900)
+        self.assertLessEqual(
+            accepted['ending_silence_seconds'],
+            accepted['maximum_ending_silence_seconds'],
+        )
+
+        encoder_and_voice_tail = strict_short_preview_render_qc(
+            {**rendered, 'ending_silence_seconds': 1.5},
+            30.0,
+            28.728,
+        )
+        self.assertTrue(encoder_and_voice_tail['pass'])
+
+        excessive_tail = strict_short_preview_render_qc(
+            {**rendered, 'ending_silence_seconds': 1.56},
+            30.0,
+            28.7,
+        )
+        self.assertFalse(excessive_tail['pass'])
+        self.assertEqual(
+            excessive_tail['reason'],
+            'final_ending_silence_out_of_bounds',
+        )
+
+        wrong_frame_count = strict_short_preview_render_qc(
+            {**rendered, 'frame_count': 899},
+            30.0,
+            28.728,
+        )
+        self.assertFalse(wrong_frame_count['pass'])
+        self.assertEqual(
+            wrong_frame_count['reason'],
+            'final_frame_count_mismatch',
+        )
 
     def test_voice_synthesis_quality_retries_use_three_distinct_seeds(self):
         calls = []
