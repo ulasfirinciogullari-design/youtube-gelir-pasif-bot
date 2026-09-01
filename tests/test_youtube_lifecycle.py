@@ -1876,10 +1876,12 @@ def test_studio_router_mounts_secure_youtube_lifecycle(monkeypatch):
     state_module = types.ModuleType('app.services.studio_state')
     for name in (
         'create_job',
+        'consume_repair_checkpoint',
         'get_job',
         'list_jobs',
         'mark_failure',
         'mark_success',
+        'save_repair_checkpoint',
         'set_stage',
         'update_job',
     ):

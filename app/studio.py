@@ -19,11 +19,13 @@ from app.tasks import (
     run_video_pipeline,
 )
 from app.services.studio_state import (
+    consume_repair_checkpoint,
     create_job,
     get_job,
     list_jobs,
     mark_failure,
     mark_success,
+    save_repair_checkpoint,
     update_job,
 )
 from app.services.voice import get_selected_voice
@@ -57,6 +59,9 @@ STAGE_LABELS = {
     'visual_qc': 'Görsel kalite kontrolü',
     'audio_design': 'Müzik ve ses tasarımı',
     'ai_scene': 'Özgün AI sahneleri',
+    'ai_scene_generation': 'Özgün sahne üretimi',
+    'ai_scene_recovery': 'Kayıtlı sahneleri geri yükleme',
+    'ai_scene_repair': 'Reddedilen sahneyi onarma',
     'render': 'Final kurgu',
     'upload': 'Depolamaya yükleme',
     'awaiting_approval': 'Storyboard onayı',
@@ -447,7 +452,7 @@ async function poll(){{
  const state=j.state||'PENDING',stage=j.stage||'queued',p=Math.max(0,Math.min(100,Number(j.progress||0)));
  document.getElementById('bar').style.width=p+'%';document.getElementById('progress').setAttribute('aria-valuenow',String(p));document.getElementById('stage').textContent=(j.stage_label||stage)+' · %'+p;document.getElementById('message').textContent=j.message||'';
  const out=document.getElementById('result');
- if(state==='FAILURE'){{out.innerHTML=`<div class="notice error" style="margin-top:14px"><b>Üretim tamamlanamadı</b><pre>${{esc(j.error||'Bilinmeyen hata')}}</pre></div><div class="actions"><form method="post" action="/studio/retry/${{taskId}}"><button class="btn danger">↻ Aynı ayarlarla tekrar dene</button></form></div>`;return;}}
+ if(state==='FAILURE'){{const repair=Boolean(j.repair_available);const repairNote=repair?`<div class="notice" style="margin-top:10px"><b>Sahne onarımı hazır.</b> ${{esc(j.repair_message||'Kabul edilen üretimler korunacak.')}}</div>`:'';const retryLabel=repair?'↻ Yalnızca reddedilen sahneyi onar':'↻ Aynı ayarlarla tekrar dene';out.innerHTML=`<div class="notice error" style="margin-top:14px"><b>Üretim tamamlanamadı</b><pre>${{esc(j.error||'Bilinmeyen hata')}}</pre></div>${{repairNote}}<div class="actions"><form method="post" action="/studio/retry/${{taskId}}"><button class="btn danger">${{retryLabel}}</button></form></div>`;return;}}
  if(state==='AWAITING_APPROVAL'){{out.innerHTML=`<div class="notice" style="margin-top:14px"><b>Storyboard hazır.</b> Render başlamadan sahneleri inceleyebilirsin.</div><div class="actions"><a class="btn success" href="/studio/plan/${{taskId}}">Storyboard'u aç →</a></div>`;return;}}
  if(state==='SUCCESS'){{const x=j.result||{{}};let links='';if(x.download_url)links+=`<a class="btn success" target="_blank" href="${{esc(x.download_url)}}">▶ Final videoyu aç</a>`;if(x.caption_url)links+=`<a class="btn secondary" target="_blank" href="${{esc(x.caption_url)}}">SRT indir</a>`;out.innerHTML=`<div class="grid3" style="margin-top:16px">${{badge((x.duration||0).toFixed?x.duration.toFixed(1)+' sn':(x.duration||'-')+' sn')}}${{badge((x.scenes||'-')+' sahne')}}${{badge((x.shots||'-')+' shot')}}</div><div class="actions">${{links}}<a class="btn secondary" href="/studio">＋ Yeni üretim</a></div>`;return;}}
  timer=setTimeout(poll,3000);
@@ -542,13 +547,56 @@ def studio_retry(task_id: str, studio_token: str | None = Cookie(default=None, a
         raise HTTPException(status_code=404, detail='Görev bulunamadı')
     spec = record.get('spec') or {}
     options = {key: value for key, value in spec.items() if key not in {'topic', 'duration_minutes', 'language', 'channel_id'}}
+    approved_package = None
     if record.get('kind') == 'plan':
         task = plan_video_pipeline.delay(spec.get('topic') or '', float(spec.get('duration_minutes') or 1), spec.get('language') or 'tr', spec.get('channel_id'), options)
         kind = 'plan'
     else:
-        task = run_video_pipeline.delay(spec.get('topic') or '', float(spec.get('duration_minutes') or 1), spec.get('language') or 'tr', spec.get('channel_id'), options, None)
+        checkpoint = None
+        if record.get('repair_available') is True:
+            try:
+                checkpoint = consume_repair_checkpoint(task_id)
+            except Exception as exc:
+                raise HTTPException(
+                    status_code=503,
+                    detail='Sahne onarım kaydı şu anda alınamıyor',
+                ) from exc
+            if not checkpoint:
+                raise HTTPException(
+                    status_code=409,
+                    detail='Sahne onarımı zaten kuyruğa alındı',
+                )
+            approved_package = checkpoint.get('approved_package')
+        try:
+            task = run_video_pipeline.delay(
+                spec.get('topic') or '',
+                float(spec.get('duration_minutes') or 1),
+                spec.get('language') or 'tr',
+                spec.get('channel_id'),
+                options,
+                approved_package,
+            )
+        except Exception as exc:
+            if checkpoint:
+                try:
+                    save_repair_checkpoint(task_id, checkpoint)
+                except Exception:
+                    pass
+            raise HTTPException(
+                status_code=503,
+                detail='Onarım görevi kuyruğa alınamadı',
+            ) from exc
         kind = 'render'
-    create_job(task.id, spec, kind=kind, parent_id=task_id)
+    child_spec = dict(spec)
+    if approved_package is not None:
+        child_spec['workflow'] = 'scene_repair'
+        child_spec['repair_source_task_id'] = task_id
+        update_job(
+            task_id,
+            repair_available=False,
+            repair_claimed=True,
+        )
+    create_job(task.id, child_spec, kind=kind, parent_id=task_id)
     return RedirectResponse(f'/studio/job/{task.id}', status_code=303)
 
 

@@ -32,7 +32,13 @@ from app.services.runway import (
     generate_scene,
 )
 from app.services.storage import download_file, upload_file, presigned_download_url
-from app.services.studio_state import mark_failure, mark_success, set_stage, update_job
+from app.services.studio_state import (
+    mark_failure,
+    mark_success,
+    save_repair_checkpoint,
+    set_stage,
+    update_job,
+)
 from app.services.visual_qc import review_scene_visuals
 from app.services.voice import (
     VoiceQualityError,
@@ -94,17 +100,205 @@ _RECOVERED_MEDIA_PROVIDERS = {
     'gemini_veo_fast',
     'gemini_veo_standard',
 }
+_REPAIR_RECOVERED_MEDIA_PROVIDERS = {
+    *_RECOVERED_MEDIA_PROVIDERS,
+    'gemini_image_motion',
+}
 _MAX_RECOVERED_VIDEO_BYTES = 100 * 1024 * 1024
+_MAX_RECOVERED_AUDIO_BYTES = 20 * 1024 * 1024
+_RECOVERED_VOICE_KEY_PATTERN = re.compile(
+    r'^recovery/(?P<source>[0-9a-f-]{36})/raw/voice\.mp3$'
+)
+_SHA256_PATTERN = re.compile(r'^[0-9a-f]{64}$')
+
+
+def _file_sha256(path: str | Path) -> str:
+    digest = hashlib.sha256()
+    with Path(path).open('rb') as file_handle:
+        for chunk in iter(lambda: file_handle.read(1024 * 1024), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _recovery_package_sha256(package: dict) -> str:
+    """Bind every checkpoint to the exact server-approved storyboard."""
+    if not isinstance(package, dict):
+        raise FinalVisualQualityError('Recovery storyboard is invalid')
+    material = {
+        key: value
+        for key, value in package.items()
+        if key not in {
+            '_recovered_generated_media',
+            '_recovered_voice',
+        }
+    }
+    encoded = json.dumps(
+        material,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(',', ':'),
+        default=str,
+    ).encode('utf-8')
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def _validated_recovered_generated_media(
     raw: object,
     scene_count: int,
+    expected_package_sha256: str | None = None,
 ) -> dict | None:
     """Validate a server-authored, Storage-only paid-media recovery contract."""
     if raw is None:
         return None
-    if not isinstance(raw, dict) or set(raw) != {
+    if not isinstance(raw, dict):
+        raise FinalVisualQualityError(
+            'Recovered generated-media contract is malformed'
+        )
+
+    if raw.get('version') == 2:
+        if set(raw) != {
+            'version',
+            'repair_only',
+            'source_task_id',
+            'package_sha256',
+            'repair_scene_indices',
+            'scenes',
+        }:
+            raise FinalVisualQualityError(
+                'Recovered generated-media repair contract is malformed'
+            )
+        source_task_id = str(
+            raw.get('source_task_id') or ''
+        ).strip().lower()
+        package_sha256 = str(
+            raw.get('package_sha256') or ''
+        ).strip().lower()
+        raw_repair_indices = raw.get('repair_scene_indices')
+        raw_scenes = raw.get('scenes')
+        if (
+            raw.get('repair_only') is not True
+            or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(
+                source_task_id
+            )
+            or not _SHA256_PATTERN.fullmatch(package_sha256)
+            or (
+                expected_package_sha256 is not None
+                and package_sha256 != expected_package_sha256
+            )
+            or not isinstance(raw_repair_indices, list)
+            or not isinstance(raw_scenes, dict)
+        ):
+            raise FinalVisualQualityError(
+                'Recovered generated-media repair contract is invalid'
+            )
+        if (
+            any(type(index) is not int for index in raw_repair_indices)
+            or raw_repair_indices != sorted(set(raw_repair_indices))
+            or not 1 <= len(raw_repair_indices) <= 2
+            or any(
+                not 0 <= index < int(scene_count)
+                for index in raw_repair_indices
+            )
+        ):
+            raise FinalVisualQualityError(
+                'Recovered generated-media repair indices are invalid'
+            )
+
+        repaired = set(raw_repair_indices)
+        scenes: dict[int, list[dict]] = {}
+        seen_object_keys: set[str] = set()
+        for raw_scene_idx, raw_entries in raw_scenes.items():
+            try:
+                scene_idx = int(raw_scene_idx)
+            except (TypeError, ValueError) as exc:
+                raise FinalVisualQualityError(
+                    'Recovered generated-media scene index is invalid'
+                ) from exc
+            if (
+                str(scene_idx) != str(raw_scene_idx)
+                or not 0 <= scene_idx < int(scene_count)
+                or scene_idx in scenes
+                or scene_idx in repaired
+                or not isinstance(raw_entries, list)
+                or not 1 <= len(raw_entries) <= 3
+            ):
+                raise FinalVisualQualityError(
+                    'Recovered generated-media scene mapping is invalid'
+                )
+            entries: list[dict] = []
+            for raw_entry in raw_entries:
+                if not isinstance(raw_entry, dict) or set(raw_entry) != {
+                    'key',
+                    'sha256',
+                    'size',
+                    'provider',
+                    'provider_attempts',
+                    'synthetic_motion_only',
+                    'motion_recipe_version',
+                    'source_media_type',
+                }:
+                    raise FinalVisualQualityError(
+                        'Recovered generated-media entry is malformed'
+                    )
+                key = str(raw_entry.get('key') or '').strip()
+                checksum = str(
+                    raw_entry.get('sha256') or ''
+                ).strip().lower()
+                provider = str(
+                    raw_entry.get('provider') or ''
+                ).strip()
+                size = raw_entry.get('size')
+                attempts = raw_entry.get('provider_attempts')
+                synthetic_motion_only = raw_entry.get(
+                    'synthetic_motion_only'
+                )
+                motion_recipe_version = raw_entry.get(
+                    'motion_recipe_version'
+                )
+                source_media_type = raw_entry.get('source_media_type')
+                match = _RECOVERED_MEDIA_KEY_PATTERN.fullmatch(key)
+                if (
+                    not match
+                    or match.group('source') != source_task_id
+                    or key in seen_object_keys
+                    or not _SHA256_PATTERN.fullmatch(checksum)
+                    or type(size) is not int
+                    or not 1024 <= size <= _MAX_RECOVERED_VIDEO_BYTES
+                    or provider not in _REPAIR_RECOVERED_MEDIA_PROVIDERS
+                    or type(attempts) is not int
+                    or not 1 <= attempts <= 10
+                    or type(synthetic_motion_only) is not bool
+                    or (
+                        motion_recipe_version is not None
+                        and (
+                            not isinstance(motion_recipe_version, str)
+                            or not 1 <= len(motion_recipe_version) <= 80
+                        )
+                    )
+                    or source_media_type not in {None, 'image', 'video'}
+                ):
+                    raise FinalVisualQualityError(
+                        'Recovered generated-media entry is invalid'
+                    )
+                normalized_entry = dict(raw_entry)
+                normalized_entry.update({
+                    'key': key,
+                    'sha256': checksum,
+                    'provider': provider,
+                })
+                entries.append(normalized_entry)
+                seen_object_keys.add(key)
+            scenes[scene_idx] = entries
+        return {
+            'version': 2,
+            'repair_only': True,
+            'source_task_id': source_task_id,
+            'package_sha256': package_sha256,
+            'repair_scene_indices': list(raw_repair_indices),
+            'scenes': scenes,
+        }
+
+    if set(raw) != {
         'version',
         'recovery_only',
         'source_task_id',
@@ -177,6 +371,9 @@ def _validated_recovered_generated_media(
 def _validate_recovered_generated_clip(
     path: str | Path,
     minimum_duration: float,
+    *,
+    expected_size: int | None = None,
+    expected_sha256: str | None = None,
 ) -> None:
     """Fail closed on an empty, oversized, non-MP4 or too-short checkpoint."""
     clip = Path(path)
@@ -189,6 +386,17 @@ def _validate_recovered_generated_clip(
     if not 1024 <= size <= _MAX_RECOVERED_VIDEO_BYTES:
         raise FinalVisualQualityError(
             'Recovered generated-media clip size is invalid'
+        )
+    if expected_size is not None and size != expected_size:
+        raise FinalVisualQualityError(
+            'Recovered generated-media clip size does not match checkpoint'
+        )
+    if (
+        expected_sha256 is not None
+        and _file_sha256(clip) != expected_sha256
+    ):
+        raise FinalVisualQualityError(
+            'Recovered generated-media clip checksum does not match checkpoint'
         )
     with clip.open('rb') as file_handle:
         header = file_handle.read(12)
@@ -216,6 +424,404 @@ def _validate_recovered_generated_clip(
         )
 
 
+def _validated_recovered_voice(
+    raw: object,
+    scene_count: int,
+    expected_package_sha256: str,
+) -> dict | None:
+    """Validate the exact previously approved narration checkpoint."""
+    if raw is None:
+        return None
+    required_fields = {
+        'version',
+        'source_task_id',
+        'package_sha256',
+        'key',
+        'sha256',
+        'size',
+        'scene_durations',
+        'spoken_texts',
+        'duration_before_fit',
+        'duration_after_fit',
+        'tempo_rate',
+        'content_target_seconds',
+        'reserved_tail_seconds',
+    }
+    if not isinstance(raw, dict) or set(raw) != required_fields:
+        raise FinalAudioQualityError(
+            'Recovered narration contract is malformed'
+        )
+    source_task_id = str(raw.get('source_task_id') or '').strip().lower()
+    package_sha256 = str(raw.get('package_sha256') or '').strip().lower()
+    key = str(raw.get('key') or '').strip()
+    checksum = str(raw.get('sha256') or '').strip().lower()
+    size = raw.get('size')
+    durations = raw.get('scene_durations')
+    spoken_texts = raw.get('spoken_texts')
+    key_match = _RECOVERED_VOICE_KEY_PATTERN.fullmatch(key)
+    if (
+        raw.get('version') != 1
+        or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(source_task_id)
+        or not _SHA256_PATTERN.fullmatch(package_sha256)
+        or package_sha256 != expected_package_sha256
+        or not key_match
+        or key_match.group('source') != source_task_id
+        or not _SHA256_PATTERN.fullmatch(checksum)
+        or type(size) is not int
+        or not 1024 <= size <= _MAX_RECOVERED_AUDIO_BYTES
+        or not isinstance(durations, list)
+        or len(durations) != int(scene_count)
+        or not isinstance(spoken_texts, list)
+        or len(spoken_texts) != int(scene_count)
+    ):
+        raise FinalAudioQualityError(
+            'Recovered narration contract is invalid'
+        )
+    normalized_durations: list[float] = []
+    for raw_duration in durations:
+        if (
+            isinstance(raw_duration, bool)
+            or not isinstance(raw_duration, (int, float))
+        ):
+            raise FinalAudioQualityError(
+                'Recovered narration scene timing is invalid'
+            )
+        duration = float(raw_duration)
+        if not math.isfinite(duration) or not 0.10 <= duration <= 20.0:
+            raise FinalAudioQualityError(
+                'Recovered narration scene timing is invalid'
+            )
+        normalized_durations.append(duration)
+    normalized_spoken = [str(value or '').strip() for value in spoken_texts]
+    if any(not value or len(value) > 600 for value in normalized_spoken):
+        raise FinalAudioQualityError(
+            'Recovered narration spoken text is invalid'
+        )
+    numeric_fields: dict[str, float] = {}
+    for field in (
+        'duration_before_fit',
+        'duration_after_fit',
+        'tempo_rate',
+        'content_target_seconds',
+        'reserved_tail_seconds',
+    ):
+        raw_value = raw.get(field)
+        if isinstance(raw_value, bool) or not isinstance(
+            raw_value,
+            (int, float),
+        ):
+            raise FinalAudioQualityError(
+                'Recovered narration timing metadata is invalid'
+            )
+        value = float(raw_value)
+        if not math.isfinite(value):
+            raise FinalAudioQualityError(
+                'Recovered narration timing metadata is invalid'
+            )
+        numeric_fields[field] = value
+    if (
+        not 0.5 <= numeric_fields['duration_before_fit'] <= 60 * 30
+        or not 0.5 <= numeric_fields['duration_after_fit'] <= 60 * 30
+        or not 0.80 <= numeric_fields['tempo_rate'] <= 1.25
+        or not 0.5 <= numeric_fields['content_target_seconds'] <= 60 * 30
+        or not 0.0 <= numeric_fields['reserved_tail_seconds'] <= 2.0
+        or abs(
+            sum(normalized_durations)
+            - numeric_fields['duration_after_fit']
+        ) > 1.0
+    ):
+        raise FinalAudioQualityError(
+            'Recovered narration timing metadata is inconsistent'
+        )
+    return {
+        **raw,
+        'source_task_id': source_task_id,
+        'package_sha256': package_sha256,
+        'key': key,
+        'sha256': checksum,
+        'scene_durations': normalized_durations,
+        'spoken_texts': normalized_spoken,
+        **numeric_fields,
+    }
+
+
+def _download_recovered_voice_candidate(
+    recovered_voice: dict,
+    work: Path,
+) -> dict:
+    output = work / 'recovered_voice.mp3'
+    try:
+        download_file(recovered_voice['key'], output)
+        size = output.stat().st_size
+        if size != recovered_voice['size']:
+            raise FinalAudioQualityError(
+                'Recovered narration size does not match checkpoint'
+            )
+        if _file_sha256(output) != recovered_voice['sha256']:
+            raise FinalAudioQualityError(
+                'Recovered narration checksum does not match checkpoint'
+            )
+        actual_duration = float(media_duration(output))
+    except FinalAudioQualityError:
+        raise
+    except Exception as exc:
+        raise FinalAudioQualityError(
+            'Recovered narration could not be downloaded or probed'
+        ) from exc
+    if (
+        not math.isfinite(actual_duration)
+        or abs(
+            actual_duration - recovered_voice['duration_after_fit']
+        ) > 0.35
+    ):
+        raise FinalAudioQualityError(
+            'Recovered narration duration does not match checkpoint'
+        )
+    return {
+        'path': str(output),
+        'scene_durations': list(recovered_voice['scene_durations']),
+        'spoken_texts': list(recovered_voice['spoken_texts']),
+        'voice_name': 'Recovered approved voice',
+        'duration_before_fit': recovered_voice['duration_before_fit'],
+        'duration_after_fit': recovered_voice['duration_after_fit'],
+        'tempo_rate': recovered_voice['tempo_rate'],
+        'content_target_seconds': recovered_voice[
+            'content_target_seconds'
+        ],
+        'reserved_tail_seconds': recovered_voice[
+            'reserved_tail_seconds'
+        ],
+        'removed_silence_seconds': 0.0,
+        'compacted_boundary_pause_count': 0,
+        'compacted_trailing_silence': False,
+        '_generation_attempt': 0,
+        '_generation_attempts_used': 1,
+        '_synthesis_quality_errors': [],
+        '_recovered_voice': True,
+    }
+
+
+def _stage_scene_repair_artifacts(
+    *,
+    task_id: str,
+    package: dict,
+    voice_result: dict,
+    scene_durations: list[float],
+    generated_checkpoint_specs: dict[int, list[dict]],
+    excluded_scene_indices: set[int] | None = None,
+) -> tuple[dict[str, list[dict]], dict]:
+    """Upload immutable raw artifacts before the final critic can fail."""
+    source_task_id = str(task_id or '').strip().lower()
+    if not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(source_task_id):
+        raise FinalVisualQualityError('Repair artifact task id is invalid')
+    excluded = set(excluded_scene_indices or set())
+    package_sha256 = _recovery_package_sha256(package)
+    recovered_scenes: dict[str, list[dict]] = {}
+    for scene_idx in sorted(generated_checkpoint_specs):
+        if scene_idx in excluded:
+            continue
+        raw_specs = generated_checkpoint_specs.get(scene_idx) or []
+        entries: list[dict] = []
+        seen_paths: set[str] = set()
+        for raw_spec in raw_specs:
+            if not isinstance(raw_spec, dict):
+                continue
+            path = Path(str(raw_spec.get('path') or ''))
+            resolved_path = str(path)
+            if not path.is_file() or resolved_path in seen_paths:
+                continue
+            provider = str(
+                raw_spec.get('generation_provider') or ''
+            ).strip()
+            if provider not in _REPAIR_RECOVERED_MEDIA_PROVIDERS:
+                raise FinalVisualQualityError(
+                    'Generated checkpoint provider is unsupported'
+                )
+            _validate_recovered_generated_clip(
+                path,
+                minimum_duration=max(
+                    5.0,
+                    float(scene_durations[scene_idx]) + 0.35,
+                ),
+            )
+            ordinal = len(entries)
+            suffix = (
+                'initial'
+                if ordinal == 0
+                else f'repair-{ordinal:02d}'
+            )
+            key = (
+                f'recovery/{source_task_id}/raw/'
+                f'scene-{scene_idx:02d}-{suffix}.mp4'
+            )
+            size = path.stat().st_size
+            checksum = _file_sha256(path)
+            upload_file(path, key, 'video/mp4')
+            entries.append({
+                'key': key,
+                'sha256': checksum,
+                'size': size,
+                'provider': provider,
+                'provider_attempts': max(
+                    1,
+                    min(
+                        10,
+                        int(
+                            raw_spec.get(
+                                'generation_provider_attempts'
+                            ) or 1
+                        ),
+                    ),
+                ),
+                'synthetic_motion_only': bool(
+                    raw_spec.get('synthetic_motion_only')
+                ),
+                'motion_recipe_version': (
+                    str(raw_spec.get('motion_recipe_version'))[:80]
+                    if raw_spec.get('motion_recipe_version')
+                    else None
+                ),
+                'source_media_type': (
+                    raw_spec.get('source_media_type')
+                    if raw_spec.get('source_media_type') in {
+                        'image',
+                        'video',
+                    }
+                    else None
+                ),
+            })
+            seen_paths.add(resolved_path)
+            if len(entries) >= 3:
+                break
+        if entries:
+            recovered_scenes[str(scene_idx)] = entries
+
+    voice_path = Path(str(voice_result.get('path') or ''))
+    if not voice_path.is_file():
+        raise FinalAudioQualityError(
+            'Approved narration is unavailable for repair checkpoint'
+        )
+    voice_size = voice_path.stat().st_size
+    if not 1024 <= voice_size <= _MAX_RECOVERED_AUDIO_BYTES:
+        raise FinalAudioQualityError(
+            'Approved narration size is invalid for repair checkpoint'
+        )
+    voice_key = f'recovery/{source_task_id}/raw/voice.mp3'
+    upload_file(voice_path, voice_key, 'audio/mpeg')
+    voice_contract = {
+        'version': 1,
+        'source_task_id': source_task_id,
+        'package_sha256': package_sha256,
+        'key': voice_key,
+        'sha256': _file_sha256(voice_path),
+        'size': voice_size,
+        'scene_durations': [float(value) for value in scene_durations],
+        'spoken_texts': [
+            str(value or '').strip()
+            for value in (voice_result.get('spoken_texts') or [])
+        ],
+        'duration_before_fit': float(
+            voice_result.get('duration_before_fit') or 0
+        ),
+        'duration_after_fit': float(
+            voice_result.get('duration_after_fit') or 0
+        ),
+        'tempo_rate': float(voice_result.get('tempo_rate') or 0),
+        'content_target_seconds': float(
+            voice_result.get('content_target_seconds') or 0
+        ),
+        'reserved_tail_seconds': float(
+            voice_result.get('reserved_tail_seconds') or 0
+        ),
+    }
+    _validated_recovered_voice(
+        voice_contract,
+        len(scene_durations),
+        package_sha256,
+    )
+    return recovered_scenes, voice_contract
+
+
+def _persist_scene_repair_checkpoint(
+    *,
+    task_id: str,
+    package: dict,
+    voice_result: dict,
+    scene_durations: list[float],
+    generated_checkpoint_specs: dict[int, list[dict]],
+    rejected_scene_indices: list[int],
+    staged_recovered_scenes: dict[str, list[dict]] | None = None,
+    staged_voice_contract: dict | None = None,
+) -> bool:
+    """Publish a single-use repair pointer before temporary cleanup."""
+    source_task_id = str(task_id or '').strip().lower()
+    rejected = sorted(set(int(index) for index in rejected_scene_indices))
+    if (
+        not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(source_task_id)
+        or not 1 <= len(rejected) <= 2
+        or any(not 0 <= index < len(scene_durations) for index in rejected)
+    ):
+        return False
+    package_sha256 = _recovery_package_sha256(package)
+    if staged_recovered_scenes is None or staged_voice_contract is None:
+        recovered_scenes, voice_contract = (
+            _stage_scene_repair_artifacts(
+                task_id=source_task_id,
+                package=package,
+                voice_result=voice_result,
+                scene_durations=scene_durations,
+                generated_checkpoint_specs=generated_checkpoint_specs,
+                excluded_scene_indices=set(rejected),
+            )
+        )
+    else:
+        recovered_scenes = {
+            str(scene_idx): list(entries)
+            for scene_idx, entries in staged_recovered_scenes.items()
+            if int(scene_idx) not in rejected
+        }
+        voice_contract = dict(staged_voice_contract)
+    media_contract = {
+        'version': 2,
+        'repair_only': True,
+        'source_task_id': source_task_id,
+        'package_sha256': package_sha256,
+        'repair_scene_indices': rejected,
+        'scenes': recovered_scenes,
+    }
+    approved_package = dict(package)
+    approved_package['_recovered_generated_media'] = media_contract
+    approved_package['_recovered_voice'] = voice_contract
+    checkpoint = {
+        'version': 1,
+        'source_task_id': source_task_id,
+        'package_sha256': package_sha256,
+        'approved_package': approved_package,
+    }
+    # Validate the complete package before publishing its single-use pointer.
+    _validated_recovered_generated_media(
+        media_contract,
+        len(scene_durations),
+        package_sha256,
+    )
+    _validated_recovered_voice(
+        voice_contract,
+        len(scene_durations),
+        package_sha256,
+    )
+    save_repair_checkpoint(source_task_id, checkpoint)
+    update_job(
+        source_task_id,
+        repair_available=True,
+        repair_scene_indices=rejected,
+        repair_message=(
+            'Kabul edilen ses ve sahneler kilitlendi; yalnızca reddedilen '
+            'sahne yeniden üretilecek.'
+        ),
+    )
+    return True
+
+
 def _require_recovered_media_coverage(
     recovered_generated_media: dict | None,
     selected_scene_indices: list[int],
@@ -225,6 +831,10 @@ def _require_recovered_media_coverage(
         return
     selected = set(int(index) for index in selected_scene_indices)
     recovered = set(recovered_generated_media['scenes'])
+    if recovered_generated_media.get('version') == 2:
+        recovered |= set(
+            recovered_generated_media['repair_scene_indices']
+        )
     missing = sorted(selected - recovered)
     unexpected = sorted(recovered - selected)
     if missing or unexpected:
@@ -2062,6 +2672,9 @@ def run_video_pipeline(
     final_runway_repair_attempts = 0
     final_runway_repair_scenes: list[int] = []
     final_runway_repair_failures: list[int] = []
+    generated_checkpoint_specs: dict[int, list[dict]] = {}
+    staged_recovered_scenes: dict[str, list[dict]] | None = None
+    staged_voice_contract: dict | None = None
 
     try:
         package = _prepare_package(self, task_id, topic, duration_minutes, language, options, approved_package)
@@ -2069,18 +2682,65 @@ def run_video_pipeline(
             '_recovered_generated_media',
             None,
         )
+        raw_recovered_voice = package.pop('_recovered_voice', None)
         if (
-            raw_recovered_generated_media is not None
+            (
+                raw_recovered_generated_media is not None
+                or raw_recovered_voice is not None
+            )
             and approved_package is None
         ):
             raise FinalVisualQualityError(
-                'Recovered generated media requires an approved storyboard'
+                'Recovered media requires an approved storyboard'
             )
+        package_sha256 = _recovery_package_sha256(package)
         recovered_generated_media = _validated_recovered_generated_media(
             raw_recovered_generated_media,
             len(package.get('scenes') or []),
+            package_sha256,
         )
+        recovered_voice = _validated_recovered_voice(
+            raw_recovered_voice,
+            len(package.get('scenes') or []),
+            package_sha256,
+        )
+        if (
+            recovered_voice
+            and not recovered_generated_media
+        ) or (
+            recovered_generated_media
+            and recovered_generated_media.get('version') == 2
+            and not recovered_voice
+        ):
+            raise FinalVisualQualityError(
+                'Scene-repair recovery requires matching media and voice '
+                'contracts'
+            )
+        if (
+            recovered_generated_media
+            and recovered_voice
+            and recovered_generated_media['source_task_id']
+            != recovered_voice['source_task_id']
+        ):
+            raise FinalVisualQualityError(
+                'Recovered media and voice source tasks do not match'
+            )
         scenes = package['scenes']
+        scene_repair_recovery = bool(
+            recovered_generated_media
+            and recovered_generated_media.get('version') == 2
+        )
+        recovery_repair_scene_indices = set(
+            recovered_generated_media.get('repair_scene_indices') or []
+            if scene_repair_recovery
+            else []
+        )
+        recovery_paid_scene_indices = (
+            set(recovered_generated_media.get('scenes') or {})
+            | recovery_repair_scene_indices
+            if scene_repair_recovery
+            else set()
+        )
         (work / 'package.json').write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding='utf-8')
 
         strict_short_preview_duration = (
@@ -2089,12 +2749,19 @@ def run_video_pipeline(
         )
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
-            voice_future = stage_pool.submit(
-                _synthesize_voice_candidate,
-                scenes,
-                task_id,
-                duration_minutes * 60,
-            )
+            if recovered_voice:
+                voice_future = stage_pool.submit(
+                    _download_recovered_voice_candidate,
+                    recovered_voice,
+                    work,
+                )
+            else:
+                voice_future = stage_pool.submit(
+                    _synthesize_voice_candidate,
+                    scenes,
+                    task_id,
+                    duration_minutes * 60,
+                )
             broll_future = stage_pool.submit(
                 _collect_broll,
                 scenes,
@@ -2228,7 +2895,8 @@ def run_video_pipeline(
                 else {}
             )
             can_regenerate = (
-                audio_generation_attempts < MAX_AUDIO_GENERATION_ATTEMPTS
+                not recovered_voice
+                and audio_generation_attempts < MAX_AUDIO_GENERATION_ATTEMPTS
                 and audio_qc.get('available') is True
                 and audio_duration_qc.get('available') is True
                 and (
@@ -2935,6 +3603,7 @@ def run_video_pipeline(
                         or str(scene.get('ai_prompt') or '').strip()
                         or candidate_scene_idx in provider_outage_stock_scenes
                         or candidate_scene_idx in stock_quality_fallback_scenes
+                        or candidate_scene_idx in recovery_paid_scene_indices
                     )
                     else ''
                 )
@@ -2980,6 +3649,7 @@ def run_video_pipeline(
         # for Runway; better-ranked overflow scenes get a final free chance.
         if (
             is_bounded_short_preview
+            and not scene_repair_recovery
             and not provider_outage_stock_scenes
             and not stock_quality_fallback_scenes
             and len(ranked_runway_candidates) > runway_submission_cap
@@ -3067,7 +3737,39 @@ def run_video_pipeline(
         runway_required_submission_cap = runway_submission_cap
         runway_effective_submission_cap = runway_submission_cap
         selected_runway: list[dict]
-        if is_bounded_short_preview:
+        if scene_repair_recovery:
+            missing_recovery_prompts = sorted(
+                recovery_paid_scene_indices - set(prompt_candidates)
+            )
+            if missing_recovery_prompts:
+                raise FinalVisualQualityError(
+                    'Scene-repair recovery is missing a safe generation '
+                    'prompt: '
+                    + ','.join(
+                        str(index) for index in missing_recovery_prompts
+                    )
+                )
+            selected_runway = [
+                {
+                    'scene_index': scene_idx,
+                    'has_visual': any(
+                        _visual_path(spec)
+                        for spec in scene_visuals[scene_idx]
+                    ),
+                    'stock_score': int(
+                        (current_reviews.get(scene_idx) or {}).get(
+                            'score',
+                            -1,
+                        )
+                    ),
+                    'provider_outage_stock_fallback': False,
+                    'stock_quality_fallback': False,
+                }
+                for scene_idx in sorted(recovery_paid_scene_indices)
+            ]
+            runway_required_submission_cap = len(selected_runway)
+            runway_effective_submission_cap = len(selected_runway)
+        elif is_bounded_short_preview:
             (
                 selected_runway,
                 required_base_candidates,
@@ -3192,14 +3894,56 @@ def run_video_pipeline(
             [int(item['scene_index']) for item in selected_runway],
         )
 
+        set_stage(
+            self,
+            task_id,
+            (
+                'ai_scene_repair'
+                if scene_repair_recovery
+                else 'ai_scene_recovery'
+                if recovered_generated_media
+                else 'ai_scene_generation'
+            ),
+            64,
+            (
+                'Kabul edilen üretimler geri yükleniyor; yalnızca reddedilen '
+                'sahneler yeniden üretiliyor.'
+                if scene_repair_recovery
+                else 'Kayıtlı ücretli sahneler doğrulanarak geri yükleniyor.'
+                if recovered_generated_media
+                else 'Seçilen özgün sahneler sırayla üretiliyor.'
+            ),
+        )
+
         for candidate in selected_runway:
             scene_idx = int(candidate['scene_index'])
             stock_fallback = list(scene_visuals[scene_idx])
-            if recovered_generated_media:
+            recovered_scene_entries = (
+                recovered_generated_media['scenes'].get(scene_idx)
+                if recovered_generated_media
+                else None
+            )
+            if recovered_scene_entries:
                 recovered_specs: list[dict] = []
-                for recovered_idx, object_key in enumerate(
-                    recovered_generated_media['scenes'][scene_idx]
+                for recovered_idx, raw_entry in enumerate(
+                    recovered_scene_entries
                 ):
+                    if recovered_generated_media.get('version') == 2:
+                        entry = raw_entry
+                    else:
+                        entry = {
+                            'key': raw_entry,
+                            'provider': recovered_generated_media[
+                                'provider'
+                            ],
+                            'provider_attempts': 1,
+                            'synthetic_motion_only': False,
+                            'motion_recipe_version': None,
+                            'source_media_type': None,
+                            'size': None,
+                            'sha256': None,
+                        }
+                    object_key = entry['key']
                     recovered_path = (
                         work
                         / f'recovered_s{scene_idx:02d}_{recovered_idx:02d}.mp4'
@@ -3212,6 +3956,8 @@ def run_video_pipeline(
                                 5.0,
                                 float(scene_durations[scene_idx]) + 0.35,
                             ),
+                            expected_size=entry.get('size'),
+                            expected_sha256=entry.get('sha256'),
                         )
                     except FinalVisualQualityError:
                         raise
@@ -3222,8 +3968,8 @@ def run_video_pipeline(
                         ) from exc
                     recovered_spec = _generated_visual_spec(
                         recovered_path,
-                        provider=recovered_generated_media['provider'],
-                        provider_attempts=1,
+                        provider=entry['provider'],
+                        provider_attempts=entry['provider_attempts'],
                     )
                     recovered_spec.update({
                         'generation_recovered': True,
@@ -3231,7 +3977,19 @@ def run_video_pipeline(
                             recovered_generated_media['source_task_id']
                         ),
                     })
+                    if entry.get('synthetic_motion_only') is True:
+                        recovered_spec.update({
+                            'synthetic_motion_only': True,
+                            'motion_recipe_version': entry.get(
+                                'motion_recipe_version'
+                            ),
+                            'source_media_type': 'image',
+                        })
                     recovered_specs.append(recovered_spec)
+                    generated_checkpoint_specs.setdefault(
+                        scene_idx,
+                        [],
+                    ).append(dict(recovered_spec))
                 scene_visuals[scene_idx] = [
                     *recovered_specs,
                     *stock_fallback,
@@ -3241,14 +3999,29 @@ def run_video_pipeline(
                 generated_video_provider_records.append({
                     'stage': 'recovered_generation',
                     'scene_index': scene_idx,
-                    'provider': recovered_generated_media['provider'],
-                    'provider_attempts': 1,
+                    'provider': recovered_specs[0][
+                        'generation_provider'
+                    ],
+                    'provider_attempts': recovered_specs[0][
+                        'generation_provider_attempts'
+                    ],
                     'recovered_from_task_id': (
                         recovered_generated_media['source_task_id']
                     ),
                     'recovered_candidate_count': len(recovered_specs),
                 })
                 continue
+
+            if (
+                recovered_generated_media
+                and not (
+                    scene_repair_recovery
+                    and scene_idx in recovery_repair_scene_indices
+                )
+            ):
+                raise FinalVisualQualityError(
+                    'Recovered generated-media scene is unavailable'
+                )
 
             runway_attempts += 1
             try:
@@ -3290,6 +4063,10 @@ def run_video_pipeline(
                         'source_media_type': 'image',
                     })
                 scene_visuals[scene_idx] = [runway_spec, *stock_fallback][:3]
+                generated_checkpoint_specs.setdefault(
+                    scene_idx,
+                    [],
+                ).append(dict(runway_spec))
                 runway_scenes_used += 1
                 runway_generated_scenes.append(scene_idx)
                 generated_video_provider_records.append({
@@ -3330,6 +4107,26 @@ def run_video_pipeline(
                         exc,
                     )
                 )
+
+        if is_bounded_short_preview:
+            try:
+                (
+                    staged_recovered_scenes,
+                    staged_voice_contract,
+                ) = _stage_scene_repair_artifacts(
+                    task_id=task_id,
+                    package=package,
+                    voice_result=voice_result,
+                    scene_durations=scene_durations,
+                    generated_checkpoint_specs=(
+                        generated_checkpoint_specs
+                    ),
+                )
+            except Exception:
+                # The primary render remains fail-closed on quality. Storage
+                # checkpointing is retried only if the critic rejects it.
+                staged_recovered_scenes = None
+                staged_voice_contract = None
 
         # Re-review the exact clips that will be rendered. Retry search results
         # and generated clips never bypass the final semantic quality gate.
@@ -3666,6 +4463,10 @@ def run_video_pipeline(
                         'source_media_type': 'image',
                     })
                 scene_visuals[scene_idx] = [repair_spec, *existing_specs][:3]
+                generated_checkpoint_specs.setdefault(
+                    scene_idx,
+                    [],
+                ).append(dict(repair_spec))
                 final_runway_repair_scenes.append(scene_idx)
                 generated_video_provider_records.append({
                     'stage': 'final_repair',
@@ -3863,12 +4664,42 @@ def run_video_pipeline(
                 }
                 for idx in rejected_final_scenes
             }
+            repair_checkpoint_available = False
+            if is_bounded_short_preview:
+                try:
+                    repair_checkpoint_available = (
+                        _persist_scene_repair_checkpoint(
+                            task_id=task_id,
+                            package=package,
+                            voice_result=voice_result,
+                            scene_durations=scene_durations,
+                            generated_checkpoint_specs=(
+                                generated_checkpoint_specs
+                            ),
+                            rejected_scene_indices=(
+                                rejected_final_scenes
+                            ),
+                            staged_recovered_scenes=(
+                                staged_recovered_scenes
+                            ),
+                            staged_voice_contract=(
+                                staged_voice_contract
+                            ),
+                        )
+                    )
+                except Exception:
+                    # Checkpointing is an optimization, never a reason to
+                    # conceal or replace the real visual-quality rejection.
+                    update_job(task_id, repair_available=False)
             diagnostics = {
                 'stage': 'after_rescue',
                 'accepted': len(scenes) - len(rejected_final_scenes),
                 'total': len(scenes),
                 'replaced': len(rescued_final_scenes),
                 'rejected': rejected_details,
+                'repair_checkpoint_available': (
+                    repair_checkpoint_available
+                ),
             }
             raise FinalVisualQualityError(
                 'Final visual quality gate rejected: '
