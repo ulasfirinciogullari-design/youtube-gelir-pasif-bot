@@ -1371,7 +1371,7 @@ def _allocate_short_preview_forced_stock_runway(
     Within that cap, clips without an approved visual are mandatory and already
     approved AI-first upgrades are optional. Every extra selected candidate is
     therefore an explicit STOCK scene forced either by a typed provider outage
-    or by at most two semantic failures after the full unchanged stock tournament.
+    or by at most three semantic failures after the full unchanged stock tournament.
     """
     base_cap = max(0, int(base_submission_cap))
     outage_indices = {int(index) for index in provider_outage_stock_scenes}
