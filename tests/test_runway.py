@@ -4,7 +4,7 @@ import re
 import tempfile
 import time
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 from urllib.parse import urljoin, urlparse
 
 
@@ -17,6 +17,10 @@ class BadRequestError(Exception):
 
 
 class GeminiVideoTerminalError(RuntimeError):
+    pass
+
+
+class GeminiVideoQuotaError(RuntimeError):
     pass
 
 
@@ -100,6 +104,7 @@ def _load_runway_functions(
         'RateLimitError': RateLimitError,
         'BadRequestError': BadRequestError,
         'GeminiVideoTerminalError': GeminiVideoTerminalError,
+        'GeminiVideoQuotaError': GeminiVideoQuotaError,
         'RunwayML': runway_client_factory or _RunwayClientFactory([object()]),
         'settings': _Settings(),
         'httpx': Mock(),
@@ -108,6 +113,7 @@ def _load_runway_functions(
         'urlparse': urlparse,
         '_GEMINI_VIDEO_BASE': 'https://generativelanguage.googleapis.com/v1beta',
         '_GEMINI_VIDEO_MODEL': 'veo-3.1-lite-generate-preview',
+        '_GEMINI_VIDEO_FAST_MODEL': 'veo-3.1-fast-generate-preview',
         '_GEMINI_OPERATION_PATTERN': re.compile(
             r'^(?:models/[A-Za-z0-9._-]+/)?operations/[A-Za-z0-9._~/-]+$'
         ),
@@ -360,6 +366,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 ),
                 'provider': 'gemini_veo',
                 'provider_attempts': 1,
+                'quota_fallback_from': None,
             },
         )
         gemini_video_uri.assert_called_once_with('safe prompt', 5)
@@ -385,6 +392,36 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertEqual(result['provider'], 'gemini_veo')
         self.assertEqual(result['provider_attempts'], 2)
         self.assertEqual(gemini_video_uri.call_count, 2)
+
+    def test_exhausted_lite_quota_switches_once_to_fast_model(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        fast_uri = (
+            'https://generativelanguage.googleapis.com/v1beta/files/fast-video'
+        )
+        gemini_video_uri = Mock(side_effect=[
+            GeminiVideoQuotaError('definitive Lite quota rejection'),
+            fast_uri,
+        ])
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+        )
+
+        result = generate_scene('safe prompt', duration=5)
+
+        self.assertEqual(result['url'], fast_uri)
+        self.assertEqual(result['provider'], 'gemini_veo_fast')
+        self.assertEqual(result['provider_attempts'], 1)
+        self.assertEqual(result['quota_fallback_from'], 'gemini_veo')
+        self.assertEqual(
+            gemini_video_uri.call_args_list,
+            [
+                call('safe prompt', 5),
+                call('safe prompt', 5, 'veo-3.1-fast-generate-preview'),
+            ],
+        )
 
     def test_ambiguous_gemini_failure_is_never_retried(self):
         factory = _RunwayClientFactory([
@@ -539,10 +576,13 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'time': fake_time,
             'urlparse': urlparse,
             'settings': _Settings(),
+            'GeminiVideoTerminalError': GeminiVideoTerminalError,
+            'GeminiVideoQuotaError': GeminiVideoQuotaError,
             '_GEMINI_VIDEO_BASE': (
                 'https://generativelanguage.googleapis.com/v1beta'
             ),
             '_GEMINI_VIDEO_MODEL': 'veo-3.1-lite-generate-preview',
+            '_GEMINI_VIDEO_FAST_MODEL': 'veo-3.1-fast-generate-preview',
             '_GEMINI_OPERATION_PATTERN': re.compile(
                 r'^(?:models/[A-Za-z0-9._-]+/)?operations/'
                 r'[A-Za-z0-9._~/-]+$'
@@ -666,10 +706,12 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'urlparse': urlparse,
             'settings': _Settings(),
             'GeminiVideoTerminalError': GeminiVideoTerminalError,
+            'GeminiVideoQuotaError': GeminiVideoQuotaError,
             '_GEMINI_VIDEO_BASE': (
                 'https://generativelanguage.googleapis.com/v1beta'
             ),
             '_GEMINI_VIDEO_MODEL': 'veo-3.1-lite-generate-preview',
+            '_GEMINI_VIDEO_FAST_MODEL': 'veo-3.1-fast-generate-preview',
             '_GEMINI_OPERATION_PATTERN': re.compile(
                 r'^(?:models/[A-Za-z0-9._-]+/)?operations/'
                 r'[A-Za-z0-9._~/-]+$'
