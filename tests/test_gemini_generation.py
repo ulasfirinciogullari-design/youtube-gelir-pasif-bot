@@ -1,9 +1,11 @@
+import base64
 import unittest
 from unittest.mock import patch
 
 from app.services.gemini_generation import (
     GeminiGenerationError,
     GeminiProtocolError,
+    generate_gemini_audio_json,
     generate_gemini_json,
     generate_gemini_multimodal_json,
 )
@@ -33,6 +35,59 @@ def gemini_response(text='{"answer":"ok"}', *, parts=None):
 
 
 class GeminiJsonGenerationTests(unittest.TestCase):
+    @patch('app.services.gemini_generation.httpx.post')
+    def test_audio_uses_bounded_inline_data_and_header_only_key(self, post):
+        post.return_value = FakeResponse(gemini_response())
+
+        result = generate_gemini_audio_json(
+            b'voice-bytes',
+            'audio/mpeg',
+            'Review this narration.',
+            api_key='header-only-secret',
+            retry_once=False,
+            system_instruction='Trusted prosody rubric.',
+        )
+
+        self.assertEqual(result, {'answer': 'ok'})
+        request = post.call_args
+        self.assertNotIn('header-only-secret', request.args[0])
+        self.assertEqual(
+            request.kwargs['headers']['x-goog-api-key'],
+            'header-only-secret',
+        )
+        parts = request.kwargs['json']['contents'][0]['parts']
+        self.assertEqual(parts[0], {'text': 'Review this narration.'})
+        self.assertEqual(parts[1]['inlineData']['mimeType'], 'audio/mpeg')
+        self.assertEqual(
+            base64.b64decode(parts[1]['inlineData']['data']),
+            b'voice-bytes',
+        )
+
+    @patch('app.services.gemini_generation.httpx.post')
+    def test_audio_rejects_invalid_format_and_size_before_network(self, post):
+        for audio_bytes, mime_type in (
+            (b'', 'audio/mpeg'),
+            (bytearray(b'x'), 'audio/mpeg'),
+            (b'x', 'video/mp4'),
+        ):
+            with self.subTest(mime_type=mime_type):
+                with self.assertRaises(GeminiGenerationError):
+                    generate_gemini_audio_json(
+                        audio_bytes,
+                        mime_type,
+                        'Review.',
+                        api_key='test-key',
+                    )
+        with patch('app.services.gemini_generation._MAX_AUDIO_BYTES', 1):
+            with self.assertRaises(GeminiGenerationError):
+                generate_gemini_audio_json(
+                    b'xx',
+                    'audio/mpeg',
+                    'Review.',
+                    api_key='test-key',
+                )
+        post.assert_not_called()
+
     @patch('app.services.gemini_generation.httpx.post')
     def test_multimodal_uses_native_ordered_inline_data(self, post):
         jpeg = b'\xff\xd8\xffjpeg-data\xff\xd9'

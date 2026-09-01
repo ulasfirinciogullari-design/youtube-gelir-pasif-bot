@@ -46,10 +46,19 @@ from app.services.director import (
 
 
 class PreviewNarrationBudgetTests(unittest.TestCase):
-    def test_thirty_second_budget_allows_natural_forty_word_story(self):
+    def test_thirty_second_generated_budget_requires_natural_speed(self):
         self.assertEqual(
             director_module._target_word_budget(0.5),
-            (48, 40, 51),
+            (56, 52, 60),
+        )
+
+    def test_thirty_second_legacy_lock_keeps_compatibility_range(self):
+        self.assertEqual(
+            director_module._target_word_budget(
+                0.5,
+                allow_legacy_short_lock=True,
+            ),
+            (56, 40, 60),
         )
 
     def test_four_scene_preview_has_hard_balanced_single_pass_ceilings(self):
@@ -174,7 +183,7 @@ class PreviewNarrationBudgetTests(unittest.TestCase):
             'Sürücü kemeri yeniden yavaşça çekip metal dili kırmızı düğmeli tokaya tek hamlede takıyor ve sonunda güvenle yola hazırlanıyor.',
         ]
         balanced_narrations = [
-            'Sürücü yola çıkmadan önce emniyet kemerini omzuna doğru sakince hemen çekmeye başlıyor.',
+            'Sürücü yola çıkmadan hemen önce emniyet kemerini omzuna doğru sakince ve kontrollü biçimde çekmeye başlıyor.',
             'Kemer yavaşça uzarken sürücü onu sertçe çekince mekanizma aniden kilitlenip tamamen duruyor.',
             'Ani hız makaranın içindeki kilidi dişli çarka geçiriyor ve kemerin dönüşünü hemen durduruyor.',
             'Sürücü kemerin göğsünde düzgün durduğunu kontrol edip ellerini direksiyona koyarak güvenle yola hazırlanıyor.',
@@ -256,7 +265,7 @@ class PreviewNarrationBudgetTests(unittest.TestCase):
                 _word_count(scene['narration'])
                 for scene in result['scenes']
             ],
-            [12, 12, 13, 13],
+            [15, 12, 13, 13],
         )
         repair_stock_scenes.assert_called_once()
 
@@ -404,12 +413,12 @@ def make_coherent_battery_package():
     scenes = [
         _scene(
             0,
-            'Otobüs bekleyen genç adam telefonunun düşen piline bakar.',
+            'Otobüs bekleyen genç adam telefonunun hızla düşen pil yüzdesine şaşkınlıkla bakar.',
             ['young man checks phone at bus stop', 'commuter checks low phone battery'],
         ),
         _scene(
             1,
-            'Soğukta pil elektrik vermekte kısa süre daha zorlanır.',
+            'Soğukta pil geçici olarak elektrik vermekte kısa süre daha zorlanır.',
             ['cold smartphone in commuters hand', 'person holds phone in winter'],
         ),
         _scene(
@@ -435,7 +444,7 @@ def make_coherent_battery_package():
         ),
     ]
     narration = ' '.join(scene['narration'] for scene in scenes)
-    assert 45 <= _word_count(narration) <= 51
+    assert 52 <= _word_count(narration) <= 60
     return {
         'title': 'Soğukta Düşen Pil',
         'description': 'Tek bir gündelik pil sorusunu anlatır.',
@@ -1280,6 +1289,11 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
         self.assertEqual(
             [scene['tts_text'] for scene in repaired_input['scenes']],
             expected,
+        )
+        self.assertTrue(
+            repair_stock_scenes.call_args.kwargs[
+                'allow_legacy_short_budget'
+            ]
         )
         self.assertEqual(result['narration'], ' '.join(expected))
         self.assertEqual(
@@ -3197,6 +3211,10 @@ class ShortStockRepairTests(unittest.TestCase):
             ],
             ['documentary', 'documentary'],
         )
+        self.assertTrue(all(
+            call.kwargs['allow_legacy_short_budget'] is False
+            for call in repair_stock_scenes.call_args_list
+        ))
         second_review = repair_stock_scenes.call_args_list[1]
         self.assertFalse(
             second_review.kwargs['allow_natural_language_repair']
@@ -3207,8 +3225,8 @@ class ShortStockRepairTests(unittest.TestCase):
             correction_context['narration_quality_issues'][0],
         )
         self.assertIn(evidence, correction_context['narration_quality_issues'][0])
-        self.assertGreaterEqual(result['narration_word_count'], 45)
-        self.assertLessEqual(result['narration_word_count'], 51)
+        self.assertGreaterEqual(result['narration_word_count'], 52)
+        self.assertLessEqual(result['narration_word_count'], 60)
 
     @patch('app.services.director._repair_short_stock_scenes')
     @patch('app.services.director._run_director')
@@ -3289,8 +3307,8 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertIn('14-inch', feedback)
         self.assertIn('scene-by-scene checklist', feedback)
         self.assertIn('brand state', feedback)
-        self.assertGreaterEqual(result['narration_word_count'], 45)
-        self.assertLessEqual(result['narration_word_count'], 51)
+        self.assertGreaterEqual(result['narration_word_count'], 52)
+        self.assertLessEqual(result['narration_word_count'], 60)
 
 
 class WholeStoryRepairDiagnosticTests(unittest.TestCase):
@@ -3433,7 +3451,7 @@ class WholeStoryRepairDiagnosticTests(unittest.TestCase):
         )
         shape = diagnostics['post_repair_shape']
         self.assertEqual(shape['narration_word_count'], 20)
-        self.assertEqual(shape['required_narration_word_range'], [40, 51])
+        self.assertEqual(shape['required_narration_word_range'], [52, 60])
         self.assertEqual(shape['scene_count'], 5)
         self.assertEqual(shape['target_scene_count'], 6)
         self.assertIs(shape['exact_scene_count'], True)

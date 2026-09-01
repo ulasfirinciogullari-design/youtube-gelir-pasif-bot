@@ -7,7 +7,11 @@ from celery.result import AsyncResult
 
 from app.config import settings
 from app.celery_app import celery
-from app.tasks import run_video_pipeline
+from app.tasks import (
+    UnsupportedLanguageError,
+    normalize_pipeline_language,
+    run_video_pipeline,
+)
 from app.services.storage import presigned_download_url
 from app.services.voice import (
     list_turkish_voice_candidates,
@@ -97,7 +101,16 @@ def health():
 @app.post('/jobs')
 def create_job(payload: JobCreate, x_factory_token: str | None = Header(default=None)):
     _require_factory_token(x_factory_token)
-    task = run_video_pipeline.delay(payload.topic, payload.duration_minutes, payload.language, payload.channel_id)
+    try:
+        language = normalize_pipeline_language(payload.language)
+    except UnsupportedLanguageError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from None
+    task = run_video_pipeline.delay(
+        payload.topic,
+        payload.duration_minutes,
+        language,
+        payload.channel_id,
+    )
     return {'task_id': task.id, 'status': 'queued'}
 
 
@@ -149,6 +162,10 @@ def factory_start(
     _require_factory_token(token)
     if not (0.5 <= duration_minutes <= 30):
         raise HTTPException(status_code=400, detail='Invalid duration')
+    try:
+        language = normalize_pipeline_language(language)
+    except UnsupportedLanguageError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from None
     task = run_video_pipeline.delay(topic, duration_minutes, language, None)
     return _factory_shell(f'''
 <div class="card"><h2>Görev başladı ✅</h2><p><b>Görev ID:</b> {escape(task.id)}</p>

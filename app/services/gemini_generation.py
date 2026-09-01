@@ -18,6 +18,18 @@ _MAX_MULTIMODAL_PARTS = 256
 _MAX_MULTIMODAL_IMAGES = 120
 _MAX_IMAGE_BYTES = 2 * 1024 * 1024
 _MAX_TOTAL_IMAGE_BYTES = 12 * 1024 * 1024
+_MAX_AUDIO_BYTES = 14 * 1024 * 1024
+_SUPPORTED_AUDIO_MIME_TYPES = frozenset({
+    'audio/aac',
+    'audio/flac',
+    'audio/m4a',
+    'audio/mp3',
+    'audio/mpeg',
+    'audio/ogg',
+    'audio/opus',
+    'audio/wav',
+    'audio/webm',
+})
 _MAX_TOTAL_TEXT_CHARS = 120_000
 _MAX_SYSTEM_INSTRUCTION_CHARS = 20_000
 _NETWORK_ERROR_TYPES = tuple(
@@ -472,6 +484,52 @@ def generate_gemini_multimodal_json(
     safe_system_instruction = _safe_system_instruction(system_instruction)
     return _generate_gemini_json_from_parts(
         safe_parts,
+        api_key=api_key,
+        model=model,
+        json_schema=json_schema,
+        google_search=False,
+        thinking_level=thinking_level,
+        timeout=timeout,
+        retry_once=retry_once,
+        system_instruction=safe_system_instruction,
+    )
+
+
+def generate_gemini_audio_json(
+    audio_bytes: bytes,
+    mime_type: str,
+    prompt: str,
+    *,
+    api_key: str,
+    model: str = GEMINI_DEFAULT_MODEL,
+    json_schema: dict | None = None,
+    thinking_level: str = 'medium',
+    timeout: Any = _DEFAULT_TIMEOUT,
+    retry_once: bool = True,
+    system_instruction: str | None = None,
+) -> dict:
+    """Generate structured criticism from one bounded local audio asset."""
+    if type(audio_bytes) is not bytes or not audio_bytes:
+        raise GeminiGenerationError('Gemini audio bytes are invalid')
+    if len(audio_bytes) > _MAX_AUDIO_BYTES:
+        raise GeminiGenerationError('Gemini audio size limit was exceeded')
+    clean_mime_type = str(mime_type or '').strip().casefold()
+    if clean_mime_type not in _SUPPORTED_AUDIO_MIME_TYPES:
+        raise GeminiGenerationError('Gemini audio format is invalid')
+    clean_prompt = str(prompt or '').strip()
+    if not clean_prompt or len(clean_prompt) > _MAX_TOTAL_TEXT_CHARS:
+        raise GeminiGenerationError('Gemini audio prompt is invalid')
+    safe_system_instruction = _safe_system_instruction(system_instruction)
+    return _generate_gemini_json_from_parts(
+        [
+            {'text': clean_prompt},
+            {
+                'inlineData': {
+                    'mimeType': clean_mime_type,
+                    'data': base64.b64encode(audio_bytes).decode('ascii'),
+                },
+            },
+        ],
         api_key=api_key,
         model=model,
         json_schema=json_schema,

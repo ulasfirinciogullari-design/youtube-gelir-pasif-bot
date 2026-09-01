@@ -191,20 +191,21 @@ def _target_scene_count(duration_minutes: float, pace: str) -> int:
 
 def _target_word_budget(duration_minutes: float) -> tuple[int, int, int]:
     if duration_minutes <= 0.6:
-        target = max(44, int(round(duration_minutes * 96)))
+        target = max(52, int(round(duration_minutes * 112)))
     elif duration_minutes <= 1.1:
         target = 82
     elif duration_minutes <= 3.1:
         target = int(round(duration_minutes * 92))
     else:
         target = int(round(duration_minutes * 100))
-    # A natural Turkish voice can land near 0.9x fit at the old 45-word
-    # minimum. Allow a concise 40-word story instead of time-warping it.
+    # A short preview must fill its timeline at a natural 1.0x voice speed.
+    # A thin script is rejected upstream instead of being slowed into robotic
+    # phrase spacing after synthesis.
     minimum = max(
         30,
-        int(round(target * (0.83 if duration_minutes <= 0.6 else 0.88))),
+        int(round(target * (0.93 if duration_minutes <= 0.6 else 0.88))),
     )
-    maximum = max(minimum + 4, int(round(target * 1.06)))
+    maximum = max(minimum + 4, int(round(target * 1.07)))
     return target, minimum, maximum
 
 

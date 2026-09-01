@@ -1900,7 +1900,12 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 '_image_motion_prompt_for_scene',
             }
         ]
-        namespace = {}
+        from app.services.visual_identity import manufactured_replica_guardrail
+        namespace = {
+            'manufactured_replica_guardrail': (
+                manufactured_replica_guardrail
+            ),
+        }
         exec(
             compile(
                 ast.Module(body=definitions, type_ignores=[]),
@@ -1930,6 +1935,8 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertIn('salt-faded toy', prompt)
         self.assertNotIn('must be ignored third hint', prompt)
         self.assertNotIn('UNTRUSTED_REASON_MUST_NOT_APPEAR', prompt)
+        self.assertIn('MANUFACTURED IDENTITY', prompt)
+        self.assertIn('Never a live or dead biological original', prompt)
         self.assertTrue(prompt.endswith('letterbox.'))
 
     def test_pipeline_limits_image_motion_to_private_preview_and_one_per_scene(self):
