@@ -1000,6 +1000,7 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     if isinstance(retry_queries, str):
         retry_queries = [retry_queries]
     hints = [str(q).strip() for q in retry_queries if str(q).strip()][:2]
+    has_repair_evidence = bool(hints)
     if not hints:
         visual_queries = scene.get('visual_queries') or []
         if isinstance(visual_queries, str):
@@ -1066,8 +1067,21 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         'then hold the visibly CHANGED RESULT in the same take. A static '
         'final-only shot fails. '
     ) if primary_event else ''
-    raw_guardrail_clause = (
-        ' '.join(mechanism_guardrails) if mechanism_guardrails else ''
+    review_targets = _truncate_utf16(
+        '; '.join(hints),
+        90,
+    ) if has_repair_evidence and not mechanism_guardrails else ''
+    repair_evidence_clause = (
+        f'REVIEW-LED REPAIR TARGETS: {review_targets}. Preserve literal '
+        'identity, real-world scale, material, condition and setting; no '
+        'generic substitute.'
+        if review_targets
+        else ''
+    )
+    raw_guardrail_clause = ' '.join(
+        clause
+        for clause in (*mechanism_guardrails, repair_evidence_clause)
+        if clause
     )
     closing = (
         'Keep subject, identity, background and exposure continuous; no cuts, '
