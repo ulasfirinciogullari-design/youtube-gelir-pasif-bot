@@ -572,6 +572,48 @@ def make_explicit_ai_macro_return_package():
     return package
 
 
+def make_documentary_airplane_coda_package():
+    package = make_ai_first_five_scene_package()
+    package['scenes'][3]['narration'] = (
+        'Loş kabin ışıkları yolcu uçağının koridorunda çıkış yolunu '
+        'belirginleştirir.'
+    )
+    package['scenes'][3]['tts_text'] = package['scenes'][3]['narration']
+    package['scenes'][3]['visual_queries'] = [
+        'dim passenger airplane cabin aisle lights',
+        'aircraft cabin floor path lighting',
+    ]
+    package['scenes'][3]['ai_prompt'] = (
+        'photorealistic interior of the same passenger aircraft cabin at '
+        'night, dim aisle path lights guide toward the forward door, no text'
+    )
+    package['scenes'][4]['narration'] = (
+        'Aynı yolcu uçağı gece pistinden havalanırken kabin ışıkları kısık kalır.'
+    )
+    package['scenes'][4]['tts_text'] = package['scenes'][4]['narration']
+    package['scenes'][4]['visual_queries'] = [
+        'passenger airplane night runway takeoff exterior',
+        'airliner taking off blue hour exterior',
+    ]
+    package['scenes'][4]['ai_prompt'] = None
+    package['narration'] = ' '.join(
+        scene['narration'] for scene in package['scenes']
+    )
+    package['tts_narration'] = package['narration']
+    package['visual_queries'] = [
+        query
+        for scene in package['scenes']
+        for query in scene['visual_queries']
+    ]
+    package['ai_scenes'] = [
+        scene['ai_prompt']
+        for scene in package['scenes']
+        if scene.get('ai_prompt')
+    ]
+    assert 42 <= _word_count(package['narration']) <= 60
+    return package
+
+
 def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
     rows = {
         0: {
@@ -655,6 +697,7 @@ def critic_payload(
     stock_positions=(0, 4, 5),
     scene_count=6,
     technical_insert_return_valid=True,
+    documentary_exterior_coda_valid=True,
 ):
     failures = failures or {}
     story_failures = story_failures or []
@@ -679,6 +722,7 @@ def critic_payload(
         'same_actor_or_object_thread',
         'everyday_benefit_visible',
         'explicit_technical_insert_return_contract_satisfied',
+        'documentary_exterior_establishing_coda_satisfied',
     }
     story_review = {
         **{key: True for key in story_boolean_keys},
@@ -712,6 +756,9 @@ def critic_payload(
     }
     ending_pair['explicit_technical_insert_return_contract_satisfied'] = (
         technical_insert_return_valid
+    )
+    ending_pair['documentary_exterior_establishing_coda_satisfied'] = (
+        documentary_exterior_coda_valid
     )
     for key in ending_failures:
         ending_pair[key] = False
@@ -2044,6 +2091,204 @@ class ShortStockRepairTests(unittest.TestCase):
         self.assertNotIsInstance(error.exception, KeyError)
         self.assertIn('"positions":[3,4]', str(error.exception))
         self.assertEqual(len(client.responses.calls), 2)
+
+    def test_documentary_may_end_on_same_airplane_exterior_establishing_coda(
+        self,
+    ):
+        package = make_documentary_airplane_coda_package()
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 4,
+            'narration': package['scenes'][4]['narration'],
+            'visual_queries': package['scenes'][4]['visual_queries'],
+            'ai_prompt': None,
+        })
+        verdict = critic_payload(
+            ending_failures=[
+                'same_immediate_location',
+                'continuous_visible_action_chain',
+            ],
+            stock_positions=(0, 2, 4),
+            scene_count=5,
+            documentary_exterior_coda_valid=True,
+        )
+        verdict['ending_pair']['location_anchor'] = (
+            'same passenger airplane event, cabin interior to exterior takeoff'
+        )
+        verdict['ending_pair']['reason'] = (
+            'The exterior takeoff is an establishing coda for the same '
+            'passenger airplane and flight event, with no new subject.'
+        )
+        client = FakeClient([generated, verdict])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+            content_style='documentary',
+        )
+
+        ending_review = result['stock_scene_qc']['ending_pair_review']
+        self.assertTrue(ending_review['accepted'])
+        self.assertTrue(
+            ending_review[
+                'documentary_exterior_establishing_coda_exception'
+            ]
+        )
+        critic_input = client.responses.calls[1]['input']
+        self.assertIn(
+            'documentary_exterior_establishing_coda_satisfied',
+            critic_input,
+        )
+        self.assertIn(
+            'product demonstrations, tutorials, procedures',
+            critic_input,
+        )
+
+    @patch('app.services.gemini_critic.httpx.post')
+    def test_gemini_may_attest_only_the_scoped_exterior_coda_false_checks(
+        self,
+        gemini_post,
+    ):
+        package = make_documentary_airplane_coda_package()
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 4,
+            'narration': package['scenes'][4]['narration'],
+            'visual_queries': package['scenes'][4]['visual_queries'],
+            'ai_prompt': None,
+        })
+        verdict = critic_payload(
+            ending_failures=[
+                'same_immediate_location',
+                'continuous_visible_action_chain',
+            ],
+            stock_positions=(0, 2, 4),
+            scene_count=5,
+            documentary_exterior_coda_valid=True,
+        )
+        verdict['ending_pair']['location_anchor'] = (
+            'same passenger airplane event, cabin interior to exterior takeoff'
+        )
+        verdict['ending_pair']['reason'] = (
+            'The exterior takeoff preserves the same aircraft and flight event.'
+        )
+        config_stub.settings.gemini_critic_enabled = True
+        config_stub.settings.gemini_api_key = 'test-gemini-key'
+        gemini_post.return_value = FakeGeminiResponse(copy.deepcopy(verdict))
+        client = FakeClient([generated, copy.deepcopy(verdict)])
+
+        result = _repair_short_stock_scenes(
+            client,
+            package,
+            'Turkish',
+            0.5,
+            content_style='documentary',
+        )
+
+        self.assertTrue(result['stock_scene_qc']['gemini_critic']['accepted'])
+        trusted_instruction = gemini_post.call_args.kwargs['json'][
+            'systemInstruction'
+        ]['parts'][0]['text']
+        self.assertIn(
+            'documentary_exterior_establishing_coda_satisfied',
+            trusted_instruction,
+        )
+        self.assertIn(
+            'At most same_immediate_location and '
+            'continuous_visible_action_chain may then be false',
+            trusted_instruction,
+        )
+
+    def test_exterior_coda_exception_is_not_available_to_story_style(self):
+        package = make_documentary_airplane_coda_package()
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 4,
+            'narration': package['scenes'][4]['narration'],
+            'visual_queries': package['scenes'][4]['visual_queries'],
+            'ai_prompt': None,
+        })
+        client = FakeClient([
+            generated,
+            critic_payload(
+                ending_failures=[
+                    'same_immediate_location',
+                    'continuous_visible_action_chain',
+                ],
+                stock_positions=(0, 2, 4),
+                scene_count=5,
+                documentary_exterior_coda_valid=True,
+            ),
+        ])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'AI-routed short-preview ending before paid media',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                package,
+                'Turkish',
+                0.5,
+                content_style='story',
+            )
+
+    def test_exterior_coda_cannot_hide_identity_break_or_demo_completion(self):
+        package = make_documentary_airplane_coda_package()
+        generated = valid_ai_first_generator_payload()
+        generated['scenes'].append({
+            'position': 4,
+            'narration': package['scenes'][4]['narration'],
+            'visual_queries': package['scenes'][4]['visual_queries'],
+            'ai_prompt': None,
+        })
+        identity_break = critic_payload(
+            ending_failures=[
+                'same_immediate_location',
+                'continuous_visible_action_chain',
+                'same_actor_or_object_thread',
+            ],
+            stock_positions=(0, 2, 4),
+            scene_count=5,
+            documentary_exterior_coda_valid=True,
+        )
+        client = FakeClient([generated, identity_break])
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'same_actor_or_object_thread',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                package,
+                'Turkish',
+                0.5,
+                content_style='documentary',
+            )
+
+        demo_completion = critic_payload(
+            ending_failures=[
+                'same_immediate_location',
+                'continuous_visible_action_chain',
+            ],
+            stock_positions=(0, 2, 4),
+            scene_count=5,
+            documentary_exterior_coda_valid=False,
+        )
+        client = FakeClient([generated, demo_completion])
+        with self.assertRaisesRegex(
+            RuntimeError,
+            'documentary_exterior_establishing_coda_satisfied',
+        ):
+            _repair_short_stock_scenes(
+                client,
+                package,
+                'Turkish',
+                0.5,
+                content_style='explainer',
+            )
 
     def test_explicit_ai_macro_insert_may_return_to_same_enclosing_setting(self):
         topic = '''Tam olarak beş sahne kullan.

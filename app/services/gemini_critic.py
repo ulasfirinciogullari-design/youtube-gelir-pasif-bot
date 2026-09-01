@@ -15,6 +15,7 @@ _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 _TIMEOUT = httpx.Timeout(60.0, connect=5.0)
 _ALLOWED_SCOPED_FALSE_PATHS = frozenset({
     '$.ending_pair.same_immediate_location',
+    '$.ending_pair.continuous_visible_action_chain',
 })
 CONTINUITY_DEICTIC_RULE = (
     'The only adjacent-continuity deictic exception is literal "same/aynı" '
@@ -45,7 +46,27 @@ CONTINUITY_DEICTIC_RULE = (
     'Only same_immediate_location may then be false because the camera temporarily '
     'enters the object; every other ending boolean must remain true. Set the '
     'contract field false for a stock-routed ending, an implicit route, a different '
-    'object or setting, travel, a new room, a time jump or ambiguous evidence.'
+    'object or setting, travel, a new room, a time jump or ambiguous evidence. '
+    'A separate documentary_exterior_establishing_coda_satisfied field governs '
+    'one other narrow editorial cut. Set it true when the final beat does not '
+    'attempt an exterior establishing coda. When it does, it may be true only for '
+    'a short documentary or explainer whose final beat is an exterior '
+    'establishing coda of the same primary object or event already carried by the '
+    'penultimate beat. The cut may change only the camera vantage, including an '
+    'interior-to-enclosing-exterior view; it must preserve the subject and event '
+    'thread, add no new person, object, product or event and no unrelated location, '
+    'travel beat, day or time jump, and remain a '
+    'relevant visible payoff to the same sourced explanation. This coda is not an '
+    'action-completion shortcut: set the field false for a product demonstration, '
+    'tutorial, procedure, before/after result, physical action whose completion '
+    'must be shown continuously, merely similar stock subject, unrelated location '
+    'jump, identity ambiguity or thematic-only montage. At most '
+    'same_immediate_location and continuous_visible_action_chain may then be false; '
+    'same_actor_or_object_thread, everyday_benefit_visible and every other contract '
+    'field must remain true. For this valid coda, everyday_benefit_visible means '
+    'the exterior shot visibly contextualizes the same sourced human benefit and '
+    'object or event; it must not claim that a discontinuous physical action was '
+    'completed.'
 )
 
 
