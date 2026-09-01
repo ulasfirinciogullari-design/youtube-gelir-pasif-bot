@@ -662,7 +662,7 @@ def _render_gemini_image_motion(
         f"zoompan=z='1+0.08*on/{frame_count - 1}':"
         "x='(iw-iw/zoom)/2':y='(ih-ih/zoom)/2':"
         f'd={frame_count}:s=1280x720:fps={_IMAGE_MOTION_FPS},'
-        'setsar=1,format=yuv420p'
+        'setsar=1,scale=in_range=full:out_range=tv,format=yuv420p'
     )
     try:
         source_image.write_bytes(image_bytes)
@@ -672,7 +672,8 @@ def _render_gemini_image_motion(
             '-vf', zoom_filter,
             '-frames:v', str(frame_count),
             '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
-            '-pix_fmt', 'yuv420p', '-movflags', '+faststart',
+            '-pix_fmt', 'yuv420p', '-color_range', 'tv',
+            '-movflags', '+faststart',
             '-f', 'mp4', str(partial),
         ], capture_output=True, text=True, check=False, timeout=180)
         if completed.returncode != 0:
@@ -683,7 +684,7 @@ def _render_gemini_image_motion(
             '-select_streams', 'v:0',
             '-show_entries', (
                 'stream=width,height,r_frame_rate,pix_fmt,'
-                'sample_aspect_ratio,nb_read_frames,duration'
+                'color_range,sample_aspect_ratio,nb_read_frames,duration'
             ),
             '-of', 'json', str(partial),
         ], capture_output=True, text=True, check=False, timeout=60)
@@ -702,6 +703,7 @@ def _render_gemini_image_motion(
             or stream.get('height') != 720
             or stream.get('r_frame_rate') != '30/1'
             or stream.get('pix_fmt') != 'yuv420p'
+            or stream.get('color_range') != 'tv'
             or stream.get('sample_aspect_ratio') != '1:1'
             or actual_frames != frame_count
             or abs(actual_duration - seconds) > 0.04
