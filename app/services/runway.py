@@ -50,6 +50,17 @@ def _generate_gemini_video_uri(prompt_text: str, seconds: int) -> str:
         f'{_GEMINI_VIDEO_BASE}/models/{_GEMINI_VIDEO_MODEL}'
         ':predictLongRunning'
     )
+    request_payload = {
+        'instances': [{'prompt': prompt_text}],
+        'parameters': {
+            'aspectRatio': '16:9',
+            # The live REST endpoint rejects JSON strings here even though
+            # older documentation tables displayed quoted values. Send the
+            # schema's numeric duration type.
+            'durationSeconds': duration,
+            'resolution': '720p',
+        },
+    }
     with httpx.Client(
         timeout=httpx.Timeout(60.0, connect=10.0),
         follow_redirects=False,
@@ -59,18 +70,26 @@ def _generate_gemini_video_uri(prompt_text: str, seconds: int) -> str:
         created = client.post(
             endpoint,
             headers=headers,
-            json={
-                'instances': [{'prompt': prompt_text}],
-                'parameters': {
-                    'aspectRatio': '16:9',
-                    # The live REST endpoint rejects JSON strings here even
-                    # though older documentation tables displayed quoted
-                    # values. Send the schema's numeric duration type.
-                    'durationSeconds': duration,
-                    'resolution': '720p',
-                },
-            },
+            json=request_payload,
         )
+        if getattr(created, 'status_code', None) == 429:
+            # A concrete 429 response proves that no paid operation was
+            # accepted. Honor the provider delay and retry this create once;
+            # network errors, timeouts and every other HTTP status remain
+            # non-retryable because their acceptance state may be ambiguous.
+            raw_retry_after = str(
+                created.headers.get('retry-after') or ''
+            ).strip()
+            try:
+                retry_after = float(raw_retry_after)
+            except ValueError:
+                retry_after = 30.0
+            time.sleep(max(1.0, min(retry_after, 60.0)))
+            created = client.post(
+                endpoint,
+                headers=headers,
+                json=request_payload,
+            )
         created.raise_for_status()
         created_payload = created.json()
         operation_name = str(

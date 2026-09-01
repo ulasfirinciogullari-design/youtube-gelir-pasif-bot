@@ -587,6 +587,113 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         )
         fake_time.sleep.assert_called_once_with(10.0)
 
+    def test_gemini_create_429_waits_and_retries_exactly_once(self):
+        source_path = (
+            Path(__file__).resolve().parents[1]
+            / 'app'
+            / 'services'
+            / 'runway.py'
+        )
+        tree = ast.parse(source_path.read_text(encoding='utf-8'))
+        definitions = [
+            node for node in tree.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name in {
+                '_gemini_video_duration',
+                '_generate_gemini_video_uri',
+            }
+        ]
+
+        class _Response:
+            def __init__(self, status_code, payload, headers=None):
+                self.status_code = status_code
+                self.payload = payload
+                self.headers = headers or {}
+
+            def raise_for_status(self):
+                if self.status_code >= 400:
+                    raise RuntimeError(f'HTTP {self.status_code}')
+
+            def json(self):
+                return self.payload
+
+        class _Client:
+            def __init__(self):
+                self.post_calls = 0
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def post(self, *_args, **_kwargs):
+                self.post_calls += 1
+                if self.post_calls == 1:
+                    return _Response(
+                        429,
+                        {'error': {'status': 'RESOURCE_EXHAUSTED'}},
+                        {'retry-after': '2.5'},
+                    )
+                return _Response(200, {'name': 'operations/operation-429'})
+
+            def get(self, *_args, **_kwargs):
+                return _Response(200, {
+                    'done': True,
+                    'response': {
+                        'generateVideoResponse': {
+                            'generatedSamples': [{
+                                'video': {
+                                    'uri': (
+                                        'https://generativelanguage.googleapis.com/'
+                                        'v1beta/files/generated-video'
+                                    ),
+                                },
+                            }],
+                        },
+                    },
+                })
+
+        client = _Client()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        fake_time = Mock()
+        fake_time.monotonic.side_effect = [0.0, 1.0]
+        namespace = {
+            'httpx': fake_httpx,
+            'time': fake_time,
+            'urlparse': urlparse,
+            'settings': _Settings(),
+            'GeminiVideoTerminalError': GeminiVideoTerminalError,
+            '_GEMINI_VIDEO_BASE': (
+                'https://generativelanguage.googleapis.com/v1beta'
+            ),
+            '_GEMINI_VIDEO_MODEL': 'veo-3.1-lite-generate-preview',
+            '_GEMINI_OPERATION_PATTERN': re.compile(
+                r'^(?:models/[A-Za-z0-9._-]+/)?operations/'
+                r'[A-Za-z0-9._~/-]+$'
+            ),
+            '_GEMINI_VIDEO_HOSTS': {
+                'generativelanguage.googleapis.com',
+                'storage.googleapis.com',
+            },
+        }
+        exec(
+            compile(
+                ast.Module(body=definitions, type_ignores=[]),
+                str(source_path),
+                'exec',
+            ),
+            namespace,
+        )
+
+        uri = namespace['_generate_gemini_video_uri']('safe prompt', 5)
+
+        self.assertTrue(uri.endswith('/generated-video'))
+        self.assertEqual(client.post_calls, 2)
+        fake_time.sleep.assert_called_once_with(2.5)
+
     def test_gemini_download_key_is_never_sent_to_other_hosts(self):
         source_path = (
             Path(__file__).resolve().parents[1]
