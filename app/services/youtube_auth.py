@@ -32,6 +32,10 @@ CREDENTIAL_KEY = 'youtube_studio:oauth:refresh_token:v2'
 CHANNEL_KEY = 'youtube_studio:oauth:channel:v2'
 LEGACY_CREDENTIAL_KEY = 'youtube_studio:oauth:credentials'
 LEGACY_CHANNEL_KEY = 'youtube_studio:oauth:channel'
+CHANNEL_INDEX_KEY = 'youtube_studio:oauth:channels:v3'
+CREDENTIAL_PREFIX = 'youtube_studio:oauth:credential:v3:'
+CHANNEL_PREFIX = 'youtube_studio:oauth:channel:v3:'
+MAX_CONNECTIONS = 10
 STATE_PREFIX = 'youtube_studio:oauth:state:v2:'
 AUTH_EPOCH_KEY = 'youtube_studio:oauth:authorization_epoch:v2'
 STATE_TTL_SECONDS = 10 * 60
@@ -41,6 +45,7 @@ AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth'
 
 _STATE_PATTERN = re.compile(r'^[A-Za-z0-9_-]{40,128}$')
 _BINDING_PATTERN = re.compile(r'^[A-Za-z0-9_-]{40,128}$')
+_CHANNEL_ID_PATTERN = re.compile(r'^[A-Za-z0-9_-]{8,128}$')
 
 _CLAIM_EPOCH_SCRIPT = '''
 local current = redis.call('GET', KEYS[1]) or '0'
@@ -55,16 +60,21 @@ local current = redis.call('GET', KEYS[1]) or '0'
 if current ~= ARGV[1] then
   return 0
 end
-redis.call('SET', KEYS[2], ARGV[2])
+if redis.call('SISMEMBER', KEYS[2], ARGV[2]) == 0 and redis.call('SCARD', KEYS[2]) >= tonumber(ARGV[5]) then
+  return -1
+end
 redis.call('SET', KEYS[3], ARGV[3])
-redis.call('DEL', KEYS[4], KEYS[5])
+redis.call('SET', KEYS[4], ARGV[4])
+redis.call('SADD', KEYS[2], ARGV[2])
+redis.call('DEL', KEYS[5], KEYS[6], KEYS[7], KEYS[8])
 redis.call('INCR', KEYS[1])
 return 1
 '''
 
 _CLEAR_IF_CREDENTIAL_MATCHES_SCRIPT = '''
 if redis.call('GET', KEYS[1]) == ARGV[1] then
-  redis.call('DEL', KEYS[1], KEYS[2], KEYS[3], KEYS[4])
+  redis.call('DEL', KEYS[1], KEYS[2])
+  redis.call('SREM', KEYS[3], ARGV[2])
   return 1
 end
 return 0
@@ -72,7 +82,8 @@ return 0
 
 _CLEAR_IF_CHANNEL_MATCHES_SCRIPT = '''
 if redis.call('GET', KEYS[2]) == ARGV[1] then
-  redis.call('DEL', KEYS[1], KEYS[2], KEYS[3], KEYS[4])
+  redis.call('DEL', KEYS[1], KEYS[2])
+  redis.call('SREM', KEYS[3], ARGV[2])
   return 1
 end
 return 0
@@ -86,6 +97,50 @@ if redis.call('GET', KEYS[2]) ~= ARGV[1] then
   return 0
 end
 redis.call('SET', KEYS[2], ARGV[2])
+return 1
+'''
+
+_DISCONNECT_IF_CURRENT_SCRIPT = '''
+if redis.call('GET', KEYS[1]) ~= ARGV[1] then
+  return 0
+end
+if redis.call('GET', KEYS[2]) ~= ARGV[2] then
+  return 0
+end
+redis.call('DEL', KEYS[1], KEYS[2])
+redis.call('SREM', KEYS[3], ARGV[3])
+redis.call('INCR', KEYS[4])
+return 1
+'''
+
+_MIGRATE_V2_SCRIPT = '''
+if redis.call('EXISTS', KEYS[2]) == 1 or redis.call('EXISTS', KEYS[3]) == 1 then
+  return 2
+end
+if redis.call('SISMEMBER', KEYS[1], ARGV[1]) == 0 and redis.call('SCARD', KEYS[1]) >= tonumber(ARGV[6]) then
+  return -1
+end
+if redis.call('GET', KEYS[4]) ~= ARGV[2] or redis.call('GET', KEYS[5]) ~= ARGV[3] then
+  return 0
+end
+redis.call('SET', KEYS[2], ARGV[4])
+redis.call('SET', KEYS[3], ARGV[5])
+redis.call('SADD', KEYS[1], ARGV[1])
+redis.call('DEL', KEYS[4], KEYS[5], KEYS[6], KEYS[7])
+return 1
+'''
+
+_CLEAR_STALE_V2_IF_V3_CURRENT_SCRIPT = '''
+if redis.call('GET', KEYS[1]) ~= ARGV[1] or redis.call('GET', KEYS[2]) ~= ARGV[2] then
+  return 0
+end
+if redis.call('SISMEMBER', KEYS[3], ARGV[5]) == 0 then
+  return 0
+end
+if redis.call('GET', KEYS[4]) ~= ARGV[3] or redis.call('GET', KEYS[5]) ~= ARGV[4] then
+  return 0
+end
+redis.call('DEL', KEYS[4], KEYS[5], KEYS[6], KEYS[7])
 return 1
 '''
 
@@ -246,67 +301,202 @@ def _credential_from_refresh_token(refresh_token: str) -> Credentials:
     )
 
 
-def _read_credential_cipher_and_token(
-    client: redis.Redis | None = None,
-) -> tuple[str | None, str | None]:
+def _safe_channel_id(value: str) -> str:
+    channel_id = str(value or '').strip()
+    if not _CHANNEL_ID_PATTERN.fullmatch(channel_id):
+        raise YouTubeAuthError('YouTube channel identifier is invalid')
+    return channel_id
+
+
+def _credential_key(channel_id: str) -> str:
+    return CREDENTIAL_PREFIX + _safe_channel_id(channel_id)
+
+
+def _channel_key(channel_id: str) -> str:
+    return CHANNEL_PREFIX + _safe_channel_id(channel_id)
+
+
+def _decode_channel(raw: str | None) -> dict[str, Any] | None:
+    if not raw:
+        return None
+    try:
+        channel = json.loads(raw)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise OAuthStorageError('Stored YouTube channel data could not be read') from exc
+    if not isinstance(channel, dict):
+        raise OAuthStorageError('Stored YouTube channel data could not be read')
+    channel_id = _safe_channel_id(str(channel.get('id') or ''))
+    connection_id = str(channel.get('connection_id') or '').strip()
+    if not _CHANNEL_ID_PATTERN.fullmatch(connection_id):
+        raise OAuthStorageError('Stored YouTube channel data could not be read')
+    channel['id'] = channel_id
+    channel['connection_id'] = connection_id
+    return channel
+
+
+def _migrate_v2_connection(client: redis.Redis | None = None) -> None:
+    """Atomically adopt the singleton v2 record without overwriting v3."""
     client = client or _redis()
     try:
-        encrypted = client.get(CREDENTIAL_KEY)
+        old_encrypted = client.get(CREDENTIAL_KEY)
+        old_channel_raw = client.get(CHANNEL_KEY)
+    except Exception as exc:
+        raise OAuthStorageError('OAuth credential storage is unavailable') from exc
+    if not old_encrypted or not old_channel_raw:
+        return
+    old_channel = _decode_channel(str(old_channel_raw))
+    if not old_channel:
+        return
+    old_payload = _decrypt_json(str(old_encrypted))
+    if old_payload.get('version') != 2:
+        raise OAuthStorageError('Stored OAuth credentials use an unsupported format')
+    refresh_token = old_payload.get('refresh_token')
+    if not isinstance(refresh_token, str) or not refresh_token or len(refresh_token) > 4096:
+        raise OAuthStorageError('Stored OAuth credentials could not be read')
+    channel_id = old_channel['id']
+    connection_id = old_channel['connection_id']
+    try:
+        v3_encrypted = client.get(_credential_key(channel_id))
+        v3_channel_raw = client.get(_channel_key(channel_id))
+    except Exception as exc:
+        raise OAuthStorageError('OAuth credential storage is unavailable') from exc
+    if v3_encrypted or v3_channel_raw:
+        # Never reactivate a stale v2 generation after a successful v3
+        # reconnect. Delete it only after both v3 halves are complete, bound to
+        # the same channel/generation, and still match the values just read.
+        if not v3_encrypted or not v3_channel_raw:
+            return
+        v3_payload = _decrypt_json(str(v3_encrypted))
+        v3_channel = _decode_channel(str(v3_channel_raw))
+        v3_refresh_token = v3_payload.get('refresh_token')
+        if (
+            v3_payload.get('version') != 3
+            or str(v3_payload.get('channel_id') or '') != channel_id
+            or not isinstance(v3_refresh_token, str)
+            or not v3_refresh_token
+            or len(v3_refresh_token) > 4096
+            or not v3_channel
+            or v3_channel.get('id') != channel_id
+            or str(v3_payload.get('connection_id') or '')
+            != str(v3_channel.get('connection_id') or '')
+        ):
+            return
+        try:
+            client.eval(
+                _CLEAR_STALE_V2_IF_V3_CURRENT_SCRIPT,
+                7,
+                _credential_key(channel_id),
+                _channel_key(channel_id),
+                CHANNEL_INDEX_KEY,
+                CREDENTIAL_KEY,
+                CHANNEL_KEY,
+                LEGACY_CREDENTIAL_KEY,
+                LEGACY_CHANNEL_KEY,
+                str(v3_encrypted),
+                str(v3_channel_raw),
+                str(old_encrypted),
+                str(old_channel_raw),
+                channel_id,
+            )
+        except Exception as exc:
+            raise OAuthStorageError('OAuth credential storage is unavailable') from exc
+        return
+    encrypted = _encrypt_json({
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': connection_id,
+        'refresh_token': refresh_token,
+        'scopes': old_payload.get('scopes') or SCOPES,
+    })
+    channel_raw = json.dumps(old_channel, ensure_ascii=False, separators=(',', ':'))
+    try:
+        result = int(client.eval(
+            _MIGRATE_V2_SCRIPT,
+            7,
+            CHANNEL_INDEX_KEY,
+            _credential_key(channel_id),
+            _channel_key(channel_id),
+            CREDENTIAL_KEY,
+            CHANNEL_KEY,
+            LEGACY_CREDENTIAL_KEY,
+            LEGACY_CHANNEL_KEY,
+            channel_id,
+            str(old_encrypted),
+            str(old_channel_raw),
+            encrypted,
+            channel_raw,
+            MAX_CONNECTIONS,
+        ))
+    except Exception as exc:
+        raise OAuthStorageError('OAuth credential storage is unavailable') from exc
+    if result < 0:
+        raise OAuthStorageError('YouTube connection limit has been reached')
+
+
+def _read_credential_cipher_and_payload(
+    channel_id: str,
+    *,
+    client: redis.Redis | None = None,
+) -> tuple[str | None, dict[str, Any] | None]:
+    channel_id = _safe_channel_id(channel_id)
+    client = client or _redis()
+    _migrate_v2_connection(client)
+    try:
+        encrypted = client.get(_credential_key(channel_id))
     except Exception as exc:
         raise OAuthStorageError('OAuth credential storage is unavailable') from exc
     if not encrypted:
         return None, None
-    payload = _decrypt_json(encrypted)
-    if payload.get('version') != 2:
+    payload = _decrypt_json(str(encrypted))
+    if payload.get('version') != 3:
         raise OAuthStorageError('Stored OAuth credentials use an unsupported format')
+    if str(payload.get('channel_id') or '') != channel_id:
+        raise OAuthStorageError('Stored OAuth credentials do not match the target channel')
+    connection_id = str(payload.get('connection_id') or '').strip()
     refresh_token = payload.get('refresh_token')
-    if not isinstance(refresh_token, str) or not refresh_token or len(refresh_token) > 4096:
+    if (
+        not _CHANNEL_ID_PATTERN.fullmatch(connection_id)
+        or not isinstance(refresh_token, str)
+        or not refresh_token
+        or len(refresh_token) > 4096
+    ):
         raise OAuthStorageError('Stored OAuth credentials could not be read')
-    return str(encrypted), refresh_token
+    return str(encrypted), payload
 
 
-def _read_refresh_token(client: redis.Redis | None = None) -> str | None:
-    return _read_credential_cipher_and_token(client)[1]
-
-
-def _clear_connection(client: redis.Redis | None = None) -> None:
-    client = client or _redis()
-    try:
-        client.delete(
-            CREDENTIAL_KEY,
-            CHANNEL_KEY,
-            LEGACY_CREDENTIAL_KEY,
-            LEGACY_CHANNEL_KEY,
-        )
-    except Exception as exc:
-        raise OAuthStorageError('OAuth credential storage is unavailable') from exc
-
-
-def _clear_connection_if_credential_matches(encrypted: str) -> None:
+def _clear_connection_if_credential_matches(
+    channel_id: str,
+    encrypted: str,
+) -> None:
+    channel_id = _safe_channel_id(channel_id)
     try:
         _redis().eval(
             _CLEAR_IF_CREDENTIAL_MATCHES_SCRIPT,
-            4,
-            CREDENTIAL_KEY,
-            CHANNEL_KEY,
-            LEGACY_CREDENTIAL_KEY,
-            LEGACY_CHANNEL_KEY,
+            3,
+            _credential_key(channel_id),
+            _channel_key(channel_id),
+            CHANNEL_INDEX_KEY,
             encrypted,
+            channel_id,
         )
     except Exception as exc:
         raise OAuthStorageError('OAuth credential storage is unavailable') from exc
 
 
-def _clear_connection_if_channel_matches(channel_json: str) -> None:
+def _clear_connection_if_channel_matches(
+    channel_id: str,
+    channel_json: str,
+) -> None:
+    channel_id = _safe_channel_id(channel_id)
     try:
         _redis().eval(
             _CLEAR_IF_CHANNEL_MATCHES_SCRIPT,
-            4,
-            CREDENTIAL_KEY,
-            CHANNEL_KEY,
-            LEGACY_CREDENTIAL_KEY,
-            LEGACY_CHANNEL_KEY,
+            3,
+            _credential_key(channel_id),
+            _channel_key(channel_id),
+            CHANNEL_INDEX_KEY,
             channel_json,
+            channel_id,
         )
     except Exception as exc:
         raise OAuthStorageError('OAuth credential storage is unavailable') from exc
@@ -325,10 +515,23 @@ def _refresh_error_is_revoked(exc: RefreshError) -> bool:
     )
 
 
-def load_credentials(*, refresh: bool = True) -> Credentials | None:
-    encrypted, refresh_token = _read_credential_cipher_and_token()
-    if not refresh_token:
+def load_credentials(
+    channel_id: str,
+    *,
+    expected_connection_id: str | None = None,
+    refresh: bool = True,
+) -> Credentials | None:
+    channel_id = _safe_channel_id(channel_id)
+    encrypted, payload = _read_credential_cipher_and_payload(channel_id)
+    if not encrypted or not payload:
         return None
+    connection_id = str(payload['connection_id'])
+    _channel_raw, channel = _read_channel_record(channel_id)
+    if not channel or str(channel.get('connection_id') or '') != connection_id:
+        raise OAuthStorageError('Stored YouTube connection records do not match')
+    if expected_connection_id and connection_id != str(expected_connection_id):
+        raise YouTubeAuthError('YouTube connection changed before upload')
+    refresh_token = str(payload['refresh_token'])
     credentials = _credential_from_refresh_token(refresh_token)
     if not refresh:
         return credentials
@@ -336,8 +539,7 @@ def load_credentials(*, refresh: bool = True) -> Credentials | None:
         credentials.refresh(GoogleRequest())
     except RefreshError as exc:
         if _refresh_error_is_revoked(exc):
-            if encrypted:
-                _clear_connection_if_credential_matches(encrypted)
+            _clear_connection_if_credential_matches(channel_id, encrypted)
             raise AuthorizationRevokedError(
                 'Google authorization expired or was revoked; reconnect is required'
             ) from exc
@@ -407,27 +609,46 @@ def _persist_connection(
         raise YouTubeAuthError(
             'Google did not return offline authorization; reconnect and grant access again'
         )
+    channel_id = _safe_channel_id(str(channel.get('id') or ''))
+    connection_id = str(channel.get('connection_id') or '').strip()
+    if not _CHANNEL_ID_PATTERN.fullmatch(connection_id):
+        raise YouTubeAuthError('YouTube connection generation is invalid')
     encrypted = _encrypt_json({
-        'version': 2,
+        'version': 3,
+        'channel_id': channel_id,
+        'connection_id': connection_id,
         'refresh_token': refresh_token,
         'scopes': SCOPES,
     })
     channel_json = json.dumps(channel, ensure_ascii=False, separators=(',', ':'))
+    client = _redis()
+    # A callback that was already in flight during a v2 -> v3 deployment must
+    # not delete the previously connected singleton while adding a new channel.
+    _migrate_v2_connection(client)
     try:
-        committed = _redis().eval(
+        committed = client.eval(
             _COMMIT_CONNECTION_SCRIPT,
-            5,
+            8,
             AUTH_EPOCH_KEY,
+            CHANNEL_INDEX_KEY,
+            _credential_key(channel_id),
+            _channel_key(channel_id),
             CREDENTIAL_KEY,
             CHANNEL_KEY,
             LEGACY_CREDENTIAL_KEY,
             LEGACY_CHANNEL_KEY,
             str(int(expected_epoch)),
+            channel_id,
             encrypted,
             channel_json,
+            MAX_CONNECTIONS,
         )
     except Exception as exc:
         raise OAuthStorageError('OAuth credential storage is unavailable') from exc
+    if int(committed) < 0:
+        raise YouTubeAuthError(
+            f'YouTube connection limit is {MAX_CONNECTIONS}; disconnect a channel first'
+        )
     if not committed:
         raise OAuthStateError(
             'OAuth authorization was superseded before it could be saved'
@@ -558,51 +779,92 @@ def complete_authorization(
     return channel
 
 
-def _read_channel_record() -> tuple[str | None, dict[str, Any] | None]:
+def _read_channel_record(
+    channel_id: str,
+    *,
+    client: redis.Redis | None = None,
+) -> tuple[str | None, dict[str, Any] | None]:
+    channel_id = _safe_channel_id(channel_id)
+    client = client or _redis()
+    _migrate_v2_connection(client)
     try:
-        raw = _redis().get(CHANNEL_KEY)
+        raw = client.get(_channel_key(channel_id))
     except Exception as exc:
         raise OAuthStorageError('OAuth credential storage is unavailable') from exc
-    if not raw:
-        return None, None
+    channel = _decode_channel(str(raw)) if raw else None
+    if channel and channel['id'] != channel_id:
+        raise OAuthStorageError('Stored YouTube channel data does not match its key')
+    return (str(raw), channel) if raw else (None, None)
+
+
+def list_connections() -> list[dict[str, Any]]:
+    client = _redis()
+    _migrate_v2_connection(client)
     try:
-        value = json.loads(raw)
-    except (TypeError, ValueError, json.JSONDecodeError) as exc:
-        raise OAuthStorageError('Stored YouTube channel data could not be read') from exc
-    if not isinstance(value, dict):
-        raise OAuthStorageError('Stored YouTube channel data could not be read')
-    return str(raw), value
+        channel_ids = sorted(str(value) for value in client.smembers(CHANNEL_INDEX_KEY))
+    except Exception as exc:
+        raise OAuthStorageError('OAuth credential storage is unavailable') from exc
+    connections = []
+    for channel_id in channel_ids:
+        try:
+            _encrypted, payload = _read_credential_cipher_and_payload(
+                channel_id,
+                client=client,
+            )
+            _raw, channel = _read_channel_record(channel_id, client=client)
+        except YouTubeAuthError:
+            continue
+        if (
+            payload
+            and channel
+            and payload.get('connection_id') == channel.get('connection_id')
+        ):
+            connections.append(channel)
+    return sorted(
+        connections,
+        key=lambda item: (
+            str(item.get('connected_at') or ''),
+            str(item.get('id') or ''),
+        ),
+    )
+
+
+def get_channel_info(channel_id: str) -> dict[str, Any] | None:
+    _raw, channel = _read_channel_record(channel_id)
+    if not channel:
+        return None
+    _encrypted, payload = _read_credential_cipher_and_payload(channel_id)
+    if not payload or payload.get('connection_id') != channel.get('connection_id'):
+        raise OAuthStorageError('Stored YouTube connection records do not match')
+    return channel
 
 
 def refresh_channel_info(
+    channel_id: str,
     credentials: Credentials | None = None,
     *,
-    expected_channel_id: str | None = None,
     expected_connection_id: str | None = None,
 ) -> dict[str, Any]:
-    credentials = credentials or load_credentials(refresh=True)
-    if not credentials:
-        raise YouTubeAuthError('YouTube is not connected')
-    old_raw, stored_channel = _read_channel_record()
+    channel_id = _safe_channel_id(channel_id)
+    old_raw, stored_channel = _read_channel_record(channel_id)
     if not old_raw or not stored_channel:
         raise YouTubeAuthError('YouTube connection must be established again')
-    stored_channel_id = str(stored_channel.get('id') or '')
     stored_connection_id = str(stored_channel.get('connection_id') or '')
-    if not stored_channel_id or not stored_connection_id:
-        raise YouTubeAuthError('YouTube connection must be established again')
-    if expected_channel_id and stored_channel_id != str(expected_channel_id):
-        raise YouTubeAuthError('YouTube target channel changed before upload')
-    if (
-        expected_connection_id
-        and stored_connection_id != str(expected_connection_id)
-    ):
+    if expected_connection_id and stored_connection_id != str(expected_connection_id):
         raise YouTubeAuthError('YouTube connection changed before upload')
+    credentials = credentials or load_credentials(
+        channel_id,
+        expected_connection_id=stored_connection_id,
+        refresh=True,
+    )
+    if not credentials:
+        raise YouTubeAuthError('YouTube is not connected')
     try:
         channel = _channel_from_credentials(credentials)
     except AuthorizationRevokedError:
-        _clear_connection_if_channel_matches(old_raw)
+        _clear_connection_if_channel_matches(channel_id, old_raw)
         raise
-    if str(channel.get('id') or '') != stored_channel_id:
+    if str(channel.get('id') or '') != channel_id:
         raise YouTubeAuthError('YouTube target channel changed before upload')
     channel['connection_id'] = stored_connection_id
     channel['connected_at'] = stored_channel.get('connected_at') or channel['connected_at']
@@ -611,8 +873,8 @@ def refresh_channel_info(
         updated = _redis().eval(
             _UPDATE_CHANNEL_IF_CURRENT_SCRIPT,
             2,
-            CREDENTIAL_KEY,
-            CHANNEL_KEY,
+            _credential_key(channel_id),
+            _channel_key(channel_id),
             old_raw,
             new_raw,
         )
@@ -623,11 +885,11 @@ def refresh_channel_info(
     return channel
 
 
-def get_channel_info() -> dict[str, Any] | None:
-    return _read_channel_record()[1]
-
-
-def connection_status(*, verify: bool = False) -> dict[str, Any]:
+def connection_status(
+    *,
+    channel_id: str | None = None,
+    verify: bool = False,
+) -> dict[str, Any]:
     configured = oauth_configured()
     if not configured:
         return {
@@ -635,58 +897,99 @@ def connection_status(*, verify: bool = False) -> dict[str, Any]:
             'connected': False,
             'requires_reconnect': False,
             'channel': None,
+            'connections': [],
+            'connection_count': 0,
+            'connection_limit': MAX_CONNECTIONS,
             'redirect_uri': settings.google_redirect_uri or None,
         }
     try:
-        refresh_token = _read_refresh_token()
-        channel = get_channel_info()
-        connected = bool(
-            refresh_token
-            and channel
-            and channel.get('id')
-            and channel.get('connection_id')
-        )
-        if verify and connected:
-            channel = refresh_channel_info()
+        connections = list_connections()
+        selected = None
+        if channel_id:
+            selected = next(
+                (item for item in connections if item.get('id') == channel_id),
+                None,
+            )
+            if verify and selected:
+                selected = refresh_channel_info(
+                    channel_id,
+                    expected_connection_id=str(selected.get('connection_id') or ''),
+                )
+                connections = [
+                    selected if item.get('id') == channel_id else item
+                    for item in connections
+                ]
+        elif len(connections) == 1:
+            selected = connections[0]
+            if verify:
+                selected = refresh_channel_info(
+                    str(selected['id']),
+                    expected_connection_id=str(selected.get('connection_id') or ''),
+                )
+                connections = [selected]
     except AuthorizationRevokedError:
-        connected = False
-        channel = None
-        return {
-            'configured': True,
-            'connected': False,
-            'requires_reconnect': True,
-            'channel': None,
-            'redirect_uri': settings.google_redirect_uri,
-        }
+        connections = list_connections()
+        selected = None
     except YouTubeAuthError:
+        connections = []
+        selected = None
         return {
             'configured': True,
             'connected': False,
             'requires_reconnect': True,
             'channel': None,
+            'connections': [],
+            'connection_count': 0,
+            'connection_limit': MAX_CONNECTIONS,
             'redirect_uri': settings.google_redirect_uri,
         }
     return {
         'configured': True,
-        'connected': connected,
-        'requires_reconnect': bool(refresh_token and not connected),
-        'channel': channel if connected else None,
+        'connected': bool(connections),
+        'requires_reconnect': False,
+        'channel': selected,
+        'connections': connections,
+        'connection_count': len(connections),
+        'connection_limit': MAX_CONNECTIONS,
         'redirect_uri': settings.google_redirect_uri,
     }
 
 
-def disconnect(*, revoke: bool = True) -> bool:
-    refresh_token: str | None = None
+def disconnect(
+    channel_id: str,
+    *,
+    expected_connection_id: str | None = None,
+    revoke: bool = True,
+) -> bool:
+    channel_id = _safe_channel_id(channel_id)
+    client = _redis()
+    _migrate_v2_connection(client)
+    encrypted, payload = _read_credential_cipher_and_payload(channel_id, client=client)
+    channel_raw, channel = _read_channel_record(channel_id, client=client)
+    if not encrypted or not payload or not channel_raw or not channel:
+        return False
+    connection_id = str(channel.get('connection_id') or '')
+    if payload.get('connection_id') != connection_id:
+        raise OAuthStorageError('Stored YouTube connection records do not match')
+    if expected_connection_id and connection_id != str(expected_connection_id):
+        raise YouTubeAuthError('YouTube connection changed before disconnect')
+    refresh_token = str(payload.get('refresh_token') or '')
     try:
-        refresh_token = _read_refresh_token()
-    except YouTubeAuthError:
-        refresh_token = None
-    # Rotate first so an in-flight or stale callback cannot reconnect after the
-    # user has disconnected.
-    invalidate_pending_authorizations()
-    # Local deletion is the authoritative user action and is completed even if
-    # Google's revocation endpoint is temporarily unavailable.
-    _clear_connection()
+        deleted = int(client.eval(
+            _DISCONNECT_IF_CURRENT_SCRIPT,
+            4,
+            _credential_key(channel_id),
+            _channel_key(channel_id),
+            CHANNEL_INDEX_KEY,
+            AUTH_EPOCH_KEY,
+            encrypted,
+            channel_raw,
+            channel_id,
+        ))
+    except Exception as exc:
+        raise OAuthStorageError('OAuth credential storage is unavailable') from exc
+    if not deleted:
+        raise YouTubeAuthError('YouTube connection changed before disconnect')
     if not revoke or not refresh_token:
         return False
     try:

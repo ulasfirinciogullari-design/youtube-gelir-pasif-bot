@@ -19,6 +19,11 @@
 
 API anahtarları ve OAuth secret'ları repoya yazılmaz. Railway Variables / secret store kullanılır.
 
+YouTube yayın merkezi en fazla 10 doğrulanmış kanalı ayrı OAuth bağlantıları
+olarak saklar. Her yükleme başlatılırken hedef kanal ve bağlantı nesli
+rezervasyona sabitlenir; çalışan başka bir hesaba geri düşmez. İlk yükleme
+daima `private` olur ve aynı final ikinci bir kanala yeniden gönderilmez.
+
 ## Durum
 
 İlk scaffold kuruluyor. Sonraki adımlar: servis hesapları, OAuth, render pipeline, çok-kanallı scheduler ve analytics feedback loop.

@@ -44,8 +44,12 @@ def _result_from_existing_record(
     record: dict,
 ) -> dict:
     video_id = str(record.get('youtube_video_id') or '')
+    target_channel_id = str(record.get('target_channel_id') or '')
+    connection_id = str(record.get('connection_id') or '')
     if record.get('status') != 'complete' or not video_id:
         raise UploadAlreadyInProgress('A YouTube upload is already reserved')
+    if not target_channel_id or not connection_id:
+        raise RuntimeError('YouTube upload target is missing')
     return {
         'status': 'complete',
         'stage': 'complete',
@@ -55,6 +59,8 @@ def _result_from_existing_record(
         'youtube_video_id': video_id,
         'youtube_url': f'https://www.youtube.com/watch?v={video_id}',
         'privacy_status': 'private',
+        'target_channel_id': target_channel_id,
+        'connection_id': connection_id,
         'idempotent_replay': True,
     }
 
@@ -63,6 +69,8 @@ def _reconcile_source_upload(
     source_task_id: str,
     video_id: str,
     *,
+    target_channel_id: str,
+    connection_id: str,
     uploaded_at: str | None = None,
 ) -> None:
     source = get_job(source_task_id)
@@ -72,16 +80,33 @@ def _reconcile_source_upload(
     if not isinstance(source_result, dict):
         return
     existing = source_result.get('youtube')
-    if isinstance(existing, dict) and existing.get('video_id') == video_id:
+    youtube = dict(existing) if isinstance(existing, dict) else {}
+    if youtube.get('video_id') == video_id and (
+        (youtube.get('target_channel_id') and youtube.get('target_channel_id') != target_channel_id)
+        or (youtube.get('connection_id') and youtube.get('connection_id') != connection_id)
+    ):
+        raise RuntimeError('YouTube upload attribution conflicts with its reservation')
+    if (
+        youtube.get('video_id') == video_id
+        and youtube.get('target_channel_id') == target_channel_id
+        and youtube.get('connection_id') == connection_id
+    ):
         return
     source_result = dict(source_result)
-    source_result['youtube'] = {
+    youtube.update({
         'video_id': video_id,
         'url': f'https://www.youtube.com/watch?v={video_id}',
         'privacy_status': 'private',
-        'uploaded_at': uploaded_at or datetime.now(timezone.utc).isoformat(),
+        'uploaded_at': (
+            uploaded_at
+            or youtube.get('uploaded_at')
+            or datetime.now(timezone.utc).isoformat()
+        ),
+        'target_channel_id': str(target_channel_id or ''),
+        'connection_id': str(connection_id or ''),
         'reconciled': True,
-    }
+    })
+    source_result['youtube'] = youtube
     update_job(source_task_id, result=source_result)
 
 
@@ -110,6 +135,8 @@ def publish_video_pipeline(
             _reconcile_source_upload(
                 source_task_id,
                 result['youtube_video_id'],
+                target_channel_id=result['target_channel_id'],
+                connection_id=result['connection_id'],
                 uploaded_at=reservation.get('completed_at'),
             )
             mark_success(task_id, result)
@@ -134,8 +161,19 @@ def publish_video_pipeline(
         prior_youtube = source_result.get('youtube') if isinstance(source_result.get('youtube'), dict) else {}
         prior_video_id = str(prior_youtube.get('video_id') or '').strip()
         if prior_video_id:
+            target_channel_id = str(reservation.get('target_channel_id') or '')
+            connection_id = str(reservation.get('connection_id') or '')
+            if not target_channel_id or not connection_id:
+                raise RuntimeError('YouTube upload target is missing')
             mark_upload_completed(source_task_id, task_id, prior_video_id)
             upload_completed = True
+            _reconcile_source_upload(
+                source_task_id,
+                prior_video_id,
+                target_channel_id=target_channel_id,
+                connection_id=connection_id,
+                uploaded_at=prior_youtube.get('uploaded_at'),
+            )
             result = {
                 'status': 'complete',
                 'stage': 'complete',
@@ -145,20 +183,30 @@ def publish_video_pipeline(
                 'youtube_video_id': prior_video_id,
                 'youtube_url': f'https://www.youtube.com/watch?v={prior_video_id}',
                 'privacy_status': 'private',
+                'target_channel_id': target_channel_id,
+                'connection_id': connection_id,
                 'idempotent_replay': True,
             }
             mark_success(task_id, result)
             return result
 
-        credentials = load_credentials(refresh=True)
+        target_channel_id = str(reservation.get('target_channel_id') or '')
+        connection_id = str(reservation.get('connection_id') or '')
+        if not target_channel_id or not connection_id:
+            raise RuntimeError('YouTube upload target is missing')
+        credentials = load_credentials(
+            target_channel_id,
+            expected_connection_id=connection_id,
+            refresh=True,
+        )
         if not credentials:
             raise RuntimeError('YouTube account is not connected')
         # channels.list(mine=true) verifies that the refreshed credential still
         # resolves to a real channel before any upload side effect is possible.
         channel = refresh_channel_info(
+            target_channel_id,
             credentials,
-            expected_channel_id=str(reservation.get('target_channel_id') or ''),
-            expected_connection_id=str(reservation.get('connection_id') or ''),
+            expected_connection_id=connection_id,
         )
 
         set_stage(
@@ -276,6 +324,8 @@ def publish_video_pipeline(
             'uploaded_at': uploaded_at,
             'caption_uploaded': bool(caption_result),
             'caption_error_code': caption_error_code,
+            'target_channel_id': target_channel_id,
+            'connection_id': connection_id,
             'channel': channel,
         }
         source_result = dict(source_result)
@@ -286,6 +336,8 @@ def publish_video_pipeline(
             'uploaded_at': uploaded_at,
             'caption_uploaded': bool(caption_result),
             'caption_error_code': caption_error_code,
+            'target_channel_id': target_channel_id,
+            'connection_id': connection_id,
         }
         update_job(source_task_id, result=source_result)
         mark_success(task_id, result)

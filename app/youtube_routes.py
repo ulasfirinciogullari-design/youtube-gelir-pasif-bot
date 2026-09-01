@@ -6,7 +6,7 @@ import secrets
 from urllib.parse import urlparse
 from uuid import uuid4
 
-from fastapi import APIRouter, Cookie, HTTPException, Request
+from fastapi import APIRouter, Cookie, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.config import settings
@@ -40,7 +40,7 @@ OAUTH_BINDING_COOKIE = 'youtube_oauth_browser_binding'
 OAUTH_CALLBACK_PATH = '/studio/youtube/callback'
 
 CSS = r'''
-*{box-sizing:border-box}html{background:#080b11}body{margin:0;color:#eef2f8;font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at 10% 0,#263668 0,transparent 34%),#080b11;min-height:100vh}.wrap{max-width:1050px;margin:auto;padding:20px 20px 80px}a{color:inherit;text-decoration:none}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #293143}.brand{font-weight:950}.nav{display:flex;gap:8px;flex-wrap:wrap}.nav a{padding:9px 12px;border:1px solid #344056;border-radius:999px;background:#111824;font-size:13px;font-weight:800}.hero{padding:34px 0 20px}.hero h1{font-size:40px;margin:0 0 8px;letter-spacing:-.04em}.muted{color:#9ba7b8}.card{background:rgba(19,24,35,.95);border:1px solid #2c3547;border-radius:20px;padding:18px;margin-bottom:14px}.btn,button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:13px;padding:12px 15px;background:#ff0033;color:white;font:inherit;font-weight:900;cursor:pointer}.btn.secondary{background:#172030;border:1px solid #38445a}.btn.success{background:#198958}.btn.danger{background:#8e3540}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.badge{display:inline-flex;padding:7px 10px;border-radius:999px;border:1px solid #354055;background:#101722;font-size:12px;font-weight:850;margin:3px}.job{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid #303a4d;border-radius:14px;background:#0d131d;margin-bottom:9px}.job-title{font-weight:900}.tiny{font-size:12px;color:#8996a8}form.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.notice{border:1px solid #6e5f22;background:#2a2411;color:#f4df89;border-radius:14px;padding:13px}.progress{height:13px;border:1px solid #344054;background:#090e16;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#ff0033,#ff8b33);transition:width .35s ease}pre{white-space:pre-wrap;word-break:break-word;background:#090e16;border:1px solid #2d3748;border-radius:14px;padding:14px}@media(max-width:650px){.wrap{padding:10px 10px 70px}.hero h1{font-size:31px}.top{align-items:flex-start}.job{grid-template-columns:1fr}.actions .btn,form.inline button{width:100%}}
+*{box-sizing:border-box}html{background:#080b11}body{margin:0;color:#eef2f8;font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at 10% 0,#263668 0,transparent 34%),#080b11;min-height:100vh}.wrap{max-width:1050px;margin:auto;padding:20px 20px 80px}a{color:inherit;text-decoration:none}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #293143}.brand{font-weight:950}.nav{display:flex;gap:8px;flex-wrap:wrap}.nav a{padding:9px 12px;border:1px solid #344056;border-radius:999px;background:#111824;font-size:13px;font-weight:800}.hero{padding:34px 0 20px}.hero h1{font-size:40px;margin:0 0 8px;letter-spacing:-.04em}.muted{color:#9ba7b8}.card{background:rgba(19,24,35,.95);border:1px solid #2c3547;border-radius:20px;padding:18px;margin-bottom:14px}.btn,button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:13px;padding:12px 15px;background:#ff0033;color:white;font:inherit;font-weight:900;cursor:pointer}select{min-width:230px;border:1px solid #38445a;border-radius:13px;padding:11px 12px;background:#101722;color:#eef2f8;font:inherit;font-weight:800}.btn.secondary{background:#172030;border:1px solid #38445a}.btn.success{background:#198958}.btn.danger{background:#8e3540}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.badge{display:inline-flex;padding:7px 10px;border-radius:999px;border:1px solid #354055;background:#101722;font-size:12px;font-weight:850;margin:3px}.job{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid #303a4d;border-radius:14px;background:#0d131d;margin-bottom:9px}.job-title{font-weight:900}.tiny{font-size:12px;color:#8996a8}form.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.notice{border:1px solid #6e5f22;background:#2a2411;color:#f4df89;border-radius:14px;padding:13px}.progress{height:13px;border:1px solid #344054;background:#090e16;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#ff0033,#ff8b33);transition:width .35s ease}pre{white-space:pre-wrap;word-break:break-word;background:#090e16;border:1px solid #2d3748;border-radius:14px;padding:14px}@media(max-width:650px){.wrap{padding:10px 10px 70px}.hero h1{font-size:31px}.top{align-items:flex-start}.job{grid-template-columns:1fr}.actions .btn,form.inline button,form.inline select{width:100%}}
 '''
 
 
@@ -154,14 +154,24 @@ def youtube_home(
 ):
     _require_auth(studio_token)
     status = connection_status()
-    channel = status.get('channel') or {}
+    connections = status.get('connections') if isinstance(status.get('connections'), list) else []
 
-    if status.get('connected'):
-        account_card = f'''
-<div class="card"><h2>Bağlı kanal ✅</h2><p><b>{escape(str(channel.get('title') or 'YouTube kanalı'))}</b></p><div><span class="badge">{escape(str(channel.get('subscriber_count') or '—'))} abone</span><span class="badge">{escape(str(channel.get('video_count') or '—'))} video</span><span class="badge">{escape(str(channel.get('view_count') or '—'))} görüntülenme</span></div><div class="actions"><form method="post" action="/studio/youtube/disconnect"><button class="btn danger" type="submit">Bağlantıyı kaldır</button></form></div></div>'''
-    elif status.get('configured'):
-        reconnect = 'Bağlantı yenilenmeli' if status.get('requires_reconnect') else 'YouTube hesabı bağlı değil'
-        account_card = f'<div class="card"><h2>{escape(reconnect)}</h2><p class="muted">Google izin ekranı tamamlandıktan sonra Studio yalnızca gizli video yükleyebilir.</p><form class="inline" method="post" action="/studio/youtube/connect"><button type="submit">Google ile YouTube’u bağla</button></form></div>'
+    if status.get('configured'):
+        cards = []
+        for channel in connections:
+            channel_id = str(channel.get('id') or '')
+            connection_id = str(channel.get('connection_id') or '')
+            cards.append(f'''
+<div class="card"><h2>Bağlı kanal ✅</h2><p><b>{escape(str(channel.get('title') or 'YouTube kanalı'))}</b></p><div><span class="badge">{escape(str(channel.get('subscriber_count') or '—'))} abone</span><span class="badge">{escape(str(channel.get('video_count') or '—'))} video</span><span class="badge">{escape(str(channel.get('view_count') or '—'))} görüntülenme</span><span class="badge">…{escape(channel_id[-6:])}</span></div><div class="actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger" type="submit">Bağlantıyı kaldır</button></form></div></div>''')
+        count = int(status.get('connection_count') or len(connections))
+        limit = int(status.get('connection_limit') or 10)
+        if count < limit:
+            cards.append(f'<div class="card"><h2>Yeni kanal bağla</h2><p class="muted">{count}/{limit} kanal bağlı. Google izin ekranında eklenecek YouTube kanalını seç.</p><form class="inline" method="post" action="/studio/youtube/connect"><button type="submit">Google ile başka kanal bağla</button></form></div>')
+        else:
+            cards.append(f'<div class="notice">Kanal sınırı dolu ({count}/{limit}). Yeni kanal eklemek için bir bağlantıyı kaldır.</div>')
+        if not connections and status.get('requires_reconnect'):
+            cards.insert(0, '<div class="notice">En az bir YouTube bağlantısı yenilenmeli.</div>')
+        account_card = ''.join(cards)
     else:
         callback = escape(str(settings.google_redirect_uri or '/studio/youtube/callback'))
         account_card = f'''
@@ -176,8 +186,12 @@ def youtube_home(
         youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
         if youtube.get('url'):
             action = f'<a class="btn success" target="_blank" rel="noopener noreferrer" href="{escape(str(youtube.get("url")), quote=True)}">YouTube’da aç</a>'
-        elif status.get('connected'):
-            action = f'''<form class="inline" method="post" action="/studio/youtube/publish/{escape(str(job.get('task_id') or ''))}"><button type="submit">Gizli olarak YouTube’a yükle</button></form>'''
+        elif connections:
+            options = ''.join(
+                f'<option value="{escape(str(item.get("id") or ""), quote=True)}">{escape(str(item.get("title") or "YouTube kanalı"))} · …{escape(str(item.get("id") or "")[-6:])}</option>'
+                for item in connections
+            )
+            action = f'''<form class="inline" method="post" action="/studio/youtube/publish/{escape(str(job.get('task_id') or ''))}"><select name="youtube_channel_id" required>{options}</select><button type="submit">Seçili kanala gizli yükle</button></form>'''
         else:
             action = '<span class="tiny">Önce hesabı bağla</span>'
         rows.append(
@@ -186,17 +200,18 @@ def youtube_home(
     jobs_html = ''.join(rows) or '<div class="card muted">Yüklenebilir tamamlanmış video henüz yok.</div>'
     success = '<div class="notice" style="border-color:#276744;background:#112d21;color:#8be5b4">YouTube hesabı ve kanal kimliği başarıyla doğrulandı.</div>' if connected else ''
     body = f'''
-<div class="hero"><h1>YouTube yayın merkezi</h1><div class="muted">Final videolar önce gizli yüklenir; herkese açık yayın ayrı ve onaylı bir işlemdir.</div></div>{success}{account_card}<div class="card"><h2>Hazır videolar</h2><p class="muted">Aynı final için ikinci bir yükleme işi oluşturulmaz.</p>{jobs_html}</div>'''
+<div class="hero"><h1>YouTube yayın merkezi</h1><div class="muted">En fazla 10 kanal bağlanabilir. Her final yalnızca seçilen tek kanala ve önce gizli olarak yüklenir.</div></div>{success}{account_card}<div class="card"><h2>Hazır videolar</h2><p class="muted">Hedef kanal yükleme başlatılırken sabitlenir; aynı final ikinci kez gönderilmez.</p>{jobs_html}</div>'''
     return _shell(body, same_origin_forms=True)
 
 
 @router.get('/studio/youtube/status')
 def youtube_connection_status(
     verify: bool = False,
+    youtube_channel_id: str | None = None,
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
-    status = connection_status(verify=verify)
+    status = connection_status(channel_id=youtube_channel_id, verify=verify)
     # connection_status intentionally contains no access/refresh token or client secret.
     return status
 
@@ -266,11 +281,20 @@ def youtube_oauth_callback(
 @router.post('/studio/youtube/disconnect')
 def youtube_disconnect(
     request: Request,
+    youtube_channel_id: str = Form(...),
+    connection_id: str = Form(...),
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
     _require_same_origin(request)
-    disconnect(revoke=True)
+    try:
+        disconnect(
+            youtube_channel_id,
+            expected_connection_id=connection_id,
+            revoke=True,
+        )
+    except YouTubeAuthError as exc:
+        raise HTTPException(status_code=409, detail='YouTube bağlantısı değişti; sayfayı yenile') from exc
     return RedirectResponse('/studio/youtube', status_code=303)
 
 
@@ -278,17 +302,16 @@ def youtube_disconnect(
 def youtube_publish(
     source_task_id: str,
     request: Request,
+    youtube_channel_id: str = Form(...),
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
     _require_same_origin(request)
-    status = connection_status()
-    if not status.get('connected'):
-        raise HTTPException(status_code=409, detail='YouTube hesabı bağlı değil')
+    status = connection_status(channel_id=youtube_channel_id)
     channel = status.get('channel') if isinstance(status.get('channel'), dict) else {}
     target_channel_id = str(channel.get('id') or '')
     connection_id = str(channel.get('connection_id') or '')
-    if not target_channel_id or not connection_id:
+    if target_channel_id != str(youtube_channel_id) or not connection_id:
         raise HTTPException(status_code=409, detail='YouTube bağlantısı yeniden doğrulanmalı')
     source = get_job(source_task_id)
     if not source or source.get('state') != 'SUCCESS':
@@ -296,6 +319,12 @@ def youtube_publish(
     source_result = source.get('result') if isinstance(source.get('result'), dict) else {}
     prior_youtube = source_result.get('youtube') if isinstance(source_result.get('youtube'), dict) else {}
     if prior_youtube.get('video_id'):
+        prior_target = str(prior_youtube.get('target_channel_id') or '')
+        if prior_target and prior_target != target_channel_id:
+            raise HTTPException(
+                status_code=409,
+                detail='Bu final başka bir YouTube kanalına yüklenmiş',
+            )
         return RedirectResponse('/studio/youtube', status_code=303)
 
     task_id = str(uuid4())
@@ -309,6 +338,13 @@ def youtube_publish(
     except (UploadReservationError, ValueError) as exc:
         raise HTTPException(status_code=503, detail='YouTube yükleme kaydı oluşturulamadı') from exc
     if not created:
+        if (
+            str(reservation.get('target_channel_id') or '') != target_channel_id
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail='Bu final başka bir YouTube kanalına ayrılmış',
+            )
         if reservation.get('status') == 'complete' and reservation.get('youtube_video_id'):
             # A worker may have died after persisting the remote video ID but
             # before updating the Studio source job. A new task can safely

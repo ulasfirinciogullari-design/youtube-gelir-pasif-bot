@@ -137,6 +137,11 @@ def reserve_upload(
                 ):
                     return record, True
                 continue
+            # A source final has exactly one immutable channel target. A retry
+            # proven to be pre-insert may adopt that channel's newer connection
+            # generation, but it can never be redirected to another channel.
+            if existing.get('target_channel_id') != target_channel_id:
+                return existing, False
             # Only failures proven to have happened before videos.insert may be
             # retried. An uncertain upload is deliberately never duplicated.
             if (
