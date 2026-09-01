@@ -1,5 +1,8 @@
 from pathlib import Path
+import base64
+import binascii
 import hashlib
+import math
 import re
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -126,15 +129,14 @@ def _voice_speed(target_seconds: float | None = None) -> float:
     return 0.92 if target_seconds and target_seconds <= 40 else 1.01
 
 
-def synthesize_voice_with_id(
+def _voice_request_body(
     text: str,
-    voice_id: str,
     previous_text: str | None = None,
     next_text: str | None = None,
     *,
     speed: float = 1.01,
     seed: int | None = None,
-) -> bytes:
+) -> dict:
     body = {
         'text': normalize_turkish_tts(text),
         'model_id': 'eleven_multilingual_v2',
@@ -155,6 +157,25 @@ def synthesize_voice_with_id(
         body['previous_text'] = normalize_turkish_tts(previous_text)[-600:]
     if next_text:
         body['next_text'] = normalize_turkish_tts(next_text)[:600]
+    return body
+
+
+def synthesize_voice_with_id(
+    text: str,
+    voice_id: str,
+    previous_text: str | None = None,
+    next_text: str | None = None,
+    *,
+    speed: float = 1.01,
+    seed: int | None = None,
+) -> bytes:
+    body = _voice_request_body(
+        text,
+        previous_text,
+        next_text,
+        speed=speed,
+        seed=seed,
+    )
     response = httpx.post(
         f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}',
         headers={**_headers(), 'Accept': 'audio/mpeg', 'Content-Type': 'application/json'},
@@ -162,6 +183,120 @@ def synthesize_voice_with_id(
     )
     response.raise_for_status()
     return response.content
+
+
+def synthesize_voice_with_timestamps(
+    text: str,
+    voice_id: str,
+    *,
+    speed: float = 1.01,
+    seed: int | None = None,
+) -> tuple[bytes, dict]:
+    """Synthesize one continuous take with character-level source timing."""
+    response = httpx.post(
+        f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}/with-timestamps',
+        headers={**_headers(), 'Accept': 'application/json', 'Content-Type': 'application/json'},
+        params={'output_format': 'mp3_44100_128'},
+        json=_voice_request_body(text, speed=speed, seed=seed),
+        timeout=180,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    if not isinstance(payload, dict):
+        raise RuntimeError('ElevenLabs timestamp response is not a JSON object')
+    encoded_audio = payload.get('audio_base64')
+    alignment = payload.get('alignment')
+    if not isinstance(encoded_audio, str) or not encoded_audio:
+        raise RuntimeError('ElevenLabs timestamp response is missing audio')
+    if not isinstance(alignment, dict):
+        raise RuntimeError('ElevenLabs timestamp response is missing source alignment')
+    try:
+        audio = base64.b64decode(encoded_audio, validate=True)
+    except (ValueError, binascii.Error) as exc:
+        raise RuntimeError('ElevenLabs timestamp response contains invalid audio') from exc
+    if not audio:
+        raise RuntimeError('ElevenLabs timestamp response contains empty audio')
+    return audio, alignment
+
+
+def _join_scene_narration(spoken: list[str]) -> tuple[str, list[tuple[int, int]]]:
+    """Join normalized scenes once while retaining exact character spans."""
+    if not spoken or not all(spoken):
+        raise RuntimeError('One or more scenes are missing narration')
+    spans: list[tuple[int, int]] = []
+    cursor = 0
+    for index, text in enumerate(spoken):
+        if index:
+            cursor += 1
+        start = cursor
+        cursor += len(text)
+        spans.append((start, cursor))
+    return ' '.join(spoken), spans
+
+
+def _scene_durations_from_alignment(
+    narration: str,
+    spans: list[tuple[int, int]],
+    alignment: dict,
+    media_duration: float,
+) -> list[float]:
+    """Convert exact source-character boundaries into scene durations."""
+    characters = alignment.get('characters')
+    end_times = alignment.get('character_end_times_seconds')
+    if not isinstance(characters, list) or not isinstance(end_times, list):
+        raise RuntimeError('ElevenLabs source alignment is incomplete')
+    if len(characters) != len(end_times) or not characters:
+        raise RuntimeError('ElevenLabs source alignment lengths do not match')
+    if not all(isinstance(character, str) for character in characters):
+        raise RuntimeError('ElevenLabs source alignment contains invalid characters')
+    if ''.join(characters) != narration:
+        raise RuntimeError('ElevenLabs source alignment does not match narration')
+
+    numeric_end_times: list[float] = []
+    for value in end_times:
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise RuntimeError('ElevenLabs source alignment contains invalid timing')
+        timing = float(value)
+        if not math.isfinite(timing) or timing < 0:
+            raise RuntimeError('ElevenLabs source alignment contains invalid timing')
+        if numeric_end_times and timing < numeric_end_times[-1]:
+            raise RuntimeError('ElevenLabs source alignment timing is not monotonic')
+        numeric_end_times.append(timing)
+
+    if not math.isfinite(media_duration) or media_duration <= 0:
+        raise RuntimeError('Continuous narration has invalid media duration')
+    if numeric_end_times[-1] > media_duration + 0.25:
+        raise RuntimeError('ElevenLabs source alignment exceeds narration duration')
+
+    boundaries: list[float] = []
+    previous_end = -1
+    for index, (start, end) in enumerate(spans):
+        if start < 0 or end <= start or end > len(narration):
+            raise RuntimeError('Narration scene span is invalid')
+        if index == 0 and start != 0:
+            raise RuntimeError('Narration scene spans do not start at zero')
+        if index and start != previous_end + 1:
+            raise RuntimeError('Narration scene spans are not contiguous')
+        previous_end = end
+        boundary = (
+            media_duration
+            if index == len(spans) - 1
+            else numeric_end_times[end - 1]
+        )
+        if boundaries and boundary <= boundaries[-1]:
+            raise RuntimeError('Narration scene timing is not increasing')
+        if not boundaries and boundary <= 0:
+            raise RuntimeError('Narration scene timing is not increasing')
+        boundaries.append(boundary)
+    if not boundaries or previous_end != len(narration):
+        raise RuntimeError('Narration scene spans do not cover the source text')
+
+    durations: list[float] = []
+    cursor = 0.0
+    for boundary in boundaries:
+        durations.append(boundary - cursor)
+        cursor = boundary
+    return durations
 
 
 def _deterministic_scene_seed(
@@ -279,65 +414,86 @@ def synthesize_scene_sequence(
 
     work = Path('/tmp') / f'{job_id}_voice'
     work.mkdir(parents=True, exist_ok=True)
-    chunk_paths = [work / f'scene_{idx:03d}.mp3' for idx in range(len(scenes))]
     selected_speed = _voice_speed(target_seconds)
-
-    def make_scene(idx: int):
-        previous_text = source_texts[idx - 1] if idx > 0 else None
-        next_text = source_texts[idx + 1] if idx + 1 < len(source_texts) else None
-        audio = synthesize_voice_with_id(
-            source_texts[idx],
+    raw_output = work / 'joined.mp3'
+    short_preview = bool(target_seconds and 0 < target_seconds <= 40)
+    if short_preview:
+        narration, spans = _join_scene_narration(spoken)
+        audio, alignment = synthesize_voice_with_timestamps(
+            narration,
             voice_id,
-            previous_text,
-            next_text,
             speed=selected_speed,
             seed=_deterministic_scene_seed(
                 voice_id,
-                source_texts[idx],
-                idx,
+                narration,
+                0,
                 generation_attempt,
             ),
         )
-        chunk_paths[idx].write_bytes(audio)
-        return idx, _media_duration(chunk_paths[idx])
+        raw_output.write_bytes(audio)
+        scene_durations = _scene_durations_from_alignment(
+            narration,
+            spans,
+            alignment,
+            _media_duration(raw_output),
+        )
+    else:
+        chunk_paths = [work / f'scene_{idx:03d}.mp3' for idx in range(len(scenes))]
 
-    raw_durations = [0.0] * len(scenes)
-    with ThreadPoolExecutor(max_workers=min(4, max(1, len(scenes)))) as executor:
-        futures = [executor.submit(make_scene, idx) for idx in range(len(scenes))]
-        for future in as_completed(futures):
-            idx, duration = future.result()
-            raw_durations[idx] = duration
+        def make_scene(idx: int):
+            previous_text = source_texts[idx - 1] if idx > 0 else None
+            next_text = source_texts[idx + 1] if idx + 1 < len(source_texts) else None
+            audio = synthesize_voice_with_id(
+                source_texts[idx],
+                voice_id,
+                previous_text,
+                next_text,
+                speed=selected_speed,
+                seed=_deterministic_scene_seed(
+                    voice_id,
+                    source_texts[idx],
+                    idx,
+                    generation_attempt,
+                ),
+            )
+            chunk_paths[idx].write_bytes(audio)
+            return idx, _media_duration(chunk_paths[idx])
 
-    pause_cache: dict[float, Path] = {}
-    def pause_file(seconds: float) -> Path:
-        rounded = round(seconds, 2)
-        if rounded in pause_cache:
-            return pause_cache[rounded]
-        path = work / f'pause_{int(rounded * 1000):03d}.mp3'
+        raw_durations = [0.0] * len(scenes)
+        with ThreadPoolExecutor(max_workers=min(4, max(1, len(scenes)))) as executor:
+            futures = [executor.submit(make_scene, idx) for idx in range(len(scenes))]
+            for future in as_completed(futures):
+                idx, duration = future.result()
+                raw_durations[idx] = duration
+
+        pause_cache: dict[float, Path] = {}
+        def pause_file(seconds: float) -> Path:
+            rounded = round(seconds, 2)
+            if rounded in pause_cache:
+                return pause_cache[rounded]
+            path = work / f'pause_{int(rounded * 1000):03d}.mp3'
+            subprocess.run([
+                'ffmpeg', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo', '-t', f'{rounded:.3f}',
+                '-c:a', 'libmp3lame', '-b:a', '128k', str(path),
+            ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            pause_cache[rounded] = path
+            return path
+
+        concat_entries: list[str] = []
+        scene_durations = []
+        for idx, path in enumerate(chunk_paths):
+            concat_entries.append(f"file '{path.as_posix()}'")
+            pause = _scene_pause(scenes[idx], idx + 1 == len(chunk_paths), False)
+            duration = raw_durations[idx] + pause
+            if pause > 0:
+                concat_entries.append(f"file '{pause_file(pause).as_posix()}'")
+            scene_durations.append(duration)
+
+        concat = work / 'concat.txt'
+        concat.write_text('\n'.join(concat_entries), encoding='utf-8')
         subprocess.run([
-            'ffmpeg', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo', '-t', f'{rounded:.3f}',
-            '-c:a', 'libmp3lame', '-b:a', '128k', str(path),
+            'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat), '-c:a', 'libmp3lame', '-b:a', '192k', str(raw_output),
         ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        pause_cache[rounded] = path
-        return path
-
-    concat_entries: list[str] = []
-    scene_durations: list[float] = []
-    short_preview = bool(target_seconds and target_seconds <= 40)
-    for idx, path in enumerate(chunk_paths):
-        concat_entries.append(f"file '{path.as_posix()}'")
-        pause = _scene_pause(scenes[idx], idx + 1 == len(chunk_paths), short_preview)
-        duration = raw_durations[idx] + pause
-        if pause > 0:
-            concat_entries.append(f"file '{pause_file(pause).as_posix()}'")
-        scene_durations.append(duration)
-
-    concat = work / 'concat.txt'
-    concat.write_text('\n'.join(concat_entries), encoding='utf-8')
-    raw_output = work / 'joined.mp3'
-    subprocess.run([
-        'ffmpeg', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat), '-c:a', 'libmp3lame', '-b:a', '192k', str(raw_output),
-    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     output = Path('/tmp') / f'{job_id}.mp3'
     subprocess.run([
@@ -368,4 +524,3 @@ def synthesize_scene_sequence(
 
 def synthesize_voice(text: str, job_id: str) -> str:
     return synthesize_scene_sequence([{'narration': text}], job_id)['path']
-
