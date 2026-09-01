@@ -64,13 +64,42 @@ def _is_daily_gemini_quota_rejection(response: object) -> bool:
                 if (
                     str(key).casefold() in {'quotaid', 'quotametric'}
                     and isinstance(item, str)
-                    and ('perday' in item.casefold() or 'requestsperday' in item.casefold())
+                    and 'perday' in re.sub(
+                        r'[^a-z0-9]+',
+                        '',
+                        item.casefold(),
+                    )
                 ):
                     return True
                 stack.append(item)
         elif isinstance(value, list):
             stack.extend(value)
     return False
+
+
+def _gemini_image_rejection_category(response: object) -> str:
+    """Return one content-free provider category for safe diagnostics."""
+    try:
+        payload = response.json()
+    except Exception:
+        return 'unknown'
+    error = payload.get('error') if isinstance(payload, dict) else None
+    if not isinstance(error, dict):
+        return 'unknown'
+    allowed = {
+        'invalid_argument',
+        'invalid_request',
+        'parameter_unknown',
+        'failed_precondition',
+        'permission_denied',
+        'resource_exhausted',
+    }
+    for field in ('status', 'type'):
+        value = str(error.get(field) or '').strip().casefold()
+        normalized = re.sub(r'[^a-z0-9]+', '_', value).strip('_')
+        if normalized in allowed:
+            return normalized
+    return 'unknown'
 
 
 def _validated_jpeg_dimensions(image_bytes: bytes) -> tuple[int, int]:
@@ -213,13 +242,16 @@ def _generate_gemini_image_descriptor(
     request_payload = {
         'model': _GEMINI_IMAGE_MODEL,
         'store': False,
-        'input': [{'type': 'text', 'text': prompt}],
+        # Keep this body identical to the current Interactions image contract.
+        # The live API rejects the otherwise documented optional delivery
+        # selector for this model; successful inline media is already the
+        # response default.
+        'input': prompt,
         'response_format': {
             'type': 'image',
             'mime_type': _GEMINI_IMAGE_MIME_TYPE,
             'aspect_ratio': '16:9',
             'image_size': '1K',
-            'delivery': 'inline',
         },
     }
     with httpx.Client(
@@ -233,6 +265,12 @@ def _generate_gemini_image_descriptor(
             headers=headers,
             json=request_payload,
         )
+        status_code = getattr(response, 'status_code', None)
+        if type(status_code) is int and not 200 <= status_code < 300:
+            category = _gemini_image_rejection_category(response)
+            raise RuntimeError(
+                f'Gemini image request was rejected ({category})'
+            )
         response.raise_for_status()
         payload = response.json()
 
