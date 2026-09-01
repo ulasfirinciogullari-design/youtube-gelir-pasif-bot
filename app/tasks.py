@@ -2221,6 +2221,9 @@ def run_video_pipeline(
                     'provider_attempts': int(
                         generated_scene.get('provider_attempts') or 1
                     ),
+                    'quota_fallback_from': generated_scene.get(
+                        'quota_fallback_from'
+                    ),
                 })
             except Exception as exc:
                 runway_failed_scenes.append(scene_idx)
@@ -2393,6 +2396,9 @@ def run_video_pipeline(
                     'provider': str(repair_scene['provider']),
                     'provider_attempts': int(
                         repair_scene.get('provider_attempts') or 1
+                    ),
+                    'quota_fallback_from': repair_scene.get(
+                        'quota_fallback_from'
                     ),
                 })
                 visual_replacements.append({
