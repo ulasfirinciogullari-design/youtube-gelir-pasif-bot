@@ -28,6 +28,14 @@ from app.services.youtube_auth import (
     discard_authorization_state,
     disconnect,
 )
+from app.services.youtube_automation import (
+    ProfileConflictError,
+    YouTubeAutomationError,
+    build_publish_plan,
+    get_channel_profile,
+    list_channel_profiles,
+    save_channel_profile,
+)
 from app.services.youtube_publish_state import (
     UploadReservationError,
     mark_upload_enqueued,
@@ -47,6 +55,7 @@ CSS = r'''
 @media(max-width:760px){.hero{align-items:flex-start;flex-direction:column}.hero-tools{justify-content:flex-start}.channel-grid{grid-template-columns:1fr}.video-card{grid-template-columns:1fr}.video-actions,.video-actions form{justify-content:flex-start}}
 @media(max-width:650px){.wrap{padding:0 12px 56px}.top{position:static;align-items:flex-start;flex-direction:column;padding:14px 0}.nav{width:100%;overflow-x:auto;flex-wrap:nowrap}.nav a{white-space:nowrap}.hero{padding:28px 0 18px}.hero h1{font-size:32px}.card{padding:16px}.section-head{flex-direction:column}.video-actions form,.video-actions select,.video-actions button,.actions .btn{width:100%}}
 @media(prefers-reduced-motion:reduce){.bar{transition:none}}
+.profile-details{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.profile-details>summary{cursor:pointer;color:#aab6c8;font-size:12px;font-weight:800}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}.profile-grid label{display:grid;gap:5px;color:#aeb9ca;font-size:11px;font-weight:750}.profile-grid .wide{grid-column:1/-1}.profile-grid input,.profile-grid textarea,.profile-grid select{width:100%;min-width:0;border:1px solid var(--line-strong);border-radius:10px;padding:9px 10px;background:#0a1018;color:var(--text);outline:none}.profile-grid input:focus-visible,.profile-grid textarea:focus-visible,.profile-grid select:focus-visible{outline:3px solid rgba(118,170,255,.62);outline-offset:2px}.profile-grid textarea{min-height:72px;resize:vertical}.profile-grid .check{display:flex;grid-column:1/-1;align-items:center;gap:8px}.profile-grid .check input{width:auto}.profile-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}@media(max-width:650px){.profile-grid{grid-template-columns:1fr}.profile-grid .wide{grid-column:auto}}
 '''
 
 
@@ -238,6 +247,61 @@ def _completed_jobs() -> list[dict]:
     return jobs
 
 
+def _profile_form(channel: dict, profile: dict | None) -> str:
+    profile = profile or {}
+    channel_id = str(channel.get('id') or '')
+    connection_id = str(channel.get('connection_id') or '')
+    revision = str(profile.get('profile_revision') or '')
+
+    def value(name: str, default: str = '') -> str:
+        raw = profile.get(name, default)
+        if isinstance(raw, list):
+            raw = ', '.join(str(item) for item in raw)
+        return escape(str(raw or ''), quote=True)
+
+    release_mode = str(profile.get('release_mode') or 'private')
+    release_options = ''.join(
+        f'<option value="{mode}"{" selected" if release_mode == mode else ""}>{label}</option>'
+        for mode, label in (
+            ('private', 'Yalnızca gizli'),
+            ('public', 'Kalite geçerse otomatik herkese açık'),
+            ('scheduled', 'Kalite geçerse otomatik planla'),
+        )
+    )
+    checked = ' checked' if profile.get('auto_publish') else ''
+    thumbnail_checked = ' checked' if profile.get('require_thumbnail') else ''
+    status = (
+        '<span class="badge good">Otomatik rota açık</span>'
+        if profile.get('auto_publish')
+        else '<span class="badge">Otomatik rota kapalı</span>'
+    )
+    return f'''
+<details class="profile-details"><summary>Otomasyon ve yayın profili</summary>
+<form method="post" action="/studio/youtube/profile/{escape(channel_id, quote=True)}">
+<input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}">
+<input type="hidden" name="expected_revision" value="{escape(revision, quote=True)}">
+<div class="profile-grid">
+<label class="wide">Kanal kimliği / yayın çizgisi<input name="channel_identity" maxlength="240" value="{value('channel_identity')}" placeholder="Kısa, merak uyandıran Türkçe bilim hikâyeleri"></label>
+<label>Studio kanal etiketi<input name="route_label" maxlength="120" value="{value('route_label')}" placeholder="merak-belgesel-tr-01"></label>
+<label>Diller<input name="languages" maxlength="180" value="{value('languages', 'tr')}" placeholder="tr, en"></label>
+<label class="wide">Konu anahtarları<input name="topic_keywords" maxlength="1200" value="{value('topic_keywords')}" placeholder="havacılık, bilim, teknoloji"></label>
+<label>Varsayılan dil<input name="default_language" maxlength="24" value="{value('default_language', 'tr')}" placeholder="tr"></label>
+<label>Kategori no<input name="category_id" maxlength="3" value="{value('category_id', '28')}" inputmode="numeric"></label>
+<label class="wide">Etiketler<input name="default_tags" maxlength="1600" value="{value('default_tags')}" placeholder="bilim, merak, kısa belgesel"></label>
+<label class="wide">Hashtagler<input name="hashtags" maxlength="700" value="{value('hashtags')}" placeholder="Bilim, Merak, Shorts"></label>
+<label class="wide">Açıklama alt bilgisi<textarea name="description_footer" maxlength="1200" placeholder="Kanal imzası ve sabit bilgi">{escape(str(profile.get('description_footer') or ''))}</textarea></label>
+<label>Seri kodu<input name="series_id" maxlength="80" value="{value('series_id')}" placeholder="ucak-sirlari-1"></label>
+<label>Seri adı<input name="series_name" maxlength="100" value="{value('series_name')}" placeholder="Uçak Sırları"></label>
+<label>Seri toplamı<input name="series_total" type="number" min="0" max="10000" value="{value('series_total', '0')}"></label>
+<label>Yayın davranışı<select name="release_mode">{release_options}</select></label>
+<label>Planlama gecikmesi (dk)<input name="schedule_delay_minutes" type="number" min="15" max="43200" value="{value('schedule_delay_minutes', '60')}"></label>
+<label class="check"><input name="auto_publish" type="checkbox" value="1"{checked}> Kalite kapısını geçen videoları bu rotaya otomatik gönder</label>
+<label class="check"><input name="require_thumbnail" type="checkbox" value="1"{thumbnail_checked}> Özel küçük resim yoksa herkese açma</label>
+</div>
+<div class="profile-actions"><button class="small" type="submit">Profili kaydet</button>{status}<span class="tiny">İlk yükleme her zaman gizlidir; yalnızca tam otomatik kalite onayı yayın geçişini açar.</span></div>
+</form></details>'''
+
+
 @router.get('/studio/youtube', response_class=HTMLResponse)
 def youtube_home(
     connected: int = 0,
@@ -246,14 +310,23 @@ def youtube_home(
     _require_auth(studio_token)
     status = connection_status()
     connections = status.get('connections') if isinstance(status.get('connections'), list) else []
+    try:
+        profiles = {
+            str(item.get('channel_id') or ''): item
+            for item in list_channel_profiles()
+            if isinstance(item, dict)
+        }
+    except YouTubeAutomationError:
+        profiles = {}
 
     if status.get('configured'):
         channel_cards = []
         for channel in connections:
             channel_id = str(channel.get('id') or '')
             connection_id = str(channel.get('connection_id') or '')
+            profile_form = _profile_form(channel, profiles.get(channel_id))
             channel_cards.append(f'''
-<article class="channel-card"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Yüklemeye hazır</div></div><span class="badge good">● Bağlı</span></div><div class="channel-metrics"><span class="badge">{escape(str(channel.get('subscriber_count') or '—'))} abone</span><span class="badge">{escape(str(channel.get('video_count') or '—'))} video</span><span class="badge">{escape(str(channel.get('view_count') or '—'))} izlenme</span></div><div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
+<article class="channel-card"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Yüklemeye hazır</div></div><span class="badge good">● Bağlı</span></div><div class="channel-metrics"><span class="badge">{escape(str(channel.get('subscriber_count') or '—'))} abone</span><span class="badge">{escape(str(channel.get('video_count') or '—'))} video</span><span class="badge">{escape(str(channel.get('view_count') or '—'))} izlenme</span></div>{profile_form}<div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
         count = int(status.get('connection_count') or len(connections))
         limit = int(status.get('connection_limit') or 10)
         connection_notice = ''
@@ -282,7 +355,14 @@ def youtube_home(
         youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
         if youtube.get('url'):
             action = f'<a class="btn success" target="_blank" rel="noopener noreferrer" href="{escape(str(youtube.get("url")), quote=True)}">YouTube’da aç</a>'
-            ready_state = '<span class="badge good">Gizli yüklendi</span>'
+            release_status = str(youtube.get('release_status') or 'private')
+            state_label = {
+                'public': 'Yayında',
+                'scheduled': 'Planlandı',
+                'blocked': 'Gizli · yayın durdu',
+                'uncertain': 'Yayın durumu doğrulanmalı',
+            }.get(release_status, 'Gizli yüklendi')
+            ready_state = f'<span class="badge good">{escape(state_label)}</span>'
         elif connections:
             options = ''.join(
                 f'<option value="{escape(str(item.get("id") or ""), quote=True)}">{escape(_ellipsize(_safe_ui_text(item.get("title") or "YouTube kanalı"), 60))}</option>'
@@ -312,7 +392,7 @@ def youtube_home(
     jobs_html = ''.join(rows) or '<div class="empty">Yüklenebilir tamamlanmış video henüz yok.</div>'
     success = '<div class="notice success" role="status">YouTube kanalı başarıyla bağlandı.</div>' if connected else ''
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Hazır videoyu seçtiğin kanala güvenle gönder. Her yükleme önce gizli kalır.</div></div><div class="hero-tools"><span class="badge good">🔒 Yalnızca gizli yükleme</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{account_card}<section class="card"><div class="section-head"><div><span class="section-kicker">YAYINA HAZIR</span><h2>Hazır videolar</h2><div class="muted">Başlık ve temel bilgiler önde; uzun talimat istenirse açılır.</div></div><span class="badge">{len(rows)} video</span></div><div class="video-list">{jobs_html}</div></section>'''
+<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanal rotalarını bir kez tanımla; başlık, açıklama, etiket, seri ve yayın akışı otomatik yürüsün.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{account_card}<section class="card"><div class="section-head"><div><span class="section-kicker">YAYINA HAZIR</span><h2>Hazır videolar</h2><div class="muted">Başlık ve temel bilgiler önde; uzun talimat istenirse açılır.</div></div><span class="badge">{len(rows)} video</span></div><div class="video-list">{jobs_html}</div></section>'''
     return _shell(body, same_origin_forms=True)
 
 
@@ -410,6 +490,77 @@ def youtube_disconnect(
     return RedirectResponse('/studio/youtube', status_code=303)
 
 
+@router.post('/studio/youtube/profile/{youtube_channel_id}')
+def youtube_save_profile(
+    youtube_channel_id: str,
+    request: Request,
+    connection_id: str = Form(...),
+    expected_revision: str = Form(''),
+    channel_identity: str = Form(''),
+    route_label: str = Form(''),
+    languages: str = Form('tr'),
+    default_language: str = Form('tr'),
+    topic_keywords: str = Form(''),
+    default_tags: str = Form(''),
+    hashtags: str = Form(''),
+    category_id: str = Form('28'),
+    description_footer: str = Form(''),
+    series_id: str = Form(''),
+    series_name: str = Form(''),
+    series_total: int = Form(0),
+    release_mode: str = Form('private'),
+    schedule_delay_minutes: int = Form(60),
+    auto_publish: str = Form(''),
+    require_thumbnail: str = Form(''),
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    _require_auth(studio_token)
+    _require_same_origin(request)
+    status = connection_status(channel_id=youtube_channel_id)
+    channel = status.get('channel') if isinstance(status.get('channel'), dict) else {}
+    if (
+        str(channel.get('id') or '') != youtube_channel_id
+        or str(channel.get('connection_id') or '') != connection_id
+    ):
+        raise HTTPException(
+            status_code=409,
+            detail='YouTube bağlantısı değişti; sayfayı yenile',
+        )
+    try:
+        save_channel_profile(
+            youtube_channel_id,
+            {
+                'channel_identity': channel_identity,
+                'route_label': route_label,
+                'languages': languages,
+                'default_language': default_language,
+                'topic_keywords': topic_keywords,
+                'default_tags': default_tags,
+                'hashtags': hashtags,
+                'category_id': category_id,
+                'description_footer': description_footer,
+                'series_id': series_id,
+                'series_name': series_name,
+                'series_total': series_total,
+                'release_mode': release_mode,
+                'schedule_delay_minutes': schedule_delay_minutes,
+                'auto_publish': auto_publish == '1',
+                'require_thumbnail': require_thumbnail == '1',
+            },
+            expected_revision=expected_revision or None,
+        )
+    except ProfileConflictError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail='Kanal profili başka bir işlemde değişti; sayfayı yenile',
+        ) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail='Kanal profili geçersiz') from exc
+    except YouTubeAutomationError as exc:
+        raise HTTPException(status_code=503, detail='Kanal profili kaydedilemedi') from exc
+    return RedirectResponse('/studio/youtube', status_code=303)
+
+
 @router.post('/studio/youtube/publish/{source_task_id}')
 def youtube_publish(
     source_task_id: str,
@@ -439,6 +590,34 @@ def youtube_publish(
             )
         return RedirectResponse('/studio/youtube', status_code=303)
 
+    publish_plan = None
+    if isinstance(source_result.get('publish_metadata'), dict):
+        try:
+            profile = get_channel_profile(target_channel_id) or {
+                'schema_version': 1,
+                'channel_id': target_channel_id,
+                'profile_revision': 'manual-private',
+                'languages': [(source.get('spec') or {}).get('language') or 'tr'],
+                'default_language': (source.get('spec') or {}).get('language') or 'tr',
+                'category_id': '28',
+                'release_mode': 'private',
+            }
+            profile = dict(profile)
+            # The explicit dashboard action remains a private-upload action.
+            # Autonomous release policy is applied only by the post-QA router.
+            profile['release_mode'] = 'private'
+            publish_plan = build_publish_plan(source_task_id, source, profile)
+        except YouTubeAutomationError as exc:
+            raise HTTPException(
+                status_code=503,
+                detail='YouTube metadata planı oluşturulamadı',
+            ) from exc
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=422,
+                detail='YouTube metadata planı geçersiz',
+            ) from exc
+
     task_id = str(uuid4())
     try:
         reservation, created = reserve_upload(
@@ -446,6 +625,7 @@ def youtube_publish(
             task_id,
             target_channel_id=target_channel_id,
             connection_id=connection_id,
+            publish_plan=publish_plan,
         )
     except (UploadReservationError, ValueError) as exc:
         raise HTTPException(status_code=503, detail='YouTube yükleme kaydı oluşturulamadı') from exc
@@ -507,6 +687,10 @@ def youtube_publish(
             'mode': 'publish',
             'target_channel_id': target_channel_id,
             'connection_id': connection_id,
+            'profile_revision': (
+                publish_plan.get('profile_revision') if publish_plan else None
+            ),
+            'series': publish_plan.get('series') if publish_plan else None,
         },
         kind='publish',
         parent_id=source_task_id,

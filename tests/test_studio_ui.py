@@ -256,8 +256,9 @@ def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monk
     assert 'name="youtube_channel_id"' in body
     assert '>Gizli yükle</button>' in body
     assert 'privacy_status' not in body
-    assert 'public' not in body.casefold()
-    assert '🔒 Yalnızca gizli yükleme' in body
+    assert 'action="/studio/youtube/public' not in body.casefold()
+    assert 'İlk yükleme daima gizli' in body
+    assert '🔒 İlk yükleme daima gizli' in body
     assert '-webkit-line-clamp:2' in youtube_routes.CSS
 
 
