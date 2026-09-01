@@ -2315,6 +2315,74 @@ def _runway_failure_payload(
     }
 
 
+def _final_visual_rejection_diagnostics(
+    *,
+    scene_count: int,
+    rejected_scene_indices: list[int],
+    rescued_scene_indices: list[int],
+    final_reviews: dict[int, dict],
+    runway_attempts: int,
+    initial_generation_failed_scene_indices: list[int],
+    final_repair_failed_scene_indices: list[int],
+    runway_failure_diagnostics: list[dict],
+    repair_checkpoint_available: bool,
+) -> dict | None:
+    """Describe only quality failures that remain after the free rescue.
+
+    Provider failures are useful diagnostics, but they are not themselves a
+    terminal outcome once an exact replacement clip passes the final critic.
+    Keeping that distinction here prevents a failed image-motion/repair chain
+    from overriding a later successful stock rescue.
+    """
+    try:
+        safe_scene_count = max(0, int(scene_count))
+    except Exception:
+        safe_scene_count = 0
+    rejected = sorted({
+        int(index)
+        for index in rejected_scene_indices
+        if str(index).lstrip('-').isdigit()
+        and 0 <= int(index) < safe_scene_count
+    })
+    if not rejected:
+        return None
+
+    rejected_details = {
+        index: {
+            'score': int((final_reviews.get(index) or {}).get('score', 0)),
+            'reason': str(
+                (final_reviews.get(index) or {}).get('reason')
+                or 'missing review'
+            )[:180],
+        }
+        for index in rejected
+    }
+    provider_failed_rejections = sorted(
+        set(rejected)
+        & (
+            {int(index) for index in initial_generation_failed_scene_indices}
+            | {int(index) for index in final_repair_failed_scene_indices}
+        )
+    )
+    diagnostics = {
+        'stage': 'after_rescue',
+        'accepted': safe_scene_count - len(rejected),
+        'total': safe_scene_count,
+        'replaced': len({int(index) for index in rescued_scene_indices}),
+        'rejected': rejected_details,
+        'repair_checkpoint_available': bool(repair_checkpoint_available),
+    }
+    if provider_failed_rejections:
+        diagnostics['provider_generation_failures'] = (
+            _runway_failure_payload(
+                runway_attempts,
+                provider_failed_rejections,
+                runway_failure_diagnostics,
+            )
+        )
+    return diagnostics
+
+
 def _runway_single_pass_supported(scene_duration: float) -> bool:
     try:
         required = max(0.0, float(scene_duration)) * 1.02 + 0.20
@@ -4651,32 +4719,6 @@ def run_video_pipeline(
 
         visual_qc['final_reviews'] = final_visual_qc.get('reviews') or []
         if rejected_final_scenes:
-            failed_required_scenes = [
-                idx for idx in rejected_final_scenes
-                if (
-                    idx in runway_failed_scenes
-                    or idx in final_runway_repair_failures
-                )
-            ]
-            if failed_required_scenes:
-                raise FinalVisualQualityError(
-                    'Runway generation failed within the bounded submission budget: '
-                    + json.dumps(
-                        _runway_failure_payload(
-                            runway_attempts,
-                            failed_required_scenes,
-                            runway_failure_diagnostics,
-                        ),
-                        separators=(',', ':'),
-                    )
-                )
-            rejected_details = {
-                idx: {
-                    'score': int((final_reviews.get(idx) or {}).get('score', 0)),
-                    'reason': str((final_reviews.get(idx) or {}).get('reason') or 'missing review')[:180],
-                }
-                for idx in rejected_final_scenes
-            }
             repair_checkpoint_available = False
             if is_bounded_short_preview:
                 try:
@@ -4704,16 +4746,27 @@ def run_video_pipeline(
                     # Checkpointing is an optimization, never a reason to
                     # conceal or replace the real visual-quality rejection.
                     update_job(task_id, repair_available=False)
-            diagnostics = {
-                'stage': 'after_rescue',
-                'accepted': len(scenes) - len(rejected_final_scenes),
-                'total': len(scenes),
-                'replaced': len(rescued_final_scenes),
-                'rejected': rejected_details,
-                'repair_checkpoint_available': (
+            diagnostics = _final_visual_rejection_diagnostics(
+                scene_count=len(scenes),
+                rejected_scene_indices=rejected_final_scenes,
+                rescued_scene_indices=rescued_final_scenes,
+                final_reviews=final_reviews,
+                runway_attempts=runway_attempts,
+                initial_generation_failed_scene_indices=(
+                    runway_failed_scenes
+                ),
+                final_repair_failed_scene_indices=(
+                    final_runway_repair_failures
+                ),
+                runway_failure_diagnostics=runway_failure_diagnostics,
+                repair_checkpoint_available=(
                     repair_checkpoint_available
                 ),
-            }
+            )
+            if diagnostics is None:
+                raise FinalVisualQualityError(
+                    'Final visual quality rejection state is inconsistent'
+                )
             raise FinalVisualQualityError(
                 'Final visual quality gate rejected: '
                 + json.dumps(diagnostics, ensure_ascii=False, separators=(',', ':'))
