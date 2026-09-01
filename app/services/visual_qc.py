@@ -19,6 +19,7 @@ from app.services.gemini_generation import (
 MOMENT_FRACTIONS = [0.18, 0.50, 0.82, 0.06, 0.94]
 GEMINI_QC_BATCH_SCENES = 4
 GEMINI_MAX_FRAME_BYTES = 180 * 1024
+_TRUSTED_IMAGE_MOTION_RECIPE_VERSION = 'diagonal-push-v2'
 _GEMINI_FRAME_REENCODE_ATTEMPTS = (
     (480, 8),
     (360, 12),
@@ -286,6 +287,35 @@ def _spec_path(spec: str | dict) -> str:
     if isinstance(spec, dict):
         return str(spec.get('path') or '').strip()
     return str(spec or '').strip()
+
+
+def _trusted_image_motion_candidate(spec: str | dict) -> bool:
+    """Recognize only the server-authored private image-motion contract."""
+    if not isinstance(spec, dict):
+        return False
+    raw_start_fraction = spec.get('start_fraction', -1)
+    if isinstance(raw_start_fraction, bool):
+        return False
+    try:
+        start_fraction = float(raw_start_fraction)
+    except (TypeError, ValueError):
+        return False
+    return (
+        bool(str(spec.get('path') or '').strip())
+        and spec.get('generated') is True
+        and str(spec.get('source_type') or '').casefold() == 'generated'
+        and spec.get('preserve_start_fraction') is True
+        and spec.get('forbid_loop') is True
+        and start_fraction == 0.0
+        and str(spec.get('generation_provider') or '').casefold()
+        == 'gemini_image_motion'
+        and type(spec.get('generation_provider_attempts')) is int
+        and spec.get('generation_provider_attempts') >= 1
+        and spec.get('synthetic_motion_only') is True
+        and spec.get('motion_recipe_version')
+        == _TRUSTED_IMAGE_MOTION_RECIPE_VERSION
+        and spec.get('source_media_type') == 'image'
+    )
 
 
 def _moment_fractions_for_candidate(
@@ -608,6 +638,7 @@ def review_scene_visuals(
             'Compare the complete ordered sequence for cross-scene continuity: the same recurring person or object, physical attributes, wardrobe, location, lighting and adjacent action handoff must remain compatible. '
             'A locally relevant candidate that omits or contradicts an explicit visual constraint, or breaks required cross-scene continuity, must score 40 or lower. '
             'Never approve digital glitch/noise for OLED pixels, programming tracebacks for QR error correction, fireworks for camera burst, finance charts for audio codecs, a skyline for network optimization, random typing for encryption, or unrelated towers for indoor GPS. '
+            'A candidate may carry an internal TRUSTED_IMAGE_MOTION_PROFILE label. For that exact candidate only, a materially changing monotonic documentary camera push and pan across the sampled moments counts as clip motion; do not mark it frozen solely because the underlying subject pose is fixed. Such a candidate may score 60 through 85 only when the named subject and narrated action are unambiguous in the decisive authored still and every evidence and editorial gate passes. Never infer physical causality, a connection, a state change, or native object motion from camera movement. If its framing barely changes, mark it effectively static and score 40 or lower. '
             'If the sampled moments are nearly identical, the clip is effectively static; any shot likely to remain static for more than six seconds must score 40 or lower. '
             'Set prominent_readable_text_or_logo_visible=true for any prominent readable text, watermark or logo. Set major_visual_artifact_visible=true for warped anatomy, object morphing, broken physics, severe flicker or another major generation/edit artifact. Set effectively_static_or_frozen=true when the selected clip is effectively a still or frozen shot. If any of these three fields is true, the score must be 40 or lower. '
             'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
@@ -620,6 +651,7 @@ def review_scene_visuals(
     included_indices: list[int] = []
     unreviewable_indices: list[int] = []
     available_moments: dict[int, dict[int, set[int]]] = {}
+    trusted_image_motion_candidates: dict[int, set[int]] = {}
     complete_story_context = {
         'topic': str(topic or ''),
         'complete_scene_plan_in_order': [
@@ -695,6 +727,21 @@ def review_scene_visuals(
         scene_available_moments: dict[int, set[int]] = {}
         image_count = 0
         for candidate_idx, path in enumerate(paths):
+            if _trusted_image_motion_candidate(specs[candidate_idx]):
+                trusted_image_motion_candidates.setdefault(idx, set()).add(
+                    candidate_idx
+                )
+                trusted_label = (
+                    'TRUSTED_IMAGE_MOTION_PROFILE — '
+                    f'CANDIDATE {candidate_idx} — '
+                    'server-authored documentary still — '
+                    'verified diagonal-push-v2 camera move — score cap 85'
+                )
+                scene_content.append({
+                    'type': 'input_text',
+                    'text': trusted_label,
+                })
+                scene_gemini_parts.append({'text': trusted_label})
             fractions = _moment_fractions_for_candidate(
                 specs[candidate_idx],
                 len(paths),
@@ -906,6 +953,12 @@ def review_scene_visuals(
             ):
                 continue
             evidence, evidence_gate_passed = evidence_result
+            trusted_motion_selected = best_candidate_index in (
+                trusted_image_motion_candidates.get(scene_index) or set()
+            )
+            normalized_score = (
+                min(score, 85) if trusted_motion_selected else score
+            )
             editorial_gate_passed = all(
                 value is False
                 for value in manual_qa_visual_flags.values()
@@ -916,9 +969,9 @@ def review_scene_visuals(
                 'best_moment_index': best_moment_index,
                 'best_start_fraction': MOMENT_FRACTIONS[best_moment_index],
                 'score': (
-                    score
+                    normalized_score
                     if evidence_gate_passed and editorial_gate_passed
-                    else min(score, 40)
+                    else min(normalized_score, 40)
                 ),
                 'raw_score': score,
                 'reason': reason.strip(),
@@ -977,7 +1030,15 @@ def review_scene_visuals(
                 False,
             )
         )
-        bounded_score = max(0, min(score, 100))
+        raw_bounded_score = max(0, min(score, 100))
+        trusted_motion_selected = best_candidate_index in (
+            trusted_image_motion_candidates.get(scene_index) or set()
+        )
+        bounded_score = (
+            min(raw_bounded_score, 85)
+            if trusted_motion_selected
+            else raw_bounded_score
+        )
         editorial_gate_passed = all(
             value is False
             for value in manual_qa_visual_flags.values()
@@ -992,7 +1053,7 @@ def review_scene_visuals(
                 if evidence_gate_passed and editorial_gate_passed
                 else min(bounded_score, 40)
             ),
-            'raw_score': bounded_score,
+            'raw_score': raw_bounded_score,
             'reason': str(review.get('reason') or '')[:500],
             'retry_queries': [str(q).strip() for q in retry_queries if str(q).strip()][:2],
             **evidence,

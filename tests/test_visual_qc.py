@@ -29,6 +29,9 @@ from app.services.visual_qc import (
 
 
 JPEG_BYTES = b'\xff\xd8\xffvisual-qc-frame\xff\xd9'
+TRUSTED_IMAGE_MOTION_QC_LABEL = (
+    'TRUSTED_IMAGE_MOTION_PROFILE'
+)
 
 
 def _review(
@@ -74,6 +77,22 @@ def _review(
         'reason': reason,
         'retry_queries': retry_queries or [],
         **evidence,
+    }
+
+
+def _trusted_image_motion_spec(path='trusted-image-motion.mp4'):
+    return {
+        'path': path,
+        'start_fraction': 0.0,
+        'preserve_start_fraction': True,
+        'forbid_loop': True,
+        'generated': True,
+        'source_type': 'generated',
+        'generation_provider': 'gemini_image_motion',
+        'generation_provider_attempts': 1,
+        'synthetic_motion_only': True,
+        'motion_recipe_version': 'diagonal-push-v2',
+        'source_media_type': 'image',
     }
 
 
@@ -277,6 +296,125 @@ class VisualQcProviderTests(unittest.TestCase):
         }.issubset(required_fields))
         self.assertEqual(result['missing_review_indices'], [])
         self.assertEqual(result['reviews'][0]['best_start_fraction'], 0.50)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_trusted_image_motion_contract_is_labeled_and_capped_at_85(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        gemini.return_value = {'reviews': [_review(score=96)]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                self.scenes,
+                [[_trusted_image_motion_spec()]],
+                self.work / 'trusted_image_motion_cap',
+                _missing_review_attempts=0,
+            )
+
+        user_text = '\n'.join(
+            part['text']
+            for part in gemini.call_args.args[0]
+            if 'text' in part
+        )
+        review = result['reviews'][0]
+        self.assertIn(TRUSTED_IMAGE_MOTION_QC_LABEL, user_text)
+        self.assertIn(
+            'materially changing monotonic documentary camera push',
+            gemini.call_args.kwargs['system_instruction'],
+        )
+        self.assertEqual(review['raw_score'], 96)
+        self.assertEqual(review['score'], 85)
+        self.assertTrue(review['evidence_gate_passed'])
+        self.assertTrue(review['editorial_gate_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_trusted_image_motion_cap_never_raises_a_low_score(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        gemini.return_value = {'reviews': [_review(score=58)]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                self.scenes,
+                [[_trusted_image_motion_spec()]],
+                self.work / 'trusted_image_motion_low_score',
+                _missing_review_attempts=0,
+            )
+
+        user_text = '\n'.join(
+            part['text']
+            for part in gemini.call_args.args[0]
+            if 'text' in part
+        )
+        review = result['reviews'][0]
+        self.assertIn(TRUSTED_IMAGE_MOTION_QC_LABEL, user_text)
+        self.assertEqual(review['raw_score'], 58)
+        self.assertEqual(review['score'], 58)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_partial_or_spoofed_image_motion_contract_gets_no_label_or_cap(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        exact = _trusted_image_motion_spec()
+        cases = {
+            'partial': {
+                key: value
+                for key, value in exact.items()
+                if key != 'synthetic_motion_only'
+            },
+            'spoofed_recipe': {
+                **exact,
+                'motion_recipe_version': 'diagonal-push-v2-spoofed',
+            },
+            'wrong_provider': {
+                **exact,
+                'generation_provider': 'runway',
+            },
+            'boolean_start_fraction': {
+                **exact,
+                'start_fraction': False,
+            },
+        }
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            for name, spec in cases.items():
+                with self.subTest(name=name):
+                    gemini.reset_mock()
+                    gemini.return_value = {'reviews': [_review(score=96)]}
+                    result = review_scene_visuals(
+                        self.scenes,
+                        [[spec]],
+                        self.work / f'untrusted_image_motion_{name}',
+                        _missing_review_attempts=0,
+                    )
+
+                    user_text = '\n'.join(
+                        part['text']
+                        for part in gemini.call_args.args[0]
+                        if 'text' in part
+                    )
+                    review = result['reviews'][0]
+                    self.assertNotIn(
+                        TRUSTED_IMAGE_MOTION_QC_LABEL,
+                        user_text,
+                    )
+                    self.assertEqual(review['raw_score'], 96)
+                    self.assertEqual(review['score'], 96)
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')

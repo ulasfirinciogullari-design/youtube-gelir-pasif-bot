@@ -21,7 +21,7 @@ _GEMINI_VIDEO_STANDARD_MODEL = 'veo-3.1-generate-preview'
 _GEMINI_IMAGE_MODEL = 'gemini-3.1-flash-image'
 _GEMINI_IMAGE_ENDPOINT = f'{_GEMINI_VIDEO_BASE}/interactions'
 _GEMINI_IMAGE_MIME_TYPE = 'image/jpeg'
-_IMAGE_MOTION_RECIPE_VERSION = 'center-push-v1'
+_IMAGE_MOTION_RECIPE_VERSION = 'diagonal-push-v2'
 _GEMINI_OPERATION_PATTERN = re.compile(
     r'^(?:models/[A-Za-z0-9._-]+/)?operations/[A-Za-z0-9._~/-]+$'
 )
@@ -622,6 +622,34 @@ def generate_scene(
     }
 
 
+def _image_motion_filter(image_sha256: str, frame_count: int) -> str:
+    """Return a deterministic, center-safe documentary camera move."""
+    if (
+        not re.fullmatch(r'[0-9a-f]{64}', str(image_sha256 or ''))
+        or not 150 <= int(frame_count) <= 300
+    ):
+        raise RuntimeError('Gemini image-motion descriptor is invalid')
+    direction = int(image_sha256[:2], 16)
+    x_start, x_end = (
+        (0.28, 0.72) if direction & 1 == 0 else (0.72, 0.28)
+    )
+    y_start, y_end = (
+        (0.42, 0.58) if direction & 2 == 0 else (0.58, 0.42)
+    )
+    final_frame = frame_count - 1
+    return (
+        'scale=2560:1440:force_original_aspect_ratio=increase:flags=lanczos,'
+        'crop=2560:1440,'
+        f"zoompan=z='1.06+0.18*on/{final_frame}':"
+        f"x='(iw-iw/zoom)*({x_start:.2f}+({x_end - x_start:.2f})*"
+        f"on/{final_frame})':"
+        f"y='(ih-ih/zoom)*({y_start:.2f}+({y_end - y_start:.2f})*"
+        f"on/{final_frame})':"
+        f'd={frame_count}:s=1280x720:fps={_IMAGE_MOTION_FPS},'
+        'setsar=1,scale=in_range=full:out_range=tv,format=yuv420p'
+    )
+
+
 def _render_gemini_image_motion(
     descriptor: dict,
     partial: Path,
@@ -656,14 +684,7 @@ def _render_gemini_image_motion(
     frame_count = seconds * _IMAGE_MOTION_FPS
     source_image = partial.with_name(f'{partial.name}.source.jpg')
     source_image.unlink(missing_ok=True)
-    zoom_filter = (
-        'scale=1920:1080:force_original_aspect_ratio=increase,'
-        'crop=1920:1080,'
-        f"zoompan=z='1+0.08*on/{frame_count - 1}':"
-        "x='(iw-iw/zoom)/2':y='(ih-ih/zoom)/2':"
-        f'd={frame_count}:s=1280x720:fps={_IMAGE_MOTION_FPS},'
-        'setsar=1,scale=in_range=full:out_range=tv,format=yuv420p'
-    )
+    zoom_filter = _image_motion_filter(expected_image_hash, frame_count)
     try:
         source_image.write_bytes(image_bytes)
         completed = subprocess.run([
