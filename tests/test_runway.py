@@ -16,6 +16,10 @@ class BadRequestError(Exception):
     pass
 
 
+class GeminiVideoTerminalError(RuntimeError):
+    pass
+
+
 class _Settings:
     runwayml_api_secret = 'configured-test-key'
     gemini_api_key = 'configured-gemini-key'
@@ -95,6 +99,7 @@ def _load_runway_functions(
     namespace = {
         'RateLimitError': RateLimitError,
         'BadRequestError': BadRequestError,
+        'GeminiVideoTerminalError': GeminiVideoTerminalError,
         'RunwayML': runway_client_factory or _RunwayClientFactory([object()]),
         'settings': _Settings(),
         'httpx': Mock(),
@@ -274,7 +279,11 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
         self.assertEqual(
             result,
-            {'url': 'video-url', 'provider': 'runway'},
+            {
+                'url': 'video-url',
+                'provider': 'runway',
+                'provider_attempts': 1,
+            },
         )
         self.assertEqual(
             factory.init_calls,
@@ -350,12 +359,49 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                     'v1beta/files/video'
                 ),
                 'provider': 'gemini_veo',
+                'provider_attempts': 1,
             },
         )
         gemini_video_uri.assert_called_once_with('safe prompt', 5)
         self.assertEqual(len(factory.init_calls), 1)
         self.assertEqual(len(factory.create_resources[0].calls), 1)
         self.assertEqual(factory.retrieve_calls, [])
+
+    def test_definitive_gemini_rejection_gets_one_bounded_retry(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        gemini_video_uri = Mock(side_effect=[
+            GeminiVideoTerminalError('definitive provider rejection'),
+            'https://generativelanguage.googleapis.com/v1beta/files/video',
+        ])
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+        )
+
+        result = generate_scene('safe prompt', duration=5)
+
+        self.assertEqual(result['provider'], 'gemini_veo')
+        self.assertEqual(result['provider_attempts'], 2)
+        self.assertEqual(gemini_video_uri.call_count, 2)
+
+    def test_ambiguous_gemini_failure_is_never_retried(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        ambiguous_error = TimeoutError('ambiguous accepted operation')
+        gemini_video_uri = Mock(side_effect=ambiguous_error)
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+        )
+
+        with self.assertRaises(TimeoutError) as raised:
+            generate_scene('safe prompt', duration=5)
+
+        self.assertIs(raised.exception, ambiguous_error)
+        gemini_video_uri.assert_called_once_with('safe prompt', 5)
 
     def test_poll_bad_request_never_starts_gemini_fallback(self):
         created_task = _CreatedTask()
