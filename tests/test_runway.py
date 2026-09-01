@@ -1,6 +1,12 @@
 import ast
+import base64
+import binascii
+import hashlib
+import json
 from pathlib import Path
 import re
+import shutil
+import subprocess
 import tempfile
 import time
 import unittest
@@ -21,6 +27,10 @@ class GeminiVideoTerminalError(RuntimeError):
 
 
 class GeminiVideoQuotaError(RuntimeError):
+    pass
+
+
+class GeminiImageAttemptedError(RuntimeError):
     pass
 
 
@@ -78,6 +88,7 @@ class _RunwayClientFactory:
 def _load_runway_functions(
     runway_client_factory=None,
     gemini_video_uri=None,
+    gemini_image_descriptor=None,
 ):
     source_path = (
         Path(__file__).resolve().parents[1]
@@ -91,6 +102,11 @@ def _load_runway_functions(
     )
     names = {
         '_gemini_video_duration',
+        '_is_daily_gemini_quota_rejection',
+        '_validated_jpeg_dimensions',
+        '_probe_single_jpeg_frame',
+        '_decode_gemini_image',
+        '_generate_gemini_image_descriptor',
         '_generate_gemini_video_uri',
         '_create_text_to_video_task',
         'generate_scene',
@@ -105,9 +121,13 @@ def _load_runway_functions(
         'BadRequestError': BadRequestError,
         'GeminiVideoTerminalError': GeminiVideoTerminalError,
         'GeminiVideoQuotaError': GeminiVideoQuotaError,
+        'GeminiImageAttemptedError': GeminiImageAttemptedError,
         'RunwayML': runway_client_factory or _RunwayClientFactory([object()]),
         'settings': _Settings(),
         'httpx': Mock(),
+        'base64': base64,
+        'binascii': binascii,
+        'hashlib': hashlib,
         're': re,
         'time': time,
         'urlparse': urlparse,
@@ -115,6 +135,12 @@ def _load_runway_functions(
         '_GEMINI_VIDEO_MODEL': 'veo-3.1-lite-generate-preview',
         '_GEMINI_VIDEO_FAST_MODEL': 'veo-3.1-fast-generate-preview',
         '_GEMINI_VIDEO_STANDARD_MODEL': 'veo-3.1-generate-preview',
+        '_GEMINI_IMAGE_MODEL': 'gemini-3.1-flash-image',
+        '_GEMINI_IMAGE_ENDPOINT': (
+            'https://generativelanguage.googleapis.com/v1beta/interactions'
+        ),
+        '_GEMINI_IMAGE_MIME_TYPE': 'image/jpeg',
+        '_IMAGE_MOTION_RECIPE_VERSION': 'center-push-v1',
         '_GEMINI_OPERATION_PATTERN': re.compile(
             r'^(?:models/[A-Za-z0-9._-]+/)?operations/[A-Za-z0-9._~/-]+$'
         ),
@@ -122,6 +148,9 @@ def _load_runway_functions(
             'generativelanguage.googleapis.com',
             'storage.googleapis.com',
         },
+        '_MIN_GENERATED_IMAGE_BYTES': 10 * 1024,
+        '_MAX_GENERATED_IMAGE_BYTES': 12 * 1024 * 1024,
+        '_MAX_GENERATED_IMAGE_PIXELS': 8_388_608,
     }
     exec(
         compile(
@@ -133,10 +162,91 @@ def _load_runway_functions(
     )
     if gemini_video_uri is not None:
         namespace['_generate_gemini_video_uri'] = gemini_video_uri
+    if gemini_image_descriptor is not None:
+        namespace['_generate_gemini_image_descriptor'] = (
+            gemini_image_descriptor
+        )
     return (
         namespace['_create_text_to_video_task'],
         namespace['generate_scene'],
     )
+
+
+def _load_image_namespace(fake_httpx=None, fake_subprocess=None):
+    source_path = (
+        Path(__file__).resolve().parents[1]
+        / 'app'
+        / 'services'
+        / 'runway.py'
+    )
+    tree = ast.parse(source_path.read_text(encoding='utf-8'))
+    names = {
+        '_validated_jpeg_dimensions',
+        '_probe_single_jpeg_frame',
+        '_decode_gemini_image',
+        '_generate_gemini_image_descriptor',
+        '_render_gemini_image_motion',
+        'download_generated_scene',
+    }
+    definitions = [
+        node for node in tree.body
+        if isinstance(node, ast.FunctionDef) and node.name in names
+    ]
+    namespace = {
+        'Path': Path,
+        'base64': base64,
+        'binascii': binascii,
+        'hashlib': hashlib,
+        'json': json,
+        're': re,
+        'subprocess': fake_subprocess or subprocess,
+        'httpx': fake_httpx or Mock(),
+        'urljoin': urljoin,
+        'urlparse': urlparse,
+        'settings': _Settings(),
+        '_GEMINI_VIDEO_HOSTS': {
+            'generativelanguage.googleapis.com',
+            'storage.googleapis.com',
+        },
+        '_GEMINI_IMAGE_MODEL': 'gemini-3.1-flash-image',
+        '_GEMINI_IMAGE_ENDPOINT': (
+            'https://generativelanguage.googleapis.com/v1beta/interactions'
+        ),
+        '_GEMINI_IMAGE_MIME_TYPE': 'image/jpeg',
+        '_IMAGE_MOTION_RECIPE_VERSION': 'center-push-v1',
+        '_MAX_GENERATED_VIDEO_BYTES': 100 * 1024 * 1024,
+        '_MIN_GENERATED_IMAGE_BYTES': 10 * 1024,
+        '_MAX_GENERATED_IMAGE_BYTES': 12 * 1024 * 1024,
+        '_MAX_GENERATED_IMAGE_PIXELS': 8_388_608,
+        '_IMAGE_MOTION_FPS': 30,
+    }
+    exec(
+        compile(
+            ast.Module(body=definitions, type_ignores=[]),
+            str(source_path),
+            'exec',
+        ),
+        namespace,
+    )
+    return namespace
+
+
+def _fake_jpeg(width=1024, height=576, size=11 * 1024):
+    header = (
+        b'\xff\xd8\xff\xc0\x00\x11\x08'
+        + int(height).to_bytes(2, 'big')
+        + int(width).to_bytes(2, 'big')
+        + b'\x03\x01\x11\x00\x02\x11\x00\x03\x11\x00'
+    )
+    scan_header = (
+        b'\xff\xda\x00\x0c\x03'
+        b'\x01\x00\x02\x11\x03\x11\x00\x3f\x00'
+    )
+    padding = b'\x00' * max(
+        0,
+        int(size) - len(header) - len(scan_header) - 2,
+    )
+    return header + scan_header + padding + b'\xff\xd9'
 
 
 class _FakeTextToVideo:
@@ -457,6 +567,183 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             ],
         )
 
+    def test_all_veo_quotas_use_one_explicit_private_image_fallback(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        gemini_video_uri = Mock(side_effect=[
+            GeminiVideoQuotaError('definitive Lite quota rejection'),
+            GeminiVideoQuotaError('definitive Fast quota rejection'),
+            GeminiVideoQuotaError('definitive Standard quota rejection'),
+        ])
+        descriptor = {
+            '_inline_image': {
+                'mime_type': 'image/jpeg',
+                'data': 'private-inline-data',
+            },
+            'motion_seconds': 5,
+            'source_media_type': 'image',
+            'synthetic_motion': True,
+            'motion_recipe_version': 'center-push-v1',
+            'image_sha256': 'a' * 64,
+            'prompt_sha256': 'b' * 64,
+            'image_model': 'gemini-3.1-flash-image',
+        }
+        gemini_image_descriptor = Mock(return_value=descriptor)
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            gemini_image_descriptor=gemini_image_descriptor,
+        )
+
+        result = generate_scene(
+            'safe video prompt',
+            duration=5,
+            allow_image_motion=True,
+            image_prompt='safe image prompt',
+        )
+
+        self.assertEqual(result['provider'], 'gemini_image_motion')
+        self.assertEqual(result['provider_attempts'], 1)
+        self.assertEqual(
+            result['quota_fallback_from'],
+            'gemini_veo_standard',
+        )
+        self.assertEqual(
+            result['quota_fallback_chain'],
+            ['gemini_veo', 'gemini_veo_fast', 'gemini_veo_standard'],
+        )
+        self.assertEqual(gemini_video_uri.call_count, 3)
+        gemini_image_descriptor.assert_called_once_with(
+            'safe image prompt',
+            5,
+        )
+
+    def test_image_fallback_is_disabled_without_private_preview_flag(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        gemini_video_uri = Mock(side_effect=[
+            GeminiVideoQuotaError('definitive Lite quota rejection'),
+            GeminiVideoQuotaError('definitive Fast quota rejection'),
+            GeminiVideoQuotaError('definitive Standard quota rejection'),
+        ])
+        gemini_image_descriptor = Mock()
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            gemini_image_descriptor=gemini_image_descriptor,
+        )
+
+        with self.assertRaises(GeminiVideoQuotaError):
+            generate_scene(
+                'safe prompt',
+                duration=5,
+                image_prompt='must not be submitted',
+            )
+
+        gemini_image_descriptor.assert_not_called()
+
+    def test_unsupported_veo_duration_uses_one_image_without_video_post(self):
+        for duration in (9, 10):
+            with self.subTest(duration=duration):
+                factory = _RunwayClientFactory([
+                    BadRequestError('secret insufficient-credit response'),
+                ])
+                gemini_video_uri = Mock()
+                gemini_image_descriptor = Mock(return_value={
+                    'motion_seconds': duration,
+                    'source_media_type': 'image',
+                    'synthetic_motion': True,
+                    'motion_recipe_version': 'center-push-v1',
+                    'image_sha256': 'a' * 64,
+                    'prompt_sha256': 'b' * 64,
+                    'image_model': 'gemini-3.1-flash-image',
+                })
+                _, generate_scene = _load_runway_functions(
+                    factory,
+                    gemini_video_uri=gemini_video_uri,
+                    gemini_image_descriptor=gemini_image_descriptor,
+                )
+
+                result = generate_scene(
+                    'safe video prompt',
+                    duration=duration,
+                    allow_image_motion=True,
+                    image_prompt='safe image prompt',
+                )
+
+                self.assertEqual(result['provider'], 'gemini_image_motion')
+                self.assertEqual(
+                    result['fallback_reason'],
+                    'unsupported_veo_duration',
+                )
+                self.assertEqual(result['quota_fallback_chain'], [])
+                gemini_video_uri.assert_not_called()
+                gemini_image_descriptor.assert_called_once_with(
+                    'safe image prompt',
+                    duration,
+                )
+
+    def test_ambiguous_standard_failure_never_starts_image_fallback(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        ambiguous_error = TimeoutError('ambiguous Standard operation')
+        gemini_video_uri = Mock(side_effect=[
+            GeminiVideoQuotaError('definitive Lite quota rejection'),
+            GeminiVideoQuotaError('definitive Fast quota rejection'),
+            ambiguous_error,
+        ])
+        gemini_image_descriptor = Mock()
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            gemini_image_descriptor=gemini_image_descriptor,
+        )
+
+        with self.assertRaises(TimeoutError) as raised:
+            generate_scene(
+                'safe prompt',
+                duration=5,
+                allow_image_motion=True,
+                image_prompt='must not be submitted',
+            )
+
+        self.assertIs(raised.exception, ambiguous_error)
+        gemini_image_descriptor.assert_not_called()
+
+    def test_failed_paid_image_returns_attempt_receipt_for_scene_reservation(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        gemini_video_uri = Mock(side_effect=[
+            GeminiVideoQuotaError('definitive Lite quota rejection'),
+            GeminiVideoQuotaError('definitive Fast quota rejection'),
+            GeminiVideoQuotaError('definitive Standard quota rejection'),
+        ])
+        ambiguous_error = TimeoutError('ambiguous paid image create')
+        gemini_image_descriptor = Mock(side_effect=ambiguous_error)
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            gemini_image_descriptor=gemini_image_descriptor,
+        )
+
+        with self.assertRaises(GeminiImageAttemptedError) as raised:
+            generate_scene(
+                'safe prompt',
+                duration=5,
+                allow_image_motion=True,
+                image_prompt='safe image prompt',
+            )
+
+        self.assertIs(raised.exception.__cause__, ambiguous_error)
+        gemini_image_descriptor.assert_called_once_with(
+            'safe image prompt',
+            5,
+        )
+
     def test_ambiguous_fast_failure_never_starts_standard_fallback(self):
         factory = _RunwayClientFactory([
             BadRequestError('secret insufficient-credit response'),
@@ -568,6 +855,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             node for node in tree.body
             if isinstance(node, ast.FunctionDef)
             and node.name in {
+                '_is_daily_gemini_quota_rejection',
                 '_gemini_video_duration',
                 '_generate_gemini_video_uri',
             }
@@ -700,6 +988,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             node for node in tree.body
             if isinstance(node, ast.FunctionDef)
             and node.name in {
+                '_is_daily_gemini_quota_rejection',
                 '_gemini_video_duration',
                 '_generate_gemini_video_uri',
             }
@@ -797,6 +1086,98 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertTrue(uri.endswith('/generated-video'))
         self.assertEqual(client.post_calls, 2)
         fake_time.sleep.assert_called_once_with(2.5)
+
+    def test_explicit_daily_quota_rejection_does_not_wait_or_retry(self):
+        source_path = (
+            Path(__file__).resolve().parents[1]
+            / 'app'
+            / 'services'
+            / 'runway.py'
+        )
+        tree = ast.parse(source_path.read_text(encoding='utf-8'))
+        definitions = [
+            node for node in tree.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name in {
+                '_is_daily_gemini_quota_rejection',
+                '_gemini_video_duration',
+                '_generate_gemini_video_uri',
+            }
+        ]
+
+        class _Response:
+            status_code = 429
+            headers = {'retry-after': '60'}
+
+            @staticmethod
+            def json():
+                return {
+                    'error': {
+                        'details': [{
+                            'violations': [{
+                                'quotaId': (
+                                    'GenerateRequestsPerDayPerProjectPerModel'
+                                ),
+                            }],
+                        }],
+                    },
+                }
+
+        class _Client:
+            def __init__(self):
+                self.post_calls = 0
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def post(self, *_args, **_kwargs):
+                self.post_calls += 1
+                return _Response()
+
+        client = _Client()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        fake_time = Mock()
+        namespace = {
+            'httpx': fake_httpx,
+            'time': fake_time,
+            'urlparse': urlparse,
+            'settings': _Settings(),
+            'GeminiVideoTerminalError': GeminiVideoTerminalError,
+            'GeminiVideoQuotaError': GeminiVideoQuotaError,
+            '_GEMINI_VIDEO_BASE': (
+                'https://generativelanguage.googleapis.com/v1beta'
+            ),
+            '_GEMINI_VIDEO_MODEL': 'veo-3.1-lite-generate-preview',
+            '_GEMINI_VIDEO_FAST_MODEL': 'veo-3.1-fast-generate-preview',
+            '_GEMINI_VIDEO_STANDARD_MODEL': 'veo-3.1-generate-preview',
+            '_GEMINI_OPERATION_PATTERN': re.compile(
+                r'^(?:models/[A-Za-z0-9._-]+/)?operations/'
+                r'[A-Za-z0-9._~/-]+$'
+            ),
+            '_GEMINI_VIDEO_HOSTS': {
+                'generativelanguage.googleapis.com',
+                'storage.googleapis.com',
+            },
+        }
+        exec(
+            compile(
+                ast.Module(body=definitions, type_ignores=[]),
+                str(source_path),
+                'exec',
+            ),
+            namespace,
+        )
+
+        with self.assertRaises(GeminiVideoQuotaError):
+            namespace['_generate_gemini_video_uri']('safe prompt', 5)
+
+        self.assertEqual(client.post_calls, 1)
+        fake_time.sleep.assert_not_called()
 
     def test_gemini_download_key_is_never_sent_to_other_hosts(self):
         source_path = (
@@ -957,6 +1338,469 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 )
             self.assertFalse(output.exists())
             self.assertFalse((Path(tmp) / 'scene.mp4.part').exists())
+
+    def test_image_interaction_is_one_retry_free_inline_jpeg_request(self):
+        image_bytes = _fake_jpeg()
+        encoded = base64.b64encode(image_bytes).decode('ascii')
+
+        class _Response:
+            @staticmethod
+            def raise_for_status():
+                return None
+
+            @staticmethod
+            def json():
+                return {
+                    'status': 'completed',
+                    'steps': [{
+                        'type': 'model_output',
+                        'content': [{
+                            'type': 'image',
+                            'mime_type': 'image/jpeg',
+                            'data': encoded,
+                        }],
+                    }],
+                }
+
+        class _Client:
+            def __init__(self):
+                self.post_calls = []
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def post(self, *args, **kwargs):
+                self.post_calls.append((args, kwargs))
+                return _Response()
+
+        client = _Client()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        fake_subprocess = Mock()
+        fake_subprocess.SubprocessError = subprocess.SubprocessError
+        fake_subprocess.run.return_value = Mock(
+            returncode=0,
+            stdout=json.dumps({
+                'streams': [{
+                    'codec_name': 'mjpeg',
+                    'width': 1024,
+                    'height': 576,
+                    'nb_read_frames': '1',
+                }],
+            }).encode('utf-8'),
+        )
+        namespace = _load_image_namespace(
+            fake_httpx=fake_httpx,
+            fake_subprocess=fake_subprocess,
+        )
+
+        descriptor = namespace['_generate_gemini_image_descriptor'](
+            'literal documentary keyframe',
+            5,
+        )
+
+        self.assertEqual(len(client.post_calls), 1)
+        self.assertTrue(descriptor['synthetic_motion'])
+        self.assertEqual(descriptor['motion_seconds'], 5)
+        self.assertEqual(
+            descriptor['image_sha256'],
+            hashlib.sha256(image_bytes).hexdigest(),
+        )
+        post_args, post_kwargs = client.post_calls[0]
+        self.assertTrue(post_args[0].endswith('/v1beta/interactions'))
+        self.assertFalse(post_kwargs['json']['store'])
+        self.assertEqual(
+            post_kwargs['json']['response_format'],
+            {
+                'type': 'image',
+                'mime_type': 'image/jpeg',
+                'aspect_ratio': '16:9',
+                'image_size': '1K',
+                'delivery': 'inline',
+            },
+        )
+        self.assertNotIn('configured-gemini-key', json.dumps(post_kwargs['json']))
+        self.assertEqual(
+            post_kwargs['headers']['x-goog-api-key'],
+            'configured-gemini-key',
+        )
+        probe_kwargs = fake_subprocess.run.call_args.kwargs
+        self.assertEqual(probe_kwargs['input'], image_bytes)
+        self.assertEqual(probe_kwargs['timeout'], 30)
+
+    def test_image_interaction_rejects_multiple_outputs_without_retry(self):
+        encoded = base64.b64encode(_fake_jpeg()).decode('ascii')
+
+        class _Response:
+            @staticmethod
+            def raise_for_status():
+                return None
+
+            @staticmethod
+            def json():
+                image = {
+                    'type': 'image',
+                    'mime_type': 'image/jpeg',
+                    'data': encoded,
+                }
+                return {
+                    'status': 'completed',
+                    'steps': [{
+                        'type': 'model_output',
+                        'content': [image, dict(image)],
+                    }],
+                }
+
+        class _Client:
+            post_calls = 0
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def post(self, *_args, **_kwargs):
+                self.post_calls += 1
+                return _Response()
+
+        client = _Client()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        namespace = _load_image_namespace(fake_httpx=fake_httpx)
+
+        with self.assertRaisesRegex(RuntimeError, 'invalid response'):
+            namespace['_generate_gemini_image_descriptor']('prompt', 5)
+
+        self.assertEqual(client.post_calls, 1)
+
+    def test_image_interaction_timeout_is_never_retried(self):
+        ambiguous_error = TimeoutError('ambiguous paid image create')
+
+        class _Client:
+            post_calls = 0
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def post(self, *_args, **_kwargs):
+                self.post_calls += 1
+                raise ambiguous_error
+
+        client = _Client()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        namespace = _load_image_namespace(fake_httpx=fake_httpx)
+
+        with self.assertRaises(TimeoutError) as raised:
+            namespace['_generate_gemini_image_descriptor']('prompt', 5)
+
+        self.assertIs(raised.exception, ambiguous_error)
+        self.assertEqual(client.post_calls, 1)
+
+    def test_structural_jpeg_that_fails_real_decode_is_rejected(self):
+        encoded = base64.b64encode(_fake_jpeg()).decode('ascii')
+
+        class _Response:
+            @staticmethod
+            def raise_for_status():
+                return None
+
+            @staticmethod
+            def json():
+                return {
+                    'status': 'completed',
+                    'steps': [{
+                        'type': 'model_output',
+                        'content': [{
+                            'type': 'image',
+                            'mime_type': 'image/jpeg',
+                            'data': encoded,
+                        }],
+                    }],
+                }
+
+        client = Mock()
+        client.__enter__ = Mock(return_value=client)
+        client.__exit__ = Mock(return_value=False)
+        client.post.return_value = _Response()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        fake_subprocess = Mock()
+        fake_subprocess.SubprocessError = subprocess.SubprocessError
+        fake_subprocess.run.return_value = Mock(returncode=1, stdout=b'')
+        namespace = _load_image_namespace(
+            fake_httpx=fake_httpx,
+            fake_subprocess=fake_subprocess,
+        )
+
+        with self.assertRaisesRegex(RuntimeError, 'invalid media'):
+            namespace['_generate_gemini_image_descriptor']('prompt', 5)
+
+        client.post.assert_called_once()
+        fake_subprocess.run.assert_called_once()
+
+    def test_image_probe_rejects_multiple_decoded_frames(self):
+        encoded = base64.b64encode(_fake_jpeg()).decode('ascii')
+
+        class _Response:
+            @staticmethod
+            def raise_for_status():
+                return None
+
+            @staticmethod
+            def json():
+                return {
+                    'status': 'completed',
+                    'steps': [{
+                        'type': 'model_output',
+                        'content': [{
+                            'type': 'image',
+                            'mime_type': 'image/jpeg',
+                            'data': encoded,
+                        }],
+                    }],
+                }
+
+        client = Mock()
+        client.__enter__ = Mock(return_value=client)
+        client.__exit__ = Mock(return_value=False)
+        client.post.return_value = _Response()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        fake_subprocess = Mock()
+        fake_subprocess.SubprocessError = subprocess.SubprocessError
+        fake_subprocess.run.return_value = Mock(
+            returncode=0,
+            stdout=json.dumps({
+                'streams': [{
+                    'codec_name': 'mjpeg',
+                    'width': 1024,
+                    'height': 576,
+                    'nb_read_frames': '2',
+                }],
+            }).encode('utf-8'),
+        )
+        namespace = _load_image_namespace(
+            fake_httpx=fake_httpx,
+            fake_subprocess=fake_subprocess,
+        )
+
+        with self.assertRaisesRegex(RuntimeError, 'invalid media'):
+            namespace['_generate_gemini_image_descriptor']('prompt', 5)
+
+        client.post.assert_called_once()
+        fake_subprocess.run.assert_called_once()
+
+    def test_image_decoder_rejects_mime_base64_size_aspect_and_pixel_bombs(self):
+        namespace = _load_image_namespace()
+        decode = namespace['_decode_gemini_image']
+        cases = [
+            ('image/png', base64.b64encode(_fake_jpeg()).decode('ascii')),
+            ('image/jpeg', 'not valid base64***'),
+            (
+                'image/jpeg',
+                base64.b64encode(_fake_jpeg()[:-2]).decode('ascii'),
+            ),
+            (
+                'image/jpeg',
+                base64.b64encode(_fake_jpeg(size=1024)).decode('ascii'),
+            ),
+            (
+                'image/jpeg',
+                base64.b64encode(_fake_jpeg(width=800, height=800)).decode('ascii'),
+            ),
+            (
+                'image/jpeg',
+                base64.b64encode(
+                    _fake_jpeg(width=8192, height=4608)
+                ).decode('ascii'),
+            ),
+        ]
+        for mime_type, encoded in cases:
+            with self.subTest(mime_type=mime_type, encoded_length=len(encoded)):
+                with self.assertRaisesRegex(RuntimeError, 'invalid media'):
+                    decode(mime_type, encoded)
+
+    def test_image_motion_render_failure_preserves_target_and_cleans_parts(self):
+        fake_subprocess = Mock()
+        fake_subprocess.run.return_value = Mock(returncode=1)
+        namespace = _load_image_namespace(fake_subprocess=fake_subprocess)
+        image_bytes = _fake_jpeg()
+        descriptor = {
+            'provider': 'gemini_image_motion',
+            '_inline_image': {
+                'mime_type': 'image/jpeg',
+                'data': base64.b64encode(image_bytes).decode('ascii'),
+            },
+            'motion_seconds': 5,
+            'source_media_type': 'image',
+            'synthetic_motion': True,
+            'motion_recipe_version': 'center-push-v1',
+            'image_sha256': hashlib.sha256(image_bytes).hexdigest(),
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'motion.mp4'
+            output.write_bytes(b'existing-target')
+
+            with self.assertRaisesRegex(RuntimeError, 'render failed'):
+                namespace['download_generated_scene'](descriptor, output)
+
+            self.assertEqual(output.read_bytes(), b'existing-target')
+            self.assertFalse((Path(tmp) / 'motion.mp4.part').exists())
+            self.assertFalse(
+                (Path(tmp) / 'motion.mp4.part.source.jpg').exists()
+            )
+            self.assertNotIn('_inline_image', descriptor)
+
+    @unittest.skipUnless(
+        shutil.which('ffmpeg') and shutil.which('ffprobe'),
+        'ffmpeg and ffprobe are required',
+    )
+    def test_real_image_motion_render_is_exact_atomic_720p_video(self):
+        namespace = _load_image_namespace()
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / 'source.jpg'
+            output = Path(tmp) / 'motion.mp4'
+            try:
+                generated = subprocess.run([
+                    'ffmpeg', '-y', '-hide_banner', '-nostats',
+                    '-f', 'lavfi', '-i', 'testsrc2=size=1024x576:rate=1',
+                    '-frames:v', '1', '-q:v', '2', str(source),
+                ], capture_output=True, check=False)
+            except OSError:
+                self.skipTest('ffmpeg execution is blocked by the local sandbox')
+            if generated.returncode != 0:
+                self.skipTest('ffmpeg image generation is unavailable')
+            image_bytes = source.read_bytes()
+            if len(image_bytes) < 10 * 1024:
+                self.skipTest('local ffmpeg produced an unusually small JPEG')
+            namespace['_probe_single_jpeg_frame'](
+                image_bytes,
+                (1024, 576),
+            )
+            descriptor = {
+                'provider': 'gemini_image_motion',
+                '_inline_image': {
+                    'mime_type': 'image/jpeg',
+                    'data': base64.b64encode(image_bytes).decode('ascii'),
+                },
+                'motion_seconds': 5,
+                'source_media_type': 'image',
+                'synthetic_motion': True,
+                'motion_recipe_version': 'center-push-v1',
+                'image_sha256': hashlib.sha256(image_bytes).hexdigest(),
+            }
+
+            try:
+                result = namespace['download_generated_scene'](
+                    descriptor,
+                    output,
+                )
+            except OSError:
+                self.skipTest('ffmpeg execution is blocked by the local sandbox')
+
+            self.assertEqual(result, str(output))
+            self.assertTrue(output.is_file())
+            self.assertNotIn('_inline_image', descriptor)
+            self.assertFalse((Path(tmp) / 'motion.mp4.part').exists())
+            self.assertFalse((Path(tmp) / 'motion.mp4.part.source.jpg').exists())
+            probe = subprocess.check_output([
+                'ffprobe', '-v', 'error', '-count_frames',
+                '-select_streams', 'v:0',
+                '-show_entries', 'stream=width,height,nb_read_frames',
+                '-of', 'json', str(output),
+            ], text=True)
+            stream = json.loads(probe)['streams'][0]
+            self.assertEqual(stream['width'], 1280)
+            self.assertEqual(stream['height'], 720)
+            self.assertEqual(int(stream['nb_read_frames']), 150)
+
+    def test_image_prompt_preserves_review_evidence_and_closing_guardrails(self):
+        source_path = (
+            Path(__file__).resolve().parents[1]
+            / 'app'
+            / 'tasks.py'
+        )
+        tree = ast.parse(source_path.read_text(encoding='utf-8'))
+        definitions = [
+            node for node in tree.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name in {
+                '_truncate_utf16',
+                '_image_motion_prompt_for_scene',
+            }
+        ]
+        namespace = {}
+        exec(
+            compile(
+                ast.Module(body=definitions, type_ignores=[]),
+                str(source_path),
+                'exec',
+            ),
+            namespace,
+        )
+        prompt = namespace['_image_motion_prompt_for_scene'](
+            {
+                'narration': 'Denizden çıkan aşınmış oyuncak. ' * 30,
+                'ai_prompt': 'çok uzun ana görsel ' * 100,
+                'visual_queries': ['unused fallback'],
+            },
+            {
+                'retry_queries': [
+                    'weathered plastic octopus on wet Cornwall sand',
+                    'salt-faded toy with scratches and sea residue',
+                    'must be ignored third hint',
+                ],
+                'reason': 'UNTRUSTED_REASON_MUST_NOT_APPEAR',
+            },
+        )
+
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 1000)
+        self.assertIn('weathered plastic octopus', prompt)
+        self.assertIn('salt-faded toy', prompt)
+        self.assertNotIn('must be ignored third hint', prompt)
+        self.assertNotIn('UNTRUSTED_REASON_MUST_NOT_APPEAR', prompt)
+        self.assertTrue(prompt.endswith('letterbox.'))
+
+    def test_pipeline_limits_image_motion_to_private_preview_and_one_per_scene(self):
+        source = (
+            Path(__file__).resolve().parents[1]
+            / 'app'
+            / 'tasks.py'
+        ).read_text(encoding='utf-8')
+        self.assertIn(
+            'allow_image_motion=is_private_image_motion_preview',
+            source,
+        )
+        self.assertIn('duration_minutes == 0.5', source)
+        self.assertIn(
+            'scene_idx not in image_motion_submission_scenes',
+            source,
+        )
+        self.assertIn(
+            'isinstance(exc, GeminiImageAttemptedError)',
+            source,
+        )
+        self.assertIn(
+            "== 'gemini_image_motion'",
+            source,
+        )
+        self.assertIn(
+            'keep that exact clip private-review-only',
+            source,
+        )
 
     def test_pipeline_submits_selected_runway_scenes_serially(self):
         source = (
