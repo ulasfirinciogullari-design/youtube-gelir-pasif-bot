@@ -1436,7 +1436,18 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'configured-gemini-key',
         )
         probe_kwargs = fake_subprocess.run.call_args.kwargs
+        probe_args = fake_subprocess.run.call_args.args[0]
+        self.assertEqual(probe_args, [
+            'ffprobe', '-v', 'error',
+            '-f', 'image2pipe',
+            '-count_frames', '-select_streams', 'v:0',
+            '-show_entries', 'stream=codec_name,width,height,nb_read_frames',
+            '-of', 'json', 'pipe:0',
+        ])
+        self.assertNotIn('-c:v', probe_args)
         self.assertEqual(probe_kwargs['input'], image_bytes)
+        self.assertTrue(probe_kwargs['capture_output'])
+        self.assertFalse(probe_kwargs['check'])
         self.assertEqual(probe_kwargs['timeout'], 30)
 
     def test_image_interaction_rejection_exposes_only_safe_category(self):
@@ -1653,6 +1664,30 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             namespace['_generate_gemini_image_descriptor']('prompt', 5)
 
         client.post.assert_called_once()
+        fake_subprocess.run.assert_called_once()
+
+    def test_image_probe_rejects_non_jpeg_codec_after_autodetection(self):
+        fake_subprocess = Mock()
+        fake_subprocess.SubprocessError = subprocess.SubprocessError
+        fake_subprocess.run.return_value = Mock(
+            returncode=0,
+            stdout=json.dumps({
+                'streams': [{
+                    'codec_name': 'png',
+                    'width': 1024,
+                    'height': 576,
+                    'nb_read_frames': '1',
+                }],
+            }).encode('utf-8'),
+        )
+        namespace = _load_image_namespace(fake_subprocess=fake_subprocess)
+
+        with self.assertRaisesRegex(RuntimeError, 'invalid media'):
+            namespace['_probe_single_jpeg_frame'](
+                _fake_jpeg(),
+                (1024, 576),
+            )
+
         fake_subprocess.run.assert_called_once()
 
     def test_image_decoder_rejects_mime_base64_size_aspect_and_pixel_bombs(self):

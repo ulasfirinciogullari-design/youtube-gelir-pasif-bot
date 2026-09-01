@@ -181,7 +181,7 @@ def _probe_single_jpeg_frame(
     try:
         completed = subprocess.run([
             'ffprobe', '-v', 'error',
-            '-f', 'image2pipe', '-c:v', 'mjpeg',
+            '-f', 'image2pipe',
             '-count_frames', '-select_streams', 'v:0',
             '-show_entries', 'stream=codec_name,width,height,nb_read_frames',
             '-of', 'json', 'pipe:0',
