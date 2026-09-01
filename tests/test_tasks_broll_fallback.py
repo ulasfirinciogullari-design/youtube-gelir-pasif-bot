@@ -102,19 +102,24 @@ def _load_outage_allocation_boundary():
         SOURCE_PATH.read_text(encoding='utf-8'),
         filename=str(SOURCE_PATH),
     )
-    definition = next(
+    function_names = {
+        '_short_preview_required_submission_cap',
+        '_allocate_short_preview_forced_stock_runway',
+    }
+    definitions = [
         node
         for node in tree.body
         if isinstance(node, ast.FunctionDef)
-        and node.name == '_allocate_short_preview_forced_stock_runway'
-    )
+        and node.name in function_names
+    ]
     namespace = {
+        'SHORT_PREVIEW_REQUIRED_RUNWAY_CAP': 2,
         'SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP': 2,
         'SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP': 3,
     }
     exec(
         compile(
-            ast.Module(body=[definition], type_ignores=[]),
+            ast.Module(body=definitions, type_ignores=[]),
             str(SOURCE_PATH),
             'exec',
         ),
@@ -980,6 +985,80 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
 
         self.assertEqual(queries, ['critic exact query'])
 
+    def test_real_first_live_shape_gets_two_required_scenes_without_rerun(self):
+        allocate = _load_outage_allocation_boundary()
+        ranked = [
+            {'scene_index': 4, 'has_visual': False, 'stock_score': -1},
+            {'scene_index': 2, 'has_visual': True, 'stock_score': 42},
+            {'scene_index': 3, 'has_visual': False, 'stock_score': 58},
+            {'scene_index': 5, 'has_visual': False, 'stock_score': 55},
+        ]
+
+        (
+            selected, required_base, missing_outage, missing_quality,
+            outage_cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 1, set(), {3, 5}, 86)
+
+        self.assertEqual(
+            [item['scene_index'] for item in required_base],
+            [4, 2],
+        )
+        self.assertEqual(
+            [item['scene_index'] for item in selected],
+            [4, 2, 3, 5],
+        )
+        self.assertEqual(missing_outage, [])
+        self.assertEqual(missing_quality, [])
+        self.assertFalse(outage_cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
+
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+        self.assertIn('SHORT_PREVIEW_REQUIRED_RUNWAY_CAP = 2', source)
+        self.assertIn(
+            'runway_required_submission_cap\n'
+            '                + min(',
+            source,
+        )
+
+    def test_third_required_scene_stays_terminal_before_paid_generation(self):
+        allocate = _load_outage_allocation_boundary()
+        ranked = [
+            {'scene_index': 4, 'has_visual': False, 'stock_score': -1},
+            {'scene_index': 2, 'has_visual': True, 'stock_score': 42},
+            {'scene_index': 1, 'has_visual': True, 'stock_score': 38},
+        ]
+
+        (
+            selected, required_base, _missing_outage, _missing_quality,
+            _outage_cap_exceeded, _quality_cap_exceeded, _overlap,
+        ) = allocate(ranked, 1, set(), set(), 86)
+
+        self.assertEqual(
+            [item['scene_index'] for item in required_base],
+            [4, 2, 1],
+        )
+        self.assertEqual(
+            [item['scene_index'] for item in selected],
+            [4, 2],
+        )
+
+        source = SOURCE_PATH.read_text(encoding='utf-8')
+        allocation_start = source.index('allocation_is_incomplete = (')
+        allocation_end = source.index(
+            'selected_runway_indices =',
+            allocation_start,
+        )
+        allocation = source[allocation_start:allocation_end]
+        self.assertIn(
+            'len(required_base_candidates)\n'
+            '                > runway_required_submission_cap',
+            allocation,
+        )
+        self.assertIn('raise FinalVisualQualityError(preflight_message)', allocation)
+        self.assertNotIn('PreRunwayRetryableError', allocation)
+        self.assertNotIn('approved_package', allocation)
+
     def test_provider_outage_stock_scene_is_the_only_extra_paid_candidate(self):
         allocate = _load_outage_allocation_boundary()
         ranked = [
@@ -1178,6 +1257,19 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         paid_generation = source.index('for candidate in selected_runway:', quarantine)
         self.assertLess(cap_check, quarantine)
         self.assertLess(quarantine, paid_generation)
+        stock_contract_end = source.index(
+            'for failure in semantic_stock_quality_failures:',
+            cap_check,
+        )
+        stock_contract_failure = source[cap_check:stock_contract_end]
+        self.assertIn(
+            'if stock_quality_cap_exceeded or approved_package is not None:',
+            stock_contract_failure,
+        )
+        self.assertIn(
+            'raise FinalVisualQualityError(stock_contract_message)',
+            stock_contract_failure,
+        )
         self.assertIn('or quality_cap_exceeded', source)
         self.assertIn('unroutable_stock_failures', source)
 
@@ -1287,6 +1379,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         source = SOURCE_PATH.read_text(encoding='utf-8')
 
         self.assertIn(
+            'SHORT_PREVIEW_REQUIRED_RUNWAY_CAP = 2',
+            source,
+        )
+        self.assertIn(
             'SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2',
             source,
         )
@@ -1296,6 +1392,8 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         )
         self.assertIn("'provider_outage_emergency_cap': (", source)
         self.assertIn("'stock_quality_emergency_cap': (", source)
+        self.assertIn("'required_scene_completion_cap': (", source)
+        self.assertIn("'runway_required_submission_cap': (", source)
         self.assertIn('or outage_cap_exceeded', source)
         self.assertIn('or quality_cap_exceeded', source)
         self.assertIn("else 'stock_quality_fallback'", source)

@@ -236,6 +236,12 @@ def _require_recovered_media_coverage(
 
 
 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
+# A real-first preview normally buys only one primary generated scene. If the
+# exact stock tournament still leaves two ordinary (non-forced) scenes without
+# publishable media, allow that second required scene locally instead of
+# regenerating narration, research and the storyboard. A third remains a hard
+# pre-paid failure, so this completion path cannot grow with scene count.
+SHORT_PREVIEW_REQUIRED_RUNWAY_CAP = 2
 # A seven-scene mixed preview can legitimately expose three different semantic
 # stock misses after the full tournament: a rare object close-up, a precise
 # human action and its shoreline payoff. Keep all three replacements bounded
@@ -1763,6 +1769,19 @@ def _max_runway_scenes(options: dict, scene_count: int, duration_minutes: float)
     return min(4, max(1, math.ceil(scene_count * 0.24)))
 
 
+def _short_preview_required_submission_cap(
+    base_submission_cap: int,
+    required_scene_count: int,
+) -> int:
+    """Bound a local completion allowance without widening normal routing."""
+    base_cap = max(0, int(base_submission_cap))
+    required_count = max(0, int(required_scene_count))
+    return max(
+        base_cap,
+        min(required_count, SHORT_PREVIEW_REQUIRED_RUNWAY_CAP),
+    )
+
+
 def _allocate_short_preview_forced_stock_runway(
     ranked_candidates: list[dict],
     base_submission_cap: int,
@@ -1780,11 +1799,12 @@ def _allocate_short_preview_forced_stock_runway(
 ]:
     """Reserve bounded emergency slots for forced short-preview STOCK scenes.
 
-    The ordinary short-preview cap continues to cover every non-forced scene.
-    Within that cap, clips without an approved visual are mandatory and already
-    approved AI-first upgrades are optional. Every extra selected candidate is
-    therefore an explicit STOCK scene forced either by a typed provider outage
-    or by at most three semantic failures after the full unchanged stock tournament.
+    Clips without an approved visual are mandatory and already approved
+    AI-first upgrades are optional. A real-first preview may locally expand its
+    ordinary base from one to at most two required scenes. Every later selected
+    candidate is an explicit STOCK scene forced either by a typed provider
+    outage or by at most three semantic failures after the full unchanged stock
+    tournament.
     """
     base_cap = max(0, int(base_submission_cap))
     outage_indices = {int(index) for index in provider_outage_stock_scenes}
@@ -1812,10 +1832,14 @@ def _allocate_short_preview_forced_stock_runway(
         else:
             optional_base_candidates.append(candidate)
 
+    required_submission_cap = _short_preview_required_submission_cap(
+        base_cap,
+        len(required_base_candidates),
+    )
     selected_base = [
         *required_base_candidates,
         *optional_base_candidates,
-    ][:base_cap]
+    ][:required_submission_cap]
     outage_cap_exceeded = (
         len(outage_indices) > SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
     )
@@ -2786,10 +2810,13 @@ def run_video_pipeline(
                 for failure in failed_stock_contracts
                 if failure not in semantic_stock_quality_failures
             ]
+            stock_quality_cap_exceeded = (
+                len(semantic_stock_quality_failures)
+                > SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
+            )
             if (
                 unroutable_stock_failures
-                or len(semantic_stock_quality_failures)
-                > SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
+                or stock_quality_cap_exceeded
             ):
                 stock_contract_message = (
                     'Short-preview stock-quality fallback exceeds its hard cap '
@@ -2800,6 +2827,9 @@ def run_video_pipeline(
                             'stock_quality_emergency_cap': (
                                 SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP
                             ),
+                            'stock_quality_cap_exceeded': (
+                                stock_quality_cap_exceeded
+                            ),
                             'unroutable_failures': unroutable_stock_failures,
                             'failures': failed_stock_contracts,
                         },
@@ -2807,7 +2837,7 @@ def run_video_pipeline(
                         separators=(',', ':'),
                     )
                 )
-                if approved_package is not None:
+                if stock_quality_cap_exceeded or approved_package is not None:
                     raise FinalVisualQualityError(stock_contract_message)
                 raise PreRunwayRetryableError(stock_contract_message)
 
@@ -3010,12 +3040,10 @@ def run_video_pipeline(
                         _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
                 prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
 
+        runway_required_submission_cap = runway_submission_cap
         runway_effective_submission_cap = runway_submission_cap
         selected_runway: list[dict]
-        if is_bounded_short_preview and (
-            provider_outage_stock_scenes
-            or stock_quality_fallback_scenes
-        ):
+        if is_bounded_short_preview:
             (
                 selected_runway,
                 required_base_candidates,
@@ -3031,9 +3059,15 @@ def run_video_pipeline(
                 stock_quality_fallback_scenes,
                 quality_threshold,
             )
+            runway_required_submission_cap = (
+                _short_preview_required_submission_cap(
+                    runway_submission_cap,
+                    len(required_base_candidates),
+                )
+            )
             runway_effective_submission_cap = min(
                 len(scenes),
-                runway_submission_cap
+                runway_required_submission_cap
                 + min(
                     len(provider_outage_stock_scenes),
                     SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP,
@@ -3044,7 +3078,8 @@ def run_video_pipeline(
                 ),
             )
             allocation_is_incomplete = (
-                len(required_base_candidates) > runway_submission_cap
+                len(required_base_candidates)
+                > runway_required_submission_cap
                 or bool(missing_outage_scenes)
                 or bool(missing_quality_scenes)
                 or outage_cap_exceeded
@@ -3054,11 +3089,17 @@ def run_video_pipeline(
             )
             if allocation_is_incomplete:
                 preflight_message = (
-                    'Short-preview forced STOCK fallback cannot produce a '
+                    'Short-preview media allocation cannot produce a '
                     'complete video within its bounded paid allocation: '
                     + json.dumps(
                         {
                             'base_submission_cap': runway_submission_cap,
+                            'required_submission_cap': (
+                                runway_required_submission_cap
+                            ),
+                            'required_scene_completion_cap': (
+                                SHORT_PREVIEW_REQUIRED_RUNWAY_CAP
+                            ),
                             'effective_submission_cap': runway_effective_submission_cap,
                             'provider_outage_emergency_cap': (
                                 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
@@ -3085,30 +3126,7 @@ def run_video_pipeline(
                         separators=(',', ':'),
                     )
                 )
-                if approved_package is not None:
-                    raise FinalVisualQualityError(preflight_message)
-                raise PreRunwayRetryableError(preflight_message)
-        elif is_bounded_short_preview and len(ranked_runway_candidates) > runway_submission_cap:
-            preflight_details = [
-                {
-                    'scene_index': int(item['scene_index']),
-                    'stock_score': int(item['stock_score']),
-                    'has_visual': bool(item['has_visual']),
-                    'authored_ai_prompt': bool(scenes[int(item['scene_index'])].get('ai_prompt')),
-                }
-                for item in ranked_runway_candidates
-            ]
-            preflight_message = (
-                'Short-preview visual plan exceeds bounded Runway budget before any paid submission: '
-                + json.dumps({
-                    'required_scenes': len(ranked_runway_candidates),
-                    'submission_cap': runway_submission_cap,
-                    'candidates': preflight_details,
-                }, separators=(',', ':'))
-            )
-            if approved_package is not None:
                 raise FinalVisualQualityError(preflight_message)
-            raise PreRunwayRetryableError(preflight_message)
         else:
             selected_runway = ranked_runway_candidates[:runway_submission_cap]
         selected_runway_indices = {item['scene_index'] for item in selected_runway}
@@ -4103,7 +4121,13 @@ def run_video_pipeline(
             'audio_design': audio_design,
             'stock_credits': credits,
             'runway_submission_cap': runway_submission_cap,
+            'runway_required_submission_cap': (
+                runway_required_submission_cap
+            ),
             'runway_effective_submission_cap': runway_effective_submission_cap,
+            'required_scene_completion_cap': (
+                SHORT_PREVIEW_REQUIRED_RUNWAY_CAP
+            ),
             'provider_outage_emergency_cap': (
                 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
             ),
@@ -4174,7 +4198,13 @@ def run_video_pipeline(
                 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
             ),
             'runway_submission_cap': runway_submission_cap,
+            'runway_required_submission_cap': (
+                runway_required_submission_cap
+            ),
             'runway_effective_submission_cap': runway_effective_submission_cap,
+            'required_scene_completion_cap': (
+                SHORT_PREVIEW_REQUIRED_RUNWAY_CAP
+            ),
             'provider_outage_emergency_cap': (
                 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP
             ),
