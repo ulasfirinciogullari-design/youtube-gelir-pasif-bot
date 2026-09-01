@@ -255,6 +255,7 @@ MAX_AUDIO_GENERATION_ATTEMPTS = 3
 AUDIO_QC_PROVIDER_ATTEMPTS = 2
 AUDIO_QC_PROVIDER_RETRY_DELAY_SECONDS = 1.0
 STOCK_TOURNAMENT_GEMINI_MODEL = 'gemini-3.7-flash'
+STOCK_TOURNAMENT_REVIEW_MAX_WORKERS = 4
 _MANUAL_QA_CLEAR_VISUAL_FIELDS = (
     'prominent_readable_text_or_logo_visible',
     'major_visual_artifact_visible',
@@ -1872,16 +1873,17 @@ def _review_stock_tournament_round(
     round_index: int,
     topic: str,
 ) -> dict[int, dict]:
-    """Review one stock scene per Gemini request to keep payloads bounded."""
+    """Review independent stock scenes concurrently in bounded requests."""
     if len(active_scenes) != len(round_visuals):
         raise PreRunwayRetryableError(
             'Stock-tournament scene and visual batches are inconsistent'
         )
 
-    round_reviews: dict[int, dict] = {}
-    for position, (scene_idx, candidate_batch) in enumerate(
-        zip(active_scenes, round_visuals)
-    ):
+    def review_position(
+        position: int,
+        scene_idx: int,
+        candidate_batch: list[str | dict],
+    ) -> dict:
         scene_qc = review_scene_visuals(
             [scenes[scene_idx]],
             [candidate_batch],
@@ -1910,7 +1912,29 @@ def _review_stock_tournament_round(
                     separators=(',', ':'),
                 )
             )
-        round_reviews[position] = dict(local_reviews[0])
+        return dict(local_reviews[0])
+
+    round_reviews: dict[int, dict] = {}
+    worker_count = min(
+        STOCK_TOURNAMENT_REVIEW_MAX_WORKERS,
+        max(1, len(active_scenes)),
+    )
+    with ThreadPoolExecutor(max_workers=worker_count) as executor:
+        future_by_position = {
+            position: executor.submit(
+                review_position,
+                position,
+                scene_idx,
+                candidate_batch,
+            )
+            for position, (scene_idx, candidate_batch) in enumerate(
+                zip(active_scenes, round_visuals)
+            )
+        }
+        # Resolve in input order so completion timing cannot change scene
+        # mapping or which fail-closed error is surfaced first.
+        for position in range(len(active_scenes)):
+            round_reviews[position] = future_by_position[position].result()
     return round_reviews
 
 

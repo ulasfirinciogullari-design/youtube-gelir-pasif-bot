@@ -4,6 +4,7 @@ import hashlib
 from pathlib import Path
 import re
 import tempfile
+import threading
 import unittest
 from unittest.mock import Mock
 
@@ -140,7 +141,10 @@ def _load_stock_tournament_review_boundary():
             isinstance(node, ast.Assign)
             and any(
                 isinstance(target, ast.Name)
-                and target.id == 'STOCK_TOURNAMENT_GEMINI_MODEL'
+                and target.id in {
+                    'STOCK_TOURNAMENT_GEMINI_MODEL',
+                    'STOCK_TOURNAMENT_REVIEW_MAX_WORKERS',
+                }
                 for target in node.targets
             )
         ) or (
@@ -154,6 +158,7 @@ def _load_stock_tournament_review_boundary():
     namespace = {
         'Path': Path,
         'json': __import__('json'),
+        'ThreadPoolExecutor': ThreadPoolExecutor,
         'review_scene_visuals': Mock(),
     }
     exec(
@@ -292,10 +297,18 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         namespace = _load_stock_tournament_review_boundary()
         review_round = namespace['_review_stock_tournament_round']
         reviewer = namespace['review_scene_visuals']
-        reviewer.side_effect = [
-            {'reviews': [{'scene_index': 0, 'score': 81}]},
-            {'reviews': [{'scene_index': 0, 'score': 92}]},
-        ]
+        second_scene_completed = threading.Event()
+
+        def review_scene(scene_batch, *_args, **_kwargs):
+            narration = scene_batch[0]['narration']
+            if narration == 'two':
+                if not second_scene_completed.wait(timeout=1):
+                    self.fail('stock reviews did not run concurrently')
+                return {'reviews': [{'scene_index': 0, 'score': 81}]}
+            second_scene_completed.set()
+            return {'reviews': [{'scene_index': 0, 'score': 92}]}
+
+        reviewer.side_effect = review_scene
         scenes = [
             {'narration': 'zero'},
             {'narration': 'one'},
@@ -319,34 +332,116 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         self.assertEqual(reviews[0]['score'], 81)
         self.assertEqual(reviews[1]['score'], 92)
         self.assertEqual(reviewer.call_count, 2)
-        first_args, first_kwargs = reviewer.call_args_list[0]
-        second_args, second_kwargs = reviewer.call_args_list[1]
-        self.assertEqual(first_args[0], [scenes[2]])
-        self.assertEqual(first_args[1], [round_visuals[0]])
-        self.assertEqual(first_args[3], 1)
-        self.assertEqual(first_args[2], Path('/tmp/tournament/scene_02'))
-        self.assertEqual(second_args[0], [scenes[0]])
-        self.assertEqual(second_args[1], [round_visuals[1]])
-        self.assertEqual(second_args[2], Path('/tmp/tournament/scene_00'))
-        self.assertEqual(first_kwargs['_missing_review_attempts'], 0)
-        self.assertEqual(first_kwargs['story_scenes'], scenes)
+        calls_by_narration = {
+            call.args[0][0]['narration']: call
+            for call in reviewer.call_args_list
+        }
+        scene_two_call = calls_by_narration['two']
+        scene_zero_call = calls_by_narration['zero']
+        self.assertEqual(scene_two_call.args[0], [scenes[2]])
+        self.assertEqual(scene_two_call.args[1], [round_visuals[0]])
+        self.assertEqual(scene_two_call.args[3], 1)
         self.assertEqual(
-            first_kwargs['gemini_model_override'],
+            scene_two_call.args[2],
+            Path('/tmp/tournament/scene_02'),
+        )
+        self.assertEqual(scene_zero_call.args[0], [scenes[0]])
+        self.assertEqual(scene_zero_call.args[1], [round_visuals[1]])
+        self.assertEqual(
+            scene_zero_call.args[2],
+            Path('/tmp/tournament/scene_00'),
+        )
+        self.assertEqual(
+            scene_two_call.kwargs['_missing_review_attempts'],
+            0,
+        )
+        self.assertEqual(scene_two_call.kwargs['story_scenes'], scenes)
+        self.assertEqual(
+            scene_two_call.kwargs['gemini_model_override'],
             'gemini-3.7-flash',
         )
         self.assertEqual(
-            second_kwargs['gemini_model_override'],
+            scene_zero_call.kwargs['gemini_model_override'],
             'gemini-3.7-flash',
         )
-        self.assertEqual(second_kwargs['topic'], 'literal topic')
+        self.assertEqual(scene_zero_call.kwargs['topic'], 'literal topic')
+
+    def test_stock_tournament_parallelism_is_safely_capped(self):
+        namespace = _load_stock_tournament_review_boundary()
+        review_round = namespace['_review_stock_tournament_round']
+        reviewer = namespace['review_scene_visuals']
+        release = threading.Event()
+        state_lock = threading.Lock()
+        state = {'active': 0, 'maximum': 0}
+
+        def review_scene(_scene_batch, *_args, **_kwargs):
+            with state_lock:
+                state['active'] += 1
+                state['maximum'] = max(state['maximum'], state['active'])
+                if state['active'] == 4:
+                    release.set()
+            if not release.wait(timeout=1):
+                self.fail('stock review pool did not reach its bounded width')
+            with state_lock:
+                state['active'] -= 1
+            return {'reviews': [{'scene_index': 0, 'score': 80}]}
+
+        reviewer.side_effect = review_scene
+        scenes = [{'narration': str(index)} for index in range(6)]
+
+        reviews = review_round(
+            scenes,
+            list(range(6)),
+            [[{'path': f'/tmp/{index}.mp4'}] for index in range(6)],
+            Path('/tmp/tournament'),
+            1,
+            'literal topic',
+        )
+
+        self.assertEqual(list(reviews), list(range(6)))
+        self.assertEqual(state['maximum'], 4)
+        self.assertEqual(reviewer.call_count, 6)
+
+    def test_stock_tournament_parallel_errors_preserve_input_order(self):
+        namespace = _load_stock_tournament_review_boundary()
+        review_round = namespace['_review_stock_tournament_round']
+        first_failure = RuntimeError('first scene provider failure')
+        second_failure = RuntimeError('second scene provider failure')
+        second_scene_completed = threading.Event()
+
+        def review_scene(scene_batch, *_args, **_kwargs):
+            narration = scene_batch[0]['narration']
+            if narration == 'first':
+                if not second_scene_completed.wait(timeout=1):
+                    self.fail('stock reviews did not run concurrently')
+                raise first_failure
+            second_scene_completed.set()
+            raise second_failure
+
+        namespace['review_scene_visuals'].side_effect = review_scene
+
+        with self.assertRaises(RuntimeError) as caught:
+            review_round(
+                [{'narration': 'first'}, {'narration': 'second'}],
+                [0, 1],
+                [[{'path': '/tmp/a.mp4'}], [{'path': '/tmp/b.mp4'}]],
+                Path('/tmp/tournament'),
+                2,
+                'literal topic',
+            )
+
+        self.assertIs(caught.exception, first_failure)
+        self.assertEqual(namespace['review_scene_visuals'].call_count, 2)
 
     def test_stock_tournament_missing_single_scene_review_fails_closed(self):
         namespace = _load_stock_tournament_review_boundary()
         review_round = namespace['_review_stock_tournament_round']
-        namespace['review_scene_visuals'].side_effect = [
-            {'reviews': [{'scene_index': 0, 'score': 88}]},
-            {'reviews': []},
-        ]
+        def review_scene(scene_batch, *_args, **_kwargs):
+            if scene_batch[0]['narration'] == 'zero':
+                return {'reviews': [{'scene_index': 0, 'score': 88}]}
+            return {'reviews': []}
+
+        namespace['review_scene_visuals'].side_effect = review_scene
 
         with self.assertRaises(
             namespace['PreRunwayRetryableError']
