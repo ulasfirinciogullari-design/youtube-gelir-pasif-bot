@@ -2670,6 +2670,7 @@ def run_video_pipeline(
         manual_qa_preview_records.clear()
         manual_qa_preview_identities.clear()
         manual_qa_preserve_exact_cut_scenes: set[int] = set()
+        final_manual_reviews_applied: set[int] = set()
         terminal_manual_qa_candidates: list[tuple[int, dict, dict]] = []
         for scene_idx in sorted(manual_qa_prepass_scenes):
             review = final_reviews.get(scene_idx) or {}
@@ -2687,11 +2688,20 @@ def run_video_pipeline(
                 review,
                 selected_spec,
             ):
+                _apply_visual_review(scene_visuals, scene_idx, review)
+                review = dict(review)
+                review['best_candidate_index'] = 0
+                final_reviews[scene_idx] = review
                 register_manual_qa_preview(
                     scene_idx,
                     review,
-                    selected_spec,
+                    (
+                        scene_visuals[scene_idx][0]
+                        if scene_visuals[scene_idx]
+                        else None
+                    ),
                 )
+                final_manual_reviews_applied.add(scene_idx)
                 continue
             terminal_manual_qa_candidates.append(
                 (scene_idx, selected_spec, review)
@@ -2831,7 +2841,6 @@ def run_video_pipeline(
                 final_manual_candidates,
             )
         )
-        final_manual_reviews_applied: set[int] = set()
         for scene_idx in accepted_final_manual:
             review = dict(final_reviews[scene_idx])
             _apply_visual_review(scene_visuals, scene_idx, review)
@@ -3039,6 +3048,14 @@ def run_video_pipeline(
                     or rescued_manual_qa_pass
                 ):
                     _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
+                    mapped_review = dict(mapped_review)
+                    mapped_review['best_candidate_index'] = 0
+                    final_reviews[scene_idx] = mapped_review
+                    selected_spec = (
+                        scene_visuals[scene_idx][0]
+                        if scene_visuals[scene_idx]
+                        else None
+                    )
                 if rescued_manual_qa_pass:
                     register_manual_qa_preview(
                         scene_idx,
