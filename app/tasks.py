@@ -1422,6 +1422,55 @@ def _allocate_short_preview_forced_stock_runway(
     )
 
 
+def _review_stock_tournament_round(
+    scenes: list[dict],
+    active_scenes: list[int],
+    round_visuals: list[list[str | dict]],
+    work: Path,
+    round_index: int,
+    topic: str,
+) -> dict[int, dict]:
+    """Review one stock scene per Gemini request to keep payloads bounded."""
+    if len(active_scenes) != len(round_visuals):
+        raise PreRunwayRetryableError(
+            'Stock-tournament scene and visual batches are inconsistent'
+        )
+
+    round_reviews: dict[int, dict] = {}
+    for position, (scene_idx, candidate_batch) in enumerate(
+        zip(active_scenes, round_visuals)
+    ):
+        scene_qc = review_scene_visuals(
+            [scenes[scene_idx]],
+            [candidate_batch],
+            work / f'scene_{scene_idx:02d}',
+            1,
+            _missing_review_attempts=0,
+            topic=topic,
+            story_scenes=scenes,
+        )
+        local_reviews = {
+            int(review.get('scene_index')): review
+            for review in (scene_qc.get('reviews') or [])
+            if isinstance(review, dict)
+            and str(review.get('scene_index', '')).lstrip('-').isdigit()
+        }
+        if 0 not in local_reviews:
+            raise PreRunwayRetryableError(
+                'Stock-tournament QC was incomplete before any paid submission: '
+                + json.dumps(
+                    {
+                        'round': round_index,
+                        'scene_index': scene_idx,
+                        'missing_positions': [position],
+                    },
+                    separators=(',', ':'),
+                )
+            )
+        round_reviews[position] = dict(local_reviews[0])
+    return round_reviews
+
+
 def _prepare_package(
     celery_task,
     task_id: str,
@@ -2037,37 +2086,14 @@ def run_video_pipeline(
                     stock_candidate_pools[scene_idx][candidate_start:candidate_end]
                     for scene_idx in active_scenes
                 ]
-                round_qc = review_scene_visuals(
-                    [scenes[scene_idx] for scene_idx in active_scenes],
+                round_reviews = _review_stock_tournament_round(
+                    scenes,
+                    active_scenes,
                     round_visuals,
                     work / f'pre_runway_stock_tournament_{round_index}',
-                    len(active_scenes),
-                    _missing_review_attempts=0,
-                    topic=topic,
-                    story_scenes=scenes,
+                    round_index,
+                    topic,
                 )
-                round_reviews = {
-                    int(review.get('scene_index')): review
-                    for review in (round_qc.get('reviews') or [])
-                    if isinstance(review, dict)
-                    and str(review.get('scene_index', '')).lstrip('-').isdigit()
-                }
-                missing_positions = [
-                    position
-                    for position in range(len(active_scenes))
-                    if position not in round_reviews
-                ]
-                if missing_positions:
-                    raise PreRunwayRetryableError(
-                        'Stock-tournament QC was incomplete before any paid submission: '
-                        + json.dumps(
-                            {
-                                'round': round_index,
-                                'missing_positions': missing_positions,
-                            },
-                            separators=(',', ':'),
-                        )
-                    )
 
                 for position, scene_idx in enumerate(active_scenes):
                     local_review = dict(round_reviews[position])
