@@ -12,6 +12,12 @@ import httpx
 from runwayml import BadRequestError, RateLimitError, RunwayML
 
 from app.config import settings
+from app.services.fal_video import (
+    FalVideoError,
+    fal_error_allows_provider_fallback,
+    generate_fal_video,
+    validate_fal_media_url,
+)
 
 
 _GEMINI_VIDEO_BASE = 'https://generativelanguage.googleapis.com/v1beta'
@@ -496,6 +502,19 @@ def generate_scene(
         # This catch deliberately covers only paid task creation. Once Runway
         # has accepted a task, no polling or download error may start a second
         # paid generation with another provider.
+        fal_fallback_from = None
+        if str(getattr(settings, 'fal_key', '') or '').strip():
+            try:
+                return generate_fal_video(prompt_text, seconds)
+            except FalVideoError as exc:
+                # Only an explicit pre-acceptance rejection or a definitive
+                # completed-job failure may start another paid provider.  An
+                # ambiguous POST, poll timeout, or result failure stays pinned
+                # to Fal's accepted request id.
+                if not fal_error_allows_provider_fallback(exc):
+                    raise
+                fal_fallback_from = 'fal_seedance_2_fast'
+
         def generate_with_gemini_model(
             model_name: str | None = None,
         ) -> tuple[str, int]:
@@ -559,7 +578,7 @@ def generate_scene(
                 raise GeminiImageAttemptedError(
                     'Gemini image create returned no usable media'
                 ) from exc
-            return {
+            result = {
                 **image_descriptor,
                 'provider': 'gemini_image_motion',
                 'provider_attempts': 1,
@@ -567,6 +586,9 @@ def generate_scene(
                 'quota_fallback_chain': quota_fallback_chain,
                 'fallback_reason': fallback_reason,
             }
+            if fal_fallback_from:
+                result['provider_fallback_from'] = fal_fallback_from
+            return result
 
         # Veo accepts at most eight seconds. This deterministic capability
         # branch runs before any Veo POST, so no video operation can exist.
@@ -620,12 +642,15 @@ def generate_scene(
                             'gemini_veo_standard',
                         ],
                     )
-        return {
+        result = {
             'url': video_uri,
             'provider': provider,
             'provider_attempts': provider_attempts,
             'quota_fallback_from': quota_fallback_from,
         }
+        if fal_fallback_from:
+            result['provider_fallback_from'] = fal_fallback_from
+        return result
     task_id = str(getattr(created, 'id', '') or '').strip()
     if not task_id:
         raise RuntimeError('Runway returned no task id')
@@ -823,8 +848,10 @@ def download_generated_scene(
                 partial.replace(output)
                 return str(output)
             url = str(source.get('url') or '').strip()
+            source_provider = str(source.get('provider') or '').strip()
         else:
             url = str(source).strip()
+            source_provider = ''
         if not url:
             raise RuntimeError('Generated video URL is empty')
         initial_host = (urlparse(str(url)).hostname or '').lower()
@@ -865,6 +892,37 @@ def download_generated_scene(
                     partial.replace(output)
                     return str(output)
             raise RuntimeError('Gemini video download redirected too many times')
+
+        if source_provider == 'fal_seedance_2_fast':
+            current_url = validate_fal_media_url(url)
+            # Fal media carries no application secret. Follow only documented
+            # Fal media hosts (and the documented legacy falserverless bucket)
+            # while preserving the shared atomic MP4 validation contract.
+            for _redirect_count in range(6):
+                current_url = validate_fal_media_url(current_url)
+                with httpx.stream(
+                    'GET',
+                    current_url,
+                    headers={},
+                    timeout=180,
+                    follow_redirects=False,
+                ) as response:
+                    if response.status_code in (301, 302, 303, 307, 308):
+                        location = str(
+                            response.headers.get('location') or ''
+                        ).strip()
+                        if not location:
+                            raise RuntimeError(
+                                'Fal video download returned an invalid redirect'
+                            )
+                        current_url = urljoin(current_url, location)
+                        validate_fal_media_url(current_url)
+                        continue
+                    response.raise_for_status()
+                    write_checked_video(response)
+                    partial.replace(output)
+                    return str(output)
+            raise RuntimeError('Fal video download redirected too many times')
 
         # Runway output URLs carry no application secret. The client may
         # follow their CDN redirects, but the file still uses the same atomic

@@ -34,9 +34,20 @@ class GeminiImageAttemptedError(RuntimeError):
     pass
 
 
+class FalVideoError(RuntimeError):
+    def __init__(self, message, *, safe_to_fallback=False):
+        super().__init__(message)
+        self.safe_to_fallback = safe_to_fallback
+
+
+def fal_error_allows_provider_fallback(exc):
+    return isinstance(exc, FalVideoError) and exc.safe_to_fallback
+
+
 class _Settings:
     runwayml_api_secret = 'configured-test-key'
     gemini_api_key = 'configured-gemini-key'
+    fal_key = ''
 
 
 class _CreatedTask:
@@ -89,6 +100,8 @@ def _load_runway_functions(
     runway_client_factory=None,
     gemini_video_uri=None,
     gemini_image_descriptor=None,
+    fal_video=None,
+    fal_key='',
 ):
     source_path = (
         Path(__file__).resolve().parents[1]
@@ -117,14 +130,21 @@ def _load_runway_functions(
         for node in tree.body
         if isinstance(node, ast.FunctionDef) and node.name in names
     ]
+    test_settings = _Settings()
+    test_settings.fal_key = fal_key
     namespace = {
         'RateLimitError': RateLimitError,
         'BadRequestError': BadRequestError,
         'GeminiVideoTerminalError': GeminiVideoTerminalError,
         'GeminiVideoQuotaError': GeminiVideoQuotaError,
         'GeminiImageAttemptedError': GeminiImageAttemptedError,
+        'FalVideoError': FalVideoError,
+        'fal_error_allows_provider_fallback': (
+            fal_error_allows_provider_fallback
+        ),
+        'generate_fal_video': fal_video or Mock(),
         'RunwayML': runway_client_factory or _RunwayClientFactory([object()]),
-        'settings': _Settings(),
+        'settings': test_settings,
         'httpx': Mock(),
         'base64': base64,
         'binascii': binascii,
@@ -456,6 +476,85 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             factory.create_resources[0].calls[0]['model'],
             'gen4.5',
         )
+
+    def test_configured_fal_runs_after_runway_rejection_before_gemini(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        fal_video = Mock(return_value={
+            'url': 'https://v3.fal.media/files/example/video.mp4',
+            'provider': 'fal_seedance_2_fast',
+            'provider_attempts': 1,
+            'provider_request_id': (
+                '123e4567-e89b-12d3-a456-426614174000'
+            ),
+        })
+        gemini_video_uri = Mock()
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            fal_video=fal_video,
+            fal_key='configured-fal-key',
+        )
+
+        result = generate_scene('safe prompt', duration=7)
+
+        self.assertEqual(result['provider'], 'fal_seedance_2_fast')
+        fal_video.assert_called_once_with('safe prompt', 7)
+        gemini_video_uri.assert_not_called()
+        self.assertEqual(len(factory.create_resources[0].calls), 1)
+
+    def test_definitive_fal_quota_rejection_falls_through_to_gemini(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        fal_video = Mock(side_effect=FalVideoError(
+            'Fal quota unavailable',
+            safe_to_fallback=True,
+        ))
+        gemini_video_uri = Mock(return_value=(
+            'https://generativelanguage.googleapis.com/v1beta/files/video'
+        ))
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            fal_video=fal_video,
+            fal_key='configured-fal-key',
+        )
+
+        result = generate_scene('safe prompt', duration=5)
+
+        self.assertEqual(result['provider'], 'gemini_veo')
+        self.assertEqual(
+            result['provider_fallback_from'],
+            'fal_seedance_2_fast',
+        )
+        fal_video.assert_called_once_with('safe prompt', 5)
+        gemini_video_uri.assert_called_once_with('safe prompt', 5)
+
+    def test_ambiguous_fal_submit_never_starts_gemini(self):
+        factory = _RunwayClientFactory([
+            BadRequestError('secret insufficient-credit response'),
+        ])
+        ambiguous_error = FalVideoError(
+            'Fal submission state is ambiguous',
+            safe_to_fallback=False,
+        )
+        fal_video = Mock(side_effect=ambiguous_error)
+        gemini_video_uri = Mock()
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            fal_video=fal_video,
+            fal_key='configured-fal-key',
+        )
+
+        with self.assertRaises(FalVideoError) as raised:
+            generate_scene('safe prompt', duration=5)
+
+        self.assertIs(raised.exception, ambiguous_error)
+        fal_video.assert_called_once_with('safe prompt', 5)
+        gemini_video_uri.assert_not_called()
 
     def test_create_bad_request_uses_one_gemini_fallback(self):
         factory = _RunwayClientFactory([
