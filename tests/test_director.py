@@ -1278,6 +1278,23 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
                 'Konuşma metni tam olarak şöyle olsun: “”'
             )
 
+    def test_declarative_turkish_exact_narration_phrase_is_locked(self):
+        block = (
+            'Yağmurdan önce toprak kokusu belirginleşmeye başlar. '
+            'İlk damlalar gözenekli zeminde küçük kabarcıklar oluşturur. '
+            'Kabarcıklar kokulu parçacıkları havaya doğru taşır.'
+        )
+
+        locked = director_module._exact_narration_lock_from_brief(
+            f'Konuşma metni tam olarak şöyledir: “{block}”'
+        )
+
+        self.assertEqual(locked, block)
+        self.assertEqual(
+            director_module._infer_exact_narration_scene_count(locked),
+            3,
+        )
+
     def test_production_exact_lock_is_recognized_as_four_scenes_and_45_words(self):
         block = (
             'Dizinin en heyecanlı yerinde, yataktaki laptop birden uçak gibi '
