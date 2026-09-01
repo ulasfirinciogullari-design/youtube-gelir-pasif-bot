@@ -112,6 +112,7 @@ def _shell(
     script: str = '',
     *,
     status_code: int = 200,
+    same_origin_forms: bool = False,
 ) -> HTMLResponse:
     response = HTMLResponse(
         '<!doctype html><html lang="tr"><head><meta charset="utf-8">'
@@ -122,7 +123,13 @@ def _shell(
         status_code=status_code,
     )
     response.headers['Cache-Control'] = 'no-store'
-    response.headers['Referrer-Policy'] = 'no-referrer'
+    # A form page must preserve exact same-origin proof: Fetch can serialize a
+    # no-referrer navigation POST's Origin as "null" while also omitting its
+    # Referer. Callback/error pages keep the stricter no-referrer default so an
+    # OAuth code or state in their URL is not forwarded even within Studio.
+    response.headers['Referrer-Policy'] = (
+        'same-origin' if same_origin_forms else 'no-referrer'
+    )
     return response
 
 
@@ -180,7 +187,7 @@ def youtube_home(
     success = '<div class="notice" style="border-color:#276744;background:#112d21;color:#8be5b4">YouTube hesabı ve kanal kimliği başarıyla doğrulandı.</div>' if connected else ''
     body = f'''
 <div class="hero"><h1>YouTube yayın merkezi</h1><div class="muted">Final videolar önce gizli yüklenir; herkese açık yayın ayrı ve onaylı bir işlemdir.</div></div>{success}{account_card}<div class="card"><h2>Hazır videolar</h2><p class="muted">Aynı final için ikinci bir yükleme işi oluşturulmaz.</p>{jobs_html}</div>'''
-    return _shell(body)
+    return _shell(body, same_origin_forms=True)
 
 
 @router.get('/studio/youtube/status')

@@ -1004,6 +1004,23 @@ def test_mutating_youtube_routes_require_exact_same_origin(monkeypatch):
     routes._require_same_origin(types.SimpleNamespace(
         headers={'referer': 'https://studio.example.test/studio/youtube'},
     ))
+    monkeypatch.setattr(
+        routes.settings,
+        'factory_api_token',
+        'studio-secret',
+        raising=False,
+    )
+    monkeypatch.setattr(
+        routes,
+        'connection_status',
+        lambda: {'configured': True, 'connected': False},
+    )
+    monkeypatch.setattr(routes, '_completed_jobs', lambda: [])
+    form_shell = routes.youtube_home(studio_token='studio-secret')
+    callback_shell = routes._shell('OAuth callback')
+    assert b'action="/studio/youtube/connect"' in form_shell.body
+    assert form_shell.headers['referrer-policy'] == 'same-origin'
+    assert callback_shell.headers['referrer-policy'] == 'no-referrer'
     with pytest.raises(routes.HTTPException) as wrong_origin:
         routes._require_same_origin(types.SimpleNamespace(
             headers={'origin': 'https://evil.studio.example.test'},
