@@ -14,6 +14,7 @@ import httpx
 from app.celery_app import celery
 from app.services.audio_design import generate_music_bed, mix_voice_and_music
 from app.services.audio_qc import (
+    AudioQCError,
     verify_audio_narration,
     verify_audio_prosody,
 )
@@ -245,6 +246,8 @@ MANUAL_QA_PREVIEW_STOCK_FLOOR = 60
 MANUAL_QA_PREVIEW_GENERATED_FLOOR = 60
 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD = 86
 MAX_AUDIO_GENERATION_ATTEMPTS = 3
+AUDIO_QC_PROVIDER_ATTEMPTS = 2
+AUDIO_QC_PROVIDER_RETRY_DELAY_SECONDS = 1.0
 _MANUAL_QA_CLEAR_VISUAL_FIELDS = (
     'prominent_readable_text_or_logo_visible',
     'major_visual_artifact_visible',
@@ -497,6 +500,33 @@ def _synthesize_voice_candidate(
             ensure_ascii=False,
             separators=(',', ':'),
         )
+    )
+
+
+def _verify_audio_narration_with_retry(
+    audio_path: str | Path,
+    expected_narration: str,
+    *,
+    language: str,
+) -> dict:
+    """Retry a transient STT outage without regenerating immutable audio."""
+    for attempt in range(AUDIO_QC_PROVIDER_ATTEMPTS):
+        try:
+            return verify_audio_narration(
+                audio_path,
+                expected_narration,
+                language=language,
+            )
+        except AudioQCError:
+            if attempt + 1 < AUDIO_QC_PROVIDER_ATTEMPTS:
+                time.sleep(AUDIO_QC_PROVIDER_RETRY_DELAY_SECONDS)
+                continue
+            raise FinalAudioQualityError(
+                'Audio narration QA providers were unavailable after one '
+                'bounded same-audio retry before paid media'
+            ) from None
+    raise FinalAudioQualityError(
+        'Audio narration QA providers were unavailable before paid media'
     )
 
 
@@ -2063,7 +2093,7 @@ def run_video_pipeline(
         }
         audio_duration_qc: dict = {}
         while True:
-            audio_qc = verify_audio_narration(
+            audio_qc = _verify_audio_narration_with_retry(
                 voice_path,
                 expected_spoken_narration,
                 language=language,

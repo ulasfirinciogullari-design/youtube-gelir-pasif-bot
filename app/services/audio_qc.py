@@ -32,7 +32,12 @@ GEMINI_FILES_UPLOAD_URL = (
 )
 ELEVENLABS_SPEECH_TO_TEXT_URL = 'https://api.elevenlabs.io/v1/speech-to-text'
 _SPEECH_TO_TEXT_TIMEOUT = httpx.Timeout(180.0, connect=10.0)
-_GEMINI_FILE_STATUS_TIMEOUT = httpx.Timeout(5.0, connect=2.0)
+_GEMINI_FILE_STATUS_TIMEOUT_SECONDS = 5.0
+_GEMINI_FILE_STATUS_CONNECT_TIMEOUT_SECONDS = 2.0
+_GEMINI_FILE_STATUS_TIMEOUT = httpx.Timeout(
+    _GEMINI_FILE_STATUS_TIMEOUT_SECONDS,
+    connect=_GEMINI_FILE_STATUS_CONNECT_TIMEOUT_SECONDS,
+)
 _GEMINI_CLEANUP_TIMEOUT = httpx.Timeout(5.0, connect=2.0)
 _APOSTROPHES = frozenset("'\u2018\u2019\u02bc\u0060\u00b4")
 # Audio QC inputs are intentionally bounded even though the Files API accepts
@@ -41,9 +46,17 @@ _GEMINI_MAX_RAW_AUDIO_BYTES = 14 * 1024 * 1024
 _GEMINI_TRANSCRIBE_MODEL = 'gemini-3.5-transcribe'
 _GEMINI_API_HOST = 'generativelanguage.googleapis.com'
 _GEMINI_FILE_NAME_PATTERN = re.compile(r'^files/[A-Za-z0-9_-]{1,256}$')
-_GEMINI_FILE_POLL_ATTEMPTS = 5
-_GEMINI_FILE_POLL_INITIAL_BACKOFF_SECONDS = 0.25
-_GEMINI_FILE_POLL_MAX_BACKOFF_SECONDS = 1.0
+_GEMINI_FILE_POLL_ATTEMPTS = 10
+_GEMINI_FILE_READY_TIMEOUT_SECONDS = 45.0
+_GEMINI_FILE_POLL_INITIAL_BACKOFF_SECONDS = 1.0
+_GEMINI_FILE_POLL_MAX_BACKOFF_SECONDS = 5.0
+_GEMINI_INTERACTION_ATTEMPTS = 2
+_GEMINI_INTERACTION_RETRY_DELAY_SECONDS = 1.0
+_GEMINI_PENDING_FILE_STATES = frozenset({
+    '',
+    'processing',
+    'state_unspecified',
+})
 _GEMINI_DURATION_PATTERN = re.compile(r'^(?:0|[1-9]\d*)(?:\.\d{1,9})?s$')
 _GEMINI_SUPPORTED_AUDIO_MIME_TYPES = frozenset({
     'audio/aac',
@@ -247,6 +260,17 @@ _PROSODY_SYSTEM_INSTRUCTION = (
 
 class AudioQCError(RuntimeError):
     """A secret-safe failure while obtaining an audio-QC transcript."""
+
+
+class _RetryableGeminiAudioQCError(AudioQCError):
+    """A bounded transient Gemini failure that may reuse the same file."""
+
+
+def _retryable_gemini_http_status(value: Any) -> bool:
+    return type(value) is int and (
+        value in {408, 429}
+        or 500 <= value <= 599
+    )
 
 
 def normalize_supported_language(language: str) -> str:
@@ -1500,16 +1524,28 @@ def _gemini_file_resource(response: Any) -> dict[str, str]:
 def _get_gemini_file_resource(
     name: str,
     api_key: str,
+    *,
+    timeout: Any = _GEMINI_FILE_STATUS_TIMEOUT,
 ) -> dict[str, str]:
     try:
         response = httpx.get(
             f'https://{_GEMINI_API_HOST}/v1beta/{name}',
             headers={'x-goog-api-key': api_key},
-            timeout=_GEMINI_FILE_STATUS_TIMEOUT,
+            timeout=timeout,
         )
+    except httpx.TransportError:
+        raise _RetryableGeminiAudioQCError(
+            'Gemini speech-to-text file status transport failed'
+        ) from None
     except Exception:
         raise AudioQCError(
             'Gemini speech-to-text file status transport failed'
+        ) from None
+    status_code = getattr(response, 'status_code', None)
+    if _retryable_gemini_http_status(status_code):
+        raise _RetryableGeminiAudioQCError(
+            'Gemini speech-to-text file status failed with HTTP '
+            f'{status_code}'
         ) from None
     try:
         return _gemini_file_resource(response)
@@ -1529,6 +1565,9 @@ def _wait_for_gemini_file_active(
 ) -> dict[str, str]:
     current = file_resource
     expected_name = file_resource['name']
+    readiness_deadline = (
+        time.monotonic() + _GEMINI_FILE_READY_TIMEOUT_SECONDS
+    )
     for attempt in range(_GEMINI_FILE_POLL_ATTEMPTS + 1):
         state = current.get('state')
         if state == 'active':
@@ -1537,21 +1576,40 @@ def _wait_for_gemini_file_active(
             raise AudioQCError(
                 'Gemini speech-to-text file processing failed'
             )
-        if state != 'processing':
+        if state not in _GEMINI_PENDING_FILE_STATES:
             raise AudioQCError(
                 'Gemini speech-to-text file processing returned an invalid '
                 'state'
             )
-        if attempt >= _GEMINI_FILE_POLL_ATTEMPTS:
+        remaining_seconds = readiness_deadline - time.monotonic()
+        if attempt >= _GEMINI_FILE_POLL_ATTEMPTS or remaining_seconds <= 0:
             break
-        if attempt:
-            backoff_seconds = min(
-                _GEMINI_FILE_POLL_INITIAL_BACKOFF_SECONDS
-                * (2 ** (attempt - 1)),
-                _GEMINI_FILE_POLL_MAX_BACKOFF_SECONDS,
+        backoff_seconds = min(
+            _GEMINI_FILE_POLL_INITIAL_BACKOFF_SECONDS * (2 ** attempt),
+            _GEMINI_FILE_POLL_MAX_BACKOFF_SECONDS,
+            remaining_seconds,
+        )
+        time.sleep(backoff_seconds)
+        remaining_seconds = readiness_deadline - time.monotonic()
+        if remaining_seconds <= 0:
+            break
+        status_timeout = _GEMINI_FILE_STATUS_TIMEOUT
+        if remaining_seconds < _GEMINI_FILE_STATUS_TIMEOUT_SECONDS:
+            status_timeout = httpx.Timeout(
+                remaining_seconds,
+                connect=min(
+                    _GEMINI_FILE_STATUS_CONNECT_TIMEOUT_SECONDS,
+                    remaining_seconds,
+                ),
             )
-            time.sleep(backoff_seconds)
-        current = _get_gemini_file_resource(expected_name, api_key)
+        try:
+            current = _get_gemini_file_resource(
+                expected_name,
+                api_key,
+                timeout=status_timeout,
+            )
+        except _RetryableGeminiAudioQCError:
+            continue
         if current['name'] != expected_name:
             raise AudioQCError(
                 'Gemini speech-to-text file status returned an invalid '
@@ -1690,32 +1748,51 @@ def _verify_with_gemini(
         },
     }
     try:
-        try:
-            response = httpx.post(
-                GEMINI_INTERACTIONS_URL,
-                headers={
-                    'x-goog-api-key': api_key,
-                    'Content-Type': 'application/json',
-                },
-                json=request_body,
-                timeout=_SPEECH_TO_TEXT_TIMEOUT,
-            )
-        except Exception:
-            raise AudioQCError(
-                'Gemini speech-to-text transport failed'
-            ) from None
+        for attempt in range(_GEMINI_INTERACTION_ATTEMPTS):
+            try:
+                response = httpx.post(
+                    GEMINI_INTERACTIONS_URL,
+                    headers={
+                        'x-goog-api-key': api_key,
+                        'Content-Type': 'application/json',
+                    },
+                    json=request_body,
+                    timeout=_SPEECH_TO_TEXT_TIMEOUT,
+                )
+            except httpx.TransportError:
+                if attempt + 1 < _GEMINI_INTERACTION_ATTEMPTS:
+                    time.sleep(_GEMINI_INTERACTION_RETRY_DELAY_SECONDS)
+                    continue
+                raise AudioQCError(
+                    'Gemini speech-to-text transport failed'
+                ) from None
+            except Exception:
+                raise AudioQCError(
+                    'Gemini speech-to-text transport failed'
+                ) from None
 
-        payload = _gemini_interaction_payload(response)
-        return _require_word_timing_evidence(
-            compare_transcript(
-                expected_narration,
-                payload['text'],
-                language_code=language_codes['bcp47'],
-                words=payload.get('words'),
-                provider='gemini',
-                comparison_language=language_codes['bcp47'],
-            ),
-            'Gemini',
+            status_code = getattr(response, 'status_code', None)
+            if (
+                _retryable_gemini_http_status(status_code)
+                and attempt + 1 < _GEMINI_INTERACTION_ATTEMPTS
+            ):
+                time.sleep(_GEMINI_INTERACTION_RETRY_DELAY_SECONDS)
+                continue
+
+            payload = _gemini_interaction_payload(response)
+            return _require_word_timing_evidence(
+                compare_transcript(
+                    expected_narration,
+                    payload['text'],
+                    language_code=language_codes['bcp47'],
+                    words=payload.get('words'),
+                    provider='gemini',
+                    comparison_language=language_codes['bcp47'],
+                ),
+                'Gemini',
+            )
+        raise AudioQCError(
+            'Gemini speech-to-text did not complete after bounded retries'
         )
     finally:
         _delete_gemini_file(uploaded_file['name'], api_key)
