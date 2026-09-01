@@ -21,6 +21,10 @@ _GEMINI_VIDEO_HOSTS = {
 _MAX_GENERATED_VIDEO_BYTES = 100 * 1024 * 1024
 
 
+class GeminiVideoTerminalError(RuntimeError):
+    """A definitive completed-operation rejection that is safe to resubmit."""
+
+
 def _gemini_video_duration(seconds: int) -> int:
     """Map the requested single-pass shot to a supported Veo duration."""
     if seconds <= 4:
@@ -90,7 +94,9 @@ def _generate_gemini_video_uri(prompt_text: str, seconds: int) -> str:
                 raise RuntimeError('Gemini video returned malformed status')
             if payload.get('done') is True:
                 if payload.get('error'):
-                    raise RuntimeError('Gemini video generation failed')
+                    raise GeminiVideoTerminalError(
+                        'Gemini video generation was rejected'
+                    )
                 response = payload.get('response') or {}
                 video_response = response.get('generateVideoResponse') or {}
                 samples = video_response.get('generatedSamples') or []
@@ -160,9 +166,20 @@ def generate_scene(prompt: str, duration: int = 5) -> dict:
         # This catch deliberately covers only paid task creation. Once Runway
         # has accepted a task, no polling or download error may start a second
         # paid generation with another provider.
+        provider_attempts = 1
+        try:
+            video_uri = _generate_gemini_video_uri(prompt_text, seconds)
+        except GeminiVideoTerminalError:
+            # The provider explicitly completed the operation with an error,
+            # so there is no ambiguous accepted job to orphan or duplicate.
+            # One bounded retry absorbs transient generation-side rejection;
+            # transport, polling, URI and download failures never enter here.
+            provider_attempts = 2
+            video_uri = _generate_gemini_video_uri(prompt_text, seconds)
         return {
-            'url': _generate_gemini_video_uri(prompt_text, seconds),
+            'url': video_uri,
             'provider': 'gemini_veo',
+            'provider_attempts': provider_attempts,
         }
     task_id = str(getattr(created, 'id', '') or '').strip()
     if not task_id:
@@ -179,6 +196,7 @@ def generate_scene(prompt: str, duration: int = 5) -> dict:
     return {
         'url': str(output[0]),
         'provider': 'runway',
+        'provider_attempts': 1,
     }
 
 
