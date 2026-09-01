@@ -1,4 +1,5 @@
 import ast
+import httpx
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 import re
@@ -13,6 +14,7 @@ def _load_task_helpers():
     wanted = {
         '_select_ranked_broll_candidates',
         '_download_ranked_broll_candidates',
+        '_is_transient_pexels_provider_error',
     }
     definitions = [
         node
@@ -29,6 +31,7 @@ def _load_task_helpers():
         're': re,
         'find_broll': None,
         'download_broll': None,
+        'httpx': httpx,
     }
     exec(compile(ast.Module(body=definitions, type_ignores=[]), str(source_path), 'exec'), namespace)
     return namespace
@@ -146,7 +149,7 @@ class RankedBrollSelectionTests(unittest.TestCase):
 
         def fake_download(item, _path):
             if item['pexels_id'] == 2:
-                raise RuntimeError('simulated download failure')
+                raise httpx.TimeoutException('simulated download failure')
 
         globals_dict = download_candidates.__globals__
         old_find = globals_dict['find_broll']
