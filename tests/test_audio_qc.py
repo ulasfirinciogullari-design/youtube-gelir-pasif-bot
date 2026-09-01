@@ -1,4 +1,3 @@
-import base64
 import sys
 import tempfile
 import types
@@ -29,6 +28,8 @@ except ModuleNotFoundError:
         kwargs=kwargs,
     )
     _httpx_for_tests.post = lambda *args, **kwargs: None
+    _httpx_for_tests.get = lambda *args, **kwargs: None
+    _httpx_for_tests.delete = lambda *args, **kwargs: None
 
 _previous_httpx_module = sys.modules.get('httpx')
 sys.modules['httpx'] = _httpx_for_tests
@@ -101,15 +102,40 @@ def _gemini_interaction(transcript: str, *values: str) -> dict:
 
 
 class _Response:
-    def __init__(self, payload, status_code: int = 200):
+    def __init__(self, payload, status_code: int = 200, headers=None):
         self._payload = payload
         self.status_code = status_code
+        self.headers = headers or {}
 
     def json(self):
         return self._payload
 
 
 class AudioQCTests(unittest.TestCase):
+    def setUp(self):
+        self._real_upload_gemini_audio_file = (
+            audio_qc._upload_gemini_audio_file
+        )
+        self._real_delete_gemini_file = audio_qc._delete_gemini_file
+        self.gemini_file_resource = {
+            'name': 'files/unit-test-audio',
+            'uri': (
+                'https://generativelanguage.googleapis.com/v1beta/files/'
+                'unit-test-audio'
+            ),
+            'mime_type': 'audio/mpeg',
+        }
+        upload_patcher = patch.object(
+            audio_qc,
+            '_upload_gemini_audio_file',
+            return_value=self.gemini_file_resource,
+        )
+        delete_patcher = patch.object(audio_qc, '_delete_gemini_file')
+        self.gemini_upload = upload_patcher.start()
+        self.gemini_delete = delete_patcher.start()
+        self.addCleanup(upload_patcher.stop)
+        self.addCleanup(delete_patcher.stop)
+
     def _prosody_output(self, *, passed=True, issues=None):
         return {
             'pass': passed,
@@ -1011,9 +1037,10 @@ class AudioQCTests(unittest.TestCase):
         self.assertEqual(body['input'][0]['type'], 'audio')
         self.assertEqual(body['input'][0]['mime_type'], 'audio/mpeg')
         self.assertEqual(
-            base64.b64decode(body['input'][0]['data']),
-            b'audio-bytes',
+            body['input'][0]['uri'],
+            self.gemini_file_resource['uri'],
         )
+        self.assertNotIn('data', body['input'][0])
         self.assertEqual(body['generation_config'], {
             'transcription_config': {
                 'language_codes': ['tr-TR'],
@@ -1024,6 +1051,438 @@ class AudioQCTests(unittest.TestCase):
             },
         })
         self.assertNotIn('Merhaba', str(body))
+        self.gemini_upload.assert_called_once_with(
+            b'audio-bytes',
+            'audio/mpeg',
+            'gemini-key',
+        )
+        self.gemini_delete.assert_called_once_with(
+            'files/unit-test-audio',
+            'gemini-key',
+        )
+
+    def test_gemini_files_upload_uses_resumable_uri_contract(self):
+        session_url = (
+            'https://generativelanguage.googleapis.com/upload/v1beta/files'
+            '?upload_id=opaque-unit-test-token'
+        )
+        resource = {
+            'file': {
+                'name': 'files/uploaded-audio',
+                'uri': (
+                    'https://generativelanguage.googleapis.com/v1beta/files/'
+                    'uploaded-audio?source=files-api'
+                ),
+                'mimeType': 'audio/mpeg',
+                'state': 'ACTIVE',
+            },
+        }
+        calls = []
+
+        def fake_post(url, **kwargs):
+            calls.append((url, kwargs))
+            if url == audio_qc.GEMINI_FILES_UPLOAD_URL:
+                return _Response(
+                    {},
+                    headers={'x-goog-upload-url': session_url},
+                )
+            if url == session_url:
+                return _Response(resource)
+            raise AssertionError('Unexpected Gemini upload request')
+
+        with patch.object(audio_qc.httpx, 'post', side_effect=fake_post):
+            result = self._real_upload_gemini_audio_file(
+                b'audio-bytes',
+                'audio/mpeg',
+                'gemini-unit-test-key',
+            )
+
+        self.assertEqual(result, {
+            'name': 'files/uploaded-audio',
+            'uri': resource['file']['uri'],
+            'mime_type': 'audio/mpeg',
+            'state': 'active',
+        })
+        self.assertEqual(len(calls), 2)
+        start_url, start = calls[0]
+        self.assertEqual(start_url, audio_qc.GEMINI_FILES_UPLOAD_URL)
+        self.assertEqual(start['headers'], {
+            'x-goog-api-key': 'gemini-unit-test-key',
+            'X-Goog-Upload-Protocol': 'resumable',
+            'X-Goog-Upload-Command': 'start',
+            'X-Goog-Upload-Header-Content-Length': '11',
+            'X-Goog-Upload-Header-Content-Type': 'audio/mpeg',
+            'Content-Type': 'application/json',
+        })
+        self.assertEqual(
+            start['json'],
+            {'file': {'displayName': 'audio-qc-narration'}},
+        )
+        upload_url, upload = calls[1]
+        self.assertEqual(upload_url, session_url)
+        self.assertEqual(upload['headers'], {
+            'Content-Length': '11',
+            'X-Goog-Upload-Offset': '0',
+            'X-Goog-Upload-Command': 'upload, finalize',
+        })
+        self.assertEqual(upload['content'], b'audio-bytes')
+        self.assertNotIn('json', upload)
+
+    def test_gemini_processing_file_is_polled_until_active(self):
+        session_url = (
+            'https://generativelanguage.googleapis.com/upload/v1beta/files'
+            '?upload_id=processing-unit-test'
+        )
+        file_fields = {
+            'name': 'files/processing-audio',
+            'uri': (
+                'https://generativelanguage.googleapis.com/v1beta/files/'
+                'processing-audio'
+            ),
+            'mimeType': 'audio/mpeg',
+        }
+
+        def fake_post(url, **kwargs):
+            if url == audio_qc.GEMINI_FILES_UPLOAD_URL:
+                return _Response(
+                    {},
+                    headers={'x-goog-upload-url': session_url},
+                )
+            if url == session_url:
+                return _Response({
+                    'file': {**file_fields, 'state': 'PROCESSING'},
+                })
+            raise AssertionError('Unexpected Gemini upload request')
+
+        get_responses = [
+            _Response({**file_fields, 'state': 'PROCESSING'}),
+            _Response({**file_fields, 'state': 'ACTIVE'}),
+        ]
+        with (
+            patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            patch.object(
+                audio_qc.httpx,
+                'get',
+                side_effect=get_responses,
+            ) as get,
+            patch.object(audio_qc.time, 'sleep') as sleep,
+        ):
+            result = self._real_upload_gemini_audio_file(
+                b'audio',
+                'audio/mpeg',
+                'gemini-key',
+            )
+
+        self.assertEqual(result['state'], 'active')
+        self.assertEqual(result['name'], 'files/processing-audio')
+        self.assertEqual(get.call_count, 2)
+        get.assert_called_with(
+            'https://generativelanguage.googleapis.com/v1beta/files/'
+            'processing-audio',
+            headers={'x-goog-api-key': 'gemini-key'},
+            timeout=audio_qc._GEMINI_FILE_STATUS_TIMEOUT,
+        )
+        sleep.assert_called_once_with(0.25)
+        self.gemini_delete.assert_not_called()
+
+    def test_gemini_processing_file_failure_is_cleaned_up(self):
+        session_url = (
+            'https://generativelanguage.googleapis.com/upload/v1beta/files'
+            '?upload_id=failed-unit-test'
+        )
+        file_fields = {
+            'name': 'files/failed-audio',
+            'uri': (
+                'https://generativelanguage.googleapis.com/v1beta/files/'
+                'failed-audio'
+            ),
+            'mimeType': 'audio/mpeg',
+        }
+
+        def fake_post(url, **kwargs):
+            if url == audio_qc.GEMINI_FILES_UPLOAD_URL:
+                return _Response(
+                    {},
+                    headers={'x-goog-upload-url': session_url},
+                )
+            return _Response({
+                'file': {**file_fields, 'state': 'PROCESSING'},
+            })
+
+        with (
+            patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            patch.object(
+                audio_qc.httpx,
+                'get',
+                return_value=_Response({
+                    **file_fields,
+                    'state': 'FAILED',
+                }),
+            ),
+            patch.object(audio_qc.time, 'sleep') as sleep,
+        ):
+            with self.assertRaises(audio_qc.AudioQCError) as caught:
+                self._real_upload_gemini_audio_file(
+                    b'audio',
+                    'audio/mpeg',
+                    'gemini-key',
+                )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text file processing failed',
+        )
+        sleep.assert_not_called()
+        self.gemini_delete.assert_called_once_with(
+            'files/failed-audio',
+            'gemini-key',
+        )
+
+    def test_gemini_processing_file_timeout_is_bounded_and_cleaned_up(self):
+        session_url = (
+            'https://generativelanguage.googleapis.com/upload/v1beta/files'
+            '?upload_id=timeout-unit-test'
+        )
+        file_fields = {
+            'name': 'files/timeout-audio',
+            'uri': (
+                'https://generativelanguage.googleapis.com/v1beta/files/'
+                'timeout-audio'
+            ),
+            'mimeType': 'audio/mpeg',
+        }
+
+        def fake_post(url, **kwargs):
+            if url == audio_qc.GEMINI_FILES_UPLOAD_URL:
+                return _Response(
+                    {},
+                    headers={'x-goog-upload-url': session_url},
+                )
+            return _Response({
+                'file': {**file_fields, 'state': 'PROCESSING'},
+            })
+
+        with (
+            patch.object(audio_qc.httpx, 'post', side_effect=fake_post),
+            patch.object(
+                audio_qc.httpx,
+                'get',
+                return_value=_Response({
+                    **file_fields,
+                    'state': 'PROCESSING',
+                }),
+            ) as get,
+            patch.object(audio_qc.time, 'sleep') as sleep,
+        ):
+            with self.assertRaises(audio_qc.AudioQCError) as caught:
+                self._real_upload_gemini_audio_file(
+                    b'audio',
+                    'audio/mpeg',
+                    'gemini-key',
+                )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text file processing timed out',
+        )
+        self.assertEqual(get.call_count, audio_qc._GEMINI_FILE_POLL_ATTEMPTS)
+        self.assertEqual(
+            [call.args[0] for call in sleep.call_args_list],
+            [0.25, 0.5, 1.0, 1.0],
+        )
+        self.gemini_delete.assert_called_once_with(
+            'files/timeout-audio',
+            'gemini-key',
+        )
+
+    def test_gemini_missing_or_unknown_file_state_fails_closed_and_cleans_up(self):
+        session_url = (
+            'https://generativelanguage.googleapis.com/upload/v1beta/files'
+            '?upload_id=invalid-state-unit-test'
+        )
+        file_fields = {
+            'name': 'files/invalid-state-audio',
+            'uri': (
+                'https://generativelanguage.googleapis.com/v1beta/files/'
+                'invalid-state-audio'
+            ),
+            'mimeType': 'audio/mpeg',
+        }
+        for state in (None, 'UNKNOWN_STATE'):
+            with self.subTest(state=state):
+                finalized_file = dict(file_fields)
+                if state is not None:
+                    finalized_file['state'] = state
+
+                def fake_post(url, **kwargs):
+                    if url == audio_qc.GEMINI_FILES_UPLOAD_URL:
+                        return _Response(
+                            {},
+                            headers={'x-goog-upload-url': session_url},
+                        )
+                    return _Response({'file': finalized_file})
+
+                self.gemini_delete.reset_mock()
+                with (
+                    patch.object(
+                        audio_qc.httpx,
+                        'post',
+                        side_effect=fake_post,
+                    ),
+                    patch.object(audio_qc.httpx, 'get') as get,
+                ):
+                    with self.assertRaises(audio_qc.AudioQCError) as caught:
+                        self._real_upload_gemini_audio_file(
+                            b'audio',
+                            'audio/mpeg',
+                            'gemini-key',
+                        )
+
+                self.assertEqual(
+                    str(caught.exception),
+                    'Gemini speech-to-text file processing returned an '
+                    'invalid state',
+                )
+                get.assert_not_called()
+                self.gemini_delete.assert_called_once_with(
+                    'files/invalid-state-audio',
+                    'gemini-key',
+                )
+
+    def test_gemini_upload_rejects_untrusted_session_without_leaking_it(self):
+        unsafe_session = (
+            'https://example.invalid/upload?token=never-show-this-token'
+        )
+        with patch.object(
+            audio_qc.httpx,
+            'post',
+            return_value=_Response(
+                {},
+                headers={'x-goog-upload-url': unsafe_session},
+            ),
+        ) as post:
+            with self.assertRaises(audio_qc.AudioQCError) as caught:
+                self._real_upload_gemini_audio_file(
+                    b'audio',
+                    'audio/mpeg',
+                    'gemini-key',
+                )
+
+        post.assert_called_once()
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text file upload provided an invalid session',
+        )
+        self.assertNotIn('never-show-this-token', str(caught.exception))
+
+    def test_gemini_upload_http_error_is_secret_safe(self):
+        secret = 'never-show-gemini-upload-secret'
+        with patch.object(
+            audio_qc.httpx,
+            'post',
+            return_value=_Response(
+                {'error': {'message': secret}},
+                status_code=403,
+            ),
+        ):
+            with self.assertRaises(audio_qc.AudioQCError) as caught:
+                self._real_upload_gemini_audio_file(
+                    b'audio',
+                    'audio/mpeg',
+                    secret,
+                )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text file upload start failed with HTTP 403',
+        )
+        self.assertNotIn(secret, str(caught.exception))
+
+    def test_gemini_finalize_transport_error_hides_session_token(self):
+        secret = 'never-show-resumable-session-token'
+        session_url = (
+            'https://generativelanguage.googleapis.com/upload/v1beta/files'
+            f'?upload_id={secret}'
+        )
+
+        def fake_post(url, **kwargs):
+            if url == audio_qc.GEMINI_FILES_UPLOAD_URL:
+                return _Response(
+                    {},
+                    headers={'x-goog-upload-url': session_url},
+                )
+            raise RuntimeError(f'failed at {url}')
+
+        with patch.object(audio_qc.httpx, 'post', side_effect=fake_post):
+            with self.assertRaises(audio_qc.AudioQCError) as caught:
+                self._real_upload_gemini_audio_file(
+                    b'audio',
+                    'audio/mpeg',
+                    'gemini-key',
+                )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text file upload transport failed',
+        )
+        self.assertNotIn(secret, str(caught.exception))
+
+    def test_gemini_file_cleanup_is_bounded_and_best_effort(self):
+        captured = {}
+
+        def fake_delete(url, **kwargs):
+            captured['url'] = url
+            captured.update(kwargs)
+            raise RuntimeError('do not expose cleanup upload token')
+
+        with patch.object(audio_qc.httpx, 'delete', side_effect=fake_delete):
+            self._real_delete_gemini_file(
+                'files/uploaded-audio',
+                'gemini-unit-test-key',
+            )
+
+        self.assertEqual(
+            captured['url'],
+            'https://generativelanguage.googleapis.com/v1beta/files/'
+            'uploaded-audio',
+        )
+        self.assertEqual(
+            captured['headers'],
+            {'x-goog-api-key': 'gemini-unit-test-key'},
+        )
+        self.assertIs(
+            captured['timeout'],
+            audio_qc._GEMINI_CLEANUP_TIMEOUT,
+        )
+
+    def test_gemini_cleanup_runs_after_interaction_failure(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', ''),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'gemini-key'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(
+                    audio_qc.httpx,
+                    'post',
+                    return_value=_Response({}, status_code=503),
+                ),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(
+                        audio_path,
+                        'Beklenen anlat\u0131m',
+                    )
+
+        self.assertEqual(
+            str(caught.exception),
+            'Gemini speech-to-text failed with HTTP 503',
+        )
+        self.gemini_delete.assert_called_once_with(
+            'files/unit-test-audio',
+            'gemini-key',
+        )
 
     def test_gemini_missing_word_annotations_falls_back_to_elevenlabs(self):
         calls = []
@@ -1579,7 +2038,7 @@ class AudioQCTests(unittest.TestCase):
         post.assert_not_called()
         self.assertEqual(
             str(caught.exception),
-            'Gemini speech-to-text inline audio exceeds the safe size limit',
+            'Gemini speech-to-text audio exceeds the safe size limit',
         )
 
     def test_gemini_non_completed_status_fails_closed(self):
