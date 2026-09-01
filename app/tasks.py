@@ -248,6 +248,7 @@ MANUAL_QA_PUBLISH_QUALITY_THRESHOLD = 86
 MAX_AUDIO_GENERATION_ATTEMPTS = 3
 AUDIO_QC_PROVIDER_ATTEMPTS = 2
 AUDIO_QC_PROVIDER_RETRY_DELAY_SECONDS = 1.0
+STOCK_TOURNAMENT_GEMINI_MODEL = 'gemini-3.7-flash'
 _MANUAL_QA_CLEAR_VISUAL_FIELDS = (
     'prominent_readable_text_or_logo_visible',
     'major_visual_artifact_visible',
@@ -1865,6 +1866,7 @@ def _review_stock_tournament_round(
             _missing_review_attempts=0,
             topic=topic,
             story_scenes=scenes,
+            gemini_model_override=STOCK_TOURNAMENT_GEMINI_MODEL,
         )
         local_reviews = {
             int(review.get('scene_index')): review

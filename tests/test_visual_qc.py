@@ -2,6 +2,7 @@ import sys
 import tempfile
 import types
 import unittest
+import subprocess
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -24,6 +25,7 @@ from app.services.gemini_generation import (
 from app.services.visual_qc import (
     GEMINI_MAX_FRAME_BYTES,
     _bounded_gemini_frame_bytes,
+    _frame,
     review_scene_visuals,
 )
 
@@ -156,6 +158,59 @@ class VisualQcProviderTests(unittest.TestCase):
 
         self.assertIsNone(result)
         self.assertEqual(run.call_count, 3)
+
+    @patch('app.services.visual_qc.subprocess.check_output')
+    def test_ffprobe_timeout_is_bounded_and_frame_fails_closed(self, probe):
+        probe.side_effect = subprocess.TimeoutExpired(
+            cmd='ffprobe',
+            timeout=10.0,
+        )
+
+        result = _frame(
+            str(self.work / 'probe-timeout.mp4'),
+            self.work / 'probe-timeout.jpg',
+            0.5,
+        )
+
+        self.assertIsNone(result)
+        self.assertEqual(probe.call_args.kwargs['timeout'], 10.0)
+
+    @patch('app.services.visual_qc.subprocess.run')
+    @patch('app.services.visual_qc._duration', return_value=5.0)
+    def test_frame_timeout_is_bounded_and_fails_closed(self, _duration, run):
+        run.side_effect = subprocess.TimeoutExpired(
+            cmd='ffmpeg',
+            timeout=20.0,
+        )
+
+        result = _frame(
+            'frame-timeout.mp4',
+            self.work / 'frame-timeout.jpg',
+            0.5,
+        )
+
+        self.assertIsNone(result)
+        self.assertEqual(run.call_args.kwargs['timeout'], 20.0)
+
+    @patch('app.services.visual_qc.subprocess.run')
+    def test_frame_reencode_timeout_is_bounded_and_fails_closed(self, run):
+        oversized = self.work / 'reencode-timeout.jpg'
+        oversized.write_bytes(
+            b'\xff\xd8\xff' + b'x' * GEMINI_MAX_FRAME_BYTES
+        )
+        run.side_effect = subprocess.TimeoutExpired(
+            cmd='ffmpeg',
+            timeout=10.0,
+        )
+
+        result = _bounded_gemini_frame_bytes(oversized)
+
+        self.assertIsNone(result)
+        self.assertEqual(run.call_count, 3)
+        self.assertTrue(all(
+            call.kwargs['timeout'] == 10.0
+            for call in run.call_args_list
+        ))
 
     def test_failed_frame_reencode_marks_scene_missing_and_unreviewable(
         self
@@ -312,6 +367,30 @@ class VisualQcProviderTests(unittest.TestCase):
         }.issubset(required_fields))
         self.assertEqual(result['missing_review_indices'], [])
         self.assertEqual(result['reviews'][0]['best_start_fraction'], 0.50)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_gemini_model_override_is_request_scoped(self, frame, gemini):
+        frame.return_value = self.frame
+        gemini.return_value = {'reviews': [_review()]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+            patch.object(settings, 'gemini_model', 'gemini-global-pro'),
+        ):
+            review_scene_visuals(
+                self.scenes,
+                self.visuals,
+                self.work / 'model_override',
+                _missing_review_attempts=0,
+                gemini_model_override='gemini-3.7-flash',
+            )
+
+        self.assertEqual(
+            gemini.call_args.kwargs['model'],
+            'gemini-3.7-flash',
+        )
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
@@ -1062,9 +1141,14 @@ class VisualQcProviderTests(unittest.TestCase):
                 _missing_review_attempts=1,
                 topic='MISSING RETRY FULL TOPIC MARKER',
                 story_scenes=scenes,
+                gemini_model_override='gemini-3.7-flash',
             )
 
         self.assertEqual(gemini.call_count, 2)
+        self.assertTrue(all(
+            call.kwargs['model'] == 'gemini-3.7-flash'
+            for call in gemini.call_args_list
+        ))
         self.assertEqual(
             [review['scene_index'] for review in result['reviews']],
             [1, 3],
@@ -1142,10 +1226,15 @@ class VisualQcProviderTests(unittest.TestCase):
                         _missing_review_attempts=0,
                         topic=topic,
                         story_scenes=scenes,
+                        gemini_model_override='gemini-3.7-flash',
                     )
 
                 self.assertEqual(gemini.call_count, expected_calls)
                 for call in gemini.call_args_list:
+                    self.assertEqual(
+                        call.kwargs['model'],
+                        'gemini-3.7-flash',
+                    )
                     parts = call.args[0]
                     user_text = '\n'.join(
                         part['text'] for part in parts if 'text' in part

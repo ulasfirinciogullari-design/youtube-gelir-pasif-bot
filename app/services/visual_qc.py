@@ -311,7 +311,7 @@ def _duration(video_path: str) -> float:
     out = subprocess.check_output([
         'ffprobe', '-v', 'error', '-show_entries', 'format=duration',
         '-of', 'default=noprint_wrappers=1:nokey=1', video_path,
-    ], text=True).strip()
+    ], text=True, timeout=10.0).strip()
     return max(0.1, float(out))
 
 
@@ -362,7 +362,8 @@ def _frame(video_path: str, output_path: Path, fraction: float) -> Path | None:
         subprocess.run([
             'ffmpeg', '-y', '-ss', f'{seconds:.3f}', '-i', video_path,
             '-frames:v', '1', '-vf', 'scale=640:-2', '-q:v', '5', str(output_path),
-        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            timeout=20.0)
         return output_path if output_path.exists() and output_path.stat().st_size else None
     except Exception:
         return None
@@ -396,7 +397,8 @@ def _bounded_gemini_frame_bytes(frame_path: Path) -> bytes | None:
                 '-q:v',
                 str(quality),
                 str(output_path),
-            ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            ], check=True, stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL, timeout=10.0)
             candidate = output_path.read_bytes()
             if (
                 candidate.startswith(b'\xff\xd8\xff')
@@ -422,6 +424,7 @@ def _review_gemini_batches(
     *,
     topic: str = '',
     story_scenes: list[dict] | None = None,
+    gemini_model_override: str | None = None,
 ) -> dict:
     def merge_boundary_review(previous: dict, current: dict) -> dict:
         def merge_identity_fields(merged: dict) -> bool:
@@ -548,6 +551,7 @@ def _review_gemini_batches(
             _missing_review_attempts=missing_review_attempts,
             topic=topic,
             story_scenes=story_scenes,
+            gemini_model_override=gemini_model_override,
         )
 
         def remap_index(value: object) -> int | None:
@@ -654,6 +658,7 @@ def review_scene_visuals(
     *,
     topic: str = '',
     story_scenes: list[dict] | None = None,
+    gemini_model_override: str | None = None,
 ) -> dict:
     provider = _studio_plan_provider()
     if provider == 'openai' and not settings.openai_api_key:
@@ -681,6 +686,7 @@ def review_scene_visuals(
             _missing_review_attempts,
             topic=topic,
             story_scenes=complete_story,
+            gemini_model_override=gemini_model_override,
         )
     frame_dir = work / 'visual_qc'
     frame_dir.mkdir(parents=True, exist_ok=True)
@@ -914,12 +920,16 @@ def review_scene_visuals(
                         getattr(settings, 'gemini_api_key', '') or ''
                     ),
                     model=str(
-                        getattr(
-                            settings,
-                            'gemini_model',
-                            GEMINI_DEFAULT_MODEL,
+                        gemini_model_override
+                        if gemini_model_override is not None
+                        else (
+                            getattr(
+                                settings,
+                                'gemini_model',
+                                GEMINI_DEFAULT_MODEL,
+                            )
+                            or GEMINI_DEFAULT_MODEL
                         )
-                        or GEMINI_DEFAULT_MODEL
                     ),
                     json_schema=review_schema,
                     thinking_level='low',
@@ -1209,6 +1219,7 @@ def review_scene_visuals(
             _missing_review_attempts=_missing_review_attempts - 1,
             topic=topic,
             story_scenes=complete_story,
+            gemini_model_override=gemini_model_override,
         )
         retry_reviews = {
             int(review.get('scene_index')): review
