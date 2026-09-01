@@ -103,6 +103,7 @@ def _load_runway_functions(
     names = {
         '_gemini_video_duration',
         '_is_daily_gemini_quota_rejection',
+        '_gemini_image_rejection_category',
         '_validated_jpeg_dimensions',
         '_probe_single_jpeg_frame',
         '_decode_gemini_image',
@@ -181,6 +182,7 @@ def _load_image_namespace(fake_httpx=None, fake_subprocess=None):
     )
     tree = ast.parse(source_path.read_text(encoding='utf-8'))
     names = {
+        '_gemini_image_rejection_category',
         '_validated_jpeg_dimensions',
         '_probe_single_jpeg_frame',
         '_decode_gemini_image',
@@ -922,6 +924,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         namespace = {
             'httpx': fake_httpx,
             'time': fake_time,
+            're': re,
             'urlparse': urlparse,
             'settings': _Settings(),
             'GeminiVideoTerminalError': GeminiVideoTerminalError,
@@ -1116,7 +1119,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                         'details': [{
                             'violations': [{
                                 'quotaId': (
-                                    'GenerateRequestsPerDayPerProjectPerModel'
+                                    'generate_requests_per_model_per_day'
                                 ),
                             }],
                         }],
@@ -1145,6 +1148,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         namespace = {
             'httpx': fake_httpx,
             'time': fake_time,
+            're': re,
             'urlparse': urlparse,
             'settings': _Settings(),
             'GeminiVideoTerminalError': GeminiVideoTerminalError,
@@ -1414,13 +1418,16 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertTrue(post_args[0].endswith('/v1beta/interactions'))
         self.assertFalse(post_kwargs['json']['store'])
         self.assertEqual(
+            post_kwargs['json']['input'],
+            'literal documentary keyframe',
+        )
+        self.assertEqual(
             post_kwargs['json']['response_format'],
             {
                 'type': 'image',
                 'mime_type': 'image/jpeg',
                 'aspect_ratio': '16:9',
                 'image_size': '1K',
-                'delivery': 'inline',
             },
         )
         self.assertNotIn('configured-gemini-key', json.dumps(post_kwargs['json']))
@@ -1431,6 +1438,51 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         probe_kwargs = fake_subprocess.run.call_args.kwargs
         self.assertEqual(probe_kwargs['input'], image_bytes)
         self.assertEqual(probe_kwargs['timeout'], 30)
+
+    def test_image_interaction_rejection_exposes_only_safe_category(self):
+        class _Response:
+            status_code = 400
+
+            @staticmethod
+            def json():
+                return {
+                    'error': {
+                        'status': 'INVALID_ARGUMENT',
+                        'message': 'sensitive provider detail',
+                    },
+                }
+
+            @staticmethod
+            def raise_for_status():
+                raise AssertionError('classified rejection must fail first')
+
+        class _Client:
+            post_calls = 0
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def post(self, *_args, **_kwargs):
+                self.post_calls += 1
+                return _Response()
+
+        client = _Client()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        namespace = _load_image_namespace(fake_httpx=fake_httpx)
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            r'rejected \(invalid_argument\)',
+        ) as raised:
+            namespace['_generate_gemini_image_descriptor']('prompt', 5)
+
+        self.assertNotIn('sensitive provider detail', str(raised.exception))
+        self.assertEqual(client.post_calls, 1)
 
     def test_image_interaction_rejects_multiple_outputs_without_retry(self):
         encoded = base64.b64encode(_fake_jpeg()).decode('ascii')
