@@ -31,6 +31,7 @@ from app.services.youtube_auth import (
 from app.services.youtube_automation import (
     ProfileConflictError,
     YouTubeAutomationError,
+    automated_quality_approved,
     build_publish_plan,
     get_channel_profile,
     list_channel_profiles,
@@ -238,11 +239,26 @@ def _completed_jobs() -> list[dict]:
     jobs = []
     for job in list_jobs(80):
         result = job.get('result') or {}
+        youtube = (
+            result.get('youtube')
+            if isinstance(result, dict)
+            and isinstance(result.get('youtube'), dict)
+            else {}
+        )
+        already_uploaded = bool(
+            isinstance(result, dict)
+            and (
+                result.get('youtube_url')
+                or youtube.get('url')
+                or youtube.get('video_id')
+            )
+        )
         if (
             job.get('state') == 'SUCCESS'
             and job.get('kind') == 'render'
             and isinstance(result, dict)
             and result.get('video_key')
+            and (already_uploaded or automated_quality_approved(job))
         ):
             jobs.append(job)
     return jobs
@@ -590,6 +606,11 @@ def youtube_publish(
                 detail='Bu final başka bir YouTube kanalına yüklenmiş',
             )
         return RedirectResponse('/studio/youtube', status_code=303)
+    if not automated_quality_approved(source):
+        raise HTTPException(
+            status_code=409,
+            detail='Kalite onayı olmayan video YouTube’a yüklenemez',
+        )
 
     publish_plan = None
     if isinstance(source_result.get('publish_metadata'), dict):
