@@ -429,6 +429,34 @@ def _status_counts(jobs: list[dict]) -> dict[str, int]:
     return counts
 
 
+def _dashboard_recent_jobs(jobs: list[dict], limit: int = 3) -> list[dict]:
+    """Keep the landing page focused on work a person can continue.
+
+    The complete failure history remains available through the status filter,
+    but a burst of failed retry attempts must not displace running or completed
+    videos from the three compact dashboard slots.
+    """
+    if limit < 1:
+        return []
+    running = [job for job in jobs if _job_ui_status(job) == 'running']
+    repairs = [job for job in jobs if _job_ui_status(job) == 'repair']
+    ready = [job for job in jobs if _job_ui_status(job) == 'ready']
+    # Keep active work first, but reserve one compact slot for a repair that
+    # needs human action instead of allowing a full running queue to hide it.
+    repair_reserve = 1 if repairs and limit > 1 else 0
+    visible = running[:limit - repair_reserve]
+    visible.extend(repairs[:limit - len(visible)])
+    visible.extend(ready[:limit - len(visible)])
+    if not visible:
+        latest_failure = next(
+            (job for job in jobs if _job_ui_status(job) == 'failed'),
+            None,
+        )
+        if latest_failure is not None:
+            visible.append(latest_failure)
+    return visible[:limit]
+
+
 def _job_created_timestamp(job: dict) -> float | None:
     try:
         timestamp = float(job.get('created_ts'))
@@ -726,13 +754,30 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     else:
         health_label = 'Tüm servis ayarları hazır'
     jobs = _collapse_retry_sources(list_jobs(HISTORY_SCAN_LIMIT)) if authenticated else []
-    # Reconcile only records that can be rendered. Probing all 500 retained
-    # Celery results would make the landing page slower as history grows.
-    if jobs:
-        jobs = [*_refresh_active_jobs(jobs[:3]), *jobs[3:]]
-    recent = jobs[:3]
+    # Reconcile only the priority candidates. This keeps the landing page
+    # truthful without probing all retained Celery results as history grows.
+    priority_candidates = _dashboard_recent_jobs(jobs)
+    if priority_candidates:
+        refreshed_by_id = {
+            str(job.get('task_id') or ''): job
+            for job in _refresh_active_jobs(priority_candidates)
+        }
+        jobs = [
+            refreshed_by_id.get(str(job.get('task_id') or ''), job)
+            for job in jobs
+        ]
+    recent = _dashboard_recent_jobs(jobs)
     recent_html = ''.join(_job_row(job, compact=True) for job in recent) or '<div class="empty">Henüz kayıtlı üretim yok.</div>'
-    overview = _status_overview(_status_counts(jobs)) if authenticated else ''
+    counts = _status_counts(jobs)
+    overview = _status_overview(counts) if authenticated else ''
+    failure_history = (
+        '<div class="tiny">'
+        f'{counts["failed"]} başarısız iş geçmişte saklanıyor. '
+        '<a href="/studio/history?status=failed">Yalnızca gerekirse aç →</a>'
+        '</div>'
+        if authenticated and counts['failed']
+        else ''
+    )
     token_field = (
         '<div class="notice success">Güvenli Studio oturumu açık.</div>'
         if authenticated else
@@ -765,7 +810,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
 {token_field}
 <button class="block" type="submit">Üretimi başlat →</button>
 </form></section>
-<aside><div class="card"><details class="system-details"><summary><span class="status-summary"><span class="health-dot {"red" if required_missing else "green"}" aria-hidden="true"></span>{health_label}</span><span class="tiny">{ready_services}/{len(service_states)}</span></summary><div class="system-body"><div class="status-grid">{services}</div></div></details></div><div class="card"><div class="section-title"><div><span class="section-kicker">SON İŞLER</span><h3>Devam et</h3></div><a class="tiny" href="/studio/history">Durumlara git →</a></div><div class="job-list">{recent_html}</div></div><div class="card"><span class="section-kicker">GÜVENLİ YAYIN</span><h3>Kontrol sende</h3><p class="muted sidebar-copy">Videolar önce gizli yüklenir. Kalite onayından önce herkese açık yayın yapılmaz.</p></div></aside></div>
+<aside><div class="card"><details class="system-details"><summary><span class="status-summary"><span class="health-dot {"red" if required_missing else "green"}" aria-hidden="true"></span>{health_label}</span><span class="tiny">{ready_services}/{len(service_states)}</span></summary><div class="system-body"><div class="status-grid">{services}</div></div></details></div><div class="card"><div class="section-title"><div><span class="section-kicker">ÖNCELİKLİ İŞLER</span><h3>Devam et</h3></div><a class="tiny" href="/studio/history">Tüm durumlar →</a></div><div class="job-list">{recent_html}</div>{failure_history}</div><div class="card"><span class="section-kicker">GÜVENLİ YAYIN</span><h3>Kontrol sende</h3><p class="muted sidebar-copy">Videolar önce gizli yüklenir. Kalite onayından önce herkese açık yayın yapılmaz.</p></div></aside></div>
 '''
     script = r'''<script>
 const preview=document.getElementById('mode-preview'),production=document.getElementById('mode-production'),duration=document.getElementById('duration');

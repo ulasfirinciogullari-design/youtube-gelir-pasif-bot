@@ -1199,6 +1199,279 @@ def _clean_package(revised: dict, original: dict) -> dict:
     return out
 
 
+_SHORT_PROXY_ROUTE_VERSION = 1
+
+
+def _short_proxy_mechanism_is_negated(text: str) -> bool:
+    """Fail closed when a thermal mechanism is explicitly negated."""
+    return bool(
+        re.search(
+            r"\b(?:no|not|never|cannot|can['’]t|does['’]t|does\s+not|"
+            r"do\s+not|isn['’]t|is\s+not|won['’]t|will\s+not|"
+            r"değil\w*|yok)\b",
+            text,
+        )
+        or re.search(
+            r'\b(?:üret|oluş|engel|haps|yalıt|yayıl?|dağıl|ver|soğu|esk|'
+            r'yıpran|hızlan|yaşlan)\w*?m[aeıiuü](?:z|dı|di|du|dü|mış|miş|'
+            r'muş|müş|yor|yacak|yecek|yın|yin|yip|yerek|den)\w*\b',
+            text,
+        )
+    )
+
+
+def _short_preview_proxy_kind(
+    narration: str,
+    visual_queries: list[str] | str | None = None,
+) -> str | None:
+    """Classify only narrowly grounded phone thermal mechanisms.
+
+    This is deliberately not a general ``abstract idea -> AI`` escape hatch.
+    Each accepted class requires a concrete phone or battery plus a recognised
+    physical mechanism that a thermal camera, cutaway, or time-compression
+    shot can render. Vague mystery or conclusion wording stays fail-closed.
+    """
+    text = unicodedata.normalize('NFKC', str(narration or '')).casefold()
+    query_values = visual_queries or []
+    if isinstance(query_values, str):
+        query_values = [query_values]
+    subject_context = ' '.join([
+        text,
+        *[
+            unicodedata.normalize('NFKC', str(value or '')).casefold()
+            for value in query_values[:3]
+        ],
+    ])
+    has_phone = bool(re.search(
+        r'\b(?:phone|smartphone|telefon\w*)\b',
+        subject_context,
+    ))
+    has_battery = bool(re.search(
+        r'\b(?:battery|batteries|batarya\w*|pil\w*)\b',
+        subject_context,
+    ))
+    has_heat = bool(re.search(
+        r'\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b',
+        text,
+    ))
+    if (
+        not has_heat
+        or not has_phone
+        or _short_proxy_mechanism_is_negated(text)
+    ):
+        return None
+
+    if (
+        has_battery
+        and re.search(
+            r'(?:\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b'
+            r'.{0,120}\b(?:battery|batteries|batarya\w*|pil\w*)\b'
+            r'.{0,100}\b(?:age\w*|degrad\w*|wear\w*|lifespan|esk\w*|'
+            r'yıpran\w*|öm\w*)\b.{0,60}\b(?:lead\w*|cause\w*|accelerat\w*|'
+            r'yol\s+aç\w*|neden\s+ol\w*|hızlandır\w*)\b)'
+            r'|(?:\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b'
+            r'.{0,80}\b(?:lead\w*|cause\w*|accelerat\w*|yol\s+aç\w*|'
+            r'neden\s+ol\w*|hızlandır\w*)\b.{0,80}\b(?:battery|batteries|'
+            r'batarya\w*|pil\w*)\b.{0,80}\b(?:age\w*|degrad\w*|wear\w*|'
+            r'lifespan|esk\w*|yıpran\w*|öm\w*)\b)',
+            text,
+        )
+    ):
+        return 'thermal_aging'
+    if (
+        re.search(
+            r'\b(?:pillow\w*|cushion\w*|yastık\w*)\b.{0,100}'
+            r'(?:\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b'
+            r'.{0,80}\b(?:dissipat\w*|spread\w*|yayıl\w*|dağıl\w*)\b'
+            r'.{0,60}\b(?:trap\w*|block\w*|prevent\w*|insulat\w*|engel\w*|'
+            r'haps\w*|yalıt\w*)\b'
+            r'|\b(?:trap\w*|block\w*|prevent\w*|insulat\w*|engel\w*|'
+            r'haps\w*|yalıt\w*)\b.{0,80}'
+            r'\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b'
+            r'(?:.{0,60}\b(?:dissipat\w*|spread\w*|yayıl\w*|dağıl\w*)\b)?)',
+            text,
+        )
+    ):
+        return 'insulated_heat'
+    if (
+        has_battery
+        and re.search(
+            r'(?:\b(?:battery|batteries|batarya\w*|pil\w*|phone|smartphone|'
+            r'telefon\w*)\b.{0,100}\b(?:charg\w*|şarj\w*)\b.{0,100}'
+            r'\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b.{0,40}'
+            r'\b(?:produc\w*|generat\w*|creat\w*|üret\w*|oluş\w*)\b)'
+            r'|(?:\b(?:battery|batteries|batarya\w*|pil\w*|phone|smartphone|'
+            r'telefon\w*)\b.{0,100}\b(?:produc\w*|generat\w*|creat\w*|'
+            r'üret\w*|oluş\w*)\b.{0,40}\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b'
+            r'.{0,80}\b(?:charg\w*|şarj\w*)\b)'
+            r'|(?:\b(?:charg\w*|şarj\w*)\b.{0,80}'
+            r'\b(?:battery|batteries|batarya\w*|pil\w*|phone|smartphone|'
+            r'telefon\w*)\b.{0,80}\b(?:produc\w*|generat\w*|creat\w*|'
+            r'üret\w*|oluş\w*)\b.{0,40}\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b)',
+            text,
+        )
+    ):
+        return 'charging_heat'
+    if (
+        has_phone
+        and re.search(
+            r'(?:\b(?:phone|smartphone|telefon\w*)\b.{0,100}'
+            r'\b(?:open|exposed|nightstand|bedside|açık\w*|komodin\w*)\b'
+            r'|\b(?:open|exposed|nightstand|bedside|açık\w*|komodin\w*)\b'
+            r'.{0,100}\b(?:phone|smartphone|telefon\w*)\b)'
+            r'.{0,100}(?:\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b.{0,50}'
+            r'\b(?:release\w*|dissipat\w*|cool\w*|spread\w*|ver\w*|'
+            r'yay\w*|soğu\w*)\b|\b(?:release\w*|dissipat\w*|cool\w*|'
+            r'spread\w*|ver\w*|yay\w*|soğu\w*)\b.{0,50}'
+            r'\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b)',
+            text,
+        )
+    ):
+        return 'open_air_cooling'
+    return None
+
+
+def _short_preview_proxy_prompt(scene: dict, kind: str) -> str:
+    prompts = {
+        'charging_heat': (
+            'One continuous photorealistic macro documentary shot of the same '
+            'unbranded smartphone charging in the established scene setting. '
+            'A physically grounded thermal-camera view shows the battery area '
+            'gradually becoming warmer while the phone remains still.'
+        ),
+        'insulated_heat': (
+            'One continuous photorealistic cutaway documentary shot of the same '
+            'unbranded charging smartphone directly beneath the same thick '
+            'pillow in the established scene setting. A physically grounded '
+            'thermal-camera view shows '
+            'heat remaining concentrated around the phone beneath the insulating '
+            'pillow while the surrounding open air stays cooler.'
+        ),
+        'thermal_aging': (
+            'One continuous photorealistic macro time-compression documentary '
+            'shot of the same smartphone battery after repeated high-temperature '
+            'charging cycles. A physically grounded battery cross-section shows '
+            'gradual internal electrode wear accumulating while the battery '
+            'identity, scale, and orientation remain constant.'
+        ),
+        'open_air_cooling': (
+            'One continuous photorealistic thermal-camera documentary shot of '
+            'the same unbranded smartphone resting exposed on the same hard, '
+            'flat, open surface in the established scene setting. Localized '
+            'heat around the phone '
+            'visibly decreases and disperses into the surrounding open air while '
+            'the camera and phone remain still.'
+        ),
+    }
+    query_values = scene.get('visual_queries') or []
+    if isinstance(query_values, str):
+        query_values = [query_values]
+    anchors = [
+        str(value).strip()
+        for value in query_values
+        if isinstance(value, str)
+        and re.fullmatch(
+            r"[A-Za-z0-9][A-Za-z0-9 '\-]{2,100}",
+            value.strip(),
+        )
+    ][:2]
+    anchor_clause = (
+        ' Preserve these scene identity, setting, and continuity anchors: '
+        + '; '.join(anchors)
+        + '.'
+        if anchors else ''
+    )
+    return (
+        prompts[kind]
+        + anchor_clause
+        + ' Keep the frame purely photographic, text-free, and unbranded, '
+        'with one literal physical subject, one cause, one visibly changed '
+        'result, and continuous motion.'
+    )
+
+
+def _brief_forces_stock_routes(topic: str) -> bool:
+    brief = unicodedata.normalize('NFKC', str(topic or '')).casefold()
+    return bool(re.search(
+        r'\b(?:ai[_ -]?prompt)\b.{0,100}\b(?:null|none|boş)\b'
+        r'|\b(?:stock|stok)\b.{0,50}\b(?:only|sadece|yalnız)\b'
+        r'|\b(?:only|sadece|yalnız)\b.{0,50}\b(?:stock|stok)\b',
+        brief,
+    ))
+
+
+def _apply_short_preview_concrete_proxy_routes(
+    package: dict,
+    options: dict,
+    duration_minutes: float,
+    topic: str = '',
+) -> dict:
+    """Promote known invisible mechanisms before stock-only preflight.
+
+    The worker still owns paid allocation and final visual QC. This only keeps
+    an evidence-ready physical mechanism from being mislabeled as stock-safe
+    before that bounded allocation can happen.
+    """
+    scenes = package.get('scenes') or []
+    if (
+        options.get('mode') != 'preview'
+        or duration_minutes > 0.6
+        or not scenes
+        or _brief_forces_stock_routes(topic)
+    ):
+        return package
+
+    paid_cap = preview_paid_ai_limit(options, len(scenes), duration_minutes)
+    if paid_cap is None:
+        return package
+    current_ai_count = sum(
+        1
+        for scene in scenes
+        if str((scene or {}).get('ai_prompt') or '').strip()
+    )
+    remaining = max(0, int(paid_cap) - current_ai_count)
+    if not remaining:
+        return package
+
+    out = dict(package)
+    routed_scenes = [dict(scene) for scene in scenes]
+    routed: list[dict] = []
+    for position, scene in enumerate(routed_scenes):
+        if not remaining or str(scene.get('ai_prompt') or '').strip():
+            continue
+        kind = _short_preview_proxy_kind(
+            scene.get('narration') or '',
+            scene.get('visual_queries') or [],
+        )
+        if kind is None:
+            continue
+        scene['ai_prompt'] = _short_preview_proxy_prompt(scene, kind)
+        routed.append({'position': position, 'proxy': kind})
+        remaining -= 1
+
+    if not routed:
+        return package
+    out['scenes'] = routed_scenes
+    out['ai_scenes'] = [
+        scene['ai_prompt']
+        for scene in routed_scenes
+        if str(scene.get('ai_prompt') or '').strip()
+    ]
+    director_qc = out.get('director_qc') or []
+    if not isinstance(director_qc, list):
+        director_qc = [str(director_qc)]
+    out['director_qc'] = [
+        *director_qc,
+        'Routed concrete thermal mechanisms through bounded visual proxies.',
+    ]
+    out['short_proxy_routes'] = {
+        'version': _SHORT_PROXY_ROUTE_VERSION,
+        'paid_cap': int(paid_cap),
+        'routes': routed,
+    }
+    return out
+
+
 def _run_director(
     client: OpenAI,
     compact: dict,
@@ -1281,6 +1554,9 @@ def _run_director(
             'rewrite the narration and its queries before returning. '
             'Every spoken clause in an ai_prompt-null scene must be literally visible in that same clip; never append abstract phrases such as magic happening, '
             'more working than the viewer can see, hidden systems or silent partners. '
+            'A causal sentence about a phone battery producing heat, a pillow trapping heat, heat accelerating battery aging, or an exposed phone dissipating heat is NOT stock-safe merely because a phone or pillow appears. '
+            'Give that sentence a non-null ai_prompt with a concrete thermal-camera, physical cutaway, or time-compression proxy that visibly preserves the exact phone, cause, changed result, and established setting. '
+            'The proxy must use one continuous physical shot with no metaphor, floating icons, arrows, chart, caption, or fake interface text. '
             'Each non-null ai_prompt must be a concrete English prompt for one continuous cinematic 16:9 scene-length shot, normally 5-10 seconds, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
             'Treat each non-null ai_prompt as a standalone paid-generation contract: repeat every visible identity, size, color, '
@@ -2910,6 +3186,12 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         topic,
         expected_scene_count=(target_scenes if exact_scene_count else None),
     )
+    out = _apply_short_preview_concrete_proxy_routes(
+        out,
+        options,
+        duration_minutes,
+        topic,
+    )
     words = _word_count(out['narration'])
     scene_count = len(out['scenes'])
     ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
@@ -2960,6 +3242,12 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             _clean_package(revised, package),
             topic,
             expected_scene_count=(target_scenes if exact_scene_count else None),
+        )
+        out = _apply_short_preview_concrete_proxy_routes(
+            out,
+            options,
+            duration_minutes,
+            topic,
         )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
@@ -3059,6 +3347,12 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 expected_scene_count=(
                     target_scenes if exact_scene_count else None
                 ),
+            )
+            out = _apply_short_preview_concrete_proxy_routes(
+                out,
+                options,
+                duration_minutes,
+                topic,
             )
             words = _word_count(out['narration'])
             scene_count = len(out['scenes'])

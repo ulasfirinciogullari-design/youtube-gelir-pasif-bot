@@ -33,6 +33,7 @@ from app.services.director import (
     ImmutableNarrationSceneBudgetError,
     _NaturalSpokenLanguageRepairRequired,
     _WholeStoryRepairRequired,
+    _apply_short_preview_concrete_proxy_routes,
     _repair_short_stock_scenes,
     _short_preview_scene_budget_issues,
     _short_preview_scene_word_ranges,
@@ -476,6 +477,67 @@ def make_coherent_battery_package():
     }
 
 
+def make_phone_under_pillow_package():
+    narrations = [
+        'Yastık altında gece şarj olan telefon, sabah normalden daha sıcak olabilir.',
+        'Batarya bütün gece şarj olurken az da olsa ısı üretir.',
+        'Yastık, bu ısının havaya rahatça yayılmasını büyük ölçüde engeller.',
+        'Bu sıcaklık bataryanın zamanla gereğinden daha hızlı eskimesine yol açabilir.',
+        'Bu yüzden telefonu sert, düz ve açık bir komodine bırak.',
+        'Açıkta kalan telefon ısıyı havaya çok daha kolay verir.',
+    ]
+    queries = [
+        [
+            'charging smartphone tucked under bedroom pillow',
+            'warm phone beneath pillow in morning',
+        ],
+        [
+            'thermal camera charging smartphone battery',
+            'smartphone battery heat while charging',
+        ],
+        [
+            'thermal camera phone heat under pillow',
+            'pillow trapping smartphone heat',
+        ],
+        [
+            'aged smartphone battery heat damage',
+            'battery cell degradation high temperature',
+        ],
+        [
+            'hand places phone on open nightstand',
+            'smartphone resting on hard bedside table',
+        ],
+        [
+            'thermal camera phone cooling on nightstand',
+            'smartphone dissipating heat in open air',
+        ],
+    ]
+    scenes = [
+        _scene(position, narration, queries[position])
+        for position, narration in enumerate(narrations)
+    ]
+    narration = ' '.join(narrations)
+    assert _word_count(narration) == 59
+    return {
+        'title': 'Telefonu Yastık Altında Şarj Etme',
+        'description': 'Telefon ısısını tek bir gündelik sebep ve çözümle anlatır.',
+        'thumbnail_text': 'YASTIK ALTINDA NEDEN ISINIR?',
+        'sources': [{
+            'url': 'https://example.com/battery-thermal-safety',
+            'evidence': (
+                'Charging creates heat, insulation restricts heat transfer, '
+                'and sustained high temperature accelerates battery aging.'
+            ),
+        }],
+        'scenes': scenes,
+        'narration': narration,
+        'tts_narration': narration,
+        'visual_queries': [query for row in queries for query in row],
+        'ai_scenes': [],
+        'director_qc': [],
+    }
+
+
 def make_ai_first_five_scene_package():
     scenes = [
         _scene(
@@ -612,6 +674,320 @@ def make_documentary_airplane_coda_package():
     ]
     assert 42 <= _word_count(package['narration']) <= 60
     return package
+
+
+class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        config_stub.settings.openai_model = 'test-model'
+
+    def test_phone_under_pillow_routes_only_grounded_invisible_mechanisms(self):
+        package = make_phone_under_pillow_package()
+
+        routed = _apply_short_preview_concrete_proxy_routes(
+            package,
+            {
+                'mode': 'preview',
+                'visual_mix': 'balanced',
+            },
+            0.5,
+            'Telefon neden yastık altında ısınır?',
+        )
+
+        self.assertEqual(routed['narration'], package['narration'])
+        self.assertEqual(
+            [
+                row['position']
+                for row in routed['short_proxy_routes']['routes']
+            ],
+            [1, 2, 3, 5],
+        )
+        self.assertEqual(
+            [
+                row['proxy']
+                for row in routed['short_proxy_routes']['routes']
+            ],
+            [
+                'charging_heat',
+                'insulated_heat',
+                'thermal_aging',
+                'open_air_cooling',
+            ],
+        )
+        self.assertEqual(routed['short_proxy_routes']['paid_cap'], 4)
+        self.assertEqual(len(routed['ai_scenes']), 4)
+        self.assertIsNone(routed['scenes'][0]['ai_prompt'])
+        self.assertIsNone(routed['scenes'][4]['ai_prompt'])
+        self.assertTrue(all(
+            routed['scenes'][position]['ai_prompt']
+            for position in (1, 2, 3, 5)
+        ))
+        self.assertIn(
+            'thermal-camera',
+            routed['scenes'][2]['ai_prompt'],
+        )
+        self.assertIn(
+            'same hard, flat, open surface in the established scene setting',
+            routed['scenes'][5]['ai_prompt'],
+        )
+        self.assertIn(
+            'purely photographic, text-free, and unbranded',
+            routed['scenes'][1]['ai_prompt'],
+        )
+        self.assertTrue(all(
+            scene['ai_prompt'] is None
+            for scene in package['scenes']
+        ))
+
+    def test_proxy_router_rejects_non_phone_batteries_and_retains_setting(self):
+        def one_scene(narration, queries):
+            return {
+                'scenes': [{
+                    'narration': narration,
+                    'visual_queries': queries,
+                    'ai_prompt': None,
+                }],
+                'narration': narration,
+                'tts_narration': narration,
+                'ai_scenes': [],
+                'director_qc': [],
+            }
+
+        for narration, queries in (
+            (
+                'Laptop bataryası şarj olurken az miktarda ısı üretir.',
+                ['thermal camera laptop battery charging'],
+            ),
+            (
+                'An electric vehicle battery produces heat while charging.',
+                ['electric vehicle battery thermal charging'],
+            ),
+        ):
+            package = one_scene(narration, queries)
+            routed = _apply_short_preview_concrete_proxy_routes(
+                package,
+                {'mode': 'preview', 'visual_mix': 'balanced'},
+                0.5,
+                'Batarya ısısı',
+            )
+            self.assertIs(routed, package)
+            self.assertIsNone(routed['scenes'][0]['ai_prompt'])
+
+        car_scene = one_scene(
+            'The smartphone battery produces heat while charging.',
+            ['smartphone charging inside parked car'],
+        )
+        routed = _apply_short_preview_concrete_proxy_routes(
+            car_scene,
+            {'mode': 'preview', 'visual_mix': 'balanced'},
+            0.5,
+            'Phone charging inside a parked car',
+        )
+        prompt = routed['scenes'][0]['ai_prompt']
+        self.assertIn('smartphone charging inside parked car', prompt)
+        self.assertNotIn('bedroom', prompt.casefold())
+
+    def test_proxy_router_rejects_negation_and_reversed_thermal_causality(self):
+        examples = (
+            (
+                'Telefon bataryası şarj olurken ısı üretmez.',
+                ['thermal camera smartphone battery charging'],
+            ),
+            (
+                'Telefon bataryası şarj olurken ısı üretmiyor.',
+                ['thermal camera smartphone battery charging'],
+            ),
+            (
+                'A phone beneath a pillow does not trap heat.',
+                ['thermal camera smartphone under pillow'],
+            ),
+            (
+                'Açıkta kalan telefon ısıyı havaya vermez.',
+                ['thermal camera phone cooling on nightstand'],
+            ),
+            (
+                'Battery aging causes the smartphone to run hotter.',
+                ['aged smartphone battery thermal closeup'],
+            ),
+            (
+                'Batarya eskidikçe telefon daha sıcak çalışır.',
+                ['aged smartphone battery heat closeup'],
+            ),
+        )
+        for narration, queries in examples:
+            package = {
+                'scenes': [{
+                    'narration': narration,
+                    'visual_queries': queries,
+                    'ai_prompt': None,
+                }],
+                'narration': narration,
+                'tts_narration': narration,
+                'ai_scenes': [],
+                'director_qc': [],
+            }
+            routed = _apply_short_preview_concrete_proxy_routes(
+                package,
+                {'mode': 'preview', 'visual_mix': 'balanced'},
+                0.5,
+                'Telefon bataryası ve ısı',
+            )
+            self.assertIs(routed, package, narration)
+            self.assertIsNone(routed['scenes'][0]['ai_prompt'])
+
+    def test_vague_abstraction_and_explicit_stock_contract_stay_fail_closed(self):
+        package = make_phone_under_pillow_package()
+        vague = copy.deepcopy(package)
+        vague['scenes'][1]['narration'] = (
+            'Telefonun görünmeyen sırrı her şeyi sessizce değiştirir.'
+        )
+        vague['scenes'][1]['tts_text'] = vague['scenes'][1]['narration']
+        vague['narration'] = ' '.join(
+            scene['narration'] for scene in vague['scenes']
+        )
+
+        routed = _apply_short_preview_concrete_proxy_routes(
+            vague,
+            {'mode': 'preview', 'visual_mix': 'balanced'},
+            0.5,
+            'Telefonun görünmeyen sırrı nedir?',
+        )
+        self.assertIsNone(routed['scenes'][1]['ai_prompt'])
+
+        stock_locked = _apply_short_preview_concrete_proxy_routes(
+            package,
+            {'mode': 'preview', 'visual_mix': 'balanced'},
+            0.5,
+            (
+                'Bütün sahneler stock only kalsın ve her ai_prompt null olsun. '
+                'Konuşma metnini değiştirme.'
+            ),
+        )
+        self.assertIs(stock_locked, package)
+        self.assertNotIn('short_proxy_routes', stock_locked)
+
+    @patch('app.services.director._repair_short_stock_scenes')
+    @patch('app.services.director._run_director')
+    @patch('app.services.director.OpenAI')
+    def test_director_applies_proxy_routes_before_stock_preflight(
+        self,
+        openai_class,
+        run_director,
+        repair_stock_scenes,
+    ):
+        package = make_phone_under_pillow_package()
+        run_director.return_value = {
+            'title': package['title'],
+            'thumbnail_text': package['thumbnail_text'],
+            'description': package['description'],
+            'scenes': [
+                {
+                    'narration': scene['narration'],
+                    'visual_queries': copy.deepcopy(scene['visual_queries']),
+                    'ai_prompt': None,
+                    'pace': 'normal',
+                    'transition': 'cut',
+                }
+                for scene in package['scenes']
+            ],
+            'qc_summary': [],
+        }
+
+        def attest(_client, candidate, *_args, **_kwargs):
+            approved = copy.deepcopy(candidate)
+            approved['stock_scene_qc'] = {
+                'version': director_module._STOCK_SCENE_QC_VERSION,
+                'story_review': {'accepted': True},
+                'ending_pair_review': {'accepted': True},
+            }
+            return approved
+
+        repair_stock_scenes.side_effect = attest
+        exact = package['narration']
+        result = direct_and_qc(
+            package,
+            (
+                'Tam altı sahne kullan. Konuşma metni tam olarak şu altı '
+                f'cümle olsun: “{exact}”'
+            ),
+            0.5,
+            'tr',
+            {
+                'mode': 'preview',
+                'pace': 'balanced',
+                'visual_mix': 'balanced',
+                'content_style': 'documentary',
+            },
+        )
+
+        preflight_candidate = repair_stock_scenes.call_args.args[1]
+        self.assertEqual(
+            [
+                position
+                for position, scene in enumerate(
+                    preflight_candidate['scenes']
+                )
+                if scene.get('ai_prompt')
+            ],
+            [1, 2, 3, 5],
+        )
+        self.assertEqual(result['narration'], exact)
+        self.assertEqual(result['ai_scene_count'], 4)
+        self.assertEqual(run_director.call_count, 1)
+        openai_class.assert_called_once()
+
+    def test_routed_phone_story_reaches_stock_critic_with_only_literal_scenes(self):
+        package = make_phone_under_pillow_package()
+        routed = _apply_short_preview_concrete_proxy_routes(
+            package,
+            {'mode': 'preview', 'visual_mix': 'balanced'},
+            0.5,
+            'Telefon neden yastık altında ısınır?',
+        )
+        generated = {
+            'scenes': [
+                {
+                    'position': position,
+                    'narration': routed['scenes'][position]['narration'],
+                    'visual_queries': routed['scenes'][position]['visual_queries'],
+                    'ai_prompt': None,
+                }
+                for position in (0, 4)
+            ],
+        }
+        client = FakeClient([
+            generated,
+            critic_payload(
+                stock_positions=(0, 4),
+                scene_count=6,
+            ),
+        ])
+        exact = routed['narration']
+
+        result = _repair_short_stock_scenes(
+            client,
+            routed,
+            'Turkish',
+            0.5,
+            topic=(
+                'Konuşma metni tam olarak şu altı cümle olsun: '
+                f'“{exact}”'
+            ),
+            content_style='documentary',
+        )
+
+        self.assertEqual(result['narration'], exact)
+        self.assertEqual(
+            result['stock_scene_qc']['target_positions'],
+            [0, 4],
+        )
+        self.assertEqual(len(result['ai_scenes']), 4)
+        self.assertIn(
+            'thermal-camera',
+            result['scenes'][5]['ai_prompt'],
+        )
+        self.assertEqual(len(client.responses.calls), 2)
 
 
 def valid_generator_payload(positions=(0, 4, 5), final_variant=False):
