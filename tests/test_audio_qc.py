@@ -2685,10 +2685,68 @@ class AudioQCTests(unittest.TestCase):
             result['mismatch_details']['timestamp_sequence_match']
         )
 
+    def test_openai_explicit_decimal_split_keeps_timestamp_evidence(self):
+        for transcript in ('4,8 milyon', '4.8 milyon'):
+            with self.subTest(transcript=transcript):
+                result = audio_qc.compare_transcript(
+                    'D\u00f6rt virg\u00fcl sekiz milyon',
+                    transcript,
+                    words=_openai_words('4', '8', 'milyon'),
+                    provider='openai',
+                )
+
+                self.assertTrue(result['pass'])
+                self.assertTrue(
+                    result['mismatch_details']['timestamp_sequence_match']
+                )
+                self.assertIs(
+                    audio_qc._require_word_timing_evidence(
+                        result,
+                        'OpenAI',
+                    ),
+                    result,
+                )
+
+    def test_openai_integer_cannot_match_split_digit_timestamps(self):
+        result = audio_qc.compare_transcript(
+            'Yirmi dokuz y\u0131l',
+            '29 y\u0131l',
+            words=_openai_words('2', '9', 'y\u0131l'),
+            provider='openai',
+        )
+
+        self.assertTrue(result['pass'])
+        self.assertFalse(
+            result['mismatch_details']['timestamp_sequence_match']
+        )
+        with self.assertRaises(audio_qc.AudioQCError):
+            audio_qc._require_word_timing_evidence(result, 'OpenAI')
+
+    def test_openai_decimal_split_rejects_changed_digits_or_order(self):
+        for words in (
+            ('4', '9', 'milyon'),
+            ('8', '4', 'milyon'),
+        ):
+            with self.subTest(words=words):
+                result = audio_qc.compare_transcript(
+                    'D\u00f6rt virg\u00fcl sekiz milyon',
+                    '4,8 milyon',
+                    words=_openai_words(*words),
+                    provider='openai',
+                )
+
+                self.assertTrue(result['pass'])
+                self.assertFalse(
+                    result['mismatch_details']['timestamp_sequence_match']
+                )
+                with self.assertRaises(audio_qc.AudioQCError):
+                    audio_qc._require_word_timing_evidence(
+                        result,
+                        'OpenAI',
+                    )
+
     def test_openai_boundary_tolerance_preserves_numeric_and_lexical_data(self):
         cases = (
-            ('4,8', ('4', '8')),
-            ('4.8', ('4', '8')),
             ('4 8', ('4/8',)),
             ('4 8', ('48',)),
             ('4, 8', ('48',)),
