@@ -259,7 +259,9 @@ class RunwayPromptTests(unittest.TestCase):
     def test_voice_synthesis_quality_retries_use_three_distinct_seeds(self):
         calls = []
 
-        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+        def synthesize(
+            _scenes, _job_id, _target, *, generation_attempt, language=None
+        ):
             calls.append(generation_attempt)
             if generation_attempt < 2:
                 raise VoiceQualityError('alignment defect')
@@ -281,7 +283,9 @@ class RunwayPromptTests(unittest.TestCase):
     def test_voice_synthesis_quality_exhaustion_is_terminal(self):
         calls = []
 
-        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+        def synthesize(
+            _scenes, _job_id, _target, *, generation_attempt, language=None
+        ):
             calls.append(generation_attempt)
             raise VoiceQualityError('deterministic fit defect')
 
@@ -299,7 +303,9 @@ class RunwayPromptTests(unittest.TestCase):
     def test_voice_structural_fit_error_is_terminal_without_seed_retry(self):
         calls = []
 
-        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+        def synthesize(
+            _scenes, _job_id, _target, *, generation_attempt, language=None
+        ):
             calls.append(generation_attempt)
             raise VoiceScriptFitError('script is structurally too long')
 
@@ -319,7 +325,9 @@ class RunwayPromptTests(unittest.TestCase):
         request = httpx.Request('POST', 'https://voice.example.invalid')
         response = httpx.Response(429, request=request)
 
-        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+        def synthesize(
+            _scenes, _job_id, _target, *, generation_attempt, language=None
+        ):
             calls.append(generation_attempt)
             raise httpx.HTTPStatusError(
                 'rate limited',
@@ -343,7 +351,9 @@ class RunwayPromptTests(unittest.TestCase):
         request = httpx.Request('POST', 'https://voice.example.invalid')
         response = httpx.Response(429, request=request)
 
-        def synthesize(_scenes, _job_id, _target, *, generation_attempt):
+        def synthesize(
+            _scenes, _job_id, _target, *, generation_attempt, language=None
+        ):
             calls.append(generation_attempt)
             raise httpx.HTTPStatusError(
                 'rate limited',
@@ -361,6 +371,25 @@ class RunwayPromptTests(unittest.TestCase):
             globals_dict['synthesize_scene_sequence'] = previous
 
         self.assertEqual(calls, [0])
+
+    def test_voice_candidate_forwards_pipeline_language_to_synthesis(self):
+        calls = []
+
+        def synthesize(
+            _scenes, _job_id, _target, *, generation_attempt, language=None
+        ):
+            calls.append((generation_attempt, language))
+            return {'path': 'voice.mp3'}
+
+        globals_dict = synthesize_voice_candidate.__globals__
+        previous = globals_dict['synthesize_scene_sequence']
+        globals_dict['synthesize_scene_sequence'] = synthesize
+        try:
+            synthesize_voice_candidate([], 'job', 30.0, language='tr')
+        finally:
+            globals_dict['synthesize_scene_sequence'] = previous
+
+        self.assertEqual(calls, [(0, 'tr')])
 
     def test_toy_replica_prompt_keeps_manufactured_identity_guardrail(self):
         prompt = runway_prompt(
