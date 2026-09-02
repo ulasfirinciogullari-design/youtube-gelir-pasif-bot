@@ -88,7 +88,7 @@ UI_STATUS_LABELS = {
 HISTORY_PAGE_SIZE = 12
 HISTORY_SCAN_LIMIT = 500
 LEGACY_RETRY_GROUP_WINDOW_SECONDS = 6 * 60 * 60
-VIDEO_GENERATION_SERVICES = frozenset({'Runway', 'Fal video'})
+OPTIONAL_VIDEO_GENERATION_SERVICES = frozenset({'Fal video'})
 
 BASE_CSS = r'''
 :root{color-scheme:dark;--bg:#090c11;--surface:#111721;--surface-2:#0d131c;--line:#273142;--line-strong:#39465c;--text:#f3f6fb;--muted:#9da9ba;--soft:#c8d0db;--accent:#7967f5;--accent-2:#5b9cf6;--good:#51d593;--warn:#f5cd68;--bad:#ff7d88;--radius:16px}
@@ -691,13 +691,12 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     selected_voice = escape(get_selected_voice().get('name') or 'Ses seçilmedi')
     service_states = _service_statuses()
     service_by_name = dict(service_states)
-    ready_video_services = {
-        name for name in VIDEO_GENERATION_SERVICES
-        if service_by_name.get(name) is True
-    }
+    runway_ready = service_by_name.get('Runway') is True
     optional_missing = {
         name for name, ok in service_states
-        if not ok and name in VIDEO_GENERATION_SERVICES and ready_video_services
+        if not ok
+        and runway_ready
+        and name in OPTIONAL_VIDEO_GENERATION_SERVICES
     }
     required_missing = [
         name for name, ok in service_states

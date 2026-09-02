@@ -224,6 +224,35 @@ def test_studio_home_names_fal_as_optional_when_runway_is_ready(
     assert '3/4' in body
 
 
+def test_studio_home_keeps_runway_required_when_only_fal_is_ready(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    monkeypatch.setattr(studio.settings, 'factory_api_token', 'studio-secret')
+    monkeypatch.setattr(studio, 'get_selected_voice', lambda: {'name': 'Doğal ses'})
+    monkeypatch.setattr(
+        studio,
+        '_service_statuses',
+        lambda: [
+            ('OpenAI', True),
+            ('Runway', False),
+            ('Fal video', True),
+            ('Storage', True),
+        ],
+    )
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
+
+    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+
+    assert 'Runway ayarı eksik' in body
+    assert 'Runway<span class="tiny" style="margin-left:auto">Eksik' in body
+    assert '<span class="health-dot red"' in body
+    assert '<span class="dot red"' in body
+    assert 'Runway isteğe bağlı' not in body
+    assert '3/4' in body
+
+
 def test_studio_home_uses_a_simple_topic_input_and_collapsed_guidance(
     monkeypatch,
     ui_modules,
