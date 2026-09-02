@@ -78,11 +78,13 @@ STAGE_LABELS = {
     'complete': 'Tamamlandı',
     'failed': 'Başarısız',
 }
-UI_STATUS_ORDER = ('running', 'ready', 'repair', 'failed')
+UI_STATUS_ORDER = ('running', 'ready', 'repair', 'completed', 'failed')
+ACTIONABLE_STATUS_ORDER = ('running', 'repair', 'ready')
 UI_STATUS_LABELS = {
     'running': 'Üretiliyor',
     'ready': 'Hazır',
     'repair': 'Onarım gerekli',
+    'completed': 'Tamamlandı',
     'failed': 'Başarısız',
 }
 HISTORY_PAGE_SIZE = 12
@@ -95,6 +97,9 @@ BASE_CSS = r'''
 *{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;background:radial-gradient(circle at 15% -10%,rgba(75,91,161,.22),transparent 34%),var(--bg)}[hidden]{display:none!important}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.skip-link{position:fixed;left:12px;top:8px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:10px;background:#fff;color:#111;font-weight:800}.skip-link:focus{transform:none}.wrap{max-width:1180px;margin:auto;padding:0 22px 72px}.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px;background:rgba(9,12,17,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(57,70,92,.7)}.brand{font-weight:900;font-size:17px;letter-spacing:-.02em}.nav{display:flex;gap:6px;flex-wrap:wrap}.nav a{padding:8px 11px;border:1px solid transparent;border-radius:10px;color:var(--muted);font-size:13px;font-weight:750}.nav a:hover{color:var(--text);background:#151c28}.nav a.active,.nav a[aria-current=page]{color:#fff;background:#211e3b;border-color:#4c4385}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:34px 0 20px}.hero-copy{max-width:720px}.eyebrow{margin-bottom:8px;color:#a89dff;font-size:12px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.hero h1{font-size:clamp(30px,5vw,44px);line-height:1.08;margin:0 0 10px;letter-spacing:-.04em}.hero-tools{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}.muted{color:var(--muted)}.tiny{font-size:12px;color:#8f9bad}.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.72fr);gap:18px;align-items:start}.card{background:rgba(17,23,33,.95);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 18px 48px rgba(0,0,0,.14);margin-bottom:14px}.card h2,.card h3{margin:0 0 8px;letter-spacing:-.02em}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px}.section-kicker{display:block;margin-bottom:4px;color:#8e9aad;font-size:12px;font-weight:800}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.choice{position:relative}.choice input{position:absolute;opacity:0}.choice label{display:block;height:100%;margin:0;padding:15px;border:1px solid var(--line-strong);border-radius:13px;background:var(--surface-2);cursor:pointer;min-height:88px}.choice input:checked+label{border-color:#8372ff;background:#201c39;box-shadow:0 0 0 3px rgba(131,114,255,.12)}.choice input:focus-visible+label{outline:3px solid rgba(118,170,255,.55);outline-offset:2px}.choice b{display:block;margin-bottom:4px}.choice span{display:block;font-size:12px;color:var(--muted);line-height:1.4}label.field{display:block;margin:14px 0 6px;color:#dfe5ee;font-size:13px;font-weight:800}.field-hint{display:block;margin-top:-2px;color:var(--muted);font-size:12px}.topic-input{min-height:84px}input[type=text],input[type=password],input[type=url],textarea,select{width:100%;border:1px solid var(--line-strong);border-radius:11px;background:#0a1018;color:#fff;padding:12px 13px;outline:none}textarea{min-height:118px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:#8271ff;box-shadow:0 0 0 3px rgba(130,113,255,.14)}button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border:1px solid transparent;border-radius:11px;padding:10px 14px;background:var(--accent);color:#fff;font-weight:850;cursor:pointer}.btn:hover,button:hover{filter:brightness(1.08)}.btn.secondary{background:#171f2c;border-color:#364258}.btn.success{background:#167d51}.btn.danger{background:#852f3a}.btn.repair{background:#8a6619}.btn.small{min-height:36px;padding:7px 11px;font-size:12px}.btn.block,button.block{width:100%;margin-top:16px}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid rgba(118,170,255,.62);outline-offset:3px}.control-details,.system-details{border:1px solid var(--line);border-radius:13px;background:var(--surface-2)}.control-details{margin-top:18px}.control-details>summary,.system-details>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 15px;cursor:pointer;font-weight:850;list-style:none}.control-details>summary::-webkit-details-marker,.system-details>summary::-webkit-details-marker{display:none}.control-details>summary:after,.system-details>summary:after{content:'+';color:var(--muted);font-size:18px}.control-details[open]>summary:after,.system-details[open]>summary:after{content:'−'}.control-body,.system-body{padding:0 15px 15px;border-top:1px solid var(--line)}.guidance{margin:14px 0 4px;padding:12px;border:1px solid var(--line);border-radius:11px;background:#0a1018}.guidance b{display:block;margin-bottom:4px}.guidance p{margin:0;line-height:1.5}.status-summary{display:flex;align-items:center;gap:9px}.health-dot,.dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex:0 0 auto}.green{background:var(--good)}.amber{background:var(--warn)}.red{background:var(--bad)}.status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:14px}.service{display:flex;align-items:center;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#0a1018;font-size:12px;font-weight:750}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #354055;border-radius:999px;background:#111824;padding:6px 9px;font-size:12px;font-weight:750}.notice{border:1px solid #6b5b23;background:#29230f;color:#f5df88;border-radius:12px;padding:12px 14px;font-size:13px}.notice.error{border-color:#76313a;background:#30171c;color:#ffbac1}.notice.success{border-color:#285d45;background:#10291e;color:#9ee7bd}.status-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 20px}.status-filter{display:grid;gap:2px;min-height:86px;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:rgba(17,23,33,.92);transition:border-color .15s ease,transform .15s ease}.status-filter:hover{border-color:#4c5a70;transform:translateY(-1px)}.status-filter[aria-current=page]{border-color:#8271ff;box-shadow:0 0 0 3px rgba(130,113,255,.12)}.status-filter .status-count{font-size:25px;font-weight:900;line-height:1}.status-filter .status-name{color:var(--soft);font-size:12px;font-weight:800}.status-filter.running{border-left:3px solid #7499ff}.status-filter.ready{border-left:3px solid var(--good)}.status-filter.repair{border-left:3px solid var(--warn)}.status-filter.failed{border-left:3px solid var(--bad)}.history-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:2px 0 12px}.history-toolbar h2{margin:0}.job-list{display:grid;gap:10px}.job{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:11px 18px;align-items:start;padding:15px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.job:hover{border-color:#3b4960}.job-main{min-width:0}.job-title{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;font-size:15px;font-weight:850;line-height:1.35}.job-status{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;margin-top:6px;color:#b1bdcd;font-size:12px;line-height:1.45}.job-meta{display:flex;align-items:center;gap:5px 12px;flex-wrap:wrap;margin-top:9px;color:#8794a7;font-size:11px}.job-meta span,.job-meta time{white-space:nowrap}.job-meta b{color:#aeb9c9;font-weight:750}.job-side{display:grid;justify-items:end;gap:10px;min-width:148px}.job-side form{margin:0}.state{display:inline-flex;align-items:center;min-height:27px;font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;background:#222b3a;white-space:nowrap}.state.running{background:#192945;color:#9cb8ff}.state.ready{background:#123a28;color:#80e7ab}.state.repair{background:#3d3316;color:#ffe187}.state.failed{background:#3d1b22;color:#ffa1aa}.job-details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:8px}.job-details>summary{width:max-content;max-width:100%;cursor:pointer;color:#8f9bad;font-size:11px;font-weight:750}.detail-body{display:grid;gap:10px;margin-top:9px;padding:11px;border-radius:10px;background:#090e15;color:#b9c4d2;font-size:12px}.detail-body dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:5px 10px;margin:0}.detail-body dt{color:#7f8da1}.detail-body dd{margin:0;min-width:0;overflow-wrap:anywhere}.detail-copy{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.job.compact{padding:12px}.job.compact .job-side{grid-column:1/-1;grid-template-columns:1fr auto;align-items:center;justify-items:start;min-width:0}.job.compact .job-side .btn{justify-self:end}.job-panel{max-width:820px}.job-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.job-panel .job-status{font-size:14px;margin-top:11px}.progress{height:10px;border:1px solid #344054;background:#090e16;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .35s ease}.stage{font-size:14px;font-weight:850}.result-action{margin-top:16px}.result-action form{margin:0}.technical-details{margin-top:18px;border-top:1px solid var(--line);padding-top:10px}.technical-details>summary{cursor:pointer;color:#8f9bad;font-size:12px;font-weight:750}.technical-body{display:grid;gap:10px;margin-top:10px;padding:12px;border-radius:10px;background:#090e15;color:#b8c3d1;font-size:12px}.technical-body code{white-space:pre-wrap;overflow-wrap:anywhere}.page-links{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}.page-links .btn[aria-disabled=true]{pointer-events:none;opacity:.45}.back-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;color:#9ba8b9;font-size:13px}.back-links a{text-decoration:underline;text-underline-offset:3px}.scene{display:grid;grid-template-columns:48px 1fr;gap:13px;padding:15px 0;border-bottom:1px solid var(--line)}.scene:last-child{border:0}.scene-no{width:40px;height:40px;border-radius:11px;background:#251f43;display:flex;align-items:center;justify-content:center;font-weight:900}.queries{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.query{font-size:11px;padding:5px 7px;border-radius:8px;background:#0d151f;border:1px solid #2b394a;color:#9fb0c4}.metric{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}.metric b{font-size:20px;display:block}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.empty{padding:26px;border:1px dashed var(--line-strong);border-radius:13px;color:var(--muted);text-align:center}.sidebar-copy{margin:0;font-size:13px;line-height:1.55}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.hero-tools{justify-content:flex-start}.status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.wrap{padding:0 12px 56px}.top{position:static;align-items:flex-start;flex-direction:column;padding:14px 0}.nav{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{white-space:nowrap}.nav a:nth-child(n+4){display:none}.hero{padding:26px 0 17px}.hero h1{font-size:31px}.grid2,.grid3,.choice-grid,.status-grid{grid-template-columns:1fr}.status-overview{gap:8px}.status-filter{min-height:76px;padding:12px}.status-filter .status-count{font-size:22px}.card{padding:16px}.history-toolbar{align-items:flex-start;flex-direction:column}.job{grid-template-columns:1fr}.job-side{grid-template-columns:1fr auto;align-items:center;justify-items:start;min-width:0}.job-side .btn,.job-side form{justify-self:end}.job-side form button{width:auto}.job.compact .job-side{grid-template-columns:1fr auto}.page-links .btn{min-width:0}.actions .btn{width:100%}.job-panel-head{align-items:flex-start}.control-details>summary,.system-details>summary{align-items:flex-start}.section-title{align-items:flex-start}}
+.status-overview{grid-template-columns:repeat(3,minmax(0,1fr))}.queue-group{display:grid;gap:8px}.queue-group+.queue-group{margin-top:15px;padding-top:15px;border-top:1px solid var(--line)}.queue-group-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.queue-group-head h4{margin:0;font-size:12px;letter-spacing:.04em;text-transform:uppercase}.queue-group-head a{font-size:11px;color:#9eabc0;text-decoration:underline;text-underline-offset:3px}.archive-details{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:#0b1119}.archive-details>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;cursor:pointer;list-style:none}.archive-details>summary::-webkit-details-marker{display:none}.archive-label{display:grid;gap:2px}.archive-label b{font-size:12px}.archive-counts{display:flex;gap:6px}.archive-count{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;border-radius:999px;font-size:12px;font-weight:900}.archive-count.completed{background:#122c25;color:#8fdab6}.archive-count.failed{background:#26171c;color:#ffabb3}.archive-body{display:flex;align-items:center;gap:8px;padding:11px 12px;border-top:1px solid var(--line)}.archive-body a{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:1;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:12px;font-weight:800}.archive-body a[aria-current=page]{border-color:#8271ff;background:#201c39}.state.completed{background:#172b27;color:#9bd9bf}.job.compact .job-status{-webkit-line-clamp:1;line-clamp:1}
+@media(max-width:900px){.status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.status-overview{grid-template-columns:1fr}.archive-body{align-items:stretch;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar{transition:none}}
 '''
 
@@ -297,7 +302,18 @@ def _job_ui_status(job: dict) -> str:
         if _retry_claimed(job):
             return 'running'
         return 'repair' if job.get('repair_available') is True else 'failed'
-    if state in {'SUCCESS', 'AWAITING_APPROVAL'}:
+    if state == 'SUCCESS':
+        result = job.get('result') if isinstance(job.get('result'), dict) else {}
+        youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+        if (
+            str(job.get('kind') or '') == 'publish'
+            or result.get('youtube_url')
+            or youtube.get('url')
+            or youtube.get('video_id')
+        ):
+            return 'completed'
+        return 'ready'
+    if state == 'AWAITING_APPROVAL':
         return 'ready'
     return 'running'
 
@@ -327,6 +343,8 @@ def _job_status_message(job: dict) -> str:
         if kind == 'publish' or result.get('youtube_url') or youtube.get('url'):
             return 'Gizli YouTube yüklemesi tamamlandı.'
         return 'Video tamamlandı; izlemeye veya gizli yüklemeye hazır.'
+    if status == 'completed':
+        return 'Gizli YouTube yüklemesi tamamlandı.'
     if status == 'repair':
         return 'Yalnızca sorunlu sahne yeniden üretilecek; diğerleri korunacak.'
     try:
@@ -432,9 +450,9 @@ def _status_counts(jobs: list[dict]) -> dict[str, int]:
 def _dashboard_recent_jobs(jobs: list[dict], limit: int = 3) -> list[dict]:
     """Keep the landing page focused on work a person can continue.
 
-    The complete failure history remains available through the status filter,
-    but a burst of failed retry attempts must not displace running or completed
-    videos from the three compact dashboard slots.
+    Failed attempts belong to the collapsed archive, never the default action
+    queue. A burst of failures therefore cannot displace or impersonate work
+    that can be continued from the landing page.
     """
     if limit < 1:
         return []
@@ -447,14 +465,28 @@ def _dashboard_recent_jobs(jobs: list[dict], limit: int = 3) -> list[dict]:
     visible = running[:limit - repair_reserve]
     visible.extend(repairs[:limit - len(visible)])
     visible.extend(ready[:limit - len(visible)])
-    if not visible:
-        latest_failure = next(
-            (job for job in jobs if _job_ui_status(job) == 'failed'),
-            None,
-        )
-        if latest_failure is not None:
-            visible.append(latest_failure)
     return visible[:limit]
+
+
+def _dashboard_action_sections(
+    jobs: list[dict],
+    counts: dict[str, int],
+) -> str:
+    """Render compact cards in clearly separated, actionable status groups."""
+    sections = []
+    for status in ACTIONABLE_STATUS_ORDER:
+        matching = [job for job in jobs if _job_ui_status(job) == status]
+        if not matching:
+            continue
+        rows = ''.join(_job_row(job, compact=True) for job in matching)
+        sections.append(
+            f'<section class="queue-group" data-action-group="{status}" '
+            f'aria-labelledby="queue-{status}"><div class="queue-group-head">'
+            f'<h4 id="queue-{status}">{UI_STATUS_LABELS[status]}</h4>'
+            f'<a href="/studio/history?status={status}">'
+            f'{int(counts.get(status, 0))} işin tümü</a></div>{rows}</section>'
+        )
+    return ''.join(sections)
 
 
 def _job_created_timestamp(job: dict) -> float | None:
@@ -572,7 +604,7 @@ def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
 
 def _status_overview(counts: dict[str, int], *, active: str | None = None) -> str:
     links = []
-    for key in UI_STATUS_ORDER:
+    for key in ACTIONABLE_STATUS_ORDER:
         current = ' aria-current="page"' if key == active else ''
         links.append(
             f'<a class="status-filter {key}" data-status-filter="{key}" '
@@ -580,7 +612,34 @@ def _status_overview(counts: dict[str, int], *, active: str | None = None) -> st
             f'<span class="status-count" data-status-count="{key}">{int(counts.get(key, 0))}</span>'
             f'<span class="status-name">{UI_STATUS_LABELS[key]}</span></a>'
         )
-    return '<nav class="status-overview" aria-label="Üretim durumları">' + ''.join(links) + '</nav>'
+    return '<nav class="status-overview" aria-label="Yapılacak işler">' + ''.join(links) + '</nav>'
+
+
+def _history_archive(
+    counts: dict[str, int],
+    *,
+    active: str | None = None,
+) -> str:
+    """Keep completed and failed work available outside the action queue."""
+    completed = int(counts.get('completed', 0))
+    failed = int(counts.get('failed', 0))
+    opened = ' open' if active in {'completed', 'failed'} else ''
+    completed_current = ' aria-current="page"' if active == 'completed' else ''
+    failed_current = ' aria-current="page"' if active == 'failed' else ''
+    return (
+        f'<details class="archive-details"{opened}><summary>'
+        '<span class="archive-label"><b>Tamamlananlar ve hatalar</b>'
+        '<span class="tiny">Günlük iş listesinden ayrı</span></span>'
+        '<span class="archive-counts">'
+        f'<span class="archive-count completed" aria-label="{completed} tamamlanan iş">'
+        f'{completed}</span>'
+        f'<span class="archive-count failed" aria-label="{failed} başarısız iş">'
+        f'{failed}</span></span></summary><div class="archive-body">'
+        f'<a href="/studio/history?status=completed"{completed_current}>'
+        f'Tamamlananlar <b>{completed}</b></a>'
+        f'<a href="/studio/history?status=failed"{failed_current}>'
+        f'Başarısızlar <b>{failed}</b></a></div></details>'
+    )
 
 
 def _nav(active: str) -> str:
@@ -767,17 +826,12 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
             for job in jobs
         ]
     recent = _dashboard_recent_jobs(jobs)
-    recent_html = ''.join(_job_row(job, compact=True) for job in recent) or '<div class="empty">Henüz kayıtlı üretim yok.</div>'
     counts = _status_counts(jobs)
-    overview = _status_overview(counts) if authenticated else ''
-    failure_history = (
-        '<div class="tiny">'
-        f'{counts["failed"]} başarısız iş geçmişte saklanıyor. '
-        '<a href="/studio/history?status=failed">Yalnızca gerekirse aç →</a>'
-        '</div>'
-        if authenticated and counts['failed']
-        else ''
+    recent_html = _dashboard_action_sections(recent, counts) or (
+        '<div class="empty">Şu anda devam etmen gereken iş yok.</div>'
     )
+    overview = _status_overview(counts) if authenticated else ''
+    failure_history = _history_archive(counts) if authenticated else ''
     token_field = (
         '<div class="notice success">Güvenli Studio oturumu açık.</div>'
         if authenticated else
@@ -810,7 +864,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
 {token_field}
 <button class="block" type="submit">Üretimi başlat →</button>
 </form></section>
-<aside><div class="card"><details class="system-details"><summary><span class="status-summary"><span class="health-dot {"red" if required_missing else "green"}" aria-hidden="true"></span>{health_label}</span><span class="tiny">{ready_services}/{len(service_states)}</span></summary><div class="system-body"><div class="status-grid">{services}</div></div></details></div><div class="card"><div class="section-title"><div><span class="section-kicker">ÖNCELİKLİ İŞLER</span><h3>Devam et</h3></div><a class="tiny" href="/studio/history">Tüm durumlar →</a></div><div class="job-list">{recent_html}</div>{failure_history}</div><div class="card"><span class="section-kicker">GÜVENLİ YAYIN</span><h3>Kontrol sende</h3><p class="muted sidebar-copy">Videolar önce gizli yüklenir. Kalite onayından önce herkese açık yayın yapılmaz.</p></div></aside></div>
+<aside><div class="card"><details class="system-details"><summary><span class="status-summary"><span class="health-dot {"red" if required_missing else "green"}" aria-hidden="true"></span>{health_label}</span><span class="tiny">{ready_services}/{len(service_states)}</span></summary><div class="system-body"><div class="status-grid">{services}</div></div></details></div><div class="card"><div class="section-title"><div><span class="section-kicker">ŞİMDİ</span><h3>Devam edilecek işler</h3></div><a class="tiny" href="/studio/history">İş listesini aç →</a></div><div class="job-list">{recent_html}</div>{failure_history}</div><div class="card"><span class="section-kicker">GÜVENLİ YAYIN</span><h3>Kontrol sende</h3><p class="muted sidebar-copy">Videolar önce gizli yüklenir. Kalite onayından önce herkese açık yayın yapılmaz.</p></div></aside></div>
 '''
     script = r'''<script>
 const preview=document.getElementById('mode-preview'),production=document.getElementById('mode-production'),duration=document.getElementById('duration');
@@ -835,14 +889,17 @@ def _job_row(job: dict, *, compact: bool = False) -> str:
         target = channel or profile or 'Seçilmedi'
     raw_updated = str(job.get('updated_at') or job.get('created_at') or '')
     metadata = [f'<span><b>Hedef / profil</b> {escape(target)}</span>']
-    if mode:
-        metadata.append(f'<span>{escape(mode)}</span>')
-    if duration:
-        metadata.append(f'<span>{escape(duration)}</span>')
-    if date:
-        metadata.append(
-            f'<time datetime="{escape(raw_updated, quote=True)}">Güncellendi {escape(date)}</time>'
-        )
+    # The dashboard is a decision queue, so compact cards keep only the target
+    # and the one primary action. Full history retains timing and mode details.
+    if not compact:
+        if mode:
+            metadata.append(f'<span>{escape(mode)}</span>')
+        if duration:
+            metadata.append(f'<span>{escape(duration)}</span>')
+        if date:
+            metadata.append(
+                f'<time datetime="{escape(raw_updated, quote=True)}">Güncellendi {escape(date)}</time>'
+            )
     meta_html = ''.join(metadata)
     details = '' if compact else _job_details(job)
     return (
@@ -1015,6 +1072,7 @@ def studio_history(
         'running': 'Devam eden üretim yok.',
         'ready': 'Hazır video yok.',
         'repair': 'Onarım bekleyen video yok.',
+        'completed': 'Tamamlanan video yok.',
         'failed': 'Başarısız üretim yok.',
     }[active]
     rows = ''.join(_job_row(job) for job in visible) or f'<div class="empty">{empty_copy}</div>'
@@ -1032,15 +1090,16 @@ def studio_history(
         if total > HISTORY_PAGE_SIZE else ''
     )
     history_context = (
-        'Önce devam eden videolar gösterilir. Hazır, onarım ve başarısız '
-        'kayıtlara yukarıdaki durum kartlarından geçebilirsin.'
-        if active == 'running'
-        else f'Şu anda yalnızca {UI_STATUS_LABELS[active].lower()} videolar gösteriliyor.'
+        'Çalışan, onarım bekleyen ve hazır videolar ayrı listelerde.'
+        if active not in {'completed', 'failed'}
+        else 'Bu arşiv günlük iş listesinden ayrı tutulur.'
     )
+    history_archive = _history_archive(counts, active=active)
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">ÜRETİM TAKİBİ</div><h1>Videolar</h1><div class="muted">{history_context}</div></div><div class="hero-tools"><span class="badge">Toplam {len(jobs)} görünür video</span></div></div>
+<div class="hero"><div class="hero-copy"><div class="eyebrow">ÜRETİM TAKİBİ</div><h1>İş listesi</h1><div class="muted">{history_context}</div></div></div>
 {_status_overview(counts, active=active)}
-<div class="history-toolbar"><div><span class="section-kicker">{UI_STATUS_LABELS[active].upper()}</span><h2>{counts[active]} video</h2></div><span class="tiny">Bu görünüm: {UI_STATUS_LABELS[active]} · en fazla {HISTORY_PAGE_SIZE} iş</span></div>
+{history_archive}
+<div class="history-toolbar"><div><span class="section-kicker">{UI_STATUS_LABELS[active].upper()}</span><h2>{counts[active]} video</h2></div></div>
 <div class="job-list" data-history-status="{active}">{rows}</div>{pagination}
 '''
     return _shell(body, active='history', title='Üretim geçmişi')
