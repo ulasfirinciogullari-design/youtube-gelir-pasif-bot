@@ -25,7 +25,12 @@ from app.services.director import (
     short_story_package_is_approved,
 )
 from app.services.pexels import find_broll, download_broll
-from app.services.render import media_duration, render_video, video_frame_count
+from app.services.render import (
+    media_duration,
+    render_video,
+    resolution_for_mode,
+    video_frame_count,
+)
 from app.services.research import research_and_script
 from app.services.runway import (
     GeminiImageAttemptedError,
@@ -5011,6 +5016,7 @@ def run_video_pipeline(
             scene_durations=scene_durations,
             scene_visual_paths=scene_visuals,
             target_duration=render_target_duration,
+            output_resolution=resolution_for_mode(options.get('mode')),
         )
 
         actual_seconds = float(rendered.get('duration') or 0)
