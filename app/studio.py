@@ -87,10 +87,12 @@ UI_STATUS_LABELS = {
 }
 HISTORY_PAGE_SIZE = 12
 HISTORY_SCAN_LIMIT = 500
+LEGACY_RETRY_GROUP_WINDOW_SECONDS = 6 * 60 * 60
+VIDEO_GENERATION_SERVICES = frozenset({'Runway', 'Fal video'})
 
 BASE_CSS = r'''
 :root{color-scheme:dark;--bg:#090c11;--surface:#111721;--surface-2:#0d131c;--line:#273142;--line-strong:#39465c;--text:#f3f6fb;--muted:#9da9ba;--soft:#c8d0db;--accent:#7967f5;--accent-2:#5b9cf6;--good:#51d593;--warn:#f5cd68;--bad:#ff7d88;--radius:16px}
-*{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;background:radial-gradient(circle at 15% -10%,rgba(75,91,161,.22),transparent 34%),var(--bg)}[hidden]{display:none!important}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.skip-link{position:fixed;left:12px;top:8px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:10px;background:#fff;color:#111;font-weight:800}.skip-link:focus{transform:none}.wrap{max-width:1180px;margin:auto;padding:0 22px 72px}.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px;background:rgba(9,12,17,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(57,70,92,.7)}.brand{font-weight:900;font-size:17px;letter-spacing:-.02em}.nav{display:flex;gap:6px;flex-wrap:wrap}.nav a{padding:8px 11px;border:1px solid transparent;border-radius:10px;color:var(--muted);font-size:13px;font-weight:750}.nav a:hover{color:var(--text);background:#151c28}.nav a.active,.nav a[aria-current=page]{color:#fff;background:#211e3b;border-color:#4c4385}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:34px 0 20px}.hero-copy{max-width:720px}.eyebrow{margin-bottom:8px;color:#a89dff;font-size:12px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.hero h1{font-size:clamp(30px,5vw,44px);line-height:1.08;margin:0 0 10px;letter-spacing:-.04em}.hero-tools{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}.muted{color:var(--muted)}.tiny{font-size:12px;color:#8f9bad}.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.72fr);gap:18px;align-items:start}.card{background:rgba(17,23,33,.95);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 18px 48px rgba(0,0,0,.14);margin-bottom:14px}.card h2,.card h3{margin:0 0 8px;letter-spacing:-.02em}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px}.section-kicker{display:block;margin-bottom:4px;color:#8e9aad;font-size:12px;font-weight:800}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.choice{position:relative}.choice input{position:absolute;opacity:0}.choice label{display:block;height:100%;margin:0;padding:15px;border:1px solid var(--line-strong);border-radius:13px;background:var(--surface-2);cursor:pointer;min-height:88px}.choice input:checked+label{border-color:#8372ff;background:#201c39;box-shadow:0 0 0 3px rgba(131,114,255,.12)}.choice input:focus-visible+label{outline:3px solid rgba(118,170,255,.55);outline-offset:2px}.choice b{display:block;margin-bottom:4px}.choice span{display:block;font-size:12px;color:var(--muted);line-height:1.4}label.field{display:block;margin:14px 0 6px;color:#dfe5ee;font-size:13px;font-weight:800}input[type=text],input[type=password],input[type=url],textarea,select{width:100%;border:1px solid var(--line-strong);border-radius:11px;background:#0a1018;color:#fff;padding:12px 13px;outline:none}textarea{min-height:118px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:#8271ff;box-shadow:0 0 0 3px rgba(130,113,255,.14)}button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border:1px solid transparent;border-radius:11px;padding:10px 14px;background:var(--accent);color:#fff;font-weight:850;cursor:pointer}.btn:hover,button:hover{filter:brightness(1.08)}.btn.secondary{background:#171f2c;border-color:#364258}.btn.success{background:#167d51}.btn.danger{background:#852f3a}.btn.repair{background:#8a6619}.btn.small{min-height:36px;padding:7px 11px;font-size:12px}.btn.block,button.block{width:100%;margin-top:16px}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid rgba(118,170,255,.62);outline-offset:3px}.control-details,.system-details{border:1px solid var(--line);border-radius:13px;background:var(--surface-2)}.control-details{margin-top:18px}.control-details>summary,.system-details>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 15px;cursor:pointer;font-weight:850;list-style:none}.control-details>summary::-webkit-details-marker,.system-details>summary::-webkit-details-marker{display:none}.control-details>summary:after,.system-details>summary:after{content:'+';color:var(--muted);font-size:18px}.control-details[open]>summary:after,.system-details[open]>summary:after{content:'−'}.control-body,.system-body{padding:0 15px 15px;border-top:1px solid var(--line)}.status-summary{display:flex;align-items:center;gap:9px}.health-dot,.dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex:0 0 auto}.green{background:var(--good)}.red{background:var(--bad)}.status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:14px}.service{display:flex;align-items:center;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#0a1018;font-size:12px;font-weight:750}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #354055;border-radius:999px;background:#111824;padding:6px 9px;font-size:12px;font-weight:750}.notice{border:1px solid #6b5b23;background:#29230f;color:#f5df88;border-radius:12px;padding:12px 14px;font-size:13px}.notice.error{border-color:#76313a;background:#30171c;color:#ffbac1}.notice.success{border-color:#285d45;background:#10291e;color:#9ee7bd}.status-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 20px}.status-filter{display:grid;gap:2px;min-height:86px;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:rgba(17,23,33,.92);transition:border-color .15s ease,transform .15s ease}.status-filter:hover{border-color:#4c5a70;transform:translateY(-1px)}.status-filter[aria-current=page]{border-color:#8271ff;box-shadow:0 0 0 3px rgba(130,113,255,.12)}.status-filter .status-count{font-size:25px;font-weight:900;line-height:1}.status-filter .status-name{color:var(--soft);font-size:12px;font-weight:800}.status-filter.running{border-left:3px solid #7499ff}.status-filter.ready{border-left:3px solid var(--good)}.status-filter.repair{border-left:3px solid var(--warn)}.status-filter.failed{border-left:3px solid var(--bad)}.history-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:2px 0 12px}.history-toolbar h2{margin:0}.job-list{display:grid;gap:10px}.job{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:11px 18px;align-items:start;padding:15px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.job:hover{border-color:#3b4960}.job-main{min-width:0}.job-title{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;font-size:15px;font-weight:850;line-height:1.35}.job-status{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;margin-top:6px;color:#b1bdcd;font-size:12px;line-height:1.45}.job-meta{display:flex;align-items:center;gap:5px 12px;flex-wrap:wrap;margin-top:9px;color:#8794a7;font-size:11px}.job-meta span,.job-meta time{white-space:nowrap}.job-meta b{color:#aeb9c9;font-weight:750}.job-side{display:grid;justify-items:end;gap:10px;min-width:148px}.job-side form{margin:0}.state{display:inline-flex;align-items:center;min-height:27px;font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;background:#222b3a;white-space:nowrap}.state.running{background:#192945;color:#9cb8ff}.state.ready{background:#123a28;color:#80e7ab}.state.repair{background:#3d3316;color:#ffe187}.state.failed{background:#3d1b22;color:#ffa1aa}.job-details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:8px}.job-details>summary{width:max-content;max-width:100%;cursor:pointer;color:#8f9bad;font-size:11px;font-weight:750}.detail-body{display:grid;gap:10px;margin-top:9px;padding:11px;border-radius:10px;background:#090e15;color:#b9c4d2;font-size:12px}.detail-body dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:5px 10px;margin:0}.detail-body dt{color:#7f8da1}.detail-body dd{margin:0;min-width:0;overflow-wrap:anywhere}.detail-copy{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.job.compact{padding:12px}.job.compact .job-side{grid-column:1/-1;grid-template-columns:1fr auto;align-items:center;justify-items:start;min-width:0}.job.compact .job-side .btn{justify-self:end}.job-panel{max-width:820px}.job-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.job-panel .job-status{font-size:14px;margin-top:11px}.progress{height:10px;border:1px solid #344054;background:#090e16;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .35s ease}.stage{font-size:14px;font-weight:850}.result-action{margin-top:16px}.result-action form{margin:0}.technical-details{margin-top:18px;border-top:1px solid var(--line);padding-top:10px}.technical-details>summary{cursor:pointer;color:#8f9bad;font-size:12px;font-weight:750}.technical-body{display:grid;gap:10px;margin-top:10px;padding:12px;border-radius:10px;background:#090e15;color:#b8c3d1;font-size:12px}.technical-body code{white-space:pre-wrap;overflow-wrap:anywhere}.page-links{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}.page-links .btn[aria-disabled=true]{pointer-events:none;opacity:.45}.back-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;color:#9ba8b9;font-size:13px}.back-links a{text-decoration:underline;text-underline-offset:3px}.scene{display:grid;grid-template-columns:48px 1fr;gap:13px;padding:15px 0;border-bottom:1px solid var(--line)}.scene:last-child{border:0}.scene-no{width:40px;height:40px;border-radius:11px;background:#251f43;display:flex;align-items:center;justify-content:center;font-weight:900}.queries{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.query{font-size:11px;padding:5px 7px;border-radius:8px;background:#0d151f;border:1px solid #2b394a;color:#9fb0c4}.metric{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}.metric b{font-size:20px;display:block}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.empty{padding:26px;border:1px dashed var(--line-strong);border-radius:13px;color:var(--muted);text-align:center}.sidebar-copy{margin:0;font-size:13px;line-height:1.55}
+*{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;background:radial-gradient(circle at 15% -10%,rgba(75,91,161,.22),transparent 34%),var(--bg)}[hidden]{display:none!important}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.skip-link{position:fixed;left:12px;top:8px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:10px;background:#fff;color:#111;font-weight:800}.skip-link:focus{transform:none}.wrap{max-width:1180px;margin:auto;padding:0 22px 72px}.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px;background:rgba(9,12,17,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(57,70,92,.7)}.brand{font-weight:900;font-size:17px;letter-spacing:-.02em}.nav{display:flex;gap:6px;flex-wrap:wrap}.nav a{padding:8px 11px;border:1px solid transparent;border-radius:10px;color:var(--muted);font-size:13px;font-weight:750}.nav a:hover{color:var(--text);background:#151c28}.nav a.active,.nav a[aria-current=page]{color:#fff;background:#211e3b;border-color:#4c4385}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:34px 0 20px}.hero-copy{max-width:720px}.eyebrow{margin-bottom:8px;color:#a89dff;font-size:12px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.hero h1{font-size:clamp(30px,5vw,44px);line-height:1.08;margin:0 0 10px;letter-spacing:-.04em}.hero-tools{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}.muted{color:var(--muted)}.tiny{font-size:12px;color:#8f9bad}.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.72fr);gap:18px;align-items:start}.card{background:rgba(17,23,33,.95);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 18px 48px rgba(0,0,0,.14);margin-bottom:14px}.card h2,.card h3{margin:0 0 8px;letter-spacing:-.02em}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px}.section-kicker{display:block;margin-bottom:4px;color:#8e9aad;font-size:12px;font-weight:800}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.choice{position:relative}.choice input{position:absolute;opacity:0}.choice label{display:block;height:100%;margin:0;padding:15px;border:1px solid var(--line-strong);border-radius:13px;background:var(--surface-2);cursor:pointer;min-height:88px}.choice input:checked+label{border-color:#8372ff;background:#201c39;box-shadow:0 0 0 3px rgba(131,114,255,.12)}.choice input:focus-visible+label{outline:3px solid rgba(118,170,255,.55);outline-offset:2px}.choice b{display:block;margin-bottom:4px}.choice span{display:block;font-size:12px;color:var(--muted);line-height:1.4}label.field{display:block;margin:14px 0 6px;color:#dfe5ee;font-size:13px;font-weight:800}.field-hint{display:block;margin-top:-2px;color:var(--muted);font-size:12px}.topic-input{min-height:84px}input[type=text],input[type=password],input[type=url],textarea,select{width:100%;border:1px solid var(--line-strong);border-radius:11px;background:#0a1018;color:#fff;padding:12px 13px;outline:none}textarea{min-height:118px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:#8271ff;box-shadow:0 0 0 3px rgba(130,113,255,.14)}button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border:1px solid transparent;border-radius:11px;padding:10px 14px;background:var(--accent);color:#fff;font-weight:850;cursor:pointer}.btn:hover,button:hover{filter:brightness(1.08)}.btn.secondary{background:#171f2c;border-color:#364258}.btn.success{background:#167d51}.btn.danger{background:#852f3a}.btn.repair{background:#8a6619}.btn.small{min-height:36px;padding:7px 11px;font-size:12px}.btn.block,button.block{width:100%;margin-top:16px}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid rgba(118,170,255,.62);outline-offset:3px}.control-details,.system-details{border:1px solid var(--line);border-radius:13px;background:var(--surface-2)}.control-details{margin-top:18px}.control-details>summary,.system-details>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 15px;cursor:pointer;font-weight:850;list-style:none}.control-details>summary::-webkit-details-marker,.system-details>summary::-webkit-details-marker{display:none}.control-details>summary:after,.system-details>summary:after{content:'+';color:var(--muted);font-size:18px}.control-details[open]>summary:after,.system-details[open]>summary:after{content:'−'}.control-body,.system-body{padding:0 15px 15px;border-top:1px solid var(--line)}.guidance{margin:14px 0 4px;padding:12px;border:1px solid var(--line);border-radius:11px;background:#0a1018}.guidance b{display:block;margin-bottom:4px}.guidance p{margin:0;line-height:1.5}.status-summary{display:flex;align-items:center;gap:9px}.health-dot,.dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex:0 0 auto}.green{background:var(--good)}.amber{background:var(--warn)}.red{background:var(--bad)}.status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:14px}.service{display:flex;align-items:center;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#0a1018;font-size:12px;font-weight:750}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #354055;border-radius:999px;background:#111824;padding:6px 9px;font-size:12px;font-weight:750}.notice{border:1px solid #6b5b23;background:#29230f;color:#f5df88;border-radius:12px;padding:12px 14px;font-size:13px}.notice.error{border-color:#76313a;background:#30171c;color:#ffbac1}.notice.success{border-color:#285d45;background:#10291e;color:#9ee7bd}.status-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 20px}.status-filter{display:grid;gap:2px;min-height:86px;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:rgba(17,23,33,.92);transition:border-color .15s ease,transform .15s ease}.status-filter:hover{border-color:#4c5a70;transform:translateY(-1px)}.status-filter[aria-current=page]{border-color:#8271ff;box-shadow:0 0 0 3px rgba(130,113,255,.12)}.status-filter .status-count{font-size:25px;font-weight:900;line-height:1}.status-filter .status-name{color:var(--soft);font-size:12px;font-weight:800}.status-filter.running{border-left:3px solid #7499ff}.status-filter.ready{border-left:3px solid var(--good)}.status-filter.repair{border-left:3px solid var(--warn)}.status-filter.failed{border-left:3px solid var(--bad)}.history-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:2px 0 12px}.history-toolbar h2{margin:0}.job-list{display:grid;gap:10px}.job{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:11px 18px;align-items:start;padding:15px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.job:hover{border-color:#3b4960}.job-main{min-width:0}.job-title{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;font-size:15px;font-weight:850;line-height:1.35}.job-status{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;margin-top:6px;color:#b1bdcd;font-size:12px;line-height:1.45}.job-meta{display:flex;align-items:center;gap:5px 12px;flex-wrap:wrap;margin-top:9px;color:#8794a7;font-size:11px}.job-meta span,.job-meta time{white-space:nowrap}.job-meta b{color:#aeb9c9;font-weight:750}.job-side{display:grid;justify-items:end;gap:10px;min-width:148px}.job-side form{margin:0}.state{display:inline-flex;align-items:center;min-height:27px;font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;background:#222b3a;white-space:nowrap}.state.running{background:#192945;color:#9cb8ff}.state.ready{background:#123a28;color:#80e7ab}.state.repair{background:#3d3316;color:#ffe187}.state.failed{background:#3d1b22;color:#ffa1aa}.job-details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:8px}.job-details>summary{width:max-content;max-width:100%;cursor:pointer;color:#8f9bad;font-size:11px;font-weight:750}.detail-body{display:grid;gap:10px;margin-top:9px;padding:11px;border-radius:10px;background:#090e15;color:#b9c4d2;font-size:12px}.detail-body dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:5px 10px;margin:0}.detail-body dt{color:#7f8da1}.detail-body dd{margin:0;min-width:0;overflow-wrap:anywhere}.detail-copy{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.job.compact{padding:12px}.job.compact .job-side{grid-column:1/-1;grid-template-columns:1fr auto;align-items:center;justify-items:start;min-width:0}.job.compact .job-side .btn{justify-self:end}.job-panel{max-width:820px}.job-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.job-panel .job-status{font-size:14px;margin-top:11px}.progress{height:10px;border:1px solid #344054;background:#090e16;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .35s ease}.stage{font-size:14px;font-weight:850}.result-action{margin-top:16px}.result-action form{margin:0}.technical-details{margin-top:18px;border-top:1px solid var(--line);padding-top:10px}.technical-details>summary{cursor:pointer;color:#8f9bad;font-size:12px;font-weight:750}.technical-body{display:grid;gap:10px;margin-top:10px;padding:12px;border-radius:10px;background:#090e15;color:#b8c3d1;font-size:12px}.technical-body code{white-space:pre-wrap;overflow-wrap:anywhere}.page-links{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}.page-links .btn[aria-disabled=true]{pointer-events:none;opacity:.45}.back-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;color:#9ba8b9;font-size:13px}.back-links a{text-decoration:underline;text-underline-offset:3px}.scene{display:grid;grid-template-columns:48px 1fr;gap:13px;padding:15px 0;border-bottom:1px solid var(--line)}.scene:last-child{border:0}.scene-no{width:40px;height:40px;border-radius:11px;background:#251f43;display:flex;align-items:center;justify-content:center;font-weight:900}.queries{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.query{font-size:11px;padding:5px 7px;border-radius:8px;background:#0d151f;border:1px solid #2b394a;color:#9fb0c4}.metric{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}.metric b{font-size:20px;display:block}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.empty{padding:26px;border:1px dashed var(--line-strong);border-radius:13px;color:var(--muted);text-align:center}.sidebar-copy{margin:0;font-size:13px;line-height:1.55}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.hero-tools{justify-content:flex-start}.status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.wrap{padding:0 12px 56px}.top{position:static;align-items:flex-start;flex-direction:column;padding:14px 0}.nav{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{white-space:nowrap}.nav a:nth-child(n+4){display:none}.hero{padding:26px 0 17px}.hero h1{font-size:31px}.grid2,.grid3,.choice-grid,.status-grid{grid-template-columns:1fr}.status-overview{gap:8px}.status-filter{min-height:76px;padding:12px}.status-filter .status-count{font-size:22px}.card{padding:16px}.history-toolbar{align-items:flex-start;flex-direction:column}.job{grid-template-columns:1fr}.job-side{grid-template-columns:1fr auto;align-items:center;justify-items:start;min-width:0}.job-side .btn,.job-side form{justify-self:end}.job-side form button{width:auto}.job.compact .job-side{grid-template-columns:1fr auto}.page-links .btn{min-width:0}.actions .btn{width:100%}.job-panel-head{align-items:flex-start}.control-details>summary,.system-details>summary{align-items:flex-start}.section-title{align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar{transition:none}}
@@ -327,11 +329,25 @@ def _job_status_message(job: dict) -> str:
         return 'Video tamamlandı; izlemeye veya gizli yüklemeye hazır.'
     if status == 'repair':
         return 'Yalnızca sorunlu sahne yeniden üretilecek; diğerleri korunacak.'
+    try:
+        grouped_attempts = max(0, int(job.get('_grouped_failure_attempts') or 0))
+    except (TypeError, ValueError):
+        grouped_attempts = 0
+    grouped_note = (
+        f' {grouped_attempts} eski başarısız deneme bu kartta toplandı.'
+        if grouped_attempts else ''
+    )
     failure_stage = str(job.get('failure_stage') or '').strip()
     stage = STAGE_LABELS.get(failure_stage)
     if stage and stage != 'Başarısız':
-        return f'{stage} aşaması tamamlanamadı. Aynı ayarlarla yeniden deneyebilirsin.'
-    return 'Üretim tamamlanamadı. Aynı ayarlarla yeniden deneyebilirsin.'
+        return (
+            f'{stage} aşaması tamamlanamadı. '
+            f'Aynı ayarlarla yeniden deneyebilirsin.{grouped_note}'
+        )
+    return (
+        'Üretim tamamlanamadı. Aynı ayarlarla yeniden deneyebilirsin.'
+        f'{grouped_note}'
+    )
 
 
 def _safe_external_url(value: Any) -> str:
@@ -413,6 +429,87 @@ def _status_counts(jobs: list[dict]) -> dict[str, int]:
     return counts
 
 
+def _job_created_timestamp(job: dict) -> float | None:
+    try:
+        timestamp = float(job.get('created_ts'))
+    except (TypeError, ValueError):
+        timestamp = float('nan')
+    if math.isfinite(timestamp):
+        return timestamp
+    raw = str(job.get('created_at') or '').strip()
+    if not raw:
+        return None
+    try:
+        parsed = datetime.fromisoformat(raw.replace('Z', '+00:00'))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.timestamp()
+
+
+def _legacy_failure_signature(job: dict) -> tuple[str, ...] | None:
+    """Identify old, unlinked retry-like failures without merging real videos."""
+    if _job_ui_status(job) != 'failed' or _plain_text(job.get('parent_id')):
+        return None
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    topic = _plain_text(spec.get('topic')).casefold()
+    if not topic:
+        return None
+    fields = (
+        'duration_minutes', 'language', 'channel_id', 'mode', 'workflow',
+        'content_style', 'pace', 'visual_mix', 'music', 'subtitles',
+        'reference_url',
+    )
+    return (
+        _plain_text(job.get('kind') or 'render').casefold(),
+        topic,
+        *(_plain_text(spec.get(field)).casefold() for field in fields),
+    )
+
+
+def _collapse_failure_duplicates(jobs: list[dict]) -> list[dict]:
+    """Group retry siblings, plus close legacy failures with frozen input."""
+    collapsed: list[dict] = []
+    latest_by_parent: dict[str, int] = {}
+    latest_by_signature: dict[tuple[str, ...], tuple[float, int]] = {}
+
+    def group_into(index: int) -> None:
+        representative = dict(collapsed[index])
+        representative['_grouped_failure_attempts'] = (
+            int(representative.get('_grouped_failure_attempts') or 0) + 1
+        )
+        collapsed[index] = representative
+
+    for job in jobs:
+        parent_id = _plain_text(job.get('parent_id'))
+        if _job_ui_status(job) == 'failed' and parent_id:
+            previous_parent_index = latest_by_parent.get(parent_id)
+            if previous_parent_index is not None:
+                group_into(previous_parent_index)
+                continue
+            collapsed.append(job)
+            latest_by_parent[parent_id] = len(collapsed) - 1
+            continue
+
+        signature = _legacy_failure_signature(job)
+        created = _job_created_timestamp(job)
+        previous = (
+            latest_by_signature.get(signature)
+            if signature and created is not None else None
+        )
+        if previous is not None:
+            previous_created, previous_index = previous
+            age = previous_created - created
+            if 0 <= age <= LEGACY_RETRY_GROUP_WINDOW_SECONDS:
+                group_into(previous_index)
+                continue
+        collapsed.append(job)
+        if signature and created is not None:
+            latest_by_signature[signature] = (created, len(collapsed) - 1)
+    return collapsed
+
+
 def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
     """Show only the newest visible step of each logical video workflow."""
     task_ids = {str(job.get('task_id') or '') for job in jobs}
@@ -442,7 +539,7 @@ def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
         ):
             continue
         visible.append(job)
-    return visible
+    return _collapse_failure_duplicates(visible)
 
 
 def _status_overview(counts: dict[str, int], *, active: str | None = None) -> str:
@@ -575,7 +672,14 @@ def _refresh_active_jobs(jobs: list[dict]) -> list[dict]:
             _job_ui_status(job) == 'running' or state == 'FAILURE'
         ) and not _retry_claimed(job)
         if task_id and should_refresh:
-            refreshed.append(_sync_job(task_id))
+            synced = _sync_job(task_id)
+            grouped_attempts = job.get('_grouped_failure_attempts')
+            if grouped_attempts:
+                synced = {
+                    **synced,
+                    '_grouped_failure_attempts': grouped_attempts,
+                }
+            refreshed.append(synced)
         else:
             refreshed.append(job)
     return refreshed
@@ -586,18 +690,42 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     authenticated = _valid_token(studio_token)
     selected_voice = escape(get_selected_voice().get('name') or 'Ses seçilmedi')
     service_states = _service_statuses()
-    services = ''.join(
-        f'<div class="service"><span class="dot {"green" if ok else "red"}" aria-hidden="true"></span>'
-        f'{escape(name)}<span class="tiny" style="margin-left:auto">{"Hazır" if ok else "Eksik"}</span></div>'
-        for name, ok in service_states
-    )
+    service_by_name = dict(service_states)
+    ready_video_services = {
+        name for name in VIDEO_GENERATION_SERVICES
+        if service_by_name.get(name) is True
+    }
+    optional_missing = {
+        name for name, ok in service_states
+        if not ok and name in VIDEO_GENERATION_SERVICES and ready_video_services
+    }
+    required_missing = [
+        name for name, ok in service_states
+        if not ok and name not in optional_missing
+    ]
+    service_rows = []
+    for name, ok in service_states:
+        dot_class = 'green' if ok else 'amber' if name in optional_missing else 'red'
+        state_label = 'Hazır' if ok else 'İsteğe bağlı' if name in optional_missing else 'Eksik'
+        service_rows.append(
+            f'<div class="service"><span class="dot {dot_class}" aria-hidden="true"></span>'
+            f'{escape(name)}<span class="tiny" style="margin-left:auto">{state_label}</span></div>'
+        )
+    services = ''.join(service_rows)
     ready_services = sum(1 for _, ok in service_states if ok)
-    missing_services = len(service_states) - ready_services
-    health_label = (
-        'Tüm servis ayarları hazır'
-        if not missing_services
-        else f'{missing_services} servis ayarı eksik'
-    )
+    if required_missing:
+        health_label = (
+            f'{required_missing[0]} ayarı eksik'
+            if len(required_missing) == 1
+            else f'Eksik servisler: {", ".join(required_missing)}'
+        )
+    elif optional_missing:
+        optional_names = ', '.join(
+            name for name, _ok in service_states if name in optional_missing
+        )
+        health_label = f'{optional_names} isteğe bağlı · üretim çalışır'
+    else:
+        health_label = 'Tüm servis ayarları hazır'
     jobs = _collapse_retry_sources(list_jobs(HISTORY_SCAN_LIMIT)) if authenticated else []
     # Reconcile only records that can be rendered. Probing all 500 retained
     # Celery results would make the landing page slower as history grows.
@@ -622,10 +750,12 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
 <div class="choice"><input id="mode-preview" name="mode" value="preview" type="radio" checked><label for="mode-preview"><b>⚡ Hızlı önizleme</b><span>30–60 saniyelik kalite testi. Hızlı karar vermek için.</span></label></div>
 <div class="choice"><input id="mode-production" name="mode" value="production" type="radio"><label for="mode-production"><b>🏆 Yayın kalitesi</b><span>Uzun video, tam kalite denetimi ve zengin kurgu.</span></label></div>
 </div>
-<label class="field" for="topic">Konu ve yaratıcı talimat</label>
-<textarea id="topic" name="topic" required>Telefonla ilgili, gerçek bir insanın otuz saniye izlemek isteyeceği tek bir gündelik sorunu seç. Tek bir şaşırtıcı nedeni göster; aynı kişi veya nesne ve aynı mekânda görünür, faydalı bir sonuçla bitir. Birden fazla teknoloji gerçeğini sıralama.</textarea>
+<label class="field" for="topic">Video konusu</label>
+<span class="field-hint">Bir cümle yeterli. Örnek: Telefon neden yastık altında ısınır?</span>
+<textarea class="topic-input" id="topic" name="topic" required placeholder="Konuyu bir cümleyle yaz"></textarea>
 <div class="grid2"><div><label class="field" for="duration">Süre</label><select id="duration" name="duration_minutes"><option value="0.5" selected>30 saniye</option><option value="1">1 dakika</option><option value="3">3 dakika</option><option value="5">5 dakika</option><option value="8">8 dakika</option><option value="10">10 dakika</option></select></div><div><label class="field" for="language">Dil</label><select id="language" name="language"><option value="tr" selected>Türkçe</option><option value="en">English</option><option value="de">Deutsch</option><option value="es">Español</option><option value="ar">العربية</option></select></div></div>
 <details class="control-details"><summary><span>Yaratıcı ve teknik ayarlar</span><span class="tiny">İsteğe bağlı</span></summary><div class="control-body">
+<div class="guidance"><b>İyi sonuç için ayrıntı eklemek istersen</b><p class="tiny">Tek bir gündelik sorun, tek bir şaşırtıcı neden, aynı kişi veya nesne, aynı mekân ve görünür bir sonuç tarif et. Bunları yazmak zorunda değilsin; sistem kısa konu cümleni otomatik olarak yönetmen planına dönüştürür.</p></div>
 <div class="grid2"><div><label class="field" for="content-style">İçerik tarzı</label><select id="content-style" name="content_style"><option value="documentary">Belgesel</option><option value="technology" selected>Teknoloji</option><option value="story">Hikâye</option><option value="cinematic">Sinematik</option><option value="explainer">Açıklayıcı</option></select></div><div><label class="field" for="pace">Kurgu temposu</label><select id="pace" name="pace"><option value="calm">Sakin</option><option value="balanced" selected>Dengeli</option><option value="dynamic">Dinamik</option></select></div></div>
 <div class="grid2"><div><label class="field" for="visual-mix">Görsel karışımı</label><select id="visual-mix" name="visual_mix"><option value="real_first">Gerçek görüntü ağırlıklı</option><option value="balanced" selected>Dengeli: B-roll + AI</option><option value="ai_first">Özgün AI ağırlıklı</option></select></div><div><label class="field" for="workflow">Akış</label><select id="workflow" name="workflow"><option value="auto" selected>Otomatik tamamla</option><option value="storyboard">Önce storyboard göster</option></select></div></div>
 <div class="grid2"><div><label class="field" for="music">Arka plan müziği</label><select id="music" name="music"><option value="off">Kapalı</option><option value="auto" selected>Uygunsa otomatik</option></select></div><div><label class="field" for="subtitles">Altyazı</label><select id="subtitles" name="subtitles"><option value="sidecar" selected>Ayrı SRT üret</option><option value="off">Üretme</option></select></div></div>
@@ -636,7 +766,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
 {token_field}
 <button class="block" type="submit">Üretimi başlat →</button>
 </form></section>
-<aside><div class="card"><details class="system-details"><summary><span class="status-summary"><span class="health-dot {"red" if missing_services else "green"}" aria-hidden="true"></span>{health_label}</span><span class="tiny">{ready_services}/{len(service_states)}</span></summary><div class="system-body"><div class="status-grid">{services}</div></div></details></div><div class="card"><div class="section-title"><div><span class="section-kicker">SON İŞLER</span><h3>Devam et</h3></div><a class="tiny" href="/studio/history">Durumlara git →</a></div><div class="job-list">{recent_html}</div></div><div class="card"><span class="section-kicker">GÜVENLİ YAYIN</span><h3>Kontrol sende</h3><p class="muted sidebar-copy">Videolar önce gizli yüklenir. Kalite onayından önce herkese açık yayın yapılmaz.</p></div></aside></div>
+<aside><div class="card"><details class="system-details"><summary><span class="status-summary"><span class="health-dot {"red" if required_missing else "green"}" aria-hidden="true"></span>{health_label}</span><span class="tiny">{ready_services}/{len(service_states)}</span></summary><div class="system-body"><div class="status-grid">{services}</div></div></details></div><div class="card"><div class="section-title"><div><span class="section-kicker">SON İŞLER</span><h3>Devam et</h3></div><a class="tiny" href="/studio/history">Durumlara git →</a></div><div class="job-list">{recent_html}</div></div><div class="card"><span class="section-kicker">GÜVENLİ YAYIN</span><h3>Kontrol sende</h3><p class="muted sidebar-copy">Videolar önce gizli yüklenir. Kalite onayından önce herkese açık yayın yapılmaz.</p></div></aside></div>
 '''
     script = r'''<script>
 const preview=document.getElementById('mode-preview'),production=document.getElementById('mode-production'),duration=document.getElementById('duration');
@@ -857,10 +987,16 @@ def studio_history(
         f'<span class="tiny">Sayfa {page} / {page_count}</span>{following}</nav>'
         if total > HISTORY_PAGE_SIZE else ''
     )
+    history_context = (
+        'Önce devam eden videolar gösterilir. Hazır, onarım ve başarısız '
+        'kayıtlara yukarıdaki durum kartlarından geçebilirsin.'
+        if active == 'running'
+        else f'Şu anda yalnızca {UI_STATUS_LABELS[active].lower()} videolar gösteriliyor.'
+    )
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">ÜRETİM TAKİBİ</div><h1>Videolar</h1><div class="muted">Her video tek bir anlaşılır durumda ve tek bir sonraki adımla gösterilir.</div></div><div class="hero-tools"><span class="badge">Son {len(jobs)} kayıt</span></div></div>
+<div class="hero"><div class="hero-copy"><div class="eyebrow">ÜRETİM TAKİBİ</div><h1>Videolar</h1><div class="muted">{history_context}</div></div><div class="hero-tools"><span class="badge">Toplam {len(jobs)} görünür video</span></div></div>
 {_status_overview(counts, active=active)}
-<div class="history-toolbar"><div><span class="section-kicker">{UI_STATUS_LABELS[active].upper()}</span><h2>{counts[active]} video</h2></div><span class="tiny">Sayfada en fazla {HISTORY_PAGE_SIZE} iş</span></div>
+<div class="history-toolbar"><div><span class="section-kicker">{UI_STATUS_LABELS[active].upper()}</span><h2>{counts[active]} video</h2></div><span class="tiny">Bu görünüm: {UI_STATUS_LABELS[active]} · en fazla {HISTORY_PAGE_SIZE} iş</span></div>
 <div class="job-list" data-history-status="{active}">{rows}</div>{pagination}
 '''
     return _shell(body, active='history', title='Üretim geçmişi')

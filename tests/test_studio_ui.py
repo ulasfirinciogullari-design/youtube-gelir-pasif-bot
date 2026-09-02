@@ -184,7 +184,7 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     ):
         assert f'for="{control_id}"' in body
         assert f'id="{control_id}"' in body
-    assert '1 servis ayarı eksik' in body
+    assert 'Storage ayarı eksik' in body
     assert '<details class="system-details">' in body
     assert '<details class="system-details" open>' not in body
     assert 'Videolar önce gizli yüklenir.' in body
@@ -194,6 +194,56 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     assert 'data-status-count="running">0</span>' in body
     assert 'data-status-count="ready">1</span>' in body
     assert 'Üretim masası' in body
+
+
+def test_studio_home_names_fal_as_optional_when_runway_is_ready(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    monkeypatch.setattr(studio.settings, 'factory_api_token', 'studio-secret')
+    monkeypatch.setattr(studio, 'get_selected_voice', lambda: {'name': 'Doğal ses'})
+    monkeypatch.setattr(
+        studio,
+        '_service_statuses',
+        lambda: [
+            ('OpenAI', True),
+            ('Runway', True),
+            ('Fal video', False),
+            ('Storage', True),
+        ],
+    )
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
+
+    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+
+    assert 'Fal video isteğe bağlı · üretim çalışır' in body
+    assert 'Fal video<span class="tiny" style="margin-left:auto">İsteğe bağlı' in body
+    assert '<span class="health-dot green"' in body
+    assert '<span class="dot amber"' in body
+    assert '3/4' in body
+
+
+def test_studio_home_uses_a_simple_topic_input_and_collapsed_guidance(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    monkeypatch.setattr(studio.settings, 'factory_api_token', 'studio-secret')
+    monkeypatch.setattr(studio, 'get_selected_voice', lambda: {'name': 'Doğal ses'})
+    monkeypatch.setattr(studio, '_service_statuses', lambda: [('OpenAI', True)])
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
+
+    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    main_input, advanced = body.split('<details class="control-details">', 1)
+
+    assert '<label class="field" for="topic">Video konusu</label>' in main_input
+    assert 'Örnek: Telefon neden yastık altında ısınır?' in main_input
+    assert 'placeholder="Konuyu bir cümleyle yaz"></textarea>' in main_input
+    assert 'Konu ve yaratıcı talimat' not in body
+    assert 'Tek bir gündelik sorun' not in main_input
+    assert 'Tek bir gündelik sorun' in advanced
+    assert 'Bunları yazmak zorunda değilsin' in advanced
 
 
 @pytest.mark.parametrize(
@@ -334,6 +384,133 @@ def test_retry_source_is_collapsed_when_child_record_is_present(ui_modules):
     assert studio._collapse_retry_sources([source]) == [source]
 
 
+def test_legacy_duplicate_failures_group_only_identical_recent_root_attempts(
+    ui_modules,
+):
+    studio, _ = ui_modules
+    frozen_spec = {
+        'topic': 'Telefon neden yastık altında ısınır?',
+        'duration_minutes': 0.5,
+        'language': 'tr',
+        'channel_id': 'teknoloji-tr',
+        'mode': 'preview',
+        'workflow': 'auto',
+        'content_style': 'technology',
+        'pace': 'balanced',
+        'visual_mix': 'balanced',
+        'music': 'off',
+        'subtitles': 'sidecar',
+    }
+    newest = {
+        'task_id': 'latest-root-failure',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'created_ts': 10_000,
+        'spec': dict(frozen_spec),
+    }
+    older = {
+        'task_id': 'older-root-failure',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'created_ts': 9_900,
+        'spec': dict(frozen_spec),
+    }
+    different_channel = {
+        'task_id': 'other-channel-failure',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'created_ts': 9_800,
+        'spec': {**frozen_spec, 'channel_id': 'teknoloji-en'},
+    }
+
+    visible = studio._collapse_retry_sources(
+        [newest, older, different_channel]
+    )
+
+    assert [job['task_id'] for job in visible] == [
+        'latest-root-failure',
+        'other-channel-failure',
+    ]
+    assert visible[0]['_grouped_failure_attempts'] == 1
+    assert '_grouped_failure_attempts' not in newest
+    assert studio._status_counts(visible)['failed'] == 2
+    assert '1 eski başarısız deneme bu kartta toplandı.' in studio._job_row(
+        visible[0]
+    )
+
+
+def test_legacy_failure_grouping_preserves_distinct_parent_linked_workflows(
+    ui_modules,
+):
+    studio, _ = ui_modules
+    spec = {
+        'topic': 'Aynı konu',
+        'duration_minutes': 0.5,
+        'language': 'tr',
+        'mode': 'preview',
+    }
+    first_workflow = {
+        'task_id': 'child-a',
+        'parent_id': 'workflow-a',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'created_ts': 20_000,
+        'spec': dict(spec),
+    }
+    second_workflow = {
+        'task_id': 'child-b',
+        'parent_id': 'workflow-b',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'created_ts': 19_999,
+        'spec': dict(spec),
+    }
+    older_first_workflow_attempt = {
+        'task_id': 'child-a-old',
+        'parent_id': 'workflow-a',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'created_ts': 1,
+        'spec': dict(spec),
+    }
+
+    visible = studio._collapse_retry_sources([
+        first_workflow,
+        second_workflow,
+        older_first_workflow_attempt,
+    ])
+
+    assert [job['task_id'] for job in visible] == ['child-a', 'child-b']
+    assert visible[0]['_grouped_failure_attempts'] == 1
+    assert studio._status_counts(visible)['failed'] == 2
+
+
+def test_legacy_duplicate_failures_outside_retry_window_remain_separate(
+    ui_modules,
+):
+    studio, _ = ui_modules
+    spec = {
+        'topic': 'Aylık tekrar üretimi',
+        'duration_minutes': 0.5,
+        'language': 'tr',
+        'mode': 'preview',
+    }
+    current = {
+        'task_id': 'current',
+        'state': 'FAILURE',
+        'created_ts': 50_000,
+        'spec': dict(spec),
+    }
+    earlier = {
+        'task_id': 'earlier',
+        'state': 'FAILURE',
+        'created_ts': 50_000 - studio.LEGACY_RETRY_GROUP_WINDOW_SECONDS - 1,
+        'spec': dict(spec),
+    }
+
+    assert studio._collapse_retry_sources([current, earlier]) == [current, earlier]
+
+
 def test_workflow_history_shows_only_the_latest_child_step(ui_modules):
     studio, _ = ui_modules
     plan = {
@@ -405,6 +582,65 @@ def test_history_filters_on_server_and_paginates_at_twelve(monkeypatch, ui_modul
     assert 'status=ready&amp;page=2' in first
     assert second.count('<article class="job"') == 1
     assert 'Sayfa 2 / 2' in second
+
+
+def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    duplicate_spec = {
+        'topic': 'Aynı hızlı test',
+        'duration_minutes': 0.5,
+        'language': 'tr',
+        'mode': 'preview',
+    }
+    jobs = [
+        {
+            'task_id': 'running-one',
+            'kind': 'render',
+            'state': 'PROGRESS',
+            'progress': 25,
+            'created_ts': 3_000,
+            'spec': {'topic': 'Devam eden video', 'mode': 'preview'},
+        },
+        {
+            'task_id': 'failed-new',
+            'kind': 'render',
+            'state': 'FAILURE',
+            'created_ts': 2_000,
+            'spec': dict(duplicate_spec),
+        },
+        {
+            'task_id': 'failed-old',
+            'kind': 'render',
+            'state': 'FAILURE',
+            'created_ts': 1_900,
+            'spec': dict(duplicate_spec),
+        },
+    ]
+    job_by_id = {job['task_id']: job for job in jobs}
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: jobs)
+    monkeypatch.setattr(studio, '_sync_job', lambda task_id: job_by_id[task_id])
+
+    body = studio.studio_history(
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    failed_body = studio.studio_history(
+        status='failed',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert 'data-history-status="running"' in body
+    assert 'Önce devam eden videolar gösterilir.' in body
+    assert 'Bu görünüm: Üretiliyor · en fazla 12 iş' in body
+    assert 'Toplam 2 görünür video' in body
+    assert 'data-status-count="running">1</span>' in body
+    assert 'data-status-count="failed">1</span>' in body
+    assert 'Aynı hızlı test' not in body
+    assert failed_body.count('<article class="job"') == 1
+    assert 'data-status-count="failed">1</span>' in failed_body
+    assert '1 eski başarısız deneme bu kartta toplandı.' in failed_body
 
 
 def test_history_reconciles_only_the_visible_page(monkeypatch, ui_modules):
