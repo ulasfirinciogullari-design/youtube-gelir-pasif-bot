@@ -168,7 +168,7 @@ def _load_omni_namespace(client):
             'unavailable',
         }),
         '_GEMINI_OMNI_FILE_ID_PATTERN': re.compile(
-            r'^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$'
+            r'^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$'
         ),
         '_GEMINI_OMNI_INTERACTION_ID_PATTERN': re.compile(
             r'^v1_[A-Za-z0-9_-]{1,253}$'
@@ -317,7 +317,7 @@ class GeminiOmniRequestTests(unittest.TestCase):
     def test_uri_output_accepts_only_official_file_contract(self):
         uri = (
             'https://generativelanguage.googleapis.com/v1beta/'
-            'files/Abc_123-xy:download?alt=media'
+            'files/abc-123-xy:download?alt=media'
         )
         client = _Client(_Response(200, _video_payload(uri=uri)))
         namespace = _load_omni_namespace(client)
@@ -330,6 +330,11 @@ class GeminiOmniRequestTests(unittest.TestCase):
             'https://generativelanguage.googleapis.com/v1beta/files/abc:download?alt=media&key=secret',
             'http://generativelanguage.googleapis.com/v1beta/files/abc:download?alt=media',
             'https://generativelanguage.googleapis.com/v1beta/files/../abc:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/Abc:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/abc_def:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/-abc:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/abc-:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:download?alt=media',
         ):
             with self.subTest(uri=untrusted):
                 with self.assertRaises(GeminiOmniTerminalError):
@@ -555,7 +560,7 @@ def _load_uri_downloader(client, validator):
             'storage.googleapis.com',
         },
         '_GEMINI_OMNI_FILE_ID_PATTERN': re.compile(
-            r'^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$'
+            r'^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$'
         ),
         '_MAX_GENERATED_VIDEO_BYTES': 100 * 1024 * 1024,
         '_validated_gemini_omni_video_file': validator,

@@ -89,7 +89,9 @@ _RUNWAY_SAFE_PROVIDER_FALLBACK_CODES = frozenset({
     'quota_exceeded',
     'unsupported_model',
 })
-_GEMINI_OMNI_FILE_ID_PATTERN = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$')
+_GEMINI_OMNI_FILE_ID_PATTERN = re.compile(
+    r'^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$'
+)
 _GEMINI_OMNI_INTERACTION_ID_PATTERN = re.compile(
     r'^v1_[A-Za-z0-9_-]{1,253}$'
 )
