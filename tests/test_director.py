@@ -728,7 +728,7 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
             routed['scenes'][2]['ai_prompt'],
         )
         self.assertIn(
-            'same hard, flat, open bedroom nightstand',
+            'same hard, flat, open surface in the established scene setting',
             routed['scenes'][5]['ai_prompt'],
         )
         self.assertIn(
@@ -739,6 +739,102 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
             scene['ai_prompt'] is None
             for scene in package['scenes']
         ))
+
+    def test_proxy_router_rejects_non_phone_batteries_and_retains_setting(self):
+        def one_scene(narration, queries):
+            return {
+                'scenes': [{
+                    'narration': narration,
+                    'visual_queries': queries,
+                    'ai_prompt': None,
+                }],
+                'narration': narration,
+                'tts_narration': narration,
+                'ai_scenes': [],
+                'director_qc': [],
+            }
+
+        for narration, queries in (
+            (
+                'Laptop bataryası şarj olurken az miktarda ısı üretir.',
+                ['thermal camera laptop battery charging'],
+            ),
+            (
+                'An electric vehicle battery produces heat while charging.',
+                ['electric vehicle battery thermal charging'],
+            ),
+        ):
+            package = one_scene(narration, queries)
+            routed = _apply_short_preview_concrete_proxy_routes(
+                package,
+                {'mode': 'preview', 'visual_mix': 'balanced'},
+                0.5,
+                'Batarya ısısı',
+            )
+            self.assertIs(routed, package)
+            self.assertIsNone(routed['scenes'][0]['ai_prompt'])
+
+        car_scene = one_scene(
+            'The smartphone battery produces heat while charging.',
+            ['smartphone charging inside parked car'],
+        )
+        routed = _apply_short_preview_concrete_proxy_routes(
+            car_scene,
+            {'mode': 'preview', 'visual_mix': 'balanced'},
+            0.5,
+            'Phone charging inside a parked car',
+        )
+        prompt = routed['scenes'][0]['ai_prompt']
+        self.assertIn('smartphone charging inside parked car', prompt)
+        self.assertNotIn('bedroom', prompt.casefold())
+
+    def test_proxy_router_rejects_negation_and_reversed_thermal_causality(self):
+        examples = (
+            (
+                'Telefon bataryası şarj olurken ısı üretmez.',
+                ['thermal camera smartphone battery charging'],
+            ),
+            (
+                'Telefon bataryası şarj olurken ısı üretmiyor.',
+                ['thermal camera smartphone battery charging'],
+            ),
+            (
+                'A phone beneath a pillow does not trap heat.',
+                ['thermal camera smartphone under pillow'],
+            ),
+            (
+                'Açıkta kalan telefon ısıyı havaya vermez.',
+                ['thermal camera phone cooling on nightstand'],
+            ),
+            (
+                'Battery aging causes the smartphone to run hotter.',
+                ['aged smartphone battery thermal closeup'],
+            ),
+            (
+                'Batarya eskidikçe telefon daha sıcak çalışır.',
+                ['aged smartphone battery heat closeup'],
+            ),
+        )
+        for narration, queries in examples:
+            package = {
+                'scenes': [{
+                    'narration': narration,
+                    'visual_queries': queries,
+                    'ai_prompt': None,
+                }],
+                'narration': narration,
+                'tts_narration': narration,
+                'ai_scenes': [],
+                'director_qc': [],
+            }
+            routed = _apply_short_preview_concrete_proxy_routes(
+                package,
+                {'mode': 'preview', 'visual_mix': 'balanced'},
+                0.5,
+                'Telefon bataryası ve ısı',
+            )
+            self.assertIs(routed, package, narration)
+            self.assertIsNone(routed['scenes'][0]['ai_prompt'])
 
     def test_vague_abstraction_and_explicit_stock_contract_stay_fail_closed(self):
         package = make_phone_under_pillow_package()

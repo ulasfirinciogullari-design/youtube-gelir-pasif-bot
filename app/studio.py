@@ -438,14 +438,15 @@ def _dashboard_recent_jobs(jobs: list[dict], limit: int = 3) -> list[dict]:
     """
     if limit < 1:
         return []
-    visible: list[dict] = []
-    for status in ('running', 'ready', 'repair'):
-        visible.extend(
-            job for job in jobs
-            if _job_ui_status(job) == status
-        )
-        if len(visible) >= limit:
-            return visible[:limit]
+    running = [job for job in jobs if _job_ui_status(job) == 'running']
+    repairs = [job for job in jobs if _job_ui_status(job) == 'repair']
+    ready = [job for job in jobs if _job_ui_status(job) == 'ready']
+    # Keep active work first, but reserve one compact slot for a repair that
+    # needs human action instead of allowing a full running queue to hide it.
+    repair_reserve = 1 if repairs and limit > 1 else 0
+    visible = running[:limit - repair_reserve]
+    visible.extend(repairs[:limit - len(visible)])
+    visible.extend(ready[:limit - len(visible)])
     if not visible:
         latest_failure = next(
             (job for job in jobs if _job_ui_status(job) == 'failed'),
@@ -771,7 +772,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     overview = _status_overview(counts) if authenticated else ''
     failure_history = (
         '<div class="tiny">'
-        f'{counts["failed"]} başarısız deneme geçmişte saklanıyor. '
+        f'{counts["failed"]} başarısız iş geçmişte saklanıyor. '
         '<a href="/studio/history?status=failed">Yalnızca gerekirse aç →</a>'
         '</div>'
         if authenticated and counts['failed']

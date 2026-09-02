@@ -1202,6 +1202,24 @@ def _clean_package(revised: dict, original: dict) -> dict:
 _SHORT_PROXY_ROUTE_VERSION = 1
 
 
+def _short_proxy_mechanism_is_negated(text: str) -> bool:
+    """Fail closed when a thermal mechanism is explicitly negated."""
+    return bool(
+        re.search(
+            r"\b(?:no|not|never|cannot|can['’]t|does['’]t|does\s+not|"
+            r"do\s+not|isn['’]t|is\s+not|won['’]t|will\s+not|"
+            r"değil\w*|yok)\b",
+            text,
+        )
+        or re.search(
+            r'\b(?:üret|oluş|engel|haps|yalıt|yayıl?|dağıl|ver|soğu|esk|'
+            r'yıpran|hızlan|yaşlan)\w*?m[aeıiuü](?:z|dı|di|du|dü|mış|miş|'
+            r'muş|müş|yor|yacak|yecek|yın|yin|yip|yerek|den)\w*\b',
+            text,
+        )
+    )
+
+
 def _short_preview_proxy_kind(
     narration: str,
     visual_queries: list[str] | str | None = None,
@@ -1236,31 +1254,60 @@ def _short_preview_proxy_kind(
         r'\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b',
         text,
     ))
-    if not has_heat or not (has_phone or has_battery):
+    if (
+        not has_heat
+        or not has_phone
+        or _short_proxy_mechanism_is_negated(text)
+    ):
         return None
 
     if (
         has_battery
         and re.search(
-            r'\b(?:age\w*|degrad\w*|wear\w*|lifespan|esk\w*|yıpran\w*|öm\w*)\b',
+            r'(?:\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b'
+            r'.{0,120}\b(?:battery|batteries|batarya\w*|pil\w*)\b'
+            r'.{0,100}\b(?:age\w*|degrad\w*|wear\w*|lifespan|esk\w*|'
+            r'yıpran\w*|öm\w*)\b.{0,60}\b(?:lead\w*|cause\w*|accelerat\w*|'
+            r'yol\s+aç\w*|neden\s+ol\w*|hızlandır\w*)\b)'
+            r'|(?:\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b'
+            r'.{0,80}\b(?:lead\w*|cause\w*|accelerat\w*|yol\s+aç\w*|'
+            r'neden\s+ol\w*|hızlandır\w*)\b.{0,80}\b(?:battery|batteries|'
+            r'batarya\w*|pil\w*)\b.{0,80}\b(?:age\w*|degrad\w*|wear\w*|'
+            r'lifespan|esk\w*|yıpran\w*|öm\w*)\b)',
             text,
         )
     ):
         return 'thermal_aging'
     if (
-        re.search(r'\b(?:pillow\w*|cushion\w*|yastık\w*)\b', text)
-        and re.search(
-            r'\b(?:trap\w*|block\w*|prevent\w*|insulat\w*|dissipat\w*|spread\w*|'
-            r'engel\w*|haps\w*|yalıt\w*|yayıl\w*)\b',
+        re.search(
+            r'\b(?:pillow\w*|cushion\w*|yastık\w*)\b.{0,100}'
+            r'(?:\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b'
+            r'.{0,80}\b(?:dissipat\w*|spread\w*|yayıl\w*|dağıl\w*)\b'
+            r'.{0,60}\b(?:trap\w*|block\w*|prevent\w*|insulat\w*|engel\w*|'
+            r'haps\w*|yalıt\w*)\b'
+            r'|\b(?:trap\w*|block\w*|prevent\w*|insulat\w*|engel\w*|'
+            r'haps\w*|yalıt\w*)\b.{0,80}'
+            r'\b(?:heat|thermal|temperature|warm\w*|hot|ısı\w*|sıcak\w*)\b'
+            r'(?:.{0,60}\b(?:dissipat\w*|spread\w*|yayıl\w*|dağıl\w*)\b)?)',
             text,
         )
     ):
         return 'insulated_heat'
     if (
         has_battery
-        and re.search(r'\b(?:charg\w*|şarj\w*)\b', text)
         and re.search(
-            r'\b(?:produc\w*|generat\w*|creat\w*|üret\w*|oluş\w*)\b',
+            r'(?:\b(?:battery|batteries|batarya\w*|pil\w*|phone|smartphone|'
+            r'telefon\w*)\b.{0,100}\b(?:charg\w*|şarj\w*)\b.{0,100}'
+            r'\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b.{0,40}'
+            r'\b(?:produc\w*|generat\w*|creat\w*|üret\w*|oluş\w*)\b)'
+            r'|(?:\b(?:battery|batteries|batarya\w*|pil\w*|phone|smartphone|'
+            r'telefon\w*)\b.{0,100}\b(?:produc\w*|generat\w*|creat\w*|'
+            r'üret\w*|oluş\w*)\b.{0,40}\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b'
+            r'.{0,80}\b(?:charg\w*|şarj\w*)\b)'
+            r'|(?:\b(?:charg\w*|şarj\w*)\b.{0,80}'
+            r'\b(?:battery|batteries|batarya\w*|pil\w*|phone|smartphone|'
+            r'telefon\w*)\b.{0,80}\b(?:produc\w*|generat\w*|creat\w*|'
+            r'üret\w*|oluş\w*)\b.{0,40}\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b)',
             text,
         )
     ):
@@ -1268,11 +1315,15 @@ def _short_preview_proxy_kind(
     if (
         has_phone
         and re.search(
-            r'\b(?:open|exposed|nightstand|bedside|açık\w*|komodin\w*)\b',
-            text,
-        )
-        and re.search(
-            r'\b(?:release\w*|dissipat\w*|cool\w*|spread\w*|ver\w*|yay\w*|soğu\w*)\b',
+            r'(?:\b(?:phone|smartphone|telefon\w*)\b.{0,100}'
+            r'\b(?:open|exposed|nightstand|bedside|açık\w*|komodin\w*)\b'
+            r'|\b(?:open|exposed|nightstand|bedside|açık\w*|komodin\w*)\b'
+            r'.{0,100}\b(?:phone|smartphone|telefon\w*)\b)'
+            r'.{0,100}(?:\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b.{0,50}'
+            r'\b(?:release\w*|dissipat\w*|cool\w*|spread\w*|ver\w*|'
+            r'yay\w*|soğu\w*)\b|\b(?:release\w*|dissipat\w*|cool\w*|'
+            r'spread\w*|ver\w*|yay\w*|soğu\w*)\b.{0,50}'
+            r'\b(?:heat|warmth|ısı\w*|sıcaklık\w*)\b)',
             text,
         )
     ):
@@ -1284,14 +1335,15 @@ def _short_preview_proxy_prompt(scene: dict, kind: str) -> str:
     prompts = {
         'charging_heat': (
             'One continuous photorealistic macro documentary shot of the same '
-            'unbranded smartphone charging in its established bedroom setting. '
+            'unbranded smartphone charging in the established scene setting. '
             'A physically grounded thermal-camera view shows the battery area '
             'gradually becoming warmer while the phone remains still.'
         ),
         'insulated_heat': (
             'One continuous photorealistic cutaway documentary shot of the same '
             'unbranded charging smartphone directly beneath the same thick '
-            'bedroom pillow. A physically grounded thermal-camera view shows '
+            'pillow in the established scene setting. A physically grounded '
+            'thermal-camera view shows '
             'heat remaining concentrated around the phone beneath the insulating '
             'pillow while the surrounding open air stays cooler.'
         ),
@@ -1305,7 +1357,8 @@ def _short_preview_proxy_prompt(scene: dict, kind: str) -> str:
         'open_air_cooling': (
             'One continuous photorealistic thermal-camera documentary shot of '
             'the same unbranded smartphone resting exposed on the same hard, '
-            'flat, open bedroom nightstand. Localized heat around the phone '
+            'flat, open surface in the established scene setting. Localized '
+            'heat around the phone '
             'visibly decreases and disperses into the surrounding open air while '
             'the camera and phone remain still.'
         ),
@@ -1323,7 +1376,7 @@ def _short_preview_proxy_prompt(scene: dict, kind: str) -> str:
         )
     ][:2]
     anchor_clause = (
-        ' Preserve these scene identity and setting anchors: '
+        ' Preserve these scene identity, setting, and continuity anchors: '
         + '; '.join(anchors)
         + '.'
         if anchors else ''

@@ -254,12 +254,35 @@ def test_studio_home_prioritizes_running_and_ready_over_failure_bursts(
     assert 'Çalışan belgesel B' in priority_panel
     assert 'Hazır belgesel' in priority_panel
     assert 'Tekrarlanan başarısız' not in priority_panel
-    assert '3 başarısız deneme geçmişte saklanıyor.' in priority_panel
+    assert '3 başarısız iş geçmişte saklanıyor.' in priority_panel
     assert '/studio/history?status=failed' in priority_panel
     assert synced == ['running-a', 'running-b']
     assert 'data-status-count="running">2</span>' in body
     assert 'data-status-count="ready">1</span>' in body
     assert 'data-status-count="failed">3</span>' in body
+
+
+def test_dashboard_priority_reserves_a_repair_slot(ui_modules):
+    studio, _ = ui_modules
+    jobs = [
+        {'task_id': 'running-a', 'state': 'PROGRESS'},
+        {'task_id': 'running-b', 'state': 'PROGRESS'},
+        {'task_id': 'running-c', 'state': 'PROGRESS'},
+        {
+            'task_id': 'repair-a',
+            'state': 'FAILURE',
+            'repair_available': True,
+        },
+        {'task_id': 'ready-a', 'state': 'SUCCESS'},
+    ]
+
+    visible = studio._dashboard_recent_jobs(jobs)
+
+    assert [job['task_id'] for job in visible] == [
+        'running-a',
+        'running-b',
+        'repair-a',
+    ]
 
 
 def test_studio_home_names_fal_as_optional_when_runway_is_ready(
