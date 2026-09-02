@@ -458,16 +458,20 @@ def test_same_title_attention_attempts_group_without_hiding_other_actions(
         'topic': 'Aynı konu',
         'duration_minutes': 0.5,
         'language': 'tr',
+        'channel_id': 'channel-a',
         'mode': 'preview',
+        'content_style': 'documentary',
+        'pace': 'balanced',
+        'visual_mix': 'balanced',
     }
 
-    def manual(task_id, created_ts):
+    def manual(task_id, created_ts, **spec_overrides):
         return {
             'task_id': task_id,
             'kind': 'render',
             'state': 'SUCCESS',
             'created_ts': created_ts,
-            'spec': dict(spec),
+            'spec': {**spec, **spec_overrides},
             'result': {
                 'title': 'Aynı görünen başlık',
                 'video_key': f'videos/{task_id}/final.mp4',
@@ -477,7 +481,18 @@ def test_same_title_attention_attempts_group_without_hiding_other_actions(
         }
 
     newest = manual('manual-new', 2_000_000_100)
-    duplicate = manual('manual-old', 2_000_000_000)
+    duplicate = manual(
+        'manual-old',
+        2_000_000_000,
+        duration_minutes=5,
+        language='tr_TR',
+        mode='production',
+        content_style='cinematic',
+        pace='dynamic',
+        visual_mix='ai_first',
+    )
+    duplicate['result']['title'] = '  Aynı   görünen başlık  '
+    duplicate['parent_id'] = 'source-not-in-history'
     repair = {
         'task_id': 'repair-action',
         'kind': 'render',
@@ -487,7 +502,37 @@ def test_same_title_attention_attempts_group_without_hiding_other_actions(
         'spec': dict(spec),
         'result': {'title': 'Aynı görünen başlık'},
     }
-    jobs = [newest, repair, duplicate]
+    storyboard = {
+        'task_id': 'storyboard-action',
+        'kind': 'plan',
+        'state': 'AWAITING_APPROVAL',
+        'created_ts': 2_000_000_040,
+        'spec': dict(spec),
+        'result': {'package': {'title': 'Aynı görünen başlık', 'scenes': []}},
+    }
+    stalled = {
+        'task_id': 'stalled-action',
+        'kind': 'render',
+        'state': 'PROGRESS',
+        'created_ts': 2_000_000_030,
+        'updated_at': '2020-01-01T00:00:00+00:00',
+        'spec': dict(spec),
+        'result': {'title': 'Aynı görünen başlık'},
+    }
+    other_channel = manual(
+        'other-channel',
+        2_000_000_020,
+        channel_id='channel-b',
+    )
+    other_language = manual(
+        'other-language',
+        2_000_000_010,
+        language='en',
+    )
+    jobs = [
+        newest, repair, storyboard, stalled, other_channel, other_language,
+        duplicate,
+    ]
     by_id = {job['task_id']: job for job in jobs}
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: jobs)
     monkeypatch.setattr(studio, '_sync_job', lambda task_id: by_id[task_id])
@@ -497,12 +542,250 @@ def test_same_title_attention_attempts_group_without_hiding_other_actions(
         studio_token='studio-secret',
     ).body.decode('utf-8')
 
-    assert body.count('<article class="job"') == 2
-    assert body.count('Aynı görünen başlık') >= 2
+    assert studio._attention_action_category(newest) == 'review'
+    assert studio._attention_action_category(repair) == 'repair'
+    assert studio._attention_action_category(storyboard) == 'storyboard'
+    assert studio._attention_action_category(stalled) == 'stalled'
+    assert studio._attention_duplicate_signature(newest) == (
+        studio._attention_duplicate_signature(duplicate)
+    )
+    assert studio._attention_duplicate_signature(newest) != (
+        studio._attention_duplicate_signature(other_channel)
+    )
+    assert studio._attention_duplicate_signature(newest) != (
+        studio._attention_duplicate_signature(other_language)
+    )
+    actual_channel_a = manual('actual-channel-a', 2_000_000_005)
+    actual_channel_a['result']['target_channel_id'] = 'UC_actual_A'
+    actual_channel_b = manual('actual-channel-b', 2_000_000_004)
+    actual_channel_b['result']['target_channel_id'] = 'UC_actual_B'
+    assert studio._attention_duplicate_signature(actual_channel_a) != (
+        studio._attention_duplicate_signature(actual_channel_b)
+    )
+    assert body.count('<article class="job"') == 6
+    assert body.count('Aynı görünen başlık') >= 6
     assert '2 benzer deneme tek kartta toplandı.' in body
     assert '>Kaliteyi incele</a>' in body
     assert '>Sorunlu sahneyi onar</button>' in body
-    assert 'data-status-count="attention">2</span>' in body
+    assert "Storyboard'u aç</a>" in body
+    assert '>Durumu aç</a>' in body
+    assert 'data-status-count="attention">6</span>' in body
+
+    outside_window = manual('outside-window', 2_000_000_100 - 6 * 60 * 60 - 1)
+    assert len(studio._collapse_attention_duplicates([newest, outside_window])) == 2
+
+
+def test_repair_group_promotes_older_action_when_refreshed_newest_is_resolved(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    spec = {
+        'topic': 'Aynı onarım konusu',
+        'duration_minutes': 0.5,
+        'language': 'tr',
+        'channel_id': 'channel-a',
+    }
+
+    def repair(task_id, created_ts):
+        return {
+            'task_id': task_id,
+            'kind': 'render',
+            'state': 'FAILURE',
+            'repair_available': True,
+            'created_ts': created_ts,
+            'spec': dict(spec),
+            'result': {'title': 'Aynı onarım başlığı'},
+        }
+
+    newest = repair('repair-new', 2_000_000_100)
+    older = repair('repair-old', 2_000_000_000)
+    resolved_newest = {**newest, 'repair_available': False}
+    synced = []
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [newest, older])
+    monkeypatch.setattr(
+        studio,
+        '_sync_job',
+        lambda task_id: synced.append(task_id) or resolved_newest,
+    )
+
+    body = studio.studio_history(
+        status='attention',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert synced == ['repair-new']
+    assert 'action="/studio/retry/repair-old"' in body
+    assert 'action="/studio/retry/repair-new"' not in body
+    assert 'data-status-count="attention">1</span>' in body
+    assert 'Başarısız denemeler <b>1</b>' in body
+
+
+def test_stalled_jobs_are_grouped_only_by_attention_identity(ui_modules):
+    studio, _ = ui_modules
+    spec = {
+        'topic': 'Aynı teknik istek',
+        'duration_minutes': 0.5,
+        'language': 'tr',
+        'channel_id': 'channel-a',
+        'mode': 'preview',
+    }
+    first = {
+        'task_id': 'stalled-first',
+        'kind': 'render',
+        'state': 'PROGRESS',
+        'created_ts': 2_000_000_100,
+        'updated_at': '2020-01-01T00:00:00+00:00',
+        'spec': dict(spec),
+        'result': {'title': 'Görünen başlık A'},
+    }
+    second = {
+        **first,
+        'task_id': 'stalled-second',
+        'created_ts': 2_000_000_000,
+        'spec': dict(spec),
+        'result': {'title': 'Görünen başlık B'},
+    }
+
+    visible = studio._collapse_retry_sources([first, second])
+
+    assert studio._running_duplicate_signature(first) is None
+    assert studio._attention_action_category(first) == 'stalled'
+    assert [job['task_id'] for job in visible] == [
+        'stalled-first', 'stalled-second',
+    ]
+    assert studio._console_counts(visible)['attention'] == 2
+
+
+def test_each_attention_action_groups_only_its_matching_attempts(ui_modules):
+    studio, _ = ui_modules
+    spec = {
+        'topic': 'Ortak konu',
+        'language': 'tr',
+        'channel_id': 'channel-a',
+    }
+
+    def attempt(action, task_id, created_ts):
+        job = {
+            'task_id': task_id,
+            'kind': 'render',
+            'state': 'SUCCESS',
+            'created_ts': created_ts,
+            'spec': dict(spec),
+            'result': {'title': f'{action} ortak başlığı'},
+        }
+        if action == 'review':
+            job['result'].update({
+                'video_key': f'videos/{task_id}/final.mp4',
+                'quality_disposition': 'manual_qa_preview',
+                'manual_qa_required': True,
+            })
+        elif action == 'repair':
+            job.update({'state': 'FAILURE', 'repair_available': True})
+        elif action == 'storyboard':
+            job.update({'kind': 'plan', 'state': 'AWAITING_APPROVAL'})
+            job['result'] = {
+                'package': {'title': f'{action} ortak başlığı', 'scenes': []},
+            }
+        else:
+            job.update({
+                'state': 'PROGRESS',
+                'updated_at': '2020-01-01T00:00:00+00:00',
+            })
+        return job
+
+    for action in ('review', 'repair', 'storyboard', 'stalled'):
+        newest = attempt(action, f'{action}-new', 2_000_000_100)
+        older = attempt(action, f'{action}-old', 2_000_000_000)
+
+        visible = studio._collapse_retry_sources([newest, older])
+
+        assert studio._attention_action_category(newest) == action
+        assert [job['task_id'] for job in visible] == [f'{action}-new']
+        assert visible[0]['_grouped_attention_attempts'] == 1
+        assert '_grouped_running_attempts' not in visible[0]
+        assert '_grouped_attention_attempts' not in newest
+        assert '_grouped_attention_attempts' not in older
+
+
+def test_attention_group_window_is_anchored_to_the_newest_attempt(ui_modules):
+    studio, _ = ui_modules
+
+    def review(task_id, created_ts):
+        return {
+            'task_id': task_id,
+            'kind': 'render',
+            'state': 'SUCCESS',
+            'created_ts': created_ts,
+            'spec': {'language': 'tr', 'channel_id': 'channel-a'},
+            'result': {
+                'title': 'Zaman penceresi başlığı',
+                'video_key': f'videos/{task_id}/final.mp4',
+                'quality_disposition': 'manual_qa_preview',
+                'manual_qa_required': True,
+            },
+        }
+
+    newest = review('newest', 2_000_000_000)
+    six_hours = review(
+        'six-hours',
+        newest['created_ts'] - studio.ATTENTION_DUPLICATE_GROUP_WINDOW_SECONDS,
+    )
+    five_hours = review('five-hours', newest['created_ts'] - 5 * 60 * 60)
+    ten_hours = review('ten-hours', newest['created_ts'] - 10 * 60 * 60)
+    missing_time = review('missing-time', None)
+    future_first = review('future-first', newest['created_ts'] + 1)
+
+    assert len(studio._collapse_attention_duplicates([newest, six_hours])) == 1
+    chained = studio._collapse_attention_duplicates([
+        newest, five_hours, ten_hours,
+    ])
+    assert [job['task_id'] for job in chained] == ['newest', 'ten-hours']
+    assert chained[0]['_grouped_attention_attempts'] == 1
+    assert len(studio._collapse_attention_duplicates([newest, missing_time])) == 2
+    assert len(studio._collapse_attention_duplicates([newest, future_first])) == 2
+
+
+def test_attention_identity_fails_closed_for_missing_and_long_titles(ui_modules):
+    studio, _ = ui_modules
+    base = {
+        'kind': 'render',
+        'state': 'SUCCESS',
+        'created_ts': 2_000_000_100,
+        'spec': {'language': 'tr', 'channel_id': 'channel-a'},
+        'result': {
+            'video_key': 'videos/example/final.mp4',
+            'quality_disposition': 'manual_qa_preview',
+            'manual_qa_required': True,
+        },
+    }
+    missing_a = {**base, 'task_id': 'missing-a'}
+    missing_b = {**base, 'task_id': 'missing-b', 'created_ts': 2_000_000_000}
+    long_a = {
+        **base,
+        'task_id': 'long-a',
+        'result': {**base['result'], 'title': 'A' * 120 + ' bir'},
+    }
+    long_b = {
+        **base,
+        'task_id': 'long-b',
+        'created_ts': 2_000_000_000,
+        'result': {**base['result'], 'title': 'A' * 120 + ' iki'},
+    }
+    unknown_language = {
+        **base,
+        'task_id': 'unknown-language',
+        'spec': {'channel_id': 'channel-a', 'topic': 'Başlığı var'},
+        'result': {**base['result'], 'title': 'Başlığı var'},
+    }
+
+    assert studio._attention_duplicate_signature(missing_a) is None
+    assert studio._attention_duplicate_signature(missing_b) is None
+    assert studio._attention_duplicate_signature(unknown_language) is None
+    assert len(studio._collapse_attention_duplicates([missing_a, missing_b])) == 2
+    assert studio._attention_duplicate_signature(long_a) != (
+        studio._attention_duplicate_signature(long_b)
+    )
 
 
 def test_identical_concurrent_running_jobs_group_only_in_the_display(ui_modules):
