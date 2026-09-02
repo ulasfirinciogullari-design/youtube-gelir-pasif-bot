@@ -858,12 +858,13 @@ SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
 # regenerating narration, research and the storyboard. A third remains a hard
 # pre-paid failure, so this completion path cannot grow with scene count.
 SHORT_PREVIEW_REQUIRED_RUNWAY_CAP = 2
-# A seven-scene mixed preview can legitimately expose three different semantic
-# stock misses after the full tournament: a rare object close-up, a precise
-# human action and its shoreline payoff. Keep all three replacements bounded
-# by the scene count and fail closed on a fourth instead of discarding an
-# otherwise approved AI-first storyboard before any paid submission.
-SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 3
+# An exact-action preview can legitimately expose four different semantic
+# stock misses after the full tournament.  Product close-ups and hand actions
+# are especially unlikely to exist as one honest stock clip even when the
+# story itself is sound.  Keep four replacements bounded by the scene count
+# and fail closed on a fifth instead of discarding an otherwise approved
+# storyboard before any paid submission.
+SHORT_PREVIEW_STOCK_QUALITY_RUNWAY_CAP = 4
 MANUAL_QA_PREVIEW_STOCK_FLOOR = 60
 MANUAL_QA_PREVIEW_GENERATED_FLOOR = 60
 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD = 86
