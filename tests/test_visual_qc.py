@@ -29,6 +29,10 @@ from app.services.visual_qc import (
     _thermal_claim_required,
     review_scene_visuals,
 )
+from app.services.visual_routing import (
+    OPEN_AIR_COOLING_PROXY_KIND,
+    SERVER_SHORT_PROXY_KIND_FIELD,
+)
 
 
 JPEG_BYTES = b'\xff\xd8\xffvisual-qc-frame\xff\xd9'
@@ -66,6 +70,8 @@ def _review(
         'unexplained_reset': False,
         'location_continuity_applicable': False,
         'location_continuity_matches': False,
+        'recurring_identity_continuity_applicable': False,
+        'recurring_identity_continuity_matches': False,
         'prominent_readable_text_or_logo_visible': False,
         'major_visual_artifact_visible': False,
         'effectively_static_or_frozen': False,
@@ -759,6 +765,122 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    def test_explicit_recurring_object_mismatch_is_server_authored_hard_gate(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scenes = [
+            {
+                'narration': 'Oyuncak ejderha kumdan çıkar.',
+                'ai_prompt': 'Weathered matte black toy dragon on wet sand.',
+                'visual_queries': ['weathered black toy dragon wet sand'],
+            },
+            {
+                'narration': 'Aynı çentikli siyah ejderha akıntıda sürüklenir.',
+                'ai_prompt': 'The same chipped black toy dragon underwater.',
+                'visual_queries': ['same chipped black toy dragon underwater'],
+            },
+        ]
+        gemini.return_value = {'reviews': [
+            _review(
+                0,
+                score=95,
+                recurring_identity_continuity_applicable=False,
+                recurring_identity_continuity_matches=True,
+                manufactured_object_cues_visible=True,
+            ),
+            _review(
+                1,
+                score=95,
+                reason='The recurring dragon has different shape and markings.',
+                recurring_identity_continuity_applicable=False,
+                recurring_identity_continuity_matches=False,
+                manufactured_object_cues_visible=True,
+            ),
+        ]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            reviews = review_scene_visuals(
+                scenes,
+                [['first.mp4'], ['second.mp4']],
+                self.work / 'recurring_identity_mismatch',
+                _missing_review_attempts=0,
+                topic='Her sahnede aynı oyuncak ejderha aynı kalmalı.',
+            )['reviews']
+
+        self.assertTrue(
+            reviews[0]['recurring_identity_continuity_applicable']
+        )
+        self.assertEqual(reviews[0]['score'], 95)
+        self.assertTrue(
+            reviews[1]['recurring_identity_continuity_applicable']
+        )
+        self.assertEqual(reviews[1]['score'], 40)
+        self.assertIn(
+            'changes identity between scenes',
+            ' '.join(reviews[1]['hard_gate_diagnostics']),
+        )
+        self.assertIn(
+            'RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS: [0,1]',
+            gemini.call_args.kwargs['system_instruction'],
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_ordinary_montage_cannot_invent_recurring_identity_requirement(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scenes = [
+            {
+                'narration': 'Bir konteyner gemisi dalgaya yakalanır.',
+                'visual_queries': ['container ship wave'],
+            },
+            {
+                'narration': 'Cornwall sahilinde plastikler toplanır.',
+                'visual_queries': ['beach cleanup Cornwall'],
+            },
+        ]
+        gemini.return_value = {'reviews': [
+            _review(
+                0,
+                recurring_identity_continuity_applicable=True,
+                recurring_identity_continuity_matches=False,
+            ),
+            _review(
+                1,
+                recurring_identity_continuity_applicable=True,
+                recurring_identity_continuity_matches=False,
+            ),
+        ]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            reviews = review_scene_visuals(
+                scenes,
+                [['ship.mp4'], ['cleanup.mp4']],
+                self.work / 'ordinary_montage',
+                _missing_review_attempts=0,
+                topic='Konteyner kazasından sahil temizliğine kısa belgesel.',
+            )['reviews']
+
+        self.assertTrue(all(review['score'] == 92 for review in reviews))
+        self.assertTrue(all(
+            review['recurring_identity_continuity_applicable'] is False
+            for review in reviews
+        ))
+        self.assertIn(
+            'RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS: []',
+            gemini.call_args.kwargs['system_instruction'],
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
     def test_real_animal_scene_does_not_require_manufactured_cues(
         self, frame, gemini
     ):
@@ -1171,6 +1293,248 @@ class VisualQcProviderTests(unittest.TestCase):
                 for scene in story
             ],
             [False, False, True, False, False, False],
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_routed_open_air_cooling_rejects_generic_or_decoy_change_prose(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        narrations = [
+            'Yastık altında gece şarj olan telefon, sabah normalden daha sıcak olabilir.',
+            'Batarya bütün gece şarj olurken az da olsa ısı üretir.',
+            'Yastık, bu ısının havaya rahatça yayılmasını büyük ölçüde engeller.',
+            'Bu sıcaklık bataryanın zamanla gereğinden daha hızlı eskimesine yol açabilir.',
+            'Bu yüzden telefonu sert, düz ve açık bir komodine bırak.',
+            'Açıkta kalan telefon ısıyı havaya çok daha kolay verir.',
+        ]
+        story = [
+            {'index': index, 'narration': narration}
+            for index, narration in enumerate(narrations)
+        ]
+        cooling_scene = {
+            **story[5],
+            'visual_queries': ['thermal camera phone cooling on nightstand'],
+            'ai_prompt': 'A phone cooling on an open nightstand.',
+            SERVER_SHORT_PROXY_KIND_FIELD: OPEN_AIR_COOLING_PROXY_KIND,
+        }
+        story[5] = cooling_scene
+        false_pass_reasons = (
+            'The candidate fully matches the narration and requested scene.',
+            'A smooth camera push gives the static phone natural motion.',
+            'The exposure and color grade become cooler across the shot.',
+            'Droplets, dust, and dirt change on the otherwise static phone.',
+        )
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            for case_index, reason in enumerate(false_pass_reasons):
+                with self.subTest(reason=reason):
+                    gemini.return_value = {'reviews': [_review(
+                        score=97,
+                        reason=reason,
+                        evidence_moments=[0, 1, 2],
+                        thermal_claim_applicable=False,
+                        thermal_evidence_visible=True,
+                        state_change_applicable=False,
+                        state_changed_after_action=True,
+                        final_state_persists=True,
+                    )]}
+                    review = review_scene_visuals(
+                        [cooling_scene],
+                        self.visuals,
+                        self.work / f'cooling_decoy_{case_index}',
+                        _missing_review_attempts=0,
+                        story_scenes=story,
+                        _score_reason_consistency_attempts=0,
+                    )['reviews'][0]
+
+                    self.assertEqual(review['raw_score'], 97)
+                    self.assertEqual(review['score'], 40)
+                    self.assertTrue(review['thermal_claim_applicable'])
+                    self.assertTrue(review['state_change_applicable'])
+                    self.assertTrue(
+                        review['open_air_cooling_temporal_required']
+                    )
+                    self.assertFalse(
+                        review['cooling_temporal_evidence_explained']
+                    )
+                    self.assertFalse(review['evidence_gate_passed'])
+                    self.assertIn(
+                        'thermal-field shrink or heat-plume dissipation',
+                        review['reason'],
+                    )
+
+        system_instruction = gemini.call_args.kwargs['system_instruction']
+        self.assertIn(
+            'OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS: [0]',
+            system_instruction,
+        )
+        for forbidden_substitute in (
+            'camera push',
+            'exposure or color-grade shift',
+            'water droplets',
+            'dust',
+            'otherwise static phone',
+        ):
+            self.assertIn(forbidden_substitute, system_instruction)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_routed_open_air_cooling_rejects_two_moment_thermal_change(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        cooling_scene = {
+            'index': 5,
+            'narration': (
+                'Açıkta kalan telefon ısıyı havaya çok daha kolay verir.'
+            ),
+            'visual_queries': ['thermal camera phone cooling on nightstand'],
+            'ai_prompt': 'A phone cooling on an open nightstand.',
+            SERVER_SHORT_PROXY_KIND_FIELD: OPEN_AIR_COOLING_PROXY_KIND,
+        }
+        gemini.return_value = {'reviews': [_review(
+            score=95,
+            reason=(
+                'The visible thermal field around the phone shrinks between '
+                'the opening and ending samples.'
+            ),
+            evidence_moments=[0, 2],
+            thermal_evidence_visible=True,
+            state_changed_after_action=True,
+            final_state_persists=True,
+        )]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                [cooling_scene],
+                self.visuals,
+                self.work / 'cooling_two_moments',
+                _missing_review_attempts=0,
+                story_scenes=[cooling_scene],
+            )['reviews'][0]
+
+        self.assertEqual(review['raw_score'], 95)
+        self.assertEqual(review['score'], 40)
+        self.assertTrue(review['cooling_temporal_evidence_explained'])
+        self.assertFalse(
+            review['cooling_temporal_moment_coverage_passed']
+        )
+        self.assertFalse(review['evidence_gate_passed'])
+        self.assertIn(
+            'ordered early, middle, and late sampled moments',
+            review['reason'],
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_routed_open_air_cooling_accepts_real_three_moment_thermal_change(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        cooling_scene = {
+            'index': 5,
+            'narration': (
+                'Açıkta kalan telefon ısıyı havaya çok daha kolay verir.'
+            ),
+            'visual_queries': ['thermal camera phone cooling on nightstand'],
+            'ai_prompt': 'A phone cooling on an open nightstand.',
+            SERVER_SHORT_PROXY_KIND_FIELD: OPEN_AIR_COOLING_PROXY_KIND,
+        }
+        gemini.return_value = {'reviews': [_review(
+            score=94,
+            reason=(
+                'Across the early, middle, and late moments, the visible '
+                'thermal field around the same phone steadily shrinks and '
+                'the smaller field persists at the ending.'
+            ),
+            evidence_moments=[0, 1, 2],
+            thermal_claim_applicable=False,
+            thermal_evidence_visible=True,
+            state_change_applicable=False,
+            state_changed_after_action=True,
+            final_state_persists=True,
+        )]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                [cooling_scene],
+                self.visuals,
+                self.work / 'cooling_real_temporal_evidence',
+                _missing_review_attempts=0,
+                story_scenes=[cooling_scene],
+            )['reviews'][0]
+
+        self.assertEqual(review['raw_score'], 94)
+        self.assertEqual(review['score'], 94)
+        self.assertTrue(review['thermal_claim_applicable'])
+        self.assertTrue(review['state_change_applicable'])
+        self.assertTrue(review['state_changed_after_action'])
+        self.assertTrue(review['final_state_persists'])
+        self.assertTrue(review['cooling_temporal_evidence_explained'])
+        self.assertTrue(
+            review['cooling_temporal_moment_coverage_passed']
+        )
+        self.assertTrue(review['evidence_gate_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_unrouted_contextual_cooling_keeps_story_aware_anchor_behavior(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        story = [
+            {'index': 0, 'narration': 'The phone may feel warmer in the morning.'},
+            {'index': 1, 'narration': 'Its battery produces heat while charging.'},
+            {
+                'index': 2,
+                'narration': 'The pillow blocks that heat from spreading.',
+            },
+            {
+                'index': 3,
+                'narration': 'That temperature can degrade the battery over time.',
+            },
+            {'index': 4, 'narration': 'Place it on an open nightstand.'},
+            {
+                'index': 5,
+                'narration': 'In open air, the phone releases heat more easily.',
+                'visual_queries': ['phone resting on open nightstand'],
+            },
+        ]
+        gemini.return_value = {'reviews': [_review(
+            score=92,
+            reason='The phone resting on the open nightstand matches the scene.',
+        )]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                [story[5]],
+                self.visuals,
+                self.work / 'unrouted_contextual_cooling',
+                _missing_review_attempts=0,
+                story_scenes=story,
+            )['reviews'][0]
+
+        self.assertEqual(review['score'], 92)
+        self.assertFalse(review['thermal_claim_applicable'])
+        self.assertFalse(review['state_change_applicable'])
+        self.assertNotIn('open_air_cooling_temporal_required', review)
+        self.assertIn(
+            'OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS: []',
+            gemini.call_args.kwargs['system_instruction'],
         )
 
     def test_english_thermal_story_allows_context_after_mechanism_proof(self):

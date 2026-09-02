@@ -355,6 +355,8 @@ def _parse_video_result(payload: object, request_id: str) -> dict:
 def generate_fal_video(
     prompt: str,
     seconds: int,
+    *,
+    aspect_ratio: str = '16:9',
 ) -> dict:
     """Submit one Seedance Fast job, poll it, and return trusted media metadata."""
     api_key = str(getattr(settings, 'fal_key', '') or '').strip()
@@ -365,6 +367,9 @@ def generate_fal_video(
         raise ValueError('Fal video prompt is empty')
     if len(prompt_text.encode('utf-16-le')) // 2 > 1000:
         raise ValueError('Fal video prompt exceeds 1000 UTF-16 code units')
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Fal video aspect ratio must be 16:9 or 9:16')
 
     duration = _seedance_duration(seconds)
     submit_url = f'{_FAL_QUEUE_ORIGIN}/{FAL_SEEDANCE_FAST_MODEL}'
@@ -379,7 +384,7 @@ def generate_fal_video(
         'prompt': prompt_text,
         'resolution': '720p',
         'duration': str(duration),
-        'aspect_ratio': '16:9',
+        'aspect_ratio': aspect_ratio,
         # ElevenLabs remains the only narration source for deterministic QA.
         'generate_audio': False,
         'bitrate_mode': 'standard',

@@ -16,6 +16,7 @@ from app.services.gemini_generation import (
     generate_gemini_json,
 )
 from app.services.visual_routing import (
+    SERVER_SHORT_PROXY_KIND_FIELD,
     preview_authored_ai_limit,
     preview_paid_ai_limit,
 )
@@ -1448,6 +1449,7 @@ def _apply_short_preview_concrete_proxy_routes(
         if kind is None:
             continue
         scene['ai_prompt'] = _short_preview_proxy_prompt(scene, kind)
+        scene[SERVER_SHORT_PROXY_KIND_FIELD] = kind
         routed.append({'position': position, 'proxy': kind})
         remaining -= 1
 

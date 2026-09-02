@@ -183,6 +183,39 @@ class FalVideoQueueTests(unittest.TestCase):
             [f'{QUEUE_ROOT}/status', f'{QUEUE_ROOT}/status', f'{QUEUE_ROOT}/response'],
         )
 
+    def test_portrait_submission_uses_seedance_vertical_aspect_ratio(self):
+        client = _Client(
+            _Response(payload=_created_payload()),
+            [
+                _Response(payload={
+                    'status': 'COMPLETED',
+                    'request_id': REQUEST_ID,
+                }),
+                _Response(payload={
+                    'video': {
+                        'url': (
+                            'https://v3.fal.media/files/example/'
+                            'portrait.mp4'
+                        ),
+                        'content_type': 'video/mp4',
+                        'file_size': 2_000_000,
+                    },
+                }),
+            ],
+        )
+        namespace = _load_namespace(client)
+
+        namespace['generate_fal_video'](
+            'safe portrait prompt',
+            7,
+            aspect_ratio='9:16',
+        )
+
+        self.assertEqual(
+            client.post_calls[0][1]['json']['aspect_ratio'],
+            '9:16',
+        )
+
     def test_absent_key_does_not_construct_or_submit_a_client(self):
         client = _Client(AssertionError('must not submit'))
         namespace = _load_namespace(client, fal_key='')

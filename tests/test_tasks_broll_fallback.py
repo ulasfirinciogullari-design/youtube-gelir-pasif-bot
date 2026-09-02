@@ -973,6 +973,7 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             [],
             file_prefix='final_qc_rescue',
             tolerate_pexels_failure=True,
+            orientation='portrait',
         )
 
         self.assertEqual(
@@ -986,6 +987,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         self.assertEqual(
             download_candidates.call_args.args[1],
             queries,
+        )
+        self.assertEqual(
+            download_candidates.call_args.kwargs['orientation'],
+            'portrait',
         )
 
     def test_stock_quality_fallback_uses_same_bounded_final_rescue(self):
@@ -1537,10 +1542,15 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             selected_by='test',
             max_candidates=3,
             search_limit=18,
+            orientation='portrait',
         )
 
         self.assertEqual(result, [])
         self.assertEqual(find_broll.call_count, 4)
+        self.assertTrue(all(
+            call.kwargs.get('orientation') == 'portrait'
+            for call in find_broll.call_args_list
+        ))
         namespace['_select_ranked_broll_candidates'].assert_called_once()
 
     def test_persistent_parallel_and_sequential_search_failure_stays_strict(self):
@@ -1586,6 +1596,10 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
 
         self.assertEqual(result, [])
         self.assertEqual(find_broll.call_count, 2)
+        self.assertTrue(all(
+            call.kwargs.get('orientation') == 'landscape'
+            for call in find_broll.call_args_list
+        ))
 
     def test_non_transient_search_failures_propagate_without_retry(self):
         for failure in (
@@ -1854,6 +1868,89 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             stock_contract,
         )
         self.assertNotIn('except Exception', stock_contract)
+
+    def test_pipeline_propagates_mode_orientation_through_every_stock_path(self):
+        tree = ast.parse(
+            SOURCE_PATH.read_text(encoding='utf-8'),
+            filename=str(SOURCE_PATH),
+        )
+        pipeline = next(
+            node
+            for node in tree.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name == 'run_video_pipeline'
+        )
+        orientation_assignment = next(
+            node
+            for node in ast.walk(pipeline)
+            if isinstance(node, ast.Assign)
+            and any(
+                isinstance(target, ast.Name)
+                and target.id == 'pexels_orientation'
+                for target in node.targets
+            )
+        )
+        orientation_expression = compile(
+            ast.Expression(body=orientation_assignment.value),
+            str(SOURCE_PATH),
+            'eval',
+        )
+        self.assertEqual(
+            eval(
+                orientation_expression,
+                {'generation_aspect_ratio': '9:16'},
+            ),
+            'portrait',
+        )
+        self.assertEqual(
+            eval(
+                orientation_expression,
+                {'generation_aspect_ratio': '16:9'},
+            ),
+            'landscape',
+        )
+
+        retry_calls = [
+            node
+            for node in ast.walk(pipeline)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == '_retry_bad_scene'
+        ]
+        self.assertEqual(len(retry_calls), 4)
+        for call in retry_calls:
+            orientation_keyword = next(
+                keyword
+                for keyword in call.keywords
+                if keyword.arg == 'orientation'
+            )
+            self.assertIsInstance(orientation_keyword.value, ast.Name)
+            self.assertEqual(
+                orientation_keyword.value.id,
+                'pexels_orientation',
+            )
+
+        collect_calls = [
+            node
+            for node in ast.walk(pipeline)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == 'submit'
+            and node.args
+            and isinstance(node.args[0], ast.Name)
+            and node.args[0].id == '_collect_broll'
+        ]
+        self.assertEqual(len(collect_calls), 1)
+        collect_orientation = next(
+            keyword
+            for keyword in collect_calls[0].keywords
+            if keyword.arg == 'orientation'
+        )
+        self.assertIsInstance(collect_orientation.value, ast.Name)
+        self.assertEqual(
+            collect_orientation.value.id,
+            'pexels_orientation',
+        )
 
 
 if __name__ == '__main__':

@@ -5,8 +5,9 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import tempfile
 import time
-from urllib.parse import urljoin, urlparse
+from urllib.parse import parse_qsl, urljoin, urlparse
 
 import httpx
 from runwayml import BadRequestError, RateLimitError, RunwayML
@@ -24,9 +25,17 @@ _GEMINI_VIDEO_BASE = 'https://generativelanguage.googleapis.com/v1beta'
 _GEMINI_VIDEO_MODEL = 'veo-3.1-lite-generate-preview'
 _GEMINI_VIDEO_FAST_MODEL = 'veo-3.1-fast-generate-preview'
 _GEMINI_VIDEO_STANDARD_MODEL = 'veo-3.1-generate-preview'
+_GEMINI_OMNI_MODEL = 'gemini-omni-1.1-flash'
 _GEMINI_IMAGE_MODEL = 'gemini-3.1-flash-image'
 _GEMINI_IMAGE_ENDPOINT = f'{_GEMINI_VIDEO_BASE}/interactions'
+_GEMINI_OMNI_ENDPOINT = f'{_GEMINI_VIDEO_BASE}/interactions'
 _GEMINI_IMAGE_MIME_TYPE = 'image/jpeg'
+_GEMINI_OMNI_ASPECT_RATIO = '9:16'
+_GEMINI_OMNI_RESOLUTION = '720p'
+_GEMINI_OMNI_MIN_SECONDS = 3.0
+_GEMINI_OMNI_MAX_SECONDS = 10.0
+_GEMINI_OMNI_REFERENCE_SECONDS = 3.0
+_MAX_GEMINI_OMNI_REFERENCE_BYTES = 8 * 1024 * 1024
 _IMAGE_MOTION_RECIPE_VERSION = 'diagonal-push-v2'
 _GEMINI_OPERATION_PATTERN = re.compile(
     r'^(?:models/[A-Za-z0-9._-]+/)?operations/[A-Za-z0-9._~/-]+$'
@@ -43,6 +52,22 @@ _IMAGE_MOTION_FPS = 30
 _GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS = 10 * 60
 _GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL: dict[str, float] = {}
 _RUNWAY_GEN45_CREDITS_PER_SECOND = 12
+_ASPECT_RATIO_PROFILES = {
+    '16:9': {
+        'runway_ratio': '1280:720',
+        'motion_scale': '2560:1440',
+        'motion_output': '1280x720',
+        'motion_width': 1280,
+        'motion_height': 720,
+    },
+    '9:16': {
+        'runway_ratio': '720:1280',
+        'motion_scale': '1440:2560',
+        'motion_output': '720x1280',
+        'motion_width': 720,
+        'motion_height': 1280,
+    },
+}
 _RUNWAY_SAFE_PROVIDER_FALLBACK_CODES = frozenset({
     'capacity_exhausted',
     'capacity_unavailable',
@@ -64,6 +89,7 @@ _RUNWAY_SAFE_PROVIDER_FALLBACK_CODES = frozenset({
     'quota_exceeded',
     'unsupported_model',
 })
+_GEMINI_OMNI_FILE_ID_PATTERN = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$')
 
 
 class GeminiVideoTerminalError(RuntimeError):
@@ -78,12 +104,28 @@ class GeminiImageAttemptedError(RuntimeError):
     """A paid image create was attempted but yielded no usable descriptor."""
 
 
+class GeminiOmniPreAcceptanceFallbackError(RuntimeError):
+    """Omni definitively rejected before accepting a paid interaction."""
+
+
+class GeminiOmniTerminalError(RuntimeError):
+    """An Omni interaction was accepted or failed in an unsafe state."""
+
+
 class RunwayCreateRejectedError(RuntimeError):
     """Runway definitively rejected create without authorizing provider hop."""
 
 
 class RunwayCreditPreflightInsufficientError(RuntimeError):
     """A read-only balance check proved Gen-4.5 create cannot succeed."""
+
+
+def _aspect_ratio_profile(aspect_ratio: str) -> dict:
+    normalized = str(aspect_ratio or '').strip()
+    try:
+        return _ASPECT_RATIO_PROFILES[normalized]
+    except KeyError:
+        raise ValueError('Aspect ratio must be 16:9 or 9:16') from None
 
 
 def _runway_gen45_credits_known_insufficient(client, seconds: int) -> bool:
@@ -310,8 +352,14 @@ def _gemini_image_rejection_category(response: object) -> str:
     return 'unknown'
 
 
-def _validated_jpeg_dimensions(image_bytes: bytes) -> tuple[int, int]:
+def _validated_jpeg_dimensions(
+    image_bytes: bytes,
+    aspect_ratio: str = '16:9',
+) -> tuple[int, int]:
     """Validate one bounded, non-animated JPEG and return its dimensions."""
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Aspect ratio must be 16:9 or 9:16')
     if not isinstance(image_bytes, bytes):
         raise RuntimeError('Gemini image returned invalid media')
     if not _MIN_GENERATED_IMAGE_BYTES <= len(image_bytes) <= _MAX_GENERATED_IMAGE_BYTES:
@@ -369,11 +417,12 @@ def _validated_jpeg_dimensions(image_bytes: bytes) -> tuple[int, int]:
             )
         position += segment_length
 
+    expected_ratio = 16 / 9 if aspect_ratio == '16:9' else 9 / 16
     if (
-        width < 640
-        or height < 360
+        min(width, height) < 360
+        or max(width, height) < 640
         or width * height > _MAX_GENERATED_IMAGE_PIXELS
-        or abs((width / height) - (16 / 9)) > 0.04
+        or abs((width / height) - expected_ratio) > 0.04
         or scan_data_start <= 0
         or len(image_bytes) - scan_data_start - 2 < 128
     ):
@@ -415,7 +464,11 @@ def _probe_single_jpeg_frame(
         raise RuntimeError('Gemini image returned invalid media')
 
 
-def _decode_gemini_image(mime_type: object, encoded_data: object) -> bytes:
+def _decode_gemini_image(
+    mime_type: object,
+    encoded_data: object,
+    aspect_ratio: str = '16:9',
+) -> bytes:
     """Strictly decode the single inline image allowed by this fallback."""
     if mime_type != _GEMINI_IMAGE_MIME_TYPE or not isinstance(encoded_data, str):
         raise RuntimeError('Gemini image returned invalid media')
@@ -426,13 +479,14 @@ def _decode_gemini_image(mime_type: object, encoded_data: object) -> bytes:
         image_bytes = base64.b64decode(encoded_data, validate=True)
     except (binascii.Error, ValueError) as exc:
         raise RuntimeError('Gemini image returned invalid media') from exc
-    _validated_jpeg_dimensions(image_bytes)
+    _validated_jpeg_dimensions(image_bytes, aspect_ratio)
     return image_bytes
 
 
 def _generate_gemini_image_descriptor(
     prompt_text: str,
     seconds: int,
+    aspect_ratio: str = '16:9',
 ) -> dict:
     """Submit one retry-free paid image request for a private-preview shot."""
     if not settings.gemini_api_key:
@@ -442,6 +496,9 @@ def _generate_gemini_image_descriptor(
         raise RuntimeError('Gemini image fallback prompt is empty')
     if len(prompt.encode('utf-16-le')) // 2 > 1000:
         raise RuntimeError('Gemini image fallback prompt is too long')
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Aspect ratio must be 16:9 or 9:16')
     motion_seconds = max(5, min(int(round(seconds)), 10))
     headers = {
         'x-goog-api-key': settings.gemini_api_key,
@@ -458,7 +515,7 @@ def _generate_gemini_image_descriptor(
         'response_format': {
             'type': 'image',
             'mime_type': _GEMINI_IMAGE_MIME_TYPE,
-            'aspect_ratio': '16:9',
+            'aspect_ratio': aspect_ratio,
             'image_size': '1K',
         },
     }
@@ -502,8 +559,9 @@ def _generate_gemini_image_descriptor(
     image_bytes = _decode_gemini_image(
         image_block.get('mime_type'),
         image_block.get('data'),
+        aspect_ratio,
     )
-    dimensions = _validated_jpeg_dimensions(image_bytes)
+    dimensions = _validated_jpeg_dimensions(image_bytes, aspect_ratio)
     _probe_single_jpeg_frame(image_bytes, dimensions)
     normalized_data = base64.b64encode(image_bytes).decode('ascii')
     return {
@@ -518,7 +576,555 @@ def _generate_gemini_image_descriptor(
         'image_sha256': hashlib.sha256(image_bytes).hexdigest(),
         'prompt_sha256': hashlib.sha256(prompt.encode('utf-8')).hexdigest(),
         'image_model': _GEMINI_IMAGE_MODEL,
+        'aspect_ratio': aspect_ratio,
     }
+
+
+def _gemini_omni_response_allows_provider_fallback(response: object) -> bool:
+    """Recognize only a definite quota/capacity rejection before acceptance."""
+    # Interactions create is non-idempotent. A concrete HTTP 429 is the sole
+    # response we treat as proving pre-acceptance rejection. Even a structured
+    # 503 can be emitted after work begins, so it must fail closed.
+    return getattr(response, 'status_code', None) == 429
+
+
+def _gemini_omni_prompt(
+    prompt_text: str,
+    seconds: int,
+    *,
+    has_continuity_reference: bool,
+) -> str:
+    """Build one English, single-shot instruction without retaining it."""
+    action = str(prompt_text).strip()
+    if not action:
+        raise ValueError('Gemini Omni prompt is empty')
+    if has_continuity_reference:
+        return (
+            '[# References <VIDEO_REF_0>@Video1] '
+            f'Generate exactly {seconds} seconds as a vertical 9:16 video. '
+            'In a single continuous unbroken shot with no scene cuts, use '
+            '<VIDEO_REF_0> only as a visual continuity reference. The current '
+            'scene direction is authoritative: '
+            f'{action} Preserve the exact recurring primary subject, object '
+            'or person identity, including distinctive geometry, materials '
+            'and markings, plus the established documentary grade. Preserve '
+            'location and lighting only when the current scene direction '
+            'implies the same place and time; explicitly follow any narrated '
+            'setting or time transition. Change only the current physical '
+            'action and any transition it requires. Keep every other '
+            'recurring detail the same. Preserve physically plausible motion '
+            'and stable geometry. Use the given video as a reference; do not '
+            'use it as a source for video editing. No '
+            'dialogue, captions, logos, watermarks, borders or letterboxing.'
+        )
+    return (
+        f'Generate exactly {seconds} seconds as a vertical 9:16 video. '
+        'In a single continuous unbroken shot with no scene cuts, show this '
+        f'literal physical action: {action} Preserve physically plausible '
+        'motion, stable object and hand geometry, natural documentary '
+        'lighting and a coherent setting or environment. No dialogue, '
+        'captions, logos, '
+        'watermarks, borders or letterboxing.'
+    )
+
+
+def _read_bounded_gemini_omni_reference(
+    reference: str | Path | bytes | bytearray | memoryview,
+) -> bytes:
+    """Read one private reference into a bounded request-only buffer."""
+    if isinstance(reference, (bytes, bytearray, memoryview)):
+        data = bytes(reference)
+    else:
+        path = Path(reference)
+        try:
+            size = path.stat().st_size
+        except OSError as exc:
+            raise ValueError('Gemini Omni continuity reference is unavailable') from exc
+        if not 1024 <= size <= _MAX_GEMINI_OMNI_REFERENCE_BYTES:
+            raise ValueError('Gemini Omni continuity reference size is invalid')
+        with path.open('rb') as file_handle:
+            data = file_handle.read(_MAX_GEMINI_OMNI_REFERENCE_BYTES + 1)
+    if not 1024 <= len(data) <= _MAX_GEMINI_OMNI_REFERENCE_BYTES:
+        raise ValueError('Gemini Omni continuity reference size is invalid')
+    if len(data) < 12 or data[4:8] != b'ftyp':
+        raise ValueError('Gemini Omni continuity reference is not an MP4')
+    return data
+
+
+def _validated_gemini_omni_video_file(
+    path: str | Path,
+    *,
+    minimum_seconds: float,
+    continuity_reference: bool = False,
+) -> float:
+    """Validate the exact portrait MP4 contract returned to the renderer."""
+    video_path = Path(path)
+    try:
+        size = video_path.stat().st_size
+    except OSError as exc:
+        raise RuntimeError('Gemini Omni video file is unavailable') from exc
+    maximum_bytes = (
+        _MAX_GEMINI_OMNI_REFERENCE_BYTES
+        if continuity_reference
+        else _MAX_GENERATED_VIDEO_BYTES
+    )
+    if not 1024 <= size <= maximum_bytes:
+        raise RuntimeError('Gemini Omni video size is invalid')
+    with video_path.open('rb') as file_handle:
+        header = file_handle.read(12)
+    if len(header) < 12 or header[4:8] != b'ftyp':
+        raise RuntimeError('Gemini Omni output is not a valid MP4')
+
+    probe = subprocess.run([
+        'ffprobe', '-v', 'error', '-select_streams', 'v:0',
+        '-count_frames', '-show_entries',
+        'stream=codec_type,width,height,r_frame_rate,nb_read_frames,'
+        'sample_aspect_ratio:stream_tags=rotate:'
+        'stream_side_data=rotation:'
+        'format=duration',
+        '-of', 'json', str(video_path),
+    ], capture_output=True, text=True, check=False, timeout=45)
+    if probe.returncode != 0:
+        raise RuntimeError('Gemini Omni video validation failed')
+    try:
+        payload = json.loads(probe.stdout)
+        streams = payload.get('streams') or []
+        stream = streams[0] if len(streams) == 1 else {}
+        duration = float((payload.get('format') or {}).get('duration'))
+        frame_count = int(stream.get('nb_read_frames'))
+    except (AttributeError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise RuntimeError('Gemini Omni video validation failed') from exc
+    rotation_values: list[object] = []
+    tags = stream.get('tags')
+    if isinstance(tags, dict) and 'rotate' in tags:
+        rotation_values.append(tags.get('rotate'))
+    side_data = stream.get('side_data_list')
+    if isinstance(side_data, list):
+        rotation_values.extend(
+            item.get('rotation')
+            for item in side_data[:8]
+            if isinstance(item, dict) and 'rotation' in item
+        )
+    try:
+        normalized_rotation = all(
+            min(abs(float(value)) % 360.0, 360.0 - (abs(float(value)) % 360.0))
+            <= 0.01
+            for value in rotation_values
+        )
+    except (TypeError, ValueError):
+        normalized_rotation = False
+    if (
+        stream.get('codec_type') != 'video'
+        or stream.get('width') != 720
+        or stream.get('height') != 1280
+        or stream.get('r_frame_rate') not in {'24/1', '24'}
+        or stream.get('sample_aspect_ratio') not in {'1:1', '1/1'}
+        or not normalized_rotation
+        or frame_count < 1
+    ):
+        raise RuntimeError('Gemini Omni portrait video contract failed')
+    if continuity_reference:
+        if not 2.90 <= duration <= _GEMINI_OMNI_REFERENCE_SECONDS + 0.08:
+            raise RuntimeError('Gemini Omni continuity reference duration is invalid')
+    elif (
+        duration + 0.04 < max(_GEMINI_OMNI_MIN_SECONDS, float(minimum_seconds))
+        or duration > _GEMINI_OMNI_MAX_SECONDS + 0.08
+    ):
+        raise RuntimeError('Gemini Omni output duration is invalid')
+    return duration
+
+
+def _store_validated_gemini_omni_video(
+    video_bytes: bytes,
+    *,
+    minimum_seconds: float,
+) -> str:
+    if not 1024 <= len(video_bytes) <= _MAX_GENERATED_VIDEO_BYTES:
+        raise GeminiOmniTerminalError('Gemini Omni returned an invalid video size')
+    temporary = tempfile.NamedTemporaryFile(
+        prefix='gemini-omni-',
+        suffix='.mp4',
+        delete=False,
+    )
+    temporary_path = Path(temporary.name)
+    try:
+        with temporary:
+            temporary.write(video_bytes)
+        _validated_gemini_omni_video_file(
+            temporary_path,
+            minimum_seconds=minimum_seconds,
+        )
+        return str(temporary_path)
+    except Exception:
+        temporary_path.unlink(missing_ok=True)
+        raise GeminiOmniTerminalError(
+            'Gemini Omni returned video outside the validated contract'
+        ) from None
+
+
+def _gemini_omni_file_id(uri: object) -> str:
+    candidate = str(uri or '').strip()
+    parsed = urlparse(candidate)
+    if (
+        parsed.scheme != 'https'
+        or (parsed.hostname or '').lower()
+        != 'generativelanguage.googleapis.com'
+        or parsed.port not in (None, 443)
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.fragment
+    ):
+        raise GeminiOmniTerminalError('Gemini Omni returned an untrusted file URI')
+    match = re.fullmatch(r'/v1beta/files/([^/:]+):download', parsed.path)
+    if not match or parse_qsl(parsed.query, keep_blank_values=True) != [('alt', 'media')]:
+        raise GeminiOmniTerminalError('Gemini Omni returned an invalid file URI')
+    file_id = match.group(1)
+    if not _GEMINI_OMNI_FILE_ID_PATTERN.fullmatch(file_id):
+        raise GeminiOmniTerminalError('Gemini Omni returned an invalid file id')
+    return file_id
+
+
+def _download_gemini_omni_uri(
+    client,
+    uri: str,
+    headers: dict,
+    *,
+    minimum_seconds: float,
+) -> str:
+    """Poll and download one already-accepted interaction without resubmit."""
+    file_id = _gemini_omni_file_id(uri)
+    file_url = f'{_GEMINI_VIDEO_BASE}/files/{file_id}'
+    deadline = time.monotonic() + 600.0
+    while True:
+        try:
+            response = client.get(file_url, headers=headers)
+        except Exception:
+            raise GeminiOmniTerminalError(
+                'Gemini Omni accepted interaction retrieval was ambiguous'
+            ) from None
+        if not 200 <= int(getattr(response, 'status_code', 0)) < 300:
+            raise GeminiOmniTerminalError('Gemini Omni file status failed')
+        try:
+            payload = response.json()
+        except Exception:
+            raise GeminiOmniTerminalError('Gemini Omni file status was invalid') from None
+        state = str(payload.get('state') if isinstance(payload, dict) else '').upper()
+        if state == 'ACTIVE':
+            break
+        if state == 'FAILED':
+            raise GeminiOmniTerminalError('Gemini Omni file processing failed')
+        if state not in {'PROCESSING', 'STATE_UNSPECIFIED'}:
+            raise GeminiOmniTerminalError('Gemini Omni file status was invalid')
+        if time.monotonic() >= deadline:
+            raise GeminiOmniTerminalError('Gemini Omni file processing timed out')
+        time.sleep(5.0)
+
+    temporary = tempfile.NamedTemporaryFile(
+        prefix='gemini-omni-',
+        suffix='.mp4',
+        delete=False,
+    )
+    temporary_path = Path(temporary.name)
+    temporary.close()
+    current_url = (
+        f'{_GEMINI_VIDEO_BASE}/files/{file_id}:download?alt=media'
+    )
+    try:
+        for _redirect_count in range(6):
+            parsed = urlparse(current_url)
+            current_host = (parsed.hostname or '').lower()
+            if (
+                parsed.scheme != 'https'
+                or current_host not in _GEMINI_VIDEO_HOSTS
+                or parsed.username is not None
+                or parsed.password is not None
+            ):
+                raise GeminiOmniTerminalError(
+                    'Gemini Omni download redirected to an untrusted host'
+                )
+            request_headers = (
+                headers
+                if current_host == 'generativelanguage.googleapis.com'
+                else {}
+            )
+            try:
+                stream_context = client.stream(
+                    'GET',
+                    current_url,
+                    headers=request_headers,
+                    follow_redirects=False,
+                )
+                with stream_context as response:
+                    if response.status_code in (301, 302, 303, 307, 308):
+                        location = str(response.headers.get('location') or '').strip()
+                        if not location:
+                            raise GeminiOmniTerminalError(
+                                'Gemini Omni download redirect was invalid'
+                            )
+                        current_url = urljoin(current_url, location)
+                        continue
+                    if not 200 <= int(response.status_code) < 300:
+                        raise GeminiOmniTerminalError('Gemini Omni download failed')
+                    content_type = str(
+                        response.headers.get('content-type') or ''
+                    ).partition(';')[0].strip().lower()
+                    if content_type not in {
+                        'video/mp4',
+                        'application/octet-stream',
+                    }:
+                        raise GeminiOmniTerminalError(
+                            'Gemini Omni download returned non-video media'
+                        )
+                    byte_count = 0
+                    with temporary_path.open('wb') as file_handle:
+                        for chunk in response.iter_bytes():
+                            if not chunk:
+                                continue
+                            byte_count += len(chunk)
+                            if byte_count > _MAX_GENERATED_VIDEO_BYTES:
+                                raise GeminiOmniTerminalError(
+                                    'Gemini Omni video exceeded the size limit'
+                                )
+                            file_handle.write(chunk)
+            except GeminiOmniTerminalError:
+                raise
+            except Exception:
+                raise GeminiOmniTerminalError(
+                    'Gemini Omni accepted video download was ambiguous'
+                ) from None
+            try:
+                _validated_gemini_omni_video_file(
+                    temporary_path,
+                    minimum_seconds=minimum_seconds,
+                )
+            except GeminiOmniTerminalError:
+                raise
+            except Exception:
+                raise GeminiOmniTerminalError(
+                    'Gemini Omni downloaded video failed validation'
+                ) from None
+            return str(temporary_path)
+        raise GeminiOmniTerminalError(
+            'Gemini Omni download redirected too many times'
+        )
+    except Exception:
+        temporary_path.unlink(missing_ok=True)
+        raise
+
+
+def _generate_gemini_omni_video(
+    prompt_text: str,
+    seconds: int,
+    *,
+    continuity_reference_video: str | Path | bytes | bytearray | memoryview | None = None,
+) -> dict:
+    """Submit one retry-free Omni interaction and return validated media."""
+    if not settings.gemini_api_key:
+        raise GeminiOmniPreAcceptanceFallbackError(
+            'Gemini Omni is not configured'
+        )
+    seconds = int(seconds)
+    if not 3 <= seconds <= 10:
+        raise ValueError('Gemini Omni duration must be from 3 to 10 seconds')
+    reference_bytes = None
+    if continuity_reference_video is not None:
+        reference_bytes = _read_bounded_gemini_omni_reference(
+            continuity_reference_video
+        )
+        temporary = tempfile.NamedTemporaryFile(
+            prefix='gemini-omni-reference-',
+            suffix='.mp4',
+            delete=False,
+        )
+        reference_probe_path = Path(temporary.name)
+        try:
+            with temporary:
+                temporary.write(reference_bytes)
+            _validated_gemini_omni_video_file(
+                reference_probe_path,
+                minimum_seconds=0.0,
+                continuity_reference=True,
+            )
+        finally:
+            reference_probe_path.unlink(missing_ok=True)
+
+    request_prompt = _gemini_omni_prompt(
+        prompt_text,
+        seconds,
+        has_continuity_reference=reference_bytes is not None,
+    )
+    request_input: object = request_prompt
+    request_payload = {
+        'model': _GEMINI_OMNI_MODEL,
+        'input': request_input,
+        'response_format': {
+            'type': 'video',
+            'delivery': 'uri',
+            'aspect_ratio': _GEMINI_OMNI_ASPECT_RATIO,
+            'resolution': _GEMINI_OMNI_RESOLUTION,
+        },
+        'background': False,
+        'store': False,
+        'stream': False,
+    }
+    if reference_bytes is not None:
+        request_payload['input'] = [{
+            'type': 'user_input',
+            'content': [
+                {
+                    'type': 'video',
+                    'mime_type': 'video/mp4',
+                    'data': base64.b64encode(reference_bytes).decode('ascii'),
+                },
+                {'type': 'text', 'text': request_prompt},
+            ],
+        }]
+        # Current Omni guidance recommends declaring a reference video's role
+        # in the prompt and letting the model infer the task. An explicit task
+        # field adds stricter mode constraints and is unnecessary here.
+
+    headers = {
+        'x-goog-api-key': settings.gemini_api_key,
+        'Content-Type': 'application/json',
+    }
+    with httpx.Client(
+        timeout=httpx.Timeout(660.0, connect=10.0),
+        follow_redirects=False,
+    ) as client:
+        try:
+            response = client.post(
+                _GEMINI_OMNI_ENDPOINT,
+                headers=headers,
+                json=request_payload,
+            )
+        except Exception:
+            # The provider may have accepted this paid POST. Never retry it or
+            # start another provider when transport acceptance is ambiguous.
+            raise GeminiOmniTerminalError(
+                'Gemini Omni interaction acceptance is unknown'
+            ) from None
+        if _gemini_omni_response_allows_provider_fallback(response):
+            raise GeminiOmniPreAcceptanceFallbackError(
+                'Gemini Omni rejected before interaction acceptance'
+            )
+        if not 200 <= int(getattr(response, 'status_code', 0)) < 300:
+            raise GeminiOmniTerminalError('Gemini Omni interaction was rejected')
+        try:
+            payload = response.json()
+        except Exception:
+            raise GeminiOmniTerminalError('Gemini Omni response was invalid') from None
+        if (
+            not isinstance(payload, dict)
+            or payload.get('status') != 'completed'
+            or payload.get('model') != _GEMINI_OMNI_MODEL
+            or payload.get('object') != 'interaction'
+            or not isinstance(payload.get('id'), str)
+            or not 1 <= len(payload['id']) <= 256
+        ):
+            raise GeminiOmniTerminalError('Gemini Omni response was invalid')
+        steps = payload.get('steps')
+        outputs = [
+            step
+            for step in steps
+            if isinstance(step, dict) and step.get('type') == 'model_output'
+        ] if isinstance(steps, list) else []
+        if len(outputs) != 1:
+            raise GeminiOmniTerminalError('Gemini Omni response was invalid')
+        content = outputs[0].get('content')
+        if not isinstance(content, list) or len(content) != 1:
+            raise GeminiOmniTerminalError('Gemini Omni response was invalid')
+        video = content[0]
+        if (
+            not isinstance(video, dict)
+            or video.get('type') != 'video'
+            or video.get('mime_type') != 'video/mp4'
+        ):
+            raise GeminiOmniTerminalError('Gemini Omni response was invalid')
+        has_data = isinstance(video.get('data'), str) and bool(video['data'])
+        has_uri = isinstance(video.get('uri'), str) and bool(video['uri'])
+        if has_data == has_uri:
+            raise GeminiOmniTerminalError('Gemini Omni response was invalid')
+        if has_data:
+            encoded = video['data']
+            if len(encoded) > ((_MAX_GENERATED_VIDEO_BYTES + 2) // 3) * 4:
+                raise GeminiOmniTerminalError(
+                    'Gemini Omni returned an invalid video size'
+                )
+            try:
+                video_bytes = base64.b64decode(encoded, validate=True)
+            except (binascii.Error, ValueError):
+                raise GeminiOmniTerminalError(
+                    'Gemini Omni returned invalid video data'
+                ) from None
+            local_path = _store_validated_gemini_omni_video(
+                video_bytes,
+                minimum_seconds=seconds,
+            )
+        else:
+            local_path = _download_gemini_omni_uri(
+                client,
+                video['uri'],
+                headers,
+                minimum_seconds=seconds,
+            )
+    return {
+        '_local_video_path': local_path,
+        'provider': 'gemini_omni',
+        'provider_attempts': 1,
+        'source_media_type': 'video',
+        'aspect_ratio': _GEMINI_OMNI_ASPECT_RATIO,
+        'resolution': _GEMINI_OMNI_RESOLUTION,
+    }
+
+
+def create_gemini_omni_continuity_reference(
+    source_path: str | Path,
+    output_path: str | Path,
+) -> str:
+    """Create one private, fixed three-second portrait continuity anchor."""
+    source = Path(source_path)
+    output = Path(output_path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    partial = output.with_name(f'{output.name}.part')
+    partial.unlink(missing_ok=True)
+    try:
+        source_size = source.stat().st_size
+        if not 1024 <= source_size <= _MAX_GENERATED_VIDEO_BYTES:
+            raise RuntimeError('Continuity source video size is invalid')
+        with source.open('rb') as source_handle:
+            source_header = source_handle.read(12)
+        if len(source_header) < 12 or source_header[4:8] != b'ftyp':
+            raise RuntimeError('Continuity source is not an MP4')
+        command = [
+            'ffmpeg', '-hide_banner', '-loglevel', 'error', '-y',
+            '-i', str(source), '-map', '0:v:0', '-an',
+            '-vf', (
+                'scale=720:1280:force_original_aspect_ratio=increase:'
+                'flags=lanczos,crop=720:1280,setsar=1,fps=24'
+            ),
+            '-frames:v', '72', '-c:v', 'libx264', '-preset', 'veryfast',
+            '-crf', '24', '-maxrate', '4M', '-bufsize', '8M',
+            '-pix_fmt', 'yuv420p', '-movflags', '+faststart',
+            '-f', 'mp4', str(partial),
+        ]
+        rendered = subprocess.run(
+            command,
+            capture_output=True,
+            check=False,
+            timeout=90,
+        )
+        if rendered.returncode != 0:
+            raise RuntimeError('Gemini Omni continuity reference render failed')
+        _validated_gemini_omni_video_file(
+            partial,
+            minimum_seconds=0.0,
+            continuity_reference=True,
+        )
+        partial.replace(output)
+        return str(output)
+    except Exception:
+        partial.unlink(missing_ok=True)
+        raise
 
 
 def _gemini_video_duration(seconds: int) -> int:
@@ -536,6 +1142,8 @@ def _generate_gemini_video_uri(
     prompt_text: str,
     seconds: int,
     model_name: str = _GEMINI_VIDEO_MODEL,
+    *,
+    aspect_ratio: str = '16:9',
 ) -> str:
     """Create exactly one Gemini Veo task and return its trusted media URI."""
     if not settings.gemini_api_key:
@@ -552,11 +1160,14 @@ def _generate_gemini_video_uri(
         _GEMINI_VIDEO_STANDARD_MODEL,
     }:
         raise ValueError('Unsupported Gemini video fallback model')
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Aspect ratio must be 16:9 or 9:16')
     endpoint = f'{_GEMINI_VIDEO_BASE}/models/{model_name}:predictLongRunning'
     request_payload = {
         'instances': [{'prompt': prompt_text}],
         'parameters': {
-            'aspectRatio': '16:9',
+            'aspectRatio': aspect_ratio,
             # The live REST endpoint rejects JSON strings here even though
             # older documentation tables displayed quoted values. Send the
             # schema's numeric duration type.
@@ -646,24 +1257,31 @@ def _generate_gemini_video_uri(
     raise TimeoutError('Gemini video generation timed out')
 
 
-def _create_text_to_video_task(client, prompt_text: str, seconds: int):
+def _create_text_to_video_task(
+    client,
+    prompt_text: str,
+    seconds: int,
+    aspect_ratio: str = '16:9',
+):
     """Create one paid task, falling back only after a rejected Gen-4.5 create.
 
     Task polling deliberately remains outside this function. A rate limit while
     polling an accepted task must never cause a second paid task submission.
     """
+    profile = _aspect_ratio_profile(aspect_ratio)
+    runway_ratio = str(profile['runway_ratio'])
     try:
         return client.text_to_video.create(
             model='gen4.5',
             prompt_text=prompt_text,
-            ratio='1280:720',
+            ratio=runway_ratio,
             duration=seconds,
         )
     except RateLimitError:
         return client.text_to_video.create(
             model='seedance2_fast',
             prompt_text=prompt_text,
-            ratio='1280:720',
+            ratio=runway_ratio,
             duration=seconds,
             audio=False,
         )
@@ -675,17 +1293,38 @@ def generate_scene(
     *,
     allow_image_motion: bool = False,
     image_prompt: str | None = None,
+    prefer_gemini_omni: bool = False,
+    continuity_reference_video: object | None = None,
+    aspect_ratio: str = '16:9',
 ) -> dict:
-    if not settings.runwayml_api_secret:
-        raise RuntimeError('RUNWAYML_API_SECRET is not configured')
-
     prompt_text = str(prompt).strip()
     if not prompt_text:
         raise ValueError('Runway prompt is empty')
     if len(prompt_text.encode('utf-16-le')) // 2 > 1000:
         raise ValueError('Runway prompt exceeds 1000 UTF-16 code units')
+    _aspect_ratio_profile(aspect_ratio)
+    aspect_ratio = str(aspect_ratio).strip()
 
     seconds = max(2, min(int(round(duration)), 10))
+    if prefer_gemini_omni:
+        if str(aspect_ratio).strip() != _GEMINI_OMNI_ASPECT_RATIO:
+            raise ValueError('Gemini Omni preference requires 9:16 output')
+        try:
+            return _generate_gemini_omni_video(
+                prompt_text,
+                max(3, seconds),
+                continuity_reference_video=continuity_reference_video,
+            )
+        except GeminiOmniPreAcceptanceFallbackError:
+            # Only a deterministic missing configuration or a concrete
+            # quota/capacity rejection reaches the existing provider chain.
+            # Ambiguous transport and every accepted/terminal interaction
+            # raise a different type and therefore fail closed here.
+            pass
+
+    if not settings.runwayml_api_secret:
+        raise RuntimeError('RUNWAYML_API_SECRET is not configured')
+
     # Paid task creation is never retried implicitly: an ambiguous timeout may
     # mean the provider accepted the POST even though its response was lost.
     create_client = RunwayML(
@@ -708,6 +1347,7 @@ def generate_scene(
             create_client,
             prompt_text,
             seconds,
+            aspect_ratio,
         )
     except (BadRequestError, RunwayCreditPreflightInsufficientError) as exc:
         # This catch deliberately covers only paid task creation. Once Runway
@@ -725,7 +1365,11 @@ def generate_scene(
         fal_fallback_from = None
         if str(getattr(settings, 'fal_key', '') or '').strip():
             try:
-                return generate_fal_video(prompt_text, seconds)
+                if aspect_ratio == '16:9':
+                    return generate_fal_video(prompt_text, seconds)
+                return generate_fal_video(
+                    prompt_text, seconds, aspect_ratio=aspect_ratio
+                )
             except FalVideoError as exc:
                 # Only an explicit pre-acceptance rejection or a definitive
                 # completed-job failure may start another paid provider.  An
@@ -747,19 +1391,33 @@ def generate_scene(
                     'Gemini video model is in a local quota cooldown'
                 )
             provider_attempts = 1
-            call_args = (
-                (prompt_text, seconds)
-                if model_name is None
-                else (prompt_text, seconds, model_name)
-            )
             try:
                 try:
-                    video_uri = _generate_gemini_video_uri(*call_args)
+                    call_args = (
+                        (prompt_text, seconds)
+                        if model_name is None
+                        else (prompt_text, seconds, model_name)
+                    )
+                    video_uri = (
+                        _generate_gemini_video_uri(*call_args)
+                        if aspect_ratio == '16:9'
+                        else _generate_gemini_video_uri(
+                            *call_args,
+                            aspect_ratio=aspect_ratio,
+                        )
+                    )
                 except GeminiVideoTerminalError:
                     # The provider explicitly completed the operation with an
                     # error, so a single resubmission is not ambiguous.
                     provider_attempts = 2
-                    video_uri = _generate_gemini_video_uri(*call_args)
+                    video_uri = (
+                        _generate_gemini_video_uri(*call_args)
+                        if aspect_ratio == '16:9'
+                        else _generate_gemini_video_uri(
+                            *call_args,
+                            aspect_ratio=aspect_ratio,
+                        )
+                    )
             except GeminiVideoQuotaError:
                 # A typed quota rejection is definitive rather than an
                 # ambiguous create response. Remember that per-model result
@@ -786,9 +1444,17 @@ def generate_scene(
                     else 'Gemini image-motion fallback is not allowed'
                 )
             try:
-                image_descriptor = _generate_gemini_image_descriptor(
-                    str(image_prompt),
-                    seconds,
+                image_descriptor = (
+                    _generate_gemini_image_descriptor(
+                        str(image_prompt),
+                        seconds,
+                    )
+                    if aspect_ratio == '16:9'
+                    else _generate_gemini_image_descriptor(
+                        str(image_prompt),
+                        seconds,
+                        aspect_ratio,
+                    )
                 )
             except Exception as exc:
                 # Preserve a narrow, content-free receipt so the caller can
@@ -890,13 +1556,20 @@ def generate_scene(
     }
 
 
-def _image_motion_filter(image_sha256: str, frame_count: int) -> str:
+def _image_motion_filter(
+    image_sha256: str,
+    frame_count: int,
+    aspect_ratio: str = '16:9',
+) -> str:
     """Return a deterministic, center-safe documentary camera move."""
     if (
         not re.fullmatch(r'[0-9a-f]{64}', str(image_sha256 or ''))
         or not 150 <= int(frame_count) <= 300
     ):
         raise RuntimeError('Gemini image-motion descriptor is invalid')
+    profile = _aspect_ratio_profile(aspect_ratio)
+    motion_scale = str(profile['motion_scale'])
+    motion_output = str(profile['motion_output'])
     direction = int(image_sha256[:2], 16)
     focal_x_start, focal_x_end = (
         (0.49, 0.55) if direction & 1 == 0 else (0.51, 0.45)
@@ -908,14 +1581,14 @@ def _image_motion_filter(image_sha256: str, frame_count: int) -> str:
     focal_x_delta = focal_x_end - focal_x_start
     focal_y_delta = focal_y_end - focal_y_start
     return (
-        'scale=2560:1440:force_original_aspect_ratio=increase:flags=lanczos,'
-        'crop=2560:1440,'
+        f'scale={motion_scale}:force_original_aspect_ratio=increase:flags=lanczos,'
+        f'crop={motion_scale},'
         f"zoompan=z='1.06+0.18*on/{final_frame}':"
         f"x='iw*({focal_x_start:.3f}+({focal_x_delta:.3f})*"
         f"on/{final_frame})-iw/(2*zoom)':"
         f"y='ih*({focal_y_start:.3f}+({focal_y_delta:.3f})*"
         f"on/{final_frame})-ih/(2*zoom)':"
-        f'd={frame_count}:s=1280x720:fps={_IMAGE_MOTION_FPS},'
+        f'd={frame_count}:s={motion_output}:fps={_IMAGE_MOTION_FPS},'
         'setsar=1,scale=in_range=full:out_range=tv,format=yuv420p'
     )
 
@@ -931,9 +1604,12 @@ def _render_gemini_image_motion(
         'data',
     }:
         raise RuntimeError('Gemini image-motion descriptor is invalid')
+    aspect_ratio = str(descriptor.get('aspect_ratio') or '16:9').strip()
+    profile = _aspect_ratio_profile(aspect_ratio)
     image_bytes = _decode_gemini_image(
         inline_image.get('mime_type'),
         inline_image.get('data'),
+        aspect_ratio,
     )
     try:
         seconds = int(descriptor.get('motion_seconds'))
@@ -954,7 +1630,11 @@ def _render_gemini_image_motion(
     frame_count = seconds * _IMAGE_MOTION_FPS
     source_image = partial.with_name(f'{partial.name}.source.jpg')
     source_image.unlink(missing_ok=True)
-    zoom_filter = _image_motion_filter(expected_image_hash, frame_count)
+    zoom_filter = _image_motion_filter(
+        expected_image_hash,
+        frame_count,
+        aspect_ratio,
+    )
     try:
         source_image.write_bytes(image_bytes)
         completed = subprocess.run([
@@ -990,8 +1670,8 @@ def _render_gemini_image_motion(
         except (AttributeError, TypeError, ValueError, json.JSONDecodeError) as exc:
             raise RuntimeError('Gemini image-motion validation failed') from exc
         if (
-            stream.get('width') != 1280
-            or stream.get('height') != 720
+            stream.get('width') != int(profile['motion_width'])
+            or stream.get('height') != int(profile['motion_height'])
             or stream.get('r_frame_rate') != '30/1'
             or stream.get('pix_fmt') != 'yuv420p'
             or stream.get('color_range') != 'tv'
@@ -1063,6 +1743,37 @@ def download_generated_scene(
     try:
         partial.unlink(missing_ok=True)
         if isinstance(source, dict):
+            if source.get('provider') == 'gemini_omni':
+                local_value = source.get('_local_video_path')
+                if not isinstance(local_value, str) or not local_value.strip():
+                    raise RuntimeError('Gemini Omni local video is unavailable')
+                local_path = Path(local_value)
+                if local_path.resolve() == output.resolve():
+                    raise RuntimeError('Gemini Omni local video target is invalid')
+                try:
+                    byte_count = 0
+                    with (
+                        local_path.open('rb') as source_handle,
+                        partial.open('wb') as output_handle,
+                    ):
+                        for chunk in iter(
+                            lambda: source_handle.read(1024 * 1024),
+                            b'',
+                        ):
+                            byte_count += len(chunk)
+                            if byte_count > _MAX_GENERATED_VIDEO_BYTES:
+                                raise RuntimeError(
+                                    'Gemini Omni local video exceeded the size limit'
+                                )
+                            output_handle.write(chunk)
+                    _validated_gemini_omni_video_file(
+                        partial,
+                        minimum_seconds=_GEMINI_OMNI_MIN_SECONDS,
+                    )
+                    partial.replace(output)
+                    return str(output)
+                finally:
+                    local_path.unlink(missing_ok=True)
             if source.get('provider') == 'gemini_image_motion':
                 _render_gemini_image_motion(source, partial)
                 partial.replace(output)

@@ -13,6 +13,9 @@ from app.services.gemini_generation import (
     generate_gemini_multimodal_json,
 )
 from app.services.visual_identity import manufactured_replica_required
+from app.services.visual_routing import (
+    routed_open_air_cooling_temporal_required,
+)
 
 
 # Keep the original three editorial choices stable, then add near-start and
@@ -96,6 +99,8 @@ _EVIDENCE_BOOLEAN_FIELDS = (
     'unexplained_reset',
     'location_continuity_applicable',
     'location_continuity_matches',
+    'recurring_identity_continuity_applicable',
+    'recurring_identity_continuity_matches',
 )
 
 _MANUAL_QA_VISUAL_BOOLEAN_FIELDS = (
@@ -195,6 +200,70 @@ _THERMAL_PROOF_PRIORITY_PATTERNS = (
 
 _THERMAL_STORY_CLUSTER_GAP = 3
 
+# A routed cooling proxy is useful only when the exact media visibly proves a
+# thermal change over time. Booleans alone are not enough: require the critic's
+# bounded evidence explanation to name the changing heat field or plume, so a
+# generic "matches the narration" explanation cannot approve a static product
+# shot even if the model mistakenly returns optimistic structured flags.
+_COOLING_VISUAL_SIGNAL = (
+    r'(?:\b(?:thermal|heat|hot)(?:[- ]camera)?(?:\s+\w+){0,3}\s+'
+    r'(?:field|area|region|signature|footprint|hotspot|hot\s+spot|plume)\b'
+    r'|\b(?:termal|ısı|sıcak)(?:\s+\w+){0,3}\s+'
+    r'(?:alan|bölge|iz|parlama|akıntı)\w*\b)'
+)
+_COOLING_VISUAL_CHANGE = (
+    r'(?:\b(?:shrink|contract|diminish|decreas|reduc|dissipat|dispers|'
+    r'fade|reced|cool)\w*\b|\b(?:küçül|daral|azal|dağıl|yayıl|sönümlen|'
+    r'soğu)\w*\b)'
+)
+_COOLING_TEMPORAL_EVIDENCE_REASON_PATTERN = re.compile(
+    rf'(?:{_COOLING_VISUAL_SIGNAL}.{{0,140}}{_COOLING_VISUAL_CHANGE}'
+    rf'|{_COOLING_VISUAL_CHANGE}.{{0,140}}{_COOLING_VISUAL_SIGNAL})',
+    flags=re.IGNORECASE,
+)
+
+# Only an explicit authored promise that one person or object remains the
+# same may turn cross-scene identity into a hard gate. This avoids punishing
+# ordinary montage stories whose locations, subjects or time periods are
+# intentionally different while still catching the common synthetic-video
+# failure where a recurring hero/object silently changes between shots.
+_GLOBAL_RECURRING_IDENTITY_PATTERN = re.compile(
+    r'\b(?:every|each|all)\s+(?:scene|shot)s?\b.{0,160}'
+    r'\b(?:same|identical|unchanged|consistent)\b|'
+    r'\b(?:same|identical|unchanged|consistent)\b.{0,160}'
+    r'\b(?:every|each|all)\s+(?:scene|shot)s?\b|'
+    r'\bher\s+sahne(?:de|nin|ye)?\b.{0,160}'
+    r'\b(?:aynı|değişmeden|tutarlı)\b|'
+    r'\b(?:aynı|değişmeden|tutarlı)\b.{0,160}'
+    r'\b(?:her|tüm|bütün)\s+sahne(?:de|nin|ye|ler(?:de)?)?\b',
+    flags=re.IGNORECASE | re.DOTALL,
+)
+_RECURRING_IDENTITY_NOUN = (
+    r'(?:person|woman|man|child|hand|face|character|host|phone|device|'
+    r'object|subject|toy|dragon|figurine|doll|vehicle|car|ship|container|'
+    r'kişi|kadın|erkek|çocuk|el|yüz|karakter|sunucu|telefon|cihaz|nesne|'
+    r'oyuncak|ejderha|figür|bebek|araç|araba|gemi|konteyner|parça)\w*'
+)
+_LOCAL_RECURRING_IDENTITY_PATTERN = re.compile(
+    rf'\b(?:same|identical|recurring|aynı)\b.{{0,100}}\b'
+    rf'{_RECURRING_IDENTITY_NOUN}\b|'
+    rf'\b{_RECURRING_IDENTITY_NOUN}\b.{{0,100}}'
+    rf'\b(?:same|identical|recurring|aynı)\b',
+    flags=re.IGNORECASE | re.DOTALL,
+)
+
+
+def _cooling_temporal_moment_coverage(moments: list[int]) -> bool:
+    """Require distinct early, middle and late evidence for cooling."""
+    if len(moments) < 3:
+        return False
+    fractions = sorted(MOMENT_FRACTIONS[index] for index in moments)
+    return bool(
+        fractions[0] <= 0.18
+        and any(0.18 < fraction < 0.82 for fraction in fractions)
+        and fractions[-1] >= 0.82
+    )
+
 
 def _clearly_positive_review_reason(reason: object) -> bool:
     """Return true only for an unqualified, explicit success explanation."""
@@ -250,6 +319,47 @@ def _connection_action_required(scene: dict) -> bool:
     # plug-in event creates a false hard gate.
     narration = str(scene.get('narration') or '')
     return bool(_CONNECTION_ACTION_PATTERN.search(narration))
+
+
+def _recurring_identity_required_indices(
+    scenes: list[dict],
+    story_scenes: list[dict],
+    topic: str,
+) -> list[int]:
+    """Return local scene IDs that can be compared for authored identity.
+
+    The current multimodal request must contain at least two referenceable
+    scenes. A single-scene repair review cannot honestly attest cross-scene
+    identity, so it keeps the ordinary per-scene identity/material gate only.
+    """
+    if len(scenes) < 2:
+        return []
+    if _GLOBAL_RECURRING_IDENTITY_PATTERN.search(str(topic or '')):
+        return list(range(len(scenes)))
+
+    explicit_story_positions = {
+        position
+        for position, story_scene in enumerate(story_scenes)
+        if isinstance(story_scene, dict)
+        and _LOCAL_RECURRING_IDENTITY_PATTERN.search(
+            ' '.join((
+                str(story_scene.get('narration') or ''),
+                str(story_scene.get('ai_prompt') or ''),
+                ' '.join(
+                    str(query)
+                    for query in (story_scene.get('visual_queries') or [])
+                ),
+            ))
+        )
+    }
+    if len(explicit_story_positions) < 2:
+        return []
+    required: list[int] = []
+    for local_index, scene in enumerate(scenes):
+        position = _story_position(scene, story_scenes)
+        if position in explicit_story_positions:
+            required.append(local_index)
+    return required if len(required) >= 2 else []
 
 
 def _thermal_proof_priority(scene: dict) -> int:
@@ -388,11 +498,33 @@ def _hard_gate_diagnostics(review: dict) -> list[str]:
             failures.append('the narrated state change is not visible')
         if review.get('final_state_persists') is not True:
             failures.append('the required final state does not persist')
+    if review.get('open_air_cooling_temporal_required') is True:
+        if review.get('cooling_temporal_evidence_explained') is not True:
+            failures.append(
+                'the cooling review does not explicitly attest visible '
+                'thermal-field shrink or heat-plume dissipation'
+            )
+        if (
+            review.get('cooling_temporal_moment_coverage_passed')
+            is not True
+        ):
+            failures.append(
+                'the cooling proof does not cover ordered early, middle, '
+                'and late sampled moments'
+            )
     if (
         review.get('location_continuity_applicable') is True
         and review.get('location_continuity_matches') is not True
     ):
         failures.append('the required location continuity does not match')
+    if (
+        review.get('recurring_identity_continuity_applicable') is True
+        and review.get('recurring_identity_continuity_matches') is not True
+    ):
+        failures.append(
+            'the authored recurring person or object changes identity '
+            'between scenes'
+        )
 
     required_moments = 1
     if (
@@ -459,6 +591,8 @@ def _normalized_evidence(
     *,
     connection_required: bool = False,
     thermal_required: bool = False,
+    cooling_temporal_required: bool = False,
+    recurring_identity_required: bool = False,
 ) -> tuple[dict, bool] | None:
     values = {field: review.get(field) for field in _EVIDENCE_BOOLEAN_FIELDS}
     if any(type(value) is not bool for value in values.values()):
@@ -474,11 +608,20 @@ def _normalized_evidence(
     ):
         return None
 
+    connection_applicable = bool(connection_required)
+    thermal_applicable = bool(
+        thermal_required or cooling_temporal_required
+    )
+    state_change_applicable = bool(
+        cooling_temporal_required
+        or values['state_change_applicable']
+    )
+    recurring_identity_applicable = bool(recurring_identity_required)
     required_moments = 1
     if (
         values['physical_causality_applicable']
-        or values['state_change_applicable']
-        or connection_required
+        or state_change_applicable
+        or connection_applicable
     ):
         required_moments = 3
     elif values['location_continuity_applicable']:
@@ -486,8 +629,16 @@ def _normalized_evidence(
     # Applicability is server-authored from the locked narration. The critic
     # still reports its interpretation for schema completeness, but it cannot
     # invent a plug-in action from an already-charging state.
-    connection_applicable = bool(connection_required)
-    thermal_applicable = bool(thermal_required)
+    cooling_temporal_evidence_explained = bool(
+        not cooling_temporal_required
+        or _COOLING_TEMPORAL_EVIDENCE_REASON_PATTERN.search(
+            str(review.get('reason') or '')
+        )
+    )
+    cooling_temporal_moment_coverage_passed = bool(
+        not cooling_temporal_required
+        or _cooling_temporal_moment_coverage(moments)
+    )
     gate_passed = bool(
         values['subject_visible']
         and values['spoken_action_visible']
@@ -511,7 +662,7 @@ def _normalized_evidence(
             )
         )
         and (
-            not values['state_change_applicable']
+            not state_change_applicable
             or (
                 values['state_changed_after_action']
                 and values['final_state_persists']
@@ -521,14 +672,35 @@ def _normalized_evidence(
             not values['location_continuity_applicable']
             or values['location_continuity_matches']
         )
+        and (
+            not recurring_identity_applicable
+            or values['recurring_identity_continuity_matches']
+        )
         and len(moments) >= required_moments
+        and cooling_temporal_evidence_explained
+        and cooling_temporal_moment_coverage_passed
     )
-    return {
+    normalized = {
         **values,
         'connection_action_applicable': connection_applicable,
         'thermal_claim_applicable': thermal_applicable,
+        'state_change_applicable': state_change_applicable,
+        'recurring_identity_continuity_applicable': (
+            recurring_identity_applicable
+        ),
         'evidence_moment_indices': moments,
-    }, gate_passed
+    }
+    if cooling_temporal_required:
+        normalized.update({
+            'open_air_cooling_temporal_required': True,
+            'cooling_temporal_evidence_explained': (
+                cooling_temporal_evidence_explained
+            ),
+            'cooling_temporal_moment_coverage_passed': (
+                cooling_temporal_moment_coverage_passed
+            ),
+        })
+    return normalized, gate_passed
 
 
 def _normalized_manual_qa_visual_flags(review: dict) -> dict | None:
@@ -802,6 +974,32 @@ def _review_gemini_batches(
     gemini_thinking_level: str = 'low',
 ) -> dict:
     def merge_boundary_review(previous: dict, current: dict) -> dict:
+        def merge_recurring_identity_fields(merged: dict) -> bool:
+            applicable = bool(
+                previous.get(
+                    'recurring_identity_continuity_applicable'
+                ) is True
+                or current.get(
+                    'recurring_identity_continuity_applicable'
+                ) is True
+            )
+            matches = bool(
+                not applicable
+                or (
+                    previous.get(
+                        'recurring_identity_continuity_matches'
+                    ) is True
+                    and current.get(
+                        'recurring_identity_continuity_matches'
+                    ) is True
+                )
+            )
+            merged.update({
+                'recurring_identity_continuity_applicable': applicable,
+                'recurring_identity_continuity_matches': matches,
+            })
+            return matches
+
         def merge_identity_fields(merged: dict) -> bool:
             replica_required = bool(
                 previous.get('manufactured_replica_required') is True
@@ -865,6 +1063,7 @@ def _review_gemini_batches(
                 *list(current.get('retry_queries') or []),
             ]))[:2]
             merge_identity_fields(merged)
+            merge_recurring_identity_fields(merged)
             return merged
 
         previous_score = int(previous.get('score', 0))
@@ -877,6 +1076,9 @@ def _review_gemini_batches(
             previous.get('evidence_gate_passed') is True
             and current.get('evidence_gate_passed') is True
         ):
+            merged['score'] = min(int(merged.get('score', 0)), 40)
+            merged['evidence_gate_passed'] = False
+        if not merge_recurring_identity_fields(merged):
             merged['score'] = min(int(merged.get('score', 0)), 40)
             merged['evidence_gate_passed'] = False
         for field in _MANUAL_QA_VISUAL_BOOLEAN_FIELDS:
@@ -1085,7 +1287,8 @@ def review_scene_visuals(
             'For any physical cause such as cover, block, press, insert, unplug, remove or reveal, require timestamped visual proof of the target before contact, real contact or occlusion at the named target, and the result only after that contact. A hand merely near, below or beside the target fails. '
             'For every narrated insertion, fastening, latching, plugging, buckling or attachment, set connection_action_applicable=true. The distinct moving connector and the receiving interface must both be visibly identifiable before contact; their actual joining must remain visible, and the completed connection must persist after the hand releases. A loose strap, cable, cover, hand or blur hiding the interface is not proof and must fail. '
             'Set connection_action_applicable=true only when the narration explicitly describes the connector being inserted, plugged, attached, fastened, buckled, latched or connected during this shot. A device that is already charging, charged, plugged in or connected describes a state, not a new connection action; do not infer a plug-in event from a visible cable, visual query or AI prompt. '
-            'Set thermal_claim_applicable=true only for scene IDs in the server-authored THERMAL_EVIDENCE_REQUIRED_SCENE_IDS list. In an ordered story, one strong mechanism shot can establish thermal evidence for nearby hook, consequence and action shots; do not demand a thermal overlay on every mention of heat or temperature. For a required scene, set thermal_evidence_visible=true only when the named subject itself has visible heat evidence, such as a clear thermal-camera heat distribution or another unambiguous visual representation of heat on that subject. A charging cable, charging icon, ordinary warm lighting or narration alone is not heat evidence. Use this thermal gate, not connector/contact fields, for a device already charging and producing heat. '
+            'Set thermal_claim_applicable=true only for scene IDs in either the server-authored THERMAL_EVIDENCE_REQUIRED_SCENE_IDS or OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS list. In an ordered story, one strong mechanism shot can establish thermal evidence for nearby hook, consequence and action shots; do not demand a thermal overlay on every mention of heat or temperature unless the server separately marks that scene as a routed open-air cooling proof. For a required scene, set thermal_evidence_visible=true only when the named subject itself has visible heat evidence, such as a clear thermal-camera heat distribution or another unambiguous visual representation of heat on that subject. A charging cable, charging icon, ordinary warm lighting or narration alone is not heat evidence. Use this thermal gate, not connector/contact fields, for a device already charging and producing heat. '
+            'For every scene ID in OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS, set both thermal_claim_applicable=true and state_change_applicable=true. Approve only when at least three ordered sampled moments visibly show the same phone beginning with a clearly larger or hotter thermal field, that field materially shrinking or a heat plume dissipating through the middle, and a persistently smaller or cooler thermal field at the ending. Name that exact visible thermal-field shrink or heat-plume dissipation in the reason. A camera push, zoom, pan, reframing, exposure or color-grade shift, ordinary warm light, condensation, water droplets, dust, dirt, or an otherwise static phone is not cooling evidence. The phone body may stay physically still only when its visible thermal field changes across early, middle, and late moments; if the heat field stays unchanged, set state_changed_after_action=false and score 40 or lower. '
             'For a display, light or other state change, compare before and after moments and require the affected element itself to change while unrelated exposure remains stable; never infer the change from the narration or prompt. '
             'The final state must persist through the end of the shot. Any unexplained reset, repeated action, return to an earlier position, or visible loop must score 40 or lower. '
             'Require adjacent scenes to preserve spatial continuity unless the narration explicitly establishes a move: interior/exterior, location class, architecture, light and travel direction must remain compatible. '
@@ -1095,6 +1298,7 @@ def review_scene_visuals(
             'For each scene set authored_identity_or_material_conflict_visible=true when the visible subject contradicts the authored identity or material. A natural, live, dead or biological animal can never substitute for an authored toy, Lego piece, model, figurine, doll or replica. Photoreal organic tissue, wet flesh, pores, gills or other lifelike biological anatomy are conflict evidence. Do not treat clearly molded, painted, sewn or deliberately stylized toy eyes, limbs, suckers or surface texture as biological conflict. '
             'For a scene listed in the server-authored MANUFACTURED_REPLICA_REQUIRED_SCENE_IDS, set manufactured_object_cues_visible=true only when at least two unmistakable manufactured cues suited to the authored material are visible, such as an injection-molded or painted surface, simplified geometry, seams, studs, part edges, woven fabric, plush pile or stitching. If conflict is visible, or a required replica lacks those cues, score 40 or lower. For other scenes report both booleans without inventing a replica requirement. '
             'Compare the complete ordered sequence for cross-scene continuity: the same recurring person or object, physical attributes, wardrobe, location, lighting and adjacent action handoff must remain compatible. '
+            'For every scene ID in the server-authored RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS list, set recurring_identity_continuity_applicable=true. Set recurring_identity_continuity_matches=true only when the recurring person or object visibly preserves its distinctive geometry, proportions, material, color, markings, wear, face or wardrobe across the other supplied required scenes. Merely showing another item from the same category is a failure. A narrated change of time or location is allowed and must not be mistaken for an identity change. If the recurring identity changes or cannot be compared, score 40 or lower. '
             'A locally relevant candidate that omits or contradicts an explicit visual constraint, or breaks required cross-scene continuity, must score 40 or lower. '
             'Never approve digital glitch/noise for OLED pixels, programming tracebacks for QR error correction, fireworks for camera burst, finance charts for audio codecs, a skyline for network optimization, random typing for encryption, or unrelated towers for indoor GPS. '
             'Only a candidate whose exact scene_index and candidate_index pair appears in the server-authored TRUSTED_IMAGE_MOTION_PROFILE_ALLOWLIST appended to this instruction may use the following rule. For that exact candidate only, a materially changing monotonic documentary camera push and pan across the sampled moments counts as clip motion; do not mark it frozen solely because the underlying subject pose is fixed. Such a candidate may score 60 through 85 only when the named subject and narrated action are unambiguous in the decisive authored still and every evidence and editorial gate passes. Never infer physical causality, a connection, a state change, or native object motion from camera movement. If its framing barely changes, mark it effectively static and score 40 or lower. '
@@ -1104,7 +1308,7 @@ def review_scene_visuals(
             'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
             'Each retry query must describe only the desired replacement shot and explicitly correct every visibly failed authored attribute that applies: subject identity, physical scale or quantity, age or condition, material, color or shape, setting or surface, and physical action; never include meta-instructions. '
             'Every review object must include both authored_identity_or_material_conflict_visible and manufactured_object_cues_visible as booleans. '
-            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"thermal_claim_applicable\":false,\"thermal_evidence_visible\":false,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"prominent_readable_text_or_logo_visible\":false,\"major_visual_artifact_visible\":false,\"effectively_static_or_frozen\":false,\"authored_identity_or_material_conflict_visible\":false,\"manufactured_object_cues_visible\":false,\"evidence_moment_indices\":[0]}]}'
+            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"thermal_claim_applicable\":false,\"thermal_evidence_visible\":false,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"recurring_identity_continuity_applicable\":false,\"recurring_identity_continuity_matches\":false,\"prominent_readable_text_or_logo_visible\":false,\"major_visual_artifact_visible\":false,\"effectively_static_or_frozen\":false,\"authored_identity_or_material_conflict_visible\":false,\"manufactured_object_cues_visible\":false,\"evidence_moment_indices\":[0]}]}'
         ),
     }]
     gemini_parts: list[dict] = []
@@ -1115,6 +1319,14 @@ def review_scene_visuals(
     trusted_image_motion_candidates: dict[int, set[int]] = {}
     manufactured_replica_required_indices: list[int] = []
     thermal_evidence_required_indices: list[int] = []
+    cooling_temporal_required_indices: list[int] = []
+    recurring_identity_required_indices = (
+        _recurring_identity_required_indices(
+            scenes,
+            [item for item in complete_story if isinstance(item, dict)],
+            topic,
+        )
+    )
     complete_story_context = {
         'topic': str(topic or ''),
         'complete_scene_plan_in_order': [
@@ -1240,6 +1452,8 @@ def review_scene_visuals(
                 manufactured_replica_required_indices.append(idx)
             if _thermal_claim_required(scene, complete_story):
                 thermal_evidence_required_indices.append(idx)
+            if routed_open_air_cooling_temporal_required(scene):
+                cooling_temporal_required_indices.append(idx)
             available_moments[idx] = scene_available_moments
             content.extend(scene_content)
             gemini_parts.extend(scene_gemini_parts)
@@ -1298,6 +1512,18 @@ def review_scene_visuals(
         + '\n\nSERVER-AUTHORED THERMAL_EVIDENCE_REQUIRED_SCENE_IDS: '
         + json.dumps(
             thermal_evidence_required_indices,
+            separators=(',', ':'),
+        )
+        + '\n\nSERVER-AUTHORED '
+        'OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS: '
+        + json.dumps(
+            cooling_temporal_required_indices,
+            separators=(',', ':'),
+        )
+        + '\n\nSERVER-AUTHORED '
+        'RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS: '
+        + json.dumps(
+            recurring_identity_required_indices,
             separators=(',', ':'),
         )
         + '\n\n'
@@ -1436,6 +1662,14 @@ def review_scene_visuals(
                 thermal_required=_thermal_claim_required(
                     scenes[scene_index], complete_story
                 ),
+                cooling_temporal_required=(
+                    routed_open_air_cooling_temporal_required(
+                        scenes[scene_index]
+                    )
+                ),
+                recurring_identity_required=(
+                    scene_index in recurring_identity_required_indices
+                ),
             )
             manual_qa_visual_flags = _normalized_manual_qa_visual_flags(
                 review
@@ -1514,6 +1748,14 @@ def review_scene_visuals(
             ),
             thermal_required=_thermal_claim_required(
                 scenes[scene_index], complete_story
+            ),
+            cooling_temporal_required=(
+                routed_open_air_cooling_temporal_required(
+                    scenes[scene_index]
+                )
+            ),
+            recurring_identity_required=(
+                scene_index in recurring_identity_required_indices
             ),
         )
         manual_qa_visual_flags = _normalized_manual_qa_visual_flags(review)

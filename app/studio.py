@@ -79,17 +79,25 @@ STAGE_LABELS = {
     'failed': 'Başarısız',
 }
 UI_STATUS_ORDER = ('running', 'ready', 'repair', 'completed', 'failed')
-ACTIONABLE_STATUS_ORDER = ('running', 'repair', 'ready')
+CONSOLE_STATUS_ORDER = ('running', 'attention', 'library')
 UI_STATUS_LABELS = {
     'running': 'Üretiliyor',
+    'attention': 'Müdahale gerekiyor',
     'ready': 'Hazır',
     'repair': 'Onarım gerekli',
     'completed': 'Tamamlandı',
     'failed': 'Başarısız',
 }
+CONSOLE_STATUS_LABELS = {
+    'running': 'Üretiliyor',
+    'attention': 'Müdahale gerekiyor',
+    'library': 'Videolar',
+}
 HISTORY_PAGE_SIZE = 12
 HISTORY_SCAN_LIMIT = 500
 LEGACY_RETRY_GROUP_WINDOW_SECONDS = 6 * 60 * 60
+RUNNING_DUPLICATE_GROUP_WINDOW_SECONDS = 10 * 60
+STALE_RUNNING_SECONDS = 6 * 60 * 60
 OPTIONAL_VIDEO_GENERATION_SERVICES = frozenset({'Fal video'})
 
 BASE_CSS = r'''
@@ -101,6 +109,17 @@ BASE_CSS = r'''
 @media(max-width:900px){.status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.status-overview{grid-template-columns:1fr}.archive-body{align-items:stretch;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar{transition:none}}
+'''
+
+# Final media can be portrait or landscape. Let its intrinsic dimensions drive
+# the player instead of stamping every result into the old 16:9 frame.
+BASE_CSS = BASE_CSS.replace(
+    'width:100%;max-height:480px;aspect-ratio:16/9;',
+    'width:auto;max-width:100%;height:auto;max-height:min(72vh,720px);aspect-ratio:auto;object-fit:contain;',
+)
+BASE_CSS += r'''
+.studio-primary{max-width:820px;margin:0 auto}.create-card{padding:clamp(18px,4vw,28px)}.create-card .private-note{display:flex;gap:8px;align-items:flex-start;margin:14px 0 0;color:#aeb9c8;font-size:12px}.create-card .private-note b{color:#e7ebf2}.console-details{margin-top:12px}.nav-more{position:relative}.nav-more>summary{padding:8px 11px;border:1px solid transparent;border-radius:10px;color:var(--muted);cursor:pointer;font-size:13px;font-weight:750;list-style:none;white-space:nowrap}.nav-more>summary::-webkit-details-marker{display:none}.nav-more>summary:hover,.nav-more[open]>summary{color:var(--text);background:#151c28}.nav-more-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:40;display:grid;min-width:170px;padding:6px;border:1px solid var(--line-strong);border-radius:12px;background:#111721;box-shadow:0 16px 34px rgba(0,0,0,.35)}.nav-more-menu a{white-space:nowrap}.status-filter.attention{border-left:3px solid var(--warn)}.status-filter.library{border-left:3px solid var(--good)}.state.attention{background:#3d3316;color:#ffe187}.archive-details{max-width:820px;margin:18px auto 0}.archive-details>summary:after{content:'+';color:var(--muted);font-size:18px}.archive-details[open]>summary:after{content:'−'}.archive-body{display:grid}.result-video-frame,.ready-media{display:flex;align-items:center;justify-content:center;min-height:180px;overflow:hidden;border:1px solid #253044;border-radius:12px;background:#030507}.result-video{border:0}.ready-grid{display:grid;gap:14px}.ready-card{display:grid;grid-template-columns:minmax(190px,260px) minmax(0,1fr);gap:18px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}.ready-media{min-height:260px}.ready-video,.ready-thumbnail{display:block;width:auto;max-width:100%;height:auto;max-height:420px;object-fit:contain;background:#000}.ready-placeholder{display:grid;place-items:center;gap:6px;min-height:220px;color:#8794a7;text-align:center}.ready-placeholder span{font-size:28px}.ready-body{display:flex;min-width:0;flex-direction:column}.ready-title{font-size:18px;font-weight:900;line-height:1.3;letter-spacing:-.02em}.ready-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}.ready-fact{min-width:0;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#090e15}.ready-fact b{display:block;color:#7f8da1;font-size:10px;letter-spacing:.05em;text-transform:uppercase}.ready-fact span{display:block;overflow:hidden;margin-top:2px;color:#dce3ed;font-size:12px;text-overflow:ellipsis;white-space:nowrap}.ready-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto}.ready-actions form{margin:0}.ready-card .state{margin-bottom:10px;align-self:flex-start}.history-label{margin-bottom:12px}.history-label h2{margin:0}.history-label .muted{margin-top:4px;font-size:13px}
+@media(max-width:650px){.status-overview{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.status-filter{min-height:72px;padding:10px 8px}.status-filter .status-name{font-size:10px;line-height:1.25}.status-filter .status-count{font-size:20px}.ready-card{grid-template-columns:1fr;padding:12px}.ready-media{min-height:220px}.ready-video,.ready-thumbnail{max-height:62vh}.ready-facts{grid-template-columns:1fr 1fr}.ready-actions{align-items:stretch}.ready-actions .btn,.ready-actions form,.ready-actions form button{width:100%}.nav-more-menu{position:fixed;left:12px;right:12px;top:auto}.create-card{padding:16px}}
 '''
 
 
@@ -296,6 +315,10 @@ def _retry_claimed(job: dict) -> bool:
     )
 
 
+def _job_awaits_approval(job: dict) -> bool:
+    return str(job.get('state') or '').upper() == 'AWAITING_APPROVAL'
+
+
 def _job_ui_status(job: dict) -> str:
     state = str(job.get('state') or 'PENDING').upper()
     if state == 'FAILURE':
@@ -313,7 +336,7 @@ def _job_ui_status(job: dict) -> str:
         ):
             return 'completed'
         return 'ready'
-    if state == 'AWAITING_APPROVAL':
+    if _job_awaits_approval(job):
         return 'ready'
     return 'running'
 
@@ -410,14 +433,174 @@ def _job_media_panel(job: dict) -> str:
         '<section class="result-media" aria-labelledby="result-media-title">'
         '<div class="result-media-head"><h2 id="result-media-title">'
         'Video önizleme</h2><span class="badge">Final dosya</span></div>'
-        '<video class="result-video" controls playsinline preload="metadata" '
-        f'src="{safe_video_url}">Tarayıcın video oynatmayı desteklemiyor.</video>'
+        '<div class="result-video-frame"><video class="result-video" controls '
+        'playsinline preload="metadata" '
+        f'src="{safe_video_url}">Tarayıcın video oynatmayı desteklemiyor.'
+        '</video></div>'
         '<div class="media-actions">'
         '<a class="btn secondary small" target="_blank" '
         'rel="noopener noreferrer" download '
         f'href="{safe_video_url}">Videoyu indir</a>{caption_action}</div>'
         '<p class="media-note">Kalite onaylanana kadar YouTube yüklemesi '
         'gizli kalır.</p></section>'
+    )
+
+
+def _ready_thumbnail_url(job: dict) -> str:
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    thumbnail = (
+        result.get('thumbnail')
+        if isinstance(result.get('thumbnail'), dict) else {}
+    )
+    return _safe_external_url(
+        result.get('thumbnail_url')
+        or result.get('poster_url')
+        or thumbnail.get('url')
+        or thumbnail.get('public_url')
+    )
+
+
+def _ready_release_status(job: dict) -> str:
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+    raw = str(
+        youtube.get('release_status')
+        or result.get('release_status')
+        or ''
+    ).strip().casefold()
+    return raw if raw in {
+        'private', 'public', 'scheduled', 'blocked', 'uncertain',
+    } else ''
+
+
+def _ready_privacy_label(job: dict) -> str:
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+    raw = str(
+        youtube.get('privacy_status')
+        or result.get('privacy_status')
+        or ''
+    ).casefold()
+    labels = {
+        'private': 'Gizli',
+        'unlisted': 'Liste dışı',
+        'public': 'Herkese açık',
+    }
+    if raw in labels:
+        return labels[raw]
+    release_status = _ready_release_status(job)
+    if release_status == 'public':
+        return 'Herkese açık'
+    if release_status in {'private', 'scheduled', 'blocked', 'uncertain'}:
+        return 'Gizli'
+    if _job_ui_status(job) == 'completed':
+        return 'Gizli'
+    return 'Henüz yüklenmedi'
+
+
+def _ready_readiness_label(job: dict) -> str:
+    if _job_awaits_approval(job):
+        return 'Storyboard onayı bekliyor'
+    if _job_ui_status(job) == 'completed':
+        release_label = {
+            'private': 'YouTube’da gizli',
+            'public': 'YouTube’da yayında',
+            'scheduled': 'YouTube’da planlandı',
+            'blocked': 'Gizli · yayın durdu',
+            'uncertain': 'Yayın durumu doğrulanmalı',
+        }.get(_ready_release_status(job))
+        if release_label:
+            return release_label
+        privacy = _ready_privacy_label(job).casefold()
+        return {
+            'gizli': 'YouTube’da gizli',
+            'liste dışı': 'YouTube’da liste dışı',
+            'herkese açık': 'YouTube’da yayında',
+        }.get(privacy, 'YouTube’a yüklendi')
+    return 'Yüklemeye hazır'
+
+
+def _ready_video_card(job: dict) -> str:
+    """Render a finished video as a small library item, not a task log."""
+    task_id = str(job.get('task_id') or '')
+    safe_task_id = escape(task_id, quote=True)
+    title = escape(_job_title(job))
+    dom_id = re.sub(r'[^a-zA-Z0-9_-]+', '-', task_id).strip('-') or 'video'
+    status = _job_ui_status(job)
+    duration = _job_duration(job) or '—'
+    channel = _job_channel(job) or 'Kanal seçilmedi'
+    privacy = _ready_privacy_label(job)
+    readiness = _ready_readiness_label(job)
+    video_url, _caption_url = _job_media_urls(job)
+    thumbnail_url = _ready_thumbnail_url(job)
+    safe_thumbnail = escape(thumbnail_url, quote=True)
+    if video_url:
+        poster = f' poster="{safe_thumbnail}"' if thumbnail_url else ''
+        media = (
+            '<video class="ready-video" controls playsinline preload="metadata"'
+            f'{poster} src="{escape(video_url, quote=True)}">'
+            'Tarayıcın video oynatmayı desteklemiyor.</video>'
+        )
+    elif thumbnail_url:
+        media = (
+            f'<img class="ready-thumbnail" src="{safe_thumbnail}" alt="" '
+            'loading="lazy">'
+        )
+    else:
+        media = (
+            '<div class="ready-placeholder" aria-label="Önizleme henüz hazır değil">'
+            '<span aria-hidden="true">▶</span><small>Önizleme ayrıntılarda</small></div>'
+        )
+
+    details_action = (
+        f'<a class="btn secondary small" href="/studio/job/{safe_task_id}">'
+        'Ayrıntılar</a>'
+    )
+    primary_action = _job_primary_action(job)
+    actions = [primary_action]
+    if f'href="/studio/job/{safe_task_id}"' not in primary_action:
+        actions.append(details_action)
+    if video_url and 'Videoyu aç' not in primary_action:
+        actions.append(
+            '<a class="btn secondary small" target="_blank" '
+            'rel="noopener noreferrer" download '
+            f'href="{escape(video_url, quote=True)}">İndir</a>'
+        )
+    actions = actions[:3]
+    facts = (
+        ('Süre', duration),
+        ('Kanal', channel),
+        ('Gizlilik', privacy),
+        ('Durum', readiness),
+    )
+    facts_html = ''.join(
+        f'<div class="ready-fact"><b>{label}</b><span>{escape(value)}</span></div>'
+        for label, value in facts
+    )
+    release_status = _ready_release_status(job)
+    pill_class = (
+        'attention'
+        if release_status in {'blocked', 'uncertain'}
+        else 'completed' if status == 'completed' else 'ready'
+    )
+    pill_label = (
+        {
+            'private': 'Gizli',
+            'public': 'Yayında',
+            'scheduled': 'Planlandı',
+            'blocked': 'Yayın durdu',
+            'uncertain': 'Doğrula',
+        }.get(release_status, 'Yüklendi')
+        if status == 'completed' else 'Hazır'
+    )
+    return (
+        f'<article class="ready-card" data-status="{status}" '
+        f'aria-labelledby="ready-title-{dom_id}"><div class="ready-media">{media}</div>'
+        f'<div class="ready-body"><span class="state {pill_class}">{pill_label}</span>'
+        f'<div class="ready-title" id="ready-title-{dom_id}">{title}</div>'
+        f'<div class="ready-facts" aria-label="Video bilgileri">{facts_html}</div>'
+        f'<div class="ready-actions" data-action-count="{len(actions)}">'
+        f'{"".join(actions)}</div></div></article>'
     )
 
 
@@ -495,48 +678,6 @@ def _status_counts(jobs: list[dict]) -> dict[str, int]:
     return counts
 
 
-def _dashboard_recent_jobs(jobs: list[dict], limit: int = 3) -> list[dict]:
-    """Keep the landing page focused on work a person can continue.
-
-    Failed attempts belong to the collapsed archive, never the default action
-    queue. A burst of failures therefore cannot displace or impersonate work
-    that can be continued from the landing page.
-    """
-    if limit < 1:
-        return []
-    running = [job for job in jobs if _job_ui_status(job) == 'running']
-    repairs = [job for job in jobs if _job_ui_status(job) == 'repair']
-    ready = [job for job in jobs if _job_ui_status(job) == 'ready']
-    # Keep active work first, but reserve one compact slot for a repair that
-    # needs human action instead of allowing a full running queue to hide it.
-    repair_reserve = 1 if repairs and limit > 1 else 0
-    visible = running[:limit - repair_reserve]
-    visible.extend(repairs[:limit - len(visible)])
-    visible.extend(ready[:limit - len(visible)])
-    return visible[:limit]
-
-
-def _dashboard_action_sections(
-    jobs: list[dict],
-    counts: dict[str, int],
-) -> str:
-    """Render compact cards in clearly separated, actionable status groups."""
-    sections = []
-    for status in ACTIONABLE_STATUS_ORDER:
-        matching = [job for job in jobs if _job_ui_status(job) == status]
-        if not matching:
-            continue
-        rows = ''.join(_job_row(job, compact=True) for job in matching)
-        sections.append(
-            f'<section class="queue-group" data-action-group="{status}" '
-            f'aria-labelledby="queue-{status}"><div class="queue-group-head">'
-            f'<h4 id="queue-{status}">{UI_STATUS_LABELS[status]}</h4>'
-            f'<a href="/studio/history?status={status}">'
-            f'{int(counts.get(status, 0))} işin tümü</a></div>{rows}</section>'
-        )
-    return ''.join(sections)
-
-
 def _job_created_timestamp(job: dict) -> float | None:
     try:
         timestamp = float(job.get('created_ts'))
@@ -554,6 +695,72 @@ def _job_created_timestamp(job: dict) -> float | None:
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=timezone.utc)
     return parsed.timestamp()
+
+
+def _job_activity_timestamp(job: dict) -> float | None:
+    """Return the last durable activity time without changing the record."""
+    for numeric_key, iso_key in (
+        ('updated_ts', 'updated_at'),
+        ('created_ts', 'created_at'),
+    ):
+        try:
+            timestamp = float(job.get(numeric_key))
+        except (TypeError, ValueError):
+            timestamp = float('nan')
+        # Ignore placeholders used by very old imports and fixtures. Production
+        # Unix timestamps are safely above the year-2000 boundary.
+        if math.isfinite(timestamp) and timestamp >= 946_684_800:
+            return timestamp
+        raw = str(job.get(iso_key) or '').strip()
+        if not raw:
+            continue
+        try:
+            parsed = datetime.fromisoformat(raw.replace('Z', '+00:00'))
+        except ValueError:
+            continue
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.timestamp()
+    return None
+
+
+def _job_is_stale_running(job: dict, *, now: float | None = None) -> bool:
+    """Classify an inactive running record for display; never mutate it."""
+    if _job_ui_status(job) != 'running':
+        return False
+    last_activity = _job_activity_timestamp(job)
+    if last_activity is None:
+        return False
+    current = datetime.now(timezone.utc).timestamp() if now is None else float(now)
+    return current - last_activity >= STALE_RUNNING_SECONDS
+
+
+def _console_bucket(job: dict) -> str:
+    if _job_awaits_approval(job):
+        return 'attention'
+    status = _job_ui_status(job)
+    if status == 'running':
+        return 'attention' if _job_is_stale_running(job) else 'running'
+    if status == 'repair':
+        return 'attention'
+    if status in {'ready', 'completed'}:
+        return 'library'
+    return 'archive'
+
+
+def _console_counts(jobs: list[dict]) -> dict[str, int]:
+    counts = {key: 0 for key in CONSOLE_STATUS_ORDER}
+    for job in jobs:
+        bucket = _console_bucket(job)
+        if bucket in counts:
+            counts[bucket] += 1
+    return counts
+
+
+def _history_matches(job: dict, active: str) -> bool:
+    if active in CONSOLE_STATUS_ORDER:
+        return _console_bucket(job) == active
+    return _job_ui_status(job) == active
 
 
 def _legacy_failure_signature(job: dict) -> tuple[str, ...] | None:
@@ -574,6 +781,53 @@ def _legacy_failure_signature(job: dict) -> tuple[str, ...] | None:
         topic,
         *(_plain_text(spec.get(field)).casefold() for field in fields),
     )
+
+
+def _running_duplicate_signature(job: dict) -> tuple[str, ...] | None:
+    """Conservatively identify concurrent duplicate clicks for display only."""
+    if _job_ui_status(job) != 'running' or _plain_text(job.get('parent_id')):
+        return None
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    topic = _plain_text(spec.get('topic')).casefold()
+    if not topic:
+        return None
+    fields = (
+        'duration_minutes', 'language', 'channel_id', 'mode', 'workflow',
+        'content_style', 'pace', 'visual_mix', 'music', 'subtitles',
+        'reference_url',
+    )
+    return (
+        _console_bucket(job),
+        _plain_text(job.get('kind') or 'render').casefold(),
+        topic,
+        *(_plain_text(spec.get(field)).casefold() for field in fields),
+    )
+
+
+def _collapse_running_duplicates(jobs: list[dict]) -> list[dict]:
+    """Group only exact, near-simultaneous root jobs without changing storage."""
+    collapsed: list[dict] = []
+    latest_by_signature: dict[tuple[str, ...], tuple[float, int]] = {}
+    for job in jobs:
+        signature = _running_duplicate_signature(job)
+        created = _job_created_timestamp(job)
+        previous = (
+            latest_by_signature.get(signature)
+            if signature and created is not None else None
+        )
+        if previous is not None:
+            previous_created, previous_index = previous
+            if abs(previous_created - created) <= RUNNING_DUPLICATE_GROUP_WINDOW_SECONDS:
+                representative = dict(collapsed[previous_index])
+                representative['_grouped_running_attempts'] = (
+                    int(representative.get('_grouped_running_attempts') or 0) + 1
+                )
+                collapsed[previous_index] = representative
+                continue
+        collapsed.append(job)
+        if signature and created is not None:
+            latest_by_signature[signature] = (created, len(collapsed) - 1)
+    return collapsed
 
 
 def _collapse_failure_duplicates(jobs: list[dict]) -> list[dict]:
@@ -621,20 +875,21 @@ def _collapse_failure_duplicates(jobs: list[dict]) -> list[dict]:
 def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
     """Show only the newest visible step of each logical video workflow."""
     task_ids = {str(job.get('task_id') or '') for job in jobs}
-    # A failed upload is an issue with publishing, not with the completed
-    # video. Keep its ready render parent as the safe actionable card; the
-    # YouTube center owns upload reconciliation and duplicate prevention.
-    hidden_failed_publishes = {
+    # Publishing is a state of the finished video, not a second video card.
+    # The worker persists successful YouTube metadata on the render source;
+    # failed uploads remain owned by the YouTube center. In both terminal
+    # cases keep the rich render parent so its preview is not lost.
+    hidden_terminal_publishes = {
         str(job.get('task_id') or '')
         for job in jobs
         if str(job.get('kind') or '') == 'publish'
-        and str(job.get('state') or '').upper() == 'FAILURE'
+        and str(job.get('state') or '').upper() in {'FAILURE', 'SUCCESS'}
         and str(job.get('parent_id') or '') in task_ids
     }
     superseded_ids = {
         str(job.get('parent_id') or '')
         for job in jobs
-        if str(job.get('task_id') or '') not in hidden_failed_publishes
+        if str(job.get('task_id') or '') not in hidden_terminal_publishes
         if str(job.get('parent_id') or '') in task_ids
         and str(job.get('parent_id') or '') != str(job.get('task_id') or '')
     }
@@ -642,25 +897,30 @@ def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
     for job in jobs:
         task_id = str(job.get('task_id') or '')
         child_id = _retry_child_task_id(job)
-        if task_id in hidden_failed_publishes or task_id in superseded_ids or (
+        if task_id in hidden_terminal_publishes or task_id in superseded_ids or (
             child_id and child_id != task_id and child_id in task_ids
         ):
             continue
         visible.append(job)
-    return _collapse_failure_duplicates(visible)
+    return _collapse_running_duplicates(_collapse_failure_duplicates(visible))
 
 
 def _status_overview(counts: dict[str, int], *, active: str | None = None) -> str:
+    current_bucket = (
+        'library' if active in {'library', 'ready', 'completed'}
+        else 'attention' if active in {'attention', 'repair'}
+        else active
+    )
     links = []
-    for key in ACTIONABLE_STATUS_ORDER:
-        current = ' aria-current="page"' if key == active else ''
+    for key in CONSOLE_STATUS_ORDER:
+        current = ' aria-current="page"' if key == current_bucket else ''
         links.append(
             f'<a class="status-filter {key}" data-status-filter="{key}" '
             f'href="/studio/history?status={key}"{current}>'
             f'<span class="status-count" data-status-count="{key}">{int(counts.get(key, 0))}</span>'
-            f'<span class="status-name">{UI_STATUS_LABELS[key]}</span></a>'
+            f'<span class="status-name">{CONSOLE_STATUS_LABELS[key]}</span></a>'
         )
-    return '<nav class="status-overview" aria-label="Yapılacak işler">' + ''.join(links) + '</nav>'
+    return '<nav class="status-overview" aria-label="Video durumları">' + ''.join(links) + '</nav>'
 
 
 def _history_archive(
@@ -668,42 +928,37 @@ def _history_archive(
     *,
     active: str | None = None,
 ) -> str:
-    """Keep completed and failed work available outside the action queue."""
-    completed = int(counts.get('completed', 0))
+    """Keep failed attempts available without adding noise to the console."""
     failed = int(counts.get('failed', 0))
-    opened = ' open' if active in {'completed', 'failed'} else ''
-    completed_current = ' aria-current="page"' if active == 'completed' else ''
+    opened = ' open' if active == 'failed' else ''
     failed_current = ' aria-current="page"' if active == 'failed' else ''
     return (
         f'<details class="archive-details"{opened}><summary>'
-        '<span class="archive-label"><b>Tamamlananlar ve hatalar</b>'
-        '<span class="tiny">Günlük iş listesinden ayrı</span></span>'
-        '<span class="archive-counts">'
-        f'<span class="archive-count completed" aria-label="{completed} tamamlanan iş">'
-        f'{completed}</span>'
-        f'<span class="archive-count failed" aria-label="{failed} başarısız iş">'
-        f'{failed}</span></span></summary><div class="archive-body">'
-        f'<a href="/studio/history?status=completed"{completed_current}>'
-        f'Tamamlananlar <b>{completed}</b></a>'
+        '<span class="archive-label"><b>Arşiv</b>'
+        '<span class="tiny">Eski denemeler ve teknik kayıtlar</span></span>'
+        '</summary><div class="archive-body">'
         f'<a href="/studio/history?status=failed"{failed_current}>'
-        f'Başarısızlar <b>{failed}</b></a></div></details>'
+        f'Başarısız denemeler <b>{failed}</b></a></div></details>'
     )
 
 
 def _nav(active: str) -> str:
-    links = [
-        ('studio', '/studio', '＋ Yeni üretim'),
-        ('history', '/studio/history', '◷ Geçmiş'),
-        ('youtube', '/studio/youtube', '▶ YouTube'),
-        ('voices', '/voice-audition', '🎙 Sesler'),
-        ('legacy', '/factory', 'Eski panel'),
+    primary_links = [
+        ('studio', '/studio', 'Yeni video'),
+        ('history', '/studio/history?status=library', 'Videolar'),
+        ('youtube', '/studio/youtube', 'YouTube'),
     ]
     items = ''.join(
         f'<a class="{"active" if key == active else ""}" href="{url}"'
         f'{" aria-current=page" if key == active else ""}>{label}</a>'
-        for key, url, label in links
+        for key, url, label in primary_links
     )
-    return f'<header class="top"><a class="brand" href="/studio">🎬 YouTube Studio V2</a><nav class="nav" aria-label="Ana menü">{items}</nav></header>'
+    more = (
+        '<details class="nav-more"><summary>Diğer</summary><div class="nav-more-menu">'
+        '<a href="/voice-audition">Anlatıcı sesleri</a>'
+        '<a href="/factory">Eski panel</a></div></details>'
+    )
+    return f'<header class="top"><a class="brand" href="/studio">YouTube Studio</a><nav class="nav" aria-label="Ana menü">{items}{more}</nav></header>'
 
 
 def _shell(body: str, *, active: str = 'studio', title: str = 'YouTube Studio V2', script: str = '') -> HTMLResponse:
@@ -766,21 +1021,48 @@ def _sync_job(task_id: str) -> dict:
     state = task.state
 
     if state == 'FAILURE':
-        record = mark_failure(task_id, str(task.result))
+        error = str(task.result)
+        if (
+            str(record.get('state') or '').upper() != 'FAILURE'
+            or str(record.get('error') or '') != error
+        ):
+            record = mark_failure(task_id, error)
     elif state == 'SUCCESS':
         result = task.result if isinstance(task.result, dict) else {'result': str(task.result)}
-        if result.get('status') == 'plan_ready':
-            record = mark_success(task_id, result, state='AWAITING_APPROVAL')
-        else:
-            record = mark_success(task_id, result)
-    elif isinstance(task.info, dict):
-        record = update_job(
-            task_id,
-            state=state,
-            stage=task.info.get('stage') or record.get('stage'),
-            progress=task.info.get('progress') if task.info.get('progress') is not None else record.get('progress', 0),
-            message=task.info.get('message') or record.get('message'),
+        target_state = (
+            'AWAITING_APPROVAL'
+            if result.get('status') == 'plan_ready' else 'SUCCESS'
         )
+        target_stage = (
+            'awaiting_approval'
+            if target_state == 'AWAITING_APPROVAL' else 'complete'
+        )
+        target_message = (
+            'Storyboard onay bekliyor.'
+            if target_state == 'AWAITING_APPROVAL' else 'Video hazır.'
+        )
+        if any((
+            str(record.get('state') or '') != target_state,
+            str(record.get('stage') or '') != target_stage,
+            _job_progress(record) != 100,
+            record.get('result') != result,
+            record.get('error') is not None,
+            str(record.get('message') or '') != target_message,
+        )):
+            record = mark_success(task_id, result, state=target_state)
+    elif isinstance(task.info, dict):
+        next_fields = {
+            'state': state,
+            'stage': task.info.get('stage') or record.get('stage'),
+            'progress': (
+                task.info.get('progress')
+                if task.info.get('progress') is not None
+                else record.get('progress', 0)
+            ),
+            'message': task.info.get('message') or record.get('message'),
+        }
+        if any(record.get(key) != value for key, value in next_fields.items()):
+            record = update_job(task_id, **next_fields)
     if str(record.get('state') or state) == 'FAILURE':
         try:
             repair_state = sync_repair_checkpoint_state(task_id)
@@ -805,15 +1087,19 @@ def _refresh_active_jobs(jobs: list[dict]) -> list[dict]:
         state = str(job.get('state') or '').upper()
         should_refresh = (
             _job_ui_status(job) == 'running' or state == 'FAILURE'
-        ) and not _retry_claimed(job)
+        ) and not _retry_claimed(job) and not _job_is_stale_running(job)
         if task_id and should_refresh:
             synced = _sync_job(task_id)
-            grouped_attempts = job.get('_grouped_failure_attempts')
-            if grouped_attempts:
-                synced = {
-                    **synced,
-                    '_grouped_failure_attempts': grouped_attempts,
-                }
+            grouped_fields = {
+                key: job[key]
+                for key in (
+                    '_grouped_failure_attempts',
+                    '_grouped_running_attempts',
+                )
+                if job.get(key)
+            }
+            if grouped_fields:
+                synced = {**synced, **grouped_fields}
             refreshed.append(synced)
         else:
             refreshed.append(job)
@@ -861,58 +1147,45 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     else:
         health_label = 'Tüm servis ayarları hazır'
     jobs = _collapse_retry_sources(list_jobs(HISTORY_SCAN_LIMIT)) if authenticated else []
-    # Reconcile only the priority candidates. This keeps the landing page
-    # truthful without probing all retained Celery results as history grows.
-    priority_candidates = _dashboard_recent_jobs(jobs)
-    if priority_candidates:
-        refreshed_by_id = {
-            str(job.get('task_id') or ''): job
-            for job in _refresh_active_jobs(priority_candidates)
-        }
-        jobs = [
-            refreshed_by_id.get(str(job.get('task_id') or ''), job)
-            for job in jobs
-        ]
-    recent = _dashboard_recent_jobs(jobs)
     counts = _status_counts(jobs)
-    recent_html = _dashboard_action_sections(recent, counts) or (
-        '<div class="empty">Şu anda devam etmen gereken iş yok.</div>'
-    )
-    overview = _status_overview(counts) if authenticated else ''
-    failure_history = _history_archive(counts) if authenticated else ''
+    console_counts = _console_counts(jobs)
+    overview = _status_overview(console_counts) if authenticated else ''
+    archive = _history_archive(counts) if authenticated else ''
     token_field = (
-        '<div class="notice success">Güvenli Studio oturumu açık.</div>'
-        if authenticated else
+        '' if authenticated else
         '<label class="field" for="studio-token">Studio güvenlik anahtarı</label><input id="studio-token" name="token" type="password" autocomplete="off" required placeholder="Güvenli anahtarı gir">'
     )
 
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">STUDIO</div><h1>Üretim masası</h1><div class="muted">Devam eden, hazır ve ilgi isteyen videoları durumuna göre takip et; yeni üretimi aynı yerden başlat.</div></div><div class="hero-tools"><span class="badge">🎙 {selected_voice}</span><span class="badge">16:9 · 1080p</span></div></div>
+<div class="hero"><div class="hero-copy"><div class="eyebrow">STUDIO</div><h1>Yeni video oluştur</h1><div class="muted">Konuyu yaz; üretim ve güvenli yükleme adımlarını Studio yönetsin.</div></div></div>
 {overview}
-<div class="layout"><section>
-<form action="/studio/start" method="post" class="card" id="studio-form">
-<span class="section-kicker">YENİ ÜRETİM</span><h2>Nasıl bir video hazırlayalım?</h2>
+<div class="studio-primary">
+<form action="/studio/start" method="post" class="card create-card" id="studio-form">
+<span class="section-kicker">YENİ VİDEO</span><h2>Ne anlatalım?</h2>
 <div class="choice-grid">
-<div class="choice"><input id="mode-preview" name="mode" value="preview" type="radio" checked><label for="mode-preview"><b>⚡ Hızlı önizleme</b><span>30–60 saniyelik kalite testi. Hızlı karar vermek için.</span></label></div>
-<div class="choice"><input id="mode-production" name="mode" value="production" type="radio"><label for="mode-production"><b>🏆 Yayın kalitesi</b><span>Uzun video, tam kalite denetimi ve zengin kurgu.</span></label></div>
+<div class="choice"><input id="mode-preview" name="mode" value="preview" type="radio" checked><label for="mode-preview"><b>Hızlı test</b><span>30 saniyelik kısa önizleme.</span></label></div>
+<div class="choice"><input id="mode-production" name="mode" value="production" type="radio"><label for="mode-production"><b>Yayın kalitesi</b><span>Tam üretim ve kalite kontrolü.</span></label></div>
 </div>
 <label class="field" for="topic">Video konusu</label>
 <span class="field-hint">Bir cümle yeterli. Örnek: Telefon neden yastık altında ısınır?</span>
 <textarea class="topic-input" id="topic" name="topic" required placeholder="Konuyu bir cümleyle yaz"></textarea>
+<details class="control-details"><summary><span>Ayarlar</span><span class="tiny">İsteğe bağlı</span></summary><div class="control-body">
 <div class="grid2"><div><label class="field" for="duration">Süre</label><select id="duration" name="duration_minutes"><option value="0.5" selected>30 saniye</option><option value="1">1 dakika</option><option value="3">3 dakika</option><option value="5">5 dakika</option><option value="8">8 dakika</option><option value="10">10 dakika</option></select></div><div><label class="field" for="language">Dil</label><select id="language" name="language"><option value="tr" selected>Türkçe</option><option value="en">English</option><option value="de">Deutsch</option><option value="es">Español</option><option value="ar">العربية</option></select></div></div>
-<details class="control-details"><summary><span>Yaratıcı ve teknik ayarlar</span><span class="tiny">İsteğe bağlı</span></summary><div class="control-body">
 <div class="guidance"><b>İyi sonuç için ayrıntı eklemek istersen</b><p class="tiny">Tek bir gündelik sorun, tek bir şaşırtıcı neden, aynı kişi veya nesne, aynı mekân ve görünür bir sonuç tarif et. Bunları yazmak zorunda değilsin; sistem kısa konu cümleni otomatik olarak yönetmen planına dönüştürür.</p></div>
 <div class="grid2"><div><label class="field" for="content-style">İçerik tarzı</label><select id="content-style" name="content_style"><option value="documentary">Belgesel</option><option value="technology" selected>Teknoloji</option><option value="story">Hikâye</option><option value="cinematic">Sinematik</option><option value="explainer">Açıklayıcı</option></select></div><div><label class="field" for="pace">Kurgu temposu</label><select id="pace" name="pace"><option value="calm">Sakin</option><option value="balanced" selected>Dengeli</option><option value="dynamic">Dinamik</option></select></div></div>
 <div class="grid2"><div><label class="field" for="visual-mix">Görsel karışımı</label><select id="visual-mix" name="visual_mix"><option value="real_first">Gerçek görüntü ağırlıklı</option><option value="balanced" selected>Dengeli: B-roll + AI</option><option value="ai_first">Özgün AI ağırlıklı</option></select></div><div><label class="field" for="workflow">Akış</label><select id="workflow" name="workflow"><option value="auto" selected>Otomatik tamamla</option><option value="storyboard">Önce storyboard göster</option></select></div></div>
 <div class="grid2"><div><label class="field" for="music">Arka plan müziği</label><select id="music" name="music"><option value="off">Kapalı</option><option value="auto" selected>Uygunsa otomatik</option></select></div><div><label class="field" for="subtitles">Altyazı</label><select id="subtitles" name="subtitles"><option value="sidecar" selected>Ayrı SRT üret</option><option value="off">Üretme</option></select></div></div>
 <label class="field" for="reference-url">Referans video / kanal bağlantısı <span class="tiny">(yalnızca yapı ve ritim analizi)</span></label><input id="reference-url" name="reference_url" type="url" placeholder="YouTube videosu veya kanal bağlantısı">
 <label class="field" for="channel-id">Kanal etiketi <span class="tiny">(opsiyonel)</span></label><input id="channel-id" name="channel_id" type="text" maxlength="120" placeholder="teknoloji-tr-01">
-<div class="actions"><a class="btn secondary small" href="/voice-audition">🎙 Anlatıcı sesini değiştir</a></div>
+<div class="actions"><a class="btn secondary small" href="/voice-audition">Anlatıcı: {selected_voice}</a></div>
 </div></details>
 {token_field}
-<button class="block" type="submit">Üretimi başlat →</button>
-</form></section>
-<aside><div class="card"><details class="system-details"><summary><span class="status-summary"><span class="health-dot {"red" if required_missing else "green"}" aria-hidden="true"></span>{health_label}</span><span class="tiny">{ready_services}/{len(service_states)}</span></summary><div class="system-body"><div class="status-grid">{services}</div></div></details></div><div class="card"><div class="section-title"><div><span class="section-kicker">ŞİMDİ</span><h3>Devam edilecek işler</h3></div><a class="tiny" href="/studio/history">İş listesini aç →</a></div><div class="job-list">{recent_html}</div>{failure_history}</div><div class="card"><span class="section-kicker">GÜVENLİ YAYIN</span><h3>Kontrol sende</h3><p class="muted sidebar-copy">Videolar önce gizli yüklenir. Kalite onayından önce herkese açık yayın yapılmaz.</p></div></aside></div>
+<p class="private-note"><b>Güvenli yayın:</b> YouTube yüklemeleri önce gizli oluşturulur.</p>
+<button class="block" type="submit">Videoyu oluştur</button>
+</form>
+<details class="system-details console-details"><summary><span class="status-summary"><span class="health-dot {"red" if required_missing else "green"}" aria-hidden="true"></span>Sistem durumu</span><span class="tiny">{ready_services}/{len(service_states)}</span></summary><div class="system-body"><p class="tiny">{health_label}</p><div class="status-grid">{services}</div></div></details>
+</div>
+{archive}
 '''
     script = r'''<script>
 const preview=document.getElementById('mode-preview'),production=document.getElementById('mode-production'),duration=document.getElementById('duration');
@@ -922,8 +1195,26 @@ preview.addEventListener('change',setDefaults);production.addEventListener('chan
     return _shell(body, script=script)
 
 
-def _job_row(job: dict, *, compact: bool = False) -> str:
+def _job_row(job: dict) -> str:
     status = _job_ui_status(job)
+    display_status = (
+        'attention'
+        if _job_awaits_approval(job) or _job_is_stale_running(job)
+        else status
+    )
+    status_message = (
+        'Uzun süredir ilerlemiyor; üretim durumunu kontrol et.'
+        if display_status == 'attention' and status == 'running'
+        else _job_status_message(job)
+    )
+    try:
+        grouped_running = max(0, int(job.get('_grouped_running_attempts') or 0))
+    except (TypeError, ValueError):
+        grouped_running = 0
+    if grouped_running:
+        status_message += (
+            f' {grouped_running + 1} eş üretim tek kartta gösteriliyor.'
+        )
     mode = _job_mode(job)
     raw_title = _job_title(job)
     title = escape(raw_title)
@@ -937,25 +1228,22 @@ def _job_row(job: dict, *, compact: bool = False) -> str:
         target = channel or profile or 'Seçilmedi'
     raw_updated = str(job.get('updated_at') or job.get('created_at') or '')
     metadata = [f'<span><b>Hedef / profil</b> {escape(target)}</span>']
-    # The dashboard is a decision queue, so compact cards keep only the target
-    # and the one primary action. Full history retains timing and mode details.
-    if not compact:
-        if mode:
-            metadata.append(f'<span>{escape(mode)}</span>')
-        if duration:
-            metadata.append(f'<span>{escape(duration)}</span>')
-        if date:
-            metadata.append(
-                f'<time datetime="{escape(raw_updated, quote=True)}">Güncellendi {escape(date)}</time>'
-            )
+    if mode:
+        metadata.append(f'<span>{escape(mode)}</span>')
+    if duration:
+        metadata.append(f'<span>{escape(duration)}</span>')
+    if date:
+        metadata.append(
+            f'<time datetime="{escape(raw_updated, quote=True)}">Güncellendi {escape(date)}</time>'
+        )
     meta_html = ''.join(metadata)
-    details = '' if compact else _job_details(job)
+    details = _job_details(job)
     return (
-        f'<article class="job{" compact" if compact else ""}" data-status="{status}" '
-        f'aria-label="{title}: {UI_STATUS_LABELS[status]}"><div class="job-main">'
-        f'<div class="job-title">{title}</div><div class="job-status">{escape(_job_status_message(job))}</div>'
+        f'<article class="job" data-status="{display_status}" '
+        f'aria-label="{title}: {UI_STATUS_LABELS[display_status]}"><div class="job-main">'
+        f'<div class="job-title">{title}</div><div class="job-status">{escape(status_message)}</div>'
         f'<div class="job-meta" aria-label="Video bilgileri">{meta_html}</div></div>'
-        f'<div class="job-side"><span class="state {status}">{UI_STATUS_LABELS[status]}</span>'
+        f'<div class="job-side"><span class="state {display_status}">{UI_STATUS_LABELS[display_status]}</span>'
         f'{_job_primary_action(job)}</div>{details}</article>'
     )
 
@@ -1012,6 +1300,12 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     }
     display_title = escape(_job_title(record))
     status = _job_ui_status(record)
+    display_status = 'attention' if _job_awaits_approval(record) else status
+    back_status = (
+        'attention' if _job_awaits_approval(record) or status == 'repair'
+        else 'library' if status in {'ready', 'completed'}
+        else status
+    )
     progress = _job_progress(record)
     stage_code = str(record.get('failure_stage') or record.get('stage') or 'queued')
     stage_label = escape(STAGE_LABELS.get(stage_code, stage_code))
@@ -1022,33 +1316,33 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     media_hidden = '' if media_panel else ' hidden'
     body = f'''
 <div class="hero"><div class="hero-copy"><div class="eyebrow">Üretim durumu</div><h1>{display_title}</h1><div class="muted">Yalnızca karar vermen gereken durum ve sonraki adım burada gösterilir.</div></div></div>
-<article class="card job-panel" id="job-card" data-status="{status}">
-<div class="job-panel-head"><div class="stage" id="stage">{stage_label}{f' · %{progress}' if status == 'running' else ''}</div><span class="state {status}" id="state-label">{UI_STATUS_LABELS[status]}</span></div>
+<article class="card job-panel" id="job-card" data-status="{display_status}">
+<div class="job-panel-head"><div class="stage" id="stage">{stage_label}{f' · %{progress}' if status == 'running' else ''}</div><span class="state {display_status}" id="state-label">{UI_STATUS_LABELS[display_status]}</span></div>
 <div class="job-status" id="status-message" role="status" aria-live="polite" aria-atomic="true">{escape(_job_status_message(record))}</div>
 <div class="progress" id="progress" role="progressbar" aria-label="Üretim ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{progress}" style="margin:14px 0"{progress_hidden}><div class="bar" id="bar" style="width:{progress}%"></div></div>
 <div class="result-action" id="result">{_job_primary_action(record, small=False)}</div>
 <div class="result-media-host" id="result-media"{media_hidden}>{media_panel}</div>
 <details class="technical-details"><summary>Teknik ayrıntılar</summary><div class="technical-body"><div><b>İş kimliği</b><br><code>{escape(task_id)}</code></div><div><b>Aşama kodu</b><br><code id="technical-stage">{escape(stage_code)}</code></div><div id="technical-error-row"{error_hidden}><b>Hata kaydı</b><br><code id="technical-error">{escape(initial_error)}</code></div></div></details>
 </article>
-<nav class="back-links" aria-label="Geri dön"><a href="/studio/history?status={status}">Üretim listesine dön</a><a href="/studio">Yeni üretim başlat</a></nav>
+<nav class="back-links" aria-label="Geri dön"><a href="/studio/history?status={back_status}">Video listesine dön</a><a href="/studio">Yeni video oluştur</a></nav>
 '''
     script = r'''<script>
 const taskId=__TASK_ID__;let timer=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const labels={running:'Üretiliyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız'};
+const labels={running:'Üretiliyor',attention:'Müdahale gerekiyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız'};
 function safeExternal(value){const text=String(value||'').trim();if(!/^https?:\/\//i.test(text))return '';try{const u=new URL(text);return ['http:','https:'].includes(u.protocol)?u.href:''}catch(_){return ''}}
 function linkAction(href,label,kind='secondary',external=false){return `<a class="btn ${kind}" ${external?'target="_blank" rel="noopener noreferrer" ':''}href="${esc(href)}">${esc(label)}</a>`}
 function retryAction(label,kind){return `<form method="post" action="/studio/retry/${encodeURIComponent(taskId)}"><button class="btn ${kind}" type="submit">${esc(label)}</button></form>`}
 function setAction(signature,html){const out=document.getElementById('result');if(out.dataset.actionSignature===signature)return;out.innerHTML=html;out.dataset.actionSignature=signature}
-function mediaMarkup(video,captions){const captionAction=captions?`<a class="btn secondary small" target="_blank" rel="noopener noreferrer" download href="${esc(captions)}">Altyazıyı indir (.srt)</a>`:'';return `<section class="result-media" aria-labelledby="result-media-title"><div class="result-media-head"><h2 id="result-media-title">Video önizleme</h2><span class="badge">Final dosya</span></div><video class="result-video" controls playsinline preload="metadata" src="${esc(video)}">Tarayıcın video oynatmayı desteklemiyor.</video><div class="media-actions"><a class="btn secondary small" target="_blank" rel="noopener noreferrer" download href="${esc(video)}">Videoyu indir</a>${captionAction}</div><p class="media-note">Kalite onaylanana kadar YouTube yüklemesi gizli kalır.</p></section>`}
+function mediaMarkup(video,captions){const captionAction=captions?`<a class="btn secondary small" target="_blank" rel="noopener noreferrer" download href="${esc(captions)}">Altyazıyı indir (.srt)</a>`:'';return `<section class="result-media" aria-labelledby="result-media-title"><div class="result-media-head"><h2 id="result-media-title">Video önizleme</h2><span class="badge">Final dosya</span></div><div class="result-video-frame"><video class="result-video" controls playsinline preload="metadata" src="${esc(video)}">Tarayıcın video oynatmayı desteklemiyor.</video></div><div class="media-actions"><a class="btn secondary small" target="_blank" rel="noopener noreferrer" download href="${esc(video)}">Videoyu indir</a>${captionAction}</div><p class="media-note">Kalite onaylanana kadar YouTube yüklemesi gizli kalır.</p></section>`}
 function setMedia(result){const out=document.getElementById('result-media'),x=result||{},video=safeExternal(x.download_url||x.video_url),captions=safeExternal(x.caption_url||x.captions_url||x.subtitle_url),current=out.querySelector('video');if(!video){out.replaceChildren();out.hidden=true;return}if(current&&current.src===video){out.hidden=false;return}out.innerHTML=mediaMarkup(video,captions);out.hidden=false}
 function setStatusMessage(message){const out=document.getElementById('status-message'),next=String(message||'');if(out.textContent!==next)out.textContent=next}
 function showTechnical(j){const stage=String(j.failure_stage||j.stage||'—');document.getElementById('technical-stage').textContent=stage;const error=String(j.error||'').trim();document.getElementById('technical-error').textContent=error;document.getElementById('technical-error-row').hidden=!error}
 async function poll(){
  try{const r=await fetch(`/studio/api/job/${encodeURIComponent(taskId)}`,{cache:'no-store'});if(!r.ok)throw new Error('status');const j=await r.json();
  const state=String(j.state||'PENDING'),ui=String(j.ui_status||'running'),stage=String(j.stage_label||j.stage||'Hazırlanıyor'),p=Math.max(0,Math.min(100,Number(j.progress||0)));
- const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label');
- panel.dataset.status=ui;pill.className='state '+ui;pill.textContent=labels[ui]||labels.running;
+ const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label'),displayUi=state==='AWAITING_APPROVAL'?'attention':ui;
+ panel.dataset.status=displayUi;pill.className='state '+displayUi;pill.textContent=labels[displayUi]||labels.running;
  document.getElementById('bar').style.width=p+'%';progress.setAttribute('aria-valuenow',String(p));progress.hidden=ui!=='running';document.getElementById('stage').textContent=stage+(ui==='running'?' · %'+p:'');setStatusMessage(j.ui_status_message);showTechnical(j);
  if(ui==='repair'){setMedia({});setAction('repair',retryAction('Sorunlu sahneyi onar','repair'));return}
  if(ui==='failed'){setMedia({});setAction('failed',retryAction('Aynı ayarlarla tekrar dene','danger'));return}
@@ -1059,7 +1353,7 @@ async function poll(){
  }
 poll();
 </script>'''.replace('__TASK_ID__', json.dumps(task_id))
-    return _shell(body, title='Üretim kontrolü', script=script)
+    return _shell(body, active='history', title='Üretim kontrolü', script=script)
 
 
 @router.get('/studio/api/job/{task_id}')
@@ -1095,13 +1389,14 @@ def studio_history(
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
-    active = status if status in UI_STATUS_ORDER else 'running'
+    allowed_statuses = (*UI_STATUS_ORDER, 'attention', 'library')
+    active = status if status in allowed_statuses else 'running'
     page = max(1, int(page))
     jobs = _collapse_retry_sources(list_jobs(HISTORY_SCAN_LIMIT))
     # Reconcile only the records that can appear on this page. The registry is
     # retained at 500 jobs; probing each Celery result would create an N+1 read
     # storm just to render the overview counts.
-    stored_filtered = [job for job in jobs if _job_ui_status(job) == active]
+    stored_filtered = [job for job in jobs if _history_matches(job, active)]
     stored_page_count = max(1, math.ceil(len(stored_filtered) / HISTORY_PAGE_SIZE))
     page = min(page, stored_page_count)
     offset = (page - 1) * HISTORY_PAGE_SIZE
@@ -1115,7 +1410,8 @@ def studio_history(
         for job in jobs
     ]
     counts = _status_counts(jobs)
-    filtered = [job for job in jobs if _job_ui_status(job) == active]
+    console_counts = _console_counts(jobs)
+    filtered = [job for job in jobs if _history_matches(job, active)]
     total = len(filtered)
     page_count = max(1, math.ceil(total / HISTORY_PAGE_SIZE))
     page = min(page, page_count)
@@ -1123,12 +1419,18 @@ def studio_history(
     visible = filtered[start:start + HISTORY_PAGE_SIZE]
     empty_copy = {
         'running': 'Devam eden üretim yok.',
+        'attention': 'Müdahale bekleyen video yok.',
+        'library': 'Kütüphanede video yok.',
         'ready': 'Hazır video yok.',
         'repair': 'Onarım bekleyen video yok.',
         'completed': 'Tamamlanan video yok.',
         'failed': 'Başarısız üretim yok.',
     }[active]
-    rows = ''.join(_job_row(job) for job in visible) or f'<div class="empty">{empty_copy}</div>'
+    rich_library = active in {'library', 'ready', 'completed'}
+    rows = ''.join(
+        _ready_video_card(job) if rich_library else _job_row(job)
+        for job in visible
+    ) or f'<div class="empty">{empty_copy}</div>'
     previous = (
         f'<a class="btn secondary small" href="/studio/history?status={active}&amp;page={page - 1}">← Önceki</a>'
         if page > 1 else '<span class="btn secondary small" aria-disabled="true">← Önceki</span>'
@@ -1142,18 +1444,26 @@ def studio_history(
         f'<span class="tiny">Sayfa {page} / {page_count}</span>{following}</nav>'
         if total > HISTORY_PAGE_SIZE else ''
     )
-    history_context = (
-        'Çalışan, onarım bekleyen ve hazır videolar ayrı listelerde.'
-        if active not in {'completed', 'failed'}
-        else 'Bu arşiv günlük iş listesinden ayrı tutulur.'
-    )
+    history_context = {
+        'running': 'Yalnızca şu anda ilerleyen üretimler.',
+        'attention': 'Storyboard onayı, takılmış iş veya onarım bekleyen üretimler.',
+        'library': 'Hazır, gizli, planlanmış veya yayınlanmış videolar.',
+        'ready': 'Yüklemeye hazır videolar.',
+        'repair': 'Onarım kararı bekleyen üretimler.',
+        'completed': 'YouTube yüklemesi tamamlanan videolar.',
+        'failed': 'Eski başarısız denemeler; günlük listeden ayrı tutulur.',
+    }[active]
     history_archive = _history_archive(counts, active=active)
+    active_label = (
+        CONSOLE_STATUS_LABELS[active]
+        if active in CONSOLE_STATUS_LABELS else UI_STATUS_LABELS[active]
+    )
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">ÜRETİM TAKİBİ</div><h1>İş listesi</h1><div class="muted">{history_context}</div></div></div>
-{_status_overview(counts, active=active)}
+<div class="hero"><div class="hero-copy"><div class="eyebrow">VİDEOLAR</div><h1>{active_label}</h1><div class="muted">{history_context}</div></div></div>
+{_status_overview(console_counts, active=active)}
+<div class="history-label"><h2>{total} video</h2></div>
+<div class="{"ready-grid" if rich_library else "job-list"}" data-history-status="{active}">{rows}</div>{pagination}
 {history_archive}
-<div class="history-toolbar"><div><span class="section-kicker">{UI_STATUS_LABELS[active].upper()}</span><h2>{counts[active]} video</h2></div></div>
-<div class="job-list" data-history-status="{active}">{rows}</div>{pagination}
 '''
     return _shell(body, active='history', title='Üretim geçmişi')
 
@@ -1179,7 +1489,7 @@ def studio_plan(task_id: str, studio_token: str | None = Cookie(default=None, al
 <div class="card"><h3>Render kararı</h3><p class="muted">Onaylandığında bu senaryo kilitlenir; araştırma yeniden yapılmadan ses, görsel QC, AI sahneleri, müzik ve final kurgu başlar.</p><form action="/studio/plan/{escape(task_id)}/render" method="post"><button class="block" type="submit">✓ Storyboard'u onayla ve render et</button></form></div>
 <div class="actions"><a class="btn secondary" href="/studio">← Yeni plan</a><a class="btn secondary" href="/studio/job/{escape(task_id)}">Göreve dön</a></div>
 '''
-    return _shell(body, title='Storyboard')
+    return _shell(body, active='history', title='Storyboard')
 
 
 @router.post('/studio/plan/{task_id}/render')

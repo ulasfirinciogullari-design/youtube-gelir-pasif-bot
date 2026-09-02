@@ -25,10 +25,18 @@ from app.services.director import (
     short_story_package_is_approved,
 )
 from app.services.pexels import find_broll, download_broll
-from app.services.render import media_duration, render_video, video_frame_count
+from app.services.render import (
+    aspect_ratio_for_mode,
+    media_duration,
+    render_video,
+    resolution_for_mode,
+    video_frame_count,
+)
 from app.services.research import research_and_script
 from app.services.runway import (
     GeminiImageAttemptedError,
+    GeminiOmniTerminalError,
+    create_gemini_omni_continuity_reference,
     download_generated_scene,
     generate_scene,
 )
@@ -70,6 +78,25 @@ class UnsupportedLanguageError(ValueError):
 
 
 SUPPORTED_PIPELINE_LANGUAGES = frozenset({'tr', 'en', 'de', 'es', 'ar'})
+_OMNI_CONTINUITY_MARKER_PATTERN = re.compile(
+    r'\b(?:same|recurring|unchanged|identical|continuity|returning|'
+    r'aynı|tekrar|süreklilik|unverändert|wiederkehrend|derselbe|dieselbe|'
+    r'dasselbe|mismo|misma|recurrente)\b',
+    re.IGNORECASE,
+)
+_OMNI_CONTINUITY_STOP_WORDS = frozenset({
+    'action', 'angle', 'background', 'black', 'blue', 'bright', 'camera',
+    'cinematic', 'clean', 'color', 'consistent', 'continuity', 'dark',
+    'documentary', 'environment', 'exact', 'frame', 'geometry', 'green',
+    'hand', 'identity', 'lighting', 'location', 'material', 'natural',
+    'object', 'person', 'photorealistic', 'physical', 'realistic', 'recurring',
+    'red', 'room', 'same', 'scene', 'setting', 'shot', 'subject', 'surface',
+    'unchanged', 'unbranded', 'vertical', 'visible', 'white',
+    'with', 'without', 'from', 'into', 'this', 'that', 'the', 'and',
+    'aynı', 'tekrar', 'süreklilik', 'sahne', 'nesne', 'kişi', 'mekan',
+    'mismo', 'misma', 'escena', 'objeto', 'persona',
+    'derselbe', 'dieselbe', 'dasselbe', 'szene', 'objekt', 'person',
+})
 
 
 def normalize_pipeline_language(language: str) -> str:
@@ -79,6 +106,39 @@ def normalize_pipeline_language(language: str) -> str:
             'Supported languages are tr, en, de, es and ar'
         )
     return normalized
+
+
+def _omni_identity_tokens(scene: dict) -> set[str]:
+    """Return bounded, non-generic identity terms from a scene contract."""
+    text = str((scene or {}).get('ai_prompt') or '').casefold()[:4000]
+    return {
+        token
+        for token in re.findall(r'[^\W_]{3,}', text, flags=re.UNICODE)
+        if token not in _OMNI_CONTINUITY_STOP_WORDS
+    }
+
+
+def _omni_continuity_reference_applies(
+    anchor_scene: dict,
+    current_scene: dict,
+) -> bool:
+    """Require an explicit recurrence marker and a shared identity token."""
+    current_prompt = str(
+        (current_scene or {}).get('ai_prompt') or ''
+    )[:4000]
+    if not _OMNI_CONTINUITY_MARKER_PATTERN.search(current_prompt):
+        return False
+    anchor_tokens = _omni_identity_tokens(anchor_scene)
+    current_tokens = _omni_identity_tokens(current_scene)
+    return any(
+        anchor == current
+        or (
+            min(len(anchor), len(current)) >= 4
+            and (anchor in current or current in anchor)
+        )
+        for anchor in anchor_tokens
+        for current in current_tokens
+    )
 
 
 class PreRunwayRetryableError(RuntimeError):
@@ -99,6 +159,7 @@ _RECOVERED_MEDIA_KEY_PATTERN = re.compile(
 _RECOVERED_MEDIA_PROVIDERS = {
     'runway',
     'fal_seedance_2_fast',
+    'gemini_omni',
     'gemini_veo',
     'gemini_veo_fast',
     'gemini_veo_standard',
@@ -1187,6 +1248,7 @@ def _is_transient_pexels_provider_error(exc: Exception) -> bool:
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value = dict(options or {})
     value.setdefault('mode', 'preview' if duration_minutes <= 1 else 'production')
+    requested_publish_after_render = value.get('publish_after_render')
     value.setdefault('workflow', 'auto')
     value.setdefault('content_style', 'documentary')
     value.setdefault('pace', 'balanced')
@@ -1202,7 +1264,28 @@ def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value['quality_threshold'] = max(quality_floor, requested_quality)
     if value['mode'] == 'preview':
         value['music'] = 'off'
+    value['publish_after_render'] = bool(
+        requested_publish_after_render is True
+        and value['mode'] == 'production'
+    )
     return value
+
+
+def _queue_automatic_publish_if_enabled(task_id: str, options: dict) -> bool:
+    """Best-effort autonomous routing after an explicit production opt-in."""
+    if (
+        options.get('publish_after_render') is not True
+        or options.get('mode') != 'production'
+    ):
+        return False
+    try:
+        from app.publish_tasks import queue_automatic_publish
+
+        queue_automatic_publish(task_id)
+    except Exception:
+        # Publishing remains best-effort after the render is durably successful.
+        return False
+    return True
 
 
 def _task_spec(topic: str, duration_minutes: float, language: str, channel_id: str | None, options: dict) -> dict:
@@ -1222,8 +1305,12 @@ def _select_ranked_broll_candidates(
     minimum_duration: float = 5.0,
     allow_seen_fallback: bool = True,
     allow_short_fallback: bool = True,
+    orientation: str = 'landscape',
 ) -> list[tuple[str, dict]]:
     """Select a stable relevance-first, query-diverse Pexels candidate pool."""
+    orientation = str(orientation or '').strip().lower()
+    if orientation not in {'landscape', 'portrait'}:
+        raise ValueError('Pexels task orientation must be landscape or portrait')
     limit = max(1, int(limit))
     selected: list[tuple[str, dict]] = []
     selected_ids: set = set()
@@ -1239,8 +1326,11 @@ def _select_ranked_broll_candidates(
             return False
         width = int(item.get('width') or 0)
         height = int(item.get('height') or 0)
-        if width and height and width < height:
-            return False
+        if width and height:
+            if orientation == 'portrait' and width >= height:
+                return False
+            if orientation == 'landscape' and width < height:
+                return False
         try:
             duration = float(item.get('duration') or 0)
         except Exception:
@@ -1281,7 +1371,11 @@ def _collect_broll(
     scenes: list[dict],
     work: Path,
     strict_duration: bool = False,
+    orientation: str = 'landscape',
 ) -> dict:
+    orientation = str(orientation or '').strip().lower()
+    if orientation not in {'landscape', 'portrait'}:
+        raise ValueError('Pexels task orientation must be landscape or portrait')
     scene_visuals: list[list[dict]] = [[] for _ in scenes]
     credits: list[dict] = []
     seen_ids: set[int | str] = set()
@@ -1294,7 +1388,12 @@ def _collect_broll(
     search_results: dict[tuple[int, int, str], list[dict]] = {}
     with ThreadPoolExecutor(max_workers=min(8, max(1, len(requests)))) as executor:
         future_map = {
-            executor.submit(find_broll, query, 16): (scene_idx, query_idx, query)
+            executor.submit(
+                find_broll,
+                query,
+                16,
+                orientation=orientation,
+            ): (scene_idx, query_idx, query)
             for scene_idx, query_idx, query in requests
         }
         for future in as_completed(future_map):
@@ -1321,6 +1420,7 @@ def _collect_broll(
             3,
             allow_seen_fallback=False,
             allow_short_fallback=not strict_duration,
+            orientation=orientation,
         )
         for candidate_idx, (query, item) in enumerate(selected):
             candidate_id = item.get('pexels_id') or item.get('download_url')
@@ -1395,7 +1495,11 @@ def _download_ranked_broll_candidates(
     search_limit: int,
     minimum_duration: float = 5.0,
     allow_short_fallback: bool = False,
+    orientation: str = 'landscape',
 ) -> list[dict]:
+    orientation = str(orientation or '').strip().lower()
+    if orientation not in {'landscape', 'portrait'}:
+        raise ValueError('Pexels task orientation must be landscape or portrait')
     normalized_queries: list[str] = []
     query_keys: set[str] = set()
     for raw_query in queries:
@@ -1414,7 +1518,12 @@ def _download_ranked_broll_candidates(
     search_errors: list[Exception] = []
     with ThreadPoolExecutor(max_workers=min(3, len(normalized_queries))) as retry_pool:
         future_map = {
-            retry_pool.submit(find_broll, query, search_limit): query_idx
+            retry_pool.submit(
+                find_broll,
+                query,
+                search_limit,
+                orientation=orientation,
+            ): query_idx
             for query_idx, query in enumerate(normalized_queries)
         }
         for future in as_completed(future_map):
@@ -1445,7 +1554,11 @@ def _download_ranked_broll_candidates(
         for query_idx, query in enumerate(normalized_queries):
             try:
                 search_results[query_idx] = (
-                    find_broll(query, search_limit) or []
+                    find_broll(
+                        query,
+                        search_limit,
+                        orientation=orientation,
+                    ) or []
                 )
             except Exception as exc:
                 if not _is_transient_pexels_provider_error(exc):
@@ -1469,6 +1582,7 @@ def _download_ranked_broll_candidates(
         minimum_duration=max(0.1, float(minimum_duration)),
         allow_seen_fallback=False,
         allow_short_fallback=allow_short_fallback,
+        orientation=orientation,
     )
     if not ranked:
         return []
@@ -1565,6 +1679,7 @@ def _retry_bad_scene(
     minimum_duration: float = 5.0,
     allow_short_fallback: bool = True,
     tolerate_pexels_failure: bool = False,
+    orientation: str = 'landscape',
 ) -> list[dict]:
     safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
     selected_by = (
@@ -1587,6 +1702,7 @@ def _retry_bad_scene(
             search_limit=18,
             minimum_duration=minimum_duration,
             allow_short_fallback=allow_short_fallback,
+            orientation=orientation,
         )
     except PexelsRetryError:
         if not tolerate_pexels_failure:
@@ -1933,7 +2049,14 @@ def _truncate_utf16(text: str, limit: int = 1000) -> str:
     return ''.join(result).strip()
 
 
-def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
+def _runway_prompt_for_scene(
+    scene: dict,
+    review: dict | None,
+    aspect_ratio: str = '16:9',
+) -> str:
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Generation aspect ratio must be 16:9 or 9:16')
     original = str(scene.get('ai_prompt') or '').strip()
     review = review or {}
     retry_queries = review.get('retry_queries') or []
@@ -2002,7 +2125,11 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
             )
 
     opening = (
-        'One continuous photorealistic 16:9 documentary shot. '
+        'One continuous photorealistic 9:16 vertical documentary shot, '
+        'composed edge-to-edge for YouTube Shorts with the primary subject '
+        'and decisive action inside the central safe area. '
+        if aspect_ratio == '9:16'
+        else 'One continuous photorealistic 16:9 documentary shot. '
     )
     temporal_clause = (
         f'PRIMARY EVENT: {_truncate_utf16(primary_event, 140)}. '
@@ -2081,8 +2208,12 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
 def _image_motion_prompt_for_scene(
     scene: dict,
     review: dict | None = None,
+    aspect_ratio: str = '16:9',
 ) -> str:
     """Build one literal, evidence-led documentary keyframe prompt."""
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Generation aspect ratio must be 16:9 or 9:16')
     review = review or {}
     identity_guardrail = manufactured_replica_guardrail(scene)
     retry_queries = review.get('retry_queries') or []
@@ -2100,8 +2231,15 @@ def _image_motion_prompt_for_scene(
         ][:2]
 
     opening = (
-        'One edge-to-edge photorealistic 16:9 documentary keyframe. '
-        'Depict the single most evidence-rich decisive instant: '
+        'One edge-to-edge photorealistic 9:16 vertical documentary keyframe '
+        'for YouTube Shorts. Keep the primary subject and decisive action '
+        'fully visible inside the central safe area. Depict the single most '
+        'evidence-rich decisive instant: '
+        if aspect_ratio == '9:16'
+        else (
+            'One edge-to-edge photorealistic 16:9 documentary keyframe. '
+            'Depict the single most evidence-rich decisive instant: '
+        )
     )
     closing = (
         ' Literal subject, scale, material, condition and setting must be '
@@ -2908,6 +3046,14 @@ def run_video_pipeline(
             options.get('mode') == 'preview'
             and duration_minutes <= 0.6
         )
+        generation_aspect_ratio = aspect_ratio_for_mode(
+            options.get('mode')
+        )
+        pexels_orientation = (
+            'portrait'
+            if generation_aspect_ratio == '9:16'
+            else 'landscape'
+        )
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
             if recovered_voice:
@@ -2928,6 +3074,7 @@ def run_video_pipeline(
                 scenes,
                 work,
                 strict_short_preview_duration,
+                orientation=pexels_orientation,
             )
             voice_result = voice_future.result()
             broll_result = broll_future.result()
@@ -3263,6 +3410,7 @@ def run_video_pipeline(
                         ),
                         allow_short_fallback=False,
                         tolerate_pexels_failure=True,
+                        orientation=pexels_orientation,
                     )
                     scene_visuals[scene_idx] = duration_refill
                     if duration_refill:
@@ -3322,6 +3470,7 @@ def run_video_pipeline(
                 minimum_duration=max(5.0, float(scene_durations[scene_idx]) + 0.35),
                 allow_short_fallback=not strict_short_preview_duration,
                 tolerate_pexels_failure=is_short_preview_authored_ai,
+                orientation=pexels_orientation,
             )
             scene_visuals[scene_idx] = [*replacements, best_spec][:3]
             if replacements:
@@ -3338,6 +3487,7 @@ def run_video_pipeline(
         runway_failed_scenes: list[int] = []
         runway_generated_scenes: list[int] = []
         image_motion_submission_scenes: set[int] = set()
+        omni_unsafe_submission_scenes: set[int] = set()
         generated_video_provider_records: list[dict] = []
         runway_scenes_used = 0
         runway_submission_cap = _max_runway_scenes(options, len(scenes), duration_minutes)
@@ -3379,6 +3529,12 @@ def run_video_pipeline(
             and duration_minutes == 0.5
             and options.get('quality_threshold')
             == MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
+        )
+        # The publish lifecycle enforces private visibility for every initial
+        # preview upload; public release remains a separate confirmed action.
+        is_private_ai_first_omni_preview = (
+            is_bounded_short_preview
+            and (options.get('visual_mix') or 'balanced') == 'ai_first'
         )
         provider_outage_stock_scenes: set[int] = set()
         stock_quality_fallback_scenes: set[int] = set()
@@ -3758,7 +3914,11 @@ def run_video_pipeline(
             for candidate_scene_idx, scene in enumerate(scenes):
                 candidate_review = current_reviews.get(candidate_scene_idx)
                 prompt = (
-                    _runway_prompt_for_scene(scene, candidate_review)
+                    _runway_prompt_for_scene(
+                        scene,
+                        candidate_review,
+                        generation_aspect_ratio,
+                    )
                     if (
                         not is_bounded_short_preview
                         or str(scene.get('ai_prompt') or '').strip()
@@ -3837,6 +3997,7 @@ def run_video_pipeline(
                         float(scene_durations[scene_idx]) + 0.35,
                     ),
                     allow_short_fallback=False,
+                    orientation=pexels_orientation,
                 )
                 if not replacements:
                     continue
@@ -4016,6 +4177,13 @@ def run_video_pipeline(
                 raise FinalVisualQualityError(preflight_message)
         else:
             selected_runway = ranked_runway_candidates[:runway_submission_cap]
+        if is_private_ai_first_omni_preview:
+            # Omni continuity is causal: the first accepted generated clip is
+            # the sole visual anchor for later explicitly related AI scenes.
+            selected_runway = sorted(
+                selected_runway,
+                key=lambda item: int(item['scene_index']),
+            )
         selected_runway_indices = {item['scene_index'] for item in selected_runway}
         runway_rank = {
             item['scene_index']: position + 1
@@ -4076,6 +4244,8 @@ def run_video_pipeline(
             ),
         )
 
+        omni_continuity_reference_path: Path | None = None
+        omni_continuity_anchor_scene_idx: int | None = None
         for candidate in selected_runway:
             scene_idx = int(candidate['scene_index'])
             stock_fallback = list(scene_visuals[scene_idx])
@@ -4151,6 +4321,18 @@ def run_video_pipeline(
                         scene_idx,
                         [],
                     ).append(dict(recovered_spec))
+                if (
+                    is_private_ai_first_omni_preview
+                    and omni_continuity_reference_path is None
+                    and recovered_specs
+                ):
+                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    create_gemini_omni_continuity_reference(
+                        recovered_specs[0]['path'],
+                        continuity_path,
+                    )
+                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_anchor_scene_idx = scene_idx
                 scene_visuals[scene_idx] = [
                     *recovered_specs,
                     *stock_fallback,
@@ -4189,6 +4371,18 @@ def run_video_pipeline(
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
                 )
+                scene_continuity_reference = None
+                if (
+                    omni_continuity_reference_path is not None
+                    and omni_continuity_anchor_scene_idx is not None
+                    and _omni_continuity_reference_applies(
+                        scenes[omni_continuity_anchor_scene_idx],
+                        scenes[scene_idx],
+                    )
+                ):
+                    scene_continuity_reference = (
+                        omni_continuity_reference_path
+                    )
                 generated_scene = generate_scene(
                     prompt_candidates[scene_idx],
                     duration=generation_seconds,
@@ -4196,18 +4390,43 @@ def run_video_pipeline(
                     image_prompt=_image_motion_prompt_for_scene(
                         scenes[scene_idx],
                         current_reviews.get(scene_idx),
+                        generation_aspect_ratio,
                     ),
+                    prefer_gemini_omni=(
+                        is_private_ai_first_omni_preview
+                    ),
+                    continuity_reference_video=(
+                        scene_continuity_reference
+                    ),
+                    aspect_ratio=generation_aspect_ratio,
                 )
                 if generated_scene.get('provider') == 'gemini_image_motion':
                     # Record the paid image submission before any local
                     # decode/render step. A local failure must not make the
                     # same scene eligible for a second image create.
                     image_motion_submission_scenes.add(scene_idx)
+                if is_private_ai_first_omni_preview:
+                    # A provider request is accepted before local copy and
+                    # continuity-reference work. Reserve the scene until every
+                    # local step succeeds so a failure cannot submit a second
+                    # paid request through Omni or its bounded fallbacks.
+                    omni_unsafe_submission_scenes.add(scene_idx)
                 runway_path = work / f'runway_s{scene_idx:02d}.mp4'
                 download_generated_scene(
                     generated_scene,
                     runway_path,
                 )
+                if (
+                    is_private_ai_first_omni_preview
+                    and omni_continuity_reference_path is None
+                ):
+                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    create_gemini_omni_continuity_reference(
+                        runway_path,
+                        continuity_path,
+                    )
+                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_anchor_scene_idx = scene_idx
                 runway_spec = _generated_visual_spec(
                     runway_path,
                     provider=str(generated_scene['provider']),
@@ -4263,9 +4482,12 @@ def run_video_pipeline(
                     'image_sha256': generated_scene.get('image_sha256'),
                     'prompt_sha256': generated_scene.get('prompt_sha256'),
                 })
+                omni_unsafe_submission_scenes.discard(scene_idx)
             except Exception as exc:
                 if isinstance(exc, GeminiImageAttemptedError):
                     image_motion_submission_scenes.add(scene_idx)
+                if isinstance(exc, GeminiOmniTerminalError):
+                    omni_unsafe_submission_scenes.add(scene_idx)
                 runway_failed_scenes.append(scene_idx)
                 runway_failure_diagnostics.append(
                     _runway_failure_diagnostic(
@@ -4566,6 +4788,15 @@ def run_video_pipeline(
                 ),
             )
         )
+        final_runway_repair_candidates = [
+            scene_idx
+            for scene_idx in final_runway_repair_candidates
+            if scene_idx not in omni_unsafe_submission_scenes
+        ]
+        if is_private_ai_first_omni_preview:
+            final_runway_repair_candidates = sorted(
+                final_runway_repair_candidates
+            )
         _preflight_runway_candidates_before_paid(
             [int(index) for index in final_runway_repair_candidates],
             scene_durations,
@@ -4586,7 +4817,11 @@ def run_video_pipeline(
                 terminal_manual_qa_old_best.get(scene_idx)
                 or (_visual_path(existing_specs[0]) if existing_specs else '')
             )
-            repair_prompt = _runway_prompt_for_scene(scenes[scene_idx], review)
+            repair_prompt = _runway_prompt_for_scene(
+                scenes[scene_idx],
+                review,
+                generation_aspect_ratio,
+            )
             if not repair_prompt:
                 continue
             final_runway_repair_attempts += 1
@@ -4595,6 +4830,18 @@ def run_video_pipeline(
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
                 )
+                scene_continuity_reference = None
+                if (
+                    omni_continuity_reference_path is not None
+                    and omni_continuity_anchor_scene_idx is not None
+                    and _omni_continuity_reference_applies(
+                        scenes[omni_continuity_anchor_scene_idx],
+                        scenes[scene_idx],
+                    )
+                ):
+                    scene_continuity_reference = (
+                        omni_continuity_reference_path
+                    )
                 repair_scene = generate_scene(
                     repair_prompt,
                     duration=generation_seconds,
@@ -4605,15 +4852,36 @@ def run_video_pipeline(
                     image_prompt=_image_motion_prompt_for_scene(
                         scenes[scene_idx],
                         review,
+                        generation_aspect_ratio,
                     ),
+                    prefer_gemini_omni=(
+                        is_private_ai_first_omni_preview
+                    ),
+                    continuity_reference_video=(
+                        scene_continuity_reference
+                    ),
+                    aspect_ratio=generation_aspect_ratio,
                 )
                 if repair_scene.get('provider') == 'gemini_image_motion':
                     image_motion_submission_scenes.add(scene_idx)
+                if is_private_ai_first_omni_preview:
+                    omni_unsafe_submission_scenes.add(scene_idx)
                 repair_path = work / f'runway_repair_s{scene_idx:02d}.mp4'
                 download_generated_scene(
                     repair_scene,
                     repair_path,
                 )
+                if (
+                    is_private_ai_first_omni_preview
+                    and omni_continuity_reference_path is None
+                ):
+                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    create_gemini_omni_continuity_reference(
+                        repair_path,
+                        continuity_path,
+                    )
+                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_anchor_scene_idx = scene_idx
                 repair_spec = _generated_visual_spec(
                     repair_path,
                     provider=str(repair_scene['provider']),
@@ -4666,6 +4934,7 @@ def run_video_pipeline(
                     'image_sha256': repair_scene.get('image_sha256'),
                     'prompt_sha256': repair_scene.get('prompt_sha256'),
                 })
+                omni_unsafe_submission_scenes.discard(scene_idx)
                 visual_replacements.append({
                     'scene_index': scene_idx,
                     'score': int(review.get('score', 0)),
@@ -4676,6 +4945,8 @@ def run_video_pipeline(
             except Exception as exc:
                 if isinstance(exc, GeminiImageAttemptedError):
                     image_motion_submission_scenes.add(scene_idx)
+                if isinstance(exc, GeminiOmniTerminalError):
+                    omni_unsafe_submission_scenes.add(scene_idx)
                 final_runway_repair_failures.append(scene_idx)
                 runway_failure_diagnostics.append(
                     _runway_failure_diagnostic(
@@ -4720,6 +4991,7 @@ def run_video_pipeline(
                     scene_idx in provider_outage_stock_scenes
                     or scene_idx in stock_quality_fallback_scenes
                 ),
+                orientation=pexels_orientation,
             )
             if not replacements:
                 continue
@@ -5011,6 +5283,7 @@ def run_video_pipeline(
             scene_durations=scene_durations,
             scene_visual_paths=scene_visuals,
             target_duration=render_target_duration,
+            output_resolution=resolution_for_mode(options.get('mode')),
         )
 
         actual_seconds = float(rendered.get('duration') or 0)
@@ -5290,14 +5563,7 @@ def run_video_pipeline(
             'studio_options': options,
         }
         mark_success(task_id, result)
-        try:
-            # Autonomous routing is best-effort after the render is durably
-            # successful. A profile/queue outage must never invalidate media.
-            from app.publish_tasks import queue_automatic_publish
-
-            queue_automatic_publish(task_id)
-        except Exception:
-            pass
+        _queue_automatic_publish_if_enabled(task_id, options)
         return result
     except Exception as exc:
         terminal_pre_media_error = isinstance(

@@ -107,7 +107,11 @@ def _load_prompt_functions():
         'manufactured_replica_guardrail': manufactured_replica_guardrail,
         'preview_paid_ai_limit': lambda options, scene_count, duration: (
             min(
-                1 if (options.get('visual_mix') or 'balanced') == 'real_first' else 4,
+                1
+                if (options.get('visual_mix') or 'balanced') == 'real_first'
+                else 6
+                if (options.get('visual_mix') or 'balanced') == 'ai_first'
+                else 4,
                 scene_count,
             )
             if options.get('mode') == 'preview' and duration <= 0.6
@@ -421,6 +425,23 @@ class RunwayPromptTests(unittest.TestCase):
             2,
         )
 
+    def test_short_generation_prompt_is_vertical_and_long_form_stays_wide(self):
+        scene = {
+            'narration': 'Telefonu açık komodine bırak.',
+            'ai_prompt': 'A black phone cooling on an open nightstand.',
+            'visual_queries': ['phone on open nightstand'],
+        }
+
+        short_prompt = runway_prompt(scene, None, '9:16')
+        long_prompt = runway_prompt(scene, None)
+
+        self.assertIn('9:16 vertical documentary shot', short_prompt)
+        self.assertIn('YouTube Shorts', short_prompt)
+        self.assertIn('central safe area', short_prompt)
+        self.assertNotIn('16:9 documentary shot', short_prompt)
+        self.assertIn('16:9 documentary shot', long_prompt)
+        self.assertNotIn('YouTube Shorts', long_prompt)
+
     def test_real_first_short_preview_caps_initial_runway_spend_at_one_scene(self):
         self.assertEqual(
             max_runway_scenes(
@@ -430,16 +451,22 @@ class RunwayPromptTests(unittest.TestCase):
             ),
             1,
         )
-        for visual_mix in ('balanced', 'ai_first'):
-            with self.subTest(visual_mix=visual_mix):
-                self.assertEqual(
-                    max_runway_scenes(
-                        {'mode': 'preview', 'visual_mix': visual_mix},
-                        5,
-                        0.5,
-                    ),
-                    4,
-                )
+        self.assertEqual(
+            max_runway_scenes(
+                {'mode': 'preview', 'visual_mix': 'balanced'},
+                5,
+                0.5,
+            ),
+            4,
+        )
+        self.assertEqual(
+            max_runway_scenes(
+                {'mode': 'preview', 'visual_mix': 'ai_first'},
+                5,
+                0.5,
+            ),
+            5,
+        )
         self.assertEqual(
             max_runway_scenes(
                 {'mode': 'preview', 'visual_mix': 'real_first'},

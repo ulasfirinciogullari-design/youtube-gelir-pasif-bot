@@ -91,8 +91,31 @@ class RankedBrollSelectionTests(unittest.TestCase):
             [1],
         )
 
+    def test_portrait_selection_keeps_vertical_candidates_only(self):
+        selected = select_candidates(
+            [
+                ('vertical story', [
+                    candidate(1),
+                    candidate(2, width=720, height=1280),
+                    candidate(3, width=1080, height=1920),
+                ]),
+            ],
+            set(),
+            3,
+            allow_seen_fallback=False,
+            orientation='portrait',
+        )
+
+        self.assertEqual(
+            [item['pexels_id'] for _query, item in selected],
+            [2, 3],
+        )
+
     def test_network_completion_order_cannot_reorder_downloaded_candidates(self):
-        def fake_find(query, _limit):
+        observed_orientations = []
+
+        def fake_find(query, _limit, *, orientation):
+            observed_orientations.append(orientation)
             if query == 'first':
                 time.sleep(0.04)
                 return [candidate(1), candidate(2)]
@@ -137,9 +160,11 @@ class RankedBrollSelectionTests(unittest.TestCase):
         self.assertEqual([entry['query'] for entry in credits], ['first', 'second', 'first'])
         self.assertEqual([entry['pexels_id'] for entry in credits], [1, 3, 2])
         self.assertEqual(seen_ids, {1, 2, 3})
+        self.assertEqual(observed_orientations, ['landscape', 'landscape'])
 
     def test_failed_download_is_not_marked_seen(self):
-        def fake_find(query, _limit):
+        def fake_find(query, _limit, *, orientation):
+            self.assertEqual(orientation, 'landscape')
             return [
                 candidate(1),
                 candidate(2),
@@ -186,6 +211,43 @@ class RankedBrollSelectionTests(unittest.TestCase):
         self.assertEqual([entry['pexels_id'] for entry in credits], [1, 3, 4])
         self.assertEqual(seen_ids, {1, 3, 4})
         self.assertNotIn(2, seen_ids)
+
+    def test_portrait_retry_search_and_selection_stay_vertical(self):
+        observed_orientations = []
+
+        def fake_find(_query, _limit, *, orientation):
+            observed_orientations.append(orientation)
+            return [
+                candidate(1),
+                candidate(2, width=720, height=1280),
+            ]
+
+        globals_dict = download_candidates.__globals__
+        old_find = globals_dict['find_broll']
+        old_download = globals_dict['download_broll']
+        globals_dict['find_broll'] = fake_find
+        globals_dict['download_broll'] = lambda _item, _path: None
+        try:
+            with tempfile.TemporaryDirectory() as temporary:
+                replacements = download_candidates(
+                    6,
+                    ['vertical story'],
+                    set(),
+                    Path(temporary),
+                    [],
+                    file_prefix='portrait',
+                    selected_by='test',
+                    max_candidates=2,
+                    search_limit=24,
+                    orientation='portrait',
+                )
+        finally:
+            globals_dict['find_broll'] = old_find
+            globals_dict['download_broll'] = old_download
+
+        self.assertEqual(observed_orientations, ['portrait'])
+        self.assertEqual(len(replacements), 1)
+        self.assertIn('portrait_s06_00.mp4', replacements[0]['path'])
 
 
 if __name__ == '__main__':

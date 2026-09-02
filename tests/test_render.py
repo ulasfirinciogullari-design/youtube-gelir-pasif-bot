@@ -9,6 +9,62 @@ import app.services.render as render_module
 
 
 class RenderQualityTests(unittest.TestCase):
+    def test_preview_mode_is_portrait_and_production_remains_widescreen(self):
+        self.assertEqual(
+            render_module.resolution_for_mode('preview'),
+            '1080x1920',
+        )
+        self.assertEqual(
+            render_module.resolution_for_mode('production'),
+            '1920x1080',
+        )
+        self.assertEqual(
+            render_module.aspect_ratio_for_mode('preview'),
+            '9:16',
+        )
+        self.assertEqual(
+            render_module.aspect_ratio_for_mode('production'),
+            '16:9',
+        )
+
+    def test_portrait_normalizer_uses_short_canvas_and_safe_center_reframe(self):
+        commands = []
+        with (
+            patch.object(render_module, 'media_duration', return_value=10.0),
+            patch.object(render_module, '_run', side_effect=commands.append),
+            patch.object(render_module, 'video_frame_count', return_value=270),
+        ):
+            render_module.normalize_clip(
+                {'path': 'generated.mp4', 'forbid_loop': True},
+                'normalized.mp4',
+                9.0,
+                1,
+                output_resolution=render_module.SHORTS_RESOLUTION,
+            )
+
+        self.assertEqual(len(commands), 1)
+        video_filter = commands[0][commands[0].index('-vf') + 1]
+        self.assertIn(
+            'scale=1153:2050:force_original_aspect_ratio=increase',
+            video_filter,
+        )
+        self.assertIn(
+            'crop=1080:1920:(iw-1080)*0.42:(ih-1920)/2',
+            video_filter,
+        )
+
+    def test_invalid_output_resolution_fails_before_render_work(self):
+        with patch.object(render_module, 'media_duration') as duration:
+            with self.assertRaisesRegex(ValueError, 'Output resolution'):
+                render_module.render_video(
+                    'voice.wav',
+                    ['visual.mp4'],
+                    'Narration.',
+                    'final.mp4',
+                    output_resolution='720x720',
+                )
+        duration.assert_not_called()
+
     def test_horizontal_letterbox_detector_uses_both_frame_edges(self):
         with tempfile.TemporaryDirectory() as tmp:
             media = Path(tmp) / 'letterboxed.mp4'
@@ -426,7 +482,11 @@ class RenderQualityTests(unittest.TestCase):
             visual.write_bytes(b'visual')
             with (
                 patch.object(render_module, 'media_duration', side_effect=[29.5, 30.0]),
-                patch.object(render_module, 'normalize_clip', side_effect=fake_normalize),
+                patch.object(
+                    render_module,
+                    'normalize_clip',
+                    side_effect=fake_normalize,
+                ) as normalize,
                 patch.object(render_module, '_run', side_effect=commands.append),
                 patch.object(render_module, 'video_frame_count', return_value=900),
                 patch.object(render_module, 'ending_silence_duration', return_value=0.5),
@@ -466,6 +526,56 @@ class RenderQualityTests(unittest.TestCase):
         self.assertEqual(mux_command[mux_command.index('-frames:v') + 1], '900')
         self.assertEqual(result['frame_count'], 900)
         self.assertEqual(result['ending_silence_seconds'], 0.5)
+        self.assertEqual(result['resolution'], '1920x1080')
+        self.assertEqual(
+            normalize.call_args.args[5],
+            render_module.LANDSCAPE_RESOLUTION,
+        )
+
+    def test_portrait_master_routes_resolution_to_every_normalized_shot(self):
+        commands = []
+
+        def fake_normalize(_spec, output, *_args, **_kwargs):
+            Path(output).write_bytes(b'clip')
+            return str(output)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            voice = work / 'voice.wav'
+            visual = work / 'visual.mp4'
+            voice.write_bytes(b'voice')
+            visual.write_bytes(b'visual')
+            with (
+                patch.object(
+                    render_module,
+                    'media_duration',
+                    side_effect=[29.5, 30.0],
+                ),
+                patch.object(
+                    render_module,
+                    'normalize_clip',
+                    side_effect=fake_normalize,
+                ) as normalize,
+                patch.object(render_module, '_run', side_effect=commands.append),
+                patch.object(render_module, 'video_frame_count', return_value=900),
+                patch.object(render_module, 'ending_silence_duration', return_value=0.5),
+                patch.object(render_module, 'max_freeze_duration', return_value=0.0),
+            ):
+                result = render_module.render_video(
+                    voice,
+                    [str(visual)],
+                    'Test narration.',
+                    work / 'final.mp4',
+                    target_duration=30.0,
+                    output_resolution=render_module.SHORTS_RESOLUTION,
+                )
+
+        self.assertEqual(len(commands), 2)
+        self.assertEqual(result['resolution'], '1080x1920')
+        self.assertEqual(
+            normalize.call_args.args[5],
+            render_module.SHORTS_RESOLUTION,
+        )
 
     def test_short_concat_fails_before_mux_instead_of_becoming_long_freeze(self):
         commands = []

@@ -158,6 +158,7 @@ def _load_runway_functions(
         filename=str(source_path),
     )
     names = {
+        '_aspect_ratio_profile',
         '_gemini_video_duration',
         '_is_daily_gemini_quota_rejection',
         '_gemini_image_rejection_category',
@@ -227,6 +228,22 @@ def _load_runway_functions(
         '_GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS': 10 * 60,
         '_GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL': {},
         '_RUNWAY_GEN45_CREDITS_PER_SECOND': 12,
+        '_ASPECT_RATIO_PROFILES': {
+            '16:9': {
+                'runway_ratio': '1280:720',
+                'motion_scale': '2560:1440',
+                'motion_output': '1280x720',
+                'motion_width': 1280,
+                'motion_height': 720,
+            },
+            '9:16': {
+                'runway_ratio': '720:1280',
+                'motion_scale': '1440:2560',
+                'motion_output': '720x1280',
+                'motion_width': 720,
+                'motion_height': 1280,
+            },
+        },
         '_RUNWAY_SAFE_PROVIDER_FALLBACK_CODES': frozenset({
             'capacity_exhausted',
             'capacity_unavailable',
@@ -278,6 +295,7 @@ def _load_image_namespace(fake_httpx=None, fake_subprocess=None):
     )
     tree = ast.parse(source_path.read_text(encoding='utf-8'))
     names = {
+        '_aspect_ratio_profile',
         '_gemini_image_rejection_category',
         '_validated_jpeg_dimensions',
         '_probe_single_jpeg_frame',
@@ -318,6 +336,22 @@ def _load_image_namespace(fake_httpx=None, fake_subprocess=None):
         '_MAX_GENERATED_IMAGE_BYTES': 12 * 1024 * 1024,
         '_MAX_GENERATED_IMAGE_PIXELS': 8_388_608,
         '_IMAGE_MOTION_FPS': 30,
+        '_ASPECT_RATIO_PROFILES': {
+            '16:9': {
+                'runway_ratio': '1280:720',
+                'motion_scale': '2560:1440',
+                'motion_output': '1280x720',
+                'motion_width': 1280,
+                'motion_height': 720,
+            },
+            '9:16': {
+                'runway_ratio': '720:1280',
+                'motion_scale': '1440:2560',
+                'motion_output': '720x1280',
+                'motion_width': 720,
+                'motion_height': 1280,
+            },
+        },
     }
     exec(
         compile(
@@ -385,6 +419,23 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 'ratio': '1280:720',
                 'duration': 7,
             }],
+        )
+
+    def test_primary_portrait_create_uses_runway_vertical_ratio(self):
+        accepted_task = object()
+        client = _FakeClient([accepted_task])
+
+        result = create_text_to_video_task(
+            client,
+            'safe portrait prompt',
+            7,
+            '9:16',
+        )
+
+        self.assertIs(result, accepted_task)
+        self.assertEqual(
+            client.text_to_video.calls[0]['ratio'],
+            '720:1280',
         )
 
     def test_bad_request_category_exposes_only_allowlisted_structure(self):
@@ -630,6 +681,74 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertEqual(result['provider'], 'gemini_veo')
         self.assertEqual(factory.create_resources[0].calls, [])
         gemini_video_uri.assert_called_once_with('safe prompt', 5)
+
+    def test_portrait_fallback_contract_reaches_fal_and_gemini(self):
+        organization = type('Organization', (), {'credit_balance': 55})()
+        fal_factory = _CreditAwareRunwayClientFactory(
+            [AssertionError('Runway create must not be submitted')],
+            organization,
+        )
+        fal_video = Mock(return_value={
+            'url': 'https://v3.fal.media/files/example/video.mp4',
+            'provider': 'fal_seedance_2_fast',
+            'provider_attempts': 1,
+        })
+        _, generate_with_fal = _load_runway_functions(
+            fal_factory,
+            fal_video=fal_video,
+            fal_key='configured-fal-key',
+        )
+
+        generate_with_fal(
+            'safe portrait prompt',
+            duration=5,
+            aspect_ratio='9:16',
+        )
+
+        fal_video.assert_called_once_with(
+            'safe portrait prompt',
+            5,
+            aspect_ratio='9:16',
+        )
+
+        gemini_factory = _CreditAwareRunwayClientFactory(
+            [AssertionError('Runway create must not be submitted')],
+            organization,
+        )
+        gemini_video_uri = Mock(return_value=(
+            'https://generativelanguage.googleapis.com/v1beta/files/video'
+        ))
+        _, generate_with_gemini = _load_runway_functions(
+            gemini_factory,
+            gemini_video_uri=gemini_video_uri,
+        )
+
+        generate_with_gemini(
+            'safe portrait prompt',
+            duration=5,
+            aspect_ratio='9:16',
+        )
+
+        gemini_video_uri.assert_called_once_with(
+            'safe portrait prompt',
+            5,
+            aspect_ratio='9:16',
+        )
+
+    def test_invalid_aspect_ratio_fails_before_paid_create(self):
+        factory = _RunwayClientFactory([
+            AssertionError('invalid ratio must not submit'),
+        ])
+        _, generate_scene = _load_runway_functions(factory)
+
+        with self.assertRaisesRegex(ValueError, 'Aspect ratio'):
+            generate_scene(
+                'safe prompt',
+                duration=5,
+                aspect_ratio='1:1',
+            )
+
+        self.assertEqual(factory.init_calls, [])
 
     def test_exact_required_balance_preserves_runway_create(self):
         created_task = _CreatedTask()
@@ -1469,6 +1588,117 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         )
         fake_time.sleep.assert_called_once_with(10.0)
 
+    def test_gemini_video_portrait_request_uses_vertical_aspect_ratio(self):
+        source_path = (
+            Path(__file__).resolve().parents[1]
+            / 'app'
+            / 'services'
+            / 'runway.py'
+        )
+        tree = ast.parse(source_path.read_text(encoding='utf-8'))
+        definitions = [
+            node for node in tree.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name in {
+                '_is_daily_gemini_quota_rejection',
+                '_gemini_video_duration',
+                '_generate_gemini_video_uri',
+            }
+        ]
+
+        class _Response:
+            status_code = 200
+            headers = {}
+
+            def __init__(self, payload):
+                self.payload = payload
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return self.payload
+
+        class _Client:
+            def __init__(self):
+                self.post_calls = []
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def post(self, *args, **kwargs):
+                self.post_calls.append((args, kwargs))
+                return _Response({'name': 'operations/portrait-operation'})
+
+            def get(self, *_args, **_kwargs):
+                return _Response({
+                    'done': True,
+                    'response': {
+                        'generateVideoResponse': {
+                            'generatedSamples': [{
+                                'video': {
+                                    'uri': (
+                                        'https://generativelanguage.googleapis.com/'
+                                        'v1beta/files/portrait-video'
+                                    ),
+                                },
+                            }],
+                        },
+                    },
+                })
+
+        client = _Client()
+        fake_httpx = Mock()
+        fake_httpx.Timeout.return_value = object()
+        fake_httpx.Client.return_value = client
+        fake_time = Mock()
+        fake_time.monotonic.side_effect = [0.0, 1.0]
+        namespace = {
+            'httpx': fake_httpx,
+            'time': fake_time,
+            're': re,
+            'urlparse': urlparse,
+            'settings': _Settings(),
+            'GeminiVideoTerminalError': GeminiVideoTerminalError,
+            'GeminiVideoQuotaError': GeminiVideoQuotaError,
+            '_GEMINI_VIDEO_BASE': (
+                'https://generativelanguage.googleapis.com/v1beta'
+            ),
+            '_GEMINI_VIDEO_MODEL': 'veo-3.1-lite-generate-preview',
+            '_GEMINI_VIDEO_FAST_MODEL': 'veo-3.1-fast-generate-preview',
+            '_GEMINI_VIDEO_STANDARD_MODEL': 'veo-3.1-generate-preview',
+            '_GEMINI_OPERATION_PATTERN': re.compile(
+                r'^(?:models/[A-Za-z0-9._-]+/)?operations/'
+                r'[A-Za-z0-9._~/-]+$'
+            ),
+            '_GEMINI_VIDEO_HOSTS': {
+                'generativelanguage.googleapis.com',
+                'storage.googleapis.com',
+            },
+        }
+        exec(
+            compile(
+                ast.Module(body=definitions, type_ignores=[]),
+                str(source_path),
+                'exec',
+            ),
+            namespace,
+        )
+
+        namespace['_generate_gemini_video_uri'](
+            'safe portrait prompt',
+            5,
+            aspect_ratio='9:16',
+        )
+
+        self.assertEqual(
+            client.post_calls[0][1]['json']['parameters']['aspectRatio'],
+            '9:16',
+        )
+
     def test_gemini_create_429_waits_and_retries_exactly_once(self):
         source_path = (
             Path(__file__).resolve().parents[1]
@@ -1838,12 +2068,14 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         encoded = base64.b64encode(image_bytes).decode('ascii')
 
         class _Response:
+            def __init__(self, encoded_data):
+                self.encoded_data = encoded_data
+
             @staticmethod
             def raise_for_status():
                 return None
 
-            @staticmethod
-            def json():
+            def json(self):
                 return {
                     'status': 'completed',
                     'steps': [{
@@ -1851,7 +2083,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                         'content': [{
                             'type': 'image',
                             'mime_type': 'image/jpeg',
-                            'data': encoded,
+                            'data': self.encoded_data,
                         }],
                     }],
                 }
@@ -1859,6 +2091,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         class _Client:
             def __init__(self):
                 self.post_calls = []
+                self.encoded_data = encoded
 
             def __enter__(self):
                 return self
@@ -1868,7 +2101,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
 
             def post(self, *args, **kwargs):
                 self.post_calls.append((args, kwargs))
-                return _Response()
+                return _Response(self.encoded_data)
 
         client = _Client()
         fake_httpx = Mock()
@@ -1939,6 +2172,37 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertTrue(probe_kwargs['capture_output'])
         self.assertFalse(probe_kwargs['check'])
         self.assertEqual(probe_kwargs['timeout'], 30)
+
+        portrait_bytes = _fake_jpeg(width=576, height=1024)
+        client.encoded_data = base64.b64encode(
+            portrait_bytes
+        ).decode('ascii')
+        fake_subprocess.run.return_value = Mock(
+            returncode=0,
+            stdout=json.dumps({
+                'streams': [{
+                    'codec_name': 'mjpeg',
+                    'width': 576,
+                    'height': 1024,
+                    'nb_read_frames': '1',
+                }],
+            }).encode('utf-8'),
+        )
+        portrait_descriptor = namespace[
+            '_generate_gemini_image_descriptor'
+        ](
+            'literal portrait documentary keyframe',
+            5,
+            '9:16',
+        )
+        self.assertEqual(len(client.post_calls), 2)
+        self.assertEqual(
+            client.post_calls[1][1]['json']['response_format'][
+                'aspect_ratio'
+            ],
+            '9:16',
+        )
+        self.assertEqual(portrait_descriptor['aspect_ratio'], '9:16')
 
     def test_image_interaction_rejection_exposes_only_safe_category(self):
         class _Response:
@@ -2261,6 +2525,13 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         ten_second_filter = build_filter('ff' + ('0' * 62), 300)
         self.assertIn("z='1.06+0.18*on/299'", ten_second_filter)
         self.assertIn('d=300:s=1280x720:fps=30', ten_second_filter)
+        portrait_filter = build_filter('04' + ('0' * 62), 150, '9:16')
+        self.assertIn(
+            'scale=1440:2560:force_original_aspect_ratio=increase',
+            portrait_filter,
+        )
+        self.assertIn('crop=1440:2560', portrait_filter)
+        self.assertIn('d=150:s=720x1280:fps=30', portrait_filter)
         for digest, frames in (('bad', 150), ('0' * 64, 149), ('0' * 64, 301)):
             with self.subTest(digest=digest[:3], frames=frames):
                 with self.assertRaisesRegex(RuntimeError, 'descriptor'):
@@ -2427,6 +2698,39 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertIn('MANUFACTURED IDENTITY', prompt)
         self.assertIn('Never a live or dead biological original', prompt)
         self.assertTrue(prompt.endswith('letterbox.'))
+
+        portrait_prompt = namespace['_image_motion_prompt_for_scene'](
+            {
+                'narration': 'Telefon açık komodinde soğuyor.',
+                'ai_prompt': 'Black phone on an open wooden nightstand.',
+                'visual_queries': ['phone cooling on nightstand'],
+            },
+            None,
+            '9:16',
+        )
+        self.assertIn('9:16 vertical documentary keyframe', portrait_prompt)
+        self.assertIn('YouTube Shorts', portrait_prompt)
+        self.assertIn('central safe area', portrait_prompt)
+
+    def test_pipeline_passes_one_aspect_contract_to_prompts_and_providers(self):
+        source = (
+            Path(__file__).resolve().parents[1]
+            / 'app'
+            / 'tasks.py'
+        ).read_text(encoding='utf-8')
+
+        self.assertIn(
+            'generation_aspect_ratio = aspect_ratio_for_mode(',
+            source,
+        )
+        self.assertGreaterEqual(
+            source.count('generation_aspect_ratio,'),
+            4,
+        )
+        self.assertEqual(
+            source.count('aspect_ratio=generation_aspect_ratio'),
+            2,
+        )
 
     def test_pipeline_limits_image_motion_to_private_preview_and_one_per_scene(self):
         source = (

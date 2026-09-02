@@ -6,6 +6,45 @@ import subprocess
 
 
 FPS = 30
+LANDSCAPE_RESOLUTION = '1920x1080'
+SHORTS_RESOLUTION = '1080x1920'
+_RENDER_PROFILES = {
+    LANDSCAPE_RESOLUTION: {
+        'width': 1920,
+        'height': 1080,
+        'base_scale': '2050:1153',
+        'strong_scale': '2304:1296',
+    },
+    SHORTS_RESOLUTION: {
+        'width': 1080,
+        'height': 1920,
+        'base_scale': '1153:2050',
+        'strong_scale': '1296:2304',
+    },
+}
+
+
+def _render_profile(output_resolution: str) -> dict:
+    try:
+        return _RENDER_PROFILES[str(output_resolution)]
+    except KeyError:
+        raise ValueError(
+            'Output resolution must be 1920x1080 or 1080x1920'
+        ) from None
+
+
+def resolution_for_mode(mode: str) -> str:
+    """Render preview jobs as Shorts while preserving production widescreen."""
+    if str(mode or '').strip().lower() == 'preview':
+        return SHORTS_RESOLUTION
+    return LANDSCAPE_RESOLUTION
+
+
+def aspect_ratio_for_mode(mode: str) -> str:
+    """Keep generated media and the final canvas on the same orientation."""
+    if resolution_for_mode(mode) == SHORTS_RESOLUTION:
+        return '9:16'
+    return '16:9'
 
 
 def _run(cmd: list[str]):
@@ -319,11 +358,16 @@ def normalize_clip(
     duration: float,
     shot_index: int,
     transition: str = 'cut',
+    output_resolution: str = LANDSCAPE_RESOLUTION,
 ) -> str:
     """Render one chosen excerpt and never loop generated action footage."""
     input_path = _spec_path(visual_spec)
     if not input_path:
         raise RuntimeError('Visual spec is missing a path')
+
+    profile = _render_profile(output_resolution)
+    output_width = int(profile['width'])
+    output_height = int(profile['height'])
 
     source_duration = max(0.1, media_duration(input_path))
     fraction = _spec_start_fraction(visual_spec)
@@ -334,13 +378,27 @@ def normalize_clip(
         max(0.0, desired_center - duration * 0.40),
     )
 
-    offsets = [
-        '(iw-1920)/2:(ih-1080)/2',
-        '0:(ih-1080)/2',
-        '(iw-1920):(ih-1080)/2',
-        '(iw-1920)/2:0',
-        '(iw-1920)/2:(ih-1080)',
-    ]
+    center_x = f'(iw-{output_width})/2'
+    center_y = f'(ih-{output_height})/2'
+    if output_height > output_width:
+        # A 9:16 master often receives 16:9 source footage. Keep reframing
+        # close to the source centre so a deterministic variation cannot cut
+        # the subject completely out of a narrow Shorts canvas.
+        offsets = [
+            f'{center_x}:{center_y}',
+            f'(iw-{output_width})*0.42:{center_y}',
+            f'(iw-{output_width})*0.58:{center_y}',
+            f'{center_x}:0',
+            f'{center_x}:(ih-{output_height})',
+        ]
+    else:
+        offsets = [
+            f'{center_x}:{center_y}',
+            f'0:{center_y}',
+            f'(iw-{output_width}):{center_y}',
+            f'{center_x}:0',
+            f'{center_x}:(ih-{output_height})',
+        ]
     crop_xy = offsets[shot_index % len(offsets)]
     speed = 1.008 + (shot_index % 3) * 0.006
     segment_frames = max(1, int(round(duration * FPS)))
@@ -366,7 +424,7 @@ def normalize_clip(
             filters.append(f'crop=iw:{crop_height}:0:{crop_y}')
         filters.extend([
             f'scale={scale_geometry}:force_original_aspect_ratio=increase',
-            f'crop=1920:1080:{crop_xy}',
+            f'crop={output_width}:{output_height}:{crop_xy}',
             'setsar=1',
             f'setpts=(PTS-STARTPTS)/{speed:.3f}',
             # The speed transform already zero-bases timestamps. Rewriting
@@ -396,12 +454,12 @@ def normalize_clip(
                 f'{actual_frames} frames for {segment_frames} frame target'
             )
 
-    render_attempt('2050:1153')
+    render_attempt(str(profile['base_scale']))
     if max_horizontal_letterbox_duration(output_path) > 0.25:
         # Some otherwise usable generated clips arrive with cinematic black
         # bars encoded into the picture. One bounded stronger overscan removes
         # them without paying for or looping another generated clip.
-        render_attempt('2304:1296')
+        render_attempt(str(profile['strong_scale']))
         if max_horizontal_letterbox_duration(output_path) > 0.25:
             source_crop = detect_symmetric_letterbox_crop(
                 input_path,
@@ -412,7 +470,7 @@ def normalize_clip(
                 # A measured crop is safer than blind zooming: it removes only
                 # stable, symmetric encoded bars and the same hard output gate
                 # below verifies that the result is actually clean.
-                render_attempt('2050:1153', source_crop)
+                render_attempt(str(profile['base_scale']), source_crop)
             if (
                 source_crop is None
                 or max_horizontal_letterbox_duration(output_path) > 0.25
@@ -496,9 +554,12 @@ def render_video(
     scene_durations: list[float] | None = None,
     scene_visual_paths: list[list[str | dict]] | None = None,
     target_duration: float | None = None,
+    output_resolution: str = LANDSCAPE_RESOLUTION,
 ) -> dict:
     if not visual_paths:
         raise RuntimeError('No visual clips were provided to renderer')
+
+    _render_profile(output_resolution)
 
     output = Path(output_path)
     work = output.parent
@@ -544,6 +605,7 @@ def render_video(
             segment_duration,
             idx,
             transition,
+            output_resolution,
         )
         normalized.append(segment)
 
@@ -651,7 +713,7 @@ def render_video(
             for spec in visual_paths
             if _spec_path(spec)
         }),
-        'resolution': '1920x1080',
+        'resolution': output_resolution,
         'scene_synced': bool(
             scenes and scene_durations and scene_visual_paths
         ),

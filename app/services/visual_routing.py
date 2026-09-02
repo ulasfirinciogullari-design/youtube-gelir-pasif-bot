@@ -2,7 +2,24 @@ from __future__ import annotations
 
 
 SHORT_PREVIEW_RUNWAY_CAP = 4
+SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP = 6
 SHORT_PREVIEW_RUNWAY_REPAIR_CAP = 2
+
+# The director strips model-authored scene metadata before applying these
+# private routing markers. Downstream visual QC may therefore use the exact
+# value as a server-authored contract instead of reclassifying narration or
+# trusting a generation prompt.
+SERVER_SHORT_PROXY_KIND_FIELD = '_server_short_proxy_kind'
+OPEN_AIR_COOLING_PROXY_KIND = 'open_air_cooling'
+
+
+def routed_open_air_cooling_temporal_required(scene: dict) -> bool:
+    """Return whether the server routed this scene as a cooling proof shot."""
+    return bool(
+        isinstance(scene, dict)
+        and scene.get(SERVER_SHORT_PROXY_KIND_FIELD)
+        == OPEN_AIR_COOLING_PROXY_KIND
+    )
 
 
 def preview_authored_ai_limit(
@@ -14,7 +31,7 @@ def preview_authored_ai_limit(
     if options.get('mode') != 'preview' or duration_minutes > 0.6:
         return None
     if (options.get('visual_mix') or 'balanced') == 'ai_first':
-        return min(SHORT_PREVIEW_RUNWAY_CAP, scene_count)
+        return min(SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP, scene_count)
     return scene_count
 
 
@@ -27,7 +44,13 @@ def preview_paid_ai_limit(
     if options.get('mode') != 'preview' or duration_minutes > 0.6:
         return None
     mix = options.get('visual_mix') or 'balanced'
-    cap = 1 if mix == 'real_first' else SHORT_PREVIEW_RUNWAY_CAP
+    cap = (
+        1
+        if mix == 'real_first'
+        else SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP
+        if mix == 'ai_first'
+        else SHORT_PREVIEW_RUNWAY_CAP
+    )
     return min(cap, scene_count)
 
 
