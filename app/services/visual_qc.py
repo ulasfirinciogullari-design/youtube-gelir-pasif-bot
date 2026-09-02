@@ -119,10 +119,76 @@ _CONNECTION_ACTION_PATTERN = re.compile(
 _THERMAL_CLAIM_PATTERN = re.compile(
     r'\b(?:heat|heats|heated|heating|hot|warmer?|warmth|temperature|thermal|'
     r'overheat(?:s|ed|ing)?)\b|'
-    r'\b(?:ısı|ısısı|ısıyı|ısıya|ısın(?:ır|ıyor|dı|ma|mış)?|sıcak|sıcağı|'
+    r'\b(?:ısı(?:nın|sı|yı|ya|dan|da)?|'
+    r'ısın(?:ır|ıyor|dı|ma|mış)?|sıcak|sıcağı|'
     r'sıcaklık(?:ta|tan|tır)?|termal)\b',
     flags=re.IGNORECASE,
 )
+
+_THERMAL_LONG_TERM_CONTEXT_PATTERN = re.compile(
+    r'\b(?:over\s+time|long[- ]term|eventually|age(?:s|d|ing)?|'
+    r'degrad(?:e|es|ed|ing|ation)|wear(?:s|ing)?\s+out)\b|'
+    r'\b(?:zamanla|uzun\s+vadede|eskimesine|eskit(?:ir|iyor|mek)|'
+    r'yıpran(?:ır|ıyor|masına)|bozul(?:ur|masına))\b',
+    flags=re.IGNORECASE,
+)
+
+# Rank the kinds of thermal claim that are best served by one explicit proof
+# shot in an ordered story. A senior editor does not repeat a thermal overlay
+# on every adjacent line: one strong mechanism shot establishes the fact, and
+# the surrounding hook, consequence and action shots may then use literal,
+# relevant B-roll. The highest-ranked nearby claim becomes the fail-closed
+# proof anchor.
+_THERMAL_PROOF_PRIORITY_PATTERNS = (
+    (
+        40,
+        re.compile(
+            r'\b(?:trap(?:s|ped|ping)?|block(?:s|ed|ing)?|insulat(?:e|es|ed|ing)|'
+            r'prevent(?:s|ed|ing)?|restrict(?:s|ed|ing)?)\b.{0,100}'
+            r'\b(?:heat|warmth|temperature|thermal)\b|'
+            r'\b(?:heat|warmth|temperature|thermal)\b.{0,100}'
+            r'\b(?:spread(?:s|ing)?|escap(?:e|es|ed|ing)|dissipat(?:e|es|ed|ing)|'
+            r'transfer(?:s|red|ring)?)\b|'
+            r'\b(?:engelle(?:r|di|mek|nmesini)|hapset(?:ti|mek|er)|yalıt(?:ır|mak)|'
+            r'kısıtla(?:r|mak|dı))\b.{0,100}\b(?:ısı\w*|sıcaklık\w*)\b|'
+            r'\b(?:ısı\w*|sıcaklık\w*)\b.{0,100}'
+            r'\b(?:yayıl(?:masını|ması|mak)|dağıl(?:masını|mak)|'
+            r'çık(?:masını|mak)|aktarıl(?:masını|mak))\b',
+            flags=re.IGNORECASE,
+        ),
+    ),
+    (
+        30,
+        re.compile(
+            r'\b(?:produc(?:e|es|ed|ing)|generat(?:e|es|ed|ing)|'
+            r'creat(?:e|es|ed|ing)|emit(?:s|ted|ting))\b.{0,80}'
+            r'\b(?:heat|warmth)\b|'
+            r'\b(?:heat|warmth)\b.{0,80}'
+            r'\b(?:produc(?:e|es|ed|ing)|generat(?:e|es|ed|ing)|'
+            r'creat(?:e|es|ed|ing)|emit(?:s|ted|ting))\b|'
+            r'\b(?:üret(?:ir|iyor|mek)|oluştur(?:ur|uyor|mak)|'
+            r'yay(?:ar|ıyor|mak))\b.{0,80}\bısı\w*\b|'
+            r'\bısı\w*\b.{0,80}\b(?:üret(?:ir|iliyor|mek)|'
+            r'oluş(?:ur|uyor|mak))\b',
+            flags=re.IGNORECASE,
+        ),
+    ),
+    (
+        20,
+        re.compile(
+            r'\b(?:dissipat(?:e|es|ed|ing)|release(?:s|d|ing)?|'
+            r'transfer(?:s|red|ring)?|shed(?:s|ding)?)\b.{0,80}'
+            r'\b(?:heat|warmth)\b|'
+            r'\b(?:heat|warmth)\b.{0,80}'
+            r'\b(?:air|away|outward|dissipat(?:e|es|ed|ing))\b|'
+            r'\bısı\w*\b.{0,80}\b(?:hava\w*|yay(?:ar|ılır|mak)|'
+            r'dağıl(?:ır|mak)|ver(?:ir|iyor|mek)|aktar(?:ır|mak))\b',
+            flags=re.IGNORECASE,
+        ),
+    ),
+)
+
+_THERMAL_STORY_CLUSTER_GAP = 3
 
 
 def _clearly_positive_review_reason(reason: object) -> bool:
@@ -181,10 +247,98 @@ def _connection_action_required(scene: dict) -> bool:
     return bool(_CONNECTION_ACTION_PATTERN.search(narration))
 
 
-def _thermal_claim_required(scene: dict) -> bool:
-    """Recognize an explicit heat/temperature claim in locked narration."""
+def _thermal_proof_priority(scene: dict) -> int:
+    """Return how strongly this locked line calls for a thermal proof shot."""
     narration = str(scene.get('narration') or '')
-    return bool(_THERMAL_CLAIM_PATTERN.search(narration))
+    if not _THERMAL_CLAIM_PATTERN.search(narration):
+        return -1
+    if _THERMAL_LONG_TERM_CONTEXT_PATTERN.search(narration):
+        # Long-term wear is an outcome. Relevant battery/device imagery can
+        # illustrate it without pretending that a thermal camera can show
+        # years of aging inside one short shot.
+        return -1
+    for priority, pattern in _THERMAL_PROOF_PRIORITY_PATTERNS:
+        if pattern.search(narration):
+            return priority
+    # A direct temperature state ("the phone is hotter") still needs proof
+    # when it stands alone, but loses to a more explanatory mechanism shot in
+    # the same compact sequence.
+    return 10
+
+
+def _story_position(scene: dict, story_scenes: list[dict]) -> int | None:
+    for position, story_scene in enumerate(story_scenes):
+        if story_scene is scene:
+            return position
+    scene_index = scene.get('index')
+    if type(scene_index) is int:
+        matches = [
+            position
+            for position, story_scene in enumerate(story_scenes)
+            if type(story_scene.get('index')) is int
+            and story_scene.get('index') == scene_index
+        ]
+        if len(matches) == 1:
+            return matches[0]
+    narration = str(scene.get('narration') or '').strip()
+    matches = [
+        position
+        for position, story_scene in enumerate(story_scenes)
+        if str(story_scene.get('narration') or '').strip() == narration
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
+def _thermal_claim_required(
+    scene: dict,
+    story_scenes: list[dict] | None = None,
+) -> bool:
+    """Choose one fail-closed thermal proof anchor per nearby story cluster.
+
+    This is deliberately server-authored from locked narration. It prevents a
+    critic from demanding the same thermal overlay on a hook, consequence and
+    recommendation after a nearby mechanism shot already establishes heat.
+    An isolated direct heat claim remains its own anchor and still fails when
+    visible thermal evidence is absent.
+    """
+    if _thermal_proof_priority(scene) < 0:
+        return False
+    if not isinstance(story_scenes, list) or not story_scenes:
+        return True
+    story = [item for item in story_scenes if isinstance(item, dict)]
+    position = _story_position(scene, story)
+    if position is None:
+        # Ambiguous mapping must not silently waive a direct claim.
+        return True
+
+    proof_candidates = [
+        (candidate_position, _thermal_proof_priority(candidate))
+        for candidate_position, candidate in enumerate(story)
+        if _thermal_proof_priority(candidate) >= 0
+    ]
+    if not proof_candidates:
+        return False
+
+    clusters: list[list[tuple[int, int]]] = []
+    for candidate in proof_candidates:
+        if (
+            not clusters
+            or candidate[0] - clusters[-1][-1][0]
+            > _THERMAL_STORY_CLUSTER_GAP
+        ):
+            clusters.append([candidate])
+        else:
+            clusters[-1].append(candidate)
+    cluster = next(
+        (items for items in clusters if any(pos == position for pos, _ in items)),
+        None,
+    )
+    if cluster is None:
+        return True
+    # Highest priority wins; the earlier line wins a tie so the proof is
+    # established before later contextual B-roll whenever possible.
+    anchor_position, _ = max(cluster, key=lambda item: (item[1], -item[0]))
+    return position == anchor_position
 
 
 def _normalized_evidence(
@@ -819,7 +973,7 @@ def review_scene_visuals(
             'For any physical cause such as cover, block, press, insert, unplug, remove or reveal, require timestamped visual proof of the target before contact, real contact or occlusion at the named target, and the result only after that contact. A hand merely near, below or beside the target fails. '
             'For every narrated insertion, fastening, latching, plugging, buckling or attachment, set connection_action_applicable=true. The distinct moving connector and the receiving interface must both be visibly identifiable before contact; their actual joining must remain visible, and the completed connection must persist after the hand releases. A loose strap, cable, cover, hand or blur hiding the interface is not proof and must fail. '
             'Set connection_action_applicable=true only when the narration explicitly describes the connector being inserted, plugged, attached, fastened, buckled, latched or connected during this shot. A device that is already charging, charged, plugged in or connected describes a state, not a new connection action; do not infer a plug-in event from a visible cable, visual query or AI prompt. '
-            'For narration that explicitly claims heat, warmth or temperature, set thermal_claim_applicable=true. Set thermal_evidence_visible=true only when the named subject itself has visible heat evidence, such as a clear thermal-camera heat distribution or another unambiguous visual representation of heat on that subject. A charging cable, charging icon, ordinary warm lighting or narration alone is not heat evidence. Use this thermal gate, not connector/contact fields, for a device already charging and producing heat. '
+            'Set thermal_claim_applicable=true only for scene IDs in the server-authored THERMAL_EVIDENCE_REQUIRED_SCENE_IDS list. In an ordered story, one strong mechanism shot can establish thermal evidence for nearby hook, consequence and action shots; do not demand a thermal overlay on every mention of heat or temperature. For a required scene, set thermal_evidence_visible=true only when the named subject itself has visible heat evidence, such as a clear thermal-camera heat distribution or another unambiguous visual representation of heat on that subject. A charging cable, charging icon, ordinary warm lighting or narration alone is not heat evidence. Use this thermal gate, not connector/contact fields, for a device already charging and producing heat. '
             'For a display, light or other state change, compare before and after moments and require the affected element itself to change while unrelated exposure remains stable; never infer the change from the narration or prompt. '
             'The final state must persist through the end of the shot. Any unexplained reset, repeated action, return to an earlier position, or visible loop must score 40 or lower. '
             'Require adjacent scenes to preserve spatial continuity unless the narration explicitly establishes a move: interior/exterior, location class, architecture, light and travel direction must remain compatible. '
@@ -848,6 +1002,7 @@ def review_scene_visuals(
     available_moments: dict[int, dict[int, set[int]]] = {}
     trusted_image_motion_candidates: dict[int, set[int]] = {}
     manufactured_replica_required_indices: list[int] = []
+    thermal_evidence_required_indices: list[int] = []
     complete_story_context = {
         'topic': str(topic or ''),
         'complete_scene_plan_in_order': [
@@ -971,6 +1126,8 @@ def review_scene_visuals(
             included_indices.append(idx)
             if manufactured_replica_required(scene):
                 manufactured_replica_required_indices.append(idx)
+            if _thermal_claim_required(scene, complete_story):
+                thermal_evidence_required_indices.append(idx)
             available_moments[idx] = scene_available_moments
             content.extend(scene_content)
             gemini_parts.extend(scene_gemini_parts)
@@ -1024,6 +1181,11 @@ def review_scene_visuals(
         + '\n\nSERVER-AUTHORED MANUFACTURED_REPLICA_REQUIRED_SCENE_IDS: '
         + json.dumps(
             manufactured_replica_required_indices,
+            separators=(',', ':'),
+        )
+        + '\n\nSERVER-AUTHORED THERMAL_EVIDENCE_REQUIRED_SCENE_IDS: '
+        + json.dumps(
+            thermal_evidence_required_indices,
             separators=(',', ':'),
         )
         + '\n\n'
@@ -1160,7 +1322,7 @@ def review_scene_visuals(
                     scenes[scene_index]
                 ),
                 thermal_required=_thermal_claim_required(
-                    scenes[scene_index]
+                    scenes[scene_index], complete_story
                 ),
             )
             manual_qa_visual_flags = _normalized_manual_qa_visual_flags(
@@ -1239,7 +1401,7 @@ def review_scene_visuals(
                 scenes[scene_index]
             ),
             thermal_required=_thermal_claim_required(
-                scenes[scene_index]
+                scenes[scene_index], complete_story
             ),
         )
         manual_qa_visual_flags = _normalized_manual_qa_visual_flags(review)

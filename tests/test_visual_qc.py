@@ -26,6 +26,7 @@ from app.services.visual_qc import (
     GEMINI_MAX_FRAME_BYTES,
     _bounded_gemini_frame_bytes,
     _frame,
+    _thermal_claim_required,
     review_scene_visuals,
 )
 
@@ -1036,6 +1037,68 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertTrue(review['thermal_evidence_visible'])
         self.assertFalse(review['connection_action_applicable'])
         self.assertTrue(review['evidence_gate_passed'])
+
+    def test_exact_turkish_phone_story_uses_one_thermal_proof_anchor(self):
+        narrations = [
+            'Yastık altında gece şarj olan telefon, sabah normalden daha sıcak olabilir.',
+            'Batarya bütün gece şarj olurken az da olsa ısı üretir.',
+            'Yastık, bu ısının havaya rahatça yayılmasını büyük ölçüde engeller.',
+            'Bu sıcaklık bataryanın zamanla gereğinden daha hızlı eskimesine yol açabilir.',
+            'Bu yüzden telefonu sert, düz ve açık bir komodine bırak.',
+            'Açıkta kalan telefon ısıyı havaya çok daha kolay verir.',
+        ]
+        story = [
+            {'index': index, 'narration': narration}
+            for index, narration in enumerate(narrations)
+        ]
+
+        self.assertEqual(
+            [
+                _thermal_claim_required(scene, story)
+                for scene in story
+            ],
+            [False, False, True, False, False, False],
+        )
+
+    def test_english_thermal_story_allows_context_after_mechanism_proof(self):
+        story = [
+            {'index': 0, 'narration': 'The phone may feel warmer in the morning.'},
+            {'index': 1, 'narration': 'Its battery produces heat while charging.'},
+            {
+                'index': 2,
+                'narration': (
+                    'The pillow blocks that heat from spreading into the air.'
+                ),
+            },
+            {
+                'index': 3,
+                'narration': (
+                    'That temperature can degrade the battery over time.'
+                ),
+            },
+            {'index': 4, 'narration': 'Place it on an open nightstand instead.'},
+            {
+                'index': 5,
+                'narration': 'In open air, the phone releases heat more easily.',
+            },
+        ]
+
+        self.assertEqual(
+            [
+                _thermal_claim_required(scene, story)
+                for scene in story
+            ],
+            [False, False, True, False, False, False],
+        )
+
+    def test_isolated_direct_heat_claim_remains_fail_closed(self):
+        scene = {
+            'narration': (
+                'The battery produces a little heat while charging overnight.'
+            ),
+        }
+
+        self.assertTrue(_thermal_claim_required(scene, [scene]))
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
