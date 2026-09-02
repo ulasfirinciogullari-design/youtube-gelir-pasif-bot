@@ -42,6 +42,7 @@ _MAX_GENERATED_IMAGE_PIXELS = 8_388_608
 _IMAGE_MOTION_FPS = 30
 _GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS = 10 * 60
 _GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL: dict[str, float] = {}
+_RUNWAY_GEN45_CREDITS_PER_SECOND = 12
 _RUNWAY_SAFE_PROVIDER_FALLBACK_CODES = frozenset({
     'capacity_exhausted',
     'capacity_unavailable',
@@ -79,6 +80,30 @@ class GeminiImageAttemptedError(RuntimeError):
 
 class RunwayCreateRejectedError(RuntimeError):
     """Runway definitively rejected create without authorizing provider hop."""
+
+
+class RunwayCreditPreflightInsufficientError(RuntimeError):
+    """A read-only balance check proved Gen-4.5 create cannot succeed."""
+
+
+def _runway_gen45_credits_known_insufficient(client, seconds: int) -> bool:
+    """Return true only when Runway reports a valid, insufficient balance.
+
+    The organization request is a bounded, read-only GET. Any missing SDK
+    resource, timeout, transport failure, provider rejection, or malformed
+    response is deliberately treated as unknown so the existing create path
+    keeps its behavior. No balance value or provider response is retained.
+    """
+    try:
+        organization = client.organization.retrieve(timeout=5.0)
+        credit_balance = getattr(organization, 'credit_balance', None)
+    except Exception:
+        return False
+    return (
+        type(credit_balance) is int
+        and credit_balance >= 0
+        and credit_balance < _RUNWAY_GEN45_CREDITS_PER_SECOND * int(seconds)
+    )
 
 
 def _normalize_runway_provider_code(value: object) -> str:
@@ -668,16 +693,30 @@ def generate_scene(
         max_retries=0,
     )
     try:
+        if _runway_gen45_credits_known_insufficient(
+            create_client,
+            seconds,
+        ):
+            # The read-only response proves the paid Runway create cannot
+            # succeed. Reuse the same bounded provider fallback path as an
+            # explicit pre-acceptance capacity rejection without submitting
+            # an impossible Runway POST or exposing the account balance.
+            raise RunwayCreditPreflightInsufficientError(
+                'Runway Gen-4.5 credit preflight rejected create'
+            )
         created = _create_text_to_video_task(
             create_client,
             prompt_text,
             seconds,
         )
-    except BadRequestError as exc:
+    except (BadRequestError, RunwayCreditPreflightInsufficientError) as exc:
         # This catch deliberately covers only paid task creation. Once Runway
         # has accepted a task, no polling or download error may start a second
         # paid generation with another provider.
-        if not _runway_create_error_allows_provider_fallback(exc):
+        if (
+            isinstance(exc, BadRequestError)
+            and not _runway_create_error_allows_provider_fallback(exc)
+        ):
             rejected = RunwayCreateRejectedError(
                 'Runway video create was definitively rejected'
             )

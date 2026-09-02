@@ -40,6 +40,10 @@ class RunwayCreateRejectedError(RuntimeError):
     pass
 
 
+class RunwayCreditPreflightInsufficientError(RuntimeError):
+    pass
+
+
 def _safe_runway_fallback_error():
     return BadRequestError(
         'secret provider response that must not be inspected',
@@ -112,6 +116,30 @@ class _RunwayClientFactory:
         return type('PollClient', (), {'tasks': _Tasks()})()
 
 
+class _FakeOrganization:
+    def __init__(self, outcome):
+        self.outcome = outcome
+        self.retrieve_calls = []
+
+    def retrieve(self, **kwargs):
+        self.retrieve_calls.append(kwargs)
+        if isinstance(self.outcome, BaseException):
+            raise self.outcome
+        return self.outcome
+
+
+class _CreditAwareRunwayClientFactory(_RunwayClientFactory):
+    def __init__(self, create_outcomes, organization_outcome, **kwargs):
+        super().__init__(create_outcomes, **kwargs)
+        self.organization = _FakeOrganization(organization_outcome)
+
+    def __call__(self, **kwargs):
+        client = super().__call__(**kwargs)
+        if kwargs.get('max_retries') == 0:
+            client.organization = self.organization
+        return client
+
+
 def _load_runway_functions(
     runway_client_factory=None,
     gemini_video_uri=None,
@@ -139,6 +167,7 @@ def _load_runway_functions(
         '_generate_gemini_image_descriptor',
         '_generate_gemini_video_uri',
         '_create_text_to_video_task',
+        '_runway_gen45_credits_known_insufficient',
         '_normalize_runway_provider_code',
         '_runway_create_error_allows_provider_fallback',
         '_runway_bad_request_category',
@@ -158,6 +187,9 @@ def _load_runway_functions(
         'GeminiVideoQuotaError': GeminiVideoQuotaError,
         'GeminiImageAttemptedError': GeminiImageAttemptedError,
         'RunwayCreateRejectedError': RunwayCreateRejectedError,
+        'RunwayCreditPreflightInsufficientError': (
+            RunwayCreditPreflightInsufficientError
+        ),
         'FalVideoError': FalVideoError,
         'fal_error_allows_provider_fallback': (
             fal_error_allows_provider_fallback
@@ -194,6 +226,7 @@ def _load_runway_functions(
         '_MAX_GENERATED_IMAGE_PIXELS': 8_388_608,
         '_GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS': 10 * 60,
         '_GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL': {},
+        '_RUNWAY_GEN45_CREDITS_PER_SECOND': 12,
         '_RUNWAY_SAFE_PROVIDER_FALLBACK_CODES': frozenset({
             'capacity_exhausted',
             'capacity_unavailable',
@@ -543,6 +576,93 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertEqual(factory.retrieve_calls, ['task-123'])
         self.assertEqual(retrieved_task.wait_calls, [{'timeout': 600}])
         self.assertEqual(created_task.direct_wait_calls, [])
+
+    def test_known_55_credit_balance_skips_impossible_five_second_create(self):
+        organization = type('Organization', (), {'credit_balance': 55})()
+        factory = _CreditAwareRunwayClientFactory(
+            [AssertionError('Runway create must not be submitted')],
+            organization,
+        )
+        fal_video = Mock(return_value={
+            'url': 'https://v3.fal.media/files/example/video.mp4',
+            'provider': 'fal_seedance_2_fast',
+            'provider_attempts': 1,
+            'provider_request_id': (
+                '123e4567-e89b-12d3-a456-426614174000'
+            ),
+        })
+        gemini_video_uri = Mock()
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            fal_video=fal_video,
+            fal_key='configured-fal-key',
+        )
+
+        result = generate_scene('safe prompt', duration=5)
+
+        self.assertEqual(result['provider'], 'fal_seedance_2_fast')
+        self.assertEqual(factory.create_resources[0].calls, [])
+        self.assertEqual(
+            factory.organization.retrieve_calls,
+            [{'timeout': 5.0}],
+        )
+        fal_video.assert_called_once_with('safe prompt', 5)
+        gemini_video_uri.assert_not_called()
+        self.assertNotIn('55', str(result))
+
+    def test_known_insufficient_balance_uses_gemini_when_fal_is_missing(self):
+        organization = type('Organization', (), {'credit_balance': 55})()
+        factory = _CreditAwareRunwayClientFactory(
+            [AssertionError('Runway create must not be submitted')],
+            organization,
+        )
+        gemini_video_uri = Mock(return_value=(
+            'https://generativelanguage.googleapis.com/v1beta/files/video'
+        ))
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+        )
+
+        result = generate_scene('safe prompt', duration=5)
+
+        self.assertEqual(result['provider'], 'gemini_veo')
+        self.assertEqual(factory.create_resources[0].calls, [])
+        gemini_video_uri.assert_called_once_with('safe prompt', 5)
+
+    def test_exact_required_balance_preserves_runway_create(self):
+        created_task = _CreatedTask()
+        organization = type('Organization', (), {'credit_balance': 60})()
+        factory = _CreditAwareRunwayClientFactory(
+            [created_task],
+            organization,
+        )
+        _, generate_scene = _load_runway_functions(factory)
+
+        result = generate_scene('safe prompt', duration=5)
+
+        self.assertEqual(result['provider'], 'runway')
+        self.assertEqual(len(factory.create_resources[0].calls), 1)
+        self.assertEqual(
+            factory.create_resources[0].calls[0]['model'],
+            'gen4.5',
+        )
+
+    def test_ambiguous_credit_preflight_failure_preserves_runway_create(self):
+        created_task = _CreatedTask()
+        secret = 'secret organization transport detail'
+        factory = _CreditAwareRunwayClientFactory(
+            [created_task],
+            TimeoutError(secret),
+        )
+        _, generate_scene = _load_runway_functions(factory)
+
+        result = generate_scene('safe prompt', duration=5)
+
+        self.assertEqual(result['provider'], 'runway')
+        self.assertEqual(len(factory.create_resources[0].calls), 1)
+        self.assertNotIn(secret, str(result))
 
     def test_poll_rate_limit_never_submits_fallback_or_second_create(self):
         created_task = _CreatedTask()
