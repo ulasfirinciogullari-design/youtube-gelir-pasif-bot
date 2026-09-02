@@ -102,7 +102,7 @@ def _load_omni_namespace(client):
         '_normalize_runway_provider_code',
         '_gemini_omni_response_allows_provider_fallback',
         '_gemini_omni_prompt',
-        '_read_bounded_gemini_omni_reference',
+        '_read_bounded_gemini_omni_reference_image',
         '_gemini_omni_file_id',
         '_best_effort_delete_gemini_omni_resource',
         '_generate_gemini_omni_video',
@@ -123,9 +123,8 @@ def _load_omni_namespace(client):
         downloaded.append((uri, dict(headers), minimum_seconds))
         return 'validated-omni-uri-output.mp4'
 
-    def validate_video(path, *, minimum_seconds, continuity_reference=False):
-        validated.append((str(path), minimum_seconds, continuity_reference))
-        return 3.0 if continuity_reference else max(3.0, minimum_seconds)
+    def validate_image(path):
+        validated.append(Path(path).read_bytes())
 
     httpx = SimpleNamespace(
         Timeout=lambda *args, **kwargs: (args, kwargs),
@@ -154,8 +153,9 @@ def _load_omni_namespace(client):
         '_GEMINI_OMNI_RESOLUTION': '720p',
         '_GEMINI_OMNI_MIN_SECONDS': 3.0,
         '_GEMINI_OMNI_MAX_SECONDS': 10.0,
-        '_GEMINI_OMNI_REFERENCE_SECONDS': 3.0,
-        '_MAX_GEMINI_OMNI_REFERENCE_BYTES': 8 * 1024 * 1024,
+        '_GEMINI_OMNI_REFERENCE_IMAGE_WIDTH': 720,
+        '_GEMINI_OMNI_REFERENCE_IMAGE_HEIGHT': 1280,
+        '_MAX_GEMINI_OMNI_REFERENCE_IMAGE_BYTES': 4 * 1024 * 1024,
         '_MAX_GENERATED_VIDEO_BYTES': 100 * 1024 * 1024,
         '_GEMINI_OMNI_CAPACITY_CODES': frozenset({
             'capacity_exhausted',
@@ -184,7 +184,7 @@ def _load_omni_namespace(client):
     )
     namespace['_store_validated_gemini_omni_video'] = store_video
     namespace['_download_gemini_omni_uri'] = download_video
-    namespace['_validated_gemini_omni_video_file'] = validate_video
+    namespace['_validated_gemini_omni_reference_image_file'] = validate_image
     namespace['_test_stored'] = stored
     namespace['_test_downloaded'] = downloaded
     namespace['_test_validated'] = validated
@@ -243,8 +243,8 @@ class GeminiOmniRequestTests(unittest.TestCase):
         )
         self.assertNotIn('?', client.delete_calls[0][0][0])
 
-    def test_reference_request_uses_private_video_input_and_generic_contract(self):
-        reference = b'\x00\x00\x00\x18ftypisom' + b'r' * 2048
+    def test_reference_request_uses_private_image_input_and_subject_contract(self):
+        reference = b'\xff\xd8\xff' + b'r' * 2048 + b'\xff\xd9'
         output = b'\x00\x00\x00\x18ftypisom' + b'o' * 2048
         client = _Client(_Response(
             200,
@@ -255,31 +255,30 @@ class GeminiOmniRequestTests(unittest.TestCase):
         result = namespace['_generate_gemini_omni_video'](
             'The same LEGO ship now reaches a bright beach at sunrise.',
             6,
-            continuity_reference_video=reference,
+            continuity_reference_image=reference,
         )
 
         payload = client.post_calls[0][1]['json']
         self.assertIs(payload['store'], True)
         self.assertNotIn('generation_config', payload)
-        self.assertEqual(len(payload['input']), 1)
-        content = payload['input'][0]['content']
-        self.assertEqual(content[0]['type'], 'video')
-        self.assertEqual(content[0]['mime_type'], 'video/mp4')
-        self.assertEqual(base64.b64decode(content[0]['data']), reference)
-        prompt = content[1]['text']
-        self.assertIn('<VIDEO_REF_0>', prompt)
+        self.assertEqual(len(payload['input']), 2)
+        image_input = payload['input'][0]
+        self.assertEqual(image_input['type'], 'image')
+        self.assertEqual(image_input['mime_type'], 'image/jpeg')
+        self.assertEqual(base64.b64decode(image_input['data']), reference)
+        prompt = payload['input'][1]['text']
+        self.assertIn('<IMAGE_REF_0>', prompt)
+        self.assertIn('subject identity reference', prompt)
+        self.assertIn('do not use it as a literal initial frame', prompt)
         self.assertIn('current scene direction is authoritative', prompt)
         self.assertIn('primary subject, object or person identity', prompt)
         self.assertIn('narrated setting or time transition', prompt)
         self.assertNotIn('phone', prompt.casefold())
         self.assertNotIn('room', prompt.casefold())
         self.assertIn('LEGO ship', prompt)
-        self.assertEqual(
-            namespace['_test_validated'][0][1:],
-            (0.0, True),
-        )
+        self.assertEqual(namespace['_test_validated'], [reference])
         serialized = json.dumps(result)
-        self.assertNotIn(content[0]['data'], serialized)
+        self.assertNotIn(image_input['data'], serialized)
         self.assertNotIn('v1_private-interaction-id', serialized)
         self.assertEqual(len(client.delete_calls), 1)
 
@@ -293,8 +292,20 @@ class GeminiOmniRequestTests(unittest.TestCase):
         namespace['_generate_gemini_omni_video']('literal action', 3)
         payload = client.post_calls[0][1]['json']
         self.assertIsInstance(payload['input'], str)
-        self.assertNotIn('<VIDEO_REF_0>', payload['input'])
+        self.assertNotIn('<IMAGE_REF_0>', payload['input'])
         self.assertEqual(namespace['_test_validated'], [])
+
+    def test_mp4_cannot_enter_the_subject_reference_image_contract(self):
+        client = _Client(Mock())
+        namespace = _load_omni_namespace(client)
+        mp4 = b'\x00\x00\x00\x18ftypisom' + b'r' * 2048
+        with self.assertRaisesRegex(ValueError, 'not a JPEG'):
+            namespace['_generate_gemini_omni_video'](
+                'safe action',
+                5,
+                continuity_reference_image=mp4,
+            )
+        self.assertEqual(client.post_calls, [])
 
     def test_interaction_cleanup_failure_keeps_validated_media(self):
         media = b'\x00\x00\x00\x18ftypisom' + b'x' * 2048
@@ -399,8 +410,173 @@ class GeminiOmniRequestTests(unittest.TestCase):
                 with self.assertRaises(GeminiOmniTerminalError):
                     namespace['_generate_gemini_omni_video']('safe', 5)
                 self.assertEqual(len(client.post_calls), 1)
-                self.assertEqual(client.delete_calls, [])
+                has_valid_interaction_id = (
+                    isinstance(payload.get('id'), str)
+                    and re.fullmatch(
+                        r'^v1_[A-Za-z0-9_-]{1,253}$',
+                        payload['id'],
+                    )
+                    is not None
+                )
+                self.assertEqual(
+                    len(client.delete_calls),
+                    1 if has_valid_interaction_id else 0,
+                )
                 self.assertEqual(namespace['_test_stored'], [])
+
+
+def _load_reference_image_validator(fake_subprocess):
+    tree = ast.parse(SOURCE_PATH.read_text(encoding='utf-8'))
+    function = next(
+        node for node in tree.body
+        if isinstance(node, ast.FunctionDef)
+        and node.name == '_validated_gemini_omni_reference_image_file'
+    )
+    namespace = {
+        'Path': Path,
+        'json': json,
+        'subprocess': fake_subprocess,
+        '_GEMINI_OMNI_REFERENCE_IMAGE_WIDTH': 720,
+        '_GEMINI_OMNI_REFERENCE_IMAGE_HEIGHT': 1280,
+        '_MAX_GEMINI_OMNI_REFERENCE_IMAGE_BYTES': 4 * 1024 * 1024,
+    }
+    exec(
+        compile(
+            ast.Module(body=[function], type_ignores=[]),
+            str(SOURCE_PATH),
+            'exec',
+        ),
+        namespace,
+    )
+    return namespace['_validated_gemini_omni_reference_image_file']
+
+
+def _reference_image_probe(*, width=720, height=1280, codec_name='mjpeg'):
+    payload = {
+        'streams': [{
+            'codec_name': codec_name,
+            'codec_type': 'video',
+            'width': width,
+            'height': height,
+        }],
+    }
+    return SimpleNamespace(
+        run=lambda *_args, **_kwargs: SimpleNamespace(
+            returncode=0,
+            stdout=json.dumps(payload),
+        )
+    )
+
+
+class GeminiOmniReferenceImageTests(unittest.TestCase):
+    def test_validator_requires_one_exact_portrait_jpeg(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            valid = root / 'valid.jpg'
+            valid.write_bytes(b'\xff\xd8\xff' + b'i' * 2048 + b'\xff\xd9')
+            _load_reference_image_validator(_reference_image_probe())(valid)
+
+            for name, data, probe in (
+                ('wrong-codec.jpg', valid.read_bytes(), _reference_image_probe(
+                    codec_name='png'
+                )),
+                ('wrong-size.jpg', valid.read_bytes(), _reference_image_probe(
+                    width=1280, height=720
+                )),
+                ('wrong-magic.jpg', b'n' * 2053, _reference_image_probe()),
+            ):
+                with self.subTest(name=name):
+                    candidate = root / name
+                    candidate.write_bytes(data)
+                    with self.assertRaises(ValueError):
+                        _load_reference_image_validator(probe)(candidate)
+
+    def test_creator_extracts_one_mid_clip_jpeg_and_replaces_atomically(self):
+        tree = ast.parse(SOURCE_PATH.read_text(encoding='utf-8'))
+        function = next(
+            node for node in tree.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name == 'create_gemini_omni_continuity_reference'
+        )
+        commands = []
+
+        def render(command, **_kwargs):
+            if command[0] == 'ffprobe':
+                return SimpleNamespace(
+                    returncode=0,
+                    stdout=json.dumps({'format': {'duration': '3.0'}}),
+                )
+            commands.append(command)
+            sample_seconds = command[command.index('-ss') + 1]
+            detail_bytes = {
+                '1.500': 2048,
+                '0.750': 2600,
+                '2.250': 2300,
+            }[sample_seconds]
+            Path(command[-1]).write_bytes(
+                b'\xff\xd8\xff' + b'i' * detail_bytes + b'\xff\xd9'
+            )
+            return SimpleNamespace(returncode=0)
+
+        validated = []
+
+        def validate(path):
+            validated.append(Path(path).read_bytes())
+
+        namespace = {
+            'Path': Path,
+            'json': json,
+            'subprocess': SimpleNamespace(run=render),
+            'GeminiOmniContinuityReferenceError': type(
+                'GeminiOmniContinuityReferenceError',
+                (RuntimeError,),
+                {},
+            ),
+            '_GEMINI_OMNI_MAX_SECONDS': 10.0,
+            '_MAX_GENERATED_VIDEO_BYTES': 100 * 1024 * 1024,
+            '_validated_gemini_omni_reference_image_file': validate,
+        }
+        exec(
+            compile(
+                ast.Module(body=[function], type_ignores=[]),
+                str(SOURCE_PATH),
+                'exec',
+            ),
+            namespace,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'source.mp4'
+            output = root / 'anchor.jpg'
+            source.write_bytes(
+                b'\x00\x00\x00\x18ftypisom' + b'v' * 2048
+            )
+            result = namespace[
+                'create_gemini_omni_continuity_reference'
+            ](source, output)
+            self.assertEqual(result, str(output))
+            self.assertTrue(output.exists())
+            self.assertEqual(len(commands), 3)
+            self.assertEqual(len(validated), 3)
+            self.assertEqual(output.read_bytes(), validated[1])
+            for index in range(3):
+                self.assertFalse(
+                    (root / f'anchor.candidate-{index}.jpg').exists()
+                )
+            self.assertEqual(
+                [
+                    command[command.index('-ss') + 1]
+                    for command in commands
+                ],
+                ['1.500', '0.750', '2.250'],
+            )
+            for command in commands:
+                self.assertEqual(
+                    command[command.index('-frames:v') + 1],
+                    '1',
+                )
+                self.assertEqual(command[command.index('-f') + 1], 'image2')
 
 
 def _load_validator(fake_subprocess):
@@ -414,11 +590,9 @@ def _load_validator(fake_subprocess):
         'Path': Path,
         'json': json,
         'subprocess': fake_subprocess,
-        '_MAX_GEMINI_OMNI_REFERENCE_BYTES': 8 * 1024 * 1024,
         '_MAX_GENERATED_VIDEO_BYTES': 100 * 1024 * 1024,
         '_GEMINI_OMNI_MIN_SECONDS': 3.0,
         '_GEMINI_OMNI_MAX_SECONDS': 10.0,
-        '_GEMINI_OMNI_REFERENCE_SECONDS': 3.0,
     }
     exec(
         compile(
@@ -888,14 +1062,14 @@ class GeminiOmniProviderOrderTests(unittest.TestCase):
             'safe action',
             duration=5,
             prefer_gemini_omni=True,
-            continuity_reference_video=reference,
+            continuity_reference_image=reference,
             aspect_ratio='9:16',
         )
         self.assertEqual(result, {'provider': 'gemini_omni'})
         omni.assert_called_once_with(
             'safe action',
             5,
-            continuity_reference_video=reference,
+            continuity_reference_image=reference,
         )
         self.assertEqual(runway.calls, [])
 
@@ -1008,13 +1182,15 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
             source[sort_position:loop_position],
         )
 
-    def test_continuity_crop_preserves_source_aspect_ratio(self):
+    def test_continuity_frame_crop_preserves_source_aspect_ratio(self):
         source = SOURCE_PATH.read_text(encoding='utf-8')
         self.assertIn(
             'scale=720:1280:force_original_aspect_ratio=increase:',
             source,
         )
-        self.assertIn('flags=lanczos,crop=720:1280,setsar=1,fps=24', source)
+        self.assertIn('flags=lanczos,crop=720:1280,setsar=1', source)
+        self.assertIn("'-frames:v', '1'", source)
+        self.assertIn("'-f', 'image2'", source)
         self.assertNotIn(
             "'-vf', 'scale=720:1280:flags=lanczos,setsar=1,fps=24'",
             source,
@@ -1033,14 +1209,14 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
             keywords = {keyword.arg: keyword.value for keyword in call_node.keywords}
             keyword_names = set(keywords)
             self.assertIn('prefer_gemini_omni', keyword_names)
-            self.assertIn('continuity_reference_video', keyword_names)
+            self.assertIn('continuity_reference_image', keyword_names)
             self.assertIn('aspect_ratio', keyword_names)
             self.assertIsInstance(
-                keywords['continuity_reference_video'],
+                keywords['continuity_reference_image'],
                 ast.Name,
             )
             self.assertEqual(
-                keywords['continuity_reference_video'].id,
+                keywords['continuity_reference_image'].id,
                 'scene_continuity_reference',
             )
 
@@ -1048,7 +1224,7 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
         source = TASKS_PATH.read_text(encoding='utf-8')
         sensitive_lines = [
             line for line in source.splitlines()
-            if 'omni_continuity_reference_path' in line
+            if 'omni_continuity_reference_image_path' in line
         ]
         self.assertGreaterEqual(len(sensitive_lines), 5)
         for line in sensitive_lines:
@@ -1057,6 +1233,20 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
             self.assertNotIn('provider_records', line)
             self.assertNotIn("'", line.strip().split('=', 1)[0])
         self.assertNotIn('interaction_id', source)
+
+    def test_anchor_extraction_failure_stops_paid_ai_first_generation(self):
+        source = TASKS_PATH.read_text(encoding='utf-8')
+        self.assertEqual(
+            source.count(
+                'if isinstance(exc, GeminiOmniContinuityReferenceError):'
+            ),
+            2,
+        )
+        self.assertIn(
+            'GeminiOmniContinuityReferenceError,\n'
+            '    GeminiOmniTerminalError,',
+            source,
+        )
 
     def test_accepted_or_ambiguous_omni_scene_cannot_be_resubmitted_as_repair(self):
         source = TASKS_PATH.read_text(encoding='utf-8')
