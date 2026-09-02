@@ -50,6 +50,7 @@ def _load_prompt_functions():
         '_visual_path',
         '_truncate_utf16',
         '_sanitize_provider_visual_text',
+        '_identity_proof_clause',
         '_runway_prompt_for_scene',
         '_apply_visual_review',
         '_runway_generation_seconds',
@@ -544,6 +545,160 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertIn('16:9 documentary shot', wide_prompt)
         self.assertNotIn('TikTok', wide_prompt)
         self.assertNotIn('vertical short-form', wide_prompt)
+
+    def test_identity_gate_failures_protect_comparable_subject_close_view(self):
+        scene = {
+            'narration': (
+                'The same tiny notched-tail toy dragon is tossed inside '
+                'the storm-struck shipping container.'
+            ),
+            'ai_prompt': (
+                'Inside the storm-tossed container, show the exact same '
+                'tiny matte-black molded plastic toy dragon at original '
+                'LEGO scale with a distinctive notch in its tail, no '
+                'humans or hands. ' * 20
+            ),
+            'visual_queries': [
+                'tiny matte-black notched-tail toy dragon in storm container'
+            ],
+        }
+        prompt = runway_prompt(
+            scene,
+            {
+                'retry_queries': [
+                    'close unobstructed view of the same tiny matte-black '
+                    'molded plastic toy dragon at original LEGO scale with '
+                    'its tail notch visible inside the storm container ' * 8,
+                ],
+                'subject_visible': False,
+                'recurring_identity_continuity_applicable': True,
+                'recurring_identity_continuity_matches': False,
+                'authored_identity_or_material_conflict_visible': True,
+            },
+            '9:16',
+        )
+
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 900)
+        self.assertIn(
+            'Raw-camera 9:16 documentary shot. No UI, @handle, caption, text, '
+            'logo, watermark, border, letterbox or collage.',
+            prompt,
+        )
+        identity_clause = (
+            'IDENTITY PROOF: exact subject large in frame, never physically '
+            'enlarged; authored scale; visible comparable close-up; no '
+            'substitute.'
+        )
+        manufactured_clause = manufactured_replica_guardrail(scene)
+        closing = 'Keep one clean, stable, unbranded documentary frame.'
+        self.assertIn(identity_clause, prompt)
+        self.assertIn(manufactured_clause, prompt)
+        self.assertIn('Core shot direction: close unobstructed view', prompt)
+        self.assertTrue(prompt.endswith(closing), repr(prompt[-180:]))
+        self.assertLess(
+            prompt.index(identity_clause),
+            prompt.index('Core shot direction:'),
+        )
+        self.assertLess(
+            prompt.index('Core shot direction:'),
+            prompt.index(manufactured_clause),
+        )
+        self.assertLess(prompt.index(manufactured_clause), prompt.index(closing))
+
+    def test_identity_repair_keeps_nonempty_core_for_non_replica_scene(self):
+        prompt = runway_prompt(
+            {
+                'narration': 'Water visibly rises inside a clear glass.',
+                'ai_prompt': 'Close documentary view of water filling a glass.',
+                'visual_queries': ['water filling a clear glass'],
+            },
+            {
+                'retry_queries': [
+                    'clear glass stays visible while the water level rises'
+                ],
+                'subject_visible': False,
+            },
+            '9:16',
+        )
+
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 900)
+        self.assertIn(
+            'Core shot direction: clear glass stays visible while the water '
+            'level rises',
+            prompt,
+        )
+        self.assertNotIn('MANUFACTURED IDENTITY:', prompt)
+        self.assertTrue(
+            prompt.endswith(
+                'Keep one clean, stable, unbranded documentary frame.'
+            ),
+            repr(prompt[-180:]),
+        )
+
+    def test_clean_identity_review_does_not_change_general_prompt(self):
+        prompt = runway_prompt(
+            {
+                'narration': 'A glass fills with clear water.',
+                'ai_prompt': 'Close documentary view of water filling a glass.',
+                'visual_queries': ['water filling a clear glass'],
+            },
+            {
+                'retry_queries': ['water visibly rises inside the same glass'],
+                'subject_visible': True,
+                'recurring_identity_continuity_applicable': True,
+                'recurring_identity_continuity_matches': True,
+                'authored_identity_or_material_conflict_visible': False,
+            },
+            '9:16',
+        )
+
+        self.assertNotIn('IDENTITY PROOF:', prompt)
+
+    def test_each_identity_hard_gate_independently_requires_proof(self):
+        scene = {
+            'narration': 'The same black toy dragon crosses wet sand.',
+            'ai_prompt': 'The same matte-black notched-tail toy dragon.',
+            'visual_queries': ['matte-black notched-tail toy dragon'],
+        }
+        failing_reviews = (
+            {'subject_visible': False},
+            {'authored_identity_or_material_conflict_visible': True},
+            {
+                'recurring_identity_continuity_applicable': True,
+                'recurring_identity_continuity_matches': False,
+            },
+        )
+
+        for review in failing_reviews:
+            with self.subTest(review=review):
+                prompt = runway_prompt(scene, review, '9:16')
+                self.assertIn('IDENTITY PROOF:', prompt)
+
+        non_applicable = runway_prompt(
+            scene,
+            {
+                'subject_visible': True,
+                'recurring_identity_continuity_applicable': False,
+                'recurring_identity_continuity_matches': False,
+                'authored_identity_or_material_conflict_visible': False,
+            },
+            '9:16',
+        )
+        self.assertNotIn('IDENTITY PROOF:', non_applicable)
+
+    def test_non_dict_review_does_not_mutate_general_prompt(self):
+        prompt = runway_prompt(
+            {
+                'narration': 'Water visibly rises inside a clear glass.',
+                'ai_prompt': 'Close documentary view of water filling a glass.',
+                'visual_queries': ['water filling a clear glass'],
+            },
+            ['invalid-review-shape'],
+            '9:16',
+        )
+
+        self.assertNotIn('IDENTITY PROOF:', prompt)
+        self.assertIn('water filling a clear glass', prompt)
 
     def test_portrait_toy_prompt_keeps_complete_artifact_ban(self):
         prompt = runway_prompt(

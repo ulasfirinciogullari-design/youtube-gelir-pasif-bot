@@ -2658,6 +2658,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             and node.name in {
                 '_truncate_utf16',
                 '_sanitize_provider_visual_text',
+                '_identity_proof_clause',
                 '_image_motion_prompt_for_scene',
             }
         ]
@@ -2776,6 +2777,113 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             'letterbox, storyboard, collage or CGI.',
             guarded_toy_prompt,
         )
+
+        identity_scene = {
+            'narration': 'The same toy dragon exits a flooded container.',
+            'ai_prompt': (
+                'The exact same tiny matte-black molded plastic toy dragon '
+                'at original LEGO scale with a distinctive notch in its '
+                'tail exits the underwater container, no humans or hands. '
+                * 20
+            ),
+            'visual_queries': ['tiny notched-tail toy dragon underwater'],
+        }
+        identity_repair_prompt = namespace['_image_motion_prompt_for_scene'](
+            identity_scene,
+            {
+                'retry_queries': [
+                    'close unobstructed view of the same tiny matte-black '
+                    'molded toy dragon at original LEGO scale with its tail '
+                    'notch visible underwater ' * 8,
+                ],
+                'subject_visible': False,
+                'recurring_identity_continuity_applicable': True,
+                'recurring_identity_continuity_matches': False,
+                'authored_identity_or_material_conflict_visible': True,
+            },
+            '9:16',
+        )
+        self.assertLessEqual(
+            len(identity_repair_prompt.encode('utf-16-le')) // 2,
+            1000,
+        )
+        self.assertIn(
+            'Raw 9:16 documentary keyframe. No UI, @handle, text, logo, '
+            'watermark, border, letterbox, storyboard, collage or CGI.',
+            identity_repair_prompt,
+        )
+        identity_clause = (
+            'IDENTITY PROOF: exact subject large in frame, never physically '
+            'enlarged; authored scale; visible comparable close-up; no '
+            'substitute.'
+        )
+        manufactured_clause = manufactured_replica_guardrail(identity_scene)
+        closing = (
+            ' Keep literal subject scale, material, condition and setting '
+            'clear in natural light and depth, composed for a subtle centered '
+            'push-in. No storyboard, collage, CGI, border or letterbox.'
+        )
+        self.assertIn(identity_clause, identity_repair_prompt)
+        self.assertIn(manufactured_clause, identity_repair_prompt)
+        self.assertIn(
+            'CORE VISUAL: close unobstructed view of the same tiny matte-black',
+            identity_repair_prompt,
+        )
+        self.assertTrue(
+            identity_repair_prompt.endswith(closing),
+            repr(identity_repair_prompt[-240:]),
+        )
+        self.assertLess(
+            identity_repair_prompt.index('IDENTITY PROOF:'),
+            identity_repair_prompt.index('CORE VISUAL:'),
+        )
+        self.assertLess(
+            identity_repair_prompt.index('CORE VISUAL:'),
+            identity_repair_prompt.index(manufactured_clause),
+        )
+        self.assertLess(
+            identity_repair_prompt.index(manufactured_clause),
+            identity_repair_prompt.index(closing),
+        )
+
+        glass_identity_repair = namespace['_image_motion_prompt_for_scene'](
+            {
+                'narration': 'Water visibly rises inside a clear glass.',
+                'ai_prompt': 'Close documentary view of water filling a glass.',
+                'visual_queries': ['water filling a clear glass'],
+            },
+            {
+                'retry_queries': [
+                    'clear glass remains visible while water level rises'
+                ],
+                'subject_visible': False,
+            },
+            '9:16',
+        )
+        self.assertLessEqual(
+            len(glass_identity_repair.encode('utf-16-le')) // 2,
+            1000,
+        )
+        self.assertIn(
+            'CORE VISUAL: clear glass remains visible while water level rises',
+            glass_identity_repair,
+        )
+        self.assertNotIn('MANUFACTURED IDENTITY:', glass_identity_repair)
+        self.assertTrue(
+            glass_identity_repair.endswith(closing),
+            repr(glass_identity_repair[-240:]),
+        )
+
+        invalid_review_prompt = namespace['_image_motion_prompt_for_scene'](
+            {
+                'narration': 'Water rises inside a clear glass.',
+                'ai_prompt': 'Water filling a clear glass.',
+                'visual_queries': ['water filling a clear glass'],
+            },
+            ['invalid-review-shape'],
+            '9:16',
+        )
+        self.assertNotIn('IDENTITY PROOF:', invalid_review_prompt)
 
     def test_pipeline_passes_one_aspect_contract_to_prompts_and_providers(self):
         source = (
