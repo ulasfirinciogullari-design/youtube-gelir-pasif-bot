@@ -469,6 +469,80 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    def test_live_positive_reason_phrasings_revalidate_when_all_gates_pass(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        live_reasons = (
+            'Candidate 0 clearly depicts a hand retrieving a black smartphone '
+            'from under a pillow, aligning well with the initial narrative beat.',
+            'Candidate 0 features a close-up of a black phone connected to a '
+            'charging cable on bedding, matching the core visual requirements.',
+            'Candidate 0 shows a finger feeling the rear casing of a black '
+            'smartphone resting on a wooden nightstand, matching the topic '
+            'palette and action.',
+        )
+
+        for case_index, reason in enumerate(live_reasons):
+            with self.subTest(reason=reason):
+                gemini.reset_mock()
+                gemini.side_effect = [
+                    {'reviews': [_review(score=40, reason=reason)]},
+                    {'reviews': [_review(
+                        score=91,
+                        reason=(
+                            'The exact selected clip clearly proves the named '
+                            'subject and narrated action with useful motion.'
+                        ),
+                    )]},
+                ]
+                with (
+                    patch.object(settings, 'studio_plan_provider', 'gemini'),
+                    patch.object(settings, 'gemini_api_key', 'test-key'),
+                ):
+                    review = review_scene_visuals(
+                        self.scenes,
+                        self.visuals,
+                        self.work / f'live_positive_reason_{case_index}',
+                        _missing_review_attempts=0,
+                    )['reviews'][0]
+
+                self.assertEqual(gemini.call_count, 2)
+                self.assertEqual(review['score'], 91)
+                self.assertTrue(review['score_reason_revalidated'])
+                self.assertTrue(review['score_reason_consistency_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_static_low_score_reason_remains_a_concrete_rejection(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        gemini.return_value = {'reviews': [_review(
+            score=40,
+            reason=(
+                'Candidate 0 presents a static wide macro of a black phone '
+                'resting openly on a wooden nightstand beside a bed.'
+            ),
+        )]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                self.scenes,
+                self.visuals,
+                self.work / 'static_reason_is_rejection',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertEqual(gemini.call_count, 1)
+        self.assertEqual(review['score'], 40)
+        self.assertNotIn('score_reason_revalidated', review)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
     def test_repeated_low_score_success_conflict_remains_fail_closed(
         self, frame, gemini
     ):
@@ -538,27 +612,18 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
-    def test_normalized_hard_rejection_with_success_reason_is_revalidated(
+    def test_normalized_hard_rejection_names_gate_and_does_not_trust_prose(
         self, frame, gemini
     ):
         frame.return_value = self.frame
-        gemini.side_effect = [
-            {'reviews': [_review(
-                score=97,
-                reason=(
-                    'The candidate fully matches the narration and scene '
-                    'requirements.'
-                ),
-                effectively_static_or_frozen=True,
-            )]},
-            {'reviews': [_review(
-                score=91,
-                reason=(
-                    'The selected clip has clear continuous motion and proves '
-                    'the named subject and action.'
-                ),
-            )]},
-        ]
+        gemini.return_value = {'reviews': [_review(
+            score=97,
+            reason=(
+                'The candidate fully matches the narration and scene '
+                'requirements.'
+            ),
+            effectively_static_or_frozen=True,
+        )]}
 
         with (
             patch.object(settings, 'studio_plan_provider', 'gemini'),
@@ -571,11 +636,59 @@ class VisualQcProviderTests(unittest.TestCase):
                 _missing_review_attempts=0,
             )['reviews'][0]
 
-        self.assertEqual(gemini.call_count, 2)
-        self.assertEqual(review['score_reason_initial_score'], 40)
-        self.assertEqual(review['score_reason_initial_raw_score'], 97)
-        self.assertEqual(review['score'], 91)
-        self.assertTrue(review['score_reason_consistency_passed'])
+        self.assertEqual(gemini.call_count, 1)
+        self.assertEqual(review['raw_score'], 97)
+        self.assertEqual(review['score'], 40)
+        self.assertIn('effectively static or frozen', review['reason'])
+        self.assertIn(
+            'the selected clip is effectively static or frozen',
+            review['hard_gate_diagnostics'],
+        )
+        self.assertNotIn('score_reason_revalidated', review)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_positive_reason_cannot_hide_missing_thermal_evidence_gate(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        thermal_scene = [{
+            'narration': (
+                'Batarya bütün gece şarj olurken az da olsa ısı üretir.'
+            ),
+            'visual_queries': ['thermal camera charging smartphone battery'],
+        }]
+        gemini.return_value = {'reviews': [_review(
+            score=92,
+            reason=(
+                'Candidate 0 matches the core visual requirements with a '
+                'phone connected to a charging cable on bedding.'
+            ),
+            thermal_claim_applicable=False,
+            thermal_evidence_visible=False,
+        )]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                thermal_scene,
+                self.visuals,
+                self.work / 'positive_reason_missing_thermal_gate',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertEqual(gemini.call_count, 1)
+        self.assertEqual(review['raw_score'], 92)
+        self.assertEqual(review['score'], 40)
+        self.assertIn('authored thermal view', review['reason'])
+        self.assertIn(
+            'the authored thermal view lacks visible heat evidence on the '
+            'subject',
+            review['hard_gate_diagnostics'],
+        )
+        self.assertNotIn('score_reason_revalidated', review)
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
@@ -1141,6 +1254,7 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertFalse(review['thermal_evidence_visible'])
         self.assertFalse(review['connection_action_applicable'])
         self.assertFalse(review['evidence_gate_passed'])
+        self.assertIn('authored thermal view', review['reason'])
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')

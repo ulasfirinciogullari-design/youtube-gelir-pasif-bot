@@ -33,6 +33,11 @@ _GEMINI_FRAME_REENCODE_ATTEMPTS = (
 # review of the exact selected clip, never an approval signal.
 _CLEARLY_POSITIVE_REASON_PATTERNS = (
     re.compile(
+        r'\b(?:match(?:es|ed|ing)?|align(?:s|ed|ing)?)\b.{0,120}'
+        r'\b(?:prompt|narrati(?:on|ve)|requirements?|brief|scene|topic|action)\b',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
         r'\b(?:match(?:es|ed)?|align(?:s|ed)?)\b.{0,100}'
         r'\b(?:prompt|narration|requirements?|brief|scene)\b.{0,80}'
         r'\b(?:well|closely|fully|exactly|perfectly|clearly)\b',
@@ -339,6 +344,113 @@ def _thermal_claim_required(
     # established before later contextual B-roll whenever possible.
     anchor_position, _ = max(cluster, key=lambda item: (item[1], -item[0]))
     return position == anchor_position
+
+
+def _hard_gate_diagnostics(review: dict) -> list[str]:
+    """Name normalized server gates that made a scene unpublishable."""
+    failures: list[str] = []
+    if review.get('subject_visible') is not True:
+        failures.append('the named subject is not visibly established')
+    if review.get('spoken_action_visible') is not True:
+        failures.append('the narrated action is not visibly established')
+    if (
+        review.get('thermal_claim_applicable') is True
+        and review.get('thermal_evidence_visible') is not True
+    ):
+        failures.append(
+            'the authored thermal view lacks visible heat evidence on the subject'
+        )
+    if review.get('unexplained_reset') is True:
+        failures.append('an unexplained action or state reset is visible')
+    if (
+        review.get('physical_causality_applicable') is True
+        and review.get('target_contact_visible') is not True
+    ):
+        failures.append('the required cause-to-target contact is not visible')
+    if review.get('connection_action_applicable') is True:
+        connection_failures = [
+            label
+            for field, label in (
+                ('moving_connector_visible', 'moving connector'),
+                ('receiving_interface_visible', 'receiving interface'),
+                ('connector_visibly_joins_target', 'visible connector join'),
+                ('connection_persists_after_release', 'persistent joined state'),
+            )
+            if review.get(field) is not True
+        ]
+        if connection_failures:
+            failures.append(
+                'the narrated connection lacks '
+                + ', '.join(connection_failures)
+            )
+    if review.get('state_change_applicable') is True:
+        if review.get('state_changed_after_action') is not True:
+            failures.append('the narrated state change is not visible')
+        if review.get('final_state_persists') is not True:
+            failures.append('the required final state does not persist')
+    if (
+        review.get('location_continuity_applicable') is True
+        and review.get('location_continuity_matches') is not True
+    ):
+        failures.append('the required location continuity does not match')
+
+    required_moments = 1
+    if (
+        review.get('physical_causality_applicable') is True
+        or review.get('state_change_applicable') is True
+        or review.get('connection_action_applicable') is True
+    ):
+        required_moments = 3
+    elif review.get('location_continuity_applicable') is True:
+        required_moments = 2
+    evidence_moments = review.get('evidence_moment_indices')
+    if (
+        not isinstance(evidence_moments, list)
+        or len(evidence_moments) < required_moments
+    ):
+        failures.append(
+            f'temporal proof covers fewer than {required_moments} sampled moments'
+        )
+
+    if review.get('authored_identity_or_material_conflict_visible') is True:
+        failures.append(
+            'the visible identity or material contradicts the authored subject'
+        )
+    if (
+        review.get('manufactured_replica_required') is True
+        and review.get('manufactured_object_cues_visible') is not True
+    ):
+        failures.append('the required manufactured-object cues are not visible')
+    if review.get('prominent_readable_text_or_logo_visible') is True:
+        failures.append('prominent readable text or a logo is visible')
+    if review.get('major_visual_artifact_visible') is True:
+        failures.append('a major visual artifact is visible')
+    if review.get('effectively_static_or_frozen') is True:
+        failures.append('the selected clip is effectively static or frozen')
+
+    if (
+        not failures
+        and (
+            review.get('evidence_gate_passed') is False
+            or review.get('editorial_gate_passed') is False
+        )
+    ):
+        failures.append('a required structured visual gate did not pass')
+    return failures
+
+
+def _annotate_hard_gate_rejection(review: dict) -> dict:
+    failures = _hard_gate_diagnostics(review)
+    if not failures:
+        return review
+    annotated = dict(review)
+    annotated['hard_gate_diagnostics'] = failures
+    diagnostic = 'Hard-gate rejection: ' + '; '.join(failures) + '.'
+    original = str(annotated.get('reason') or '').strip()
+    annotated['reason'] = (
+        diagnostic + (f' Model explanation: {original}' if original else '')
+    )[:500]
+    return annotated
 
 
 def _normalized_evidence(
@@ -1484,6 +1596,15 @@ def review_scene_visuals(
             'identity_gate_passed': identity_gate_passed,
             'editorial_gate_passed': editorial_gate_passed,
         }
+
+    # Server-owned hard gates take precedence over model prose. Make every
+    # clamp diagnosable before considering score/reason consistency so a
+    # positive explanation can never override missing evidence, identity,
+    # motion or artifact proof.
+    reviews_by_scene = {
+        scene_index: _annotate_hard_gate_rejection(review)
+        for scene_index, review in reviews_by_scene.items()
+    }
 
     # A valid JSON object can still be semantically self-contradictory. Only
     # the narrow hard-reject/clear-success case earns one independent review,
