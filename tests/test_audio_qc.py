@@ -152,7 +152,22 @@ class AudioQCTests(unittest.TestCase):
         self.addCleanup(upload_patcher.stop)
         self.addCleanup(delete_patcher.stop)
 
-    def _prosody_output(self, *, passed=True, issues=None):
+    def _prosody_output(
+        self,
+        *,
+        passed=True,
+        issues=None,
+        score_overrides=None,
+    ):
+        scores = {
+            'pronunciation': 92,
+            'naturalness': 88 if passed else 35,
+            'pacing': 86 if passed else 30,
+            'sentence_flow': 90 if passed else 30,
+            'emphasis': 84 if passed else 40,
+            'roboticness': 12 if passed else 75,
+        }
+        scores.update(score_overrides or {})
         return {
             'pass': passed,
             'summary': (
@@ -160,14 +175,7 @@ class AudioQCTests(unittest.TestCase):
                 if passed
                 else 'Cümle içi akış kesiliyor.'
             ),
-            'scores': {
-                'pronunciation': 92,
-                'naturalness': 88 if passed else 35,
-                'pacing': 86 if passed else 30,
-                'sentence_flow': 90 if passed else 30,
-                'emphasis': 84 if passed else 40,
-                'roboticness': 12 if passed else 75,
-            },
+            'scores': scores,
             'issues': [] if issues is None else issues,
         }
 
@@ -346,6 +354,97 @@ class AudioQCTests(unittest.TestCase):
         self.assertTrue(result['pass'])
         self.assertEqual(result['review_attempts'], 2)
         self.assertEqual(generate.call_count, 2)
+
+    @patch.object(audio_qc, 'generate_gemini_audio_json')
+    def test_prosody_pass_score_contradiction_retries_and_recovers(
+        self, generate
+    ):
+        generate.side_effect = [
+            self._prosody_output(score_overrides={'roboticness': 94}),
+            self._prosody_output(score_overrides={'roboticness': 18}),
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            audio = Path(tmp) / 'voice.mp3'
+            audio.write_bytes(b'audible-voice')
+            with patch.object(config_stub.settings, 'gemini_api_key', 'test-key'):
+                result = audio_qc.verify_audio_prosody(
+                    audio,
+                    'Doğru metin.',
+                    audio_duration_seconds=29.52,
+                )
+
+        self.assertTrue(result['available'])
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['scores']['roboticness'], 18)
+        self.assertEqual(result['review_attempts'], 2)
+        self.assertEqual(generate.call_count, 2)
+        self.assertIn(
+            'roboticness is 0=fully human and 100=fully robotic',
+            generate.call_args_list[1].args[2],
+        )
+
+    @patch.object(audio_qc, 'generate_gemini_audio_json')
+    def test_prosody_two_pass_score_contradictions_remain_fail_closed(
+        self, generate
+    ):
+        generate.side_effect = [
+            self._prosody_output(score_overrides={'roboticness': 94}),
+            self._prosody_output(score_overrides={'naturalness': 69}),
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            audio = Path(tmp) / 'voice.mp3'
+            audio.write_bytes(b'audible-voice')
+            with patch.object(config_stub.settings, 'gemini_api_key', 'test-key'):
+                result = audio_qc.verify_audio_prosody(audio, 'Doğru metin.')
+
+        self.assertFalse(result['available'])
+        self.assertFalse(result['pass'])
+        self.assertEqual(result['reason'], 'gemini_prosody_protocol_invalid')
+        self.assertEqual(result['review_attempts'], 2)
+        self.assertEqual(generate.call_count, 2)
+
+    @patch.object(audio_qc, 'generate_gemini_audio_json')
+    def test_prosody_scores_never_override_grounded_negative_verdict(
+        self, generate
+    ):
+        issue = {
+            'code': 'unnatural_internal_pause',
+            'start_seconds': 10.2,
+            'end_seconds': 11.1,
+            'phrase': 'altmış iki',
+            'detail': 'Sayı öbeğinin ortasında yapay bir durak var.',
+        }
+        generate.return_value = self._prosody_output(
+            passed=False,
+            issues=[issue],
+            score_overrides={
+                'pronunciation': 99,
+                'naturalness': 99,
+                'pacing': 99,
+                'sentence_flow': 99,
+                'emphasis': 99,
+                'roboticness': 0,
+            },
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            audio = Path(tmp) / 'voice.mp3'
+            audio.write_bytes(b'audible-voice')
+            with patch.object(config_stub.settings, 'gemini_api_key', 'test-key'):
+                result = audio_qc.verify_audio_prosody(
+                    audio,
+                    'Altmış iki konteyner denize düştü.',
+                    audio_duration_seconds=30.0,
+                    transcript_evidence=self._prosody_transcript_evidence(
+                        ('Altmış', 10.0, 10.4),
+                        ('iki', 10.4, 10.8),
+                    ),
+                )
+
+        self.assertTrue(result['available'])
+        self.assertFalse(result['pass'])
+        self.assertEqual(result['reason'], 'unnatural_internal_pause')
+        self.assertEqual(result['review_attempts'], 1)
+        self.assertEqual(generate.call_count, 1)
 
     @patch.object(audio_qc, 'generate_gemini_audio_json')
     def test_prosody_two_invalid_reviews_remain_fail_closed(self, generate):
