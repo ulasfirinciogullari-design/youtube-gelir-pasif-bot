@@ -1248,6 +1248,7 @@ def _is_transient_pexels_provider_error(exc: Exception) -> bool:
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value = dict(options or {})
     value.setdefault('mode', 'preview' if duration_minutes <= 1 else 'production')
+    requested_publish_after_render = value.get('publish_after_render')
     value.setdefault('workflow', 'auto')
     value.setdefault('content_style', 'documentary')
     value.setdefault('pace', 'balanced')
@@ -1263,7 +1264,28 @@ def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value['quality_threshold'] = max(quality_floor, requested_quality)
     if value['mode'] == 'preview':
         value['music'] = 'off'
+    value['publish_after_render'] = bool(
+        requested_publish_after_render is True
+        and value['mode'] == 'production'
+    )
     return value
+
+
+def _queue_automatic_publish_if_enabled(task_id: str, options: dict) -> bool:
+    """Best-effort autonomous routing after an explicit production opt-in."""
+    if (
+        options.get('publish_after_render') is not True
+        or options.get('mode') != 'production'
+    ):
+        return False
+    try:
+        from app.publish_tasks import queue_automatic_publish
+
+        queue_automatic_publish(task_id)
+    except Exception:
+        # Publishing remains best-effort after the render is durably successful.
+        return False
+    return True
 
 
 def _task_spec(topic: str, duration_minutes: float, language: str, channel_id: str | None, options: dict) -> dict:
@@ -5541,14 +5563,7 @@ def run_video_pipeline(
             'studio_options': options,
         }
         mark_success(task_id, result)
-        try:
-            # Autonomous routing is best-effort after the render is durably
-            # successful. A profile/queue outage must never invalidate media.
-            from app.publish_tasks import queue_automatic_publish
-
-            queue_automatic_publish(task_id)
-        except Exception:
-            pass
+        _queue_automatic_publish_if_enabled(task_id, options)
         return result
     except Exception as exc:
         terminal_pre_media_error = isinstance(
