@@ -35,6 +35,8 @@ from app.services.render import (
 from app.services.research import research_and_script
 from app.services.runway import (
     GeminiImageAttemptedError,
+    GeminiOmniTerminalError,
+    create_gemini_omni_continuity_reference,
     download_generated_scene,
     generate_scene,
 )
@@ -76,6 +78,25 @@ class UnsupportedLanguageError(ValueError):
 
 
 SUPPORTED_PIPELINE_LANGUAGES = frozenset({'tr', 'en', 'de', 'es', 'ar'})
+_OMNI_CONTINUITY_MARKER_PATTERN = re.compile(
+    r'\b(?:same|recurring|unchanged|identical|continuity|returning|'
+    r'aynı|tekrar|süreklilik|unverändert|wiederkehrend|derselbe|dieselbe|'
+    r'dasselbe|mismo|misma|recurrente)\b',
+    re.IGNORECASE,
+)
+_OMNI_CONTINUITY_STOP_WORDS = frozenset({
+    'action', 'angle', 'background', 'black', 'blue', 'bright', 'camera',
+    'cinematic', 'clean', 'color', 'consistent', 'continuity', 'dark',
+    'documentary', 'environment', 'exact', 'frame', 'geometry', 'green',
+    'hand', 'identity', 'lighting', 'location', 'material', 'natural',
+    'object', 'person', 'photorealistic', 'physical', 'realistic', 'recurring',
+    'red', 'room', 'same', 'scene', 'setting', 'shot', 'subject', 'surface',
+    'unchanged', 'unbranded', 'vertical', 'visible', 'white',
+    'with', 'without', 'from', 'into', 'this', 'that', 'the', 'and',
+    'aynı', 'tekrar', 'süreklilik', 'sahne', 'nesne', 'kişi', 'mekan',
+    'mismo', 'misma', 'escena', 'objeto', 'persona',
+    'derselbe', 'dieselbe', 'dasselbe', 'szene', 'objekt', 'person',
+})
 
 
 def normalize_pipeline_language(language: str) -> str:
@@ -85,6 +106,39 @@ def normalize_pipeline_language(language: str) -> str:
             'Supported languages are tr, en, de, es and ar'
         )
     return normalized
+
+
+def _omni_identity_tokens(scene: dict) -> set[str]:
+    """Return bounded, non-generic identity terms from a scene contract."""
+    text = str((scene or {}).get('ai_prompt') or '').casefold()[:4000]
+    return {
+        token
+        for token in re.findall(r'[^\W_]{3,}', text, flags=re.UNICODE)
+        if token not in _OMNI_CONTINUITY_STOP_WORDS
+    }
+
+
+def _omni_continuity_reference_applies(
+    anchor_scene: dict,
+    current_scene: dict,
+) -> bool:
+    """Require an explicit recurrence marker and a shared identity token."""
+    current_prompt = str(
+        (current_scene or {}).get('ai_prompt') or ''
+    )[:4000]
+    if not _OMNI_CONTINUITY_MARKER_PATTERN.search(current_prompt):
+        return False
+    anchor_tokens = _omni_identity_tokens(anchor_scene)
+    current_tokens = _omni_identity_tokens(current_scene)
+    return any(
+        anchor == current
+        or (
+            min(len(anchor), len(current)) >= 4
+            and (anchor in current or current in anchor)
+        )
+        for anchor in anchor_tokens
+        for current in current_tokens
+    )
 
 
 class PreRunwayRetryableError(RuntimeError):
@@ -105,6 +159,7 @@ _RECOVERED_MEDIA_KEY_PATTERN = re.compile(
 _RECOVERED_MEDIA_PROVIDERS = {
     'runway',
     'fal_seedance_2_fast',
+    'gemini_omni',
     'gemini_veo',
     'gemini_veo_fast',
     'gemini_veo_standard',
@@ -3410,6 +3465,7 @@ def run_video_pipeline(
         runway_failed_scenes: list[int] = []
         runway_generated_scenes: list[int] = []
         image_motion_submission_scenes: set[int] = set()
+        omni_unsafe_submission_scenes: set[int] = set()
         generated_video_provider_records: list[dict] = []
         runway_scenes_used = 0
         runway_submission_cap = _max_runway_scenes(options, len(scenes), duration_minutes)
@@ -3451,6 +3507,12 @@ def run_video_pipeline(
             and duration_minutes == 0.5
             and options.get('quality_threshold')
             == MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
+        )
+        # The publish lifecycle enforces private visibility for every initial
+        # preview upload; public release remains a separate confirmed action.
+        is_private_ai_first_omni_preview = (
+            is_bounded_short_preview
+            and (options.get('visual_mix') or 'balanced') == 'ai_first'
         )
         provider_outage_stock_scenes: set[int] = set()
         stock_quality_fallback_scenes: set[int] = set()
@@ -4093,6 +4155,13 @@ def run_video_pipeline(
                 raise FinalVisualQualityError(preflight_message)
         else:
             selected_runway = ranked_runway_candidates[:runway_submission_cap]
+        if is_private_ai_first_omni_preview:
+            # Omni continuity is causal: the first accepted generated clip is
+            # the sole visual anchor for later explicitly related AI scenes.
+            selected_runway = sorted(
+                selected_runway,
+                key=lambda item: int(item['scene_index']),
+            )
         selected_runway_indices = {item['scene_index'] for item in selected_runway}
         runway_rank = {
             item['scene_index']: position + 1
@@ -4153,6 +4222,8 @@ def run_video_pipeline(
             ),
         )
 
+        omni_continuity_reference_path: Path | None = None
+        omni_continuity_anchor_scene_idx: int | None = None
         for candidate in selected_runway:
             scene_idx = int(candidate['scene_index'])
             stock_fallback = list(scene_visuals[scene_idx])
@@ -4228,6 +4299,18 @@ def run_video_pipeline(
                         scene_idx,
                         [],
                     ).append(dict(recovered_spec))
+                if (
+                    is_private_ai_first_omni_preview
+                    and omni_continuity_reference_path is None
+                    and recovered_specs
+                ):
+                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    create_gemini_omni_continuity_reference(
+                        recovered_specs[0]['path'],
+                        continuity_path,
+                    )
+                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_anchor_scene_idx = scene_idx
                 scene_visuals[scene_idx] = [
                     *recovered_specs,
                     *stock_fallback,
@@ -4266,6 +4349,18 @@ def run_video_pipeline(
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
                 )
+                scene_continuity_reference = None
+                if (
+                    omni_continuity_reference_path is not None
+                    and omni_continuity_anchor_scene_idx is not None
+                    and _omni_continuity_reference_applies(
+                        scenes[omni_continuity_anchor_scene_idx],
+                        scenes[scene_idx],
+                    )
+                ):
+                    scene_continuity_reference = (
+                        omni_continuity_reference_path
+                    )
                 generated_scene = generate_scene(
                     prompt_candidates[scene_idx],
                     duration=generation_seconds,
@@ -4275,6 +4370,12 @@ def run_video_pipeline(
                         current_reviews.get(scene_idx),
                         generation_aspect_ratio,
                     ),
+                    prefer_gemini_omni=(
+                        is_private_ai_first_omni_preview
+                    ),
+                    continuity_reference_video=(
+                        scene_continuity_reference
+                    ),
                     aspect_ratio=generation_aspect_ratio,
                 )
                 if generated_scene.get('provider') == 'gemini_image_motion':
@@ -4282,11 +4383,28 @@ def run_video_pipeline(
                     # decode/render step. A local failure must not make the
                     # same scene eligible for a second image create.
                     image_motion_submission_scenes.add(scene_idx)
+                if is_private_ai_first_omni_preview:
+                    # A provider request is accepted before local copy and
+                    # continuity-reference work. Reserve the scene until every
+                    # local step succeeds so a failure cannot submit a second
+                    # paid request through Omni or its bounded fallbacks.
+                    omni_unsafe_submission_scenes.add(scene_idx)
                 runway_path = work / f'runway_s{scene_idx:02d}.mp4'
                 download_generated_scene(
                     generated_scene,
                     runway_path,
                 )
+                if (
+                    is_private_ai_first_omni_preview
+                    and omni_continuity_reference_path is None
+                ):
+                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    create_gemini_omni_continuity_reference(
+                        runway_path,
+                        continuity_path,
+                    )
+                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_anchor_scene_idx = scene_idx
                 runway_spec = _generated_visual_spec(
                     runway_path,
                     provider=str(generated_scene['provider']),
@@ -4342,9 +4460,12 @@ def run_video_pipeline(
                     'image_sha256': generated_scene.get('image_sha256'),
                     'prompt_sha256': generated_scene.get('prompt_sha256'),
                 })
+                omni_unsafe_submission_scenes.discard(scene_idx)
             except Exception as exc:
                 if isinstance(exc, GeminiImageAttemptedError):
                     image_motion_submission_scenes.add(scene_idx)
+                if isinstance(exc, GeminiOmniTerminalError):
+                    omni_unsafe_submission_scenes.add(scene_idx)
                 runway_failed_scenes.append(scene_idx)
                 runway_failure_diagnostics.append(
                     _runway_failure_diagnostic(
@@ -4645,6 +4766,15 @@ def run_video_pipeline(
                 ),
             )
         )
+        final_runway_repair_candidates = [
+            scene_idx
+            for scene_idx in final_runway_repair_candidates
+            if scene_idx not in omni_unsafe_submission_scenes
+        ]
+        if is_private_ai_first_omni_preview:
+            final_runway_repair_candidates = sorted(
+                final_runway_repair_candidates
+            )
         _preflight_runway_candidates_before_paid(
             [int(index) for index in final_runway_repair_candidates],
             scene_durations,
@@ -4678,6 +4808,18 @@ def run_video_pipeline(
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
                 )
+                scene_continuity_reference = None
+                if (
+                    omni_continuity_reference_path is not None
+                    and omni_continuity_anchor_scene_idx is not None
+                    and _omni_continuity_reference_applies(
+                        scenes[omni_continuity_anchor_scene_idx],
+                        scenes[scene_idx],
+                    )
+                ):
+                    scene_continuity_reference = (
+                        omni_continuity_reference_path
+                    )
                 repair_scene = generate_scene(
                     repair_prompt,
                     duration=generation_seconds,
@@ -4690,15 +4832,34 @@ def run_video_pipeline(
                         review,
                         generation_aspect_ratio,
                     ),
+                    prefer_gemini_omni=(
+                        is_private_ai_first_omni_preview
+                    ),
+                    continuity_reference_video=(
+                        scene_continuity_reference
+                    ),
                     aspect_ratio=generation_aspect_ratio,
                 )
                 if repair_scene.get('provider') == 'gemini_image_motion':
                     image_motion_submission_scenes.add(scene_idx)
+                if is_private_ai_first_omni_preview:
+                    omni_unsafe_submission_scenes.add(scene_idx)
                 repair_path = work / f'runway_repair_s{scene_idx:02d}.mp4'
                 download_generated_scene(
                     repair_scene,
                     repair_path,
                 )
+                if (
+                    is_private_ai_first_omni_preview
+                    and omni_continuity_reference_path is None
+                ):
+                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    create_gemini_omni_continuity_reference(
+                        repair_path,
+                        continuity_path,
+                    )
+                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_anchor_scene_idx = scene_idx
                 repair_spec = _generated_visual_spec(
                     repair_path,
                     provider=str(repair_scene['provider']),
@@ -4751,6 +4912,7 @@ def run_video_pipeline(
                     'image_sha256': repair_scene.get('image_sha256'),
                     'prompt_sha256': repair_scene.get('prompt_sha256'),
                 })
+                omni_unsafe_submission_scenes.discard(scene_idx)
                 visual_replacements.append({
                     'scene_index': scene_idx,
                     'score': int(review.get('score', 0)),
@@ -4761,6 +4923,8 @@ def run_video_pipeline(
             except Exception as exc:
                 if isinstance(exc, GeminiImageAttemptedError):
                     image_motion_submission_scenes.add(scene_idx)
+                if isinstance(exc, GeminiOmniTerminalError):
+                    omni_unsafe_submission_scenes.add(scene_idx)
                 final_runway_repair_failures.append(scene_idx)
                 runway_failure_diagnostics.append(
                     _runway_failure_diagnostic(

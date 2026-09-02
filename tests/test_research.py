@@ -71,7 +71,7 @@ class ResearchEvidenceContractTests(unittest.TestCase):
                 {'mode': 'preview', 'visual_mix': 'ai_first'},
                 0.5,
             ),
-            4,
+            5,
         )
         for visual_mix in ('balanced', 'real_first'):
             with self.subTest(visual_mix=visual_mix):

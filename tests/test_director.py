@@ -1406,7 +1406,7 @@ class ExplicitSceneCountTests(unittest.TestCase):
         expected = {
             'real_first': (5, 1),
             'balanced': (5, 4),
-            'ai_first': (4, 4),
+            'ai_first': (5, 5),
         }
         for visual_mix, (authored_limit, paid_limit) in expected.items():
             with self.subTest(visual_mix=visual_mix):
@@ -1761,7 +1761,7 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
     @patch('app.services.director._repair_short_stock_scenes')
     @patch('app.services.director._run_director')
     @patch('app.services.director.OpenAI')
-    def test_every_director_correction_path_reapplies_exact_narration(
+    def test_whole_story_correction_reapplies_exact_narration(
         self,
         openai_class,
         run_director,
@@ -1778,11 +1778,7 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
             package,
             marker='ordinary-correction-marker',
         )
-        whole_story = self._director_payload(
-            package,
-            marker='whole-story-marker',
-        )
-        run_director.side_effect = [initial, corrected, whole_story]
+        run_director.side_effect = [initial, corrected]
         repair_calls = 0
 
         def repair(_client, candidate, *_args, **_kwargs):
@@ -1810,7 +1806,7 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(run_director.call_count, 3)
+        self.assertEqual(run_director.call_count, 2)
         correction_input = run_director.call_args_list[1].args[1]
         self.assertEqual(
             [scene['narration'] for scene in correction_input['scenes']],
@@ -1829,7 +1825,7 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
         self.assertEqual(result['narration'], ' '.join(expected))
         self.assertEqual(
             result['scenes'][0]['visual_queries'],
-            whole_story['scenes'][0]['visual_queries'],
+            corrected['scenes'][0]['visual_queries'],
         )
 
     @patch('app.services.director._repair_short_stock_scenes')
@@ -4132,7 +4128,6 @@ class WholeStoryRepairDiagnosticTests(unittest.TestCase):
             [
                 'narration_word_count',
                 'scene_count',
-                'ai_scene_count',
                 'short_editorial_issues',
             ],
         )
@@ -4143,7 +4138,7 @@ class WholeStoryRepairDiagnosticTests(unittest.TestCase):
         self.assertEqual(shape['target_scene_count'], 6)
         self.assertIs(shape['exact_scene_count'], True)
         self.assertEqual(shape['ai_scene_count'], 5)
-        self.assertEqual(shape['max_ai_scene_count'], 4)
+        self.assertEqual(shape['max_ai_scene_count'], 6)
         self.assertGreater(shape['short_editorial_issue_count'], 0)
         self.assertIn(
             'tts_unsafe_raw_terms',

@@ -1,6 +1,7 @@
 import unittest
 
 from app.services.visual_routing import (
+    SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP,
     SHORT_PREVIEW_RUNWAY_CAP,
     SHORT_PREVIEW_RUNWAY_REPAIR_CAP,
     preview_authored_ai_limit,
@@ -11,15 +12,16 @@ from app.services.visual_routing import (
 
 
 class ShortPreviewVisualRoutingTests(unittest.TestCase):
-    def test_ai_first_five_scene_preview_is_bounded_to_four_authored_ai(self):
+    def test_ai_first_preview_is_bounded_to_six_authored_ai(self):
         self.assertEqual(SHORT_PREVIEW_RUNWAY_CAP, 4)
+        self.assertEqual(SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP, 6)
         self.assertEqual(
             preview_authored_ai_limit(
                 {'mode': 'preview', 'visual_mix': 'ai_first'},
-                5,
+                8,
                 0.5,
             ),
-            4,
+            6,
         )
 
     def test_balanced_and_real_first_preview_limits_are_unchanged(self):
@@ -43,16 +45,22 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
             ),
             1,
         )
-        for visual_mix in ('balanced', 'ai_first'):
-            with self.subTest(visual_mix=visual_mix):
-                self.assertEqual(
-                    preview_paid_ai_limit(
-                        {'mode': 'preview', 'visual_mix': visual_mix},
-                        7,
-                        0.5,
-                    ),
-                    4,
-                )
+        self.assertEqual(
+            preview_paid_ai_limit(
+                {'mode': 'preview', 'visual_mix': 'balanced'},
+                7,
+                0.5,
+            ),
+            4,
+        )
+        self.assertEqual(
+            preview_paid_ai_limit(
+                {'mode': 'preview', 'visual_mix': 'ai_first'},
+                7,
+                0.5,
+            ),
+            6,
+        )
         self.assertIsNone(
             preview_paid_ai_limit(
                 {'mode': 'production', 'visual_mix': 'ai_first'},
