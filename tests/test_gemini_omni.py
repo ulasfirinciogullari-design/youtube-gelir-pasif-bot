@@ -43,9 +43,11 @@ class _Response:
 
 
 class _Client:
-    def __init__(self, post_outcome):
+    def __init__(self, post_outcome, delete_outcomes=None):
         self.post_outcome = post_outcome
+        self.delete_outcomes = list(delete_outcomes or [])
         self.post_calls = []
+        self.delete_calls = []
 
     def __enter__(self):
         return self
@@ -58,6 +60,17 @@ class _Client:
         if isinstance(self.post_outcome, BaseException):
             raise self.post_outcome
         return self.post_outcome
+
+    def delete(self, *args, **kwargs):
+        self.delete_calls.append((args, kwargs))
+        outcome = (
+            self.delete_outcomes.pop(0)
+            if self.delete_outcomes
+            else _Response(200, {})
+        )
+        if isinstance(outcome, BaseException):
+            raise outcome
+        return outcome
 
 
 def _video_payload(*, data=None, uri=None, **overrides):
@@ -91,6 +104,7 @@ def _load_omni_namespace(client):
         '_gemini_omni_prompt',
         '_read_bounded_gemini_omni_reference',
         '_gemini_omni_file_id',
+        '_best_effort_delete_gemini_omni_resource',
         '_generate_gemini_omni_video',
     }
     definitions = [
@@ -154,7 +168,10 @@ def _load_omni_namespace(client):
             'unavailable',
         }),
         '_GEMINI_OMNI_FILE_ID_PATTERN': re.compile(
-            r'^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$'
+            r'^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$'
+        ),
+        '_GEMINI_OMNI_INTERACTION_ID_PATTERN': re.compile(
+            r'^v1_[A-Za-z0-9_-]{1,253}$'
         ),
     }
     exec(
@@ -203,7 +220,7 @@ class GeminiOmniRequestTests(unittest.TestCase):
             'resolution': '720p',
         })
         self.assertIs(payload['background'], False)
-        self.assertIs(payload['store'], False)
+        self.assertIs(payload['store'], True)
         self.assertIs(payload['stream'], False)
         self.assertIsInstance(payload['input'], str)
         self.assertIn('exactly 5 seconds', payload['input'])
@@ -218,6 +235,13 @@ class GeminiOmniRequestTests(unittest.TestCase):
         self.assertNotIn('v1_private-interaction-id', serialized)
         self.assertNotIn(_Settings.gemini_api_key, serialized)
         self.assertNotIn('wooden boat', serialized)
+        self.assertEqual(len(client.delete_calls), 1)
+        self.assertEqual(
+            client.delete_calls[0][0][0],
+            'https://generativelanguage.googleapis.com/v1beta/'
+            'interactions/v1_private-interaction-id',
+        )
+        self.assertNotIn('?', client.delete_calls[0][0][0])
 
     def test_reference_request_uses_private_video_input_and_generic_contract(self):
         reference = b'\x00\x00\x00\x18ftypisom' + b'r' * 2048
@@ -235,6 +259,7 @@ class GeminiOmniRequestTests(unittest.TestCase):
         )
 
         payload = client.post_calls[0][1]['json']
+        self.assertIs(payload['store'], True)
         self.assertNotIn('generation_config', payload)
         self.assertEqual(len(payload['input']), 1)
         content = payload['input'][0]['content']
@@ -256,6 +281,7 @@ class GeminiOmniRequestTests(unittest.TestCase):
         serialized = json.dumps(result)
         self.assertNotIn(content[0]['data'], serialized)
         self.assertNotIn('v1_private-interaction-id', serialized)
+        self.assertEqual(len(client.delete_calls), 1)
 
     def test_reference_is_omitted_without_an_explicit_private_anchor(self):
         media = b'\x00\x00\x00\x18ftypisom' + b'x' * 2048
@@ -270,10 +296,28 @@ class GeminiOmniRequestTests(unittest.TestCase):
         self.assertNotIn('<VIDEO_REF_0>', payload['input'])
         self.assertEqual(namespace['_test_validated'], [])
 
+    def test_interaction_cleanup_failure_keeps_validated_media(self):
+        media = b'\x00\x00\x00\x18ftypisom' + b'x' * 2048
+        client = _Client(
+            _Response(
+                200,
+                _video_payload(data=base64.b64encode(media).decode('ascii')),
+            ),
+            [TimeoutError('private cleanup detail'), _Response(503, {})],
+        )
+        namespace = _load_omni_namespace(client)
+
+        result = namespace['_generate_gemini_omni_video']('safe action', 3)
+
+        self.assertEqual(result['_local_video_path'], 'validated-omni-output.mp4')
+        self.assertEqual(len(client.post_calls), 1)
+        self.assertEqual(len(client.delete_calls), 2)
+        self.assertEqual(len(namespace['_test_stored']), 1)
+
     def test_uri_output_accepts_only_official_file_contract(self):
         uri = (
             'https://generativelanguage.googleapis.com/v1beta/'
-            'files/Abc_123-xy:download?alt=media'
+            'files/abc-123-xy:download?alt=media'
         )
         client = _Client(_Response(200, _video_payload(uri=uri)))
         namespace = _load_omni_namespace(client)
@@ -286,6 +330,11 @@ class GeminiOmniRequestTests(unittest.TestCase):
             'https://generativelanguage.googleapis.com/v1beta/files/abc:download?alt=media&key=secret',
             'http://generativelanguage.googleapis.com/v1beta/files/abc:download?alt=media',
             'https://generativelanguage.googleapis.com/v1beta/files/../abc:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/Abc:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/abc_def:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/-abc:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/abc-:download?alt=media',
+            'https://generativelanguage.googleapis.com/v1beta/files/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:download?alt=media',
         ):
             with self.subTest(uri=untrusted):
                 with self.assertRaises(GeminiOmniTerminalError):
@@ -326,6 +375,8 @@ class GeminiOmniRequestTests(unittest.TestCase):
             ('model', 'gemini-omni-preview'),
             ('object', 'response'),
             ('id', None),
+            ('id', 'v1_bad/../interaction'),
+            ('id', 'v1_' + ('a' * 254)),
         ):
             payload = dict(valid)
             payload[key] = value
@@ -348,6 +399,7 @@ class GeminiOmniRequestTests(unittest.TestCase):
                 with self.assertRaises(GeminiOmniTerminalError):
                     namespace['_generate_gemini_omni_video']('safe', 5)
                 self.assertEqual(len(client.post_calls), 1)
+                self.assertEqual(client.delete_calls, [])
                 self.assertEqual(namespace['_test_stored'], [])
 
 
@@ -446,11 +498,13 @@ class _StreamResponse:
 
 
 class _URIClient:
-    def __init__(self, get_outcomes, stream_outcomes):
+    def __init__(self, get_outcomes, stream_outcomes, delete_outcomes=None):
         self.get_outcomes = list(get_outcomes)
         self.stream_outcomes = list(stream_outcomes)
+        self.delete_outcomes = list(delete_outcomes or [])
         self.get_calls = []
         self.stream_calls = []
+        self.delete_calls = []
 
     def get(self, *args, **kwargs):
         self.get_calls.append((args, kwargs))
@@ -466,10 +520,25 @@ class _URIClient:
             raise outcome
         return outcome
 
+    def delete(self, *args, **kwargs):
+        self.delete_calls.append((args, kwargs))
+        outcome = (
+            self.delete_outcomes.pop(0)
+            if self.delete_outcomes
+            else _Response(200, {})
+        )
+        if isinstance(outcome, BaseException):
+            raise outcome
+        return outcome
+
 
 def _load_uri_downloader(client, validator):
     tree = ast.parse(SOURCE_PATH.read_text(encoding='utf-8'))
-    names = {'_gemini_omni_file_id', '_download_gemini_omni_uri'}
+    names = {
+        '_gemini_omni_file_id',
+        '_best_effort_delete_gemini_omni_resource',
+        '_download_gemini_omni_uri',
+    }
     definitions = [
         node for node in tree.body
         if isinstance(node, ast.FunctionDef) and node.name in names
@@ -491,7 +560,7 @@ def _load_uri_downloader(client, validator):
             'storage.googleapis.com',
         },
         '_GEMINI_OMNI_FILE_ID_PATTERN': re.compile(
-            r'^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$'
+            r'^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$'
         ),
         '_MAX_GENERATED_VIDEO_BYTES': 100 * 1024 * 1024,
         '_validated_gemini_omni_video_file': validator,
@@ -544,6 +613,41 @@ class GeminiOmniURIRetrievalTests(unittest.TestCase):
                 client.stream_calls[0][1]['headers'],
                 {'x-goog-api-key': 'private-key'},
             )
+            self.assertEqual(len(client.delete_calls), 1)
+            self.assertEqual(
+                client.delete_calls[0][0][0],
+                'https://generativelanguage.googleapis.com/v1beta/'
+                'files/abc-123',
+            )
+            self.assertEqual(
+                client.delete_calls[0][1]['headers'],
+                {'x-goog-api-key': 'private-key'},
+            )
+            self.assertEqual(client.delete_calls[0][1]['timeout'], 10.0)
+        finally:
+            output.unlink(missing_ok=True)
+
+    def test_cleanup_failure_keeps_validated_local_video(self):
+        media = b'\x00\x00\x00\x18ftypisom' + b'v' * 2048
+        client = _URIClient(
+            [_Response(200, {'state': 'ACTIVE'})],
+            [_StreamResponse(200, {'content-type': 'video/mp4'}, [media])],
+            [TimeoutError('private cleanup detail'), _Response(503, {})],
+        )
+        download = _load_uri_downloader(client, lambda *_a, **_k: 5.0)
+        output = Path(download(
+            client,
+            (
+                'https://generativelanguage.googleapis.com/v1beta/'
+                'files/abc:download?alt=media'
+            ),
+            {'x-goog-api-key': 'private-key'},
+            minimum_seconds=5,
+        ))
+        try:
+            self.assertEqual(output.read_bytes(), media)
+            self.assertEqual(len(client.delete_calls), 2)
+            self.assertEqual(len(client.stream_calls), 1)
         finally:
             output.unlink(missing_ok=True)
 
@@ -565,6 +669,7 @@ class GeminiOmniURIRetrievalTests(unittest.TestCase):
                 minimum_seconds=5,
             )
         self.assertEqual(len(client.stream_calls), 1)
+        self.assertEqual(client.delete_calls, [])
         validator.assert_not_called()
 
     def test_post_acceptance_status_transport_error_fails_closed(self):
@@ -585,6 +690,7 @@ class GeminiOmniURIRetrievalTests(unittest.TestCase):
             )
         self.assertEqual(len(client.get_calls), 1)
         self.assertEqual(client.stream_calls, [])
+        self.assertEqual(client.delete_calls, [])
 
     def test_download_validation_failure_is_terminal_and_cleans_temp_file(self):
         media = b'\x00\x00\x00\x18ftypisom' + b'v' * 2048
@@ -614,6 +720,7 @@ class GeminiOmniURIRetrievalTests(unittest.TestCase):
             )
         self.assertEqual(len(probed_paths), 1)
         self.assertFalse(probed_paths[0].exists())
+        self.assertEqual(client.delete_calls, [])
 
 
 def _load_generated_scene_downloader(validator):

@@ -89,7 +89,12 @@ _RUNWAY_SAFE_PROVIDER_FALLBACK_CODES = frozenset({
     'quota_exceeded',
     'unsupported_model',
 })
-_GEMINI_OMNI_FILE_ID_PATTERN = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$')
+_GEMINI_OMNI_FILE_ID_PATTERN = re.compile(
+    r'^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$'
+)
+_GEMINI_OMNI_INTERACTION_ID_PATTERN = re.compile(
+    r'^v1_[A-Za-z0-9_-]{1,253}$'
+)
 
 
 class GeminiVideoTerminalError(RuntimeError):
@@ -784,6 +789,28 @@ def _gemini_omni_file_id(uri: object) -> str:
     return file_id
 
 
+def _best_effort_delete_gemini_omni_resource(
+    client,
+    resource_url: str,
+    headers: dict,
+) -> None:
+    """Delete one validated provider resource without risking good media."""
+    for _attempt in range(2):
+        try:
+            response = client.delete(
+                resource_url,
+                headers=headers,
+                timeout=10.0,
+            )
+        except Exception:
+            continue
+        status_code = int(getattr(response, 'status_code', 0) or 0)
+        if 200 <= status_code < 300 or status_code == 404:
+            return
+        if status_code not in {408, 429, 500, 502, 503, 504}:
+            return
+
+
 def _download_gemini_omni_uri(
     client,
     uri: str,
@@ -903,6 +930,11 @@ def _download_gemini_omni_uri(
                 raise GeminiOmniTerminalError(
                     'Gemini Omni downloaded video failed validation'
                 ) from None
+            _best_effort_delete_gemini_omni_resource(
+                client,
+                file_url,
+                headers,
+            )
             return str(temporary_path)
         raise GeminiOmniTerminalError(
             'Gemini Omni download redirected too many times'
@@ -964,7 +996,9 @@ def _generate_gemini_omni_video(
             'resolution': _GEMINI_OMNI_RESOLUTION,
         },
         'background': False,
-        'store': False,
+        # Google's live URI-delivery contract requires a stored interaction.
+        # The record is deleted after the validated video is safely local.
+        'store': True,
         'stream': False,
     }
     if reference_bytes is not None:
@@ -1019,7 +1053,7 @@ def _generate_gemini_omni_video(
             or payload.get('model') != _GEMINI_OMNI_MODEL
             or payload.get('object') != 'interaction'
             or not isinstance(payload.get('id'), str)
-            or not 1 <= len(payload['id']) <= 256
+            or not _GEMINI_OMNI_INTERACTION_ID_PATTERN.fullmatch(payload['id'])
         ):
             raise GeminiOmniTerminalError('Gemini Omni response was invalid')
         steps = payload.get('steps')
@@ -1067,6 +1101,11 @@ def _generate_gemini_omni_video(
                 headers,
                 minimum_seconds=seconds,
             )
+        _best_effort_delete_gemini_omni_resource(
+            client,
+            f'{_GEMINI_OMNI_ENDPOINT}/{payload["id"]}',
+            headers,
+        )
     return {
         '_local_video_path': local_path,
         'provider': 'gemini_omni',
