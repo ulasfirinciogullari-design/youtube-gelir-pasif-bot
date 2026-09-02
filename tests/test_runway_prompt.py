@@ -371,7 +371,7 @@ class RunwayPromptTests(unittest.TestCase):
             {'retry_queries': ['weathered orange toy on wet sand']},
         )
 
-        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 1000)
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 900)
         self.assertIn('MANUFACTURED IDENTITY', prompt)
         self.assertIn('Require 2+ clear manufactured cues', prompt)
         self.assertIn('Never a live or dead biological original', prompt)
@@ -667,6 +667,19 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertNotIn('X-Amz-Signature', serialized)
         self.assertNotIn('private authored scene', serialized)
 
+    def test_runway_failure_diagnostic_allows_only_safe_reason_codes(self):
+        safe_error = RuntimeError('secret provider response')
+        safe_error.reason_code = 'invalid_model'
+        unsafe_error = RuntimeError('secret provider response')
+        unsafe_error.reason_code = 'sk_live_secret_value'
+
+        safe = runway_failure_diagnostic('initial_generation', 1, safe_error)
+        unsafe = runway_failure_diagnostic('initial_generation', 2, unsafe_error)
+
+        self.assertEqual(safe['reason_code'], 'invalid_model')
+        self.assertNotIn('reason_code', unsafe)
+        self.assertNotIn('secret', json.dumps([safe, unsafe]))
+
     def test_public_runway_failure_payload_filters_fields_and_scenes(self):
         secret = 'key=super-secret&url=https://private.example/generated.mp4'
         payload = runway_failure_payload(
@@ -679,6 +692,7 @@ class RunwayPromptTests(unittest.TestCase):
                         1,
                         TimeoutError(secret),
                     ),
+                    'reason_code': 'invalid_model',
                     'message': secret,
                     'url': 'https://private.example/generated.mp4',
                     'prompt': 'private authored scene',
@@ -692,6 +706,7 @@ class RunwayPromptTests(unittest.TestCase):
                     'stage': 'final_repair',
                     'scene_index': 1,
                     'exception_class': secret,
+                    'reason_code': secret,
                 },
             ],
         )
@@ -705,6 +720,7 @@ class RunwayPromptTests(unittest.TestCase):
                     'stage': 'final_repair',
                     'scene_index': 1,
                     'exception_class': 'TimeoutError',
+                    'reason_code': 'invalid_model',
                 },
                 {
                     'stage': 'final_repair',
@@ -748,13 +764,13 @@ class RunwayPromptTests(unittest.TestCase):
             prompt.index('PRIMARY EVENT:'),
             prompt.index('Core shot direction:'),
         )
-        self.assertIn('Show a clear START state', prompt)
+        self.assertIn('Begin with a clear START state', prompt)
         self.assertIn('PHYSICAL ACTION or CAUSE', prompt)
         self.assertIn('hold the visibly CHANGED RESULT', prompt)
-        self.assertIn('A static final-only shot fails.', prompt)
-        self.assertIn('REVIEW-LED REPAIR TARGETS:', prompt)
+        self.assertNotIn('final-only shot fails', prompt)
+        self.assertIn('REVIEW-LED VISIBLE TARGETS:', prompt)
         self.assertIn('real-world scale', prompt)
-        self.assertIn('no generic substitute', prompt)
+        self.assertNotIn('no generic substitute', prompt)
         self.assertNotIn('THIS FREEFORM REASON', prompt)
 
     def test_repair_evidence_keeps_small_weathered_subject_literal(self):
@@ -785,7 +801,7 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertIn('real-world scale', prompt)
         self.assertIn('material, condition and setting', prompt)
         self.assertNotIn('IGNORE THE STORY', prompt)
-        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 1000)
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 900)
 
     def test_temporal_contract_survives_long_authored_prompt_and_utf16_cap(self):
         prompt = runway_prompt(
@@ -796,10 +812,10 @@ class RunwayPromptTests(unittest.TestCase):
             },
             {'retry_queries': ['hand performs one visible action']},
         )
-        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 1000)
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 900)
         self.assertIn('PRIMARY EVENT:', prompt)
-        self.assertIn('static final-only shot fails', prompt)
-        self.assertTrue(prompt.endswith('watermark or metaphor.'))
+        self.assertNotIn('static final-only shot fails', prompt)
+        self.assertTrue(prompt.endswith('unbranded documentary frame.'))
 
     def test_existing_mechanism_guardrail_is_retained(self):
         prompt = runway_prompt(
@@ -831,9 +847,9 @@ class RunwayPromptTests(unittest.TestCase):
 
         self.assertIn('Connection proof:', prompt)
         self.assertIn('distinct moving connector', prompt)
-        self.assertIn('receiving socket before contact', prompt)
+        self.assertIn('receiving socket apart', prompt)
         self.assertIn('release the hand', prompt)
-        self.assertIn('loose strap', prompt)
+        self.assertIn('fully seated connection', prompt)
 
     def test_mechanism_contract_stays_whole_when_review_targets_exist(self):
         prompt = runway_prompt(
@@ -859,12 +875,12 @@ class RunwayPromptTests(unittest.TestCase):
         )
         self.assertIn('Connection proof:', prompt)
         self.assertIn(
-            'loose strap or a hand hiding the interface fails.',
+            'hold the fully seated connection in clear view.',
             prompt,
         )
         self.assertNotIn('REVIEW-LED', prompt)
-        self.assertTrue(prompt.endswith('watermark or metaphor.'))
-        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 1000)
+        self.assertTrue(prompt.endswith('unbranded documentary frame.'))
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 900)
 
     def test_long_event_and_mechanism_keep_authored_contract_and_closing(self):
         authored = (
@@ -880,10 +896,10 @@ class RunwayPromptTests(unittest.TestCase):
             },
             {'retry_queries': ['physical meter falls after OLED pixels turn off ' * 8]},
         )
-        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 1000)
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 900)
         self.assertIn('AUTHORED_CONTINUITY_SENTINEL', prompt)
         self.assertIn('OLED proof:', prompt)
-        self.assertTrue(prompt.endswith('watermark or metaphor.'))
+        self.assertTrue(prompt.endswith('unbranded documentary frame.'))
 
     def test_generated_clip_keeps_zero_start_after_qc_ranking(self):
         visuals = [[{
