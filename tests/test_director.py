@@ -732,6 +732,18 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
             routed['scenes'][5]['ai_prompt'],
         )
         self.assertIn(
+            'ending is visibly cooler than the beginning',
+            routed['scenes'][5]['ai_prompt'],
+        )
+        self.assertIn(
+            'gentle continuous documentary push-in',
+            routed['scenes'][5]['ai_prompt'],
+        )
+        self.assertNotIn(
+            'camera and phone remain still',
+            routed['scenes'][5]['ai_prompt'],
+        )
+        self.assertIn(
             'purely photographic, text-free, and unbranded',
             routed['scenes'][1]['ai_prompt'],
         )

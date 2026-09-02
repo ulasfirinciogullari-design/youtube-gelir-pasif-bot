@@ -1357,10 +1357,12 @@ def _short_preview_proxy_prompt(scene: dict, kind: str) -> str:
         'open_air_cooling': (
             'One continuous photorealistic thermal-camera documentary shot of '
             'the same unbranded smartphone resting exposed on the same hard, '
-            'flat, open surface in the established scene setting. Localized '
-            'heat around the phone '
-            'visibly decreases and disperses into the surrounding open air while '
-            'the camera and phone remain still.'
+            'flat, open surface in the established scene setting. Begin with a '
+            'clearly hot thermal color field concentrated around the phone, then '
+            'show that field steadily shrinking as a soft heat plume disperses '
+            'into the surrounding open air; the ending is visibly cooler than '
+            'the beginning. Keep the phone stable while a gentle continuous '
+            'documentary push-in gives the shot natural temporal motion.'
         ),
     }
     query_values = scene.get('visual_queries') or []
