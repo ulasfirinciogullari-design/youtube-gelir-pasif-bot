@@ -2104,6 +2104,26 @@ def _sanitize_provider_visual_text(value: object) -> str:
     return re.sub(r'\s+', ' ', text).strip(' .,:;-')
 
 
+def _identity_proof_clause(review: object) -> str:
+    """Protect exact-subject evidence only after an identity hard-gate."""
+    if not isinstance(review, dict):
+        return ''
+    identity_evidence_required = (
+        review.get('subject_visible') is False
+        or review.get('authored_identity_or_material_conflict_visible') is True
+        or (
+            review.get('recurring_identity_continuity_applicable') is True
+            and review.get('recurring_identity_continuity_matches') is not True
+        )
+    )
+    if not identity_evidence_required:
+        return ''
+    return (
+        'IDENTITY PROOF: exact subject large in frame, never physically '
+        'enlarged; authored scale; visible comparable close-up; no substitute. '
+    )
+
+
 def _runway_prompt_for_scene(
     scene: dict,
     review: dict | None,
@@ -2113,7 +2133,8 @@ def _runway_prompt_for_scene(
     if aspect_ratio not in {'16:9', '9:16'}:
         raise ValueError('Generation aspect ratio must be 16:9 or 9:16')
     original = _sanitize_provider_visual_text(scene.get('ai_prompt'))
-    review = review or {}
+    review = review if isinstance(review, dict) else {}
+    identity_evidence_clause = _identity_proof_clause(review)
     retry_queries = review.get('retry_queries') or []
     if isinstance(retry_queries, str):
         retry_queries = [retry_queries]
@@ -2227,9 +2248,80 @@ def _runway_prompt_for_scene(
     identity_clause = (
         f'{identity_guardrail} ' if identity_guardrail else ''
     )
+    if identity_evidence_clause:
+        # A failed identity gate needs a smaller protected layout than the
+        # general-purpose prompt. Reserve a useful literal scene core before
+        # admitting any optional mechanism text; never trim the identity or
+        # artifact contracts from either end of the provider limit.
+        repair_opening = (
+            'Raw-camera 9:16 documentary shot. No UI, @handle, caption, text, '
+            'logo, watermark, border, letterbox or collage. '
+            if aspect_ratio == '9:16'
+            else (
+                'Raw-camera 16:9 documentary shot. No UI, @handle, caption, '
+                'text, logo, watermark, border, letterbox or collage. '
+            )
+        )
+        repair_core_source = ' / '.join(
+            value for value in (visible_action, original, narration) if value
+        )
+        repair_prefix = (
+            repair_opening
+            + identity_evidence_clause
+            + original_label
+        )
+        repair_suffix = (
+            '. '
+            + identity_clause
+            + closing
+        )
+        minimum_core_units = 80
+        required_units = len(
+            (repair_prefix + repair_suffix).encode('utf-16-le')
+        ) // 2
+        if required_units + minimum_core_units > prompt_limit:
+            raise ValueError(
+                'Protected identity repair prompt exceeds provider limit'
+            )
+
+        optional_guardrail = ''
+        if raw_guardrail_clause:
+            candidate_guardrail = f'{raw_guardrail_clause} '
+            candidate_units = len(
+                candidate_guardrail.encode('utf-16-le')
+            ) // 2
+            if (
+                required_units
+                + candidate_units
+                + minimum_core_units
+                <= prompt_limit
+            ):
+                optional_guardrail = candidate_guardrail
+                repair_suffix = (
+                    '. '
+                    + optional_guardrail
+                    + identity_clause
+                    + closing
+                )
+                required_units += candidate_units
+
+        repair_core = _truncate_utf16(
+            repair_core_source,
+            prompt_limit - required_units,
+        )
+        if not repair_core:
+            raise ValueError('Identity repair prompt requires scene content')
+        repair_prompt = repair_prefix + repair_core + repair_suffix
+        if len(repair_prompt.encode('utf-16-le')) // 2 > prompt_limit:
+            raise ValueError(
+                'Protected identity repair prompt exceeds provider limit'
+            )
+        return repair_prompt
+
     fixed_units = len(
         (
             opening
+            + identity_evidence_clause
             + temporal_clause
             + original_label
             + identity_clause
@@ -2263,6 +2355,7 @@ def _runway_prompt_for_scene(
     guardrail_clause = f'{guardrail_value} ' if guardrail_value else ''
     return _truncate_utf16(
         opening
+        + identity_evidence_clause
         + temporal_clause
         + original_clause
         + identity_clause
@@ -2281,7 +2374,8 @@ def _image_motion_prompt_for_scene(
     aspect_ratio = str(aspect_ratio or '').strip()
     if aspect_ratio not in {'16:9', '9:16'}:
         raise ValueError('Generation aspect ratio must be 16:9 or 9:16')
-    review = review or {}
+    review = review if isinstance(review, dict) else {}
+    identity_evidence_clause = _identity_proof_clause(review)
     identity_guardrail = manufactured_replica_guardrail(scene)
     retry_queries = review.get('retry_queries') or []
     if isinstance(retry_queries, str):
@@ -2338,9 +2432,60 @@ def _image_motion_prompt_for_scene(
     identity_clause = (
         f' {identity_guardrail}' if identity_guardrail else ''
     )
+    if identity_evidence_clause:
+        repair_opening = (
+            'Raw 9:16 documentary keyframe. No UI, @handle, text, logo, '
+            'watermark, border, letterbox, storyboard, collage or CGI. '
+            if aspect_ratio == '9:16'
+            else (
+                'Raw 16:9 documentary keyframe. No UI, @handle, text, logo, '
+                'watermark, border, letterbox, storyboard, collage or CGI. '
+            )
+        )
+        repair_core_source = ' / '.join(
+            value
+            for value in (
+                evidence,
+                _sanitize_provider_visual_text(scene.get('ai_prompt')),
+                narration,
+            )
+            if value
+        )
+        repair_prefix = (
+            repair_opening
+            + identity_evidence_clause
+            + 'CORE VISUAL: '
+        )
+        repair_suffix = (
+            f'. {identity_guardrail}{closing}'
+            if identity_guardrail
+            else f'.{closing}'
+        )
+        minimum_core_units = 80
+        required_units = len(
+            (repair_prefix + repair_suffix).encode('utf-16-le')
+        ) // 2
+        if required_units + minimum_core_units > 1000:
+            raise ValueError(
+                'Protected identity keyframe prompt exceeds provider limit'
+            )
+        repair_core = _truncate_utf16(
+            repair_core_source,
+            1000 - required_units,
+        )
+        if not repair_core:
+            raise ValueError('Identity repair keyframe requires scene content')
+        repair_prompt = repair_prefix + repair_core + repair_suffix
+        if len(repair_prompt.encode('utf-16-le')) // 2 > 1000:
+            raise ValueError(
+                'Protected identity keyframe prompt exceeds provider limit'
+            )
+        return repair_prompt
+
     fixed_units = len(
         (
             opening
+            + identity_evidence_clause
             + context_prefix
             + identity_clause
             + closing
@@ -2355,6 +2500,7 @@ def _image_motion_prompt_for_scene(
     )
     return _truncate_utf16(
         opening
+        + identity_evidence_clause
         + context_prefix
         + core_visual
         + identity_clause
