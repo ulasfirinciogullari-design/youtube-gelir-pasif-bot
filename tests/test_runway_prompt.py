@@ -49,6 +49,7 @@ def _load_prompt_functions():
     names = {
         '_visual_path',
         '_truncate_utf16',
+        '_sanitize_provider_visual_text',
         '_runway_prompt_for_scene',
         '_apply_visual_review',
         '_runway_generation_seconds',
@@ -465,11 +466,110 @@ class RunwayPromptTests(unittest.TestCase):
         long_prompt = runway_prompt(scene, None)
 
         self.assertIn('9:16 vertical documentary shot', short_prompt)
-        self.assertIn('YouTube Shorts', short_prompt)
         self.assertIn('central safe area', short_prompt)
+        self.assertIn(
+            'No UI, @handle, caption, text, logo, watermark, border, '
+            'letterbox or collage.',
+            short_prompt,
+        )
+        self.assertNotIn('YouTube Shorts', short_prompt)
         self.assertNotIn('16:9 documentary shot', short_prompt)
         self.assertIn('16:9 documentary shot', long_prompt)
         self.assertNotIn('YouTube Shorts', long_prompt)
+
+    def test_provider_prompt_removes_social_presentation_bait(self):
+        scene = {
+            'narration': (
+                'For YouTube Shorts, the black toy dragon rises from the sand '
+                'beside @seeldfft_bwers.'
+            ),
+            'ai_prompt': (
+                'TikTok style close-up of the same black toy dragon with a '
+                'subscribe button.'
+            ),
+            'visual_queries': ['unused fallback'],
+        }
+        prompt = runway_prompt(
+            scene,
+            {
+                'retry_queries': [
+                    'Instagram Reel style with @seeldfft_bwers share icon; black toy '
+                    'dragon standing on wet sand',
+                ],
+            },
+            '9:16',
+        )
+
+        lowered = prompt.casefold()
+        self.assertIn('black toy dragon', lowered)
+        self.assertIn('wet sand', lowered)
+        self.assertIn('central safe area', lowered)
+        for bait in (
+            'youtube shorts',
+            'tiktok',
+            'instagram reel',
+            '@seeldfft_bwers',
+            'subscribe button',
+            'share icon',
+        ):
+            with self.subTest(bait=bait):
+                self.assertNotIn(bait, lowered)
+
+        factual_prompt = runway_prompt(
+            {
+                'narration': (
+                    'TikTok changed music discovery while YouTube Shorts '
+                    'policy changed creator strategy.'
+                ),
+                'ai_prompt': (
+                    'Exterior of TikTok headquarters beside a generic creator '
+                    'workspace discussing YouTube Shorts policy.'
+                ),
+                'visual_queries': ['TikTok headquarters documentary exterior'],
+            },
+            None,
+        )
+        self.assertIn('TikTok headquarters', factual_prompt)
+        self.assertIn('YouTube Shorts policy', factual_prompt)
+
+        wide_prompt = runway_prompt(
+            {
+                'narration': 'A musician records a new song.',
+                'ai_prompt': 'TikTok-style close-up of a musician recording.',
+                'visual_queries': ['musician recording in a studio'],
+            },
+            None,
+            '16:9',
+        )
+        self.assertIn('16:9 documentary shot', wide_prompt)
+        self.assertNotIn('TikTok', wide_prompt)
+        self.assertNotIn('vertical short-form', wide_prompt)
+
+    def test_portrait_toy_prompt_keeps_complete_artifact_ban(self):
+        prompt = runway_prompt(
+            {
+                'narration': 'A black toy dragon is recovered from wet sand.',
+                'ai_prompt': (
+                    'The same manufactured black toy dragon on wet Cornwall '
+                    'sand, no humans or hands. ' * 20
+                ),
+                'visual_queries': ['black toy dragon wet sand no humans'],
+            },
+            {
+                'retry_queries': [
+                    'weathered black toy dragon with molded seams and part '
+                    'edges on wet Cornwall sand, no humans ' * 8,
+                ],
+            },
+            '9:16',
+        )
+
+        self.assertLessEqual(len(prompt.encode('utf-16-le')) // 2, 900)
+        self.assertIn(
+            'No UI, @handle, caption, text, logo, watermark, border, '
+            'letterbox or collage.',
+            prompt,
+        )
 
     def test_real_first_short_preview_caps_initial_runway_spend_at_one_scene(self):
         self.assertEqual(

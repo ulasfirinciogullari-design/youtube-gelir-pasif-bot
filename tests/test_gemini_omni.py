@@ -26,6 +26,10 @@ class GeminiOmniTerminalError(RuntimeError):
     pass
 
 
+class GeminiOmniContinuityReferenceError(RuntimeError):
+    pass
+
+
 class _Settings:
     gemini_api_key = 'configured-gemini-secret'
     runwayml_api_secret = 'configured-runway-secret'
@@ -272,6 +276,9 @@ class GeminiOmniRequestTests(unittest.TestCase):
         self.assertIn('do not use it as a literal initial frame', prompt)
         self.assertIn('current scene direction is authoritative', prompt)
         self.assertIn('primary subject, object or person identity', prompt)
+        self.assertIn('authored non-text physical markings', prompt)
+        self.assertIn('non-diegetic graphic or interface pixels', prompt)
+        self.assertIn('raw camera footage only', prompt)
         self.assertIn('narrated setting or time transition', prompt)
         self.assertNotIn('phone', prompt.casefold())
         self.assertNotIn('room', prompt.casefold())
@@ -468,7 +475,100 @@ def _reference_image_probe(*, width=720, height=1280, codec_name='mjpeg'):
     )
 
 
+def _anchor_candidate_review(
+    index,
+    *,
+    text=False,
+    logo=False,
+    social_ui=False,
+    artifact=False,
+    subject=True,
+    detail=80,
+):
+    return {
+        'candidate_index': index,
+        'readable_text_visible': text,
+        'logo_or_watermark_visible': logo,
+        'social_ui_or_handle_visible': social_ui,
+        'major_visual_artifact_visible': artifact,
+        'primary_subject_clear': subject,
+        'detail_score': detail,
+    }
+
+
+def _load_reference_candidate_selector(outcome):
+    tree = ast.parse(SOURCE_PATH.read_text(encoding='utf-8'))
+    function = next(
+        node for node in tree.body
+        if isinstance(node, ast.FunctionDef)
+        and node.name == '_select_gemini_omni_continuity_candidate'
+    )
+    calls = []
+
+    def generate(parts, **kwargs):
+        calls.append((parts, kwargs))
+        if isinstance(outcome, BaseException):
+            raise outcome
+        return outcome
+
+    schema = {'sentinel': 'anchor-qc-schema'}
+    namespace = {
+        'Path': Path,
+        'settings': SimpleNamespace(
+            gemini_api_key='configured-gemini-secret',
+            gemini_model='configured-critic-model',
+        ),
+        'GEMINI_DEFAULT_MODEL': 'default-critic-model',
+        'GeminiOmniContinuityReferenceError': (
+            GeminiOmniContinuityReferenceError
+        ),
+        '_GEMINI_OMNI_ANCHOR_QC_SCHEMA': schema,
+        '_validated_gemini_omni_reference_image_file': lambda _path: None,
+        'generate_gemini_multimodal_json': generate,
+    }
+    exec(
+        compile(
+            ast.Module(body=[function], type_ignores=[]),
+            str(SOURCE_PATH),
+            'exec',
+        ),
+        namespace,
+    )
+    return namespace[function.name], calls, schema
+
+
 class GeminiOmniReferenceImageTests(unittest.TestCase):
+    def test_anchor_qc_schema_is_strict_for_all_three_candidates(self):
+        tree = ast.parse(SOURCE_PATH.read_text(encoding='utf-8'))
+        assignment = next(
+            node for node in tree.body
+            if isinstance(node, ast.Assign)
+            and any(
+                isinstance(target, ast.Name)
+                and target.id == '_GEMINI_OMNI_ANCHOR_QC_SCHEMA'
+                for target in node.targets
+            )
+        )
+        schema = ast.literal_eval(assignment.value)
+        self.assertIs(schema['additionalProperties'], False)
+        candidates = schema['properties']['candidates']
+        self.assertEqual(candidates['minItems'], 3)
+        self.assertEqual(candidates['maxItems'], 3)
+        item = candidates['items']
+        self.assertIs(item['additionalProperties'], False)
+        self.assertEqual(
+            set(item['required']),
+            set(item['properties']),
+        )
+        for field in (
+            'readable_text_visible',
+            'logo_or_watermark_visible',
+            'social_ui_or_handle_visible',
+            'major_visual_artifact_visible',
+            'primary_subject_clear',
+        ):
+            self.assertEqual(item['properties'][field], {'type': 'boolean'})
+
     def test_validator_requires_one_exact_portrait_jpeg(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -491,7 +591,95 @@ class GeminiOmniReferenceImageTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         _load_reference_image_validator(probe)(candidate)
 
-    def test_creator_extracts_one_mid_clip_jpeg_and_replaces_atomically(self):
+    def test_clean_candidate_gate_overrides_largest_file_proxy(self):
+        outcome = {
+            'candidates': [
+                _anchor_candidate_review(2, detail=70),
+                _anchor_candidate_review(0, logo=True, detail=100),
+                _anchor_candidate_review(1, detail=90),
+            ],
+        }
+        select, calls, schema = _load_reference_candidate_selector(outcome)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            candidates = [root / f'candidate-{index}.jpg' for index in range(3)]
+            candidate_bytes = []
+            for index, candidate in enumerate(candidates):
+                frame_bytes = (
+                    b'\xff\xd8\xff' + b'i' * (6000 - index * 1000) + b'\xff\xd9'
+                )
+                candidate.write_bytes(frame_bytes)
+                candidate_bytes.append(frame_bytes)
+            self.assertEqual(select(candidates), candidates[1])
+
+        self.assertEqual(len(calls), 1)
+        parts, kwargs = calls[0]
+        self.assertEqual(
+            [part['image_bytes'] for part in parts if 'image_bytes' in part],
+            candidate_bytes,
+        )
+        self.assertEqual(kwargs['api_key'], 'configured-gemini-secret')
+        self.assertEqual(kwargs['model'], 'configured-critic-model')
+        self.assertIs(kwargs['json_schema'], schema)
+        self.assertEqual(kwargs['thinking_level'], 'low')
+        self.assertEqual(kwargs['timeout'], 90.0)
+        self.assertIs(kwargs['retry_once'], True)
+        self.assertIn('fail-closed', kwargs['system_instruction'])
+        self.assertIn('@handles', kwargs['system_instruction'])
+
+    def test_clean_candidate_gate_fails_closed_without_a_safe_frame(self):
+        outcome = {
+            'candidates': [
+                _anchor_candidate_review(0, text=True),
+                _anchor_candidate_review(1, social_ui=True),
+                _anchor_candidate_review(2, subject=False),
+            ],
+        }
+        select, _calls, _schema = _load_reference_candidate_selector(outcome)
+        with tempfile.TemporaryDirectory() as directory:
+            candidates = []
+            for index in range(3):
+                candidate = Path(directory) / f'candidate-{index}.jpg'
+                candidate.write_bytes(b'\xff\xd8\xffframe\xff\xd9')
+                candidates.append(candidate)
+            with self.assertRaises(GeminiOmniContinuityReferenceError):
+                select(candidates)
+
+    def test_clean_candidate_gate_rejects_ambiguous_indices_and_provider_errors(self):
+        invalid_outcomes = (
+            {
+                'candidates': [
+                    _anchor_candidate_review(0),
+                    _anchor_candidate_review(0),
+                    _anchor_candidate_review(2),
+                ],
+            },
+            {
+                'candidates': [
+                    _anchor_candidate_review(False),
+                    _anchor_candidate_review(1),
+                    _anchor_candidate_review(2),
+                ],
+            },
+            RuntimeError('provider failed'),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            candidates = []
+            for index in range(3):
+                candidate = Path(directory) / f'candidate-{index}.jpg'
+                candidate.write_bytes(b'\xff\xd8\xffframe\xff\xd9')
+                candidates.append(candidate)
+            for outcome in invalid_outcomes:
+                with self.subTest(outcome=outcome):
+                    select, _calls, _schema = (
+                        _load_reference_candidate_selector(outcome)
+                    )
+                    with self.assertRaises(
+                        GeminiOmniContinuityReferenceError
+                    ):
+                        select(candidates)
+
+    def test_creator_extracts_three_jpegs_and_replaces_selected_atomically(self):
         tree = ast.parse(SOURCE_PATH.read_text(encoding='utf-8'))
         function = next(
             node for node in tree.body
@@ -523,6 +711,7 @@ class GeminiOmniReferenceImageTests(unittest.TestCase):
         def validate(path):
             validated.append(Path(path).read_bytes())
 
+        selector = Mock(side_effect=lambda values: values[1])
         namespace = {
             'Path': Path,
             'json': json,
@@ -535,6 +724,7 @@ class GeminiOmniReferenceImageTests(unittest.TestCase):
             '_GEMINI_OMNI_MAX_SECONDS': 10.0,
             '_MAX_GENERATED_VIDEO_BYTES': 100 * 1024 * 1024,
             '_validated_gemini_omni_reference_image_file': validate,
+            '_select_gemini_omni_continuity_candidate': selector,
         }
         exec(
             compile(
@@ -560,6 +750,7 @@ class GeminiOmniReferenceImageTests(unittest.TestCase):
             self.assertEqual(len(commands), 3)
             self.assertEqual(len(validated), 3)
             self.assertEqual(output.read_bytes(), validated[1])
+            selector.assert_called_once()
             for index in range(3):
                 self.assertFalse(
                     (root / f'anchor.candidate-{index}.jpg').exists()
@@ -1143,6 +1334,42 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
         )
         return namespace['_omni_continuity_reference_applies']
 
+    def _continuity_needed(self):
+        tree = ast.parse(TASKS_PATH.read_text(encoding='utf-8'))
+        names = {
+            '_OMNI_CONTINUITY_MARKER_PATTERN',
+            '_OMNI_CONTINUITY_STOP_WORDS',
+        }
+        functions = {
+            '_omni_identity_tokens',
+            '_omni_continuity_reference_applies',
+            '_omni_continuity_reference_needed',
+        }
+        definitions = [
+            node for node in tree.body
+            if (
+                isinstance(node, ast.Assign)
+                and any(
+                    isinstance(target, ast.Name) and target.id in names
+                    for target in node.targets
+                )
+            )
+            or (
+                isinstance(node, ast.FunctionDef)
+                and node.name in functions
+            )
+        ]
+        namespace = {'re': re}
+        exec(
+            compile(
+                ast.Module(body=definitions, type_ignores=[]),
+                str(TASKS_PATH),
+                'exec',
+            ),
+            namespace,
+        )
+        return namespace['_omni_continuity_reference_needed']
+
     def test_reference_requires_explicit_marker_and_shared_identity(self):
         applies = self._continuity_applies()
         anchor = {
@@ -1168,6 +1395,51 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
             {'ai_prompt': 'Documentary room lighting around a metal tool.'},
             {'ai_prompt': 'The same documentary room lighting surrounds a bird.'},
         ))
+
+    def test_billed_anchor_gate_requires_a_later_eligible_continuation(self):
+        needed = self._continuity_needed()
+        scenes = [
+            {'ai_prompt': 'Wide aerial view of Cornwall at sunrise.'},
+            {'ai_prompt': 'A black LEGO dragon rests on wet sand.'},
+            {'ai_prompt': 'The same black LEGO dragon rises from wet sand.'},
+        ]
+
+        self.assertFalse(needed(0, scenes, {0, 1, 2}))
+        self.assertTrue(needed(1, scenes, {1, 2}))
+        self.assertFalse(needed(1, scenes, {1}))
+        self.assertFalse(needed(1, scenes, {0, 1}))
+        self.assertFalse(needed(False, scenes, {1, 2}))
+
+    def test_all_anchor_creation_paths_are_guarded_by_later_paid_use(self):
+        source = TASKS_PATH.read_text(encoding='utf-8')
+        self.assertEqual(
+            source.count('_omni_continuity_reference_needed('),
+            4,
+        )
+        recovered_start = source.index('if recovered_scene_entries:')
+        recovered_end = source.index('\n                continue', recovered_start)
+        self.assertIn(
+            '_omni_continuity_reference_needed(',
+            source[recovered_start:recovered_end],
+        )
+        fresh_start = source.index('generated_scene = generate_scene(')
+        fresh_end = source.index(
+            "runway_spec = _generated_visual_spec(",
+            fresh_start,
+        )
+        self.assertIn(
+            '_omni_continuity_reference_needed(',
+            source[fresh_start:fresh_end],
+        )
+        repair_start = source.index('repair_scene = generate_scene(')
+        repair_end = source.index(
+            "repair_spec = _generated_visual_spec(",
+            repair_start,
+        )
+        self.assertIn(
+            '_omni_continuity_reference_needed(',
+            source[repair_start:repair_end],
+        )
 
     def test_private_ai_first_selected_scenes_are_sorted_before_generation(self):
         source = TASKS_PATH.read_text(encoding='utf-8')
@@ -1246,6 +1518,19 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
             'GeminiOmniContinuityReferenceError,\n'
             '    GeminiOmniTerminalError,',
             source,
+        )
+        self.assertIn(
+            'dont_autoretry_for=(\n'
+            '        FinalVisualQualityError,\n'
+            '        FinalAudioQualityError,\n'
+            '        GeminiOmniContinuityReferenceError,',
+            source,
+        )
+        terminal_start = source.index('terminal_pre_media_error = isinstance(')
+        terminal_end = source.index('\n        if (', terminal_start)
+        self.assertIn(
+            'GeminiOmniContinuityReferenceError,',
+            source[terminal_start:terminal_end],
         )
 
     def test_accepted_or_ambiguous_omni_scene_cannot_be_resubmitted_as_repair(self):

@@ -142,6 +142,29 @@ def _omni_continuity_reference_applies(
     )
 
 
+def _omni_continuity_reference_needed(
+    anchor_scene_idx: int,
+    scenes: list[dict],
+    eligible_scene_indices: set[int] | list[int] | tuple[int, ...],
+) -> bool:
+    """Create a billed anchor gate only when a later paid scene will use it."""
+    if (
+        type(anchor_scene_idx) is not int
+        or anchor_scene_idx < 0
+        or anchor_scene_idx >= len(scenes)
+    ):
+        return False
+    return any(
+        type(scene_idx) is int
+        and anchor_scene_idx < scene_idx < len(scenes)
+        and _omni_continuity_reference_applies(
+            scenes[anchor_scene_idx],
+            scenes[scene_idx],
+        )
+        for scene_idx in eligible_scene_indices
+    )
+
+
 class PreRunwayRetryableError(RuntimeError):
     """A pre-paid preflight rejection that may safely regenerate the automatic plan."""
 
@@ -2052,6 +2075,35 @@ def _truncate_utf16(text: str, limit: int = 1000) -> str:
     return ''.join(result).strip()
 
 
+def _sanitize_provider_visual_text(value: object) -> str:
+    """Remove presentation bait from derived provider-only visual prompts."""
+    text = str(value or '').strip()
+    substitutions = (
+        (
+            r'\b(?:for\s+youtube\s+shorts?|'
+            r'youtube\s+shorts?[-\s]+style|'
+            r'for\s+tiktok|tiktok[-\s]+style|'
+            r'for\s+instagram\s+reels?|'
+            r'instagram\s+reels?[-\s]+style)\b',
+            'clean documentary footage',
+        ),
+        (r'(?<![\w@])@[A-Za-z0-9._-]{2,64}(?![A-Za-z0-9._-])', ''),
+        (
+            r'\b(?:subscribe|follow|like|share)\s+'
+            r'(?:button|icon|badge|overlay)\b',
+            '',
+        ),
+        (
+            r'\b(?:shorts?|reels?)\s+'
+            r'(?:logo|icon|badge|watermark|overlay|interface|ui)\b',
+            '',
+        ),
+    )
+    for pattern, replacement in substitutions:
+        text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
+    return re.sub(r'\s+', ' ', text).strip(' .,:;-')
+
+
 def _runway_prompt_for_scene(
     scene: dict,
     review: dict | None,
@@ -2060,18 +2112,26 @@ def _runway_prompt_for_scene(
     aspect_ratio = str(aspect_ratio or '').strip()
     if aspect_ratio not in {'16:9', '9:16'}:
         raise ValueError('Generation aspect ratio must be 16:9 or 9:16')
-    original = str(scene.get('ai_prompt') or '').strip()
+    original = _sanitize_provider_visual_text(scene.get('ai_prompt'))
     review = review or {}
     retry_queries = review.get('retry_queries') or []
     if isinstance(retry_queries, str):
         retry_queries = [retry_queries]
-    hints = [str(q).strip() for q in retry_queries if str(q).strip()][:2]
+    hints = [
+        _sanitize_provider_visual_text(q)
+        for q in retry_queries
+        if _sanitize_provider_visual_text(q)
+    ][:2]
     has_repair_evidence = bool(hints)
     if not hints:
         visual_queries = scene.get('visual_queries') or []
         if isinstance(visual_queries, str):
             visual_queries = [visual_queries]
-        hints = [str(q).strip() for q in visual_queries if str(q).strip()][:2]
+        hints = [
+            _sanitize_provider_visual_text(q)
+            for q in visual_queries
+            if _sanitize_provider_visual_text(q)
+        ][:2]
     if not original and not hints:
         return ''
     # Keep deterministic headroom below the provider's 1000 UTF-16-unit hard
@@ -2079,7 +2139,10 @@ def _runway_prompt_for_scene(
     # visual action instead of filling the entire boundary with constraints.
     prompt_limit = 900
 
-    narration = _truncate_utf16(str(scene.get('narration') or '').strip(), 180)
+    narration = _truncate_utf16(
+        _sanitize_provider_visual_text(scene.get('narration')),
+        180,
+    )
     visible_action = _truncate_utf16('; '.join(hint[:100] for hint in hints), 150)
     primary_event = _truncate_utf16(
         ' / '.join(
@@ -2128,11 +2191,15 @@ def _runway_prompt_for_scene(
             )
 
     opening = (
-        'One continuous photorealistic 9:16 vertical documentary shot, '
-        'composed edge-to-edge for YouTube Shorts with the primary subject '
-        'and decisive action inside the central safe area. '
+        'Raw-camera photorealistic 9:16 vertical documentary shot, '
+        'edge-to-edge. No UI, @handle, caption, text, logo, watermark, '
+        'border, letterbox or collage. Keep the primary subject and decisive '
+        'action inside the central safe area. '
         if aspect_ratio == '9:16'
-        else 'One continuous photorealistic 16:9 documentary shot. '
+        else (
+            'Raw-camera photorealistic 16:9 documentary shot. No UI, @handle, '
+            'caption, text, logo, watermark, border, letterbox or collage. '
+        )
     )
     temporal_clause = (
         f'PRIMARY EVENT: {_truncate_utf16(primary_event, 140)}. '
@@ -2154,10 +2221,7 @@ def _runway_prompt_for_scene(
         for clause in (*mechanism_guardrails, repair_evidence_clause)
         if clause
     )
-    closing = (
-        'Maintain subject, identity, background and exposure in one continuous '
-        'clean, unbranded documentary frame.'
-    )
+    closing = 'Keep one clean, stable, unbranded documentary frame.'
     original_label = 'Core shot direction: '
     identity_guardrail = manufactured_replica_guardrail(scene)
     identity_clause = (
@@ -2222,40 +2286,44 @@ def _image_motion_prompt_for_scene(
     retry_queries = review.get('retry_queries') or []
     if isinstance(retry_queries, str):
         retry_queries = [retry_queries]
-    hints = [str(value).strip() for value in retry_queries if str(value).strip()][:2]
+    hints = [
+        _sanitize_provider_visual_text(value)
+        for value in retry_queries
+        if _sanitize_provider_visual_text(value)
+    ][:2]
     if not hints:
         visual_queries = scene.get('visual_queries') or []
         if isinstance(visual_queries, str):
             visual_queries = [visual_queries]
         hints = [
-            str(value).strip()
+            _sanitize_provider_visual_text(value)
             for value in visual_queries
-            if str(value).strip()
+            if _sanitize_provider_visual_text(value)
         ][:2]
 
     opening = (
-        'One edge-to-edge photorealistic 9:16 vertical documentary keyframe '
-        'for YouTube Shorts. Keep the primary subject and decisive action '
-        'fully visible inside the central safe area. Depict the single most '
-        'evidence-rich decisive instant: '
+        'Raw-camera photorealistic 9:16 vertical documentary keyframe, '
+        'edge-to-edge. No social UI, @handle, text, logo, watermark, border, '
+        'letterbox, storyboard, collage or CGI. Keep the primary subject and '
+        'decisive action fully visible inside the central safe area. Depict '
+        'the most evidence-rich instant: '
         if aspect_ratio == '9:16'
         else (
-            'One edge-to-edge photorealistic 16:9 documentary keyframe. '
-            'Depict the single most evidence-rich decisive instant: '
+            'Raw-camera photorealistic 16:9 documentary keyframe. No social '
+            'UI, @handle, text, logo, watermark, border, letterbox, storyboard, '
+            'collage or CGI. Depict the most evidence-rich instant: '
         )
     )
     closing = (
-        ' Literal subject, scale, material, condition and setting must be '
-        'clear in one coherent photoreal documentary frame with natural light '
-        'and depth, composed for a subtle centered push-in. No storyboard, '
-        'split screen, collage, illustration, CGI, metaphor, text, logo, '
-        'watermark, border or letterbox.'
+        ' Keep literal subject scale, material, condition and setting clear '
+        'in natural light and depth, composed for a subtle centered push-in. '
+        'No storyboard, collage, CGI, border or letterbox.'
     )
     narration = (
         ''
         if identity_guardrail
         else _truncate_utf16(
-            str(scene.get('narration') or '').strip(),
+            _sanitize_provider_visual_text(scene.get('narration')),
             180,
         )
     )
@@ -2278,9 +2346,11 @@ def _image_motion_prompt_for_scene(
             + closing
         ).encode('utf-16-le')
     ) // 2
-    visual_budget = max(0, 1000 - fixed_units)
+    # Keep the artifact ban intact even when a provider or fixture normalizes
+    # Unicode differently at its documented 1000-unit boundary.
+    visual_budget = max(0, 1000 - fixed_units - 96)
     core_visual = _truncate_utf16(
-        str(scene.get('ai_prompt') or '').strip(),
+        _sanitize_provider_visual_text(scene.get('ai_prompt')),
         visual_budget,
     )
     return _truncate_utf16(
@@ -2942,6 +3012,7 @@ def plan_video_pipeline(
     dont_autoretry_for=(
         FinalVisualQualityError,
         FinalAudioQualityError,
+        GeminiOmniContinuityReferenceError,
         ImmutableNarrationSceneBudgetError,
         UnsupportedLanguageError,
     ),
@@ -4334,6 +4405,11 @@ def run_video_pipeline(
                     is_private_ai_first_omni_preview
                     and omni_continuity_reference_image_path is None
                     and recovered_specs
+                    and _omni_continuity_reference_needed(
+                        scene_idx,
+                        scenes,
+                        selected_runway_indices,
+                    )
                 ):
                     continuity_path = work / 'omni_continuity_reference.jpg'
                     create_gemini_omni_continuity_reference(
@@ -4428,6 +4504,11 @@ def run_video_pipeline(
                 if (
                     is_private_ai_first_omni_preview
                     and omni_continuity_reference_image_path is None
+                    and _omni_continuity_reference_needed(
+                        scene_idx,
+                        scenes,
+                        selected_runway_indices,
+                    )
                 ):
                     continuity_path = work / 'omni_continuity_reference.jpg'
                     create_gemini_omni_continuity_reference(
@@ -4811,6 +4892,9 @@ def run_video_pipeline(
             final_runway_repair_candidates = sorted(
                 final_runway_repair_candidates
             )
+        final_runway_repair_candidate_indices = set(
+            final_runway_repair_candidates
+        )
         _preflight_runway_candidates_before_paid(
             [int(index) for index in final_runway_repair_candidates],
             scene_durations,
@@ -4888,6 +4972,11 @@ def run_video_pipeline(
                 if (
                     is_private_ai_first_omni_preview
                     and omni_continuity_reference_image_path is None
+                    and _omni_continuity_reference_needed(
+                        scene_idx,
+                        scenes,
+                        final_runway_repair_candidate_indices,
+                    )
                 ):
                     continuity_path = work / 'omni_continuity_reference.jpg'
                     create_gemini_omni_continuity_reference(
@@ -5591,6 +5680,7 @@ def run_video_pipeline(
             (
                 FinalVisualQualityError,
                 FinalAudioQualityError,
+                GeminiOmniContinuityReferenceError,
                 ImmutableNarrationSceneBudgetError,
             ),
         )

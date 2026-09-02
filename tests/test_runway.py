@@ -2657,11 +2657,13 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             if isinstance(node, ast.FunctionDef)
             and node.name in {
                 '_truncate_utf16',
+                '_sanitize_provider_visual_text',
                 '_image_motion_prompt_for_scene',
             }
         ]
         from app.services.visual_identity import manufactured_replica_guardrail
         namespace = {
+            're': re,
             'manufactured_replica_guardrail': (
                 manufactured_replica_guardrail
             ),
@@ -2697,7 +2699,7 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertNotIn('UNTRUSTED_REASON_MUST_NOT_APPEAR', prompt)
         self.assertIn('MANUFACTURED IDENTITY', prompt)
         self.assertIn('Never a live or dead biological original', prompt)
-        self.assertTrue(prompt.endswith('letterbox.'))
+        self.assertTrue(prompt.endswith('letterbox.'), repr(prompt[-180:]))
 
         portrait_prompt = namespace['_image_motion_prompt_for_scene'](
             {
@@ -2709,8 +2711,71 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             '9:16',
         )
         self.assertIn('9:16 vertical documentary keyframe', portrait_prompt)
-        self.assertIn('YouTube Shorts', portrait_prompt)
+        self.assertNotIn('YouTube Shorts', portrait_prompt)
+        self.assertIn('No storyboard', portrait_prompt)
+        self.assertIn('social UI', portrait_prompt)
+        self.assertIn('@handle', portrait_prompt)
         self.assertIn('central safe area', portrait_prompt)
+
+        baited_prompt = namespace['_image_motion_prompt_for_scene'](
+            {
+                'narration': (
+                    'For YouTube Shorts, a black toy dragon stands beside '
+                    '@seeldfft_bwers.'
+                ),
+                'ai_prompt': (
+                    'TikTok style black toy dragon on wet sand with a '
+                    'subscribe button.'
+                ),
+                'visual_queries': ['unused fallback'],
+            },
+            {
+                'retry_queries': [
+                    'Instagram Reel style showing @seeldfft_bwers share icon and '
+                    'the black toy dragon on wet sand',
+                ],
+            },
+            '9:16',
+        ).casefold()
+        self.assertIn('black toy dragon', baited_prompt)
+        self.assertIn('wet sand', baited_prompt)
+        for bait in (
+            'youtube shorts',
+            'tiktok',
+            'instagram reel',
+            '@seeldfft_bwers',
+            'subscribe button',
+            'share icon',
+        ):
+            with self.subTest(bait=bait):
+                self.assertNotIn(bait, baited_prompt)
+
+        guarded_toy_prompt = namespace['_image_motion_prompt_for_scene'](
+            {
+                'narration': 'A black toy dragon is recovered from wet sand.',
+                'ai_prompt': (
+                    'The same manufactured black toy dragon on wet Cornwall '
+                    'sand, no humans or hands. ' * 20
+                ),
+                'visual_queries': ['black toy dragon wet sand no humans'],
+            },
+            {
+                'retry_queries': [
+                    'weathered black toy dragon with molded seams and part '
+                    'edges on wet Cornwall sand, no humans ' * 8,
+                ],
+            },
+            '9:16',
+        )
+        self.assertLessEqual(
+            len(guarded_toy_prompt.encode('utf-16-le')) // 2,
+            1000,
+        )
+        self.assertIn(
+            'No social UI, @handle, text, logo, watermark, border, '
+            'letterbox, storyboard, collage or CGI.',
+            guarded_toy_prompt,
+        )
 
     def test_pipeline_passes_one_aspect_contract_to_prompts_and_providers(self):
         source = (
