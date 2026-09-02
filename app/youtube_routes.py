@@ -216,9 +216,10 @@ def _shell(
         '<meta name="theme-color" content="#090c11">'
         f'<title>{escape(title)}</title><style>{CSS}</style></head><body>'
         '<a class="skip-link" href="#main-content">İçeriğe geç</a><div class="wrap">'
-        '<header class="top"><a class="brand" href="/studio">🎬 YouTube Studio V2</a>'
-        '<nav class="nav" aria-label="Ana menü"><a href="/studio">Yeni üretim</a>'
-        '<a href="/studio/history">Geçmiş</a><a class="active" aria-current="page" href="/studio/youtube">YouTube</a></nav></header>'
+        '<header class="top"><a class="brand" href="/studio">YouTube Studio</a>'
+        '<nav class="nav" aria-label="Ana menü"><a href="/studio">Yeni video</a>'
+        '<a href="/studio/history?status=library">Videolar</a>'
+        '<a class="active" aria-current="page" href="/studio/youtube">YouTube</a></nav></header>'
         f'<main id="main-content" tabindex="-1">{body}</main></div>{script}</body></html>',
         status_code=status_code,
     )

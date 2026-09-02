@@ -91,7 +91,7 @@ UI_STATUS_LABELS = {
 CONSOLE_STATUS_LABELS = {
     'running': 'Üretiliyor',
     'attention': 'Müdahale gerekiyor',
-    'library': 'Hazır / gizli',
+    'library': 'Videolar',
 }
 HISTORY_PAGE_SIZE = 12
 HISTORY_SCAN_LIMIT = 500
@@ -315,6 +315,10 @@ def _retry_claimed(job: dict) -> bool:
     )
 
 
+def _job_awaits_approval(job: dict) -> bool:
+    return str(job.get('state') or '').upper() == 'AWAITING_APPROVAL'
+
+
 def _job_ui_status(job: dict) -> str:
     state = str(job.get('state') or 'PENDING').upper()
     if state == 'FAILURE':
@@ -332,7 +336,7 @@ def _job_ui_status(job: dict) -> str:
         ):
             return 'completed'
         return 'ready'
-    if state == 'AWAITING_APPROVAL':
+    if _job_awaits_approval(job):
         return 'ready'
     return 'running'
 
@@ -456,6 +460,19 @@ def _ready_thumbnail_url(job: dict) -> str:
     )
 
 
+def _ready_release_status(job: dict) -> str:
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+    raw = str(
+        youtube.get('release_status')
+        or result.get('release_status')
+        or ''
+    ).strip().casefold()
+    return raw if raw in {
+        'private', 'public', 'scheduled', 'blocked', 'uncertain',
+    } else ''
+
+
 def _ready_privacy_label(job: dict) -> str:
     result = job.get('result') if isinstance(job.get('result'), dict) else {}
     youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
@@ -471,20 +488,35 @@ def _ready_privacy_label(job: dict) -> str:
     }
     if raw in labels:
         return labels[raw]
+    release_status = _ready_release_status(job)
+    if release_status == 'public':
+        return 'Herkese açık'
+    if release_status in {'private', 'scheduled', 'blocked', 'uncertain'}:
+        return 'Gizli'
     if _job_ui_status(job) == 'completed':
         return 'Gizli'
     return 'Henüz yüklenmedi'
 
 
 def _ready_readiness_label(job: dict) -> str:
-    if str(job.get('state') or '').upper() == 'AWAITING_APPROVAL':
+    if _job_awaits_approval(job):
         return 'Storyboard onayı bekliyor'
     if _job_ui_status(job) == 'completed':
+        release_label = {
+            'private': 'YouTube’da gizli',
+            'public': 'YouTube’da yayında',
+            'scheduled': 'YouTube’da planlandı',
+            'blocked': 'Gizli · yayın durdu',
+            'uncertain': 'Yayın durumu doğrulanmalı',
+        }.get(_ready_release_status(job))
+        if release_label:
+            return release_label
         privacy = _ready_privacy_label(job).casefold()
-        return (
-            'YouTube’da gizli'
-            if privacy == 'gizli' else 'YouTube’a yüklendi'
-        )
+        return {
+            'gizli': 'YouTube’da gizli',
+            'liste dışı': 'YouTube’da liste dışı',
+            'herkese açık': 'YouTube’da yayında',
+        }.get(privacy, 'YouTube’a yüklendi')
     return 'Yüklemeye hazır'
 
 
@@ -545,8 +577,22 @@ def _ready_video_card(job: dict) -> str:
         f'<div class="ready-fact"><b>{label}</b><span>{escape(value)}</span></div>'
         for label, value in facts
     )
-    pill_class = 'completed' if status == 'completed' else 'ready'
-    pill_label = 'Yüklendi' if status == 'completed' else 'Hazır'
+    release_status = _ready_release_status(job)
+    pill_class = (
+        'attention'
+        if release_status in {'blocked', 'uncertain'}
+        else 'completed' if status == 'completed' else 'ready'
+    )
+    pill_label = (
+        {
+            'private': 'Gizli',
+            'public': 'Yayında',
+            'scheduled': 'Planlandı',
+            'blocked': 'Yayın durdu',
+            'uncertain': 'Doğrula',
+        }.get(release_status, 'Yüklendi')
+        if status == 'completed' else 'Hazır'
+    )
     return (
         f'<article class="ready-card" data-status="{status}" '
         f'aria-labelledby="ready-title-{dom_id}"><div class="ready-media">{media}</div>'
@@ -690,6 +736,8 @@ def _job_is_stale_running(job: dict, *, now: float | None = None) -> bool:
 
 
 def _console_bucket(job: dict) -> str:
+    if _job_awaits_approval(job):
+        return 'attention'
     status = _job_ui_status(job)
     if status == 'running':
         return 'attention' if _job_is_stale_running(job) else 'running'
@@ -1149,7 +1197,11 @@ preview.addEventListener('change',setDefaults);production.addEventListener('chan
 
 def _job_row(job: dict) -> str:
     status = _job_ui_status(job)
-    display_status = 'attention' if _job_is_stale_running(job) else status
+    display_status = (
+        'attention'
+        if _job_awaits_approval(job) or _job_is_stale_running(job)
+        else status
+    )
     status_message = (
         'Uzun süredir ilerlemiyor; üretim durumunu kontrol et.'
         if display_status == 'attention' and status == 'running'
@@ -1248,9 +1300,10 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     }
     display_title = escape(_job_title(record))
     status = _job_ui_status(record)
+    display_status = 'attention' if _job_awaits_approval(record) else status
     back_status = (
-        'library' if status in {'ready', 'completed'}
-        else 'attention' if status == 'repair'
+        'attention' if _job_awaits_approval(record) or status == 'repair'
+        else 'library' if status in {'ready', 'completed'}
         else status
     )
     progress = _job_progress(record)
@@ -1263,8 +1316,8 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     media_hidden = '' if media_panel else ' hidden'
     body = f'''
 <div class="hero"><div class="hero-copy"><div class="eyebrow">Üretim durumu</div><h1>{display_title}</h1><div class="muted">Yalnızca karar vermen gereken durum ve sonraki adım burada gösterilir.</div></div></div>
-<article class="card job-panel" id="job-card" data-status="{status}">
-<div class="job-panel-head"><div class="stage" id="stage">{stage_label}{f' · %{progress}' if status == 'running' else ''}</div><span class="state {status}" id="state-label">{UI_STATUS_LABELS[status]}</span></div>
+<article class="card job-panel" id="job-card" data-status="{display_status}">
+<div class="job-panel-head"><div class="stage" id="stage">{stage_label}{f' · %{progress}' if status == 'running' else ''}</div><span class="state {display_status}" id="state-label">{UI_STATUS_LABELS[display_status]}</span></div>
 <div class="job-status" id="status-message" role="status" aria-live="polite" aria-atomic="true">{escape(_job_status_message(record))}</div>
 <div class="progress" id="progress" role="progressbar" aria-label="Üretim ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{progress}" style="margin:14px 0"{progress_hidden}><div class="bar" id="bar" style="width:{progress}%"></div></div>
 <div class="result-action" id="result">{_job_primary_action(record, small=False)}</div>
@@ -1276,7 +1329,7 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     script = r'''<script>
 const taskId=__TASK_ID__;let timer=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const labels={running:'Üretiliyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız'};
+const labels={running:'Üretiliyor',attention:'Müdahale gerekiyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız'};
 function safeExternal(value){const text=String(value||'').trim();if(!/^https?:\/\//i.test(text))return '';try{const u=new URL(text);return ['http:','https:'].includes(u.protocol)?u.href:''}catch(_){return ''}}
 function linkAction(href,label,kind='secondary',external=false){return `<a class="btn ${kind}" ${external?'target="_blank" rel="noopener noreferrer" ':''}href="${esc(href)}">${esc(label)}</a>`}
 function retryAction(label,kind){return `<form method="post" action="/studio/retry/${encodeURIComponent(taskId)}"><button class="btn ${kind}" type="submit">${esc(label)}</button></form>`}
@@ -1288,8 +1341,8 @@ function showTechnical(j){const stage=String(j.failure_stage||j.stage||'—');do
 async function poll(){
  try{const r=await fetch(`/studio/api/job/${encodeURIComponent(taskId)}`,{cache:'no-store'});if(!r.ok)throw new Error('status');const j=await r.json();
  const state=String(j.state||'PENDING'),ui=String(j.ui_status||'running'),stage=String(j.stage_label||j.stage||'Hazırlanıyor'),p=Math.max(0,Math.min(100,Number(j.progress||0)));
- const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label');
- panel.dataset.status=ui;pill.className='state '+ui;pill.textContent=labels[ui]||labels.running;
+ const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label'),displayUi=state==='AWAITING_APPROVAL'?'attention':ui;
+ panel.dataset.status=displayUi;pill.className='state '+displayUi;pill.textContent=labels[displayUi]||labels.running;
  document.getElementById('bar').style.width=p+'%';progress.setAttribute('aria-valuenow',String(p));progress.hidden=ui!=='running';document.getElementById('stage').textContent=stage+(ui==='running'?' · %'+p:'');setStatusMessage(j.ui_status_message);showTechnical(j);
  if(ui==='repair'){setMedia({});setAction('repair',retryAction('Sorunlu sahneyi onar','repair'));return}
  if(ui==='failed'){setMedia({});setAction('failed',retryAction('Aynı ayarlarla tekrar dene','danger'));return}
@@ -1300,7 +1353,7 @@ async function poll(){
  }
 poll();
 </script>'''.replace('__TASK_ID__', json.dumps(task_id))
-    return _shell(body, title='Üretim kontrolü', script=script)
+    return _shell(body, active='history', title='Üretim kontrolü', script=script)
 
 
 @router.get('/studio/api/job/{task_id}')
@@ -1367,7 +1420,7 @@ def studio_history(
     empty_copy = {
         'running': 'Devam eden üretim yok.',
         'attention': 'Müdahale bekleyen video yok.',
-        'library': 'Hazır video yok.',
+        'library': 'Kütüphanede video yok.',
         'ready': 'Hazır video yok.',
         'repair': 'Onarım bekleyen video yok.',
         'completed': 'Tamamlanan video yok.',
@@ -1393,8 +1446,8 @@ def studio_history(
     )
     history_context = {
         'running': 'Yalnızca şu anda ilerleyen üretimler.',
-        'attention': 'Takılmış veya onarım bekleyen üretimler.',
-        'library': 'Hazır videolar ve gizli YouTube yüklemeleri.',
+        'attention': 'Storyboard onayı, takılmış iş veya onarım bekleyen üretimler.',
+        'library': 'Hazır, gizli, planlanmış veya yayınlanmış videolar.',
         'ready': 'Yüklemeye hazır videolar.',
         'repair': 'Onarım kararı bekleyen üretimler.',
         'completed': 'YouTube yüklemesi tamamlanan videolar.',
@@ -1436,7 +1489,7 @@ def studio_plan(task_id: str, studio_token: str | None = Cookie(default=None, al
 <div class="card"><h3>Render kararı</h3><p class="muted">Onaylandığında bu senaryo kilitlenir; araştırma yeniden yapılmadan ses, görsel QC, AI sahneleri, müzik ve final kurgu başlar.</p><form action="/studio/plan/{escape(task_id)}/render" method="post"><button class="block" type="submit">✓ Storyboard'u onayla ve render et</button></form></div>
 <div class="actions"><a class="btn secondary" href="/studio">← Yeni plan</a><a class="btn secondary" href="/studio/job/{escape(task_id)}">Göreve dön</a></div>
 '''
-    return _shell(body, title='Storyboard')
+    return _shell(body, active='history', title='Storyboard')
 
 
 @router.post('/studio/plan/{task_id}/render')

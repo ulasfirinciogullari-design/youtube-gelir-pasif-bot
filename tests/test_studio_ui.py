@@ -330,6 +330,46 @@ def test_stale_running_job_moves_to_attention_without_mutating_or_retrying(
     assert stale == snapshot
 
 
+def test_storyboard_approval_counts_and_renders_as_attention_not_library(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    approval = {
+        'task_id': 'approval-needed',
+        'kind': 'plan',
+        'state': 'AWAITING_APPROVAL',
+        'spec': {'topic': 'Onay bekleyen storyboard', 'mode': 'production'},
+        'result': {'package': {'title': 'Onay bekleyen storyboard', 'scenes': []}},
+    }
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [approval])
+
+    attention = studio.studio_history(
+        status='attention',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    library = studio.studio_history(
+        status='library',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert studio._console_bucket(approval) == 'attention'
+    assert studio._console_counts([approval]) == {
+        'running': 0,
+        'attention': 1,
+        'library': 0,
+    }
+    assert 'data-status-count="attention">1</span>' in attention
+    assert 'data-status-count="library">0</span>' in attention
+    assert 'data-history-status="attention"' in attention
+    assert '<article class="job" data-status="attention"' in attention
+    assert '<span class="state attention">Müdahale gerekiyor</span>' in attention
+    assert 'Storyboard hazır; render için onayını bekliyor.' in attention
+    assert 'href="/studio/plan/approval-needed"' in attention
+    assert 'Onay bekleyen storyboard' not in library
+    assert '<h2>0 video</h2>' in library
+
+
 def test_identical_concurrent_running_jobs_group_only_in_the_display(ui_modules):
     studio, _ = ui_modules
     spec = {
@@ -971,6 +1011,10 @@ def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
 
     assert 'data-history-status="library"' in body
     assert 'data-status-count="library">2</span>' in body
+    assert '<span class="status-name">Videolar</span>' in body
+    assert '<h1>Videolar</h1>' in body
+    assert 'Hazır, gizli, planlanmış veya yayınlanmış videolar.' in body
+    assert 'Hazır / gizli' not in body
     assert body.count('<article class="ready-card"') == 2
     assert body.count('<video class="ready-video"') == 2
     assert 'poster="https://media.example.test/portrait.jpg"' in body
@@ -988,6 +1032,41 @@ def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
     assert 'Başarısız video' not in body
     assert 'action="/studio/retry/' not in body
     assert 'action="/studio/youtube/public' not in body.casefold()
+
+
+@pytest.mark.parametrize(
+    (
+        'release_status', 'privacy_status', 'pill_label',
+        'privacy_label', 'readiness_label',
+    ),
+    [
+        ('private', 'private', 'Gizli', 'Gizli', 'YouTube’da gizli'),
+        ('public', 'public', 'Yayında', 'Herkese açık', 'YouTube’da yayında'),
+        ('scheduled', 'private', 'Planlandı', 'Gizli', 'YouTube’da planlandı'),
+    ],
+)
+def test_ready_card_presents_youtube_release_state_without_calling_it_all_private(
+    release_status,
+    privacy_status,
+    pill_label,
+    privacy_label,
+    readiness_label,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    job = _ready_job()
+    job['result']['youtube'] = {
+        'url': 'https://youtube.example.test/watch?v=release-state',
+        'release_status': release_status,
+        'privacy_status': privacy_status,
+    }
+
+    card = studio._ready_video_card(job)
+
+    assert studio._console_bucket(job) == 'library'
+    assert f'<span class="state completed">{pill_label}</span>' in card
+    assert f'<b>Gizlilik</b><span>{privacy_label}</span>' in card
+    assert f'<b>Durum</b><span>{readiness_label}</span>' in card
 
 
 def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
@@ -1270,6 +1349,43 @@ def test_claimed_repair_ui_hides_duplicate_form_and_links_child(
     assert "setAction('running:'+target" in body
 
 
+def test_existing_video_and_storyboard_pages_keep_videos_navigation_active(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    ready = _ready_job()
+    monkeypatch.setattr(studio, 'get_job', lambda _task_id: ready)
+
+    job_body = studio.studio_job(
+        ready['task_id'],
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    approval = {
+        'task_id': 'approval-plan',
+        'kind': 'plan',
+        'state': 'AWAITING_APPROVAL',
+        'spec': {'topic': 'Onaylanacak plan'},
+        'result': {
+            'package': {'title': 'Onaylanacak plan', 'scenes': []},
+        },
+    }
+    monkeypatch.setattr(studio, '_sync_job', lambda _task_id: approval)
+    plan_body = studio.studio_plan(
+        approval['task_id'],
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    active_videos = (
+        '<a class="active" href="/studio/history?status=library" '
+        'aria-current=page>Videolar</a>'
+    )
+    for body in (job_body, plan_body):
+        assert active_videos in body
+        assert '<a class="active" href="/studio"' not in body
+
+
 def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monkeypatch, ui_modules):
     _, youtube_routes = ui_modules
     monkeypatch.setattr(youtube_routes.settings, 'factory_api_token', 'studio-secret')
@@ -1313,6 +1429,12 @@ def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monk
     assert 'İlk yükleme daima gizli' in body
     assert '🔒 İlk yükleme daima gizli' in body
     assert '-webkit-line-clamp:2' in youtube_routes.CSS
+    assert '<a class="brand" href="/studio">YouTube Studio</a>' in body
+    assert '<a href="/studio">Yeni video</a>' in body
+    assert '<a href="/studio/history?status=library">Videolar</a>' in body
+    assert '🎬 YouTube Studio V2' not in body
+    assert '>Yeni üretim</a>' not in body
+    assert '>Geçmiş</a>' not in body
 
 
 def test_oauth_configuration_error_does_not_print_callback_url(monkeypatch, ui_modules):
