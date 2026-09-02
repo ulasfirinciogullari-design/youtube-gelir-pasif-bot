@@ -1228,8 +1228,12 @@ def _select_ranked_broll_candidates(
     minimum_duration: float = 5.0,
     allow_seen_fallback: bool = True,
     allow_short_fallback: bool = True,
+    orientation: str = 'landscape',
 ) -> list[tuple[str, dict]]:
     """Select a stable relevance-first, query-diverse Pexels candidate pool."""
+    orientation = str(orientation or '').strip().lower()
+    if orientation not in {'landscape', 'portrait'}:
+        raise ValueError('Pexels task orientation must be landscape or portrait')
     limit = max(1, int(limit))
     selected: list[tuple[str, dict]] = []
     selected_ids: set = set()
@@ -1245,8 +1249,11 @@ def _select_ranked_broll_candidates(
             return False
         width = int(item.get('width') or 0)
         height = int(item.get('height') or 0)
-        if width and height and width < height:
-            return False
+        if width and height:
+            if orientation == 'portrait' and width >= height:
+                return False
+            if orientation == 'landscape' and width < height:
+                return False
         try:
             duration = float(item.get('duration') or 0)
         except Exception:
@@ -1287,7 +1294,11 @@ def _collect_broll(
     scenes: list[dict],
     work: Path,
     strict_duration: bool = False,
+    orientation: str = 'landscape',
 ) -> dict:
+    orientation = str(orientation or '').strip().lower()
+    if orientation not in {'landscape', 'portrait'}:
+        raise ValueError('Pexels task orientation must be landscape or portrait')
     scene_visuals: list[list[dict]] = [[] for _ in scenes]
     credits: list[dict] = []
     seen_ids: set[int | str] = set()
@@ -1300,7 +1311,12 @@ def _collect_broll(
     search_results: dict[tuple[int, int, str], list[dict]] = {}
     with ThreadPoolExecutor(max_workers=min(8, max(1, len(requests)))) as executor:
         future_map = {
-            executor.submit(find_broll, query, 16): (scene_idx, query_idx, query)
+            executor.submit(
+                find_broll,
+                query,
+                16,
+                orientation=orientation,
+            ): (scene_idx, query_idx, query)
             for scene_idx, query_idx, query in requests
         }
         for future in as_completed(future_map):
@@ -1327,6 +1343,7 @@ def _collect_broll(
             3,
             allow_seen_fallback=False,
             allow_short_fallback=not strict_duration,
+            orientation=orientation,
         )
         for candidate_idx, (query, item) in enumerate(selected):
             candidate_id = item.get('pexels_id') or item.get('download_url')
@@ -1401,7 +1418,11 @@ def _download_ranked_broll_candidates(
     search_limit: int,
     minimum_duration: float = 5.0,
     allow_short_fallback: bool = False,
+    orientation: str = 'landscape',
 ) -> list[dict]:
+    orientation = str(orientation or '').strip().lower()
+    if orientation not in {'landscape', 'portrait'}:
+        raise ValueError('Pexels task orientation must be landscape or portrait')
     normalized_queries: list[str] = []
     query_keys: set[str] = set()
     for raw_query in queries:
@@ -1420,7 +1441,12 @@ def _download_ranked_broll_candidates(
     search_errors: list[Exception] = []
     with ThreadPoolExecutor(max_workers=min(3, len(normalized_queries))) as retry_pool:
         future_map = {
-            retry_pool.submit(find_broll, query, search_limit): query_idx
+            retry_pool.submit(
+                find_broll,
+                query,
+                search_limit,
+                orientation=orientation,
+            ): query_idx
             for query_idx, query in enumerate(normalized_queries)
         }
         for future in as_completed(future_map):
@@ -1451,7 +1477,11 @@ def _download_ranked_broll_candidates(
         for query_idx, query in enumerate(normalized_queries):
             try:
                 search_results[query_idx] = (
-                    find_broll(query, search_limit) or []
+                    find_broll(
+                        query,
+                        search_limit,
+                        orientation=orientation,
+                    ) or []
                 )
             except Exception as exc:
                 if not _is_transient_pexels_provider_error(exc):
@@ -1475,6 +1505,7 @@ def _download_ranked_broll_candidates(
         minimum_duration=max(0.1, float(minimum_duration)),
         allow_seen_fallback=False,
         allow_short_fallback=allow_short_fallback,
+        orientation=orientation,
     )
     if not ranked:
         return []
@@ -1571,6 +1602,7 @@ def _retry_bad_scene(
     minimum_duration: float = 5.0,
     allow_short_fallback: bool = True,
     tolerate_pexels_failure: bool = False,
+    orientation: str = 'landscape',
 ) -> list[dict]:
     safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
     selected_by = (
@@ -1593,6 +1625,7 @@ def _retry_bad_scene(
             search_limit=18,
             minimum_duration=minimum_duration,
             allow_short_fallback=allow_short_fallback,
+            orientation=orientation,
         )
     except PexelsRetryError:
         if not tolerate_pexels_failure:
@@ -2939,6 +2972,11 @@ def run_video_pipeline(
         generation_aspect_ratio = aspect_ratio_for_mode(
             options.get('mode')
         )
+        pexels_orientation = (
+            'portrait'
+            if generation_aspect_ratio == '9:16'
+            else 'landscape'
+        )
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
             if recovered_voice:
@@ -2959,6 +2997,7 @@ def run_video_pipeline(
                 scenes,
                 work,
                 strict_short_preview_duration,
+                orientation=pexels_orientation,
             )
             voice_result = voice_future.result()
             broll_result = broll_future.result()
@@ -3294,6 +3333,7 @@ def run_video_pipeline(
                         ),
                         allow_short_fallback=False,
                         tolerate_pexels_failure=True,
+                        orientation=pexels_orientation,
                     )
                     scene_visuals[scene_idx] = duration_refill
                     if duration_refill:
@@ -3353,6 +3393,7 @@ def run_video_pipeline(
                 minimum_duration=max(5.0, float(scene_durations[scene_idx]) + 0.35),
                 allow_short_fallback=not strict_short_preview_duration,
                 tolerate_pexels_failure=is_short_preview_authored_ai,
+                orientation=pexels_orientation,
             )
             scene_visuals[scene_idx] = [*replacements, best_spec][:3]
             if replacements:
@@ -3872,6 +3913,7 @@ def run_video_pipeline(
                         float(scene_durations[scene_idx]) + 0.35,
                     ),
                     allow_short_fallback=False,
+                    orientation=pexels_orientation,
                 )
                 if not replacements:
                     continue
@@ -4763,6 +4805,7 @@ def run_video_pipeline(
                     scene_idx in provider_outage_stock_scenes
                     or scene_idx in stock_quality_fallback_scenes
                 ),
+                orientation=pexels_orientation,
             )
             if not replacements:
                 continue
