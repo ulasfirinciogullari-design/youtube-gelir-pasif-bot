@@ -955,6 +955,7 @@ def _bind_prosody_issue_timestamp(
         return None
 
     matching_windows: list[tuple[float, float]] = []
+    time_selected_windows: list[tuple[float, float]] = []
     for start_index in range(len(words)):
         for end_index in range(
             start_index + 1,
@@ -973,15 +974,23 @@ def _bind_prosody_issue_timestamp(
                 and stt_end > audio_duration_seconds + 0.25
             ):
                 continue
+            matching_windows.append((stt_start, stt_end))
             if (
                 reported_start >= stt_start - 0.50
                 and reported_end <= stt_end + 0.50
                 and reported_end >= stt_start
                 and reported_start <= stt_end
             ):
-                matching_windows.append((stt_start, stt_end))
+                time_selected_windows.append((stt_start, stt_end))
+    # Gemini's audio timeline is approximate. When the cited phrase occurs
+    # exactly once, its identity is sufficient to bind the issue to the one
+    # authoritative STT window; the model's rough interval is not evidence.
+    # Repeated phrases still require the reported interval to select exactly
+    # one occurrence, so ambiguous criticism remains fail-closed.
     if len(matching_windows) != 1:
-        return None
+        if len(time_selected_windows) != 1:
+            return None
+        return time_selected_windows[0]
     return matching_windows[0]
 
 
