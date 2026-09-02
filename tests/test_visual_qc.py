@@ -50,6 +50,8 @@ def _review(
     evidence = {
         'subject_visible': True,
         'spoken_action_visible': True,
+        'thermal_claim_applicable': False,
+        'thermal_evidence_visible': False,
         'physical_causality_applicable': False,
         'target_contact_visible': False,
         'connection_action_applicable': False,
@@ -979,6 +981,143 @@ class VisualQcProviderTests(unittest.TestCase):
         review = result['reviews'][0]
         self.assertTrue(review['connection_action_applicable'])
         self.assertEqual(review['raw_score'], 98)
+        self.assertEqual(review['score'], 40)
+        self.assertFalse(review['evidence_gate_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_turkish_charging_heat_state_ignores_invented_connection_gate(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scene = {
+            'narration': (
+                'Batarya bütün gece şarj olurken az da olsa ısı üretir.'
+            ),
+            'visual_queries': [
+                'thermal camera phone already connected to charging cable'
+            ],
+            'ai_prompt': (
+                'A phone already plugged in and charging, shown through a '
+                'thermal camera with heat concentrated on its battery.'
+            ),
+        }
+        gemini.return_value = {
+            'reviews': [_review(
+                score=68,
+                reason=(
+                    'The thermal view visibly shows heat concentrated on '
+                    'the named phone battery while it is already charging.'
+                ),
+                thermal_claim_applicable=True,
+                thermal_evidence_visible=True,
+                connection_action_applicable=True,
+                moving_connector_visible=False,
+                receiving_interface_visible=False,
+                connector_visibly_joins_target=False,
+                connection_persists_after_release=False,
+            )],
+        }
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                [scene],
+                self.visuals,
+                self.work / 'turkish_charging_heat_state',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertEqual(review['raw_score'], 68)
+        self.assertEqual(review['score'], 68)
+        self.assertTrue(review['thermal_claim_applicable'])
+        self.assertTrue(review['thermal_evidence_visible'])
+        self.assertFalse(review['connection_action_applicable'])
+        self.assertTrue(review['evidence_gate_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_english_charging_heat_state_requires_visible_thermal_evidence(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scene = {
+            'narration': (
+                'The battery produces a little heat while charging overnight.'
+            ),
+            'visual_queries': ['phone already charging overnight'],
+        }
+        gemini.return_value = {
+            'reviews': [_review(
+                score=94,
+                reason=(
+                    'The phone is charging, but no thermal or other visible '
+                    'heat evidence appears on the battery.'
+                ),
+                thermal_claim_applicable=False,
+                thermal_evidence_visible=False,
+            )],
+        }
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                [scene],
+                self.visuals,
+                self.work / 'english_charging_heat_without_evidence',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertEqual(review['raw_score'], 94)
+        self.assertEqual(review['score'], 40)
+        self.assertTrue(review['thermal_claim_applicable'])
+        self.assertFalse(review['thermal_evidence_visible'])
+        self.assertFalse(review['connection_action_applicable'])
+        self.assertFalse(review['evidence_gate_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_english_explicit_plug_action_still_fails_without_join_evidence(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scene = {
+            'narration': 'She plugs the charging cable into the phone.',
+            'visual_queries': ['hand plugs cable into phone port'],
+        }
+        gemini.return_value = {
+            'reviews': [_review(
+                score=97,
+                reason=(
+                    'The cable remains near the phone, but its connector '
+                    'never visibly joins the receiving port.'
+                ),
+                evidence_moments=[0, 1, 2],
+                connection_action_applicable=False,
+                moving_connector_visible=False,
+                receiving_interface_visible=True,
+                connector_visibly_joins_target=False,
+                connection_persists_after_release=False,
+            )],
+        }
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                [scene],
+                self.visuals,
+                self.work / 'english_explicit_plug_action',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertTrue(review['connection_action_applicable'])
+        self.assertEqual(review['raw_score'], 97)
         self.assertEqual(review['score'], 40)
         self.assertFalse(review['evidence_gate_passed'])
 

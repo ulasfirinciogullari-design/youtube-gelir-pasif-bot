@@ -1748,6 +1748,8 @@ _MANUAL_QA_DIAGNOSTIC_BOOLEAN_FIELDS = (
     'manufactured_object_cues_visible',
     'subject_visible',
     'spoken_action_visible',
+    'thermal_claim_applicable',
+    'thermal_evidence_visible',
     'physical_causality_applicable',
     'target_contact_visible',
     'connection_action_applicable',
