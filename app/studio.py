@@ -54,7 +54,7 @@ MODE_LABELS = {
 }
 STATE_LABELS = {
     'PENDING': 'Kuyrukta',
-    'PROGRESS': 'Üretiliyor',
+    'PROGRESS': 'Devam ediyor',
     'SUCCESS': 'Hazır',
     'FAILURE': 'Başarısız',
     'AWAITING_APPROVAL': 'Storyboard onayı',
@@ -81,8 +81,8 @@ STAGE_LABELS = {
 UI_STATUS_ORDER = ('running', 'ready', 'repair', 'completed', 'failed')
 CONSOLE_STATUS_ORDER = ('running', 'attention', 'library')
 UI_STATUS_LABELS = {
-    'running': 'Üretiliyor',
-    'attention': 'Müdahale gerekiyor',
+    'running': 'Devam ediyor',
+    'attention': 'Dikkat gerekiyor',
     'ready': 'Hazır',
     'repair': 'Onarım gerekli',
     'completed': 'Tamamlandı',
@@ -90,16 +90,18 @@ UI_STATUS_LABELS = {
     'unreviewed': 'Kalite onayı yok',
 }
 CONSOLE_STATUS_LABELS = {
-    'running': 'Üretiliyor',
-    'attention': 'Müdahale gerekiyor',
-    'library': 'Videolar',
+    'running': 'Devam ediyor',
+    'attention': 'Dikkat gerekiyor',
+    'library': 'Hazır',
 }
 HISTORY_PAGE_SIZE = 12
 HISTORY_SCAN_LIMIT = 500
 LEGACY_RETRY_GROUP_WINDOW_SECONDS = 6 * 60 * 60
 RUNNING_DUPLICATE_GROUP_WINDOW_SECONDS = 10 * 60
+ATTENTION_DUPLICATE_GROUP_WINDOW_SECONDS = 6 * 60 * 60
 STALE_RUNNING_SECONDS = 6 * 60 * 60
 PLAN_RETRY_DISPLAY_GRACE_SECONDS = 15 * 60
+OLD_STORYBOARD_SECONDS = 24 * 60 * 60
 OPTIONAL_VIDEO_GENERATION_SERVICES = frozenset({'Fal video'})
 
 BASE_CSS = r'''
@@ -107,7 +109,7 @@ BASE_CSS = r'''
 *{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;background:radial-gradient(circle at 15% -10%,rgba(75,91,161,.22),transparent 34%),var(--bg)}[hidden]{display:none!important}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.skip-link{position:fixed;left:12px;top:8px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:10px;background:#fff;color:#111;font-weight:800}.skip-link:focus{transform:none}.wrap{max-width:1180px;margin:auto;padding:0 22px 72px}.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px;background:rgba(9,12,17,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(57,70,92,.7)}.brand{font-weight:900;font-size:17px;letter-spacing:-.02em}.nav{display:flex;gap:6px;flex-wrap:wrap}.nav a{padding:8px 11px;border:1px solid transparent;border-radius:10px;color:var(--muted);font-size:13px;font-weight:750}.nav a:hover{color:var(--text);background:#151c28}.nav a.active,.nav a[aria-current=page]{color:#fff;background:#211e3b;border-color:#4c4385}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:34px 0 20px}.hero-copy{max-width:720px}.eyebrow{margin-bottom:8px;color:#a89dff;font-size:12px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.hero h1{font-size:clamp(30px,5vw,44px);line-height:1.08;margin:0 0 10px;letter-spacing:-.04em}.hero-tools{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}.muted{color:var(--muted)}.tiny{font-size:12px;color:#8f9bad}.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.72fr);gap:18px;align-items:start}.card{background:rgba(17,23,33,.95);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 18px 48px rgba(0,0,0,.14);margin-bottom:14px}.card h2,.card h3{margin:0 0 8px;letter-spacing:-.02em}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px}.section-kicker{display:block;margin-bottom:4px;color:#8e9aad;font-size:12px;font-weight:800}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.choice{position:relative}.choice input{position:absolute;opacity:0}.choice label{display:block;height:100%;margin:0;padding:15px;border:1px solid var(--line-strong);border-radius:13px;background:var(--surface-2);cursor:pointer;min-height:88px}.choice input:checked+label{border-color:#8372ff;background:#201c39;box-shadow:0 0 0 3px rgba(131,114,255,.12)}.choice input:focus-visible+label{outline:3px solid rgba(118,170,255,.55);outline-offset:2px}.choice b{display:block;margin-bottom:4px}.choice span{display:block;font-size:12px;color:var(--muted);line-height:1.4}label.field{display:block;margin:14px 0 6px;color:#dfe5ee;font-size:13px;font-weight:800}.field-hint{display:block;margin-top:-2px;color:var(--muted);font-size:12px}.topic-input{min-height:84px}input[type=text],input[type=password],input[type=url],textarea,select{width:100%;border:1px solid var(--line-strong);border-radius:11px;background:#0a1018;color:#fff;padding:12px 13px;outline:none}textarea{min-height:118px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:#8271ff;box-shadow:0 0 0 3px rgba(130,113,255,.14)}button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border:1px solid transparent;border-radius:11px;padding:10px 14px;background:var(--accent);color:#fff;font-weight:850;cursor:pointer}.btn:hover,button:hover{filter:brightness(1.08)}.btn.secondary{background:#171f2c;border-color:#364258}.btn.success{background:#167d51}.btn.danger{background:#852f3a}.btn.repair{background:#8a6619}.btn.small{min-height:36px;padding:7px 11px;font-size:12px}.btn.block,button.block{width:100%;margin-top:16px}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid rgba(118,170,255,.62);outline-offset:3px}.control-details,.system-details{border:1px solid var(--line);border-radius:13px;background:var(--surface-2)}.control-details{margin-top:18px}.control-details>summary,.system-details>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 15px;cursor:pointer;font-weight:850;list-style:none}.control-details>summary::-webkit-details-marker,.system-details>summary::-webkit-details-marker{display:none}.control-details>summary:after,.system-details>summary:after{content:'+';color:var(--muted);font-size:18px}.control-details[open]>summary:after,.system-details[open]>summary:after{content:'−'}.control-body,.system-body{padding:0 15px 15px;border-top:1px solid var(--line)}.guidance{margin:14px 0 4px;padding:12px;border:1px solid var(--line);border-radius:11px;background:#0a1018}.guidance b{display:block;margin-bottom:4px}.guidance p{margin:0;line-height:1.5}.status-summary{display:flex;align-items:center;gap:9px}.health-dot,.dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex:0 0 auto}.green{background:var(--good)}.amber{background:var(--warn)}.red{background:var(--bad)}.status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:14px}.service{display:flex;align-items:center;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#0a1018;font-size:12px;font-weight:750}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #354055;border-radius:999px;background:#111824;padding:6px 9px;font-size:12px;font-weight:750}.notice{border:1px solid #6b5b23;background:#29230f;color:#f5df88;border-radius:12px;padding:12px 14px;font-size:13px}.notice.error{border-color:#76313a;background:#30171c;color:#ffbac1}.notice.success{border-color:#285d45;background:#10291e;color:#9ee7bd}.status-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 20px}.status-filter{display:grid;gap:2px;min-height:86px;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:rgba(17,23,33,.92);transition:border-color .15s ease,transform .15s ease}.status-filter:hover{border-color:#4c5a70;transform:translateY(-1px)}.status-filter[aria-current=page]{border-color:#8271ff;box-shadow:0 0 0 3px rgba(130,113,255,.12)}.status-filter .status-count{font-size:25px;font-weight:900;line-height:1}.status-filter .status-name{color:var(--soft);font-size:12px;font-weight:800}.status-filter.running{border-left:3px solid #7499ff}.status-filter.ready{border-left:3px solid var(--good)}.status-filter.repair{border-left:3px solid var(--warn)}.status-filter.failed{border-left:3px solid var(--bad)}.history-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:2px 0 12px}.history-toolbar h2{margin:0}.job-list{display:grid;gap:10px}.job{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:11px 18px;align-items:start;padding:15px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.job:hover{border-color:#3b4960}.job-main{min-width:0}.job-title{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;font-size:15px;font-weight:850;line-height:1.35}.job-status{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;margin-top:6px;color:#b1bdcd;font-size:12px;line-height:1.45}.job-meta{display:flex;align-items:center;gap:5px 12px;flex-wrap:wrap;margin-top:9px;color:#8794a7;font-size:11px}.job-meta span,.job-meta time{white-space:nowrap}.job-meta b{color:#aeb9c9;font-weight:750}.job-side{display:grid;justify-items:end;gap:10px;min-width:148px}.job-side form{margin:0}.state{display:inline-flex;align-items:center;min-height:27px;font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;background:#222b3a;white-space:nowrap}.state.running{background:#192945;color:#9cb8ff}.state.ready{background:#123a28;color:#80e7ab}.state.repair{background:#3d3316;color:#ffe187}.state.failed{background:#3d1b22;color:#ffa1aa}.job-details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:8px}.job-details>summary{width:max-content;max-width:100%;cursor:pointer;color:#8f9bad;font-size:11px;font-weight:750}.detail-body{display:grid;gap:10px;margin-top:9px;padding:11px;border-radius:10px;background:#090e15;color:#b9c4d2;font-size:12px}.detail-body dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:5px 10px;margin:0}.detail-body dt{color:#7f8da1}.detail-body dd{margin:0;min-width:0;overflow-wrap:anywhere}.detail-copy{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.job.compact{padding:12px}.job.compact .job-side{grid-column:1/-1;grid-template-columns:1fr auto;align-items:center;justify-items:start;min-width:0}.job.compact .job-side .btn{justify-self:end}.job-panel{max-width:820px}.job-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.job-panel .job-status{font-size:14px;margin-top:11px}.progress{height:10px;border:1px solid #344054;background:#090e16;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .35s ease}.stage{font-size:14px;font-weight:850}.result-action{margin-top:16px}.result-action form{margin:0}.result-media-host{margin-top:18px}.result-media{display:grid;gap:12px;padding:14px;border:1px solid var(--line-strong);border-radius:14px;background:#080d14}.result-media-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.result-media-head h2{margin:0;font-size:16px}.result-video{display:block;width:100%;max-height:480px;aspect-ratio:16/9;border:1px solid #253044;border-radius:11px;background:#000}.media-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.media-note{margin:0;color:#8f9bad;font-size:12px}.technical-details{margin-top:18px;border-top:1px solid var(--line);padding-top:10px}.technical-details>summary{cursor:pointer;color:#8f9bad;font-size:12px;font-weight:750}.technical-body{display:grid;gap:10px;margin-top:10px;padding:12px;border-radius:10px;background:#090e15;color:#b8c3d1;font-size:12px}.technical-body code{white-space:pre-wrap;overflow-wrap:anywhere}.page-links{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}.page-links .btn[aria-disabled=true]{pointer-events:none;opacity:.45}.back-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;color:#9ba8b9;font-size:13px}.back-links a{text-decoration:underline;text-underline-offset:3px}.scene{display:grid;grid-template-columns:48px 1fr;gap:13px;padding:15px 0;border-bottom:1px solid var(--line)}.scene:last-child{border:0}.scene-no{width:40px;height:40px;border-radius:11px;background:#251f43;display:flex;align-items:center;justify-content:center;font-weight:900}.queries{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.query{font-size:11px;padding:5px 7px;border-radius:8px;background:#0d151f;border:1px solid #2b394a;color:#9fb0c4}.metric{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}.metric b{font-size:20px;display:block}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.empty{padding:26px;border:1px dashed var(--line-strong);border-radius:13px;color:var(--muted);text-align:center}.sidebar-copy{margin:0;font-size:13px;line-height:1.55}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.hero-tools{justify-content:flex-start}.status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.wrap{padding:0 12px 56px}.top{position:static;align-items:flex-start;flex-direction:column;padding:14px 0}.nav{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{white-space:nowrap}.nav a:nth-child(n+4){display:none}.hero{padding:26px 0 17px}.hero h1{font-size:31px}.grid2,.grid3,.choice-grid,.status-grid{grid-template-columns:1fr}.status-overview{gap:8px}.status-filter{min-height:76px;padding:12px}.status-filter .status-count{font-size:22px}.card{padding:16px}.history-toolbar{align-items:flex-start;flex-direction:column}.job{grid-template-columns:1fr}.job-side{grid-template-columns:1fr auto;align-items:center;justify-items:start;min-width:0}.job-side .btn,.job-side form{justify-self:end}.job-side form button{width:auto}.job.compact .job-side{grid-template-columns:1fr auto}.page-links .btn{min-width:0}.actions .btn{width:100%}.job-panel-head{align-items:flex-start}.control-details>summary,.system-details>summary{align-items:flex-start}.section-title{align-items:flex-start}}
-.status-overview{grid-template-columns:repeat(3,minmax(0,1fr))}.queue-group{display:grid;gap:8px}.queue-group+.queue-group{margin-top:15px;padding-top:15px;border-top:1px solid var(--line)}.queue-group-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.queue-group-head h4{margin:0;font-size:12px;letter-spacing:.04em;text-transform:uppercase}.queue-group-head a{font-size:11px;color:#9eabc0;text-decoration:underline;text-underline-offset:3px}.archive-details{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:#0b1119}.archive-details>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;cursor:pointer;list-style:none}.archive-details>summary::-webkit-details-marker{display:none}.archive-label{display:grid;gap:2px}.archive-label b{font-size:12px}.archive-counts{display:flex;gap:6px}.archive-count{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;border-radius:999px;font-size:12px;font-weight:900}.archive-count.completed{background:#122c25;color:#8fdab6}.archive-count.failed{background:#26171c;color:#ffabb3}.archive-body{display:flex;align-items:center;gap:8px;padding:11px 12px;border-top:1px solid var(--line)}.archive-body a{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:1;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:12px;font-weight:800}.archive-body a[aria-current=page]{border-color:#8271ff;background:#201c39}.state.completed{background:#172b27;color:#9bd9bf}.job.compact .job-status{-webkit-line-clamp:1;line-clamp:1}
+.status-overview{grid-template-columns:repeat(4,minmax(0,1fr))}.queue-group{display:grid;gap:8px}.queue-group+.queue-group{margin-top:15px;padding-top:15px;border-top:1px solid var(--line)}.queue-group-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.queue-group-head h4{margin:0;font-size:12px;letter-spacing:.04em;text-transform:uppercase}.queue-group-head a{font-size:11px;color:#9eabc0;text-decoration:underline;text-underline-offset:3px}.archive-details{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:#0b1119}.archive-details>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;cursor:pointer;list-style:none}.archive-details>summary::-webkit-details-marker{display:none}.archive-label{display:grid;gap:2px}.archive-label b{font-size:12px}.archive-counts{display:flex;gap:6px}.archive-count{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;border-radius:999px;font-size:12px;font-weight:900}.archive-count.completed{background:#122c25;color:#8fdab6}.archive-count.failed{background:#26171c;color:#ffabb3}.archive-body{display:flex;align-items:center;gap:8px;padding:11px 12px;border-top:1px solid var(--line)}.archive-body a{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:1;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:12px;font-weight:800}.archive-body a[aria-current=page]{border-color:#8271ff;background:#201c39}.state.completed{background:#172b27;color:#9bd9bf}.job.compact .job-status{-webkit-line-clamp:1;line-clamp:1}
 @media(max-width:900px){.status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.status-overview{grid-template-columns:1fr}.archive-body{align-items:stretch;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar{transition:none}}
@@ -121,8 +123,8 @@ BASE_CSS = BASE_CSS.replace(
     'width:auto;max-width:100%;height:auto;max-height:min(72vh,720px);aspect-ratio:auto;object-fit:contain;',
 )
 BASE_CSS += r'''
-.studio-primary{max-width:820px;margin:0 auto}.create-card{padding:clamp(18px,4vw,28px)}.create-card .private-note{display:flex;gap:8px;align-items:flex-start;margin:14px 0 0;color:#aeb9c8;font-size:12px}.create-card .private-note b{color:#e7ebf2}.console-details{margin-top:12px}.nav-more{position:relative}.nav-more>summary{padding:8px 11px;border:1px solid transparent;border-radius:10px;color:var(--muted);cursor:pointer;font-size:13px;font-weight:750;list-style:none;white-space:nowrap}.nav-more>summary::-webkit-details-marker{display:none}.nav-more>summary:hover,.nav-more[open]>summary{color:var(--text);background:#151c28}.nav-more-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:40;display:grid;min-width:170px;padding:6px;border:1px solid var(--line-strong);border-radius:12px;background:#111721;box-shadow:0 16px 34px rgba(0,0,0,.35)}.nav-more-menu a{white-space:nowrap}.status-filter.attention{border-left:3px solid var(--warn)}.status-filter.library{border-left:3px solid var(--good)}.state.attention{background:#3d3316;color:#ffe187}.archive-details{max-width:820px;margin:18px auto 0}.archive-details>summary:after{content:'+';color:var(--muted);font-size:18px}.archive-details[open]>summary:after{content:'−'}.archive-body{display:grid}.result-video-frame,.ready-media{display:flex;align-items:center;justify-content:center;min-height:180px;overflow:hidden;border:1px solid #253044;border-radius:12px;background:#030507}.result-video{border:0}.ready-grid{display:grid;gap:14px}.ready-card{display:grid;grid-template-columns:minmax(190px,260px) minmax(0,1fr);gap:18px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}.ready-media{min-height:260px}.ready-video,.ready-thumbnail{display:block;width:auto;max-width:100%;height:auto;max-height:420px;object-fit:contain;background:#000}.ready-placeholder{display:grid;place-items:center;gap:6px;min-height:220px;color:#8794a7;text-align:center}.ready-placeholder span{font-size:28px}.ready-body{display:flex;min-width:0;flex-direction:column}.ready-title{font-size:18px;font-weight:900;line-height:1.3;letter-spacing:-.02em}.ready-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}.ready-fact{min-width:0;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#090e15}.ready-fact b{display:block;color:#7f8da1;font-size:10px;letter-spacing:.05em;text-transform:uppercase}.ready-fact span{display:block;overflow:hidden;margin-top:2px;color:#dce3ed;font-size:12px;text-overflow:ellipsis;white-space:nowrap}.ready-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto}.ready-actions form{margin:0}.ready-card .state{margin-bottom:10px;align-self:flex-start}.history-label{margin-bottom:12px}.history-label h2{margin:0}.history-label .muted{margin-top:4px;font-size:13px}
-@media(max-width:650px){.status-overview{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.status-filter{min-height:72px;padding:10px 8px}.status-filter .status-name{font-size:10px;line-height:1.25}.status-filter .status-count{font-size:20px}.ready-card{grid-template-columns:1fr;padding:12px}.ready-media{min-height:220px}.ready-video,.ready-thumbnail{max-height:62vh}.ready-facts{grid-template-columns:1fr 1fr}.ready-actions{align-items:stretch}.ready-actions .btn,.ready-actions form,.ready-actions form button{width:100%}.nav-more-menu{position:fixed;left:12px;right:12px;top:auto}.create-card{padding:16px}}
+.studio-primary{max-width:820px;margin:0 auto}.create-card{padding:clamp(18px,4vw,28px)}.create-card .private-note{display:flex;gap:8px;align-items:flex-start;margin:14px 0 0;color:#aeb9c8;font-size:12px}.create-card .private-note b{color:#e7ebf2}.console-details{margin-top:12px}.nav-more{position:relative}.nav-more>summary{padding:8px 11px;border:1px solid transparent;border-radius:10px;color:var(--muted);cursor:pointer;font-size:13px;font-weight:750;list-style:none;white-space:nowrap}.nav-more>summary::-webkit-details-marker{display:none}.nav-more>summary:hover,.nav-more[open]>summary{color:var(--text);background:#151c28}.nav-more-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:40;display:grid;min-width:170px;padding:6px;border:1px solid var(--line-strong);border-radius:12px;background:#111721;box-shadow:0 16px 34px rgba(0,0,0,.35)}.nav-more-menu a{white-space:nowrap}.status-filter.create{border-left:3px solid var(--accent)}.status-filter.attention{border-left:3px solid var(--warn)}.status-filter.library{border-left:3px solid var(--good)}.state.attention{background:#3d3316;color:#ffe187}.archive-details{max-width:820px;margin:18px auto 0}.archive-details>summary:after{content:'+';color:var(--muted);font-size:18px}.archive-details[open]>summary:after{content:'−'}.archive-body{display:grid}.result-video-frame,.ready-media{display:flex;align-items:center;justify-content:center;min-height:180px;overflow:hidden;border:1px solid #253044;border-radius:12px;background:#030507}.result-video{border:0}.ready-grid{display:grid;gap:14px}.ready-card{display:grid;grid-template-columns:minmax(190px,260px) minmax(0,1fr);gap:18px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}.ready-media{min-height:260px}.ready-video,.ready-thumbnail{display:block;width:auto;max-width:100%;height:auto;max-height:420px;object-fit:contain;background:#000}.ready-placeholder{display:grid;place-items:center;gap:6px;min-height:220px;color:#8794a7;text-align:center}.ready-placeholder span{font-size:28px}.ready-body{display:flex;min-width:0;flex-direction:column}.ready-title{font-size:18px;font-weight:900;line-height:1.3;letter-spacing:-.02em}.ready-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}.ready-fact{min-width:0;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#090e15}.ready-fact b{display:block;color:#7f8da1;font-size:10px;letter-spacing:.05em;text-transform:uppercase}.ready-fact span{display:block;overflow:hidden;margin-top:2px;color:#dce3ed;font-size:12px;text-overflow:ellipsis;white-space:nowrap}.ready-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto}.ready-actions form{margin:0}.ready-card .state{margin-bottom:10px;align-self:flex-start}.history-label{margin-bottom:12px}.history-label h2{margin:0}.history-label .muted{margin-top:4px;font-size:13px}
+@media(max-width:650px){.status-overview{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.status-filter{min-height:72px;padding:10px 8px}.status-filter .status-name{font-size:11px;line-height:1.25}.status-filter .status-count{font-size:20px}.ready-card{grid-template-columns:1fr;padding:12px}.ready-media{min-height:220px}.ready-video,.ready-thumbnail{max-height:62vh}.ready-facts{grid-template-columns:1fr 1fr}.ready-actions{align-items:stretch}.ready-actions .btn,.ready-actions form,.ready-actions form button{width:100%}.nav-more-menu{position:fixed;left:12px;right:12px;top:auto}.create-card{padding:16px}}
 '''
 
 
@@ -410,11 +412,11 @@ def _job_status_message(job: dict) -> str:
     state = str(job.get('state') or 'PENDING').upper()
     kind = str(job.get('kind') or '')
     if _job_requires_manual_qa(job):
-        return 'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.'
+        return 'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.'
     if display_status == 'unreviewed':
         return 'Bu eski videoda açık kalite onayı yok; YouTube yüklemesi kapalı.'
     if display_status == 'attention' and status == 'running':
-        return 'Uzun süredir ilerlemiyor; üretim durumunu kontrol et.'
+        return 'Üretim durdu; durumunu kontrol et.'
     if status == 'running':
         if _retry_claimed(job):
             if str(job.get('retry_dispatch_state') or '') == 'uncertain':
@@ -430,7 +432,7 @@ def _job_status_message(job: dict) -> str:
         return f'{stage} devam ediyor · %{progress}' if progress else f'{stage} bekleniyor.'
     if status == 'ready':
         if state == 'AWAITING_APPROVAL':
-            return 'Storyboard hazır; render için onayını bekliyor.'
+            return 'Storyboard hazır; devam etmek için aç.'
         result = job.get('result') if isinstance(job.get('result'), dict) else {}
         youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
         if kind == 'publish' or result.get('youtube_url') or youtube.get('url'):
@@ -500,7 +502,7 @@ def _job_media_panel(job: dict) -> str:
             f'href="{safe_caption_url}">Altyazıyı indir (.srt)</a>'
         )
     if _job_requires_manual_qa(job):
-        media_note = 'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.'
+        media_note = 'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.'
     elif _job_is_unreviewed_render(job):
         media_note = 'Açık kalite onayı yok; YouTube yüklemesi kapalı.'
     else:
@@ -604,7 +606,6 @@ def _ready_video_card(job: dict) -> str:
     status = _job_ui_status(job)
     duration = _job_duration(job) or '—'
     channel = _job_channel(job) or 'Kanal seçilmedi'
-    privacy = _ready_privacy_label(job)
     readiness = _ready_readiness_label(job)
     video_url, _caption_url = _job_media_urls(job)
     thumbnail_url = _ready_thumbnail_url(job)
@@ -635,18 +636,11 @@ def _ready_video_card(job: dict) -> str:
     actions = [primary_action]
     if f'href="/studio/job/{safe_task_id}"' not in primary_action:
         actions.append(details_action)
-    if video_url and 'Videoyu aç' not in primary_action:
-        actions.append(
-            '<a class="btn secondary small" target="_blank" '
-            'rel="noopener noreferrer" download '
-            f'href="{escape(video_url, quote=True)}">İndir</a>'
-        )
-    actions = actions[:3]
+    actions = actions[:2]
     facts = (
         ('Süre', duration),
         ('Kanal', channel),
-        ('Gizlilik', privacy),
-        ('Durum', readiness),
+        ('Yayın', readiness),
     )
     facts_html = ''.join(
         f'<div class="ready-fact"><b>{label}</b><span>{escape(value)}</span></div>'
@@ -739,6 +733,8 @@ def _job_details(job: dict) -> str:
     task_id = escape(str(job.get('task_id') or ''))
     stage = escape(str(job.get('failure_stage') or job.get('stage') or '—'))
     internal_state = escape(str(job.get('state') or 'PENDING'))
+    mode = escape(_job_mode(job))
+    mode_row = f'<dt>Üretim türü</dt><dd>{mode}</dd>' if mode else ''
     creative = (
         f'<div><b>Yaratıcı talimat</b><p class="detail-copy">{escape(brief)}</p></div>'
         if brief and _plain_text(brief) != _plain_text(_job_title(job))
@@ -751,7 +747,8 @@ def _job_details(job: dict) -> str:
     return (
         '<details class="job-details"><summary>Teknik ayrıntılar</summary>'
         f'<div class="detail-body">{creative}{error_html}<dl>'
-        f'<dt>İş kimliği</dt><dd>{task_id}</dd><dt>İç durum</dt><dd>{internal_state}</dd>'
+        f'{mode_row}<dt>İş kimliği</dt><dd>{task_id}</dd>'
+        f'<dt>İç durum</dt><dd>{internal_state}</dd>'
         f'<dt>Aşama kodu</dt><dd>{stage}</dd></dl></div></details>'
     )
 
@@ -765,6 +762,7 @@ def _status_counts(jobs: list[dict]) -> dict[str, int]:
 
 def _archive_counts(jobs: list[dict]) -> dict[str, int]:
     return {
+        'drafts': sum(_job_is_old_storyboard(job) for job in jobs),
         'failed': sum(_job_ui_status(job) == 'failed' for job in jobs),
         'unreviewed': sum(
             _job_display_status(job) == 'unreviewed' for job in jobs
@@ -844,7 +842,20 @@ def _job_is_dormant_plan_retry(job: dict, *, now: float | None = None) -> bool:
     return current - last_activity >= PLAN_RETRY_DISPLAY_GRACE_SECONDS
 
 
+def _job_is_old_storyboard(job: dict, *, now: float | None = None) -> bool:
+    """Move untouched storyboard approvals out of the daily attention queue."""
+    if str(job.get('kind') or '') != 'plan' or not _job_awaits_approval(job):
+        return False
+    last_activity = _job_activity_timestamp(job)
+    if last_activity is None:
+        return False
+    current = datetime.now(timezone.utc).timestamp() if now is None else float(now)
+    return current - last_activity >= OLD_STORYBOARD_SECONDS
+
+
 def _console_bucket(job: dict) -> str:
+    if _job_is_old_storyboard(job):
+        return 'archive'
     display_status = _job_display_status(job)
     if display_status == 'attention':
         return 'attention'
@@ -867,6 +878,8 @@ def _console_counts(jobs: list[dict]) -> dict[str, int]:
 
 
 def _history_matches(job: dict, active: str) -> bool:
+    if active == 'drafts':
+        return _job_is_old_storyboard(job)
     if active in CONSOLE_STATUS_ORDER:
         return _console_bucket(job) == active
     if active in {'ready', 'unreviewed'}:
@@ -932,6 +945,52 @@ def _collapse_running_duplicates(jobs: list[dict]) -> list[dict]:
                 representative = dict(collapsed[previous_index])
                 representative['_grouped_running_attempts'] = (
                     int(representative.get('_grouped_running_attempts') or 0) + 1
+                )
+                collapsed[previous_index] = representative
+                continue
+        collapsed.append(job)
+        if signature and created is not None:
+            latest_by_signature[signature] = (created, len(collapsed) - 1)
+    return collapsed
+
+
+def _attention_duplicate_signature(job: dict) -> tuple[str, ...] | None:
+    """Identify same-title attention attempts without merging durable records."""
+    if _console_bucket(job) != 'attention' or _plain_text(job.get('parent_id')):
+        return None
+    title = _plain_text(_job_title(job)).casefold()
+    if not title:
+        return None
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    fields = (
+        'duration_minutes', 'language', 'channel_id', 'mode', 'workflow',
+        'content_style', 'pace', 'visual_mix',
+    )
+    return (
+        _job_ui_status(job),
+        _plain_text(job.get('kind') or 'render').casefold(),
+        title,
+        *(_plain_text(spec.get(field)).casefold() for field in fields),
+    )
+
+
+def _collapse_attention_duplicates(jobs: list[dict]) -> list[dict]:
+    """Show close, exact-title review attempts as one concise attention card."""
+    collapsed: list[dict] = []
+    latest_by_signature: dict[tuple[str, ...], tuple[float, int]] = {}
+    for job in jobs:
+        signature = _attention_duplicate_signature(job)
+        created = _job_created_timestamp(job)
+        previous = (
+            latest_by_signature.get(signature)
+            if signature and created is not None else None
+        )
+        if previous is not None:
+            previous_created, previous_index = previous
+            if abs(previous_created - created) <= ATTENTION_DUPLICATE_GROUP_WINDOW_SECONDS:
+                representative = dict(collapsed[previous_index])
+                representative['_grouped_attention_attempts'] = (
+                    int(representative.get('_grouped_attention_attempts') or 0) + 1
                 )
                 collapsed[previous_index] = representative
                 continue
@@ -1016,16 +1075,24 @@ def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
         ):
             continue
         visible.append(job)
-    return _collapse_running_duplicates(_collapse_failure_duplicates(visible))
+    collapsed = _collapse_failure_duplicates(visible)
+    collapsed = _collapse_running_duplicates(collapsed)
+    return _collapse_attention_duplicates(collapsed)
 
 
 def _status_overview(counts: dict[str, int], *, active: str | None = None) -> str:
     current_bucket = (
-        'library' if active in {'library', 'ready', 'completed'}
+        'create' if active is None
+        else 'library' if active in {'library', 'ready', 'completed'}
         else 'attention' if active in {'attention', 'repair'}
         else active
     )
-    links = []
+    create_current = ' aria-current="page"' if current_bucket == 'create' else ''
+    links = [
+        '<a class="status-filter create" data-status-filter="new" '
+        f'href="/studio"{create_current}><span class="status-count" '
+        'aria-hidden="true">＋</span><span class="status-name">Yeni video</span></a>'
+    ]
     for key in CONSOLE_STATUS_ORDER:
         current = ' aria-current="page"' if key == current_bucket else ''
         links.append(
@@ -1042,21 +1109,25 @@ def _history_archive(
     *,
     active: str | None = None,
 ) -> str:
-    """Keep failed attempts available without adding noise to the console."""
+    """Keep old drafts and technical records reachable without daily noise."""
     failed = int(counts.get('failed', 0))
     unreviewed = int(counts.get('unreviewed', 0))
-    opened = ' open' if active in {'failed', 'unreviewed'} else ''
+    drafts = int(counts.get('drafts', 0))
+    opened = ' open' if active in {'drafts', 'failed', 'unreviewed'} else ''
+    drafts_current = ' aria-current="page"' if active == 'drafts' else ''
     failed_current = ' aria-current="page"' if active == 'failed' else ''
     unreviewed_current = ' aria-current="page"' if active == 'unreviewed' else ''
     return (
         f'<details class="archive-details"{opened}><summary>'
-        '<span class="archive-label"><b>Arşiv</b>'
-        '<span class="tiny">Eski denemeler ve teknik kayıtlar</span></span>'
+        '<span class="archive-label"><b>Eski işler</b>'
+        '<span class="tiny">Günlük görünümden ayrı tutulur</span></span>'
         '</summary><div class="archive-body">'
+        f'<a href="/studio/history?status=drafts"{drafts_current}>'
+        f'Eski storyboard taslakları <b>{drafts}</b></a>'
         f'<a href="/studio/history?status=failed"{failed_current}>'
         f'Başarısız denemeler <b>{failed}</b></a>'
         f'<a href="/studio/history?status=unreviewed"{unreviewed_current}>'
-        f'Kalite onayı olmayan eski videolar <b>{unreviewed}</b></a>'
+        f'Eski kalite kayıtları <b>{unreviewed}</b></a>'
         '</div></details>'
     )
 
@@ -1213,6 +1284,7 @@ def _refresh_active_jobs(jobs: list[dict]) -> list[dict]:
                 for key in (
                     '_grouped_failure_attempts',
                     '_grouped_running_attempts',
+                    '_grouped_attention_attempts',
                 )
                 if job.get(key)
             }
@@ -1323,7 +1395,14 @@ def _job_row(job: dict) -> str:
         status_message += (
             f' {grouped_running + 1} eş üretim tek kartta gösteriliyor.'
         )
-    mode = _job_mode(job)
+    try:
+        grouped_attention = max(0, int(job.get('_grouped_attention_attempts') or 0))
+    except (TypeError, ValueError):
+        grouped_attention = 0
+    if grouped_attention:
+        status_message += (
+            f' {grouped_attention + 1} benzer deneme tek kartta toplandı.'
+        )
     raw_title = _job_title(job)
     title = escape(raw_title)
     duration = _job_duration(job)
@@ -1337,14 +1416,12 @@ def _job_row(job: dict) -> str:
     raw_updated = str(job.get('updated_at') or job.get('created_at') or '')
     metadata = []
     if target:
-        metadata.append(f'<span><b>Hedef / profil</b> {escape(target)}</span>')
-    if mode:
-        metadata.append(f'<span>{escape(mode)}</span>')
+        metadata.append(f'<span>{escape(target)}</span>')
     if duration:
         metadata.append(f'<span>{escape(duration)}</span>')
     if date:
         metadata.append(
-            f'<time datetime="{escape(raw_updated, quote=True)}">Güncellendi {escape(date)}</time>'
+            f'<time datetime="{escape(raw_updated, quote=True)}">{escape(date)}</time>'
         )
     meta_html = ''.join(metadata)
     details = _job_details(job)
@@ -1413,8 +1490,9 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     display_status = _job_display_status(record)
     bucket = _console_bucket(record)
     back_status = (
-        'unreviewed'
-        if display_status == 'unreviewed'
+        'drafts'
+        if _job_is_old_storyboard(record)
+        else 'unreviewed' if display_status == 'unreviewed'
         else bucket if bucket in CONSOLE_STATUS_ORDER else status
     )
     progress = _job_progress(record)
@@ -1440,7 +1518,7 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     script = r'''<script>
 const taskId=__TASK_ID__;let timer=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const labels={running:'Üretiliyor',attention:'Müdahale gerekiyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız',unreviewed:'Kalite onayı yok'};
+const labels={running:'Devam ediyor',attention:'Dikkat gerekiyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız',unreviewed:'Kalite onayı yok'};
 function safeExternal(value){const text=String(value||'').trim();if(!/^https?:\/\//i.test(text))return '';try{const u=new URL(text);return ['http:','https:'].includes(u.protocol)?u.href:''}catch(_){return ''}}
 function linkAction(href,label,kind='secondary',external=false){return `<a class="btn ${kind}" ${external?'target="_blank" rel="noopener noreferrer" ':''}href="${esc(href)}">${esc(label)}</a>`}
 function retryAction(label,kind){return `<form method="post" action="/studio/retry/${encodeURIComponent(taskId)}"><button class="btn ${kind}" type="submit">${esc(label)}</button></form>`}
@@ -1458,7 +1536,7 @@ async function poll(){
  if(ui==='repair'){setMedia({});setAction('repair',retryAction('Sorunlu sahneyi onar','repair'));return}
  if(ui==='failed'){setMedia({});setAction('failed',retryAction('Aynı ayarlarla tekrar dene','danger'));return}
  if(ui==='ready'&&state==='AWAITING_APPROVAL'){setAction('storyboard',linkAction(`/studio/plan/${encodeURIComponent(taskId)}`,"Storyboard'u aç",'success'));return}
- if(ui==='ready'||ui==='completed'){const x=j.result||{},youtube=safeExternal(x.youtube_url||(x.youtube||{}).url),download=safeExternal(x.download_url||x.video_url),mediaNote=displayUi==='attention'?'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.':displayUi==='unreviewed'?'Açık kalite onayı yok; YouTube yüklemesi kapalı.':'Kalite onaylanana kadar YouTube yüklemesi gizli kalır.';setMedia(x,mediaNote);if(youtube)setAction('youtube',linkAction(youtube,"YouTube'da aç",'success',true));else if(ui==='ready'&&j.upload_allowed===true)setAction('private-upload',linkAction('/studio/youtube','Gizli yükle','success'));else if(download&&displayUi==='attention')setAction('manual-review',linkAction(download,'Videoyu incele','repair',true));else if(download&&displayUi==='unreviewed')setAction('unreviewed',linkAction(download,'Videoyu incele','secondary',true));else if(download)setAction('download',linkAction(download,'Videoyu aç','secondary',true));else setAction('ready-refresh',linkAction(`/studio/job/${encodeURIComponent(taskId)}`,'Sonucu yenile'));return}
+ if(ui==='ready'||ui==='completed'){const x=j.result||{},youtube=safeExternal(x.youtube_url||(x.youtube||{}).url),download=safeExternal(x.download_url||x.video_url),mediaNote=displayUi==='attention'?'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.':displayUi==='unreviewed'?'Açık kalite onayı yok; YouTube yüklemesi kapalı.':'Kalite onaylanana kadar YouTube yüklemesi gizli kalır.';setMedia(x,mediaNote);if(youtube)setAction('youtube',linkAction(youtube,"YouTube'da aç",'success',true));else if(ui==='ready'&&j.upload_allowed===true)setAction('private-upload',linkAction('/studio/youtube','Gizli yükle','success'));else if(download&&displayUi==='attention')setAction('manual-review',linkAction(download,'Videoyu incele','repair',true));else if(download&&displayUi==='unreviewed')setAction('unreviewed',linkAction(download,'Videoyu incele','secondary',true));else if(download)setAction('download',linkAction(download,'Videoyu aç','secondary',true));else setAction('ready-refresh',linkAction(`/studio/job/${encodeURIComponent(taskId)}`,'Sonucu yenile'));return}
  const child=String(j.retry_child_task_id||'').trim(),target=child||taskId,label=child?(j.repair_claimed?'Onarım durumunu aç':'Yeniden denemeyi aç'):'Durumu yenile';setAction('running:'+target,linkAction(`/studio/job/${encodeURIComponent(target)}`,label));timer=setTimeout(poll,3000);
  }catch(_){setStatusMessage('Durum geçici olarak alınamıyor. Tekrar denenecek.');timer=setTimeout(poll,5000)}
  }
@@ -1503,7 +1581,9 @@ def studio_history(
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
-    allowed_statuses = (*UI_STATUS_ORDER, 'attention', 'library', 'unreviewed')
+    allowed_statuses = (
+        *UI_STATUS_ORDER, 'attention', 'library', 'unreviewed', 'drafts',
+    )
     active = status if status in allowed_statuses else 'running'
     page = max(1, int(page))
     jobs = _collapse_retry_sources(list_jobs(HISTORY_SCAN_LIMIT))
@@ -1532,13 +1612,14 @@ def studio_history(
     visible = filtered[start:start + HISTORY_PAGE_SIZE]
     empty_copy = {
         'running': 'Devam eden üretim yok.',
-        'attention': 'Müdahale bekleyen video yok.',
-        'library': 'Kütüphanede video yok.',
+        'attention': 'Dikkat gerektiren güncel video yok.',
+        'library': 'Hazır video yok.',
         'ready': 'Hazır video yok.',
         'repair': 'Onarım bekleyen video yok.',
         'completed': 'Tamamlanan video yok.',
         'failed': 'Başarısız üretim yok.',
         'unreviewed': 'Kalite onayı olmayan eski video yok.',
+        'drafts': 'Eski storyboard taslağı yok.',
     }[active]
     rich_library = active in {'library', 'ready', 'completed'}
     rows = ''.join(
@@ -1559,18 +1640,21 @@ def studio_history(
         if total > HISTORY_PAGE_SIZE else ''
     )
     history_context = {
-        'running': 'Yalnızca şu anda ilerleyen üretimler.',
-        'attention': 'Storyboard onayı, takılmış iş veya onarım bekleyen üretimler.',
-        'library': 'Hazır, gizli, planlanmış veya yayınlanmış videolar.',
+        'running': 'Şu anda hazırlanan videolar.',
+        'attention': 'Yalnızca karar veya kontrol bekleyen güncel videolar.',
+        'library': 'Kalite kontrolünden geçen ve YouTube’a hazır videolar.',
         'ready': 'Yüklemeye hazır videolar.',
         'repair': 'Onarım kararı bekleyen üretimler.',
         'completed': 'YouTube yüklemesi tamamlanan videolar.',
         'failed': 'Eski başarısız denemeler; günlük listeden ayrı tutulur.',
         'unreviewed': 'Açık kalite onayı olmayan eski çıktılar; YouTube yüklemesi kapalıdır.',
+        'drafts': 'Bir günden uzun süredir bekleyen storyboard taslakları.',
     }[active]
     history_archive = _history_archive(_archive_counts(jobs), active=active)
     active_label = (
-        CONSOLE_STATUS_LABELS[active]
+        'Eski storyboard taslakları'
+        if active == 'drafts'
+        else CONSOLE_STATUS_LABELS[active]
         if active in CONSOLE_STATUS_LABELS else UI_STATUS_LABELS[active]
     )
     body = f'''
