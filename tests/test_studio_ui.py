@@ -190,7 +190,9 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     assert 'Videolar önce gizli yüklenir.' in body
     assert '<article class="job compact" data-status="ready"' in body
     assert '<details class="job-details">' not in body
-    assert body.count('data-status-filter=') == 4
+    assert body.count('data-status-filter=') == 3
+    assert 'data-status-filter="failed"' not in body
+    assert '<details class="archive-details">' in body
     assert 'data-status-count="running">0</span>' in body
     assert 'data-status-count="ready">1</span>' in body
     assert 'Üretim masası' in body
@@ -245,7 +247,7 @@ def test_studio_home_prioritizes_running_and_ready_over_failure_bursts(
     body = studio.studio_home(
         studio_token='studio-secret',
     ).body.decode('utf-8')
-    priority_panel = body.split('ÖNCELİKLİ İŞLER', 1)[1].split(
+    priority_panel = body.split('ŞİMDİ', 1)[1].split(
         'GÜVENLİ YAYIN', 1,
     )[0]
 
@@ -254,12 +256,15 @@ def test_studio_home_prioritizes_running_and_ready_over_failure_bursts(
     assert 'Çalışan belgesel B' in priority_panel
     assert 'Hazır belgesel' in priority_panel
     assert 'Tekrarlanan başarısız' not in priority_panel
-    assert '3 başarısız iş geçmişte saklanıyor.' in priority_panel
+    assert 'data-action-group="running"' in priority_panel
+    assert 'data-action-group="ready"' in priority_panel
+    assert 'Tamamlananlar ve hatalar' in priority_panel
+    assert 'aria-label="3 başarısız iş"' in priority_panel
     assert '/studio/history?status=failed' in priority_panel
     assert synced == ['running-a', 'running-b']
     assert 'data-status-count="running">2</span>' in body
     assert 'data-status-count="ready">1</span>' in body
-    assert 'data-status-count="failed">3</span>' in body
+    assert 'data-status-filter="failed"' not in body
 
 
 def test_dashboard_priority_reserves_a_repair_slot(ui_modules):
@@ -283,6 +288,53 @@ def test_dashboard_priority_reserves_a_repair_slot(ui_modules):
         'running-b',
         'repair-a',
     ]
+
+
+def test_dashboard_failure_only_state_stays_out_of_action_queue(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    monkeypatch.setattr(studio.settings, 'factory_api_token', 'studio-secret')
+    monkeypatch.setattr(studio, 'get_selected_voice', lambda: {'name': 'Doğal ses'})
+    monkeypatch.setattr(studio, '_service_statuses', lambda: [('OpenAI', True)])
+    monkeypatch.setattr(
+        studio,
+        'list_jobs',
+        lambda _limit: [
+            {
+                'task_id': 'failed-only',
+                'kind': 'render',
+                'state': 'FAILURE',
+                'spec': {'topic': 'Eski başarısız video'},
+            },
+            {
+                'task_id': 'completed-only',
+                'kind': 'publish',
+                'state': 'SUCCESS',
+                'spec': {'topic': 'Yayınlanmış video'},
+                'result': {'youtube_url': 'https://youtu.be/completed'},
+            },
+        ],
+    )
+
+    body = studio.studio_home(
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    action_panel = body.split('ŞİMDİ', 1)[1].split(
+        'GÜVENLİ YAYIN', 1,
+    )[0]
+
+    assert 'Şu anda devam etmen gereken iş yok.' in action_panel
+    assert '<article class="job compact" data-status="failed"' not in action_panel
+    assert '<article class="job compact" data-status="completed"' not in action_panel
+    assert 'Eski başarısız video' not in action_panel
+    assert 'Yayınlanmış video' not in action_panel
+    assert '<details class="archive-details">' in action_panel
+    assert '<details class="archive-details" open>' not in action_panel
+    assert 'aria-label="1 başarısız iş"' in action_panel
+    assert 'aria-label="1 tamamlanan iş"' in action_panel
+    assert '/studio/history?status=failed' in action_panel
 
 
 def test_studio_home_names_fal_as_optional_when_runway_is_ready(
@@ -370,6 +422,8 @@ def test_studio_home_uses_a_simple_topic_input_and_collapsed_guidance(
         ({'state': 'PENDING'}, 'running'),
         ({'state': 'PROGRESS'}, 'running'),
         ({'state': 'SUCCESS'}, 'ready'),
+        ({'kind': 'publish', 'state': 'SUCCESS'}, 'completed'),
+        ({'state': 'SUCCESS', 'result': {'youtube_url': 'https://youtu.be/video'}}, 'completed'),
         ({'state': 'AWAITING_APPROVAL'}, 'ready'),
         ({'state': 'FAILURE', 'repair_available': True}, 'repair'),
         ({'state': 'FAILURE', 'repair_available': False}, 'failed'),
@@ -377,7 +431,7 @@ def test_studio_home_uses_a_simple_topic_input_and_collapsed_guidance(
         ({'state': 'FAILURE', 'retry_child_task_id': 'child-task'}, 'running'),
     ],
 )
-def test_studio_exposes_only_four_user_statuses(job, expected, ui_modules):
+def test_studio_exposes_five_clear_user_statuses(job, expected, ui_modules):
     studio, _ = ui_modules
 
     assert studio._job_ui_status(job) == expected
@@ -497,6 +551,7 @@ def test_retry_source_is_collapsed_when_child_record_is_present(ui_modules):
         'running': 0,
         'ready': 1,
         'repair': 0,
+        'completed': 0,
         'failed': 0,
     }
     assert studio._collapse_retry_sources([source]) == [source]
@@ -695,7 +750,7 @@ def test_history_filters_on_server_and_paginates_at_twelve(monkeypatch, ui_modul
     assert first.count('<article class="job"') == 12
     assert 'Başarısız video' not in first
     assert 'data-status-count="ready">13</span>' in first
-    assert 'data-status-count="failed">1</span>' in first
+    assert 'aria-label="1 başarısız iş"' in first
     assert 'Sayfa 1 / 2' in first
     assert 'status=ready&amp;page=2' in first
     assert second.count('<article class="job"') == 1
@@ -750,14 +805,15 @@ def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
     ).body.decode('utf-8')
 
     assert 'data-history-status="running"' in body
-    assert 'Önce devam eden videolar gösterilir.' in body
-    assert 'Bu görünüm: Üretiliyor · en fazla 12 iş' in body
-    assert 'Toplam 2 görünür video' in body
+    assert 'Çalışan, onarım bekleyen ve hazır videolar ayrı listelerde.' in body
+    assert 'Bu görünüm:' not in body
+    assert 'Toplam 2 görünür video' not in body
     assert 'data-status-count="running">1</span>' in body
-    assert 'data-status-count="failed">1</span>' in body
+    assert 'aria-label="1 başarısız iş"' in body
     assert 'Aynı hızlı test' not in body
     assert failed_body.count('<article class="job"') == 1
-    assert 'data-status-count="failed">1</span>' in failed_body
+    assert '<details class="archive-details" open>' in failed_body
+    assert 'aria-label="1 başarısız iş"' in failed_body
     assert '1 eski başarısız deneme bu kartta toplandı.' in failed_body
 
 
@@ -789,7 +845,7 @@ def test_history_reconciles_only_the_visible_page(monkeypatch, ui_modules):
 
     assert len(synced) == studio.HISTORY_PAGE_SIZE
     assert body.count('<article class="job"') == studio.HISTORY_PAGE_SIZE
-    assert 'data-status-count="failed">500</span>' in body
+    assert 'aria-label="500 başarısız iş"' in body
 
 
 def test_long_fallback_title_is_bounded_and_never_uses_a_url(ui_modules):
