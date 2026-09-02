@@ -140,6 +140,97 @@ def _runway_create_error_allows_provider_fallback(exc: BaseException) -> bool:
     return bool(codes & _RUNWAY_SAFE_PROVIDER_FALLBACK_CODES)
 
 
+def _runway_bad_request_category(exc: BaseException) -> str:
+    """Return one content-free category for a rejected create request.
+
+    The SDK body can include our full prompt and provider diagnostics, so only
+    documented machine codes and allow-listed input-field names are surfaced.
+    A bounded message fragment is used only to choose among fixed categories;
+    it is never retained or serialized.
+    """
+    body = getattr(exc, 'body', None)
+    if not isinstance(body, dict):
+        return 'bad_request'
+
+    safe_fields = {
+        'audio': 'audio',
+        'duration': 'duration',
+        'model': 'model',
+        'promptimage': 'prompt_image',
+        'prompttext': 'prompt_text',
+        'ratio': 'ratio',
+    }
+    issues = body.get('issues')
+    if isinstance(issues, list):
+        for issue in issues[:20]:
+            if not isinstance(issue, dict):
+                continue
+            path = issue.get('path') or issue.get('loc')
+            if not isinstance(path, list):
+                continue
+            for part in path[:8]:
+                field = re.sub(r'[^a-z0-9]+', '', str(part).casefold())
+                if field in safe_fields:
+                    safe_field = safe_fields[field]
+                    if safe_field == 'prompt_text':
+                        # The message itself is never retained or serialized.
+                        # It is inspected only for tightly bounded categories
+                        # that distinguish contract length from safety policy.
+                        raw_message = issue.get('message')
+                        message = (
+                            raw_message[:4096].casefold()
+                            if isinstance(raw_message, str)
+                            else ''
+                        )
+                        if re.search(
+                            r'\b(?:safety|moderation|unsafe)\b|policy violation',
+                            message,
+                        ):
+                            return 'prompt_safety'
+                        if (
+                            re.search(
+                                r'\b(?:character|utf[ -]?16|code unit|length)\b',
+                                message,
+                            )
+                            and re.search(
+                                r'\b(?:1000|too long|at most|maximum|max(?:imum)? length)\b',
+                                message,
+                            )
+                        ):
+                            return 'prompt_too_long'
+                        if re.search(
+                            r'\b(?:non[ -]?empty|required|must not be empty)\b',
+                            message,
+                        ):
+                            return 'prompt_empty'
+                    return f'invalid_{safe_field}'
+
+    allowed_codes = {
+        'bad_request',
+        'invalid_argument',
+        'invalid_request',
+        'model_not_supported',
+        'parameter_unknown',
+        'unsupported_model',
+        'validation_error',
+        'validation_of_body_failed',
+    }
+    candidates: list[object] = []
+    for field in ('code', 'errorCode', 'error_code', 'reason', 'type'):
+        candidates.append(body.get(field))
+    error = body.get('error')
+    if isinstance(error, str):
+        candidates.append(error)
+    elif isinstance(error, dict):
+        for field in ('code', 'errorCode', 'error_code', 'reason', 'type'):
+            candidates.append(error.get(field))
+    for value in candidates:
+        normalized = _normalize_runway_provider_code(value)
+        if normalized in allowed_codes:
+            return normalized
+    return 'bad_request'
+
+
 def _is_daily_gemini_quota_rejection(response: object) -> bool:
     """Recognize an explicit per-day rejection without relying on message text."""
     try:
@@ -587,9 +678,11 @@ def generate_scene(
         # has accepted a task, no polling or download error may start a second
         # paid generation with another provider.
         if not _runway_create_error_allows_provider_fallback(exc):
-            raise RunwayCreateRejectedError(
+            rejected = RunwayCreateRejectedError(
                 'Runway video create was definitively rejected'
-            ) from None
+            )
+            rejected.reason_code = _runway_bad_request_category(exc)
+            raise rejected from None
         fal_fallback_from = None
         if str(getattr(settings, 'fal_key', '') or '').strip():
             try:

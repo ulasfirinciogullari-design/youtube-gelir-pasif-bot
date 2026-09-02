@@ -141,6 +141,7 @@ def _load_runway_functions(
         '_create_text_to_video_task',
         '_normalize_runway_provider_code',
         '_runway_create_error_allows_provider_fallback',
+        '_runway_bad_request_category',
         'generate_scene',
     }
     definitions = [
@@ -352,6 +353,64 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 'duration': 7,
             }],
         )
+
+    def test_bad_request_category_exposes_only_allowlisted_structure(self):
+        secret = 'sk-secret prompt and account detail'
+        factory = _RunwayClientFactory([
+            BadRequestError(
+                secret,
+                body={
+                    'error': 'Validation of body failed',
+                    'issues': [{
+                        'path': ['body', 'model'],
+                        'message': secret,
+                        'received': secret,
+                    }],
+                },
+            ),
+        ])
+        _, generate_scene = _load_runway_functions(factory)
+
+        with self.assertRaises(RunwayCreateRejectedError) as raised:
+            generate_scene('safe prompt', duration=5)
+
+        self.assertEqual(
+            getattr(raised.exception, 'reason_code', ''),
+            'invalid_model',
+        )
+        self.assertNotIn(secret, str(raised.exception))
+
+    def test_prompt_issue_categories_never_serialize_provider_message(self):
+        cases = [
+            ('Prompt must be at most 1000 UTF-16 code units', 'prompt_too_long'),
+            ('Prompt blocked by content safety policy', 'prompt_safety'),
+            ('Prompt must be non-empty', 'prompt_empty'),
+        ]
+        for message, expected in cases:
+            with self.subTest(expected=expected):
+                secret = 'secret prompt and account value'
+                factory = _RunwayClientFactory([
+                    BadRequestError(
+                        secret,
+                        body={
+                            'error': 'Validation of body failed',
+                            'issues': [{
+                                'path': ['body', 'promptText'],
+                                'message': f'{message}; {secret}',
+                            }],
+                        },
+                    ),
+                ])
+                _, generate_scene = _load_runway_functions(factory)
+
+                with self.assertRaises(RunwayCreateRejectedError) as raised:
+                    generate_scene('safe prompt', duration=5)
+
+                self.assertEqual(
+                    getattr(raised.exception, 'reason_code', ''),
+                    expected,
+                )
+                self.assertNotIn(secret, str(raised.exception))
 
     def test_primary_rate_limit_uses_one_silent_seedance_fallback(self):
         accepted_task = object()

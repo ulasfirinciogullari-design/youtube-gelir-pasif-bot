@@ -1946,6 +1946,10 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         hints = [str(q).strip() for q in visual_queries if str(q).strip()][:2]
     if not original and not hints:
         return ''
+    # Keep deterministic headroom below the provider's 1000 UTF-16-unit hard
+    # limit. Runway's Gen-4.5 guidance recommends simple, direct, positive
+    # visual action instead of filling the entire boundary with constraints.
+    prompt_limit = 900
 
     narration = _truncate_utf16(str(scene.get('narration') or '').strip(), 180)
     visible_action = _truncate_utf16('; '.join(hint[:100] for hint in hints), 150)
@@ -1970,9 +1974,9 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     ))
     if connection_claim:
         mechanism_guardrails.append(
-            'Connection proof: show the distinct moving connector and receiving '
-            'socket before contact, visibly join them, release the hand, and hold '
-            'the connected result; loose strap or a hand hiding the interface fails.'
+            'Connection proof: clearly show the distinct moving connector and '
+            'receiving socket apart, visibly join them, release the hand, and '
+            'hold the fully seated connection in clear view.'
         )
     oled_claim = bool(re.search(
         r'\b(?:oled|true[ -]black)\b|gerçek siyah|emissive\s+(?:pixel|display|screen)',
@@ -1980,8 +1984,8 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     ))
     if oled_claim:
         mechanism_guardrails.append(
-            'OLED proof: macro real subpixels; shaped-black emitters off while '
-            'adjacent RGB stays lit; never whole-display fade, tap or noise.'
+            'OLED proof: macro real subpixels; shaped-black emitters remain dark '
+            'while adjacent RGB stays lit in the same held close-up.'
         )
         power_claim = bool(re.search(
             r'\b(?:power\s+(?:use|usage|draw|consumption)|energy\s+(?:use|usage|consumption)|'
@@ -1996,23 +2000,20 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
             )
 
     opening = (
-        'One continuous photorealistic 16:9 documentary shot for the full '
-        'requested duration. '
+        'One continuous photorealistic 16:9 documentary shot. '
     )
     temporal_clause = (
         f'PRIMARY EVENT: {_truncate_utf16(primary_event, 140)}. '
-        'Show a clear START state, then the named PHYSICAL ACTION or CAUSE, '
-        'then hold the visibly CHANGED RESULT in the same take. A static '
-        'final-only shot fails. '
+        'Begin with a clear START state, show the named PHYSICAL ACTION or '
+        'CAUSE, then hold the visibly CHANGED RESULT in the same take. '
     ) if primary_event else ''
     review_targets = _truncate_utf16(
         '; '.join(hints),
         90,
     ) if has_repair_evidence and not mechanism_guardrails else ''
     repair_evidence_clause = (
-        f'REVIEW-LED REPAIR TARGETS: {review_targets}. Preserve literal '
-        'identity, real-world scale, material, condition and setting; no '
-        'generic substitute.'
+        f'REVIEW-LED VISIBLE TARGETS: {review_targets}. Match their literal '
+        'identity, real-world scale, material, condition and setting.'
         if review_targets
         else ''
     )
@@ -2022,8 +2023,8 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         if clause
     )
     closing = (
-        'Keep subject, identity, background and exposure continuous; no cuts, '
-        'text, logos, charts, glitch, watermark or metaphor.'
+        'Maintain subject, identity, background and exposure in one continuous '
+        'clean, unbranded documentary frame.'
     )
     original_label = 'Core shot direction: '
     identity_guardrail = manufactured_replica_guardrail(scene)
@@ -2043,7 +2044,7 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
     ) // 2
     shared_budget = max(
         0,
-        1000 - fixed_units - 3,
+        prompt_limit - fixed_units - 3,
     )
     original_units = len(original.encode('utf-16-le')) // 2
     minimum_original = min(original_units, 360)
@@ -2070,7 +2071,8 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
         + original_clause
         + identity_clause
         + guardrail_clause
-        + closing
+        + closing,
+        prompt_limit,
     )
 
 
@@ -2259,11 +2261,33 @@ def _runway_failure_diagnostic(
     )
     if not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,127}', exception_class):
         exception_class = 'Exception'
-    return {
+    diagnostic = {
         'stage': safe_stage,
         'scene_index': safe_scene_index,
         'exception_class': exception_class,
     }
+    reason_code = str(getattr(exc, 'reason_code', '') or '').strip()
+    if reason_code in {
+        'bad_request',
+        'invalid_argument',
+        'invalid_audio',
+        'invalid_duration',
+        'invalid_model',
+        'invalid_prompt_image',
+        'invalid_prompt_text',
+        'invalid_ratio',
+        'invalid_request',
+        'model_not_supported',
+        'parameter_unknown',
+        'prompt_empty',
+        'prompt_safety',
+        'prompt_too_long',
+        'unsupported_model',
+        'validation_error',
+        'validation_of_body_failed',
+    }:
+        diagnostic['reason_code'] = reason_code
+    return diagnostic
 
 
 def _runway_failure_payload(
@@ -2304,11 +2328,33 @@ def _runway_failure_payload(
             exception_class,
         ):
             exception_class = 'Exception'
-        safe_diagnostics.append({
+        safe_diagnostic = {
             'stage': stage,
             'scene_index': scene_index,
             'exception_class': exception_class,
-        })
+        }
+        reason_code = str(diagnostic.get('reason_code') or '').strip()
+        if reason_code in {
+            'bad_request',
+            'invalid_argument',
+            'invalid_audio',
+            'invalid_duration',
+            'invalid_model',
+            'invalid_prompt_image',
+            'invalid_prompt_text',
+            'invalid_ratio',
+            'invalid_request',
+            'model_not_supported',
+            'parameter_unknown',
+            'prompt_empty',
+            'prompt_safety',
+            'prompt_too_long',
+            'unsupported_model',
+            'validation_error',
+            'validation_of_body_failed',
+        }:
+            safe_diagnostic['reason_code'] = reason_code
+        safe_diagnostics.append(safe_diagnostic)
 
     try:
         safe_attempts = max(0, int(attempts))
