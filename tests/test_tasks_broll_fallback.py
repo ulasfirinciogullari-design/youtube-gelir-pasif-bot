@@ -1121,6 +1121,66 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             source,
         )
 
+    def test_ai_first_six_scene_preview_allocates_every_required_scene(self):
+        allocate = _load_outage_allocation_boundary()
+        ranked = [
+            {
+                'scene_index': scene_index,
+                'has_visual': False,
+                'stock_score': -1,
+            }
+            for scene_index in range(6)
+        ]
+
+        (
+            selected, required_base, missing_outage, missing_quality,
+            outage_cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 6, set(), set(), 86)
+
+        self.assertEqual(
+            [item['scene_index'] for item in required_base],
+            list(range(6)),
+        )
+        self.assertEqual(
+            [item['scene_index'] for item in selected],
+            list(range(6)),
+        )
+        self.assertEqual(missing_outage, [])
+        self.assertEqual(missing_quality, [])
+        self.assertFalse(outage_cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
+
+    def test_balanced_six_scene_preview_does_not_expand_past_paid_cap(self):
+        allocate = _load_outage_allocation_boundary()
+        ranked = [
+            {
+                'scene_index': scene_index,
+                'has_visual': False,
+                'stock_score': -1,
+            }
+            for scene_index in range(6)
+        ]
+
+        (
+            selected, required_base, missing_outage, missing_quality,
+            outage_cap_exceeded, quality_cap_exceeded, overlap,
+        ) = allocate(ranked, 4, set(), set(), 86)
+
+        self.assertEqual(
+            [item['scene_index'] for item in required_base],
+            list(range(6)),
+        )
+        self.assertEqual(
+            [item['scene_index'] for item in selected],
+            list(range(4)),
+        )
+        self.assertEqual(missing_outage, [])
+        self.assertEqual(missing_quality, [])
+        self.assertFalse(outage_cap_exceeded)
+        self.assertFalse(quality_cap_exceeded)
+        self.assertEqual(overlap, [])
+
     def test_third_required_scene_stays_terminal_before_paid_generation(self):
         allocate = _load_outage_allocation_boundary()
         ranked = [
