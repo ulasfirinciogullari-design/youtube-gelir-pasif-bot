@@ -196,6 +196,72 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     assert 'Üretim masası' in body
 
 
+def test_studio_home_prioritizes_running_and_ready_over_failure_bursts(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    monkeypatch.setattr(studio.settings, 'factory_api_token', 'studio-secret')
+    monkeypatch.setattr(studio, 'get_selected_voice', lambda: {'name': 'Doğal ses'})
+    monkeypatch.setattr(studio, '_service_statuses', lambda: [('OpenAI', True)])
+
+    def job(task_id, state, title, created_ts):
+        payload = {
+            'task_id': task_id,
+            'kind': 'render',
+            'state': state,
+            'progress': 35 if state == 'PROGRESS' else 100,
+            'created_ts': created_ts,
+            'spec': {
+                'topic': title,
+                'mode': 'preview',
+                'duration_minutes': 0.5,
+            },
+        }
+        if state == 'SUCCESS':
+            payload['result'] = {
+                'title': title,
+                'video_key': f'videos/{task_id}/final.mp4',
+            }
+        return payload
+
+    jobs = [
+        job('failed-new', 'FAILURE', 'Tekrarlanan başarısız A', 600),
+        job('failed-mid', 'FAILURE', 'Tekrarlanan başarısız B', 590),
+        job('failed-old', 'FAILURE', 'Tekrarlanan başarısız C', 580),
+        job('running-a', 'PROGRESS', 'Çalışan belgesel A', 570),
+        job('running-b', 'PROGRESS', 'Çalışan belgesel B', 560),
+        job('ready-a', 'SUCCESS', 'Hazır belgesel', 550),
+    ]
+    by_id = {item['task_id']: item for item in jobs}
+    synced = []
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: jobs)
+    monkeypatch.setattr(
+        studio,
+        '_sync_job',
+        lambda task_id: synced.append(task_id) or by_id[task_id],
+    )
+
+    body = studio.studio_home(
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    priority_panel = body.split('ÖNCELİKLİ İŞLER', 1)[1].split(
+        'GÜVENLİ YAYIN', 1,
+    )[0]
+
+    assert priority_panel.count('<article class="job compact"') == 3
+    assert 'Çalışan belgesel A' in priority_panel
+    assert 'Çalışan belgesel B' in priority_panel
+    assert 'Hazır belgesel' in priority_panel
+    assert 'Tekrarlanan başarısız' not in priority_panel
+    assert '3 başarısız deneme geçmişte saklanıyor.' in priority_panel
+    assert '/studio/history?status=failed' in priority_panel
+    assert synced == ['running-a', 'running-b']
+    assert 'data-status-count="running">2</span>' in body
+    assert 'data-status-count="ready">1</span>' in body
+    assert 'data-status-count="failed">3</span>' in body
+
+
 def test_studio_home_names_fal_as_optional_when_runway_is_ready(
     monkeypatch,
     ui_modules,
