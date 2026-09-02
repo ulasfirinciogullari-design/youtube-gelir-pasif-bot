@@ -467,3 +467,38 @@ def test_repair_checkpoint_rejects_foreign_source(monkeypatch):
         assert 'invalid' in str(exc)
     else:
         raise AssertionError('foreign repair checkpoint was accepted')
+
+
+def test_list_jobs_can_scan_the_full_bounded_history(monkeypatch):
+    class FakePipeline:
+        def __init__(self):
+            self.keys = []
+
+        def get(self, key):
+            self.keys.append(key)
+            return self
+
+        def execute(self):
+            return [None] * len(self.keys)
+
+    class FakeRedis:
+        def __init__(self):
+            self.range = None
+            self.pipe = FakePipeline()
+
+        def zrevrange(self, key, start, stop):
+            self.range = (key, start, stop)
+            return ['job-id']
+
+        def pipeline(self):
+            return self.pipe
+
+    client = FakeRedis()
+    monkeypatch.setattr(studio_state, '_client', lambda: client)
+
+    assert studio_state.list_jobs(9999) == []
+    assert client.range == (
+        studio_state.JOB_INDEX,
+        0,
+        studio_state.MAX_INDEXED_JOBS - 1,
+    )

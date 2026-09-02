@@ -537,7 +537,7 @@ def update_job(task_id: str, **fields: Any) -> dict:
 
 
 def list_jobs(limit: int = 30) -> list[dict]:
-    limit = max(1, min(int(limit), 100))
+    limit = max(1, min(int(limit), MAX_INDEXED_JOBS))
     try:
         client = _client()
         ids = client.zrevrange(JOB_INDEX, 0, limit - 1)

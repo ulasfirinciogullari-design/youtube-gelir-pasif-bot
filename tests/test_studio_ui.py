@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+import json
 import sys
 import types
 
@@ -129,20 +130,24 @@ def _ready_job() -> dict:
     }
 
 
-def test_studio_job_card_is_compact_but_keeps_accessible_full_brief(ui_modules):
+def test_studio_job_card_is_compact_with_one_action_and_collapsed_details(ui_modules):
     studio, _ = ui_modules
     html = studio._job_row(_ready_job())
 
-    assert '<article class="job">' in html
+    assert '<article class="job" data-status="ready"' in html
     assert '<div class="job-title">Uçakta Işıklar Neden Kısılır?</div>' in html
-    assert '<details class="brief-details">' in html
-    assert '<summary>Yaratıcı talimatı gör</summary>' in html
+    assert '<details class="job-details"><summary>Teknik ayrıntılar</summary>' in html
+    assert '<b>Yaratıcı talimat</b>' in html
     assert 'Teknik açıklamayı insan deneyiminin önüne geçirme.' in html
     assert 'https://sensitive.example' not in html
     assert '[bağlantı gizlendi]' in html
+    assert '<span class="state ready">Hazır</span>' in html
+    assert '>Gizli yükle</a>' in html
+    assert html.count('class="btn ') == 1
     assert '30 sn' in html
     assert '2 Eyl 2026 · 00:15' in html
-    assert 'Kanal: merak-belgesel-tr-01' in html
+    assert '<b>Hedef / profil</b> merak-belgesel-tr-01' in html
+    assert 'Güncellendi 2 Eyl 2026 · 00:15' in html
     assert 'aria-label="Video bilgileri"' in html
     assert '-webkit-line-clamp:2' in studio.BASE_CSS
 
@@ -172,12 +177,265 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
         'channel_id',
     ):
         assert f'name="{field}"' in body
+    for control_id in (
+        'topic', 'duration', 'language', 'content-style', 'pace',
+        'visual-mix', 'workflow', 'music', 'subtitles', 'reference-url',
+        'channel-id',
+    ):
+        assert f'for="{control_id}"' in body
+        assert f'id="{control_id}"' in body
     assert '1 servis ayarı eksik' in body
-    assert '<details class="system-details" open>' in body
+    assert '<details class="system-details">' in body
+    assert '<details class="system-details" open>' not in body
     assert 'Videolar önce gizli yüklenir.' in body
-    assert '<article class="job compact">' in body
-    assert '<summary>Yaratıcı talimatı gör</summary>' in body
-    assert '.job.compact .brief-details{display:none}' not in studio.BASE_CSS
+    assert '<article class="job compact" data-status="ready"' in body
+    assert '<details class="job-details">' not in body
+    assert body.count('data-status-filter=') == 4
+    assert 'data-status-count="running">0</span>' in body
+    assert 'data-status-count="ready">1</span>' in body
+    assert 'Üretim masası' in body
+
+
+@pytest.mark.parametrize(
+    ('job', 'expected'),
+    [
+        ({'state': 'PENDING'}, 'running'),
+        ({'state': 'PROGRESS'}, 'running'),
+        ({'state': 'SUCCESS'}, 'ready'),
+        ({'state': 'AWAITING_APPROVAL'}, 'ready'),
+        ({'state': 'FAILURE', 'repair_available': True}, 'repair'),
+        ({'state': 'FAILURE', 'repair_available': False}, 'failed'),
+        ({'state': 'FAILURE', 'retry_claimed': True}, 'running'),
+        ({'state': 'FAILURE', 'retry_child_task_id': 'child-task'}, 'running'),
+    ],
+)
+def test_studio_exposes_only_four_user_statuses(job, expected, ui_modules):
+    studio, _ = ui_modules
+
+    assert studio._job_ui_status(job) == expected
+    assert studio._job_ui_status(job) in studio.UI_STATUS_ORDER
+
+
+def test_each_job_status_has_exactly_one_targeted_primary_action(ui_modules):
+    studio, _ = ui_modules
+    base = {
+        'task_id': 'source-task',
+        'kind': 'render',
+        'spec': {'topic': 'Tek bir konu', 'mode': 'preview'},
+    }
+    cases = [
+        ({**base, 'state': 'PROGRESS'}, 'Durumu aç'),
+        ({**base, 'state': 'SUCCESS', 'result': {'video_key': 'videos/final.mp4'}}, 'Gizli yükle'),
+        ({**base, 'state': 'FAILURE', 'repair_available': True}, 'Sorunlu sahneyi onar'),
+        ({**base, 'state': 'FAILURE', 'repair_available': False}, 'Aynı ayarlarla tekrar dene'),
+    ]
+
+    for job, label in cases:
+        html = studio._job_row(job)
+        assert label in html
+        assert html.count('class="btn ') == 1
+
+
+def test_ready_render_prioritizes_private_upload_over_expiring_download(ui_modules):
+    studio, _ = ui_modules
+    job = _ready_job()
+    job['result']['download_url'] = 'https://temporary.example.test/final.mp4'
+
+    html = studio._job_row(job)
+
+    assert '>Gizli yükle</a>' in html
+    assert '>Videoyu aç</a>' not in html
+    assert 'temporary.example.test' not in html
+    assert html.count('class="btn ') == 1
+
+
+def test_publish_mode_and_authorization_headers_are_human_safe(ui_modules):
+    studio, _ = ui_modules
+    publish = {
+        'task_id': 'publish-task',
+        'kind': 'publish',
+        'state': 'PROGRESS',
+        'spec': {
+            'topic': 'Otomatik yayın',
+            'mode': 'autonomous_publish',
+        },
+        'error': 'Authorization: Bearer sk-live-secret Basic dXNlcjpwYXNz',
+    }
+
+    html = studio._job_row(publish)
+
+    assert 'Otomatik gizli yükleme' in html
+    assert 'autonomous_publish' not in html
+    assert 'sk-live-secret' not in html
+    assert 'dXNlcjpwYXNz' not in html
+    assert 'Authorization=[gizlendi]' in html
+
+
+@pytest.mark.parametrize(
+    'secret_field',
+    ['refresh_token', 'access_token', 'id_token', 'client_secret'],
+)
+def test_compound_credentials_are_redacted(secret_field, ui_modules):
+    studio, _ = ui_modules
+
+    safe = studio._safe_ui_text(f'provider {secret_field}=never-show-this')
+
+    assert 'never-show-this' not in safe
+    assert '[gizlendi]' in safe
+
+
+def test_claimed_retry_becomes_running_and_links_to_child_without_second_retry(ui_modules):
+    studio, _ = ui_modules
+    job = {
+        'task_id': 'source-task',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'retry_claimed': True,
+        'retry_child_task_id': 'retry-child-task',
+        'retry_dispatch_state': 'uncertain',
+        'spec': {'topic': 'Tek bir konu'},
+    }
+
+    html = studio._job_row(job)
+
+    assert 'data-status="running"' in html
+    assert 'href="/studio/job/retry-child-task"' in html
+    assert 'ikinci kez başlatılmayacak' in html
+    assert 'action="/studio/retry/' not in html
+    assert html.count('class="btn ') == 1
+
+
+def test_retry_source_is_collapsed_when_child_record_is_present(ui_modules):
+    studio, _ = ui_modules
+    source = {
+        'task_id': 'source-task',
+        'state': 'FAILURE',
+        'retry_claimed': True,
+        'retry_child_task_id': 'retry-child-task',
+        'spec': {'topic': 'Eski başarısız deneme'},
+    }
+    child = {
+        'task_id': 'retry-child-task',
+        'state': 'SUCCESS',
+        'kind': 'render',
+        'spec': {'topic': 'Güncel deneme'},
+        'result': {'video_key': 'videos/retry-child-task/final.mp4'},
+    }
+
+    visible = studio._collapse_retry_sources([source, child])
+
+    assert visible == [child]
+    assert studio._status_counts(visible) == {
+        'running': 0,
+        'ready': 1,
+        'repair': 0,
+        'failed': 0,
+    }
+    assert studio._collapse_retry_sources([source]) == [source]
+
+
+def test_workflow_history_shows_only_the_latest_child_step(ui_modules):
+    studio, _ = ui_modules
+    plan = {
+        'task_id': 'plan-task',
+        'kind': 'plan',
+        'state': 'AWAITING_APPROVAL',
+    }
+    render = {
+        'task_id': 'render-task',
+        'parent_id': 'plan-task',
+        'kind': 'render',
+        'state': 'SUCCESS',
+    }
+    publish = {
+        'task_id': 'publish-task',
+        'parent_id': 'render-task',
+        'kind': 'publish',
+        'state': 'PROGRESS',
+    }
+
+    assert studio._collapse_retry_sources([publish, render, plan]) == [publish]
+
+    failed_publish = {**publish, 'state': 'FAILURE'}
+    assert studio._collapse_retry_sources(
+        [failed_publish, render, plan]
+    ) == [render]
+
+
+def test_history_filters_on_server_and_paginates_at_twelve(monkeypatch, ui_modules):
+    studio, _ = ui_modules
+    ready_jobs = []
+    for index in range(13):
+        job = _ready_job()
+        job['task_id'] = f'ready-{index}'
+        job['result'] = dict(job['result'], title=f'Hazır video {index}')
+        ready_jobs.append(job)
+    failed = {
+        'task_id': 'failed-one',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'spec': {'topic': 'Başarısız video'},
+    }
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [*ready_jobs, failed])
+    monkeypatch.setattr(
+        studio,
+        '_sync_job',
+        lambda task_id: next(
+            job for job in [*ready_jobs, failed] if job['task_id'] == task_id
+        ),
+    )
+
+    first = studio.studio_history(
+        status='ready',
+        page=1,
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    second = studio.studio_history(
+        status='ready',
+        page=2,
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert 'data-history-status="ready"' in first
+    assert first.count('<article class="job"') == 12
+    assert 'Başarısız video' not in first
+    assert 'data-status-count="ready">13</span>' in first
+    assert 'data-status-count="failed">1</span>' in first
+    assert 'Sayfa 1 / 2' in first
+    assert 'status=ready&amp;page=2' in first
+    assert second.count('<article class="job"') == 1
+    assert 'Sayfa 2 / 2' in second
+
+
+def test_history_reconciles_only_the_visible_page(monkeypatch, ui_modules):
+    studio, _ = ui_modules
+    jobs = [
+        {
+            'task_id': f'failed-{index}',
+            'kind': 'render',
+            'state': 'FAILURE',
+            'spec': {'topic': f'Başarısız video {index}'},
+        }
+        for index in range(500)
+    ]
+    job_by_id = {job['task_id']: job for job in jobs}
+    synced = []
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: jobs)
+    monkeypatch.setattr(
+        studio,
+        '_sync_job',
+        lambda task_id: synced.append(task_id) or job_by_id[task_id],
+    )
+
+    body = studio.studio_history(
+        status='failed',
+        page=1,
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert len(synced) == studio.HISTORY_PAGE_SIZE
+    assert body.count('<article class="job"') == studio.HISTORY_PAGE_SIZE
+    assert 'data-status-count="failed">500</span>' in body
 
 
 def test_long_fallback_title_is_bounded_and_never_uses_a_url(ui_modules):
@@ -216,25 +474,76 @@ def test_job_api_keeps_critical_error_visible_but_redacts_links_and_secrets(
         'failed-job',
         studio_token='studio-secret',
     ).body.decode('utf-8')
+    payload = json.loads(body)
 
     assert 'Sağlayıcı hatası' in body
     assert 'provider.example' not in body
     assert 'do-not-render' not in body
     assert 'gizlendi' in body
+    assert payload['ui_status'] == 'failed'
+    assert payload['ui_status_label'] == 'Başarısız'
+    assert payload['ui_status_message'].startswith('Üretim tamamlanamadı')
 
 
-def test_claimed_repair_ui_hides_duplicate_form_and_links_child(ui_modules):
+def test_job_view_keeps_error_inside_closed_technical_details(monkeypatch, ui_modules):
     studio, _ = ui_modules
+    record = {
+        'task_id': 'repair-job',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'stage': 'failed',
+        'failure_stage': 'visual_qc',
+        'repair_available': True,
+        'error': 'provider_error token=secret-value',
+        'spec': {'topic': 'Uçak videosu'},
+    }
+    monkeypatch.setattr(studio, 'get_job', lambda _task_id: record)
+
+    body = studio.studio_job(
+        'repair-job',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert '<details class="technical-details">' in body
+    assert '<details class="technical-details" open>' not in body
+    assert '<pre>' not in body
+    assert 'Yalnızca sorunlu sahne yeniden üretilecek' in body
+    assert '>Sorunlu sahneyi onar</button>' in body
+    assert 'secret-value' not in body
+    assert 'token=[gizlendi]' in body
+
+
+def test_claimed_repair_ui_hides_duplicate_form_and_links_child(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    monkeypatch.setattr(
+        studio,
+        'get_job',
+        lambda _task_id: {
+            'task_id': 'failed-job',
+            'kind': 'render',
+            'state': 'FAILURE',
+            'repair_claimed': True,
+            'retry_claimed': True,
+            'retry_child_task_id': 'repair-child',
+            'spec': {'topic': 'Onarılan video'},
+        },
+    )
 
     body = studio.studio_job(
         'failed-job',
         studio_token='studio-secret',
     ).body.decode('utf-8')
+    initial_html = body.split('<script>', 1)[0]
 
-    assert 'j.retry_claimed||j.repair_claimed' in body
-    assert 'Aynı iş ikinci kez gönderilmeyecek.' in body
-    assert 'Kuyruktaki işi aç' in body
-    assert "const action=claimed?" in body
+    assert 'href="/studio/job/repair-child"' in initial_html
+    assert 'Onarım durumunu aç' in initial_html
+    assert 'action="/studio/retry/' not in initial_html
+    assert initial_html.count('class="btn ') == 1
+    assert "const child=String(j.retry_child_task_id||'').trim()" in body
+    assert "setAction('running:'+target" in body
 
 
 def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monkeypatch, ui_modules):
