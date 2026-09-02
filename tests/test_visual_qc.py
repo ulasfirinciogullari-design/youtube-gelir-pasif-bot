@@ -394,6 +394,188 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    def test_low_score_with_clear_success_reason_revalidates_exact_media_once(
+        self, frame, gemini
+    ):
+        def write_candidate_frame(video_path, output_path, _fraction):
+            output_path.write_bytes(
+                b'\xff\xd8\xff' + video_path.encode('utf-8') + b'\xff\xd9'
+            )
+            return output_path
+
+        frame.side_effect = write_candidate_frame
+        inconsistent_reason = (
+            'Candidate 0 perfectly aligns with the AI prompt and narration, '
+            'showing a black smartphone charging tightly wedged under a thick '
+            'pillow on navy bedding. The subtle camera motion is professional.'
+        )
+        gemini.side_effect = [
+            {'reviews': [_review(
+                candidate=1,
+                score=40,
+                reason=inconsistent_reason,
+                retry_queries=['phone under pillow charging', 'charging phone bedding'],
+            )]},
+            {'reviews': [_review(
+                score=93,
+                reason=(
+                    'The exact selected clip visibly proves the phone, pillow '
+                    'and charging state with useful motion.'
+                ),
+            )]},
+        ]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            result = review_scene_visuals(
+                self.scenes,
+                [['candidate-zero.mp4', 'candidate-one.mp4']],
+                self.work / 'score_reason_exact_media',
+                _missing_review_attempts=0,
+            )
+
+        self.assertEqual(gemini.call_count, 2)
+        self.assertEqual(gemini.call_args_list[0].kwargs['thinking_level'], 'low')
+        self.assertEqual(
+            gemini.call_args_list[1].kwargs['thinking_level'],
+            'medium',
+        )
+        second_images = [
+            part['image_bytes']
+            for part in gemini.call_args_list[1].args[0]
+            if set(part) == {'image_bytes'}
+        ]
+        self.assertEqual(len(second_images), 5)
+        self.assertTrue(all(
+            b'candidate-one.mp4' in image for image in second_images
+        ))
+        self.assertFalse(any(
+            b'candidate-zero.mp4' in image for image in second_images
+        ))
+        review = result['reviews'][0]
+        self.assertEqual(review['score'], 93)
+        self.assertEqual(review['best_candidate_index'], 1)
+        self.assertTrue(review['score_reason_revalidated'])
+        self.assertTrue(review['score_reason_consistency_passed'])
+        self.assertEqual(review['score_reason_initial_score'], 40)
+        self.assertEqual(
+            review['score_reason_initial_reason'], inconsistent_reason
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_repeated_low_score_success_conflict_remains_fail_closed(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        inconsistent_reason = (
+            'Matches the prompt requirements well with the charging '
+            'smartphone tucked tightly under the pillow.'
+        )
+        gemini.side_effect = [
+            {'reviews': [_review(
+                score=40,
+                reason=inconsistent_reason,
+                retry_queries=['charging phone under pillow', 'phone beneath bedding'],
+            )]},
+            {'reviews': [_review(
+                score=40,
+                reason=inconsistent_reason,
+                retry_queries=['charging phone under pillow', 'phone beneath bedding'],
+            )]},
+        ]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                self.scenes,
+                self.visuals,
+                self.work / 'score_reason_repeated_conflict',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertEqual(gemini.call_count, 2)
+        self.assertEqual(review['score'], 40)
+        self.assertTrue(review['score_reason_revalidated'])
+        self.assertFalse(review['score_reason_consistency_passed'])
+        self.assertIn('retained fail-closed', review['reason'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_low_score_with_concrete_failure_does_not_spend_revalidation(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        gemini.return_value = {'reviews': [_review(
+            score=40,
+            reason=(
+                'The pillow is missing and the phone is not visibly charging.'
+            ),
+            retry_queries=['charging phone under pillow', 'phone beneath bedding'],
+        )]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                self.scenes,
+                self.visuals,
+                self.work / 'score_reason_valid_rejection',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertEqual(gemini.call_count, 1)
+        self.assertEqual(review['score'], 40)
+        self.assertNotIn('score_reason_revalidated', review)
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_normalized_hard_rejection_with_success_reason_is_revalidated(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        gemini.side_effect = [
+            {'reviews': [_review(
+                score=97,
+                reason=(
+                    'The candidate fully matches the narration and scene '
+                    'requirements.'
+                ),
+                effectively_static_or_frozen=True,
+            )]},
+            {'reviews': [_review(
+                score=91,
+                reason=(
+                    'The selected clip has clear continuous motion and proves '
+                    'the named subject and action.'
+                ),
+            )]},
+        ]
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                self.scenes,
+                self.visuals,
+                self.work / 'score_reason_normalized_cap',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertEqual(gemini.call_count, 2)
+        self.assertEqual(review['score_reason_initial_score'], 40)
+        self.assertEqual(review['score_reason_initial_raw_score'], 97)
+        self.assertEqual(review['score'], 91)
+        self.assertTrue(review['score_reason_consistency_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
     def test_toy_scene_identity_conflict_or_missing_cues_is_hard_capped(
         self, frame, gemini
     ):
@@ -406,11 +588,19 @@ class VisualQcProviderTests(unittest.TestCase):
         gemini.side_effect = [
             {'reviews': [_review(
                 score=96,
+                reason=(
+                    'The visible animal is biological rather than the '
+                    'required manufactured Lego replica.'
+                ),
                 authored_identity_or_material_conflict_visible=True,
                 manufactured_object_cues_visible=True,
             )]},
             {'reviews': [_review(
                 score=96,
+                reason=(
+                    'The required replica lacks visible manufactured material '
+                    'cues.'
+                ),
                 authored_identity_or_material_conflict_visible=False,
                 manufactured_object_cues_visible=False,
             )]},

@@ -35,13 +35,19 @@ def ui_modules(monkeypatch):
     tasks_module.run_video_pipeline = types.SimpleNamespace(delay=lambda *_a, **_k: None)
 
     state_module = types.ModuleType('app.services.studio_state')
+    state_module.claim_retry_dispatch = lambda *_a, **_k: None
     state_module.consume_repair_checkpoint = lambda *_a, **_k: None
     state_module.create_job = lambda *_a, **_k: None
     state_module.get_job = lambda *_a, **_k: None
     state_module.list_jobs = lambda *_a, **_k: []
     state_module.mark_failure = lambda *_a, **_k: {}
+    state_module.mark_retry_dispatch = lambda *_a, **_k: True
     state_module.mark_success = lambda *_a, **_k: {}
     state_module.save_repair_checkpoint = lambda *_a, **_k: None
+    state_module.sync_repair_checkpoint_state = lambda *_a, **_k: {
+        'repair_available': False,
+        'repair_claimed': False,
+    }
     state_module.update_job = lambda *_a, **_k: {}
 
     voice_module = types.ModuleType('app.services.voice')
@@ -215,6 +221,20 @@ def test_job_api_keeps_critical_error_visible_but_redacts_links_and_secrets(
     assert 'provider.example' not in body
     assert 'do-not-render' not in body
     assert 'gizlendi' in body
+
+
+def test_claimed_repair_ui_hides_duplicate_form_and_links_child(ui_modules):
+    studio, _ = ui_modules
+
+    body = studio.studio_job(
+        'failed-job',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert 'j.retry_claimed||j.repair_claimed' in body
+    assert 'Aynı iş ikinci kez gönderilmeyecek.' in body
+    assert 'Kuyruktaki işi aç' in body
+    assert "const action=claimed?" in body
 
 
 def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monkeypatch, ui_modules):

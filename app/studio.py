@@ -4,7 +4,9 @@ from datetime import datetime, timedelta, timezone
 from html import escape
 import json
 import re
+import secrets
 from typing import Any
+from uuid import uuid4
 
 from celery.result import AsyncResult
 from fastapi import APIRouter, Cookie, Form, HTTPException, Request
@@ -19,13 +21,14 @@ from app.tasks import (
     run_video_pipeline,
 )
 from app.services.studio_state import (
-    consume_repair_checkpoint,
+    claim_retry_dispatch,
     create_job,
     get_job,
     list_jobs,
     mark_failure,
+    mark_retry_dispatch,
     mark_success,
-    save_repair_checkpoint,
+    sync_repair_checkpoint_state,
     update_job,
 )
 from app.services.voice import get_selected_voice
@@ -292,6 +295,20 @@ def _sync_job(task_id: str) -> dict:
             progress=task.info.get('progress') if task.info.get('progress') is not None else record.get('progress', 0),
             message=task.info.get('message') or record.get('message'),
         )
+    if str(record.get('state') or state) == 'FAILURE':
+        try:
+            repair_state = sync_repair_checkpoint_state(task_id)
+        except Exception:
+            # A dashboard probe must not expose a possibly stale repair action
+            # when Redis cannot prove the single-use checkpoint still exists.
+            repair_state = {
+                'repair_available': False,
+                'repair_claimed': bool(record.get('repair_claimed')),
+            }
+        refreshed = get_job(task_id)
+        if refreshed:
+            record = refreshed
+        record = {**record, **repair_state}
     return record
 
 
@@ -453,7 +470,7 @@ async function poll(){{
  const state=j.state||'PENDING',stage=j.stage||'queued',p=Math.max(0,Math.min(100,Number(j.progress||0)));
  document.getElementById('bar').style.width=p+'%';document.getElementById('progress').setAttribute('aria-valuenow',String(p));document.getElementById('stage').textContent=(j.stage_label||stage)+' · %'+p;document.getElementById('message').textContent=j.message||'';
  const out=document.getElementById('result');
- if(state==='FAILURE'){{const repair=Boolean(j.repair_available);const repairNote=repair?`<div class="notice" style="margin-top:10px"><b>Sahne onarımı hazır.</b> ${{esc(j.repair_message||'Kabul edilen üretimler korunacak.')}}</div>`:'';const retryLabel=repair?'↻ Yalnızca reddedilen sahneyi onar':'↻ Aynı ayarlarla tekrar dene';out.innerHTML=`<div class="notice error" style="margin-top:14px"><b>Üretim tamamlanamadı</b><pre>${{esc(j.error||'Bilinmeyen hata')}}</pre></div>${{repairNote}}<div class="actions"><form method="post" action="/studio/retry/${{taskId}}"><button class="btn danger">${{retryLabel}}</button></form></div>`;return;}}
+ if(state==='FAILURE'){{const repair=Boolean(j.repair_available),claimed=Boolean(j.retry_claimed||j.repair_claimed);const repairNote=repair?`<div class="notice" style="margin-top:10px"><b>Sahne onarımı hazır.</b> ${{esc(j.repair_message||'Kabul edilen üretimler korunacak.')}}</div>`:'';const retryLabel=repair?'↻ Yalnızca reddedilen sahneyi onar':'↻ Aynı ayarlarla tekrar dene';const child=String(j.retry_child_task_id||'');const claimedAction=child?`<a class="btn secondary" href="/studio/job/${{encodeURIComponent(child)}}">Kuyruktaki işi aç →</a>`:'';const action=claimed?`<div class="notice" style="margin-top:10px"><b>${{j.repair_claimed?'Sahne onarımı':'Yeniden deneme'}} kuyruğa alındı.</b> Aynı iş ikinci kez gönderilmeyecek.</div><div class="actions">${{claimedAction}}</div>`:`${{repairNote}}<div class="actions"><form method="post" action="/studio/retry/${{taskId}}"><button class="btn danger">${{retryLabel}}</button></form></div>`;out.innerHTML=`<div class="notice error" style="margin-top:14px"><b>Üretim tamamlanamadı</b><pre>${{esc(j.error||'Bilinmeyen hata')}}</pre></div>${{action}}`;return;}}
  if(state==='AWAITING_APPROVAL'){{out.innerHTML=`<div class="notice" style="margin-top:14px"><b>Storyboard hazır.</b> Render başlamadan sahneleri inceleyebilirsin.</div><div class="actions"><a class="btn success" href="/studio/plan/${{taskId}}">Storyboard'u aç →</a></div>`;return;}}
  if(state==='SUCCESS'){{const x=j.result||{{}};let links='';if(x.download_url)links+=`<a class="btn success" target="_blank" href="${{esc(x.download_url)}}">▶ Final videoyu aç</a>`;if(x.caption_url)links+=`<a class="btn secondary" target="_blank" href="${{esc(x.caption_url)}}">SRT indir</a>`;out.innerHTML=`<div class="grid3" style="margin-top:16px">${{badge((x.duration||0).toFixed?x.duration.toFixed(1)+' sn':(x.duration||'-')+' sn')}}${{badge((x.scenes||'-')+' sahne')}}${{badge((x.shots||'-')+' shot')}}</div><div class="actions">${{links}}<a class="btn secondary" href="/studio">＋ Yeni üretim</a></div>`;return;}}
  timer=setTimeout(poll,3000);
@@ -548,57 +565,104 @@ def studio_retry(task_id: str, studio_token: str | None = Cookie(default=None, a
         raise HTTPException(status_code=404, detail='Görev bulunamadı')
     spec = record.get('spec') or {}
     options = {key: value for key, value in spec.items() if key not in {'topic', 'duration_minutes', 'language', 'channel_id'}}
-    approved_package = None
-    if record.get('kind') == 'plan':
-        task = plan_video_pipeline.delay(spec.get('topic') or '', float(spec.get('duration_minutes') or 1), spec.get('language') or 'tr', spec.get('channel_id'), options)
-        kind = 'plan'
-    else:
-        checkpoint = None
-        if record.get('repair_available') is True:
-            try:
-                checkpoint = consume_repair_checkpoint(task_id)
-            except Exception as exc:
-                raise HTTPException(
-                    status_code=503,
-                    detail='Sahne onarım kaydı şu anda alınamıyor',
-                ) from exc
-            if not checkpoint:
-                raise HTTPException(
-                    status_code=409,
-                    detail='Sahne onarımı zaten kuyruğa alındı',
-                )
-            approved_package = checkpoint.get('approved_package')
-        try:
-            task = run_video_pipeline.delay(
-                spec.get('topic') or '',
-                float(spec.get('duration_minutes') or 1),
-                spec.get('language') or 'tr',
-                spec.get('channel_id'),
-                options,
-                approved_package,
+    kind = 'plan' if record.get('kind') == 'plan' else 'render'
+    try:
+        retry_duration = float(spec.get('duration_minutes') or 1)
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(
+            status_code=409,
+            detail='Kaynak görevin süre kaydı geçersiz',
+        ) from exc
+    retry_topic = str(spec.get('topic') or '')
+    retry_language = str(spec.get('language') or 'tr')
+    retry_channel_id = spec.get('channel_id')
+    child_task_id = str(uuid4())
+    dispatch_token = secrets.token_urlsafe(32)
+    try:
+        dispatch = claim_retry_dispatch(
+            task_id,
+            child_task_id,
+            dispatch_token,
+            allow_repair=kind == 'render',
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=503,
+            detail='Yeniden deneme durumu güvenle ayrılamadı',
+        ) from exc
+    if not dispatch.get('claimed'):
+        existing_child = str(dispatch.get('child_task_id') or '').strip()
+        if existing_child:
+            return RedirectResponse(
+                f'/studio/job/{existing_child}',
+                status_code=303,
             )
-        except Exception as exc:
-            if checkpoint:
-                try:
-                    save_repair_checkpoint(task_id, checkpoint)
-                except Exception:
-                    pass
-            raise HTTPException(
-                status_code=503,
-                detail='Onarım görevi kuyruğa alınamadı',
-            ) from exc
-        kind = 'render'
+        raise HTTPException(
+            status_code=409,
+            detail='Yeniden deneme zaten kuyruğa alındı',
+        )
+
+    checkpoint = dispatch.get('checkpoint')
+    approved_package = (
+        checkpoint.get('approved_package')
+        if isinstance(checkpoint, dict)
+        else None
+    )
     child_spec = dict(spec)
     if approved_package is not None:
         child_spec['workflow'] = 'scene_repair'
         child_spec['repair_source_task_id'] = task_id
-        update_job(
+    create_job(
+        child_task_id,
+        child_spec,
+        kind=kind,
+        parent_id=task_id,
+    )
+    if kind == 'plan':
+        task_callable = plan_video_pipeline
+        task_args = (
+            retry_topic,
+            retry_duration,
+            retry_language,
+            retry_channel_id,
+            options,
             task_id,
-            repair_available=False,
-            repair_claimed=True,
         )
-    create_job(task.id, child_spec, kind=kind, parent_id=task_id)
-    return RedirectResponse(f'/studio/job/{task.id}', status_code=303)
+    else:
+        task_callable = run_video_pipeline
+        task_args = (
+            retry_topic,
+            retry_duration,
+            retry_language,
+            retry_channel_id,
+            options,
+            approved_package,
+            task_id,
+        )
+    try:
+        task_callable.apply_async(args=task_args, task_id=child_task_id)
+    except Exception:
+        # Broker timeouts are ambiguous: the message may already be durable.
+        # Preserve the one-shot claim and deterministic task id; never reopen
+        # the checkpoint or issue a second paid submission.
+        try:
+            mark_retry_dispatch(task_id, dispatch_token, 'uncertain')
+        except Exception:
+            pass
+        update_job(
+            child_task_id,
+            state='PENDING',
+            stage='dispatch_uncertain',
+            message='Kuyruk kabulü doğrulanıyor; aynı iş tekrar gönderilmeyecek.',
+        )
+    else:
+        try:
+            mark_retry_dispatch(task_id, dispatch_token, 'dispatched')
+        except Exception:
+            pass
+    return RedirectResponse(f'/studio/job/{child_task_id}', status_code=303)
 
 
 @router.post('/studio/logout')
