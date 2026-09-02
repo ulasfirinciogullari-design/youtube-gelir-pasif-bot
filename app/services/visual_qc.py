@@ -13,6 +13,9 @@ from app.services.gemini_generation import (
     generate_gemini_multimodal_json,
 )
 from app.services.visual_identity import manufactured_replica_required
+from app.services.visual_routing import (
+    routed_open_air_cooling_temporal_required,
+)
 
 
 # Keep the original three editorial choices stable, then add near-start and
@@ -194,6 +197,40 @@ _THERMAL_PROOF_PRIORITY_PATTERNS = (
 )
 
 _THERMAL_STORY_CLUSTER_GAP = 3
+
+# A routed cooling proxy is useful only when the exact media visibly proves a
+# thermal change over time. Booleans alone are not enough: require the critic's
+# bounded evidence explanation to name the changing heat field or plume, so a
+# generic "matches the narration" explanation cannot approve a static product
+# shot even if the model mistakenly returns optimistic structured flags.
+_COOLING_VISUAL_SIGNAL = (
+    r'(?:\b(?:thermal|heat|hot)(?:[- ]camera)?(?:\s+\w+){0,3}\s+'
+    r'(?:field|area|region|signature|footprint|hotspot|hot\s+spot|plume)\b'
+    r'|\b(?:termal|ısı|sıcak)(?:\s+\w+){0,3}\s+'
+    r'(?:alan|bölge|iz|parlama|akıntı)\w*\b)'
+)
+_COOLING_VISUAL_CHANGE = (
+    r'(?:\b(?:shrink|contract|diminish|decreas|reduc|dissipat|dispers|'
+    r'fade|reced|cool)\w*\b|\b(?:küçül|daral|azal|dağıl|yayıl|sönümlen|'
+    r'soğu)\w*\b)'
+)
+_COOLING_TEMPORAL_EVIDENCE_REASON_PATTERN = re.compile(
+    rf'(?:{_COOLING_VISUAL_SIGNAL}.{{0,140}}{_COOLING_VISUAL_CHANGE}'
+    rf'|{_COOLING_VISUAL_CHANGE}.{{0,140}}{_COOLING_VISUAL_SIGNAL})',
+    flags=re.IGNORECASE,
+)
+
+
+def _cooling_temporal_moment_coverage(moments: list[int]) -> bool:
+    """Require distinct early, middle and late evidence for cooling."""
+    if len(moments) < 3:
+        return False
+    fractions = sorted(MOMENT_FRACTIONS[index] for index in moments)
+    return bool(
+        fractions[0] <= 0.18
+        and any(0.18 < fraction < 0.82 for fraction in fractions)
+        and fractions[-1] >= 0.82
+    )
 
 
 def _clearly_positive_review_reason(reason: object) -> bool:
@@ -388,6 +425,20 @@ def _hard_gate_diagnostics(review: dict) -> list[str]:
             failures.append('the narrated state change is not visible')
         if review.get('final_state_persists') is not True:
             failures.append('the required final state does not persist')
+    if review.get('open_air_cooling_temporal_required') is True:
+        if review.get('cooling_temporal_evidence_explained') is not True:
+            failures.append(
+                'the cooling review does not explicitly attest visible '
+                'thermal-field shrink or heat-plume dissipation'
+            )
+        if (
+            review.get('cooling_temporal_moment_coverage_passed')
+            is not True
+        ):
+            failures.append(
+                'the cooling proof does not cover ordered early, middle, '
+                'and late sampled moments'
+            )
     if (
         review.get('location_continuity_applicable') is True
         and review.get('location_continuity_matches') is not True
@@ -459,6 +510,7 @@ def _normalized_evidence(
     *,
     connection_required: bool = False,
     thermal_required: bool = False,
+    cooling_temporal_required: bool = False,
 ) -> tuple[dict, bool] | None:
     values = {field: review.get(field) for field in _EVIDENCE_BOOLEAN_FIELDS}
     if any(type(value) is not bool for value in values.values()):
@@ -474,11 +526,19 @@ def _normalized_evidence(
     ):
         return None
 
+    connection_applicable = bool(connection_required)
+    thermal_applicable = bool(
+        thermal_required or cooling_temporal_required
+    )
+    state_change_applicable = bool(
+        cooling_temporal_required
+        or values['state_change_applicable']
+    )
     required_moments = 1
     if (
         values['physical_causality_applicable']
-        or values['state_change_applicable']
-        or connection_required
+        or state_change_applicable
+        or connection_applicable
     ):
         required_moments = 3
     elif values['location_continuity_applicable']:
@@ -486,8 +546,16 @@ def _normalized_evidence(
     # Applicability is server-authored from the locked narration. The critic
     # still reports its interpretation for schema completeness, but it cannot
     # invent a plug-in action from an already-charging state.
-    connection_applicable = bool(connection_required)
-    thermal_applicable = bool(thermal_required)
+    cooling_temporal_evidence_explained = bool(
+        not cooling_temporal_required
+        or _COOLING_TEMPORAL_EVIDENCE_REASON_PATTERN.search(
+            str(review.get('reason') or '')
+        )
+    )
+    cooling_temporal_moment_coverage_passed = bool(
+        not cooling_temporal_required
+        or _cooling_temporal_moment_coverage(moments)
+    )
     gate_passed = bool(
         values['subject_visible']
         and values['spoken_action_visible']
@@ -511,7 +579,7 @@ def _normalized_evidence(
             )
         )
         and (
-            not values['state_change_applicable']
+            not state_change_applicable
             or (
                 values['state_changed_after_action']
                 and values['final_state_persists']
@@ -522,13 +590,27 @@ def _normalized_evidence(
             or values['location_continuity_matches']
         )
         and len(moments) >= required_moments
+        and cooling_temporal_evidence_explained
+        and cooling_temporal_moment_coverage_passed
     )
-    return {
+    normalized = {
         **values,
         'connection_action_applicable': connection_applicable,
         'thermal_claim_applicable': thermal_applicable,
+        'state_change_applicable': state_change_applicable,
         'evidence_moment_indices': moments,
-    }, gate_passed
+    }
+    if cooling_temporal_required:
+        normalized.update({
+            'open_air_cooling_temporal_required': True,
+            'cooling_temporal_evidence_explained': (
+                cooling_temporal_evidence_explained
+            ),
+            'cooling_temporal_moment_coverage_passed': (
+                cooling_temporal_moment_coverage_passed
+            ),
+        })
+    return normalized, gate_passed
 
 
 def _normalized_manual_qa_visual_flags(review: dict) -> dict | None:
@@ -1085,7 +1167,8 @@ def review_scene_visuals(
             'For any physical cause such as cover, block, press, insert, unplug, remove or reveal, require timestamped visual proof of the target before contact, real contact or occlusion at the named target, and the result only after that contact. A hand merely near, below or beside the target fails. '
             'For every narrated insertion, fastening, latching, plugging, buckling or attachment, set connection_action_applicable=true. The distinct moving connector and the receiving interface must both be visibly identifiable before contact; their actual joining must remain visible, and the completed connection must persist after the hand releases. A loose strap, cable, cover, hand or blur hiding the interface is not proof and must fail. '
             'Set connection_action_applicable=true only when the narration explicitly describes the connector being inserted, plugged, attached, fastened, buckled, latched or connected during this shot. A device that is already charging, charged, plugged in or connected describes a state, not a new connection action; do not infer a plug-in event from a visible cable, visual query or AI prompt. '
-            'Set thermal_claim_applicable=true only for scene IDs in the server-authored THERMAL_EVIDENCE_REQUIRED_SCENE_IDS list. In an ordered story, one strong mechanism shot can establish thermal evidence for nearby hook, consequence and action shots; do not demand a thermal overlay on every mention of heat or temperature. For a required scene, set thermal_evidence_visible=true only when the named subject itself has visible heat evidence, such as a clear thermal-camera heat distribution or another unambiguous visual representation of heat on that subject. A charging cable, charging icon, ordinary warm lighting or narration alone is not heat evidence. Use this thermal gate, not connector/contact fields, for a device already charging and producing heat. '
+            'Set thermal_claim_applicable=true only for scene IDs in either the server-authored THERMAL_EVIDENCE_REQUIRED_SCENE_IDS or OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS list. In an ordered story, one strong mechanism shot can establish thermal evidence for nearby hook, consequence and action shots; do not demand a thermal overlay on every mention of heat or temperature unless the server separately marks that scene as a routed open-air cooling proof. For a required scene, set thermal_evidence_visible=true only when the named subject itself has visible heat evidence, such as a clear thermal-camera heat distribution or another unambiguous visual representation of heat on that subject. A charging cable, charging icon, ordinary warm lighting or narration alone is not heat evidence. Use this thermal gate, not connector/contact fields, for a device already charging and producing heat. '
+            'For every scene ID in OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS, set both thermal_claim_applicable=true and state_change_applicable=true. Approve only when at least three ordered sampled moments visibly show the same phone beginning with a clearly larger or hotter thermal field, that field materially shrinking or a heat plume dissipating through the middle, and a persistently smaller or cooler thermal field at the ending. Name that exact visible thermal-field shrink or heat-plume dissipation in the reason. A camera push, zoom, pan, reframing, exposure or color-grade shift, ordinary warm light, condensation, water droplets, dust, dirt, or an otherwise static phone is not cooling evidence. The phone body may stay physically still only when its visible thermal field changes across early, middle, and late moments; if the heat field stays unchanged, set state_changed_after_action=false and score 40 or lower. '
             'For a display, light or other state change, compare before and after moments and require the affected element itself to change while unrelated exposure remains stable; never infer the change from the narration or prompt. '
             'The final state must persist through the end of the shot. Any unexplained reset, repeated action, return to an earlier position, or visible loop must score 40 or lower. '
             'Require adjacent scenes to preserve spatial continuity unless the narration explicitly establishes a move: interior/exterior, location class, architecture, light and travel direction must remain compatible. '
@@ -1115,6 +1198,7 @@ def review_scene_visuals(
     trusted_image_motion_candidates: dict[int, set[int]] = {}
     manufactured_replica_required_indices: list[int] = []
     thermal_evidence_required_indices: list[int] = []
+    cooling_temporal_required_indices: list[int] = []
     complete_story_context = {
         'topic': str(topic or ''),
         'complete_scene_plan_in_order': [
@@ -1240,6 +1324,8 @@ def review_scene_visuals(
                 manufactured_replica_required_indices.append(idx)
             if _thermal_claim_required(scene, complete_story):
                 thermal_evidence_required_indices.append(idx)
+            if routed_open_air_cooling_temporal_required(scene):
+                cooling_temporal_required_indices.append(idx)
             available_moments[idx] = scene_available_moments
             content.extend(scene_content)
             gemini_parts.extend(scene_gemini_parts)
@@ -1298,6 +1384,12 @@ def review_scene_visuals(
         + '\n\nSERVER-AUTHORED THERMAL_EVIDENCE_REQUIRED_SCENE_IDS: '
         + json.dumps(
             thermal_evidence_required_indices,
+            separators=(',', ':'),
+        )
+        + '\n\nSERVER-AUTHORED '
+        'OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS: '
+        + json.dumps(
+            cooling_temporal_required_indices,
             separators=(',', ':'),
         )
         + '\n\n'
@@ -1436,6 +1528,11 @@ def review_scene_visuals(
                 thermal_required=_thermal_claim_required(
                     scenes[scene_index], complete_story
                 ),
+                cooling_temporal_required=(
+                    routed_open_air_cooling_temporal_required(
+                        scenes[scene_index]
+                    )
+                ),
             )
             manual_qa_visual_flags = _normalized_manual_qa_visual_flags(
                 review
@@ -1514,6 +1611,11 @@ def review_scene_visuals(
             ),
             thermal_required=_thermal_claim_required(
                 scenes[scene_index], complete_story
+            ),
+            cooling_temporal_required=(
+                routed_open_air_cooling_temporal_required(
+                    scenes[scene_index]
+                )
             ),
         )
         manual_qa_visual_flags = _normalized_manual_qa_visual_flags(review)

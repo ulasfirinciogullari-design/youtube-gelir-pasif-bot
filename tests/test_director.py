@@ -44,6 +44,7 @@ from app.services.director import (
     direct_and_qc,
     short_story_package_is_approved,
 )
+from app.services.visual_routing import SERVER_SHORT_PROXY_KIND_FIELD
 
 
 class PreviewNarrationBudgetTests(unittest.TestCase):
@@ -738,6 +739,10 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
         self.assertIn(
             'gentle continuous documentary push-in',
             routed['scenes'][5]['ai_prompt'],
+        )
+        self.assertEqual(
+            routed['scenes'][5][SERVER_SHORT_PROXY_KIND_FIELD],
+            'open_air_cooling',
         )
         self.assertNotIn(
             'camera and phone remain still',
