@@ -452,7 +452,45 @@ class AudioQCTests(unittest.TestCase):
                         )
 
     @patch.object(audio_qc, 'generate_gemini_audio_json')
-    def test_prosody_timestamp_rejects_wrong_numeric_boundary_or_time(
+    def test_prosody_unique_phrase_uses_trusted_time_when_model_time_is_rough(
+        self, generate
+    ):
+        generate.return_value = self._prosody_output(
+            passed=False,
+            issues=[{
+                'code': 'unnatural_internal_pause',
+                'start_seconds': 5.2,
+                'end_seconds': 7.3,
+                'phrase': "1997'de",
+                'detail': 'Yıl okunurken doğal olmayan bir durak var.',
+            }],
+        )
+        evidence = self._prosody_transcript_evidence(
+            ("1997'de", 6.08, 7.02),
+            ('dev', 7.02, 7.3),
+            ('bir', 7.3, 7.5),
+            ('dalga', 7.5, 7.9),
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            audio = Path(tmp) / 'voice.mp3'
+            audio.write_bytes(b'audible-voice')
+            with patch.object(config_stub.settings, 'gemini_api_key', 'test-key'):
+                result = audio_qc.verify_audio_prosody(
+                    audio,
+                    "1997'de dev bir dalga geldi.",
+                    audio_duration_seconds=10.0,
+                    transcript_evidence=evidence,
+                )
+
+        self.assertTrue(result['available'])
+        self.assertFalse(result['pass'])
+        self.assertEqual(result['reason'], 'unnatural_internal_pause')
+        self.assertEqual(result['issues'][0]['start_seconds'], 6.08)
+        self.assertEqual(result['issues'][0]['end_seconds'], 7.02)
+        self.assertEqual(result['review_attempts'], 1)
+
+    @patch.object(audio_qc, 'generate_gemini_audio_json')
+    def test_prosody_timestamp_rejects_wrong_numeric_boundary_or_duration(
         self, generate
     ):
         cases = (
@@ -460,13 +498,6 @@ class AudioQCTests(unittest.TestCase):
                 'Yirmi dokuz kişi geldi.',
                 '29',
                 [('2', 1.0, 1.2), ('9', 1.2, 1.4)],
-                1.0,
-                1.4,
-            ),
-            (
-                'Doğru ifade burada.',
-                'doğru ifade',
-                [('Doğru', 5.0, 5.4), ('ifade', 5.4, 5.8)],
                 1.0,
                 1.4,
             ),
@@ -542,6 +573,43 @@ class AudioQCTests(unittest.TestCase):
 
         self.assertTrue(result['available'])
         self.assertEqual(result['issues'][0]['start_seconds'], 6.0)
+
+    @patch.object(audio_qc, 'generate_gemini_audio_json')
+    def test_prosody_repeated_phrase_without_time_selection_is_ambiguous(
+        self, generate
+    ):
+        generate.return_value = self._prosody_output(
+            passed=False,
+            issues=[{
+                'code': 'unnatural_internal_pause',
+                'start_seconds': 3.0,
+                'end_seconds': 4.0,
+                'phrase': 'aynı söz',
+                'detail': 'Tekrarlardan biri bölünüyor.',
+            }],
+        )
+        evidence = self._prosody_transcript_evidence(
+            ('Aynı', 1.0, 1.4),
+            ('söz', 1.4, 1.8),
+            ('sonra', 2.0, 2.4),
+            ('aynı', 6.0, 6.4),
+            ('söz', 6.4, 6.8),
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            audio = Path(tmp) / 'voice.mp3'
+            audio.write_bytes(b'audible-voice')
+            with patch.object(config_stub.settings, 'gemini_api_key', 'test-key'):
+                result = audio_qc.verify_audio_prosody(
+                    audio,
+                    'Aynı söz, sonra aynı söz.',
+                    audio_duration_seconds=10.0,
+                    transcript_evidence=evidence,
+                )
+
+        self.assertFalse(result['available'])
+        self.assertFalse(result['pass'])
+        self.assertEqual(result['reason'], 'gemini_prosody_protocol_invalid')
+        self.assertEqual(generate.call_count, 2)
 
     def test_supported_audio_qc_language_codes_are_explicit(self):
         expected = {
