@@ -923,6 +923,71 @@ def test_job_view_keeps_error_inside_closed_technical_details(monkeypatch, ui_mo
     assert 'token=[gizlendi]' in body
 
 
+def test_ready_job_view_renders_inline_video_download_and_captions(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    record = _ready_job()
+    record['result'].update({
+        'download_url': (
+            'https://media.example.test/final.mp4?X-Amz-Signature=signed'
+            '&response-content-disposition=attachment'
+        ),
+        'caption_url': (
+            'https://media.example.test/captions.tr.srt?X-Amz-Signature=caption'
+            '&X-Amz-Expires=86400'
+        ),
+    })
+    monkeypatch.setattr(studio, 'get_job', lambda _task_id: record)
+
+    body = studio.studio_job(
+        'job-123',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert '<video class="result-video" controls playsinline preload="metadata"' in body
+    assert (
+        'src="https://media.example.test/final.mp4?X-Amz-Signature=signed'
+        '&amp;response-content-disposition=attachment"'
+    ) in body
+    assert '>Videoyu indir</a>' in body
+    assert '>Altyazıyı indir (.srt)</a>' in body
+    assert 'caption&amp;X-Amz-Expires=86400"' in body
+    assert 'target="_blank" rel="noopener noreferrer" download' in body
+    assert '>Gizli yükle</a>' in body
+    assert 'Kalite onaylanana kadar YouTube yüklemesi gizli kalır.' in body
+
+
+def test_job_media_panel_accepts_video_url_and_escapes_signed_attributes(ui_modules):
+    studio, _ = ui_modules
+    record = _ready_job()
+    record['result'].update({
+        'video_url': (
+            'https://media.example.test/final.mp4?value="'
+            '><img src=x onerror=alert(1)>'
+        ),
+        'caption_url': 'javascript:alert(2)',
+    })
+
+    panel = studio._job_media_panel(record)
+
+    assert '<video class="result-video" controls playsinline preload="metadata"' in panel
+    assert '&quot;&gt;&lt;img src=x onerror=alert(1)&gt;' in panel
+    assert '<img src=x' not in panel
+    assert 'javascript:' not in panel
+    assert 'Altyazıyı indir' not in panel
+
+
+def test_incomplete_job_never_renders_stale_result_media(ui_modules):
+    studio, _ = ui_modules
+    record = _ready_job()
+    record['state'] = 'PROGRESS'
+    record['result']['download_url'] = 'https://media.example.test/stale.mp4'
+
+    assert studio._job_media_panel(record) == ''
+
+
 def test_claimed_repair_ui_hides_duplicate_form_and_links_child(
     monkeypatch,
     ui_modules,
