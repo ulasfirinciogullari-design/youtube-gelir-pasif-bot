@@ -6,6 +6,7 @@ import json
 import math
 import re
 import secrets
+import unicodedata
 from typing import Any
 from uuid import uuid4
 
@@ -887,6 +888,76 @@ def _history_matches(job: dict, active: str) -> bool:
     return _job_ui_status(job) == active
 
 
+def _attention_action_category(job: dict) -> str | None:
+    """Return the real user action without inspecting rendered HTML or URLs."""
+    if _console_bucket(job) != 'attention':
+        return None
+    if _job_requires_manual_qa(job):
+        return 'review'
+    if _job_ui_status(job) == 'repair':
+        return 'repair'
+    if _job_awaits_approval(job):
+        return 'storyboard'
+    if (
+        _job_ui_status(job) == 'running'
+        and _job_display_status(job) == 'attention'
+    ):
+        return 'stalled'
+    return None
+
+
+def _attention_title_identity(job: dict) -> str:
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    package = result.get('package') if isinstance(result.get('package'), dict) else {}
+    for candidate in (
+        result.get('title'),
+        package.get('title'),
+        spec.get('title'),
+        spec.get('topic'),
+    ):
+        title = _plain_text(candidate)
+        if title:
+            return _plain_text(unicodedata.normalize('NFKC', title)).casefold()
+    return ''
+
+
+def _attention_channel_identity(job: dict) -> str:
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+    channel = result.get('channel') if isinstance(result.get('channel'), dict) else {}
+    for candidate in (
+        result.get('target_channel_id'),
+        youtube.get('target_channel_id'),
+        channel.get('id'),
+        result.get('channel_id'),
+        youtube.get('channel_id'),
+        spec.get('target_channel_id'),
+        spec.get('channel_id'),
+    ):
+        value = _plain_text(candidate)
+        if value:
+            return f'id:{value}'
+    for candidate in (
+        channel.get('title'),
+        youtube.get('channel_title'),
+        spec.get('target_channel_title'),
+    ):
+        value = _plain_text(candidate)
+        if value:
+            normalized = _plain_text(unicodedata.normalize('NFKC', value)).casefold()
+            return f'title:{normalized}'
+    return ''
+
+
+def _attention_language_identity(job: dict) -> str:
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    value = spec.get('language') or result.get('language') or job.get('language')
+    return _plain_text(value).casefold().replace('_', '-').split('-', 1)[0]
+
+
 def _legacy_failure_signature(job: dict) -> tuple[str, ...] | None:
     """Identify old, unlinked retry-like failures without merging real videos."""
     if _job_ui_status(job) != 'failed' or _plain_text(job.get('parent_id')):
@@ -909,7 +980,11 @@ def _legacy_failure_signature(job: dict) -> tuple[str, ...] | None:
 
 def _running_duplicate_signature(job: dict) -> tuple[str, ...] | None:
     """Conservatively identify concurrent duplicate clicks for display only."""
-    if _job_ui_status(job) != 'running' or _plain_text(job.get('parent_id')):
+    if (
+        _job_ui_status(job) != 'running'
+        or _console_bucket(job) != 'running'
+        or _plain_text(job.get('parent_id'))
+    ):
         return None
     spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
     topic = _plain_text(spec.get('topic')).casefold()
@@ -956,21 +1031,16 @@ def _collapse_running_duplicates(jobs: list[dict]) -> list[dict]:
 
 def _attention_duplicate_signature(job: dict) -> tuple[str, ...] | None:
     """Identify same-title attention attempts without merging durable records."""
-    if _console_bucket(job) != 'attention' or _plain_text(job.get('parent_id')):
+    action = _attention_action_category(job)
+    title = _attention_title_identity(job)
+    language = _attention_language_identity(job)
+    if not action or not title or not language:
         return None
-    title = _plain_text(_job_title(job)).casefold()
-    if not title:
-        return None
-    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
-    fields = (
-        'duration_minutes', 'language', 'channel_id', 'mode', 'workflow',
-        'content_style', 'pace', 'visual_mix',
-    )
     return (
-        _job_ui_status(job),
-        _plain_text(job.get('kind') or 'render').casefold(),
         title,
-        *(_plain_text(spec.get(field)).casefold() for field in fields),
+        action,
+        _attention_channel_identity(job),
+        language,
     )
 
 
@@ -987,7 +1057,8 @@ def _collapse_attention_duplicates(jobs: list[dict]) -> list[dict]:
         )
         if previous is not None:
             previous_created, previous_index = previous
-            if abs(previous_created - created) <= ATTENTION_DUPLICATE_GROUP_WINDOW_SECONDS:
+            age = previous_created - created
+            if 0 <= age <= ATTENTION_DUPLICATE_GROUP_WINDOW_SECONDS:
                 representative = dict(collapsed[previous_index])
                 representative['_grouped_attention_attempts'] = (
                     int(representative.get('_grouped_attention_attempts') or 0) + 1
@@ -1042,7 +1113,11 @@ def _collapse_failure_duplicates(jobs: list[dict]) -> list[dict]:
     return collapsed
 
 
-def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
+def _collapse_retry_sources(
+    jobs: list[dict],
+    *,
+    collapse_attention: bool = True,
+) -> list[dict]:
     """Show only the newest visible step of each logical video workflow."""
     task_ids = {str(job.get('task_id') or '') for job in jobs}
     # Publishing is a state of the finished video, not a second video card.
@@ -1077,7 +1152,10 @@ def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
         visible.append(job)
     collapsed = _collapse_failure_duplicates(visible)
     collapsed = _collapse_running_duplicates(collapsed)
-    return _collapse_attention_duplicates(collapsed)
+    return (
+        _collapse_attention_duplicates(collapsed)
+        if collapse_attention else collapsed
+    )
 
 
 def _status_overview(counts: dict[str, int], *, active: str | None = None) -> str:
@@ -1586,7 +1664,11 @@ def studio_history(
     )
     active = status if status in allowed_statuses else 'running'
     page = max(1, int(page))
-    jobs = _collapse_retry_sources(list_jobs(HISTORY_SCAN_LIMIT))
+    stored_jobs = _collapse_retry_sources(
+        list_jobs(HISTORY_SCAN_LIMIT),
+        collapse_attention=False,
+    )
+    jobs = _collapse_attention_duplicates(stored_jobs)
     # Reconcile only the records that can appear on this page. The registry is
     # retained at 500 jobs; probing each Celery result would create an N+1 read
     # storm just to render the overview counts.
@@ -1594,15 +1676,20 @@ def studio_history(
     stored_page_count = max(1, math.ceil(len(stored_filtered) / HISTORY_PAGE_SIZE))
     page = min(page, stored_page_count)
     offset = (page - 1) * HISTORY_PAGE_SIZE
-    candidates = stored_filtered[offset:offset + HISTORY_PAGE_SIZE]
+    candidates = []
+    for job in stored_filtered[offset:offset + HISTORY_PAGE_SIZE]:
+        candidate = dict(job)
+        candidate.pop('_grouped_attention_attempts', None)
+        candidates.append(candidate)
     refreshed_by_id = {
         str(job.get('task_id') or ''): job
         for job in _refresh_active_jobs(candidates)
     }
-    jobs = [
+    stored_jobs = [
         refreshed_by_id.get(str(job.get('task_id') or ''), job)
-        for job in jobs
+        for job in stored_jobs
     ]
+    jobs = _collapse_attention_duplicates(stored_jobs)
     console_counts = _console_counts(jobs)
     filtered = [job for job in jobs if _history_matches(job, active)]
     total = len(filtered)
