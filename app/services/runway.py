@@ -43,6 +43,22 @@ _IMAGE_MOTION_FPS = 30
 _GEMINI_VIDEO_QUOTA_COOLDOWN_SECONDS = 10 * 60
 _GEMINI_VIDEO_QUOTA_BLOCKED_UNTIL: dict[str, float] = {}
 _RUNWAY_GEN45_CREDITS_PER_SECOND = 12
+_ASPECT_RATIO_PROFILES = {
+    '16:9': {
+        'runway_ratio': '1280:720',
+        'motion_scale': '2560:1440',
+        'motion_output': '1280x720',
+        'motion_width': 1280,
+        'motion_height': 720,
+    },
+    '9:16': {
+        'runway_ratio': '720:1280',
+        'motion_scale': '1440:2560',
+        'motion_output': '720x1280',
+        'motion_width': 720,
+        'motion_height': 1280,
+    },
+}
 _RUNWAY_SAFE_PROVIDER_FALLBACK_CODES = frozenset({
     'capacity_exhausted',
     'capacity_unavailable',
@@ -84,6 +100,14 @@ class RunwayCreateRejectedError(RuntimeError):
 
 class RunwayCreditPreflightInsufficientError(RuntimeError):
     """A read-only balance check proved Gen-4.5 create cannot succeed."""
+
+
+def _aspect_ratio_profile(aspect_ratio: str) -> dict:
+    normalized = str(aspect_ratio or '').strip()
+    try:
+        return _ASPECT_RATIO_PROFILES[normalized]
+    except KeyError:
+        raise ValueError('Aspect ratio must be 16:9 or 9:16') from None
 
 
 def _runway_gen45_credits_known_insufficient(client, seconds: int) -> bool:
@@ -310,8 +334,14 @@ def _gemini_image_rejection_category(response: object) -> str:
     return 'unknown'
 
 
-def _validated_jpeg_dimensions(image_bytes: bytes) -> tuple[int, int]:
+def _validated_jpeg_dimensions(
+    image_bytes: bytes,
+    aspect_ratio: str = '16:9',
+) -> tuple[int, int]:
     """Validate one bounded, non-animated JPEG and return its dimensions."""
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Aspect ratio must be 16:9 or 9:16')
     if not isinstance(image_bytes, bytes):
         raise RuntimeError('Gemini image returned invalid media')
     if not _MIN_GENERATED_IMAGE_BYTES <= len(image_bytes) <= _MAX_GENERATED_IMAGE_BYTES:
@@ -369,11 +399,12 @@ def _validated_jpeg_dimensions(image_bytes: bytes) -> tuple[int, int]:
             )
         position += segment_length
 
+    expected_ratio = 16 / 9 if aspect_ratio == '16:9' else 9 / 16
     if (
-        width < 640
-        or height < 360
+        min(width, height) < 360
+        or max(width, height) < 640
         or width * height > _MAX_GENERATED_IMAGE_PIXELS
-        or abs((width / height) - (16 / 9)) > 0.04
+        or abs((width / height) - expected_ratio) > 0.04
         or scan_data_start <= 0
         or len(image_bytes) - scan_data_start - 2 < 128
     ):
@@ -415,7 +446,11 @@ def _probe_single_jpeg_frame(
         raise RuntimeError('Gemini image returned invalid media')
 
 
-def _decode_gemini_image(mime_type: object, encoded_data: object) -> bytes:
+def _decode_gemini_image(
+    mime_type: object,
+    encoded_data: object,
+    aspect_ratio: str = '16:9',
+) -> bytes:
     """Strictly decode the single inline image allowed by this fallback."""
     if mime_type != _GEMINI_IMAGE_MIME_TYPE or not isinstance(encoded_data, str):
         raise RuntimeError('Gemini image returned invalid media')
@@ -426,13 +461,14 @@ def _decode_gemini_image(mime_type: object, encoded_data: object) -> bytes:
         image_bytes = base64.b64decode(encoded_data, validate=True)
     except (binascii.Error, ValueError) as exc:
         raise RuntimeError('Gemini image returned invalid media') from exc
-    _validated_jpeg_dimensions(image_bytes)
+    _validated_jpeg_dimensions(image_bytes, aspect_ratio)
     return image_bytes
 
 
 def _generate_gemini_image_descriptor(
     prompt_text: str,
     seconds: int,
+    aspect_ratio: str = '16:9',
 ) -> dict:
     """Submit one retry-free paid image request for a private-preview shot."""
     if not settings.gemini_api_key:
@@ -442,6 +478,9 @@ def _generate_gemini_image_descriptor(
         raise RuntimeError('Gemini image fallback prompt is empty')
     if len(prompt.encode('utf-16-le')) // 2 > 1000:
         raise RuntimeError('Gemini image fallback prompt is too long')
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Aspect ratio must be 16:9 or 9:16')
     motion_seconds = max(5, min(int(round(seconds)), 10))
     headers = {
         'x-goog-api-key': settings.gemini_api_key,
@@ -458,7 +497,7 @@ def _generate_gemini_image_descriptor(
         'response_format': {
             'type': 'image',
             'mime_type': _GEMINI_IMAGE_MIME_TYPE,
-            'aspect_ratio': '16:9',
+            'aspect_ratio': aspect_ratio,
             'image_size': '1K',
         },
     }
@@ -502,8 +541,9 @@ def _generate_gemini_image_descriptor(
     image_bytes = _decode_gemini_image(
         image_block.get('mime_type'),
         image_block.get('data'),
+        aspect_ratio,
     )
-    dimensions = _validated_jpeg_dimensions(image_bytes)
+    dimensions = _validated_jpeg_dimensions(image_bytes, aspect_ratio)
     _probe_single_jpeg_frame(image_bytes, dimensions)
     normalized_data = base64.b64encode(image_bytes).decode('ascii')
     return {
@@ -518,6 +558,7 @@ def _generate_gemini_image_descriptor(
         'image_sha256': hashlib.sha256(image_bytes).hexdigest(),
         'prompt_sha256': hashlib.sha256(prompt.encode('utf-8')).hexdigest(),
         'image_model': _GEMINI_IMAGE_MODEL,
+        'aspect_ratio': aspect_ratio,
     }
 
 
@@ -536,6 +577,8 @@ def _generate_gemini_video_uri(
     prompt_text: str,
     seconds: int,
     model_name: str = _GEMINI_VIDEO_MODEL,
+    *,
+    aspect_ratio: str = '16:9',
 ) -> str:
     """Create exactly one Gemini Veo task and return its trusted media URI."""
     if not settings.gemini_api_key:
@@ -552,11 +595,14 @@ def _generate_gemini_video_uri(
         _GEMINI_VIDEO_STANDARD_MODEL,
     }:
         raise ValueError('Unsupported Gemini video fallback model')
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Aspect ratio must be 16:9 or 9:16')
     endpoint = f'{_GEMINI_VIDEO_BASE}/models/{model_name}:predictLongRunning'
     request_payload = {
         'instances': [{'prompt': prompt_text}],
         'parameters': {
-            'aspectRatio': '16:9',
+            'aspectRatio': aspect_ratio,
             # The live REST endpoint rejects JSON strings here even though
             # older documentation tables displayed quoted values. Send the
             # schema's numeric duration type.
@@ -646,24 +692,31 @@ def _generate_gemini_video_uri(
     raise TimeoutError('Gemini video generation timed out')
 
 
-def _create_text_to_video_task(client, prompt_text: str, seconds: int):
+def _create_text_to_video_task(
+    client,
+    prompt_text: str,
+    seconds: int,
+    aspect_ratio: str = '16:9',
+):
     """Create one paid task, falling back only after a rejected Gen-4.5 create.
 
     Task polling deliberately remains outside this function. A rate limit while
     polling an accepted task must never cause a second paid task submission.
     """
+    profile = _aspect_ratio_profile(aspect_ratio)
+    runway_ratio = str(profile['runway_ratio'])
     try:
         return client.text_to_video.create(
             model='gen4.5',
             prompt_text=prompt_text,
-            ratio='1280:720',
+            ratio=runway_ratio,
             duration=seconds,
         )
     except RateLimitError:
         return client.text_to_video.create(
             model='seedance2_fast',
             prompt_text=prompt_text,
-            ratio='1280:720',
+            ratio=runway_ratio,
             duration=seconds,
             audio=False,
         )
@@ -675,6 +728,7 @@ def generate_scene(
     *,
     allow_image_motion: bool = False,
     image_prompt: str | None = None,
+    aspect_ratio: str = '16:9',
 ) -> dict:
     if not settings.runwayml_api_secret:
         raise RuntimeError('RUNWAYML_API_SECRET is not configured')
@@ -684,6 +738,8 @@ def generate_scene(
         raise ValueError('Runway prompt is empty')
     if len(prompt_text.encode('utf-16-le')) // 2 > 1000:
         raise ValueError('Runway prompt exceeds 1000 UTF-16 code units')
+    _aspect_ratio_profile(aspect_ratio)
+    aspect_ratio = str(aspect_ratio).strip()
 
     seconds = max(2, min(int(round(duration)), 10))
     # Paid task creation is never retried implicitly: an ambiguous timeout may
@@ -708,6 +764,7 @@ def generate_scene(
             create_client,
             prompt_text,
             seconds,
+            aspect_ratio,
         )
     except (BadRequestError, RunwayCreditPreflightInsufficientError) as exc:
         # This catch deliberately covers only paid task creation. Once Runway
@@ -725,7 +782,11 @@ def generate_scene(
         fal_fallback_from = None
         if str(getattr(settings, 'fal_key', '') or '').strip():
             try:
-                return generate_fal_video(prompt_text, seconds)
+                if aspect_ratio == '16:9':
+                    return generate_fal_video(prompt_text, seconds)
+                return generate_fal_video(
+                    prompt_text, seconds, aspect_ratio=aspect_ratio
+                )
             except FalVideoError as exc:
                 # Only an explicit pre-acceptance rejection or a definitive
                 # completed-job failure may start another paid provider.  An
@@ -747,19 +808,33 @@ def generate_scene(
                     'Gemini video model is in a local quota cooldown'
                 )
             provider_attempts = 1
-            call_args = (
-                (prompt_text, seconds)
-                if model_name is None
-                else (prompt_text, seconds, model_name)
-            )
             try:
                 try:
-                    video_uri = _generate_gemini_video_uri(*call_args)
+                    call_args = (
+                        (prompt_text, seconds)
+                        if model_name is None
+                        else (prompt_text, seconds, model_name)
+                    )
+                    video_uri = (
+                        _generate_gemini_video_uri(*call_args)
+                        if aspect_ratio == '16:9'
+                        else _generate_gemini_video_uri(
+                            *call_args,
+                            aspect_ratio=aspect_ratio,
+                        )
+                    )
                 except GeminiVideoTerminalError:
                     # The provider explicitly completed the operation with an
                     # error, so a single resubmission is not ambiguous.
                     provider_attempts = 2
-                    video_uri = _generate_gemini_video_uri(*call_args)
+                    video_uri = (
+                        _generate_gemini_video_uri(*call_args)
+                        if aspect_ratio == '16:9'
+                        else _generate_gemini_video_uri(
+                            *call_args,
+                            aspect_ratio=aspect_ratio,
+                        )
+                    )
             except GeminiVideoQuotaError:
                 # A typed quota rejection is definitive rather than an
                 # ambiguous create response. Remember that per-model result
@@ -786,9 +861,17 @@ def generate_scene(
                     else 'Gemini image-motion fallback is not allowed'
                 )
             try:
-                image_descriptor = _generate_gemini_image_descriptor(
-                    str(image_prompt),
-                    seconds,
+                image_descriptor = (
+                    _generate_gemini_image_descriptor(
+                        str(image_prompt),
+                        seconds,
+                    )
+                    if aspect_ratio == '16:9'
+                    else _generate_gemini_image_descriptor(
+                        str(image_prompt),
+                        seconds,
+                        aspect_ratio,
+                    )
                 )
             except Exception as exc:
                 # Preserve a narrow, content-free receipt so the caller can
@@ -890,13 +973,20 @@ def generate_scene(
     }
 
 
-def _image_motion_filter(image_sha256: str, frame_count: int) -> str:
+def _image_motion_filter(
+    image_sha256: str,
+    frame_count: int,
+    aspect_ratio: str = '16:9',
+) -> str:
     """Return a deterministic, center-safe documentary camera move."""
     if (
         not re.fullmatch(r'[0-9a-f]{64}', str(image_sha256 or ''))
         or not 150 <= int(frame_count) <= 300
     ):
         raise RuntimeError('Gemini image-motion descriptor is invalid')
+    profile = _aspect_ratio_profile(aspect_ratio)
+    motion_scale = str(profile['motion_scale'])
+    motion_output = str(profile['motion_output'])
     direction = int(image_sha256[:2], 16)
     focal_x_start, focal_x_end = (
         (0.49, 0.55) if direction & 1 == 0 else (0.51, 0.45)
@@ -908,14 +998,14 @@ def _image_motion_filter(image_sha256: str, frame_count: int) -> str:
     focal_x_delta = focal_x_end - focal_x_start
     focal_y_delta = focal_y_end - focal_y_start
     return (
-        'scale=2560:1440:force_original_aspect_ratio=increase:flags=lanczos,'
-        'crop=2560:1440,'
+        f'scale={motion_scale}:force_original_aspect_ratio=increase:flags=lanczos,'
+        f'crop={motion_scale},'
         f"zoompan=z='1.06+0.18*on/{final_frame}':"
         f"x='iw*({focal_x_start:.3f}+({focal_x_delta:.3f})*"
         f"on/{final_frame})-iw/(2*zoom)':"
         f"y='ih*({focal_y_start:.3f}+({focal_y_delta:.3f})*"
         f"on/{final_frame})-ih/(2*zoom)':"
-        f'd={frame_count}:s=1280x720:fps={_IMAGE_MOTION_FPS},'
+        f'd={frame_count}:s={motion_output}:fps={_IMAGE_MOTION_FPS},'
         'setsar=1,scale=in_range=full:out_range=tv,format=yuv420p'
     )
 
@@ -931,9 +1021,12 @@ def _render_gemini_image_motion(
         'data',
     }:
         raise RuntimeError('Gemini image-motion descriptor is invalid')
+    aspect_ratio = str(descriptor.get('aspect_ratio') or '16:9').strip()
+    profile = _aspect_ratio_profile(aspect_ratio)
     image_bytes = _decode_gemini_image(
         inline_image.get('mime_type'),
         inline_image.get('data'),
+        aspect_ratio,
     )
     try:
         seconds = int(descriptor.get('motion_seconds'))
@@ -954,7 +1047,11 @@ def _render_gemini_image_motion(
     frame_count = seconds * _IMAGE_MOTION_FPS
     source_image = partial.with_name(f'{partial.name}.source.jpg')
     source_image.unlink(missing_ok=True)
-    zoom_filter = _image_motion_filter(expected_image_hash, frame_count)
+    zoom_filter = _image_motion_filter(
+        expected_image_hash,
+        frame_count,
+        aspect_ratio,
+    )
     try:
         source_image.write_bytes(image_bytes)
         completed = subprocess.run([
@@ -990,8 +1087,8 @@ def _render_gemini_image_motion(
         except (AttributeError, TypeError, ValueError, json.JSONDecodeError) as exc:
             raise RuntimeError('Gemini image-motion validation failed') from exc
         if (
-            stream.get('width') != 1280
-            or stream.get('height') != 720
+            stream.get('width') != int(profile['motion_width'])
+            or stream.get('height') != int(profile['motion_height'])
             or stream.get('r_frame_rate') != '30/1'
             or stream.get('pix_fmt') != 'yuv420p'
             or stream.get('color_range') != 'tv'

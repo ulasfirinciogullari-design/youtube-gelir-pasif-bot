@@ -421,6 +421,23 @@ class RunwayPromptTests(unittest.TestCase):
             2,
         )
 
+    def test_short_generation_prompt_is_vertical_and_long_form_stays_wide(self):
+        scene = {
+            'narration': 'Telefonu açık komodine bırak.',
+            'ai_prompt': 'A black phone cooling on an open nightstand.',
+            'visual_queries': ['phone on open nightstand'],
+        }
+
+        short_prompt = runway_prompt(scene, None, '9:16')
+        long_prompt = runway_prompt(scene, None)
+
+        self.assertIn('9:16 vertical documentary shot', short_prompt)
+        self.assertIn('YouTube Shorts', short_prompt)
+        self.assertIn('central safe area', short_prompt)
+        self.assertNotIn('16:9 documentary shot', short_prompt)
+        self.assertIn('16:9 documentary shot', long_prompt)
+        self.assertNotIn('YouTube Shorts', long_prompt)
+
     def test_real_first_short_preview_caps_initial_runway_spend_at_one_scene(self):
         self.assertEqual(
             max_runway_scenes(

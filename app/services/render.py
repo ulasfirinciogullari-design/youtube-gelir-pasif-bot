@@ -40,6 +40,13 @@ def resolution_for_mode(mode: str) -> str:
     return LANDSCAPE_RESOLUTION
 
 
+def aspect_ratio_for_mode(mode: str) -> str:
+    """Keep generated media and the final canvas on the same orientation."""
+    if resolution_for_mode(mode) == SHORTS_RESOLUTION:
+        return '9:16'
+    return '16:9'
+
+
 def _run(cmd: list[str]):
     subprocess.run(
         cmd,

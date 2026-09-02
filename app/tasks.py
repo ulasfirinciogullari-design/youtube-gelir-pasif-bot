@@ -26,6 +26,7 @@ from app.services.director import (
 )
 from app.services.pexels import find_broll, download_broll
 from app.services.render import (
+    aspect_ratio_for_mode,
     media_duration,
     render_video,
     resolution_for_mode,
@@ -1938,7 +1939,14 @@ def _truncate_utf16(text: str, limit: int = 1000) -> str:
     return ''.join(result).strip()
 
 
-def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
+def _runway_prompt_for_scene(
+    scene: dict,
+    review: dict | None,
+    aspect_ratio: str = '16:9',
+) -> str:
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Generation aspect ratio must be 16:9 or 9:16')
     original = str(scene.get('ai_prompt') or '').strip()
     review = review or {}
     retry_queries = review.get('retry_queries') or []
@@ -2007,7 +2015,11 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
             )
 
     opening = (
-        'One continuous photorealistic 16:9 documentary shot. '
+        'One continuous photorealistic 9:16 vertical documentary shot, '
+        'composed edge-to-edge for YouTube Shorts with the primary subject '
+        'and decisive action inside the central safe area. '
+        if aspect_ratio == '9:16'
+        else 'One continuous photorealistic 16:9 documentary shot. '
     )
     temporal_clause = (
         f'PRIMARY EVENT: {_truncate_utf16(primary_event, 140)}. '
@@ -2086,8 +2098,12 @@ def _runway_prompt_for_scene(scene: dict, review: dict | None) -> str:
 def _image_motion_prompt_for_scene(
     scene: dict,
     review: dict | None = None,
+    aspect_ratio: str = '16:9',
 ) -> str:
     """Build one literal, evidence-led documentary keyframe prompt."""
+    aspect_ratio = str(aspect_ratio or '').strip()
+    if aspect_ratio not in {'16:9', '9:16'}:
+        raise ValueError('Generation aspect ratio must be 16:9 or 9:16')
     review = review or {}
     identity_guardrail = manufactured_replica_guardrail(scene)
     retry_queries = review.get('retry_queries') or []
@@ -2105,8 +2121,15 @@ def _image_motion_prompt_for_scene(
         ][:2]
 
     opening = (
-        'One edge-to-edge photorealistic 16:9 documentary keyframe. '
-        'Depict the single most evidence-rich decisive instant: '
+        'One edge-to-edge photorealistic 9:16 vertical documentary keyframe '
+        'for YouTube Shorts. Keep the primary subject and decisive action '
+        'fully visible inside the central safe area. Depict the single most '
+        'evidence-rich decisive instant: '
+        if aspect_ratio == '9:16'
+        else (
+            'One edge-to-edge photorealistic 16:9 documentary keyframe. '
+            'Depict the single most evidence-rich decisive instant: '
+        )
     )
     closing = (
         ' Literal subject, scale, material, condition and setting must be '
@@ -2912,6 +2935,9 @@ def run_video_pipeline(
         strict_short_preview_duration = (
             options.get('mode') == 'preview'
             and duration_minutes <= 0.6
+        )
+        generation_aspect_ratio = aspect_ratio_for_mode(
+            options.get('mode')
         )
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
@@ -3763,7 +3789,11 @@ def run_video_pipeline(
             for candidate_scene_idx, scene in enumerate(scenes):
                 candidate_review = current_reviews.get(candidate_scene_idx)
                 prompt = (
-                    _runway_prompt_for_scene(scene, candidate_review)
+                    _runway_prompt_for_scene(
+                        scene,
+                        candidate_review,
+                        generation_aspect_ratio,
+                    )
                     if (
                         not is_bounded_short_preview
                         or str(scene.get('ai_prompt') or '').strip()
@@ -4201,7 +4231,9 @@ def run_video_pipeline(
                     image_prompt=_image_motion_prompt_for_scene(
                         scenes[scene_idx],
                         current_reviews.get(scene_idx),
+                        generation_aspect_ratio,
                     ),
+                    aspect_ratio=generation_aspect_ratio,
                 )
                 if generated_scene.get('provider') == 'gemini_image_motion':
                     # Record the paid image submission before any local
@@ -4591,7 +4623,11 @@ def run_video_pipeline(
                 terminal_manual_qa_old_best.get(scene_idx)
                 or (_visual_path(existing_specs[0]) if existing_specs else '')
             )
-            repair_prompt = _runway_prompt_for_scene(scenes[scene_idx], review)
+            repair_prompt = _runway_prompt_for_scene(
+                scenes[scene_idx],
+                review,
+                generation_aspect_ratio,
+            )
             if not repair_prompt:
                 continue
             final_runway_repair_attempts += 1
@@ -4610,7 +4646,9 @@ def run_video_pipeline(
                     image_prompt=_image_motion_prompt_for_scene(
                         scenes[scene_idx],
                         review,
+                        generation_aspect_ratio,
                     ),
+                    aspect_ratio=generation_aspect_ratio,
                 )
                 if repair_scene.get('provider') == 'gemini_image_motion':
                     image_motion_submission_scenes.add(scene_idx)

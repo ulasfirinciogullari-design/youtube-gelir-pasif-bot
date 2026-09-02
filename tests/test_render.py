@@ -18,6 +18,14 @@ class RenderQualityTests(unittest.TestCase):
             render_module.resolution_for_mode('production'),
             '1920x1080',
         )
+        self.assertEqual(
+            render_module.aspect_ratio_for_mode('preview'),
+            '9:16',
+        )
+        self.assertEqual(
+            render_module.aspect_ratio_for_mode('production'),
+            '16:9',
+        )
 
     def test_portrait_normalizer_uses_short_canvas_and_safe_center_reframe(self):
         commands = []
