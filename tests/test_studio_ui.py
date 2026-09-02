@@ -170,7 +170,7 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     assert 'aria-label="Ana menü"' in body
     assert 'aria-current=page' in body
     assert '<details class="control-details">' in body
-    assert 'Yaratıcı ve teknik ayarlar' in body
+    assert '<summary><span>Ayarlar</span>' in body
     for field in (
         'topic', 'duration_minutes', 'language', 'content_style', 'pace',
         'visual_mix', 'workflow', 'music', 'subtitles', 'reference_url',
@@ -185,20 +185,31 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
         assert f'for="{control_id}"' in body
         assert f'id="{control_id}"' in body
     assert 'Storage ayarı eksik' in body
-    assert '<details class="system-details">' in body
-    assert '<details class="system-details" open>' not in body
-    assert 'Videolar önce gizli yüklenir.' in body
-    assert '<article class="job compact" data-status="ready"' in body
-    assert '<details class="job-details">' not in body
+    assert '<details class="system-details console-details">' in body
+    assert '<details class="system-details console-details" open>' not in body
+    assert 'YouTube yüklemeleri önce gizli oluşturulur.' in body
+    assert '<article class="job' not in body
+    assert 'Uçakta Işıklar Neden Kısılır?' not in body
     assert body.count('data-status-filter=') == 3
     assert 'data-status-filter="failed"' not in body
+    assert 'data-status-filter="attention"' in body
+    assert 'data-status-filter="library"' in body
     assert '<details class="archive-details">' in body
     assert 'data-status-count="running">0</span>' in body
-    assert 'data-status-count="ready">1</span>' in body
-    assert 'Üretim masası' in body
+    assert 'data-status-count="library">1</span>' in body
+    assert '<h1>Yeni video oluştur</h1>' in body
+    assert body.count('type="submit"') == 1
+    assert '>Videoyu oluştur</button>' in body
+    assert '16:9' not in body
+    assert 'aspect-ratio:16/9' not in studio.BASE_CSS
+    archive_summary = body.split('<details class="archive-details">', 1)[1].split(
+        '</summary>', 1,
+    )[0]
+    assert 'başarısız' not in archive_summary.casefold()
+    assert 'tamamlanan' not in archive_summary.casefold()
 
 
-def test_studio_home_prioritizes_running_and_ready_over_failure_bursts(
+def test_studio_home_uses_status_cards_without_a_duplicate_job_queue(
     monkeypatch,
     ui_modules,
 ):
@@ -247,47 +258,186 @@ def test_studio_home_prioritizes_running_and_ready_over_failure_bursts(
     body = studio.studio_home(
         studio_token='studio-secret',
     ).body.decode('utf-8')
-    priority_panel = body.split('ŞİMDİ', 1)[1].split(
-        'GÜVENLİ YAYIN', 1,
-    )[0]
-
-    assert priority_panel.count('<article class="job compact"') == 3
-    assert 'Çalışan belgesel A' in priority_panel
-    assert 'Çalışan belgesel B' in priority_panel
-    assert 'Hazır belgesel' in priority_panel
-    assert 'Tekrarlanan başarısız' not in priority_panel
-    assert 'data-action-group="running"' in priority_panel
-    assert 'data-action-group="ready"' in priority_panel
-    assert 'Tamamlananlar ve hatalar' in priority_panel
-    assert 'aria-label="3 başarısız iş"' in priority_panel
-    assert '/studio/history?status=failed' in priority_panel
-    assert synced == ['running-a', 'running-b']
+    assert '<article class="job' not in body
+    assert '<aside>' not in body
+    assert 'Çalışan belgesel A' not in body
+    assert 'Hazır belgesel' not in body
+    assert 'Tekrarlanan başarısız' not in body
+    assert 'ŞİMDİ' not in body
+    assert synced == []
     assert 'data-status-count="running">2</span>' in body
-    assert 'data-status-count="ready">1</span>' in body
+    assert 'data-status-count="attention">0</span>' in body
+    assert 'data-status-count="library">1</span>' in body
     assert 'data-status-filter="failed"' not in body
+    archive_summary, archive_body = body.split(
+        '<details class="archive-details">', 1,
+    )[1].split('</summary>', 1)
+    assert '3' not in archive_summary
+    assert 'Başarısız denemeler <b>3</b>' in archive_body
 
 
-def test_dashboard_priority_reserves_a_repair_slot(ui_modules):
+def test_stale_running_job_moves_to_attention_without_mutating_or_retrying(
+    monkeypatch,
+    ui_modules,
+):
     studio, _ = ui_modules
-    jobs = [
-        {'task_id': 'running-a', 'state': 'PROGRESS'},
-        {'task_id': 'running-b', 'state': 'PROGRESS'},
-        {'task_id': 'running-c', 'state': 'PROGRESS'},
-        {
-            'task_id': 'repair-a',
-            'state': 'FAILURE',
-            'repair_available': True,
+    stale = {
+        'task_id': 'stale-running',
+        'kind': 'render',
+        'state': 'PROGRESS',
+        'stage': 'plan_retry',
+        'progress': 6,
+        'updated_at': '2020-01-01T00:00:00+00:00',
+        'spec': {'topic': 'Takılan kısa video', 'mode': 'preview'},
+    }
+    fresh = {
+        'task_id': 'fresh-running',
+        'kind': 'render',
+        'state': 'PROGRESS',
+        'progress': 40,
+        'created_ts': 1_600_000_000,
+        'updated_at': '2099-01-01T00:00:00+00:00',
+        'spec': {'topic': 'İlerleyen kısa video', 'mode': 'preview'},
+    }
+    snapshot = json.loads(json.dumps(stale))
+    synced = []
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [stale, fresh])
+    monkeypatch.setattr(
+        studio,
+        '_sync_job',
+        lambda task_id: synced.append(task_id) or stale,
+    )
+
+    body = studio.studio_history(
+        status='attention',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert studio._job_is_stale_running(stale, now=1_700_000_000)
+    assert studio._console_counts([stale, fresh]) == {
+        'running': 1,
+        'attention': 1,
+        'library': 0,
+    }
+    assert 'data-history-status="attention"' in body
+    assert 'data-status="attention"' in body
+    assert 'Takılan kısa video' in body
+    assert 'İlerleyen kısa video' not in body
+    assert 'Uzun süredir ilerlemiyor' in body
+    assert 'href="/studio/job/stale-running"' in body
+    assert 'action="/studio/retry/' not in body
+    assert synced == []
+    assert stale == snapshot
+
+
+def test_identical_concurrent_running_jobs_group_only_in_the_display(ui_modules):
+    studio, _ = ui_modules
+    spec = {
+        'topic': 'Tokio Express nasıl çalışır?',
+        'duration_minutes': 0.5,
+        'language': 'tr',
+        'mode': 'preview',
+        'workflow': 'auto',
+    }
+    newest = {
+        'task_id': 'tokio-new',
+        'kind': 'render',
+        'state': 'PROGRESS',
+        'stage': 'plan_retry',
+        'progress': 6,
+        'created_ts': 2_000_000_100,
+        'spec': dict(spec),
+    }
+    duplicate = {
+        **newest,
+        'task_id': 'tokio-old',
+        'created_ts': 2_000_000_000,
+        'spec': dict(spec),
+    }
+    distinct = {
+        **newest,
+        'task_id': 'other-video',
+        'created_ts': 2_000_000_050,
+        'spec': {**spec, 'topic': 'Başka bir video'},
+    }
+
+    visible = studio._collapse_retry_sources([newest, duplicate, distinct])
+
+    assert [job['task_id'] for job in visible] == ['tokio-new', 'other-video']
+    assert visible[0]['_grouped_running_attempts'] == 1
+    assert '_grouped_running_attempts' not in newest
+    assert '_grouped_running_attempts' not in duplicate
+    assert studio._console_counts(visible)['running'] == 2
+    assert '2 eş üretim tek kartta gösteriliyor.' in studio._job_row(visible[0])
+
+    much_later = {
+        **duplicate,
+        'task_id': 'tokio-later',
+        'created_ts': (
+            newest['created_ts']
+            + studio.RUNNING_DUPLICATE_GROUP_WINDOW_SECONDS
+            + 1
+        ),
+    }
+    assert len(studio._collapse_retry_sources([newest, much_later])) == 2
+
+
+def test_sync_job_does_not_refresh_activity_for_unchanged_task_info(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    record = {
+        'task_id': 'stuck-task',
+        'kind': 'render',
+        'state': 'RETRY',
+        'stage': 'plan_retry',
+        'progress': 6,
+        'message': 'Plan yeniden deneniyor.',
+        'updated_at': '2026-09-01T00:00:00+00:00',
+        'spec': {'topic': 'Takılan iş'},
+    }
+
+    class UnchangedResult:
+        state = 'RETRY'
+        info = {
+            'stage': 'plan_retry',
+            'progress': 6,
+            'message': 'Plan yeniden deneniyor.',
+        }
+
+    updates = []
+    monkeypatch.setattr(studio, 'get_job', lambda _task_id: record)
+    monkeypatch.setattr(studio, 'AsyncResult', lambda *_a, **_k: UnchangedResult())
+    monkeypatch.setattr(
+        studio,
+        'update_job',
+        lambda task_id, **fields: updates.append((task_id, fields)) or {
+            **record,
+            **fields,
         },
-        {'task_id': 'ready-a', 'state': 'SUCCESS'},
-    ]
+    )
 
-    visible = studio._dashboard_recent_jobs(jobs)
+    result = studio._sync_job('stuck-task')
 
-    assert [job['task_id'] for job in visible] == [
-        'running-a',
-        'running-b',
-        'repair-a',
-    ]
+    assert result == record
+    assert result['updated_at'] == '2026-09-01T00:00:00+00:00'
+    assert updates == []
+
+    class ChangedResult:
+        state = 'RETRY'
+        info = {**UnchangedResult.info, 'progress': 7}
+
+    monkeypatch.setattr(studio, 'AsyncResult', lambda *_a, **_k: ChangedResult())
+    changed = studio._sync_job('stuck-task')
+
+    assert changed['progress'] == 7
+    assert updates == [('stuck-task', {
+        'state': 'RETRY',
+        'stage': 'plan_retry',
+        'progress': 7,
+        'message': 'Plan yeniden deneniyor.',
+    })]
 
 
 def test_dashboard_failure_only_state_stays_out_of_action_queue(
@@ -321,20 +471,20 @@ def test_dashboard_failure_only_state_stays_out_of_action_queue(
     body = studio.studio_home(
         studio_token='studio-secret',
     ).body.decode('utf-8')
-    action_panel = body.split('ŞİMDİ', 1)[1].split(
-        'GÜVENLİ YAYIN', 1,
-    )[0]
-
-    assert 'Şu anda devam etmen gereken iş yok.' in action_panel
-    assert '<article class="job compact" data-status="failed"' not in action_panel
-    assert '<article class="job compact" data-status="completed"' not in action_panel
-    assert 'Eski başarısız video' not in action_panel
-    assert 'Yayınlanmış video' not in action_panel
-    assert '<details class="archive-details">' in action_panel
-    assert '<details class="archive-details" open>' not in action_panel
-    assert 'aria-label="1 başarısız iş"' in action_panel
-    assert 'aria-label="1 tamamlanan iş"' in action_panel
-    assert '/studio/history?status=failed' in action_panel
+    assert '<article class="job' not in body
+    assert 'Eski başarısız video' not in body
+    assert 'Yayınlanmış video' not in body
+    assert '<details class="archive-details">' in body
+    assert '<details class="archive-details" open>' not in body
+    assert 'data-status-count="running">0</span>' in body
+    assert 'data-status-count="attention">0</span>' in body
+    assert 'data-status-count="library">1</span>' in body
+    archive_summary, archive_body = body.split(
+        '<details class="archive-details">', 1,
+    )[1].split('</summary>', 1)
+    assert '1' not in archive_summary
+    assert 'Başarısız denemeler <b>1</b>' in archive_body
+    assert 'tamamlanan' not in archive_body.casefold()
 
 
 def test_studio_home_names_fal_as_optional_when_runway_is_ready(
@@ -711,6 +861,25 @@ def test_workflow_history_shows_only_the_latest_child_step(ui_modules):
         [failed_publish, render, plan]
     ) == [render]
 
+    published_render = {
+        **render,
+        'result': {
+            'download_url': 'https://media.example.test/final.mp4',
+            'youtube': {
+                'url': 'https://youtube.example.test/watch?v=private',
+                'privacy_status': 'private',
+            },
+        },
+    }
+    successful_publish = {
+        **publish,
+        'state': 'SUCCESS',
+        'result': {'youtube_url': 'https://youtube.example.test/watch?v=private'},
+    }
+    assert studio._collapse_retry_sources(
+        [successful_publish, published_render, plan]
+    ) == [published_render]
+
 
 def test_history_filters_on_server_and_paginates_at_twelve(monkeypatch, ui_modules):
     studio, _ = ui_modules
@@ -747,14 +916,78 @@ def test_history_filters_on_server_and_paginates_at_twelve(monkeypatch, ui_modul
     ).body.decode('utf-8')
 
     assert 'data-history-status="ready"' in first
-    assert first.count('<article class="job"') == 12
+    assert first.count('<article class="ready-card"') == 12
     assert 'Başarısız video' not in first
-    assert 'data-status-count="ready">13</span>' in first
-    assert 'aria-label="1 başarısız iş"' in first
+    assert 'data-status-count="library">13</span>' in first
+    assert 'Başarısız denemeler <b>1</b>' in first
     assert 'Sayfa 1 / 2' in first
     assert 'status=ready&amp;page=2' in first
-    assert second.count('<article class="job"') == 1
+    assert second.count('<article class="ready-card"') == 1
     assert 'Sayfa 2 / 2' in second
+
+
+def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    ready = _ready_job()
+    ready['result'].update({
+        'download_url': 'https://media.example.test/portrait.mp4',
+        'thumbnail_url': 'https://media.example.test/portrait.jpg',
+    })
+    uploaded = {
+        'task_id': 'uploaded-video',
+        'kind': 'render',
+        'state': 'SUCCESS',
+        'spec': {
+            'topic': 'Gizli video',
+            'duration_minutes': 1,
+            'channel_id': 'fallback-channel',
+        },
+        'result': {
+            'title': 'YouTube’a Gizli Yüklenen Video',
+            'duration': 58,
+            'download_url': 'https://media.example.test/uploaded.mp4',
+            'youtube': {
+                'url': 'https://youtube.example.test/watch?v=private',
+                'privacy_status': 'private',
+                'channel_title': 'Merak Kanalı',
+            },
+        },
+    }
+    failed = {
+        'task_id': 'failed-video',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'spec': {'topic': 'Başarısız video'},
+    }
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [ready, uploaded, failed])
+
+    body = studio.studio_history(
+        status='library',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert 'data-history-status="library"' in body
+    assert 'data-status-count="library">2</span>' in body
+    assert body.count('<article class="ready-card"') == 2
+    assert body.count('<video class="ready-video"') == 2
+    assert 'poster="https://media.example.test/portrait.jpg"' in body
+    assert 'Uçakta Işıklar Neden Kısılır?' in body
+    assert 'YouTube’a Gizli Yüklenen Video' in body
+    assert '<b>Süre</b><span>30 sn</span>' in body
+    assert '<b>Kanal</b><span>Merak Kanalı</span>' in body
+    assert '<b>Gizlilik</b><span>Henüz yüklenmedi</span>' in body
+    assert '<b>Gizlilik</b><span>Gizli</span>' in body
+    assert '<b>Durum</b><span>Yüklemeye hazır</span>' in body
+    assert '<b>Durum</b><span>YouTube’da gizli</span>' in body
+    assert body.count('data-action-count="3"') == 2
+    assert '>Gizli yükle</a>' in body
+    assert ">YouTube'da aç</a>" in body
+    assert 'Başarısız video' not in body
+    assert 'action="/studio/retry/' not in body
+    assert 'action="/studio/youtube/public' not in body.casefold()
 
 
 def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
@@ -805,15 +1038,16 @@ def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
     ).body.decode('utf-8')
 
     assert 'data-history-status="running"' in body
-    assert 'Çalışan, onarım bekleyen ve hazır videolar ayrı listelerde.' in body
+    assert 'Yalnızca şu anda ilerleyen üretimler.' in body
     assert 'Bu görünüm:' not in body
     assert 'Toplam 2 görünür video' not in body
     assert 'data-status-count="running">1</span>' in body
-    assert 'aria-label="1 başarısız iş"' in body
+    assert 'data-status-count="attention">0</span>' in body
+    assert 'Başarısız denemeler <b>1</b>' in body
     assert 'Aynı hızlı test' not in body
     assert failed_body.count('<article class="job"') == 1
     assert '<details class="archive-details" open>' in failed_body
-    assert 'aria-label="1 başarısız iş"' in failed_body
+    assert 'Başarısız denemeler <b>1</b>' in failed_body
     assert '1 eski başarısız deneme bu kartta toplandı.' in failed_body
 
 
@@ -845,7 +1079,7 @@ def test_history_reconciles_only_the_visible_page(monkeypatch, ui_modules):
 
     assert len(synced) == studio.HISTORY_PAGE_SIZE
     assert body.count('<article class="job"') == studio.HISTORY_PAGE_SIZE
-    assert 'aria-label="500 başarısız iş"' in body
+    assert 'Başarısız denemeler <b>500</b>' in body
 
 
 def test_long_fallback_title_is_bounded_and_never_uses_a_url(ui_modules):
@@ -977,6 +1211,21 @@ def test_job_media_panel_accepts_video_url_and_escapes_signed_attributes(ui_modu
     assert '<img src=x' not in panel
     assert 'javascript:' not in panel
     assert 'Altyazıyı indir' not in panel
+
+
+def test_video_players_keep_intrinsic_portrait_ratio(ui_modules):
+    studio, _ = ui_modules
+    record = _ready_job()
+    record['result']['download_url'] = 'https://media.example.test/portrait.mp4'
+
+    panel = studio._job_media_panel(record)
+    card = studio._ready_video_card(record)
+
+    assert '<div class="result-video-frame"><video class="result-video"' in panel
+    assert '<video class="ready-video"' in card
+    assert 'aspect-ratio:16/9' not in studio.BASE_CSS
+    assert 'aspect-ratio:auto' in studio.BASE_CSS
+    assert 'width:auto;max-width:100%;height:auto' in studio.BASE_CSS
 
 
 def test_incomplete_job_never_renders_stale_result_media(ui_modules):
