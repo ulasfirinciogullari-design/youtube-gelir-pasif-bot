@@ -148,8 +148,8 @@ def test_studio_job_card_is_compact_with_one_action_and_collapsed_details(ui_mod
     assert html.count('class="btn ') == 1
     assert '30 sn' in html
     assert '2 Eyl 2026 · 00:15' in html
-    assert '<b>Hedef / profil</b> merak-belgesel-tr-01' in html
-    assert 'Güncellendi 2 Eyl 2026 · 00:15' in html
+    assert '<span>merak-belgesel-tr-01</span>' in html
+    assert 'Güncellendi 2 Eyl 2026 · 00:15' not in html
     assert 'aria-label="Video bilgileri"' in html
     assert '-webkit-line-clamp:2' in studio.BASE_CSS
 
@@ -211,7 +211,9 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     assert 'YouTube yüklemeleri önce gizli oluşturulur.' in body
     assert '<article class="job' not in body
     assert 'Uçakta Işıklar Neden Kısılır?' not in body
-    assert body.count('data-status-filter=') == 3
+    assert body.count('data-status-filter=') == 4
+    assert 'data-status-filter="new"' in body
+    assert '<span class="status-name">Yeni video</span>' in body
     assert 'data-status-filter="failed"' not in body
     assert 'data-status-filter="attention"' in body
     assert 'data-status-filter="library"' in body
@@ -346,7 +348,7 @@ def test_stale_running_job_moves_to_attention_without_mutating_or_retrying(
     assert 'data-status="attention"' in body
     assert 'Takılan kısa video' in body
     assert 'İlerleyen kısa video' not in body
-    assert 'Uzun süredir ilerlemiyor' in body
+    assert 'Üretim durdu; durumunu kontrol et.' in body
     assert 'href="/studio/job/stale-running"' in body
     assert 'action="/studio/retry/' not in body
     assert synced == []
@@ -386,11 +388,121 @@ def test_storyboard_approval_counts_and_renders_as_attention_not_library(
     assert 'data-status-count="library">0</span>' in attention
     assert 'data-history-status="attention"' in attention
     assert '<article class="job" data-status="attention"' in attention
-    assert '<span class="state attention">Müdahale gerekiyor</span>' in attention
-    assert 'Storyboard hazır; render için onayını bekliyor.' in attention
+    assert '<span class="state attention">Dikkat gerekiyor</span>' in attention
+    assert 'Storyboard hazır; devam etmek için aç.' in attention
     assert 'href="/studio/plan/approval-needed"' in attention
     assert 'Onay bekleyen storyboard' not in library
     assert '<h2>0 video</h2>' in library
+
+
+def test_old_storyboard_leaves_daily_attention_but_stays_reachable(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    old = {
+        'task_id': 'old-storyboard',
+        'kind': 'plan',
+        'state': 'AWAITING_APPROVAL',
+        'updated_at': '2020-01-01T00:00:00+00:00',
+        'spec': {'topic': 'Eski storyboard', 'mode': 'production'},
+        'result': {'package': {'title': 'Eski storyboard', 'scenes': []}},
+    }
+    current = {
+        'task_id': 'current-storyboard',
+        'kind': 'plan',
+        'state': 'AWAITING_APPROVAL',
+        'updated_at': '2099-01-01T00:00:00+00:00',
+        'spec': {'topic': 'Güncel storyboard', 'mode': 'production'},
+        'result': {'package': {'title': 'Güncel storyboard', 'scenes': []}},
+    }
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [current, old])
+    monkeypatch.setattr(studio, 'get_job', lambda _task_id: old)
+
+    attention = studio.studio_history(
+        status='attention',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    drafts = studio.studio_history(
+        status='drafts',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    detail = studio.studio_job(
+        old['task_id'],
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert studio._job_is_old_storyboard(old, now=1_700_000_000)
+    assert studio._console_bucket(old) == 'archive'
+    assert studio._console_counts([current, old]) == {
+        'running': 0,
+        'attention': 1,
+        'library': 0,
+    }
+    assert 'Güncel storyboard' in attention
+    assert '<div class="job-title">Eski storyboard</div>' not in attention
+    assert 'Eski storyboard taslakları <b>1</b>' in attention
+    assert 'data-history-status="drafts"' in drafts
+    assert '<details class="archive-details" open>' in drafts
+    assert 'Eski storyboard' in drafts
+    assert "Storyboard'u aç" in drafts
+    assert 'href="/studio/history?status=drafts"' in detail
+
+
+def test_same_title_attention_attempts_group_without_hiding_other_actions(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    spec = {
+        'topic': 'Aynı konu',
+        'duration_minutes': 0.5,
+        'language': 'tr',
+        'mode': 'preview',
+    }
+
+    def manual(task_id, created_ts):
+        return {
+            'task_id': task_id,
+            'kind': 'render',
+            'state': 'SUCCESS',
+            'created_ts': created_ts,
+            'spec': dict(spec),
+            'result': {
+                'title': 'Aynı görünen başlık',
+                'video_key': f'videos/{task_id}/final.mp4',
+                'quality_disposition': 'manual_qa_preview',
+                'manual_qa_required': True,
+            },
+        }
+
+    newest = manual('manual-new', 2_000_000_100)
+    duplicate = manual('manual-old', 2_000_000_000)
+    repair = {
+        'task_id': 'repair-action',
+        'kind': 'render',
+        'state': 'FAILURE',
+        'repair_available': True,
+        'created_ts': 2_000_000_050,
+        'spec': dict(spec),
+        'result': {'title': 'Aynı görünen başlık'},
+    }
+    jobs = [newest, repair, duplicate]
+    by_id = {job['task_id']: job for job in jobs}
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: jobs)
+    monkeypatch.setattr(studio, '_sync_job', lambda task_id: by_id[task_id])
+
+    body = studio.studio_history(
+        status='attention',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert body.count('<article class="job"') == 2
+    assert body.count('Aynı görünen başlık') >= 2
+    assert '2 benzer deneme tek kartta toplandı.' in body
+    assert '>Kaliteyi incele</a>' in body
+    assert '>Sorunlu sahneyi onar</button>' in body
+    assert 'data-status-count="attention">2</span>' in body
 
 
 def test_identical_concurrent_running_jobs_group_only_in_the_display(ui_modules):
@@ -1121,9 +1233,9 @@ def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
 
     assert 'data-history-status="library"' in body
     assert 'data-status-count="library">2</span>' in body
-    assert '<span class="status-name">Videolar</span>' in body
-    assert '<h1>Videolar</h1>' in body
-    assert 'Hazır, gizli, planlanmış veya yayınlanmış videolar.' in body
+    assert '<span class="status-name">Hazır</span>' in body
+    assert '<h1>Hazır</h1>' in body
+    assert 'Kalite kontrolünden geçen ve YouTube’a hazır videolar.' in body
     assert 'Hazır / gizli' not in body
     assert body.count('<article class="ready-card"') == 2
     assert body.count('<video class="ready-video"') == 2
@@ -1132,11 +1244,10 @@ def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
     assert 'YouTube’a Gizli Yüklenen Video' in body
     assert '<b>Süre</b><span>30 sn</span>' in body
     assert '<b>Kanal</b><span>Merak Kanalı</span>' in body
-    assert '<b>Gizlilik</b><span>Henüz yüklenmedi</span>' in body
-    assert '<b>Gizlilik</b><span>Gizli</span>' in body
-    assert '<b>Durum</b><span>Yüklemeye hazır</span>' in body
-    assert '<b>Durum</b><span>YouTube’da gizli</span>' in body
-    assert body.count('data-action-count="3"') == 2
+    assert '<b>Yayın</b><span>Yüklemeye hazır</span>' in body
+    assert '<b>Yayın</b><span>YouTube’da gizli</span>' in body
+    assert '<b>Gizlilik</b>' not in body
+    assert body.count('data-action-count="2"') == 2
     assert '>Gizli yükle</a>' in body
     assert ">YouTube'da aç</a>" in body
     assert 'Başarısız video' not in body
@@ -1214,10 +1325,10 @@ def test_library_is_quality_qualified_and_routes_manual_and_legacy_outputs(
     assert 'Eski Kalite Kaydı Olmayan Video' not in library
     assert library.count('<article class="ready-card"') == 2
     assert 'data-status-count="library">2</span>' in library
-    assert 'Kalite onayı olmayan eski videolar <b>1</b>' in library
+    assert 'Eski kalite kayıtları <b>1</b>' in library
 
     assert 'İnsan İncelemesi Gereken Video' in attention
-    assert 'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.' in attention
+    assert 'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.' in attention
     assert '>Kaliteyi incele</a>' in attention
     assert '>Gizli yükle</a>' not in attention
     assert 'Eski Kalite Kaydı Olmayan Video' not in attention
@@ -1264,17 +1375,17 @@ def test_manual_quality_detail_and_polling_fail_closed_consistently(
     )
 
     assert '<article class="card job-panel" id="job-card" data-status="attention">' in detail
-    assert '<span class="state attention" id="state-label">Müdahale gerekiyor</span>' in detail
-    assert 'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.' in detail
+    assert '<span class="state attention" id="state-label">Dikkat gerekiyor</span>' in detail
+    assert 'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.' in detail
     assert '>Videoyu incele</a>' in detail
     assert '>Gizli yükle</a>' not in detail
     assert 'status=attention' in detail
     assert payload['ui_status'] == 'ready'
     assert payload['display_status'] == 'attention'
-    assert payload['display_status_label'] == 'Müdahale gerekiyor'
+    assert payload['display_status_label'] == 'Dikkat gerekiyor'
     assert payload['upload_allowed'] is False
     assert payload['ui_status_message'] == (
-        'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.'
+        'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.'
     )
     assert "j.upload_allowed===true" in detail
     assert "displayUi=String(j.display_status||ui)" in detail
@@ -1301,20 +1412,18 @@ def test_approved_polling_payload_is_the_only_render_upload_allowed(
 
 @pytest.mark.parametrize(
     (
-        'release_status', 'privacy_status', 'pill_label',
-        'privacy_label', 'readiness_label',
+        'release_status', 'privacy_status', 'pill_label', 'readiness_label',
     ),
     [
-        ('private', 'private', 'Gizli', 'Gizli', 'YouTube’da gizli'),
-        ('public', 'public', 'Yayında', 'Herkese açık', 'YouTube’da yayında'),
-        ('scheduled', 'private', 'Planlandı', 'Gizli', 'YouTube’da planlandı'),
+        ('private', 'private', 'Gizli', 'YouTube’da gizli'),
+        ('public', 'public', 'Yayında', 'YouTube’da yayında'),
+        ('scheduled', 'private', 'Planlandı', 'YouTube’da planlandı'),
     ],
 )
 def test_ready_card_presents_youtube_release_state_without_calling_it_all_private(
     release_status,
     privacy_status,
     pill_label,
-    privacy_label,
     readiness_label,
     ui_modules,
 ):
@@ -1330,8 +1439,7 @@ def test_ready_card_presents_youtube_release_state_without_calling_it_all_privat
 
     assert studio._console_bucket(job) == 'library'
     assert f'<span class="state completed">{pill_label}</span>' in card
-    assert f'<b>Gizlilik</b><span>{privacy_label}</span>' in card
-    assert f'<b>Durum</b><span>{readiness_label}</span>' in card
+    assert f'<b>Yayın</b><span>{readiness_label}</span>' in card
 
 
 def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
@@ -1382,7 +1490,7 @@ def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
     ).body.decode('utf-8')
 
     assert 'data-history-status="running"' in body
-    assert 'Yalnızca şu anda ilerleyen üretimler.' in body
+    assert 'Şu anda hazırlanan videolar.' in body
     assert 'Bu görünüm:' not in body
     assert 'Toplam 2 görünür video' not in body
     assert 'data-status-count="running">1</span>' in body
