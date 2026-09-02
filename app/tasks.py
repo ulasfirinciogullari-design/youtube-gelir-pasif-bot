@@ -35,6 +35,7 @@ from app.services.render import (
 from app.services.research import research_and_script
 from app.services.runway import (
     GeminiImageAttemptedError,
+    GeminiOmniContinuityReferenceError,
     GeminiOmniTerminalError,
     create_gemini_omni_continuity_reference,
     download_generated_scene,
@@ -4252,7 +4253,7 @@ def run_video_pipeline(
             ),
         )
 
-        omni_continuity_reference_path: Path | None = None
+        omni_continuity_reference_image_path: Path | None = None
         omni_continuity_anchor_scene_idx: int | None = None
         for candidate in selected_runway:
             scene_idx = int(candidate['scene_index'])
@@ -4331,15 +4332,15 @@ def run_video_pipeline(
                     ).append(dict(recovered_spec))
                 if (
                     is_private_ai_first_omni_preview
-                    and omni_continuity_reference_path is None
+                    and omni_continuity_reference_image_path is None
                     and recovered_specs
                 ):
-                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    continuity_path = work / 'omni_continuity_reference.jpg'
                     create_gemini_omni_continuity_reference(
                         recovered_specs[0]['path'],
                         continuity_path,
                     )
-                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_reference_image_path = continuity_path
                     omni_continuity_anchor_scene_idx = scene_idx
                 scene_visuals[scene_idx] = [
                     *recovered_specs,
@@ -4381,7 +4382,7 @@ def run_video_pipeline(
                 )
                 scene_continuity_reference = None
                 if (
-                    omni_continuity_reference_path is not None
+                    omni_continuity_reference_image_path is not None
                     and omni_continuity_anchor_scene_idx is not None
                     and _omni_continuity_reference_applies(
                         scenes[omni_continuity_anchor_scene_idx],
@@ -4389,7 +4390,7 @@ def run_video_pipeline(
                     )
                 ):
                     scene_continuity_reference = (
-                        omni_continuity_reference_path
+                        omni_continuity_reference_image_path
                     )
                 generated_scene = generate_scene(
                     prompt_candidates[scene_idx],
@@ -4403,7 +4404,7 @@ def run_video_pipeline(
                     prefer_gemini_omni=(
                         is_private_ai_first_omni_preview
                     ),
-                    continuity_reference_video=(
+                    continuity_reference_image=(
                         scene_continuity_reference
                     ),
                     aspect_ratio=generation_aspect_ratio,
@@ -4426,14 +4427,14 @@ def run_video_pipeline(
                 )
                 if (
                     is_private_ai_first_omni_preview
-                    and omni_continuity_reference_path is None
+                    and omni_continuity_reference_image_path is None
                 ):
-                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    continuity_path = work / 'omni_continuity_reference.jpg'
                     create_gemini_omni_continuity_reference(
                         runway_path,
                         continuity_path,
                     )
-                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_reference_image_path = continuity_path
                     omni_continuity_anchor_scene_idx = scene_idx
                 runway_spec = _generated_visual_spec(
                     runway_path,
@@ -4492,6 +4493,11 @@ def run_video_pipeline(
                 })
                 omni_unsafe_submission_scenes.discard(scene_idx)
             except Exception as exc:
+                if isinstance(exc, GeminiOmniContinuityReferenceError):
+                    # A paid first clip exists but cannot safely anchor later
+                    # related scenes. Stop instead of buying inconsistent
+                    # follow-ups or silently discarding the valid clip.
+                    raise
                 if isinstance(exc, GeminiImageAttemptedError):
                     image_motion_submission_scenes.add(scene_idx)
                 if isinstance(exc, GeminiOmniTerminalError):
@@ -4840,7 +4846,7 @@ def run_video_pipeline(
                 )
                 scene_continuity_reference = None
                 if (
-                    omni_continuity_reference_path is not None
+                    omni_continuity_reference_image_path is not None
                     and omni_continuity_anchor_scene_idx is not None
                     and _omni_continuity_reference_applies(
                         scenes[omni_continuity_anchor_scene_idx],
@@ -4848,7 +4854,7 @@ def run_video_pipeline(
                     )
                 ):
                     scene_continuity_reference = (
-                        omni_continuity_reference_path
+                        omni_continuity_reference_image_path
                     )
                 repair_scene = generate_scene(
                     repair_prompt,
@@ -4865,7 +4871,7 @@ def run_video_pipeline(
                     prefer_gemini_omni=(
                         is_private_ai_first_omni_preview
                     ),
-                    continuity_reference_video=(
+                    continuity_reference_image=(
                         scene_continuity_reference
                     ),
                     aspect_ratio=generation_aspect_ratio,
@@ -4881,14 +4887,14 @@ def run_video_pipeline(
                 )
                 if (
                     is_private_ai_first_omni_preview
-                    and omni_continuity_reference_path is None
+                    and omni_continuity_reference_image_path is None
                 ):
-                    continuity_path = work / 'omni_continuity_reference.mp4'
+                    continuity_path = work / 'omni_continuity_reference.jpg'
                     create_gemini_omni_continuity_reference(
                         repair_path,
                         continuity_path,
                     )
-                    omni_continuity_reference_path = continuity_path
+                    omni_continuity_reference_image_path = continuity_path
                     omni_continuity_anchor_scene_idx = scene_idx
                 repair_spec = _generated_visual_spec(
                     repair_path,
@@ -4951,6 +4957,8 @@ def run_video_pipeline(
                     'stage': 'final_visual_qc_ai_repair',
                 })
             except Exception as exc:
+                if isinstance(exc, GeminiOmniContinuityReferenceError):
+                    raise
                 if isinstance(exc, GeminiImageAttemptedError):
                     image_motion_submission_scenes.add(scene_idx)
                 if isinstance(exc, GeminiOmniTerminalError):
