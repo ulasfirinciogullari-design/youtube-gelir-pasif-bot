@@ -93,6 +93,9 @@ _DIGIT_TOKEN_PATTERN = re.compile(
     r'(?:(?P<separator>[,.])(?P<fraction>\d+))?'
     r'(?P<suffix>[^\W\d_]*)$'
 )
+_EXPLICIT_DECIMAL_TOKEN_PATTERN = re.compile(
+    r'(?P<integer>\d+)[,.](?P<fraction>\d+)$'
+)
 _NUMBER_UNITS = {
     's\u0131f\u0131r': 0,
     'bir': 1,
@@ -625,6 +628,50 @@ def _timestamp_boundary_sequence(tokens: list[str]) -> tuple[str, ...]:
     return tuple(sequence)
 
 
+def _timestamp_sequence_matches_transcript(
+    timestamp_tokens: list[str],
+    transcript_tokens: list[str],
+    *,
+    allow_explicit_decimal_split: bool = False,
+) -> bool:
+    """Compare timestamp text without permitting ambiguous digit merges.
+
+    OpenAI occasionally emits an explicitly punctuated decimal such as
+    ``4,8`` in its transcript while returning ``4`` and ``8`` as two adjacent
+    word timestamps.  Expanding only that transcript token keeps the mapping
+    exact; an integer such as ``29`` is never expanded to ``2`` and ``9``.
+    """
+    if (
+        timestamp_tokens == transcript_tokens
+        or _timestamp_boundary_sequence(timestamp_tokens)
+        == _timestamp_boundary_sequence(transcript_tokens)
+    ):
+        return True
+    if not allow_explicit_decimal_split:
+        return False
+
+    expanded_transcript_tokens: list[str] = []
+    expanded_decimal = False
+    for token in transcript_tokens:
+        match = _EXPLICIT_DECIMAL_TOKEN_PATTERN.fullmatch(token)
+        if match is None:
+            expanded_transcript_tokens.append(token)
+            continue
+        expanded_transcript_tokens.extend((
+            match.group('integer'),
+            match.group('fraction'),
+        ))
+        expanded_decimal = True
+
+    if not expanded_decimal:
+        return False
+    return (
+        timestamp_tokens == expanded_transcript_tokens
+        or _timestamp_boundary_sequence(timestamp_tokens)
+        == _timestamp_boundary_sequence(expanded_transcript_tokens)
+    )
+
+
 def _ascii_digits(value: str) -> str:
     return ''.join(str(unicodedata.decimal(character)) for character in value)
 
@@ -1128,10 +1175,12 @@ def compare_transcript(
         )
     ]
     details['timestamp_sequence_match'] = (
-        (
-            timestamp_tokens == surface_heard_tokens
-            or _timestamp_boundary_sequence(timestamp_tokens)
-            == _timestamp_boundary_sequence(surface_heard_tokens)
+        _timestamp_sequence_matches_transcript(
+            timestamp_tokens,
+            surface_heard_tokens,
+            allow_explicit_decimal_split=(
+                str(provider or '').strip().lower() == 'openai'
+            ),
         )
         if words is not None
         else None
