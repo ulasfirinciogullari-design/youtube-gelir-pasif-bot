@@ -684,7 +684,7 @@ def _validated_gemini_omni_video_file(
         'ffprobe', '-v', 'error', '-select_streams', 'v:0',
         '-count_frames', '-show_entries',
         'stream=codec_type,width,height,r_frame_rate,nb_read_frames,'
-        'sample_aspect_ratio:stream_tags=rotate:'
+        'sample_aspect_ratio,display_aspect_ratio:stream_tags=rotate:'
         'stream_side_data=rotation:'
         'format=duration',
         '-of', 'json', str(video_path),
@@ -718,12 +718,43 @@ def _validated_gemini_omni_video_file(
         )
     except (TypeError, ValueError):
         normalized_rotation = False
+
+    def _aspect_ratio(value: object) -> float | None:
+        if value is None:
+            return None
+        text = str(value).strip().lower()
+        if text in {'', 'n/a', 'unknown', '0:0', '0:1'}:
+            return None
+        separator = ':' if ':' in text else '/' if '/' in text else None
+        if separator is None:
+            return -1.0
+        try:
+            numerator, denominator = text.split(separator, 1)
+            numerator_value = float(numerator)
+            denominator_value = float(denominator)
+            if numerator_value <= 0 or denominator_value <= 0:
+                return -1.0
+            return numerator_value / denominator_value
+        except (TypeError, ValueError, ZeroDivisionError):
+            return -1.0
+
+    sample_aspect_ratio = _aspect_ratio(stream.get('sample_aspect_ratio'))
+    display_aspect_ratio = _aspect_ratio(stream.get('display_aspect_ratio'))
+    square_pixels = (
+        sample_aspect_ratio is None
+        or abs(sample_aspect_ratio - 1.0) <= 0.000001
+    )
+    portrait_display = (
+        display_aspect_ratio is None
+        or abs(display_aspect_ratio - (9.0 / 16.0)) <= 0.000001
+    )
     if (
         stream.get('codec_type') != 'video'
         or stream.get('width') != 720
         or stream.get('height') != 1280
         or stream.get('r_frame_rate') not in {'24/1', '24'}
-        or stream.get('sample_aspect_ratio') not in {'1:1', '1/1'}
+        or not square_pixels
+        or not portrait_display
         or not normalized_rotation
         or frame_count < 1
     ):

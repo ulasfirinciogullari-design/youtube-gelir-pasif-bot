@@ -440,6 +440,7 @@ class GeminiOmniMediaContractTests(unittest.TestCase):
         duration=5.0,
         rate='24/1',
         sar='1:1',
+        dar='9:16',
         rotation=None,
     ):
         stream = {
@@ -447,9 +448,12 @@ class GeminiOmniMediaContractTests(unittest.TestCase):
             'width': width,
             'height': height,
             'r_frame_rate': rate,
-            'sample_aspect_ratio': sar,
             'nb_read_frames': '120',
         }
+        if sar is not None:
+            stream['sample_aspect_ratio'] = sar
+        if dar is not None:
+            stream['display_aspect_ratio'] = dar
         if rotation is not None:
             stream['side_data_list'] = [{'rotation': rotation}]
         payload = {
@@ -471,7 +475,6 @@ class GeminiOmniMediaContractTests(unittest.TestCase):
             for probe in (
                 self._probe(width=1280, height=720),
                 self._probe(rate='30/1'),
-                self._probe(sar='4:3'),
                 self._probe(rotation=90),
                 self._probe(duration=2.9),
                 self._probe(duration=10.2),
@@ -479,6 +482,29 @@ class GeminiOmniMediaContractTests(unittest.TestCase):
                 with self.subTest(probe=probe):
                     with self.assertRaises(RuntimeError):
                         _load_validator(probe)(path, minimum_seconds=3)
+
+    def test_validator_accepts_missing_sar_for_unrotated_portrait_display(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'clip.mp4'
+            path.write_bytes(b'\x00\x00\x00\x18ftypisom' + b'x' * 2048)
+            validator = _load_validator(self._probe(sar=None, dar=None))
+            self.assertEqual(validator(path, minimum_seconds=5), 5.0)
+
+    def test_validator_rejects_explicit_non_square_sar(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'clip.mp4'
+            path.write_bytes(b'\x00\x00\x00\x18ftypisom' + b'x' * 2048)
+            validator = _load_validator(self._probe(sar='4:3', dar='9:16'))
+            with self.assertRaises(RuntimeError):
+                validator(path, minimum_seconds=5)
+
+    def test_validator_rejects_conflicting_display_aspect_ratio(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'clip.mp4'
+            path.write_bytes(b'\x00\x00\x00\x18ftypisom' + b'x' * 2048)
+            validator = _load_validator(self._probe(sar=None, dar='3:4'))
+            with self.assertRaises(RuntimeError):
+                validator(path, minimum_seconds=5)
 
 
 class _StreamResponse:
