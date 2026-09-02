@@ -70,6 +70,8 @@ def _review(
         'unexplained_reset': False,
         'location_continuity_applicable': False,
         'location_continuity_matches': False,
+        'recurring_identity_continuity_applicable': False,
+        'recurring_identity_continuity_matches': False,
         'prominent_readable_text_or_logo_visible': False,
         'major_visual_artifact_visible': False,
         'effectively_static_or_frozen': False,
@@ -759,6 +761,122 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertIn(
             'natural, live, dead or biological animal can never substitute',
             system_instruction,
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_explicit_recurring_object_mismatch_is_server_authored_hard_gate(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scenes = [
+            {
+                'narration': 'Oyuncak ejderha kumdan çıkar.',
+                'ai_prompt': 'Weathered matte black toy dragon on wet sand.',
+                'visual_queries': ['weathered black toy dragon wet sand'],
+            },
+            {
+                'narration': 'Aynı çentikli siyah ejderha akıntıda sürüklenir.',
+                'ai_prompt': 'The same chipped black toy dragon underwater.',
+                'visual_queries': ['same chipped black toy dragon underwater'],
+            },
+        ]
+        gemini.return_value = {'reviews': [
+            _review(
+                0,
+                score=95,
+                recurring_identity_continuity_applicable=False,
+                recurring_identity_continuity_matches=True,
+                manufactured_object_cues_visible=True,
+            ),
+            _review(
+                1,
+                score=95,
+                reason='The recurring dragon has different shape and markings.',
+                recurring_identity_continuity_applicable=False,
+                recurring_identity_continuity_matches=False,
+                manufactured_object_cues_visible=True,
+            ),
+        ]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            reviews = review_scene_visuals(
+                scenes,
+                [['first.mp4'], ['second.mp4']],
+                self.work / 'recurring_identity_mismatch',
+                _missing_review_attempts=0,
+                topic='Her sahnede aynı oyuncak ejderha aynı kalmalı.',
+            )['reviews']
+
+        self.assertTrue(
+            reviews[0]['recurring_identity_continuity_applicable']
+        )
+        self.assertEqual(reviews[0]['score'], 95)
+        self.assertTrue(
+            reviews[1]['recurring_identity_continuity_applicable']
+        )
+        self.assertEqual(reviews[1]['score'], 40)
+        self.assertIn(
+            'changes identity between scenes',
+            ' '.join(reviews[1]['hard_gate_diagnostics']),
+        )
+        self.assertIn(
+            'RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS: [0,1]',
+            gemini.call_args.kwargs['system_instruction'],
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_ordinary_montage_cannot_invent_recurring_identity_requirement(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scenes = [
+            {
+                'narration': 'Bir konteyner gemisi dalgaya yakalanır.',
+                'visual_queries': ['container ship wave'],
+            },
+            {
+                'narration': 'Cornwall sahilinde plastikler toplanır.',
+                'visual_queries': ['beach cleanup Cornwall'],
+            },
+        ]
+        gemini.return_value = {'reviews': [
+            _review(
+                0,
+                recurring_identity_continuity_applicable=True,
+                recurring_identity_continuity_matches=False,
+            ),
+            _review(
+                1,
+                recurring_identity_continuity_applicable=True,
+                recurring_identity_continuity_matches=False,
+            ),
+        ]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            reviews = review_scene_visuals(
+                scenes,
+                [['ship.mp4'], ['cleanup.mp4']],
+                self.work / 'ordinary_montage',
+                _missing_review_attempts=0,
+                topic='Konteyner kazasından sahil temizliğine kısa belgesel.',
+            )['reviews']
+
+        self.assertTrue(all(review['score'] == 92 for review in reviews))
+        self.assertTrue(all(
+            review['recurring_identity_continuity_applicable'] is False
+            for review in reviews
+        ))
+        self.assertIn(
+            'RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS: []',
+            gemini.call_args.kwargs['system_instruction'],
         )
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
