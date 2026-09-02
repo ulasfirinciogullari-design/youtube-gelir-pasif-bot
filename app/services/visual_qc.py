@@ -76,6 +76,8 @@ _NEGATIVE_REASON_MARKERS = re.compile(
 _EVIDENCE_BOOLEAN_FIELDS = (
     'subject_visible',
     'spoken_action_visible',
+    'thermal_claim_applicable',
+    'thermal_evidence_visible',
     'physical_causality_applicable',
     'target_contact_visible',
     'connection_action_applicable',
@@ -111,6 +113,14 @@ _CONNECTION_ACTION_PATTERN = re.compile(
     r'kemer(?:i|ini)?)\b.{0,48}\b(?:tak(?:ıyor|iyor|mak|ar|tı|ti|ıl|il)|'
     r'sok(?:uyor|mak|ar|tu|ul)|bağla(?:r|mak|dı|nıyor)?|'
     r'yerleştir(?:iyor|mek|ir|di)?|kilitle(?:r|mek|di|niyor)?)\b',
+    flags=re.IGNORECASE,
+)
+
+_THERMAL_CLAIM_PATTERN = re.compile(
+    r'\b(?:heat|heats|heated|heating|hot|warmer?|warmth|temperature|thermal|'
+    r'overheat(?:s|ed|ing)?)\b|'
+    r'\b(?:ısı|ısısı|ısıyı|ısıya|ısın(?:ır|ıyor|dı|ma|mış)?|sıcak|sıcağı|'
+    r'sıcaklık(?:ta|tan|tır)?|termal)\b',
     flags=re.IGNORECASE,
 )
 
@@ -163,21 +173,18 @@ def _mark_unresolved_score_reason_conflict(
 
 
 def _connection_action_required(scene: dict) -> bool:
-    text = ' '.join(
-        [
-            str(scene.get('narration') or ''),
-            str(scene.get('ai_prompt') or ''),
-            *[
-                str(query or '')
-                for query in (
-                    [scene.get('visual_queries')]
-                    if isinstance(scene.get('visual_queries'), str)
-                    else scene.get('visual_queries') or []
-                )
-            ],
-        ]
-    )
-    return bool(_CONNECTION_ACTION_PATTERN.search(text))
+    # Only the locked narration can make a connector action mandatory. Search
+    # queries and generation prompts often describe an already-charging or
+    # already-connected state; treating those retrieval hints as a narrated
+    # plug-in event creates a false hard gate.
+    narration = str(scene.get('narration') or '')
+    return bool(_CONNECTION_ACTION_PATTERN.search(narration))
+
+
+def _thermal_claim_required(scene: dict) -> bool:
+    """Recognize an explicit heat/temperature claim in locked narration."""
+    narration = str(scene.get('narration') or '')
+    return bool(_THERMAL_CLAIM_PATTERN.search(narration))
 
 
 def _normalized_evidence(
@@ -185,6 +192,7 @@ def _normalized_evidence(
     available_moment_indices: set[int],
     *,
     connection_required: bool = False,
+    thermal_required: bool = False,
 ) -> tuple[dict, bool] | None:
     values = {field: review.get(field) for field in _EVIDENCE_BOOLEAN_FIELDS}
     if any(type(value) is not bool for value in values.values()):
@@ -205,17 +213,22 @@ def _normalized_evidence(
         values['physical_causality_applicable']
         or values['state_change_applicable']
         or connection_required
-        or values['connection_action_applicable']
     ):
         required_moments = 3
     elif values['location_continuity_applicable']:
         required_moments = 2
-    connection_applicable = bool(
-        connection_required or values['connection_action_applicable']
-    )
+    # Applicability is server-authored from the locked narration. The critic
+    # still reports its interpretation for schema completeness, but it cannot
+    # invent a plug-in action from an already-charging state.
+    connection_applicable = bool(connection_required)
+    thermal_applicable = bool(thermal_required)
     gate_passed = bool(
         values['subject_visible']
         and values['spoken_action_visible']
+        and (
+            not thermal_applicable
+            or values['thermal_evidence_visible']
+        )
         and not values['unexplained_reset']
         and (
             not values['physical_causality_applicable']
@@ -247,6 +260,7 @@ def _normalized_evidence(
     return {
         **values,
         'connection_action_applicable': connection_applicable,
+        'thermal_claim_applicable': thermal_applicable,
         'evidence_moment_indices': moments,
     }, gate_passed
 
@@ -804,6 +818,8 @@ def review_scene_visuals(
             'Treat explicit indoor/outdoor state, destination type, viewpoint and direction of travel as literal requirements; a station, mall or transit concourse cannot substitute for an exterior office approach. '
             'For any physical cause such as cover, block, press, insert, unplug, remove or reveal, require timestamped visual proof of the target before contact, real contact or occlusion at the named target, and the result only after that contact. A hand merely near, below or beside the target fails. '
             'For every narrated insertion, fastening, latching, plugging, buckling or attachment, set connection_action_applicable=true. The distinct moving connector and the receiving interface must both be visibly identifiable before contact; their actual joining must remain visible, and the completed connection must persist after the hand releases. A loose strap, cable, cover, hand or blur hiding the interface is not proof and must fail. '
+            'Set connection_action_applicable=true only when the narration explicitly describes the connector being inserted, plugged, attached, fastened, buckled, latched or connected during this shot. A device that is already charging, charged, plugged in or connected describes a state, not a new connection action; do not infer a plug-in event from a visible cable, visual query or AI prompt. '
+            'For narration that explicitly claims heat, warmth or temperature, set thermal_claim_applicable=true. Set thermal_evidence_visible=true only when the named subject itself has visible heat evidence, such as a clear thermal-camera heat distribution or another unambiguous visual representation of heat on that subject. A charging cable, charging icon, ordinary warm lighting or narration alone is not heat evidence. Use this thermal gate, not connector/contact fields, for a device already charging and producing heat. '
             'For a display, light or other state change, compare before and after moments and require the affected element itself to change while unrelated exposure remains stable; never infer the change from the narration or prompt. '
             'The final state must persist through the end of the shot. Any unexplained reset, repeated action, return to an earlier position, or visible loop must score 40 or lower. '
             'Require adjacent scenes to preserve spatial continuity unless the narration explicitly establishes a move: interior/exterior, location class, architecture, light and travel direction must remain compatible. '
@@ -822,7 +838,7 @@ def review_scene_visuals(
             'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
             'Each retry query must describe only the desired replacement shot and explicitly correct every visibly failed authored attribute that applies: subject identity, physical scale or quantity, age or condition, material, color or shape, setting or surface, and physical action; never include meta-instructions. '
             'Every review object must include both authored_identity_or_material_conflict_visible and manufactured_object_cues_visible as booleans. '
-            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"prominent_readable_text_or_logo_visible\":false,\"major_visual_artifact_visible\":false,\"effectively_static_or_frozen\":false,\"authored_identity_or_material_conflict_visible\":false,\"manufactured_object_cues_visible\":false,\"evidence_moment_indices\":[0]}]}'
+            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"thermal_claim_applicable\":false,\"thermal_evidence_visible\":false,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"prominent_readable_text_or_logo_visible\":false,\"major_visual_artifact_visible\":false,\"effectively_static_or_frozen\":false,\"authored_identity_or_material_conflict_visible\":false,\"manufactured_object_cues_visible\":false,\"evidence_moment_indices\":[0]}]}'
         ),
     }]
     gemini_parts: list[dict] = []
@@ -1143,6 +1159,9 @@ def review_scene_visuals(
                 connection_required=_connection_action_required(
                     scenes[scene_index]
                 ),
+                thermal_required=_thermal_claim_required(
+                    scenes[scene_index]
+                ),
             )
             manual_qa_visual_flags = _normalized_manual_qa_visual_flags(
                 review
@@ -1217,6 +1236,9 @@ def review_scene_visuals(
             review,
             available_moments[scene_index][best_candidate_index],
             connection_required=_connection_action_required(
+                scenes[scene_index]
+            ),
+            thermal_required=_thermal_claim_required(
                 scenes[scene_index]
             ),
         )
