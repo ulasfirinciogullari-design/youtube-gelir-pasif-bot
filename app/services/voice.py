@@ -12,6 +12,8 @@ import redis
 from app.config import settings
 
 ELEVENLABS_BASE = 'https://api.elevenlabs.io/v1'
+ELEVENLABS_MULTILINGUAL_V2_MODEL_ID = 'eleven_multilingual_v2'
+ELEVENLABS_TURKISH_SHORT_MODEL_ID = 'eleven_flash_v2_5'
 SELECTED_VOICE_ID_KEY = 'youtube_factory:selected_voice_id'
 SELECTED_VOICE_NAME_KEY = 'youtube_factory:selected_voice_name'
 SELECTED_VOICE_OWNER_KEY = 'youtube_factory:selected_voice_owner_id'
@@ -152,6 +154,25 @@ def _voice_speed(target_seconds: float | None = None) -> float:
     return 1.0 if target_seconds and target_seconds <= 40 else 1.01
 
 
+def _use_turkish_short_preview_profile(
+    language: str | None,
+    target_seconds: float | None,
+) -> bool:
+    """Route only the validated pipeline language and short duration."""
+    primary_language = (
+        str(language or '')
+        .strip()
+        .replace('_', '-')
+        .casefold()
+        .split('-', 1)[0]
+    )
+    return bool(
+        target_seconds
+        and 0 < target_seconds <= 40
+        and primary_language == 'tr'
+    )
+
+
 def _voice_request_body(
     text: str,
     previous_text: str | None = None,
@@ -159,19 +180,39 @@ def _voice_request_body(
     *,
     speed: float = 1.01,
     seed: int | None = None,
+    turkish_short_preview: bool = False,
 ) -> dict:
-    body = {
-        'text': normalize_turkish_tts(text),
-        'model_id': 'eleven_multilingual_v2',
-        'apply_text_normalization': 'on',
-        'voice_settings': {
+    if turkish_short_preview:
+        # The selected native Turkish PVC was validated end-to-end with
+        # Flash v2.5 on the production 30-second narration: exact transcript,
+        # duration and independent prosody gates all passed. ``language_code``
+        # is intentionally used only here because ElevenLabs does not support
+        # it on Multilingual v2.
+        model_id = ELEVENLABS_TURKISH_SHORT_MODEL_ID
+        language_code = 'tr'
+        voice_settings = {
+            'stability': 0.50,
+            'similarity_boost': 0.75,
+            'speed': speed,
+        }
+    else:
+        model_id = ELEVENLABS_MULTILINGUAL_V2_MODEL_ID
+        language_code = None
+        voice_settings = {
             'stability': 0.40,
             'similarity_boost': 0.80,
             'style': 0.0,
             'use_speaker_boost': True,
             'speed': speed,
-        },
+        }
+    body = {
+        'text': normalize_turkish_tts(text),
+        'model_id': model_id,
+        'apply_text_normalization': 'on',
+        'voice_settings': voice_settings,
     }
+    if language_code:
+        body['language_code'] = language_code
     if seed is not None:
         if type(seed) is not int or not 0 <= seed <= 4_294_967_295:
             raise ValueError('ElevenLabs seed must be an unsigned 32-bit integer')
@@ -191,6 +232,7 @@ def synthesize_voice_with_id(
     *,
     speed: float = 1.01,
     seed: int | None = None,
+    turkish_short_preview: bool = False,
 ) -> bytes:
     body = _voice_request_body(
         text,
@@ -198,6 +240,7 @@ def synthesize_voice_with_id(
         next_text,
         speed=speed,
         seed=seed,
+        turkish_short_preview=turkish_short_preview,
     )
     response = httpx.post(
         f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}',
@@ -214,13 +257,19 @@ def synthesize_voice_with_timestamps(
     *,
     speed: float = 1.01,
     seed: int | None = None,
+    turkish_short_preview: bool = False,
 ) -> tuple[bytes, dict]:
     """Synthesize one continuous take with character-level source timing."""
     response = httpx.post(
         f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}/with-timestamps',
         headers={**_headers(), 'Accept': 'application/json', 'Content-Type': 'application/json'},
         params={'output_format': 'mp3_44100_128'},
-        json=_voice_request_body(text, speed=speed, seed=seed),
+        json=_voice_request_body(
+            text,
+            speed=speed,
+            seed=seed,
+            turkish_short_preview=turkish_short_preview,
+        ),
         timeout=180,
     )
     response.raise_for_status()
@@ -758,11 +807,16 @@ def synthesize_scene_sequence(
     target_seconds: float | None = None,
     *,
     generation_attempt: int = 0,
+    language: str | None = None,
 ) -> dict:
     selected = _selected_voice_or_raise()
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
     short_preview = bool(target_seconds and 0 < target_seconds <= 40)
+    turkish_short_preview = _use_turkish_short_preview_profile(
+        language,
+        target_seconds,
+    )
     spoken = [
         normalize_turkish_tts(
             text,
@@ -782,16 +836,21 @@ def synthesize_scene_sequence(
     compacted_trailing_silence = False
     if short_preview:
         narration, spans = _join_scene_narration(spoken)
-        audio, alignment = synthesize_voice_with_timestamps(
-            narration,
-            voice_id,
-            speed=selected_speed,
-            seed=_deterministic_scene_seed(
+        timestamp_options = {
+            'speed': selected_speed,
+            'seed': _deterministic_scene_seed(
                 voice_id,
                 narration,
                 0,
                 generation_attempt,
             ),
+        }
+        if turkish_short_preview:
+            timestamp_options['turkish_short_preview'] = True
+        audio, alignment = synthesize_voice_with_timestamps(
+            narration,
+            voice_id,
+            **timestamp_options,
         )
         raw_output.write_bytes(audio)
         raw_media_duration = _media_duration(raw_output)
@@ -878,6 +937,12 @@ def synthesize_scene_sequence(
         'scene_durations': scene_durations,
         'spoken_texts': spoken,
         'voice_name': selected.get('name'),
+        'voice_model': (
+            ELEVENLABS_TURKISH_SHORT_MODEL_ID
+            if turkish_short_preview
+            else ELEVENLABS_MULTILINGUAL_V2_MODEL_ID
+        ),
+        'voice_language_code': 'tr' if turkish_short_preview else None,
         'duration_before_fit': before_fit,
         'duration_after_fit': after_fit,
         'tempo_rate': tempo_rate,

@@ -20,6 +20,7 @@ sys.modules['redis'] = redis_stub
 
 from app.services.voice import normalize_turkish_tts
 from app.services.voice import _voice_speed
+from app.services.voice import _use_turkish_short_preview_profile
 from app.services.voice import _fit_duration
 from app.services.voice import _join_scene_narration
 from app.services.voice import _scene_durations_from_alignment
@@ -113,6 +114,23 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertEqual(_voice_speed(40), 1.0)
         self.assertEqual(_voice_speed(60), 1.01)
         self.assertEqual(_voice_speed(None), 1.01)
+
+    def test_turkish_flash_profile_route_is_narrow(self):
+        self.assertTrue(_use_turkish_short_preview_profile('tr', 30.0))
+        self.assertTrue(_use_turkish_short_preview_profile(' TR ', 40.0))
+        self.assertTrue(_use_turkish_short_preview_profile('tr-TR', 30.0))
+        self.assertTrue(_use_turkish_short_preview_profile('tr_TR', 30.0))
+        for language, duration in (
+            ('en', 30.0),
+            ('tr', 60.0),
+            ('trick', 30.0),
+            (None, 30.0),
+            ('tr', None),
+        ):
+            with self.subTest(language=language, duration=duration):
+                self.assertFalse(
+                    _use_turkish_short_preview_profile(language, duration)
+                )
 
     def test_near_unity_short_preview_fit_uses_only_minimal_tempo_change(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -369,6 +387,46 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertEqual(request.kwargs['timeout'], 180)
 
     @patch.object(voice_module.httpx, 'post', create=True)
+    def test_turkish_short_preview_uses_verified_flash_profile(self, post):
+        config_stub.settings.elevenlabs_api_key = 'test-key'
+        alignment = {
+            'characters': list('Bir. İki.'),
+            'character_start_times_seconds': [0.0] * 9,
+            'character_end_times_seconds': [0.1] * 9,
+        }
+        post.return_value = _FakeTimestampResponse({
+            'audio_base64': base64.b64encode(b'continuous-voice').decode(),
+            'alignment': alignment,
+        })
+
+        synthesize_voice_with_timestamps(
+            'Bir. İki.',
+            'test-voice',
+            speed=1.0,
+            seed=123,
+            turkish_short_preview=True,
+        )
+
+        request_body = post.call_args.kwargs['json']
+        self.assertEqual(
+            request_body,
+            {
+                'text': 'Bir. İki.',
+                'model_id': 'eleven_flash_v2_5',
+                'language_code': 'tr',
+                'apply_text_normalization': 'on',
+                'voice_settings': {
+                    'stability': 0.50,
+                    'similarity_boost': 0.75,
+                    'speed': 1.0,
+                },
+                'seed': 123,
+            },
+        )
+        self.assertNotIn('style', request_body['voice_settings'])
+        self.assertNotIn('use_speaker_boost', request_body['voice_settings'])
+
+    @patch.object(voice_module.httpx, 'post', create=True)
     def test_timestamp_request_is_single_and_keeps_voice_profile(self, post):
         config_stub.settings.elevenlabs_api_key = 'test-key'
         alignment = {
@@ -506,6 +564,66 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertEqual(result['removed_silence_seconds'], 0.0)
         self.assertEqual(result['compacted_boundary_pause_count'], 0)
         self.assertFalse(result['compacted_trailing_silence'])
+        self.assertEqual(result['voice_model'], 'eleven_multilingual_v2')
+        self.assertIsNone(result['voice_language_code'])
+
+    def test_only_turkish_short_preview_routes_to_flash_profile(self):
+        scenes = [{'narration': 'Bir.'}, {'narration': 'İki.'}]
+        narration = 'Bir. İki.'
+        alignment = {
+            'characters': list(narration),
+            'character_start_times_seconds': [
+                index * 0.1 for index in range(len(narration))
+            ],
+            'character_end_times_seconds': [
+                (index + 1) * 0.1 for index in range(len(narration))
+            ],
+        }
+
+        with tempfile.TemporaryDirectory() as tmp:
+            real_path = Path
+
+            def mapped_path(value):
+                if str(value).replace('\\', '/') == '/tmp':
+                    return real_path(tmp)
+                return real_path(value)
+
+            def fake_ffmpeg(command, **_kwargs):
+                real_path(command[-1]).write_bytes(b'normalized')
+
+            with (
+                patch.object(
+                    voice_module,
+                    '_selected_voice_or_raise',
+                    return_value={'voice_id': 'voice-id', 'name': 'Mustafa'},
+                ),
+                patch.object(
+                    voice_module,
+                    'synthesize_voice_with_timestamps',
+                    return_value=(b'continuous', alignment),
+                ) as timestamp_synthesis,
+                patch.object(voice_module, '_media_duration', return_value=0.9),
+                patch.object(voice_module, 'Path', side_effect=mapped_path),
+                patch.object(
+                    voice_module.subprocess,
+                    'run',
+                    side_effect=fake_ffmpeg,
+                ),
+            ):
+                result = synthesize_scene_sequence(
+                    scenes,
+                    'turkish-short-test',
+                    30.0,
+                    language=' TR ',
+                )
+
+        timestamp_synthesis.assert_called_once()
+        self.assertIs(
+            timestamp_synthesis.call_args.kwargs['turkish_short_preview'],
+            True,
+        )
+        self.assertEqual(result['voice_model'], 'eleven_flash_v2_5')
+        self.assertEqual(result['voice_language_code'], 'tr')
 
     @patch.object(voice_module.httpx, 'post', create=True)
     def test_seed_is_sent_as_top_level_elevenlabs_request_field(self, post):

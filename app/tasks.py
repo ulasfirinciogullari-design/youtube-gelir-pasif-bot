@@ -1083,6 +1083,7 @@ def _synthesize_voice_candidate(
     target_seconds: float,
     *,
     start_attempt: int = 0,
+    language: str | None = None,
 ) -> dict:
     """Use bounded new seeds for synthesis defects without rerunning the job."""
     quality_errors: list[dict] = []
@@ -1101,6 +1102,7 @@ def _synthesize_voice_candidate(
                 attempt_task_id,
                 target_seconds,
                 generation_attempt=generation_attempt,
+                language=language,
             )
         except VoiceScriptFitError as exc:
             raise FinalAudioQualityError(
@@ -3068,6 +3070,7 @@ def run_video_pipeline(
                     scenes,
                     task_id,
                     duration_minutes * 60,
+                    language=language,
                 )
             broll_future = stage_pool.submit(
                 _collect_broll,
@@ -3181,6 +3184,10 @@ def run_video_pipeline(
                     voice_result.get('_generation_attempt')
                     if voice_result.get('_generation_attempt') is not None
                     else audio_generation_attempts - 1
+                ),
+                'voice_model': voice_result.get('voice_model'),
+                'voice_language_code': voice_result.get(
+                    'voice_language_code'
                 ),
                 'transcript': {
                     'available': audio_qc.get('available') is True,
@@ -3297,6 +3304,7 @@ def run_video_pipeline(
                 task_id,
                 duration_minutes * 60,
                 start_attempt=audio_generation_attempts,
+                language=language,
             )
             audio_generation_attempts = int(
                 voice_result.get('_generation_attempts_used')
@@ -5383,6 +5391,8 @@ def run_video_pipeline(
             'scene_durations': scene_durations,
             'spoken_texts': voice_result.get('spoken_texts', []),
             'voice_name': voice_result.get('voice_name'),
+            'voice_model': voice_result.get('voice_model'),
+            'voice_language_code': voice_result.get('voice_language_code'),
             'voice_duration_before_fit': voice_result.get('duration_before_fit'),
             'voice_duration_after_fit': voice_result.get('duration_after_fit'),
             'voice_tempo_rate': voice_result.get('tempo_rate'),
@@ -5536,6 +5546,8 @@ def run_video_pipeline(
             'initial_average_visual_qc_score': initial_avg_visual_score,
             'average_visual_qc_score': avg_visual_score,
             'narration_word_count': package.get('narration_word_count'),
+            'voice_model': voice_result.get('voice_model'),
+            'voice_language_code': voice_result.get('voice_language_code'),
             'voice_duration_before_fit': voice_result.get('duration_before_fit'),
             'voice_duration_after_fit': voice_result.get('duration_after_fit'),
             'voice_tempo_rate': voice_result.get('tempo_rate'),
