@@ -172,6 +172,35 @@ _PROSODY_SCORE_FIELDS = (
     'emphasis',
     'roboticness',
 )
+_PROSODY_HIGHER_IS_BETTER_SCORE_FIELDS = _PROSODY_SCORE_FIELDS[:-1]
+_PROSODY_PASS_MIN_QUALITY_SCORE = 70
+_PROSODY_PASS_MAX_ROBOTICNESS_SCORE = 30
+_PROSODY_SCORE_DESCRIPTIONS = {
+    'pronunciation': (
+        '0 = unintelligible or seriously mispronounced; '
+        '100 = precise, native-quality pronunciation. Higher is better.'
+    ),
+    'naturalness': (
+        '0 = wholly unnatural delivery; 100 = fully human, conversational '
+        'delivery. Higher is better.'
+    ),
+    'pacing': (
+        '0 = severely mistimed pace; 100 = natural, viewer-ready tempo and '
+        'pauses. Higher is better.'
+    ),
+    'sentence_flow': (
+        '0 = fragmented or choppy sentences; 100 = cohesive, effortless '
+        'sentence flow. Higher is better.'
+    ),
+    'emphasis': (
+        '0 = flat or meaningfully misplaced emphasis; 100 = expressive, '
+        'meaning-appropriate emphasis. Higher is better.'
+    ),
+    'roboticness': (
+        '0 = fully human and natural; 100 = fully robotic or synthetic. '
+        'Lower is better; this is the only inverse score.'
+    ),
+}
 _SPEECH_LANGUAGE_CODES = {
     'tr': {'openai': 'tr', 'bcp47': 'tr-TR', 'elevenlabs': 'tur'},
     'en': {'openai': 'en', 'bcp47': 'en-US', 'elevenlabs': 'eng'},
@@ -195,6 +224,7 @@ _PROSODY_REVIEW_SCHEMA = {
                     'type': 'integer',
                     'minimum': 0,
                     'maximum': 100,
+                    'description': _PROSODY_SCORE_DESCRIPTIONS[field],
                 }
                 for field in _PROSODY_SCORE_FIELDS
             },
@@ -255,7 +285,14 @@ _PROSODY_SYSTEM_INSTRUCTION = (
     'Listen from start to finish and judge audible Turkish pronunciation, '
     'natural phrase grouping, sentence flow, pace, emphasis and robotic '
     'delivery. Set pass=true only when the performance itself is immediately '
-    'publishable. Do not derive pass from numeric scores. Every rejecting '
+    'publishable. Score pronunciation, naturalness, pacing, sentence_flow '
+    f'and emphasis from 0=worst to 100=best; pass=true requires each to be '
+    f'at least {_PROSODY_PASS_MIN_QUALITY_SCORE}. Score roboticness in the '
+    'opposite direction: 0=fully human and natural, 100=fully robotic or '
+    f'synthetic; pass=true requires at most '
+    f'{_PROSODY_PASS_MAX_ROBOTICNESS_SCORE}. These consistency bounds do not '
+    'determine the audible verdict. Do not derive pass from numeric scores. '
+    'Every rejecting '
     'issue must use an allowed reason code and cite a concrete audible phrase '
     'with a precise start/end timestamp. Return only the server-defined JSON.'
 )
@@ -316,6 +353,17 @@ def _unavailable_prosody_result(reason: str) -> dict[str, Any]:
     }
 
 
+def _pass_prosody_scores_are_consistent(scores: dict[str, int]) -> bool:
+    """Reject only score vectors that contradict a positive audible verdict."""
+    return (
+        all(
+            scores[field] >= _PROSODY_PASS_MIN_QUALITY_SCORE
+            for field in _PROSODY_HIGHER_IS_BETTER_SCORE_FIELDS
+        )
+        and scores['roboticness'] <= _PROSODY_PASS_MAX_ROBOTICNESS_SCORE
+    )
+
+
 def _validate_prosody_review(
     output: Any,
     expected_narration: str,
@@ -344,6 +392,12 @@ def _validate_prosody_review(
         or not isinstance(issues, list)
         or len(issues) > 5
     ):
+        return None
+    # Scores are supporting protocol data, never a substitute for listening.
+    # A grounded negative verdict remains negative regardless of its scores,
+    # but a positive verdict with an unambiguously failing/inverted vector is
+    # unsafe to publish and must be independently retried.
+    if passed and not _pass_prosody_scores_are_consistent(scores):
         return None
 
     timestamp_evidence: tuple[list[dict[str, Any]], str] | None = None
@@ -486,7 +540,10 @@ def verify_audio_prosody(
                 'do not change it merely to satisfy the schema. If rejecting, '
                 'cite an exact phrase from the expected narration and its '
                 'approximate audible interval so the server can bind it to '
-                'trusted speech-to-text word timestamps.'
+                'trusted speech-to-text word timestamps. Use the score '
+                'directions exactly: pronunciation, naturalness, pacing, '
+                'sentence_flow and emphasis are higher-is-better, while '
+                'roboticness is 0=fully human and 100=fully robotic.'
             )
         try:
             output = generate_gemini_audio_json(
