@@ -2125,8 +2125,13 @@ def test_unknown_or_cross_target_publish_never_queues(monkeypatch):
         'get_job',
         lambda _task_id: {
             'state': 'SUCCESS',
+            'kind': 'render',
             'spec': {'topic': 'Target safety'},
-            'result': {'video_key': 'videos/source/final.mp4'},
+            'result': {
+                'video_key': 'videos/source/final.mp4',
+                'quality_disposition': 'automated_qc_pass',
+                'manual_qa_required': False,
+            },
         },
     )
 

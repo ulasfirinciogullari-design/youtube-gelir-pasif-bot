@@ -87,6 +87,7 @@ UI_STATUS_LABELS = {
     'repair': 'Onarım gerekli',
     'completed': 'Tamamlandı',
     'failed': 'Başarısız',
+    'unreviewed': 'Kalite onayı yok',
 }
 CONSOLE_STATUS_LABELS = {
     'running': 'Üretiliyor',
@@ -98,6 +99,7 @@ HISTORY_SCAN_LIMIT = 500
 LEGACY_RETRY_GROUP_WINDOW_SECONDS = 6 * 60 * 60
 RUNNING_DUPLICATE_GROUP_WINDOW_SECONDS = 10 * 60
 STALE_RUNNING_SECONDS = 6 * 60 * 60
+PLAN_RETRY_DISPLAY_GRACE_SECONDS = 15 * 60
 OPTIONAL_VIDEO_GENERATION_SERVICES = frozenset({'Fal video'})
 
 BASE_CSS = r'''
@@ -109,6 +111,7 @@ BASE_CSS = r'''
 @media(max-width:900px){.status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.status-overview{grid-template-columns:1fr}.archive-body{align-items:stretch;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar{transition:none}}
+.state.unreviewed{background:#342d1b;color:#f1d88b}
 '''
 
 # Final media can be portrait or landscape. Let its intrinsic dimensions drive
@@ -319,6 +322,61 @@ def _job_awaits_approval(job: dict) -> bool:
     return str(job.get('state') or '').upper() == 'AWAITING_APPROVAL'
 
 
+def _job_result(job: dict) -> dict:
+    return job.get('result') if isinstance(job.get('result'), dict) else {}
+
+
+def _job_has_youtube_output(job: dict) -> bool:
+    result = _job_result(job)
+    youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+    return bool(
+        str(job.get('kind') or '') == 'publish'
+        or result.get('youtube_url')
+        or youtube.get('url')
+        or youtube.get('video_id')
+    )
+
+
+def _job_quality_approved(job: dict) -> bool:
+    result = _job_result(job)
+    return bool(
+        str(job.get('state') or '').upper() == 'SUCCESS'
+        and str(job.get('kind') or '') == 'render'
+        and result.get('video_key')
+        and result.get('quality_disposition') == 'automated_qc_pass'
+        and result.get('manual_qa_required') is False
+    )
+
+
+def _job_requires_manual_qa(job: dict) -> bool:
+    if (
+        str(job.get('state') or '').upper() != 'SUCCESS'
+        or str(job.get('kind') or '') != 'render'
+        or _job_has_youtube_output(job)
+    ):
+        return False
+    result = _job_result(job)
+    return bool(
+        result.get('quality_disposition') == 'manual_qa_preview'
+        or result.get('manual_qa_required') is True
+    )
+
+
+def _job_is_unreviewed_render(job: dict) -> bool:
+    return bool(
+        str(job.get('state') or '').upper() == 'SUCCESS'
+        and str(job.get('kind') or '') == 'render'
+        and not _job_has_youtube_output(job)
+        and not _job_quality_approved(job)
+        and not _job_requires_manual_qa(job)
+    )
+
+
+def _job_upload_allowed(job: dict) -> bool:
+    """Expose the same fail-closed quality decision to HTML and polling."""
+    return _job_quality_approved(job) and not _job_has_youtube_output(job)
+
+
 def _job_ui_status(job: dict) -> str:
     state = str(job.get('state') or 'PENDING').upper()
     if state == 'FAILURE':
@@ -326,14 +384,7 @@ def _job_ui_status(job: dict) -> str:
             return 'running'
         return 'repair' if job.get('repair_available') is True else 'failed'
     if state == 'SUCCESS':
-        result = job.get('result') if isinstance(job.get('result'), dict) else {}
-        youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
-        if (
-            str(job.get('kind') or '') == 'publish'
-            or result.get('youtube_url')
-            or youtube.get('url')
-            or youtube.get('video_id')
-        ):
+        if _job_has_youtube_output(job):
             return 'completed'
         return 'ready'
     if _job_awaits_approval(job):
@@ -341,10 +392,29 @@ def _job_ui_status(job: dict) -> str:
     return 'running'
 
 
+def _job_display_status(job: dict) -> str:
+    """Return the user-facing status shared by list, detail and polling."""
+    if _job_awaits_approval(job) or _job_requires_manual_qa(job):
+        return 'attention'
+    if _job_is_unreviewed_render(job):
+        return 'unreviewed'
+    status = _job_ui_status(job)
+    if status == 'running' and _job_is_stale_running(job):
+        return 'attention'
+    return status
+
+
 def _job_status_message(job: dict) -> str:
     status = _job_ui_status(job)
+    display_status = _job_display_status(job)
     state = str(job.get('state') or 'PENDING').upper()
     kind = str(job.get('kind') or '')
+    if _job_requires_manual_qa(job):
+        return 'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.'
+    if display_status == 'unreviewed':
+        return 'Bu eski videoda açık kalite onayı yok; YouTube yüklemesi kapalı.'
+    if display_status == 'attention' and status == 'running':
+        return 'Uzun süredir ilerlemiyor; üretim durumunu kontrol et.'
     if status == 'running':
         if _retry_claimed(job):
             if str(job.get('retry_dispatch_state') or '') == 'uncertain':
@@ -429,6 +499,12 @@ def _job_media_panel(job: dict) -> str:
             'rel="noopener noreferrer" download '
             f'href="{safe_caption_url}">Altyazıyı indir (.srt)</a>'
         )
+    if _job_requires_manual_qa(job):
+        media_note = 'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.'
+    elif _job_is_unreviewed_render(job):
+        media_note = 'Açık kalite onayı yok; YouTube yüklemesi kapalı.'
+    else:
+        media_note = 'Kalite onaylanana kadar YouTube yüklemesi gizli kalır.'
     return (
         '<section class="result-media" aria-labelledby="result-media-title">'
         '<div class="result-media-head"><h2 id="result-media-title">'
@@ -441,8 +517,7 @@ def _job_media_panel(job: dict) -> str:
         '<a class="btn secondary small" target="_blank" '
         'rel="noopener noreferrer" download '
         f'href="{safe_video_url}">Videoyu indir</a>{caption_action}</div>'
-        '<p class="media-note">Kalite onaylanana kadar YouTube yüklemesi '
-        'gizli kalır.</p></section>'
+        f'<p class="media-note">{escape(media_note)}</p></section>'
     )
 
 
@@ -606,6 +681,7 @@ def _ready_video_card(job: dict) -> str:
 
 def _job_primary_action(job: dict, *, small: bool = True) -> str:
     status = _job_ui_status(job)
+    display_status = _job_display_status(job)
     state = str(job.get('state') or 'PENDING').upper()
     task_id = escape(str(job.get('task_id') or ''), quote=True)
     size = ' small' if small else ''
@@ -638,13 +714,22 @@ def _job_primary_action(job: dict, *, small: bool = True) -> str:
     result = job.get('result') if isinstance(job.get('result'), dict) else {}
     youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
     youtube_url = _safe_external_url(result.get('youtube_url') or youtube.get('url'))
-    download_url = _safe_external_url(result.get('download_url'))
+    download_url = _safe_external_url(
+        result.get('download_url') or result.get('video_url')
+    )
     if youtube_url:
         return f'<a class="btn success{size}" target="_blank" rel="noopener noreferrer" href="{escape(youtube_url, quote=True)}" aria-label="{aria("YouTube\'da aç")}">YouTube\'da aç</a>'
-    if result.get('video_key') and str(job.get('kind') or '') == 'render':
+    if _job_requires_manual_qa(job):
+        if small:
+            return f'<a class="btn repair{size}" href="/studio/job/{task_id}" aria-label="{aria("Kaliteyi incele")}">Kaliteyi incele</a>'
+        if download_url:
+            return f'<a class="btn repair{size}" target="_blank" rel="noopener noreferrer" href="{escape(download_url, quote=True)}" aria-label="{aria("Videoyu incele")}">Videoyu incele</a>'
+        return f'<a class="btn repair{size}" href="/studio/job/{task_id}" aria-label="{aria("Kaliteyi incele")}">Kaliteyi incele</a>'
+    if _job_upload_allowed(job):
         return f'<a class="btn success{size}" href="/studio/youtube" aria-label="{aria("Gizli yükle")}">Gizli yükle</a>'
     if download_url:
-        return f'<a class="btn success{size}" target="_blank" rel="noopener noreferrer" href="{escape(download_url, quote=True)}" aria-label="{aria("Videoyu aç")}">Videoyu aç</a>'
+        label = 'Videoyu incele' if display_status == 'unreviewed' else 'Videoyu aç'
+        return f'<a class="btn secondary{size}" target="_blank" rel="noopener noreferrer" href="{escape(download_url, quote=True)}" aria-label="{aria(label)}">{label}</a>'
     return f'<a class="btn secondary{size}" href="/studio/job/{task_id}" aria-label="{aria("Sonucu aç")}">Sonucu aç</a>'
 
 
@@ -676,6 +761,15 @@ def _status_counts(jobs: list[dict]) -> dict[str, int]:
     for job in jobs:
         counts[_job_ui_status(job)] += 1
     return counts
+
+
+def _archive_counts(jobs: list[dict]) -> dict[str, int]:
+    return {
+        'failed': sum(_job_ui_status(job) == 'failed' for job in jobs),
+        'unreviewed': sum(
+            _job_display_status(job) == 'unreviewed' for job in jobs
+        ),
+    }
 
 
 def _job_created_timestamp(job: dict) -> float | None:
@@ -735,15 +829,30 @@ def _job_is_stale_running(job: dict, *, now: float | None = None) -> bool:
     return current - last_activity >= STALE_RUNNING_SECONDS
 
 
+def _job_is_dormant_plan_retry(job: dict, *, now: float | None = None) -> bool:
+    """Hide only abandoned planning retries; keep their durable records intact."""
+    state = str(job.get('state') or 'PENDING').upper()
+    if (
+        state not in {'PENDING', 'RECEIVED', 'STARTED', 'PROGRESS', 'RETRY'}
+        or str(job.get('stage') or '') != 'plan_retry'
+    ):
+        return False
+    last_activity = _job_activity_timestamp(job)
+    if last_activity is None:
+        return False
+    current = datetime.now(timezone.utc).timestamp() if now is None else float(now)
+    return current - last_activity >= PLAN_RETRY_DISPLAY_GRACE_SECONDS
+
+
 def _console_bucket(job: dict) -> str:
-    if _job_awaits_approval(job):
+    display_status = _job_display_status(job)
+    if display_status == 'attention':
         return 'attention'
-    status = _job_ui_status(job)
-    if status == 'running':
-        return 'attention' if _job_is_stale_running(job) else 'running'
-    if status == 'repair':
+    if display_status == 'running':
+        return 'running'
+    if display_status == 'repair':
         return 'attention'
-    if status in {'ready', 'completed'}:
+    if display_status == 'completed' or _job_quality_approved(job):
         return 'library'
     return 'archive'
 
@@ -760,6 +869,8 @@ def _console_counts(jobs: list[dict]) -> dict[str, int]:
 def _history_matches(job: dict, active: str) -> bool:
     if active in CONSOLE_STATUS_ORDER:
         return _console_bucket(job) == active
+    if active in {'ready', 'unreviewed'}:
+        return _job_display_status(job) == active
     return _job_ui_status(job) == active
 
 
@@ -897,8 +1008,11 @@ def _collapse_retry_sources(jobs: list[dict]) -> list[dict]:
     for job in jobs:
         task_id = str(job.get('task_id') or '')
         child_id = _retry_child_task_id(job)
-        if task_id in hidden_terminal_publishes or task_id in superseded_ids or (
-            child_id and child_id != task_id and child_id in task_ids
+        if (
+            _job_is_dormant_plan_retry(job)
+            or task_id in hidden_terminal_publishes
+            or task_id in superseded_ids
+            or (child_id and child_id != task_id and child_id in task_ids)
         ):
             continue
         visible.append(job)
@@ -930,15 +1044,20 @@ def _history_archive(
 ) -> str:
     """Keep failed attempts available without adding noise to the console."""
     failed = int(counts.get('failed', 0))
-    opened = ' open' if active == 'failed' else ''
+    unreviewed = int(counts.get('unreviewed', 0))
+    opened = ' open' if active in {'failed', 'unreviewed'} else ''
     failed_current = ' aria-current="page"' if active == 'failed' else ''
+    unreviewed_current = ' aria-current="page"' if active == 'unreviewed' else ''
     return (
         f'<details class="archive-details"{opened}><summary>'
         '<span class="archive-label"><b>Arşiv</b>'
         '<span class="tiny">Eski denemeler ve teknik kayıtlar</span></span>'
         '</summary><div class="archive-body">'
         f'<a href="/studio/history?status=failed"{failed_current}>'
-        f'Başarısız denemeler <b>{failed}</b></a></div></details>'
+        f'Başarısız denemeler <b>{failed}</b></a>'
+        f'<a href="/studio/history?status=unreviewed"{unreviewed_current}>'
+        f'Kalite onayı olmayan eski videolar <b>{unreviewed}</b></a>'
+        '</div></details>'
     )
 
 
@@ -955,8 +1074,7 @@ def _nav(active: str) -> str:
     )
     more = (
         '<details class="nav-more"><summary>Diğer</summary><div class="nav-more-menu">'
-        '<a href="/voice-audition">Anlatıcı sesleri</a>'
-        '<a href="/factory">Eski panel</a></div></details>'
+        '<a href="/voice-audition">Anlatıcı sesleri</a></div></details>'
     )
     return f'<header class="top"><a class="brand" href="/studio">YouTube Studio</a><nav class="nav" aria-label="Ana menü">{items}{more}</nav></header>'
 
@@ -1147,10 +1265,9 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     else:
         health_label = 'Tüm servis ayarları hazır'
     jobs = _collapse_retry_sources(list_jobs(HISTORY_SCAN_LIMIT)) if authenticated else []
-    counts = _status_counts(jobs)
     console_counts = _console_counts(jobs)
     overview = _status_overview(console_counts) if authenticated else ''
-    archive = _history_archive(counts) if authenticated else ''
+    archive = _history_archive(_archive_counts(jobs)) if authenticated else ''
     token_field = (
         '' if authenticated else
         '<label class="field" for="studio-token">Studio güvenlik anahtarı</label><input id="studio-token" name="token" type="password" autocomplete="off" required placeholder="Güvenli anahtarı gir">'
@@ -1196,17 +1313,8 @@ preview.addEventListener('change',setDefaults);production.addEventListener('chan
 
 
 def _job_row(job: dict) -> str:
-    status = _job_ui_status(job)
-    display_status = (
-        'attention'
-        if _job_awaits_approval(job) or _job_is_stale_running(job)
-        else status
-    )
-    status_message = (
-        'Uzun süredir ilerlemiyor; üretim durumunu kontrol et.'
-        if display_status == 'attention' and status == 'running'
-        else _job_status_message(job)
-    )
+    display_status = _job_display_status(job)
+    status_message = _job_status_message(job)
     try:
         grouped_running = max(0, int(job.get('_grouped_running_attempts') or 0))
     except (TypeError, ValueError):
@@ -1225,9 +1333,11 @@ def _job_row(job: dict) -> str:
     if channel and profile and channel.casefold() != profile.casefold():
         target = f'{channel} / {profile}'
     else:
-        target = channel or profile or 'Seçilmedi'
+        target = channel or profile
     raw_updated = str(job.get('updated_at') or job.get('created_at') or '')
-    metadata = [f'<span><b>Hedef / profil</b> {escape(target)}</span>']
+    metadata = []
+    if target:
+        metadata.append(f'<span><b>Hedef / profil</b> {escape(target)}</span>')
     if mode:
         metadata.append(f'<span>{escape(mode)}</span>')
     if duration:
@@ -1300,11 +1410,12 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     }
     display_title = escape(_job_title(record))
     status = _job_ui_status(record)
-    display_status = 'attention' if _job_awaits_approval(record) else status
+    display_status = _job_display_status(record)
+    bucket = _console_bucket(record)
     back_status = (
-        'attention' if _job_awaits_approval(record) or status == 'repair'
-        else 'library' if status in {'ready', 'completed'}
-        else status
+        'unreviewed'
+        if display_status == 'unreviewed'
+        else bucket if bucket in CONSOLE_STATUS_ORDER else status
     )
     progress = _job_progress(record)
     stage_code = str(record.get('failure_stage') or record.get('stage') or 'queued')
@@ -1329,25 +1440,25 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     script = r'''<script>
 const taskId=__TASK_ID__;let timer=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const labels={running:'Üretiliyor',attention:'Müdahale gerekiyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız'};
+const labels={running:'Üretiliyor',attention:'Müdahale gerekiyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız',unreviewed:'Kalite onayı yok'};
 function safeExternal(value){const text=String(value||'').trim();if(!/^https?:\/\//i.test(text))return '';try{const u=new URL(text);return ['http:','https:'].includes(u.protocol)?u.href:''}catch(_){return ''}}
 function linkAction(href,label,kind='secondary',external=false){return `<a class="btn ${kind}" ${external?'target="_blank" rel="noopener noreferrer" ':''}href="${esc(href)}">${esc(label)}</a>`}
 function retryAction(label,kind){return `<form method="post" action="/studio/retry/${encodeURIComponent(taskId)}"><button class="btn ${kind}" type="submit">${esc(label)}</button></form>`}
 function setAction(signature,html){const out=document.getElementById('result');if(out.dataset.actionSignature===signature)return;out.innerHTML=html;out.dataset.actionSignature=signature}
-function mediaMarkup(video,captions){const captionAction=captions?`<a class="btn secondary small" target="_blank" rel="noopener noreferrer" download href="${esc(captions)}">Altyazıyı indir (.srt)</a>`:'';return `<section class="result-media" aria-labelledby="result-media-title"><div class="result-media-head"><h2 id="result-media-title">Video önizleme</h2><span class="badge">Final dosya</span></div><div class="result-video-frame"><video class="result-video" controls playsinline preload="metadata" src="${esc(video)}">Tarayıcın video oynatmayı desteklemiyor.</video></div><div class="media-actions"><a class="btn secondary small" target="_blank" rel="noopener noreferrer" download href="${esc(video)}">Videoyu indir</a>${captionAction}</div><p class="media-note">Kalite onaylanana kadar YouTube yüklemesi gizli kalır.</p></section>`}
-function setMedia(result){const out=document.getElementById('result-media'),x=result||{},video=safeExternal(x.download_url||x.video_url),captions=safeExternal(x.caption_url||x.captions_url||x.subtitle_url),current=out.querySelector('video');if(!video){out.replaceChildren();out.hidden=true;return}if(current&&current.src===video){out.hidden=false;return}out.innerHTML=mediaMarkup(video,captions);out.hidden=false}
+function mediaMarkup(video,captions,note){const captionAction=captions?`<a class="btn secondary small" target="_blank" rel="noopener noreferrer" download href="${esc(captions)}">Altyazıyı indir (.srt)</a>`:'';return `<section class="result-media" aria-labelledby="result-media-title"><div class="result-media-head"><h2 id="result-media-title">Video önizleme</h2><span class="badge">Final dosya</span></div><div class="result-video-frame"><video class="result-video" controls playsinline preload="metadata" src="${esc(video)}">Tarayıcın video oynatmayı desteklemiyor.</video></div><div class="media-actions"><a class="btn secondary small" target="_blank" rel="noopener noreferrer" download href="${esc(video)}">Videoyu indir</a>${captionAction}</div><p class="media-note">${esc(note)}</p></section>`}
+function setMedia(result,note='Kalite onaylanana kadar YouTube yüklemesi gizli kalır.'){const out=document.getElementById('result-media'),x=result||{},video=safeExternal(x.download_url||x.video_url),captions=safeExternal(x.caption_url||x.captions_url||x.subtitle_url),current=out.querySelector('video');if(!video){out.replaceChildren();out.hidden=true;return}if(current&&current.src===video){const noteNode=out.querySelector('.media-note');if(noteNode&&noteNode.textContent!==note)noteNode.textContent=note;out.hidden=false;return}out.innerHTML=mediaMarkup(video,captions,note);out.hidden=false}
 function setStatusMessage(message){const out=document.getElementById('status-message'),next=String(message||'');if(out.textContent!==next)out.textContent=next}
 function showTechnical(j){const stage=String(j.failure_stage||j.stage||'—');document.getElementById('technical-stage').textContent=stage;const error=String(j.error||'').trim();document.getElementById('technical-error').textContent=error;document.getElementById('technical-error-row').hidden=!error}
 async function poll(){
  try{const r=await fetch(`/studio/api/job/${encodeURIComponent(taskId)}`,{cache:'no-store'});if(!r.ok)throw new Error('status');const j=await r.json();
  const state=String(j.state||'PENDING'),ui=String(j.ui_status||'running'),stage=String(j.stage_label||j.stage||'Hazırlanıyor'),p=Math.max(0,Math.min(100,Number(j.progress||0)));
- const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label'),displayUi=state==='AWAITING_APPROVAL'?'attention':ui;
+ const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label'),displayUi=String(j.display_status||ui);
  panel.dataset.status=displayUi;pill.className='state '+displayUi;pill.textContent=labels[displayUi]||labels.running;
  document.getElementById('bar').style.width=p+'%';progress.setAttribute('aria-valuenow',String(p));progress.hidden=ui!=='running';document.getElementById('stage').textContent=stage+(ui==='running'?' · %'+p:'');setStatusMessage(j.ui_status_message);showTechnical(j);
  if(ui==='repair'){setMedia({});setAction('repair',retryAction('Sorunlu sahneyi onar','repair'));return}
  if(ui==='failed'){setMedia({});setAction('failed',retryAction('Aynı ayarlarla tekrar dene','danger'));return}
  if(ui==='ready'&&state==='AWAITING_APPROVAL'){setAction('storyboard',linkAction(`/studio/plan/${encodeURIComponent(taskId)}`,"Storyboard'u aç",'success'));return}
- if(ui==='ready'||ui==='completed'){const x=j.result||{},youtube=safeExternal(x.youtube_url||(x.youtube||{}).url),download=safeExternal(x.download_url||x.video_url);setMedia(x);if(youtube)setAction('youtube',linkAction(youtube,"YouTube'da aç",'success',true));else if(ui==='ready'&&x.video_key&&j.kind==='render')setAction('private-upload',linkAction('/studio/youtube','Gizli yükle','success'));else if(download)setAction('download',linkAction(download,'Videoyu aç','success',true));else setAction('ready-refresh',linkAction(`/studio/job/${encodeURIComponent(taskId)}`,'Sonucu yenile'));return}
+ if(ui==='ready'||ui==='completed'){const x=j.result||{},youtube=safeExternal(x.youtube_url||(x.youtube||{}).url),download=safeExternal(x.download_url||x.video_url),mediaNote=displayUi==='attention'?'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.':displayUi==='unreviewed'?'Açık kalite onayı yok; YouTube yüklemesi kapalı.':'Kalite onaylanana kadar YouTube yüklemesi gizli kalır.';setMedia(x,mediaNote);if(youtube)setAction('youtube',linkAction(youtube,"YouTube'da aç",'success',true));else if(ui==='ready'&&j.upload_allowed===true)setAction('private-upload',linkAction('/studio/youtube','Gizli yükle','success'));else if(download&&displayUi==='attention')setAction('manual-review',linkAction(download,'Videoyu incele','repair',true));else if(download&&displayUi==='unreviewed')setAction('unreviewed',linkAction(download,'Videoyu incele','secondary',true));else if(download)setAction('download',linkAction(download,'Videoyu aç','secondary',true));else setAction('ready-refresh',linkAction(`/studio/job/${encodeURIComponent(taskId)}`,'Sonucu yenile'));return}
  const child=String(j.retry_child_task_id||'').trim(),target=child||taskId,label=child?(j.repair_claimed?'Onarım durumunu aç':'Yeniden denemeyi aç'):'Durumu yenile';setAction('running:'+target,linkAction(`/studio/job/${encodeURIComponent(target)}`,label));timer=setTimeout(poll,3000);
  }catch(_){setStatusMessage('Durum geçici olarak alınamıyor. Tekrar denenecek.');timer=setTimeout(poll,5000)}
  }
@@ -1378,6 +1489,9 @@ def studio_job_api(task_id: str, studio_token: str | None = Cookie(default=None,
         payload['result'] = result
     payload['ui_status'] = _job_ui_status(payload)
     payload['ui_status_label'] = UI_STATUS_LABELS[payload['ui_status']]
+    payload['display_status'] = _job_display_status(payload)
+    payload['display_status_label'] = UI_STATUS_LABELS[payload['display_status']]
+    payload['upload_allowed'] = _job_upload_allowed(payload)
     payload['ui_status_message'] = _job_status_message(payload)
     return JSONResponse(payload)
 
@@ -1389,7 +1503,7 @@ def studio_history(
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
-    allowed_statuses = (*UI_STATUS_ORDER, 'attention', 'library')
+    allowed_statuses = (*UI_STATUS_ORDER, 'attention', 'library', 'unreviewed')
     active = status if status in allowed_statuses else 'running'
     page = max(1, int(page))
     jobs = _collapse_retry_sources(list_jobs(HISTORY_SCAN_LIMIT))
@@ -1409,7 +1523,6 @@ def studio_history(
         refreshed_by_id.get(str(job.get('task_id') or ''), job)
         for job in jobs
     ]
-    counts = _status_counts(jobs)
     console_counts = _console_counts(jobs)
     filtered = [job for job in jobs if _history_matches(job, active)]
     total = len(filtered)
@@ -1425,6 +1538,7 @@ def studio_history(
         'repair': 'Onarım bekleyen video yok.',
         'completed': 'Tamamlanan video yok.',
         'failed': 'Başarısız üretim yok.',
+        'unreviewed': 'Kalite onayı olmayan eski video yok.',
     }[active]
     rich_library = active in {'library', 'ready', 'completed'}
     rows = ''.join(
@@ -1452,8 +1566,9 @@ def studio_history(
         'repair': 'Onarım kararı bekleyen üretimler.',
         'completed': 'YouTube yüklemesi tamamlanan videolar.',
         'failed': 'Eski başarısız denemeler; günlük listeden ayrı tutulur.',
+        'unreviewed': 'Açık kalite onayı olmayan eski çıktılar; YouTube yüklemesi kapalıdır.',
     }[active]
-    history_archive = _history_archive(counts, active=active)
+    history_archive = _history_archive(_archive_counts(jobs), active=active)
     active_label = (
         CONSOLE_STATUS_LABELS[active]
         if active in CONSOLE_STATUS_LABELS else UI_STATUS_LABELS[active]

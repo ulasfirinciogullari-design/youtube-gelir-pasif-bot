@@ -126,6 +126,8 @@ def _ready_job() -> dict:
             'title': 'Uçakta Işıklar Neden Kısılır?',
             'duration': 30.0,
             'video_key': 'videos/job-123/final.mp4',
+            'quality_disposition': 'automated_qc_pass',
+            'manual_qa_required': False,
         },
     }
 
@@ -150,6 +152,25 @@ def test_studio_job_card_is_compact_with_one_action_and_collapsed_details(ui_mod
     assert 'Güncellendi 2 Eyl 2026 · 00:15' in html
     assert 'aria-label="Video bilgileri"' in html
     assert '-webkit-line-clamp:2' in studio.BASE_CSS
+
+
+def test_job_row_omits_empty_target_metadata_and_legacy_panel_link(ui_modules):
+    studio, _ = ui_modules
+    job = {
+        'task_id': 'no-target',
+        'kind': 'render',
+        'state': 'PROGRESS',
+        'spec': {'topic': 'Hedefsiz üretim'},
+    }
+
+    row = studio._job_row(job)
+    nav = studio._nav('history')
+
+    assert 'Hedef / profil' not in row
+    assert 'Seçilmedi' not in row
+    assert 'Eski panel' not in nav
+    assert 'href="/factory"' not in nav
+    assert 'Anlatıcı sesleri' in nav
 
 
 def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkeypatch, ui_modules):
@@ -235,6 +256,8 @@ def test_studio_home_uses_status_cards_without_a_duplicate_job_queue(
             payload['result'] = {
                 'title': title,
                 'video_key': f'videos/{task_id}/final.mp4',
+                'quality_disposition': 'automated_qc_pass',
+                'manual_qa_required': False,
             }
         return payload
 
@@ -285,7 +308,7 @@ def test_stale_running_job_moves_to_attention_without_mutating_or_retrying(
         'task_id': 'stale-running',
         'kind': 'render',
         'state': 'PROGRESS',
-        'stage': 'plan_retry',
+        'stage': 'ai_scene_generation',
         'progress': 6,
         'updated_at': '2020-01-01T00:00:00+00:00',
         'spec': {'topic': 'Takılan kısa video', 'mode': 'preview'},
@@ -420,6 +443,81 @@ def test_identical_concurrent_running_jobs_group_only_in_the_display(ui_modules)
         ),
     }
     assert len(studio._collapse_retry_sources([newest, much_later])) == 2
+
+
+def test_dormant_plan_retries_are_hidden_without_touching_other_jobs(ui_modules):
+    studio, _ = ui_modules
+    old_retry_a = {
+        'task_id': 'old-plan-retry-a',
+        'kind': 'render',
+        'state': 'RETRY',
+        'stage': 'plan_retry',
+        'progress': 6,
+        'updated_at': '2020-01-01T00:00:00+00:00',
+        'spec': {'topic': 'Eski plan A', 'language': 'tr'},
+    }
+    old_retry_b = {
+        **old_retry_a,
+        'task_id': 'old-plan-retry-b',
+        'spec': {'topic': 'Eski plan B', 'language': 'en'},
+    }
+    fresh_retry = {
+        **old_retry_a,
+        'task_id': 'fresh-plan-retry',
+        'updated_at': '2099-01-01T00:00:00+00:00',
+        'spec': {'topic': 'Taze plan'},
+    }
+    stale_normal = {
+        **old_retry_a,
+        'task_id': 'stale-normal-stage',
+        'stage': 'ai_scene_generation',
+        'spec': {'topic': 'Eski ama normal üretim'},
+    }
+    jobs = [old_retry_a, old_retry_b, fresh_retry, stale_normal]
+    snapshot = json.loads(json.dumps(jobs))
+
+    visible = studio._collapse_retry_sources(jobs)
+
+    assert [job['task_id'] for job in visible] == [
+        'fresh-plan-retry',
+        'stale-normal-stage',
+    ]
+    assert studio._console_bucket(fresh_retry) == 'running'
+    assert studio._console_bucket(stale_normal) == 'attention'
+    assert jobs == snapshot
+
+
+def test_dormant_plan_retry_grace_boundary_is_exact(ui_modules):
+    studio, _ = ui_modules
+    now = 1_800_000_000
+    base = {
+        'task_id': 'boundary-retry',
+        'kind': 'render',
+        'state': 'RETRY',
+        'stage': 'plan_retry',
+        'updated_ts': now - studio.PLAN_RETRY_DISPLAY_GRACE_SECONDS + 1,
+    }
+
+    assert not studio._job_is_dormant_plan_retry(base, now=now)
+    assert studio._job_is_dormant_plan_retry(
+        {
+            **base,
+            'updated_ts': now - studio.PLAN_RETRY_DISPLAY_GRACE_SECONDS,
+        },
+        now=now,
+    )
+    assert not studio._job_is_dormant_plan_retry(
+        {**base, 'state': 'FAILURE'},
+        now=now,
+    )
+    assert not studio._job_is_dormant_plan_retry(
+        {**base, 'state': 'REVOKED'},
+        now=now,
+    )
+    assert not studio._job_is_dormant_plan_retry(
+        {**base, 'stage': 'visual_qc'},
+        now=now,
+    )
 
 
 def test_sync_job_does_not_refresh_activity_for_unchanged_task_info(
@@ -637,7 +735,15 @@ def test_each_job_status_has_exactly_one_targeted_primary_action(ui_modules):
     }
     cases = [
         ({**base, 'state': 'PROGRESS'}, 'Durumu aç'),
-        ({**base, 'state': 'SUCCESS', 'result': {'video_key': 'videos/final.mp4'}}, 'Gizli yükle'),
+        ({
+            **base,
+            'state': 'SUCCESS',
+            'result': {
+                'video_key': 'videos/final.mp4',
+                'quality_disposition': 'automated_qc_pass',
+                'manual_qa_required': False,
+            },
+        }, 'Gizli yükle'),
         ({**base, 'state': 'FAILURE', 'repair_available': True}, 'Sorunlu sahneyi onar'),
         ({**base, 'state': 'FAILURE', 'repair_available': False}, 'Aynı ayarlarla tekrar dene'),
     ]
@@ -731,7 +837,11 @@ def test_retry_source_is_collapsed_when_child_record_is_present(ui_modules):
         'state': 'SUCCESS',
         'kind': 'render',
         'spec': {'topic': 'Güncel deneme'},
-        'result': {'video_key': 'videos/retry-child-task/final.mp4'},
+        'result': {
+            'video_key': 'videos/retry-child-task/final.mp4',
+            'quality_disposition': 'automated_qc_pass',
+            'manual_qa_required': False,
+        },
     }
 
     visible = studio._collapse_retry_sources([source, child])
@@ -1032,6 +1142,161 @@ def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
     assert 'Başarısız video' not in body
     assert 'action="/studio/retry/' not in body
     assert 'action="/studio/youtube/public' not in body.casefold()
+
+
+def test_library_is_quality_qualified_and_routes_manual_and_legacy_outputs(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    approved = _ready_job()
+    approved['task_id'] = 'approved-video'
+    approved['result'] = {
+        **approved['result'],
+        'title': 'Kalitesi Onaylı Video',
+        'download_url': 'https://media.example.test/approved.mp4',
+    }
+    manual = _ready_job()
+    manual['task_id'] = 'manual-video'
+    manual['result'] = {
+        **manual['result'],
+        'title': 'İnsan İncelemesi Gereken Video',
+        'download_url': 'https://media.example.test/manual.mp4',
+        'quality_disposition': 'manual_qa_preview',
+        'manual_qa_required': True,
+    }
+    unreviewed = _ready_job()
+    unreviewed['task_id'] = 'legacy-video'
+    unreviewed['result'] = {
+        'title': 'Eski Kalite Kaydı Olmayan Video',
+        'video_key': 'videos/legacy-video/final.mp4',
+        'video_url': 'https://media.example.test/legacy.mp4',
+    }
+    uploaded = _ready_job()
+    uploaded['task_id'] = 'already-uploaded'
+    uploaded['result'] = {
+        'title': 'Önceden YouTube’a Yüklenmiş Video',
+        'video_key': 'videos/already-uploaded/final.mp4',
+        'youtube': {
+            'url': 'https://youtube.example.test/watch?v=already',
+            'video_id': 'already',
+            'privacy_status': 'private',
+        },
+    }
+    jobs = [approved, manual, unreviewed, uploaded]
+    monkeypatch.setattr(studio, 'list_jobs', lambda _limit: jobs)
+
+    library = studio.studio_history(
+        status='library',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    attention = studio.studio_history(
+        status='attention',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    archive = studio.studio_history(
+        status='unreviewed',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+
+    assert studio._console_counts(jobs) == {
+        'running': 0,
+        'attention': 1,
+        'library': 2,
+    }
+    assert studio._job_upload_allowed(approved)
+    assert not studio._job_upload_allowed(manual)
+    assert not studio._job_upload_allowed(unreviewed)
+    assert not studio._job_upload_allowed(uploaded)
+    assert 'Kalitesi Onaylı Video' in library
+    assert 'Önceden YouTube’a Yüklenmiş Video' in library
+    assert 'İnsan İncelemesi Gereken Video' not in library
+    assert 'Eski Kalite Kaydı Olmayan Video' not in library
+    assert library.count('<article class="ready-card"') == 2
+    assert 'data-status-count="library">2</span>' in library
+    assert 'Kalite onayı olmayan eski videolar <b>1</b>' in library
+
+    assert 'İnsan İncelemesi Gereken Video' in attention
+    assert 'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.' in attention
+    assert '>Kaliteyi incele</a>' in attention
+    assert '>Gizli yükle</a>' not in attention
+    assert 'Eski Kalite Kaydı Olmayan Video' not in attention
+
+    assert 'data-history-status="unreviewed"' in archive
+    assert '<details class="archive-details" open>' in archive
+    assert 'Eski Kalite Kaydı Olmayan Video' in archive
+    assert 'Bu eski videoda açık kalite onayı yok' in archive
+    assert '>Videoyu incele</a>' in archive
+    assert '>Gizli yükle</a>' not in archive
+
+    contradictory = _ready_job()
+    contradictory['result']['manual_qa_required'] = True
+    assert studio._job_display_status(contradictory) == 'attention'
+    assert not studio._job_upload_allowed(contradictory)
+
+
+def test_manual_quality_detail_and_polling_fail_closed_consistently(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    manual = _ready_job()
+    manual['task_id'] = 'manual-review'
+    manual['result'] = {
+        **manual['result'],
+        'download_url': None,
+        'video_url': 'https://media.example.test/manual-review.mp4',
+        'quality_disposition': 'manual_qa_preview',
+        'manual_qa_required': True,
+    }
+    monkeypatch.setattr(studio, 'get_job', lambda _task_id: manual)
+    monkeypatch.setattr(studio, '_sync_job', lambda _task_id: manual)
+
+    detail = studio.studio_job(
+        'manual-review',
+        studio_token='studio-secret',
+    ).body.decode('utf-8')
+    payload = json.loads(
+        studio.studio_job_api(
+            'manual-review',
+            studio_token='studio-secret',
+        ).body.decode('utf-8')
+    )
+
+    assert '<article class="card job-panel" id="job-card" data-status="attention">' in detail
+    assert '<span class="state attention" id="state-label">Müdahale gerekiyor</span>' in detail
+    assert 'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.' in detail
+    assert '>Videoyu incele</a>' in detail
+    assert '>Gizli yükle</a>' not in detail
+    assert 'status=attention' in detail
+    assert payload['ui_status'] == 'ready'
+    assert payload['display_status'] == 'attention'
+    assert payload['display_status_label'] == 'Müdahale gerekiyor'
+    assert payload['upload_allowed'] is False
+    assert payload['ui_status_message'] == (
+        'Kalite incelemesi gerekiyor; YouTube yüklemesi kapalı.'
+    )
+    assert "j.upload_allowed===true" in detail
+    assert "displayUi=String(j.display_status||ui)" in detail
+
+
+def test_approved_polling_payload_is_the_only_render_upload_allowed(
+    monkeypatch,
+    ui_modules,
+):
+    studio, _ = ui_modules
+    approved = _ready_job()
+    monkeypatch.setattr(studio, '_sync_job', lambda _task_id: approved)
+
+    payload = json.loads(
+        studio.studio_job_api(
+            approved['task_id'],
+            studio_token='studio-secret',
+        ).body.decode('utf-8')
+    )
+
+    assert payload['display_status'] == 'ready'
+    assert payload['upload_allowed'] is True
 
 
 @pytest.mark.parametrize(
@@ -1435,6 +1700,106 @@ def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monk
     assert '🎬 YouTube Studio V2' not in body
     assert '>Yeni üretim</a>' not in body
     assert '>Geçmiş</a>' not in body
+
+
+def test_youtube_center_hides_nonapproved_outputs_but_keeps_uploaded_video(
+    monkeypatch,
+    ui_modules,
+):
+    _, youtube_routes = ui_modules
+    approved = _ready_job()
+    approved['task_id'] = 'approved'
+    manual = _ready_job()
+    manual['task_id'] = 'manual'
+    manual['result'] = {
+        **manual['result'],
+        'quality_disposition': 'manual_qa_preview',
+        'manual_qa_required': True,
+    }
+    unreviewed = _ready_job()
+    unreviewed['task_id'] = 'unreviewed'
+    unreviewed['result'] = {
+        'video_key': 'videos/unreviewed/final.mp4',
+    }
+    uploaded = _ready_job()
+    uploaded['task_id'] = 'uploaded'
+    uploaded['result'] = {
+        'video_key': 'videos/uploaded/final.mp4',
+        'youtube': {
+            'url': 'https://youtube.example.test/watch?v=uploaded',
+            'video_id': 'uploaded',
+        },
+    }
+    monkeypatch.setattr(
+        youtube_routes,
+        'list_jobs',
+        lambda _limit: [approved, manual, unreviewed, uploaded],
+    )
+
+    visible = youtube_routes._completed_jobs()
+
+    assert [job['task_id'] for job in visible] == ['approved', 'uploaded']
+
+
+@pytest.mark.parametrize(
+    'result',
+    [
+        {
+            'video_key': 'videos/manual/final.mp4',
+            'quality_disposition': 'manual_qa_preview',
+            'manual_qa_required': True,
+        },
+        {'video_key': 'videos/unreviewed/final.mp4'},
+    ],
+)
+def test_direct_youtube_post_rejects_nonapproved_source_before_reservation(
+    result,
+    monkeypatch,
+    ui_modules,
+):
+    _, youtube_routes = ui_modules
+    request = types.SimpleNamespace(
+        headers={'origin': 'https://studio.example.test'},
+        base_url='https://studio.example.test/',
+    )
+    monkeypatch.setattr(
+        youtube_routes,
+        'connection_status',
+        lambda **_kwargs: {
+            'channel': {
+                'id': 'UC_quality_target',
+                'connection_id': 'connection-quality-target',
+            },
+        },
+    )
+    monkeypatch.setattr(
+        youtube_routes,
+        'get_job',
+        lambda _task_id: {
+            'task_id': 'nonapproved-source',
+            'kind': 'render',
+            'state': 'SUCCESS',
+            'result': result,
+        },
+    )
+    reservations = []
+    monkeypatch.setattr(
+        youtube_routes,
+        'reserve_upload',
+        lambda *_args, **_kwargs: reservations.append((_args, _kwargs)),
+    )
+
+    with pytest.raises(youtube_routes.HTTPException) as rejection:
+        youtube_routes.youtube_publish(
+            'nonapproved-source',
+            request,
+            youtube_channel_id='UC_quality_target',
+            studio_token='studio-secret',
+        )
+
+    assert rejection.value.status_code == 409
+    assert 'Kalite onayı olmayan video' in rejection.value.detail
+    assert reservations == []
 
 
 def test_oauth_configuration_error_does_not_print_callback_url(monkeypatch, ui_modules):
