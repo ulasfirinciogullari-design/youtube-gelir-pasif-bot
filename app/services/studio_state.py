@@ -19,6 +19,7 @@ REPAIR_CHECKPOINT_CLAIM_PREFIX = 'youtube_studio:repair_checkpoint_claim:'
 RETRY_DISPATCH_PREFIX = 'youtube_studio:retry_dispatch:'
 RETRY_CHILD_CLAIM_PREFIX = 'youtube_studio:retry_child_claim:'
 RETRY_CHILD_EXECUTION_PREFIX = 'youtube_studio:retry_child_execution:'
+PAID_CREATE_BUDGET_PREFIX = 'youtube_studio:paid_create_budget:'
 REPAIR_CHECKPOINT_TTL_SECONDS = 60 * 60 * 24 * 30
 RETRY_DISPATCH_TTL_SECONDS = REPAIR_CHECKPOINT_TTL_SECONDS
 _TASK_ID_PATTERN = re.compile(
@@ -75,6 +76,89 @@ def _retry_child_execution_key(task_id: str) -> str:
     if not _TASK_ID_PATTERN.fullmatch(normalized):
         raise ValueError('valid task_id is required')
     return RETRY_CHILD_EXECUTION_PREFIX + normalized
+
+
+# This separate hash is authoritative even if a concurrent dashboard write
+# saves an older job document. Reserve before any potentially paid request;
+# a lost Redis reply therefore consumes a slot without authorizing a POST.
+_PAID_CREATE_BUDGET = r'''
+local raw_job = redis.call('GET', KEYS[2])
+if not raw_job then return {-1, 0, 0} end
+local decoded, job = pcall(cjson.decode, raw_job)
+if not decoded or type(job) ~= 'table' then return {-1, 0, 0} end
+local cap = tonumber(ARGV[1])
+local used = 0
+if redis.call('EXISTS', KEYS[1]) == 1 then
+  local saved_cap = tonumber(redis.call('HGET', KEYS[1], 'cap'))
+  local saved_used = tonumber(redis.call('HGET', KEYS[1], 'used'))
+  if not saved_cap or saved_cap < 1 or saved_cap % 1 ~= 0
+     or not saved_used or saved_used < 0 or saved_used % 1 ~= 0 then
+    return {-1, 0, 0}
+  end
+  cap = math.min(cap, saved_cap)
+  used = saved_used
+else
+  local prior = job['paid_create_slots_used']
+  if prior == nil and type(job['result']) == 'table' then
+    prior = job['result']['paid_create_slots_used']
+        or job['result']['runway_attempts']
+  end
+  if prior ~= nil and prior ~= cjson.null then
+    if type(prior) ~= 'number' or prior < 0 or prior % 1 ~= 0 then
+      return {-1, 0, 0}
+    end
+    used = prior
+  end
+end
+local accepted = 1
+if ARGV[2] == '1' then
+  if used >= cap then accepted = 0 else used = used + 1 end
+end
+redis.call('HSET', KEYS[1], 'cap', cap, 'used', used)
+redis.call('EXPIRE', KEYS[1], tonumber(ARGV[4]))
+job['preview_total_paid_create_cap'] = cap
+job['paid_create_slots_used'] = used
+job['paid_create_slots_remaining'] = math.max(0, cap - used)
+job['updated_at'] = ARGV[3]
+redis.call('SETEX', KEYS[2], tonumber(ARGV[4]), cjson.encode(job))
+return {accepted, used, cap}
+'''
+
+
+def paid_create_budget_state(
+    task_id: str,
+    cap: int,
+    *,
+    reserve: bool = False,
+) -> dict[str, int]:
+    """Read or atomically reserve a paid slot; Redis errors must propagate."""
+    normalized = str(task_id or '').strip().lower()
+    if not _TASK_ID_PATTERN.fullmatch(normalized):
+        raise ValueError('valid task_id is required')
+    if type(cap) is not int or cap < 1:
+        raise ValueError('a positive paid-create cap is required')
+    result = _client().eval(
+        _PAID_CREATE_BUDGET,
+        2,
+        PAID_CREATE_BUDGET_PREFIX + normalized,
+        _job_key(normalized),
+        cap,
+        '1' if reserve else '0',
+        _now_iso(),
+        JOB_TTL_SECONDS,
+    )
+    if (
+        not isinstance(result, (list, tuple))
+        or len(result) != 3
+        or any(type(value) is not int for value in result)
+    ):
+        raise RuntimeError('Paid-create budget state is invalid')
+    accepted, used, saved_cap = result
+    if accepted == 0:
+        raise RuntimeError('Paid-create cap is exhausted')
+    if accepted != 1 or used < 0 or not 1 <= saved_cap <= cap:
+        raise RuntimeError('Paid-create budget state is unavailable')
+    return {'used': used, 'cap': saved_cap, 'remaining': max(0, saved_cap - used)}
 
 
 # The public job flag and the private, single-use checkpoint must move as one

@@ -26,6 +26,7 @@ from app.services.visual_qc import (
     GEMINI_MAX_FRAME_BYTES,
     _bounded_gemini_frame_bytes,
     _frame,
+    _state_change_required,
     _thermal_claim_required,
     review_scene_visuals,
 )
@@ -39,6 +40,32 @@ JPEG_BYTES = b'\xff\xd8\xffvisual-qc-frame\xff\xd9'
 TRUSTED_IMAGE_MOTION_QC_LABEL = (
     'TRUSTED_IMAGE_MOTION_PROFILE_ALLOWLIST'
 )
+
+
+class NarratedRemovalContractTests(unittest.TestCase):
+    def test_negative_claims_do_not_require_total_erasure(self):
+        for narration in (
+            'Çizimi tamamen silmeden gölgeleri açabilirsin.',
+            'Silgi izi tamamen silmez.',
+            'Grafit kaybolmaz, silgiye tutunur.',
+            'Grafit kaybolmuyor, silgiye tutunuyor.',
+            'Bu hareket yüzeyi temizlemiyor.',
+            'İz yok olmaz; parçacıklar yer değiştirir.',
+            'A clear glass stands on a clean table.',
+            'The eraser does not completely remove the drawing.',
+            'Lighten the shading without erasing the whole drawing.',
+        ):
+            with self.subTest(narration=narration):
+                self.assertFalse(_state_change_required({'narration': narration}))
+
+    def test_negation_does_not_mask_a_separate_affirmative_action(self):
+        for narration in (
+            'Çizimi silmeden, kenardaki lekeyi temizler.',
+            'It does not remove the drawing, but erases the stray line.',
+            'Pembe silgi grafit çizgisini tamamen siliyor.',
+        ):
+            with self.subTest(narration=narration):
+                self.assertTrue(_state_change_required({'narration': narration}))
 
 
 def _review(
@@ -75,6 +102,7 @@ def _review(
         'prominent_readable_text_or_logo_visible': False,
         'major_visual_artifact_visible': False,
         'effectively_static_or_frozen': False,
+        'substantially_repeats_adjacent_scene': False,
         'authored_identity_or_material_conflict_visible': False,
         'manufactured_object_cues_visible': False,
         'evidence_moment_indices': (
@@ -305,6 +333,14 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertIn('visible loop must score 40 or lower', kwargs['system_instruction'])
         self.assertIn('spatial continuity', kwargs['system_instruction'])
         self.assertIn(
+            'repeat substantially the same action, framing or shot grammar',
+            kwargs['system_instruction'],
+        )
+        self.assertIn(
+            'wood pencil shavings during rubber erasing',
+            kwargs['system_instruction'],
+        )
+        self.assertIn(
             'explicitly correct every visibly failed authored attribute',
             kwargs['system_instruction'],
         )
@@ -371,6 +407,7 @@ class VisualQcProviderTests(unittest.TestCase):
             'prominent_readable_text_or_logo_visible',
             'major_visual_artifact_visible',
             'effectively_static_or_frozen',
+            'substantially_repeats_adjacent_scene',
             'authored_identity_or_material_conflict_visible',
             'manufactured_object_cues_visible',
         }.issubset(required_fields))
@@ -830,6 +867,119 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    def test_local_eraser_names_author_recurring_identity_gate(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        for case_index, descriptor in enumerate((
+            'same pink rectangular eraser',
+            'same pink rectangular rubber',
+            'aynı pembe dikdörtgen silgi',
+        )):
+            with self.subTest(descriptor=descriptor):
+                gemini.reset_mock()
+                scenes = [
+                    {
+                        'narration': 'Silgi grafit çizgisine yaklaşır.',
+                        'ai_prompt': f'{descriptor} above white paper.',
+                        'visual_queries': [f'{descriptor} above white paper'],
+                    },
+                    {
+                        'narration': 'Silgi çizginin son bölümüne geçer.',
+                        'ai_prompt': f'{descriptor} at the end of the line.',
+                        'visual_queries': [f'{descriptor} end of line'],
+                    },
+                ]
+                gemini.return_value = {'reviews': [
+                    _review(
+                        0,
+                        score=95,
+                        recurring_identity_continuity_matches=True,
+                    ),
+                    _review(
+                        1,
+                        score=95,
+                        reason='The second eraser changes color and shape.',
+                        recurring_identity_continuity_matches=False,
+                    ),
+                ]}
+
+                with (
+                    patch.object(settings, 'studio_plan_provider', 'gemini'),
+                    patch.object(settings, 'gemini_api_key', 'test-key'),
+                ):
+                    reviews = review_scene_visuals(
+                        scenes,
+                        [['first.mp4'], ['second.mp4']],
+                        self.work / f'local_eraser_identity_{case_index}',
+                        _missing_review_attempts=0,
+                        topic='Kısa bir silgi açıklaması.',
+                    )['reviews']
+
+                self.assertTrue(all(
+                    review['recurring_identity_continuity_applicable']
+                    for review in reviews
+                ))
+                self.assertEqual(reviews[0]['score'], 95)
+                self.assertEqual(reviews[1]['score'], 40)
+                self.assertIn(
+                    'RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS: [0,1]',
+                    gemini.call_args.kwargs['system_instruction'],
+                )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_eraser_montage_without_explicit_same_does_not_invent_recurrence(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scenes = [
+            {
+                'narration': 'Pembe silgi masada duruyor.',
+                'visual_queries': ['pink eraser on desk'],
+            },
+            {
+                'narration': 'Gri silgi bir çekmeceye bırakılıyor.',
+                'visual_queries': ['gray eraser placed in drawer'],
+            },
+        ]
+        gemini.return_value = {'reviews': [
+            _review(
+                0,
+                recurring_identity_continuity_applicable=True,
+                recurring_identity_continuity_matches=False,
+            ),
+            _review(
+                1,
+                recurring_identity_continuity_applicable=True,
+                recurring_identity_continuity_matches=False,
+            ),
+        ]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            reviews = review_scene_visuals(
+                scenes,
+                [['pink.mp4'], ['gray.mp4']],
+                self.work / 'eraser_montage',
+                _missing_review_attempts=0,
+                topic='Farklı silgi türleri.',
+            )['reviews']
+
+        self.assertTrue(all(review['score'] == 92 for review in reviews))
+        self.assertTrue(all(
+            review['recurring_identity_continuity_applicable'] is False
+            for review in reviews
+        ))
+        self.assertIn(
+            'RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS: []',
+            gemini.call_args.kwargs['system_instruction'],
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
     def test_ordinary_montage_cannot_invent_recurring_identity_requirement(
         self, frame, gemini
     ):
@@ -1149,6 +1299,146 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    def test_turkish_erasure_is_server_authored_persistent_state_change_gate(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scene = {
+            'narration': 'Pembe silgi grafit çizgisini tamamen siliyor.',
+            'visual_queries': ['pink eraser removes graphite line'],
+        }
+        cases = (
+            (
+                True,
+                False,
+                'required final state does not persist',
+                'A dark graphite streak remains after the eraser passes.',
+            ),
+            (
+                False,
+                True,
+                'narrated state change is not visible',
+                'The graphite line never visibly changes after contact.',
+            ),
+        )
+
+        for changed, persists, diagnostic, reason in cases:
+            with self.subTest(changed=changed, persists=persists):
+                gemini.reset_mock()
+                gemini.return_value = {'reviews': [_review(
+                    score=98,
+                    reason=reason,
+                    evidence_moments=[0, 1, 2],
+                    state_change_applicable=False,
+                    state_changed_after_action=changed,
+                    final_state_persists=persists,
+                )]}
+                with (
+                    patch.object(settings, 'studio_plan_provider', 'gemini'),
+                    patch.object(settings, 'gemini_api_key', 'test-key'),
+                ):
+                    review = review_scene_visuals(
+                        [scene],
+                        self.visuals,
+                        self.work / f'erasure_{changed}_{persists}',
+                        _missing_review_attempts=0,
+                        _score_reason_consistency_attempts=0,
+                    )['reviews'][0]
+
+                self.assertTrue(review['state_change_applicable'])
+                self.assertEqual(review['raw_score'], 98)
+                self.assertEqual(review['score'], 40)
+                self.assertFalse(review['evidence_gate_passed'])
+                self.assertIn(
+                    diagnostic,
+                    ' '.join(review['hard_gate_diagnostics']),
+                )
+                self.assertIn(
+                    'STATE_CHANGE_REQUIRED_SCENE_IDS: [0]',
+                    gemini.call_args.kwargs['system_instruction'],
+                )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_erasure_requirement_uses_locked_narration_not_prompt_or_query(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scene = {
+            'narration': 'Pembe silgi beyaz kağıdın üzerinde duruyor.',
+            'visual_queries': ['eraser removes pencil mark'],
+            'ai_prompt': 'A pink eraser cleanly erases a graphite line.',
+        }
+        gemini.return_value = {'reviews': [_review(score=94)]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                [scene],
+                self.visuals,
+                self.work / 'static_eraser_narration',
+                _missing_review_attempts=0,
+            )['reviews'][0]
+
+        self.assertFalse(review['state_change_applicable'])
+        self.assertEqual(review['score'], 94)
+        self.assertIn(
+            'STATE_CHANGE_REQUIRED_SCENE_IDS: []',
+            gemini.call_args.kwargs['system_instruction'],
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_high_score_cannot_override_substantial_adjacent_repetition(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scenes = [
+            {
+                'narration': 'Pembe silgi grafit çizgisine yaklaşır.',
+                'visual_queries': ['pink eraser approaches graphite line'],
+            },
+            {
+                'narration': 'Silgi çizgi üzerinde aynı hareketi tekrarlar.',
+                'visual_queries': ['pink eraser repeats same stroke'],
+            },
+        ]
+        gemini.return_value = {'reviews': [
+            _review(0, score=96),
+            _review(
+                1,
+                score=96,
+                reason='The second shot repeats the same erasing stroke.',
+                substantially_repeats_adjacent_scene=True,
+            ),
+        ]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            reviews = review_scene_visuals(
+                scenes,
+                [['first.mp4'], ['second.mp4']],
+                self.work / 'adjacent_repetition',
+                _missing_review_attempts=0,
+                _score_reason_consistency_attempts=0,
+            )['reviews']
+
+        self.assertEqual(reviews[0]['score'], 96)
+        self.assertEqual(reviews[1]['raw_score'], 96)
+        self.assertEqual(reviews[1]['score'], 40)
+        self.assertTrue(reviews[1]['evidence_gate_passed'])
+        self.assertFalse(reviews[1]['editorial_gate_passed'])
+        self.assertIn(
+            'substantially repeats an adjacent shot',
+            ' '.join(reviews[1]['hard_gate_diagnostics']),
+        )
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
     def test_high_score_cannot_override_explicit_editorial_artifact(
         self, frame, gemini
     ):
@@ -1177,6 +1467,48 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertEqual(review['score'], 40)
         self.assertTrue(review['evidence_gate_passed'])
         self.assertFalse(review['editorial_gate_passed'])
+
+    @patch('app.services.visual_qc.generate_gemini_multimodal_json')
+    @patch('app.services.visual_qc._frame')
+    def test_impossible_eraser_debris_is_a_major_artifact(
+        self, frame, gemini
+    ):
+        frame.return_value = self.frame
+        scene = {
+            'narration': 'Pembe silgi grafit çizgisini siliyor.',
+            'visual_queries': ['pink rubber eraser removes graphite line'],
+        }
+        gemini.return_value = {'reviews': [_review(
+            score=96,
+            reason=(
+                'Coiled wood pencil shavings appear from the rubber eraser.'
+            ),
+            evidence_moments=[0, 1, 2],
+            state_changed_after_action=True,
+            final_state_persists=True,
+            major_visual_artifact_visible=True,
+        )]}
+
+        with (
+            patch.object(settings, 'studio_plan_provider', 'gemini'),
+            patch.object(settings, 'gemini_api_key', 'test-key'),
+        ):
+            review = review_scene_visuals(
+                [scene],
+                self.visuals,
+                self.work / 'impossible_eraser_debris',
+                _missing_review_attempts=0,
+                _score_reason_consistency_attempts=0,
+            )['reviews'][0]
+
+        self.assertTrue(review['state_change_applicable'])
+        self.assertEqual(review['raw_score'], 96)
+        self.assertEqual(review['score'], 40)
+        self.assertFalse(review['editorial_gate_passed'])
+        self.assertIn(
+            'major visual artifact',
+            ' '.join(review['hard_gate_diagnostics']),
+        )
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')

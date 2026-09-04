@@ -223,6 +223,29 @@ def _load_manual_qa_boundary():
     return namespace
 
 
+def _load_paid_allocation_boundary():
+    tree = ast.parse(
+        SOURCE_PATH.read_text(encoding='utf-8'),
+        filename=str(SOURCE_PATH),
+    )
+    definitions = [
+        node
+        for node in tree.body
+        if isinstance(node, ast.FunctionDef)
+        and node.name == '_validate_paid_create_allocation'
+    ]
+    namespace = {'FinalVisualQualityError': RuntimeError}
+    exec(
+        compile(
+            ast.Module(body=definitions, type_ignores=[]),
+            str(SOURCE_PATH),
+            'exec',
+        ),
+        namespace,
+    )
+    return namespace['_validate_paid_create_allocation']
+
+
 def _retry_call(retry_bad_scene, **kwargs):
     return retry_bad_scene(
         2,
@@ -269,6 +292,7 @@ def _manual_review(score=68, **overrides):
         'prominent_readable_text_or_logo_visible': False,
         'major_visual_artifact_visible': False,
         'effectively_static_or_frozen': False,
+        'substantially_repeats_adjacent_scene': False,
     }
     review.update(overrides)
     return review
@@ -293,6 +317,35 @@ def _stock_spec(path='/tmp/real-stock.mp4'):
 
 
 class ShortPreviewBrollFallbackTests(unittest.TestCase):
+    def test_six_scene_recovery_can_reuse_paid_clips_and_buy_two_repairs(self):
+        validate = _load_paid_allocation_boundary()
+        selected = [{'scene_index': index} for index in range(6)]
+        recovered = {
+            'scenes': {
+                index: [{'key': f'recovery/source/raw/scene_{index}.mp4'}]
+                for index in (0, 1, 3, 5)
+            },
+            'repair_scene_indices': [2, 4],
+        }
+        validate(selected, recovered, 2)
+        # Cached scene 3 is unavailable: three new creates exceed the cap.
+        recovered['scenes'][3] = []
+        with self.assertRaisesRegex(RuntimeError, 'paid-create cap'):
+            validate(selected, recovered, 2)
+
+    def test_recovery_only_does_not_consume_new_paid_slots(self):
+        validate = _load_paid_allocation_boundary()
+        selected = [{'scene_index': index} for index in range(6)]
+        recovered = {
+            'scenes': {
+                index: [{'key': f'recovery/source/raw/scene_{index}.mp4'}]
+                for index in range(6)
+            },
+        }
+        validate(selected, recovered, 0)
+        with self.assertRaisesRegex(RuntimeError, 'paid-create cap'):
+            validate(selected, None, 2)
+
     def test_stock_tournament_reviews_each_scene_in_a_bounded_request(self):
         namespace = _load_stock_tournament_review_boundary()
         review_round = namespace['_review_stock_tournament_round']
@@ -704,6 +757,40 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             )
         )
 
+    def test_manual_qa_rejects_image_motion_and_synthetic_motion_provenance(self):
+        namespace = _load_manual_qa_boundary()
+        passes = namespace['_manual_qa_preview_passes']
+        generated_spec = namespace['_generated_visual_spec']
+        args = (
+            _manual_options(),
+            0.5,
+            {'ai_prompt': 'same pink eraser on white paper'},
+            _manual_review(65),
+        )
+
+        for provider in ('gemini_image_motion', 'Gemini_Image_Motion'):
+            with self.subTest(provider=provider):
+                self.assertFalse(
+                    passes(*args, generated_spec('/tmp/still.mp4', provider))
+                )
+
+        synthetic = generated_spec('/tmp/synthetic.mp4', 'runway')
+        synthetic['synthetic_motion_only'] = True
+        self.assertFalse(passes(*args, synthetic))
+        self.assertTrue(
+            passes(*args, generated_spec('/tmp/native-video.mp4', 'runway'))
+        )
+        self.assertFalse(
+            passes(
+                *args[:3],
+                _manual_review(
+                    65,
+                    substantially_repeats_adjacent_scene=True,
+                ),
+                generated_spec('/tmp/repeated-video.mp4', 'runway'),
+            )
+        )
+
     def test_forced_generated_and_recovered_stock_use_their_source_floors(self):
         namespace = _load_manual_qa_boundary()
         passes = namespace['_manual_qa_preview_passes']
@@ -802,6 +889,34 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
         self.assertEqual(list(accepted), [0])
         repair.assert_not_called()
         render.assert_called_once_with()
+
+    def test_synthetic_image_motion_floor_cannot_skip_repair_or_reach_render(self):
+        namespace = _load_manual_qa_boundary()
+        decide = namespace['_manual_qa_preview_decisions']
+        generated = namespace['_generated_visual_spec'](
+            '/tmp/still-motion.mp4',
+            'gemini_image_motion',
+        )
+        generated['synthetic_motion_only'] = True
+        accepted, rejected = decide(
+            _manual_options(),
+            0.5,
+            [{'ai_prompt': 'same pink eraser removes graphite line'}],
+            {0: _manual_review(65)},
+            [[generated]],
+            [0],
+        )
+        repair = Mock()
+        render = Mock()
+        if rejected:
+            repair(rejected)
+        else:
+            render()
+
+        self.assertEqual(accepted, {})
+        self.assertEqual(rejected, [0])
+        repair.assert_called_once_with([0])
+        render.assert_not_called()
 
     def test_manual_prepass_final_failure_gets_bounded_ai_repair(self):
         namespace = _load_manual_qa_boundary()

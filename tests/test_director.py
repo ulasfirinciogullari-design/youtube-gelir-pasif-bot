@@ -539,6 +539,53 @@ def make_phone_under_pillow_package():
     }
 
 
+def make_two_mechanism_phone_package():
+    package = make_phone_under_pillow_package()
+    literal_beats = {
+        0: (
+            'Elif yatakta yastığın altında şarja bağlı duran telefonunu bulur.',
+            [
+                'woman finds charging phone under bedroom pillow',
+                'woman reveals phone beneath pillow on bed',
+            ],
+        ),
+        3: (
+            'Elif yataktaki yastığın altından şarja bağlı olan telefonunu çıkarır.',
+            [
+                'woman removes charging phone from under pillow',
+                'woman lifts phone from beneath bedroom pillow',
+            ],
+        ),
+        4: (
+            'Elif telefonu yatağın yanındaki boş komodinin üzerine açıkta bırakır.',
+            [
+                'woman places phone on open bedside table',
+                'woman sets smartphone on clear nightstand surface',
+            ],
+        ),
+        5: (
+            'Telefon aynı komodinde yastıktan uzakta açıkta şarj olmaya devam eder.',
+            [
+                'smartphone charging exposed on same bedside table',
+                'phone charges uncovered on same clear nightstand',
+            ],
+        ),
+    }
+    for position, (narration, queries) in literal_beats.items():
+        package['scenes'][position]['narration'] = narration
+        package['scenes'][position]['tts_text'] = narration
+        package['scenes'][position]['visual_queries'] = queries
+    package['narration'] = ' '.join(
+        scene['narration'] for scene in package['scenes']
+    )
+    package['tts_narration'] = package['narration']
+    package['visual_queries'] = [
+        query for scene in package['scenes'] for query in scene['visual_queries']
+    ]
+    assert 52 <= _word_count(package['narration']) <= 60
+    return package
+
+
 def make_ai_first_five_scene_package():
     scenes = [
         _scene(
@@ -683,7 +730,7 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
         config_stub.settings.openai_api_key = 'test-openai-key'
         config_stub.settings.openai_model = 'test-model'
 
-    def test_phone_under_pillow_routes_only_grounded_invisible_mechanisms(self):
+    def test_phone_under_pillow_routes_only_two_mechanisms_in_story_order(self):
         package = make_phone_under_pillow_package()
 
         routed = _apply_short_preview_concrete_proxy_routes(
@@ -702,7 +749,7 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
                 row['position']
                 for row in routed['short_proxy_routes']['routes']
             ],
-            [1, 2, 3, 5],
+            [1, 2],
         )
         self.assertEqual(
             [
@@ -712,41 +759,22 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
             [
                 'charging_heat',
                 'insulated_heat',
-                'thermal_aging',
-                'open_air_cooling',
             ],
         )
-        self.assertEqual(routed['short_proxy_routes']['paid_cap'], 4)
-        self.assertEqual(len(routed['ai_scenes']), 4)
+        self.assertEqual(routed['short_proxy_routes']['paid_cap'], 2)
+        self.assertEqual(len(routed['ai_scenes']), 2)
         self.assertIsNone(routed['scenes'][0]['ai_prompt'])
+        self.assertIsNone(routed['scenes'][3]['ai_prompt'])
         self.assertIsNone(routed['scenes'][4]['ai_prompt'])
+        self.assertIsNone(routed['scenes'][5]['ai_prompt'])
+        self.assertNotIn('stock_scene_qc', routed)
         self.assertTrue(all(
             routed['scenes'][position]['ai_prompt']
-            for position in (1, 2, 3, 5)
+            for position in (1, 2)
         ))
         self.assertIn(
             'thermal-camera',
             routed['scenes'][2]['ai_prompt'],
-        )
-        self.assertIn(
-            'same hard, flat, open surface in the established scene setting',
-            routed['scenes'][5]['ai_prompt'],
-        )
-        self.assertIn(
-            'ending is visibly cooler than the beginning',
-            routed['scenes'][5]['ai_prompt'],
-        )
-        self.assertIn(
-            'gentle continuous documentary push-in',
-            routed['scenes'][5]['ai_prompt'],
-        )
-        self.assertEqual(
-            routed['scenes'][5][SERVER_SHORT_PROXY_KIND_FIELD],
-            'open_air_cooling',
-        )
-        self.assertNotIn(
-            'camera and phone remain still',
-            routed['scenes'][5]['ai_prompt'],
         )
         self.assertIn(
             'purely photographic, text-free, and unbranded',
@@ -756,6 +784,41 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
             scene['ai_prompt'] is None
             for scene in package['scenes']
         ))
+
+    def test_two_remaining_proxy_kinds_preserve_cooling_temporal_contract(self):
+        package = make_phone_under_pillow_package()
+        package['scenes'] = [package['scenes'][3], package['scenes'][5]]
+        routed = _apply_short_preview_concrete_proxy_routes(
+            package,
+            {'mode': 'preview', 'visual_mix': 'balanced'},
+            0.5,
+            'Telefon neden yastık altında ısınır?',
+        )
+        self.assertEqual(
+            [row['proxy'] for row in routed['short_proxy_routes']['routes']],
+            ['thermal_aging', 'open_air_cooling'],
+        )
+        self.assertEqual(routed['short_proxy_routes']['paid_cap'], 2)
+        self.assertIn(
+            'same hard, flat, open surface in the established scene setting',
+            routed['scenes'][1]['ai_prompt'],
+        )
+        self.assertIn(
+            'ending is visibly cooler than the beginning',
+            routed['scenes'][1]['ai_prompt'],
+        )
+        self.assertIn(
+            'gentle continuous documentary push-in',
+            routed['scenes'][1]['ai_prompt'],
+        )
+        self.assertEqual(
+            routed['scenes'][1][SERVER_SHORT_PROXY_KIND_FIELD],
+            'open_air_cooling',
+        )
+        self.assertNotIn(
+            'camera and phone remain still',
+            routed['scenes'][1]['ai_prompt'],
+        )
 
     def test_proxy_router_rejects_non_phone_batteries_and_retains_setting(self):
         def one_scene(narration, queries):
@@ -893,7 +956,7 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
         run_director,
         repair_stock_scenes,
     ):
-        package = make_phone_under_pillow_package()
+        package = make_two_mechanism_phone_package()
         run_director.return_value = {
             'title': package['title'],
             'thumbnail_text': package['thumbnail_text'],
@@ -947,15 +1010,15 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
                 )
                 if scene.get('ai_prompt')
             ],
-            [1, 2, 3, 5],
+            [1, 2],
         )
         self.assertEqual(result['narration'], exact)
-        self.assertEqual(result['ai_scene_count'], 4)
+        self.assertEqual(result['ai_scene_count'], 2)
         self.assertEqual(run_director.call_count, 1)
         openai_class.assert_called_once()
 
     def test_routed_phone_story_reaches_stock_critic_with_only_literal_scenes(self):
-        package = make_phone_under_pillow_package()
+        package = make_two_mechanism_phone_package()
         routed = _apply_short_preview_concrete_proxy_routes(
             package,
             {'mode': 'preview', 'visual_mix': 'balanced'},
@@ -970,13 +1033,13 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
                     'visual_queries': routed['scenes'][position]['visual_queries'],
                     'ai_prompt': None,
                 }
-                for position in (0, 4)
+                for position in (0, 3, 4, 5)
             ],
         }
         client = FakeClient([
             generated,
             critic_payload(
-                stock_positions=(0, 4),
+                stock_positions=(0, 3, 4, 5),
                 scene_count=6,
             ),
         ])
@@ -997,12 +1060,12 @@ class ShortPreviewConcreteProxyRoutingTests(unittest.TestCase):
         self.assertEqual(result['narration'], exact)
         self.assertEqual(
             result['stock_scene_qc']['target_positions'],
-            [0, 4],
+            [0, 3, 4, 5],
         )
-        self.assertEqual(len(result['ai_scenes']), 4)
+        self.assertEqual(len(result['ai_scenes']), 2)
         self.assertIn(
             'thermal-camera',
-            result['scenes'][5]['ai_prompt'],
+            result['scenes'][2]['ai_prompt'],
         )
         self.assertEqual(len(client.responses.calls), 2)
 
@@ -1405,8 +1468,8 @@ class ExplicitSceneCountTests(unittest.TestCase):
         }
         expected = {
             'real_first': (5, 1),
-            'balanced': (5, 4),
-            'ai_first': (5, 5),
+            'balanced': (5, 2),
+            'ai_first': (5, 2),
         }
         for visual_mix, (authored_limit, paid_limit) in expected.items():
             with self.subTest(visual_mix=visual_mix):

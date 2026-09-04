@@ -4,9 +4,11 @@ from app.services.visual_routing import (
     SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP,
     SHORT_PREVIEW_RUNWAY_CAP,
     SHORT_PREVIEW_RUNWAY_REPAIR_CAP,
+    SHORT_PREVIEW_TOTAL_PAID_CREATE_CAP,
     preview_authored_ai_limit,
     preview_paid_ai_limit,
     preview_runway_repair_indices,
+    preview_total_paid_create_cap,
     should_rank_runway_candidate,
 )
 
@@ -36,7 +38,8 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
                     5,
                 )
 
-    def test_paid_preview_limit_matches_worker_budget_for_every_mix(self):
+    def test_exact_thirty_second_paid_preview_limit_is_two_for_every_mix(self):
+        self.assertEqual(SHORT_PREVIEW_TOTAL_PAID_CREATE_CAP, 2)
         self.assertEqual(
             preview_paid_ai_limit(
                 {'mode': 'preview', 'visual_mix': 'real_first'},
@@ -51,7 +54,7 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
                 7,
                 0.5,
             ),
-            4,
+            2,
         )
         self.assertEqual(
             preview_paid_ai_limit(
@@ -59,7 +62,11 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
                 7,
                 0.5,
             ),
-            6,
+            2,
+        )
+        self.assertEqual(
+            preview_total_paid_create_cap({'mode': 'preview'}, 0.5),
+            2,
         )
         self.assertIsNone(
             preview_paid_ai_limit(
@@ -68,6 +75,29 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
                 0.5,
             )
         )
+        self.assertIsNone(
+            preview_total_paid_create_cap({'mode': 'production'}, 0.5)
+        )
+        self.assertIsNone(
+            preview_total_paid_create_cap({'mode': 'preview'}, 0.55)
+        )
+
+    def test_non_exact_short_preview_keeps_existing_primary_limits(self):
+        expected = {
+            'real_first': 1,
+            'balanced': SHORT_PREVIEW_RUNWAY_CAP,
+            'ai_first': SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP,
+        }
+        for visual_mix, cap in expected.items():
+            with self.subTest(visual_mix=visual_mix):
+                self.assertEqual(
+                    preview_paid_ai_limit(
+                        {'mode': 'preview', 'visual_mix': visual_mix},
+                        7,
+                        0.55,
+                    ),
+                    cap,
+                )
 
     def test_ai_first_authored_scene_is_ranked_even_with_approved_stock(self):
         common = {
@@ -176,6 +206,32 @@ class ShortPreviewVisualRoutingTests(unittest.TestCase):
             ),
             [2, 1],
         )
+
+    def test_exact_preview_repairs_share_remaining_job_wide_paid_slots(self):
+        scenes = [
+            {'ai_prompt': 'scene zero'},
+            {'ai_prompt': 'scene one'},
+            {'ai_prompt': 'scene two'},
+        ]
+        reviews = {
+            0: {'score': 30},
+            1: {'score': 20},
+            2: {'score': 10},
+        }
+        for attempts, expected in ((0, [2, 1]), (1, [2]), (2, [])):
+            with self.subTest(attempts=attempts):
+                self.assertEqual(
+                    preview_runway_repair_indices(
+                        {'mode': 'preview', 'visual_mix': 'ai_first'},
+                        0.5,
+                        [0, 1, 2],
+                        scenes,
+                        {0, 1, 2},
+                        reviews,
+                        paid_create_attempts=attempts,
+                    ),
+                    expected,
+                )
 
     def test_repairs_never_expand_beyond_short_preview_or_paid_submissions(self):
         scenes = [{'ai_prompt': 'scene zero'}, {'ai_prompt': 'scene one'}]

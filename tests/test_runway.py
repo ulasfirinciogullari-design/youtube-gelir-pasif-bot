@@ -55,9 +55,16 @@ def _safe_runway_fallback_error():
 
 
 class FalVideoError(RuntimeError):
-    def __init__(self, message, *, safe_to_fallback=False):
+    def __init__(
+        self,
+        message,
+        *,
+        safe_to_fallback=False,
+        request_id=None,
+    ):
         super().__init__(message)
         self.safe_to_fallback = safe_to_fallback
+        self.request_id = request_id
 
 
 def fal_error_allows_provider_fallback(exc):
@@ -676,7 +683,11 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             gemini_video_uri=gemini_video_uri,
         )
 
-        result = generate_scene('safe prompt', duration=5)
+        result = generate_scene(
+            'safe prompt',
+            duration=5,
+            allow_paid_terminal_resubmit=False,
+        )
 
         self.assertEqual(result['provider'], 'gemini_veo')
         self.assertEqual(factory.create_resources[0].calls, [])
@@ -988,7 +999,11 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             fal_key='configured-fal-key',
         )
 
-        result = generate_scene('safe prompt', duration=5)
+        result = generate_scene(
+            'safe prompt',
+            duration=5,
+            allow_paid_terminal_resubmit=False,
+        )
 
         self.assertEqual(result['provider'], 'gemini_veo')
         self.assertEqual(
@@ -1019,6 +1034,35 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             generate_scene('safe prompt', duration=5)
 
         self.assertIs(raised.exception, ambiguous_error)
+        fal_video.assert_called_once_with('safe prompt', 5)
+        gemini_video_uri.assert_not_called()
+
+    def test_exact_preview_never_hops_after_accepted_fal_terminal_failure(self):
+        factory = _RunwayClientFactory([
+            _safe_runway_fallback_error(),
+        ])
+        accepted_error = FalVideoError(
+            'Fal accepted task completed unsuccessfully',
+            safe_to_fallback=True,
+            request_id='123e4567-e89b-12d3-a456-426614174000',
+        )
+        fal_video = Mock(side_effect=accepted_error)
+        gemini_video_uri = Mock()
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+            fal_video=fal_video,
+            fal_key='configured-fal-key',
+        )
+
+        with self.assertRaises(FalVideoError) as raised:
+            generate_scene(
+                'safe prompt',
+                duration=5,
+                allow_paid_terminal_resubmit=False,
+            )
+
+        self.assertIs(raised.exception, accepted_error)
         fal_video.assert_called_once_with('safe prompt', 5)
         gemini_video_uri.assert_not_called()
 
@@ -1073,6 +1117,29 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         self.assertEqual(result['provider'], 'gemini_veo')
         self.assertEqual(result['provider_attempts'], 2)
         self.assertEqual(gemini_video_uri.call_count, 2)
+
+    def test_exact_preview_gemini_terminal_failure_is_not_resubmitted(self):
+        factory = _RunwayClientFactory([
+            _safe_runway_fallback_error(),
+        ])
+        terminal_error = GeminiVideoTerminalError(
+            'definitive provider rejection'
+        )
+        gemini_video_uri = Mock(side_effect=terminal_error)
+        _, generate_scene = _load_runway_functions(
+            factory,
+            gemini_video_uri=gemini_video_uri,
+        )
+
+        with self.assertRaises(GeminiVideoTerminalError) as raised:
+            generate_scene(
+                'safe prompt',
+                duration=5,
+                allow_paid_terminal_resubmit=False,
+            )
+
+        self.assertIs(raised.exception, terminal_error)
+        gemini_video_uri.assert_called_once_with('safe prompt', 5)
 
     def test_exhausted_lite_quota_switches_once_to_fast_model(self):
         factory = _RunwayClientFactory([
@@ -2911,10 +2978,29 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
             / 'app'
             / 'tasks.py'
         ).read_text(encoding='utf-8')
-        self.assertIn(
-            'allow_image_motion=is_private_image_motion_preview',
-            source,
-        )
+        generation_calls = [
+            node for node in ast.walk(ast.parse(source))
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == 'generate_scene'
+        ]
+        self.assertEqual(len(generation_calls), 2)
+        for call in generation_calls:
+            image_motion_flag = next(
+                keyword.value for keyword in call.keywords
+                if keyword.arg == 'allow_image_motion'
+            )
+            # Even a private exact-30 preview cannot buy a still that the
+            # final quality gates categorically reject.
+            self.assertIs(
+                eval(compile(ast.Expression(image_motion_flag), '<flag>', 'eval'), {
+                    'total_paid_create_cap': 2,
+                    'is_private_image_motion_preview': True,
+                    'scene_idx': 0,
+                    'image_motion_submission_scenes': set(),
+                }),
+                False,
+            )
         self.assertIn('duration_minutes == 0.5', source)
         self.assertIn(
             'scene_idx not in image_motion_submission_scenes',
