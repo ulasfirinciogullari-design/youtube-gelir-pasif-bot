@@ -194,7 +194,7 @@ class VisualQcProviderTests(unittest.TestCase):
                 _missing_review_attempts=0,
             )
         instruction = gemini.call_args.kwargs['system_instruction']
-        payload = json.dumps(gemini.call_args.args[0])
+        payload = '\n'.join(part.get('text', '') for part in gemini.call_args.args[0])
         self.assertIn('DOCUMENTARY B-ROLL SEMANTICS ARE ACTIVE', instruction)
         self.assertIn('material-composition percentages', instruction)
         self.assertIn('Never infer strength, durability', instruction)
@@ -270,12 +270,17 @@ class VisualQcProviderTests(unittest.TestCase):
                     reason='Required visual evidence is missing or the clip has an artifact.',
                     **failure,
                 )]}
+                scenes = ([{
+                    'narration': 'The charging phone produces heat.',
+                    'visual_queries': ['thermal camera charging phone heat'],
+                    'ai_prompt': 'Thermal camera shows a charging phone producing heat.',
+                }] if 'thermal_claim_applicable' in failure else self.scenes)
                 with (
                     patch.object(settings, 'studio_plan_provider', 'gemini'),
                     patch.object(settings, 'gemini_api_key', 'test-key'),
                 ):
                     result = review_scene_visuals(
-                        self.scenes, self.visuals, self.work,
+                        scenes, self.visuals, self.work,
                         content_style='documentary',
                         evidence_sources=[{
                             'url': 'https://www.bep.gov/currency/how-money-is-made',
@@ -326,7 +331,7 @@ class VisualQcProviderTests(unittest.TestCase):
                 self.assertEqual(gemini.call_count, 2)
                 for call in gemini.call_args_list:
                     self.assertIn('DOCUMENTARY B-ROLL SEMANTICS ARE ACTIVE', call.kwargs['system_instruction'])
-                    self.assertIn('RECURSIVE SOURCE MARKER', json.dumps(call.args[0]))
+                    self.assertIn('RECURSIVE SOURCE MARKER', '\n'.join(part.get('text', '') for part in call.args[0]))
 
     @patch('app.services.visual_qc.subprocess.run')
     def test_oversized_gemini_frame_is_reencoded_to_bounded_jpeg(
