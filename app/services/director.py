@@ -2,6 +2,7 @@ import hashlib
 import json
 import re
 import unicodedata
+from copy import deepcopy
 from openai import OpenAI
 from app.config import settings
 from app.services.gemini_critic import (
@@ -1828,6 +1829,22 @@ EDITORIAL QC RULES:
     return _json(response.output_text)
 
 
+def _immutable_narration_map(package: dict, narrations: list[str]) -> dict[int, str]:
+    scenes = package.get('scenes') if isinstance(package, dict) else None
+    if (
+        not isinstance(narrations, list)
+        or not isinstance(scenes, list)
+        or not 3 <= len(scenes) <= _MAX_PRODUCTION_SCENES
+        or len(narrations) != len(scenes)
+        or any(not isinstance(text, str) or not text.strip() for text in narrations)
+        or any(not isinstance(scene, dict) for scene in scenes)
+        or [scene.get('narration') for scene in scenes] != narrations
+        or package.get('narration') != ' '.join(narrations)
+    ):
+        raise RuntimeError('Immutable candidate narration does not match the exact scene mapping')
+    return dict(enumerate(narrations))
+
+
 def _repair_short_stock_scenes(
     client: OpenAI,
     package: dict,
@@ -1840,6 +1857,7 @@ def _repair_short_stock_scenes(
     allow_explicit_brief_repair: bool = True,
     allow_legacy_short_budget: bool = True,
     calibrated_short_words: int | None = None,
+    immutable_candidate_narrations: list[str] | None = None,
 ) -> dict:
     if duration_minutes > 0.6:
         return package
@@ -1897,7 +1915,11 @@ def _repair_short_stock_scenes(
     )
 
     exact_narration_lock = _exact_narration_lock_from_brief(requested_brief)
-    locked_narration_by_position: dict[int, str] = {}
+    locked_narration_by_position = (
+        _immutable_narration_map(package, immutable_candidate_narrations)
+        if immutable_candidate_narrations is not None
+        else {}
+    )
     if exact_narration_lock is not None:
         complete_scene_narration = _normalize_exact_narration(
             ' '.join(
@@ -1911,10 +1933,11 @@ def _repair_short_stock_scenes(
                 'Exact spoken-narration lock does not match the complete '
                 'candidate story before stock repair'
             )
-        locked_narration_by_position = {
-            position: str(scene.get('narration') or '').strip()
-            for position, scene in enumerate(scenes)
-        }
+        if immutable_candidate_narrations is None:
+            locked_narration_by_position = {
+                position: str(scene.get('narration') or '').strip()
+                for position, scene in enumerate(scenes)
+            }
 
     target_total_words, minimum_total_words, maximum_total_words = (
         _target_word_budget(
@@ -3189,6 +3212,85 @@ def _whole_story_repair_diagnostics(
             ),
         },
     }
+
+
+def revalidate_immutable_short_story(
+    package: dict,
+    topic: str,
+    duration_minutes: float,
+    language: str,
+    options: dict | None = None,
+    *,
+    immutable_candidate_narrations: list[str],
+) -> dict:
+    """Server-only voice recovery: freshly critique exact speech, never rewrite it.
+
+    The caller must separately bind the saved audio to these exact narrations
+    and run actual audio/media QA. This function authorizes no audio reuse or
+    publication by itself and does not turn a server lock into a user brief.
+    """
+    options = dict(options or package.get('studio_options') or {})
+    if duration_minutes != 0.5 or not (
+        options.get('mode') == 'preview'
+        or options.get('mode') == 'production' and options.get('format') == 'shorts'
+    ):
+        raise RuntimeError('Immutable story revalidation requires an exact 30-second Short')
+    _story_brief_for_qc(topic)
+    locked = _immutable_narration_map(package, immutable_candidate_narrations)
+    candidate = deepcopy(package)
+    original_indexes = [scene.get('index') for scene in candidate['scenes']]
+    # Never let an old attestation satisfy the new independent review.
+    candidate.pop('short_story_qc', None)
+    candidate.pop('stock_scene_qc', None)
+    normalize_evidence_sources(candidate.get('sources'), min_count=2, max_count=5)
+    language_name = 'Turkish' if language.lower().startswith('tr') else language
+    target, minimum, maximum = _target_word_budget(0.5, allow_legacy_short_lock=True)
+    if _short_preview_scene_budget_issues(candidate, target, len(locked)):
+        raise ImmutableNarrationSceneBudgetError('Immutable narration exceeds the single-pass scene budget')
+    authored_limit = preview_authored_ai_limit(options, len(locked), duration_minutes)
+    if authored_limit is not None and sum(bool(scene.get('ai_prompt')) for scene in candidate['scenes']) > authored_limit:
+        raise RuntimeError('Immutable story exceeds the authored paid-generation limit')
+    provider = _studio_plan_provider()
+    if provider == 'openai' and not settings.openai_api_key:
+        raise RuntimeError('Immutable story revalidation requires a configured independent critic')
+    client = (
+        OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
+        if provider == 'openai' else None
+    )
+    out = _repair_short_stock_scenes(
+        client, candidate, language_name, duration_minutes, topic,
+        content_style=str(options.get('content_style') or 'documentary'),
+        allow_natural_language_repair=False,
+        allow_explicit_brief_repair=False,
+        allow_legacy_short_budget=True,
+        immutable_candidate_narrations=list(locked.values()),
+    )
+    _immutable_narration_map(out, list(locked.values()))
+    if [scene.get('index') for scene in out['scenes']] != original_indexes:
+        raise RuntimeError('Independent revalidation changed the immutable scene order')
+    stock_qc = out.get('stock_scene_qc') or {}
+    if (
+        stock_qc.get('version') != _STOCK_SCENE_QC_VERSION
+        or (stock_qc.get('story_review') or {}).get('accepted') is not True
+        or (stock_qc.get('ending_pair_review') or {}).get('accepted') is not True
+    ):
+        raise RuntimeError('Fresh independent story attestation is required for immutable narration')
+    out['studio_options'] = options
+    out['narration_word_count'] = _word_count(out['narration'])
+    out['target_word_range'] = [minimum, maximum]
+    out['target_scene_count'] = len(locked)
+    out['ai_scene_count'] = sum(bool(scene.get('ai_prompt')) for scene in out['scenes'])
+    out['max_ai_scene_count'] = authored_limit
+    out['short_story_qc'] = {
+        'version': _SHORT_STORY_QC_VERSION,
+        'requested_topic': _normalize_short_story_topic(topic),
+        'story_review_accepted': True,
+        'ending_pair_accepted': True,
+    }
+    out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
+    if not short_story_package_is_approved(out, topic):
+        raise RuntimeError('Fresh immutable story approval failed its final integrity check')
+    return out
 
 
 def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
