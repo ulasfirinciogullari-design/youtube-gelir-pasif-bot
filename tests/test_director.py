@@ -68,7 +68,7 @@ class ProductionShortPaidBudgetTests(unittest.TestCase):
         package = {
             'title': 'Shopping', 'description': '', 'thumbnail_text': '',
             'scenes': [
-                _scene(index, 'Müşteri market rafında iki farklı paketi eline alıp karşılaştırıyor.',
+                _scene(index, 'Müşteri market rafında iki farklı makarna paketini eline alıp karşılaştırıyor.',
                        ['customer comparing two packages in supermarket'], 'A continuous shopping shot')
                 for index in range(5)
             ],
@@ -106,6 +106,8 @@ class ProductionShortPaidBudgetTests(unittest.TestCase):
                 self.assertIn('own source support and visible evidence', prompt)
                 self.assertIn('generic wallpaper footage', prompt)
                 self.assertIn('At most 2 scenes may have a non-null ai_prompt', prompt)
+                self.assertIn(director_module._MATERIAL_IDENTITY_RULE, prompt)
+                self.assertIn(director_module._HUMAN_CURIOSITY_RULE, prompt)
 
     def test_other_director_styles_do_not_activate_documentary_exception(self):
         for style in ('technology', 'explainer', 'story', 'cinematic'):
@@ -119,8 +121,109 @@ class ProductionShortPaidBudgetTests(unittest.TestCase):
                 self.assertIn('NO DOCUMENTARY B-ROLL EXCEPTION: every spoken claim must be directly visible', prompt)
                 self.assertNotIn('DOCUMENTARY B-ROLL EXCEPTION: verified historical dates', prompt)
 
+    @staticmethod
+    def _fifty_word_stock_package():
+        package = {
+            'title': 'Markette bir seçim', 'description': 'Kaynaklı alışveriş hikâyesi.',
+            'thumbnail_text': 'İki paket',
+            'sources': [
+                {'url': 'https://example.com/packaging', 'evidence': 'The customer compares two packages at a grocery shelf.'},
+                {'url': 'https://example.org/shopping', 'evidence': 'Two grocery packages are compared at the same shelf.'},
+            ],
+            'scenes': [
+                _scene(index, 'Müşteri market rafında iki farklı makarna paketini eline alıp karşılaştırıyor.',
+                       ['customer comparing two pasta packages at grocery shelf',
+                        'close up hands comparing pasta packages in supermarket'])
+                for index in range(5)
+            ],
+        }
+        package['narration'] = ' '.join(scene['narration'] for scene in package['scenes'])
+        return package
+
+    def test_production_short_runs_independent_critic_with_same_51_word_budget(self):
+        package = self._fifty_word_stock_package()
+        generated = {'scenes': [
+            {'position': index, 'narration': scene['narration'],
+             'visual_queries': scene['visual_queries'], 'ai_prompt': None}
+            for index, scene in enumerate(package['scenes'])
+        ]}
+        client = FakeClient([generated, critic_payload(stock_positions=tuple(range(5)), scene_count=5)])
+        with (
+            patch.object(director_module, 'OpenAI', return_value=client),
+            patch.object(director_module, '_run_director', return_value=package),
+            patch.object(director_module, '_short_story_quality_issues', return_value=[]),
+        ):
+            result = direct_and_qc(package, 'Tam beş sahne kullan.', 0.5, 'tr', self.options)
+        self.assertEqual(len(client.responses.calls), 2)
+        writer_prompt = client.responses.calls[0]['input']
+        self.assertIn('"whole_story_word_budget": {"minimum": 48, "target": 51, "maximum": 54}', writer_prompt)
+        self.assertIn('independent, fail-closed stock-shot feasibility critic', client.responses.calls[1]['input'])
+        self.assertEqual(result['target_word_range'], [48, 54])
+        self.assertTrue(result['short_story_qc']['story_review_accepted'])
+        self.assertTrue(result['short_story_qc']['ending_pair_accepted'])
+        self.assertTrue(short_story_package_is_approved(result, 'Tam beş sahne kullan.'))
+
+    def test_production_short_missing_or_failed_independent_review_is_fatal(self):
+        package = self._fifty_word_stock_package()
+        for outcome in ('missing_attestation', 'critic_rejected_source'):
+            with self.subTest(outcome=outcome):
+                with (
+                    patch.object(director_module, 'OpenAI', return_value=object()),
+                    patch.object(director_module, '_run_director', return_value=package),
+                    patch.object(director_module, '_short_story_quality_issues', return_value=[]),
+                    patch.object(director_module, '_repair_short_stock_scenes',
+                                 return_value=copy.deepcopy(package),
+                                 side_effect=RuntimeError('critic_rejected_source') if outcome == 'critic_rejected_source' else None) as review,
+                    self.assertRaisesRegex(RuntimeError, 'attestation is missing|critic_rejected_source'),
+                ):
+                    direct_and_qc(package, 'Tam beş sahne kullan.', 0.5, 'tr', self.options)
+                review.assert_called_once()
+                self.assertEqual(review.call_args.kwargs['calibrated_short_words'], 51)
+                self.assertFalse(review.call_args.kwargs['allow_legacy_short_budget'])
+
+    def test_production_short_cannot_skip_review_without_credentials_or_scenes(self):
+        with patch.object(config_stub.settings, 'openai_api_key', ''):
+            with self.assertRaisesRegex(RuntimeError, 'requires a configured director'):
+                direct_and_qc(self._fifty_word_stock_package(), 'A grocery story.', 0.5, 'tr', self.options)
+        with self.assertRaisesRegex(RuntimeError, 'requires a nonempty package'):
+            direct_and_qc({'scenes': []}, 'A grocery story.', 0.5, 'tr', self.options)
+
 
 class PreviewNarrationBudgetTests(unittest.TestCase):
+    def test_only_unlocked_turkish_production_short_selects_live_calibration(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        class PlanningObserved(Exception):
+            pass
+        cases = [
+            ('tr', 'production', 'shorts', 0.5, (51, 48, 54)),
+            ('tr-TR', 'production', 'shorts', 0.5, (51, 48, 54)),
+            ('en', 'production', 'shorts', 0.5, (56, 52, 60)),
+            ('tr', 'preview', 'shorts', 0.5, (56, 52, 60)),
+            ('tr', 'production', 'landscape', 0.5, (56, 52, 60)),
+            ('tr', 'production', 'shorts', 1.0, (82, 71, 88)),
+        ]
+        for language, mode, format_name, duration, expected in cases:
+            with self.subTest(language=language, mode=mode, format=format_name, duration=duration):
+                with (
+                    patch.object(director_module, 'OpenAI', return_value=object()),
+                    patch.object(director_module, '_run_director', side_effect=PlanningObserved) as run,
+                    self.assertRaises(PlanningObserved),
+                ):
+                    direct_and_qc(make_short_package(), 'One everyday story.', duration, language,
+                                  {'mode': mode, 'format': format_name})
+                self.assertEqual(run.call_args.args[5:8], expected)
+
+        package = make_short_package()
+        brief = 'Konuşma metni tam olarak şöyle olsun: “' + package['narration'] + '”'
+        with (
+            patch.object(director_module, 'OpenAI', return_value=object()),
+            patch.object(director_module, '_run_director', side_effect=PlanningObserved) as run,
+            self.assertRaises(PlanningObserved),
+        ):
+            direct_and_qc(package, brief, 0.5, 'tr', {'mode': 'production', 'format': 'shorts'})
+        self.assertEqual(run.call_args.args[5:8], (56, 40, 60))
+
     def test_thirty_second_generated_budget_requires_natural_speed(self):
         self.assertEqual(
             director_module._target_word_budget(0.5),
@@ -2343,6 +2446,8 @@ class ShortStockRepairTests(unittest.TestCase):
         for call in client.responses.calls:
             self.assertIn(source['url'], call['input'])
             self.assertIn(source['evidence'], call['input'])
+            self.assertIn(director_module._MATERIAL_IDENTITY_RULE, call['input'])
+            self.assertIn(director_module._HUMAN_CURIOSITY_RULE, call['input'])
         self.assertIn(director_module._documentary_broll_writer_rule('documentary'), client.responses.calls[0]['input'])
         self.assertIn('source must explicitly name the material and exact percentage', client.responses.calls[1]['input'])
 

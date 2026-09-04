@@ -16,6 +16,7 @@ from app.celery_app import celery
 from app.services.audio_design import generate_music_bed, mix_voice_and_music
 from app.services.audio_qc import (
     AudioQCError,
+    audio_qc_provider_diagnostics,
     verify_audio_narration,
     verify_audio_prosody,
 )
@@ -1048,6 +1049,23 @@ def _preflight_production_shorts_paid_plan(
     )
 
 
+def _checkpoint_audio_candidate(task_id: str, package: dict, voice_result: dict) -> None:
+    """Preserve an unapproved candidate without changing any quality decision."""
+    from app.services.audio_checkpoint import persist_audio_candidate_checkpoint
+
+    try:
+        fields = persist_audio_candidate_checkpoint(task_id, package, voice_result)
+        fields['audio_candidate_checkpoint_error'] = None
+    except Exception:
+        # Keep an earlier candidate address if a later attempt cannot be saved.
+        fields = {'audio_candidate_checkpoint_error': 'unavailable'}
+    try:
+        update_job(task_id, **fields)
+    except Exception:
+        # Losing the registry must not discard a voice that still needs QA.
+        pass
+
+
 def _short_preview_voice_duration_qc(
     voice_result: dict,
     target_seconds: float,
@@ -1303,6 +1321,7 @@ def _verify_audio_narration_with_retry(
     language: str,
 ) -> dict:
     """Retry a transient STT outage without regenerating immutable audio."""
+    provider_attempts = []
     for attempt in range(AUDIO_QC_PROVIDER_ATTEMPTS):
         try:
             return verify_audio_narration(
@@ -1310,14 +1329,21 @@ def _verify_audio_narration_with_retry(
                 expected_narration,
                 language=language,
             )
-        except AudioQCError:
+        except AudioQCError as exc:
+            provider_attempts.append({
+                'attempt': attempt + 1,
+                'providers': audio_qc_provider_diagnostics(exc),
+            })
             if attempt + 1 < AUDIO_QC_PROVIDER_ATTEMPTS:
                 time.sleep(AUDIO_QC_PROVIDER_RETRY_DELAY_SECONDS)
                 continue
-            raise FinalAudioQualityError(
-                'Audio narration QA providers were unavailable after one '
-                'bounded same-audio retry before paid media'
-            ) from None
+            error = FinalAudioQualityError(
+                'Audio narration QA could not be verified after one '
+                'bounded same-audio retry before paid media: '
+                + json.dumps({'provider_attempts': provider_attempts}, separators=(',', ':'))
+            )
+            error.audio_qc_diagnostics = provider_attempts
+            raise error from None
     raise FinalAudioQualityError(
         'Audio narration QA providers were unavailable before paid media'
     )
@@ -3451,6 +3477,7 @@ def run_video_pipeline(
                 orientation=pexels_orientation,
             )
             voice_result = voice_future.result()
+            _checkpoint_audio_candidate(task_id, package, voice_result)
             broll_result = broll_future.result()
 
         voice_path = voice_result['path']
@@ -3677,6 +3704,7 @@ def run_video_pipeline(
                 start_attempt=audio_generation_attempts,
                 language=language,
             )
+            _checkpoint_audio_candidate(task_id, package, voice_result)
             audio_generation_attempts = int(
                 voice_result.get('_generation_attempts_used')
                 or audio_generation_attempts + 1

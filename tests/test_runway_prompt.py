@@ -106,6 +106,7 @@ def _load_prompt_functions():
         'AUDIO_QC_PROVIDER_RETRY_DELAY_SECONDS': 1.0,
         'synthesize_scene_sequence': None,
         'verify_audio_narration': None,
+        'audio_qc_provider_diagnostics': lambda error: getattr(error, 'provider_diagnostics', []),
         'manufactured_replica_guardrail': manufactured_replica_guardrail,
         'preview_paid_ai_limit': lambda options, scene_count, duration: (
             min(
@@ -835,7 +836,7 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertLess(audio_rejection, initial_runway_loop)
         self.assertIn('MAX_AUDIO_GENERATION_ATTEMPTS = 3', source)
         self.assertIn('AUDIO_QC_PROVIDER_ATTEMPTS = 2', source)
-        self.assertIn('except AudioQCError:', source)
+        self.assertIn('except AudioQCError as exc:', source)
         self.assertIn('bounded same-audio retry before paid media', source)
         self.assertIn('generation_attempt=generation_attempt', source)
         self.assertIn("'audio_generation_attempts': audio_generation_attempts", source)
@@ -940,6 +941,42 @@ class RunwayPromptTests(unittest.TestCase):
         sleep.assert_called_once_with(1.0)
         self.assertIn('bounded same-audio retry', str(caught.exception))
         self.assertNotIn(secret, str(caught.exception))
+
+    def test_same_audio_retry_retains_both_safe_provider_diagnostics(self):
+        first_error = AudioQCError('secret raw response')
+        first_error.provider_diagnostics = [
+            {'provider': 'openai', 'code': 'inconsistent_word_timestamps'},
+        ]
+        second_error = AudioQCError('secret raw transport exception')
+        second_error.provider_diagnostics = [
+            {'provider': 'gemini', 'code': 'http_error', 'http_status': 429},
+        ]
+        verifier = Mock(side_effect=[first_error, second_error])
+        sleep = Mock()
+        function_globals = verify_audio_narration_with_retry.__globals__
+        previous_verifier = function_globals['verify_audio_narration']
+        previous_time = function_globals['time']
+        function_globals['verify_audio_narration'] = verifier
+        function_globals['time'] = SimpleNamespace(sleep=sleep)
+        try:
+            with self.assertRaises(FinalAudioQualityError) as caught:
+                verify_audio_narration_with_retry(
+                    'immutable-voice.mp3', 'Beklenen anlatım', language='tr',
+                )
+        finally:
+            function_globals['verify_audio_narration'] = previous_verifier
+            function_globals['time'] = previous_time
+        expected = [
+            {'attempt': 1, 'providers': first_error.provider_diagnostics},
+            {'attempt': 2, 'providers': second_error.provider_diagnostics},
+        ]
+        self.assertEqual(caught.exception.audio_qc_diagnostics, expected)
+        payload = str(caught.exception).split('before paid media: ', 1)[1]
+        self.assertEqual(json.loads(payload), {'provider_attempts': expected})
+        self.assertNotIn('secret', str(caught.exception))
+        self.assertEqual(verifier.call_count, 2)
+        self.assertEqual(verifier.call_args_list[0], verifier.call_args_list[1])
+        sleep.assert_called_once_with(1.0)
 
     def test_initial_and_repair_generation_never_use_fixed_five_seconds(self):
         source = (
