@@ -1,4 +1,6 @@
 import base64
+import ast
+import math
 import sys
 import tempfile
 import types
@@ -22,6 +24,7 @@ from app.services.voice import normalize_turkish_tts
 from app.services.voice import _voice_speed
 from app.services.voice import _use_turkish_short_preview_profile
 from app.services.voice import _fit_duration
+from app.services.voice import fit_existing_narration_candidate
 from app.services.voice import _join_scene_narration
 from app.services.voice import _scene_durations_from_alignment
 from app.services.voice import _short_preview_audio_edit_plan
@@ -165,7 +168,7 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertAlmostEqual(sum(durations), 29.50, places=6)
         self.assertIn(f'atempo={rate:.6f}', run.call_args.args[0])
 
-    def test_short_preview_never_stretches_an_under_length_voice(self):
+    def test_short_preview_does_not_stretch_beyond_six_percent_allowance(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / 'voice.mp3'
             output.write_bytes(b'raw')
@@ -188,6 +191,131 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertEqual(durations, [27.0])
         self.assertEqual((before, after, rate), (27.0, 27.0, 1.0))
         self.assertEqual(unchanged, b'raw')
+
+    def test_recoverable_short_deficit_uses_minimal_bounded_slowdown(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'raw')
+
+            def fake_ffmpeg(command, **_kwargs):
+                Path(command[-1]).write_bytes(b'fitted')
+
+            with (
+                patch.object(voice_module, '_media_duration', side_effect=[27.24, 28.75]),
+                patch.object(voice_module.subprocess, 'run', side_effect=fake_ffmpeg) as run,
+            ):
+                durations, before, after, rate = _fit_duration(output, [10.0, 17.24], 30.0)
+        self.assertEqual((before, after, rate), (27.24, 28.75, 0.947478))
+        self.assertAlmostEqual(sum(durations), 28.75, places=8)
+        self.assertEqual(rate, float(run.call_args.args[0][5].split('=')[1]))
+
+    def test_already_valid_short_narration_is_not_slowed(self):
+        for seconds in (28.7, 28.72, 28.75, 29.5):
+            with self.subTest(seconds=seconds), tempfile.TemporaryDirectory() as tmp:
+                output = Path(tmp) / 'voice.mp3'
+                output.write_bytes(b'raw')
+                with (
+                    patch.object(voice_module, '_media_duration', return_value=seconds),
+                    patch.object(voice_module.subprocess, 'run') as run,
+                ):
+                    values = _fit_duration(output, [seconds], 30.0)
+                run.assert_not_called()
+                self.assertEqual(values, ([seconds], seconds, seconds, 1.0))
+
+    def test_too_thin_audio_remains_unchanged_and_fails_existing_duration_qa(self):
+        task_path = Path(__file__).resolve().parents[1] / 'app' / 'tasks.py'
+        definition = next(
+            node for node in ast.parse(task_path.read_text(encoding='utf-8')).body
+            if isinstance(node, ast.FunctionDef) and node.name == '_short_preview_voice_duration_qc'
+        )
+        namespace = {'math': math}
+        exec(compile(ast.Module(body=[definition], type_ignores=[]), str(task_path), 'exec'), namespace)
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'raw')
+            with (
+                patch.object(voice_module, '_media_duration', return_value=25.0),
+                patch.object(voice_module.subprocess, 'run') as run,
+            ):
+                values = _fit_duration(output, [25.0], 30.0)
+        run.assert_not_called()
+        self.assertEqual(values, ([25.0], 25.0, 25.0, 1.0))
+        qa = namespace['_short_preview_voice_duration_qc']({'duration_after_fit': values[2]}, 30.0)
+        self.assertFalse(qa['pass'])
+        self.assertEqual(qa['minimum_seconds'], 28.7)
+        self.assertEqual(qa['reason'], 'short_form_script_too_thin')
+
+    def test_short_slowdown_boundary_and_long_form_fit_limits_are_preserved(self):
+        for target, before, after, expected_rate in (
+            (30.0, 27.025, 28.75, 0.94),
+            (40.0, 36.8125, 38.75, 0.95),
+            (60.0, 55.242, 59.4, 0.93),
+        ):
+            with self.subTest(target=target), tempfile.TemporaryDirectory() as tmp:
+                output = Path(tmp) / 'voice.mp3'
+                output.write_bytes(b'raw')
+
+                def fake_ffmpeg(command, **_kwargs):
+                    Path(command[-1]).write_bytes(b'fitted')
+
+                with (
+                    patch.object(voice_module, '_media_duration', side_effect=[before, after]),
+                    patch.object(voice_module.subprocess, 'run', side_effect=fake_ffmpeg),
+                ):
+                    values = _fit_duration(output, [before], target)
+                self.assertEqual(values[3], expected_rate)
+                self.assertAlmostEqual(sum(values[0]), after)
+
+    def test_existing_candidate_fit_is_repeat_safe_preserves_metadata_and_never_calls_tts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'raw')
+            candidate = {
+                'path': str(output), 'scene_durations': [10.0, 17.24],
+                'duration_before_fit': 27.24, 'duration_after_fit': 27.24,
+                'tempo_rate': 1.0, 'spoken_texts': ['Same immutable', 'narration'],
+                'audio_qc': {'pass': True}, 'audio_prosody_qc': {'pass': True},
+            }
+
+            def fake_ffmpeg(command, **_kwargs):
+                Path(command[-1]).write_bytes(b'fitted')
+
+            with (
+                patch.object(voice_module, '_media_duration', side_effect=[27.24, 28.776, 28.776]),
+                patch.object(voice_module.subprocess, 'run', side_effect=fake_ffmpeg) as run,
+                patch.object(voice_module, 'synthesize_voice_with_timestamps') as tts,
+            ):
+                result = fit_existing_narration_candidate(candidate, 30.0)
+                repeated = fit_existing_narration_candidate(result, 30.0)
+        tts.assert_not_called()
+        run.assert_called_once()
+        self.assertEqual(result, repeated)
+        self.assertEqual(candidate['scene_durations'], [10.0, 17.24])
+        self.assertEqual(candidate['tempo_rate'], 1.0)
+        self.assertEqual(result['spoken_texts'], candidate['spoken_texts'])
+        self.assertEqual(result['duration_before_fit'], 27.24)
+        self.assertEqual(result['duration_after_fit'], 28.776)
+        self.assertEqual(result['tempo_rate'], 0.947478)
+        self.assertAlmostEqual(sum(result['scene_durations']), 28.776)
+        self.assertNotIn('audio_qc', result)
+        self.assertNotIn('audio_prosody_qc', result)
+
+    def test_existing_candidate_cannot_compound_slowdown_beyond_six_percent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'raw')
+            candidate = {
+                'path': str(output), 'scene_durations': [27.24],
+                'duration_before_fit': 26.6952, 'tempo_rate': 0.98,
+            }
+            with (
+                patch.object(voice_module, '_media_duration', return_value=27.24),
+                patch.object(voice_module.subprocess, 'run') as run,
+            ):
+                with self.assertRaisesRegex(voice_module.VoiceScriptFitError, 'cumulative tempo'):
+                    fit_existing_narration_candidate(candidate, 30.0)
+            self.assertEqual(output.read_bytes(), b'raw')
+        run.assert_not_called()
 
     def test_short_preview_rejects_excessive_compression(self):
         with tempfile.TemporaryDirectory() as tmp:

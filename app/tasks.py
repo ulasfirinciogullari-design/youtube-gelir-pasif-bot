@@ -3284,6 +3284,105 @@ def _guard_retry_child_execution(
         raise Ignore()
 
 
+def _prepare_saved_voice_retry(
+    task_id: str,
+    source_task_id: str | None,
+    runtime_spec: dict,
+    work: Path,
+) -> dict | None:
+    """Revalidate one same-spec UI retry without purchasing another voice."""
+    if (
+        not source_task_id
+        or runtime_spec.get('mode') != 'production'
+        or runtime_spec.get('format') != 'shorts'
+        or runtime_spec.get('duration_minutes') != 0.5
+    ):
+        return None
+    from app.services.studio_state import get_job
+    from app.services.voice_candidate_recovery import (
+        load_voice_retry_candidate,
+        require_unchanged_voice_narration,
+    )
+    from app.services.director import revalidate_immutable_short_story
+    from app.services.voice import normalize_turkish_tts
+
+    source = get_job(source_task_id)
+    child = get_job(task_id)
+    if not isinstance(source, dict) or not isinstance(child, dict):
+        raise FinalAudioQualityError('Saved-voice retry source could not be verified')
+    checkpoint = source.get('audio_candidate_checkpoint')
+    if checkpoint is None:
+        return None
+    if (
+        not isinstance(checkpoint, dict)
+        or source.get('state') != 'FAILURE'
+        or source.get('kind') != 'render'
+        or source.get('retry_child_task_id') != task_id
+        or child.get('parent_id') != source_task_id
+        or source.get('spec') != runtime_spec
+        or child.get('spec') != runtime_spec
+        or runtime_spec.get('mode') != 'production'
+        or runtime_spec.get('format') != 'shorts'
+        or runtime_spec.get('duration_minutes') != 0.5
+    ):
+        raise FinalAudioQualityError('Saved-voice retry binding is invalid')
+    cap = preview_total_paid_create_cap(runtime_spec, 0.5)
+    if cap is None or _persisted_paid_create_slots(source_task_id, cap) != 0:
+        raise FinalAudioQualityError('Saved-voice-only retry requires zero paid media submissions')
+    try:
+        candidate = load_voice_retry_candidate(source_task_id, task_id, checkpoint, work)
+        source_package = candidate['package']
+        source_scenes = source_package['scenes']
+        expected_spoken = [
+            normalize_turkish_tts(
+                scene['narration'], ensure_terminal=(index + 1 == len(source_scenes)),
+            )
+            for index, scene in enumerate(source_scenes)
+        ]
+        if candidate['voice_result'].get('spoken_texts') != expected_spoken:
+            raise ValueError('Saved spoken contract differs from the narration')
+        options = {
+            key: value for key, value in runtime_spec.items()
+            if key not in {'topic', 'duration_minutes', 'language', 'channel_id'}
+        }
+        reviewed = revalidate_immutable_short_story(
+            source_package,
+            runtime_spec['topic'],
+            0.5,
+            runtime_spec['language'],
+            options,
+            immutable_candidate_narrations=[
+                scene['narration'] for scene in source_package['scenes']
+            ],
+        )
+        require_unchanged_voice_narration(source_package, reviewed)
+        if not short_story_package_is_approved(reviewed, runtime_spec['topic']):
+            raise ValueError('Current independent story approval is required')
+    except Exception:
+        raise FinalAudioQualityError(
+            'Saved narration could not pass immutable story/source revalidation; '
+            'no replacement voice was generated'
+        ) from None
+    update_job(task_id, voice_candidate_reuse={
+        'source_task_id': source_task_id,
+        'new_tts_requests': 0,
+        'requires_full_qa': True,
+    })
+    return {'package': reviewed, 'voice_result': candidate['voice_result']}
+
+
+def _fit_saved_voice_for_retry(voice_result: dict, target_seconds: float) -> dict:
+    from app.services.voice import fit_existing_narration_candidate
+
+    try:
+        return fit_existing_narration_candidate(voice_result, target_seconds)
+    except Exception:
+        raise FinalAudioQualityError(
+            'Saved narration cannot be fitted within natural tempo limits; '
+            'no replacement voice was generated'
+        ) from None
+
+
 @celery.task(
     bind=True,
     autoretry_for=(Exception,),
@@ -3400,7 +3499,21 @@ def run_video_pipeline(
             runway_attempts = _persisted_paid_create_slots(
                 task_id, total_paid_create_cap,
             )
-        package = _prepare_package(self, task_id, topic, duration_minutes, language, options, approved_package)
+        if retry_dispatch_source_id and approved_package is None:
+            set_stage(self, task_id, 'director_qc', 14, 'Kaydedilmiş anlatım güncel hikâye denetiminden geçiriliyor.')
+        saved_voice_retry = (
+            _prepare_saved_voice_retry(
+                task_id,
+                retry_dispatch_source_id,
+                _task_spec(topic, duration_minutes, language, channel_id, options),
+                work,
+            )
+            if approved_package is None else None
+        )
+        package = (
+            saved_voice_retry['package'] if saved_voice_retry
+            else _prepare_package(self, task_id, topic, duration_minutes, language, options, approved_package)
+        )
         raw_recovered_generated_media = package.pop(
             '_recovered_generated_media',
             None,
@@ -3487,7 +3600,13 @@ def run_video_pipeline(
         )
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
-            if recovered_voice:
+            if saved_voice_retry:
+                voice_future = stage_pool.submit(
+                    _fit_saved_voice_for_retry,
+                    saved_voice_retry['voice_result'],
+                    duration_minutes * 60,
+                )
+            elif recovered_voice:
                 voice_future = stage_pool.submit(
                     _download_recovered_voice_candidate,
                     recovered_voice,
@@ -3642,6 +3761,7 @@ def run_video_pipeline(
             )
             can_regenerate = (
                 not recovered_voice
+                and not saved_voice_retry
                 and audio_generation_attempts < MAX_AUDIO_GENERATION_ATTEMPTS
                 and audio_qc.get('available') is True
                 and audio_duration_qc.get('available') is True

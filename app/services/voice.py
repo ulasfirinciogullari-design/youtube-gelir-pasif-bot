@@ -753,8 +753,14 @@ def _scene_pause(scene: dict, is_last: bool, short_preview: bool) -> float:
     return 0.32
 
 
-def _fit_duration(output: Path, scene_durations: list[float], target_seconds: float | None) -> tuple[list[float], float, float, float]:
-    """Fit narration while reserving a natural tail on short previews."""
+def _fit_duration(
+    output: Path,
+    scene_durations: list[float],
+    target_seconds: float | None,
+    *,
+    prior_tempo_rate: float = 1.0,
+) -> tuple[list[float], float, float, float]:
+    """Fit narration with bounded tempo changes; full audio QA still follows."""
     before = _media_duration(output)
     after = before
     tempo_rate = 1.0
@@ -766,13 +772,22 @@ def _fit_duration(output: Path, scene_durations: list[float], target_seconds: fl
         if target_seconds and target_seconds > 0
         else before
     )
+    short_minimum_fit = max(1.0, float(target_seconds) - 1.25) if short_preview else before
+    recoverable_short_deficit = bool(
+        short_preview
+        # Leave already-valid narration unchanged. Fit only to just above the
+        # existing duration-QA floor, not all the way to a filled timeline.
+        and before < float(target_seconds) - 1.30
+        and before / short_minimum_fit >= 0.94
+    )
+    if recoverable_short_deficit:
+        desired = short_minimum_fit
     needs_fit = bool(
         target_seconds and target_seconds > 0
         and (
-            # Never slow an under-length short narration merely to fill the
-            # timeline. That hides a thin script budget and produces robotic
-            # phrase spacing. Only a small overrun may be compressed.
-            (short_preview and before > desired + 0.015)
+            # At most 6% slower for a recoverable shortfall. Thinner scripts
+            # remain unchanged and must fail the downstream duration gate.
+            (short_preview and (before > desired + 0.015 or recoverable_short_deficit))
             or (
                 not short_preview
                 and (before > target_seconds * 1.03 or before < target_seconds * 0.97)
@@ -782,12 +797,19 @@ def _fit_duration(output: Path, scene_durations: list[float], target_seconds: fl
     if needs_fit:
         requested_rate = before / desired
         # Large tempo changes hide a bad script budget and sound synthetic.
-        if requested_rate < 0.92 or requested_rate > 1.12:
+        if requested_rate < (0.94 if short_preview else 0.92) or requested_rate > 1.12:
             raise VoiceScriptFitError(
                 f'Narration needs {requested_rate:.3f}x tempo to fit {target_seconds:.1f}s; '
                 'rewrite the script instead of distorting the voice'
             )
-        tempo_rate = requested_rate
+        # Report the exact value sent to FFmpeg, not an unrounded estimate.
+        tempo_rate = round(requested_rate, 6)
+        cumulative_rate = prior_tempo_rate * tempo_rate
+        if cumulative_rate < (0.94 if short_preview else 0.92) - 1e-12 or cumulative_rate > 1.12 + 1e-12:
+            raise VoiceScriptFitError(
+                'Existing narration would exceed the cumulative tempo limit; '
+                'rewrite the script instead of repeatedly stretching the voice'
+            )
         fitted = output.with_name(output.stem + '_fitted.mp3')
         subprocess.run([
             'ffmpeg', '-y', '-i', str(output),
@@ -799,6 +821,45 @@ def _fit_duration(output: Path, scene_durations: list[float], target_seconds: fl
         scale = after / before if before else 1.0
         scene_durations = [duration * scale for duration in scene_durations]
     return scene_durations, before, after, tempo_rate
+
+
+def fit_existing_narration_candidate(voice_result: dict, target_seconds: float) -> dict:
+    """Refit an existing candidate without TTS; this never grants QA approval."""
+    if not isinstance(voice_result, dict):
+        raise VoiceScriptFitError('Existing narration metadata is invalid')
+    prior_rate = voice_result.get('tempo_rate', 1.0)
+    durations = voice_result.get('scene_durations')
+    path = voice_result.get('path')
+    if (
+        type(target_seconds) not in (int, float)
+        or not math.isfinite(target_seconds) or target_seconds <= 0
+        or type(prior_rate) not in (int, float) or not math.isfinite(prior_rate)
+        or not (0.94 if target_seconds <= 40 else 0.92) - 1e-12 <= prior_rate <= 1.12 + 1e-12
+        or not isinstance(path, (str, Path))
+        or not isinstance(durations, list) or not durations
+        or any(type(value) not in (int, float) or not math.isfinite(value) or value <= 0 for value in durations)
+    ):
+        raise VoiceScriptFitError('Existing narration metadata is invalid')
+    original_before = voice_result.get('duration_before_fit')
+    if original_before is not None and (
+        type(original_before) not in (int, float)
+        or not math.isfinite(original_before) or original_before <= 0
+    ):
+        raise VoiceScriptFitError('Existing narration metadata is invalid')
+    updated_durations, before, after, applied_rate = _fit_duration(
+        Path(path), list(durations), target_seconds, prior_tempo_rate=prior_rate,
+    )
+    result = dict(voice_result)
+    result.update({
+        'scene_durations': updated_durations,
+        'duration_before_fit': original_before if original_before is not None else before,
+        'duration_after_fit': after,
+        'tempo_rate': prior_rate * applied_rate,
+    })
+    # Timing-sensitive approvals cannot survive even a small audio transform.
+    for field in ('audio_qc', 'audio_prosody_qc', 'audio_duration_qc'):
+        result.pop(field, None)
+    return result
 
 
 def synthesize_scene_sequence(

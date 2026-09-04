@@ -193,6 +193,108 @@ class ProductionShortPaidBudgetTests(unittest.TestCase):
             direct_and_qc({'scenes': []}, 'A grocery story.', 0.5, 'tr', self.options)
 
 
+class ImmutableVoiceStoryRevalidationTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        self.options = {'mode': 'production', 'format': 'shorts', 'content_style': 'documentary'}
+
+    @staticmethod
+    def _fixture():
+        package = ProductionShortPaidBudgetTests._fifty_word_stock_package()
+        package['short_story_qc'] = {'version': 4, 'story_review_accepted': True}
+        package['stock_scene_qc'] = {'version': 8, 'story_review': {'accepted': True}}
+        narrations = [scene['narration'] for scene in package['scenes']]
+        generated = {'scenes': [
+            {'position': index, 'narration': 'The writer tries to replace the saved spoken words.',
+             'visual_queries': ['hands compare two pasta packages at shelf', 'customer compares pasta packages in grocery store'],
+             'ai_prompt': None}
+            for index in range(len(narrations))
+        ]}
+        return package, narrations, generated
+
+    def test_fresh_critic_locks_exact_voice_without_rewriting_topic_or_narration(self):
+        package, narrations, generated = self._fixture()
+        original = copy.deepcopy(package)
+        topic = 'Compare two pasta packages in the supermarket.'
+        client = FakeClient([generated, critic_payload(stock_positions=tuple(range(5)), scene_count=5)])
+        with (
+            patch.object(director_module, 'OpenAI', return_value=client),
+            patch.object(director_module, '_run_director') as director,
+        ):
+            result = director_module.revalidate_immutable_short_story(
+                package, topic, 0.5, 'tr', self.options,
+                immutable_candidate_narrations=narrations,
+            )
+        director.assert_not_called()
+        self.assertEqual(package, original)
+        self.assertEqual([scene['narration'] for scene in result['scenes']], narrations)
+        self.assertEqual([scene['index'] for scene in result['scenes']], [scene['index'] for scene in package['scenes']])
+        self.assertEqual(result['narration'], package['narration'])
+        self.assertNotEqual(result['scenes'][0]['visual_queries'], package['scenes'][0]['visual_queries'])
+        self.assertTrue(short_story_package_is_approved(result, topic))
+        self.assertEqual(len(client.responses.calls), 2)
+        self.assertIn('"locked_narration"', client.responses.calls[0]['input'])
+        self.assertIn('"requested_topic": "' + topic + '"', client.responses.calls[1]['input'])
+        self.assertNotIn('The writer tries to replace the saved spoken words', client.responses.calls[1]['input'])
+
+    def test_voice_mapping_mismatch_and_changed_scene_order_are_rejected(self):
+        package, narrations, _ = self._fixture()
+        for invalid in (narrations[:-1], [narrations[0] + ' ', *narrations[1:]], [''] * 5):
+            with self.subTest(invalid=invalid):
+                with patch.object(director_module, 'OpenAI') as client, self.assertRaisesRegex(RuntimeError, 'exact scene mapping'):
+                    director_module.revalidate_immutable_short_story(
+                        package, 'A grocery story.', 0.5, 'tr', self.options,
+                        immutable_candidate_narrations=invalid,
+                    )
+                client.assert_not_called()
+        changed = copy.deepcopy(package)
+        changed['scenes'][0]['index'] = 99
+        with (
+            patch.object(director_module, 'OpenAI', return_value=object()),
+            patch.object(director_module, '_repair_short_stock_scenes', return_value=changed),
+            self.assertRaisesRegex(RuntimeError, 'scene order'),
+        ):
+            director_module.revalidate_immutable_short_story(
+                package, 'A grocery story.', 0.5, 'tr', self.options,
+                immutable_candidate_narrations=narrations,
+            )
+
+    def test_rejected_existing_story_cannot_trigger_a_narration_repair(self):
+        for failed_check in ('natural_spoken_language', 'causal_claim_supported', 'all_explicit_brief_constraints_preserved'):
+            with self.subTest(failed_check=failed_check):
+                package, narrations, generated = self._fixture()
+                verdict = critic_payload(story_failures=[failed_check], stock_positions=tuple(range(5)), scene_count=5)
+                client = FakeClient([generated, verdict])
+                with (
+                    patch.object(director_module, 'OpenAI', return_value=client),
+                    patch.object(director_module, '_run_director') as director,
+                    self.assertRaisesRegex(RuntimeError, 'incoherent short-preview story'),
+                ):
+                    director_module.revalidate_immutable_short_story(
+                        package, 'A grocery story.', 0.5, 'tr', self.options,
+                        immutable_candidate_narrations=narrations,
+                    )
+                director.assert_not_called()
+                self.assertEqual(len(client.responses.calls), 2)
+
+    def test_old_approval_is_removed_before_review_and_cannot_be_reused(self):
+        package, narrations, _ = self._fixture()
+        with (
+            patch.object(director_module, 'OpenAI', return_value=object()),
+            patch.object(director_module, '_repair_short_stock_scenes', side_effect=lambda client, candidate, *args, **kwargs: candidate) as review,
+            self.assertRaisesRegex(RuntimeError, 'Fresh independent story attestation'),
+        ):
+            director_module.revalidate_immutable_short_story(
+                package, 'A grocery story.', 0.5, 'tr', self.options,
+                immutable_candidate_narrations=narrations,
+            )
+        self.assertNotIn('short_story_qc', review.call_args.args[1])
+        self.assertNotIn('stock_scene_qc', review.call_args.args[1])
+        self.assertFalse(review.call_args.kwargs['allow_natural_language_repair'])
+        self.assertFalse(review.call_args.kwargs['allow_explicit_brief_repair'])
+
+
 class PreviewNarrationBudgetTests(unittest.TestCase):
     def test_only_unlocked_turkish_production_short_selects_live_calibration(self):
         config_stub.settings.studio_plan_provider = 'openai'
