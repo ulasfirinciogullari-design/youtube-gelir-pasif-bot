@@ -108,6 +108,9 @@ class ProductionShortPaidBudgetTests(unittest.TestCase):
                 self.assertIn('At most 2 scenes may have a non-null ai_prompt', prompt)
                 self.assertIn(director_module._MATERIAL_IDENTITY_RULE, prompt)
                 self.assertIn(director_module._HUMAN_CURIOSITY_RULE, prompt)
+                self.assertIn(director_module._SOURCE_IDENTITY_RULE, prompt)
+                self.assertIn(director_module._VISIBLE_MATERIAL_RULE, prompt)
+                self.assertIn(director_module._documentary_explanatory_coda_rule('documentary'), prompt)
 
     def test_other_director_styles_do_not_activate_documentary_exception(self):
         for style in ('technology', 'explainer', 'story', 'cinematic'):
@@ -120,6 +123,7 @@ class ProductionShortPaidBudgetTests(unittest.TestCase):
                 prompt = client.responses.calls[0]['input']
                 self.assertIn('NO DOCUMENTARY B-ROLL EXCEPTION: every spoken claim must be directly visible', prompt)
                 self.assertNotIn('DOCUMENTARY B-ROLL EXCEPTION: verified historical dates', prompt)
+                self.assertIn('SOURCED EXPLANATORY CODA IS NOT ACTIVE', prompt)
 
     @staticmethod
     def _fifty_word_stock_package():
@@ -2167,6 +2171,91 @@ class ExactNarrationDirectorLockTests(unittest.TestCase):
 
 
 class ShortStockRepairTests(unittest.TestCase):
+    @staticmethod
+    def _documentary_material_coda_fixture():
+        narrations = [
+            'Bir dolar banknotuyla pamuklu tişörtün ortak noktası ne olabilir?',
+            'Amerikan banknotlarının kâğıdında hammadde olarak yüzde yetmiş beş oranında pamuk bulunur.',
+            'Bu karışımın kalan yüzde yirmi beşini ise keten oluşturur.',
+            'Ama aynı hammaddeler, banknotun da dokunmuş bir kumaş olduğunu göstermez.',
+            'Cebindeki para hâlâ kâğıttır, hammaddesi ise pamuk ve ketendir.',
+        ]
+        queries = [
+            ['cotton shirt fabric close up', 'white cotton shirt on table'],
+            ['US dollar banknotes close up', 'US currency paper banknote detail'],
+            ['raw flax fiber close up', 'natural flax fibers on table'],
+            ['US dollar banknotes close up', 'US currency paper banknote detail'],
+            ['US dollar banknotes on table', 'US currency banknotes close up'],
+        ]
+        scenes = [_scene(index, text, queries[index]) for index, text in enumerate(narrations)]
+        package = {
+            'title': 'Dolarla Tişörtün Ortak Noktası', 'description': 'Kaynak: Bureau of Engraving and Printing.',
+            'scenes': scenes, 'narration': ' '.join(narrations),
+            'sources': [{
+                'url': 'https://www.bep.gov/currency/how-money-is-made',
+                'evidence': 'The Bureau of Engraving and Printing states that U.S. currency paper is 75 percent cotton and 25 percent linen.',
+            }],
+        }
+        generated = {'scenes': [
+            {'position': index, 'narration': row['narration'],
+             'visual_queries': row['visual_queries'], 'ai_prompt': None}
+            for index, row in enumerate(scenes)
+        ]}
+        return package, generated
+
+    def test_documentary_composition_coda_can_answer_curiosity_without_purchase_or_action(self):
+        package, generated = self._documentary_material_coda_fixture()
+        verdict = critic_payload(stock_positions=tuple(range(5)), scene_count=5)
+        verdict['story_review']['visible_payoff'] = 'The viewer learns that cotton and linen form currency paper, not woven fabric.'
+        verdict['ending_pair']['location_anchor'] = 'Contextual views of US banknote paper; no continuous action or same-location claim.'
+        client = FakeClient([generated, verdict])
+        result = _repair_short_stock_scenes(
+            client, package, 'Turkish', 0.5, content_style='documentary',
+            calibrated_short_words=51, allow_legacy_short_budget=False,
+        )
+        self.assertEqual(result['narration'], package['narration'])
+        self.assertTrue(result['stock_scene_qc']['story_review']['accepted'])
+        self.assertTrue(result['stock_scene_qc']['ending_pair_review']['accepted'])
+        self.assertTrue(all(row['ai_prompt'] is None for row in result['scenes']))
+        for call in client.responses.calls:
+            self.assertIn(director_module._documentary_explanatory_coda_rule('documentary'), call['input'])
+            self.assertIn(director_module._SOURCE_IDENTITY_RULE, call['input'])
+            self.assertIn(director_module._VISIBLE_MATERIAL_RULE, call['input'])
+        critic_prompt = client.responses.calls[1]['input']
+        self.assertIn('Do not demand an invented purchase or physical benefit', critic_prompt)
+        self.assertIn('no physical benefit or completed action is required', critic_prompt)
+        self.assertIn('relevant subject/material views may be adjacent rather than simultaneous', critic_prompt)
+
+    def test_explanatory_coda_does_not_override_wrong_institution_or_material_visibility(self):
+        for violation in ('institution', 'visible_fibers'):
+            with self.subTest(violation=violation):
+                package, generated = self._documentary_material_coda_fixture()
+                verdict = critic_payload(
+                    failures={3: ['all_spoken_meaning_visible', 'adds_no_new_fact']} if violation == 'visible_fibers' else None,
+                    story_failures=['causal_claim_supported'] if violation == 'institution' else None,
+                    stock_positions=tuple(range(5)), scene_count=5,
+                )
+                client = FakeClient([generated, copy.deepcopy(verdict), generated, copy.deepcopy(verdict)])
+                with self.assertRaises(RuntimeError):
+                    _repair_short_stock_scenes(client, package, 'Turkish', 0.5, content_style='documentary')
+                prompt = client.responses.calls[1]['input']
+                self.assertIn('An invented or substituted institution fails causal_claim_supported', prompt)
+                self.assertIn('Unsupported visual identification fails all_spoken_meaning_visible', prompt)
+
+    def test_documentary_tutorial_and_durability_claims_keep_physical_ending_checks(self):
+        for topic in ('Adım adım banknot katlama öğreticisi.', 'Banknot dayanıklılığı için önce ve sonra fiziksel deney.'):
+            with self.subTest(topic=topic):
+                package, generated = self._documentary_material_coda_fixture()
+                verdict = critic_payload(
+                    ending_failures=['same_immediate_location', 'continuous_visible_action_chain', 'everyday_benefit_visible'],
+                    stock_positions=tuple(range(5)), scene_count=5,
+                )
+                client = FakeClient([generated, copy.deepcopy(verdict), generated, copy.deepcopy(verdict)])
+                with self.assertRaisesRegex(RuntimeError, 'fully stock-safe'):
+                    _repair_short_stock_scenes(client, package, 'Turkish', 0.5, topic=topic, content_style='documentary')
+                for call in client.responses.calls:
+                    self.assertIn('does not apply to a tutorial, procedure, before/after result, physical demonstration', call['input'])
+
     def setUp(self):
         config_stub.settings.studio_plan_provider = 'openai'
         config_stub.settings.gemini_critic_enabled = False
@@ -5066,6 +5155,22 @@ class ShortSpokenQualityTests(unittest.TestCase):
 
 
 class ShortStoryApprovalTests(unittest.TestCase):
+    def test_pre_source_identity_contracts_fail_even_with_matching_fingerprints(self):
+        self.assertEqual(director_module._SHORT_STORY_QC_VERSION, 5)
+        self.assertEqual(director_module._STOCK_SCENE_QC_VERSION, 9)
+        self.assertEqual(director_module._STORY_STOCK_CONTRACT, 'openai-story-stock-v5')
+        for old_story, old_stock in ((True, False), (False, True), (True, True)):
+            with self.subTest(old_story=old_story, old_stock=old_stock):
+                package = self._approved_package()
+                self.assertTrue(short_story_package_is_approved(package, 'one useful phone story'))
+                if old_story:
+                    package['short_story_qc']['version'] = 4
+                if old_stock:
+                    package['stock_scene_qc']['version'] = 8
+                package['short_story_qc']['fingerprint'] = _short_story_fingerprint(package)
+                self.assertEqual(package['short_story_qc']['fingerprint'], _short_story_fingerprint(package))
+                self.assertFalse(short_story_package_is_approved(package, 'one useful phone story'))
+
     def _approved_package(self):
         client = FakeClient([
             valid_generator_payload(),
