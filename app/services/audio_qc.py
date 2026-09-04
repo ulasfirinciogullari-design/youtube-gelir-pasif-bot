@@ -96,6 +96,9 @@ _DIGIT_TOKEN_PATTERN = re.compile(
 _EXPLICIT_DECIMAL_TOKEN_PATTERN = re.compile(
     r'(?P<integer>\d+)[,.](?P<fraction>\d+)$'
 )
+_OPENAI_PERCENT_TIMESTAMP_SUFFIXES = frozenset({
+    '', 'i', '\u0131', 'u', '\u00fc', 'lik', 'l\u0131k', 'luk', 'l\u00fck',
+})
 _NUMBER_UNITS = {
     's\u0131f\u0131r': 0,
     'bir': 1,
@@ -300,6 +303,78 @@ _PROSODY_SYSTEM_INSTRUCTION = (
 
 class AudioQCError(RuntimeError):
     """A secret-safe failure while obtaining an audio-QC transcript."""
+
+    def __init__(self, message: str, *, provider_diagnostics: list[dict] | None = None):
+        super().__init__(message)
+        self.provider_diagnostics = _safe_provider_diagnostics(provider_diagnostics)
+
+
+_AUDIO_PROVIDER_NAMES = frozenset({'openai', 'gemini', 'elevenlabs'})
+_AUDIO_PROVIDER_ERROR_CODES = frozenset({
+    'http_error', 'transport_error', 'file_processing_timeout',
+    'file_processing_failed', 'invalid_json', 'invalid_payload',
+    'invalid_transcript', 'invalid_word_annotations',
+    'incomplete_word_timestamps', 'inconsistent_word_timestamps',
+    'interaction_error', 'input_error', 'provider_error',
+})
+
+
+def _safe_provider_diagnostics(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    safe = []
+    for item in value[:3]:
+        if not isinstance(item, dict):
+            continue
+        provider, code = item.get('provider'), item.get('code')
+        if (
+            not isinstance(provider, str) or provider not in _AUDIO_PROVIDER_NAMES
+            or not isinstance(code, str) or code not in _AUDIO_PROVIDER_ERROR_CODES
+        ):
+            continue
+        row = {'provider': provider, 'code': code}
+        status = item.get('http_status')
+        if type(status) is int and 100 <= status <= 599:
+            row['http_status'] = status
+        safe.append(row)
+    return safe
+
+
+def audio_qc_provider_diagnostics(error: Exception) -> list[dict[str, Any]]:
+    """Expose only allowlisted provider codes, never raw exception text."""
+    return _safe_provider_diagnostics(getattr(error, 'provider_diagnostics', None))
+
+
+def _provider_error_diagnostic(provider: str, error: AudioQCError) -> dict[str, Any]:
+    message = str(error).casefold()
+    diagnostic = {'provider': provider, 'code': 'provider_error'}
+    status = re.search(r'\bhttp ([1-5][0-9]{2})\b', message)
+    if 'failed with http' in message:
+        diagnostic['code'] = 'http_error'
+        if status:
+            diagnostic['http_status'] = int(status.group(1))
+        return diagnostic
+    for text, code in (
+        ('transport failed', 'transport_error'),
+        ('file processing timed out', 'file_processing_timeout'),
+        ('file processing failed', 'file_processing_failed'),
+        ('invalid json', 'invalid_json'),
+        ('incomplete word timestamps', 'incomplete_word_timestamps'),
+        ('inconsistent word timestamps', 'inconsistent_word_timestamps'),
+        ('invalid word annotations', 'invalid_word_annotations'),
+        ('invalid word timestamps', 'invalid_word_annotations'),
+        ('invalid transcript', 'invalid_transcript'),
+        ('omitted its transcript', 'invalid_transcript'),
+        ('interaction error', 'interaction_error'),
+        ('audio input', 'input_error'),
+        ('audio format is unsupported', 'input_error'),
+        ('invalid payload', 'invalid_payload'),
+        ('invalid response envelope', 'invalid_payload'),
+    ):
+        if text in message:
+            diagnostic['code'] = code
+            break
+    return diagnostic
 
 
 class _RetryableGeminiAudioQCError(AudioQCError):
@@ -727,6 +802,83 @@ def _timestamp_sequence_matches_transcript(
         or _timestamp_boundary_sequence(timestamp_tokens)
         == _timestamp_boundary_sequence(expanded_transcript_tokens)
     )
+
+
+def _openai_percent_timestamp_adjustment(
+    timestamp_tokens: list[str],
+    transcript_tokens: list[str],
+) -> dict[str, Any] | None:
+    """Reconcile observed OpenAI percent formatting, not spoken meaning.
+
+    A full transcript ``%75'i`` may have real word annotations ``75``, ``i``.
+    Only an explicitly present percent before an unchanged unsigned integer
+    may lack its own annotation. Existing intervals are never manufactured or
+    merged. Signs, decimals, currencies and operators remain hard boundaries.
+    """
+    optional_percent = '\x00openai_explicit_percent'
+    expanded_transcript: list[str] = []
+    numeric_expansions: dict[str, tuple[str, ...]] = {}
+    index = 0
+    while index < len(transcript_tokens):
+        token = transcript_tokens[index]
+        number = (
+            _DIGIT_TOKEN_PATTERN.fullmatch(transcript_tokens[index + 1])
+            if token == '%' and index + 1 < len(transcript_tokens)
+            else None
+        )
+        if (
+            number is not None
+            and not number.group('sign')
+            and number.group('fraction') is None
+            and number.group('suffix') in _OPENAI_PERCENT_TIMESTAMP_SUFFIXES
+        ):
+            parts = (number.group('integer'),)
+            if number.group('suffix'):
+                parts += (number.group('suffix'),)
+            numeric_expansions[transcript_tokens[index + 1]] = parts
+            expanded_transcript.extend((optional_percent, *parts))
+            index += 2
+        else:
+            expanded_transcript.append(token)
+            index += 1
+    if not numeric_expansions:
+        return None
+
+    expanded_timestamps = [
+        part
+        for token in timestamp_tokens
+        for part in numeric_expansions.get(token, (token,))
+    ]
+    expected = _timestamp_boundary_sequence(expanded_transcript)
+    actual = _timestamp_boundary_sequence(expanded_timestamps)
+    expected_index = actual_index = omitted_markers = explicit_markers = 0
+    while expected_index < len(expected):
+        token = expected[expected_index]
+        if token == optional_percent:
+            explicit_markers += 1
+            if actual_index < len(actual) and actual[actual_index] == '%':
+                actual_index += 1
+            elif (
+                actual_index < len(actual)
+                and expected_index + 1 < len(expected)
+                and actual[actual_index] == expected[expected_index + 1]
+            ):
+                omitted_markers += 1
+            else:
+                return None
+        elif actual_index < len(actual) and actual[actual_index] == token:
+            actual_index += 1
+        else:
+            return None
+        expected_index += 1
+    if actual_index != len(actual):
+        return None
+    return {
+        'code': 'openai_explicit_percent_timestamp_representation',
+        'explicit_transcript_percent_count': explicit_markers,
+        'percent_markers_without_word_timestamps': omitted_markers,
+        'word_timestamps_preserved': True,
+    }
 
 
 def _ascii_digits(value: str) -> str:
@@ -1251,6 +1403,18 @@ def compare_transcript(
         if words is not None
         else None
     )
+    if (
+        words is not None
+        and details['timestamp_sequence_match'] is False
+        and str(provider or '').strip().lower() == 'openai'
+        and normalized_language == 'tr'
+    ):
+        adjustment = _openai_percent_timestamp_adjustment(
+            timestamp_tokens, surface_heard_tokens,
+        )
+        if adjustment is not None:
+            details['timestamp_sequence_match'] = True
+            details['timestamp_representation_adjustment'] = adjustment
 
     return {
         'provider': str(provider or '') or None,
@@ -1981,6 +2145,7 @@ def verify_audio_narration(
         raise AudioQCError('Audio QC input file is unavailable')
 
     provider_errors: list[AudioQCError] = []
+    provider_diagnostics: list[dict[str, Any]] = []
     mismatch_results: list[dict[str, Any]] = []
     if openai_api_key:
         try:
@@ -1994,6 +2159,7 @@ def verify_audio_narration(
             # OpenAI is primary, but a provider failure must not block the
             # independent ElevenLabs verification path.
             provider_errors.append(exc)
+            provider_diagnostics.append(_provider_error_diagnostic('openai', exc))
         else:
             if openai_result['pass']:
                 return openai_result
@@ -2009,6 +2175,7 @@ def verify_audio_narration(
             )
         except AudioQCError as exc:
             provider_errors.append(exc)
+            provider_diagnostics.append(_provider_error_diagnostic('gemini', exc))
         else:
             if gemini_result['pass']:
                 return gemini_result
@@ -2024,6 +2191,7 @@ def verify_audio_narration(
             )
         except AudioQCError as exc:
             provider_errors.append(exc)
+            provider_diagnostics.append(_provider_error_diagnostic('elevenlabs', exc))
         else:
             if elevenlabs_result['pass']:
                 return elevenlabs_result
@@ -2038,8 +2206,10 @@ def verify_audio_narration(
         )
 
     if len(provider_errors) == 1:
+        provider_errors[0].provider_diagnostics = provider_diagnostics
         raise provider_errors[0] from None
 
     raise AudioQCError(
-        'Audio QC transcription failed for all configured providers'
+        'Audio QC transcription failed for all configured providers',
+        provider_diagnostics=provider_diagnostics,
     ) from None

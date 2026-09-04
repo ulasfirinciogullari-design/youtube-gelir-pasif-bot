@@ -3191,5 +3191,170 @@ class AudioQCTests(unittest.TestCase):
         self.assertNotIn(elevenlabs_secret, str(caught.exception))
 
 
+class OpenAIPercentTimestampTests(unittest.TestCase):
+    def test_observed_percent_suffix_format_preserves_all_real_timestamps(self):
+        transcript = "Banknotun %75'i pamuktur. %25'lik kısmı ketendir."
+        words = _openai_words('Banknotun', '75', 'i', 'pamuktur', '25', 'lik', 'kısmı', 'ketendir')
+        result = audio_qc.compare_transcript(
+            transcript, transcript, words=words, provider='openai',
+        )
+        self.assertTrue(result['pass'])
+        self.assertTrue(result['mismatch_details']['timestamp_sequence_match'])
+        self.assertEqual(result['mismatch_details']['timestamp_representation_adjustment'], {
+            'code': 'openai_explicit_percent_timestamp_representation',
+            'explicit_transcript_percent_count': 2,
+            'percent_markers_without_word_timestamps': 2,
+            'word_timestamps_preserved': True,
+        })
+        self.assertEqual(result['word_timestamps'], audio_qc._word_timestamps(words))
+        self.assertIs(audio_qc._require_word_timing_evidence(result, 'OpenAI'), result)
+
+    def test_percent_representation_can_mix_retained_and_omitted_markers(self):
+        text = "%75'i pamuk, %25'lik kısmı keten."
+        result = audio_qc.compare_transcript(
+            text, text, words=_openai_words('%75i', 'pamuk', '25', 'lik', 'kısmı', 'keten'),
+            provider='openai',
+        )
+        self.assertTrue(result['mismatch_details']['timestamp_sequence_match'])
+        self.assertEqual(result['mismatch_details']['timestamp_representation_adjustment']
+                         ['percent_markers_without_word_timestamps'], 1)
+
+    def test_missing_percent_in_full_transcript_remains_semantic_failure(self):
+        result = audio_qc.compare_transcript(
+            "%75'i pamuktur", "75'i pamuktur",
+            words=_openai_words('75i', 'pamuktur'), provider='openai',
+        )
+        self.assertFalse(result['pass'])
+        self.assertFalse(result['mismatch_details']['exact_match'])
+        self.assertNotIn('timestamp_representation_adjustment', result['mismatch_details'])
+
+    def test_wrong_numbers_suffixes_signs_or_percent_locations_still_fail(self):
+        cases = [
+            ("%75'i pamuk", ('76', 'i', 'pamuk')),
+            ("%75'i pamuk", ('7', '5', 'i', 'pamuk')),
+            ("%-75'i pamuk", ('75', 'i', 'pamuk')),
+            ("%75'i pamuk", ('-75', 'i', 'pamuk')),
+            ("%75'i pamuk", ('75', 'lik', 'pamuk')),
+            ("%75'lik pamuk", ('75', 'i', 'pamuk')),
+            ('%75 ve 75', ('75', 've', '%75')),
+            ('%75 ve $25', ('75', 've', '25')),
+            ('%75 ve 2/5', ('75', 've', '2', '5')),
+            ('%75,5 pamuk', ('75', '5', 'pamuk')),
+        ]
+        for transcript, words in cases:
+            with self.subTest(transcript=transcript, words=words):
+                result = audio_qc.compare_transcript(
+                    transcript, transcript, words=_openai_words(*words), provider='openai',
+                )
+                self.assertTrue(result['pass'])
+                self.assertFalse(result['mismatch_details']['timestamp_sequence_match'])
+                with self.assertRaises(audio_qc.AudioQCError):
+                    audio_qc._require_word_timing_evidence(result, 'OpenAI')
+
+    def test_representation_rule_is_openai_turkish_only(self):
+        for provider, language in [('gemini', 'tr'), ('elevenlabs', 'tr'), ('openai', 'en')]:
+            with self.subTest(provider=provider, language=language):
+                result = audio_qc.compare_transcript(
+                    "%75'i pamuk", "%75'i pamuk", words=_openai_words('75', 'i', 'pamuk'),
+                    provider=provider, comparison_language=language,
+                )
+                self.assertFalse(result['mismatch_details']['timestamp_sequence_match'])
+
+    def test_accepted_timestamp_representation_cannot_override_changed_spoken_value(self):
+        result = audio_qc.compare_transcript(
+            "%75'i pamuk", "%76'i pamuk", words=_openai_words('76', 'i', 'pamuk'),
+            provider='openai',
+        )
+        self.assertTrue(result['mismatch_details']['timestamp_sequence_match'])
+        self.assertFalse(result['mismatch_details']['exact_match'])
+        self.assertFalse(result['pass'])
+
+    def test_percent_representation_does_not_relax_positive_timing_intervals(self):
+        words = _openai_words('75', 'i', 'pamuk')
+        words[1]['end'] = words[1]['start']
+        result = audio_qc.compare_transcript(
+            "%75'i pamuk", "%75'i pamuk", words=words, provider='openai',
+        )
+        self.assertTrue(result['mismatch_details']['timestamp_sequence_match'])
+        with self.assertRaisesRegex(audio_qc.AudioQCError, 'incomplete word timestamps'):
+            audio_qc._require_word_timing_evidence(result, 'OpenAI')
+
+
+class ProviderDiagnosticTests(unittest.TestCase):
+    def test_all_provider_failures_keep_distinct_safe_reasons(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'test-openai'),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'test-gemini'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', 'test-elevenlabs'),
+                patch.object(audio_qc, '_verify_with_openai', side_effect=audio_qc.AudioQCError(
+                    'OpenAI speech-to-text returned inconsistent word timestamps'
+                )),
+                patch.object(audio_qc, '_verify_with_gemini', side_effect=audio_qc.AudioQCError(
+                    'Gemini speech-to-text failed with HTTP 429'
+                )),
+                patch.object(audio_qc, '_verify_with_elevenlabs', side_effect=audio_qc.AudioQCError(
+                    'ElevenLabs speech-to-text transport failed'
+                )),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(audio_path, 'Beklenen metin')
+
+        self.assertEqual(str(caught.exception),
+                         'Audio QC transcription failed for all configured providers')
+        self.assertEqual(audio_qc.audio_qc_provider_diagnostics(caught.exception), [
+            {'provider': 'openai', 'code': 'inconsistent_word_timestamps'},
+            {'provider': 'gemini', 'code': 'http_error', 'http_status': 429},
+            {'provider': 'elevenlabs', 'code': 'transport_error'},
+        ])
+
+    def test_single_provider_error_retains_code_without_changing_message(self):
+        message = 'OpenAI speech-to-text returned incomplete word timestamps'
+        with tempfile.TemporaryDirectory() as temporary:
+            audio_path = Path(temporary) / 'voice.mp3'
+            audio_path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'test-openai'),
+                patch.object(audio_qc.settings, 'gemini_api_key', ''),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(audio_qc, '_verify_with_openai', side_effect=audio_qc.AudioQCError(message)),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError) as caught:
+                    audio_qc.verify_audio_narration(audio_path, 'Beklenen metin')
+        self.assertEqual(str(caught.exception), message)
+        self.assertEqual(audio_qc.audio_qc_provider_diagnostics(caught.exception), [
+            {'provider': 'openai', 'code': 'incomplete_word_timestamps'},
+        ])
+
+    def test_diagnostic_schema_rejects_arbitrary_text_and_extra_fields(self):
+        error = audio_qc.AudioQCError('secret response body', provider_diagnostics=[
+            {'provider': 'openai', 'code': 'http_error', 'http_status': 401,
+             'response_body': 'secret body', 'url': 'https://secret.example/?key=secret'},
+            {'provider': 'gemini', 'code': 'transport_error', 'http_status': True},
+            {'provider': 'elevenlabs', 'code': 'invalid_json', 'http_status': 'secret'},
+        ])
+        self.assertEqual(audio_qc.audio_qc_provider_diagnostics(error), [
+            {'provider': 'openai', 'code': 'http_error', 'http_status': 401},
+            {'provider': 'gemini', 'code': 'transport_error'},
+            {'provider': 'elevenlabs', 'code': 'invalid_json'},
+        ])
+        error.provider_diagnostics = [
+            {'provider': 'secret', 'code': 'http_error'},
+            {'provider': 'openai', 'code': 'secret'},
+            {'provider': ['secret'], 'code': 'invalid_json'},
+        ]
+        self.assertEqual(audio_qc.audio_qc_provider_diagnostics(error), [])
+        error.provider_diagnostics = 'secret'
+        self.assertEqual(audio_qc.audio_qc_provider_diagnostics(error), [])
+
+    def test_unknown_provider_error_becomes_generic_code_not_raw_text(self):
+        diagnostic = audio_qc._provider_error_diagnostic(
+            'openai', audio_qc.AudioQCError('secret key and signed URL')
+        )
+        self.assertEqual(diagnostic, {'provider': 'openai', 'code': 'provider_error'})
+
+
 if __name__ == '__main__':
     unittest.main()

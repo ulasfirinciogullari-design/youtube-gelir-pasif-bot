@@ -33,6 +33,23 @@ STYLE_NOTES = {
 _PRODUCTION_SCENES_PER_MINUTE = 7.0
 _MAX_PRODUCTION_SCENES = 70
 _SHORT_PREVIEW_AI_SCENE_MAX_WORDS = 13
+_MATERIAL_IDENTITY_RULE = (
+    'MATERIAL IDENTITY: distinguish raw ingredients from the finished object '
+    'and its manufacturing structure. A product containing a material is not '
+    'therefore another product commonly made from that material. For example, '
+    'cotton-and-linen currency paper remains paper, not woven cloth or fabric. '
+    'Preserve the exact product category supported by the source; reject a '
+    'catchy ending that silently changes that category or invents a process.'
+)
+_HUMAN_CURIOSITY_RULE = (
+    'HUMAN CURIOSITY: open with a natural question or recognizable human '
+    'situation, then let each beat add a distinct useful detail. The ending '
+    'must answer the opening curiosity, not repeat the introduction in new '
+    'words or append a slogan. Keep routine source attribution in the '
+    'description instead of spoken boilerplate such as "resmi kayıtlara göre" '
+    'or "kaynaklara göre", unless identifying the source is itself necessary '
+    'to understand a disputed claim. Never add filler just to fill the time.'
+)
 
 
 class ImmutableNarrationSceneBudgetError(RuntimeError):
@@ -1084,12 +1101,12 @@ def _target_word_budget(
     calibrated_short_words: int | None = None,
 ) -> tuple[int, int, int]:
     if calibrated_short_words is not None:
-        if duration_minutes != 0.5 or calibrated_short_words != 45:
+        if duration_minutes != 0.5 or calibrated_short_words != 51:
             raise ValueError('Unsupported calibrated narration budget')
-        # The selected Turkish voice delivered 54 words in 35.50 seconds;
-        # its reviewed 45-word edit fills 29.5 seconds at natural speed.
-        # This is a planning budget, not permission to skip the audio gate.
-        return 45, 42, 48
+        # The live 43-word short lasted 25.128s, implying about 50.5 words
+        # for 29.5s. Earlier utterances had a different rate: this is a
+        # planning estimate only. Actual synthesized-audio QC stays required.
+        return 51, 48, 54
     if duration_minutes <= 0.6:
         target = max(52, int(round(duration_minutes * 112)))
     elif duration_minutes <= 1.1:
@@ -1702,6 +1719,8 @@ Each scene must contain exactly:
 narration, visual_queries, ai_prompt, pace, transition.
 
 EDITORIAL QC RULES:
+- {_MATERIAL_IDENTITY_RULE}
+- {_HUMAN_CURIOSITY_RULE}
 - Produce one coherent story. Repair every abrupt subject jump.
 - Treat the complete Topic as a literal production contract. Before returning, silently audit every numbered scene against every explicit positive, negative, routing and continuity constraint in it.
 - Every non-null ai_prompt is a standalone paid-generation instruction. Restate all applicable visible object identity, dimensions, brand state, color, wardrobe, room, lighting, continuity and forbidden elements inside that scene's own prompt, even when this repeats earlier prompts. Never assume a later generation can see an earlier prompt.
@@ -1767,6 +1786,7 @@ def _repair_short_stock_scenes(
     allow_natural_language_repair: bool = True,
     allow_explicit_brief_repair: bool = True,
     allow_legacy_short_budget: bool = True,
+    calibrated_short_words: int | None = None,
 ) -> dict:
     if duration_minutes > 0.6:
         return package
@@ -1846,6 +1866,7 @@ def _repair_short_stock_scenes(
         _target_word_budget(
             duration_minutes,
             allow_legacy_short_lock=allow_legacy_short_budget,
+            calibrated_short_words=calibrated_short_words,
         )
     )
     minimum_scene_words = 5
@@ -2080,6 +2101,8 @@ Return ONLY JSON in exactly this shape:
 
 NON-NEGOTIABLE RULES:
 - {documentary_writer_rule}
+- {_MATERIAL_IDENTITY_RULE}
+- {_HUMAN_CURIOSITY_RULE}
 - Return exactly the requested positions and no others. Never rewrite an accepted locked stock scene or an AI-routed mechanism scene.
 - When a target contains locked_narration, copy that narration exactly, character for character. Repair only visual_queries; never paraphrase, punctuate, pad or otherwise edit the locked spoken text.
 - Preserve every explicit positive, negative, routing and continuity constraint in requested_brief. Never introduce an actor, object, action, setting, screen state or payoff that the brief forbids.
@@ -2383,6 +2406,8 @@ Return ONLY JSON in exactly this shape:
 
 Review the WHOLE story before reviewing individual stock shots. Set each story_review boolean independently and false whenever evidence is ambiguous.
 {documentary_critic_rule}
+- {_MATERIAL_IDENTITY_RULE} A wrong finished-product category fails causal_claim_supported and adds_no_new_fact for the affected scene, even if its ingredient percentages are correct.
+- {_HUMAN_CURIOSITY_RULE} Repeated intro-as-payoff fails one_specific_useful_reveal or hook_payoff_same_promise; unnecessary citation boilerplate fails natural_spoken_language.
 - all_explicit_brief_constraints_preserved: every explicit structural, routing, continuity, required-element and forbidden-element constraint in requested_topic is obeyed by the complete candidate story, including narration, visual queries and ai_prompt routes. False if any explicit constraint is omitted, contradicted or replaced by a generic payoff. A wardrobe, camera or framing constraint is preserved when it is explicit in the applicable visual_queries or ai_prompt; never require production-only metadata to be spoken merely to prove compliance.
 - single_human_situation: the short follows one concrete everyday situation a person can care about.
 - single_central_question: one curiosity or problem is opened and resolved.
@@ -3133,18 +3158,25 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     )
     options = dict(options or package.get('studio_options') or {})
     pace_profile = str(options.get('pace') or 'balanced')
+    production_short_qc = (
+        duration_minutes == 0.5
+        and options.get('mode') == 'production'
+        and options.get('format') == 'shorts'
+    )
+    short_story_qc_required = production_short_qc or (
+        options.get('mode') == 'preview' and duration_minutes <= 0.6
+    )
+    calibrated_short_words = (
+        51
+        if exact_narration is None
+        and production_short_qc
+        and str(language or '').replace('_', '-').casefold().split('-')[0] == 'tr'
+        else None
+    )
     target_words, min_words, max_words = _target_word_budget(
         duration_minutes,
         allow_legacy_short_lock=exact_narration is not None,
-        calibrated_short_words=(
-            45
-            if exact_narration is None
-            and duration_minutes == 0.5
-            and options.get('mode') == 'production'
-            and options.get('format') == 'shorts'
-            and str(language or '').replace('_', '-').casefold().split('-')[0] == 'tr'
-            else None
-        ),
+        calibrated_short_words=calibrated_short_words,
     )
     exact_scene_count = immutable_scene_count is not None
     target_scenes = (
@@ -3184,6 +3216,8 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 'single-pass shot: '
                 + '; '.join(locked_budget_issues)
             )
+        if production_short_qc:
+            raise RuntimeError('Production Short independent story QC requires a configured director')
         return locked_package
     if not scenes:
         if immutable_scene_count is not None:
@@ -3191,6 +3225,8 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 'User-brief scene-count gate rejected an empty package; '
                 f'required exactly {immutable_scene_count}'
             )
+        if production_short_qc:
+            raise RuntimeError('Production Short independent story QC requires a nonempty package')
         return package
 
     client = (
@@ -3330,7 +3366,12 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             f'paid media: {scene_count} scenes; required exactly {target_scenes}'
         )
 
-    if options.get('mode') == 'preview' and duration_minutes <= 0.6:
+    if preview_ai_limit is not None and ai_scene_count > preview_ai_limit:
+        raise RuntimeError(
+            f'Preview AI-scene gate rejected {ai_scene_count} scenes; maximum {preview_ai_limit}'
+        )
+
+    if short_story_qc_required:
         try:
             out = _repair_short_stock_scenes(
                 client,
@@ -3342,6 +3383,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                     options.get('content_style') or 'documentary'
                 ),
                 allow_legacy_short_budget=(exact_narration is not None),
+                calibrated_short_words=calibrated_short_words,
             )
         except _WholeStoryRepairRequired as exc:
             if isinstance(exc, _NaturalSpokenLanguageRepairRequired):
@@ -3461,6 +3503,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 allow_natural_language_repair=False,
                 allow_explicit_brief_repair=False,
                 allow_legacy_short_budget=(exact_narration is not None),
+                calibrated_short_words=calibrated_short_words,
             )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
@@ -3508,7 +3551,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     out['ai_scene_count'] = ai_scene_count
     out['max_ai_scene_count'] = preview_ai_limit
     out['studio_options'] = options
-    if options.get('mode') == 'preview' and duration_minutes <= 0.6:
+    if short_story_qc_required:
         stock_qc = out.get('stock_scene_qc') or {}
         story_review = stock_qc.get('story_review') or {}
         ending_review = stock_qc.get('ending_pair_review') or {}
