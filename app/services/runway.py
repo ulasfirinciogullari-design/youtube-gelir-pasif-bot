@@ -1633,6 +1633,7 @@ def generate_scene(
     prefer_gemini_omni: bool = False,
     continuity_reference_image: object | None = None,
     aspect_ratio: str = '16:9',
+    allow_paid_terminal_resubmit: bool = True,
 ) -> dict:
     prompt_text = str(prompt).strip()
     if not prompt_text:
@@ -1714,6 +1715,14 @@ def generate_scene(
                 # to Fal's accepted request id.
                 if not fal_error_allows_provider_fallback(exc):
                     raise
+                if (
+                    not allow_paid_terminal_resubmit
+                    and str(getattr(exc, 'request_id', '') or '').strip()
+                ):
+                    # A request id proves Fal accepted a potentially billable
+                    # operation. The exact-preview slot cannot start another
+                    # provider after that terminal result.
+                    raise
                 fal_fallback_from = 'fal_seedance_2_fast'
 
         def generate_with_gemini_model(
@@ -1746,6 +1755,8 @@ def generate_scene(
                 except GeminiVideoTerminalError:
                     # The provider explicitly completed the operation with an
                     # error, so a single resubmission is not ambiguous.
+                    if not allow_paid_terminal_resubmit:
+                        raise
                     provider_attempts = 2
                     video_uri = (
                         _generate_gemini_video_uri(*call_args)

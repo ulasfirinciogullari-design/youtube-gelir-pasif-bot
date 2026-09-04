@@ -46,6 +46,7 @@ from app.services.studio_state import (
     acquire_retry_child_execution,
     mark_failure,
     mark_success,
+    paid_create_budget_state,
     save_repair_checkpoint,
     set_stage,
     update_job,
@@ -62,6 +63,7 @@ from app.services.visual_identity import manufactured_replica_guardrail
 from app.services.visual_routing import (
     preview_paid_ai_limit,
     preview_runway_repair_indices,
+    preview_total_paid_create_cap,
     should_rank_runway_candidate,
 )
 
@@ -962,9 +964,64 @@ _MANUAL_QA_CLEAR_VISUAL_FIELDS = (
     'prominent_readable_text_or_logo_visible',
     'major_visual_artifact_visible',
     'effectively_static_or_frozen',
+    'substantially_repeats_adjacent_scene',
     'authored_identity_or_material_conflict_visible',
 )
 _TRANSIENT_PEXELS_HTTP_STATUS_CODES = {408, 425, 429}
+
+
+def _persisted_paid_create_slots(
+    task_id: str,
+    cap: int,
+    *,
+    reserve: bool = False,
+) -> int:
+    try:
+        return paid_create_budget_state(task_id, cap, reserve=reserve)['used']
+    except Exception as exc:
+        raise FinalVisualQualityError(
+            'Short-preview paid-create budget could not be reserved or '
+            'verified; no new generation was submitted'
+        ) from exc
+
+
+def _reserve_paid_create_slot(
+    used: int,
+    cap: int | None,
+    *,
+    task_id: str,
+) -> int:
+    """Conservatively reserve one paid create before contacting a provider."""
+    if cap is not None:
+        return _persisted_paid_create_slots(task_id, cap, reserve=True)
+    reserved = max(0, int(used))
+    return reserved + 1
+
+
+def _validate_paid_create_allocation(
+    selected_candidates: list[dict],
+    recovered_generated_media: dict | None,
+    cap: int | None,
+    *,
+    paid_slots_used: int = 0,
+) -> None:
+    """Limit new creates while permitting reuse of already-paid clips."""
+    if cap is None:
+        return
+    recovered_scenes = (
+        recovered_generated_media['scenes']
+        if recovered_generated_media
+        else {}
+    )
+    new_creates = sum(
+        not bool(recovered_scenes.get(int(candidate['scene_index'])))
+        for candidate in selected_candidates
+    )
+    if new_creates > max(0, cap - paid_slots_used):
+        raise FinalVisualQualityError(
+            'Short-preview paid media allocation exceeds the job-wide '
+            'paid-create cap before any submission'
+        )
 
 
 def _short_preview_voice_duration_qc(
@@ -1832,6 +1889,16 @@ def _manual_qa_preview_passes(
         or type(quality_threshold) is not int
         or quality_threshold != MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
     ):
+        return False
+    if isinstance(visual_spec, dict) and (
+        visual_spec.get('synthetic_motion_only') is True
+        or str(
+            visual_spec.get('generation_provider') or ''
+        ).strip().casefold() == 'gemini_image_motion'
+    ):
+        # A generated still with a deterministic pan/zoom is useful only as a
+        # placeholder.  It cannot use the private manual-QA score exception to
+        # survive into a result that the quality loop treats as reviewable.
         return False
     source_type = _manual_qa_visual_source_type(visual_spec)
     if source_type is None:
@@ -3188,6 +3255,9 @@ def run_video_pipeline(
     work.mkdir(parents=True, exist_ok=True)
     update_job(task_id, kind='render', spec=_task_spec(topic, duration_minutes, language, channel_id, options))
     runway_attempts = 0
+    total_paid_create_cap = preview_total_paid_create_cap(
+        options, duration_minutes,
+    )
     final_runway_repair_attempts = 0
     final_runway_repair_scenes: list[int] = []
     final_runway_repair_failures: list[int] = []
@@ -3196,6 +3266,10 @@ def run_video_pipeline(
     staged_voice_contract: dict | None = None
 
     try:
+        if total_paid_create_cap is not None:
+            runway_attempts = _persisted_paid_create_slots(
+                task_id, total_paid_create_cap,
+            )
         package = _prepare_package(self, task_id, topic, duration_minutes, language, options, approved_package)
         raw_recovered_generated_media = package.pop(
             '_recovered_generated_media',
@@ -3717,6 +3791,11 @@ def run_video_pipeline(
         generated_video_provider_records: list[dict] = []
         runway_scenes_used = 0
         runway_submission_cap = _max_runway_scenes(options, len(scenes), duration_minutes)
+        if total_paid_create_cap is not None:
+            runway_submission_cap = min(
+                runway_submission_cap,
+                total_paid_create_cap,
+            )
 
         # Score the exact clips selected after stock retries. Paid Runway slots
         # are ranked by current evidence, never scene order or stale scores.
@@ -4410,6 +4489,12 @@ def run_video_pipeline(
                 selected_runway,
                 key=lambda item: int(item['scene_index']),
             )
+        _validate_paid_create_allocation(
+            selected_runway,
+            recovered_generated_media,
+            total_paid_create_cap,
+            paid_slots_used=runway_attempts,
+        )
         selected_runway_indices = {item['scene_index'] for item in selected_runway}
         runway_rank = {
             item['scene_index']: position + 1
@@ -4597,7 +4682,11 @@ def run_video_pipeline(
                     'Recovered generated-media scene is unavailable'
                 )
 
-            runway_attempts += 1
+            runway_attempts = _reserve_paid_create_slot(
+                runway_attempts,
+                total_paid_create_cap,
+                task_id=task_id,
+            )
             try:
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
@@ -4617,7 +4706,10 @@ def run_video_pipeline(
                 generated_scene = generate_scene(
                     prompt_candidates[scene_idx],
                     duration=generation_seconds,
-                    allow_image_motion=is_private_image_motion_preview,
+                    allow_image_motion=(
+                        total_paid_create_cap is None
+                        and is_private_image_motion_preview
+                    ),
                     image_prompt=_image_motion_prompt_for_scene(
                         scenes[scene_idx],
                         current_reviews.get(scene_idx),
@@ -4630,6 +4722,9 @@ def run_video_pipeline(
                         scene_continuity_reference
                     ),
                     aspect_ratio=generation_aspect_ratio,
+                    allow_paid_terminal_resubmit=(
+                        total_paid_create_cap is None
+                    ),
                 )
                 if generated_scene.get('provider') == 'gemini_image_motion':
                     # Record the paid image submission before any local
@@ -5027,6 +5122,7 @@ def run_video_pipeline(
                 exact_revalidation_scene_indices=(
                     terminal_manual_qa_failure_scene_indices
                 ),
+                paid_create_attempts=runway_attempts,
             )
         )
         final_runway_repair_candidates = [
@@ -5069,7 +5165,11 @@ def run_video_pipeline(
             if not repair_prompt:
                 continue
             final_runway_repair_attempts += 1
-            runway_attempts += 1
+            runway_attempts = _reserve_paid_create_slot(
+                runway_attempts,
+                total_paid_create_cap,
+                task_id=task_id,
+            )
             try:
                 generation_seconds = _runway_generation_seconds(
                     scene_durations[scene_idx]
@@ -5090,7 +5190,8 @@ def run_video_pipeline(
                     repair_prompt,
                     duration=generation_seconds,
                     allow_image_motion=(
-                        is_private_image_motion_preview
+                        total_paid_create_cap is None
+                        and is_private_image_motion_preview
                         and scene_idx not in image_motion_submission_scenes
                     ),
                     image_prompt=_image_motion_prompt_for_scene(
@@ -5105,6 +5206,9 @@ def run_video_pipeline(
                         scene_continuity_reference
                     ),
                     aspect_ratio=generation_aspect_ratio,
+                    allow_paid_terminal_resubmit=(
+                        total_paid_create_cap is None
+                    ),
                 )
                 if repair_scene.get('provider') == 'gemini_image_motion':
                     image_motion_submission_scenes.add(scene_idx)
@@ -5591,6 +5695,14 @@ def run_video_pipeline(
             upload_file(rendered['srt'], caption_key, 'application/x-subrip')
             caption_url = presigned_download_url(caption_key, 86400)
 
+        paid_create_slots_used = (
+            runway_attempts if total_paid_create_cap is not None else None
+        )
+        paid_create_slots_remaining = (
+            max(0, total_paid_create_cap - runway_attempts)
+            if total_paid_create_cap is not None
+            else None
+        )
         metadata_key = f'videos/{task_id}/metadata.json'
         meta_path = work / 'metadata.json'
         meta_path.write_text(json.dumps({
@@ -5661,6 +5773,9 @@ def run_video_pipeline(
             'audio_prosody_qc': audio_prosody_qc,
             'audio_design': audio_design,
             'stock_credits': credits,
+            'preview_total_paid_create_cap': total_paid_create_cap,
+            'paid_create_slots_used': paid_create_slots_used,
+            'paid_create_slots_remaining': paid_create_slots_remaining,
             'runway_submission_cap': runway_submission_cap,
             'runway_required_submission_cap': (
                 runway_required_submission_cap
@@ -5746,6 +5861,9 @@ def run_video_pipeline(
             'publish_quality_threshold': (
                 MANUAL_QA_PUBLISH_QUALITY_THRESHOLD
             ),
+            'preview_total_paid_create_cap': total_paid_create_cap,
+            'paid_create_slots_used': paid_create_slots_used,
+            'paid_create_slots_remaining': paid_create_slots_remaining,
             'runway_submission_cap': runway_submission_cap,
             'runway_required_submission_cap': (
                 runway_required_submission_cap
@@ -5821,6 +5939,15 @@ def run_video_pipeline(
         _queue_automatic_publish_if_enabled(task_id, options)
         return result
     except Exception as exc:
+        if total_paid_create_cap is not None:
+            try:
+                # Refresh the public failure count from the authoritative
+                # ledger, including an ambiguous reservation response.
+                runway_attempts = _persisted_paid_create_slots(
+                    task_id, total_paid_create_cap,
+                )
+            except FinalVisualQualityError:
+                pass
         terminal_pre_media_error = isinstance(
             exc,
             (

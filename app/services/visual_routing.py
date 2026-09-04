@@ -4,6 +4,7 @@ from __future__ import annotations
 SHORT_PREVIEW_RUNWAY_CAP = 4
 SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP = 6
 SHORT_PREVIEW_RUNWAY_REPAIR_CAP = 2
+SHORT_PREVIEW_TOTAL_PAID_CREATE_CAP = 2
 
 # The director strips model-authored scene metadata before applying these
 # private routing markers. Downstream visual QC may therefore use the exact
@@ -11,6 +12,16 @@ SHORT_PREVIEW_RUNWAY_REPAIR_CAP = 2
 # trusting a generation prompt.
 SERVER_SHORT_PROXY_KIND_FIELD = '_server_short_proxy_kind'
 OPEN_AIR_COOLING_PROXY_KIND = 'open_air_cooling'
+
+
+def preview_total_paid_create_cap(
+    options: dict,
+    duration_minutes: float,
+) -> int | None:
+    """Return the job-wide paid-create cap for an exact 30-second preview."""
+    if options.get('mode') != 'preview' or duration_minutes != 0.5:
+        return None
+    return SHORT_PREVIEW_TOTAL_PAID_CREATE_CAP
 
 
 def routed_open_air_cooling_temporal_required(scene: dict) -> bool:
@@ -51,6 +62,9 @@ def preview_paid_ai_limit(
         if mix == 'ai_first'
         else SHORT_PREVIEW_RUNWAY_CAP
     )
+    total_cap = preview_total_paid_create_cap(options, duration_minutes)
+    if total_cap is not None:
+        cap = min(cap, total_cap)
     return min(cap, scene_count)
 
 
@@ -83,6 +97,7 @@ def preview_runway_repair_indices(
     final_reviews: dict[int, dict],
     *,
     exact_revalidation_scene_indices: set[int] | list[int] | None = None,
+    paid_create_attempts: int = 0,
 ) -> list[int]:
     """Select a bounded set of evidence-led final repairs.
 
@@ -124,5 +139,14 @@ def preview_runway_repair_indices(
         int((final_reviews.get(index) or {}).get('score', 0)),
         index,
     ))
-    return eligible[:SHORT_PREVIEW_RUNWAY_REPAIR_CAP]
+    repair_cap = SHORT_PREVIEW_RUNWAY_REPAIR_CAP
+    total_cap = preview_total_paid_create_cap(options, duration_minutes)
+    if total_cap is not None:
+        used = (
+            paid_create_attempts
+            if type(paid_create_attempts) is int
+            else total_cap
+        )
+        repair_cap = min(repair_cap, max(0, total_cap - max(0, used)))
+    return eligible[:repair_cap]
 

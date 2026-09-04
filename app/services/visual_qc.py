@@ -107,6 +107,7 @@ _MANUAL_QA_VISUAL_BOOLEAN_FIELDS = (
     'prominent_readable_text_or_logo_visible',
     'major_visual_artifact_visible',
     'effectively_static_or_frozen',
+    'substantially_repeats_adjacent_scene',
 )
 
 _IDENTITY_BOOLEAN_FIELDS = (
@@ -123,6 +124,20 @@ _CONNECTION_ACTION_PATTERN = re.compile(
     r'kemer(?:i|ini)?)\b.{0,48}\b(?:tak(?:ıyor|iyor|mak|ar|tı|ti|ıl|il)|'
     r'sok(?:uyor|mak|ar|tu|ul)|bağla(?:r|mak|dı|nıyor)?|'
     r'yerleştir(?:iyor|mek|ir|di)?|kilitle(?:r|mek|di|niyor)?)\b',
+    flags=re.IGNORECASE,
+)
+
+# A visible removal promise in the locked narration is a temporal contract,
+# not a judgment the multimodal critic may opt out of.  Keep this deliberately
+# narrower than a raw stem match so nouns such as ``silgi`` (eraser) or a
+# static mention of cleaning do not invent an action gate.
+_STATE_CHANGE_ACTION_PATTERN = re.compile(
+    r'\b(?:eras(?:e|es|ed|ing)|remov(?:e|es|ed|ing)|'
+    r'wip(?:e|es|ed|ing)|clear(?:s|ed|ing)|clean(?:s|ed|ing)|'
+    r'disappear(?:s|ed|ing)?|vanish(?:es|ed|ing)?)\b|'
+    r'\bsil(?:er|iyor|di|miş|mek|me|erek|ince|ip|inir|indi|inmiş|inerek)\w*\b|'
+    r'\bkaldır\w*\b|\bkaybol\w*\b|\byok\s+ol\w*\b|'
+    r'\btemizle\w*\b|\btemizlen\w*\b',
     flags=re.IGNORECASE,
 )
 
@@ -241,8 +256,9 @@ _GLOBAL_RECURRING_IDENTITY_PATTERN = re.compile(
 _RECURRING_IDENTITY_NOUN = (
     r'(?:person|woman|man|child|hand|face|character|host|phone|device|'
     r'object|subject|toy|dragon|figurine|doll|vehicle|car|ship|container|'
+    r'eraser|rubber|'
     r'kişi|kadın|erkek|çocuk|el|yüz|karakter|sunucu|telefon|cihaz|nesne|'
-    r'oyuncak|ejderha|figür|bebek|araç|araba|gemi|konteyner|parça)\w*'
+    r'oyuncak|ejderha|figür|bebek|araç|araba|gemi|konteyner|parça|silgi)\w*'
 )
 _LOCAL_RECURRING_IDENTITY_PATTERN = re.compile(
     rf'\b(?:same|identical|recurring|aynı)\b.{{0,100}}\b'
@@ -319,6 +335,24 @@ def _connection_action_required(scene: dict) -> bool:
     # plug-in event creates a false hard gate.
     narration = str(scene.get('narration') or '')
     return bool(_CONNECTION_ACTION_PATTERN.search(narration))
+
+
+def _state_change_required(scene: dict) -> bool:
+    """Require before/action/after proof for narrated erasure or removal."""
+    narration = str(scene.get('narration') or '')
+    # Negated actions are not promises of disappearance. Keep affirmative
+    # actions elsewhere in the same sentence available to the temporal gate.
+    narration = re.sub(
+        r"\b(?:do(?:es)? not|did not|cannot|can't|don't|doesn't|didn't|"
+        r"is not|isn't|never|without)\s+(?:(?:fully|completely|actually)\s+)?"
+        r'(?:eras\w*|remov\w*|wip\w*|clear\w*|clean\w*|disappear\w*|vanish\w*)\b|'
+        r'\b(?:sil|silin|kaldır|kaybol|temizle|temizlen|yok\s+ol)'
+        r'(?:meden|madan|mez\w*|maz\w*|medi\w*|madı\w*|memiş\w*|mamış\w*|m[ıiuü]yor\w*|mey\w*|may\w*)\b',
+        '',
+        narration,
+        flags=re.IGNORECASE,
+    )
+    return bool(_STATE_CHANGE_ACTION_PATTERN.search(narration))
 
 
 def _recurring_identity_required_indices(
@@ -559,6 +593,11 @@ def _hard_gate_diagnostics(review: dict) -> list[str]:
         failures.append('a major visual artifact is visible')
     if review.get('effectively_static_or_frozen') is True:
         failures.append('the selected clip is effectively static or frozen')
+    if review.get('substantially_repeats_adjacent_scene') is True:
+        failures.append(
+            'the scene substantially repeats an adjacent shot without a new '
+            'causal beat'
+        )
 
     if (
         not failures
@@ -592,6 +631,7 @@ def _normalized_evidence(
     connection_required: bool = False,
     thermal_required: bool = False,
     cooling_temporal_required: bool = False,
+    state_change_required: bool = False,
     recurring_identity_required: bool = False,
 ) -> tuple[dict, bool] | None:
     values = {field: review.get(field) for field in _EVIDENCE_BOOLEAN_FIELDS}
@@ -613,7 +653,8 @@ def _normalized_evidence(
         thermal_required or cooling_temporal_required
     )
     state_change_applicable = bool(
-        cooling_temporal_required
+        state_change_required
+        or cooling_temporal_required
         or values['state_change_applicable']
     )
     recurring_identity_applicable = bool(recurring_identity_required)
@@ -1285,6 +1326,7 @@ def review_scene_visuals(
             'Generic, metaphorically loose or keyword-only footage must score poorly. The named subject and the spoken action must both be visible. '
             'Treat explicit indoor/outdoor state, destination type, viewpoint and direction of travel as literal requirements; a station, mall or transit concourse cannot substitute for an exterior office approach. '
             'For any physical cause such as cover, block, press, insert, unplug, remove or reveal, require timestamped visual proof of the target before contact, real contact or occlusion at the named target, and the result only after that contact. A hand merely near, below or beside the target fails. '
+            'For every scene ID in the server-authored STATE_CHANGE_REQUIRED_SCENE_IDS list, set state_change_applicable=true and require ordered before, action/contact and after evidence. Require only the degree of change explicitly claimed by the narration, and require that result to persist. If complete removal or disappearance is promised, a residual line, streak, stain or mark fails. Partial erasing, lightening or correction does not require a blank surface. A negated action or a question is not a promise that the whole subject disappears. '
             'For every narrated insertion, fastening, latching, plugging, buckling or attachment, set connection_action_applicable=true. The distinct moving connector and the receiving interface must both be visibly identifiable before contact; their actual joining must remain visible, and the completed connection must persist after the hand releases. A loose strap, cable, cover, hand or blur hiding the interface is not proof and must fail. '
             'Set connection_action_applicable=true only when the narration explicitly describes the connector being inserted, plugged, attached, fastened, buckled, latched or connected during this shot. A device that is already charging, charged, plugged in or connected describes a state, not a new connection action; do not infer a plug-in event from a visible cable, visual query or AI prompt. '
             'Set thermal_claim_applicable=true only for scene IDs in either the server-authored THERMAL_EVIDENCE_REQUIRED_SCENE_IDS or OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS list. In an ordered story, one strong mechanism shot can establish thermal evidence for nearby hook, consequence and action shots; do not demand a thermal overlay on every mention of heat or temperature unless the server separately marks that scene as a routed open-air cooling proof. For a required scene, set thermal_evidence_visible=true only when the named subject itself has visible heat evidence, such as a clear thermal-camera heat distribution or another unambiguous visual representation of heat on that subject. A charging cable, charging icon, ordinary warm lighting or narration alone is not heat evidence. Use this thermal gate, not connector/contact fields, for a device already charging and producing heat. '
@@ -1298,18 +1340,19 @@ def review_scene_visuals(
             'For each scene set authored_identity_or_material_conflict_visible=true when the visible subject contradicts the authored identity or material. A natural, live, dead or biological animal can never substitute for an authored toy, Lego piece, model, figurine, doll or replica. Photoreal organic tissue, wet flesh, pores, gills or other lifelike biological anatomy are conflict evidence. Do not treat clearly molded, painted, sewn or deliberately stylized toy eyes, limbs, suckers or surface texture as biological conflict. '
             'For a scene listed in the server-authored MANUFACTURED_REPLICA_REQUIRED_SCENE_IDS, set manufactured_object_cues_visible=true only when at least two unmistakable manufactured cues suited to the authored material are visible, such as an injection-molded or painted surface, simplified geometry, seams, studs, part edges, woven fabric, plush pile or stitching. If conflict is visible, or a required replica lacks those cues, score 40 or lower. For other scenes report both booleans without inventing a replica requirement. '
             'Compare the complete ordered sequence for cross-scene continuity: the same recurring person or object, physical attributes, wardrobe, location, lighting and adjacent action handoff must remain compatible. '
+            'Set substantially_repeats_adjacent_scene=true when this scene and either adjacent scene repeat substantially the same action, framing or shot grammar without adding a distinct causal step, visible result or new story information. A legitimate before-contact-result continuation is not repetition when each scene visibly advances a different beat. Any substantial adjacent repetition must score 40 or lower. '
             'For every scene ID in the server-authored RECURRING_IDENTITY_CONTINUITY_REQUIRED_SCENE_IDS list, set recurring_identity_continuity_applicable=true. Set recurring_identity_continuity_matches=true only when the recurring person or object visibly preserves its distinctive geometry, proportions, material, color, markings, wear, face or wardrobe across the other supplied required scenes. Merely showing another item from the same category is a failure. A narrated change of time or location is allowed and must not be mistaken for an identity change. If the recurring identity changes or cannot be compared, score 40 or lower. '
             'A locally relevant candidate that omits or contradicts an explicit visual constraint, or breaks required cross-scene continuity, must score 40 or lower. '
             'Never approve digital glitch/noise for OLED pixels, programming tracebacks for QR error correction, fireworks for camera burst, finance charts for audio codecs, a skyline for network optimization, random typing for encryption, or unrelated towers for indoor GPS. '
             'Only a candidate whose exact scene_index and candidate_index pair appears in the server-authored TRUSTED_IMAGE_MOTION_PROFILE_ALLOWLIST appended to this instruction may use the following rule. For that exact candidate only, a materially changing monotonic documentary camera push and pan across the sampled moments counts as clip motion; do not mark it frozen solely because the underlying subject pose is fixed. Such a candidate may score 60 through 85 only when the named subject and narrated action are unambiguous in the decisive authored still and every evidence and editorial gate passes. Never infer physical causality, a connection, a state change, or native object motion from camera movement. If its framing barely changes, mark it effectively static and score 40 or lower. '
             'If the sampled moments are nearly identical, the clip is effectively static; any shot likely to remain static for more than six seconds must score 40 or lower. '
-            'Set prominent_readable_text_or_logo_visible=true for any prominent readable text, watermark or logo. Set major_visual_artifact_visible=true for warped anatomy, object morphing, broken physics, severe flicker or another major generation/edit artifact. Set effectively_static_or_frozen=true when the selected clip is effectively a still or frozen shot. If any of these three fields is true, the score must be 40 or lower. '
+            'Set prominent_readable_text_or_logo_visible=true for any prominent readable text, watermark or logo. Set major_visual_artifact_visible=true for warped anatomy, object morphing, broken physics, severe flicker or another major generation/edit artifact. Residue, debris and fragments must be physically plausible by-products of the named contact and visibly match the named material; wood pencil shavings during rubber erasing, or large intact fragments appearing from nowhere, are major artifacts. Set effectively_static_or_frozen=true when the selected clip is effectively a still or frozen shot. If any manual-QA visual flag is true, the score must be 40 or lower. '
             'The score and reason must agree. A score of 40 or lower is a hard rejection: its reason must name at least one concrete visible failure and must not claim that the candidate matches, aligns with, satisfies or fulfills the prompt, narration, scene or requirements. If a hard gate forces the score to 40 or lower, explicitly name that failed gate in the reason. '
             'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
             'Each retry query must describe only the desired replacement shot and explicitly correct every visibly failed authored attribute that applies: subject identity, physical scale or quantity, age or condition, material, color or shape, setting or surface, and physical action; never include meta-instructions. '
             'For a text, logo, watermark or interface failure, describe only the clean replacement shot; never transcribe or name the visible platform, handle, username, badge or interface control in a retry query. '
             'Every review object must include both authored_identity_or_material_conflict_visible and manufactured_object_cues_visible as booleans. '
-            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"thermal_claim_applicable\":false,\"thermal_evidence_visible\":false,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"recurring_identity_continuity_applicable\":false,\"recurring_identity_continuity_matches\":false,\"prominent_readable_text_or_logo_visible\":false,\"major_visual_artifact_visible\":false,\"effectively_static_or_frozen\":false,\"authored_identity_or_material_conflict_visible\":false,\"manufactured_object_cues_visible\":false,\"evidence_moment_indices\":[0]}]}'
+            'Return ONLY JSON: {\"reviews\":[{\"scene_index\":0,\"best_candidate_index\":0,\"best_moment_index\":0,\"score\":0,\"reason\":\"...\",\"retry_queries\":[\"...\",\"...\"],\"subject_visible\":true,\"spoken_action_visible\":true,\"thermal_claim_applicable\":false,\"thermal_evidence_visible\":false,\"physical_causality_applicable\":false,\"target_contact_visible\":false,\"connection_action_applicable\":false,\"moving_connector_visible\":false,\"receiving_interface_visible\":false,\"connector_visibly_joins_target\":false,\"connection_persists_after_release\":false,\"state_change_applicable\":false,\"state_changed_after_action\":false,\"final_state_persists\":false,\"unexplained_reset\":false,\"location_continuity_applicable\":false,\"location_continuity_matches\":false,\"recurring_identity_continuity_applicable\":false,\"recurring_identity_continuity_matches\":false,\"prominent_readable_text_or_logo_visible\":false,\"major_visual_artifact_visible\":false,\"effectively_static_or_frozen\":false,\"substantially_repeats_adjacent_scene\":false,\"authored_identity_or_material_conflict_visible\":false,\"manufactured_object_cues_visible\":false,\"evidence_moment_indices\":[0]}]}'
         ),
     }]
     gemini_parts: list[dict] = []
@@ -1321,6 +1364,7 @@ def review_scene_visuals(
     manufactured_replica_required_indices: list[int] = []
     thermal_evidence_required_indices: list[int] = []
     cooling_temporal_required_indices: list[int] = []
+    state_change_required_indices: list[int] = []
     recurring_identity_required_indices = (
         _recurring_identity_required_indices(
             scenes,
@@ -1455,6 +1499,8 @@ def review_scene_visuals(
                 thermal_evidence_required_indices.append(idx)
             if routed_open_air_cooling_temporal_required(scene):
                 cooling_temporal_required_indices.append(idx)
+            if _state_change_required(scene):
+                state_change_required_indices.append(idx)
             available_moments[idx] = scene_available_moments
             content.extend(scene_content)
             gemini_parts.extend(scene_gemini_parts)
@@ -1519,6 +1565,11 @@ def review_scene_visuals(
         'OPEN_AIR_COOLING_TEMPORAL_REQUIRED_SCENE_IDS: '
         + json.dumps(
             cooling_temporal_required_indices,
+            separators=(',', ':'),
+        )
+        + '\n\nSERVER-AUTHORED STATE_CHANGE_REQUIRED_SCENE_IDS: '
+        + json.dumps(
+            state_change_required_indices,
             separators=(',', ':'),
         )
         + '\n\nSERVER-AUTHORED '
@@ -1668,6 +1719,9 @@ def review_scene_visuals(
                         scenes[scene_index]
                     )
                 ),
+                state_change_required=_state_change_required(
+                    scenes[scene_index]
+                ),
                 recurring_identity_required=(
                     scene_index in recurring_identity_required_indices
                 ),
@@ -1754,6 +1808,9 @@ def review_scene_visuals(
                 routed_open_air_cooling_temporal_required(
                     scenes[scene_index]
                 )
+            ),
+            state_change_required=_state_change_required(
+                scenes[scene_index]
             ),
             recurring_identity_required=(
                 scene_index in recurring_identity_required_indices
