@@ -3096,6 +3096,9 @@ def _review_stock_tournament_round(
     work: Path,
     round_index: int,
     topic: str,
+    *,
+    content_style: str = '',
+    evidence_sources: list[dict] | None = None,
 ) -> dict[int, dict]:
     """Review independent stock scenes concurrently in bounded requests."""
     if len(active_scenes) != len(round_visuals):
@@ -3117,6 +3120,8 @@ def _review_stock_tournament_round(
             topic=topic,
             story_scenes=scenes,
             gemini_model_override=STOCK_TOURNAMENT_GEMINI_MODEL,
+            content_style=content_style,
+            evidence_sources=evidence_sources,
         )
         local_reviews = {
             int(review.get('scene_index')): review
@@ -3880,6 +3885,8 @@ def run_video_pipeline(
             len(scenes),
             topic=topic,
             story_scenes=scenes,
+            content_style=options.get('content_style', ''),
+            evidence_sources=package.get('sources') or [],
         )
         current_reviews = {
             int(review.get('scene_index')): review
@@ -4086,6 +4093,8 @@ def run_video_pipeline(
                     work / f'pre_runway_stock_tournament_{round_index}',
                     round_index,
                     topic,
+                    content_style=options.get('content_style', ''),
+                    evidence_sources=package.get('sources') or [],
                 )
 
                 for position, scene_idx in enumerate(active_scenes):
@@ -4407,6 +4416,8 @@ def run_video_pipeline(
                     len(budget_rescued_scenes),
                     topic=topic,
                     story_scenes=scenes,
+                    content_style=options.get('content_style', ''),
+                    evidence_sources=package.get('sources') or [],
                 )
                 budget_reviews = {
                     int(review.get('scene_index')): review
@@ -4953,6 +4964,8 @@ def run_video_pipeline(
             len(scenes),
             topic=topic,
             story_scenes=scenes,
+            content_style=options.get('content_style', ''),
+            evidence_sources=package.get('sources') or [],
         )
         final_reviews = {
             int(r.get('scene_index')): r
@@ -5043,6 +5056,8 @@ def run_video_pipeline(
                 _missing_review_attempts=0,
                 topic=topic,
                 story_scenes=scenes,
+                content_style=options.get('content_style', ''),
+                evidence_sources=package.get('sources') or [],
             )
             for local_review in adjudication_qc.get('reviews') or []:
                 if not isinstance(local_review, dict):
@@ -5464,6 +5479,8 @@ def run_video_pipeline(
                 len(rescued_final_scenes),
                 topic=topic,
                 story_scenes=scenes,
+                content_style=options.get('content_style', ''),
+                evidence_sources=package.get('sources') or [],
             )
             rescue_reviews = {
                 int(r.get('scene_index')): r

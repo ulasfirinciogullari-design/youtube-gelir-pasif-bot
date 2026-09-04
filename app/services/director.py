@@ -1484,6 +1484,34 @@ def _apply_short_preview_concrete_proxy_routes(
     return out
 
 
+def _documentary_broll_writer_rule(content_style: str) -> str:
+    if str(content_style or 'documentary').strip().casefold() != 'documentary':
+        return (
+            'NO DOCUMENTARY B-ROLL EXCEPTION: every spoken claim must be '
+            'directly visible in the same stock clip.'
+        )
+    return (
+        'DOCUMENTARY B-ROLL EXCEPTION: verified historical dates, elapsed '
+        'durations and scale facts such as counts, capacities, totals or '
+        'material-composition percentages may remain in voice-over '
+        'without making the numeral readable in the clip. The supplied '
+        'source evidence must explicitly support the exact fact, including '
+        'the named material and percentage for a composition claim. Each '
+        'query must honestly illustrate the same named subject when '
+        'available, otherwise the same specific object class, activity and '
+        'relevant setting. The clip illustrates the sourced fact; it does '
+        'not prove a percentage or material composition through appearance. '
+        'Modern establishing footage may illustrate a still-existing '
+        'subject, but it must not masquerade as archive footage of a past '
+        'event. This narrow exception never covers an unsupported claim, '
+        'prediction, causal or technical mechanism, contradiction, wrong '
+        'subject or era, or generic wallpaper footage. A sourced composition '
+        'fact does not establish a claimed effect on durability, strength '
+        'or performance; any such causal demonstration still needs its '
+        'own source support and visible evidence.'
+    )
+
+
 def _run_director(
     client: OpenAI,
     compact: dict,
@@ -1506,6 +1534,7 @@ def _run_director(
     short_quota_note = ''
     short_visual_note = ''
     short_language_note = ''
+    documentary_rule = _documentary_broll_writer_rule(style)
     if duration_minutes <= 0.6 and target_scenes > 0:
         authored_ai_limit = preview_authored_ai_limit(
             options,
@@ -1562,9 +1591,9 @@ def _run_director(
             'even when it also carries a fallback ai_prompt for uncertain stock coverage. '
             'The penultimate action and visible payoff must happen seconds apart to the same person or object in the SAME named ordinary micro-location, '
             'such as the same café counter, desk or doorway. Repeat that location phrase in both scenes; never jump between home, store, street, a new room or a later time. '
-            'Every ai_prompt-null scene must be fully provable by one ordinary stock clip; if all named nouns and actions are unlikely to coexist in that clip, '
+            'Except only for the active sourced documentary B-roll exception below, every ai_prompt-null scene must be fully provable by one ordinary stock clip; if all named nouns and actions are unlikely to coexist in that clip, '
             'rewrite the narration and its queries before returning. '
-            'Every spoken clause in an ai_prompt-null scene must be literally visible in that same clip; never append abstract phrases such as magic happening, '
+            'Except only for that narrow sourced documentary fact, every spoken clause in an ai_prompt-null scene must be literally visible in that same clip; never append abstract phrases such as magic happening, '
             'more working than the viewer can see, hidden systems or silent partners. '
             'A causal sentence about a phone battery producing heat, a pillow trapping heat, heat accelerating battery aging, or an exposed phone dissipating heat is NOT stock-safe merely because a phone or pillow appears. '
             'Give that sentence a non-null ai_prompt with a concrete thermal-camera, physical cutaway, or time-compression proxy that visibly preserves the exact phone, cause, changed result, and established setting. '
@@ -1581,6 +1610,7 @@ def _run_director(
                 f'At most {authored_ai_limit} scenes may have a non-null ai_prompt, including all fallback candidates. '
                 f'The entire video has only {paid_dependency_limit} paid generation slots, shared with any repairs. '
                 'Every other scene MUST use ai_prompt null and show one ordinary stock-filmable action. '
+                'The active sourced documentary B-roll exception also qualifies when its exact subject and source requirements are met. '
                 'Choose a story whose visual proof fits that budget; rewrite excess AI-dependent scenes and their narration '
                 'into honest stock-filmable beats, never merely erase a required AI prompt. '
             )
@@ -1652,6 +1682,7 @@ Requested duration: {duration_minutes} minutes.
 Studio style: {STYLE_NOTES.get(style, STYLE_NOTES['documentary'])}
 Studio pace profile: {pace_profile}
 Studio visual mix: {visual_mix}
+{documentary_rule}
 {reference_note}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_quota_note}
@@ -1682,20 +1713,20 @@ EDITORIAL QC RULES:
 - In Turkish narration, reject translated energy or geometry as a grammatical agent. Prefer a natural condition such as hot air remaining trapped and the fan then speeding up or slowing down.
 - Do not verbalize production-only wardrobe, color-continuity, camera-direction, shot-size, face-visibility or framing notes. Preserve those requirements in visual_queries or ai_prompt instead; narration should contain them only when they change the story's human meaning.
 - Each scene contains one complete thought that can remain under one excellent hero visual.
-- Never make an ai_prompt-null scene recap several earlier mechanisms or invisible abstractions; it must narrate one visible subject performing one visible action in one ordinary location.
-- Every clause of every ai_prompt-null narration must be directly visible in that one clip; remove magic-like hooks, hidden-system claims and spoken conclusions.
+- Never make an ai_prompt-null scene recap several earlier mechanisms or invisible abstractions; it must narrate one visible subject performing one visible action in one ordinary location, or illustrate one exactly sourced fact allowed by the active documentary B-roll exception.
+- Except only for that narrow sourced documentary fact, every clause of every ai_prompt-null narration must be directly visible in that one clip; remove magic-like hooks, hidden-system claims and spoken conclusions.
 - Before returning, audit every ai_prompt-null scene against its queries: all named subjects, actions and context must realistically coexist in a single stock clip.
 - Match the selected Studio style without imitating a named creator.
 - Apply the global pace profile, but still vary individual scene pace intentionally.
 - The master video is text-free. Do not create subtitles, lower thirds or overlay copy.
-- visual_queries must literally match the exact spoken meaning and name the visible subject, action and context in the same phrase, while also carrying applicable silent visual-production constraints from the Topic without forcing those constraints into narration.
+- visual_queries must literally match the exact spoken meaning and name the visible subject, action and context in the same phrase, while also carrying applicable silent visual-production constraints from the Topic without forcing those constraints into narration. For the active documentary B-roll exception, illustrate its exact supported subject and setting without pretending the clip proves the sourced number or composition.
 - Never search for an abstract property alone: keep the named subject attached (for example, a damaged QR code being scanned, not a generic software error; OLED pixel microscopy, not digital glitch footage).
 - CONDITIONAL VALIDATION EXAMPLE, not a story suggestion: only if the user's topic and the chosen single story already require OLED or true black, narration, stock queries and ai_prompt must show black-region subpixel emitters visibly unlit beside illuminated colored subpixels; a whole-screen fade or hand turning a screen off is not evidence.
 - In that same conditional OLED case, never claim lower power use in a short scene unless a real physical power meter visibly falls in that same continuous shot.
 - For a short seat-belt story, never ask paid AI video to animate the small metal latch plate entering the buckle. Explain the internal locking mechanism in the preceding technical scene, then make the payoff show the same driver visibly wearing an already-fastened three-point belt across the chest and preparing to drive. Do not narrate the precision insertion in that AI scene.
 - Reject generic typing, code errors, random phones, office workers, skylines, fireworks, finance charts, digital noise or abstract tech footage unless literally required by the narration.
 - Give every scene 2-3 search options with different shot grammar.
-- ai_prompt is null unless stock footage cannot honestly show the concept.
+- ai_prompt is null unless stock footage cannot honestly show the concept or illustrate a fact allowed by the active sourced documentary B-roll exception. Only when that exception is active, do not create paid visual demonstrations merely to display a verified date, count or material percentage.
 - pace is fast, normal or slow. transition is mostly cut; use match only for a real visual relationship and dip sparingly.
 - Final scene must resolve the central curiosity and provide a memorable payoff.
 - Total narration word count must be between {min_words} and {max_words}.
@@ -1746,27 +1777,11 @@ def _repair_short_stock_scenes(
         content_style or 'documentary'
     ).strip().casefold()
     documentary_broll = normalized_content_style == 'documentary'
-    documentary_writer_rule = (
-        'DOCUMENTARY B-ROLL EXCEPTION: verified historical dates, elapsed '
-        'durations and scale facts such as counts, capacities or totals may '
-        'remain in voice-over without making the numeral readable in the '
-        'clip. The supplied source evidence must explicitly support the exact '
-        'fact. Each query must honestly illustrate the same named subject '
-        'when available, otherwise the same specific object class, activity '
-        'and relevant setting. Modern establishing footage may illustrate a '
-        'still-existing subject, but it must not masquerade as archive footage '
-        'of a past event. This narrow exception never covers an unsupported '
-        'claim, prediction, causal or technical mechanism, contradiction, '
-        'wrong subject or era, or generic wallpaper footage.'
-        if documentary_broll
-        else (
-            'NO DOCUMENTARY B-ROLL EXCEPTION: every spoken claim must be '
-            'directly visible in the same stock clip.'
-        )
-    )
+    documentary_writer_rule = _documentary_broll_writer_rule(normalized_content_style)
     documentary_critic_rule = (
         'DOCUMENTARY B-ROLL SEMANTICS ARE ACTIVE. A verified historical year, '
-        'elapsed duration, count, capacity or total does not need to appear '
+        'elapsed duration, count, capacity, total or material-composition '
+        'percentage does not need to appear '
         'as readable text, a chart or a literal quantity in the clip. For '
         'all_spoken_meaning_visible and no_invisible_or_abstract_claim, treat '
         'that narrow fact as satisfied only when its exact value is explicitly '
@@ -1774,6 +1789,9 @@ def _repair_short_stock_scenes(
         'the same named subject when available, otherwise the same specific '
         'object class, activity and relevant setting. The B-roll illustrates '
         'the sourced narration; it is not itself evidence of the numeral. '
+        'For material composition, the source must explicitly name the '
+        'material and exact percentage; related footage must never be '
+        'treated as proof of composition or its effect on performance. '
         'Set the relevant booleans false for an unsupported or overstated '
         'fact, a causal or technical mechanism that remains invisible, a '
         'wrong or contradictory subject, action, place or era, footage that '
@@ -2027,6 +2045,14 @@ def _repair_short_stock_scenes(
             'requested_brief': requested_brief,
             'content_style': normalized_content_style,
             'title': package.get('title'),
+            'sources': [
+                {
+                    'url': str(source.get('url') or '')[:500],
+                    'evidence': str(source.get('evidence') or '')[:500],
+                }
+                for source in (package.get('sources') or [])[:6]
+                if isinstance(source, dict)
+            ],
             'whole_story_word_budget': {
                 'minimum': minimum_total_words,
                 'target': target_total_words,
@@ -2059,7 +2085,7 @@ NON-NEGOTIABLE RULES:
 - Preserve every explicit positive, negative, routing and continuity constraint in requested_brief. Never introduce an actor, object, action, setting, screen state or payoff that the brief forbids.
 - Respect each requested scene's allowed_word_count range. Keep the complete story within whole_story_word_budget; exact per-scene equality is neither required nor desirable.
 - Never add empty padding such as "bugün", "şimdi", "sakinlikle" or "dikkatlice" unless that word changes the visible action and sounds necessary in normal speech.
-- Each narration describes ONE visible human or physical action in ONE ordinary location.
+- Each narration describes ONE visible human or physical action in ONE ordinary location, or illustrates one exactly sourced fact allowed by the active documentary B-roll exception.
 - Except only as allowed by the documentary B-roll rule above, every spoken clause must be literally visible in the same common five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
 - {CONTINUITY_DEICTIC_RULE}
 - Use one simple sentence. Do not combine distinct actions, even with a conjunction, gerund, sequence or subordinate clause.
@@ -2389,7 +2415,7 @@ For EACH requested position, set every boolean independently. If evidence is amb
 - single_ordinary_location: narration and every query can share one ordinary physical setting.
 - all_spoken_meaning_visible: every spoken clause is directly visible in that single clip, except for the narrow sourced documentary B-roll semantics above when active.
 - Apply this exact narrow semantic rule when judging all_spoken_meaning_visible: {CONTINUITY_DEICTIC_RULE}
-- no_invisible_or_abstract_claim: there is no magic-like hook, comparison, mystery, technical implication or spoken conclusion. A sourced documentary date, duration, count, capacity or total is not an invisible abstraction when the active documentary rule is fully satisfied.
+- no_invisible_or_abstract_claim: there is no magic-like hook, comparison, mystery, technical implication or spoken conclusion. A sourced documentary date, duration, count, capacity, total or material-composition percentage is not an invisible abstraction when the active documentary rule is fully satisfied.
 - all_named_subjects_coexist: one normal five-second stock clip can visibly contain every named subject and object.
 - queries_are_english: every query is idiomatic English stock-search text.
 - queries_match_same_action: every query depicts the narration's exact same actor/object, action and setting.
