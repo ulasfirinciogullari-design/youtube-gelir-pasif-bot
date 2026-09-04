@@ -18,8 +18,15 @@ def preview_total_paid_create_cap(
     options: dict,
     duration_minutes: float,
 ) -> int | None:
-    """Return the job-wide paid-create cap for an exact 30-second preview."""
-    if options.get('mode') != 'preview' or duration_minutes != 0.5:
+    """Cap every exact 30-second preview or production Short across retries."""
+    bounded_mode = (
+        options.get('mode') == 'preview'
+        or (
+            options.get('mode') == 'production'
+            and options.get('format') == 'shorts'
+        )
+    )
+    if not bounded_mode or duration_minutes != 0.5:
         return None
     return SHORT_PREVIEW_TOTAL_PAID_CREATE_CAP
 
@@ -38,7 +45,10 @@ def preview_authored_ai_limit(
     scene_count: int,
     duration_minutes: float,
 ) -> int | None:
-    """Return the authored-AI limit for a short preview, if applicable."""
+    """Return the authored-AI limit for a bounded short, if applicable."""
+    if options.get('mode') == 'production':
+        total_cap = preview_total_paid_create_cap(options, duration_minutes)
+        return min(total_cap, scene_count) if total_cap is not None else None
     if options.get('mode') != 'preview' or duration_minutes > 0.6:
         return None
     if (options.get('visual_mix') or 'balanced') == 'ai_first':
@@ -51,7 +61,10 @@ def preview_paid_ai_limit(
     scene_count: int,
     duration_minutes: float,
 ) -> int | None:
-    """Return the worker's paid primary-generation cap for a short preview."""
+    """Return the worker's paid primary-generation cap for a bounded short."""
+    if options.get('mode') == 'production':
+        total_cap = preview_total_paid_create_cap(options, duration_minutes)
+        return min(total_cap, scene_count) if total_cap is not None else None
     if options.get('mode') != 'preview' or duration_minutes > 0.6:
         return None
     mix = options.get('visual_mix') or 'balanced'

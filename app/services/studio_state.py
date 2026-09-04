@@ -620,6 +620,56 @@ def update_job(task_id: str, **fields: Any) -> dict:
     return save_job(record)
 
 
+_MERGE_YOUTUBE_RESULT_FIELD = '''
+local raw = redis.call('GET', KEYS[1])
+if not raw then return 0 end
+local ok, job = pcall(cjson.decode, raw)
+if not ok or type(job) ~= 'table' or type(job['result']) ~= 'table' then return -1 end
+local patch = cjson.decode(ARGV[2])
+local current = job['result'][ARGV[1]]
+if type(current) ~= 'table' then current = {} end
+if ARGV[5] == '1' then
+  local function present(value)
+    return value ~= nil and value ~= cjson.null and value ~= false and value ~= ''
+  end
+  local youtube = job['result']['youtube']
+  if present(current['status']) or present(current['publish_task_id'])
+     or present(job['result']['youtube_url'])
+     or (type(youtube) == 'table' and present(youtube['video_id'])) then
+    return 0
+  end
+end
+for key, value in pairs(patch) do current[key] = value end
+job['result'][ARGV[1]] = current
+job['updated_at'] = ARGV[3]
+redis.call('SETEX', KEYS[1], tonumber(ARGV[4]), cjson.encode(job))
+return 1
+'''
+
+
+def merge_youtube_result_field(
+    task_id: str, field: str, values: dict, *, only_if_missing: bool = False,
+) -> bool:
+    """Atomically update one publisher-owned field without replacing render results."""
+    if field not in {'youtube', 'youtube_automation'} or not isinstance(values, dict):
+        raise ValueError('YouTube result field is invalid')
+    if type(only_if_missing) is not bool or only_if_missing and field != 'youtube_automation':
+        raise ValueError('Conditional merge is only valid for a missing automation outcome')
+    status = int(_client().eval(
+        _MERGE_YOUTUBE_RESULT_FIELD,
+        1,
+        _job_key(task_id),
+        field,
+        json.dumps(values, ensure_ascii=False, separators=(',', ':'), default=_json_default),
+        _now_iso(),
+        JOB_TTL_SECONDS,
+        '1' if only_if_missing else '0',
+    ))
+    if status not in {0, 1}:
+        raise RuntimeError('YouTube source result is unavailable')
+    return status == 1
+
+
 def list_jobs(limit: int = 30) -> list[dict]:
     limit = max(1, min(int(limit), MAX_INDEXED_JOBS))
     try:

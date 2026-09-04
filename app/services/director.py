@@ -1081,7 +1081,15 @@ def _target_word_budget(
     duration_minutes: float,
     *,
     allow_legacy_short_lock: bool = False,
+    calibrated_short_words: int | None = None,
 ) -> tuple[int, int, int]:
+    if calibrated_short_words is not None:
+        if duration_minutes != 0.5 or calibrated_short_words != 45:
+            raise ValueError('Unsupported calibrated narration budget')
+        # The selected Turkish voice delivered 54 words in 35.50 seconds;
+        # its reviewed 45-word edit fills 29.5 seconds at natural speed.
+        # This is a planning budget, not permission to skip the audio gate.
+        return 45, 42, 48
     if duration_minutes <= 0.6:
         target = max(52, int(round(duration_minutes * 112)))
     elif duration_minutes <= 1.1:
@@ -1567,6 +1575,15 @@ def _run_director(
             'wardrobe, setting, continuity and forbidden-element constraint from the user topic that applies to that numbered scene. '
             'Never rely on an earlier scene prompt to carry a shared constraint forward. '
         )
+        if options.get('mode') == 'production' and options.get('format') == 'shorts' and duration_minutes == 0.5:
+            short_visual_note += (
+                'PRODUCTION SHORT PAID BUDGET — OVERRIDES FALLBACK-CANDIDATE GUIDANCE: '
+                f'At most {authored_ai_limit} scenes may have a non-null ai_prompt, including all fallback candidates. '
+                f'The entire video has only {paid_dependency_limit} paid generation slots, shared with any repairs. '
+                'Every other scene MUST use ai_prompt null and show one ordinary stock-filmable action. '
+                'Choose a story whose visual proof fits that budget; rewrite excess AI-dependent scenes and their narration '
+                'into honest stock-filmable beats, never merely erase a required AI prompt. '
+            )
     elif options.get('mode') == 'preview':
         short_visual_note = (
             'PREVIEW VISUAL ROUTING — HIGHEST PRIORITY: every ai_prompt MUST be null for this duration. '
@@ -3093,6 +3110,15 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     target_words, min_words, max_words = _target_word_budget(
         duration_minutes,
         allow_legacy_short_lock=exact_narration is not None,
+        calibrated_short_words=(
+            45
+            if exact_narration is None
+            and duration_minutes == 0.5
+            and options.get('mode') == 'production'
+            and options.get('format') == 'shorts'
+            and str(language or '').replace('_', '-').casefold().split('-')[0] == 'tr'
+            else None
+        ),
     )
     exact_scene_count = immutable_scene_count is not None
     target_scenes = (
@@ -3199,15 +3225,13 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     words = _word_count(out['narration'])
     scene_count = len(out['scenes'])
     ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
-    preview_ai_limit = None
-    if options.get('mode') == 'preview':
-        preview_ai_limit = preview_authored_ai_limit(
-            options,
-            target_scenes,
-            duration_minutes,
-        )
-        if preview_ai_limit is None:
-            preview_ai_limit = 0
+    preview_ai_limit = preview_authored_ai_limit(
+        options,
+        target_scenes,
+        duration_minutes,
+    )
+    if options.get('mode') == 'preview' and preview_ai_limit is None:
+        preview_ai_limit = 0
 
     short_editorial_issues = short_preview_issues(out)
 

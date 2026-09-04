@@ -33,16 +33,20 @@ def _render_profile(output_resolution: str) -> dict:
         ) from None
 
 
-def resolution_for_mode(mode: str) -> str:
-    """Render preview jobs as Shorts while preserving production widescreen."""
+def resolution_for_mode(mode: str, format: str | None = None) -> str:
+    """Choose the canvas independently of production/preview quality policy."""
+    if format is not None:
+        if not isinstance(format, str) or format.strip().lower() not in {'shorts', 'landscape'}:
+            raise ValueError('Video format must be shorts or landscape')
+        return SHORTS_RESOLUTION if format.strip().lower() == 'shorts' else LANDSCAPE_RESOLUTION
     if str(mode or '').strip().lower() == 'preview':
         return SHORTS_RESOLUTION
     return LANDSCAPE_RESOLUTION
 
 
-def aspect_ratio_for_mode(mode: str) -> str:
+def aspect_ratio_for_mode(mode: str, format: str | None = None) -> str:
     """Keep generated media and the final canvas on the same orientation."""
-    if resolution_for_mode(mode) == SHORTS_RESOLUTION:
+    if resolution_for_mode(mode, format) == SHORTS_RESOLUTION:
         return '9:16'
     return '16:9'
 

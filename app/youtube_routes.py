@@ -264,7 +264,35 @@ def _completed_jobs() -> list[dict]:
     return jobs
 
 
-def _profile_form(channel: dict, profile: dict | None) -> str:
+def _production_status_text(profile: dict, state: dict | None) -> str:
+    if profile.get('production_enabled') is not True:
+        return 'Otomatik üretim kapalı'
+    if profile.get('auto_publish') is not True:
+        return 'Otomatik yükleme ayarı bekliyor'
+    topics = profile.get('production_topics') or []
+    if not topics:
+        return 'Konu bekliyor'
+    if state is None:
+        return 'Üretim takvimi etkin'
+    if state.get('unavailable'):
+        return 'Üretim durumu alınamadı'
+    if state.get('paused_reason') or state.get('dispatch_status') == 'uncertain':
+        return 'Duraklatıldı · kontrol gerekiyor'
+    if state.get('active_task_id'):
+        return 'Üretim sıraya alındı'
+    try:
+        if int(state.get('cursor') or 0) >= len(topics):
+            return 'Konu listesi tamamlandı'
+        due = float(state.get('next_due') or 0)
+        if due > datetime.now(timezone.utc).timestamp():
+            label = datetime.fromtimestamp(due, timezone(timedelta(hours=3))).strftime('%d.%m %H:%M')
+            return f'Sonraki video: {label}'
+    except (ValueError, TypeError, OverflowError, OSError):
+        return 'Üretim durumu alınamadı'
+    return 'Planlama bekliyor'
+
+
+def _profile_form(channel: dict, profile: dict | None, production_state: dict | None = None) -> str:
     profile = profile or {}
     channel_id = str(channel.get('id') or '')
     connection_id = str(channel.get('connection_id') or '')
@@ -286,23 +314,29 @@ def _profile_form(channel: dict, profile: dict | None) -> str:
         )
     )
     checked = ' checked' if profile.get('auto_publish') else ''
+    production_checked = ' checked' if profile.get('production_enabled') is True else ''
+    production_topics = '\n'.join(profile.get('production_topics') or [])
     thumbnail_checked = ' checked' if profile.get('require_thumbnail') else ''
-    status = (
-        '<span class="badge good">Otomatik rota açık</span>'
-        if profile.get('auto_publish')
-        else '<span class="badge">Otomatik rota kapalı</span>'
-    )
+    status = f'<span class="badge">{escape(_production_status_text(profile, production_state))}</span>'
     return f'''
-<details class="profile-details"><summary>Otomasyon ve yayın profili</summary>
+<details class="profile-details"><summary>Otomatik üretim</summary>
 <form method="post" action="/studio/youtube/profile/{escape(channel_id, quote=True)}">
 <input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}">
 <input type="hidden" name="expected_revision" value="{escape(revision, quote=True)}">
+<input type="hidden" name="production_settings" value="1">
+<div class="profile-grid">
+<label class="check"><input name="production_enabled" type="checkbox" value="1"{production_checked}> Bu kanal için düzenli video üret</label>
+<label class="wide">Üretilecek konular<textarea name="production_topics" maxlength="14459" placeholder="Her satıra bir konu yaz. Konular sırayla işlenir.">{escape(production_topics)}</textarea><span>En fazla 60 konu; her konu en fazla 240 karakter.</span></label>
+<label>Yeni video aralığı (saat)<input name="production_interval_hours" type="number" min="6" max="168" value="{value('production_interval_hours', '24')}"></label>
+<label>Üretim dili<input name="default_language" maxlength="24" value="{value('default_language', 'tr')}" placeholder="tr"></label>
+<label class="check"><input name="auto_publish" type="checkbox" value="1"{checked}> Kalite kontrolü geçen videoları bu kanala otomatik yükle</label>
+</div>
+<details class="profile-details"><summary>Yayın ve seri ayarları</summary>
 <div class="profile-grid">
 <label class="wide">Kanal kimliği / yayın çizgisi<input name="channel_identity" maxlength="240" value="{value('channel_identity')}" placeholder="Kısa, merak uyandıran Türkçe bilim hikâyeleri"></label>
 <label>Studio kanal etiketi<input name="route_label" maxlength="120" value="{value('route_label')}" placeholder="merak-belgesel-tr-01"></label>
 <label>Diller<input name="languages" maxlength="180" value="{value('languages', 'tr')}" placeholder="tr, en"></label>
 <label class="wide">Konu anahtarları<input name="topic_keywords" maxlength="1200" value="{value('topic_keywords')}" placeholder="havacılık, bilim, teknoloji"></label>
-<label>Varsayılan dil<input name="default_language" maxlength="24" value="{value('default_language', 'tr')}" placeholder="tr"></label>
 <label>Kategori no<input name="category_id" maxlength="3" value="{value('category_id', '28')}" inputmode="numeric"></label>
 <label class="wide">Etiketler<input name="default_tags" maxlength="1600" value="{value('default_tags')}" placeholder="bilim, merak, kısa belgesel"></label>
 <label class="wide">Hashtagler<input name="hashtags" maxlength="700" value="{value('hashtags')}" placeholder="Bilim, Merak, Shorts"></label>
@@ -312,9 +346,8 @@ def _profile_form(channel: dict, profile: dict | None) -> str:
 <label>Seri toplamı<input name="series_total" type="number" min="0" max="10000" value="{value('series_total', '0')}"></label>
 <label>Yayın davranışı<select name="release_mode">{release_options}</select></label>
 <label>Planlama gecikmesi (dk)<input name="schedule_delay_minutes" type="number" min="15" max="43200" value="{value('schedule_delay_minutes', '60')}"></label>
-<label class="check"><input name="auto_publish" type="checkbox" value="1"{checked}> Kalite kapısını geçen videoları bu rotaya otomatik gönder</label>
 <label class="check"><input name="require_thumbnail" type="checkbox" value="1"{thumbnail_checked}> Özel küçük resim yoksa herkese açma</label>
-</div>
+</div></details>
 <div class="profile-actions"><button class="small" type="submit">Profili kaydet</button>{status}<span class="tiny">İlk yükleme her zaman gizlidir; yalnızca tam otomatik kalite onayı yayın geçişini açar.</span></div>
 </form></details>'''
 
@@ -341,7 +374,15 @@ def youtube_home(
         for channel in connections:
             channel_id = str(channel.get('id') or '')
             connection_id = str(channel.get('connection_id') or '')
-            profile_form = _profile_form(channel, profiles.get(channel_id))
+            profile = profiles.get(channel_id)
+            production_state = {}
+            if profile and profile.get('production_enabled') is True:
+                try:
+                    from app.services.channel_production import get_production_state
+                    production_state = get_production_state(channel_id)
+                except Exception:
+                    production_state = {'unavailable': True}
+            profile_form = _profile_form(channel, profile, production_state)
             channel_cards.append(f'''
 <article class="channel-card"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Yüklemeye hazır</div></div><span class="badge good">● Bağlı</span></div><div class="channel-metrics"><span class="badge">{escape(str(channel.get('subscriber_count') or '—'))} abone</span><span class="badge">{escape(str(channel.get('video_count') or '—'))} video</span><span class="badge">{escape(str(channel.get('view_count') or '—'))} izlenme</span></div>{profile_form}<div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
         count = int(status.get('connection_count') or len(connections))
@@ -529,6 +570,10 @@ def youtube_save_profile(
     schedule_delay_minutes: int = Form(60),
     auto_publish: str = Form(''),
     require_thumbnail: str = Form(''),
+    production_settings: str = Form(''),
+    production_enabled: str = Form(''),
+    production_topics: str = Form(''),
+    production_interval_hours: int = Form(24),
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
@@ -563,6 +608,11 @@ def youtube_save_profile(
                 'schedule_delay_minutes': schedule_delay_minutes,
                 'auto_publish': auto_publish == '1',
                 'require_thumbnail': require_thumbnail == '1',
+                **({
+                    'production_enabled': production_enabled == '1',
+                    'production_topics': production_topics,
+                    'production_interval_hours': production_interval_hours,
+                } if production_settings == '1' else {}),
             },
             expected_revision=expected_revision or None,
         )

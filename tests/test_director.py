@@ -47,6 +47,44 @@ from app.services.director import (
 from app.services.visual_routing import SERVER_SHORT_PROXY_KIND_FIELD
 
 
+class ProductionShortPaidBudgetTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        self.options = {'mode': 'production', 'format': 'shorts', 'visual_mix': 'real_first'}
+
+    def test_production_short_prompt_limits_all_fallbacks_to_two(self):
+        client = FakeClient([{'scenes': []}])
+        director_module._run_director(
+            client, {}, 'One shopping story', 'Turkish', 0.5,
+            45, 42, 48, 5, self.options,
+        )
+        prompt = client.responses.calls[0]['input']
+        self.assertIn('At most 2 scenes may have a non-null ai_prompt, including all fallback candidates', prompt)
+        self.assertIn('Every other scene MUST use ai_prompt null', prompt)
+        self.assertIn('only 2 paid generation slots, shared with any repairs', prompt)
+
+    def test_production_short_repairs_excess_ai_and_rejects_if_not_corrected(self):
+        package = {
+            'title': 'Shopping', 'description': '', 'thumbnail_text': '',
+            'scenes': [
+                _scene(index, 'Müşteri market rafında iki farklı paketi eline alıp karşılaştırıyor.',
+                       ['customer comparing two packages in supermarket'], 'A continuous shopping shot')
+                for index in range(5)
+            ],
+        }
+        package['narration'] = ' '.join(scene['narration'] for scene in package['scenes'])
+        with (
+            patch.object(director_module, 'OpenAI', return_value=object()),
+            patch.object(director_module, '_run_director', return_value=package) as run,
+            patch.object(director_module, '_short_story_quality_issues', return_value=[]),
+            self.assertRaisesRegex(RuntimeError, 'AI-scene gate rejected 5 scenes; maximum 2'),
+        ):
+            direct_and_qc(package, 'Tam beş sahne kullan.', 0.5, 'tr', self.options)
+        self.assertEqual(run.call_count, 4)
+        self.assertTrue(all(call.args[1]['max_ai_scene_count'] == 2 for call in run.call_args_list[1:]))
+
+
 class PreviewNarrationBudgetTests(unittest.TestCase):
     def test_thirty_second_generated_budget_requires_natural_speed(self):
         self.assertEqual(
