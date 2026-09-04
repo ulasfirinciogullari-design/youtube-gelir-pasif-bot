@@ -1025,6 +1025,61 @@ def _validate_paid_create_allocation(
         )
 
 
+def _record_prepaid_visual_diagnostics(
+    task_id: str,
+    scene_visuals: list,
+    reviews: dict,
+    ranked_candidates: list[dict],
+    cap: int | None,
+    *,
+    paid_slots_used: int,
+    quality_threshold: int,
+) -> None:
+    """Retain bounded allocation facts, never paths or provider prose."""
+    if type(cap) is not int or cap < 1:
+        return
+    pending = {
+        row['scene_index'] for row in ranked_candidates
+        if isinstance(row, dict) and type(row.get('scene_index')) is int
+    }
+    used = paid_slots_used if type(paid_slots_used) is int and paid_slots_used >= 0 else cap
+    threshold = quality_threshold if type(quality_threshold) is int and 0 <= quality_threshold <= 100 else 100
+    records = []
+    for index, visuals in enumerate(scene_visuals[:64]):
+        review = reviews.get(index)
+        raw_score = review.get('score') if isinstance(review, dict) else None
+        score = (
+            float(raw_score)
+            if type(raw_score) in (int, float) and math.isfinite(raw_score) and 0 <= raw_score <= 100
+            else -1
+        )
+        has_visual = bool(isinstance(visuals, list) and any(_visual_path(spec) for spec in visuals))
+        records.append({
+            'scene_index': index,
+            'score': score,
+            'has_visual': has_visual,
+            'requires_paid_replacement': index in pending,
+            'reason': (
+                'missing_visual' if not has_visual
+                else 'missing_review' if score < 0
+                else 'below_quality_threshold' if score < threshold
+                else 'quality_threshold_met'
+            ),
+        })
+    try:
+        update_job(task_id, prepaid_visual_diagnostics={
+            'stage': 'before_paid_allocation',
+            'paid_create_cap': cap,
+            'paid_slots_used': used,
+            'paid_slots_remaining': max(0, cap - used),
+            'quality_threshold': threshold,
+            'scenes': records,
+        })
+    except Exception:
+        # Diagnostic availability must not change the strict allocation gate.
+        return
+
+
 def _preflight_production_shorts_paid_plan(
     options: dict,
     scenes: list[dict],
@@ -3913,6 +3968,8 @@ def run_video_pipeline(
                 len(scenes) if duration_minutes <= 1 else min(14, len(scenes)),
                 topic=topic,
                 story_scenes=scenes,
+                content_style=options.get('content_style', ''),
+                evidence_sources=package.get('sources') or [],
             )
             music_future = None
             if should_generate_music:
@@ -4535,10 +4592,19 @@ def run_video_pipeline(
         prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
 
         # Before rejecting an over-budget plan, give only the overflow scenes
-        # one bounded stock rescue. The three weakest scenes remain reserved
-        # for Runway; better-ranked overflow scenes get a final free chance.
+        # one bounded stock rescue. The weakest scenes within the cap remain
+        # reserved for generation; overflow scenes get one more stock search.
         if (
-            is_bounded_short_preview
+            (
+                is_bounded_short_preview
+                or (
+                    options.get('mode') == 'production'
+                    and options.get('format') == 'shorts'
+                    and duration_minutes == 0.5
+                    and type(total_paid_create_cap) is int
+                    and total_paid_create_cap > 0
+                )
+            )
             and not scene_repair_recovery
             and not provider_outage_stock_scenes
             and not stock_quality_fallback_scenes
@@ -4627,6 +4693,15 @@ def run_video_pipeline(
                         _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
                 prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
 
+        _record_prepaid_visual_diagnostics(
+            task_id,
+            scene_visuals,
+            current_reviews,
+            ranked_runway_candidates,
+            total_paid_create_cap,
+            paid_slots_used=runway_attempts,
+            quality_threshold=quality_threshold,
+        )
         runway_required_submission_cap = runway_submission_cap
         runway_effective_submission_cap = runway_submission_cap
         selected_runway: list[dict]
