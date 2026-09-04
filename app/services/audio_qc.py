@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 import time
 import unicodedata
-from typing import Any
+from typing import Any, Callable
 from urllib.parse import urlsplit
 
 import httpx
@@ -98,6 +98,7 @@ _EXPLICIT_DECIMAL_TOKEN_PATTERN = re.compile(
 )
 _OPENAI_PERCENT_TIMESTAMP_SUFFIXES = frozenset({
     '', 'i', '\u0131', 'u', '\u00fc', 'lik', 'l\u0131k', 'luk', 'l\u00fck',
+    'ini', '\u0131n\u0131', 'unu', '\u00fcn\u00fc',
 })
 _NUMBER_UNITS = {
     's\u0131f\u0131r': 0,
@@ -317,6 +318,78 @@ _AUDIO_PROVIDER_ERROR_CODES = frozenset({
     'incomplete_word_timestamps', 'inconsistent_word_timestamps',
     'interaction_error', 'input_error', 'provider_error',
 })
+_PROVIDER_EVIDENCE_FIELDS = frozenset({
+    'text', 'word', 'start', 'end', 'type', 'language', 'language_code',
+    'language_probability', 'status', 'words', 'steps', 'content',
+    'annotations', 'start_offset', 'end_offset', 'seconds', 'nanos',
+})
+_PROVIDER_EVIDENCE_PRIVATE_TEXT = re.compile(
+    r'https?://|\bBearer\s+\S+|\b(?:sk-[A-Za-z0-9_-]{12,}|AIza[A-Za-z0-9_-]{20,})'
+    r'|\b(?:api[_ -]?key|authorization|access[_ -]?token|refresh[_ -]?token|'
+    r'client[_ -]?secret|password)\s*[:=]',
+    re.IGNORECASE,
+)
+_PERCENT_NUMBER_BASES_BY_LENGTH = tuple(sorted(_NUMBER_WORDS, key=len, reverse=True))
+_TURKISH_ORTHOGRAPHIC_PAIRS = {
+    ('ham', 'madde'): 'hammadde',
+    ('ham', 'maddesi'): 'hammaddesi',
+    ('ham', 'maddesinin'): 'hammaddesinin',
+    ('b\u00f6l\u00fcm\u00fc', 'ise'): 'b\u00f6l\u00fcm\u00fcyse',
+}
+
+
+def _provider_evidence_payload(value: Any, secret: str, depth: int = 0) -> Any:
+    """Keep bounded transcript evidence, not response metadata or secrets."""
+    if depth > 9:
+        raise ValueError('Provider evidence exceeds the safe nesting limit')
+    if isinstance(value, dict):
+        return {
+            key: _provider_evidence_payload(item, secret, depth + 1)
+            for key, item in value.items()
+            if key in _PROVIDER_EVIDENCE_FIELDS
+        }
+    if isinstance(value, list):
+        if len(value) > 1024:
+            raise ValueError('Provider evidence exceeds the safe item limit')
+        return [_provider_evidence_payload(item, secret, depth + 1) for item in value]
+    if isinstance(value, str):
+        if (
+            len(value) > 32768
+            or (secret and secret in value)
+            or _PROVIDER_EVIDENCE_PRIVATE_TEXT.search(value)
+        ):
+            raise ValueError('Provider evidence text is not safe to retain')
+        return value
+    if value is None or type(value) in (bool, int):
+        return value
+    if type(value) is float and math.isfinite(value):
+        return value
+    return None
+
+
+def _checkpoint_provider_evidence(
+    response: Any,
+    *,
+    provider: str,
+    model: str,
+    language: str,
+    secret: str,
+    sink: Callable[..., Any] | None,
+) -> None:
+    """Best-effort unapproved evidence, captured before strict QC parsing."""
+    if sink is None or getattr(response, 'status_code', None) != 200:
+        return
+    try:
+        raw = response.json()
+        if not isinstance(raw, dict):
+            return
+        payload = _provider_evidence_payload(raw, secret)
+        if len(json.dumps(payload, ensure_ascii=False).encode('utf-8')) > 512 * 1024:
+            return
+        sink(provider=provider, model=model, language=language, payload=payload)
+    except Exception:
+        # Storage/diagnostic failures cannot approve, reject or replace QA.
+        return
 
 
 def _safe_provider_diagnostics(value: Any) -> list[dict[str, Any]]:
@@ -1047,6 +1120,50 @@ def _number_word_unit(
     return None
 
 
+def _percentage_comparison_unit(
+    tokens: list[str], start: int,
+) -> tuple[str, int] | None:
+    """Canonicalize numbers only inside an explicit Turkish percent phrase."""
+    if tokens[start] == '%' and start + 1 < len(tokens):
+        match = _DIGIT_TOKEN_PATTERN.fullmatch(tokens[start + 1])
+        if match is None or match.group('suffix') not in _OPENAI_PERCENT_TIMESTAMP_SUFFIXES:
+            return None
+        sign = match.group('sign').replace('\u2212', '-')
+        value = sign + _ascii_digits(match.group('integer'))
+        if match.group('fraction') is not None:
+            value += ',' + _ascii_digits(match.group('fraction'))
+        return '\x00percent:' + _numeric_key(value, match.group('suffix')), 2
+    if tokens[start] != 'y\u00fczde':
+        return None
+
+    words: list[str] = []
+    suffixes: list[str] = []
+    for token in tokens[start + 1:]:
+        folded = _orthographic_fold(token)
+        if folded in _NUMBER_WORDS:
+            words.append(folded)
+            suffixes.append('')
+            continue
+        split = next((
+            (base, folded[len(base):])
+            for base in _PERCENT_NUMBER_BASES_BY_LENGTH
+            if folded.startswith(base)
+            and folded[len(base):] in _OPENAI_PERCENT_TIMESTAMP_SUFFIXES - {''}
+        ), None)
+        if split is not None:
+            words.append(split[0])
+            suffixes.append(split[1])
+        break
+    for consumed in range(len(words), 0, -1):
+        number = _parse_number_words(words[:consumed])
+        if number is not None:
+            return (
+                '\x00percent:' + _numeric_key(number, suffixes[consumed - 1]),
+                consumed + 1,
+            )
+    return None
+
+
 def _comparison_units(
     text: str,
     language: str = 'tr',
@@ -1058,6 +1175,17 @@ def _comparison_units(
     units: list[tuple[str, tuple[str, ...]]] = []
     index = 0
     while index < len(tokens):
+        percentage = _percentage_comparison_unit(tokens, index)
+        if percentage is not None:
+            key, consumed = percentage
+            units.append((key, tuple(tokens[index:index + consumed])))
+            index += consumed
+            continue
+        orthographic_pair = _TURKISH_ORTHOGRAPHIC_PAIRS.get(tuple(tokens[index:index + 2]))
+        if orthographic_pair is not None:
+            units.append((orthographic_pair, tuple(tokens[index:index + 2])))
+            index += 2
+            continue
         digit_key = _canonical_digit_token(tokens[index])
         if digit_key is not None:
             units.append((digit_key, (tokens[index],)))
@@ -1677,6 +1805,8 @@ def _verify_with_openai(
     expected_narration: str,
     api_key: str,
     language_codes: dict[str, str],
+    *,
+    provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
@@ -1701,6 +1831,11 @@ def _verify_with_openai(
             'OpenAI speech-to-text transport failed'
         ) from None
 
+    _checkpoint_provider_evidence(
+        response, provider='openai', model='whisper-1',
+        language=language_codes['openai'], secret=api_key,
+        sink=provider_evidence_sink,
+    )
     payload = _response_payload(response, 'OpenAI')
     return _require_word_timing_evidence(
         compare_transcript(
@@ -1978,6 +2113,8 @@ def _verify_with_gemini(
     expected_narration: str,
     api_key: str,
     language_codes: dict[str, str],
+    *,
+    provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
     guessed_content_type = mimetypes.guess_type(path.name)[0] or ''
     content_type = _GEMINI_AUDIO_MIME_ALIASES.get(
@@ -2058,6 +2195,11 @@ def _verify_with_gemini(
                 time.sleep(_GEMINI_INTERACTION_RETRY_DELAY_SECONDS)
                 continue
 
+            _checkpoint_provider_evidence(
+                response, provider='gemini', model=_GEMINI_TRANSCRIBE_MODEL,
+                language=language_codes['bcp47'], secret=api_key,
+                sink=provider_evidence_sink,
+            )
             payload = _gemini_interaction_payload(response)
             return _require_word_timing_evidence(
                 compare_transcript(
@@ -2082,6 +2224,8 @@ def _verify_with_elevenlabs(
     expected_narration: str,
     api_key: str,
     language_codes: dict[str, str],
+    *,
+    provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
@@ -2106,6 +2250,11 @@ def _verify_with_elevenlabs(
             'ElevenLabs speech-to-text transport failed'
         ) from None
 
+    _checkpoint_provider_evidence(
+        response, provider='elevenlabs', model='scribe_v2',
+        language=language_codes['elevenlabs'], secret=api_key,
+        sink=provider_evidence_sink,
+    )
     payload = _response_payload(response, 'ElevenLabs')
     return _require_word_timing_evidence(
         compare_transcript(
@@ -2126,6 +2275,7 @@ def verify_audio_narration(
     expected_narration: str,
     *,
     language: str = 'tr',
+    provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
     """Transcribe an audio master and compare it with its spoken contract."""
     openai_api_key = str(getattr(settings, 'openai_api_key', '') or '')
@@ -2154,6 +2304,7 @@ def verify_audio_narration(
                 expected_narration,
                 openai_api_key,
                 language_codes,
+                provider_evidence_sink=provider_evidence_sink,
             )
         except AudioQCError as exc:
             # OpenAI is primary, but a provider failure must not block the
@@ -2172,6 +2323,7 @@ def verify_audio_narration(
                 expected_narration,
                 gemini_api_key,
                 language_codes,
+                provider_evidence_sink=provider_evidence_sink,
             )
         except AudioQCError as exc:
             provider_errors.append(exc)
@@ -2188,6 +2340,7 @@ def verify_audio_narration(
                 expected_narration,
                 elevenlabs_api_key,
                 language_codes,
+                provider_evidence_sink=provider_evidence_sink,
             )
         except AudioQCError as exc:
             provider_errors.append(exc)

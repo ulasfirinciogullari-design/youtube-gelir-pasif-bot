@@ -1314,20 +1314,46 @@ def _synthesize_voice_candidate(
     )
 
 
+def _audio_provider_evidence_sink(task_id: str, audio_path: str | Path):
+    """Record bounded unapproved provider evidence without changing any QA decision."""
+    from app.services.audio_evidence import persist_audio_provider_evidence
+
+    pointers = []
+
+    def save(**evidence):
+        try:
+            pointer = persist_audio_provider_evidence(task_id, audio_path, **evidence)
+            if pointer not in pointers:
+                pointers.append(pointer)
+            update_job(task_id, audio_provider_evidence=pointers[-6:])
+        except Exception:
+            # Evidence storage is diagnostic only; never expose provider responses
+            # or turn a failed audio gate into an approved candidate.
+            pass
+
+    return save
+
+
 def _verify_audio_narration_with_retry(
     audio_path: str | Path,
     expected_narration: str,
     *,
     language: str,
+    task_id: str | None = None,
 ) -> dict:
     """Retry a transient STT outage without regenerating immutable audio."""
     provider_attempts = []
+    evidence_options = (
+        {'provider_evidence_sink': _audio_provider_evidence_sink(task_id, audio_path)}
+        if task_id else {}
+    )
     for attempt in range(AUDIO_QC_PROVIDER_ATTEMPTS):
         try:
             return verify_audio_narration(
                 audio_path,
                 expected_narration,
                 language=language,
+                **evidence_options,
             )
         except AudioQCError as exc:
             provider_attempts.append({
@@ -3204,8 +3230,14 @@ def _prepare_package(
 ) -> dict:
     if approved_package:
         if (
-            options.get('mode') == 'preview'
-            and duration_minutes <= 0.6
+            (
+                (options.get('mode') == 'preview' and duration_minutes <= 0.6)
+                or (
+                    options.get('mode') == 'production'
+                    and options.get('format') == 'shorts'
+                    and duration_minutes == 0.5
+                )
+            )
             and not short_story_package_is_approved(
                 approved_package,
                 topic,
@@ -3523,6 +3555,7 @@ def run_video_pipeline(
                 voice_path,
                 expected_spoken_narration,
                 language=language,
+                task_id=task_id,
             )
             audio_duration_qc = _short_preview_voice_duration_qc(
                 voice_result,

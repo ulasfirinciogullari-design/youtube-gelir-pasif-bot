@@ -4,7 +4,7 @@ import types
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 
 config_stub = types.ModuleType('app.config')
@@ -3189,6 +3189,129 @@ class AudioQCTests(unittest.TestCase):
         self.assertNotIn(openai_secret, str(caught.exception))
         self.assertNotIn(gemini_secret, str(caught.exception))
         self.assertNotIn(elevenlabs_secret, str(caught.exception))
+
+
+class LiveTurkishRepresentationTests(unittest.TestCase):
+    def test_observed_full_banknote_transcript_is_linguistically_identical(self):
+        expected = (
+            'Cüzdandan çıkan bir dolar aslında ağaç hamurundan üretilmiyor. '
+            'Amerikan darphanesi bu özel kâğıdın içeriğini açıkça paylaşıyor. '
+            'Banknot hammaddesinin yüzde yetmiş beşini doğal pamuk lifleri oluşturuyor. '
+            'Kalan yüzde yirmi beşlik bölümüyse keten liflerinden geliyor. '
+            'Yakından bakıldığında yüzeydeki bu özel lifler netleşiyor. '
+            'Dolar banknotları, ağaç yerine bu özel bitkisel kâğıtla basılıyor.'
+        )
+        transcript = (
+            'Cüzdandan çıkan bir dolar aslında ağaç hamurundan üretilmiyor. '
+            'Amerikan darphanesi bu özel kağıdın içeriğini açıkça paylaşıyor. '
+            "Banknot ham maddesinin %75'ini doğal pamuk lifleri oluşturuyor. "
+            "Kalan %25'lik bölümü ise keten liflerinden geliyor. "
+            'Yakından bakıldığında yüzeydeki bu özel lifler netleşiyor. '
+            'Dolar banknotları ağaç yerine bu özel bitkisel kağıtla basılıyor.'
+        )
+        words = _openai_words(*transcript.replace("%75'ini", '75 ini').replace("%25'lik", '25 lik').split())
+        result = audio_qc.compare_transcript(expected, transcript, words=words, provider='openai')
+        self.assertTrue(result['pass'])
+        self.assertEqual(result['score'], 100)
+        self.assertTrue(result['mismatch_details']['timestamp_sequence_match'])
+        self.assertIs(audio_qc._require_word_timing_evidence(result, 'OpenAI'), result)
+        self.assertEqual(result['word_timestamps'], audio_qc._word_timestamps(words))
+
+    def test_percentage_equivalence_preserves_value_suffix_sign_and_operators(self):
+        cases = (
+            ('yüzde yetmiş beşini', "%76'ini"),
+            ('yüzde yetmiş beşini', "%75'i"),
+            ('yüzde yetmiş beşini', "%75'lik"),
+            ('yüzde yetmiş beşini', "%-75'ini"),
+            ('yüzde yetmiş beşini', '75ini'),
+            ('yüzde yetmiş beş', '%7 5'),
+            ('yüzde yetmiş beş', '%75/2'),
+            ('yüzde yetmiş beş', '$75'),
+            ('yüzde yirmi beşlik', "%25'ini"),
+            ('bölümüyse', 'bölümüydü'),
+            ('hammaddesinin', 'ham maddesini'),
+            ('hamur maddesinin', 'hammaddesinin'),
+            ('yüzde yetmiş beşini', "%75'ın"),
+        )
+        for expected, heard in cases:
+            with self.subTest(expected=expected, heard=heard):
+                self.assertFalse(audio_qc.compare_transcript(expected, heard)['pass'])
+
+    def test_only_explicit_percentage_context_gets_suffix_number_normalization(self):
+        self.assertTrue(audio_qc.compare_transcript('yüzde yetmiş beşini', "%75'ini")['pass'])
+        self.assertTrue(audio_qc.compare_transcript('yüzde yirmi beşlik', "%25'lik")['pass'])
+        self.assertFalse(audio_qc.compare_transcript('yetmiş beşini', "75'ini")['pass'])
+        self.assertFalse(audio_qc.compare_transcript('onda', '10da')['pass'])
+
+
+class ProviderEvidenceSinkTests(unittest.TestCase):
+    def test_each_provider_success_response_is_captured_before_its_validation_failure(self):
+        openai_payload = {'text': 'Metin', 'words': _openai_words('Başka')}
+        gemini_payload = _gemini_interaction('Metin', 'Metin')
+        gemini_payload['steps'][0]['content'][0]['annotations'][0]['end_offset'] = '0.000s'
+        elevenlabs_payload = {'text': 'Metin', 'words': _words('Başka')}
+        captured = []
+        payloads = {
+            audio_qc.OPENAI_AUDIO_TRANSCRIPTIONS_URL: openai_payload,
+            audio_qc.GEMINI_INTERACTIONS_URL: gemini_payload,
+            audio_qc.ELEVENLABS_SPEECH_TO_TEXT_URL: elevenlabs_payload,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / 'voice.mp3'
+            path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'key-openai'),
+                patch.object(audio_qc.settings, 'gemini_api_key', 'key-gemini'),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', 'key-elevenlabs'),
+                patch.object(audio_qc, '_upload_gemini_audio_file', return_value={
+                    'name': 'files/test', 'uri': 'https://provider.example/audio', 'mime_type': 'audio/mpeg',
+                }),
+                patch.object(audio_qc, '_delete_gemini_file'),
+                patch.object(audio_qc.httpx, 'post', side_effect=lambda url, **kwargs: _Response(payloads[url])),
+            ):
+                with self.assertRaises(audio_qc.AudioQCError):
+                    audio_qc.verify_audio_narration(path, 'Metin', provider_evidence_sink=lambda **item: captured.append(item))
+        self.assertEqual([item['provider'] for item in captured], ['openai', 'gemini', 'elevenlabs'])
+        self.assertEqual([item['model'] for item in captured], ['whisper-1', audio_qc._GEMINI_TRANSCRIBE_MODEL, 'scribe_v2'])
+        self.assertEqual(captured[0]['payload'], openai_payload)
+        self.assertEqual(captured[1]['payload'], gemini_payload)
+        self.assertEqual(captured[2]['payload'], elevenlabs_payload)
+
+    def test_sink_failure_or_mutation_does_not_change_qa(self):
+        def failing_sink(**item):
+            item['payload']['text'] = 'Changed'
+            raise RuntimeError('secret storage error')
+
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / 'voice.mp3'
+            path.write_bytes(b'audio')
+            with (
+                patch.object(audio_qc.settings, 'openai_api_key', 'key-openai'),
+                patch.object(audio_qc.settings, 'gemini_api_key', ''),
+                patch.object(audio_qc.settings, 'elevenlabs_api_key', ''),
+                patch.object(audio_qc.httpx, 'post', return_value=_Response({'text': 'Metin', 'words': _openai_words('Metin')})),
+            ):
+                baseline = audio_qc.verify_audio_narration(path, 'Metin')
+                with_sink = audio_qc.verify_audio_narration(path, 'Metin', provider_evidence_sink=failing_sink)
+        self.assertEqual(baseline, with_sink)
+        self.assertTrue(with_sink['pass'])
+
+    def test_error_bodies_urls_keys_and_unknown_fields_are_not_exposed(self):
+        sink = Mock()
+        def capture(payload, status=200):
+            audio_qc._checkpoint_provider_evidence(
+                _Response(payload, status_code=status), provider='openai', model='whisper-1',
+                language='tr', secret='exact-api-secret', sink=sink,
+            )
+        capture({'text': 'safe', 'words': [], 'headers': {'Authorization': 'exact-api-secret'},
+                 'url': 'https://secret.example/?token=secret', 'error': {'message': 'secret'}})
+        self.assertEqual(sink.call_args.kwargs['payload'], {'text': 'safe', 'words': []})
+        sink.reset_mock()
+        for text in ('exact-api-secret', 'https://secret.example/?token=secret', 'Authorization: Bearer private', 'api_key=private'):
+            capture({'text': text})
+        capture({'text': 'secret error body'}, status=401)
+        capture({'text': 'x' * 32769})
+        sink.assert_not_called()
 
 
 class OpenAIPercentTimestampTests(unittest.TestCase):

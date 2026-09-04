@@ -50,6 +50,22 @@ _HUMAN_CURIOSITY_RULE = (
     'or "kaynaklara göre", unless identifying the source is itself necessary '
     'to understand a disputed claim. Never add filler just to fill the time.'
 )
+_SOURCE_IDENTITY_RULE = (
+    'SOURCE IDENTITY: preserve the exact institution and its role from the '
+    'supplied evidence; never replace it with a plausible-sounding agency. '
+    'For example, the Bureau of Engraving and Printing is not the United '
+    'States Mint. Prefer omitting unnecessary spoken attribution over '
+    'inventing, loosely translating or substituting the source institution.'
+)
+_VISIBLE_MATERIAL_RULE = (
+    'VISIBLE MATERIAL CLAIMS: a sourced ingredient is not automatically '
+    'visually identifiable. Do not say a close-up reveals cotton, linen or '
+    'their percentages unless the exact evidence and planned shot can '
+    'distinguish them. Colored security fibers in banknote paper are not '
+    'visual proof of its cotton-and-linen composition. Ordinary texture '
+    'B-roll may illustrate the finished paper without claiming microscopic '
+    'identification; a zoom never establishes a material or process by itself.'
+)
 
 
 class ImmutableNarrationSceneBudgetError(RuntimeError):
@@ -880,9 +896,11 @@ def _short_story_quality_issues(
     return issues
 
 
-_SHORT_STORY_QC_VERSION = 4
-_STOCK_SCENE_QC_VERSION = 8
-_STORY_STOCK_CONTRACT = 'openai-story-stock-v4'
+# Invalidate pre-explanatory-coda/source-identity approvals, including intact
+# fingerprints on the previously accepted but factually wrong narration.
+_SHORT_STORY_QC_VERSION = 5
+_STOCK_SCENE_QC_VERSION = 9
+_STORY_STOCK_CONTRACT = 'openai-story-stock-v5'
 
 
 def _normalize_short_story_topic(topic: str) -> str:
@@ -1529,6 +1547,37 @@ def _documentary_broll_writer_rule(content_style: str) -> str:
     )
 
 
+def _documentary_explanatory_coda_rule(content_style: str) -> str:
+    if str(content_style or 'documentary').strip().casefold() != 'documentary':
+        return (
+            'SOURCED EXPLANATORY CODA IS NOT ACTIVE: retain the ordinary '
+            'physical payoff and continuity rules for this style.'
+        )
+    return (
+        'SOURCED DOCUMENTARY EXPLANATORY CODA: only for a factual curiosity '
+        'whose precise answer is explicitly supported by the supplied '
+        'sources, the payoff may be the viewer understanding that answer '
+        'over honest B-roll of the specifically identified subject, its '
+        'explicitly sourced materials or a source-backed comparison. '
+        'It need not invent a purchase, visible physical benefit or completed '
+        'action. Each beat must advance the explanation; the ending must '
+        'answer the original question, not repeat the introduction or add '
+        'a new claim. Preserve the finished-product category and source '
+        'institution. Contextual views may change angle or location, and '
+        'show that subject, its sourced materials or comparison objects, only if '
+        'neither narration nor the user brief asserts the same individual '
+        'object/person, continuous action, chronological event or location. '
+        'Never present contextual B-roll as an experiment, archive or proof '
+        'of a material percentage. This contract does not apply to a '
+        'tutorial, procedure, before/after result, physical demonstration, '
+        'or durability, strength, performance or causal-mechanism claim; '
+        'those retain the strict physical-evidence and continuity rules. '
+        'Explicit user shot/identity constraints always remain binding. '
+        'This is a defined explanatory meaning of payoff, not permission '
+        'to waive a failed source, factual, footage or continuity check.'
+    )
+
+
 def _run_director(
     client: OpenAI,
     compact: dict,
@@ -1552,6 +1601,7 @@ def _run_director(
     short_visual_note = ''
     short_language_note = ''
     documentary_rule = _documentary_broll_writer_rule(style)
+    explanatory_coda_rule = _documentary_explanatory_coda_rule(style)
     if duration_minutes <= 0.6 and target_scenes > 0:
         authored_ai_limit = preview_authored_ai_limit(
             options,
@@ -1599,14 +1649,14 @@ def _run_director(
             'Follow them exactly and never merge or move a required beat merely to prefer one mechanism scene. '
             'Before writing, silently choose ONE precise everyday curiosity a real person would willingly spend thirty seconds to resolve. '
             'The supplied topic is broad context, never permission to make a technology-trivia sampler. '
-            'Use one recurring person or object, one immediate goal or problem, one causal reveal, and one visible everyday payoff. '
+            'Use one recurring subject and one curiosity: a goal, causal reveal and visible everyday payoff for a physical story, or the active sourced documentary explanatory coda below. '
             'Every scene must advance that same question; never mix unrelated mechanisms, products or clever facts merely because they fit the topic. '
             f'Structure the story so no more than {paid_dependency_limit} scenes truly depend on AI, and reserve those dependencies only for the single chosen mechanism that stock cannot literally show. '
             'Unless the explicit user topic assigns a multi-scene causal demonstration, compress that mechanism and its complete causal explanation into one scene. '
             'Never merge, split, repeat or move explicit numbered beats from the user topic. '
             'Every other scene must remain publishable with a plainly filmable real-world action whose exact subject and action appear in its stock queries, '
             'even when it also carries a fallback ai_prompt for uncertain stock coverage. '
-            'The penultimate action and visible payoff must happen seconds apart to the same person or object in the SAME named ordinary micro-location, '
+            'Outside the active sourced documentary explanatory coda, the penultimate action and visible payoff must happen seconds apart to the same person or object in the SAME named ordinary micro-location, '
             'such as the same café counter, desk or doorway. Repeat that location phrase in both scenes; never jump between home, store, street, a new room or a later time. '
             'Except only for the active sourced documentary B-roll exception below, every ai_prompt-null scene must be fully provable by one ordinary stock clip; if all named nouns and actions are unlikely to coexist in that clip, '
             'rewrite the narration and its queries before returning. '
@@ -1700,6 +1750,7 @@ Studio style: {STYLE_NOTES.get(style, STYLE_NOTES['documentary'])}
 Studio pace profile: {pace_profile}
 Studio visual mix: {visual_mix}
 {documentary_rule}
+{explanatory_coda_rule}
 {reference_note}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_quota_note}
@@ -1721,10 +1772,12 @@ narration, visual_queries, ai_prompt, pace, transition.
 EDITORIAL QC RULES:
 - {_MATERIAL_IDENTITY_RULE}
 - {_HUMAN_CURIOSITY_RULE}
+- {_SOURCE_IDENTITY_RULE}
+- {_VISIBLE_MATERIAL_RULE}
 - Produce one coherent story. Repair every abrupt subject jump.
 - Treat the complete Topic as a literal production contract. Before returning, silently audit every numbered scene against every explicit positive, negative, routing and continuity constraint in it.
 - Every non-null ai_prompt is a standalone paid-generation instruction. Restate all applicable visible object identity, dimensions, brand state, color, wardrobe, room, lighting, continuity and forbidden elements inside that scene's own prompt, even when this repeats earlier prompts. Never assume a later generation can see an earlier prompt.
-- For a short preview, commit to one narrow human situation, one curiosity hook, one recurring person or object, one causal mini-story and one visible everyday payoff.
+- For a short, commit to one curiosity hook and one recognisable subject thread. A physical story needs a causal mini-story and visible everyday payoff; the active sourced documentary explanatory coda instead earns its ending by resolving the factual curiosity.
 - A broad topic is not a story. Never create a sampler of unrelated mechanisms or facts; at most one technical mechanism family may drive a short preview.
 - Every scene must continue, explain, contrast, escalate or pay off the previous scene.
 - Remove filler, robotic listicle wording and repetitive transition phrases.
@@ -1798,6 +1851,7 @@ def _repair_short_stock_scenes(
     ).strip().casefold()
     documentary_broll = normalized_content_style == 'documentary'
     documentary_writer_rule = _documentary_broll_writer_rule(normalized_content_style)
+    explanatory_coda_rule = _documentary_explanatory_coda_rule(normalized_content_style)
     documentary_critic_rule = (
         'DOCUMENTARY B-ROLL SEMANTICS ARE ACTIVE. A verified historical year, '
         'elapsed duration, count, capacity, total or material-composition '
@@ -2101,15 +2155,18 @@ Return ONLY JSON in exactly this shape:
 
 NON-NEGOTIABLE RULES:
 - {documentary_writer_rule}
+- {explanatory_coda_rule}
 - {_MATERIAL_IDENTITY_RULE}
 - {_HUMAN_CURIOSITY_RULE}
+- {_SOURCE_IDENTITY_RULE}
+- {_VISIBLE_MATERIAL_RULE}
 - Return exactly the requested positions and no others. Never rewrite an accepted locked stock scene or an AI-routed mechanism scene.
 - When a target contains locked_narration, copy that narration exactly, character for character. Repair only visual_queries; never paraphrase, punctuate, pad or otherwise edit the locked spoken text.
 - Preserve every explicit positive, negative, routing and continuity constraint in requested_brief. Never introduce an actor, object, action, setting, screen state or payoff that the brief forbids.
 - Respect each requested scene's allowed_word_count range. Keep the complete story within whole_story_word_budget; exact per-scene equality is neither required nor desirable.
 - Never add empty padding such as "bugün", "şimdi", "sakinlikle" or "dikkatlice" unless that word changes the visible action and sounds necessary in normal speech.
 - Each narration describes ONE visible human or physical action in ONE ordinary location, or illustrates one exactly sourced fact allowed by the active documentary B-roll exception.
-- Except only as allowed by the documentary B-roll rule above, every spoken clause must be literally visible in the same common five-second stock clip. Do not append an abstract hook, comparison, mystery, lesson or recap.
+- Except only as allowed by the documentary B-roll or sourced explanatory-coda rule above, every spoken clause must be literally visible in the same common five-second stock clip. An eligible, exact source-backed comparison may bridge adjacent relevant subject/material views; it must not imply they are one object or simultaneously in one place. Otherwise do not append an abstract hook, comparison, mystery, lesson or recap.
 - {CONTINUITY_DEICTIC_RULE}
 - Use one simple sentence. Do not combine distinct actions, even with a conjunction, gerund, sequence or subordinate clause.
 - Do not use a semicolon or colon to join actions.
@@ -2119,13 +2176,13 @@ NON-NEGOTIABLE RULES:
 - First choose one canonical actor/object, one action verb phrase and one ordinary setting. Repeat that same semantic contract in every query; vary only framing or camera distance.
 - Every query must contain 3-9 English words and depict the narration's exact same single action.
 - Keep each scene faithful to its supplied role and add no new fact, product or unrelated activity.
-- A hook must be one concrete everyday action that opens naturally into the next technical scene.
+- A hook must open one recognisable everyday curiosity, not necessarily a technical scene; use a concrete action for a physical story or a sourced factual question under the active explanatory-coda contract.
 - A bridge or penultimate scene must connect its immediate neighbors without repeating their mechanism.
 - DOCUMENTARY/EXPLAINER EXTERIOR CODA: only for a documentary or explainer, the final beat may be an exterior establishing shot of the same primary object or event already carried by the penultimate beat. It may cut from an interior or detail view to the enclosing exterior context, but it must preserve the exact subject/event thread, introduce no new person, object, product or event, add no unrelated location, travel beat, day or time jump, and visibly remain relevant to the same sourced explanation. This is never a shortcut for a product demonstration, tutorial, procedure, before/after result or physical action whose completion must be shown continuously.
-- Outside that narrow exterior coda, the penultimate and payoff scenes are one continuous two-beat action by the same person or object, seconds apart in the SAME named micro-location.
-- Outside that narrow exterior coda, name the same concrete micro-location in both ending query sets and establish it explicitly in the penultimate narration. The payoff narration may use a minimal deictic under the adjacent-continuity rule above, but it must not invent or widen the referent. A venue-level match is insufficient if one shot is at a counter and the other is outside.
-- Outside that narrow exterior coda, never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
-- Outside the narrow exterior coda, a payoff must visibly complete the preceding action and show the everyday benefit, not merely state a conclusion. A valid coda must instead visibly contextualize the same object/event and human benefit without claiming that a discontinuous physical action was completed.
+- Outside the active sourced explanatory coda and narrow exterior coda, the penultimate and payoff scenes are one continuous two-beat action by the same person or object, seconds apart in the SAME named micro-location.
+- Outside those defined codas, name the same concrete micro-location in both ending query sets and establish it explicitly in the penultimate narration. The payoff narration may use a minimal deictic under the adjacent-continuity rule above, but it must not invent or widen the referent. A venue-level match is insufficient if one shot is at a counter and the other is outside.
+- Outside those defined codas, never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
+- Outside those defined codas, a payoff must visibly complete the preceding action and show the everyday benefit. A sourced explanatory coda instead gives the precise factual answer over relevant subject footage without inventing an action or physical benefit; an exterior coda must meet its separate existing contract.
 - Keep the spoken narration natural and easy to pronounce in {language_name}; for Turkish, use meaning-first native wording and never raw technical abbreviations.
 - In Turkish, express causality as a natural condition. Use wording such as “sıcak hava içeride kalınca” or “sıcak hava sıkışınca”; never write translated energy-agent phrases such as “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”.
 - Keep production-only wardrobe, color-continuity, camera-direction, shot-size, face-visibility and framing notes in visual_queries, not spoken narration. Phrases such as “koyu lacivert tişörtlü Mert” or “arkadan izliyor” are not human narration when they exist only to control the picture.
@@ -2340,7 +2397,7 @@ NON-NEGOTIABLE RULES:
                 **{key: True for key in sorted(story_boolean_keys)},
                 'central_question': 'one precise human question',
                 'causal_answer': 'one supported causal reveal',
-                'visible_payoff': 'one visible everyday benefit',
+                'visible_payoff': 'one evidenced physical benefit or eligible sourced answer with relevant visuals',
                 'natural_spoken_language_evidence': (
                     'PASS, or scene N plus an exact quote and the spoken-language issue'
                 ),
@@ -2406,30 +2463,33 @@ Return ONLY JSON in exactly this shape:
 
 Review the WHOLE story before reviewing individual stock shots. Set each story_review boolean independently and false whenever evidence is ambiguous.
 {documentary_critic_rule}
+{explanatory_coda_rule}
 - {_MATERIAL_IDENTITY_RULE} A wrong finished-product category fails causal_claim_supported and adds_no_new_fact for the affected scene, even if its ingredient percentages are correct.
 - {_HUMAN_CURIOSITY_RULE} Repeated intro-as-payoff fails one_specific_useful_reveal or hook_payoff_same_promise; unnecessary citation boilerplate fails natural_spoken_language.
+- {_SOURCE_IDENTITY_RULE} An invented or substituted institution fails causal_claim_supported and adds_no_new_fact.
+- {_VISIBLE_MATERIAL_RULE} Unsupported visual identification fails all_spoken_meaning_visible and adds_no_new_fact even when the ingredient percentages themselves are sourced.
 - all_explicit_brief_constraints_preserved: every explicit structural, routing, continuity, required-element and forbidden-element constraint in requested_topic is obeyed by the complete candidate story, including narration, visual queries and ai_prompt routes. False if any explicit constraint is omitted, contradicted or replaced by a generic payoff. A wardrobe, camera or framing constraint is preserved when it is explicit in the applicable visual_queries or ai_prompt; never require production-only metadata to be spoken merely to prove compliance.
-- single_human_situation: the short follows one concrete everyday situation a person can care about.
+- single_human_situation: the short follows one concrete everyday situation a person can care about, or one recognisable factual curiosity under the active sourced explanatory-coda contract.
 - single_central_question: one curiosity or problem is opened and resolved.
 - not_fact_montage: the story is not a sampler, listicle or collage of unrelated mechanisms, products or clever facts.
-- causal_scene_chain: every scene advances the same cause-and-effect answer rather than merely sharing a broad topic.
-- same_actor_or_object_thread: one recognisable person or object gives the story continuity.
-- human_payoff_visible: the last beat visibly delivers an everyday benefit that earns the hook.
+- causal_scene_chain: every scene advances the same cause-and-effect answer, or builds the same precise source-backed factual explanation under the active explanatory-coda contract, rather than merely sharing a broad topic.
+- same_actor_or_object_thread: one recognisable person or object gives the story continuity; the active explanatory coda may connect the named subject to its explicitly sourced materials or comparison objects, never silently substitute an explicitly identified individual object/person or drift to unrelated facts.
+- human_payoff_visible: the last beat visibly delivers an everyday benefit, or resolves the factual curiosity over specifically relevant subject footage under the active explanatory-coda contract. Do not demand an invented purchase or physical benefit from an educational answer.
 - natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese, unsafe suffix-attached abbreviations or unsupported foreign terms. For Turkish, this is false when heat, energy or an opened gap becomes an awkward translated grammatical agent, as in “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”; natural causality says that hot air stays trapped and the fan then changes speed. It is also false when narration verbalizes wardrobe/color continuity, camera direction, shot size, face visibility or framing solely to control production, as in “koyu lacivert tişörtlü Mert ... arkadan izliyor”. Keep that metadata in visual fields unless it changes the story's human meaning.
 - directly_answers_requested_topic: the actual hook, reveal and payoff directly answer the supplied topic rather than drifting to a merely coherent side story.
 - one_specific_useful_reveal: the viewer learns one non-obvious, useful or genuinely surprising thing worth thirty seconds.
-- causal_claim_supported: independently verify the central cause-and-effect explanation against the supplied source URLs and evidence. Use bounded web search when the evidence is insufficient; false if the claim cannot be verified or overstates a source.
-- hook_payoff_same_promise: the ending visibly fulfills the exact curiosity opened by the hook.
+- causal_claim_supported: independently verify the central explanation, including every factual answer and attribution in an eligible explanatory coda, against the supplied source URLs and evidence. Use bounded web search when the evidence is insufficient; false if the claim cannot be verified or overstates a source. Do not require a non-causal composition fact to invent causality.
+- hook_payoff_same_promise: the ending fulfills the exact curiosity opened by the hook, with the precise source-backed answer and relevant visuals for an eligible explanatory coda, not a repeated hook or unrelated conclusion.
 central_question, causal_answer and visible_payoff must each be one short, concrete, non-empty summary grounded in the candidate story.
 natural_spoken_language_evidence must begin with PASS when natural_spoken_language is true. When it is false, it must name the scene position, quote the exact offending words and explain the concrete spoken-language problem. Never use the general reason to hide or contradict this language evidence.
 If any story_review boolean is false, the general reason must name the failed key and discuss only concrete failure evidence, not summarize checks that passed.
 A whole-story failure is fatal: do not approve a polished shot plan for a bad idea.
 
 Review ending_pair jointly. The positions must match the supplied final two indexes exactly.
-- same_immediate_location: both beats occur in the same named micro-location, such as the same café counter, desk, doorway or room. Same venue but counter-to-street is false.
-- continuous_visible_action_chain: the payoff is the immediately following visible action, seconds later, with no exit, travel, new room, new day or time-of-day jump.
-- same_actor_or_object_thread: the same person or object carries both ending beats.
-- everyday_benefit_visible: for an ordinary ending, the final action visibly completes the preceding action and shows the benefit. For the narrow documentary/explainer exterior coda, the shot must instead visibly contextualize the same sourced human benefit and object/event without claiming that a discontinuous physical action was completed.
+- same_immediate_location: for a physical story, both beats occur in the same named micro-location; counter-to-street is false. Under the active sourced explanatory-coda contract only, this is satisfied by honest contextual views that make no same-location or continuous-event assertion and violate no explicit user location constraint.
+- continuous_visible_action_chain: for a physical story, the payoff immediately follows the preceding visible action, seconds later, with no temporal or location jump. Under the active sourced explanatory-coda contract only, this is satisfied when there is no asserted continuous action to interrupt and both beats coherently support the same precise answer.
+- same_actor_or_object_thread: the same person or object carries both ending beats, or the named subject and its explicitly sourced materials/comparison under the active explanatory-coda contract, never a substitute for an explicitly identified individual object/person.
+- everyday_benefit_visible: for an ordinary ending, the final action visibly completes the preceding action and shows the benefit. For an eligible sourced explanatory coda, the payoff is the precise answer illustrated by the relevant subject; no physical benefit or completed action is required. For the separate documentary/explainer exterior coda, the shot must visibly contextualize the same sourced human benefit and object/event without claiming a discontinuous action was completed.
 - explicit_technical_insert_return_contract_satisfied: true when requested_topic has no explicit numbered technical-insert return contract. When requested_topic does explicitly number and AI-route the penultimate beat as a technical macro, cutaway, cross-section or inside-the-mechanism insert and the final beat straight back to the same enclosing ordinary setting, set this true only if the candidate obeys that exact route, the insert reveals the mechanism of the same recurring object, and there is no travel, new room, new day or unrelated venue. Otherwise false. A satisfied narrow insert may have same_immediate_location=false because the camera temporarily enters the object; ordinary location changes, implicit routes and generic thematic continuity never qualify for the exception.
 - documentary_exterior_establishing_coda_satisfied: true when the final beat does not attempt an exterior establishing coda. When it does, set this true only if content_style is documentary or explainer and the final beat is an exterior establishing coda of the same primary object or event already carried by the penultimate beat. An interior-to-enclosing-exterior camera-vantage cut is allowed, but the subject and event thread must be unchanged, the shot must remain visibly relevant to the same sourced explanation, and it must introduce no new person, object, product or event and no unrelated location, travel beat, day or time jump. Set false for product demonstrations, tutorials, procedures, before/after results, physical actions whose completion must be shown continuously, merely similar stock subjects, unrelated location jumps, identity ambiguity or thematic-only montage. At most same_immediate_location and continuous_visible_action_chain may then be false; same_actor_or_object_thread, everyday_benefit_visible and every other ending boolean must remain true.
 location_anchor must name the exact shared micro-location for an ordinary ending. For the narrow exterior coda it must instead name the same primary object/event anchor and the precise interior/detail-to-exterior vantage change. reason must cite concrete evidence.
@@ -2440,8 +2500,8 @@ For EACH requested position, set every boolean independently. If evidence is amb
 - single_ordinary_location: narration and every query can share one ordinary physical setting.
 - all_spoken_meaning_visible: every spoken clause is directly visible in that single clip, except for the narrow sourced documentary B-roll semantics above when active.
 - Apply this exact narrow semantic rule when judging all_spoken_meaning_visible: {CONTINUITY_DEICTIC_RULE}
-- no_invisible_or_abstract_claim: there is no magic-like hook, comparison, mystery, technical implication or spoken conclusion. A sourced documentary date, duration, count, capacity, total or material-composition percentage is not an invisible abstraction when the active documentary rule is fully satisfied.
-- all_named_subjects_coexist: one normal five-second stock clip can visibly contain every named subject and object.
+- no_invisible_or_abstract_claim: there is no unsupported abstraction, technical implication or invented conclusion. A sourced documentary fact or exact supported comparison is not an invisible abstraction when the active documentary/explanatory-coda contract is fully satisfied; it still cannot imply visually identified ingredients or unproved effects.
+- all_named_subjects_coexist: one normal five-second stock clip can visibly contain the named actors and objects asserted to be together. For an eligible source-backed comparison only, relevant subject/material views may be adjacent rather than simultaneous when neither narration nor brief asserts physical coexistence; each query must still specify the actual subject shown, not generic wallpaper.
 - queries_are_english: every query is idiomatic English stock-search text.
 - queries_match_same_action: every query depicts the narration's exact same actor/object, action and setting.
 - common_stock_clip_feasible: the exact shot is realistically common in stock libraries, not merely imaginable.
