@@ -1024,6 +1024,30 @@ def _validate_paid_create_allocation(
         )
 
 
+def _preflight_production_shorts_paid_plan(
+    options: dict,
+    scenes: list[dict],
+    recovered_generated_media: dict | None,
+    cap: int | None,
+    *,
+    paid_slots_used: int = 0,
+) -> None:
+    """Reject over-budget production AI plans before voice/media spend."""
+    if options.get('mode') != 'production' or options.get('format') != 'shorts' or cap is None:
+        return
+    authored_candidates = [
+        {'scene_index': index}
+        for index, scene in enumerate(scenes)
+        if str(scene.get('ai_prompt') or '').strip()
+    ]
+    _validate_paid_create_allocation(
+        authored_candidates,
+        recovered_generated_media,
+        cap,
+        paid_slots_used=paid_slots_used,
+    )
+
+
 def _short_preview_voice_duration_qc(
     voice_result: dict,
     target_seconds: float,
@@ -1331,6 +1355,12 @@ def _is_transient_pexels_provider_error(exc: Exception) -> bool:
 def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     value = dict(options or {})
     value.setdefault('mode', 'preview' if duration_minutes <= 1 else 'production')
+    requested_format = value.get('format')
+    if requested_format is None:
+        requested_format = 'shorts' if value['mode'] == 'preview' else 'landscape'
+    if not isinstance(requested_format, str) or requested_format.strip().lower() not in {'shorts', 'landscape'}:
+        raise ValueError('Video format must be shorts or landscape')
+    value['format'] = requested_format.strip().lower()
     requested_publish_after_render = value.get('publish_after_render')
     value.setdefault('workflow', 'auto')
     value.setdefault('content_style', 'documentary')
@@ -1354,6 +1384,33 @@ def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
     return value
 
 
+def _record_publish_queue_outcome(task_id: str, outcome: dict) -> None:
+    """Fill a missing routing outcome without replacing a real publish state."""
+    allowed_statuses = {
+        'queued', 'reserved', 'uploading', 'uploaded', 'completed', 'uncertain',
+        'already_reserved', 'failed_preflight', 'quality_blocked',
+        'preview_blocked', 'not_enabled', 'no_unique_route',
+        'connection_missing', 'connection_changed', 'profile_changed',
+        'metadata_blocked', 'reservation_blocked', 'queue_blocked', 'queue_error',
+    }
+    try:
+        from app.services.studio_state import merge_youtube_result_field
+
+        status = outcome.get('status')
+        automation = {
+            'status': status if isinstance(status, str) and status in allowed_statuses else 'queue_error',
+        }
+        publish_task_id = outcome.get('publish_task_id')
+        if isinstance(publish_task_id, str) and re.fullmatch(r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}', publish_task_id):
+            automation['publish_task_id'] = publish_task_id
+        merge_youtube_result_field(
+            task_id, 'youtube_automation', automation, only_if_missing=True,
+        )
+    except Exception:
+        # Registry failure must not discard an already rendered master.
+        return
+
+
 def _queue_automatic_publish_if_enabled(task_id: str, options: dict) -> bool:
     """Best-effort autonomous routing after an explicit production opt-in."""
     if (
@@ -1364,11 +1421,15 @@ def _queue_automatic_publish_if_enabled(task_id: str, options: dict) -> bool:
     try:
         from app.publish_tasks import queue_automatic_publish
 
-        queue_automatic_publish(task_id)
+        outcome = queue_automatic_publish(task_id)
     except Exception:
-        # Publishing remains best-effort after the render is durably successful.
+        _record_publish_queue_outcome(task_id, {'status': 'queue_error'})
         return False
-    return True
+    if not isinstance(outcome, dict):
+        _record_publish_queue_outcome(task_id, {'status': 'queue_error'})
+        return False
+    _record_publish_queue_outcome(task_id, outcome)
+    return outcome.get('status') == 'queued'
 
 
 def _task_spec(topic: str, duration_minutes: float, language: str, channel_id: str | None, options: dict) -> dict:
@@ -2629,7 +2690,13 @@ def _generated_visual_spec(
 def _render_target_duration(options: dict, requested_seconds: float) -> float | None:
     return (
         float(requested_seconds)
-        if options.get('mode') == 'preview'
+        if (
+            options.get('mode') == 'preview'
+            or (
+                options.get('mode') == 'production'
+                and options.get('format') == 'shorts'
+            )
+        )
         else None
     )
 
@@ -3029,6 +3096,9 @@ def _review_stock_tournament_round(
     work: Path,
     round_index: int,
     topic: str,
+    *,
+    content_style: str = '',
+    evidence_sources: list[dict] | None = None,
 ) -> dict[int, dict]:
     """Review independent stock scenes concurrently in bounded requests."""
     if len(active_scenes) != len(round_visuals):
@@ -3050,6 +3120,8 @@ def _review_stock_tournament_round(
             topic=topic,
             story_scenes=scenes,
             gemini_model_override=STOCK_TOURNAMENT_GEMINI_MODEL,
+            content_style=content_style,
+            evidence_sources=evidence_sources,
         )
         local_reviews = {
             int(review.get('scene_index')): review
@@ -3319,6 +3391,13 @@ def run_video_pipeline(
                 'Recovered media and voice source tasks do not match'
             )
         scenes = package['scenes']
+        _preflight_production_shorts_paid_plan(
+            options,
+            scenes,
+            recovered_generated_media,
+            total_paid_create_cap,
+            paid_slots_used=runway_attempts,
+        )
         scene_repair_recovery = bool(
             recovered_generated_media
             and recovered_generated_media.get('version') == 2
@@ -3341,7 +3420,7 @@ def run_video_pipeline(
             and duration_minutes <= 0.6
         )
         generation_aspect_ratio = aspect_ratio_for_mode(
-            options.get('mode')
+            options.get('mode'), options.get('format')
         )
         pexels_orientation = (
             'portrait'
@@ -3806,6 +3885,8 @@ def run_video_pipeline(
             len(scenes),
             topic=topic,
             story_scenes=scenes,
+            content_style=options.get('content_style', ''),
+            evidence_sources=package.get('sources') or [],
         )
         current_reviews = {
             int(review.get('scene_index')): review
@@ -4012,6 +4093,8 @@ def run_video_pipeline(
                     work / f'pre_runway_stock_tournament_{round_index}',
                     round_index,
                     topic,
+                    content_style=options.get('content_style', ''),
+                    evidence_sources=package.get('sources') or [],
                 )
 
                 for position, scene_idx in enumerate(active_scenes):
@@ -4333,6 +4416,8 @@ def run_video_pipeline(
                     len(budget_rescued_scenes),
                     topic=topic,
                     story_scenes=scenes,
+                    content_style=options.get('content_style', ''),
+                    evidence_sources=package.get('sources') or [],
                 )
                 budget_reviews = {
                     int(review.get('scene_index')): review
@@ -4480,6 +4565,22 @@ def run_video_pipeline(
                     )
                 )
                 raise FinalVisualQualityError(preflight_message)
+        elif (
+            options.get('mode') == 'production'
+            and options.get('format') == 'shorts'
+            and total_paid_create_cap is not None
+        ):
+            # Production ranks only absent/rejected visuals. Validate all
+            # required replacements before truncating or buying any of them.
+            _validate_paid_create_allocation(
+                ranked_runway_candidates,
+                None,
+                total_paid_create_cap,
+                paid_slots_used=runway_attempts,
+            )
+            selected_runway = list(ranked_runway_candidates)
+            runway_required_submission_cap = len(selected_runway)
+            runway_effective_submission_cap = len(selected_runway)
         else:
             selected_runway = ranked_runway_candidates[:runway_submission_cap]
         if is_private_ai_first_omni_preview:
@@ -4863,6 +4964,8 @@ def run_video_pipeline(
             len(scenes),
             topic=topic,
             story_scenes=scenes,
+            content_style=options.get('content_style', ''),
+            evidence_sources=package.get('sources') or [],
         )
         final_reviews = {
             int(r.get('scene_index')): r
@@ -4953,6 +5056,8 @@ def run_video_pipeline(
                 _missing_review_attempts=0,
                 topic=topic,
                 story_scenes=scenes,
+                content_style=options.get('content_style', ''),
+                evidence_sources=package.get('sources') or [],
             )
             for local_review in adjudication_qc.get('reviews') or []:
                 if not isinstance(local_review, dict):
@@ -5374,6 +5479,8 @@ def run_video_pipeline(
                 len(rescued_final_scenes),
                 topic=topic,
                 story_scenes=scenes,
+                content_style=options.get('content_style', ''),
+                evidence_sources=package.get('sources') or [],
             )
             rescue_reviews = {
                 int(r.get('scene_index')): r
@@ -5638,7 +5745,9 @@ def run_video_pipeline(
             scene_durations=scene_durations,
             scene_visual_paths=scene_visuals,
             target_duration=render_target_duration,
-            output_resolution=resolution_for_mode(options.get('mode')),
+            output_resolution=resolution_for_mode(
+                options.get('mode'), options.get('format'),
+            ),
         )
 
         actual_seconds = float(rendered.get('duration') or 0)
@@ -5653,7 +5762,11 @@ def run_video_pipeline(
         if not duration_ok:
             raise RuntimeError(f'Final duration gate rejected render: {actual_seconds:.1f}s for requested {requested_seconds:.1f}s')
 
-        if strict_short_preview_duration:
+        if strict_short_preview_duration or (
+            options.get('mode') == 'production'
+            and options.get('format') == 'shorts'
+            and duration_minutes == 0.5
+        ):
             final_render_qc = _strict_short_preview_render_qc(
                 rendered,
                 requested_seconds,

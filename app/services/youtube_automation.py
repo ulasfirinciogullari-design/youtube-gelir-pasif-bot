@@ -136,6 +136,19 @@ def _language(value: Any, fallback: str = 'tr') -> str:
     return normalized
 
 
+def _production_topics(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        value = value.splitlines()
+    if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
+        raise ValueError('production_topics must be a list of topics')
+    topics = [' '.join(item.split()) for item in value if item.strip()]
+    if len(topics) > 60 or any(len(item) > 240 for item in topics):
+        raise ValueError('production_topics exceeds its limit')
+    return list(dict.fromkeys(topics))
+
+
 def _profile_payload(channel_id: str, value: dict[str, Any]) -> dict[str, Any]:
     channel_id = _safe_id(channel_id)
     default_language = _language(value.get('default_language') or 'tr')
@@ -171,6 +184,16 @@ def _profile_payload(channel_id: str, value: dict[str, Any]) -> dict[str, Any]:
         raise ValueError('series_total is invalid') from exc
     if not 0 <= series_total <= 10000:
         raise ValueError('series_total is invalid')
+    production_enabled = value.get('production_enabled', False)
+    if type(production_enabled) is not bool:
+        raise ValueError('production_enabled must be a boolean')
+    production_interval_hours = value.get('production_interval_hours', 24)
+    if (
+        type(production_interval_hours) is not int
+        or not 6 <= production_interval_hours <= 168
+    ):
+        raise ValueError('production_interval_hours must be between 6 and 168')
+    production_topics = _production_topics(value.get('production_topics'))
 
     return {
         'schema_version': 1,
@@ -197,6 +220,9 @@ def _profile_payload(channel_id: str, value: dict[str, Any]) -> dict[str, Any]:
         'series_name': _one_line(value.get('series_name'), 100),
         'series_total': series_total,
         'auto_publish': bool(value.get('auto_publish')),
+        'production_enabled': production_enabled,
+        'production_topics': production_topics,
+        'production_interval_hours': production_interval_hours,
         'release_mode': release_mode,
         'schedule_delay_minutes': schedule_delay_minutes,
         'require_thumbnail': bool(value.get('require_thumbnail')),
@@ -244,7 +270,6 @@ def save_channel_profile(
     expected_revision: str | None = None,
 ) -> dict[str, Any]:
     channel_id = _safe_id(channel_id)
-    payload = _profile_payload(channel_id, value)
     key = _profile_key(channel_id)
     try:
         client = _redis()
@@ -256,6 +281,7 @@ def save_channel_profile(
             revision = current.get('profile_revision') if isinstance(current, dict) else None
             if revision != expected_revision:
                 raise ProfileConflictError('YouTube channel profile changed concurrently')
+        payload = _profile_payload(channel_id, {**(current or {}), **value})
         encoded = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
         saved = client.eval(
             _SAVE_PROFILE,
@@ -267,6 +293,8 @@ def save_channel_profile(
             channel_id,
         )
     except ProfileConflictError:
+        raise
+    except ValueError:
         raise
     except Exception as exc:
         raise YouTubeAutomationError('YouTube channel profile could not be saved') from exc
@@ -300,15 +328,23 @@ def select_channel_profile(
 ) -> dict[str, Any] | None:
     spec = source_job.get('spec') if isinstance(source_job.get('spec'), dict) else {}
     result = source_job.get('result') if isinstance(source_job.get('result'), dict) else {}
-    language = _language(spec.get('language') or 'tr')
+    language = _language(result.get('language') or spec.get('language') or 'tr', '')
+    selected_channel_id = str(spec.get('production_channel_id') or '')
     route_label = _search_text(spec.get('channel_id'))
     topic = _search_text(spec.get('topic') or result.get('title'))
     ranked: list[tuple[int, str, dict[str, Any]]] = []
     for profile in profiles:
         channel_id = str(profile.get('channel_id') or '')
+        if selected_channel_id and channel_id != selected_channel_id:
+            continue
         if connected_channel_ids is not None and channel_id not in connected_channel_ids:
             continue
-        if not profile.get('auto_publish'):
+        if profile.get('auto_publish') is not True:
+            continue
+        if (
+            spec.get('production_scheduled') is True
+            and profile.get('production_enabled') is not True
+        ):
             continue
         languages = {
             _language(item, language)
@@ -316,6 +352,8 @@ def select_channel_profile(
         }
         if language not in languages:
             continue
+        if selected_channel_id:
+            return profile
         expected_label = _search_text(profile.get('route_label'))
         exact_label = bool(route_label and expected_label and route_label == expected_label)
         keywords = [_search_text(item) for item in profile.get('topic_keywords') or []]
@@ -397,6 +435,23 @@ def build_publish_plan(
     description = str(raw_metadata.get('description') or '').strip()
     if not title or not description:
         raise MetadataValidationError('Publish title and description are required')
+    try:
+        language = _language(
+            result.get('language') or spec.get('language')
+            or profile.get('default_language') or 'tr',
+            '',
+        )
+        allowed_languages = {
+            _language(item, '')
+            for item in _items(
+                profile.get('languages')
+                or [profile.get('default_language') or language]
+            )
+        }
+    except ValueError as exc:
+        raise MetadataValidationError('Video language is invalid') from exc
+    if language not in allowed_languages:
+        raise MetadataValidationError('Video language is not allowed by the channel profile')
 
     series_number = None
     series_id = str(profile.get('series_id') or '')
@@ -439,9 +494,6 @@ def build_publish_plan(
         ],
         maximum_items=30,
         maximum_length=100,
-    )
-    language = _language(
-        profile.get('default_language') or spec.get('language') or 'tr'
     )
     release_mode = str(profile.get('release_mode') or 'private')
     publish_at = None

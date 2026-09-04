@@ -418,6 +418,47 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             'gemini-3.7-flash',
         )
         self.assertEqual(scene_zero_call.kwargs['topic'], 'literal topic')
+        self.assertEqual(scene_zero_call.kwargs['content_style'], '')
+        self.assertIsNone(scene_zero_call.kwargs['evidence_sources'])
+
+    def test_stock_tournament_preserves_documentary_sources_for_each_scene(self):
+        namespace = _load_stock_tournament_review_boundary()
+        reviewer = namespace['review_scene_visuals']
+        reviewer.return_value = {'reviews': [{'scene_index': 0, 'score': 92}]}
+        sources = [{'url': 'https://example.test/history', 'evidence': 'The bridge opened in 1937.'}]
+        namespace['_review_stock_tournament_round'](
+            [{'narration': 'first'}, {'narration': 'second'}],
+            [0, 1], [['first.mp4'], ['second.mp4']], Path('/tmp/tournament'),
+            1, 'Bridge history', content_style='documentary', evidence_sources=sources,
+        )
+        self.assertEqual(reviewer.call_count, 2)
+        for call in reviewer.call_args_list:
+            self.assertEqual(call.kwargs['content_style'], 'documentary')
+            self.assertIs(call.kwargs['evidence_sources'], sources)
+
+    def test_every_worker_visual_review_stage_forwards_documentary_context(self):
+        tree = ast.parse(SOURCE_PATH.read_text(encoding='utf-8'))
+        calls = [
+            node for node in ast.walk(tree)
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+            and node.func.id in {'review_scene_visuals', '_review_stock_tournament_round'}
+        ]
+        self.assertEqual(len(calls), 7)
+        sources = [{'url': 'https://example.test/history', 'evidence': 'Verified historical fact.'}]
+        for call in calls:
+            with self.subTest(line=call.lineno):
+                keywords = {keyword.arg: keyword.value for keyword in call.keywords}
+                self.assertIn('content_style', keywords)
+                self.assertIn('evidence_sources', keywords)
+                context = {
+                    'options': {'content_style': 'documentary'},
+                    'package': {'sources': sources},
+                    'content_style': 'documentary', 'evidence_sources': sources,
+                }
+                style = eval(compile(ast.Expression(keywords['content_style']), '<review-context>', 'eval'), context)
+                evidence = eval(compile(ast.Expression(keywords['evidence_sources']), '<review-context>', 'eval'), context)
+                self.assertEqual(style, 'documentary')
+                self.assertIs(evidence, sources)
 
     def test_stock_tournament_parallelism_is_safely_capped(self):
         namespace = _load_stock_tournament_review_boundary()

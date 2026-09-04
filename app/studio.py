@@ -34,6 +34,11 @@ from app.services.studio_state import (
     update_job,
 )
 from app.services.voice import get_selected_voice
+from app.services.youtube_auth import connection_status
+from app.services.youtube_automation import (
+    list_channel_profiles,
+    select_channel_profile,
+)
 
 router = APIRouter()
 COOKIE_NAME = 'youtube_studio_token'
@@ -1251,6 +1256,8 @@ def _normalize_spec(
     music: str,
     subtitles: str,
     reference_url: str,
+    format: str = 'landscape',
+    publish_after_render: bool = False,
 ) -> dict:
     try:
         language = normalize_pipeline_language(language)
@@ -1279,7 +1286,68 @@ def _normalize_spec(
         'subtitles': subtitles,
         'reference_url': reference_url.strip() or None,
         'quality_threshold': 84 if mode == 'production' else 86,
+        'format': format if format in {'shorts', 'landscape'} else 'landscape',
+        'publish_after_render': publish_after_render is True and mode == 'production',
     }
+
+
+def _production_publish_options(
+    mode: str,
+    publish_after_render: bool,
+    channel_id: str,
+    language: str,
+) -> dict:
+    if mode != 'production' or publish_after_render is not True:
+        return {'publish_after_render': False}
+    channel_id = str(channel_id or '').strip()
+    if not channel_id:
+        raise HTTPException(status_code=422, detail='Otomatik yükleme için bir YouTube kanalı seç')
+    try:
+        status = connection_status()
+        connections = status.get('connections') or []
+        channel = next((
+            item for item in connections
+            if isinstance(item, dict) and str(item.get('id') or '') == channel_id
+        ), None)
+        profile = select_channel_profile(
+            {'spec': {'language': language, 'production_channel_id': channel_id}},
+            list_channel_profiles(),
+            connected_channel_ids={str((channel or {}).get('id') or '')},
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail='Kanal ayarları şu anda doğrulanamıyor') from exc
+    if not channel or not channel.get('connection_id'):
+        raise HTTPException(status_code=409, detail='Seçilen YouTube kanalını yeniden bağla')
+    if not profile:
+        raise HTTPException(
+            status_code=422,
+            detail='Kanal ayarlarında otomatik yüklemeyi ve videonun dilini etkinleştir',
+        )
+    return {
+        'publish_after_render': True,
+        'production_channel_id': channel_id,
+        'production_connection_id': str(channel['connection_id']),
+        'production_profile_revision': str(profile.get('profile_revision') or ''),
+    }
+
+
+def _production_channel_choices(authenticated: bool) -> str:
+    choices = ['<option value="">Kanal seçilmedi</option>']
+    if authenticated:
+        try:
+            connections = connection_status().get('connections') or []
+        except Exception:
+            connections = []
+        for channel in connections:
+            if not isinstance(channel, dict) or not channel.get('id'):
+                continue
+            channel_id = str(channel['id'])
+            title = _safe_ui_text(channel.get('title') or 'YouTube kanalı')
+            choices.append(
+                f'<option value="{escape(channel_id, quote=True)}">'
+                f'{escape(title)} · {escape(channel_id[-8:])}</option>'
+            )
+    return ''.join(choices)
 
 
 def _sync_job(task_id: str) -> dict:
@@ -1422,6 +1490,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
         '' if authenticated else
         '<label class="field" for="studio-token">Studio güvenlik anahtarı</label><input id="studio-token" name="token" type="password" autocomplete="off" required placeholder="Güvenli anahtarı gir">'
     )
+    channel_choices = _production_channel_choices(authenticated)
 
     body = f'''
 <div class="hero"><div class="hero-copy"><div class="eyebrow">STUDIO</div><h1>Yeni video oluştur</h1><div class="muted">Konuyu yaz; üretim ve güvenli yükleme adımlarını Studio yönetsin.</div></div></div>
@@ -1436,7 +1505,11 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
 <label class="field" for="topic">Video konusu</label>
 <span class="field-hint">Bir cümle yeterli. Örnek: Telefon neden yastık altında ısınır?</span>
 <textarea class="topic-input" id="topic" name="topic" required placeholder="Konuyu bir cümleyle yaz"></textarea>
+<label class="field" for="production-channel">YouTube kanalı</label><select id="production-channel" name="production_channel_id">{channel_choices}</select>
+<label class="field"><input id="publish-after-render" name="publish_after_render" type="checkbox" value="1" disabled> Kalite kontrolü geçince seçili kanala otomatik yükle</label>
+<span class="field-hint">Yayın kalitesinde kullanılabilir. Kanalın yayın ayarları uygulanır; ilk yükleme gizlidir.</span>
 <details class="control-details"><summary><span>Ayarlar</span><span class="tiny">İsteğe bağlı</span></summary><div class="control-body">
+<label class="field" for="video-format">Video biçimi</label><select id="video-format" name="format"><option value="landscape">Yatay video</option><option value="shorts">Dikey Shorts</option></select>
 <div class="grid2"><div><label class="field" for="duration">Süre</label><select id="duration" name="duration_minutes"><option value="0.5" selected>30 saniye</option><option value="1">1 dakika</option><option value="3">3 dakika</option><option value="5">5 dakika</option><option value="8">8 dakika</option><option value="10">10 dakika</option></select></div><div><label class="field" for="language">Dil</label><select id="language" name="language"><option value="tr" selected>Türkçe</option><option value="en">English</option><option value="de">Deutsch</option><option value="es">Español</option><option value="ar">العربية</option></select></div></div>
 <div class="guidance"><b>İyi sonuç için ayrıntı eklemek istersen</b><p class="tiny">Tek bir gündelik sorun, tek bir şaşırtıcı neden, aynı kişi veya nesne, aynı mekân ve görünür bir sonuç tarif et. Bunları yazmak zorunda değilsin; sistem kısa konu cümleni otomatik olarak yönetmen planına dönüştürür.</p></div>
 <div class="grid2"><div><label class="field" for="content-style">İçerik tarzı</label><select id="content-style" name="content_style"><option value="documentary">Belgesel</option><option value="technology" selected>Teknoloji</option><option value="story">Hikâye</option><option value="cinematic">Sinematik</option><option value="explainer">Açıklayıcı</option></select></div><div><label class="field" for="pace">Kurgu temposu</label><select id="pace" name="pace"><option value="calm">Sakin</option><option value="balanced" selected>Dengeli</option><option value="dynamic">Dinamik</option></select></div></div>
@@ -1456,8 +1529,10 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
 '''
     script = r'''<script>
 const preview=document.getElementById('mode-preview'),production=document.getElementById('mode-production'),duration=document.getElementById('duration');
-function setDefaults(){if(production.checked){duration.value='5';document.querySelector('[name=workflow]').value='storyboard';document.querySelector('[name=music]').value='auto';}else{duration.value='0.5';document.querySelector('[name=workflow]').value='auto';document.querySelector('[name=music]').value='off';}}
+const publishAfter=document.getElementById('publish-after-render');
+function setDefaults(){publishAfter.disabled=!production.checked;if(production.checked){duration.value=document.getElementById('video-format').value==='shorts'?'0.5':'5';document.querySelector('[name=workflow]').value='auto';document.querySelector('[name=music]').value='auto';}else{publishAfter.checked=false;duration.value='0.5';document.querySelector('[name=workflow]').value='auto';document.querySelector('[name=music]').value='off';}}
 preview.addEventListener('change',setDefaults);production.addEventListener('change',setDefaults);
+document.getElementById('video-format').addEventListener('change',()=>{if(document.getElementById('video-format').value==='shorts'){duration.value='0.5';}});
 </script>'''
     return _shell(body, script=script)
 
@@ -1528,6 +1603,9 @@ def studio_start(
     music: str = Form('off'),
     subtitles: str = Form('sidecar'),
     reference_url: str = Form(''),
+    format: str = Form('landscape'),
+    publish_after_render: str = Form(''),
+    production_channel_id: str = Form(''),
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     credential = studio_token if _valid_token(studio_token) else token
@@ -1539,7 +1617,12 @@ def studio_start(
     spec = _normalize_spec(
         topic, duration_minutes, language, channel_id, mode, workflow,
         content_style, pace, visual_mix, music, subtitles, reference_url,
+        format, publish_after_render == '1',
     )
+    spec.update(_production_publish_options(
+        spec['mode'], spec['publish_after_render'], production_channel_id,
+        spec['language'],
+    ))
     options = {key: value for key, value in spec.items() if key not in {'topic', 'duration_minutes', 'language', 'channel_id'}}
     if workflow == 'storyboard':
         task = plan_video_pipeline.delay(topic, duration_minutes, language, channel_id.strip() or None, options)

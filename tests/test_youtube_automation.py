@@ -225,3 +225,86 @@ def test_profile_write_is_revision_safe(monkeypatch):
     )
     assert updated['channel_identity'] == 'Changed'
     assert updated['profile_revision'] != saved['profile_revision']
+
+
+def test_production_profile_defaults_and_partial_update_preserve_existing_fields(monkeypatch):
+    client = FakeRedis()
+    monkeypatch.setattr(automation, '_redis', lambda: client)
+    saved = automation.save_channel_profile('UC_channel_alpha', _profile())
+    assert saved['production_enabled'] is False
+    assert saved['production_topics'] == []
+    assert saved['production_interval_hours'] == 24
+    updated = automation.save_channel_profile(
+        'UC_channel_alpha',
+        {'production_enabled': True, 'production_topics': 'Kabin ışıkları\nMotorlar, kanatlar\n'},
+        expected_revision=saved['profile_revision'],
+    )
+    assert updated['production_topics'] == ['Kabin ışıkları', 'Motorlar, kanatlar']
+    assert updated['series_id'] == saved['series_id']
+    assert updated['auto_publish'] is True
+    with pytest.raises(automation.ProfileConflictError):
+        automation.save_channel_profile(
+            'UC_channel_alpha', {'production_enabled': False},
+            expected_revision=saved['profile_revision'],
+        )
+    assert automation.get_channel_profile('UC_channel_alpha')['production_enabled'] is True
+
+
+@pytest.mark.parametrize('fields', [
+    {'production_enabled': 'false'}, {'production_enabled': 1},
+    {'production_interval_hours': True}, {'production_interval_hours': '24'},
+    {'production_interval_hours': 5}, {'production_interval_hours': 169},
+    {'production_topics': ['a'] * 61}, {'production_topics': ['a' * 241]},
+    {'production_topics': [1]}, {'production_topics': {'topic': 'wrong shape'}},
+])
+def test_production_profile_rejects_invalid_bounds_and_types(fields):
+    with pytest.raises(ValueError):
+        automation._profile_payload('UC_channel_alpha', fields)
+
+
+def test_production_profile_accepts_topic_and_interval_boundaries():
+    payload = automation._profile_payload('UC_channel_alpha', {
+        'production_topics': [f'{index} ' + 'x' * 237 for index in range(60)],
+        'production_interval_hours': 6,
+    })
+    assert len(payload['production_topics']) == 60
+    assert payload['production_interval_hours'] == 6
+    assert automation._profile_payload('UC_channel_alpha', {
+        'production_interval_hours': 168,
+    })['production_interval_hours'] == 168
+
+
+def test_explicit_production_channel_never_falls_back_to_another_profile():
+    source = _source()
+    source['spec']['production_channel_id'] = 'UC_channel_chosen'
+    chosen = _profile('UC_channel_chosen', route_label='different', topic_keywords=['space'])
+    assert automation.select_channel_profile(source, [_profile(), chosen]) is chosen
+    assert automation.select_channel_profile(source, [_profile()]) is None
+    assert automation.select_channel_profile(source, [dict(chosen, auto_publish=False)]) is None
+    source['spec']['production_scheduled'] = True
+    assert automation.select_channel_profile(source, [chosen]) is None
+    assert automation.select_channel_profile(source, [dict(chosen, production_enabled=True)])
+
+
+def test_publish_metadata_uses_actual_source_language_before_profile_default(monkeypatch):
+    client = FakeRedis()
+    monkeypatch.setattr(automation, '_redis', lambda: client)
+    source = _source()
+    source['result']['language'] = 'en'
+    profile = _profile(default_language='tr', languages=['tr', 'en'])
+    plan = automation.build_publish_plan('source-language', source, profile)
+    assert plan['default_language'] == 'en'
+    source['result'].pop('language')
+    source['spec']['language'] = 'en'
+    assert automation.build_publish_plan('source-language-two', source, profile)['default_language'] == 'en'
+
+
+@pytest.mark.parametrize('language', ['de', 'not a language'])
+def test_disallowed_source_language_blocks_before_consuming_series_number(monkeypatch, language):
+    client = FakeRedis()
+    monkeypatch.setattr(automation, '_redis', lambda: client)
+    source = _source()
+    source['result']['language'] = language
+    with pytest.raises(automation.MetadataValidationError):
+        automation.build_publish_plan('source-language-wrong', source, _profile())
+    assert client.values == {}

@@ -1,8 +1,9 @@
 from html import escape
+from typing import Literal
 from urllib.parse import quote
 from fastapi import FastAPI, HTTPException, Query, Header, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictBool
 from celery.result import AsyncResult
 
 from app.config import settings
@@ -18,7 +19,7 @@ from app.services.voice import (
     save_selected_voice,
     get_selected_voice,
 )
-from app.studio import router as studio_router
+from app.studio import router as studio_router, _production_publish_options
 
 app = FastAPI(title='YouTube 7/24 Content Factory', version='2.0.0')
 app.include_router(studio_router)
@@ -29,6 +30,10 @@ class JobCreate(BaseModel):
     duration_minutes: float = Field(default=5, ge=0.5, le=30)
     language: str = Field(default='tr', min_length=2, max_length=10)
     channel_id: str | None = None
+    mode: Literal['preview', 'production'] | None = None
+    format: Literal['shorts', 'landscape'] = 'landscape'
+    publish_after_render: StrictBool = False
+    production_channel_id: str | None = Field(default=None, max_length=128)
 
 
 def _require_factory_token(x_factory_token: str | None):
@@ -106,11 +111,21 @@ def create_job(payload: JobCreate, x_factory_token: str | None = Header(default=
         language = normalize_pipeline_language(payload.language)
     except UnsupportedLanguageError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from None
+    mode = payload.mode or ('preview' if payload.duration_minutes <= 1 else 'production')
+    options = {
+        'mode': mode,
+        'format': payload.format,
+        **_production_publish_options(
+            mode, payload.publish_after_render,
+            payload.production_channel_id or '', language,
+        ),
+    }
     task = run_video_pipeline.delay(
         payload.topic,
         payload.duration_minutes,
         language,
         payload.channel_id,
+        options,
     )
     return {'task_id': task.id, 'status': 'queued'}
 

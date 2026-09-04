@@ -1354,6 +1354,7 @@ def _import_publish_tasks_with_stubs(monkeypatch):
         'list_jobs',
         'mark_failure',
         'mark_success',
+        'merge_youtube_result_field',
         'set_stage',
         'update_job',
     ):
@@ -1363,6 +1364,13 @@ def _import_publish_tasks_with_stubs(monkeypatch):
     monkeypatch.setitem(sys.modules, 'app.services.studio_state', state_module)
     sys.modules.pop('app.publish_tasks', None)
     module = importlib.import_module('app.publish_tasks')
+    def merge_result(task_id, field, values):
+        source = module.get_job(task_id) or {}
+        result = dict(source.get('result') or {})
+        result[field] = {**(result.get(field) or {}), **values}
+        module.update_job(task_id, result=result)
+        return True
+    module.merge_youtube_result_field = merge_result
     module._test_task_options = task_options
     return module
 
@@ -1397,15 +1405,16 @@ def test_publish_pipeline_crosses_registry_boundary_before_private_insert(
     )
     monkeypatch.setattr(module, 'acquire_execution_lock', lambda *_a: 'lock-token')
     monkeypatch.setattr(module, 'release_execution_lock', lambda *_a: events.append('release'))
-    monkeypatch.setattr(
-        module,
-        'get_job',
-        lambda _task: {
+    source_record = {
             'state': 'SUCCESS',
             'kind': 'render',
             'spec': {'language': 'tr'},
             'result': {'video_key': 'videos/source/final.mp4', 'title': 'Title'},
-        },
+    }
+    monkeypatch.setattr(
+        module,
+        'get_job',
+        lambda _task: json.loads(json.dumps(source_record)),
     )
     credential_loads = []
     def load_target(channel_id, **kwargs):
@@ -1439,6 +1448,10 @@ def test_publish_pipeline_crosses_registry_boundary_before_private_insert(
     )
 
     def upload(_credentials, _path, _title, _description, **kwargs):
+        # Dispatcher writes this after the worker read its initial snapshot.
+        source_record['result']['youtube_automation'] = {
+            'status': 'queued', 'publish_task_id': publish_id,
+        }
         events.append(('insert', kwargs['privacy_status']))
         kwargs['progress_callback'](1.0)
         return {'id': 'YT_PRIVATE_1', 'status': {'privacyStatus': 'private'}}
@@ -1475,6 +1488,7 @@ def test_publish_pipeline_crosses_registry_boundary_before_private_insert(
     ) in events
     assert credential_loads == [('UC_verified', 'connection-id-7777')]
     youtube_attribution = source_updates[-1][1]['result']['youtube']
+    assert source_updates[-1][1]['result']['youtube_automation']['publish_task_id'] == publish_id
     assert youtube_attribution['target_channel_id'] == 'UC_verified'
     assert youtube_attribution['connection_id'] == 'connection-id-7777'
     assert events.index('registry-started') < events.index(('insert', 'private'))
@@ -1693,7 +1707,10 @@ def test_automatic_router_freezes_channel_generation_before_enqueue(monkeypatch)
     source = {
         'state': 'SUCCESS',
         'kind': 'render',
-        'spec': {'topic': 'Uçak', 'language': 'tr', 'channel_id': 'merak-tr'},
+        'spec': {
+            'topic': 'Uçak', 'language': 'tr', 'channel_id': 'merak-tr',
+            'mode': 'production', 'publish_after_render': True,
+        },
         'result': {
             'video_key': 'videos/source/final.mp4',
             'quality_disposition': 'automated_qc_pass',
@@ -1769,6 +1786,45 @@ def test_automatic_router_freezes_channel_generation_before_enqueue(monkeypatch)
     assert reservation['connection_id'] == 'connection-router-generation'
     assert reservation['publish_plan'] is plan
     assert 'must-not-fail-after-enqueue' not in events
+
+
+@pytest.mark.parametrize('spec_update,expected', [
+    ({'mode': 'preview'}, 'preview_blocked'),
+    ({'publish_after_render': False}, 'not_enabled'),
+    ({'publish_after_render': 'true'}, 'not_enabled'),
+    ({'production_connection_id': 'old-generation'}, 'connection_changed'),
+    ({'production_profile_revision': 'old-profile'}, 'profile_changed'),
+    ({'production_scheduled': True, 'production_connection_id': ''}, 'connection_changed'),
+])
+def test_automatic_router_blocks_unapproved_or_changed_production_bindings(monkeypatch, spec_update, expected):
+    module = _import_publish_tasks_with_stubs(monkeypatch)
+    source = {
+        'state': 'SUCCESS', 'kind': 'render',
+        'spec': {
+            'mode': 'production', 'publish_after_render': True, 'language': 'tr',
+            'production_channel_id': 'UC_channel_bound',
+            'production_connection_id': 'current-generation',
+            'production_profile_revision': 'current-profile',
+            **spec_update,
+        },
+        'result': {
+            'video_key': 'videos/bound/final.mp4',
+            'quality_disposition': 'automated_qc_pass', 'manual_qa_required': False,
+        },
+    }
+    profile = {
+        'channel_id': 'UC_channel_bound', 'profile_revision': 'current-profile',
+        'auto_publish': True, 'production_enabled': True,
+    }
+    monkeypatch.setattr(module, 'get_job', lambda *_a: source)
+    monkeypatch.setattr(module, 'update_job', lambda *_a, **_k: None)
+    monkeypatch.setattr(module, 'connection_status', lambda: {'connections': [{
+        'id': 'UC_channel_bound', 'connection_id': 'current-generation',
+    }]})
+    monkeypatch.setattr(module, 'list_channel_profiles', lambda: [profile])
+    monkeypatch.setattr(module, 'select_channel_profile', lambda *_a, **_k: profile)
+    monkeypatch.setattr(module, 'build_publish_plan', lambda *_a: pytest.fail('must block before metadata or upload'))
+    assert module.queue_automatic_publish('source-bound')['status'] == expected
 
 
 def test_publish_pipeline_marks_uncertain_and_never_retries_insert(
@@ -2245,6 +2301,7 @@ def test_studio_router_mounts_secure_youtube_lifecycle(monkeypatch):
         'mark_failure',
         'mark_retry_dispatch',
         'mark_success',
+        'merge_youtube_result_field',
         'save_repair_checkpoint',
         'set_stage',
         'sync_repair_checkpoint_state',

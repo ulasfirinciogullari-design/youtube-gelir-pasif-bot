@@ -14,6 +14,20 @@ from app.services.visual_routing import (
 
 
 class ShortPreviewVisualRoutingTests(unittest.TestCase):
+    def test_production_shorts_authorship_matches_total_paid_cap_for_every_mix(self):
+        for mix in ('real_first', 'balanced', 'ai_first'):
+            options = {'mode': 'production', 'format': 'shorts', 'visual_mix': mix}
+            with self.subTest(mix=mix):
+                self.assertEqual(preview_authored_ai_limit(options, 5, 0.5), 2)
+                self.assertEqual(preview_paid_ai_limit(options, 5, 0.5), 2)
+                self.assertEqual(preview_total_paid_create_cap(options, 0.5), 2)
+                self.assertEqual(preview_authored_ai_limit(options, 1, 0.5), 1)
+                self.assertIsNone(preview_authored_ai_limit(options, 5, 1.0))
+                self.assertIsNone(preview_paid_ai_limit(options, 5, 1.0))
+        self.assertIsNone(preview_authored_ai_limit(
+            {'mode': 'production', 'format': 'landscape'}, 5, 0.5,
+        ))
+
     def test_ai_first_preview_is_bounded_to_six_authored_ai(self):
         self.assertEqual(SHORT_PREVIEW_RUNWAY_CAP, 4)
         self.assertEqual(SHORT_PREVIEW_AI_FIRST_RUNWAY_CAP, 6)

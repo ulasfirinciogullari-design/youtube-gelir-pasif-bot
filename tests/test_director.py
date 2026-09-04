@@ -47,6 +47,79 @@ from app.services.director import (
 from app.services.visual_routing import SERVER_SHORT_PROXY_KIND_FIELD
 
 
+class ProductionShortPaidBudgetTests(unittest.TestCase):
+    def setUp(self):
+        config_stub.settings.studio_plan_provider = 'openai'
+        config_stub.settings.openai_api_key = 'test-openai-key'
+        self.options = {'mode': 'production', 'format': 'shorts', 'visual_mix': 'real_first'}
+
+    def test_production_short_prompt_limits_all_fallbacks_to_two(self):
+        client = FakeClient([{'scenes': []}])
+        director_module._run_director(
+            client, {}, 'One shopping story', 'Turkish', 0.5,
+            45, 42, 48, 5, self.options,
+        )
+        prompt = client.responses.calls[0]['input']
+        self.assertIn('At most 2 scenes may have a non-null ai_prompt, including all fallback candidates', prompt)
+        self.assertIn('Every other scene MUST use ai_prompt null', prompt)
+        self.assertIn('only 2 paid generation slots, shared with any repairs', prompt)
+
+    def test_production_short_repairs_excess_ai_and_rejects_if_not_corrected(self):
+        package = {
+            'title': 'Shopping', 'description': '', 'thumbnail_text': '',
+            'scenes': [
+                _scene(index, 'Müşteri market rafında iki farklı paketi eline alıp karşılaştırıyor.',
+                       ['customer comparing two packages in supermarket'], 'A continuous shopping shot')
+                for index in range(5)
+            ],
+        }
+        package['narration'] = ' '.join(scene['narration'] for scene in package['scenes'])
+        with (
+            patch.object(director_module, 'OpenAI', return_value=object()),
+            patch.object(director_module, '_run_director', return_value=package) as run,
+            patch.object(director_module, '_short_story_quality_issues', return_value=[]),
+            self.assertRaisesRegex(RuntimeError, 'AI-scene gate rejected 5 scenes; maximum 2'),
+        ):
+            direct_and_qc(package, 'Tam beş sahne kullan.', 0.5, 'tr', self.options)
+        self.assertEqual(run.call_count, 4)
+        self.assertTrue(all(call.args[1]['max_ai_scene_count'] == 2 for call in run.call_args_list[1:]))
+
+    def test_initial_and_correction_director_share_bounded_documentary_rule(self):
+        source = {
+            'url': 'https://www.bep.gov/currency/how-money-is-made',
+            'evidence': 'The currency paper is 75 percent cotton and 25 percent linen.',
+        }
+        for correction in (False, True):
+            with self.subTest(correction=correction):
+                client = FakeClient([{'scenes': []}])
+                director_module._run_director(
+                    client, {'sources': [source]}, 'Amerikan dolarının malzemesi',
+                    'Turkish', 0.5, 45, 42, 48, 5,
+                    {**self.options, 'content_style': 'documentary'},
+                    correction=correction,
+                )
+                prompt = client.responses.calls[0]['input']
+                self.assertIn(director_module._documentary_broll_writer_rule('documentary'), prompt)
+                self.assertIn(source['evidence'], prompt)
+                self.assertIn('material-composition percentages', prompt)
+                self.assertIn('does not establish a claimed effect on durability', prompt)
+                self.assertIn('own source support and visible evidence', prompt)
+                self.assertIn('generic wallpaper footage', prompt)
+                self.assertIn('At most 2 scenes may have a non-null ai_prompt', prompt)
+
+    def test_other_director_styles_do_not_activate_documentary_exception(self):
+        for style in ('technology', 'explainer', 'story', 'cinematic'):
+            with self.subTest(style=style):
+                client = FakeClient([{'scenes': []}])
+                director_module._run_director(
+                    client, {}, 'One visible process', 'Turkish', 0.5,
+                    45, 42, 48, 5, {**self.options, 'content_style': style},
+                )
+                prompt = client.responses.calls[0]['input']
+                self.assertIn('NO DOCUMENTARY B-ROLL EXCEPTION: every spoken claim must be directly visible', prompt)
+                self.assertNotIn('DOCUMENTARY B-ROLL EXCEPTION: verified historical dates', prompt)
+
+
 class PreviewNarrationBudgetTests(unittest.TestCase):
     def test_thirty_second_generated_budget_requires_natural_speed(self):
         self.assertEqual(
@@ -2199,6 +2272,7 @@ class ShortStockRepairTests(unittest.TestCase):
     def test_documentary_broll_exception_never_overrides_critic_failures(self):
         failure_matrix = {
             'unsupported_fact': ['adds_no_new_fact'],
+            'unsupported_material_composition': ['adds_no_new_fact'],
             'wrong_or_contradictory_era': ['queries_match_same_action'],
             'irrelevant_wallpaper': ['preserves_story_role'],
             'invisible_causal_mechanism': [
@@ -2233,6 +2307,44 @@ class ShortStockRepairTests(unittest.TestCase):
                 retry_input = client.responses.calls[2]['input']
                 for failed_check in failed_checks:
                     self.assertIn(failed_check, retry_input)
+
+    def test_sourced_banknote_composition_reaches_writer_and_independent_critic(self):
+        narrations = [
+            'Kasadaki müşteri Amerikan dolarını elinde çevirip iki yüzüne bakıyor.',
+            'Dolar kağıdının yüzde yetmiş beşi pamuk, yüzde yirmi beşi ketendir.',
+            'Banknotu elinde tutarken köşesine doğru yaklaşıp dokusunu dikkatle inceliyor.',
+            'Müşteri aynı banknotu kasadaki görevliye uzatıp alışveriş bedelini ödüyor.',
+            'Kasadaki görevli aynı dolar banknotunu alıp açık çekmeceye yerleştiriyor.',
+        ]
+        scenes = [
+            _scene(index, narration, ['US dollar banknote handled at checkout', 'US currency banknote close up'])
+            for index, narration in enumerate(narrations)
+        ]
+        source = {
+            'url': 'https://www.bep.gov/currency/how-money-is-made',
+            'evidence': 'The currency paper is 75 percent cotton and 25 percent linen.',
+        }
+        package = {
+            'title': 'Doların Malzemesi', 'description': 'Kaynaklı belgesel.',
+            'sources': [source], 'scenes': scenes,
+            'narration': ' '.join(narrations),
+        }
+        generated = {'scenes': [
+            {'position': index, 'narration': scene['narration'],
+             'visual_queries': scene['visual_queries'], 'ai_prompt': None}
+            for index, scene in enumerate(scenes)
+        ]}
+        client = FakeClient([generated, critic_payload(stock_positions=tuple(range(5)), scene_count=5)])
+        result = _repair_short_stock_scenes(
+            client, package, 'Turkish', 0.5, content_style='documentary',
+        )
+        self.assertIn(narrations[1], result['narration'])
+        self.assertTrue(all(scene['ai_prompt'] is None for scene in result['scenes']))
+        for call in client.responses.calls:
+            self.assertIn(source['url'], call['input'])
+            self.assertIn(source['evidence'], call['input'])
+        self.assertIn(director_module._documentary_broll_writer_rule('documentary'), client.responses.calls[0]['input'])
+        self.assertIn('source must explicitly name the material and exact percentage', client.responses.calls[1]['input'])
 
     def test_non_documentary_style_keeps_literal_stock_semantics(self):
         client = FakeClient([

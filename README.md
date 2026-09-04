@@ -24,6 +24,27 @@ olarak saklar. Her yükleme başlatılırken hedef kanal ve bağlantı nesli
 rezervasyona sabitlenir; çalışan başka bir hesaba geri düşmez. İlk yükleme
 daima `private` olur ve aynı final ikinci bir kanala yeniden gönderilmez.
 
-## Durum
+## Düzenli kanal üretimi
 
-İlk scaffold kuruluyor. Sonraki adımlar: servis hesapları, OAuth, render pipeline, çok-kanallı scheduler ve analytics feedback loop.
+Ana web servisi ve `video-worker` yanında tek bir `production-scheduler`
+servisi çalıştırılır. Aynı repo ve Redis kullanılır; zamanlayıcı için model
+anahtarları gerekmez. Başlatma komutu:
+
+```text
+celery -A app.celery_app.celery beat --loglevel=info --schedule=/tmp/celerybeat-schedule
+```
+
+Studio → YouTube → Otomatik üretim bölümünde bağlı kanalın konu sırası,
+dili, üretim aralığı ve yayın davranışı saklanır. Üretim ve otomatik yükleme
+varsayılan olarak kapalıdır. İkisi etkinleştirilince ilk konu hemen sıraya
+girer; zamanlayıcı her dakika kontrol eder. Varsayılan aralık 24 saattir.
+
+Zamanlayıcı 30 saniyelik dikey üretim başlatır. Aynı anda yalnızca bir
+otomatik iş aktiftir; yeni iş için render ve YouTube tesliminin doğrulanmış
+başarısı beklenir. Kalite/yayın hatası kanalı durdurur. Belirsiz teslim
+sonuçları yeniden ücretli üretim veya tekrar yükleme başlatmaz.
+
+Konu listesi en fazla 60 girdidir ve tüketilince durur; otomatik trend
+araştırması, konu listesini yenileme ve Analytics geri beslemesi bu
+zamanlayıcının parçası değildir. OAuth izni iptal edilirse veya Google
+yeniden giriş isterse hesap sahibi bağlantıyı yenilemelidir.

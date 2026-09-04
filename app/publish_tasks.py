@@ -14,6 +14,7 @@ from app.services.studio_state import (
     get_job,
     mark_failure,
     mark_success,
+    merge_youtube_result_field,
     set_stage,
     update_job,
 )
@@ -57,18 +58,7 @@ from app.services.youtube_publish_state import (
 
 
 def _set_source_automation(source_task_id: str, **automation: object) -> None:
-    source = get_job(source_task_id)
-    if not source or not isinstance(source.get('result'), dict):
-        return
-    result = dict(source['result'])
-    current = (
-        dict(result.get('youtube_automation'))
-        if isinstance(result.get('youtube_automation'), dict)
-        else {}
-    )
-    current.update(automation)
-    result['youtube_automation'] = current
-    update_job(source_task_id, result=result)
+    merge_youtube_result_field(source_task_id, 'youtube_automation', automation)
 
 
 def queue_automatic_publish(source_task_id: str) -> dict:
@@ -77,6 +67,13 @@ def queue_automatic_publish(source_task_id: str) -> dict:
     source = get_job(source_task_id)
     if not source or not automated_quality_approved(source):
         return {'status': 'quality_blocked'}
+    spec = source.get('spec') if isinstance(source.get('spec'), dict) else {}
+    if spec.get('mode') == 'preview':
+        return {'status': 'preview_blocked'}
+    if spec.get('mode') != 'production' or spec.get('publish_after_render') is not True:
+        return {'status': 'not_enabled'}
+    if spec.get('production_scheduled') is True and not spec.get('production_channel_id'):
+        return {'status': 'no_unique_route'}
     try:
         status = connection_status()
         connections = (
@@ -111,6 +108,17 @@ def queue_automatic_publish(source_task_id: str) -> dict:
         if not connection_id:
             _set_source_automation(source_task_id, status='connection_missing')
             return {'status': 'connection_missing'}
+        expected_connection_id = str(spec.get('production_connection_id') or '')
+        if (
+            expected_connection_id and connection_id != expected_connection_id
+            or spec.get('production_scheduled') is True and not expected_connection_id
+        ):
+            _set_source_automation(source_task_id, status='connection_changed')
+            return {'status': 'connection_changed'}
+        expected_revision = str(spec.get('production_profile_revision') or '')
+        if expected_revision and expected_revision != str(profile.get('profile_revision') or ''):
+            _set_source_automation(source_task_id, status='profile_changed')
+            return {'status': 'profile_changed'}
         plan = build_publish_plan(source_task_id, source, profile)
     except Exception as exc:
         _set_source_automation(
@@ -262,8 +270,7 @@ def _reconcile_source_upload(
         and youtube.get('connection_id') == connection_id
     ):
         return
-    source_result = dict(source_result)
-    youtube.update({
+    attribution = {
         'video_id': video_id,
         'url': f'https://www.youtube.com/watch?v={video_id}',
         'privacy_status': str(privacy_status or 'private'),
@@ -277,17 +284,16 @@ def _reconcile_source_upload(
         'target_channel_id': str(target_channel_id or ''),
         'connection_id': str(connection_id or ''),
         'reconciled': True,
-    })
+    }
     if isinstance(publish_plan, dict):
-        youtube.update({
+        attribution.update({
             'title': publish_plan.get('title'),
             'default_language': publish_plan.get('default_language'),
             'category_id': publish_plan.get('category_id'),
             'series': publish_plan.get('series'),
             'profile_revision': publish_plan.get('profile_revision'),
         })
-    source_result['youtube'] = youtube
-    update_job(source_task_id, result=source_result)
+    merge_youtube_result_field(source_task_id, 'youtube', attribution)
 
 
 @celery.task(bind=True, acks_late=True, reject_on_worker_lost=True)
@@ -669,8 +675,7 @@ def publish_video_pipeline(
                 publish_plan.get('profile_revision') if publish_plan else None
             ),
         }
-        source_result = dict(source_result)
-        source_result['youtube'] = {
+        youtube_attribution = {
             'video_id': video_id,
             'url': youtube_url,
             'privacy_status': final_privacy_status,
@@ -692,7 +697,7 @@ def publish_video_pipeline(
                 publish_plan.get('profile_revision') if publish_plan else None
             ),
         }
-        update_job(source_task_id, result=source_result)
+        merge_youtube_result_field(source_task_id, 'youtube', youtube_attribution)
         mark_success(task_id, result)
         return result
     except Exception as exc:

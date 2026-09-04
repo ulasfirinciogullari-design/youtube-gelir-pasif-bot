@@ -154,6 +154,75 @@ def test_studio_job_card_is_compact_with_one_action_and_collapsed_details(ui_mod
     assert '-webkit-line-clamp:2' in studio.BASE_CSS
 
 
+def test_channel_automation_ui_defaults_disabled_and_escapes_topics(ui_modules):
+    _, youtube = ui_modules
+    channel = {'id': 'UC_channel_test', 'connection_id': 'current-connection'}
+    html = youtube._profile_form(channel, None)
+    assert '<summary>Otomatik üretim</summary>' in html
+    assert 'name="production_enabled" type="checkbox" value="1">' in html
+    assert 'name="production_interval_hours" type="number" min="6" max="168" value="24"' in html
+    assert 'Otomatik üretim kapalı' in html
+    html = youtube._profile_form(channel, {
+        'production_enabled': True, 'auto_publish': True,
+        'production_topics': ['<script>bad</script>', 'Kabin ışıkları'],
+    })
+    assert 'name="production_enabled" type="checkbox" value="1" checked' in html
+    assert '&lt;script&gt;bad&lt;/script&gt;\nKabin ışıkları' in html
+    assert '<script>bad</script>' not in html
+
+
+def test_production_upload_requires_explicit_opt_in_and_captures_exact_channel(ui_modules, monkeypatch):
+    studio, _ = ui_modules
+    monkeypatch.setattr(studio, 'connection_status', lambda: {'connections': [{
+        'id': 'UC_channel_chosen', 'connection_id': 'oauth-generation-one',
+    }]})
+    monkeypatch.setattr(studio, 'list_channel_profiles', lambda: [{
+        'channel_id': 'UC_channel_chosen', 'profile_revision': 'profile-one',
+        'auto_publish': True, 'languages': ['tr', 'en'], 'default_language': 'tr',
+    }])
+    for mode, flag in [('preview', True), ('production', False), ('production', 'true')]:
+        assert studio._production_publish_options(mode, flag, 'UC_channel_chosen', 'en') == {
+            'publish_after_render': False,
+        }
+    assert studio._production_publish_options('production', True, 'UC_channel_chosen', 'en') == {
+        'publish_after_render': True,
+        'production_channel_id': 'UC_channel_chosen',
+        'production_connection_id': 'oauth-generation-one',
+        'production_profile_revision': 'profile-one',
+    }
+    with pytest.raises(studio.HTTPException) as missing:
+        studio._production_publish_options('production', True, '', 'en')
+    assert missing.value.status_code == 422
+    with pytest.raises(studio.HTTPException) as language:
+        studio._production_publish_options('production', True, 'UC_channel_chosen', 'de')
+    assert language.value.status_code == 422
+
+
+def test_studio_normalization_preserves_shorts_and_never_auto_uploads_preview(ui_modules):
+    studio, _ = ui_modules
+    args = ('Konu', 0.5, 'tr', '', 'preview', 'auto', 'documentary',
+            'balanced', 'real_first', 'off', 'sidecar', '')
+    spec = studio._normalize_spec(*args, format='shorts', publish_after_render=True)
+    assert spec['format'] == 'shorts'
+    assert spec['publish_after_render'] is False
+    production_args = (*args[:4], 'production', *args[5:])
+    assert studio._normalize_spec(*production_args)['publish_after_render'] is False
+    assert studio._normalize_spec(*production_args, publish_after_render=True)['publish_after_render'] is True
+
+
+def test_production_status_reports_paused_exhausted_and_pending_without_fake_running(ui_modules):
+    _, youtube = ui_modules
+    profile = {'production_enabled': True, 'auto_publish': True, 'production_topics': ['Konu']}
+    assert youtube._production_status_text(profile, {}) == 'Planlama bekliyor'
+    assert youtube._production_status_text(profile, {'cursor': '1'}) == 'Konu listesi tamamlandı'
+    assert youtube._production_status_text(profile, {'active_task_id': 'queued'}) == 'Üretim sıraya alındı'
+    assert youtube._production_status_text(profile, {
+        'dispatch_status': 'uncertain', 'active_task_id': 'unknown',
+    }) == 'Duraklatıldı · kontrol gerekiyor'
+    assert youtube._production_status_text(profile, {'paused_reason': 'previous_render_failed'}) == 'Duraklatıldı · kontrol gerekiyor'
+    assert youtube._production_status_text(profile, {'unavailable': True}) == 'Üretim durumu alınamadı'
+
+
 def test_job_row_omits_empty_target_metadata_and_legacy_panel_link(ui_modules):
     studio, _ = ui_modules
     job = {
