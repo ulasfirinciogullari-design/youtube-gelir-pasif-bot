@@ -1,3 +1,4 @@
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,6 +11,9 @@ class Settings(BaseSettings):
     openai_model: str = 'gpt-5'
     studio_plan_provider: str = 'openai'
     studio_visual_qc_provider: str = ''
+    studio_production_short_paid_create_cap: int = Field(
+        default=2, strict=True, ge=2, le=6,
+    )
     gemini_critic_enabled: bool = False
     gemini_api_key: str = ''
     gemini_model: str = 'gemini-3.1-pro-preview'
@@ -30,6 +34,15 @@ class Settings(BaseSettings):
     secret_access_key: str = ''
     endpoint: str = ''
     region: str = 'auto'
+
+    @field_validator('studio_production_short_paid_create_cap', mode='before')
+    @classmethod
+    def parse_production_short_paid_create_cap(cls, value: object) -> object:
+        # Environment variables are strings; reject floats, booleans and
+        # other coercions while accepting the bounded integer spelling.
+        if isinstance(value, str) and value.strip() in {'2', '3', '4', '5', '6'}:
+            return int(value.strip())
+        return value
 
 
 settings = Settings()

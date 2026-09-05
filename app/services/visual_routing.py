@@ -18,7 +18,7 @@ def preview_total_paid_create_cap(
     options: dict,
     duration_minutes: float,
 ) -> int | None:
-    """Cap every exact 30-second preview or production Short across retries."""
+    """Return server policy; the worker additionally freezes the per-task cap."""
     bounded_mode = (
         options.get('mode') == 'preview'
         or (
@@ -28,6 +28,15 @@ def preview_total_paid_create_cap(
     )
     if not bounded_mode or duration_minutes != 0.5:
         return None
+    if options.get('mode') == 'production':
+        # Resolve server configuration only for production Shorts. Neither
+        # model-authored metadata nor public job options can set this budget.
+        from app.config import settings
+
+        cap = getattr(settings, 'studio_production_short_paid_create_cap', 2)
+        if type(cap) is not int or not 2 <= cap <= 6:
+            raise ValueError('Production Short paid-create cap must be an integer from 2 to 6')
+        return cap
     return SHORT_PREVIEW_TOTAL_PAID_CREATE_CAP
 
 

@@ -15,7 +15,7 @@ def task_boundaries():
     names = {
         '_normalized_options', '_render_target_duration',
         '_preflight_production_shorts_paid_plan', '_validate_paid_create_allocation',
-        '_manual_qa_preview_passes', '_persisted_paid_create_slots',
+        '_manual_qa_preview_passes', '_persisted_paid_create_budget', '_persisted_paid_create_slots',
         '_reserve_paid_create_slot',
     }
     definitions = [node for node in TREE.body if isinstance(node, ast.FunctionDef) and node.name in names]

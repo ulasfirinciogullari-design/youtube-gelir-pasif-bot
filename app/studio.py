@@ -36,6 +36,7 @@ from app.services.studio_state import (
 )
 from app.services.voice import get_selected_voice
 from app.services.youtube_auth import connection_status
+from app.services.youtube_publish_state import get_upload_record
 from app.services.youtube_automation import (
     list_channel_profiles,
     select_channel_profile,
@@ -109,6 +110,8 @@ ATTENTION_DUPLICATE_GROUP_WINDOW_SECONDS = 6 * 60 * 60
 STALE_RUNNING_SECONDS = 6 * 60 * 60
 PLAN_RETRY_DISPLAY_GRACE_SECONDS = 15 * 60
 OLD_STORYBOARD_SECONDS = 24 * 60 * 60
+RECENT_FAILURE_SECONDS = 24 * 60 * 60
+RETRY_PRESENTATION_MAX_HOPS = 16
 OPTIONAL_VIDEO_GENERATION_SERVICES = frozenset({'Fal video'})
 
 BASE_CSS = r'''
@@ -460,7 +463,219 @@ def _job_is_unreviewed_render(job: dict) -> bool:
 
 def _job_upload_allowed(job: dict) -> bool:
     """Expose the same fail-closed quality decision to HTML and polling."""
-    return _job_quality_approved(job) and not _job_has_youtube_output(job)
+    return (
+        _job_quality_approved(job)
+        and not _job_has_youtube_output(job)
+        and not _publication_status(job)
+    )
+
+
+def _publication_status(job: dict) -> str:
+    """Presentation only: an existing upload must be reviewed, not recreated."""
+    release = _ready_release_status(job)
+    if release in {'blocked', 'uncertain'}:
+        return release
+    if job.get('kind') == 'publish' and job.get('state') == 'FAILURE':
+        return 'failed'
+    if job.get('_publication_complete') is True:
+        return ''
+    result = _job_result(job)
+    automation = result.get('youtube_automation')
+    automation = automation if isinstance(automation, dict) else {}
+    status = str(automation.get('status') or '')
+    if status in {
+        'quality_blocked', 'no_unique_route', 'connection_missing',
+        'connection_changed', 'profile_changed', 'metadata_blocked',
+        'reservation_blocked', 'queue_blocked', 'queue_error', 'preflight_failed', 'failed_preflight',
+    }:
+        return 'blocked'
+    if status == 'uncertain':
+        return 'uncertain'
+    # This field is calculated from a verified publish child, never persisted.
+    child_status = job.get('_publication_status')
+    if child_status in {'failed', 'blocked', 'uncertain', 'pending'}:
+        return child_status
+    if status in {'queued', 'reserved', 'uploading', 'already_reserved'} and not _job_has_youtube_output(job):
+        return 'pending'
+    return ''
+
+
+def _canonical_task_id(value: Any) -> str:
+    if not isinstance(value, str):
+        return ''
+    try:
+        return value if str(UUID(value)) == value else ''
+    except ValueError:
+        return ''
+
+
+def _with_publication_presentation(job: dict, lookup, *, upload_lookup=None) -> dict:
+    """Read at most one explicitly bound publisher; never reconcile or enqueue."""
+    result = _job_result(job)
+    automation = result.get('youtube_automation')
+    automation = automation if isinstance(automation, dict) else {}
+    source_id = _canonical_task_id(job.get('task_id'))
+    publish_id = _canonical_task_id(automation.get('publish_task_id'))
+    if job.get('kind') != 'render' or not source_id:
+        return job
+    ledger = None
+    if not publish_id and upload_lookup is not None and job.get('state') == 'SUCCESS':
+        try:
+            ledger = upload_lookup(source_id)
+        except Exception:
+            return {**job, '_publication_status': 'uncertain'}
+        if ledger is not None:
+            if not _publication_ledger_matches_source(ledger, job):
+                return {**job, '_publication_status': 'uncertain'}
+            publish_id = ledger['publish_task_id']
+    if not publish_id:
+        return job
+    try:
+        publisher = lookup(publish_id)
+    except Exception:
+        publisher = None
+    if not _publisher_matches_source(publisher, job) or publisher.get('task_id') != publish_id:
+        if not _job_has_youtube_output(job):
+            return {**job, '_publication_status': 'uncertain'}
+        return job
+    if ledger:
+        publisher_spec = publisher['spec']
+        if any(publisher_spec.get(key) != ledger.get(key) for key in ('target_channel_id', 'connection_id')):
+            return {**job, '_publication_status': 'uncertain'}
+        plan = ledger.get('publish_plan')
+        revision = plan.get('profile_revision') if isinstance(plan, dict) else None
+        if revision and publisher_spec.get('profile_revision') != revision:
+            return {**job, '_publication_status': 'uncertain'}
+    if _publisher_matches_completed_output(publisher, job) and (
+        ledger is None or (
+            ledger.get('status') == 'complete'
+            and ledger.get('release_status') not in {'blocked', 'uncertain'}
+            and ledger.get('youtube_video_id') == _job_result(job)['youtube']['video_id']
+        )
+    ):
+        return {**job, '_publication_complete': True}
+    status = _publication_status(publisher)
+    if ledger:
+        if ledger.get('release_status') in {'blocked', 'uncertain'}:
+            status = ledger['release_status']
+        elif ledger.get('status') in {'uncertain', 'preflight_failed', 'failed_preflight'}:
+            status = 'uncertain' if ledger['status'] == 'uncertain' else 'failed'
+    if publisher.get('state') in {'PENDING', 'RECEIVED', 'STARTED', 'PROGRESS', 'RETRY'}:
+        status = status or 'pending'
+    if not status and publisher.get('state') == 'SUCCESS' and not _job_has_youtube_output(job):
+        status = 'uncertain'  # Reconcile the existing upload; do not offer another.
+    if status:
+        return {**job, '_publication_status': status, '_publication_task_id': publish_id}
+    return job
+
+
+def _publication_ledger_matches_source(ledger: Any, source: dict) -> bool:
+    """Check the existing immutable upload target without changing its profile."""
+    if (
+        not isinstance(ledger, dict) or ledger.get('source_task_id') != source.get('task_id')
+        or not _canonical_task_id(ledger.get('publish_task_id'))
+        or not isinstance(ledger.get('target_channel_id'), str) or not ledger['target_channel_id']
+        or not isinstance(ledger.get('connection_id'), str) or not ledger['connection_id']
+    ):
+        return False
+    spec = source.get('spec') if isinstance(source.get('spec'), dict) else {}
+    youtube = _job_result(source).get('youtube')
+    youtube = youtube if isinstance(youtube, dict) else {}
+    for key, production_key in (
+        ('target_channel_id', 'production_channel_id'),
+        ('connection_id', 'production_connection_id'),
+    ):
+        for expected in (spec.get(production_key), youtube.get(key)):
+            if expected and expected != ledger.get(key):
+                return False
+    revision = spec.get('production_profile_revision')
+    plan = ledger.get('publish_plan')
+    return not revision or (
+        isinstance(plan, dict) and plan.get('profile_revision') == revision
+    )
+
+
+def _publisher_matches_source(publisher: Any, source: dict) -> bool:
+    if (
+        source.get('kind') != 'render'
+        or not isinstance(publisher, dict) or publisher.get('kind') != 'publish'
+    ):
+        return False
+    source_id = _canonical_task_id(source.get('task_id'))
+    spec = publisher.get('spec') if isinstance(publisher.get('spec'), dict) else {}
+    return bool(
+        source_id and _canonical_task_id(publisher.get('task_id'))
+        and publisher.get('parent_id') == source_id
+        and spec.get('source_task_id') == source_id
+    )
+
+
+def _publisher_matches_completed_output(publisher: dict, source: dict) -> bool:
+    if (
+        not _publisher_matches_source(publisher, source)
+        or publisher.get('state') != 'SUCCESS' or _publication_status(publisher)
+    ):
+        return False
+    output = _job_result(source).get('youtube')
+    result = _job_result(publisher)
+    if not isinstance(output, dict) or result.get('source_task_id') != source.get('task_id'):
+        return False
+    return all(
+        isinstance(output.get(source_key), str) and bool(output[source_key])
+        and output[source_key] == result.get(publisher_key)
+        for source_key, publisher_key in (
+            ('video_id', 'youtube_video_id'),
+            ('target_channel_id', 'target_channel_id'),
+            ('connection_id', 'connection_id'),
+        )
+    )
+
+
+def _terminal_retry_presentation(job: dict, lookup, *, upload_lookup=None) -> dict | None:
+    """Follow only reciprocal render/plan retry edges, with a strict read bound.
+
+    The original state, error, media and QA remain the original job's. The
+    terminal child's status and same-origin link are the only borrowed fields.
+    """
+    if job.get('state') != 'FAILURE' or job.get('kind') not in {'render', 'plan'}:
+        return None
+    seen = {_canonical_task_id(job.get('task_id'))}
+    if '' in seen:
+        return None
+    current = job
+    for hops in range(1, RETRY_PRESENTATION_MAX_HOPS + 1):
+        child_id = _canonical_task_id(current.get('retry_child_task_id'))
+        if current.get('state') != 'FAILURE' or not child_id or child_id in seen:
+            return None
+        seen.add(child_id)
+        try:
+            child = lookup(child_id)
+        except Exception:
+            return None
+        if (
+            not isinstance(child, dict) or child.get('task_id') != child_id
+            or child.get('parent_id') != current.get('task_id')
+            or child.get('kind') != job.get('kind')
+        ):
+            return None
+        current = child
+        if current.get('retry_child_task_id'):
+            continue
+        if current.get('state') not in {'SUCCESS', 'FAILURE', 'AWAITING_APPROVAL'}:
+            return None
+        if current.get('state') == 'FAILURE' and _retry_claimed(current):
+            return None
+        current = _with_publication_presentation(current, lookup, upload_lookup=upload_lookup)
+        stage_key = current.get('failure_stage') or current.get('stage') or 'complete'
+        return {
+            'task_id': child_id,
+            'hops': hops,
+            'ui_status': _job_ui_status(current),
+            'display_status': _job_display_status(current),
+            'stage_label': STAGE_LABELS.get(str(stage_key), 'Güncel sonuç'),
+            'message': 'Güncel deneme: ' + _job_status_message(current),
+        }
+    return None
 
 
 def _job_ui_status(job: dict) -> str:
@@ -480,6 +695,8 @@ def _job_ui_status(job: dict) -> str:
 
 def _job_display_status(job: dict) -> str:
     """Return the user-facing status shared by list, detail and polling."""
+    if _publication_status(job) in {'failed', 'blocked', 'uncertain'} or _job_is_recent_failed_leaf(job):
+        return 'attention'
     if _job_awaits_approval(job) or _job_requires_manual_qa(job):
         return 'attention'
     if _job_is_unreviewed_render(job):
@@ -495,6 +712,14 @@ def _job_status_message(job: dict) -> str:
     display_status = _job_display_status(job)
     state = str(job.get('state') or 'PENDING').upper()
     kind = str(job.get('kind') or '')
+    publication = _publication_status(job)
+    if publication:
+        return {
+            'failed': 'Video korunuyor; YouTube yüklemesi tamamlanamadı. Mevcut yüklemeyi kontrol et.',
+            'blocked': 'YouTube işlemi durdu. Mevcut yükleme ve kanal ayarlarını kontrol et; yeni yükleme başlatılmaz.',
+            'uncertain': 'YouTube sonucu doğrulanmalı. İkinci yükleme başlatmadan mevcut kaydı kontrol et.',
+            'pending': 'YouTube yüklemesi işleniyor; mevcut yüklemenin durumunu aç.',
+        }[publication]
     if _job_requires_manual_qa(job):
         return 'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.'
     if display_status == 'unreviewed':
@@ -660,6 +885,11 @@ def _ready_privacy_label(job: dict) -> str:
 
 
 def _ready_readiness_label(job: dict) -> str:
+    if _publication_status(job):
+        return {
+            'failed': 'Yükleme tamamlanamadı', 'blocked': 'YouTube işlemi durdu',
+            'uncertain': 'Yükleme doğrulanmalı', 'pending': 'Yükleme işleniyor',
+        }[_publication_status(job)]
     if _job_awaits_approval(job):
         return 'Storyboard onayı bekliyor'
     if _job_ui_status(job) == 'completed':
@@ -746,6 +976,8 @@ def _ready_video_card(job: dict) -> str:
         }.get(release_status, 'Yüklendi')
         if status == 'completed' else 'Hazır'
     )
+    if _publication_status(job) in {'failed', 'blocked', 'uncertain'}:
+        pill_class, pill_label = 'attention', 'Yüklemeyi kontrol et'
     return (
         f'<article class="ready-card" data-status="{status}" '
         f'aria-labelledby="ready-title-{dom_id}"><div class="ready-media">{media}</div>'
@@ -767,6 +999,13 @@ def _job_primary_action(job: dict, *, small: bool = True) -> str:
     def aria(label: str) -> str:
         return escape(f'{_job_title(job)}: {label}', quote=True)
 
+    if _publication_status(job):
+        publisher_id = _canonical_task_id(job.get('_publication_task_id'))
+        if job.get('kind') == 'publish':
+            publisher_id = _canonical_task_id(job.get('task_id'))
+        target = f'/studio/youtube/publish-status/{publisher_id}' if publisher_id else '/studio/youtube'
+        label = 'Mevcut yüklemeyi kontrol et'
+        return f'<a class="btn repair{size}" href="{target}" aria-label="{aria(label)}">{label}</a>'
     if status == 'running':
         target = escape(_retry_child_task_id(job) or str(job.get('task_id') or ''), quote=True)
         if _retry_child_task_id(job):
@@ -847,7 +1086,7 @@ def _status_counts(jobs: list[dict]) -> dict[str, int]:
 def _archive_counts(jobs: list[dict]) -> dict[str, int]:
     return {
         'drafts': sum(_job_is_old_storyboard(job) for job in jobs),
-        'failed': sum(_job_ui_status(job) == 'failed' for job in jobs),
+        'failed': sum(_history_matches(job, 'failed') for job in jobs),
         'unreviewed': sum(
             _job_display_status(job) == 'unreviewed' for job in jobs
         ),
@@ -911,6 +1150,19 @@ def _job_is_stale_running(job: dict, *, now: float | None = None) -> bool:
     return current - last_activity >= STALE_RUNNING_SECONDS
 
 
+def _job_is_recent_failed_leaf(job: dict, *, now: float | None = None) -> bool:
+    if (
+        job.get('state') != 'FAILURE' or job.get('kind') not in {'render', 'plan'}
+        or _retry_claimed(job)
+    ):
+        return False
+    last_activity = _job_activity_timestamp(job)
+    if last_activity is None:
+        return False
+    current = datetime.now(timezone.utc).timestamp() if now is None else float(now)
+    return 0 <= current - last_activity < RECENT_FAILURE_SECONDS
+
+
 def _job_is_dormant_plan_retry(job: dict, *, now: float | None = None) -> bool:
     """Hide only abandoned planning retries; keep their durable records intact."""
     state = str(job.get('state') or 'PENDING').upper()
@@ -968,6 +1220,8 @@ def _history_matches(job: dict, active: str) -> bool:
         return _console_bucket(job) == active
     if active in {'ready', 'unreviewed'}:
         return _job_display_status(job) == active
+    if active == 'failed':
+        return _job_ui_status(job) == 'failed' and _console_bucket(job) == 'archive'
     return _job_ui_status(job) == active
 
 
@@ -975,10 +1229,15 @@ def _attention_action_category(job: dict) -> str | None:
     """Return the real user action without inspecting rendered HTML or URLs."""
     if _console_bucket(job) != 'attention':
         return None
+    # Independent failed uploads must stay individually reviewable.
+    if _publication_status(job):
+        return None
     if _job_requires_manual_qa(job):
         return 'review'
     if _job_ui_status(job) == 'repair':
         return 'repair'
+    if _job_ui_status(job) == 'failed':
+        return 'retry'
     if _job_awaits_approval(job):
         return 'storyboard'
     if (
@@ -1202,7 +1461,47 @@ def _collapse_retry_sources(
     collapse_attention: bool = True,
 ) -> list[dict]:
     """Show only the newest visible step of each logical video workflow."""
-    task_ids = {str(job.get('task_id') or '') for job in jobs}
+    by_id = {str(job.get('task_id') or ''): job for job in jobs}
+    jobs = [_with_publication_presentation(job, by_id.get) for job in jobs]
+    # Manual publishers can predate source automation metadata. Propagate only
+    # a verified child warning, leaving all durable job/result records intact.
+    completed_sources = set()
+    for publisher in jobs:
+        parent_id = str(publisher.get('parent_id') or '')
+        source = by_id.get(parent_id)
+        if source and _publisher_matches_completed_output(publisher, source):
+            automation = _job_result(source).get('youtube_automation')
+            bound_id = automation.get('publish_task_id') if isinstance(automation, dict) else None
+            if not bound_id or bound_id == publisher.get('task_id'):
+                completed_sources.add(parent_id)
+    jobs = [
+        {**job, '_publication_complete': True} if job.get('task_id') in completed_sources else job
+        for job in jobs
+    ]
+    warnings = {}
+    for publisher in jobs:
+        parent_id = str(publisher.get('parent_id') or '')
+        source = by_id.get(parent_id)
+        if source and _publisher_matches_source(publisher, source):
+            automation = _job_result(source).get('youtube_automation')
+            bound_id = automation.get('publish_task_id') if isinstance(automation, dict) else None
+            if bound_id and bound_id != publisher.get('task_id'):
+                continue
+            if not bound_id and parent_id in completed_sources:
+                continue
+            status = _publication_status(publisher)
+            if status in {'failed', 'blocked', 'uncertain'}:
+                warnings[parent_id] = (
+                    ('uncertain', '') if parent_id in warnings
+                    else (status, publisher['task_id'])
+                )
+    jobs = [
+        {**job, '_publication_status': warnings[job['task_id']][0],
+         '_publication_task_id': warnings[job['task_id']][1]}
+        if job.get('task_id') in warnings else job
+        for job in jobs
+    ]
+    task_ids = set(by_id)
     # Publishing is a state of the finished video, not a second video card.
     # The worker persists successful YouTube metadata on the render source;
     # failed uploads remain owned by the YouTube center. In both terminal
@@ -1724,9 +2023,11 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
         'stage': 'queued',
         'progress': 0,
     }
+    record = _with_publication_presentation(record, get_job, upload_lookup=get_upload_record)
+    retry_presentation = _terminal_retry_presentation(record, get_job, upload_lookup=get_upload_record)
     display_title = escape(_job_title(record))
-    status = _job_ui_status(record)
-    display_status = _job_display_status(record)
+    status = retry_presentation['ui_status'] if retry_presentation else _job_ui_status(record)
+    display_status = retry_presentation['display_status'] if retry_presentation else _job_display_status(record)
     bucket = _console_bucket(record)
     back_status = (
         'drafts'
@@ -1737,6 +2038,15 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     progress = _job_progress(record)
     stage_code = str(record.get('failure_stage') or record.get('stage') or 'queued')
     stage_label = escape(STAGE_LABELS.get(stage_code, stage_code))
+    message = _job_status_message(record)
+    primary_action = _job_primary_action(record, small=False)
+    if retry_presentation:
+        stage_label = escape(retry_presentation['stage_label'])
+        message = 'Bu sayfa önceki denemenin kaydıdır. ' + retry_presentation['message']
+        primary_action = (
+            '<a class="btn secondary" href="/studio/job/'
+            f'{retry_presentation["task_id"]}">Güncel sonucu aç</a>'
+        )
     initial_error = _safe_ui_text(record.get('error'))
     error_hidden = '' if initial_error else ' hidden'
     progress_hidden = '' if status == 'running' else ' hidden'
@@ -1746,9 +2056,9 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
 <div class="hero"><div class="hero-copy"><div class="eyebrow">Üretim durumu</div><h1>{display_title}</h1><div class="muted">Yalnızca karar vermen gereken durum ve sonraki adım burada gösterilir.</div></div></div>
 <article class="card job-panel" id="job-card" data-status="{display_status}">
 <div class="job-panel-head"><div class="stage" id="stage">{stage_label}{f' · %{progress}' if status == 'running' else ''}</div><span class="state {display_status}" id="state-label">{UI_STATUS_LABELS[display_status]}</span></div>
-<div class="job-status" id="status-message" role="status" aria-live="polite" aria-atomic="true">{escape(_job_status_message(record))}</div>
+<div class="job-status" id="status-message" role="status" aria-live="polite" aria-atomic="true">{escape(message)}</div>
 <div class="progress" id="progress" role="progressbar" aria-label="Üretim ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{progress}" style="margin:14px 0"{progress_hidden}><div class="bar" id="bar" style="width:{progress}%"></div></div>
-<div class="result-action" id="result">{_job_primary_action(record, small=False)}</div>
+<div class="result-action" id="result">{primary_action}</div>
 <div class="result-media-host" id="result-media"{media_hidden}>{media_panel}</div>
 <details class="technical-details"><summary>Teknik ayrıntılar</summary><div class="technical-body"><div><b>İş kimliği</b><br><code>{escape(task_id)}</code></div><div><b>Aşama kodu</b><br><code id="technical-stage">{escape(stage_code)}</code></div><div id="technical-error-row"{error_hidden}><b>Hata kaydı</b><br><code id="technical-error">{escape(initial_error)}</code></div>{_visual_diagnostics_link(record)}</div></details>
 </article>
@@ -1772,6 +2082,8 @@ async function poll(){
  const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label'),displayUi=String(j.display_status||ui);
  panel.dataset.status=displayUi;pill.className='state '+displayUi;pill.textContent=labels[displayUi]||labels.running;
  document.getElementById('bar').style.width=p+'%';progress.setAttribute('aria-valuenow',String(p));progress.hidden=ui!=='running';document.getElementById('stage').textContent=stage+(ui==='running'?' · %'+p:'');setStatusMessage(j.ui_status_message);showTechnical(j);
+ if(j.retry_presentation){const latest=j.retry_presentation;setMedia({});setAction('latest:'+latest.task_id,linkAction(`/studio/job/${encodeURIComponent(latest.task_id)}`,'Güncel sonucu aç'));return}
+ if(j.publication_status){setMedia(['ready','completed'].includes(ui)?j.result:{});setAction('publication-review',linkAction(j.publication_review_path||'/studio/youtube','Mevcut yüklemeyi kontrol et','repair'));if(j.publication_status==='pending')timer=setTimeout(poll,3000);return}
  if(ui==='repair'){setMedia({});setAction('repair',retryAction('Sorunlu sahneyi onar','repair'));return}
  if(ui==='failed'){setMedia({});setAction('failed',retryAction('Aynı ayarlarla tekrar dene','danger'));return}
  if(ui==='ready'&&state==='AWAITING_APPROVAL'){setAction('storyboard',linkAction(`/studio/plan/${encodeURIComponent(taskId)}`,"Storyboard'u aç",'success'));return}
@@ -1808,7 +2120,8 @@ def studio_visual_diagnostics(task_id: str, studio_token: str | None = Cookie(de
 @router.get('/studio/api/job/{task_id}')
 def studio_job_api(task_id: str, studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
     _require_auth(studio_token)
-    record = _sync_job(task_id)
+    record = _with_publication_presentation(_sync_job(task_id), get_job, upload_lookup=get_upload_record)
+    retry_presentation = _terminal_retry_presentation(record, get_job, upload_lookup=get_upload_record)
     payload = dict(record)
     payload['state_label'] = STATE_LABELS.get(str(payload.get('state')), str(payload.get('state') or ''))
     stage_key = (
@@ -1831,6 +2144,24 @@ def studio_job_api(task_id: str, studio_token: str | None = Cookie(default=None,
     payload['display_status_label'] = UI_STATUS_LABELS[payload['display_status']]
     payload['upload_allowed'] = _job_upload_allowed(payload)
     payload['ui_status_message'] = _job_status_message(payload)
+    payload['publication_status'] = _publication_status(record)
+    if payload['publication_status']:
+        publisher_id = _canonical_task_id(record.get('_publication_task_id'))
+        if record.get('kind') == 'publish':
+            publisher_id = _canonical_task_id(record.get('task_id'))
+        payload['publication_review_path'] = (
+            f'/studio/youtube/publish-status/{publisher_id}' if publisher_id else '/studio/youtube'
+        )
+    if retry_presentation:
+        payload['retry_presentation'] = retry_presentation
+        for field in ('ui_status', 'display_status'):
+            payload[field] = retry_presentation[field]
+            payload[field + '_label'] = UI_STATUS_LABELS[payload[field]]
+        payload['stage_label'] = retry_presentation['stage_label']
+        payload['ui_status_message'] = (
+            'Bu sayfa önceki denemenin kaydıdır. ' + retry_presentation['message']
+        )
+        payload['upload_allowed'] = False
     return JSONResponse(payload)
 
 
@@ -1892,7 +2223,9 @@ def studio_history(
     }[active]
     rich_library = active in {'library', 'ready', 'completed'}
     rows = ''.join(
-        _ready_video_card(job) if rich_library else _job_row(job)
+        _ready_video_card(job)
+        if rich_library or (_publication_status(job) and _job_media_urls(job)[0])
+        else _job_row(job)
         for job in visible
     ) or f'<div class="empty">{empty_copy}</div>'
     previous = (

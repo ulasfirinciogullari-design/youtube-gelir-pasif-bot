@@ -50,6 +50,7 @@ def viewer(monkeypatch):
     namespace = {
         'settings': SimpleNamespace(factory_api_token=COOKIE, bucket='existing-private-bucket'),
         'get_job': get_job,
+        'get_upload_record': Mock(return_value=None),
         'youtube_router': APIRouter(),
     }
     exec(compile(tree, str(source), 'exec'), namespace)

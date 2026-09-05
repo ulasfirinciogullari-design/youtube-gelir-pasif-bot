@@ -75,6 +75,7 @@ def ui_modules(monkeypatch):
         {},
     )
     publish_state_module.mark_upload_enqueued = lambda *_a, **_k: None
+    publish_state_module.get_upload_record = lambda *_a, **_k: None
     publish_state_module.mark_upload_preflight_failed = lambda *_a, **_k: None
     publish_state_module.reserve_upload = lambda *_a, **_k: ({}, True)
 
