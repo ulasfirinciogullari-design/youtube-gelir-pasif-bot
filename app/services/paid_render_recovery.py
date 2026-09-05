@@ -595,7 +595,24 @@ def _validate_continuation_package(original: dict, origin: dict, leaf: dict):
     return tasks, audio, entries[0], index
 
 
-def prepare_paid_recovery_continuation(leaf_task_id: str, original_receipt_pointer: dict, work_dir: str | Path) -> dict:
+def _checked_curated_stock_pointer(pointer: dict, source_job: dict, approved_package: dict) -> dict:
+    """Validate optional server-authored curation without changing the story."""
+    if not isinstance(pointer, dict):
+        raise ValueError('Curated stock pointer is unavailable')
+    from app.services.curated_stock import validate_curated_stock_manifest
+
+    manifest = validate_curated_stock_manifest(
+        deepcopy(pointer), source_job=deepcopy(source_job), approved_package=deepcopy(approved_package),
+    )
+    if not isinstance(manifest, dict) or not manifest:
+        raise ValueError('Curated stock manifest is unavailable')
+    return deepcopy(pointer)
+
+
+def prepare_paid_recovery_continuation(
+    leaf_task_id: str, original_receipt_pointer: dict, work_dir: str | Path,
+    *, curated_stock_manifest: dict | None = None,
+) -> dict:
     """Prepare a failed zero-create leaf, never any consumed ancestor.
 
     No provider generation, new story review, Storage write or state mutation.
@@ -609,6 +626,10 @@ def prepare_paid_recovery_continuation(leaf_task_id: str, original_receipt_point
         client = studio_state._client()
         origin, leaf, fingerprint = _continuation_state(origin_id, leaf_id, client)
         tasks, audio, entry, index = _validate_continuation_package(original, origin, leaf)
+        curated_pointer = (
+            _checked_curated_stock_pointer(curated_stock_manifest, leaf, original['approved_package'])
+            if curated_stock_manifest is not None else None
+        )
         work = Path(work_dir)
         match = re.fullmatch(r'([0-9a-f-]{36})_attempt_0', work.name)
         if not match or _canonical_id(match[1]) in {origin_id, leaf_id}:
@@ -632,7 +653,11 @@ def prepare_paid_recovery_continuation(leaf_task_id: str, original_receipt_point
             work / 'existing_paid_scene.mp4', minimum_duration=max(5.0, float(audio['scene_durations'][index]) + 0.35),
             expected_size=entry['size'], expected_sha256=entry['sha256'],
         )
-        if _continuation_state(origin_id, leaf_id, client)[2] != fingerprint:
+        _latest_origin, latest_leaf, latest_fingerprint = _continuation_state(origin_id, leaf_id, client)
+        if latest_fingerprint != fingerprint or (
+            curated_pointer is not None
+            and _digest(latest_leaf.get('qa_workprint')) != _digest(leaf.get('qa_workprint'))
+        ):
             raise ValueError('Continuation changed during preparation')
         checkpoint = deepcopy(original)
         checkpoint.update(
@@ -640,6 +665,8 @@ def prepare_paid_recovery_continuation(leaf_task_id: str, original_receipt_point
             source_state_sha256=_source_fingerprint(leaf, {'cap': leaf['preview_total_paid_create_cap'], 'used': 0}),
             continuation={'version': 1, 'original_receipt_pointer': deepcopy(original_receipt_pointer), 'lineage_sha256': fingerprint},
         )
+        if curated_pointer is not None:
+            checkpoint['curated_stock_manifest'] = curated_pointer
         return checkpoint
     except Exception:
         raise PaidRenderRecoveryError('Paid recovery continuation preparation unavailable; no replacement media was generated') from None
@@ -648,7 +675,8 @@ def prepare_paid_recovery_continuation(leaf_task_id: str, original_receipt_point
 def publish_paid_recovery_continuation(checkpoint: dict) -> dict:
     """CAS-publish only the unclaimed leaf; leave all consumed claims intact."""
     try:
-        if not isinstance(checkpoint, dict) or set(checkpoint) != _RECEIPT_FIELDS | {'continuation'}:
+        fields = _RECEIPT_FIELDS | {'continuation'}
+        if not isinstance(checkpoint, dict) or set(checkpoint) not in (fields, fields | {'curated_stock_manifest'}):
             raise ValueError('Invalid continuation receipt')
         proof = checkpoint['continuation']
         if not isinstance(proof, dict) or set(proof) != {'version', 'original_receipt_pointer', 'lineage_sha256'} or type(proof['version']) is not int or proof['version'] != 1:
@@ -667,6 +695,12 @@ def publish_paid_recovery_continuation(checkpoint: dict) -> dict:
                 source_state_sha256=_source_fingerprint(leaf, {'cap': leaf['preview_total_paid_create_cap'], 'used': 0}),
                 continuation={'version': 1, 'original_receipt_pointer': proof['original_receipt_pointer'], 'lineage_sha256': fingerprint},
             )
+            if 'curated_stock_manifest' in checkpoint:
+                # This bounded private read is deliberately under the same
+                # lineage WATCH as the leaf job containing workprint evidence.
+                expected['curated_stock_manifest'] = _checked_curated_stock_pointer(
+                    checkpoint['curated_stock_manifest'], leaf, original['approved_package'],
+                )
             if _digest(checkpoint) != _digest(expected):
                 raise ValueError('Prepared continuation changed')
             encoded = json.dumps(checkpoint, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
