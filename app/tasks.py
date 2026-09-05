@@ -1797,6 +1797,9 @@ def _collect_broll(
             source_duration = 0.0
         scene_visuals[scene_idx].append({
             'path': str(path),
+            'pexels_id': (
+                candidate_id if type(candidate_id) is int and candidate_id > 0 else None
+            ),
             'start_fraction': 0.25,
             'source_duration': source_duration,
             'source_type': 'stock',
@@ -1815,6 +1818,83 @@ def _collect_broll(
     return {'scene_visuals': scene_visuals, 'credits': credits, 'seen_ids': seen_ids}
 
 
+def _broll_retry_blocked_ids(
+    scene_idx: int,
+    seen_ids: set,
+    credits: list[dict],
+    active_scene_visuals: list[list[str | dict]],
+) -> set:
+    """Release only proven cross-scene losers, never active or own candidates."""
+    blocked = set(seen_ids)
+    if (
+        type(scene_idx) is not int
+        or not isinstance(active_scene_visuals, list)
+        or not 0 <= scene_idx < len(active_scene_visuals)
+        or not isinstance(credits, list)
+    ):
+        return blocked
+    held: set[int] = set()
+    unknown_stock_identity = False
+    for specs in active_scene_visuals:
+        if not isinstance(specs, list):
+            unknown_stock_identity = True
+            continue
+        for spec in specs:
+            if isinstance(spec, dict) and (
+                spec.get('generated') is True or spec.get('source_type') == 'generated'
+            ):
+                continue
+            candidate_id = spec.get('pexels_id') if isinstance(spec, dict) else None
+            if (
+                isinstance(spec, dict)
+                and spec.get('source_type') == 'stock'
+                and spec.get('stock_provider') == 'pexels'
+                and type(candidate_id) is int and candidate_id > 0
+            ):
+                held.add(candidate_id)
+            else:
+                # A legacy path may still refer to any previously seen asset.
+                unknown_stock_identity = True
+    downloaded: set[int] = set()
+    own_attempted: set[int] = set()
+    for credit in credits:
+        if not isinstance(credit, dict) or credit.get('source') != 'Pexels':
+            continue
+        candidate_id = credit.get('pexels_id')
+        owner = credit.get('scene_index')
+        if (
+            type(candidate_id) is not int or candidate_id <= 0
+            or type(owner) is not int or not 0 <= owner < len(active_scene_visuals)
+        ):
+            continue
+        downloaded.add(candidate_id)
+        if owner == scene_idx:
+            own_attempted.add(candidate_id)
+    blocked.update(held | own_attempted)
+    if not unknown_stock_identity:
+        blocked.difference_update(downloaded - held - own_attempted)
+    return blocked
+
+
+def _require_unique_selected_stock(scene_visuals: list[list[str | dict]]) -> None:
+    """Check known stock identities only; legacy/general reuse is caller-scoped."""
+    owners: dict[int, int] = {}
+    for scene_idx, specs in enumerate(scene_visuals):
+        for spec in specs:
+            if not isinstance(spec, dict) or (
+                spec.get('source_type') != 'stock' or spec.get('stock_provider') != 'pexels'
+            ):
+                continue
+            candidate_id = spec.get('pexels_id')
+            if type(candidate_id) is not int or candidate_id <= 0:
+                continue
+            if candidate_id in owners and owners[candidate_id] != scene_idx:
+                raise FinalVisualQualityError(
+                    'Final stock uniqueness gate rejected repeated Pexels media'
+                )
+            owners[candidate_id] = scene_idx
+
+
 def _download_ranked_broll_candidates(
     scene_idx: int,
     queries: list[str],
@@ -1829,6 +1909,7 @@ def _download_ranked_broll_candidates(
     minimum_duration: float = 5.0,
     allow_short_fallback: bool = False,
     orientation: str = 'landscape',
+    active_scene_visuals: list[list[str | dict]] | None = None,
 ) -> list[dict]:
     orientation = str(orientation or '').strip().lower()
     if orientation not in {'landscape', 'portrait'}:
@@ -1910,7 +1991,10 @@ def _download_ranked_broll_candidates(
             (query, search_results.get(query_idx, []))
             for query_idx, query in enumerate(normalized_queries)
         ],
-        seen_ids,
+        (
+            _broll_retry_blocked_ids(scene_idx, seen_ids, credits, active_scene_visuals)
+            if active_scene_visuals is not None else seen_ids
+        ),
         attempt_limit,
         minimum_duration=max(0.1, float(minimum_duration)),
         allow_seen_fallback=False,
@@ -1979,6 +2063,9 @@ def _download_ranked_broll_candidates(
             source_duration = 0.0
         replacements.append({
             'path': str(path),
+            'pexels_id': (
+                candidate_id if type(candidate_id) is int and candidate_id > 0 else None
+            ),
             'start_fraction': 0.35,
             'source_duration': source_duration,
             'source_type': 'stock',
@@ -2014,6 +2101,7 @@ def _retry_bad_scene(
     allow_short_fallback: bool = True,
     tolerate_pexels_failure: bool = False,
     orientation: str = 'landscape',
+    active_scene_visuals: list[list[str | dict]] | None = None,
 ) -> list[dict]:
     safe_prefix = re.sub(r'[^a-zA-Z0-9_-]+', '_', file_prefix)[:32] or 'qc'
     selected_by = (
@@ -2037,6 +2125,7 @@ def _retry_bad_scene(
             minimum_duration=minimum_duration,
             allow_short_fallback=allow_short_fallback,
             orientation=orientation,
+            active_scene_visuals=active_scene_visuals,
         )
     except PexelsRetryError:
         if not tolerate_pexels_failure:
@@ -4107,6 +4196,15 @@ def run_video_pipeline(
                 scene_visuals[scene_idx] = duration_safe_specs
         credits = broll_result['credits']
         seen_ids = broll_result['seen_ids']
+        # The fixed production Short uses distinct final stock clips. Keep
+        # legacy preview/long-form reuse behavior unchanged.
+        stock_reuse_visuals = (
+            scene_visuals
+            if options.get('mode') == 'production'
+            and options.get('format') == 'shorts'
+            and duration_minutes == 0.5
+            else None
+        )
 
         set_stage(self, task_id, 'visual_qc', 45, 'Her sahnenin aday görüntüleri gerçek kareler üzerinden karşılaştırılıyor.')
         visual_qc: dict = {'reviews': []}
@@ -4243,6 +4341,7 @@ def run_video_pipeline(
                 allow_short_fallback=not strict_short_preview_duration,
                 tolerate_pexels_failure=is_short_preview_authored_ai,
                 orientation=pexels_orientation,
+                active_scene_visuals=stock_reuse_visuals,
             )
             scene_visuals[scene_idx] = [*replacements, best_spec][:3]
             if replacements:
@@ -4796,6 +4895,7 @@ def run_video_pipeline(
                     ),
                     allow_short_fallback=False,
                     orientation=pexels_orientation,
+                    active_scene_visuals=stock_reuse_visuals,
                 )
                 if not replacements:
                     continue
@@ -5907,6 +6007,7 @@ def run_video_pipeline(
                     or scene_idx in stock_quality_fallback_scenes
                 ),
                 orientation=pexels_orientation,
+                active_scene_visuals=stock_reuse_visuals,
             )
             if not replacements:
                 continue
@@ -6056,6 +6157,8 @@ def run_video_pipeline(
         unresolved_scenes = [idx for idx, specs in enumerate(scene_visuals) if not any(_visual_path(s) for s in specs)]
         if unresolved_scenes:
             raise RuntimeError(f'Visual quality gate rejected unresolved scenes: {unresolved_scenes}')
+        if stock_reuse_visuals is not None:
+            _require_unique_selected_stock(scene_visuals)
 
         # Synthetic camera motion over a still image can satisfy pixel-motion
         # probes without proving real temporal action. Even when the semantic

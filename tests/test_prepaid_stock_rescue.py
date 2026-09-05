@@ -163,6 +163,7 @@ def test_overflow_call_keeps_two_new_clips_and_the_reviewed_incumbent(tmp_path):
         'current_reviews': {0: {'score': 65, 'retry_queries': []}},
         'scenes': [{'visual_queries': ['first authored query', 'second authored query']}],
         'scene_visuals': [[incumbent]], 'scene_durations': [5.4],
+        'stock_reuse_visuals': None,
         'budget_rescued_scenes': [], 'visual_replacements': [],
         'seen_ids': set(), 'work': tmp_path, 'credits': [],
         'pexels_orientation': 'portrait',

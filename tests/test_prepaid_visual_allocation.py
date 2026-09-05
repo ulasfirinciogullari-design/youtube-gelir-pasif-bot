@@ -83,6 +83,7 @@ def test_production_stock_rescue_must_pass_unchanged_quality_and_cap(rescued_sco
     visuals = [[{'path': f'incumbent-{index}.mp4'}] for index in range(4)]
     namespace.update({
         'current_reviews': reviews, 'scene_visuals': visuals,
+        'stock_reuse_visuals': visuals,
         'scene_durations': [4.8] * 4, 'scenes': [{'narration': str(index)} for index in range(4)],
         'seen_ids': set(), 'work': Path('/tmp/test-work'), 'credits': [],
         'pexels_orientation': 'portrait', 'visual_replacements': [],
