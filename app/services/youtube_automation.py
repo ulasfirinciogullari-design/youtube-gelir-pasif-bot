@@ -433,6 +433,13 @@ def build_publish_plan(
         raise MetadataValidationError('Publish metadata was not generated')
     title = _one_line(raw_metadata.get('title') or result.get('title'), 100)
     description = str(raw_metadata.get('description') or '').strip()
+    if title and not description:
+        from app.services.youtube_publish_metadata import approved_narration_description
+
+        try:
+            description = approved_narration_description(source_task_id, source_job)
+        except ValueError:
+            raise MetadataValidationError('Approved publish description is unavailable') from None
     if not title or not description:
         raise MetadataValidationError('Publish title and description are required')
     try:
@@ -469,8 +476,15 @@ def build_publish_plan(
         series_line = f'{series_name or series_id} · {fraction}'
         description = f'{series_line}\n\n{description}'
 
+    source_values = []
+    for source in _items(raw_metadata.get('sources')):
+        if isinstance(source, dict):
+            source = source.get('url')
+            if not isinstance(source, str):
+                continue
+        source_values.append(source)
     sources = _string_list(
-        raw_metadata.get('sources'),
+        source_values,
         maximum_items=20,
         maximum_length=400,
     )
