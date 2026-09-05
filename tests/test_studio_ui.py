@@ -78,6 +78,9 @@ def ui_modules(monkeypatch):
     publish_state_module.get_upload_record = lambda *_a, **_k: None
     publish_state_module.mark_upload_preflight_failed = lambda *_a, **_k: None
     publish_state_module.reserve_upload = lambda *_a, **_k: ({}, True)
+    metrics_module = types.ModuleType('app.services.youtube_metrics')
+    metrics_module.get_dashboard_metrics = lambda *_a, **_k: {'channels': [], 'videos': {}, 'updated_at': None, 'refresh_after_seconds': 300}
+    metrics_module.refresh_dashboard_metrics = metrics_module.get_dashboard_metrics
 
     for name, module in {
         'app.config': config_module,
@@ -88,6 +91,7 @@ def ui_modules(monkeypatch):
         'app.publish_tasks': publish_tasks_module,
         'app.services.youtube_auth': youtube_auth_module,
         'app.services.youtube_publish_state': publish_state_module,
+        'app.services.youtube_metrics': metrics_module,
     }.items():
         monkeypatch.setitem(sys.modules, name, module)
     app_package = importlib.import_module('app')
@@ -144,7 +148,7 @@ def test_studio_job_card_is_compact_with_one_action_and_collapsed_details(ui_mod
     assert 'Teknik açıklamayı insan deneyiminin önüne geçirme.' in html
     assert 'https://sensitive.example' not in html
     assert '[bağlantı gizlendi]' in html
-    assert '<span class="state ready">Hazır</span>' in html
+    assert '<span class="state rendered">Üretildi · YouTube’a yüklenmedi</span>' in html
     assert '>Gizli yükle</a>' in html
     assert html.count('class="btn ') == 1
     assert '30 sn' in html
@@ -1479,7 +1483,9 @@ def test_workflow_history_shows_only_the_latest_child_step(ui_modules):
         'result': {
             'download_url': 'https://media.example.test/final.mp4',
             'youtube': {
-                'url': 'https://youtube.example.test/watch?v=private',
+                'url': 'https://www.youtube.com/watch?v=AbCdEfGhI_1',
+                'video_id': 'AbCdEfGhI_1',
+                'target_channel_id': 'UCchannel_test',
                 'privacy_status': 'private',
             },
         },
@@ -1563,7 +1569,9 @@ def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
             'duration': 58,
             'download_url': 'https://media.example.test/uploaded.mp4',
             'youtube': {
-                'url': 'https://youtube.example.test/watch?v=private',
+                'url': 'https://www.youtube.com/watch?v=AbCdEfGhI_1',
+                'video_id': 'AbCdEfGhI_1',
+                'target_channel_id': 'UCchannel_test',
                 'privacy_status': 'private',
                 'channel_title': 'Merak Kanalı',
             },
@@ -1584,9 +1592,9 @@ def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
 
     assert 'data-history-status="library"' in body
     assert 'data-status-count="library">2</span>' in body
-    assert '<span class="status-name">Hazır</span>' in body
-    assert '<h1>Hazır</h1>' in body
-    assert 'Kalite kontrolünden geçen ve YouTube’a hazır videolar.' in body
+    assert '<span class="status-name">Videolar</span>' in body
+    assert '<h1>Videolar</h1>' in body
+    assert 'Üretilen ve YouTube’a yüklenen videolar ayrı durumlarla gösterilir.' in body
     assert 'Hazır / gizli' not in body
     assert body.count('<article class="ready-card"') == 2
     assert body.count('<video class="ready-video"') == 2
@@ -1595,8 +1603,8 @@ def test_library_keeps_ready_and_private_videos_rich_but_failures_separate(
     assert 'YouTube’a Gizli Yüklenen Video' in body
     assert '<b>Süre</b><span>30 sn</span>' in body
     assert '<b>Kanal</b><span>Merak Kanalı</span>' in body
-    assert '<b>Yayın</b><span>Yüklemeye hazır</span>' in body
-    assert '<b>Yayın</b><span>YouTube’da gizli</span>' in body
+    assert '<b>Yayın</b><span data-delivery-label="job-123">Yüklemeye hazır</span>' in body
+    assert '<b>Yayın</b><span data-delivery-label="uploaded-video">YouTube’a gizli yüklendi</span>' in body
     assert '<b>Gizlilik</b>' not in body
     assert body.count('data-action-count="2"') == 2
     assert '>Gizli yükle</a>' in body
@@ -1766,9 +1774,9 @@ def test_approved_polling_payload_is_the_only_render_upload_allowed(
         'release_status', 'privacy_status', 'pill_label', 'readiness_label',
     ),
     [
-        ('private', 'private', 'Gizli', 'YouTube’da gizli'),
-        ('public', 'public', 'Yayında', 'YouTube’da yayında'),
-        ('scheduled', 'private', 'Planlandı', 'YouTube’da planlandı'),
+        ('private', 'private', 'private', 'YouTube’a gizli yüklendi'),
+        ('public', 'public', 'public', 'YouTube’da yayında'),
+        ('scheduled', 'private', 'private', 'YouTube yayını planlandı'),
     ],
 )
 def test_ready_card_presents_youtube_release_state_without_calling_it_all_private(
@@ -1781,7 +1789,9 @@ def test_ready_card_presents_youtube_release_state_without_calling_it_all_privat
     studio, _ = ui_modules
     job = _ready_job()
     job['result']['youtube'] = {
-        'url': 'https://youtube.example.test/watch?v=release-state',
+        'url': 'https://www.youtube.com/watch?v=AbCdEfGhI_1',
+        'video_id': 'AbCdEfGhI_1',
+        'target_channel_id': 'UCchannel_test',
         'release_status': release_status,
         'privacy_status': privacy_status,
     }
@@ -1789,8 +1799,8 @@ def test_ready_card_presents_youtube_release_state_without_calling_it_all_privat
     card = studio._ready_video_card(job)
 
     assert studio._console_bucket(job) == 'library'
-    assert f'<span class="state completed">{pill_label}</span>' in card
-    assert f'<b>Yayın</b><span>{readiness_label}</span>' in card
+    assert f'<span class="state {pill_label}">{readiness_label}</span>' in card
+    assert f'<b>Yayın</b><span data-delivery-label="job-123">{readiness_label}</span>' in card
 
 
 def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
@@ -2144,7 +2154,8 @@ def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monk
     assert '<details class="brief-details">' in body
     assert 'https://sensitive.example' not in body
     assert '[bağlantı gizlendi]' in body
-    assert 'role="status"' not in body  # only shown after a new OAuth callback
+    assert 'id="metrics-feedback" role="status"' in body
+    assert 'YouTube bağlantısı tamamlandı' not in body  # no fabricated OAuth callback
     assert 'aria-label="Hedef YouTube kanalı"' in body
     assert 'name="youtube_channel_id"' in body
     assert '>Gizli yükle</button>' in body

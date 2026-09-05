@@ -210,12 +210,13 @@ def _shell(
     *,
     status_code: int = 200,
     same_origin_forms: bool = False,
+    extra_css: str = '',
 ) -> HTMLResponse:
     response = HTMLResponse(
         '<!doctype html><html lang="tr"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         '<meta name="theme-color" content="#090c11">'
-        f'<title>{escape(title)}</title><style>{CSS}</style></head><body>'
+        f'<title>{escape(title)}</title><style>{CSS}{extra_css}</style></head><body>'
         '<a class="skip-link" href="#main-content">İçeriğe geç</a><div class="wrap">'
         '<header class="top"><a class="brand" href="/studio">YouTube Studio</a>'
         '<nav class="nav" aria-label="Ana menü"><a href="/studio">Yeni video</a>'
@@ -262,6 +263,20 @@ def _completed_jobs() -> list[dict]:
         ):
             jobs.append(job)
     return jobs
+
+
+def _studio_presentation():
+    # Runtime import: Studio registers this router before defining its shared
+    # display helpers. No provider or state mutation is performed by this bridge.
+    from app import studio
+    return studio
+
+
+def _youtube_watch_url(job: dict) -> str:
+    video_id = _studio_presentation()._delivery_video_id(job)
+    if isinstance(video_id, str) and re.fullmatch(r'[A-Za-z0-9_-]{11}', video_id):
+        return 'https://www.youtube.com/watch?v=' + video_id
+    return ''
 
 
 def _production_status_text(profile: dict, state: dict | None) -> str:
@@ -421,6 +436,11 @@ def youtube_home(
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
+    presentation = _studio_presentation()
+    completed = _completed_jobs()
+    recent = list_jobs(80) or []
+    by_id = {job.get('task_id'): job for job in [*recent, *completed] if isinstance(job, dict)}
+    metrics = presentation._dashboard_metrics([*recent, *completed])
     status = connection_status()
     connections = status.get('connections') if isinstance(status.get('connections'), list) else []
     try:
@@ -447,7 +467,7 @@ def youtube_home(
                     production_state = {'unavailable': True}
             profile_form = _profile_form(channel, profile, production_state)
             channel_cards.append(f'''
-<article class="channel-card"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Yüklemeye hazır</div></div><span class="badge good">● Bağlı</span></div><div class="channel-metrics"><span class="badge">{escape(str(channel.get('subscriber_count') or '—'))} abone</span><span class="badge">{escape(str(channel.get('video_count') or '—'))} video</span><span class="badge">{escape(str(channel.get('view_count') or '—'))} izlenme</span></div>{profile_form}<div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
+<article class="channel-card" id="channel-{escape(channel_id, quote=True)}"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Kanal ve otomasyon ayarları</div></div><span class="badge">{'Bağlantı yenilenmeli' if channel.get('requires_reconnect') is True else '● Bağlı'}</span></div>{profile_form}<div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
         count = int(status.get('connection_count') or len(connections))
         limit = int(status.get('connection_limit') or 10)
         connection_notice = ''
@@ -463,28 +483,33 @@ def youtube_home(
         account_card = '''
 <div class="notice" role="alert"><b>Google bağlantı ayarları eksik.</b><p>Google istemcisi, yönlendirme adresi ve ayrı şifreleme anahtarı Railway’de güvenli ortam değişkenleri olarak tanımlanmalı.</p></div>'''
 
-    rows = []
-    for index, job in enumerate(_completed_jobs(), start=1):
+    uploaded_rows = []
+    ready_rows = []
+    for index, source in enumerate(completed, start=1):
+        job = presentation._with_publication_presentation(source, by_id.get)
+        job = presentation._with_youtube_metrics(job, metrics)
         result = job.get('result') or {}
-        spec = job.get('spec') or {}
         raw_title = _ready_title(job)
         title = escape(raw_title)
         brief = _ready_brief(job)
         duration = _ready_duration(job)
         created = _ready_date(job)
-        channel_label = _ellipsize(_safe_ui_text(spec.get('channel_id')), 42)
         youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
-        if youtube.get('url'):
-            action = f'<a class="btn success" target="_blank" rel="noopener noreferrer" href="{escape(str(youtube.get("url")), quote=True)}">YouTube’da aç</a>'
+        delivery = presentation._video_delivery(job)
+        uploaded = (
+            delivery['key'] in {'private', 'public', 'unlisted', 'scheduled', 'uploaded'}
+            or presentation._job_has_youtube_output(job)
+        )
+        watch_url = _youtube_watch_url(job)
+        publication = presentation._publication_status(job)
+        if uploaded:
+            action = (
+                f'<a class="btn secondary" target="_blank" rel="noopener noreferrer" href="{watch_url}">YouTube’da aç</a>'
+                if watch_url else '<span class="tiny">Video bağlantısı doğrulanmalı</span>'
+            )
             action += _existing_release_form(job, profiles.get(str(youtube.get('target_channel_id') or '')))
-            release_status = str(youtube.get('release_status') or 'private')
-            state_label = {
-                'public': 'Yayında',
-                'scheduled': 'Planlandı',
-                'blocked': 'Gizli · yayın durdu',
-                'uncertain': 'Yayın durumu doğrulanmalı',
-            }.get(release_status, 'Gizli yüklendi')
-            ready_state = f'<span class="badge good">{escape(state_label)}</span>'
+        elif publication:
+            action = '<span class="tiny">Mevcut yükleme kaydı kontrol edilmeli; yeni yükleme başlatılmaz.</span>'
         elif connections:
             options = ''.join(
                 f'<option value="{escape(str(item.get("id") or ""), quote=True)}">{escape(_ellipsize(_safe_ui_text(item.get("title") or "YouTube kanalı"), 60))}</option>'
@@ -492,15 +517,17 @@ def youtube_home(
             )
             selector_id = f'target-channel-{index}'
             action = f'''<form class="inline" method="post" action="/studio/youtube/publish/{escape(str(job.get('task_id') or ''), quote=True)}"><label class="sr-only" for="{selector_id}">Hedef YouTube kanalı</label><select id="{selector_id}" name="youtube_channel_id" required aria-label="Hedef YouTube kanalı">{options}</select><button type="submit">Gizli yükle</button></form>'''
-            ready_state = '<span class="badge ready">Hazır</span>'
         else:
             action = '<span class="tiny">Önce bir YouTube kanalı bağla</span>'
-            ready_state = '<span class="badge ready">Hazır</span>'
+        if publication:
+            publisher_id = presentation._canonical_task_id(job.get('_publication_task_id'))
+            automation = result.get('youtube_automation')
+            if not publisher_id and isinstance(automation, dict):
+                publisher_id = presentation._canonical_task_id(automation.get('publish_task_id'))
+            if publisher_id:
+                action += f'<a class="btn secondary small" href="/studio/youtube/publish-status/{publisher_id}">Yükleme durumunu aç</a>'
+        ready_state = presentation._delivery_badges(job)
         metadata = [value for value in (duration, created) if value]
-        metadata.append(
-            f'Kanal etiketi: {channel_label}'
-            if channel_label else 'Hedef kanal yüklerken seçilecek'
-        )
         meta_html = ''.join(f'<span>{escape(value)}</span>' for value in metadata)
         details = ''
         if brief and _plain_text(brief) != _plain_text(raw_title):
@@ -508,14 +535,23 @@ def youtube_home(
                 '<details class="brief-details"><summary>Yaratıcı talimatı gör</summary>'
                 f'<div class="brief-full">{escape(brief)}</div></details>'
             )
-        rows.append(
-            f'<article class="video-card"><div class="video-main"><div class="video-title">{title}</div><div class="video-meta" aria-label="Video bilgileri">{meta_html}</div></div><div class="video-actions">{ready_state}{action}</div>{details}</article>'
+        row = (
+            f'<article class="video-card"><div class="video-main"><div class="delivery-badges" data-delivery-task="{presentation._canonical_task_id(job.get("task_id"))}">{ready_state}</div><div class="video-title">{title}</div>{presentation._video_identity(job)}<div class="video-meta" aria-label="Video bilgileri">{meta_html}</div>{presentation._video_performance(job)}</div><div class="video-actions">{action}</div>{details}</article>'
         )
-    jobs_html = ''.join(rows) or '<div class="empty">Yüklenebilir tamamlanmış video henüz yok.</div>'
+        (uploaded_rows if uploaded else ready_rows).append(row)
+    sections = ''
+    for heading, rows, empty, note in (
+        ('Yüklenen videolar', uploaded_rows, 'Henüz YouTube’a yüklenen video yok.',
+         'Gerçek görünürlük ve yükleme uyarıları ayrı gösterilir.'),
+        ('Yüklenmeye hazır', ready_rows, 'Yüklenmeyi bekleyen tamamlanmış video yok.',
+         'Üretimi tamamlanan videolar. Devam eden yükleme varsa ikinci kez başlatılmaz.'),
+    ):
+        sections += f'<section class="card"><div class="section-head"><div><h2>{heading}</h2><div class="muted">{note}</div></div><span class="badge">{len(rows)} video</span></div><div class="video-list">' + (''.join(rows) or f'<div class="empty">{empty}</div>') + '</div></section>'
+    overview = '<section class="card">' + presentation._metrics_header(metrics) + '<div id="channel-overview-host">' + presentation._channel_overview(metrics.get('channels') or []) + '</div></section>'
     success = '<div class="notice success" role="status">YouTube kanalı başarıyla bağlandı.</div>' if connected else ''
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanal rotalarını bir kez tanımla; başlık, açıklama, etiket, seri ve yayın akışı otomatik yürüsün.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{account_card}<section class="card"><div class="section-head"><div><span class="section-kicker">YAYINA HAZIR</span><h2>Hazır videolar</h2><div class="muted">Başlık ve temel bilgiler önde; uzun talimat istenirse açılır.</div></div><span class="badge">{len(rows)} video</span></div><div class="video-list">{jobs_html}</div></section>'''
-    return _shell(body, same_origin_forms=True)
+<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanallar, gerçek yayın durumu ve performans tek yerde.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{overview}{sections}{account_card}'''
+    return _shell(body, same_origin_forms=True, script=presentation._metrics_script(), extra_css=presentation.METRICS_CSS)
 
 
 @router.get('/studio/youtube/status')
@@ -907,11 +943,52 @@ def youtube_publish_status(
     studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
 ):
     _require_auth(studio_token)
+    presentation = _studio_presentation()
+    canonical_id = presentation._canonical_task_id(task_id)
+    publisher = get_job(canonical_id) if canonical_id else None
+    if not isinstance(publisher, dict) or publisher.get('task_id') != canonical_id or publisher.get('kind') != 'publish':
+        publisher = {'kind': 'publish', 'state': 'PENDING', 'task_id': canonical_id}
+    displayed = publisher
+    spec = publisher.get('spec') if isinstance(publisher.get('spec'), dict) else {}
+    source_id = presentation._canonical_task_id(spec.get('source_task_id'))
+    if source_id and publisher.get('parent_id') == source_id:
+        source = get_job(source_id)
+        source_result = source.get('result') if isinstance(source, dict) else None
+        output = source_result.get('youtube') if isinstance(source_result, dict) else None
+        delivered = publisher.get('result')
+        if (
+            isinstance(source, dict) and source.get('task_id') == source_id and source.get('kind') == 'render'
+            and isinstance(output, dict) and isinstance(delivered, dict)
+            and delivered.get('source_task_id') == source_id
+            and all(isinstance(output.get(a), str) and output[a] and output[a] == delivered.get(b)
+                    for a, b in (('video_id', 'youtube_video_id'), ('target_channel_id', 'target_channel_id'),
+                                 ('connection_id', 'connection_id')))
+        ):
+            # Current source attribution can reflect an explicit later release;
+            # the original publisher's private result remains historical.
+            displayed = presentation._with_publication_presentation(source, lambda value: publisher if value == canonical_id else None)
+    metrics = presentation._dashboard_metrics([displayed])
+    displayed = presentation._with_youtube_metrics(displayed, metrics)
+    delivery = presentation._video_delivery(displayed)
+    label = delivery['label'] or 'YouTube yükleme durumu'
+    publication = presentation._publication_status(displayed)
+    stage = 'Yayın durdu' if publication == 'blocked' else 'Sonuç doğrulanmalı' if publication == 'uncertain' else label
+    message = presentation._job_status_message(displayed)
+    try:
+        progress = max(0, min(100, int(publisher.get('progress') or 0)))
+    except (TypeError, ValueError, OverflowError):
+        progress = 0
+    watch_url = _youtube_watch_url(displayed)
+    result_html = (
+        f'<a class="btn secondary" target="_blank" rel="noopener noreferrer" href="{watch_url}">YouTube’da aç</a>'
+        if watch_url else ''
+    )
+    poll_id = presentation._canonical_task_id(displayed.get('task_id'))
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">Gizli yükleme</div><h1>YouTube’a gönderiliyor</h1><div class="muted">Video hedef kanala aktarılıyor. Bu sayfa kendiliğinden güncellenir.</div></div><div class="hero-tools"><span class="badge good">🔒 Gizli</span></div></div><div class="card" aria-live="polite"><div id="stage"><b>Başlatılıyor…</b></div><div class="progress" id="progress" role="progressbar" aria-label="YouTube yükleme ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="margin:14px 0"><div class="bar" id="bar"></div></div><div class="muted" id="message">Final master hazırlanıyor.</div><div id="result"></div></div><div class="actions"><a class="btn secondary" href="/studio/youtube">← Yayın merkezine dön</a></div>'''
-    safe_id = json.dumps(task_id)
+<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube teslimatı</div><h1 id="delivery-title">{escape(label)}</h1><div class="muted">Dosyanın yüklenmesi ve herkese açık yayın durumu ayrı izlenir.</div></div><div class="hero-tools"><span class="badge">İlk yükleme: 🔒 Gizli</span></div></div><div class="card" aria-live="polite"><div class="delivery-badges" id="delivery-badges" data-delivery-task="{poll_id}">{presentation._delivery_badges(displayed)}</div>{presentation._video_identity(displayed)}<div id="stage"><b>{escape(stage)}</b></div><div class="progress" id="progress" role="progressbar" aria-label="YouTube dosya aktarımı" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{progress}" style="margin:14px 0"><div class="bar" id="bar" style="width:{progress}%"></div></div><div class="muted" id="message">{escape(message)}</div><div id="result" class="actions">{result_html}</div>{presentation._video_performance(displayed)}</div><div class="actions"><a class="btn secondary" href="/studio/youtube">← Yayın merkezine dön</a></div>'''
+    safe_id = json.dumps(poll_id)
     script = f'''<script>
 const id={safe_id};const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]));
-async function poll(){{try{{const r=await fetch(`/studio/api/job/${{encodeURIComponent(id)}}`,{{cache:'no-store'}});const j=await r.json();const p=Math.max(0,Math.min(100,Number(j.progress||0)));document.getElementById('bar').style.width=p+'%';document.getElementById('progress').setAttribute('aria-valuenow',String(p));document.getElementById('stage').innerHTML='<b>'+esc(j.stage_label||j.stage||j.state)+'</b> · %'+p;document.getElementById('message').textContent=j.message||'';if(j.state==='FAILURE'){{document.getElementById('result').innerHTML='<div class="notice" role="alert">Yükleme tamamlanamadı. Tekrar yükleme başlatılmadan önce sonuç güvenle doğrulanmalıdır.</div>';return}}if(j.state==='SUCCESS'){{const x=j.result||{{}};document.getElementById('result').innerHTML=`<div class="actions"><a class="btn success" target="_blank" rel="noopener noreferrer" href="${{esc(x.youtube_url)}}">▶ YouTube’da aç</a><a class="btn secondary" href="/studio/youtube">Yayın merkezine dön</a></div>`;return}}setTimeout(poll,3000)}}catch(e){{document.getElementById('message').textContent='Durum geçici olarak alınamadı.';setTimeout(poll,5000)}}}}
+async function poll(){{if(!id||document.visibilityState==='hidden'){{if(id)setTimeout(poll,5000);return}}try{{const r=await fetch(`/studio/api/job/${{encodeURIComponent(id)}}`,{{credentials:'same-origin',cache:'no-store'}});if(!r.ok)throw new Error('status');const j=await r.json();if(j.task_id!==id)throw new Error('identity');const raw=Number(j.progress||0),p=Number.isFinite(raw)?Math.max(0,Math.min(100,raw)):0;document.getElementById('bar').style.width=p+'%';document.getElementById('progress').setAttribute('aria-valuenow',String(p));const warning={{blocked:'Yayın durdu',uncertain:'Sonuç doğrulanmalı',failed:'Yükleme tamamlanamadı'}}[j.publication_status];document.getElementById('stage').textContent=warning||j.delivery_label||j.stage_label||'Durum bekleniyor';document.getElementById('delivery-title').textContent=j.delivery_label||'YouTube yükleme durumu';document.getElementById('message').textContent=j.ui_status_message||j.message||'';document.getElementById('delivery-badges').innerHTML=(j.delivery_label?'<span class="state private">'+esc(j.delivery_label)+'</span>':'')+(warning?'<span class="state attention">'+esc(warning)+'</span>':'');const video=j.delivery_video_id;document.getElementById('result').innerHTML=/^[A-Za-z0-9_-]{{11}}$/.test(video||'')?`<a class="btn secondary" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=${{video}}">YouTube’da aç</a>`:'';if(j.state==='FAILURE'||j.state==='SUCCESS')return;setTimeout(poll,3000)}}catch(e){{document.getElementById('message').textContent='Durum geçici olarak alınamadı; mevcut video korunuyor.';setTimeout(poll,5000)}}}}
 poll();</script>'''
-    return _shell(body, title='YouTube yükleme', script=script)
+    return _shell(body, title='YouTube teslimat durumu', script=script + presentation._metrics_script(), extra_css=presentation.METRICS_CSS)
