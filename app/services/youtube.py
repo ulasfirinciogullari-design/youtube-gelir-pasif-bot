@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import json
 from pathlib import Path
+import time
 from typing import Callable
 
 from google.oauth2.credentials import Credentials
@@ -17,6 +19,7 @@ SCOPES = [
 
 PRIVATE_STATUS = 'private'
 UPLOAD_CHUNK_SIZE = 8 * 1024 * 1024
+_CAPTION_NOT_FOUND_DELAYS = (2, 5)
 
 
 def _service(credentials: Credentials):
@@ -216,6 +219,59 @@ def set_video_release_with_credentials(
     return response
 
 
+def _caption_video_not_found(error: Exception) -> bool:
+    """Only an explicit rejected insert can authorize another caption insert."""
+    try:
+        if getattr(error.resp, 'status', None) != 404:
+            return False
+        content = error.content
+        if not isinstance(content, bytes) or not 1 <= len(content) <= 16 * 1024:
+            return False
+
+        def unique_fields(pairs):
+            result = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError('Duplicate caption error field')
+                result[key] = value
+            return result
+
+        def invalid_number(_value):
+            raise ValueError('Invalid caption error value')
+
+        payload = json.loads(content.decode('utf-8'), object_pairs_hook=unique_fields,
+                             parse_constant=invalid_number)
+        detail = payload.get('error') if isinstance(payload, dict) else None
+        reasons = detail.get('errors') if isinstance(detail, dict) else None
+        return bool(
+            isinstance(detail, dict) and type(detail.get('code')) is int and detail['code'] == 404
+            and isinstance(reasons, list) and 1 <= len(reasons) <= 10
+            and all(isinstance(item, dict) and item.get('reason') == 'videoNotFound' for item in reasons)
+        )
+    except Exception:
+        return False
+
+
+def _private_caption_target_exists(youtube, video_id: str) -> bool:
+    """Read the exact target with the same credentials; never alter its status."""
+    try:
+        response = youtube.videos().list(
+            part='status', id=video_id, maxResults=1,
+        ).execute(num_retries=2)
+        items = response.get('items') if isinstance(response, dict) else None
+        if not isinstance(items, list) or len(items) != 1:
+            return False
+        item = items[0]
+        status = item.get('status') if isinstance(item, dict) else None
+        return bool(
+            isinstance(item, dict) and item.get('id') == video_id and isinstance(status, dict)
+            and status.get('privacyStatus') == PRIVATE_STATUS
+            and status.get('uploadStatus') in {'uploaded', 'processed'}
+        )
+    except Exception:
+        return False
+
+
 def upload_caption_with_credentials(
     credentials: Credentials,
     video_id: str,
@@ -230,23 +286,35 @@ def upload_caption_with_credentials(
     path = Path(caption_path)
     if not path.is_file() or path.stat().st_size <= 0:
         raise FileNotFoundError(str(path))
+    from googleapiclient.errors import HttpError
+
     youtube = _service(credentials)
-    return youtube.captions().insert(
-        part='snippet',
-        body={
-            'snippet': {
-                'videoId': video_id,
-                'language': str(language or 'tr')[:12],
-                'name': str(name or f'{(language or "tr").upper()} captions')[:150],
-                'isDraft': False,
-            }
-        },
-        media_body=MediaFileUpload(
-            str(path),
-            mimetype='application/octet-stream',
-            resumable=False,
-        ),
-    ).execute(num_retries=2)
+    for attempt in range(len(_CAPTION_NOT_FOUND_DELAYS) + 1):
+        try:
+            return youtube.captions().insert(
+                part='snippet',
+                body={
+                    'snippet': {
+                        'videoId': video_id,
+                        'language': str(language or 'tr')[:12],
+                        'name': str(name or f'{(language or "tr").upper()} captions')[:150],
+                        'isDraft': False,
+                    }
+                },
+                media_body=MediaFileUpload(
+                    str(path),
+                    mimetype='application/octet-stream',
+                    resumable=False,
+                ),
+            ).execute(num_retries=2)
+        except HttpError as exc:
+            if (attempt == len(_CAPTION_NOT_FOUND_DELAYS) or not _caption_video_not_found(exc)
+                    or not _private_caption_target_exists(youtube, video_id)):
+                raise
+            # API documents videoNotFound, not a propagation guarantee. A
+            # short delay is our bounded inference only after an independent
+            # read proves this same uploaded/processed private target exists.
+            time.sleep(_CAPTION_NOT_FOUND_DELAYS[attempt])
 
 
 def upload_video(

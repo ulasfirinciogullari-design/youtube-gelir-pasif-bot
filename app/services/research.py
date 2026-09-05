@@ -8,6 +8,9 @@ from app.services.gemini_generation import (
     generate_gemini_json,
 )
 from app.services.director import (
+    _HUMAN_CURIOSITY_RULE,
+    _documentary_broll_writer_rule,
+    _documentary_explanatory_coda_rule,
     _explicit_scene_count_from_brief,
     _story_brief_for_qc,
 )
@@ -258,20 +261,49 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
         f'Reference URL: {reference_url}\nAnalyze only its structural rhythm, hook pattern and information architecture. Do not copy wording, branding, signature devices or protected creative expression.'
         if reference_url else 'No reference video was supplied.'
     )
+    documentary = style.strip().casefold() == 'documentary'
+    documentary_rules = (
+        '\n'.join((
+            _documentary_broll_writer_rule(style),
+            _documentary_explanatory_coda_rule(style),
+            _HUMAN_CURIOSITY_RULE,
+            'Unless Topic explicitly requires otherwise, the beat after the '
+            'hook must begin answering the established curiosity, not ask '
+            'the same question again.',
+        ))
+        if documentary else ''
+    )
+    physical_payoff_scope = (
+        'Outside the active sourced documentary explanatory coda: '
+        if documentary else ''
+    )
+    physical_stock_scope = (
+        'Except for an exactly sourced fact or comparison allowed by the '
+        'active documentary B-roll or explanatory-coda contract: '
+        if documentary else ''
+    )
+    central_reveal = 'central sourced answer' if documentary else 'central causal reveal'
+    central_claim = 'central sourced answer' if documentary else 'central causal claim'
+    stock_query_meaning = (
+        'honestly illustrate the exact supported subject under the active '
+        'documentary B-roll contract, or literally visualize the narration '
+        'when that contract does not apply'
+        if documentary else 'literally visualize the exact narration'
+    )
     if mode == 'preview' and duration_minutes <= 0.6:
         preview_ai_routing_note = (
             '- EXPLICIT USER-BRIEF OVERRIDE: explicit numbered scene beats, route assignments and continuity constraints in Topic override generic story-shaping heuristics below. Follow them exactly and do not merge or move a required beat merely to prefer one mechanism scene.\n'
-            '- SHORT-PREVIEW STORY CONTRACT: first narrow the broad topic to ONE everyday human situation, ONE central curiosity or problem, '
+            f'- SHORT-PREVIEW STORY CONTRACT: {physical_payoff_scope}first narrow the broad topic to ONE everyday human situation, ONE central curiosity or problem, '
             'ONE recurring person or object, ONE technical reveal and ONE visible everyday benefit. Do not make a sampler, listicle or montage of unrelated facts.\n'
             '- Treat technical mechanisms mentioned elsewhere in this prompt only as conditional visual-validation examples, never as an idea menu or checklist. '
             'At most one mechanism family may drive this 30-second story.\n'
             '- Unless Topic explicitly assigns a multi-scene causal demonstration, contain the chosen hard mechanism and its complete causal explanation inside ONE corresponding AI scene. '
             'Never merge, split, repeat or move explicit numbered beats from Topic.\n'
-            '- Every scene with ai_prompt set to null must narrate only one literal, realistically filmable subject and action that one ordinary stock clip can visibly show. '
+            f'- {physical_stock_scope}Every scene with ai_prompt set to null must narrate only one literal, realistically filmable subject and action that one ordinary stock clip can visibly show. '
             'It must never recap, compare or recombine several mechanisms or abstract claims.\n'
-            '- Make the penultimate action and closing payoff two consecutive visible beats by the same person or object, seconds apart in the SAME named micro-location '
+            f'- {physical_payoff_scope}Make the penultimate action and closing payoff two consecutive visible beats by the same person or object, seconds apart in the SAME named micro-location '
             '(the same counter, table, desk, doorway or room). Repeat that location anchor in both scenes and both query sets; no exit, travel, new room or later-time jump.\n'
-            '- Before returning, audit each ai_prompt-null scene against its English stock queries. All named subjects, actions and context must realistically coexist '
+            f'- {physical_stock_scope}Before returning, audit each ai_prompt-null scene against its English stock queries. All named subjects, actions and context must realistically coexist '
             'in one commonly available stock clip; otherwise rewrite that scene and its queries.\n'
             '- Treat ai_prompt as free fallback metadata, not a promise to generate. Give a precise fallback ai_prompt to any scene whose exact stock coverage is uncertain; '
             'the worker will rank current stock quality and submit at most three paid generations. Fewer AI scenes are preferable when literal stock proves the story.\n'
@@ -317,6 +349,7 @@ Editorial style: {STYLE_DIRECTIONS.get(style, STYLE_DIRECTIONS['documentary'])}
 Pacing: {PACE_DIRECTIONS.get(pace, PACE_DIRECTIONS['balanced'])}
 Visual mix: {visual_mix}
 {reference_note}
+{documentary_rules}
 
 HARD NARRATION BUDGET: {min_words}-{max_words} total spoken words; aim for {target_words}. Never exceed {max_words}.
 {scene_budget_note}
@@ -331,25 +364,25 @@ narration, visual_queries, ai_prompt.
 
 sources must contain 2-5 objects, each with exactly:
 url, evidence.
-evidence is one concise paraphrased sentence from that URL that directly supports the story's central causal reveal.
+evidence is one concise paraphrased sentence from that URL that directly supports the story's {central_reveal}.
 
 STORY RULES:
 - Topic is the authoritative production contract. Explicit scene counts, numbered beats, routes, visible attributes, continuity anchors and forbidden elements override generic heuristics in this prompt.
 - Write ONE coherent story, not a pile of facts or a numbered list.
-- For a short preview, silently define one sentence that states: a person or familiar object wants something, meets one obstacle, learns one cause, and receives one visible benefit. Every scene must serve that sentence.
+- {physical_payoff_scope}For a short preview, silently define one sentence that states: a person or familiar object wants something, meets one obstacle, learns one cause, and receives one visible benefit. Every scene must serve that sentence.
 - A broad topic is not an angle. Narrow it to the strongest useful or surprising human question; discard unrelated research facts even when they are individually interesting.
 - Every scene must continue, explain, contrast, escalate or pay off the previous scene.
 - Hook immediately. No greeting, channel intro or filler.
-- The final scene must resolve the central curiosity through a visible human action and leave a memorable payoff, not merely a closing thought.
+- {physical_payoff_scope}The final scene must resolve the central curiosity through a visible human action and leave a memorable payoff, not merely a closing thought.
 - Spoken {language_name} must sound like an excellent human narrator: concise, deliberate punctuation, varied sentence length and natural bridges.
 - For Turkish short previews, standalone OLED, GPS and QR are allowed only with a natural Turkish noun because the voice layer normalizes them. Never attach Turkish suffixes directly to abbreviations, and never speak raw Wi-Fi or Reed-Solomon. Prefer OLED ekran, GPS sinyali, QR kodu, kablosuz ağ or hata düzeltme yöntemi. Technical English remains allowed in visual_queries and ai_prompt.
 - For Turkish, reject translated noun stacks, inverted word order and phrases like “siyah yerde”, “hücresel zamanlama tamamlar konumu” or “okunur yine kolayca”.
 - The complete narration must remain inside {min_words}-{max_words} words.
 - Each scene carries one complete idea that can live under one strong hero visual.
-- A stock-only scene may not summarize several earlier mechanisms or invisible abstractions; it must describe one subject performing one visible action in one ordinary location.
+- {physical_stock_scope}A stock-only scene may not summarize several earlier mechanisms or invisible abstractions; it must describe one subject performing one visible action in one ordinary location.
 
 VISUAL DIRECTING RULES:
-- Give every scene 2-3 DISTINCT English search phrases that literally visualize the exact narration.
+- Give every scene 2-3 DISTINCT English search phrases that {stock_query_meaning}.
 - Search phrases must name concrete visible subjects, actions, mechanisms, demonstrations, locations or close details.
 - Reject generic typing, office workers, skylines, random phones, abstract charts or vague futuristic imagery unless literally required.
 - Vary shot grammar across the video: establishing, macro, detail, human interaction, physical demonstration, infrastructure and controlled camera motion.
@@ -367,7 +400,7 @@ FACT RULES:
 - Do not invent claims or statistics.
 - Do not copy source wording.
 - sources must be evidence records from pages actually used, never a bare URL list.
-- Every evidence sentence must directly support the central causal claim; omit interesting but unused sources.
+- Every evidence sentence must directly support the {central_claim}; omit interesting but unused sources.
 '''
     if provider == 'gemini':
         generated = generate_gemini_json(
