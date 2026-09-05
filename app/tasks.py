@@ -1471,12 +1471,41 @@ def _synthesize_voice_candidate(
     *,
     start_attempt: int = 0,
     language: str | None = None,
+    voice_replacement_request: dict | None = None,
 ) -> dict:
     """Use bounded new seeds for synthesis defects without rerunning the job."""
+    replacement_options = {}
+    maximum_attempts = MAX_AUDIO_GENERATION_ATTEMPTS
+    if voice_replacement_request is not None:
+        if start_attempt != 0 or target_seconds != 30 or language != 'tr':
+            raise FinalAudioQualityError('Voice replacement requires one initial Turkish short take')
+        from app.services.voice_replacement import acquire_voice_replacement_attempt
+        from app.services.voice_replacement_diagnostic import persist_raw_voice_replacement
+
+        def reserve_replacement(voice_id):
+            reservation = acquire_voice_replacement_attempt(
+                task_id, voice_replacement_request['source_task_id'],
+                voice_replacement_request['audio_sha256'], voice_replacement_request['spec'],
+                voice_id=voice_id,
+            )
+            if (not isinstance(reservation, dict) or reservation.get('model_id') != 'eleven_multilingual_v2'
+                    or type(reservation.get('max_attempts')) is not int or reservation['max_attempts'] != 1):
+                raise FinalAudioQualityError('Voice replacement reservation could not be verified')
+
+        def preserve_raw_replacement(audio):
+            pointer = persist_raw_voice_replacement(task_id, audio)
+            update_job(task_id, voice_replacement_raw_audio=pointer)
+
+        replacement_options = {
+            'profile_override': 'turkish_multilingual_v2',
+            'before_paid_request': reserve_replacement,
+            'raw_audio_sink': preserve_raw_replacement,
+        }
+        maximum_attempts = 1
     quality_errors: list[dict] = []
     for generation_attempt in range(
         max(0, int(start_attempt)),
-        MAX_AUDIO_GENERATION_ATTEMPTS,
+        maximum_attempts,
     ):
         attempt_task_id = (
             task_id
@@ -1490,6 +1519,7 @@ def _synthesize_voice_candidate(
                 target_seconds,
                 generation_attempt=generation_attempt,
                 language=language,
+                **replacement_options,
             )
         except VoiceScriptFitError as exc:
             raise FinalAudioQualityError(
@@ -1530,7 +1560,7 @@ def _synthesize_voice_candidate(
                         'Long-form voice scene retry budget was exhausted '
                         'before paid media'
                     ) from None
-                if generation_attempt < MAX_AUDIO_GENERATION_ATTEMPTS - 1:
+                if generation_attempt < maximum_attempts - 1:
                     time.sleep(
                         voice_http_retry_delay_seconds(
                             exc,
@@ -1569,7 +1599,7 @@ def _synthesize_voice_candidate(
         'Voice synthesis quality rejected before paid media: '
         + json.dumps(
             {
-                'generation_attempts': MAX_AUDIO_GENERATION_ATTEMPTS,
+                'generation_attempts': maximum_attempts,
                 'quality_errors': quality_errors,
             },
             ensure_ascii=False,
@@ -3822,7 +3852,45 @@ def _prepare_saved_voice_retry(
     if source.get('audio_pause_repair'):
         candidate['voice_result']['_internal_pause_repair_attempted'] = True
         update_job(task_id, audio_pause_repair=source['audio_pause_repair'])
-    return {'package': reviewed, 'voice_result': candidate['voice_result']}
+    if source.get('voice_replacement'):
+        update_job(task_id, voice_replacement=source['voice_replacement'])
+    return {'package': reviewed, 'voice_result': candidate['voice_result'],
+            'source_audio_sha256': candidate.get('audio_sha256')}
+
+
+def _prepare_voice_replacement_request(task_id: str, source_task_id: str,
+                                       spec: dict, saved_voice_retry: dict | None) -> dict:
+    """Validate the private authorization after exact saved-story/audio checks."""
+    from app.services.voice_replacement import get_voice_replacement_policy
+
+    try:
+        if not isinstance(saved_voice_retry, dict):
+            raise ValueError('Saved source candidate is required')
+        audio_sha256 = saved_voice_retry.get('source_audio_sha256')
+        policy = get_voice_replacement_policy(task_id, source_task_id, audio_sha256, spec)
+        if (policy.get('model_id') != 'eleven_multilingual_v2'
+                or type(policy.get('max_attempts')) is not int or policy['max_attempts'] != 1):
+            raise ValueError('Unexpected voice replacement policy')
+        update_job(task_id, voice_candidate_reuse=None, voice_replacement=policy)
+        return {'source_task_id': source_task_id, 'audio_sha256': audio_sha256, 'spec': dict(spec)}
+    except Exception:
+        raise FinalAudioQualityError('Voice replacement authorization could not be verified') from None
+
+
+def _require_voice_replacement_checkpoint(task_id: str, voice_result: dict) -> None:
+    """A paid replacement must be durably recoverable before any later work."""
+    from app.services.studio_state import get_job
+
+    try:
+        job = get_job(task_id)
+        checkpoint = job.get('audio_candidate_checkpoint') if isinstance(job, dict) else None
+        if (not isinstance(checkpoint, dict) or job.get('audio_candidate_checkpoint_error')
+                or checkpoint.get('status') != 'unapproved_candidate'
+                or checkpoint.get('qa_approved') is not False or checkpoint.get('requires_full_qa') is not True
+                or checkpoint.get('audio_sha256') != _audio_qa_fingerprint(voice_result['path'])):
+            raise ValueError('Replacement candidate was not persisted')
+    except Exception:
+        raise FinalAudioQualityError('Voice replacement candidate checkpoint could not be verified') from None
 
 
 def _fit_saved_voice_for_retry(voice_result: dict, target_seconds: float) -> dict:
@@ -3956,6 +4024,7 @@ def run_video_pipeline(
     approved_package: dict | None = None,
     retry_dispatch_source_id: str | None = None,
     curated_stock_manifest: dict | None = None,
+    voice_replacement_source_id: str | None = None,
 ):
     language = normalize_pipeline_language(language)
     task_id = self.request.id
@@ -4002,6 +4071,17 @@ def run_video_pipeline(
                 work,
             )
             if approved_package is None else None
+        )
+        if voice_replacement_source_id is not None and (
+            voice_replacement_source_id != retry_dispatch_source_id
+            or approved_package is not None or curated_stock_manifest is not None
+        ):
+            raise FinalAudioQualityError('Voice replacement requires its exact claimed source')
+        voice_replacement_request = (
+            _prepare_voice_replacement_request(
+                task_id, voice_replacement_source_id,
+                _task_spec(topic, duration_minutes, language, channel_id, options), saved_voice_retry,
+            ) if voice_replacement_source_id is not None else None
         )
         package = (
             saved_voice_retry['package'] if saved_voice_retry
@@ -4102,11 +4182,17 @@ def run_video_pipeline(
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
             if saved_voice_retry:
-                voice_future = stage_pool.submit(
-                    _fit_saved_voice_for_retry,
-                    saved_voice_retry['voice_result'],
-                    duration_minutes * 60,
-                )
+                if voice_replacement_request:
+                    voice_future = stage_pool.submit(
+                        _synthesize_voice_candidate, scenes, task_id, duration_minutes * 60,
+                        language=language, voice_replacement_request=voice_replacement_request,
+                    )
+                else:
+                    voice_future = stage_pool.submit(
+                        _fit_saved_voice_for_retry,
+                        saved_voice_retry['voice_result'],
+                        duration_minutes * 60,
+                    )
             elif recovered_voice:
                 voice_future = stage_pool.submit(
                     _download_recovered_voice_candidate,
@@ -4134,6 +4220,8 @@ def run_video_pipeline(
             )
             voice_result = voice_future.result()
             _checkpoint_audio_candidate(task_id, package, voice_result)
+            if voice_replacement_request:
+                _require_voice_replacement_checkpoint(task_id, voice_result)
             broll_result = broll_future.result()
 
         voice_path = voice_result['path']
@@ -4162,7 +4250,7 @@ def run_video_pipeline(
         )
         short_form_prosody_required = bool(
             0 < duration_minutes * 60 <= 40
-            and str(language or '').lower().startswith('tr')
+            and str(language or '').lower() in {'tr', 'en'}
         )
         audio_prosody_qc: dict = {
             'available': False,
@@ -4216,13 +4304,14 @@ def run_video_pipeline(
                         'duration_after_fit'
                     ),
                     transcript_evidence=audio_qc,
+                    **({'language': 'en'} if language == 'en' else {}),
                 )
             elif transcript_passed and duration_passed:
                 audio_prosody_qc = {
                     'available': True,
                     'pass': True,
                     'provider': None,
-                    'reason': 'not_applicable_non_turkish_or_long_form',
+                    'reason': 'not_applicable_language_or_long_form',
                     'scores': None,
                     'issues': [],
                     'summary': None,
@@ -4274,6 +4363,7 @@ def run_video_pipeline(
                 not audio_pause_repair_attempted
                 and not recovered_voice
                 and short_form_prosody_required
+                and language == 'tr'
                 and transcript_passed and duration_passed
                 and audio_prosody_qc.get('available') is True
                 and audio_prosody_qc.get('pass') is False

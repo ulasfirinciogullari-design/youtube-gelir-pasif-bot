@@ -258,8 +258,11 @@ def synthesize_voice_with_timestamps(
     speed: float = 1.01,
     seed: int | None = None,
     turkish_short_preview: bool = False,
+    raw_audio_sink=None,
 ) -> tuple[bytes, dict]:
     """Synthesize one continuous take with character-level source timing."""
+    if raw_audio_sink is not None and not callable(raw_audio_sink):
+        raise VoiceQualityError('Raw voice diagnostic sink is invalid')
     response = httpx.post(
         f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}/with-timestamps',
         headers={**_headers(), 'Accept': 'application/json', 'Content-Type': 'application/json'},
@@ -287,10 +290,6 @@ def synthesize_voice_with_timestamps(
     alignment = payload.get('alignment')
     if not isinstance(encoded_audio, str) or not encoded_audio:
         raise VoiceQualityError('ElevenLabs timestamp response is missing audio')
-    if not isinstance(alignment, dict):
-        raise VoiceQualityError(
-            'ElevenLabs timestamp response is missing source alignment'
-        )
     try:
         audio = base64.b64decode(encoded_audio, validate=True)
     except (ValueError, binascii.Error) as exc:
@@ -299,6 +298,14 @@ def synthesize_voice_with_timestamps(
         ) from exc
     if not audio:
         raise VoiceQualityError('ElevenLabs timestamp response contains empty audio')
+    if raw_audio_sink is not None:
+        # Preserve the sole paid response before alignment, editing or fitting
+        # can reject it. This archive is not a reusable or approved candidate.
+        raw_audio_sink(audio)
+    if not isinstance(alignment, dict):
+        raise VoiceQualityError(
+            'ElevenLabs timestamp response is missing source alignment'
+        )
     return audio, alignment
 
 
@@ -869,7 +876,21 @@ def synthesize_scene_sequence(
     *,
     generation_attempt: int = 0,
     language: str | None = None,
+    profile_override: str | None = None,
+    before_paid_request=None,
+    raw_audio_sink=None,
 ) -> dict:
+    if profile_override is not None and (
+        profile_override != 'turkish_multilingual_v2'
+        or target_seconds != 30
+        or str(language or '').strip().casefold() != 'tr'
+        or type(generation_attempt) is not int or generation_attempt != 0
+        or not callable(before_paid_request)
+        or not callable(raw_audio_sink)
+    ):
+        raise VoiceScriptFitError('Voice replacement profile requires one reserved Turkish short take')
+    if (before_paid_request is not None or raw_audio_sink is not None) and profile_override is None:
+        raise VoiceScriptFitError('Voice replacement reservation requires an explicit profile')
     selected = _selected_voice_or_raise()
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
@@ -877,7 +898,7 @@ def synthesize_scene_sequence(
     turkish_short_preview = _use_turkish_short_preview_profile(
         language,
         target_seconds,
-    )
+    ) and profile_override is None
     spoken = [
         normalize_turkish_tts(
             text,
@@ -908,6 +929,12 @@ def synthesize_scene_sequence(
         }
         if turkish_short_preview:
             timestamp_options['turkish_short_preview'] = True
+        if raw_audio_sink is not None:
+            timestamp_options['raw_audio_sink'] = raw_audio_sink
+        if before_paid_request is not None:
+            # Durable, one-shot reservation immediately precedes the only
+            # synthesis request. An uncertain result must not be retried.
+            before_paid_request(voice_id)
         audio, alignment = synthesize_voice_with_timestamps(
             narration,
             voice_id,
