@@ -13,7 +13,7 @@ from app.services.google_cloud_test_users import (
     discard_test_user_authorization_state,
     is_cloud_test_user_state,
 )
-from app.services.youtube_auth import STATE_TTL_SECONDS
+from app.services.youtube_auth import STATE_TTL_SECONDS, YouTubeAuthError
 from app.youtube_routes import (
     COOKIE_NAME,
     OAUTH_BINDING_COOKIE,
@@ -74,7 +74,7 @@ def google_cloud_test_user_start(
             target_email,
             browser_binding,
         )
-    except GoogleCloudTestUserError as exc:
+    except YouTubeAuthError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     response = RedirectResponse(authorization_url, status_code=302)
     response.headers['Cache-Control'] = 'no-store'
@@ -122,7 +122,7 @@ def google_cloud_or_youtube_callback(
             state,
             cloud_binding or '',
         )
-    except GoogleCloudTestUserError as exc:
+    except YouTubeAuthError as exc:
         message = escape(str(exc) or 'Google test kullanıcısı eklenemedi')
         return _delete_cloud_binding_cookie(_shell(
             f'<div class="hero"><h1>Düzeltme tamamlanamadı</h1></div><div class="notice">{message}</div><div class="actions"><a class="btn secondary" href="/studio/youtube/fix-access">Tekrar dene</a><a class="btn secondary" href="/studio/youtube">YouTube’a dön</a></div>',
