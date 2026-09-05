@@ -39,10 +39,25 @@ dili, üretim aralığı ve yayın davranışı saklanır. Üretim ve otomatik y
 varsayılan olarak kapalıdır. İkisi etkinleştirilince ilk konu hemen sıraya
 girer; zamanlayıcı her dakika kontrol eder. Varsayılan aralık 24 saattir.
 
-Zamanlayıcı 30 saniyelik dikey üretim başlatır. Aynı anda yalnızca bir
-otomatik iş aktiftir; yeni iş için render ve YouTube tesliminin doğrulanmış
-başarısı beklenir. Kalite/yayın hatası kanalı durdurur. Belirsiz teslim
-sonuçları yeniden ücretli üretim veya tekrar yükleme başlatmaz.
+Zamanlayıcı konu kapsamına göre biçim seçer: tek merak sorusu için 30 saniyelik
+dikey Shorts, açıkça kapsamlı anlatım veya çok boyutlu karşılaştırma için
+3 dakikalık yatay video. Karar ve gerekçesi görev kaydına sabitlenir;
+bu seçim için ek model çağrısı yapılmaz. Belirsiz kapsam kısa kalır.
+
+Aynı anda en fazla iki farklı kanalda otomatik iş aktiftir. Aynı kanalın
+sonraki bölümü için render ve YouTube tesliminin doğrulanmış başarısı
+beklenir; seri sırası korunur. `video-worker` varsayılan iki yürütme yuvasıyla
+çalışır. Kalite/yayın hatası ilgili kanalı durdurur. Belirsiz teslim sonuçları
+yeniden ücretli üretim veya tekrar yükleme başlatmaz.
+
+Başlık, açıklama, ilgili etiketler ve seri numarası yayın planına kaydedilir.
+Profil `public` seçilmişse kalite ve varlık kontrollerini geçen ilk gizli
+yükleme otomatik herkese açılır. Profil değişikliği geçmişte tamamlanmış
+gizli yüklemeleri geriye dönük yayımlamaz. Gerçekçi AI sahnesi veya eksik
+üretim kanıtı varsa YouTube'un sentetik içerik bildirimi korunur; yalnızca
+senaryo yazımında AI kullanılması gerçekçi görüntü üretimiyle eş tutulmaz.
+Bu önlemler ban veya para kazanma garantisi değildir. Tekrarlanan düşük
+katkılı içerik, yanıltıcı başlık/etiket, taklit ve telif ihlali üretilmemelidir.
 
 Konu listesi en fazla 60 girdidir ve tüketilince durur; otomatik trend
 araştırması, konu listesini yenileme ve Analytics geri beslemesi bu

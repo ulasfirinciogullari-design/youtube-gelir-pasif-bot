@@ -420,6 +420,34 @@ def _truncate_title(base: str, suffix: str) -> str:
     return f'{_one_line(base, room)} {suffix}'[:100]
 
 
+def contains_synthetic_media(source_job: dict[str, Any]) -> bool:
+    """Disclose generated visuals, including paid-zero recovered scenes.
+
+    Without a reviewed realism exemption, generated scenes are conservatively
+    disclosed. Only complete server-render stock-only provenance permits False;
+    prose/title assistance alone is not a generated visual. Legacy or malformed
+    provenance never silently becomes an assertion that no disclosure is needed.
+    """
+    result = source_job.get('result') if isinstance(source_job, dict) else None
+    if not isinstance(result, dict):
+        return True
+    metadata = result.get('publish_metadata')
+    for values in (result, metadata if isinstance(metadata, dict) else {}):
+        if ('contains_synthetic_media' in values
+                and values['contains_synthetic_media'] is not False):
+            return True
+    if type(result.get('runway_scenes_used')) is not int or result['runway_scenes_used'] != 0:
+        return True
+    for field in (
+        'video_generation_provider_records',
+        'runway_success_scene_indices',
+        'final_runway_repair_scene_indices',
+    ):
+        if not isinstance(result.get(field), list) or result[field]:
+            return True
+    return False
+
+
 def build_publish_plan(
     source_task_id: str,
     source_job: dict[str, Any],
@@ -493,19 +521,27 @@ def build_publish_plan(
     footer = str(profile.get('description_footer') or '').strip()
     if footer:
         description += '\n\n' + footer
-    hashtags = _hashtags(
-        [*_items(raw_metadata.get('hashtags')), *_items(profile.get('hashtags'))]
-    )
+    hashtag_values = [*_items(raw_metadata.get('hashtags')), *_items(profile.get('hashtags'))]
+    if spec.get('format') == 'shorts':
+        hashtag_values = ['Shorts', *hashtag_values]
+    elif spec.get('format') == 'landscape':
+        hashtag_values = [value for value in hashtag_values
+                          if str(value).strip().lstrip('#').casefold() != 'shorts']
+    hashtags = _hashtags(hashtag_values)
     if hashtags:
         description += '\n\n' + ' '.join(f'#{value}' for value in hashtags)
     description = description[:5000]
 
+    tag_values = [
+        *_items(raw_metadata.get('tags') or raw_metadata.get('keywords')),
+        *_items(profile.get('default_tags')),
+        *_items(profile.get('topic_keywords')),
+    ]
+    if spec.get('format') == 'landscape':
+        tag_values = [value for value in tag_values
+                      if str(value).strip().lstrip('#').casefold() != 'shorts']
     tags = _string_list(
-        [
-            *_items(raw_metadata.get('tags') or raw_metadata.get('keywords')),
-            *_items(profile.get('default_tags')),
-            *_items(profile.get('topic_keywords')),
-        ],
+        tag_values,
         maximum_items=30,
         maximum_length=100,
     )
@@ -532,6 +568,7 @@ def build_publish_plan(
         'hashtags': hashtags,
         'category_id': str(profile.get('category_id') or '28'),
         'default_language': language,
+        'contains_synthetic_media': contains_synthetic_media(source_job),
         'thumbnail_key': _storage_key(
             raw_metadata.get('thumbnail_key') or result.get('thumbnail_key')
         ),
@@ -572,6 +609,12 @@ def validate_publish_plan(value: dict[str, Any]) -> dict[str, Any]:
         raise MetadataValidationError('Publish category is invalid')
     plan['category_id'] = category_id
     plan['default_language'] = _language(plan.get('default_language') or 'tr')
+    # Old immutable plans predate disclosure metadata: preserve compatibility
+    # without treating their missing field as a non-synthetic attestation.
+    disclosure = plan.get('contains_synthetic_media', True)
+    if type(disclosure) is not bool:
+        raise MetadataValidationError('Synthetic media disclosure is invalid')
+    plan['contains_synthetic_media'] = disclosure
     plan['thumbnail_key'] = _storage_key(plan.get('thumbnail_key'))
     release_mode = str(plan.get('release_mode') or 'private')
     if release_mode not in {'private', 'public', 'scheduled'}:
