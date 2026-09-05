@@ -971,19 +971,28 @@ _MANUAL_QA_CLEAR_VISUAL_FIELDS = (
 _TRANSIENT_PEXELS_HTTP_STATUS_CODES = {408, 425, 429}
 
 
+def _persisted_paid_create_budget(
+    task_id: str,
+    cap: int,
+    *,
+    reserve: bool = False,
+) -> dict[str, int]:
+    try:
+        return paid_create_budget_state(task_id, cap, reserve=reserve)
+    except Exception as exc:
+        raise FinalVisualQualityError(
+            'Short-preview paid-create budget could not be reserved or '
+            'verified; no new generation was submitted'
+        ) from exc
+
+
 def _persisted_paid_create_slots(
     task_id: str,
     cap: int,
     *,
     reserve: bool = False,
 ) -> int:
-    try:
-        return paid_create_budget_state(task_id, cap, reserve=reserve)['used']
-    except Exception as exc:
-        raise FinalVisualQualityError(
-            'Short-preview paid-create budget could not be reserved or '
-            'verified; no new generation was submitted'
-        ) from exc
+    return _persisted_paid_create_budget(task_id, cap, reserve=reserve)['used']
 
 
 def _reserve_paid_create_slot(
@@ -3682,9 +3691,11 @@ def run_video_pipeline(
 
     try:
         if total_paid_create_cap is not None:
-            runway_attempts = _persisted_paid_create_slots(
+            paid_create_budget = _persisted_paid_create_budget(
                 task_id, total_paid_create_cap,
             )
+            total_paid_create_cap = paid_create_budget['cap']
+            runway_attempts = paid_create_budget['used']
         if retry_dispatch_source_id and approved_package is None:
             set_stage(self, task_id, 'director_qc', 14, 'Kaydedilmiş anlatım güncel hikâye denetiminden geçiriliyor.')
         saved_voice_retry = (

@@ -42,7 +42,7 @@ def _load_state(client):
 def _load_task_budget(state):
     source = ROOT / 'app' / 'tasks.py'
     names = {
-        '_persisted_paid_create_slots', '_reserve_paid_create_slot',
+        '_persisted_paid_create_budget', '_persisted_paid_create_slots', '_reserve_paid_create_slot',
         '_validate_paid_create_allocation',
     }
     definitions = [
