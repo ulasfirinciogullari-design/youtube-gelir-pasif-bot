@@ -18,7 +18,7 @@ RESCUE = next(
 
 
 def _namespace():
-    names = {'_validate_paid_create_allocation', '_record_prepaid_visual_diagnostics', '_visual_path'}
+    names = {'_validate_paid_create_allocation', '_record_prepaid_visual_diagnostics', '_visual_path', '_prepaid_stock_rescue_queries', '_prepaid_stock_rescue_candidates'}
     functions = [node for node in TREE.body if isinstance(node, ast.FunctionDef) and node.name in names]
     namespace = {
         'math': math, 'json': json, 'update_job': Mock(),
@@ -35,7 +35,7 @@ def _rescue_context(**overrides):
         'duration_minutes': 0.5, 'total_paid_create_cap': 2,
         'scene_repair_recovery': False, 'provider_outage_stock_scenes': set(),
         'stock_quality_fallback_scenes': set(), 'runway_submission_cap': 2,
-        'ranked_runway_candidates': [{'scene_index': index} for index in range(3)],
+        'ranked_runway_candidates': [{'scene_index': index, 'stock_score': score} for index, score in enumerate((20, 30, 70))],
     }
     context.update(overrides)
     return context
@@ -75,7 +75,7 @@ def test_only_existing_preview_or_capped_production_short_enters_budget_rescue(o
 
 
 @pytest.mark.parametrize('rescued_score, accepted', [(92, True), (70, False)])
-def test_production_overflow_rescue_must_pass_unchanged_quality_and_cap(rescued_score, accepted):
+def test_production_stock_rescue_must_pass_unchanged_quality_and_cap(rescued_score, accepted):
     namespace = _namespace()
     namespace.update(_rescue_context())
     sources = [{'url': 'https://www.bep.gov/currency', 'evidence': 'Verified currency composition.'}]
@@ -87,15 +87,19 @@ def test_production_overflow_rescue_must_pass_unchanged_quality_and_cap(rescued_
         'seen_ids': set(), 'work': Path('/tmp/test-work'), 'credits': [],
         'pexels_orientation': 'portrait', 'visual_replacements': [],
         '_retry_bad_scene': Mock(return_value=[{'path': 'new-stock.mp4'}]),
-        'review_scene_visuals': Mock(return_value={'reviews': [{'scene_index': 0, 'score': rescued_score}]}),
+        'review_scene_visuals': Mock(return_value={'reviews': [
+            {'scene_index': 0, 'score': 20},
+            {'scene_index': 1, 'score': rescued_score},
+            {'scene_index': 2, 'score': 70},
+        ]}),
         '_apply_visual_review': Mock(), 'set_stage': Mock(),
         'self': object(), 'task_id': 'test-task', 'topic': 'Currency paper',
-        'package': {'sources': sources},
+        'package': {'sources': sources}, 'quality_threshold': 86,
     })
 
     def rank():
         return {}, [
-            {'scene_index': index}
+            {'scene_index': index, 'stock_score': reviews[index]['score']}
             for index in range(4)
             if not visuals[index] or reviews[index]['score'] < 86
         ]
@@ -103,14 +107,18 @@ def test_production_overflow_rescue_must_pass_unchanged_quality_and_cap(rescued_
     namespace['rank_runway_candidates'] = Mock(side_effect=rank)
     exec(compile(ast.Module(body=[RESCUE], type_ignores=[]), '<rescue>', 'exec'), namespace)
     retry = namespace['_retry_bad_scene']
-    retry.assert_called_once()
-    assert retry.call_args.args[0] == 2
+    assert retry.call_count == 3
+    assert [call.args[0] for call in retry.call_args_list] == [0, 1, 2]
+    assert 3 not in [call.args[0] for call in retry.call_args_list]
     assert retry.call_args.kwargs['allow_short_fallback'] is False
     assert retry.call_args.kwargs['minimum_duration'] == pytest.approx(5.15)
     reviewer = namespace['review_scene_visuals']
     reviewer.assert_called_once()
     assert reviewer.call_args.kwargs['content_style'] == 'documentary'
     assert reviewer.call_args.kwargs['evidence_sources'] is sources
+    # A provisionally reserved scene can pass while the old overflow stays bad.
+    assert reviews[1]['score'] == rescued_score
+    assert reviews[2]['score'] == 70
     ranked = namespace['ranked_runway_candidates']
     assert len(ranked) == (2 if accepted else 3)
     if accepted:
