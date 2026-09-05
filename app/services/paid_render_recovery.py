@@ -448,20 +448,48 @@ def _load_original_receipt(pointer: dict) -> dict:
     return receipt
 
 
-def _continuation_keys(origin_id: str, leaf_id: str) -> tuple[str, ...]:
-    return tuple(prefix + task_id for task_id in (origin_id, leaf_id) for prefix in (
+_MAX_CONTINUATION_EDGES = 8
+
+
+def _continuation_lineage(origin_id: str, leaf_id: str, client) -> tuple[str, ...]:
+    """Discover only canonical parent links to the trusted original receipt."""
+    _canonical_id(origin_id)
+    current = _canonical_id(leaf_id)
+    reverse = []
+    for _ in range(_MAX_CONTINUATION_EDGES + 1):
+        if current in reverse:
+            raise ValueError('Continuation lineage contains a cycle')
+        reverse.append(current)
+        if current == origin_id:
+            if len(reverse) < 2:
+                raise ValueError('Continuation source is not distinct')
+            return tuple(reversed(reverse))
+        job = json.loads(client.get(studio_state.JOB_PREFIX + current) or 'null')
+        if not isinstance(job, dict) or job.get('task_id') != current:
+            raise ValueError('Continuation lineage is unavailable')
+        current = _canonical_id(job.get('parent_id'))
+    raise ValueError('Continuation lineage exceeds its bound')
+
+
+def _continuation_keys(lineage: tuple[str, ...]) -> tuple[str, ...]:
+    return tuple(prefix + task_id for task_id in lineage for prefix in (
         studio_state.JOB_PREFIX, studio_state.PAID_CREATE_BUDGET_PREFIX,
         studio_state.RETRY_DISPATCH_PREFIX, studio_state.REPAIR_CHECKPOINT_PREFIX,
         studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX,
-    )) + (studio_state.RETRY_CHILD_CLAIM_PREFIX + leaf_id, studio_state.RETRY_CHILD_EXECUTION_PREFIX + leaf_id)
+    )) + tuple(prefix + task_id for task_id in lineage[1:] for prefix in (
+        studio_state.RETRY_CHILD_CLAIM_PREFIX, studio_state.RETRY_CHILD_EXECUTION_PREFIX,
+    ))
 
 
-def _continuation_state(origin_id: str, leaf_id: str, client) -> tuple[dict, dict, str]:
-    """One direct consumed repair only; never reopen or walk an arbitrary tree."""
-    if origin_id == leaf_id:
-        raise ValueError('Continuation source is not distinct')
+def _continuation_state(origin_id: str, leaf_id: str, client, *, lineage=None) -> tuple[dict, dict, str]:
+    """Validate every consumed repair edge; never reopen an ancestor claim."""
+    discovered = _continuation_lineage(origin_id, leaf_id, client)
+    if lineage is not None and discovered != lineage:
+        raise ValueError('Continuation lineage changed after discovery')
+    lineage = discovered
     jobs, budgets = [], []
-    for task_id, expected_used in ((origin_id, 1), (leaf_id, 0)):
+    for position, task_id in enumerate(lineage):
+        expected_used = 1 if position == 0 else 0
         job = json.loads(client.get(studio_state.JOB_PREFIX + task_id) or 'null')
         if (
             not isinstance(job, dict) or job.get('task_id') != task_id or job.get('kind') != 'render'
@@ -481,7 +509,7 @@ def _continuation_state(origin_id: str, leaf_id: str, client) -> tuple[dict, dic
             raise ValueError('Continuation spending differs')
         jobs.append(job)
         budgets.append(budget)
-    origin, leaf = jobs
+    origin, leaf = jobs[0], jobs[-1]
     spec = origin.get('spec')
     if (
         not isinstance(spec, dict) or leaf.get('spec') != spec or spec.get('mode') != 'production'
@@ -489,10 +517,6 @@ def _continuation_state(origin_id: str, leaf_id: str, client) -> tuple[dict, dic
         or spec['duration_minutes'] != 0.5 or spec.get('music') != 'off'
         or not isinstance(spec.get('topic'), str) or not spec['topic'].strip()
         or not isinstance(spec.get('language'), str) or not spec['language'].strip()
-        or budgets[0]['cap'] != budgets[1]['cap']
-        or leaf.get('parent_id') != origin_id or origin.get('retry_child_task_id') != leaf_id
-        or origin.get('repair_claimed') is not True or origin.get('retry_claimed') is not True
-        or origin.get('repair_available') is not False
         or any(leaf.get(key) for key in ('retry_child_task_id', 'retry_claimed', 'repair_claimed', 'repair_available'))
     ):
         raise ValueError('Continuation frozen lineage differs')
@@ -501,25 +525,38 @@ def _continuation_state(origin_id: str, leaf_id: str, client) -> tuple[dict, dic
         for key in ('production_channel_id', 'production_connection_id', 'production_profile_revision')
     ):
         raise ValueError('Frozen publication binding is missing')
-    if client.exists(studio_state.REPAIR_CHECKPOINT_PREFIX + origin_id, *(
+    if client.exists(*(studio_state.REPAIR_CHECKPOINT_PREFIX + task_id for task_id in lineage[:-1]), *(
         prefix + leaf_id for prefix in (studio_state.RETRY_DISPATCH_PREFIX, studio_state.REPAIR_CHECKPOINT_PREFIX, studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX)
     )):
         raise ValueError('Continuation already has an outgoing claim')
-    dispatch = client.hgetall(studio_state.RETRY_DISPATCH_PREFIX + origin_id)
-    child_claim = client.hgetall(studio_state.RETRY_CHILD_CLAIM_PREFIX + leaf_id)
-    claim = client.get(studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX + origin_id)
-    execution = client.get(studio_state.RETRY_CHILD_EXECUTION_PREFIX + leaf_id)
-    token = dispatch.get('token')
-    if (
-        not isinstance(token, str) or not 16 <= len(token) <= 256
-        or dispatch.get('mode') != 'repair' or dispatch.get('state') != 'dispatched'
-        or dispatch.get('child_task_id') != leaf_id or child_claim.get('source_task_id') != origin_id
-        or child_claim.get('token') != token or claim != token or execution != token
-    ):
-        raise ValueError('Consumed repair execution is unproven')
+    edges = []
+    for position, (parent, child) in enumerate(zip(jobs, jobs[1:]), start=1):
+        parent_id, child_id = parent['task_id'], child['task_id']
+        if (
+            child.get('spec') != spec or budgets[position]['cap'] != budgets[0]['cap']
+            or child.get('parent_id') != parent_id or parent.get('retry_child_task_id') != child_id
+            or parent.get('repair_claimed') is not True or parent.get('retry_claimed') is not True
+            or parent.get('repair_available') is not False
+            or child['audio_candidate_checkpoint']['audio_sha256'] != origin['audio_candidate_checkpoint']['audio_sha256']
+            or child['audio_candidate_checkpoint']['package_sha256'] != leaf['audio_candidate_checkpoint']['package_sha256']
+        ):
+            raise ValueError('Continuation frozen lineage differs')
+        dispatch = client.hgetall(studio_state.RETRY_DISPATCH_PREFIX + parent_id)
+        child_claim = client.hgetall(studio_state.RETRY_CHILD_CLAIM_PREFIX + child_id)
+        claim = client.get(studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX + parent_id)
+        execution = client.get(studio_state.RETRY_CHILD_EXECUTION_PREFIX + child_id)
+        token = dispatch.get('token')
+        if (
+            not isinstance(token, str) or not 16 <= len(token) <= 256
+            or dispatch.get('mode') != 'repair' or dispatch.get('state') != 'dispatched'
+            or dispatch.get('child_task_id') != child_id or child_claim.get('source_task_id') != parent_id
+            or child_claim.get('token') != token or claim != token or execution != token
+        ):
+            raise ValueError('Consumed repair execution is unproven')
+        edges.append({'dispatch': dispatch, 'child_claim': child_claim, 'claim': claim, 'execution': execution})
     fingerprint = _digest({
         'jobs': [{key: job.get(key) for key in (*_SOURCE_FIELDS, 'parent_id')} for job in jobs],
-        'budgets': budgets, 'dispatch': dispatch, 'child_claim': child_claim, 'claim': claim, 'execution': execution,
+        'budgets': budgets, 'edges': edges,
     })
     return origin, leaf, fingerprint
 
@@ -559,7 +596,7 @@ def _validate_continuation_package(original: dict, origin: dict, leaf: dict):
 
 
 def prepare_paid_recovery_continuation(leaf_task_id: str, original_receipt_pointer: dict, work_dir: str | Path) -> dict:
-    """Prepare the directly failed zero-create child, not its consumed parent.
+    """Prepare a failed zero-create leaf, never any consumed ancestor.
 
     No provider generation, new story review, Storage write or state mutation.
     The original still-current attestation and paired voice/media are retained;
@@ -618,9 +655,11 @@ def publish_paid_recovery_continuation(checkpoint: dict) -> dict:
             raise ValueError('Invalid continuation proof')
         original = _load_original_receipt(proof['original_receipt_pointer'])
         origin_id, leaf_id = original['source_task_id'], _canonical_id(checkpoint['source_task_id'])
-        with studio_state._client().pipeline() as transaction:
-            transaction.watch(*_continuation_keys(origin_id, leaf_id))
-            origin, leaf, fingerprint = _continuation_state(origin_id, leaf_id, transaction)
+        client = studio_state._client()
+        lineage = _continuation_lineage(origin_id, leaf_id, client)
+        with client.pipeline() as transaction:
+            transaction.watch(*_continuation_keys(lineage))
+            origin, leaf, fingerprint = _continuation_state(origin_id, leaf_id, transaction, lineage=lineage)
             _validate_continuation_package(original, origin, leaf)
             expected = deepcopy(original)
             expected.update(
