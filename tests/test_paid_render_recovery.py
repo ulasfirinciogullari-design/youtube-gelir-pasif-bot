@@ -575,3 +575,156 @@ def test_continuation_real_watch_race_never_reopens_or_overwrites_claims(continu
     assert case.redis.get(studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX+SOURCE)
     if target == 'checkpoint': assert case.redis.get(studio_state.REPAIR_CHECKPOINT_PREFIX+CHILD) == 'racing-claim'
     else: assert not case.redis.exists(studio_state.REPAIR_CHECKPOINT_PREFIX+CHILD)
+
+
+def _add_failed_descendant(f, parent_id, child_id):
+    """Use real consumed Studio claims, not fabricated lineage tokens."""
+    case = f.case
+    checkpoint_key = studio_state.REPAIR_CHECKPOINT_PREFIX + parent_id
+    if not case.redis.exists(checkpoint_key):
+        fixture_checkpoint = {**deepcopy(f.original), 'source_task_id':parent_id}
+        case.redis.set(checkpoint_key, json.dumps(fixture_checkpoint))
+    token = 'consumed-repair-token-' + child_id
+    assert studio_state.claim_retry_dispatch(parent_id, child_id, token, allow_repair=True)['claimed']
+    assert studio_state.mark_retry_dispatch(parent_id, token, 'dispatched')
+    studio_state.create_job(child_id, deepcopy(f.leaf['spec']), kind='render', parent_id=parent_id)
+    assert studio_state.acquire_retry_child_execution(child_id, parent_id)
+    path = case.work.parent.parent / f'{child_id}.mp3'
+    path.write_bytes(case.audio)
+    voice = {**f.original['approved_package']['_recovered_voice'], 'path':str(path)}
+    candidate = audio_checkpoint.persist_audio_candidate_checkpoint(child_id, f.original['approved_package'], voice)
+    leaf = studio_state.get_job(child_id)
+    leaf.update(candidate, state='FAILURE', stage='failed', failure_stage='final_visual_qc',
+                result={}, error='Stock evidence rejected', paid_create_slots_used=0, preview_total_paid_create_cap=4)
+    case.redis.set(studio_state.JOB_PREFIX+child_id, json.dumps(leaf))
+    case.redis.hset(studio_state.PAID_CREATE_BUDGET_PREFIX+child_id, mapping={'cap':'4','used':'0'})
+    return leaf
+
+
+@pytest.fixture
+def second_continuation(continuation):
+    f = continuation
+    # First continuation is actually prepared, published, consumed and executed.
+    recovery.publish_paid_recovery_continuation(_continue(f))
+    f.leaf = _add_failed_descendant(f, CHILD, GRANDCHILD)
+    f.work = f.case.work.parent / f'{OTHER_CHILD}_attempt_0'
+    f.work.mkdir()
+    return f
+
+
+def _continue_second(f):
+    return recovery.prepare_paid_recovery_continuation(GRANDCHILD, f.pointer, f.work)
+
+
+def test_two_consumed_repairs_preserve_all_ancestors_and_single_use_leaf(second_continuation):
+    f, case = second_continuation, second_continuation.case
+    before, puts, calls = _redis_snapshot(case), list(case.puts), case.review.call_count
+    checkpoint = _continue_second(f)
+    assert _redis_snapshot(case) == before
+    assert case.puts == puts and case.review.call_count == calls
+    assert checkpoint['source_task_id'] == GRANDCHILD
+    assert checkpoint['approved_package'] == f.original['approved_package']
+    assert recovery.publish_paid_recovery_continuation(checkpoint)['source_task_id'] == GRANDCHILD
+    allowed = {studio_state.JOB_PREFIX+GRANDCHILD, studio_state.REPAIR_CHECKPOINT_PREFIX+GRANDCHILD}
+    after = _redis_snapshot(case)
+    assert {key:value for key,value in before.items() if key not in allowed} == {key:value for key,value in after.items() if key not in allowed}
+    dispatch = studio_state.claim_retry_dispatch(GRANDCHILD, OTHER_CHILD, 'third-retry-token-long-enough', allow_repair=True)
+    assert dispatch['claimed'] and dispatch['checkpoint'] == checkpoint
+    assert not studio_state.claim_retry_dispatch(GRANDCHILD, PREP, 'duplicate-token-long-enough', allow_repair=True)['claimed']
+    assert case.redis.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX+SOURCE)['used'] == '1'
+    assert case.redis.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX+CHILD)['used'] == '0'
+    assert case.redis.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX+GRANDCHILD)['used'] == '0'
+
+
+@pytest.mark.parametrize('damage', ['mid_paid','mid_spec','mid_state','mid_audio','mid_package','mid_reciprocal',
+    'first_claim','second_claim','second_dispatch','second_child_claim','second_execution','mid_checkpoint','cycle','missing_parent'])
+def test_every_intermediate_edge_and_zero_paid_ledger_is_required(second_continuation, damage):
+    f, case = second_continuation, second_continuation.case
+    middle = studio_state.get_job(CHILD)
+    if damage == 'mid_paid':
+        middle['paid_create_slots_used'] = 1
+        case.redis.hset(studio_state.PAID_CREATE_BUDGET_PREFIX+CHILD, 'used', '1')
+    if damage == 'mid_spec': middle['spec']['production_profile_revision'] = 'other'
+    if damage == 'mid_state': middle['state'] = 'SUCCESS'
+    if damage == 'mid_audio': middle['audio_candidate_checkpoint']['audio_sha256'] = 'f'*64
+    if damage == 'mid_package': middle['audio_candidate_checkpoint']['package_sha256'] = 'e'*64
+    if damage == 'mid_reciprocal': middle['retry_child_task_id'] = PREP
+    if damage == 'cycle': middle['parent_id'] = GRANDCHILD
+    if damage == 'missing_parent': middle['parent_id'] = PREP
+    case.redis.set(studio_state.JOB_PREFIX+CHILD, json.dumps(middle))
+    if damage == 'first_claim': case.redis.set(studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX+SOURCE, 'wrong')
+    if damage == 'second_claim': case.redis.set(studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX+CHILD, 'wrong')
+    if damage == 'second_dispatch': case.redis.hset(studio_state.RETRY_DISPATCH_PREFIX+CHILD, 'token', 'wrong')
+    if damage == 'second_child_claim': case.redis.hset(studio_state.RETRY_CHILD_CLAIM_PREFIX+GRANDCHILD, 'source_task_id', SOURCE)
+    if damage == 'second_execution': case.redis.delete(studio_state.RETRY_CHILD_EXECUTION_PREFIX+GRANDCHILD)
+    if damage == 'mid_checkpoint': case.redis.set(studio_state.REPAIR_CHECKPOINT_PREFIX+CHILD, 'unconsumed')
+    before, puts = _redis_snapshot(case), list(case.puts)
+    with pytest.raises(recovery.PaidRenderRecoveryError): _continue_second(f)
+    assert _redis_snapshot(case) == before and case.puts == puts
+
+
+@pytest.mark.parametrize('target', ['job','ledger','dispatch','repair_claim','inbound_claim','execution','checkpoint'])
+def test_every_intermediate_record_is_watched(second_continuation, monkeypatch, target):
+    f, case = second_continuation, second_continuation.case
+    checkpoint = _continue_second(f)
+    other = fakeredis.FakeRedis(server=case.server, decode_responses=True)
+    original_pipeline = case.redis.pipeline
+    calls = []
+    def pipeline(*args, **kwargs):
+        pipe = original_pipeline(*args, **kwargs)
+        original_execute = pipe.execute
+        def execute():
+            calls.append(True)
+            if target == 'job':
+                job = json.loads(other.get(studio_state.JOB_PREFIX+CHILD))
+                job['error'] = 'raced'
+                other.set(studio_state.JOB_PREFIX+CHILD, json.dumps(job))
+            elif target in {'ledger','dispatch','inbound_claim'}:
+                prefix, field = {'ledger':(studio_state.PAID_CREATE_BUDGET_PREFIX,'used'),
+                    'dispatch':(studio_state.RETRY_DISPATCH_PREFIX,'token'),
+                    'inbound_claim':(studio_state.RETRY_CHILD_CLAIM_PREFIX,'token')}[target]
+                other.hset(prefix+CHILD, field, 'raced')
+            else:
+                prefix = {'repair_claim':studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX,
+                    'execution':studio_state.RETRY_CHILD_EXECUTION_PREFIX,'checkpoint':studio_state.REPAIR_CHECKPOINT_PREFIX}[target]
+                other.set(prefix+CHILD, 'raced')
+            return original_execute()
+        pipe.execute = execute
+        return pipe
+    monkeypatch.setattr(case.redis, 'pipeline', pipeline)
+    with pytest.raises(recovery.PaidRenderRecoveryError): recovery.publish_paid_recovery_continuation(checkpoint)
+    assert calls == [True]
+    assert not studio_state.get_job(GRANDCHILD).get('repair_available')
+    assert not case.redis.exists(studio_state.REPAIR_CHECKPOINT_PREFIX+GRANDCHILD)
+
+
+def test_changed_lineage_between_discovery_and_watch_is_rejected(second_continuation, monkeypatch):
+    f, case = second_continuation, second_continuation.case
+    checkpoint = _continue_second(f)
+    original_pipeline = case.redis.pipeline
+    def pipeline(*args, **kwargs):
+        middle = studio_state.get_job(CHILD)
+        middle['parent_id'] = PREP
+        case.redis.set(studio_state.JOB_PREFIX+CHILD, json.dumps(middle))
+        return original_pipeline(*args, **kwargs)
+    monkeypatch.setattr(case.redis, 'pipeline', pipeline)
+    with pytest.raises(recovery.PaidRenderRecoveryError): recovery.publish_paid_recovery_continuation(checkpoint)
+    assert not studio_state.get_job(GRANDCHILD).get('repair_available')
+    assert not case.redis.exists(studio_state.REPAIR_CHECKPOINT_PREFIX+GRANDCHILD)
+
+
+@pytest.mark.parametrize('edges', [8,9])
+def test_continuation_discovery_is_bounded_to_eight_consumed_edges(continuation, edges):
+    f, case = continuation, continuation.case
+    parent = CHILD
+    for index in range(2, edges+1):
+        child = f'77777777-7777-4777-8777-{index:012d}'
+        _add_failed_descendant(f, parent, child)
+        parent = child
+    before = _redis_snapshot(case)
+    if edges == 8:
+        assert len(recovery._continuation_lineage(SOURCE, parent, case.redis)) == 9
+        assert recovery._continuation_state(SOURCE, parent, case.redis)[1]['task_id'] == parent
+    else:
+        with pytest.raises(ValueError): recovery._continuation_state(SOURCE, parent, case.redis)
+    assert _redis_snapshot(case) == before
