@@ -470,6 +470,20 @@ def build_publish_plan(
             raise MetadataValidationError('Approved publish description is unavailable') from None
     if not title or not description:
         raise MetadataValidationError('Publish title and description are required')
+    metadata_tags = _items(raw_metadata.get('tags') or raw_metadata.get('keywords'))
+    metadata_hashtags = _items(raw_metadata.get('hashtags'))
+    missing_tags = not _string_list(metadata_tags, maximum_items=30, maximum_length=100)
+    missing_hashtags = not _hashtags(metadata_hashtags)
+    if missing_tags or missing_hashtags:
+        from app.services.youtube_discovery_metadata import topic_metadata_fallback
+
+        # Use authored content before series/citations/footer are added. Never
+        # extract keywords from the task brief or mutate an existing frozen plan.
+        fallback = topic_metadata_fallback(title, description)
+        if missing_tags:
+            metadata_tags = fallback['tags']
+        if missing_hashtags:
+            metadata_hashtags = fallback['hashtags']
     try:
         language = _language(
             result.get('language') or spec.get('language')
@@ -521,7 +535,7 @@ def build_publish_plan(
     footer = str(profile.get('description_footer') or '').strip()
     if footer:
         description += '\n\n' + footer
-    hashtag_values = [*_items(raw_metadata.get('hashtags')), *_items(profile.get('hashtags'))]
+    hashtag_values = [*metadata_hashtags, *_items(profile.get('hashtags'))]
     if spec.get('format') == 'shorts':
         hashtag_values = ['Shorts', *hashtag_values]
     elif spec.get('format') == 'landscape':
@@ -533,7 +547,7 @@ def build_publish_plan(
     description = description[:5000]
 
     tag_values = [
-        *_items(raw_metadata.get('tags') or raw_metadata.get('keywords')),
+        *metadata_tags,
         *_items(profile.get('default_tags')),
         *_items(profile.get('topic_keywords')),
     ]

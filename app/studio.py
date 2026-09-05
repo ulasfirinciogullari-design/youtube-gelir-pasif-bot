@@ -74,6 +74,8 @@ STAGE_LABELS = {
     'approved_plan': 'Onaylı storyboard',
     'voice_and_visuals': 'Ses ve görsel toplama',
     'audio_qc': 'Ses ve telaffuz denetimi',
+    'audio_qc_retry': 'Anlatıcı sesini iyileştirme',
+    'audio_pause_recheck': 'Düzeltilen sesin son kontrolü',
     'visual_qc': 'Görsel kalite kontrolü',
     'audio_design': 'Müzik ve ses tasarımı',
     'ai_scene': 'Özgün AI sahneleri',

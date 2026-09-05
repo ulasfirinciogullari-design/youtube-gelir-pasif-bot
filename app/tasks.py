@@ -3817,6 +3817,11 @@ def _prepare_saved_voice_retry(
         'new_tts_requests': 0,
         'requires_full_qa': True,
     })
+    # A claimed child may reuse the edited candidate, but never repeatedly
+    # shorten the same narration through successive failed-job retries.
+    if source.get('audio_pause_repair'):
+        candidate['voice_result']['_internal_pause_repair_attempted'] = True
+        update_job(task_id, audio_pause_repair=source['audio_pause_repair'])
     return {'package': reviewed, 'voice_result': candidate['voice_result']}
 
 
@@ -3830,6 +3835,37 @@ def _fit_saved_voice_for_retry(voice_result: dict, target_seconds: float) -> dic
             'Saved narration cannot be fitted within natural tempo limits; '
             'no replacement voice was generated'
         ) from None
+
+
+def _audio_qa_fingerprint(audio_path: str | Path) -> str:
+    """Bind the forthcoming timing review to a bounded, actual audio file."""
+    checksum = hashlib.sha256()
+    total = 0
+    with Path(audio_path).open('rb') as stream:
+        while chunk := stream.read(64 * 1024):
+            total += len(chunk)
+            if total > 14 * 1024 * 1024:
+                raise FinalAudioQualityError('Short narration exceeds its review size limit')
+            checksum.update(chunk)
+    if total < 1024:
+        raise FinalAudioQualityError('Short narration is incomplete')
+    return checksum.hexdigest()
+
+
+def _repair_voice_internal_pauses(voice_result: dict, target_seconds: float,
+                                 audio_qc: dict, prosody_qc: dict) -> dict | None:
+    """Optional local edit, never an approval or a provider retry."""
+    from app.services.audio_pause_repair import repair_internal_pauses
+
+    try:
+        return repair_internal_pauses(
+            voice_result, target_seconds,
+            transcript_evidence=audio_qc, prosody_review=prosody_qc,
+        )
+    except Exception:
+        # An unavailable edit keeps the failed review and the existing bounded
+        # generation policy. No raw file/provider diagnostics reach the UI.
+        return None
 
 
 @celery.task(
@@ -4138,13 +4174,24 @@ def run_video_pipeline(
             'summary': None,
         }
         audio_duration_qc: dict = {}
+        audio_pause_repair_attempted = bool(
+            voice_result.get('_internal_pause_repair_attempted')
+            or voice_result.get('internal_pause_repair')
+        )
         while True:
+            audio_review_sha256 = (
+                _audio_qa_fingerprint(voice_path)
+                if short_form_prosody_required and not recovered_voice
+                else None
+            )
             audio_qc = _verify_audio_narration_with_retry(
                 voice_path,
                 expected_spoken_narration,
                 language=language,
                 task_id=task_id,
             )
+            if audio_review_sha256:
+                audio_qc = {**audio_qc, 'audio_sha256': audio_review_sha256}
             audio_duration_qc = _short_preview_voice_duration_qc(
                 voice_result,
                 duration_minutes * 60,
@@ -4223,6 +4270,33 @@ def run_video_pipeline(
                     audio_generation_attempts - 1
                 )
                 break
+            if (
+                not audio_pause_repair_attempted
+                and not recovered_voice
+                and short_form_prosody_required
+                and transcript_passed and duration_passed
+                and audio_prosody_qc.get('available') is True
+                and audio_prosody_qc.get('pass') is False
+            ):
+                audio_pause_repair_attempted = True
+                repaired_voice = _repair_voice_internal_pauses(
+                    voice_result, duration_minutes * 60,
+                    audio_qc, audio_prosody_qc,
+                )
+                if repaired_voice is not None:
+                    voice_result = repaired_voice
+                    voice_path = voice_result['path']
+                    scene_durations = voice_result['scene_durations']
+                    update_job(task_id, audio_pause_repair=voice_result['internal_pause_repair'])
+                    _checkpoint_audio_candidate(task_id, package, voice_result)
+                    set_stage(
+                        self, task_id, 'audio_pause_recheck', 38,
+                        'Kanıtlanmış cümle içi boşluklar düzeltildi; aynı ses yeniden denetleniyor.',
+                    )
+                    # The edit invalidates every old timestamp and verdict.
+                    # Re-run the complete STT, duration and prosody gates on
+                    # the edited file; do not spend a fresh synthesis seed.
+                    continue
             audio_mismatch = (
                 audio_qc.get('mismatch_details')
                 if isinstance(audio_qc.get('mismatch_details'), dict)
@@ -6640,6 +6714,7 @@ def run_video_pipeline(
                 selected_audio_generation_attempt
             ),
             'audio_qc_retry_history': audio_qc_retry_history,
+            'audio_pause_repair': voice_result.get('internal_pause_repair'),
             'audio_synthesis_quality_errors': (
                 audio_synthesis_quality_errors
             ),
@@ -6804,6 +6879,7 @@ def run_video_pipeline(
                 selected_audio_generation_attempt
             ),
             'audio_qc_retry_history': audio_qc_retry_history,
+            'audio_pause_repair': voice_result.get('internal_pause_repair'),
             'audio_synthesis_quality_errors': (
                 audio_synthesis_quality_errors
             ),
