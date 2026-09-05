@@ -65,13 +65,21 @@ def _run_revalidation(initial, response, *, sources=True, authored_ai=False):
     return namespace, selected
 
 
-@pytest.mark.parametrize('score, reason', [
-    (68, 'Shows a hand presenting a US dollar bill clearly matching the narration context.'),
-    (70, 'Macro close-up shows hands holding and examining US dollar bills as stated.'),
-    (72, 'Clearly shows pure raw white cotton bolls and fibers in hand.'),
+@pytest.mark.parametrize('score, reason, retry_queries', [
+    (68, 'Shows a hand presenting a US dollar bill clearly matching the narration context.', []),
+    (70, 'Macro close-up shows hands holding and examining US dollar bills as stated.', []),
+    (72, 'Clearly shows pure raw white cotton bolls and fibers in hand.', []),
+    (68, 'Correctly shows hands holding and handling US dollar bills as stated in the narration.', [
+        'person pulling US dollar bills from wallet',
+        'close up hands taking dollar bills from wallet',
+    ]),
+    (70, 'Macro shot clearly displays the distinctive surface texture and paper blend of genuine US currency.', [
+        'macro close up authentic us dollar paper texture',
+        'extreme close up genuine dollar banknote paper fibers',
+    ]),
 ])
-def test_observed_positive_soft_rejections_trigger_only_independent_exact_media_review(score, reason):
-    initial = _review(score, reason)
+def test_observed_positive_soft_rejections_trigger_only_independent_exact_media_review(score, reason, retry_queries):
+    initial = _review(score, reason, retry_queries=retry_queries)
     second = _review(92, 'The exact material and narration match.', best_candidate_index=0)
     namespace, selected = _run_revalidation(initial, {'reviews': [second]})
     reviewer = namespace['review_scene_visuals']
@@ -91,8 +99,12 @@ def test_observed_positive_soft_rejections_trigger_only_independent_exact_media_
 
 
 @pytest.mark.parametrize('override', [
-    {'retry_queries': ['raw cotton bolls in hand']},
     {'retry_queries': None},
+    {'retry_queries': 'not a list'},
+    {'retry_queries': [None]},
+    {'retry_queries': ['']},
+    {'retry_queries': ['x' * 241]},
+    {'retry_queries': ['one', 'two', 'three']},
     {'evidence_gate_passed': False},
     {'identity_gate_passed': False},
     {'editorial_gate_passed': False},
@@ -101,10 +113,18 @@ def test_observed_positive_soft_rejections_trigger_only_independent_exact_media_
     {'score': '68'},
     {'reason': 'Clearly shows cotton but the texture is blurry.'},
     {'reason': 'Clearly shows cotton; dull lighting needs improvement.'},
+    {'reason': 'Shows a close-up woven flax/linen fabric texture matching the narration topic, though not raw unspun fibers.'},
     {'reason': 'This is merely an adequate candidate.'},
 ])
-def test_retry_queries_criticism_hard_gates_or_intentional_caps_do_not_trigger_soft_review(override):
+def test_malformed_queries_criticism_hard_gates_or_intentional_caps_do_not_trigger_soft_review(override):
     namespace, _ = _run_revalidation(_review(**override), {'reviews': []})
+    namespace['review_scene_visuals'].assert_not_called()
+
+
+def test_missing_query_list_does_not_trigger_soft_review():
+    initial = _review()
+    del initial['retry_queries']
+    namespace, _ = _run_revalidation(initial, {'reviews': []})
     namespace['review_scene_visuals'].assert_not_called()
 
 
@@ -117,6 +137,7 @@ def test_new_trigger_stays_in_source_backed_documentary_stock_scope(sources, aut
 @pytest.mark.parametrize('response', [
     {'reviews': []},
     {'reviews': [_review(best_candidate_index=0)]},
+    {'reviews': [_review(best_candidate_index=0, retry_queries=['another dollar close up'])]},
 ])
 def test_missing_or_still_conflicting_second_verdict_is_not_promoted(response):
     namespace, _ = _run_revalidation(_review(), response)
@@ -148,3 +169,21 @@ def test_second_hard_failure_cannot_be_overridden_by_initial_positive_prose():
 def test_existing_hard_conflict_path_does_not_require_new_documentary_scope():
     namespace, _ = _run_revalidation(_review(40), {'reviews': []}, sources=False)
     namespace['review_scene_visuals'].assert_called_once()
+
+
+def test_soft_rejection_prompt_requires_visible_shortfall_not_stock_bias_or_queries_alone():
+    function = next(
+        node for node in TREE.body
+        if isinstance(node, ast.FunctionDef) and node.name == 'review_scene_visuals'
+    )
+    content = next(
+        node for node in function.body
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name)
+        and node.target.id == 'content'
+    )
+    instruction = ast.literal_eval(content.value)[0]['text']
+    assert 'Any soft rejection from 41 through 85 must name a concrete visible shortfall' in instruction
+    assert 'replacement search queries alone do not explain a failure' in instruction
+    assert 'an entirely positive reason cannot justify rejection merely because the footage is stock or B-roll' in instruction
+    assert 'A score of 86+ means the chosen moment is genuinely publishable' in instruction
+    assert 'If a hard gate forces the score to 40 or lower, explicitly name that failed gate' in instruction

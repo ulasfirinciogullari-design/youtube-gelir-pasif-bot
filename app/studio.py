@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from html import escape
+import hashlib
 import json
 import math
 import re
 import secrets
 import unicodedata
 from typing import Any
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from celery.result import AsyncResult
 from fastapi import APIRouter, Cookie, Form, HTTPException, Request
@@ -141,6 +142,83 @@ def _valid_token(value: str | None) -> bool:
 def _require_auth(cookie_token: str | None) -> None:
     if not _valid_token(cookie_token):
         raise HTTPException(status_code=401, detail='Studio oturumu gerekli')
+
+
+_VISUAL_DIAGNOSTIC_MAX_BYTES = 4 * 1024 * 1024
+_VISUAL_DIAGNOSTIC_HEADERS = {
+    'Content-Security-Policy': "sandbox; default-src 'none'; img-src data:; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+    'Cache-Control': 'private, no-store',
+    'Referrer-Policy': 'no-referrer',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+}
+
+
+def _visual_diagnostic_pointer(job: dict, task_id: str | None = None) -> tuple[str, str] | None:
+    """Accept only this job's explicitly non-reusable, content-addressed HTML."""
+    if not isinstance(job, dict):
+        return None
+    actual_id = job.get('task_id')
+    try:
+        if (not isinstance(actual_id, str) or str(UUID(actual_id)) != actual_id
+                or (task_id is not None and task_id != actual_id)):
+            return None
+    except (ValueError, AttributeError):
+        return None
+    pointer = job.get('visual_allocation_checkpoint')
+    if (not isinstance(pointer, dict) or type(pointer.get('version')) is not int
+            or pointer['version'] != 1 or pointer.get('status') != 'diagnostic_only'
+            or pointer.get('qa_approved') is not False or pointer.get('reusable_for_render') is not False):
+        return None
+    digest = pointer.get('html_sha256')
+    if not isinstance(digest, str) or re.fullmatch(r'[0-9a-f]{64}', digest) is None:
+        return None
+    expected_key = f'diagnostics/visual_allocation/{actual_id}/review-{digest}.html'
+    if pointer.get('html_key') != expected_key:
+        return None
+    return expected_key, digest
+
+
+def _visual_diagnostics_link(job: dict) -> str:
+    if _visual_diagnostic_pointer(job) is None:
+        return ''
+    return (
+        f'<a class="btn secondary small" href="/studio/job/{job["task_id"]}/visual-diagnostics" '
+        'target="_blank" rel="noopener noreferrer">Sahne tanısını aç</a>'
+    )
+
+
+def _read_visual_diagnostic_html(key: str, digest: str) -> bytes:
+    """Read one bounded private object, never sign, redirect, or expose its key."""
+    from app.services.storage import _client
+
+    body = None
+    try:
+        stored = _client().get_object(Bucket=settings.bucket, Key=key)
+        body = stored.get('Body')
+        length = stored.get('ContentLength')
+        content_type = str(stored.get('ContentType') or '').split(';', 1)[0].strip().lower()
+        if (type(length) is not int or not 0 < length <= _VISUAL_DIAGNOSTIC_MAX_BYTES
+                or content_type != 'text/html' or body is None):
+            raise HTTPException(status_code=404, detail='Tanı kaydı bulunamadı', headers=_VISUAL_DIAGNOSTIC_HEADERS)
+        # StreamingBody does not load the object until read; ContentLength is
+        # checked first and the single read itself is capped at four MiB.
+        payload = body.read(_VISUAL_DIAGNOSTIC_MAX_BYTES)
+        if (not isinstance(payload, bytes) or len(payload) != length
+                or hashlib.sha256(payload).hexdigest() != digest):
+            raise HTTPException(status_code=404, detail='Tanı kaydı bulunamadı', headers=_VISUAL_DIAGNOSTIC_HEADERS)
+        payload.decode('utf-8', errors='strict')
+        return payload
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=503, detail='Tanı kaydı şu anda açılamıyor', headers=_VISUAL_DIAGNOSTIC_HEADERS) from None
+    finally:
+        if body is not None:
+            try:
+                body.close()
+            except Exception:
+                pass
 
 
 def _service_statuses() -> list[tuple[str, bool]]:
@@ -755,7 +833,7 @@ def _job_details(job: dict) -> str:
         f'<div class="detail-body">{creative}{error_html}<dl>'
         f'{mode_row}<dt>İş kimliği</dt><dd>{task_id}</dd>'
         f'<dt>İç durum</dt><dd>{internal_state}</dd>'
-        f'<dt>Aşama kodu</dt><dd>{stage}</dd></dl></div></details>'
+        f'<dt>Aşama kodu</dt><dd>{stage}</dd></dl>{_visual_diagnostics_link(job)}</div></details>'
     )
 
 
@@ -1672,7 +1750,7 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
 <div class="progress" id="progress" role="progressbar" aria-label="Üretim ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{progress}" style="margin:14px 0"{progress_hidden}><div class="bar" id="bar" style="width:{progress}%"></div></div>
 <div class="result-action" id="result">{_job_primary_action(record, small=False)}</div>
 <div class="result-media-host" id="result-media"{media_hidden}>{media_panel}</div>
-<details class="technical-details"><summary>Teknik ayrıntılar</summary><div class="technical-body"><div><b>İş kimliği</b><br><code>{escape(task_id)}</code></div><div><b>Aşama kodu</b><br><code id="technical-stage">{escape(stage_code)}</code></div><div id="technical-error-row"{error_hidden}><b>Hata kaydı</b><br><code id="technical-error">{escape(initial_error)}</code></div></div></details>
+<details class="technical-details"><summary>Teknik ayrıntılar</summary><div class="technical-body"><div><b>İş kimliği</b><br><code>{escape(task_id)}</code></div><div><b>Aşama kodu</b><br><code id="technical-stage">{escape(stage_code)}</code></div><div id="technical-error-row"{error_hidden}><b>Hata kaydı</b><br><code id="technical-error">{escape(initial_error)}</code></div>{_visual_diagnostics_link(record)}</div></details>
 </article>
 <nav class="back-links" aria-label="Geri dön"><a href="/studio/history?status={back_status}">Video listesine dön</a><a href="/studio">Yeni video oluştur</a></nav>
 '''
@@ -1704,6 +1782,27 @@ async function poll(){
 poll();
 </script>'''.replace('__TASK_ID__', json.dumps(task_id))
     return _shell(body, active='history', title='Üretim kontrolü', script=script)
+
+
+@router.get('/studio/job/{task_id}/visual-diagnostics', response_class=HTMLResponse)
+def studio_visual_diagnostics(task_id: str, studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    _require_auth(studio_token)
+    # Owner Studio authentication precedes even UUID/job lookup. Possessing
+    # this same-origin URL is never sufficient authority to read the object.
+    try:
+        if str(UUID(task_id)) != task_id:
+            raise ValueError('Noncanonical task ID')
+    except (ValueError, AttributeError):
+        raise HTTPException(status_code=404, detail='Tanı kaydı bulunamadı', headers=_VISUAL_DIAGNOSTIC_HEADERS) from None
+    try:
+        record = get_job(task_id)
+    except Exception:
+        raise HTTPException(status_code=503, detail='Tanı kaydı şu anda açılamıyor', headers=_VISUAL_DIAGNOSTIC_HEADERS) from None
+    pointer = _visual_diagnostic_pointer(record, task_id)
+    if pointer is None:
+        raise HTTPException(status_code=404, detail='Tanı kaydı bulunamadı', headers=_VISUAL_DIAGNOSTIC_HEADERS)
+    payload = _read_visual_diagnostic_html(*pointer)
+    return HTMLResponse(content=payload, headers=_VISUAL_DIAGNOSTIC_HEADERS)
 
 
 @router.get('/studio/api/job/{task_id}')
