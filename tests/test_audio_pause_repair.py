@@ -130,6 +130,9 @@ def test_observed_two_internal_pauses_repair_existing_voice_without_new_tts(cand
     assert audit['source_sha256'] == before
     assert audit['output_sha256'] == _sha(c.path) != before
     assert audit['requires_full_qa'] is True
+    assert audit['targeted_issue_count'] == 2
+    assert audit['untargeted_issue_count'] == 0
+    assert audit['untargeted_issue_codes'] == []
     assert [item['scene_index'] for item in audit['cuts']] == [1, 5]
     for cut, silence, gap in zip(audit['cuts'], c.silences, [(3.8, 5.05), (24.58, 26.08)]):
         assert cut['start_seconds'] >= silence[0] + .06
@@ -163,7 +166,7 @@ def test_observed_two_internal_pauses_repair_existing_voice_without_new_tts(cand
     lambda c: c.review.update(issues=[]),
     lambda c: c.review.update(issues=c.review['issues'] * 2),
     lambda c: c.review['issues'].append(deepcopy(c.review['issues'][0])),
-    lambda c: c.review['issues'][0].update(code='choppy_phrase_grouping'),
+    lambda c: [issue.update(code='choppy_phrase_grouping') for issue in c.review['issues']],
     lambda c: c.review['issues'][0].update(phrase='A phrase not in this narration'),
     lambda c: c.review['issues'][0].update(start_seconds=-1),
     lambda c: c.review['scores'].update(pronunciation=True),
@@ -186,6 +189,59 @@ def test_invalid_or_stale_evidence_never_changes_original(candidate, mutation):
     assert _run(c) is None
     assert c.path.read_bytes() == before
     c.cutter.assert_not_called()
+
+
+def _other_issue():
+    return dict(code='choppy_phrase_grouping', phrase='Kasada ürünün bilgisi okundu.',
+                start_seconds=10.8, end_seconds=15, detail='Phrase delivery is still choppy.')
+
+
+def test_two_grounded_pauses_can_be_edited_without_approving_third_delivery_defect(candidate):
+    c = candidate
+    c.review['issues'].append(_other_issue())
+    original = deepcopy(c.review)
+    result = _run(c)
+    assert result is not None
+    assert c.review == original and c.review['pass'] is False
+    audit = result['internal_pause_repair']
+    assert len(audit['cuts']) == audit['targeted_issue_count'] == 2
+    assert audit['untargeted_issue_count'] == 1
+    assert audit['untargeted_issue_codes'] == ['choppy_phrase_grouping']
+    assert audit['requires_full_qa'] is True
+    assert not {'audio_qc', 'audio_duration_qc', 'audio_prosody_qc'} & result.keys()
+    assert result['spoken_texts'] == c.voice['spoken_texts']
+    assert all(cut['end_seconds'] < 10.8 or cut['start_seconds'] > 15 for cut in audit['cuts'])
+    c.cutter.assert_called_once()
+    c.fitter.assert_called_once()
+
+
+def test_only_other_grounded_delivery_defect_cannot_trigger_a_silence_edit(candidate):
+    candidate.review['issues'] = [_other_issue()]
+    before = candidate.path.read_bytes()
+    assert _run(candidate) is None
+    assert candidate.path.read_bytes() == before
+    candidate.cutter.assert_not_called()
+
+
+@pytest.mark.parametrize('change', [
+    {'phrase': 'Words absent from the source'}, {'code': 'unknown_defect'},
+    {'start_seconds': -1}, {'detail': ''}, {'extra': 'not in the review contract'},
+])
+def test_malformed_or_ungrounded_untargeted_issue_invalidates_the_whole_edit(candidate, change):
+    candidate.review['issues'].append({**_other_issue(), **change})
+    before = candidate.path.read_bytes()
+    assert _run(candidate) is None
+    assert candidate.path.read_bytes() == before
+    candidate.cutter.assert_not_called()
+
+
+def test_partial_defect_repair_still_requires_every_targeted_pause_to_be_proven(candidate, monkeypatch):
+    candidate.review['issues'].append(_other_issue())
+    monkeypatch.setattr(repair, '_silences', lambda *_: [candidate.silences[0]])
+    before = candidate.path.read_bytes()
+    assert _run(candidate) is None
+    assert candidate.path.read_bytes() == before
+    candidate.cutter.assert_not_called()
 
 
 @pytest.mark.parametrize('spoken', ['Olay. 26 Haziran tarihinde oldu.', 'Olay! 26 Haziran tarihinde oldu.',

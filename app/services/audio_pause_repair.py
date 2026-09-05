@@ -211,10 +211,16 @@ def repair_internal_pauses(voice_result: dict, target_seconds: float, *,
         )
         if (not isinstance(prosody_review, dict) or prosody_review.get('available') is not True
                 or normalized is None or normalized['pass'] is not False
-                or not 1 <= len(normalized['issues']) <= 3
-                or any(issue['code'] != 'unnatural_internal_pause' for issue in normalized['issues'])):
+                or not 1 <= len(normalized['issues']) <= 3):
             return None
-        cuts = _planned_cuts(voice, duration, evidence[0], normalized, _silences(path, duration))
+        # Validate every cited defect above before selecting an editable
+        # subset. Other grounded defects remain outstanding for fresh QA;
+        # correcting dead air is never a verdict about phrase delivery.
+        targeted = [issue for issue in normalized['issues'] if issue['code'] == 'unnatural_internal_pause']
+        untargeted = [issue for issue in normalized['issues'] if issue['code'] != 'unnatural_internal_pause']
+        if not targeted:
+            return None
+        cuts = _planned_cuts(voice, duration, evidence[0], {**normalized, 'issues': targeted}, _silences(path, duration))
         removed = sum(cut['removed_seconds'] for cut in cuts)
         expected = duration - removed
         if not _fit_is_bounded(expected, target, prior_rate):
@@ -251,6 +257,8 @@ def repair_internal_pauses(voice_result: dict, target_seconds: float, *,
                 'duration_before_seconds': duration, 'duration_after_cut_seconds': after_cut,
                 'duration_after_seconds': after, 'tempo_rate_before': prior_rate,
                 'tempo_rate_after': repaired['tempo_rate'], 'requires_full_qa': True,
+                'targeted_issue_count': len(targeted), 'untargeted_issue_count': len(untargeted),
+                'untargeted_issue_codes': sorted({issue['code'] for issue in untargeted}),
             }
             repaired['removed_silence_seconds'] = _number(voice_result.get('removed_silence_seconds', 0), zero=True) + removed
             for field in ('audio_qc', 'audio_duration_qc', 'audio_prosody_qc'):

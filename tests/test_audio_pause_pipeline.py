@@ -85,6 +85,23 @@ def test_failed_repaired_voice_stays_failed_without_second_edit_or_new_tts():
     n['_synthesize_voice_candidate'].assert_not_called()
 
 
+def test_other_prosody_defect_cannot_be_approved_by_a_partial_pause_repair():
+    loop, n = _loop()
+    pause = {'code': 'unnatural_internal_pause'}
+    choppy = {'code': 'choppy_phrase_grouping'}
+    n['verify_audio_prosody'].side_effect = [
+        {'available': True, 'pass': False, 'reason': 'unnatural_internal_pause', 'issues': [pause, choppy]},
+        {'available': True, 'pass': False, 'reason': 'choppy_phrase_grouping', 'issues': [choppy]},
+    ]
+    with pytest.raises(QualityError, match='choppy_phrase_grouping'):
+        _run(loop, n)
+    assert n['_verify_audio_narration_with_retry'].call_count == 2
+    n['_repair_voice_internal_pauses'].assert_called_once()
+    n['_synthesize_voice_candidate'].assert_not_called()
+    assert all(not item['prosody']['pass'] for item in n['audio_qc_retry_history'])
+    assert n['audio_qc_retry_history'][0]['prosody']['issues'] == [pause, choppy]
+
+
 def test_unavailable_edit_preserves_failure_without_fake_checkpoint():
     loop, n = _loop(repaired=False)
     with pytest.raises(QualityError):
