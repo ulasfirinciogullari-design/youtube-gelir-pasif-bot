@@ -11,7 +11,8 @@ def render_profile():
     path = Path(__file__).resolve().parents[1] / 'app' / 'youtube_routes.py'
     tree = ast.parse(path.read_text(encoding='utf-8-sig'))
     node = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == '_profile_form')
-    namespace = {'escape': escape, '_production_status_text': lambda *_: 'Planlama bekliyor'}
+    namespace = {'escape': escape, '_production_status_text': lambda *_: 'Planlama bekliyor',
+                 '_produce_now_form': lambda *_: ''}
     exec(compile(ast.Module(body=[node], type_ignores=[]), str(path), 'exec'), namespace)
     return namespace['_profile_form']
 

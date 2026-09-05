@@ -59,6 +59,13 @@ senaryo yazımında AI kullanılması gerçekçi görüntü üretimiyle eş tutu
 Bu önlemler ban veya para kazanma garantisi değildir. Tekrarlanan düşük
 katkılı içerik, yanıltıcı başlık/etiket, taklit ve telif ihlali üretilmemelidir.
 
+Yayın merkezinde kalite onaylı, daha önce gizli yüklenmiş bir videonun
+`Herkese aç` işlemi aynı YouTube video kimliğini kullanır; tekrar yükleme
+yapmaz. Yeni açık yayın yetkisi eski gizli yükleme planından ayrı kaydedilir.
+Belirsiz yayın yanıtı otomatik tekrarlanmaz. `Hemen sıradaki videoyu üret`
+ise yalnız boş ve duraklatılmamış kanalın mevcut sonraki konusunu öne alır;
+konu sırasını sıfırlamaz ve aynı profil sürümündeki tekrarlar yeni iş açmaz.
+
 Konu listesi en fazla 60 girdidir ve tüketilince durur; otomatik trend
 araştırması, konu listesini yenileme ve Analytics geri beslemesi bu
 zamanlayıcının parçası değildir. OAuth izni iptal edilirse veya Google
