@@ -81,13 +81,31 @@ def video_frame_count(path: str | Path) -> int:
         return 0
 
 
+def _video_timeline_duration(path: str | Path) -> float:
+    """Use the picture stream, not a container extended by audio padding."""
+    try:
+        output = subprocess.check_output([
+            'ffprobe', '-v', 'error', '-select_streams', 'v:0',
+            '-show_entries', 'stream=duration',
+            '-of', 'default=noprint_wrappers=1:nokey=1', str(path),
+        ], text=True).strip()
+        duration = float(output)
+        if not math.isfinite(duration) or duration <= 0:
+            raise ValueError('Invalid video timeline')
+        return duration
+    except (OSError, subprocess.CalledProcessError, TypeError, ValueError):
+        raise RuntimeError('Video timeline duration could not be verified') from None
+
+
 def ending_silence_duration(path: str | Path, noise_db: int = -45) -> float:
     """Measure only a silence interval that reaches the end of the master."""
     completed = subprocess.run([
         'ffmpeg', '-hide_banner', '-nostats', '-i', str(path),
         '-map', '0:a:0', '-af', f'silencedetect=noise={noise_db}dB:d=0.10',
         '-vn', '-f', 'null', '-',
-    ], capture_output=True, text=True, check=False)
+    ], capture_output=True, text=True, encoding='utf-8', errors='replace', check=False)
+    if completed.returncode != 0:
+        raise RuntimeError('Final audio silence measurement failed')
     starts = [
         float(value)
         for value in re.findall(r'silence_start:\s*([0-9.]+)', completed.stderr or '')
@@ -98,10 +116,12 @@ def ending_silence_duration(path: str | Path, noise_db: int = -45) -> float:
     ]
     if not starts or not ends:
         return 0.0
-    total = media_duration(path)
+    total = _video_timeline_duration(path)
     if ends[-1] + 0.08 < total:
         return 0.0
-    return max(0.0, ends[-1] - starts[-1])
+    # Decoding the final AAC packet can expose padding samples beyond the
+    # picture's last frame. They are not part of the presented master.
+    return max(0.0, min(total, ends[-1]) - max(0.0, starts[-1]))
 
 
 def max_freeze_duration(path: str | Path, minimum_seconds: float = 2.0) -> float:

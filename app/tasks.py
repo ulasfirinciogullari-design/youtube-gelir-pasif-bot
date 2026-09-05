@@ -246,15 +246,18 @@ def _validated_recovered_generated_media(
             'Recovered generated-media contract is malformed'
         )
 
-    if raw.get('version') == 2:
-        if set(raw) != {
+    if raw.get('version') in (2, 3):
+        recovery_only = raw.get('version') == 3
+        expected_fields = {
             'version',
-            'repair_only',
             'source_task_id',
             'package_sha256',
-            'repair_scene_indices',
             'scenes',
-        }:
+        } | (
+            {'recovery_only'} if recovery_only
+            else {'repair_only', 'repair_scene_indices'}
+        )
+        if set(raw) != expected_fields:
             raise FinalVisualQualityError(
                 'Recovered generated-media repair contract is malformed'
             )
@@ -264,10 +267,11 @@ def _validated_recovered_generated_media(
         package_sha256 = str(
             raw.get('package_sha256') or ''
         ).strip().lower()
-        raw_repair_indices = raw.get('repair_scene_indices')
+        raw_repair_indices = [] if recovery_only else raw.get('repair_scene_indices')
         raw_scenes = raw.get('scenes')
         if (
-            raw.get('repair_only') is not True
+            raw.get('recovery_only' if recovery_only else 'repair_only') is not True
+            or (recovery_only and type(raw.get('version')) is not int)
             or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(
                 source_task_id
             )
@@ -278,6 +282,7 @@ def _validated_recovered_generated_media(
             )
             or not isinstance(raw_repair_indices, list)
             or not isinstance(raw_scenes, dict)
+            or (recovery_only and not raw_scenes)
         ):
             raise FinalVisualQualityError(
                 'Recovered generated-media repair contract is invalid'
@@ -285,7 +290,7 @@ def _validated_recovered_generated_media(
         if (
             any(type(index) is not int for index in raw_repair_indices)
             or raw_repair_indices != sorted(set(raw_repair_indices))
-            or not 1 <= len(raw_repair_indices) <= 2
+            or (not recovery_only and not 1 <= len(raw_repair_indices) <= 2)
             or any(
                 not 0 <= index < int(scene_count)
                 for index in raw_repair_indices
@@ -380,6 +385,14 @@ def _validated_recovered_generated_media(
                 entries.append(normalized_entry)
                 seen_object_keys.add(key)
             scenes[scene_idx] = entries
+        if recovery_only:
+            return {
+                'version': 3,
+                'recovery_only': True,
+                'source_task_id': source_task_id,
+                'package_sha256': package_sha256,
+                'scenes': scenes,
+            }
         return {
             'version': 2,
             'repair_only': True,
@@ -3742,7 +3755,7 @@ def run_video_pipeline(
             and not recovered_generated_media
         ) or (
             recovered_generated_media
-            and recovered_generated_media.get('version') == 2
+            and recovered_generated_media.get('version') in (2, 3)
             and not recovered_voice
         ):
             raise FinalVisualQualityError(
@@ -4893,6 +4906,35 @@ def run_video_pipeline(
             ]
             runway_required_submission_cap = len(selected_runway)
             runway_effective_submission_cap = len(selected_runway)
+        elif (
+            options.get('mode') == 'production'
+            and options.get('format') == 'shorts'
+            and duration_minutes == 0.5
+            and recovered_generated_media
+            and recovered_generated_media.get('version') == 3
+            and recovered_generated_media.get('recovery_only') is True
+        ):
+            # This validated recovery-only contract selects already-paid
+            # assets, not new generation. Fresh stock rankings must neither
+            # drop a recovered scene nor add another paid scene. Every scene
+            # still goes through the normal exact final visual gate/rescue.
+            selected_runway = [
+                {
+                    'scene_index': scene_idx,
+                    'has_visual': any(
+                        _visual_path(spec)
+                        for spec in scene_visuals[scene_idx]
+                    ),
+                    'stock_score': int(
+                        (current_reviews.get(scene_idx) or {}).get('score', -1)
+                    ),
+                    'provider_outage_stock_fallback': False,
+                    'stock_quality_fallback': False,
+                }
+                for scene_idx in sorted(recovered_generated_media['scenes'])
+            ]
+            runway_required_submission_cap = len(selected_runway)
+            runway_effective_submission_cap = len(selected_runway)
         elif is_bounded_short_preview:
             (
                 selected_runway,
@@ -5083,7 +5125,7 @@ def run_video_pipeline(
                 for recovered_idx, raw_entry in enumerate(
                     recovered_scene_entries
                 ):
-                    if recovered_generated_media.get('version') == 2:
+                    if recovered_generated_media.get('version') in (2, 3):
                         entry = raw_entry
                     else:
                         entry = {
