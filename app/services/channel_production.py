@@ -17,6 +17,7 @@ from app.services.studio_state import JOB_INDEX, JOB_PREFIX, JOB_TTL_SECONDS
 
 PRODUCTION_PREFIX = 'youtube_studio:production:v1:'
 ACTIVE_KEY = PRODUCTION_PREFIX + 'active'
+MAX_ACTIVE_PRODUCTIONS = 2
 CHANNEL_STATE_PREFIX = PRODUCTION_PREFIX + 'channel:'
 PROFILE_PREFIX = 'youtube_studio:youtube_profile:v1:'
 OAUTH_CHANNEL_PREFIX = 'youtube_studio:oauth:channel:v3:'
@@ -49,7 +50,50 @@ def _prefix_digest(topics: list[str]) -> str:
 # No TTL on the active claim: an expired lease cannot prove that an accepted
 # render stopped. Lost enqueue replies stay reserved and are never resent.
 # Check all mutable eligibility and cursor state again in the atomic write.
-_RESERVE = r'''
+_ACTIVE_CLAIMS_LUA = r'''
+local function active_claims(raw)
+  if not raw then return {} end
+  if #raw > 4096 then return nil end
+  local ok, active = pcall(cjson.decode, raw)
+  if not ok or type(active) ~= 'table' then return nil end
+  local claims
+  if active['version'] == 2 then
+    for key, _ in pairs(active) do
+      if key ~= 'version' and key ~= 'claims' then return nil end
+    end
+    claims = active['claims']
+    if type(claims) ~= 'table' or #claims < 1 or #claims > 2 then return nil end
+    for key, _ in pairs(claims) do
+      if type(key) ~= 'number' or key % 1 ~= 0 or key < 1 or key > #claims then return nil end
+    end
+  else
+    claims = {active}
+  end
+  local channels, tasks = {}, {}
+  for _, claim in ipairs(claims) do
+    if type(claim) ~= 'table' then return nil end
+    for key, _ in pairs(claim) do
+      if key ~= 'channel_id' and key ~= 'task_id' then return nil end
+    end
+    local channel, task = claim['channel_id'], claim['task_id']
+    if type(channel) ~= 'string' or #channel < 8 or #channel > 128
+       or not string.match(channel, '^[A-Za-z0-9_%-]+$')
+       or type(task) ~= 'string' or #task ~= 36
+       or not string.match(task, '^[0-9a-f%-]+$')
+       or channels[channel] or tasks[task] then return nil end
+    channels[channel], tasks[task] = true, true
+  end
+  return claims
+end
+local function encode_active(claims)
+  -- Single occupancy remains readable by the old worker during a rollout.
+  if #claims == 1 then return cjson.encode(claims[1]) end
+  return cjson.encode({version=2, claims=claims})
+end
+'''
+
+
+_RESERVE = _ACTIVE_CLAIMS_LUA + r'''
 local profile_raw = redis.call('GET', KEYS[1])
 if profile_raw ~= ARGV[1] then return 'profile_changed' end
 local ok, profile = pcall(cjson.decode, profile_raw or '')
@@ -83,7 +127,12 @@ if (redis.call('HGET', KEYS[2], 'consumed_prefix') or ARGV[3]) ~= ARGV[3] then
   return 'paused'
 end
 if due > tonumber(ARGV[5]) then return 'not_due' end
-if redis.call('EXISTS', KEYS[3]) == 1 then return 'active' end
+local claims = active_claims(redis.call('GET', KEYS[3]))
+if not claims then return 'invalid_state' end
+if #claims >= 2 then return 'active' end
+for _, claim in ipairs(claims) do
+  if claim['channel_id'] == ARGV[7] or claim['task_id'] == ARGV[9] then return 'active' end
+end
 if (redis.call('HGET', KEYS[2], 'active_task_id') or '') ~= '' then return 'active' end
 if redis.call('EXISTS', KEYS[4]) == 1 then return 'invalid_state' end
 redis.call('HSET', KEYS[2],
@@ -91,7 +140,8 @@ redis.call('HSET', KEYS[2],
   'next_due', ARGV[6], 'active_task_id', ARGV[9],
   'last_task_id', ARGV[9], 'dispatch_status', 'reserved',
   'profile_revision', ARGV[12], 'connection_id', ARGV[8])
-redis.call('SET', KEYS[3], ARGV[10])
+table.insert(claims, {channel_id=ARGV[7], task_id=ARGV[9]})
+redis.call('SET', KEYS[3], encode_active(claims))
 redis.call('SETEX', KEYS[4], tonumber(ARGV[13]), ARGV[11])
 redis.call('ZADD', KEYS[8], tonumber(ARGV[5]), ARGV[9])
 redis.call('EXPIRE', KEYS[8], tonumber(ARGV[13]))
@@ -99,11 +149,21 @@ return 'reserved'
 '''
 
 
-_RECONCILE = r'''
+_RECONCILE = _ACTIVE_CLAIMS_LUA + r'''
 if redis.call('GET', KEYS[1]) ~= ARGV[1] then return 'active_changed' end
+local claims = active_claims(ARGV[1])
+if not claims then return 'state_unavailable' end
+local matched
+for index, claim in ipairs(claims) do
+  if claim['task_id'] == ARGV[2] and claim['channel_id'] == ARGV[4] then matched = index end
+end
+if not matched then return 'active_changed' end
 local raw_job = redis.call('GET', KEYS[2])
 local ok, job = pcall(cjson.decode, raw_job or '')
 if not ok or type(job) ~= 'table' then return 'state_unavailable' end
+if job['task_id'] ~= ARGV[2] or job['kind'] ~= 'render' then
+  return 'state_unavailable'
+end
 if redis.call('HGET', KEYS[3], 'active_task_id') ~= ARGV[2] then
   return 'state_unavailable'
 end
@@ -168,7 +228,12 @@ end
 if reason ~= '' then redis.call('HSET', KEYS[3], 'paused_reason', reason) end
 redis.call('HSET', KEYS[3], 'last_result', state, 'dispatch_status', 'finished')
 redis.call('HDEL', KEYS[3], 'active_task_id')
-redis.call('DEL', KEYS[1])
+table.remove(claims, matched)
+if #claims == 0 then
+  redis.call('DEL', KEYS[1])
+else
+  redis.call('SET', KEYS[1], encode_active(claims))
+end
 if reason ~= '' then return 'channel_paused' end
 return 'completed'
 '''
@@ -190,26 +255,68 @@ def get_production_state(channel_id: str) -> dict:
 
 
 def reconcile_active_production() -> str:
-    """Wait for confirmed delivery; render or publication failures pause."""
+    """Reconcile at most two claims independently; never expire or steal one."""
     try:
         client = _redis()
         raw = client.get(ACTIVE_KEY)
         if raw is None:
             return 'idle'
-        active = json.loads(raw)
-        channel_id = _channel_id(active.get('channel_id'))
-        task_id = str(active.get('task_id') or '')
-        if not _TASK_ID.fullmatch(task_id):
-            raise ValueError('invalid active task')
-        status = client.eval(
-            _RECONCILE, 3, ACTIVE_KEY, JOB_PREFIX + task_id,
-            CHANNEL_STATE_PREFIX + channel_id, raw, task_id, JOB_PREFIX,
-        )
-        if status not in {'completed', 'channel_paused', 'active', 'active_changed', 'state_unavailable'}:
-            raise ValueError('invalid reconciliation state')
-        return status
+        initial = _decode_active_claims(raw)
+        finished = []
+        for active in initial:
+            # Another tick may have completed a sibling. Re-read the shared
+            # fence and let Lua compare it again before removing only this job.
+            current_raw = client.get(ACTIVE_KEY)
+            if current_raw is None:
+                break
+            current = _decode_active_claims(current_raw)
+            if active not in current:
+                continue
+            channel_id, task_id = active['channel_id'], active['task_id']
+            status = client.eval(
+                _RECONCILE, 3, ACTIVE_KEY, JOB_PREFIX + task_id,
+                CHANNEL_STATE_PREFIX + channel_id, current_raw, task_id, JOB_PREFIX, channel_id,
+            )
+            if status in {'active_changed', 'state_unavailable'}:
+                return status
+            if status not in {'completed', 'channel_paused', 'active'}:
+                raise ValueError('invalid reconciliation state')
+            finished.append(status)
+        remaining = client.get(ACTIVE_KEY)
+        if remaining is not None:
+            _decode_active_claims(remaining)
+            return 'active'
+        return 'channel_paused' if 'channel_paused' in finished else 'completed'
     except Exception as exc:
         raise ChannelProductionError('production_state_unavailable') from exc
+
+
+def _decode_active_claims(raw: str) -> list[dict]:
+    if not isinstance(raw, str) or len(raw) > 4096:
+        raise ValueError('invalid production active claims')
+    active = json.loads(raw)
+    if isinstance(active, dict) and type(active.get('version')) is int and active['version'] == 2:
+        if set(active) != {'version', 'claims'}:
+            raise ValueError('invalid production active claims')
+        claims = active['claims']
+    else:
+        claims = [active]
+    if not isinstance(claims, list) or not 1 <= len(claims) <= MAX_ACTIVE_PRODUCTIONS:
+        raise ValueError('invalid production active claims')
+    channels, tasks = set(), set()
+    for claim in claims:
+        if not isinstance(claim, dict) or set(claim) != {'channel_id', 'task_id'}:
+            raise ValueError('invalid production active claims')
+        channel_id = _channel_id(claim['channel_id'])
+        task_id = claim['task_id']
+        if (
+            not isinstance(task_id, str) or not _TASK_ID.fullmatch(task_id)
+            or channel_id in channels or task_id in tasks
+        ):
+            raise ValueError('invalid production active claims')
+        channels.add(channel_id)
+        tasks.add(task_id)
+    return claims
 
 
 def reserve_due_production(profile: dict, connection: dict, *, now: float | None = None) -> dict:
@@ -251,10 +358,14 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         topic = topics[cursor]
         identity = str(profile.get('channel_identity') or '').strip()[:240]
         brief = topic + (f'\n\nChannel editorial direction: {identity}' if identity else '')
+        from app.services.production_editorial import choose_production_editorial
+
+        editorial = choose_production_editorial(topic, identity)
+        duration_minutes = editorial['duration_minutes']
         route = str(profile.get('route_label') or channel_id).strip()
         task_id = str(uuid5(NAMESPACE_URL, f'youtube-production:{channel_id}:{cursor}:{_prefix_digest([topic])}'))
         options = {
-            'mode': 'production', 'format': 'shorts', 'workflow': 'auto',
+            'mode': 'production', 'format': editorial['format'], 'workflow': 'auto',
             'content_style': 'documentary', 'pace': 'balanced',
             'visual_mix': 'real_first', 'music': 'off', 'subtitles': 'sidecar',
             'quality_threshold': 86, 'publish_after_render': True,
@@ -263,8 +374,9 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
             'production_connection_id': connection_id,
             'production_profile_revision': str(profile.get('profile_revision') or ''),
             'production_topic_index': cursor,
+            'production_editorial': editorial,
         }
-        spec = {'topic': brief, 'duration_minutes': 0.5, 'language': language, 'channel_id': route, **options}
+        spec = {'topic': brief, 'duration_minutes': duration_minutes, 'language': language, 'channel_id': route, **options}
         iso_now = datetime.fromtimestamp(now, timezone.utc).isoformat()
         record = {
             'task_id': task_id, 'kind': 'render', 'parent_id': None,
@@ -290,7 +402,7 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         if status != 'reserved':
             return {'status': str(status)}
         return {'status': 'reserved', 'task_id': task_id, 'channel_id': channel_id,
-                'args': (brief, 0.5, language, route, options, None)}
+                'args': (brief, duration_minutes, language, route, options, None)}
     except Exception as exc:
         # Includes lost replies after Redis accepted a reservation. The caller
         # must never enqueue on this outcome or try the same topic again.
@@ -310,10 +422,11 @@ def mark_production_dispatched(channel_id: str, task_id: str, *, uncertain: bool
 def dispatch_due_productions(profiles: list[dict], connections: list[dict], enqueue, *, now: float | None = None) -> dict:
     """One beat tick, including reconciliation; never calls a paid provider."""
     reconciliation = reconcile_active_production()
-    if reconciliation in {'active', 'active_changed', 'state_unavailable'}:
+    if reconciliation in {'active_changed', 'state_unavailable'}:
         return {'status': reconciliation}
     connected = {str(item.get('id') or ''): item for item in connections if isinstance(item, dict)}
     statuses = {}
+    queued = []
     for profile in sorted(profiles, key=lambda item: str(item.get('channel_id') or '')):
         channel_id = str(profile.get('channel_id') or '')
         if profile.get('production_enabled') is not True or profile.get('auto_publish') is not True:
@@ -336,7 +449,10 @@ def dispatch_due_productions(profiles: list[dict], connections: list[dict], enqu
             enqueue(args=reservation['args'], task_id=reservation['task_id'])
         except Exception:
             mark_production_dispatched(channel_id, reservation['task_id'], uncertain=True)
-            return {'status': 'dispatch_uncertain', 'task_id': reservation['task_id'], 'channel_id': channel_id}
+            return {'status': 'dispatch_uncertain', 'task_id': reservation['task_id'], 'channel_id': channel_id,
+                    'queued': queued, 'queued_count': len(queued)}
         mark_production_dispatched(channel_id, reservation['task_id'])
-        return {'status': 'queued', 'task_id': reservation['task_id'], 'channel_id': channel_id}
-    return {'status': 'idle', 'channels': statuses}
+        queued.append({'task_id': reservation['task_id'], 'channel_id': channel_id})
+    if queued:
+        return {'status': 'queued', **queued[0], 'queued': queued, 'queued_count': len(queued)}
+    return {'status': 'active' if reconciliation == 'active' else 'idle', 'channels': statuses}

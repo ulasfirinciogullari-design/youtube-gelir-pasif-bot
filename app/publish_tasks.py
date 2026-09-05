@@ -33,6 +33,7 @@ from app.services.youtube_automation import (
     MetadataValidationError,
     automated_quality_approved,
     build_publish_plan,
+    contains_synthetic_media,
     list_channel_profiles,
     select_channel_profile,
     validate_publish_plan,
@@ -493,6 +494,12 @@ def publish_video_pipeline(
             release_mode = 'private'
             publish_at = None
         language = re.sub(r'[^A-Za-z0-9_-]+', '', language)[:24] or 'tr'
+        # A legacy False can never overrule positive/unknown render provenance.
+        # Do not derive this from paid-create usage: recovered AI costs zero.
+        synthetic_disclosure = (
+            bool(publish_plan and publish_plan['contains_synthetic_media'])
+            or contains_synthetic_media(source)
+        )
 
         # Persist the side-effect boundary before videos.insert. If anything
         # after this point fails without a video ID, the reservation becomes
@@ -532,6 +539,7 @@ def publish_video_pipeline(
             tags=tags,
             category_id=category_id,
             default_language=language,
+            contains_synthetic_media=synthetic_disclosure,
             progress_callback=report_progress,
         )
         video_id = str(youtube_response.get('id') or '').strip()
@@ -606,7 +614,12 @@ def publish_video_pipeline(
         scheduled_publish_at = None
         if release_mode in {'public', 'scheduled'}:
             asset_error = (
-                caption_error_code
+                ('synthetic_disclosure_unconfirmed' if (
+                    synthetic_disclosure
+                    and isinstance(youtube_response.get('status'), dict)
+                    and youtube_response['status'].get('containsSyntheticMedia') is False
+                ) else None)
+                or caption_error_code
                 or thumbnail_error_code
                 or ('thumbnail_required' if require_thumbnail and not thumbnail_result else None)
             )
@@ -634,6 +647,7 @@ def publish_video_pipeline(
                     video_id,
                     release_mode,
                     publish_at=publish_at,
+                    contains_synthetic_media=synthetic_disclosure,
                 )
                 mark_release_completed(
                     source_task_id,
@@ -659,6 +673,7 @@ def publish_video_pipeline(
             'youtube_video_id': video_id,
             'youtube_url': youtube_url,
             'privacy_status': final_privacy_status,
+            'contains_synthetic_media': synthetic_disclosure,
             'release_status': release_status,
             'scheduled_publish_at': scheduled_publish_at,
             'release_error_code': release_error_code,
@@ -679,6 +694,7 @@ def publish_video_pipeline(
             'video_id': video_id,
             'url': youtube_url,
             'privacy_status': final_privacy_status,
+            'contains_synthetic_media': synthetic_disclosure,
             'release_status': release_status,
             'scheduled_publish_at': scheduled_publish_at,
             'release_error_code': release_error_code,

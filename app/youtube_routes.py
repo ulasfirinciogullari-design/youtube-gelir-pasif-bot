@@ -318,7 +318,16 @@ def _profile_form(channel: dict, profile: dict | None, production_state: dict | 
     production_topics = '\n'.join(profile.get('production_topics') or [])
     thumbnail_checked = ' checked' if profile.get('require_thumbnail') else ''
     status = f'<span class="badge">{escape(_production_status_text(profile, production_state))}</span>'
+    publication_label = (
+        {
+            'private': 'Otomatik yükleme · gizli',
+            'public': 'Kalite geçerse otomatik yayında',
+            'scheduled': 'Kalite geçerse otomatik planlanır',
+        }.get(release_mode, 'Yayın ayarını kontrol et')
+        if profile.get('auto_publish') is True else 'Otomatik yükleme kapalı'
+    )
     return f'''
+<div class="channel-policy"><span class="badge">{escape(publication_label)}</span></div>
 <details class="profile-details"><summary>Otomatik üretim</summary>
 <form method="post" action="/studio/youtube/profile/{escape(channel_id, quote=True)}">
 <input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}">
@@ -326,6 +335,7 @@ def _profile_form(channel: dict, profile: dict | None, production_state: dict | 
 <input type="hidden" name="production_settings" value="1">
 <div class="profile-grid">
 <label class="check"><input name="production_enabled" type="checkbox" value="1"{production_checked}> Bu kanal için düzenli video üret</label>
+<div class="wide tiny">Biçim otomatik seçilir: tek fikir için 30 saniyelik Shorts; açıkça kapsamlı anlatım veya çok boyutlu karşılaştırma için 3 dakikalık yatay video. Aynı kanalın bölümleri sırayla, en fazla iki farklı kanalın işleri paralel ilerler.</div>
 <label class="wide">Üretilecek konular<textarea name="production_topics" maxlength="14459" placeholder="Her satıra bir konu yaz. Konular sırayla işlenir.">{escape(production_topics)}</textarea><span>En fazla 60 konu; her konu en fazla 240 karakter.</span></label>
 <label>Yeni video aralığı (saat)<input name="production_interval_hours" type="number" min="6" max="168" value="{value('production_interval_hours', '24')}"></label>
 <label>Üretim dili<input name="default_language" maxlength="24" value="{value('default_language', 'tr')}" placeholder="tr"></label>
@@ -348,7 +358,7 @@ def _profile_form(channel: dict, profile: dict | None, production_state: dict | 
 <label>Planlama gecikmesi (dk)<input name="schedule_delay_minutes" type="number" min="15" max="43200" value="{value('schedule_delay_minutes', '60')}"></label>
 <label class="check"><input name="require_thumbnail" type="checkbox" value="1"{thumbnail_checked}> Özel küçük resim yoksa herkese açma</label>
 </div></details>
-<div class="profile-actions"><button class="small" type="submit">Profili kaydet</button>{status}<span class="tiny">İlk yükleme her zaman gizlidir; yalnızca tam otomatik kalite onayı yayın geçişini açar.</span></div>
+<div class="profile-actions"><button class="small" type="submit">Profili kaydet</button>{status}<span class="tiny">Başlık, açıklama ve etiketler otomatik hazırlanır. İlk yükleme gizlidir; kalite onayı ve gerekli içerik bildirimleri tamamlanınca seçilen yayın davranışı uygulanır.</span></div>
 </form></details>'''
 
 

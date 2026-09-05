@@ -49,10 +49,13 @@ def upload_video_with_credentials(
     tags: list[str] | None = None,
     category_id: str = '28',
     default_language: str | None = None,
+    contains_synthetic_media: bool = True,
     progress_callback: Callable[[float], None] | None = None,
 ) -> dict:
     path = _video_file(file_path)
     privacy_status = _private_status(privacy_status)
+    if type(contains_synthetic_media) is not bool:
+        raise ValueError('Synthetic media disclosure must be a boolean')
     youtube = _service(credentials)
 
     normalized_tags: list[str] = []
@@ -92,6 +95,7 @@ def upload_video_with_credentials(
                 # boundary. Public release must be a separate confirmed action.
                 'privacyStatus': PRIVATE_STATUS,
                 'selfDeclaredMadeForKids': False,
+                'containsSyntheticMedia': contains_synthetic_media,
             },
         },
         media_body=MediaFileUpload(
@@ -165,7 +169,9 @@ def get_video_status_with_credentials(
     if not isinstance(items, list) or len(items) != 1:
         raise RuntimeError('YouTube video status could not be verified')
     item = items[0] if isinstance(items[0], dict) else {}
-    status = item.get('status') if isinstance(item.get('status'), dict) else {}
+    if item.get('id') != video_id or not isinstance(item.get('status'), dict):
+        raise RuntimeError('YouTube video status could not be verified')
+    status = item['status']
     return dict(status)
 
 
@@ -175,12 +181,20 @@ def set_video_release_with_credentials(
     release_mode: str,
     *,
     publish_at: str | None = None,
+    contains_synthetic_media: bool = True,
 ) -> dict:
     video_id = str(video_id or '').strip()
     if not video_id:
         raise ValueError('video_id is required')
     release_mode = str(release_mode or '').strip().casefold()
-    status = {'selfDeclaredMadeForKids': False}
+    if type(contains_synthetic_media) is not bool:
+        raise ValueError('Synthetic media disclosure must be a boolean')
+    # videos.update replaces the requested status part. Carry the disclosure
+    # through the release boundary instead of losing it after a private insert.
+    status = {
+        'selfDeclaredMadeForKids': False,
+        'containsSyntheticMedia': contains_synthetic_media,
+    }
     if release_mode == 'public':
         status['privacyStatus'] = 'public'
     elif release_mode == 'scheduled':
@@ -203,7 +217,7 @@ def set_video_release_with_credentials(
         part='status',
         body={'id': video_id, 'status': status},
     ).execute(num_retries=3)
-    if not isinstance(response, dict):
+    if not isinstance(response, dict) or response.get('id') != video_id:
         raise RuntimeError('YouTube release did not return a video resource')
     response_status = (
         response.get('status')
@@ -211,11 +225,17 @@ def set_video_release_with_credentials(
         else {}
     )
     expected_privacy = 'public' if release_mode == 'public' else 'private'
-    if (
-        response_status.get('privacyStatus')
-        and response_status.get('privacyStatus') != expected_privacy
-    ):
+    if response_status.get('privacyStatus') != expected_privacy:
         raise RuntimeError('YouTube release status did not match the request')
+    if contains_synthetic_media and response_status.get('containsSyntheticMedia') is not True:
+        raise RuntimeError('YouTube release did not preserve synthetic media disclosure')
+    if release_mode == 'scheduled':
+        try:
+            returned_time = datetime.fromisoformat(str(response_status.get('publishAt') or ''))
+        except (TypeError, ValueError):
+            raise RuntimeError('YouTube release schedule could not be verified') from None
+        if returned_time.tzinfo is None or returned_time.astimezone(timezone.utc) != scheduled:
+            raise RuntimeError('YouTube release schedule did not match the request')
     return response
 
 
