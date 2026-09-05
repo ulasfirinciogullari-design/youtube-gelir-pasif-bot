@@ -2,6 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 import base64
 import json
+import math
 import re
 import subprocess
 from openai import OpenAI
@@ -1019,6 +1020,34 @@ def _parse(text: str) -> dict:
     return data if isinstance(data, dict) else {'reviews': []}
 
 
+def _parse_strict_visual_review(text: str) -> dict:
+    """Keep structured OpenAI evidence as strict as the Gemini JSON decoder."""
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('Visual review JSON has duplicate keys')
+            result[key] = value
+        return result
+
+    def reject_constant(_value):
+        raise ValueError('Visual review JSON has a non-finite number')
+
+    def finite_float(value):
+        number = float(value)
+        if not math.isfinite(number):
+            reject_constant(value)
+        return number
+
+    data = json.loads(
+        text, object_pairs_hook=unique_object,
+        parse_constant=reject_constant, parse_float=finite_float,
+    )
+    if not isinstance(data, dict) or set(data) != {'reviews'}:
+        raise ValueError('Visual review JSON has an invalid root')
+    return data
+
+
 @lru_cache(maxsize=256)
 def _duration(video_path: str) -> float:
     out = subprocess.check_output([
@@ -1142,6 +1171,7 @@ def _review_gemini_batches(
     gemini_model_override: str | None = None,
     score_reason_consistency_attempts: int = 1,
     gemini_thinking_level: str = 'low',
+    provider_override: str | None = None,
 ) -> dict:
     def merge_boundary_review(previous: dict, current: dict) -> dict:
         def merge_recurring_identity_fields(merged: dict) -> bool:
@@ -1305,6 +1335,7 @@ def _review_gemini_batches(
                 score_reason_consistency_attempts
             ),
             _gemini_thinking_level=gemini_thinking_level,
+            provider_override=provider_override,
         )
 
         def remap_index(value: object) -> int | None:
@@ -1416,8 +1447,18 @@ def review_scene_visuals(
     gemini_model_override: str | None = None,
     _score_reason_consistency_attempts: int = 1,
     _gemini_thinking_level: str = 'low',
+    provider_override: str | None = None,
 ) -> dict:
-    provider = _studio_plan_provider()
+    dedicated_provider = str(getattr(settings, 'studio_visual_qc_provider', '') or '').strip().casefold()
+    if provider_override is None:
+        if dedicated_provider and dedicated_provider not in {'openai', 'gemini'}:
+            raise ValueError('STUDIO_VISUAL_QC_PROVIDER must be openai or gemini')
+        provider = dedicated_provider or _studio_plan_provider()
+    elif isinstance(provider_override, str) and provider_override.strip().casefold() in {'openai', 'gemini'}:
+        provider = provider_override.strip().casefold()
+    else:
+        raise ValueError('Visual review provider override must be openai or gemini')
+    strict_review_contract = provider == 'gemini' or provider_override is not None or bool(dedicated_provider)
     if provider == 'openai' and not settings.openai_api_key:
         return {'reviews': [], 'missing_review_indices': []}
     if provider == 'gemini' and not str(
@@ -1453,6 +1494,7 @@ def review_scene_visuals(
                 _score_reason_consistency_attempts
             ),
             gemini_thinking_level=_gemini_thinking_level,
+            provider_override=provider_override,
         )
     frame_dir = work / 'visual_qc'
     frame_dir.mkdir(parents=True, exist_ok=True)
@@ -1595,7 +1637,7 @@ def review_scene_visuals(
                 specs[candidate_idx],
                 len(paths),
             )
-            for fraction in fractions:
+            for fraction in sorted(fractions):
                 moment_idx = MOMENT_FRACTIONS.index(fraction)
                 frame = _frame(
                     path,
@@ -1655,7 +1697,7 @@ def review_scene_visuals(
             'included_scene_indices': [],
             'unreviewable_scene_indices': unreviewable_indices,
             'missing_review_indices': (
-                list(unreviewable_indices) if provider == 'gemini' else []
+                list(unreviewable_indices) if strict_review_contract else []
             ),
         }
 
@@ -1780,25 +1822,43 @@ def review_scene_visuals(
                 if protocol_attempt:
                     raise
     else:
+        structured_options = {}
+        if strict_review_contract:
+            schema = _review_json_schema(included_indices, available_moments)
+            # Keep the wire schema within documented OpenAI keywords. The
+            # strict local validator still requires distinct evidence moments.
+            schema['properties']['reviews']['items']['properties']['evidence_moment_indices'].pop('uniqueItems', None)
+            structured_options = {'text': {'format': {
+                'type': 'json_schema', 'name': 'visual_scene_review',
+                'strict': True, 'schema': schema,
+            }}}
         client = OpenAI(
             api_key=settings.openai_api_key,
             timeout=120.0,
-            max_retries=1,
+            max_retries=0 if strict_review_contract else 1,
         )
         response = client.responses.create(
             model=settings.openai_model,
             reasoning={'effort': 'low'},
             instructions=system_instruction,
             input=[{'role': 'user', 'content': content[1:]}],
+            **structured_options,
         )
-        data = _parse(response.output_text)
+        if strict_review_contract:
+            data = (
+                _parse_strict_visual_review(response.output_text)
+                if getattr(response, 'status', None) == 'completed'
+                else {'reviews': []}
+            )
+        else:
+            data = _parse(response.output_text)
     reviews_by_scene: dict[int, dict] = {}
     included_set = set(included_indices)
     raw_reviews = data.get('reviews') if isinstance(data, dict) else []
     if not isinstance(raw_reviews, list):
         raw_reviews = []
     duplicate_counts: dict[int, int] = {}
-    if provider == 'gemini':
+    if strict_review_contract:
         for raw_review in raw_reviews:
             if not isinstance(raw_review, dict):
                 continue
@@ -1811,7 +1871,7 @@ def review_scene_visuals(
     for review in raw_reviews:
         if not isinstance(review, dict):
             continue
-        if provider == 'gemini':
+        if strict_review_contract:
             expected_fields = {
                 'scene_index',
                 'best_candidate_index',
@@ -2089,6 +2149,7 @@ def review_scene_visuals(
         ]
         for scene_index in contradictory_scene_indices:
             initial_review = dict(reviews_by_scene[scene_index])
+            initial_review['score_reason_initial_provider'] = provider
             candidate_specs = [
                 spec
                 for spec in (
@@ -2114,6 +2175,13 @@ def review_scene_visuals(
                 )
                 continue
 
+            consistency_provider = (
+                'openai'
+                if provider == 'gemini' and str(getattr(settings, 'openai_api_key', '') or '').strip()
+                else provider
+            )
+            initial_review['score_reason_revalidation_provider'] = consistency_provider
+            initial_review['score_reason_revalidation_attempted'] = True
             try:
                 consistency_qc = review_scene_visuals(
                     [scenes[scene_index]],
@@ -2128,9 +2196,8 @@ def review_scene_visuals(
                     content_style=content_style,
                     evidence_sources=documentary_sources,
                     gemini_model_override=gemini_model_override,
-                    _score_reason_consistency_attempts=(
-                        _score_reason_consistency_attempts - 1
-                    ),
+                    _score_reason_consistency_attempts=0,
+                    provider_override=consistency_provider,
                     _gemini_thinking_level=(
                         'medium'
                         if provider == 'gemini'
@@ -2162,6 +2229,9 @@ def review_scene_visuals(
             revalidated['scene_index'] = scene_index
             revalidated['best_candidate_index'] = selected_candidate_index
             revalidated['score_reason_revalidated'] = True
+            revalidated['score_reason_initial_provider'] = provider
+            revalidated['score_reason_revalidation_provider'] = consistency_provider
+            revalidated['score_reason_revalidation_attempted'] = True
             revalidated['score_reason_initial_score'] = int(
                 initial_review.get('score', 0)
             )
@@ -2221,6 +2291,7 @@ def review_scene_visuals(
                 _score_reason_consistency_attempts
             ),
             _gemini_thinking_level=_gemini_thinking_level,
+            provider_override=provider_override,
         )
         retry_reviews = {
             int(review.get('scene_index')): review
@@ -2281,7 +2352,7 @@ def review_scene_visuals(
             reviews_by_scene[scene_index] = mapped
 
     missing_indices = [idx for idx in included_indices if idx not in reviews_by_scene]
-    if provider == 'gemini':
+    if strict_review_contract:
         missing_indices = sorted(set(
             [*missing_indices, *unreviewable_indices]
         ))
