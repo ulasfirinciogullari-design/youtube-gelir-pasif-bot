@@ -1080,6 +1080,49 @@ def _record_prepaid_visual_diagnostics(
         return
 
 
+def _checkpoint_overbudget_visuals(
+    task_id: str,
+    scenes: list[dict],
+    scene_visuals: list,
+    reviews: dict,
+    ranked_candidates: list[dict],
+    work: Path,
+    cap: int | None,
+    *,
+    paid_slots_used: int,
+    quality_threshold: int,
+) -> None:
+    """Keep actual failure evidence without creating links or changing QA."""
+    if (type(cap) is not int or cap < 1
+            or type(paid_slots_used) is not int or paid_slots_used < 0):
+        return
+    remaining = max(0, cap - paid_slots_used)
+    if len(ranked_candidates) <= remaining:
+        return
+    try:
+        from app.services.visual_allocation_checkpoint import persist_visual_allocation_checkpoint
+
+        pending = [row['scene_index'] for row in ranked_candidates]
+        fields = persist_visual_allocation_checkpoint(
+            task_id, scenes, scene_visuals, reviews, work,
+            quality_threshold=quality_threshold,
+            allocation={
+                'paid_create_cap': cap,
+                'paid_create_used': paid_slots_used,
+                'paid_slots_remaining': remaining,
+                'required_paid_scenes': len(pending),
+                'quality_threshold': quality_threshold,
+                'selected_paid_scene_indices': pending[:remaining],
+                'overflow_scene_indices': pending[remaining:],
+                'failed_stock_scene_indices': pending,
+            },
+        )
+        update_job(task_id, **fields)
+    except Exception:
+        # The original allocation failure and all paid ledgers remain intact.
+        return
+
+
 def _preflight_production_shorts_paid_plan(
     options: dict,
     scenes: list[dict],
@@ -1557,6 +1600,7 @@ def _select_ranked_broll_candidates(
     allow_seen_fallback: bool = True,
     allow_short_fallback: bool = True,
     orientation: str = 'landscape',
+    query_diverse_first: bool = False,
 ) -> list[tuple[str, dict]]:
     """Select a stable relevance-first, query-diverse Pexels candidate pool."""
     orientation = str(orientation or '').strip().lower()
@@ -1603,6 +1647,22 @@ def _select_ranked_broll_candidates(
         selection_phases.append((False, True))
         if allow_short_fallback:
             selection_phases.append((False, False))
+    if query_diverse_first:
+        # The bounded overflow rescue must actually sample both queries,
+        # even when one query's first usable clip is farther down its list.
+        for query, candidates in query_results:
+            for require_unseen, require_duration in selection_phases:
+                first_usable = next((
+                    item for item in candidates
+                    if usable(item, require_unseen, require_duration)
+                ), None)
+                if first_usable is None:
+                    continue
+                selected.append((query, first_usable))
+                selected_ids.add(candidate_key(first_usable))
+                break
+            if len(selected) >= limit:
+                return selected
     for require_unseen, require_duration in selection_phases:
         for rank in range(max_rank):
             for query, candidates in query_results:
@@ -1834,6 +1894,7 @@ def _download_ranked_broll_candidates(
         allow_seen_fallback=False,
         allow_short_fallback=allow_short_fallback,
         orientation=orientation,
+        query_diverse_first=(selected_by == 'pre_runway_budget_rescue'),
     )
     if not ranked:
         return []
@@ -1987,6 +2048,76 @@ def _final_pexels_rescue_queries(
         for query in raw_visual_queries[:2]
         if str(query).strip()
     ]
+
+
+def _prepaid_stock_rescue_queries(scene: dict, review: dict) -> list[str]:
+    """Use at most two distinct critique queries, or authored hints if absent."""
+    for raw_queries in (
+        review.get('retry_queries'), scene.get('visual_queries'),
+    ):
+        if isinstance(raw_queries, str):
+            raw_queries = [raw_queries]
+        if not isinstance(raw_queries, list):
+            continue
+        queries: list[str] = []
+        seen: set[str] = set()
+        for raw_query in raw_queries:
+            if not isinstance(raw_query, str):
+                continue
+            query = ' '.join(raw_query.split())
+            key = query.casefold()
+            if not query or key in seen:
+                continue
+            queries.append(query)
+            seen.add(key)
+            if len(queries) == 2:
+                break
+        if queries:
+            return queries
+    return []
+
+
+def _prepaid_stock_rescue_candidates(
+    ranked_candidates: list[dict],
+    submission_cap: int,
+    *,
+    options: dict,
+    duration_minutes: float,
+    scenes: list[dict],
+    evidence_sources: list[dict] | None,
+    quality_threshold: int,
+) -> list[dict]:
+    """Rescue rejected stock before reserving paid slots in a tiny documentary."""
+    overflow = ranked_candidates[submission_cap:]
+    if not (
+        options.get('mode') == 'production'
+        and options.get('format') == 'shorts'
+        and str(options.get('content_style') or '').strip().casefold() == 'documentary'
+        and duration_minutes == 0.5
+        and 1 <= len(scenes) <= 6
+        and type(quality_threshold) is int and 0 <= quality_threshold <= 100
+    ):
+        return overflow
+    from app.services.source_evidence import normalize_evidence_sources
+
+    try:
+        normalize_evidence_sources(evidence_sources, min_count=1, max_count=5)
+    except (TypeError, ValueError):
+        return overflow
+    selected = []
+    seen: set[int] = set()
+    for candidate in ranked_candidates:
+        index = candidate.get('scene_index')
+        score = candidate.get('stock_score')
+        if (
+            type(index) is int and 0 <= index < len(scenes) and index not in seen
+            and not str(scenes[index].get('ai_prompt') or '').strip()
+            and type(score) in (int, float) and math.isfinite(score)
+            and score < quality_threshold
+        ):
+            selected.append(candidate)
+            seen.add(index)
+    return selected
 
 
 def _visual_path(spec: str | dict) -> str:
@@ -4591,9 +4722,10 @@ def run_video_pipeline(
 
         prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
 
-        # Before rejecting an over-budget plan, give only the overflow scenes
-        # one bounded stock rescue. The weakest scenes within the cap remain
-        # reserved for generation; overflow scenes get one more stock search.
+        # Before rejecting an over-budget plan, run one bounded stock rescue.
+        # Tiny sourced documentary productions also try rejected stock scenes
+        # provisionally inside the paid cap, then rerank the measured results.
+        # Other routes retain the existing overflow-only selection.
         if (
             (
                 is_bounded_short_preview
@@ -4610,16 +4742,22 @@ def run_video_pipeline(
             and not stock_quality_fallback_scenes
             and len(ranked_runway_candidates) > runway_submission_cap
         ):
-            overflow_candidates = ranked_runway_candidates[runway_submission_cap:]
+            overflow_candidates = _prepaid_stock_rescue_candidates(
+                ranked_runway_candidates,
+                runway_submission_cap,
+                options=options,
+                duration_minutes=duration_minutes,
+                scenes=scenes,
+                evidence_sources=package.get('sources') or [],
+                quality_threshold=quality_threshold,
+            )
             budget_rescued_scenes: list[int] = []
             for candidate in overflow_candidates:
                 scene_idx = int(candidate['scene_index'])
                 review = current_reviews.get(scene_idx) or {}
-                retry_queries = [
-                    str(query).strip()
-                    for query in (review.get('retry_queries') or [])[:2]
-                    if str(query).strip()
-                ]
+                retry_queries = _prepaid_stock_rescue_queries(
+                    scenes[scene_idx], review,
+                )
                 replacements = _retry_bad_scene(
                     scene_idx,
                     retry_queries,
@@ -4627,6 +4765,7 @@ def run_video_pipeline(
                     work,
                     credits,
                     file_prefix='pre_runway_budget_rescue',
+                    max_replacements=2,
                     minimum_duration=max(
                         5.0,
                         float(scene_durations[scene_idx]) + 0.35,
@@ -4699,6 +4838,12 @@ def run_video_pipeline(
             current_reviews,
             ranked_runway_candidates,
             total_paid_create_cap,
+            paid_slots_used=runway_attempts,
+            quality_threshold=quality_threshold,
+        )
+        _checkpoint_overbudget_visuals(
+            task_id, scenes, scene_visuals, current_reviews,
+            ranked_runway_candidates, work, total_paid_create_cap,
             paid_slots_used=runway_attempts,
             quality_threshold=quality_threshold,
         )
