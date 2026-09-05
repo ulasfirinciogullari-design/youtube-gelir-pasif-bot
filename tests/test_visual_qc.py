@@ -317,6 +317,7 @@ class VisualQcProviderTests(unittest.TestCase):
                 with (
                     patch.object(settings, 'studio_plan_provider', 'gemini'),
                     patch.object(settings, 'gemini_api_key', 'test-key'),
+                    patch.object(settings, 'openai_api_key', ''),
                 ):
                     review_scene_visuals(
                         scenes, [['candidate.mp4'] for _scene in scenes],
@@ -621,6 +622,7 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    @patch.object(settings, 'openai_api_key', '')
     def test_low_score_with_clear_success_reason_revalidates_exact_media_once(
         self, frame, gemini
     ):
@@ -693,6 +695,7 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    @patch.object(settings, 'openai_api_key', '')
     def test_live_positive_reason_phrasings_revalidate_when_all_gates_pass(
         self, frame, gemini
     ):
@@ -767,6 +770,7 @@ class VisualQcProviderTests(unittest.TestCase):
 
     @patch('app.services.visual_qc.generate_gemini_multimodal_json')
     @patch('app.services.visual_qc._frame')
+    @patch.object(settings, 'openai_api_key', '')
     def test_repeated_low_score_success_conflict_remains_fail_closed(
         self, frame, gemini
     ):

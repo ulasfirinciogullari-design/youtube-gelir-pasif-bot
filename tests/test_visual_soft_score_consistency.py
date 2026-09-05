@@ -1,6 +1,7 @@
 import ast
 from pathlib import Path
 import re
+from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
@@ -52,6 +53,7 @@ def _run_revalidation(initial, response, *, sources=True, authored_ai=False):
     selected = {'path': 'exact-selected.mp4', 'source_type': 'stock', 'start_fraction': 0.5}
     evidence = [{'url': 'https://www.bep.gov/currency', 'evidence': 'U.S. currency paper is 75% cotton and 25% linen.'}] if sources else []
     namespace.update({
+        'settings': SimpleNamespace(openai_api_key=''),
         '_score_reason_consistency_attempts': 1,
         'reviews_by_scene': {0: initial},
         'scenes': [scene], 'scene_visuals': [[{'path': 'unselected.mp4'}, selected]],
