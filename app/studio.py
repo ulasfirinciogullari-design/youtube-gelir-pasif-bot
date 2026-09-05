@@ -2447,6 +2447,17 @@ def studio_retry(task_id: str, studio_token: str | None = Cookie(default=None, a
         if isinstance(checkpoint, dict)
         else None
     )
+    curated_stock_manifest = None
+    if isinstance(checkpoint, dict) and 'curated_stock_manifest' in checkpoint:
+        # Only the already-claimed private checkpoint can supply this pointer;
+        # never read it from a form, options, model output or a public job field.
+        if (
+            kind != 'render' or dispatch.get('mode') != 'repair'
+            or not isinstance(approved_package, dict)
+            or not isinstance(checkpoint['curated_stock_manifest'], dict)
+        ):
+            raise HTTPException(status_code=409, detail='Sabit sahne kurtarma kaydı geçersiz')
+        curated_stock_manifest = dict(checkpoint['curated_stock_manifest'])
     child_spec = dict(spec)
     if approved_package is not None:
         child_spec['workflow'] = 'scene_repair'
@@ -2478,6 +2489,8 @@ def studio_retry(task_id: str, studio_token: str | None = Cookie(default=None, a
             approved_package,
             task_id,
         )
+        if curated_stock_manifest is not None:
+            task_args = (*task_args, curated_stock_manifest)
     try:
         task_callable.apply_async(args=task_args, task_id=child_task_id)
     except Exception:
