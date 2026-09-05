@@ -200,6 +200,13 @@ def test_normal_final_gate_rejects_bad_or_missing_stock_review_after_reuse(missi
                    manual_qa_preview_scenes=set(), rescued_final_scenes=[],
                    runway_failed_scenes=[], final_runway_repair_failures=[],
                    runway_failure_diagnostics=[],
+                   # This boundary isolates paid-reuse rejection. The real
+                   # diagnostic hook and its guards run in their own tests.
+                   _checkpoint_qa_workprint=lambda *_args, **_kwargs: None,
+                   task_id=SOURCE_ID, work=Path('/tmp/workprint-boundary'),
+                   voice_result={}, scene_durations=[5.0]*6,
+                   package={'narration':'Saved narration'},
+                   audio_qc={}, audio_duration_qc={}, audio_prosody_qc={},
                    _final_visual_rejection_diagnostics=lambda **kwargs: {
                        'rejected': kwargs['rejected_scene_indices']})
     if missing:

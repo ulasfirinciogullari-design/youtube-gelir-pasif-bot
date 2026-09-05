@@ -1145,6 +1145,64 @@ def _checkpoint_overbudget_visuals(
         return
 
 
+def _checkpoint_qa_workprint(
+    task_id: str,
+    work: Path,
+    *,
+    duration_minutes: float,
+    scenes: list[dict],
+    scene_visuals: list,
+    final_reviews: dict,
+    voice_result: dict,
+    scene_durations: list,
+    narration: str,
+    options: dict,
+    audio_qc: dict,
+    audio_duration_qc: dict,
+    audio_prosody_qc: dict,
+) -> None:
+    """Keep a rejected private draft without changing its terminal outcome."""
+    try:
+        if (
+            not isinstance(options, dict) or options.get('mode') != 'production'
+            or options.get('format') != 'shorts' or options.get('music') != 'off'
+            or type(duration_minutes) not in (int, float) or duration_minutes != 0.5
+            or not all(
+                isinstance(gate, dict) and gate.get('available') is True and gate.get('pass') is True
+                for gate in (audio_qc, audio_duration_qc, audio_prosody_qc)
+            )
+        ):
+            return
+        from copy import deepcopy
+        from app.services.qa_workprint import persist_qa_workprint
+
+        # Keep full candidate pools and their exact final best indices. The
+        # helper understands already-collapsed selected singletons; rejected
+        # multi-candidate scenes must not silently fall back to their first clip.
+        fields = persist_qa_workprint(
+            task_id, work,
+            scenes=deepcopy(scenes), scene_visuals=deepcopy(scene_visuals),
+            final_reviews=deepcopy(final_reviews), voice_result=deepcopy(voice_result),
+            scene_durations=deepcopy(scene_durations), narration=narration,
+            options=deepcopy(options), voice_quality_passed=True,
+            target_seconds=duration_minutes * 60,
+        )
+        pointer = fields.get('qa_workprint') if isinstance(fields, dict) else None
+        if (
+            not isinstance(pointer, dict) or type(pointer.get('version')) is not int or pointer['version'] != 1
+            or pointer.get('task_id') != task_id or pointer.get('status') != 'qa_workprint'
+            or any(pointer.get(key) is not False for key in ('qa_approved', 'publish_eligible', 'reusable'))
+        ):
+            return
+        # This private diagnostic field is never result.video_key, SUCCESS or
+        # an automatic-publication input. No spending/claim/QA fields are merged.
+        update_job(task_id, qa_workprint=deepcopy(pointer))
+    except Exception:
+        # Rendering/storage diagnostics are best effort. Always preserve the
+        # real final-visual rejection; never regenerate, review or retry here.
+        return
+
+
 def _preflight_production_shorts_paid_plan(
     options: dict,
     scenes: list[dict],
@@ -6149,6 +6207,15 @@ def run_video_pipeline(
                 raise FinalVisualQualityError(
                     'Final visual quality rejection state is inconsistent'
                 )
+            _checkpoint_qa_workprint(
+                task_id, work,
+                duration_minutes=duration_minutes,
+                scenes=scenes, scene_visuals=scene_visuals,
+                final_reviews=final_reviews, voice_result=voice_result,
+                scene_durations=scene_durations, narration=package['narration'],
+                options=options, audio_qc=audio_qc,
+                audio_duration_qc=audio_duration_qc, audio_prosody_qc=audio_prosody_qc,
+            )
             raise FinalVisualQualityError(
                 'Final visual quality gate rejected: '
                 + json.dumps(diagnostics, ensure_ascii=False, separators=(',', ':'))
