@@ -844,11 +844,11 @@ class RunwayPromptTests(unittest.TestCase):
         self.assertIn("'audio_prosody_qc': audio_prosody_qc", source)
         self.assertIn("'audio_qc_retry_history': audio_qc_retry_history", source)
         self.assertIn(
-            "str(language or '').lower().startswith('tr')",
+            "str(language or '').lower() in {'tr', 'en'}",
             source,
         )
         self.assertIn(
-            "'reason': 'not_applicable_non_turkish_or_long_form'",
+            "'reason': 'not_applicable_language_or_long_form'",
             source,
         )
         self.assertIn(

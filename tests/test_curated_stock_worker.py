@@ -187,10 +187,14 @@ def test_proxy_review_never_changes_raw_pinned_render_fraction(case):
 
 def test_trailing_server_argument_defaults_to_none_and_is_not_read_from_options():
     worker = next(node for node in TREE.body if isinstance(node, ast.FunctionDef) and node.name == 'run_video_pipeline')
-    assert worker.args.args[-1].arg == 'curated_stock_manifest'
-    assert isinstance(worker.args.defaults[-1], ast.Constant) and worker.args.defaults[-1].value is None
+    # The appended voice-replacement argument must not move the existing
+    # positional manifest argument or allow either private input via options.
+    assert [arg.arg for arg in worker.args.args[-2:]] == ['curated_stock_manifest', 'voice_replacement_source_id']
+    assert all(isinstance(value, ast.Constant) and value.value is None for value in worker.args.defaults[-2:])
     assert 'options.get(\'curated_stock_manifest\')' not in ast.unparse(worker)
     assert 'options[\'curated_stock_manifest\']' not in ast.unparse(worker)
+    assert 'options.get(\'voice_replacement_source_id\')' not in ast.unparse(worker)
+    assert 'options[\'voice_replacement_source_id\']' not in ast.unparse(worker)
 
 
 def test_exact_proxy_is_used_only_for_final_critic_not_the_real_renderer():

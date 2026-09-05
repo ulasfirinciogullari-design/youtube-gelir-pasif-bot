@@ -15,6 +15,7 @@ _INSTRUCTION = re.compile(
 _STOP = frozenset('''
     a an and are as at be by for from how in is it its of on or that the their
     this to was were what when where which who why with your
+    put puts make makes made does did
     acaba ama artık asıl aynı bazı ben bile bir bu buna bunu bunun burada böyle
     çünkü da daha de değil diye dünya dünyayı en fakat gibi gün günü gününde
     hakkında hangi her hem hep hiç için ile ilk ise işte kadar kez ki kim nasıl

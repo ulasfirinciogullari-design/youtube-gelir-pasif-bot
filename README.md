@@ -74,6 +74,18 @@ Onarım zincirinde aynı ses tekrar tekrar kısaltılmaz. Başarılı bir claime
 retry'nin public teslimi doğrulandıktan sonra `resume_after_public_retry`
 yalnız hata duraklamasını kaldırır; konu sırası ve yayın kayıtları korunur.
 
+Başarısız Türkçe kısa ses kaydı için Studio'daki `Sesi tek denemeyle yenile`
+işlemi aynı senaryoyu farklı bir ElevenLabs modeliyle bir kez okutabilir.
+Hak, başarısız son işe ve ses dosyasının parmak izine bağlıdır; servis
+çağrısından önce kalıcı olarak tüketilir. Belirsiz yanıt ikinci bir ses
+ücretine yol açmaz. Eski kayıtlar ve kanal ayarları değiştirilmez; yeni ses
+onaylanmamış aday olarak saklanır ve bütün kontroller yeniden çalışır.
+
+Türkçe ve İngilizce kısa videolarda metin ve süre kontrolüne ek olarak
+doğal anlatım denetimi zorunludur. İngilizce birleşik kelimeler ve açık yıl
+ifadelerinin eşdeğer yazımları karşılaştırılabilir; eksik kelime zamanları
+uydurulmaz, değiştirilmiş tarihler veya metinler eşdeğer sayılmaz.
+
 Konu etiketleri eksikse yalnız tamamlanmış videonun başlık ve açıklamasındaki
 ifadelerden sınırlı etiket/hashtag desteği çıkarılır; kaynak bağlantıları,
 üretim talimatları ve kanal dipnotları bu seçime katılmaz. Etiketler veya

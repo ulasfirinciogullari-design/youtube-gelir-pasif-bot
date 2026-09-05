@@ -1012,6 +1012,23 @@ def _ready_video_card(job: dict) -> str:
     )
 
 
+def _voice_replacement_candidate(job: dict) -> bool:
+    """Presentation only; the private reservation rechecks authoritative state."""
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    candidate = job.get('audio_candidate_checkpoint')
+    return bool(
+        job.get('state') == 'FAILURE' and job.get('kind') == 'render'
+        and spec.get('mode') == 'production' and spec.get('format') == 'shorts'
+        and spec.get('duration_minutes') == 0.5 and spec.get('language') == 'tr'
+        and str(job.get('failure_stage') or job.get('stage') or '') in {'audio_qc', 'audio_qc_retry', 'audio_pause_recheck'}
+        and not job.get('retry_child_task_id') and not job.get('retry_claimed') and not job.get('voice_replacement')
+        and isinstance(candidate, dict) and candidate.get('status') == 'unapproved_candidate'
+        and candidate.get('qa_approved') is False and candidate.get('requires_full_qa') is True
+        and isinstance(candidate.get('audio_sha256'), str)
+        and re.fullmatch(r'[0-9a-f]{64}', candidate['audio_sha256'])
+    )
+
+
 def _job_primary_action(job: dict, *, small: bool = True) -> str:
     status = _job_ui_status(job)
     display_status = _job_display_status(job)
@@ -1045,6 +1062,9 @@ def _job_primary_action(job: dict, *, small: bool = True) -> str:
             f'<button class="btn repair{size}" type="submit" aria-label="{aria("Sorunlu sahneyi onar")}">Sorunlu sahneyi onar</button></form>'
         )
     if status == 'failed':
+        if _voice_replacement_candidate(job):
+            label = 'Sesi tek denemeyle yenile'
+            return f'<a class="btn repair{size}" href="/studio/voice-replacement/{task_id}" aria-label="{aria(label)}">{label}</a>'
         return (
             f'<form method="post" action="/studio/retry/{task_id}">'
             f'<button class="btn danger{size}" type="submit" aria-label="{aria("Aynı ayarlarla tekrar dene")}">Aynı ayarlarla tekrar dene</button></form>'
@@ -2134,7 +2154,7 @@ async function poll(){
  if(j.retry_presentation){const latest=j.retry_presentation;setMedia({});setAction('latest:'+latest.task_id,linkAction(`/studio/job/${encodeURIComponent(latest.task_id)}`,'Güncel sonucu aç'));return}
  if(j.publication_status){setMedia(['ready','completed'].includes(ui)?j.result:{});setAction('publication-review',linkAction(j.publication_review_path||'/studio/youtube','Mevcut yüklemeyi kontrol et','repair'));if(j.publication_status==='pending')timer=setTimeout(poll,3000);return}
  if(ui==='repair'){setMedia({});setAction('repair',retryAction('Sorunlu sahneyi onar','repair'));return}
- if(ui==='failed'){setMedia({});setAction('failed',retryAction('Aynı ayarlarla tekrar dene','danger'));return}
+ if(ui==='failed'){setMedia({});if(j.voice_replacement_available===true)setAction('voice-replacement',linkAction(`/studio/voice-replacement/${encodeURIComponent(taskId)}`,'Sesi tek denemeyle yenile','repair'));else setAction('failed',retryAction('Aynı ayarlarla tekrar dene','danger'));return}
  if(ui==='ready'&&state==='AWAITING_APPROVAL'){setAction('storyboard',linkAction(`/studio/plan/${encodeURIComponent(taskId)}`,"Storyboard'u aç",'success'));return}
  if(ui==='ready'||ui==='completed'){const x=j.result||{},youtube=safeExternal(x.youtube_url||(x.youtube||{}).url),download=safeExternal(x.download_url||x.video_url),mediaNote=displayUi==='attention'?'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.':displayUi==='unreviewed'?'Açık kalite onayı yok; YouTube yüklemesi kapalı.':'Kalite onaylanana kadar YouTube yüklemesi gizli kalır.';setMedia(x,mediaNote);if(youtube)setAction('youtube',linkAction(youtube,"YouTube'da aç",'success',true));else if(ui==='ready'&&j.upload_allowed===true)setAction('private-upload',linkAction('/studio/youtube','Gizli yükle','success'));else if(download&&displayUi==='attention')setAction('manual-review',linkAction(download,'Videoyu incele','repair',true));else if(download&&displayUi==='unreviewed')setAction('unreviewed',linkAction(download,'Videoyu incele','secondary',true));else if(download)setAction('download',linkAction(download,'Videoyu aç','secondary',true));else setAction('ready-refresh',linkAction(`/studio/job/${encodeURIComponent(taskId)}`,'Sonucu yenile'));return}
  const child=String(j.retry_child_task_id||'').trim(),target=child||taskId,label=child?(j.repair_claimed?'Onarım durumunu aç':'Yeniden denemeyi aç'):'Durumu yenile';setAction('running:'+target,linkAction(`/studio/job/${encodeURIComponent(target)}`,label));timer=setTimeout(poll,3000);
@@ -2220,6 +2240,7 @@ def studio_job_api(task_id: str, studio_token: str | None = Cookie(default=None,
     record = _with_publication_presentation(_sync_job(task_id), get_job, upload_lookup=get_upload_record)
     retry_presentation = _terminal_retry_presentation(record, get_job, upload_lookup=get_upload_record)
     payload = dict(record)
+    payload['voice_replacement_available'] = _voice_replacement_candidate(record)
     # Poll only a same-origin owner route, never private object keys or a bearer URL.
     payload.pop('qa_workprint', None)
     workprint_path = _qa_workprint_path(record)
@@ -2539,6 +2560,75 @@ def studio_retry(task_id: str, studio_token: str | None = Cookie(default=None, a
         except Exception:
             pass
     return RedirectResponse(f'/studio/job/{child_task_id}', status_code=303)
+
+
+@router.get('/studio/voice-replacement/{task_id}', response_class=HTMLResponse)
+def studio_voice_replacement_page(task_id: str, studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    _require_auth(studio_token)
+    record = get_job(task_id)
+    if not isinstance(record, dict) or not _voice_replacement_candidate(record):
+        raise HTTPException(status_code=409, detail='Bu deneme için yeni ses kaydı açılamıyor')
+    safe_id = escape(task_id, quote=True)
+    checksum = record['audio_candidate_checkpoint']['audio_sha256']
+    body = (
+        '<section class="card"><h1>Ses kaydını yenile</h1>'
+        '<p>Senaryo ve kanal ayarları korunur. Farklı bir anlatım modeliyle yalnız bir yeni kayıt alınır; '
+        'metin, telaffuz ve doğallık kontrolleri yeniden çalışır. Eski denemeler silinmez.</p>'
+        f'<form method="post" action="/studio/voice-replacement/{safe_id}">'
+        f'<input type="hidden" name="expected_audio_sha256" value="{checksum}">'
+        '<button class="btn repair" type="submit">Tek yeni ses kaydını başlat</button></form></section>'
+    )
+    response = _shell(body, active='history', title='Ses kaydını yenile')
+    response.headers['Referrer-Policy'] = 'same-origin'
+    return response
+
+
+@router.post('/studio/voice-replacement/{task_id}')
+def studio_voice_replacement(
+    task_id: str, request: Request, expected_audio_sha256: str = Form(...),
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    _require_auth(studio_token)
+    from app.youtube_routes import _require_same_origin
+    from app.services.voice_replacement import VoiceReplacementError, reserve_voice_replacement
+
+    _require_same_origin(request)
+    record = get_job(task_id)
+    if not isinstance(record, dict):
+        raise HTTPException(status_code=404, detail='Görev bulunamadı')
+    child_id, token = str(uuid4()), secrets.token_urlsafe(32)
+    try:
+        dispatch = reserve_voice_replacement(task_id, child_id, token, expected_audio_sha256)
+    except VoiceReplacementError:
+        raise HTTPException(status_code=409, detail='Ses yenileme kaydı güvenle ayrılamadı') from None
+    except Exception:
+        raise HTTPException(status_code=503, detail='Ses yenileme durumu doğrulanamıyor') from None
+    if not dispatch.get('claimed'):
+        existing = _canonical_task_id(dispatch.get('child_task_id'))
+        if existing:
+            return RedirectResponse(f'/studio/job/{existing}', status_code=303)
+        raise HTTPException(status_code=409, detail='Ses yenileme daha önce ayrıldı')
+    spec = dict(dispatch['spec'])
+    options = {key: value for key, value in spec.items() if key not in {'topic', 'duration_minutes', 'language', 'channel_id'}}
+    create_job(child_id, spec, kind='render', parent_id=task_id)
+    update_job(child_id, voice_replacement=dispatch['voice_replacement'])
+    args = (spec['topic'], spec['duration_minutes'], spec['language'], spec.get('channel_id'),
+            options, None, task_id, None, task_id)
+    try:
+        run_video_pipeline.apply_async(args=args, task_id=child_id)
+    except Exception:
+        try:
+            mark_retry_dispatch(task_id, token, 'uncertain')
+        except Exception:
+            pass
+        update_job(child_id, state='PENDING', stage='dispatch_uncertain',
+                   message='Kuyruk kabulü doğrulanıyor; ikinci ses kaydı başlatılmayacak.')
+    else:
+        try:
+            mark_retry_dispatch(task_id, token, 'dispatched')
+        except Exception:
+            pass
+    return RedirectResponse(f'/studio/job/{child_id}', status_code=303)
 
 
 @router.post('/studio/logout')
