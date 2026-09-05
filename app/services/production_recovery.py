@@ -1,8 +1,9 @@
-"""Explicit, private-delivery-only recovery of a failed production schedule.
+"""Explicit, delivery-proven recovery of a failed production schedule.
 
 This does not retry, enqueue, upload, or publish anything. It releases only a
 known failed-render pause after its bounded, claimed retry lineage has already
-completed automated QA and a private upload. All evidence is compared again in
+completed automated QA and the specifically required private or public delivery.
+All evidence is compared again in
 one Redis transaction; retry, spending, upload, and series ledgers are read-only.
 """
 from __future__ import annotations
@@ -21,11 +22,14 @@ from app.services.channel_production import (
 )
 from app.services.studio_state import (
     JOB_PREFIX, RETRY_CHILD_CLAIM_PREFIX, RETRY_DISPATCH_PREFIX,
+    RETRY_CHILD_EXECUTION_PREFIX, REPAIR_CHECKPOINT_CLAIM_PREFIX,
 )
+from app.services.youtube_automation import contains_synthetic_media
 from app.services.youtube_publish_state import UPLOAD_PREFIX
 
 
 RESUME_PREFIX = PRODUCTION_PREFIX + 'resume:'
+PUBLIC_RESUME_PREFIX = PRODUCTION_PREFIX + 'resume_public:'
 MAX_RETRY_HOPS = 16
 _ID = re.compile(r'^[A-Za-z0-9_-]{8,128}$')
 _TASK_ID = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
@@ -120,8 +124,17 @@ def _private(record: dict) -> bool:
     )
 
 
+def _public(record: dict) -> bool:
+    return (
+        record.get('privacy_status') == 'public'
+        and record.get('release_status') == 'public'
+        and not record.get('scheduled_publish_at')
+        and not record.get('release_error_code')
+    )
+
+
 def _audit_result(raw: str, status: str, channel_id: str, original_id: str,
-                  recovered_id: str, revision: str) -> dict:
+                  recovered_id: str, revision: str, release_mode: str = 'private') -> dict:
     audit = _object(raw, 'recovery_audit_invalid')
     _require(
         audit.get('version') == 1 and audit.get('channel_id') == channel_id
@@ -139,6 +152,12 @@ def _audit_result(raw: str, status: str, channel_id: str, original_id: str,
                 and audit[k] >= 0 for k in ('resumed_at', 'next_due')),
         'recovery_audit_invalid',
     )
+    if release_mode == 'public':
+        _require(audit.get('release_mode') == 'public'
+                 and audit.get('release_status') == 'public'
+                 and audit.get('caption_uploaded') is True
+                 and type(audit.get('contains_synthetic_media')) is bool,
+                 'recovery_audit_invalid')
     # An idempotent response describes the earlier transition, not eligibility
     # now: a later production job may already have reserved the next topic.
     return {**audit, 'status': status}
@@ -159,6 +178,34 @@ def resume_after_private_retry(
     are accepted. The next topic is delayed by at least one current interval
     from the first successful call. Repeated calls never shift that due time.
     """
+    return _resume_after_retry(channel_id, original_task_id, recovered_task_id,
+                               expected_profile_revision, now=now, release_mode='private')
+
+
+def resume_after_public_retry(
+    channel_id: str,
+    original_task_id: str,
+    recovered_task_id: str,
+    expected_profile_revision: str,
+    *,
+    now: float | None = None,
+) -> dict:
+    """Clear a failed-render pause only after its claimed retry is public.
+
+    This is an explicit server-side reconciliation, not an automatic retry or
+    publication action. The current public profile and original frozen profile
+    must be identical. All caption/disclosure/required-thumbnail proofs must
+    already exist. Separate public audits cannot satisfy private recovery.
+    """
+    return _resume_after_retry(channel_id, original_task_id, recovered_task_id,
+                               expected_profile_revision, now=now, release_mode='public')
+
+
+def _resume_after_retry(
+    channel_id: str, original_task_id: str, recovered_task_id: str,
+    expected_profile_revision: str, *, now: float | None, release_mode: str,
+) -> dict:
+    public = release_mode == 'public'
     _require(isinstance(channel_id, str) and _ID.fullmatch(channel_id) is not None,
              'recovery_channel_invalid')
     _require(all(isinstance(value, str) and _TASK_ID.fullmatch(value) is not None
@@ -171,20 +218,27 @@ def resume_after_private_retry(
              'recovery_time_invalid')
     try:
         client = _redis()
-        audit_key = RESUME_PREFIX + channel_id + ':' + original_task_id
+        audit_key = (PUBLIC_RESUME_PREFIX if public else RESUME_PREFIX) + channel_id + ':' + original_task_id
         prior = client.get(audit_key)
         if prior is not None:
             return _audit_result(prior, 'already_resumed', channel_id, original_task_id,
-                                 recovered_task_id, expected_profile_revision)
+                                 recovered_task_id, expected_profile_revision, release_mode)
         snapshots = []
         profile = _json_snapshot(client, PROFILE_PREFIX + channel_id, snapshots)
         state = _hash_snapshot(client, CHANNEL_STATE_PREFIX + channel_id, snapshots)
         connection = _json_snapshot(client, OAUTH_CHANNEL_PREFIX + channel_id, snapshots)
+        if public:
+            # Public recovery also binds the actual encrypted credential bytes,
+            # not just existence, through the final atomic compare.
+            credential_key = OAUTH_CREDENTIAL_PREFIX + channel_id
+            credential = client.get(credential_key)
+            _require(isinstance(credential, str) and bool(credential), 'recovery_connection_missing')
+            snapshots.append((credential_key, {'kind': 'string', 'value': credential}))
         _require(
             profile.get('channel_id') == channel_id
             and profile.get('profile_revision') == expected_profile_revision
             and profile.get('production_enabled') is True
-            and profile.get('auto_publish') is True and profile.get('release_mode') == 'private',
+            and profile.get('auto_publish') is True and profile.get('release_mode') == release_mode,
             'recovery_profile_ineligible',
         )
         interval = profile.get('production_interval_hours')
@@ -243,6 +297,22 @@ def resume_after_private_retry(
                     and bool(dispatch.get('token')) and claim.get('token') == dispatch['token'],
                     'recovery_lineage_invalid',
                 )
+                if public:
+                    execution_key = RETRY_CHILD_EXECUTION_PREFIX + child['task_id']
+                    execution = client.get(execution_key)
+                    snapshots.append((execution_key, {
+                        'kind': 'none' if execution is None else 'string', 'value': execution,
+                    }))
+                    _require(execution == dispatch['token'] and dispatch.get('mode') in {'full', 'repair'},
+                             'recovery_lineage_invalid')
+                    if dispatch['mode'] == 'repair':
+                        repair_key = REPAIR_CHECKPOINT_CLAIM_PREFIX + task_id
+                        repair_token = client.get(repair_key)
+                        snapshots.append((repair_key, {
+                            'kind': 'none' if repair_token is None else 'string', 'value': repair_token,
+                        }))
+                        _require(job.get('repair_claimed') is True and repair_token == dispatch['token'],
+                                 'recovery_lineage_invalid')
             chain.append(job)
             if task_id == original_task_id:
                 _require(not job.get('parent_id'), 'recovery_original_not_scheduled')
@@ -274,10 +344,24 @@ def resume_after_private_retry(
         for job in chain:
             _require(json.dumps({key: job['spec'].get(key) for key in _STABLE_SPEC}, sort_keys=True)
                      == stable, 'recovery_spec_changed')
+        if public:
+            # Only server-created transport metadata may differ between retries;
+            # preserve editorial decisions and any future frozen render options.
+            def frozen_spec(spec):
+                return json.dumps({key: value for key, value in spec.items()
+                                   if key not in {'workflow', 'repair_source_task_id'}}, sort_keys=True)
+            expected_spec = frozen_spec(original)
+            _require(all(frozen_spec(job['spec']) == expected_spec for job in chain),
+                     'recovery_spec_changed')
         result = chain[0].get('result')
         _require(isinstance(result, dict) and bool(result.get('video_key'))
                  and result.get('quality_disposition') == 'automated_qc_pass'
                  and result.get('manual_qa_required') is False, 'recovery_qa_not_approved')
+        if public:
+            _require(result.get('task_id') == recovered_task_id and result.get('status') == 'complete'
+                     and result.get('video_key') == f'videos/{recovered_task_id}/final.mp4'
+                     and result.get('caption_key') == f'videos/{recovered_task_id}/captions.{original["language"]}.srt',
+                     'recovery_qa_not_approved')
         automation = result.get('youtube_automation')
         _require(isinstance(automation, dict)
                  and automation.get('status') in {'queued', 'reserved', 'uploading', 'complete'},
@@ -293,30 +377,31 @@ def resume_after_private_retry(
             and publisher.get('state') == 'SUCCESS' and publisher.get('parent_id') == recovered_task_id
             and isinstance(publish_spec, dict) and publish_spec.get('source_task_id') == recovered_task_id
             and isinstance(delivered, dict) and delivered.get('source_task_id') == recovered_task_id
-            and delivered.get('status') == 'complete' and _private(delivered),
+            and delivered.get('status') == 'complete'
+            and (_public(delivered) if public else _private(delivered)),
             'recovery_publication_not_complete',
         )
         video_id = delivered.get('youtube_video_id')
         _require(isinstance(video_id, str) and _VIDEO_ID.fullmatch(video_id) is not None,
                  'recovery_video_invalid')
         attribution = result.get('youtube')
-        _require(isinstance(attribution, dict) and _private(attribution)
+        _require(isinstance(attribution, dict) and (_public(attribution) if public else _private(attribution))
                  and attribution.get('video_id') == video_id, 'recovery_attribution_invalid')
         upload = _json_snapshot(client, UPLOAD_PREFIX + recovered_task_id, snapshots)
         plan = upload.get('publish_plan')
         _require(
             upload.get('source_task_id') == recovered_task_id and upload.get('publish_task_id') == publish_id
             and upload.get('status') == 'complete' and upload.get('youtube_video_id') == video_id
-            and upload.get('requested_release_mode') == 'private' and upload.get('release_status') == 'private'
+            and upload.get('requested_release_mode') == release_mode and upload.get('release_status') == release_mode
             and upload.get('side_effect_possible') is True
-            and upload.get('release_side_effect_possible') is False
+            and upload.get('release_side_effect_possible') is public
             and not upload.get('requested_publish_at') and not upload.get('release_error_code')
             and isinstance(plan, dict) and plan.get('source_task_id') == recovered_task_id
-            and plan.get('release_mode') == 'private' and not plan.get('publish_at')
+            and plan.get('release_mode') == release_mode and not plan.get('publish_at')
             and plan.get('profile_revision') == expected_profile_revision
-            and publish_spec.get('release_mode') == 'private'
+            and publish_spec.get('release_mode') == release_mode
             and publish_spec.get('privacy_status') == 'private',
-            'recovery_upload_not_private',
+            'recovery_upload_not_public' if public else 'recovery_upload_not_private',
         )
         for record in (publish_spec, delivered, attribution):
             _require(record.get('target_channel_id') == channel_id
@@ -326,6 +411,26 @@ def resume_after_private_retry(
         _require(upload.get('target_channel_id') == channel_id
                  and upload.get('connection_id') == connection_id
                  and plan.get('target_channel_id') == channel_id, 'recovery_publication_binding_changed')
+        if public:
+            _require(upload.get('version') == 2 and _public(upload)
+                     and bool(upload.get('release_completed_at'))
+                     and delivered.get('task_id') == publish_id
+                     and automation.get('target_channel_id') == channel_id
+                     and automation.get('profile_revision') == expected_profile_revision
+                     and automation.get('release_mode') == 'public',
+                     'recovery_publication_binding_changed')
+            disclosure = plan.get('contains_synthetic_media')
+            _require(type(disclosure) is bool
+                     and (not contains_synthetic_media(chain[0]) or disclosure is True),
+                     'recovery_disclosure_unverified')
+            for record in (delivered, attribution):
+                _require(record.get('contains_synthetic_media') is disclosure,
+                         'recovery_disclosure_unverified')
+                _require(record.get('caption_uploaded') is True
+                         and not record.get('caption_error_code')
+                         and not record.get('thumbnail_error_code'), 'recovery_assets_unverified')
+                if plan.get('require_thumbnail') is True or profile.get('require_thumbnail') is True:
+                    _require(record.get('thumbnail_uploaded') is True, 'recovery_assets_unverified')
         for ancestor in chain[1:]:
             prior_upload = _json_snapshot(client, UPLOAD_PREFIX + ancestor['task_id'], snapshots, optional=True)
             _require(prior_upload is None or (
@@ -344,6 +449,9 @@ def resume_after_private_retry(
             'previous_paused_reason': state['paused_reason'], 'previous_last_result': state['last_result'],
             'resumed_at': now, 'next_due': max(next_due, now + interval * 3600),
         }
+        if public:
+            audit.update(release_mode='public', release_status='public', caption_uploaded=True,
+                         contains_synthetic_media=plan['contains_synthetic_media'])
         keys = [audit_key, CHANNEL_STATE_PREFIX + channel_id, ACTIVE_KEY,
                 OAUTH_CREDENTIAL_PREFIX + channel_id, OAUTH_CHANNEL_INDEX]
         keys.extend(key for key, _ in snapshots)
@@ -354,7 +462,7 @@ def resume_after_private_retry(
         )
         _require(status in {'resumed', 'already_resumed'}, 'recovery_' + str(status))
         return _audit_result(raw, status, channel_id, original_task_id, recovered_task_id,
-                             expected_profile_revision)
+                             expected_profile_revision, release_mode)
     except ProductionRecoveryError:
         # Another identical caller can finish after our initial audit read but
         # before we finish validation. Its durable result wins; do not mistake
@@ -365,7 +473,7 @@ def resume_after_private_retry(
             raise ProductionRecoveryError('recovery_state_unavailable') from None
         if prior is not None:
             return _audit_result(prior, 'already_resumed', channel_id, original_task_id,
-                                 recovered_task_id, expected_profile_revision)
+                                 recovered_task_id, expected_profile_revision, release_mode)
         raise
     except Exception:
         # Do not log raw records, claim tokens, credentials, or provider errors.

@@ -66,6 +66,19 @@ Belirsiz yayın yanıtı otomatik tekrarlanmaz. `Hemen sıradaki videoyu üret`
 ise yalnız boş ve duraklatılmamış kanalın mevcut sonraki konusunu öne alır;
 konu sırasını sıfırlamaz ve aynı profil sürümündeki tekrarlar yeni iş açmaz.
 
+Türkçe kısa anlatımda ses denetimi cümle içi uzun duraklama bulursa, gerçek
+ses dalgası ve aynı dosyaya bağlı kelime zamanlarıyla kanıtlanan boşluklar
+bir defa kısaltılabilir. Kelimeler ve doğal nefes korunur; yeni ses satın
+alınmaz. Düzeltilen sesin metin, süre ve doğallık kontrolleri baştan çalışır.
+Onarım zincirinde aynı ses tekrar tekrar kısaltılmaz. Başarılı bir claimed
+retry'nin public teslimi doğrulandıktan sonra `resume_after_public_retry`
+yalnız hata duraklamasını kaldırır; konu sırası ve yayın kayıtları korunur.
+
+Konu etiketleri eksikse yalnız tamamlanmış videonun başlık ve açıklamasındaki
+ifadelerden sınırlı etiket/hashtag desteği çıkarılır; kaynak bağlantıları,
+üretim talimatları ve kanal dipnotları bu seçime katılmaz. Etiketler veya
+yükleme sıklığı keşfet, izlenme ya da gelir garantisi değildir.
+
 Konu listesi en fazla 60 girdidir ve tüketilince durur; otomatik trend
 araştırması, konu listesini yenileme ve Analytics geri beslemesi bu
 zamanlayıcının parçası değildir. OAuth izni iptal edilirse veya Google

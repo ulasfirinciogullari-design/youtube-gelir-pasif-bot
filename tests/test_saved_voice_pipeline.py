@@ -90,6 +90,15 @@ def test_legacy_job_without_candidate_keeps_existing_path(recovery):
     r.loader.assert_not_called()
 
 
+def test_saved_retry_inherits_prior_pause_edit_and_cannot_trim_it_again(recovery):
+    r = recovery
+    audit = {'requires_full_qa': True, 'output_sha256': 'a' * 64}
+    r.source['audio_pause_repair'] = audit
+    result = r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    assert result['voice_result']['_internal_pause_repair_attempted'] is True
+    assert r.namespace['update_job'].call_args.kwargs['audio_pause_repair'] == audit
+
+
 def test_other_formats_are_not_changed(recovery):
     r = recovery
     r.spec['mode'] = 'preview'
