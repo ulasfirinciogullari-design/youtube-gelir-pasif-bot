@@ -191,6 +191,27 @@ def _visual_diagnostics_link(job: dict) -> str:
     )
 
 
+def _qa_workprint_path(job: dict) -> str:
+    if not isinstance(job, dict) or not job.get('qa_workprint'):
+        return ''
+    from app.services.qa_workprint_access import validated_pointer
+    if validated_pointer(job) is None:
+        return ''
+    return f'/studio/job/{job["task_id"]}/qa-workprint'
+
+
+def _qa_workprint_banner(job: dict) -> str:
+    path = _qa_workprint_path(job)
+    if not path:
+        return ''
+    return (
+        '<section class="notice" aria-label="İnceleme taslağı">'
+        '<b>Bu denemenin inceleme taslağı saklandı.</b>'
+        '<p>Kalite kontrolünü geçmedi. Yayına hazır değildir ve YouTube’a gönderilmez.</p>'
+        f'<a class="btn secondary" href="{path}">İnceleme videosunu aç</a></section>'
+    )
+
+
 def _read_visual_diagnostic_html(key: str, digest: str) -> bytes:
     """Read one bounded private object, never sign, redirect, or expose its key."""
     from app.services.storage import _client
@@ -2060,6 +2081,7 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
 <div class="progress" id="progress" role="progressbar" aria-label="Üretim ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{progress}" style="margin:14px 0"{progress_hidden}><div class="bar" id="bar" style="width:{progress}%"></div></div>
 <div class="result-action" id="result">{primary_action}</div>
 <div class="result-media-host" id="result-media"{media_hidden}>{media_panel}</div>
+<div id="qa-workprint-host">{_qa_workprint_banner(record)}</div>
 <details class="technical-details"><summary>Teknik ayrıntılar</summary><div class="technical-body"><div><b>İş kimliği</b><br><code>{escape(task_id)}</code></div><div><b>Aşama kodu</b><br><code id="technical-stage">{escape(stage_code)}</code></div><div id="technical-error-row"{error_hidden}><b>Hata kaydı</b><br><code id="technical-error">{escape(initial_error)}</code></div>{_visual_diagnostics_link(record)}</div></details>
 </article>
 <nav class="back-links" aria-label="Geri dön"><a href="/studio/history?status={back_status}">Video listesine dön</a><a href="/studio">Yeni video oluştur</a></nav>
@@ -2076,10 +2098,11 @@ function mediaMarkup(video,captions,note){const captionAction=captions?`<a class
 function setMedia(result,note='Kalite onaylanana kadar YouTube yüklemesi gizli kalır.'){const out=document.getElementById('result-media'),x=result||{},video=safeExternal(x.download_url||x.video_url),captions=safeExternal(x.caption_url||x.captions_url||x.subtitle_url),current=out.querySelector('video');if(!video){out.replaceChildren();out.hidden=true;return}if(current&&current.src===video){const noteNode=out.querySelector('.media-note');if(noteNode&&noteNode.textContent!==note)noteNode.textContent=note;out.hidden=false;return}out.innerHTML=mediaMarkup(video,captions,note);out.hidden=false}
 function setStatusMessage(message){const out=document.getElementById('status-message'),next=String(message||'');if(out.textContent!==next)out.textContent=next}
 function showTechnical(j){const stage=String(j.failure_stage||j.stage||'—');document.getElementById('technical-stage').textContent=stage;const error=String(j.error||'').trim();document.getElementById('technical-error').textContent=error;document.getElementById('technical-error-row').hidden=!error}
+function showWorkprint(j){const host=document.getElementById('qa-workprint-host'),path=`/studio/job/${encodeURIComponent(taskId)}/qa-workprint`;if(j.qa_workprint_path!==path){host.replaceChildren();return}if(host.querySelector('a'))return;host.innerHTML=`<section class="notice" aria-label="İnceleme taslağı"><b>Bu denemenin inceleme taslağı saklandı.</b><p>Kalite kontrolünü geçmedi. Yayına hazır değildir ve YouTube’a gönderilmez.</p>${linkAction(path,'İnceleme videosunu aç')}</section>`}
 async function poll(){
  try{const r=await fetch(`/studio/api/job/${encodeURIComponent(taskId)}`,{cache:'no-store'});if(!r.ok)throw new Error('status');const j=await r.json();
  const state=String(j.state||'PENDING'),ui=String(j.ui_status||'running'),stage=String(j.stage_label||j.stage||'Hazırlanıyor'),p=Math.max(0,Math.min(100,Number(j.progress||0)));
- const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label'),displayUi=String(j.display_status||ui);
+ const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label'),displayUi=String(j.display_status||ui);showWorkprint(j);
  panel.dataset.status=displayUi;pill.className='state '+displayUi;pill.textContent=labels[displayUi]||labels.running;
  document.getElementById('bar').style.width=p+'%';progress.setAttribute('aria-valuenow',String(p));progress.hidden=ui!=='running';document.getElementById('stage').textContent=stage+(ui==='running'?' · %'+p:'');setStatusMessage(j.ui_status_message);showTechnical(j);
  if(j.retry_presentation){const latest=j.retry_presentation;setMedia({});setAction('latest:'+latest.task_id,linkAction(`/studio/job/${encodeURIComponent(latest.task_id)}`,'Güncel sonucu aç'));return}
@@ -2117,12 +2140,65 @@ def studio_visual_diagnostics(task_id: str, studio_token: str | None = Cookie(de
     return HTMLResponse(content=payload, headers=_VISUAL_DIAGNOSTIC_HEADERS)
 
 
+def _owner_qa_workprint(task_id: str, studio_token: str | None):
+    _require_auth(studio_token)
+    if not _canonical_task_id(task_id):
+        raise HTTPException(status_code=404, detail='İnceleme taslağı bulunamadı')
+    from app.services.qa_workprint_access import validated_pointer
+    try:
+        record = get_job(task_id)
+    except Exception:
+        raise HTTPException(status_code=503, detail='İnceleme taslağı şu anda açılamıyor') from None
+    pointer = validated_pointer(record, task_id)
+    if pointer is None:
+        raise HTTPException(status_code=404, detail='İnceleme taslağı bulunamadı')
+    return record, pointer
+
+
+@router.get('/studio/job/{task_id}/qa-workprint', response_class=HTMLResponse)
+def studio_qa_workprint(task_id: str, studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    record, _pointer = _owner_qa_workprint(task_id, studio_token)
+    body = (
+        '<div class="hero"><div class="hero-copy"><div class="eyebrow">Yalnızca özel inceleme</div>'
+        f'<h1>{escape(_job_title(record))}</h1></div></div>'
+        '<section class="card"><div class="section-title"><h2>İnceleme taslağı</h2>'
+        '<span class="badge">Yayınlanamaz</span></div>'
+        '<p class="notice">Bu çalışma kopyası görsel kalite kontrolünü geçmedi. '
+        'Onaylı final değildir ve YouTube’a gönderilmez. Ses, sahne geçişleri ve '
+        'görüntü–anlatım uyumu bu kopya üzerinden incelenebilir.</p>'
+        '<div class="result-video-frame"><video class="result-video" controls playsinline '
+        f'preload="metadata" src="/studio/job/{task_id}/qa-workprint/video">'
+        'Tarayıcın video oynatmayı desteklemiyor.</video></div></section>'
+        f'<nav class="back-links"><a href="/studio/job/{task_id}">Deneme kaydına dön</a></nav>'
+    )
+    response = _shell(body, active='history', title='Özel inceleme taslağı')
+    response.headers.update({
+        'Cache-Control': 'private, no-store', 'Referrer-Policy': 'no-referrer',
+        'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY',
+        'Content-Security-Policy': "default-src 'none'; media-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+    })
+    return response
+
+
+@router.get('/studio/job/{task_id}/qa-workprint/video')
+@router.head('/studio/job/{task_id}/qa-workprint/video')
+def studio_qa_workprint_video(task_id: str, request: Request, studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    _record, pointer = _owner_qa_workprint(task_id, studio_token)
+    from app.services.qa_workprint_access import stream_response
+    return stream_response(pointer, request)
+
+
 @router.get('/studio/api/job/{task_id}')
 def studio_job_api(task_id: str, studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
     _require_auth(studio_token)
     record = _with_publication_presentation(_sync_job(task_id), get_job, upload_lookup=get_upload_record)
     retry_presentation = _terminal_retry_presentation(record, get_job, upload_lookup=get_upload_record)
     payload = dict(record)
+    # Poll only a same-origin owner route, never private object keys or a bearer URL.
+    payload.pop('qa_workprint', None)
+    workprint_path = _qa_workprint_path(record)
+    if workprint_path:
+        payload['qa_workprint_path'] = workprint_path
     payload['state_label'] = STATE_LABELS.get(str(payload.get('state')), str(payload.get('state') or ''))
     stage_key = (
         payload.get('failure_stage')
