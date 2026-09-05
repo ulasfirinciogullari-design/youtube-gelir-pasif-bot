@@ -718,15 +718,77 @@ def set_stage(
 
 
 def mark_success(task_id: str, result: dict, *, state: str = 'SUCCESS') -> dict:
-    return update_job(
-        task_id,
-        state=state,
-        stage='complete' if state == 'SUCCESS' else 'awaiting_approval',
-        progress=100,
-        message='Video hazır.' if state == 'SUCCESS' else 'Storyboard onay bekliyor.',
-        result=result,
-        error=None,
-    )
+    if not isinstance(result, dict) or (
+        result.get('task_id') is not None and result['task_id'] != task_id
+    ):
+        raise ValueError('Completion result does not match task')
+    # A Celery result is a snapshot from before the asynchronous publisher ran.
+    # Read its two owned fields inside WATCH, never merge a stale dashboard read
+    # and then save the whole job over a concurrent publisher update.
+    incoming = json.loads(json.dumps(result, default=_json_default))
+    now = time.time()
+    completion = {
+        'state': state,
+        'stage': 'complete' if state == 'SUCCESS' else 'awaiting_approval',
+        'progress': 100,
+        'message': 'Video hazır.' if state == 'SUCCESS' else 'Storyboard onay bekliyor.',
+        'result': incoming,
+        'error': None,
+    }
+    fallback = {
+        'task_id': task_id, 'created_ts': now, 'created_at': _now_iso(),
+        'spec': {}, 'kind': 'render', **completion,
+    }
+    fallback['result'] = {
+        key: value for key, value in incoming.items()
+        if key not in {'youtube', 'youtube_automation'}
+    }
+    try:
+        client = _client()
+        for _ in range(5):
+            try:
+                with client.pipeline() as pipe:
+                    pipe.watch(_job_key(task_id))
+                    raw = pipe.get(_job_key(task_id))
+                    record = json.loads(raw) if raw is not None else {**fallback, 'result': {}}
+                    if not isinstance(record, dict) or record.get('task_id') != task_id:
+                        raise ValueError('Completion record does not match task')
+                    if incoming.get('source_task_id') is not None:
+                        spec = record.get('spec') if isinstance(record.get('spec'), dict) else {}
+                        if (
+                            record.get('kind') != 'publish'
+                            or incoming['source_task_id'] != spec.get('source_task_id')
+                            or incoming['source_task_id'] != record.get('parent_id')
+                        ):
+                            raise ValueError('Completion source does not match task')
+                    merged = dict(incoming)
+                    if record.get('kind', 'render') == 'render':
+                        prior = record.get('result') if isinstance(record.get('result'), dict) else {}
+                        for field in ('youtube', 'youtube_automation'):
+                            # Only the publisher's narrow atomic writer may add
+                            # these fields; cached render output cannot invent them.
+                            merged.pop(field, None)
+                            if field in prior:
+                                merged[field] = prior[field]
+                    record.update(completion)
+                    record['result'] = merged
+                    record['updated_at'] = _now_iso()
+                    encoded = json.dumps(record, ensure_ascii=False, default=_json_default)
+                    pipe.multi()
+                    pipe.setex(_job_key(task_id), JOB_TTL_SECONDS, encoded)
+                    pipe.zadd(JOB_INDEX, {task_id: float(record.get('created_ts') or now)})
+                    pipe.expire(JOB_INDEX, JOB_TTL_SECONDS)
+                    pipe.execute()
+                    return record
+            except redis.WatchError:
+                continue
+    except ValueError:
+        raise
+    except Exception:
+        # Keep the existing registry-outage best effort, but never fall back to
+        # an unguarded write that could erase a completed remote upload.
+        pass
+    return get_job(task_id) or fallback
 
 
 def mark_failure(task_id: str, error: Exception | str) -> dict:

@@ -1035,12 +1035,10 @@ def test_sync_job_does_not_refresh_activity_for_unchanged_task_info(
     changed = studio._sync_job('stuck-task')
 
     assert changed['progress'] == 7
-    assert updates == [('stuck-task', {
-        'state': 'RETRY',
-        'stage': 'plan_retry',
-        'progress': 7,
-        'message': 'Plan yeniden deneniyor.',
-    })]
+    # Worker set_stage owns durable progress; stale Celery snapshots are only
+    # presented and must not overwrite a success/publication arriving meanwhile.
+    assert changed['updated_at'] == record['updated_at']
+    assert updates == []
 
 
 def test_dashboard_failure_only_state_stays_out_of_action_queue(

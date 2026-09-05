@@ -1762,6 +1762,22 @@ def _sync_job(task_id: str) -> dict:
             record = mark_failure(task_id, error)
     elif state == 'SUCCESS':
         result = task.result if isinstance(task.result, dict) else {'result': str(task.result)}
+        if result.get('task_id') is not None and result['task_id'] != task_id:
+            return record
+        if result.get('source_task_id') is not None:
+            spec = record.get('spec') if isinstance(record.get('spec'), dict) else {}
+            if (
+                record.get('kind') != 'publish'
+                or result['source_task_id'] != spec.get('source_task_id')
+                or result['source_task_id'] != record.get('parent_id')
+            ):
+                return record
+        persisted_result = record.get('result')
+        comparable_result = result
+        if record.get('kind', 'render') == 'render' and isinstance(persisted_result, dict):
+            publisher_fields = {'youtube', 'youtube_automation'}
+            persisted_result = {k: v for k, v in persisted_result.items() if k not in publisher_fields}
+            comparable_result = {k: v for k, v in result.items() if k not in publisher_fields}
         target_state = (
             'AWAITING_APPROVAL'
             if result.get('status') == 'plan_ready' else 'SUCCESS'
@@ -1778,12 +1794,17 @@ def _sync_job(task_id: str) -> dict:
             str(record.get('state') or '') != target_state,
             str(record.get('stage') or '') != target_stage,
             _job_progress(record) != 100,
-            record.get('result') != result,
+            persisted_result != comparable_result,
             record.get('error') is not None,
             str(record.get('message') or '') != target_message,
         )):
             record = mark_success(task_id, result, state=target_state)
-    elif isinstance(task.info, dict):
+    elif (
+        isinstance(task.info, dict)
+        and record.get('state') not in {'SUCCESS', 'AWAITING_APPROVAL'}
+    ):
+        # The worker persists success before routing a publish and returning to
+        # Celery. Its previous progress snapshot cannot downgrade that result.
         next_fields = {
             'state': state,
             'stage': task.info.get('stage') or record.get('stage'),
@@ -1795,7 +1816,10 @@ def _sync_job(task_id: str) -> dict:
             'message': task.info.get('message') or record.get('message'),
         }
         if any(record.get(key) != value for key, value in next_fields.items()):
-            record = update_job(task_id, **next_fields)
+            # set_stage owns durable progress. A Celery snapshot may already
+            # be stale after this GET, so it is presentation-only and must not
+            # overwrite a concurrent success or publisher update.
+            record = {**record, **next_fields}
     if str(record.get('state') or state) == 'FAILURE':
         try:
             repair_state = sync_repair_checkpoint_state(task_id)
