@@ -18,7 +18,7 @@ from uuid import UUID
 
 from botocore.exceptions import ClientError
 
-from app.services import storage, studio_state
+from app.services import audio_checkpoint, storage, studio_state
 from app.services.voice_candidate_recovery import (
     _download_bounded,
     load_voice_retry_candidate,
@@ -398,3 +398,246 @@ def publish_paid_render_recovery(checkpoint: dict) -> dict:
         return {'status': 'checkpoint_published', 'source_task_id': source_id, 'requires_full_qa': True}
     except Exception:
         raise PaidRenderRecoveryError('Paid render recovery publication stopped; existing claims were preserved') from None
+
+
+_RECEIPT_FIELDS = {
+    'version', 'source_task_id', 'package_sha256', 'approved_package',
+    'source_spec_sha256', 'source_state_sha256', 'retrieval_manifest_sha256',
+    'recovered_clip_sha256', 'requires_full_qa', 'new_paid_create_requests', 'new_tts_requests',
+}
+_VOICE_TIMING_FIELDS = (
+    'scene_durations', 'spoken_texts', 'duration_before_fit', 'duration_after_fit',
+    'tempo_rate', 'content_target_seconds', 'reserved_tail_seconds',
+)
+
+
+def _load_original_receipt(pointer: dict) -> dict:
+    """Read one operator-supplied, hash-bound private receipt, never a URL."""
+    if not isinstance(pointer, dict) or set(pointer) != {
+        'source_task_id', 'checkpoint_key', 'checkpoint_sha256', 'checkpoint_size',
+    }:
+        raise ValueError('Invalid original receipt pointer')
+    origin_id = _canonical_id(pointer['source_task_id'])
+    if (
+        pointer['checkpoint_key'] != f'recovery/{origin_id}/prepared_checkpoint_v1.json'
+        or not isinstance(pointer['checkpoint_sha256'], str) or not _SHA256.fullmatch(pointer['checkpoint_sha256'])
+        or type(pointer['checkpoint_size']) is not int or not 1 <= pointer['checkpoint_size'] <= 512 * 1024
+    ):
+        raise ValueError('Invalid original receipt binding')
+    response = storage._client().get_object(Bucket=storage.settings.bucket, Key=pointer['checkpoint_key'])
+    body = response['Body']
+    try:
+        if response.get('ContentLength') != pointer['checkpoint_size']:
+            raise ValueError('Original receipt size changed')
+        raw = body.read(pointer['checkpoint_size'] + 1)
+    finally:
+        body.close()
+    if len(raw) != pointer['checkpoint_size'] or hashlib.sha256(raw).hexdigest() != pointer['checkpoint_sha256']:
+        raise ValueError('Original receipt fingerprint changed')
+    receipt = json.loads(raw)
+    if (
+        not isinstance(receipt, dict) or set(receipt) != _RECEIPT_FIELDS
+        or type(receipt.get('version')) is not int or receipt['version'] != 1
+        or receipt.get('source_task_id') != origin_id or receipt.get('requires_full_qa') is not True
+        or any(type(receipt.get(key)) is not int or receipt[key] != 0 for key in ('new_paid_create_requests', 'new_tts_requests'))
+        or any(not isinstance(receipt.get(key), str) or not _SHA256.fullmatch(receipt[key]) for key in (
+            'package_sha256', 'source_spec_sha256', 'source_state_sha256', 'retrieval_manifest_sha256', 'recovered_clip_sha256',
+        ))
+    ):
+        raise ValueError('Original receipt is invalid')
+    return receipt
+
+
+def _continuation_keys(origin_id: str, leaf_id: str) -> tuple[str, ...]:
+    return tuple(prefix + task_id for task_id in (origin_id, leaf_id) for prefix in (
+        studio_state.JOB_PREFIX, studio_state.PAID_CREATE_BUDGET_PREFIX,
+        studio_state.RETRY_DISPATCH_PREFIX, studio_state.REPAIR_CHECKPOINT_PREFIX,
+        studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX,
+    )) + (studio_state.RETRY_CHILD_CLAIM_PREFIX + leaf_id, studio_state.RETRY_CHILD_EXECUTION_PREFIX + leaf_id)
+
+
+def _continuation_state(origin_id: str, leaf_id: str, client) -> tuple[dict, dict, str]:
+    """One direct consumed repair only; never reopen or walk an arbitrary tree."""
+    if origin_id == leaf_id:
+        raise ValueError('Continuation source is not distinct')
+    jobs, budgets = [], []
+    for task_id, expected_used in ((origin_id, 1), (leaf_id, 0)):
+        job = json.loads(client.get(studio_state.JOB_PREFIX + task_id) or 'null')
+        if (
+            not isinstance(job, dict) or job.get('task_id') != task_id or job.get('kind') != 'render'
+            or job.get('state') != 'FAILURE' or job.get('stage') != 'failed'
+            or job.get('failure_stage') not in ({'render'} if expected_used else {'render', 'final_visual_qc', 'final_visual_qc_rescue'})
+        ):
+            raise ValueError('Continuation requires failed renders')
+        raw = client.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX + task_id)
+        if set(raw) != {'cap', 'used'} or any(not isinstance(value, str) or not re.fullmatch(r'[0-9]{1,3}', value) for value in raw.values()):
+            raise ValueError('Continuation ledger is unavailable')
+        budget = {key: int(value) for key, value in raw.items()}
+        if (
+            budget['used'] != expected_used or not 1 <= budget['cap'] <= 100
+            or type(job.get('paid_create_slots_used')) is not int or job['paid_create_slots_used'] != expected_used
+            or type(job.get('preview_total_paid_create_cap')) is not int or job['preview_total_paid_create_cap'] != budget['cap']
+        ):
+            raise ValueError('Continuation spending differs')
+        jobs.append(job)
+        budgets.append(budget)
+    origin, leaf = jobs
+    spec = origin.get('spec')
+    if (
+        not isinstance(spec, dict) or leaf.get('spec') != spec or spec.get('mode') != 'production'
+        or spec.get('format') != 'shorts' or type(spec.get('duration_minutes')) not in (int, float)
+        or spec['duration_minutes'] != 0.5 or spec.get('music') != 'off'
+        or not isinstance(spec.get('topic'), str) or not spec['topic'].strip()
+        or not isinstance(spec.get('language'), str) or not spec['language'].strip()
+        or budgets[0]['cap'] != budgets[1]['cap']
+        or leaf.get('parent_id') != origin_id or origin.get('retry_child_task_id') != leaf_id
+        or origin.get('repair_claimed') is not True or origin.get('retry_claimed') is not True
+        or origin.get('repair_available') is not False
+        or any(leaf.get(key) for key in ('retry_child_task_id', 'retry_claimed', 'repair_claimed', 'repair_available'))
+    ):
+        raise ValueError('Continuation frozen lineage differs')
+    if spec.get('publish_after_render') is True and any(
+        not isinstance(spec.get(key), str) or not spec[key].strip()
+        for key in ('production_channel_id', 'production_connection_id', 'production_profile_revision')
+    ):
+        raise ValueError('Frozen publication binding is missing')
+    if client.exists(studio_state.REPAIR_CHECKPOINT_PREFIX + origin_id, *(
+        prefix + leaf_id for prefix in (studio_state.RETRY_DISPATCH_PREFIX, studio_state.REPAIR_CHECKPOINT_PREFIX, studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX)
+    )):
+        raise ValueError('Continuation already has an outgoing claim')
+    dispatch = client.hgetall(studio_state.RETRY_DISPATCH_PREFIX + origin_id)
+    child_claim = client.hgetall(studio_state.RETRY_CHILD_CLAIM_PREFIX + leaf_id)
+    claim = client.get(studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX + origin_id)
+    execution = client.get(studio_state.RETRY_CHILD_EXECUTION_PREFIX + leaf_id)
+    token = dispatch.get('token')
+    if (
+        not isinstance(token, str) or not 16 <= len(token) <= 256
+        or dispatch.get('mode') != 'repair' or dispatch.get('state') != 'dispatched'
+        or dispatch.get('child_task_id') != leaf_id or child_claim.get('source_task_id') != origin_id
+        or child_claim.get('token') != token or claim != token or execution != token
+    ):
+        raise ValueError('Consumed repair execution is unproven')
+    fingerprint = _digest({
+        'jobs': [{key: job.get(key) for key in (*_SOURCE_FIELDS, 'parent_id')} for job in jobs],
+        'budgets': budgets, 'dispatch': dispatch, 'child_claim': child_claim, 'claim': claim, 'execution': execution,
+    })
+    return origin, leaf, fingerprint
+
+
+def _validate_continuation_package(original: dict, origin: dict, leaf: dict):
+    tasks, director, _voice = _runtime()
+    spec = origin['spec']
+    package = original['approved_package']
+    options = {key: value for key, value in spec.items() if key not in {'topic', 'language', 'duration_minutes', 'channel_id'}}
+    if (
+        _digest(spec) != original['source_spec_sha256'] or tasks._normalized_options(options, 0.5) != options
+        or not isinstance(package, dict) or package.get('studio_options') != options
+        or tasks._recovery_package_sha256(package) != original['package_sha256']
+        or not director.short_story_package_is_approved(package, spec['topic'])
+    ):
+        raise ValueError('Original story approval is no longer current')
+    count = len(package.get('scenes') or [])
+    media = tasks._validated_recovered_generated_media(package.get('_recovered_generated_media'), count, original['package_sha256'])
+    audio = tasks._validated_recovered_voice(package.get('_recovered_voice'), count, original['package_sha256'])
+    if (
+        not media or media.get('version') != 3 or media.get('recovery_only') is not True
+        or not audio or media['source_task_id'] != origin['task_id'] or audio['source_task_id'] != origin['task_id']
+        or len(media['scenes']) != 1
+    ):
+        raise ValueError('Original zero-create assets are unavailable')
+    index, entries = next(iter(media['scenes'].items()))
+    required = [row['scene_index'] for row in origin['prepaid_visual_diagnostics']['scenes'] if row['requires_paid_replacement']]
+    if (
+        required != [index] or len(entries) != 1 or entries[0]['sha256'] != original['recovered_clip_sha256']
+        or audio['sha256'] != origin['audio_candidate_checkpoint']['audio_sha256']
+        or audio['sha256'] != leaf['audio_candidate_checkpoint']['audio_sha256']
+        or audio['size'] != leaf['audio_candidate_checkpoint']['size']
+        or _digest(audio_checkpoint._candidate_package(package)) != leaf['audio_candidate_checkpoint']['package_sha256']
+    ):
+        raise ValueError('Paired continuation assets changed')
+    return tasks, audio, entries[0], index
+
+
+def prepare_paid_recovery_continuation(leaf_task_id: str, original_receipt_pointer: dict, work_dir: str | Path) -> dict:
+    """Prepare the directly failed zero-create child, not its consumed parent.
+
+    No provider generation, new story review, Storage write or state mutation.
+    The original still-current attestation and paired voice/media are retained;
+    the normal worker must repeat all real audio, stock, visual and render QA.
+    """
+    try:
+        leaf_id = _canonical_id(leaf_task_id)
+        original = _load_original_receipt(original_receipt_pointer)
+        origin_id = original['source_task_id']
+        client = studio_state._client()
+        origin, leaf, fingerprint = _continuation_state(origin_id, leaf_id, client)
+        tasks, audio, entry, index = _validate_continuation_package(original, origin, leaf)
+        work = Path(work_dir)
+        match = re.fullmatch(r'([0-9a-f-]{36})_attempt_0', work.name)
+        if not match or _canonical_id(match[1]) in {origin_id, leaf_id}:
+            raise ValueError('Continuation preparation directory is not distinct')
+        candidate = load_voice_retry_candidate(leaf_id, match[1], leaf['audio_candidate_checkpoint'], work)
+        require_unchanged_voice_narration(candidate['package'], original['approved_package'])
+        if candidate['audio_sha256'] != audio['sha256'] or any(candidate['voice_result'].get(key) != audio.get(key) for key in _VOICE_TIMING_FIELDS):
+            raise ValueError('Continuation voice timing changed')
+        asset_client = storage._client()
+        for key, size, digest, name, maximum in (
+            (audio['key'], audio['size'], audio['sha256'], 'paired_voice.mp3', 20 * 1024 * 1024),
+            (entry['key'], entry['size'], entry['sha256'], 'existing_paid_scene.mp4', 100 * 1024 * 1024),
+        ):
+            path = work / name
+            if path.exists() or path.is_symlink():
+                raise ValueError('Continuation asset destination already exists')
+            checksum, _size = _download_bounded(asset_client, key, path, maximum, expected_size=size)
+            if checksum != digest:
+                raise ValueError('Continuation asset fingerprint changed')
+        tasks._validate_recovered_generated_clip(
+            work / 'existing_paid_scene.mp4', minimum_duration=max(5.0, float(audio['scene_durations'][index]) + 0.35),
+            expected_size=entry['size'], expected_sha256=entry['sha256'],
+        )
+        if _continuation_state(origin_id, leaf_id, client)[2] != fingerprint:
+            raise ValueError('Continuation changed during preparation')
+        checkpoint = deepcopy(original)
+        checkpoint.update(
+            source_task_id=leaf_id,
+            source_state_sha256=_source_fingerprint(leaf, {'cap': leaf['preview_total_paid_create_cap'], 'used': 0}),
+            continuation={'version': 1, 'original_receipt_pointer': deepcopy(original_receipt_pointer), 'lineage_sha256': fingerprint},
+        )
+        return checkpoint
+    except Exception:
+        raise PaidRenderRecoveryError('Paid recovery continuation preparation unavailable; no replacement media was generated') from None
+
+
+def publish_paid_recovery_continuation(checkpoint: dict) -> dict:
+    """CAS-publish only the unclaimed leaf; leave all consumed claims intact."""
+    try:
+        if not isinstance(checkpoint, dict) or set(checkpoint) != _RECEIPT_FIELDS | {'continuation'}:
+            raise ValueError('Invalid continuation receipt')
+        proof = checkpoint['continuation']
+        if not isinstance(proof, dict) or set(proof) != {'version', 'original_receipt_pointer', 'lineage_sha256'} or type(proof['version']) is not int or proof['version'] != 1:
+            raise ValueError('Invalid continuation proof')
+        original = _load_original_receipt(proof['original_receipt_pointer'])
+        origin_id, leaf_id = original['source_task_id'], _canonical_id(checkpoint['source_task_id'])
+        with studio_state._client().pipeline() as transaction:
+            transaction.watch(*_continuation_keys(origin_id, leaf_id))
+            origin, leaf, fingerprint = _continuation_state(origin_id, leaf_id, transaction)
+            _validate_continuation_package(original, origin, leaf)
+            expected = deepcopy(original)
+            expected.update(
+                source_task_id=leaf_id,
+                source_state_sha256=_source_fingerprint(leaf, {'cap': leaf['preview_total_paid_create_cap'], 'used': 0}),
+                continuation={'version': 1, 'original_receipt_pointer': proof['original_receipt_pointer'], 'lineage_sha256': fingerprint},
+            )
+            if _digest(checkpoint) != _digest(expected):
+                raise ValueError('Prepared continuation changed')
+            encoded = json.dumps(checkpoint, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+            leaf['repair_available'] = True
+            leaf['updated_at'] = datetime.now(timezone.utc).isoformat()
+            transaction.multi()
+            transaction.set(studio_state.REPAIR_CHECKPOINT_PREFIX + leaf_id, encoded, nx=True, ex=studio_state.REPAIR_CHECKPOINT_TTL_SECONDS)
+            transaction.set(studio_state.JOB_PREFIX + leaf_id, json.dumps(leaf, ensure_ascii=False, separators=(',', ':'), allow_nan=False), ex=studio_state.JOB_TTL_SECONDS)
+            if transaction.execute() != [True, True]:
+                raise ValueError('Continuation publication was not confirmed')
+        return {'status': 'checkpoint_published', 'source_task_id': leaf_id, 'requires_full_qa': True}
+    except Exception:
+        raise PaidRenderRecoveryError('Paid recovery continuation publication stopped; existing claims were preserved') from None
