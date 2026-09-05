@@ -292,6 +292,59 @@ def _production_status_text(profile: dict, state: dict | None) -> str:
     return 'Planlama bekliyor'
 
 
+def _produce_now_form(profile: dict, state: dict | None) -> str:
+    state = state or {}
+    topics = profile.get('production_topics')
+    try:
+        cursor = int(state.get('cursor', '-1'))
+    except (TypeError, ValueError):
+        return ''
+    if not (
+        profile.get('production_enabled') is True and profile.get('auto_publish') is True
+        and profile.get('release_mode') == 'public' and profile.get('profile_revision')
+        and isinstance(topics, list) and 1 <= cursor < len(topics)
+        and state.get('dispatch_status') == 'finished'
+        and not state.get('paused_reason') and not state.get('active_task_id')
+    ):
+        return ''
+    return (
+        '<form class="inline" method="post" action="/studio/youtube/produce-now/'
+        + escape(str(profile.get('channel_id') or ''), quote=True) + '">'
+        + '<input type="hidden" name="expected_revision" value="'
+        + escape(str(profile['profile_revision']), quote=True) + '">'
+        + '<button class="small" type="submit">Hemen sıradaki videoyu üret</button></form>'
+    )
+
+
+def _existing_release_form(job: dict, profile: dict | None) -> str:
+    profile = profile or {}
+    result = job.get('result') if isinstance(job.get('result'), dict) else {}
+    youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+    if not (
+        automated_quality_approved(job) and job.get('task_id')
+        and youtube.get('privacy_status') == 'private' and youtube.get('release_status') == 'private'
+        and youtube.get('video_id') and not youtube.get('release_error_code')
+        and profile.get('auto_publish') is True and profile.get('release_mode') == 'public'
+        and profile.get('channel_id') == youtube.get('target_channel_id')
+        and profile.get('profile_revision')
+    ):
+        return ''
+    fields = {
+        'expected_video_id': youtube['video_id'],
+        'youtube_channel_id': profile['channel_id'],
+        'expected_profile_revision': profile['profile_revision'],
+    }
+    hidden = ''.join(
+        f'<input type="hidden" name="{name}" value="{escape(str(value), quote=True)}">'
+        for name, value in fields.items()
+    )
+    return (
+        '<form class="inline" method="post" action="/studio/youtube/release/'
+        + escape(str(job['task_id']), quote=True) + '">'
+        + hidden + '<button class="small" type="submit">Herkese aç</button></form>'
+    )
+
+
 def _profile_form(channel: dict, profile: dict | None, production_state: dict | None = None) -> str:
     profile = profile or {}
     channel_id = str(channel.get('id') or '')
@@ -359,7 +412,7 @@ def _profile_form(channel: dict, profile: dict | None, production_state: dict | 
 <label class="check"><input name="require_thumbnail" type="checkbox" value="1"{thumbnail_checked}> Özel küçük resim yoksa herkese açma</label>
 </div></details>
 <div class="profile-actions"><button class="small" type="submit">Profili kaydet</button>{status}<span class="tiny">Başlık, açıklama ve etiketler otomatik hazırlanır. İlk yükleme gizlidir; kalite onayı ve gerekli içerik bildirimleri tamamlanınca seçilen yayın davranışı uygulanır.</span></div>
-</form></details>'''
+</form>{_produce_now_form(profile, production_state)}</details>'''
 
 
 @router.get('/studio/youtube', response_class=HTMLResponse)
@@ -423,6 +476,7 @@ def youtube_home(
         youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
         if youtube.get('url'):
             action = f'<a class="btn success" target="_blank" rel="noopener noreferrer" href="{escape(str(youtube.get("url")), quote=True)}">YouTube’da aç</a>'
+            action += _existing_release_form(job, profiles.get(str(youtube.get('target_channel_id') or '')))
             release_status = str(youtube.get('release_status') or 'private')
             state_label = {
                 'public': 'Yayında',
@@ -635,6 +689,55 @@ def youtube_save_profile(
         raise HTTPException(status_code=422, detail='Kanal profili geçersiz') from exc
     except YouTubeAutomationError as exc:
         raise HTTPException(status_code=503, detail='Kanal profili kaydedilemedi') from exc
+    return RedirectResponse('/studio/youtube', status_code=303)
+
+
+@router.post('/studio/youtube/release/{source_task_id}')
+def youtube_release_existing(
+    source_task_id: str,
+    request: Request,
+    expected_video_id: str = Form(...),
+    youtube_channel_id: str = Form(...),
+    expected_profile_revision: str = Form(...),
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    _require_auth(studio_token)
+    _require_same_origin(request)
+    from app.services.existing_video_release import ExistingVideoReleaseError, release_existing_private_video
+
+    try:
+        release_existing_private_video(
+            source_task_id,
+            expected_video_id=expected_video_id,
+            expected_channel_id=youtube_channel_id,
+            expected_profile_revision=expected_profile_revision,
+        )
+    except ExistingVideoReleaseError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail='YouTube yayını doğrulanamadı; mevcut video korunuyor, tekrar yükleme yapılmadı.',
+        ) from exc
+    return RedirectResponse('/studio/youtube', status_code=303)
+
+
+@router.post('/studio/youtube/produce-now/{youtube_channel_id}')
+def youtube_produce_next_now(
+    youtube_channel_id: str,
+    request: Request,
+    expected_revision: str = Form(...),
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    _require_auth(studio_token)
+    _require_same_origin(request)
+    from app.services.production_schedule_control import ProductionScheduleControlError, expedite_next_production
+
+    try:
+        expedite_next_production(youtube_channel_id, expected_revision)
+    except ProductionScheduleControlError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail='Üretim sırası değişti veya kanal meşgul; sayfayı yenile. Tekrar üretim başlatılmadı.',
+        ) from exc
     return RedirectResponse('/studio/youtube', status_code=303)
 
 
