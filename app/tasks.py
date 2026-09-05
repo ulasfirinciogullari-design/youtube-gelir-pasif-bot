@@ -5623,9 +5623,9 @@ def run_video_pipeline(
             )
             scene_visuals[scene_idx] = []
 
-        # A final critic has now seen the exact generated clips. Spend at most
-        # two evidence-led repair submissions on authored AI scenes, instead of
-        # rerunning the whole paid pipeline or accepting a static non-event.
+        # A final critic has now seen the exact generated clips. This pass may
+        # repair one production Short scene or at most two authored preview
+        # scenes, always inside the same remaining durable total budget.
         final_runway_repair_candidates = (
             []
             if recovered_generated_media
@@ -5640,6 +5640,7 @@ def run_video_pipeline(
                     terminal_manual_qa_failure_scene_indices
                 ),
                 paid_create_attempts=runway_attempts,
+                paid_create_cap=total_paid_create_cap,
             )
         )
         final_runway_repair_candidates = [

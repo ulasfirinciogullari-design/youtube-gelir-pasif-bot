@@ -120,6 +120,7 @@ def preview_runway_repair_indices(
     *,
     exact_revalidation_scene_indices: set[int] | list[int] | None = None,
     paid_create_attempts: int = 0,
+    paid_create_cap: int | None = None,
 ) -> list[int]:
     """Select a bounded set of evidence-led final repairs.
 
@@ -130,6 +131,36 @@ def preview_runway_repair_indices(
     selector pure makes the paid limit easy to verify independently from the
     worker orchestration.
     """
+    if options.get('mode') == 'production':
+        # A production pass can repair one exact generated clip, including
+        # an original stock scene that needed generation. Use the worker's
+        # frozen ledger cap, never a newly increased environment policy.
+        threshold = options.get('quality_threshold', 86)
+        if (
+            options.get('format') != 'shorts'
+            or duration_minutes != 0.5
+            or type(paid_create_cap) is not int
+            or not 2 <= paid_create_cap <= 6
+            or type(paid_create_attempts) is not int
+            or not 0 <= paid_create_attempts < paid_create_cap
+            or type(threshold) is not int
+            or not 0 <= threshold <= 100
+        ):
+            return []
+        generated = {
+            index for index in generated_scene_indices if type(index) is int
+        }
+        eligible = {
+            index for index in rejected_scene_indices
+            if type(index) is int and 0 <= index < len(scenes)
+            and index in generated
+            and isinstance(final_reviews.get(index), dict)
+            and type(final_reviews[index].get('score')) is int
+            and 0 <= final_reviews[index]['score'] < threshold
+        }
+        return sorted(eligible, key=lambda index: (
+            final_reviews[index]['score'], index,
+        ))[:1]
     if options.get('mode') != 'preview' or duration_minutes > 0.6:
         return []
 
