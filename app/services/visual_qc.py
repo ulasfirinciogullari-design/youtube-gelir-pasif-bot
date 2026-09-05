@@ -404,11 +404,16 @@ def _score_reason_conflicts(review: dict, *, allow_soft_rejection: bool = False)
         return False
     if score <= 40:
         return _clearly_positive_review_reason(review.get('reason'))
+    retry_queries = review.get('retry_queries')
     if not (
         allow_soft_rejection and 40 < score < 86
         # Deliberate server caps (e.g. image-motion at85) are not conflicts.
         and type(review.get('raw_score')) is int and review['raw_score'] == score
-        and review.get('retry_queries') == []
+        and isinstance(retry_queries, list) and len(retry_queries) <= 2
+        and all(
+            isinstance(query, str) and query.strip() and len(query) <= 240
+            for query in retry_queries
+        )
         and all(review.get(field) is True for field in (
             'evidence_gate_passed', 'identity_gate_passed', 'editorial_gate_passed',
         ))
@@ -1481,6 +1486,7 @@ def review_scene_visuals(
             'If the sampled moments are nearly identical, the clip is effectively static; any shot likely to remain static for more than six seconds must score 40 or lower. '
             'Set major_visual_artifact_visible=true for warped anatomy, object morphing, broken physics, severe flicker or another major generation/edit artifact. Residue, debris and fragments must be physically plausible by-products of the named contact and visibly match the named material; wood pencil shavings during rubber erasing, or large intact fragments appearing from nowhere, are major artifacts. Set effectively_static_or_frozen=true when the selected clip is effectively a still or frozen shot. If any manual-QA visual flag is true, the score must be 40 or lower. '
             'The score and reason must agree. A score of 40 or lower is a hard rejection: its reason must name at least one concrete visible failure and must not claim that the candidate matches, aligns with, satisfies or fulfills the prompt, narration, scene or requirements. If a hard gate forces the score to 40 or lower, explicitly name that failed gate in the reason. '
+            'Any soft rejection from 41 through 85 must name a concrete visible shortfall in its reason; replacement search queries alone do not explain a failure, and an entirely positive reason cannot justify rejection merely because the footage is stock or B-roll. '
             'A score of 86+ means the chosen moment is genuinely publishable under that exact narration. If the best available moment is below 86, provide two concrete ENGLISH retry queries that keep the named subject attached to the visible action. '
             'Each retry query must describe only the desired replacement shot and explicitly correct every visibly failed authored attribute that applies: subject identity, physical scale or quantity, age or condition, material, color or shape, setting or surface, and physical action; never include meta-instructions. '
             'For a text, logo, watermark or interface failure, describe only the clean replacement shot; never transcribe or name the visible platform, handle, username, badge or interface control in a retry query. '
@@ -2063,8 +2069,8 @@ def review_scene_visuals(
 
     # A valid JSON object can still be semantically self-contradictory. Only
     # the narrow hard-reject/clear-success case earns one independent review.
-    # Source-backed documentary stock also gets that one review when an
-    # otherwise-positive soft rejection omits its required retry queries.
+    # Source-backed documentary stock also gets that one review when a soft
+    # rejection has unqualified positive prose, with or without retry queries.
     # That review sees the exact selected media rather than another search
     # candidate. The original positive prose is never used as approval
     # evidence. A missing or still-contradictory second verdict remains a hard
