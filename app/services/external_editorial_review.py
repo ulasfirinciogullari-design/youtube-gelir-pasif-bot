@@ -286,9 +286,14 @@ def _contract(source):
     version = provenance.get('manifest_version', 1)
     _require(type(version) is int and version in (1, 2))
     duration_ms = provenance.get('duration_ms') if version == 2 else 30000
-    _require(type(duration_ms) is int and (15000 <= duration_ms <= 60000 if version == 2 else duration_ms == 30000)
-             and type(spec.get('duration_minutes')) in (int, float)
-             and spec['duration_minutes'] == duration_ms / 60000
+    _require(type(duration_ms) is int and (15000 <= duration_ms <= 60000 if version == 2 else duration_ms == 30000))
+    duration_minutes = duration_ms / 60000
+    # Redis Lua cjson re-encodes the whole job at 14 significant digits when
+    # publisher status is merged. Accept only that exact known representation,
+    # never an arbitrary numeric tolerance or a different millisecond duration.
+    valid_durations = (duration_minutes, float(format(duration_minutes, '.14g'))) if version == 2 else (duration_minutes,)
+    _require(type(spec.get('duration_minutes')) in (int, float)
+             and spec['duration_minutes'] in valid_durations
              and (spec.get('language') == 'en' if version == 1 else spec.get('language') in {'tr', 'en'}))
     _require(source.get('kind') == 'render' and source.get('state') == 'SUCCESS' and not source.get('error')
              and source.get('parent_id') is None and not any(source.get(k) for k in
@@ -304,8 +309,13 @@ def _contract(source):
 
 
 def _projection(source):
-    _contract(source)
-    return {'task_id': source['task_id'], 'spec': source['spec'],
+    spec, result = _contract(source)
+    spec = dict(spec)
+    if result.get('external_provenance', {}).get('manifest_version') == 2:
+        # Restore the original importer representation in the hash copy only;
+        # existing receipts and the source record remain immutable.
+        spec['duration_minutes'] = result['external_provenance']['duration_ms'] / 60000
+    return {'task_id': source['task_id'], 'spec': spec,
             'result': {key: source['result'].get(key) for key in _RESULT_BINDING}}
 
 
