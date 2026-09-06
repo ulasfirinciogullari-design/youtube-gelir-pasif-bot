@@ -42,6 +42,8 @@ def _loop(*, repaired=True, subsequent_pass=True, recovered=False):
         'voice_result': voice, 'voice_path': voice['path'], 'scene_durations': voice['scene_durations'],
         'audio_pause_repair_attempted': False, 'short_form_prosody_required': True,
         'recovered_voice': recovered, 'saved_voice_retry': True, 'duration_minutes': .5,
+        'options': {'mode': 'preview', 'format': 'shorts'},
+        '_effective_short_edit_target': _definition('_effective_short_edit_target', {'math': math}),
         'expected_spoken_narration': 'Existing words.', 'language': 'tr', 'task_id': 'child',
         'package': {'scenes': []}, 'self': SimpleNamespace(), 'audio_generation_attempts': 3,
         'audio_qc_retry_history': [], 'audio_synthesis_quality_errors': [],

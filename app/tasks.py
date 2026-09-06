@@ -1552,6 +1552,35 @@ def _persist_final_thumbnail(task_id, work, rendered, options, quality_dispositi
         }}
 
 
+def _effective_short_edit_target(
+    options: dict,
+    requested_seconds: float,
+    voice_duration_seconds: float,
+) -> float:
+    """End an approximately thirty-second production edit after its real voice.
+
+    This selects a frame-aligned video endpoint only. It neither edits the
+    audio/scene timeline nor approves its transcript, prosody or visual quality.
+    Fixed previews and out-of-scope/thin/dense takes keep their original gates.
+    """
+    if (
+        not isinstance(options, dict)
+        or options.get('mode') != 'production'
+        or options.get('format') != 'shorts'
+        or type(requested_seconds) not in (int, float)
+        or requested_seconds != 30
+        or type(voice_duration_seconds) not in (int, float)
+        or not math.isfinite(voice_duration_seconds)
+        or not 25.5 <= voice_duration_seconds <= 29.75
+    ):
+        return requested_seconds
+    if _short_preview_voice_duration_qc(
+        {'duration_after_fit': voice_duration_seconds}, requested_seconds,
+    ).get('pass') is True:
+        return requested_seconds
+    return min(requested_seconds, math.ceil((voice_duration_seconds + 0.55) * 30) / 30)
+
+
 def _short_preview_voice_duration_qc(
     voice_result: dict,
     target_seconds: float,
@@ -4699,7 +4728,10 @@ def run_video_pipeline(
                     voice_future = stage_pool.submit(
                         _fit_saved_voice_for_retry,
                         saved_voice_retry['voice_result'],
-                        duration_minutes * 60,
+                        _effective_short_edit_target(
+                            options, duration_minutes * 60,
+                            saved_voice_retry['voice_result'].get('duration_after_fit'),
+                        ),
                     )
             elif recovered_voice:
                 voice_future = stage_pool.submit(
@@ -4788,9 +4820,12 @@ def run_video_pipeline(
             )
             if audio_review_sha256:
                 audio_qc = {**audio_qc, 'audio_sha256': audio_review_sha256}
+            effective_edit_target_seconds = _effective_short_edit_target(
+                options, duration_minutes * 60, voice_result.get('duration_after_fit'),
+            )
             audio_duration_qc = _short_preview_voice_duration_qc(
                 voice_result,
-                duration_minutes * 60,
+                effective_edit_target_seconds,
             )
             transcript_passed = bool(
                 audio_qc.get('available') is True
@@ -4878,7 +4913,7 @@ def run_video_pipeline(
             ):
                 audio_pause_repair_attempted = True
                 repaired_voice = _repair_voice_internal_pauses(
-                    voice_result, duration_minutes * 60,
+                    voice_result, effective_edit_target_seconds,
                     audio_qc, audio_prosody_qc,
                 )
                 if repaired_voice is not None:
@@ -7249,7 +7284,7 @@ def run_video_pipeline(
         requested_seconds = duration_minutes * 60
         render_target_duration = _render_target_duration(
             options,
-            requested_seconds,
+            effective_edit_target_seconds,
         )
         set_stage(self, task_id, 'render', 76, 'Onaylı ses ve sahneler final kurguya alınıyor.')
         rendered = render_video(
@@ -7285,7 +7320,7 @@ def run_video_pipeline(
         ):
             final_render_qc = _strict_short_preview_render_qc(
                 rendered,
-                requested_seconds,
+                effective_edit_target_seconds,
                 voice_result.get('duration_after_fit'),
             )
             if final_render_qc.get('reason') == 'final_frame_count_mismatch':
@@ -7343,6 +7378,7 @@ def run_video_pipeline(
             'topic': topic,
             'channel_id': channel_id,
             'requested_duration_minutes': duration_minutes,
+            'effective_edit_target_seconds': effective_edit_target_seconds,
             'studio_options': options,
             'narration_word_count': package.get('narration_word_count'),
             'target_word_range': package.get('target_word_range'),
@@ -7478,6 +7514,7 @@ def run_video_pipeline(
             'burned_subtitles': False,
             'text_layers': 0,
             'duration': rendered.get('duration'),
+            'effective_edit_target_seconds': effective_edit_target_seconds,
             'shots': rendered.get('shots'),
             'scenes': len(scenes),
             'unique_visuals': rendered.get('unique_visuals'),

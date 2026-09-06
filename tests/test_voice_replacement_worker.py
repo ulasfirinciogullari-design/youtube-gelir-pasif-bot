@@ -195,6 +195,8 @@ def test_english_short_failed_naturalness_cannot_reach_media_or_new_tts():
     prosody = Mock(return_value={'available': True, 'pass': False, 'reason': 'choppy_phrase_grouping', 'issues': []})
     blocked = Mock(side_effect=AssertionError('No edit or new TTS for saved English audio'))
     n = dict(language='en', duration_minutes=.5, recovered_voice=False, saved_voice_retry=True,
+             options={'mode': 'preview', 'format': 'shorts'},
+             _effective_short_edit_target=_function('app/tasks.py', '_effective_short_edit_target', {}),
              voice_result={'path': '/tmp/existing.mp3', 'duration_after_fit': 29.5}, voice_path='/tmp/existing.mp3',
              expected_spoken_narration='An existing English script.', task_id='child', audio_generation_attempts=1,
              audio_pause_repair_attempted=False, audio_qc_retry_history=[], audio_synthesis_quality_errors=[],
