@@ -50,7 +50,17 @@ _HUMAN_CURIOSITY_RULE = (
     'words or append a slogan. Keep routine source attribution in the '
     'description instead of spoken boilerplate such as "resmi kayıtlara göre" '
     'or "kaynaklara göre", unless identifying the source is itself necessary '
-    'to understand a disputed claim. Never add filler just to fill the time.'
+    'to understand a disputed claim. Never add filler just to fill the time. '
+    'NEW-SCRIPT ENGAGEMENT: after delivering the complete answer, prefer one '
+    'brief, honest question tied to this story and, when it fits naturally, '
+    'a short invitation to subscribe for a concrete, relevant kind of future '
+    'story. Keep the established visual subject; do not add a separate CTA '
+    'scene. Following is optional: never withhold the answer, demand engagement, '
+    'promise rewards or guaranteed outcomes, or invent a promised sequel. '
+    'Fit the existing word budget at a natural, breath-friendly pace; never '
+    'speed up narration or add filler for a CTA. This is a writing preference, '
+    'not a new acceptance gate. Never alter exact locked or archived narration '
+    'to insert a question or subscription invitation.'
 )
 _SOURCE_IDENTITY_RULE = (
     'SOURCE IDENTITY: preserve the exact institution and its role from the '

@@ -152,9 +152,12 @@ _EN_YEAR_UNITS = {
     'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
     'six': 6, 'seven': 7, 'eight': 8, 'nine': 9,
 }
+_EN_CARDINAL_SMALL = {'zero': 0, **_EN_YEAR_UNITS,
+    **{k: v for k, v in _EN_YEAR_CENTURIES.items() if v < 20}}
+_EN_CARDINAL_SCALES = frozenset({'thousand', 'million', 'billion', 'trillion'})
 _EN_NUMBER_WORDS = frozenset({
     *_EN_YEAR_CENTURIES, *_EN_YEAR_TENS, *_EN_YEAR_UNITS,
-    'zero', 'oh', 'hundred', 'thousand', 'million', 'billion', 'point',
+    'zero', 'oh', 'hundred', *_EN_CARDINAL_SCALES, 'point',
 })
 _EN_YEAR_CUES = frozenset({'in', 'since', 'during', 'until', 'before', 'after', 'by', 'from', 'around', 'year'})
 _EN_YEAR_NONYEAR_FOLLOWERS = frozenset({
@@ -1226,8 +1229,62 @@ def _percentage_comparison_unit(
     return None
 
 
+def _english_small_cardinal(words: list[str]) -> int | None:
+    """Complete, ordered cardinal grammar below 1000; never add a word list."""
+    if len(words) == 1:
+        return _EN_CARDINAL_SMALL.get(words[0], _EN_YEAR_TENS.get(words[0]))
+    if len(words) == 2 and words[0] in _EN_YEAR_TENS and words[1] in _EN_YEAR_UNITS:
+        return _EN_YEAR_TENS[words[0]] + _EN_YEAR_UNITS[words[1]]
+    if len(words) >= 2 and words[0] in _EN_YEAR_UNITS and words[1] == 'hundred':
+        rest = words[2:]
+        if not rest:
+            return _EN_YEAR_UNITS[words[0]] * 100
+        if rest[0] == 'and':
+            rest = rest[1:]
+        tail = _english_small_cardinal(rest) if len(rest) <= 2 else None
+        if tail is not None and 1 <= tail <= 99:
+            return _EN_YEAR_UNITS[words[0]] * 100 + tail
+    return None
+
+
+def _english_contextual_cardinal(tokens, matches, value, index, year_context):
+    """Only an explicit thousand-year or a complete coefficient before a scale."""
+    numeric = _EN_NUMBER_WORDS | {'and'}
+    end = index
+    while end < len(tokens) and end - index < 9 and tokens[end] in numeric:
+        end += 1
+    words = tokens[index:end]
+    if not words:
+        return None
+    candidates = []
+    if (year_context and len(words) >= 2 and words[0] in _EN_YEAR_UNITS and words[1] == 'thousand'):
+        tail_words = words[2:]
+        if tail_words[:1] == ['and']:
+            tail_words = tail_words[1:]
+            tail = _english_small_cardinal(tail_words)
+        else:
+            tail = _english_small_cardinal(tail_words) if tail_words else 0
+        if tail is not None and 0 <= tail <= 999:
+            candidates.append((_EN_YEAR_UNITS[words[0]] * 1000 + tail, len(words), True))
+    if len(words) >= 2 and words[-1] in _EN_CARDINAL_SCALES:
+        coefficient = _english_small_cardinal(words[:-1])
+        if coefficient is not None:
+            candidates.append((coefficient, len(words) - 1, False))
+    for number, consumed, is_year in candidates:
+        stop = index + consumed if is_year else index + consumed + 1
+        neighbors = tokens[max(0, index - 1):index] + tokens[stop:stop + 1]
+        if any(token in _EN_NUMBER_WORDS or any(c.isdigit() for c in token) for token in neighbors):
+            continue
+        if is_year and stop < len(tokens) and tokens[stop] in _EN_YEAR_NONYEAR_FOLLOWERS:
+            continue
+        if all(re.fullmatch(r'(?:\s+|[-\u2010\u2011])', value[matches[p].end():matches[p + 1].start()])
+               for p in range(index, stop - 1)):
+            return str(number), consumed
+    return None
+
+
 def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]]]:
-    """Normalize only complete English year-style readings, preserving order.
+    """Normalize complete English years and scale coefficients, preserving order.
 
     Require an explicit year context, such as "in nineteen fifty-three";
     prices and bare two-part numbers can have a different spoken meaning.
@@ -1247,6 +1304,12 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
         remainder = None
         year_context = bool(index > 0 and tokens[index - 1] in _EN_YEAR_CUES
                             and value[matches[index - 1].end():matches[index].start()].isspace())
+        cardinal = _english_contextual_cardinal(tokens, matches, value, index, year_context)
+        if cardinal is not None:
+            number, count = cardinal
+            units.append((number, tuple(tokens[index:index + count])))
+            index += count
+            continue
         if century is not None and year_context and index + 1 < len(tokens):
             second = tokens[index + 1]
             if second in _EN_YEAR_TENS:

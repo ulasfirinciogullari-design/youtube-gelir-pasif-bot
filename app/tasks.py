@@ -4015,12 +4015,13 @@ def _fresh_scheduled_short_shots(
         return False
     try:
         from app.services.studio_state import get_job
+        from app.services.fresh_story_binding import fresh_scheduled_spec_matches
 
         job = get_job(task_id)
         if (
             not isinstance(task_id, str) or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(task_id)
             or not isinstance(job, dict) or job.get('task_id') != task_id
-            or job.get('kind') != 'render' or job.get('spec') != spec
+            or job.get('kind') != 'render' or not fresh_scheduled_spec_matches(job.get('spec'), spec)
         ):
             raise ValueError('Scheduler job binding is unavailable')
         return (
