@@ -11,6 +11,7 @@ from app.services.director import (
     _HUMAN_CURIOSITY_RULE,
     _documentary_broll_writer_rule,
     _documentary_explanatory_coda_rule,
+    _fresh_documentary_stock_video_rule,
     _explicit_scene_count_from_brief,
     _story_brief_for_qc,
     _scheduled_short_shot_writer_rule,
@@ -274,6 +275,7 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
         '\n'.join((
             _documentary_broll_writer_rule(style),
             _documentary_explanatory_coda_rule(style),
+            _fresh_documentary_stock_video_rule(style, fresh_scheduled),
             _HUMAN_CURIOSITY_RULE,
             'Unless Topic explicitly requires otherwise, the beat after the '
             'hook must begin answering the established curiosity, not ask '

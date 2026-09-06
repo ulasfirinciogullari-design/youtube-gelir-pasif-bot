@@ -46,18 +46,33 @@ def capture(monkeypatch):
     monkeypatch.setattr(research, 'generate_gemini_json', generate)
     monkeypatch.setattr(research, 'OpenAI', Mock(side_effect=AssertionError('No OpenAI/network call')))
 
-    def run(topic=NEXT_TOPICS[1], *, style='documentary', mode='production', duration=0.5):
+    def run(topic=NEXT_TOPICS[1], *, style='documentary', mode='production', duration=0.5, fresh=False):
         options = {
             'content_style': style, 'mode': mode, 'format': 'shorts',
             'pace': 'balanced', 'visual_mix': 'real_first', 'quality_threshold': 86,
         }
         before = deepcopy(options)
-        result = research.research_and_script(topic, duration, 'tr', options)
+        result = research.research_and_script(topic, duration, 'tr', options, fresh_scheduled=fresh)
         assert options == before
         generate.assert_called_once()
         return generate.call_args.args[0], generate.call_args.kwargs, result
 
     return run
+
+
+@pytest.mark.parametrize('fresh', [True, False, None, 1, 'true'])
+@pytest.mark.parametrize('style', ['documentary', 'technology'])
+def test_fresh_documentary_research_plans_moving_video_not_unavailable_archival_photos(capture, fresh, style):
+    prompt, kwargs, _result = capture(NEXT_TOPICS[0], fresh=fresh, style=style)
+    marker = 'FRESH DOCUMENTARY STOCK-VIDEO CONTRACT'
+    enabled = fresh is True and style == 'documentary'
+    assert (marker in prompt) is enabled
+    assert kwargs['google_search'] is True
+    if enabled:
+        assert director._fresh_documentary_stock_video_rule(style, True) in prompt
+        assert 'all explicit user actions, identities and historical constraints' in prompt
+        assert 'not archival photographs' in prompt
+        assert 'modern footage is real archive' in prompt
 
 
 @pytest.mark.parametrize('topic', NEXT_TOPICS)
