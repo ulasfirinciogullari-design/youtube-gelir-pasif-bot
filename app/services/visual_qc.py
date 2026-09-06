@@ -1130,7 +1130,7 @@ def _candidate_media_provenance(spec: str | dict) -> dict:
         projected[field] = value if type(value) is bool else None
     for field, allowed in (
         ('source_type', {'stock', 'generated', 'ai'}),
-        ('generation_provider', {'runway', 'gemini_veo', 'fal', 'replicate',
+        ('generation_provider', {'runway', 'gemini_veo', 'gemini_omni', 'fal', 'replicate',
                                  'openai', 'gemini_image_motion'}),
         ('stock_provider', {'pexels'}),
         ('source_media_type', {'image', 'video'}),

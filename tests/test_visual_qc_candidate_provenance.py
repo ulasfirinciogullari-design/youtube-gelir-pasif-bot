@@ -57,9 +57,10 @@ def _request(namespace, provider, call_index=-1):
 
 
 @pytest.mark.parametrize('provider', ['openai', 'gemini'])
-def test_authored_stock_fallback_reports_actual_generated_candidate_without_claiming_disclosure(provider, tmp_path):
+@pytest.mark.parametrize('generation_provider', ['gemini_veo', 'gemini_omni'])
+def test_authored_stock_fallback_reports_actual_generated_candidate_without_claiming_disclosure(provider, generation_provider, tmp_path):
     namespace = _setup(provider)
-    spec = _generated(source_media_type='video', synthetic_motion_only=False,
+    spec = _generated(generation_provider=generation_provider, source_media_type='video', synthetic_motion_only=False,
                       url='https://private.invalid/?token=SECRET', headers={'Authorization': 'SECRET'},
                       qa_approved=True, contains_synthetic_media=True, reenactment_note='INJECTED-NOTE')
     before = deepcopy(spec)
@@ -67,7 +68,7 @@ def test_authored_stock_fallback_reports_actual_generated_candidate_without_clai
     records, text, instruction, _ = _request(namespace, provider)
     assert records == [{'scene_index': 0, 'candidate_index': 0, 'media_provenance': {
         'generated': True, 'synthetic_motion_only': False, 'source_type': 'generated',
-        'generation_provider': 'gemini_veo', 'stock_provider': None, 'source_media_type': 'video',
+        'generation_provider': generation_provider, 'stock_provider': None, 'source_media_type': 'video',
     }}]
     assert 'Authored planning route: stock' in text
     assert '"route": "stock"' in text
