@@ -176,7 +176,8 @@ def test_public_continuation_preserves_other_active_channel_and_capacity_two(pro
     claims = module._decode_active_claims(client.get(module.ACTIVE_KEY))
     assert len(claims) == 2 and running in claims
     assert client.get(module.JOB_PREFIX + running['task_id']) == before
-    assert module.get_production_state(profiles[2]['channel_id']) == {}
+    assert next_tick['channel_id'] == profiles[2]['channel_id']
+    assert module.get_production_state(profiles[2]['channel_id'])['cursor'] == '1'
 
 
 def test_concurrent_public_ticks_reserve_next_topic_once(case):

@@ -286,6 +286,21 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
                   if spec['language'] == 'tr' else scene['narration'].strip()
                   for index, scene in enumerate(candidate['package']['scenes'])]
         _require(voice['spoken_texts'] == spoken)
+        review_kwargs = {}
+        bound_packages = [candidate['package'], *(manifest['package'] for manifest in manifests)]
+        if any('spoken_word_budget' in package for package in bound_packages):
+            from app.services.director import validate_spoken_word_budget
+
+            # Only the content-addressed voice package and all six immutable
+            # manifests can provide this marker, never options or a repair
+            # prompt. Their original scheduled production scope must match.
+            _require(spec.get('language') == 'en' and spec.get('production_scheduled') is True
+                     and spec.get('mode') == 'production' and spec.get('format') == 'shorts'
+                     and spec.get('duration_minutes') == 0.5)
+            budgets = [validate_spoken_word_budget(package.get('spoken_word_budget'))
+                       for package in bound_packages]
+            _require(all(budget == budgets[0] for budget in budgets))
+            review_kwargs['verified_spoken_word_budget'] = budgets[0]
         paths = []
         for index, manifest in enumerate(manifests):
             raw = manifest['raw']
@@ -305,8 +320,12 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
         try:
             shooting_package = _shooting_package(manifests[0]['package'], overrides)
             reviewed = director.revalidate_immutable_short_story(shooting_package, spec['topic'], 0.5, spec['language'], options,
-                          immutable_candidate_narrations=[scene['narration'] for scene in candidate['package']['scenes']])
+                          immutable_candidate_narrations=[scene['narration'] for scene in candidate['package']['scenes']],
+                          **review_kwargs)
             require_unchanged_voice_narration(candidate['package'], reviewed)
+            if review_kwargs:
+                _require(validate_spoken_word_budget(reviewed.get('spoken_word_budget'))
+                         == review_kwargs['verified_spoken_word_budget'])
             if repairs:
                 _require(reviewed['scenes'] == _shooting_package(manifests[0]['package'], overrides)['scenes'])
             _require(reviewed.get('studio_options') == options and director.short_story_package_is_approved(reviewed, spec['topic']))

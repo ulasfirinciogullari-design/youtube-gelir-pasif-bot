@@ -61,6 +61,7 @@ def case():
         'RETRY_CHILD_EXECUTION_PREFIX', 'REPAIR_CHECKPOINT_PREFIX', 'REPAIR_CHECKPOINT_CLAIM_PREFIX',
         'RETRY_DISPATCH_TTL_SECONDS', 'PAID_CREATE_BUDGET_PREFIX', '_CLAIM_RETRY_DISPATCH')}
     ns.update(settings=settings, PROFILE_PREFIX='youtube_studio:youtube_profile:v1:',
+              FULL_REBUILD_POLICY_PREFIX='youtube_studio:full_video_rebuild:v1:policy:', MAX_RETRY_HOPS=16,
               OAUTH_CHANNEL_PREFIX='youtube_studio:oauth:channel:v3:',
               OAUTH_CREDENTIAL_PREFIX='youtube_studio:oauth:credential:v3:',
               OAUTH_CHANNEL_INDEX='youtube_studio:oauth:channels:v3',

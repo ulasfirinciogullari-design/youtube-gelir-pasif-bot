@@ -68,7 +68,7 @@ def test_initial_threadpool_visual_review_forwards_documentary_evidence():
     ({'scene_repair_recovery': True}, False),
     ({'provider_outage_stock_scenes': {2}}, False),
     ({'stock_quality_fallback_scenes': {2}}, False),
-    ({'ranked_runway_candidates': [{'scene_index': 0}, {'scene_index': 1}]}, False),
+    ({'ranked_runway_candidates': [{'scene_index': 0}, {'scene_index': 1}]}, True),
 ])
 def test_only_existing_preview_or_capped_production_short_enters_budget_rescue(overrides, allowed):
     assert bool(eval(compile(ast.Expression(RESCUE.test), '<rescue-condition>', 'eval'), _rescue_context(**overrides))) is allowed

@@ -17,6 +17,7 @@ from app.services.studio_state import JOB_INDEX, JOB_PREFIX, JOB_TTL_SECONDS
 
 PRODUCTION_PREFIX = 'youtube_studio:production:v1:'
 ACTIVE_KEY = PRODUCTION_PREFIX + 'active'
+DISPATCH_CURSOR_KEY = PRODUCTION_PREFIX + 'last_dispatched_channel'
 MAX_ACTIVE_PRODUCTIONS = 2
 CHANNEL_STATE_PREFIX = PRODUCTION_PREFIX + 'channel:'
 PROFILE_PREFIX = 'youtube_studio:youtube_profile:v1:'
@@ -146,6 +147,9 @@ redis.call('SET', KEYS[3], encode_active(claims))
 redis.call('SETEX', KEYS[4], tonumber(ARGV[13]), ARGV[11])
 redis.call('ZADD', KEYS[8], tonumber(ARGV[5]), ARGV[9])
 redis.call('EXPIRE', KEYS[8], tonumber(ARGV[13]))
+-- Scheduling priority only: advance with the existing atomic reservation,
+-- including when its enqueue reply is lost. Never clear or replace claims.
+redis.call('SET', KEYS[9], ARGV[7])
 return 'reserved'
 '''
 
@@ -477,10 +481,10 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         }
         active = json.dumps({'channel_id': channel_id, 'task_id': task_id}, sort_keys=True)
         status = client.eval(
-            _RESERVE, 8, PROFILE_PREFIX + channel_id,
+            _RESERVE, 9, PROFILE_PREFIX + channel_id,
             CHANNEL_STATE_PREFIX + channel_id, ACTIVE_KEY, JOB_PREFIX + task_id,
             OAUTH_CHANNEL_PREFIX + channel_id, OAUTH_CREDENTIAL_PREFIX + channel_id,
-            OAUTH_CHANNEL_INDEX, JOB_INDEX,
+            OAUTH_CHANNEL_INDEX, JOB_INDEX, DISPATCH_CURSOR_KEY,
             profile_raw, cursor, _prefix_digest(topics[:cursor]),
             _prefix_digest(topics[:cursor + 1]), now, now + interval * 3600,
             channel_id, connection_id, task_id, active,
@@ -509,6 +513,28 @@ def mark_production_dispatched(channel_id: str, task_id: str, *, uncertain: bool
         raise ChannelProductionError('production_dispatch_state_unavailable') from exc
 
 
+def _dispatch_profile_order(profiles: list[dict]) -> list[dict]:
+    """Round-robin priority, not authorization, after the last reserved channel.
+
+    A missing/obsolete cursor bootstraps safely; malformed ordering metadata
+    cannot remove a claim or bypass any reservation check. Channel IDs, not
+    timestamps, keep the order stable across clock changes and worker restarts.
+    Concurrent ticks may see the same priority list; the existing reservation
+    Lua still enforces the two slots and one active job per channel.
+    """
+    ordered = sorted(profiles, key=lambda item: str(item.get('channel_id') or ''))
+    try:
+        client = _redis()
+        kind = client.type(DISPATCH_CURSOR_KEY)
+        cursor = client.get(DISPATCH_CURSOR_KEY) if kind == 'string' else None
+    except Exception as exc:
+        raise ChannelProductionError('production_state_unavailable') from exc
+    if not isinstance(cursor, str) or not _ID.fullmatch(cursor):
+        return ordered
+    return ([profile for profile in ordered if str(profile.get('channel_id') or '') > cursor]
+            + [profile for profile in ordered if str(profile.get('channel_id') or '') <= cursor])
+
+
 def dispatch_due_productions(profiles: list[dict], connections: list[dict], enqueue, *, now: float | None = None) -> dict:
     """One beat tick, including reconciliation; never calls a paid provider."""
     reconciliation = reconcile_active_production(now=now)
@@ -517,7 +543,7 @@ def dispatch_due_productions(profiles: list[dict], connections: list[dict], enqu
     connected = {str(item.get('id') or ''): item for item in connections if isinstance(item, dict)}
     statuses = {}
     queued = []
-    for profile in sorted(profiles, key=lambda item: str(item.get('channel_id') or '')):
+    for profile in _dispatch_profile_order(profiles):
         channel_id = str(profile.get('channel_id') or '')
         if profile.get('production_enabled') is not True or profile.get('auto_publish') is not True:
             continue

@@ -24,6 +24,10 @@ from app.services.channel_production import (
 )
 from app.services.youtube_auth import AUTH_EPOCH_KEY
 from app.services.youtube_publish_state import UPLOAD_PREFIX, EXECUTION_LOCK_PREFIX
+from app.services.full_video_rebuild import (
+    POLICY_PREFIX as FULL_REBUILD_POLICY_PREFIX, MAX_RETRY_HOPS,
+    _executed_full_rebuild_grant,
+)
 
 
 POLICY_PREFIX = 'youtube_studio:voice_replacement:v1:policy:'
@@ -69,7 +73,9 @@ def _snapshot(client, key, snapshots, *, kind='string', optional=False):
     actual = client.type(key)
     _require(actual in ({kind, 'none'} if optional else {kind}))
     value = client.hgetall(key) if actual == 'hash' else client.get(key)
-    snapshots[key] = {'kind': actual, 'value': value}
+    snapshot = {'kind': actual, 'value': value}
+    _require(key not in snapshots or snapshots[key] == snapshot, 'voice_replacement_state_changed')
+    snapshots[key] = snapshot
     return value
 
 
@@ -155,22 +161,56 @@ def _source(client, source_id, audio_sha, snapshots, *, reserved=False):
     return source, spec, pointer, paid_cap, auth
 
 
-def _lineage(client, source, spec, snapshots):
+def _lineage(client, source, spec, snapshots, *, replacement_policy=None):
     seen = set()
     child = source
+    audio_caps = [_paid_zero(client, source['task_id'], snapshots)]
     for _ in range(17):
         task_id = child['task_id']
-        _require(task_id not in seen and not child.get('voice_replacement'))
+        _require(task_id not in seen)
+        if replacement_policy is not None and task_id == source['task_id']:
+            _require(child.get('voice_replacement') == _marker(replacement_policy))
+        else:
+            _require(not child.get('voice_replacement'))
         seen.add(task_id)
         _absent(client, POLICY_PREFIX + task_id, snapshots)
-        _absent(client, LINEAGE_PREFIX + task_id, snapshots)
+        lineage = _snapshot(client, LINEAGE_PREFIX + task_id, snapshots, optional=True)
+        _require(lineage is None or replacement_policy is not None
+                 and task_id == replacement_policy['lineage_root_task_id'] and _object(lineage) == replacement_policy)
         parent_id = child.get('parent_id')
+        full_grant = _snapshot(client, FULL_REBUILD_POLICY_PREFIX + task_id, snapshots, optional=True)
+        if full_grant is not None:
+            # A public job flag is not authority. Revalidate the private grant,
+            # all older failed ancestors, current authorization and old ledgers.
+            _failed_audio(child, task_id, spec)
+            _require(child.get('voice_candidate_reuse') is None
+                     and (child.get('voice_replacement') is None
+                          or replacement_policy is not None and task_id == source['task_id']
+                          and child['voice_replacement'] == _marker(replacement_policy))
+                     and not child.get('repair_available') and not child.get('repair_claimed')
+                     and all(child.get(k) is None for k in (
+                         'audio_candidate_checkpoint_error', 'generated_asset_candidates',
+                         'qa_workprint', 'repair_checkpoint',
+                     )))
+            for prefix in (UPLOAD_PREFIX, EXECUTION_LOCK_PREFIX,
+                           REPAIR_CHECKPOINT_PREFIX, REPAIR_CHECKPOINT_CLAIM_PREFIX):
+                _absent(client, prefix + task_id, snapshots)
+            audio = child.get('audio_candidate_checkpoint')
+            pointer = _checkpoint(child, audio.get('audio_sha256') if isinstance(audio, dict) else None)
+            cap = _paid_zero(client, task_id, snapshots)
+            grant, _ = _executed_full_rebuild_grant(client, task_id, parent_id, spec, snapshots)
+            _require(grant['original_paid_create_cap'] == cap
+                     and all(value == cap for value in audio_caps))
+            # Leave room for the replacement in the full public-recovery bound.
+            _require(sum(key.startswith(JOB_PREFIX) for key in snapshots) <= MAX_RETRY_HOPS)
+            return task_id, {'task_id': task_id, 'policy_sha256': _digest(grant),
+                             'checkpoint_sha256': _digest(pointer)}
         if not parent_id:
-            return task_id
+            return task_id, None
         _require(isinstance(parent_id, str) and _TASK.fullmatch(parent_id))
         parent = _object(_snapshot(client, JOB_PREFIX + parent_id, snapshots))
         _failed_audio(parent, parent_id, spec)
-        _paid_zero(client, parent_id, snapshots)
+        audio_caps.append(_paid_zero(client, parent_id, snapshots))
         for prefix in (UPLOAD_PREFIX, EXECUTION_LOCK_PREFIX):
             _absent(client, prefix + parent_id, snapshots)
         dispatch = _snapshot(client, RETRY_DISPATCH_PREFIX + parent_id, snapshots, kind='hash')
@@ -232,14 +272,17 @@ def _keys(source_id, child_id, root_id):
             LINEAGE_PREFIX + root_id, ATTEMPT_PREFIX + child_id, OAUTH_CHANNEL_INDEX]
 
 
+def _marker(policy):
+    return {k: policy[k] for k in ('version', 'source_task_id', 'child_task_id', 'audio_sha256',
+                                   'model', 'model_id', 'max_attempts', 'requires_full_qa')}
+
+
 def _evaluate(client, script, keys, snapshots, source_id, child_id, token, policy, attempt=None):
-    marker = {k: policy[k] for k in ('version', 'source_task_id', 'child_task_id', 'audio_sha256',
-                                     'model', 'model_id', 'max_attempts', 'requires_full_qa')}
     now = datetime.now(timezone.utc).isoformat()
     return client.eval(script, len(keys), *keys, token, child_id, now, JOB_TTL_SECONDS,
                        '0', RETRY_DISPATCH_TTL_SECONDS, source_id,
                        _json([{'key': key, **value} for key, value in snapshots.items()]),
-                       _json(policy), _json(marker), _json(attempt), policy['channel_id'])
+                       _json(policy), _json(_marker(policy)), _json(attempt), policy['channel_id'])
 
 
 def _inputs(source_id, child_id, audio_sha):
@@ -261,7 +304,7 @@ def reserve_voice_replacement(source_id, child_id, token, expected_audio_sha256)
             _require(isinstance(existing_child, str) and _TASK.fullmatch(existing_child))
             return {'claimed': False, 'child_task_id': existing_child}
         source, spec, pointer, cap, auth = _source(client, source_id, expected_audio_sha256, snapshots)
-        root_id = _lineage(client, source, spec, snapshots)
+        root_id, full_boundary = _lineage(client, source, spec, snapshots)
         for prefix in (JOB_PREFIX, RETRY_CHILD_CLAIM_PREFIX, RETRY_CHILD_EXECUTION_PREFIX,
                        POLICY_PREFIX, ATTEMPT_PREFIX):
             _absent(client, prefix + child_id, snapshots)
@@ -272,6 +315,8 @@ def reserve_voice_replacement(source_id, child_id, token, expected_audio_sha256)
                   'model': 'eleven_multilingual_v2', 'model_id': 'eleven_multilingual_v2',
                   'voice_profile': 'turkish_multilingual_v2',
                   'max_attempts': 1, 'requires_full_qa': True, 'dispatch_token_sha256': _digest(token), **auth}
+        if full_boundary is not None:
+            policy['full_rebuild_boundary'] = full_boundary
         result = _evaluate(client, _RESERVE, _keys(source_id, child_id, root_id), snapshots,
                            source_id, child_id, token, policy)
         _require(isinstance(result, (list, tuple)) and len(result) == 2 and result[0] == 2,
@@ -303,6 +348,8 @@ def _policy(client, child_id, source_id, audio_sha256, spec, snapshots):
     root_id = policy.get('lineage_root_task_id')
     _require(isinstance(root_id, str) and _TASK.fullmatch(root_id))
     _require(_object(_snapshot(client, LINEAGE_PREFIX + root_id, snapshots)) == policy)
+    actual_root, boundary = _lineage(client, source, spec, snapshots, replacement_policy=policy)
+    _require(actual_root == root_id and boundary == policy.get('full_rebuild_boundary'))
     _absent(client, ATTEMPT_PREFIX + child_id, snapshots)
     child = _object(_snapshot(client, JOB_PREFIX + child_id, snapshots))
     _require(child.get('task_id') == child_id and child.get('parent_id') == source_id
