@@ -5185,9 +5185,10 @@ def run_video_pipeline(
         prompt_candidates, ranked_runway_candidates = rank_runway_candidates()
 
         # Before rejecting an over-budget plan, run one bounded stock rescue.
-        # Tiny sourced documentary productions also try rejected stock scenes
-        # provisionally inside the paid cap, then rerank the measured results.
-        # Other routes retain the existing overflow-only selection.
+        # Production Shorts use the persisted total create budget, not the
+        # visual mix's preferred AI share. An in-budget plan needs no additional
+        # stock access here; all normal allocation and visual QA gates remain.
+        # Previews retain their existing submission-cap rescue behavior.
         if (
             (
                 is_bounded_short_preview
@@ -5202,11 +5203,19 @@ def run_video_pipeline(
             and not scene_repair_recovery
             and not provider_outage_stock_scenes
             and not stock_quality_fallback_scenes
-            and len(ranked_runway_candidates) > runway_submission_cap
+            and len(ranked_runway_candidates) > (
+                total_paid_create_cap
+                if options.get('mode') == 'production'
+                else runway_submission_cap
+            )
         ):
             overflow_candidates = _prepaid_stock_rescue_candidates(
                 ranked_runway_candidates,
-                runway_submission_cap,
+                (
+                    total_paid_create_cap
+                    if options.get('mode') == 'production'
+                    else runway_submission_cap
+                ),
                 options=options,
                 duration_minutes=duration_minutes,
                 scenes=scenes,
