@@ -1116,6 +1116,30 @@ def _spec_path(spec: str | dict) -> str:
     return str(spec or '').strip()
 
 
+def _candidate_media_provenance(spec: str | dict) -> dict:
+    """Project actual media identity without URLs, paths or invented facts.
+
+    An authored stock route can have a generated fallback, and vice versa.
+    Preserve conflicting fields rather than deriving a more confident label.
+    Unknown or legacy values stay unknown and cannot inject reviewer text.
+    """
+    original = spec if isinstance(spec, dict) else {}
+    projected = {}
+    for field in ('generated', 'synthetic_motion_only'):
+        value = original.get(field)
+        projected[field] = value if type(value) is bool else None
+    for field, allowed in (
+        ('source_type', {'stock', 'generated', 'ai'}),
+        ('generation_provider', {'runway', 'gemini_veo', 'gemini_omni', 'fal', 'replicate',
+                                 'openai', 'gemini_image_motion'}),
+        ('stock_provider', {'pexels'}),
+        ('source_media_type', {'image', 'video'}),
+    ):
+        value = original.get(field)
+        projected[field] = value if type(value) is str and value in allowed else None
+    return projected
+
+
 def _trusted_image_motion_candidate(spec: str | dict) -> bool:
     """Recognize only the server-authored private image-motion contract."""
     if not isinstance(spec, dict):
@@ -1841,7 +1865,7 @@ def review_scene_visuals(
         scene_text = (
             f'REVIEW SCENE ID {idx}\n'
             f'Story position: {story_position}\n'
-            f'Route: {"ai" if str(scene.get("ai_prompt") or "").strip() else "stock"}\n'
+            f'Authored planning route: {"ai" if str(scene.get("ai_prompt") or "").strip() else "stock"}\n'
             f'Narration: {str(scene.get("narration") or "").strip()}\n'
             'Search queries: '
             + json.dumps(
@@ -1868,6 +1892,7 @@ def review_scene_visuals(
         scene_available_moments: dict[int, set[int]] = {}
         image_count = 0
         for candidate_idx, path in enumerate(paths):
+            provenance_attached = False
             if _trusted_image_motion_candidate(specs[candidate_idx]):
                 trusted_image_motion_candidates.setdefault(idx, set()).add(
                     candidate_idx
@@ -1895,6 +1920,12 @@ def review_scene_visuals(
                     f'CANDIDATE {candidate_idx} — MOMENT {moment_idx} — '
                     f'approximately {int(fraction * 100)}% into clip'
                 )
+                if not provenance_attached:
+                    label += '\nSERVER-AUTHORED CANDIDATE MEDIA PROVENANCE: ' + json.dumps({
+                        'scene_index': idx, 'candidate_index': candidate_idx,
+                        'media_provenance': _candidate_media_provenance(specs[candidate_idx]),
+                    }, separators=(',', ':'))
+                    provenance_attached = True
                 scene_content.append({
                     'type': 'input_text',
                     'text': label,
@@ -1962,6 +1993,18 @@ def review_scene_visuals(
     ]
     system_instruction = (
         content[0]['text']
+        + '\n\nACTUAL CANDIDATE PROVENANCE CONTEXT: the ordered plan route and '
+        'Authored planning route describe the original shot plan, not the origin '
+        'of every candidate. The per-candidate media_provenance records below '
+        'contain only allowlisted fields from that actual candidate spec. Null '
+        'means unavailable; conflicting fields remain uncertain rather than '
+        'establishing authenticity. A candidate explicitly marked generated is '
+        'synthetic even when its authored planning route is stock; do not mistake '
+        'it for an authentic archival recording. Provenance does not establish '
+        'historical accuracy, source truth, a viewer-visible reconstruction label '
+        'or completed publication disclosure. It is not a QA approval and does '
+        'not activate any scoped rubric exception. All existing identity, action, '
+        'continuity, artifact, evidence and scoring requirements remain unchanged. '
         + '\n\n'
         + _CURRENCY_DOCUMENT_TEXT_RULE
         + '\n\n' + _TEMPORAL_PROOF_RULE

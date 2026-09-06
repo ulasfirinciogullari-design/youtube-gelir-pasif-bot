@@ -369,8 +369,15 @@ def claim_retry_dispatch(
     token: str,
     *,
     allow_repair: bool,
+    full_rebuild_binding=None,
 ) -> dict:
     """Atomically reserve exactly one retry and, when present, its checkpoint."""
+    if full_rebuild_binding is not None:
+        from app.services.full_video_rebuild import _claim_bound_full_rebuild
+
+        if allow_repair is not False:
+            raise ValueError('full rebuild cannot consume a repair checkpoint')
+        return _claim_bound_full_rebuild(task_id, child_task_id, token, full_rebuild_binding)
     normalized_task_id = str(task_id or '').strip().lower()
     normalized_child_id = str(child_task_id or '').strip().lower()
     normalized_token = str(token or '').strip()

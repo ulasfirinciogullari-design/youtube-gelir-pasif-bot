@@ -478,14 +478,18 @@ def _apply_exact_narration_lock(
 
 
 def _studio_plan_provider() -> str:
-    provider = str(
-        getattr(settings, 'studio_plan_provider', 'openai') or ''
-    ).strip().casefold()
-    if provider not in {'openai', 'gemini'}:
-        raise RuntimeError(
-            'STUDIO_PLAN_PROVIDER must be openai or gemini'
-        )
-    return provider
+    from app.services.planning_model_routing import planning_provider
+    return planning_provider(settings)
+
+
+def _studio_plan_openai_model() -> str:
+    from app.services.planning_model_routing import planning_openai_model
+    return planning_openai_model(settings)
+
+
+def _planning_response_text(response) -> str:
+    from app.services.planning_model_routing import planning_response_text
+    return planning_response_text(response)
 
 
 def _director_json_schema(
@@ -1875,11 +1879,11 @@ EDITORIAL QC RULES:
             thinking_level=reasoning_effort,
         )
     response = client.responses.create(
-        model=settings.openai_model,
+        model=_studio_plan_openai_model(),
         reasoning={'effort': reasoning_effort},
         input=prompt,
     )
-    return _json(response.output_text)
+    return _json(_planning_response_text(response))
 
 
 def _immutable_narration_map(package: dict, narrations: list[str]) -> dict[int, str]:
@@ -2293,12 +2297,12 @@ NON-NEGOTIABLE RULES:
                 )
             else:
                 response = client.responses.create(
-                    model=settings.openai_model,
+                    model=_studio_plan_openai_model(),
                     reasoning={'effort': 'medium' if attempt else 'low'},
                     input=generator_input,
                 )
                 try:
-                    data = _json(response.output_text)
+                    data = _json(_planning_response_text(response))
                 except Exception:
                     data = {}
 
@@ -2614,7 +2618,7 @@ For EACH requested position, set every boolean independently. If evidence is amb
 The reason must name concrete evidence for the verdict. Individual shot approval requires all thirteen booleans to be true.
 '''
         critic_request = {
-            'model': settings.openai_model,
+            'model': _studio_plan_openai_model(),
             'reasoning': {'effort': 'medium'},
             'tools': [{'type': 'web_search', 'search_context_size': 'low'}],
             'tool_choice': 'auto',
@@ -2687,7 +2691,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             else:
                 critic_response = client.responses.create(**critic_request)
                 try:
-                    critic = _json(critic_response.output_text)
+                    critic = _json(_planning_response_text(critic_response))
                 except Exception:
                     critic_global_error = (
                         'independent stock-shot critic returned invalid JSON'
@@ -3451,14 +3455,14 @@ def _compress_scheduled_shot_prompts(package: dict, topic: str, indices: list[in
         raise ScheduledShotPromptError('Scheduled shot preparation requires its configured provider')
     client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=0)
     response = client.responses.create(
-        model=settings.openai_model, reasoning={'effort': 'medium'}, input=prompt,
+        model=_studio_plan_openai_model(), reasoning={'effort': 'medium'}, input=prompt,
         max_output_tokens=5000,
         text={'format': {'type': 'json_schema', 'name': 'scheduled_shot_compression',
                          'strict': True, 'schema': schema}},
     )
     if getattr(response, 'status', None) != 'completed':
         raise ScheduledShotPromptError('Scheduled shot preparation did not complete')
-    output = response.output_text
+    output = _planning_response_text(response)
     if not isinstance(output, str) or len(output.encode('utf-8')) > 64 * 1024:
         raise ScheduledShotPromptError('Scheduled shot preparation returned invalid data')
     return json.loads(output, object_pairs_hook=_reject_duplicate_keys, parse_constant=_reject_non_finite)

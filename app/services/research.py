@@ -36,14 +36,18 @@ _MAX_PRODUCTION_SCENES = 70
 
 
 def _studio_plan_provider() -> str:
-    provider = str(
-        getattr(settings, 'studio_plan_provider', 'openai') or ''
-    ).strip().casefold()
-    if provider not in {'openai', 'gemini'}:
-        raise RuntimeError(
-            'STUDIO_PLAN_PROVIDER must be openai or gemini'
-        )
-    return provider
+    from app.services.planning_model_routing import planning_provider
+    return planning_provider(settings)
+
+
+def _studio_plan_openai_model() -> str:
+    from app.services.planning_model_routing import planning_openai_model
+    return planning_openai_model(settings)
+
+
+def _planning_response_text(response) -> str:
+    from app.services.planning_model_routing import planning_response_text
+    return planning_response_text(response)
 
 
 def _research_json_schema(
@@ -430,14 +434,14 @@ FACT RULES:
             max_retries=1,
         )
         response = client.responses.create(
-            model=settings.openai_model,
+            model=_studio_plan_openai_model(),
             reasoning={'effort': reasoning_effort},
             tools=[{'type': 'web_search', 'search_context_size': 'low'}],
             tool_choice='auto',
             max_tool_calls=2,
             input=prompt,
         )
-        output_text = response.output_text
+        output_text = _planning_response_text(response)
     package = _parse_json_payload(output_text)
     if (
         exact_scene_count

@@ -85,9 +85,12 @@ def test_single_candidate_frames_are_chronological_with_stable_moment_ids(review
         parts = reviewer.client.responses.create.call_args.kwargs['input'][0]['content']
 
     observed = []
+    provenance_moments = []
+    provenance_prefix = 'SERVER-AUTHORED CANDIDATE MEDIA PROVENANCE: '
     for index, part in enumerate(parts):
         label = part.get('text', '')
-        match = re.fullmatch(r'CANDIDATE 0 — MOMENT ([0-4]) — approximately ([0-9]+)% into clip', label)
+        match = re.fullmatch(r'CANDIDATE 0 — MOMENT ([0-4]) — approximately ([0-9]+)% into clip',
+                             label.split('\n', 1)[0])
         if match is None:
             continue
         image = parts[index + 1]
@@ -95,9 +98,13 @@ def test_single_candidate_frames_are_chronological_with_stable_moment_ids(review
                else base64.b64decode(image['image_url'].split(',', 1)[1]))
         moment, percent = map(int, match.groups())
         fraction = percent / 100
-        assert f'fraction={fraction:.2f}'.encode() in raw
+        assert raw == b'\xff\xd8\xff' + f'fraction={fraction:.2f}'.encode() + b'\xff\xd9'
+        if '\n' + provenance_prefix in label:
+            provenance_moments.append(moment)
         observed.append((moment, fraction))
     assert observed == EXPECTED
+    assert provenance_moments == [EXPECTED[0][0]]
+    assert sum(part.get('text', '').count(provenance_prefix) for part in parts) == 1
     # ID 1 must remain the 50% editorial choice even though it is now emitted
     # third; provider order must never change downstream fraction mapping.
     assert result['reviews'][0]['best_moment_index'] == 1
