@@ -1640,6 +1640,39 @@ def _documentary_broll_writer_rule(content_style: str) -> str:
     )
 
 
+def _fresh_documentary_stock_video_rule(content_style: str, fresh_scheduled: bool) -> str:
+    if (
+        fresh_scheduled is not True
+        or str(content_style or 'documentary').strip().casefold() != 'documentary'
+    ):
+        return ''
+    return (
+        'FRESH DOCUMENTARY STOCK-VIDEO CONTRACT: stock search retrieves moving '
+        'video clips, not archival photographs, still images, document scans '
+        'or product photographs. Never label a rare event-specific archival '
+        'photo as a common moving stock clip. Preserve the source-supported '
+        'spoken facts and all explicit user actions, identities and historical '
+        'constraints. A static factual question or explanation does not '
+        'require inventing membership inspection, a cashier transaction, '
+        'employee/customer interaction or employee stocking choreography. '
+        'Prefer genuinely common relevant footage of the named subject or '
+        'a revealing detail when available; otherwise use clearly contextual '
+        'footage of the same specific subject class and relevant setting only '
+        'when the brief and narration permit illustration. Never pretend a '
+        'generic shop is the named brand, or modern footage is real archive. '
+        'Simplify unclaimed visual interactions rather than inventing facts '
+        'or assuming a highly specific close-up is available. When a real '
+        'historical reconstruction is required, the initial director must '
+        'choose an honest AI route within its existing budget or fail; '
+        'a stock-query repair must never silently reroute an authored null '
+        'scene, replace a required action, substitute an identity or claim '
+        'stock availability without a realistic moving-footage basis. '
+        'A common_stock_clip_feasible-only rejection calls for new feasible '
+        'queries for the already source-supported narration, not a new '
+        'spoken claim or a weaker reviewer verdict.'
+    )
+
+
 def _documentary_explanatory_coda_rule(content_style: str) -> str:
     if str(content_style or 'documentary').strip().casefold() != 'documentary':
         return (
@@ -1705,6 +1738,7 @@ def _run_director(
     documentary_rule = _documentary_broll_writer_rule(style)
     explanatory_coda_rule = _documentary_explanatory_coda_rule(style)
     shot_capacity_rule = _scheduled_short_shot_writer_rule(options, duration_minutes, fresh_scheduled)
+    stock_video_rule = _fresh_documentary_stock_video_rule(style, fresh_scheduled)
     shot_aspect = '9:16' if shot_capacity_rule else '16:9'
     if duration_minutes <= 0.6 and target_scenes > 0:
         authored_ai_limit = preview_authored_ai_limit(
@@ -1855,6 +1889,7 @@ Studio pace profile: {pace_profile}
 Studio visual mix: {visual_mix}
 {documentary_rule}
 {explanatory_coda_rule}
+{stock_video_rule}
 {reference_note}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_quota_note}
@@ -1960,6 +1995,7 @@ def _repair_short_stock_scenes(
     allow_natural_language_repair: bool = True,
     allow_explicit_brief_repair: bool = True,
     allow_whole_story_repair: bool = False,
+    fresh_scheduled: bool = False,
     allow_legacy_short_budget: bool = True,
     calibrated_short_words: int | None = None,
     immutable_candidate_narrations: list[str] | None = None,
@@ -1974,6 +2010,14 @@ def _repair_short_stock_scenes(
         content_style or 'documentary'
     ).strip().casefold()
     documentary_broll = normalized_content_style == 'documentary'
+    fresh_stock_planning = (
+        fresh_scheduled is True
+        and immutable_candidate_narrations is None
+        and immutable_original_shot_prompts is None
+    )
+    stock_video_rule = _fresh_documentary_stock_video_rule(
+        normalized_content_style, fresh_stock_planning,
+    )
     documentary_writer_rule = _documentary_broll_writer_rule(normalized_content_style)
     explanatory_coda_rule = _documentary_explanatory_coda_rule(normalized_content_style)
     documentary_critic_rule = (
@@ -2201,8 +2245,23 @@ def _repair_short_stock_scenes(
     }
     candidate_story = [dict(scene) for scene in scenes]
     critic = None
+    maximum_writer_attempts = (
+        1 if immutable_original_shot_prompts is not None
+        else 3 if fresh_stock_planning else 2
+    )
+    deterministic_repairs = 0
+    semantic_repairs = 0
 
-    for attempt in range(1 if immutable_original_shot_prompts is not None else 2):
+    def can_retry_deterministic(attempt: int) -> bool:
+        nonlocal deterministic_repairs
+        if not fresh_stock_planning:
+            return attempt == 0
+        if deterministic_repairs or attempt + 1 >= maximum_writer_attempts:
+            return False
+        deterministic_repairs += 1
+        return True
+
+    for attempt in range(maximum_writer_attempts):
         request_positions = list(pending_positions)
         current_story = [
             {
@@ -2212,6 +2271,9 @@ def _repair_short_stock_scenes(
                 'narration': (
                     accepted_rows[position]['narration']
                     if position in accepted_rows
+                    else targets_by_position[position]['locked_narration']
+                    if position in targets_by_position
+                    and 'locked_narration' in targets_by_position[position]
                     else scene.get('narration')
                 ),
             }
@@ -2288,6 +2350,7 @@ Return ONLY JSON in exactly this shape:
 NON-NEGOTIABLE RULES:
 - {documentary_writer_rule}
 - {explanatory_coda_rule}
+- {stock_video_rule}
 - {_MATERIAL_IDENTITY_RULE}
 - {_HUMAN_CURIOSITY_RULE}
 - {_SOURCE_IDENTITY_RULE}
@@ -2351,6 +2414,11 @@ NON-NEGOTIABLE RULES:
                     model=_studio_plan_openai_model(),
                     reasoning={'effort': 'medium' if attempt else 'low'},
                     input=generator_input,
+                    **({'text': {'format': {
+                        'type': 'json_schema', 'name': 'fresh_stock_writer',
+                        'strict': True,
+                        'schema': _stock_writer_json_schema(request_positions),
+                    }}} if fresh_stock_planning else {}),
                 )
                 try:
                     data = _json(_planning_response_text(response))
@@ -2428,7 +2496,7 @@ NON-NEGOTIABLE RULES:
             pending_positions = sorted(deterministic_errors)
             feedback_by_position = deterministic_errors
             last_failures = dict(deterministic_errors)
-            if attempt == 0:
+            if can_retry_deterministic(attempt):
                 continue
             break
 
@@ -2440,7 +2508,7 @@ NON-NEGOTIABLE RULES:
             }
             pending_positions = missing
             feedback_by_position = dict(last_failures)
-            if attempt == 0:
+            if can_retry_deterministic(attempt):
                 continue
             break
 
@@ -2461,7 +2529,7 @@ NON-NEGOTIABLE RULES:
                 position: total_error
                 for position in request_positions
             }
-            if attempt == 0:
+            if can_retry_deterministic(attempt):
                 pending_positions = list(request_positions)
                 feedback_by_position = dict(last_failures)
                 for position in request_positions:
@@ -2621,6 +2689,7 @@ Return ONLY JSON in exactly this shape:
 Review the WHOLE story before reviewing individual stock shots. Set each story_review boolean independently and false whenever evidence is ambiguous.
 {documentary_critic_rule}
 {explanatory_coda_rule}
+{stock_video_rule}
 - {_MATERIAL_IDENTITY_RULE} A wrong finished-product category fails causal_claim_supported and adds_no_new_fact for the affected scene, even if its ingredient percentages are correct.
 - {_HUMAN_CURIOSITY_RULE} Repeated intro-as-payoff fails one_specific_useful_reveal or hook_payoff_same_promise; unnecessary citation boilerplate fails natural_spoken_language.
 - {_SOURCE_IDENTITY_RULE} An invented or substituted institution fails causal_claim_supported and adds_no_new_fact.
@@ -3257,10 +3326,28 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             return repaired
 
         last_failures = dict(critic_failures)
-        if attempt == 0:
+        can_retry_semantic = (
+            semantic_repairs == 0 and attempt + 1 < maximum_writer_attempts
+            if fresh_stock_planning else attempt == 0
+        )
+        if can_retry_semantic:
+            semantic_repairs += 1
             pending_positions = sorted(critic_failures)
             feedback_by_position = dict(critic_failures)
             for position in pending_positions:
+                if (
+                    fresh_stock_planning
+                    and documentary_broll
+                    and parsed_reviews.get(position, {}).get('failed_checks')
+                    == ['common_stock_clip_feasible']
+                    and not ending_failed_checks
+                ):
+                    # The narration already passed every semantic/source gate.
+                    # Lock the actual reviewed text, not the pre-writer draft,
+                    # while simplifying only the rejected footage queries.
+                    targets_by_position[position]['locked_narration'] = (
+                        accepted_rows[position]['narration']
+                    )
                 failed_candidates[position] = dict(accepted_rows[position])
                 accepted_rows.pop(position, None)
             continue
@@ -3893,6 +3980,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 allow_legacy_short_budget=(exact_narration is not None),
                 calibrated_short_words=calibrated_short_words,
                 **({'allow_whole_story_repair': True} if fresh_scheduled is True else {}),
+                **({'fresh_scheduled': True} if fresh_scheduled is True else {}),
             )
         except _WholeStoryRepairRequired as exc:
             if isinstance(exc, _NaturalSpokenLanguageRepairRequired):
@@ -4016,6 +4104,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 allow_explicit_brief_repair=False,
                 allow_legacy_short_budget=(exact_narration is not None),
                 calibrated_short_words=calibrated_short_words,
+                **({'fresh_scheduled': True} if fresh_scheduled is True else {}),
             )
         words = _word_count(out['narration'])
         scene_count = len(out['scenes'])
