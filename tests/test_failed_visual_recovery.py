@@ -275,7 +275,7 @@ def test_source_guard_fails_before_any_storage_or_qc(case, damage):
     case.visual_review.assert_not_called()
 
 
-@pytest.mark.parametrize('repairs', [[0, 2, 5], [0, 2], [5, 0], [False, 5], [], [0, 5, 5]])
+@pytest.mark.parametrize('repairs', [[0, 1, 5], [0, 2], [5, 0], [False, 5], [], [0, 5, 5]])
 def test_no_other_repair_or_scope_expansion(case, repairs):
     with pytest.raises(recovery.FailedVisualRecoveryError): recovery.prepare_failed_visual_repair(SOURCE, case.pointer, case.work, repair_scene_indices=repairs)
     assert case.gets == case.puts == []
@@ -320,7 +320,7 @@ def test_story_must_be_fresh_approved_and_immutable(case, damage):
     case.story_review.side_effect = changed
     with pytest.raises(recovery.FailedVisualRecoveryError): _prepare(case)
     case.visual_review.assert_not_called()
-    assert case.puts == []
+    assert case.puts and all('failed_visual_audit_v1-' in key for key in case.puts)
 
 
 @pytest.mark.parametrize('damage', ['score', 'evidence', 'identity', 'editorial', 'missing', 'duplicate', 'candidate'])
@@ -334,7 +334,8 @@ def test_suspect_scene_two_never_authorizes_new_creates_or_checkpoint(case, dama
     if damage == 'candidate': row['best_candidate_index'] = 1
     before = _snapshot(case)
     with pytest.raises(recovery.FailedVisualRecoveryError) as caught: _prepare(case)
-    assert _snapshot(case) == before and case.puts == []
+    assert _snapshot(case) == before and case.puts
+    assert all('failed_visual_audit_v1-' in key for key in case.puts)
     if damage not in {'missing', 'duplicate'}:
         assert caught.value.diagnostics[0]['scene_index'] == 2
         assert 'artifact' in caught.value.diagnostics[0]['review']['reason']

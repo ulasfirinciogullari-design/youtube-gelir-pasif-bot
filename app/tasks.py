@@ -246,7 +246,8 @@ def _validated_recovered_generated_media(
             'Recovered generated-media contract is malformed'
         )
 
-    if raw.get('version') in (2, 3):
+    if raw.get('version') in (2, 3, 4):
+        three_scene_repair = raw.get('version') == 4
         recovery_only = raw.get('version') == 3
         expected_fields = {
             'version',
@@ -272,6 +273,11 @@ def _validated_recovered_generated_media(
         if (
             raw.get('recovery_only' if recovery_only else 'repair_only') is not True
             or (recovery_only and type(raw.get('version')) is not int)
+            or (three_scene_repair and (
+                type(raw.get('version')) is not int
+                or type(scene_count) is not int or scene_count < 1
+                or expected_package_sha256 is None
+            ))
             or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(
                 source_task_id
             )
@@ -290,7 +296,7 @@ def _validated_recovered_generated_media(
         if (
             any(type(index) is not int for index in raw_repair_indices)
             or raw_repair_indices != sorted(set(raw_repair_indices))
-            or (not recovery_only and not 1 <= len(raw_repair_indices) <= 2)
+            or (not recovery_only and not 1 <= len(raw_repair_indices) <= (3 if three_scene_repair else 2))
             or any(
                 not 0 <= index < int(scene_count)
                 for index in raw_repair_indices
@@ -385,6 +391,10 @@ def _validated_recovered_generated_media(
                 entries.append(normalized_entry)
                 seen_object_keys.add(key)
             scenes[scene_idx] = entries
+        if three_scene_repair and set(scenes) | repaired != set(range(scene_count)):
+            raise FinalVisualQualityError(
+                'Three-scene repair requires a complete retained/repair partition'
+            )
         if recovery_only:
             return {
                 'version': 3,
@@ -394,7 +404,7 @@ def _validated_recovered_generated_media(
                 'scenes': scenes,
             }
         return {
-            'version': 2,
+            'version': 4 if three_scene_repair else 2,
             'repair_only': True,
             'source_task_id': source_task_id,
             'package_sha256': package_sha256,
@@ -938,7 +948,7 @@ def _require_recovered_media_coverage(
         return
     selected = set(int(index) for index in selected_scene_indices)
     recovered = set(recovered_generated_media['scenes'])
-    if recovered_generated_media.get('version') == 2:
+    if recovered_generated_media.get('version') in (2, 4):
         recovered |= set(
             recovered_generated_media['repair_scene_indices']
         )
@@ -4195,7 +4205,7 @@ def run_video_pipeline(
             and not recovered_generated_media
         ) or (
             recovered_generated_media
-            and recovered_generated_media.get('version') in (2, 3)
+            and recovered_generated_media.get('version') in (2, 3, 4)
             and not recovered_voice
         ):
             raise FinalVisualQualityError(
@@ -4212,6 +4222,22 @@ def run_video_pipeline(
                 'Recovered media and voice source tasks do not match'
             )
         scenes = package['scenes']
+        if recovered_generated_media and recovered_generated_media.get('version') == 4:
+            if (
+                options.get('mode') != 'production'
+                or options.get('format') != 'shorts'
+                or duration_minutes != 0.5
+                or type(total_paid_create_cap) is not int
+                or total_paid_create_cap < 1
+            ):
+                raise FinalVisualQualityError(
+                    'Three-scene repair requires a bounded thirty-second production Short'
+                )
+            _validate_paid_create_allocation(
+                [{'scene_index': index} for index in range(len(scenes))],
+                recovered_generated_media, total_paid_create_cap,
+                paid_slots_used=runway_attempts,
+            )
         curated_source_job = (
             _curated_recovery_source(
                 task_id, retry_dispatch_source_id,
@@ -4229,7 +4255,7 @@ def run_video_pipeline(
         )
         scene_repair_recovery = bool(
             recovered_generated_media
-            and recovered_generated_media.get('version') == 2
+            and recovered_generated_media.get('version') in (2, 4)
         )
         recovery_repair_scene_indices = set(
             recovered_generated_media.get('repair_scene_indices') or []
@@ -5640,6 +5666,11 @@ def run_video_pipeline(
         for candidate in selected_runway:
             scene_idx = int(candidate['scene_index'])
             stock_fallback = list(scene_visuals[scene_idx])
+            if recovered_generated_media and recovered_generated_media.get('version') == 4:
+                # V4 fixes an exact retained/repair partition. Preliminary
+                # stock reviews may inform direction, never replace its assets.
+                stock_fallback = []
+                scene_visuals[scene_idx] = []
             curated_preloaded = bool(
                 len(stock_fallback) == 1 and isinstance(stock_fallback[0], dict)
                 and stock_fallback[0].get('curated_pinned') is True
@@ -5657,7 +5688,7 @@ def run_video_pipeline(
                 for recovered_idx, raw_entry in enumerate(
                     recovered_scene_entries
                 ):
-                    if recovered_generated_media.get('version') in (2, 3):
+                    if recovered_generated_media.get('version') in (2, 3, 4):
                         entry = raw_entry
                     else:
                         entry = {
@@ -6428,6 +6459,10 @@ def run_video_pipeline(
         # scenes already changed above go straight back to exact-clip QC.
         rescued_final_scenes: list[int] = list(final_runway_repair_scenes)
         for scene_idx in rejected_final_scenes:
+            if recovered_generated_media and recovered_generated_media.get('version') == 4:
+                # No stock substitution or undeclared second generation after
+                # a failed exact V4 clip; retain the normal final-QA failure.
+                continue
             if scene_idx in final_runway_repair_scenes:
                 continue
             review = final_reviews.get(scene_idx) or {}

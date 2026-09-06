@@ -46,6 +46,31 @@ _CURRENCY_DOCUMENT_TEXT_RULE = (
     'depicted object. Ordinary optical defocus is not automatically fake '
     'typography, but if the narration relies on an unreadable detail, its '
     'required visual evidence is missing and the scene must fail. '
+    'For source-backed documentary scenes only, this natural-print distinction '
+    'also covers the specifically authored store or product name physically '
+    'present on that same depicted store or product. Its factual identity must '
+    'match the authored scene and sources, and the typography must be clean, '
+    'legible and stable. Intrinsic signage or packaging is not an added overlay; '
+    'this does not allow unrelated advertising, logos, overlays, watermarks, '
+    'invented branding or fake, morphing or garbled AI print. A reenactment '
+    'must not be represented as authentic archival footage. Review these '
+    'conditions afresh; an earlier score never clears any visual flag. '
+)
+
+_TEMPORAL_PROOF_RULE = (
+    'EVIDENCE MOMENT COUNTS ARE REQUIRED PER REVIEW: when '
+    'location_continuity_applicable=true, cite at least 2 distinct actually '
+    'supplied moments from the selected candidate. When '
+    'physical_causality_applicable, state_change_applicable or '
+    'connection_action_applicable is true (including server-required actions), '
+    'cite at least 3 distinct supplied moments establishing before, action '
+    'and persistent result. Otherwise cite at least 1 supplied moment. '
+    'These are existing moment IDs, not new sequential numbers: their '
+    'chronological order is 3,0,1,2,4 when all five are supplied. Never invent '
+    'an ID, borrow another candidate\'s moment, copy a schema example [0] '
+    'as proof, or turn an applicable gate off to avoid its evidence count. '
+    'If the supplied frames do not prove the applicable requirement, reject '
+    'the scene and describe the missing evidence; do not fabricate proof. '
 )
 
 _DOCUMENTARY_BROLL_RULE = (
@@ -1185,6 +1210,182 @@ def _bounded_gemini_frame_bytes(frame_path: Path) -> bytes | None:
     return None
 
 
+def _request_visual_review(provider, strict_review_contract, instruction, content, gemini_parts,
+                           included_indices, available_moments, model_override, thinking_level,
+                           *, protocol_attempts=2):
+    """Reuse an already-built frame payload; response repair has no SDK retry."""
+    if provider == 'gemini':
+        schema = _review_json_schema(included_indices, available_moments)
+        for attempt in range(protocol_attempts):
+            try:
+                return generate_gemini_multimodal_json(
+                    gemini_parts, api_key=str(getattr(settings, 'gemini_api_key', '') or ''),
+                    model=str(model_override if model_override is not None else (
+                        getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL) or GEMINI_DEFAULT_MODEL)),
+                    json_schema=schema, thinking_level=thinking_level, timeout=120.0,
+                    retry_once=False, system_instruction=instruction)
+            except GeminiProtocolError:
+                if attempt + 1 == protocol_attempts:
+                    raise
+    else:
+        structured_options = {}
+        if strict_review_contract:
+            schema = _review_json_schema(included_indices, available_moments)
+            schema['properties']['reviews']['items']['properties']['evidence_moment_indices'].pop('uniqueItems', None)
+            structured_options = {'text': {'format': {
+                'type': 'json_schema', 'name': 'visual_scene_review', 'strict': True, 'schema': schema}}}
+        client = OpenAI(api_key=settings.openai_api_key, timeout=120.0,
+                        max_retries=0 if strict_review_contract or protocol_attempts == 1 else 1)
+        response = client.responses.create(
+            model=settings.openai_model, reasoning={'effort': 'low'}, instructions=instruction,
+            input=[{'role': 'user', 'content': content[1:]}], **structured_options)
+        if strict_review_contract:
+            return (_parse_strict_visual_review(response.output_text)
+                    if getattr(response, 'status', None) == 'completed' else {'reviews': []})
+        return _parse(response.output_text)
+
+
+def _temporal_response_rows(data, included_indices, available_moments, scenes, complete_story,
+                            recurring_indices, replica_indices):
+    """Only complete, unambiguous raw review identities can be repaired."""
+    rows = data.get('reviews') if isinstance(data, dict) else None
+    if not isinstance(rows, list) or len(rows) != len(included_indices):
+        return None
+    required_fields = {'scene_index', 'best_candidate_index', 'best_moment_index', 'score',
+        'reason', 'retry_queries', 'evidence_moment_indices', *_EVIDENCE_BOOLEAN_FIELDS,
+        *_MANUAL_QA_VISUAL_BOOLEAN_FIELDS, *_IDENTITY_BOOLEAN_FIELDS}
+    result = {}
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != required_fields:
+            return None
+        index, candidate, moment, score = (row.get(key) for key in (
+            'scene_index', 'best_candidate_index', 'best_moment_index', 'score'))
+        if (any(type(value) is not int for value in (index, candidate, moment, score))
+                or index not in included_indices or index in result
+                or candidate not in available_moments[index]
+                or moment not in available_moments[index][candidate] or not 0 <= score <= 100
+                or not isinstance(row['reason'], str) or not row['reason'].strip() or len(row['reason']) > 500
+                or not isinstance(row['retry_queries'], list) or len(row['retry_queries']) > 2
+                or any(not isinstance(query, str) or not query.strip() or len(query) > 240
+                       for query in row['retry_queries'])):
+            return None
+        evidence = _normalized_evidence(row, available_moments[index][candidate],
+            connection_required=_connection_action_required(scenes[index]),
+            thermal_required=_thermal_claim_required(scenes[index], complete_story),
+            cooling_temporal_required=routed_open_air_cooling_temporal_required(scenes[index]),
+            state_change_required=_state_change_required(scenes[index]),
+            recurring_identity_required=index in recurring_indices)
+        flags = _normalized_manual_qa_visual_flags(row)
+        identity = _normalized_identity_gate(row, replica_required=index in replica_indices)
+        if evidence is None or flags is None or identity is None:
+            return None
+        result[index] = (row, {**row, **evidence[0], **flags, **identity[0],
+            'evidence_gate_passed': evidence[1], 'identity_gate_passed': identity[1],
+            'editorial_gate_passed': identity[1] and all(value is False for value in flags.values())})
+    return result
+
+
+def _repair_temporal_response(data, request, included_indices, available_moments, scenes,
+                              complete_story, recurring_indices, replica_indices):
+    """One same-frame response repair, never a review-score promotion."""
+    arguments = (included_indices, available_moments, scenes, complete_story, recurring_indices, replica_indices)
+    original = _temporal_response_rows(data, *arguments)
+    if original is None:
+        return data, {}
+    targets = {}
+    for index, (raw, normalized) in original.items():
+        failures = _hard_gate_diagnostics(normalized)
+        count = 3 if any(normalized.get(field) is True for field in (
+            'physical_causality_applicable', 'state_change_applicable', 'connection_action_applicable')) else 2
+        if (raw['score'] >= 86 and failures == [f'temporal proof covers fewer than {count} sampled moments']
+                and len(available_moments[index][raw['best_candidate_index']]) >= count):
+            targets[index] = count
+    if not targets:
+        return data, {}
+    audit = {index: {'temporal_response_repair_attempted': True,
+                    'temporal_response_repair_complete': False,
+                    'temporal_response_required_moments': count,
+                    'temporal_response_initial_evidence_moment_indices': list(original[index][0]['evidence_moment_indices'])}
+             for index, count in targets.items()}
+    anchors = [{'scene_index': index, 'best_candidate_index': row['best_candidate_index'],
+                'best_moment_index': row['best_moment_index']} for index, (row, _) in sorted(original.items())]
+    requirements = [{'scene_index': index, 'required_distinct_moments': count,
+        'available_selected_candidate_moment_ids': sorted(
+            available_moments[index][original[index][0]['best_candidate_index']], key=lambda moment: MOMENT_FRACTIONS[moment])}
+        for index, count in sorted(targets.items())]
+    instruction = (
+        '\n\nSERVER-AUTHORED SAME-FRAME TEMPORAL RESPONSE REPAIR (ONE ATTEMPT): '
+        'The preceding response omitted enough distinct evidence moments for its own applicable gates. '
+        'Inspect the SAME supplied images and full story again. Return the complete review JSON, '
+        'keeping EVERY scene/candidate/best-moment selection below unchanged. Do not turn applicability '
+        'or identity booleans off, invent evidence, or assume the original high score proves quality. '
+        'Only cite actual selected-candidate moment IDs that visibly support each requirement. '
+        'If that evidence is absent, reject honestly; all original gates still apply. '
+        'Locked selections: ' + json.dumps(anchors, separators=(',', ':'))
+        + ' Incomplete response requirements: ' + json.dumps(requirements, separators=(',', ':'))
+    )
+    try:
+        revised = _temporal_response_rows(request(instruction), *arguments)
+    except Exception:
+        revised = None
+    if revised is None or any(
+        (revised[index][0]['best_candidate_index'], revised[index][0]['best_moment_index'])
+        != (row['best_candidate_index'], row['best_moment_index'])
+        for index, (row, _) in original.items()
+    ):
+        return data, audit
+    replacements = {}
+    fixed_fields = [field for field in _EVIDENCE_BOOLEAN_FIELDS if field.endswith('_applicable')] + list(_IDENTITY_BOOLEAN_FIELDS)
+    negative_rows = {}
+    context_conflict = False
+    for index, (row, normalized) in original.items():
+        revised_row, revised_normalized = revised[index]
+        context_conflict |= any(revised_row[field] is not row[field] for field in fixed_fields)
+        merged, merged_normalized = dict(row), dict(normalized)
+        for field in (*_EVIDENCE_BOOLEAN_FIELDS, *_MANUAL_QA_VISUAL_BOOLEAN_FIELDS, *_IDENTITY_BOOLEAN_FIELDS):
+            unsafe_true = (field.endswith('_applicable') or field in _MANUAL_QA_VISUAL_BOOLEAN_FIELDS
+                           or field in {'unexplained_reset', 'authored_identity_or_material_conflict_visible'})
+            merged[field] = (row[field] or revised_row[field]) if unsafe_true else (row[field] and revised_row[field])
+            merged_normalized[field] = ((normalized[field] or revised_normalized[field]) if unsafe_true
+                                        else (normalized[field] and revised_normalized[field]))
+        # Preserve actual newly returned moment IDs only on a rejection path;
+        # no old negative flag or applicable requirement may disappear.
+        merged['evidence_moment_indices'] = list(revised_row['evidence_moment_indices'])
+        merged_normalized['evidence_moment_indices'] = merged['evidence_moment_indices']
+        merged_normalized.pop('evidence_gate_passed', None)
+        merged_normalized.pop('editorial_gate_passed', None)
+        failures = _hard_gate_diagnostics(merged_normalized)
+        new_negative = (bool(set(failures) - set(_hard_gate_diagnostics(normalized)))
+                        or revised_row['score'] < 86 <= row['score'])
+        if new_negative:
+            merged['score'] = min(row['score'], revised_row['score'], 40 if failures else 100)
+            merged['reason'] = revised_row['reason']
+            negative_rows[index] = merged
+            audit.setdefault(index, {'temporal_response_repair_attempted': True,
+                                     'temporal_response_repair_complete': False})
+            audit[index]['temporal_response_preserved_negative'] = True
+            context_conflict |= index not in targets
+    if context_conflict:
+        # A changed identity or newly rejected neighbor cannot authorize a
+        # positive count repair, but its negative evidence must remain visible
+        # to any later partial scene rescue.
+        return {**data, 'reviews': [negative_rows.get(row['scene_index'], row) for row in data['reviews']]}, audit
+    for index, count in targets.items():
+        prior, _ = original[index]
+        row, _ = revised[index]
+        if (any(row[field] is not prior[field] for field in fixed_fields)
+                or len(row['evidence_moment_indices']) < count):
+            continue
+        # Only model-reported real moment IDs replace the incomplete response.
+        # Scores, new negative observations and every gate are normalized below.
+        replacements[index] = row
+        audit[index]['temporal_response_repair_complete'] = True
+    for index, row in negative_rows.items():
+        replacements[index] = row
+        audit[index]['temporal_response_repair_complete'] = False
+    return {**data, 'reviews': [replacements.get(row['scene_index'], row) for row in data['reviews']]}, audit
+
+
 def _review_gemini_batches(
     scenes: list[dict],
     scene_visuals: list[list[str | dict]],
@@ -1200,6 +1401,7 @@ def _review_gemini_batches(
     score_reason_consistency_attempts: int = 1,
     gemini_thinking_level: str = 'low',
     provider_override: str | None = None,
+    temporal_response_repair_attempts: int = 1,
 ) -> dict:
     def merge_boundary_review(previous: dict, current: dict) -> dict:
         def merge_recurring_identity_fields(merged: dict) -> bool:
@@ -1364,6 +1566,7 @@ def _review_gemini_batches(
             ),
             _gemini_thinking_level=gemini_thinking_level,
             provider_override=provider_override,
+            _temporal_response_repair_attempts=temporal_response_repair_attempts,
         )
 
         def remap_index(value: object) -> int | None:
@@ -1476,6 +1679,7 @@ def review_scene_visuals(
     _score_reason_consistency_attempts: int = 1,
     _gemini_thinking_level: str = 'low',
     provider_override: str | None = None,
+    _temporal_response_repair_attempts: int = 1,
 ) -> dict:
     dedicated_provider = str(getattr(settings, 'studio_visual_qc_provider', '') or '').strip().casefold()
     if provider_override is None:
@@ -1523,6 +1727,7 @@ def review_scene_visuals(
             ),
             gemini_thinking_level=_gemini_thinking_level,
             provider_override=provider_override,
+            temporal_response_repair_attempts=_temporal_response_repair_attempts,
         )
     frame_dir = work / 'visual_qc'
     frame_dir.mkdir(parents=True, exist_ok=True)
@@ -1753,6 +1958,7 @@ def review_scene_visuals(
         content[0]['text']
         + '\n\n'
         + _CURRENCY_DOCUMENT_TEXT_RULE
+        + '\n\n' + _TEMPORAL_PROOF_RULE
         + '\n\n'
         + (
             _DOCUMENTARY_BROLL_RULE
@@ -1813,73 +2019,17 @@ def review_scene_visuals(
         + exact_ids_prompt
     )
 
-    if provider == 'gemini':
-        review_schema = _review_json_schema(
-            included_indices, available_moments
-        )
-        for protocol_attempt in range(2):
-            try:
-                data = generate_gemini_multimodal_json(
-                    gemini_parts,
-                    api_key=str(
-                        getattr(settings, 'gemini_api_key', '') or ''
-                    ),
-                    model=str(
-                        gemini_model_override
-                        if gemini_model_override is not None
-                        else (
-                            getattr(
-                                settings,
-                                'gemini_model',
-                                GEMINI_DEFAULT_MODEL,
-                            )
-                            or GEMINI_DEFAULT_MODEL
-                        )
-                    ),
-                    json_schema=review_schema,
-                    thinking_level=_gemini_thinking_level,
-                    timeout=120.0,
-                    # This caller already owns the two-attempt protocol loop.
-                    # Disable the helper's protocol retry so one malformed
-                    # response cannot multiply into four paid requests.
-                    retry_once=False,
-                    system_instruction=system_instruction,
-                )
-                break
-            except GeminiProtocolError:
-                if protocol_attempt:
-                    raise
-    else:
-        structured_options = {}
-        if strict_review_contract:
-            schema = _review_json_schema(included_indices, available_moments)
-            # Keep the wire schema within documented OpenAI keywords. The
-            # strict local validator still requires distinct evidence moments.
-            schema['properties']['reviews']['items']['properties']['evidence_moment_indices'].pop('uniqueItems', None)
-            structured_options = {'text': {'format': {
-                'type': 'json_schema', 'name': 'visual_scene_review',
-                'strict': True, 'schema': schema,
-            }}}
-        client = OpenAI(
-            api_key=settings.openai_api_key,
-            timeout=120.0,
-            max_retries=0 if strict_review_contract else 1,
-        )
-        response = client.responses.create(
-            model=settings.openai_model,
-            reasoning={'effort': 'low'},
-            instructions=system_instruction,
-            input=[{'role': 'user', 'content': content[1:]}],
-            **structured_options,
-        )
-        if strict_review_contract:
-            data = (
-                _parse_strict_visual_review(response.output_text)
-                if getattr(response, 'status', None) == 'completed'
-                else {'reviews': []}
-            )
-        else:
-            data = _parse(response.output_text)
+    data = _request_visual_review(provider, strict_review_contract, system_instruction, content, gemini_parts,
+        included_indices, available_moments, gemini_model_override, _gemini_thinking_level)
+    temporal_response_audit = {}
+    if _temporal_response_repair_attempts > 0:
+        data, temporal_response_audit = _repair_temporal_response(
+            data, lambda addition: _request_visual_review(
+                provider, True, system_instruction + addition, content, gemini_parts,
+                included_indices, available_moments, gemini_model_override, _gemini_thinking_level,
+                protocol_attempts=1),
+            included_indices, available_moments, scenes, complete_story,
+            recurring_identity_required_indices, manufactured_replica_required_indices)
     reviews_by_scene: dict[int, dict] = {}
     included_set = set(included_indices)
     raw_reviews = data.get('reviews') if isinstance(data, dict) else []
@@ -2151,7 +2301,7 @@ def review_scene_visuals(
     # positive explanation can never override missing evidence, identity,
     # motion or artifact proof.
     reviews_by_scene = {
-        scene_index: _annotate_hard_gate_rejection(review)
+        scene_index: _annotate_hard_gate_rejection({**review, **temporal_response_audit.get(scene_index, {})})
         for scene_index, review in reviews_by_scene.items()
     }
 
@@ -2167,7 +2317,7 @@ def review_scene_visuals(
         contradictory_scene_indices = [
             scene_index
             for scene_index, review in reviews_by_scene.items()
-            if _score_reason_conflicts(
+            if not review.get('temporal_response_repair_attempted') and _score_reason_conflicts(
                 review,
                 allow_soft_rejection=bool(
                     documentary_sources
@@ -2225,6 +2375,7 @@ def review_scene_visuals(
                     evidence_sources=documentary_sources,
                     gemini_model_override=gemini_model_override,
                     _score_reason_consistency_attempts=0,
+                    _temporal_response_repair_attempts=0,
                     provider_override=consistency_provider,
                     _gemini_thinking_level=(
                         'medium'
@@ -2320,6 +2471,7 @@ def review_scene_visuals(
             ),
             _gemini_thinking_level=_gemini_thinking_level,
             provider_override=provider_override,
+            _temporal_response_repair_attempts=0,
         )
         retry_reviews = {
             int(review.get('scene_index')): review
