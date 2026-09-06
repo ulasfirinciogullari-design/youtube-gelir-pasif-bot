@@ -22,11 +22,12 @@ def recovery(monkeypatch):
     voice = {'path': '/tmp/existing.mp3', 'spoken_texts': ['First sentence.', 'Final sentence.']}
     loader = Mock(return_value={'package': package, 'voice_result': voice})
     reviewer = Mock(return_value=copy.deepcopy(package))
+    budget_validator = Mock(side_effect=lambda value: copy.deepcopy(value))
     unchanged = Mock()
     fitting = Mock(return_value=voice)
     monkeypatch.setitem(sys.modules, 'app.services.studio_state', SimpleNamespace(get_job=lambda job_id: source if job_id == source_id else child))
     monkeypatch.setitem(sys.modules, 'app.services.voice_candidate_recovery', SimpleNamespace(load_voice_retry_candidate=loader, require_unchanged_voice_narration=unchanged))
-    monkeypatch.setitem(sys.modules, 'app.services.director', SimpleNamespace(revalidate_immutable_short_story=reviewer))
+    monkeypatch.setitem(sys.modules, 'app.services.director', SimpleNamespace(revalidate_immutable_short_story=reviewer, validate_spoken_word_budget=budget_validator))
     monkeypatch.setitem(sys.modules, 'app.services.voice', SimpleNamespace(normalize_turkish_tts=lambda text, **kwargs: text, fit_existing_narration_candidate=fitting))
     path = Path(__file__).resolve().parents[1] / 'app' / 'tasks.py'
     tree = ast.parse(path.read_text(encoding='utf-8'))
@@ -121,3 +122,71 @@ def test_pipeline_blocks_both_initial_tts_and_audio_retry_tts_for_saved_voice():
     assert '_fit_saved_voice_for_retry' in ast.unparse(branches[0])
     regeneration = next(node for node in ast.walk(pipeline) if isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'can_regenerate' for target in node.targets))
     assert 'not saved_voice_retry' in ast.unparse(regeneration.value)
+
+
+def _english_scheduled(r):
+    for spec in (r.spec, r.source['spec'], r.child['spec']):
+        spec.update(language='en', production_scheduled=True)
+    return {'version': 1, 'profile': 'fresh_en_30s_v1', 'language': 'en',
+            'duration_minutes': .5, 'target_words': 65, 'minimum_words': 62, 'maximum_words': 66}
+
+
+def test_saved_english_budget_forwarded_only_from_verified_checkpoint_package(recovery):
+    r = recovery
+    marker = _english_scheduled(r)
+    r.package['spoken_word_budget'] = marker
+    r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    r.budget_validator.assert_called_once_with(marker)
+    forwarded = r.reviewer.call_args.kwargs['verified_spoken_word_budget']
+    assert forwarded == marker
+    assert forwarded is not marker
+    r.unchanged.assert_called_once()
+
+
+@pytest.mark.parametrize('invalid_runtime', ['language', 'unscheduled', 'truthy_scheduled'])
+def test_saved_budget_mismatched_runtime_rejected_even_if_validator_would_accept(recovery, invalid_runtime):
+    r = recovery
+    r.package['spoken_word_budget'] = _english_scheduled(r)
+    for spec in (r.spec, r.source['spec'], r.child['spec']):
+        if invalid_runtime == 'language':
+            spec['language'] = 'tr'
+        else:
+            spec['production_scheduled'] = 1 if invalid_runtime == 'truthy_scheduled' else False
+    with pytest.raises(QualityError, match='no replacement voice was generated'):
+        r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    r.budget_validator.assert_not_called()
+    r.reviewer.assert_not_called()
+    r.namespace['update_job'].assert_not_called()
+
+
+@pytest.mark.parametrize('malformed', [None, 'fresh_en_30s_v1', {}, {'target_words': 999}])
+def test_invalid_checkpoint_budget_is_terminal_not_silently_dropped(recovery, malformed):
+    r = recovery
+    _english_scheduled(r)
+    r.package['spoken_word_budget'] = malformed
+    r.budget_validator.side_effect = ValueError('Invalid fixed spoken budget')
+    with pytest.raises(QualityError, match='no replacement voice was generated'):
+        r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    r.budget_validator.assert_called_once_with(malformed)
+    r.reviewer.assert_not_called()
+    r.namespace['update_job'].assert_not_called()
+
+
+def test_legacy_english_without_checkpoint_marker_does_not_get_budget_from_options(recovery):
+    r = recovery
+    marker = _english_scheduled(r)
+    for spec in (r.spec, r.source['spec'], r.child['spec']):
+        spec['spoken_word_budget'] = marker
+    r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    assert 'verified_spoken_word_budget' not in r.reviewer.call_args.kwargs
+    r.budget_validator.assert_not_called()
+
+
+def test_checkpoint_hash_failure_prevents_budget_validation_and_review(recovery):
+    r = recovery
+    r.package['spoken_word_budget'] = _english_scheduled(r)
+    r.loader.side_effect = ValueError('Checkpoint hash differs')
+    with pytest.raises(QualityError):
+        r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    r.budget_validator.assert_not_called()
+    r.reviewer.assert_not_called()

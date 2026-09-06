@@ -2,6 +2,7 @@ import ast
 import copy
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -45,6 +46,8 @@ def _loop(*, repaired=True, subsequent_pass=True, recovered=False):
         'package': {'scenes': []}, 'self': SimpleNamespace(), 'audio_generation_attempts': 3,
         'audio_qc_retry_history': [], 'audio_synthesis_quality_errors': [],
         'MAX_AUDIO_GENERATION_ATTEMPTS': 3, 'FinalAudioQualityError': QualityError, 'json': json,
+        '_audio_qc_failure_evidence': _definition('_audio_qc_failure_evidence',
+                                                {'math': math, 'MAX_AUDIO_GENERATION_ATTEMPTS': 3}),
         '_audio_qa_fingerprint': Mock(side_effect=['a' * 64, 'b' * 64]),
         '_verify_audio_narration_with_retry': Mock(return_value={**passing, 'score': 100}),
         '_short_preview_voice_duration_qc': Mock(return_value=passing),
@@ -107,7 +110,8 @@ def test_unavailable_edit_preserves_failure_without_fake_checkpoint():
     with pytest.raises(QualityError):
         _run(loop, n)
     n['_checkpoint_audio_candidate'].assert_not_called()
-    n['update_job'].assert_not_called()
+    n['update_job'].assert_called_once()
+    assert set(n['update_job'].call_args.kwargs) == {'audio_qc_failure_evidence'}
     assert n['_verify_audio_narration_with_retry'].call_count == 1
 
 

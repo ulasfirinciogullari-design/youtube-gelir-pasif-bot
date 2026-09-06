@@ -26,7 +26,7 @@ def isolated_planner(monkeypatch):
     monkeypatch.setattr(director, '_studio_plan_openai_model', lambda: 'mock-only')
 
 
-def package():
+def package(*, calibrated=False):
     narrations = [
         'Members pay an annual fee before entering this warehouse.',
         'That payment buys membership rather than any individual product.',
@@ -35,6 +35,15 @@ def package():
         "Lower operating expenses support the warehouse's limited markup model.",
         'Membership and product sales therefore serve different business purposes.',
     ]
+    if calibrated:
+        narrations = [
+            'Members pay an annual membership fee before entering the retail warehouse.',
+            'That annual payment buys access rather than any individual product inside.',
+            "Warehouse shelves display merchandise in the goods' original plain shipping cartons.",
+            'The company describes fewer handling costs from displaying these cartons directly.',
+            "Lower operating expenses help support the warehouse's consistently limited merchandise markups.",
+            'Membership access and individual product sales serve different business purposes.',
+        ]
     queries = [
         ['membership card beside warehouse entrance', 'warehouse membership card entrance close up'],
         ['membership card beside warehouse checkout', 'warehouse checkout membership card close up'],
@@ -219,7 +228,7 @@ def test_invalid_semantic_review_does_not_request_a_rewrite(malformation):
 
 @pytest.mark.parametrize('second_passes', [True, False])
 def test_fresh_pipeline_corrects_once_and_requires_new_complete_critic(monkeypatch, second_passes):
-    value = package()
+    value = package(calibrated=True)
     failed = reviewed(story_failures=MULTIPLE_FAILURES)
     client = FakeClient([
         directed(value), generated(value), failed,

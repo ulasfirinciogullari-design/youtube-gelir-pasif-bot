@@ -133,6 +133,13 @@ def _candidate_package(package: dict) -> dict:
             item['visual_queries'] = [_plain_text(query, 600) for query in queries]
         result['scenes'].append(item)
     result['sources'] = _public_sources(package.get('sources'))
+    if 'spoken_word_budget' in package:
+        from app.services.director import validate_spoken_word_budget
+
+        # Keep only the fixed planning profile, never an approval. It is part
+        # of the content-addressed package; reuse still needs exact job/spec
+        # binding, immutable story review, and every normal audio/media gate.
+        result['spoken_word_budget'] = validate_spoken_word_budget(package['spoken_word_budget'])
     return result
 
 

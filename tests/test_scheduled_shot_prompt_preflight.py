@@ -173,6 +173,29 @@ def test_one_compression_then_real_immutable_critic_preserves_every_nonprompt_fi
     assert all(call.kwargs['google_search'] is False for call in case.model.call_args_list)
 
 
+def test_calibrated_english_prompt_compression_preserves_65_words_and_budget(case):
+    from test_documentary_evidence_planning import package as documentary_package
+
+    narrations = [scene['narration'] for scene in documentary_package(calibrated=True)['scenes']]
+    for scene, narration in zip(case.package['scenes'], narrations):
+        scene['narration'] = scene['tts_text'] = narration
+    case.package['narration'] = case.package['tts_narration'] = ' '.join(narrations)
+    case.package['spoken_word_budget'] = director._fresh_spoken_word_budget(.5, 'en', case.options, True)
+    case.package['target_word_range'] = [62, 66]
+    _long(case)
+    before = deepcopy(case.package)
+    result = _run(case)
+    assert case.events == ['reserve', 'compress', 'critic']
+    assert case.package == before
+    assert result['spoken_word_budget'] == before['spoken_word_budget']
+    assert result['target_word_range'] == [62, 66]
+    assert result['narration'] == before['narration']
+    assert director._word_count(result['narration']) == 65
+    assert director.short_story_package_is_approved(result, TOPIC)
+    assert result['stock_scene_qc']['generator_calls'] == 0
+    assert result['stock_scene_qc']['critic_calls'] == 1
+
+
 @pytest.mark.parametrize('prompt', ['x' * 1000, '\U0001f600' * 500])
 def test_exact_utf16_boundary_is_lossless_without_models(case, prompt):
     case.package['scenes'][0]['ai_prompt'] = prompt; _attest(case.package)
