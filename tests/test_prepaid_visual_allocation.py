@@ -159,8 +159,25 @@ def test_runtime_persists_diagnostics_before_any_final_allocation_branch():
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
         and node.func.id == '_validate_paid_create_allocation'
     ]
-    assert len(runtime_allocation_calls) == 2
-    assert all(diagnostic.lineno < node.lineno for node in runtime_allocation_calls)
+    final_calls = [node for node in runtime_allocation_calls
+                   if isinstance(node.args[0], ast.Name)
+                   and node.args[0].id in {'ranked_runway_candidates', 'selected_runway'}]
+    assert len(final_calls) == 2
+    assert {node.args[0].id for node in final_calls} == {'ranked_runway_candidates', 'selected_runway'}
+    assert all(diagnostic.lineno < node.lineno for node in final_calls)
+    early_calls = [node for node in runtime_allocation_calls if node not in final_calls]
+    assert len(early_calls) == 1  # new V4 scope/cost preflight, not final stock allocation
+    early = early_calls[0]
+    assert ast.unparse(early.args[0]) == "[{'scene_index': index} for index in range(len(scenes))]"
+    assert [ast.unparse(arg) for arg in early.args[1:]] == ['recovered_generated_media', 'total_paid_create_cap']
+    assert [(kw.arg, ast.unparse(kw.value)) for kw in early.keywords] == [('paid_slots_used', 'runway_attempts')]
+    v4_guards = [node for node in ast.walk(runtime) if isinstance(node, ast.If)
+                 and ast.unparse(node.test) == "recovered_generated_media and recovered_generated_media.get('version') == 4"]
+    assert any(early in list(ast.walk(guard)) for guard in v4_guards)
+    media_calls = [node for node in ast.walk(runtime) if isinstance(node, ast.Call)
+                   and isinstance(node.func, ast.Name) and node.func.id in {'_synthesize_voice_candidate', 'generate_scene'}]
+    assert media_calls and early.lineno < diagnostic.lineno
+    assert all(early.lineno < node.lineno for node in media_calls)
 
 
 def test_diagnostic_storage_failure_does_not_approve_an_over_budget_plan():

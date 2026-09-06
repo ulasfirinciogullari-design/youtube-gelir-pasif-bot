@@ -77,6 +77,15 @@ def test_checkpoint_is_wired_after_final_stock_ranking_before_paid_allocation_va
              if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)]
     checkpoint = [line for name, line in calls if name == '_checkpoint_overbudget_visuals']
     diagnostics = [line for name, line in calls if name == '_record_prepaid_visual_diagnostics']
-    allocation = [line for name, line in calls if name == '_validate_paid_create_allocation']
+    allocation = [node for node in ast.walk(pipeline) if isinstance(node, ast.Call)
+                  and isinstance(node.func, ast.Name) and node.func.id == '_validate_paid_create_allocation']
+    final_allocation = [node for node in allocation if isinstance(node.args[0], ast.Name)
+                        and node.args[0].id in {'ranked_runway_candidates', 'selected_runway'}]
+    assert len(final_allocation) == 2
+    assert {node.args[0].id for node in final_allocation} == {'ranked_runway_candidates', 'selected_runway'}
+    early = [node for node in allocation if node not in final_allocation]
+    assert len(early) == 1 and isinstance(early[0].args[0], ast.ListComp)
     assert len(checkpoint) == len(diagnostics) == 1
-    assert diagnostics[0] < checkpoint[0] < min(allocation)
+    assert early[0].lineno < diagnostics[0] < checkpoint[0] < min(node.lineno for node in final_allocation)
+    generation = [line for name, line in calls if name == 'generate_scene']
+    assert generation and max(node.lineno for node in final_allocation) < min(generation)
