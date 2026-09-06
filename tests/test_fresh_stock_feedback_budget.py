@@ -211,7 +211,12 @@ def test_stock_video_contract_is_shared_without_brand_or_event_specific_exceptio
                  'never silently reroute an authored null scene',
                  'all explicit user actions, identities and historical constraints',
                  'generic shop is the named brand, or modern footage is real archive',
-                 'membership inspection', 'employee/customer interaction'):
+                 'membership inspection', 'employee/customer interaction',
+                 'pre-search planning feasibility, not footage, licensing or publication approval',
+                 'absence of a selected asset URL or license',
+                 'Still fail rare, event-specific or identity-critical archive requirements',
+                 'Never infer footage authenticity or licensing from query approval',
+                 'actual selected-media quality and publication gates remain mandatory'):
         assert text in rule
     assert 'Costco' not in rule and 'Wrigley' not in rule and '1974' not in rule
     assert director._fresh_documentary_stock_video_rule('technology', True) == ''
