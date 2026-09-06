@@ -137,6 +137,41 @@ def _shooting_package(original, overrides):
     return candidate
 
 
+def _validate_reviewed_story(shooting, reviewed):
+    """Check the critic's output without changing its attested fingerprint.
+
+    The stock writer may refine only the pinned coda's search descriptions.
+    Its derived tts_text is not a narration edit when it is an exact echo.
+    The same pinned bytes still require a fresh exact-cut visual review.
+    """
+    require_unchanged_voice_narration(shooting, reviewed)
+    _require(type(reviewed) is dict and type(reviewed.get('scenes')) is list
+             and len(reviewed['scenes']) == len(shooting['scenes']) == 6
+             and reviewed.get('sources') == shooting.get('sources')
+             and reviewed.get('title') == shooting.get('title'))
+    joined = ' '.join(scene['narration'] for scene in shooting['scenes'])
+    _require(reviewed.get('narration') == joined
+             and ('tts_narration' not in reviewed or reviewed['tts_narration'] == joined))
+    for index, (before, after) in enumerate(zip(shooting['scenes'], reviewed['scenes'])):
+        _require(type(before) is dict and type(after) is dict)
+        if index != 5:
+            _require(after == before)
+            continue
+        expected, actual = deepcopy(before), deepcopy(after)
+        for scene in (expected, actual):
+            _require('tts_text' not in scene or scene['tts_text'] == scene['narration'])
+            scene.pop('tts_text', None)
+        queries = actual.get('visual_queries')
+        _require(type(queries) is list and 2 <= len(queries) <= 3
+                 and all(type(query) is str and query == query.strip()
+                         and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9 '\-]*", query)
+                         and 3 <= len(re.findall(r"[A-Za-z0-9'-]+", query)) <= 9
+                         and len(query) <= 600 for query in queries)
+                 and len({query.casefold() for query in queries}) == len(queries))
+        actual['visual_queries'] = deepcopy(expected['visual_queries'])
+        _require(actual == expected)
+
+
 def exact_mixed_retained_visuals(scenes, scene_visuals, voice_result, work_dir):
     """Reviewable real 1/5 cuts; missing repair slots supply timing, no images."""
     render, _ = cb._review_runtime()
@@ -269,15 +304,18 @@ def prepare_mixed_visual_recovery(source_task_id, retrieval_pointer, work_dir, *
                  'stock_candidate': deepcopy(stock_candidate), 'stock_entry': entry,
                  'repair_scene_indices': list(REPAIRS), 'retained_visual_reviews': [],
                  'new_paid_create_requests': 0, 'new_tts_requests': 0}
+        story_stage = 'independent_story_review'
         try:
             reviewed = director.revalidate_immutable_short_story(shooting, source['spec']['topic'], .5, 'tr', options,
                           immutable_candidate_narrations=[scene['narration'] for scene in package['scenes']])
-            require_unchanged_voice_narration(package, reviewed)
-            _require(reviewed['scenes'] == shooting['scenes'] and reviewed.get('studio_options') == options
-                     and reviewed.get('sources') == package.get('sources') and reviewed.get('title') == package.get('title')
-                     and director.short_story_package_is_approved(reviewed, source['spec']['topic']))
+            story_stage = 'immutable_story_contract'
+            _validate_reviewed_story(shooting, reviewed)
+            _require(reviewed.get('studio_options') == options)
+            story_stage = 'story_attestation'
+            _require(director.short_story_package_is_approved(reviewed, source['spec']['topic']))
         except Exception:
             audit['status'] = 'story_review_rejected_or_unavailable'
+            audit['failure_stage'] = story_stage
             audit_pointer = _store(s3, work, 'audit', audit)
             raise MixedVisualRecoveryError(audit_pointer) from None
         audit['reviewed_package'] = deepcopy(reviewed)
@@ -354,10 +392,7 @@ def publish_mixed_visual_recovery(pointer):
                      and cb._digest(audio_checkpoint._candidate_package(audit['source_package']))
                          == source['audio_candidate_checkpoint']['package_sha256'])
             overrides = {int(key): value for key, value in audit['shot_prompt_overrides'].items()}
-            _require(package['scenes'] == _shooting_package(audit['source_package'], overrides)['scenes'])
-            _require(package.get('sources') == audit['source_package'].get('sources')
-                     and package.get('title') == audit['source_package'].get('title'))
-            require_unchanged_voice_narration(audit['source_package'], package)
+            _validate_reviewed_story(_shooting_package(audit['source_package'], overrides), package)
             _require(audio['spoken_texts'] == [voice.normalize_turkish_tts(scene['narration'], ensure_terminal=index == 5)
                                               for index, scene in enumerate(package['scenes'])]
                      and all(row['narration'] == scene['narration'] and row['duration_seconds'] == audio['scene_durations'][index]
