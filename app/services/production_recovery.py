@@ -158,6 +158,7 @@ def _audit_result(raw: str, status: str, channel_id: str, original_id: str,
         _require(audit.get('release_mode') == 'public'
                  and audit.get('release_status') == 'public'
                  and audit.get('caption_uploaded') is True
+                 and audit.get('continue_immediately', False) is continue_immediately
                  and type(audit.get('contains_synthetic_media')) is bool,
                  'recovery_audit_invalid')
     if public_recovery:
@@ -197,6 +198,7 @@ def resume_after_public_retry(
     expected_profile_revision: str,
     *,
     now: float | None = None,
+    continue_immediately: bool = False,
 ) -> dict:
     """Clear a failed-render pause only after its claimed retry is public.
 
@@ -204,9 +206,12 @@ def resume_after_public_retry(
     publication action. The current public profile and original frozen profile
     must be identical. All caption/disclosure/required-thumbnail proofs must
     already exist. Separate public audits cannot satisfy private recovery.
+    Explicit immediate continuation changes only next_due, once; the default
+    retains the existing interval and neither choice can rewrite a prior audit.
     """
     return _resume_after_retry(channel_id, original_task_id, recovered_task_id,
-                               expected_profile_revision, now=now, release_mode='public')
+                               expected_profile_revision, now=now, release_mode='public',
+                               continue_immediately=continue_immediately)
 
 
 def resume_after_blocked_public_retry(
@@ -260,7 +265,7 @@ def _resume_after_retry(
 ) -> dict:
     public = release_mode == 'public'
     _require(not public_recovery or public, 'recovery_mode_invalid')
-    _require(type(continue_immediately) is bool and (not continue_immediately or public_recovery),
+    _require(type(continue_immediately) is bool and (not continue_immediately or public),
              'recovery_continuation_invalid')
     _require(isinstance(channel_id, str) and _ID.fullmatch(channel_id) is not None,
              'recovery_channel_invalid')
@@ -517,6 +522,7 @@ def _resume_after_retry(
         }
         if public:
             audit.update(release_mode='public', release_status='public', caption_uploaded=True,
+                         continue_immediately=continue_immediately,
                          contains_synthetic_media=plan['contains_synthetic_media'])
         if recovered_proof is not None:
             audit.update(publication_proof='blocked_public_recovery', thumbnail_uploaded=True,
