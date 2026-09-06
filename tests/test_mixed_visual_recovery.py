@@ -67,6 +67,167 @@ def _publish(case):
     return pointer, recovery.publish_mixed_visual_recovery(pointer)
 
 
+def _actual_director_stock_result(package, queries):
+    """Run the real successful stock writer's reconstruction, not an echo mock."""
+    path = Path(__file__).resolve().parents[1] / 'app/services/director.py'
+    tree = ast.parse(path.read_text(encoding='utf-8'))
+    function = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                    and node.name == '_repair_short_stock_scenes')
+    def assigns(node, name):
+        return isinstance(node, ast.Assign) and any(ast.unparse(target) == name for target in node.targets)
+    branch = next(node for node in ast.walk(function) if isinstance(node, ast.If)
+                  and any(assigns(statement, 'repaired') for statement in node.body))
+    start = next(index for index, node in enumerate(branch.body) if assigns(node, 'repaired'))
+    statements = branch.body[start:start + 3]
+    assert isinstance(statements[-1], ast.For)
+    fields = {"repaired['scenes']", "repaired['narration']", "repaired['tts_narration']"}
+    derived = [node for node in branch.body if any(assigns(node, field) for field in fields)]
+    assert len(derived) == 3
+    namespace = {'package': deepcopy(package), 'scenes': deepcopy(package['scenes']),
+                 'stock_positions': [5], 'accepted_rows': {5: {
+                     'narration': package['scenes'][5]['narration'], 'visual_queries': deepcopy(queries)}}}
+    exec(compile(ast.Module(body=statements + derived, type_ignores=[]), str(path), 'exec'), namespace)
+    return namespace['repaired']
+
+
+def _use_actual_director_stock_result(case, queries):
+    original = case.story_review.side_effect
+    def reviewed(*args, **kwargs):
+        return _actual_director_stock_result(original(*args, **kwargs), queries)
+    case.story_review.side_effect = reviewed
+
+
+@pytest.mark.parametrize('queries', [recovery.STOCK_QUERIES, [
+    'warehouse worker scanning parcel barcode closeup',
+    'warehouse worker scanning parcel barcode side view',
+]])
+def test_real_stock_writer_derived_fields_survive_prepare_publish_and_claim(case, queries):
+    _use_actual_director_stock_result(case, queries)
+    before = _snapshot(case)
+    pointer = _prepare(case)
+    receipt = _receipt(case, pointer)
+    package = receipt['approved_package']
+    assert all('tts_text' not in scene for scene in receipt['source_package']['scenes'])
+    assert package['scenes'][5]['tts_text'] == package['scenes'][5]['narration']
+    assert package['tts_narration'] == package['narration']
+    assert package['scenes'][5]['visual_queries'] == queries
+    assert _snapshot(case) == before
+    # The real critic output is kept intact: no post-approval normalization.
+    assert {key: value for key, value in package.items() if key not in {
+        '_recovered_voice', '_recovered_generated_media'}} == receipt['reviewed_package']
+    assert case.visual_review.call_args.args[0][1] == package['scenes'][5]
+    assert case.visual_review.call_args.kwargs['story_scenes'] == package['scenes']
+    assert recovery.publish_mixed_visual_recovery(pointer)['status'] == 'checkpoint_published'
+    claimed = studio_state.claim_retry_dispatch(SOURCE, CHILD, 'k' * 32, allow_repair=True)
+    assert claimed['claimed'] is True
+    assert claimed['checkpoint']['approved_package'] == package
+    assert case.fetch.call_count == case.visual_review.call_count == case.story_review.call_count == 1
+    assert case.redis.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX + SOURCE) == {'cap': '6', 'used': '6'}
+
+
+@pytest.mark.parametrize('damage', [
+    'stock_tts_changed', 'stock_tts_null', 'whole_tts_changed', 'whole_tts_null',
+    'speech', 'source', 'title', 'stock_ai', 'stock_pace', 'stock_transition',
+    'stock_extra', 'retained_query', 'retained_tts', 'repair_prompt',
+])
+def test_derived_field_compatibility_does_not_allow_other_story_edits(case, damage):
+    original = case.story_review.side_effect
+    def changed(*args, **kwargs):
+        reviewed = _actual_director_stock_result(original(*args, **kwargs), recovery.STOCK_QUERIES)
+        stock_scene = reviewed['scenes'][5]
+        if damage == 'stock_tts_changed': stock_scene['tts_text'] += ' different speech'
+        if damage == 'stock_tts_null': stock_scene['tts_text'] = None
+        if damage == 'whole_tts_changed': reviewed['tts_narration'] += ' different speech'
+        if damage == 'whole_tts_null': reviewed['tts_narration'] = None
+        if damage == 'speech': stock_scene['narration'] += ' new claim'
+        if damage == 'source': reviewed['sources'][0]['evidence'] += ' Unsupported claim.'
+        if damage == 'title': reviewed['title'] = 'Different title'
+        if damage == 'stock_ai': stock_scene['ai_prompt'] = 'Generate substitute footage'
+        if damage == 'stock_pace': stock_scene['pace'] = 'changed'
+        if damage == 'stock_transition': stock_scene['transition'] = 'changed'
+        if damage == 'stock_extra': stock_scene['approved'] = True
+        if damage == 'retained_query': reviewed['scenes'][1]['visual_queries'] = ['different stock search']
+        if damage == 'retained_tts': reviewed['scenes'][1]['tts_text'] = reviewed['scenes'][1]['narration']
+        if damage == 'repair_prompt': reviewed['scenes'][0]['ai_prompt'] += ' Different shooting direction.'
+        return reviewed
+    case.story_review.side_effect = changed
+    before = _snapshot(case)
+    with pytest.raises(recovery.MixedVisualRecoveryError) as caught: _prepare(case)
+    audit = _receipt(case, caught.value.diagnostic_pointer)
+    assert audit['failure_stage'] == 'immutable_story_contract'
+    assert audit['status'] == 'story_review_rejected_or_unavailable'
+    case.visual_review.assert_not_called()
+    assert _snapshot(case) == before
+
+
+@pytest.mark.parametrize('queries', [None, [], ['one query only'],
+    ['warehouse parcel scanner', 'warehouse parcel scanner'],
+    ['warehouse parcel scanner', 'WAREHOUSE PARCEL SCANNER'],
+    [' warehouse parcel scanner', 'worker scanning box barcode'],
+    ['warehouse parcel scanner', 'depo barkodu tarıyor'],
+    ['warehouse parcel scanner', 'https://example.org/private'],
+    ['warehouse parcel scanner', 'scan box'],
+    ['warehouse parcel scanner', 'one two three four five six seven eight nine ten'],
+    ['warehouse parcel scanner'] * 4,
+])
+def test_rewritten_coda_queries_still_require_director_stock_query_contract(case, queries):
+    _use_actual_director_stock_result(case, queries)
+    with pytest.raises(recovery.MixedVisualRecoveryError) as caught: _prepare(case)
+    assert _receipt(case, caught.value.diagnostic_pointer)['failure_stage'] == 'immutable_story_contract'
+    case.visual_review.assert_not_called()
+
+
+@pytest.mark.parametrize('stage', ['independent_story_review', 'story_attestation'])
+def test_safe_stage_distinguishes_critic_failure_from_local_contract_without_error_leak(case, stage):
+    if stage == 'independent_story_review':
+        case.story_review.side_effect = ValueError('Bearer private-token https://private.invalid/response')
+    else:
+        case.approved.return_value = False
+        case.approved.side_effect = None
+    before = _snapshot(case)
+    with pytest.raises(recovery.MixedVisualRecoveryError) as caught: _prepare(case)
+    audit = _receipt(case, caught.value.diagnostic_pointer)
+    assert audit['failure_stage'] == stage
+    assert 'private-token' not in json.dumps(audit) and 'private.invalid' not in json.dumps(audit)
+    assert _snapshot(case) == before
+    case.visual_review.assert_not_called()
+
+
+def test_new_stock_descriptions_never_bypass_actual_pinned_cut_rejection(case):
+    _use_actual_director_stock_result(case, ['worker scanning parcel barcode', 'worker scanning parcel barcode closeup'])
+    case.good[1]['identity_gate_passed'] = False
+    with pytest.raises(recovery.MixedVisualRecoveryError) as caught: _prepare(case)
+    audit = _receipt(case, caught.value.diagnostic_pointer)
+    assert audit['status'] == 'retained_visuals_rejected'
+    assert audit['retained_visual_reviews'][1]['review']['gates']['identity_gate_passed'] is False
+    assert not case.redis.exists(studio_state.REPAIR_CHECKPOINT_PREFIX + SOURCE)
+    case.fetch.assert_called_once()
+
+
+@pytest.mark.parametrize('damage', ['stock_tts', 'whole_tts', 'stock_extra', 'retained_query'])
+def test_rebound_receipt_still_checks_same_story_contract_at_publication(case, damage):
+    _use_actual_director_stock_result(case, recovery.STOCK_QUERIES)
+    receipt = _receipt(case, _prepare(case))
+    audit = _receipt(case, receipt['audit_pointer'])
+    package = receipt['approved_package']
+    if damage == 'stock_tts': package['scenes'][5]['tts_text'] = 'Wrong speech'
+    if damage == 'whole_tts': package['tts_narration'] = 'Wrong speech'
+    if damage == 'stock_extra': package['scenes'][5]['quality_override'] = True
+    if damage == 'retained_query': package['scenes'][1]['visual_queries'] = ['another warehouse stock scene']
+    reviewed = {key: deepcopy(value) for key, value in package.items() if key not in {
+        '_recovered_voice', '_recovered_generated_media'}}
+    receipt['reviewed_package'] = audit['reviewed_package'] = reviewed
+    checksum = case.tasks._recovery_package_sha256(package)
+    receipt['package_sha256'] = checksum
+    package['_recovered_voice']['package_sha256'] = checksum
+    package['_recovered_generated_media']['package_sha256'] = checksum
+    receipt['audit_pointer'] = recovery._store(case.storage, None, 'audit', audit)
+    pointer = recovery._store(case.storage, None, 'prepared', receipt)
+    before = _snapshot(case)
+    with pytest.raises(recovery.MixedVisualRecoveryError): recovery.publish_mixed_visual_recovery(pointer)
+    assert _snapshot(case) == before
+
+
 def test_prepare_preserves_actual_stock_identity_voice_and_only_saved_scene_one(case):
     before = _snapshot(case)
     receipt = _receipt(case, _prepare(case))

@@ -3919,6 +3919,83 @@ def _review_stock_tournament_round(
     return round_reviews
 
 
+def _fresh_scheduled_short_shots(
+    task_id: str,
+    spec: dict,
+    *,
+    approved_package,
+    retry_dispatch_source_id,
+    curated_stock_manifest,
+    voice_replacement_source_id,
+    paid_slots_used: int,
+) -> bool:
+    """Opt in only an untouched scheduler root, never a frozen/recovery plan."""
+    if (
+        spec.get('mode') != 'production' or spec.get('format') != 'shorts'
+        or spec.get('duration_minutes') != 0.5 or spec.get('workflow') != 'auto'
+        or spec.get('production_scheduled') is not True
+        or spec.get('publish_after_render') is not True
+        or approved_package is not None or retry_dispatch_source_id is not None
+        or curated_stock_manifest is not None or voice_replacement_source_id is not None
+        or type(paid_slots_used) is not int or paid_slots_used != 0
+    ):
+        return False
+    try:
+        from app.services.studio_state import get_job
+
+        job = get_job(task_id)
+        if (
+            not isinstance(task_id, str) or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(task_id)
+            or not isinstance(job, dict) or job.get('task_id') != task_id
+            or job.get('kind') != 'render' or job.get('spec') != spec
+        ):
+            raise ValueError('Scheduler job binding is unavailable')
+        return (
+            job.get('parent_id') is None and job.get('result') is None
+            and job.get('state') in {'PENDING', 'STARTED', 'PROGRESS', 'RETRY'}
+            and all(job.get(field) is None for field in (
+                'audio_candidate_checkpoint', 'voice_candidate_reuse', 'voice_replacement',
+                'repair_checkpoint', 'qa_workprint',
+            ))
+        )
+    except Exception:
+        raise FinalVisualQualityError('Fresh scheduled storyboard binding could not be verified') from None
+
+
+def _prepare_scheduled_short_shots(
+    task_id: str, package: dict, topic: str, duration_minutes: float,
+    language: str, options: dict,
+) -> dict:
+    """One optional prompt-only compression, durably reserved before its call."""
+    def reserve_compression() -> None:
+        from app.services.studio_state import _client
+
+        if not isinstance(task_id, str) or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(task_id):
+            raise ValueError('Canonical task identity is required')
+        reservation = json.dumps({
+            'task_id': task_id, 'package_sha256': _recovery_package_sha256(package),
+            'attempts': 1,
+        }, sort_keys=True, separators=(',', ':'))
+        # No expiry or reopen: a missing reply may already represent a paid
+        # compression. A later delivery must not repeat that uncertain call.
+        if _client().set(
+            f'youtube_studio:shot_prompt_compression:v1:{task_id}', reservation, nx=True,
+        ) is not True:
+            raise ValueError('Prompt compression was already reserved or is unavailable')
+
+    try:
+        from app.services.director import ensure_scheduled_short_shot_prompts
+
+        return ensure_scheduled_short_shot_prompts(
+            package, topic, duration_minutes, language, options,
+            fresh_scheduled=True, before_compression=reserve_compression,
+        )
+    except Exception:
+        raise FinalVisualQualityError(
+            'Scheduled shooting directions could not be validated before voice or paid media'
+        ) from None
+
+
 def _prepare_package(
     celery_task,
     task_id: str,
@@ -3927,6 +4004,8 @@ def _prepare_package(
     language: str,
     options: dict,
     approved_package: dict | None,
+    *,
+    fresh_scheduled: bool = False,
 ) -> dict:
     if approved_package:
         if (
@@ -3961,9 +4040,10 @@ def _prepare_package(
         return package
 
     set_stage(celery_task, task_id, 'research', 7, 'Güncel araştırma ve ilk storyboard hazırlanıyor.')
-    draft = research_and_script(topic, duration_minutes, language, options)
+    fresh_kwargs = {'fresh_scheduled': True} if fresh_scheduled is True else {}
+    draft = research_and_script(topic, duration_minutes, language, options, **fresh_kwargs)
     set_stage(celery_task, task_id, 'director_qc', 14, 'Senaryo yönetmeni akışı, ritmi ve görsel dili düzeltiyor.')
-    return direct_and_qc(draft, topic, duration_minutes, language, options)
+    return direct_and_qc(draft, topic, duration_minutes, language, options, **fresh_kwargs)
 
 
 def _guard_retry_child_execution(
@@ -4305,10 +4385,23 @@ def run_video_pipeline(
                 _task_spec(topic, duration_minutes, language, channel_id, options), saved_voice_retry,
             ) if voice_replacement_source_id is not None else None
         )
+        fresh_scheduled_shot_prompts = _fresh_scheduled_short_shots(
+            task_id, _task_spec(topic, duration_minutes, language, channel_id, options),
+            approved_package=approved_package, retry_dispatch_source_id=retry_dispatch_source_id,
+            curated_stock_manifest=curated_stock_manifest,
+            voice_replacement_source_id=voice_replacement_source_id, paid_slots_used=runway_attempts,
+        )
         package = (
             saved_voice_retry['package'] if saved_voice_retry
-            else _prepare_package(self, task_id, topic, duration_minutes, language, options, approved_package)
+            else _prepare_package(
+                self, task_id, topic, duration_minutes, language, options, approved_package,
+                **({'fresh_scheduled': True} if fresh_scheduled_shot_prompts else {}),
+            )
         )
+        if fresh_scheduled_shot_prompts:
+            package = _prepare_scheduled_short_shots(
+                task_id, package, topic, duration_minutes, language, options,
+            )
         raw_recovered_generated_media = package.pop(
             '_recovered_generated_media',
             None,
@@ -5395,6 +5488,14 @@ def run_video_pipeline(
                     # Validate every explicit repair direction before the paid
                     # loop. Old search/critic staging must not overwrite or
                     # truncate the newly approved authored shooting contract.
+                    from app.services.production_shot_prompt import build_production_shot_prompt
+                    prompt = build_production_shot_prompt(scene)
+                elif (
+                    options.get('production_scheduled') is True
+                    and fresh_scheduled_shot_prompts and scene.get('ai_prompt') is not None
+                ):
+                    # The entire authored direction was preflighted before
+                    # TTS; later stock reviews must not replace its action.
                     from app.services.production_shot_prompt import build_production_shot_prompt
                     prompt = build_production_shot_prompt(scene)
                 else:

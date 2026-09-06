@@ -238,3 +238,210 @@ def test_uncertain_model_error_is_audited_without_checkpoint_or_replay(case):
     assert audit['status'] == 'visual_review_unavailable' and _snapshot(case) == before
     assert 'secret provider' not in json.dumps(audit)
     case.visual.assert_called_once()
+
+
+LATEST = '77777777-7777-4777-8777-777777777777'
+
+
+@pytest.fixture
+def latest(case, monkeypatch):
+    """Create the actual second consumed V4 child, not a fabricated receipt."""
+    pointer = _prepare(case)
+    prior = _record(case, pointer)
+    recovery.publish_repaired_visual_recovery(pointer)
+    token = 'second-consumed-prior-repair-token'
+    claimed = studio_state.claim_retry_dispatch(LEAF, LATEST, token, allow_repair=True)
+    assert claimed['claimed'] is True and claimed['checkpoint'] == prior
+    assert studio_state.mark_retry_dispatch(LEAF, token, 'dispatched') is True
+    assert studio_state.acquire_retry_child_execution(LATEST, LEAF) is True
+    package = deepcopy(prior['approved_package'])
+    voice = {**case.voice, 'path': str(case.work.parent.parent / f'{LATEST}.mp3')}
+    Path(voice['path']).write_bytes(case.audio)
+    audio_pointer = audio_checkpoint.persist_audio_candidate_checkpoint(LATEST, package, voice)['audio_candidate_checkpoint']
+    generation_work = case.work.parent / f'{LATEST}_attempt_0'; generation_work.mkdir()
+    entries, actual = [], list(case.actual)
+    for index in (1, 4, 5):
+        actual[index] = b'\0\0\0\x18ftyp' + bytes([130 + index]) * (2300 + index)
+        path = generation_work / f'runway_s{index:02d}.mp4'; path.write_bytes(actual[index])
+        entries.append(recovery.base.assets.persist_generated_asset_candidate(LATEST, generation_work,
+            package=package, voice_result=voice, visual_spec={
+                'path': str(path), 'generated': True, 'source_type': 'generated', 'generation_provider': 'gemini_veo',
+                'generation_provider_attempts': 1, 'start_fraction': 0.0, 'preserve_start_fraction': True, 'forbid_loop': True},
+            scene_index=index, phase='initial_generation', options=recovery.base._options(case.leaf), duration_minutes=.5))
+    leaf = {**deepcopy(case.leaf), 'task_id': LATEST, 'parent_id': LEAF, 'paid_create_slots_used': 3,
+            'audio_candidate_checkpoint': audio_pointer, 'generated_asset_candidates': {
+                **recovery.base._FLAGS, 'source_task_id': LATEST, 'status': 'candidate_journal',
+                'attempted_count': 3, 'preserved_count': 3, 'failed_count': 0, 'entries': entries}}
+    flags = {'version': 1, 'status': 'qa_workprint', 'task_id': LATEST,
+             'qa_approved': False, 'publish_eligible': False, 'reusable': False}
+    metadata = {**flags, 'voice': {'sha256': _sha(case.audio), 'size': len(case.audio), 'existing_voice_quality_passed': True},
+        'scenes': [{'scene_index': index, 'narration': scene['narration'], 'duration_seconds': voice['scene_durations'][index],
+                    'selection': {'selected_spec_index': 0, 'sha256': _sha(actual[index]), 'size': len(actual[index]),
+                                  'source_type': 'generated', 'generation_provider': 'gemini_veo',
+                                  'start_fraction': 0.0, 'forbid_loop': True}}
+                   for index, scene in enumerate(package['scenes'])]}
+    payload = json.dumps(metadata, sort_keys=True, separators=(',', ':')).encode()
+    key = f'qa_workprints/{LATEST}/{_sha(payload)}.json'
+    case.objects[key] = payload, 'application/json'
+    leaf['qa_workprint'] = {**flags, 'metadata_key': key, 'metadata_sha256': _sha(payload), 'metadata_size': len(payload)}
+    case.client.set(studio_state.JOB_PREFIX + LATEST, json.dumps(leaf))
+    case.client.hset(studio_state.PAID_CREATE_BUDGET_PREFIX + LATEST, mapping={'cap': '6', 'used': '3'})
+    for name, value in {'LATEST_SOURCE': LATEST, 'LATEST_PARENT_RECEIPT_SHA': pointer['sha256'],
+                        'LATEST_PARENT_RECEIPT_SIZE': pointer['size'], 'LATEST_WORKPRINT_SHA': _sha(payload),
+                        'LATEST_WORKPRINT_SIZE': len(payload)}.items():
+        monkeypatch.setattr(recovery, name, value)
+    case.latest_work = case.work.parent / '88888888-8888-4888-8888-888888888888_attempt_0'; case.latest_work.mkdir()
+    case.latest_pointer, case.latest_leaf, case.latest_actual = pointer, leaf, actual
+    case.latest_original = deepcopy(package)
+    case.story.reset_mock(); case.visual.reset_mock(); case.render.normalize_clip.reset_mock()
+    case.reads.clear(); case.writes.clear()
+    return case
+
+
+def _latest_prepare(case, **kwargs):
+    return recovery.prepare_repaired_visual_recovery(kwargs.get('source', LATEST), kwargs.get('pointer', case.latest_pointer),
+        case.latest_work, repair_scene_indices=kwargs.get('repairs', ()), shot_prompt_overrides=kwargs.get('overrides', {}))
+
+
+def _save_latest(case):
+    case.client.set(studio_state.JOB_PREFIX + LATEST, json.dumps(case.latest_leaf))
+
+
+def test_second_case_fresh_all_six_review_outputs_v3_zero_create_and_claims_leaf_only(latest):
+    before = _snapshot(latest)
+    pointer = _latest_prepare(latest)
+    assert _snapshot(latest) == before
+    receipt = _record(latest, pointer)
+    package = receipt['approved_package']
+    assert receipt['repair_scene_indices'] == [] and receipt['shot_prompt_overrides'] == {}
+    assert receipt['new_paid_create_requests'] == receipt['new_tts_requests'] == 0
+    assert package['scenes'] == latest.latest_original['scenes']
+    assert package['sources'] == latest.latest_original['sources']
+    assert package['studio_options'] == latest.latest_original['studio_options']
+    assert package['_recovered_generated_media']['version'] == 3
+    assert package['_recovered_generated_media']['recovery_only'] is True
+    assert 'repair_scene_indices' not in package['_recovered_generated_media']
+    assert set(package['_recovered_generated_media']['scenes']) == set('012345')
+    assert [entry['origin_task_id'] for entry in receipt['assets']] == [LEAF, LATEST, LEAF, LEAF, LATEST, LATEST]
+    assert [entry['sha256'] for entry in receipt['assets']] == [_sha(raw) for raw in latest.latest_actual]
+    for index, entries in package['_recovered_generated_media']['scenes'].items():
+        assert latest.objects[entries[0]['key']][0] == latest.latest_actual[int(index)]
+    assert latest.objects[package['_recovered_voice']['key']][0] == latest.audio
+    latest.story.assert_called_once(); latest.visual.assert_called_once()
+    assert [call.args[3] for call in latest.render.normalize_clip.call_args_list] == list(range(6))
+    assert latest.writes[0] == receipt['audit_pointer']['key']
+    assert recovery.publish_repaired_visual_recovery(pointer)['repair_scene_indices'] == []
+    for key in before:
+        if key != studio_state.JOB_PREFIX + LATEST: assert latest.client.dump(key) == before[key]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        claims = list(pool.map(lambda index: studio_state.claim_retry_dispatch(LATEST,
+            PREP if index else '99999999-9999-4999-8999-999999999999', ('c' if index else 'd') * 32, allow_repair=True), (0, 1)))
+    assert sum(claim['claimed'] for claim in claims) == 1
+    assert next(claim for claim in claims if claim['claimed'])['checkpoint'] == receipt
+    assert latest.client.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX + LATEST) == {'cap': '6', 'used': '3'}
+    assert latest.client.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX + LEAF) == {'cap': '6', 'used': '4'}
+    assert latest.client.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX + PARENT) == {'cap': '6', 'used': '6'}
+
+
+@pytest.mark.parametrize('index', range(6))
+@pytest.mark.parametrize('field,value', [('score', 30), ('identity_gate_passed', False), ('evidence_gate_passed', False)])
+def test_second_case_no_scene_can_skip_fresh_qa_or_become_an_implicit_repair(latest, index, field, value):
+    latest.reviews[index][field] = value
+    before = _snapshot(latest)
+    with pytest.raises(recovery.RepairedVisualRecoveryError) as caught: _latest_prepare(latest)
+    audit = _record(latest, caught.value.diagnostic_pointer)
+    assert audit['status'] == 'retained_visuals_rejected' and len(audit['retained_visual_reviews']) == 6
+    assert audit['repair_scene_indices'] == [] and len(latest.writes) == 1
+    assert _snapshot(latest) == before
+
+
+@pytest.mark.parametrize('damage', ['new_repairs', 'new_prompt', 'unknown_source', 'none_source', 'old_pointer',
+    'leaf_paid', 'parent_paid', 'parent_journal', 'parent_audio', 'child_journal', 'workprint', 'dispatch', 'claim', 'execution', 'consumed'])
+def test_second_case_exact_case_and_lineage_inputs_cannot_be_substituted(latest, damage):
+    kwargs = {}
+    if damage == 'new_repairs': kwargs['repairs'] = (1, 4, 5)
+    if damage == 'new_prompt': kwargs['overrides'] = {1: 'New paid shot'}
+    if damage == 'unknown_source': kwargs['source'] = PREP
+    if damage == 'none_source': kwargs['source'] = None
+    if damage == 'old_pointer': kwargs['pointer'] = latest.parent_pointer
+    if damage == 'leaf_paid': latest.client.hset(studio_state.PAID_CREATE_BUDGET_PREFIX + LATEST, 'used', '4')
+    if damage == 'parent_paid': latest.client.hset(studio_state.PAID_CREATE_BUDGET_PREFIX + LEAF, 'used', '6')
+    if damage in {'parent_journal', 'parent_audio'}:
+        parent = studio_state.get_job(LEAF)
+        if damage == 'parent_journal': parent['generated_asset_candidates']['preserved_count'] = 3
+        else: parent['audio_candidate_checkpoint']['package_sha256'] = '0' * 64
+        latest.client.set(studio_state.JOB_PREFIX + LEAF, json.dumps(parent))
+    if damage == 'child_journal':
+        latest.latest_leaf['generated_asset_candidates']['entries'][1] = deepcopy(latest.latest_leaf['generated_asset_candidates']['entries'][0]); _save_latest(latest)
+    if damage == 'workprint': latest.latest_leaf['qa_workprint']['metadata_sha256'] = '0' * 64; _save_latest(latest)
+    if damage == 'dispatch': latest.client.hset(studio_state.RETRY_DISPATCH_PREFIX + LEAF, 'mode', 'full')
+    if damage == 'claim': latest.client.hset(studio_state.RETRY_CHILD_CLAIM_PREFIX + LATEST, 'token', 'changed')
+    if damage == 'execution': latest.client.set(studio_state.RETRY_CHILD_EXECUTION_PREFIX + LATEST, 'changed')
+    if damage == 'consumed': latest.client.set(studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX + LEAF, 'changed')
+    before = _snapshot(latest)
+    with pytest.raises(recovery.RepairedVisualRecoveryError): _latest_prepare(latest, **kwargs)
+    assert _snapshot(latest) == before and not latest.writes
+    latest.story.assert_not_called(); latest.visual.assert_not_called()
+
+
+@pytest.mark.parametrize('target', range(12))
+def test_second_case_watches_actual_new_parent_and_leaf_keys_without_ancestor_reset(latest, target):
+    pointer = _latest_prepare(latest)
+    key = recovery._keys(recovery._case(LATEST))[target]
+    original = latest.storage.get_object
+    fired = False
+    def racing(**kwargs):
+        nonlocal fired
+        result = original(**kwargs)
+        if not fired and kwargs['Key'] == latest.latest_pointer['key']:
+            fired = True
+            if latest.client.type(key) == 'hash': latest.client.hset(key, 'race', 'changed')
+            else: latest.client.set(key, 'concurrent-change')
+        return result
+    latest.storage.get_object = racing
+    with pytest.raises(recovery.RepairedVisualRecoveryError): recovery.publish_repaired_visual_recovery(pointer)
+    assert fired
+    if key != studio_state.REPAIR_CHECKPOINT_PREFIX + LATEST:
+        assert not latest.client.exists(studio_state.REPAIR_CHECKPOINT_PREFIX + LATEST)
+    if key != studio_state.JOB_PREFIX + LATEST: assert studio_state.get_job(LATEST) == latest.latest_leaf
+
+
+@pytest.mark.parametrize('field', ['narration', 'ai_prompt', 'visual_queries'])
+def test_second_case_independent_story_cannot_edit_any_frozen_shot(latest, field):
+    original = latest.story.side_effect
+    def changed(*args, **kwargs):
+        package = original(*args, **kwargs)
+        package['scenes'][5][field] = ['changed shot query'] if field == 'visual_queries' else 'Changed words or shot'
+        return package
+    latest.story.side_effect = changed
+    before = _snapshot(latest)
+    with pytest.raises(recovery.RepairedVisualRecoveryError) as caught: _latest_prepare(latest)
+    assert _record(latest, caught.value.diagnostic_pointer)['status'] == 'story_review_rejected_or_unavailable'
+    assert _snapshot(latest) == before
+    latest.visual.assert_not_called()
+
+
+def test_second_case_unsorted_journal_and_parent_raw_provenance_are_preserved(latest):
+    latest.latest_leaf['generated_asset_candidates']['entries'].reverse(); _save_latest(latest)
+    receipt = _record(latest, _latest_prepare(latest))
+    assert [asset['sha256'] for asset in receipt['assets']] == [_sha(raw) for raw in latest.latest_actual]
+    assert len(receipt['retained_visual_reviews']) == 6
+
+
+def test_second_case_requires_explicit_empty_repairs_not_the_legacy_default(latest):
+    before = _snapshot(latest)
+    with pytest.raises(recovery.RepairedVisualRecoveryError):
+        recovery.prepare_repaired_visual_recovery(LATEST, latest.latest_pointer, latest.latest_work, shot_prompt_overrides={})
+    assert _snapshot(latest) == before and not latest.reads and not latest.writes
+    latest.story.assert_not_called(); latest.visual.assert_not_called()
+
+
+def test_second_case_critic_error_has_fixed_safe_stage_and_durable_diagnostic(latest):
+    latest.story.side_effect = RuntimeError('Bearer private-key https://private.invalid/response')
+    before = _snapshot(latest)
+    with pytest.raises(recovery.RepairedVisualRecoveryError) as caught: _latest_prepare(latest)
+    audit = _record(latest, caught.value.diagnostic_pointer)
+    assert audit['failure_stage'] == 'independent_story_review'
+    assert 'private-key' not in json.dumps(audit) and 'private.invalid' not in json.dumps(audit)
+    assert _snapshot(latest) == before and len(latest.writes) == 1
+    latest.visual.assert_not_called()

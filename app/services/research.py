@@ -13,6 +13,7 @@ from app.services.director import (
     _documentary_explanatory_coda_rule,
     _explicit_scene_count_from_brief,
     _story_brief_for_qc,
+    _scheduled_short_shot_writer_rule,
 )
 from app.services.visual_routing import preview_authored_ai_limit
 from app.services.source_evidence import normalize_evidence_sources
@@ -230,12 +231,15 @@ def _max_ai_scenes(scene_count: int, options: dict, duration_minutes: float) -> 
     return min(4, max(1, math.ceil(scene_count * 0.24)))
 
 
-def research_and_script(topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
+def research_and_script(topic: str, duration_minutes: float, language: str, options: dict | None = None,
+                        *, fresh_scheduled: bool = False) -> dict:
     provider = _studio_plan_provider()
     if provider == 'openai' and not settings.openai_api_key:
         raise RuntimeError('OPENAI_API_KEY is not configured')
 
     options = dict(options or {})
+    shot_capacity_rule = _scheduled_short_shot_writer_rule(options, duration_minutes, fresh_scheduled)
+    shot_aspect = '9:16' if shot_capacity_rule else '16:9'
     style = str(options.get('content_style') or 'documentary')
     pace = str(options.get('pace') or 'balanced')
     mode = str(options.get('mode') or ('preview' if duration_minutes <= 1 else 'production'))
@@ -391,7 +395,8 @@ VISUAL DIRECTING RULES:
 - In that same conditional OLED case, if narration claims lower power use, require a real physical meter visibly dropping in the same shot; otherwise rewrite the spoken claim to the directly visible emissive-pixel fact.
 - ai_prompt may be non-null when literal stock is unlikely to reliably show the named subject, action or mechanism, and in at most {max_ai_scenes} scenes.
 {preview_ai_routing_note}
-- Every non-null ai_prompt must describe one continuous 16:9 photorealistic scene-length shot, normally 5-10 seconds, with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
+- Every non-null ai_prompt must describe one continuous {shot_aspect} photorealistic scene-length shot, normally 5-10 seconds, with controlled motion, the subject, action and mechanism visibly clear, and no captions, readable interface text, logos, watermarks, charts, random glitch or surreal metaphor.
+{shot_capacity_rule}
 - Every non-null ai_prompt is standalone. Repeat inside that scene's own prompt every applicable object identity, dimension, brand state, color, wardrobe, room, lighting, continuity and forbidden-element constraint from Topic; never rely on an earlier scene prompt to carry it forward.
 - The master video is text-free: do not plan captions, lower thirds or on-screen sentences.
 

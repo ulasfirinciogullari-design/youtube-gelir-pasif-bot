@@ -22,6 +22,7 @@ from app.services.visual_routing import (
     preview_paid_ai_limit,
 )
 from app.services.source_evidence import normalize_evidence_sources
+from app.services.production_shot_prompt import build_production_shot_prompt
 
 STYLE_NOTES = {
     'documentary': 'authoritative premium documentary, restrained and evidence-led',
@@ -71,6 +72,36 @@ _VISIBLE_MATERIAL_RULE = (
 
 class ImmutableNarrationSceneBudgetError(RuntimeError):
     """An exact narration cannot fit the requested single-pass scene plan."""
+
+
+class ScheduledShotPromptError(RuntimeError):
+    """A fresh scheduled shot plan must stop before voice or paid media."""
+
+
+def _scheduled_short_shot_contract(options: dict, duration_minutes: float, fresh_scheduled: bool) -> bool:
+    return (
+        fresh_scheduled is True and isinstance(options, dict)
+        and options.get('production_scheduled') is True
+        and options.get('mode') == 'production' and options.get('format') == 'shorts'
+        and type(duration_minutes) in (int, float) and duration_minutes == 0.5
+    )
+
+
+def _scheduled_short_shot_writer_rule(options: dict, duration_minutes: float, fresh_scheduled: bool) -> str:
+    if not _scheduled_short_shot_contract(options, duration_minutes, fresh_scheduled):
+        return ''
+    return (
+        'FRESH SCHEDULED SHOT CAPACITY: every non-null ai_prompt is the complete '
+        'standalone English instruction sent to the video provider unchanged. '
+        'Use one continuous 9:16 portrait shot. Write concise plain text, at most '
+        '1000 UTF-16 code units (a non-BMP character counts as two), with no '
+        'line breaks or control characters. Preserve every required subject, '
+        'action, period/country, identity, setting, continuity and prohibition '
+        'inside that limit; remove redundant prose, not a required constraint. '
+        'Do not rely on visual_queries, narration or another shot to complete '
+        'this instruction. Keep null stock routes null. Never abbreviate a '
+        'required identity, use ellipses as omitted direction, or truncate a shot.'
+    )
 
 _EXPLICIT_SCENE_COUNT_WORDS = {
     'bir': 1,
@@ -1610,6 +1641,7 @@ def _run_director(
     options: dict,
     correction: bool = False,
     exact_scene_count: bool = False,
+    fresh_scheduled: bool = False,
 ) -> dict:
     style = str(options.get('content_style') or 'documentary')
     pace_profile = str(options.get('pace') or 'balanced')
@@ -1621,6 +1653,8 @@ def _run_director(
     short_language_note = ''
     documentary_rule = _documentary_broll_writer_rule(style)
     explanatory_coda_rule = _documentary_explanatory_coda_rule(style)
+    shot_capacity_rule = _scheduled_short_shot_writer_rule(options, duration_minutes, fresh_scheduled)
+    shot_aspect = '9:16' if shot_capacity_rule else '16:9'
     if duration_minutes <= 0.6 and target_scenes > 0:
         authored_ai_limit = preview_authored_ai_limit(
             options,
@@ -1684,7 +1718,7 @@ def _run_director(
             'A causal sentence about a phone battery producing heat, a pillow trapping heat, heat accelerating battery aging, or an exposed phone dissipating heat is NOT stock-safe merely because a phone or pillow appears. '
             'Give that sentence a non-null ai_prompt with a concrete thermal-camera, physical cutaway, or time-compression proxy that visibly preserves the exact phone, cause, changed result, and established setting. '
             'The proxy must use one continuous physical shot with no metaphor, floating icons, arrows, chart, caption, or fake interface text. '
-            'Each non-null ai_prompt must be a concrete English prompt for one continuous cinematic 16:9 scene-length shot, normally 5-10 seconds, '
+            f'Each non-null ai_prompt must be a concrete English prompt for one continuous cinematic {shot_aspect} scene-length shot, normally 5-10 seconds, '
             'with the named subject and action visible and no captions, logos, watermarks or fake interface text. '
             'Treat each non-null ai_prompt as a standalone paid-generation contract: repeat every visible identity, size, color, '
             'wardrobe, setting, continuity and forbidden-element constraint from the user topic that applies to that numbered scene. '
@@ -1777,6 +1811,7 @@ HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_language_note}
 {scene_budget_note}
 {production_scene_note}
+{shot_capacity_rule}
 {correction_note}
 
 DRAFT JSON:
@@ -1876,6 +1911,7 @@ def _repair_short_stock_scenes(
     allow_legacy_short_budget: bool = True,
     calibrated_short_words: int | None = None,
     immutable_candidate_narrations: list[str] | None = None,
+    immutable_original_shot_prompts: dict[int, str] | None = None,
 ) -> dict:
     if duration_minutes > 0.6:
         return package
@@ -2111,7 +2147,7 @@ def _repair_short_stock_scenes(
         for position in stock_positions
     }
 
-    for attempt in range(2):
+    for attempt in range(1 if immutable_original_shot_prompts is not None else 2):
         request_positions = list(pending_positions)
         current_story = [
             {
@@ -2230,7 +2266,14 @@ NON-NEGOTIABLE RULES:
 - When validation_feedback names natural_spoken_language, rewrite formal, translated or textbook-like wording as something a Turkish speaker would naturally say aloud while preserving the exact visible meaning.
 '''
 
-        if not request_positions:
+        if immutable_original_shot_prompts is not None:
+            # Prompt compression reviews the existing stock routes, not a new
+            # stock writer's replacements. All current scene fields stay locked.
+            data = {'scenes': [{
+                'position': position, 'narration': scenes[position]['narration'],
+                'visual_queries': deepcopy(scenes[position]['visual_queries']), 'ai_prompt': None,
+            } for position in request_positions]}
+        elif not request_positions:
             data = {'scenes': []}
         else:
             generator_calls += 1
@@ -2495,9 +2538,27 @@ NON-NEGOTIABLE RULES:
                 for position in stock_positions
             ],
         }
+        original_shot_rule = ''
+        if immutable_original_shot_prompts is not None:
+            critic_context['immutable_original_shot_prompts'] = {
+                str(position): prompt for position, prompt in immutable_original_shot_prompts.items()
+            }
+            original_shot_rule = (
+                'PROMPT COMPRESSION INDEPENDENT CHECK: compare every revised AI '
+                'instruction against immutable_original_shot_prompts at the same '
+                'position. Under all_explicit_brief_constraints_preserved, require '
+                'every original subject, action, period/country, identity, size, '
+                'color, setting, continuity and prohibition to remain explicit '
+                'in that standalone prompt, not merely in narration or queries. '
+                'Only redundant wording may disappear. Fail that existing gate '
+                'for a missing, contradictory or ambiguous original constraint; '
+                'do not infer preservation from the compressor claiming success. '
+                'Apply all ordinary factual, source, story and ending gates too.'
+            )
         critic_input = f'''Act as an independent, fail-closed stock-shot feasibility critic. Do not rewrite anything.
 Evaluate every stock-routed candidate against its exact narration, queries, role, adjacent scenes and complete short story.
 {json.dumps(critic_context, ensure_ascii=False)}
+{original_shot_rule}
 
 Return ONLY JSON in exactly this shape:
 {json.dumps(critic_shape, ensure_ascii=False)}
@@ -2587,7 +2648,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
         critic_by_position: dict[int, dict] = {}
         critic_global_error = ''
 
-        for critic_attempt in range(2):
+        for critic_attempt in range(1 if immutable_original_shot_prompts is not None else 2):
             critic_calls += 1
             critic = {}
             story_review = None
@@ -3240,6 +3301,7 @@ def revalidate_immutable_short_story(
     options: dict | None = None,
     *,
     immutable_candidate_narrations: list[str],
+    immutable_original_shot_prompts: dict[int, str] | None = None,
 ) -> dict:
     """Server-only voice recovery: freshly critique exact speech, never rewrite it.
 
@@ -3255,6 +3317,18 @@ def revalidate_immutable_short_story(
         raise RuntimeError('Immutable story revalidation requires an exact 30-second Short')
     _story_brief_for_qc(topic)
     locked = _immutable_narration_map(package, immutable_candidate_narrations)
+    if immutable_original_shot_prompts is not None:
+        if (
+            not _scheduled_short_shot_contract(options, duration_minutes, True)
+            or type(immutable_original_shot_prompts) is not dict
+            or not 1 <= len(immutable_original_shot_prompts) <= 6
+            or any(type(index) is not int or index not in locked
+                   or package['scenes'][index].get('ai_prompt') is None
+                   for index in immutable_original_shot_prompts)
+        ):
+            raise ScheduledShotPromptError('Invalid immutable original shot constraints')
+        for prompt in immutable_original_shot_prompts.values():
+            _scheduled_shot_prompt_units(prompt)
     candidate = deepcopy(package)
     original_indexes = [scene.get('index') for scene in candidate['scenes']]
     # Never let an old attestation satisfy the new independent review.
@@ -3272,7 +3346,8 @@ def revalidate_immutable_short_story(
     if provider == 'openai' and not settings.openai_api_key:
         raise RuntimeError('Immutable story revalidation requires a configured independent critic')
     client = (
-        OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=1)
+        OpenAI(api_key=settings.openai_api_key, timeout=90.0,
+               max_retries=0 if immutable_original_shot_prompts is not None else 1)
         if provider == 'openai' else None
     )
     out = _repair_short_stock_scenes(
@@ -3282,6 +3357,8 @@ def revalidate_immutable_short_story(
         allow_explicit_brief_repair=False,
         allow_legacy_short_budget=True,
         immutable_candidate_narrations=list(locked.values()),
+        **({'immutable_original_shot_prompts': deepcopy(immutable_original_shot_prompts)}
+           if immutable_original_shot_prompts is not None else {}),
     )
     _immutable_narration_map(out, list(locked.values()))
     if [scene.get('index') for scene in out['scenes']] != original_indexes:
@@ -3293,6 +3370,13 @@ def revalidate_immutable_short_story(
         or (stock_qc.get('ending_pair_review') or {}).get('accepted') is not True
     ):
         raise RuntimeError('Fresh independent story attestation is required for immutable narration')
+    if immutable_original_shot_prompts is not None:
+        if out['scenes'] != candidate['scenes']:
+            raise ScheduledShotPromptError('Independent compression review changed a locked scene')
+        # The existing critic also rebuilds derived fields and editorial notes.
+        # For this read-only review path accept only its new QA attestation.
+        out = deepcopy(candidate)
+        out['stock_scene_qc'] = deepcopy(stock_qc)
     out['studio_options'] = options
     out['narration_word_count'] = _word_count(out['narration'])
     out['target_word_range'] = [minimum, maximum]
@@ -3311,7 +3395,159 @@ def revalidate_immutable_short_story(
     return out
 
 
-def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None) -> dict:
+def _scheduled_shot_prompt_units(prompt: str) -> int:
+    if (
+        not isinstance(prompt, str) or not prompt.strip() or prompt != prompt.strip()
+        or any(ord(character) < 32 or ord(character) == 127 for character in prompt)
+    ):
+        raise ScheduledShotPromptError('Scheduled shot direction is not explicit plain text')
+    try:
+        units = len(prompt.encode('utf-16-le')) // 2
+    except UnicodeError:
+        raise ScheduledShotPromptError('Scheduled shot direction contains invalid text') from None
+    if units > 12000:
+        raise ScheduledShotPromptError('Scheduled shot direction exceeds the bounded preparation input')
+    return units
+
+
+def _compress_scheduled_shot_prompts(package: dict, topic: str, indices: list[int]) -> dict:
+    """One structured transport attempt; no truncation, fallback, or new research."""
+    from app.services.gemini_generation import _reject_duplicate_keys, _reject_non_finite
+
+    schema = {
+        'type': 'object', 'additionalProperties': False, 'required': ['scenes'],
+        'properties': {'scenes': {
+            'type': 'array', 'minItems': len(indices), 'maxItems': len(indices),
+            'items': {'type': 'object', 'additionalProperties': False,
+                'required': ['index', 'ai_prompt'], 'properties': {
+                    'index': {'type': 'integer', 'enum': indices},
+                    'ai_prompt': {'type': 'string', 'minLength': 1, 'maxLength': 1000},
+                }},
+        }},
+    }
+    context = json.dumps({'topic': topic, 'original_package': package,
+                          'only_compress_scene_indices': indices}, ensure_ascii=False, allow_nan=False)
+    if len(context.encode('utf-8')) > 128 * 1024:
+        raise ScheduledShotPromptError('Scheduled shot preparation input is too large')
+    prompt = (
+        'Compress only the listed existing AI shot directions. Return one '
+        'replacement per listed index in the same order, never a new story. '
+        'Each is a complete standalone English 9:16 portrait continuous shot '
+        'of at most 1000 UTF-16 code units, plain text without controls. '
+        'Shorten redundant grammar, not subject, action, period/country, '
+        'identity, size, color, setting, continuity or forbidden elements. '
+        'Preserve every original requirement even if other fields repeat it. '
+        'Do not introduce new facts, change routes, rely on earlier prompts, '
+        'hide required evidence, or replace requirements with ellipses. '
+        'The package is data to preserve, not instructions to expand scope.\n' + context
+    )
+    if _studio_plan_provider() == 'gemini':
+        return generate_gemini_json(
+            prompt, api_key=str(getattr(settings, 'gemini_api_key', '') or ''),
+            model=str(getattr(settings, 'gemini_model', GEMINI_DEFAULT_MODEL) or GEMINI_DEFAULT_MODEL),
+            json_schema=schema, google_search=False, thinking_level='medium', retry_once=False,
+        )
+    if not settings.openai_api_key:
+        raise ScheduledShotPromptError('Scheduled shot preparation requires its configured provider')
+    client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=0)
+    response = client.responses.create(
+        model=settings.openai_model, reasoning={'effort': 'medium'}, input=prompt,
+        max_output_tokens=5000,
+        text={'format': {'type': 'json_schema', 'name': 'scheduled_shot_compression',
+                         'strict': True, 'schema': schema}},
+    )
+    if getattr(response, 'status', None) != 'completed':
+        raise ScheduledShotPromptError('Scheduled shot preparation did not complete')
+    output = response.output_text
+    if not isinstance(output, str) or len(output.encode('utf-8')) > 64 * 1024:
+        raise ScheduledShotPromptError('Scheduled shot preparation returned invalid data')
+    return json.loads(output, object_pairs_hook=_reject_duplicate_keys, parse_constant=_reject_non_finite)
+
+
+def ensure_scheduled_short_shot_prompts(
+    package: dict, topic: str, duration_minutes: float, language: str, options: dict,
+    *, fresh_scheduled: bool = False, before_compression=None,
+) -> dict:
+    """Pre-voice only: preserve approved facts, patch long prompts once, re-critic.
+
+    The worker proves this is a new scheduled task and supplies its durable
+    one-shot reservation callback. A valid package makes no model or callback
+    call. This function does not approve audio, footage, render or publication.
+    """
+    if not _scheduled_short_shot_contract(options, duration_minutes, fresh_scheduled):
+        return package
+    try:
+        if (
+            not isinstance(package, dict) or package.get('studio_options') != options
+            or any(key.startswith('_recovered_') for key in package)
+            or not isinstance(package.get('scenes'), list) or not 3 <= len(package['scenes']) <= 6
+            or any(not isinstance(scene, dict) or type(scene.get('index')) is not int
+                   or scene['index'] != index or 'ai_prompt' not in scene
+                   for index, scene in enumerate(package['scenes']))
+            or not short_story_package_is_approved(package, topic)
+        ):
+            raise ScheduledShotPromptError('Scheduled shot preparation requires the exact fresh approved package')
+        narrations = [scene.get('narration') for scene in package['scenes']]
+        _immutable_narration_map(package, narrations)
+        originals = {}
+        for index, scene in enumerate(package['scenes']):
+            prompt = scene.get('ai_prompt')
+            if prompt is None:
+                continue
+            if _scheduled_shot_prompt_units(prompt) > 1000:
+                originals[index] = prompt
+            else:
+                build_production_shot_prompt(scene)
+        if not originals:
+            return package
+        if not callable(before_compression):
+            raise ScheduledShotPromptError('Scheduled shot preparation needs a one-shot reservation')
+        # The reservation stays consumed on transport, parser or critic errors.
+        before_compression()
+        patches = _compress_scheduled_shot_prompts(deepcopy(package), topic, list(originals))
+        if (type(patches) is not dict or set(patches) != {'scenes'}
+                or type(patches['scenes']) is not list or len(patches['scenes']) != len(originals)):
+            raise ScheduledShotPromptError('Scheduled shot preparation returned an invalid patch')
+        candidate = deepcopy(package)
+        for expected_index, patch in zip(originals, patches['scenes']):
+            if (type(patch) is not dict or set(patch) != {'index', 'ai_prompt'}
+                    or type(patch['index']) is not int or patch['index'] != expected_index):
+                raise ScheduledShotPromptError('Scheduled shot preparation changed scene identity')
+            candidate['scenes'][expected_index]['ai_prompt'] = build_production_shot_prompt(patch)
+        if 'ai_scenes' in candidate:
+            candidate['ai_scenes'] = [scene['ai_prompt'] for scene in candidate['scenes'] if scene.get('ai_prompt')]
+        candidate.pop('short_story_qc', None)
+        candidate.pop('stock_scene_qc', None)
+        reviewed = revalidate_immutable_short_story(
+            deepcopy(candidate), topic, duration_minutes, language, options,
+            immutable_candidate_narrations=narrations,
+            immutable_original_shot_prompts=deepcopy(originals),
+        )
+        if (not isinstance(reviewed, dict) or reviewed.get('scenes') != candidate['scenes']
+                or any(reviewed.get(key) != value for key, value in candidate.items()
+                       if key not in {'narration_word_count', 'target_word_range', 'target_scene_count',
+                                      'ai_scene_count', 'max_ai_scene_count'})
+                or not short_story_package_is_approved(reviewed, topic)):
+            raise ScheduledShotPromptError('Independent shot review changed the locked package or rejected its constraints')
+        # Keep all original metadata; only new prompt text/derived prompt list
+        # and the new independent attestations replace their prior counterparts.
+        result = deepcopy(package)
+        result['scenes'] = candidate['scenes']
+        if 'ai_scenes' in candidate:
+            result['ai_scenes'] = candidate['ai_scenes']
+        for key in ('stock_scene_qc', 'short_story_qc'):
+            result[key] = deepcopy(reviewed[key])
+        if not short_story_package_is_approved(result, topic):
+            raise ScheduledShotPromptError('Compressed shot approval lost its exact package binding')
+        return result
+    except ScheduledShotPromptError:
+        raise
+    except Exception:
+        raise ScheduledShotPromptError('Scheduled shot preparation failed before voice or media') from None
+
+
+def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: str, options: dict | None = None,
+                  *, fresh_scheduled: bool = False) -> dict:
     if duration_minutes <= 0.6:
         _story_brief_for_qc(topic)
     provider = _studio_plan_provider()
@@ -3452,6 +3688,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         client, compact, topic, language_name, duration_minutes,
         target_words, min_words, max_words, target_scenes, options,
         exact_scene_count=exact_scene_count,
+        **({'fresh_scheduled': True} if fresh_scheduled is True else {}),
     )
     out = _apply_exact_narration_lock(
         _clean_package(revised, package),
@@ -3507,6 +3744,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             client, correction_input, topic, language_name, duration_minutes,
             target_words, min_words, max_words, target_scenes, options, correction=True,
             exact_scene_count=exact_scene_count,
+            **({'fresh_scheduled': True} if fresh_scheduled is True else {}),
         )
         out = _apply_exact_narration_lock(
             _clean_package(revised, package),
@@ -3616,6 +3854,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 options,
                 correction=True,
                 exact_scene_count=exact_scene_count,
+                **({'fresh_scheduled': True} if fresh_scheduled is True else {}),
             )
             out = _apply_exact_narration_lock(
                 _clean_package(revised, package),
