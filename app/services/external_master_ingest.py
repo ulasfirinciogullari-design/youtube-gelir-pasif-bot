@@ -249,11 +249,16 @@ def ingest_external_master(staging_root, video_path, captions_path, manifest, *,
                                           'captions_sha256': descriptor['captions_sha256'],
                                           'manifest_sha256': descriptor['manifest_sha256']},
                   'contains_synthetic_media': True, 'new_media_generated': False}
+        if value['version'] == 2:
+            # Server-selected from the validated, hash-bound manifest; never QA.
+            result['external_provenance'].update(manifest_version=2, duration_ms=value['duration_ms'])
         for field, key in (('download_url', stored['video']), ('caption_url', stored['captions'])):
             result[field] = s3.generate_presigned_url('get_object',
                 Params={'Bucket': storage.settings.bucket, 'Key': key}, ExpiresIn=86400)
         job = {'task_id': task_id, 'kind': 'render', 'parent_id': None,
-               'spec': {'topic': value['title'], 'duration_minutes': .5, 'language': value['language'],
+               'spec': {'topic': value['title'],
+                        'duration_minutes': .5 if value['version'] == 1 else value['duration_ms'] / 60000,
+                        'language': value['language'],
                         'format': 'shorts', 'mode': 'production', 'workflow': 'external_import',
                         'production_channel_id': target_channel_id,
                         'production_connection_id': expected_connection_id,

@@ -104,14 +104,21 @@ def _source_url(value):
 
 
 def validate_external_manifest(manifest):
-    """Validate v1 declarations without treating any declaration as proof."""
+    """Validate versioned declarations without treating them as proof.
+
+    V1 retains its original 30-second contract. V2 supports bounded TR/EN
+    masters at their declared millisecond duration, still with six scenes.
+    """
     try:
         value = _object(manifest)
         _require(set(value) == {'version', 'origin', 'language', 'format', 'duration_ms', 'title',
                                'scenes', 'sources', 'files'}, 'external_manifest_schema_invalid')
-        _require(type(value['version']) is int and value['version'] == 1
-                 and value['language'] in {'tr', 'en', 'de', 'es', 'ar'} and value['format'] == 'shorts'
-                 and type(value['duration_ms']) is int and value['duration_ms'] == 30000)
+        _require(type(value['version']) is int and value['version'] in (1, 2)
+                 and value['format'] == 'shorts' and type(value['duration_ms']) is int)
+        if value['version'] == 1:
+            _require(value['language'] in {'tr', 'en', 'de', 'es', 'ar'} and value['duration_ms'] == 30000)
+        else:
+            _require(value['language'] in {'tr', 'en'} and 15000 <= value['duration_ms'] <= 60000)
         _text(value['title'], 140)
         origin = value['origin']
         _require(type(origin) is dict and set(origin) == {'kind', 'provider', *_UNKNOWN_ORIGIN_FIELDS}
@@ -269,7 +276,9 @@ def _positive_number(value):
     return number
 
 
-def _probe_mp4(path):
+def _probe_mp4(path, *, expected_duration=30):
+    _require(type(expected_duration) in (int, float) and math.isfinite(expected_duration)
+             and 15 <= expected_duration <= 60, 'external_expected_duration_invalid')
     with path.open('rb') as stream:
         header = stream.read(32)
     _require(len(header) == 32 and header[4:8] == b'ftyp'
@@ -311,8 +320,8 @@ def _probe_mp4(path):
     audio_duration = _positive_number(audio.get('duration'))
     frames = video.get('nb_read_frames')
     _require(type(frames) is str and re.fullmatch(r'[1-9][0-9]*', frames)
-             and 23 <= fps <= 60 and abs(duration - 30) <= .100
-             and abs(container_duration - 30) <= .250
+             and 23 <= fps <= 60 and abs(duration - expected_duration) <= .100
+             and abs(container_duration - expected_duration) <= .250
              and abs(int(frames) - fps * duration) <= 1.1, 'external_duration_or_frames_invalid')
     _require(1 <= audio_duration <= duration + .250
              and str(audio.get('sample_rate')) in {'44100', '48000'}
@@ -345,7 +354,8 @@ def validate_staged_external_artifact(staging_root, video_path, captions_path, m
         _, video_identity = _fingerprint(video, value['files']['video'])
         caption_bytes, caption_identity = _fingerprint(captions, value['files']['captions'], return_bytes=True)
         caption_contract = validate_external_captions(caption_bytes, value)
-        media = _probe_mp4(video)
+        media = (_probe_mp4(video) if value['version'] == 1
+                 else _probe_mp4(video, expected_duration=value['duration_ms'] / 1000))
         # Probe and caption parsing cannot certify bytes subsequently replaced.
         _require(_staged_path(root, video, '.mp4') == video and _staged_path(root, captions, '.srt') == captions)
         _require(_fingerprint(video, value['files']['video'])[1] == video_identity

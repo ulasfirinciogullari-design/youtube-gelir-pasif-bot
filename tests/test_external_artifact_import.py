@@ -141,7 +141,7 @@ def test_fstat_ctime_change_during_hash_still_rejects(staged, monkeypatch):
 
 @pytest.mark.parametrize('field,value', [('qa_approved', True), ('publish_eligible', True),
     ('quality_disposition', 'automated_qc_pass'), ('state', 'SUCCESS'), ('version', True),
-    ('version', 2), ('language', 'xx'), ('format', 'landscape'), ('duration_ms', 30000.0),
+    ('version', 3), ('language', 'xx'), ('format', 'landscape'), ('duration_ms', 30000.0),
     ('duration_ms', 31000), ('title', 'secret=do-not-return-this'), ('title', '<script>alert(1)</script>')])
 def test_caller_flags_unknown_schema_or_secret_text_are_rejected_before_probe(staged, field, value):
     staged.manifest[field] = value
