@@ -20,6 +20,7 @@ RETRY_DISPATCH_PREFIX = 'youtube_studio:retry_dispatch:'
 RETRY_CHILD_CLAIM_PREFIX = 'youtube_studio:retry_child_claim:'
 RETRY_CHILD_EXECUTION_PREFIX = 'youtube_studio:retry_child_execution:'
 EXTERNAL_EPISODE_LEAF_PREFIX = 'youtube_studio:external_episode_delivery:v1:leaf:'
+RENDER_CANCELLATION_PREFIX = 'youtube_studio:render_cancellation:v1:'
 PAID_CREATE_BUDGET_PREFIX = 'youtube_studio:paid_create_budget:'
 REPAIR_CHECKPOINT_TTL_SECONDS = 60 * 60 * 24 * 30
 RETRY_DISPATCH_TTL_SECONDS = REPAIR_CHECKPOINT_TTL_SECONDS
@@ -218,6 +219,7 @@ return 0
 
 _CLAIM_RETRY_DISPATCH = (
     "if redis.call('EXISTS', '" + EXTERNAL_EPISODE_LEAF_PREFIX + "' .. ARGV[7]) == 1 then return {-4, ''} end\n"
+    "if redis.call('EXISTS', '" + RENDER_CANCELLATION_PREFIX + "' .. ARGV[7]) == 1 then return {-5, ''} end\n"
 ) + r'''
 local raw_job = redis.call('GET', KEYS[1])
 if not raw_job then
@@ -414,6 +416,8 @@ def claim_retry_dispatch(
         raise ValueError('retry source must be a failed job')
     if status == -4:
         raise ValueError('retry source was separately delivered by editorial replacement')
+    if status == -5:
+        raise ValueError('retry source has an owner cancellation fence')
     if status == 0:
         return {
             'claimed': False,
@@ -560,6 +564,13 @@ def get_job(task_id: str) -> dict | None:
         return None
 
 
+def render_cancellation_requested(task_id: str) -> bool:
+    """Any durable owner fence stops entry; Redis uncertainty must not allow work."""
+    if not isinstance(task_id, str) or not _TASK_ID_PATTERN.fullmatch(task_id):
+        raise ValueError('invalid render task identity')
+    return bool(_client().exists(RENDER_CANCELLATION_PREFIX + task_id))
+
+
 def save_job(record: dict) -> dict:
     task_id = str(record.get('task_id') or '').strip()
     if not task_id:
@@ -574,11 +585,25 @@ def save_job(record: dict) -> dict:
     try:
         client = _client()
         encoded = json.dumps(payload, ensure_ascii=False, default=_json_default)
-        pipe = client.pipeline()
-        pipe.setex(_job_key(task_id), JOB_TTL_SECONDS, encoded)
-        pipe.zadd(JOB_INDEX, {task_id: float(payload.get('created_ts') or time.time())})
-        pipe.expire(JOB_INDEX, JOB_TTL_SECONDS)
-        pipe.execute()
+        for _ in range(3):
+            try:
+                with client.pipeline() as pipe:
+                    # Requested cancellations still retain real in-flight progress.
+                    # Once terminal, stale snapshots cannot resurrect the job.
+                    pipe.watch(RENDER_CANCELLATION_PREFIX + task_id)
+                    cancellation = pipe.get(RENDER_CANCELLATION_PREFIX + task_id)
+                    if cancellation is not None and json.loads(cancellation).get('status') == 'cancelled':
+                        return get_job(task_id) or payload
+                    pipe.multi()
+                    pipe.setex(_job_key(task_id), JOB_TTL_SECONDS, encoded)
+                    pipe.zadd(JOB_INDEX, {task_id: float(payload.get('created_ts') or time.time())})
+                    pipe.expire(JOB_INDEX, JOB_TTL_SECONDS)
+                    pipe.execute()
+                break
+            except redis.WatchError:
+                continue
+        else:
+            return get_job(task_id) or payload
 
         overflow = client.zcard(JOB_INDEX) - MAX_INDEXED_JOBS
         if overflow > 0:
@@ -760,11 +785,14 @@ def mark_success(task_id: str, result: dict, *, state: str = 'SUCCESS') -> dict:
         for _ in range(5):
             try:
                 with client.pipeline() as pipe:
-                    pipe.watch(_job_key(task_id))
+                    pipe.watch(_job_key(task_id), RENDER_CANCELLATION_PREFIX + task_id)
                     raw = pipe.get(_job_key(task_id))
                     record = json.loads(raw) if raw is not None else {**fallback, 'result': {}}
                     if not isinstance(record, dict) or record.get('task_id') != task_id:
                         raise ValueError('Completion record does not match task')
+                    cancellation = pipe.get(RENDER_CANCELLATION_PREFIX + task_id)
+                    if cancellation is not None and json.loads(cancellation).get('status') == 'cancelled':
+                        return record
                     if incoming.get('source_task_id') is not None:
                         spec = record.get('spec') if isinstance(record.get('spec'), dict) else {}
                         if (

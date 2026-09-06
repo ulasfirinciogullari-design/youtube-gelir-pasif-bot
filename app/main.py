@@ -24,6 +24,7 @@ from app.external_routes import router as external_router
 from app.editorial_routes import router as editorial_router
 from app.episode_delivery_routes import router as episode_delivery_router
 from app.publication_hold_routes import router as publication_hold_router
+from app.held_render_cancellation_routes import router as held_render_cancellation_router
 
 app = FastAPI(title='YouTube 7/24 Content Factory', version='2.0.0')
 app.include_router(studio_router)
@@ -31,6 +32,7 @@ app.include_router(external_router)
 app.include_router(editorial_router)
 app.include_router(episode_delivery_router)
 app.include_router(publication_hold_router)
+app.include_router(held_render_cancellation_router)
 
 
 class JobCreate(BaseModel):

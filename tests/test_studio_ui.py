@@ -1323,6 +1323,7 @@ def test_retry_source_is_collapsed_when_child_record_is_present(ui_modules):
         'repair': 0,
         'completed': 0,
         'failed': 0,
+        'cancelled': 0,
     }
     assert studio._collapse_retry_sources([source]) == [source]
 

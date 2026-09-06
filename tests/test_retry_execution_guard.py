@@ -21,6 +21,7 @@ def _load_guard(acquire):
     )
     namespace = {
         'acquire_retry_child_execution': acquire,
+        'render_cancellation_requested': lambda _task_id: False,
         'Ignore': Ignore,
     }
     exec(

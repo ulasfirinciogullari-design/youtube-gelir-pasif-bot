@@ -45,6 +45,7 @@ from app.services.runway import (
 from app.services.storage import download_file, upload_file, presigned_download_url
 from app.services.studio_state import (
     acquire_retry_child_execution,
+    render_cancellation_requested,
     mark_failure,
     mark_success,
     paid_create_budget_state,
@@ -4180,7 +4181,9 @@ def _guard_retry_child_execution(
     task_id: str,
     retry_dispatch_source_id: str | None,
 ) -> None:
-    """Drop only duplicate initial deliveries; allow Celery's own retries."""
+    """Owner cancellation fences every delivery, including Celery autoretries."""
+    if render_cancellation_requested(task_id):
+        raise Ignore()
     retry_number = int(getattr(celery_task.request, 'retries', 0) or 0)
     if (
         retry_dispatch_source_id

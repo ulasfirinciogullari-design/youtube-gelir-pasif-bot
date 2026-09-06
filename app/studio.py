@@ -62,6 +62,7 @@ MODE_LABELS = {
     'publish_recovery': 'Yükleme kurtarma',
 }
 STATE_LABELS = {
+    'CANCELLED': 'İptal edildi',
     'PENDING': 'Kuyrukta',
     'PROGRESS': 'Devam ediyor',
     'SUCCESS': 'Hazır',
@@ -69,6 +70,7 @@ STATE_LABELS = {
     'AWAITING_APPROVAL': 'Storyboard onayı',
 }
 STAGE_LABELS = {
+    'cancelled': 'Sahibi tarafından iptal edildi',
     'queued': 'Kuyrukta',
     'research': 'Araştırma',
     'director_qc': 'Senaryo yönetmeni',
@@ -93,9 +95,10 @@ STAGE_LABELS = {
     'complete': 'Tamamlandı',
     'failed': 'Başarısız',
 }
-UI_STATUS_ORDER = ('running', 'ready', 'repair', 'completed', 'failed')
+UI_STATUS_ORDER = ('running', 'ready', 'repair', 'completed', 'failed', 'cancelled')
 CONSOLE_STATUS_ORDER = ('running', 'attention', 'library')
 UI_STATUS_LABELS = {
+    'cancelled': 'İptal edildi',
     'running': 'Devam ediyor',
     'attention': 'Dikkat gerekiyor',
     'ready': 'Hazır',
@@ -1167,7 +1170,7 @@ def _terminal_retry_presentation(job: dict, lookup, *, upload_lookup=None) -> di
         current = child
         if current.get('retry_child_task_id'):
             continue
-        if current.get('state') not in {'SUCCESS', 'FAILURE', 'AWAITING_APPROVAL'}:
+        if current.get('state') not in {'SUCCESS', 'FAILURE', 'AWAITING_APPROVAL', 'CANCELLED'}:
             return None
         if current.get('state') == 'FAILURE' and _retry_claimed(current):
             return None
@@ -1186,6 +1189,8 @@ def _terminal_retry_presentation(job: dict, lookup, *, upload_lookup=None) -> di
 
 def _job_ui_status(job: dict) -> str:
     state = str(job.get('state') or 'PENDING').upper()
+    if state == 'CANCELLED':
+        return 'cancelled'
     if state == 'FAILURE':
         if _retry_claimed(job):
             return 'running'
@@ -1201,6 +1206,8 @@ def _job_ui_status(job: dict) -> str:
 
 def _job_display_status(job: dict) -> str:
     """Return the user-facing status shared by list, detail and polling."""
+    if job.get('state') == 'CANCELLED':
+        return 'cancelled'
     if _publication_status(job) in {'failed', 'blocked', 'uncertain'} or _job_is_recent_failed_leaf(job):
         return 'attention'
     if _job_awaits_approval(job) or _job_requires_manual_qa(job):
@@ -1214,6 +1221,8 @@ def _job_display_status(job: dict) -> str:
 
 
 def _job_status_message(job: dict) -> str:
+    if job.get('state') == 'CANCELLED':
+        return 'Sahibi tarafından iptal edildi; mevcut çıktı ve harcama kayıtları korunuyor. Kalite onayı verilmedi.'
     if _video_delivery(job)['key'] == 'deleted':
         return 'YouTube’dan silindi veya erişilemiyor. Önceki yayın kaydı korunuyor; tekrar yükleme başlatılmaz.'
     status = _job_ui_status(job)
@@ -2266,6 +2275,8 @@ def _production_channel_choices(authenticated: bool) -> str:
 
 def _sync_job(task_id: str) -> dict:
     record = get_job(task_id) or {'task_id': task_id, 'spec': {}, 'state': 'PENDING', 'progress': 0}
+    if record.get('state') == 'CANCELLED':
+        return record  # An old Celery result is not authority to undo owner cancellation.
     task = AsyncResult(task_id, app=celery)
     state = task.state
 
