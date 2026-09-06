@@ -43,7 +43,11 @@ def boundary(monkeypatch, tmp_path):
             'quality_disposition', 'manual_qa_required', 'editorial_review_id', 'editorial_review_sha256')},
     }
     receipt = {'version': 1, 'receipt_id': source_id, 'receipt_sha256': 'a' * 64,
-               'server_proof': {'video_sha256': sha(video), 'captions_sha256': sha(captions)}}
+               'evidence': {'frames': [{'frame_index': 60, 'sha256': 'c' * 64}],
+                            'manifest': {'files': {'video': {'sha256': sha(video), 'size': len(video)}}}},
+               'server_proof': {'video_sha256': sha(video), 'captions_sha256': sha(captions),
+                                'media_structure': {'frame_rate': '30/1', 'frame_count': 900,
+                                                    'width': 1080, 'height': 1920}}}
     record = {'publish_task_id': task_id, 'status': 'queued', 'side_effect_possible': False,
               'target_channel_id': 'UC_editorial', 'connection_id': 'connection-editorial',
               'publish_plan': deepcopy(plan)}

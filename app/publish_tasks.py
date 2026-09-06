@@ -572,12 +572,30 @@ def publish_video_pipeline(
             release_mode = 'private'
             publish_at = None
         language = re.sub(r'[^A-Za-z0-9_-]+', '', language)[:24] or 'tr'
+        editorial_thumbnail = None
+        editorial_thumbnail_path = None
+        if editorial_receipt and require_thumbnail and not thumbnail_key:
+            from app.services.editorial_thumbnail import prepare_editorial_thumbnail
+            editorial_thumbnail_path = work / 'editorial-thumbnail.jpg'
+            editorial_thumbnail = prepare_editorial_thumbnail(
+                video_path, editorial_thumbnail_path, editorial_receipt,
+            )
         # A legacy False can never overrule positive/unknown render provenance.
         # Do not derive this from paid-create usage: recovered AI costs zero.
         synthetic_disclosure = (
             bool(publish_plan and publish_plan['contains_synthetic_media'])
             or contains_synthetic_media(source)
         )
+        if editorial_thumbnail:
+            # Local extraction can take time: revocation during FFmpeg must
+            # stop even the private insert, not merely the later public step.
+            editorial_receipt = _validate_editorial_downloads(
+                get_job(source_task_id), publish_plan, video_path, caption_path,
+            )
+            from app.services.editorial_thumbnail import validate_editorial_thumbnail
+            validate_editorial_thumbnail(
+                video_path, editorial_thumbnail_path, editorial_receipt, editorial_thumbnail,
+            )
 
         # Persist the side-effect boundary before videos.insert. If anything
         # after this point fails without a video ID, the reservation becomes
@@ -669,7 +687,7 @@ def publish_video_pipeline(
 
         thumbnail_result = None
         thumbnail_error_code = None
-        if thumbnail_key:
+        if thumbnail_key or editorial_thumbnail:
             set_stage(
                 self,
                 task_id,
@@ -678,10 +696,17 @@ def publish_video_pipeline(
                 'Özel küçük resim YouTube’a ekleniyor.',
             )
             try:
-                suffix = Path(str(thumbnail_key)).suffix.casefold()
-                suffix = suffix if suffix in {'.jpg', '.jpeg', '.png'} else '.jpg'
-                thumbnail_path = work / f'thumbnail{suffix}'
-                download_file(thumbnail_key, thumbnail_path)
+                if editorial_thumbnail:
+                    from app.services.editorial_thumbnail import validate_editorial_thumbnail
+                    validate_editorial_thumbnail(
+                        video_path, editorial_thumbnail_path, editorial_receipt, editorial_thumbnail,
+                    )
+                    thumbnail_path = editorial_thumbnail_path
+                else:
+                    suffix = Path(str(thumbnail_key)).suffix.casefold()
+                    suffix = suffix if suffix in {'.jpg', '.jpeg', '.png'} else '.jpg'
+                    thumbnail_path = work / f'thumbnail{suffix}'
+                    download_file(thumbnail_key, thumbnail_path)
                 thumbnail_result = upload_thumbnail_with_credentials(
                     credentials,
                     video_id,
@@ -700,9 +725,14 @@ def publish_video_pipeline(
                 try:
                     # Fresh stored source/receipt/OAuth/profile and the same
                     # local master/SRT must still match immediately pre-release.
-                    _validate_editorial_downloads(
+                    current_receipt = _validate_editorial_downloads(
                         get_job(source_task_id), publish_plan, video_path, caption_path,
                     )
+                    if editorial_thumbnail:
+                        from app.services.editorial_thumbnail import validate_editorial_thumbnail
+                        validate_editorial_thumbnail(
+                            video_path, editorial_thumbnail_path, current_receipt, editorial_thumbnail,
+                        )
                 except Exception:
                     # videos.insert already returned a real ID. Keep that ID
                     # and report a blocked private release, not a failed upload.
