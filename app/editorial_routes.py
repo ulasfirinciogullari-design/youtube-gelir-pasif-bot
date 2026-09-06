@@ -1,0 +1,94 @@
+"""Owner-authorized editorial review of an imported, existing master only."""
+import base64
+from uuid import UUID
+
+from fastapi import APIRouter, Header, HTTPException, Request
+from starlette.concurrency import run_in_threadpool
+
+from app.external_routes import _require_auth
+from app.services.external_artifact_import import _object, ExternalArtifactValidationError
+from app.services.external_editorial_review import (
+    create_editorial_review, EditorialReviewError, EDITORIAL_REVIEW_FAILURE_CODES,
+)
+
+
+router = APIRouter()
+MAX_REVIEW_EVIDENCE_BYTES = 1024 * 1024
+MAX_REFERENCE_VIDEO_BYTES = 8 * 1024 * 1024
+MAX_REVIEW_REQUEST_BYTES = 12 * 1024 * 1024
+
+
+def _review_and_queue(task_id, evidence_pack, reference_video=None):
+    from app.services.studio_state import get_job
+    from app.publish_tasks import queue_automatic_publish
+
+    if reference_video is None:
+        create_editorial_review(task_id, evidence_pack)
+    else:
+        # Ephemeral comparison input only: never put reference bytes in the
+        # evidence pack, returned response, job or publication metadata.
+        create_editorial_review(task_id, evidence_pack, reference_video=reference_video)
+    source = get_job(task_id)
+    result = source.get('result') or {}
+    # This uses the existing immutable reservation / private-first publisher.
+    # A retry after an uncertain HTTP reply cannot enqueue another insert.
+    publication = queue_automatic_publish(task_id)
+    return {'task_id': task_id,
+            'quality_disposition': result.get('quality_disposition'),
+            'editorial_review_id': result.get('editorial_review_id'),
+            'editorial_review_sha256': result.get('editorial_review_sha256'),
+            'publication': publication,
+            'studio_url': '/studio/job/' + task_id}
+
+
+@router.post('/studio/api/external-masters/{task_id}/review')
+async def review_external_master(task_id: str, request: Request,
+                                 x_factory_token: str | None = Header(default=None)):
+    _require_auth(x_factory_token)
+    try:
+        if str(UUID(task_id)) != task_id:
+            raise ValueError()
+    except (ValueError, AttributeError):
+        raise HTTPException(status_code=422, detail='editorial_task_invalid') from None
+    if request.headers.get('content-type', '').split(';', 1)[0].strip().lower() != 'application/json':
+        raise HTTPException(status_code=415, detail='editorial_json_required')
+    length = request.headers.get('content-length')
+    if length is not None and (len(length) > 12 or not length.isascii() or not length.isdigit()
+                               or int(length) > MAX_REVIEW_REQUEST_BYTES):
+        raise HTTPException(status_code=413, detail='editorial_request_too_large')
+    payload = bytearray()
+    async for chunk in request.stream():
+        if len(payload) + len(chunk) > MAX_REVIEW_REQUEST_BYTES:
+            raise HTTPException(status_code=413, detail='editorial_request_too_large')
+        payload.extend(chunk)
+    try:
+        value = _object(bytes(payload), limit=MAX_REVIEW_REQUEST_BYTES)
+        if set(value) not in ({'evidence_pack'}, {'evidence_pack', 'reviewed_reference_video'}) or type(value['evidence_pack']) is not dict:
+            raise ExternalArtifactValidationError('editorial_schema_invalid')
+        _object(value['evidence_pack'], limit=MAX_REVIEW_EVIDENCE_BYTES)
+        reference_video = None
+        if 'reviewed_reference_video' in value:
+            encoded = value['reviewed_reference_video']
+            if type(encoded) is not str or not encoded or not encoded.isascii():
+                raise ExternalArtifactValidationError('editorial_schema_invalid')
+            if len(encoded) > 4 * ((MAX_REFERENCE_VIDEO_BYTES + 2) // 3):
+                raise HTTPException(status_code=413, detail='editorial_reference_video_too_large')
+            reference_video = base64.b64decode(encoded, validate=True)
+            if not reference_video or base64.b64encode(reference_video).decode('ascii') != encoded:
+                raise ExternalArtifactValidationError('editorial_schema_invalid')
+            if len(reference_video) > MAX_REFERENCE_VIDEO_BYTES:
+                raise HTTPException(status_code=413, detail='editorial_reference_video_too_large')
+    except (ValueError, UnicodeError):
+        raise HTTPException(status_code=422, detail='editorial_schema_invalid') from None
+    try:
+        if reference_video is not None:
+            return await run_in_threadpool(_review_and_queue, task_id, value['evidence_pack'], reference_video)
+        return await run_in_threadpool(_review_and_queue, task_id, value['evidence_pack'])
+    except EditorialReviewError as exc:
+        phase = getattr(exc, 'phase', None)
+        detail = phase if type(phase) is str and phase in EDITORIAL_REVIEW_FAILURE_CODES else 'editorial_review_not_eligible'
+        raise HTTPException(status_code=409, detail=detail) from None
+    except Exception:
+        # Publication could already be reserved; never report that retrying a
+        # brand-new source or calling videos.insert directly is safe.
+        raise HTTPException(status_code=503, detail='editorial_review_or_publication_unavailable') from None
