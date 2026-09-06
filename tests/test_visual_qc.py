@@ -515,7 +515,7 @@ class VisualQcProviderTests(unittest.TestCase):
         self.assertIn('visible loop must score 40 or lower', kwargs['system_instruction'])
         self.assertIn('spatial continuity', kwargs['system_instruction'])
         self.assertIn(
-            'repeat substantially the same action, framing or shot grammar',
+            'only for redundant adjacent footage that adds no meaningful visual or narrative progression',
             kwargs['system_instruction'],
         )
         self.assertIn(

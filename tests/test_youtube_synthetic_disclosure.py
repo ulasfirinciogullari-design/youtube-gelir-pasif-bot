@@ -217,7 +217,8 @@ def worker(tmp_path):
                  'mark_release_blocked', 'mark_release_ready', 'mark_release_started',
                  'set_video_release_with_credentials', 'mark_release_completed', 'mark_success',
                  'mark_failure', 'mark_release_uncertain', 'mark_upload_uncertain',
-                 'mark_upload_preflight_failed', 'merge_youtube_result_field'):
+                 'mark_upload_preflight_failed', 'merge_youtube_result_field',
+                 '_wake_after_public_success'):
         namespace[name] = Mock()
     exec(compile(ast.Module(body=nodes, type_ignores=[]), str(path), 'exec'), namespace)
     namespace['get_job'].return_value = source()
