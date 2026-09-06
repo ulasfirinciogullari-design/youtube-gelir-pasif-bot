@@ -1,4 +1,4 @@
-"""V4 alone permits up to three declared repairs, never implicit substitutes."""
+"""V4 alone permits up to four declared repairs, never implicit substitutes."""
 import ast
 from copy import deepcopy
 from pathlib import Path
@@ -13,6 +13,7 @@ from test_production_paid_reuse_selection import (
 
 
 REPAIRS = [0, 2, 5]
+FOUR_REPAIRS = [1, 3, 4, 5]
 
 
 def _contract(repairs=REPAIRS):
@@ -34,7 +35,7 @@ def _validate(boundary, raw=None, expected='b' * 64):
     )
 
 
-@pytest.mark.parametrize('repairs', [[0], [0, 5], REPAIRS])
+@pytest.mark.parametrize('repairs', [[0], [0, 5], REPAIRS, FOUR_REPAIRS])
 def test_v4_preserves_bound_entries_and_exact_disjoint_partition(boundary, repairs):
     raw = _contract(repairs)
     before = deepcopy(raw)
@@ -50,7 +51,7 @@ def test_v4_preserves_bound_entries_and_exact_disjoint_partition(boundary, repai
 
 @pytest.mark.parametrize('field,value', [
     ('version', 4.0), ('version', '4'), ('version', True), ('repair_only', 1),
-    ('repair_only', False), ('repair_scene_indices', []), ('repair_scene_indices', [0, 1, 2, 5]),
+    ('repair_only', False), ('repair_scene_indices', []), ('repair_scene_indices', [0, 1, 2, 3, 5]),
     ('repair_scene_indices', [0, 0]), ('repair_scene_indices', [2, 0]),
     ('repair_scene_indices', [True]), ('repair_scene_indices', ['0']),
     ('repair_scene_indices', [-1]), ('repair_scene_indices', [6]),
@@ -102,13 +103,13 @@ def test_old_versions_never_inherit_three_repair_authority(boundary):
     assert _validate(boundary, raw)['version'] == 2
 
 
-def _worker(boundary, **changes):
-    media = _validate(boundary)
+def _worker(boundary, *, repairs=REPAIRS, **changes):
+    media = _validate(boundary, _contract(repairs))
     runtime = _runtime(
         recovered_generated_media=media, recovered_voice={'source_task_id': SOURCE_ID},
-        scene_repair_recovery=True, recovery_repair_scene_indices=set(REPAIRS),
+        scene_repair_recovery=True, recovery_repair_scene_indices=set(repairs),
         recovery_paid_scene_indices=set(range(6)), prompt_candidates={i: f'bound-prompt-{i}' for i in range(6)},
-        runway_attempts=0, total_paid_create_cap=3,
+        runway_attempts=0, total_paid_create_cap=len(repairs),
     )
     runtime.update(changes)
     return runtime
@@ -117,7 +118,7 @@ def _worker(boundary, **changes):
 def _scope(runtime):
     guard = next(node for node in ast.walk(TREE) if isinstance(node, ast.If)
                  and any(isinstance(child, ast.Constant) and isinstance(child.value, str)
-                         and 'Three-scene repair requires a bounded' in child.value
+                         and 'V4 repair requires a bounded' in child.value
                          for child in ast.walk(node)))
     _execute([guard], runtime)
 
@@ -270,8 +271,9 @@ def test_missing_retained_asset_cannot_be_replaced_by_new_create(boundary, tmp_p
     assert runtime['runway_attempts'] == 0
 
 
-def test_v4_disables_additional_paid_repair_and_stock_substitution(boundary):
-    runtime = _worker(boundary, preview_runway_repair_indices=Mock(side_effect=AssertionError('No extra repair')))
+@pytest.mark.parametrize('repairs', [REPAIRS, FOUR_REPAIRS])
+def test_v4_disables_additional_paid_repair_and_stock_substitution(boundary, repairs):
+    runtime = _worker(boundary, repairs=repairs, preview_runway_repair_indices=Mock(side_effect=AssertionError('No extra repair')))
     _execute([_named_assignment('final_runway_repair_candidates')], runtime)
     assert runtime['final_runway_repair_candidates'] == []
     runtime.update(rejected_final_scenes=list(range(6)), _retry_bad_scene=Mock(side_effect=AssertionError('No stock rescue')))
@@ -284,8 +286,9 @@ def test_v4_disables_additional_paid_repair_and_stock_substitution(boundary):
     runtime['_retry_bad_scene'].assert_not_called()
 
 
-def test_v4_uses_existing_voice_and_cannot_seed_regenerate(boundary):
-    runtime = _worker(boundary, saved_voice_retry=None, stage_pool=Mock(),
+@pytest.mark.parametrize('repairs', [REPAIRS, FOUR_REPAIRS])
+def test_v4_uses_existing_voice_and_cannot_seed_regenerate(boundary, repairs):
+    runtime = _worker(boundary, repairs=repairs, saved_voice_retry=None, stage_pool=Mock(),
                        _download_recovered_voice_candidate=Mock(), work=Path('/tmp/mock-work'))
     voice_branch = next(node for node in ast.walk(TREE) if isinstance(node, ast.If)
                         and isinstance(node.test, ast.Name) and node.test.id == 'saved_voice_retry'
@@ -294,6 +297,47 @@ def test_v4_uses_existing_voice_and_cannot_seed_regenerate(boundary):
     assert runtime['stage_pool'].submit.call_args.args[0] is runtime['_download_recovered_voice_candidate']
     _execute([_named_assignment('can_regenerate')], runtime)
     assert runtime['can_regenerate'] is False
+
+
+@pytest.mark.parametrize('fail_index', [None, 1, 3, 4, 5])
+def test_four_named_repairs_reserve_four_and_reuse_only_retained_zero_two(boundary, tmp_path, fail_index):
+    runtime = _worker(boundary, repairs=FOUR_REPAIRS, total_paid_create_cap=6)
+    _scope(runtime)
+    _select(runtime)
+    events, validations = _primary(runtime, tmp_path, fail_index=fail_index)
+    assert [value for kind, value in events if kind == 'create'] == FOUR_REPAIRS
+    assert [value for kind, value in events if kind == 'reserve'] == [1, 2, 3, 4]
+    assert [value for kind, value in events if kind == 'download'] == [_entry(i)['key'] for i in (0, 2)]
+    assert len(validations) == 2
+    assert all(row['expected_size'] == 4096 and row['expected_sha256'] == 'a' * 64 for row in validations)
+    assert runtime['runway_attempts'] == 4 and runtime['total_paid_create_cap'] == 6
+    for index, specs in enumerate(runtime['scene_visuals']):
+        assert len(specs) == (0 if index == fail_index else 1)
+        assert all('stock-' not in spec['path'] for spec in specs)
+        if index in (0, 2):
+            assert specs[0]['generation_recovered'] is True
+    assert runtime['runway_failed_scenes'] == ([] if fail_index is None else [fail_index])
+
+
+@pytest.mark.parametrize('cap,used', [(3, 0), (4, 1), (6, 3)])
+def test_four_repair_budget_rejects_before_voice_or_create_when_only_three_slots_remain(boundary, cap, used):
+    runtime = _worker(boundary, repairs=FOUR_REPAIRS, total_paid_create_cap=cap, runway_attempts=used)
+    before = deepcopy(runtime['recovered_generated_media'])
+    with pytest.raises(RuntimeError, match='before any submission'):
+        _scope(runtime)
+    assert runtime['runway_attempts'] == used and runtime['total_paid_create_cap'] == cap
+    assert runtime['recovered_generated_media'] == before
+    guard = next(node for node in ast.walk(TREE) if isinstance(node, ast.If)
+                 and 'V4 repair requires a bounded' in ast.unparse(node))
+    voice = next(node for node in ast.walk(TREE) if isinstance(node, ast.If)
+                 and isinstance(node.test, ast.Name) and node.test.id == 'saved_voice_retry'
+                 and 'voice_future' in ast.unparse(node))
+    assert guard.lineno < voice.lineno
+
+
+def test_complete_five_repair_partition_is_still_rejected(boundary):
+    with pytest.raises(RuntimeError, match='repair indices'):
+        _validate(boundary, _contract([0, 1, 3, 4, 5]))
 
 
 @pytest.mark.parametrize('rejected_index,score', [(0, 85), (2, 40), (5, None), (1, 40)])

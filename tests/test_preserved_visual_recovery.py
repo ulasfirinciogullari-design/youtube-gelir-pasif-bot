@@ -200,7 +200,7 @@ def test_generation_priority_order_does_not_change_scene_identity(case):
     assert [media[str(i)][0]['sha256'] for i in range(6)] == [_sha(raw) for raw in case.clips]
 
 
-@pytest.mark.parametrize('repairs', [(), (3, 4, 5)])
+@pytest.mark.parametrize('repairs', [(), (3, 4, 5), (1, 3, 4, 5)])
 def test_stripped_manifest_is_reconstructed_for_real_immutable_director_boundary(case, repairs):
     manifest_pointer = case.source['generated_asset_candidates']['entries'][0]
     stored = json.loads(case.objects[manifest_pointer['manifest_key']][0])['package']
@@ -225,7 +225,7 @@ def test_stripped_manifest_is_reconstructed_for_real_immutable_director_boundary
     assert recovery.publish_preserved_visual_recovery(pointer)['status'] == 'checkpoint_published'
 
 
-@pytest.mark.parametrize('repairs', [(), (3,)])
+@pytest.mark.parametrize('repairs', [(), (3,), (1, 3, 4, 5)])
 def test_publish_then_actual_lua_claim_is_one_child_preserving_history_and_spend(case, repairs):
     pointer = _prepare(case, repair_scene_indices=repairs)
     before, original = _snapshot(case), deepcopy(case.source)
@@ -365,7 +365,7 @@ def test_publish_rechecks_exact_source_claim_assets_audit_and_current_story(case
     assert _snapshot(case) == before
 
 
-@pytest.mark.parametrize('repairs', [(), (3,)])
+@pytest.mark.parametrize('repairs', [(), (3,), (1, 3, 4, 5)])
 def test_mid_transaction_claim_race_never_overwrites_claim_or_job(case, repairs):
     pointer = _prepare(case, repair_scene_indices=repairs)
     original, fired = case.storage.get_object, False
@@ -390,7 +390,7 @@ def test_same_preparation_directory_cannot_repeat_paid_reviews(case):
     case.story.assert_called_once(); case.visual.assert_called_once()
 
 
-@pytest.mark.parametrize('repairs', [(3,), (0, 3), (0, 3, 5)])
+@pytest.mark.parametrize('repairs', [(3,), (0, 3), (0, 3, 5), (1, 3, 4, 5)])
 def test_explicit_v4_partition_preserves_all_audio_and_copies_only_passing_retained_media(case, repairs):
     for index in repairs:
         case.reviews[index].update(score=38, editorial_gate_passed=False,
@@ -443,7 +443,7 @@ def test_v4_without_prompt_override_retains_the_existing_authored_shot(case):
 
 @pytest.mark.parametrize('indices,overrides', [
     ([3], None), (None, None), ((3, 0), None), ((3, 3), None), ((True,), None), (('3',), None),
-    ((-1,), None), ((6,), None), ((0, 1, 2, 3), None), ((), {3: 'A new shot'}),
+    ((-1,), None), ((6,), None), ((0, 1, 2, 3, 4), None), ((), {3: 'A new shot'}),
     ((3,), {2: 'Wrong retained scene'}), ((3,), {'3': 'String input key'}),
     ((3,), {3: ''}), ((3,), {3: ' padded '}), ((3,), {3: 'x' * 4001}),
     ((3,), {3: 'bad\ncontrol'}), ((3,), {3: 'https://private.example/media'}),
@@ -495,6 +495,28 @@ def test_declared_repair_never_excuses_bad_retained_or_missing_actual_review(cas
     assert audit['status'] == 'visual_preparation_rejected' and len(audit['retained_visual_reviews']) == 6
     assert _snapshot(case) == before and len(case.writes) == 1
     assert not list(case.work.glob('prepared-*.json'))
+
+
+@pytest.mark.parametrize('retained_index', [0, 2])
+@pytest.mark.parametrize('damage', ['score', 'editorial_gate'])
+def test_four_repairs_cannot_approve_either_bad_retained_clip_or_reset_six_paid_ledger(case, retained_index, damage):
+    repairs = (1, 3, 4, 5)
+    for index in repairs:
+        case.reviews[index].update(score=38, editorial_gate_passed=False)
+    if damage == 'score':
+        case.reviews[retained_index]['score'] = 75
+    else:
+        case.reviews[retained_index]['editorial_gate_passed'] = False
+    before = _snapshot(case)
+    with pytest.raises(recovery.PreservedVisualRecoveryError) as caught:
+        _prepare(case, repair_scene_indices=repairs)
+    audit = _record(case, caught.value.diagnostic_pointer)
+    assert audit['status'] == 'visual_preparation_rejected'
+    assert audit['repair_scene_indices'] == list(repairs)
+    assert len(audit['retained_visual_reviews']) == len(case.visual.call_args.args[1]) == 6
+    assert _snapshot(case) == before and len(case.writes) == 1
+    assert case.client.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX + SOURCE) == {'cap': '6', 'used': '6'}
+    assert not case.client.exists(studio_state.REPAIR_CHECKPOINT_PREFIX + SOURCE)
 
 
 def _rewrite_record(case, pointer, record):

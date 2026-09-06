@@ -66,7 +66,7 @@ def _options(source):
 
 
 def _repair_request(indices, overrides):
-    _require(type(indices) is tuple and len(indices) <= 3
+    _require(type(indices) is tuple and len(indices) <= 4
              and all(type(index) is int and 0 <= index < 6 for index in indices)
              and list(indices) == sorted(set(indices)))
     overrides = {} if overrides is None else overrides
