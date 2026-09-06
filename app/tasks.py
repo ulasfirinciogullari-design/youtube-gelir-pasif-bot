@@ -247,7 +247,7 @@ def _validated_recovered_generated_media(
         )
 
     if raw.get('version') in (2, 3, 4):
-        three_scene_repair = raw.get('version') == 4
+        partitioned_repair = raw.get('version') == 4
         recovery_only = raw.get('version') == 3
         expected_fields = {
             'version',
@@ -273,7 +273,7 @@ def _validated_recovered_generated_media(
         if (
             raw.get('recovery_only' if recovery_only else 'repair_only') is not True
             or (recovery_only and type(raw.get('version')) is not int)
-            or (three_scene_repair and (
+            or (partitioned_repair and (
                 type(raw.get('version')) is not int
                 or type(scene_count) is not int or scene_count < 1
                 or expected_package_sha256 is None
@@ -296,7 +296,7 @@ def _validated_recovered_generated_media(
         if (
             any(type(index) is not int for index in raw_repair_indices)
             or raw_repair_indices != sorted(set(raw_repair_indices))
-            or (not recovery_only and not 1 <= len(raw_repair_indices) <= (3 if three_scene_repair else 2))
+            or (not recovery_only and not 1 <= len(raw_repair_indices) <= (4 if partitioned_repair else 2))
             or any(
                 not 0 <= index < int(scene_count)
                 for index in raw_repair_indices
@@ -391,9 +391,9 @@ def _validated_recovered_generated_media(
                 entries.append(normalized_entry)
                 seen_object_keys.add(key)
             scenes[scene_idx] = entries
-        if three_scene_repair and set(scenes) | repaired != set(range(scene_count)):
+        if partitioned_repair and set(scenes) | repaired != set(range(scene_count)):
             raise FinalVisualQualityError(
-                'Three-scene repair requires a complete retained/repair partition'
+                'V4 repair requires a complete retained/repair partition'
             )
         if recovery_only:
             return {
@@ -404,7 +404,7 @@ def _validated_recovered_generated_media(
                 'scenes': scenes,
             }
         return {
-            'version': 4 if three_scene_repair else 2,
+            'version': 4 if partitioned_repair else 2,
             'repair_only': True,
             'source_task_id': source_task_id,
             'package_sha256': package_sha256,
@@ -4231,7 +4231,7 @@ def run_video_pipeline(
                 or total_paid_create_cap < 1
             ):
                 raise FinalVisualQualityError(
-                    'Three-scene repair requires a bounded thirty-second production Short'
+                    'V4 repair requires a bounded thirty-second production Short'
                 )
             _validate_paid_create_allocation(
                 [{'scene_index': index} for index in range(len(scenes))],
