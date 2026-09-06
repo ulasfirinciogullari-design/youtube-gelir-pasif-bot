@@ -185,6 +185,10 @@ _PROPER_NAME_SUFFIXES = frozenset({
     'nun',
     'nin',
 })
+# Only these complete bound suffixes may bridge one ASR word boundary, and
+# only when the immutable expected text explicitly attaches them by apostrophe.
+# This is not a place alias, general word concatenation or numeric grammar.
+_SPLIT_APOSTROPHE_SUFFIXES = frozenset({'daki', 'deki', 'taki', 'teki'})
 _GEMINI_ANNOTATION_TRAILING_PUNCTUATION = '.,!?;:\u2026'
 _PROSODY_REASON_CODES = (
     'unnatural_internal_pause',
@@ -1268,9 +1272,23 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
     return units
 
 
+def _expected_apostrophe_suffixes(text: str) -> frozenset[tuple[str, str]]:
+    pattern = (
+        r'(?<!\w)([^\W\d_]{2,80})[' + re.escape(''.join(sorted(_APOSTROPHES)))
+        + r']([^\W\d_]+)(?!\w)'
+    )
+    return frozenset(
+        (match.group(1), match.group(2))
+        for match in re.finditer(pattern, _turkish_lower(text))
+        if match.group(2) in _SPLIT_APOSTROPHE_SUFFIXES
+    )
+
+
 def _comparison_units(
     text: str,
     language: str = 'tr',
+    *,
+    expected_apostrophe_suffixes: frozenset[tuple[str, str]] = frozenset(),
 ) -> list[tuple[str, tuple[str, ...]]]:
     normalized_language = normalize_supported_language(language)
     tokens = _comparison_lexical_tokens(text, normalized_language)
@@ -1278,9 +1296,23 @@ def _comparison_units(
         return _english_year_comparison_units(text)
     if normalized_language != 'tr':
         return [(token, (token,)) for token in tokens]
+    join_positions: set[int] = set()
+    if expected_apostrophe_suffixes:
+        value = _turkish_lower(text).translate({ord(char): None for char in _APOSTROPHES})
+        matches = list(_COMPARISON_TOKEN_PATTERN.finditer(value))
+        join_positions = {
+            position for position, (left, right) in enumerate(zip(matches, matches[1:]))
+            if (left.group(), right.group()) in expected_apostrophe_suffixes
+            and value[left.end():right.start()].isspace()
+        }
     units: list[tuple[str, tuple[str, ...]]] = []
     index = 0
     while index < len(tokens):
+        if index in join_positions:
+            source = tuple(tokens[index:index + 2])
+            units.append((_orthographic_fold(''.join(source)), source))
+            index += 2
+            continue
         percentage = _percentage_comparison_unit(tokens, index)
         if percentage is not None:
             key, consumed = percentage
@@ -1684,7 +1716,13 @@ def compare_transcript(
     )
 
     expected_units = _comparison_units(expected_narration, normalized_language)
-    heard_units = _comparison_units(transcript, normalized_language)
+    heard_units = _comparison_units(
+        transcript, normalized_language,
+        expected_apostrophe_suffixes=(
+            _expected_apostrophe_suffixes(expected_narration)
+            if normalized_language == 'tr' else frozenset()
+        ),
+    )
     expected_tokens = [unit[0] for unit in expected_units]
     heard_tokens = [unit[0] for unit in heard_units]
 

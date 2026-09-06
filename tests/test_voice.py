@@ -168,7 +168,7 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertAlmostEqual(sum(durations), 29.50, places=6)
         self.assertIn(f'atempo={rate:.6f}', run.call_args.args[0])
 
-    def test_short_preview_does_not_stretch_beyond_six_percent_allowance(self):
+    def test_short_preview_does_not_stretch_beyond_seven_percent_allowance(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / 'voice.mp3'
             output.write_bytes(b'raw')
@@ -176,20 +176,20 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
                 patch.object(
                     voice_module,
                     '_media_duration',
-                    return_value=27.0,
+                    return_value=26.7,
                 ),
                 patch.object(voice_module.subprocess, 'run') as run,
             ):
                 durations, before, after, rate = _fit_duration(
                     output,
-                    [27.0],
+                    [26.7],
                     30.0,
                 )
                 unchanged = output.read_bytes()
 
         run.assert_not_called()
-        self.assertEqual(durations, [27.0])
-        self.assertEqual((before, after, rate), (27.0, 27.0, 1.0))
+        self.assertEqual(durations, [26.7])
+        self.assertEqual((before, after, rate), (26.7, 26.7, 1.0))
         self.assertEqual(unchanged, b'raw')
 
     def test_recoverable_short_deficit_uses_minimal_bounded_slowdown(self):
@@ -300,7 +300,7 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertNotIn('audio_qc', result)
         self.assertNotIn('audio_prosody_qc', result)
 
-    def test_existing_candidate_cannot_compound_slowdown_beyond_six_percent(self):
+    def test_existing_candidate_cannot_compound_slowdown_beyond_seven_percent(self):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / 'voice.mp3'
             output.write_bytes(b'raw')
