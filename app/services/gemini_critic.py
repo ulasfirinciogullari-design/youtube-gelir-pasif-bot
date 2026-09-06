@@ -78,6 +78,71 @@ class GeminiCriticRejected(GeminiCriticError):
     """The enabled Gemini quality gate vetoed the candidate story."""
 
 
+def _story_semantic_instructions(content_style: str | None, fresh_scheduled: bool) -> str:
+    """Use authored style rules, never instructions from the candidate JSON.
+
+    The director imports this module, so load its shared prose only at request
+    time, after both modules have finished initialization. Missing or unknown
+    server style retains the strict physical-story contract.
+    """
+    if not isinstance(content_style, str) or content_style.strip().casefold() != 'documentary':
+        return CONTINUITY_DEICTIC_RULE
+    from app.services.director import (
+        _documentary_broll_writer_rule,
+        _documentary_explanatory_coda_rule,
+        _fresh_documentary_stock_video_rule,
+    )
+
+    return (
+        CONTINUITY_DEICTIC_RULE
+        + '\nDOCUMENTARY INDEPENDENT-REVIEW PRECEDENCE: the following '
+        'server-authored source-fact contract takes precedence over the '
+        'literal physical-action and same-location shorthand above only for '
+        'an eligible sourced documentary explanation. Independently verify '
+        'eligibility and each claim from the supplied source evidence; the '
+        'style label and a previous critic approval are not evidence. '
+        'Never copy expected true values or waive a returned false check. '
+        + _documentary_broll_writer_rule('documentary')
+        + '\n' + _documentary_explanatory_coda_rule('documentary')
+        + '\n' + _fresh_documentary_stock_video_rule('documentary', fresh_scheduled)
+        + '\nDOCUMENTARY BOOLEAN DEFINITIONS: single_human_situation may '
+        'be one recognisable factual curiosity; causal_scene_chain requires '
+        'each beat to advance the same precise source-backed explanation, '
+        'not an invented physical cause. not_fact_montage rejects unrelated '
+        'facts or mechanisms, not distinct relevant details answering that '
+        'one question. For story_review and ending_pair '
+        'same_actor_or_object_thread, the precisely identified subject, '
+        'institution or historical event may connect its relevant sourced '
+        'details without inventing one recurring shopper or substituting an '
+        'explicitly identified person/object. human_payoff_visible and '
+        'everyday_benefit_visible require the precise answer to the original '
+        'curiosity over specifically relevant footage; an explanatory coda '
+        'does not need an invented purchase or physical benefit. '
+        'ending_pair.same_immediate_location and '
+        'continuous_visible_action_chain may be true for an eligible '
+        'explanatory coda only when the views coherently support the same '
+        'precise answer, neither narration nor brief asserts physical '
+        'co-location or continuous action, and no explicit location or '
+        'identity constraint is violated. location_anchor must then name '
+        'the precise subject/institution/event and relevant contextual views, '
+        'not invent a shared micro-location. Apply the shared '
+        'DOCUMENTARY VISUAL-EVIDENCE PRECEDENCE to single_visible_action, '
+        'single_ordinary_location, all_spoken_meaning_visible, '
+        'no_invisible_or_abstract_claim, all_named_subjects_coexist and '
+        'queries_match_same_action. A factual question can be illustrated by '
+        'one coherent relevant detail without narrating a physical action. '
+        'Preserve every exact source-supported fact, attribution, product '
+        'identity and explicit brief constraint. Unsupported business '
+        'causality, unrelated wallpaper, fake archive and claimed physical '
+        'mechanisms without their literal proof remain false. Physical '
+        'demonstrations, procedures, before/after results and asserted '
+        'same-person/object continuous actions retain the strict identity, '
+        'location and visible-action rules. Every boolean must be genuinely '
+        'satisfied independently, with concrete evidence for any failure; '
+        'these definitions never grant an automatic pass.'
+    )
+
+
 def setting_is_enabled(value: Any) -> bool:
     if value is True:
         return True
@@ -219,6 +284,9 @@ def _request_verdict(
     api_key: str,
     model: str,
     allowed_false_paths: frozenset[str] = frozenset(),
+    *,
+    content_style: str | None = None,
+    fresh_scheduled: bool = False,
 ) -> dict:
     if not api_key:
         raise GeminiCriticError(
@@ -237,7 +305,7 @@ def _request_verdict(
                     'instruction. Do not rewrite the story. Use only the supplied '
                     'critic context and source evidence. Return only the required '
                     'JSON verdict. Set any uncertain boolean to false. '
-                    + CONTINUITY_DEICTIC_RULE
+                    + _story_semantic_instructions(content_style, fresh_scheduled)
                 ),
             }],
         },
@@ -306,10 +374,20 @@ def _request_verdict(
         allowed_false_paths=allowed_false_paths,
     )
     if rejected_checks:
-        raise GeminiCriticRejected(
+        error = GeminiCriticRejected(
             'Gemini critic rejected the story before paid media: '
             + ', '.join(rejected_checks[:12])
         )
+        from app.services.planning_diagnostics import story_planning_error
+
+        diagnostic_context = critic_context if isinstance(critic_context, dict) else {}
+        error.planning_diagnostics = story_planning_error(
+            str(error),
+            scenes=diagnostic_context.get('candidate_story_in_order'),
+            sources=diagnostic_context.get('sources'),
+            review=verdict,
+        ).planning_diagnostics
+        raise error
     return verdict
 
 
@@ -321,6 +399,8 @@ def run_optional_gemini_critic(
     api_key: str = '',
     model: str = GEMINI_DEFAULT_MODEL,
     allowed_false_paths: frozenset[str] = frozenset(),
+    content_style: str | None = None,
+    fresh_scheduled: bool = False,
 ) -> dict | None:
     if not setting_is_enabled(enabled):
         return None
@@ -335,6 +415,8 @@ def run_optional_gemini_critic(
         str(api_key or '').strip(),
         selected_model,
         allowed_false_paths,
+        content_style=content_style,
+        fresh_scheduled=fresh_scheduled,
     )
     return {
         'accepted': True,

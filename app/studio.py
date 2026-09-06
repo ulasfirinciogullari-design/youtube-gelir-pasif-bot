@@ -119,6 +119,12 @@ PLAN_RETRY_DISPLAY_GRACE_SECONDS = 15 * 60
 OLD_STORYBOARD_SECONDS = 24 * 60 * 60
 RECENT_FAILURE_SECONDS = 24 * 60 * 60
 RETRY_PRESENTATION_MAX_HOPS = 16
+PRODUCTION_RETRY_LABELS = {
+    'retry_active': 'Yeniden üretim sürüyor · takvim sonucu bekliyor',
+    'retry_queued': 'Yeniden üretim kuyrukta · takvim sonucu bekliyor',
+    'retry_reserved': 'Yeniden deneme ayrıldı · gönderim bekleniyor',
+    'retry_uncertain': 'Yeniden denemenin gönderimi doğrulanamadı',
+}
 OPTIONAL_VIDEO_GENERATION_SERVICES = frozenset({'Fal video'})
 
 BASE_CSS = r'''
@@ -468,6 +474,90 @@ def _known_public_video_view_subtotals(videos: dict) -> dict[str, int]:
     return {channel_id: count for channel_id, count in subtotals.items() if 0 < count <= 2**64 - 1}
 
 
+def _active_production_retry(profile: dict, state: dict, by_id: dict, *, now: float | None = None) -> dict | None:
+    """Project a recent retry record, not execution/QA/publication permission.
+
+    Only the supplied job snapshot is inspected. Private claim tokens are not
+    loaded, and a presentation override never changes the actual paused state.
+    """
+    try:
+        if (not isinstance(profile, dict) or not isinstance(state, dict) or not isinstance(by_id, dict)
+                or state.get('paused_reason') != 'previous_render_failed'
+                or state.get('last_result') != 'FAILURE' or state.get('dispatch_status') != 'finished'
+                or state.get('active_task_id') or state.get('unavailable')
+                or profile.get('production_enabled') is not True or profile.get('auto_publish') is not True
+                or profile.get('release_mode') != 'public'):
+            return None
+        root_id = _canonical_task_id(state.get('last_task_id'))
+        current = by_id.get(root_id)
+        if (not root_id or not isinstance(current, dict) or current.get('task_id') != root_id
+                or current.get('parent_id')):
+            return None
+        spec = current.get('spec')
+        channel_id, revision = profile.get('channel_id'), profile.get('profile_revision')
+        connection = state.get('connection_id')
+        topics = profile.get('production_topics')
+        cursor = int(state.get('cursor', '-1'))
+        if (not isinstance(spec, dict) or not isinstance(channel_id, str)
+                or re.fullmatch(r'[A-Za-z0-9_-]{8,128}', channel_id) is None
+                or not isinstance(revision, str) or not revision or state.get('profile_revision') != revision
+                or not isinstance(connection, str) or re.fullmatch(r'[A-Za-z0-9_-]{8,128}', connection) is None
+                or not isinstance(topics, list) or not 1 <= len(topics) <= 60
+                or not all(isinstance(topic, str) and topic.strip() and len(topic) <= 240 for topic in topics)
+                or str(cursor) != state.get('cursor') or not 1 <= cursor <= len(topics)
+                or spec.get('production_channel_id') != channel_id
+                or spec.get('production_connection_id') != connection
+                or spec.get('production_profile_revision') != revision
+                or spec.get('production_scheduled') is not True or spec.get('publish_after_render') is not True
+                or spec.get('mode') != 'production' or type(spec.get('production_topic_index')) is not int
+                or spec['production_topic_index'] != cursor - 1
+                or spec.get('language') != profile.get('default_language')
+                or spec.get('channel_id') != str(profile.get('route_label') or channel_id).strip()):
+            return None
+        identity = str(profile.get('channel_identity') or '').strip()[:240]
+        brief = topics[cursor - 1].strip() + (f'\n\nChannel editorial direction: {identity}' if identity else '')
+        if spec.get('topic') != brief:
+            return None
+
+        def frozen(value):
+            return json.dumps({k: v for k, v in value.items() if k not in {'workflow', 'repair_source_task_id'}},
+                              sort_keys=True, ensure_ascii=False, allow_nan=False)
+
+        expected, seen = frozen(spec), {root_id}
+        for _ in range(RETRY_PRESENTATION_MAX_HOPS):
+            if (current.get('kind') != 'render' or current.get('state') != 'FAILURE'
+                    or current.get('retry_claimed') is not True or current.get('result')
+                    or current.get('retry_dispatch_state') not in {'reserved', 'dispatched', 'uncertain'}):
+                return None
+            child_id = _canonical_task_id(current.get('retry_child_task_id'))
+            child = by_id.get(child_id)
+            if (not child_id or child_id in seen or not isinstance(child, dict)
+                    or child.get('task_id') != child_id or child.get('parent_id') != current.get('task_id')
+                    or child.get('kind') != 'render' or not isinstance(child.get('spec'), dict)
+                    or frozen(child['spec']) != expected):
+                return None
+            seen.add(child_id)
+            if child.get('retry_child_task_id'):
+                current = child
+                continue
+            leaf_state = child.get('state')
+            activity = _job_activity_timestamp(child)
+            clock = datetime.now(timezone.utc).timestamp() if now is None else float(now)
+            if (leaf_state not in {'PENDING', 'RECEIVED', 'STARTED', 'PROGRESS', 'RETRY'}
+                    or child.get('retry_claimed') or child.get('result')
+                    or child.get('stage') in {'failed', 'complete', 'awaiting_approval'}
+                    or activity is None or not 0 <= clock - activity < STALE_RUNNING_SECONDS):
+                return None
+            dispatch = current['retry_dispatch_state']
+            status = ('retry_active' if leaf_state in {'STARTED', 'PROGRESS'}
+                      else 'retry_uncertain' if dispatch == 'uncertain'
+                      else 'retry_queued' if dispatch == 'dispatched' else 'retry_reserved')
+            return {'status': status, 'task_id': child_id, 'stage': str(child.get('stage') or '')}
+    except (TypeError, ValueError, OverflowError):
+        return None
+    return None
+
+
 def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
     """Read/refresh the bounded metrics cache; never mutate render/publish jobs."""
     fallback = {'channels': [], 'videos': {}, 'updated_at': None, 'refresh_after_seconds': 300}
@@ -479,6 +569,7 @@ def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
         model = {**model, 'channels': [dict(row) for row in model['channels'][:10] if isinstance(row, dict)]}
         subtotals = _known_public_video_view_subtotals(model['videos'])
         for row in model['channels']:
+            row.pop('production_retry', None)
             row.pop('known_public_video_view_subtotal', None)
             if type(row.get('view_count')) is int and row['view_count'] == 0 and row.get('channel_id') in subtotals:
                 row['known_public_video_view_subtotal'] = subtotals[row['channel_id']]
@@ -487,6 +578,7 @@ def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
     try:
         from app.services.channel_production import get_production_state
         profiles = {row['channel_id']: row for row in list_channel_profiles() if isinstance(row, dict) and isinstance(row.get('channel_id'), str)}
+        by_id = {job.get('task_id'): job for job in jobs[:HISTORY_SCAN_LIMIT] if isinstance(job, dict)}
         for row in model['channels']:
             channel_id = row.get('channel_id')
             profile = profiles.get(channel_id, {})
@@ -506,6 +598,9 @@ def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
                 else 'exhausted' if remaining == 0 else 'scheduled'
             )
             row.update(production_status=production_status, next_due=state.get('next_due'), remaining_topics=remaining)
+            retry = _active_production_retry(profile, state, by_id)
+            if retry:
+                row.update(production_status=retry['status'], production_retry=retry)
     except Exception:
         # Missing schedule data cannot invent an active/healthy channel state.
         pass
@@ -712,9 +807,17 @@ def _channel_overview(rows: list[dict]) -> str:
                 text = 'Kanal toplamı güncelleniyor'
             css = ' class="waiting"' if text in {'Veri bekleniyor', 'Kanal toplamı güncelleniyor'} else ''
             counts.append(f'<div><b{css}>{text}</b><span>{label}</span></div>')
-        production = {'active': 'Üretim sürüyor', 'scheduled': 'Takvim etkin', 'paused': 'Üretim durdu · kontrol gerekiyor',
-                      'disabled': 'Otomatik üretim kapalı', 'exhausted': 'Konu listesi tamamlandı'}.get(row.get('production_status'), 'Üretim durumu bekleniyor')
+        retry = row.get('production_retry') if isinstance(row.get('production_retry'), dict) else {}
+        retry_id = _canonical_task_id(retry.get('task_id'))
+        valid_retry = bool(retry_id and retry.get('status') == row.get('production_status')
+                           and retry.get('status') in PRODUCTION_RETRY_LABELS)
+        production = (PRODUCTION_RETRY_LABELS[retry['status']] if valid_retry else {
+            'active': 'Üretim sürüyor', 'scheduled': 'Takvim etkin', 'paused': 'Üretim durdu · kontrol gerekiyor',
+            'disabled': 'Otomatik üretim kapalı', 'exhausted': 'Konu listesi tamamlandı',
+        }.get(row.get('production_status'), 'Üretim durumu bekleniyor'))
         schedule = [production]
+        if valid_retry and retry['status'] == 'retry_active':
+            schedule.append(STAGE_LABELS.get(retry.get('stage'), 'Hazırlanıyor'))
         remaining = row.get('remaining_topics')
         if type(remaining) is int and remaining >= 0:
             schedule.append(f'{remaining} konu sırada')
@@ -729,7 +832,8 @@ def _channel_overview(rows: list[dict]) -> str:
             status += ' · Güncelleme bekleniyor'
         if total_pending:
             status += ' · Kayıtlı herkese açık videoların son ölçümü: ' + _metric_number(subtotal) + ' izlenme'
-        cards.append(f'<article class="channel-summary"><div class="channel-summary-head"><h3>{escape(title)}</h3><a class="tiny" href="/studio/youtube#channel-{escape(channel_id, quote=True)}">Yönet</a></div><div class="channel-numbers">{"".join(counts)}</div><p class="metrics-note">{escape(status)}</p><div class="channel-schedule">' + ''.join(f'<span>{escape(item)}</span>' for item in schedule) + '</div></article>')
+        retry_link = f'<a class="tiny" href="/studio/job/{retry_id}">Güncel denemeyi aç</a>' if valid_retry else ''
+        cards.append(f'<article class="channel-summary"><div class="channel-summary-head"><h3>{escape(title)}</h3><a class="tiny" href="/studio/youtube#channel-{escape(channel_id, quote=True)}">Yönet</a></div><div class="channel-numbers">{"".join(counts)}</div><p class="metrics-note">{escape(status)}</p><div class="channel-schedule">' + ''.join(f'<span>{escape(item)}</span>' for item in schedule) + retry_link + '</div></article>')
     return '<div class="channel-overview">' + (''.join(cards) or '<div class="empty">Kanal verileri bekleniyor. <a href="/studio/youtube">YouTube bağlantılarını aç</a></div>') + '</div>'
 
 
