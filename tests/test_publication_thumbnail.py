@@ -185,6 +185,7 @@ def test_thumbnail_failure_keeps_final_but_missing_key_blocks_required_public_re
     gate = next(node for node in ast.walk(tree) if isinstance(node, ast.If)
                 and isinstance(node.test, ast.Name) and node.test.id == 'asset_error')
     ns = dict(synthetic_disclosure=True, youtube_response={'status': {'containsSyntheticMedia': True}},
+              editorial_error=None,
               caption_error_code=None, thumbnail_error_code=None, require_thumbnail=True, thumbnail_result=None,
               source_task_id=TASK, task_id='publisher', mark_release_blocked=Mock())
     exec(compile(ast.Module(body=[error, gate], type_ignores=[]), '<real-publisher-required-cover-gate>', 'exec'), ns)

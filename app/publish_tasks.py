@@ -62,11 +62,68 @@ def _set_source_automation(source_task_id: str, **automation: object) -> None:
     merge_youtube_result_field(source_task_id, 'youtube_automation', automation)
 
 
+def _editorial_candidate(source: dict) -> bool:
+    if not isinstance(source, dict):
+        return False
+    spec = source.get('spec') if isinstance(source.get('spec'), dict) else {}
+    result = source.get('result') if isinstance(source.get('result'), dict) else {}
+    # Presence, not truthiness: a malformed external marker cannot fall back to
+    # the historical private-upload path or to an automated approval flag.
+    return bool(
+        spec.get('workflow') == 'external_import'
+        or result.get('quality_disposition') == 'editorial_review_pass'
+        or any(key in result for key in (
+            'external_descriptor_id', 'external_provenance',
+            'editorial_review_id', 'editorial_review_sha256',
+            'expected_video_sha256', 'expected_caption_sha256',
+            'expected_video_size', 'expected_caption_size',
+        ))
+    )
+
+
+def _publication_quality_approved(source: dict) -> bool:
+    if not _editorial_candidate(source):
+        return automated_quality_approved(source)
+    # Keep external-review dependencies out of unchanged legacy publishing.
+    from app.services.external_editorial_review import publication_quality_approved
+    return publication_quality_approved(source)
+
+
+def _verify_editorial_files(source: dict, receipt: dict, video_path: Path, caption_path: Path) -> None:
+    from app.services.external_artifact_import import _fingerprint, MAX_VIDEO_BYTES, MAX_CAPTION_BYTES
+    from app.services.external_editorial_review import EditorialReviewError
+
+    result = source.get('result') or {}
+    proof = receipt.get('server_proof') or {}
+    for path, name, proof_key, maximum in (
+        (video_path, 'video', 'video_sha256', MAX_VIDEO_BYTES),
+        (caption_path, 'caption', 'captions_sha256', MAX_CAPTION_BYTES),
+    ):
+        digest, size = result.get(f'expected_{name}_sha256'), result.get(f'expected_{name}_size')
+        if (type(digest) is not str or not re.fullmatch(r'[0-9a-f]{64}', digest)
+                or type(size) is not int or not 0 < size <= maximum
+                or proof.get(proof_key) != digest or path is None):
+            raise EditorialReviewError('editorial_download_binding_invalid')
+        # Reuse the importer's bounded, no-link, before/after identity check.
+        # Neither caller flags nor the Storage key alone attest these bytes.
+        _fingerprint(path, {'sha256': digest, 'size': size})
+
+
+def _validate_editorial_downloads(source: dict, publish_plan: dict, video_path: Path, caption_path: Path) -> dict:
+    from app.services.external_editorial_review import validate_editorial_publication, EditorialReviewError
+
+    if not isinstance(source, dict) or not isinstance(publish_plan, dict):
+        raise EditorialReviewError('editorial_publication_plan_required')
+    receipt = validate_editorial_publication(source, frozen_plan=publish_plan)
+    _verify_editorial_files(source, receipt, video_path, caption_path)
+    return receipt
+
+
 def queue_automatic_publish(source_task_id: str) -> dict:
     """Route one approved final and enqueue exactly one autonomous publish job."""
     source_task_id = str(source_task_id or '').strip()
     source = get_job(source_task_id)
-    if not source or not automated_quality_approved(source):
+    if not source or not _publication_quality_approved(source):
         return {'status': 'quality_blocked'}
     spec = source.get('spec') if isinstance(source.get('spec'), dict) else {}
     if spec.get('mode') == 'preview':
@@ -353,6 +410,7 @@ def publish_video_pipeline(
         source_result = source.get('result') or {}
         if not isinstance(source_result, dict) or not source_result.get('video_key'):
             raise RuntimeError('Source job has no completed video')
+        editorial_candidate = _editorial_candidate(source)
 
         prior_youtube = source_result.get('youtube') if isinstance(source_result.get('youtube'), dict) else {}
         prior_video_id = str(prior_youtube.get('video_id') or '').strip()
@@ -451,6 +509,22 @@ def publish_video_pipeline(
             else None
         )
         if publish_plan:
+            editorial_candidate = editorial_candidate or _editorial_candidate(
+                {'result': publish_plan.get('quality_snapshot')},
+            )
+        editorial_receipt = None
+        caption_path = None
+        if editorial_candidate:
+            # Editorial acceptance is distinct from automated QA. Even a
+            # private insert requires its real current receipt and frozen plan.
+            if not source_result.get('caption_key'):
+                raise RuntimeError('Editorial publication requires its reviewed captions')
+            caption_path = work / 'captions.editorial.srt'
+            download_file(source_result['caption_key'], caption_path)
+            editorial_receipt = _validate_editorial_downloads(
+                get_job(source_task_id), publish_plan, video_path, caption_path,
+            )
+        if publish_plan:
             if publish_plan['source_task_id'] != source_task_id:
                 raise MetadataValidationError('Publish plan source changed')
             if publish_plan['target_channel_id'] != target_channel_id:
@@ -464,10 +538,14 @@ def publish_video_pipeline(
             require_thumbnail = bool(publish_plan.get('require_thumbnail'))
             quality_snapshot = publish_plan.get('quality_snapshot')
             release_allowed = bool(
-                automated_quality_approved(source)
-                and isinstance(quality_snapshot, dict)
-                and quality_snapshot.get('quality_disposition') == 'automated_qc_pass'
-                and quality_snapshot.get('manual_qa_required') is False
+                editorial_receipt
+                or (
+                    not editorial_candidate
+                    and automated_quality_approved(source)
+                    and isinstance(quality_snapshot, dict)
+                    and quality_snapshot.get('quality_disposition') == 'automated_qc_pass'
+                    and quality_snapshot.get('manual_qa_required') is False
+                )
             )
             requested_release_mode = str(publish_plan.get('release_mode') or 'private')
             release_mode = requested_release_mode if release_allowed else 'private'
@@ -494,12 +572,30 @@ def publish_video_pipeline(
             release_mode = 'private'
             publish_at = None
         language = re.sub(r'[^A-Za-z0-9_-]+', '', language)[:24] or 'tr'
+        editorial_thumbnail = None
+        editorial_thumbnail_path = None
+        if editorial_receipt and require_thumbnail and not thumbnail_key:
+            from app.services.editorial_thumbnail import prepare_editorial_thumbnail
+            editorial_thumbnail_path = work / 'editorial-thumbnail.jpg'
+            editorial_thumbnail = prepare_editorial_thumbnail(
+                video_path, editorial_thumbnail_path, editorial_receipt,
+            )
         # A legacy False can never overrule positive/unknown render provenance.
         # Do not derive this from paid-create usage: recovered AI costs zero.
         synthetic_disclosure = (
             bool(publish_plan and publish_plan['contains_synthetic_media'])
             or contains_synthetic_media(source)
         )
+        if editorial_thumbnail:
+            # Local extraction can take time: revocation during FFmpeg must
+            # stop even the private insert, not merely the later public step.
+            editorial_receipt = _validate_editorial_downloads(
+                get_job(source_task_id), publish_plan, video_path, caption_path,
+            )
+            from app.services.editorial_thumbnail import validate_editorial_thumbnail
+            validate_editorial_thumbnail(
+                video_path, editorial_thumbnail_path, editorial_receipt, editorial_thumbnail,
+            )
 
         # Persist the side-effect boundary before videos.insert. If anything
         # after this point fails without a video ID, the reservation becomes
@@ -573,8 +669,12 @@ def publish_video_pipeline(
                 'Ayrı altyazı parçası YouTube’a ekleniyor.',
             )
             try:
-                caption_path = work / f'captions.{caption_language}.srt'
-                download_file(caption_key, caption_path)
+                if editorial_receipt:
+                    # Use the exact pre-insert SRT, never a second download.
+                    _verify_editorial_files(source, editorial_receipt, video_path, caption_path)
+                else:
+                    caption_path = work / f'captions.{caption_language}.srt'
+                    download_file(caption_key, caption_path)
                 caption_result = upload_caption_with_credentials(
                     credentials,
                     video_id,
@@ -587,7 +687,7 @@ def publish_video_pipeline(
 
         thumbnail_result = None
         thumbnail_error_code = None
-        if thumbnail_key:
+        if thumbnail_key or editorial_thumbnail:
             set_stage(
                 self,
                 task_id,
@@ -596,10 +696,17 @@ def publish_video_pipeline(
                 'Özel küçük resim YouTube’a ekleniyor.',
             )
             try:
-                suffix = Path(str(thumbnail_key)).suffix.casefold()
-                suffix = suffix if suffix in {'.jpg', '.jpeg', '.png'} else '.jpg'
-                thumbnail_path = work / f'thumbnail{suffix}'
-                download_file(thumbnail_key, thumbnail_path)
+                if editorial_thumbnail:
+                    from app.services.editorial_thumbnail import validate_editorial_thumbnail
+                    validate_editorial_thumbnail(
+                        video_path, editorial_thumbnail_path, editorial_receipt, editorial_thumbnail,
+                    )
+                    thumbnail_path = editorial_thumbnail_path
+                else:
+                    suffix = Path(str(thumbnail_key)).suffix.casefold()
+                    suffix = suffix if suffix in {'.jpg', '.jpeg', '.png'} else '.jpg'
+                    thumbnail_path = work / f'thumbnail{suffix}'
+                    download_file(thumbnail_key, thumbnail_path)
                 thumbnail_result = upload_thumbnail_with_credentials(
                     credentials,
                     video_id,
@@ -613,8 +720,26 @@ def publish_video_pipeline(
         release_error_code = None
         scheduled_publish_at = None
         if release_mode in {'public', 'scheduled'}:
+            editorial_error = None
+            if editorial_candidate:
+                try:
+                    # Fresh stored source/receipt/OAuth/profile and the same
+                    # local master/SRT must still match immediately pre-release.
+                    current_receipt = _validate_editorial_downloads(
+                        get_job(source_task_id), publish_plan, video_path, caption_path,
+                    )
+                    if editorial_thumbnail:
+                        from app.services.editorial_thumbnail import validate_editorial_thumbnail
+                        validate_editorial_thumbnail(
+                            video_path, editorial_thumbnail_path, current_receipt, editorial_thumbnail,
+                        )
+                except Exception:
+                    # videos.insert already returned a real ID. Keep that ID
+                    # and report a blocked private release, not a failed upload.
+                    editorial_error = 'editorial_review_changed_or_unavailable'
             asset_error = (
-                ('synthetic_disclosure_unconfirmed' if (
+                editorial_error
+                or ('synthetic_disclosure_unconfirmed' if (
                     synthetic_disclosure
                     and isinstance(youtube_response.get('status'), dict)
                     and youtube_response['status'].get('containsSyntheticMedia') is False

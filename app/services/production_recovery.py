@@ -134,6 +134,35 @@ def _public(record: dict) -> bool:
     )
 
 
+def _completed_public_replay(record: dict, attribution: dict, plan: dict,
+                             channel_id: str, connection_id: str, revision: str) -> bool:
+    """Match the scheduler's compact public-delivery predicate, not QA proof.
+
+    Actual completed publisher redelivery omits asset/revision fields. Only
+    omissions are compatible; a present contradiction still fails. The caller
+    must also verify the complete source attribution, plan, ledger and lineage.
+    """
+    def omitted_or(key, expected):
+        return key not in record or (type(record[key]) is type(expected) and record[key] == expected)
+
+    def empty(key):
+        return record.get(key) is None or record.get(key) == ''
+
+    return (
+        record.get('idempotent_replay') is True
+        and record.get('stage') == 'complete' and record.get('progress') == 100
+        and _public(record)
+        and record.get('target_channel_id') == channel_id
+        and record.get('connection_id') == connection_id
+        and all(empty(key) for key in ('scheduled_publish_at', 'release_error_code',
+                                      'caption_error_code', 'thumbnail_error_code'))
+        and omitted_or('profile_revision', revision)
+        and omitted_or('caption_uploaded', True)
+        and omitted_or('thumbnail_uploaded', attribution.get('thumbnail_uploaded'))
+        and omitted_or('contains_synthetic_media', plan.get('contains_synthetic_media'))
+    )
+
+
 def _audit_result(raw: str, status: str, channel_id: str, original_id: str,
                   recovered_id: str, revision: str, release_mode: str = 'private',
                   public_recovery: bool = False, continue_immediately: bool = False) -> dict:
@@ -474,10 +503,16 @@ def _resume_after_retry(
             and publish_spec.get('privacy_status') == 'private',
             'recovery_upload_not_public' if public else 'recovery_upload_not_private',
         )
+        compact_public_replay = public and recovered_proof is None and delivered.get('idempotent_replay') is True
+        if compact_public_replay:
+            _require(_completed_public_replay(delivered, attribution, plan,
+                                              channel_id, connection_id, expected_profile_revision),
+                     'recovery_publication_binding_changed')
         for record in (publish_spec, delivered, attribution):
             _require(record.get('target_channel_id') == channel_id
                      and record.get('connection_id') == connection_id
-                     and record.get('profile_revision') == expected_profile_revision,
+                     and (record.get('profile_revision') == expected_profile_revision
+                          or compact_public_replay and record is delivered and 'profile_revision' not in record),
                      'recovery_publication_binding_changed')
         _require(upload.get('target_channel_id') == channel_id
                  and upload.get('connection_id') == connection_id
@@ -494,7 +529,11 @@ def _resume_after_retry(
             _require(type(disclosure) is bool
                      and (not contains_synthetic_media(chain[0]) or disclosure is True),
                      'recovery_disclosure_unverified')
-            for record in ((recovered_proof,) if recovered_proof is not None else (delivered, attribution)):
+            # A compact replay never supplies missing proof: the full source
+            # and ledger stay mandatory in this same atomic snapshot set.
+            asset_records = ((recovered_proof,) if recovered_proof is not None
+                             else (attribution,) if compact_public_replay else (delivered, attribution))
+            for record in asset_records:
                 _require(record.get('contains_synthetic_media') is disclosure,
                          'recovery_disclosure_unverified')
                 _require(record.get('caption_uploaded') is True

@@ -921,6 +921,10 @@ def _job_has_youtube_output(job: dict) -> bool:
 
 def _job_quality_approved(job: dict) -> bool:
     result = _job_result(job)
+    if result.get('quality_disposition') == 'editorial_review_pass':
+        from app.services.external_editorial_review import publication_quality_approved
+
+        return publication_quality_approved(job)
     return bool(
         str(job.get('state') or '').upper() == 'SUCCESS'
         and str(job.get('kind') or '') == 'render'
