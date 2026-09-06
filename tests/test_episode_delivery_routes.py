@@ -14,6 +14,7 @@ from app.external_routes import settings
 @pytest.fixture
 def case(monkeypatch):
     monkeypatch.setattr(settings, 'factory_api_token', 'episode-test-token', raising=False)
+    monkeypatch.setattr(routes, 'request_production_tick', lambda: True)
     external, original, leaf, publisher = [str(uuid4()) for _ in range(4)]
     value = {'channel_id': 'UCeditorial12345', 'original_task_id': original, 'failed_leaf_id': leaf,
              'expected_profile_revision': 'current-profile-revision', 'expected_topic_sha256': 'a' * 64,

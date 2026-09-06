@@ -354,6 +354,67 @@ def _reconcile_source_upload(
     merge_youtube_result_field(source_task_id, 'youtube', attribution)
 
 
+def _wake_after_public_success(source_task_id: str, task_id: str, result: dict) -> None:
+    """Check stored public proof before a hint; never approve or dispatch here."""
+    try:
+        from app.services.production_events import request_production_tick
+
+        if result.get('privacy_status') != 'public' or result.get('release_status') != 'public':
+            return
+        record = get_upload_record(source_task_id)
+        source = get_job(source_task_id)
+        publisher = get_job(task_id)
+        plan = record.get('publish_plan') or {}
+        source_result = source.get('result') or {}
+        attribution = source_result.get('youtube') or {}
+        video, channel, connection = (record.get(key) for key in (
+            'youtube_video_id', 'target_channel_id', 'connection_id'))
+        revision = plan.get('profile_revision')
+        if not (
+            source.get('task_id') == source_task_id and source.get('state') == 'SUCCESS'
+            and publisher.get('task_id') == task_id and publisher.get('state') == 'SUCCESS'
+            and publisher.get('kind') == 'publish' and publisher.get('parent_id') == source_task_id
+            and publisher.get('spec', {}).get('source_task_id') == source_task_id
+            and publisher.get('result') == result
+            and source.get('kind') == 'render' and source_result.get('video_key')
+            and source_result.get('caption_key') and source_result.get('manual_qa_required') is False
+            and source_result.get('quality_disposition') in {'automated_qc_pass', 'editorial_review_pass'}
+            and record.get('version') == 2 and record.get('status') == 'complete'
+            and record.get('source_task_id') == source_task_id and record.get('publish_task_id') == task_id
+            and record.get('side_effect_possible') is True and record.get('release_side_effect_possible') is True
+            and record.get('requested_release_mode') == 'public' and not record.get('requested_publish_at')
+            and type(record.get('release_completed_at')) is str and record['release_completed_at']
+            and all(type(value) is str and value for value in (video, channel, connection, revision))
+            and result.get('task_id') == task_id and result.get('source_task_id') == source_task_id
+            and result.get('status') == 'complete' and result.get('youtube_video_id') == video
+            and attribution.get('video_id') == video and attribution.get('profile_revision') == revision
+            and plan.get('source_task_id') == source_task_id and plan.get('target_channel_id') == channel
+            and plan.get('release_mode') == 'public' and not plan.get('publish_at')
+            and type(plan.get('contains_synthetic_media')) is bool
+            and attribution.get('contains_synthetic_media') is plan['contains_synthetic_media']
+            and attribution.get('caption_uploaded') is True
+            and (plan.get('require_thumbnail') is not True or attribution.get('thumbnail_uploaded') is True)
+            and all(row.get('privacy_status') == 'public' and row.get('release_status') == 'public'
+                    and row.get('target_channel_id') == channel and row.get('connection_id') == connection
+                    and all(row.get(key) in (None, '') for key in (
+                        'scheduled_publish_at', 'release_error_code', 'caption_error_code', 'thumbnail_error_code'))
+                    for row in (record, attribution, result))
+            and all(key not in result or (type(result[key]) is type(expected) and result[key] == expected)
+                    for key, expected in (('profile_revision', revision), ('caption_uploaded', True),
+                        ('thumbnail_uploaded', attribution.get('thumbnail_uploaded')),
+                        ('contains_synthetic_media', plan['contains_synthetic_media'])))
+        ):
+            return
+        from app.services import youtube_publish_state as publication_state
+        if publication_state._redis().exists(publication_state._lock_key(source_task_id)):
+            return  # An unlock outage/redelivery must leave the minute beat as fallback.
+        # Duplicate hints are harmless: the existing Redis reservation remains
+        # the only render authorizer, with two slots and one job per channel.
+        request_production_tick()
+    except Exception:
+        pass  # The committed PUBLIC result must survive read/broker failures.
+
+
 @celery.task(bind=True, acks_late=True, reject_on_worker_lost=True)
 def publish_video_pipeline(
     self,
@@ -371,6 +432,7 @@ def publish_video_pipeline(
     upload_started = False
     upload_completed = False
     release_started = False
+    completed_result = None
     try:
         reservation = get_upload_record(source_task_id)
         if not reservation:
@@ -393,6 +455,7 @@ def publish_video_pipeline(
                 ),
             )
             mark_success(task_id, result)
+            completed_result = result
             return result
         if reservation.get('publish_task_id') != task_id:
             raise UploadAlreadyInProgress(
@@ -460,6 +523,7 @@ def publish_video_pipeline(
                 'idempotent_replay': True,
             }
             mark_success(task_id, result)
+            completed_result = result
             return result
 
         target_channel_id = str(reservation.get('target_channel_id') or '')
@@ -840,6 +904,7 @@ def publish_video_pipeline(
         }
         merge_youtube_result_field(source_task_id, 'youtube', youtube_attribution)
         mark_success(task_id, result)
+        completed_result = result
         return result
     except Exception as exc:
         error_code = _safe_error_code(exc)
@@ -867,3 +932,5 @@ def publish_video_pipeline(
         if lock_token:
             release_execution_lock(source_task_id, lock_token)
         shutil.rmtree(work, ignore_errors=True)
+        if completed_result is not None:
+            _wake_after_public_success(source_task_id, task_id, completed_result)

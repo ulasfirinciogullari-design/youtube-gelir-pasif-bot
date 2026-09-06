@@ -8,6 +8,7 @@ from starlette.concurrency import run_in_threadpool
 from app.external_routes import _require_auth
 from app.services.external_artifact_import import _object, _text
 from app.services.external_episode_delivery import resolve_external_episode, ExternalEpisodeDeliveryError
+from app.services.production_events import request_production_tick
 
 
 router = APIRouter()
@@ -31,6 +32,8 @@ def _resolve_and_present(external_task_id, value):
     if (proof.get('external_task_id') != external_task_id or type(proof.get('youtube_video_id')) is not str
             or not re.fullmatch(r'[A-Za-z0-9_-]{11}', proof['youtube_video_id'])):
         raise ValueError()
+    if receipt['status'] == 'resolved':
+        request_production_tick()  # Committed delivery only; historical replay does not expedite again.
     return {'status': receipt['status'], 'channel_id': value['channel_id'],
             'original_task_id': value['original_task_id'], 'failed_leaf_id': value['failed_leaf_id'],
             'external_task_id': external_task_id, 'publish_task_id': proof['publish_task_id'],
