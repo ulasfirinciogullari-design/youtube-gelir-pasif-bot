@@ -85,13 +85,46 @@ def _words(text):
     return re.findall(r"[^\W_]+(?:['’][^\W_]+)*", text.casefold())
 
 
+def _independent_audio_crosscheck(pack, binding, attempt, result, expected, language):
+    """Recompute a retained blind second transcript, without approving old ASR."""
+    from app.services.audio_qc import compare_transcript, _validate_prosody_review
+    raw = _object(pack['prosody_raw_response_json'])
+    _require(raw.get('format') == 'parsed_model_json_unapproved' and raw.get('provider') == 'gemini'
+             and raw.get('model') == attempt['model'] and raw.get('binding') == binding
+             and raw.get('diagnostic_only') is True
+             and all(raw.get(k) is False for k in ('asr_approved', 'combined_audio_approved',
+                                                   'word_timing_verified', 'qa_approved', 'publish_eligible')))
+    response = raw.get('response')
+    _exact(response, ('transcript', 'prosody'))
+    _text(response['transcript'])
+    digest = _digest(response)
+    _require(raw.get('response_sha256') == result.get('raw_response_sha256') == digest)
+    comparison = compare_transcript(expected, response['transcript'], provider='gemini', comparison_language=language)
+    _require(comparison['pass'] is True and comparison['score'] == 100
+             and comparison['mismatch_details']['exact_match'] is True)
+    crosscheck = result.get('independent_transcript_crosscheck')
+    _exact(crosscheck, ('provider', 'transcript', 'normalized_exact', 'comparison_score',
+                        'mismatch_details', 'raw_response_sha256'))
+    _require(crosscheck['normalized_exact'] is True
+             and crosscheck == {'provider': 'gemini', 'transcript': response['transcript'],
+                            'normalized_exact': True, 'comparison_score': comparison['score'],
+                            'mismatch_details': comparison['mismatch_details'], 'raw_response_sha256': digest})
+    validated = _validate_prosody_review(response['prosody'], expected,
+        audio_duration_seconds=binding['duration_seconds'], transcript_evidence=None, language=language)
+    _require(validated is not None and validated['pass'] is True
+             and all(result.get(k) == value for k, value in validated.items()))
+
+
 def _evidence(pack):
     pack = _object(pack, MAX_EVIDENCE_BYTES)
     _require(not artifact._SECRET.search(ingest._json(pack)))
+    crosscheck = 'prosody_raw_response_json' in pack
+    _require(not crosscheck or type(pack.get('version')) is int and pack['version'] == 2)
     _exact(pack, ('version', 'manifest', 'asr_provider_evidence_json', 'asr_attempt_json',
                   'prosody_result_json', 'prosody_attempt_json', 'frames', 'scenes',
-                  'sources', 'rights_basis', 'limitations', 'blocking_issues', 'publish_metadata'))
-    _require(type(pack['version']) is int and pack['version'] == 1
+                  'sources', 'rights_basis', 'limitations', 'blocking_issues', 'publish_metadata',
+                  *(('prosody_raw_response_json',) if crosscheck else ())))
+    _require(type(pack['version']) is int and pack['version'] in (1, 2)
              and type(pack['limitations']) is dict and set(pack['limitations']) == {*_LIMITATIONS, 'notes'}
              and all(type(pack['limitations'].get(k)) is type(v) and pack['limitations'].get(k) == v
                      for k, v in _LIMITATIONS.items())
@@ -100,7 +133,10 @@ def _evidence(pack):
     for note in pack['limitations']['notes']:
         _text(note)
     manifest = artifact.validate_external_manifest(pack['manifest'])
-    _require(manifest['language'] == 'en')
+    version, language = pack['version'], manifest['language']
+    _require(manifest['version'] == version and (language == 'en' if version == 1 else language in {'tr', 'en'}))
+    duration = manifest['duration_ms'] / 1000
+    frame_count = round(duration * 30)
     metadata = pack['publish_metadata']
     _exact(metadata, ('title', 'description', 'tags', 'hashtags', 'sources', 'contains_synthetic_media'))
     _require(metadata['contains_synthetic_media'] is True
@@ -130,26 +166,41 @@ def _evidence(pack):
              and type(binding['channels']) is int and binding['channels'] in (1, 2)
              and type(binding['sample_frames']) is int and binding['sample_frames'] > 0
              and type(binding['duration_seconds']) in (float, int)
-             and 29.75 <= binding['duration_seconds'] <= 30.35
+             and duration - .25 <= binding['duration_seconds'] <= duration + .35
              and abs(binding['sample_frames'] / binding['sample_rate'] - binding['duration_seconds']) < .001
              and type(binding['review_code_sha256']) is dict and 1 <= len(binding['review_code_sha256']) <= 8)
     for name, digest in binding['review_code_sha256'].items():
         _require(type(name) is str and re.fullmatch(r'[a-z_]{1,40}', name)); _hash(digest)
     _exact(provider, ('language', 'model', 'payload', 'provider'))
-    _require(provider['provider'] == 'openai' and provider['model'] == 'whisper-1' and provider['language'] == 'en')
+    _require(provider['provider'] == 'openai' and provider['model'] == 'whisper-1' and provider['language'] == language)
     _exact(provider['payload'], ('language', 'text', 'words'))
     payload = provider['payload']
-    _require(payload['language'] in {'en', 'english'} and payload['text'] == expected
-             and type(payload['words']) is list and len(payload['words']) == len(_words(expected)) == 65)
+    _require(payload['language'] in ({'en', 'english'} if language == 'en' else {'tr', 'turkish'})
+             and type(payload['text']) is str and type(payload['words']) is list)
+    if version == 1:
+        _require(payload['text'] == expected and len(payload['words']) == len(_words(expected)) == 65)
+    else:
+        _require(1 <= len(payload['words']) <= 500)
     unknown = []
     for index, word in enumerate(payload['words']):
         _exact(word, ('word', 'start', 'end'))
         _text(word['word'])
         _require(all(type(word[k]) in (float, int) and math.isfinite(word[k]) for k in ('start', 'end'))
-                 and 0 <= word['start'] <= word['end'] <= 30.35)
+                 and 0 <= word['start'] <= word['end'] <= duration + .35)
         if word['start'] == word['end']:
             unknown.append(index)
-    _require([token for row in payload['words'] for token in _words(row['word'])] == _words(expected))
+    if version == 1:
+        _require([token for row in payload['words'] for token in _words(row['word'])] == _words(expected))
+    else:
+        # Compare authentic text without rewriting numeric years or provider
+        # word spans. This is lexical equivalence, not timestamp certification.
+        from app.services.audio_qc import compare_transcript
+        comparison = compare_transcript(expected, payload['text'], words=payload['words'],
+                                        provider='openai', comparison_language=language)
+        _require(comparison['mismatch_details']['timestamp_sequence_match'] is True)
+        if not crosscheck:
+            _require(comparison['pass'] is True and comparison['score'] == 100
+                     and comparison['mismatch_details']['exact_match'] is True)
     _require(prosody.get('binding') == binding and prosody.get('component') == 'prosody')
     for attempt, component, provider_name, model in ((asr_attempt, 'asr', 'openai', 'whisper-1'),
                                                     (prosody_attempt, 'prosody', 'gemini', None)):
@@ -169,7 +220,8 @@ def _evidence(pack):
         'asr_approved', 'audio_sha256', 'authorized_total_paid_requests', 'available', 'combined_audio_approved',
         'diagnostic_code_sha256', 'diagnostic_only', 'diagnostic_status', 'issues', 'pass', 'preflight', 'provider',
         'publish_eligible', 'qa_approved', 'raw_response_sha256', 'reason', 'review_attempts', 'scores', 'summary',
-        'timestamp_provider', 'timestamp_source', 'word_timing_verified'})
+        'timestamp_provider', 'timestamp_source', 'word_timing_verified',
+        *(('independent_transcript_crosscheck',) if crosscheck else ())})
     _require(result.get('available') is True and result.get('pass') is True and result.get('provider') == 'gemini'
              and result.get('diagnostic_only') is True and result.get('review_attempts') == 1
              and result.get('audio_sha256') == binding['wav_sha256'] and result.get('issues') == []
@@ -180,12 +232,17 @@ def _evidence(pack):
              and prosody.get('started_at') == prosody_attempt.get('started_at'))
     preflight = result.get('preflight', {})
     _require(preflight.get('provider_evidence_sha256') == _sha(pack['asr_provider_evidence_json'].encode('utf-8'))
-             and preflight.get('text_exact') is True and preflight.get('text_comparison_score') == 100
+             and preflight.get('text_exact') is (True if version == 1 else payload['text'] == expected)
+             and (version == 1 or preflight.get('text_normalized_exact') is comparison['mismatch_details']['exact_match'])
+             and preflight.get('text_comparison_score') == (100 if version == 1 else comparison['score'])
              and preflight.get('word_timing_verified') is False and preflight.get('asr_approved') is False)
+    if crosscheck:
+        _independent_audio_crosscheck(pack, binding, prosody_attempt, result, expected, language)
     scores = result.get('scores')
     _exact(scores, ('pronunciation', 'naturalness', 'pacing', 'sentence_flow', 'emphasis', 'roboticness'))
     _require(all(type(v) in (int, float) and math.isfinite(v) and 0 <= v <= 100 for v in scores.values())
-             and all(v >= 86 for k, v in scores.items() if k != 'roboticness') and scores['roboticness'] <= 30)
+             and all(v >= (86 if version == 1 else 70) for k, v in scores.items() if k != 'roboticness')
+             and scores['roboticness'] <= 30)
     urls = {row['url'] for row in manifest['sources']}
     _require(type(pack['sources']) is list and len(pack['sources']) == len(urls))
     for row in pack['sources']:
@@ -199,7 +256,7 @@ def _evidence(pack):
     for row in pack['frames']:
         _exact(row, ('frame_index', 'sha256', 'observation'))
         i = row['frame_index']
-        _require(type(i) is int and 0 <= i < 900 and i not in frames)
+        _require(type(i) is int and 0 <= i < frame_count and i not in frames)
         _hash(row['sha256']); _text(row['observation'])
         frames[i] = row
     _require(type(pack['scenes']) is list and len(pack['scenes']) == 6)
@@ -207,7 +264,7 @@ def _evidence(pack):
         _exact(row, ('index', 'frame_indices', 'visual_observation', 'alignment_observation', 'source_urls', 'claim_note'))
         _require(type(row['index']) is int and row['index'] == i and type(row['frame_indices']) is list
                  and row['frame_indices'] and len(row['frame_indices']) <= 10
-                 and all(type(n) is int and n in frames and manifest['scenes'][i]['start_ms'] <= n * 1000 / 30
+                 and all(type(n) is int and n in frames and manifest['scenes'][i]['start_ms'] <= (round(n * 1000 / 30) if version == 2 else n * 1000 / 30)
                          < manifest['scenes'][i]['end_ms'] for n in row['frame_indices'])
                  and type(row['source_urls']) is list and row['source_urls'] and set(row['source_urls']) <= urls)
         for key in ('visual_observation', 'alignment_observation', 'claim_note'):
@@ -223,12 +280,21 @@ def _evidence(pack):
 
 def _contract(source):
     spec, result = source.get('spec', {}), source.get('result', {})
+    _require(type(spec) is dict and type(result) is dict)
+    provenance = result.get('external_provenance', {})
+    _require(type(provenance) is dict)
+    version = provenance.get('manifest_version', 1)
+    _require(type(version) is int and version in (1, 2))
+    duration_ms = provenance.get('duration_ms') if version == 2 else 30000
+    _require(type(duration_ms) is int and (15000 <= duration_ms <= 60000 if version == 2 else duration_ms == 30000)
+             and type(spec.get('duration_minutes')) in (int, float)
+             and spec['duration_minutes'] == duration_ms / 60000
+             and (spec.get('language') == 'en' if version == 1 else spec.get('language') in {'tr', 'en'}))
     _require(source.get('kind') == 'render' and source.get('state') == 'SUCCESS' and not source.get('error')
              and source.get('parent_id') is None and not any(source.get(k) for k in
                  ('retry_child_task_id', 'retry_dispatch', 'retry_of', 'retry_source_task_id'))
              and spec.get('workflow') == 'external_import' and spec.get('mode') == 'production'
-             and spec.get('production_scheduled') is False and spec.get('duration_minutes') == .5
-             and spec.get('format') == 'shorts' and spec.get('language') == 'en'
+             and spec.get('production_scheduled') is False and spec.get('format') == 'shorts'
              and not any(k in spec for k in ('production_topic_index', 'series_id', 'series_number'))
              and result.get('qa_approved') is False and result.get('audio_transcription_verified') is False
              and result.get('contains_synthetic_media') is True and result.get('new_media_generated') is False)
@@ -274,11 +340,11 @@ def _decode_complete_pcm(video, output):
         stderr=subprocess.PIPE, timeout=60, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
 
 
-def _pcm_bytes(path):
-    _require(0 < path.stat().st_size <= 8 * 1024 * 1024)
+def _pcm_bytes(path, *, max_bytes=8 * 1024 * 1024):
+    _require(0 < path.stat().st_size <= max_bytes)
     with path.open('rb') as stream:
-        value = stream.read(8 * 1024 * 1024 + 1)
-    _require(len(value) == path.stat().st_size and len(value) <= 8 * 1024 * 1024)
+        value = stream.read(max_bytes + 1)
+    _require(len(value) == path.stat().st_size and len(value) <= max_bytes)
     return value
 
 
@@ -287,6 +353,9 @@ def _storage_proof(source, manifest, binding, *, reference_video=None):
     phase = 'editorial_review_stored_download'
     try:
         result = source['result']
+        version = manifest.get('version', 1)
+        duration = manifest['duration_ms'] / 1000 if version == 2 else 30
+        expected_frames = round(duration * 30)
         with tempfile.TemporaryDirectory(prefix='editorial_verify_') as directory:
             root = Path(directory).resolve(strict=True)
             paths = {}
@@ -307,7 +376,7 @@ def _storage_proof(source, manifest, binding, *, reference_video=None):
             phase = 'editorial_review_media_structure'
             descriptor = artifact.validate_staged_external_artifact(root, paths['video'], paths['captions'], manifest)
             _require(metadata['manifest'] == manifest and metadata['descriptor_id'] == descriptor['descriptor_id']
-                     == result['external_descriptor_id'] and descriptor['media_structure']['frame_count'] == 900
+                     == result['external_descriptor_id'] and descriptor['media_structure']['frame_count'] == expected_frames
                      and descriptor['media_structure']['frame_rate'] == '30/1')
             reference_path, reference_identity, source_identity = None, None, None
             if reference_video is not None:
@@ -320,14 +389,18 @@ def _storage_proof(source, manifest, binding, *, reference_video=None):
                 _, reference_identity = artifact._fingerprint(reference_path, reference_expected)
                 _, source_identity = artifact._fingerprint(paths['video'], manifest['files']['video'])
                 phase = 'editorial_review_reference_structure'
-                reference_media = artifact._probe_mp4(reference_path)
+                reference_media = (artifact._probe_mp4(reference_path) if version == 1 else
+                                   artifact._probe_mp4(reference_path, expected_duration=duration))
                 media = descriptor['media_structure']
-                _require(reference_media['frame_count'] == 900 and reference_media['frame_rate'] == '30/1'
+                _require(reference_media['frame_count'] == expected_frames and reference_media['frame_rate'] == '30/1'
                          and reference_media['sample_rate'] == media['sample_rate'] == binding['sample_rate']
                          and reference_media['audio_channels'] == media['audio_channels'] == binding['channels']
                          and reference_media['audio_duration_seconds'] == media['audio_duration_seconds']
-                         == binding['duration_seconds']
                          and reference_media['video_duration_seconds'] == media['video_duration_seconds'])
+                # V2 binds complete decoded samples, not the container's rounded
+                # AAC duration. The exact two decoded streams must still agree.
+                _require(media['audio_duration_seconds'] == binding['duration_seconds'] if version == 1 else
+                         abs(media['audio_duration_seconds'] - binding['duration_seconds']) <= .1)
                 # Recheck full reference bytes after probing, immediately before
                 # the pair of decodes. Filename or caller origin is not proof.
                 _require(artifact._fingerprint(reference_path, reference_expected)[1] == reference_identity)
@@ -337,8 +410,12 @@ def _storage_proof(source, manifest, binding, *, reference_video=None):
             _require(completed.returncode == 0 and len(completed.stderr) <= 65536)
             phase = 'editorial_review_pcm_binding'
             media = descriptor['media_structure']
-            decoded = _pcm_bytes(pcm)
+            decoded = _pcm_bytes(pcm) if version == 1 else _pcm_bytes(pcm, max_bytes=12 * 1024 * 1024)
             _require(binding.get('sample_rate') == media['sample_rate'] and binding.get('channels') == media['audio_channels'])
+            if version == 2:
+                _require(len(decoded) % (binding['channels'] * 2) == 0
+                         and abs(len(decoded) / (binding['channels'] * 2 * binding['sample_rate'])
+                                 - media['audio_duration_seconds']) <= .1)
             decoded_sha = _sha(decoded)
             proof = {'video_sha256': descriptor['video_sha256'], 'captions_sha256': descriptor['captions_sha256'],
                      'manifest_sha256': descriptor['manifest_sha256'], 'pcm_sha256': decoded_sha,
@@ -352,7 +429,8 @@ def _storage_proof(source, manifest, binding, *, reference_video=None):
             completed = _decode_complete_pcm(reference_path, reference_pcm)
             _require(completed.returncode == 0 and len(completed.stderr) <= 65536)
             phase = 'editorial_review_reference_pcm_binding'
-            reference_decoded = _pcm_bytes(reference_pcm)
+            reference_decoded = (_pcm_bytes(reference_pcm) if version == 1 else
+                                 _pcm_bytes(reference_pcm, max_bytes=12 * 1024 * 1024))
             _require(len(decoded) % (binding['channels'] * 2) == 0
                      and decoded == reference_decoded and decoded_sha == _sha(reference_decoded)
                      and artifact._fingerprint(reference_path, reference_expected)[1] == reference_identity
@@ -454,6 +532,12 @@ def create_editorial_review(source_task_id, evidence_pack, *, reference_video=No
             _reference_binding(reference_video, binding)
         phase = 'editorial_review_source_contract'
         keys = _keys(source)
+        provenance = source['result']['external_provenance']
+        if manifest['version'] == 2 or provenance.get('manifest_version') == 2:
+            _require(manifest['version'] == provenance.get('manifest_version') == 2
+                     and manifest['duration_ms'] == provenance.get('duration_ms')
+                     and manifest['language'] == source['spec']['language'] == source['result'].get('language')
+                     and provenance.get('manifest_sha256') == _digest(manifest))
         if client.get(keys[0]) is not None:
             phase = 'editorial_review_existing_receipt'
             receipt = validate_editorial_publication(source)
