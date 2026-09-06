@@ -6927,21 +6927,37 @@ def run_video_pipeline(
                     else ''
                 )
             )
-            replacements = _retry_bad_scene(
-                scene_idx, retry_queries, seen_ids, work, credits,
-                file_prefix='final_qc_rescue',
-                minimum_duration=max(
-                    5.0,
-                    float(scene_durations[scene_idx]) + 0.35,
-                ),
-                allow_short_fallback=not is_bounded_short_preview,
-                tolerate_pexels_failure=(
-                    scene_idx in provider_outage_stock_scenes
-                    or scene_idx in stock_quality_fallback_scenes
-                ),
-                orientation=pexels_orientation,
-                active_scene_visuals=stock_reuse_visuals,
-            )
+            try:
+                replacements = _retry_bad_scene(
+                    scene_idx, retry_queries, seen_ids, work, credits,
+                    file_prefix='final_qc_rescue',
+                    minimum_duration=max(
+                        5.0,
+                        float(scene_durations[scene_idx]) + 0.35,
+                    ),
+                    allow_short_fallback=not is_bounded_short_preview,
+                    tolerate_pexels_failure=(
+                        scene_idx in provider_outage_stock_scenes
+                        or scene_idx in stock_quality_fallback_scenes
+                    ),
+                    orientation=pexels_orientation,
+                    active_scene_visuals=stock_reuse_visuals,
+                )
+            except httpx.HTTPStatusError as exc:
+                # This is optional rescue, not evidence that a rejected clip
+                # passed. Stop this run's stock searches without retrying an
+                # access failure; preserve the real reviews and reach the
+                # ordinary rejection/checkpoint/workprint branch below.
+                try:
+                    update_job(task_id, final_stock_rescue_unavailable={
+                        'provider': 'pexels',
+                        'scene_index': scene_idx,
+                        'status': 'unavailable',
+                        'http_status': exc.response.status_code,
+                    })
+                except Exception:
+                    pass  # Diagnostic storage cannot erase the QA outcome.
+                break
             if not replacements:
                 continue
             existing_specs = list(scene_visuals[scene_idx])
