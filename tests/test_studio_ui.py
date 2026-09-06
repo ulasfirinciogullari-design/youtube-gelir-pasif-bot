@@ -81,6 +81,8 @@ def ui_modules(monkeypatch):
     metrics_module = types.ModuleType('app.services.youtube_metrics')
     metrics_module.get_dashboard_metrics = lambda *_a, **_k: {'channels': [], 'videos': {}, 'updated_at': None, 'refresh_after_seconds': 300}
     metrics_module.refresh_dashboard_metrics = metrics_module.get_dashboard_metrics
+    recovery_module = types.ModuleType('app.services.blocked_public_release')
+    recovery_module.get_verified_public_recovery_for_source = lambda *_a, **_k: None
 
     for name, module in {
         'app.config': config_module,
@@ -92,6 +94,7 @@ def ui_modules(monkeypatch):
         'app.services.youtube_auth': youtube_auth_module,
         'app.services.youtube_publish_state': publish_state_module,
         'app.services.youtube_metrics': metrics_module,
+        'app.services.blocked_public_release': recovery_module,
     }.items():
         monkeypatch.setitem(sys.modules, name, module)
     app_package = importlib.import_module('app')

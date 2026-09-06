@@ -30,6 +30,7 @@ from app.services.youtube_publish_state import UPLOAD_PREFIX
 
 RESUME_PREFIX = PRODUCTION_PREFIX + 'resume:'
 PUBLIC_RESUME_PREFIX = PRODUCTION_PREFIX + 'resume_public:'
+PUBLIC_RECOVERY_RESUME_PREFIX = PRODUCTION_PREFIX + 'resume_public_recovery:'
 MAX_RETRY_HOPS = 16
 _ID = re.compile(r'^[A-Za-z0-9_-]{8,128}$')
 _TASK_ID = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
@@ -134,7 +135,8 @@ def _public(record: dict) -> bool:
 
 
 def _audit_result(raw: str, status: str, channel_id: str, original_id: str,
-                  recovered_id: str, revision: str, release_mode: str = 'private') -> dict:
+                  recovered_id: str, revision: str, release_mode: str = 'private',
+                  public_recovery: bool = False) -> dict:
     audit = _object(raw, 'recovery_audit_invalid')
     _require(
         audit.get('version') == 1 and audit.get('channel_id') == channel_id
@@ -157,6 +159,11 @@ def _audit_result(raw: str, status: str, channel_id: str, original_id: str,
                  and audit.get('release_status') == 'public'
                  and audit.get('caption_uploaded') is True
                  and type(audit.get('contains_synthetic_media')) is bool,
+                 'recovery_audit_invalid')
+    if public_recovery:
+        _require(audit.get('publication_proof') == 'blocked_public_recovery'
+                 and re.fullmatch(r'[0-9a-f]{64}', str(audit.get('public_recovery_receipt_sha256') or ''))
+                 and audit.get('thumbnail_uploaded') is True,
                  'recovery_audit_invalid')
     # An idempotent response describes the earlier transition, not eligibility
     # now: a later production job may already have reserved the next topic.
@@ -201,11 +208,54 @@ def resume_after_public_retry(
                                expected_profile_revision, now=now, release_mode='public')
 
 
+def resume_after_blocked_public_retry(
+    channel_id: str, original_task_id: str, recovered_task_id: str,
+    expected_profile_revision: str, *, now: float | None = None,
+) -> dict:
+    """Resume only from a separately verified, already-public recovery receipt.
+
+    Historical blocked source attribution, publisher and upload records remain
+    unchanged. This never performs a release or turns their errors into passes.
+    """
+    return _resume_after_retry(channel_id, original_task_id, recovered_task_id,
+                               expected_profile_revision, now=now, release_mode='public',
+                               public_recovery=True)
+
+
+def _public_recovery_proof(client, snapshots, records, credential):
+    from app.services.blocked_public_recovery import RECOVERY_PREFIX
+    from app.services.blocked_public_release import PUBLIC_RECOVERY_PREFIX, validate_public_recovery_receipt
+    from app.services.youtube_auth import AUTH_EPOCH_KEY
+
+    source_id = records['source']['task_id']
+    receipt = _json_snapshot(client, PUBLIC_RECOVERY_PREFIX + source_id, snapshots)
+    assets = _json_snapshot(client, RECOVERY_PREFIX + source_id, snapshots)
+    epoch = client.get(AUTH_EPOCH_KEY)
+    snapshots.append((AUTH_EPOCH_KEY, {'kind': 'none' if epoch is None else 'string', 'value': epoch}))
+    proof = validate_public_recovery_receipt(records, assets, receipt,
+                                            credential_cipher=credential, authorization_epoch=epoch)
+    _require(isinstance(proof, dict)
+             and proof.get('source_task_id') == source_id
+             and proof.get('publish_task_id') == records['publisher'].get('task_id')
+             and proof.get('youtube_video_id') == records['ledger'].get('youtube_video_id')
+             and proof.get('target_channel_id') == records['profile'].get('channel_id')
+             and proof.get('connection_id') == records['channel'].get('connection_id')
+             and proof.get('profile_revision') == records['profile'].get('profile_revision')
+             and proof.get('privacy_status') == proof.get('release_status') == 'public'
+             and proof.get('caption_uploaded') is True and proof.get('thumbnail_uploaded') is True
+             and proof.get('contains_synthetic_media') is True
+             and re.fullmatch(r'[0-9a-f]{64}', str(proof.get('receipt_sha256') or '')),
+             'recovery_public_receipt_invalid')
+    return proof
+
+
 def _resume_after_retry(
     channel_id: str, original_task_id: str, recovered_task_id: str,
     expected_profile_revision: str, *, now: float | None, release_mode: str,
+    public_recovery: bool = False,
 ) -> dict:
     public = release_mode == 'public'
+    _require(not public_recovery or public, 'recovery_mode_invalid')
     _require(isinstance(channel_id, str) and _ID.fullmatch(channel_id) is not None,
              'recovery_channel_invalid')
     _require(all(isinstance(value, str) and _TASK_ID.fullmatch(value) is not None
@@ -218,11 +268,12 @@ def _resume_after_retry(
              'recovery_time_invalid')
     try:
         client = _redis()
-        audit_key = (PUBLIC_RESUME_PREFIX if public else RESUME_PREFIX) + channel_id + ':' + original_task_id
+        prefix = PUBLIC_RECOVERY_RESUME_PREFIX if public_recovery else PUBLIC_RESUME_PREFIX if public else RESUME_PREFIX
+        audit_key = prefix + channel_id + ':' + original_task_id
         prior = client.get(audit_key)
         if prior is not None:
             return _audit_result(prior, 'already_resumed', channel_id, original_task_id,
-                                 recovered_task_id, expected_profile_revision, release_mode)
+                                 recovered_task_id, expected_profile_revision, release_mode, public_recovery)
         snapshots = []
         profile = _json_snapshot(client, PROFILE_PREFIX + channel_id, snapshots)
         state = _hash_snapshot(client, CHANNEL_STATE_PREFIX + channel_id, snapshots)
@@ -372,30 +423,39 @@ def _resume_after_retry(
         publisher = _json_snapshot(client, JOB_PREFIX + publish_id, snapshots)
         delivered = publisher.get('result')
         publish_spec = publisher.get('spec')
+        upload = _json_snapshot(client, UPLOAD_PREFIX + recovered_task_id, snapshots)
+        recovered_proof = None
+        if public_recovery:
+            recovered_proof = _public_recovery_proof(client, snapshots, {
+                'source': chain[0], 'publisher': publisher, 'ledger': upload,
+                'profile': profile, 'channel': connection,
+            }, credential)
         _require(
             publisher.get('task_id') == publish_id and publisher.get('kind') == 'publish'
             and publisher.get('state') == 'SUCCESS' and publisher.get('parent_id') == recovered_task_id
             and isinstance(publish_spec, dict) and publish_spec.get('source_task_id') == recovered_task_id
             and isinstance(delivered, dict) and delivered.get('source_task_id') == recovered_task_id
             and delivered.get('status') == 'complete'
-            and (_public(delivered) if public else _private(delivered)),
+            and (recovered_proof is not None or (_public(delivered) if public else _private(delivered))),
             'recovery_publication_not_complete',
         )
         video_id = delivered.get('youtube_video_id')
         _require(isinstance(video_id, str) and _VIDEO_ID.fullmatch(video_id) is not None,
                  'recovery_video_invalid')
         attribution = result.get('youtube')
-        _require(isinstance(attribution, dict) and (_public(attribution) if public else _private(attribution))
+        _require(isinstance(attribution, dict)
+                 and (recovered_proof is not None or (_public(attribution) if public else _private(attribution)))
                  and attribution.get('video_id') == video_id, 'recovery_attribution_invalid')
-        upload = _json_snapshot(client, UPLOAD_PREFIX + recovered_task_id, snapshots)
         plan = upload.get('publish_plan')
         _require(
             upload.get('source_task_id') == recovered_task_id and upload.get('publish_task_id') == publish_id
             and upload.get('status') == 'complete' and upload.get('youtube_video_id') == video_id
-            and upload.get('requested_release_mode') == release_mode and upload.get('release_status') == release_mode
+            and upload.get('requested_release_mode') == release_mode
             and upload.get('side_effect_possible') is True
-            and upload.get('release_side_effect_possible') is public
-            and not upload.get('requested_publish_at') and not upload.get('release_error_code')
+            and (recovered_proof is not None or (
+                upload.get('release_status') == release_mode
+                and upload.get('release_side_effect_possible') is public and not upload.get('release_error_code')))
+            and not upload.get('requested_publish_at')
             and isinstance(plan, dict) and plan.get('source_task_id') == recovered_task_id
             and plan.get('release_mode') == release_mode and not plan.get('publish_at')
             and plan.get('profile_revision') == expected_profile_revision
@@ -412,8 +472,8 @@ def _resume_after_retry(
                  and upload.get('connection_id') == connection_id
                  and plan.get('target_channel_id') == channel_id, 'recovery_publication_binding_changed')
         if public:
-            _require(upload.get('version') == 2 and _public(upload)
-                     and bool(upload.get('release_completed_at'))
+            _require(upload.get('version') == 2
+                     and (recovered_proof is not None or (_public(upload) and bool(upload.get('release_completed_at'))))
                      and delivered.get('task_id') == publish_id
                      and automation.get('target_channel_id') == channel_id
                      and automation.get('profile_revision') == expected_profile_revision
@@ -423,7 +483,7 @@ def _resume_after_retry(
             _require(type(disclosure) is bool
                      and (not contains_synthetic_media(chain[0]) or disclosure is True),
                      'recovery_disclosure_unverified')
-            for record in (delivered, attribution):
+            for record in ((recovered_proof,) if recovered_proof is not None else (delivered, attribution)):
                 _require(record.get('contains_synthetic_media') is disclosure,
                          'recovery_disclosure_unverified')
                 _require(record.get('caption_uploaded') is True
@@ -452,6 +512,9 @@ def _resume_after_retry(
         if public:
             audit.update(release_mode='public', release_status='public', caption_uploaded=True,
                          contains_synthetic_media=plan['contains_synthetic_media'])
+        if recovered_proof is not None:
+            audit.update(publication_proof='blocked_public_recovery', thumbnail_uploaded=True,
+                         public_recovery_receipt_sha256=recovered_proof['receipt_sha256'])
         keys = [audit_key, CHANNEL_STATE_PREFIX + channel_id, ACTIVE_KEY,
                 OAUTH_CREDENTIAL_PREFIX + channel_id, OAUTH_CHANNEL_INDEX]
         keys.extend(key for key, _ in snapshots)
@@ -462,7 +525,7 @@ def _resume_after_retry(
         )
         _require(status in {'resumed', 'already_resumed'}, 'recovery_' + str(status))
         return _audit_result(raw, status, channel_id, original_task_id, recovered_task_id,
-                             expected_profile_revision, release_mode)
+                             expected_profile_revision, release_mode, public_recovery)
     except ProductionRecoveryError:
         # Another identical caller can finish after our initial audit read but
         # before we finish validation. Its durable result wins; do not mistake
@@ -473,7 +536,7 @@ def _resume_after_retry(
             raise ProductionRecoveryError('recovery_state_unavailable') from None
         if prior is not None:
             return _audit_result(prior, 'already_resumed', channel_id, original_task_id,
-                                 recovered_task_id, expected_profile_revision, release_mode)
+                                 recovered_task_id, expected_profile_revision, release_mode, public_recovery)
         raise
     except Exception:
         # Do not log raw records, claim tokens, credentials, or provider errors.
