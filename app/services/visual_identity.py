@@ -16,6 +16,21 @@ _MANUFACTURED_REPLICA_PATTERN = re.compile(
     r"ler(?:i|in|e|de|den|le)?)?)\b",
     flags=re.IGNORECASE,
 )
+_STRUCTURE_SUBJECT = (
+    r'(?:bridges?|buildings?|houses?|castles?|monuments?|'
+    r'köprü(?:nün|ler(?:in)?)?|bina(?:nın|lar(?:ın)?)?|'
+    r'kale(?:nin|ler(?:in)?)?)'
+)
+_STRUCTURE_REPLICA_WORD = (
+    r'(?:replicas?|replika(?:sı(?:n(?:ı|a|da|dan)?)?|sıyla|'
+    r'nın|ya|yı|da|dan|yla|lar(?:ı|ın|a|da|dan|la)?)?)'
+)
+_STRUCTURE_REPLICA_PATTERN = re.compile(
+    rf'\b(?:{_STRUCTURE_SUBJECT}\s+{_STRUCTURE_REPLICA_WORD}|'
+    rf'{_STRUCTURE_REPLICA_WORD}\s+{_STRUCTURE_SUBJECT}|'
+    rf'replicas?\s+of\s+(?:(?:a|an|the|this|that)\s+)?{_STRUCTURE_SUBJECT})\b',
+    flags=re.IGNORECASE,
+)
 _AUTHORED_HUMAN_EXCLUSION_PATTERN = re.compile(
     r"\b(?:no|without)\s+(?:humans?|people|persons?|human\s+hands?|hands?)\b|"
     r"\b(?:insansız|insan\s+yok|kişi\s+yok|el\s+yok|"
@@ -104,8 +119,17 @@ def _match_is_negated(text: str, match: re.Match[str]) -> bool:
 def manufactured_replica_required(scene: dict) -> bool:
     """Recognize only explicitly authored toy, model or replica identities."""
     authored_text = _scene_authored_text(scene)
+    # An architectural replica may be a functioning full-sized structure,
+    # not a toy. Exclude only that replica noun phrase, never the whole scene:
+    # an explicit miniature/Lego/scale-model identity must still be honored.
+    # This is not evidence that a depicted building, banknote or clip is real.
+    structure_replicas = list(_STRUCTURE_REPLICA_PATTERN.finditer(authored_text))
     return any(
         not _match_is_negated(authored_text, match)
+        and not any(
+            structure.start() <= match.start() and match.end() <= structure.end()
+            for structure in structure_replicas
+        )
         for match in _MANUFACTURED_REPLICA_PATTERN.finditer(authored_text)
     )
 
