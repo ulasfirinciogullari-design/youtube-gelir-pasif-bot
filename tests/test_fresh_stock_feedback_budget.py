@@ -201,6 +201,23 @@ def test_gemini_json_schema_request_contract_is_unchanged(monkeypatch):
     assert gemini.call_args_list[1].kwargs['retry_once'] is False
 
 
+@pytest.mark.parametrize('fresh', [True, False])
+def test_optional_gemini_receives_server_selected_style_not_candidate_instruction(monkeypatch, fresh):
+    value = package()
+    value['content_style'] = 'story'
+    client = FakeClient([generated(value), reviewed()])
+    independent = Mock(return_value=None)
+    monkeypatch.setattr(director, 'run_optional_gemini_critic', independent)
+    director._repair_short_stock_scenes(
+        client, value, 'English', .5, TOPIC,
+        content_style='documentary', fresh_scheduled=fresh,
+    )
+    independent.assert_called_once()
+    assert independent.call_args.kwargs['content_style'] == 'documentary'
+    assert independent.call_args.kwargs['fresh_scheduled'] is fresh
+    assert independent.call_args.kwargs['allowed_false_paths'] == frozenset()
+
+
 def test_stock_video_contract_is_shared_without_brand_or_event_specific_exception():
     client = FakeClient([generated(package()), reviewed()])
     run(client)

@@ -3174,6 +3174,8 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 gemini_attestation = run_optional_gemini_critic(
                     critic_context,
                     critic_shape,
+                    content_style=normalized_content_style,
+                    fresh_scheduled=fresh_stock_planning,
                     enabled=getattr(
                         settings,
                         'gemini_critic_enabled',
