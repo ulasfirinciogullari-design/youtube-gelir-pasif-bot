@@ -27,6 +27,9 @@ _SHORT_PREVIEW_BOUNDARY_BREATH_SIDE = 0.18
 _SHORT_PREVIEW_LONG_TAIL = 0.28
 _SHORT_PREVIEW_RETAINED_TAIL = 0.20
 _SHORT_PREVIEW_COMPACTION_TOLERANCE = 0.18
+# A measured short take may use a modest pitch-preserving slowdown, but the
+# cumulative rate and fresh transcript/duration/prosody gates remain binding.
+_SHORT_NARRATION_MIN_TEMPO = 0.93
 
 
 class VoiceQualityError(RuntimeError):
@@ -785,14 +788,14 @@ def _fit_duration(
         # Leave already-valid narration unchanged. Fit only to just above the
         # existing duration-QA floor, not all the way to a filled timeline.
         and before < float(target_seconds) - 1.30
-        and before / short_minimum_fit >= 0.94
+        and before / short_minimum_fit >= _SHORT_NARRATION_MIN_TEMPO
     )
     if recoverable_short_deficit:
         desired = short_minimum_fit
     needs_fit = bool(
         target_seconds and target_seconds > 0
         and (
-            # At most 6% slower for a recoverable shortfall. Thinner scripts
+            # At most 7% slower for a recoverable shortfall. Thinner scripts
             # remain unchanged and must fail the downstream duration gate.
             (short_preview and (before > desired + 0.015 or recoverable_short_deficit))
             or (
@@ -804,7 +807,7 @@ def _fit_duration(
     if needs_fit:
         requested_rate = before / desired
         # Large tempo changes hide a bad script budget and sound synthetic.
-        if requested_rate < (0.94 if short_preview else 0.92) or requested_rate > 1.12:
+        if requested_rate < (_SHORT_NARRATION_MIN_TEMPO if short_preview else 0.92) or requested_rate > 1.12:
             raise VoiceScriptFitError(
                 f'Narration needs {requested_rate:.3f}x tempo to fit {target_seconds:.1f}s; '
                 'rewrite the script instead of distorting the voice'
@@ -812,7 +815,7 @@ def _fit_duration(
         # Report the exact value sent to FFmpeg, not an unrounded estimate.
         tempo_rate = round(requested_rate, 6)
         cumulative_rate = prior_tempo_rate * tempo_rate
-        if cumulative_rate < (0.94 if short_preview else 0.92) - 1e-12 or cumulative_rate > 1.12 + 1e-12:
+        if cumulative_rate < (_SHORT_NARRATION_MIN_TEMPO if short_preview else 0.92) - 1e-12 or cumulative_rate > 1.12 + 1e-12:
             raise VoiceScriptFitError(
                 'Existing narration would exceed the cumulative tempo limit; '
                 'rewrite the script instead of repeatedly stretching the voice'
@@ -841,7 +844,7 @@ def fit_existing_narration_candidate(voice_result: dict, target_seconds: float) 
         type(target_seconds) not in (int, float)
         or not math.isfinite(target_seconds) or target_seconds <= 0
         or type(prior_rate) not in (int, float) or not math.isfinite(prior_rate)
-        or not (0.94 if target_seconds <= 40 else 0.92) - 1e-12 <= prior_rate <= 1.12 + 1e-12
+        or not (_SHORT_NARRATION_MIN_TEMPO if target_seconds <= 40 else 0.92) - 1e-12 <= prior_rate <= 1.12 + 1e-12
         or not isinstance(path, (str, Path))
         or not isinstance(durations, list) or not durations
         or any(type(value) not in (int, float) or not math.isfinite(value) or value <= 0 for value in durations)
