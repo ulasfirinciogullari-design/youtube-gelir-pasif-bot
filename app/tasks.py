@@ -245,6 +245,12 @@ def _validated_recovered_generated_media(
         raise FinalVisualQualityError(
             'Recovered generated-media contract is malformed'
         )
+    if raw.get('version') == 5:
+        try:
+            from app.services.mixed_visual_recovery import validate_mixed_visual_recovery
+            return validate_mixed_visual_recovery(raw, scene_count, expected_package_sha256)
+        except Exception:
+            raise FinalVisualQualityError('Mixed recovery contract could not be verified') from None
 
     if raw.get('version') in (2, 3, 4):
         partitioned_repair = raw.get('version') == 4
@@ -948,7 +954,7 @@ def _require_recovered_media_coverage(
         return
     selected = set(int(index) for index in selected_scene_indices)
     recovered = set(recovered_generated_media['scenes'])
-    if recovered_generated_media.get('version') in (2, 4):
+    if recovered_generated_media.get('version') in (2, 4, 5):
         recovered |= set(
             recovered_generated_media['repair_scene_indices']
         )
@@ -1002,6 +1008,8 @@ def _collect_curated_recovery_visuals(
     recovered_media: dict, recovered_voice: dict, task_id: str, work: Path,
 ) -> dict:
     """Load the five pinned stocks and existing paid shot before any review."""
+    if recovered_media.get('version') == 5:
+        return _collect_mixed_recovery_visuals(recovered_media, recovered_voice, work)
     try:
         from app.services.curated_stock import load_curated_stock_manifest
         from app.services.voice_candidate_recovery import _download_bounded
@@ -1046,6 +1054,133 @@ def _collect_curated_recovery_visuals(
                 'seen_ids': {pool[0]['pexels_id'] for pool in pools.values()}}
     except Exception:
         raise FinalVisualQualityError('Curated recovery media could not be verified; no replacement media was generated') from None
+
+
+def _mixed_recovery_source(
+    task_id: str, source_task_id: str | None, runtime_spec: dict,
+    approved_package: dict | None, recovered_media: dict, recovered_voice: dict | None,
+    cap: int | None, *, paid_slots_used: int,
+) -> dict:
+    """V5 is a claimed server recovery, not a caller-selected stock option."""
+    from app.services.studio_state import get_job
+
+    if (
+        not isinstance(approved_package, dict) or not source_task_id
+        or not isinstance(task_id, str) or _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(task_id) is None
+        or task_id == source_task_id or source_task_id != recovered_media.get('source_task_id')
+        or runtime_spec.get('mode') != 'production' or runtime_spec.get('format') != 'shorts'
+        or runtime_spec.get('duration_minutes') != 0.5 or runtime_spec.get('language') != 'tr'
+        or runtime_spec.get('music') != 'off' or len(approved_package.get('scenes') or []) != 6
+        or recovered_media.get('version') != 5 or not recovered_voice
+        or recovered_media['source_task_id'] != recovered_voice['source_task_id']
+        or type(cap) is not int or cap < 1
+    ):
+        raise FinalVisualQualityError('Mixed recovery requires a bounded claimed production Short')
+    _validate_paid_create_allocation(
+        [{'scene_index': index} for index in sorted(
+            set(recovered_media['scenes']) | set(recovered_media['repair_scene_indices'])
+        )], recovered_media, cap, paid_slots_used=paid_slots_used,
+    )
+    source, child = get_job(source_task_id), get_job(task_id)
+    if (
+        not isinstance(source, dict) or not isinstance(child, dict)
+        or source.get('task_id') != source_task_id or source.get('kind') != 'render'
+        or source.get('state') != 'FAILURE' or source.get('retry_child_task_id') != task_id
+        or child.get('task_id') != task_id or child.get('parent_id') != source_task_id
+        or child.get('kind') != 'render'
+        or source.get('spec') != runtime_spec or child.get('spec') != runtime_spec
+    ):
+        raise FinalVisualQualityError('Mixed recovery dispatch binding is invalid')
+    return source
+
+
+def _collect_mixed_recovery_visuals(recovered_media: dict, recovered_voice: dict, work: Path) -> dict:
+    """Load only the immutable real stock and retained generated shot; no search."""
+    try:
+        from app.services.mixed_visual_recovery import load_mixed_stock
+        from app.services.voice_candidate_recovery import _download_bounded
+        from app.services import storage
+
+        stock = load_mixed_stock(recovered_media, work)
+        pools = stock['scene_visuals']
+        if not isinstance(pools, dict) or set(pools) != {5}:
+            raise ValueError('Invalid mixed stock coverage')
+        pool = pools[5]
+        if (not isinstance(pool, list) or len(pool) != 1 or not isinstance(pool[0], dict)
+                or pool[0].get('source_type') != 'stock' or pool[0].get('stock_provider') != 'pexels'
+                or pool[0].get('generated') is not False):
+            raise ValueError('Invalid mixed stock identity')
+        spec = dict(pool[0])
+        entry = recovered_media['stock_scenes'][5]
+        _validate_recovered_generated_clip(
+            Path(spec['path']), minimum_duration=max(5.0, recovered_voice['scene_durations'][5] + 0.35),
+            expected_size=entry['size'], expected_sha256=entry['sha256'],
+        )
+        spec.update(curated_pinned=True, preserve_start_fraction=True, forbid_loop=True)
+        scene_visuals = [[] for _ in range(6)]
+        scene_visuals[5] = [spec]
+        entry = recovered_media['scenes'][1][0]
+        path = work / 'recovered_s01_00.mp4'
+        if path.exists() or path.is_symlink():
+            raise ValueError('Mixed paid destination already exists')
+        checksum, _size = _download_bounded(
+            storage._client(), entry['key'], path, _MAX_RECOVERED_VIDEO_BYTES,
+            expected_size=entry['size'],
+        )
+        if checksum != entry['sha256']:
+            raise ValueError('Mixed paid source changed')
+        _validate_recovered_generated_clip(
+            path, minimum_duration=max(5.0, recovered_voice['scene_durations'][1] + 0.35),
+            expected_size=entry['size'], expected_sha256=entry['sha256'],
+        )
+        paid = _generated_visual_spec(path, provider=entry['provider'], provider_attempts=entry['provider_attempts'])
+        paid.update(curated_pinned=True, generation_recovered=True,
+                    recovered_from_task_id=recovered_media['source_task_id'])
+        scene_visuals[1] = [paid]
+        return {'scene_visuals': scene_visuals, 'credits': stock['credits'], 'seen_ids': {spec['pexels_id']}}
+    except Exception:
+        raise FinalVisualQualityError('Mixed recovery media could not be verified; no replacement media was generated') from None
+
+
+def _review_mixed_retained_before_paid(
+    scenes: list[dict], scene_visuals: list[list[dict]], voice_result: dict,
+    work: Path, topic: str, options: dict, evidence_sources: list,
+) -> dict:
+    """Freshly approve only exact retained cuts before buying any repair."""
+    try:
+        from app.services.mixed_visual_recovery import exact_mixed_retained_visuals
+        prepared = exact_mixed_retained_visuals(scenes, scene_visuals, voice_result, work)
+        result = review_scene_visuals(
+            [scenes[index] for index in (1, 5)],
+            [prepared['scene_visuals'][index] for index in (1, 5)],
+            work / 'mixed_prepaid_visual_qc', 2,
+            _missing_review_attempts=0, _score_reason_consistency_attempts=0,
+            topic=topic, story_scenes=scenes,
+            content_style=options.get('content_style', ''), evidence_sources=evidence_sources,
+        )
+        if (not isinstance(result, dict) or result.get('missing_review_indices')
+                or not isinstance(result.get('reviews'), list) or len(result['reviews']) != 2):
+            raise ValueError('Mixed retained review missing')
+        reviews = {}
+        threshold = max(MANUAL_QA_PUBLISH_QUALITY_THRESHOLD, int(options['quality_threshold']))
+        for review in result['reviews']:
+            if (not isinstance(review, dict) or type(review.get('scene_index')) is not int
+                    or review['scene_index'] not in (0, 1) or review['scene_index'] in reviews
+                    or type(review.get('score')) not in (int, float)
+                    or not threshold <= review['score'] <= 100
+                    or type(review.get('best_candidate_index')) is not int or review['best_candidate_index'] != 0
+                    or any(review.get(key) is not True for key in (
+                        'evidence_gate_passed', 'editorial_gate_passed', 'identity_gate_passed',
+                        'subject_visible', 'spoken_action_visible'))
+                    or review.get('unexplained_reset') is not False
+                    or any(review.get(key) is not False for key in _MANUAL_QA_CLEAR_VISUAL_FIELDS)):
+                raise ValueError('Mixed retained exact cut rejected')
+            reviews[review['scene_index']] = review
+        return {**result, 'reviews': [
+            {**reviews[local], 'scene_index': index} for local, index in enumerate((1, 5))
+        ]}
+    except Exception:
+        raise FinalVisualQualityError('Mixed retained exact-cut quality gate failed before any new media submission') from None
 
 
 SHORT_PREVIEW_PROVIDER_OUTAGE_RUNWAY_CAP = 2
@@ -4205,7 +4340,7 @@ def run_video_pipeline(
             and not recovered_generated_media
         ) or (
             recovered_generated_media
-            and recovered_generated_media.get('version') in (2, 3, 4)
+            and recovered_generated_media.get('version') in (2, 3, 4, 5)
             and not recovered_voice
         ):
             raise FinalVisualQualityError(
@@ -4239,12 +4374,20 @@ def run_video_pipeline(
                 paid_slots_used=runway_attempts,
             )
         curated_source_job = (
-            _curated_recovery_source(
+            _mixed_recovery_source(
                 task_id, retry_dispatch_source_id,
                 _task_spec(topic, duration_minutes, language, channel_id, options),
-                approved_package, curated_stock_manifest,
-                recovered_generated_media, recovered_voice,
-            ) if curated_stock_manifest is not None else None
+                approved_package, recovered_generated_media, recovered_voice,
+                total_paid_create_cap, paid_slots_used=runway_attempts,
+            ) if recovered_generated_media and recovered_generated_media.get('version') == 5
+            and curated_stock_manifest is None else (
+                _curated_recovery_source(
+                    task_id, retry_dispatch_source_id,
+                    _task_spec(topic, duration_minutes, language, channel_id, options),
+                    approved_package, curated_stock_manifest,
+                    recovered_generated_media, recovered_voice,
+                ) if curated_stock_manifest is not None else None
+            )
         )
         _preflight_production_shorts_paid_plan(
             options,
@@ -4255,7 +4398,7 @@ def run_video_pipeline(
         )
         scene_repair_recovery = bool(
             recovered_generated_media
-            and recovered_generated_media.get('version') in (2, 4)
+            and recovered_generated_media.get('version') in (2, 4, 5)
         )
         recovery_repair_scene_indices = set(
             recovered_generated_media.get('repair_scene_indices') or []
@@ -4650,17 +4793,23 @@ def run_video_pipeline(
         should_generate_music = options.get('mode') == 'production' and options.get('music') == 'auto'
 
         with ThreadPoolExecutor(max_workers=2 if should_generate_music else 1) as quality_pool:
-            qc_future = quality_pool.submit(
-                review_scene_visuals,
-                scenes,
-                scene_visuals,
-                work,
-                len(scenes) if duration_minutes <= 1 else min(14, len(scenes)),
-                topic=topic,
-                story_scenes=scenes,
-                content_style=options.get('content_style', ''),
-                evidence_sources=package.get('sources') or [],
-            )
+            if recovered_generated_media and recovered_generated_media.get('version') == 5:
+                qc_future = quality_pool.submit(
+                    _review_mixed_retained_before_paid, scenes, scene_visuals, voice_result,
+                    work, topic, options, package.get('sources') or [],
+                )
+            else:
+                qc_future = quality_pool.submit(
+                    review_scene_visuals,
+                    scenes,
+                    scene_visuals,
+                    work,
+                    len(scenes) if duration_minutes <= 1 else min(14, len(scenes)),
+                    topic=topic,
+                    story_scenes=scenes,
+                    content_style=options.get('content_style', ''),
+                    evidence_sources=package.get('sources') or [],
+                )
             music_future = None
             if should_generate_music:
                 music_future = quality_pool.submit(
@@ -4812,7 +4961,9 @@ def run_video_pipeline(
 
         # Score the exact clips selected after stock retries. Paid Runway slots
         # are ranked by current evidence, never scene order or stale scores.
-        pre_runway_qc = review_scene_visuals(
+        pre_runway_qc = visual_qc if (
+            recovered_generated_media and recovered_generated_media.get('version') == 5
+        ) else review_scene_visuals(
             scenes,
             scene_visuals,
             work / 'pre_runway_visual_qc',
@@ -5235,21 +5386,33 @@ def run_video_pipeline(
             ranked: list[dict] = []
             for candidate_scene_idx, scene in enumerate(scenes):
                 candidate_review = current_reviews.get(candidate_scene_idx)
-                prompt = (
-                    _runway_prompt_for_scene(
-                        scene,
-                        candidate_review,
-                        generation_aspect_ratio,
+                if (
+                    options.get('mode') == 'production' and options.get('format') == 'shorts'
+                    and duration_minutes == 0.5 and recovered_generated_media
+                    and recovered_generated_media.get('version') in (4, 5)
+                    and candidate_scene_idx in recovery_repair_scene_indices
+                ):
+                    # Validate every explicit repair direction before the paid
+                    # loop. Old search/critic staging must not overwrite or
+                    # truncate the newly approved authored shooting contract.
+                    from app.services.production_shot_prompt import build_production_shot_prompt
+                    prompt = build_production_shot_prompt(scene)
+                else:
+                    prompt = (
+                        _runway_prompt_for_scene(
+                            scene,
+                            candidate_review,
+                            generation_aspect_ratio,
+                        )
+                        if (
+                            not is_bounded_short_preview
+                            or str(scene.get('ai_prompt') or '').strip()
+                            or candidate_scene_idx in provider_outage_stock_scenes
+                            or candidate_scene_idx in stock_quality_fallback_scenes
+                            or candidate_scene_idx in recovery_paid_scene_indices
+                        )
+                        else ''
                     )
-                    if (
-                        not is_bounded_short_preview
-                        or str(scene.get('ai_prompt') or '').strip()
-                        or candidate_scene_idx in provider_outage_stock_scenes
-                        or candidate_scene_idx in stock_quality_fallback_scenes
-                        or candidate_scene_idx in recovery_paid_scene_indices
-                    )
-                    else ''
-                )
                 if not prompt:
                     continue
                 prompts[candidate_scene_idx] = prompt
@@ -5678,6 +5841,11 @@ def run_video_pipeline(
             )
             if curated_preloaded:
                 stock_fallback = []
+            if recovered_generated_media and recovered_generated_media.get('version') == 5:
+                # Keep the preloaded generated identity only; neither the
+                # repair slots nor the pinned real stock can be substituted.
+                stock_fallback = []
+                scene_visuals[scene_idx] = []
             recovered_scene_entries = (
                 recovered_generated_media['scenes'].get(scene_idx)
                 if recovered_generated_media
@@ -5688,7 +5856,7 @@ def run_video_pipeline(
                 for recovered_idx, raw_entry in enumerate(
                     recovered_scene_entries
                 ):
-                    if recovered_generated_media.get('version') in (2, 3, 4):
+                    if recovered_generated_media.get('version') in (2, 3, 4, 5):
                         entry = raw_entry
                     else:
                         entry = {
@@ -5886,6 +6054,8 @@ def run_video_pipeline(
                         generated_scene.get('provider_attempts') or 1
                     ),
                 )
+                if recovered_generated_media and recovered_generated_media.get('version') == 5:
+                    runway_spec['curated_pinned'] = True
                 if generated_scene.get('synthetic_motion') is True:
                     runway_spec.update({
                         'synthetic_motion_only': True,
@@ -6459,7 +6629,7 @@ def run_video_pipeline(
         # scenes already changed above go straight back to exact-clip QC.
         rescued_final_scenes: list[int] = list(final_runway_repair_scenes)
         for scene_idx in rejected_final_scenes:
-            if recovered_generated_media and recovered_generated_media.get('version') == 4:
+            if recovered_generated_media and recovered_generated_media.get('version') in (4, 5):
                 # No stock substitution or undeclared second generation after
                 # a failed exact V4 clip; retain the normal final-QA failure.
                 continue
