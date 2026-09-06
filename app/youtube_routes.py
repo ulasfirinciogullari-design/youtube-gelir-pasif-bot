@@ -279,7 +279,7 @@ def _youtube_watch_url(job: dict) -> str:
     return ''
 
 
-def _production_status_text(profile: dict, state: dict | None) -> str:
+def _production_status_text(profile: dict, state: dict | None, production_retry: dict | None = None) -> str:
     if profile.get('production_enabled') is not True:
         return 'Otomatik üretim kapalı'
     if profile.get('auto_publish') is not True:
@@ -291,6 +291,12 @@ def _production_status_text(profile: dict, state: dict | None) -> str:
         return 'Üretim takvimi etkin'
     if state.get('unavailable'):
         return 'Üretim durumu alınamadı'
+    if state.get('paused_reason') == 'previous_render_failed' and isinstance(production_retry, dict):
+        presentation = _studio_presentation()
+        if presentation._canonical_task_id(production_retry.get('task_id')):
+            label = presentation.PRODUCTION_RETRY_LABELS.get(production_retry.get('status'))
+            if label:
+                return label
     if state.get('paused_reason') or state.get('dispatch_status') == 'uncertain':
         return 'Duraklatıldı · kontrol gerekiyor'
     if state.get('active_task_id'):
@@ -360,7 +366,8 @@ def _existing_release_form(job: dict, profile: dict | None) -> str:
     )
 
 
-def _profile_form(channel: dict, profile: dict | None, production_state: dict | None = None) -> str:
+def _profile_form(channel: dict, profile: dict | None, production_state: dict | None = None,
+                  production_retry: dict | None = None) -> str:
     profile = profile or {}
     channel_id = str(channel.get('id') or '')
     connection_id = str(channel.get('connection_id') or '')
@@ -385,7 +392,7 @@ def _profile_form(channel: dict, profile: dict | None, production_state: dict | 
     production_checked = ' checked' if profile.get('production_enabled') is True else ''
     production_topics = '\n'.join(profile.get('production_topics') or [])
     thumbnail_checked = ' checked' if profile.get('require_thumbnail') else ''
-    status = f'<span class="badge">{escape(_production_status_text(profile, production_state))}</span>'
+    status = f'<span class="badge">{escape(_production_status_text(profile, production_state, production_retry))}</span>'
     publication_label = (
         {
             'private': 'Otomatik yükleme · gizli',
@@ -465,7 +472,8 @@ def youtube_home(
                     production_state = get_production_state(channel_id)
                 except Exception:
                     production_state = {'unavailable': True}
-            profile_form = _profile_form(channel, profile, production_state)
+            production_retry = presentation._active_production_retry(profile, production_state, by_id)
+            profile_form = _profile_form(channel, profile, production_state, production_retry)
             channel_cards.append(f'''
 <article class="channel-card" id="channel-{escape(channel_id, quote=True)}"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Kanal ve otomasyon ayarları</div></div><span class="badge">{'Bağlantı yenilenmeli' if channel.get('requires_reconnect') is True else '● Bağlı'}</span></div>{profile_form}<div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
         count = int(status.get('connection_count') or len(connections))
