@@ -8,14 +8,26 @@ from unittest.mock import Mock
 
 import pytest
 
-from app.services import mixed_visual_recovery as recovery, studio_state
-from test_failed_visual_recovery import case as cb_case, SOURCE, PREP, CHILD, _sha, _snapshot, _save_source
+from app.services import audio_checkpoint, mixed_visual_recovery as recovery, studio_state
+from test_failed_visual_recovery import case as cb_case, SOURCE, PREP, CHILD, _sha, _snapshot, _save_source, _save_manifest
 from test_preserved_visual_recovery import _immutable_boundary
 
 
 @pytest.fixture
 def case(cb_case, monkeypatch):
     case = cb_case
+    # Actual CB shape: scene 1 was authored stock, then generated as a fallback.
+    # Re-persist the real hash-bound candidate/manifest, not just the input mock.
+    case.package['scenes'][1]['ai_prompt'] = None
+    case.package['scenes'][1]['visual_queries'] = ['Marsh grocery store exterior', 'Marsh grocery store entrance view']
+    pointer = audio_checkpoint.persist_audio_candidate_checkpoint(SOURCE, case.package, case.voice)['audio_candidate_checkpoint']
+    case.source['audio_candidate_checkpoint'] = pointer
+    case.manifest.update(source_audio_metadata_sha256=pointer['metadata_sha256'],
+                         source_audio_package_sha256=pointer['package_sha256'],
+                         source_state_sha256=recovery.cb._digest({
+                             'source': {key: case.source.get(key) for key in recovery.cb._RETRIEVAL_SOURCE_FIELDS},
+                             'ledger': {'cap': '6', 'used': '6'}}))
+    _save_source(case); _save_manifest(case)
     parent = case.source['parent_id']
     token = 'actual-bound-retry-token-00000000'
     case.redis.set(studio_state.JOB_PREFIX + parent, json.dumps({
@@ -83,9 +95,13 @@ def _actual_director_stock_result(package, queries):
     fields = {"repaired['scenes']", "repaired['narration']", "repaired['tts_narration']"}
     derived = [node for node in branch.body if any(assigns(node, field) for field in fields)]
     assert len(derived) == 3
+    stock_positions = [index for index, scene in enumerate(package['scenes'])
+                       if not str(scene.get('ai_prompt') or '').strip()]
     namespace = {'package': deepcopy(package), 'scenes': deepcopy(package['scenes']),
-                 'stock_positions': [5], 'accepted_rows': {5: {
-                     'narration': package['scenes'][5]['narration'], 'visual_queries': deepcopy(queries)}}}
+                 'stock_positions': stock_positions, 'accepted_rows': {index: {
+                     'narration': package['scenes'][index]['narration'], 'visual_queries': deepcopy(
+                         queries[index] if isinstance(queries, dict) else queries if index == 5
+                         else package['scenes'][index]['visual_queries'])} for index in stock_positions}}
     exec(compile(ast.Module(body=statements + derived, type_ignores=[]), str(path), 'exec'), namespace)
     return namespace['repaired']
 
@@ -108,7 +124,9 @@ def test_real_stock_writer_derived_fields_survive_prepare_publish_and_claim(case
     receipt = _receipt(case, pointer)
     package = receipt['approved_package']
     assert all('tts_text' not in scene for scene in receipt['source_package']['scenes'])
-    assert package['scenes'][5]['tts_text'] == package['scenes'][5]['narration']
+    assert [index for index, scene in enumerate(package['scenes']) if scene['ai_prompt'] is None] == [1, 5]
+    for index in (1, 5):
+        assert package['scenes'][index]['tts_text'] == package['scenes'][index]['narration']
     assert package['tts_narration'] == package['narration']
     assert package['scenes'][5]['visual_queries'] == queries
     assert _snapshot(case) == before
@@ -116,6 +134,9 @@ def test_real_stock_writer_derived_fields_survive_prepare_publish_and_claim(case
     assert {key: value for key, value in package.items() if key not in {
         '_recovered_voice', '_recovered_generated_media'}} == receipt['reviewed_package']
     assert case.visual_review.call_args.args[0][1] == package['scenes'][5]
+    assert case.visual_review.call_args.args[0][0] == package['scenes'][1]
+    assert case.visual_review.call_args.args[1][0][0]['generated'] is True
+    assert case.visual_review.call_args.args[1][0][0]['generation_provider'] == 'gemini_veo'
     assert case.visual_review.call_args.kwargs['story_scenes'] == package['scenes']
     assert recovery.publish_mixed_visual_recovery(pointer)['status'] == 'checkpoint_published'
     claimed = studio_state.claim_retry_dispatch(SOURCE, CHILD, 'k' * 32, allow_repair=True)
@@ -123,6 +144,59 @@ def test_real_stock_writer_derived_fields_survive_prepare_publish_and_claim(case
     assert claimed['checkpoint']['approved_package'] == package
     assert case.fetch.call_count == case.visual_review.call_count == case.story_review.call_count == 1
     assert case.redis.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX + SOURCE) == {'cap': '6', 'used': '6'}
+
+
+def test_both_authored_stock_query_updates_keep_actual_generated_and_stock_assets(case):
+    queries = {1: ['Marsh grocery store exterior wide view', 'Marsh grocery store entrance close view'],
+               5: ['warehouse worker scanning parcel barcode', 'warehouse worker scanning parcel barcode closeup']}
+    _use_actual_director_stock_result(case, queries)
+    pointer = _prepare(case)
+    receipt = _receipt(case, pointer)
+    package = receipt['approved_package']
+    for index in (1, 5):
+        assert package['scenes'][index]['visual_queries'] == queries[index]
+    media = package['_recovered_generated_media']
+    assert media['scenes']['1'][0]['sha256'] == recovery.cb.SELECTED[1][0]
+    assert media['scenes']['1'][0]['provider'] == 'gemini_veo'
+    assert media['stock_scenes']['5']['pexels_id'] == case.stock_candidate['pexels_id']
+    assert media['stock_scenes']['5']['start_fraction'] == case.stock_candidate['start_fraction']
+    assert recovery.publish_mixed_visual_recovery(pointer)['status'] == 'checkpoint_published'
+    case.fetch.assert_called_once(); case.visual_review.assert_called_once()
+
+
+@pytest.mark.parametrize('index', [1, 5])
+@pytest.mark.parametrize('field,value', [('narration', 'Changed narration'), ('tts_text', 'Changed speech'),
+    ('ai_prompt', 'New generated scene'), ('index', False), ('pace', 'changed'), ('transition', 'changed'), ('extra', True)])
+def test_actual_two_stock_positions_do_not_allow_non_derived_scene_changes(case, index, field, value):
+    original = case.story_review.side_effect
+    def changed(*args, **kwargs):
+        package = _actual_director_stock_result(original(*args, **kwargs), recovery.STOCK_QUERIES)
+        package['scenes'][index][field] = value
+        return package
+    case.story_review.side_effect = changed
+    with pytest.raises(recovery.MixedVisualRecoveryError) as caught: _prepare(case)
+    assert _receipt(case, caught.value.diagnostic_pointer)['failure_stage'] == 'immutable_story_contract'
+    case.visual_review.assert_not_called()
+    assert not case.redis.exists(studio_state.REPAIR_CHECKPOINT_PREFIX + SOURCE)
+
+
+@pytest.mark.parametrize('field', ['tts_text', 'visual_queries'])
+def test_nonnull_authored_ai_scene_one_keeps_exact_legacy_comparison(case, field):
+    shooting = recovery._shooting_package(case.package, case.overrides)
+    shooting['scenes'][1]['ai_prompt'] = 'Existing explicit generated store shot'
+    reviewed = _actual_director_stock_result(shooting, recovery.STOCK_QUERIES)
+    recovery._validate_reviewed_story(shooting, reviewed)
+    reviewed['scenes'][1][field] = (reviewed['scenes'][1]['narration'] if field == 'tts_text'
+                                   else ['Marsh grocery store exterior wide view', 'Marsh grocery store entrance close view'])
+    with pytest.raises(ValueError): recovery._validate_reviewed_story(shooting, reviewed)
+
+
+@pytest.mark.parametrize('index', [0, 2, 3, 4])
+def test_input_stock_exception_cannot_expand_to_an_ai_repair_position(case, index):
+    shooting = recovery._shooting_package(case.package, case.overrides)
+    shooting['scenes'][index]['ai_prompt'] = None
+    reviewed = deepcopy(shooting)
+    with pytest.raises(ValueError): recovery._validate_reviewed_story(shooting, reviewed)
 
 
 @pytest.mark.parametrize('damage', [
@@ -147,7 +221,7 @@ def test_derived_field_compatibility_does_not_allow_other_story_edits(case, dama
         if damage == 'stock_transition': stock_scene['transition'] = 'changed'
         if damage == 'stock_extra': stock_scene['approved'] = True
         if damage == 'retained_query': reviewed['scenes'][1]['visual_queries'] = ['different stock search']
-        if damage == 'retained_tts': reviewed['scenes'][1]['tts_text'] = reviewed['scenes'][1]['narration']
+        if damage == 'retained_tts': reviewed['scenes'][1]['tts_text'] = 'Changed retained speech'
         if damage == 'repair_prompt': reviewed['scenes'][0]['ai_prompt'] += ' Different shooting direction.'
         return reviewed
     case.story_review.side_effect = changed

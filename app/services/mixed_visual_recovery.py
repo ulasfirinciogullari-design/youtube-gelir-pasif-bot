@@ -140,7 +140,8 @@ def _shooting_package(original, overrides):
 def _validate_reviewed_story(shooting, reviewed):
     """Check the critic's output without changing its attested fingerprint.
 
-    The stock writer may refine only the pinned coda's search descriptions.
+    The stock writer may refine the immutable stock-routed retained shots.
+    A generated fallback can still have an authored stock route (scene 1).
     Its derived tts_text is not a narration edit when it is an exact echo.
     The same pinned bytes still require a fresh exact-cut visual review.
     """
@@ -152,9 +153,12 @@ def _validate_reviewed_story(shooting, reviewed):
     joined = ' '.join(scene['narration'] for scene in shooting['scenes'])
     _require(reviewed.get('narration') == joined
              and ('tts_narration' not in reviewed or reviewed['tts_narration'] == joined))
+    stock_positions = {index for index, scene in enumerate(shooting['scenes'])
+                       if not str(scene.get('ai_prompt') or '').strip()}
+    _require(5 in stock_positions and stock_positions <= {1, 5})
     for index, (before, after) in enumerate(zip(shooting['scenes'], reviewed['scenes'])):
         _require(type(before) is dict and type(after) is dict)
-        if index != 5:
+        if index not in stock_positions:
             _require(after == before)
             continue
         expected, actual = deepcopy(before), deepcopy(after)
