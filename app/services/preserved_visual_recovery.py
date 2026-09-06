@@ -101,6 +101,7 @@ def _shooting_package(package, overrides):
     candidate = deepcopy(package)
     for index, prompt in overrides.items():
         candidate['scenes'][index]['ai_prompt'] = prompt
+    candidate['narration'] = ' '.join(scene['narration'] for scene in candidate['scenes'])
     return candidate
 
 
