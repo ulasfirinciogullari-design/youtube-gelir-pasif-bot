@@ -439,6 +439,35 @@ def _metrics_time(value: Any) -> str:
         return 'Veri bekleniyor'
 
 
+def _known_public_video_view_subtotals(videos: dict) -> dict[str, int]:
+    """Presentation only: unique, current public-video observations, not channel totals."""
+    observed = {}
+    for video in list(videos.values())[:5000]:
+        if not isinstance(video, dict):
+            continue
+        channel_id, video_id = video.get('channel_id'), video.get('video_id')
+        if (not isinstance(channel_id, str) or re.fullmatch(r'[A-Za-z0-9_-]{8,128}', channel_id) is None
+                or not isinstance(video_id, str) or re.fullmatch(r'[A-Za-z0-9_-]{11}', video_id) is None):
+            continue
+        value = video.get('view_count')
+        count = value if (type(value) is int and 0 <= value <= 2**64 - 1
+                          and video.get('status') == 'fresh' and video.get('privacy_status') == 'public'
+                          and video.get('reason') is None
+                          and _metrics_time(video.get('fetched_at')) != 'Veri bekleniyor') else None
+        key = (channel_id, video_id)
+        # Duplicate task/publisher rows cannot double count or choose the more
+        # optimistic of contradictory observations for the same exact video.
+        if key not in observed:
+            observed[key] = count
+        elif observed[key] != count:
+            observed[key] = None
+    subtotals = {}
+    for (channel_id, _video_id), count in observed.items():
+        if count is not None:
+            subtotals[channel_id] = subtotals.get(channel_id, 0) + count
+    return {channel_id: count for channel_id, count in subtotals.items() if 0 < count <= 2**64 - 1}
+
+
 def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
     """Read/refresh the bounded metrics cache; never mutate render/publish jobs."""
     fallback = {'channels': [], 'videos': {}, 'updated_at': None, 'refresh_after_seconds': 300}
@@ -448,6 +477,11 @@ def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
         if not isinstance(model, dict) or not isinstance(model.get('channels'), list) or not isinstance(model.get('videos'), dict):
             return fallback
         model = {**model, 'channels': [dict(row) for row in model['channels'][:10] if isinstance(row, dict)]}
+        subtotals = _known_public_video_view_subtotals(model['videos'])
+        for row in model['channels']:
+            row.pop('known_public_video_view_subtotal', None)
+            if type(row.get('view_count')) is int and row['view_count'] == 0 and row.get('channel_id') in subtotals:
+                row['known_public_video_view_subtotal'] = subtotals[row['channel_id']]
     except Exception:
         return fallback
     try:
@@ -668,10 +702,15 @@ def _channel_overview(rows: list[dict]) -> str:
         if not isinstance(channel_id, str) or re.fullmatch(r'[A-Za-z0-9_-]{8,128}', channel_id) is None:
             continue
         title = _ellipsize(_safe_ui_text(row.get('title')), 48) or 'YouTube kanalı'
+        subtotal = row.get('known_public_video_view_subtotal')
+        total_pending = (type(row.get('view_count')) is int and row['view_count'] == 0
+                         and type(subtotal) is int and 0 < subtotal <= 2**64 - 1)
         counts = []
         for key, label in (('subscriber_count', 'Abone'), ('video_count', 'Herkese açık video'), ('view_count', 'Toplam izlenme')):
             text = 'Gizli' if key == 'subscriber_count' and row.get('subscriber_count_hidden') is True else _metric_number(row.get(key))
-            css = ' class="waiting"' if text == 'Veri bekleniyor' else ''
+            if key == 'view_count' and total_pending:
+                text = 'Kanal toplamı güncelleniyor'
+            css = ' class="waiting"' if text in {'Veri bekleniyor', 'Kanal toplamı güncelleniyor'} else ''
             counts.append(f'<div><b{css}>{text}</b><span>{label}</span></div>')
         production = {'active': 'Üretim sürüyor', 'scheduled': 'Takvim etkin', 'paused': 'Üretim durdu · kontrol gerekiyor',
                       'disabled': 'Otomatik üretim kapalı', 'exhausted': 'Konu listesi tamamlandı'}.get(row.get('production_status'), 'Üretim durumu bekleniyor')
@@ -688,6 +727,8 @@ def _channel_overview(rows: list[dict]) -> str:
         status = 'Son ölçüm: ' + _metrics_time(row.get('fetched_at'))
         if row.get('status') == 'stale':
             status += ' · Güncelleme bekleniyor'
+        if total_pending:
+            status += ' · Kayıtlı herkese açık videoların son ölçümü: ' + _metric_number(subtotal) + ' izlenme'
         cards.append(f'<article class="channel-summary"><div class="channel-summary-head"><h3>{escape(title)}</h3><a class="tiny" href="/studio/youtube#channel-{escape(channel_id, quote=True)}">Yönet</a></div><div class="channel-numbers">{"".join(counts)}</div><p class="metrics-note">{escape(status)}</p><div class="channel-schedule">' + ''.join(f'<span>{escape(item)}</span>' for item in schedule) + '</div></article>')
     return '<div class="channel-overview">' + (''.join(cards) or '<div class="empty">Kanal verileri bekleniyor. <a href="/studio/youtube">YouTube bağlantılarını aç</a></div>') + '</div>'
 
