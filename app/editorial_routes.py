@@ -6,7 +6,9 @@ from starlette.concurrency import run_in_threadpool
 
 from app.external_routes import _require_auth
 from app.services.external_artifact_import import _object, ExternalArtifactValidationError
-from app.services.external_editorial_review import create_editorial_review, EditorialReviewError
+from app.services.external_editorial_review import (
+    create_editorial_review, EditorialReviewError, EDITORIAL_REVIEW_FAILURE_CODES,
+)
 
 
 router = APIRouter()
@@ -55,8 +57,10 @@ async def review_external_master(task_id: str, request: Request,
         raise HTTPException(status_code=422, detail='editorial_schema_invalid') from None
     try:
         return await run_in_threadpool(_review_and_queue, task_id, value['evidence_pack'])
-    except EditorialReviewError:
-        raise HTTPException(status_code=409, detail='editorial_review_not_eligible') from None
+    except EditorialReviewError as exc:
+        phase = getattr(exc, 'phase', None)
+        detail = phase if type(phase) is str and phase in EDITORIAL_REVIEW_FAILURE_CODES else 'editorial_review_not_eligible'
+        raise HTTPException(status_code=409, detail=detail) from None
     except Exception:
         # Publication could already be reserved; never report that retrying a
         # brand-new source or calling videos.insert directly is safe.
