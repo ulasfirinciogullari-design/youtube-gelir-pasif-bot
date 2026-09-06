@@ -11,6 +11,7 @@ from test_visual_cross_provider_review import _namespace, _review
 
 MARKER = 'SCOPED DOCUMENTARY AI STAGING:'
 STOCK_MARKER = 'SCOPED DOCUMENTARY STOCK QUERY HINTS:'
+AUTHORITY = 'REQUIREMENT AUTHORITY — RESOLVE BEFORE APPLYING THE RUBRIC:'
 EVIDENCE = [{
     'url': 'https://example.org/warehouse-history',
     'evidence': 'Mock source excerpt: this historical warehouse shop moved packaged merchandise in bulk.',
@@ -38,6 +39,30 @@ def test_source_backed_ai_rule_resolves_authority_before_incidental_details():
         'All narrated actions, contact, before/action/result, persistence and evidence moment requirements remain unchanged',
     ):
         assert mandatory in prompt
+
+
+def test_authority_precedes_and_qualifies_both_generic_constraint_rules():
+    prompt = _prompt()
+    assert prompt.startswith(AUTHORITY)
+    authority_end = prompt.index('All required subject, factual setting, user constraints, core action and actual continuity remain binding.')
+    assert authority_end < prompt.index('You are a demanding senior YouTube picture editor')
+    assert 'only when that rule is actually appended and its scene-specific scope conditions are met' in prompt
+    assert 'Do not reintroduce an excluded incidental preference as a mandatory constraint through a generic rule' in prompt
+    assert 'After that authority resolution, treat applicable explicit indoor/outdoor state, destination type, viewpoint' in prompt
+    assert 'explicit visual constraint remaining mandatory after that authority resolution, or breaks required cross-scene continuity, must score 40 or lower' in prompt
+    assert 'Treat explicit indoor/outdoor state' not in prompt
+    assert 'omits or contradicts an explicit visual constraint, or' not in prompt
+
+
+@pytest.mark.parametrize('style,sources', [('', EVIDENCE), ('technology', EVIDENCE), ('documentary', [])])
+def test_authority_does_not_create_a_documentary_scope_or_remove_literal_fallback(style, sources):
+    prompt = _prompt(style=style, sources=sources)
+    assert prompt.startswith(AUTHORITY) and MARKER not in prompt and STOCK_MARKER not in prompt
+    assert 'Otherwise the literal requirements remain binding' in prompt
+    assert 'DOCUMENTARY B-ROLL SEMANTICS ARE INACTIVE' in prompt
+    assert 'a station, mall or transit concourse cannot substitute for an exterior office approach' in prompt
+    assert 'The named subject and the spoken action must both be visible' in prompt
+    assert 'Any unexplained reset, repeated action, return to an earlier position, or visible loop must score 40 or lower' in prompt
 
 
 @pytest.mark.parametrize('preference', [
@@ -157,6 +182,55 @@ def test_both_providers_receive_same_scoped_rule_without_added_review_calls(tmp_
     assert MARKER in prompt
     assert row['score'] == row['raw_score'] == 92
     assert row['evidence_gate_passed'] is row['identity_gate_passed'] is row['editorial_gate_passed'] is True
+
+
+@pytest.mark.parametrize('provider', ['openai', 'gemini'])
+def test_six_scene_requests_keep_authority_full_story_and_correct_batch_mapping(tmp_path, provider):
+    namespace = _namespace()
+    namespace['settings'].studio_visual_qc_provider = provider
+    scenes = [{**SCENE, 'index': index, 'ai_prompt': f'AUTHORED_{index}: warehouse merchandise.'}
+              for index in range(6)]
+    requests = []
+
+    def respond(parts=None, **kwargs):
+        instruction = kwargs['system_instruction' if provider == 'gemini' else 'instructions']
+        content = parts if provider == 'gemini' else kwargs['input'][0]['content']
+        schema = kwargs['json_schema'] if provider == 'gemini' else kwargs['text']['format']['schema']
+        ids = schema['properties']['reviews']['items']['properties']['scene_index']['enum']
+        assert instruction.startswith(AUTHORITY) and MARKER in instruction
+        text = '\n'.join(item.get('text', '') for item in content)
+        assert EVIDENCE[0]['evidence'] in text
+        assert all(scene['ai_prompt'] in text for scene in scenes)
+        mappings = []
+        for item in content:
+            chunk = item.get('text', '')
+            if not chunk.startswith('<UNTRUSTED_SCENE_EVIDENCE>'):
+                continue
+            local = int(chunk.split('REVIEW SCENE ID ', 1)[1].split('\n', 1)[0])
+            position = int(chunk.split('Story position: ', 1)[1].split('\n', 1)[0])
+            prompt = json.loads(chunk.split('\nAI prompt contract: ', 1)[1].split('\n', 1)[0])
+            assert prompt == scenes[position]['ai_prompt']
+            mappings.append((local, position))
+        requests.append(mappings)
+        result = {'reviews': [_review(namespace, index=index, retry_queries=[]) for index in ids]}
+        return result if provider == 'gemini' else SimpleNamespace(status='completed', output_text=json.dumps(result))
+
+    if provider == 'gemini':
+        namespace['generate_gemini_multimodal_json'].side_effect = respond
+    else:
+        namespace['OpenAI'].return_value.responses.create.side_effect = respond
+    result = namespace['review_scene_visuals'](
+        scenes, [[{'path': f'scene-{index}.mp4', 'generated': True}] for index in range(6)],
+        tmp_path, 6, topic='Source-backed warehouse documentary.', story_scenes=scenes,
+        content_style='documentary', evidence_sources=EVIDENCE,
+        _missing_review_attempts=0, _score_reason_consistency_attempts=0,
+    )
+    expected = [[(index, index) for index in range(6)]] if provider == 'openai' else [
+        [(index, index) for index in range(4)], [(0, 3), (1, 4), (2, 5)],
+    ]
+    assert requests == expected
+    assert [row['scene_index'] for row in result['reviews']] == list(range(6))
+    assert namespace['_frame'].call_count == (30 if provider == 'openai' else 35)
 
 
 @pytest.mark.parametrize('provider', ['gemini', 'openai'])
