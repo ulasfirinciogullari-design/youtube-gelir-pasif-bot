@@ -1330,6 +1330,53 @@ def _checkpoint_audio_candidate(task_id: str, package: dict, voice_result: dict)
         pass
 
 
+def _checkpoint_generated_asset(
+    task_id, work, package, voice_result, visual_spec, scene_index, phase,
+    options, duration_minutes, journal,
+):
+    """Record only private unapproved bytes; never change a render decision."""
+    if (
+        options.get('mode') != 'production' or options.get('format') != 'shorts'
+        or duration_minutes != 0.5
+    ):
+        return
+    try:
+        from app.services.generated_asset_checkpoint import persist_generated_asset_candidate
+        pointer = persist_generated_asset_candidate(
+            task_id, work, package=package, voice_result=voice_result,
+            visual_spec=visual_spec, scene_index=scene_index, phase=phase,
+            options=options, duration_minutes=duration_minutes,
+        )
+        if (
+            not isinstance(pointer, dict) or pointer.get('source_task_id') != task_id
+            or pointer.get('scene_index') != scene_index or pointer.get('phase') != phase
+            or pointer.get('status') != 'preserved_candidate'
+            or pointer.get('qa_approved') is not False or pointer.get('reusable') is not False
+            or pointer.get('requires_full_qa') is not True
+        ):
+            raise ValueError('Invalid preservation receipt')
+    except Exception:
+        pointer = {
+            'source_task_id': task_id, 'scene_index': scene_index, 'phase': phase,
+            'status': 'unavailable', 'reason': 'generated_asset_preservation_unavailable',
+            'qa_approved': False, 'reusable': False, 'requires_full_qa': True,
+        }
+    journal.append(pointer)
+    try:
+        update_job(task_id, generated_asset_candidates={
+            'version': 1, 'source_task_id': task_id, 'status': 'candidate_journal',
+            'diagnostic_only': True, 'qa_approved': False, 'reusable': False,
+            'requires_full_qa': True, 'attempted_count': len(journal),
+            'preserved_count': sum(item['status'] == 'preserved_candidate' for item in journal),
+            'failed_count': sum(item['status'] != 'preserved_candidate' for item in journal),
+            'entries': list(journal[-24:]),
+        })
+    except Exception:
+        # The content-addressed private manifest survives a registry outage.
+        # Never resubmit a provider create or assert QA because a journal failed.
+        pass
+
+
 def _persist_final_thumbnail(task_id, work, rendered, options, quality_disposition, manual_qa_required):
     """A missing cover must not buy another render or silently approve release."""
     empty = {'thumbnail_key': None, 'thumbnail_sha256': None, 'thumbnail_size': None}
@@ -4075,6 +4122,7 @@ def run_video_pipeline(
     final_runway_repair_scenes: list[int] = []
     final_runway_repair_failures: list[int] = []
     generated_checkpoint_specs: dict[int, list[dict]] = {}
+    generated_asset_candidate_journal: list[dict] = []
     staged_recovered_scenes: dict[str, list[dict]] | None = None
     staged_voice_contract: dict | None = None
 
@@ -5820,6 +5868,10 @@ def run_video_pipeline(
                     scene_idx,
                     [],
                 ).append(dict(runway_spec))
+                _checkpoint_generated_asset(
+                    task_id, work, package, voice_result, runway_spec, scene_idx,
+                    'initial_generation', options, duration_minutes, generated_asset_candidate_journal,
+                )
                 runway_scenes_used += 1
                 runway_generated_scenes.append(scene_idx)
                 generated_video_provider_records.append({
@@ -6312,6 +6364,10 @@ def run_video_pipeline(
                     scene_idx,
                     [],
                 ).append(dict(repair_spec))
+                _checkpoint_generated_asset(
+                    task_id, work, package, voice_result, repair_spec, scene_idx,
+                    'final_repair', options, duration_minutes, generated_asset_candidate_journal,
+                )
                 final_runway_repair_scenes.append(scene_idx)
                 generated_video_provider_records.append({
                     'stage': 'final_repair',

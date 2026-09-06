@@ -136,7 +136,7 @@ def _public(record: dict) -> bool:
 
 def _audit_result(raw: str, status: str, channel_id: str, original_id: str,
                   recovered_id: str, revision: str, release_mode: str = 'private',
-                  public_recovery: bool = False) -> dict:
+                  public_recovery: bool = False, continue_immediately: bool = False) -> dict:
     audit = _object(raw, 'recovery_audit_invalid')
     _require(
         audit.get('version') == 1 and audit.get('channel_id') == channel_id
@@ -162,6 +162,7 @@ def _audit_result(raw: str, status: str, channel_id: str, original_id: str,
                  'recovery_audit_invalid')
     if public_recovery:
         _require(audit.get('publication_proof') == 'blocked_public_recovery'
+                 and audit.get('continue_immediately', False) is continue_immediately
                  and re.fullmatch(r'[0-9a-f]{64}', str(audit.get('public_recovery_receipt_sha256') or ''))
                  and audit.get('thumbnail_uploaded') is True,
                  'recovery_audit_invalid')
@@ -210,16 +211,18 @@ def resume_after_public_retry(
 
 def resume_after_blocked_public_retry(
     channel_id: str, original_task_id: str, recovered_task_id: str,
-    expected_profile_revision: str, *, now: float | None = None,
+    expected_profile_revision: str, *, now: float | None = None, continue_immediately: bool = False,
 ) -> dict:
     """Resume only from a separately verified, already-public recovery receipt.
 
     Historical blocked source attribution, publisher and upload records remain
     unchanged. This never performs a release or turns their errors into passes.
+    Explicit immediate continuation changes only the next due time; it never
+    resets a consumed topic or overrides a prior resume audit's timing choice.
     """
     return _resume_after_retry(channel_id, original_task_id, recovered_task_id,
                                expected_profile_revision, now=now, release_mode='public',
-                               public_recovery=True)
+                               public_recovery=True, continue_immediately=continue_immediately)
 
 
 def _public_recovery_proof(client, snapshots, records, credential):
@@ -253,9 +256,12 @@ def _resume_after_retry(
     channel_id: str, original_task_id: str, recovered_task_id: str,
     expected_profile_revision: str, *, now: float | None, release_mode: str,
     public_recovery: bool = False,
+    continue_immediately: bool = False,
 ) -> dict:
     public = release_mode == 'public'
     _require(not public_recovery or public, 'recovery_mode_invalid')
+    _require(type(continue_immediately) is bool and (not continue_immediately or public_recovery),
+             'recovery_continuation_invalid')
     _require(isinstance(channel_id, str) and _ID.fullmatch(channel_id) is not None,
              'recovery_channel_invalid')
     _require(all(isinstance(value, str) and _TASK_ID.fullmatch(value) is not None
@@ -273,7 +279,7 @@ def _resume_after_retry(
         prior = client.get(audit_key)
         if prior is not None:
             return _audit_result(prior, 'already_resumed', channel_id, original_task_id,
-                                 recovered_task_id, expected_profile_revision, release_mode, public_recovery)
+                                 recovered_task_id, expected_profile_revision, release_mode, public_recovery, continue_immediately)
         snapshots = []
         profile = _json_snapshot(client, PROFILE_PREFIX + channel_id, snapshots)
         state = _hash_snapshot(client, CHANNEL_STATE_PREFIX + channel_id, snapshots)
@@ -507,13 +513,14 @@ def _resume_after_retry(
             'youtube_video_id': video_id, 'connection_id': connection_id,
             'profile_revision': expected_profile_revision, 'cursor': cursor,
             'previous_paused_reason': state['paused_reason'], 'previous_last_result': state['last_result'],
-            'resumed_at': now, 'next_due': max(next_due, now + interval * 3600),
+            'resumed_at': now, 'next_due': now if continue_immediately else max(next_due, now + interval * 3600),
         }
         if public:
             audit.update(release_mode='public', release_status='public', caption_uploaded=True,
                          contains_synthetic_media=plan['contains_synthetic_media'])
         if recovered_proof is not None:
             audit.update(publication_proof='blocked_public_recovery', thumbnail_uploaded=True,
+                         continue_immediately=continue_immediately,
                          public_recovery_receipt_sha256=recovered_proof['receipt_sha256'])
         keys = [audit_key, CHANNEL_STATE_PREFIX + channel_id, ACTIVE_KEY,
                 OAUTH_CREDENTIAL_PREFIX + channel_id, OAUTH_CHANNEL_INDEX]
@@ -525,7 +532,7 @@ def _resume_after_retry(
         )
         _require(status in {'resumed', 'already_resumed'}, 'recovery_' + str(status))
         return _audit_result(raw, status, channel_id, original_task_id, recovered_task_id,
-                             expected_profile_revision, release_mode, public_recovery)
+                             expected_profile_revision, release_mode, public_recovery, continue_immediately)
     except ProductionRecoveryError:
         # Another identical caller can finish after our initial audit read but
         # before we finish validation. Its durable result wins; do not mistake
@@ -536,7 +543,7 @@ def _resume_after_retry(
             raise ProductionRecoveryError('recovery_state_unavailable') from None
         if prior is not None:
             return _audit_result(prior, 'already_resumed', channel_id, original_task_id,
-                                 recovered_task_id, expected_profile_revision, release_mode, public_recovery)
+                                 recovered_task_id, expected_profile_revision, release_mode, public_recovery, continue_immediately)
         raise
     except Exception:
         # Do not log raw records, claim tokens, credentials, or provider errors.

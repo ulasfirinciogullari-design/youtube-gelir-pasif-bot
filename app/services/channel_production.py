@@ -23,6 +23,7 @@ PROFILE_PREFIX = 'youtube_studio:youtube_profile:v1:'
 OAUTH_CHANNEL_PREFIX = 'youtube_studio:oauth:channel:v3:'
 OAUTH_CREDENTIAL_PREFIX = 'youtube_studio:oauth:credential:v3:'
 OAUTH_CHANNEL_INDEX = 'youtube_studio:oauth:channels:v3'
+PUBLICATION_UPLOAD_PREFIX = 'youtube_studio:youtube_upload:v2:'
 _ID = re.compile(r'^[A-Za-z0-9_-]{8,128}$')
 _TASK_ID = re.compile(r'^[0-9a-f-]{36}$')
 _LANGUAGES = {'tr', 'en', 'de', 'es', 'ar'}
@@ -170,6 +171,7 @@ end
 local state = job['state']
 if state ~= 'SUCCESS' and state ~= 'FAILURE' then return 'active' end
 local reason = ''
+local continue_public = false
 if state == 'FAILURE' then
   reason = 'previous_render_failed'
 else
@@ -220,12 +222,95 @@ else
           reason = 'previous_publication_blocked'
         elseif release ~= 'private' and release ~= 'public' and release ~= 'scheduled' then
           return 'state_unavailable'
+        elseif release == 'public' then
+          -- A publisher SUCCESS alone is not proof of public delivery. Inspect
+          -- all bound records atomically before removing only this cooldown.
+          local function read_object(key)
+            local valid, value = pcall(cjson.decode, redis.call('GET', key) or '')
+            if valid and type(value) == 'table' then return value end
+            return {}
+          end
+          local function empty(value) return value == nil or value == cjson.null or value == '' end
+          local spec = type(job['spec']) == 'table' and job['spec'] or {}
+          local attribution = type(result['youtube']) == 'table' and result['youtube'] or {}
+          local upload = read_object(ARGV[6] .. ARGV[2])
+          local profile = read_object(KEYS[4])
+          local channel = read_object(KEYS[5])
+          local plan = type(upload['publish_plan']) == 'table' and upload['publish_plan'] or {}
+          local language = type(spec['language']) == 'string' and spec['language'] or ''
+          local connection = spec['production_connection_id']
+          local revision = spec['production_profile_revision']
+          local video = delivered['youtube_video_id']
+          local function identity(record)
+            return type(record) == 'table' and record['target_channel_id'] == ARGV[4]
+              and record['connection_id'] == connection and record['profile_revision'] == revision
+          end
+          local function public_assets(record)
+            return identity(record) and record['privacy_status'] == 'public' and record['release_status'] == 'public'
+              and empty(record['release_error_code']) and empty(record['scheduled_publish_at'])
+              and record['caption_uploaded'] == true and empty(record['caption_error_code'])
+              and empty(record['thumbnail_error_code'])
+              and (plan['require_thumbnail'] ~= true and profile['require_thumbnail'] ~= true
+                   or record['thumbnail_uploaded'] == true)
+              and record['contains_synthetic_media'] == plan['contains_synthetic_media']
+          end
+          local function public_delivery(record)
+            if record['idempotent_replay'] ~= true then return public_assets(record) end
+            -- Real completed-upload redelivery intentionally omits asset fields.
+            -- Its exact IDs still require the full source/ledger proofs below;
+            -- a present contradictory field is never treated as an omission.
+            local function omitted_or(key, value) return record[key] == nil or record[key] == value end
+            return record['stage'] == 'complete' and record['progress'] == 100
+              and record['target_channel_id'] == ARGV[4] and record['connection_id'] == connection
+              and record['privacy_status'] == 'public' and record['release_status'] == 'public'
+              and empty(record['release_error_code']) and empty(record['scheduled_publish_at'])
+              and empty(record['caption_error_code']) and empty(record['thumbnail_error_code'])
+              and omitted_or('profile_revision', revision) and omitted_or('caption_uploaded', true)
+              and omitted_or('thumbnail_uploaded', attribution['thumbnail_uploaded'])
+              and omitted_or('contains_synthetic_media', plan['contains_synthetic_media'])
+          end
+          continue_public = type(spec) == 'table' and type(attribution) == 'table' and type(plan) == 'table'
+            and type(connection) == 'string' and connection ~= '' and type(revision) == 'string' and revision ~= ''
+            and language ~= ''
+            and spec['mode'] == 'production' and spec['production_scheduled'] == true
+            and spec['publish_after_render'] == true and spec['production_channel_id'] == ARGV[4]
+            and profile['channel_id'] == ARGV[4] and profile['profile_revision'] == revision
+            and profile['production_enabled'] == true and profile['auto_publish'] == true and profile['release_mode'] == 'public'
+            and channel['id'] == ARGV[4] and channel['connection_id'] == connection and channel['requires_reconnect'] ~= true
+            and redis.call('EXISTS', KEYS[6]) == 1 and redis.call('SISMEMBER', KEYS[7], ARGV[4]) == 1
+            and redis.call('HGET', KEYS[3], 'profile_revision') == revision
+            and redis.call('HGET', KEYS[3], 'connection_id') == connection
+            and result['task_id'] == ARGV[2] and result['status'] == 'complete'
+            and result['video_key'] == 'videos/' .. ARGV[2] .. '/final.mp4'
+            and result['caption_key'] == 'videos/' .. ARGV[2] .. '/captions.' .. language .. '.srt'
+            and #video == 11 and string.match(video, '^[A-Za-z0-9_%-]+$') ~= nil
+            and child['task_id'] == child_id and delivered['task_id'] == child_id and delivered['status'] == 'complete'
+            and identity(child['spec']) and child['spec']['release_mode'] == 'public' and child['spec']['privacy_status'] == 'private'
+            and public_delivery(delivered) and public_assets(attribution) and attribution['video_id'] == video
+            and automation['target_channel_id'] == ARGV[4] and automation['profile_revision'] == revision
+            and automation['release_mode'] == 'public'
+            and upload['version'] == 2 and upload['status'] == 'complete'
+            and upload['source_task_id'] == ARGV[2] and upload['publish_task_id'] == child_id
+            and upload['youtube_video_id'] == video and upload['target_channel_id'] == ARGV[4]
+            and upload['connection_id'] == connection and upload['requested_release_mode'] == 'public'
+            and upload['privacy_status'] == 'public' and upload['release_status'] == 'public'
+            and upload['side_effect_possible'] == true and upload['release_side_effect_possible'] == true
+            and type(upload['release_completed_at']) == 'string' and upload['release_completed_at'] ~= ''
+            and empty(upload['requested_publish_at']) and empty(upload['release_error_code'])
+            and plan['source_task_id'] == ARGV[2] and plan['target_channel_id'] == ARGV[4]
+            and plan['profile_revision'] == revision and plan['release_mode'] == 'public' and empty(plan['publish_at'])
+            and type(plan['contains_synthetic_media']) == 'boolean'
+          if not continue_public then reason = 'previous_publication_blocked' end
         end
       end
     end
   end
 end
 if reason ~= '' then redis.call('HSET', KEYS[3], 'paused_reason', reason) end
+if continue_public and reason == '' then
+  redis.call('HSET', KEYS[3], 'next_due', ARGV[5], 'last_public_task_id', ARGV[2],
+             'last_public_continued_at', ARGV[5])
+end
 redis.call('HSET', KEYS[3], 'last_result', state, 'dispatch_status', 'finished')
 redis.call('HDEL', KEYS[3], 'active_task_id')
 table.remove(claims, matched)
@@ -254,9 +339,12 @@ def get_production_state(channel_id: str) -> dict:
         raise ChannelProductionError('production_state_unavailable') from exc
 
 
-def reconcile_active_production() -> str:
+def reconcile_active_production(*, now: float | None = None) -> str:
     """Reconcile at most two claims independently; never expire or steal one."""
     try:
+        now = time.time() if now is None else now
+        if type(now) not in (int, float) or not math.isfinite(now) or now < 0:
+            raise ValueError('invalid production reconciliation time')
         client = _redis()
         raw = client.get(ACTIVE_KEY)
         if raw is None:
@@ -274,8 +362,10 @@ def reconcile_active_production() -> str:
                 continue
             channel_id, task_id = active['channel_id'], active['task_id']
             status = client.eval(
-                _RECONCILE, 3, ACTIVE_KEY, JOB_PREFIX + task_id,
-                CHANNEL_STATE_PREFIX + channel_id, current_raw, task_id, JOB_PREFIX, channel_id,
+                _RECONCILE, 7, ACTIVE_KEY, JOB_PREFIX + task_id,
+                CHANNEL_STATE_PREFIX + channel_id, PROFILE_PREFIX + channel_id,
+                OAUTH_CHANNEL_PREFIX + channel_id, OAUTH_CREDENTIAL_PREFIX + channel_id, OAUTH_CHANNEL_INDEX,
+                current_raw, task_id, JOB_PREFIX, channel_id, now, PUBLICATION_UPLOAD_PREFIX,
             )
             if status in {'active_changed', 'state_unavailable'}:
                 return status
@@ -421,7 +511,7 @@ def mark_production_dispatched(channel_id: str, task_id: str, *, uncertain: bool
 
 def dispatch_due_productions(profiles: list[dict], connections: list[dict], enqueue, *, now: float | None = None) -> dict:
     """One beat tick, including reconciliation; never calls a paid provider."""
-    reconciliation = reconcile_active_production()
+    reconciliation = reconcile_active_production(now=now)
     if reconciliation in {'active_changed', 'state_unavailable'}:
         return {'status': reconciliation}
     connected = {str(item.get('id') or ''): item for item in connections if isinstance(item, dict)}

@@ -184,11 +184,31 @@ def _receipt_identity(receipt, identity):
                  and prior.get('scheduled_publish_at') is None, 'public_recovery_prior_private_proof_invalid')
 
 
-def _public_proof(proof, binding):
+def _disclosure_confirmation(proof, receipt):
+    """Do not turn a videos.list omission into a claimed remote True."""
+    if not isinstance(proof, dict):
+        return None
+    present = proof.get('synthetic_media_field_present')
+    if proof.get('contains_synthetic_media') is True and (
+        'synthetic_media_field_present' not in proof or present is True
+    ):
+        return 'readback'
+    # The API documents disclosure for insert/update requests, without a
+    # videos.list return guarantee. Only our exact accepted update can cover
+    # genuine omission; explicit null/False or a lost response cannot do so.
+    if (present is False and proof.get('contains_synthetic_media') is None
+        and isinstance(receipt, dict) and receipt.get('update_response_verified') is True
+        and receipt.get('request_error') is None
+        and receipt.get('disclosure_contradiction_observed', False) is False):
+        return 'accepted_update_response'
+    return None
+
+
+def _public_proof(proof, binding, receipt=None):
     return bool(isinstance(proof, dict) and proof.get('youtube_video_id') == binding['youtube_video_id']
                 and proof.get('target_channel_id') == binding['target_channel_id']
                 and proof.get('privacy_status') == 'public' and proof.get('upload_status') == 'processed'
-                and proof.get('contains_synthetic_media') is True and proof.get('scheduled_publish_at') is None
+                and _disclosure_confirmation(proof, receipt) is not None and proof.get('scheduled_publish_at') is None
                 and isinstance(proof.get('verified_at'), str) and bool(proof['verified_at']))
 
 
@@ -199,7 +219,7 @@ def validate_public_recovery_receipt(records, asset_audit, receipt, *, credentia
         identity = _identity(records, asset_audit, credential_cipher, authorization_epoch)
         _receipt_identity(receipt, identity)
         _require(receipt['status'] == 'public' and receipt['attempts'] == 1
-                 and _public_proof(receipt.get('public_proof'), identity)
+                 and _public_proof(receipt.get('public_proof'), identity, receipt)
                  and _metadata_matches(receipt.get('public_proof'), receipt)
                  and receipt.get('confirmation') in {'post_request_readback', 'readback_after_reserved_attempt'},
                  'public_recovery_not_confirmed')
@@ -214,7 +234,12 @@ def validate_public_recovery_receipt(records, asset_audit, receipt, *, credentia
             'source_snapshot_sha256', 'publisher_snapshot_sha256', 'ledger_snapshot_sha256')},
             'public_recovery_history_changed')
         return {key: identity[key] for key in _IDENTITY_FIELDS} | {
+            # This is the frozen declared classification. The separate fields
+            # below state whether the GET actually returned the disclosure.
             'privacy_status': 'public', 'release_status': 'public', 'contains_synthetic_media': True,
+            'synthetic_disclosure_confirmation': _disclosure_confirmation(receipt['public_proof'], receipt),
+            'synthetic_disclosure_readback': receipt['public_proof'].get('contains_synthetic_media'),
+            'synthetic_disclosure_request_accepted': receipt.get('update_response_verified') is True,
             'caption_uploaded': True, 'thumbnail_uploaded': True,
             'receipt_sha256': assets_core._digest(receipt),
         }
@@ -274,6 +299,7 @@ def _remote(service, binding, *, include_metadata=False):
     proof = {'youtube_video_id': item['id'], 'target_channel_id': snippet['channelId'],
             'privacy_status': status.get('privacyStatus'), 'upload_status': 'processed',
             'contains_synthetic_media': status.get('containsSyntheticMedia'),
+            'synthetic_media_field_present': 'containsSyntheticMedia' in status,
             'scheduled_publish_at': None, 'verified_at': assets_core._now()}
     if include_metadata:
         etag = item.get('etag')
@@ -323,6 +349,8 @@ def _invalidate_public_receipt(client, key, previous, remote, caption):
     _require(receipt.get('status') == 'public' and receipt.get('attempts') == 1)
     receipt.update(status='uncertain', last_remote_observation=remote, caption_proof=caption,
                    confirmation_changed_at=assets_core._now())
+    if remote.get('contains_synthetic_media') is False:
+        receipt['disclosure_contradiction_observed'] = True
     with client.pipeline() as pipe:
         pipe.watch(key)
         _require(pipe.get(key) == previous, 'public_recovery_receipt_changed')
@@ -398,7 +426,9 @@ def _run(source_id, video_id, channel_id, revision, *, work_dir, request_release
         if receipt['attempts'] == 1:
             # A conclusive GET can settle a lost update response, but never
             # authorizes another update when the target is still private.
-            if _public_proof(remote, identity) and caption is not None and _metadata_matches(remote, receipt):
+            if remote.get('contains_synthetic_media') is False:
+                receipt['disclosure_contradiction_observed'] = True
+            if _public_proof(remote, identity, receipt) and caption is not None and _metadata_matches(remote, receipt):
                 receipt.update(status='public', public_proof=remote, confirmation='readback_after_reserved_attempt')
             elif receipt['status'] == 'public':
                 # Preserve the earlier evidence as history, but do not leave a
@@ -449,7 +479,9 @@ def _run(source_id, video_id, channel_id, revision, *, work_dir, request_release
         try:
             remote = (_remote(service, identity, include_metadata=True) if reenactment_note else _remote(service, identity))
             caption = _caption(service, identity, audit)
-            if _public_proof(remote, identity) and caption is not None and _metadata_matches(remote, receipt):
+            if remote.get('contains_synthetic_media') is False:
+                receipt['disclosure_contradiction_observed'] = True
+            if _public_proof(remote, identity, receipt) and caption is not None and _metadata_matches(remote, receipt):
                 receipt.update(status='public', public_proof=remote, caption_proof=caption,
                                confirmation='post_request_readback')
             else:
