@@ -258,6 +258,8 @@ def _tick_namespace(case):
     enqueue = Mock()
     namespace = {
         'run_video_pipeline': SimpleNamespace(apply_async=enqueue),
+        'prepare_series_batch': SimpleNamespace(apply_async=Mock()),
+        'maintain_production_series': Mock(return_value={'status': 'checked', 'channels': {}}),
         'connection_status': Mock(return_value={'connections': [json.loads(case.client.get(case.recovery.OAUTH_CHANNEL_PREFIX + CHANNEL))]}),
         'list_channel_profiles': Mock(return_value=[case.data.profile]),
         'reconcile_public_retry_deliveries': case.ns['reconcile_public_retry_deliveries'],

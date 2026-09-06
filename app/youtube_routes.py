@@ -30,6 +30,7 @@ from app.services.youtube_auth import (
 )
 from app.services.youtube_automation import (
     ProfileConflictError,
+    SeriesProfileEditError,
     YouTubeAutomationError,
     automated_quality_approved,
     build_publish_plan,
@@ -724,6 +725,12 @@ def youtube_save_profile(
             },
             expected_revision=expected_revision or None,
         )
+    except SeriesProfileEditError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail=('Bu profil otomatik seri geçmişine bağlı; değişiklik yeni bir seri geçişi gerektiriyor. '
+                    'Üretimi veya otomatik yayını kapatabilirsiniz.'),
+        ) from exc
     except ProfileConflictError as exc:
         raise HTTPException(
             status_code=409,

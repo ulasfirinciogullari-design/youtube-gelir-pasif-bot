@@ -18,6 +18,7 @@ from app.services.director import (
     _fresh_spoken_word_budget,
     _spoken_word_budget_note,
     _exact_narration_lock_from_brief,
+    _proper_name_spoken_guidance,
 )
 from app.services.visual_routing import preview_authored_ai_limit
 from app.services.source_evidence import normalize_evidence_sources
@@ -403,6 +404,7 @@ STORY RULES:
 - Spoken {language_name} must sound like an excellent human narrator: concise, deliberate punctuation, varied sentence length and natural bridges.
 - For Turkish short previews, standalone OLED, GPS and QR are allowed only with a natural Turkish noun because the voice layer normalizes them. Never attach Turkish suffixes directly to abbreviations, and never speak raw Wi-Fi or Reed-Solomon. Prefer OLED ekran, GPS sinyali, QR kodu, kablosuz ağ or hata düzeltme yöntemi. Technical English remains allowed in visual_queries and ai_prompt.
 - For Turkish, reject translated noun stacks, inverted word order and phrases like “siyah yerde”, “hücresel zamanlama tamamlar konumu” or “okunur yine kolayca”.
+{_proper_name_spoken_guidance(language_name) if duration_minutes <= 0.6 else ''}
 - The complete narration must remain inside {min_words}-{max_words} words.
 - Each scene carries one complete idea that can live under one strong hero visual.
 - {physical_stock_scope}A stock-only scene may not summarize several earlier mechanisms or invisible abstractions; it must describe one subject performing one visible action in one ordinary location.

@@ -70,6 +70,30 @@ _VISIBLE_MATERIAL_RULE = (
 )
 
 
+def _proper_name_spoken_guidance(language_name: str) -> str:
+    if not str(language_name or '').strip().casefold().startswith('turk'):
+        return ''
+    return (
+        'TURKISH PROPER-NAME DELIVERY: for newly authored narration, build '
+        'natural Turkish phrasing around foreign proper names. When alternate '
+        'wording is permitted, prefer placing a case or location suffix on a '
+        'suitable Turkish category noun, such as kent, marka or mağaza, instead '
+        'of creating a language switch inside the name. Preserve the exact '
+        'identity and spelling of names essential to the factual claim or '
+        'explicitly required by the brief. A natural category description may '
+        'replace a nonessential repeated long foreign product name only when '
+        'no required name, attribution or meaningful factual distinction is '
+        'lost; retain the full source-supported identity in relevant metadata. '
+        'Never invent phonetic spellings, substitute a different entity, or '
+        'alter an exact spoken-text lock. This is a phrasing preference, not '
+        'a ban on foreign names or correctly written Turkish apostrophe '
+        'suffixes: neither alone makes natural_spoken_language false. A '
+        'negative language verdict must quote a concrete awkward phrase and '
+        'explain its problem. Text review cannot prove audible pronunciation; '
+        'actual transcript and prosody QA remain required.'
+    )
+
+
 class ImmutableNarrationSceneBudgetError(RuntimeError):
     """An exact narration cannot fit the requested single-pass scene plan."""
 
@@ -1927,6 +1951,7 @@ def _run_director(
             'Never narrate phrases such as “koyu lacivert tişörtlü Mert” or “arkadan izliyor” merely to control the picture. '
             'Precise technical English is allowed in visual_queries and ai_prompt because those fields are not spoken. '
         )
+        short_language_note += _proper_name_spoken_guidance(language_name)
 
     correction_issues = compact.get('narration_quality_issues') or []
     if not isinstance(correction_issues, list):
@@ -2187,6 +2212,14 @@ def _repair_short_stock_scenes(
                 position: str(scene.get('narration') or '').strip()
                 for position, scene in enumerate(scenes)
             }
+
+    # New writing guidance never changes the contract for archived speech or
+    # an exact narration/compression review; its audio still needs actual QA.
+    proper_name_note = (
+        _proper_name_spoken_guidance(language_name)
+        if not locked_narration_by_position and immutable_original_shot_prompts is None
+        else ''
+    )
 
     target_total_words, minimum_total_words, maximum_total_words = (
         _target_word_budget(
@@ -2479,6 +2512,7 @@ NON-NEGOTIABLE RULES:
 - Outside those defined codas, never use an exit, journey, new room, later time of day or home/store/street jump as the payoff.
 - Outside those defined codas, a payoff must visibly complete the preceding action and show the everyday benefit. A sourced explanatory coda instead gives the precise factual answer over relevant subject footage without inventing an action or physical benefit; an exterior coda must meet its separate existing contract.
 - Keep the spoken narration natural and easy to pronounce in {language_name}; for Turkish, use meaning-first native wording and never raw technical abbreviations.
+{proper_name_note}
 - In Turkish, express causality as a natural condition. Use wording such as “sıcak hava içeride kalınca” or “sıcak hava sıkışınca”; never write translated energy-agent phrases such as “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”.
 - Keep production-only wardrobe, color-continuity, camera-direction, shot-size, face-visibility and framing notes in visual_queries, not spoken narration. Phrases such as “koyu lacivert tişörtlü Mert” or “arkadan izliyor” are not human narration when they exist only to control the picture.
 - When validation_feedback names natural_spoken_language, rewrite formal, translated or textbook-like wording as something a Turkish speaker would naturally say aloud while preserving the exact visible meaning.
@@ -2802,6 +2836,7 @@ Review the WHOLE story before reviewing individual stock shots. Set each story_r
 - same_actor_or_object_thread: one recognisable person or object gives the story continuity; the active explanatory coda may connect the precisely identified subject, institution or historical event to its explicitly sourced materials, related details or comparison objects, never silently substitute an explicitly identified individual object/person or drift to unrelated facts.
 - human_payoff_visible: the last beat visibly delivers an everyday benefit, or resolves the factual curiosity over specifically relevant subject footage under the active explanatory-coda contract. Do not demand an invented purchase or physical benefit from an educational answer.
 - natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese, unsafe suffix-attached abbreviations or unsupported foreign terms. For Turkish, this is false when heat, energy or an opened gap becomes an awkward translated grammatical agent, as in “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”; natural causality says that hot air stays trapped and the fan then changes speed. It is also false when narration verbalizes wardrobe/color continuity, camera direction, shot size, face visibility or framing solely to control production, as in “koyu lacivert tişörtlü Mert ... arkadan izliyor”. Keep that metadata in visual fields unless it changes the story's human meaning.
+{proper_name_note}
 - directly_answers_requested_topic: the actual hook, reveal and payoff directly answer the supplied topic rather than drifting to a merely coherent side story.
 - one_specific_useful_reveal: the viewer learns one non-obvious, useful or genuinely surprising thing worth thirty seconds.
 - causal_claim_supported: independently verify the central explanation, including every factual answer and attribution in an eligible explanatory coda, against the supplied source URLs and evidence. Use bounded web search when the evidence is insufficient; false if the claim cannot be verified or overstates a source. Do not require a non-causal composition fact to invent causality.
