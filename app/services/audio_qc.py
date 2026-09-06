@@ -576,7 +576,7 @@ def _validate_prosody_review(
     timestamp_evidence: tuple[list[dict[str, Any]], str] | None = None
     if issues:
         timestamp_evidence = _validated_prosody_timestamp_evidence(
-            transcript_evidence
+            transcript_evidence, allow_coarse=True,
         )
         if timestamp_evidence is None:
             return None
@@ -635,7 +635,7 @@ def _validate_prosody_review(
 
     if (passed and normalized_issues) or (not passed and not normalized_issues):
         return None
-    return {
+    result = {
         'available': True,
         'pass': passed,
         'provider': 'gemini',
@@ -652,6 +652,13 @@ def _validate_prosody_review(
             else None
         ),
     }
+    coarse_groups = _validated_coarse_timestamp_groups(transcript_evidence)
+    if coarse_groups:
+        result['timestamp_precision'] = 'mixed_word_and_coarse_group'
+        result['coarse_timestamp_groups'] = coarse_groups
+        if normalized_issues:
+            result['timestamp_source'] = 'stt_word_timestamps_with_coarse_boundary_group'
+    return result
 
 
 def verify_audio_prosody(
@@ -1336,6 +1343,8 @@ def _prosody_phrase_occurs_in_text(text: str, phrase: str, language: str = 'tr')
 
 def _validated_prosody_timestamp_evidence(
     evidence: dict[str, Any] | None,
+    *,
+    allow_coarse: bool = False,
 ) -> tuple[list[dict[str, Any]], str] | None:
     if not isinstance(evidence, dict):
         return None
@@ -1354,9 +1363,15 @@ def _validated_prosody_timestamp_evidence(
     ):
         return None
 
+    coarse_groups = _validated_coarse_timestamp_groups(evidence)
+    if evidence.get('coarse_timestamp_groups') is not None and (not allow_coarse or not coarse_groups):
+        # Audio-pause repair uses the default: coarse group bounds must never
+        # be treated as individual word edges for destructive audio edits.
+        return None
+    boundary_groups = {group['boundary_token_index']: group for group in coarse_groups or []}
     normalized: list[dict[str, Any]] = []
     previous_end = 0.0
-    for item in words:
+    for index, item in enumerate(words):
         if not isinstance(item, dict):
             return None
         word = item.get('text')
@@ -1371,7 +1386,8 @@ def _validated_prosody_timestamp_evidence(
             or not math.isfinite(float(end))
             or float(start) < previous_end
             or float(start) < 0
-            or float(end) <= float(start)
+            or float(end) < float(start)
+            or (float(end) == float(start) and index not in boundary_groups)
         ):
             return None
         normalized.append({
@@ -1379,6 +1395,10 @@ def _validated_prosody_timestamp_evidence(
             'start': float(start),
             'end': float(end),
         })
+        if index in boundary_groups:
+            group = boundary_groups[index]
+            normalized[-1]['coarse_group_start'] = group['start']
+            normalized[-1]['coarse_group_end'] = group['end']
         previous_end = float(end)
     return normalized, provider.strip()[:40]
 
@@ -1412,6 +1432,12 @@ def _bind_prosody_issue_timestamp(
                 continue
             stt_start = float(window[0]['start'])
             stt_end = float(window[-1]['end'])
+            # A phrase containing the boundary token has only the enclosing
+            # three-word group's real bounds, not invented per-word timing.
+            for item in window:
+                if 'coarse_group_start' in item:
+                    stt_start = min(stt_start, float(item['coarse_group_start']))
+                    stt_end = max(stt_end, float(item['coarse_group_end']))
             if (
                 audio_duration_seconds is not None
                 and stt_end > audio_duration_seconds + 0.25
@@ -1566,6 +1592,62 @@ def _word_timestamps(words: Any) -> list[dict[str, Any]]:
     return timestamps
 
 
+def _gemini_boundary_token_groups(words: Any) -> list[dict[str, Any]] | None:
+    """One isolated zero-width boundary may supply coarse, never word, timing."""
+    if not isinstance(words, list) or not 3 <= len(words) <= 256:
+        return None
+    zero_indices = []
+    previous_end = 0.0
+    for index, item in enumerate(words):
+        if not isinstance(item, dict) or not _valid_gemini_annotation_text(item.get('text')):
+            return None
+        start, end = item.get('start'), item.get('end')
+        if (type(start) not in (int, float) or type(end) not in (int, float)
+            or not math.isfinite(start) or not math.isfinite(end)
+            or start < previous_end or end < start):
+            return None
+        if end == start:
+            zero_indices.append(index)
+        previous_end = end
+    if len(zero_indices) != 1:
+        return None
+    index = zero_indices[0]
+    if index == 0 or index == len(words) - 1:
+        return None
+    left, point, right = words[index - 1:index + 2]
+    if not (left['end'] > left['start'] and right['end'] > right['start']
+            and left['end'] == point['start'] == point['end'] == right['start']):
+        return None
+    if any(item['text'].rstrip().endswith(('.', '?', '!', '…')) for item in (left, point)):
+        return None
+    return [{
+        'kind': 'coincident_boundary_token', 'boundary_token_index': index,
+        'word_indices': [index - 1, index, index + 1],
+        'text': ' '.join(item['text'] for item in (left, point, right)),
+        'start': left['start'], 'end': right['end'],
+    }]
+
+
+def _validated_coarse_timestamp_groups(evidence: Any) -> list[dict[str, Any]] | None:
+    if not isinstance(evidence, dict) or evidence.get('provider') != 'gemini':
+        return None
+    if evidence.get('word_timing_precision') != 'mixed_word_and_coarse_group':
+        return None
+    groups = _gemini_boundary_token_groups(evidence.get('word_timestamps'))
+    if not groups:
+        return None
+    try:
+        # Strict JSON equality also rejects bool-as-index and fabricated
+        # widths. Every group is independently derived from the raw rows.
+        if json.dumps(evidence.get('coarse_timestamp_groups'), sort_keys=True, allow_nan=False) != json.dumps(
+            groups, sort_keys=True, allow_nan=False,
+        ):
+            return None
+    except (TypeError, ValueError):
+        return None
+    return groups
+
+
 def _language_probability(value: Any) -> float | None:
     try:
         probability = float(value)
@@ -1650,7 +1732,7 @@ def compare_transcript(
             details['timestamp_sequence_match'] = True
             details['timestamp_representation_adjustment'] = adjustment
 
-    return {
+    result = {
         'provider': str(provider or '') or None,
         'available': True,
         'pass': bool(details['exact_match']),
@@ -1664,6 +1746,12 @@ def compare_transcript(
         'ending_word_time': max(ending_times) if ending_times else None,
         'mismatch_details': details,
     }
+    if str(provider or '').strip().lower() == 'gemini':
+        groups = _gemini_boundary_token_groups(timestamps)
+        if groups:
+            result['coarse_timestamp_groups'] = groups
+            result['word_timing_precision'] = 'mixed_word_and_coarse_group'
+    return result
 
 
 def _unavailable_result() -> dict[str, Any]:
@@ -1726,14 +1814,17 @@ def _require_word_timing_evidence(
             or float(result.get('ending_word_time') or 0.0) <= 0
         )
         previous_end = -1.0
+        groups = _validated_coarse_timestamp_groups(result)
+        boundary_indices = {group['boundary_token_index'] for group in groups or []}
         if isinstance(timestamps, list):
-            for item in timestamps:
+            for index, item in enumerate(timestamps):
                 start = item.get('start') if isinstance(item, dict) else None
                 end = item.get('end') if isinstance(item, dict) else None
                 if (
                     start is None
                     or end is None
-                    or end <= start
+                    or end < start
+                    or (end == start and index not in boundary_indices)
                     or start < previous_end
                 ):
                     invalid_timing = True
@@ -1890,7 +1981,7 @@ def _gemini_interaction_payload(response: Any) -> dict[str, Any]:
                 not _valid_gemini_annotation_text(word)
                 or start is None
                 or end is None
-                or end <= start
+                or end < start
             ):
                 raise AudioQCError(
                     'Gemini speech-to-text returned invalid word annotations'
@@ -1904,6 +1995,9 @@ def _gemini_interaction_payload(response: Any) -> dict[str, Any]:
         raise AudioQCError(
             'Gemini speech-to-text omitted its transcript'
         )
+    if (any(item['end'] == item['start'] for item in normalized_words)
+        and not _gemini_boundary_token_groups(_word_timestamps(normalized_words))):
+        raise AudioQCError('Gemini speech-to-text returned invalid word annotations')
     return {
         'text': ''.join(transcript_parts),
         'language_code': 'tr-TR',
