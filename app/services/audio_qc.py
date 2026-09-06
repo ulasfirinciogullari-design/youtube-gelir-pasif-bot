@@ -1185,6 +1185,30 @@ def _number_word_unit(
     return None
 
 
+def _digit_scale_unit(tokens, start, value, matches) -> tuple[str, int] | None:
+    """An unsigned 1..999 coefficient plus one Turkish scale, not an ID.
+
+    Keep decimals, signs, leading zeros, ranges and larger mixed-number runs
+    in their existing representation. Original two-word spans stay intact.
+    """
+    if start + 1 >= len(tokens) or not tokens[start].isdecimal():
+        return None
+    integer = _ascii_digits(tokens[start])
+    scale = _NUMBER_SCALES.get(tokens[start + 1])
+    if (not re.fullmatch(r'[1-9][0-9]{0,2}', integer) or scale is None
+            or not value[matches[start].end():matches[start + 1].start()].isspace()):
+        return None
+    neighbors = tokens[max(0, start - 1):start] + tokens[start + 2:start + 3]
+    if any(_split_number_word(token) is not None or any(char.isdigit() for char in token)
+           for token in neighbors):
+        return None
+    left, right = matches[start].start(), matches[start + 1].end()
+    if ((left and (value[left - 1].isalnum() or value[left - 1] == '_'))
+            or (right < len(value) and (value[right].isalnum() or value[right] == '_'))):
+        return None
+    return _numeric_key(str(int(integer) * scale)), 2
+
+
 def _percentage_comparison_unit(
     tokens: list[str], start: int,
 ) -> tuple[str, int] | None:
@@ -1367,10 +1391,10 @@ def _comparison_units(
         return _english_year_comparison_units(text)
     if normalized_language != 'tr':
         return [(token, (token,)) for token in tokens]
+    value = _turkish_lower(text).translate({ord(char): None for char in _APOSTROPHES})
+    matches = list(_COMPARISON_TOKEN_PATTERN.finditer(value))
     join_positions: set[int] = set()
     if expected_apostrophe_suffixes:
-        value = _turkish_lower(text).translate({ord(char): None for char in _APOSTROPHES})
-        matches = list(_COMPARISON_TOKEN_PATTERN.finditer(value))
         join_positions = {
             position for position, (left, right) in enumerate(zip(matches, matches[1:]))
             if (left.group(), right.group()) in expected_apostrophe_suffixes
@@ -1394,6 +1418,12 @@ def _comparison_units(
         if orthographic_pair is not None:
             units.append((orthographic_pair, tuple(tokens[index:index + 2])))
             index += 2
+            continue
+        digit_scale = _digit_scale_unit(tokens, index, value, matches)
+        if digit_scale is not None:
+            key, consumed = digit_scale
+            units.append((key, tuple(tokens[index:index + consumed])))
+            index += consumed
             continue
         digit_key = _canonical_digit_token(tokens[index])
         if digit_key is not None:

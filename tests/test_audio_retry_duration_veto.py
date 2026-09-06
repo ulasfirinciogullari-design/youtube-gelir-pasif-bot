@@ -22,7 +22,7 @@ class QualityError(RuntimeError):
 
 
 def _helpers():
-    names = {'_audio_qc_failure_evidence', '_short_preview_voice_duration_qc'}
+    names = {'_audio_qc_failure_evidence', '_short_preview_voice_duration_qc', '_effective_short_edit_target'}
     definitions = [node for node in TREE.body if isinstance(node, ast.FunctionDef) and node.name in names]
     namespace = {'math': math, 'MAX_AUDIO_GENERATION_ATTEMPTS': 3}
     exec(compile(ast.Module(body=definitions, type_ignores=[]), str(SOURCE), 'exec'), namespace)
@@ -41,6 +41,7 @@ def _namespace(duration=25.272, transcript_pass=False):
         'scene_durations': voice['scene_durations'], 'scenes': [],
         'audio_pause_repair_attempted': False, 'short_form_prosody_required': True,
         'recovered_voice': False, 'saved_voice_retry': False, 'duration_minutes': .5,
+        'options': {'mode': 'preview', 'format': 'shorts'},
         'expected_spoken_narration': 'Existing sentence.', 'language': 'en',
         'task_id': 'child', 'package': {'scenes': []}, 'self': SimpleNamespace(),
         'audio_generation_attempts': 1, 'audio_qc_retry_history': [],
