@@ -592,3 +592,134 @@ def test_zero_media_concurrent_operator_retry_is_exactly_once(case):
         results = list(pool.map(reserve, range(6)))
     assert sum(result['claimed'] for result in results) == 1
     assert len(list(case.client.scan_iter(case.module.POLICY_PREFIX + '*'))) == 2
+
+
+def _failed_english_audio_child(c):
+    c.spec = {**c.spec, 'language': 'en'}
+    _edit(c, c.module.JOB_PREFIX + SOURCE, 'spec', c.spec)
+    _edit(c, c.module.PROFILE_PREFIX + CHANNEL, 'default_language', 'en')
+    _failed_planning_child(c)
+    prefix = f'audio_candidates/{CHILD}/' + 'a' * 64
+    pointer = {'version': 1, 'status': 'unapproved_candidate', 'qa_approved': False,
+               'requires_full_qa': True, 'audio_sha256': 'a' * 64, 'metadata_sha256': 'b' * 64,
+               'package_sha256': 'c' * 64, 'audio_key': prefix + '/candidate.mp3',
+               'metadata_key': prefix + '/metadata-' + 'b' * 64 + '.json', 'size': 607148}
+    _edit(c, c.module.JOB_PREFIX + CHILD, 'failure_stage', 'audio_qc_retry')
+    _edit(c, c.module.JOB_PREFIX + CHILD, 'audio_candidate_checkpoint', pointer)
+    return pointer
+
+
+def test_english_premedia_audio_failure_retains_candidate_and_requires_full_qa(case):
+    c, m = case, case.module
+    pointer = _failed_english_audio_child(c)
+    before = _all(c.client)
+    result = _reserve(c, GRANDCHILD, CHILD)
+    assert result['claimed'] is True and result['spec'] == c.spec
+    assert result['checkpoint'] is None
+    assert all(result['full_rebuild'][k] is True for k in m._FLAGS)
+    private = json.loads(c.client.get(m.POLICY_PREFIX + GRANDCHILD))
+    assert private['retained_audio_checkpoint_sha256'] == m._digest(pointer)
+    assert 'retained_audio_checkpoint_sha256' not in result['full_rebuild']
+    assert json.loads(c.client.get(m.JOB_PREFIX + CHILD))['audio_candidate_checkpoint'] == pointer
+    for key in (m.JOB_PREFIX + SOURCE, m.PAID_CREATE_BUDGET_PREFIX + SOURCE,
+                m.PAID_CREATE_BUDGET_PREFIX + CHILD, m.POLICY_PREFIX + CHILD,
+                m.SOURCE_PREFIX + SOURCE, m.RETRY_DISPATCH_PREFIX + SOURCE,
+                m.RETRY_CHILD_CLAIM_PREFIX + CHILD, m.RETRY_CHILD_EXECUTION_PREFIX + CHILD,
+                m.CHANNEL_STATE_PREFIX + CHANNEL):
+        assert _all(c.client)[key] == before[key]
+    assert c.state.acquire_retry_child_execution(GRANDCHILD, CHILD) is True
+    assert m.get_full_rebuild_policy(GRANDCHILD, CHILD, c.spec) == result['full_rebuild']
+    assert _reserve(c, str(UUID(int=903)), CHILD) == {'claimed': False, 'child_task_id': GRANDCHILD}
+
+
+@pytest.mark.parametrize('field,value', [
+    ('version', True), ('version', 2), ('qa_approved', True), ('requires_full_qa', False),
+    ('status', 'approved'), ('audio_sha256', 'a' * 63), ('metadata_sha256', 'B' * 64),
+    ('package_sha256', None), ('size', True), ('size', 1023), ('size', 14 * 1024 * 1024 + 1),
+    ('audio_key', f'audio_candidates/{SOURCE}/' + 'a' * 64 + '/candidate.mp3'),
+    ('audio_key', 'https://example.com/private.mp3'), ('metadata_key', '../metadata.json'),
+    ('unexpected_field', 'not-allowed'),
+])
+def test_audio_continuation_rejects_invalid_or_cross_job_pointer_without_mutation(case, field, value):
+    pointer = _failed_english_audio_child(case)
+    _edit(case, case.module.JOB_PREFIX + CHILD, 'audio_candidate_checkpoint', {**pointer, field: value})
+    before = _all(case.client)
+    with pytest.raises(case.module.FullVideoRebuildError):
+        _reserve(case, GRANDCHILD, CHILD)
+    assert _all(case.client) == before
+
+
+@pytest.mark.parametrize('field,value', [
+    ('audio_candidate_checkpoint', None), ('failure_stage', 'audio_qc'),
+    ('failure_stage', 'director_qc'), ('failure_stage', 'final_visual_qc'),
+    ('audio_candidate_checkpoint_error', 'unavailable'), ('generated_asset_candidates', {}),
+    ('voice_candidate_reuse', {}), ('voice_replacement', {}), ('repair_checkpoint', {}),
+    ('qa_workprint', {}), ('result', {}), ('youtube', {}), ('youtube_automation', {}),
+])
+def test_audio_continuation_rejects_wrong_stage_and_other_artifacts(case, field, value):
+    _failed_english_audio_child(case)
+    _edit(case, case.module.JOB_PREFIX + CHILD, field, value)
+    before = _all(case.client)
+    with pytest.raises(case.module.FullVideoRebuildError):
+        _reserve(case, GRANDCHILD, CHILD)
+    assert _all(case.client) == before
+
+
+def test_audio_continuation_is_not_a_general_turkish_voice_replacement(case):
+    pointer = _failed_english_audio_child(case)
+    # Directly exercise the narrow gate: forged runtime language cannot expand it.
+    job = json.loads(case.client.get(case.module.JOB_PREFIX + CHILD))
+    assert job['audio_candidate_checkpoint'] == pointer
+    with pytest.raises(case.module.FullVideoRebuildError):
+        case.module._premedia_checkpoint_binding(job, {**case.spec, 'language': 'tr'})
+
+
+@pytest.mark.parametrize('mutation', ['missing_grant', 'ledger', 'repair', 'upload'])
+def test_audio_checkpoint_alone_never_grants_a_new_paid_pipeline(case, mutation):
+    c, m = case, case.module
+    _failed_english_audio_child(c)
+    if mutation == 'missing_grant':
+        c.client.delete(m.POLICY_PREFIX + CHILD)
+    elif mutation == 'ledger':
+        c.client.hset(m.PAID_CREATE_BUDGET_PREFIX + SOURCE, 'used', '5')
+    elif mutation == 'repair':
+        c.client.set(m.REPAIR_CHECKPOINT_PREFIX + CHILD, 'retained-private-repair')
+    else:
+        c.client.set(m.UPLOAD_PREFIX + CHILD, 'existing-upload-intent')
+    before = _all(c.client)
+    with pytest.raises(m.FullVideoRebuildError):
+        _reserve(c, GRANDCHILD, CHILD)
+    assert _all(c.client) == before
+
+
+@pytest.mark.parametrize('when', ['reservation', 'execution'])
+def test_retained_audio_pointer_is_compared_atomically_and_rechecked_before_cost(case, monkeypatch, when):
+    c, m = case, case.module
+    pointer = _failed_english_audio_child(c)
+    if when == 'execution':
+        _reserve(c, GRANDCHILD, CHILD)
+        assert c.state.acquire_retry_child_execution(GRANDCHILD, CHILD) is True
+        _edit(c, m.JOB_PREFIX + CHILD, 'audio_candidate_checkpoint', {**pointer, 'package_sha256': 'd' * 64})
+        with pytest.raises(m.FullVideoRebuildError):
+            m.get_full_rebuild_policy(GRANDCHILD, CHILD, c.spec)
+    else:
+        original = c.client.eval
+        def changed(script, *args):
+            if script == m._RESERVE:
+                _edit(c, m.JOB_PREFIX + CHILD, 'audio_candidate_checkpoint', {**pointer, 'package_sha256': 'd' * 64})
+            return original(script, *args)
+        monkeypatch.setattr(c.client, 'eval', changed)
+        with pytest.raises(m.FullVideoRebuildError):
+            _reserve(c, GRANDCHILD, CHILD)
+        assert not c.client.exists(m.RETRY_DISPATCH_PREFIX + CHILD)
+        assert not c.client.exists(m.JOB_PREFIX + GRANDCHILD)
+
+
+def test_audio_continuation_dispatch_uses_fresh_verified_worker_once(case):
+    _failed_english_audio_child(case)
+    result = case.module.dispatch_full_video_rebuild(CHILD)
+    assert result['status'] == 'dispatched'
+    assert case.calls[0]['kwargs'] == {'full_rebuild_source_id': CHILD}
+    assert case.calls[0]['args'][5:] == (None, CHILD)
+    assert case.module.dispatch_full_video_rebuild(CHILD)['status'] == 'already_claimed'
+    assert len(case.calls) == 1

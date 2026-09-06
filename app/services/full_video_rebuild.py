@@ -40,6 +40,9 @@ MAX_RETRY_HOPS = 16
 _TASK = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
 _ID = re.compile(r'^[A-Za-z0-9_-]{8,128}$')
 _TOKEN = re.compile(r'^[A-Za-z0-9_-]{16,256}$')
+_SHA = re.compile(r'^[0-9a-f]{64}$')
+_AUDIO_POINTER_FIELDS = {'version', 'status', 'qa_approved', 'requires_full_qa', 'audio_key',
+                         'metadata_key', 'audio_sha256', 'metadata_sha256', 'package_sha256', 'size'}
 _ACTIVE_STATES = {'PENDING', 'STARTED', 'PROGRESS', 'RETRY'}
 _FLAGS = ('fresh_story', 'fresh_voice', 'fresh_media', 'requires_full_qa')
 
@@ -179,19 +182,51 @@ def _authorization(client, spec, root_id, snapshots):
             'authorization_epoch_sha256': _digest(epoch), 'schedule_sha256': _digest(state)}
 
 
+def _premedia_checkpoint_binding(source, spec):
+    """Retain a failed English narration without granting its reuse or approval.
+
+    This is a new-story continuation of an existing private full-rebuild grant,
+    not a general retry for any job with an audio pointer. Canonical shape is
+    checked here and the entire pointer is bound into the new private policy;
+    neither the old artifact nor its claims/ledger is rewritten. The fresh
+    worker never consumes this audio, so this is not an asset-integrity check.
+    """
+    _require(spec.get('language') == 'en' and source.get('failure_stage') == 'audio_qc_retry',
+             'full_rebuild_paid_source_required')
+    pointer = source.get('audio_candidate_checkpoint')
+    _require(isinstance(pointer, dict) and set(pointer) == _AUDIO_POINTER_FIELDS
+             and type(pointer.get('version')) is int and pointer['version'] == 1
+             and pointer.get('status') == 'unapproved_candidate'
+             and pointer.get('qa_approved') is False and pointer.get('requires_full_qa') is True,
+             'full_rebuild_audio_checkpoint_invalid')
+    _require(all(isinstance(pointer.get(k), str) and _SHA.fullmatch(pointer[k])
+                 for k in ('audio_sha256', 'metadata_sha256', 'package_sha256'))
+             and type(pointer.get('size')) is int and 1024 <= pointer['size'] <= 14 * 1024 * 1024,
+             'full_rebuild_audio_checkpoint_invalid')
+    prefix = f"audio_candidates/{source['task_id']}/{pointer['audio_sha256']}"
+    _require(pointer['audio_key'] == prefix + '/candidate.mp3'
+             and pointer['metadata_key'] == prefix + '/metadata-' + pointer['metadata_sha256'] + '.json',
+             'full_rebuild_audio_checkpoint_invalid')
+    return {'retained_audio_checkpoint_sha256': _digest(pointer)}
+
+
 def _planning_retry_authorization(client, source, spec, cap, root_id, auth, snapshots):
-    """Inherit a genuine full-rebuild grant only after its pre-voice failure.
+    """Inherit a genuine full-rebuild grant after a validated pre-media failure.
 
     This does not restart a worker or reopen its old execution claim. An
     explicit operator dispatch still reserves exactly one new child below.
     """
-    _require(source.get('failure_stage') == 'director_qc'
-             and all(source.get(k) is None for k in (
-                 'audio_candidate_checkpoint', 'audio_candidate_checkpoint_error',
+    _require(all(source.get(k) is None for k in (
+                 'audio_candidate_checkpoint_error',
                  'generated_asset_candidates', 'voice_candidate_reuse', 'voice_replacement',
                  'repair_checkpoint', 'qa_workprint', 'result', 'video_key', 'youtube_video_id',
                  'youtube', 'youtube_automation',
              )), 'full_rebuild_paid_source_required')
+    if source.get('failure_stage') == 'director_qc':
+        _require(source.get('audio_candidate_checkpoint') is None, 'full_rebuild_paid_source_required')
+        retained = {}
+    else:
+        retained = _premedia_checkpoint_binding(source, spec)
     source_id, parent_id = source['task_id'], source.get('parent_id')
     _require(isinstance(parent_id, str) and _TASK.fullmatch(parent_id))
     policy = _object(_snapshot(client, POLICY_PREFIX + source_id, snapshots))
@@ -213,7 +248,7 @@ def _planning_retry_authorization(client, source, spec, cap, root_id, auth, snap
              and policy.get('source_paid_ledger_sha256') == _digest(parent_ledger))
     for prefix in (REPAIR_CHECKPOINT_PREFIX, REPAIR_CHECKPOINT_CLAIM_PREFIX):
         _absent(client, prefix + source_id, snapshots)
-    return {'inherited_policy_sha256': _digest(policy)}
+    return {'inherited_policy_sha256': _digest(policy), **retained}
 
 
 def _source(client, source_id, snapshots, *, reserved=False):

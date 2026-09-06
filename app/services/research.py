@@ -15,6 +15,9 @@ from app.services.director import (
     _explicit_scene_count_from_brief,
     _story_brief_for_qc,
     _scheduled_short_shot_writer_rule,
+    _fresh_spoken_word_budget,
+    _spoken_word_budget_note,
+    _exact_narration_lock_from_brief,
 )
 from app.services.visual_routing import preview_authored_ai_limit
 from app.services.source_evidence import normalize_evidence_sources
@@ -258,6 +261,18 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     )
     explicit_scene_count = _explicit_scene_count_from_brief(requested_brief)
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
+    spoken_word_budget = _fresh_spoken_word_budget(
+        duration_minutes, language, options, fresh_scheduled,
+        exact_narration=(
+            _exact_narration_lock_from_brief(requested_brief)
+            if duration_minutes == 0.5 and fresh_scheduled is True else None
+        ),
+    )
+    if spoken_word_budget is not None:
+        target_words, min_words, max_words = (
+            spoken_word_budget['target_words'], spoken_word_budget['minimum_words'],
+            spoken_word_budget['maximum_words'],
+        )
     target_scenes = (
         explicit_scene_count
         if explicit_scene_count is not None
@@ -362,6 +377,7 @@ Visual mix: {visual_mix}
 {documentary_rules}
 
 HARD NARRATION BUDGET: {min_words}-{max_words} total spoken words; aim for {target_words}. Never exceed {max_words}.
+{_spoken_word_budget_note(spoken_word_budget)}
 {scene_budget_note}
 Maximum scenes that may carry an AI fallback prompt: {max_ai_scenes}. Paid generation is selected later from measured stock quality.
 {production_scene_note}
@@ -462,6 +478,9 @@ FACT RULES:
             f'{len(package["scenes"])} scenes; {requirement}'
         )
     package['target_scene_count'] = target_scenes
+    package.pop('spoken_word_budget', None)
+    if spoken_word_budget is not None:
+        package['spoken_word_budget'] = dict(spoken_word_budget)
     package['target_word_range'] = [min_words, max_words]
     package['studio_options'] = options
     return package

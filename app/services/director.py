@@ -937,6 +937,58 @@ def _short_story_quality_issues(
 _SHORT_STORY_QC_VERSION = 5
 _STOCK_SCENE_QC_VERSION = 9
 _STORY_STOCK_CONTRACT = 'openai-story-stock-v5'
+_ENGLISH_SHORT_SPOKEN_BUDGET = {
+    'version': 1,
+    'profile': 'fresh_en_30s_v1',
+    'language': 'en',
+    'duration_minutes': 0.5,
+    'target_words': 65,
+    'minimum_words': 62,
+    'maximum_words': 66,
+}
+
+
+def validate_spoken_word_budget(value: object) -> dict:
+    """Validate fixed planning metadata, not story/audio approval or authority."""
+    if (
+        type(value) is not dict
+        or set(value) != set(_ENGLISH_SHORT_SPOKEN_BUDGET)
+        or any(type(value[key]) is not type(expected) or value[key] != expected
+               for key, expected in _ENGLISH_SHORT_SPOKEN_BUDGET.items())
+    ):
+        raise ValueError('Unsupported spoken-word budget profile')
+    return dict(_ENGLISH_SHORT_SPOKEN_BUDGET)
+
+
+def _fresh_spoken_word_budget(
+    duration_minutes: float, language: str, options: dict, fresh_scheduled: bool,
+    *, exact_narration: str | None = None,
+) -> dict | None:
+    if (
+        exact_narration is None
+        and str(language or '').strip().casefold() == 'en'
+        and _scheduled_short_shot_contract(options, duration_minutes, fresh_scheduled)
+    ):
+        # One measured English take used 56 words in 25.272s. This estimate
+        # targets about 29.3s, not permission to skip actual duration/prosody QA.
+        return dict(_ENGLISH_SHORT_SPOKEN_BUDGET)
+    return None
+
+
+def _spoken_word_budget_note(budget: dict | None) -> str:
+    if budget is None:
+        return ''
+    validate_spoken_word_budget(budget)
+    return (
+        'ENGLISH SHORT SPOKEN-BUDGET CALIBRATION: target 65 words within '
+        '62-66 total words at natural speech speed. Keep every stock-routed '
+        'scene at 5-11 words; with six stock scenes aim for 10-11 useful '
+        'words per scene, never filler. Each AI scene still has its existing '
+        '13-word maximum and single-pass visual constraint. Preserve the '
+        'explicit scene count and every supported fact. This is a planning '
+        'estimate only; actual synthesized duration, transcript accuracy and '
+        'independent prosody review remain authoritative.'
+    )
 
 
 def _normalize_short_story_topic(topic: str) -> str:
@@ -969,6 +1021,10 @@ def _short_story_fingerprint(package: dict) -> str:
         ],
         'stock_scene_qc': package.get('stock_scene_qc'),
     }
+    # Preserve all legacy fingerprints; bind new budget provenance only when
+    # explicitly present on a server-authored calibrated package.
+    if 'spoken_word_budget' in package:
+        material['spoken_word_budget'] = package['spoken_word_budget']
     encoded = json.dumps(
         material,
         ensure_ascii=False,
@@ -1106,6 +1162,20 @@ def short_story_package_is_approved(
         and attested_topic != _normalize_short_story_topic(topic)
     ):
         return False
+    if 'spoken_word_budget' in package:
+        try:
+            budget = validate_spoken_word_budget(package['spoken_word_budget'])
+        except ValueError:
+            return False
+        words = _word_count(str(package.get('narration') or ''))
+        if (
+            not budget['minimum_words'] <= words <= budget['maximum_words']
+            or package.get('target_word_range') != [budget['minimum_words'], budget['maximum_words']]
+            or any(not str(scene.get('ai_prompt') or '').strip()
+                   and not 5 <= _word_count(str(scene.get('narration') or '')) <= 11
+                   for scene in scenes)
+        ):
+            return False
     fingerprint = str(qc.get('fingerprint') or '')
     return (
         len(fingerprint) == 64
@@ -1153,7 +1223,13 @@ def _target_word_budget(
     *,
     allow_legacy_short_lock: bool = False,
     calibrated_short_words: int | None = None,
+    spoken_word_budget: dict | None = None,
 ) -> tuple[int, int, int]:
+    if spoken_word_budget is not None:
+        budget = validate_spoken_word_budget(spoken_word_budget)
+        if duration_minutes != 0.5 or calibrated_short_words is not None:
+            raise ValueError('Unsupported combined narration budget')
+        return budget['target_words'], budget['minimum_words'], budget['maximum_words']
     if calibrated_short_words is not None:
         if duration_minutes != 0.5 or calibrated_short_words != 51:
             raise ValueError('Unsupported calibrated narration budget')
@@ -1748,6 +1824,9 @@ def _run_director(
     explanatory_coda_rule = _documentary_explanatory_coda_rule(style)
     shot_capacity_rule = _scheduled_short_shot_writer_rule(options, duration_minutes, fresh_scheduled)
     stock_video_rule = _fresh_documentary_stock_video_rule(style, fresh_scheduled)
+    spoken_budget_note = _spoken_word_budget_note(
+        _ENGLISH_SHORT_SPOKEN_BUDGET if (target_words, min_words, max_words) == (65, 62, 66) else None
+    )
     shot_aspect = '9:16' if shot_capacity_rule else '16:9'
     if duration_minutes <= 0.6 and target_scenes > 0:
         authored_ai_limit = preview_authored_ai_limit(
@@ -1899,6 +1978,7 @@ Studio visual mix: {visual_mix}
 {documentary_rule}
 {explanatory_coda_rule}
 {stock_video_rule}
+{spoken_budget_note}
 {reference_note}
 HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {short_quota_note}
@@ -2007,11 +2087,20 @@ def _repair_short_stock_scenes(
     fresh_scheduled: bool = False,
     allow_legacy_short_budget: bool = True,
     calibrated_short_words: int | None = None,
+    spoken_word_budget: dict | None = None,
     immutable_candidate_narrations: list[str] | None = None,
     immutable_original_shot_prompts: dict[int, str] | None = None,
 ) -> dict:
     if duration_minutes > 0.6:
         return package
+    if spoken_word_budget is not None:
+        spoken_word_budget = validate_spoken_word_budget(spoken_word_budget)
+        if (
+            duration_minutes != 0.5
+            or str(language_name or '').strip().casefold() not in {'en', 'english'}
+            or validate_spoken_word_budget(package.get('spoken_word_budget')) != spoken_word_budget
+        ):
+            raise ValueError('Spoken-word budget does not match the reviewed candidate')
 
     plan_provider = _studio_plan_provider()
     requested_brief = _story_brief_for_qc(topic)
@@ -2104,6 +2193,7 @@ def _repair_short_stock_scenes(
             duration_minutes,
             allow_legacy_short_lock=allow_legacy_short_budget,
             calibrated_short_words=calibrated_short_words,
+            spoken_word_budget=spoken_word_budget,
         )
     )
     minimum_scene_words = 5
@@ -2360,6 +2450,7 @@ NON-NEGOTIABLE RULES:
 - {documentary_writer_rule}
 - {explanatory_coda_rule}
 - {stock_video_rule}
+- {_spoken_word_budget_note(spoken_word_budget)}
 - {_MATERIAL_IDENTITY_RULE}
 - {_HUMAN_CURIOSITY_RULE}
 - {_SOURCE_IDENTITY_RULE}
@@ -3490,6 +3581,7 @@ def revalidate_immutable_short_story(
     *,
     immutable_candidate_narrations: list[str],
     immutable_original_shot_prompts: dict[int, str] | None = None,
+    verified_spoken_word_budget: dict | None = None,
 ) -> dict:
     """Server-only voice recovery: freshly critique exact speech, never rewrite it.
 
@@ -3504,6 +3596,15 @@ def revalidate_immutable_short_story(
     ):
         raise RuntimeError('Immutable story revalidation requires an exact 30-second Short')
     _story_brief_for_qc(topic)
+    spoken_word_budget = None
+    if 'spoken_word_budget' in package or verified_spoken_word_budget is not None:
+        spoken_word_budget = validate_spoken_word_budget(verified_spoken_word_budget)
+        if (
+            validate_spoken_word_budget(package.get('spoken_word_budget')) != spoken_word_budget
+            or str(language or '').strip().casefold() != 'en'
+            or not _scheduled_short_shot_contract(options, duration_minutes, True)
+        ):
+            raise RuntimeError('Immutable narration budget provenance does not match')
     locked = _immutable_narration_map(package, immutable_candidate_narrations)
     if immutable_original_shot_prompts is not None:
         if (
@@ -3524,7 +3625,9 @@ def revalidate_immutable_short_story(
     candidate.pop('stock_scene_qc', None)
     normalize_evidence_sources(candidate.get('sources'), min_count=2, max_count=5)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
-    target, minimum, maximum = _target_word_budget(0.5, allow_legacy_short_lock=True)
+    target, minimum, maximum = _target_word_budget(
+        0.5, allow_legacy_short_lock=True, spoken_word_budget=spoken_word_budget,
+    )
     if _short_preview_scene_budget_issues(candidate, target, len(locked)):
         raise ImmutableNarrationSceneBudgetError('Immutable narration exceeds the single-pass scene budget')
     authored_limit = preview_authored_ai_limit(options, len(locked), duration_minutes)
@@ -3544,6 +3647,7 @@ def revalidate_immutable_short_story(
         allow_natural_language_repair=False,
         allow_explicit_brief_repair=False,
         allow_legacy_short_budget=True,
+        **({'spoken_word_budget': spoken_word_budget} if spoken_word_budget is not None else {}),
         immutable_candidate_narrations=list(locked.values()),
         **({'immutable_original_shot_prompts': deepcopy(immutable_original_shot_prompts)}
            if immutable_original_shot_prompts is not None else {}),
@@ -3710,6 +3814,8 @@ def ensure_scheduled_short_shot_prompts(
             deepcopy(candidate), topic, duration_minutes, language, options,
             immutable_candidate_narrations=narrations,
             immutable_original_shot_prompts=deepcopy(originals),
+            **({'verified_spoken_word_budget': validate_spoken_word_budget(package['spoken_word_budget'])}
+               if 'spoken_word_budget' in package else {}),
         )
         if (not isinstance(reviewed, dict) or reviewed.get('scenes') != candidate['scenes']
                 or any(reviewed.get(key) != value for key, value in candidate.items()
@@ -3761,6 +3867,14 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         else locked_scene_count
     )
     options = dict(options or package.get('studio_options') or {})
+    spoken_word_budget = _fresh_spoken_word_budget(
+        duration_minutes, language, options, fresh_scheduled, exact_narration=exact_narration,
+    )
+    # Model output and legacy input metadata can never select a calibration.
+    package = dict(package)
+    package.pop('spoken_word_budget', None)
+    if spoken_word_budget is not None:
+        package['spoken_word_budget'] = dict(spoken_word_budget)
     pace_profile = str(options.get('pace') or 'balanced')
     production_short_qc = (
         duration_minutes == 0.5
@@ -3781,6 +3895,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         duration_minutes,
         allow_legacy_short_lock=exact_narration is not None,
         calibrated_short_words=calibrated_short_words,
+        spoken_word_budget=spoken_word_budget,
     )
     exact_scene_count = immutable_scene_count is not None
     target_scenes = (
@@ -3990,6 +4105,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 ),
                 allow_legacy_short_budget=(exact_narration is not None),
                 calibrated_short_words=calibrated_short_words,
+                **({'spoken_word_budget': spoken_word_budget} if spoken_word_budget is not None else {}),
                 **({'allow_whole_story_repair': True} if fresh_scheduled is True else {}),
                 **({'fresh_scheduled': True} if fresh_scheduled is True else {}),
             )
@@ -4115,6 +4231,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 allow_explicit_brief_repair=False,
                 allow_legacy_short_budget=(exact_narration is not None),
                 calibrated_short_words=calibrated_short_words,
+                **({'spoken_word_budget': spoken_word_budget} if spoken_word_budget is not None else {}),
                 **({'fresh_scheduled': True} if fresh_scheduled is True else {}),
             )
         words = _word_count(out['narration'])

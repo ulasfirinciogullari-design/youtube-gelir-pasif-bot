@@ -160,10 +160,11 @@ _EN_YEAR_CUES = frozenset({'in', 'since', 'during', 'until', 'before', 'after', 
 _EN_YEAR_NONYEAR_FOLLOWERS = frozenset({
     '%', '‰', '$', '€', '£', '¥', '₺', 'percent', 'dollars', 'cents', 'euros', 'pounds',
 })
-# Only the locative suffix needed for forms such as ``yedi-de``/``1997'de``
-# is detached from unambiguous unit/tens words. Broader suffix guessing would
-# reinterpret ordinary Turkish words such as ``onda`` or ``yüzde`` as numbers.
-_NUMBER_SUFFIXES = frozenset({'da', 'de', 'ta', 'te'})
+# Only exact locative and locative-past forms are detached from unambiguous
+# unit/tens words: ``yedide``/``1997'de``, ``dörtteydi``/``1974'teydi``.
+# Keep the complete suffix in the numeric key: ``1974te`` is not ``1974teydi``.
+# Broader suffix/base guessing would reinterpret ``onda`` or ``yüzde`` as numbers.
+_NUMBER_SUFFIXES = frozenset({'da', 'de', 'ta', 'te', 'daydı', 'deydi', 'taydı', 'teydi'})
 _NUMBER_BASES_BY_LENGTH = tuple(
     sorted(
         (set(_NUMBER_UNITS) | set(_NUMBER_TENS)) - {'bir', 'on'},

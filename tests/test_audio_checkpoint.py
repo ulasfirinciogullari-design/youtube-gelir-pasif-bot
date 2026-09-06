@@ -89,6 +89,56 @@ def test_checkpoint_preserves_existing_audio_and_whitelisted_unapproved_metadata
         for excluded in ('https://', 'SECRET', 'DO NOT EXPORT', 'PRIVATE PROVIDER ID', 'headers', 'audio_qc', '"pass"', str(Path(voice['path']).parent)):
             assert excluded not in text
     assert Path(voice['path']).read_bytes() == audio
+
+
+_EN_BUDGET = {'version': 1, 'profile': 'fresh_en_30s_v1', 'language': 'en',
+              'duration_minutes': 0.5, 'target_words': 65, 'minimum_words': 62, 'maximum_words': 66}
+
+
+def test_fixed_word_budget_survives_content_addressed_unapproved_voice_recovery(candidate, monkeypatch):
+    import io
+    from types import SimpleNamespace
+    from app.services import storage, voice_candidate_recovery
+
+    monkeypatch.setattr(storage.settings, 'bucket', 'test-bucket', raising=False)
+    package, voice, audio, uploaded = candidate
+    package['spoken_word_budget'] = dict(_EN_BUDGET)
+    pointer = audio_checkpoint.persist_audio_candidate_checkpoint(TASK_ID, package, voice)['audio_candidate_checkpoint']
+    metadata = json.loads(uploaded[1][2])
+    assert metadata['package']['spoken_word_budget'] == _EN_BUDGET
+    assert metadata['qa_approved'] is False and metadata['requires_full_qa'] is True
+    package_bytes = json.dumps(metadata['package'], ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode()
+    assert hashlib.sha256(package_bytes).hexdigest() == pointer['package_sha256']
+    objects = {key: content for key, _, content, _ in uploaded}
+    monkeypatch.setattr(storage, '_client', lambda: SimpleNamespace(get_object=lambda **kw: {
+        'Body': io.BytesIO(objects[kw['Key']]), 'ContentLength': len(objects[kw['Key']]),
+    }))
+    work = Path(voice['path']).parent / 'youtube_factory' / f'{OTHER_TASK_ID}_attempt_0'
+    work.mkdir(parents=True)
+    recovered = voice_candidate_recovery.load_voice_retry_candidate(TASK_ID, OTHER_TASK_ID, pointer, work)
+    assert recovered['package']['spoken_word_budget'] == _EN_BUDGET
+    assert recovered['qa_approved'] is False and recovered['requires_full_qa'] is True
+    assert Path(recovered['voice_result']['path']).read_bytes() == audio
+
+
+@pytest.mark.parametrize('field,value', [
+    ('version', True), ('version', 2), ('profile', 'custom'), ('language', 'tr'),
+    ('duration_minutes', True), ('duration_minutes', 1), ('target_words', 66),
+    ('minimum_words', 51), ('maximum_words', 100), ('qa_approved', True),
+    ('api_key', 'PRIVATE'),
+])
+def test_checkpoint_rejects_noncanonical_budget_before_upload(candidate, field, value):
+    package, voice, _audio, uploaded = candidate
+    package['spoken_word_budget'] = {**_EN_BUDGET, field: value}
+    with pytest.raises(audio_checkpoint.AudioCandidateCheckpointError):
+        audio_checkpoint.persist_audio_candidate_checkpoint(TASK_ID, package, voice)
+    assert uploaded == []
+
+
+def test_checkpoint_without_budget_keeps_legacy_package_shape(candidate):
+    package, voice, _audio, uploaded = candidate
+    audio_checkpoint.persist_audio_candidate_checkpoint(TASK_ID, package, voice)
+    assert 'spoken_word_budget' not in json.loads(uploaded[1][2])['package']
     assert all(not entry[3].exists() for entry in uploaded)
 
 

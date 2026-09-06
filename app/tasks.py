@@ -1608,6 +1608,69 @@ def _short_preview_voice_duration_qc(
     }
 
 
+def _audio_qc_failure_evidence(history: list[dict]) -> dict:
+    """Bounded factual checks, never provider text, transcripts or media keys."""
+    reasons = {
+        'voice_duration_missing', 'short_form_script_too_thin',
+        'short_form_script_too_dense', 'short_form_duration_near_boundary',
+        'speech_to_text_keys_missing', 'unnatural_internal_pause',
+        'choppy_phrase_grouping', 'flat_emphasis', 'unnatural_pacing',
+        'mispronunciation', 'gemini_api_key_unavailable',
+        'gemini_prosody_protocol_invalid', 'gemini_prosody_review_failed',
+        'prosody_review_unavailable', 'not_run',
+        'not_run_transcript_rejected', 'not_run_duration_rejected',
+        'not_applicable_language_or_long_form',
+    }
+
+    def number(value, maximum):
+        if type(value) not in (int, float) or not 0 <= value <= maximum:
+            return None
+        return round(value, 3) if math.isfinite(value) else None
+
+    def verdict(value):
+        value = value if isinstance(value, dict) else {}
+        reason = value.get('reason')
+        return {
+            'available': value.get('available') if type(value.get('available')) is bool else None,
+            'pass': value.get('pass') if type(value.get('pass')) is bool else None,
+            # Closed codes are stronger than redacting arbitrary provider text.
+            'reason': (None if reason is None else reason
+                       if isinstance(reason, str) and reason in reasons else 'reason_omitted'),
+        }
+
+    checks = []
+    # Three synthesis attempts can include one same-audio pause recheck.
+    for item in (history if isinstance(history, list) else [])[-(MAX_AUDIO_GENERATION_ATTEMPTS + 1):]:
+        if not isinstance(item, dict):
+            continue
+        transcript, duration, prosody = (
+            item.get(key) if isinstance(item.get(key), dict) else {}
+            for key in ('transcript', 'duration', 'prosody')
+        )
+        attempt = item.get('generation_attempt')
+        scores = prosody.get('scores')
+        checks.append({
+            'generation_attempt': (attempt if type(attempt) is int
+                                   and 0 <= attempt < MAX_AUDIO_GENERATION_ATTEMPTS else None),
+            'transcript': {**verdict(transcript), 'score': number(transcript.get('score'), 100)},
+            'duration': {
+                **verdict(duration),
+                'retryable': duration.get('retryable') if type(duration.get('retryable')) is bool else None,
+                **{key: number(duration.get(key), 86400) for key in (
+                    'duration_seconds', 'minimum_seconds', 'maximum_seconds',
+                )},
+            },
+            'prosody': {
+                **verdict(prosody),
+                'scores': ({key: number(scores.get(key), 100) for key in (
+                    'pronunciation', 'naturalness', 'pacing',
+                    'sentence_flow', 'emphasis', 'roboticness',
+                )} if isinstance(scores, dict) else None),
+            },
+        })
+    return {'version': 1, 'status': 'rejected', 'requires_full_qa': True, 'checks': checks}
+
+
 def _strict_short_preview_render_qc(
     rendered: dict,
     requested_seconds: float,
@@ -4191,6 +4254,16 @@ def _prepare_saved_voice_retry(
             key: value for key, value in runtime_spec.items()
             if key not in {'topic', 'duration_minutes', 'language', 'channel_id'}
         }
+        review_kwargs = {}
+        if 'spoken_word_budget' in source_package:
+            from app.services.director import validate_spoken_word_budget
+
+            if (runtime_spec.get('language') != 'en'
+                    or runtime_spec.get('production_scheduled') is not True):
+                raise ValueError('Saved spoken budget does not match the runtime contract')
+            review_kwargs['verified_spoken_word_budget'] = validate_spoken_word_budget(
+                source_package['spoken_word_budget'],
+            )
         reviewed = revalidate_immutable_short_story(
             source_package,
             runtime_spec['topic'],
@@ -4200,6 +4273,7 @@ def _prepare_saved_voice_retry(
             immutable_candidate_narrations=[
                 scene['narration'] for scene in source_package['scenes']
             ],
+            **review_kwargs,
         )
         require_unchanged_voice_narration(source_package, reviewed)
         if not short_story_package_is_approved(reviewed, runtime_spec['topic']):
@@ -4828,6 +4902,9 @@ def run_video_pipeline(
                 and audio_generation_attempts < MAX_AUDIO_GENERATION_ATTEMPTS
                 and audio_qc.get('available') is True
                 and audio_duration_qc.get('available') is True
+                # An independent script-length rejection cannot be repaired
+                # by reseeding the same text, even when transcript QA also fails.
+                and (duration_passed or audio_duration_qc.get('retryable') is True)
                 and (
                     (
                         audio_qc.get('available') is True
@@ -4847,6 +4924,13 @@ def run_video_pipeline(
                 )
             )
             if not can_regenerate:
+                try:
+                    update_job(task_id, audio_qc_failure_evidence=_audio_qc_failure_evidence(
+                        audio_qc_retry_history,
+                    ))
+                except Exception:
+                    # Diagnostic persistence must never mask or relax rejection.
+                    pass
                 raise FinalAudioQualityError(
                     'Audio narration QA rejected before paid media: '
                     + json.dumps(
