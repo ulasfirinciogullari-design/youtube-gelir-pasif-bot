@@ -1330,6 +1330,35 @@ def _checkpoint_audio_candidate(task_id: str, package: dict, voice_result: dict)
         pass
 
 
+def _persist_final_thumbnail(task_id, work, rendered, options, quality_disposition, manual_qa_required):
+    """A missing cover must not buy another render or silently approve release."""
+    empty = {'thumbnail_key': None, 'thumbnail_sha256': None, 'thumbnail_size': None}
+    if options.get('mode') != 'production' or options.get('format') not in {'shorts', 'landscape'}:
+        return {**empty, 'thumbnail_generation': {'status': 'not_requested'}}
+    if quality_disposition != 'automated_qc_pass' or manual_qa_required is not False:
+        return {**empty, 'thumbnail_generation': {'status': 'not_approved'}}
+    try:
+        from app.services.publication_thumbnail import prepare_approved_final_thumbnail
+        output = work / 'thumbnail.jpg'
+        proof = prepare_approved_final_thumbnail(
+            task_id, rendered['path'], output,
+            video_format=options['format'], qa_approved=True,
+        )
+        key = f'videos/{task_id}/thumbnail.jpg'
+        uploaded = upload_file(output, key, 'image/jpeg')
+        if not isinstance(uploaded, dict) or uploaded.get('key') != key or uploaded.get('size') != proof['size']:
+            raise ValueError('Thumbnail storage receipt did not match')
+        return {'thumbnail_key': key, 'thumbnail_sha256': proof['sha256'],
+                'thumbnail_size': proof['size'], 'thumbnail_generation': {**proof, 'status': 'stored'}}
+    except Exception:
+        # Keep the approved final. The unchanged publisher blocks public release
+        # when its frozen require_thumbnail policy has no successfully uploaded
+        # cover. No TTS, generated-video retry, or quality override is triggered.
+        return {**empty, 'thumbnail_generation': {
+            'status': 'unavailable', 'reason': 'thumbnail_preparation_unavailable',
+        }}
+
+
 def _short_preview_voice_duration_qc(
     voice_result: dict,
     target_seconds: float,
@@ -6731,6 +6760,9 @@ def run_video_pipeline(
                 f'(limit {freeze_limit:.1f}s)'
             )
 
+        thumbnail_fields = _persist_final_thumbnail(
+            task_id, work, rendered, options, quality_disposition, manual_qa_required,
+        )
         set_stage(self, task_id, 'upload', 92, 'Final master ve üretim dosyaları kalıcı depolamaya yükleniyor.')
         object_key = f'videos/{task_id}/final.mp4'
         upload_file(rendered['path'], object_key, 'video/mp4')
@@ -6755,6 +6787,7 @@ def run_video_pipeline(
         meta_path = work / 'metadata.json'
         meta_path.write_text(json.dumps({
             'task_id': task_id,
+            **thumbnail_fields,
             'topic': topic,
             'channel_id': channel_id,
             'requested_duration_minutes': duration_minutes,
@@ -6873,10 +6906,12 @@ def run_video_pipeline(
             'stage': 'complete',
             'progress': 100,
             'task_id': task_id,
+            **thumbnail_fields,
             'channel_id': channel_id,
             'title': package.get('title'),
             'publish_metadata': {
                 'title': package.get('title'),
+                'thumbnail_key': thumbnail_fields['thumbnail_key'],
                 'description': package.get('description'),
                 'thumbnail_text': package.get('thumbnail_text'),
                 'tags': package.get('tags', []),

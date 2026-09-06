@@ -78,6 +78,10 @@ STAGE_LABELS = {
     'audio_qc_retry': 'Anlatıcı sesini iyileştirme',
     'audio_pause_recheck': 'Düzeltilen sesin son kontrolü',
     'visual_qc': 'Görsel kalite kontrolü',
+    'final_visual_qc': 'Sahnelerin son kalite kontrolü',
+    'final_visual_qc_rescue': 'Son kontroldeki sahneleri iyileştirme',
+    'final_visual_qc_ai_repair': 'Son kontroldeki sahneyi onarma',
+    'pre_runway_budget_rescue': 'Sahne kaynaklarını dengeleme',
     'audio_design': 'Müzik ve ses tasarımı',
     'ai_scene': 'Özgün AI sahneleri',
     'ai_scene_generation': 'Özgün sahne üretimi',
@@ -491,7 +495,56 @@ def _with_youtube_metrics(job: dict, model: dict) -> dict:
         if isinstance(row, dict) and channel_id and row.get('channel_id') == channel_id:
             copied['_youtube_channel_title'] = _safe_ui_text(row.get('title'))
             break
+    return _with_verified_public_recovery(copied)
+
+
+def _with_verified_public_recovery(job: dict, *, lookup=None) -> dict:
+    """Presentation-only proof; never overwrite historical publication records."""
+    copied = dict(job)
+    copied.pop('_verified_public_recovery', None)
+    result = _job_result(copied)
+    youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+    if (copied.get('kind') != 'render' or copied.get('state') != 'SUCCESS'
+            or youtube.get('release_status') != 'blocked' or not _delivery_video_id(copied)):
+        return copied
+    try:
+        if lookup is None:
+            from app.services.blocked_public_release import get_verified_public_recovery_for_source
+            lookup = get_verified_public_recovery_for_source
+        proof = lookup(copied.get('task_id'))
+        if isinstance(proof, dict):
+            copied['_verified_public_recovery'] = dict(proof)
+        if not _has_verified_public_recovery(copied):
+            copied.pop('_verified_public_recovery', None)
+    except Exception:
+        copied.pop('_verified_public_recovery', None)
     return copied
+
+
+def _has_verified_public_recovery(job: dict) -> bool:
+    proof = job.get('_verified_public_recovery')
+    if not isinstance(proof, dict) or job.get('kind') != 'render' or job.get('state') != 'SUCCESS':
+        return False
+    result = _job_result(job)
+    youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
+    spec = job.get('spec') if isinstance(job.get('spec'), dict) else {}
+    automation = result.get('youtube_automation') if isinstance(result.get('youtube_automation'), dict) else {}
+    metrics = job.get('_youtube_metrics') if isinstance(job.get('_youtube_metrics'), dict) else {}
+    if metrics.get('status') == 'fresh' and metrics.get('privacy_status') in {'private', 'unlisted'}:
+        return False  # A newer observed privacy change remains visible.
+    return bool(
+        result.get('quality_disposition') == 'automated_qc_pass' and result.get('manual_qa_required') is False
+        and youtube.get('release_status') == 'blocked'
+        and proof.get('source_task_id') == job.get('task_id')
+        and proof.get('youtube_video_id') == _delivery_video_id(job)
+        and proof.get('publish_task_id') == automation.get('publish_task_id')
+        and proof.get('target_channel_id') == youtube.get('target_channel_id') == spec.get('production_channel_id')
+        and proof.get('profile_revision') == youtube.get('profile_revision') == spec.get('production_profile_revision')
+        and proof.get('connection_id') == youtube.get('connection_id') == spec.get('production_connection_id')
+        and proof.get('privacy_status') == proof.get('release_status') == 'public'
+        and all(proof.get(key) is True for key in ('caption_uploaded', 'thumbnail_uploaded', 'contains_synthetic_media'))
+        and re.fullmatch(r'[0-9a-f]{64}', str(proof.get('receipt_sha256') or ''))
+    )
 
 
 def _delivery_video_id(job: dict) -> str:
@@ -540,6 +593,8 @@ def _video_delivery(job: dict) -> dict:
     publication = _publication_status(job)
     release = _ready_release_status(job)
     privacy = str(youtube.get('privacy_status') or result.get('privacy_status') or '').casefold()
+    if _has_verified_public_recovery(job):
+        privacy = 'public'
     if metrics.get('status') == 'fresh' and metrics.get('privacy_status') in {'private', 'public', 'unlisted'}:
         privacy = metrics['privacy_status']
     if uploaded:
@@ -765,6 +820,8 @@ def _job_upload_allowed(job: dict) -> bool:
 
 def _publication_status(job: dict) -> str:
     """Presentation only: an existing upload must be reviewed, not recreated."""
+    if _has_verified_public_recovery(job):
+        return ''
     release = _ready_release_status(job)
     if release in {'blocked', 'uncertain'}:
         return release
@@ -1144,6 +1201,8 @@ def _ready_thumbnail_url(job: dict) -> str:
 
 
 def _ready_release_status(job: dict) -> str:
+    if _has_verified_public_recovery(job):
+        return 'public'
     result = job.get('result') if isinstance(job.get('result'), dict) else {}
     youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
     raw = str(
@@ -1157,6 +1216,8 @@ def _ready_release_status(job: dict) -> str:
 
 
 def _ready_privacy_label(job: dict) -> str:
+    if _has_verified_public_recovery(job):
+        return 'Herkese açık'
     result = job.get('result') if isinstance(job.get('result'), dict) else {}
     youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
     raw = str(
