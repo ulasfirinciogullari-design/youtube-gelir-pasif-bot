@@ -2406,6 +2406,7 @@ class VisualQcProviderTests(unittest.TestCase):
             patch.object(settings, 'studio_plan_provider', 'openai'),
             patch.object(settings, 'openai_api_key', 'openai-test-key'),
             patch.object(settings, 'openai_model', 'gpt-test'),
+            patch.object(settings, 'studio_visual_qc_openai_model', '', create=True),
         ):
             result = review_scene_visuals(
                 self.scenes,

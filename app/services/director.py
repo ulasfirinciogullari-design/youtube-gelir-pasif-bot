@@ -1555,6 +1555,44 @@ def _apply_short_preview_concrete_proxy_routes(
     return out
 
 
+def _documentary_visual_evidence_rule(content_style: str) -> str:
+    if str(content_style or 'documentary').strip().casefold() != 'documentary':
+        return ''
+    return (
+        'DOCUMENTARY VISUAL-EVIDENCE PRECEDENCE: for a factual documentary, '
+        'one coherent visual beat may illustrate one exact source-supported '
+        'historical or business fact, relationship or trade-off. The narration '
+        'need not itself assert a visible physical action. Supplied primary '
+        'source evidence must support the precise named event, institution, '
+        'product, date, amount, relationship and scope actually claimed; '
+        'co-occurrence is not evidence of causality. Every query must show '
+        'one specifically relevant subject, activity or revealing detail in '
+        'one feasible setting, not generic wallpaper or an invented transaction. '
+        'For such eligible narration, single_visible_action means that one '
+        'coherent visual beat, and queries_match_same_action means that all '
+        'queries illustrate the same factual beat and relevant subject. '
+        'single_ordinary_location and all_named_subjects_coexist apply to '
+        'what the scene actually asserts is physically together, not to '
+        'source-attributed facts or comparisons in voice-over. '
+        'all_spoken_meaning_visible and no_invisible_or_abstract_claim require '
+        'both the exact source support and this honest visual relationship; '
+        'the footage illustrates the fact and does not prove it. These '
+        'definitions take precedence over literal-action shorthand below, '
+        'but do not automatically make any boolean true. A sourced business '
+        'model may be explained without staging economic causality as a '
+        'physical experiment; do not invent profitability, savings or causal '
+        'effects absent from the source. An actual physical-action, '
+        'technical-mechanism, experiment or before/after claim still '
+        'requires its literal visual evidence, exact '
+        'identity and continuous-action proof. Mere documentary styling '
+        'does not qualify an unsupported or overstated claim. Historical '
+        'contextual footage must not pretend to be archive evidence; an '
+        'event reconstruction must preserve every applicable period, place '
+        'and product constraint. Never erase an explicit identity, action, '
+        'location or continuity requirement to qualify for this contract.'
+    )
+
+
 def _documentary_broll_writer_rule(content_style: str) -> str:
     if str(content_style or 'documentary').strip().casefold() != 'documentary':
         return (
@@ -1575,7 +1613,7 @@ def _documentary_broll_writer_rule(content_style: str) -> str:
         'Modern establishing footage may illustrate a still-existing '
         'subject, but it must not masquerade as archive footage of a past '
         'event. This narrow exception never covers an unsupported claim, '
-        'prediction, causal or technical mechanism, contradiction, wrong '
+        'prediction, an invisible physical or technical mechanism, contradiction, wrong '
         'subject or era, or generic wallpaper footage. A sourced composition '
         'fact does not establish a claimed effect on durability, strength '
         'or performance; any such causal demonstration still needs its '
@@ -1597,7 +1635,8 @@ def _documentary_broll_writer_rule(content_style: str) -> str:
         'sourced explanatory coda still need not invent a completed physical '
         'action or a new claim; modern contextual B-roll remains distinct '
         'from a reconstruction of the historical event. These are shot-design '
-        'choices, not permission to alter facts or waive any existing QA gate.'
+        'choices, not permission to alter facts or waive any existing QA gate. '
+        + _documentary_visual_evidence_rule(content_style)
     )
 
 
@@ -1612,19 +1651,27 @@ def _documentary_explanatory_coda_rule(content_style: str) -> str:
         'whose precise answer is explicitly supported by the supplied '
         'sources, the payoff may be the viewer understanding that answer '
         'over honest B-roll of the specifically identified subject, its '
-        'explicitly sourced materials or a source-backed comparison. '
+        'explicitly sourced materials, historical event, business model or a '
+        'source-backed comparison. '
         'It need not invent a purchase, visible physical benefit or completed '
         'action. Each beat must advance the explanation; the ending must '
         'answer the original question, not repeat the introduction or add '
         'a new claim. Preserve the finished-product category and source '
         'institution. Contextual views may change angle or location, and '
-        'show that subject, its sourced materials or comparison objects, only if '
+        'show that subject, its sourced materials, related institutional '
+        'details or comparison objects, only if '
         'neither narration nor the user brief asserts the same individual '
-        'object/person, continuous action, chronological event or location. '
+        'object/person, continuous action or shared location. Historical '
+        'chronology in narration does not by itself assert that separate '
+        'contextual shots depict one continuous event; a reconstruction '
+        'presented as that event still preserves its period and identities. '
+        'The precisely identified institution or event may carry the subject '
+        'thread across its relevant details without inventing a recurring '
+        'shopper or physical payoff. '
         'Never present contextual B-roll as an experiment, archive or proof '
         'of a material percentage. This contract does not apply to a '
         'tutorial, procedure, before/after result, physical demonstration, '
-        'or durability, strength, performance or causal-mechanism claim; '
+        'or durability, strength, performance or physical causal-mechanism claim; '
         'those retain the strict physical-evidence and continuity rules. '
         'Explicit user shot/identity constraints always remain binding. '
         'This is a defined explanatory meaning of payoff, not permission '
@@ -1912,6 +1959,7 @@ def _repair_short_stock_scenes(
     content_style: str = 'documentary',
     allow_natural_language_repair: bool = True,
     allow_explicit_brief_repair: bool = True,
+    allow_whole_story_repair: bool = False,
     allow_legacy_short_budget: bool = True,
     calibrated_short_words: int | None = None,
     immutable_candidate_narrations: list[str] | None = None,
@@ -1943,12 +1991,13 @@ def _repair_short_stock_scenes(
         'material and exact percentage; related footage must never be '
         'treated as proof of composition or its effect on performance. '
         'Set the relevant booleans false for an unsupported or overstated '
-        'fact, a causal or technical mechanism that remains invisible, a '
+        'fact, a physical or technical mechanism that remains invisible, a '
         'wrong or contradictory subject, action, place or era, footage that '
         'pretends to be archive evidence, or generic wallpaper with no '
         'specific visual connection. Under this rule, queries_match_same_action '
         'and common_stock_clip_feasible may pass honest contextual B-roll even '
-        'when it cannot literally contain millions of items or display a year.'
+        'when it cannot literally contain millions of items or display a year. '
+        + _documentary_visual_evidence_rule(normalized_content_style)
         if documentary_broll
         else (
             'DOCUMENTARY B-ROLL SEMANTICS ARE NOT ACTIVE. Apply the literal '
@@ -2150,6 +2199,8 @@ def _repair_short_stock_scenes(
         position: 'not reviewed yet'
         for position in stock_positions
     }
+    candidate_story = [dict(scene) for scene in scenes]
+    critic = None
 
     for attempt in range(1 if immutable_original_shot_prompts is not None else 2):
         request_positions = list(pending_positions)
@@ -2254,8 +2305,8 @@ NON-NEGOTIABLE RULES:
 - Do not mention or recap OLED, pixels, GPS, Wi-Fi, cellular signals, location systems, QR, error correction, timing, algebra or invisible mechanisms.
 - ai_prompt must be JSON null.
 - Give exactly 2-3 simple ENGLISH stock search phrases per scene.
-- First choose one canonical actor/object, one action verb phrase and one ordinary setting. Repeat that same semantic contract in every query; vary only framing or camera distance.
-- Every query must contain 3-9 English words and depict the narration's exact same single action.
+- First choose one canonical actor/object, one action verb phrase and one ordinary setting, or the single relevant factual beat allowed by DOCUMENTARY VISUAL-EVIDENCE PRECEDENCE. Repeat that same semantic contract in every query; vary only framing or camera distance.
+- Every query must contain 3-9 English words and depict the narration's exact same single action or illustrate the same eligible sourced documentary fact under DOCUMENTARY VISUAL-EVIDENCE PRECEDENCE.
 - Keep each scene faithful to its supplied role and add no new fact, product or unrelated activity.
 - A hook must open one recognisable everyday curiosity, not necessarily a technical scene; use a concrete action for a physical story or a sourced factual question under the active explanatory-coda contract.
 - A bridge or penultimate scene must connect its immediate neighbors without repeating their mechanism.
@@ -2579,7 +2630,7 @@ Review the WHOLE story before reviewing individual stock shots. Set each story_r
 - single_central_question: one curiosity or problem is opened and resolved.
 - not_fact_montage: the story is not a sampler, listicle or collage of unrelated mechanisms, products or clever facts.
 - causal_scene_chain: every scene advances the same cause-and-effect answer, or builds the same precise source-backed factual explanation under the active explanatory-coda contract, rather than merely sharing a broad topic.
-- same_actor_or_object_thread: one recognisable person or object gives the story continuity; the active explanatory coda may connect the named subject to its explicitly sourced materials or comparison objects, never silently substitute an explicitly identified individual object/person or drift to unrelated facts.
+- same_actor_or_object_thread: one recognisable person or object gives the story continuity; the active explanatory coda may connect the precisely identified subject, institution or historical event to its explicitly sourced materials, related details or comparison objects, never silently substitute an explicitly identified individual object/person or drift to unrelated facts.
 - human_payoff_visible: the last beat visibly delivers an everyday benefit, or resolves the factual curiosity over specifically relevant subject footage under the active explanatory-coda contract. Do not demand an invented purchase or physical benefit from an educational answer.
 - natural_spoken_language: all narration is idiomatic, breath-friendly {language_name}, without translationese, unsafe suffix-attached abbreviations or unsupported foreign terms. For Turkish, this is false when heat, energy or an opened gap becomes an awkward translated grammatical agent, as in “sıkışan ısı fanı hızlandırıyor” or “açılan boşluk fanı yavaşlatıyor”; natural causality says that hot air stays trapped and the fan then changes speed. It is also false when narration verbalizes wardrobe/color continuity, camera direction, shot size, face visibility or framing solely to control production, as in “koyu lacivert tişörtlü Mert ... arkadan izliyor”. Keep that metadata in visual fields unless it changes the story's human meaning.
 - directly_answers_requested_topic: the actual hook, reveal and payoff directly answer the supplied topic rather than drifting to a merely coherent side story.
@@ -2589,27 +2640,27 @@ Review the WHOLE story before reviewing individual stock shots. Set each story_r
 central_question, causal_answer and visible_payoff must each be one short, concrete, non-empty summary grounded in the candidate story.
 natural_spoken_language_evidence must begin with PASS when natural_spoken_language is true. When it is false, it must name the scene position, quote the exact offending words and explain the concrete spoken-language problem. Never use the general reason to hide or contradict this language evidence.
 If any story_review boolean is false, the general reason must name the failed key and discuss only concrete failure evidence, not summarize checks that passed.
-A whole-story failure is fatal: do not approve a polished shot plan for a bad idea.
+A whole-story failure rejects this candidate: do not approve a polished shot plan for a bad idea. A separate rewrite, if requested later, must receive a new complete independent review.
 
 Review ending_pair jointly. The positions must match the supplied final two indexes exactly.
 - same_immediate_location: for a physical story, both beats occur in the same named micro-location; counter-to-street is false. Under the active sourced explanatory-coda contract only, this is satisfied by honest contextual views that make no same-location or continuous-event assertion and violate no explicit user location constraint.
 - continuous_visible_action_chain: for a physical story, the payoff immediately follows the preceding visible action, seconds later, with no temporal or location jump. Under the active sourced explanatory-coda contract only, this is satisfied when there is no asserted continuous action to interrupt and both beats coherently support the same precise answer.
-- same_actor_or_object_thread: the same person or object carries both ending beats, or the named subject and its explicitly sourced materials/comparison under the active explanatory-coda contract, never a substitute for an explicitly identified individual object/person.
+- same_actor_or_object_thread: the same person or object carries both ending beats, or the precisely identified subject, institution or event and its explicitly sourced relevant details/materials/comparison under the active explanatory-coda contract, never a substitute for an explicitly identified individual object/person.
 - everyday_benefit_visible: for an ordinary ending, the final action visibly completes the preceding action and shows the benefit. For an eligible sourced explanatory coda, the payoff is the precise answer illustrated by the relevant subject; no physical benefit or completed action is required. For the separate documentary/explainer exterior coda, the shot must visibly contextualize the same sourced human benefit and object/event without claiming a discontinuous action was completed.
 - explicit_technical_insert_return_contract_satisfied: true when requested_topic has no explicit numbered technical-insert return contract. When requested_topic does explicitly number and AI-route the penultimate beat as a technical macro, cutaway, cross-section or inside-the-mechanism insert and the final beat straight back to the same enclosing ordinary setting, set this true only if the candidate obeys that exact route, the insert reveals the mechanism of the same recurring object, and there is no travel, new room, new day or unrelated venue. Otherwise false. A satisfied narrow insert may have same_immediate_location=false because the camera temporarily enters the object; ordinary location changes, implicit routes and generic thematic continuity never qualify for the exception.
 - documentary_exterior_establishing_coda_satisfied: true when the final beat does not attempt an exterior establishing coda. When it does, set this true only if content_style is documentary or explainer and the final beat is an exterior establishing coda of the same primary object or event already carried by the penultimate beat. An interior-to-enclosing-exterior camera-vantage cut is allowed, but the subject and event thread must be unchanged, the shot must remain visibly relevant to the same sourced explanation, and it must introduce no new person, object, product or event and no unrelated location, travel beat, day or time jump. Set false for product demonstrations, tutorials, procedures, before/after results, physical actions whose completion must be shown continuously, merely similar stock subjects, unrelated location jumps, identity ambiguity or thematic-only montage. At most same_immediate_location and continuous_visible_action_chain may then be false; same_actor_or_object_thread, everyday_benefit_visible and every other ending boolean must remain true.
-location_anchor must name the exact shared micro-location for an ordinary ending. For the narrow exterior coda it must instead name the same primary object/event anchor and the precise interior/detail-to-exterior vantage change. reason must cite concrete evidence.
+location_anchor must name the exact shared micro-location for an ordinary ending. For an eligible sourced explanatory coda, name the precise subject/institution/event and the relevant contextual views without inventing a shared location. For the narrow exterior coda it must instead name the same primary object/event anchor and the precise interior/detail-to-exterior vantage change. reason must cite concrete evidence.
 
 For EACH requested position, set every boolean independently. If evidence is ambiguous, set it false.
 - single_sentence: narration contains only one sentence.
-- single_visible_action: narration requires exactly one visible action, not two actions joined by a conjunction, gerund, sequence or implied cut.
-- single_ordinary_location: narration and every query can share one ordinary physical setting.
+- single_visible_action: narration requires exactly one visible action, not two actions joined by a conjunction, gerund, sequence or implied cut; for eligible sourced documentary narration, instead require one coherent relevant visual beat under DOCUMENTARY VISUAL-EVIDENCE PRECEDENCE, without inventing an action in the narration.
+- single_ordinary_location: narration and every query can share one ordinary physical setting, applying DOCUMENTARY VISUAL-EVIDENCE PRECEDENCE only to eligible factual voice-over that asserts no physical co-location.
 - all_spoken_meaning_visible: every spoken clause is directly visible in that single clip, except for the narrow sourced documentary B-roll semantics above when active.
 - Apply this exact narrow semantic rule when judging all_spoken_meaning_visible: {CONTINUITY_DEICTIC_RULE}
 - no_invisible_or_abstract_claim: there is no unsupported abstraction, technical implication or invented conclusion. A sourced documentary fact or exact supported comparison is not an invisible abstraction when the active documentary/explanatory-coda contract is fully satisfied; it still cannot imply visually identified ingredients or unproved effects.
 - all_named_subjects_coexist: one normal five-second stock clip can visibly contain the named actors and objects asserted to be together. For an eligible source-backed comparison only, relevant subject/material views may be adjacent rather than simultaneous when neither narration nor brief asserts physical coexistence; each query must still specify the actual subject shown, not generic wallpaper.
 - queries_are_english: every query is idiomatic English stock-search text.
-- queries_match_same_action: every query depicts the narration's exact same actor/object, action and setting.
+- queries_match_same_action: every query depicts the narration's exact same actor/object, action and setting, or illustrates the same eligible sourced factual beat and relevant subject under DOCUMENTARY VISUAL-EVIDENCE PRECEDENCE.
 - common_stock_clip_feasible: the exact shot is realistically common in stock libraries, not merely imaginable.
 - continues_from_previous: it follows the previous scene; for position 0 this boundary check is true.
 - leads_to_next: it leads naturally to the next scene; for the final position this boundary check is true.
@@ -2864,18 +2915,43 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     sorted(set(failed_story_checks)),
                     story_failure,
                 )
+            if (
+                allow_whole_story_repair is True
+                and immutable_candidate_narrations is None
+                and immutable_original_shot_prompts is None
+                and failed_story_checks
+                and set(failed_story_checks).issubset(story_boolean_keys)
+                and all(type(story_review.get(key)) is bool for key in story_boolean_keys)
+                and all(type(ending_pair.get(key)) is bool for key in ending_boolean_keys)
+                and all(
+                    type(row.get(key)) is bool
+                    for row in critic_by_position.values()
+                    for key in critic_boolean_keys
+                )
+            ):
+                repair_error = _WholeStoryRepairRequired(
+                    sorted(set(failed_story_checks)),
+                    story_failure,
+                )
+                repair_error.rejected_candidate_story = deepcopy(candidate_story)
+                raise repair_error
             failure_details = {
                 'generator_calls': generator_calls,
                 'critic_calls': critic_calls,
                 'reason': story_failure[:220],
             }
-            raise RuntimeError(
+            from app.services.planning_diagnostics import story_planning_error
+
+            raise story_planning_error(
                 'Director rejected an incoherent short-preview story before paid media: '
                 + json.dumps(
                     failure_details,
                     ensure_ascii=False,
                     separators=(',', ':'),
-                )
+                ),
+                scenes=candidate_story,
+                sources=package.get('sources'),
+                review=critic or failure_details,
             )
 
         critic_failures: dict[int, str] = {}
@@ -2969,7 +3045,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     if position not in stock_positions
                 ]
                 if ai_routed_ending_positions:
-                    raise RuntimeError(
+                    from app.services.planning_diagnostics import story_planning_error
+
+                    raise story_planning_error(
                         'Director rejected an AI-routed short-preview ending '
                         'before paid media: '
                         + json.dumps(
@@ -2980,7 +3058,10 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                             },
                             ensure_ascii=False,
                             separators=(',', ':'),
-                        )
+                        ),
+                        scenes=candidate_story,
+                        sources=package.get('sources'),
+                        review=critic,
                     )
                 for position in ending_positions:
                     critic_failures[position] = pair_failure
@@ -3131,7 +3212,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 *qc_summary,
                 (
                     'Locked every short-preview stock scene to independently '
-                    'verified single-action coverage.'
+                    'verified single-action or sourced documentary coverage.'
                 ),
             ]
             stock_scene_qc = {
@@ -3197,9 +3278,14 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             for position, reason in sorted(last_failures.items())
         ],
     }
-    raise RuntimeError(
+    from app.services.planning_diagnostics import story_planning_error
+
+    raise story_planning_error(
         'Director could not produce fully stock-safe short-preview scenes: '
-        + json.dumps(failure_details, ensure_ascii=False, separators=(',', ':'))
+        + json.dumps(failure_details, ensure_ascii=False, separators=(',', ':')),
+        scenes=candidate_story,
+        sources=package.get('sources'),
+        review=critic or failure_details,
     )
 
 
@@ -3806,6 +3892,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 ),
                 allow_legacy_short_budget=(exact_narration is not None),
                 calibrated_short_words=calibrated_short_words,
+                **({'allow_whole_story_repair': True} if fresh_scheduled is True else {}),
             )
         except _WholeStoryRepairRequired as exc:
             if isinstance(exc, _NaturalSpokenLanguageRepairRequired):
@@ -3845,6 +3932,8 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 'correction_attempt': 'whole_story_critic',
                 'narration_quality_issues': [whole_story_feedback],
             }
+            if fresh_scheduled is True and isinstance(getattr(exc, 'rejected_candidate_story', None), list):
+                correction_input['rejected_candidate_story'] = deepcopy(exc.rejected_candidate_story)
             revised = _run_director(
                 client,
                 correction_input,
