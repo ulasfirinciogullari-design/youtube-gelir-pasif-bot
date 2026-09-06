@@ -4096,7 +4096,20 @@ def _prepare_package(
     fresh_kwargs = {'fresh_scheduled': True} if fresh_scheduled is True else {}
     draft = research_and_script(topic, duration_minutes, language, options, **fresh_kwargs)
     set_stage(celery_task, task_id, 'director_qc', 14, 'Senaryo yönetmeni akışı, ritmi ve görsel dili düzeltiyor.')
-    return direct_and_qc(draft, topic, duration_minutes, language, options, **fresh_kwargs)
+    try:
+        return direct_and_qc(draft, topic, duration_minutes, language, options, **fresh_kwargs)
+    except Exception as exc:
+        if fresh_scheduled is True:
+            from app.services.planning_diagnostics import planning_failure_diagnostics
+
+            # This path runs before voice/media and never grants approval.
+            # Preserve rejected wording so a repair can use actual evidence
+            # instead of paying for the same opaque failure again.
+            try:
+                update_job(task_id, prepaid_story_diagnostics=planning_failure_diagnostics(exc, draft))
+            except Exception:
+                pass  # diagnostics must not mask the original quality error
+        raise
 
 
 def _guard_retry_child_execution(

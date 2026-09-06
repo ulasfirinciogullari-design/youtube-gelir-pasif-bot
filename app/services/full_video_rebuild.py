@@ -179,6 +179,43 @@ def _authorization(client, spec, root_id, snapshots):
             'authorization_epoch_sha256': _digest(epoch), 'schedule_sha256': _digest(state)}
 
 
+def _planning_retry_authorization(client, source, spec, cap, root_id, auth, snapshots):
+    """Inherit a genuine full-rebuild grant only after its pre-voice failure.
+
+    This does not restart a worker or reopen its old execution claim. An
+    explicit operator dispatch still reserves exactly one new child below.
+    """
+    _require(source.get('failure_stage') == 'director_qc'
+             and all(source.get(k) is None for k in (
+                 'audio_candidate_checkpoint', 'audio_candidate_checkpoint_error',
+                 'generated_asset_candidates', 'voice_candidate_reuse', 'voice_replacement',
+                 'repair_checkpoint', 'qa_workprint', 'result', 'video_key', 'youtube_video_id',
+                 'youtube', 'youtube_automation',
+             )), 'full_rebuild_paid_source_required')
+    source_id, parent_id = source['task_id'], source.get('parent_id')
+    _require(isinstance(parent_id, str) and _TASK.fullmatch(parent_id))
+    policy = _object(_snapshot(client, POLICY_PREFIX + source_id, snapshots))
+    _require(_object(_snapshot(client, SOURCE_PREFIX + parent_id, snapshots)) == policy)
+    parent = _object(_snapshot(client, JOB_PREFIX + parent_id, snapshots))
+    parent_ledger = _snapshot(client, PAID_CREATE_BUDGET_PREFIX + parent_id, snapshots, kind='hash')
+    dispatch = _snapshot(client, RETRY_DISPATCH_PREFIX + parent_id, snapshots, kind='hash')
+    # _lineage has already proved the reciprocal claim/execution and failed
+    # ancestors. Bind that exact full claim to its immutable private grant.
+    _require(type(policy.get('version')) is int and policy['version'] == 1
+             and policy.get('mode') == dispatch.get('mode') == 'full'
+             and policy.get('child_task_id') == source_id and policy.get('source_task_id') == parent_id
+             and policy.get('lineage_root_task_id') == root_id
+             and parent.get('spec') == spec and policy.get('spec_sha256') == _digest(spec)
+             and type(policy.get('original_paid_create_cap')) is int and policy['original_paid_create_cap'] == cap
+             and all(policy.get(k) is True for k in _FLAGS)
+             and all(policy.get(k) == v for k, v in auth.items())
+             and policy.get('dispatch_token_sha256') == _digest(dispatch['token'])
+             and policy.get('source_paid_ledger_sha256') == _digest(parent_ledger))
+    for prefix in (REPAIR_CHECKPOINT_PREFIX, REPAIR_CHECKPOINT_CLAIM_PREFIX):
+        _absent(client, prefix + source_id, snapshots)
+    return {'inherited_policy_sha256': _digest(policy)}
+
+
 def _source(client, source_id, snapshots, *, reserved=False):
     source = _object(_snapshot(client, JOB_PREFIX + source_id, snapshots))
     spec = source.get('spec')
@@ -190,9 +227,12 @@ def _source(client, source_id, snapshots, *, reserved=False):
     ledger = _snapshot(client, PAID_CREATE_BUDGET_PREFIX + source_id, snapshots, kind='hash')
     _require(all(isinstance(ledger.get(k), str) and re.fullmatch(r'[0-9]+', ledger[k]) for k in ('cap', 'used')))
     cap, used = int(ledger['cap']), int(ledger['used'])
-    _require(0 < used <= cap and 2 <= cap <= 6, 'full_rebuild_paid_source_required')
+    _require(0 <= used <= cap and 2 <= cap <= 6, 'full_rebuild_paid_source_required')
     root_id = _lineage(client, source, spec, snapshots)
     auth = _authorization(client, spec, root_id, snapshots)
+    if used == 0:
+        _require(ledger['used'] == '0', 'full_rebuild_paid_source_required')
+        auth.update(_planning_retry_authorization(client, source, spec, cap, root_id, auth, snapshots))
     auth['source_paid_ledger_sha256'] = _digest(ledger)
     if not reserved:
         _require(not source.get('retry_child_task_id') and source.get('retry_claimed') is not True)

@@ -448,3 +448,147 @@ def test_same_channel_job_started_after_reservation_blocks_worker_before_cost(ca
     with pytest.raises(m.FullVideoRebuildError, match='full_rebuild_channel_busy'):
         _get(c)
     assert _all(c.client) == before
+
+
+GRANDCHILD = '18500000-0000-4000-8000-000000000005'
+
+
+def _failed_planning_child(c):
+    _child(c)
+    job = json.loads(c.client.get(c.module.JOB_PREFIX + CHILD))
+    job.update(state='FAILURE', stage='failed', failure_stage='director_qc', error='Story planning rejected')
+    _write(c.client, c.module.JOB_PREFIX + CHILD, job)
+    c.client.hset(c.module.PAID_CREATE_BUDGET_PREFIX + CHILD, mapping={'cap': '6', 'used': '0'})
+
+
+def test_zero_media_full_rebuild_planning_failure_can_reserve_one_fresh_child(case):
+    c, m = case, case.module
+    _failed_planning_child(c)
+    before = _all(c.client)
+    result = _reserve(c, GRANDCHILD, CHILD)
+    assert result['claimed'] is True and result['spec'] == c.spec
+    assert result['full_rebuild']['source_task_id'] == CHILD
+    assert result['full_rebuild']['original_paid_create_cap'] == 6
+    assert c.state.acquire_retry_child_execution(GRANDCHILD, CHILD) is True
+    assert m.get_full_rebuild_policy(GRANDCHILD, CHILD, c.spec) == result['full_rebuild']
+    new_policy = json.loads(c.client.get(m.POLICY_PREFIX + GRANDCHILD))
+    old_policy = json.loads(c.client.get(m.POLICY_PREFIX + CHILD))
+    assert new_policy['inherited_policy_sha256'] == m._digest(old_policy)
+    assert 'inherited_policy_sha256' not in result['full_rebuild']
+    for key in (m.JOB_PREFIX + SOURCE, m.PAID_CREATE_BUDGET_PREFIX + SOURCE,
+                m.PAID_CREATE_BUDGET_PREFIX + CHILD, m.RETRY_DISPATCH_PREFIX + SOURCE,
+                m.RETRY_CHILD_CLAIM_PREFIX + CHILD, m.RETRY_CHILD_EXECUTION_PREFIX + CHILD,
+                m.REPAIR_CHECKPOINT_PREFIX + SOURCE, m.SOURCE_PREFIX + SOURCE, m.POLICY_PREFIX + CHILD):
+        assert _all(c.client)[key] == before[key]
+    assert not c.client.exists(m.PAID_CREATE_BUDGET_PREFIX + GRANDCHILD)
+    current = _all(c.client)
+    assert _reserve(c, str(UUID(int=701)), CHILD) == {'claimed': False, 'child_task_id': GRANDCHILD}
+    assert _all(c.client) == current
+
+
+@pytest.mark.parametrize('field,value', [
+    ('failure_stage', 'audio_qc'), ('failure_stage', 'final_visual_qc'), ('failure_stage', 'plan_retry'),
+    ('state', 'PROGRESS'), ('audio_candidate_checkpoint', {}), ('audio_candidate_checkpoint_error', 'unavailable'),
+    ('generated_asset_candidates', {}), ('voice_candidate_reuse', {}), ('voice_replacement', {}),
+    ('repair_checkpoint', {}), ('qa_workprint', {}), ('result', {}), ('video_key', ''),
+    ('youtube', {}), ('youtube_automation', {}),
+])
+def test_zero_media_exception_rejects_nonplanning_or_any_media_marker(case, field, value):
+    _failed_planning_child(case)
+    _edit(case, case.module.JOB_PREFIX + CHILD, field, value)
+    before = _all(case.client)
+    with pytest.raises(case.module.FullVideoRebuildError):
+        _reserve(case, GRANDCHILD, CHILD)
+    assert _all(case.client) == before
+
+
+@pytest.mark.parametrize('field,value', [
+    ('version', True), ('mode', 'repair'), ('child_task_id', GRANDCHILD), ('source_task_id', PARENT),
+    ('lineage_root_task_id', CHILD), ('spec_sha256', 'f' * 64), ('original_paid_create_cap', 5),
+    ('fresh_voice', 1), ('fresh_media', False), ('requires_full_qa', False),
+    ('dispatch_token_sha256', 'e' * 64), ('source_paid_ledger_sha256', 'd' * 64),
+    ('credential_sha256', 'c' * 64), ('schedule_sha256', 'b' * 64),
+])
+def test_zero_media_exception_requires_complete_original_private_authorization(case, field, value):
+    _failed_planning_child(case)
+    for key in (case.module.POLICY_PREFIX + CHILD, case.module.SOURCE_PREFIX + SOURCE):
+        _edit(case, key, field, value)
+    before = _all(case.client)
+    with pytest.raises(case.module.FullVideoRebuildError):
+        _reserve(case, GRANDCHILD, CHILD)
+    assert _all(case.client) == before
+
+
+@pytest.mark.parametrize('mutation', ['missing_policy', 'source_policy_mismatch', 'execution', 'cap',
+                                      'parent_ledger', 'private_checkpoint', 'spec', 'profile', 'used_format'])
+def test_zero_media_exception_rejects_missing_or_stale_binding(case, mutation):
+    c, m = case, case.module
+    _failed_planning_child(c)
+    if mutation == 'missing_policy':
+        c.client.delete(m.POLICY_PREFIX + CHILD)
+    elif mutation == 'source_policy_mismatch':
+        _edit(c, m.SOURCE_PREFIX + SOURCE, 'version', 2)
+    elif mutation == 'execution':
+        c.client.set(m.RETRY_CHILD_EXECUTION_PREFIX + CHILD, 'different-claim-token')
+    elif mutation == 'cap':
+        c.client.hset(m.PAID_CREATE_BUDGET_PREFIX + CHILD, 'cap', '5')
+    elif mutation == 'parent_ledger':
+        c.client.hset(m.PAID_CREATE_BUDGET_PREFIX + SOURCE, 'used', '5')
+    elif mutation == 'private_checkpoint':
+        c.client.set(m.REPAIR_CHECKPOINT_PREFIX + CHILD, 'existing-private-checkpoint')
+    elif mutation == 'spec':
+        _edit(c, m.JOB_PREFIX + CHILD, 'spec', {**c.spec, 'workflow': 'scene_repair'})
+    elif mutation == 'profile':
+        _edit(c, m.PROFILE_PREFIX + CHANNEL, 'profile_revision', 'changed')
+    else:
+        c.client.hset(m.PAID_CREATE_BUDGET_PREFIX + CHILD, 'used', '00')
+    before = _all(c.client)
+    with pytest.raises(m.FullVideoRebuildError):
+        _reserve(c, GRANDCHILD, CHILD)
+    assert _all(c.client) == before
+
+
+@pytest.mark.parametrize('mutation', ['policy', 'parent_ledger', 'zero_ledger', 'private_checkpoint'])
+def test_zero_media_ancestry_race_is_compared_before_atomic_claim(case, monkeypatch, mutation):
+    c, m = case, case.module
+    _failed_planning_child(c)
+    original = c.client.eval
+    def changed(script, *args):
+        if script == m._RESERVE:
+            if mutation == 'policy':
+                _edit(c, m.POLICY_PREFIX + CHILD, 'mode', 'repair')
+            elif mutation == 'parent_ledger':
+                c.client.hset(m.PAID_CREATE_BUDGET_PREFIX + SOURCE, 'used', '5')
+            elif mutation == 'zero_ledger':
+                c.client.hset(m.PAID_CREATE_BUDGET_PREFIX + CHILD, 'used', '1')
+            else:
+                c.client.set(m.REPAIR_CHECKPOINT_PREFIX + CHILD, 'late-checkpoint')
+        return original(script, *args)
+    monkeypatch.setattr(c.client, 'eval', changed)
+    with pytest.raises(m.FullVideoRebuildError):
+        _reserve(c, GRANDCHILD, CHILD)
+    assert not c.client.exists(m.RETRY_DISPATCH_PREFIX + CHILD)
+    assert not c.client.exists(m.JOB_PREFIX + GRANDCHILD)
+
+
+def test_zero_media_child_dispatch_keeps_verified_full_rebuild_worker_path(case):
+    _failed_planning_child(case)
+    result = case.module.dispatch_full_video_rebuild(CHILD)
+    assert result['status'] == 'dispatched'
+    assert case.calls[0]['args'][5:] == (None, CHILD)
+    assert case.calls[0]['kwargs'] == {'full_rebuild_source_id': CHILD}
+    assert case.module.dispatch_full_video_rebuild(CHILD)['status'] == 'already_claimed'
+    assert len(case.calls) == 1
+
+
+def test_zero_media_concurrent_operator_retry_is_exactly_once(case):
+    _failed_planning_child(case)
+    def reserve(i):
+        try:
+            return _reserve(case, str(UUID(int=810 + i)), CHILD)
+        except case.module.FullVideoRebuildError:
+            return {'claimed': False}
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        results = list(pool.map(reserve, range(6)))
+    assert sum(result['claimed'] for result in results) == 1
+    assert len(list(case.client.scan_iter(case.module.POLICY_PREFIX + '*'))) == 2
