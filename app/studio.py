@@ -719,6 +719,11 @@ def _video_delivery(job: dict) -> dict:
     youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
     metrics = job.get('_youtube_metrics') if isinstance(job.get('_youtube_metrics'), dict) else {}
     uploaded = bool(_delivery_video_id(job))
+    if (uploaded and metrics.get('video_id') == _delivery_video_id(job)
+            and metrics.get('availability') == 'unavailable'
+            and metrics.get('availability_evidence') == 'owner_api_absent'
+            and _metrics_time(metrics.get('availability_checked_at')) != 'Veri bekleniyor'):
+        return {'key': 'deleted', 'label': 'YouTube’dan silindi / erişilemiyor', 'attention': False}
     publication = _publication_status(job)
     release = _ready_release_status(job)
     privacy = str(youtube.get('privacy_status') or result.get('privacy_status') or '').casefold()
@@ -752,7 +757,7 @@ def _delivery_badges(job: dict) -> str:
     tone = 'public' if delivery['key'] == 'public' else 'private' if delivery['key'] in {'private', 'unlisted', 'scheduled', 'uploaded'} else 'attention' if delivery['key'] == 'unknown' else 'rendered'
     warning_label = 'Yüklemeyi kontrol et' if delivery['key'] == 'rendered' and _publication_status(job) in {'failed', 'blocked', 'uncertain'} else 'Kontrol gerekiyor'
     warning = f'<span class="state attention">{warning_label}</span>' if delivery['attention'] else ''
-    return f'<span class="state {tone}">{escape(delivery["label"])}</span>{warning}'
+    return f'<span class="state {tone}" data-delivery-key="{delivery["key"]}">{escape(delivery["label"])}</span>{warning}'
 
 
 def _video_identity(job: dict) -> str:
@@ -775,6 +780,8 @@ def _video_performance(job: dict) -> str:
 
 
 def _performance_summary(job: dict) -> str:
+    if _video_delivery(job)['key'] == 'deleted':
+        return 'Video kanalın yetkili sorgusunda bulunamadı. Eski ölçümler ve yayın kaydı korunuyor; yeniden yüklenmez.'
     if _video_delivery(job)['key'] in {'private', 'scheduled', 'unlisted', 'rendered', 'none'}:
         return 'Henüz herkese açık değil'
     metrics = job.get('_youtube_metrics') if isinstance(job.get('_youtube_metrics'), dict) else {}
@@ -846,7 +853,7 @@ def _metrics_script() -> str:
 (()=>{let busy=false,lastPost=0,first=true,lastUpdate=null;const visible=()=>document.visibilityState==='visible',button=document.getElementById('metrics-refresh'),feedback=document.getElementById('metrics-feedback');
 const number=value=>Number.isSafeInteger(value)&&value>=0?new Intl.NumberFormat('tr-TR').format(value):'Veri bekleniyor';
 const time=value=>{if(typeof value!=='string'||!value)return 'Veri bekleniyor';const d=new Date(value);return Number.isNaN(d.getTime())?'Veri bekleniyor':new Intl.DateTimeFormat('tr-TR',{timeZone:'Europe/Istanbul',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).format(d)};
-function apply(model){const host=document.getElementById('channel-overview-host');if(host&&typeof model.channel_overview_html==='string')host.innerHTML=model.channel_overview_html;const updated=document.getElementById('metrics-updated');if(updated)updated.textContent='Son güncelleme: '+time(model.updated_at);document.querySelectorAll('[data-metrics-task]').forEach(node=>{const m=(model.videos||{})[node.dataset.metricsTask],p=(model.video_presentations||{})[node.dataset.metricsTask];if(p){const summary=node.querySelector('[data-performance-summary]');if(summary)summary.textContent=p.summary||'Performans verisi bekleniyor'}if(!m)return;node.querySelectorAll('[data-metric]').forEach(cell=>{const value=number(m[cell.dataset.metric]);cell.textContent=value;cell.classList.toggle('waiting',value==='Veri bekleniyor')});const note=node.querySelector('[data-metric-time]');if(note)note.textContent='Son ölçüm: '+time(m.fetched_at)+(m.status==='stale'?' · Güncelleme bekleniyor':'')});document.querySelectorAll('[data-delivery-task]').forEach(node=>{const p=(model.video_presentations||{})[node.dataset.deliveryTask];if(p&&typeof p.badges_html==='string')node.innerHTML=p.badges_html});document.querySelectorAll('[data-delivery-label]').forEach(node=>{const p=(model.video_presentations||{})[node.dataset.deliveryLabel];if(p)node.textContent=p.label||'Görünürlük bekleniyor'})}
+function apply(model){let membershipChanged=false;document.querySelectorAll('[data-delivery-task]').forEach(node=>{const p=(model.video_presentations||{})[node.dataset.deliveryTask],old=node.querySelector('[data-delivery-key]');if(p&&old&&old.dataset.deliveryKey!==p.key&&(old.dataset.deliveryKey==='deleted'||p.key==='deleted'))membershipChanged=true});if(membershipChanged){window.location.reload();return}const host=document.getElementById('channel-overview-host');if(host&&typeof model.channel_overview_html==='string')host.innerHTML=model.channel_overview_html;const updated=document.getElementById('metrics-updated');if(updated)updated.textContent='Son güncelleme: '+time(model.updated_at);document.querySelectorAll('[data-metrics-task]').forEach(node=>{const m=(model.videos||{})[node.dataset.metricsTask],p=(model.video_presentations||{})[node.dataset.metricsTask];if(p){const summary=node.querySelector('[data-performance-summary]');if(summary)summary.textContent=p.summary||'Performans verisi bekleniyor'}if(!m)return;node.querySelectorAll('[data-metric]').forEach(cell=>{const value=number(m[cell.dataset.metric]);cell.textContent=value;cell.classList.toggle('waiting',value==='Veri bekleniyor')});const note=node.querySelector('[data-metric-time]');if(note)note.textContent='Son ölçüm: '+time(m.fetched_at)+(m.status==='stale'?' · Güncelleme bekleniyor':'')});document.querySelectorAll('[data-delivery-task]').forEach(node=>{const p=(model.video_presentations||{})[node.dataset.deliveryTask];if(p&&typeof p.badges_html==='string')node.innerHTML=p.badges_html});document.querySelectorAll('[data-delivery-label]').forEach(node=>{const p=(model.video_presentations||{})[node.dataset.deliveryLabel];if(p)node.textContent=p.label||'Görünürlük bekleniyor'})}
 async function load(refresh=false){if(!visible()||busy)return;if(refresh&&Date.now()-lastPost<60000)return;busy=true;if(button)button.disabled=true;if(refresh)lastPost=Date.now();try{const response=await fetch('/studio/api/youtube-metrics'+(refresh?'/refresh':''),{method:refresh?'POST':'GET',credentials:'same-origin',cache:'no-store'});if(!response.ok)throw new Error('metrics');const model=await response.json();const stale=!model.updated_at||(model.channels||[]).some(x=>x.status!=='fresh')||Object.values(model.videos||{}).some(x=>x.status!=='fresh');apply(model);if(feedback&&refresh)feedback.textContent=stale?'Son saklanan ölçümler korunuyor; güncelleme bekleniyor.':model.updated_at&&model.updated_at!==lastUpdate?'Yeni YouTube ölçümleri alındı.':'Son ölçüm korunuyor; henüz yeni veri yok.';lastUpdate=model.updated_at;if(first){first=false;if(stale)setTimeout(()=>load(true),0)}}catch(_){if(feedback)feedback.textContent='Ölçümler şu anda alınamıyor; mevcut veriler korunuyor.'}finally{busy=false;if(button)button.disabled=false}}
 if(button)button.addEventListener('click',()=>load(true));setInterval(()=>load(false),30000);setInterval(()=>load(true),300000);document.addEventListener('visibilitychange',()=>{if(visible())load(false)});load(false);
 })();
@@ -855,7 +862,7 @@ if(button)button.addEventListener('click',()=>load(true));setInterval(()=>load(f
 
 def _library_filters(active: str) -> str:
     links = []
-    for key, label in (('library', 'Tüm videolar'), ('ready', 'Üretildi · yüklenmedi'), ('uploaded', 'YouTube’a yüklendi'), ('public', 'Herkese açık'), ('private', 'Gizli')):
+    for key, label in (('library', 'Tüm videolar'), ('ready', 'Üretildi · yüklenmedi'), ('uploaded', 'YouTube’a yüklendi'), ('public', 'Herkese açık'), ('private', 'Gizli'), ('deleted', 'Silinenler')):
         current = ' aria-current="page"' if active == key else ''
         links.append(f'<a class="library-filter" href="/studio/history?status={key}"{current}>{label}</a>')
     return '<nav class="library-filters" aria-label="Yayın durumuna göre filtrele">' + ''.join(links) + '</nav>'
@@ -1207,6 +1214,8 @@ def _job_display_status(job: dict) -> str:
 
 
 def _job_status_message(job: dict) -> str:
+    if _video_delivery(job)['key'] == 'deleted':
+        return 'YouTube’dan silindi veya erişilemiyor. Önceki yayın kaydı korunuyor; tekrar yükleme başlatılmaz.'
     status = _job_ui_status(job)
     display_status = _job_display_status(job)
     state = str(job.get('state') or 'PENDING').upper()
@@ -1393,7 +1402,7 @@ def _ready_privacy_label(job: dict) -> str:
 
 def _ready_readiness_label(job: dict) -> str:
     delivery = _video_delivery(job)
-    if delivery['key'] in {'unknown', 'private', 'public', 'scheduled', 'unlisted', 'uploaded'}:
+    if delivery['key'] in {'deleted', 'unknown', 'private', 'public', 'scheduled', 'unlisted', 'uploaded'}:
         return delivery['label'] + (' · kontrol gerekiyor' if delivery['attention'] else '')
     if _publication_status(job):
         return {
@@ -1511,6 +1520,8 @@ def _job_primary_action(job: dict, *, small: bool = True) -> str:
     def aria(label: str) -> str:
         return escape(f'{_job_title(job)}: {label}', quote=True)
 
+    if _video_delivery(job)['key'] == 'deleted':
+        return f'<a class="btn secondary{size}" href="/studio/job/{task_id}" aria-label="{aria("Yayın kaydını aç")}">Yayın kaydını aç</a>'
     if _publication_status(job):
         publisher_id = _canonical_task_id(job.get('_publication_task_id'))
         if job.get('kind') == 'publish':
@@ -1705,6 +1716,8 @@ def _job_is_old_storyboard(job: dict, *, now: float | None = None) -> bool:
 
 
 def _console_bucket(job: dict) -> str:
+    if _video_delivery(job)['key'] == 'deleted':
+        return 'archive'
     if _job_is_old_storyboard(job):
         return 'archive'
     display_status = _job_display_status(job)
@@ -1731,6 +1744,8 @@ def _console_counts(jobs: list[dict]) -> dict[str, int]:
 
 
 def _history_matches(job: dict, active: str) -> bool:
+    if _video_delivery(job)['key'] == 'deleted' or active == 'deleted':
+        return active == 'deleted' and _video_delivery(job)['key'] == 'deleted'
     if active == 'library' and _video_delivery(job)['key'] in {'private', 'public', 'scheduled', 'unlisted', 'uploaded'}:
         return True
     if active in {'uploaded', 'public', 'private'}:
@@ -2760,7 +2775,7 @@ def studio_job_api(task_id: str, studio_token: str | None = Cookie(default=None,
     payload['upload_allowed'] = _job_upload_allowed(payload)
     payload['ui_status_message'] = _job_status_message(payload)
     payload['delivery_label'] = _video_delivery(record)['label']
-    payload['delivery_video_id'] = _delivery_video_id(record)
+    payload['delivery_video_id'] = '' if _video_delivery(record)['key'] == 'deleted' else _delivery_video_id(record)
     if _video_delivery(record)['key'] == 'rendered' and payload['display_status'] in {'attention', 'unreviewed'}:
         payload['delivery_label'] = ''
     payload['publication_status'] = _publication_status(record)
@@ -2799,7 +2814,7 @@ def _youtube_metrics_response(model: dict, jobs: list[dict]) -> JSONResponse:
         if task_id:
             displayed = _with_publication_presentation(projected.get(task_id, job), by_id.get)
             decorated = _with_youtube_metrics(displayed, model)
-            payload['video_presentations'][task_id] = {'badges_html': _delivery_badges(decorated), 'summary': _performance_summary(decorated), 'label': _ready_readiness_label(decorated)}
+            payload['video_presentations'][task_id] = {'badges_html': _delivery_badges(decorated), 'summary': _performance_summary(decorated), 'label': _ready_readiness_label(decorated), 'key': _video_delivery(decorated)['key']}
     return JSONResponse(payload, headers={'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff'})
 
 
@@ -2827,7 +2842,7 @@ def studio_history(
 ):
     _require_auth(studio_token)
     allowed_statuses = (
-        *UI_STATUS_ORDER, 'attention', 'library', 'unreviewed', 'drafts', 'uploaded', 'public', 'private',
+        *UI_STATUS_ORDER, 'attention', 'library', 'unreviewed', 'drafts', 'uploaded', 'public', 'private', 'deleted',
     )
     active = status if status in allowed_statuses else 'running'
     page = max(1, int(page))
@@ -2873,6 +2888,7 @@ def studio_history(
         'uploaded': 'Henüz YouTube’a yüklenmiş video yok.',
         'public': 'Henüz herkese açık video yok.',
         'private': 'Henüz gizli yüklenmiş video yok.',
+        'deleted': 'Silinmiş veya erişilemeyen YouTube videosu yok.',
         'ready': 'Hazır video yok.',
         'repair': 'Onarım bekleyen video yok.',
         'completed': 'Tamamlanan video yok.',
@@ -2880,7 +2896,7 @@ def studio_history(
         'unreviewed': 'Kalite onayı olmayan eski video yok.',
         'drafts': 'Eski storyboard taslağı yok.',
     }[active]
-    rich_library = active in {'library', 'ready', 'completed', 'uploaded', 'public', 'private'}
+    rich_library = active in {'library', 'ready', 'completed', 'uploaded', 'public', 'private', 'deleted'}
     rows = ''.join(
         _ready_video_card(job)
         if rich_library or (_publication_status(job) and _job_media_urls(job)[0])
@@ -2907,6 +2923,7 @@ def studio_history(
         'uploaded': 'Gizli, planlı ve herkese açık YouTube yüklemeleri. Kontrol uyarıları korunur.',
         'public': 'YouTube’da herkese açık görünen videolar.',
         'private': 'YouTube’a yüklenmiş, henüz herkese açık olmayan gizli videolar.',
+        'deleted': 'Kanalın yetkili sorgusunda artık bulunmayan videolar. Geçmiş yayın ve dosyalar korunur; otomatik tekrar yüklenmez.',
         'ready': 'Yüklemeye hazır videolar.',
         'repair': 'Onarım kararı bekleyen üretimler.',
         'completed': 'YouTube yüklemesi tamamlanan videolar.',
@@ -2915,7 +2932,7 @@ def studio_history(
         'drafts': 'Bir günden uzun süredir bekleyen storyboard taslakları.',
     }[active]
     history_archive = _history_archive(_archive_counts(jobs), active=active)
-    active_label = {'uploaded': 'YouTube’a yüklenenler', 'public': 'Herkese açık videolar', 'private': 'Gizli videolar'}.get(active) or (
+    active_label = {'uploaded': 'YouTube’a yüklenenler', 'public': 'Herkese açık videolar', 'private': 'Gizli videolar', 'deleted': 'Silinenler'}.get(active) or (
         'Eski storyboard taslakları'
         if active == 'drafts'
         else CONSOLE_STATUS_LABELS[active]

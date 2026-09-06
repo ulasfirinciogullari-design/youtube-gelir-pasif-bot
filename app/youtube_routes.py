@@ -505,6 +505,8 @@ def youtube_home(
         created = _ready_date(job)
         youtube = result.get('youtube') if isinstance(result.get('youtube'), dict) else {}
         delivery = presentation._video_delivery(job)
+        if delivery['key'] == 'deleted':
+            continue  # Retained in Silinenler, never offered for another upload.
         uploaded = (
             delivery['key'] in {'private', 'public', 'unlisted', 'scheduled', 'uploaded'}
             or presentation._job_has_youtube_output(job)
@@ -556,6 +558,7 @@ def youtube_home(
          'Üretimi tamamlanan videolar. Devam eden yükleme varsa ikinci kez başlatılmaz.'),
     ):
         sections += f'<section class="card"><div class="section-head"><div><h2>{heading}</h2><div class="muted">{note}</div></div><span class="badge">{len(rows)} video</span></div><div class="video-list">' + (''.join(rows) or f'<div class="empty">{empty}</div>') + '</div></section>'
+    sections += '<div class="actions"><a class="btn secondary" href="/studio/history?status=deleted">Silinenler · geçmiş yayın kayıtları</a></div>'
     overview = '<section class="card">' + presentation._metrics_header(metrics) + '<div id="channel-overview-host">' + presentation._channel_overview(metrics.get('channels') or []) + '</div></section>'
     success = '<div class="notice success" role="status">YouTube kanalı başarıyla bağlandı.</div>' if connected else ''
     body = f'''
