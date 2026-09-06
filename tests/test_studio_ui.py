@@ -151,7 +151,7 @@ def test_studio_job_card_is_compact_with_one_action_and_collapsed_details(ui_mod
     assert 'Teknik açıklamayı insan deneyiminin önüne geçirme.' in html
     assert 'https://sensitive.example' not in html
     assert '[bağlantı gizlendi]' in html
-    assert '<span class="state rendered">Üretildi · YouTube’a yüklenmedi</span>' in html
+    assert '<span class="state rendered" data-delivery-key="rendered">Üretildi · YouTube’a yüklenmedi</span>' in html
     assert '>Gizli yükle</a>' in html
     assert html.count('class="btn ') == 1
     assert '30 sn' in html
@@ -1802,7 +1802,7 @@ def test_ready_card_presents_youtube_release_state_without_calling_it_all_privat
     card = studio._ready_video_card(job)
 
     assert studio._console_bucket(job) == 'library'
-    assert f'<span class="state {pill_label}">{readiness_label}</span>' in card
+    assert f'<span class="state {pill_label}" data-delivery-key="{release_status}">{readiness_label}</span>' in card
     assert f'<b>Yayın</b><span data-delivery-label="job-123">{readiness_label}</span>' in card
 
 

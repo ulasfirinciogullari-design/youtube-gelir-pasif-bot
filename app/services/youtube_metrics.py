@@ -2,6 +2,8 @@
 
 Refreshes write only this module's cache and short debounce keys. In particular,
 an expired credential is reported, never migrated, revoked or deleted here.
+Owner-observed absence retains its cache; expiry alone must not resurrect an
+old public label. A newer successful available observation restores normal TTL.
 """
 from __future__ import annotations
 
@@ -43,7 +45,20 @@ if oldraw then
   if ok and type(old) == 'table' and type(old['last_attempt_at']) == 'number'
      and old['last_attempt_at'] >= started then return 0 end
 end
-redis.call('SETEX', KEYS[1], ARGV[6], ARGV[5])
+local absent = false
+if type(incoming['videos']) == 'table' then
+  for _, video in pairs(incoming['videos']) do
+    if type(video) == 'table' and video['availability'] == 'unavailable'
+       and video['error'] == 'video_unavailable'
+       and type(video['availability_checked_at']) == 'number'
+       and video['availability_checked_at'] > 0
+       and video['availability_checked_at'] <= started + 5 then absent = true end
+  end
+end
+-- Do not resurrect a historical public label merely because its cache expired.
+-- A later successful available observation restores the ordinary cache TTL.
+if absent then redis.call('SET', KEYS[1], ARGV[5])
+else redis.call('SETEX', KEYS[1], ARGV[6], ARGV[5]) end
 return 1
 '''
 
@@ -238,6 +253,11 @@ def get_dashboard_metrics(jobs):
                 video_at = _timestamp(video.get('fetched_at'))
                 reason = error or (video.get('error') if video.get('error') in _REASONS else None)
                 duration = video.get('duration')
+                checked_at = _timestamp(video.get('availability_checked_at'))
+                availability = video.get('availability')
+                if (not isinstance(availability, str) or availability not in {'available', 'unavailable'} or not checked_at
+                        or checked_at > now + 5):
+                    availability, checked_at = None, None
                 output['videos'][source_id] = {
                     'video_id': proof['video_id'], 'channel_id': context['channel_id'], 'channel_title': row['title'],
                     'title': _text(video.get('title'), 100), 'view_count': _count(video.get('view_count')),
@@ -247,6 +267,9 @@ def get_dashboard_metrics(jobs):
                     'duration': _duration(duration),
                     'fetched_at': _iso(video_at), 'status': _state(video_at, reason, now),
                     'reason': reason or ('not_refreshed' if not video_at else None),
+                    'availability': availability,
+                    'availability_checked_at': _iso(checked_at),
+                    'availability_evidence': 'owner_api_absent' if availability == 'unavailable' else None,
                 }
         output['updated_at'] = _iso(min(fetched)) if fetched else None
     except Exception:
@@ -338,12 +361,18 @@ def _read_google(context, ids, previous, now):
                     'view_count': _count(statistics.get('viewCount')), 'like_count': _count(statistics.get('likeCount')),
                     'comment_count': _count(statistics.get('commentCount')),
                     'privacy_status': status.get('privacyStatus') if status.get('privacyStatus') in ('private', 'unlisted', 'public') else None,
-                    'duration': _duration(details.get('duration')), 'fetched_at': now}
+                    'duration': _duration(details.get('duration')), 'fetched_at': now,
+                    'availability': 'available', 'availability_checked_at': now}
             old_videos = previous.get('videos') if isinstance(previous.get('videos'), dict) else {}
             for video_id in ids:
                 if video_id not in videos:
                     old = old_videos.get(video_id)
-                    videos[video_id] = {**(old if isinstance(old, dict) else {}), 'error': 'video_unavailable'}
+                    # Only a successful owner-channel query can establish absence.
+                    # Preserve historical counts/privacy; absence is not an upload
+                    # failure or proof of who deleted/restricted the video.
+                    videos[video_id] = {**(old if isinstance(old, dict) else {}),
+                        'error': 'video_unavailable', 'availability': 'unavailable',
+                        'availability_checked_at': now}
         return {'version': 1, 'channel_id': context['channel_id'], 'connection_id': context['connection_id'],
                 'channel': channel, 'videos': videos, 'last_error': None, 'last_attempt_at': now}
     finally:
