@@ -1,4 +1,5 @@
 """Offline end-to-end preservation -> fresh review -> ordinary v3 claim."""
+import ast
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 import hashlib
@@ -24,6 +25,22 @@ CHILD = '33333333-3333-4333-8333-333333333333'
 
 def _sha(raw):
     return hashlib.sha256(raw).hexdigest()
+
+
+def _immutable_boundary():
+    """Execute the real director pre-provider boundary, without SDK imports."""
+    source = Path(__file__).resolve().parents[1] / 'app' / 'services' / 'director.py'
+    tree = ast.parse(source.read_text(encoding='utf-8'))
+    definitions = [node for node in tree.body if (
+        isinstance(node, ast.FunctionDef) and node.name == '_immutable_narration_map'
+    ) or (
+        isinstance(node, ast.Assign) and any(isinstance(target, ast.Name)
+            and target.id == '_MAX_PRODUCTION_SCENES' for target in node.targets)
+    )]
+    assert len(definitions) == 2
+    namespace = {}
+    exec(compile(ast.Module(body=definitions, type_ignores=[]), str(source), 'exec'), namespace)
+    return namespace['_immutable_narration_map']
 
 
 @pytest.fixture
@@ -98,7 +115,9 @@ def case(tmp_path, monkeypatch):
     client.hset(studio_state.PAID_CREATE_BUDGET_PREFIX + SOURCE, mapping={'cap': '6', 'used': '6'})
     client.set(studio_state.REPAIR_CHECKPOINT_CLAIM_PREFIX + source['parent_id'], 'consumed-ancestor-claim')
     client.hset(studio_state.RETRY_DISPATCH_PREFIX + source['parent_id'], mapping={'state': 'dispatched', 'child_task_id': SOURCE})
+    immutable = _immutable_boundary()
     def revalidate(original, topic, duration, language, opts, **kwargs):
+        immutable(original, kwargs['immutable_candidate_narrations'])
         assert language == 'en' and duration == .5
         assert kwargs['immutable_candidate_narrations'] == [scene['narration'] for scene in original['scenes']]
         assert 'short_story_qc' not in original
@@ -179,6 +198,31 @@ def test_generation_priority_order_does_not_change_scene_identity(case):
     receipt = _record(case, _prepare(case))
     media = receipt['approved_package']['_recovered_generated_media']['scenes']
     assert [media[str(i)][0]['sha256'] for i in range(6)] == [_sha(raw) for raw in case.clips]
+
+
+@pytest.mark.parametrize('repairs', [(), (3, 4, 5)])
+def test_stripped_manifest_is_reconstructed_for_real_immutable_director_boundary(case, repairs):
+    manifest_pointer = case.source['generated_asset_candidates']['entries'][0]
+    stored = json.loads(case.objects[manifest_pointer['manifest_key']][0])['package']
+    original = deepcopy(stored)
+    spoken = [scene['narration'] for scene in stored['scenes']]
+    assert 'narration' not in stored and 'studio_options' not in stored
+    with pytest.raises(RuntimeError, match='exact scene mapping'):
+        _immutable_boundary()(stored, spoken)  # the live failure, before any provider
+    pointer = _prepare(case, repair_scene_indices=repairs,
+                       shot_prompt_overrides={index: f'Exact replacement visual {index}.' for index in repairs})
+    supplied = case.story.call_args.args[0]
+    assert _immutable_boundary()(supplied, spoken) == dict(enumerate(spoken))
+    assert supplied['narration'] == ' '.join(spoken)
+    assert case.story.call_args.args[4] == recovery._options(case.source)
+    assert supplied.get('studio_options') is None  # authoritative options are passed separately
+    receipt = _record(case, pointer)
+    audit = _record(case, receipt['audit_pointer'])
+    assert audit['package']['narration'] == receipt['approved_package']['narration'] == ' '.join(spoken)
+    assert receipt['approved_package']['_recovered_voice']['sha256'] == _sha(case.audio)
+    assert case.objects[receipt['approved_package']['_recovered_voice']['key']][0] == case.audio
+    assert json.loads(case.objects[manifest_pointer['manifest_key']][0])['package'] == original
+    assert recovery.publish_preserved_visual_recovery(pointer)['status'] == 'checkpoint_published'
 
 
 @pytest.mark.parametrize('repairs', [(), (3,)])
