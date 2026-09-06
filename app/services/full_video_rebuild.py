@@ -430,44 +430,56 @@ def _safe_policy(policy):
                                   'spec_sha256', 'original_paid_create_cap', *_FLAGS)}
 
 
+def _executed_full_rebuild_grant(client, task_id, source_id, runtime_spec, snapshots):
+    """Private ancestry proof only; the caller must validate the child's state.
+
+    This never grants another rebuild. Keep all reads in the caller's CAS so
+    a terminal audio child can prove its fresh-voice ancestry without treating
+    that failed child as an untouched, runnable full-rebuild worker.
+    """
+    _require(all(isinstance(v, str) and _TASK.fullmatch(v) for v in (task_id, source_id))
+             and task_id != source_id and isinstance(runtime_spec, dict))
+    policy = _object(_snapshot(client, POLICY_PREFIX + task_id, snapshots))
+    source, spec, cap, root_id, auth = _source(client, source_id, snapshots, reserved=True)
+    _require(type(policy.get('version')) is int and policy['version'] == 1 and policy.get('mode') == 'full'
+             and policy.get('source_task_id') == source_id and policy.get('child_task_id') == task_id
+             and policy.get('lineage_root_task_id') == root_id
+             and spec == runtime_spec and policy.get('spec_sha256') == _digest(runtime_spec)
+             and type(policy.get('original_paid_create_cap')) is int and policy['original_paid_create_cap'] == cap
+             and all(policy.get(k) is True for k in _FLAGS)
+             and all(policy.get(k) == v for k, v in auth.items())
+             and _object(_snapshot(client, SOURCE_PREFIX + source_id, snapshots)) == policy)
+    dispatch = _snapshot(client, RETRY_DISPATCH_PREFIX + source_id, snapshots, kind='hash')
+    claim = _snapshot(client, RETRY_CHILD_CLAIM_PREFIX + task_id, snapshots, kind='hash')
+    execution = _snapshot(client, RETRY_CHILD_EXECUTION_PREFIX + task_id, snapshots)
+    token = dispatch.get('token')
+    _require(isinstance(token, str) and _TOKEN.fullmatch(token) and _digest(token) == policy.get('dispatch_token_sha256')
+             and dispatch.get('child_task_id') == task_id and dispatch.get('mode') == 'full'
+             and dispatch.get('state') in {'reserved', 'dispatched', 'uncertain'}
+             and claim.get('source_task_id') == source_id and claim.get('token') == token and execution == token
+             and source.get('retry_child_task_id') == task_id and source.get('retry_claimed') is True
+             and source.get('retry_dispatch_state') == dispatch.get('state'))
+    return policy, token
+
+
 def get_full_rebuild_policy(task_id, source_id, runtime_spec):
     """Read-only proof after the existing one-shot execution guard, before cost."""
     try:
-        _require(all(isinstance(v, str) and _TASK.fullmatch(v) for v in (task_id, source_id))
-                 and task_id != source_id and isinstance(runtime_spec, dict))
         client, snapshots = _redis(), {}
-        policy = _object(_snapshot(client, POLICY_PREFIX + task_id, snapshots))
-        source, spec, cap, root_id, auth = _source(client, source_id, snapshots, reserved=True)
-        _require(type(policy.get('version')) is int and policy['version'] == 1 and policy.get('mode') == 'full'
-                 and policy.get('source_task_id') == source_id and policy.get('child_task_id') == task_id
-                 and policy.get('lineage_root_task_id') == root_id
-                 and spec == runtime_spec and policy.get('spec_sha256') == _digest(runtime_spec)
-                 and type(policy.get('original_paid_create_cap')) is int and policy['original_paid_create_cap'] == cap
-                 and all(policy.get(k) is True for k in _FLAGS)
-                 and all(policy.get(k) == v for k, v in auth.items())
-                 and _object(_snapshot(client, SOURCE_PREFIX + source_id, snapshots)) == policy)
+        policy, token = _executed_full_rebuild_grant(client, task_id, source_id, runtime_spec, snapshots)
+        cap = policy['original_paid_create_cap']
         child = _object(_snapshot(client, JOB_PREFIX + task_id, snapshots))
         _require(child.get('task_id') == task_id and child.get('parent_id') == source_id
                  and child.get('kind') == 'render' and child.get('state') in {'PENDING', 'STARTED', 'PROGRESS'}
                  and child.get('spec') == runtime_spec
                  and not any(child.get(k) for k in ('result', 'retry_child_task_id', 'youtube', 'youtube_automation',
                                                     'video_key', 'audio_candidate_checkpoint', 'generated_asset_candidates')))
-        _idle_channel(client, auth['channel_id'], snapshots, ignore_task_id=task_id)
+        _idle_channel(client, policy['channel_id'], snapshots, ignore_task_id=task_id)
         ledger = _snapshot(client, PAID_CREATE_BUDGET_PREFIX + task_id, snapshots, kind='hash', optional=True)
         _require(ledger is None or ledger.get('used') == '0' and ledger.get('cap') == str(cap))
         for prefix in (UPLOAD_PREFIX, EXECUTION_LOCK_PREFIX, REPAIR_CHECKPOINT_PREFIX, REPAIR_CHECKPOINT_CLAIM_PREFIX,
                        RETRY_DISPATCH_PREFIX):
             _absent(client, prefix + task_id, snapshots)
-        dispatch = _snapshot(client, RETRY_DISPATCH_PREFIX + source_id, snapshots, kind='hash')
-        claim = _snapshot(client, RETRY_CHILD_CLAIM_PREFIX + task_id, snapshots, kind='hash')
-        execution = _snapshot(client, RETRY_CHILD_EXECUTION_PREFIX + task_id, snapshots)
-        token = dispatch.get('token')
-        _require(isinstance(token, str) and _TOKEN.fullmatch(token) and _digest(token) == policy.get('dispatch_token_sha256')
-                 and dispatch.get('child_task_id') == task_id and dispatch.get('mode') == 'full'
-                 and dispatch.get('state') in {'reserved', 'dispatched', 'uncertain'}
-                 and claim.get('source_task_id') == source_id and claim.get('token') == token and execution == token
-                 and source.get('retry_child_task_id') == task_id and source.get('retry_claimed') is True
-                 and source.get('retry_dispatch_state') == dispatch.get('state'))
         result = _evaluate(client, _VERIFY, source_id, task_id, token, snapshots, policy)
         _require(result == [1, ''], 'full_rebuild_state_changed')
         return _safe_policy(policy)

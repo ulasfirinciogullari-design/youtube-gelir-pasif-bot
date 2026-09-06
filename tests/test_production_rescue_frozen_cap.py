@@ -46,12 +46,13 @@ def _execute(context):
 
 
 @pytest.mark.parametrize('cap', [2, 3, 4, 5, 6])
-def test_at_or_below_frozen_cap_never_enters_stock_rescue(cap):
+def test_empty_selector_at_or_below_frozen_cap_never_accesses_stock(cap):
     for count in range(cap + 1):
         context = _context(count, cap)
         before = deepcopy((context['scenes'], context['ranked_runway_candidates']))
         _execute(context)
-        context['_prepaid_stock_rescue_candidates'].assert_not_called()
+        context['_prepaid_stock_rescue_candidates'].assert_called_once()
+        assert context['_prepaid_stock_rescue_candidates'].call_args.args[1] == cap
         context['_retry_bad_scene'].assert_not_called()
         context['review_scene_visuals'].assert_not_called()
         assert before == (context['scenes'], context['ranked_runway_candidates'])
@@ -68,14 +69,15 @@ def test_only_actual_overflow_uses_the_frozen_total_as_rescue_boundary(cap):
     assert call.kwargs['evidence_sources'] is context['package']['sources']
 
 
-@pytest.mark.parametrize('count,expected_calls', [(2, 0), (3, 1), (6, 1)])
-def test_preview_keeps_its_original_submission_boundary(count, expected_calls):
+@pytest.mark.parametrize('count', [2, 3, 6])
+def test_preview_selector_keeps_its_original_submission_boundary(count):
     context = _context(count, 6, is_bounded_short_preview=True,
                        options={'mode': 'preview', 'format': 'shorts'})
     _execute(context)
-    assert context['_prepaid_stock_rescue_candidates'].call_count == expected_calls
-    if expected_calls:
-        assert context['_prepaid_stock_rescue_candidates'].call_args.args[1] == 2
+    context['_prepaid_stock_rescue_candidates'].assert_called_once()
+    assert context['_prepaid_stock_rescue_candidates'].call_args.args[1] == 2
+    context['_retry_bad_scene'].assert_not_called()
+    context['review_scene_visuals'].assert_not_called()
 
 
 @pytest.mark.parametrize('changes', [
@@ -131,6 +133,8 @@ def test_parent_four_is_not_raised_when_new_child_freezes_six(configured, budget
     _execute(old)
     _execute(new)
     old['_prepaid_stock_rescue_candidates'].assert_called_once()
-    new['_prepaid_stock_rescue_candidates'].assert_not_called()
+    new['_prepaid_stock_rescue_candidates'].assert_called_once()
+    assert new['_prepaid_stock_rescue_candidates'].call_args.args[1] == 6
+    new['_retry_bad_scene'].assert_not_called()
     assert budget.state(OLD, 6) == {'used': 0, 'cap': 4, 'remaining': 4}
     assert budget.state(NEW, 6) == {'used': 0, 'cap': 6, 'remaining': 6}
