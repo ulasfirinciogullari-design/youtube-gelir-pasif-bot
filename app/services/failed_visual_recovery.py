@@ -1,7 +1,7 @@
-"""Explicit, two-scene repair of one preserved failed production Short.
+"""Explicit, bounded repair of one preserved failed production Short.
 
 Preparation reviews existing raw clips; it never synthesizes or dispatches.
-The private receipt is not final QA approval. The ordinary v2 repair worker
+The private receipt is not final QA approval. The ordinary v2/v4 repair worker
 must still run every audio, visual, rendering and publication gate.
 """
 from __future__ import annotations
@@ -17,7 +17,7 @@ import re
 
 from botocore.exceptions import ClientError
 
-from app.services import storage, studio_state
+from app.services import audio_checkpoint, storage, studio_state
 from app.services.paid_render_recovery import _canonical_id, _copy_voice_create_only, _digest, _runtime
 from app.services.visual_allocation_checkpoint import _review, _text
 from app.services.voice_candidate_recovery import (
@@ -40,6 +40,25 @@ SELECTED = {
 }
 RETAINED = (1, 2, 3, 4)
 REPAIRS = (0, 5)
+THREE_REPAIRS = (0, 2, 5)
+# Exact-source, operator-authorized shooting contracts. Only these three
+# prompts change, before the independent critic; speech and retained scenes do not.
+REPAIR_SHOTS = {
+    0: ('Documentary reenactment, United States grocery checkout in 1974. Close view of a cashier hand '
+        'moving a grocery item across a period red-laser glass barcode scanner, with a period mechanical '
+        'cash register. The hand, barcode side and scanner action are the subjects; no front-label hero shot, '
+        'invented branding, gibberish print, modern PIN pad or LCD screen. Not authentic archival footage.'),
+    2: ('Documentary reenactment of the 1974 United States first UPC checkout. A ten-pack of Wrigley\'s '
+        'Juicy Fruit chewing gum passes over a period NCR glass scanner beside a mechanical register. '
+        'Preserve the exact product identity and ten-pack quantity; show the side or back barcode and '
+        'cashier hand, not a front-label hero shot. No modern PIN pad, touchscreen, LCD, fabricated labels '
+        'or modern payment terminal. Not authentic archival footage.'),
+    5: ('Clearly present-day documentary B-roll of an active fulfillment line: a barcode-bearing box '
+        'passes a scanner and continues along an operating conveyor among other shipping boxes. '
+        'Make scanner, barcode side, boxes and active movement visibly readable as the context for '
+        'global supply-chain speed, without claiming a measured speedup. Not an empty belt or 1974 archive; '
+        'no fake brands, invented labels, overlays or garbled print.'),
+}
 _SHA = re.compile(r'[0-9a-f]{64}')
 _OPERATION = re.compile(r'models/veo-3\.1(?:-lite|-fast)?-generate-preview/operations/[A-Za-z0-9_-]{1,128}')
 _RETRIEVAL_SOURCE_FIELDS = (
@@ -55,9 +74,10 @@ MAX_CLIP = 16 * 1024 * 1024
 class FailedVisualRecoveryError(RuntimeError):
     """Fixed error message with optional bounded, secret-safe scene evidence."""
 
-    def __init__(self, *, diagnostics=None):
+    def __init__(self, *, diagnostics=None, diagnostic_pointer=None):
         super().__init__('Failed visual recovery stopped; no new media or retry was created')
         self.diagnostics = deepcopy(diagnostics or [])
+        self.diagnostic_pointer = deepcopy(diagnostic_pointer)
 
 
 def _require(condition):
@@ -208,7 +228,7 @@ def _review_runtime():
     return render, review_scene_visuals
 
 
-def _review_existing(package, voice_result, paths, work, threshold):
+def _review_existing(package, voice_result, paths, work, threshold, retained=RETAINED):
     render, review_visuals = _review_runtime()
     scenes, durations = package['scenes'], voice_result['scene_durations']
     measured = float(render.media_duration(voice_result['path']))
@@ -226,35 +246,31 @@ def _review_existing(package, voice_result, paths, work, threshold):
     review_dir = work / 'retained_exact_review'
     review_dir.mkdir(exist_ok=False)
     visual_inputs = []
-    for index in RETAINED:
+    for index in retained:
         spec, _duration, transition, _scene = timeline[index]
         target = review_dir / f'scene-{index:02d}.mp4'
         render.normalize_clip(spec, target, frame_counts[index] / render.FPS, index, transition, '1080x1920')
         visual_inputs.append([{**spec, 'path': str(target)}])
     output = review_visuals(
-        [scenes[index] for index in RETAINED], visual_inputs, review_dir, len(RETAINED),
+        [scenes[index] for index in retained], visual_inputs, review_dir, len(retained),
         _missing_review_attempts=0, _score_reason_consistency_attempts=0,
         topic=package['_recovery_topic'], story_scenes=scenes,
         content_style=package['studio_options'].get('content_style', ''), evidence_sources=package.get('sources') or [],
     )
     _require(isinstance(output, dict) and not output.get('missing_review_indices'))
     reviews = output.get('reviews')
-    _require(isinstance(reviews, list) and len(reviews) == 4)
+    _require(isinstance(reviews, list) and len(reviews) == len(retained))
     by_index = {}
     for review in reviews:
         _require(isinstance(review, dict) and type(review.get('scene_index')) is int
-                 and 0 <= review['scene_index'] < 4 and review['scene_index'] not in by_index)
+                 and 0 <= review['scene_index'] < len(retained) and review['scene_index'] not in by_index)
         by_index[review['scene_index']] = review
-    evidence, rejected = [], []
-    for local, index in enumerate(RETAINED):
+    evidence = []
+    for local, index in enumerate(retained):
         raw = by_index[local]
         safe = {'scene_index': index, 'raw_sha256': SELECTED[index][0],
                 'review': _review(raw), 'exact_cut_frames': frame_counts[index]}
         evidence.append(safe)
-        if not _review_passes(safe['review'], threshold):
-            rejected.append(safe)
-    if rejected:
-        raise FailedVisualRecoveryError(diagnostics=rejected)
     return evidence
 
 
@@ -283,16 +299,65 @@ def _store_prepared(client, receipt):
             'prepared_sha256': checksum, 'prepared_size': len(payload)}
 
 
+def _store_audit(client, work, audit):
+    payload = json.dumps(audit, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()
+    _require(1 <= len(payload) <= MAX_JSON)
+    checksum = hashlib.sha256(payload).hexdigest()
+    # Local evidence survives a failed/uncertain private Storage response.
+    with (work / f'failed-visual-audit-{checksum}.json').open('xb') as output:
+        output.write(payload)
+    key = f'recovery/{SOURCE}/failed_visual_audit_v1-{checksum}.json'
+    try:
+        response = client.put_object(Bucket=storage.settings.bucket, Key=key, Body=io.BytesIO(payload),
+            ContentLength=len(payload), ContentType='application/json', CacheControl='private, no-store', IfNoneMatch='*')
+        _require(response.get('ResponseMetadata', {}).get('HTTPStatusCode') == 200)
+    except ClientError as exc:
+        if str(exc.response.get('Error', {}).get('Code')) not in {'412', 'PreconditionFailed'}:
+            raise
+        _require(_read_json(client, key, checksum, len(payload)) == audit)
+    return {'version': 1, 'source_task_id': SOURCE, 'key': key, 'sha256': checksum, 'size': len(payload)}
+
+
+def _read_audit(client, pointer):
+    _require(isinstance(pointer, dict) and set(pointer) == {'version', 'source_task_id', 'key', 'sha256', 'size'}
+             and type(pointer.get('version')) is int and pointer['version'] == 1 and pointer.get('source_task_id') == SOURCE
+             and pointer.get('key') == f"recovery/{SOURCE}/failed_visual_audit_v1-{pointer.get('sha256')}.json")
+    audit = _read_json(client, pointer['key'], pointer['sha256'], pointer['size'])
+    _require(audit.get('source_task_id') == SOURCE and audit.get('diagnostic_only') is True
+             and audit.get('qa_approved') is False and audit.get('reusable') is False
+             and audit.get('requires_full_qa') is True and audit.get('status') == 'retained_visuals_passed')
+    return audit
+
+
+def _shooting_candidate(package, repairs):
+    candidate = deepcopy(package)
+    if repairs == THREE_REPAIRS:
+        for index in repairs:
+            candidate['scenes'][index]['ai_prompt'] = REPAIR_SHOTS[index]
+    return candidate
+
+
+def _require_visual_partition(original, reviewed, repairs):
+    require_unchanged_voice_narration(original, reviewed)
+    if repairs == THREE_REPAIRS:
+        for index, before in enumerate(original['scenes']):
+            expected = {**before, 'ai_prompt': REPAIR_SHOTS[index]} if index in repairs else before
+            _require(reviewed['scenes'][index] == expected)
+
+
 def prepare_failed_visual_repair(source_task_id, retrieval_pointer, work_dir, *, repair_scene_indices=(0, 5)):
-    """Review the four exact existing cuts once, then store a private v2 receipt.
+    """Review exact retained cuts once, then store a private v2 or v4 receipt.
 
     Call only explicitly with a fresh existing /tmp/youtube_factory/<UUID>_attempt_0
     directory. A rejected retained clip reports sanitized evidence and returns
-    no checkpoint. No extra repair index, TTS, media create or dispatch exists.
+    no checkpoint. Only (0,5) or explicit (0,2,5) is accepted. No media is created.
     """
+    audit_pointer = None
     try:
-        _require(source_task_id == SOURCE and tuple(repair_scene_indices) == REPAIRS
+        repairs = tuple(repair_scene_indices)
+        _require(source_task_id == SOURCE and repairs in (REPAIRS, THREE_REPAIRS)
                  and all(type(index) is int for index in repair_scene_indices))
+        retained = tuple(index for index in range(6) if index not in repairs)
         source, fingerprint = _state(studio_state._client())
         work = Path(work_dir)
         match = re.fullmatch(r'([0-9a-f-]{36})_attempt_0', work.name)
@@ -300,6 +365,7 @@ def prepare_failed_visual_repair(source_task_id, retrieval_pointer, work_dir, *,
         candidate = load_voice_retry_candidate(SOURCE, match[1], source['audio_candidate_checkpoint'], work)
         client = storage._client()
         metadata, mapped = _evidence(client, retrieval_pointer, source)
+        mapped = {index: mapped[index] for index in retained}
         scenes, voice_result = candidate['package']['scenes'], candidate['voice_result']
         _require(len(scenes) == 6 and candidate['audio_sha256'] == VOICE_SHA)
         _require(all(row['narration'] == _text(scene['narration'], 4000)
@@ -323,11 +389,34 @@ def prepare_failed_visual_repair(source_task_id, retrieval_pointer, work_dir, *,
             _require(abs(float(tasks.media_duration(target)) - row['duration_seconds']) <= 0.04
                      and tasks.video_frame_count(target) == row['video_frames'])
             paths[index] = target
-        reviewed = director.revalidate_immutable_short_story(candidate['package'], source['spec']['topic'], 0.5, 'tr', options,
-                        immutable_candidate_narrations=[scene['narration'] for scene in scenes])
-        require_unchanged_voice_narration(candidate['package'], reviewed)
-        _require(reviewed.get('studio_options') == options and director.short_story_package_is_approved(reviewed, source['spec']['topic']))
-        evidence = _review_existing({**reviewed, '_recovery_topic': source['spec']['topic']}, voice_result, paths, work, threshold)
+        audit = {'version': 1, 'source_task_id': SOURCE, 'diagnostic_only': True, 'qa_approved': False,
+                 'reusable': False, 'requires_full_qa': True, 'status': 'story_review_pending',
+                 'source_state_sha256': fingerprint, 'source_spec_sha256': _digest(source['spec']),
+                 'source_package': deepcopy(candidate['package']), 'repair_scene_indices': list(repairs),
+                 'retrieval_pointer': deepcopy(retrieval_pointer), 'workprint_metadata_sha256': WORKPRINT_SHA,
+                 'voice_sha256': VOICE_SHA, 'retained_visual_reviews': [], 'new_paid_create_requests': 0, 'new_tts_requests': 0}
+        try:
+            reviewed = director.revalidate_immutable_short_story(_shooting_candidate(candidate['package'], repairs),
+                source['spec']['topic'], 0.5, 'tr', options,
+                immutable_candidate_narrations=[scene['narration'] for scene in scenes])
+            _require_visual_partition(candidate['package'], reviewed, repairs)
+            _require(reviewed.get('studio_options') == options and director.short_story_package_is_approved(reviewed, source['spec']['topic']))
+        except Exception:
+            audit['status'] = 'story_review_rejected_or_unavailable'
+            audit_pointer = _store_audit(client, work, audit)
+            raise FailedVisualRecoveryError(diagnostic_pointer=audit_pointer) from None
+        audit['reviewed_package'] = deepcopy(reviewed)
+        try:
+            evidence = _review_existing({**reviewed, '_recovery_topic': source['spec']['topic']}, voice_result, paths, work, threshold, retained)
+        except Exception:
+            audit['status'] = 'visual_review_unavailable'
+            audit_pointer = _store_audit(client, work, audit)
+            raise FailedVisualRecoveryError(diagnostic_pointer=audit_pointer) from None
+        rejected = [row for row in evidence if not _review_passes(row['review'], threshold)]
+        audit.update(status='retained_visuals_rejected' if rejected else 'retained_visuals_passed', retained_visual_reviews=evidence)
+        audit_pointer = _store_audit(client, work, audit)
+        if rejected:
+            raise FailedVisualRecoveryError(diagnostics=rejected, diagnostic_pointer=audit_pointer)
         package = deepcopy(reviewed)
         package_hash = tasks._recovery_package_sha256(package)
         voice_path = Path(voice_result['path'])
@@ -335,8 +424,8 @@ def prepare_failed_visual_repair(source_task_id, retrieval_pointer, work_dir, *,
                  'key': f'recovery/{SOURCE}/raw/voice.mp3', 'sha256': VOICE_SHA, 'size': VOICE_SIZE,
                  **{key: voice_result.get(key) for key in ('scene_durations', 'spoken_texts', 'duration_before_fit',
                     'duration_after_fit', 'tempo_rate', 'content_target_seconds', 'reserved_tail_seconds')}}
-        media = {'version': 2, 'repair_only': True, 'source_task_id': SOURCE, 'package_sha256': package_hash,
-                 'repair_scene_indices': list(REPAIRS), 'scenes': {str(index): [{
+        media = {'version': 4 if repairs == THREE_REPAIRS else 2, 'repair_only': True, 'source_task_id': SOURCE, 'package_sha256': package_hash,
+                 'repair_scene_indices': list(repairs), 'scenes': {str(index): [{
                      'key': row['clip_key'], 'sha256': row['clip_sha256'], 'size': row['clip_size'],
                      'provider': 'gemini_veo', 'provider_attempts': 1, 'synthetic_motion_only': False,
                      'motion_recipe_version': None, 'source_media_type': 'video'}] for index, row in mapped.items()}}
@@ -352,12 +441,13 @@ def prepare_failed_visual_repair(source_task_id, retrieval_pointer, work_dir, *,
                    'qa_approved': False, 'requires_full_qa': True, 'new_paid_create_requests': 0, 'new_tts_requests': 0,
                    'source_state_sha256': fingerprint, 'source_spec_sha256': _digest(source['spec']),
                    'retrieval_pointer': deepcopy(retrieval_pointer), 'workprint_metadata_sha256': WORKPRINT_SHA,
-                   'package_sha256': package_hash, 'approved_package': package, 'retained_visual_reviews': evidence}
+                   'package_sha256': package_hash, 'approved_package': package, 'retained_visual_reviews': evidence,
+                   'audit_pointer': audit_pointer}
         return _store_prepared(client, receipt)
     except FailedVisualRecoveryError:
         raise
     except Exception:
-        raise FailedVisualRecoveryError() from None
+        raise FailedVisualRecoveryError(diagnostic_pointer=audit_pointer) from None
 
 
 def publish_failed_visual_repair(prepared_receipt):
@@ -371,7 +461,7 @@ def publish_failed_visual_repair(prepared_receipt):
         receipt = _read_json(storage_client, pointer['prepared_key'], pointer['prepared_sha256'], pointer['prepared_size'])
         _require(set(receipt) == {'version', 'source_task_id', 'status', 'qa_approved', 'requires_full_qa',
                     'new_paid_create_requests', 'new_tts_requests', 'source_state_sha256', 'source_spec_sha256',
-                    'retrieval_pointer', 'workprint_metadata_sha256', 'package_sha256', 'approved_package', 'retained_visual_reviews'}
+                    'retrieval_pointer', 'workprint_metadata_sha256', 'package_sha256', 'approved_package', 'retained_visual_reviews', 'audit_pointer'}
                  and type(receipt.get('version')) is int and receipt['version'] == 1 and receipt.get('source_task_id') == SOURCE
                  and receipt.get('status') == 'prepared_visual_repair' and receipt.get('qa_approved') is False
                  and receipt.get('requires_full_qa') is True and receipt.get('workprint_metadata_sha256') == WORKPRINT_SHA
@@ -389,18 +479,32 @@ def publish_failed_visual_repair(prepared_receipt):
                      and director.short_story_package_is_approved(package, source['spec']['topic']))
             audio = tasks._validated_recovered_voice(package.get('_recovered_voice'), 6, package_hash)
             media = tasks._validated_recovered_generated_media(package.get('_recovered_generated_media'), 6, package_hash)
-            _require(audio and media and media.get('version') == 2 and media.get('repair_only') is True
+            repairs = tuple(media.get('repair_scene_indices') or ()) if media else ()
+            retained = tuple(index for index in range(6) if index not in repairs)
+            _require(audio and media and repairs in (REPAIRS, THREE_REPAIRS)
+                     and media.get('version') == (4 if repairs == THREE_REPAIRS else 2) and media.get('repair_only') is True
                      and media.get('source_task_id') == audio.get('source_task_id') == SOURCE
-                     and media.get('repair_scene_indices') == list(REPAIRS) and set(media['scenes']) == set(RETAINED)
+                     and set(media['scenes']) == set(retained)
                      and audio['sha256'] == VOICE_SHA and audio['size'] == VOICE_SIZE)
+            audit = _read_audit(storage_client, receipt['audit_pointer'])
+            _require(audit.get('source_state_sha256') == fingerprint
+                     and audit.get('source_spec_sha256') == receipt['source_spec_sha256']
+                     and audit.get('retrieval_pointer') == receipt['retrieval_pointer']
+                     and audit.get('workprint_metadata_sha256') == WORKPRINT_SHA and audit.get('voice_sha256') == VOICE_SHA
+                     and audit.get('repair_scene_indices') == list(repairs)
+                     and audit.get('retained_visual_reviews') == receipt['retained_visual_reviews']
+                     and audit.get('reviewed_package') == {key: value for key, value in package.items()
+                         if key not in {'_recovered_voice', '_recovered_generated_media'}}
+                     and _digest(audio_checkpoint._candidate_package(audit.get('source_package'))) == source['audio_candidate_checkpoint']['package_sha256'])
+            _require_visual_partition(audit['source_package'], package, repairs)
             _require(audio['spoken_texts'] == [voice.normalize_turkish_tts(scene['narration'], ensure_terminal=index == 5)
                                               for index, scene in enumerate(package['scenes'])])
             _require(all(row['narration'] == _text(scene['narration'], 4000)
                          and row['duration_seconds'] == audio['scene_durations'][index]
                          for index, (row, scene) in enumerate(zip(metadata['scenes'], package['scenes']))))
             reviews = receipt['retained_visual_reviews']
-            _require(isinstance(reviews, list) and len(reviews) == 4)
-            for index, evidence in zip(RETAINED, reviews):
+            _require(isinstance(reviews, list) and len(reviews) == len(retained))
+            for index, evidence in zip(retained, reviews):
                 row, entries = mapped[index], media['scenes'][index]
                 _require(len(entries) == 1 and entries[0] == {
                     'key': row['clip_key'], 'sha256': row['clip_sha256'], 'size': row['clip_size'],
@@ -421,6 +525,6 @@ def publish_failed_visual_repair(prepared_receipt):
                             ex=studio_state.JOB_TTL_SECONDS)
             _require(transaction.execute() == [True, True])
         return {'status': 'checkpoint_published', 'source_task_id': SOURCE, 'requires_full_qa': True,
-                'repair_scene_indices': list(REPAIRS), 'new_paid_create_requests': 0}
+                'repair_scene_indices': list(repairs), 'new_paid_create_requests': 0}
     except Exception:
         raise FailedVisualRecoveryError() from None

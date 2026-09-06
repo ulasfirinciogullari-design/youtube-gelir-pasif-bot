@@ -230,6 +230,18 @@ def test_bounded_free_stock_rescue_and_exact_review_are_not_skipped_for_recovery
                                and child.func.id == '_retry_bad_scene' for child in ast.walk(node)))
     rescue_review = next(node for node in ast.walk(TREE) if isinstance(node, ast.If)
                          and isinstance(node.test, ast.Name) and node.test.id == 'rescued_final_scenes')
-    assert 'recovered_generated_media' not in ast.unparse(rescue_loop)
+    calls = []
+    runtime = _runtime(
+        rejected_final_scenes=[3], final_runway_repair_scenes=[],
+        final_reviews={3: {'score': 40}}, provider_outage_stock_scenes=set(),
+        stock_quality_fallback_scenes=set(), terminal_manual_qa_old_best={},
+        seen_ids=set(), work=Path('/tmp/mock-stock-rescue'), credits=[],
+        scene_durations=[5.0] * 6, pexels_orientation='portrait', stock_reuse_visuals=None,
+        _final_pexels_rescue_queries=lambda *args, **kwargs: ['specific subject'],
+        _retry_bad_scene=lambda *args, **kwargs: calls.append((args, kwargs)) or [],
+    )
+    _execute([rescue_loop], runtime)
+    assert len(calls) == 1 and calls[0][0][:2] == (3, ['specific subject'])
+    assert calls[0][1]['minimum_duration'] == 5.35
     assert 'review_scene_visuals(' in ast.unparse(rescue_review)
     assert 'recovered_generated_media' not in ast.unparse(rescue_review)
