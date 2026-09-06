@@ -339,3 +339,49 @@ def test_real_validator_never_turns_ambiguous_or_changed_proof_into_public(real_
     with pytest.raises(module.ProductionRecoveryError): run(case)
     assert _snapshot(client) == before
     paused(case)
+
+
+def test_explicit_immediate_public_recovery_preserves_cursor_and_audits_choice(real_case):
+    case, keys = real_case
+    module, client, data, _, _ = case
+    before = {name: client.get(key) for name, key in keys.items()}
+    result = module.resume_after_blocked_public_retry(CHANNEL, data.original_id, data.recovered_id, REVISION,
+                                                     now=100000, continue_immediately=True)
+    assert result['continue_immediately'] is True and result['next_due'] == result['resumed_at'] == 100000
+    assert result['cursor'] == 1 and client.hget(data.state_key, 'cursor') == '1'
+    assert client.hget(data.state_key, 'next_due') == '100000'
+    assert {name: client.get(key) for name, key in keys.items()} == before
+    again = module.resume_after_blocked_public_retry(CHANNEL, data.original_id, data.recovered_id, REVISION,
+                                                     now=900000, continue_immediately=True)
+    assert again == {**result, 'status': 'already_resumed'}
+
+
+def test_immediate_option_cannot_rewrite_a_previously_delayed_resume(case):
+    module, client, data, _, _ = case
+    first = run(case)
+    before = _snapshot(client)
+    with pytest.raises(module.ProductionRecoveryError):
+        module.resume_after_blocked_public_retry(CHANNEL, data.original_id, data.recovered_id, REVISION,
+                                                now=100001, continue_immediately=True)
+    assert _snapshot(client) == before and first['continue_immediately'] is False
+
+
+@pytest.mark.parametrize('value', [1, 'true', None, {}, []])
+def test_immediate_flag_is_an_explicit_boolean(case, value):
+    module, client, data, _, _ = case
+    before = _snapshot(client)
+    with pytest.raises(module.ProductionRecoveryError, match='recovery_continuation_invalid'):
+        module.resume_after_blocked_public_retry(CHANNEL, data.original_id, data.recovered_id, REVISION,
+                                                now=100000, continue_immediately=value)
+    assert _snapshot(client) == before
+
+
+def test_immediate_recovery_still_waits_for_existing_global_active_fence(real_case):
+    case, _ = real_case
+    module, client, data, _, _ = case
+    client.set(module.ACTIVE_KEY, 'another-active-production')
+    before = _snapshot(client)
+    with pytest.raises(module.ProductionRecoveryError):
+        module.resume_after_blocked_public_retry(CHANNEL, data.original_id, data.recovered_id, REVISION,
+                                                now=100000, continue_immediately=True)
+    assert _snapshot(client) == before

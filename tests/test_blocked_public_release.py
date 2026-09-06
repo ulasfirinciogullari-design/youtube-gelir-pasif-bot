@@ -334,7 +334,7 @@ def test_cached_verified_badge_disappears_after_auth_change(case, mutation):
     assert case.module.get_verified_public_recovery_for_source(SOURCE) is None
 
 
-def test_future_remote_private_or_missing_disclosure_is_not_reported_as_confirmed(case):
+def test_future_remote_false_disclosure_is_not_reported_as_confirmed(case):
     _run(case)
     case.api.remote_video['status']['containsSyntheticMedia'] = False
     assert _run(case, settle=True)['status'] == 'uncertain'
@@ -507,6 +507,152 @@ def test_later_note_removal_invalidates_public_proof_without_another_write(note_
     case = note_case
     assert _run(case, reenactment_note=case.note)['status'] == 'public'
     case.api.remote_video['snippet']['description'] = 'The note was removed externally.'
+    assert _run(case, settle=True)['status'] == 'uncertain'
+    assert case.module.get_verified_public_recovery_for_source(SOURCE) is None
+    assert case.api.requests.count('videos.update') == 1
+
+
+def _set_public_disclosure_readback(case, *, omitted=True, value=None):
+    """Model list omitting a field that the preceding update did return."""
+    original = case.module._remote
+    case.api.disclosure_readback = {'omitted': omitted, 'value': value}
+    def remote(*args, **kwargs):
+        status = case.api.remote_video['status']
+        if status.get('privacyStatus') == 'public':
+            readback = case.api.disclosure_readback
+            if readback['omitted']:
+                status.pop('containsSyntheticMedia', None)
+            else:
+                status['containsSyntheticMedia'] = readback['value']
+        return original(*args, **kwargs)
+    case.module._remote = remote
+
+
+def test_accepted_update_and_omitted_list_disclosure_are_distinct_truthful_evidence(case):
+    originals = {key: case.client.get(key) for name, key in case.keys.items() if name != 'lock'}
+    _set_public_disclosure_readback(case)
+    assert _run(case)['status'] == 'public'
+    receipt = _receipt(case)
+    assert receipt['update_response_verified'] is True
+    assert receipt['public_proof']['contains_synthetic_media'] is None
+    assert receipt['public_proof']['synthetic_media_field_present'] is False
+    proof = _proof(case)
+    assert proof['contains_synthetic_media'] is True  # Original declared classification, not GET data.
+    assert proof['synthetic_disclosure_confirmation'] == 'accepted_update_response'
+    assert proof['synthetic_disclosure_readback'] is None
+    assert proof['synthetic_disclosure_request_accepted'] is True
+    assert case.module.get_verified_public_recovery_for_source(SOURCE) == proof
+    assert _run(case, settle=True, work_dir=None)['status'] == 'public'
+    assert case.api.requests.count('videos.update') == 1
+    case.captions.insert.assert_not_called()
+    case.thumbnails.set.assert_not_called()
+    assert {key: case.client.get(key) for key in originals} == originals
+
+
+def test_existing_uncertain_receipt_with_accepted_update_settles_only_by_get(case):
+    _set_public_disclosure_readback(case)
+    _run(case)
+    receipt = _receipt(case)
+    receipt['status'] = 'uncertain'
+    receipt.pop('public_proof')
+    receipt.pop('confirmation')
+    _write(case.client, case.release_key, receipt)
+    case.prep.prepare_publication_recovery_assets.reset_mock()
+    _edit(case, 'source', ['updated_at'], '2026-09-06T20:00:00+00:00')
+    assert _run(case, settle=True, work_dir=None)['status'] == 'public'
+    assert _proof(case)['synthetic_disclosure_confirmation'] == 'accepted_update_response'
+    case.prep.prepare_publication_recovery_assets.assert_not_called()
+    assert case.api.requests.count('videos.update') == 1
+
+
+@pytest.mark.parametrize('response', [
+    {}, {'id': VIDEO, 'status': {'privacyStatus': 'public'}},
+    {'id': VIDEO, 'status': {'privacyStatus': 'public', 'containsSyntheticMedia': False}},
+    {'id': 'Different00', 'status': {'privacyStatus': 'public', 'containsSyntheticMedia': True}},
+])
+def test_missing_list_disclosure_cannot_cover_an_unverified_update(case, response):
+    case.api.update_response = response
+    _set_public_disclosure_readback(case)
+    assert _run(case)['status'] == 'uncertain'
+    assert _receipt(case)['update_response_verified'] is False
+    assert _run(case, settle=True)['status'] == 'uncertain'
+    assert case.module.get_verified_public_recovery_for_source(SOURCE) is None
+    assert case.api.requests.count('videos.update') == 1
+
+
+def test_lost_update_response_plus_omitted_list_field_stays_uncertain(case):
+    case.api.update_error = TimeoutError('SECRET response lost')
+    _set_public_disclosure_readback(case)
+    assert _run(case)['status'] == 'uncertain'
+    assert _run(case, settle=True)['status'] == 'uncertain'
+    assert 'SECRET' not in json.dumps(_receipt(case))
+    assert case.api.requests.count('videos.update') == 1
+
+
+@pytest.mark.parametrize('value', [False, None, 0, 1, 'true', '', {}, []])
+def test_present_false_null_or_malformed_readback_never_uses_accepted_update(case, value):
+    _set_public_disclosure_readback(case, omitted=False, value=value)
+    assert _run(case)['status'] == 'uncertain'
+    assert _receipt(case)['update_response_verified'] is True
+    assert case.module.get_verified_public_recovery_for_source(SOURCE) is None
+    assert _run(case, settle=True)['status'] == 'uncertain'
+    assert case.api.requests.count('videos.update') == 1
+
+
+@pytest.mark.parametrize('value', [False, None, 1, 'true'])
+def test_omission_proof_requires_strict_durable_verified_response(case, value):
+    _set_public_disclosure_readback(case)
+    _run(case)
+    receipt = _receipt(case)
+    receipt['update_response_verified'] = value
+    _write(case.client, case.release_key, receipt)
+    with pytest.raises(case.module.BlockedPublicReleaseError):
+        _proof(case)
+
+
+@pytest.mark.parametrize('mutation', ['presence_missing', 'presence_null', 'request_error', 'request_changed'])
+def test_omission_proof_requires_precise_presence_and_uncorrupted_request_evidence(case, mutation):
+    _set_public_disclosure_readback(case)
+    _run(case)
+    receipt = _receipt(case)
+    if mutation == 'presence_missing':
+        receipt['public_proof'].pop('synthetic_media_field_present')
+    elif mutation == 'presence_null':
+        receipt['public_proof']['synthetic_media_field_present'] = None
+    elif mutation == 'request_error':
+        receipt['request_error'] = {'status': 'uncertain'}
+    else:
+        receipt['release_request']['contains_synthetic_media'] = False
+    _write(case.client, case.release_key, receipt)
+    with pytest.raises(case.module.BlockedPublicReleaseError):
+        _proof(case)
+
+
+def test_explicit_negative_observation_cannot_be_revived_by_later_omission(case):
+    _set_public_disclosure_readback(case)
+    assert _run(case)['status'] == 'public'
+    case.api.disclosure_readback = {'omitted': False, 'value': False}
+    assert _run(case, settle=True)['status'] == 'uncertain'
+    assert _receipt(case)['disclosure_contradiction_observed'] is True
+    case.api.disclosure_readback = {'omitted': True, 'value': None}
+    assert _run(case, settle=True)['status'] == 'uncertain'
+    assert case.module.get_verified_public_recovery_for_source(SOURCE) is None
+    # An actual later positive GET is separate new evidence, not a score/policy bypass.
+    case.api.disclosure_readback = {'omitted': False, 'value': True}
+    assert _run(case, settle=True)['status'] == 'public'
+    assert _proof(case)['synthetic_disclosure_confirmation'] == 'readback'
+    assert case.api.requests.count('videos.update') == 1
+
+
+def test_omitted_disclosure_still_requires_exact_note_snippet_and_serving_caption(note_case):
+    case = note_case
+    _set_public_disclosure_readback(case)
+    assert _run(case, reenactment_note=case.note)['status'] == 'public'
+    assert _proof(case)['synthetic_disclosure_readback'] is None
+    case.api.caption_tracks = [_track(status='syncing')]
+    assert _run(case, settle=True)['status'] == 'uncertain'
+    case.api.caption_tracks = [_track()]
+    case.api.remote_video['snippet']['description'] = 'Note removed externally.'
     assert _run(case, settle=True)['status'] == 'uncertain'
     assert case.module.get_verified_public_recovery_for_source(SOURCE) is None
     assert case.api.requests.count('videos.update') == 1
