@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     openai_api_key: str = ''
     openai_model: str = 'gpt-5'
     studio_plan_provider: str = 'openai'
+    studio_fresh_plan_openai_model: str = 'gpt-6-astra'
     studio_visual_qc_provider: str = ''
     studio_visual_qc_openai_model: str = 'gpt-6-astra'
     studio_production_short_paid_create_cap: int = Field(

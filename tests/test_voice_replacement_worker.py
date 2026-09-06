@@ -215,7 +215,9 @@ def test_replacement_still_uses_saved_story_and_disables_seed_regeneration():
     text = (ROOT / 'app/tasks.py').read_text(encoding='utf-8')
     tree = ast.parse(text)
     pipeline = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == 'run_video_pipeline')
-    assert pipeline.args.args[-1].arg == 'voice_replacement_source_id'
+    assert pipeline.args.args[-2].arg == 'voice_replacement_source_id'
+    assert pipeline.args.args[-1].arg == 'full_rebuild_source_id'
+    assert pipeline.args.defaults[-1].value is None
     source = ast.unparse(pipeline)
     assert source.index('_prepare_saved_voice_retry(') < source.index('_prepare_voice_replacement_request(')
     assert source.index('_require_voice_replacement_checkpoint(') < source.index('while True:')

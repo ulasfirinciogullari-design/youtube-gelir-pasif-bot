@@ -3928,14 +3928,23 @@ def _fresh_scheduled_short_shots(
     curated_stock_manifest,
     voice_replacement_source_id,
     paid_slots_used: int,
+    full_rebuild_verified: bool = False,
 ) -> bool:
-    """Opt in only an untouched scheduler root, never a frozen/recovery plan."""
+    """Opt in an untouched root or a separately authorized full rebuild."""
+    full_rebuild = full_rebuild_verified is True
     if (
         spec.get('mode') != 'production' or spec.get('format') != 'shorts'
-        or spec.get('duration_minutes') != 0.5 or spec.get('workflow') != 'auto'
+        or spec.get('duration_minutes') != 0.5
+        or spec.get('workflow') not in ({'auto', 'scene_repair'} if full_rebuild else {'auto'})
         or spec.get('production_scheduled') is not True
         or spec.get('publish_after_render') is not True
-        or approved_package is not None or retry_dispatch_source_id is not None
+        or approved_package is not None
+        or (retry_dispatch_source_id is not None and not full_rebuild)
+        or (full_rebuild and (
+            not isinstance(retry_dispatch_source_id, str)
+            or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(retry_dispatch_source_id)
+            or retry_dispatch_source_id == task_id
+        ))
         or curated_stock_manifest is not None or voice_replacement_source_id is not None
         or type(paid_slots_used) is not int or paid_slots_used != 0
     ):
@@ -3951,7 +3960,8 @@ def _fresh_scheduled_short_shots(
         ):
             raise ValueError('Scheduler job binding is unavailable')
         return (
-            job.get('parent_id') is None and job.get('result') is None
+            job.get('parent_id') == (retry_dispatch_source_id if full_rebuild else None)
+            and job.get('result') is None
             and job.get('state') in {'PENDING', 'STARTED', 'PROGRESS', 'RETRY'}
             and all(job.get(field) is None for field in (
                 'audio_candidate_checkpoint', 'voice_candidate_reuse', 'voice_replacement',
@@ -3960,6 +3970,49 @@ def _fresh_scheduled_short_shots(
         )
     except Exception:
         raise FinalVisualQualityError('Fresh scheduled storyboard binding could not be verified') from None
+
+
+def _prepare_full_video_rebuild(
+    task_id: str, source_task_id: str | None, runtime_spec: dict, *,
+    retry_dispatch_source_id: str | None, approved_package,
+    curated_stock_manifest, voice_replacement_source_id,
+) -> dict | None:
+    """Verify a private full-rebuild grant; never infer one from model options."""
+    if source_task_id is None:
+        return None
+    try:
+        if (
+            not isinstance(source_task_id, str)
+            or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(source_task_id)
+            or not isinstance(task_id, str)
+            or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(task_id)
+            or task_id == source_task_id
+            or source_task_id != retry_dispatch_source_id
+            or approved_package is not None or curated_stock_manifest is not None
+            or voice_replacement_source_id is not None
+        ):
+            raise ValueError('Full rebuild requires its exact standalone retry')
+        from app.services.full_video_rebuild import get_full_rebuild_policy
+
+        policy = get_full_rebuild_policy(task_id, source_task_id, runtime_spec)
+        if (
+            not isinstance(policy, dict)
+            or type(policy.get('version')) is not int or policy['version'] != 1
+            or policy.get('mode') != 'full'
+            or policy.get('source_task_id') != source_task_id
+            or policy.get('child_task_id') != task_id
+            or not isinstance(policy.get('spec_sha256'), str)
+            or not _SHA256_PATTERN.fullmatch(policy['spec_sha256'])
+            or type(policy.get('original_paid_create_cap')) is not int
+            or not 2 <= policy['original_paid_create_cap'] <= 6
+            or any(policy.get(field) is not True for field in (
+                'fresh_story', 'fresh_voice', 'fresh_media', 'requires_full_qa',
+            ))
+        ):
+            raise ValueError('Full rebuild policy is incomplete')
+        return policy
+    except Exception:
+        raise FinalVisualQualityError('Full rebuild authorization could not be verified') from None
 
 
 def _prepare_scheduled_short_shots(
@@ -4326,6 +4379,7 @@ def run_video_pipeline(
     retry_dispatch_source_id: str | None = None,
     curated_stock_manifest: dict | None = None,
     voice_replacement_source_id: str | None = None,
+    full_rebuild_source_id: str | None = None,
 ):
     language = normalize_pipeline_language(language)
     task_id = self.request.id
@@ -4352,6 +4406,18 @@ def run_video_pipeline(
     staged_voice_contract: dict | None = None
 
     try:
+        full_rebuild_request = _prepare_full_video_rebuild(
+            task_id, full_rebuild_source_id,
+            _task_spec(topic, duration_minutes, language, channel_id, options),
+            retry_dispatch_source_id=retry_dispatch_source_id,
+            approved_package=approved_package, curated_stock_manifest=curated_stock_manifest,
+            voice_replacement_source_id=voice_replacement_source_id,
+        )
+        if full_rebuild_request is not None and (
+            type(total_paid_create_cap) is not int
+            or total_paid_create_cap != full_rebuild_request['original_paid_create_cap']
+        ):
+            raise FinalVisualQualityError('Full rebuild paid-create budget differs from its authorization')
         if curated_stock_manifest is not None and (
             not isinstance(approved_package, dict) or not approved_package
             or not retry_dispatch_source_id
@@ -4363,7 +4429,11 @@ def run_video_pipeline(
             )
             total_paid_create_cap = paid_create_budget['cap']
             runway_attempts = paid_create_budget['used']
-        if retry_dispatch_source_id and approved_package is None:
+        if full_rebuild_request is not None and (
+            total_paid_create_cap != full_rebuild_request['original_paid_create_cap']
+        ):
+            raise FinalVisualQualityError('Full rebuild paid-create budget differs from its authorization')
+        if retry_dispatch_source_id and approved_package is None and full_rebuild_request is None:
             set_stage(self, task_id, 'director_qc', 14, 'Kaydedilmiş anlatım güncel hikâye denetiminden geçiriliyor.')
         saved_voice_retry = (
             _prepare_saved_voice_retry(
@@ -4372,7 +4442,7 @@ def run_video_pipeline(
                 _task_spec(topic, duration_minutes, language, channel_id, options),
                 work,
             )
-            if approved_package is None else None
+            if approved_package is None and full_rebuild_request is None else None
         )
         if voice_replacement_source_id is not None and (
             voice_replacement_source_id != retry_dispatch_source_id
@@ -4390,18 +4460,26 @@ def run_video_pipeline(
             approved_package=approved_package, retry_dispatch_source_id=retry_dispatch_source_id,
             curated_stock_manifest=curated_stock_manifest,
             voice_replacement_source_id=voice_replacement_source_id, paid_slots_used=runway_attempts,
+            full_rebuild_verified=full_rebuild_request is not None,
         )
-        package = (
-            saved_voice_retry['package'] if saved_voice_retry
-            else _prepare_package(
-                self, task_id, topic, duration_minutes, language, options, approved_package,
-                **({'fresh_scheduled': True} if fresh_scheduled_shot_prompts else {}),
+        if full_rebuild_request is not None and not fresh_scheduled_shot_prompts:
+            raise FinalVisualQualityError('Full rebuild requires an untouched authorized child')
+        from app.services.planning_model_routing import fresh_planning_route
+
+        with fresh_planning_route(enabled=fresh_scheduled_shot_prompts) as planning_route:
+            if isinstance(planning_route, dict):
+                update_job(task_id, story_planning_route=dict(planning_route))
+            package = (
+                saved_voice_retry['package'] if saved_voice_retry
+                else _prepare_package(
+                    self, task_id, topic, duration_minutes, language, options, approved_package,
+                    **({'fresh_scheduled': True} if fresh_scheduled_shot_prompts else {}),
+                )
             )
-        )
-        if fresh_scheduled_shot_prompts:
-            package = _prepare_scheduled_short_shots(
-                task_id, package, topic, duration_minutes, language, options,
-            )
+            if fresh_scheduled_shot_prompts:
+                package = _prepare_scheduled_short_shots(
+                    task_id, package, topic, duration_minutes, language, options,
+                )
         raw_recovered_generated_media = package.pop(
             '_recovered_generated_media',
             None,
@@ -7404,6 +7482,15 @@ def run_video_pipeline(
                 ImmutableNarrationSceneBudgetError,
             ),
         )
+        if full_rebuild_source_id is not None and not terminal_pre_media_error:
+            # One explicit rebuild must not silently restart the whole pipeline
+            # after an ambiguous planning, voice or provider response. Ordinary
+            # retry behavior and per-provider bounded attempts are unchanged.
+            bounded_error = FinalVisualQualityError(
+                f'Full rebuild stopped without automatic restart: {type(exc).__name__}'
+            )
+            mark_failure(task_id, bounded_error)
+            raise bounded_error from exc
         if (
             runway_attempts == 0
             and not terminal_pre_media_error
