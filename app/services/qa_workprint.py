@@ -26,7 +26,8 @@ MAX_VIDEO_BYTES = 64 * 1024 * 1024
 MAX_SOURCE_BYTES = 512 * 1024 * 1024
 MAX_METADATA_BYTES = 1024 * 1024
 _ETAG = re.compile(r'"[A-Za-z0-9_-]{1,128}"')
-_PROVIDERS = {'pexels', 'runway', 'gemini_veo', 'fal', 'replicate', 'openai'}
+_PROVIDERS = {'pexels', 'runway', 'gemini_veo', 'fal', 'replicate', 'openai',
+              'gemini_image_motion'}
 
 
 def _number(value: object, low: float, high: float) -> float:
@@ -73,6 +74,8 @@ def _selected(specs: object, review: dict, work: Path) -> tuple[dict, dict]:
         raise ValueError('Ambiguous diagnostic selection')
     original = specs[index]
     path = _file(original.get('path'), work, MAX_SOURCE_BYTES)
+    if original.get('preserve_start_fraction') is True and 'start_fraction' not in original:
+        raise ValueError('Invalid diagnostic render identity')
     fraction = original.get('start_fraction', 0.0)
     if original.get('preserve_start_fraction') is not True:
         fraction = review.get('best_start_fraction', fraction)
@@ -82,11 +85,24 @@ def _selected(specs: object, review: dict, work: Path) -> tuple[dict, dict]:
     checksum, size = _digest(path, MAX_SOURCE_BYTES)
     provenance = {'selected_spec_index': index, 'start_fraction': fraction,
                   'sha256': checksum, 'size': size, 'forbid_loop': spec['forbid_loop']}
+    # Keep exactly the safe identity used by the shared renderer's generated
+    # action timing. Dropping it would make this workprint a different edit.
+    for field in ('generated', 'preserve_start_fraction', 'synthetic_motion_only'):
+        value = original.get(field)
+        if value is not None and type(value) is not bool:
+            raise ValueError('Invalid diagnostic render identity')
+        if type(value) is bool:
+            spec[field] = provenance[field] = value
+    media_type = original.get('source_media_type')
+    if media_type not in (None, 'image', 'video'):
+        raise ValueError('Invalid diagnostic render identity')
+    if media_type is not None:
+        spec['source_media_type'] = provenance['source_media_type'] = media_type
     for field in ('source_type', 'stock_provider', 'generation_provider'):
         value = original.get(field)
         allowed = {'stock', 'generated', 'ai'} if field == 'source_type' else _PROVIDERS
         if value in allowed:
-            provenance[field] = value
+            spec[field] = provenance[field] = value
     if type(original.get('pexels_id')) is int and original['pexels_id'] > 0:
         provenance['pexels_id'] = original['pexels_id']
     return spec, provenance

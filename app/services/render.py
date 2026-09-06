@@ -376,6 +376,38 @@ def _spec_forbids_loop(spec: str | dict) -> bool:
     return bool(isinstance(spec, dict) and spec.get('forbid_loop'))
 
 
+def _clip_speed(spec: str | dict, source_duration: float,
+                duration: float, shot_index: int) -> float:
+    """Keep a short generated action's ending when a modest single pass fits.
+
+    Only a locked, genuine generated video starting at zero is eligible. Stock
+    excerpts, explicit nonzero starts and still-image motion retain their old
+    timing. The 1.20x ceiling avoids turning a long action into a rushed cut.
+    This changes no voice timing and never loops footage or adds a tail hold.
+    """
+    speed = 1.008 + (shot_index % 3) * 0.006
+    if not (isinstance(spec, dict) and spec.get('generated') is True
+            and spec.get('source_type') == 'generated'
+            and spec.get('forbid_loop') is True
+            and spec.get('preserve_start_fraction') is True
+            and type(spec.get('start_fraction')) in (int, float)
+            and spec['start_fraction'] == 0
+            and (spec.get('synthetic_motion_only') is None
+                 or spec.get('synthetic_motion_only') is False)
+            and spec.get('source_media_type') in (None, 'video')
+            and spec.get('generation_provider') != 'gemini_image_motion'):
+        return speed
+    if not all(math.isfinite(value) and value > 0
+               for value in (source_duration, duration)):
+        raise RuntimeError('Generated clip timing is invalid')
+    full_span_speed = source_duration / duration
+    if speed < full_span_speed <= 1.20:
+        # Match the emitted FFmpeg precision, rounding DOWN so a fraction of
+        # a microsecond can never request footage past the real source end.
+        return math.floor(full_span_speed * 1_000_000_000) / 1_000_000_000
+    return speed
+
+
 def normalize_clip(
     visual_spec: str | dict,
     output_path: str | Path,
@@ -424,7 +456,7 @@ def normalize_clip(
             f'{center_x}:(ih-{output_height})',
         ]
     crop_xy = offsets[shot_index % len(offsets)]
-    speed = 1.008 + (shot_index % 3) * 0.006
+    speed = _clip_speed(visual_spec, source_duration, duration, shot_index)
     segment_frames = max(1, int(round(duration * FPS)))
     forbid_loop = _spec_forbids_loop(visual_spec)
     required_source_end = start_seconds + duration * speed + 0.04
@@ -450,7 +482,7 @@ def normalize_clip(
             f'scale={scale_geometry}:force_original_aspect_ratio=increase',
             f'crop={output_width}:{output_height}:{crop_xy}',
             'setsar=1',
-            f'setpts=(PTS-STARTPTS)/{speed:.3f}',
+            f'setpts=(PTS-STARTPTS)/{speed:.9f}',
             # The speed transform already zero-bases timestamps. Rewriting
             # PTS a second time after trim makes FFmpeg drop the last frame
             # for valid fractional targets such as 124/30 seconds.
