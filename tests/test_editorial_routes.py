@@ -1,5 +1,7 @@
 """Owner API boundary; no external credentials, services or paid calls."""
 from uuid import uuid4
+import sys
+from types import ModuleType
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -11,7 +13,9 @@ from app.external_routes import settings
 
 @pytest.fixture
 def case(monkeypatch):
-    monkeypatch.setattr(settings, 'factory_api_token', 'editorial-test-token')
+    # Older suites intentionally replace app.config with a minimal module at
+    # collection time; add this fixture's field without weakening the checks.
+    monkeypatch.setattr(settings, 'factory_api_token', 'editorial-test-token', raising=False)
     calls = []
     monkeypatch.setattr(routes, '_review_and_queue', lambda *args: calls.append(args) or {'task_id': args[0]})
     app = FastAPI()
@@ -71,16 +75,19 @@ def test_errors_sanitized_and_no_false_success(case, monkeypatch, error, status)
 
 
 def test_review_then_existing_publisher_only(monkeypatch):
-    from app.services import studio_state
-    from app import publish_tasks
     task, events = str(uuid4()), []
+    studio_state = ModuleType('app.services.studio_state')
+    publish_tasks = ModuleType('app.publish_tasks')
+    monkeypatch.setitem(sys.modules, studio_state.__name__, studio_state)
+    monkeypatch.setitem(sys.modules, publish_tasks.__name__, publish_tasks)
     monkeypatch.setattr(routes, 'create_editorial_review', lambda *args: events.append('review'))
     monkeypatch.setattr(studio_state, 'get_job', lambda _: {'result': {
         'quality_disposition': 'editorial_review_pass', 'editorial_review_id': task,
-        'editorial_review_sha256': 'a' * 64}})
+        'editorial_review_sha256': 'a' * 64}}, raising=False)
     monkeypatch.setattr(publish_tasks, 'queue_automatic_publish',
-        lambda _: events.append('queue') or {'status': 'queued'})
+        lambda _: events.append('queue') or {'status': 'queued'}, raising=False)
     result = routes._review_and_queue(task, {})
     assert events == ['review', 'queue']
     assert result['publication'] == {'status': 'queued'}
     assert result['studio_url'] == '/studio/job/' + task
+
