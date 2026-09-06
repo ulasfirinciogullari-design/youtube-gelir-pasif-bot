@@ -27,6 +27,7 @@ from app.services.youtube_automation import automated_quality_approved, SERIES_A
 
 EDITORIAL_RECEIPT_PREFIX = 'youtube_studio:external_editorial_review:v1:'
 MAX_EVIDENCE_BYTES = 1024 * 1024
+MAX_REFERENCE_VIDEO_BYTES = 8 * 1024 * 1024
 _LIMITATIONS = {'word_timing': 'unverified', 'human_listened': False,
                 'provider_evidence_origin': 'owner_supplied_retained_run'}
 _EXPECTED = ('expected_video_sha256', 'expected_caption_sha256', 'expected_video_size', 'expected_caption_size')
@@ -39,6 +40,7 @@ EDITORIAL_REVIEW_FAILURE_CODES = frozenset('editorial_review_' + name for name i
     'storage_proof', 'stored_download', 'metadata_validation', 'media_structure', 'pcm_decode',
     'pcm_binding', 'stored_provenance', 'current_state', 'reservation_binding',
     'authorization', 'projection', 'commit',
+    'reference_binding', 'reference_structure', 'reference_pcm_decode', 'reference_pcm_binding',
 ))
 
 
@@ -254,7 +256,33 @@ def _context(reader, source):
     return _digest(raw)
 
 
-def _storage_proof(source, manifest, binding):
+def _reference_binding(reference_video, binding):
+    """An optional reference is the exact old provider-bound MP4, not a flag."""
+    if reference_video is not None:
+        _require(type(reference_video) is bytes and 1024 <= len(reference_video) <= MAX_REFERENCE_VIDEO_BYTES
+                 and len(reference_video) == binding['video_size']
+                 and _sha(reference_video) == binding['video_sha256'])
+
+
+def _decode_complete_pcm(video, output):
+    # Both members of a reference comparison use this exact complete decode.
+    # No trim, timestamp reset, resampling, channel remix, or tolerant compare.
+    return subprocess.run(['ffmpeg', '-nostdin', '-hide_banner', '-loglevel', 'error', '-max_alloc', '134217728',
+        '-threads', '1', '-protocol_whitelist', 'file', '-enable_drefs', '0', '-use_absolute_path', '0',
+        '-f', 'mov', '-i', str(video), '-map', '0:a:0', '-vn', '-sn', '-dn',
+        '-c:a', 'pcm_s16le', '-f', 's16le', '-n', str(output)], stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE, timeout=60, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+
+
+def _pcm_bytes(path):
+    _require(0 < path.stat().st_size <= 8 * 1024 * 1024)
+    with path.open('rb') as stream:
+        value = stream.read(8 * 1024 * 1024 + 1)
+    _require(len(value) == path.stat().st_size and len(value) <= 8 * 1024 * 1024)
+    return value
+
+
+def _storage_proof(source, manifest, binding, *, reference_video=None):
     """Read own immutable Storage objects; no provider call or Storage write."""
     phase = 'editorial_review_stored_download'
     try:
@@ -281,23 +309,62 @@ def _storage_proof(source, manifest, binding):
             _require(metadata['manifest'] == manifest and metadata['descriptor_id'] == descriptor['descriptor_id']
                      == result['external_descriptor_id'] and descriptor['media_structure']['frame_count'] == 900
                      and descriptor['media_structure']['frame_rate'] == '30/1')
+            reference_path, reference_identity, source_identity = None, None, None
+            if reference_video is not None:
+                phase = 'editorial_review_reference_binding'
+                _reference_binding(reference_video, binding)
+                reference_path = root / 'reference.mp4'
+                with reference_path.open('xb') as stream:
+                    stream.write(reference_video)
+                reference_expected = {'size': binding['video_size'], 'sha256': binding['video_sha256']}
+                _, reference_identity = artifact._fingerprint(reference_path, reference_expected)
+                _, source_identity = artifact._fingerprint(paths['video'], manifest['files']['video'])
+                phase = 'editorial_review_reference_structure'
+                reference_media = artifact._probe_mp4(reference_path)
+                media = descriptor['media_structure']
+                _require(reference_media['frame_count'] == 900 and reference_media['frame_rate'] == '30/1'
+                         and reference_media['sample_rate'] == media['sample_rate'] == binding['sample_rate']
+                         and reference_media['audio_channels'] == media['audio_channels'] == binding['channels']
+                         and reference_media['audio_duration_seconds'] == media['audio_duration_seconds']
+                         == binding['duration_seconds']
+                         and reference_media['video_duration_seconds'] == media['video_duration_seconds'])
+                # Recheck full reference bytes after probing, immediately before
+                # the pair of decodes. Filename or caller origin is not proof.
+                _require(artifact._fingerprint(reference_path, reference_expected)[1] == reference_identity)
             phase = 'editorial_review_pcm_decode'
             pcm = root / 'decoded.pcm'
-            completed = subprocess.run(['ffmpeg', '-nostdin', '-hide_banner', '-loglevel', 'error', '-max_alloc', '134217728',
-                '-threads', '1', '-protocol_whitelist', 'file', '-enable_drefs', '0', '-use_absolute_path', '0',
-                '-f', 'mov', '-i', str(paths['video']), '-map', '0:a:0', '-vn', '-sn', '-dn',
-                '-c:a', 'pcm_s16le', '-f', 's16le', '-n', str(pcm)], stdout=subprocess.DEVNULL,
-                stderr=subprocess.PIPE, timeout=60, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+            completed = _decode_complete_pcm(paths['video'], pcm)
             _require(completed.returncode == 0 and len(completed.stderr) <= 65536)
             phase = 'editorial_review_pcm_binding'
             media = descriptor['media_structure']
-            _require(pcm.stat().st_size <= 8 * 1024 * 1024
-                     and binding.get('sample_rate') == media['sample_rate'] and binding.get('channels') == media['audio_channels']
-                     and pcm.stat().st_size == binding.get('sample_frames', -1) * binding['channels'] * 2
-                     and _sha(pcm.read_bytes()) == binding['pcm_sha256'])
-            return {'video_sha256': descriptor['video_sha256'], 'captions_sha256': descriptor['captions_sha256'],
-                    'manifest_sha256': descriptor['manifest_sha256'], 'pcm_sha256': binding['pcm_sha256'],
-                    'server_verified_stored_bytes_and_pcm': True, 'media_structure': media}
+            decoded = _pcm_bytes(pcm)
+            _require(binding.get('sample_rate') == media['sample_rate'] and binding.get('channels') == media['audio_channels'])
+            decoded_sha = _sha(decoded)
+            proof = {'video_sha256': descriptor['video_sha256'], 'captions_sha256': descriptor['captions_sha256'],
+                     'manifest_sha256': descriptor['manifest_sha256'], 'pcm_sha256': decoded_sha,
+                     'server_verified_stored_bytes_and_pcm': True, 'media_structure': media}
+            if reference_path is None:
+                _require(len(decoded) == binding.get('sample_frames', -1) * binding['channels'] * 2
+                         and decoded_sha == binding['pcm_sha256'])
+                return proof
+            phase = 'editorial_review_reference_pcm_decode'
+            reference_pcm = root / 'reference.pcm'
+            completed = _decode_complete_pcm(reference_path, reference_pcm)
+            _require(completed.returncode == 0 and len(completed.stderr) <= 65536)
+            phase = 'editorial_review_reference_pcm_binding'
+            reference_decoded = _pcm_bytes(reference_pcm)
+            _require(len(decoded) % (binding['channels'] * 2) == 0
+                     and decoded == reference_decoded and decoded_sha == _sha(reference_decoded)
+                     and artifact._fingerprint(reference_path, reference_expected)[1] == reference_identity
+                     and artifact._fingerprint(paths['video'], manifest['files']['video'])[1] == source_identity)
+            proof.update(pcm_verification_mode='same_runtime_reference_equivalence',
+                         reference_video_sha256=binding['video_sha256'], reference_video_size=binding['video_size'],
+                         reference_pcm_sha256=_sha(reference_decoded), server_sample_frames=len(decoded) // (binding['channels'] * 2),
+                         server_pcm_size=len(decoded), retained_pcm_sha256=binding['pcm_sha256'],
+                         retained_sample_frames=binding['sample_frames'], retained_pcm_exact_match=decoded_sha == binding['pcm_sha256'],
+                         reference_and_current_server_pcm_exact_match=True,
+                         pcm_conversion='decode_complete_master_audio_to_pcm_s16le_no_other_filters')
+            return proof
     except Exception as exc:
         # Preserve the direct helper's exception contract. The outer owner
         # boundary exposes only this fixed internal phase, never its message.
@@ -368,8 +435,12 @@ def _validate(reader, source, frozen_plan=None):
     return receipt
 
 
-def create_editorial_review(source_task_id, evidence_pack):
-    """Trusted owner-review action. One immutable receipt; CAS changes only its job."""
+def create_editorial_review(source_task_id, evidence_pack, *, reference_video=None):
+    """One immutable owner review. No-reference replay validates its stored proof.
+
+    A supplied reference must always match the retained provider binding, even
+    on an idempotent replay; it cannot replace or rewrite that original evidence.
+    """
     phase = 'editorial_review_source_snapshot'
     try:
         client = ingest._redis()
@@ -378,6 +449,9 @@ def create_editorial_review(source_task_id, evidence_pack):
         _require(source.get('task_id') == source_task_id)
         phase = 'editorial_review_evidence'
         pack, manifest, binding, unknown = _evidence(evidence_pack)
+        if reference_video is not None:
+            phase = 'editorial_review_reference_binding'
+            _reference_binding(reference_video, binding)
         phase = 'editorial_review_source_contract'
         keys = _keys(source)
         if client.get(keys[0]) is not None:
@@ -389,7 +463,8 @@ def create_editorial_review(source_task_id, evidence_pack):
         _require(source['result'].get('quality_disposition') == 'manual_qa_preview'
              and source['result'].get('manual_qa_required') is True and source['spec'].get('publish_after_render') is False)
         phase = 'editorial_review_storage_proof'
-        proof = _storage_proof(source, manifest, binding)
+        proof = (_storage_proof(source, manifest, binding) if reference_video is None
+                 else _storage_proof(source, manifest, binding, reference_video=reference_video))
         phase = 'editorial_review_stored_provenance'
         provenance = source['result']['external_provenance']
         _require(all(provenance.get(k) == proof[k] for k in ('video_sha256', 'captions_sha256', 'manifest_sha256')))
