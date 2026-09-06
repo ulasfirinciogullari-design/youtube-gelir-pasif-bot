@@ -54,6 +54,10 @@ class ProfileConflictError(YouTubeAutomationError):
     pass
 
 
+class SeriesProfileEditError(ProfileConflictError):
+    """A promoted profile needs a new series transition, not receipt rewriting."""
+
+
 class MetadataValidationError(YouTubeAutomationError):
     pass
 
@@ -282,7 +286,37 @@ def save_channel_profile(
             if revision != expected_revision:
                 raise ProfileConflictError('YouTube channel profile changed concurrently')
         payload = _profile_payload(channel_id, {**(current or {}), **value})
-        encoded = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
+        encoded = None
+        if isinstance(current, dict):
+            normalized_current = _profile_payload(channel_id, current)
+            changed = {
+                field for field in payload
+                if field not in {'profile_revision', 'updated_at'}
+                and payload[field] != normalized_current[field]
+            }
+            if not changed:
+                # Normalized form values are not a new authorization. Keep the
+                # exact server record (including its epoch/hash) under the same
+                # raw-record CAS, so a concurrent promotion still wins safely.
+                payload, encoded = current, current_raw
+            elif 'series_epoch' in current:
+                if not (
+                    changed <= {'production_enabled', 'auto_publish'}
+                    and all(current.get(field) is True and payload[field] is False
+                            for field in changed)
+                ):
+                    raise SeriesProfileEditError('Promoted series profile edits require a new series transition')
+                # A stop must work even with damaged epoch proof. Preserve every
+                # server field and all external receipts/cursors; changed flags
+                # and revision fence pending production/publication. Re-enabling
+                # cannot inherit the previous epoch's authorization.
+                payload = {
+                    **current, **{field: False for field in changed},
+                    'profile_revision': payload['profile_revision'],
+                    'updated_at': payload['updated_at'],
+                }
+        if encoded is None:
+            encoded = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
         saved = client.eval(
             _SAVE_PROFILE,
             2,

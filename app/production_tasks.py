@@ -4,8 +4,17 @@ from app.services.channel_production import (
     ChannelProductionError, dispatch_due_productions, reconcile_active_production,
 )
 from app.services.production_reconciliation import reconcile_public_retry_deliveries
+from app.services.production_scheduler import maintain_production_series
 from app.services.youtube_auth import connection_status
 from app.services.youtube_automation import list_channel_profiles
+
+
+@celery.task(name='app.production_tasks.prepare_series_batch', bind=True, acks_late=False,
+             autoretry_for=(), max_retries=0, soft_time_limit=110, time_limit=120)
+def prepare_series_batch(self, execution_binding: dict) -> dict:
+    from app.services.production_scheduler import run_series_preparation
+
+    return run_series_preparation(execution_binding, self.request.id)
 
 
 @celery.task(name='app.production_tasks.production_tick', acks_late=False)
@@ -30,7 +39,13 @@ def production_tick() -> dict:
             connections,
             run_video_pipeline.apply_async,
         )
-        return {**dispatched, 'public_retry_reconciliation': recovered}
+        # No model request runs inside this minute tick. Maintenance failure
+        # cannot undo or suppress already-completed normal dispatch.
+        try:
+            maintenance = maintain_production_series(profiles, connections, prepare_series_batch.apply_async)
+        except Exception:
+            maintenance = {'status': 'unavailable', 'channels': {}}
+        return {**dispatched, 'public_retry_reconciliation': recovered, 'series_maintenance': maintenance}
     except ChannelProductionError:
         return {'status': 'blocked', 'reason': 'production_state_unavailable'}
     except Exception:
