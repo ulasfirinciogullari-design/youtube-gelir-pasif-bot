@@ -490,6 +490,11 @@ def build_publish_plan(
     source_task_id = _safe_id(source_task_id, 'source_task_id')
     result = source_job.get('result') if isinstance(source_job.get('result'), dict) else {}
     spec = source_job.get('spec') if isinstance(source_job.get('spec'), dict) else {}
+    if result.get('quality_disposition') == 'editorial_review_pass':
+        from app.services.external_editorial_review import validate_editorial_publication
+
+        # Reject a stale external review before allocating a series number.
+        validate_editorial_publication(source_job)
     raw_metadata = result.get('publish_metadata')
     if not isinstance(raw_metadata, dict):
         raise MetadataValidationError('Publish metadata was not generated')
@@ -635,6 +640,11 @@ def build_publish_plan(
         },
         'created_at': _now().isoformat(),
     }
+    if result.get('quality_disposition') == 'editorial_review_pass':
+        plan['quality_snapshot'].update(
+            editorial_review_id=result.get('editorial_review_id'),
+            editorial_review_sha256=result.get('editorial_review_sha256'),
+        )
     return validate_publish_plan(plan)
 
 

@@ -197,7 +197,8 @@ def test_readonly_status_cannot_supply_another_video_or_missing_status(api, item
 @pytest.fixture
 def worker(tmp_path):
     path = Path(__file__).resolve().parents[1] / 'app' / 'publish_tasks.py'
-    names = {'publish_video_pipeline', '_safe_error_code', '_result_from_existing_record', '_reconcile_source_upload'}
+    names = {'publish_video_pipeline', '_safe_error_code', '_result_from_existing_record',
+             '_reconcile_source_upload', '_editorial_candidate'}
     nodes = [node for node in ast.parse(path.read_text(encoding='utf-8')).body
              if isinstance(node, ast.FunctionDef) and node.name in names]
     for node in nodes:

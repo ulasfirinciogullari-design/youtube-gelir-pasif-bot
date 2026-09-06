@@ -820,7 +820,15 @@ def youtube_publish(
                 detail='Bu final başka bir YouTube kanalına yüklenmiş',
             )
         return RedirectResponse('/studio/youtube', status_code=303)
-    if not automated_quality_approved(source):
+    quality_approved = automated_quality_approved(source)
+    if source_result.get('quality_disposition') == 'editorial_review_pass':
+        from app.services.external_editorial_review import publication_quality_approved
+
+        quality_approved = (
+            publication_quality_approved(source)
+            and (source.get('spec') or {}).get('production_channel_id') == target_channel_id
+        )
+    if not quality_approved:
         raise HTTPException(
             status_code=409,
             detail='Kalite onayı olmayan video YouTube’a yüklenemez',
