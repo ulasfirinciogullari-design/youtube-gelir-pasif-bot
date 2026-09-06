@@ -34,10 +34,20 @@ _RESULT_BINDING = ('video_key', 'caption_key', 'metadata_key', 'external_descrip
                    'quality_disposition', 'manual_qa_required', 'qa_approved', 'audio_transcription_verified',
                    'word_timing_verified', 'contains_synthetic_media', 'new_media_generated',
                    'editorial_review_id', 'publish_metadata', *_EXPECTED)
+EDITORIAL_REVIEW_FAILURE_CODES = frozenset('editorial_review_' + name for name in (
+    'source_snapshot', 'evidence', 'source_contract', 'existing_receipt', 'source_readiness',
+    'storage_proof', 'stored_download', 'metadata_validation', 'media_structure', 'pcm_decode',
+    'pcm_binding', 'stored_provenance', 'current_state', 'reservation_binding',
+    'authorization', 'projection', 'commit',
+))
 
 
 class EditorialReviewError(ValueError):
     """Fixed safe rejection; never includes evidence, credentials or filenames."""
+
+    def __init__(self, message, *, phase=None):
+        super().__init__(message)
+        self.phase = phase if type(phase) is str and phase in EDITORIAL_REVIEW_FAILURE_CODES else None
 
 
 def _require(condition):
@@ -246,42 +256,53 @@ def _context(reader, source):
 
 def _storage_proof(source, manifest, binding):
     """Read own immutable Storage objects; no provider call or Storage write."""
-    result = source['result']
-    with tempfile.TemporaryDirectory(prefix='editorial_verify_') as directory:
-        root = Path(directory).resolve(strict=True)
-        paths = {}
-        for name, field, suffix in (('video', 'video_key', 'master.mp4'), ('captions', 'caption_key', 'captions.srt')):
-            expected = manifest['files'][name]
-            _require(result[field] == 'external-masters/v1/' + expected['sha256'] + '/' + suffix)
-            paths[name] = root / suffix
-            ingest.storage.download_file(result[field], paths[name])
-        metadata_key = result['metadata_key']
-        _require(type(metadata_key) is str and re.fullmatch(r'external-masters/v1/[0-9a-f]{64}/metadata.json', metadata_key))
-        metadata_path = root / 'metadata.json'
-        ingest.storage.download_file(metadata_key, metadata_path)
-        _require(metadata_path.stat().st_size <= 512 * 1024)
-        raw = metadata_path.read_bytes()
-        _require(_sha(raw) == metadata_key.split('/')[2])
-        metadata = _object(raw)
-        descriptor = artifact.validate_staged_external_artifact(root, paths['video'], paths['captions'], manifest)
-        _require(metadata['manifest'] == manifest and metadata['descriptor_id'] == descriptor['descriptor_id']
-                 == result['external_descriptor_id'] and descriptor['media_structure']['frame_count'] == 900
-                 and descriptor['media_structure']['frame_rate'] == '30/1')
-        pcm = root / 'decoded.pcm'
-        completed = subprocess.run(['ffmpeg', '-nostdin', '-hide_banner', '-loglevel', 'error', '-max_alloc', '134217728',
-            '-threads', '1', '-protocol_whitelist', 'file', '-enable_drefs', '0', '-use_absolute_path', '0',
-            '-f', 'mov', '-i', str(paths['video']), '-map', '0:a:0', '-vn', '-sn', '-dn',
-            '-c:a', 'pcm_s16le', '-f', 's16le', '-n', str(pcm)], stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE, timeout=60, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
-        media = descriptor['media_structure']
-        _require(completed.returncode == 0 and len(completed.stderr) <= 65536
-                 and pcm.stat().st_size <= 8 * 1024 * 1024
-                 and binding.get('sample_rate') == media['sample_rate'] and binding.get('channels') == media['audio_channels']
-                 and pcm.stat().st_size == binding.get('sample_frames', -1) * binding['channels'] * 2
-                 and _sha(pcm.read_bytes()) == binding['pcm_sha256'])
-        return {'video_sha256': descriptor['video_sha256'], 'captions_sha256': descriptor['captions_sha256'],
-                'manifest_sha256': descriptor['manifest_sha256'], 'pcm_sha256': binding['pcm_sha256'],
-                'server_verified_stored_bytes_and_pcm': True, 'media_structure': media}
+    phase = 'editorial_review_stored_download'
+    try:
+        result = source['result']
+        with tempfile.TemporaryDirectory(prefix='editorial_verify_') as directory:
+            root = Path(directory).resolve(strict=True)
+            paths = {}
+            for name, field, suffix in (('video', 'video_key', 'master.mp4'), ('captions', 'caption_key', 'captions.srt')):
+                expected = manifest['files'][name]
+                _require(result[field] == 'external-masters/v1/' + expected['sha256'] + '/' + suffix)
+                paths[name] = root / suffix
+                ingest.storage.download_file(result[field], paths[name])
+            phase = 'editorial_review_metadata_validation'
+            metadata_key = result['metadata_key']
+            _require(type(metadata_key) is str and re.fullmatch(r'external-masters/v1/[0-9a-f]{64}/metadata.json', metadata_key))
+            metadata_path = root / 'metadata.json'
+            ingest.storage.download_file(metadata_key, metadata_path)
+            _require(metadata_path.stat().st_size <= 512 * 1024)
+            raw = metadata_path.read_bytes()
+            _require(_sha(raw) == metadata_key.split('/')[2])
+            metadata = _object(raw)
+            phase = 'editorial_review_media_structure'
+            descriptor = artifact.validate_staged_external_artifact(root, paths['video'], paths['captions'], manifest)
+            _require(metadata['manifest'] == manifest and metadata['descriptor_id'] == descriptor['descriptor_id']
+                     == result['external_descriptor_id'] and descriptor['media_structure']['frame_count'] == 900
+                     and descriptor['media_structure']['frame_rate'] == '30/1')
+            phase = 'editorial_review_pcm_decode'
+            pcm = root / 'decoded.pcm'
+            completed = subprocess.run(['ffmpeg', '-nostdin', '-hide_banner', '-loglevel', 'error', '-max_alloc', '134217728',
+                '-threads', '1', '-protocol_whitelist', 'file', '-enable_drefs', '0', '-use_absolute_path', '0',
+                '-f', 'mov', '-i', str(paths['video']), '-map', '0:a:0', '-vn', '-sn', '-dn',
+                '-c:a', 'pcm_s16le', '-f', 's16le', '-n', str(pcm)], stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE, timeout=60, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+            _require(completed.returncode == 0 and len(completed.stderr) <= 65536)
+            phase = 'editorial_review_pcm_binding'
+            media = descriptor['media_structure']
+            _require(pcm.stat().st_size <= 8 * 1024 * 1024
+                     and binding.get('sample_rate') == media['sample_rate'] and binding.get('channels') == media['audio_channels']
+                     and pcm.stat().st_size == binding.get('sample_frames', -1) * binding['channels'] * 2
+                     and _sha(pcm.read_bytes()) == binding['pcm_sha256'])
+            return {'video_sha256': descriptor['video_sha256'], 'captions_sha256': descriptor['captions_sha256'],
+                    'manifest_sha256': descriptor['manifest_sha256'], 'pcm_sha256': binding['pcm_sha256'],
+                    'server_verified_stored_bytes_and_pcm': True, 'media_structure': media}
+    except Exception as exc:
+        # Preserve the direct helper's exception contract. The outer owner
+        # boundary exposes only this fixed internal phase, never its message.
+        exc.editorial_phase = phase
+        raise
 
 
 def _keys(source):
@@ -349,25 +370,34 @@ def _validate(reader, source, frozen_plan=None):
 
 def create_editorial_review(source_task_id, evidence_pack):
     """Trusted owner-review action. One immutable receipt; CAS changes only its job."""
+    phase = 'editorial_review_source_snapshot'
     try:
         client = ingest._redis()
         _require(type(source_task_id) is str and str(UUID(source_task_id)) == source_task_id)
         source = _object(client.get(JOB_PREFIX + source_task_id))
         _require(source.get('task_id') == source_task_id)
+        phase = 'editorial_review_evidence'
         pack, manifest, binding, unknown = _evidence(evidence_pack)
+        phase = 'editorial_review_source_contract'
         keys = _keys(source)
         if client.get(keys[0]) is not None:
+            phase = 'editorial_review_existing_receipt'
             receipt = validate_editorial_publication(source)
             _require(receipt['evidence_sha256'] == _digest(pack))
             return receipt
+        phase = 'editorial_review_source_readiness'
         _require(source['result'].get('quality_disposition') == 'manual_qa_preview'
-                 and source['result'].get('manual_qa_required') is True and source['spec'].get('publish_after_render') is False)
+             and source['result'].get('manual_qa_required') is True and source['spec'].get('publish_after_render') is False)
+        phase = 'editorial_review_storage_proof'
         proof = _storage_proof(source, manifest, binding)
+        phase = 'editorial_review_stored_provenance'
         provenance = source['result']['external_provenance']
         _require(all(provenance.get(k) == proof[k] for k in ('video_sha256', 'captions_sha256', 'manifest_sha256')))
+        phase = 'editorial_review_current_state'
         with client.pipeline() as pipe:
             pipe.watch(*keys)
             _require(pipe.get(keys[0]) is None and _object(pipe.get(keys[1])) == source and pipe.get(keys[8]) is None)
+            phase = 'editorial_review_reservation_binding'
             reservation = _object(pipe.get(keys[2]))
             _require(reservation.get('status') == 'complete' and reservation.get('task_id') == source_task_id
                      and reservation.get('descriptor_id') == source['result']['external_descriptor_id']
@@ -378,23 +408,31 @@ def create_editorial_review(source_task_id, evidence_pack):
                 word_timing_verified=False, editorial_review_id=source_task_id, publish_metadata=pack['publish_metadata'],
                 **dict(zip(_EXPECTED, (manifest['files']['video']['sha256'], manifest['files']['captions']['sha256'],
                                        manifest['files']['video']['size'], manifest['files']['captions']['size']))))
+            phase = 'editorial_review_authorization'
+            authorization_sha256 = _context(pipe, source)
+            phase = 'editorial_review_projection'
+            source_sha256 = _digest(_projection(updated))
             receipt = {'version': 1, 'receipt_id': source_task_id, 'reviewer_type': 'delegated_editorial_agent',
                 'quality_disposition': 'editorial_review_pass', 'created_at': datetime.now(timezone.utc).isoformat(),
                 'evidence_sha256': _digest(pack), 'evidence': pack, 'server_proof': proof,
                 'publish_metadata_sha256': _digest(pack['publish_metadata']),
                 'unverified_word_indices': unknown, 'word_timing_verified': False, 'automated_qa_approved': False,
                 'observations_provenance': 'owner_authenticated_editorial_attestation_not_backend_vision_or_source_fetch',
-                'authorization_sha256': _context(pipe, source), 'source_sha256': _digest(_projection(updated)),
+                'authorization_sha256': authorization_sha256, 'source_sha256': source_sha256,
                 'original_job_sha256': reservation['job_sha256']}
             receipt['receipt_sha256'] = _digest(receipt)
             updated['result']['editorial_review_sha256'] = receipt['receipt_sha256']
+            phase = 'editorial_review_commit'
             pipe.multi()
             pipe.set(keys[0], ingest._json(receipt))
             pipe.setex(keys[1], JOB_TTL_SECONDS, ingest._json(updated))
             pipe.execute()
         return receipt
-    except Exception:
-        raise EditorialReviewError('external_editorial_review_unavailable_or_invalid') from None
+    except Exception as exc:
+        reported = getattr(exc, 'editorial_phase', None)
+        if type(reported) is not str or reported not in EDITORIAL_REVIEW_FAILURE_CODES:
+            reported = phase
+        raise EditorialReviewError('external_editorial_review_unavailable_or_invalid', phase=reported) from None
 
 
 def validate_editorial_publication(source, frozen_plan=None):

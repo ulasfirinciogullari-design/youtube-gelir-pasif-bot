@@ -19,6 +19,7 @@ REPAIR_CHECKPOINT_CLAIM_PREFIX = 'youtube_studio:repair_checkpoint_claim:'
 RETRY_DISPATCH_PREFIX = 'youtube_studio:retry_dispatch:'
 RETRY_CHILD_CLAIM_PREFIX = 'youtube_studio:retry_child_claim:'
 RETRY_CHILD_EXECUTION_PREFIX = 'youtube_studio:retry_child_execution:'
+EXTERNAL_EPISODE_LEAF_PREFIX = 'youtube_studio:external_episode_delivery:v1:leaf:'
 PAID_CREATE_BUDGET_PREFIX = 'youtube_studio:paid_create_budget:'
 REPAIR_CHECKPOINT_TTL_SECONDS = 60 * 60 * 24 * 30
 RETRY_DISPATCH_TTL_SECONDS = REPAIR_CHECKPOINT_TTL_SECONDS
@@ -215,7 +216,9 @@ return 0
 '''
 
 
-_CLAIM_RETRY_DISPATCH = r'''
+_CLAIM_RETRY_DISPATCH = (
+    "if redis.call('EXISTS', '" + EXTERNAL_EPISODE_LEAF_PREFIX + "' .. ARGV[7]) == 1 then return {-4, ''} end\n"
+) + r'''
 local raw_job = redis.call('GET', KEYS[1])
 if not raw_job then
   return {-2, ''}
@@ -409,6 +412,8 @@ def claim_retry_dispatch(
         raw = raw.decode('utf-8')
     if status == -2:
         raise ValueError('retry source must be a failed job')
+    if status == -4:
+        raise ValueError('retry source was separately delivered by editorial replacement')
     if status == 0:
         return {
             'claimed': False,

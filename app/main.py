@@ -22,11 +22,13 @@ from app.services.voice import (
 from app.studio import router as studio_router, _production_publish_options
 from app.external_routes import router as external_router
 from app.editorial_routes import router as editorial_router
+from app.episode_delivery_routes import router as episode_delivery_router
 
 app = FastAPI(title='YouTube 7/24 Content Factory', version='2.0.0')
 app.include_router(studio_router)
 app.include_router(external_router)
 app.include_router(editorial_router)
+app.include_router(episode_delivery_router)
 
 
 class JobCreate(BaseModel):
