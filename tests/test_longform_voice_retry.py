@@ -168,8 +168,10 @@ def test_worker_keeps_existing_shorts_route_and_has_explicit_no_fit_long_branch(
     pipeline = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
                     and n.name == 'run_video_pipeline')
     branch = next(n for n in ast.walk(pipeline) if isinstance(n, ast.If)
-        and isinstance(n.test, ast.Compare)
-        and "saved_voice_retry.get('preserve_audio_bytes')" in ast.unparse(n.test))
+        and any(isinstance(call, ast.Name) and call.id == '_preserved_longform_voice_for_retry'
+                for statement in n.body for call in ast.walk(statement))
+        and isinstance(n.test, ast.Compare))
+    assert "saved_voice_retry.get('preserve_audio_bytes') is True" in ast.unparse(branch.test)
     body = '\n'.join(ast.unparse(n) for n in branch.body)
     assert '_preserved_longform_voice_for_retry' in body
     assert 'fit' not in body and 'synthesize' not in body
@@ -208,3 +210,38 @@ def test_verified_longform_uses_existing_durable_two_create_ledger_and_no_restar
     text = ast.unparse(pipeline)
     assert 'allow_paid_terminal_resubmit=total_paid_create_cap is None' in text
     assert 'Long-form retained job stopped without automatic restart' in text
+
+
+@pytest.mark.parametrize('candidate,budget,raises,expected_cap', [
+    ({'preserve_audio_bytes': True}, {'cap': 2, 'used': 0}, False, 2),
+    ({'preserve_audio_bytes': True}, {'cap': 2, 'used': 1}, True, None),
+    ({'preserve_audio_bytes': True}, {'cap': 6, 'used': 0}, True, None),
+    ({'preserve_audio_bytes': True}, {'cap': 2}, True, None),
+    ({'preserve_audio_bytes': False}, {'cap': 2, 'used': 0}, False, None),
+    (None, {'cap': 2, 'used': 0}, False, None),
+])
+def test_actual_retained_ledger_gate_does_not_touch_shorts_or_reuse_spent_budget(
+        candidate, budget, raises, expected_cap):
+    path = Path(__file__).resolve().parents[1] / 'app/tasks.py'
+    tree = ast.parse(path.read_text(encoding='utf-8'))
+    pipeline = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
+                    and n.name == 'run_video_pipeline')
+    ledger = next(n for n in ast.walk(pipeline) if isinstance(n, ast.If)
+        and isinstance(n.test, ast.BoolOp)
+        and "saved_voice_retry.get('preserve_audio_bytes')" in ast.unparse(n.test))
+    persisted = Mock(return_value=budget)
+    namespace = {'saved_voice_retry': candidate, '_persisted_paid_create_budget': persisted,
+        'task_id': 'verified-child', 'total_paid_create_cap': None, 'runway_attempts': 5,
+        'FinalVisualQualityError': ValueError}
+    code = compile(ast.Module(body=[ledger], type_ignores=[]), str(path), 'exec')
+    if raises:
+        with pytest.raises(ValueError, match='fresh two-create'):
+            exec(code, namespace)
+    else:
+        exec(code, namespace)
+    assert namespace['total_paid_create_cap'] == expected_cap
+    if candidate and candidate.get('preserve_audio_bytes') is True:
+        persisted.assert_called_once_with('verified-child', 2)
+    else:
+        persisted.assert_not_called()
+        assert namespace['runway_attempts'] == 5
