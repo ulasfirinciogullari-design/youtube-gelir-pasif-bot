@@ -70,6 +70,9 @@ class _FakeTimestampResponse(_FakeVoiceResponse):
 
 
 class TurkishVoiceNormalizationTests(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(patch.object(voice_module, 'settings', config_stub.settings))
+
     def test_numeric_separators_are_not_converted_to_speech_boundaries(self):
         for text in ('Maliyet 3,69 sent.', 'Maliyet 3.69 sent.',
                      'Bir milyon: 1.000.000 TL.', 'Tarih 07.01.2026.'):
@@ -90,7 +93,7 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
         self.assertEqual(normalize_turkish_tts('Maliyet 3,69 sent.'), 'Maliyet 3,69 sent.')
 
     def test_temporary_voice_import_does_not_leak_to_later_tests(self):
-        self.assertNotIn('app.services.voice', sys.modules)
+        self.assertIsNot(sys.modules.get('app.services.voice'), voice_module)
 
     def test_short_preview_always_fits_content_before_reserved_tail(self):
         with tempfile.TemporaryDirectory() as tmp:

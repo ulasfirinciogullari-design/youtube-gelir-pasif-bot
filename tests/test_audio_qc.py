@@ -2286,7 +2286,7 @@ class AudioQCTests(unittest.TestCase):
             '4:8',
             '4%8',
             '4\u20ba8',
-            '%29',
+            '%%29',
             '29%',
             '4+8.',
             '4/8!',

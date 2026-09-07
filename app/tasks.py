@@ -4233,6 +4233,17 @@ def _prepare_saved_voice_retry(
     work: Path,
 ) -> dict | None:
     """Revalidate one same-spec UI retry without purchasing another voice."""
+    if (source_task_id and runtime_spec.get('mode') == 'production'
+            and runtime_spec.get('format') == 'landscape'
+            and runtime_spec.get('duration_minutes') == 3):
+        from app.services.longform_voice_retry import prepare, LongformVoiceRetryError
+
+        try:
+            return prepare(task_id, source_task_id, runtime_spec, work)
+        except LongformVoiceRetryError:
+            raise FinalAudioQualityError(
+                'Long-form saved narration could not be revalidated; no replacement voice was generated'
+            ) from None
     if (
         not source_task_id
         or runtime_spec.get('mode') != 'production'
@@ -4376,6 +4387,17 @@ def _require_voice_replacement_checkpoint(task_id: str, voice_result: dict) -> N
             raise ValueError('Replacement candidate was not persisted')
     except Exception:
         raise FinalAudioQualityError('Voice replacement candidate checkpoint could not be verified') from None
+
+
+def _preserved_longform_voice_for_retry(candidate: dict) -> dict:
+    from app.services.longform_voice_retry import preserved_voice, LongformVoiceRetryError
+
+    try:
+        return preserved_voice(candidate)
+    except LongformVoiceRetryError:
+        raise FinalAudioQualityError(
+            'Long-form saved audio or cues changed; no replacement voice was generated'
+        ) from None
 
 
 def _fit_saved_voice_for_retry(voice_result: dict, target_seconds: float) -> dict:
@@ -4575,6 +4597,14 @@ def run_video_pipeline(
             )
             if approved_package is None and full_rebuild_request is None else None
         )
+        if saved_voice_retry and saved_voice_retry.get('preserve_audio_bytes') is True:
+            # A verified standalone retry gets its own existing durable ledger;
+            # the legacy parent's absent preview ledger and frozen spec stay intact.
+            longform_budget = _persisted_paid_create_budget(task_id, 2)
+            if longform_budget.get('cap') != 2 or longform_budget.get('used') != 0:
+                raise FinalVisualQualityError('Long-form retry requires its fresh two-create media budget')
+            total_paid_create_cap = 2
+            runway_attempts = 0
         if voice_replacement_source_id is not None and (
             voice_replacement_source_id != retry_dispatch_source_id
             or approved_package is not None or curated_stock_manifest is not None
@@ -4735,6 +4765,8 @@ def run_video_pipeline(
                         _synthesize_voice_candidate, scenes, task_id, duration_minutes * 60,
                         language=language, voice_replacement_request=voice_replacement_request,
                     )
+                elif saved_voice_retry.get('preserve_audio_bytes') is True:
+                    voice_future = stage_pool.submit(_preserved_longform_voice_for_retry, saved_voice_retry)
                 else:
                     voice_future = stage_pool.submit(
                         _fit_saved_voice_for_retry,
@@ -7642,6 +7674,14 @@ def run_video_pipeline(
                 ImmutableNarrationSceneBudgetError,
             ),
         )
+        if (retry_dispatch_source_id and options.get('mode') == 'production'
+                and options.get('format') == 'landscape' and duration_minutes == 3
+                and not terminal_pre_media_error):
+            bounded_error = FinalVisualQualityError(
+                f'Long-form retained job stopped without automatic restart: {type(exc).__name__}'
+            )
+            mark_failure(task_id, bounded_error)
+            raise bounded_error from exc
         if full_rebuild_source_id is not None and not terminal_pre_media_error:
             # One explicit rebuild must not silently restart the whole pipeline
             # after an ambiguous planning, voice or provider response. Ordinary
