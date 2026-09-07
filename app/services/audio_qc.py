@@ -1379,6 +1379,61 @@ def _expected_apostrophe_suffixes(text: str) -> frozenset[tuple[str, str]]:
     )
 
 
+_TURKISH_CENT_SUFFIXES = frozenset({
+    '', 'i', 'in', 'e', 'te', 'ten', 'le',
+    'ler', 'leri', 'lerin', 'lere', 'lerde', 'lerden', 'lerle',
+    'ini', 'inin', 'ine', 'inde', 'inden', 'iyle', 'inle',
+    'im', 'imin', 'ime', 'imde', 'imden', 'imle',
+    'imiz', 'imizin', 'imize', 'imizde', 'imizden', 'imizle',
+    'iniz', 'inizin', 'inize', 'inizde', 'inizden', 'inizle',
+    *('ler' + suffix for suffix in (
+        'ini', 'inin', 'ine', 'inde', 'inden', 'iyle', 'inle',
+        'im', 'imin', 'ime', 'imde', 'imden', 'imle',
+        'imiz', 'imizin', 'imize', 'imizde', 'imizden', 'imizle',
+        'iniz', 'inizin', 'inize', 'inizde', 'inizden', 'inizle',
+    )),
+})
+_TURKISH_CENT_CONTEXT = frozenset({
+    'amerikan', 'abd', 'dolar', 'doları', 'doların', 'dolarının',
+    'euro', 'euronun', 'avro', 'avronun',
+    'para', 'parası', 'paranın', 'parayı', 'paralar', 'paraları',
+    'madeni', 'banknot', 'darphane', 'darphanenin',
+    'dolaşım', 'dolaşımı', 'dolaşımda', 'dolaşımdaki', 'dolaşıma', 'dolaşımdan',
+})
+
+
+def _turkish_cent_suffix(token: str) -> str | None:
+    """Closed noun forms only: centilitre/sentetik and other roots are not cents."""
+    if token[:4] not in {'sent', 'cent'}:
+        return None
+    suffix = token[4:]
+    return suffix if suffix in _TURKISH_CENT_SUFFIXES else None
+
+
+def _turkish_cent_noun_unit(tokens, index, value, matches) -> str | None:
+    """Preserve every case/number suffix; require a local monetary cue.
+
+    A Turkish numeric amount is handled separately. Without an amount, an
+    inflected noun needs an explicit currency/circulation word within eight
+    tokens of the same sentence. No cross-sentence or substring aliases.
+    """
+    suffix = _turkish_cent_suffix(tokens[index])
+    if suffix is None:
+        return None
+    left, right = matches[index].start(), matches[index].end()
+    if ((left and (value[left - 1].isalnum() or value[left - 1] == '_'))
+            or (right < len(value) and (value[right].isalnum() or value[right] == '_'))):
+        return None
+    for position in range(max(0, index - 8), min(len(tokens), index + 9)):
+        if tokens[position] not in _TURKISH_CENT_CONTEXT:
+            continue
+        start = min(matches[index].start(), matches[position].start())
+        end = max(matches[index].end(), matches[position].end())
+        if not re.search(r'[.!?;\n]', value[start:end]):
+            return '\x00cent_noun:' + suffix
+    return None
+
+
 def _turkish_cent_amount_unit(tokens, start, value, matches) -> tuple[str, int] | None:
     """Same explicit amount plus Turkish sent/ASR cent, never bare digit joins.
 
@@ -1408,7 +1463,8 @@ def _turkish_cent_amount_unit(tokens, start, value, matches) -> tuple[str, int] 
     if amount is None or not re.fullmatch(r'\x00number:(?:0|[1-9][0-9]*)(?:,[0-9]{1,2})?:', amount):
         return None
     currency = start + consumed
-    if currency >= len(tokens) or tokens[currency] not in {'sent', 'cent'}:
+    suffix = _turkish_cent_suffix(tokens[currency]) if currency < len(tokens) else None
+    if suffix is None:
         return None
     for position in range(start, currency):
         gap = value[matches[position].end():matches[position + 1].start()]
@@ -1418,7 +1474,7 @@ def _turkish_cent_amount_unit(tokens, start, value, matches) -> tuple[str, int] 
     if ((left and (value[left - 1].isalnum() or value[left - 1] == '_'))
             or (right < len(value) and (value[right].isalnum() or value[right] == '_'))):
         return None
-    return '\x00cent:' + amount, consumed + 1
+    return '\x00cent:' + amount + ':' + suffix, consumed + 1
 
 
 def _comparison_units(
@@ -1445,6 +1501,11 @@ def _comparison_units(
     units: list[tuple[str, tuple[str, ...]]] = []
     index = 0
     while index < len(tokens):
+        cent_noun = _turkish_cent_noun_unit(tokens, index, value, matches)
+        if cent_noun is not None:
+            units.append((cent_noun, (tokens[index],)))
+            index += 1
+            continue
         cent_amount = _turkish_cent_amount_unit(tokens, index, value, matches)
         if cent_amount is not None:
             key, consumed = cent_amount
