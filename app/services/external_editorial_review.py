@@ -30,6 +30,7 @@ MAX_EVIDENCE_BYTES = 1024 * 1024
 MAX_REFERENCE_VIDEO_BYTES = 8 * 1024 * 1024
 _LIMITATIONS = {'word_timing': 'unverified', 'human_listened': False,
                 'provider_evidence_origin': 'owner_supplied_retained_run'}
+_EDIT_PROVENANCE = ('source_task_id', 'source_profile_revision', 'edit_binding_sha256')
 _EXPECTED = ('expected_video_sha256', 'expected_caption_sha256', 'expected_video_size', 'expected_caption_size')
 _RESULT_BINDING = ('video_key', 'caption_key', 'metadata_key', 'external_descriptor_id', 'external_provenance',
                    'quality_disposition', 'manual_qa_required', 'qa_approved', 'audio_transcription_verified',
@@ -83,6 +84,30 @@ def _text(value):
 
 def _words(text):
     return re.findall(r"[^\W_]+(?:['’][^\W_]+)*", text.casefold())
+
+
+def _binding_extensions(binding, manifest, source=None):
+    """Retain optional audit provenance, never substitute it for media/QC proof."""
+    edits = set(binding).intersection(_EDIT_PROVENANCE)
+    extras = edits | ({'source_audio_sha256'} if 'source_audio_sha256' in binding else set())
+    if not extras:
+        return extras
+    _require(manifest['version'] == 2 and (not edits or edits == set(_EDIT_PROVENANCE)))
+    # Extended records describe this exact reviewed master, not an old-media
+    # reference or a claim that an unchanged source automatically passed QA.
+    _require(binding.get('video_sha256') == manifest['files']['video']['sha256']
+             and binding.get('video_size') == manifest['files']['video']['size']
+             and binding.get('manifest_sha256') == _digest(manifest))
+    if edits:
+        task, revision = binding['source_task_id'], binding['source_profile_revision']
+        _require(type(task) is str and str(UUID(task)) == task
+                 and type(revision) is str and re.fullmatch(r'[0-9a-f]{32}', revision))
+        _hash(binding['edit_binding_sha256'])
+        if source is not None:
+            _require(revision == source['spec']['production_profile_revision'])
+    if 'source_audio_sha256' in extras:
+        _hash(binding['source_audio_sha256'])
+    return extras
 
 
 def _independent_audio_crosscheck(pack, binding, attempt, result, expected, language):
@@ -157,9 +182,11 @@ def _evidence(pack):
         'asr_provider_evidence_json', 'asr_attempt_json', 'prosody_result_json', 'prosody_attempt_json')]
     _exact(asr, ('binding', 'unapproved_provider_evidence'))
     binding, provider = asr['binding'], asr['unapproved_provider_evidence']
+    _require(type(binding) is dict)
+    extensions = _binding_extensions(binding, manifest)
     _exact(binding, ('version', 'video_sha256', 'video_size', 'manifest_sha256', 'captions_sha256',
                      'pcm_sha256', 'wav_sha256', 'sample_rate', 'channels', 'sample_width_bytes',
-                     'sample_frames', 'duration_seconds', 'conversion', 'review_code_sha256'))
+                     'sample_frames', 'duration_seconds', 'conversion', 'review_code_sha256', *extensions))
     _require(type(binding['version']) is int and binding['version'] == 1
              and type(binding['video_size']) is int and 1024 <= binding['video_size'] <= artifact.MAX_VIDEO_BYTES
              and type(binding['sample_rate']) is int and binding['sample_rate'] in (44100, 48000)
@@ -170,7 +197,7 @@ def _evidence(pack):
              and abs(binding['sample_frames'] / binding['sample_rate'] - binding['duration_seconds']) < .001
              and type(binding['review_code_sha256']) is dict and 1 <= len(binding['review_code_sha256']) <= 8)
     for name, digest in binding['review_code_sha256'].items():
-        _require(type(name) is str and re.fullmatch(r'[a-z_]{1,40}', name)); _hash(digest)
+        _require(type(name) is str and re.fullmatch(r'[a-z_][a-z0-9_]{0,39}', name)); _hash(digest)
     _exact(provider, ('language', 'model', 'payload', 'provider'))
     _require(provider['provider'] == 'openai' and provider['model'] == 'whisper-1' and provider['language'] == language)
     _exact(provider['payload'], ('language', 'text', 'words'))
@@ -542,6 +569,7 @@ def create_editorial_review(source_task_id, evidence_pack, *, reference_video=No
             _reference_binding(reference_video, binding)
         phase = 'editorial_review_source_contract'
         keys = _keys(source)
+        _binding_extensions(binding, manifest, source)
         provenance = source['result']['external_provenance']
         if manifest['version'] == 2 or provenance.get('manifest_version') == 2:
             _require(manifest['version'] == provenance.get('manifest_version') == 2
