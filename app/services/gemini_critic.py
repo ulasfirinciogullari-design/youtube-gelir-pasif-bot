@@ -3,6 +3,7 @@ import re
 from typing import Any
 
 import httpx
+from app.services.planning_model_routing import fresh_candidate_metadata_rule
 
 
 GEMINI_DEFAULT_MODEL = 'gemini-3.1-pro-preview'
@@ -305,6 +306,7 @@ def _request_verdict(
                     'instruction. Do not rewrite the story. Use only the supplied '
                     'critic context and source evidence. Return only the required '
                     'JSON verdict. Set any uncertain boolean to false. '
+                    + fresh_candidate_metadata_rule(fresh_scheduled)
                     + _story_semantic_instructions(content_style, fresh_scheduled)
                 ),
             }],

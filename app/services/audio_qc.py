@@ -2118,6 +2118,11 @@ def _valid_gemini_annotation_text(value: Any) -> bool:
             return False
     if not normalized:
         return False
+    # Gemini can time an explicit Turkish percent numeral as one annotation
+    # (for example %75). Keep that raw text and its one real interval; numeric
+    # meaning and timestamp/transcript agreement remain separate strict checks.
+    if re.fullmatch(r'%(?:0|[1-9][0-9]{0,2})', normalized):
+        return True
     if re.fullmatch(
         r'[+\-\u2212\u00b1]?\d+(?:[,.]\d+)?',
         normalized,

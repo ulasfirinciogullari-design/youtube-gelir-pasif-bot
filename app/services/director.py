@@ -23,6 +23,7 @@ from app.services.visual_routing import (
 )
 from app.services.source_evidence import normalize_evidence_sources
 from app.services.production_shot_prompt import build_production_shot_prompt
+from app.services.planning_model_routing import fresh_candidate_metadata_rule
 
 STYLE_NOTES = {
     'documentary': 'authoritative premium documentary, restrained and evidence-led',
@@ -2036,6 +2037,7 @@ HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {production_scene_note}
 {shot_capacity_rule}
 {correction_note}
+{fresh_candidate_metadata_rule(fresh_scheduled)}
 
 DRAFT JSON:
 {json.dumps(compact, ensure_ascii=False)}
@@ -2506,6 +2508,7 @@ NON-NEGOTIABLE RULES:
 - {documentary_writer_rule}
 - {explanatory_coda_rule}
 - {stock_video_rule}
+- {fresh_candidate_metadata_rule(fresh_stock_planning)}
 - {_spoken_word_budget_note(spoken_word_budget)}
 - {_MATERIAL_IDENTITY_RULE}
 - {_HUMAN_CURIOSITY_RULE}
@@ -2818,6 +2821,11 @@ NON-NEGOTIABLE RULES:
                 for position in stock_positions
             ],
         }
+        if fresh_stock_planning:
+            # Candidate-authored copy must not masquerade as the owner's brief.
+            critic_context['generated_candidate_metadata'] = {
+                key: critic_context.pop(key) for key in ('title', 'description')
+            }
         original_shot_rule = ''
         if immutable_original_shot_prompts is not None:
             critic_context['immutable_original_shot_prompts'] = {
@@ -2839,6 +2847,7 @@ NON-NEGOTIABLE RULES:
 Evaluate every stock-routed candidate against its exact narration, queries, role, adjacent scenes and complete short story.
 {json.dumps(critic_context, ensure_ascii=False)}
 {original_shot_rule}
+{fresh_candidate_metadata_rule(fresh_stock_planning)}
 
 Return ONLY JSON in exactly this shape:
 {json.dumps(critic_shape, ensure_ascii=False)}
