@@ -1379,6 +1379,48 @@ def _expected_apostrophe_suffixes(text: str) -> frozenset[tuple[str, str]]:
     )
 
 
+def _turkish_cent_amount_unit(tokens, start, value, matches) -> tuple[str, int] | None:
+    """Same explicit amount plus Turkish sent/ASR cent, never bare digit joins.
+
+    Older TTS preparation inserted a space after a decimal comma. Recover
+    only that visible comma in an unsigned, at-most-two-decimal cent amount.
+    Keep raw transcript/word timing untouched; punctuation-free ``3 69``
+    and sentence punctuation ``3. 69`` cannot supply a decimal separator.
+    """
+    previous = tokens[start - 1] if start else ''
+    if (_split_number_word(previous) is not None or any(c.isdigit() for c in previous)
+            or previous in {'%', '\u2030', '$', '\u20ac', '\u00a3', '\u00a5', '\u20ba', '+', '-', '\u2212', '\u00b1'}):
+        return None
+    amount = None
+    consumed = 1
+    if (start + 2 < len(tokens)
+            and re.fullmatch(r'(?:0|[1-9][0-9]*)', tokens[start])
+            and re.fullmatch(r'[0-9]{1,2}', tokens[start + 1])
+            and re.fullmatch(r',[ \t]+', value[matches[start].end():matches[start + 1].start()])):
+        amount = _numeric_key(tokens[start] + ',' + tokens[start + 1])
+        consumed = 2
+    if amount is None:
+        amount = _canonical_digit_token(tokens[start])
+        if amount is None:
+            number = _number_word_unit(tokens, start)
+            if number is not None:
+                amount, consumed = number
+    if amount is None or not re.fullmatch(r'\x00number:(?:0|[1-9][0-9]*)(?:,[0-9]{1,2})?:', amount):
+        return None
+    currency = start + consumed
+    if currency >= len(tokens) or tokens[currency] not in {'sent', 'cent'}:
+        return None
+    for position in range(start, currency):
+        gap = value[matches[position].end():matches[position + 1].start()]
+        if not gap.isspace() and not (position == start and consumed == 2 and re.fullmatch(r',[ \t]+', gap)):
+            return None
+    left, right = matches[start].start(), matches[currency].end()
+    if ((left and (value[left - 1].isalnum() or value[left - 1] == '_'))
+            or (right < len(value) and (value[right].isalnum() or value[right] == '_'))):
+        return None
+    return '\x00cent:' + amount, consumed + 1
+
+
 def _comparison_units(
     text: str,
     language: str = 'tr',
@@ -1403,6 +1445,12 @@ def _comparison_units(
     units: list[tuple[str, tuple[str, ...]]] = []
     index = 0
     while index < len(tokens):
+        cent_amount = _turkish_cent_amount_unit(tokens, index, value, matches)
+        if cent_amount is not None:
+            key, consumed = cent_amount
+            units.append((key, tuple(tokens[index:index + consumed])))
+            index += consumed
+            continue
         if index in join_positions:
             source = tuple(tokens[index:index + 2])
             units.append((_orthographic_fold(''.join(source)), source))

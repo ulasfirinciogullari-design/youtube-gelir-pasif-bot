@@ -578,6 +578,84 @@ def youtube_connection_status(
     return status
 
 
+@router.get('/studio/youtube/production-status/{youtube_channel_id}')
+def youtube_production_status(
+    youtube_channel_id: str,
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    """Expose only owner-safe scheduler diagnostics; never reconcile or resume."""
+    from fastapi.responses import JSONResponse
+    from app.services.channel_production import get_production_state
+
+    _require_auth(studio_token)
+    if not re.fullmatch(r'UC[A-Za-z0-9_-]{22}', youtube_channel_id):
+        raise HTTPException(status_code=422, detail='production_channel_invalid')
+    try:
+        connected = connection_status(channel_id=youtube_channel_id, verify=False)
+        channel = connected.get('channel') or {}
+        if channel.get('id') != youtube_channel_id:
+            raise HTTPException(status_code=404, detail='production_channel_not_connected')
+        profile = get_channel_profile(youtube_channel_id)
+        if not isinstance(profile, dict) or profile.get('channel_id') != youtube_channel_id:
+            raise HTTPException(status_code=409, detail='production_profile_unavailable')
+        state = get_production_state(youtube_channel_id)
+        if not isinstance(state, dict):
+            raise ValueError()
+        topics = profile.get('production_topics')
+        if not isinstance(topics, list) or len(topics) > 60 or not all(isinstance(t, str) for t in topics):
+            raise ValueError()
+        cursor = state.get('cursor', '0')
+        if not isinstance(cursor, str) or not re.fullmatch(r'0|[1-9][0-9]?', cursor):
+            raise ValueError()
+        cursor = int(cursor)
+        if cursor > len(topics):
+            raise ValueError()
+        reason = state.get('paused_reason') or None
+        if reason not in {None, 'previous_render_failed', 'previous_render_needs_review',
+                          'previous_publication_blocked', 'consumed_topics_changed'}:
+            reason = 'unrecognized_pause'
+
+        def identifier(value):
+            return value if isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9_-]{8,128}', value) else None
+
+        def task_id(value):
+            return value if isinstance(value, str) and re.fullmatch(
+                r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', value) else None
+
+        next_due = state.get('next_due')
+        next_due = (next_due if isinstance(next_due, str) and re.fullmatch(
+            r'(?:0|[1-9][0-9]{0,12})(?:\.[0-9]{1,8})?', next_due) else None)
+        digest = state.get('consumed_prefix')
+        digest = digest if isinstance(digest, str) and re.fullmatch(r'[0-9a-f]{64}', digest) else None
+        result = {
+            'channel_id': youtube_channel_id,
+            'connection_id': identifier(channel.get('connection_id')),
+            'requires_reconnect': connected.get('requires_reconnect') is True or channel.get('requires_reconnect') is True,
+            'profile_revision': identifier(profile.get('profile_revision')),
+            'production_enabled': profile.get('production_enabled') is True,
+            'auto_publish': profile.get('auto_publish') is True,
+            'release_mode': profile.get('release_mode') if profile.get('release_mode') in {'public', 'private', 'scheduled'} else None,
+            'series_epoch_present': 'series_epoch' in profile,
+            'cursor': cursor,
+            'topic_count': len(topics),
+            'next_topic_index': cursor if cursor < len(topics) else None,
+            'paused_reason': reason,
+            'next_due': next_due,
+            'last_task_id': task_id(state.get('last_task_id')),
+            'active_task_id': task_id(state.get('active_task_id')),
+            'last_result': state.get('last_result') if state.get('last_result') in {'SUCCESS', 'FAILURE', 'CANCELLED'} else None,
+            'dispatch_status': state.get('dispatch_status') if state.get('dispatch_status') in {'reserved', 'dispatched', 'uncertain', 'finished'} else None,
+            'state_profile_revision': identifier(state.get('profile_revision')),
+            'state_connection_id': identifier(state.get('connection_id')),
+            'consumed_prefix': digest,
+        }
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=503, detail='production_state_unavailable') from None
+    return JSONResponse(result, headers={'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer'})
+
+
 @router.post('/studio/youtube/connect')
 def youtube_connect(
     request: Request,

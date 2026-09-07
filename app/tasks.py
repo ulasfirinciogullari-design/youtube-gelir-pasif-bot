@@ -4282,7 +4282,18 @@ def _prepare_saved_voice_retry(
             for index, scene in enumerate(source_scenes)
         ]
         if candidate['voice_result'].get('spoken_texts') != expected_spoken:
-            raise ValueError('Saved spoken contract differs from the narration')
+            # Old hash-bound candidates used the exact prior punctuation
+            # normalizer (3,69 -> 3, 69). Accept that whole original spelling
+            # only, not semantic similarity or arbitrary edited speech.
+            legacy_spoken = [
+                normalize_turkish_tts(
+                    scene['narration'], ensure_terminal=(index + 1 == len(source_scenes)),
+                    legacy_numeric_spacing=True,
+                )
+                for index, scene in enumerate(source_scenes)
+            ] if runtime_spec.get('language') == 'tr' else None
+            if candidate['voice_result'].get('spoken_texts') != legacy_spoken:
+                raise ValueError('Saved spoken contract differs from the narration')
         options = {
             key: value for key, value in runtime_spec.items()
             if key not in {'topic', 'duration_minutes', 'language', 'channel_id'}

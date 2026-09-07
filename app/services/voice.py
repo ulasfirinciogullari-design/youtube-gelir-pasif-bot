@@ -135,12 +135,19 @@ def normalize_turkish_tts(
     text: str,
     *,
     ensure_terminal: bool = True,
+    legacy_numeric_spacing: bool = False,
 ) -> str:
     text = (text or '').strip()
     for pattern, replacement in _TURKISH_PRONUNCIATION_RULES:
         text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
     text = re.sub(r'\s+([,.;:!?])', r'\1', text)
-    text = re.sub(r'([,.;:!?])(?=\S)', r'\1 ', text)
+    # A separator inside a written number is not a phrase boundary. In
+    # particular, never turn the sourced amount ``3,69`` into ``3, 69``.
+    punctuation = (r'([,.;:!?])(?=\S)' if legacy_numeric_spacing
+                   else r'([;:!?]|(?<!\d)[,.]|[,.](?!\d))(?=\S)')
+    # The legacy spelling is only for exact validation of an already
+    # hash-verified checkpoint, never selected by new synthesis calls.
+    text = re.sub(punctuation, lambda match: match.group() + ' ', text)
     text = re.sub(r'\s{2,}', ' ', text).strip()
     if ensure_terminal and text and text[-1] not in '.!?…':
         text += '.'
