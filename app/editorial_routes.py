@@ -9,13 +9,14 @@ from app.external_routes import _require_auth
 from app.services.external_artifact_import import _object, ExternalArtifactValidationError
 from app.services.external_editorial_review import (
     create_editorial_review, EditorialReviewError, EDITORIAL_REVIEW_FAILURE_CODES,
+    MAX_REFERENCE_VIDEO_BYTES,
 )
 
 
 router = APIRouter()
 MAX_REVIEW_EVIDENCE_BYTES = 1024 * 1024
-MAX_REFERENCE_VIDEO_BYTES = 8 * 1024 * 1024
-MAX_REVIEW_REQUEST_BYTES = 12 * 1024 * 1024
+# Bounded base64 envelope for a <=16 MiB original, plus <=1 MiB evidence.
+MAX_REVIEW_REQUEST_BYTES = 24 * 1024 * 1024
 
 
 def _review_and_queue(task_id, evidence_pack, reference_video=None):

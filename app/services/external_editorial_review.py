@@ -27,7 +27,9 @@ from app.services.youtube_automation import automated_quality_approved, SERIES_A
 
 EDITORIAL_RECEIPT_PREFIX = 'youtube_studio:external_editorial_review:v1:'
 MAX_EVIDENCE_BYTES = 1024 * 1024
-MAX_REFERENCE_VIDEO_BYTES = 8 * 1024 * 1024
+# Full provider-bound 1080p masters may exceed 8 MiB. Keep a finite cap and
+# the unchanged exact-file and same-runtime complete-PCM equality checks.
+MAX_REFERENCE_VIDEO_BYTES = 16 * 1024 * 1024
 _LIMITATIONS = {'word_timing': 'unverified', 'human_listened': False,
                 'provider_evidence_origin': 'owner_supplied_retained_run'}
 _EDIT_PROVENANCE = ('source_task_id', 'source_profile_revision', 'edit_binding_sha256')

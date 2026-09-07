@@ -108,6 +108,20 @@ def test_reference_must_be_exact_provider_bound_bytes_before_decode(pair, damage
     assert not p.calls
 
 
+def test_larger_provider_bound_reference_preserves_exact_identity_and_hard_cap():
+    reference = b'x' * 14622034
+    binding = {'video_sha256': review._sha(reference), 'video_size': len(reference)}
+    assert review._reference_binding(reference, binding) is None
+    with pytest.raises(review.EditorialReviewError):
+        review._reference_binding(b'y' + reference[1:], binding)
+    with pytest.raises(review.EditorialReviewError):
+        review._reference_binding(reference, {**binding, 'video_size': len(reference) - 1})
+    oversize = b'x' * (review.MAX_REFERENCE_VIDEO_BYTES + 1)
+    with pytest.raises(review.EditorialReviewError):
+        review._reference_binding(oversize,
+            {'video_sha256': review._sha(oversize), 'video_size': len(oversize)})
+
+
 @pytest.mark.parametrize('damage', ['one_sample', 'size', 'channels', 'sample_rate', 'duration',
                                    'reference_changed', 'source_changed'])
 def test_no_tolerance_or_reference_swap_can_authorize_pair(pair, damage):
