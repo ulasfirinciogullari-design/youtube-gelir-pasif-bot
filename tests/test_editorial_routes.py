@@ -129,11 +129,31 @@ def test_actual_stream_bound_cannot_be_bypassed_with_small_declared_length(case,
     assert response.status_code == 413 and not case[1]
 
 
-@pytest.mark.parametrize('length', ['-1', 'invalid', '9' * 20, str(12 * 1024 * 1024 + 1)])
+@pytest.mark.parametrize('length', ['-1', 'invalid', '9' * 20, str(routes.MAX_REVIEW_REQUEST_BYTES + 1)])
 def test_invalid_or_oversized_declared_body_is_rejected(case, length):
     response = case[0].post('/studio/api/external-masters/' + case[2] + '/review', content=b'{}',
         headers={'X-Factory-Token': 'editorial-test-token', 'Content-Type': 'application/json', 'Content-Length': length})
     assert response.status_code == 413 and not case[1]
+
+
+def test_full_1080p_reference_fits_bounded_shared_cap(case):
+    from app.services import external_editorial_review as review
+    assert routes.MAX_REFERENCE_VIDEO_BYTES == review.MAX_REFERENCE_VIDEO_BYTES == 16 * 1024 * 1024
+    assert routes.MAX_REVIEW_EVIDENCE_BYTES == 1024 * 1024
+    assert routes.MAX_REVIEW_REQUEST_BYTES == 24 * 1024 * 1024
+    # The actual new LEGO master is 14,622,034 bytes: don't transcode it or
+    # rewrite its retained QA just to fit the former 8 MiB envelope.
+    reference = b'x' * 14622034
+    encoded = base64.b64encode(reference).decode('ascii')
+    response = post(case, json={'evidence_pack': {'version': 2}, 'reviewed_reference_video': encoded})
+    assert response.status_code == 200
+    assert case[1] == [(case[2], {'version': 2}, reference)]
+    assert 'reviewed_reference_video' not in response.text
+
+
+def test_reference_bound_envelope_leaves_room_for_unchanged_evidence_limit():
+    envelope = 4 * ((routes.MAX_REFERENCE_VIDEO_BYTES + 2) // 3)
+    assert envelope + routes.MAX_REVIEW_EVIDENCE_BYTES + 1024 < routes.MAX_REVIEW_REQUEST_BYTES
 
 
 def test_content_type_and_uuid(case):
