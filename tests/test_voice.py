@@ -70,6 +70,25 @@ class _FakeTimestampResponse(_FakeVoiceResponse):
 
 
 class TurkishVoiceNormalizationTests(unittest.TestCase):
+    def test_numeric_separators_are_not_converted_to_speech_boundaries(self):
+        for text in ('Maliyet 3,69 sent.', 'Maliyet 3.69 sent.',
+                     'Bir milyon: 1.000.000 TL.', 'Tarih 07.01.2026.'):
+            with self.subTest(text=text):
+                self.assertEqual(normalize_turkish_tts(text), text)
+
+    def test_ordinary_punctuation_still_gets_spacing_without_joining_numbers(self):
+        self.assertEqual(normalize_turkish_tts('Evet,doğru.Yıl:2026!Tamam?Evet;son.'),
+                         'Evet, doğru. Yıl: 2026! Tamam? Evet; son.')
+        self.assertEqual(normalize_turkish_tts('Maliyet 3, 69 sent.'), 'Maliyet 3, 69 sent.')
+        self.assertEqual(normalize_turkish_tts('Bölüm 3.Sonraki 69.'), 'Bölüm 3. Sonraki 69.')
+
+    def test_explicit_legacy_mode_reproduces_only_the_prior_normalizer(self):
+        self.assertEqual(normalize_turkish_tts('Maliyet 3,69 sent.', legacy_numeric_spacing=True),
+                         'Maliyet 3, 69 sent.')
+        self.assertEqual(normalize_turkish_tts('Tutar 1.000.000 TL', ensure_terminal=False,
+                                              legacy_numeric_spacing=True), 'Tutar 1. 000. 000 TL')
+        self.assertEqual(normalize_turkish_tts('Maliyet 3,69 sent.'), 'Maliyet 3,69 sent.')
+
     def test_temporary_voice_import_does_not_leak_to_later_tests(self):
         self.assertNotIn('app.services.voice', sys.modules)
 

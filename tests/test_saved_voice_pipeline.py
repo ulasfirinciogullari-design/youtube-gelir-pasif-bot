@@ -1,5 +1,6 @@
 import ast
 import copy
+import re
 from pathlib import Path
 import sys
 from types import SimpleNamespace
@@ -189,4 +190,78 @@ def test_checkpoint_hash_failure_prevents_budget_validation_and_review(recovery)
     with pytest.raises(QualityError):
         r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
     r.budget_validator.assert_not_called()
+    r.reviewer.assert_not_called()
+
+
+def _decimal_recovery(r):
+    path = Path(__file__).resolve().parents[1] / 'app' / 'services' / 'voice.py'
+    tree = ast.parse(path.read_text(encoding='utf-8'))
+    definition = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                      and node.name == 'normalize_turkish_tts')
+    namespace = {'re': re, '_TURKISH_PRONUNCIATION_RULES': []}
+    exec(compile(ast.Module(body=[definition], type_ignores=[]), str(path), 'exec'), namespace)
+    r.monkeypatch.setitem(sys.modules, 'app.services.voice', SimpleNamespace(
+        normalize_turkish_tts=namespace['normalize_turkish_tts']))
+    r.package['scenes'] = [{'narration': 'Maliyet 3,69 sent.'}, {'narration': 'Tutar 1,25 sent.'}]
+    r.reviewer.return_value = copy.deepcopy(r.package)
+
+
+@pytest.mark.parametrize('spoken', [
+    ['Maliyet 3,69 sent.', 'Tutar 1,25 sent.'],
+    ['Maliyet 3, 69 sent.', 'Tutar 1, 25 sent.'],
+])
+def test_exact_current_or_legacy_checkpoint_spelling_preserves_original_records(recovery, spoken):
+    r = recovery
+    _decimal_recovery(r)
+    r.voice['spoken_texts'] = spoken
+    before = copy.deepcopy((r.source, r.child, r.voice, r.package))
+    result = r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    assert result['voice_result'] is r.voice
+    assert (r.source, r.child, r.voice, r.package) == before
+    r.loader.assert_called_once()
+    r.reviewer.assert_called_once()
+    r.unchanged.assert_called_once()
+    assert r.namespace['update_job'].call_args.kwargs['voice_candidate_reuse']['new_tts_requests'] == 0
+
+
+@pytest.mark.parametrize('spoken', [
+    ['Maliyet 3 69 sent.', 'Tutar 1, 25 sent.'],
+    ['Maliyet 3,96 sent.', 'Tutar 1,25 sent.'],
+    ['Maliyet 3, 69 cent.', 'Tutar 1, 25 sent.'],
+    ['Maliyet 3,  69 sent.', 'Tutar 1, 25 sent.'],
+    ['Maliyet 3, 69 sent değil.', 'Tutar 1, 25 sent.'],
+    ['Maliyet 3,69 sent.', 'Tutar 1, 25 sent.'],
+    ['Maliyet 3, 69 sent.', 'Tutar 1,25 sent.'],
+])
+def test_spoken_tampering_or_mixed_normalizer_versions_never_reaches_review(recovery, spoken):
+    r = recovery
+    _decimal_recovery(r)
+    r.voice['spoken_texts'] = spoken
+    before = copy.deepcopy((r.source, r.voice, r.package))
+    with pytest.raises(QualityError, match='no replacement voice was generated'):
+        r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    assert (r.source, r.voice, r.package) == before
+    r.reviewer.assert_not_called()
+    r.namespace['update_job'].assert_not_called()
+
+
+def test_legacy_punctuation_never_skips_hash_validation(recovery):
+    r = recovery
+    _decimal_recovery(r)
+    r.voice['spoken_texts'] = ['Maliyet 3, 69 sent.', 'Tutar 1, 25 sent.']
+    r.loader.side_effect = ValueError('Checkpoint hash differs')
+    with pytest.raises(QualityError):
+        r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    r.reviewer.assert_not_called()
+    r.namespace['update_job'].assert_not_called()
+
+
+def test_turkish_legacy_punctuation_is_not_adopted_for_other_languages(recovery):
+    r = recovery
+    _decimal_recovery(r)
+    for spec in (r.spec, r.source['spec'], r.child['spec']):
+        spec['language'] = 'en'
+    r.voice['spoken_texts'] = ['Maliyet 3, 69 sent.', 'Tutar 1, 25 sent.']
+    with pytest.raises(QualityError):
+        r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
     r.reviewer.assert_not_called()
