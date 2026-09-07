@@ -656,6 +656,41 @@ def youtube_production_status(
     return JSONResponse(result, headers={'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer'})
 
 
+@router.post('/studio/youtube/continue-after-owner-cancellation/{youtube_channel_id}')
+async def youtube_continue_after_owner_cancellation(
+    youtube_channel_id: str,
+    request: Request,
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    from starlette.concurrency import run_in_threadpool
+    from fastapi.responses import JSONResponse
+    from app.services.external_artifact_import import _object
+    from app.services.owner_cancelled_continuation import (
+        OwnerContinuationError, continue_after_owner_cancellation, validate_request,
+    )
+
+    _require_auth(studio_token)
+    _require_same_origin(request)
+    if request.headers.get('content-type', '').split(';', 1)[0].lower() != 'application/json':
+        raise HTTPException(status_code=415, detail='owner_continuation_json_required')
+    body = bytearray()
+    async for chunk in request.stream():
+        if len(body) + len(chunk) > 8192:
+            raise HTTPException(status_code=413, detail='owner_continuation_request_too_large')
+        body.extend(chunk)
+    try:
+        value = validate_request(youtube_channel_id, _object(bytes(body), limit=8192))
+    except Exception:
+        raise HTTPException(status_code=422, detail='owner_continuation_schema_invalid') from None
+    try:
+        result = await run_in_threadpool(continue_after_owner_cancellation, youtube_channel_id, **value)
+    except OwnerContinuationError:
+        raise HTTPException(status_code=409, detail='owner_continuation_not_eligible') from None
+    except Exception:
+        raise HTTPException(status_code=503, detail='owner_continuation_unavailable') from None
+    return JSONResponse(result, headers={'Cache-Control': 'no-store'})
+
+
 @router.post('/studio/youtube/connect')
 def youtube_connect(
     request: Request,
