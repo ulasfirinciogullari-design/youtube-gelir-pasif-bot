@@ -27,6 +27,13 @@ until its required routes have bounded, tested quotes and verified job context.
 - OpenAI and Runway SDK automatic create retries are disabled when enforcement
   is on. OpenAI text requests and Gemini JSON requests receive output bounds.
   Existing paid HTTP creates pass through the same pre-dispatch check.
+- Planning/render workers persist a budget rejection as a terminal failure on
+  the first attempt, consistent with their disabled Celery retry. The server
+  tick can release that active capacity without a Studio page visit. The budget
+  reason, preserved assets, spending history and failed episode hold remain;
+  this does not automatically resume a job when a new budget day starts.
+  This depends on the job registry accepting the failure write; registry
+  outages and hard worker interruption still need separate reconciliation.
 - `GET /studio/youtube/production-budget` requires normal owner authentication,
   is non-caching and read-only, and distinguishes disabled/active/blocked state.
   Its counters are reserved upper bounds, NOT settled invoices or an all-in
@@ -81,10 +88,18 @@ only explicit free-POST exclusions in the source coverage test.
 
 ## Financial scope
 
-- Proposed combined-channel cash envelope: $500/month, not a spending target.
-- Proposed variable API allowance: approximately $260/month. Fixed bills,
-  infrastructure, asset/music allowances, taxes and contingency stay outside
-  that API ledger but INSIDE the $500 envelope.
+- The earlier approximately $260/month API estimate and $500/month combined
+  estimate came from the assistant. Neither is a user-approved envelope,
+  allowance or spending target. No new monthly limit has been determined;
+  these estimates must not initialize policy or authorize paid dispatch.
+- Prefer existing legitimate subscription rights, beginning with the user's
+  Abacus AI subscription. Verify its actual plan, remaining credits, commercial
+  output rights and supported automation access before treating any generation
+  as included. A web subscription does not by itself establish an API allowance.
+  Included access does not mean unlimited capacity or authorized cash overage.
+- Keep fixed bills, infrastructure, asset/music allowances, taxes and contingency
+  visible separately from this API reservation ledger. There is currently no
+  approved combined monthly envelope against which to reconcile those costs.
 - A valid all-zero policy prohibits paid dispatch while free local editing
   and accepted-operation polling remain possible. Legitimate free quotas or
   prepaid credits require provider-specific quota/cash accounting; their expiry
@@ -139,3 +154,10 @@ only explicit free-POST exclusions in the source coverage test.
    and post-publication continuation are later separate acceptance gates.
 
 No new paid package or trial-account cycling is required by this module.
+
+Budget commissioning must also pass the app-independent operation acceptance
+checks in [the delivery workflow](longform-delivery-workflow.md#app-independent-operation-acceptance).
+Reaching a paid limit must stop new paid dispatch while eligible free monitoring,
+accepted-operation polling and reuse can continue; it must not silently select a
+paid fallback. These are commissioning conditions, not a claim of proven 24/7
+operation.

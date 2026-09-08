@@ -4500,7 +4500,11 @@ def plan_video_pipeline(
         return result
     except Exception as exc:
         if (
-            not isinstance(exc, ImmutableNarrationSceneBudgetError)
+            # Every non-retryable planning error must also finish the stored
+            # job; Celery will not deliver the advertised plan_retry stage.
+            not isinstance(exc, (
+                ImmutableNarrationSceneBudgetError, UnsupportedLanguageError, SpendBlocked,
+            ))
             and int(getattr(self.request, 'retries', 0) or 0)
             < int(self.max_retries or 0)
         ):
@@ -7702,6 +7706,8 @@ def run_video_pipeline(
                 )
             except FinalVisualQualityError:
                 pass
+        # Match Celery's non-retryable errors so a budget stop is persisted as
+        # terminal; otherwise plan_retry can keep a production slot forever.
         terminal_pre_media_error = isinstance(
             exc,
             (
@@ -7709,6 +7715,8 @@ def run_video_pipeline(
                 FinalAudioQualityError,
                 GeminiOmniContinuityReferenceError,
                 ImmutableNarrationSceneBudgetError,
+                UnsupportedLanguageError,
+                SpendBlocked,
             ),
         )
         if options.get('production_delivery') is not None and not terminal_pre_media_error:
