@@ -691,6 +691,18 @@ async def youtube_continue_after_owner_cancellation(
     return JSONResponse(result, headers={'Cache-Control': 'no-store'})
 
 
+@router.get('/studio/youtube/production-budget')
+def youtube_production_budget(
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    """Read budget reservations only; no initialization, refund or resumption."""
+    from fastapi.responses import JSONResponse
+    from app.services.production_spend_runtime import budget_status
+
+    _require_auth(studio_token)
+    return JSONResponse(budget_status(), headers={'Cache-Control': 'no-store'})
+
+
 @router.post('/studio/youtube/connect')
 def youtube_connect(
     request: Request,

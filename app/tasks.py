@@ -7,7 +7,11 @@ import math
 import re
 import shutil
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import as_completed
+from app.services.production_spend import SpendBlocked
+from app.services.production_spend_runtime import (
+    SpendingThreadPoolExecutor as ThreadPoolExecutor, spending_task,
+)
 
 import httpx
 from celery.exceptions import Ignore
@@ -4449,10 +4453,12 @@ def _repair_voice_internal_pauses(voice_result: dict, target_seconds: float,
     dont_autoretry_for=(
         ImmutableNarrationSceneBudgetError,
         UnsupportedLanguageError,
+        SpendBlocked,
     ),
     retry_backoff=True,
     max_retries=1,
 )
+@spending_task
 def plan_video_pipeline(
     self,
     topic: str,
@@ -4517,10 +4523,12 @@ def plan_video_pipeline(
         GeminiOmniContinuityReferenceError,
         ImmutableNarrationSceneBudgetError,
         UnsupportedLanguageError,
+        SpendBlocked,
     ),
     retry_backoff=True,
     max_retries=2,
 )
+@spending_task
 def run_video_pipeline(
     self,
     topic: str,

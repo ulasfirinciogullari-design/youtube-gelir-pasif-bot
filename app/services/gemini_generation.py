@@ -4,6 +4,8 @@ import re
 from typing import Any
 
 import httpx
+from app.services.production_spend import SpendBlocked
+from app.services.production_spend_runtime import paid_post, enforcement_enabled
 
 
 GEMINI_DEFAULT_MODEL = 'gemini-3.1-pro-preview'
@@ -383,6 +385,8 @@ def _generate_gemini_json_from_parts(
         'thinkingConfig': {'thinkingLevel': clean_thinking_level},
         'responseMimeType': 'application/json',
     }
+    if enforcement_enabled():
+        generation_config['maxOutputTokens'] = 8192
     if safe_schema is not None:
         generation_config['responseJsonSchema'] = safe_schema
     request_body: dict[str, Any] = {
@@ -401,7 +405,7 @@ def _generate_gemini_json_from_parts(
     attempts = 2 if retry_once else 1
     for attempt in range(attempts):
         try:
-            response = httpx.post(
+            response = paid_post(httpx.post,
                 _GEMINI_ENDPOINT.format(model=clean_model),
                 headers={
                     'x-goog-api-key': clean_api_key,
@@ -410,6 +414,8 @@ def _generate_gemini_json_from_parts(
                 json=request_body,
                 timeout=timeout,
             )
+        except SpendBlocked:
+            raise  # A budget refusal is neither a transport failure nor retry permission.
         except _NETWORK_ERROR_TYPES:
             if attempt + 1 < attempts:
                 continue

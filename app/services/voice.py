@@ -6,7 +6,10 @@ import math
 import re
 import subprocess
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import as_completed
+from app.services.production_spend_runtime import (
+    SpendingThreadPoolExecutor as ThreadPoolExecutor, paid_post,
+)
 import httpx
 import redis
 from app.config import settings
@@ -252,7 +255,7 @@ def synthesize_voice_with_id(
         seed=seed,
         turkish_short_preview=turkish_short_preview,
     )
-    response = httpx.post(
+    response = paid_post(httpx.post,
         f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}',
         headers={**_headers(), 'Accept': 'audio/mpeg', 'Content-Type': 'application/json'},
         params={'output_format': 'mp3_44100_128'}, json=body, timeout=180,
@@ -273,7 +276,7 @@ def synthesize_voice_with_timestamps(
     """Synthesize one continuous take with character-level source timing."""
     if raw_audio_sink is not None and not callable(raw_audio_sink):
         raise VoiceQualityError('Raw voice diagnostic sink is invalid')
-    response = httpx.post(
+    response = paid_post(httpx.post,
         f'{ELEVENLABS_BASE}/text-to-speech/{voice_id}/with-timestamps',
         headers={**_headers(), 'Accept': 'application/json', 'Content-Type': 'application/json'},
         params={'output_format': 'mp3_44100_128'},

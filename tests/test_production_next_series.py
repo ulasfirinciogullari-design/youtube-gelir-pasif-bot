@@ -535,6 +535,8 @@ def _provider_generate(case, **bindings):
     function = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == '_generate')
     class Imports(ast.NodeTransformer):
         def visit_ImportFrom(self, node):
+            if node.module == 'app.services.production_spend_runtime':
+                return node  # Retain the real guard around the fake provider.
             return None
     function = Imports().visit(function)
     isolated = {**case.ns, **bindings}

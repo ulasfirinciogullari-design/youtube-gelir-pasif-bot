@@ -11,6 +11,7 @@ import time
 from urllib.parse import urlparse
 
 import httpx
+from app.services.production_spend_runtime import paid_post
 
 from app.config import settings
 
@@ -396,7 +397,7 @@ def generate_fal_video(
     ) as client:
         try:
             # Never retry this paid POST. A timeout may hide an accepted job.
-            created = client.post(
+            created = paid_post(client.post,
                 submit_url,
                 headers=headers,
                 json=request_body,

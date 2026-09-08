@@ -13,6 +13,10 @@ class Settings(BaseSettings):
     studio_fresh_plan_openai_model: str = 'gpt-6-astra'
     studio_visual_qc_provider: str = ''
     studio_visual_qc_openai_model: str = 'gpt-6-astra'
+    # Staged rollout: enable only after explicit ledger initialization. Missing
+    # context, policy or a reviewed provider quote then blocks paid requests.
+    studio_spend_enforcement: bool = False
+    studio_spend_policy_json: str = ''
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )
