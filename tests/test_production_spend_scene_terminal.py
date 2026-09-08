@@ -86,6 +86,10 @@ omni_continuity_anchor_scene_idx = None
 @pytest.fixture
 def case(production, monkeypatch, tmp_path):
     module, client = production
+    # Some legacy tests unload studio_state during collection. Keep dynamic
+    # worker imports on the same real module whose Redis boundary we patch.
+    monkeypatch.setitem(sys.modules, 'app.services.studio_state', studio_state)
+    monkeypatch.setattr(sys.modules['app.services'], 'studio_state', studio_state, raising=False)
     monkeypatch.setattr(studio_state, '_client', lambda: client)
     audio_checkpoint = {'audio_sha256': 'a' * 64, 'requires_full_qa': True}
     client.set(studio_state.JOB_PREFIX + TASK_ID, json.dumps({

@@ -194,6 +194,8 @@ def test_actual_v4_selection_ignores_stock_rank_and_has_no_undeclared_candidate(
 
 
 def _primary(runtime, tmp_path, *, fail_index=None):
+    from app.services.production_spend import SpendBlocked
+
     events, validations = [], []
     durable = {'used': runtime['runway_attempts']}
     def slots(task_id, cap, *, reserve=False):
@@ -213,6 +215,7 @@ def _primary(runtime, tmp_path, *, fail_index=None):
             raise RuntimeError('A mocked accepted-provider failure')
         return {'provider': 'gemini_veo', 'provider_attempts': 1}
     runtime.update(
+        SpendBlocked=SpendBlocked,
         task_id='child', work=tmp_path, scene_durations=[5.0] * 6,
         download_file=lambda key, path: events.append(('download', key)),
         _validate_recovered_generated_clip=lambda *args, **kwargs: validations.append(kwargs),
