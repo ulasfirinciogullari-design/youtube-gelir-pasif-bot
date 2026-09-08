@@ -122,8 +122,19 @@ only explicit free-POST exclusions in the source coverage test.
 
 - The earlier approximately $260/month API estimate and $500/month combined
   estimate came from the assistant. Neither is a user-approved envelope,
-  allowance or spending target. No new monthly limit has been determined;
-  these estimates must not initialize policy or authorize paid dispatch.
+  allowance or spending target. On 8 September 2026 the owner set a maximum
+  **$10/month in additional API cash spending**, separate from existing
+  subscriptions and included credits. This is a ceiling, not a spending target.
+  The earlier estimates must not initialize policy or authorize paid dispatch.
+- Persist and reconcile included provider quotas separately from the approved
+  $10 additional-cash ceiling. The current ledger reserves USD list-cost upper
+  bounds; it cannot yet distinguish covered credits from new cash charges.
+  Simply setting its monthly number to $10 does not commission that distinction.
+  Missing credit coverage must not be treated as free, and exhausted included
+  rights must not trigger an automatic topup or a cash fallback over the ceiling.
+  Both prior/in-flight extra charges and provider overage settings need evidence
+  before live paid dispatch. Existing subscription renewals are outside this
+  additional API allowance, not newly authorized purchases.
 - Prefer existing legitimate subscription rights, beginning with the user's
   Abacus AI subscription. Verify its actual plan, remaining credits, commercial
   output rights and supported automation access before treating any generation
