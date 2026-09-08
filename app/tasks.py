@@ -8,6 +8,7 @@ import re
 import shutil
 import time
 from concurrent.futures import as_completed
+from app.services.abacus_generation import AbacusGenerationError
 from app.services.production_spend import SpendBlocked
 from app.services.production_spend_runtime import (
     SpendingThreadPoolExecutor as ThreadPoolExecutor, spending_task,
@@ -4148,6 +4149,8 @@ def _prepare_scheduled_short_shots(
             package, topic, duration_minutes, language, options,
             fresh_scheduled=True, before_compression=reserve_compression,
         )
+    except (SpendBlocked, AbacusGenerationError):
+        raise
     except Exception:
         raise FinalVisualQualityError(
             'Scheduled shooting directions could not be validated before voice or paid media'
@@ -4461,6 +4464,7 @@ def _repair_voice_internal_pauses(voice_result: dict, target_seconds: float,
         ImmutableNarrationSceneBudgetError,
         UnsupportedLanguageError,
         SpendBlocked,
+        AbacusGenerationError,
     ),
     retry_backoff=True,
     max_retries=1,
@@ -4504,6 +4508,7 @@ def plan_video_pipeline(
             # job; Celery will not deliver the advertised plan_retry stage.
             not isinstance(exc, (
                 ImmutableNarrationSceneBudgetError, UnsupportedLanguageError, SpendBlocked,
+                AbacusGenerationError,
             ))
             and int(getattr(self.request, 'retries', 0) or 0)
             < int(self.max_retries or 0)
@@ -4535,6 +4540,7 @@ def plan_video_pipeline(
         ImmutableNarrationSceneBudgetError,
         UnsupportedLanguageError,
         SpendBlocked,
+        AbacusGenerationError,
     ),
     retry_backoff=True,
     max_retries=2,
@@ -6488,6 +6494,11 @@ def run_video_pipeline(
                     'prompt_sha256': generated_scene.get('prompt_sha256'),
                 })
                 omni_unsafe_submission_scenes.discard(scene_idx)
+            except SpendBlocked:
+                # A budget denial stops this worker before another scene,
+                # critic or repair can make a paid request. Preserve its reason
+                # for the outer terminal handler and retained checkpoints.
+                raise
             except Exception as exc:
                 if isinstance(exc, GeminiOmniContinuityReferenceError):
                     # A paid first clip exists but cannot safely anchor later
@@ -6988,6 +6999,8 @@ def run_video_pipeline(
                     'replacement_count': 1,
                     'stage': 'final_visual_qc_ai_repair',
                 })
+            except SpendBlocked:
+                raise
             except Exception as exc:
                 if isinstance(exc, GeminiOmniContinuityReferenceError):
                     raise
@@ -7717,6 +7730,7 @@ def run_video_pipeline(
                 ImmutableNarrationSceneBudgetError,
                 UnsupportedLanguageError,
                 SpendBlocked,
+                AbacusGenerationError,
             ),
         )
         if options.get('production_delivery') is not None and not terminal_pre_media_error:

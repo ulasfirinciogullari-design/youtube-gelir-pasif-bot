@@ -166,17 +166,85 @@ def resolve_context(client, task_id):
     raise SpendBlocked('spend_store_contention')
 
 
-def reserve_request(provider, operation, payload, quote):
-    ledger = configured_ledger()
-    context = resolve_context(ledger.client, _TASK_ID.get())
-    fingerprint = hashlib.sha256(_json({
+def _request_fingerprint(context, provider, operation, payload):
+    return hashlib.sha256(_json({
         'lineage': context['lineage_id'], 'provider': provider,
         'operation': operation, 'payload': payload,
     }).encode()).hexdigest()
+
+
+def reserve_request(provider, operation, payload, quote):
+    ledger = configured_ledger()
+    context = resolve_context(ledger.client, _TASK_ID.get())
+    fingerprint = _request_fingerprint(context, provider, operation, payload)
     return ledger.reserve(
         request_key=fingerprint, channel_id=context['channel_id'],
         lineage_id=context['lineage_id'], kind=context['kind'], quote=quote,
     )
+
+
+def record_abacus_usage(payload, usage_record):
+    """Attach verified response usage to its existing immutable reservation.
+
+    This is an observation, not settlement or a refund. Reserved counters and
+    replay fences remain untouched, including when the returned JSON is bad.
+    A lost write reply stops the worker; recording the same receipt again is
+    harmless and never grants a second provider submission.
+    """
+    if not enforcement_enabled():
+        raise SpendBlocked('spend_not_enabled')
+    fields = {'request_id', 'model', 'input_tokens', 'output_tokens',
+              'cache_creation_input_tokens', 'cache_read_input_tokens', 'actual_micro'}
+    if (type(payload) is not dict or type(usage_record) is not dict
+            or set(usage_record) != fields
+            or type(usage_record['request_id']) is not str
+            or not re.fullmatch(r'[A-Za-z0-9_-]{1,160}', usage_record['request_id'])
+            or type(usage_record['model']) is not str
+            or usage_record['model'] != payload.get('model')
+            or not re.fullmatch(r'[A-Za-z0-9._-]{1,100}', usage_record['model'])
+            or any(type(usage_record[name]) is not int or not 0 <= usage_record[name] <= 10_000_000_000
+                   for name in fields - {'request_id', 'model'})):
+        raise SpendBlocked('spend_usage_invalid')
+    ledger = configured_ledger()
+    context = resolve_context(ledger.client, _TASK_ID.get())
+    fingerprint = _request_fingerprint(context, 'abacus', '/v1/messages', payload)
+    suffix = hashlib.sha256(fingerprint.encode()).hexdigest()
+    request_field, usage_field = 'request:' + suffix, 'usage:' + suffix
+    record = {'version': 1, 'provider': 'abacus', 'operation': '/v1/messages',
+              'accounting': 'observed_list_cost_not_settlement', **usage_record}
+    encoded = _json(record)
+    for _ in range(12):
+        try:
+            with ledger.client.pipeline() as pipe:
+                pipe.watch(LEDGER_KEY)
+                reservation = _object(pipe.hget(LEDGER_KEY, request_field))
+                quote = reservation.get('quote')
+                if (any(reservation.get(key) != context[key]
+                        for key in ('channel_id', 'lineage_id', 'kind'))
+                        or type(quote) is not dict or quote.get('provider') != 'abacus'
+                        or quote.get('model') != usage_record['model']
+                        or type(quote.get('maximum_micro')) is not int
+                        or usage_record['actual_micro'] > quote['maximum_micro']):
+                    raise SpendBlocked('spend_usage_binding_invalid')
+                previous = pipe.hget(LEDGER_KEY, usage_field)
+                if previous is not None:
+                    if _object(previous) != record:
+                        raise SpendBlocked('spend_usage_conflict')
+                    # The observation exists; no counters or submission permit.
+                    return
+                pipe.multi()
+                pipe.hset(LEDGER_KEY, usage_field, encoded)
+                acknowledged = pipe.execute()
+                if len(acknowledged) != 1 or type(acknowledged[0]) is not int or acknowledged[0] != 1:
+                    raise SpendBlocked('spend_usage_write_uncertain')
+                return
+        except redis.exceptions.WatchError:
+            continue
+        except SpendBlocked:
+            raise
+        except Exception:
+            raise SpendBlocked('spend_usage_unavailable') from None
+    raise SpendBlocked('spend_store_contention')
 
 
 def paid_post(sender, url, **kwargs):

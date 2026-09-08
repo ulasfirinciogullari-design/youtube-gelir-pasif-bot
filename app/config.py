@@ -11,6 +11,11 @@ class Settings(BaseSettings):
     openai_model: str = 'gpt-5'
     studio_plan_provider: str = 'openai'
     studio_fresh_plan_openai_model: str = 'gpt-6-astra'
+    abacus_api_key: str = ''
+    # Only the fresh editorial refinement opts in; research and independent
+    # media/voice review keep their existing provider contracts.
+    studio_abacus_editorial_enabled: bool = False
+    studio_abacus_editorial_model: str = 'claude-haiku-4-5-20251001'
     studio_visual_qc_provider: str = ''
     studio_visual_qc_openai_model: str = 'gpt-6-astra'
     # Staged rollout: enable only after explicit ledger initialization. Missing

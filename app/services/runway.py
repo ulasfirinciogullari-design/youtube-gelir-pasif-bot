@@ -1085,6 +1085,7 @@ def _generate_gemini_omni_video(
     continuity_reference_image: str | Path | bytes | bytearray | memoryview | None = None,
 ) -> dict:
     """Submit one retry-free Omni interaction and return validated media."""
+    from app.services.production_spend import SpendBlocked
     from app.services.production_spend_runtime import paid_post
     if not settings.gemini_api_key:
         raise GeminiOmniPreAcceptanceFallbackError(
@@ -1147,6 +1148,8 @@ def _generate_gemini_omni_video(
                 headers=headers,
                 json=request_payload,
             )
+        except SpendBlocked:
+            raise
         except Exception:
             # The provider may have accepted this paid POST. Never retry it or
             # start another provider when transport acceptance is ambiguous.
@@ -1273,6 +1276,7 @@ def _select_gemini_omni_continuity_candidate(
     candidates: list[Path],
 ) -> Path:
     """Choose only a clean identity frame; never propagate generated UI."""
+    from app.services.production_spend import SpendBlocked
     if len(candidates) != 3:
         raise GeminiOmniContinuityReferenceError(
             'Gemini Omni continuity candidate count is invalid'
@@ -1329,6 +1333,8 @@ def _select_gemini_omni_continuity_candidate(
                 'required JSON.'
             ),
         )
+    except SpendBlocked:
+        raise
     except GeminiOmniContinuityReferenceError:
         raise
     except Exception as exc:
@@ -1389,6 +1395,7 @@ def create_gemini_omni_continuity_reference(
     output_path: str | Path,
 ) -> str:
     """Extract one visually clean, bounded identity-anchor frame."""
+    from app.services.production_spend import SpendBlocked
     source = Path(source_path)
     output = Path(output_path)
     if output.suffix.casefold() not in {'.jpg', '.jpeg'}:
@@ -1455,6 +1462,8 @@ def create_gemini_omni_continuity_reference(
         winner = _select_gemini_omni_continuity_candidate(candidates)
         winner.replace(output)
         return str(output)
+    except SpendBlocked:
+        raise
     except GeminiOmniContinuityReferenceError:
         raise
     except Exception as exc:
@@ -1789,6 +1798,7 @@ def generate_scene(
             quota_fallback_from: str | None,
             quota_fallback_chain: list[str],
         ) -> dict:
+            from app.services.production_spend import SpendBlocked
             if not allow_image_motion or not str(image_prompt or '').strip():
                 raise RuntimeError(
                     'Gemini video fallback cannot satisfy this shot duration'
@@ -1808,6 +1818,8 @@ def generate_scene(
                         aspect_ratio,
                     )
                 )
+            except SpendBlocked:
+                raise
             except Exception as exc:
                 # Preserve a narrow, content-free receipt so the caller can
                 # reserve this scene even after an ambiguous timeout or a

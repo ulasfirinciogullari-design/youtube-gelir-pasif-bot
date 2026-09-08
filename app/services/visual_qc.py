@@ -1364,8 +1364,11 @@ def _repair_temporal_response(data, request, included_indices, available_moments
         'Locked selections: ' + json.dumps(anchors, separators=(',', ':'))
         + ' Incomplete response requirements: ' + json.dumps(requirements, separators=(',', ':'))
     )
+    from app.services.production_spend import SpendBlocked
     try:
         revised = _temporal_response_rows(request(instruction), *arguments)
+    except SpendBlocked:
+        raise
     except Exception:
         revised = None
     if revised is None or any(
@@ -2470,6 +2473,7 @@ def review_scene_visuals(
             )
             initial_review['score_reason_revalidation_provider'] = consistency_provider
             initial_review['score_reason_revalidation_attempted'] = True
+            from app.services.production_spend import SpendBlocked
             try:
                 consistency_qc = review_scene_visuals(
                     [scenes[scene_index]],
@@ -2493,6 +2497,8 @@ def review_scene_visuals(
                         else _gemini_thinking_level
                     ),
                 )
+            except SpendBlocked:
+                raise
             except Exception:
                 consistency_qc = {'reviews': []}
 

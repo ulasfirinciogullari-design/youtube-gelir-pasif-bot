@@ -2,7 +2,8 @@
 
 The reservation primitive is now connected to the current paid provider
 submission sites. `STUDIO_SPEND_ENFORCEMENT=false` preserves the existing
-provider contract without reading or initializing the budget ledger. This
+provider contract without reading or initializing the budget ledger. The new
+Abacus editorial path requires enforcement and remains separately disabled. This
 change does NOT enable production enforcement, initialize Redis, purchase
 credits, generate media, resume failed jobs or publish anything.
 
@@ -34,6 +35,11 @@ until its required routes have bounded, tested quotes and verified job context.
   this does not automatically resume a job when a new budget day starts.
   This depends on the job registry accepting the failure write; registry
   outages and hard worker interruption still need separate reconciliation.
+- Scene creation and repair loops, audio-provider fallbacks, Omni anchor review
+  and temporal/recursive visual review preserve a budget rejection as terminal.
+  They must not convert it into an ordinary provider failure and continue to
+  another paid request. Native Abacus submission failures are also terminal;
+  valid usage is recorded even when the generated content subsequently fails QA.
 - `GET /studio/youtube/production-budget` requires normal owner authentication,
   is non-caching and read-only, and distinguishes disabled/active/blocked state.
   Its counters are reserved upper bounds, NOT settled invoices or an all-in
@@ -56,6 +62,8 @@ endpoints and unbounded requests block. Prepaid balances are not cash discounts.
 | --- | --- | --- |
 | OpenAI GPT-6 Astra | Tool-free plain text, standard tier, at most 100,000 encoded JSON bytes, at most 16,384 output tokens | $10/M input and $50/M output; conservative input bound is encoded JSON bytes + 4,096 framing tokens |
 | Gemini 3.1 Pro Preview | One tool-free text-only JSON candidate, optional inline schema, at most 100,000 encoded JSON bytes and 16,384 total output tokens | $2/M input and $12/M output including thinking; encoded bytes + 4,096 framing keeps the input bound below the 200,000-token price threshold |
+| Abacus Claude Haiku 4.5 (`claude-haiku-4-5-20251001`) | Native Messages, one plain-text user message, thinking disabled, at most 100,000 encoded JSON bytes and 8,192 output tokens | $1/M input and $5/M output; encoded bytes + 4,096 framing tokens |
+| Abacus Claude Sonnet 5 / 4.6 (`claude-sonnet-5`, `claude-sonnet-4-6`) | Same native text contract, explicit global inference | Respectively $2/$10 and $3/$15 per M input/output tokens |
 | Runway Gen-4.5 | Text-to-video, supported 720p ratios, 2–10 s, no generated audio | $0.12/s |
 | Runway Seedance 2 Fast | Same bounded request family | $0.29/s, including when selected as a fallback |
 | Veo 3.1 Lite | One text-to-video sample, 4/6/8 s | $0.05/s at 720p; $0.08/s at 1080p |
@@ -70,6 +78,30 @@ Sources: [OpenAI pricing](https://developers.openai.com/api/docs/pricing),
 [Google's combined thinking/output token guidance](https://codelabs.developers.google.com/bigquery-generative-ai-intro#3).
 The OpenAI output ceiling includes reasoning tokens. Provider-supported model
 duration restrictions still apply; a cost quote does not imply model acceptance.
+
+Abacus prices were checked against the authenticated official `/v1/models`
+catalog and the [public per-million-token price table](https://routellm-apis.abacus.ai/).
+The former returns USD **per token**; do not reuse the differently scaled
+`listRouteLLMModels` examples. The adapter uses the
+[native Anthropic Messages passthrough](https://abacus.ai/help/developer-platform/route-llm/anthropic-messages),
+`service_tier=standard_only`, and `thinking.type=disabled`. Sonnet also requires
+`inference_geo=global`; Haiku omits that unsupported field. Tools, cache controls,
+media, automatic routing, priority/fast modes, unknown headers and provider-side
+structured-output configuration are rejected. A plain prompt carries the JSON
+schema, which is validated locally. The authenticated model-list read confirms
+key access, not a successful paid Messages call or remaining account balance.
+
+`STUDIO_ABACUS_EDITORIAL_ENABLED=false` is the default. When explicitly enabled
+with commissioned spending, only the fresh scheduled director refinement uses
+the configured Abacus Claude model (Haiku by default); research, immutable saved
+stories and independent media reviewers retain their existing routes. Every
+create has one reservation and no automatic POST retry or provider fallback.
+Native model/request identity, token counts and pricing mode must match the
+bounded request. An acknowledged `usage:<digest>` observation is attached to
+the existing durable reservation before generated-content validation. It stores
+no prompt or key and never reduces reserved counters, settles an invoice,
+converts credits to cash or authorizes another create. Missing/malformed usage,
+uncertain writes, over-quote counts and conflicting observations stop the job.
 
 The current audio/TTS/music, Gemini grounding/multimodal critic/image/Omni,
 OpenAI vision/search and fal calls are guarded but have NO commissioned quote
@@ -132,6 +164,9 @@ only explicit free-POST exclusions in the source coverage test.
    calls, duration, resolution and attempt count. Unknown models/prices block
    paid dispatch. `SpendQuote` holds this upper bound; it does not calculate
    prices or validate a provider's request shape by itself.
+   Per-scene monetary ceilings also remain to be implemented: a family cap and
+   request-count cap do not by themselves prevent a more expensive video-model
+   fallback while the family still has budget available.
 4. Retain the existing durable provider intent alongside the deterministic
    spending identity. The guard reserves immediately before ONE create call.
    Only an acknowledged new reservation permits that POST. Duplicate keys,

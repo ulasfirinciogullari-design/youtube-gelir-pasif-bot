@@ -14,6 +14,7 @@ from celery import Celery
 import pytest
 
 from app.services import studio_state
+from app.services.abacus_generation import AbacusConfigurationError, AbacusGenerationError
 from app.services.production_spend import LEDGER_KEY, SpendBlocked
 from test_channel_production import production, _parallel_channels
 
@@ -29,6 +30,7 @@ ERRORS = {
     )
 }
 ERRORS['SpendBlocked'] = SpendBlocked
+ERRORS['AbacusGenerationError'] = AbacusGenerationError
 
 
 def _worker(pipeline, task_id, error, *, attempts=0, options=None, **overrides):
@@ -130,6 +132,25 @@ def test_other_declared_non_retryable_errors_are_terminal_too(registry, pipeline
             stage.assert_not_called()
         finally:
             app.close()
+
+
+@pytest.mark.parametrize('pipeline', ['plan_video_pipeline', 'run_video_pipeline'])
+@pytest.mark.parametrize('error_type,code', [
+    (AbacusGenerationError, 'abacus_output_invalid'),
+    (AbacusConfigurationError, 'abacus_configuration_invalid'),
+])
+def test_abacus_error_family_cannot_resend_a_failed_or_invalid_paid_response(registry, pipeline, error_type, code):
+    error = error_type(code)
+    app, task, fail, mark, stage = _worker(pipeline, TASK_ID, error)
+    try:
+        result = task.apply(task_id=TASK_ID, throw=False)
+        assert result.state == 'FAILURE' and str(result.result) == code
+        fail.assert_called_once()
+        mark.assert_called_once_with(TASK_ID, error)
+        stage.assert_not_called()
+        assert studio_state.get_job(TASK_ID)['error'] == code
+    finally:
+        app.close()
 
 
 @pytest.mark.parametrize('pipeline,retries', [('plan_video_pipeline', 1), ('run_video_pipeline', 2)])

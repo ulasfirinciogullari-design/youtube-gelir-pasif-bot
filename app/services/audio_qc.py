@@ -2268,6 +2268,7 @@ def _verify_with_openai(
     *,
     provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
+    from app.services.production_spend import SpendBlocked
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
         with path.open('rb') as audio_file:
@@ -2286,6 +2287,8 @@ def _verify_with_openai(
                 },
                 timeout=_SPEECH_TO_TEXT_TIMEOUT,
             )
+    except SpendBlocked:
+        raise
     except Exception:
         raise AudioQCError(
             'OpenAI speech-to-text transport failed'
@@ -2623,6 +2626,7 @@ def _verify_with_gemini(
             },
         },
     }
+    from app.services.production_spend import SpendBlocked
     try:
         for attempt in range(_GEMINI_INTERACTION_ATTEMPTS):
             try:
@@ -2635,6 +2639,8 @@ def _verify_with_gemini(
                     json=request_body,
                     timeout=_SPEECH_TO_TEXT_TIMEOUT,
                 )
+            except SpendBlocked:
+                raise
             except httpx.TransportError:
                 if attempt + 1 < _GEMINI_INTERACTION_ATTEMPTS:
                     time.sleep(_GEMINI_INTERACTION_RETRY_DELAY_SECONDS)
@@ -2687,6 +2693,7 @@ def _verify_with_elevenlabs(
     *,
     provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
+    from app.services.production_spend import SpendBlocked
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
         with path.open('rb') as audio_file:
@@ -2705,6 +2712,8 @@ def _verify_with_elevenlabs(
                 },
                 timeout=_SPEECH_TO_TEXT_TIMEOUT,
             )
+    except SpendBlocked:
+        raise
     except Exception:
         raise AudioQCError(
             'ElevenLabs speech-to-text transport failed'

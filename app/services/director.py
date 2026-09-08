@@ -2103,6 +2103,20 @@ EDITORIAL QC RULES:
 - qc_summary is a short list of the main editorial repairs.
 '''
     reasoning_effort = 'medium' if correction else 'low'
+    if (fresh_scheduled is True
+            and getattr(settings, 'studio_abacus_editorial_enabled', False) is True):
+        from app.services.abacus_generation import generate_abacus_json
+        return generate_abacus_json(
+            prompt,
+            api_key=str(getattr(settings, 'abacus_api_key', '') or ''),
+            model=str(getattr(settings, 'studio_abacus_editorial_model', '') or ''),
+            json_schema=_director_json_schema(
+                target_scenes,
+                exact_scene_count=exact_scene_count,
+                **({'delivery_family': True} if delivery_rule else {}),
+            ),
+            max_tokens=8192,
+        )
     if _studio_plan_provider() == 'gemini':
         return generate_gemini_json(
             prompt,
@@ -3853,6 +3867,8 @@ def ensure_scheduled_short_shot_prompts(
     one-shot reservation callback. A valid package makes no model or callback
     call. This function does not approve audio, footage, render or publication.
     """
+    from app.services.abacus_generation import AbacusGenerationError
+    from app.services.production_spend import SpendBlocked
     if not _scheduled_short_shot_contract(options, duration_minutes, fresh_scheduled):
         return package
     try:
@@ -3921,7 +3937,7 @@ def ensure_scheduled_short_shot_prompts(
         if not short_story_package_is_approved(result, topic):
             raise ScheduledShotPromptError('Compressed shot approval lost its exact package binding')
         return result
-    except ScheduledShotPromptError:
+    except (ScheduledShotPromptError, SpendBlocked, AbacusGenerationError):
         raise
     except Exception:
         raise ScheduledShotPromptError('Scheduled shot preparation failed before voice or media') from None

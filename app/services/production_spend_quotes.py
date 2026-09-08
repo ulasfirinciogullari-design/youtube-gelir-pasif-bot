@@ -13,9 +13,22 @@ from urllib.parse import urlsplit
 
 from app.services.production_spend import SpendBlocked, SpendQuote, usd_micro
 
-_REVISION = 'official-2026-09-08-v2'
+_REVISION = 'official-2026-09-08-v3'
 _VALID_FROM = datetime(2026, 9, 8, tzinfo=timezone.utc)
 _VALID_UNTIL = datetime(2026, 10, 1, tzinfo=timezone.utc)
+
+# GET https://routellm.abacus.ai/v1/models uses USD PER TOKEN. The public
+# https://routellm-apis.abacus.ai/ table displays USD PER MILLION tokens.
+# Do not apply the unit of the older listRouteLLMModels example to this route.
+ABACUS_TEXT_RATES_PER_TOKEN = {
+    'claude-haiku-4-5-20251001': (Decimal('0.000001'), Decimal('0.000005')),
+    'claude-sonnet-5': (Decimal('0.000002'), Decimal('0.00001')),
+    'claude-sonnet-4-6': (Decimal('0.000003'), Decimal('0.000015')),
+}
+ABACUS_INPUT_FRAMING_TOKENS = 4096
+ABACUS_MAX_REQUEST_BYTES = 100_000
+ABACUS_MAX_OUTPUT_TOKENS = 8192
+ABACUS_GLOBAL_GEO_MODELS = frozenset({'claude-sonnet-4-6', 'claude-sonnet-5'})
 
 
 def _require(condition, reason='spend_request_not_priced'):
@@ -181,6 +194,59 @@ def _gemini_json(model, body, headers):
                   (Decimal(size + 4096) * 2 + Decimal(output) * 12) / 1_000_000)
 
 
+def _abacus_messages(body, headers):
+    """One native Claude text response, with thinking/tools/cache disabled.
+
+    Abacus documents an unchanged Anthropic Messages pass-through:
+    https://abacus.ai/help/developer-platform/route-llm/anthropic-messages
+    Claude documents disabled thinking on these reviewed models and a strict
+    max_tokens ceiling including thinking:
+    https://platform.claude.com/docs/en/build-with-claude/thinking
+    https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting
+    Explicit standard tier/global routing prevents workspace defaults from
+    selecting other pricing; Haiku rejects geo and always uses standard rates:
+    https://platform.claude.com/docs/en/api/service-tiers
+    https://platform.claude.com/docs/en/manage-claude/data-residency
+    Schemas stay in plain prompt text: output_config can inject billed input.
+    """
+    _require(type(headers) is dict and all(type(key) is str for key in headers))
+    names = [key.lower() for key in headers]
+    _require(len(set(names)) == len(names) and set(names) == {
+        'x-api-key', 'content-type', 'anthropic-version'})
+    normalized = {key.lower(): value for key, value in headers.items()}
+    _require(normalized['content-type'] == 'application/json'
+             and normalized['anthropic-version'] == '2023-06-01')
+    key = normalized['x-api-key']
+    _require(type(key) is str and 1 <= len(key) <= 4096
+             and all(32 < ord(char) < 127 for char in key))
+    _require(type(body) is dict)
+    model = body.get('model')
+    _require(type(model) is str and model in ABACUS_TEXT_RATES_PER_TOKEN)
+    expected = {'model', 'messages', 'system', 'max_tokens', 'thinking', 'stream',
+                'service_tier'}
+    if model in ABACUS_GLOBAL_GEO_MODELS:
+        expected.add('inference_geo')
+        _require(body.get('inference_geo') == 'global')
+    _require(set(body) == expected and body['service_tier'] == 'standard_only')
+    _require(body['stream'] is False and type(body['thinking']) is dict
+             and body['thinking'] == {'type': 'disabled'})
+    output = _integer(body['max_tokens'], 1, ABACUS_MAX_OUTPUT_TOKENS)
+    _text_bytes(body['system'], ABACUS_MAX_REQUEST_BYTES)
+    messages = body['messages']
+    _require(type(messages) is list and len(messages) == 1
+             and type(messages[0]) is dict and set(messages[0]) == {'role', 'content'}
+             and messages[0]['role'] == 'user')
+    _text_bytes(messages[0]['content'], ABACUS_MAX_REQUEST_BYTES)
+    size = _encoded_size(body)
+    _require(size <= ABACUS_MAX_REQUEST_BYTES)
+    # Full ASCII encoding overcounts the text bytes; framing allowance keeps
+    # this reviewed input below the 200k long-context pricing boundary.
+    input_rate, output_rate = ABACUS_TEXT_RATES_PER_TOKEN[model]
+    return _quote('abacus', model,
+                  Decimal(size + ABACUS_INPUT_FRAMING_TOKENS) * input_rate
+                  + Decimal(output) * output_rate)
+
+
 def quote_http_request(url, kwargs):
     _require(type(url) is str)
     try:
@@ -191,6 +257,9 @@ def quote_http_request(url, kwargs):
     _require(parsed.scheme == 'https' and not parsed.username and not parsed.password
              and port in (None, 443) and not parsed.query and not parsed.fragment)
     _require(type(kwargs) is dict and set(kwargs) <= {'json', 'headers', 'timeout'})
+    if parsed.hostname == 'routellm.abacus.ai' and parsed.path == '/v1/messages':
+        return 'abacus', parsed.path, _abacus_messages(
+            kwargs.get('json'), kwargs.get('headers', {}))
     match = re.fullmatch(r'/v1beta/models/([A-Za-z0-9._-]+):predictLongRunning', parsed.path)
     if parsed.hostname == 'generativelanguage.googleapis.com' and match:
         return 'gemini', parsed.path, _veo(match[1], kwargs.get('json'))
