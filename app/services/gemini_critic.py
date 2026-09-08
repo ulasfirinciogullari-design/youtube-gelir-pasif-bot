@@ -3,6 +3,8 @@ import re
 from typing import Any
 
 import httpx
+from app.services.production_spend import SpendBlocked
+from app.services.production_spend_runtime import paid_post
 from app.services.planning_model_routing import fresh_candidate_metadata_rule
 
 
@@ -338,7 +340,7 @@ def _request_verdict(
     response = None
     for attempt in range(2):
         try:
-            response = httpx.post(
+            response = paid_post(httpx.post,
                 url,
                 headers={
                     'x-goog-api-key': api_key,
@@ -347,6 +349,8 @@ def _request_verdict(
                 json=request_body,
                 timeout=_TIMEOUT,
             )
+        except SpendBlocked:
+            raise
         except Exception:
             if attempt == 0:
                 continue

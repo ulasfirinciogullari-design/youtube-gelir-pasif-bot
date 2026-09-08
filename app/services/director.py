@@ -5,6 +5,7 @@ import unicodedata
 from copy import deepcopy
 from openai import OpenAI
 from app.config import settings
+from app.services.production_spend_runtime import paid_response
 from app.services.gemini_critic import (
     CONTINUITY_DEICTIC_RULE,
     GEMINI_DEFAULT_MODEL,
@@ -2099,7 +2100,7 @@ EDITORIAL QC RULES:
             google_search=False,
             thinking_level=reasoning_effort,
         )
-    response = client.responses.create(
+    response = paid_response(client,
         model=_studio_plan_openai_model(),
         reasoning={'effort': reasoning_effort},
         input=prompt,
@@ -2570,7 +2571,7 @@ NON-NEGOTIABLE RULES:
                     thinking_level='medium' if attempt else 'low',
                 )
             else:
-                response = client.responses.create(
+                response = paid_response(client,
                     model=_studio_plan_openai_model(),
                     reasoning={'effort': 'medium' if attempt else 'low'},
                     input=generator_input,
@@ -2976,7 +2977,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                         'independent stock-shot critic returned invalid JSON'
                     )
             else:
-                critic_response = client.responses.create(**critic_request)
+                critic_response = paid_response(client, **critic_request)
                 try:
                     critic = _json(_planning_response_text(critic_response))
                 except Exception:
@@ -3809,7 +3810,7 @@ def _compress_scheduled_shot_prompts(package: dict, topic: str, indices: list[in
     if not settings.openai_api_key:
         raise ScheduledShotPromptError('Scheduled shot preparation requires its configured provider')
     client = OpenAI(api_key=settings.openai_api_key, timeout=90.0, max_retries=0)
-    response = client.responses.create(
+    response = paid_response(client,
         model=_studio_plan_openai_model(), reasoning={'effort': 'medium'}, input=prompt,
         max_output_tokens=5000,
         text={'format': {'type': 'json_schema', 'name': 'scheduled_shot_compression',

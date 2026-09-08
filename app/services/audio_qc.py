@@ -14,6 +14,7 @@ from urllib.parse import urlsplit
 import httpx
 
 from app.config import settings
+from app.services.production_spend_runtime import paid_post
 from app.services.gemini_generation import (
     GEMINI_DEFAULT_MODEL,
     GeminiGenerationError,
@@ -2270,7 +2271,7 @@ def _verify_with_openai(
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
         with path.open('rb') as audio_file:
-            response = httpx.post(
+            response = paid_post(httpx.post,
                 OPENAI_AUDIO_TRANSCRIPTIONS_URL,
                 headers=_openai_headers(api_key),
                 data={
@@ -2625,7 +2626,7 @@ def _verify_with_gemini(
     try:
         for attempt in range(_GEMINI_INTERACTION_ATTEMPTS):
             try:
-                response = httpx.post(
+                response = paid_post(httpx.post,
                     GEMINI_INTERACTIONS_URL,
                     headers={
                         'x-goog-api-key': api_key,
@@ -2689,7 +2690,7 @@ def _verify_with_elevenlabs(
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
         with path.open('rb') as audio_file:
-            response = httpx.post(
+            response = paid_post(httpx.post,
                 ELEVENLABS_SPEECH_TO_TEXT_URL,
                 headers=_elevenlabs_headers(api_key),
                 data={

@@ -1269,9 +1269,10 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
             schema['properties']['reviews']['items']['properties']['evidence_moment_indices'].pop('uniqueItems', None)
             structured_options = {'text': {'format': {
                 'type': 'json_schema', 'name': 'visual_scene_review', 'strict': True, 'schema': schema}}}
+        from app.services.production_spend_runtime import paid_response
         client = OpenAI(api_key=settings.openai_api_key, timeout=120.0,
                         max_retries=0 if strict_review_contract or protocol_attempts == 1 else 1)
-        response = client.responses.create(
+        response = paid_response(client,
             # Picture review needs its own model; do not silently upgrade the
             # separate writing/voice workloads or alter the editorial rubric.
             model=(str(getattr(settings, 'studio_visual_qc_openai_model', '') or '').strip()

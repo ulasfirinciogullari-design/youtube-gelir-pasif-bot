@@ -3,6 +3,7 @@ import math
 import re
 from openai import OpenAI
 from app.config import settings
+from app.services.production_spend_runtime import paid_response
 from app.services.gemini_generation import (
     GEMINI_DEFAULT_MODEL,
     generate_gemini_json,
@@ -453,7 +454,7 @@ FACT RULES:
             timeout=105.0,
             max_retries=1,
         )
-        response = client.responses.create(
+        response = paid_response(client,
             model=_studio_plan_openai_model(),
             reasoning={'effort': reasoning_effort},
             tools=[{'type': 'web_search', 'search_context_size': 'low'}],

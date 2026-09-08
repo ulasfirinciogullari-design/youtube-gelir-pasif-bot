@@ -546,6 +546,7 @@ def _generate_gemini_image_descriptor(
     aspect_ratio: str = '16:9',
 ) -> dict:
     """Submit one retry-free paid image request for a private-preview shot."""
+    from app.services.production_spend_runtime import paid_post
     if not settings.gemini_api_key:
         raise RuntimeError('Gemini image fallback is not configured')
     prompt = str(prompt_text or '').strip()
@@ -582,7 +583,7 @@ def _generate_gemini_image_descriptor(
     ) as client:
         # Never retry this paid POST. A timeout or any other transport failure
         # has an ambiguous acceptance state and must terminate the fallback.
-        response = client.post(
+        response = paid_post(client.post,
             _GEMINI_IMAGE_ENDPOINT,
             headers=headers,
             json=request_payload,
@@ -1084,6 +1085,7 @@ def _generate_gemini_omni_video(
     continuity_reference_image: str | Path | bytes | bytearray | memoryview | None = None,
 ) -> dict:
     """Submit one retry-free Omni interaction and return validated media."""
+    from app.services.production_spend_runtime import paid_post
     if not settings.gemini_api_key:
         raise GeminiOmniPreAcceptanceFallbackError(
             'Gemini Omni is not configured'
@@ -1140,7 +1142,7 @@ def _generate_gemini_omni_video(
         follow_redirects=False,
     ) as client:
         try:
-            response = client.post(
+            response = paid_post(client.post,
                 _GEMINI_OMNI_ENDPOINT,
                 headers=headers,
                 json=request_payload,
@@ -1483,6 +1485,7 @@ def _generate_gemini_video_uri(
     aspect_ratio: str = '16:9',
 ) -> str:
     """Create exactly one Gemini Veo task and return its trusted media URI."""
+    from app.services.production_spend_runtime import paid_post
     if not settings.gemini_api_key:
         raise RuntimeError('Gemini video fallback is not configured')
 
@@ -1518,7 +1521,7 @@ def _generate_gemini_video_uri(
     ) as client:
         # A create request is retried only after an explicit 429 response;
         # ambiguous network failures may mean the paid operation was accepted.
-        created = client.post(
+        created = paid_post(client.post,
             endpoint,
             headers=headers,
             json=request_payload,
@@ -1540,7 +1543,7 @@ def _generate_gemini_video_uri(
             except ValueError:
                 retry_after = 30.0
             time.sleep(max(1.0, min(retry_after, 60.0)))
-            created = client.post(
+            created = paid_post(client.post,
                 endpoint,
                 headers=headers,
                 json=request_payload,
@@ -1605,17 +1608,18 @@ def _create_text_to_video_task(
     Task polling deliberately remains outside this function. A rate limit while
     polling an accepted task must never cause a second paid task submission.
     """
+    from app.services.production_spend_runtime import paid_runway_create
     profile = _aspect_ratio_profile(aspect_ratio)
     runway_ratio = str(profile['runway_ratio'])
     try:
-        return client.text_to_video.create(
+        return paid_runway_create(client,
             model='gen4.5',
             prompt_text=prompt_text,
             ratio=runway_ratio,
             duration=seconds,
         )
     except RateLimitError:
-        return client.text_to_video.create(
+        return paid_runway_create(client,
             model='seedance2_fast',
             prompt_text=prompt_text,
             ratio=runway_ratio,

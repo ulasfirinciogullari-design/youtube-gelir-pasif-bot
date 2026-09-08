@@ -6,6 +6,7 @@ import subprocess
 import httpx
 
 from app.config import settings
+from app.services.production_spend_runtime import paid_post
 
 ELEVENLABS_BASE = 'https://api.elevenlabs.io/v1'
 
@@ -48,7 +49,7 @@ def generate_music_bed(
         'No lead melody competing with speech, no vocals, no dramatic ending.'
     )
     duration_ms = int(max(12000, min(loop_seconds * 1000, 60000)))
-    response = httpx.post(
+    response = paid_post(httpx.post,
         f'{ELEVENLABS_BASE}/music',
         headers={
             'xi-api-key': settings.elevenlabs_api_key,
