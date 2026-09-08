@@ -9,6 +9,10 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
+# The dispatch guard owns real Redis types; load it before the voice-only
+# temporary Redis/config stubs so isolated test ordering cannot corrupt it.
+from app.services import production_spend_runtime as _spend_runtime
+
 
 config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace()

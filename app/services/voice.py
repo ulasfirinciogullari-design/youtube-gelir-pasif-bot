@@ -8,7 +8,7 @@ import subprocess
 import time
 from concurrent.futures import as_completed
 from app.services.production_spend_runtime import (
-    SpendingThreadPoolExecutor as ThreadPoolExecutor, paid_post,
+    SpendingThreadPoolExecutor as ThreadPoolExecutor,
 )
 import httpx
 import redis
@@ -247,6 +247,7 @@ def synthesize_voice_with_id(
     seed: int | None = None,
     turkish_short_preview: bool = False,
 ) -> bytes:
+    from app.services.production_spend_runtime import paid_post
     body = _voice_request_body(
         text,
         previous_text,
@@ -274,6 +275,7 @@ def synthesize_voice_with_timestamps(
     raw_audio_sink=None,
 ) -> tuple[bytes, dict]:
     """Synthesize one continuous take with character-level source timing."""
+    from app.services.production_spend_runtime import paid_post
     if raw_audio_sink is not None and not callable(raw_audio_sink):
         raise VoiceQualityError('Raw voice diagnostic sink is invalid')
     response = paid_post(httpx.post,
