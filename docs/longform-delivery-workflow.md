@@ -2,14 +2,29 @@
 
 ## Product target, not current throughput
 
-The starting cadence target is **five Shorts plus one roughly eight-minute
-long video per day across both channels combined**, not per channel. Three Shorts
-reuse the long video's authored stories, narration and moving footage; two are
-independent originals. Two concurrent cloud productions, channel/series memory,
-metadata, thumbnails, optional short virtual-presenter segments, and verified
-public release followed by the next eligible production remain the complete
-product scope. The user's computer and an open desktop conversation must not be
-required for runtime production.
+The current owner target is continuous server operation: observe relevant trends
+and channel performance, select original suitable topics, produce and review
+videos, and publish up to the channel's permitted daily capacity while respecting
+actual API quotas, approved spending and quality. No numeric channel limit or
+unlimited production allowance has been verified. Existing series keep their
+episode order; trend selection must not rewrite consumed topics or resurrect
+deleted videos. The user's computer and an open conversation must not be needed.
+
+Keep a bounded stock of completed, individually reviewed videos so eligible
+publication can continue through a temporary production outage. Replenish below
+the configured stock target; stop new paid production when it is full. Select
+timely videos before they become stale while preserving series order, and
+recheck publication eligibility and exact accepted assets before release. The
+stock target, freshness policy and independent publisher are not commissioned.
+
+The earlier **five Shorts plus one roughly eight-minute long per day across both
+channels combined** is now a reference workload, not the owner's permanent cap.
+Its efficient format remains useful: three Shorts reuse the long video's authored
+stories, narration and moving footage, with two independent originals. The current
+two-production concurrency guard is unchanged; a higher publication target alone
+does not authorize more simultaneous paid jobs or prove throughput. Channel/series
+memory, metadata, thumbnails and verified release followed by next eligible work
+remain required.
 
 The earlier USD368.80/month comparison, approximately USD260/month API estimate
 and USD500/month reserve came from the assistant. They are not user-approved
@@ -50,6 +65,12 @@ verification of current account entitlements.
    in the same channel, including successful masters and private derivatives.
    A mutable completion label cannot authorize a profile change that would
    orphan the family. Other channels retain their normal eligibility.
+9. A separate server task requests owned-video metrics refresh every five minutes
+   using the existing channel/account/publication proofs. Background reads skip
+   fresh observations and reconnect-required channels, wait longer after quota
+   errors, and share the manual refresh lock. Empty or unavailable job discovery
+   leaves prior observations untouched. This removes the browser trigger
+   dependency; it does not add measured trend selection, retention or revenue.
 
 The feature defaults OFF (`studio_longform_delivery_enabled=false`). Its scheduler
 also requires the spending guard to be ON; this check does not initialize a ledger
@@ -67,9 +88,12 @@ capture new frame-map diagnostics or queue these derivative jobs.
   indexed-job guard closes the known premature-rotation path, but durable
   discovery after job expiry and validated family-publication receipts still
   need integration before long-family rotation can be commissioned.
-- The combined daily five-Shorts/one-long selection policy is not yet commissioned.
-  This patch enables an explicitly broader topic to become eight minutes; it does
-  not secretly replace existing series topics or treat the target as a guarantee.
+- Dynamic selection under channel/API/spending limits and the reviewed-video
+  stock are not yet commissioned. The former five-Shorts/one-long reference mix
+  is not a hard daily target. This patch enables an explicitly broader topic to
+  become eight minutes; it does not replace existing series topics or prove
+  capacity. Measured trend and performance evidence still needs integration
+  into future editorial selection.
 - Ambiguous dispatches and hard-interrupted CPU executions remain visible holds.
   One bounded recovery of a caught render/export failure is now supported; a
   second failure, missing/changed checkpoint or child cancellation stays held.
@@ -81,6 +105,15 @@ capture new frame-map diagnostics or queue these derivative jobs.
   production holds are not cleared by this change.
 - Virtual-presenter provider commissioning, dubbing and broader UI work are still
   part of the overall workflow; adding this fan-out does not complete them.
+- Metrics observation shares the existing worker queue. Two occupied render
+  workers can delay or expire an observation, so five minutes is its requested
+  schedule, not a guaranteed collection interval. Worker capacity must be checked
+  at commissioning; the existing short refresh lock is not a guarantee that
+  unusually long read requests can never overlap.
+- The shared metrics cache still represents only the queried subset, at most
+  50 videos per channel. A later nonempty subset can replace unqueried older
+  observations, including absence evidence. Durable full publication/deletion
+  history remains a separate requirement; do not use this cache as its ledger.
 
 Do not enable the new family flag in production until the remaining publication,
 review, ordering and budget conditions above are implemented and verified.
@@ -107,6 +140,11 @@ describing it as unattended:
   chain, including a budget stop and recovery, on the server. Passing offline
   tests, keeping a process alive or seeing one completed render is not proof of
   24/7 operation or the daily cadence target.
+- Fill and drain the reviewed-video stock independently of the producer; do not
+  publish an expired topical story or a later serial episode just to fill a slot.
+  A channel upload limit and a project API quota are separate stops. Keep the
+  accepted video and its receipt when either stops dispatch; uncertain upload
+  outcomes still require reconciliation before any resubmission.
 
 ## Verification
 

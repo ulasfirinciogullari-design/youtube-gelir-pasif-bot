@@ -23,6 +23,7 @@ CACHE_PREFIX = 'youtube_studio:metrics:v1:'
 LOCK_PREFIX = 'youtube_studio:metrics:refresh:v1:'
 REFRESH_SECONDS = 300
 DEBOUNCE_SECONDS = 60
+BACKGROUND_QUOTA_RETRY_SECONDS = 3600
 CACHE_TTL_SECONDS = 7 * 86400
 MAX_CHANNELS = 10
 MAX_VIDEOS = 50
@@ -382,10 +383,25 @@ def _read_google(context, ids, previous, now):
             pass
 
 
-def _refresh_channel(context, proofs):
+def _refresh_channel(context, proofs, *, background=False):
     client, now = _redis(), time.time()
     previous = _cache(client, context)
     ids = list(dict.fromkeys(p['video_id'] for p in proofs.values() if p['channel_id'] == context['channel_id']))[:MAX_VIDEOS]
+    if background:
+        if not ids:
+            # Another channel's jobs or unfinished jobs are not evidence that
+            # this channel's earlier video observations should be cleared.
+            return
+        # Background observation shares the owner's cache and lock, but does
+        # not spend quota immediately after a manual refresh or failed read.
+        # The manual action retains its existing 60-second debounce contract.
+        channel = previous.get('channel') if isinstance(previous.get('channel'), dict) else {}
+        observed = [_timestamp(previous.get('last_attempt_at')), _timestamp(channel.get('fetched_at'))]
+        recent = max((at for at in observed if at is not None and at <= now + 5), default=None)
+        interval = (BACKGROUND_QUOTA_RETRY_SECONDS if previous.get('last_error') == 'quota'
+                    else REFRESH_SECONDS)
+        if context['blocked'] or recent is not None and now - recent < interval:
+            return
     if not client.set(LOCK_PREFIX + context['channel_id'] + ':' + context['connection_id'], '1', nx=True, ex=DEBOUNCE_SECONDS):
         return
     try:
@@ -400,13 +416,15 @@ def _refresh_channel(context, proofs):
                 json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False), CACHE_TTL_SECONDS)
 
 
-def refresh_dashboard_metrics(jobs):
-    """Explicit owner refresh: at most 10 channels / 50 uploaded IDs per channel."""
+def refresh_dashboard_metrics(jobs, *, background=False):
+    """Bounded owner-authorized reads, optionally from the server observer."""
     try:
         contexts = _contexts(_redis())
         proofs = _proofs(jobs, contexts)
         with ThreadPoolExecutor(max_workers=3) as pool:
-            futures = [pool.submit(_refresh_channel, context, proofs) for context in contexts]
+            futures = [pool.submit(_refresh_channel, context, proofs,
+                                   **({'background': True} if background is True else {}))
+                       for context in contexts]
             for future in futures:
                 try:
                     future.result()

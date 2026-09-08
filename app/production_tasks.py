@@ -25,6 +25,30 @@ def render_delivery_family(self, source_task_id: str) -> dict:
     return render_family(source_task_id, self.request.id)
 
 
+@celery.task(name='app.production_tasks.observe_youtube_metrics', acks_late=False,
+             autoretry_for=(), max_retries=0, soft_time_limit=250, time_limit=270)
+def observe_youtube_metrics() -> dict:
+    """Refresh owned-video observations without depending on an open Studio."""
+    try:
+        from app.services.studio_state import list_jobs, MAX_INDEXED_JOBS
+        from app.services.youtube_metrics import refresh_dashboard_metrics
+
+        jobs = list_jobs(limit=MAX_INDEXED_JOBS)
+        if not jobs:
+            # The registry's read helper also returns [] on store failure.
+            # An empty inventory cannot authorize replacing cached video
+            # observations, including prior owner-observed absence evidence.
+            return {'status': 'unavailable', 'channel_count': 0, 'video_count': 0}
+        metrics = refresh_dashboard_metrics(jobs, background=True)
+        return {'status': 'unavailable' if metrics.get('error') else 'checked',
+                'channel_count': len(metrics.get('channels') or []),
+                'video_count': len(metrics.get('videos') or {})}
+    except Exception:
+        # Observation does not alter jobs, credentials, profiles, or dispatch.
+        # The next ordinary observation may retry; no immediate task replay.
+        return {'status': 'unavailable', 'channel_count': 0, 'video_count': 0}
+
+
 @celery.task(name='app.production_tasks.production_tick', acks_late=False)
 def production_tick() -> dict:
     from app.tasks import run_video_pipeline

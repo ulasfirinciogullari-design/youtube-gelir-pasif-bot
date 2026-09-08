@@ -16,5 +16,10 @@ celery.conf.update(
             'schedule': 60.0,
             'options': {'expires': 55},
         },
+        'owned-youtube-metrics-every-five-minutes': {
+            'task': 'app.production_tasks.observe_youtube_metrics',
+            'schedule': 300.0,
+            'options': {'expires': 290},
+        },
     },
 )
