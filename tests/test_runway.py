@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import tempfile
 import time
+from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, call
 from urllib.parse import urljoin, urlparse
@@ -2650,7 +2651,21 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
         'ffmpeg and ffprobe are required',
     )
     def test_real_image_motion_render_is_exact_atomic_720p_video(self):
-        namespace = _load_image_namespace()
+        media_probes = []
+
+        def record_media_probe(*args, **kwargs):
+            completed = subprocess.run(*args, **kwargs)
+            command = args[0]
+            if command[0] == 'ffprobe' and '-count_frames' in command:
+                # Only this test's synthetic pattern is measured. Keep its
+                # metadata before atomic cleanup removes a rejected MP4.
+                media_probes.append(completed.stdout)
+            return completed
+
+        namespace = _load_image_namespace(fake_subprocess=SimpleNamespace(
+            run=record_media_probe,
+            TimeoutExpired=subprocess.TimeoutExpired,
+        ))
         with tempfile.TemporaryDirectory() as tmp:
             source = Path(tmp) / 'source.jpg'
             output = Path(tmp) / 'motion.mp4'
@@ -2691,6 +2706,10 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 )
             except OSError:
                 self.skipTest('ffmpeg execution is blocked by the local sandbox')
+            except RuntimeError as exc:
+                self.fail(
+                    f'{exc}; synthetic video probe measurements: {media_probes!r}'
+                )
 
             self.assertEqual(result, str(output))
             self.assertTrue(output.is_file())
