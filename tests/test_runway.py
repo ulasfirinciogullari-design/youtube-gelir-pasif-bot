@@ -2645,6 +2645,10 @@ class RunwayQuotaFallbackTests(unittest.TestCase):
                 render_args[render_args.index('-color_range') + 1],
                 'tv',
             )
+            self.assertEqual(
+                render_args[render_args.index('-bsf:v') + 1],
+                'h264_metadata=video_full_range_flag=0',
+            )
 
     @unittest.skipUnless(
         shutil.which('ffmpeg') and shutil.which('ffprobe'),

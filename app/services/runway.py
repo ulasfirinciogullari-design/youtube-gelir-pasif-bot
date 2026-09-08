@@ -1996,6 +1996,9 @@ def _render_gemini_image_motion(
             '-frames:v', str(frame_count),
             '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
             '-pix_fmt', 'yuv420p', '-color_range', 'tv',
+            # libx264 may omit default limited-range signalling. Persist it
+            # in the H.264 VUI as well as the encoder/container metadata.
+            '-bsf:v', 'h264_metadata=video_full_range_flag=0',
             '-movflags', '+faststart',
             '-f', 'mp4', str(partial),
         ], capture_output=True, text=True, check=False, timeout=180)
