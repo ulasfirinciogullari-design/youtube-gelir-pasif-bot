@@ -7,12 +7,13 @@ Sources and intentionally blocked routes are recorded in the rollout doc.
 from datetime import datetime, timezone
 from decimal import Decimal
 import json
+import math
 import re
 from urllib.parse import urlsplit
 
 from app.services.production_spend import SpendBlocked, SpendQuote, usd_micro
 
-_REVISION = 'official-2026-09-08-v1'
+_REVISION = 'official-2026-09-08-v2'
 _VALID_FROM = datetime(2026, 9, 8, tzinfo=timezone.utc)
 _VALID_UNTIL = datetime(2026, 10, 1, tzinfo=timezone.utc)
 
@@ -35,7 +36,7 @@ def _integer(value, low, high):
 def _encoded_size(value):
     try:
         return len(json.dumps(value, ensure_ascii=True, allow_nan=False).encode())
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, RecursionError):
         raise SpendBlocked('spend_request_not_priced') from None
 
 
@@ -87,6 +88,99 @@ def _veo(model, body):
     return _quote('gemini', model, Decimal(rate) * seconds)
 
 
+def _bounded_json_schema(schema, depth=0):
+    """Inline schema subset used by planning; no reference expansion/history."""
+    _require(depth <= 20 and type(schema) is dict and set(schema) <= {
+        'type', 'properties', 'required', 'items', 'enum', 'additionalProperties',
+        'minItems', 'maxItems', 'minLength', 'maxLength', 'minimum', 'maximum',
+        'description', 'title'})
+    types = schema.get('type')
+    types = types if type(types) is list else [types]
+    _require(bool(types) and all(type(item) is str and item in {
+        'object', 'array', 'string', 'number', 'integer', 'boolean', 'null'} for item in types))
+    if 'properties' in schema:
+        properties = schema['properties']
+        _require(type(properties) is dict)
+        for name, child in properties.items():
+            _text_bytes(name, 1000)
+            _bounded_json_schema(child, depth + 1)
+    if 'items' in schema:
+        _bounded_json_schema(schema['items'], depth + 1)
+    if 'required' in schema:
+        _require(type(schema['required']) is list and all(
+            type(name) is str and name in schema.get('properties', {})
+            for name in schema['required']))
+    if 'additionalProperties' in schema:
+        _require(type(schema['additionalProperties']) is bool)
+    if 'enum' in schema:
+        _require(type(schema['enum']) is list and bool(schema['enum'])
+                 and all(type(item) in (str, int, float, bool, type(None))
+                         for item in schema['enum']))
+    for key in ('minItems', 'maxItems', 'minLength', 'maxLength'):
+        if key in schema:
+            _integer(schema[key], 0, 100_000)
+    for key in ('minimum', 'maximum'):
+        if key in schema:
+            _require(type(schema[key]) in (int, float) and math.isfinite(schema[key]))
+    for key in ('description', 'title'):
+        if key in schema:
+            _text_bytes(schema[key], 10_000)
+
+
+def _gemini_json(model, body, headers):
+    """One tool-free, text-only Gemini 3.1 Pro JSON response at standard rates.
+
+    Reviewed sources: https://ai.google.dev/gemini-api/docs/pricing and
+    https://ai.google.dev/api/generate-content . Google's Gemini 3.0+ guide in
+    https://codelabs.developers.google.com/bigquery-generative-ai-intro#3
+    confirms thoughts and visible output share the maxOutputTokens pool.
+    """
+    _require(model == 'gemini-3.1-pro-preview')
+    _require(type(headers) is dict and all(type(key) is str for key in headers))
+    names = [key.lower() for key in headers]
+    _require(len(set(names)) == len(names) and set(names) <= {
+        'x-goog-api-key', 'content-type'})
+    _require(type(body) is dict and set(body) <= {
+        'store', 'contents', 'systemInstruction', 'generationConfig'})
+    _require(body.get('store') is False)
+    # Count the full encoded schema/settings too, keeping even the conservative
+    # input ceiling below the 200,000-token higher-price threshold.
+    size = _encoded_size(body)
+    _require(size <= 100_000)
+    contents = body.get('contents')
+    _require(type(contents) is list and len(contents) == 1
+             and type(contents[0]) is dict and set(contents[0]) == {'role', 'parts'}
+             and contents[0]['role'] == 'user')
+    inputs = [contents[0]]
+    if 'systemInstruction' in body:
+        system = body['systemInstruction']
+        _require(type(system) is dict and set(system) == {'parts'})
+        inputs.append(system)
+    for content in inputs:
+        parts = content['parts']
+        _require(type(parts) is list and 1 <= len(parts) <= 32)
+        for part in parts:
+            _require(type(part) is dict and set(part) == {'text'})
+            _text_bytes(part['text'])
+    config = body.get('generationConfig')
+    _require(type(config) is dict and set(config) <= {
+        'candidateCount', 'thinkingConfig', 'responseMimeType',
+        'maxOutputTokens', 'responseJsonSchema'})
+    _integer(config.get('candidateCount'), 1, 1)
+    _require(config.get('responseMimeType') == 'application/json')
+    output = _integer(config.get('maxOutputTokens'), 1, 16_384)
+    thinking = config.get('thinkingConfig')
+    _require(type(thinking) is dict and set(thinking) == {'thinkingLevel'}
+             and type(thinking['thinkingLevel']) is str
+             and thinking['thinkingLevel'] in {'low', 'medium', 'high'})
+    if 'responseJsonSchema' in config:
+        _require(type(config['responseJsonSchema']) is dict
+                 and config['responseJsonSchema'].get('type') == 'object')
+        _bounded_json_schema(config['responseJsonSchema'])
+    return _quote('gemini', model,
+                  (Decimal(size + 4096) * 2 + Decimal(output) * 12) / 1_000_000)
+
+
 def quote_http_request(url, kwargs):
     _require(type(url) is str)
     try:
@@ -100,6 +194,10 @@ def quote_http_request(url, kwargs):
     match = re.fullmatch(r'/v1beta/models/([A-Za-z0-9._-]+):predictLongRunning', parsed.path)
     if parsed.hostname == 'generativelanguage.googleapis.com' and match:
         return 'gemini', parsed.path, _veo(match[1], kwargs.get('json'))
+    match = re.fullmatch(r'/v1beta/models/([A-Za-z0-9._-]+):generateContent', parsed.path)
+    if parsed.hostname == 'generativelanguage.googleapis.com' and match:
+        return 'gemini', parsed.path, _gemini_json(
+            match[1], kwargs.get('json'), kwargs.get('headers', {}))
     # Audio, images, Omni, grounding and fal need separate bounded quotes.
     # A consumer subscription or an apparently free model is not a price quote.
     raise SpendBlocked('spend_request_not_priced')

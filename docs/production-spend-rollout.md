@@ -32,6 +32,13 @@ until its required routes have bounded, tested quotes and verified job context.
   Its counters are reserved upper bounds, NOT settled invoices or an all-in
   household/subscription spending cap. No initialization/refund/resume API is
   exposed by this change.
+- Explicit operator-side `SpendLedger.initialize_reconciled` can seed a new
+  ledger with audited current-month paid intents. It atomically imports the
+  full reserved upper bounds into month/day/channel/lineage counters and the
+  same request replay fences, with an audit digest. It neither calls providers
+  nor grants a submission permit. Existing or conflicting ledgers cannot be
+  overwritten, even after a lost initialization reply. Over-limit prior usage
+  stays recorded and blocks additional spending.
 
 ## Reviewed initial catalog (8 September 2026)
 
@@ -41,6 +48,7 @@ endpoints and unbounded requests block. Prepaid balances are not cash discounts.
 | Route | Bounded request | USD list-rate upper bound |
 | --- | --- | --- |
 | OpenAI GPT-6 Astra | Tool-free plain text, standard tier, at most 100,000 encoded JSON bytes, at most 16,384 output tokens | $10/M input and $50/M output; conservative input bound is encoded JSON bytes + 4,096 framing tokens |
+| Gemini 3.1 Pro Preview | One tool-free text-only JSON candidate, optional inline schema, at most 100,000 encoded JSON bytes and 16,384 total output tokens | $2/M input and $12/M output including thinking; encoded bytes + 4,096 framing keeps the input bound below the 200,000-token price threshold |
 | Runway Gen-4.5 | Text-to-video, supported 720p ratios, 2–10 s, no generated audio | $0.12/s |
 | Runway Seedance 2 Fast | Same bounded request family | $0.29/s, including when selected as a fallback |
 | Veo 3.1 Lite | One text-to-video sample, 4/6/8 s | $0.05/s at 720p; $0.08/s at 1080p |
@@ -50,14 +58,24 @@ endpoints and unbounded requests block. Prepaid balances are not cash discounts.
 Sources: [OpenAI pricing](https://developers.openai.com/api/docs/pricing),
 [Responses limits](https://developers.openai.com/api/reference/python/resources/responses/methods/create),
 [Runway pricing](https://docs.dev.runwayml.com/guides/pricing/),
-[Gemini/Veo pricing](https://ai.google.dev/gemini-api/docs/pricing).
+[Gemini/Veo pricing](https://ai.google.dev/gemini-api/docs/pricing),
+[Gemini generation limits](https://ai.google.dev/api/generate-content),
+[Google's combined thinking/output token guidance](https://codelabs.developers.google.com/bigquery-generative-ai-intro#3).
 The OpenAI output ceiling includes reasoning tokens. Provider-supported model
 duration restrictions still apply; a cost quote does not imply model acceptance.
 
-The current audio/TTS/music, Gemini JSON/critic/image/Omni, OpenAI vision/search
-and fal calls are guarded but have NO commissioned quote yet. They therefore
-block with enforcement on. Next-series planning also needs a persisted planning
-cost family before it can operate in that mode. A shared-voice bookmark and
+The current audio/TTS/music, Gemini grounding/multimodal critic/image/Omni,
+OpenAI vision/search and fal calls are guarded but have NO commissioned quote
+yet. They therefore block with enforcement on. The Gemini JSON route permits
+only the named model and bounded text contract, including schema/settings;
+media, tools, custom tier headers, unknown fields and other models still block.
+This covers the existing tool-free director and text story-critic request shapes;
+it does not permit a multimodal/audio review through a text-only price quote.
+Next-series planning also needs a persisted planning cost family and a grounded
+request quote before it can operate in that mode. ElevenLabs base list rates
+alone do not bound the selected voice: custom voice multipliers require separate
+verified rate evidence ([ElevenLabs custom-rate documentation](https://elevenlabs.io/docs/help-center/product/voices/voice-library/what-are-custom-rates-and-credit-multipliers)).
+A shared-voice bookmark and
 Gemini file-upload transport are not model-generation charges; they are the
 only explicit free-POST exclusions in the source coverage test.
 
@@ -80,9 +98,15 @@ only explicit free-POST exclusions in the source coverage test.
 
 ## Required commissioning before enabling
 
-1. Load one operator-approved policy. Initialize the durable, no-eviction Redis
-   ledger explicitly once; never bootstrap it when a provider request finds
-   missing state. Calendar periods use UTC. Every replica uses a synchronized
+1. Load one operator-approved policy. Reconcile billed and in-flight current-month
+   API intents first, retaining their real production request/lineage identities
+   and full upper bounds; missing history is not zero usage. Use
+   `initialize_reconciled(month=..., reservations=[OpeningReservation(...)],
+   reconciliation_sha256=...)` on the durable, no-eviction Redis ledger explicitly
+   once. Its import only supports the current UTC month; unresolved earlier-month
+   operations require separate reconciliation before commissioning. An empty
+   `initialize()` is appropriate only with no pre-existing usage. Neither method
+   runs when a provider request finds missing state. Every replica uses a synchronized
    clock and the same ledger/policy; legacy expiring job writes cannot touch it.
 2. Verify channel, format and root cost lineage using real stored job shapes.
    Repairs use the same root lineage, not a fresh queue task's allowance.

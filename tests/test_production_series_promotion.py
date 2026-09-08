@@ -316,6 +316,71 @@ def test_same_channel_active_blocks_but_other_channel_is_untouched(case, same_ch
             assert case.client.dump(key) == before[key]
 
 
+@pytest.mark.parametrize('marker', ['master', 'portrait', 'manifest', 'malformed_master'])
+@pytest.mark.parametrize('state', ['SUCCESS', 'FAILURE'])
+def test_earlier_delivery_family_blocks_rotation_after_final_short_is_public(case, marker, state):
+    task_id = str(UUID(int=998))
+    spec = {'production_channel_id': CHANNEL, 'production_profile_revision': case.revision}
+    result = {'delivery_status': 'complete', 'quality_disposition': 'automated_qc_pass',
+              'manual_qa_required': False}
+    if marker == 'master':
+        spec.update(format='landscape', duration_minutes=8,
+                    production_delivery={'version': 1, 'long_minutes': 8, 'derived_shorts': 3})
+    elif marker == 'portrait':
+        spec.update(format='shorts', production_derived_from=str(UUID(int=997)))
+    elif marker == 'manifest':
+        result['delivery_manifest_key'] = 'videos/earlier/delivery/manifest.json'
+    else:
+        spec['production_delivery'] = None
+    _write(case.client, case.ns['JOB_PREFIX'] + task_id,
+           {'task_id': task_id, 'state': state, 'kind': 'render', 'spec': spec, 'result': result})
+    case.client.zadd(case.ns['JOB_INDEX'], {task_id: NOW - 2000})
+    # Turning the feature off or setting a mutable completion label must not
+    # make an outstanding family eligible for legacy Shorts-only rotation.
+    case.ns['settings'].studio_longform_delivery_enabled = False
+    before = _snapshot(case)
+    with pytest.raises(case.ns['SeriesPromotionError'], match='series_delivery_family_pending'):
+        _run(case)
+    assert _snapshot(case) == before
+
+
+@pytest.mark.parametrize('destination', ['UC_other_channel', None])
+def test_other_channel_family_is_untouched_but_unknown_family_cannot_authorize_rotation(case, destination):
+    task_id = str(UUID(int=998))
+    _write(case.client, case.ns['JOB_PREFIX'] + task_id, {'task_id': task_id, 'state': 'SUCCESS',
+        'kind': 'render', 'spec': {'production_channel_id': destination,
+                                 'production_derived_from': str(UUID(int=997))}})
+    case.client.zadd(case.ns['JOB_INDEX'], {task_id: NOW - 2000})
+    before = _snapshot(case)
+    if destination is None:
+        with pytest.raises(case.ns['SeriesPromotionError'], match='series_delivery_channel_unknown'):
+            _run(case)
+        assert _snapshot(case) == before
+    else:
+        assert _run(case)['status'] == 'promoted'
+        for key in (case.ns['JOB_INDEX'], case.ns['JOB_PREFIX'] + task_id):
+            assert case.client.dump(key) == before[key]
+
+
+def test_concurrent_earlier_family_marker_cannot_escape_watched_registry(case, monkeypatch):
+    task_id = str(UUID(int=998))
+    key = case.ns['JOB_PREFIX'] + task_id
+    _write(case.client, key, {'task_id': task_id, 'state': 'SUCCESS', 'kind': 'render',
+                            'spec': {'production_channel_id': CHANNEL}})
+    case.client.zadd(case.ns['JOB_INDEX'], {task_id: NOW - 2000})
+    before_profile = case.client.get(case.profile_key)
+    original = case.ns['_Snapshot'].compare
+    def racing(snapshot, pipe):
+        original(snapshot, pipe)
+        _change(case, key, ['spec', 'production_delivery'],
+                {'version': 1, 'long_minutes': 8, 'derived_shorts': 3})
+    monkeypatch.setattr(case.ns['_Snapshot'], 'compare', racing)
+    with pytest.raises(case.ns['SeriesPromotionError']):
+        _run(case)
+    assert case.client.get(case.profile_key) == before_profile
+    assert not case.client.keys(case.ns['ARCHIVE_PREFIX'] + '*')
+
+
 @pytest.mark.parametrize('target', ['profile', 'state', 'credential', 'epoch', 'pending', 'daily',
                                     'source', 'publisher', 'ledger', 'membership', 'active', 'job_index', 'history'])
 def test_watch_compare_rejects_concurrent_proof_or_authority_change(case, monkeypatch, target):

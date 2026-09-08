@@ -216,9 +216,22 @@ def _idle(snapshot, channel_id, route):
             continue
         job = _object(raw)
         _require(job.get('task_id') == task_id and isinstance(job.get('spec'), dict))
+        spec = job['spec']
+        result = job.get('result')
+        destination = spec.get('production_channel_id') or spec.get('youtube_channel_id') or spec.get('target_channel_id')
+        delivery_family = ('production_delivery' in spec or 'production_derived_from' in spec
+                           or isinstance(result, dict) and 'delivery_manifest_key' in result)
+        if delivery_family:
+            # A successful long master or portrait export is not a completed
+            # delivery family. Even an earlier episode can still own private
+            # candidates when the final ordinary Short becomes public. There
+            # is no commissioned family-publication receipt yet, so neither a
+            # terminal job state nor a mutable status label may authorize a
+            # profile revision change that would orphan those candidates.
+            _require(isinstance(destination, str) and destination, 'series_delivery_channel_unknown')
+            _require(destination != channel_id and spec.get('channel_id') not in {channel_id, route},
+                     'series_delivery_family_pending')
         if job.get('state') in _ACTIVE:
-            spec = job['spec']
-            destination = spec.get('production_channel_id') or spec.get('youtube_channel_id') or spec.get('target_channel_id')
             _require(isinstance(destination, str) and destination, 'series_active_channel_unknown')
             _require(destination != channel_id and spec.get('channel_id') not in {channel_id, route},
                      'series_channel_busy')

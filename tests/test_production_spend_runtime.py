@@ -343,7 +343,8 @@ def test_actual_gemini_json_preserves_budget_refusal_without_retry(case, monkeyp
     sender = Mock()
     monkeypatch.setattr(gemini_generation.httpx, 'post', sender)
     with pytest.raises(SpendBlocked, match='request_not_priced'):
-        gemini_generation.generate_gemini_json('script', api_key='test-only', retry_once=True)
+        gemini_generation.generate_gemini_json(
+            'script', api_key='test-only', model='unreviewed-model', retry_once=True)
     sender.assert_not_called()
 
 

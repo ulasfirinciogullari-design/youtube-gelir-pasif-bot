@@ -110,17 +110,25 @@ def _render_one(master, cut, output):
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, timeout=600)
 
 
-def render_candidates(master, manifest, work, *, source_task_id, expected_digest, expected_master_sha256):
+def iter_candidates(master, manifest, work, *, source_task_id, expected_digest,
+                    expected_master_sha256, only_numbers=None):
+    """Yield verified cuts individually so completed exports survive later errors."""
     validate_manifest(manifest, source_task_id=source_task_id,
                       expected_digest=expected_digest, expected_master_sha256=expected_master_sha256)
+    if only_numbers is None:
+        only_numbers = [1, 2, 3]
+    _require(type(only_numbers) is list
+             and all(type(number) is int and 1 <= number <= 3 for number in only_numbers)
+             and only_numbers == sorted(set(only_numbers)), 'delivery_cut_selection_invalid')
     _require(file_sha256(master) == expected_master_sha256, 'delivery_master_changed')
     source = probe_video(master)
     _require(source['width'] == 1920 and source['height'] == 1080 and source['fps'] == '30/1'
              and source['frames'] == manifest['source_frame_count'], 'delivery_master_media_changed')
     work = Path(work)
     work.mkdir(parents=True, exist_ok=True)
-    results = []
     for cut in manifest['shorts']:
+        if cut['number'] not in only_numbers:
+            continue
         output = work / f'short_{cut["number"]}.mp4'
         _render_one(master, cut, output)
         media = probe_video(output)
@@ -129,7 +137,7 @@ def render_candidates(master, manifest, work, *, source_task_id, expected_digest
                  and math.isfinite(media['duration'])
                  and abs(media['duration'] - cut['duration_seconds']) <= 0.12,
                  'delivery_portrait_media_invalid')
-        results.append({
+        yield {
             'number': cut['number'], 'path': str(output), 'sha256': file_sha256(output),
             'title': cut['title'], 'description': cut['description'], 'narration': cut['narration'],
             'duration': media['duration'], 'frame_count': media['frames'], 'resolution': '1080x1920',
@@ -139,5 +147,8 @@ def render_candidates(master, manifest, work, *, source_task_id, expected_digest
             'new_voice_generations': 0, 'new_video_generations': 0,
             'quality_disposition': 'derived_portrait_review_required', 'manual_qa_required': True,
             'publish_eligible': False,
-        })
-    return results
+        }
+
+
+def render_candidates(master, manifest, work, **kwargs):
+    return list(iter_candidates(master, manifest, work, **kwargs))

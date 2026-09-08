@@ -35,6 +35,16 @@ rights; do not silently buy new subscriptions or increase limits. The detailed
 6. The existing cloud minute tick can discover a missed family enqueue; accepted
    or uncertain claims are not blindly resent. Long-family failures do not trigger
    the old automatic whole-pipeline rebuild.
+7. New family executions checkpoint each successful portrait independently. A
+   positively recorded CPU render/export failure may receive one automatic
+   recovery execution. It verifies retained job records and stored media hashes,
+   keeps the original child IDs, and renders only missing cuts. It grants no
+   paid media generation or publication permission. Unknown broker outcomes,
+   hard-interrupted executions and old uncheckpointed failures stay held.
+8. Legacy series promotion now rejects indexed outstanding delivery-family jobs
+   in the same channel, including successful masters and private derivatives.
+   A mutable completion label cannot authorize a profile change that would
+   orphan the family. Other channels retain their normal eligibility.
 
 The feature defaults OFF (`studio_longform_delivery_enabled=false`). Its scheduler
 also requires the spending guard to be ON; this check does not initialize a ledger
@@ -48,16 +58,22 @@ capture new frame-map diagnostics or queue these derivative jobs.
   or call YouTube upload. Actual portrait/audio review, immutable accepted proof,
   derived-series numbering and public-release ordering still need integration.
 - The current legacy series promotion remains Shorts-specific; it must not rotate
-  a long-form family's profile while its derivatives are outstanding.
+  a long-form family's profile while its derivatives are outstanding. The new
+  indexed-job guard closes the known premature-rotation path, but durable
+  discovery after job expiry and validated family-publication receipts still
+  need integration before long-family rotation can be commissioned.
 - The combined daily five-Shorts/one-long selection policy is not yet commissioned.
   This patch enables an explicitly broader topic to become eight minutes; it does
   not secretly replace existing series topics or treat the target as a guarantee.
-- Ambiguous execution and failed exports remain visible, once-claimed holds.
-  Recovery of partially completed CPU jobs without regenerating paid assets is a
-  separate step, not a working self-healing/24x7 claim.
+- Ambiguous dispatches and hard-interrupted CPU executions remain visible holds.
+  One bounded recovery of a caught render/export failure is now supported; a
+  second failure, missing/changed checkpoint or child cancellation stays held.
+  This does not establish unattended recovery from every worker interruption.
 - Required speech/multimodal/grounded-planning price bounds, remaining-period
-  accounting and actual budget activation remain open. Existing failed production
-  holds are not cleared by this change.
+  reconciliation of real usage and actual budget activation remain open. The
+  explicit opening-usage import and bounded Gemini text quote are implemented;
+  they have not been commissioned against production. Existing failed parent
+  production holds are not cleared by this change.
 - Virtual-presenter provider commissioning, dubbing and broader UI work are still
   part of the overall workflow; adding this fan-out does not complete them.
 
@@ -66,12 +82,13 @@ review, ordering and budget conditions above are implemented and verified.
 
 ## Verification
 
-Run the complete suite and media fixtures on the GitHub-hosted CI runner. The
-owner reported severe local PC slowdown; do not start local render jobs, full
-test suites, dependency installs or builds. A new server does not migrate the
-memory used by the owner's open desktop apps or their browser sessions. The
-existing Railway services remain the production execution host. This branch
-does not purchase a server or relocate the current Codex conversation.
+Run the complete suite and media fixtures on the GitHub-hosted CI runner or the
+verified YouTube OVH development server, with bounded CPU/memory. The owner
+reported severe PC slowdown; do not run rendering, test suites, dependency
+installation or builds on the owner's PC. This task verified the existing OVH
+checkout directly; no setup was repeated. The existing Railway services remain
+the production execution host; credentials and production services were not
+migrated to the development server.
 
 Offline tests use fake provider/storage transports and real Redis semantics via
 fakeredis. A tiny, locally generated synthetic FFmpeg fixture verifies the actual

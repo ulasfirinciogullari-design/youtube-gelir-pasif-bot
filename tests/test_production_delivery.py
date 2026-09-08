@@ -180,7 +180,8 @@ def test_actual_master_hash_must_match_before_any_render(family, monkeypatch, tm
     renderer.assert_not_called()
 
 
-def test_three_cuts_use_one_master_zero_paid_generations_and_no_inherited_qc(family, monkeypatch, tmp_path):
+@pytest.mark.parametrize('only_numbers', [None, [2, 3]])
+def test_three_cuts_use_one_master_zero_paid_generations_and_no_inherited_qc(family, monkeypatch, tmp_path, only_numbers):
     _, _, manifest, master = family
     calls = []
     def render(source, cut, path):
@@ -192,12 +193,36 @@ def test_three_cuts_use_one_master_zero_paid_generations_and_no_inherited_qc(fam
         if path == master else
         {'width': 1080, 'height': 1920, 'fps': '30/1', 'frames': 960, 'duration': 32}
     ))
-    results = derivatives.render_candidates(master, manifest, tmp_path / 'cuts', **bindings(manifest))
-    assert calls == [(master, 0, 960), (master, 4800, 5760), (master, 9600, 10560)]
-    assert len(results) == 3
+    results = derivatives.render_candidates(master, manifest, tmp_path / 'cuts',
+                                             only_numbers=only_numbers, **bindings(manifest))
+    expected = [(master, 0, 960), (master, 4800, 5760), (master, 9600, 10560)]
+    assert calls == (expected if only_numbers is None else expected[1:])
+    assert len(results) == (3 if only_numbers is None else 2)
     assert all(row['new_voice_generations'] == row['new_video_generations'] == 0 for row in results)
     assert all(row['manual_qa_required'] and not row['publish_eligible'] for row in results)
     assert all(row['quality_disposition'] != 'automated_qc_pass' for row in results)
+
+
+@pytest.mark.parametrize('only_numbers', [[True], [2, 2], [3, 2], [0], [4], ['2'], {2, 3}, '2'])
+def test_recovery_cut_selection_cannot_expand_or_repeat_work(family, monkeypatch, tmp_path, only_numbers):
+    _, _, manifest, master = family
+    renderer = Mock()
+    monkeypatch.setattr(derivatives, '_render_one', renderer)
+    with pytest.raises(delivery.DeliveryPlanError, match='cut_selection_invalid'):
+        derivatives.render_candidates(master, manifest, tmp_path, only_numbers=only_numbers,
+                                      **bindings(manifest))
+    renderer.assert_not_called()
+
+
+def test_selected_recovery_cuts_still_require_exact_master(family, monkeypatch, tmp_path):
+    _, _, manifest, master = family
+    master.write_bytes(b'changed parent asset')
+    renderer = Mock()
+    monkeypatch.setattr(derivatives, '_render_one', renderer)
+    with pytest.raises(delivery.DeliveryPlanError, match='master_changed'):
+        derivatives.render_candidates(master, manifest, tmp_path, only_numbers=[2, 3],
+                                      **bindings(manifest))
+    renderer.assert_not_called()
 
 
 def test_render_filter_preserves_speed_whole_frames_and_original_audio(monkeypatch, tmp_path):

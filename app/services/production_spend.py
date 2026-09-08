@@ -106,6 +106,22 @@ class SpendQuote:
         return self
 
 
+@dataclass(frozen=True)
+class OpeningReservation:
+    """An audited pre-existing paid intent, including uncertain/in-flight work.
+
+    request_key and lineage_id must match the production dispatch identities.
+    Import the full reserved upper bound; this is not a refund/settlement API.
+    """
+
+    day: str
+    request_key: str
+    channel_id: str
+    lineage_id: str
+    kind: str
+    quote: SpendQuote
+
+
 def _period(now):
     if not isinstance(now, datetime) or now.tzinfo is None or now.utcoffset() is None:
         raise SpendBlocked('spend_clock_invalid')
@@ -131,26 +147,89 @@ class SpendLedger:
         self.clock = clock or (lambda: datetime.now(timezone.utc))
 
     def initialize(self):
-        """Explicit one-time empty start; never resets/reconciles past spend.
+        """Explicit empty start for a period with no pre-existing API usage.
 
-        The operator must choose the remaining-period allowance before this
-        first installation. Existing matching state is only read/validated.
+        For a partially used month, use initialize_reconciled instead. Neither
+        method may run as a missing-ledger fallback in a production request.
+        Existing matching state is only read/validated.
         """
         month, day = _period(self.clock())
+        return self._initialize(month, day, {'period:' + month: _json(_fresh_period(month))})
+
+    def initialize_reconciled(self, *, month, reservations, reconciliation_sha256):
+        """Explicit one-time import, with no provider calls or spending permits.
+
+        The operator must reconcile ALL current-month billed/in-flight intents
+        before activation. Amounts may exceed policy limits: preserve the debt
+        and block subsequent dispatch, rather than discard it to fit a budget.
+        No existing ledger is overwritten, including after a lost reply.
+        """
+        current_month, day = _period(self.clock())
+        if (month != current_month or type(month) is not str
+                or type(reconciliation_sha256) is not str
+                or not re.fullmatch(r'[0-9a-f]{64}', reconciliation_sha256)
+                or type(reservations) is not list or len(reservations) > 10000):
+            raise SpendBlocked('spend_opening_invalid')
+        period, mapping, lineages = _fresh_period(month), {}, {}
+        for entry in reservations:
+            if type(entry) is not OpeningReservation or type(entry.quote) is not SpendQuote:
+                raise SpendBlocked('spend_opening_invalid')
+            try:
+                parsed_day = datetime.strptime(entry.day, '%Y-%m-%d').date().isoformat()
+            except (TypeError, ValueError):
+                raise SpendBlocked('spend_opening_invalid') from None
+            if parsed_day != entry.day or not entry.day.startswith(month + '-') or entry.day > day:
+                raise SpendBlocked('spend_opening_invalid')
+            for value in (entry.request_key, entry.channel_id, entry.lineage_id):
+                _identifier(value)
+            if type(entry.kind) is not str or entry.kind not in _KINDS:
+                raise SpendBlocked('spend_kind_invalid')
+            entry.quote.validate()
+            amount = entry.quote.maximum_micro
+            request_field = 'request:' + hashlib.sha256(entry.request_key.encode()).hexdigest()
+            if request_field in mapping:
+                raise SpendBlocked('spend_opening_duplicate_request')
+            lineage = lineages.setdefault(entry.lineage_id, {
+                'channel_id': entry.channel_id, 'kind': entry.kind, 'used_micro': 0})
+            if lineage['channel_id'] != entry.channel_id or lineage['kind'] != entry.kind:
+                raise SpendBlocked('spend_lineage_binding_invalid')
+            lineage['used_micro'] += amount
+            period['used_micro'] += amount
+            _integer(period['used_micro'])
+            period['days'][entry.day] = period['days'].get(entry.day, 0) + amount
+            period['channels'][entry.channel_id] = period['channels'].get(entry.channel_id, 0) + amount
+            mapping[request_field] = _json({
+                'version': 1, 'month': month, 'day': entry.day,
+                'channel_id': entry.channel_id, 'lineage_id': entry.lineage_id,
+                'kind': entry.kind, 'quote': asdict(entry.quote),
+                'state': 'opening_reserved_upper_bound',
+            })
+        mapping.update({'lineage:' + hashlib.sha256(key.encode()).hexdigest(): _json(value)
+                        for key, value in lineages.items()})
+        mapping['period:' + month] = _json(period)
+        mapping['opening_reconciliation'] = _json({
+            'version': 1, 'month': month, 'reserved_micro': period['used_micro'],
+            'request_count': len(reservations), 'reconciliation_sha256': reconciliation_sha256,
+            'opening_sha256': hashlib.sha256(_json(mapping).encode()).hexdigest(),
+        })
+        return self._initialize(month, day, mapping)
+
+    def _initialize(self, month, day, opening):
         policy_raw = _json(asdict(self.policy))
         try:
             with self.client.pipeline() as pipe:
                 pipe.watch(LEDGER_KEY)
                 if pipe.exists(LEDGER_KEY):
                     self._read_state(pipe, month, day)
+                    if ('opening_reconciliation' in opening and
+                            pipe.hget(LEDGER_KEY, 'opening_reconciliation') != opening['opening_reconciliation']):
+                        raise SpendBlocked('spend_opening_mismatch')
                     return False
+                mapping = {**opening, 'policy': policy_raw, 'active_month': month, 'last_day': day}
                 pipe.multi()
-                pipe.hset(LEDGER_KEY, mapping={
-                    'policy': policy_raw, 'active_month': month,
-                    'last_day': day, 'period:' + month: _json(_fresh_period(month)),
-                })
+                pipe.hset(LEDGER_KEY, mapping=mapping)
                 result = pipe.execute()
-                if len(result) != 1 or type(result[0]) is not int or result[0] != 4:
+                if len(result) != 1 or type(result[0]) is not int or result[0] != len(mapping):
                     raise SpendBlocked('spend_initialization_uncertain')
                 return True
         except SpendBlocked:
