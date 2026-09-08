@@ -17,6 +17,14 @@ def prepare_series_batch(self, execution_binding: dict) -> dict:
     return run_series_preparation(execution_binding, self.request.id)
 
 
+@celery.task(name='app.production_tasks.render_delivery_family', bind=True, acks_late=False,
+             autoretry_for=(), max_retries=0, soft_time_limit=2200, time_limit=2300)
+def render_delivery_family(self, source_task_id: str) -> dict:
+    from app.services.production_delivery_runtime import render_delivery_family as render_family
+
+    return render_family(source_task_id, self.request.id)
+
+
 @celery.task(name='app.production_tasks.production_tick', acks_late=False)
 def production_tick() -> dict:
     from app.tasks import run_video_pipeline
@@ -33,6 +41,12 @@ def production_tick() -> dict:
         # Clear only already-finished active claims before looking for public
         # retry receipts. Recovery still requires the existing global-idle CAS.
         reconcile_active_production()
+        try:
+            from app.services.production_delivery_runtime import maintain_delivery_families
+
+            maintain_delivery_families()
+        except Exception:
+            pass  # Private derivatives never suppress an independent normal job.
         recovered = reconcile_public_retry_deliveries(linked_profiles)
         dispatched = dispatch_due_productions(
             profiles,

@@ -545,6 +545,7 @@ def _director_json_schema(
     target_scenes: int,
     *,
     exact_scene_count: bool = False,
+    delivery_family: bool = False,
 ) -> dict:
     if exact_scene_count:
         minimum_scenes = maximum_scenes = int(target_scenes)
@@ -580,7 +581,7 @@ def _director_json_schema(
         ],
         'additionalProperties': False,
     }
-    return {
+    schema = {
         'type': 'object',
         'properties': {
             'title': {'type': 'string'},
@@ -606,6 +607,12 @@ def _director_json_schema(
         ],
         'additionalProperties': False,
     }
+    if delivery_family:
+        from app.services.production_delivery import shorts_schema
+
+        schema['properties']['derived_shorts'] = shorts_schema()
+        schema['required'].append('derived_shorts')
+    return schema
 
 
 def _stock_writer_json_schema(request_positions: list[int]) -> dict:
@@ -1401,6 +1408,12 @@ def _clean_package(revised: dict, original: dict) -> dict:
     out['ai_scenes'] = [s['ai_prompt'] for s in cleaned if s.get('ai_prompt')]
     out['overlay_phrases'] = []
     out['director_qc'] = revised.get('qc_summary') or []
+    # A later director correction must supply a fresh cut selection. Never keep
+    # a previous plan alongside changed scene narration/indices.
+    out.pop('delivery_plan', None)
+    out.pop('derived_shorts', None)
+    if 'derived_shorts' in revised:
+        out['derived_shorts'] = deepcopy(revised['derived_shorts'])
     return out
 
 
@@ -2018,6 +2031,10 @@ def _run_director(
         if duration_minutes > 1.1
         else ''
     )
+    from app.services.production_delivery import writer_rule
+
+    delivery_rule = writer_rule(options, duration_minutes)
+    delivery_keys = ', derived_shorts' if delivery_rule else ''
     prompt = f'''You are the FINAL EDITORIAL DIRECTOR for a premium faceless YouTube video.
 Topic: {topic}
 Language: {language_name}
@@ -2039,12 +2056,13 @@ HARD spoken-word budget: {min_words}-{max_words}; aim for {target_words}.
 {shot_capacity_rule}
 {correction_note}
 {fresh_candidate_metadata_rule(fresh_scheduled)}
+{delivery_rule}
 
 DRAFT JSON:
 {json.dumps(compact, ensure_ascii=False)}
 
 Return ONLY valid JSON with exactly these keys:
-title, thumbnail_text, description, scenes, qc_summary.
+title, thumbnail_text, description, scenes, qc_summary{delivery_keys}.
 
 Each scene must contain exactly:
 narration, visual_queries, ai_prompt, pace, transition.
@@ -2096,6 +2114,7 @@ EDITORIAL QC RULES:
             json_schema=_director_json_schema(
                 target_scenes,
                 exact_scene_count=exact_scene_count,
+                **({'delivery_family': True} if delivery_rule else {}),
             ),
             google_search=False,
             thinking_level=reasoning_effort,
@@ -4367,5 +4386,9 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             'ending_pair_accepted': True,
         }
         out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
+    from app.services.production_delivery import delivery_requested, bind_delivery_plan
+
+    if delivery_requested(options, duration_minutes):
+        out['delivery_plan'] = bind_delivery_plan(out)
     return out
 

@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     # context, policy or a reviewed provider quote then blocks paid requests.
     studio_spend_enforcement: bool = False
     studio_spend_policy_json: str = ''
+    # Staged until actual delivery/review and the spending policy are commissioned.
+    studio_longform_delivery_enabled: bool = False
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )

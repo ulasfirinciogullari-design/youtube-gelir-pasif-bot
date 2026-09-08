@@ -2045,6 +2045,13 @@ def _normalized_options(options: dict | None, duration_minutes: float) -> dict:
         requested_publish_after_render is True
         and value['mode'] == 'production'
     )
+    if value.get('production_delivery') is not None:
+        from app.services.production_delivery import delivery_requested
+        from app.services.production_delivery_runtime import enabled
+
+        delivery_requested(value, duration_minutes)
+        if not enabled():
+            raise ValueError('Long-form delivery and its spending guard are not enabled')
     return value
 
 
@@ -4697,6 +4704,13 @@ def run_video_pipeline(
                 'Recovered media and voice source tasks do not match'
             )
         scenes = package['scenes']
+        if options.get('production_delivery') is not None:
+            from app.services.production_delivery import delivery_requested, bind_delivery_plan
+
+            delivery_requested(options, duration_minutes)
+            if (getattr(settings, 'studio_spend_enforcement', False) is not True
+                    or package.get('delivery_plan') != bind_delivery_plan(package)):
+                raise FinalVisualQualityError('Long-form delivery package or budget is not commissioned')
         if recovered_generated_media and recovered_generated_media.get('version') == 4:
             if (
                 options.get('mode') != 'production'
@@ -7350,6 +7364,7 @@ def run_video_pipeline(
             output_resolution=resolution_for_mode(
                 options.get('mode'), options.get('format'),
             ),
+            **({'capture_scene_windows': True} if options.get('production_delivery') else {}),
         )
 
         actual_seconds = float(rendered.get('duration') or 0)
@@ -7404,6 +7419,11 @@ def run_video_pipeline(
         set_stage(self, task_id, 'upload', 92, 'Final master ve üretim dosyaları kalıcı depolamaya yükleniyor.')
         object_key = f'videos/{task_id}/final.mp4'
         upload_file(rendered['path'], object_key, 'video/mp4')
+        from app.services.production_delivery import persist_delivery_manifest
+
+        delivery_fields = persist_delivery_manifest(
+            task_id, package, rendered, options, duration_minutes, work,
+        )
 
         caption_key = None
         caption_url = None
@@ -7429,6 +7449,7 @@ def run_video_pipeline(
             'topic': topic,
             'channel_id': channel_id,
             'requested_duration_minutes': duration_minutes,
+            **delivery_fields,
             'effective_edit_target_seconds': effective_edit_target_seconds,
             'studio_options': options,
             'narration_word_count': package.get('narration_word_count'),
@@ -7547,6 +7568,7 @@ def run_video_pipeline(
             'task_id': task_id,
             **thumbnail_fields,
             'channel_id': channel_id,
+            **delivery_fields,
             'title': package.get('title'),
             'publish_metadata': {
                 'title': package.get('title'),
@@ -7662,6 +7684,13 @@ def run_video_pipeline(
         }
         mark_success(task_id, result)
         _queue_automatic_publish_if_enabled(task_id, options)
+        if delivery_fields.get('delivery_manifest_key'):
+            try:
+                from app.services.production_delivery_runtime import queue_delivery_family
+
+                queue_delivery_family(task_id)
+            except Exception:
+                pass  # The cloud tick retries discovery, never parent generation.
         return result
     except Exception as exc:
         if total_paid_create_cap is not None:
@@ -7682,6 +7711,12 @@ def run_video_pipeline(
                 ImmutableNarrationSceneBudgetError,
             ),
         )
+        if options.get('production_delivery') is not None and not terminal_pre_media_error:
+            bounded_error = FinalVisualQualityError(
+                f'Long-form delivery stopped without automatic master rebuild: {type(exc).__name__}'
+            )
+            mark_failure(task_id, bounded_error)
+            raise bounded_error from exc
         if (retry_dispatch_source_id and options.get('mode') == 'production'
                 and options.get('format') == 'landscape' and duration_minutes == 3
                 and not terminal_pre_media_error):

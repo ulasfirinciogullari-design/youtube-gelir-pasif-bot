@@ -454,8 +454,13 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         brief = topic + (f'\n\nChannel editorial direction: {identity}' if identity else '')
         from app.services.production_editorial import choose_production_editorial
 
-        editorial = choose_production_editorial(topic, identity)
+        delivery_enabled = getattr(settings, 'studio_longform_delivery_enabled', False) is True
+        editorial = choose_production_editorial(
+            topic, identity, **({'long_duration_minutes': 8} if delivery_enabled else {}),
+        )
         duration_minutes = editorial['duration_minutes']
+        if duration_minutes == 8 and getattr(settings, 'studio_spend_enforcement', False) is not True:
+            return {'status': 'delivery_budget_not_enabled'}
         route = str(profile.get('route_label') or channel_id).strip()
         task_id = str(uuid5(NAMESPACE_URL, f'youtube-production:{channel_id}:{cursor}:{_prefix_digest([topic])}'))
         options = {
@@ -470,6 +475,10 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
             'production_topic_index': cursor,
             'production_editorial': editorial,
         }
+        if duration_minutes == 8:
+            from app.services.production_delivery import CONTRACT
+
+            options['production_delivery'] = dict(CONTRACT)
         spec = {'topic': brief, 'duration_minutes': duration_minutes, 'language': language, 'channel_id': route, **options}
         iso_now = datetime.fromtimestamp(now, timezone.utc).isoformat()
         record = {

@@ -6,15 +6,16 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
+import httpx
+
 
 openai_stub = types.ModuleType('openai')
 openai_stub.OpenAI = object
 sys.modules.setdefault('openai', openai_stub)
 
-httpx_stub = types.ModuleType('httpx')
-httpx_stub.Timeout = lambda *args, **kwargs: object()
-httpx_stub.post = lambda *args, **kwargs: None
-sys.modules.setdefault('httpx', httpx_stub)
+# Keep the real transport module importable by other SDKs (notably Runway).
+# Individual tests patch requests; a process-wide partial stub breaks tests
+# depending on collection order, even though no provider traffic is needed.
 
 config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace(

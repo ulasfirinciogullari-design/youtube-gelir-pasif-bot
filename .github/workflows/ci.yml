@@ -8,6 +8,7 @@ on:
 jobs:
   syntax:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -15,6 +16,12 @@ jobs:
           python-version: '3.12'
       - name: Install application and test dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt pytest==9.1.1 'fakeredis[lua]>=2.32,<3'
+      - name: Ensure cloud media test dependencies
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
       - name: Compile Python sources
         run: python -m compileall -q app
       - name: Run complete test suite

@@ -601,6 +601,28 @@ def _timeline_frame_counts(
     return counts
 
 
+def _scene_frame_windows(timeline: list, frame_counts: list[int], total_frames: int) -> list[dict]:
+    """Keep exact whole-scene boundaries from the actual rendered CFR timeline."""
+    if len(timeline) != len(frame_counts) or not timeline:
+        raise ValueError('Invalid rendered scene timeline')
+    windows, cursor = [], 0
+    for row, count in zip(timeline, frame_counts):
+        index = row[3]
+        if type(index) is not int or type(count) is not int or count <= 0:
+            raise ValueError('Invalid rendered scene timeline')
+        if windows and windows[-1]['scene_index'] == index:
+            windows[-1]['end_frame'] += count
+        else:
+            if index != len(windows):
+                raise ValueError('Non-contiguous rendered scene timeline')
+            windows.append({'scene_index': index, 'start_frame': cursor, 'end_frame': cursor + count})
+        cursor += count
+    if type(total_frames) is not int or total_frames < cursor:
+        raise ValueError('Invalid rendered frame total')
+    windows[-1]['end_frame'] = total_frames
+    return windows
+
+
 def render_video(
     voice_path: str | Path,
     visual_paths: list[str | dict],
@@ -611,6 +633,7 @@ def render_video(
     scene_visual_paths: list[list[str | dict]] | None = None,
     target_duration: float | None = None,
     output_resolution: str = LANDSCAPE_RESOLUTION,
+    capture_scene_windows: bool = False,
 ) -> dict:
     if not visual_paths:
         raise RuntimeError('No visual clips were provided to renderer')
@@ -761,6 +784,10 @@ def render_video(
         'duration': final_duration,
         'frame_count': final_frames,
         'fps': FPS,
+        'scene_windows': (
+            _scene_frame_windows(timeline, timeline_frame_counts, final_frames)
+            if capture_scene_windows and scenes and scene_durations and scene_visual_paths else []
+        ),
         'ending_silence_seconds': ending_silence_duration(output),
         'max_freeze_seconds': max_freeze_duration(output),
         'shots': len(timeline),

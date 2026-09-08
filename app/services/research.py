@@ -248,6 +248,13 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
         raise RuntimeError('OPENAI_API_KEY is not configured')
 
     options = dict(options or {})
+    from app.services.production_delivery import writer_rule
+
+    delivery_rule = writer_rule(options, duration_minutes, select_cuts=False)
+    if delivery_rule:
+        # The original research brief includes the reusable mini-story structure;
+        # the final director selects and binds the exact whole-scene ranges.
+        topic = topic + '\n\n' + delivery_rule
     shot_capacity_rule = _scheduled_short_shot_writer_rule(options, duration_minutes, fresh_scheduled)
     shot_aspect = '9:16' if shot_capacity_rule else '16:9'
     style = str(options.get('content_style') or 'documentary')
