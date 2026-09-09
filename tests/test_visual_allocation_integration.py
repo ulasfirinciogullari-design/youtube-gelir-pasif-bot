@@ -84,8 +84,12 @@ def test_checkpoint_is_wired_after_final_stock_ranking_before_paid_allocation_va
     assert len(final_allocation) == 2
     assert {node.args[0].id for node in final_allocation} == {'ranked_runway_candidates', 'selected_runway'}
     early = [node for node in allocation if node not in final_allocation]
-    assert len(early) == 1 and isinstance(early[0].args[0], ast.ListComp)
+    assert len(early) == 2 and all(isinstance(node.args[0], ast.ListComp) for node in early)
+    for version in (4, 6):
+        guard = next(node for node in ast.walk(pipeline) if isinstance(node, ast.If)
+                     and ast.unparse(node.test) == f"recovered_generated_media and recovered_generated_media.get('version') == {version}")
+        assert sum(node in list(ast.walk(guard)) for node in early) == 1
     assert len(checkpoint) == len(diagnostics) == 1
-    assert early[0].lineno < diagnostics[0] < checkpoint[0] < min(node.lineno for node in final_allocation)
+    assert max(node.lineno for node in early) < diagnostics[0] < checkpoint[0] < min(node.lineno for node in final_allocation)
     generation = [line for name, line in calls if name == 'generate_scene']
     assert generation and max(node.lineno for node in final_allocation) < min(generation)
