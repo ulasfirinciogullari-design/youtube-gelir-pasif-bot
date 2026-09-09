@@ -100,6 +100,7 @@ endpoints and unbounded requests block. Prepaid balances are not cash discounts.
 | OpenAI GPT-6 Astra (rate updated 9 September) | Tool-free plain text, explicit standard tier, at most 100,000 encoded JSON bytes, at most 16,384 output tokens | $12.50/M input reserves the implicit cache-write rate; $50/M output. Conservative input bound is encoded JSON bytes + 4,096 framing tokens |
 | Gemini 3.1 Pro Preview | One tool-free text-only JSON candidate, optional inline schema, at most 100,000 encoded JSON bytes and 16,384 total output tokens | $2/M input and $12/M output including thinking; encoded bytes + 4,096 framing keeps the input bound below the 200,000-token price threshold |
 | Abacus Claude Haiku 4.5 (`claude-haiku-4-5-20251001`) | Native Messages, one plain-text user message, thinking disabled, at most 100,000 encoded JSON bytes and 8,192 output tokens | $1/M input and $5/M output; encoded bytes + 4,096 framing tokens |
+| Abacus Claude Haiku 4.5 native images (9 September revision) | One user message with full interleaved text/JPEG evidence, thinking disabled, standard tier, at most 60 bounded images and 8,192 output tokens | Full 200,000-token input context at $1/M plus the requested output ceiling at $5/M; at most $0.240960 |
 | Abacus Claude Sonnet 5 / 4.6 (`claude-sonnet-5`, `claude-sonnet-4-6`) | Same native text contract, explicit global inference | Respectively $2/$10 and $3/$15 per M input/output tokens |
 | Runway Gen-4.5 | Text-to-video, supported 720p ratios, 2–10 s, no generated audio | $0.12/s |
 | Runway Seedance 2 Fast | Same bounded request family | $0.29/s, including when selected as a fallback |
@@ -142,7 +143,8 @@ key access, not a successful paid Messages call or remaining account balance.
 `STUDIO_ABACUS_EDITORIAL_ENABLED=false` is the default. When explicitly enabled
 with commissioned spending, only the fresh scheduled director refinement uses
 the configured Abacus Claude model (Haiku by default); research, immutable saved
-stories and independent media reviewers retain their existing routes. Every
+stories and independent media reviewers retain their existing routes unless
+the separate visual reviewer setting below is explicitly selected. Every
 create has one reservation and no automatic POST retry or provider fallback.
 Native model/request identity, token counts and pricing mode must match the
 bounded request. An acknowledged `usage:<digest>` observation is attached to
@@ -151,7 +153,33 @@ no prompt or key and never reduces reserved counters, settles an invoice,
 converts credits to cash or authorizes another create. Missing/malformed usage,
 uncertain writes, over-quote counts and conflicting observations stop the job.
 
-The current audio review/music, Gemini grounding/multimodal critic/image/Omni,
+`STUDIO_VISUAL_QC_PROVIDER` remains empty by default. Explicitly setting it to
+`abacus` selects the fixed native `claude-haiku-4-5-20251001` image reviewer;
+it requires spending enforcement, the existing Abacus key, and funding admission
+for `abacus-vision-2026-09-09-v1`. This setting is independent of the editorial
+opt-in. The full rubric, exact scene count/schema, ordered frame labels, source
+evidence and cross-scene context are preserved. Abacus receives the original
+JPEG bytes, with no frame resizing, splitting or omission to fit its quote.
+Up to 60 images are accepted, each at most 180 KiB, 640 pixels wide and 2,000
+pixels tall, with at most 12 MiB decoded image bytes and 100,000 encoded metadata
+bytes. Larger or malformed evidence blocks before submission.
+
+This separate quote reserves Haiku's full 200,000-token input context at $1/M
+plus the requested output ceiling at $5/M (at most 8,192 output tokens): at the
+maximum output setting, $0.240960 per request. It does not infer an input bound
+from image dimensions. The native image contract and model context/rates are
+documented by [Abacus](https://abacus.ai/help/developer-platform/route-llm/anthropic-messages)
+and [Anthropic](https://platform.claude.com/docs/en/models/overview).
+Local schema validation retains evidence `uniqueItems` and all existing QA
+gates, including the 86-point threshold. Submission/usage/schema failures are
+terminal; there is no automatic POST retry or fallback to another provider.
+The existing explicit same-frame temporal repair and score-consistency review
+remain separate, individually reserved calls; an identical repeated request
+still stops at the existing replay fence. This opt-in has not been activated
+or quality-validated against a live account; it does not commission V6 dispatch,
+audio review or the complete production/publication chain.
+
+The current prosody/music and fallback speech review, Gemini grounding/multimodal critic/image/Omni,
 OpenAI vision/search and fal calls are guarded but have NO commissioned quote
 yet. They therefore block with enforcement on. The Gemini JSON route permits
 only the named model and bounded text contract, including schema/settings;
@@ -165,6 +193,31 @@ verified rate evidence ([ElevenLabs custom-rate documentation](https://elevenlab
 A shared-voice bookmark and
 Gemini file-upload transport are not model-generation charges; they are the
 only explicit free-POST exclusions in the source coverage test.
+
+## Bounded Whisper transcription of an existing Short
+
+With enforcement enabled, the existing OpenAI speech review now uses a dedicated
+native multipart transport for `whisper-1`. Its immutable request contains the
+original MP3 or PCM16 WAV bytes, `verbose_json`, word timestamps, English/Turkish
+language and temperature zero. It validates the whole file structure and decodes
+the admitted audio to verify at most 30.08 seconds, with an 8 MiB byte limit.
+The original bytes are sent; the local decode does not alter the narration.
+
+The reviewed [Whisper rate](https://developers.openai.com/api/docs/models/whisper-1)
+is $0.006/minute. Each request conservatively reserves one full minute ($0.006),
+under `whisper-short-2026-09-09-v1`, expiring before 1 October. This is not a claim
+about provider rounding, prepaid coverage or the account's tax-inclusive cost.
+Its exact route and actual credential still need reconciled funding evidence.
+Longer/unsupported audio stays blocked; other speech and prosody models gain no
+allowance from this quote.
+
+The same atomic family/funding/replay reservation binds the captured bytes and
+form fields before one streamed POST. Redis stores their digest, not the voice
+or filename. Timeout, rejected HTTP and malformed transcript/timing responses
+are terminal through the existing worker failure handler, with no provider or
+same-audio retry and no refund. Valid transcript mismatch retains the existing
+quality decision. Enforcement OFF preserves the legacy request path. No live
+transcription or funding initialization is part of this implementation.
 
 ## Existing ElevenLabs voice: evidence-backed quote, not commissioned
 

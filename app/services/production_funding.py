@@ -137,7 +137,9 @@ def validate_funding_policy(policy: dict, *, now: datetime) -> dict:
             _route(route['route'])
             for name in ('model', 'price_revision'):
                 _require(type(route[name]) is str and _NAME.fullmatch(route[name]) is not None)
-            identity = (route['route'], route['model'])
+            # Text and vision can have separately reviewed prices at the same
+            # native endpoint/model. These bindings still draw one account pool.
+            identity = (route['route'], route['model'], route['price_revision'])
             _require(identity not in seen_routes)
             seen_routes.add(identity)
         funding = account['funding']

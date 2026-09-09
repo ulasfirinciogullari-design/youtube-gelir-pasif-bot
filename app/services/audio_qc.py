@@ -2269,27 +2269,39 @@ def _verify_with_openai(
     provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
     from app.services.production_spend import SpendBlocked
+    from app.services.production_spend_runtime import enforcement_enabled
+    from app.services.whisper_transcription import (
+        WhisperTranscriptionError, transcribe_whisper_bounded,
+    )
+    enforced = enforcement_enabled()
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
-        with path.open('rb') as audio_file:
-            response = paid_post(httpx.post,
-                OPENAI_AUDIO_TRANSCRIPTIONS_URL,
-                headers=_openai_headers(api_key),
-                data={
-                    'model': 'whisper-1',
-                    'language': language_codes['openai'],
-                    'response_format': 'verbose_json',
-                    'timestamp_granularities[]': 'word',
-                    'temperature': '0',
-                },
-                files={
-                    'file': (path.name, audio_file, content_type),
-                },
-                timeout=_SPEECH_TO_TEXT_TIMEOUT,
+        if enforced:
+            response = transcribe_whisper_bounded(
+                path, api_key=api_key, language=language_codes['openai'],
             )
-    except SpendBlocked:
+        else:
+            with path.open('rb') as audio_file:
+                response = paid_post(httpx.post,
+                    OPENAI_AUDIO_TRANSCRIPTIONS_URL,
+                    headers=_openai_headers(api_key),
+                    data={
+                        'model': 'whisper-1',
+                        'language': language_codes['openai'],
+                        'response_format': 'verbose_json',
+                        'timestamp_granularities[]': 'word',
+                        'temperature': '0',
+                    },
+                    files={
+                        'file': (path.name, audio_file, content_type),
+                    },
+                    timeout=_SPEECH_TO_TEXT_TIMEOUT,
+                )
+    except (SpendBlocked, WhisperTranscriptionError):
         raise
     except Exception:
+        if enforced:
+            raise WhisperTranscriptionError('whisper_transport_failed') from None
         raise AudioQCError(
             'OpenAI speech-to-text transport failed'
         ) from None
@@ -2299,18 +2311,23 @@ def _verify_with_openai(
         language=language_codes['openai'], secret=api_key,
         sink=provider_evidence_sink,
     )
-    payload = _response_payload(response, 'OpenAI')
-    return _require_word_timing_evidence(
-        compare_transcript(
-            expected_narration,
-            payload['text'],
-            language_code=payload.get('language'),
-            words=payload.get('words'),
-            provider='openai',
-            comparison_language=language_codes['openai'],
-        ),
-        'OpenAI',
-    )
+    try:
+        payload = _response_payload(response, 'OpenAI')
+        return _require_word_timing_evidence(
+            compare_transcript(
+                expected_narration,
+                payload['text'],
+                language_code=payload.get('language'),
+                words=payload.get('words'),
+                provider='openai',
+                comparison_language=language_codes['openai'],
+            ),
+            'OpenAI',
+        )
+    except AudioQCError:
+        if enforced:
+            raise WhisperTranscriptionError('whisper_response_invalid') from None
+        raise
 
 
 def _validated_gemini_upload_url(value: Any) -> str:

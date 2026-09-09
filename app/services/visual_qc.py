@@ -1249,6 +1249,30 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
                            included_indices, available_moments, model_override, thinking_level,
                            *, protocol_attempts=2):
     """Reuse an already-built frame payload; response repair has no SDK retry."""
+    if provider == 'abacus':
+        from app.services.abacus_generation import AbacusConfigurationError
+        from app.services.abacus_visual_generation import generate_abacus_visual_json
+
+        if model_override is not None:
+            raise AbacusConfigurationError('abacus_visual_gemini_override_invalid')
+        native = []
+        for block in content[1:]:
+            if type(block) is not dict:
+                raise AbacusConfigurationError('abacus_visual_input_invalid')
+            if set(block) == {'type', 'text'} and block['type'] == 'input_text':
+                native.append({'type': 'text', 'text': block['text']})
+            elif (set(block) == {'type', 'image_url'} and block['type'] == 'input_image'
+                  and type(block['image_url']) is str
+                  and block['image_url'].startswith('data:image/jpeg;base64,')):
+                native.append({'type': 'image', 'source': {'type': 'base64', 'media_type': 'image/jpeg',
+                    'data': block['image_url'][len('data:image/jpeg;base64,'):]}})
+            else:
+                raise AbacusConfigurationError('abacus_visual_input_invalid')
+        return generate_abacus_visual_json(
+            native, system_instruction=instruction,
+            api_key=str(getattr(settings, 'abacus_api_key', '') or ''),
+            json_schema=_review_json_schema(included_indices, available_moments),
+        )
     if provider == 'gemini':
         schema = _review_json_schema(included_indices, available_moments)
         for attempt in range(protocol_attempts):
@@ -1365,9 +1389,10 @@ def _repair_temporal_response(data, request, included_indices, available_moments
         + ' Incomplete response requirements: ' + json.dumps(requirements, separators=(',', ':'))
     )
     from app.services.production_spend import SpendBlocked
+    from app.services.abacus_generation import AbacusGenerationError
     try:
         revised = _temporal_response_rows(request(instruction), *arguments)
-    except SpendBlocked:
+    except (SpendBlocked, AbacusGenerationError):
         raise
     except Exception:
         revised = None
@@ -1726,14 +1751,25 @@ def review_scene_visuals(
 ) -> dict:
     dedicated_provider = str(getattr(settings, 'studio_visual_qc_provider', '') or '').strip().casefold()
     if provider_override is None:
-        if dedicated_provider and dedicated_provider not in {'openai', 'gemini'}:
-            raise ValueError('STUDIO_VISUAL_QC_PROVIDER must be openai or gemini')
+        if dedicated_provider and dedicated_provider not in {'openai', 'gemini', 'abacus'}:
+            raise ValueError('STUDIO_VISUAL_QC_PROVIDER must be openai, gemini or abacus')
         provider = dedicated_provider or _studio_plan_provider()
-    elif isinstance(provider_override, str) and provider_override.strip().casefold() in {'openai', 'gemini'}:
+    elif isinstance(provider_override, str) and provider_override.strip().casefold() in {'openai', 'gemini', 'abacus'}:
         provider = provider_override.strip().casefold()
     else:
-        raise ValueError('Visual review provider override must be openai or gemini')
-    strict_review_contract = provider == 'gemini' or provider_override is not None or bool(dedicated_provider)
+        raise ValueError('Visual review provider override must be openai, gemini or abacus')
+    strict_review_contract = provider in {'gemini', 'abacus'} or provider_override is not None or bool(dedicated_provider)
+    if provider == 'abacus':
+        from app.services.abacus_generation import AbacusConfigurationError
+        from app.services.production_spend import SpendBlocked
+        from app.services.production_spend_runtime import enforcement_enabled
+
+        if gemini_model_override is not None:
+            raise AbacusConfigurationError('abacus_visual_gemini_override_invalid')
+        if not enforcement_enabled():
+            raise SpendBlocked('spend_not_enabled')
+        if not str(getattr(settings, 'abacus_api_key', '') or '').strip():
+            raise AbacusConfigurationError('abacus_visual_key_missing')
     if provider == 'openai' and not settings.openai_api_key:
         return {'reviews': [], 'missing_review_indices': []}
     if provider == 'gemini' and not str(
@@ -2474,6 +2510,7 @@ def review_scene_visuals(
             initial_review['score_reason_revalidation_provider'] = consistency_provider
             initial_review['score_reason_revalidation_attempted'] = True
             from app.services.production_spend import SpendBlocked
+            from app.services.abacus_generation import AbacusGenerationError
             try:
                 consistency_qc = review_scene_visuals(
                     [scenes[scene_index]],
@@ -2497,7 +2534,7 @@ def review_scene_visuals(
                         else _gemini_thinking_level
                     ),
                 )
-            except SpendBlocked:
+            except (SpendBlocked, AbacusGenerationError):
                 raise
             except Exception:
                 consistency_qc = {'reviews': []}
@@ -2659,4 +2696,3 @@ def review_scene_visuals(
         'unreviewable_scene_indices': unreviewable_indices,
         'missing_review_indices': missing_indices,
     }
-

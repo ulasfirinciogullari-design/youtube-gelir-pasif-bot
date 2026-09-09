@@ -295,7 +295,7 @@ def test_all_current_provider_create_sites_use_the_guard():
     services = Path(__file__).parents[1] / 'app' / 'services'
     names = ('director', 'research', 'visual_qc', 'runway', 'fal_video', 'gemini_generation',
              'gemini_critic', 'voice', 'audio_design', 'audio_qc', 'production_next_series',
-             'abacus_generation')
+             'abacus_generation', 'abacus_visual_generation', 'whisper_transcription')
     free_post_functions = {'ensure_shared_voice_added', '_upload_gemini_audio_file'}
     unguarded = []
     for name in names:
@@ -343,6 +343,49 @@ def test_all_current_provider_create_sites_use_the_guard():
                             if (isinstance(node, ast.Name) and node.id == '_post_bounded')
                             or (isinstance(node, ast.Attribute) and node.attr == '_post_bounded')]
     assert transport_references == [guarded[0].args[0]]
+
+    # The image adapter reuses that same transport only as the guarded call's
+    # sender; importing it must not introduce a direct create or another stream.
+    visual = ast.parse((services / 'abacus_visual_generation.py').read_text())
+    visual_guarded = [node for node in ast.walk(visual) if isinstance(node, ast.Call)
+                      and isinstance(node.func, ast.Attribute) and node.func.attr == 'paid_post'
+                      and node.args and isinstance(node.args[0], ast.Name)
+                      and node.args[0].id == '_post_bounded']
+    assert len(visual_guarded) == 1
+    assert [node for node in ast.walk(visual) if isinstance(node, ast.Name)
+            and node.id == '_post_bounded'] == [visual_guarded[0].args[0]]
+    assert not [node for node in ast.walk(visual) if isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute) and node.func.attr == 'stream']
+
+    # Multipart audio has its own immutable byte descriptor and funding gate.
+    # Its sole stream is private, and its sole caller reserves unconditionally
+    # before entering the transport try block. Real send ordering is also
+    # exercised by the Whisper/audio-QC integration tests.
+    whisper = ast.parse((services / 'whisper_transcription.py').read_text())
+    parents = {child: parent for parent in ast.walk(whisper)
+               for child in ast.iter_child_nodes(parent)}
+    streams = [node for node in ast.walk(whisper) if isinstance(node, ast.Call)
+               and isinstance(node.func, ast.Attribute) and node.func.attr == 'stream']
+    assert len(streams) == 1 and containing_function(streams[0]) == '_post_bounded'
+    assert isinstance(streams[0].func.value, ast.Name) and streams[0].func.value.id == 'httpx'
+    assert isinstance(streams[0].args[0], ast.Constant) and streams[0].args[0].value == 'POST'
+    calls = [node for node in ast.walk(whisper) if isinstance(node, ast.Call)
+             and isinstance(node.func, ast.Name) and node.func.id == '_post_bounded']
+    assert len(calls) == 1 and containing_function(calls[0]) == 'transcribe_whisper_bounded'
+    helper = next(node for node in whisper.body if isinstance(node, ast.FunctionDef)
+                  and node.name == 'transcribe_whisper_bounded')
+    reserve = [node.value for node in helper.body if isinstance(node, ast.Expr)
+               and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Attribute)
+               and node.value.func.attr == 'reserve_request']
+    assert len(reserve) == 1 and reserve[0].lineno < calls[0].lineno
+    assert [node for node in ast.walk(whisper) if isinstance(node, ast.Name)
+            and node.id == '_post_bounded'] == [calls[0].func]
+    audio = ast.parse((services / 'audio_qc.py').read_text())
+    parents = {child: parent for parent in ast.walk(audio)
+               for child in ast.iter_child_nodes(parent)}
+    entry = [node for node in ast.walk(audio) if isinstance(node, ast.Call)
+             and isinstance(node.func, ast.Name) and node.func.id == 'transcribe_whisper_bounded']
+    assert len(entry) == 1 and containing_function(entry[0]) == '_verify_with_openai'
 
 
 @pytest.mark.parametrize('kwargs', [

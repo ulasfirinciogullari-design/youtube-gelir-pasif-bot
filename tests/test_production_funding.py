@@ -90,6 +90,66 @@ def test_covered_models_share_one_account_pool_and_never_fall_back_to_cash():
     assert state == snapshot and state['cash_reserved_micro'] == 2_000_000
 
 
+@pytest.mark.parametrize('mode', ['covered_only', 'cash_only'])
+def test_native_haiku_text_and_visual_revisions_share_one_account_balance(mode):
+    p = policy()
+    account = p['accounts'][0]
+    p['accounts'] = [account]
+    quotes = [
+        SpendQuote('abacus', HAIKU, 41_060, 'official-2026-09-08-v3'),
+        SpendQuote('abacus', HAIKU, 240_960, 'abacus-vision-2026-09-09-v1'),
+    ]
+    account['routes'] = [{'route': ABACUS_ROUTE, 'model': quote.model,
+                          'price_revision': quote.price_revision} for quote in quotes]
+    account['mode'] = mode
+    if mode == 'covered_only':
+        account['funding']['covered_list_allowance_micro'] = 282_020
+        expected_cash, expected_covered = 0, 282_020
+    else:
+        account['funding'] = {'cash_factor_numerator': 11, 'cash_factor_denominator': 10,
+                              'cash_bound_verified': True}
+        expected_cash, expected_covered = 310_222, 0
+        p['cash_cap_micro'] = p['opening_cash_micro'] + expected_cash
+    original_policy = deepcopy(p)
+    state = initial_funding_state(p, now=NOW)
+    receipts = []
+    for quote in quotes:
+        state, receipt = reserve_funding(
+            p, state, quote=quote, route=ABACUS_ROUTE,
+            credential_sha256=credential('abacus'), now=NOW,
+        )
+        receipts.append(receipt)
+        assert receipt['price_revision'] == quote.price_revision
+        assert receipt['model'] == HAIKU and receipt['route'] == ABACUS_ROUTE
+        assert receipt['account_sha256'] == account['account_sha256']
+    assert p == original_policy
+    assert state['accounts'] == {account['account_sha256']: {
+        'covered_reserved_micro': expected_covered, 'cash_reserved_micro': expected_cash,
+    }}
+    assert sum(receipt['cash_micro'] for receipt in receipts) == expected_cash
+    assert sum(receipt['covered_micro'] for receipt in receipts) == expected_covered
+    assert state['cash_reserved_micro'] == p['opening_cash_micro'] + expected_cash
+    summary = funding_summary(p, state, now=NOW)
+    assert len(summary['providers']) == 1
+    assert summary['providers'][0]['covered_allowance_micro'] == (
+        282_020 if mode == 'covered_only' else None
+    )
+    saved = deepcopy(state)
+    for quote in quotes:
+        with pytest.raises(SpendBlocked, match=(
+                'spend_funding_covered_limit' if mode == 'covered_only' else 'spend_funding_cash_limit')):
+            reserve_funding(
+                p, state, quote=SpendQuote('abacus', HAIKU, 1, quote.price_revision),
+                route=ABACUS_ROUTE, credential_sha256=credential('abacus'), now=NOW,
+            )
+    assert state == saved  # Neither price revision opens another allowance.
+    with pytest.raises(SpendBlocked, match='spend_funding_route_not_covered'):
+        reserve_funding(
+            p, state, quote=SpendQuote('abacus', HAIKU, 1, 'unreviewed-revision'),
+            route=ABACUS_ROUTE, credential_sha256=credential('abacus'), now=NOW,
+        )
+
+
 def test_cash_cap_is_shared_across_providers_and_rounds_every_bound_up():
     p = policy()
     p['accounts'][0]['mode'] = 'cash_only'
@@ -315,7 +375,8 @@ def test_another_timezone_is_normalized_to_utc():
     assert reserve(p, state, now=local)[0]['month'] == '2026-09'
 
 
-@pytest.mark.parametrize('change', ['cap', 'opening', 'evidence', 'allowance', 'credential'])
+@pytest.mark.parametrize('change', ['cap', 'opening', 'evidence', 'allowance', 'credential',
+                                   'route_revision'])
 def test_new_policy_or_balance_snapshot_cannot_reset_existing_state(change):
     p = policy()
     state, _ = reserve(p, initial_funding_state(p, now=NOW))
@@ -328,6 +389,10 @@ def test_new_policy_or_balance_snapshot_cannot_reset_existing_state(change):
         modified['reconciliation_sha256'] = digest('new observation')
     elif change == 'allowance':
         modified['accounts'][0]['funding']['covered_list_allowance_micro'] += 10_000
+    elif change == 'route_revision':
+        modified['accounts'][0]['routes'].append({
+            'route': ABACUS_ROUTE, 'model': HAIKU, 'price_revision': 'abacus-vision-2026-09-09-v1',
+        })
     else:
         modified['accounts'][0]['credential_sha256'] = credential('new-key')
     with pytest.raises(SpendBlocked, match='spend_funding_policy_mismatch'):
@@ -388,10 +453,9 @@ def test_input_objects_and_receipts_are_independent_and_secret_free():
     assert state == original_state
 
 
-def test_exact_duplicate_model_route_cannot_add_another_pool_or_revision():
+def test_exact_duplicate_route_model_revision_cannot_add_another_pool():
     p = policy()
     duplicate = deepcopy(p['accounts'][0]['routes'][0])
-    duplicate['price_revision'] = 'fixture-v2'
     p['accounts'][0]['routes'].append(duplicate)
     with pytest.raises(SpendBlocked, match='spend_funding_policy_invalid'):
         initial_funding_state(p, now=NOW)

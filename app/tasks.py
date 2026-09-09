@@ -2157,6 +2157,8 @@ def _verify_audio_narration_with_retry(
     task_id: str | None = None,
 ) -> dict:
     """Retry a transient STT outage without regenerating immutable audio."""
+    from app.services.whisper_transcription import WhisperTranscriptionError
+
     provider_attempts = []
     evidence_options = (
         {'provider_evidence_sink': _audio_provider_evidence_sink(task_id, audio_path)}
@@ -2185,6 +2187,12 @@ def _verify_audio_narration_with_retry(
             )
             error.audio_qc_diagnostics = provider_attempts
             raise error from None
+        except WhisperTranscriptionError:
+            # A reserved native request is terminal even before video creates.
+            # The same audio must not trigger a provider or Celery retry.
+            raise FinalAudioQualityError(
+                'Reserved audio verification stopped without another paid request'
+            ) from None
     raise FinalAudioQualityError(
         'Audio narration QA providers were unavailable before paid media'
     )

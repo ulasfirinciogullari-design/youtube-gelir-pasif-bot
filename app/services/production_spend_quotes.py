@@ -329,6 +329,12 @@ def quote_http_request(url, kwargs):
         return 'elevenlabs', parsed.path, _elevenlabs_quote(url, kwargs)
     _require(type(kwargs) is dict and set(kwargs) <= {'json', 'headers', 'timeout'})
     if parsed.hostname == 'routellm.abacus.ai' and parsed.path == '/v1/messages':
+        body = kwargs.get('json')
+        messages = body.get('messages') if type(body) is dict else None
+        if (type(messages) is list and len(messages) == 1 and type(messages[0]) is dict
+                and type(messages[0].get('content')) is list):
+            from app.services.abacus_visual_spend_quotes import quote_abacus_visual_request
+            return 'abacus', parsed.path, quote_abacus_visual_request(body, kwargs.get('headers', {}))
         return 'abacus', parsed.path, _abacus_messages(
             kwargs.get('json'), kwargs.get('headers', {}))
     match = re.fullmatch(r'/v1beta/models/([A-Za-z0-9._-]+):predictLongRunning', parsed.path)

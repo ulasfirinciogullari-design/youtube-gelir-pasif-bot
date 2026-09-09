@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     # media/voice review keep their existing provider contracts.
     studio_abacus_editorial_enabled: bool = False
     studio_abacus_editorial_model: str = 'claude-haiku-4-5-20251001'
+    # Blank keeps existing planning-provider routing. Explicit abacus selects
+    # only the bounded native Haiku picture critic and requires spending setup.
     studio_visual_qc_provider: str = ''
     studio_visual_qc_openai_model: str = 'gpt-6-astra'
     # Staged rollout: enable only after explicit ledger initialization. Missing
