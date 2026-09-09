@@ -16,6 +16,7 @@ import json
 import math
 import re
 
+import httpx
 import redis
 
 from app.config import settings
@@ -271,7 +272,8 @@ def _funding_admission(provider, operation, api_key):
     """Bind funding evidence to the credential actually sent, never a UI choice."""
     origins = {'abacus': 'https://routellm.abacus.ai',
                'gemini': 'https://generativelanguage.googleapis.com',
-               'openai': 'https://api.openai.com', 'runway': 'https://api.dev.runwayml.com'}
+               'openai': 'https://api.openai.com', 'runway': 'https://api.dev.runwayml.com',
+               'elevenlabs': 'https://api.elevenlabs.io'}
     if (provider not in origins or type(api_key) is not str or not 1 <= len(api_key) <= 8192
             or any(not 32 < ord(char) < 127 for char in api_key)):
         raise SpendBlocked('spend_funding_credential_invalid')
@@ -463,16 +465,92 @@ def record_abacus_usage(payload, usage_record):
     raise SpendBlocked('spend_store_contention')
 
 
+def _copy_native_json(value, depth=0):
+    if depth > 64:
+        raise SpendBlocked('spend_request_not_priced')
+    if type(value) is dict:
+        if any(type(key) is not str for key in value):
+            raise SpendBlocked('spend_request_not_priced')
+        return {key: _copy_native_json(item, depth + 1) for key, item in value.items()}
+    if type(value) is list:
+        return [_copy_native_json(item, depth + 1) for item in value]
+    if value is None or type(value) in (str, int, bool) or type(value) is float and math.isfinite(value):
+        return value
+    raise SpendBlocked('spend_request_not_priced')
+
+
+def _freeze_native_request(kwargs):
+    if set(kwargs) - {'json', 'headers', 'params', 'timeout'}:
+        raise SpendBlocked('spend_request_not_priced')
+    frozen = dict(kwargs)
+    try:
+        for key in ('json', 'headers', 'params'):
+            if key in frozen:
+                frozen[key] = _copy_native_json(frozen[key])
+        if len(_json({key: frozen[key] for key in ('json', 'headers', 'params') if key in frozen}).encode()) > 16 * 1024 * 1024:
+            raise SpendBlocked('spend_request_not_priced')
+    except SpendBlocked:
+        raise
+    except Exception:
+        raise SpendBlocked('spend_request_not_priced') from None
+    return frozen
+
+
+def _native_sender_identity(sender, headers, provider):
+    """Check trusted HTTPX dispatch configuration; never invoke a transport."""
+    names = {'abacus': {'x-api-key', 'content-type', 'anthropic-version', 'accept'},
+             'gemini': {'x-goog-api-key', 'content-type', 'accept'},
+             'elevenlabs': {'xi-api-key', 'content-type', 'accept'}}
+    try:
+        if (not callable(sender) or type(headers) is not dict
+                or any(type(key) is not str or type(value) is not str for key, value in headers.items())
+                or len({key.lower() for key in headers}) != len(headers)
+                or not {key.lower() for key in headers} <= names[provider]):
+            raise SpendBlocked('spend_funding_native_headers_invalid')
+        owner = getattr(sender, '__self__', None)
+        if owner is None:
+            return  # Plain application functions use their reviewed transport.
+        if (not isinstance(owner, httpx.Client) or owner.auth is not None
+                or owner.params or owner.cookies or owner.follow_redirects is not False
+                or type(owner.event_hooks) is not dict
+                or any(owner.event_hooks.get(kind) for kind in ('request', 'response'))):
+            raise SpendBlocked('spend_funding_native_transport_unbound')
+        forbidden = {'authorization', 'proxy-authorization', 'x-goog-user-project',
+                     'openai-organization', 'openai-project', 'host'}
+        if any(key.lower() in forbidden for key in owner.headers):
+            raise SpendBlocked('spend_funding_native_transport_unbound')
+    except SpendBlocked:
+        raise
+    except Exception:
+        raise SpendBlocked('spend_funding_native_transport_unbound') from None
+
+
 def paid_post(sender, url, **kwargs):
     """Guard a paid HTTP POST before its transport sees credentials or media."""
     if enforcement_enabled():
         from app.services.production_spend_quotes import quote_http_request
+        kwargs = _freeze_native_request(kwargs)
         provider, operation, quote = quote_http_request(url, kwargs)
         # Unsupported multipart/media payloads are rejected by the quote layer;
         # nothing reads upload streams or persists narration/image contents.
-        key_header = {'abacus': 'x-api-key', 'gemini': 'x-goog-api-key'}[provider]
+        key_header = {'abacus': 'x-api-key', 'gemini': 'x-goog-api-key', 'elevenlabs': 'xi-api-key'}[provider]
         funding = _funding_admission(provider, operation, _header_key(kwargs.get('headers'), key_header))
-        reserve_request(provider, operation, kwargs.get('json'), quote, funding=funding)
+        payload = kwargs.get('json')
+        if provider == 'elevenlabs':
+            from datetime import datetime, timezone
+            from app.services.elevenlabs_spend_quotes import elevenlabs_price_revision
+            from app.services.production_spend_quotes import configured_elevenlabs_pricing
+            now = datetime.now(timezone.utc)
+            evidence = configured_elevenlabs_pricing(now=now)
+            if elevenlabs_price_revision(evidence, now=now) != quote.price_revision:
+                raise SpendBlocked('spend_funding_evidence_changed')
+            funding['account_sha256'] = evidence['account_sha256']
+            # ElevenLabs has one explicitly priced output-format parameter.
+            # Include it in the replay identity; existing provider keys stay unchanged.
+            payload = {'json': payload, 'params': kwargs.get('params')}
+        _native_sender_identity(sender, kwargs.get('headers'), provider)
+        reserve_request(provider, operation, payload, quote, funding=funding)
+        _native_sender_identity(sender, kwargs.get('headers'), provider)
     return sender(url, **kwargs)
 
 
@@ -481,9 +559,10 @@ def paid_response(client, **kwargs):
         from app.services.production_spend_quotes import quote_openai_response
         if str(getattr(client, 'base_url', '')).rstrip('/') != 'https://api.openai.com/v1':
             raise SpendBlocked('spend_endpoint_not_priced')
-        kwargs = dict(kwargs)
+        kwargs = _freeze_native_request({'json': kwargs})['json']
         kwargs.setdefault('max_output_tokens', 8192)
         kwargs.setdefault('store', False)
+        kwargs.setdefault('service_tier', 'default')
         quote = quote_openai_response(kwargs)
         client, key, headers = _sdk_funding_client(client, 'openai', 'https://api.openai.com/v1')
         funding = _funding_admission('openai', 'responses', key)

@@ -35,7 +35,8 @@ def body(provider, number=1):
         return {'instances': [{'prompt': prompt}], 'parameters': {
             'aspectRatio': '9:16', 'resolution': '720p', 'durationSeconds': 6}}
     if provider == 'openai':
-        return {'model': 'gpt-6-astra', 'input': prompt, 'store': False, 'max_output_tokens': 16}
+        return {'model': 'gpt-6-astra', 'input': prompt, 'store': False, 'max_output_tokens': 16,
+                'service_tier': 'default'}
     return {'model': HAIKU, 'messages': [{'role': 'user', 'content': prompt}],
             'system': 'Return one brief JSON object.', 'max_tokens': 16,
             'thinking': {'type': 'disabled'}, 'stream': False, 'service_tier': 'standard_only'}
@@ -842,3 +843,141 @@ def test_shared_http_config_drift_after_reservation_stops_post_and_retains_hold(
         assert not requests and case.client.dump(LEDGER_KEY) == before
     finally:
         client.close()
+
+
+def test_native_body_and_key_are_detached_before_quote_and_reservation(case, monkeypatch):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    request, request_headers = body('abacus'), headers('abacus')
+    expected = json.loads(json.dumps(request))
+    original = runtime.reserve_request
+    def reserve_and_mutate(*args, **kwargs):
+        result = original(*args, **kwargs)
+        request['messages'][0]['content'] = 'different private prompt after reservation'
+        request['max_tokens'] = 8192
+        request_headers['x-api-key'] = 'rotated-private-test-key'
+        request_headers['Authorization'] = 'Bearer another-private-test-key'
+        return result
+    monkeypatch.setattr(runtime, 'reserve_request', reserve_and_mutate)
+    received = []
+    def receive(wire):
+        assert case.ledger.funding_snapshot()['cash_reserved_micro'] == actual_quote('abacus').maximum_micro
+        received.append(wire)
+        return httpx.Response(200, json={'id': 'offline'})
+    with httpx.Client(transport=httpx.MockTransport(receive)) as client:
+        runtime.paid_post(client.post, ABACUS_URL, json=request, headers=request_headers)
+    assert len(received) == 1
+    assert json.loads(received[0].content) == expected
+    assert received[0].headers['x-api-key'] == TEST_KEY
+    assert 'authorization' not in received[0].headers
+    stored = repr(request_receipts(case.client))
+    assert TEST_KEY not in stored and expected['messages'][0]['content'] not in stored
+    monkeypatch.setattr(runtime, 'reserve_request', original)
+    before = case.client.dump(LEDGER_KEY)
+    with pytest.raises(SpendBlocked, match='^spend_request_already_reserved$'):
+        runtime.paid_post(case.post, ABACUS_URL, json=expected, headers=headers('abacus'))
+    assert case.client.dump(LEDGER_KEY) == before and case.post.call_count == 0
+
+
+def test_real_openai_wire_pins_standard_tier_and_freezes_nested_options(case, monkeypatch):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    client, received = real_sdk(case, monkeypatch, 'openai')
+    request = body('openai')
+    request.pop('service_tier')
+    request['reasoning'] = {'effort': 'low'}
+    expected = json.loads(json.dumps({**request, 'service_tier': 'default'}))
+    original = runtime.reserve_request
+    def reserve_and_mutate(*args, **kwargs):
+        result = original(*args, **kwargs)
+        request['reasoning']['effort'] = 'high'
+        request['max_output_tokens'] = 16384
+        return result
+    monkeypatch.setattr(runtime, 'reserve_request', reserve_and_mutate)
+    try:
+        runtime.paid_response(client, **request)
+        assert len(received) == 1
+        assert json.loads(received[0].content) == expected
+        assert case.ledger.funding_snapshot()['cash_reserved_micro'] == quotes.quote_openai_response(expected).maximum_micro
+    finally:
+        client.close()
+
+
+def _mutate_native_transport(client, kind):
+    if kind == 'auth':
+        client.auth = httpx.BasicAuth('offline', 'offline')
+    elif kind == 'headers':
+        client.headers['x-goog-user-project'] = 'unbound-project'
+    elif kind == 'params':
+        client.params = {'key': 'alternate-private-key'}
+    elif kind == 'cookies':
+        client.cookies.set('session', 'unbound-session')
+    elif kind == 'redirects':
+        client.follow_redirects = True
+    elif kind == 'hooks':
+        client.event_hooks = {'request': [lambda request: None], 'response': []}
+    else:
+        raise AssertionError(kind)
+
+
+@pytest.mark.parametrize('kind', ['auth', 'headers', 'params', 'cookies', 'redirects', 'hooks'])
+@pytest.mark.parametrize('after_reservation', [False, True])
+def test_native_transport_drift_blocks_post_and_never_refunds(case, monkeypatch, kind, after_reservation):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    received = []
+    def receive(wire):
+        received.append(wire)
+        return httpx.Response(200)
+    with httpx.Client(transport=httpx.MockTransport(receive)) as client:
+        original = runtime.reserve_request
+        if after_reservation:
+            def reserve_and_mutate(*args, **kwargs):
+                result = original(*args, **kwargs)
+                _mutate_native_transport(client, kind)
+                return result
+            monkeypatch.setattr(runtime, 'reserve_request', reserve_and_mutate)
+        else:
+            _mutate_native_transport(client, kind)
+        before = case.client.dump(LEDGER_KEY)
+        with pytest.raises(SpendBlocked, match='^spend_funding_native_transport_unbound$'):
+            runtime.paid_post(client.post, ABACUS_URL, json=body('abacus'), headers=headers('abacus'))
+        assert not received
+        if after_reservation:
+            assert case.ledger.funding_snapshot()['cash_reserved_micro'] == actual_quote('abacus').maximum_micro
+            assert len(request_receipts(case.client)) == 1
+            monkeypatch.setattr(runtime, 'reserve_request', original)
+            with pytest.raises(SpendBlocked, match='^spend_request_already_reserved$'):
+                issue(case, 'abacus')
+            assert case.post.call_count == 0
+        else:
+            assert case.client.dump(LEDGER_KEY) == before
+
+
+@pytest.mark.parametrize('extra', [
+    {'X-Goog-User-Project': 'unbound'}, {'Authorization': 'Bearer private'},
+    {'X-Api-Key': TEST_KEY}, {'unknown': 'unreviewed'},
+])
+def test_native_unknown_or_duplicate_headers_never_reserve(case, extra):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    before = case.client.dump(LEDGER_KEY)
+    with pytest.raises(SpendBlocked):
+        runtime.paid_post(case.post, ABACUS_URL, json=body('abacus'), headers={**headers('abacus'), **extra})
+    assert case.post.call_count == 0 and case.client.dump(LEDGER_KEY) == before
+
+
+@pytest.mark.parametrize('mutate', ['cycle', 'nan', 'object', 'non_string_key', 'oversized'])
+def test_native_unfreezable_payload_never_reserves_or_sends(case, mutate):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    request = body('abacus')
+    if mutate == 'cycle':
+        request['system'] = request
+    elif mutate == 'nan':
+        request['system'] = float('nan')
+    elif mutate == 'object':
+        request['system'] = object()
+    elif mutate == 'non_string_key':
+        request[1] = 'unquoted'
+    else:
+        request['system'] = 'a' * (16 * 1024 * 1024)
+    before = case.client.dump(LEDGER_KEY)
+    with pytest.raises(SpendBlocked, match='^spend_request_not_priced$'):
+        runtime.paid_post(case.post, ABACUS_URL, json=request, headers=headers('abacus'))
+    assert case.post.call_count == 0 and case.client.dump(LEDGER_KEY) == before

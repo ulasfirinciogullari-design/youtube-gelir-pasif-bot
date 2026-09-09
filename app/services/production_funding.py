@@ -230,6 +230,7 @@ def reserve_funding(
     route: str,
     credential_sha256: str,
     now: datetime,
+    account_sha256: str | None = None,
 ) -> tuple[dict, dict]:
     """Return increased counters and a safe receipt, without mutation or fallback.
 
@@ -249,6 +250,9 @@ def reserve_funding(
                if account['provider'] == quote.provider and account['credential_sha256'] == credential_sha256]
     _require(len(matches) == 1, 'spend_funding_account_mismatch')
     account = matches[0]
+    if account_sha256 is not None:
+        _hash(account_sha256, 'spend_funding_account_mismatch')
+        _require(account['account_sha256'] == account_sha256, 'spend_funding_account_mismatch')
     _require(now < _timestamp(account['valid_until']), 'spend_funding_account_expired')
     binding = {'route': route, 'model': quote.model, 'price_revision': quote.price_revision}
     _require(binding in account['routes'], 'spend_funding_route_not_covered')

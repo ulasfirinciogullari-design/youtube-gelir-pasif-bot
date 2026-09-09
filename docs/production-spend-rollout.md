@@ -39,6 +39,12 @@ until its required routes have bounded, tested quotes and verified job context.
   dispatch sites, not isolation against arbitrary concurrent Python mutation:
   SDK copies still share their underlying HTTP transport and callers must not
   mutate that transport during a request.
+- Native JSON creates also detach their body, headers and allowed parameters
+  before quoting. Bound HTTPX clients must have no alternate authentication,
+  query defaults, cookies, redirects, billing headers or request/response hooks;
+  configuration is checked before and after reservation. Plain application
+  dispatch functions remain trusted reviewed code and must not hide an
+  unreviewed client in a new wrapper.
 - Planning/render workers persist a budget rejection as a terminal failure on
   the first attempt, consistent with their disabled Celery retry. The server
   tick can release that active capacity without a Studio page visit. The budget
@@ -91,7 +97,7 @@ endpoints and unbounded requests block. Prepaid balances are not cash discounts.
 
 | Route | Bounded request | USD list-rate upper bound |
 | --- | --- | --- |
-| OpenAI GPT-6 Astra | Tool-free plain text, standard tier, at most 100,000 encoded JSON bytes, at most 16,384 output tokens | $10/M input and $50/M output; conservative input bound is encoded JSON bytes + 4,096 framing tokens |
+| OpenAI GPT-6 Astra (rate updated 9 September) | Tool-free plain text, explicit standard tier, at most 100,000 encoded JSON bytes, at most 16,384 output tokens | $12.50/M input reserves the implicit cache-write rate; $50/M output. Conservative input bound is encoded JSON bytes + 4,096 framing tokens |
 | Gemini 3.1 Pro Preview | One tool-free text-only JSON candidate, optional inline schema, at most 100,000 encoded JSON bytes and 16,384 total output tokens | $2/M input and $12/M output including thinking; encoded bytes + 4,096 framing keeps the input bound below the 200,000-token price threshold |
 | Abacus Claude Haiku 4.5 (`claude-haiku-4-5-20251001`) | Native Messages, one plain-text user message, thinking disabled, at most 100,000 encoded JSON bytes and 8,192 output tokens | $1/M input and $5/M output; encoded bytes + 4,096 framing tokens |
 | Abacus Claude Sonnet 5 / 4.6 (`claude-sonnet-5`, `claude-sonnet-4-6`) | Same native text contract, explicit global inference | Respectively $2/$10 and $3/$15 per M input/output tokens |
@@ -109,6 +115,17 @@ Sources: [OpenAI pricing](https://developers.openai.com/api/docs/pricing),
 [Google's combined thinking/output token guidance](https://codelabs.developers.google.com/bigquery-generative-ai-intro#3).
 The OpenAI output ceiling includes reasoning tokens. Provider-supported model
 duration restrictions still apply; a cost quote does not imply model acceptance.
+
+OpenAI's default [implicit prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
+can charge a cache write at 1.25 times ordinary input cost. The Astra quote
+reserves that higher input rate without predicting a cache hit. A separate
+`openai-text-2026-09-09-v1` revision invalidates old OpenAI funding-route evidence
+without repricing existing video-scene plans. The enforced SDK path sends an
+explicit `service_tier=default`, whose standard pricing is documented in the
+[Responses API](https://developers.openai.com/api/reference/cli/resources/responses/methods/create),
+and detaches nested options before quoting/reservation. Missing tier is not
+allowed to inherit project-level automatic routing at dispatch. These are
+conservative reservations, not evidence of any past provider overcharge.
 
 Abacus prices were checked against the authenticated official `/v1/models`
 catalog and the [public per-million-token price table](https://routellm-apis.abacus.ai/).
@@ -134,7 +151,7 @@ no prompt or key and never reduces reserved counters, settles an invoice,
 converts credits to cash or authorizes another create. Missing/malformed usage,
 uncertain writes, over-quote counts and conflicting observations stop the job.
 
-The current audio/TTS/music, Gemini grounding/multimodal critic/image/Omni,
+The current audio review/music, Gemini grounding/multimodal critic/image/Omni,
 OpenAI vision/search and fal calls are guarded but have NO commissioned quote
 yet. They therefore block with enforcement on. The Gemini JSON route permits
 only the named model and bounded text contract, including schema/settings;
@@ -148,6 +165,38 @@ verified rate evidence ([ElevenLabs custom-rate documentation](https://elevenlab
 A shared-voice bookmark and
 Gemini file-upload transport are not model-generation charges; they are the
 only explicit free-POST exclusions in the source coverage test.
+
+## Existing ElevenLabs voice: evidence-backed quote, not commissioned
+
+`STUDIO_ELEVENLABS_PRICING_EVIDENCE_JSON` defaults to an empty string. The new
+pure quote and runtime adapter support only the existing selected voice
+`WtOce4YK0dDSxlVlSdBh`, the `/v1/text-to-speech/<voice>/with-timestamps` route,
+MP3 44.1 kHz/128 kbps output, and the unchanged continuous Multilingual V2 or
+Turkish Flash V2.5 request profiles. Text normalization, voice settings and
+timing behavior stay unchanged. Plain-audio, contextual and other voice/model
+requests remain unpriced. The actual request shape follows the
+[timestamp TTS API](https://elevenlabs.io/docs/api-reference/text-to-speech/convert-with-timestamps).
+
+Operator evidence must contain a version, USD currency, account/credential/proof
+SHA-256 digests, current-month UTC validity dates, exact voice/route, and one or
+both supported profiles. Each profile specifies its model, text length bound,
+verified billing-unit bound and positive rational list rate. The billing bound
+must explicitly cover normalization, model, custom-voice and all request charges;
+it cannot be inferred from `sharing.rate`, a subscription price or a character
+balance. Integers calculate `ceil(actual transmitted Unicode codepoints *
+unit numerator / denominator) + fixed units`, then round the USD microdollar
+cost upward. Validation checks the contract; it does not independently prove
+the operator's billing evidence.
+
+The canonical evidence hash forms the price revision. A second read must still
+match before reservation. The account digest and the actual sent API-key digest
+must match the reconciled funding account in the same transaction as the family
+and request counters. The exact body and output parameter form the replay
+identity. Covered-only and cash-only funding retain their existing distinct
+rules, including the shared $10 extra-cash ceiling and no refund on timeout.
+No tariff, credits or production policy was initialized by this change. A
+verified tariff, available coverage/cash evidence and opening commitments are
+still required before any enforced TTS dispatch can be commissioned.
 
 ## Financial scope
 

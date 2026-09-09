@@ -71,6 +71,14 @@ verification of current account entitlements.
    errors, and share the manual refresh lock. Empty or unavailable job discovery
    leaves prior observations untouched. This removes the browser trigger
    dependency; it does not add measured trend selection, retention or revenue.
+10. The existing Shorts continuation tick can discover a separately verified
+    public-release recovery receipt after a failed root's successful retry.
+    It rechecks the receipt, exact assets, authorization and reciprocal lineage
+    before the existing atomic continuation. The same proof can satisfy the
+    last-episode requirement for legacy series promotion. Owner cancellation
+    and publication-hold markers participate in those atomic checks. Historical
+    blocked jobs and upload records remain unchanged; discovery itself neither
+    publishes nor retries media and does not broaden long-family eligibility.
 
 The feature defaults OFF (`studio_longform_delivery_enabled=false`). Its scheduler
 also requires the spending guard to be ON; this check does not initialize a ledger
@@ -100,7 +108,8 @@ capture new frame-map diagnostics or queue these derivative jobs.
   This does not establish unattended recovery from every worker interruption.
 - Required speech/multimodal/grounded-planning price bounds, remaining-period
   reconciliation of real usage and actual budget activation remain open. The
-  explicit opening-usage import, bounded Gemini/Abacus text quotes, immutable
+  explicit opening-usage import, bounded Gemini/Abacus text quotes, optional
+  operator-evidenced quotes for the existing ElevenLabs voice, immutable
   per-scene video allowances and separate covered-credit/new-cash accounting
   are implemented. New cash has an owner ceiling of USD 10 per month; routes
   require verified account coverage or a cash upper bound tied to the actual

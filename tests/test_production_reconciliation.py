@@ -32,7 +32,9 @@ def reconciliation(public_case):
     limit = next(node.value for node in auth.body if isinstance(node, ast.Assign)
                  and any(isinstance(target, ast.Name) and target.id == 'MAX_CONNECTIONS' for target in node.targets))
     namespace['MAX_CONNECTIONS'] = ast.literal_eval(limit)
-    namespace.update(_redis=lambda: client, resume_after_public_retry=proof)
+    namespace.update(_redis=lambda: client, resume_after_public_retry=proof,
+                     resume_after_blocked_public_retry=recovery.resume_after_blocked_public_retry,
+                     PUBLIC_RECOVERY_PREFIX='youtube_studio:blocked_public_release:v1:')
     exec(compile(tree, str(path), 'exec'), namespace)
     return SimpleNamespace(ns=namespace, recovery=recovery, client=client, data=data, proof=proof)
 
@@ -305,5 +307,6 @@ def test_discovery_module_has_no_independent_state_or_provider_mutators():
     methods = {node.func.attr for node in ast.walk(tree) if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)}
     assert not methods & {'set', 'hset', 'delete', 'hdel', 'eval', 'pipeline', 'apply_async', 'delay', 'create'}
     calls = {node.func.id for node in ast.walk(tree) if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)}
-    assert 'resume_after_public_retry' in calls
+    names = {node.id for node in ast.walk(tree) if isinstance(node, ast.Name)}
+    assert {'resume_after_public_retry', 'resume_after_blocked_public_retry'} <= names
     assert not calls & {'claim_retry_dispatch', 'save_channel_profile', 'prepare_next_series', 'run_video_pipeline'}

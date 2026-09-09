@@ -528,7 +528,10 @@ class SpendLedger:
                     funding_mapping, funding_receipt = {}, None
                     if funding is not None:
                         from app.services.production_funding import reserve_funding
-                        if type(funding) is not dict or set(funding) != {'route', 'credential_sha256'}:
+                        if (type(funding) is not dict or set(funding) not in (
+                                {'route', 'credential_sha256'},
+                                {'route', 'credential_sha256', 'account_sha256'})
+                                or ('account_sha256' in funding and type(funding['account_sha256']) is not str)):
                             raise SpendBlocked('spend_funding_context_invalid')
                         raw_policy = pipe.hget(LEDGER_KEY, 'funding_policy')
                         raw_state = pipe.hget(LEDGER_KEY, 'funding_state')
@@ -538,6 +541,7 @@ class SpendLedger:
                             _object(raw_policy), _object(raw_state), quote=quote,
                             route=funding['route'], credential_sha256=funding['credential_sha256'],
                             now=self.clock(),
+                            account_sha256=funding.get('account_sha256'),
                         )
                         funding_mapping['funding_state'] = _json(funding_state)
                     elif (pipe.hexists(LEDGER_KEY, 'funding_policy')

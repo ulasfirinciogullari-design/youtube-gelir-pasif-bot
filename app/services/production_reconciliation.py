@@ -17,12 +17,15 @@ import json
 from app.services.channel_production import ACTIVE_KEY, CHANNEL_STATE_PREFIX, _redis
 from app.services.production_recovery import (
     MAX_RETRY_HOPS, ProductionRecoveryError, _ID, _TASK_ID, resume_after_public_retry,
+    resume_after_blocked_public_retry,
 )
+from app.services.blocked_public_release import PUBLIC_RECOVERY_PREFIX
 from app.services.studio_state import JOB_PREFIX
 from app.services.youtube_auth import MAX_CONNECTIONS
 
 
-def _public_leaf(client, original_id: str, channel_id: str, revision: str) -> str | None:
+def _public_leaf(client, original_id: str, channel_id: str, revision: str,
+                 *, separate_receipt: bool = False) -> str | None:
     """Find a terminal candidate through reciprocal links, without trusting it."""
     current, parent, seen = original_id, None, set()
     for hop in range(MAX_RETRY_HOPS + 1):
@@ -45,10 +48,24 @@ def _public_leaf(client, original_id: str, channel_id: str, revision: str) -> st
         if job.get('state') == 'SUCCESS':
             result = job.get('result')
             youtube = result.get('youtube') if isinstance(result, dict) else None
-            if (hop > 0 and not child and isinstance(youtube, dict)
-                    and youtube.get('privacy_status') == 'public'
-                    and youtube.get('release_status') == 'public'):
-                return current
+            if hop > 0 and not child and isinstance(youtube, dict):
+                if not separate_receipt:
+                    if (youtube.get('privacy_status') == 'public'
+                            and youtube.get('release_status') == 'public'):
+                        return current
+                elif (youtube.get('privacy_status') == 'private'
+                      and youtube.get('release_status') == 'blocked'):
+                    raw_receipt = client.get(PUBLIC_RECOVERY_PREFIX + current)
+                    if isinstance(raw_receipt, str) and 0 < len(raw_receipt) <= 2_000_000:
+                        receipt = json.loads(raw_receipt)
+                        if (isinstance(receipt, dict) and receipt.get('status') == 'public'
+                                and receipt.get('source_task_id') == current
+                                and receipt.get('target_channel_id') == channel_id
+                                and receipt.get('profile_revision') == revision):
+                            # Discovery is only a hint. The separate helper
+                            # verifies assets, actual release proof, identity,
+                            # lineage and authorization together in its CAS.
+                            return current
             return None
         if job.get('state') != 'FAILURE' or job.get('retry_claimed') is not True:
             return None
@@ -91,10 +108,15 @@ def reconcile_public_retry_deliveries(profiles: list[dict], *, now: float | None
                 continue
             original_id = state.get('last_task_id')
             recovered_id = _public_leaf(client, original_id, channel_id, revision)
+            resume = resume_after_public_retry
+            if recovered_id is None:
+                recovered_id = _public_leaf(client, original_id, channel_id, revision,
+                                            separate_receipt=True)
+                resume = resume_after_blocked_public_retry
             if recovered_id is None:
                 channels[channel_id] = 'waiting_for_public_retry'
                 continue
-            result = resume_after_public_retry(
+            result = resume(
                 channel_id, original_id, recovered_id, revision,
                 now=now, continue_immediately=True,
             )

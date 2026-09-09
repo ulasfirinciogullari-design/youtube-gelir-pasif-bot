@@ -128,7 +128,8 @@ def test_funding_policy(ledger):
             'provider': provider, 'account_sha256': hashlib.sha256(provider.encode()).hexdigest(),
             'credential_sha256': hashlib.sha256((provider + '\0' + TEST_KEY).encode()).hexdigest(),
             'evidence_sha256': 'e' * 64, 'valid_until': expiry, 'mode': 'cash_only',
-            'routes': [{'route': route, 'model': model, 'price_revision': quotes._REVISION}
+            'routes': [{'route': route, 'model': model, 'price_revision': (
+                quotes.OPENAI_TEXT_PRICE_REVISION if provider == 'openai' else quotes._REVISION)}
                        for route, model in items],
             'funding': {'cash_factor_numerator': 1, 'cash_factor_denominator': 1,
                         'cash_bound_verified': True},

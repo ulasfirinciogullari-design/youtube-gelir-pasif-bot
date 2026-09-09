@@ -6,14 +6,17 @@ Sources and intentionally blocked routes are recorded in the rollout doc.
 """
 from datetime import datetime, timezone
 from decimal import Decimal
+import hashlib
 import json
 import math
 import re
 from urllib.parse import urlsplit
 
+from app.config import settings
 from app.services.production_spend import SpendBlocked, SpendQuote, usd_micro
 
 _REVISION = 'official-2026-09-08-v3'
+OPENAI_TEXT_PRICE_REVISION = 'openai-text-2026-09-09-v1'
 _VALID_FROM = datetime(2026, 9, 8, tzinfo=timezone.utc)
 _VALID_UNTIL = datetime(2026, 10, 1, tzinfo=timezone.utc)
 
@@ -274,6 +277,44 @@ def _abacus_messages(body, headers):
                   + Decimal(output) * output_rate)
 
 
+def configured_elevenlabs_pricing(*, now=None):
+    """Read explicit operator evidence, never subscription-price arithmetic."""
+    from app.services.elevenlabs_spend_quotes import validate_elevenlabs_pricing_evidence
+    raw = getattr(settings, 'studio_elevenlabs_pricing_evidence_json', '')
+    try:
+        _require(type(raw) is str and 0 < len(raw.encode('utf-8')) <= 32 * 1024,
+                 'spend_elevenlabs_pricing_uncommissioned')
+    except UnicodeError:
+        raise SpendBlocked('spend_elevenlabs_pricing_uncommissioned') from None
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('Duplicate evidence field')
+            result[key] = value
+        return result
+    try:
+        evidence = json.loads(raw, object_pairs_hook=unique_object)
+    except (ValueError, TypeError, RecursionError):
+        raise SpendBlocked('spend_elevenlabs_pricing_uncommissioned') from None
+    return validate_elevenlabs_pricing_evidence(
+        evidence, now=now or datetime.now(timezone.utc))
+
+
+def _elevenlabs_quote(url, kwargs):
+    from app.services.elevenlabs_spend_quotes import quote_elevenlabs_tts
+    now = datetime.now(timezone.utc)
+    evidence = configured_elevenlabs_pricing(now=now)
+    headers = kwargs.get('headers')
+    _require(type(headers) is dict and all(type(key) is str for key in headers))
+    keys = [value for key, value in headers.items() if key.lower() == 'xi-api-key']
+    _require(len(keys) == 1 and type(keys[0]) is str and 1 <= len(keys[0]) <= 8192
+             and all(32 < ord(char) < 127 for char in keys[0]))
+    credential = hashlib.sha256(('elevenlabs\0' + keys[0]).encode()).hexdigest()
+    return quote_elevenlabs_tts(url, kwargs, evidence=evidence,
+                                credential_sha256=credential, now=now)
+
+
 def quote_http_request(url, kwargs):
     _require(type(url) is str)
     try:
@@ -283,6 +324,9 @@ def quote_http_request(url, kwargs):
         raise SpendBlocked('spend_request_not_priced') from None
     _require(parsed.scheme == 'https' and not parsed.username and not parsed.password
              and port in (None, 443) and not parsed.query and not parsed.fragment)
+    if parsed.hostname == 'api.elevenlabs.io':
+        _require(type(kwargs) is dict and set(kwargs) <= {'json', 'headers', 'params', 'timeout'})
+        return 'elevenlabs', parsed.path, _elevenlabs_quote(url, kwargs)
     _require(type(kwargs) is dict and set(kwargs) <= {'json', 'headers', 'timeout'})
     if parsed.hostname == 'routellm.abacus.ai' and parsed.path == '/v1/messages':
         return 'abacus', parsed.path, _abacus_messages(
@@ -311,9 +355,14 @@ def quote_openai_response(body):
         _text_bytes(body['instructions'])
     output = _integer(body.get('max_output_tokens'), 1, 16384)
     # UTF-8 bytes plus framing/schema reserve overestimates plain-text tokens.
-    # No search/tool/context-cache costs can enter this strictly tool-free shape.
+    # Astra uses implicit caching by default, including when store=False and
+    # no cache options are supplied. Reserve the 1.25x cache-write input rate
+    # for every input token; ordinary input and cache reads cost less.
+    # Reviewed 2026-09-09: https://developers.openai.com/api/docs/guides/prompt-caching
+    # and https://developers.openai.com/api/docs/models/gpt-6-astra .
     size = _encoded_size(body)
     _require(size <= 100_000)
     input_tokens = size + 4096
-    return _quote('openai', 'gpt-6-astra',
-                  (Decimal(input_tokens) * 10 + Decimal(output) * 50) / 1_000_000)
+    _fresh()
+    amount = (Decimal(input_tokens) * Decimal('12.5') + Decimal(output) * 50) / 1_000_000
+    return SpendQuote('openai', 'gpt-6-astra', usd_micro(amount), OPENAI_TEXT_PRICE_REVISION)

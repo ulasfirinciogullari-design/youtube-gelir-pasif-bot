@@ -23,7 +23,9 @@ from app.services.channel_production import (
 from app.services.studio_state import (
     JOB_PREFIX, RETRY_CHILD_CLAIM_PREFIX, RETRY_DISPATCH_PREFIX,
     RETRY_CHILD_EXECUTION_PREFIX, REPAIR_CHECKPOINT_CLAIM_PREFIX,
+    RENDER_CANCELLATION_PREFIX,
 )
+from app.services.source_publication_hold import HOLD_PREFIX
 from app.services.youtube_automation import contains_synthetic_media
 from app.services.youtube_publish_state import UPLOAD_PREFIX
 
@@ -368,6 +370,15 @@ def _resume_after_retry(
                      'recovery_lineage_invalid')
             seen.add(task_id)
             job = _json_snapshot(client, JOB_PREFIX + task_id, snapshots)
+            if public_recovery:
+                _require('publication_hold' not in job and 'owner_cancellation' not in job,
+                         'recovery_owner_hold')
+                for fence in (RENDER_CANCELLATION_PREFIX, HOLD_PREFIX):
+                    raw_fence = client.get(fence + task_id)
+                    snapshots.append((fence + task_id, {
+                        'kind': 'none' if raw_fence is None else 'string', 'value': raw_fence,
+                    }))
+                    _require(raw_fence is None, 'recovery_owner_hold')
             _require(job.get('task_id') == task_id and job.get('kind') == 'render'
                      and isinstance(job.get('spec'), dict), 'recovery_lineage_invalid')
             _require(job.get('state') == ('SUCCESS' if not chain else 'FAILURE'),

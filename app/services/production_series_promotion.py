@@ -44,6 +44,7 @@ ARCHIVE_PREFIX = PRODUCTION_PREFIX + 'series_archive:'
 RECEIPT_PREFIX = PRODUCTION_PREFIX + 'series_promotion:'
 TOPIC_HISTORY_PREFIX = PRODUCTION_PREFIX + 'series_topic_history:'
 _PUBLIC_RESUME_PREFIX = PRODUCTION_PREFIX + 'resume_public:'
+_PUBLIC_RECOVERY_RESUME_PREFIX = PRODUCTION_PREFIX + 'resume_public_recovery:'
 _FLAGS = {'qa_approved': False, 'publish_eligible': False, 'media_budget_approved': False,
           'requires_full_research_and_critic': True, 'evidence_validation': 'source_shape_only'}
 _ID = re.compile(r'[A-Za-z0-9_-]{8,128}')
@@ -237,7 +238,7 @@ def _idle(snapshot, channel_id, route):
                      'series_channel_busy')
 
 
-def _publication(snapshot, source, profile, channel):
+def _publication(snapshot, source, profile, channel, *, public_recovery=False):
     """The same bound PUBLIC/assets proof required by production reconciliation.
 
     A prior continuation marker alone is insufficient: recheck live records and
@@ -265,20 +266,36 @@ def _publication(snapshot, source, profile, channel):
     disclosure = plan.get('contains_synthetic_media')
     _require(type(disclosure) is bool and (not contains_synthetic_media(source) or disclosure is True),
              'series_disclosure_unverified')
-    for row in (attribution, delivered):
-        replay = row is delivered and row.get('idempotent_replay') is True
-        _require(all(row.get(k) == v or replay and k == 'profile_revision' and k not in row for k, v in binding.items())
-                 and row.get('privacy_status') == row.get('release_status') == 'public'
-                 and all(not row.get(k) for k in ('release_error_code', 'scheduled_publish_at',
-                                                 'caption_error_code', 'thumbnail_error_code')),
-                 'series_publication_unverified')
-        for key, expected in {'caption_uploaded': True, 'contains_synthetic_media': disclosure}.items():
-            _require(row.get(key) is expected or replay and key not in row, 'series_assets_unverified')
-        if plan.get('require_thumbnail') is True or profile.get('require_thumbnail') is True:
-            _require(row.get('thumbnail_uploaded') is True or replay and 'thumbnail_uploaded' not in row)
-        if replay:
-            _require(row.get('stage') == 'complete' and row.get('progress') == 100
-                     and ('thumbnail_uploaded' not in row or row['thumbnail_uploaded'] == attribution.get('thumbnail_uploaded')))
+    recovered = None
+    if public_recovery:
+        from app.services.production_recovery import _public_recovery_proof
+
+        receipt_snapshots = []
+        recovered = _public_recovery_proof(snapshot.client, receipt_snapshots, {
+            'source': source, 'publisher': publisher, 'ledger': ledger,
+            'profile': profile, 'channel': channel,
+        }, snapshot.read(OAUTH_CREDENTIAL_PREFIX + channel_id))
+        # The helper reads the exact receipt, assets and authorization epoch.
+        # Adopt each read into this promotion's WATCH/compare transaction.
+        for key, observed in receipt_snapshots:
+            _require(observed['kind'] in {'none', 'string'}
+                     and snapshot.read(key) == observed['value'], 'series_state_changed')
+        _require(disclosure is True, 'series_disclosure_unverified')
+    else:
+        for row in (attribution, delivered):
+            replay = row is delivered and row.get('idempotent_replay') is True
+            _require(all(row.get(k) == v or replay and k == 'profile_revision' and k not in row for k, v in binding.items())
+                     and row.get('privacy_status') == row.get('release_status') == 'public'
+                     and all(not row.get(k) for k in ('release_error_code', 'scheduled_publish_at',
+                                                     'caption_error_code', 'thumbnail_error_code')),
+                     'series_publication_unverified')
+            for key, expected in {'caption_uploaded': True, 'contains_synthetic_media': disclosure}.items():
+                _require(row.get(key) is expected or replay and key not in row, 'series_assets_unverified')
+            if plan.get('require_thumbnail') is True or profile.get('require_thumbnail') is True:
+                _require(row.get('thumbnail_uploaded') is True or replay and 'thumbnail_uploaded' not in row)
+            if replay:
+                _require(row.get('stage') == 'complete' and row.get('progress') == 100
+                         and ('thumbnail_uploaded' not in row or row['thumbnail_uploaded'] == attribution.get('thumbnail_uploaded')))
     _require(publisher.get('task_id') == publish_id and publisher.get('kind') == 'publish'
              and publisher.get('state') == 'SUCCESS' and publisher.get('parent_id') == task_id
              and delivered.get('task_id') == publish_id and delivered.get('source_task_id') == task_id
@@ -292,10 +309,13 @@ def _publication(snapshot, source, profile, channel):
              and ledger.get('status') == 'complete' and ledger.get('source_task_id') == task_id
              and ledger.get('publish_task_id') == publish_id and ledger.get('youtube_video_id') == video_id
              and ledger.get('target_channel_id') == channel_id and ledger.get('connection_id') == channel['connection_id']
-             and ledger.get('requested_release_mode') == ledger.get('privacy_status') == ledger.get('release_status') == 'public'
-             and ledger.get('side_effect_possible') is True and ledger.get('release_side_effect_possible') is True
-             and isinstance(ledger.get('release_completed_at'), str) and ledger['release_completed_at']
-             and not ledger.get('requested_publish_at') and not ledger.get('scheduled_publish_at') and not ledger.get('release_error_code')
+             and ledger.get('requested_release_mode') == 'public' and ledger.get('side_effect_possible') is True
+             and (recovered is not None or (
+                 ledger.get('privacy_status') == ledger.get('release_status') == 'public'
+                 and ledger.get('release_side_effect_possible') is True
+                 and isinstance(ledger.get('release_completed_at'), str) and ledger['release_completed_at']
+                 and not ledger.get('scheduled_publish_at') and not ledger.get('release_error_code')))
+             and not ledger.get('requested_publish_at')
              and plan.get('source_task_id') == task_id and plan.get('target_channel_id') == channel_id
              and plan.get('profile_revision') == profile['profile_revision'] and plan.get('release_mode') == 'public'
              and not plan.get('publish_at'), 'series_upload_unverified')
@@ -312,7 +332,9 @@ def _publication(snapshot, source, profile, channel):
     return {'source_task_id': task_id, 'publish_task_id': publish_id, 'youtube_video_id': video_id,
             **binding, 'privacy_status': 'public', 'release_status': 'public', 'caption_uploaded': True,
             'contains_synthetic_media': disclosure, 'source_sha256': _digest(source),
-            'publisher_sha256': _digest(publisher), 'upload_sha256': _digest(ledger), 'series': series}
+            'publisher_sha256': _digest(publisher), 'upload_sha256': _digest(ledger), 'series': series,
+            **({'publication_proof': 'blocked_public_recovery',
+                'public_recovery_receipt_sha256': recovered['receipt_sha256']} if recovered is not None else {})}
 
 
 def _last_public(snapshot, profile, channel, state, now):
@@ -339,6 +361,7 @@ def _last_public(snapshot, profile, channel, state, now):
              'series_final_episode_changed')
     source, lineage = original, [original_id]
     audit = None
+    public_recovery = False
     if original.get('state') == 'SUCCESS':
         continued_at = float(state.get('last_public_continued_at', 'nan'))
         _require(state.get('last_result') == 'SUCCESS' and state.get('last_public_task_id') == original_id
@@ -349,12 +372,15 @@ def _last_public(snapshot, profile, channel, state, now):
         # reciprocal lineage, original frozen spec or actual PUBLIC proof.
         from app.services.production_recovery import _audit_result
         raw = snapshot.read(_PUBLIC_RESUME_PREFIX + profile['channel_id'] + ':' + original_id)
+        if raw is None:
+            raw = snapshot.read(_PUBLIC_RECOVERY_RESUME_PREFIX + profile['channel_id'] + ':' + original_id)
+            public_recovery = True
         audit = _object(raw)
         target = audit.get('recovered_task_id')
         _require(isinstance(target, str) and _TASK.fullmatch(target) and target != original_id
                  and type(audit.get('continue_immediately')) is bool)
         _audit_result(raw, 'already_resumed', profile['channel_id'], original_id, target,
-                      profile['profile_revision'], 'public', False, audit.get('continue_immediately'))
+                      profile['profile_revision'], 'public', public_recovery, audit.get('continue_immediately'))
         _require(state.get('last_result') == 'FAILURE' and audit.get('cursor') == len(profile['production_topics'])
                  and audit.get('connection_id') == channel['connection_id']
                  and audit.get('resumed_at') <= now and float(state['next_due']) == audit.get('next_due'),
@@ -391,10 +417,22 @@ def _last_public(snapshot, profile, channel, state, now):
             if child_id == target:
                 break
         _require(source['task_id'] == target, 'series_retry_lineage_unbounded')
-    proof = _publication(snapshot, source, profile, channel)
+    if public_recovery:
+        from app.services.studio_state import RENDER_CANCELLATION_PREFIX
+        from app.services.source_publication_hold import HOLD_PREFIX
+
+        for task_id in lineage:
+            job = snapshot.object(JOB_PREFIX + task_id)
+            _require('publication_hold' not in job and 'owner_cancellation' not in job
+                     and snapshot.read(RENDER_CANCELLATION_PREFIX + task_id) is None
+                     and snapshot.read(HOLD_PREFIX + task_id) is None, 'series_owner_hold')
+    proof = _publication(snapshot, source, profile, channel, public_recovery=public_recovery)
     if audit is not None:
         _require(all(audit.get(k) == proof.get(k) for k in ('publish_task_id', 'youtube_video_id',
                                                           'contains_synthetic_media', 'caption_uploaded')))
+        if public_recovery:
+            _require(audit.get('public_recovery_receipt_sha256') == proof['public_recovery_receipt_sha256'],
+                     'series_public_receipt_invalid')
         proof['resume_receipt_sha256'] = _digest(audit)
     return {**proof, 'original_task_id': original_id, 'lineage': lineage}
 

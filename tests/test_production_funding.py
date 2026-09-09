@@ -129,6 +129,21 @@ def test_zero_cash_cap_allows_only_verified_covered_work():
         reserve(p, state, provider='openai', amount=1)
 
 
+@pytest.mark.parametrize('provider', ['abacus', 'openai'])
+def test_account_specific_tariff_must_match_the_actual_credential_account(provider):
+    p = policy()
+    state = initial_funding_state(p, now=NOW)
+    account = next(row for row in p['accounts'] if row['provider'] == provider)
+    updated, receipt = reserve(p, state, provider=provider, account_sha256=account['account_sha256'])
+    assert receipt['account_sha256'] == account['account_sha256']
+    assert updated != state
+    before = deepcopy(state)
+    for wrong in ('f' * 64, '', False, 1, ['f' * 64]):
+        with pytest.raises(SpendBlocked, match='^spend_funding_account_mismatch$'):
+            reserve(p, state, provider=provider, account_sha256=wrong)
+        assert state == before
+
+
 @pytest.mark.parametrize('field,value', [
     ('cash_cap_micro', 10_000_001), ('cash_cap_micro', True), ('cash_cap_micro', 10.0),
     ('cash_cap_micro', '10000000'), ('cash_cap_micro', -1), ('opening_cash_micro', -1),
