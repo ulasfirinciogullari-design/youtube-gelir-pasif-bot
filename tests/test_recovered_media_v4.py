@@ -353,6 +353,8 @@ def test_v4_retained_and_repaired_assets_still_face_unchanged_final_gate(boundar
         manual_qa_preview_scenes=set(), rescued_final_scenes=[],
         runway_failed_scenes=[], final_runway_repair_failures=[], runway_failure_diagnostics=[],
         _checkpoint_qa_workprint=lambda *args, **kwargs: None,
+        _checkpoint_selected_visuals=lambda *args, **kwargs: None,
+        effective_edit_target_seconds=30.0,
         task_id='child', work=Path('/tmp/mock-work'), voice_result={}, scene_durations=[5.0] * 6,
         package={'narration': 'Saved narration'}, audio_qc={}, audio_duration_qc={}, audio_prosody_qc={},
         _final_visual_rejection_diagnostics=lambda **kwargs: {'rejected': kwargs['rejected_scene_indices']},

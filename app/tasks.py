@@ -1383,6 +1383,58 @@ def _checkpoint_overbudget_visuals(
         return
 
 
+def _checkpoint_selected_visuals(
+    task_id, work, *, duration_minutes, effective_edit_target_seconds, package, scene_visuals, final_reviews,
+    rejected_scene_indices, quality_threshold, voice_result, scene_durations,
+    options, audio_qc, audio_duration_qc, audio_prosody_qc,
+) -> None:
+    """Preserve the rejected edit's inputs without creating a repair permit."""
+    try:
+        if (
+            not isinstance(options, dict) or options.get('mode') != 'production'
+            or options.get('format') != 'shorts' or options.get('music') != 'off'
+            or type(duration_minutes) not in (int, float) or duration_minutes != 0.5
+            or not isinstance(voice_result, dict)
+            or not isinstance(scene_durations, list)
+            or voice_result.get('scene_durations') != scene_durations
+            or not all(
+                isinstance(gate, dict) and gate.get('available') is True and gate.get('pass') is True
+                for gate in (audio_qc, audio_duration_qc, audio_prosody_qc)
+            )
+        ):
+            return
+        from copy import deepcopy
+        from app.services.selected_visual_context import resolve_selected_visual_binding
+        from app.services.selected_visual_checkpoint import persist_selected_visual_checkpoint
+
+        binding = resolve_selected_visual_binding(task_id)
+        package_sha = _recovery_package_sha256(package)
+        pointer = persist_selected_visual_checkpoint(
+            task_id, work, binding=deepcopy(binding), package=deepcopy(package),
+            voice_result=deepcopy(voice_result), scene_visuals=deepcopy(scene_visuals),
+            final_reviews=deepcopy(final_reviews), rejected_scene_indices=deepcopy(rejected_scene_indices),
+            quality_threshold=quality_threshold, options=deepcopy(options),
+            duration_minutes=duration_minutes,
+            effective_edit_target_seconds=effective_edit_target_seconds,
+        )
+        if (
+            not isinstance(pointer, dict) or type(pointer.get('version')) is not int or pointer['version'] != 1
+            or pointer.get('source_task_id') != task_id
+            or pointer.get('status') != 'preserved_selected_candidates'
+            or pointer.get('binding') != binding or pointer.get('package_sha256') != package_sha
+            or any(pointer.get(key) is not False for key in (
+                'accepted', 'qa_approved', 'publish_eligible', 'reusable', 'qa_input_verified',
+            ))
+            or any(pointer.get(key) is not True for key in ('requires_full_qa', 'exact_cut_qa_required'))
+        ):
+            return
+        update_job(task_id, selected_visual_checkpoint=deepcopy(pointer))
+    except Exception:
+        # Preserve the original rejection. No fallback create, claim reset,
+        # full rebuild, publication or changes to the existing spend history.
+        return
+
+
 def _checkpoint_qa_workprint(
     task_id: str,
     work: Path,
@@ -7222,6 +7274,15 @@ def run_video_pipeline(
                 raise FinalVisualQualityError(
                     'Final visual quality rejection state is inconsistent'
                 )
+            _checkpoint_selected_visuals(
+                task_id, work, duration_minutes=duration_minutes,
+                effective_edit_target_seconds=effective_edit_target_seconds,
+                package=package, scene_visuals=scene_visuals, final_reviews=final_reviews,
+                rejected_scene_indices=rejected_final_scenes, quality_threshold=quality_threshold,
+                voice_result=voice_result, scene_durations=scene_durations, options=options,
+                audio_qc=audio_qc, audio_duration_qc=audio_duration_qc,
+                audio_prosody_qc=audio_prosody_qc,
+            )
             _checkpoint_qa_workprint(
                 task_id, work,
                 duration_minutes=duration_minutes,
@@ -7786,4 +7847,3 @@ def run_video_pipeline(
         raise
     finally:
         shutil.rmtree(work, ignore_errors=True)
-

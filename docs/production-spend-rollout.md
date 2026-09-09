@@ -203,6 +203,13 @@ only explicit free-POST exclusions in the source coverage test.
 
 ## Required commissioning before enabling
 
+Rejected production Shorts can now preserve their exact selected input bytes
+without opening a new spend allowance. See
+[selected visual recovery](selected-visual-recovery.md) for its private candidate
+contract and remaining dispatcher/QA requirements. A checkpoint is not a paid
+repair permit; it cannot reset a scene plan, prior cash debt or an uncertain
+request reservation.
+
 1. Load one operator-approved policy. Reconcile billed and in-flight current-month
    API intents first, retaining their real production request/lineage identities
    and full upper bounds; missing history is not zero usage. Use

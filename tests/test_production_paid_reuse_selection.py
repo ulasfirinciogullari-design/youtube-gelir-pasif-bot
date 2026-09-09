@@ -203,6 +203,8 @@ def test_normal_final_gate_rejects_bad_or_missing_stock_review_after_reuse(missi
                    # This boundary isolates paid-reuse rejection. The real
                    # diagnostic hook and its guards run in their own tests.
                    _checkpoint_qa_workprint=lambda *_args, **_kwargs: None,
+                   _checkpoint_selected_visuals=lambda *_args, **_kwargs: None,
+                   effective_edit_target_seconds=30.0,
                    task_id=SOURCE_ID, work=Path('/tmp/workprint-boundary'),
                    voice_result={}, scene_durations=[5.0]*6,
                    package={'narration':'Saved narration'},

@@ -38,7 +38,9 @@ def case(monkeypatch, tmp_path):
     function = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == '_checkpoint_qa_workprint')
     pipeline = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == 'run_video_pipeline')
     branch = next(node for node in ast.walk(pipeline) if isinstance(node, ast.If) and isinstance(node.test, ast.Name) and node.test.id == 'rejected_final_scenes')
-    namespace = {'Path':Path, 'update_job':update, 'json':json, 'FinalVisualQualityError':FinalVisualQualityError}
+    namespace = {'Path':Path, 'update_job':update, 'json':json, 'FinalVisualQualityError':FinalVisualQualityError,
+                 '_checkpoint_selected_visuals': Mock(), 'quality_threshold': 86,
+                 'effective_edit_target_seconds': 30.0}
     exec(compile(ast.Module(body=[function], type_ignores=[]), str(SOURCE), 'exec'), namespace)
     gate = {'available':True, 'pass':True}
     kwargs = dict(
