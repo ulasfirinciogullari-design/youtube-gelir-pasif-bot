@@ -13,7 +13,9 @@ import fakeredis
 from app.services import production_spend_runtime as runtime
 from app.services.production_spend import LEDGER_KEY, SpendBlocked, SpendLedger, SpendPolicy
 from app.services import production_spend_quotes as quotes
-from spending_test_support import initialize_test_funding, TEST_KEY
+from spending_test_support import (
+    fake_sdk_client, initialize_test_funding, installed_sdk_modules, TEST_KEY,
+)
 from test_production_spend_runtime import job, ROOT, CHANNEL
 from test_production_spend_scene_terminal import (
     SOURCE, TREE, _worker, case as scene_case, production,
@@ -24,7 +26,7 @@ PACKAGE_HASH = 'a' * 64
 
 
 @pytest.fixture
-def scene_spend(monkeypatch):
+def scene_spend(monkeypatch, installed_sdk_modules):
     """Independent state: legacy adapter fixtures may install their own plans."""
     client = fakeredis.FakeRedis(decode_responses=True)
     policy = SpendPolicy(20_000_000, 20_000_000, 20_000_000,
@@ -254,8 +256,7 @@ def test_actual_fallback_cannot_buy_a_more_expensive_scene(funded_runway, monkey
     class CapacityRejected(Exception):
         pass
     monkeypatch.setattr(runway, 'RateLimitError', CapacityRejected)
-    client = Mock(base_url='https://api.dev.runwayml.com/', api_key=TEST_KEY)
-    client.with_options.return_value = client
+    client = fake_sdk_client('https://api.dev.runwayml.com/')
     client.text_to_video.create.side_effect = CapacityRejected()
     with runtime.spending_scene(_prepare([5.0]), 0):
         with pytest.raises(SpendBlocked, match='spend_scene_request_limit'):
@@ -270,8 +271,7 @@ def test_accepted_poll_failure_does_not_start_another_paid_scene(funded_runway, 
     from app.services import runway
     monkeypatch.setattr(runway, 'settings', SimpleNamespace(runwayml_api_secret=TEST_KEY))
     monkeypatch.setattr(runway, '_runway_gen45_credits_known_insufficient', Mock(return_value=False))
-    create_client = Mock(base_url='https://api.dev.runwayml.com/', api_key=TEST_KEY)
-    create_client.with_options.return_value = create_client
+    create_client = fake_sdk_client('https://api.dev.runwayml.com/')
     create_client.text_to_video.create.return_value = SimpleNamespace(id='accepted-scene')
     poll_client = Mock()
     failure = TimeoutError('accepted operation still unresolved')

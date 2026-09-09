@@ -6,6 +6,7 @@ authorize an identical paid submission again. Unknown prices stay blocked.
 The default rollout flag is OFF; this module never initializes live budgets.
 """
 from concurrent.futures import ThreadPoolExecutor as _ThreadPoolExecutor
+from collections.abc import Mapping
 from contextlib import contextmanager
 from contextvars import ContextVar, copy_context
 from dataclasses import dataclass
@@ -290,6 +291,94 @@ def _header_key(headers, name):
     return matches[0]
 
 
+def _sdk_funding_headers(client, provider, *, expected_key=None):
+    """Snapshot the SDK's effective auth, rejecting unbound billing overrides.
+
+    New OpenAI SDKs add auth separately; Runway also includes it in defaults.
+    Merge exactly as the SDK does before checking case-insensitive duplicates.
+    Only the real SDK Omit sentinel represents an absent optional header.
+    """
+    if provider == 'openai':
+        from openai import Omit
+    else:
+        from runwayml import Omit
+    try:
+        base_url = 'https://api.openai.com/v1' if provider == 'openai' else 'https://api.dev.runwayml.com'
+        if str(getattr(client, 'base_url', '')).rstrip('/') != base_url:
+            raise SpendBlocked('spend_endpoint_not_priced')
+        key = getattr(client, 'api_key', None)
+        if (type(key) is not str or not 1 <= len(key) <= 8192
+                or any(not 32 < ord(char) < 127 for char in key)):
+            raise SpendBlocked('spend_funding_credential_invalid')
+        if expected_key is not None and key != expected_key:
+            raise SpendBlocked('spend_funding_sdk_identity_changed')
+        if type(client.default_query) is not dict or client.default_query:
+            raise SpendBlocked('spend_funding_sdk_query_unbound')
+        # HTTPX Auth runs after SDK header construction and can replace Bearer
+        # auth. These production routes use the standard key-auth transport.
+        if client.custom_auth is not None or client._client.auth is not None:
+            raise SpendBlocked('spend_funding_sdk_transport_unbound')
+        transport = client._client
+        if not isinstance(transport.params, Mapping) or transport.params:
+            raise SpendBlocked('spend_funding_sdk_query_unbound')
+        hooks = transport.event_hooks
+        if (type(hooks) is not dict or type(hooks.get('request')) is not list
+                or hooks['request']):
+            raise SpendBlocked('spend_funding_sdk_transport_unbound')
+        if not isinstance(transport.headers, Mapping):
+            raise SpendBlocked('spend_funding_sdk_headers_invalid')
+        lower_headers = (list(transport.headers.multi_items())
+                         if hasattr(transport.headers, 'multi_items')
+                         else list(transport.headers.items()))
+        if any(type(name) is not str or type(value) is not str for name, value in lower_headers):
+            raise SpendBlocked('spend_funding_sdk_headers_invalid')
+        lower_authorization = [value for name, value in lower_headers if name.lower() == 'authorization']
+        if lower_authorization and (len(lower_authorization) != 1 or lower_authorization[0] != 'Bearer ' + key):
+            raise SpendBlocked('spend_funding_sdk_headers_invalid')
+        auth, defaults = client.auth_headers, client.default_headers
+        if (type(auth) is not dict or type(defaults) is not dict
+                or any(type(name) is not str for name in (*auth, *defaults))):
+            raise SpendBlocked('spend_funding_sdk_headers_invalid')
+        headers = {**auth, **defaults}
+        if any(type(value) is not str and type(value) is not Omit for value in headers.values()):
+            raise SpendBlocked('spend_funding_sdk_headers_invalid')
+        authorization = [value for name, value in headers.items() if name.lower() == 'authorization']
+        if len(authorization) != 1 or authorization[0] != 'Bearer ' + key:
+            raise SpendBlocked('spend_funding_sdk_headers_invalid')
+        if provider == 'openai':
+            if (getattr(client, 'organization', None) is not None
+                    or getattr(client, 'project', None) is not None):
+                raise SpendBlocked('spend_funding_sdk_account_unbound')
+            if any(name.lower() in {'openai-organization', 'openai-project'} for name, _ in lower_headers):
+                raise SpendBlocked('spend_funding_sdk_account_unbound')
+            for name in ('openai-organization', 'openai-project'):
+                values = [value for header, value in headers.items() if header.lower() == name]
+                if len(values) > 1 or any(type(value) is not Omit for value in values):
+                    raise SpendBlocked('spend_funding_sdk_account_unbound')
+        return key, headers
+    except SpendBlocked:
+        raise
+    except Exception:
+        raise SpendBlocked('spend_funding_sdk_headers_invalid') from None
+
+
+def _sdk_funding_client(client, provider, base_url):
+    """Freeze key/header values in a private clone before reserving any money."""
+    key, headers = _sdk_funding_headers(client, provider)
+    try:
+        cloned = client.with_options(max_retries=0, api_key=key, set_default_headers=dict(headers))
+        if str(getattr(cloned, 'base_url', '')).rstrip('/') != base_url:
+            raise SpendBlocked('spend_endpoint_not_priced')
+        cloned_key, cloned_headers = _sdk_funding_headers(cloned, provider, expected_key=key)
+        if cloned_headers != headers:
+            raise SpendBlocked('spend_funding_sdk_identity_changed')
+        return cloned, cloned_key, headers
+    except SpendBlocked:
+        raise
+    except Exception:
+        raise SpendBlocked('spend_funding_sdk_headers_invalid') from None
+
+
 def reserve_request(provider, operation, payload, quote, *, funding):
     from app.services.production_spend_quotes import describe_video_request
     ledger = configured_ledger()
@@ -396,9 +485,14 @@ def paid_response(client, **kwargs):
         kwargs.setdefault('max_output_tokens', 8192)
         kwargs.setdefault('store', False)
         quote = quote_openai_response(kwargs)
-        funding = _funding_admission('openai', 'responses', getattr(client, 'api_key', None))
+        client, key, headers = _sdk_funding_client(client, 'openai', 'https://api.openai.com/v1')
+        funding = _funding_admission('openai', 'responses', key)
         reserve_request('openai', 'responses', kwargs, quote, funding=funding)
-        client = client.with_options(max_retries=0)
+        # Standard lower-HTTP configuration is shared by SDK copies. A known
+        # drift after reservation stops this POST and keeps the conservative
+        # hold; trusted callers must not mutate it concurrently during send.
+        if _sdk_funding_headers(client, 'openai', expected_key=key)[1] != headers:
+            raise SpendBlocked('spend_funding_sdk_identity_changed')
     return client.responses.create(**kwargs)
 
 
@@ -408,9 +502,11 @@ def paid_runway_create(client, **kwargs):
         if str(getattr(client, 'base_url', '')).rstrip('/') != 'https://api.dev.runwayml.com':
             raise SpendBlocked('spend_endpoint_not_priced')
         quote = quote_runway_video(kwargs)
-        funding = _funding_admission('runway', 'text_to_video', getattr(client, 'api_key', None))
+        client, key, headers = _sdk_funding_client(client, 'runway', 'https://api.dev.runwayml.com')
+        funding = _funding_admission('runway', 'text_to_video', key)
         reserve_request('runway', 'text_to_video', kwargs, quote, funding=funding)
-        client = client.with_options(max_retries=0)
+        if _sdk_funding_headers(client, 'runway', expected_key=key)[1] != headers:
+            raise SpendBlocked('spend_funding_sdk_identity_changed')
     return client.text_to_video.create(**kwargs)
 
 

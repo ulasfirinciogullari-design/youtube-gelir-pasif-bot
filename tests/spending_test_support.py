@@ -1,9 +1,105 @@
 """Explicit synthetic funding/scene commissioning for offline dispatch tests."""
+from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
+import importlib
+import sys
+from types import SimpleNamespace
+from unittest.mock import Mock
+
+import pytest
 
 
 TEST_KEY = 'private-test-key'
+_INSTALLED_SDK_MODULES = {}
+
+
+def _sdk_modules(name):
+    return {key: value for key, value in sys.modules.copy().items()
+            if key == name or key.startswith(name + '.')}
+
+
+@contextmanager
+def real_sdk_imports():
+    """Temporarily replace legacy collection stubs with installed SDK packages.
+
+    Keep each real package's submodules together so Omit retains its actual
+    class identity. Restore the original module table after the test, including
+    removing SDK submodules first imported by a real SDK's lazy resources.
+    """
+    names = ('openai', 'runwayml')
+    previous = {name: _sdk_modules(name) for name in names}
+    loaded = {}
+    try:
+        for name in names:
+            cached = _INSTALLED_SDK_MODULES.get(name)
+            current = sys.modules.get(name)
+            if cached or not isinstance(getattr(current, '__file__', None), str):
+                for key in _sdk_modules(name):
+                    del sys.modules[key]
+                if cached:
+                    sys.modules.update(cached)
+            module = importlib.import_module(name)
+            assert isinstance(module.__file__, str)
+            assert module.Omit is importlib.import_module(name + '._types').Omit
+            loaded[name] = module
+        yield loaded
+    finally:
+        for name in names:
+            if name in loaded:
+                _INSTALLED_SDK_MODULES[name] = _sdk_modules(name)
+            for key in _sdk_modules(name):
+                del sys.modules[key]
+            sys.modules.update(previous[name])
+
+
+@pytest.fixture
+def installed_sdk_modules():
+    with real_sdk_imports() as modules:
+        yield modules
+
+
+class _FakeSDKClient:
+    """Offline SDK shape with dynamic auth and a detached header clone."""
+
+    def __init__(self, base_url, api_key, *, default_headers=None, resources=None):
+        self.base_url = base_url
+        self.api_key = api_key
+        self.organization = None
+        self.project = None
+        self._client = SimpleNamespace(
+            auth=None, headers={}, params={}, event_hooks={'request': [], 'response': []},
+        )
+        self.custom_auth = None
+        self._custom_headers = dict(default_headers or {})
+        if resources is None:
+            resources = (SimpleNamespace(create=Mock()), SimpleNamespace(create=Mock()))
+        self.responses, self.text_to_video = resources
+        self.with_options = Mock(side_effect=self._with_options)
+
+    @property
+    def auth_headers(self):
+        return {'Authorization': 'Bearer ' + self.api_key}
+
+    @property
+    def default_headers(self):
+        return {**self.auth_headers, **self._custom_headers}
+
+    @property
+    def default_query(self):
+        return {}
+
+    def _with_options(self, *, max_retries, api_key, set_default_headers):
+        assert max_retries == 0
+        return _FakeSDKClient(
+            self.base_url, api_key, default_headers=set_default_headers,
+            resources=(self.responses, self.text_to_video),
+        )
+
+
+def fake_sdk_client(base_url, api_key=TEST_KEY):
+    """Make a synthetic SDK client; never constructs a network transport."""
+    return _FakeSDKClient(base_url, api_key)
 
 
 def test_funding_policy(ledger):

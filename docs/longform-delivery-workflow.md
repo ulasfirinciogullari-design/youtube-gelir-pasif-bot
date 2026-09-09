@@ -113,10 +113,13 @@ capture new frame-map diagnostics or queue these derivative jobs.
   schedule, not a guaranteed collection interval. Worker capacity must be checked
   at commissioning; the existing short refresh lock is not a guarantee that
   unusually long read requests can never overlap.
-- The shared metrics cache still represents only the queried subset, at most
-  50 videos per channel. A later nonempty subset can replace unqueried older
-  observations, including absence evidence. Durable full publication/deletion
-  history remains a separate requirement; do not use this cache as its ledger.
+- The statistics cache represents only the queried subset, at most 50 videos
+  per channel. Separate durable visibility observations now retain an older
+  video's absence across unrelated queries and cache expiry. Reads use only
+  verified requested video IDs; newer same-video owner observations can update
+  visibility, while corrupt evidence is displayed as unknown. This is the last
+  observed state, not a full publication/deletion event ledger. Expiring source
+  jobs/upload receipts and durable series/family discovery remain separate work.
 
 Do not enable the new family flag in production until the remaining publication,
 review, ordering and budget conditions above are implemented and verified.

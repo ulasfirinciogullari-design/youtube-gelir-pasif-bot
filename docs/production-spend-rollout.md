@@ -28,6 +28,17 @@ until its required routes have bounded, tested quotes and verified job context.
 - OpenAI and Runway SDK automatic create retries are disabled when enforcement
   is on. OpenAI text requests and Gemini JSON requests receive output bounds.
   Existing paid HTTP creates pass through the same pre-dispatch check.
+  SDK funding binds to the effective authorization headers of the actual
+  sending client, whose key and headers are frozen in a separate zero-retry
+  instance before reservation. Alternate/duplicate auth headers and unbound
+  OpenAI organization/project overrides block before spending or submission.
+  Unquoted SDK/HTTPX query parameters, alternate HTTP authentication, billing
+  headers and request hooks are unsupported. Standard transport configuration
+  is checked again after reservation; detected drift stops submission while
+  retaining the reservation. This is a guard for the trusted application
+  dispatch sites, not isolation against arbitrary concurrent Python mutation:
+  SDK copies still share their underlying HTTP transport and callers must not
+  mutate that transport during a request.
 - Planning/render workers persist a budget rejection as a terminal failure on
   the first attempt, consistent with their disabled Celery retry. The server
   tick can release that active capacity without a Studio page visit. The budget

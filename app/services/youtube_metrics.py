@@ -1,9 +1,10 @@
 """Owner-only YouTube statistics; cached GETs never contact Google or change jobs.
 
-Refreshes write only this module's cache and short debounce keys. In particular,
+Refreshes write only this module's observations, cache and short debounce keys. In particular,
 an expired credential is reported, never migrated, revoked or deleted here.
 Owner-observed absence retains its cache; expiry alone must not resurrect an
-old public label. A newer successful available observation restores normal TTL.
+old public label. Visibility observations outlive the bounded statistics cache;
+only a newer successful observation of that same video can replace them.
 """
 from __future__ import annotations
 
@@ -20,6 +21,7 @@ from app.config import settings
 
 
 CACHE_PREFIX = 'youtube_studio:metrics:v1:'
+OBSERVATION_PREFIX = 'youtube_studio:metrics:visibility:v1:'
 LOCK_PREFIX = 'youtube_studio:metrics:refresh:v1:'
 REFRESH_SECONDS = 300
 DEBOUNCE_SECONDS = 60
@@ -27,6 +29,8 @@ BACKGROUND_QUOTA_RETRY_SECONDS = 3600
 CACHE_TTL_SECONDS = 7 * 86400
 MAX_CHANNELS = 10
 MAX_VIDEOS = 50
+MAX_PROOFS = 5000
+OBSERVATION_READ_BATCH = 250
 _ID = re.compile(r'^[A-Za-z0-9_-]{8,128}$')
 _TASK = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
 _VIDEO = re.compile(r'^[A-Za-z0-9_-]{11}$')
@@ -39,12 +43,45 @@ if redis.call('GET', KEYS[2]) ~= ARGV[1]
  or redis.call('SISMEMBER', KEYS[4], ARGV[4]) ~= 1 then return 0 end
 local incoming = cjson.decode(ARGV[5])
 local started = incoming['last_attempt_at']
-if type(started) ~= 'number' then return 0 end
+if type(started) ~= 'number' or started <= 0 or started == math.huge then return 0 end
 local oldraw = redis.call('GET', KEYS[1])
 if oldraw then
   local ok, old = pcall(cjson.decode, oldraw)
   if ok and type(old) == 'table' and type(old['last_attempt_at']) == 'number'
      and old['last_attempt_at'] >= started then return 0 end
+end
+-- Validate all proposed writes before mutating either store. A malformed or
+-- future durable row is not permission to reset that video's observation.
+local kind = redis.call('TYPE', KEYS[6])['ok']
+if kind ~= 'none' and kind ~= 'hash' then return 0 end
+local observations = cjson.decode(ARGV[7])
+local function valid(row, id)
+  return type(row) == 'table' and row['version'] == 1
+    and row['channel_id'] == incoming['channel_id']
+    and row['connection_id'] == incoming['connection_id'] and row['video_id'] == id
+    and type(id) == 'string' and #id == 11 and string.match(id, '^[A-Za-z0-9_%-]+$')
+    and type(row['availability_checked_at']) == 'number'
+    and row['availability_checked_at'] > 0 and row['availability_checked_at'] <= started
+    and (row['availability'] == 'available' or row['availability'] == 'unavailable')
+    and ((row['availability'] == 'unavailable' and row['error'] == 'video_unavailable')
+         or (row['availability'] == 'available' and row['error'] == cjson.null))
+    and (row['privacy_status'] == cjson.null or row['privacy_status'] == 'public'
+         or row['privacy_status'] == 'private' or row['privacy_status'] == 'unlisted')
+end
+local writes, count = {}, 0
+for id, row in pairs(observations) do
+  count = count + 1
+  if count > 100 or not valid(row, id) then return 0 end
+  local old = redis.call('HGET', KEYS[6], id)
+  if old then
+    if #old > 2048 then return 0 end
+    local ok, decoded = pcall(cjson.decode, old)
+    if not ok or not valid(decoded, id) then return 0 end
+    if decoded['availability_checked_at'] > row['availability_checked_at']
+       or (decoded['availability_checked_at'] == row['availability_checked_at']
+           and not (row['availability'] == 'unavailable' and decoded['availability'] == 'available')) then row = nil end
+  end
+  if row then writes[id] = cjson.encode(row) end
 end
 local absent = false
 if type(incoming['videos']) == 'table' then
@@ -56,6 +93,7 @@ if type(incoming['videos']) == 'table' then
        and video['availability_checked_at'] <= started + 5 then absent = true end
   end
 end
+for id, encoded in pairs(writes) do redis.call('HSET', KEYS[6], id, encoded) end
 -- Do not resurrect a historical public label merely because its cache expired.
 -- A later successful available observation restores the ordinary cache TTL.
 if absent then redis.call('SET', KEYS[1], ARGV[5])
@@ -154,12 +192,12 @@ def _contexts(client):
 
 
 def _proofs(jobs, contexts):
-    """Only exact successful upload attributions become API video queries."""
+    """Bounded verified inventory; API sampling is a separate, smaller limit."""
     bindings = {(c['channel_id'], c['connection_id']) for c in contexts}
     proofs = {}
     if not isinstance(jobs, (list, tuple)):
         return proofs
-    for job in jobs[:5000]:
+    for job in jobs[:MAX_PROOFS]:
         if not isinstance(job, dict) or job.get('state') != 'SUCCESS':
             continue
         task_id, result = job.get('task_id'), job.get('result')
@@ -189,21 +227,76 @@ def _proofs(jobs, contexts):
             proofs[source_id] = None  # Conflicting histories cannot select an arbitrary video.
         elif source_id not in proofs:
             proofs[source_id] = proof
-    # At most 50 exact IDs per channel, in the caller's most-recent-first order.
-    selected, seen = {}, {}
-    for source_id, proof in proofs.items():
-        if not proof:
-            continue
-        ids = seen.setdefault(proof['channel_id'], set())
-        if proof['video_id'] not in ids and len(ids) >= MAX_VIDEOS:
-            continue
-        ids.add(proof['video_id'])
-        selected[source_id] = proof
-    return selected
+    return {source: proof for source, proof in proofs.items() if proof}
 
 
 def _cache_key(context):
     return CACHE_PREFIX + context['channel_id'] + ':' + context['connection_id']
+
+
+def _observation_key(context):
+    return OBSERVATION_PREFIX + context['channel_id'] + ':' + context['connection_id']
+
+
+def _observation(video_id, video, context, now):
+    if not isinstance(video_id, str) or not _VIDEO.fullmatch(video_id) or not isinstance(video, dict):
+        return None
+    checked = _timestamp(video.get('availability_checked_at'))
+    availability = video.get('availability')
+    if (not checked or checked > now or availability not in ('available', 'unavailable')
+            or availability == 'unavailable' and video.get('error') != 'video_unavailable'
+            or availability == 'available' and video.get('error') is not None):
+        return None
+    return {'version': 1, 'channel_id': context['channel_id'], 'connection_id': context['connection_id'],
+            'video_id': video_id, 'availability': availability, 'availability_checked_at': checked,
+            'error': 'video_unavailable' if availability == 'unavailable' else None,
+            'privacy_status': video.get('privacy_status') if video.get('privacy_status') in ('public', 'private', 'unlisted') else None}
+
+
+def _read_observations(client, context, ids, now):
+    """Read only requested IDs, never scan or load a channel's full history."""
+    result, invalid = {}, set()
+    for offset in range(0, len(ids), OBSERVATION_READ_BATCH):
+        batch = ids[offset:offset + OBSERVATION_READ_BATCH]
+        values = client.hmget(_observation_key(context), batch)
+        if not isinstance(values, list) or len(values) != len(batch):
+            raise YouTubeMetricsError('cache_unavailable')
+        for video_id, raw in zip(batch, values):
+            if raw is None:
+                continue
+            value = _object(raw, 2048)
+            row = _observation(video_id, value, context, now)
+            if row and type(value.get('version')) is int and value == row:
+                result[video_id] = row
+            else:
+                invalid.add(video_id)
+    return result, invalid
+
+
+def _observation_updates(previous, incoming, context, now):
+    updates = {}
+    # Migrate existing valid absence evidence before replacing the legacy cache,
+    # including IDs outside this refresh's sample. A cached positive is not new evidence.
+    for payload, legacy in ((previous, True), (incoming, False)):
+        at = _timestamp(payload.get('last_attempt_at'))
+        videos = payload.get('videos')
+        if (not at or at > now or not isinstance(videos, dict) or len(videos) > MAX_VIDEOS
+                or type(payload.get('version')) is not int or payload['version'] != 1
+                or payload.get('channel_id') != context['channel_id']
+                or payload.get('connection_id') != context['connection_id']):
+            continue
+        if not legacy and (payload.get('last_error') is not None or at != now):
+            continue
+        for video_id, video in videos.items():
+            row = _observation(video_id, video, context, at)
+            if not row or legacy and row['availability'] != 'unavailable':
+                continue
+            if not legacy and row['availability_checked_at'] != now:
+                continue
+            old = updates.get(video_id)
+            if old is None or row['availability_checked_at'] > old['availability_checked_at']:
+                updates[video_id] = row
+    return updates
 
 
 def _cache(client, context):
@@ -246,19 +339,38 @@ def get_dashboard_metrics(jobs):
                 fetched.append(at)
             output['channels'].append(row)
             stored = cached.get('videos') if isinstance(cached.get('videos'), dict) else {}
+            ids = list(dict.fromkeys(p['video_id'] for p in proofs.values() if p['channel_id'] == context['channel_id']))
+            try:
+                observations, invalid_observations = _read_observations(client, context, ids, now)
+            except Exception:
+                # A failed history read must not hide valid absence evidence
+                # already read from the bounded legacy cache.
+                observations = {}
+                invalid_observations = set(ids)
+                output['error'] = 'cache_unavailable'
             for source_id, proof in proofs.items():
                 if proof['channel_id'] != context['channel_id']:
                     continue
                 video = stored.get(proof['video_id'])
                 video = video if isinstance(video, dict) else {}
+                observed = observations.get(proof['video_id'])
+                cached_observation = _observation(proof['video_id'], video, context, now)
+                if observed and (not cached_observation
+                        or observed['availability_checked_at'] > cached_observation['availability_checked_at']
+                        or observed['availability_checked_at'] == cached_observation['availability_checked_at']
+                           and observed['availability'] == 'unavailable'):
+                    video = {**video, **observed}
                 video_at = _timestamp(video.get('fetched_at'))
                 reason = error or (video.get('error') if video.get('error') in _REASONS else None)
                 duration = video.get('duration')
-                checked_at = _timestamp(video.get('availability_checked_at'))
-                availability = video.get('availability')
-                if (not isinstance(availability, str) or availability not in {'available', 'unavailable'} or not checked_at
-                        or checked_at > now + 5):
+                visibility = _observation(proof['video_id'], video, context, now)
+                checked_at = visibility['availability_checked_at'] if visibility else None
+                availability = visibility['availability'] if visibility else None
+                visibility_invalid = (proof['video_id'] in invalid_observations
+                                      and availability != 'unavailable')
+                if visibility_invalid:
                     availability, checked_at = None, None
+                    reason = error or 'cache_unavailable'
                 output['videos'][source_id] = {
                     'video_id': proof['video_id'], 'channel_id': context['channel_id'], 'channel_title': row['title'],
                     'title': _text(video.get('title'), 100), 'view_count': _count(video.get('view_count')),
@@ -271,6 +383,7 @@ def get_dashboard_metrics(jobs):
                     'availability': availability,
                     'availability_checked_at': _iso(checked_at),
                     'availability_evidence': 'owner_api_absent' if availability == 'unavailable' else None,
+                    'visibility_state_invalid': visibility_invalid,
                 }
         output['updated_at'] = _iso(min(fetched)) if fetched else None
     except Exception:
@@ -410,10 +523,13 @@ def _refresh_channel(context, proofs, *, background=False):
         payload = {**previous, 'version': 1, 'channel_id': context['channel_id'], 'connection_id': context['connection_id'],
                    'last_error': _error(exc), 'last_attempt_at': now}
     auth = _auth()
-    client.eval(_CACHE_COMMIT, 5, _cache_key(context), auth.CHANNEL_PREFIX + context['channel_id'],
+    observations = _observation_updates(previous, payload, context, now)
+    client.eval(_CACHE_COMMIT, 6, _cache_key(context), auth.CHANNEL_PREFIX + context['channel_id'],
                 auth.CREDENTIAL_PREFIX + context['channel_id'], auth.CHANNEL_INDEX_KEY, auth.AUTH_EPOCH_KEY,
+                _observation_key(context),
                 context['raw'], context['cipher'], context['epoch'], context['channel_id'],
-                json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False), CACHE_TTL_SECONDS)
+                json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False), CACHE_TTL_SECONDS,
+                json.dumps(observations, ensure_ascii=False, separators=(',', ':'), allow_nan=False))
 
 
 def refresh_dashboard_metrics(jobs, *, background=False):

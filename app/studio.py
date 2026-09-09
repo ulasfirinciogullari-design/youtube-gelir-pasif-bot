@@ -727,6 +727,9 @@ def _video_delivery(job: dict) -> dict:
             and metrics.get('availability_evidence') == 'owner_api_absent'
             and _metrics_time(metrics.get('availability_checked_at')) != 'Veri bekleniyor'):
         return {'key': 'deleted', 'label': 'YouTube’dan silindi / erişilemiyor', 'attention': False}
+    if (uploaded and metrics.get('video_id') == _delivery_video_id(job)
+            and metrics.get('visibility_state_invalid') is True):
+        return {'key': 'unknown', 'label': 'YouTube görünürlüğü doğrulanamadı', 'attention': True}
     publication = _publication_status(job)
     release = _ready_release_status(job)
     privacy = str(youtube.get('privacy_status') or result.get('privacy_status') or '').casefold()

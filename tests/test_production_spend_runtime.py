@@ -10,7 +10,10 @@ from unittest.mock import Mock
 import fakeredis
 import pytest
 
-from spending_test_support import initialize_test_funding, initialize_test_scene
+from spending_test_support import (
+    fake_sdk_client, initialize_test_funding, initialize_test_scene,
+    real_sdk_imports, TEST_KEY,
+)
 
 from app.services.production_spend import LEDGER_KEY, SpendBlocked, SpendLedger, SpendPolicy
 from app.services import production_spend_runtime as runtime
@@ -37,24 +40,26 @@ def job(client, task_id=ROOT, parent_id=None, *, channel=CHANNEL, duration=0.5):
 
 @pytest.fixture
 def case(monkeypatch):
-    client = fakeredis.FakeRedis(decode_responses=True)
-    policy = SpendPolicy(10_000_000, 4_000_000, 8_000_000, 1_000_000, 8_000_000, 500_000)
-    ledger = SpendLedger(client, policy, clock=lambda: datetime(2026, 9, 8, tzinfo=timezone.utc))
-    ledger.initialize()
-    monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
-    monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger)
-    monkeypatch.setattr(quotes, '_fresh', lambda: None)
-    initialize_test_funding(ledger)
-    client.sadd(runtime._CHANNEL_INDEX, CHANNEL)
-    client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({
-        'id': CHANNEL, 'connection_id': 'connection_AAAAA'}))
-    job(client)
-    token = runtime._TASK_ID.set(ROOT)
-    scene_token = initialize_test_scene(ledger, channel=CHANNEL, root=ROOT)
-    yield client, ledger
-    runtime._TASK_ID.reset(token)
-    runtime._SCENE.reset(scene_token)
-
+    # This fixture is imported by other test modules; keep SDK isolation local
+    # rather than depending on a fixture registered only in this module.
+    with real_sdk_imports():
+        client = fakeredis.FakeRedis(decode_responses=True)
+        policy = SpendPolicy(10_000_000, 4_000_000, 8_000_000, 1_000_000, 8_000_000, 500_000)
+        ledger = SpendLedger(client, policy, clock=lambda: datetime(2026, 9, 8, tzinfo=timezone.utc))
+        ledger.initialize()
+        monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
+        monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger)
+        monkeypatch.setattr(quotes, '_fresh', lambda: None)
+        initialize_test_funding(ledger)
+        client.sadd(runtime._CHANNEL_INDEX, CHANNEL)
+        client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({
+            'id': CHANNEL, 'connection_id': 'connection_AAAAA'}))
+        job(client)
+        token = runtime._TASK_ID.set(ROOT)
+        scene_token = initialize_test_scene(ledger, channel=CHANNEL, root=ROOT)
+        yield client, ledger
+        runtime._TASK_ID.reset(token)
+        runtime._SCENE.reset(scene_token)
 
 def test_real_adapter_reserves_before_post_and_blocks_duplicate(case):
     client, ledger = case
@@ -113,8 +118,7 @@ def test_different_repairs_still_share_original_allowance(case):
 
 def test_more_expensive_runway_fallback_uses_actual_quoted_cost(case):
     _, ledger = case
-    client = Mock(api_key='private-test-key', base_url='https://api.dev.runwayml.com/')
-    client.with_options.return_value = client
+    client = fake_sdk_client('https://api.dev.runwayml.com/')
     runtime.paid_runway_create(client, model='gen4.5', prompt_text='scene',
                                ratio='720:1280', duration=5)
     with pytest.raises(SpendBlocked, match='lineage_limit'):
@@ -122,7 +126,12 @@ def test_more_expensive_runway_fallback_uses_actual_quoted_cost(case):
                                    ratio='720:1280', duration=5, audio=False)
     assert ledger.snapshot()['period']['used_micro'] == 600_000
     assert client.text_to_video.create.call_count == 1
-    client.with_options.assert_called_once_with(max_retries=0)
+    assert client.with_options.call_count == 2
+    for call in client.with_options.call_args_list:
+        assert call.kwargs == {
+            'max_retries': 0, 'api_key': TEST_KEY,
+            'set_default_headers': {'Authorization': 'Bearer ' + TEST_KEY},
+        }
 
 
 @pytest.mark.parametrize('url,kwargs', [
@@ -230,10 +239,12 @@ def test_task_scope_is_reset_even_after_error(case):
 
 
 def test_openai_text_request_caps_output_and_disables_sdk_retries(case):
-    client = Mock(api_key='private-test-key', base_url='https://api.openai.com/v1/')
-    client.with_options.return_value = client
+    client = fake_sdk_client('https://api.openai.com/v1/')
     runtime.paid_response(client, model='gpt-6-astra', input='a short script')
-    client.with_options.assert_called_once_with(max_retries=0)
+    client.with_options.assert_called_once_with(
+        max_retries=0, api_key=TEST_KEY,
+        set_default_headers={'Authorization': 'Bearer ' + TEST_KEY},
+    )
     assert client.responses.create.call_args.kwargs['max_output_tokens'] == 8192
     assert client.responses.create.call_args.kwargs['store'] is False
 
@@ -244,7 +255,7 @@ def test_openai_text_request_caps_output_and_disables_sdk_retries(case):
     {'service_tier': 'priority'}, {'model': 'unknown'}, {'max_output_tokens': 999999},
 ])
 def test_unbounded_openai_variants_block_before_sdk(case, change):
-    client = Mock(api_key='private-test-key', base_url='https://api.openai.com/v1/')
+    client = fake_sdk_client('https://api.openai.com/v1/')
     kwargs = {'model': 'gpt-6-astra', 'input': 'script', 'store': False, **change}
     with pytest.raises(SpendBlocked):
         runtime.paid_response(client, **kwargs)
@@ -283,7 +294,8 @@ def test_catalog_expires_instead_of_silently_reusing_stale_price(monkeypatch):
 def test_all_current_provider_create_sites_use_the_guard():
     services = Path(__file__).parents[1] / 'app' / 'services'
     names = ('director', 'research', 'visual_qc', 'runway', 'fal_video', 'gemini_generation',
-             'gemini_critic', 'voice', 'audio_design', 'audio_qc', 'production_next_series')
+             'gemini_critic', 'voice', 'audio_design', 'audio_qc', 'production_next_series',
+             'abacus_generation')
     free_post_functions = {'ensure_shared_voice_added', '_upload_gemini_audio_file'}
     unguarded = []
     for name in names:
@@ -300,6 +312,37 @@ def test_all_current_provider_create_sites_use_the_guard():
                 if sdk_create or direct_post:
                     unguarded.append((name, function.name, node.lineno))
     assert not unguarded, unguarded
+
+    # Abacus uses a bounded streamed POST, so checking only `.post` misses its
+    # transport. Its sole transport reference must remain a paid_post argument.
+    abacus = ast.parse((services / 'abacus_generation.py').read_text(encoding='utf-8'))
+    parents = {child: parent for parent in ast.walk(abacus)
+               for child in ast.iter_child_nodes(parent)}
+    def containing_function(node):
+        while node in parents:
+            node = parents[node]
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                return node.name
+        return None
+
+    streams = [node for node in ast.walk(abacus) if isinstance(node, ast.Call)
+               and isinstance(node.func, ast.Attribute) and node.func.attr == 'stream']
+    assert len(streams) == 1
+    assert containing_function(streams[0]) == '_post_bounded'
+    assert isinstance(streams[0].func.value, ast.Name)
+    assert streams[0].func.value.id == 'httpx'
+    assert streams[0].args and isinstance(streams[0].args[0], ast.Constant)
+    assert streams[0].args[0].value == 'POST'
+    guarded = [node for node in ast.walk(abacus) if isinstance(node, ast.Call)
+               and isinstance(node.func, ast.Name) and node.func.id == 'paid_post'
+               and node.args and isinstance(node.args[0], ast.Name)
+               and node.args[0].id == '_post_bounded']
+    assert len(guarded) == 1
+    assert containing_function(guarded[0]) == 'generate_abacus_json'
+    transport_references = [node for node in ast.walk(abacus)
+                            if (isinstance(node, ast.Name) and node.id == '_post_bounded')
+                            or (isinstance(node, ast.Attribute) and node.attr == '_post_bounded')]
+    assert transport_references == [guarded[0].args[0]]
 
 
 @pytest.mark.parametrize('kwargs', [
@@ -319,7 +362,7 @@ def test_unpriced_transport_options_block(case, kwargs):
 ])
 def test_sdk_proxy_cannot_use_official_endpoint_quote(case, adapter, kwargs):
     _, ledger = case
-    client = Mock(api_key='private-test-key', base_url='https://example.com/other-billing/')
+    client = fake_sdk_client('https://example.com/other-billing/')
     with pytest.raises(SpendBlocked, match='endpoint_not_priced'):
         adapter(client, **kwargs)
     client.with_options.assert_not_called()
@@ -333,8 +376,7 @@ def test_actual_runway_fallback_cannot_outgrow_original_budget(case, monkeypatch
     class RejectedCapacity(Exception):
         pass
     monkeypatch.setattr(runway, 'RateLimitError', RejectedCapacity)
-    client = Mock(api_key='private-test-key', base_url='https://api.dev.runwayml.com/')
-    client.with_options.return_value = client
+    client = fake_sdk_client('https://api.dev.runwayml.com/')
     client.text_to_video.create.side_effect = RejectedCapacity()
     with pytest.raises(SpendBlocked, match='lineage_limit'):
         runway._create_text_to_video_task(client, 'scene', 5, '9:16')

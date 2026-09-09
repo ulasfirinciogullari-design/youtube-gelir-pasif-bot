@@ -73,7 +73,8 @@ def test_server_task_refreshes_exact_owned_videos_without_studio_or_spending(cas
     assert c.service.videos.return_value.list.call_args.kwargs['id'] == VIDEO
     assert _google_count(c) == 1
     assert all(c.client.dump(key) == value for key, value in before.items())
-    assert all(key in before or key.startswith((c.module.CACHE_PREFIX, c.module.LOCK_PREFIX))
+    assert all(key in before or key.startswith((c.module.CACHE_PREFIX, c.module.LOCK_PREFIX,
+                                               c.module.OBSERVATION_PREFIX))
                for key in c.client.keys('*'))
     assert 'secret' not in json.dumps(result)
 

@@ -5,13 +5,17 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import fakeredis
+import httpx
 import pytest
 
 from app.services.production_spend import LEDGER_KEY, SpendBlocked, SpendLedger, SpendPolicy
 from app.services.production_scene_budget import scene_fields
 from app.services import production_spend_quotes as quotes
 from app.services import production_spend_runtime as runtime
-from spending_test_support import TEST_KEY, test_funding_policy as funding_policy_fixture
+from spending_test_support import (
+    TEST_KEY, fake_sdk_client, installed_sdk_modules,
+    test_funding_policy as funding_policy_fixture,
+)
 
 
 ROOT = '11111111-1111-4111-8111-111111111111'
@@ -73,7 +77,7 @@ def request_receipts(client):
 
 
 @pytest.fixture
-def case(monkeypatch):
+def case(monkeypatch, installed_sdk_modules):
     client = fakeredis.FakeRedis(decode_responses=True)
     clock = [datetime(2026, 9, 9, 12, tzinfo=timezone.utc)]
     # Gross list-cost caps deliberately exceed the owner's separate cash cap.
@@ -91,11 +95,9 @@ def case(monkeypatch):
     task_token = runtime._TASK_ID.set(ROOT)
     scene_token = runtime._SCENE.set(None)
     runtime.resolve_context(client, ROOT)
-    runway = Mock(base_url='https://api.dev.runwayml.com', api_key=TEST_KEY)
-    runway.with_options.return_value = runway
+    runway = fake_sdk_client('https://api.dev.runwayml.com')
     runway.text_to_video.create.return_value = {'id': 'fake-runway-task'}
-    openai = Mock(base_url='https://api.openai.com/v1', api_key=TEST_KEY)
-    openai.with_options.return_value = openai
+    openai = fake_sdk_client('https://api.openai.com/v1')
     openai.responses.create.return_value = {'id': 'fake-openai-response'}
     post = Mock(return_value={'id': 'fake-http-response'})
     prepared = runtime.prepare_video_scene_budget('a' * 64, [4.0], '9:16', scene_count=1)
@@ -133,6 +135,35 @@ def sends(case):
             + case.openai.responses.create.call_count)
 
 
+def test_real_sdk_import_scope_restores_legacy_collection_stub(monkeypatch):
+    import importlib
+    import sys
+    from types import ModuleType
+    from spending_test_support import real_sdk_imports
+
+    stub = ModuleType('openai')
+    stub.OpenAI = object
+    monkeypatch.setitem(sys.modules, 'openai', stub)
+    prefixes = ('openai', 'runwayml')
+    def sdk_table():
+        return {name: module for name, module in sys.modules.copy().items()
+                if any(name == prefix or name.startswith(prefix + '.') for prefix in prefixes)}
+    previous = sdk_table()
+    with real_sdk_imports() as modules:
+        from openai import Omit
+        assert modules['openai'] is not stub
+        assert Omit is importlib.import_module('openai._types').Omit
+        # The real runtime imports exactly the same installed sentinel class.
+        sdk = fake_sdk_client('https://api.openai.com/v1')
+        sdk._custom_headers['OpenAI-Project'] = Omit()
+        assert runtime._sdk_funding_headers(sdk, 'openai')[0] == TEST_KEY
+        importlib.import_module('openai.resources.responses.responses')
+    restored = sdk_table()
+    assert restored.keys() == previous.keys()
+    assert all(restored[name] is module for name, module in previous.items())
+    assert sys.modules['openai'] is stub
+
+
 def test_four_real_adapters_share_the_ten_dollar_cash_cap(case):
     policy = funding_policy_fixture(case.ledger)
     providers = ('runway', 'gemini', 'openai', 'abacus')
@@ -157,8 +188,13 @@ def test_four_real_adapters_share_the_ten_dollar_cash_cap(case):
         funding = receipt['funding']
         assert funding['cash_micro'] == amounts[funding['provider']]
         assert funding['covered_micro'] == 0
-    case.runway.with_options.assert_called_once_with(max_retries=0)
-    case.openai.with_options.assert_called_once_with(max_retries=0)
+    for sdk in (case.runway, case.openai):
+        # The blocked second call also validates a detached transport clone.
+        assert sdk.with_options.call_count == 2
+        sdk.with_options.assert_called_with(
+            max_retries=0, api_key=TEST_KEY,
+            set_default_headers={'Authorization': 'Bearer ' + TEST_KEY},
+        )
 
 
 def test_real_quote_cash_factor_rounds_up_before_atomic_reservation(case):
@@ -545,3 +581,264 @@ def test_corrupt_funding_counters_block_status_and_dispatch_without_repair(case)
     assert runtime.budget_status()['reason_code'] == 'spend_funding_state_invalid'
     assert case.client.dump(LEDGER_KEY) == before
     assert sends(case) == 1
+
+
+def real_sdk(case, monkeypatch, provider, *, default_headers=None, properties=None,
+             environment=None, http_auth=None, http_headers=None, http_params=None, http_hooks=None):
+    """Real installed SDKs, with an in-memory transport that cannot use DNS."""
+    from openai import OpenAI
+    from runwayml import RunwayML
+    for name in ('OPENAI_ORG_ID', 'OPENAI_PROJECT_ID', 'OPENAI_CUSTOM_HEADERS',
+                 'OPENAI_BASE_URL', 'OPENAI_ADMIN_KEY', 'OPENAI_WEBHOOK_SECRET',
+                 'RUNWAYML_CUSTOM_HEADERS', 'RUNWAYML_BASE_URL'):
+        monkeypatch.delenv(name, raising=False)
+    for name, value in (environment or {}).items():
+        monkeypatch.setenv(name, value)
+    requests = []
+    def receive(request):
+        requests.append(request)
+        output = ({'id': '33333333-3333-4333-8333-333333333333'} if provider == 'runway'
+                  else {'id': 'resp_fixture', 'object': 'response', 'created_at': 1,
+                        'status': 'completed', 'model': 'gpt-6-astra', 'output': []})
+        return httpx.Response(200, json=output)
+    transport = httpx.Client(transport=httpx.MockTransport(receive), auth=http_auth,
+                             headers=http_headers, params=http_params, event_hooks=http_hooks)
+    constructor = OpenAI if provider == 'openai' else RunwayML
+    client = constructor(api_key=TEST_KEY, default_headers=default_headers,
+                         http_client=transport, **(properties or {}))
+    setattr(case, provider, client)
+    return client, requests
+
+
+@pytest.mark.parametrize('provider', ['openai', 'runway'])
+@pytest.mark.parametrize('header,value', [
+    ('Authorization', 'Bearer alternate-private-test-key'),
+    ('authorization', 'Bearer alternate-private-test-key'),
+    ('authorization', 'Bearer ' + TEST_KEY),
+    ('AUTHORIZATION', 'Bearer ' + TEST_KEY),
+])
+def test_real_sdk_auth_override_or_duplicate_never_reserves_or_sends(case, monkeypatch, provider, header, value):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    prime_scene(case)
+    client, requests = real_sdk(case, monkeypatch, provider, default_headers={header: value})
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^spend_funding_sdk_headers_invalid$') as caught:
+            issue(case, provider)
+        assert 'private-test-key' not in str(caught.value)
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('provider', ['openai', 'runway'])
+@pytest.mark.parametrize('value_kind', ['omit', 'none', 'object'])
+def test_real_sdk_missing_or_non_string_authorization_never_reserves(case, monkeypatch, provider, value_kind):
+    from openai import Omit as OpenAIOmit
+    from runwayml import Omit as RunwayOmit
+    omitted = OpenAIOmit() if provider == 'openai' else RunwayOmit()
+    value = {'omit': omitted, 'none': None, 'object': object()}[value_kind]
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    prime_scene(case)
+    client, requests = real_sdk(case, monkeypatch, provider, default_headers={'Authorization': value})
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^spend_funding_sdk_headers_invalid$'):
+            issue(case, provider)
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('field', ['organization', 'project'])
+@pytest.mark.parametrize('source', ['property', 'environment', 'header'])
+def test_real_openai_unbound_billing_selection_never_reserves(case, monkeypatch, field, source):
+    kwargs = {}
+    if source == 'property':
+        kwargs['properties'] = {field: 'fixture-billing-selector'}
+    elif source == 'environment':
+        kwargs['environment'] = {
+            'OPENAI_ORG_ID' if field == 'organization' else 'OPENAI_PROJECT_ID': 'fixture-billing-selector'}
+    else:
+        kwargs['default_headers'] = {'OpenAI-' + field.title(): 'fixture-billing-selector'}
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    client, requests = real_sdk(case, monkeypatch, 'openai', **kwargs)
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^spend_funding_sdk_account_unbound$'):
+            issue(case, 'openai')
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('provider,variable', [
+    ('openai', 'OPENAI_CUSTOM_HEADERS'), ('runway', 'RUNWAYML_CUSTOM_HEADERS'),
+])
+def test_real_sdk_environment_auth_override_is_checked_too(case, monkeypatch, provider, variable):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    prime_scene(case)
+    client, requests = real_sdk(case, monkeypatch, provider,
+                                environment={variable: 'Authorization: Bearer alternate-private-test-key'})
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^spend_funding_sdk_headers_invalid$'):
+            issue(case, provider)
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('provider', ['openai', 'runway'])
+def test_real_sdk_clone_pins_permitted_key_and_headers_across_original_mutation(case, monkeypatch, provider):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    client, requests = real_sdk(case, monkeypatch, provider)
+    original_reserve = runtime.reserve_request
+    def reserve_then_mutate_original(*args, **kwargs):
+        result = original_reserve(*args, **kwargs)
+        client.api_key = 'rotated-private-test-key'
+        client._custom_headers['Authorization'] = 'Bearer alternate-private-test-key'
+        return result
+    monkeypatch.setattr(runtime, 'reserve_request', reserve_then_mutate_original)
+    try:
+        issue(case, provider)
+        assert len(requests) == 1
+        assert requests[0].headers['authorization'] == 'Bearer ' + TEST_KEY
+        assert requests[0].url.host == ('api.openai.com' if provider == 'openai' else 'api.dev.runwayml.com')
+        assert 'openai-project' not in requests[0].headers and 'openai-organization' not in requests[0].headers
+        assert case.ledger.funding_snapshot()['cash_reserved_micro'] == actual_quote(provider).maximum_micro
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('provider', ['openai', 'runway'])
+def test_changed_key_on_created_sdk_clone_is_rejected_before_reservation(case, monkeypatch, provider):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    prime_scene(case)
+    client, requests = real_sdk(case, monkeypatch, provider)
+    original_copy = client.with_options
+    def changed_clone(**kwargs):
+        cloned = original_copy(**kwargs)
+        cloned.api_key = 'changed-during-clone'
+        return cloned
+    monkeypatch.setattr(client, 'with_options', changed_clone)
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^spend_funding_sdk_identity_changed$'):
+            issue(case, provider)
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('provider', ['openai', 'runway'])
+def test_real_sdk_unquoted_default_query_is_blocked_before_reservation(case, monkeypatch, provider):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    prime_scene(case)
+    client, requests = real_sdk(case, monkeypatch, provider,
+                                properties={'default_query': {'unreviewed': 'fixture'}})
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^spend_funding_sdk_query_unbound$'):
+            issue(case, provider)
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('provider', ['openai', 'runway'])
+def test_real_sdk_http_auth_cannot_replace_the_bound_bearer_key(case, monkeypatch, provider):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    prime_scene(case)
+    client, requests = real_sdk(case, monkeypatch, provider,
+                                http_auth=httpx.BasicAuth('fixture-user', 'fixture-password'))
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^spend_funding_sdk_transport_unbound$'):
+            issue(case, provider)
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('header', ['OpenAI-Project', 'OpenAI-Organization'])
+def test_real_openai_lower_http_billing_header_cannot_survive_sdk_omission(case, monkeypatch, header):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    client, requests = real_sdk(case, monkeypatch, 'openai', http_headers={header: 'unbound-fixture-selector'})
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^spend_funding_sdk_account_unbound$'):
+            issue(case, 'openai')
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('provider', ['openai', 'runway'])
+@pytest.mark.parametrize('kind,reason', [
+    ('params', 'spend_funding_sdk_query_unbound'),
+    ('hooks', 'spend_funding_sdk_transport_unbound'),
+    ('authorization', 'spend_funding_sdk_headers_invalid'),
+])
+def test_real_sdk_unbound_lower_http_options_block_before_reservation(case, monkeypatch, provider, kind, reason):
+    invoked_hooks = []
+    options = {
+        'params': {'http_params': {'unreviewed': 'fixture'}},
+        'hooks': {'http_hooks': {'request': [lambda request: invoked_hooks.append(request)]}},
+        'authorization': {'http_headers': {'Authorization': 'Bearer alternate-private-test-key'}},
+    }[kind]
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    prime_scene(case)
+    client, requests = real_sdk(case, monkeypatch, provider, **options)
+    before = case.client.dump(LEDGER_KEY)
+    try:
+        with pytest.raises(SpendBlocked, match='^' + reason + '$'):
+            issue(case, provider)
+        assert not requests and not invoked_hooks
+        assert case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize('provider,kind', [
+    ('openai', 'auth'), ('openai', 'billing'), ('openai', 'params'), ('openai', 'hooks'),
+    ('runway', 'auth'), ('runway', 'params'), ('runway', 'hooks'),
+])
+def test_shared_http_config_drift_after_reservation_stops_post_and_retains_hold(case, monkeypatch, provider, kind):
+    case.ledger.initialize_funding(funding_policy_fixture(case.ledger))
+    client, requests = real_sdk(case, monkeypatch, provider)
+    initial_headers = dict(client._client.headers)
+    original_reserve = runtime.reserve_request
+    def reserve_then_change_shared_transport(*args, **kwargs):
+        result = original_reserve(*args, **kwargs)
+        if kind == 'auth':
+            client._client.auth = httpx.BasicAuth('fixture-user', 'fixture-password')
+        elif kind == 'billing':
+            client._client.headers['OpenAI-Project'] = 'unbound-fixture-project'
+        elif kind == 'params':
+            client._client.params = {'unreviewed': 'fixture'}
+        else:
+            client._client.event_hooks = {'request': [lambda request: None], 'response': []}
+        return result
+    monkeypatch.setattr(runtime, 'reserve_request', reserve_then_change_shared_transport)
+    try:
+        with pytest.raises(SpendBlocked):
+            issue(case, provider)
+        cost = actual_quote(provider).maximum_micro
+        assert not requests
+        assert case.ledger.funding_snapshot()['cash_reserved_micro'] == cost
+        assert case.ledger.snapshot()['period']['used_micro'] == cost
+        assert len(request_receipts(case.client)) == 1
+        # Restoring local configuration cannot replay the already reserved
+        # intent. No automatic refund is invented for the failed dispatch.
+        client._client.auth = None
+        client._client.headers = initial_headers
+        client._client.params = {}
+        client._client.event_hooks = {'request': [], 'response': []}
+        monkeypatch.setattr(runtime, 'reserve_request', original_reserve)
+        before = case.client.dump(LEDGER_KEY)
+        with pytest.raises(SpendBlocked, match='^spend_request_already_reserved$'):
+            issue(case, provider)
+        assert not requests and case.client.dump(LEDGER_KEY) == before
+    finally:
+        client.close()
