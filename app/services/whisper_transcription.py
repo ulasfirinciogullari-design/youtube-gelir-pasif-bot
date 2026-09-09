@@ -181,6 +181,18 @@ def _snapshot_audio(raw, suffix):
         raise SpendBlocked('spend_request_not_priced') from None
 
 
+def inspect_bounded_short_audio(raw: bytes, mime_type: str) -> dict:
+    """Validate complete original Short bytes without uploading or rewriting them.
+
+    Both native audio reviewers use the same strict container walk and full
+    bounded decode. The descriptor identifies the original file and measured
+    PCM; it grants neither a provider request nor a budget reservation.
+    """
+    _require(type(mime_type) is str and mime_type in {'audio/mpeg', 'audio/wav'})
+    suffix = '.mp3' if mime_type == 'audio/mpeg' else '.wav'
+    return _snapshot_audio(raw, suffix).descriptor({})['audio']
+
+
 def _quote(fields):
     if not _VALID_FROM <= datetime.now(timezone.utc) < _VALID_UNTIL:
         raise SpendBlocked('spend_price_review_expired')

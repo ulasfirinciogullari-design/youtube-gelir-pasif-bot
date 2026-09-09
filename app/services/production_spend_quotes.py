@@ -342,6 +342,23 @@ def quote_http_request(url, kwargs):
         return 'gemini', parsed.path, _veo(match[1], kwargs.get('json'))
     match = re.fullmatch(r'/v1beta/models/([A-Za-z0-9._-]+):generateContent', parsed.path)
     if parsed.hostname == 'generativelanguage.googleapis.com' and match:
+        if match[1] == 'gemini-3.7-flash':
+            body = kwargs.get('json')
+            contents = body.get('contents') if type(body) is dict else None
+            _require(type(contents) is list and len(contents) == 1
+                     and type(contents[0]) is dict)
+            parts = contents[0].get('parts')
+            _require(type(parts) is list)
+            if len(parts) == 1 and type(parts[0]) is dict and set(parts[0]) == {'text'}:
+                from app.services.gemini37_text_spend_quotes import quote_gemini37_text_request
+                quote = quote_gemini37_text_request(body, kwargs.get('headers', {}))
+            elif (len(parts) == 2 and type(parts[0]) is dict and set(parts[0]) == {'text'}
+                  and type(parts[1]) is dict and set(parts[1]) == {'inlineData'}):
+                from app.services.gemini37_audio_spend_quotes import quote_gemini37_audio_request
+                quote = quote_gemini37_audio_request(body, kwargs.get('headers', {}))
+            else:
+                raise SpendBlocked('spend_request_not_priced')
+            return 'gemini', parsed.path, quote
         return 'gemini', parsed.path, _gemini_json(
             match[1], kwargs.get('json'), kwargs.get('headers', {}))
     # Audio, images, Omni, grounding and fal need separate bounded quotes.

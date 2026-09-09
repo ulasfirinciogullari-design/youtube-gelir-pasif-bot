@@ -99,6 +99,8 @@ endpoints and unbounded requests block. Prepaid balances are not cash discounts.
 | --- | --- | --- |
 | OpenAI GPT-6 Astra (rate updated 9 September) | Tool-free plain text, explicit standard tier, at most 100,000 encoded JSON bytes, at most 16,384 output tokens | $12.50/M input reserves the implicit cache-write rate; $50/M output. Conservative input bound is encoded JSON bytes + 4,096 framing tokens |
 | Gemini 3.1 Pro Preview | One tool-free text-only JSON candidate, optional inline schema, at most 100,000 encoded JSON bytes and 16,384 total output tokens | $2/M input and $12/M output including thinking; encoded bytes + 4,096 framing keeps the input bound below the 200,000-token price threshold |
+| Gemini 3.7 Flash text (9 September revision) | One tool-free native text JSON candidate, complete prompt/system/schema at most 100,000 encoded metadata bytes, at most 16,384 output tokens | Full 1,048,576-token input context at $0.75/M plus requested output at $3.75/M including thinking; at most $0.847872 reserved |
+| Gemini 3.7 Flash Short audio (separate 9 September revision) | Full native prosody rubric/schema and one original MP3/PCM16 WAV, at most 8 MiB and 30.08 decoded seconds, medium thinking, at most 8,192 output tokens | Same full input context and rates; at most $0.817152 reserved |
 | Abacus Claude Haiku 4.5 (`claude-haiku-4-5-20251001`) | Native Messages, one plain-text user message, thinking disabled, at most 100,000 encoded JSON bytes and 8,192 output tokens | $1/M input and $5/M output; encoded bytes + 4,096 framing tokens |
 | Abacus Claude Haiku 4.5 native images (9 September revision) | One user message with full interleaved text/JPEG evidence, thinking disabled, standard tier, at most 60 bounded images and 8,192 output tokens | Full 200,000-token input context at $1/M plus the requested output ceiling at $5/M; at most $0.240960 |
 | Abacus Claude Sonnet 5 / 4.6 (`claude-sonnet-5`, `claude-sonnet-4-6`) | Same native text contract, explicit global inference | Respectively $2/$10 and $3/$15 per M input/output tokens |
@@ -179,7 +181,7 @@ still stops at the existing replay fence. This opt-in has not been activated
 or quality-validated against a live account; it does not commission V6 dispatch,
 audio review or the complete production/publication chain.
 
-The current prosody/music and fallback speech review, Gemini grounding/multimodal critic/image/Omni,
+Other prosody/music and fallback speech review, Gemini grounding/multimodal critic/image/Omni,
 OpenAI vision/search and fal calls are guarded but have NO commissioned quote
 yet. They therefore block with enforcement on. The Gemini JSON route permits
 only the named model and bounded text contract, including schema/settings;
@@ -193,6 +195,30 @@ verified rate evidence ([ElevenLabs custom-rate documentation](https://elevenlab
 A shared-voice bookmark and
 Gemini file-upload transport are not model-generation charges; they are the
 only explicit free-POST exclusions in the source coverage test.
+
+## Gemini 3.7 Flash text and Short prosody reservations
+
+Two distinct price revisions cover the existing tool-free immutable story critic
+and native Short prosody request. The complete prompts, source context, schema,
+selected audio and quality criteria remain unchanged. The audio route requires
+the complete original canonical base64 MP3 or PCM16 WAV and reuses the same
+bounded container and real FFmpeg decode inspection as Whisper; it never prices
+audio through the text route or truncates evidence to fit a limit. Unknown
+fields, search, images, other models and oversized audio remain blocked.
+
+Both quotes reserve the documented full input context, rather than infer total
+input tokens from text bytes or 32 audio tokens per second. The current 8,192
+output setting reserves $0.817152 per request. This conservative reservation is
+not observed usage, expected cost, a free-tier claim or an invoice. The existing
+Gemini transport keeps its acknowledged reservation and replay fence; this
+increment does not implement response-usage settlement or refunds.
+
+Sources: [Gemini 3.7 Flash model limits](https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash),
+[standard pricing](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.7-flash),
+[audio input accounting](https://ai.google.dev/gemini-api/docs/audio#technical-details-about-audio),
+and [the shared thinking/output pool](https://codelabs.developers.google.com/bigquery-generative-ai-intro#3).
+These revisions expire on 1 October 2026. They do not activate account funding,
+change the live model/reviewer, reset the ledger or grant a recovery dispatch.
 
 ## Bounded Whisper transcription of an existing Short
 
