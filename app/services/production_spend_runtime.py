@@ -527,6 +527,11 @@ def _native_sender_identity(sender, headers, provider):
 
 def paid_post(sender, url, **kwargs):
     """Guard a paid HTTP POST before its transport sees credentials or media."""
+    if getattr(settings, 'studio_elevenlabs_native_credits', False) is True:
+        from app.services.production_credit_funding import ROUTE
+        if url == ROUTE:
+            from app.services.production_credit_runtime import paid_credit_post
+            return paid_credit_post(sender, url, kwargs)
     if enforcement_enabled():
         from app.services.production_spend_quotes import quote_http_request
         kwargs = _freeze_native_request(kwargs)

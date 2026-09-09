@@ -507,6 +507,17 @@ class SpendLedger:
                 with self.client.pipeline() as pipe:
                     pipe.watch(LEDGER_KEY)
                     period = self._read_state(pipe, month, day)
+                    if quote.provider == 'elevenlabs':
+                        from app.services.production_credit_ledger import (
+                            STATE_KEY, JOURNAL_KEY, MODE_FIELD, native_foundation_markers,
+                        )
+                        pipe.watch(STATE_KEY, JOURNAL_KEY)
+                        # Once native credits are commissioned, changing a flag
+                        # cannot move a voice request back to cash funding.
+                        if (pipe.hexists(LEDGER_KEY, MODE_FIELD)
+                                or pipe.exists(STATE_KEY, JOURNAL_KEY)
+                                or native_foundation_markers(pipe)):
+                            raise SpendBlocked('spend_native_credit_required')
                     if pipe.hexists(LEDGER_KEY, operation_field):
                         raise SpendBlocked('spend_request_already_reserved')
                     raw_lineage = pipe.hget(LEDGER_KEY, lineage_field)

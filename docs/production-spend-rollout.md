@@ -296,7 +296,7 @@ still required before any enforced TTS dispatch can be commissioned.
   Both prior/in-flight extra charges and provider overage settings need evidence
   before live paid dispatch. Existing subscription renewals are outside this
   additional API allowance, not newly authorized purchases.
-- A covered allocation must be an explicitly verified USD-list-cost equivalent
+- In the original USD-list-cost funding mode, a covered allocation must be an explicitly verified USD-list-cost equivalent
   net of prior/in-flight use, with a verified no-overage condition. Abacus credit
   counts, subscription prices or ElevenLabs raw voice-rate metadata do not supply
   this conversion by themselves. Missing evidence blocks both covered and cash
@@ -318,7 +318,7 @@ still required before any enforced TTS dispatch can be commissioned.
 - Keep fixed bills, infrastructure, asset/music allowances, taxes and contingency
   visible separately from this API reservation ledger. There is currently no
   approved combined monthly envelope against which to reconcile those costs.
-- A valid all-zero policy prohibits paid dispatch while free local editing
+- A valid all-zero USD policy prohibits USD-quoted dispatch while free local editing
   and accepted-operation polling remain possible. Legitimate free quotas or
   prepaid credits require provider-specific quota/cash accounting; their expiry
   must NOT automatically enable a paid route. No repeated fake trial accounts.
@@ -328,6 +328,74 @@ still required before any enforced TTS dispatch can be commissioned.
   It must never silently reset the whole current month to $0 already spent.
 - Existing personal ChatGPT Pro/Google subscriptions and their extra credit
   purchases are separate; this application cannot cap purchases in those apps.
+
+## Explicit ElevenLabs native-credit mode (default OFF)
+
+`STUDIO_ELEVENLABS_NATIVE_CREDITS=false` preserves the existing route. The new
+opt-in accepts only the selected `WtOce4YK0dDSxlVlSdBh` voice, Multilingual V2,
+the original normalized continuous narration settings, MP3 44100/128 output and
+the `with-timestamps` endpoint. It requires spending enforcement ON, a real
+stored Short task/original lineage, an already reconciled foundation ledger,
+and a separately commissioned native-credit policy. No caller initializes any
+ledger, modifies a tariff, resets a failed job, or grants publication.
+
+This addresses an accounting mismatch: verified subscription credits have their
+own unit, while the original covered mode required a USD-list-cost conversion
+and a universal billed-text normalization bound. Native credits are never
+presented as dollars or a zero-price quote. An operator policy binds the exact
+account/outgoing-key digests, observed net quota, outstanding-use reconciliation,
+reset/expiry, and no-extra-cash controls (zero extension, extension unavailable,
+and automatic topup OFF with explicit observed/owner-attested provenance).
+The policy cannot authorize a purchase or automatic fallback to cash. Existing
+subscription renewals remain separate from the owner's additional USD10 limit.
+
+Because no exact future character meter is assumed, each native intent reserves
+ALL remaining allocated credits until its actual response is known. This is a
+capacity lock, not a claim that the request costs that amount or that the input
+character count bounds billing. A complete authenticated HTTPX response with
+one positive integer `character-cost` and one `request-id` can settle the exact
+observed credits, releasing only unused capacity. The official
+[API introduction](https://elevenlabs.io/docs/api-reference/introduction/)
+documents those response headers; their presence on the actual timestamp route
+is checked rather than assumed. No synthesis is made merely to test the meter.
+
+The response's original request must match the immutable outgoing URL, query,
+JSON and key, with no redirect or ambiguous headers. Request/response byte
+digests and request identity bind the observation. Missing/invalid usage, a
+timeout or an uncertain Redis acknowledgement stops the task with `SpendBlocked`
+and preserves the held allocation. No automatic resend or new seed follows an
+unknown outcome. A metered response may still fail the unchanged audio/JSON QA;
+settlement is not quality approval. Application functions and HTTP transports
+remain trusted code, and the observer bounds already-loaded responses rather
+than claiming a streaming download limit.
+
+`CreditLedger` persists policy/state and an independent complete journal without
+TTL in the existing `{production_spend}` Redis hash slot. It detects partial
+loss, expiring records, rolled-back state, mismatched receipts and uninspected
+history. Production commissioning also records an immutable native-mode marker
+in the foundation ledger. Every reservation writes the native state, journal
+and the existing-fingerprint request marker in one acknowledged WATCH/EXEC.
+Complete correspondence with the foundation markers prevents a simultaneous
+state/journal rollback from forgetting an outstanding request. Original root,
+channel and source connection bindings stay fixed across children and key IDs.
+
+The native branch rejects an earlier USD request with the same fingerprint.
+The USD Eleven branch rejects any native commissioning/receipt evidence, even
+if the opt-in flag is later disabled or some native records disappear. Changing
+funding modes cannot resend a consumed request. A settled intent retains its
+permanent request fence; identical observation replay cannot release capacity
+twice. No automatic monthly renewal, topup, missing-state initialization or
+coordinated datastore-loss recovery is implemented. Expiry or an uncertain
+meter requires explicit reconciliation. An all-zero USD policy can coexist with
+separately evidenced credit-only activity; it does not itself commission that
+activity or open the USD10 additional allowance.
+
+The private Capital connection-continuity staging service is separate. It
+records only the exact audited legacy three-job episode-5 lineage, original
+candidate pointers and current OAuth evidence. Its receipt is explicitly
+diagnostic, not runnable, not QA-approved and not a funding or publish grant.
+Admission/worker/publication/resume consumers remain to be implemented; old
+selected-edit proof cannot be fabricated from raw candidate pointers.
 
 ## Required commissioning before enabling
 
