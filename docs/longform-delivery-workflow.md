@@ -100,9 +100,12 @@ capture new frame-map diagnostics or queue these derivative jobs.
   This does not establish unattended recovery from every worker interruption.
 - Required speech/multimodal/grounded-planning price bounds, remaining-period
   reconciliation of real usage and actual budget activation remain open. The
-  explicit opening-usage import and bounded Gemini text quote are implemented;
-  they have not been commissioned against production. Existing failed parent
-  production holds are not cleared by this change.
+  explicit opening-usage import, bounded Gemini/Abacus text quotes, immutable
+  per-scene video allowances and separate covered-credit/new-cash accounting
+  are implemented. New cash has an owner ceiling of USD 10 per month; routes
+  require verified account coverage or a cash upper bound tied to the actual
+  API credential. These controls have not been commissioned against production.
+  Existing failed parent production holds are not cleared by this change.
 - Virtual-presenter provider commissioning, dubbing and broader UI work are still
   part of the overall workflow; adding this fan-out does not complete them.
 - Metrics observation shares the existing worker queue. Two occupied render

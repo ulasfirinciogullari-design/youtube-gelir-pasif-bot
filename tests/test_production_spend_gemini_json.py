@@ -9,6 +9,8 @@ import fakeredis
 import httpx
 import pytest
 
+from spending_test_support import initialize_test_funding, initialize_test_scene
+
 from app.services import gemini_generation as generation
 from app.services import production_spend_quotes as quotes
 from app.services import production_spend_runtime as runtime
@@ -49,6 +51,7 @@ def case(monkeypatch):
     monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
     monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger)
     monkeypatch.setattr(quotes, '_fresh', lambda: None)
+    initialize_test_funding(ledger)
     client.sadd(runtime._CHANNEL_INDEX, CHANNEL)
     client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({
         'id': CHANNEL, 'connection_id': 'connection_AAAAA'}))
@@ -112,7 +115,7 @@ def test_current_eight_minute_director_schema_with_three_shorts_is_priced(case):
 def test_unpriced_inputs_never_reserve_or_reach_transport(case, patch):
     sender = Mock()
     with pytest.raises(SpendBlocked, match='request_not_priced'):
-        runtime.paid_post(sender, URL, json={**body(), **patch})
+        runtime.paid_post(sender, URL, json={**body(), **patch}, headers={'x-goog-api-key': 'private-test-key'})
     sender.assert_not_called()
     assert case[1].snapshot()['period']['used_micro'] == 0
 
@@ -134,7 +137,7 @@ def test_unbounded_output_and_schema_variants_never_dispatch(case, patch):
     request_body['generationConfig'].update(deepcopy(patch))
     sender = Mock()
     with pytest.raises(SpendBlocked, match='request_not_priced'):
-        runtime.paid_post(sender, URL, json=request_body)
+        runtime.paid_post(sender, URL, json=request_body, headers={'x-goog-api-key': 'private-test-key'})
     sender.assert_not_called()
 
 
@@ -183,7 +186,7 @@ def test_existing_helper_retry_cannot_replay_an_uncertain_paid_create(case, monk
     sender = Mock(side_effect=response) if isinstance(response, Exception) else Mock(return_value=response)
     monkeypatch.setattr(generation.httpx, 'post', sender)
     with pytest.raises(SpendBlocked, match='already_reserved'):
-        generation.generate_gemini_json('One planning attempt.', api_key='test-key', retry_once=True)
+        generation.generate_gemini_json('One planning attempt.', api_key='private-test-key', retry_once=True)
     assert sender.call_count == 1
     assert case[1].snapshot()['period']['used_micro'] > 0
 
@@ -193,9 +196,9 @@ def test_changed_repair_prompt_still_uses_original_family_allowance(case, monkey
         'finishReason': 'STOP', 'content': {'parts': [{'text': '{}'}]},
     }]}))
     monkeypatch.setattr(generation.httpx, 'post', sender)
-    generation.generate_gemini_json('First plan.', api_key='test-key')
+    generation.generate_gemini_json('First plan.', api_key='private-test-key')
     with pytest.raises(SpendBlocked, match='lineage_limit'):
-        generation.generate_gemini_json('Repair the plan.', api_key='test-key')
+        generation.generate_gemini_json('Repair the plan.', api_key='private-test-key')
     assert sender.call_count == 1
 
 
@@ -208,5 +211,5 @@ def test_gemini_catalog_expires_at_review_boundary(monkeypatch):
     monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
     sender = Mock()
     with pytest.raises(SpendBlocked, match='expired'):
-        runtime.paid_post(sender, URL, json=body())
+        runtime.paid_post(sender, URL, json=body(), headers={'x-goog-api-key': 'private-test-key'})
     sender.assert_not_called()

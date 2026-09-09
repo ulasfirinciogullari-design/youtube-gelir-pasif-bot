@@ -28,7 +28,7 @@ def editorial(monkeypatch):
     settings = SimpleNamespace(studio_plan_provider='gemini',
         studio_abacus_editorial_enabled=True,
         studio_abacus_editorial_model='claude-haiku-4-5-20251001',
-        abacus_api_key='FAKE-ABACUS-KEY', gemini_api_key='FAKE-GEMINI-KEY',
+        abacus_api_key='private-test-key', gemini_api_key='FAKE-GEMINI-KEY',
         gemini_model='gemini-3.1-pro-preview')
     monkeypatch.setattr(director, 'settings', settings)
     monkeypatch.setattr(director, '_studio_plan_provider', lambda: 'gemini')

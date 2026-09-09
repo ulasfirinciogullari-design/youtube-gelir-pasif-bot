@@ -6,7 +6,9 @@ authorize an identical paid submission again. Unknown prices stay blocked.
 The default rollout flag is OFF; this module never initializes live budgets.
 """
 from concurrent.futures import ThreadPoolExecutor as _ThreadPoolExecutor
+from contextlib import contextmanager
 from contextvars import ContextVar, copy_context
+from dataclasses import dataclass
 from functools import wraps
 import hashlib
 import json
@@ -22,6 +24,7 @@ from app.services.production_spend import (
 
 
 _TASK_ID = ContextVar('production_spend_task', default=None)
+_SCENE = ContextVar('production_spend_scene', default=None)
 _JOB_PREFIX = 'youtube_studio:job:'
 _CHANNEL_PREFIX = 'youtube_studio:oauth:channel:v3:'
 _CHANNEL_INDEX = 'youtube_studio:oauth:channels:v3'
@@ -173,13 +176,137 @@ def _request_fingerprint(context, provider, operation, payload):
     }).encode()).hexdigest()
 
 
-def reserve_request(provider, operation, payload, quote):
+@dataclass(frozen=True)
+class _PreparedVideoScenes:
+    package_sha256: str
+    narration_millis: tuple
+    generation_seconds: tuple
+    aspect_ratio: str
+
+
+def prepare_video_scene_budget(package_sha256, scene_durations, aspect_ratio, *, scene_count=None):
+    """Freeze measured inputs without pricing, opening a ledger or buying media.
+
+    Retained-only recovery therefore works without a new financial plan or a
+    still-current generation price. Only entry into a new generation needs it.
+    """
+    if not enforcement_enabled():
+        return None
+    if (type(package_sha256) is not str or not re.fullmatch(r'[0-9a-f]{64}', package_sha256)
+            or type(scene_durations) is not list or not 1 <= len(scene_durations) <= 500
+            or aspect_ratio not in ('9:16', '16:9') or type(aspect_ratio) is not str
+            or (scene_count is not None and (type(scene_count) is not int
+                                            or scene_count != len(scene_durations)))):
+        raise SpendBlocked('spend_scene_inputs_invalid')
+    if any(type(value) not in (int, float) or not math.isfinite(value)
+           or not 0 < value <= 7200 for value in scene_durations):
+        raise SpendBlocked('spend_scene_inputs_invalid')
+    return _PreparedVideoScenes(
+        package_sha256, tuple(math.ceil(value * 1000) for value in scene_durations),
+        # Match the actual worker mapping before millisecond rounding; that
+        # rounding must not silently add another billable generation second.
+        tuple(max(5, min(10, math.ceil(value * 1.02 + .20))) for value in scene_durations),
+        aspect_ratio,
+    )
+
+
+def _quoted_video_scenes(prepared):
+    from app.services.production_spend_quotes import (
+        describe_video_request, quote_http_request, quote_runway_video,
+    )
+    scenes = []
+    ratio = '720:1280' if prepared.aspect_ratio == '9:16' else '1280:720'
+    for index, seconds in enumerate(prepared.generation_seconds):
+        body = {'model': 'gen4.5', 'prompt_text': 'budgeted scene',
+                'ratio': ratio, 'duration': seconds}
+        primary = quote_runway_video(body)
+        allowed = []
+        for model in ('gen4.5', 'seedance2_fast'):
+            request = {**body, 'model': model}
+            quote = quote_runway_video(request)
+            allowed.append(describe_video_request('runway', 'text_to_video', request, quote))
+        if seconds <= 8:
+            billed_seconds = 4 if seconds <= 4 else 6 if seconds <= 6 else 8
+            for model in ('veo-3.1-lite-generate-preview', 'veo-3.1-fast-generate-preview',
+                          'veo-3.1-generate-preview'):
+                path = '/v1beta/models/' + model + ':predictLongRunning'
+                request = {'instances': [{'prompt': 'budgeted scene'}], 'parameters': {
+                    'aspectRatio': prepared.aspect_ratio, 'resolution': '720p',
+                    'durationSeconds': billed_seconds}}
+                provider, operation, quote = quote_http_request(
+                    'https://generativelanguage.googleapis.com' + path, {'json': request})
+                allowed.append(describe_video_request(provider, operation, request, quote))
+        scenes.append({'scene_index': index, 'narration_millis': prepared.narration_millis[index],
+                       'generation_seconds': seconds, 'max_request_micro': primary.maximum_micro,
+                       'total_micro': primary.maximum_micro * 2, 'allowed_requests': allowed})
+    return scenes
+
+
+@contextmanager
+def spending_scene(prepared, scene_index):
+    """Scope only new scene generation; all provider fallbacks share its cap."""
+    if not enforcement_enabled():
+        yield
+        return
+    if (type(prepared) is not _PreparedVideoScenes or type(scene_index) is not int
+            or not 0 <= scene_index < len(prepared.generation_seconds)):
+        raise SpendBlocked('spend_scene_context_missing')
+    ledger = configured_ledger()
+    context = resolve_context(ledger.client, _TASK_ID.get())
+    ledger.initialize_scene_plan(
+        channel_id=context['channel_id'], lineage_id=context['lineage_id'], kind=context['kind'],
+        connection_id=context['connection_id'], package_sha256=prepared.package_sha256,
+        scenes=_quoted_video_scenes(prepared),
+    )
+    token = _SCENE.set({**context, 'package_sha256': prepared.package_sha256,
+                       'scene_index': scene_index})
+    try:
+        yield
+    finally:
+        _SCENE.reset(token)
+
+
+def _funding_admission(provider, operation, api_key):
+    """Bind funding evidence to the credential actually sent, never a UI choice."""
+    origins = {'abacus': 'https://routellm.abacus.ai',
+               'gemini': 'https://generativelanguage.googleapis.com',
+               'openai': 'https://api.openai.com', 'runway': 'https://api.dev.runwayml.com'}
+    if (provider not in origins or type(api_key) is not str or not 1 <= len(api_key) <= 8192
+            or any(not 32 < ord(char) < 127 for char in api_key)):
+        raise SpendBlocked('spend_funding_credential_invalid')
+    path = {'responses': '/v1/responses', 'text_to_video': '/v1/text_to_video'}.get(operation, operation)
+    if type(path) is not str or not path.startswith('/'):
+        raise SpendBlocked('spend_funding_route_invalid')
+    return {'route': origins[provider] + path,
+            'credential_sha256': hashlib.sha256((provider + '\0' + api_key).encode()).hexdigest()}
+
+
+def _header_key(headers, name):
+    if type(headers) is not dict:
+        raise SpendBlocked('spend_funding_credential_invalid')
+    matches = [value for key, value in headers.items() if type(key) is str and key.lower() == name]
+    if len(matches) != 1:
+        raise SpendBlocked('spend_funding_credential_invalid')
+    return matches[0]
+
+
+def reserve_request(provider, operation, payload, quote, *, funding):
+    from app.services.production_spend_quotes import describe_video_request
     ledger = configured_ledger()
     context = resolve_context(ledger.client, _TASK_ID.get())
     fingerprint = _request_fingerprint(context, provider, operation, payload)
+    descriptor = describe_video_request(provider, operation, payload, quote)
+    scene = None
+    if descriptor is not None:
+        scope = _SCENE.get()
+        if (type(scope) is not dict or any(scope.get(key) != value for key, value in context.items())):
+            raise SpendBlocked('spend_scene_context_missing')
+        scene = {key: scope[key] for key in ('connection_id', 'package_sha256', 'scene_index')}
+        scene['descriptor'] = descriptor
     return ledger.reserve(
         request_key=fingerprint, channel_id=context['channel_id'],
         lineage_id=context['lineage_id'], kind=context['kind'], quote=quote,
+        scene=scene, funding=funding,
     )
 
 
@@ -254,7 +381,9 @@ def paid_post(sender, url, **kwargs):
         provider, operation, quote = quote_http_request(url, kwargs)
         # Unsupported multipart/media payloads are rejected by the quote layer;
         # nothing reads upload streams or persists narration/image contents.
-        reserve_request(provider, operation, kwargs.get('json'), quote)
+        key_header = {'abacus': 'x-api-key', 'gemini': 'x-goog-api-key'}[provider]
+        funding = _funding_admission(provider, operation, _header_key(kwargs.get('headers'), key_header))
+        reserve_request(provider, operation, kwargs.get('json'), quote, funding=funding)
     return sender(url, **kwargs)
 
 
@@ -267,7 +396,8 @@ def paid_response(client, **kwargs):
         kwargs.setdefault('max_output_tokens', 8192)
         kwargs.setdefault('store', False)
         quote = quote_openai_response(kwargs)
-        reserve_request('openai', 'responses', kwargs, quote)
+        funding = _funding_admission('openai', 'responses', getattr(client, 'api_key', None))
+        reserve_request('openai', 'responses', kwargs, quote, funding=funding)
         client = client.with_options(max_retries=0)
     return client.responses.create(**kwargs)
 
@@ -278,7 +408,8 @@ def paid_runway_create(client, **kwargs):
         if str(getattr(client, 'base_url', '')).rstrip('/') != 'https://api.dev.runwayml.com':
             raise SpendBlocked('spend_endpoint_not_priced')
         quote = quote_runway_video(kwargs)
-        reserve_request('runway', 'text_to_video', kwargs, quote)
+        funding = _funding_admission('runway', 'text_to_video', getattr(client, 'api_key', None))
+        reserve_request('runway', 'text_to_video', kwargs, quote, funding=funding)
         client = client.with_options(max_retries=0)
     return client.text_to_video.create(**kwargs)
 
@@ -288,6 +419,8 @@ def budget_status():
     if not enforcement_enabled():
         return {'enforced': False, 'status': 'not_enabled'}
     try:
-        return {'enforced': True, 'status': 'active', **configured_ledger().snapshot()}
+        ledger = configured_ledger()
+        return {'enforced': True, 'status': 'active', **ledger.snapshot(),
+                'funding': ledger.funding_snapshot()}
     except SpendBlocked as error:
         return {'enforced': True, 'status': 'blocked', 'reason_code': str(error)}

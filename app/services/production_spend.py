@@ -270,12 +270,226 @@ class SpendLedger:
             raise SpendBlocked('spend_state_invalid')
         return _fresh_period(month)
 
-    def reserve(self, *, request_key, channel_id, lineage_id, kind, quote: SpendQuote):
+    def initialize_funding(self, policy):
+        """Commission reconciled net coverage and cash once, without a POST.
+
+        Equal re-entry validates existing use; it never resets counters. No
+        request dispatcher or API endpoint invokes this operator-only method.
+        """
+        from app.services.production_funding import (
+            funding_summary, initial_funding_state, validate_funding_policy,
+        )
+        policy = validate_funding_policy(policy, now=self.clock())
+        initial = initial_funding_state(policy, now=self.clock())
+        for _ in range(12):
+            month, day = _period(self.clock())
+            try:
+                with self.client.pipeline() as pipe:
+                    pipe.watch(LEDGER_KEY)
+                    self._read_state(pipe, month, day)
+                    validate_funding_policy(policy, now=self.clock())
+                    raw_policy = pipe.hget(LEDGER_KEY, 'funding_policy')
+                    raw_state = pipe.hget(LEDGER_KEY, 'funding_state')
+                    if raw_policy is not None:
+                        prior = _object(raw_policy)
+                        if prior != policy:
+                            raise SpendBlocked('spend_funding_policy_mismatch')
+                        funding_summary(prior, _object(raw_state), now=self.clock())
+                        pipe.multi()
+                        pipe.ping()
+                        result = pipe.execute()
+                        if len(result) != 1 or result[0] is not True:
+                            raise SpendBlocked('spend_funding_initialization_uncertain')
+                        return False
+                    if raw_state is not None:
+                        raise SpendBlocked('spend_funding_state_invalid')
+                    # Losing both summary fields must not reopen already used
+                    # cash/coverage while durable funded request receipts remain.
+                    cursor, scanned = 0, 0
+                    for _page in range(128):
+                        cursor, entries = pipe.hscan(
+                            LEDGER_KEY, cursor=cursor, match='request:*', count=256)
+                        scanned += len(entries)
+                        if scanned > 10_000:
+                            raise SpendBlocked('spend_funding_history_limit')
+                        for raw in entries.values():
+                            receipt = _object(raw)
+                            if 'funding' in receipt:
+                                raise SpendBlocked('spend_funding_initialization_late')
+                            # Only a recognizable legacy reservation can be
+                            # reconciled by the operator's opening balance.
+                            # An arbitrary JSON object is unknown history.
+                            try:
+                                required = {'version', 'month', 'day', 'channel_id',
+                                            'lineage_id', 'kind', 'quote', 'state'}
+                                if (set(receipt) - (required | {'scene'})
+                                        or not required.issubset(receipt)
+                                        or type(receipt['version']) is not int
+                                        or receipt['version'] != 1
+                                        or receipt['kind'] not in _KINDS
+                                        or receipt['state'] not in {
+                                            'reserved_before_request', 'opening_reserved_upper_bound'}):
+                                    raise ValueError
+                                _identifier(receipt['channel_id'])
+                                _identifier(receipt['lineage_id'])
+                                parsed_day = datetime.strptime(receipt['day'], '%Y-%m-%d')
+                                if (parsed_day.strftime('%Y-%m-%d') != receipt['day']
+                                        or parsed_day.strftime('%Y-%m') != receipt['month']
+                                        or receipt['day'] > day
+                                        or type(receipt['quote']) is not dict):
+                                    raise ValueError
+                                SpendQuote(**receipt['quote']).validate()
+                            except (ValueError, TypeError, SpendBlocked):
+                                raise SpendBlocked('spend_state_invalid') from None
+                        if cursor == 0:
+                            break
+                    else:
+                        raise SpendBlocked('spend_funding_history_limit')
+                    funding_summary(policy, initial, now=self.clock())
+                    pipe.multi()
+                    pipe.hset(LEDGER_KEY, mapping={
+                        'funding_policy': _json(policy), 'funding_state': _json(initial),
+                    })
+                    result = pipe.execute()
+                    if len(result) != 1 or type(result[0]) is not int or result[0] != 2:
+                        raise SpendBlocked('spend_funding_initialization_uncertain')
+                    return True
+            except WatchError:
+                continue
+            except SpendBlocked:
+                raise
+            except Exception:
+                raise SpendBlocked('spend_store_unavailable') from None
+        raise SpendBlocked('spend_store_contention')
+
+    def funding_snapshot(self):
+        from app.services.production_funding import funding_summary
+        for _ in range(12):
+            try:
+                with self.client.pipeline() as pipe:
+                    pipe.watch(LEDGER_KEY)
+                    month, day = _period(self.clock())
+                    self._read_state(pipe, month, day)
+                    raw_policy = pipe.hget(LEDGER_KEY, 'funding_policy')
+                    raw_state = pipe.hget(LEDGER_KEY, 'funding_state')
+                    if raw_policy is None or raw_state is None:
+                        raise SpendBlocked('spend_funding_not_initialized')
+                    summary = funding_summary(_object(raw_policy), _object(raw_state), now=self.clock())
+                    pipe.multi()
+                    pipe.ping()
+                    result = pipe.execute()
+                    if len(result) != 1 or result[0] is not True:
+                        raise SpendBlocked('spend_funding_snapshot_uncertain')
+                    return summary
+            except WatchError:
+                continue
+            except SpendBlocked:
+                raise
+            except Exception:
+                raise SpendBlocked('spend_store_unavailable') from None
+        raise SpendBlocked('spend_store_contention')
+
+    def initialize_scene_plan(self, *, channel_id, lineage_id, kind, connection_id,
+                              package_sha256, scenes):
+        """Freeze verified server allocations before this family's first video.
+
+        Text/audio planning may already have consumed family funds. Historical
+        video intents, including opening imports, cannot receive a fresh scene
+        allowance. Equal re-entry only validates; it never resets scene usage.
+        This is an explicit planning action, never a reserve() fallback.
+        """
+        from app.services.production_scene_budget import (
+            initial_scene_usage, make_scene_plan, scene_fields,
+            validate_scene_state, video_quote,
+        )
+        plan = make_scene_plan(channel_id=channel_id, lineage_id=lineage_id,
+                               kind=kind, connection_id=connection_id,
+                               package_sha256=package_sha256, scenes=scenes)
+        plan_field, usage_field = scene_fields(lineage_id)
+        lineage_field = 'lineage:' + hashlib.sha256(lineage_id.encode()).hexdigest()
+        for _attempt in range(12):
+            month, day = _period(self.clock())
+            try:
+                with self.client.pipeline() as pipe:
+                    pipe.watch(LEDGER_KEY)
+                    self._read_state(pipe, month, day)
+                    raw_lineage = pipe.hget(LEDGER_KEY, lineage_field)
+                    lineage = (_object(raw_lineage) if raw_lineage is not None else
+                               {'channel_id': channel_id, 'kind': kind, 'used_micro': 0})
+                    if (set(lineage) != {'channel_id', 'kind', 'used_micro'}
+                            or lineage['channel_id'] != channel_id or lineage['kind'] != kind):
+                        raise SpendBlocked('spend_lineage_binding_invalid')
+                    _integer(lineage['used_micro'])
+                    raw_plan = pipe.hget(LEDGER_KEY, plan_field)
+                    raw_usage = pipe.hget(LEDGER_KEY, usage_field)
+                    if raw_plan is not None:
+                        prior, usage = _object(raw_plan), _object(raw_usage)
+                        validate_scene_state(prior, usage, channel_id=channel_id,
+                                             lineage_id=lineage_id, kind=kind)
+                        if prior != plan:
+                            raise SpendBlocked('spend_scene_plan_mismatch')
+                        if sum(usage['used_micro'].values()) > lineage['used_micro']:
+                            raise SpendBlocked('spend_scene_state_invalid')
+                        # Even read-only equality must observe one committed
+                        # version; a concurrent mutation retries validation.
+                        pipe.multi()
+                        pipe.ping()
+                        result = pipe.execute()
+                        if len(result) != 1 or result[0] is not True:
+                            raise SpendBlocked('spend_scene_initialization_uncertain')
+                        return False
+                    if raw_usage is not None:
+                        raise SpendBlocked('spend_scene_state_invalid')
+                    # The old ledger has no per-family video index. Bound its
+                    # one-time historical scan; never assume an unscanned tail
+                    # is empty or load the whole durable ledger with HGETALL.
+                    cursor, scanned = 0, 0
+                    for _page in range(128):
+                        cursor, entries = pipe.hscan(
+                            LEDGER_KEY, cursor=cursor, match='request:*', count=256)
+                        scanned += len(entries)
+                        if scanned > 10_000:
+                            raise SpendBlocked('spend_scene_history_limit')
+                        for raw_receipt in entries.values():
+                            receipt = _object(raw_receipt)
+                            _identifier(receipt.get('lineage_id'))
+                            if receipt['lineage_id'] != lineage_id:
+                                continue
+                            raw_quote = receipt.get('quote')
+                            if (type(raw_quote) is not dict or set(raw_quote) != {
+                                    'provider', 'model', 'maximum_micro', 'price_revision'}):
+                                raise SpendBlocked('spend_state_invalid')
+                            if video_quote(SpendQuote(**raw_quote)):
+                                raise SpendBlocked('spend_scene_plan_late')
+                        if cursor == 0:
+                            break
+                    else:
+                        raise SpendBlocked('spend_scene_history_limit')
+                    pipe.multi()
+                    pipe.hset(LEDGER_KEY, mapping={
+                        plan_field: _json(plan), usage_field: _json(initial_scene_usage(plan)),
+                    })
+                    result = pipe.execute()
+                    if len(result) != 1 or type(result[0]) is not int or result[0] != 2:
+                        raise SpendBlocked('spend_scene_initialization_uncertain')
+                    return True
+            except WatchError:
+                continue
+            except SpendBlocked:
+                raise
+            except Exception:
+                raise SpendBlocked('spend_store_unavailable') from None
+        raise SpendBlocked('spend_store_contention')
+
+    def reserve(self, *, request_key, channel_id, lineage_id, kind, quote: SpendQuote,
+                scene=None, funding=None):
         """Return one permit only after the durable transaction is acknowledged.
 
         Caller identities must come from verified server-side job bindings,
         not an arbitrary request body. The persisted request_key identifies
         ONE paid submission, including SDK retries and alternate providers.
+        An optional scene admission binds the actual video shape to a frozen
+        plan. Once a family has a plan, video cannot omit its scene admission.
         """
         for value in (request_key, channel_id, lineage_id):
             _identifier(value)
@@ -285,6 +499,8 @@ class SpendLedger:
         amount = quote.maximum_micro
         operation_field = 'request:' + hashlib.sha256(request_key.encode()).hexdigest()
         lineage_field = 'lineage:' + hashlib.sha256(lineage_id.encode()).hexdigest()
+        from app.services.production_scene_budget import admit_scene, scene_fields, video_quote
+        plan_field, usage_field = scene_fields(lineage_id)
         for _attempt in range(12):
             month, day = _period(self.clock())
             try:
@@ -309,6 +525,40 @@ class SpendLedger:
                     for used, limit, scope in checks:
                         if used + amount > limit:
                             raise SpendBlocked('spend_' + scope + '_limit')
+                    funding_mapping, funding_receipt = {}, None
+                    if funding is not None:
+                        from app.services.production_funding import reserve_funding
+                        if type(funding) is not dict or set(funding) != {'route', 'credential_sha256'}:
+                            raise SpendBlocked('spend_funding_context_invalid')
+                        raw_policy = pipe.hget(LEDGER_KEY, 'funding_policy')
+                        raw_state = pipe.hget(LEDGER_KEY, 'funding_state')
+                        if raw_policy is None or raw_state is None:
+                            raise SpendBlocked('spend_funding_not_initialized')
+                        funding_state, funding_receipt = reserve_funding(
+                            _object(raw_policy), _object(raw_state), quote=quote,
+                            route=funding['route'], credential_sha256=funding['credential_sha256'],
+                            now=self.clock(),
+                        )
+                        funding_mapping['funding_state'] = _json(funding_state)
+                    elif (pipe.hexists(LEDGER_KEY, 'funding_policy')
+                          or pipe.hexists(LEDGER_KEY, 'funding_state')):
+                        raise SpendBlocked('spend_funding_context_missing')
+                    scene_mapping, scene_receipt = {}, None
+                    if scene is not None:
+                        raw_plan = pipe.hget(LEDGER_KEY, plan_field)
+                        raw_usage = pipe.hget(LEDGER_KEY, usage_field)
+                        if raw_plan is None or raw_usage is None:
+                            raise SpendBlocked('spend_scene_plan_missing')
+                        usage, scene_receipt = admit_scene(
+                            _object(raw_plan), _object(raw_usage), scene, quote,
+                            channel_id=channel_id, lineage_id=lineage_id, kind=kind,
+                            lineage_used_micro=lineage['used_micro'],
+                        )
+                        scene_mapping[usage_field] = _json(usage)
+                    elif video_quote(quote) and (
+                            pipe.hexists(LEDGER_KEY, plan_field)
+                            or pipe.hexists(LEDGER_KEY, usage_field)):
+                        raise SpendBlocked('spend_scene_context_missing')
                     period['used_micro'] += amount
                     period['days'][day] = period['days'].get(day, 0) + amount
                     period['channels'][channel_id] = period['channels'].get(channel_id, 0) + amount
@@ -318,12 +568,17 @@ class SpendLedger:
                         'channel_id': channel_id, 'lineage_id': lineage_id, 'kind': kind,
                         'quote': asdict(quote), 'state': 'reserved_before_request',
                     }
-                    pipe.multi()
-                    pipe.hset(LEDGER_KEY, mapping={
+                    if scene_receipt is not None:
+                        receipt['scene'] = scene_receipt
+                    if funding_receipt is not None:
+                        receipt['funding'] = funding_receipt
+                    mapping = {
                         'active_month': month, 'last_day': day,
                         'period:' + month: _json(period), lineage_field: _json(lineage),
-                        operation_field: _json(receipt),
-                    })
+                        operation_field: _json(receipt), **scene_mapping, **funding_mapping,
+                    }
+                    pipe.multi()
+                    pipe.hset(LEDGER_KEY, mapping=mapping)
                     result = pipe.execute()
                     if len(result) != 1 or type(result[0]) is not int or result[0] < 1:
                         raise SpendBlocked('spend_reservation_uncertain')

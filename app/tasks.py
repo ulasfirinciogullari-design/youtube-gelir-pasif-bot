@@ -12,6 +12,7 @@ from app.services.abacus_generation import AbacusGenerationError
 from app.services.production_spend import SpendBlocked
 from app.services.production_spend_runtime import (
     SpendingThreadPoolExecutor as ThreadPoolExecutor, spending_task,
+    prepare_video_scene_budget, spending_scene,
 )
 
 import httpx
@@ -6187,6 +6188,10 @@ def run_video_pipeline(
             recovered_generated_media,
             [int(item['scene_index']) for item in selected_runway],
         )
+        video_scene_budget = prepare_video_scene_budget(
+            _recovery_package_sha256(package), scene_durations, generation_aspect_ratio,
+            scene_count=len(scenes),
+        )
 
         set_stage(
             self,
@@ -6377,29 +6382,30 @@ def run_video_pipeline(
                     scene_continuity_reference = (
                         omni_continuity_reference_image_path
                     )
-                generated_scene = generate_scene(
-                    prompt_candidates[scene_idx],
-                    duration=generation_seconds,
-                    allow_image_motion=(
-                        total_paid_create_cap is None
-                        and is_private_image_motion_preview
-                    ),
-                    image_prompt=_image_motion_prompt_for_scene(
-                        scenes[scene_idx],
-                        current_reviews.get(scene_idx),
-                        generation_aspect_ratio,
-                    ),
-                    prefer_gemini_omni=(
-                        is_private_ai_first_omni_preview
-                    ),
-                    continuity_reference_image=(
-                        scene_continuity_reference
-                    ),
-                    aspect_ratio=generation_aspect_ratio,
-                    allow_paid_terminal_resubmit=(
-                        total_paid_create_cap is None
-                    ),
-                )
+                with spending_scene(video_scene_budget, scene_idx):
+                    generated_scene = generate_scene(
+                        prompt_candidates[scene_idx],
+                        duration=generation_seconds,
+                        allow_image_motion=(
+                            total_paid_create_cap is None
+                            and is_private_image_motion_preview
+                        ),
+                        image_prompt=_image_motion_prompt_for_scene(
+                            scenes[scene_idx],
+                            current_reviews.get(scene_idx),
+                            generation_aspect_ratio,
+                        ),
+                        prefer_gemini_omni=(
+                            is_private_ai_first_omni_preview
+                        ),
+                        continuity_reference_image=(
+                            scene_continuity_reference
+                        ),
+                        aspect_ratio=generation_aspect_ratio,
+                        allow_paid_terminal_resubmit=(
+                            total_paid_create_cap is None
+                        ),
+                    )
                 if generated_scene.get('provider') == 'gemini_image_motion':
                     # Record the paid image submission before any local
                     # decode/render step. A local failure must not make the
@@ -6886,30 +6892,31 @@ def run_video_pipeline(
                     scene_continuity_reference = (
                         omni_continuity_reference_image_path
                     )
-                repair_scene = generate_scene(
-                    repair_prompt,
-                    duration=generation_seconds,
-                    allow_image_motion=(
-                        total_paid_create_cap is None
-                        and is_private_image_motion_preview
-                        and scene_idx not in image_motion_submission_scenes
-                    ),
-                    image_prompt=_image_motion_prompt_for_scene(
-                        scenes[scene_idx],
-                        review,
-                        generation_aspect_ratio,
-                    ),
-                    prefer_gemini_omni=(
-                        is_private_ai_first_omni_preview
-                    ),
-                    continuity_reference_image=(
-                        scene_continuity_reference
-                    ),
-                    aspect_ratio=generation_aspect_ratio,
-                    allow_paid_terminal_resubmit=(
-                        total_paid_create_cap is None
-                    ),
-                )
+                with spending_scene(video_scene_budget, scene_idx):
+                    repair_scene = generate_scene(
+                        repair_prompt,
+                        duration=generation_seconds,
+                        allow_image_motion=(
+                            total_paid_create_cap is None
+                            and is_private_image_motion_preview
+                            and scene_idx not in image_motion_submission_scenes
+                        ),
+                        image_prompt=_image_motion_prompt_for_scene(
+                            scenes[scene_idx],
+                            review,
+                            generation_aspect_ratio,
+                        ),
+                        prefer_gemini_omni=(
+                            is_private_ai_first_omni_preview
+                        ),
+                        continuity_reference_image=(
+                            scene_continuity_reference
+                        ),
+                        aspect_ratio=generation_aspect_ratio,
+                        allow_paid_terminal_resubmit=(
+                            total_paid_create_cap is None
+                        ),
+                    )
                 if repair_scene.get('provider') == 'gemini_image_motion':
                     image_motion_submission_scenes.add(scene_idx)
                 if is_private_ai_first_omni_preview:

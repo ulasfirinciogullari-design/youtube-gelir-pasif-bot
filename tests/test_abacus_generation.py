@@ -11,6 +11,8 @@ import fakeredis
 import httpx
 import pytest
 
+from spending_test_support import initialize_test_funding, initialize_test_scene
+
 from app.services import abacus_generation as generation
 from app.services import production_spend_quotes as quotes
 from app.services import production_spend_runtime as runtime
@@ -50,6 +52,7 @@ def case(monkeypatch):
     monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
     monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger)
     monkeypatch.setattr(quotes, '_fresh', lambda: None)
+    initialize_test_funding(ledger)
     record = Mock()
     monkeypatch.setattr(runtime, 'record_abacus_usage', record, raising=False)
     client.sadd(runtime._CHANNEL_INDEX, CHANNEL)

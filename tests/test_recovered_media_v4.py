@@ -1,5 +1,6 @@
 """V4 alone permits up to four declared repairs, never implicit substitutes."""
 import ast
+from contextlib import nullcontext
 from copy import deepcopy
 from pathlib import Path
 from unittest.mock import Mock
@@ -216,6 +217,7 @@ def _primary(runtime, tmp_path, *, fail_index=None):
         return {'provider': 'gemini_veo', 'provider_attempts': 1}
     runtime.update(
         SpendBlocked=SpendBlocked,
+        video_scene_budget=None, spending_scene=lambda *_args: nullcontext(),
         task_id='child', work=tmp_path, scene_durations=[5.0] * 6,
         download_file=lambda key, path: events.append(('download', key)),
         _validate_recovered_generated_clip=lambda *args, **kwargs: validations.append(kwargs),

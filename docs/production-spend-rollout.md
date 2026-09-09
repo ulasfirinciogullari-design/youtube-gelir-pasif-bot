@@ -40,11 +40,31 @@ until its required routes have bounded, tested quotes and verified job context.
   They must not convert it into an ordinary provider failure and continue to
   another paid request. Native Abacus submission failures are also terminal;
   valid usage is recorded even when the generated content subsequently fails QA.
+- New video creates require an immutable plan for every scene, prepared from
+  the exact storyboard, final measured narration durations and output aspect.
+  The first new generation freezes the plan; retained-only recovery performs
+  no ledger initialization or current-price lookup. Initial generation, repair
+  and child tasks retain the same root/scene allowance. Actual rounded provider
+  duration, model, resolution, audio and sample count must match that plan.
+  The per-request ceiling is the original Gen-4.5 quote and each scene's total
+  is twice that ceiling; the existing family and call-count caps still apply.
+  A more expensive fallback cannot exceed the original quote even when the
+  family has room. All scene and family counters share one atomic reservation.
+- Every enforced paid route also requires explicit reconciled funding evidence
+  bound to the actual provider credential, exact endpoint, model and price
+  revision. Verified included coverage and additional cash have separate counters.
+  New cash across providers is capped at the owner-approved $10/month maximum.
+  Covered-only exhaustion blocks without switching to cash; cash-only routes
+  require a verified upper-bound factor including applicable taxes/surcharges.
+  Funding, scene, family and replay records commit in the same transaction.
 - `GET /studio/youtube/production-budget` requires normal owner authentication,
   is non-caching and read-only, and distinguishes disabled/active/blocked state.
   Its counters are reserved upper bounds, NOT settled invoices or an all-in
   household/subscription spending cap. No initialization/refund/resume API is
-  exposed by this change.
+  exposed by this change. Its separate `funding` summary reports covered-use
+  reservations and extra-cash capacity without account/credential hashes. Missing
+  or expired funding evidence yields blocked status rather than a false active
+  cash-cap claim. A fully reserved cap can report zero remaining capacity.
 - Explicit operator-side `SpendLedger.initialize_reconciled` can seed a new
   ledger with audited current-month paid intents. It atomically imports the
   full reserved upper bounds into month/day/channel/lineage counters and the
@@ -127,14 +147,30 @@ only explicit free-POST exclusions in the source coverage test.
   subscriptions and included credits. This is a ceiling, not a spending target.
   The earlier estimates must not initialize policy or authorize paid dispatch.
 - Persist and reconcile included provider quotas separately from the approved
-  $10 additional-cash ceiling. The current ledger reserves USD list-cost upper
-  bounds; it cannot yet distinguish covered credits from new cash charges.
-  Simply setting its monthly number to $10 does not commission that distinction.
+  $10 additional-cash ceiling. The staged funding ledger now distinguishes
+  verified covered allocation from new cash upper bounds, while the original
+  list-cost counters remain intact. Real account evidence and live commissioning
+  are still missing; simply setting the original monthly number to $10 does not
+  establish the funding policy.
   Missing credit coverage must not be treated as free, and exhausted included
   rights must not trigger an automatic topup or a cash fallback over the ceiling.
   Both prior/in-flight extra charges and provider overage settings need evidence
   before live paid dispatch. Existing subscription renewals are outside this
   additional API allowance, not newly authorized purchases.
+- A covered allocation must be an explicitly verified USD-list-cost equivalent
+  net of prior/in-flight use, with a verified no-overage condition. Abacus credit
+  counts, subscription prices or ElevenLabs raw voice-rate metadata do not supply
+  this conversion by themselves. Missing evidence blocks both covered and cash
+  classification. The policy supports one verified billing account per provider,
+  bound to a digest of its actual credential; rotating a key requires reconciled
+  evidence, not a fresh allowance.
+- `SpendLedger.initialize_funding(policy)` is an explicit one-time operator step
+  after reconciliation. It cannot overwrite existing policy/state, repair a
+  partially missing pair, or reopen both missing fields when earlier funded
+  request receipts remain. Existing cash debt above $10 stays visible. Policy,
+  route and account expiry stop new applicable paid requests; there is no automatic
+  monthly reset, replenishment, refund or topup. Bounded historical scans refuse
+  an uninspected tail, requiring separate reconciliation for larger histories.
 - Prefer existing legitimate subscription rights, beginning with the user's
   Abacus AI subscription. Verify its actual plan, remaining credits, commercial
   output rights and supported automation access before treating any generation
@@ -175,9 +211,14 @@ only explicit free-POST exclusions in the source coverage test.
    calls, duration, resolution and attempt count. Unknown models/prices block
    paid dispatch. `SpendQuote` holds this upper bound; it does not calculate
    prices or validate a provider's request shape by itself.
-   Per-scene monetary ceilings also remain to be implemented: a family cap and
-   request-count cap do not by themselves prevent a more expensive video-model
-   fallback while the family still has budget available.
+   Per-scene ceilings are implemented for the reviewed Runway/Veo video shapes.
+   Unknown Omni/fal/image/audio shapes remain blocked. An older family with paid
+   video receipts cannot receive a new zero-use scene plan; preserve/reuse its
+   existing files or reconcile it explicitly instead of silently starting over.
+   Commission the immutable funding policy with verified account coverage, actual
+   credential bindings, current-month opening cash and surcharge/tax bounds before
+   any enforced dispatch. Reconcile again when evidence expires; do not invent a
+   new period's available money or assume manual account usage was zero.
 4. Retain the existing durable provider intent alongside the deterministic
    spending identity. The guard reserves immediately before ONE create call.
    Only an acknowledged new reservation permits that POST. Duplicate keys,

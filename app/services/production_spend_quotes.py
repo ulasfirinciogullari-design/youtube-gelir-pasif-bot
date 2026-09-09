@@ -101,6 +101,33 @@ def _veo(model, body):
     return _quote('gemini', model, Decimal(rate) * seconds)
 
 
+def describe_video_request(provider, operation, payload, quote):
+    """Bind the price to the actual reviewed video shape, never a prompt hint."""
+    if provider == 'runway' and operation == 'text_to_video':
+        checked = quote_runway_video(payload)
+        descriptor = {
+            'provider': provider, 'model': checked.model,
+            'duration_seconds': payload['duration'],
+            'aspect_ratio': '9:16' if payload['ratio'] == '720:1280' else '16:9',
+            'resolution': '720p', 'audio': False, 'sample_count': 1,
+            'price_revision': checked.price_revision,
+        }
+    elif provider == 'gemini' and type(operation) is str and (match := re.fullmatch(
+            r'/v1beta/models/([A-Za-z0-9._-]+):predictLongRunning', operation)):
+        checked = _veo(match[1], payload)
+        params = payload['parameters']
+        descriptor = {
+            'provider': provider, 'model': checked.model,
+            'duration_seconds': params['durationSeconds'],
+            'aspect_ratio': params['aspectRatio'], 'resolution': params['resolution'],
+            'audio': True, 'sample_count': 1, 'price_revision': checked.price_revision,
+        }
+    else:
+        return None  # Text/voice review does not consume a video-scene allowance.
+    _require(checked == quote, 'spend_quote_binding_invalid')
+    return descriptor
+
+
 def _bounded_json_schema(schema, depth=0):
     """Inline schema subset used by planning; no reference expansion/history."""
     _require(depth <= 20 and type(schema) is dict and set(schema) <= {

@@ -7,6 +7,7 @@ Unlike a synthetic throwing task body, each loop completes one scene, then
 receives a budget denial while another scene and a critic remain pending.
 """
 import ast
+from contextlib import nullcontext
 from copy import deepcopy
 import json
 import math
@@ -128,6 +129,7 @@ def case(production, monkeypatch, tmp_path):
         update_job=studio_state.update_job, mark_failure=Mock(wraps=studio_state.mark_failure),
         set_stage=Mock(wraps=studio_state.set_stage),
         total_paid_create_cap=6, retry_dispatch_source_id=None, full_rebuild_source_id=None,
+        video_scene_budget=None, spending_scene=lambda *_args: nullcontext(),
         selected_runway=[{'scene_index': index} for index in range(3)],
         selected_runway_indices=set(range(3)), scenes=[{'narration': 'fixture'} for _ in range(3)],
         scene_visuals=[[{'path': f'stock-{index}.mp4'}] for index in range(3)],

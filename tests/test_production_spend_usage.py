@@ -31,7 +31,7 @@ def usage():
 def reserve(sender=None, payload=None):
     sender = sender or Mock(return_value='accepted')
     runtime.paid_post(sender, URL, json=payload or body(), headers={
-        'x-api-key': 'FAKE-KEY-DO-NOT-PERSIST', 'Content-Type': 'application/json',
+        'x-api-key': 'private-test-key', 'Content-Type': 'application/json',
         'anthropic-version': '2023-06-01'}, timeout=10)
     return sender
 

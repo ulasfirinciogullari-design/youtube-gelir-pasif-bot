@@ -10,6 +10,8 @@ from unittest.mock import Mock
 import fakeredis
 import pytest
 
+from spending_test_support import initialize_test_funding, initialize_test_scene
+
 from app.services.production_spend import LEDGER_KEY, SpendBlocked, SpendLedger, SpendPolicy
 from app.services import production_spend_runtime as runtime
 from app.services import production_spend_quotes as quotes
@@ -42,13 +44,16 @@ def case(monkeypatch):
     monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
     monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger)
     monkeypatch.setattr(quotes, '_fresh', lambda: None)
+    initialize_test_funding(ledger)
     client.sadd(runtime._CHANNEL_INDEX, CHANNEL)
     client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({
         'id': CHANNEL, 'connection_id': 'connection_AAAAA'}))
     job(client)
     token = runtime._TASK_ID.set(ROOT)
+    scene_token = initialize_test_scene(ledger, channel=CHANNEL, root=ROOT)
     yield client, ledger
     runtime._TASK_ID.reset(token)
+    runtime._SCENE.reset(scene_token)
 
 
 def test_real_adapter_reserves_before_post_and_blocks_duplicate(case):
@@ -57,9 +62,9 @@ def test_real_adapter_reserves_before_post_and_blocks_duplicate(case):
         assert ledger.snapshot()['period']['used_micro'] == 300_000
         return 'accepted'
     sender = Mock(side_effect=post)
-    assert runtime.paid_post(sender, URL, json=video()) == 'accepted'
+    assert runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'}) == 'accepted'
     with pytest.raises(SpendBlocked, match='already_reserved'):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     assert sender.call_count == 1
     # Private prompts, keys and media never enter the persisted ledger.
     assert 'a real moving scene' not in json.dumps(client.hgetall(LEDGER_KEY))
@@ -69,9 +74,9 @@ def test_provider_timeout_is_not_refunded_or_replayed(case):
     _, ledger = case
     sender = Mock(side_effect=TimeoutError('unknown provider outcome'))
     with pytest.raises(TimeoutError):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     with pytest.raises(SpendBlocked, match='already_reserved'):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     assert sender.call_count == 1
     assert ledger.snapshot()['period']['used_micro'] == 300_000
 
@@ -79,12 +84,12 @@ def test_provider_timeout_is_not_refunded_or_replayed(case):
 def test_new_retry_task_cannot_repeat_identical_create(case):
     client, _ = case
     sender = Mock()
-    runtime.paid_post(sender, URL, json=video())
+    runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     job(client, CHILD, ROOT)
     token = runtime._TASK_ID.set(CHILD)
     try:
         with pytest.raises(SpendBlocked, match='already_reserved'):
-            runtime.paid_post(sender, URL, json=video())
+            runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     finally:
         runtime._TASK_ID.reset(token)
     assert sender.call_count == 1
@@ -94,12 +99,12 @@ def test_different_repairs_still_share_original_allowance(case):
     client, ledger = case
     sender = Mock()
     for i in range(3):
-        runtime.paid_post(sender, URL, json=video(f'scene {i}'))
+        runtime.paid_post(sender, URL, json=video(f'scene {i}'), headers={'x-goog-api-key': 'private-test-key'})
     job(client, CHILD, ROOT)
     token = runtime._TASK_ID.set(CHILD)
     try:
         with pytest.raises(SpendBlocked, match='lineage_limit'):
-            runtime.paid_post(sender, URL, json=video('repaired scene'))
+            runtime.paid_post(sender, URL, json=video('repaired scene'), headers={'x-goog-api-key': 'private-test-key'})
     finally:
         runtime._TASK_ID.reset(token)
     assert ledger.snapshot()['period']['used_micro'] == 900_000
@@ -108,7 +113,7 @@ def test_different_repairs_still_share_original_allowance(case):
 
 def test_more_expensive_runway_fallback_uses_actual_quoted_cost(case):
     _, ledger = case
-    client = Mock(base_url='https://api.dev.runwayml.com/')
+    client = Mock(api_key='private-test-key', base_url='https://api.dev.runwayml.com/')
     client.with_options.return_value = client
     runtime.paid_runway_create(client, model='gen4.5', prompt_text='scene',
                                ratio='720:1280', duration=5)
@@ -139,7 +144,7 @@ def test_missing_context_blocks_before_transport(case):
     token = runtime._TASK_ID.set(None)
     try:
         with pytest.raises(SpendBlocked, match='context_missing'):
-            runtime.paid_post(sender, URL, json=video())
+            runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     finally:
         runtime._TASK_ID.reset(token)
     sender.assert_not_called()
@@ -178,7 +183,7 @@ def test_missing_ledger_is_never_bootstrapped(case):
     client.delete(LEDGER_KEY)
     sender = Mock()
     with pytest.raises(SpendBlocked, match='not_initialized'):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     sender.assert_not_called()
     assert not client.exists(LEDGER_KEY)
 
@@ -194,7 +199,7 @@ def test_zero_allowance_prevents_any_paid_request(case, monkeypatch):
     client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({'id': CHANNEL, 'connection_id': 'connection_AAAAA'}))
     sender = Mock()
     with pytest.raises(SpendBlocked, match='month_limit'):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     sender.assert_not_called()
 
 
@@ -203,7 +208,7 @@ def test_parallel_requests_inherit_context_and_cannot_overspend(case):
     sender = Mock()
     def call(i):
         try:
-            runtime.paid_post(sender, URL, json=video(f'parallel {i}'))
+            runtime.paid_post(sender, URL, json=video(f'parallel {i}'), headers={'x-goog-api-key': 'private-test-key'})
             return True
         except SpendBlocked:
             return False
@@ -225,7 +230,7 @@ def test_task_scope_is_reset_even_after_error(case):
 
 
 def test_openai_text_request_caps_output_and_disables_sdk_retries(case):
-    client = Mock(base_url='https://api.openai.com/v1/')
+    client = Mock(api_key='private-test-key', base_url='https://api.openai.com/v1/')
     client.with_options.return_value = client
     runtime.paid_response(client, model='gpt-6-astra', input='a short script')
     client.with_options.assert_called_once_with(max_retries=0)
@@ -239,7 +244,7 @@ def test_openai_text_request_caps_output_and_disables_sdk_retries(case):
     {'service_tier': 'priority'}, {'model': 'unknown'}, {'max_output_tokens': 999999},
 ])
 def test_unbounded_openai_variants_block_before_sdk(case, change):
-    client = Mock(base_url='https://api.openai.com/v1/')
+    client = Mock(api_key='private-test-key', base_url='https://api.openai.com/v1/')
     kwargs = {'model': 'gpt-6-astra', 'input': 'script', 'store': False, **change}
     with pytest.raises(SpendBlocked):
         runtime.paid_response(client, **kwargs)
@@ -250,7 +255,7 @@ def test_flag_off_retains_existing_provider_contract_without_redis(monkeypatch):
     monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=False))
     monkeypatch.setattr(runtime, 'configured_ledger', Mock(side_effect=AssertionError))
     sender = Mock(return_value='legacy')
-    assert runtime.paid_post(sender, URL, json=video()) == 'legacy'
+    assert runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'}) == 'legacy'
     client = Mock()
     runtime.paid_response(client, model='legacy', input='unchanged')
     client.responses.create.assert_called_once_with(model='legacy', input='unchanged')
@@ -314,7 +319,7 @@ def test_unpriced_transport_options_block(case, kwargs):
 ])
 def test_sdk_proxy_cannot_use_official_endpoint_quote(case, adapter, kwargs):
     _, ledger = case
-    client = Mock(base_url='https://example.com/other-billing/')
+    client = Mock(api_key='private-test-key', base_url='https://example.com/other-billing/')
     with pytest.raises(SpendBlocked, match='endpoint_not_priced'):
         adapter(client, **kwargs)
     client.with_options.assert_not_called()
@@ -328,7 +333,7 @@ def test_actual_runway_fallback_cannot_outgrow_original_budget(case, monkeypatch
     class RejectedCapacity(Exception):
         pass
     monkeypatch.setattr(runway, 'RateLimitError', RejectedCapacity)
-    client = Mock(base_url='https://api.dev.runwayml.com/')
+    client = Mock(api_key='private-test-key', base_url='https://api.dev.runwayml.com/')
     client.with_options.return_value = client
     client.text_to_video.create.side_effect = RejectedCapacity()
     with pytest.raises(SpendBlocked, match='lineage_limit'):
