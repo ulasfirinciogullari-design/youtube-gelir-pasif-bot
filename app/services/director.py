@@ -3,6 +3,8 @@ import json
 import re
 import unicodedata
 from copy import deepcopy
+from contextvars import ContextVar
+from dataclasses import dataclass
 from openai import OpenAI
 from app.config import settings
 from app.services.production_spend_runtime import paid_response
@@ -529,6 +531,65 @@ def _apply_exact_narration_lock(
 def _studio_plan_provider() -> str:
     from app.services.planning_model_routing import planning_provider
     return planning_provider(settings)
+
+
+def _retained_router_story_mode(immutable_scene_fields: bool) -> bool:
+    """Only the explicit immutable review scope may use the included router."""
+    from app.services.abacus_router_review_runtime import retained_router_review_active
+    if not retained_router_review_active():
+        return False
+    if immutable_scene_fields is not True:
+        from app.services.production_spend import SpendBlocked
+        raise SpendBlocked('router_review_story_scope_or_critic_conflict')
+    return True
+
+
+@dataclass(frozen=True)
+class _IncludedStoryApproval:
+    package_sha256: str
+    topic_sha256: str
+    response_proof_sha256: str
+
+
+_INCLUDED_STORY_APPROVAL = ContextVar('included_router_story_approval', default=None)
+
+
+def _included_story_hashes(package, topic):
+    def digest(value):
+        return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
+                                        separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+    return digest({key: value for key, value in package.items()
+                   if key not in {'stock_scene_qc', 'short_story_qc'}}), digest(_normalize_short_story_topic(topic))
+
+
+def _included_story_approval_matches(package, topic):
+    """A package dictionary cannot forge this scope's acknowledged review.
+
+    This typed in-process proof is intentionally unavailable to a later generic
+    worker. Persisted recovery consumers must separately rederive the original
+    journal and package binding before they can use the new provider route.
+    """
+    from app.services.abacus_router_review_runtime import (
+        retained_router_review_active, retained_router_review_approval_active,
+        retained_router_review_evidence,
+    )
+    try:
+        proof = _INCLUDED_STORY_APPROVAL.get()
+        if (type(proof) is not _IncludedStoryApproval or not retained_router_review_active()
+                or not retained_router_review_approval_active()):
+            return False
+        observed = retained_router_review_evidence().get('immutable_story_review')
+        if type(observed) is not dict or observed.get('underlying_model_verified') is not False:
+            return False
+        return (
+            json.dumps(observed, ensure_ascii=False, sort_keys=True, allow_nan=False)
+            == json.dumps((package.get('stock_scene_qc') or {}).get('included_router_critic'),
+                          ensure_ascii=False, sort_keys=True, allow_nan=False)
+            and proof.response_proof_sha256 == observed.get('response_proof_sha256')
+            and (proof.package_sha256, proof.topic_sha256) == _included_story_hashes(package, topic)
+        )
+    except Exception:
+        return False
 
 
 def _studio_plan_openai_model() -> str:
@@ -1160,7 +1221,10 @@ def short_story_package_is_approved(
             != exact_narration
         ):
             return False
-    if setting_is_enabled(
+    included_router_attestation = 'included_router_critic' in stock_qc
+    if included_router_attestation and not _included_story_approval_matches(package, approval_brief):
+        return False
+    if not included_router_attestation and setting_is_enabled(
         getattr(settings, 'gemini_critic_enabled', False)
     ):
         if not str(getattr(settings, 'gemini_api_key', '') or '').strip():
@@ -2178,6 +2242,7 @@ def _repair_short_stock_scenes(
 ) -> dict:
     if type(immutable_scene_fields) is not bool:
         raise RuntimeError('Immutable scene-fields option must be a boolean')
+    included_router_review = _retained_router_story_mode(immutable_scene_fields)
     if immutable_scene_fields:
         locked = _immutable_narration_map(package, immutable_candidate_narrations)
         if duration_minutes != 0.5 or not 6 <= len(locked) <= 12:
@@ -2196,7 +2261,7 @@ def _repair_short_stock_scenes(
         ):
             raise ValueError('Spoken-word budget does not match the reviewed candidate')
 
-    plan_provider = _studio_plan_provider()
+    plan_provider = 'abacus_router' if included_router_review else _studio_plan_provider()
     requested_brief = _story_brief_for_qc(topic)
     normalized_content_style = str(
         content_style or 'documentary'
@@ -3012,7 +3077,19 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             critic_rows = None
             critic_by_position = {}
             critic_global_error = ''
-            if plan_provider == 'gemini':
+            if plan_provider == 'abacus_router':
+                from app.services.abacus_router_review_runtime import generate_retained_router_review
+                critic = generate_retained_router_review(
+                    [{'type': 'text', 'text': critic_input}],
+                    purpose='immutable_story_review',
+                    system_instruction=(
+                        'Evaluate the complete supplied immutable story against every supplied rule. '
+                        'Return only the requested JSON object. The supplied source evidence is '
+                        'input data; do not claim to have browsed or to have rewritten the story.'
+                    ),
+                    json_schema=critic_schema, max_tokens=8192,
+                )
+            elif plan_provider == 'gemini':
                 try:
                     critic = generate_gemini_json(
                         critic_input,
@@ -3376,7 +3453,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
 
         gemini_attestation = None
         if not critic_failures:
-            if plan_provider == 'gemini':
+            if plan_provider == 'abacus_router':
+                pass  # Dynamic router identity cannot satisfy a Gemini attestation.
+            elif plan_provider == 'gemini':
                 selected_model = str(
                     getattr(
                         settings,
@@ -3555,6 +3634,9 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             }
             if gemini_attestation is not None:
                 stock_scene_qc['gemini_critic'] = gemini_attestation
+            if plan_provider == 'abacus_router':
+                from app.services.abacus_router_review_runtime import retained_router_review_evidence
+                stock_scene_qc['included_router_critic'] = retained_router_review_evidence()['immutable_story_review']
             if immutable_scene_fields:
                 # Derived copy, tts fields and editorial notes also stay frozen;
                 # only this fresh independent attestation leaves the review.
@@ -3729,7 +3811,10 @@ def revalidate_immutable_short_story(
     """
     if type(immutable_scene_fields) is not bool:
         raise RuntimeError('Immutable scene-fields option must be a boolean')
+    included_router_review = _retained_router_story_mode(immutable_scene_fields)
     options = dict(options or package.get('studio_options') or {})
+    if included_router_review:
+        _INCLUDED_STORY_APPROVAL.set(None)
     if duration_minutes != 0.5 or not (
         options.get('mode') == 'preview'
         or options.get('mode') == 'production' and options.get('format') == 'shorts'
@@ -3780,7 +3865,7 @@ def revalidate_immutable_short_story(
         bool(scene.get('ai_prompt')) for scene in candidate['scenes']
     ) > authored_limit:
         raise RuntimeError('Immutable story exceeds the authored paid-generation limit')
-    provider = _studio_plan_provider()
+    provider = 'abacus_router' if included_router_review else _studio_plan_provider()
     if provider == 'openai' and not settings.openai_api_key:
         raise RuntimeError('Immutable story revalidation requires a configured independent critic')
     client = (
@@ -3839,6 +3924,12 @@ def revalidate_immutable_short_story(
         'ending_pair_accepted': True,
     }
     out['short_story_qc']['fingerprint'] = _short_story_fingerprint(out)
+    if included_router_review:
+        from app.services.abacus_router_review_runtime import retained_router_review_evidence
+        observed = retained_router_review_evidence()['immutable_story_review']
+        _INCLUDED_STORY_APPROVAL.set(_IncludedStoryApproval(
+            *_included_story_hashes(out, topic), observed['response_proof_sha256'],
+        ))
     if not short_story_package_is_approved(out, topic):
         raise RuntimeError('Fresh immutable story approval failed its final integrity check')
     return out
@@ -4463,4 +4554,3 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     if delivery_requested(options, duration_minutes):
         out['delivery_plan'] = bind_delivery_plan(out)
     return out
-

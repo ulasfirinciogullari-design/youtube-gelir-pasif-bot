@@ -3,9 +3,8 @@
 The existing Capital episode has six retained clips and its original voice.
 Reviewing those assets should not require purchasing replacement media. The
 new adapter and journal prepare a separate subscription-funded review path.
-They are currently unused: no production flag, sender, director integration,
-entitlement commissioning, provider call, quality approval or publication is
-enabled by importing these modules.
+The explicit retained-review runtime defaults OFF. Importing these modules does
+not commission an entitlement, send a request, grant quality approval or publish.
 
 ## Documented scope
 
@@ -62,20 +61,43 @@ or cancellation, without opening new work. Exact settlement readback is
 idempotent and preserves original timestamps; different response evidence is
 a conflict. No provider credentials, prompts or image bytes are persisted.
 
-## Remaining integration
+## Explicit runtime and remaining release integration
 
-The runtime must bind the existing subscription evidence and actual outgoing
-key, enforce zero new cash, use a reviewed transport with one send only, and
-connect the two purposes to complete immutable story and visual review. The
-journal's purpose label alone does not prove rubric or frame completeness.
-There is currently no sender, scheduled commissioning or automatic renewal.
-Commissioning is intentionally deferred until that runtime is tested.
+`prepare_subscription_router_recovery` is the explicit synchronous entry. It
+requires the exact retained Capital source, a precommissioned journal,
+`STUDIO_SPEND_ENFORCEMENT=true`, all six cash limits at zero and
+`STUDIO_ABACUS_ROUTER_RETAINED_REVIEW_ENABLED=true`. That separate flag defaults
+false and does not reroute any ordinary production request. The scope derives
+the actual Abacus key from server settings; neither key, sender nor a funding
+identity is accepted from a request body. A fresh HTTPX transport has zero
+retries, no environment proxy or redirects, and a bounded streamed response.
+Reservation ACK precedes one send; settlement ACK precedes result delivery.
+Any uncertain result leaves the permanent slot occupied and the scope terminal.
+There is no scheduled commissioning or automatic renewal.
+
+The actual immutable story critic supplies its complete existing rubric and
+schema; the visual critic supplies its original rubric, all sampled JPEGs in
+order and the same complete schema. No writer, new shot or new voice is used.
+Missing images/overrides reject before sending. Temporal, missing-review and
+semantic retries are disabled in this one-use scope; contradictory score/reason
+results keep the existing hard rejection. Private recovery audit records keep
+honest response evidence and bounded rejected-story diagnostics.
+
+An explicit private typed story proof permits this route without calling it a
+Gemini review. It is created only after the complete immutable director checks,
+binds every non-QA package field, topic and acknowledged response proof, and is
+valid only while the exact runtime scope still contains that observation.
+Ordinary Gemini critic requirements remain unchanged. A copied marker in a
+package, a changed package, a new empty scope or an ended scope cannot supply
+this proof. This deliberately does **not** make the resulting saved package
+eligible for a later generic worker: a persistent recovery consumer must first
+rederive the server-owned journal/package/authority binding.
 
 Keep the existing story/visual thresholds, narration, original financial root
 and new-connection authority checks. Router quality or model independence is
 not established by a successful API response. Audio QA, final assembly QA,
 recovery child admission, public upload verification and scheduler resume all
-remain separate requirements. This path grants no publication approval and
+remain separate requirements. A real calibration remains necessary. This path grants no publication approval and
 does not supply grounded trend research, new voices or new generated video.
 If this exact route later becomes available through any other funding adapter,
 that adapter must honor these included-subscription replay records as well.

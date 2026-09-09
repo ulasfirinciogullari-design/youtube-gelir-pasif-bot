@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     # media/voice review keep their existing provider contracts.
     studio_abacus_editorial_enabled: bool = False
     studio_abacus_editorial_model: str = 'claude-haiku-4-5-20251001'
+    # Explicit synchronous retained-Capital review only; no automatic funding,
+    # production routing, fixed-model fallback or additional cash permission.
+    studio_abacus_router_retained_review_enabled: bool = False
     # Blank keeps existing planning-provider routing. Explicit abacus selects
     # only the bounded native Haiku picture critic and requires spending setup.
     studio_visual_qc_provider: str = ''

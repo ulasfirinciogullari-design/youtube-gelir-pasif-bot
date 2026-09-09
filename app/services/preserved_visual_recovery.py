@@ -279,12 +279,48 @@ def _reports(result, counts, manifests, threshold, repairs=()):
         else _review_passes(row['review'], threshold) for row in reports))
 
 
+def _capture_included_router_review(audit, error=None):
+    from app.services.abacus_router_review_runtime import (
+        retained_router_review_active, retained_router_review_evidence,
+    )
+    if retained_router_review_active():
+        audit['included_router_review'] = {
+            'provider': 'abacus_router', 'observations': retained_router_review_evidence(),
+            'underlying_model_verified': False,
+        }
+        from app.services.production_spend import SpendBlocked
+        # Fixed local failure codes only; never arbitrary provider/exception text.
+        if isinstance(error, SpendBlocked) and re.fullmatch(r'[a-z_]{1,100}', str(error)):
+            audit['included_router_review']['failure_code'] = str(error)
+        if error is not None and isinstance(getattr(error, 'planning_diagnostics', None), dict):
+            from app.services.planning_diagnostics import planning_failure_diagnostics
+            audit['included_router_review']['rejected_story'] = planning_failure_diagnostics(
+                error, audit.get('package'),
+            )
+
+
+def prepare_subscription_router_recovery(source_task_id, work_dir):
+    """Explicit synchronous retained-only review; no commissioning or publish.
+
+    The exact Capital source, existing subscription journal and zero-cash flag
+    must already be commissioned by operations. Ordinary scheduler/provider
+    routing is untouched and no child claim is consumed by this preparation.
+    """
+    from app.services.abacus_router_review_runtime import retained_router_review_scope
+    with retained_router_review_scope(source_task_id):
+        return prepare_preserved_visual_recovery(source_task_id, work_dir)
+
+
 def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_indices=(), shot_prompt_overrides=None):
     """One explicit, fresh-directory preparation; no TTS, paid video or dispatch."""
     audit_pointer = None
     try:
         repairs, overrides = _repair_request(repair_scene_indices, shot_prompt_overrides)
         source_id = _canonical_id(source_task_id)
+        from app.services.abacus_router_review_runtime import retained_router_review_active
+        if retained_router_review_active():
+            from app.services.production_connection_continuity import LEAF_ID
+            _require(source_id == LEAF_ID and not repairs and not overrides)
         source, fingerprint = _state(source_id, studio_state._client())
         work = Path(work_dir)
         match = re.fullmatch(r'([0-9a-f-]{36})_attempt_0', work.name)
@@ -345,21 +381,25 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
                 _require(validate_spoken_word_budget(reviewed.get('spoken_word_budget'))
                          == review_kwargs['verified_spoken_word_budget'])
             _require(reviewed.get('studio_options') == options and director.short_story_package_is_approved(reviewed, spec['topic']))
-        except Exception:
+        except Exception as error:
             audit['status'] = 'story_review_rejected_or_unavailable'
+            _capture_included_router_review(audit, error)
             audit_pointer = _store(client, source_id, work, 'audit', audit)
             raise PreservedVisualRecoveryError(audit_pointer) from None
         audit['package'] = deepcopy(reviewed)
+        _capture_included_router_review(audit)
         try:
             result, counts = _exact_review(reviewed, voice, paths, work, spec['topic'])
             _require(_digest(reviewed) == _digest(audit['package']))
             reports, passed = _reports(result, counts, manifests, options['quality_threshold'], repairs)
-        except Exception:
+        except Exception as error:
             audit['status'] = 'visual_review_unavailable'
+            _capture_included_router_review(audit, error)
             audit_pointer = _store(client, source_id, work, 'audit', audit)
             raise PreservedVisualRecoveryError(audit_pointer) from None
         audit.update(status=('retained_visual_preparation_passed' if repairs else 'visual_preparation_passed')
                      if passed else 'visual_preparation_rejected', retained_visual_reviews=reports)
+        _capture_included_router_review(audit)
         audit_pointer = _store(client, source_id, work, 'audit', audit)
         if not passed:
             raise PreservedVisualRecoveryError(audit_pointer)

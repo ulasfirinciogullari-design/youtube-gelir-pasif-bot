@@ -1249,6 +1249,26 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
                            included_indices, available_moments, model_override, thinking_level,
                            *, protocol_attempts=2):
     """Reuse an already-built frame payload; response repair has no SDK retry."""
+    if provider == 'abacus_router':
+        from app.services.abacus_router_review_runtime import generate_retained_router_review
+        from app.services.production_spend import SpendBlocked
+
+        parts = []
+        for block in content[1:]:
+            if type(block) is not dict:
+                raise SpendBlocked('abacus_router_visual_input_invalid')
+            if set(block) == {'type', 'text'} and block['type'] == 'input_text':
+                parts.append({'type': 'text', 'text': block['text']})
+            elif (set(block) == {'type', 'image_url'} and block['type'] == 'input_image'
+                  and type(block['image_url']) is str
+                  and block['image_url'].startswith('data:image/jpeg;base64,')):
+                parts.append({'type': 'image_url', 'image_url': {'url': block['image_url']}})
+            else:
+                raise SpendBlocked('abacus_router_visual_input_invalid')
+        return generate_retained_router_review(
+            parts, purpose='retained_visual_review', system_instruction=instruction,
+            json_schema=_review_json_schema(included_indices, available_moments), max_tokens=8192,
+        )
     if provider == 'abacus':
         from app.services.abacus_generation import AbacusConfigurationError
         from app.services.abacus_visual_generation import generate_abacus_visual_json
@@ -1749,8 +1769,28 @@ def review_scene_visuals(
     provider_override: str | None = None,
     _temporal_response_repair_attempts: int = 1,
 ) -> dict:
+    from app.services.abacus_router_review_runtime import retained_router_review_active
+
+    router_active = retained_router_review_active()
     dedicated_provider = str(getattr(settings, 'studio_visual_qc_provider', '') or '').strip().casefold()
-    if provider_override is None:
+    if router_active:
+        from app.services.production_spend import SpendBlocked
+
+        if provider_override is not None or gemini_model_override is not None:
+            raise SpendBlocked('abacus_router_visual_override_invalid')
+        # The explicit retained scope reviews every selected scene and every
+        # original sampled JPEG. It cannot silently truncate candidates/scenes.
+        if (type(scenes) is not list or not 1 <= len(scenes) <= 12
+                or type(max_scenes) is not int or max_scenes < len(scenes)
+                or type(scene_visuals) is not list or len(scene_visuals) != len(scenes)
+                or any(type(specs) is not list or len(specs) != 1 or not _spec_path(specs[0])
+                       for specs in scene_visuals)):
+            raise SpendBlocked('abacus_router_visual_scope_invalid')
+        provider = 'abacus_router'
+        # Keep contradiction detection active; the router branch below records
+        # its rejection without consuming a second review slot.
+        _score_reason_consistency_attempts = 1
+    elif provider_override is None:
         if dedicated_provider and dedicated_provider not in {'openai', 'gemini', 'abacus'}:
             raise ValueError('STUDIO_VISUAL_QC_PROVIDER must be openai, gemini or abacus')
         provider = dedicated_provider or _studio_plan_provider()
@@ -1758,7 +1798,7 @@ def review_scene_visuals(
         provider = provider_override.strip().casefold()
     else:
         raise ValueError('Visual review provider override must be openai, gemini or abacus')
-    strict_review_contract = provider in {'gemini', 'abacus'} or provider_override is not None or bool(dedicated_provider)
+    strict_review_contract = provider in {'gemini', 'abacus', 'abacus_router'} or provider_override is not None or bool(dedicated_provider)
     if provider == 'abacus':
         from app.services.abacus_generation import AbacusConfigurationError
         from app.services.production_spend import SpendBlocked
@@ -1960,6 +2000,8 @@ def review_scene_visuals(
                     fraction,
                 )
                 if not frame:
+                    if router_active:
+                        raise SpendBlocked('abacus_router_visual_frame_missing')
                     continue
                 if provider == 'gemini':
                     frame_bytes = _bounded_gemini_frame_bytes(frame)
@@ -2171,7 +2213,7 @@ def review_scene_visuals(
     data = _request_visual_review(provider, strict_review_contract, system_instruction, content, gemini_parts,
         included_indices, available_moments, gemini_model_override, _gemini_thinking_level)
     temporal_response_audit = {}
-    if _temporal_response_repair_attempts > 0:
+    if _temporal_response_repair_attempts > 0 and not router_active:
         data, temporal_response_audit = _repair_temporal_response(
             data, lambda addition: _request_visual_review(
                 provider, True, system_instruction + addition, content, gemini_parts,
@@ -2477,6 +2519,17 @@ def review_scene_visuals(
         for scene_index in contradictory_scene_indices:
             initial_review = dict(reviews_by_scene[scene_index])
             initial_review['score_reason_initial_provider'] = provider
+            if provider == 'abacus_router':
+                # One router observation cannot establish an independent
+                # second model. Keep the existing rejection without another
+                # request or assigning another provider's provenance.
+                failed = _mark_unresolved_score_reason_conflict(
+                    initial_review, revalidation_missing=True,
+                )
+                failed['score_reason_revalidated'] = False
+                failed['score_reason_revalidation_attempted'] = False
+                reviews_by_scene[scene_index] = failed
+                continue
             candidate_specs = [
                 spec
                 for spec in (
@@ -2593,7 +2646,7 @@ def review_scene_visuals(
             reviews_by_scene[scene_index] = revalidated
 
     missing_indices = [idx for idx in included_indices if idx not in reviews_by_scene]
-    if missing_indices and _missing_review_attempts > 0:
+    if missing_indices and _missing_review_attempts > 0 and not router_active:
         retry_context_indices = sorted({
             context_index
             for missing_index in missing_indices
@@ -2689,10 +2742,19 @@ def review_scene_visuals(
         missing_indices = sorted(set(
             [*missing_indices, *unreviewable_indices]
         ))
+    observer = {}
+    if router_active:
+        from app.services.abacus_router_review_runtime import retained_router_review_evidence
+
+        observer = {
+            'review_provider': 'abacus_router',
+            'review_observer': retained_router_review_evidence().get('retained_visual_review'),
+        }
     return {
         'reviews': [reviews_by_scene[idx] for idx in sorted(reviews_by_scene)],
         'moment_fractions': MOMENT_FRACTIONS,
         'included_scene_indices': included_indices,
         'unreviewable_scene_indices': unreviewable_indices,
         'missing_review_indices': missing_indices,
+        **observer,
     }
