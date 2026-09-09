@@ -105,6 +105,22 @@ def _shooting_package(package, overrides):
     return candidate
 
 
+def _immutable_shooting_package(package, overrides, options):
+    # Reconstruct the review package before freezing it; the archived candidate
+    # projection deliberately omits options and derived narration metadata.
+    candidate = _shooting_package(package, overrides)
+    candidate['studio_options'] = deepcopy(options)
+    if 'spoken_word_budget' in candidate:
+        budget = candidate['spoken_word_budget']
+        candidate['target_word_range'] = [budget['minimum_words'], budget['maximum_words']]
+    return candidate
+
+
+def _story_fields(package):
+    return {key: value for key, value in package.items()
+            if key not in {'short_story_qc', 'stock_scene_qc'}}
+
+
 def _observed_review(review):
     return (isinstance(review, dict) and type(review.get('score')) in (int, float)
             and math.isfinite(review['score']) and 0 <= review['score'] <= 100
@@ -318,16 +334,16 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
                  'retained_visual_reviews': [], 'new_paid_create_requests': 0, 'new_tts_requests': 0,
                  **_repair_fields(repairs, overrides)}
         try:
-            shooting_package = _shooting_package(manifests[0]['package'], overrides)
-            reviewed = director.revalidate_immutable_short_story(shooting_package, spec['topic'], 0.5, spec['language'], options,
+            shooting_package = _immutable_shooting_package(manifests[0]['package'], overrides, options)
+            reviewed = director.revalidate_immutable_short_story(deepcopy(shooting_package), spec['topic'], 0.5, spec['language'], deepcopy(options),
                           immutable_candidate_narrations=[scene['narration'] for scene in candidate['package']['scenes']],
+                          immutable_scene_fields=True,
                           **review_kwargs)
+            _require(_digest(_story_fields(reviewed)) == _digest(shooting_package))
             require_unchanged_voice_narration(candidate['package'], reviewed)
             if review_kwargs:
                 _require(validate_spoken_word_budget(reviewed.get('spoken_word_budget'))
                          == review_kwargs['verified_spoken_word_budget'])
-            if repairs:
-                _require(reviewed['scenes'] == _shooting_package(manifests[0]['package'], overrides)['scenes'])
             _require(reviewed.get('studio_options') == options and director.short_story_package_is_approved(reviewed, spec['topic']))
         except Exception:
             audit['status'] = 'story_review_rejected_or_unavailable'
@@ -336,6 +352,7 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
         audit['package'] = deepcopy(reviewed)
         try:
             result, counts = _exact_review(reviewed, voice, paths, work, spec['topic'])
+            _require(_digest(reviewed) == _digest(audit['package']))
             reports, passed = _reports(result, counts, manifests, options['quality_threshold'], repairs)
         except Exception:
             audit['status'] = 'visual_review_unavailable'
@@ -414,10 +431,11 @@ def publish_preserved_visual_recovery(prepared_pointer):
                      and tasks._recovery_package_sha256(package) == package_hash
                      and package.get('studio_options') == _options(source)
                      and director.short_story_package_is_approved(package, source['spec']['topic'])
-                     and {key: value for key, value in package.items() if key not in {'_recovered_voice', '_recovered_generated_media'}} == audit.get('package'))
+                     and _digest({key: value for key, value in package.items()
+                                  if key not in {'_recovered_voice', '_recovered_generated_media'}}) == _digest(audit.get('package')))
             require_unchanged_voice_narration(manifests[0]['package'], package)
-            if repairs:
-                _require(package['scenes'] == _shooting_package(manifests[0]['package'], overrides)['scenes'])
+            _require(_digest(_story_fields(audit['package'])) == _digest(_immutable_shooting_package(
+                manifests[0]['package'], overrides, _options(source))))
             media = tasks._validated_recovered_generated_media(package.get('_recovered_generated_media'), 6, package_hash)
             voice = tasks._validated_recovered_voice(package.get('_recovered_voice'), 6, package_hash)
             _require(media and voice and media.get('version') == (4 if repairs else 3)

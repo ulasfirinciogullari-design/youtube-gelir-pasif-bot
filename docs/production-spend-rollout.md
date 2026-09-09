@@ -405,6 +405,16 @@ diagnostic, not runnable, not QA-approved and not a funding or publish grant.
 Admission/worker/publication/resume consumers remain to be implemented; old
 selected-edit proof cannot be fabricated from raw candidate pointers.
 
+Complete legacy journals can instead use the existing V3 retained-media path,
+which derives a new package and cut from the six saved candidates and voice.
+V3/V4 preparation attaches the original source options before a single immutable
+story review. Existing shots do not consume the new-shot authoring allowance;
+all non-QA package fields remain fixed, including any explicit V4 repair prompts.
+Preparation and private checkpoint publication reject changed scenes, options,
+sources or other editorial fields. Fresh story and exact-cut visual approval
+remain mandatory. This does not enable a reconnected channel's spending context,
+grant a retry, reset historical creates or prove the original selected edit.
+
 ## Required commissioning before enabling
 
 Rejected production Shorts can now preserve their exact selected input bytes
