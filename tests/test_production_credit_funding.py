@@ -122,9 +122,73 @@ def test_uncertain_request_holds_entire_pool_across_jobs_and_replay_nonces(polic
     assert state['request_index'][receipt['request_identity_sha256']] == receipt['intent']['intent_id']
 
 
+def test_verified_overrun_records_full_debt_and_blocks_every_later_intent(policy):
+    state, first = reserve(policy, credit.initial_credit_state(policy, now=NOW))
+    state, _ = settle(policy, state, observation(policy, first, actual=990))
+    held, second = reserve(policy, state, intent(2))
+    assert held['spent_credits'] == 990 and second['reserved_credits'] == 10
+    seen = observation(policy, second, actual=248)
+    final, returned = settle(policy, held, seen)
+    assert returned == seen and final['spent_credits'] == 1238
+    summary = credit.credit_funding_summary(policy, final, now=NOW)
+    assert summary['reserved_credits'] == 0 and summary['available_credits'] == 0
+    assert summary['overrun_credits'] == 238 and summary['allocation_credits'] == 1000
+    assert held['spent_credits'] == 990 and held['reserved_credits'] == 10
+    repeated, repeated_receipt = settle(policy, final, seen, now=NOW + timedelta(seconds=1))
+    assert repeated == final and repeated_receipt == seen
+    for next_request in (intent(3), intent(4, root_lineage_id='different-original-root')):
+        with pytest.raises(SpendBlocked, match='credit_allocation_exhausted'):
+            reserve(policy, final, next_request)
+    with pytest.raises(SpendBlocked, match='credit_request_already_reserved'):
+        reserve(policy, final, intent(8, request_sha256=intent(2)['request_sha256']))
+    with pytest.raises(SpendBlocked, match='credit_observation_conflict'):
+        settle(policy, final, seen | {'actual_credit_cost': 10})
+
+
+def test_final_debt_can_exceed_one_billion_but_stays_within_finite_account_bound(policy):
+    policy['allocation_credits'] = 1_000_000_000
+    policy['balance'].update(quota_credits=1_000_000_000, used_credits=0, withheld_credits=0)
+    state, first = reserve(policy, credit.initial_credit_state(policy, now=NOW))
+    state, _ = settle(policy, state, observation(policy, first, actual=999_999_999))
+    state, last = reserve(policy, state, intent(2))
+    assert last['reserved_credits'] == 1
+    final, _ = settle(policy, state, observation(policy, last, actual=1_000_000_000))
+    summary = credit.credit_funding_summary(policy, final, now=NOW)
+    assert summary['spent_credits'] == 1_999_999_999
+    assert summary['overrun_credits'] == 999_999_999 and summary['available_credits'] == 0
+    with pytest.raises(SpendBlocked, match='credit_allocation_exhausted'):
+        reserve(policy, final, intent(3))
+
+
+def test_account_quota_not_internal_hold_is_the_verified_meter_bound(policy):
+    held, receipt = reserve(policy, credit.initial_credit_state(policy, now=NOW))
+    actual = policy['balance']['quota_credits']
+    final, _ = settle(policy, held, observation(policy, receipt, actual=actual))
+    assert final['spent_credits'] == actual and final['reserved_credits'] == 0
+    before = deepcopy(held)
+    with pytest.raises(SpendBlocked, match='credit_observation_invalid'):
+        settle(policy, held, observation(policy, receipt, actual=actual + 1))
+    assert held == before
+
+
+def test_reconstructed_history_cannot_have_an_intent_after_an_overrun(policy):
+    state = credit.initial_credit_state(policy, now=NOW)
+    for number, actual in ((1, 990), (2, 1), (3, 1)):
+        state, receipt = reserve(policy, state, intent(number))
+        state, _ = settle(policy, state, observation(policy, receipt, actual=actual))
+    # Even coherent totals and valid receipt hashes cannot justify a third
+    # request after the second request's retrospectively forged overrun.
+    broken = deepcopy(state)
+    broken['intents'][intent(2)['intent_id']]['settlement']['actual_credit_cost'] = 248
+    broken['spent_credits'] = 1239
+    assert broken['reserved_credits'] == 0
+    with pytest.raises(SpendBlocked, match='credit_state_invalid'):
+        credit.credit_funding_summary(policy, broken, now=NOW)
+
+
 @pytest.mark.parametrize('field,value', [
     ('terminal', False), ('terminal', 1), ('actual_credit_cost', 0),
-    ('actual_credit_cost', -1), ('actual_credit_cost', 1001), ('actual_credit_cost', True),
+    ('actual_credit_cost', -1), ('actual_credit_cost', 131001), ('actual_credit_cost', True),
     ('actual_credit_cost', 0.55), ('actual_credit_cost', '248'),
     ('source', 'estimated_characters'), ('request_sha256', digest('other body')),
     ('root_lineage_id', 'recovery-child-0002'), ('channel_id', 'other-channel-0002'),

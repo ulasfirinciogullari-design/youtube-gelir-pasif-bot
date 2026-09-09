@@ -359,6 +359,14 @@ observed credits, releasing only unused capacity. The official
 documents those response headers; their presence on the actual timestamp route
 is checked rather than assumed. No synthesis is made merely to test the meter.
 
+The internal allocation is not a provider request-price ceiling: an admitted
+request can consume more than its remaining share. Verified usage up to the
+evidenced account quota is still recorded in full. `overrun_credits` makes that
+excess visible, available capacity becomes zero, and the next request is
+blocked. Neither the original charge nor its request fence disappears. This
+does not authorize provider cash overage; the independent account cash controls
+remain required. Charges outside the evidenced account scope remain unverified.
+
 The response's original request must match the immutable outgoing URL, query,
 JSON and key, with no redirect or ambiguous headers. Request/response byte
 digests and request identity bind the observation. Missing/invalid usage, a

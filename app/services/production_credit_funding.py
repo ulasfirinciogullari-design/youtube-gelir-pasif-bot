@@ -1,12 +1,15 @@
-"""OFFLINE native-credit admission for the existing ElevenLabs voice only.
+"""Pure native-credit accounting for the existing ElevenLabs voice only.
 
-This module is not called by production dispatch. It creates no provider request,
-USD quote, ledger, allowance refresh or activation. A reservation holds ALL the
-remaining operator allocation because the exact request meter is not assumed.
+The explicit opt-in production_credit_runtime caller defaults OFF. These pure
+functions create no provider request, USD quote, ledger, allowance refresh or
+activation. A reservation holds ALL the remaining operator allocation because
+the exact request meter is not assumed.
 Provider-enforced cash controls are separate from any per-character estimate.
+A verified meter may exceed the internal reservation: preserve that consumed
+credit debt and stop later admission instead of hiding it as unknown usage.
 
 All inputs containing account, key, source-root and provider observations must
-come from a future trusted adapter. Hashes bind evidence; they are not provider
+come from the trusted runtime adapter. Hashes bind evidence; they are not provider
 signatures. The caller must persist each returned state and the existing durable
 request fence in one acknowledged compare-and-write transaction. Revision and
 structural validation alone cannot authenticate a stale/partially lost state.
@@ -145,7 +148,7 @@ def validate_credit_policy(policy, *, now):
 def initial_credit_state(policy, *, now):
     """Explicit initial candidate only; never a missing/lost-state recovery API.
 
-    The future durable initializer must independently refuse existing state or
+    The durable initializer must independently refuse existing state or
     earlier native-credit receipts. This pure constructor cannot inspect storage.
     """
     policy = validate_credit_policy(policy, now=now)
@@ -206,7 +209,9 @@ def _observation(observation, receipt, policy, now, code):
     for field in ('intent_id', 'root_lineage_id', 'channel_id', 'source_connection_id', 'request_sha256'):
         _require(observation[field] == receipt['intent'][field], code)
     actual = _integer(observation['actual_credit_cost'], code, positive=True)
-    _require(actual <= receipt['reserved_credits'], code)
+    # The internal allocation is not a request-price upper bound. Preserve a
+    # verified overrun, bounded by the evidenced provider quota, as consumed debt.
+    _require(actual <= policy['balance']['quota_credits'], code)
     observed = _timestamp(observation['observed_at'], code)
     _require(_timestamp(receipt['reserved_at'], code) <= observed <= now, code)
 
@@ -219,8 +224,9 @@ def _validate_state(policy, state, now):
     _require(state['policy_sha256'] == _digest(policy), 'credit_policy_mismatch')
     _require(state['month'] == policy['month'], 'credit_period_mismatch')
     _integer(state['revision'], code, maximum=_MAX_INTENTS * 2)
-    for field in ('spent_credits', 'reserved_credits'):
-        _integer(state[field], code)
+    spent_bound = policy['allocation_credits'] + policy['balance']['quota_credits']
+    _integer(state['spent_credits'], code, maximum=spent_bound)
+    _integer(state['reserved_credits'], code, maximum=policy['allocation_credits'])
     updated = _timestamp(state['last_updated_at'], code)
     _require(_timestamp(policy['valid_from'], code) <= updated <= now, code)
     _require(type(state['intents']) is dict and len(state['intents']) <= _MAX_INTENTS, code)
@@ -270,7 +276,7 @@ def _validate_state(policy, state, now):
     for sequence in range(1, len(ordered) + 1):
         entry = ordered[sequence]
         receipt = entry['reservation']
-        _require(receipt['reserved_credits'] == available
+        _require(available > 0 and receipt['reserved_credits'] == available
                  and _timestamp(receipt['reserved_at'], code) >= prior_terminal_at, code)
         if entry['settlement'] is None:
             _require(sequence == len(ordered), code)
@@ -278,7 +284,7 @@ def _validate_state(policy, state, now):
             available -= entry['settlement']['actual_credit_cost']
             prior_terminal_at = _timestamp(entry['settlement']['observed_at'], code)
     _require(active <= 1 and state['spent_credits'] == spent and state['reserved_credits'] == held
-             and spent + held <= policy['allocation_credits']
+             and spent + held <= spent_bound
              and (active == 0 or spent + held == policy['allocation_credits'])
              and state['revision'] == len(state['intents']) + settled, code)
     _require(len(_canonical(state, code)) <= _MAX_STATE_BYTES, code)
@@ -290,7 +296,8 @@ def credit_funding_summary(policy, state, *, now):
     return {'provider': PROVIDER, 'mode': 'covered_native_credits_only', 'month': policy['month'],
             'allocation_credits': policy['allocation_credits'], 'spent_credits': state['spent_credits'],
             'reserved_credits': state['reserved_credits'],
-            'available_credits': policy['allocation_credits'] - state['spent_credits'] - state['reserved_credits'],
+            'available_credits': max(0, policy['allocation_credits'] - state['spent_credits'] - state['reserved_credits']),
+            'overrun_credits': max(0, state['spent_credits'] - policy['allocation_credits']),
             'intent_count': len(state['intents']), 'revision': state['revision'],
             'valid_until': policy['valid_until'], 'accounting': 'native_credits_not_usd'}
 
@@ -334,9 +341,11 @@ def settle_credit_intent(policy, state, *, observation, actual_account_sha256,
                          actual_credential_sha256, now):
     """Settle exact terminal usage once and release ONLY unused held capacity.
 
-    Positive consumed credits stay spent. This is not a provider refund, quote
-    correction or permission to repeat a POST. The future trusted adapter must
-    bind the actual terminal provider meter to this reservation; these hashes
+    Positive consumed credits, including an allocation overrun, stay spent.
+    An overrun leaves zero available capacity; it never increases an allowance.
+    This is not a provider refund, quote correction or permission to repeat a
+    POST. The trusted runtime adapter must bind the actual terminal provider
+    meter to this reservation; these hashes
     alone cannot prove that it did. Missing/invalid/late observations change no
     state. An identical settlement is idempotent, including its proof identity.
     """

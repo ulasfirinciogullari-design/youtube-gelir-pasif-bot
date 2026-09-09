@@ -230,7 +230,9 @@ def test_uncertain_transport_or_meter_holds_all_and_blocks_both_replay_and_new_b
         if failure == 'missing_meter':
             headers.pop('character-cost')
         if failure == 'over_meter':
-            headers['character-cost'] = '1001'
+            # An internal-allocation overrun is known usage. A claimed amount
+            # beyond this evidenced account quota remains out of scope.
+            headers['character-cost'] = str(case.policy['balance']['quota_credits'] + 1)
         status = 500 if failure == '500' else 302 if failure == 'redirect' else 200
         return httpx.Response(status, content=b'private-response', headers=headers)
     with httpx.Client(transport=httpx.MockTransport(respond)) as http:
@@ -345,3 +347,32 @@ def test_exact_meter_settles_even_if_downstream_audio_json_is_invalid(case):
     assert response.content == b'not-json-or-audio' and state(case)['spent_credits'] == 248
     with pytest.raises(ValueError):
         response.json()
+
+
+def test_real_meter_above_remaining_internal_share_is_recorded_and_next_post_stops(case):
+    sends, holds = [], []
+    amounts = (990, 248)
+
+    def respond(req):
+        sends.append(req)
+        holds.append(state(case)['reserved_credits'])
+        return httpx.Response(200, content=b'original-paid-audio-response', headers={
+            'character-cost': str(amounts[len(sends) - 1]),
+            'request-id': 'actual-native-overrun-' + str(len(sends)),
+        })
+
+    with httpx.Client(transport=httpx.MockTransport(respond)) as http:
+        native.paid_credit_post(http.post, credit.ROUTE, request())
+        result = native.paid_credit_post(http.post, credit.ROUTE, request(TEXT + ' Second request.'))
+        assert result.content == b'original-paid-audio-response'
+        assert holds == [1000, 10]
+        summary = case.ledger.summary()
+        assert summary['spent_credits'] == 1238 and summary['overrun_credits'] == 238
+        assert summary['available_credits'] == summary['reserved_credits'] == 0
+        assert case.foundation.snapshot()['period']['used_micro'] == 0
+        before = deepcopy(state(case))
+        with pytest.raises(SpendBlocked, match='credit_allocation_exhausted'):
+            native.paid_credit_post(http.post, credit.ROUTE, request(TEXT + ' Third request.'))
+        with pytest.raises(SpendBlocked, match='credit_cross_mode_request_conflict'):
+            native.paid_credit_post(http.post, credit.ROUTE, request(TEXT + ' Second request.'))
+        assert len(sends) == 2 and state(case) == before

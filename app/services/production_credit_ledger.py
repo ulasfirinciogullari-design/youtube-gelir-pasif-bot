@@ -1,4 +1,4 @@
-"""Staged atomic persistence for native ElevenLabs credits; no live caller.
+"""Atomic native ElevenLabs credit persistence; explicit opt-in, no auto-init.
 
 The state and an independent non-expiring journal commit together. Every read
 checks their full correspondence, so losing policy/state, an intent, a request
@@ -8,7 +8,7 @@ operator action after balance and outstanding-use reconciliation. Complete loss
 of both durable Redis keys requires external recovery, never automatic restart.
 
 This module does not send requests, authenticate account evidence, inspect jobs,
-grant publication or convert credits into USD. A future trusted adapter must
+grant publication or convert credits into USD. The trusted runtime adapter must
 derive the actual credential, original root and immutable native request before
 reserve(), and validate the actual provider meter before settle(). Only an
 acknowledged reserve return may precede one provider send.

@@ -205,6 +205,8 @@ def observe_credit_response(prepared, response, *, reserved_credits):
     Complete charged bytes may fail later audio/JSON QA. Missing meter, redirects,
     wrong requests, unconsumed/oversized bodies and ambiguous headers fail closed.
     The caller retains the original timestamp/receipt when replaying settlement.
+    A meter exceeding an internal hold remains known usage. The policy validator
+    applies the evidenced account quota; the observer only bounds finite counts.
     """
     code = _RESPONSE_ERROR
     try:
@@ -226,7 +228,7 @@ def observe_credit_response(prepared, response, *, reserved_credits):
         cost, request_id = headers.get('character-cost'), headers.get('request-id')
         _require(type(cost) is str and re.fullmatch(r'[1-9][0-9]{0,9}', cost) is not None, _METER_ERROR)
         actual = int(cost)
-        _require(actual <= reserved_credits, _METER_ERROR)
+        _require(actual <= 1_000_000_000, _METER_ERROR)
         _require(type(request_id) is str and 1 <= len(request_id) <= 256
                  and ',' not in request_id and all(32 < ord(c) < 127 for c in request_id), _METER_ERROR)
         request_id_sha = _sha(('elevenlabs\0request\0' + request_id).encode('ascii'))

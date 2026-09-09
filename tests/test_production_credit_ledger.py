@@ -611,3 +611,43 @@ def test_uninspected_foundation_scan_tail_cannot_mean_absent_native_history(clie
     monkeypatch.setattr(client, 'pipeline', pipeline)
     with pytest.raises(SpendBlocked, match='credit_foundation_history_limit'):
         old_cash_reserve(money)
+
+
+def test_known_usage_above_internal_allocation_is_durable_debt_not_unverified_usage(client, policy):
+    money = foundation(client)
+    live = production(client, money)
+    live.initialize(policy)
+    bound = context(client)
+    receipt = live.reserve(intent=intent(), production_context=bound, **binding(policy))
+    live.settle(observation=observation(policy, receipt, actual_credit_cost=990), **binding(policy))
+    second = live.reserve(intent=intent(2), production_context=bound, **binding(policy))
+    assert second['reserved_credits'] == 10
+    seen = observation(policy, second, actual_credit_cost=248)
+    live.settle(observation=seen, **binding(policy))
+    summary = live.summary()
+    assert summary['spent_credits'] == 1238 and summary['overrun_credits'] == 238
+    assert summary['available_credits'] == summary['reserved_credits'] == 0
+    before = snapshot(client), client.hgetall(LEDGER_KEY)
+    assert live.settle(observation=seen, **binding(policy)) == seen
+    assert live.initialize(policy) is False
+    with pytest.raises(SpendBlocked, match='credit_allocation_exhausted'):
+        live.reserve(intent=intent(3), production_context=bound, **binding(policy))
+    with pytest.raises(SpendBlocked, match='credit_cross_mode_request_conflict'):
+        live.reserve(intent=intent(2), production_context=bound, **binding(policy))
+    assert (snapshot(client), client.hgetall(LEDGER_KEY)) == before
+    assert money.snapshot()['period']['used_micro'] == 0
+
+
+def test_lost_overrun_settlement_reply_keeps_exact_consumption_and_never_restores_capacity(client, policy):
+    live = store(client)
+    live.initialize(policy)
+    receipt = live.reserve(intent=intent(), **binding(policy))
+    seen = observation(policy, receipt, actual_credit_cost=1238)
+    with pytest.raises(SpendBlocked, match='credit_store_unavailable'):
+        store(InterceptClient(client, after=lose_reply)).settle(observation=seen, **binding(policy))
+    assert live.summary()['spent_credits'] == 1238
+    before = snapshot(client)
+    assert live.settle(observation=seen, **binding(policy)) == seen
+    assert snapshot(client) == before
+    with pytest.raises(SpendBlocked, match='credit_allocation_exhausted'):
+        live.reserve(intent=intent(2), **binding(policy))

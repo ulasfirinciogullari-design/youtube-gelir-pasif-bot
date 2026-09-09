@@ -143,8 +143,15 @@ def test_wire_header_snapshot_accepts_normal_httpx_transport_and_exact_charge(kw
     assert meter['actual_credit_cost'] != len(kwargs['json']['text'])
 
 
+def test_observer_preserves_known_meter_above_hold_without_claiming_account_authority(kwargs):
+    item = prepared(kwargs)
+    result = observe(item, response(item, cost='1000000000'), held=1)
+    assert result['actual_credit_cost'] == 1_000_000_000
+    assert set(result) == {'actual_credit_cost', 'provider_request_id_sha256', 'response_proof_sha256'}
+
+
 @pytest.mark.parametrize('cost', ['', '0', '-1', '1.0', '1e2', 'true', ' 17', '17 ', '+17',
-                                '017', '17,17', '1001', '10000000001', '１２'])
+                                '017', '17,17', '1000000001', '10000000001', '１２'])
 def test_missing_or_ambiguous_meter_cannot_release_hold(kwargs, cost):
     item = prepared(kwargs)
     with pytest.raises(SpendBlocked, match='credit_tts_.*unverified'):
@@ -329,3 +336,46 @@ def test_validator_has_no_network_or_money_write_entry_points(kwargs, monkeypatc
     monkeypatch.setattr(httpx.Client, 'send', forbidden)
     item = prepared(kwargs)
     assert observe(item, response(item))['actual_credit_cost'] == 17
+
+
+def test_actual_httpx_overrun_meter_keeps_full_consumption_and_stops_next_admission(kwargs, native_policy):
+    native_policy['credential_sha256'] = prepared(kwargs).credential_sha256
+    binding = {'actual_account_sha256': native_policy['account_sha256'],
+               'actual_credential_sha256': native_policy['credential_sha256']}
+    state = credit.initial_credit_state(native_policy, now=NOW)
+    sends = []
+
+    def handle(request):
+        sends.append(request)
+        return httpx.Response(200, content=b'complete charged bytes, QA remains separate', headers={
+            'character-cost': str((990, 248)[len(sends) - 1]),
+            'request-id': 'synthetic-overrun-request-' + str(len(sends)),
+        })
+
+    with httpx.Client(transport=httpx.MockTransport(handle), trust_env=False) as client:
+        for number, expected_hold in ((1, 1000), (2, 10)):
+            kwargs['json']['seed'] = number
+            item = prepared(kwargs)
+            state, receipt = credit.reserve_credit_intent(
+                native_policy, state, intent=intent(number), now=NOW, **binding)
+            assert receipt['reserved_credits'] == expected_hold
+            reply = client.post(item.route, **item.wire_kwargs())
+            meter = observe(item, reply, held=receipt['reserved_credits'])
+            seen = {'version': 1, 'terminal': True, 'source': 'verified_provider_meter',
+                    **{k: receipt['intent'][k] for k in ('intent_id', 'root_lineage_id', 'channel_id',
+                                                        'source_connection_id', 'request_sha256')},
+                    'reservation_sha256': receipt['reservation_sha256'],
+                    'account_sha256': native_policy['account_sha256'],
+                    'credential_sha256': item.credential_sha256,
+                    'observed_at': '2026-09-09T14:00:00Z', **meter}
+            state, _ = credit.settle_credit_intent(native_policy, state, observation=seen, now=NOW, **binding)
+        with pytest.raises(SpendBlocked, match='credit_allocation_exhausted'):
+            # No subsequent caller send may follow a denied reservation.
+            credit.reserve_credit_intent(native_policy, state, intent=intent(3), now=NOW, **binding)
+            client.post(item.route, **item.wire_kwargs())
+    assert len(sends) == 2
+    summary = credit.credit_funding_summary(native_policy, state, now=NOW)
+    assert summary['spent_credits'] == 1238 and summary['overrun_credits'] == 238
+    assert summary['available_credits'] == 0 and summary['reserved_credits'] == 0
+    repeated, _ = credit.settle_credit_intent(native_policy, state, observation=seen, now=NOW, **binding)
+    assert repeated == state
