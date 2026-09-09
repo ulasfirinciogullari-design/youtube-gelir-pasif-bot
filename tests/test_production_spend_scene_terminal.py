@@ -51,7 +51,9 @@ def _worker(case, phase):
                 if isinstance(node, ast.For) and isinstance(node.iter, ast.Name)
                 and node.iter.id == iterator)
     if phase == 'initial_generation':
-        critic = next(node for node in OUTER.body if _assigned(node, 'final_visual_qc'))
+        critic = next(node for node in OUTER.body if isinstance(node, ast.If)
+                      and ast.unparse(node.test) == 'selected_recovery is None'
+                      and any(_assigned(child, 'final_visual_qc') for child in node.body))
         # The real final-review input assignment; curated review is out of this slice.
         between = next(node for node in OUTER.body if _assigned(node, 'final_review_visuals'))
         body = [loop, between, critic]
@@ -135,6 +137,7 @@ def case(production, monkeypatch, tmp_path):
         scene_visuals=[[{'path': f'stock-{index}.mp4'}] for index in range(3)],
         scene_durations=[5, 5, 5], prompt_candidates={index: f'scene-{index}' for index in range(3)},
         current_reviews={}, recovered_generated_media=None,
+        selected_recovery=None,
         is_private_ai_first_omni_preview=False, is_private_image_motion_preview=False,
         generation_aspect_ratio='9:16', image_motion_submission_scenes=set(),
         omni_unsafe_submission_scenes=set(), generated_checkpoint_specs={},

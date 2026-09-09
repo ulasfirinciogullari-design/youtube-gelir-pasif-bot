@@ -42,6 +42,7 @@ def _runtime(**changes):
         'FinalVisualQualityError': RuntimeError, 'Path': Path, 'json': json,
         'options': {'mode': 'production', 'format': 'shorts', 'quality_threshold': 86},
         'duration_minutes': 0.5, 'scene_repair_recovery': False,
+        'selected_recovery': None,
         'recovered_generated_media': {
             'version': 3, 'recovery_only': True, 'source_task_id': SOURCE_ID,
             'package_sha256': 'b' * 64,

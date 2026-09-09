@@ -184,6 +184,7 @@ def test_verified_rebuild_uses_shared_new_voice_and_fresh_broll_collection(case)
     broll = Mock(return_value=['fresh-stock-candidate'])
     reject_reuse = Mock(side_effect=AssertionError('Full rebuild cannot reuse old media'))
     ns = dict(result, ThreadPoolExecutor=ThreadPoolExecutor, scenes=case.package['scenes'],
+              selected_recovery=None,
               _synthesize_voice_candidate=synth, _collect_broll=broll,
               _fit_saved_voice_for_retry=reject_reuse, _download_recovered_voice_candidate=reject_reuse,
               _collect_curated_recovery_visuals=reject_reuse, _checkpoint_audio_candidate=Mock(),

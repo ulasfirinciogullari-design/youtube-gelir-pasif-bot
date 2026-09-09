@@ -2174,7 +2174,17 @@ def _repair_short_stock_scenes(
     spoken_word_budget: dict | None = None,
     immutable_candidate_narrations: list[str] | None = None,
     immutable_original_shot_prompts: dict[int, str] | None = None,
+    immutable_scene_fields: bool = False,
 ) -> dict:
+    if type(immutable_scene_fields) is not bool:
+        raise RuntimeError('Immutable scene-fields option must be a boolean')
+    if immutable_scene_fields:
+        locked = _immutable_narration_map(package, immutable_candidate_narrations)
+        if duration_minutes != 0.5 or not 6 <= len(locked) <= 12:
+            raise RuntimeError('Immutable scene review requires six to twelve scenes in a 30-second Short')
+        immutable_package = deepcopy(package)
+        package = deepcopy(package)
+    scene_fields_locked = immutable_scene_fields or immutable_original_shot_prompts is not None
     if duration_minutes > 0.6:
         return package
     if spoken_word_budget is not None:
@@ -2437,7 +2447,7 @@ def _repair_short_stock_scenes(
     candidate_story = [dict(scene) for scene in scenes]
     critic = None
     maximum_writer_attempts = (
-        1 if immutable_original_shot_prompts is not None
+        1 if scene_fields_locked
         else 3 if fresh_stock_planning else 2
     )
     deterministic_repairs = 0
@@ -2445,6 +2455,8 @@ def _repair_short_stock_scenes(
 
     def can_retry_deterministic(attempt: int) -> bool:
         nonlocal deterministic_repairs
+        if immutable_scene_fields:
+            return False
         if not fresh_stock_planning:
             return attempt == 0
         if deterministic_repairs or attempt + 1 >= maximum_writer_attempts:
@@ -2578,9 +2590,9 @@ NON-NEGOTIABLE RULES:
 - When validation_feedback names natural_spoken_language, rewrite formal, translated or textbook-like wording as something a Turkish speaker would naturally say aloud while preserving the exact visible meaning.
 '''
 
-        if immutable_original_shot_prompts is not None:
-            # Prompt compression reviews the existing stock routes, not a new
-            # stock writer's replacements. All current scene fields stay locked.
+        if scene_fields_locked:
+            # Compression and selected-asset recovery critique the existing
+            # stock routes without asking a writer for replacement queries.
             data = {'scenes': [{
                 'position': position, 'narration': scenes[position]['narration'],
                 'visual_queries': deepcopy(scenes[position]['visual_queries']), 'ai_prompt': None,
@@ -2683,6 +2695,12 @@ NON-NEGOTIABLE RULES:
                         'visual_queries': rows_by_position[position].get('visual_queries'),
                     }
                 elif candidate:
+                    if immutable_scene_fields and candidate != {
+                        key: scenes[position].get(key)
+                        for key in ('narration', 'visual_queries', 'ai_prompt')
+                    }:
+                        deterministic_errors[position] = 'immutable stock fields require an exact existing candidate'
+                        continue
                     accepted_rows[position] = candidate
                     failed_candidates.pop(position, None)
 
@@ -2861,11 +2879,21 @@ NON-NEGOTIABLE RULES:
                 key: critic_context.pop(key) for key in ('title', 'description')
             }
         original_shot_rule = ''
+        if immutable_scene_fields:
+            critic_context['immutable_scene_fields'] = True
+            critic_context['complete_immutable_scenes'] = deepcopy(scenes)
+            original_shot_rule = (
+                'IMMUTABLE SELECTED STORY REVIEW: all scene fields, source evidence, '
+                'title and spoken words are fixed existing inputs. Judge the original '
+                'candidate under every ordinary factual, source, story and ending '
+                'gate. Do not repair, rewrite or reinterpret an unsafe candidate '
+                'as a proposed future replacement. Return only the review contract.'
+            )
         if immutable_original_shot_prompts is not None:
             critic_context['immutable_original_shot_prompts'] = {
                 str(position): prompt for position, prompt in immutable_original_shot_prompts.items()
             }
-            original_shot_rule = (
+            original_shot_rule += (
                 'PROMPT COMPRESSION INDEPENDENT CHECK: compare every revised AI '
                 'instruction against immutable_original_shot_prompts at the same '
                 'position. Under all_explicit_brief_constraints_preserved, require '
@@ -2973,7 +3001,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
         critic_by_position: dict[int, dict] = {}
         critic_global_error = ''
 
-        for critic_attempt in range(1 if immutable_original_shot_prompts is not None else 2):
+        for critic_attempt in range(1 if scene_fields_locked else 2):
             critic_calls += 1
             critic = {}
             story_review = None
@@ -3171,6 +3199,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
         if not critic_global_error and story_failure:
             if (
                 allow_natural_language_repair
+                and not immutable_scene_fields
                 and failed_story_checks == ['natural_spoken_language']
             ):
                 raise _NaturalSpokenLanguageRepairRequired(
@@ -3178,6 +3207,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 )
             if (
                 allow_explicit_brief_repair
+                and not immutable_scene_fields
                 and failed_story_checks
                 == ['all_explicit_brief_constraints_preserved']
             ):
@@ -3398,7 +3428,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             final_critic_reviews = parsed_reviews
             repaired = dict(package)
             repaired_scenes = [dict(scene) for scene in scenes]
-            for position in stock_positions:
+            for position in (() if immutable_scene_fields else stock_positions):
                 repaired_scenes[position]['narration'] = accepted_rows[position]['narration']
                 repaired_scenes[position]['tts_text'] = accepted_rows[position]['narration']
                 repaired_scenes[position]['visual_queries'] = accepted_rows[position]['visual_queries']
@@ -3525,6 +3555,10 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             }
             if gemini_attestation is not None:
                 stock_scene_qc['gemini_critic'] = gemini_attestation
+            if immutable_scene_fields:
+                # Derived copy, tts fields and editorial notes also stay frozen;
+                # only this fresh independent attestation leaves the review.
+                repaired = deepcopy(immutable_package)
             repaired['stock_scene_qc'] = stock_scene_qc
             return repaired
 
@@ -3532,7 +3566,7 @@ The reason must name concrete evidence for the verdict. Individual shot approval
         can_retry_semantic = (
             semantic_repairs == 0 and attempt + 1 < maximum_writer_attempts
             if fresh_stock_planning else attempt == 0
-        )
+        ) and not immutable_scene_fields
         if can_retry_semantic:
             semantic_repairs += 1
             pending_positions = sorted(critic_failures)
@@ -3682,6 +3716,7 @@ def revalidate_immutable_short_story(
     *,
     immutable_candidate_narrations: list[str],
     immutable_original_shot_prompts: dict[int, str] | None = None,
+    immutable_scene_fields: bool = False,
     verified_spoken_word_budget: dict | None = None,
 ) -> dict:
     """Server-only voice recovery: freshly critique exact speech, never rewrite it.
@@ -3689,7 +3724,11 @@ def revalidate_immutable_short_story(
     The caller must separately bind the saved audio to these exact narrations
     and run actual audio/media QA. This function authorizes no audio reuse or
     publication by itself and does not turn a server lock into a user brief.
+    ``immutable_scene_fields`` additionally freezes the complete selected
+    package and returns only fresh QA metadata, with no writer or repair retry.
     """
+    if type(immutable_scene_fields) is not bool:
+        raise RuntimeError('Immutable scene-fields option must be a boolean')
     options = dict(options or package.get('studio_options') or {})
     if duration_minutes != 0.5 or not (
         options.get('mode') == 'preview'
@@ -3707,6 +3746,8 @@ def revalidate_immutable_short_story(
         ):
             raise RuntimeError('Immutable narration budget provenance does not match')
     locked = _immutable_narration_map(package, immutable_candidate_narrations)
+    if immutable_scene_fields and not 6 <= len(locked) <= 12:
+        raise RuntimeError('Immutable scene review requires six to twelve scenes in a 30-second Short')
     if immutable_original_shot_prompts is not None:
         if (
             not _scheduled_short_shot_contract(options, duration_minutes, True)
@@ -3724,6 +3765,7 @@ def revalidate_immutable_short_story(
     # Never let an old attestation satisfy the new independent review.
     candidate.pop('short_story_qc', None)
     candidate.pop('stock_scene_qc', None)
+    immutable_reference = deepcopy(candidate) if immutable_scene_fields else None
     normalize_evidence_sources(candidate.get('sources'), min_count=2, max_count=5)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
     target, minimum, maximum = _target_word_budget(
@@ -3732,14 +3774,18 @@ def revalidate_immutable_short_story(
     if _short_preview_scene_budget_issues(candidate, target, len(locked)):
         raise ImmutableNarrationSceneBudgetError('Immutable narration exceeds the single-pass scene budget')
     authored_limit = preview_authored_ai_limit(options, len(locked), duration_minutes)
-    if authored_limit is not None and sum(bool(scene.get('ai_prompt')) for scene in candidate['scenes']) > authored_limit:
+    # Reviewing existing selected assets creates no media. The worker still
+    # admits only frozen rejected slots against its original paid allowances.
+    if not immutable_scene_fields and authored_limit is not None and sum(
+        bool(scene.get('ai_prompt')) for scene in candidate['scenes']
+    ) > authored_limit:
         raise RuntimeError('Immutable story exceeds the authored paid-generation limit')
     provider = _studio_plan_provider()
     if provider == 'openai' and not settings.openai_api_key:
         raise RuntimeError('Immutable story revalidation requires a configured independent critic')
     client = (
         OpenAI(api_key=settings.openai_api_key, timeout=90.0,
-               max_retries=0 if immutable_original_shot_prompts is not None else 1)
+               max_retries=0 if immutable_scene_fields or immutable_original_shot_prompts is not None else 1)
         if provider == 'openai' else None
     )
     out = _repair_short_stock_scenes(
@@ -3752,6 +3798,7 @@ def revalidate_immutable_short_story(
         immutable_candidate_narrations=list(locked.values()),
         **({'immutable_original_shot_prompts': deepcopy(immutable_original_shot_prompts)}
            if immutable_original_shot_prompts is not None else {}),
+        **({'immutable_scene_fields': True} if immutable_scene_fields else {}),
     )
     _immutable_narration_map(out, list(locked.values()))
     if [scene.get('index') for scene in out['scenes']] != original_indexes:
@@ -3763,19 +3810,28 @@ def revalidate_immutable_short_story(
         or (stock_qc.get('ending_pair_review') or {}).get('accepted') is not True
     ):
         raise RuntimeError('Fresh independent story attestation is required for immutable narration')
-    if immutable_original_shot_prompts is not None:
+    if immutable_scene_fields:
+        actual = {key: value for key, value in out.items() if key not in {'stock_scene_qc', 'short_story_qc'}}
+        if json.dumps(actual, ensure_ascii=False, sort_keys=True, allow_nan=False) != json.dumps(
+            immutable_reference, ensure_ascii=False, sort_keys=True, allow_nan=False,
+        ):
+            raise RuntimeError('Independent review changed immutable scene or package fields')
+        out = deepcopy(immutable_reference)
+        out['stock_scene_qc'] = deepcopy(stock_qc)
+    elif immutable_original_shot_prompts is not None:
         if out['scenes'] != candidate['scenes']:
             raise ScheduledShotPromptError('Independent compression review changed a locked scene')
         # The existing critic also rebuilds derived fields and editorial notes.
         # For this read-only review path accept only its new QA attestation.
         out = deepcopy(candidate)
         out['stock_scene_qc'] = deepcopy(stock_qc)
-    out['studio_options'] = options
-    out['narration_word_count'] = _word_count(out['narration'])
-    out['target_word_range'] = [minimum, maximum]
-    out['target_scene_count'] = len(locked)
-    out['ai_scene_count'] = sum(bool(scene.get('ai_prompt')) for scene in out['scenes'])
-    out['max_ai_scene_count'] = authored_limit
+    if not immutable_scene_fields:
+        out['studio_options'] = options
+        out['narration_word_count'] = _word_count(out['narration'])
+        out['target_word_range'] = [minimum, maximum]
+        out['target_scene_count'] = len(locked)
+        out['ai_scene_count'] = sum(bool(scene.get('ai_prompt')) for scene in out['scenes'])
+        out['max_ai_scene_count'] = authored_limit
     out['short_story_qc'] = {
         'version': _SHORT_STORY_QC_VERSION,
         'requested_topic': _normalize_short_story_topic(topic),

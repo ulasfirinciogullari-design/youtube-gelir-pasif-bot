@@ -16,6 +16,8 @@ JOB_TTL_SECONDS = 60 * 60 * 24 * 90
 MAX_INDEXED_JOBS = 500
 REPAIR_CHECKPOINT_PREFIX = 'youtube_studio:repair_checkpoint:'
 REPAIR_CHECKPOINT_CLAIM_PREFIX = 'youtube_studio:repair_checkpoint_claim:'
+# A durable private staging receipt is not a runnable recovery checkpoint.
+SELECTED_VISUAL_RECOVERY_PREFIX = 'youtube_studio:selected_visual_recovery:v6:'
 RETRY_DISPATCH_PREFIX = 'youtube_studio:retry_dispatch:'
 RETRY_CHILD_CLAIM_PREFIX = 'youtube_studio:retry_child_claim:'
 RETRY_CHILD_EXECUTION_PREFIX = 'youtube_studio:retry_child_execution:'
@@ -168,10 +170,13 @@ def paid_create_budget_state(
 # checkpoint or resurrect an already-consumed one.  The synchronization script
 # deliberately uses only EXISTS for the checkpoint and claim keys; it never
 # opens the private recovery package.
-_SYNC_REPAIR_CHECKPOINT_STATE = r'''
+_SYNC_REPAIR_CHECKPOINT_STATE = (
+    "local selected_staged = redis.call('EXISTS', '" + SELECTED_VISUAL_RECOVERY_PREFIX
+    + "' .. string.sub(KEYS[1], " + str(len(JOB_PREFIX) + 1) + ")) == 1\n"
+) + r'''
 local dispatch_exists = redis.call('EXISTS', KEYS[4]) == 1
 local checkpoint_exists = false
-if not dispatch_exists then
+if not dispatch_exists and not selected_staged then
   checkpoint_exists = redis.call('EXISTS', KEYS[2]) == 1
 end
 local claim_exists = redis.call('EXISTS', KEYS[3]) == 1
@@ -188,6 +193,10 @@ local raw_job = redis.call('GET', KEYS[1])
 if raw_job then
   local decoded, job = pcall(cjson.decode, raw_job)
   if decoded and type(job) == 'table' then
+    local selected = job['selected_visual_recovery']
+    if type(selected) == 'table' and selected['status'] == 'staged_private_checkpoint' then
+      checkpoint_exists = false
+    end
     local desired_available = checkpoint_exists
     local desired_claimed = claim_exists or retry_mode == 'repair'
     local desired_retry_claimed = dispatch_exists
@@ -217,10 +226,29 @@ return 0
 '''
 
 
-_CLAIM_RETRY_DISPATCH = (
+_SELECTED_V6_CHECK = r'''
+local function selected_v6_checkpoint(raw)
+  if not raw then return false end
+  local decoded, checkpoint = pcall(cjson.decode, raw)
+  if not decoded or type(checkpoint) ~= 'table'
+     or type(checkpoint['approved_package']) ~= 'table' then return false end
+  local package = checkpoint['approved_package']
+  local media = package['_recovered_generated_media']
+  local voice = package['_recovered_voice']
+  return (type(media) == 'table' and media['version'] == 6)
+      or (type(voice) == 'table' and voice['version'] == 6)
+end
+'''
+
+
+_CLAIM_RETRY_DISPATCH = _SELECTED_V6_CHECK + (
     "if redis.call('EXISTS', '" + EXTERNAL_EPISODE_LEAF_PREFIX + "' .. ARGV[7]) == 1 then return {-4, ''} end\n"
     "if redis.call('EXISTS', '" + RENDER_CANCELLATION_PREFIX + "' .. ARGV[7]) == 1 then return {-5, ''} end\n"
+    "if redis.call('EXISTS', '" + SELECTED_VISUAL_RECOVERY_PREFIX + "' .. ARGV[7]) == 1 then return {-6, ''} end\n"
 ) + r'''
+-- V6 needs commissioned exact-cut QA and atomic funding admission first.
+-- Reject before DEL/claim, including allow_repair=false and lost staging flags.
+if selected_v6_checkpoint(redis.call('GET', KEYS[2])) then return {-6, ''} end
 local raw_job = redis.call('GET', KEYS[1])
 if not raw_job then
   return {-2, ''}
@@ -325,8 +353,12 @@ return 1
 '''
 
 
-_CONSUME_REPAIR_CHECKPOINT = r'''
+_CONSUME_REPAIR_CHECKPOINT = _SELECTED_V6_CHECK + (
+    "if redis.call('EXISTS', '" + SELECTED_VISUAL_RECOVERY_PREFIX
+    + "' .. string.sub(KEYS[1], " + str(len(JOB_PREFIX) + 1) + ")) == 1 then return nil end\n"
+) + r'''
 local raw_checkpoint = redis.call('GET', KEYS[2])
+if selected_v6_checkpoint(raw_checkpoint) then return nil end
 if raw_checkpoint then
   redis.call('DEL', KEYS[2])
   redis.call('SETEX', KEYS[3], tonumber(ARGV[1]), '1')
@@ -418,6 +450,8 @@ def claim_retry_dispatch(
         raise ValueError('retry source was separately delivered by editorial replacement')
     if status == -5:
         raise ValueError('retry source has an owner cancellation fence')
+    if status == -6:
+        raise ValueError('selected visual recovery awaits commissioned quality and spending admission')
     if status == 0:
         return {
             'claimed': False,

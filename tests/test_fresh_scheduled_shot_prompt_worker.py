@@ -237,6 +237,7 @@ def test_approved_package_never_enters_fresh_writers_even_if_flag_is_passed(case
 
 def _rank(case, **changes):
     ns = dict(options=case.spec, duration_minutes=.5, recovered_generated_media=None,
+        selected_recovery=None,
         recovery_repair_scene_indices=set(), fresh_scheduled_shot_prompts=True,
         scenes=deepcopy(case.package['scenes']) + [{'index': 1, 'narration': 'Stock fact.', 'ai_prompt': None}],
         current_reviews={0: {'score': 40, 'retry_queries': ['old unrelated warehouse']}, 1: {'score': 40}},

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from copy import deepcopy
 import hashlib
 import json
 import math
@@ -252,6 +253,12 @@ def _validated_recovered_generated_media(
         raise FinalVisualQualityError(
             'Recovered generated-media contract is malformed'
         )
+    if raw.get('version') == 6:
+        try:
+            from app.services.selected_visual_recovery import validate_selected_visual_recovery
+            return validate_selected_visual_recovery(raw, scene_count, expected_package_sha256)
+        except Exception:
+            raise FinalVisualQualityError('Selected recovery contract could not be verified') from None
     if raw.get('version') == 5:
         try:
             from app.services.mixed_visual_recovery import validate_mixed_visual_recovery
@@ -559,6 +566,12 @@ def _validated_recovered_voice(
     """Validate the exact previously approved narration checkpoint."""
     if raw is None:
         return None
+    if isinstance(raw, dict) and raw.get('version') == 6:
+        try:
+            from app.services.selected_visual_recovery import validate_selected_voice_recovery
+            return validate_selected_voice_recovery(raw, scene_count, expected_package_sha256)
+        except Exception:
+            raise FinalAudioQualityError('Selected narration contract could not be verified') from None
     required_fields = {
         'version',
         'source_task_id',
@@ -960,6 +973,10 @@ def _require_recovered_media_coverage(
     if not recovered_generated_media:
         return
     selected = set(int(index) for index in selected_scene_indices)
+    if recovered_generated_media.get('version') == 6:
+        if selected != set(recovered_generated_media['repair_scene_indices']):
+            raise FinalVisualQualityError('Selected recovery may create only its frozen rejected scenes')
+        return
     recovered = set(recovered_generated_media['scenes'])
     if recovered_generated_media.get('version') in (2, 4, 5):
         recovered |= set(
@@ -1149,6 +1166,131 @@ def _collect_mixed_recovery_visuals(recovered_media: dict, recovered_voice: dict
         raise FinalVisualQualityError('Mixed recovery media could not be verified; no replacement media was generated') from None
 
 
+def _selected_recovery_authorization(task_id, source_id, runtime_spec, approved_package):
+    """Recheck the real one-use child and owner state; never initialize money."""
+    from app.services.selected_visual_recovery_state import verify_selected_recovery_child
+
+    try:
+        if getattr(settings, 'studio_spend_enforcement', False) is not True:
+            raise SpendBlocked('spend_selected_recovery_requires_enforcement')
+        return verify_selected_recovery_child(task_id, source_id, runtime_spec, approved_package)
+    except SpendBlocked:
+        raise
+    except Exception:
+        raise FinalVisualQualityError('Selected recovery dispatch binding could not be verified') from None
+
+
+def _prepare_selected_worker_recovery(
+    task_id, source_id, runtime_spec, approved_package, package, media, voice, work,
+):
+    """Keep the original storyboard and voice while reviewing a detached copy."""
+    from app.services.selected_visual_recovery import load_selected_recovery
+    from app.services.director import revalidate_immutable_short_story
+
+    try:
+        authorization = _selected_recovery_authorization(task_id, source_id, runtime_spec, approved_package)
+        loaded = load_selected_recovery(media, voice, task_id, work,
+                                        expected_binding=authorization['binding'])
+        if (loaded['package'] != package
+                or loaded['repair_scene_indices'] != media['repair_scene_indices']):
+            raise ValueError('Selected recovery package changed')
+        from app.services.production_shot_prompt import build_production_shot_prompt
+        repair_prompts = {}
+        for index in loaded['repair_scene_indices']:
+            scene = package['scenes'][index]
+            if scene.get('ai_prompt') is not None:
+                repair_prompts[index] = build_production_shot_prompt(scene)
+            else:
+                observed = loaded['manifest']['scenes'][index]['qa_observation']
+                review = {**{key: value for key, value in observed.items() if key != 'gates'},
+                          **observed['gates']}
+                composed = _runway_prompt_for_scene(scene, review, '9:16')
+                repair_prompts[index] = build_production_shot_prompt({'ai_prompt': composed})
+        review_options = {key: value for key, value in runtime_spec.items()
+                          if key not in {'topic', 'duration_minutes', 'language', 'channel_id'}}
+        review_kwargs = {}
+        if 'spoken_word_budget' in package:
+            from app.services.director import validate_spoken_word_budget
+            if runtime_spec['language'] != 'en' or runtime_spec.get('production_scheduled') is not True:
+                raise ValueError('Selected recovery spoken budget changed')
+            review_kwargs['verified_spoken_word_budget'] = validate_spoken_word_budget(package['spoken_word_budget'])
+        original = deepcopy(package)
+        reviewed = revalidate_immutable_short_story(
+            deepcopy(original), runtime_spec['topic'], 0.5, runtime_spec['language'], review_options,
+            immutable_candidate_narrations=[scene['narration'] for scene in original['scenes']],
+            immutable_scene_fields=True,
+            **review_kwargs,
+        )
+        if (not isinstance(reviewed, dict) or reviewed.get('scenes') != original['scenes']
+                or any(reviewed.get(key) != original.get(key) for key in ('narration', 'title', 'sources'))
+                or package != original or not short_story_package_is_approved(reviewed, runtime_spec['topic'])):
+            raise ValueError('Selected recovery story is not unchanged and approved')
+        # New review metadata never replaces the package or changes its money
+        # family. It attests only to the unchanged scene/source material.
+        loaded['story_revalidated'] = True
+        loaded['repair_prompts'] = repair_prompts
+        return loaded
+    except SpendBlocked:
+        raise
+    except Exception:
+        raise FinalVisualQualityError('Selected recovery failed immutable story or asset verification') from None
+
+
+def _selected_review_verdict(result, indices, threshold):
+    """Keep observed negative gates; no score-only or duplicate-index approval."""
+    if (type(result) is not dict or result.get('missing_review_indices')
+            or type(result.get('reviews')) is not list or len(result['reviews']) != len(indices)):
+        raise FinalVisualQualityError('Selected exact-cut quality review is incomplete')
+    mapped, rejected = {}, []
+    positive = ('evidence_gate_passed', 'editorial_gate_passed', 'identity_gate_passed',
+                'subject_visible', 'spoken_action_visible')
+    negative = ('unexplained_reset', *_MANUAL_QA_CLEAR_VISUAL_FIELDS)
+    for raw in result['reviews']:
+        if (type(raw) is not dict or type(raw.get('scene_index')) is not int
+                or not 0 <= raw['scene_index'] < len(indices) or raw['scene_index'] in mapped
+                or type(raw.get('score')) not in (int, float) or not math.isfinite(raw['score'])
+                or not 0 <= raw['score'] <= 100 or type(raw.get('best_candidate_index')) is not int
+                or raw['best_candidate_index'] != 0
+                or any(type(raw.get(field)) is not bool for field in (*positive, *negative))):
+            raise FinalVisualQualityError('Selected exact-cut quality review is malformed')
+        index = indices[raw['scene_index']]
+        mapped[raw['scene_index']] = {**raw, 'scene_index': index}
+        if (raw['score'] < threshold or any(raw[field] is not True for field in positive)
+                or any(raw[field] is not False for field in negative)):
+            rejected.append(index)
+    return {**result, 'reviews': [mapped[position] for position in sorted(mapped)],
+            'selected_recovery_rejected_indices': sorted(rejected)}
+
+
+def _review_selected_exact(recovery, scenes, work, topic, options, evidence_sources, *, scene_visuals=None):
+    from app.services.selected_visual_recovery import prepare_selected_exact_visuals
+
+    try:
+        prepared = prepare_selected_exact_visuals(recovery, work, scene_visuals=scene_visuals)
+        indices = sorted(prepared['scene_visuals'])
+        if not indices:
+            if scene_visuals is not None or len(recovery['repair_scene_indices']) != len(scenes):
+                raise ValueError('Missing selected exact cuts')
+            return {'reviews': [], 'selected_recovery_rejected_indices': []}
+        result = review_scene_visuals(
+            [scenes[index] for index in indices], [prepared['scene_visuals'][index] for index in indices],
+            work / ('selected_retained_critic' if scene_visuals is None else 'selected_final_critic'),
+            len(indices), _missing_review_attempts=0, _score_reason_consistency_attempts=0,
+            topic=topic, story_scenes=scenes, content_style=options.get('content_style', ''),
+            evidence_sources=evidence_sources,
+        )
+        threshold = max(MANUAL_QA_PUBLISH_QUALITY_THRESHOLD, int(options.get('quality_threshold') or 80),
+                        recovery['manifest']['quality_threshold'])
+        checked = _selected_review_verdict(result, indices, threshold)
+        if scene_visuals is None and checked['selected_recovery_rejected_indices']:
+            raise ValueError('Retained exact cuts rejected')
+        return {**checked, 'selected_recovery_qa_inputs': prepared['qa_inputs']}
+    except SpendBlocked:
+        raise
+    except Exception:
+        raise FinalVisualQualityError('Selected exact-cut quality gate failed; no extra replacement is authorized') from None
+
+
 def _review_mixed_retained_before_paid(
     scenes: list[dict], scene_visuals: list[list[dict]], voice_result: dict,
     work: Path, topic: str, options: dict, evidence_sources: list,
@@ -1268,6 +1410,13 @@ def _validate_paid_create_allocation(
 ) -> None:
     """Limit new creates while permitting reuse of already-paid clips."""
     if cap is None:
+        return
+    if recovered_generated_media and recovered_generated_media.get('version') == 6:
+        # Every retained stock/generated selection is already present. It never
+        # enters the create loop even when the frozen storyboard has ai_prompt.
+        new_creates = len(recovered_generated_media['repair_scene_indices'])
+        if new_creates > max(0, cap - paid_slots_used):
+            raise FinalVisualQualityError('Selected recovery exceeds remaining paid-create capacity')
         return
     recovered_scenes = (
         recovered_generated_media['scenes']
@@ -4241,7 +4390,9 @@ def _prepare_package(
                 'denetiminden geçmiyor; ücretli medya başlatılmadı.'
             )
         set_stage(celery_task, task_id, 'approved_plan', 12, 'Onaylı storyboard kilitlendi.')
-        package = dict(approved_package)
+        package = (deepcopy(approved_package) if isinstance(approved_package.get('_recovered_generated_media'), dict)
+                   and approved_package['_recovered_generated_media'].get('version') == 6
+                   else dict(approved_package))
         if not (
             package.get('_recovered_generated_media') is not None
             or package.get('_recovered_voice') is not None
@@ -4750,7 +4901,7 @@ def run_video_pipeline(
             and not recovered_generated_media
         ) or (
             recovered_generated_media
-            and recovered_generated_media.get('version') in (2, 3, 4, 5)
+            and recovered_generated_media.get('version') in (2, 3, 4, 5, 6)
             and not recovered_voice
         ):
             raise FinalVisualQualityError(
@@ -4767,6 +4918,21 @@ def run_video_pipeline(
                 'Recovered media and voice source tasks do not match'
             )
         scenes = package['scenes']
+        selected_recovery = None
+        if recovered_generated_media and recovered_generated_media.get('version') == 6:
+            if (curated_stock_manifest is not None or full_rebuild_request is not None
+                    or voice_replacement_source_id is not None or not recovered_voice
+                    or recovered_voice.get('version') != 6 or type(total_paid_create_cap) is not int):
+                raise FinalVisualQualityError('Selected recovery requires its own bounded voice/media contract')
+            _validate_paid_create_allocation(
+                [{'scene_index': index} for index in range(len(scenes))],
+                recovered_generated_media, total_paid_create_cap, paid_slots_used=runway_attempts,
+            )
+            selected_recovery = _prepare_selected_worker_recovery(
+                task_id, retry_dispatch_source_id,
+                _task_spec(topic, duration_minutes, language, channel_id, options),
+                approved_package, package, recovered_generated_media, recovered_voice, work,
+            )
         if options.get('production_delivery') is not None:
             from app.services.production_delivery import delivery_requested, bind_delivery_plan
 
@@ -4815,7 +4981,7 @@ def run_video_pipeline(
         )
         scene_repair_recovery = bool(
             recovered_generated_media
-            and recovered_generated_media.get('version') in (2, 4, 5)
+            and recovered_generated_media.get('version') in (2, 4, 5, 6)
         )
         recovery_repair_scene_indices = set(
             recovered_generated_media.get('repair_scene_indices') or []
@@ -4823,10 +4989,11 @@ def run_video_pipeline(
             else []
         )
         recovery_paid_scene_indices = (
-            set(recovered_generated_media.get('scenes') or {})
-            | recovery_repair_scene_indices
-            if scene_repair_recovery
-            else set()
+            recovery_repair_scene_indices if selected_recovery is not None else (
+                set(recovered_generated_media.get('scenes') or {})
+                | recovery_repair_scene_indices
+                if scene_repair_recovery else set()
+            )
         )
         (work / 'package.json').write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding='utf-8')
 
@@ -4844,7 +5011,9 @@ def run_video_pipeline(
         )
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
-            if saved_voice_retry:
+            if selected_recovery is not None:
+                voice_future = stage_pool.submit(deepcopy, selected_recovery['voice_result'])
+            elif saved_voice_retry:
                 if voice_replacement_request:
                     voice_future = stage_pool.submit(
                         _synthesize_voice_candidate, scenes, task_id, duration_minutes * 60,
@@ -4876,6 +5045,11 @@ def run_video_pipeline(
                     language=language,
                 )
             broll_future = (
+                stage_pool.submit(lambda: {
+                    'scene_visuals': deepcopy(selected_recovery['scene_visuals']), 'credits': [],
+                    'seen_ids': {spec['pexels_id'] for pool in selected_recovery['scene_visuals']
+                                 for spec in pool if type(spec.get('pexels_id')) is int},
+                }) if selected_recovery is not None else
                 stage_pool.submit(
                     _collect_curated_recovery_visuals,
                     curated_stock_manifest, curated_source_job, approved_package,
@@ -4948,8 +5122,11 @@ def run_video_pipeline(
             )
             if audio_review_sha256:
                 audio_qc = {**audio_qc, 'audio_sha256': audio_review_sha256}
-            effective_edit_target_seconds = _effective_short_edit_target(
-                options, duration_minutes * 60, voice_result.get('duration_after_fit'),
+            effective_edit_target_seconds = (
+                selected_recovery['timing']['effective_edit_target_seconds']
+                if selected_recovery is not None else _effective_short_edit_target(
+                    options, duration_minutes * 60, voice_result.get('duration_after_fit'),
+                )
             )
             audio_duration_qc = _short_preview_voice_duration_qc(
                 voice_result,
@@ -5228,7 +5405,16 @@ def run_video_pipeline(
         should_generate_music = options.get('mode') == 'production' and options.get('music') == 'auto'
 
         with ThreadPoolExecutor(max_workers=2 if should_generate_music else 1) as quality_pool:
-            if recovered_generated_media and recovered_generated_media.get('version') == 5:
+            if selected_recovery is not None:
+                _selected_recovery_authorization(
+                    task_id, retry_dispatch_source_id,
+                    _task_spec(topic, duration_minutes, language, channel_id, options), approved_package,
+                )
+                qc_future = quality_pool.submit(
+                    _review_selected_exact, selected_recovery, scenes, work, topic, options,
+                    package.get('sources') or [],
+                )
+            elif recovered_generated_media and recovered_generated_media.get('version') == 5:
                 qc_future = quality_pool.submit(
                     _review_mixed_retained_before_paid, scenes, scene_visuals, voice_result,
                     work, topic, options, package.get('sources') or [],
@@ -5397,7 +5583,7 @@ def run_video_pipeline(
         # Score the exact clips selected after stock retries. Paid Runway slots
         # are ranked by current evidence, never scene order or stale scores.
         pre_runway_qc = visual_qc if (
-            recovered_generated_media and recovered_generated_media.get('version') == 5
+            recovered_generated_media and recovered_generated_media.get('version') in (5, 6)
         ) else review_scene_visuals(
             scenes,
             scene_visuals,
@@ -5820,8 +6006,12 @@ def run_video_pipeline(
             prompts: dict[int, str] = {}
             ranked: list[dict] = []
             for candidate_scene_idx, scene in enumerate(scenes):
+                if selected_recovery is not None and candidate_scene_idx not in recovery_repair_scene_indices:
+                    continue
                 candidate_review = current_reviews.get(candidate_scene_idx)
-                if (
+                if selected_recovery is not None:
+                    prompt = selected_recovery['repair_prompts'][candidate_scene_idx]
+                elif (
                     options.get('mode') == 'production' and options.get('format') == 'shorts'
                     and duration_minutes == 0.5 and recovered_generated_media
                     and recovered_generated_media.get('version') in (4, 5)
@@ -6270,6 +6460,15 @@ def run_video_pipeline(
         omni_continuity_anchor_scene_idx: int | None = None
         for candidate in selected_runway:
             scene_idx = int(candidate['scene_index'])
+            if selected_recovery is not None:
+                _selected_recovery_authorization(
+                    task_id, retry_dispatch_source_id,
+                    _task_spec(topic, duration_minutes, language, channel_id, options), approved_package,
+                )
+                if (scene_idx not in recovery_repair_scene_indices
+                        or _recovery_package_sha256(package) != selected_recovery['manifest']['package_sha256']
+                        or voice_result != selected_recovery['voice_result']):
+                    raise FinalVisualQualityError('Selected recovery changed before a new scene request')
             stock_fallback = list(scene_visuals[scene_idx])
             if recovered_generated_media and recovered_generated_media.get('version') == 4:
                 # V4 fixes an exact retained/repair partition. Preliminary
@@ -6289,7 +6488,7 @@ def run_video_pipeline(
                 stock_fallback = []
                 scene_visuals[scene_idx] = []
             recovered_scene_entries = (
-                recovered_generated_media['scenes'].get(scene_idx)
+                recovered_generated_media.get('scenes', {}).get(scene_idx)
                 if recovered_generated_media
                 else None
             )
@@ -6497,7 +6696,7 @@ def run_video_pipeline(
                         generated_scene.get('provider_attempts') or 1
                     ),
                 )
-                if recovered_generated_media and recovered_generated_media.get('version') == 5:
+                if recovered_generated_media and recovered_generated_media.get('version') in (5, 6):
                     runway_spec['curated_pinned'] = True
                 if generated_scene.get('synthetic_motion') is True:
                     runway_spec.update({
@@ -6600,7 +6799,16 @@ def run_video_pipeline(
         # and generated clips never bypass the final semantic quality gate.
         set_stage(self, task_id, 'final_visual_qc', 69, 'Seçilen final görüntüler anlatıyla son kez eşleştiriliyor.')
         final_review_visuals = scene_visuals
-        if curated_source_job is not None:
+        if selected_recovery is not None:
+            _selected_recovery_authorization(
+                task_id, retry_dispatch_source_id,
+                _task_spec(topic, duration_minutes, language, channel_id, options), approved_package,
+            )
+            final_visual_qc = _review_selected_exact(
+                selected_recovery, scenes, work, topic, options, package.get('sources') or [],
+                scene_visuals=scene_visuals,
+            )
+        elif curated_source_job is not None:
             try:
                 from app.services.curated_stock_review import exact_review_visuals
                 final_review_visuals = exact_review_visuals(
@@ -6609,16 +6817,17 @@ def run_video_pipeline(
                 )
             except Exception:
                 raise FinalVisualQualityError('Curated exact-cut review inputs could not be verified') from None
-        final_visual_qc = review_scene_visuals(
-            scenes,
-            final_review_visuals,
-            work / 'final_visual_qc',
-            len(scenes),
-            topic=topic,
-            story_scenes=scenes,
-            content_style=options.get('content_style', ''),
-            evidence_sources=package.get('sources') or [],
-        )
+        if selected_recovery is None:
+            final_visual_qc = review_scene_visuals(
+                scenes,
+                final_review_visuals,
+                work / 'final_visual_qc',
+                len(scenes),
+                topic=topic,
+                story_scenes=scenes,
+                content_style=options.get('content_style', ''),
+                evidence_sources=package.get('sources') or [],
+            )
         final_reviews = {
             int(r.get('scene_index')): r
             for r in (final_visual_qc.get('reviews') or [])
@@ -6836,6 +7045,8 @@ def run_video_pipeline(
             idx for idx in range(min(len(scenes), len(scene_visuals)))
             if (
                 idx not in final_reviews
+                or (selected_recovery is not None
+                    and idx in final_visual_qc['selected_recovery_rejected_indices'])
                 or (
                     int(final_reviews[idx].get('score', 0)) < quality_threshold
                     and idx not in manual_qa_preview_scenes
@@ -6844,7 +7055,8 @@ def run_video_pipeline(
         ]
         for scene_idx, review in final_reviews.items():
             if (
-                scene_idx not in rejected_final_scenes
+                selected_recovery is None
+                and scene_idx not in rejected_final_scenes
                 and scene_idx not in manual_qa_preserve_exact_cut_scenes
                 and scene_idx not in final_manual_reviews_applied
             ):
@@ -7080,7 +7292,7 @@ def run_video_pipeline(
         # scenes already changed above go straight back to exact-clip QC.
         rescued_final_scenes: list[int] = list(final_runway_repair_scenes)
         for scene_idx in rejected_final_scenes:
-            if recovered_generated_media and recovered_generated_media.get('version') in (4, 5):
+            if recovered_generated_media and recovered_generated_media.get('version') in (4, 5, 6):
                 # No stock substitution or undeclared second generation after
                 # a failed exact V4 clip; retain the normal final-QA failure.
                 continue
@@ -7436,6 +7648,22 @@ def run_video_pipeline(
             options,
             effective_edit_target_seconds,
         )
+        if selected_recovery is not None:
+            from app.services.selected_visual_recovery import verify_selected_final_inputs
+            _selected_recovery_authorization(
+                task_id, retry_dispatch_source_id,
+                _task_spec(topic, duration_minutes, language, channel_id, options), approved_package,
+            )
+            if (render_target_duration != selected_recovery['timing']['target_frames'] / 30
+                    or _recovery_package_sha256(package) != selected_recovery['manifest']['package_sha256']
+                    or voice_result != selected_recovery['voice_result'] or final_audio_path != voice_path
+                    or final_visual_qc['selected_recovery_rejected_indices']):
+                raise FinalVisualQualityError('Selected recovery render inputs changed after review')
+            try:
+                verify_selected_final_inputs(selected_recovery, work, scene_visuals,
+                                             final_visual_qc['selected_recovery_qa_inputs'])
+            except Exception:
+                raise FinalVisualQualityError('Selected recovery exact render identity changed after review') from None
         set_stage(self, task_id, 'render', 76, 'Onaylı ses ve sahneler final kurguya alınıyor.')
         rendered = render_video(
             voice_path=final_audio_path,
