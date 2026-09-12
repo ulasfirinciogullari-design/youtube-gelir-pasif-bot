@@ -36,7 +36,7 @@ returning schema-validated JSON and hashed observation evidence. It does not
 send requests or grant spending authority.
 
 `abacus_router_review_journal.py` is an explicit, synchronous operator API for
-the already audited Capital root and retained leaf. A one-time policy binds the
+the already audited Capital root and retained leaf. The commissioned policy binds the
 existing subscription assertion, actual key hash and complete current
 continuity observation. This assertion is not presented as a provider account
 lookup. Historical additional cash remains `null`; new cash allowance stays
@@ -60,6 +60,40 @@ automatically reinitialize. A late valid response may be recorded after expiry
 or cancellation, without opening new work. Exact settlement readback is
 idempotent and preserves original timestamps; different response evidence is
 a conflict. No provider credentials, prompts or image bytes are persisted.
+
+### Operator reconfirmation of an expired unused window
+
+`RouterReviewJournal.reconfirm_unused(policy)` is a separate explicit operator
+action for an expired review window whose two purposes are still entirely
+unused. It requires all three existing durable records to agree and `slots` to
+be empty. Any reservation, including an unknown provider outcome or an observed
+response, permanently blocks this action. The original commissioning helper
+must not be rerun, and no key is cleared or reinitialized. Neither a provider
+entitlement nor additional review quantity is created: only the original two
+unused purposes can become available in the reconfirmed window.
+
+Only `valid_from`, `valid_until` and `entitlement_evidence_sha256` may change.
+The new window must start at or after the previous expiry, contain the current
+time and last at most 24 hours. Endpoint, model, key hash, root, retained leaf,
+channel, profile, OAuth identities, full source continuity, entitlement source
+and zero additional cash limit must remain identical. The source and all three
+journal keys are checked under the same WATCH transaction. The policy is copied
+before transaction retries; changed prior state or a lost acknowledgement
+cannot silently reconfirm it a second time. An active window rejects another
+reconfirmation, and the operation never sends a provider request.
+
+The state gains a bounded `history` list of at most 12 reconfirmations. Each
+entry preserves the full prior policy, empty slots and update timestamp in
+`previous_state`, the hash of the complete prior state in
+`previous_state_sha256`, and `reconfirmed_at`. Earlier history is reconstructed
+from the preceding list entries when verifying that hash, so the first entry
+preserves the exact original commissioned state without recursively duplicating
+history. Every read validates all snapshots, unchanged bindings, ordered
+nonoverlapping windows, reconfirmation timestamps and the state hash chain
+against the current independent journal and commitment. Invalid history,
+partial loss, expiring keys or a rollback against surviving evidence fails
+closed. The return includes policy and state hashes, the previous state hash,
+the reconfirmation count, and `qa_approved: false` / `publish_eligible: false`.
 
 ## Explicit runtime and remaining release integration
 
@@ -105,3 +139,21 @@ that adapter must honor these included-subscription replay records as well.
 Offline tests cover actual HTTPX mutation/protocol/schema/image bounds and real
 Redis WATCH races, cross-purpose replay, cross-mode receipts, unknown cash,
 partial loss/rollback, expiry, cancellation and lost transaction replies.
+Unused-window reconfirmation tests also cover history preservation and bounds,
+immutable policy bindings, concurrent callers, source changes and malformed or
+rolled-back history without any provider call.
+
+## Separate offline audio adapter
+
+`abacus_router_audio_adapter.py` prepares bounded, fully decoded original MP3
+inputs for explicit `route-llm` audio inspection. Blind transcription has a fixed
+prompt and word-timing schema and accepts no expected narration or topic. The
+separate prosody request preserves the complete supplied rubric and schema.
+Both request types bind the original audio bytes and credential, require text
+output, and observe actual HTTPX request/response evidence. They do not claim an
+identified upstream model, independently heard correctness, or measured cash.
+
+This module has no sender, journal or runtime integration. The existing story
+and visual purposes do not authorize audio calls. Actual audio/JSON compatibility,
+the existing narration/prosody gates and separate durable audio admission remain
+to be verified before this adapter can be used for production approval.

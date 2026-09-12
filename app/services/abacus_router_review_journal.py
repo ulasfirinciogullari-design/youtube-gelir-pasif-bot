@@ -1,6 +1,6 @@
 """Two one-shot subscription reviews for the audited retained Capital episode.
 
-This is an unused explicit commissioning API, not a sender or a spend bypass.
+This is an explicit operator API, not a sender or a spend bypass.
 It never initializes USD history, purchases credits, claims a child, grants QA,
 or changes production. Original financial and OAuth records remain untouched.
 The operator must bind the existing subscription entitlement to the real key;
@@ -34,7 +34,10 @@ JOURNAL_KEY = _PREFIX + ':journal'
 ANCHOR_KEY = _PREFIX + ':commissioned'
 PURPOSES = ('immutable_story_review', 'retained_visual_review')
 _MAX_BYTES = 256 * 1024
+_MAX_RECONFIRMATIONS = 12
 _SHA = re.compile(r'[0-9a-f]{64}')
+_STATE_FIELDS = {'policy', 'slots', 'updated_at'}
+_RECONFIRMABLE_FIELDS = {'valid_from', 'valid_until', 'entitlement_evidence_sha256'}
 _POLICY_FIELDS = {
     'version', 'kind', 'endpoint', 'model', 'original_task_id', 'leaf_task_id',
     'channel_id', 'profile_revision', 'old_connection_id', 'current_connection_id',
@@ -113,6 +116,53 @@ def _receipt(policy, purpose, slot):
             'reserved_at': slot['reserved_at']}
 
 
+def _same_bindings(previous, current):
+    _require(all(previous[name] == current[name]
+                 for name in _POLICY_FIELDS - _RECONFIRMABLE_FIELDS),
+             'router_review_reconfirmation_binding_changed')
+
+
+def _history(state):
+    """Validate flat snapshots and their complete, reconstructable state chain."""
+    if 'history' not in state:
+        return _date(state['policy']['valid_from'])
+    history = state['history']
+    _require(type(history) is list and 1 <= len(history) <= _MAX_RECONFIRMATIONS,
+             'router_review_history_invalid')
+    previous_reconfirmed = None
+    for index, entry in enumerate(history):
+        _require(type(entry) is dict and set(entry) == {
+            'previous_state', 'previous_state_sha256', 'reconfirmed_at'},
+            'router_review_history_invalid')
+        previous = entry['previous_state']
+        _require(type(previous) is dict and set(previous) == _STATE_FIELDS
+                 and type(previous['slots']) is dict and previous['slots'] == {},
+                 'router_review_history_invalid')
+        policy = _policy(previous['policy'])
+        _same_bindings(policy, state['policy'])
+        stamp = _date(previous['updated_at'])
+        _require(_date(policy['valid_from']) <= stamp < _date(policy['valid_until'])
+                 and (previous_reconfirmed is None or stamp == previous_reconfirmed),
+                 'router_review_history_invalid')
+        reconstructed = dict(previous)
+        if index:
+            reconstructed['history'] = history[:index]
+        _digest(entry['previous_state_sha256'])
+        _require(entry['previous_state_sha256'] == _hash(reconstructed),
+                 'router_review_history_mismatch')
+        successor = history[index + 1]['previous_state'] if index + 1 < len(history) else state
+        successor_policy = _policy(successor['policy'])
+        reconfirmed = _date(entry['reconfirmed_at'])
+        _require(_date(policy['valid_until']) <= _date(successor_policy['valid_from'])
+                 <= reconfirmed < _date(successor_policy['valid_until'])
+                 and reconfirmed <= _date(successor['updated_at']),
+                 'router_review_history_invalid')
+        previous_reconfirmed = reconfirmed
+    _require(state['slots'] or _date(state['updated_at']) == previous_reconfirmed,
+             'router_review_history_invalid')
+    return previous_reconfirmed
+
+
 def _journal(state):
     expected = {'policy_sha256': _hash(state['policy']), 'state_sha256': _hash(state)}
     for purpose, slot in state['slots'].items():
@@ -125,7 +175,7 @@ def _journal(state):
 class RouterReviewJournal:
     """Explicit operator API using the existing decode_responses Redis client.
 
-    No method sends network requests, renews an entitlement, returns a cached
+    No method sends network requests, renews a provider entitlement, returns a cached
     send permit, or reads/relabels the unknown historical cash foundation.
     Application runtime must additionally enforce its zero-cash mode and only
     call these purposes from the complete immutable story/visual review paths.
@@ -155,11 +205,13 @@ class RouterReviewJournal:
         _require(all(type(ttl) is int and ttl == -1 for ttl in lifetimes),
                  'router_review_not_initialized_or_durable')
         state = _object(pipe.get(STATE_KEY))
-        _require(set(state) == {'policy', 'slots', 'updated_at'})
+        _require(set(state) in (_STATE_FIELDS, _STATE_FIELDS | {'history'}))
         policy = _policy(state['policy'])
         stamp = _date(state['updated_at'])
         _require(stamp >= _date(policy['valid_from']))
         _require(type(state['slots']) is dict and set(state['slots']) <= set(PURPOSES))
+        _require(state['slots'] or stamp < _date(policy['valid_until']))
+        activated = _history(state)
         seen = set()
         for purpose, slot in state['slots'].items():
             _require(type(slot) is dict and set(slot) == {
@@ -169,7 +221,7 @@ class RouterReviewJournal:
             _require(slot['request_sha256'] not in seen)
             seen.add(slot['request_sha256'])
             reserved = _date(slot['reserved_at'])
-            _require(_date(policy['valid_from']) <= reserved < _date(policy['valid_until'])
+            _require(activated <= reserved < _date(policy['valid_until'])
                      and reserved <= stamp)
             response = slot['response']
             if response is not None:
@@ -233,6 +285,52 @@ class RouterReviewJournal:
             state = {'policy': checked, 'slots': {}, 'updated_at': now.strftime('%Y-%m-%dT%H:%M:%SZ')}
             self._commit(pipe, state, {})
             return {'policy_sha256': _hash(checked), 'qa_approved': False, 'publish_eligible': False}
+        return self._operate(action)
+
+    def reconfirm_unused(self, policy):
+        """Explicitly replace an expired, entirely unused review window only.
+
+        Preserve every prior policy/state, the original two purposes and all
+        funding/source bindings. A lost acknowledgement is never retried as a
+        write; the resulting active window blocks another reconfirmation.
+        """
+        try:
+            checked = _policy(_object(_json(policy)))
+        except RouterReviewBlocked:
+            raise
+        except Exception:
+            raise RouterReviewBlocked('router_review_policy_invalid') from None
+        expected_previous_sha256 = None
+
+        def action(pipe, now):
+            nonlocal expected_previous_sha256
+            previous = self._read(pipe)
+            previous_sha256 = _hash(previous)
+            if expected_previous_sha256 is None:
+                expected_previous_sha256 = previous_sha256
+            _require(previous_sha256 == expected_previous_sha256,
+                     'router_review_reconfirmation_state_changed')
+            _require(previous['slots'] == {}, 'router_review_reconfirmation_already_used')
+            _require(now >= _date(previous['updated_at']), 'router_review_clock_invalid')
+            _require(now >= _date(previous['policy']['valid_until']),
+                     'router_review_reconfirmation_still_active')
+            _same_bindings(previous['policy'], checked)
+            _require(_date(checked['valid_from']) >= _date(previous['policy']['valid_until']),
+                     'router_review_reconfirmation_window_invalid')
+            history = previous.get('history', [])
+            _require(len(history) < _MAX_RECONFIRMATIONS, 'router_review_history_limit')
+            self._fresh(pipe, checked, now)
+            stamp = now.strftime('%Y-%m-%dT%H:%M:%SZ')
+            state = {'policy': checked, 'slots': {}, 'updated_at': stamp,
+                     'history': [*history, {
+                         'previous_state': {name: previous[name] for name in _STATE_FIELDS},
+                         'previous_state_sha256': previous_sha256, 'reconfirmed_at': stamp}]}
+            _history(state)
+            self._commit(pipe, state, _journal(previous))
+            return {'policy_sha256': _hash(checked), 'previous_state_sha256': previous_sha256,
+                    'state_sha256': _hash(state), 'reconfirmation_count': len(state['history']),
+                    'qa_approved': False, 'publish_eligible': False}
+
         return self._operate(action)
 
     @staticmethod

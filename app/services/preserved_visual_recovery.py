@@ -337,7 +337,15 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
         spoken = [voice_module.normalize_turkish_tts(scene['narration'], ensure_terminal=index == 5)
                   if spec['language'] == 'tr' else scene['narration'].strip()
                   for index, scene in enumerate(candidate['package']['scenes'])]
-        _require(voice['spoken_texts'] == spoken)
+        if voice['spoken_texts'] != spoken:
+            # Match the saved-voice worker's compatibility contract: an old,
+            # hash-bound Turkish take may contain the exact prior normalizer's
+            # numeric spacing (3,69 -> 3, 69). Require one complete version;
+            # never rewrite the saved speech or combine normalizer versions.
+            legacy_spoken = [voice_module.normalize_turkish_tts(
+                scene['narration'], ensure_terminal=index == 5, legacy_numeric_spacing=True,
+            ) for index, scene in enumerate(candidate['package']['scenes'])] if spec['language'] == 'tr' else None
+            _require(voice['spoken_texts'] == legacy_spoken)
         review_kwargs = {}
         bound_packages = [candidate['package'], *(manifest['package'] for manifest in manifests)]
         if any('spoken_word_budget' in package for package in bound_packages):

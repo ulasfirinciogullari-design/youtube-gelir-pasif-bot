@@ -44,7 +44,9 @@ def _immutable_boundary():
 
 
 @pytest.fixture
-def case(tmp_path, monkeypatch):
+def case(tmp_path, monkeypatch, request):
+    parameters = getattr(request, 'param', {})
+    language = parameters.get('language', 'en')
     tasks, render = _task_runtime(), _render_runtime()
     client = fakeredis.FakeRedis(decode_responses=True)
     monkeypatch.setattr(studio_state, '_client', lambda: client)
@@ -77,6 +79,9 @@ def case(tmp_path, monkeypatch):
          'ai_prompt': 'A genuine warehouse documentary shot.', 'transition': 'dip' if index == 3 else 'cut'} for index in range(6)],
         'sources': [{'url': 'https://investor.costco.com/overview/default.aspx', 'evidence': 'Official source describes the membership business.'},
                     {'url': 'https://www.costco.com/about.html', 'evidence': 'Company describes its warehouse operations.'}]}
+    if 'narrations' in parameters:
+        for scene, narration in zip(package['scenes'], parameters['narrations'], strict=True):
+            scene['narration'] = narration
     audio = b'ID3' + b'exact unchanged saved narration' * 150
     audio_path = tmp_path / f'{SOURCE}.mp3'
     audio_path.write_bytes(audio)
@@ -85,6 +90,8 @@ def case(tmp_path, monkeypatch):
              'scene_durations': durations, 'duration_before_fit': 29.1, 'duration_after_fit': 29.1,
              'tempo_rate': 1.0, 'content_target_seconds': 29.5, 'reserved_tail_seconds': .5,
              'voice_name': 'Existing approved speech', 'voice_model': 'existing', 'voice_language_code': 'en'}
+    voice['spoken_texts'] = parameters.get('spoken_texts', voice['spoken_texts'])
+    voice['voice_language_code'] = language
     audio_pointer = audio_checkpoint.persist_audio_candidate_checkpoint(SOURCE, package, voice)['audio_candidate_checkpoint']
     options = tasks._normalized_options({'mode': 'production', 'format': 'shorts', 'music': 'off',
         'publish_after_render': True, 'production_channel_id': 'frozen-channel', 'production_connection_id': 'frozen-connection',
@@ -107,7 +114,7 @@ def case(tmp_path, monkeypatch):
               'updated_at': '2026-09-07T00:00:00Z', 'parent_id': '44444444-4444-4444-8444-444444444444',
               'paid_create_slots_used': 6, 'preview_total_paid_create_cap': 6,
               'audio_candidate_checkpoint': audio_pointer, 'audio_candidate_checkpoint_error': None,
-              'spec': {'topic': 'How membership fees fund a warehouse business', 'language': 'en', 'duration_minutes': .5,
+              'spec': {'topic': 'How membership fees fund a warehouse business', 'language': language, 'duration_minutes': .5,
                        'channel_id': 'channel-profile', **options},
               'generated_asset_candidates': {**recovery._FLAGS, 'source_task_id': SOURCE, 'status': 'candidate_journal',
                                             'attempted_count': 6, 'preserved_count': 6, 'failed_count': 0, 'entries': entries}}
@@ -118,7 +125,7 @@ def case(tmp_path, monkeypatch):
     immutable = _immutable_boundary()
     def revalidate(original, topic, duration, language, opts, **kwargs):
         immutable(original, kwargs['immutable_candidate_narrations'])
-        assert language == 'en' and duration == .5
+        assert language == case_language and duration == .5
         if kwargs.get('immutable_scene_fields') is True:
             assert original['studio_options'] == opts
         assert kwargs['immutable_candidate_narrations'] == [scene['narration'] for scene in original['scenes']]
@@ -128,7 +135,9 @@ def case(tmp_path, monkeypatch):
     story = Mock(side_effect=revalidate)
     approved = Mock(side_effect=lambda value, topic: value.get('short_story_qc') == {'fresh_test': True})
     director = SimpleNamespace(revalidate_immutable_short_story=story, short_story_package_is_approved=approved)
-    monkeypatch.setattr(recovery, '_runtime', lambda: (tasks, director, SimpleNamespace(normalize_turkish_tts=lambda text, **kwargs: text)))
+    case_language = language
+    from app.services.voice import normalize_turkish_tts
+    monkeypatch.setattr(recovery, '_runtime', lambda: (tasks, director, SimpleNamespace(normalize_turkish_tts=normalize_turkish_tts)))
     render.media_duration = lambda path: 29.1
     render.normalize_clip = Mock(side_effect=lambda spec, path, *args: path.write_bytes(b'exact local cut'))
     reviews = [{'scene_index': index, 'score': 90, 'best_candidate_index': 0,
@@ -159,6 +168,75 @@ def _snapshot(case):
 
 def _save(case):
     case.client.set(studio_state.JOB_PREFIX + SOURCE, json.dumps(case.source))
+
+
+_DECIMAL_NARRATIONS = [
+    'Maliyet 3,69 sent.', 'Tutar 1,25 sent.',
+    'Üretim giderleri hesaba giriyor.', 'Mevcut paralar geçerli kalıyor.',
+    'Dolaşımdaki paralar kullanılabilir.', 'Üretim maliyeti ayrıca ölçülüyor.',
+]
+_DECIMAL_LEGACY = ['Maliyet 3, 69 sent.', 'Tutar 1, 25 sent.', *_DECIMAL_NARRATIONS[2:]]
+
+
+@pytest.mark.parametrize('case', [
+    {'language': 'tr', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': _DECIMAL_NARRATIONS},
+    {'language': 'tr', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': _DECIMAL_LEGACY},
+], indirect=True, ids=['current', 'legacy'])
+@pytest.mark.parametrize('repairs', [(), (3,)])
+def test_hash_bound_current_or_legacy_turkish_voice_reaches_fresh_review_unchanged(case, repairs):
+    before = _snapshot(case)
+    source, original_objects = deepcopy(case.source), deepcopy(case.objects)
+    receipt = _record(case, _prepare(case, repair_scene_indices=repairs))
+    package = receipt['approved_package']
+    assert _snapshot(case) == before and case.source == source
+    assert all(case.objects[key] == value for key, value in original_objects.items())
+    assert package['scenes'] == case.package['scenes']
+    assert package['_recovered_voice']['spoken_texts'] == case.voice['spoken_texts']
+    assert package['_recovered_voice']['sha256'] == _sha(case.audio)
+    assert case.objects[package['_recovered_voice']['key']][0] == case.audio
+    assert receipt['new_paid_create_requests'] == receipt['new_tts_requests'] == 0
+    assert receipt['qa_approved'] is False and receipt['requires_full_qa'] is True
+    case.story.assert_called_once()
+    case.visual.assert_called_once()
+
+
+@pytest.mark.parametrize('case', [
+    {'language': 'tr', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': spoken}
+    for spoken in [
+        ['Maliyet 3,96 sent.', *_DECIMAL_NARRATIONS[1:]],
+        ['Maliyet 3, 69 cent.', *_DECIMAL_LEGACY[1:]],
+        ['Maliyet 3,  69 sent.', *_DECIMAL_LEGACY[1:]],
+        ['Maliyet 3 69 sent.', *_DECIMAL_LEGACY[1:]],
+        ['Maliyet 3, 69 sent değil.', *_DECIMAL_LEGACY[1:]],
+        [_DECIMAL_NARRATIONS[0], *_DECIMAL_LEGACY[1:]],
+        [_DECIMAL_LEGACY[0], *_DECIMAL_NARRATIONS[1:]],
+    ]
+] + [{'language': 'en', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': _DECIMAL_LEGACY}],
+    indirect=True, ids=['wrong_number', 'changed_word', 'extra_space', 'lost_comma',
+                       'changed_meaning', 'mixed_current_first', 'mixed_legacy_first', 'other_language'])
+def test_changed_or_mixed_saved_speech_stops_before_any_review(case):
+    before, objects = _snapshot(case), deepcopy(case.objects)
+    with pytest.raises(recovery.PreservedVisualRecoveryError):
+        _prepare(case)
+    assert _snapshot(case) == before and case.objects == objects
+    case.story.assert_not_called()
+    case.visual.assert_not_called()
+    assert case.writes == []
+
+
+@pytest.mark.parametrize('case', [
+    {'language': 'tr', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': _DECIMAL_LEGACY},
+], indirect=True)
+def test_legacy_spelling_does_not_admit_a_changed_audio_object(case):
+    key = case.source['audio_candidate_checkpoint']['audio_key']
+    raw, kind = case.objects[key]
+    case.objects[key] = raw[:-1] + bytes([raw[-1] ^ 1]), kind
+    before = _snapshot(case)
+    with pytest.raises(recovery.PreservedVisualRecoveryError):
+        _prepare(case)
+    assert _snapshot(case) == before and case.writes == []
+    case.story.assert_not_called()
+    case.visual.assert_not_called()
 
 
 def test_complete_real_preservation_journal_becomes_fresh_zero_create_v3_only(case):
