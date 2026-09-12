@@ -229,9 +229,33 @@ def _asr_binding(policy, slot, expected, result):
 class RouterAudioReviewJournal:
     """Explicit synchronous API; its receipts are never publication approval."""
 
-    def __init__(self, client, *, clock=None):
+    def __init__(self, client, *, clock=None, successor=None):
         self.client = client
+        self._successor = successor
+        if successor is not None:
+            from app.services.retained_review_credential_successor import selected_keys
+            selected_keys(successor, 'audio')
         self.clock = clock or (lambda: datetime.now(timezone.utc))
+
+    @property
+    def keys(self):
+        if self._successor is None:
+            return STATE_KEY, JOURNAL_KEY, ANCHOR_KEY
+        from app.services.retained_review_credential_successor import selected_keys
+        return selected_keys(self._successor, 'audio')
+
+    @property
+    def state_key(self): return self.keys[0]
+
+    @property
+    def journal_key(self): return self.keys[1]
+
+    @property
+    def anchor_key(self): return self.keys[2]
+
+    def _admit(self, pipe, *, reserve=False):
+        from app.services.retained_review_credential_successor import guard_mutation
+        guard_mutation(pipe, self._successor, 'audio', reserve=reserve)
 
     def _now(self):
         now = self.clock()
@@ -258,10 +282,17 @@ class RouterAudioReviewJournal:
                  'router_audio_review_source_changed')
 
     def _read(self, pipe):
+        state = self._read_records(pipe)
+        if self._successor is not None:
+            from app.services.retained_review_credential_successor import guard_selected
+            guard_selected(pipe, self._successor, 'audio', state)
+        return state
+
+    def _read_records(self, pipe):
         _require(all(type(ttl) is int and ttl == -1 for ttl in
-                     (pipe.pttl(key) for key in (STATE_KEY, JOURNAL_KEY, ANCHOR_KEY))),
+                     (pipe.pttl(key) for key in (self.state_key, self.journal_key, self.anchor_key))),
                  'router_audio_review_not_initialized_or_durable')
-        state = _object(pipe.get(STATE_KEY))
+        state = _object(pipe.get(self.state_key))
         _require(set(state) == {'policy', 'slots', 'updated_at'})
         policy = _policy(state['policy'])
         stamp = _date(state['updated_at'])
@@ -316,17 +347,19 @@ class RouterAudioReviewJournal:
                          and binding['parsed_result_sha256'] == asr['response']['evidence']['parsed_result_sha256']
                          and binding['expected_narration_sha256'] == policy['expected_narration_sha256']
                          and _date(asr['response']['observed_at']) <= reserved)
-        _require(pipe.hlen(JOURNAL_KEY) <= 6 and pipe.hgetall(JOURNAL_KEY) == _journal(state)
-                 and pipe.get(ANCHOR_KEY) == _hash(state), 'router_audio_review_replay_evidence_mismatch')
+        _require(pipe.hlen(self.journal_key) <= 6 and pipe.hgetall(self.journal_key) == _journal(state)
+                 and pipe.get(self.anchor_key) == _hash(state), 'router_audio_review_replay_evidence_mismatch')
         return state
 
-    @staticmethod
-    def _commit(pipe, state, old_journal):
+    def _commit(self, pipe, state, old_journal):
+        if self._successor is not None:
+            from app.services.retained_review_credential_successor import commit_selected
+            return commit_selected(pipe, self._successor, 'audio', state, old_journal)
         journal = _journal(state)
         pipe.multi()
-        pipe.set(STATE_KEY, _json(state))
-        pipe.hset(JOURNAL_KEY, mapping=journal)
-        pipe.set(ANCHOR_KEY, _hash(state))
+        pipe.set(self.state_key, _json(state))
+        pipe.hset(self.journal_key, mapping=journal)
+        pipe.set(self.anchor_key, _hash(state))
         ack = pipe.execute()
         _require(type(ack) is list and len(ack) == 3 and ack[0] is True and ack[2] is True
                  and type(ack[1]) is int and ack[1] == len(set(journal) - set(old_journal)),
@@ -336,7 +369,7 @@ class RouterAudioReviewJournal:
         for _ in range(8):
             try:
                 with self.client.pipeline() as pipe:
-                    pipe.watch(STATE_KEY, JOURNAL_KEY, ANCHOR_KEY)
+                    pipe.watch(self.state_key, self.journal_key, self.anchor_key)
                     return action(pipe, self._now())
             except WatchError:
                 continue  # EXEC did not run; this API has no provider sender.
@@ -357,7 +390,9 @@ class RouterAudioReviewJournal:
             raise RouterAudioReviewBlocked('router_audio_review_policy_or_metadata_invalid') from None
 
         def action(pipe, now):
-            _require(pipe.exists(STATE_KEY, JOURNAL_KEY, ANCHOR_KEY) == 0,
+            self._admit(pipe, reserve=False)
+            _require(self._successor is None, 'router_audio_review_successor_invalid')
+            _require(pipe.exists(self.state_key, self.journal_key, self.anchor_key) == 0,
                      'router_audio_review_already_commissioned_or_partial')
             self._fresh(pipe, checked, now)
             state = {'policy': checked, 'slots': {}, 'updated_at': now.strftime('%Y-%m-%dT%H:%M:%SZ')}
@@ -381,6 +416,7 @@ class RouterAudioReviewJournal:
             raise RouterAudioReviewBlocked('router_audio_review_request_invalid') from None
 
         def action(pipe, now):
+            self._admit(pipe, reserve=True)
             state = self._read(pipe)
             policy = state['policy']
             _require(purpose.value not in state['slots'], 'router_audio_review_request_already_reserved')
@@ -417,6 +453,7 @@ class RouterAudioReviewJournal:
             raise RouterAudioReviewBlocked('router_audio_review_response_unverified') from None
 
         def action(pipe, now):
+            self._admit(pipe, reserve=False)
             state = self._read(pipe)
             _require(purpose.value in state['slots'], 'router_audio_review_reservation_missing')
             policy, slot = state['policy'], state['slots'][purpose.value]

@@ -130,16 +130,19 @@ class _AudioScope:
 
 
 @contextmanager
-def retained_audio_router_review_scope(source_task_id):
+def retained_audio_router_review_scope(source_task_id, *, successor=None):
     _require(_SCOPE.get() is None, 'router_audio_scope_nested')
     _require(type(source_task_id) is str and source_task_id == LEAF_ID,
              'router_audio_source_not_supported')
     try:
         key = _server_key(_zero_cash_guard())
         foundation = spending.configured_ledger()
+        if successor is not None:
+            from app.services.retained_review_credential_successor import verify_scope_successor
+            verify_scope_successor(foundation.client, successor)
         # Only its existing client/clock are used. No financial method, policy
         # lookup or absent-history initialization belongs in an included review.
-        scope = _AudioScope(RouterAudioReviewJournal(foundation.client, clock=foundation.clock),
+        scope = _AudioScope(RouterAudioReviewJournal(foundation.client, clock=foundation.clock, successor=successor),
                             threading.get_ident(), key)
         _require(_server_key(_zero_cash_guard()) == key, 'router_audio_runtime_credential_changed')
     except SpendBlocked:

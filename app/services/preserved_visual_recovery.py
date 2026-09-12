@@ -279,9 +279,10 @@ def _reports(result, counts, manifests, threshold, repairs=()):
         else _review_passes(row['review'], threshold) for row in reports))
 
 
-def _capture_included_router_review(audit, error=None):
+def _capture_included_router_review(audit, error=None, *, artifact_state=None):
     from app.services.abacus_router_review_runtime import (
         retained_router_review_active, retained_router_review_evidence,
+        retained_router_review_approval_active, retained_router_review_artifacts,
     )
     if retained_router_review_active():
         audit['included_router_review'] = {
@@ -297,9 +298,29 @@ def _capture_included_router_review(audit, error=None):
             audit['included_router_review']['rejected_story'] = planning_failure_diagnostics(
                 error, audit.get('package'),
             )
+        # Preserve the actual response before the next review can fail or the
+        # owning scope closes. Serialized audit receipts are not live permits.
+        if retained_router_review_approval_active():
+            artifacts = retained_router_review_artifacts()
+            if artifacts:
+                from app.services.abacus_router_review_artifacts import RetainedRouterReviewArtifactSink
+                from app.services.abacus_router_review_journal import PURPOSES
+                _require(type(artifact_state) is dict)
+                sink = RetainedRouterReviewArtifactSink(
+                    storage._client(single_attempt=True), bucket=storage.settings.bucket,
+                )
+                for purpose in PURPOSES:
+                    if purpose in artifacts and purpose not in artifact_state:
+                        artifact_state[purpose] = sink.persist(
+                            artifacts[purpose], prior_story_anchor=artifact_state.get(PURPOSES[0])
+                            if purpose == PURPOSES[1] else None,
+                        )
+                audit['included_router_artifact_anchors'] = {
+                    purpose: anchor.receipt for purpose, anchor in artifact_state.items()
+                }
 
 
-def prepare_subscription_router_recovery(source_task_id, work_dir):
+def prepare_subscription_router_recovery(source_task_id, work_dir, *, successor=None):
     """Explicit synchronous retained-only review; no commissioning or publish.
 
     The exact Capital source, existing subscription journal and zero-cash flag
@@ -307,7 +328,9 @@ def prepare_subscription_router_recovery(source_task_id, work_dir):
     routing is untouched and no child claim is consumed by this preparation.
     """
     from app.services.abacus_router_review_runtime import retained_router_review_scope
-    with retained_router_review_scope(source_task_id):
+    scope = (retained_router_review_scope(source_task_id) if successor is None
+             else retained_router_review_scope(source_task_id, successor=successor))
+    with scope:
         return prepare_preserved_visual_recovery(source_task_id, work_dir)
 
 
@@ -371,6 +394,7 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
                 minimum_duration=max(5.0, float(voice['scene_durations'][index]) + 0.35),
                 expected_size=raw['size'], expected_sha256=raw['sha256'])
             paths.append((path, raw['provider']))
+        artifact_state = {}
         audit = {**_FLAGS, 'source_task_id': source_id, 'status': 'story_review_pending',
                  'source_state_sha256': fingerprint, 'source_spec_sha256': _digest(spec),
                  'journal_sha256': _digest(source['generated_asset_candidates']),
@@ -391,23 +415,23 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
             _require(reviewed.get('studio_options') == options and director.short_story_package_is_approved(reviewed, spec['topic']))
         except Exception as error:
             audit['status'] = 'story_review_rejected_or_unavailable'
-            _capture_included_router_review(audit, error)
+            _capture_included_router_review(audit, error, artifact_state=artifact_state)
             audit_pointer = _store(client, source_id, work, 'audit', audit)
             raise PreservedVisualRecoveryError(audit_pointer) from None
         audit['package'] = deepcopy(reviewed)
-        _capture_included_router_review(audit)
+        _capture_included_router_review(audit, artifact_state=artifact_state)
         try:
             result, counts = _exact_review(reviewed, voice, paths, work, spec['topic'])
             _require(_digest(reviewed) == _digest(audit['package']))
             reports, passed = _reports(result, counts, manifests, options['quality_threshold'], repairs)
         except Exception as error:
             audit['status'] = 'visual_review_unavailable'
-            _capture_included_router_review(audit, error)
+            _capture_included_router_review(audit, error, artifact_state=artifact_state)
             audit_pointer = _store(client, source_id, work, 'audit', audit)
             raise PreservedVisualRecoveryError(audit_pointer) from None
         audit.update(status=('retained_visual_preparation_passed' if repairs else 'visual_preparation_passed')
                      if passed else 'visual_preparation_rejected', retained_visual_reviews=reports)
-        _capture_included_router_review(audit)
+        _capture_included_router_review(audit, artifact_state=artifact_state)
         audit_pointer = _store(client, source_id, work, 'audit', audit)
         if not passed:
             raise PreservedVisualRecoveryError(audit_pointer)

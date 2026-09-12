@@ -86,7 +86,7 @@ class _ReviewScope:
 
 
 @contextmanager
-def retained_router_review_scope(source_task_id):
+def retained_router_review_scope(source_task_id, *, successor=None):
     """Only the explicit retained-review entry may open this synchronous scope."""
     _require(_SCOPE.get() is None, 'router_review_scope_nested')
     _require(type(source_task_id) is str and source_task_id == LEAF_ID,
@@ -94,12 +94,15 @@ def retained_router_review_scope(source_task_id):
     _zero_cash_guard()
     try:
         foundation = spending.configured_ledger()
+        if successor is not None:
+            from app.services.retained_review_credential_successor import verify_scope_successor
+            verify_scope_successor(foundation.client, successor)
         # Access the existing configured client/clock only. Do not invoke any
         # financial method: old cash remains unknown and no USD permit is made.
         _require(all(type(getattr(foundation.policy, name, None)) is int
                      and getattr(foundation.policy, name) == 0 for name in _CAPS),
                  'router_review_zero_cash_required')
-        scope = _ReviewScope(RouterReviewJournal(foundation.client, clock=foundation.clock),
+        scope = _ReviewScope(RouterReviewJournal(foundation.client, clock=foundation.clock, successor=successor),
                              threading.get_ident())
     except SpendBlocked:
         raise

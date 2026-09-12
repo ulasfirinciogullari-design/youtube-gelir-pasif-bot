@@ -10,11 +10,34 @@ inside their original, still-usable owning scope. Detached JSON properties do
 not retain mutable HTTPX objects, headers or credential references. Changed
 transport bytes, malformed receipts and credential echoes are rejected.
 
-This preserves exact review inputs for the next persistence step. It does not
-write new storage or journal records, recover old unknown responses, grant
-quality approval, or make a capture usable after its scope closes. Private
-artifact persistence, source-bound readback and independent story/visual
-semantic validation remain required before a later worker can consume it.
+Capture itself does not write storage or journal records, recover old unknown
+responses, grant quality approval, or survive its owning scope. The explicit
+preparation now hands each acknowledged capture to the private artifact sink
+before proceeding to the next review. It saves an acknowledged story response
+even when its semantic verdict rejects the candidate.
+
+`abacus_router_review_artifacts.py` stores full prepared/wire/response/result
+bytes in separate bounded, content-addressed objects. A small manifest binds
+them to the selected journal, exact reservation, full source snapshot and six
+original media/manifest pointers. The sink requires a single-attempt client,
+private create-only writes, exact byte and ACL readback, and a permanent watched
+anchor acknowledgement. The visual anchor also verifies the earlier typed
+story receipt and its full stored artifacts. Only detached diagnostic receipts
+enter the recovery audit; no serialized value becomes a live approval. A failed
+write or acknowledgement poisons the scope and cannot trigger another request.
+
+The shared `stock_story_critic_semantics.py` validator interprets complete parsed
+story results without a provider call. The director uses the same helper for
+its existing boolean, evidence, scene-order and narrow ending-exception rules;
+provider retry, repair and approval decisions stay in the director. A future
+saved-evidence consumer must derive exception eligibility from the bound
+original brief and scenes, never trust caller-authored booleans.
+
+These records still do not prove normalized-cut/JPEG rendering identity or
+final quality. Exact media-input capture, independent visual semantics and a
+source-bound saved-evidence consumer remain required before a later worker can
+render or publish. See the [explicit credential successor](retained-review-credential-successor.md)
+for the separately bounded new-key path; occupied legacy requests are preserved.
 
 The existing Capital episode has six retained clips and its original voice.
 Reviewing those assets should not require purchasing replacement media. The

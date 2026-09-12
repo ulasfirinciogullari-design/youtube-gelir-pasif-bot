@@ -25,6 +25,10 @@ from app.services.visual_routing import (
     preview_paid_ai_limit,
 )
 from app.services.source_evidence import normalize_evidence_sources
+from app.services.stock_story_critic_semantics import (
+    STORY_BOOLEAN_KEYS, ENDING_BOOLEAN_KEYS, SCENE_BOOLEAN_KEYS,
+    validate_stock_story_critic,
+)
 from app.services.production_shot_prompt import build_production_shot_prompt
 from app.services.planning_model_routing import fresh_candidate_metadata_rule
 
@@ -2839,43 +2843,9 @@ NON-NEGOTIABLE RULES:
             for position, scene in enumerate(scenes)
         ]
         ending_positions = [len(scenes) - 2, len(scenes) - 1]
-        story_boolean_keys = {
-            'all_explicit_brief_constraints_preserved',
-            'single_human_situation',
-            'single_central_question',
-            'not_fact_montage',
-            'causal_scene_chain',
-            'same_actor_or_object_thread',
-            'human_payoff_visible',
-            'natural_spoken_language',
-            'directly_answers_requested_topic',
-            'one_specific_useful_reveal',
-            'causal_claim_supported',
-            'hook_payoff_same_promise',
-        }
-        ending_boolean_keys = {
-            'same_immediate_location',
-            'continuous_visible_action_chain',
-            'same_actor_or_object_thread',
-            'everyday_benefit_visible',
-            'explicit_technical_insert_return_contract_satisfied',
-            'documentary_exterior_establishing_coda_satisfied',
-        }
-        critic_boolean_keys = {
-            'single_sentence',
-            'single_visible_action',
-            'single_ordinary_location',
-            'all_spoken_meaning_visible',
-            'no_invisible_or_abstract_claim',
-            'all_named_subjects_coexist',
-            'queries_are_english',
-            'queries_match_same_action',
-            'common_stock_clip_feasible',
-            'continues_from_previous',
-            'leads_to_next',
-            'preserves_story_role',
-            'adds_no_new_fact',
-        }
+        story_boolean_keys = STORY_BOOLEAN_KEYS
+        ending_boolean_keys = ENDING_BOOLEAN_KEYS
+        critic_boolean_keys = SCENE_BOOLEAN_KEYS
         critic_shape = {
             'story_review': {
                 **{key: True for key in sorted(story_boolean_keys)},
@@ -3040,22 +3010,6 @@ The reason must name concrete evidence for the verdict. Individual shot approval
             'input': critic_input,
         }
         critic_schema = _contract_schema(critic_shape)
-        expected_story_keys = {
-            'central_question',
-            'causal_answer',
-            'visible_payoff',
-            'natural_spoken_language_evidence',
-            'reason',
-            *story_boolean_keys,
-        }
-        expected_ending_keys = {
-            'penultimate_position',
-            'final_position',
-            'location_anchor',
-            'reason',
-            *ending_boolean_keys,
-        }
-        expected_critic_keys = {'position', 'reason', *critic_boolean_keys}
         critic = {}
         story_review = None
         ending_pair = None
@@ -3122,154 +3076,20 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                     critic_global_error = (
                         'independent stock-shot critic returned invalid JSON'
                     )
-            if (
-                critic
-                and set(critic.keys()) != {'story_review', 'ending_pair', 'scenes'}
-            ):
-                critic_global_error = (
-                    'independent stock-shot critic returned an invalid object'
-                )
-            story_review = (
-                critic.get('story_review')
-                if isinstance(critic, dict)
-                else None
+            critic_semantics = validate_stock_story_critic(
+                critic, stock_positions=stock_positions, ending_positions=ending_positions,
+                normalized_content_style=normalized_content_style,
+                explicit_technical_insert_return_contract=explicit_technical_insert_return_contract,
+                explicit_exterior_establishing_coda=explicit_exterior_establishing_coda,
+                protocol_error=critic_global_error,
             )
-            ending_pair = (
-                critic.get('ending_pair')
-                if isinstance(critic, dict)
-                else None
-            )
-            if not critic_global_error:
-                if (
-                    not isinstance(story_review, dict)
-                    or set(story_review.keys()) != expected_story_keys
-                ):
-                    critic_global_error = (
-                        'whole-story critic returned the wrong fields'
-                    )
-                else:
-                    failed_story_checks = sorted(
-                        key
-                        for key in story_boolean_keys
-                        if story_review.get(key) is not True
-                    )
-                    story_reason = str(
-                        story_review.get('reason') or ''
-                    ).strip()
-                    natural_language_evidence = str(
-                        story_review.get('natural_spoken_language_evidence') or ''
-                    ).strip()
-                    story_summaries = {
-                        key: str(story_review.get(key) or '').strip()
-                        for key in (
-                            'central_question',
-                            'causal_answer',
-                            'visible_payoff',
-                        )
-                    }
-                    if not story_reason:
-                        failed_story_checks.append('missing_evidence')
-                        story_reason = 'critic omitted whole-story evidence'
-                    if not natural_language_evidence:
-                        failed_story_checks.append(
-                            'missing_natural_spoken_language_evidence'
-                        )
-                    elif story_review.get('natural_spoken_language') is True:
-                        if not re.match(
-                            r'^pass\b',
-                            natural_language_evidence,
-                            flags=re.IGNORECASE,
-                        ):
-                            failed_story_checks.append(
-                                'inconsistent_natural_spoken_language_evidence'
-                            )
-                    elif (
-                        re.match(
-                            r'^pass\b',
-                            natural_language_evidence,
-                            flags=re.IGNORECASE,
-                        )
-                        or not re.search(
-                            r'\bscene\s+\d+\b',
-                            natural_language_evidence,
-                            flags=re.IGNORECASE,
-                        )
-                        or not any(
-                            quote in natural_language_evidence
-                            for quote in ('"', '“', '”')
-                        )
-                    ):
-                        failed_story_checks.append(
-                            'inconsistent_natural_spoken_language_evidence'
-                        )
-                    for key, value in story_summaries.items():
-                        if not value:
-                            failed_story_checks.append(f'missing_{key}')
-                    if failed_story_checks:
-                        failure_reason = (
-                            natural_language_evidence
-                            if failed_story_checks == ['natural_spoken_language']
-                            else story_reason
-                        )
-                        story_failure = (
-                            f'{", ".join(failed_story_checks)}; '
-                            f'{failure_reason[:180]}'
-                        )
-                if not critic_global_error and (
-                    not isinstance(ending_pair, dict)
-                    or set(ending_pair.keys()) != expected_ending_keys
-                    or type(ending_pair.get('penultimate_position')) is not int
-                    or type(ending_pair.get('final_position')) is not int
-                    or ending_pair.get('penultimate_position') != ending_positions[0]
-                    or ending_pair.get('final_position') != ending_positions[1]
-                ):
-                    critic_global_error = (
-                        'ending-pair critic returned an invalid contract'
-                    )
-            critic_rows = (
-                critic.get('scenes')
-                if isinstance(critic, dict)
-                else None
-            )
-            if not critic_global_error and (
-                not isinstance(critic_rows, list)
-                or len(critic_rows) != len(stock_positions)
-            ):
-                critic_global_error = (
-                    'independent stock-shot critic did not review every stock scene'
-                )
-            if not critic_global_error:
-                for row in critic_rows:
-                    if (
-                        not isinstance(row, dict)
-                        or set(row.keys()) != expected_critic_keys
-                    ):
-                        critic_global_error = (
-                            'independent critic returned the wrong fields'
-                        )
-                        break
-                    position = row.get('position')
-                    if (
-                        type(position) is not int
-                        or position not in stock_positions
-                    ):
-                        critic_global_error = (
-                            'independent critic returned an invalid stock position'
-                        )
-                        break
-                    if position in critic_by_position:
-                        critic_global_error = (
-                            f'independent critic repeated position {position}'
-                        )
-                        break
-                    critic_by_position[position] = row
-                if (
-                    not critic_global_error
-                    and set(critic_by_position) != set(stock_positions)
-                ):
-                    critic_global_error = (
-                        'independent critic missed a requested stock position'
-                    )
+            critic_global_error = critic_semantics['critic_global_error']
+            story_review = critic_semantics['story_review']
+            ending_pair = critic_semantics['ending_pair']
+            story_failure = critic_semantics['story_failure']
+            failed_story_checks = critic_semantics['failed_story_checks']
+            natural_language_evidence = critic_semantics['natural_language_evidence']
+            critic_by_position = critic_semantics['critic_by_position']
             if not critic_global_error:
                 break
 
@@ -3331,91 +3151,19 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                 review=critic or failure_details,
             )
 
-        critic_failures: dict[int, str] = {}
-        parsed_reviews: dict[int, dict] = {}
+        critic_failures = critic_semantics['critic_failures']
+        parsed_reviews = critic_semantics['parsed_reviews']
         if critic_global_error:
-            critic_failures = {
-                position: critic_global_error
-                for position in stock_positions
-            }
             last_failures = dict(critic_failures)
             break
-        else:
-            for position in stock_positions:
-                row = critic_by_position[position]
-                failed_checks = sorted(
-                    key
-                    for key in critic_boolean_keys
-                    if row.get(key) is not True
-                )
-                reason = str(row.get('reason') or '').strip()
-                if not reason:
-                    failed_checks.append('missing_evidence')
-                    reason = 'critic omitted evidence'
-                parsed_reviews[position] = {
-                    'position': position,
-                    'accepted': not failed_checks,
-                    'failed_checks': failed_checks,
-                    'reason': reason[:160],
-                }
-                if failed_checks:
-                    critic_failures[position] = (
-                        f'{", ".join(failed_checks)}; {reason[:160]}'
-                    )
 
-        ending_failed_checks: list[str] = []
-        ending_reason = ''
-        ending_location_anchor = ''
-        technical_insert_return_exception_applied = False
-        documentary_exterior_coda_exception_applied = False
+        ending_failed_checks = critic_semantics['ending_failed_checks']
+        ending_reason = critic_semantics['ending_reason']
+        ending_location_anchor = critic_semantics['ending_location_anchor']
+        technical_insert_return_exception_applied = critic_semantics['technical_insert_return_exception_applied']
+        documentary_exterior_coda_exception_applied = critic_semantics['documentary_exterior_coda_exception_applied']
         if not critic_global_error:
-            ending_failed_checks = sorted(
-                key
-                for key in ending_boolean_keys
-                if ending_pair.get(key) is not True
-            )
-            ending_reason = str(ending_pair.get('reason') or '').strip()
-            ending_location_anchor = str(
-                ending_pair.get('location_anchor') or ''
-            ).strip()
-            if not ending_reason:
-                ending_failed_checks.append('missing_evidence')
-                ending_reason = 'critic omitted ending-pair evidence'
-            if not ending_location_anchor:
-                ending_failed_checks.append('missing_location_anchor')
-            if (
-                ending_failed_checks == ['same_immediate_location']
-                and explicit_technical_insert_return_contract
-                and ending_pair.get(
-                    'explicit_technical_insert_return_contract_satisfied'
-                ) is True
-            ):
-                ending_failed_checks = []
-                technical_insert_return_exception_applied = True
-            documentary_coda_false_checks = {
-                'same_immediate_location',
-                'continuous_visible_action_chain',
-            }
-            if (
-                ending_failed_checks
-                and set(ending_failed_checks).issubset(
-                    documentary_coda_false_checks
-                )
-                and normalized_content_style in {'documentary', 'explainer'}
-                and explicit_exterior_establishing_coda
-                and ending_pair.get(
-                    'documentary_exterior_establishing_coda_satisfied'
-                ) is True
-                and ending_pair.get('same_actor_or_object_thread') is True
-                and ending_pair.get('everyday_benefit_visible') is True
-            ):
-                ending_failed_checks = []
-                documentary_exterior_coda_exception_applied = True
             if ending_failed_checks:
-                pair_failure = (
-                    f'ending pair: {", ".join(ending_failed_checks)}; '
-                    f'{ending_reason[:160]}'
-                )
                 ai_routed_ending_positions = [
                     position
                     for position in ending_positions
@@ -3440,16 +3188,6 @@ The reason must name concrete evidence for the verdict. Individual shot approval
                         sources=package.get('sources'),
                         review=critic,
                     )
-                for position in ending_positions:
-                    critic_failures[position] = pair_failure
-                    review = parsed_reviews.get(position)
-                    if review is not None:
-                        review['accepted'] = False
-                        review['failed_checks'] = sorted({
-                            *review.get('failed_checks', []),
-                            *[f'ending_pair.{key}' for key in ending_failed_checks],
-                        })
-                        review['reason'] = pair_failure[:160]
 
         gemini_attestation = None
         if not critic_failures:
