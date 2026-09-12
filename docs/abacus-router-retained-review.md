@@ -1,5 +1,21 @@
 # Existing-subscription RouteLLM review candidate
 
+## Acknowledged full-review capture
+
+After the original reservation and settlement acknowledgements, the runtime now
+keeps the complete prepared JSON, actual request and response bytes, parsed
+result, observer evidence and reservation receipt in a private immutable capture.
+`retained_router_review_artifacts()` exposes these diagnostic components only
+inside their original, still-usable owning scope. Detached JSON properties do
+not retain mutable HTTPX objects, headers or credential references. Changed
+transport bytes, malformed receipts and credential echoes are rejected.
+
+This preserves exact review inputs for the next persistence step. It does not
+write new storage or journal records, recover old unknown responses, grant
+quality approval, or make a capture usable after its scope closes. Private
+artifact persistence, source-bound readback and independent story/visual
+semantic validation remain required before a later worker can consume it.
+
 The existing Capital episode has six retained clips and its original voice.
 Reviewing those assets should not require purchasing replacement media. The
 new adapter and journal prepare a separate subscription-funded review path.

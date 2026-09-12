@@ -10,17 +10,21 @@ callers cannot silently switch to an ordinary paid provider.
 from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass, field
+from datetime import datetime
+import hashlib
 import json
+import re
 import threading
 
 import httpx
 
 from app.services import production_spend_runtime as spending
 from app.services.abacus_router_adapter import (
-    ENDPOINT, MAX_RESPONSE_BYTES, ObservedRouterResult, prepare_router_request,
+    ENDPOINT, OPERATION, MAX_RESPONSE_BYTES, ObservedRouterResult,
+    observe_router_response, prepare_router_request,
 )
 from app.services.abacus_router_review_journal import PURPOSES, RouterReviewJournal
-from app.services.production_connection_continuity import LEAF_ID
+from app.services.production_connection_continuity import LEAF_ID, ROOT_ID
 from app.services.production_spend import SpendBlocked
 
 
@@ -69,6 +73,7 @@ class _ReviewScope:
     owner_thread: int
     attempted: set = field(default_factory=set)
     observations: dict = field(default_factory=dict)
+    _artifacts: dict = field(default_factory=dict)
     failed: bool = False
     closed: bool = False
 
@@ -132,6 +137,149 @@ def retained_router_review_evidence():
     return scope.evidence if scope is not None else {}
 
 
+def _artifact_scope():
+    scope = _SCOPE.get()
+    _require(scope is not None, 'router_review_scope_required')
+    _require(not scope.closed and not scope.failed
+             and scope.owner_thread == threading.get_ident(), 'router_review_scope_unusable')
+    _zero_cash_guard()
+    return scope
+
+
+@dataclass(frozen=True, repr=False, init=False, slots=True)
+class AcknowledgedRouterReview:
+    """Private, scope-bound byte snapshots, never a QA or publication permit.
+
+    No prepared/HTTPX object is retained: those objects contain credentials and
+    mutable headers. Parsed properties always return detached JSON copies.
+    """
+    _purpose: str
+    _snapshot: tuple
+
+    def __new__(cls, *args, **kwargs):
+        raise TypeError('router_review_artifact_private')
+
+    def __repr__(self):
+        return '<AcknowledgedRouterReview diagnostic redacted>'
+
+    def _value(self, index):
+        scope = _artifact_scope()
+        _require(type(self) is AcknowledgedRouterReview
+                 and scope._artifacts.get(self._purpose) is self._snapshot,
+                 'router_review_artifact_unverified')
+        return self._snapshot[index]
+
+    @property
+    def purpose(self):
+        self._value(0)
+        return self._purpose
+
+    @property
+    def prepared_body_bytes(self):
+        return self._value(0)
+
+    @property
+    def request_body_bytes(self):
+        return self._value(1)
+
+    @property
+    def response_body_bytes(self):
+        return self._value(2)
+
+    @property
+    def result(self):
+        return json.loads(self._value(3))
+
+    @property
+    def evidence(self):
+        return json.loads(self._value(4))
+
+    @property
+    def reservation(self):
+        return json.loads(self._value(5))
+
+    @property
+    def response_status_code(self):
+        return self._value(6)
+
+    @property
+    def diagnostic_only(self):
+        self._value(0)
+        return True
+
+    @property
+    def qa_approved(self):
+        self._value(0)
+        return False
+
+    @property
+    def publish_eligible(self):
+        self._value(0)
+        return False
+
+
+def retained_router_review_artifacts():
+    """Return acknowledged captures only in the still-usable owning scope.
+
+    This accessor performs no I/O. Each wrapper is bound to its original scope;
+    keeping a wrapper or a copied context does not extend the access window.
+    """
+    scope = _artifact_scope()
+    result = {}
+    for purpose, snapshot in scope._artifacts.items():
+        artifact = object.__new__(AcknowledgedRouterReview)
+        object.__setattr__(artifact, '_purpose', purpose)
+        object.__setattr__(artifact, '_snapshot', snapshot)
+        result[purpose] = artifact
+    return result
+
+
+def _canonical(value):
+    return json.dumps(value, ensure_ascii=False, allow_nan=False,
+                      sort_keys=True, separators=(',', ':')).encode('utf-8')
+
+
+def _acknowledged_reservation(value, purpose, prepared):
+    fields = {'policy_sha256', 'purpose', 'request_sha256',
+              'root_request_fingerprint', 'reserved_at'}
+    _require(type(value) is dict and set(value) == fields | {'reservation_sha256'}
+             and all(type(value[name]) is str for name in value)
+             and value['purpose'] == purpose
+             and value['request_sha256'] == prepared.request_sha256
+             and value['root_request_fingerprint'] == spending._request_fingerprint(
+                 {'lineage_id': ROOT_ID}, 'abacus', OPERATION, prepared.payload)
+             and all(re.fullmatch(r'[0-9a-f]{64}', value[name]) for name in (
+                 'policy_sha256', 'request_sha256', 'root_request_fingerprint', 'reservation_sha256'))
+             and re.fullmatch(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ', value['reserved_at']),
+             'router_review_reservation_unverified')
+    datetime.strptime(value['reserved_at'], '%Y-%m-%dT%H:%M:%SZ')
+    _require(hashlib.sha256(_canonical({name: value[name] for name in fields})).hexdigest()
+             == value['reservation_sha256'], 'router_review_reservation_unverified')
+    return _canonical(value)
+
+
+def _capture_review(prepared, response, observed, reservation, received):
+    # Freeze the bytes received before settlement, then re-observe after its
+    # ACK. Mutation of HTTPX caches during that transaction is not evidence.
+    _require(received == (prepared._body_bytes, response.request.content,
+                         response.content, response.status_code),
+             'router_review_artifact_unverified')
+    checked = observe_router_response(prepared, response)
+    _require(type(observed) is ObservedRouterResult and observed == checked,
+             'router_review_settlement_unverified')
+    key = dict(prepared._header_pairs)['authorization'][len('Bearer '):]
+    # Exact bodies cannot be silently redacted. Refuse an anomalous credential
+    # echo, including JSON escapes, instead of retaining a secret in a capture.
+    encoded_key = _canonical(key)[1:-1]
+    # Assistant content is itself JSON encoded inside the outer JSON response;
+    # inspect the decoded result too so a second layer of escapes cannot hide it.
+    for raw in (*received[:3], checked._result_bytes, checked._evidence_bytes, reservation):
+        _require(key.encode('ascii') not in raw and encoded_key not in _canonical(json.loads(raw)),
+                 'router_review_artifact_credential_present')
+    return (*received[:3], checked._result_bytes, checked._evidence_bytes,
+            reservation, received[3])
+
+
 def _send_once(prepared):
     """Private fixed HTTPX transport; no caller-provided sender or retry path."""
     # A fresh pool avoids shared auth/cookie/header/hook state. Both the client
@@ -181,7 +329,8 @@ def generate_retained_router_review(
         config = _zero_cash_guard()
         prepared = prepare_router_request(parts, api_key=getattr(config, 'abacus_api_key', None),
             system_instruction=system_instruction, json_schema=json_schema, max_tokens=max_tokens)
-        scope.journal.reserve(purpose, prepared)  # Only an acknowledged first return permits a send.
+        reservation = _acknowledged_reservation(
+            scope.journal.reserve(purpose, prepared), purpose, prepared)
         current = _zero_cash_guard()
         # Keep the reserved private key/body frozen while checking live config
         # did not switch account during the reservation transaction.
@@ -189,8 +338,12 @@ def generate_retained_router_review(
                  == dict(prepared._header_pairs)['authorization'][len('Bearer '):],
                  'router_review_runtime_credential_changed')
         response = _send_once(prepared)
+        received = (prepared._body_bytes, response.request.content,
+                    response.content, response.status_code)
         observed = scope.journal.settle(purpose, prepared, response)
         _require(type(observed) is ObservedRouterResult, 'router_review_settlement_unverified')
+        capture = _capture_review(prepared, response, observed, reservation, received)
+        scope._artifacts[purpose] = capture
         scope.observations[purpose] = observed.evidence
         return observed.result
     except SpendBlocked:
