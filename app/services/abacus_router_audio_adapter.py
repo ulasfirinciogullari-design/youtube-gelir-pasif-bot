@@ -285,6 +285,10 @@ def read_original_mp3(path):
 
 
 def _usage(value, max_tokens):
+    if type(value) is dict and set(value) == {'input_tokens', 'output_tokens', 'raw_input_tokens'}:
+        _require(all(type(count) is int and 0 <= count <= 1_000_000_000
+                     for count in value.values()) and value['output_tokens'] <= max_tokens, _USAGE_ERROR)
+        return value  # Preserve native counters; never synthesize a reported total.
     _require(type(value) is dict and {'prompt_tokens', 'completion_tokens', 'total_tokens'} <= set(value)
              and set(value) <= {'prompt_tokens', 'completion_tokens', 'total_tokens',
                                'prompt_tokens_details', 'completion_tokens_details'}, _USAGE_ERROR)
@@ -386,10 +390,12 @@ def observe_audio_router_response(prepared, response):
             length = headers['content-length']
             _require(re.fullmatch(r'[0-9]{1,9}', length) is not None and int(length) == len(raw), _RESPONSE_ERROR)
         payload = _json_loads(raw.decode('utf-8'))
-        _require(type(payload) is dict and {'id', 'object', 'model', 'choices'} <= set(payload)
-                 and set(payload) <= {'id', 'object', 'created', 'model', 'choices', 'usage', 'system_fingerprint'}
-                 and payload['object'] == 'chat.completion', _RESPONSE_ERROR)
-        for field in ('id', 'model'):
+        _require(type(payload) is dict and {'model', 'choices'} <= set(payload)
+                 and set(payload) <= {'id', 'object', 'created', 'model', 'choices', 'usage', 'system_fingerprint'},
+                 _RESPONSE_ERROR)
+        if 'object' in payload:
+            _require(type(payload['object']) is str and payload['object'] == 'chat.completion', _RESPONSE_ERROR)
+        for field in ('model', *(['id'] if 'id' in payload else [])):
             _require(type(payload[field]) is str and _IDENTIFIER.fullmatch(payload[field]), _RESPONSE_ERROR)
         if 'created' in payload:
             _require(type(payload['created']) is int and 0 <= payload['created'] <= 253_402_300_799, _RESPONSE_ERROR)
@@ -421,7 +427,8 @@ def observe_audio_router_response(prepared, response):
             'underlying_model_verified': False, 'credential_sha256': prepared.credential_sha256,
             'request_sha256': prepared.request_sha256, 'wire_body_sha256': wire_sha,
             'response_body_sha256': _sha(raw), 'status_code': response.status_code,
-            'provider_request_id_sha256': _sha(('abacus\0router-request\0' + payload['id']).encode('ascii')),
+            'provider_request_id_sha256': (_sha(('abacus\0router-request\0' + payload['id']).encode('ascii'))
+                                          if 'id' in payload else None),
             'audio': prepared.audio, 'parsed_result_sha256': _sha(_canonical(output)), 'usage': usage,
         }
         evidence['response_proof_sha256'] = _sha(_canonical(evidence))

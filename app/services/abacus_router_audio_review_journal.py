@@ -325,9 +325,13 @@ class RouterAudioReviewJournal:
                          and type(evidence['status_code']) is int and 200 <= evidence['status_code'] < 300
                          and type(evidence['returned_model']) is str
                          and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:/-]{0,159}', evidence['returned_model']))
-                for name in ('wire_body_sha256', 'response_body_sha256', 'provider_request_id_sha256',
+                for name in ('wire_body_sha256', 'response_body_sha256',
                              'parsed_result_sha256', 'response_proof_sha256'):
                     _digest(evidence[name])
+                # Only a genuinely absent body ID is represented as None by
+                # the observer; local request/body hashes remain mandatory.
+                if evidence['provider_request_id_sha256'] is not None:
+                    _digest(evidence['provider_request_id_sha256'])
                 if evidence['usage'] is not None:
                     _usage(evidence['usage'], MAX_OUTPUT_TOKENS)
                 _require(evidence['response_proof_sha256'] == _hash({

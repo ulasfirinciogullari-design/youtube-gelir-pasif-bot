@@ -74,6 +74,25 @@ It verifies the actual HTTPX request and a complete terminal response before
 returning schema-validated JSON and hashed observation evidence. It does not
 send requests or grant spending authority.
 
+The September 12 fixed protocol diagnostic returned a complete JSON envelope
+without `id` or `object`. Both text and audio adapters permit these fields to be
+absent, while validating their original strict types and values when present.
+An absent body ID is recorded as `provider_request_id_sha256: null`; no header,
+local identifier or response hash is relabeled as a provider request ID. The
+request, outgoing body, complete response and parsed-result hashes remain
+mandatory. Existing ID-bearing evidence retains its original byte format.
+This compatibility rule does not settle the lost STORY response, reopen an
+occupied request or demonstrate audio or video quality.
+
+The same diagnostic reported the exact usage fields `input_tokens`,
+`output_tokens` and `raw_input_tokens`. This closed alternative is retained
+without renaming fields or inventing a reported total. All three counters must
+be bounded nonnegative integers, and output must fit the requested limit.
+No undocumented arithmetic relationship between raw and effective input is
+assumed. Mixed formats, extra fields and malformed counters are rejected; the
+existing OpenAI-style usage format keeps its original checks and bytes. These
+token counters are neither credit conversion nor evidence of a cash charge.
+
 `abacus_router_review_journal.py` is an explicit, synchronous operator API for
 the already audited Capital root and retained leaf. The commissioned policy binds the
 existing subscription assertion, actual key hash and complete current
