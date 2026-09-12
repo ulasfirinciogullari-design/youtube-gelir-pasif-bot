@@ -8,6 +8,11 @@ original policy window; reading settled evidence after expiry does not extend
 that window. Continuity still requires the original idle, unclaimed lineage.
 Story/visual, edit-duration and final-render QA remain separate.
 
+An optional closed successor selects its existing audio journal and artifact
+anchors. Its watched journal read also verifies the controller, both child
+heads, exact legacy records and archived replacement. Selection never renews
+an entitlement or reinterprets an old unknown reservation.
+
 Trusted Redis and configured storage are evidence authorities, not cryptographic
 witnesses of provider receipt. Coordinated replacement/rollback of all external
 records cannot be detected here. Private ACL checks retain the sink's known
@@ -204,11 +209,24 @@ def _source(pipe, policy):
     return pointer
 
 
-def _anchor(pipe, key, state):
+def _artifact_keys(journal):
+    """Derive fixed artifact keys only from an actual closed journal selection."""
+    _require(type(journal) is audio_journal.RouterAudioReviewJournal,
+             'audio_evidence_journal_invalid')
+    keys = journal.keys
+    if keys != _WATCH[:3]:
+        from app.services.retained_review_credential_successor import AUDIO_KEYS
+        _require(keys == AUDIO_KEYS, 'audio_evidence_journal_invalid')
+    prefix = keys[0].rsplit(':', 1)[0]
+    return {'asr': prefix + ':asr_artifact', 'final': prefix + ':final_artifact'}
+
+
+def _anchor(pipe, kind, state, journal):
+    _require(type(kind) is str and kind in ('asr', 'final'), 'audio_evidence_anchor_invalid')
+    key = _artifact_keys(journal)[kind]
     ttl = pipe.pttl(key)
     _require(type(ttl) is int and ttl == -1, 'audio_evidence_anchor_not_durable')
     anchor = _object(pipe.get(key))
-    kind = 'asr' if key == ASR_ANCHOR_KEY else 'final'
     _require(set(anchor) == {'version', 'kind', 'source_task_id', 'original_task_id',
              'policy_sha256', 'continuity_sha256', 'journal_state_sha256', 'pointer',
              'asr_anchor_sha256', *_FLAGS}
@@ -322,12 +340,14 @@ def _verified_component(raw):
     return value
 
 
-def read_retained_audio_review_evidence(client, s3_client, *, bucket):
+def read_retained_audio_review_evidence(client, s3_client, *, bucket, successor=None):
     """Read both positive components and original source under one WATCH ACK.
 
     Only GET/ACL reads and a Redis MULTI/PING occur. A race, unknown outcome,
     negative component or partial history fails without an automatic retry.
-    The returned snapshot is not a future claim or story/render permission.
+    The optional successor is a closed selection, verified with the controller
+    and original records in this same transaction. Historical reads require no
+    fresh request window. The snapshot is not a claim or story/render permission.
     """
     try:
         _require(type(bucket) is str and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{2,62}', bucket)
@@ -335,17 +355,18 @@ def read_retained_audio_review_evidence(client, s3_client, *, bucket):
                  and type(storage.settings.endpoint) is str and storage.settings.endpoint
                  and getattr(getattr(s3_client, 'meta', None), 'endpoint_url', None) == storage.settings.endpoint,
                  'audio_evidence_storage_changed')
-        journal = audio_journal.RouterAudioReviewJournal(client)
+        journal = audio_journal.RouterAudioReviewJournal(client, successor=successor)
+        anchors = _artifact_keys(journal)
         with client.pipeline() as pipe:
-            pipe.watch(*_WATCH)
+            pipe.watch(*journal.keys, *anchors.values())
             state = journal._read(pipe)
             _require(set(state['slots']) == {_ASR.value, _PROSODY.value}
                      and all(slot['response'] is not None for slot in state['slots'].values()),
                      'audio_evidence_response_unacknowledged')
             policy = state['policy']
             pointer = _source(pipe, policy)
-            asr_anchor = _anchor(pipe, ASR_ANCHOR_KEY, state)
-            final_anchor = _anchor(pipe, FINAL_ANCHOR_KEY, state)
+            asr_anchor = _anchor(pipe, 'asr', state, journal)
+            final_anchor = _anchor(pipe, 'final', state, journal)
             asr_slot = state['slots'][_ASR.value]
             asr_state = {'policy': policy, 'slots': {_ASR.value: asr_slot},
                          'updated_at': asr_slot['response']['observed_at']}

@@ -16,6 +16,9 @@ from app.services import abacus_router_audio_review_journal as journal
 from app.services import abacus_router_audio_adapter as adapter
 from app.services import production_connection_continuity as continuity
 from app.services import retained_router_audio_qa as bridge
+from app.services import retained_review_credential_successor as successor
+import test_retained_review_credential_successor as successor_cases
+from test_retained_review_credential_successor import prepared as successor_prepared
 from test_abacus_router_audio_review_journal import (
     case, source, commission, response, prosody, mp3, state, ASR, PROSODY,
     canonical, digest, sha,
@@ -84,7 +87,7 @@ def save_artifact(box, kind):
     pointer = {'key': f'recovery/{continuity.LEAF_ID}/included_router_audio_review/{kind}/{sha(raw)}.json',
                'sha256': sha(raw), 'size': len(raw), 'content_type': 'application/json'}
     box.s3.objects[pointer['key']] = raw
-    current = state(box.case)
+    current = json.loads(box.case.client.get(box.journal.state_key))
     asr_slot = current['slots'][ASR.value]
     snapshot = {'policy': current['policy'], 'slots': {ASR.value: asr_slot},
                 'updated_at': asr_slot['response']['observed_at']} if kind == 'asr' else current
@@ -94,8 +97,8 @@ def save_artifact(box, kind):
         'journal_state_sha256': digest(snapshot), 'pointer': pointer,
         'asr_anchor_sha256': None if kind == 'asr' else digest(box.anchors['asr']), **FLAGS}
     box.anchors[kind] = anchor
-    box.case.client.set(reader.ASR_ANCHOR_KEY if kind == 'asr' else reader.FINAL_ANCHOR_KEY,
-                        canonical(anchor))
+    prefix = box.journal.state_key.rsplit(':', 1)[0]
+    box.case.client.set(prefix + ':' + kind + '_artifact', canonical(anchor))
 
 
 @pytest.fixture
@@ -126,9 +129,9 @@ def complete(case, source, monkeypatch):
     return box
 
 
-def read(box, *, client=None):
+def read(box, *, client=None, successor=None):
     return reader.read_retained_audio_review_evidence(
-        box.case.client if client is None else client, box.s3, bucket='private-fixture')
+        box.case.client if client is None else client, box.s3, bucket='private-fixture', successor=successor)
 
 
 @pytest.mark.parametrize('args,kwargs', [((), {}), ((b'{}',), {}), ((), {'_record_bytes': b'{}'})])
@@ -432,3 +435,229 @@ def test_bounded_identity_checked_before_read_and_stream_closed(complete, field,
     with pytest.raises(reader.RetainedAudioEvidenceError):
         read(complete)
     assert len(complete.s3.gets) == 1 and complete.s3.bodies[0].closed
+
+
+@pytest.fixture
+def successor_complete(request, monkeypatch):
+    # Build real historical admission/settlements with a fixed fixture clock.
+    # Reading later must never invoke a clock or extend that expired window.
+    past = datetime(2020, 9, 12, 16, tzinfo=timezone.utc)
+    monkeypatch.setattr(successor_cases, 'NOW', past)
+    original = request.getfixturevalue('successor_prepared')
+    cap = successor_cases.commission(original)
+    monkeypatch.setattr(reader.storage, 'settings', SimpleNamespace(endpoint=ENDPOINT, bucket='private-fixture'))
+    ledger = journal.RouterAudioReviewJournal(original.client, clock=lambda: past, successor=cap)
+    source = SimpleNamespace(**vars(original.source))
+    source.policy = deepcopy(original.audio_policy)
+    source.prepared = adapter.prepare_blind_asr_request(mp3(), api_key=successor_cases.NEW_KEY)
+    initial = successor_cases.records(original.client, successor.ALL_KEYS)
+    asr, asr_response = review(ledger, source.prepared, source.asr_result, source)
+    first = {'version': 1, 'kind': 'asr', 'source': {
+        'source_task_id': continuity.LEAF_ID, 'policy_sha256': digest(source.policy),
+        'continuity_sha256': source.policy['continuity_sha256'], 'expected_narration': source.expected,
+        'expected_narration_sha256': source.policy['expected_narration_sha256'],
+        'audio': source.prepared.audio}, 'reviews': {ASR.value: asr}, **FLAGS}
+    output = {'pass': True, 'summary': 'Clear synthetic delivery.', 'scores': {
+        'pronunciation': 80, 'naturalness': 80, 'pacing': 80, 'sentence_flow': 80,
+        'emphasis': 80, 'roboticness': 20}, 'issues': []}
+    second, _ = review(ledger, prosody(source, api_key=successor_cases.NEW_KEY), output,
+                       source, asr_response=asr_response)
+    final = {**deepcopy(first), 'kind': 'final', 'reviews': {
+        **deepcopy(first['reviews']), PROSODY.value: second}}
+    prefix = ledger.state_key.rsplit(':', 1)[0]
+    box = SimpleNamespace(case=SimpleNamespace(client=original.client), source=source, journal=ledger,
+        s3=ReadOnlyS3(), records={'asr': first, 'final': final}, anchors={}, cap=cap,
+        anchor_keys={kind: prefix + ':' + kind + '_artifact' for kind in ('asr', 'final')},
+        original=original, initial=initial)
+    pointer = json.loads(original.client.get(continuity._JOB + continuity.LEAF_ID))['audio_candidate_checkpoint']
+    box.s3.objects[pointer['metadata_key']] = source.metadata_bytes
+    box.s3.objects[pointer['audio_key']] = mp3()
+    save_artifact(box, 'asr')
+    save_artifact(box, 'final')
+    return box
+
+
+def read_successor(box, *, client=None):
+    return read(box, client=client, successor=box.cap)
+
+
+def test_successor_positive_expired_components_require_only_one_read_ack(successor_complete, monkeypatch):
+    box = successor_complete
+    blocked = Mock(side_effect=AssertionError('Historical reads cannot request or renew anything.'))
+    for name in ('commission', 'reserve', 'settle', '_fresh', '_now', '_commit'):
+        monkeypatch.setattr(journal.RouterAudioReviewJournal, name, blocked)
+    for name in ('prepare_blind_asr_request', 'prepare_audio_prosody_request', 'observe_audio_router_response'):
+        monkeypatch.setattr(adapter, name, blocked)
+    for name in ('read_credential_successor', 'commission_credential_successor', 'verify_scope_successor'):
+        monkeypatch.setattr(successor, name, blocked)
+    for name in ('post', 'get', 'request', 'Client', 'AsyncClient'):
+        monkeypatch.setattr(httpx, name, blocked)
+    before = _dump(box.case.client)
+    client = successor_cases.Intercept(box.case.client)
+    value = read_successor(box, client=client)
+    assert type(value) is reader.RetainedAudioReviewEvidence and value.component_pass
+    assert value.diagnostic_only and not any((value.qa_approved, value.publish_eligible,
+                                              value.full_qa_complete, value.edit_duration_qa_complete))
+    assert value.diagnostics['source']['policy_sha256'] == digest(box.source.policy)
+    assert value.diagnostics['final_anchor_sha256'] == digest(box.anchors['final'])
+    assert client.executions == [('PING',)] and _dump(box.case.client) == before
+    assert reader._artifact_keys(box.journal) == box.anchor_keys
+    assert successor_cases.records(box.case.client, successor_cases.OLD_KEYS) == box.original.legacy
+    assert len(box.s3.gets) == 4 and all(body.closed for body in box.s3.bodies)
+    blocked.assert_not_called()
+
+
+def test_default_read_still_rejects_legacy_unknown_even_with_valid_successor_artifacts(successor_complete):
+    box = successor_complete
+    before = _dump(box.case.client)
+    with pytest.raises(reader.RetainedAudioEvidenceError, match='response_unacknowledged'):
+        read(box)
+    assert box.s3.gets == [] and _dump(box.case.client) == before
+
+
+@pytest.mark.parametrize('cap', [False, True, {}, ('state', 'journal', 'anchor'), 'external-namespace'])
+def test_successor_reader_rejects_untyped_selector_before_storage(successor_complete, cap):
+    box = successor_complete
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        read(box, successor=cap)
+    assert box.s3.gets == []
+
+
+def test_successor_capability_or_namespace_cannot_be_forged(successor_complete):
+    box = successor_complete
+    with pytest.raises(TypeError):
+        successor.SuccessorAuthorization()
+    fake = object.__new__(successor.SuccessorAuthorization)
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        read(box, successor=fake)
+    object.__setattr__(box.cap, '_manifest_bytes', b'{}')
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        read_successor(box)
+    with pytest.raises(TypeError):
+        reader.read_retained_audio_review_evidence(box.case.client, box.s3,
+            bucket='private-fixture', namespace='caller-selected')
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        reader._artifact_keys(SimpleNamespace(keys=successor.AUDIO_KEYS))
+    assert box.s3.gets == []
+
+
+@pytest.mark.parametrize('kind', ['asr', 'final'])
+def test_old_anchor_locations_cannot_substitute_for_selected_anchors(successor_complete, kind):
+    box = successor_complete
+    key = box.anchor_keys[kind]
+    old_key = reader.ASR_ANCHOR_KEY if kind == 'asr' else reader.FINAL_ANCHOR_KEY
+    box.case.client.set(old_key, box.case.client.get(key))
+    box.case.client.delete(key)
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        read_successor(box)
+    assert box.s3.gets == []
+    assert successor_cases.records(box.case.client, successor_cases.OLD_KEYS) == box.original.legacy
+
+
+@pytest.mark.parametrize('damage', ['old_policy_anchor', 'old_policy_record', 'swapped_kinds', 'final_prior'])
+def test_successor_anchors_and_records_cannot_be_transplanted_or_relabelled(successor_complete, damage):
+    box = successor_complete
+    if damage == 'old_policy_record':
+        box.records['final']['source']['policy_sha256'] = digest(box.original.source.policy)
+        save_artifact(box, 'final')
+    elif damage == 'swapped_kinds':
+        first, final = (box.case.client.get(box.anchor_keys[kind]) for kind in ('asr', 'final'))
+        box.case.client.set(box.anchor_keys['asr'], final)
+        box.case.client.set(box.anchor_keys['final'], first)
+    else:
+        anchor = deepcopy(box.anchors['final'])
+        anchor['policy_sha256' if damage == 'old_policy_anchor' else 'asr_anchor_sha256'] = (
+            digest(box.original.source.policy) if damage == 'old_policy_anchor' else '0'*64)
+        box.case.client.set(box.anchor_keys['final'], canonical(anchor))
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        read_successor(box)
+    assert successor_cases.records(box.case.client, successor_cases.OLD_KEYS) == box.original.legacy
+
+
+@pytest.mark.parametrize('family', ['child_trio', 'control_pair'])
+def test_successor_historical_read_rejects_partial_external_rollback(successor_complete, family):
+    box = successor_complete
+    keys = successor.AUDIO_KEYS if family == 'child_trio' else (successor.JOURNAL_KEY, successor.ANCHOR_KEY)
+    for key in keys:
+        box.case.client.restore(key, 0, box.initial[key], replace=True)
+    before = _dump(box.case.client)
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        read_successor(box)
+    assert _dump(box.case.client) == before and box.s3.gets == []
+
+
+@pytest.mark.parametrize('part,damage', [
+    ('controller', 'ttl'), ('sibling', 'missing'), ('predecessor', 'missing'),
+    ('archive', 'ttl'), ('source', 'changed'), ('final_anchor', 'ttl'),
+])
+def test_successor_read_requires_all_authorities_to_remain_durable_and_unchanged(successor_complete, part, damage):
+    box = successor_complete
+    key = {'controller': successor.ANCHOR_KEY, 'sibling': successor.STORY_KEYS[2],
+        'predecessor': successor_cases.OLD_KEYS[2], 'archive': box.original.archive_key,
+        'source': continuity._AUTH_EPOCH, 'final_anchor': box.anchor_keys['final']}[part]
+    if damage == 'missing': box.case.client.delete(key)
+    elif damage == 'ttl': box.case.client.pexpire(key, 60000)
+    else: box.case.client.incr(key)
+    before = _dump(box.case.client)
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        read_successor(box)
+    assert _dump(box.case.client) == before and box.s3.gets == []
+
+
+@pytest.mark.parametrize('part', ['controller', 'sibling', 'predecessor', 'archive', 'source'])
+def test_successor_watch_covers_controller_sibling_predecessors_archive_and_source(successor_complete, part):
+    box = successor_complete
+    key = {'controller': successor.ANCHOR_KEY, 'sibling': successor.STORY_KEYS[2],
+        'predecessor': successor_cases.OLD_KEYS[2], 'archive': box.original.archive_key,
+        'source': continuity._AUTH_EPOCH}[part]
+    def change(_):
+        box.case.client.set(key, box.case.client.get(key))
+    client = InterceptClient(box.case.client, before=change)
+    with pytest.raises(reader.RetainedAudioEvidenceError, match='read_unverified'):
+        read_successor(box, client=client)
+    assert client.calls == 1 and all(body.closed for body in box.s3.bodies)
+
+
+@pytest.mark.parametrize('ack', [[1], [True, True], 'lost'])
+def test_successor_uncertain_read_ack_returns_no_component_or_retry(successor_complete, ack):
+    box = successor_complete
+    def outcome(_, result):
+        if ack == 'lost': raise ConnectionError('private-ack-details')
+        return ack
+    client = InterceptClient(box.case.client, after=outcome)
+    before = _dump(box.case.client)
+    with pytest.raises(reader.RetainedAudioEvidenceError) as caught:
+        read_successor(box, client=client)
+    assert 'private-ack-details' not in str(caught.value)
+    assert client.calls == 1 and _dump(box.case.client) == before
+
+
+def test_actual_selected_audio_unknown_response_rejects_before_storage(successor_prepared, monkeypatch):
+    original = successor_prepared
+    cap = successor_cases.commission(original)
+    monkeypatch.setattr(reader.storage, 'settings', SimpleNamespace(endpoint=ENDPOINT, bucket='private-fixture'))
+    ledger = journal.RouterAudioReviewJournal(original.client, clock=lambda: successor_cases.NOW, successor=cap)
+    prepared = adapter.prepare_blind_asr_request(mp3(), api_key=successor_cases.NEW_KEY)
+    ledger.reserve(ASR, prepared)
+    stored = json.loads(original.client.get(ledger.state_key))
+    assert set(stored['slots']) == {ASR.value} and stored['slots'][ASR.value]['response'] is None
+    s3, before = ReadOnlyS3(), _dump(original.client)
+    with pytest.raises(reader.RetainedAudioEvidenceError, match='response_unacknowledged'):
+        reader.read_retained_audio_review_evidence(original.client, s3,
+                                                   bucket='private-fixture', successor=cap)
+    assert s3.gets == [] and _dump(original.client) == before
+    assert successor_cases.records(original.client, successor_cases.OLD_KEYS) == original.legacy
+
+
+def test_well_formed_sealed_capability_must_match_actual_controller_manifest(successor_complete):
+    box = successor_complete
+    manifest = json.loads(box.cap._manifest_bytes)
+    manifest['attestation']['owner_authorization_sha256'] = '0'*64
+    object.__setattr__(box.cap, '_manifest_bytes', canonical(manifest).encode())
+    # This passes the closed type/seal/schema gate, so rejection below must come
+    # from comparing the presented manifest against the actual durable one.
+    assert successor.selected_keys(box.cap, 'audio') == successor.AUDIO_KEYS
+    before = _dump(box.case.client)
+    with pytest.raises(reader.RetainedAudioEvidenceError):
+        read_successor(box)
+    assert box.s3.gets == [] and _dump(box.case.client) == before
