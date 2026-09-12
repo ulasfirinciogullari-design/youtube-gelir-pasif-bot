@@ -56,6 +56,8 @@ Actual HTTP status and a limited error diagnosis are retained on failure.
 Only fixed allowed fields or reason indicators can survive a bounded error-body
 inspection; free-form messages, raw bodies, headers and credentials are omitted.
 Those indicators are diagnostic, never a verified cause or a reason to resend.
+The exact provider string `Invalid API Key` maps to a fixed authentication
+indicator; arbitrary text containing similar words is not retained or classified.
 
 `retained_router_audio_qa.py` re-observes actual supplied HTTPX artifacts, binds
 ASR to the supplied original descriptor and expected narration, then binds
@@ -71,11 +73,34 @@ source values are not authoritative by themselves. Every bridge report remains
 intervals do not replace the frozen edit-duration or final rendered-video gates;
 `edit_duration_qa_complete` remains false.
 
+## Reading persisted component evidence
+
+`read_retained_audio_review_evidence` reads the operations coordinator's v1
+artifacts without another provider request. Both settled purposes, the ASR and
+final durable anchors, complete parsed results and original source identity are
+required. It checks content-addressed private JSON blobs, original metadata and
+the complete MP3 decode, recomputes the existing ASR/prosody verdicts and obtains
+a Redis WATCH/EXEC read acknowledgement before returning a detached component.
+Partial history, an unknown response, a changed source, a storage/read race or a
+negative result blocks the read. The returned data grants no final-QA or publish
+authority. Its original source must still be idle and unclaimed.
+
+Past settled evidence remains readable after its request window expires. The
+reader checks historical reservations against their original window; it neither
+renews that window nor creates a new dispatch allowance. Trusted Redis/storage
+are evidence authorities; coordinated replacement of all external records cannot
+be detected by this reader. Private object ACL verification does not establish
+bucket-policy or CDN privacy.
+
 ## Remaining integration
 
-An explicit operations coordinator still needs to load and authenticate original
-Storage blobs, preserve acknowledged ASR evidence in an immutable record with a
-durable anchor before prosody, and preserve the final diagnostic record. General
-recovery execution, final audio/render QA, OAuth delivery authority and ordered
-public release require separate verified consumers. This path alone does not
-complete unattended production or clear either channel's existing quality hold.
+The server operations coordinator authenticates retained source blobs and stores
+ASR and final diagnostics with durable anchors. Its first actual audio attempt
+received HTTP 403 and left one occupied, unobserved reservation, so it produced
+no positive evidence for this reader. Changing a provider key does not reset or
+authorize replay of that history.
+
+General recovery execution, persisted story/visual evidence, the retained-only
+renderer, final audio/render QA, OAuth delivery authority and ordered public
+release require separate verified consumers. This path alone does not complete
+unattended production or clear either channel's existing quality hold.

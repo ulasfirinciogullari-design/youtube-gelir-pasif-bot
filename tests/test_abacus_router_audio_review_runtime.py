@@ -490,6 +490,55 @@ def test_unknown_or_duplicate_provider_errors_never_invent_a_cause(sandbox, raw)
     assert len(sandbox.calls) == 1
 
 
+@pytest.mark.parametrize('message', ['Invalid API Key', 'invalid api key', ' Invalid API Key\n'])
+def test_abacus_text_credential_rejection_is_classified_without_releasing_slot(sandbox, message):
+    before = originals(sandbox)
+    secret = 'PRIVATE diagnostic echo ' + KEY
+    def denied(request):
+        sandbox.calls.append(request)
+        raw = canonical({'error': message, 'private': secret}).encode()
+        stream = Chunks([raw]); sandbox.streams.append(stream)
+        return httpx.Response(403, request=request, stream=stream,
+                              headers={'content-type': 'application/json', 'x-private': secret})
+    sandbox.handler = denied
+    with runtime.retained_audio_router_review_scope(continuity.LEAF_ID):
+        with pytest.raises(SpendBlocked, match='response_rejected'): run_asr()
+        detail = runtime.retained_audio_router_review_failure()
+        error = detail['provider_error']
+        assert detail['http_status'] == 403
+        assert error['classification'] == 'provider_reported_message'
+        assert error['message_kind'] == 'invalid_api_key' and error['cause_verified'] is False
+        assert error['indicators']['authentication'] is True
+        assert sum(error['indicators'].values()) == 1
+        assert secret not in canonical(detail) and message.strip() not in canonical(detail)
+        error['message_kind'] = secret
+        assert secret not in canonical(runtime.retained_audio_router_review_failure())
+        with pytest.raises(SpendBlocked, match='scope_unusable'): run_asr()
+        with pytest.raises(SpendBlocked, match='scope_unusable'): run_prosody(sandbox)
+    assert len(sandbox.calls) == 1 and sandbox.streams[0].closed
+    slots = state(sandbox.case)['slots']
+    assert set(slots) == {ASR.value} and slots[ASR.value]['response'] is None
+    assert originals(sandbox) == before
+
+
+@pytest.mark.parametrize('message', [
+    'Invalid API Key ' + KEY, 'Invalid API Key: ' + KEY,
+    'Not an invalid API key', 'Invalid API Key. Please use a different account.',
+])
+def test_credential_keywords_do_not_classify_or_store_arbitrary_messages(sandbox, message):
+    def denied(request):
+        sandbox.calls.append(request)
+        stream = Chunks([canonical({'error': message}).encode()]); sandbox.streams.append(stream)
+        return httpx.Response(403, request=request, stream=stream)
+    sandbox.handler = denied
+    with runtime.retained_audio_router_review_scope(continuity.LEAF_ID):
+        with pytest.raises(SpendBlocked): run_asr()
+        detail = runtime.retained_audio_router_review_failure()
+        assert detail['provider_error'] == {'classification': 'unknown', 'cause_verified': False}
+        assert KEY not in canonical(detail) and message not in canonical(detail)
+    assert len(sandbox.calls) == 1
+
+
 def test_error_body_limit_discards_all_fields_and_stops_after_first_overflow(sandbox):
     def denied(request):
         sandbox.calls.append(request)

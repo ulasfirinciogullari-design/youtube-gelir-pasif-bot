@@ -209,6 +209,13 @@ def _bounded_http_error(response):
         if type(value) is not dict:
             return unknown
         error = value.get('error', value)
+        # Abacus also returns a plain error string. Classify only the exact
+        # observed credential rejection; never retain arbitrary message text
+        # or turn this diagnostic into permission to release/retry the slot.
+        if type(error) is str and error.strip().casefold() == 'invalid api key':
+            return {'classification': 'provider_reported_message', 'cause_verified': False,
+                    'message_kind': 'invalid_api_key', 'indicators': {
+                        name: name == 'authentication' for name in _ERROR_INDICATORS}}
         if type(error) is not dict:
             return unknown
         allowed = {'code': _ERROR_CODES, 'type': _ERROR_TYPES, 'param': _ERROR_PARAMS}

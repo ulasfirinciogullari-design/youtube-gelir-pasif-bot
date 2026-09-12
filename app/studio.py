@@ -2154,7 +2154,8 @@ def _nav(active: str) -> str:
     )
     more = (
         '<details class="nav-more"><summary>Diğer</summary><div class="nav-more-menu">'
-        '<a href="/voice-audition">Anlatıcı sesleri</a></div></details>'
+        '<a href="/voice-audition">Anlatıcı sesleri</a>'
+        '<a href="/studio/providers/abacus">Abacus bağlantısı</a></div></details>'
     )
     return f'<header class="top"><a class="brand" href="/studio">YouTube Studio</a><nav class="nav" aria-label="Ana menü">{items}{more}</nav></header>'
 
