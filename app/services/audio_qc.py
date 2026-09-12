@@ -560,8 +560,11 @@ def _validate_prosody_review(
     audio_duration_seconds: float | None,
     transcript_evidence: dict[str, Any] | None,
     language: str = 'tr',
+    provider: str = 'gemini',
 ) -> dict[str, Any] | None:
     """Bind a model review to trusted transcript timing or reject it."""
+    if type(provider) is not str or provider not in {'gemini', 'abacus_router'}:
+        return None
     if not isinstance(output, dict):
         return None
     passed = output.get('pass')
@@ -655,7 +658,7 @@ def _validate_prosody_review(
     result = {
         'available': True,
         'pass': passed,
-        'provider': 'gemini',
+        'provider': provider,
         'reason': None if passed else normalized_issues[0]['code'],
         'scores': {field: scores[field] for field in _PROSODY_SCORE_FIELDS},
         'issues': normalized_issues,
