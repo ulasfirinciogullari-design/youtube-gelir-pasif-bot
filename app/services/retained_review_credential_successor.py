@@ -337,6 +337,10 @@ def guard_selected(pipe, authorization, kind, state):
 
 
 def guard_mutation(pipe, authorization, kind, *, reserve=False):
+    if reserve:
+        from app.services.retained_router_protocol_probe import PROBE_KEYS
+        pipe.watch(*PROBE_KEYS)
+        _require(pipe.exists(*PROBE_KEYS) == 0, 'retained_successor_protocol_probe_terminal')
     if authorization is None:
         pipe.watch(*ALL_KEYS)
         _require(pipe.exists(*ALL_KEYS) == 0, 'retained_successor_legacy_fenced')
