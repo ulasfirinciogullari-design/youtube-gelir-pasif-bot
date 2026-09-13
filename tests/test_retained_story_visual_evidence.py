@@ -14,7 +14,6 @@ import httpx
 import pytest
 from redis.exceptions import ConnectionError
 
-from app import tasks
 from app.services import audio_checkpoint
 from app.services import abacus_router_audio_adapter as audio_adapter
 from app.services import abacus_router_review_runtime as runtime
@@ -56,6 +55,17 @@ def put_fixture(s3, key, value, mime='application/json'):
 
 @pytest.fixture
 def source(case, planning_case, real_media, tmp_path, monkeypatch):
+    # Full collection includes lightweight app.config stubs. Load the existing
+    # source-extracted pure normalizer inside this fixture, without importing
+    # Celery or copying the recovery loader's mocked quality/approval helpers.
+    import app
+    import sys
+    from types import ModuleType
+    from test_paid_render_recovery import _task_runtime
+    tasks = ModuleType('app.tasks')
+    tasks._normalized_options = _task_runtime()._normalized_options
+    monkeypatch.setitem(sys.modules, 'app.tasks', tasks)
+    monkeypatch.setattr(app, 'tasks', tasks, raising=False)
     # Populate all actual source preimages BEFORE any legacy journal is
     # commissioned. No existing occupied history is relabelled or repaired.
     initial = base_audio.source.__wrapped__(case)
