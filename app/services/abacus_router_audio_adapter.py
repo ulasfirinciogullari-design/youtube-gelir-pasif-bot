@@ -404,8 +404,12 @@ def observe_audio_router_response(prepared, response):
         choices = payload['choices']
         _require(type(choices) is list and len(choices) == 1 and type(choices[0]) is dict
                  and {'index', 'message', 'finish_reason'} <= set(choices[0])
-                 and set(choices[0]) <= {'index', 'message', 'finish_reason', 'logprobs'}, _RESPONSE_ERROR)
+                 and set(choices[0]) <= {'index', 'message', 'finish_reason', 'logprobs', 'native_finish_reason'},
+                 _RESPONSE_ERROR)
         choice = choices[0]
+        if 'native_finish_reason' in choice:
+            _require(type(choice['native_finish_reason']) is str
+                     and choice['native_finish_reason'] == 'STOP', _RESPONSE_ERROR)
         _require(type(choice['index']) is int and choice['index'] == 0
                  and choice['finish_reason'] == 'stop' and choice.get('logprobs') is None, _RESPONSE_ERROR)
         message = choice['message']

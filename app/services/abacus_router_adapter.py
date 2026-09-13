@@ -338,27 +338,17 @@ class ObservedRouterResult:
         return self.evidence['usage']
 
 
-def observe_router_response(prepared, response):
-    """Observe one complete bound JSON response; errors never permit another send."""
+def _parse_response_payload(raw, *, schema, max_tokens):
+    """Parse bounded bytes only; transport provenance and QA remain unverified.
+
+    This returns fresh JSON values, never an observation, receipt or approval.
+    A stored-response consumer must independently authenticate the exact raw
+    bytes, original request, reservation and source before using this parser.
+    """
     try:
-        _require(type(prepared) is PreparedRouterRequest, _RESPONSE_ERROR)
-        # Revalidate privately constructed snapshots as well as normal builders.
-        _require(inspect_router_request(ENDPOINT, prepared.wire_kwargs()) == prepared, _RESPONSE_ERROR)
-        _require(type(response) is httpx.Response and 200 <= response.status_code < 300
-                 and not response.history and response.is_stream_consumed, _RESPONSE_ERROR)
-        wire_sha = _verify_request(prepared, response.request)
-        raw = response.content
-        _require(type(raw) is bytes and 0 < len(raw) <= MAX_RESPONSE_BYTES, _RESPONSE_ERROR)
-        headers = _headers(response.headers, names={
-            'content-type', 'content-length', 'content-encoding', 'transfer-encoding', 'request-id', 'x-request-id'})
-        mime = headers.get('content-type', '').lower().replace(' ', '')
-        _require(mime in {'application/json', 'application/json;charset=utf-8'}, _RESPONSE_ERROR)
-        _require(not ('content-length' in headers and 'transfer-encoding' in headers), _RESPONSE_ERROR)
-        if 'content-length' in headers:
-            length = headers['content-length']
-            _require(re.fullmatch(r'[0-9]{1,9}', length) is not None, _RESPONSE_ERROR)
-            if headers.get('content-encoding', 'identity') == 'identity':
-                _require(int(length) == len(raw), _RESPONSE_ERROR)
+        _require(type(raw) is bytes and 0 < len(raw) <= MAX_RESPONSE_BYTES
+                 and type(schema) is dict and type(max_tokens) is int
+                 and 1 <= max_tokens <= MAX_OUTPUT_TOKENS, _RESPONSE_ERROR)
         payload = _json_loads(raw.decode('utf-8'))
         _require(type(payload) is dict and {'model', 'choices'} <= set(payload)
                  and set(payload) <= {'id', 'object', 'created', 'model', 'choices', 'usage', 'system_fingerprint'},
@@ -381,8 +371,12 @@ def observe_router_response(prepared, response):
         choices = payload['choices']
         _require(type(choices) is list and len(choices) == 1 and type(choices[0]) is dict
                  and {'index', 'message', 'finish_reason'} <= set(choices[0])
-                 and set(choices[0]) <= {'index', 'message', 'finish_reason', 'logprobs'}, _RESPONSE_ERROR)
+                 and set(choices[0]) <= {'index', 'message', 'finish_reason', 'logprobs', 'native_finish_reason'},
+                 _RESPONSE_ERROR)
         choice = choices[0]
+        if 'native_finish_reason' in choice:
+            _require(type(choice['native_finish_reason']) is str
+                     and choice['native_finish_reason'] == 'STOP', _RESPONSE_ERROR)
         _require(type(choice['index']) is int and choice['index'] == 0
                  and choice['finish_reason'] == 'stop' and choice.get('logprobs') is None, _RESPONSE_ERROR)
         message = choice['message']
@@ -392,10 +386,41 @@ def observe_router_response(prepared, response):
                  and message.get('refusal') is None and message.get('function_call') is None
                  and (message.get('tool_calls') is None or message['tool_calls'] == []), _RESPONSE_ERROR)
         output = _json_loads(message['content'])
-        schema = prepared.payload['response_format']['json_schema']['schema']
         _require(type(output) is dict and _matches_schema(output, schema)
                  and _unique_items_match(output, schema) and _enum_match(output, schema), _SCHEMA_ERROR)
-        usage = _usage(payload['usage'], prepared.payload['max_tokens']) if 'usage' in payload else None
+        usage = _usage(payload['usage'], max_tokens) if 'usage' in payload else None
+        return {'payload': payload, 'result': output, 'usage': usage}
+    except AbacusRouterError:
+        raise
+    except Exception:
+        raise AbacusRouterError(_RESPONSE_ERROR) from None
+
+
+def observe_router_response(prepared, response):
+    """Observe one complete bound JSON response; errors never permit another send."""
+    try:
+        _require(type(prepared) is PreparedRouterRequest, _RESPONSE_ERROR)
+        # Revalidate privately constructed snapshots as well as normal builders.
+        _require(inspect_router_request(ENDPOINT, prepared.wire_kwargs()) == prepared, _RESPONSE_ERROR)
+        _require(type(response) is httpx.Response and 200 <= response.status_code < 300
+                 and not response.history and response.is_stream_consumed, _RESPONSE_ERROR)
+        wire_sha = _verify_request(prepared, response.request)
+        raw = response.content
+        _require(type(raw) is bytes and 0 < len(raw) <= MAX_RESPONSE_BYTES, _RESPONSE_ERROR)
+        headers = _headers(response.headers, names={
+            'content-type', 'content-length', 'content-encoding', 'transfer-encoding', 'request-id', 'x-request-id'})
+        mime = headers.get('content-type', '').lower().replace(' ', '')
+        _require(mime in {'application/json', 'application/json;charset=utf-8'}, _RESPONSE_ERROR)
+        _require(not ('content-length' in headers and 'transfer-encoding' in headers), _RESPONSE_ERROR)
+        if 'content-length' in headers:
+            length = headers['content-length']
+            _require(re.fullmatch(r'[0-9]{1,9}', length) is not None, _RESPONSE_ERROR)
+            if headers.get('content-encoding', 'identity') == 'identity':
+                _require(int(length) == len(raw), _RESPONSE_ERROR)
+        parsed = _parse_response_payload(raw,
+            schema=prepared.payload['response_format']['json_schema']['schema'],
+            max_tokens=prepared.payload['max_tokens'])
+        payload, output, usage = (parsed[key] for key in ('payload', 'result', 'usage'))
         evidence = {
             'version': 1, 'provider': 'abacus', 'endpoint': ENDPOINT, 'operation': OPERATION,
             'requested_model': MODEL, 'returned_model': payload['model'], 'underlying_model_verified': False,
