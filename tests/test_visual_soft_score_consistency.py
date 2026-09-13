@@ -174,9 +174,11 @@ def test_existing_hard_conflict_path_does_not_require_new_documentary_scope():
 
 
 def test_soft_rejection_prompt_requires_visible_shortfall_not_stock_bias_or_queries_alone():
+    prompt_source = SOURCE.with_name('strict_visual_review_semantics.py')
+    prompt_tree = ast.parse(prompt_source.read_text(encoding='utf-8'))
     function = next(
-        node for node in TREE.body
-        if isinstance(node, ast.FunctionDef) and node.name == 'review_scene_visuals'
+        node for node in prompt_tree.body
+        if isinstance(node, ast.FunctionDef) and node.name == '_rubric_content'
     )
     content = next(
         node for node in function.body
