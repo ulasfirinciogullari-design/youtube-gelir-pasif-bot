@@ -74,6 +74,8 @@ class _ReviewScope:
     attempted: set = field(default_factory=set)
     observations: dict = field(default_factory=dict)
     _artifacts: dict = field(default_factory=dict)
+    _transport_session: object = None
+    _transport_captures: dict = field(default_factory=dict)
     failed: bool = False
     closed: bool = False
 
@@ -84,25 +86,43 @@ class _ReviewScope:
     def evidence(self):
         return json.loads(json.dumps(self.observations, allow_nan=False))
 
+    @property
+    def transport_captures(self):
+        from app.services.abacus_router_transport_capture import _receipts
+        return _receipts(self)
+
+    @property
+    def transport_capture_fallbacks(self):
+        from app.services.abacus_router_transport_capture import _fallbacks
+        return _fallbacks(self)
+
 
 @contextmanager
-def retained_router_review_scope(source_task_id, *, successor=None):
+def retained_router_review_scope(source_task_id, *, successor=None, completion_plan=None,
+                                 capture_transport=False):
     """Only the explicit retained-review entry may open this synchronous scope."""
     _require(_SCOPE.get() is None, 'router_review_scope_nested')
     _require(type(source_task_id) is str and source_task_id == LEAF_ID,
              'router_review_source_not_supported')
+    _require(type(capture_transport) is bool and not (successor is not None and completion_plan is not None)
+             and (completion_plan is None or capture_transport is True),
+             'router_review_capture_option_invalid')
     _zero_cash_guard()
     try:
         foundation = spending.configured_ledger()
         if successor is not None:
             from app.services.retained_review_credential_successor import verify_scope_successor
             verify_scope_successor(foundation.client, successor)
+        if completion_plan is not None:
+            from app.services.retained_review_completion_plan import verify_scope_completion_plan
+            verify_scope_completion_plan(foundation.client, completion_plan)
         # Access the existing configured client/clock only. Do not invoke any
         # financial method: old cash remains unknown and no USD permit is made.
         _require(all(type(getattr(foundation.policy, name, None)) is int
                      and getattr(foundation.policy, name) == 0 for name in _CAPS),
                  'router_review_zero_cash_required')
-        scope = _ReviewScope(RouterReviewJournal(foundation.client, clock=foundation.clock, successor=successor),
+        scope = _ReviewScope(RouterReviewJournal(foundation.client, clock=foundation.clock, successor=successor,
+                                               completion_plan=completion_plan),
                              threading.get_ident())
     except SpendBlocked:
         raise
@@ -110,6 +130,8 @@ def retained_router_review_scope(source_task_id, *, successor=None):
         raise SpendBlocked('router_review_runtime_unavailable') from None
     token = _SCOPE.set(scope)
     try:
+        from app.services.abacus_router_transport_capture import _configure
+        _configure(scope, 'story', capture_transport)
         yield scope
     finally:
         scope.closed = True
@@ -285,6 +307,12 @@ def _capture_review(prepared, response, observed, reservation, received):
 
 def _send_once(prepared):
     """Private fixed HTTPX transport; no caller-provided sender or retry path."""
+    scope = _SCOPE.get()
+    from app.services.abacus_router_transport_capture import _enabled, _send, _accept_response
+    if scope is not None and _enabled(scope):
+        response, capture = _send(scope, prepared)
+        _accept_response(response, capture)
+        return response
     # A fresh pool avoids shared auth/cookie/header/hook state. Both the client
     # and transport ignore environment proxies. Identity encoding permits a
     # raw byte bound before decompression/allocation, including chunked bodies.
@@ -328,6 +356,8 @@ def generate_retained_router_review(
                  'router_review_scope_unusable')
         _require(type(purpose) is str and purpose in PURPOSES, 'router_review_purpose_invalid')
         _require(purpose not in scope.attempted, 'router_review_scope_already_attempted')
+        from app.services.abacus_router_transport_capture import _enabled, _begin
+        capture_enabled = _enabled(scope)
         scope.attempted.add(purpose)
         config = _zero_cash_guard()
         prepared = prepare_router_request(parts, api_key=getattr(config, 'abacus_api_key', None),
@@ -340,6 +370,8 @@ def generate_retained_router_review(
         _require(getattr(current, 'abacus_api_key', None)
                  == dict(prepared._header_pairs)['authorization'][len('Bearer '):],
                  'router_review_runtime_credential_changed')
+        if capture_enabled:
+            _begin(scope, prepared, purpose, reservation)
         response = _send_once(prepared)
         received = (prepared._body_bytes, response.request.content,
                     response.content, response.status_code)

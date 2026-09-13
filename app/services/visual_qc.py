@@ -1186,16 +1186,37 @@ def _moment_fractions_for_candidate(
     return MOMENT_FRACTIONS[:3]
 
 
-def _frame(video_path: str, output_path: Path, fraction: float) -> Path | None:
+def _frame(video_path: str, output_path: Path, fraction: float, *, _retained_sample_capture=None) -> Path | None:
     try:
-        seconds = max(0.0, _duration(video_path) * fraction)
-        subprocess.run([
-            'ffmpeg', '-y', '-ss', f'{seconds:.3f}', '-i', video_path,
+        if _retained_sample_capture is not None:
+            from app.services.retained_sampled_input_linkage import _before_frame, _after_frame
+            executables = _before_frame(_retained_sample_capture, video_path, output_path, fraction)
+            probe_command = [
+                executables['ffprobe'], '-v', 'error', '-show_entries', 'format=duration',
+                '-of', 'default=noprint_wrappers=1:nokey=1', video_path,
+            ]
+            executed_probe = tuple(probe_command)
+            duration = float(subprocess.check_output(probe_command, text=True, timeout=10.0).strip())
+        else:
+            duration = _duration(video_path)
+        seconds = max(0.0, duration * fraction)
+        command = [
+            executables['ffmpeg'] if _retained_sample_capture is not None else 'ffmpeg',
+            '-y', '-ss', f'{seconds:.3f}', '-i', video_path,
             '-frames:v', '1', '-vf', 'scale=640:-2', '-q:v', '5', str(output_path),
-        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        ]
+        executed = tuple(command)
+        subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
             timeout=20.0)
+        if _retained_sample_capture is not None:
+            _after_frame(_retained_sample_capture, duration, seconds, list(executed), list(executed_probe))
+            return output_path
         return output_path if output_path.exists() and output_path.stat().st_size else None
     except Exception:
+        if _retained_sample_capture is not None:
+            from app.services.retained_sampled_input_linkage import _abort
+            # The subprocess itself may fail before the post-extraction callback.
+            _abort(_retained_sample_capture)
         return None
 
 
@@ -1247,7 +1268,7 @@ def _bounded_gemini_frame_bytes(frame_path: Path) -> bytes | None:
 
 def _request_visual_review(provider, strict_review_contract, instruction, content, gemini_parts,
                            included_indices, available_moments, model_override, thinking_level,
-                           *, protocol_attempts=2):
+                           *, protocol_attempts=2, _retained_sample_capture=None):
     """Reuse an already-built frame payload; response repair has no SDK retry."""
     if provider == 'abacus_router':
         from app.services.abacus_router_review_runtime import generate_retained_router_review
@@ -1265,9 +1286,13 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
                 parts.append({'type': 'image_url', 'image_url': {'url': block['image_url']}})
             else:
                 raise SpendBlocked('abacus_router_visual_input_invalid')
+        schema = _review_json_schema(included_indices, available_moments)
+        if _retained_sample_capture is not None:
+            from app.services.retained_sampled_input_linkage import _bind_request
+            _bind_request(_retained_sample_capture, parts, instruction, schema)
         return generate_retained_router_review(
             parts, purpose='retained_visual_review', system_instruction=instruction,
-            json_schema=_review_json_schema(included_indices, available_moments), max_tokens=8192,
+            json_schema=schema, max_tokens=8192,
         )
     if provider == 'abacus':
         from app.services.abacus_generation import AbacusConfigurationError
@@ -1768,10 +1793,16 @@ def review_scene_visuals(
     _gemini_thinking_level: str = 'low',
     provider_override: str | None = None,
     _temporal_response_repair_attempts: int = 1,
+    _retained_sample_capture=None,
 ) -> dict:
     from app.services.abacus_router_review_runtime import retained_router_review_active
 
     router_active = retained_router_review_active()
+    if _retained_sample_capture is not None:
+        from app.services.retained_sampled_input_linkage import _enter, SampledInputLinkageError
+        if not router_active:
+            raise SampledInputLinkageError('retained_sampled_input_unverified')
+        _enter(_retained_sample_capture, scenes, scene_visuals, work_dir)
     dedicated_provider = str(getattr(settings, 'studio_visual_qc_provider', '') or '').strip().casefold()
     if router_active:
         from app.services.production_spend import SpendBlocked
@@ -1994,16 +2025,19 @@ def review_scene_visuals(
             )
             for fraction in sorted(fractions):
                 moment_idx = MOMENT_FRACTIONS.index(fraction)
-                frame = _frame(
-                    path,
-                    frame_dir / f'scene_{idx:02d}_candidate_{candidate_idx:02d}_moment_{moment_idx:02d}.jpg',
-                    fraction,
-                )
+                target = frame_dir / f'scene_{idx:02d}_candidate_{candidate_idx:02d}_moment_{moment_idx:02d}.jpg'
+                if _retained_sample_capture is not None:
+                    frame = _frame(path, target, fraction, _retained_sample_capture=_retained_sample_capture)
+                else:
+                    frame = _frame(path, target, fraction)
                 if not frame:
                     if router_active:
                         raise SpendBlocked('abacus_router_visual_frame_missing')
                     continue
-                if provider == 'gemini':
+                if _retained_sample_capture is not None:
+                    from app.services.retained_sampled_input_linkage import _read_frame
+                    frame_bytes = _read_frame(_retained_sample_capture, frame)
+                elif provider == 'gemini':
                     frame_bytes = _bounded_gemini_frame_bytes(frame)
                     if frame_bytes is None:
                         continue
@@ -2019,6 +2053,9 @@ def review_scene_visuals(
                         'media_provenance': _candidate_media_provenance(specs[candidate_idx]),
                     }, separators=(',', ':'))
                     provenance_attached = True
+                if _retained_sample_capture is not None:
+                    from app.services.retained_sampled_input_linkage import _record_frame
+                    _record_frame(_retained_sample_capture, label, frame_bytes)
                 scene_content.append({
                     'type': 'input_text',
                     'text': label,
@@ -2210,8 +2247,10 @@ def review_scene_visuals(
         + exact_ids_prompt
     )
 
+    capture_options = ({'_retained_sample_capture': _retained_sample_capture}
+                       if _retained_sample_capture is not None else {})
     data = _request_visual_review(provider, strict_review_contract, system_instruction, content, gemini_parts,
-        included_indices, available_moments, gemini_model_override, _gemini_thinking_level)
+        included_indices, available_moments, gemini_model_override, _gemini_thinking_level, **capture_options)
     temporal_response_audit = {}
     if _temporal_response_repair_attempts > 0 and not router_active:
         data, temporal_response_audit = _repair_temporal_response(

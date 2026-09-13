@@ -8,8 +8,8 @@ original policy window; reading settled evidence after expiry does not extend
 that window. Continuity still requires the original idle, unclaimed lineage.
 Story/visual, edit-duration and final-render QA remain separate.
 
-An optional closed successor selects its existing audio journal and artifact
-anchors. Its watched journal read also verifies the controller, both child
+An optional closed successor or completion plan selects its existing audio
+journal and artifact anchors. Its watched read also verifies the controller, both child
 heads, exact legacy records and archived replacement. Selection never renews
 an entitlement or reinterprets an old unknown reservation.
 
@@ -216,7 +216,9 @@ def _artifact_keys(journal):
     keys = journal.keys
     if keys != _WATCH[:3]:
         from app.services.retained_review_credential_successor import AUDIO_KEYS
-        _require(keys == AUDIO_KEYS, 'audio_evidence_journal_invalid')
+        if keys != AUDIO_KEYS:
+            from app.services.retained_review_completion_plan import AUDIO_KEYS as COMPLETION_AUDIO_KEYS
+            _require(keys == COMPLETION_AUDIO_KEYS, 'audio_evidence_journal_invalid')
     prefix = keys[0].rsplit(':', 1)[0]
     return {'asr': prefix + ':asr_artifact', 'final': prefix + ':final_artifact'}
 
@@ -340,12 +342,12 @@ def _verified_component(raw):
     return value
 
 
-def read_retained_audio_review_evidence(client, s3_client, *, bucket, successor=None):
+def read_retained_audio_review_evidence(client, s3_client, *, bucket, successor=None, completion_plan=None):
     """Read both positive components and original source under one WATCH ACK.
 
     Only GET/ACL reads and a Redis MULTI/PING occur. A race, unknown outcome,
     negative component or partial history fails without an automatic retry.
-    The optional successor is a closed selection, verified with the controller
+    The optional authority is a closed selection, verified with its controller
     and original records in this same transaction. Historical reads require no
     fresh request window. The snapshot is not a claim or story/render permission.
     """
@@ -355,7 +357,8 @@ def read_retained_audio_review_evidence(client, s3_client, *, bucket, successor=
                  and type(storage.settings.endpoint) is str and storage.settings.endpoint
                  and getattr(getattr(s3_client, 'meta', None), 'endpoint_url', None) == storage.settings.endpoint,
                  'audio_evidence_storage_changed')
-        journal = audio_journal.RouterAudioReviewJournal(client, successor=successor)
+        journal = audio_journal.RouterAudioReviewJournal(
+            client, successor=successor, completion_plan=completion_plan)
         anchors = _artifact_keys(journal)
         with client.pipeline() as pipe:
             pipe.watch(*journal.keys, *anchors.values())

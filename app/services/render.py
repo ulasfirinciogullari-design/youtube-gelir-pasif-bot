@@ -415,8 +415,13 @@ def normalize_clip(
     shot_index: int,
     transition: str = 'cut',
     output_resolution: str = LANDSCAPE_RESOLUTION,
+    *,
+    _recipe_recorder=None,
 ) -> str:
     """Render one chosen excerpt and never loop generated action footage."""
+    if _recipe_recorder is not None and not callable(_recipe_recorder):
+        raise ValueError('Invalid normalization recipe recorder')
+    recipe_attempts, letterbox_measurements = [], []
     input_path = _spec_path(visual_spec)
     if not input_path:
         raise RuntimeError('Visual spec is missing a path')
@@ -425,7 +430,9 @@ def normalize_clip(
     output_width = int(profile['width'])
     output_height = int(profile['height'])
 
-    source_duration = max(0.1, media_duration(input_path))
+    duration_probe = (getattr(media_duration, '__wrapped__', media_duration)
+                      if _recipe_recorder is not None else media_duration)
+    source_duration = max(0.1, duration_probe(input_path))
     fraction = _spec_start_fraction(visual_spec)
     max_start = max(0.0, source_duration - duration - 0.08)
     desired_center = source_duration * fraction
@@ -496,27 +503,39 @@ def normalize_clip(
                 f'fade=t=out:st={fade_out:.3f}:d=0.16',
             ])
         filters.append('format=yuv420p')
-        _run([
+        command = [
             'ffmpeg', '-y', '-ss', f'{start_seconds:.3f}', *input_args,
             '-vf', ','.join(filters),
             '-frames:v', str(segment_frames), '-an',
             '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
             str(output_path),
-        ])
+        ]
+        executed_command = tuple(command)
+        _run(command)
         actual_frames = video_frame_count(output_path)
+        if _recipe_recorder is not None:
+            recipe_attempts.append({'argv': list(executed_command),
+                'actual_frames': actual_frames, 'scale_geometry': scale_geometry,
+                'source_crop': list(source_crop) if source_crop is not None else None})
         if actual_frames != segment_frames:
             raise RuntimeError(
                 'Normalized clip frame gate rejected segment: '
                 f'{actual_frames} frames for {segment_frames} frame target'
             )
 
+    def measured_letterbox():
+        value = max_horizontal_letterbox_duration(output_path)
+        if _recipe_recorder is not None:
+            letterbox_measurements.append(value)
+        return value
+
     render_attempt(str(profile['base_scale']))
-    if max_horizontal_letterbox_duration(output_path) > 0.25:
+    if measured_letterbox() > 0.25:
         # Some otherwise usable generated clips arrive with cinematic black
         # bars encoded into the picture. One bounded stronger overscan removes
         # them without paying for or looping another generated clip.
         render_attempt(str(profile['strong_scale']))
-        if max_horizontal_letterbox_duration(output_path) > 0.25:
+        if measured_letterbox() > 0.25:
             source_crop = detect_symmetric_letterbox_crop(
                 input_path,
                 start_seconds=start_seconds,
@@ -529,11 +548,18 @@ def normalize_clip(
                 render_attempt(str(profile['base_scale']), source_crop)
             if (
                 source_crop is None
-                or max_horizontal_letterbox_duration(output_path) > 0.25
+                or measured_letterbox() > 0.25
             ):
                 raise RuntimeError(
                     'Normalized clip letterbox gate rejected persistent black bars'
                 )
+    if _recipe_recorder is not None:
+        _recipe_recorder({'version': 1, 'source_duration': source_duration,
+            'duration': duration, 'shot_index': shot_index, 'transition': transition,
+            'output_resolution': output_resolution, 'fps': FPS,
+            'start_seconds': start_seconds, 'speed': speed, 'target_frames': segment_frames,
+            'forbid_loop': forbid_loop, 'attempts': recipe_attempts,
+            'letterbox_measurements': letterbox_measurements})
     return str(output_path)
 
 

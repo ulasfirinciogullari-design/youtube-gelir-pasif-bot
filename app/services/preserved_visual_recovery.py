@@ -233,8 +233,38 @@ def _read_record(client, pointer, kind):
     return _read_json(client, pointer['key'], pointer['sha256'], pointer['size'], MAX_REPORT_BYTES)
 
 
-def _exact_review(package, voice, paths, work, topic):
+def _exact_review(package, voice, paths, work, topic, *, cut_context=None):
     render, reviewer = _review_runtime()
+    if cut_context is not None:
+        from app.services.retained_cut_evidence import (
+            prepare_retained_cuts, persist_retained_cuts, verify_retained_cuts,
+        )
+        derived = prepare_retained_cuts(package, voice, paths, work,
+            source_binding=cut_context['source'], raw_bindings=cut_context['raw_bindings'])
+        source_id = cut_context['source']['source_task_id']
+        fingerprint = cut_context['source']['source_state_sha256']
+        _require(_state(source_id, studio_state._client())[1] == fingerprint)
+        receipt = persist_retained_cuts(derived, storage._client(single_attempt=True),
+                                       bucket=storage.settings.bucket)
+        # Keep a completed diagnostic receipt even if the existing reviewer
+        # subsequently rejects or becomes unavailable. It is never approval.
+        cut_context['audit']['retained_cut_evidence'] = receipt
+        _require(_state(source_id, studio_state._client())[1] == fingerprint)
+        inputs, counts = derived.inputs, derived.frame_counts
+        directory = work / 'preserved_exact_review'
+        sample_options = {}
+        from app.services.abacus_router_review_runtime import retained_router_review_active
+        if retained_router_review_active():
+            from app.services.retained_sampled_input_linkage import begin_sampled_input_capture
+            collector = begin_sampled_input_capture(derived, package)
+            cut_context['sampled_collector'] = collector
+            sample_options['_retained_sample_capture'] = collector
+        result = reviewer(package['scenes'], inputs, directory, 6, _missing_review_attempts=0,
+                          _score_reason_consistency_attempts=0, topic=topic, story_scenes=package['scenes'],
+                          content_style=package['studio_options'].get('content_style', ''),
+                          evidence_sources=package.get('sources') or [], **sample_options)
+        verify_retained_cuts(derived)
+        return result, counts
     measured = float(render.media_duration(voice['path']))
     _require(math.isfinite(measured) and 28.7 <= measured <= 30.08
              and abs(measured - voice['duration_after_fit']) <= 0.12)
@@ -320,7 +350,8 @@ def _capture_included_router_review(audit, error=None, *, artifact_state=None):
                 }
 
 
-def prepare_subscription_router_recovery(source_task_id, work_dir, *, successor=None):
+def prepare_subscription_router_recovery(source_task_id, work_dir, *, successor=None,
+        preserve_exact_cuts=False, completion_plan=None, capture_transport=False):
     """Explicit synchronous retained-only review; no commissioning or publish.
 
     The exact Capital source, existing subscription journal and zero-cash flag
@@ -328,17 +359,51 @@ def prepare_subscription_router_recovery(source_task_id, work_dir, *, successor=
     routing is untouched and no child claim is consumed by this preparation.
     """
     from app.services.abacus_router_review_runtime import retained_router_review_scope
-    scope = (retained_router_review_scope(source_task_id) if successor is None
-             else retained_router_review_scope(source_task_id, successor=successor))
+    _require(type(preserve_exact_cuts) is bool and type(capture_transport) is bool
+             and (completion_plan is None or preserve_exact_cuts and capture_transport))
+    scope_kwargs = {}
+    if successor is not None:
+        scope_kwargs['successor'] = successor
+    if completion_plan is not None:
+        scope_kwargs['completion_plan'] = completion_plan
+    if capture_transport:
+        scope_kwargs['capture_transport'] = True
+    scope = retained_router_review_scope(source_task_id, **scope_kwargs)
     with scope:
+        if preserve_exact_cuts:
+            return prepare_preserved_visual_recovery(source_task_id, work_dir, preserve_exact_cuts=True)
         return prepare_preserved_visual_recovery(source_task_id, work_dir)
 
 
-def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_indices=(), shot_prompt_overrides=None):
+def _capture_sampled_input_link(audit, cut_context, artifact_state, *, required=False):
+    if cut_context is None:
+        return
+    from app.services.abacus_router_review_runtime import (
+        retained_router_review_active, retained_router_review_approval_active, retained_router_review_artifacts,
+    )
+    if 'sampled_collector' not in cut_context:
+        _require(not (required and retained_router_review_active()))
+        return
+    if not retained_router_review_approval_active():
+        _require(not required)
+        return
+    purpose = 'retained_visual_review'
+    actual = retained_router_review_artifacts().get(purpose)
+    _require(actual is not None or not required)
+    if actual is not None:
+        from app.services.retained_sampled_input_linkage import persist_sampled_input_link
+        audit['retained_sampled_input_link'] = persist_sampled_input_link(
+            cut_context['sampled_collector'], actual, artifact_state.get(purpose),
+        )
+
+
+def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_indices=(),
+        shot_prompt_overrides=None, preserve_exact_cuts=False):
     """One explicit, fresh-directory preparation; no TTS, paid video or dispatch."""
     audit_pointer = None
     try:
         repairs, overrides = _repair_request(repair_scene_indices, shot_prompt_overrides)
+        _require(type(preserve_exact_cuts) is bool and (not preserve_exact_cuts or not repairs and not overrides))
         source_id = _canonical_id(source_task_id)
         from app.services.abacus_router_review_runtime import retained_router_review_active
         if retained_router_review_active():
@@ -420,18 +485,41 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
             raise PreservedVisualRecoveryError(audit_pointer) from None
         audit['package'] = deepcopy(reviewed)
         _capture_included_router_review(audit, artifact_state=artifact_state)
+        cut_context = None
         try:
-            result, counts = _exact_review(reviewed, voice, paths, work, spec['topic'])
+            if preserve_exact_cuts:
+                cut_context = {'source': {'source_task_id': source_id,
+                    'source_state_sha256': fingerprint, 'source_spec_sha256': _digest(spec),
+                    'source_journal_sha256': _digest(source['generated_asset_candidates']),
+                    'source_metadata_sha256': source['audio_candidate_checkpoint']['metadata_sha256'],
+                    'audio': {'sha256': candidate['audio_sha256'],
+                              'size': source['audio_candidate_checkpoint']['size']}},
+                    'raw_bindings': [{key: row['raw'][key] for key in ('sha256', 'size', 'provider')}
+                                     for row in manifests], 'audit': audit}
+                result, counts = _exact_review(reviewed, voice, paths, work, spec['topic'],
+                                              cut_context=cut_context)
+            else:
+                result, counts = _exact_review(reviewed, voice, paths, work, spec['topic'])
             _require(_digest(reviewed) == _digest(audit['package']))
             reports, passed = _reports(result, counts, manifests, options['quality_threshold'], repairs)
         except Exception as error:
             audit['status'] = 'visual_review_unavailable'
             _capture_included_router_review(audit, error, artifact_state=artifact_state)
+            try:
+                _capture_sampled_input_link(audit, cut_context, artifact_state)
+            except Exception:
+                audit['status'] = 'sampled_input_linkage_unavailable'
             audit_pointer = _store(client, source_id, work, 'audit', audit)
             raise PreservedVisualRecoveryError(audit_pointer) from None
         audit.update(status=('retained_visual_preparation_passed' if repairs else 'visual_preparation_passed')
                      if passed else 'visual_preparation_rejected', retained_visual_reviews=reports)
         _capture_included_router_review(audit, artifact_state=artifact_state)
+        try:
+            _capture_sampled_input_link(audit, cut_context, artifact_state, required=True)
+        except Exception:
+            audit['status'] = 'sampled_input_linkage_unavailable'
+            audit_pointer = _store(client, source_id, work, 'audit', audit)
+            raise PreservedVisualRecoveryError(audit_pointer) from None
         audit_pointer = _store(client, source_id, work, 'audit', audit)
         if not passed:
             raise PreservedVisualRecoveryError(audit_pointer)

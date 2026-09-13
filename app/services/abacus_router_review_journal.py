@@ -181,9 +181,15 @@ class RouterReviewJournal:
     call these purposes from the complete immutable story/visual review paths.
     """
 
-    def __init__(self, client, *, clock=None, successor=None):
+    def __init__(self, client, *, clock=None, successor=None, completion_plan=None):
+        _require(successor is None or completion_plan is None,
+                 'router_review_multiple_authorizations')
         self.client = client
         self._successor = successor
+        self._completion_plan = completion_plan
+        if completion_plan is not None:
+            from app.services.retained_review_completion_plan import selected_keys
+            selected_keys(completion_plan, 'story')
         if successor is not None:
             from app.services.retained_review_credential_successor import selected_keys
             selected_keys(successor, 'story')
@@ -191,6 +197,9 @@ class RouterReviewJournal:
 
     @property
     def keys(self):
+        if self._completion_plan is not None:
+            from app.services.retained_review_completion_plan import selected_keys
+            return selected_keys(self._completion_plan, 'story')
         if self._successor is None:
             return STATE_KEY, JOURNAL_KEY, ANCHOR_KEY
         from app.services.retained_review_credential_successor import selected_keys
@@ -206,6 +215,9 @@ class RouterReviewJournal:
     def anchor_key(self): return self.keys[2]
 
     def _admit(self, pipe, *, reserve=False):
+        if self._completion_plan is not None:
+            from app.services.retained_review_completion_plan import guard_mutation
+            return guard_mutation(pipe, self._completion_plan, 'story', reserve=reserve)
         from app.services.retained_review_credential_successor import guard_mutation
         guard_mutation(pipe, self._successor, 'story', reserve=reserve)
 
@@ -226,7 +238,10 @@ class RouterReviewJournal:
 
     def _read(self, pipe):
         state = self._read_records(pipe)
-        if self._successor is not None:
+        if self._completion_plan is not None:
+            from app.services.retained_review_completion_plan import guard_selected
+            guard_selected(pipe, self._completion_plan, 'story', state)
+        elif self._successor is not None:
             from app.services.retained_review_credential_successor import guard_selected
             guard_selected(pipe, self._successor, 'story', state)
         return state
@@ -275,6 +290,9 @@ class RouterReviewJournal:
         return state
 
     def _commit(self, pipe, state, old_journal):
+        if self._completion_plan is not None:
+            from app.services.retained_review_completion_plan import commit_selected
+            return commit_selected(pipe, self._completion_plan, 'story', state, old_journal)
         if self._successor is not None:
             from app.services.retained_review_credential_successor import commit_selected
             return commit_selected(pipe, self._successor, 'story', state, old_journal)
@@ -313,7 +331,8 @@ class RouterReviewJournal:
             raise RouterReviewBlocked('router_review_policy_invalid') from None
         def action(pipe, now):
             self._admit(pipe, reserve=False)
-            _require(self._successor is None, 'router_review_successor_invalid')
+            _require(self._successor is None and self._completion_plan is None,
+                     'router_review_successor_invalid')
             _require(pipe.exists(self.state_key, self.journal_key, self.anchor_key) == 0,
                      'router_review_already_commissioned_or_partial')
             self._fresh(pipe, checked, now)
@@ -339,7 +358,8 @@ class RouterReviewJournal:
 
         def action(pipe, now):
             self._admit(pipe, reserve=False)
-            _require(self._successor is None, 'router_review_successor_invalid')
+            _require(self._successor is None and self._completion_plan is None,
+                     'router_review_successor_invalid')
             nonlocal expected_previous_sha256
             previous = self._read(pipe)
             previous_sha256 = _hash(previous)

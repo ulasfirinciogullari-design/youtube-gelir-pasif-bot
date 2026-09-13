@@ -118,6 +118,8 @@ class _AudioScope:
     http_status: object = None
     http_error: dict = field(default_factory=dict)
     failure: dict = field(default_factory=dict)
+    _transport_session: object = None
+    _transport_captures: dict = field(default_factory=dict)
     failed: bool = False
     closed: bool = False
 
@@ -128,21 +130,39 @@ class _AudioScope:
     def evidence(self):
         return {purpose.value: item.settlement for purpose, item in self.artifacts.items()}
 
+    @property
+    def transport_captures(self):
+        from app.services.abacus_router_transport_capture import _receipts
+        return _receipts(self)
+
+    @property
+    def transport_capture_fallbacks(self):
+        from app.services.abacus_router_transport_capture import _fallbacks
+        return _fallbacks(self)
+
 
 @contextmanager
-def retained_audio_router_review_scope(source_task_id, *, successor=None):
+def retained_audio_router_review_scope(source_task_id, *, successor=None, completion_plan=None,
+                                      capture_transport=False):
     _require(_SCOPE.get() is None, 'router_audio_scope_nested')
     _require(type(source_task_id) is str and source_task_id == LEAF_ID,
              'router_audio_source_not_supported')
+    _require(type(capture_transport) is bool and not (successor is not None and completion_plan is not None)
+             and (completion_plan is None or capture_transport is True),
+             'router_audio_capture_option_invalid')
     try:
         key = _server_key(_zero_cash_guard())
         foundation = spending.configured_ledger()
         if successor is not None:
             from app.services.retained_review_credential_successor import verify_scope_successor
             verify_scope_successor(foundation.client, successor)
+        if completion_plan is not None:
+            from app.services.retained_review_completion_plan import verify_scope_completion_plan
+            verify_scope_completion_plan(foundation.client, completion_plan)
         # Only its existing client/clock are used. No financial method, policy
         # lookup or absent-history initialization belongs in an included review.
-        scope = _AudioScope(RouterAudioReviewJournal(foundation.client, clock=foundation.clock, successor=successor),
+        scope = _AudioScope(RouterAudioReviewJournal(foundation.client, clock=foundation.clock, successor=successor,
+                                                   completion_plan=completion_plan),
                             threading.get_ident(), key)
         _require(_server_key(_zero_cash_guard()) == key, 'router_audio_runtime_credential_changed')
     except SpendBlocked:
@@ -151,6 +171,8 @@ def retained_audio_router_review_scope(source_task_id, *, successor=None):
         raise SpendBlocked('router_audio_runtime_unavailable') from None
     token = _SCOPE.set(scope)
     try:
+        from app.services.abacus_router_transport_capture import _configure
+        _configure(scope, 'audio', capture_transport)
         yield scope
     finally:
         scope.closed = True
@@ -179,7 +201,7 @@ def _usable(scope):
     _require(_server_key(_zero_cash_guard()) == scope.key, 'router_audio_runtime_credential_changed')
 
 
-def _bounded_http_error(response):
+def _bounded_http_error(response, *, captured=False):
     """Retain only fixed provider field indicators, never body/message text.
 
     Recognized fields describe the provider's reported error, not a verified
@@ -190,7 +212,8 @@ def _bounded_http_error(response):
     if encodings and encodings != ['identity']:
         return unknown
     chunks, size = [], 0
-    for chunk in response.iter_raw(chunk_size=4096):
+    source = (response.content,) if captured else response.iter_raw(chunk_size=4096)
+    for chunk in source:
         if type(chunk) is not bytes:
             return unknown
         if len(chunk) > _ERROR_BODY_BYTES - size:
@@ -239,12 +262,21 @@ def _send_once(prepared):
     scope = _SCOPE.get()
     _require(scope is not None, 'router_audio_scope_required')
     _usable(scope)
+    from app.services.abacus_router_transport_capture import _enabled, _send, _accept_response
+    capture_enabled = _enabled(scope)
     _require(type(prepared) is adapter.PreparedAudioRouterRequest
              and scope.pending_request is prepared,
              'router_audio_send_not_reserved')
     scope.pending_request = None
     _require(adapter.inspect_audio_router_request(adapter.ENDPOINT, prepared.wire_kwargs(),
              purpose=prepared.purpose) == prepared, 'router_audio_request_unverified')
+    if capture_enabled:
+        response, capture = _send(scope, prepared)
+        scope.http_status = response.status_code
+        if not 200 <= response.status_code < 300:
+            scope.http_error = _bounded_http_error(response, captured=True)
+        _accept_response(response, capture)
+        return response
     transport = httpx.HTTPTransport(retries=0, trust_env=False)
     with httpx.Client(transport=transport, trust_env=False, follow_redirects=False,
                       auth=None, cookies=None, event_hooks={'request': [], 'response': []},
@@ -292,9 +324,13 @@ def _acknowledged_reservation(value, prepared):
 
 
 def _execute(scope, prepared, **admission):
+    from app.services.abacus_router_transport_capture import _enabled, _begin
+    capture_enabled = _enabled(scope)
     reservation = _acknowledged_reservation(scope.journal.reserve(
         prepared.purpose, prepared, **admission), prepared)
     _usable(scope)
+    if capture_enabled:
+        _begin(scope, prepared, prepared.purpose.value, reservation)
     scope.pending_request = prepared
     response = _send_once(prepared)
     settled = scope.journal.settle(prepared.purpose, prepared, response)
@@ -342,7 +378,7 @@ def _run(purpose, audio_bytes, expected_narration=None):
         # Journal/adapter failures have fixed local codes. Do not preserve an
         # arbitrary exception string even if a dependency raises SpendBlocked.
         code = str(error)
-        if re.fullmatch(r'(?:router_audio|abacus_router_audio)_[a-z_]{1,120}', code) is None:
+        if re.fullmatch(r'(?:router_audio|abacus_router_audio|router_transport_capture)_[a-z_]{1,120}', code) is None:
             code = 'router_audio_runtime_outcome_unverified'
         if not scope.failure:
             scope.failure = {'purpose': purpose.value, 'reason': code,
