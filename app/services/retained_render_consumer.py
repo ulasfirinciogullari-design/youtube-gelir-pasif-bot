@@ -164,13 +164,15 @@ def _watched(pipe, state):
     controller._checked(cap)
     options = {'captured_story_continuation' if captured else 'completion_plan': cap}
     keys = controller.selected_keys(cap, 'story')
-    _require(keys == (continuation.VISUAL_KEYS if captured else completion.STORY_KEYS))
+    _require(artifacts._captured_keys(keys) if captured else keys == completion.STORY_KEYS)
     audio = audio_journal.RouterAudioReviewJournal(state['client'], **options)
     artifact_keys = artifacts._anchor_keys(keys)
     pipe.watch(*keys, *audio.keys, *artifact_keys.values(),
                *audio_reader._artifact_keys(audio).values(), c['sampled_link_anchor_key'],
                *recovery._keys(continuity.LEAF_ID))
-    control, states, control_raw, _ = controller._read_control(pipe)
+    control, states, control_raw, _ = controller._read_control(pipe,
+        **({'authorization': cap} if captured else {}))
+    control_keys = continuation.controller_keys(cap) if captured else completion.ALL_KEYS
     story = story_journal.RouterReviewJournal(state['client'], **options)._read(pipe)
     audio_state = audio._read(pipe)
     original_cap = continuation._issued_bytes(cap) if captured else cap._manifest_bytes
@@ -178,8 +180,8 @@ def _watched(pipe, state):
     _require(control_raw == original_cap and states['story'] == story
              and states['audio'] == audio_state
              and hashlib.sha256(control_raw).hexdigest() == c[prefix + '_manifest_sha256']
-             and _hash(pipe.hgetall(controller.JOURNAL_KEY)) == c[prefix + '_journal_sha256']
-             and pipe.get(controller.ANCHOR_KEY) == c[prefix + '_anchor_sha256']
+             and _hash(pipe.hgetall(control_keys[1])) == c[prefix + '_journal_sha256']
+             and pipe.get(control_keys[2]) == c[prefix + '_anchor_sha256']
              and control['predecessors']['snapshot_sha256'] == c['predecessor_snapshot_sha256']
              and list(keys) == c['journal_keys'] and _hash(story) == c['journal_state_sha256']
              and _hash(story['policy']) == c['policy_sha256']

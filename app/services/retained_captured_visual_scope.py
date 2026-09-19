@@ -35,7 +35,7 @@ def _scope(scope):
              and scope.journal._successor is None and scope.journal._completion_plan is None
              and capture._enabled(scope) is True)
     cap = scope.journal._captured_story_continuation
-    _require(continuation.selected_keys(cap, 'audio') == scope.journal.keys == continuation.AUDIO_KEYS)
+    _require(continuation.selected_keys(cap, 'audio') == scope.journal.keys)
     return cap
 
 
@@ -64,7 +64,9 @@ def _durable_object(pipe, key, digest):
 
 def _visual(pipe, scope, data):
     from app.services import abacus_router_review_artifacts as artifacts
-    manifest, states, raw, actual = continuation._read_control(pipe, current=True)
+    cap = scope.journal._captured_story_continuation
+    visual_keys = continuation.selected_keys(cap, 'story')
+    manifest, states, raw, actual = continuation._read_control(pipe, current=True, authorization=cap)
     config = continuation._configuration()
     _require(raw == data['manifest'] and actual == config[:2]
              and manifest['attestation']['runtime_head_sha'] == config[2]
@@ -80,7 +82,7 @@ def _visual(pipe, scope, data):
     expected = {'continuation_manifest_sha256': continuation._sha(raw),
         'continuation_journal_sha256': baseline_sha, 'continuation_anchor_sha256': baseline_sha,
         'predecessor_snapshot_sha256': manifest['predecessors']['snapshot_sha256'],
-        'story_evidence_sha256': _hash(qualification), 'journal_keys': list(continuation.VISUAL_KEYS),
+        'story_evidence_sha256': _hash(qualification), 'journal_keys': list(visual_keys),
         'journal_state_sha256': _hash(state), 'policy_sha256': _hash(state['policy']),
         'story_predecessor': {'version': 1, 'kind': 'captured_transport_story',
             'continuation_manifest_sha256': continuation._sha(raw), 'evidence': qualification}}
@@ -89,7 +91,7 @@ def _visual(pipe, scope, data):
         expected[key] = qualification['commitments'][key]
     _require(_raw(expected) == _raw({key: bound[key] for key in expected}),
              'router_audio_visual_binding_changed')
-    anchor_keys = artifacts._anchor_keys(continuation.VISUAL_KEYS)
+    anchor_keys = artifacts._anchor_keys(visual_keys)
     pipe.watch(*anchor_keys.values())
     _require(pipe.exists(anchor_keys[continuation.story.PURPOSES[0]]) == 0)
     anchor = _durable_object(pipe, anchor_keys[visual], bound['visual_anchor_sha256'])
@@ -98,7 +100,7 @@ def _visual(pipe, scope, data):
              and anchor['story_predecessor'] == expected['story_predecessor'])
     slot = state['slots'][visual]
     receipt = continuation.story._receipt(state['policy'], visual, slot)
-    link_key = continuation.VISUAL_KEYS[0].rsplit(':', 1)[0] + ':sampled_cut_link:v1:' + _hash(receipt)
+    link_key = visual_keys[0].rsplit(':', 1)[0] + ':sampled_cut_link:v1:' + _hash(receipt)
     _require(bound['sampled_link_anchor_key'] == link_key)
     link = _durable_object(pipe, link_key, bound['sampled_link_anchor_sha256'])
     _require(link['pointer'] == bound['sampled_link']
@@ -157,7 +159,7 @@ def _asr_snapshot(scope, artifact):
     _require(receipt['capture_acknowledged'] is True
              and receipt['summary']['response_complete'] is True
              and receipt['summary']['response_sha256'] == continuation._sha(artifact.response.content)
-             and receipt['binding']['journal_keys'] == list(continuation.AUDIO_KEYS)
+             and receipt['binding']['journal_keys'] == list(scope.journal.keys)
              and receipt['binding']['reservation_sha256'] == artifact.reservation['reservation_sha256']
              and receipt['binding']['request_sha256'] == artifact.prepared.request_sha256)
     return _raw({'reservation': artifact.reservation, 'settlement': artifact.settlement,

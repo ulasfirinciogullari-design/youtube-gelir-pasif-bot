@@ -370,7 +370,13 @@ def generate_retained_router_review(
         capture_enabled = _enabled(scope)
         scope.attempted.add(purpose)
         config = _zero_cash_guard()
-        prepared = prepare_router_request(parts, api_key=getattr(config, 'abacus_api_key', None),
+        builder = prepare_router_request
+        if scope.journal._captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import uses_schema_compatibility
+            if uses_schema_compatibility(scope.journal._captured_story_continuation):
+                from app.services.abacus_router_schema_compat import prepare_compatible_router_request
+                builder = prepare_compatible_router_request
+        prepared = builder(parts, api_key=getattr(config, 'abacus_api_key', None),
             system_instruction=system_instruction, json_schema=json_schema, max_tokens=max_tokens)
         reservation = _acknowledged_reservation(
             scope.journal.reserve(purpose, prepared), purpose, prepared)

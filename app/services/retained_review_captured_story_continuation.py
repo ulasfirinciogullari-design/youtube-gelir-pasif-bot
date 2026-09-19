@@ -259,6 +259,9 @@ def snapshot_captured_story_predecessors(client, *, story_evidence):
 
 
 def _manifest(value):
+    if type(value) is dict and value.get('kind') == 'explicit_included_visual_schema_repair':
+        from app.services.retained_visual_schema_repair import validate_manifest
+        return validate_manifest(value)
     _require(type(value) is dict and set(value) == {*_MANIFEST_FIXED, 'created_at', 'predecessors',
         'attestation', 'policies', 'source_metadata_sha256', 'new_purpose_limits', 'story_qualification'})
     _fixed(value, _MANIFEST_FIXED)
@@ -297,11 +300,12 @@ class CapturedStoryContinuationAuthorization:
     @property
     def receipt(self):
         value = _checked(self)
-        return {'version': 1, 'manifest_sha256': _sha(_issued_bytes(self)),
+        return {'version': value['version'], 'manifest_sha256': _sha(_issued_bytes(self)),
             'predecessor_snapshot_sha256': value['predecessors']['snapshot_sha256'],
             'captured_story_evidence_sha256': _hash(value['story_qualification']),
-            'prior_occupied_count': 5, 'prior_unknown_count': 4, 'additional_attempt_limit': 3,
-            'max_total_attempts': 8, 'pre_observer_capture_required': True,
+            'prior_occupied_count': value['prior_occupied_count'],
+            'prior_unknown_count': value['prior_unknown_count'], 'additional_attempt_limit': 3,
+            'max_total_attempts': value['max_total_attempts'], 'pre_observer_capture_required': True,
             'source_bound_semantic_gates_required': True, **_FLAGS}
 
 
@@ -326,9 +330,30 @@ def _authorization(raw):
 
 
 def selected_keys(authorization, kind):
-    _checked(authorization)
+    value = _checked(authorization)
     _require(type(kind) is str and kind in ('story', 'audio'))
+    if value['version'] == 2:
+        from app.services import retained_visual_schema_repair as repair
+        return repair.VISUAL_KEYS if kind == 'story' else repair.AUDIO_KEYS
     return VISUAL_KEYS if kind == 'story' else AUDIO_KEYS
+
+
+def uses_schema_compatibility(authorization):
+    return _checked(authorization)['version'] == 2
+
+
+def controller_keys(authorization):
+    if uses_schema_compatibility(authorization):
+        from app.services.retained_visual_schema_repair import ALL_KEYS as keys
+        return keys
+    return ALL_KEYS
+
+
+def historical_keys(authorization):
+    if uses_schema_compatibility(authorization):
+        from app.services.retained_visual_schema_repair import HISTORICAL_KEYS as keys
+        return keys
+    return HISTORICAL_KEYS
 
 
 def _control_journal(manifest, states):
@@ -351,7 +376,10 @@ def _ordered(states):
     return occupied
 
 
-def _read_control(pipe, *, current=False):
+def _read_control(pipe, *, current=False, authorization=None):
+    if authorization is not None and uses_schema_compatibility(authorization):
+        from app.services.retained_visual_schema_repair import read_control
+        return read_control(pipe, authorization, current=current)
     pipe.watch(*ALL_KEYS)
     _require(all(type(ttl) is int and ttl == -1 for ttl in (pipe.pttl(k) for k in ALL_KEYS)),
              'captured_story_continuation_not_durable')
@@ -393,7 +421,7 @@ def verify_scope_captured_story_continuation(client, authorization):
     try:
         context = _configuration()
         with client.pipeline() as pipe:
-            manifest, _, raw, actual = _read_control(pipe, current=True)
+            manifest, _, raw, actual = _read_control(pipe, current=True, authorization=authorization)
             _require(raw == _issued_bytes(authorization) and actual == context[:2]
                      and manifest['attestation']['runtime_head_sha'] == context[2],
                      'captured_story_continuation_capability_changed')
@@ -407,14 +435,14 @@ def verify_scope_captured_story_continuation(client, authorization):
 
 def guard_selected(pipe, authorization, kind, state):
     selected_keys(authorization, kind)
-    _, states, raw, _ = _read_control(pipe)
+    _, states, raw, _ = _read_control(pipe, authorization=authorization)
     _require(raw == _issued_bytes(authorization) and states[kind] == state,
              'captured_story_continuation_capability_changed')
 
 
 def guard_mutation(pipe, authorization, kind, *, reserve=False):
     selected_keys(authorization, kind)
-    manifest, states, raw, context = _read_control(pipe, current=reserve)
+    manifest, states, raw, context = _read_control(pipe, current=reserve, authorization=authorization)
     _require(raw == _issued_bytes(authorization), 'captured_story_continuation_capability_changed')
     if reserve:
         config = _configuration()
@@ -433,7 +461,7 @@ def guard_mutation(pipe, authorization, kind, *, reserve=False):
 def commit_selected(pipe, authorization, kind, state, old_journal):
     """One selected transition plus independent heads; never alter predecessors."""
     keys = selected_keys(authorization, kind)
-    manifest, states, raw, _ = _read_control(pipe)
+    manifest, states, raw, _ = _read_control(pipe, authorization=authorization)
     module = story if kind == 'story' else audio
     old = states[kind]
     _require(raw == _issued_bytes(authorization) and old_journal == module._journal(old)
@@ -468,8 +496,9 @@ def commit_selected(pipe, authorization, kind, state, old_journal):
     pipe.set(keys[0], module._json(state))
     pipe.hset(keys[1], mapping=journal)
     pipe.set(keys[2], module._hash(state))
-    pipe.hset(JOURNAL_KEY, mapping=control)
-    pipe.set(ANCHOR_KEY, _hash(control))
+    controls = controller_keys(authorization)
+    pipe.hset(controls[1], mapping=control)
+    pipe.set(controls[2], _hash(control))
     ack = pipe.execute()
     expected = [True, len(set(journal) - set(old_journal)), True, 0, True]
     _require(type(ack) is list and len(ack) == len(expected)

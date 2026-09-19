@@ -56,7 +56,7 @@ def audio_case(produced_captured_visual, monkeypatch):
     box.prosody_result = deepcopy(PROSODY_RESULT)
     def response(request):
         purpose = json.loads(request.content)['response_format']['json_schema']['name']
-        state = json.loads(box.client.get(continuation.AUDIO_KEYS[0]))
+        state = json.loads(box.client.get(continuation.selected_keys(box.visual_cap, 'audio')[0]))
         assert state['slots'][purpose]['response'] is None
         result = box.asr_result if purpose == ASR.value else box.prosody_result
         box.wire.chunks = [reader._raw(envelope(result))]
@@ -81,7 +81,7 @@ def _prosody(box):
 
 def persist_fixture(box, scope, artifact, *, kind='asr'):
     """Exact test-only private record; caller-supplied receipt is never a gate."""
-    state = json.loads(box.client.get(continuation.AUDIO_KEYS[0]))
+    state = json.loads(box.client.get(continuation.selected_keys(box.visual_cap, 'audio')[0]))
     policy = state['policy']
     first = scope.artifacts[ASR]
     record = {'version': 1, 'kind': kind, **reader._FLAGS,

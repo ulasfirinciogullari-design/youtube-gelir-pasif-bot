@@ -104,10 +104,11 @@ class RetainedTransportStoryEvidence:
         return False
 
 
-def _binding(state, source, keys):
-    receipt = journal._receipt(state['policy'], _STORY, state['slots'][_STORY])
+def _binding(state, source, keys, *, purpose=_STORY):
+    _require(purpose in journal.PURPOSES)
+    receipt = journal._receipt(state['policy'], purpose, state['slots'][purpose])
     reservation = {**receipt, 'reservation_sha256': journal._hash(receipt)}
-    binding = {'version': 1, 'kind': 'story', 'purpose': _STORY,
+    binding = {'version': 1, 'kind': 'story', 'purpose': purpose,
         'original_task_id': continuity.ROOT_ID, 'source_task_id': continuity.LEAF_ID,
         'journal_keys': list(keys), 'reservation_sha256': reservation['reservation_sha256'],
         'request_sha256': receipt['request_sha256'],
@@ -117,9 +118,10 @@ def _binding(state, source, keys):
     return binding, reservation
 
 
-def _records(pipe, s3, bucket, binding):
+def _records(pipe, s3, bucket, binding, *, purpose=_STORY):
+    _require(purpose in journal.PURPOSES and binding['purpose'] == purpose)
     prefix = (binding['journal_keys'][0].rsplit(':', 1)[0] + ':transport_capture:v1:'
-              + _STORY + ':' + binding['reservation_sha256'])
+              + purpose + ':' + binding['reservation_sha256'])
     intent_key, anchor_key = prefix + ':intent', prefix + ':anchor'
     pipe.watch(intent_key, anchor_key)
     for key in (intent_key, anchor_key):
@@ -140,13 +142,16 @@ def _records(pipe, s3, bucket, binding):
     shared._digest(pointer['sha256'])
     namespace = _hash(binding['journal_keys'])
     _require(pointer['key'] == f'recovery/{continuity.LEAF_ID}/router_transport/v1/{namespace}/'
-             f'{_STORY}/{binding["reservation_sha256"]}/{pointer["sha256"]}.fernet'
+             f'{purpose}/{binding["reservation_sha256"]}/{pointer["sha256"]}.fernet'
              and pointer['content_type'] == capture._CONTENT_TYPE)
     ciphertext = cuts._read_private(s3, bucket, pointer)
     return intent_key, intent, anchor_key, anchor, ciphertext
 
 
-def _packet(ciphertext, material, *, binding, reservation, state, source, summary):
+def _packet(ciphertext, material, *, binding, reservation, state, source, summary, expected_status=200):
+    # The default saved-STORY interpretation still requires HTTP 200. Only the
+    # separate rejection reader selects 400; this does not issue an observation.
+    _require(type(expected_status) is int and expected_status in (200, 400))
     _require(type(material) is str and 0 < len(material) <= 4096)
     key = base64.urlsafe_b64encode(hmac.new(material.encode('utf-8'), capture._DOMAIN,
                                           hashlib.sha256).digest())
@@ -187,7 +192,7 @@ def _packet(ciphertext, material, *, binding, reservation, state, source, summar
         and headers['content_length_valid'] is True and headers['redirect_history'] is False
         and (headers['content_length'] is None or type(headers['content_length']) is int
              and headers['content_length'] == len(bodies['response'])))
-    _same(summary, {'http_status': 200, 'response_bytes': len(bodies['response']),
+    _same(summary, {'http_status': expected_status, 'response_bytes': len(bodies['response']),
         'response_sha256': _sha(bodies['response']), 'response_complete': True,
         'response_binding_verified': True, 'transport_outcome': 'response_received',
         'headers': headers, 'root_shape': capture._shape(bodies['response'], True)})

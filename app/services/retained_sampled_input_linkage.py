@@ -226,7 +226,14 @@ def _bind_request(collector, parts, instruction, schema):
             {'role': 'user', 'content': parts}], 'response_format': {'type': 'json_schema',
             'json_schema': {'name': 'youtube_review', 'strict': True, 'schema': schema}},
             'max_tokens': 8192, 'stream': False, 'modalities': ['text']}
-    data['body'] = adapter._inspect_body(body)
+    from app.services import retained_review_captured_story_continuation as continuation
+    cap = scope.journal._captured_story_continuation
+    if cap is not None and continuation.uses_schema_compatibility(cap):
+        from app.services.abacus_router_schema_compat import prepare_compatible_router_request
+        data['body'] = prepare_compatible_router_request(parts, api_key='offline-sampled-input-binding',
+            system_instruction=instruction, json_schema=schema, max_tokens=8192)._body_bytes
+    else:
+        data['body'] = adapter._inspect_body(body)
     cuts.verify_retained_cuts(data['cuts'])
 
 

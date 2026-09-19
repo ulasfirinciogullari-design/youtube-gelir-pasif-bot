@@ -136,10 +136,12 @@ def _inspect_body(value):
     _require(type(response_format) is dict and set(response_format) == {'type', 'json_schema'}
              and response_format['type'] == 'json_schema', _REQUEST_ERROR)
     spec = response_format['json_schema']
+    from app.services.abacus_router_schema_compat import SCHEMA_NAME, schema_for_body
     _require(type(spec) is dict and set(spec) == {'name', 'strict', 'schema'}
-             and spec['name'] == 'youtube_review' and spec['strict'] is True
+             and spec['name'] in ('youtube_review', SCHEMA_NAME) and spec['strict'] is True
              and type(spec['schema']) is dict and spec['schema'].get('type') == 'object', _REQUEST_ERROR)
     _bounded_visual_schema(spec['schema'])
+    schema_for_body(body)  # A compatibility request must retain its complete authored schema.
     metadata = {**body, 'messages': [messages[0], {'role': 'user', 'content': metadata_parts}]}
     raw = _canonical(body)
     _require(len(_canonical(metadata)) <= MAX_METADATA_BYTES
@@ -417,8 +419,9 @@ def observe_router_response(prepared, response):
             _require(re.fullmatch(r'[0-9]{1,9}', length) is not None, _RESPONSE_ERROR)
             if headers.get('content-encoding', 'identity') == 'identity':
                 _require(int(length) == len(raw), _RESPONSE_ERROR)
+        from app.services.abacus_router_schema_compat import schema_for_body
         parsed = _parse_response_payload(raw,
-            schema=prepared.payload['response_format']['json_schema']['schema'],
+            schema=schema_for_body(prepared.payload),
             max_tokens=prepared.payload['max_tokens'])
         payload, output, usage = (parsed[key] for key in ('payload', 'result', 'usage'))
         evidence = {

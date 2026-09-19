@@ -58,3 +58,32 @@ reviewed MP3; it has not received an independent model listening assessment.
 
 The resulting private render remains diagnostic. These paths do not create a
 production job, spend allowance, upload, publication or series-resume grant.
+
+## Correcting the captured VISUAL schema rejection
+
+The actual 19 September VISUAL transport returned HTTP 400 with a validation
+error identifying the unsupported JSON Schema keyword `uniqueItems`. Its
+complete encrypted response is diagnostic evidence, not a quality result or
+proof of billing. The original slot remains occupied and unknown; ASR and
+prosody were never started.
+
+The explicit `youtube_review_unique_items_v1` wire format omits only this
+keyword from the provider's native response schema. It binds the entire
+original schema as the final text part, preserving the rubric and all image
+bytes. The observer reconstructs that contract and enforces every original
+constraint, including uniqueness, before accepting a response. Legacy requests
+retain their original bytes. Missing or altered contracts fail verification.
+
+`read_visual_schema_rejection` authenticates the original controller, all 36
+historical records, reservation, private encrypted capture and complete bounded
+error before issuing a sealed diagnostic object. It neither resends nor settles
+the original slot. Only this object together with the genuine saved STORY can
+commission the fixed `retained_visual_schema_repair:v1` namespace.
+
+The correction preserves six occupied requests, including five unknown outcomes,
+and allows at most one corrected VISUAL, one blind ASR and one prosody request:
+nine attempts total, with no additional cash authority. Its nine permanent
+records cannot be recommissioned after a missing acknowledgement. The full
+36-record history and rejected capture remain bound throughout sampling,
+independent component reads and final local rendering. The existing semantic
+gates and the separate production/publication boundary remain in force.

@@ -142,9 +142,17 @@ def _artifact(sink, pipe, purpose, state, source, prior_sha):
     return anchor, manifest, bodies
 
 
-def _request_bytes(request):
+def _request_bytes(request, *, schema_compat=False):
     _require(type(request) is dict and set(request) == {
         'parts', 'purpose', 'system_instruction', 'json_schema', 'max_tokens'})
+    _require(type(schema_compat) is bool)
+    if schema_compat:
+        from app.services.abacus_router_schema_compat import prepare_compatible_router_request
+        # A pure local snapshot with an inert key: no HTTP request, observer or
+        # send is created, and only its canonical body is compared to storage.
+        return prepare_compatible_router_request(request['parts'], api_key='offline-source-rederivation',
+            system_instruction=request['system_instruction'], json_schema=request['json_schema'],
+            max_tokens=request['max_tokens'])._body_bytes
     body = {'model': adapter.MODEL, 'messages': [
         {'role': 'system', 'content': request['system_instruction']},
         {'role': 'user', 'content': request['parts']}],

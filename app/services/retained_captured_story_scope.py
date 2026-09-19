@@ -28,7 +28,7 @@ def _scope(scope):
     _require(runtime._artifact_scope() is scope and type(scope.journal) is journal.RouterReviewJournal)
     cap = scope.journal._captured_story_continuation
     _require(scope.journal._successor is None and scope.journal._completion_plan is None
-             and continuation.selected_keys(cap, 'story') == scope.journal.keys == continuation.VISUAL_KEYS
+             and continuation.selected_keys(cap, 'story') == scope.journal.keys
              and capture._enabled(scope) is True, 'captured_story_scope_selection_changed')
     return cap
 
@@ -38,7 +38,7 @@ def _verify(scope, cap, evidence, *, initial):
     encoded = continuation._raw(qualification)
     context = continuation._configuration()
     with scope.journal.client.pipeline() as pipe:
-        manifest, states, raw, actual = continuation._read_control(pipe, current=True)
+        manifest, states, raw, actual = continuation._read_control(pipe, current=True, authorization=cap)
         _require(raw == continuation._issued_bytes(cap)
                  and continuation._raw(manifest['story_qualification']) == encoded
                  and actual == context[:2] and manifest['attestation']['runtime_head_sha'] == context[2],

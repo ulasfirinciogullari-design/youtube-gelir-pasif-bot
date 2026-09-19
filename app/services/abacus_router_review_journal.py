@@ -425,6 +425,12 @@ class RouterReviewJournal:
             _require(type(purpose) is str and purpose in PURPOSES, 'router_review_purpose_invalid')
             _require(purpose not in state['slots'], 'router_review_request_already_reserved')
             self._request(prepared, policy)
+            if self._captured_story_continuation is not None:
+                from app.services.retained_review_captured_story_continuation import uses_schema_compatibility
+                if uses_schema_compatibility(self._captured_story_continuation):
+                    from app.services.abacus_router_schema_compat import SCHEMA_NAME
+                    _require(prepared.payload['response_format']['json_schema']['name'] == SCHEMA_NAME,
+                             'router_review_schema_correction_required')
             fingerprint = _request_fingerprint({'lineage_id': continuity.ROOT_ID},
                                                'abacus', OPERATION, prepared.payload)
             _require(all(slot['request_sha256'] != prepared.request_sha256 for slot in state['slots'].values()),

@@ -168,7 +168,7 @@ def read_retained_captured_story_visual_evidence(client, s3, *, bucket,
     try:
         qualification = continuation._evidence(story_evidence)
         keys = continuation.selected_keys(captured_story_continuation, 'story')
-        _require(keys == continuation.VISUAL_KEYS)
+        _require(artifacts._captured_keys(keys))
         ledger = journal.RouterReviewJournal(client, captured_story_continuation=captured_story_continuation)
         sink = artifacts.RetainedRouterReviewArtifactSink(s3, bucket=bucket)
         sink._keys = keys
@@ -178,7 +178,8 @@ def read_retained_captured_story_visual_evidence(client, s3, *, bucket,
             state = ledger._read(pipe)
             _require(set(state['slots']) == {_VISUAL} and state['slots'][_VISUAL]['response'] is not None,
                      'retained_captured_story_visual_response_unacknowledged')
-            control, states, control_raw, _ = continuation._read_control(pipe)
+            control, states, control_raw, _ = continuation._read_control(pipe, authorization=captured_story_continuation)
+            control_keys = continuation.controller_keys(captured_story_continuation)
             _require(control_raw == continuation._issued_bytes(captured_story_continuation)
                      and states['story'] == state and _raw(control['story_qualification']) == _raw(qualification)
                      and pipe.exists(anchors[_STORY]) == 0)
@@ -218,7 +219,8 @@ def read_retained_captured_story_visual_evidence(client, s3, *, bucket,
                 scene_visuals, samples=samples, topic=original['spec']['topic'],
                 story_scenes=contract['candidate']['scenes'], content_style=options.get('content_style', ''),
                 evidence_sources=contract['candidate'].get('sources') or [])
-            _require(shared._request_bytes(visual['request']) == bodies['prepared'],
+            _require(shared._request_bytes(visual['request'],
+                schema_compat=continuation.uses_schema_compatibility(captured_story_continuation)) == bodies['prepared'],
                      'retained_captured_story_visual_request_changed')
             parsed = adapter._parse_response_payload(bodies['response'],
                 schema=visual['request']['json_schema'], max_tokens=visual['request']['max_tokens'])
@@ -226,8 +228,8 @@ def read_retained_captured_story_visual_evidence(client, s3, *, bucket,
                      and _raw(parsed['usage']) == _raw(manifest['evidence']['usage']))
             rows = shared._visual_component(parsed['result'], visual, options['quality_threshold'])
             commitments = {'continuation_manifest_sha256': _sha(control_raw),
-                'continuation_journal_sha256': _hash(pipe.hgetall(continuation.JOURNAL_KEY)),
-                'continuation_anchor_sha256': pipe.get(continuation.ANCHOR_KEY),
+                'continuation_journal_sha256': _hash(pipe.hgetall(control_keys[1])),
+                'continuation_anchor_sha256': pipe.get(control_keys[2]),
                 'predecessor_snapshot_sha256': control['predecessors']['snapshot_sha256'],
                 'story_evidence_sha256': _hash(qualification), 'story_predecessor': tag,
                 'journal_keys': list(keys), 'journal_state_sha256': _hash(state),
