@@ -231,7 +231,8 @@ def _bind_request(collector, parts, instruction, schema):
     if cap is not None and continuation.uses_schema_compatibility(cap):
         from app.services.abacus_router_schema_compat import prepare_compatible_router_request
         data['body'] = prepare_compatible_router_request(parts, api_key='offline-sampled-input-binding',
-            system_instruction=instruction, json_schema=schema, max_tokens=8192)._body_bytes
+            system_instruction=instruction, json_schema=schema, max_tokens=8192,
+            schema_name=continuation.request_schema_name(cap))._body_bytes
     else:
         data['body'] = adapter._inspect_body(body)
     cuts.verify_retained_cuts(data['cuts'])

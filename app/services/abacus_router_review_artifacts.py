@@ -100,7 +100,8 @@ def _anchor_keys(keys):
 def _captured_keys(keys):
     from app.services.retained_review_captured_story_continuation import VISUAL_KEYS
     from app.services.retained_visual_schema_repair import VISUAL_KEYS as CORRECTED_VISUAL_KEYS
-    return keys in (VISUAL_KEYS, CORRECTED_VISUAL_KEYS)
+    from app.services.retained_visual_enum_repair import VISUAL_KEYS as ENUM_VISUAL_KEYS
+    return keys in (VISUAL_KEYS, CORRECTED_VISUAL_KEYS, ENUM_VISUAL_KEYS)
 
 
 def _captured_tag(value, keys):

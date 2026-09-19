@@ -124,7 +124,7 @@ def validate_retained_router_prosody(prepared, response, observed, *,
                            + json.dumps(expected_narration, ensure_ascii=False)
                            + adapter._PROSODY_SUFFIX)
         _require(body['messages'][0]['content'] == audio_qc._PROSODY_SYSTEM_INSTRUCTION
-                 and adapter._canonical(body['response_format']['json_schema']['schema'])
+                 and adapter._canonical(adapter.schema_for_request(body, prepared.purpose))
                  == adapter._canonical(audio_qc._PROSODY_REVIEW_SCHEMA)
                  and body['messages'][1]['content'][1]['text'] == expected_prompt,
                  'retained_router_audio_prosody_contract_changed')

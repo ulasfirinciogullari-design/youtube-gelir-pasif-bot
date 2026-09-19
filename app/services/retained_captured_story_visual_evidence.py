@@ -220,7 +220,8 @@ def read_retained_captured_story_visual_evidence(client, s3, *, bucket,
                 story_scenes=contract['candidate']['scenes'], content_style=options.get('content_style', ''),
                 evidence_sources=contract['candidate'].get('sources') or [])
             _require(shared._request_bytes(visual['request'],
-                schema_compat=continuation.uses_schema_compatibility(captured_story_continuation)) == bodies['prepared'],
+                schema_compat=continuation.uses_schema_compatibility(captured_story_continuation),
+                schema_name=continuation.request_schema_name(captured_story_continuation)) == bodies['prepared'],
                      'retained_captured_story_visual_request_changed')
             parsed = adapter._parse_response_payload(bodies['response'],
                 schema=visual['request']['json_schema'], max_tokens=visual['request']['max_tokens'])

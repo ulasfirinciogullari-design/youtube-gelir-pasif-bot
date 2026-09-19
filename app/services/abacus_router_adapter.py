@@ -136,9 +136,9 @@ def _inspect_body(value):
     _require(type(response_format) is dict and set(response_format) == {'type', 'json_schema'}
              and response_format['type'] == 'json_schema', _REQUEST_ERROR)
     spec = response_format['json_schema']
-    from app.services.abacus_router_schema_compat import SCHEMA_NAME, schema_for_body
+    from app.services.abacus_router_schema_compat import SCHEMA_NAME, ENUM_SCHEMA_NAME, schema_for_body
     _require(type(spec) is dict and set(spec) == {'name', 'strict', 'schema'}
-             and spec['name'] in ('youtube_review', SCHEMA_NAME) and spec['strict'] is True
+             and spec['name'] in ('youtube_review', SCHEMA_NAME, ENUM_SCHEMA_NAME) and spec['strict'] is True
              and type(spec['schema']) is dict and spec['schema'].get('type') == 'object', _REQUEST_ERROR)
     _bounded_visual_schema(spec['schema'])
     schema_for_body(body)  # A compatibility request must retain its complete authored schema.

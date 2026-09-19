@@ -240,6 +240,14 @@ class FakeRedis:
             self.delete(*keys[3:])
             return 1
 
+        if script in (publish_state._CREATE_RECORD, publish_state._CAS_RECORD, publish_state._RELEASE_LOCK):
+            if any(self.exists(key) for key in keys[1:]):
+                return 0
+
+        if script == publish_state._CREATE_RECORD:
+            value, ttl = args
+            return int(bool(self.set(keys[0], value, ex=int(ttl), nx=True)))
+
         if script == publish_state._CAS_RECORD:
             old_raw, new_raw, ttl = args
             if self.values.get(keys[0]) != old_raw:
@@ -1335,6 +1343,8 @@ def test_release_registry_is_one_way_and_idempotent(monkeypatch):
 
 
 def _import_publish_tasks_with_stubs(monkeypatch):
+    from app.services.studio_state import retained_delivery_fence_keys
+
     celery_module = types.ModuleType('app.celery_app')
     task_options = {}
 
@@ -1347,6 +1357,7 @@ def _import_publish_tasks_with_stubs(monkeypatch):
     storage_module = types.ModuleType('app.services.storage')
     storage_module.download_file = lambda *_a, **_k: None
     state_module = types.ModuleType('app.services.studio_state')
+    state_module.retained_delivery_fence_keys = retained_delivery_fence_keys
     for name in (
         'create_job',
         'claim_retry_dispatch',

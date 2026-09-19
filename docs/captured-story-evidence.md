@@ -87,3 +87,37 @@ records cannot be recommissioned after a missing acknowledgement. The full
 36-record history and rejected capture remain bound throughout sampling,
 independent component reads and final local rendering. The existing semantic
 gates and the separate production/publication boundary remain in force.
+
+## Native enum compatibility and retained delivery
+
+The following actual corrected VISUAL request also returned HTTP 400: the
+provider's native `enum` field expects a string instead of a JSON Schema array.
+`read_visual_enum_rejection` authenticates this second captured rejection and
+all 45 predecessor records. The separate fixed version-3 controller preserves
+seven occupied requests and six unknown outcomes. It permits at most one new
+VISUAL, blind ASR and prosody request, ten attempts in total, with zero additional
+cash authority. Neither rejected request is replayed or settled.
+
+The new visual wire format omits native `enum` and `uniqueItems` while binding
+the complete canonical schema. Audio has an explicit compatible format too;
+blind ASR still receives no expected narration. All observers enforce original
+types, enum values, uniqueness and semantic checks locally. Sampling and the
+independent visual reader derive the same version-specific request bytes.
+Legacy builders retain their original wire format.
+
+After actual component passes and local final-file checks, a sealed render can
+be staged as private immutable video, caption, thumbnail and metadata objects.
+The staged snapshot preserves both rejection captures and every historical
+control record. A separate one-use admission reserves one child and permanently
+fences the original family and child from ordinary paid work, generic retries,
+job overwrites and generic upload ownership.
+
+The dedicated worker reserves episode five and records intent before each
+ordered YouTube effect: private upload, private status, captions, optional
+thumbnail, public release and public status. Unknown effects are never replayed.
+Only complete public receipts can atomically record the child's success and
+upload registry. A lost final acknowledgement or duplicate task reads the
+committed result without another upload. The quality disposition records
+component review and local checks; it does not assert independent listening to
+the final AAC. These receipts do not resume the scheduler or authorize another
+video. Next-video funding and readiness remain separate requirements.

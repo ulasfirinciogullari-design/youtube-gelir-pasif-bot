@@ -23,6 +23,12 @@ RETRY_CHILD_CLAIM_PREFIX = 'youtube_studio:retry_child_claim:'
 RETRY_CHILD_EXECUTION_PREFIX = 'youtube_studio:retry_child_execution:'
 EXTERNAL_EPISODE_LEAF_PREFIX = 'youtube_studio:external_episode_delivery:v1:leaf:'
 RENDER_CANCELLATION_PREFIX = 'youtube_studio:render_cancellation:v1:'
+RETAINED_DELIVERY_CHILD_PREFIX = 'youtube_studio:retained_delivery_child:v1:'
+_RETAINED_LINEAGE = ('aad98516-eee0-5f39-b49d-af33f01e688e',
+                     '69ce7728-acce-4e5d-b30f-d5432cf7f3ac',
+                     'f5315330-e927-44c7-aed7-394a331111c8')
+_RETAINED_ROOT_KEYS = tuple('youtube_studio:retained_delivery:v1:' + _RETAINED_LINEAGE[0] + suffix
+                            for suffix in (':manifest', ':journal', ':anchor'))
 PAID_CREATE_BUDGET_PREFIX = 'youtube_studio:paid_create_budget:'
 REPAIR_CHECKPOINT_TTL_SECONDS = 60 * 60 * 24 * 30
 RETRY_DISPATCH_TTL_SECONDS = REPAIR_CHECKPOINT_TTL_SECONDS
@@ -241,7 +247,17 @@ end
 '''
 
 
-_CLAIM_RETRY_DISPATCH = _SELECTED_V6_CHECK + (
+_RETAINED_DELIVERY_FENCE = (
+    "local function retained_delivery(task_id)\n"
+    " if redis.call('EXISTS', '" + RETAINED_DELIVERY_CHILD_PREFIX + "' .. task_id) == 1 then return true end\n"
+    " if " + ' or '.join("task_id == '" + task + "'" for task in _RETAINED_LINEAGE) + " then\n"
+    "  return redis.call('EXISTS', " + ', '.join("'" + key + "'" for key in _RETAINED_ROOT_KEYS) + ") > 0\n"
+    " end\n return false\nend\n"
+)
+
+
+_CLAIM_RETRY_DISPATCH = _RETAINED_DELIVERY_FENCE + _SELECTED_V6_CHECK + (
+    "if retained_delivery(ARGV[7]) or retained_delivery(ARGV[2]) then return {-7, ''} end\n"
     "if redis.call('EXISTS', '" + EXTERNAL_EPISODE_LEAF_PREFIX + "' .. ARGV[7]) == 1 then return {-4, ''} end\n"
     "if redis.call('EXISTS', '" + RENDER_CANCELLATION_PREFIX + "' .. ARGV[7]) == 1 then return {-5, ''} end\n"
     "if redis.call('EXISTS', '" + SELECTED_VISUAL_RECOVERY_PREFIX + "' .. ARGV[7]) == 1 then return {-6, ''} end\n"
@@ -298,7 +314,9 @@ return {2, ''}
 '''
 
 
-_MARK_RETRY_DISPATCH = r'''
+_MARK_RETRY_DISPATCH = _RETAINED_DELIVERY_FENCE + (
+    "if retained_delivery(string.sub(KEYS[1], " + str(len(JOB_PREFIX) + 1) + ")) then return 0 end\n"
+) + r'''
 if redis.call('HGET', KEYS[2], 'token') ~= ARGV[1] then
   return 0
 end
@@ -318,7 +336,10 @@ return 1
 '''
 
 
-_ACQUIRE_RETRY_CHILD_EXECUTION = r'''
+_ACQUIRE_RETRY_CHILD_EXECUTION = _RETAINED_DELIVERY_FENCE + (
+    "if retained_delivery(string.sub(KEYS[2], " + str(len(RETRY_CHILD_EXECUTION_PREFIX) + 1) + "))\n"
+    " or retained_delivery(ARGV[2]) then return 0 end\n"
+) + r'''
 if redis.call('EXISTS', KEYS[1]) == 0 then
   return 0
 end
@@ -452,6 +473,8 @@ def claim_retry_dispatch(
         raise ValueError('retry source has an owner cancellation fence')
     if status == -6:
         raise ValueError('selected visual recovery awaits commissioned quality and spending admission')
+    if status == -7:
+        raise ValueError('retained final requires its dedicated delivery task')
     if status == 0:
         return {
             'claimed': False,
@@ -605,6 +628,28 @@ def render_cancellation_requested(task_id: str) -> bool:
     return bool(_client().exists(RENDER_CANCELLATION_PREFIX + task_id))
 
 
+def retained_delivery_blocked(task_id: str) -> bool:
+    """A retained child or occupied ancestor cannot enter ordinary generation."""
+    if not isinstance(task_id, str) or not _TASK_ID_PATTERN.fullmatch(task_id):
+        raise ValueError('invalid retained delivery task identity')
+    keys = (RETAINED_DELIVERY_CHILD_PREFIX + task_id,)
+    if task_id in _RETAINED_LINEAGE:
+        keys += _RETAINED_ROOT_KEYS
+    return bool(_client().exists(*keys))
+
+
+def retained_delivery_fence_keys(task_id: str) -> tuple[str, ...]:
+    """Keys watched by ordinary writers before touching retained history."""
+    return (RETAINED_DELIVERY_CHILD_PREFIX + task_id,
+            *(_RETAINED_ROOT_KEYS if task_id in _RETAINED_LINEAGE else ()))
+
+
+def _watch_retained_delivery(pipe, task_id: str) -> bool:
+    keys = retained_delivery_fence_keys(task_id)
+    pipe.watch(*keys)
+    return bool(pipe.exists(*keys))
+
+
 def save_job(record: dict) -> dict:
     task_id = str(record.get('task_id') or '').strip()
     if not task_id:
@@ -625,6 +670,8 @@ def save_job(record: dict) -> dict:
                     # Requested cancellations still retain real in-flight progress.
                     # Once terminal, stale snapshots cannot resurrect the job.
                     pipe.watch(RENDER_CANCELLATION_PREFIX + task_id)
+                    if _watch_retained_delivery(pipe, task_id):
+                        return get_job(task_id) or payload
                     cancellation = pipe.get(RENDER_CANCELLATION_PREFIX + task_id)
                     if cancellation is not None and json.loads(cancellation).get('status') == 'cancelled':
                         return get_job(task_id) or payload
@@ -642,11 +689,17 @@ def save_job(record: dict) -> dict:
         overflow = client.zcard(JOB_INDEX) - MAX_INDEXED_JOBS
         if overflow > 0:
             old_ids = client.zrange(JOB_INDEX, 0, overflow - 1)
-            cleanup = client.pipeline()
             for old_id in old_ids:
-                cleanup.delete(_job_key(old_id))
-                cleanup.zrem(JOB_INDEX, old_id)
-            cleanup.execute()
+                try:
+                    with client.pipeline() as cleanup:
+                        if _watch_retained_delivery(cleanup, old_id):
+                            continue
+                        cleanup.multi()
+                        cleanup.delete(_job_key(old_id))
+                        cleanup.zrem(JOB_INDEX, old_id)
+                        cleanup.execute()
+                except redis.WatchError:
+                    continue
     except Exception:
         # Celery must keep working even when the dashboard registry is unavailable.
         pass
@@ -692,6 +745,9 @@ def update_job(task_id: str, **fields: Any) -> dict:
 
 
 _MERGE_YOUTUBE_RESULT_FIELD = '''
+for i = 2, #KEYS do
+  if redis.call('EXISTS', KEYS[i]) == 1 then return 0 end
+end
 local raw = redis.call('GET', KEYS[1])
 if not raw then return 0 end
 local ok, job = pcall(cjson.decode, raw)
@@ -726,10 +782,12 @@ def merge_youtube_result_field(
         raise ValueError('YouTube result field is invalid')
     if type(only_if_missing) is not bool or only_if_missing and field != 'youtube_automation':
         raise ValueError('Conditional merge is only valid for a missing automation outcome')
+    fence_keys = retained_delivery_fence_keys(task_id)
     status = int(_client().eval(
         _MERGE_YOUTUBE_RESULT_FIELD,
-        1,
+        1 + len(fence_keys),
         _job_key(task_id),
+        *fence_keys,
         field,
         json.dumps(values, ensure_ascii=False, separators=(',', ':'), default=_json_default),
         _now_iso(),
@@ -824,6 +882,8 @@ def mark_success(task_id: str, result: dict, *, state: str = 'SUCCESS') -> dict:
                     record = json.loads(raw) if raw is not None else {**fallback, 'result': {}}
                     if not isinstance(record, dict) or record.get('task_id') != task_id:
                         raise ValueError('Completion record does not match task')
+                    if _watch_retained_delivery(pipe, task_id):
+                        return record
                     cancellation = pipe.get(RENDER_CANCELLATION_PREFIX + task_id)
                     if cancellation is not None and json.loads(cancellation).get('status') == 'cancelled':
                         return record

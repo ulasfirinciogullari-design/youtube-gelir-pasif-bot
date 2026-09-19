@@ -53,6 +53,7 @@ from app.services.storage import download_file, upload_file, presigned_download_
 from app.services.studio_state import (
     acquire_retry_child_execution,
     render_cancellation_requested,
+    retained_delivery_blocked,
     mark_failure,
     mark_success,
     paid_create_budget_state,
@@ -4438,7 +4439,7 @@ def _guard_retry_child_execution(
     retry_dispatch_source_id: str | None,
 ) -> None:
     """Owner cancellation fences every delivery, including Celery autoretries."""
-    if render_cancellation_requested(task_id):
+    if render_cancellation_requested(task_id) or retained_delivery_blocked(task_id):
         raise Ignore()
     retry_number = int(getattr(celery_task.request, 'retries', 0) or 0)
     if (

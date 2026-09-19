@@ -426,10 +426,9 @@ class RouterReviewJournal:
             _require(purpose not in state['slots'], 'router_review_request_already_reserved')
             self._request(prepared, policy)
             if self._captured_story_continuation is not None:
-                from app.services.retained_review_captured_story_continuation import uses_schema_compatibility
+                from app.services.retained_review_captured_story_continuation import uses_schema_compatibility, request_schema_name
                 if uses_schema_compatibility(self._captured_story_continuation):
-                    from app.services.abacus_router_schema_compat import SCHEMA_NAME
-                    _require(prepared.payload['response_format']['json_schema']['name'] == SCHEMA_NAME,
+                    _require(prepared.payload['response_format']['json_schema']['name'] == request_schema_name(self._captured_story_continuation),
                              'router_review_schema_correction_required')
             fingerprint = _request_fingerprint({'lineage_id': continuity.ROOT_ID},
                                                'abacus', OPERATION, prepared.payload)

@@ -25,6 +25,17 @@ def render_delivery_family(self, source_task_id: str) -> dict:
     return render_family(source_task_id, self.request.id)
 
 
+@celery.task(name='app.production_tasks.finalize_retained_child', bind=True, acks_late=False,
+             reject_on_worker_lost=False, autoretry_for=(), max_retries=0,
+             soft_time_limit=1100, time_limit=1200)
+def finalize_retained_child(self, manifest_sha256: str) -> dict:
+    from app.services.retained_delivery_runtime import run_retained_delivery
+
+    if type(self.request.retries) is not int or self.request.retries != 0:
+        return {'status': 'stopped_unverified', 'automatic_retry_permitted': False}
+    return run_retained_delivery(self.request.id, manifest_sha256)
+
+
 @celery.task(name='app.production_tasks.observe_youtube_metrics', acks_late=False,
              autoretry_for=(), max_retries=0, soft_time_limit=250, time_limit=270)
 def observe_youtube_metrics() -> dict:

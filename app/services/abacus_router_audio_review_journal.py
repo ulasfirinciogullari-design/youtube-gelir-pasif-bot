@@ -194,11 +194,12 @@ def _request(prepared, policy):
     _require(prepared.credential_sha256 == policy['credential_sha256']
              and _json(prepared.audio) == _json(policy['audio']), 'router_audio_review_request_invalid')
     if prepared.purpose is AudioReviewPurpose.PROSODY:
+        from app.services.abacus_router_audio_adapter import schema_for_request
         body = prepared.payload
         text = body['messages'][1]['content'][1]['text']
         expected = json.loads(text[len(_PROSODY_PREFIX):-len(_PROSODY_SUFFIX)])
         _require(body['messages'][0]['content'] == audio_qc._PROSODY_SYSTEM_INSTRUCTION
-                 and _json(body['response_format']['json_schema']['schema']) == _json(audio_qc._PROSODY_REVIEW_SCHEMA)
+                 and _json(schema_for_request(body, prepared.purpose)) == _json(audio_qc._PROSODY_REVIEW_SCHEMA)
                  and _sha(expected.encode('utf-8')) == policy['expected_narration_sha256'],
                  'router_audio_review_prosody_contract_changed')
 
@@ -462,6 +463,13 @@ class RouterAudioReviewJournal:
             policy = state['policy']
             _require(purpose.value not in state['slots'], 'router_audio_review_request_already_reserved')
             _request(prepared, policy)
+            enum_compat = False
+            if self._captured_story_continuation is not None:
+                from app.services.retained_review_captured_story_continuation import _checked
+                enum_compat = _checked(self._captured_story_continuation)['version'] == 3
+            _require(prepared.payload['response_format']['json_schema']['name']
+                     == purpose.value + ('_enum_v1' if enum_compat else ''),
+                     'router_audio_schema_selection_changed')
             binding = None if purpose is AudioReviewPurpose.BLIND_ASR else _asr_binding(
                 policy, state['slots'].get(AudioReviewPurpose.BLIND_ASR.value), expected_narration, asr_result)
             _require(all(slot['request_sha256'] != prepared.request_sha256 for slot in state['slots'].values()),

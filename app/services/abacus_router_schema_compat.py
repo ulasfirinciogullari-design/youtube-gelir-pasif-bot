@@ -9,11 +9,18 @@ Legacy request bytes are unchanged. This pure module grants no send or retry.
 from app.services import abacus_router_adapter as adapter
 
 SCHEMA_NAME = 'youtube_review_unique_items_v1'
+ENUM_SCHEMA_NAME = 'youtube_review_enum_constraints_v2'
 SCHEMA_PREFIX = (
     'YOUTUBE_REVIEW_COMPLETE_SCHEMA_V1\n'
     'Return JSON conforming to this complete schema. In particular, arrays with '
     'uniqueItems=true must contain distinct values. All constraints are checked '
     'locally before this response can be accepted.\n'
+)
+ENUM_SCHEMA_PREFIX = (
+    'YOUTUBE_REVIEW_COMPLETE_SCHEMA_V2\n'
+    'Return JSON conforming to this complete schema. Enum values retain their '
+    'original JSON types and arrays with uniqueItems=true contain distinct values. '
+    'All constraints are checked locally before this response can be accepted.\n'
 )
 
 
@@ -40,44 +47,74 @@ def _lower(schema):
     return result, count
 
 
+def _lower_enums(schema):
+    """The observed provider enum field accepts a string, not a JSON Schema list."""
+    native, _ = _lower(schema)
+    def visit(node):
+        result, count = {}, 0
+        for name, value in node.items():
+            if name == 'enum':
+                count += 1
+            elif name == 'properties':
+                result[name] = {}
+                for field, child in value.items():
+                    result[name][field], added = visit(child)
+                    count += added
+            elif name == 'items':
+                result[name], added = visit(value)
+                count += added
+            else:
+                result[name] = value
+        return result, count
+    return visit(native)
+
+
+def _format(name):
+    _require(name in (SCHEMA_NAME, ENUM_SCHEMA_NAME))
+    return (SCHEMA_PREFIX, _lower) if name == SCHEMA_NAME else (ENUM_SCHEMA_PREFIX, _lower_enums)
+
+
 def schema_for_body(body):
     """Recover the complete validation schema from the immutable wire body."""
     spec = body['response_format']['json_schema']
     parts = body['messages'][1]['content']
     records = [index for index, part in enumerate(parts) if part.get('type') == 'text'
-               and part['text'].startswith(SCHEMA_PREFIX)]
+               and part['text'].startswith((SCHEMA_PREFIX, ENUM_SCHEMA_PREFIX))]
     if spec['name'] == 'youtube_review':
         _require(not records)
         return spec['schema']
-    _require(spec['name'] == SCHEMA_NAME and records == [len(parts) - 1])
-    encoded = parts[-1]['text'][len(SCHEMA_PREFIX):].encode('utf-8')
+    prefix, lower = _format(spec['name'])
+    _require(records == [len(parts) - 1] and parts[-1]['text'].startswith(prefix))
+    encoded = parts[-1]['text'][len(prefix):].encode('utf-8')
     _require(0 < len(encoded) <= adapter.MAX_METADATA_BYTES)
     original = adapter._json_loads(encoded.decode('utf-8'))
     _require(type(original) is dict and original.get('type') == 'object'
              and adapter._canonical(original) == encoded)
     adapter._bounded_visual_schema(original)
-    native, count = _lower(original)
+    native, count = lower(original)
     _require(count > 0 and adapter._canonical(native) == adapter._canonical(spec['schema']))
     return original
 
 
 def prepare_compatible_router_request(parts, *, api_key, system_instruction,
-                                      json_schema, max_tokens=adapter.MAX_OUTPUT_TOKENS):
+                                      json_schema, max_tokens=adapter.MAX_OUTPUT_TOKENS,
+                                      schema_name=SCHEMA_NAME):
     """Opt in to a different, fully bound request; never rewrite an old request."""
     try:
         _require(type(api_key) is str)
         original = adapter._copy_json(json_schema)
         _require(type(original) is dict and original.get('type') == 'object')
         adapter._bounded_visual_schema(original)
-        native, count = _lower(original)
+        prefix, lower = _format(schema_name)
+        native, count = lower(original)
         _require(count > 0)
         content = adapter._copy_json(parts)
         _require(type(content) is list and content)
-        content.append({'type': 'text', 'text': SCHEMA_PREFIX + adapter._canonical(original).decode('utf-8')})
+        content.append({'type': 'text', 'text': prefix + adapter._canonical(original).decode('utf-8')})
         body = {'model': adapter.MODEL, 'messages': [
             {'role': 'system', 'content': system_instruction}, {'role': 'user', 'content': content}],
             'response_format': {'type': 'json_schema', 'json_schema': {
-                'name': SCHEMA_NAME, 'strict': True, 'schema': native}},
+                'name': schema_name, 'strict': True, 'schema': native}},
             'max_tokens': max_tokens, 'stream': False, 'modalities': ['text']}
         return adapter.inspect_router_request(adapter.ENDPOINT, {
             'json': body, 'headers': {'Authorization': 'Bearer ' + api_key,

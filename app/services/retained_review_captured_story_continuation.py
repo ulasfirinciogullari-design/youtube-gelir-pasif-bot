@@ -259,6 +259,9 @@ def snapshot_captured_story_predecessors(client, *, story_evidence):
 
 
 def _manifest(value):
+    if type(value) is dict and value.get('kind') == 'explicit_included_visual_enum_repair':
+        from app.services.retained_visual_enum_repair import validate_manifest
+        return validate_manifest(value)
     if type(value) is dict and value.get('kind') == 'explicit_included_visual_schema_repair':
         from app.services.retained_visual_schema_repair import validate_manifest
         return validate_manifest(value)
@@ -332,28 +335,64 @@ def _authorization(raw):
 def selected_keys(authorization, kind):
     value = _checked(authorization)
     _require(type(kind) is str and kind in ('story', 'audio'))
-    if value['version'] == 2:
-        from app.services import retained_visual_schema_repair as repair
+    repair = _schema_controller(authorization)
+    if repair is not None:
         return repair.VISUAL_KEYS if kind == 'story' else repair.AUDIO_KEYS
     return VISUAL_KEYS if kind == 'story' else AUDIO_KEYS
 
 
 def uses_schema_compatibility(authorization):
-    return _checked(authorization)['version'] == 2
+    return _checked(authorization)['version'] in (2, 3)
+
+
+def request_schema_name(authorization):
+    return _checked(authorization).get('request_schema_name')
+
+
+def _schema_controller(authorization):
+    version = _checked(authorization)['version']
+    if version == 3:
+        from app.services import retained_visual_enum_repair as repair
+        return repair
+    if version == 2:
+        from app.services import retained_visual_schema_repair as repair
+        return repair
+    return None
 
 
 def controller_keys(authorization):
-    if uses_schema_compatibility(authorization):
-        from app.services.retained_visual_schema_repair import ALL_KEYS as keys
-        return keys
+    repair = _schema_controller(authorization)
+    if repair is not None:
+        return repair.ALL_KEYS
     return ALL_KEYS
 
 
 def historical_keys(authorization):
-    if uses_schema_compatibility(authorization):
-        from app.services.retained_visual_schema_repair import HISTORICAL_KEYS as keys
-        return keys
+    repair = _schema_controller(authorization)
+    if repair is not None:
+        return repair.HISTORICAL_KEYS
     return HISTORICAL_KEYS
+
+
+def rejection_capture_keys(pipe, authorization):
+    """All transitive rejection captures remain watched after a final is staged."""
+    current = _checked(authorization)
+    manifests = [current]
+    if current['version'] == 3:
+        from app.services import retained_visual_schema_repair as previous
+        pipe.watch(previous.STATE_KEY)
+        stored = pipe.get(previous.STATE_KEY)
+        _require(type(stored) is str and _hash(stored)
+            == current['schema_rejection']['commitments']['history_records'][previous.STATE_KEY])
+        manifest = _manifest(_object(stored))
+        _require(manifest['version'] == 2)
+        manifests.append(manifest)
+    result = []
+    for manifest in manifests:
+        if manifest['version'] in (2, 3):
+            bound = manifest['schema_rejection']['commitments']
+            result.extend((bound['intent_key'], bound['anchor_key']))
+    return tuple(result)
 
 
 def _control_journal(manifest, states):
@@ -378,8 +417,7 @@ def _ordered(states):
 
 def _read_control(pipe, *, current=False, authorization=None):
     if authorization is not None and uses_schema_compatibility(authorization):
-        from app.services.retained_visual_schema_repair import read_control
-        return read_control(pipe, authorization, current=current)
+        return _schema_controller(authorization).read_control(pipe, authorization, current=current)
     pipe.watch(*ALL_KEYS)
     _require(all(type(ttl) is int and ttl == -1 for ttl in (pipe.pttl(k) for k in ALL_KEYS)),
              'captured_story_continuation_not_durable')

@@ -55,7 +55,9 @@ def audio_case(produced_captured_visual, monkeypatch):
          'end': round(.1 + index * step + step * .9, 4)} for index, word in enumerate(words)]}
     box.prosody_result = deepcopy(PROSODY_RESULT)
     def response(request):
-        purpose = json.loads(request.content)['response_format']['json_schema']['name']
+        schema_name = json.loads(request.content)['response_format']['json_schema']['name']
+        purpose = {name: purpose.value for purpose in (ASR, PROSODY)
+                   for name in (purpose.value, purpose.value + '_enum_v1')}[schema_name]
         state = json.loads(box.client.get(continuation.selected_keys(box.visual_cap, 'audio')[0]))
         assert state['slots'][purpose]['response'] is None
         result = box.asr_result if purpose == ASR.value else box.prosody_result

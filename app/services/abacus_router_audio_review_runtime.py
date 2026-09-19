@@ -369,8 +369,15 @@ def _run(purpose, audio_bytes, expected_narration=None):
         _usable(scope)
         _require(purpose not in scope.attempted, 'router_audio_scope_already_attempted')
         scope.attempted.add(purpose)
+        asr_builder = adapter.prepare_blind_asr_request
+        prosody_builder = adapter.prepare_audio_prosody_request
+        if scope.journal._captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import _checked
+            if _checked(scope.journal._captured_story_continuation)['version'] == 3:
+                asr_builder = adapter.prepare_compatible_blind_asr_request
+                prosody_builder = adapter.prepare_compatible_audio_prosody_request
         if purpose is _ASR:
-            prepared = adapter.prepare_blind_asr_request(audio_bytes, api_key=scope.key)
+            prepared = asr_builder(audio_bytes, api_key=scope.key)
             return _execute(scope, prepared)
         _require(_ASR in scope.artifacts, 'router_audio_asr_unacknowledged')
         asr = scope.artifacts[_ASR]
@@ -379,7 +386,7 @@ def _run(purpose, audio_bytes, expected_narration=None):
         report = validate_retained_router_asr(asr.prepared, asr.response, asr.observed,
             expected_narration=expected_narration, original_audio=asr.prepared.audio)
         _require(report['component_pass'] is True, 'router_audio_asr_not_exact')
-        prepared = adapter.prepare_audio_prosody_request(audio_bytes, api_key=scope.key,
+        prepared = prosody_builder(audio_bytes, api_key=scope.key,
             expected_narration=expected_narration, system_instruction=audio_qc._PROSODY_SYSTEM_INSTRUCTION,
             json_schema=audio_qc._PROSODY_REVIEW_SCHEMA)
         _require(prepared.audio == asr.prepared.audio, 'router_audio_original_audio_changed')

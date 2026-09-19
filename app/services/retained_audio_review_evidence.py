@@ -221,7 +221,8 @@ def _artifact_keys(journal):
             if keys != COMPLETION_AUDIO_KEYS:
                 from app.services.retained_review_captured_story_continuation import AUDIO_KEYS as CAPTURED_AUDIO_KEYS
                 from app.services.retained_visual_schema_repair import AUDIO_KEYS as CORRECTED_AUDIO_KEYS
-                _require(keys in (CAPTURED_AUDIO_KEYS, CORRECTED_AUDIO_KEYS), 'audio_evidence_journal_invalid')
+                from app.services.retained_visual_enum_repair import AUDIO_KEYS as ENUM_AUDIO_KEYS
+                _require(keys in (CAPTURED_AUDIO_KEYS, CORRECTED_AUDIO_KEYS, ENUM_AUDIO_KEYS), 'audio_evidence_journal_invalid')
     prefix = keys[0].rsplit(':', 1)[0]
     return {'asr': prefix + ':asr_artifact', 'final': prefix + ':final_artifact'}
 
