@@ -48,7 +48,7 @@ def case(monkeypatch):
         ledger = SpendLedger(client, policy, clock=lambda: datetime(2026, 9, 8, tzinfo=timezone.utc))
         ledger.initialize()
         monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
-        monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger)
+        monkeypatch.setattr(runtime, 'configured_ledger', lambda **_: ledger)
         monkeypatch.setattr(quotes, '_fresh', lambda: None)
         initialize_test_funding(ledger)
         client.sadd(runtime._CHANNEL_INDEX, CHANNEL)

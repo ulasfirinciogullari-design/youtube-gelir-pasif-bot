@@ -561,8 +561,9 @@ def youtube_home(
     sections += '<div class="actions"><a class="btn secondary" href="/studio/history?status=deleted">Silinenler · geçmiş yayın kayıtları</a></div>'
     overview = '<section class="card">' + presentation._metrics_header(metrics) + '<div id="channel-overview-host">' + presentation._channel_overview(metrics.get('channels') or []) + '</div></section>'
     success = '<div class="notice success" role="status">YouTube kanalı başarıyla bağlandı.</div>' if connected else ''
+    budget_notice = presentation._production_budget_notice()
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanallar, gerçek yayın durumu ve performans tek yerde.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{overview}{sections}{account_card}'''
+<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanallar, gerçek yayın durumu ve performans tek yerde.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{budget_notice}{overview}{sections}{account_card}'''
     return _shell(body, same_origin_forms=True, script=presentation._metrics_script(), extra_css=presentation.METRICS_CSS)
 
 
@@ -700,7 +701,7 @@ def youtube_production_budget(
     from app.services.production_spend_runtime import budget_status
 
     _require_auth(studio_token)
-    return JSONResponse(budget_status(), headers={'Cache-Control': 'no-store'})
+    return JSONResponse(budget_status(read_timeout=2), headers={'Cache-Control': 'no-store'})
 
 
 @router.post('/studio/youtube/connect')

@@ -1116,7 +1116,8 @@ def test_studio_home_names_fal_as_optional_when_runway_is_ready(
 
     body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
 
-    assert 'Fal video isteğe bağlı · üretim çalışır' in body
+    assert 'Fal video isteğe bağlı' in body
+    assert 'isteğe bağlı · üretim çalışır' not in body
     assert 'Fal video<span class="tiny" style="margin-left:auto">İsteğe bağlı' in body
     assert '<span class="health-dot green"' in body
     assert '<span class="dot amber"' in body

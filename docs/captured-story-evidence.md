@@ -121,3 +121,15 @@ committed result without another upload. The quality disposition records
 component review and local checks; it does not assert independent listening to
 the final AAC. These receipts do not resume the scheduler or authorize another
 video. Next-video funding and readiness remain separate requirements.
+
+Authenticated Studio and YouTube pages display the existing read-only funding
+status. An absent or expired funding record remains visibly unverified; a
+configured provider key does not imply production readiness. Status reads use
+bounded Redis connect/read timeouts and no automatic transport retries. This
+display neither initializes a balance nor enables a production route.
+
+CI partitions the complete collected test list into four interleaved groups.
+Every group records the same full-collection digest, its index and selected
+count. Release verification requires all four successful groups, identical
+collection digests and full aggregate coverage. No test or genuine media check
+is removed; each collected test executes in exactly one group.

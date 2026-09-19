@@ -2432,9 +2432,9 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
         optional_names = ', '.join(
             name for name, _ok in service_states if name in optional_missing
         )
-        health_label = f'{optional_names} isteğe bağlı · üretim çalışır'
+        health_label = f'{optional_names} isteğe bağlı'
     else:
-        health_label = 'Tüm servis ayarları hazır'
+        health_label = 'Tüm bağlantı ayarları hazır'
     stored_jobs = list_jobs(HISTORY_SCAN_LIMIT) if authenticated else []
     metrics = _dashboard_metrics(stored_jobs) if authenticated else {}
     jobs = [_with_youtube_metrics(job, metrics) for job in _collapse_retry_sources(stored_jobs)]
@@ -2447,9 +2447,11 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
         '<label class="field" for="studio-token">Studio güvenlik anahtarı</label><input id="studio-token" name="token" type="password" autocomplete="off" required placeholder="Güvenli anahtarı gir">'
     )
     channel_choices = _production_channel_choices(authenticated)
+    budget_notice = _production_budget_notice() if authenticated else ''
 
     body = f'''
 <div class="hero"><div class="hero-copy"><div class="eyebrow">STUDIO</div><h1>Yeni video oluştur</h1><div class="muted">Konuyu yaz; üretim ve güvenli yükleme adımlarını Studio yönetsin.</div></div></div>
+{budget_notice}
 {overview}
 {channel_dashboard}
 <div class="studio-primary">
@@ -2814,6 +2816,47 @@ def studio_job_api(task_id: str, studio_token: str | None = Cookie(default=None,
         )
         payload['upload_allowed'] = False
     return JSONResponse(payload)
+
+
+def _production_budget_notice() -> str:
+    """Show read-only funding evidence without equating configured keys to readiness."""
+    title = 'Bütçe durumu doğrulanamadı'
+    detail = 'Üretim bütçesi şu anda okunamıyor. Kullanılabilir tutar bilinmiyor.'
+    try:
+        from app.services.production_spend_runtime import budget_status
+        status = budget_status(read_timeout=2)
+        if type(status) is not dict:
+            raise ValueError('invalid_budget_status')
+        if status.get('enforced') is False and status.get('status') == 'not_enabled':
+            title = 'Bütçe koruması kapalı'
+            detail = 'Yeni üretim için uygulamanın harcama sınırı etkin değil.'
+        elif status.get('enforced') is True and status.get('status') == 'blocked':
+            title = 'Yeni ücretli üretim bütçe kontrolünü bekliyor'
+            reason = status.get('reason_code')
+            if reason in {'spend_not_initialized', 'spend_funding_not_initialized'}:
+                detail = 'Harcama geçmişi ve kullanılabilir bakiye doğrulanmayı bekliyor. Bilinmeyen tutarlar sıfır kabul edilmiyor.'
+            elif reason in {'spend_funding_policy_expired', 'spend_funding_account_expired',
+                            'spend_funding_month_mismatch'}:
+                detail = 'Kayıtlı bütçe veya abonelik bilgisi güncel değil; yeniden doğrulanması gerekiyor.'
+            else:
+                detail = 'Bütçe kaydı doğrulanamadığı için yeni ücretli üretim başlatılamıyor.'
+        elif status.get('enforced') is True and status.get('status') == 'active':
+            funding = status.get('funding')
+            if (type(funding) is not dict or funding.get('currency') != 'USD'
+                    or funding.get('accounting') != 'reserved_cash_upper_bound_not_invoice'
+                    or type(funding.get('cash_remaining_micro')) is not int
+                    or abs(funding['cash_remaining_micro']) > 10_000_000_000):
+                raise ValueError('invalid_budget_funding')
+            remaining = funding['cash_remaining_micro']
+            amount = f'{remaining / 1_000_000:.2f}'
+            title = 'Ek API harcaması için kalan pay: ' + amount + ' USD'
+            detail = 'Bu tutar ayrılmış harcamaları içerir; fatura toplamı değildir. Her üretim öncesinde bütçe yeniden kontrol edilir.'
+            if remaining <= 0:
+                detail = 'Yeni ek harcama payı yok. Abonelik kredileri ayrıca doğrulanır.'
+    except Exception:
+        pass
+    return ('<section class="notice" role="status" aria-label="Üretim bütçesi">'
+            + '<b>' + escape(title) + '</b><p>' + escape(detail) + '</p></section>')
 
 
 def _youtube_metrics_response(model: dict, jobs: list[dict]) -> JSONResponse:

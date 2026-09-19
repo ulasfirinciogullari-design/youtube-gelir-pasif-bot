@@ -75,10 +75,19 @@ def _object(raw):
         raise SpendBlocked('spend_context_invalid') from None
 
 
-def configured_ledger():
+def configured_ledger(*, read_timeout=None):
     try:
         policy = SpendPolicy(**_object(settings.studio_spend_policy_json)).validate()
-        client = redis.Redis.from_url(settings.redis_url, decode_responses=True)
+        options = {'decode_responses': True}
+        if read_timeout is not None:
+            if (type(read_timeout) not in (int, float) or not math.isfinite(read_timeout)
+                    or not 0 < read_timeout <= 5):
+                raise SpendBlocked('spend_status_timeout_invalid')
+            from redis.backoff import NoBackoff
+            from redis.retry import Retry
+            options.update(socket_timeout=read_timeout, socket_connect_timeout=read_timeout,
+                           retry_on_timeout=False, retry=Retry(NoBackoff(), 0))
+        client = redis.Redis.from_url(settings.redis_url, **options)
         return SpendLedger(client, policy)
     except SpendBlocked:
         raise
@@ -594,12 +603,12 @@ def paid_runway_create(client, **kwargs):
     return client.text_to_video.create(**kwargs)
 
 
-def budget_status():
+def budget_status(*, read_timeout=None):
     """Safe operator-facing state; never implies invoices or total cash caps."""
     if not enforcement_enabled():
         return {'enforced': False, 'status': 'not_enabled'}
     try:
-        ledger = configured_ledger()
+        ledger = configured_ledger() if read_timeout is None else configured_ledger(read_timeout=read_timeout)
         return {'enforced': True, 'status': 'active', **ledger.snapshot(),
                 'funding': ledger.funding_snapshot()}
     except SpendBlocked as error:
