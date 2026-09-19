@@ -250,7 +250,7 @@ def test_job_row_omits_empty_target_metadata_and_legacy_panel_link(ui_modules):
     assert 'Anlatıcı sesleri' in nav
 
 
-def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkeypatch, ui_modules):
+def test_studio_create_prioritizes_creation_and_preserves_all_form_controls(monkeypatch, ui_modules):
     studio, _ = ui_modules
     monkeypatch.setattr(studio.settings, 'factory_api_token', 'studio-secret')
     monkeypatch.setattr(studio, 'get_selected_voice', lambda: {'name': 'Doğal ses'})
@@ -261,12 +261,12 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     )
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [_ready_job()])
 
-    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    body = studio.studio_create(studio_token='studio-secret').body.decode('utf-8')
 
     assert '<a class="skip-link" href="#main-content">' in body
     assert '<main id="main-content" tabindex="-1">' in body
     assert 'aria-label="Ana menü"' in body
-    assert 'aria-current=page' in body
+    assert 'href="/studio">Genel bakış</a>' in body
     assert '<details class="control-details">' in body
     assert '<summary><span>Ayarlar</span>' in body
     for field in (
@@ -309,7 +309,7 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     assert 'tamamlanan' not in archive_summary.casefold()
 
 
-def test_studio_home_uses_status_cards_without_a_duplicate_job_queue(
+def test_studio_create_uses_status_cards_without_a_duplicate_job_queue(
     monkeypatch,
     ui_modules,
 ):
@@ -357,7 +357,7 @@ def test_studio_home_uses_status_cards_without_a_duplicate_job_queue(
         lambda task_id: synced.append(task_id) or by_id[task_id],
     )
 
-    body = studio.studio_home(
+    body = studio.studio_create(
         studio_token='studio-secret',
     ).body.decode('utf-8')
     assert '<article class="job' not in body
@@ -1076,7 +1076,7 @@ def test_dashboard_failure_only_state_stays_out_of_action_queue(
         ],
     )
 
-    body = studio.studio_home(
+    body = studio.studio_create(
         studio_token='studio-secret',
     ).body.decode('utf-8')
     assert '<article class="job' not in body
@@ -1095,7 +1095,7 @@ def test_dashboard_failure_only_state_stays_out_of_action_queue(
     assert 'tamamlanan' not in archive_body.casefold()
 
 
-def test_studio_home_names_fal_as_optional_when_runway_is_ready(
+def test_studio_create_names_fal_as_optional_when_runway_is_ready(
     monkeypatch,
     ui_modules,
 ):
@@ -1114,7 +1114,7 @@ def test_studio_home_names_fal_as_optional_when_runway_is_ready(
     )
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
 
-    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    body = studio.studio_create(studio_token='studio-secret').body.decode('utf-8')
 
     assert 'Fal video isteğe bağlı' in body
     assert 'isteğe bağlı · üretim çalışır' not in body
@@ -1124,7 +1124,7 @@ def test_studio_home_names_fal_as_optional_when_runway_is_ready(
     assert '3/4' in body
 
 
-def test_studio_home_keeps_runway_required_when_only_fal_is_ready(
+def test_studio_create_keeps_runway_required_when_only_fal_is_ready(
     monkeypatch,
     ui_modules,
 ):
@@ -1143,7 +1143,7 @@ def test_studio_home_keeps_runway_required_when_only_fal_is_ready(
     )
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
 
-    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    body = studio.studio_create(studio_token='studio-secret').body.decode('utf-8')
 
     assert 'Runway ayarı eksik' in body
     assert 'Runway<span class="tiny" style="margin-left:auto">Eksik' in body
@@ -1153,7 +1153,7 @@ def test_studio_home_keeps_runway_required_when_only_fal_is_ready(
     assert '3/4' in body
 
 
-def test_studio_home_uses_a_simple_topic_input_and_collapsed_guidance(
+def test_studio_create_uses_a_simple_topic_input_and_collapsed_guidance(
     monkeypatch,
     ui_modules,
 ):
@@ -1163,7 +1163,7 @@ def test_studio_home_uses_a_simple_topic_input_and_collapsed_guidance(
     monkeypatch.setattr(studio, '_service_statuses', lambda: [('OpenAI', True)])
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
 
-    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    body = studio.studio_create(studio_token='studio-secret').body.decode('utf-8')
     main_input, advanced = body.split('<details class="control-details">', 1)
 
     assert '<label class="field" for="topic">Video konusu</label>' in main_input
@@ -2170,7 +2170,7 @@ def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monk
     assert '🔒 İlk yükleme daima gizli' in body
     assert '-webkit-line-clamp:2' in youtube_routes.CSS
     assert '<a class="brand" href="/studio">YouTube Studio</a>' in body
-    assert '<a href="/studio">Yeni video</a>' in body
+    assert 'href="/studio">Genel bakış</a>' in body
     assert '<a href="/studio/history?status=library">Videolar</a>' in body
     assert '🎬 YouTube Studio V2' not in body
     assert '>Yeni üretim</a>' not in body

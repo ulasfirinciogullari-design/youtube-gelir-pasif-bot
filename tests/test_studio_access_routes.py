@@ -114,11 +114,11 @@ def test_valid_grant_sets_only_strong_secure_cookie_after_delete_ack_and_fixed_3
     before = vars(web.config).copy()
     response = web.http.post(PATH, headers={'origin': BASE}, json={'grant': grant.token}, follow_redirects=False)
     assert response.status_code == 303
-    assert response.headers['location'] == '/studio/providers/abacus'
+    assert response.headers['location'] == '/studio'
     assert response.text == ''
     header = response.headers['set-cookie']
     assert COOKIE + '=' + FACTORY in header
-    for flag in ('HttpOnly', 'Secure', 'SameSite=strict', 'Path=/', 'Max-Age=2592000'):
+    for flag in ('HttpOnly', 'Secure', 'SameSite=lax', 'Path=/', 'Max-Age=2592000'):
         assert flag in header
     assert web.client.exists(key(grant.token)) == 0 and vars(web.config) == before
     safe(response, caplog, grant.token, cookie=True)
@@ -300,7 +300,7 @@ def test_no_mint_route_or_fastapi_body_validation_schema(web):
 
 NODE = shutil.which('node')
 @pytest.mark.skipif(NODE is None, reason='JavaScript runtime unavailable')
-@pytest.mark.parametrize('outcome', ['success', 'error', 'network', 'wrong-url', 'no-redirect', 'no-fragment'])
+@pytest.mark.parametrize('outcome', ['success', 'error', 'network', 'wrong-url', 'no-redirect'])
 def test_browser_script_clears_fragment_then_sends_only_once_on_click(web, outcome):
     harness = r'''
 const fs = require('fs');
@@ -319,7 +319,7 @@ const context = {URL, window:{location, history:{replaceState:(_a,_b,path)=>{
     events.push('fetch'); calls.push({path,options});
     if(input.outcome==='network') throw new Error('never displayed');
     return {ok:input.outcome!=='error',redirected:input.outcome!=='no-redirect',
-      url:input.outcome==='wrong-url'?'https://evil.invalid/':input.base+'/studio/providers/abacus'};
+      url:input.outcome==='wrong-url'?'https://evil.invalid/':input.base+'/studio'};
   }};
 vm.runInNewContext(input.script, context);
 const beforeClick=calls.length;
@@ -346,4 +346,43 @@ const beforeClick=calls.length;
         assert value['calls'] == 1 and value['validBody'] is True
         assert value['path'] == PATH and value['method'] == 'POST' and value['mode'] == 'cors'
         assert value['credentials'] == 'same-origin' and value['redirect'] == 'follow'
-    assert ('navigate:/studio/providers/abacus' in value['events']) == (outcome == 'success')
+    assert ('navigate:/studio' in value['events']) == (outcome == 'success')
+
+
+@pytest.mark.skipif(NODE is None, reason='JavaScript runtime unavailable')
+@pytest.mark.parametrize('outcome', ['active', 'expired', 'network', 'invalid-json'])
+def test_browser_without_grant_recovers_existing_session_with_only_read_only_probe(web, outcome):
+    harness = r'''
+const fs=require('fs'),vm=require('vm');
+const input=JSON.parse(fs.readFileSync(0,'utf8')),events=[],calls=[];
+let callback;
+const button={disabled:false,addEventListener:(_,fn)=>{callback=fn;}},message={textContent:''};
+const context={URL,window:{location:{hash:'',origin:input.base,replace:p=>events.push(p)},
+ history:{replaceState:()=>events.push('fragment-cleared')}},
+ document:{getElementById:id=>id==='open-studio'?button:message},
+ fetch:async(path,options)=>{calls.push({path,options});
+   if(input.outcome==='network')throw Error('PRIVATE_NETWORK_ERROR');
+   return {ok:input.outcome!=='expired',json:async()=>{
+     if(input.outcome==='invalid-json')throw Error('PRIVATE_JSON_ERROR');
+     return {authenticated:input.outcome==='active'};}};}};
+vm.runInNewContext(input.script,context);
+setImmediate(async()=>{
+  const beforeRetry=calls.length;
+  if(input.outcome!=='active')await callback();
+  process.stdout.write(JSON.stringify({events,calls,beforeRetry,message:message.textContent,disabled:button.disabled}));
+});
+'''
+    result = subprocess.run([NODE, '-e', harness], input=json.dumps({
+        'script': web.routes._SCRIPT, 'base': BASE, 'outcome': outcome}),
+        text=True, capture_output=True, timeout=10, check=True)
+    value = json.loads(result.stdout)
+    assert value['events'][0] == 'fragment-cleared'
+    assert value['beforeRetry'] == 1 and len(value['calls']) == (1 if outcome == 'active' else 2)
+    assert ('/studio' in value['events']) == (outcome == 'active')
+    for call in value['calls']:
+        assert call['path'] == '/studio/api/session' and call['options']['method'] == 'GET'
+        assert call['options']['credentials'] == 'same-origin' and call['options']['redirect'] == 'error'
+        assert 'body' not in call['options']
+    assert 'PRIVATE_' not in value['message']
+    if outcome != 'active':
+        assert value['disabled'] is False

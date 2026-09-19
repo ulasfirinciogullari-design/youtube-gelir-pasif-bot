@@ -14,6 +14,11 @@ def partition(items, index, count):
     if (len(nodeids) < count or len(set(nodeids)) != len(nodeids)
             or any(type(nodeid) is not str or not nodeid for nodeid in nodeids)):
         raise pytest.UsageError('Full test collection must be nonempty and unique')
+    # Parametrizations built from sets can collect in a different order in
+    # separate Python processes. Partition the canonical node-ID order so no
+    # test is omitted or duplicated across independently collected shards.
+    items = sorted(items, key=lambda item: item.nodeid)
+    nodeids = [item.nodeid for item in items]
     selected = items[index::count]
     omitted = [item for position, item in enumerate(items) if position % count != index]
 

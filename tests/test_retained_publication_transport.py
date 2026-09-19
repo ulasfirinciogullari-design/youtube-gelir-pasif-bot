@@ -49,7 +49,8 @@ def test_one_private_upload_and_ordered_public_receipt_or_permanent_unknown(exec
     def captions(actual, video, path, language):
         effect('captions')
         assert actual is credentials and video == video_id and Path(path).suffix == '.srt' and language == 'tr'
-        return {'id': 'SyntheticCaption01', 'snippet': {'videoId': video, 'language': language}}
+        return {'id': 'Synthetic/Caption+' + 'a' * 180 + '==',
+                'snippet': {'videoId': video, 'language': language}}
     def release(actual, video, mode, **kw):
         effect('release')
         assert actual is credentials and video == video_id and mode == 'public' and kw == {'contains_synthetic_media': True}
@@ -104,3 +105,17 @@ def test_unissued_plan_cannot_access_oauth_or_any_transport(monkeypatch):
     monkeypatch.setattr(transport.youtube_auth, 'load_credentials', lambda *a, **k: pytest.fail('No OAuth'))
     for value in (None, {}, object.__new__(publication.PreparedRetainedPublication)):
         with pytest.raises(transport.RetainedPublicationError): transport.publish_retained_final(value)
+
+
+@pytest.mark.parametrize('value', ['short', 'Opaque/Caption+Identifier==', 'a' * 256,
+                                  '識別子:id', 'a' * 4096])
+def test_opaque_caption_ids_are_preserved_without_video_id_rules(value):
+    assert transport._caption_id(value) == value
+
+
+@pytest.mark.parametrize('value', [None, True, 7, {}, [], '', '   ', 'id\nnext',
+                                  'id\x00next', 'id\x7fnext', '\ud800',
+                                  'a' * 4097, '語' * 1366])
+def test_invalid_or_oversized_caption_identifiers_are_rejected(value):
+    with pytest.raises(transport.RetainedPublicationError):
+        transport._caption_id(value)

@@ -19,7 +19,7 @@ from app.youtube_routes import COOKIE_NAME, _require_same_origin
 
 router = APIRouter()
 PATH = '/studio/access'
-DESTINATION = '/studio/providers/abacus'
+DESTINATION = '/studio'
 MAX_BODY_BYTES = 2048
 MAX_TOKEN_CHARS = 256
 _COOKIE_MAX_AGE = 30 * 24 * 60 * 60
@@ -31,8 +31,31 @@ _SCRIPT = r'''(() => {
   const message = document.getElementById('access-status');
   if (!/^[A-Za-z0-9_-]{43}$/.test(grant)) {
     grant = '';
-    button.disabled = true;
-    message.textContent = 'Giriş bağlantısı eksik veya geçersiz.';
+    let checking = false;
+    async function resume() {
+      if (checking) return;
+      checking = true;
+      button.disabled = true;
+      message.textContent = 'Bu cihazdaki oturum kontrol ediliyor…';
+      try {
+        const response = await fetch('/studio/api/session', {
+          method: 'GET', credentials: 'same-origin', redirect: 'error', cache: 'no-store',
+          referrerPolicy: 'no-referrer', headers: {'Accept': 'application/json'}
+        });
+        if (response.ok && (await response.json()).authenticated === true) {
+          window.location.replace('/studio');
+          return;
+        }
+        message.textContent = 'Bu cihazda açık oturum bulunamadı. Sana özel gönderilen giriş bağlantısını bu tarayıcıda aç.';
+      } catch (_) {
+        message.textContent = 'Oturum kontrol edilemedi. Bağlantını kontrol edip tekrar deneyebilirsin.';
+      }
+      button.textContent = 'Oturumu tekrar kontrol et';
+      button.disabled = false;
+      checking = false;
+    }
+    button.addEventListener('click', resume);
+    resume();
     return;
   }
   let submitted = false;
@@ -49,16 +72,16 @@ _SCRIPT = r'''(() => {
         referrerPolicy: 'no-referrer', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({grant: pending})
       });
-      const destination = new URL('/studio/providers/abacus', window.location.origin).href;
+      const destination = new URL('/studio', window.location.origin).href;
       if (response.ok && response.redirected && response.url === destination) {
-        window.location.replace('/studio/providers/abacus');
+        window.location.replace('/studio');
         return;
       }
     } catch (_) {}
     message.textContent = 'Giriş tamamlanamadı. Yeni bir giriş bağlantısı gerekiyor.';
   });
 })();'''
-_STYLE = '''html{color-scheme:dark;background:#10131b;color:#f3f5fa;font-family:system-ui,sans-serif}body{margin:0;padding:24px}main{max-width:480px;margin:12vh auto;padding:28px;border:1px solid #343d50;border-radius:16px;background:#192130}h1{font-size:28px}p{line-height:1.6;color:#c6cedc}button{padding:13px 20px;background:#7e69ef;color:white;border:0;border-radius:10px;font:inherit;cursor:pointer}button:disabled{opacity:.55;cursor:default}button:focus-visible{outline:3px solid #bfb4ff;outline-offset:3px}'''
+_STYLE = '''*{box-sizing:border-box}html{color-scheme:dark;background:#0b0e15;color:#f3f5fa;font-family:system-ui,-apple-system,sans-serif}body{margin:0;min-height:100vh;padding:24px;background:radial-gradient(ellipse at 50% 0,#25203e,transparent 65%)}main{max-width:460px;margin:10vh auto;padding:34px;border:1px solid #353448;border-radius:24px;background:#131822;box-shadow:0 24px 90px #0004}.brand{color:#bbaaff;font-size:12px;letter-spacing:.12em;font-weight:750;margin:0 0 34px}.mark{display:grid;place-items:center;width:52px;height:52px;background:#2b2246;border:1px solid #5b497f;border-radius:15px;color:#c1afff;font-size:24px;margin-bottom:22px}h1{font-size:29px;letter-spacing:-.04em;line-height:1.2;margin:0 0 12px}p{line-height:1.7;color:#b9c2d2;font-size:14px}#access-status{min-height:48px}button,.back{display:block;width:100%;text-align:center;padding:14px 18px;background:#8c75f5;color:#fff;border:0;border-radius:12px;font:inherit;font-weight:650;cursor:pointer;text-decoration:none;margin:22px 0}button:hover,.back:hover{background:#a18bff}button:disabled{opacity:.55;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #d5caff;outline-offset:4px}.foot{padding-top:18px;margin-top:24px;border-top:1px solid #303342;color:#8f9bb0;font-size:12px}.foot b{color:#b8c3d5}noscript p{color:#f6d19b}@media(max-width:480px){body{padding:16px}main{margin:6vh auto;padding:26px 22px}h1{font-size:27px}}'''
 
 
 def _hash(value):
@@ -77,12 +100,15 @@ _HEADERS = {
 
 def _page(*, status_code=200, error=False):
     message = 'Giriş tamamlanamadı. Yeni bir giriş bağlantısı gerekiyor.' if error else 'Devam etmek için aşağıdaki düğmeye dokunun.'
-    button = '' if error else '<button id="open-studio" type="button">Studio’yu aç</button>'
+    button = '<a class="back" href="/studio/access">Giriş ekranına dön</a>' if error else '<button id="open-studio" type="button">Studio’yu aç</button>'
     script = '' if error else '<script>' + _SCRIPT + '</script>'
     return HTMLResponse('<!doctype html><html lang="tr"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1"><title>Studio girişi</title>'
-        '<style>' + _STYLE + '</style></head><body><main><h1>Studio’ya güvenli giriş</h1>'
+        '<style>' + _STYLE + '</style></head><body><main><p class="brand">YOUTUBE STUDIO</p>'
+        '<div class="mark" aria-hidden="true">▶</div><h1>Studio’ya hoş geldin</h1><p>Kanalların, videoların ve otomasyonun burada.</p>'
         '<p id="access-status" role="status">' + message + '</p>' + button
+        + '<noscript><p>Studio’ya giriş için tarayıcında JavaScript açık olmalı.</p></noscript>'
+        + '<p class="foot"><b>Bir kez giriş yapman yeterli.</b><br>Oturumun bu tarayıcıda 30 gün saklanır. Giriş yaptıktan sonra normal site adresini kullanabilirsin.</p>'
         + '</main>' + script + '</body></html>', status_code=status_code, headers=_HEADERS)
 
 
@@ -155,7 +181,7 @@ async def studio_access_login(request: Request):
         cookie = session_cookie_for(receipt)
         response = RedirectResponse(DESTINATION, status_code=303, headers=_HEADERS)
         response.set_cookie(COOKIE_NAME, cookie, max_age=_COOKIE_MAX_AGE, path='/',
-                            httponly=True, secure=True, samesite='strict')
+                            httponly=True, secure=True, samesite='lax')
         return response
     except HTTPException as error:
         return _page(status_code=error.status_code, error=True)

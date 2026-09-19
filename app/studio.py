@@ -160,6 +160,10 @@ METRICS_CSS = r'''
 
 METRICS_CSS += '.delivery-badges .state{display:inline-flex;font-size:11px;font-weight:850;padding:5px 8px;border-radius:999px}.delivery-badges .state.attention{background:#3d3316;color:#ffe187}'
 BASE_CSS += METRICS_CSS
+BASE_CSS += r'''
+.overview-hero{align-items:center;margin:24px 0}.overview-hero h1{font-size:clamp(28px,5vw,40px)}.overview-hero .muted{max-width:550px}.overview-top{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}.automation-card{position:relative;overflow:hidden;background:linear-gradient(135deg,#211d38,#101722);border:1px solid #45405f;border-radius:18px;padding:24px}.automation-card h2{font-size:22px;margin:10px 0}.automation-card p{margin:8px 0 0;color:var(--soft);font-size:14px;line-height:1.6}.automation-card .section-kicker{color:#b8a8ff}.overview-top .notice{margin:0;padding:24px;border-radius:18px;display:flex;flex-direction:column;justify-content:center;background:#161b24;border-color:#3c3841}.overview-top .notice b{font-size:17px;line-height:1.45}.overview-top .notice p{font-size:13px;line-height:1.7;margin:10px 0 0}.overview-counts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 26px}.overview-count{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;border:1px solid var(--line);background:var(--surface);border-radius:14px}.overview-count:hover{border-color:#8876c8;background:#191b2a}.overview-count b{font-size:30px;line-height:1;font-variant-numeric:tabular-nums}.overview-count span{font-size:13px;color:var(--soft)}.overview-count small{display:block;margin-top:4px;color:var(--muted);font-size:11px}.workflow-strip{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:18px 0 0;padding:0;list-style:none;counter-reset:step}.workflow-strip li{display:flex;align-items:center;gap:6px;color:#c0b8d7;font-size:11px;counter-increment:step}.workflow-strip li:before{content:counter(step);display:grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1px solid #625579;color:#dcd0ff;font-size:10px}.overview-section{margin:24px 0}.overview-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.overview-heading h2{font-size:19px;margin:0}.overview-heading a{font-size:12px;color:#c0b2fa}.overview-recent{border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden}.overview-video{display:flex;align-items:center;gap:16px;justify-content:space-between;padding:17px 20px;border-bottom:1px solid var(--line)}.overview-video:last-child{border-bottom:0}.overview-video:hover{background:#181d2a}.overview-video-title{font-weight:750;font-size:14px;line-height:1.5;overflow-wrap:anywhere}.overview-video-meta{color:var(--muted);font-size:12px;margin-top:5px}.overview-video .delivery-badges{justify-content:flex-end;margin:0;flex-shrink:0}.overview-footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+@media(max-width:650px){.overview-top{grid-template-columns:1fr;gap:10px}.automation-card,.overview-top .notice{padding:19px}.overview-counts{gap:7px}.overview-count{flex-direction:column;align-items:flex-start;padding:13px 10px;gap:12px}.overview-count b{font-size:26px}.overview-count small{display:none}.overview-video{align-items:flex-start;flex-direction:column;gap:10px;padding:15px}.overview-video .delivery-badges{justify-content:flex-start}.overview-hero .btn{width:100%;text-align:center}}
+'''
 
 
 def _valid_token(value: str | None) -> bool:
@@ -169,6 +173,19 @@ def _valid_token(value: str | None) -> bool:
 def _require_auth(cookie_token: str | None) -> None:
     if not _valid_token(cookie_token):
         raise HTTPException(status_code=401, detail='Studio oturumu gerekli')
+
+
+async def studio_auth_exception(request: Request, error: HTTPException):
+    """Browser navigation gets a login page; API and mutation failures stay 401."""
+    from fastapi.exception_handlers import http_exception_handler
+    route = request.scope.get('route')
+    response_class = getattr(route, 'response_class', None)
+    if (error.status_code == 401 and error.detail == 'Studio oturumu gerekli'
+            and request.method == 'GET' and 'text/html' in request.headers.get('accept', '').lower()
+            and isinstance(response_class, type) and issubclass(response_class, HTMLResponse)):
+        return RedirectResponse('/studio/access', status_code=303,
+                                headers={'Cache-Control': 'private, no-store', 'Referrer-Policy': 'no-referrer'})
+    return await http_exception_handler(request, error)
 
 
 _VISUAL_DIAGNOSTIC_MAX_BYTES = 4 * 1024 * 1024
@@ -2099,7 +2116,7 @@ def _status_overview(counts: dict[str, int], *, active: str | None = None) -> st
     create_current = ' aria-current="page"' if current_bucket == 'create' else ''
     links = [
         '<a class="status-filter create" data-status-filter="new" '
-        f'href="/studio"{create_current}><span class="status-count" '
+        f'href="/studio/create"{create_current}><span class="status-count" '
         'aria-hidden="true">＋</span><span class="status-name">Yeni video</span></a>'
     ]
     for key in CONSOLE_STATUS_ORDER:
@@ -2143,9 +2160,9 @@ def _history_archive(
 
 def _nav(active: str) -> str:
     primary_links = [
-        ('studio', '/studio', 'Yeni video'),
+        ('studio', '/studio', 'Genel bakış'),
         ('history', '/studio/history?status=library', 'Videolar'),
-        ('youtube', '/studio/youtube', 'YouTube'),
+        ('youtube', '/studio/youtube', 'Kanallar'),
     ]
     items = ''.join(
         f'<a class="{"active" if key == active else ""}" href="{url}"'
@@ -2153,7 +2170,8 @@ def _nav(active: str) -> str:
         for key, url, label in primary_links
     )
     more = (
-        '<details class="nav-more"><summary>Diğer</summary><div class="nav-more-menu">'
+        '<details class="nav-more"><summary>Ayarlar</summary><div class="nav-more-menu">'
+        '<a href="/studio/create">Video oluştur</a>'
         '<a href="/voice-audition">Anlatıcı sesleri</a>'
         '<a href="/studio/providers/abacus">Abacus bağlantısı</a></div></details>'
     )
@@ -2166,7 +2184,9 @@ def _shell(body: str, *, active: str = 'studio', title: str = 'YouTube Studio V2
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         f'<meta name="theme-color" content="#080b11"><title>{escape(title)}</title>'
         f'<style>{BASE_CSS}</style></head><body><a class="skip-link" href="#main-content">İçeriğe geç</a>'
-        f'<div class="wrap">{_nav(active)}<main id="main-content" tabindex="-1">{body}</main></div>{script}</body></html>'
+        f'<div class="wrap">{_nav(active)}<main id="main-content" tabindex="-1">{body}</main></div>{script}</body></html>',
+        headers={'Cache-Control': 'private, no-store', 'Referrer-Policy': 'same-origin',
+                 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY'},
     )
 
 
@@ -2395,9 +2415,83 @@ def _refresh_active_jobs(jobs: list[dict]) -> list[dict]:
     return refreshed
 
 
+@router.get('/studio/api/session')
+def studio_session(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    """Same-origin cookie check only; no grant, provider, Redis or OAuth action."""
+    if not _valid_token(studio_token):
+        return JSONResponse({'authenticated': False}, status_code=401,
+                            headers={'Cache-Control': 'private, no-store'})
+    return JSONResponse({'authenticated': True}, headers={'Cache-Control': 'private, no-store'})
+
+
 @router.get('/studio', response_class=HTMLResponse)
 def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    if not _valid_token(studio_token):
+        return RedirectResponse('/studio/access', status_code=303, headers={'Cache-Control': 'private, no-store'})
+    jobs_available = True
+    try:
+        stored_jobs = list_jobs(HISTORY_SCAN_LIMIT)
+        if not isinstance(stored_jobs, list):
+            raise ValueError('jobs_unavailable')
+    except Exception:
+        stored_jobs, jobs_available = [], False
+    metrics = _dashboard_metrics(stored_jobs)
+    jobs = [_with_youtube_metrics(job, metrics) for job in _collapse_retry_sources(stored_jobs)]
+    counts = _console_counts(jobs)
+    channels = metrics.get('channels') or []
+    states = {row.get('production_status') for row in channels}
+    if not jobs_available:
+        heading, detail = 'Durum bilgisi alınamıyor', 'Video kayıtları şu anda okunamıyor. Sayfayı biraz sonra yenileyebilirsin.'
+    elif counts.get('running', 0):
+        heading, detail = 'Video üzerinde çalışılıyor', 'Devam eden işin aşamasını üretim listesinden takip edebilirsin.'
+    elif states & {'paused', 'retry_uncertain'}:
+        heading, detail = 'Otomasyon kontrol bekliyor', 'Devam etmek için üretimdeki sorunun çözülmesi gerekiyor. Kanal durumları aşağıda.'
+    elif 'scheduled' in states:
+        heading, detail = 'Bir sonraki üretim planlandı', 'Başlama zamanı kanalda görünür. Üretim öncesinde bütçe ve bağlantılar yeniden kontrol edilir.'
+    elif states and states <= {'disabled', 'exhausted'}:
+        heading, detail = 'Yeni üretim bekleniyor', 'Kanal ayarlarından otomatik üretimi ve sıradaki konuları görebilirsin.'
+    else:
+        heading, detail = 'Otomasyon durumu doğrulanıyor', 'Kanal ve video kayıtları hazır oldukça burada gösterilir.'
+    cards = []
+    for key, label, note in (('running', 'Üretimde', 'Devam eden işler'),
+                             ('attention', 'Kontrol bekleyen', 'İlgilenilmesi gerekenler'),
+                             ('library', 'Videolar', 'Hazır ve yüklenen videolar')):
+        count = str(counts.get(key, 0)) if jobs_available else '—'
+        cards.append(f'<a class="overview-count" href="/studio/history?status={key}"><span>{label}<small>{note}</small></span><b>{count}</b></a>')
+    recent = []
+    for job in jobs:
+        task_id = _canonical_task_id(job.get('task_id'))
+        if not task_id or _console_bucket(job) not in {'running', 'attention', 'library'}:
+            continue
+        title = escape(_ellipsize(_safe_ui_text(_job_title(job)), 100))
+        meta = ' · '.join(filter(None, (_job_channel(job), _job_format(job), _job_date(job))))
+        recent.append(f'<a class="overview-video" href="/studio/job/{task_id}"><div><div class="overview-video-title">{title}</div><div class="overview-video-meta">{escape(meta)}</div></div><div class="delivery-badges">{_delivery_badges(job)}</div></a>')
+        if len(recent) == 5:
+            break
+    empty = 'Henüz gösterilecek video yok. İlk videonu oluşturabilir veya kanal ayarlarına bakabilirsin.' if jobs_available else 'Video listesi şu anda okunamıyor.'
+    body = (
+        '<div class="hero overview-hero"><div class="hero-copy"><div class="eyebrow">YOUTUBE STUDIO</div>'
+        '<h1>Kontrol panelin</h1><p class="muted">Üretim, yayınlar ve bütçe. Hepsi tek yerde.</p></div>'
+        '<a class="btn" href="/studio/create">+ Video oluştur</a></div>'
+        '<div class="overview-top"><section class="automation-card" aria-label="Otomasyon durumu">'
+        '<span class="section-kicker">OTOMASYON</span><h2>' + heading + '</h2><p>' + detail + '</p>'
+        '<ol class="workflow-strip" aria-label="Üretim akışının aşamaları"><li>Üretim</li><li>Kalite kontrolü</li><li>Yayın</li><li>Sonraki bölüm</li></ol></section>'
+        + _production_budget_notice() + '</div><nav class="overview-counts" aria-label="Video durumları">'
+        + ''.join(cards) + '</nav><section class="overview-section">' + _metrics_header(metrics)
+        + '<div id="channel-overview-host">' + _channel_overview(channels) + '</div></section>'
+        '<section class="overview-section"><div class="overview-heading"><h2>Son videolar</h2>'
+        '<a href="/studio/history?status=library">Tüm videolar →</a></div><div class="overview-recent">'
+        + (''.join(recent) or '<div class="empty">' + empty + '</div>') + '</div></section>'
+        '<p class="overview-footer">Yayın ve performans bilgileri son doğrulanan kayıtları gösterir. Kanal bazında ayrıntılar Kanallar sayfasında.</p>'
+    )
+    return _shell(body, title='Kontrol paneli · Studio', script=_metrics_script())
+
+
+@router.get('/studio/create', response_class=HTMLResponse)
+def studio_create(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
     authenticated = _valid_token(studio_token)
+    if not authenticated:
+        return RedirectResponse('/studio/access', status_code=303, headers={'Cache-Control': 'private, no-store'})
     selected_voice = escape(get_selected_voice().get('name') or 'Ses seçilmedi')
     service_states = _service_statuses()
     service_by_name = dict(service_states)
@@ -2438,7 +2532,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     stored_jobs = list_jobs(HISTORY_SCAN_LIMIT) if authenticated else []
     metrics = _dashboard_metrics(stored_jobs) if authenticated else {}
     jobs = [_with_youtube_metrics(job, metrics) for job in _collapse_retry_sources(stored_jobs)]
-    channel_dashboard = (_metrics_header(metrics) + '<div id="channel-overview-host">' + _channel_overview(metrics.get('channels') or []) + '</div>') if authenticated else ''
+    channel_dashboard = ''
     console_counts = _console_counts(jobs)
     overview = _status_overview(console_counts) if authenticated else ''
     archive = _history_archive(_archive_counts(jobs)) if authenticated else ''
@@ -2493,7 +2587,7 @@ function setDefaults(){publishAfter.disabled=!production.checked;if(production.c
 preview.addEventListener('change',setDefaults);production.addEventListener('change',setDefaults);
 document.getElementById('video-format').addEventListener('change',()=>{if(document.getElementById('video-format').value==='shorts'){duration.value='0.5';}});
 </script>'''
-    return _shell(body, script=script + (_metrics_script() if authenticated else ''))
+    return _shell(body, active='create', title='Video oluştur · Studio', script=script)
 
 
 def _job_row(job: dict) -> str:
@@ -2592,7 +2686,7 @@ def studio_start(
         kind = 'render'
     create_job(task.id, spec, kind=kind)
     response = RedirectResponse(f'/studio/job/{task.id}', status_code=303)
-    response.set_cookie(COOKIE_NAME, credential, max_age=60 * 60 * 24 * 30, httponly=True, secure=True, samesite='strict')
+    response.set_cookie(COOKIE_NAME, credential, max_age=60 * 60 * 24 * 30, httponly=True, secure=True, samesite='lax')
     return response
 
 

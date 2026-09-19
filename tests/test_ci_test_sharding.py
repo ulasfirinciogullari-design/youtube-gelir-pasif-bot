@@ -15,7 +15,7 @@ def test_full_collection_is_disjoint_complete_and_ordered(count):
         selected, omitted, record = partition(items, index, count)
         assert {id(item) for item in selected}.isdisjoint(id(item) for item in omitted)
         assert {id(item) for item in selected + omitted} == {id(item) for item in items}
-        assert selected == sorted(selected, key=items.index)
+        assert selected == sorted(selected, key=lambda item: item.nodeid)
         assert record['selected_items'] == len(selected)
         assert record['total_items'] == len(items)
         seen.extend(id(item) for item in selected)
@@ -39,12 +39,25 @@ def test_empty_duplicate_or_incomplete_collection_is_rejected(nodeids, count):
         partition([SimpleNamespace(nodeid=nodeid) for nodeid in nodeids], 0, count)
 
 
-def test_added_or_reordered_collection_changes_the_evidence():
+def test_added_collection_changes_evidence_but_process_order_does_not():
     items = [SimpleNamespace(nodeid=name) for name in ('first', 'second', 'third', 'fourth')]
     original = partition(items, 0, 2)[2]
     assert original == partition(items, 0, 2)[2]
-    for changed in (items[::-1], items + [SimpleNamespace(nodeid='added')]):
-        assert partition(changed, 0, 2)[2]['collection_sha256'] != original['collection_sha256']
+    assert partition(items[::-1], 0, 2)[2] == original
+    changed = items + [SimpleNamespace(nodeid='added')]
+    assert partition(changed, 0, 2)[2]['collection_sha256'] != original['collection_sha256']
+
+
+def test_independent_process_collection_orders_cover_every_test_exactly_once():
+    items = [SimpleNamespace(nodeid=f'case-{n}') for n in range(101)]
+    collections = [items, items[::-1], items[30:] + items[:30], items[::2] + items[1::2]]
+    selected, evidence = [], []
+    for index, collection in enumerate(collections):
+        group, _, record = partition(collection, index, 4)
+        selected.extend(item.nodeid for item in group)
+        evidence.append(record['collection_sha256'])
+    assert sorted(selected) == sorted(item.nodeid for item in items)
+    assert len(set(evidence)) == 1
 
 
 def test_hook_reports_actual_selection_and_deselection():

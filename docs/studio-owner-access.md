@@ -21,10 +21,21 @@ Neither the grant nor the session key is rendered into HTML or error messages.
 
 Consumption validates the encrypted record, current context and remaining TTL,
 then deletes the grant with a watched acknowledgement before issuing the
-existing secure, HttpOnly, SameSite=Strict Studio cookie. Replays, expired or
+secure, HttpOnly, SameSite=Lax Studio cookie for 30 days. Lax permits ordinary
+top-level navigation from a privately delivered link; same-origin checks on the
+grant POST and channel changes remain required. Replays, expired or
 changed records, races and uncertain acknowledgements cannot issue a cookie or
-retry automatically. Success redirects to the Abacus key-entry page; it does
+retry automatically. Success redirects to the Studio overview; it does
 not verify or promote a provider key, dispatch production or initialize spending.
+
+Without a grant fragment, the access page checks the existing cookie through
+the read-only `/studio/api/session` endpoint. This also recovers an older Strict
+cookie after an external navigation: the check originates on the Studio site.
+It never mints or consumes a grant, accesses Redis, changes the OAuth epoch,
+or dispatches production. Missing or expired sessions get an explanatory login
+screen. Protected HTML navigations redirect there; API calls and mutation
+failures retain their authorization errors. The overview is `/studio`; the
+manual creation form remains available at `/studio/create`.
 
 The live rotation procedure stages a new random key privately, preserves the
 existing local vault and all other service variables, and changes only the

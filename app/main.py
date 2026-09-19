@@ -19,7 +19,7 @@ from app.services.voice import (
     save_selected_voice,
     get_selected_voice,
 )
-from app.studio import router as studio_router, _production_publish_options
+from app.studio import router as studio_router, _production_publish_options, studio_auth_exception
 from app.external_routes import router as external_router
 from app.editorial_routes import router as editorial_router
 from app.episode_delivery_routes import router as episode_delivery_router
@@ -39,6 +39,7 @@ app.include_router(held_render_cancellation_router)
 app.include_router(deleted_episode_replacement_router)
 app.include_router(provider_key_router)
 app.include_router(studio_access_router)
+app.add_exception_handler(HTTPException, studio_auth_exception)
 
 
 class JobCreate(BaseModel):

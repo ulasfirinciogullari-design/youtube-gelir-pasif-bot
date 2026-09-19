@@ -61,7 +61,7 @@ def _public_receipts(pipe, manifest, plan_record, execution):
             and value == {'video_id': video_id, 'privacy_status': privacy,
                 'contains_synthetic_media': True, 'upload_status': value['upload_status']})
     caption = results['captions']['observed']
-    _require(caption == {'video_id': video_id, 'caption_id': transport._id(caption['caption_id']),
+    _require(caption == {'video_id': video_id, 'caption_id': transport._caption_id(caption['caption_id']),
         'language': plan_record['plan']['default_language']})
     thumbnail = 'uploaded' if plan_record['plan']['require_thumbnail'] else 'not_required'
     _require(results['thumbnail']['observed'] == {'video_id': video_id, 'status': thumbnail}

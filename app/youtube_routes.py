@@ -179,7 +179,7 @@ def _require_same_origin(request: Request) -> None:
     if not expected:
         # Logout remains usable before OAuth is configured. The request host is
         # a safe fallback here because an attacker cannot both target a
-        # different host and attach this host's Strict Studio cookie.
+        # different host and attach this host's Studio cookie on a form POST.
         expected = _canonical_origin(str(request.base_url))
     if not expected:
         raise HTTPException(status_code=503, detail='Studio public origin is not configured')
@@ -220,9 +220,9 @@ def _shell(
         f'<title>{escape(title)}</title><style>{CSS}{extra_css}</style></head><body>'
         '<a class="skip-link" href="#main-content">İçeriğe geç</a><div class="wrap">'
         '<header class="top"><a class="brand" href="/studio">YouTube Studio</a>'
-        '<nav class="nav" aria-label="Ana menü"><a href="/studio">Yeni video</a>'
+        '<nav class="nav" aria-label="Ana menü"><a href="/studio">Genel bakış</a>'
         '<a href="/studio/history?status=library">Videolar</a>'
-        '<a class="active" aria-current="page" href="/studio/youtube">YouTube</a></nav></header>'
+        '<a class="active" aria-current="page" href="/studio/youtube">Kanallar</a></nav></header>'
         f'<main id="main-content" tabindex="-1">{body}</main></div>{script}</body></html>',
         status_code=status_code,
     )
@@ -752,7 +752,7 @@ def youtube_oauth_callback(
                 status_code=400,
             ))
         complete_authorization(code, state, oauth_binding or '')
-        # The Studio session cookie is SameSite=Strict. Render one same-origin
+        # Older Studio session cookies are SameSite=Strict. Render a same-origin
         # document before navigating back so the cookie is available after the
         # cross-site Google callback without weakening CSRF protection.
         return _delete_oauth_binding_cookie(_shell(

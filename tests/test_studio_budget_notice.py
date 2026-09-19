@@ -68,7 +68,7 @@ def test_authenticated_studio_places_budget_before_creation(ui_modules, monkeypa
     studio, _ = ui_modules
     monkeypatch.setattr(studio, '_production_budget_notice', lambda: '<div>VISIBLE_BUDGET_HOLD</div>')
     monkeypatch.setattr(studio, '_production_channel_choices', lambda *_: '')
-    body = studio.studio_home(studio_token='studio-secret').body.decode()
+    body = studio.studio_create(studio_token='studio-secret').body.decode()
     assert body.index('VISIBLE_BUDGET_HOLD') < body.index('id="studio-form"')
 
 

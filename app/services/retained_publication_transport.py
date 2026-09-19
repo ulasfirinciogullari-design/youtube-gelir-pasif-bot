@@ -38,6 +38,23 @@ def _id(value):
     return value
 
 
+def _caption_id(value):
+    """Caption IDs are opaque API strings, independent of video ID syntax.
+
+    Preserve padding, punctuation and longer IDs exactly. The bounds here limit
+    our receipt size; they do not reinterpret the provider's identifier.
+    https://developers.google.com/youtube/v3/docs/captions#id
+    """
+    _require(type(value) is str and 0 < len(value) <= 4096 and not value.isspace()
+             and all(ord(char) >= 32 and ord(char) != 127 for char in value))
+    try:
+        encoded = value.encode('utf-8')
+    except UnicodeError:
+        raise RetainedPublicationError('retained_publication_unverified_no_retry') from None
+    _require(len(encoded) <= 4096)
+    return value
+
+
 def _key(phase, suffix):
     _require(phase in _PHASES and suffix in ('intent', 'result'))
     return PREFIX + phase + ':' + suffix
@@ -166,7 +183,7 @@ def publish_retained_final(prepared):
         _require(type(caption) is dict and type(caption.get('snippet')) is dict
                  and caption['snippet'].get('videoId') == video_id
                  and caption['snippet'].get('language') == plan['default_language'])
-        _observe(state, 'captions', {'video_id': video_id, 'caption_id': _id(caption.get('id')),
+        _observe(state, 'captions', {'video_id': video_id, 'caption_id': _caption_id(caption.get('id')),
                                    'language': plan['default_language']})
         _start(state, 'thumbnail')
         if plan['require_thumbnail']:

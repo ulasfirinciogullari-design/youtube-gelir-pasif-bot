@@ -80,7 +80,8 @@ def _authorize(request, *, write=False):
 
 def _authorization_failure(error):
     status = error.status_code if error.status_code in (400, 401, 403, 503) else 403
-    message = 'Studio oturumu gerekli.' if status == 401 else 'Bu istek kabul edilmedi. Studio sayfasından devam edin.'
+    message = ('Oturumun bu tarayıcıda açık değil. <a href="/studio/access">Studio’ya giriş yap</a>.'
+               if status == 401 else 'Bu istek kabul edilmedi. Studio sayfasından devam edin.')
     return _page(message, status_code=status)
 
 

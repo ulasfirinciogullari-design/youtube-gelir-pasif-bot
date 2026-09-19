@@ -50,7 +50,8 @@ def synthetic_youtube(box, monkeypatch):
     def captions(actual, video, path, language):
         effect('captions')
         assert actual is credentials and video == video_id and Path(path).is_file()
-        return {'id': 'SyntheticCaption01', 'snippet': {'videoId': video, 'language': language}}
+        return {'id': 'Synthetic/Caption+' + 'a' * 180 + '==',
+                'snippet': {'videoId': video, 'language': language}}
     def release(actual, video, mode, **kw):
         effect('release')
         assert actual is credentials and video == video_id and mode == 'public'
