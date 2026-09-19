@@ -29,3 +29,32 @@ Component evidence grants no final-edit approval, claim, retry, publication or
 series resumption. Any remaining VISUAL, ASR and prosody requests require a
 separate explicit continuation that preserves the existing occupied requests;
 this reader cannot commission one or authorize another STORY request.
+
+## Completing the retained components
+
+The explicit captured-STORY continuation preserves all 27 predecessor records
+and their unknown outcomes. It creates one fixed nine-record namespace with
+three ordered attempts: VISUAL, blind ASR, then prosody. A genuine saved-STORY
+object must be bound to the owning VISUAL scope before reservation. The visual
+preparation retains the original voice, six exact cuts and all 30 sampled JPEGs;
+its version-2 artifacts identify the captured predecessor without inventing a
+same-namespace STORY settlement or ordinary reusable checkpoint.
+
+The independent VISUAL reader checks the source, complete prepared request,
+actual sampled inputs, private artifacts and semantic result. Audio admission
+requires this closed object in the owning scope. Prosody additionally requires
+the actual acknowledged ASR artifact and its persisted private evidence. These
+bindings are rechecked with the source and control records before reservation
+and transmission. An ambiguous response remains occupied; captured bytes and
+known persistence receipts survive later failures.
+
+`prepare_retained_render_inputs` reads both component families again and
+materializes private original-audio and exact-cut inputs under a shared watched
+read. Its one-use capability allows a local render with bounded decoder, filter
+and encoder threads. The renderer records the executed concatenation and audio
+mux commands and verifies duration, frames, audible audio and freezes, including
+an unfinished freeze at the end. The AAC is a recorded transformation of the
+reviewed MP3; it has not received an independent model listening assessment.
+
+The resulting private render remains diagnostic. These paths do not create a
+production job, spend allowance, upload, publication or series-resume grant.

@@ -99,13 +99,15 @@ class _ReviewScope:
 
 @contextmanager
 def retained_router_review_scope(source_task_id, *, successor=None, completion_plan=None,
+                                 captured_story_continuation=None,
                                  capture_transport=False):
     """Only the explicit retained-review entry may open this synchronous scope."""
     _require(_SCOPE.get() is None, 'router_review_scope_nested')
     _require(type(source_task_id) is str and source_task_id == LEAF_ID,
              'router_review_source_not_supported')
-    _require(type(capture_transport) is bool and not (successor is not None and completion_plan is not None)
-             and (completion_plan is None or capture_transport is True),
+    _require(type(capture_transport) is bool
+             and sum(value is not None for value in (successor, completion_plan, captured_story_continuation)) <= 1
+             and (completion_plan is None and captured_story_continuation is None or capture_transport is True),
              'router_review_capture_option_invalid')
     _zero_cash_guard()
     try:
@@ -113,6 +115,9 @@ def retained_router_review_scope(source_task_id, *, successor=None, completion_p
         if successor is not None:
             from app.services.retained_review_credential_successor import verify_scope_successor
             verify_scope_successor(foundation.client, successor)
+        if captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import verify_scope_captured_story_continuation
+            verify_scope_captured_story_continuation(foundation.client, captured_story_continuation)
         if completion_plan is not None:
             from app.services.retained_review_completion_plan import verify_scope_completion_plan
             verify_scope_completion_plan(foundation.client, completion_plan)
@@ -122,7 +127,8 @@ def retained_router_review_scope(source_task_id, *, successor=None, completion_p
                      and getattr(foundation.policy, name) == 0 for name in _CAPS),
                  'router_review_zero_cash_required')
         scope = _ReviewScope(RouterReviewJournal(foundation.client, clock=foundation.clock, successor=successor,
-                                               completion_plan=completion_plan),
+                                               completion_plan=completion_plan,
+                                               captured_story_continuation=captured_story_continuation),
                              threading.get_ident())
     except SpendBlocked:
         raise
@@ -356,6 +362,10 @@ def generate_retained_router_review(
                  'router_review_scope_unusable')
         _require(type(purpose) is str and purpose in PURPOSES, 'router_review_purpose_invalid')
         _require(purpose not in scope.attempted, 'router_review_scope_already_attempted')
+        if scope.journal._captured_story_continuation is not None:
+            _require(purpose == PURPOSES[1], 'captured_story_continuation_story_forbidden')
+            from app.services.retained_captured_story_scope import captured_story_predecessor
+            captured_story_predecessor(scope)
         from app.services.abacus_router_transport_capture import _enabled, _begin
         capture_enabled = _enabled(scope)
         scope.attempted.add(purpose)

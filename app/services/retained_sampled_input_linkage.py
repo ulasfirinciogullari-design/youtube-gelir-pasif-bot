@@ -232,6 +232,14 @@ def _bind_request(collector, parts, instruction, schema):
 
 def _source(pipe, data, scope, artifact):
     state, source = artifacts._state(pipe, scope, artifact, data['keys'])
+    _source_identity(pipe, data)
+    if artifacts._captured_keys(data['keys']):
+        tag = artifacts.captured_story_predecessor_tag(scope, data['captured_story_predecessor'])
+        _require(_raw(tag) == _raw(data['story_predecessor']))
+    return state, source
+
+
+def _source_identity(pipe, data):
     from app.services import preserved_visual_recovery as recovery
     pipe.watch(*recovery._keys(continuity.LEAF_ID))
     actual, fingerprint = recovery._state(continuity.LEAF_ID, pipe)
@@ -245,12 +253,32 @@ def _source(pipe, data, scope, artifact):
     pointers = sorted(actual['generated_asset_candidates']['entries'], key=lambda row: row['scene_index'])
     _require(all(row['raw'] == {'sha256': pointer['raw_sha256'], 'size': pointer['raw_size'],
                                'provider': pointer['provider']} for row, pointer in zip(data['record']['cuts'], pointers)))
-    return state, source
 
 
 def _before_visual(data, scope):
     # Events and their complete body binding must precede the actual VISUAL
     # reservation. A later re-extraction is not an input-production witness.
+    if artifacts._captured_keys(data['keys']):
+        from app.services.retained_captured_story_scope import captured_story_predecessor
+        actual = captured_story_predecessor(scope)
+        tag = artifacts.captured_story_predecessor_tag(scope, actual)
+        if 'story_predecessor' in data:
+            _require(data['captured_story_predecessor'] is actual
+                     and _raw(data['story_predecessor']) == _raw(tag))
+        with scope.journal.client.pipeline() as pipe:
+            pipe.watch(*data['keys'], *artifacts._anchor_keys(data['keys']).values())
+            state = scope.journal._read(pipe)
+            source = continuity._derive(pipe, state['policy']['profile_revision'])
+            _require(state['slots'] == {} and artifacts._hash(source) == state['policy']['continuity_sha256']
+                     and pipe.exists(*artifacts._anchor_keys(data['keys']).values()) == 0)
+            _source_identity(pipe, data)
+            from app.services.preserved_visual_recovery import _story_fields
+            _require(_sha(_raw(_story_fields(json.loads(data['package']))))
+                     == tag['evidence']['commitments']['immutable_core_sha256'])
+            artifacts._ack_read(pipe)
+        data['captured_story_predecessor'] = actual
+        data['story_predecessor'] = tag
+        return
     actual = runtime.retained_router_review_artifacts().get(_STORY)
     _require(type(actual) is runtime.AcknowledgedRouterReview)
     with scope.journal.client.pipeline() as pipe:
@@ -303,6 +331,9 @@ def persist_sampled_input_link(collector, artifact, visual_receipt):
                      and anchor['continuity_sha256'] == artifacts._hash(source)
                      and anchor['policy_sha256'] == artifacts._hash(state['policy'])
                      and artifact.evidence == state['slots'][_VISUAL]['response']['evidence'])
+            if artifacts._captured_keys(data['keys']):
+                _require(_raw(anchor['story_predecessor']) == _raw(data['story_predecessor'])
+                         and anchor['prior_story_anchor_sha256'] is None)
             return state, source, anchor
         with scope.journal.client.pipeline() as pipe:
             state, source, visual_anchor = current(pipe)
@@ -317,6 +348,8 @@ def persist_sampled_input_link(collector, artifact, visual_receipt):
             'bodies': {kind: artifacts._pointer(_VISUAL, kind, raw, data['keys']) for kind, raw in bodies.items()},
             'prior_story_anchor_sha256': visual_anchor['prior_story_anchor_sha256'],
             'journal_keys': list(data['keys']), **artifacts._FLAGS}
+        if artifacts._captured_keys(data['keys']):
+            manifest.update(version=2, story_predecessor=data['story_predecessor'])
         _require(sink._read_blob(visual_anchor['manifest'], _VISUAL, 'manifest') == artifacts._raw(manifest))
         for kind, raw in bodies.items():
             _require(sink._read_blob(manifest['bodies'][kind], _VISUAL, kind) == raw)
@@ -329,6 +362,8 @@ def persist_sampled_input_link(collector, artifact, visual_receipt):
             'visual_artifact_manifest': visual_anchor['manifest'], 'evidence': artifact.evidence,
             'events': data['events'], 'actual_sampling_events_verified': True,
             'sampled_wire_linkage_verified': True, **_FLAGS}
+        if artifacts._captured_keys(data['keys']):
+            record.update(version=2, story_predecessor=data['story_predecessor'])
         raw = _raw(record)
         prefix = f'recovery/{continuity.LEAF_ID}/sampled_cut_link/v1/'
         pointer = cuts._put(s3, storage.settings.bucket, prefix + _sha(raw) + '.json', raw, 'application/json')
@@ -338,6 +373,8 @@ def persist_sampled_input_link(collector, artifact, visual_receipt):
             'visual_artifact_anchor_sha256': artifacts._hash(visual_anchor),
             'cut_manifest_sha256': data['cut_receipt']['manifest']['sha256'],
             'sampled_wire_linkage_verified': True, **_FLAGS}
+        if artifacts._captured_keys(data['keys']):
+            anchor.update(version=2, story_predecessor=data['story_predecessor'])
         encoded = _raw(anchor)
         with scope.journal.client.pipeline() as pipe:
             after, actual_source, actual_anchor = current(pipe)
@@ -352,9 +389,12 @@ def persist_sampled_input_link(collector, artifact, visual_receipt):
                      and _raw(actual_anchor) == _raw(visual_anchor))
             artifacts._ack_read(pipe)
         _checked(collector)
-        return {'version': 1, 'kind': 'retained_sampled_cut_link_receipt', 'anchor_key': key,
+        receipt = {'version': 1, 'kind': 'retained_sampled_cut_link_receipt', 'anchor_key': key,
                 'anchor_sha256': _sha(encoded), 'pointer': pointer,
                 'sampled_wire_linkage_verified': True, **_FLAGS}
+        if artifacts._captured_keys(data['keys']):
+            receipt.update(version=2, story_predecessor=data['story_predecessor'])
+        return receipt
     except Exception:
         if scope is not None:
             scope.failed = True

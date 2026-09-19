@@ -97,6 +97,44 @@ def _anchor_keys(keys):
     return {_STORY: prefix + ':story_artifact:v1', _VISUAL: prefix + ':visual_artifact:v1'}
 
 
+def _captured_keys(keys):
+    from app.services.retained_review_captured_story_continuation import VISUAL_KEYS
+    return keys == VISUAL_KEYS
+
+
+def _captured_tag(value, keys):
+    """Validate the closed diagnostic tag, without treating its JSON as a grant."""
+    from app.services import retained_review_captured_story_continuation as continuation
+    _require(_captured_keys(keys) and type(value) is dict and set(value) == {
+        'version', 'kind', 'continuation_manifest_sha256', 'evidence'}
+        and type(value['version']) is int and value['version'] == 1
+        and value['kind'] == 'captured_transport_story'
+        and type(value['continuation_manifest_sha256']) is str
+        and re.fullmatch('[0-9a-f]{64}', value['continuation_manifest_sha256']) is not None,
+        'router_review_artifact_captured_predecessor_invalid')
+    continuation._qualification(value['evidence'])
+    return value
+
+
+def captured_story_predecessor_tag(scope, story_evidence):
+    """Derive a tag only from the actual bound predecessor in this owner scope."""
+    from app.services import retained_captured_story_scope as captured_scope
+    from app.services import retained_review_captured_story_continuation as continuation
+    _require(runtime._artifact_scope() is scope,
+             'router_review_artifact_captured_predecessor_invalid')
+    bound = captured_scope.captured_story_predecessor(scope)
+    _require(story_evidence is bound, 'router_review_artifact_captured_predecessor_invalid')
+    cap = scope.journal._captured_story_continuation
+    manifest = continuation._checked(cap)
+    evidence = continuation._evidence(bound)
+    keys = _journal_keys(scope.journal)
+    _require(keys == continuation.selected_keys(cap, 'story')
+             and _raw(evidence) == _raw(manifest['story_qualification']),
+             'router_review_artifact_captured_predecessor_changed')
+    return _captured_tag({'version': 1, 'kind': 'captured_transport_story',
+        'continuation_manifest_sha256': cap.receipt['manifest_sha256'], 'evidence': evidence}, keys)
+
+
 def _mark_attempt(scope, purpose):
     identity = id(scope)
     def remove(reference):
@@ -141,9 +179,12 @@ class PersistedRouterReviewArtifact:
 
 
 def _receipt(anchor):
-    return {'version': 1, 'purpose': anchor['purpose'], 'source_task_id': continuity.LEAF_ID,
+    result = {'version': 1, 'purpose': anchor['purpose'], 'source_task_id': continuity.LEAF_ID,
             'anchor_key': _anchor_keys(anchor['journal_keys'])[anchor['purpose']], 'anchor_sha256': _hash(anchor),
             'manifest': anchor['manifest'], **_FLAGS}
+    if _captured_keys(tuple(anchor['journal_keys'])):
+        result.update(version=2, story_predecessor=_captured_tag(anchor['story_predecessor'], tuple(anchor['journal_keys'])))
+    return result
 
 
 def _pointer(purpose, kind, raw, keys):
@@ -184,7 +225,14 @@ def _state(pipe, scope, artifact, keys):
     _require(_hash(source) == state['policy']['continuity_sha256']
              and all(source[name] == state['policy'][name] for name in (
                  'old_connection_id', 'current_connection_id')), 'router_review_artifact_source_changed')
-    expected = {_STORY} if artifact.purpose == _STORY else {_STORY, _VISUAL}
+    if _captured_keys(keys):
+        from app.services.retained_captured_story_scope import captured_story_predecessor
+        _require(artifact.purpose == _VISUAL and pipe.exists(_anchor_keys(keys)[_STORY]) == 0,
+                 'router_review_artifact_captured_predecessor_invalid')
+        captured_story_predecessor_tag(scope, captured_story_predecessor(scope))
+        expected = {_VISUAL}
+    else:
+        expected = {_STORY} if artifact.purpose == _STORY else {_STORY, _VISUAL}
     _require(set(state['slots']) == expected and all(
         state['slots'][purpose]['response'] is not None for purpose in expected),
         'router_review_artifact_slot_unacknowledged')
@@ -308,14 +356,19 @@ class RetainedRouterReviewArtifactSink:
         ttl = pipe.pttl(key)
         _require(type(ttl) is int and ttl == -1, 'router_review_artifact_anchor_not_durable')
         anchor = _object(pipe.get(key))
+        captured = _captured_keys(self._keys)
         _require(set(anchor) == {'version', 'kind', 'purpose', 'original_task_id', 'source_task_id',
             'policy_sha256', 'continuity_sha256', 'journal_state_sha256', 'manifest',
-            'prior_story_anchor_sha256', 'journal_keys', *_FLAGS}
-            and type(anchor['version']) is int and anchor['version'] == 1
+            'prior_story_anchor_sha256', 'journal_keys', *_FLAGS} | ({'story_predecessor'} if captured else set())
+            and type(anchor['version']) is int and anchor['version'] == (2 if captured else 1)
             and anchor['kind'] == 'retained_router_review_artifact_anchor' and anchor['purpose'] == purpose
             and anchor['original_task_id'] == continuity.ROOT_ID and anchor['source_task_id'] == continuity.LEAF_ID
             and anchor['journal_keys'] == list(self._keys)
             and _flags(anchor), 'router_review_artifact_anchor_invalid')
+        if captured:
+            _require(purpose == _VISUAL and anchor['prior_story_anchor_sha256'] is None,
+                     'router_review_artifact_captured_predecessor_invalid')
+            _captured_tag(anchor['story_predecessor'], self._keys)
         _checked_pointer(anchor['manifest'], purpose, 'manifest', self._keys)
         return anchor
 
@@ -347,7 +400,7 @@ class RetainedRouterReviewArtifactSink:
                           manifest['response_status_code'], previous)
         return anchor
 
-    def persist(self, artifact, *, prior_story_anchor=None):
+    def persist(self, artifact, *, prior_story_anchor=None, captured_story_predecessor=None):
         """One scope/purpose attempt; incomplete writes remain non-authorizing."""
         scope = None
         try:
@@ -359,7 +412,16 @@ class RetainedRouterReviewArtifactSink:
             self._keys = keys
             anchors = _anchor_keys(keys)
             self._client_guard()
-            _require((prior_story_anchor is None) is (purpose == _STORY), 'router_review_artifact_prior_required')
+            captured = _captured_keys(keys)
+            if captured:
+                _require(purpose == _VISUAL and prior_story_anchor is None,
+                         'router_review_artifact_captured_predecessor_invalid')
+                predecessor_tag = captured_story_predecessor_tag(scope, captured_story_predecessor)
+            else:
+                _require(captured_story_predecessor is None
+                         and (prior_story_anchor is None) is (purpose == _STORY),
+                         'router_review_artifact_prior_required')
+                predecessor_tag = None
             bodies = {'prepared': artifact.prepared_body_bytes, 'wire': artifact.request_body_bytes,
                       'response': artifact.response_body_bytes, 'result': _raw(artifact.result, _LIMITS['result'])}
             reservation, evidence, status = artifact.reservation, artifact.evidence, artifact.response_status_code
@@ -369,7 +431,7 @@ class RetainedRouterReviewArtifactSink:
                          and (purpose != _STORY or pipe.exists(anchors[_VISUAL]) == 0),
                          'router_review_artifact_anchor_exists')
                 _validate_capture(purpose, bodies, reservation, evidence, status, state)
-                prior = self._prior(pipe, state, source, prior_story_anchor) if purpose == _VISUAL else None
+                prior = self._prior(pipe, state, source, prior_story_anchor) if purpose == _VISUAL and not captured else None
                 _ack_read(pipe)
             prior_sha = _hash(prior) if prior is not None else None
             pointers = {kind: self._put_blob(raw, purpose, kind, scope, artifact) for kind, raw in bodies.items()}
@@ -377,18 +439,25 @@ class RetainedRouterReviewArtifactSink:
                 'source': source, 'journal_state': state, 'reservation': reservation, 'evidence': evidence,
                 'response_status_code': status, 'bodies': pointers, 'prior_story_anchor_sha256': prior_sha,
                 'journal_keys': list(keys), **_FLAGS}
+            if captured:
+                manifest.update(version=2, story_predecessor=predecessor_tag)
             manifest_pointer = self._put_blob(_raw(manifest), purpose, 'manifest', scope, artifact)
             anchor = {'version': 1, 'kind': 'retained_router_review_artifact_anchor', 'purpose': purpose,
                 'original_task_id': continuity.ROOT_ID, 'source_task_id': continuity.LEAF_ID,
                 'policy_sha256': _hash(state['policy']), 'continuity_sha256': _hash(source),
                 'journal_state_sha256': _hash(state), 'manifest': manifest_pointer,
                 'prior_story_anchor_sha256': prior_sha, 'journal_keys': list(keys), **_FLAGS}
+            if captured:
+                anchor.update(version=2, story_predecessor=predecessor_tag)
             with scope.journal.client.pipeline() as pipe:
                 current, current_source = _state(pipe, scope, artifact, keys)
                 _require(_raw(current) == _raw(state) and _raw(current_source) == _raw(source)
                          and pipe.exists(anchors[purpose]) == 0, 'router_review_artifact_source_changed')
                 if prior is not None:
                     _require(_raw(self._read_anchor(pipe, _STORY)) == _raw(prior), 'router_review_artifact_prior_changed')
+                if captured:
+                    _require(_raw(captured_story_predecessor_tag(scope, captured_story_predecessor)) == _raw(predecessor_tag),
+                             'router_review_artifact_captured_predecessor_changed')
                 _scope(artifact, scope, keys)
                 pipe.multi()
                 pipe.set(anchors[purpose], _raw(anchor).decode('utf-8'), nx=True)
@@ -402,6 +471,9 @@ class RetainedRouterReviewArtifactSink:
                          'router_review_artifact_anchor_readback_changed')
                 if prior is not None:
                     _require(_raw(self._read_anchor(pipe, _STORY)) == _raw(prior), 'router_review_artifact_prior_changed')
+                if captured:
+                    _require(_raw(captured_story_predecessor_tag(scope, captured_story_predecessor)) == _raw(predecessor_tag),
+                             'router_review_artifact_captured_predecessor_changed')
                 _ack_read(pipe)
             _scope(artifact, scope, keys)
             receipt = object.__new__(PersistedRouterReviewArtifact)

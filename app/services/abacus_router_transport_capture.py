@@ -195,7 +195,8 @@ def _journal_state(scope, data, prepared, purpose, reservation):
         pipe.watch(*keys)
         scope.journal._admit(pipe, reserve=False)
         # A newly installed diagnostic fence must also prevent a pending send.
-        if getattr(scope.journal, '_completion_plan', None) is None:
+        if (getattr(scope.journal, '_completion_plan', None) is None
+                and getattr(scope.journal, '_captured_story_continuation', None) is None):
             from app.services.retained_router_protocol_probe import PROBE_KEYS
             pipe.watch(*PROBE_KEYS)
             _require(pipe.exists(*PROBE_KEYS) == 0, 'router_transport_capture_admission_changed')
@@ -213,6 +214,10 @@ def _journal_state(scope, data, prepared, purpose, reservation):
         if data['kind'] == 'audio':
             expected.update(audio_journal._FLAGS)
         _require(_raw(expected) == reservation and prepared.request_sha256 == slot['request_sha256'])
+        if data['kind'] == 'audio' and scope.journal._captured_story_continuation is not None:
+            from app.services.retained_captured_visual_scope import require_audio_predecessors
+            require_audio_predecessors(pipe, scope.journal._captured_story_continuation, purpose,
+                                       reserved=True)
         source = continuity._derive(pipe, state['policy']['profile_revision'])
         _require(_sha(_raw(source)) == state['policy']['continuity_sha256'])
         credential = getattr(spending.settings, 'abacus_api_key', None)

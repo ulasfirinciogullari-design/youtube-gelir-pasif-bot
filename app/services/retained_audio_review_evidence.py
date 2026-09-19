@@ -218,7 +218,9 @@ def _artifact_keys(journal):
         from app.services.retained_review_credential_successor import AUDIO_KEYS
         if keys != AUDIO_KEYS:
             from app.services.retained_review_completion_plan import AUDIO_KEYS as COMPLETION_AUDIO_KEYS
-            _require(keys == COMPLETION_AUDIO_KEYS, 'audio_evidence_journal_invalid')
+            if keys != COMPLETION_AUDIO_KEYS:
+                from app.services.retained_review_captured_story_continuation import AUDIO_KEYS as CAPTURED_AUDIO_KEYS
+                _require(keys == CAPTURED_AUDIO_KEYS, 'audio_evidence_journal_invalid')
     prefix = keys[0].rsplit(':', 1)[0]
     return {'asr': prefix + ':asr_artifact', 'final': prefix + ':final_artifact'}
 
@@ -342,7 +344,8 @@ def _verified_component(raw):
     return value
 
 
-def read_retained_audio_review_evidence(client, s3_client, *, bucket, successor=None, completion_plan=None):
+def read_retained_audio_review_evidence(client, s3_client, *, bucket, successor=None, completion_plan=None,
+                                      captured_story_continuation=None):
     """Read both positive components and original source under one WATCH ACK.
 
     Only GET/ACL reads and a Redis MULTI/PING occur. A race, unknown outcome,
@@ -358,7 +361,8 @@ def read_retained_audio_review_evidence(client, s3_client, *, bucket, successor=
                  and getattr(getattr(s3_client, 'meta', None), 'endpoint_url', None) == storage.settings.endpoint,
                  'audio_evidence_storage_changed')
         journal = audio_journal.RouterAudioReviewJournal(
-            client, successor=successor, completion_plan=completion_plan)
+            client, successor=successor, completion_plan=completion_plan,
+            captured_story_continuation=captured_story_continuation)
         anchors = _artifact_keys(journal)
         with client.pipeline() as pipe:
             pipe.watch(*journal.keys, *anchors.values())

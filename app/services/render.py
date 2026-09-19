@@ -660,7 +660,11 @@ def render_video(
     target_duration: float | None = None,
     output_resolution: str = LANDSCAPE_RESOLUTION,
     capture_scene_windows: bool = False,
+    retained_cuts=None,
 ) -> dict:
+    if retained_cuts is not None:
+        from app.services import retained_render_consumer as retained
+        retained._assert_renderer_entry(retained_cuts)
     if not visual_paths:
         raise RuntimeError('No visual clips were provided to renderer')
 
@@ -701,7 +705,13 @@ def render_video(
 
     normalized: list[Path] = []
     timeline_frame_counts = _timeline_frame_counts(timeline, voice_duration)
-    for idx, (visual_spec, _shot_duration, transition, _scene_idx) in enumerate(timeline):
+    if retained_cuts is not None:
+        normalized = retained._take_exact_cuts(retained_cuts, voice_path=voice_path,
+            scenes=scenes, scene_durations=scene_durations, scene_visual_paths=scene_visual_paths,
+            narration=narration, timeline=timeline, frame_counts=timeline_frame_counts,
+            target_duration=target_duration, output_resolution=output_resolution, output_path=output_path)
+    for idx, (visual_spec, _shot_duration, transition, _scene_idx) in enumerate(
+            timeline if retained_cuts is None else []):
         segment = work / f'norm_{idx:03d}.mp4'
         segment_duration = timeline_frame_counts[idx] / FPS
         normalize_clip(
@@ -761,13 +771,17 @@ def render_video(
         joined_label + ','.join(master_filters) + '[master]'
     )
     filter_complex = ';'.join(segment_filters)
-    _run([
+    concat_command = [
         'ffmpeg', '-y', *input_args,
         '-filter_complex', filter_complex, '-map', '[master]',
         '-frames:v', str(target_frames), '-an',
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
         str(silent_video),
-    ])
+    ]
+    if retained_cuts is None:
+        _run(concat_command)
+    else:
+        retained._run_exact_command(retained_cuts, concat_command, phase='concat')
     silent_frames = video_frame_count(silent_video)
     if silent_frames != target_frames:
         raise RuntimeError(
@@ -790,13 +804,17 @@ def render_video(
         f'atrim=duration={master_duration:.3f}',
         'asetpts=N/SR/TB',
     ])
-    _run([
+    mux_command = [
         'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path),
         '-map', '0:v:0', '-map', '1:a:0',
         '-c:v', 'copy', '-frames:v', str(target_frames),
         '-af', audio_filter, '-c:a', 'aac', '-b:a', '192k',
         '-t', f'{master_duration:.3f}', '-movflags', '+faststart', str(output),
-    ])
+    ]
+    if retained_cuts is None:
+        _run(mux_command)
+    else:
+        retained._run_exact_command(retained_cuts, mux_command, phase='mux')
     final_frames = video_frame_count(output)
     if final_frames != target_frames:
         raise RuntimeError(
@@ -804,6 +822,8 @@ def render_video(
             f'{final_frames} frames for {target_frames} frame target'
         )
     final_duration = media_duration(output)
+    if retained_cuts is not None:
+        retained._finish_exact_cuts(retained_cuts)
 
     return {
         'path': str(output),

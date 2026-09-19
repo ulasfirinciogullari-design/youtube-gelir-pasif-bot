@@ -341,9 +341,17 @@ def _capture_included_router_review(audit, error=None, *, artifact_state=None):
                 )
                 for purpose in PURPOSES:
                     if purpose in artifacts and purpose not in artifact_state:
+                        extra = {}
+                        from app.services.abacus_router_review_runtime import _artifact_scope
+                        selected_scope = _artifact_scope()
+                        if getattr(selected_scope.journal, '_captured_story_continuation', None) is not None:
+                            from app.services.retained_captured_story_scope import captured_story_predecessor
+                            _require(purpose == PURPOSES[1])
+                            extra['captured_story_predecessor'] = captured_story_predecessor(selected_scope)
                         artifact_state[purpose] = sink.persist(
                             artifacts[purpose], prior_story_anchor=artifact_state.get(PURPOSES[0])
                             if purpose == PURPOSES[1] else None,
+                            **extra,
                         )
                 audit['included_router_artifact_anchors'] = {
                     purpose: anchor.receipt for purpose, anchor in artifact_state.items()
@@ -375,6 +383,70 @@ def prepare_subscription_router_recovery(source_task_id, work_dir, *, successor=
         return prepare_preserved_visual_recovery(source_task_id, work_dir)
 
 
+def prepare_captured_story_visual_recovery(source_task_id, work_dir, *,
+        captured_story_continuation, story_evidence):
+    """Review exact retained cuts after a separately authenticated saved STORY.
+
+    Returns a diagnostic audit only. The unknown original STORY is not sent or
+    settled, and this path cannot produce the ordinary reusable checkpoint.
+    """
+    from app.services.abacus_router_review_runtime import retained_router_review_scope
+    from app.services.retained_captured_story_scope import bind_captured_story_predecessor
+    with retained_router_review_scope(source_task_id,
+            captured_story_continuation=captured_story_continuation, capture_transport=True) as scope:
+        result = failure = None
+        try:
+            bind_captured_story_predecessor(scope, story_evidence=story_evidence)
+            result = prepare_preserved_visual_recovery(source_task_id, work_dir,
+                preserve_exact_cuts=True, _captured_story_evidence=story_evidence)
+            return result
+        except Exception as error:
+            failure = error
+            raise
+        finally:
+            # An observer/source failure must not hide a body already captured
+            # by the owning scope. Ciphertext fallbacks stay typed and private.
+            receipts = scope.transport_captures
+            fallbacks = scope.transport_capture_fallbacks
+            if failure is not None:
+                failure.transport_captures = receipts
+                failure._transport_capture_fallbacks = fallbacks
+            elif result is not None:
+                _require(not fallbacks)
+                result['transport_captures'] = receipts
+
+
+def _captured_story_package(evidence, source, fingerprint, candidate, shooting_package,
+                            options, review_kwargs):
+    from app.services.abacus_router_review_runtime import _artifact_scope
+    from app.services.retained_captured_story_scope import captured_story_predecessor
+    from app.services.immutable_story_review_contract import derive_immutable_story_review_contract
+    from app.services.retained_story_visual_evidence import _request_bytes
+    from app.services import abacus_router_adapter as adapter
+
+    _require(captured_story_predecessor(_artifact_scope()) is evidence)
+    bound = evidence.commitments
+    original_audio = source['audio_candidate_checkpoint']
+    _require(_digest(options) == _digest(_options(source))
+             and bound['source_state_sha256'] == fingerprint
+             and bound['source_spec_sha256'] == _digest(source['spec'])
+             and bound['source_journal_sha256'] == _digest(source['generated_asset_candidates'])
+             and bound['source_metadata_sha256'] == original_audio['metadata_sha256']
+             and bound['audio']['sha256'] == candidate['audio_sha256'] == original_audio['audio_sha256']
+             and bound['audio']['bytes'] == original_audio['size'])
+    spec = source['spec']
+    contract = derive_immutable_story_review_contract(shooting_package, spec['topic'], .5,
+        spec['language'], options,
+        immutable_candidate_narrations=[scene['narration'] for scene in candidate['package']['scenes']],
+        **review_kwargs)
+    prepared = _request_bytes(contract['request'])
+    _require(_digest(contract['candidate']) == bound['immutable_core_sha256']
+             and hashlib.sha256(prepared).hexdigest() == bound['prepared_sha256']
+             and _digest({'version': 1, 'method': 'POST', 'endpoint': adapter.ENDPOINT,
+                          'body': json.loads(prepared)}) == bound['request_sha256'])
+    return deepcopy(contract['candidate'])
+
+
 def _capture_sampled_input_link(audit, cut_context, artifact_state, *, required=False):
     if cut_context is None:
         return
@@ -398,7 +470,7 @@ def _capture_sampled_input_link(audit, cut_context, artifact_state, *, required=
 
 
 def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_indices=(),
-        shot_prompt_overrides=None, preserve_exact_cuts=False):
+        shot_prompt_overrides=None, preserve_exact_cuts=False, _captured_story_evidence=None):
     """One explicit, fresh-directory preparation; no TTS, paid video or dispatch."""
     audit_pointer = None
     try:
@@ -409,6 +481,15 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
         if retained_router_review_active():
             from app.services.production_connection_continuity import LEAF_ID
             _require(source_id == LEAF_ID and not repairs and not overrides)
+            from app.services.abacus_router_review_runtime import _artifact_scope
+            selected_scope = _artifact_scope()
+            selected_captured = getattr(selected_scope.journal, '_captured_story_continuation', None) is not None
+            _require(selected_captured is (_captured_story_evidence is not None))
+            if selected_captured:
+                from app.services.retained_captured_story_scope import captured_story_predecessor
+                _require(preserve_exact_cuts and captured_story_predecessor(selected_scope) is _captured_story_evidence)
+        else:
+            _require(_captured_story_evidence is None)
         source, fingerprint = _state(source_id, studio_state._client())
         work = Path(work_dir)
         match = re.fullmatch(r'([0-9a-f-]{36})_attempt_0', work.name)
@@ -468,7 +549,12 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
                  **_repair_fields(repairs, overrides)}
         try:
             shooting_package = _immutable_shooting_package(manifests[0]['package'], overrides, options)
-            reviewed = director.revalidate_immutable_short_story(deepcopy(shooting_package), spec['topic'], 0.5, spec['language'], deepcopy(options),
+            if _captured_story_evidence is not None:
+                reviewed = _captured_story_package(_captured_story_evidence, source, fingerprint,
+                    candidate, shooting_package, options, review_kwargs)
+                audit['captured_story_evidence'] = _captured_story_evidence.record
+            else:
+                reviewed = director.revalidate_immutable_short_story(deepcopy(shooting_package), spec['topic'], 0.5, spec['language'], deepcopy(options),
                           immutable_candidate_narrations=[scene['narration'] for scene in candidate['package']['scenes']],
                           immutable_scene_fields=True,
                           **review_kwargs)
@@ -477,7 +563,9 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
             if review_kwargs:
                 _require(validate_spoken_word_budget(reviewed.get('spoken_word_budget'))
                          == review_kwargs['verified_spoken_word_budget'])
-            _require(reviewed.get('studio_options') == options and director.short_story_package_is_approved(reviewed, spec['topic']))
+            _require(reviewed.get('studio_options') == options)
+            if _captured_story_evidence is None:
+                _require(director.short_story_package_is_approved(reviewed, spec['topic']))
         except Exception as error:
             audit['status'] = 'story_review_rejected_or_unavailable'
             _capture_included_router_review(audit, error, artifact_state=artifact_state)
@@ -524,6 +612,15 @@ def prepare_preserved_visual_recovery(source_task_id, work_dir, *, repair_scene_
         if not passed:
             raise PreservedVisualRecoveryError(audit_pointer)
         _require(_state(source_id, studio_state._client())[1] == fingerprint)
+        if _captured_story_evidence is not None:
+            from app.services.retained_captured_story_scope import captured_story_predecessor
+            from app.services.abacus_router_review_runtime import _artifact_scope
+            _require(captured_story_predecessor(_artifact_scope()) is _captured_story_evidence)
+            return {**_FLAGS, 'kind': 'captured_story_visual_preparation',
+                'status': 'captured_story_visual_preparation_passed', 'source_task_id': source_id,
+                'audit_pointer': audit_pointer, 'publish_eligible': False, 'claim_authorized': False,
+                'render_authorized': False, 'resume_authorized': False,
+                'new_paid_create_requests': 0, 'new_tts_requests': 0}
         package = deepcopy(reviewed)
         package_hash = tasks._recovery_package_sha256(package)
         audio = {'version': 1, 'source_task_id': source_id, 'package_sha256': package_hash,

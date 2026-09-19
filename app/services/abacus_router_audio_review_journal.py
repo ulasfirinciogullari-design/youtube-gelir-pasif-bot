@@ -229,12 +229,17 @@ def _asr_binding(policy, slot, expected, result):
 class RouterAudioReviewJournal:
     """Explicit synchronous API; its receipts are never publication approval."""
 
-    def __init__(self, client, *, clock=None, successor=None, completion_plan=None):
-        _require(successor is None or completion_plan is None,
+    def __init__(self, client, *, clock=None, successor=None, completion_plan=None,
+                 captured_story_continuation=None):
+        _require(sum(value is not None for value in (successor, completion_plan, captured_story_continuation)) <= 1,
                  'router_audio_review_multiple_authorizations')
         self.client = client
         self._successor = successor
         self._completion_plan = completion_plan
+        self._captured_story_continuation = captured_story_continuation
+        if captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import selected_keys
+            selected_keys(captured_story_continuation, 'audio')
         if completion_plan is not None:
             from app.services.retained_review_completion_plan import selected_keys
             selected_keys(completion_plan, 'audio')
@@ -245,6 +250,9 @@ class RouterAudioReviewJournal:
 
     @property
     def keys(self):
+        if self._captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import selected_keys
+            return selected_keys(self._captured_story_continuation, 'audio')
         if self._completion_plan is not None:
             from app.services.retained_review_completion_plan import selected_keys
             return selected_keys(self._completion_plan, 'audio')
@@ -263,6 +271,9 @@ class RouterAudioReviewJournal:
     def anchor_key(self): return self.keys[2]
 
     def _admit(self, pipe, *, reserve=False):
+        if self._captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import guard_mutation
+            return guard_mutation(pipe, self._captured_story_continuation, 'audio', reserve=reserve)
         if self._completion_plan is not None:
             from app.services.retained_review_completion_plan import guard_mutation
             return guard_mutation(pipe, self._completion_plan, 'audio', reserve=reserve)
@@ -295,7 +306,10 @@ class RouterAudioReviewJournal:
 
     def _read(self, pipe):
         state = self._read_records(pipe)
-        if self._completion_plan is not None:
+        if self._captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import guard_selected
+            guard_selected(pipe, self._captured_story_continuation, 'audio', state)
+        elif self._completion_plan is not None:
             from app.services.retained_review_completion_plan import guard_selected
             guard_selected(pipe, self._completion_plan, 'audio', state)
         elif self._successor is not None:
@@ -371,6 +385,9 @@ class RouterAudioReviewJournal:
         return state
 
     def _commit(self, pipe, state, old_journal):
+        if self._captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import commit_selected
+            return commit_selected(pipe, self._captured_story_continuation, 'audio', state, old_journal)
         if self._completion_plan is not None:
             from app.services.retained_review_completion_plan import commit_selected
             return commit_selected(pipe, self._completion_plan, 'audio', state, old_journal)
@@ -413,7 +430,8 @@ class RouterAudioReviewJournal:
 
         def action(pipe, now):
             self._admit(pipe, reserve=False)
-            _require(self._successor is None and self._completion_plan is None,
+            _require(self._successor is None and self._completion_plan is None
+                     and self._captured_story_continuation is None,
                      'router_audio_review_successor_invalid')
             _require(pipe.exists(self.state_key, self.journal_key, self.anchor_key) == 0,
                      'router_audio_review_already_commissioned_or_partial')

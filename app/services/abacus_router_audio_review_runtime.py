@@ -143,12 +143,14 @@ class _AudioScope:
 
 @contextmanager
 def retained_audio_router_review_scope(source_task_id, *, successor=None, completion_plan=None,
+                                      captured_story_continuation=None,
                                       capture_transport=False):
     _require(_SCOPE.get() is None, 'router_audio_scope_nested')
     _require(type(source_task_id) is str and source_task_id == LEAF_ID,
              'router_audio_source_not_supported')
-    _require(type(capture_transport) is bool and not (successor is not None and completion_plan is not None)
-             and (completion_plan is None or capture_transport is True),
+    _require(type(capture_transport) is bool
+             and sum(value is not None for value in (successor, completion_plan, captured_story_continuation)) <= 1
+             and (completion_plan is None and captured_story_continuation is None or capture_transport is True),
              'router_audio_capture_option_invalid')
     try:
         key = _server_key(_zero_cash_guard())
@@ -156,13 +158,17 @@ def retained_audio_router_review_scope(source_task_id, *, successor=None, comple
         if successor is not None:
             from app.services.retained_review_credential_successor import verify_scope_successor
             verify_scope_successor(foundation.client, successor)
+        if captured_story_continuation is not None:
+            from app.services.retained_review_captured_story_continuation import verify_scope_captured_story_continuation
+            verify_scope_captured_story_continuation(foundation.client, captured_story_continuation)
         if completion_plan is not None:
             from app.services.retained_review_completion_plan import verify_scope_completion_plan
             verify_scope_completion_plan(foundation.client, completion_plan)
         # Only its existing client/clock are used. No financial method, policy
         # lookup or absent-history initialization belongs in an included review.
         scope = _AudioScope(RouterAudioReviewJournal(foundation.client, clock=foundation.clock, successor=successor,
-                                                   completion_plan=completion_plan),
+                                                   completion_plan=completion_plan,
+                                                   captured_story_continuation=captured_story_continuation),
                             threading.get_ident(), key)
         _require(_server_key(_zero_cash_guard()) == key, 'router_audio_runtime_credential_changed')
     except SpendBlocked:
@@ -331,6 +337,9 @@ def _execute(scope, prepared, **admission):
     _usable(scope)
     if capture_enabled:
         _begin(scope, prepared, prepared.purpose.value, reservation)
+    if scope.journal._captured_story_continuation is not None and prepared.purpose is _ASR:
+        from app.services.retained_captured_visual_scope import _arm_asr_producer
+        _arm_asr_producer(scope, prepared, reservation)
     scope.pending_request = prepared
     response = _send_once(prepared)
     settled = scope.journal.settle(prepared.purpose, prepared, response)
@@ -343,6 +352,9 @@ def _execute(scope, prepared, **admission):
     artifact = AcknowledgedAudioReview(prepared, response, observed, reservation,
                                        adapter._canonical(settled))
     scope.artifacts[prepared.purpose] = artifact
+    if scope.journal._captured_story_continuation is not None and prepared.purpose is _ASR:
+        from app.services.retained_captured_visual_scope import _register_asr_artifact
+        _register_asr_artifact(scope, artifact)
     return artifact
 
 
