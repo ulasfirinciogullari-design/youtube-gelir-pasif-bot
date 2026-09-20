@@ -12,16 +12,18 @@ from app.services.abacus_router_adapter import prepare_router_request
 from test_immutable_selected_story import case, planning_case, TOPIC, _route
 
 
-# Exact prepared-body SHA/length obtained before extraction from committed634.
+# Exact prepared bodies include the cost/source rule shipped in ac5c6eb.
+# Removing only that 827-byte rule reproduces every original extraction golden;
+# fresh writer retry changes must not alter these immutable critic inputs.
 # These are synthetic fixtures, never provider or source-authority evidence.
 GOLDEN = [
-    (6, 'stock', 'en', '613cbc76f52207e979170aa9dc7b82abba6efad24820d80b81e23e49aa5a1503', 38775),
-    (6, 'mixed', 'en', '3044b685010f2b12d156f31143bc730f9cd1d0b5b833c11176c847e2ed4cf1f4', 37292),
-    (6, 'generated', 'en', '22bdddfd2f971f195c46e3e73631c325cf49c97c1aebb941a5d9d18949eb05ce', 34835),
-    (12, 'stock', 'en', '577f99451f92b661bbc0f1251de20e8df48f34f932960e7c3cc7b418bd0a97af', 46348),
-    (12, 'mixed', 'en', '10289743bed705dc4e96b380f31ed3196f4ea76af7ff2a78db48768ade3fb9de', 43518),
-    (12, 'generated', 'en', '16b90877f3bff56e646d466b8e10e8a03ef730a4f2fe0296241b828b7d1770ee', 39706),
-    (6, 'generated', 'tr', '5d5d16505296750055c2ec5b534d83c8758cee573fa44cffbc00bb910c63fd50', 34840),
+    (6, 'stock', 'en', '597b03a275f87ae44cb864fb98f1f266b2d0e2d98569ece929860682927b80a3', 39602),
+    (6, 'mixed', 'en', '576740d3807a0a0ced4c5aa92d6e896a23d32fa4f935040433a151d5a86fd3b6', 38119),
+    (6, 'generated', 'en', '383b7989289206d5044c703ca2a0e39b4909fb2472a0c12562ce83987955bbc7', 35662),
+    (12, 'stock', 'en', 'a895205aba556a512a16db654a52dd123cf49efe3efbf8c4d97d54ce5ba6f754', 47175),
+    (12, 'mixed', 'en', 'b92e70d1e3b19e45e402d22e10c6ee92b915724df8ea4186cd903601d03a739b', 44345),
+    (12, 'generated', 'en', 'ac9f72621541fa60363ae64fa859bdf89cd4244e67e0896de1da99d11f9c79fd', 40533),
+    (6, 'generated', 'tr', '778a289d43546782e417676211b8d703ee727de1b9182d31cf52146a30704d21', 35667),
 ]
 
 
@@ -39,7 +41,7 @@ def body(value):
 
 
 @pytest.mark.parametrize('count,kind,language,digest,size', GOLDEN)
-def test_exact_pre_extraction_bytes_and_live_director_share_contract(case, count, kind, language, digest, size):
+def test_exact_source_guard_bytes_and_live_director_share_contract(case, count, kind, language, digest, size):
     _route(case, count, kind)
     before = deepcopy(case.package)
     value = derive(case, language=language)
