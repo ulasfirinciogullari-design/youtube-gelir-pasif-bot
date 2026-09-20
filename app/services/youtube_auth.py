@@ -153,6 +153,18 @@ class OAuthConfigurationError(YouTubeAuthError):
     pass
 
 
+class YouTubeChannelMismatchError(YouTubeAuthError):
+    """Display only verified channel names; never OAuth credentials or errors."""
+
+    def __init__(self, target_id, target_title, selected_title):
+        super().__init__('youtube_oauth_channel_mismatch')
+        self.channel_mismatch = {
+            'target_id': _safe_channel_id(target_id),
+            'target_title': str(target_title or target_id)[:200],
+            'selected_title': str(selected_title or 'Farklı bir kanal')[:200],
+        }
+
+
 class OAuthStateError(YouTubeAuthError):
     pass
 
@@ -679,7 +691,7 @@ def build_authorization_url(
     authorization_url, returned_state = flow.authorization_url(
         access_type='offline',
         include_granted_scopes='true',
-        prompt='consent',
+        prompt='consent select_account' if target_channel_id is not None else 'consent',
     )
     if returned_state != state or not flow.code_verifier:
         raise YouTubeAuthError('Google authorization could not be initialized')
@@ -791,7 +803,8 @@ def complete_authorization(
     channel = _channel_from_credentials(credentials)
     target = state_payload.get('target_channel_id')
     if target is not None and channel.get('id') != target:
-        raise YouTubeAuthError('youtube_oauth_channel_mismatch')
+        _, stored = _read_channel_record(target)
+        raise YouTubeChannelMismatchError(target, (stored or {}).get('title'), channel.get('title'))
     channel['connection_id'] = secrets.token_urlsafe(24)
     _persist_connection(
         credentials,

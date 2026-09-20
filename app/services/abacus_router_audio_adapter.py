@@ -337,7 +337,10 @@ def read_original_mp3(path):
 
 
 def _usage(value, max_tokens):
-    if type(value) is dict and set(value) == {'input_tokens', 'output_tokens', 'raw_input_tokens'}:
+    native_fields = {'input_tokens', 'output_tokens', 'raw_input_tokens'}
+    if type(value) is dict and set(value) in (native_fields, native_fields | {'reasoning_tokens'}):
+        # The same RouteLLM endpoint reports native reasoning separately from
+        # output. Keep the reported counters without inferring totals or cost.
         _require(all(type(count) is int and 0 <= count <= 1_000_000_000
                      for count in value.values()) and value['output_tokens'] <= max_tokens, _USAGE_ERROR)
         return value  # Preserve native counters; never synthesize a reported total.
@@ -461,7 +464,7 @@ def observe_audio_router_response(prepared, response):
         choice = choices[0]
         if 'native_finish_reason' in choice:
             _require(type(choice['native_finish_reason']) is str
-                     and choice['native_finish_reason'] == 'STOP', _RESPONSE_ERROR)
+                     and choice['native_finish_reason'] in {'STOP', 'stop'}, _RESPONSE_ERROR)
         _require(type(choice['index']) is int and choice['index'] == 0
                  and choice['finish_reason'] == 'stop' and choice.get('logprobs') is None, _RESPONSE_ERROR)
         message = choice['message']

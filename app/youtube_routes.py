@@ -790,8 +790,27 @@ def youtube_oauth_callback(
         ))
     except YouTubeAuthError as exc:
         if str(exc) == 'youtube_oauth_channel_mismatch':
+            detail = getattr(exc, 'channel_mismatch', None)
+            selected = ''
+            back = '/studio/youtube'
+            if type(detail) is dict and set(detail) == {'target_id', 'target_title', 'selected_title'}:
+                selected = ('<p>Yenilenecek kanal: <strong>' + escape(detail['target_title'])
+                    + '</strong><br>Google’dan gelen kanal: <strong>'
+                    + escape(detail['selected_title']) + '</strong></p>')
+                if re.fullmatch(r'UC[A-Za-z0-9_-]{22}', detail['target_id']):
+                    back += '#channel-' + detail['target_id']
             return _delete_oauth_binding_cookie(_shell(
-                '<div class="hero"><h1>Farklı bir kanal seçildi</h1></div><div class="notice">Yenilemek istediğin kanal seçilmediği için bu bağlantı kaydedilmedi. Kanallar sayfasında ilgili kanalın Yeniden bağla düğmesine bas ve Google’da aynı kanalı seç.</div><div class="actions"><a class="btn secondary" href="/studio/youtube">Kanallara dön</a></div>',
+                '<div class="hero"><h1>Farklı bir kanal seçildi</h1></div><div class="notice">'
+                'Yenilemek istediğin kanal seçilmediği için bu bağlantı kaydedilmedi.' + selected
+                + '<p>Kanallara dön, ilgili kanalın <strong>Yeniden bağla</strong> düğmesine bas. '
+                'Google’da o kanalı yönettiğin hesabı ve ardından kanal adını seç.</p>'
+                '<p>Kanal seçimi çıkmıyorsa YouTube’da profil menüsünden istediğin kanala geç. '
+                'YouTube → Ayarlar → Gelişmiş ayarlar bölümünde bu kanalı hesabın varsayılan kanalı '
+                'yapıp bağlantıyı yeniden başlat. '
+                '<a href="https://support.google.com/youtube/answer/6019090?hl=tr" '
+                'target="_blank" rel="noopener noreferrer">Google’ın kanal seçimi açıklaması</a></p>'
+                '</div><div class="actions"><a class="btn secondary" href="' + back
+                + '">Kanallara dön</a></div>',
                 status_code=400,
             ))
         return _delete_oauth_binding_cookie(_shell(

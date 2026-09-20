@@ -21,6 +21,7 @@ def reconnect(monkeypatch):
     _seed_v3_connection(client, CHANNEL, 'margin-connection', title='Margin Verdict')
     _seed_v3_connection(client, OTHER_CHANNEL, 'capital-connection', title='Capital Corrupt')
     fetched = Mock()
+    authorization = Mock()
     selected = {'id': CHANNEL, 'title': 'Margin Verdict'}
 
     class Flow:
@@ -34,6 +35,7 @@ def reconnect(monkeypatch):
             return cls(kwargs['state'], kwargs.get('code_verifier'))
 
         def authorization_url(self, **_kwargs):
+            authorization(**_kwargs)
             return f'https://accounts.google.test/auth?state={self.state}', self.state
 
         def fetch_token(self, **kwargs):
@@ -42,7 +44,7 @@ def reconnect(monkeypatch):
     monkeypatch.setattr(auth, 'Flow', Flow)
     monkeypatch.setattr(auth, '_channel_from_credentials', lambda _credentials: deepcopy(selected))
     monkeypatch.setattr(auth, 'build', Mock(side_effect=AssertionError('No real YouTube client')))
-    return SimpleNamespace(client=client, selected=selected, fetched=fetched)
+    return SimpleNamespace(client=client, selected=selected, fetched=fetched, authorization=authorization)
 
 
 def begin(reconnect):
@@ -62,6 +64,7 @@ def test_reconnect_target_is_encrypted_and_only_matching_channel_is_replaced(rec
     assert auth._decrypt_json(encrypted)['version'] == 3
     assert reconnect.client.get(auth._credential_key(CHANNEL)) == before_target
     assert reconnect.fetched.call_count == 0
+    assert reconnect.authorization.call_args.kwargs['prompt'] == 'consent select_account'
 
     result = auth.complete_authorization('synthetic-code', state, BINDING)
     assert result['id'] == CHANNEL
@@ -80,8 +83,10 @@ def test_wrong_channel_never_adds_or_overwrites_connection_and_callback_cannot_r
               if k.startswith((auth.CREDENTIAL_PREFIX, auth.CHANNEL_PREFIX))}
     before_members = deepcopy(reconnect.client.sets)
     reconnect.selected['id'] = selected
-    with pytest.raises(auth.YouTubeAuthError, match='youtube_oauth_channel_mismatch'):
+    with pytest.raises(auth.YouTubeChannelMismatchError, match='youtube_oauth_channel_mismatch') as error:
         auth.complete_authorization('synthetic-code', state, BINDING)
+    assert error.value.channel_mismatch['target_id'] == CHANNEL
+    assert error.value.channel_mismatch['target_title'] == 'Margin Verdict'
     assert reconnect.client.get(key) is None
     assert {k: v for k, v in reconnect.client.values.items()
             if k.startswith((auth.CREDENTIAL_PREFIX, auth.CHANNEL_PREFIX))} == before
@@ -196,3 +201,17 @@ def test_wrong_channel_callback_explains_recovery_without_leaking_provider_detai
     assert 'secret-code' not in response.text and 'youtube_oauth_channel_mismatch' not in response.text
     assert 'Max-Age=0' in response.headers['set-cookie']
     assert response.headers['referrer-policy'] == 'no-referrer'
+
+
+def test_wrong_channel_callback_escapes_names_and_points_to_requested_channel(dashboard):
+    error = RuntimeError('youtube_oauth_channel_mismatch')
+    error.channel_mismatch = {'target_id': CHANNEL, 'target_title': 'Margin Verdict',
+                              'selected_title': '<script>wrong channel</script>'}
+    dashboard.ns['complete_authorization'] = Mock(side_effect=error)
+    response = dashboard.client.get('/studio/youtube/callback?state=synthetic&code=secret-code')
+    assert response.status_code == 400
+    assert 'Margin Verdict' in response.text and '&lt;script&gt;wrong channel&lt;/script&gt;' in response.text
+    assert '<script>wrong channel</script>' not in response.text and 'secret-code' not in response.text
+    assert f'href="/studio/youtube#channel-{CHANNEL}"' in response.text
+    assert 'Kanal seçimi çıkmıyorsa' in response.text
+    assert 'support.google.com/youtube/answer/6019090' in response.text
