@@ -115,12 +115,13 @@ def test_upload_failure_does_not_create_a_false_checkpoint(case, monkeypatch):
     assert not list(case.ledger.client.scan_iter(match=pool.PREFIX + '*'))
 
 
-def test_each_phase_preserves_its_own_exact_pool(case):
+@pytest.mark.parametrize('phase', ['before_generation', 'budget_rescue'])
+def test_each_phase_preserves_its_own_exact_pool(case, phase):
     first = inputs(case, 'initial', b'A', 101)
     second = inputs(case, 'changed', b'B', 202)
-    run(case, first); run(case, second, phase='before_generation')
+    run(case, first); run(case, second, phase=phase)
     retry = inputs(case, 'retry', b'C', 303)
-    run(case, retry, phase='before_generation')
+    run(case, retry, phase=phase)
     assert Path(retry[1][0][0]['path']).read_bytes() == b'B' * 2048
     assert retry[2] == second[2] and retry[3] == {202}
     assert len(case.uploads) == 2

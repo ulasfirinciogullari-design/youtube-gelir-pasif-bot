@@ -37,7 +37,9 @@ def stock_only_rule():
     return ('\nEXISTING-SUBSCRIPTION PRODUCTION: no paid image or video generation is available. '
         'Set every ai_prompt to null. Build the story from genuinely available real stock video '
         'of the supported subject and setting. Keep claims source-backed and preserve the brief; '
-        'never invent footage, force a misleading stock match, or claim a visual proves a statistic.\n')
+        'never invent footage, force a misleading stock match, or claim a visual proves a statistic. '
+        'Chronology and early sales success do not prove that those sales funded a later '
+        'product or business; omit that financing claim unless a source states it explicitly.\n')
 
 
 def generate_text_json(prompt, schema, *, purpose):
@@ -478,6 +480,7 @@ def seal_story_review(package, topic):
     observed = _LAST_OBSERVED.get()
     _require(enabled() and type(observed) is dict and observed.get('purpose') == 'story_review',
              'included_story_evidence_missing')
+    _require(_current_source_audit(package), 'included_story_source_audit_missing')
     payload = {'version': 1, 'story_sha256': _story_material(package, topic), 'observed': observed}
     return _cipher().encrypt(_raw(payload).encode()).decode('ascii')
 
@@ -485,12 +488,21 @@ def seal_story_review(package, topic):
 def story_review_matches(package, topic):
     try:
         token = package['stock_scene_qc']['subscription_router_critic']
-        _require(enabled() and type(token) is str and 1 <= len(token) <= 20000)
+        _require(enabled() and type(token) is str and 1 <= len(token) <= 20000
+                 and _current_source_audit(package))
         proof = json.loads(_cipher().decrypt(token.encode('ascii')))
         return (proof['version'] == 1 and proof['observed']['purpose'] == 'story_review'
                 and proof['story_sha256'] == _story_material(package, topic))
     except Exception:
         return False
+
+
+def _current_source_audit(package):
+    from app.services.included_factual_audit import VERSION
+    audit = (package.get('stock_scene_qc') or {}).get('source_claim_review')
+    return (type(audit) is dict and type(audit.get('version')) is int
+            and audit['version'] == VERSION and audit.get('accepted') is True
+            and audit.get('validation_findings') == [])
 
 
 def generate_included_audio(audio_bytes, *, purpose, language, expected_narration=None):

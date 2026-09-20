@@ -34,6 +34,7 @@ def _rescue_context(**overrides):
         'options': {'mode': 'production', 'format': 'shorts', 'content_style': 'documentary'},
         'duration_minutes': 0.5, 'total_paid_create_cap': 2,
         'scene_repair_recovery': False, 'provider_outage_stock_scenes': set(),
+        'recovered_generated_media': None, 'selected_recovery': None,
         'stock_quality_fallback_scenes': set(), 'runway_submission_cap': 2,
         'ranked_runway_candidates': [{'scene_index': index, 'stock_score': score} for index, score in enumerate((20, 30, 70))],
     }

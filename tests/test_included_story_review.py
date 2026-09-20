@@ -29,7 +29,7 @@ def fixture_story():
     return package, env['critic_payload']
 
 
-@pytest.mark.parametrize('rejected', [False, 'editorial', 'unsupported', 'uncertain', 'quote'])
+@pytest.mark.parametrize('rejected', [False, 'editorial', 'unsupported', 'uncertain', 'quote', 'financing'])
 @pytest.mark.parametrize('review_only', [False, True])
 @pytest.mark.parametrize('allow_repair', [False, True])
 def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(commissioned, monkeypatch, rejected, review_only, allow_repair):
@@ -43,6 +43,9 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
     monkeypatch.setattr(runtime, 'configured_ledger', lambda **kw: ledger.foundation)
     monkeypatch.setattr(runtime, 'resolve_context', lambda *a: deepcopy(CONTEXT))
     package, critic = fixture_story()
+    if rejected == 'financing':
+        package['scenes'][2]['narration'] = 'The card sales boom funded the modern gaming empire.'
+        package['narration'] = ' '.join(s['narration'] for s in package['scenes'])
     generated = {'scenes': [{'position': pos, 'narration': scene['narration'],
         'visual_queries': scene['visual_queries'], 'ai_prompt': None} for pos, scene in enumerate(package['scenes'])]}
     calls, consulted = [], []
@@ -91,15 +94,32 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
     if rejected:
         with pytest.raises((RuntimeError, ValueError)) as raised:
             run_review()
-        if rejected in {'unsupported', 'uncertain'} and allow_repair and not review_only:
+        if rejected in {'unsupported', 'uncertain', 'financing'} and allow_repair and not review_only:
             assert isinstance(raised.value, director._WholeStoryRepairRequired)
             assert raised.value.source_claim_failures[0]['position'] == 2
-            assert raised.value.source_claim_failures[0]['assessment'] == rejected
+            assert raised.value.source_claim_failures[0]['assessment'] == ('unsupported' if rejected == 'financing' else rejected)
         assert 'subscription_router_critic' not in (package.get('stock_scene_qc') or {})
     else:
         result = run_review()
         assert result['stock_scene_qc']['source_claim_review']['accepted'] is True
         assert included.story_review_matches(result, topic)
+        from app.services.included_factual_audit import VERSION
+        report = result['stock_scene_qc']['source_claim_review']
+        report['version'] = VERSION - 1
+        assert not included.story_review_matches(result, topic)
+        report['version'] = VERSION
+        legacy = deepcopy(result)
+        legacy_report = legacy['stock_scene_qc']['source_claim_review']
+        legacy_report['version'] = VERSION - 1
+        legacy_report.pop('validation_findings')
+        # Reconstruct the older signing contract: the signature and story hash
+        # still match exactly, but the obsolete audit cannot grant approval.
+        old_proof = {'version': 1, 'story_sha256': included._story_material(legacy, topic),
+                     'observed': included._LAST_OBSERVED.get()}
+        legacy['stock_scene_qc']['subscription_router_critic'] = included._cipher().encrypt(
+            included._raw(old_proof).encode()).decode('ascii')
+        assert old_proof['story_sha256'] == included._story_material(legacy, topic)
+        assert not included.story_review_matches(legacy, topic)
         changed = deepcopy(result); changed['scenes'][0]['narration'] += ' Invented fact.'
         assert not included.story_review_matches(changed, topic)
         changed = deepcopy(result); changed['stock_scene_qc']['source_claim_review']['sentences'][0]['reason'] += ' Forged.'

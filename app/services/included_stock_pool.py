@@ -19,7 +19,7 @@ PREFIX = 'youtube_studio:included_stock_pool:v1:'
 MAX_FILE = 128 * 1024 * 1024
 MAX_TOTAL = 512 * 1024 * 1024
 MAX_MANIFEST = 512 * 1024
-PHASES = frozenset({'initial', 'before_generation'})
+PHASES = frozenset({'initial', 'before_generation', 'budget_rescue'})
 SPEC_FIELDS = frozenset({'pexels_id', 'start_fraction', 'source_duration', 'source_type', 'stock_provider'})
 
 

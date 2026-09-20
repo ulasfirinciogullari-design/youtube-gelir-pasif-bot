@@ -11,8 +11,21 @@ import json
 import re
 
 
-VERSION = 1
-MARKER = 'INCLUDED_SENTENCE_SOURCE_AUDIT_V1'
+VERSION = 2
+MARKER = 'INCLUDED_SENTENCE_SOURCE_AUDIT_V2'
+
+# A narrow negative check, not a substitute for semantic source review. A
+# chronology-only quote cannot establish an explicitly narrated financing link,
+# even if the model marks the whole sentence supported. Matching this pattern
+# in a quote does NOT establish entailment or override a negative model verdict.
+_FINANCING_CLAIM = re.compile(
+    r'\b(?:fund(?:ed|s|ing)|financ(?:ed|es|ing)|bankroll(?:ed|s|ing)|'
+    r'finanse|fonla\w*)\b', re.IGNORECASE,
+)
+_FINANCING_EVIDENCE = re.compile(
+    r'\b(?:fund(?:ed|s|ing)?|financ(?:e|ed|es|ing)|bankroll(?:ed|s|ing)?|'
+    r'reinvest\w*|finans\w*|fonla\w*)\b', re.IGNORECASE,
+)
 
 
 def _require(value):
@@ -78,6 +91,11 @@ def request(critic_prompt, critic_schema, scenes, pages):
           'A supported sentence requires at least one quotation. The reason must compare '
           'the precise claim to the cited text, not simply restate that it is supported. '
           'Check subject, time, geography, quantity, causation and qualifications separately. '
+          'CHRONOLOGY IS NOT FINANCING: early product success followed by later company '
+          'growth does not show that those sales funded, financed or bankrolled a later '
+          'product or empire. Even two accurate quotations about the early success and '
+          'the later product do not establish the missing financial relationship. Require '
+          'explicit evidence of that exact relationship, not a plausible progression. '
           'A TOTAL cost containing several components does not establish that one component '
           'or a subset alone exceeds face value. For example, a total penny cost including '
           'materials, facilities and overhead does NOT establish that metal alone, or labor '
@@ -102,7 +120,7 @@ def validate(response, scenes, pages):
     _require(type(audit) is dict and set(audit) == {'sentences'})
     rows = audit['sentences']
     _require(type(rows) is list and len(rows) == len(lines))
-    failures = []
+    failures, validation_findings = [], []
     for line, row in zip(lines, rows):
         _require(type(row) is dict and set(row) == {
             'position', 'narration', 'assessment', 'reason', 'quotations'}
@@ -123,7 +141,17 @@ def validate(response, scenes, pages):
         if row['assessment'] != 'supported':
             failures.append({'position': row['position'], 'assessment': row['assessment'],
                 'reason': row['reason'], 'narration': row['narration']})
+        elif (_FINANCING_CLAIM.search(row['narration'])
+                and not any(_FINANCING_EVIDENCE.search(q['quote']) for q in quotes)):
+            finding = {'position': row['position'], 'assessment': 'unsupported',
+                'narration': row['narration'], 'reason':
+                'The narration asserts a financing relationship, but none of its exact '
+                'source quotations explicitly describes financing. Chronology, product '
+                'success and later growth do not establish that link.'}
+            failures.append(finding)
+            validation_findings.append(deepcopy(finding))
     report = {'version': VERSION, 'accepted': not failures, 'sentences': deepcopy(rows),
+        'validation_findings': validation_findings,
         'sources': [{'url': url, 'text_sha256': source['text_sha256'],
             'excerpt_sha256': source['excerpt_sha256']} for url, source in sources.items()]}
     return deepcopy(response['editorial_review']), report, failures

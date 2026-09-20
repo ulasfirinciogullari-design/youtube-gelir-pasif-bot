@@ -73,6 +73,49 @@ def test_no_quote_is_a_rejection_not_a_reason_to_invent_one():
     assert not report['accepted'] and len(failures) == len(LINES)
 
 
+@pytest.mark.parametrize('verb', ['funded', 'financed', 'bankrolled', 'finanse etti', 'fonladı'])
+def test_real_chronology_does_not_establish_a_financing_link_even_with_positive_model_verdict(verb):
+    text = 'The cards produced a sales boom. Years later, the company created Mario.'
+    pages = [{'url': URL, 'text': text, 'text_sha256': hashlib.sha256(text.encode()).hexdigest()}]
+    lines = [{'position': 0, 'narration': f'The card boom {verb} the later gaming empire.'}]
+    actual = {'editorial_review': {'causal_claim_supported': True}, 'factual_audit': {'sentences': [
+        {**lines[0], 'assessment': 'supported', 'reason': 'There is an operational progression.',
+         'quotations': [{'source_url': URL, 'quote': quote} for quote in (
+             'The cards produced a sales boom.', 'Years later, the company created Mario.')]}]}}
+    before = deepcopy(actual)
+    _, report, failures = audit.validate(actual, lines, pages)
+    assert len(failures) == 1 and failures[0]['assessment'] == 'unsupported'
+    assert 'financing' in failures[0]['reason']
+    assert not report['accepted'] and report['version'] == 2
+    assert report['sentences'][0]['assessment'] == 'supported'  # actual response is preserved
+    assert report['validation_findings'] == failures and actual == before
+
+
+@pytest.mark.parametrize('assessment', ['supported', 'unsupported', 'uncertain'])
+def test_an_explicit_financing_quote_never_overrides_the_semantic_verdict(assessment):
+    text = 'The company reinvested its card profits to develop its first electronic game.'
+    lines = [{'position': 0, 'narration': 'Card profits funded the first electronic game.'}]
+    pages = [{'url': URL, 'text': text, 'text_sha256': hashlib.sha256(text.encode()).hexdigest()}]
+    actual = {'editorial_review': {}, 'factual_audit': {'sentences': [
+        {**lines[0], 'assessment': assessment, 'reason': 'Compare the specific products and financing.',
+         'quotations': [{'source_url': URL, 'quote': text}]}]}}
+    _, report, failures = audit.validate(actual, lines, pages)
+    assert report['accepted'] is (assessment == 'supported')
+    assert bool(failures) is (assessment != 'supported')
+    assert report['validation_findings'] == []
+
+
+def test_unquoted_financing_words_or_the_reviewers_reason_cannot_satisfy_the_guard():
+    text = 'The card division boomed. An unrelated company funded a different project.'
+    lines = [{'position': 0, 'narration': 'The card boom financed Mario.'}]
+    pages = [{'url': URL, 'text': text, 'text_sha256': hashlib.sha256(text.encode()).hexdigest()}]
+    actual = {'editorial_review': {}, 'factual_audit': {'sentences': [
+        {**lines[0], 'assessment': 'supported', 'reason': 'The boom financed the later game.',
+         'quotations': [{'source_url': URL, 'quote': 'The card division boomed.'}]}]}}
+    _, report, failures = audit.validate(actual, lines, pages)
+    assert not report['accepted'] and len(failures) == 1
+
+
 def test_request_contains_every_clause_complete_original_contract_and_stable_source_identity():
     schema = {'type': 'object', 'properties': {'original': {'type': 'boolean'}}}
     before = deepcopy(schema)

@@ -1396,6 +1396,11 @@ def _reserve_paid_create_slot(
     task_id: str,
 ) -> int:
     """Conservatively reserve one paid create before contacting a provider."""
+    from app.services.production_included_router import enabled
+    if enabled():
+        raise FinalVisualQualityError(
+            'Included production requires approved stock; new video generation is unavailable'
+        )
     if cap is not None:
         return _persisted_paid_create_slots(task_id, cap, reserve=True)
     reserved = max(0, int(used))
@@ -1410,6 +1415,19 @@ def _validate_paid_create_allocation(
     paid_slots_used: int = 0,
 ) -> None:
     """Limit new creates while permitting reuse of already-paid clips."""
+    from app.services.production_included_router import enabled
+    if enabled():
+        retained = (recovered_generated_media or {}).get('scenes') or {}
+        new_creates = (
+            len(recovered_generated_media['repair_scene_indices'])
+            if recovered_generated_media and recovered_generated_media.get('version') == 6
+            else sum(not bool(retained.get(int(row['scene_index']))) for row in selected_candidates)
+        )
+        if new_creates:
+            raise FinalVisualQualityError(
+                'Included production stock quality remains unresolved after bounded stock rescue; '
+                'new video generation is unavailable'
+            )
     if cap is None:
         return
     if recovered_generated_media and recovered_generated_media.get('version') == 6:
@@ -6179,6 +6197,13 @@ def run_video_pipeline(
                 })
 
             if budget_rescued_scenes:
+                # This is a third, distinct reviewer input. Keep its exact
+                # clips across retries just like the first two pools; an
+                # unknown review must not silently receive different frames.
+                if not recovered_generated_media and selected_recovery is None:
+                    from app.services.included_stock_pool import retain_stock_pool
+                    retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids,
+                                      work, phase='budget_rescue')
                 set_stage(
                     self,
                     task_id,
