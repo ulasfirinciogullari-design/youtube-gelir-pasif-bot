@@ -860,6 +860,9 @@ def _channel_overview(rows: list[dict]) -> str:
         status = 'Son ölçüm: ' + _metrics_time(row.get('fetched_at'))
         if row.get('status') == 'stale':
             status += ' · Güncelleme bekleniyor'
+        if row.get('reason') == 'permission':
+            status += ' · Google erişimi yenilenmeli'
+            schedule.append('Kanallar sayfasından yeniden bağla')
         if total_pending:
             status += ' · Kayıtlı herkese açık videoların son ölçümü: ' + _metric_number(subtotal) + ' izlenme'
         retry_link = f'<a class="tiny" href="/studio/job/{retry_id}">Güncel denemeyi aç</a>' if valid_retry else ''

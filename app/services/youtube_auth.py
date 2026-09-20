@@ -655,9 +655,17 @@ def _persist_connection(
         )
 
 
-def build_authorization_url(session_binding: str) -> str:
+def build_authorization_url(
+    session_binding: str,
+    *,
+    target_channel_id: str | None = None,
+) -> str:
     redirect_uri = _validate_redirect_uri(settings.google_redirect_uri)
     binding_digest = _binding_digest(session_binding)
+    if target_channel_id is not None:
+        target_channel_id = _safe_channel_id(target_channel_id)
+        if load_credentials(target_channel_id, refresh=False) is None:
+            raise YouTubeAuthError('YouTube channel is not connected')
     # Starting a new browser flow invalidates every older pending state.
     epoch = _rotate_authorization_epoch()
     state = secrets.token_urlsafe(32)
@@ -675,14 +683,17 @@ def build_authorization_url(session_binding: str) -> str:
     )
     if returned_state != state or not flow.code_verifier:
         raise YouTubeAuthError('Google authorization could not be initialized')
-    state_payload = _encrypt_json({
+    state_record = {
         'version': 2,
         'redirect_uri': redirect_uri,
         'code_verifier': flow.code_verifier,
         'binding_digest': binding_digest,
         'authorization_epoch': epoch,
         'created_at': datetime.now(timezone.utc).isoformat(),
-    })
+    }
+    if target_channel_id is not None:
+        state_record['target_channel_id'] = target_channel_id
+    state_payload = _encrypt_json(state_record)
     try:
         stored = _redis().set(
             _state_key(state, binding_digest),
@@ -727,6 +738,10 @@ def _consume_state(state: str, session_binding: str) -> dict[str, Any]:
     code_verifier = payload.get('code_verifier')
     if not isinstance(code_verifier, str) or not code_verifier:
         raise OAuthStateError('OAuth state expired, invalid, or already used')
+    if 'target_channel_id' in payload:
+        target = payload['target_channel_id']
+        if not isinstance(target, str) or not _CHANNEL_ID_PATTERN.fullmatch(target):
+            raise OAuthStateError('OAuth reconnect target is invalid')
     return payload
 
 
@@ -770,6 +785,9 @@ def complete_authorization(
 
     # Verify the exact authenticated channel before any token is persisted.
     channel = _channel_from_credentials(credentials)
+    target = state_payload.get('target_channel_id')
+    if target is not None and channel.get('id') != target:
+        raise YouTubeAuthError('youtube_oauth_channel_mismatch')
     channel['connection_id'] = secrets.token_urlsafe(24)
     _persist_connection(
         credentials,

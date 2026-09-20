@@ -462,6 +462,10 @@ def youtube_home(
 
     if status.get('configured'):
         channel_cards = []
+        channel_metrics = {
+            row.get('channel_id'): row for row in (metrics.get('channels') or [])
+            if isinstance(row, dict)
+        }
         for channel in connections:
             channel_id = str(channel.get('id') or '')
             connection_id = str(channel.get('connection_id') or '')
@@ -475,8 +479,14 @@ def youtube_home(
                     production_state = {'unavailable': True}
             production_retry = presentation._active_production_retry(profile, production_state, by_id)
             profile_form = _profile_form(channel, profile, production_state, production_retry)
+            measured = channel_metrics.get(channel_id, {})
+            reconnect = channel.get('requires_reconnect') is True or measured.get('reason') == 'permission'
+            connection_label = ('Bağlantı yenilenmeli' if reconnect else
+                                '● Bağlı' if measured.get('status') == 'fresh' else 'Bağlantı kayıtlı')
+            reconnect_notice = ('<p class="notice" role="status">Google erişimi yenilenmeli. '
+                                'Yeniden bağla düğmesine basıp bu kanalı seç.</p>' if reconnect else '')
             channel_cards.append(f'''
-<article class="channel-card" id="channel-{escape(channel_id, quote=True)}"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Kanal ve otomasyon ayarları</div></div><span class="badge">{'Bağlantı yenilenmeli' if channel.get('requires_reconnect') is True else '● Bağlı'}</span></div>{profile_form}<div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
+<article class="channel-card" id="channel-{escape(channel_id, quote=True)}"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Kanal ve otomasyon ayarları</div></div><span class="badge">{connection_label}</span></div>{reconnect_notice}{profile_form}<div class="actions channel-actions"><form method="post" action="/studio/youtube/reconnect/{escape(channel_id, quote=True)}"><button class="btn secondary small" type="submit">Yeniden bağla</button></form><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
         count = int(status.get('connection_count') or len(connections))
         limit = int(status.get('connection_limit') or 10)
         connection_notice = ''
@@ -485,7 +495,7 @@ def youtube_home(
         if count < limit:
             connect_action = f'<div class="actions"><form class="inline" method="post" action="/studio/youtube/connect"><button type="submit">+ Google ile kanal bağla</button></form><span class="tiny">{count}/{limit} kanal kullanılıyor</span></div>'
         else:
-            connect_action = f'<div class="notice">Kanal sınırı dolu ({count}/{limit}). Yeni kanal için önce bir bağlantıyı kaldır.</div>'
+            connect_action = f'<div class="notice">Kanal sınırı dolu ({count}/{limit}). Mevcut kanallarını yenileyebilirsin. Yeni kanal eklemek için bir bağlantıyı kaldır.</div>'
         empty_channels = '<div class="empty">Henüz bağlı kanal yok.</div>' if not channel_cards else ''
         account_card = f'''<section class="card"><div class="section-head"><div><span class="section-kicker">HESAPLAR</span><h2>Bağlı kanallar</h2><div class="muted">Her video yükleme anında tek bir hedef kanala sabitlenir.</div></div><span class="badge">{count}/{limit}</span></div>{connection_notice}<div class="channel-grid">{''.join(channel_cards)}</div>{empty_channels}{connect_action}</section>'''
     else:
@@ -704,10 +714,11 @@ def youtube_production_budget(
     return JSONResponse(budget_status(read_timeout=2), headers={'Cache-Control': 'no-store'})
 
 
-@router.post('/studio/youtube/connect')
-def youtube_connect(
+def _begin_youtube_connect(
     request: Request,
-    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+    studio_token: str | None,
+    *,
+    target_channel_id: str | None = None,
 ):
     _require_auth(studio_token)
     # Starting a flow rotates the global authorization epoch, so it is a
@@ -715,8 +726,9 @@ def youtube_connect(
     _require_same_origin(request)
     browser_binding = secrets.token_urlsafe(32)
     try:
+        options = {'target_channel_id': target_channel_id} if target_channel_id is not None else {}
         response = RedirectResponse(
-            build_authorization_url(browser_binding),
+            build_authorization_url(browser_binding, **options),
             status_code=302,
         )
     except YouTubeAuthError as exc:
@@ -733,6 +745,23 @@ def youtube_connect(
         path=OAUTH_CALLBACK_PATH,
     )
     return response
+
+
+@router.post('/studio/youtube/connect')
+def youtube_connect(
+    request: Request,
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    return _begin_youtube_connect(request, studio_token)
+
+
+@router.post('/studio/youtube/reconnect/{youtube_channel_id}')
+def youtube_reconnect(
+    request: Request,
+    youtube_channel_id: str,
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    return _begin_youtube_connect(request, studio_token, target_channel_id=youtube_channel_id)
 
 
 @router.get('/studio/youtube/callback', name='youtube_oauth_callback')
@@ -759,7 +788,12 @@ def youtube_oauth_callback(
             '<div class="hero"><h1>Kanal doğrulandı</h1></div><div class="card">YouTube bağlantısı tamamlandı. Studio’ya dönülüyor…</div><div class="actions"><a class="btn success" href="/studio/youtube?connected=1">Studio’ya dön</a></div>',
             script='<script>window.location.replace("/studio/youtube?connected=1")</script>',
         ))
-    except YouTubeAuthError:
+    except YouTubeAuthError as exc:
+        if str(exc) == 'youtube_oauth_channel_mismatch':
+            return _delete_oauth_binding_cookie(_shell(
+                '<div class="hero"><h1>Farklı bir kanal seçildi</h1></div><div class="notice">Yenilemek istediğin kanal seçilmediği için bu bağlantı kaydedilmedi. Kanallar sayfasında ilgili kanalın Yeniden bağla düğmesine bas ve Google’da aynı kanalı seç.</div><div class="actions"><a class="btn secondary" href="/studio/youtube">Kanallara dön</a></div>',
+                status_code=400,
+            ))
         return _delete_oauth_binding_cookie(_shell(
             '<div class="hero"><h1>Bağlantı kurulamadı</h1></div><div class="notice">OAuth yanıtı geçersiz, süresi dolmuş veya daha önce kullanılmış. Güvenli bağlantıyı yeniden başlat.</div><div class="actions"><a class="btn secondary" href="/studio/youtube">Geri dön</a></div>',
             status_code=400,
