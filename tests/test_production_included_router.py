@@ -157,7 +157,7 @@ def test_reconnected_channel_cannot_reuse_an_old_context(commissioned):
 
 def test_runtime_one_send_then_cached_result_with_existing_real_context(commissioned, monkeypatch):
     ledger, _, _ = commissioned
-    from app.services import abacus_router_review_runtime as transport
+    from app.services import production_included_transport as transport
     monkeypatch.setattr(runtime.settings, 'studio_spend_enforcement', True)
     monkeypatch.setattr(runtime.settings, 'studio_abacus_included_production', True)
     monkeypatch.setattr(runtime.settings, 'abacus_api_key', KEY)
@@ -167,7 +167,7 @@ def test_runtime_one_send_then_cached_result_with_existing_real_context(commissi
     def send(prepared):
         calls.append(prepared)
         return response(prepared)
-    monkeypatch.setattr(transport, '_send_once', send)
+    monkeypatch.setattr(transport, 'send_once', send)
     kwargs = {'purpose': 'research', 'system_instruction': 'Return the complete authored JSON.', 'json_schema': SCHEMA}
     for _ in range(2):
         assert included.generate_included_json([{'type': 'text', 'text': 'First complete prompt'}], **kwargs) == RESULT
@@ -176,7 +176,7 @@ def test_runtime_one_send_then_cached_result_with_existing_real_context(commissi
 
 def test_runtime_timeout_is_terminal_for_same_request(commissioned, monkeypatch):
     ledger, _, _ = commissioned
-    from app.services import abacus_router_review_runtime as transport
+    from app.services import production_included_transport as transport
     monkeypatch.setattr(runtime.settings, 'studio_spend_enforcement', True)
     monkeypatch.setattr(runtime.settings, 'studio_abacus_included_production', True)
     monkeypatch.setattr(runtime.settings, 'abacus_api_key', KEY)
@@ -186,7 +186,7 @@ def test_runtime_timeout_is_terminal_for_same_request(commissioned, monkeypatch)
     def send(prepared):
         calls.append(prepared)
         raise RuntimeError('Unknown provider outcome')
-    monkeypatch.setattr(transport, '_send_once', send)
+    monkeypatch.setattr(transport, 'send_once', send)
     kwargs = {'purpose': 'research', 'system_instruction': 'Full schema', 'json_schema': SCHEMA}
     with pytest.raises(SpendBlocked, match='response_unverified'):
         included.generate_included_json([{'type': 'text', 'text': 'Prompt'}], **kwargs)

@@ -283,6 +283,35 @@ class IncludedRouterLedger:
             except Exception:
                 raise SpendBlocked('included_router_settlement_uncertain') from None
 
+    def record_failure(self, identity, prepared, response, error):
+        """Supplemental encrypted evidence; never settles or releases a request."""
+        import httpx
+        key = PREFIX + 'failure:' + identity
+        evidence = {'version': 1, 'request_sha256': prepared.request_sha256,
+            'credential_sha256': prepared.credential_sha256, 'observed_at': _stamp(self.clock()),
+            'error_type': type(error).__name__, 'http_status': None, 'response_sha256': None,
+            'encrypted_response': None, 'retry_allowed': False}
+        if type(response) is httpx.Response:
+            from app.services.production_included_transport import MAX_ERROR_BYTES
+            _require(response.is_closed and response.is_stream_consumed
+                and len(response.content) <= (MAX_ERROR_BYTES if response.status_code >= 300 else 2 * 1024 * 1024))
+            evidence['http_status'] = response.status_code
+            evidence['response_sha256'] = hashlib.sha256(response.content).hexdigest()
+            # Never retain credential echoes, even encrypted. Invalid/large
+            # success bodies retain only their hash and remain unacknowledged.
+            secret = dict(prepared._header_pairs)['authorization'][len('Bearer '):].encode()
+            if len(response.content) <= MAX_ERROR_BYTES and secret not in response.content:
+                evidence['encrypted_response'] = _cipher().encrypt(response.content).decode('ascii')
+        with self.client.pipeline() as pipe:
+            state, journal = self._read(pipe)
+            row = journal['requests'].get(identity)
+            _require(row is not None and row['outcome'] is None
+                and row['request_sha256'] == prepared.request_sha256)
+            pipe.watch(key)
+            _require(not pipe.exists(key))
+            pipe.multi(); pipe.set(key, _raw(evidence), nx=True)
+            self._ack(pipe, [True])
+
 
 def _cipher():
     from app.config import settings
@@ -331,12 +360,20 @@ def _generate(prepared, purpose, observer):
     ledger = IncludedRouterLedger(foundation)
     identity, outcome = ledger.reserve(context, purpose, prepared)
     if outcome is None:
-        from app.services.abacus_router_review_runtime import _send_once, retained_router_review_active
+        from app.services.abacus_router_review_runtime import retained_router_review_active
+        from app.services.abacus_router_audio_review_runtime import retained_audio_router_review_active
+        from app.services.production_included_transport import send_once
         _require(not retained_router_review_active(), 'included_router_scope_conflict')
+        _require(not retained_audio_router_review_active(), 'included_router_scope_conflict')
+        response = None
         try:
-            response = _send_once(prepared)
+            response = send_once(prepared)
             observed = observer(prepared, response)
-        except Exception:
+        except Exception as error:
+            try:
+                ledger.record_failure(identity, prepared, response, error)
+            except Exception:
+                pass  # Occupied request survives missing failure diagnostics.
             raise SpendBlocked('included_router_response_unverified') from None
         outcome = ledger.settle(identity, prepared, observed)
     result = _result(prepared, outcome)
@@ -378,10 +415,10 @@ def generate_included_audio(audio_bytes, *, purpose, language, expected_narratio
     from app.services import abacus_router_audio_adapter as audio, audio_qc
     if purpose == 'blind_asr':
         _require(expected_narration is None, 'included_blind_asr_text_forbidden')
-        prepared = audio.prepare_included_blind_asr_request(audio_bytes,
+        prepared = audio.prepare_prompt_json_blind_asr_request(audio_bytes,
             api_key=settings.abacus_api_key, language=language)
     elif purpose == 'prosody':
-        prepared = audio.prepare_included_prosody_request(audio_bytes,
+        prepared = audio.prepare_prompt_json_prosody_request(audio_bytes,
             api_key=settings.abacus_api_key, language=language, expected_narration=expected_narration,
             system_instruction=audio_qc._PROSODY_SYSTEM_INSTRUCTION.replace('Turkish', 'English')
                 if language == 'en' else audio_qc._PROSODY_SYSTEM_INSTRUCTION,

@@ -24,7 +24,7 @@ URL2 = 'https://www.ecb.europa.eu/b.htm'
 @pytest.fixture
 def native(box, policy, monkeypatch):
     from app import config
-    from app.services import abacus_router_review_runtime as transport, production_scheduler as scheduler
+    from app.services import production_included_transport as transport, production_scheduler as scheduler
     # An independent synthetic store; never reset an existing financial ledger.
     store = fakeredis.FakeRedis(decode_responses=True)
     for key, value in snapshot(box.client).items():
@@ -71,7 +71,7 @@ def native(box, policy, monkeypatch):
         body = envelope()
         body['choices'][0]['message']['content'] = json.dumps(box.answer)
         return response(prepared, payload=body)
-    monkeypatch.setattr(transport, '_send_once', send)
+    monkeypatch.setattr(transport, 'send_once', send)
     original = planning._generate
     box.errors = []
     def generate(*args):

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from app.services import director, production_included_router as included, production_spend_runtime as runtime
-from app.services import included_research_sources as sources, abacus_router_review_runtime as transport
+from app.services import included_research_sources as sources, production_included_transport as transport
 from test_production_included_router import commissioned, client, CONTEXT
 from test_abacus_router_adapter import KEY, response, envelope
 
@@ -56,7 +56,7 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
             assert 'ACTUAL SOURCE TEXT FOR THE INDEPENDENT CRITIC' in json.dumps(prepared.payload)
         body = envelope(); body['choices'][0]['message']['content'] = json.dumps(output)
         return response(prepared, payload=body)
-    monkeypatch.setattr(transport, '_send_once', send)
+    monkeypatch.setattr(transport, 'send_once', send)
     monkeypatch.setattr(director, 'run_optional_gemini_critic', lambda *a, **kw: pytest.fail('No paid fallback'))
     topic = 'Soğukta telefonun pili neden hızla düşer?'
     if rejected:
