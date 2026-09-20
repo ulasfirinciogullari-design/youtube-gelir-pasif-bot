@@ -59,6 +59,7 @@ def test_reconnect_target_is_encrypted_and_only_matching_channel_is_replaced(rec
     encrypted = reconnect.client.get(key)
     assert CHANNEL not in encrypted
     assert auth._decrypt_json(encrypted)['target_channel_id'] == CHANNEL
+    assert auth._decrypt_json(encrypted)['version'] == 3
     assert reconnect.client.get(auth._credential_key(CHANNEL)) == before_target
     assert reconnect.fetched.call_count == 0
 
@@ -107,6 +108,21 @@ def test_nonexistent_target_does_not_start_or_invalidate_any_flow(reconnect):
     with pytest.raises(auth.YouTubeAuthError):
         auth.build_authorization_url(BINDING, target_channel_id='UC_missing_channel')
     assert reconnect.client.values == before
+    reconnect.fetched.assert_not_called()
+
+
+@pytest.mark.parametrize('change', ['missing_target', 'legacy_version', 'float_version', 'unknown_version'])
+def test_target_cannot_be_removed_or_downgraded_to_an_unbound_state(reconnect, change):
+    state, key = begin(reconnect)
+    record = auth._decrypt_json(reconnect.client.get(key))
+    if change == 'missing_target':
+        record.pop('target_channel_id')
+    else:
+        record['version'] = {'legacy_version': 2, 'float_version': 3.0, 'unknown_version': 4}[change]
+    reconnect.client.set(key, auth._encrypt_json(record))
+    with pytest.raises(auth.OAuthStateError):
+        auth.complete_authorization('synthetic-code', state, BINDING)
+    assert reconnect.client.get(key) is None
     reconnect.fetched.assert_not_called()
 
 

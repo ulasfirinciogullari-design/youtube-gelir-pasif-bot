@@ -692,6 +692,7 @@ def build_authorization_url(
         'created_at': datetime.now(timezone.utc).isoformat(),
     }
     if target_channel_id is not None:
+        state_record['version'] = 3
         state_record['target_channel_id'] = target_channel_id
     state_payload = _encrypt_json(state_record)
     try:
@@ -722,7 +723,8 @@ def _consume_state(state: str, session_binding: str) -> dict[str, Any]:
     if not encrypted:
         raise OAuthStateError('OAuth state expired, invalid, or already used')
     payload = _decrypt_json(encrypted)
-    if payload.get('version') != 2:
+    version = payload.get('version')
+    if type(version) is not int or version not in (2, 3):
         raise OAuthStateError('OAuth state expired, invalid, or already used')
     if payload.get('redirect_uri') != _validate_redirect_uri(settings.google_redirect_uri):
         raise OAuthStateError('OAuth state expired, invalid, or already used')
@@ -738,10 +740,12 @@ def _consume_state(state: str, session_binding: str) -> dict[str, Any]:
     code_verifier = payload.get('code_verifier')
     if not isinstance(code_verifier, str) or not code_verifier:
         raise OAuthStateError('OAuth state expired, invalid, or already used')
-    if 'target_channel_id' in payload:
-        target = payload['target_channel_id']
+    if version == 3:
+        target = payload.get('target_channel_id')
         if not isinstance(target, str) or not _CHANNEL_ID_PATTERN.fullmatch(target):
             raise OAuthStateError('OAuth reconnect target is invalid')
+    elif 'target_channel_id' in payload:
+        raise OAuthStateError('OAuth reconnect target requires version 3')
     return payload
 
 
