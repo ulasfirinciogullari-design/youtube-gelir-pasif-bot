@@ -148,10 +148,9 @@ def _records(pipe, s3, bucket, binding, *, purpose=_STORY):
     return intent_key, intent, anchor_key, anchor, ciphertext
 
 
-def _packet(ciphertext, material, *, binding, reservation, state, source, summary, expected_status=200):
-    # The default saved-STORY interpretation still requires HTTP 200. Only the
-    # separate rejection reader selects 400; this does not issue an observation.
-    _require(type(expected_status) is int and expected_status in (200, 400))
+def _authenticated_context(ciphertext, material):
+    """Open bounded authenticated metadata, without interpreting any response."""
+    _require(type(ciphertext) is bytes and 0 < len(ciphertext) <= _MAX_CIPHER)
     _require(type(material) is str and 0 < len(material) <= 4096)
     key = base64.urlsafe_b64encode(hmac.new(material.encode('utf-8'), capture._DOMAIN,
                                           hashlib.sha256).digest())
@@ -167,6 +166,14 @@ def _packet(ciphertext, material, *, binding, reservation, state, source, summar
     _require(set(context) == {'binding', 'policy', 'source', 'reservation', 'summary',
         'prepared_size', 'prepared_sha256', 'wire_size', 'wire_sha256', 'response_size',
         'response_sha256', *capture._FLAGS})
+    return context, packet, offset
+
+
+def _packet(ciphertext, material, *, binding, reservation, state, source, summary, expected_status=200):
+    # The default saved-STORY interpretation still requires HTTP 200. Only the
+    # separate rejection reader selects 400; this does not issue an observation.
+    _require(type(expected_status) is int and expected_status in (200, 400))
+    context, packet, offset = _authenticated_context(ciphertext, material)
     for field, expected in (('binding', binding), ('policy', state['policy']), ('source', source),
                             ('reservation', reservation), ('summary', summary)):
         _same(context[field], expected)
@@ -206,6 +213,11 @@ def _packet(ciphertext, material, *, binding, reservation, state, source, summar
 
 def _source_contract(pipe, s3, bucket, original, audio_policy):
     pointer = audio_reader._source(pipe, audio_policy)
+    return _source_contract_for_pointer(s3, bucket, original, audio_policy, pointer)
+
+
+def _source_contract_for_pointer(s3, bucket, original, audio_policy, pointer):
+    """Interpret the exact private media addressed by a verified source pointer."""
     metadata_raw = audio_reader._blob(s3, bucket, pointer['metadata_key'], pointer['metadata_sha256'],
         audio_reader.MAX_RECORD_BYTES, content_type='application/json')
     cuts._read_private(s3, bucket, {'key': pointer['metadata_key'], 'sha256': pointer['metadata_sha256'],

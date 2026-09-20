@@ -123,33 +123,43 @@ def _text(value):
 
 def schema_for_request(body, purpose):
     """Validate the complete bound schema of a legacy or explicit enum request."""
-    from app.services.abacus_router_schema_compat import ENUM_SCHEMA_PREFIX, _lower_enums
+    from app.services.abacus_router_schema_compat import ENUM_SCHEMA_PREFIX, OBJECT_SCHEMA_PREFIX, _lower_enums
 
     _require(type(purpose) is AudioReviewPurpose)
-    spec, parts = body['response_format']['json_schema'], body['messages'][1]['content']
-    if spec['name'] == purpose.value:
+    parts = body['messages'][1]['content']
+    is_object = body['response_format'] == {'type': 'json_object'}
+    spec = None if is_object else body['response_format']['json_schema']
+    if not is_object and spec['name'] == purpose.value:
         _require(len(parts) == 2)
         return spec['schema']
-    _require(spec['name'] == purpose.value + '_enum_v1' and len(parts) == 3)
+    _require((is_object or spec['name'] == purpose.value + '_enum_v1') and len(parts) == 3)
+    prefix = OBJECT_SCHEMA_PREFIX if is_object else ENUM_SCHEMA_PREFIX
     part = parts[2]
     _require(type(part) is dict and set(part) == {'type', 'text'} and part['type'] == 'text'
-             and type(part['text']) is str and part['text'].startswith(ENUM_SCHEMA_PREFIX))
-    encoded = part['text'][len(ENUM_SCHEMA_PREFIX):].encode('utf-8')
+             and type(part['text']) is str and part['text'].startswith(prefix))
+    encoded = part['text'][len(prefix):].encode('utf-8')
     _require(0 < len(encoded) <= MAX_METADATA_BYTES)
     original = _json_loads(encoded.decode('utf-8'))
     _require(type(original) is dict and original.get('type') == 'object' and _canonical(original) == encoded)
     _bounded_visual_schema(original)
-    native, count = _lower_enums(original)
-    _require(count > 0 and _canonical(native) == _canonical(spec['schema']))
+    if not is_object:
+        native, count = _lower_enums(original)
+        _require(count > 0 and _canonical(native) == _canonical(spec['schema']))
     return original
 
 
 def _inspect_body(value, purpose):
     _require(type(purpose) is AudioReviewPurpose)
     body = _copy_json(value)
-    _require(type(body) is dict and set(body) == {
-        'model', 'messages', 'response_format', 'max_tokens', 'stream', 'modalities'}
-        and body['model'] == MODEL and body['stream'] is False and body['modalities'] == ['text'])
+    _require(type(body) is dict)
+    is_object = body.get('response_format') == {'type': 'json_object'}
+    options = {'temperature'} if is_object else {'modalities'}
+    _require(set(body) == {'model', 'messages', 'response_format', 'max_tokens', 'stream', *options}
+        and body['model'] == MODEL and body['stream'] is False)
+    if is_object:
+        _require(type(body['temperature']) is int and body['temperature'] == 0)
+    else:
+        _require(body['modalities'] == ['text'])
     _require(type(body['max_tokens']) is int and 1 <= body['max_tokens'] <= MAX_OUTPUT_TOKENS)
     messages = body['messages']
     _require(type(messages) is list and len(messages) == 2)
@@ -169,13 +179,14 @@ def _inspect_body(value, purpose):
     _require(type(text) is dict and set(text) == {'type', 'text'} and text['type'] == 'text')
     _text(text['text'])
     response_format = body['response_format']
-    _require(type(response_format) is dict and set(response_format) == {'type', 'json_schema'}
-             and response_format['type'] == 'json_schema')
-    spec = response_format['json_schema']
-    _require(type(spec) is dict and set(spec) == {'name', 'strict', 'schema'}
-             and spec['name'] in (purpose.value, purpose.value + '_enum_v1') and spec['strict'] is True
-             and type(spec['schema']) is dict and spec['schema'].get('type') == 'object')
-    _bounded_visual_schema(spec['schema'])
+    if not is_object:
+        _require(type(response_format) is dict and set(response_format) == {'type', 'json_schema'}
+                 and response_format['type'] == 'json_schema')
+        spec = response_format['json_schema']
+        _require(type(spec) is dict and set(spec) == {'name', 'strict', 'schema'}
+                 and spec['name'] in (purpose.value, purpose.value + '_enum_v1') and spec['strict'] is True
+                 and type(spec['schema']) is dict and spec['schema'].get('type') == 'object')
+        _bounded_visual_schema(spec['schema'])
     complete_schema = schema_for_request(body, purpose)
     if purpose is AudioReviewPurpose.BLIND_ASR:
         _require(messages[0]['content'] == _ASR_SYSTEM and text['text'] == _ASR_TEXT
@@ -254,11 +265,12 @@ def inspect_audio_router_request(url, kwargs, *, purpose):
         raise AbacusRouterAudioError(_REQUEST_ERROR) from None
 
 
-def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens, enum_compat=False):
+def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens, enum_compat=False,
+             *, json_object=False):
     try:
         _require(type(audio) is bytes and 0 < len(audio) <= MAX_AUDIO_BYTES
                  and type(api_key) is str and language == 'tr' and type(language) is str)
-        _require(type(enum_compat) is bool)
+        _require(type(enum_compat) is bool and type(json_object) is bool and not (enum_compat and json_object))
         schema = _copy_json(schema)
         extra = []
         if enum_compat:
@@ -267,6 +279,13 @@ def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens
             extra = [{'type': 'text', 'text': ENUM_SCHEMA_PREFIX + _canonical(schema).decode('utf-8')}]
             schema, count = _lower_enums(schema)
             _require(count > 0)
+        if json_object:
+            from app.services.abacus_router_schema_compat import OBJECT_SCHEMA_PREFIX
+            _bounded_visual_schema(schema)
+            extra = [{'type': 'text', 'text': OBJECT_SCHEMA_PREFIX + _canonical(schema).decode('utf-8')}]
+        response_format = ({'type': 'json_object'} if json_object else
+            {'type': 'json_schema', 'json_schema': {
+                'name': purpose.value + ('_enum_v1' if enum_compat else ''), 'strict': True, 'schema': schema}})
         return inspect_audio_router_request(ENDPOINT, {
             'headers': {'Authorization': 'Bearer ' + api_key, 'Content-Type': 'application/json',
                         'Accept': 'application/json'},
@@ -275,9 +294,9 @@ def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens
                     {'type': 'input_audio', 'input_audio': {
                         'data': base64.b64encode(audio).decode('ascii'), 'format': 'mp3'}},
                     {'type': 'text', 'text': text}, *extra]}],
-                'response_format': {'type': 'json_schema', 'json_schema': {
-                    'name': purpose.value + ('_enum_v1' if enum_compat else ''), 'strict': True, 'schema': schema}},
-                'max_tokens': max_tokens, 'stream': False, 'modalities': ['text']}, 'timeout': 90.0,
+                'response_format': response_format,
+                'max_tokens': max_tokens, 'stream': False,
+                **({'temperature': 0} if json_object else {'modalities': ['text']})}, 'timeout': 90.0,
         }, purpose=purpose)
     except AbacusRouterAudioError:
         raise
@@ -295,6 +314,26 @@ def prepare_compatible_blind_asr_request(audio_bytes, *, api_key, language='tr',
     """A distinct stateless ASR format; it still accepts no expected narration."""
     return _prepare(audio_bytes, api_key, _ASR_SYSTEM, _ASR_TEXT, _ASR_SCHEMA,
                     AudioReviewPurpose.BLIND_ASR, language, max_tokens, True)
+
+
+def prepare_json_object_blind_asr_request(audio_bytes, *, api_key, language='tr', max_tokens=MAX_OUTPUT_TOKENS):
+    """Explicit JSON Object ASR; still blind, with the full fixed local schema."""
+    return _prepare(audio_bytes, api_key, _ASR_SYSTEM, _ASR_TEXT, _ASR_SCHEMA,
+                    AudioReviewPurpose.BLIND_ASR, language, max_tokens, json_object=True)
+
+
+def prepare_json_object_audio_prosody_request(audio_bytes, *, api_key, expected_narration,
+        system_instruction, json_schema, language='tr', max_tokens=MAX_OUTPUT_TOKENS):
+    """Explicit JSON Object prosody; original audio, rubric and schema preserved."""
+    try:
+        _text(expected_narration)
+        prompt = _PROSODY_PREFIX + json.dumps(expected_narration, ensure_ascii=False) + _PROSODY_SUFFIX
+        return _prepare(audio_bytes, api_key, system_instruction, prompt, json_schema,
+                        AudioReviewPurpose.PROSODY, language, max_tokens, json_object=True)
+    except AbacusRouterAudioError:
+        raise
+    except Exception:
+        raise AbacusRouterAudioError(_REQUEST_ERROR) from None
 
 
 def prepare_audio_prosody_request(audio_bytes, *, api_key, expected_narration,

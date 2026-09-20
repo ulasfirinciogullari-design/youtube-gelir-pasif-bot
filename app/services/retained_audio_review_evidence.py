@@ -193,6 +193,11 @@ def _validate_record(record, state):
 def _source(pipe, policy):
     """Recheck source identity, without renewing historical request entitlement."""
     record = continuity._derive(pipe, policy['profile_revision'])
+    return _source_pointer(record, policy)
+
+
+def _source_pointer(record, policy):
+    """Validate an audio pointer in already authenticated source data."""
     candidates = record['legacy_candidates']
     pointer = candidates['audio_pointer']
     _require(_hash(record) == policy['continuity_sha256']
@@ -222,7 +227,9 @@ def _artifact_keys(journal):
                 from app.services.retained_review_captured_story_continuation import AUDIO_KEYS as CAPTURED_AUDIO_KEYS
                 from app.services.retained_visual_schema_repair import AUDIO_KEYS as CORRECTED_AUDIO_KEYS
                 from app.services.retained_visual_enum_repair import AUDIO_KEYS as ENUM_AUDIO_KEYS
-                _require(keys in (CAPTURED_AUDIO_KEYS, CORRECTED_AUDIO_KEYS, ENUM_AUDIO_KEYS), 'audio_evidence_journal_invalid')
+                from app.services.retained_json_object_continuation import AUDIO_KEYS as OBJECT_AUDIO_KEYS
+                _require(keys in (CAPTURED_AUDIO_KEYS, CORRECTED_AUDIO_KEYS, ENUM_AUDIO_KEYS, OBJECT_AUDIO_KEYS),
+                         'audio_evidence_journal_invalid')
     prefix = keys[0].rsplit(':', 1)[0]
     return {'asr': prefix + ':asr_artifact', 'final': prefix + ':final_artifact'}
 

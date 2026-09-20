@@ -372,8 +372,11 @@ def generate_retained_router_review(
         config = _zero_cash_guard()
         builder = prepare_router_request
         if scope.journal._captured_story_continuation is not None:
-            from app.services.retained_review_captured_story_continuation import uses_schema_compatibility, request_schema_name
-            if uses_schema_compatibility(scope.journal._captured_story_continuation):
+            from app.services.retained_review_captured_story_continuation import uses_schema_compatibility, uses_json_object_requests, request_schema_name
+            if uses_json_object_requests(scope.journal._captured_story_continuation):
+                from app.services.abacus_router_schema_compat import prepare_json_object_router_request
+                builder = prepare_json_object_router_request
+            elif uses_schema_compatibility(scope.journal._captured_story_continuation):
                 from app.services.abacus_router_schema_compat import prepare_compatible_router_request
                 from functools import partial
                 builder = partial(prepare_compatible_router_request,

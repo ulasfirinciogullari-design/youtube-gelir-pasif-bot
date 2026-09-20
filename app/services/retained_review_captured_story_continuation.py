@@ -259,6 +259,9 @@ def snapshot_captured_story_predecessors(client, *, story_evidence):
 
 
 def _manifest(value):
+    if type(value) is dict and value.get('kind') == 'explicit_included_json_object_continuation':
+        from app.services.retained_json_object_continuation import validate_manifest
+        return validate_manifest(value)
     if type(value) is dict and value.get('kind') == 'explicit_included_visual_enum_repair':
         from app.services.retained_visual_enum_repair import validate_manifest
         return validate_manifest(value)
@@ -345,12 +348,19 @@ def uses_schema_compatibility(authorization):
     return _checked(authorization)['version'] in (2, 3)
 
 
+def uses_json_object_requests(authorization):
+    return _checked(authorization)['version'] == 4
+
+
 def request_schema_name(authorization):
     return _checked(authorization).get('request_schema_name')
 
 
 def _schema_controller(authorization):
     version = _checked(authorization)['version']
+    if version == 4:
+        from app.services import retained_json_object_continuation as repair
+        return repair
     if version == 3:
         from app.services import retained_visual_enum_repair as repair
         return repair
@@ -377,6 +387,8 @@ def historical_keys(authorization):
 def rejection_capture_keys(pipe, authorization):
     """All transitive rejection captures remain watched after a final is staged."""
     current = _checked(authorization)
+    if current['version'] == 4:
+        return tuple(current['predecessors']['capture_records'])
     manifests = [current]
     if current['version'] == 3:
         from app.services import retained_visual_schema_repair as previous
@@ -416,8 +428,10 @@ def _ordered(states):
 
 
 def _read_control(pipe, *, current=False, authorization=None):
-    if authorization is not None and uses_schema_compatibility(authorization):
-        return _schema_controller(authorization).read_control(pipe, authorization, current=current)
+    if authorization is not None:
+        controller = _schema_controller(authorization)
+        if controller is not None:
+            return controller.read_control(pipe, authorization, current=current)
     pipe.watch(*ALL_KEYS)
     _require(all(type(ttl) is int and ttl == -1 for ttl in (pipe.pttl(k) for k in ALL_KEYS)),
              'captured_story_continuation_not_durable')

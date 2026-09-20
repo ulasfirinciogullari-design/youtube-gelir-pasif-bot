@@ -189,9 +189,16 @@ def read_retained_captured_story_visual_evidence(client, s3, *, bucket,
             # The outer transaction already watches all historical/source/intent
             # records. This separate genuine reader must succeed afresh, and any
             # concurrent change also aborts the outer final PING.
-            old_cap = completion.read_retained_completion_plan(client)
-            fresh_story = story_reader.read_retained_transport_story_evidence(
-                client, s3, bucket=bucket, completion_plan=old_cap)
+            if continuation.uses_json_object_requests(captured_story_continuation):
+                from app.services.retained_story_connection_rebind import read_reconnected_story_evidence
+                reconnected = read_reconnected_story_evidence(client, s3, bucket=bucket,
+                    qualification=qualification)
+                _require(_raw(reconnected.record) == _raw(control['source_bridge']))
+                fresh_story = reconnected.story_evidence
+            else:
+                old_cap = completion.read_retained_completion_plan(client)
+                fresh_story = story_reader.read_retained_transport_story_evidence(
+                    client, s3, bucket=bucket, completion_plan=old_cap)
             _require(_raw(fresh_story.record) == _raw(qualification))
             tag = {'version': 1, 'kind': 'captured_transport_story',
                 'continuation_manifest_sha256': _sha(control_raw), 'evidence': qualification}
@@ -221,6 +228,7 @@ def read_retained_captured_story_visual_evidence(client, s3, *, bucket,
                 evidence_sources=contract['candidate'].get('sources') or [])
             _require(shared._request_bytes(visual['request'],
                 schema_compat=continuation.uses_schema_compatibility(captured_story_continuation),
+                json_object=continuation.uses_json_object_requests(captured_story_continuation),
                 schema_name=continuation.request_schema_name(captured_story_continuation)) == bodies['prepared'],
                      'retained_captured_story_visual_request_changed')
             parsed = adapter._parse_response_payload(bodies['response'],

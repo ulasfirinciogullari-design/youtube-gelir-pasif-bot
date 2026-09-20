@@ -142,11 +142,17 @@ def _artifact(sink, pipe, purpose, state, source, prior_sha):
     return anchor, manifest, bodies
 
 
-def _request_bytes(request, *, schema_compat=False, schema_name=None):
+def _request_bytes(request, *, schema_compat=False, schema_name=None, json_object=False):
     _require(type(request) is dict and set(request) == {
         'parts', 'purpose', 'system_instruction', 'json_schema', 'max_tokens'})
-    _require(type(schema_compat) is bool)
+    _require(type(schema_compat) is bool and type(json_object) is bool
+             and not (schema_compat and json_object))
     _require(schema_compat or schema_name is None)
+    if json_object:
+        from app.services.abacus_router_schema_compat import prepare_json_object_router_request
+        return prepare_json_object_router_request(request['parts'], api_key='offline-source-rederivation',
+            system_instruction=request['system_instruction'], json_schema=request['json_schema'],
+            max_tokens=request['max_tokens'])._body_bytes
     if schema_compat:
         from app.services.abacus_router_schema_compat import prepare_compatible_router_request, SCHEMA_NAME
         # A pure local snapshot with an inert key: no HTTP request, observer or

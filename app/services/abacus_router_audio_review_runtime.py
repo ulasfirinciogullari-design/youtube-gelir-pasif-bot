@@ -373,7 +373,11 @@ def _run(purpose, audio_bytes, expected_narration=None):
         prosody_builder = adapter.prepare_audio_prosody_request
         if scope.journal._captured_story_continuation is not None:
             from app.services.retained_review_captured_story_continuation import _checked
-            if _checked(scope.journal._captured_story_continuation)['version'] == 3:
+            version = _checked(scope.journal._captured_story_continuation)['version']
+            if version == 4:
+                asr_builder = adapter.prepare_json_object_blind_asr_request
+                prosody_builder = adapter.prepare_json_object_audio_prosody_request
+            elif version == 3:
                 asr_builder = adapter.prepare_compatible_blind_asr_request
                 prosody_builder = adapter.prepare_compatible_audio_prosody_request
         if purpose is _ASR:

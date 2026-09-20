@@ -89,6 +89,9 @@ def _visual(pipe, scope, data):
     for key in ('continuity_sha256', 'source_state_sha256', 'source_spec_sha256',
                 'source_journal_sha256', 'source_metadata_sha256', 'audio', 'immutable_core_sha256'):
         expected[key] = qualification['commitments'][key]
+    # The saved STORY retains historical OAuth provenance. The selected
+    # controller verifies its same-content bridge to the current VISUAL source.
+    expected['continuity_sha256'] = state['policy']['continuity_sha256']
     _require(_raw(expected) == _raw({key: bound[key] for key in expected}),
              'router_audio_visual_binding_changed')
     anchor_keys = artifacts._anchor_keys(visual_keys)

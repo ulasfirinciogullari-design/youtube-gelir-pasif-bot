@@ -464,12 +464,19 @@ class RouterAudioReviewJournal:
             _require(purpose.value not in state['slots'], 'router_audio_review_request_already_reserved')
             _request(prepared, policy)
             enum_compat = False
+            json_object = False
             if self._captured_story_continuation is not None:
                 from app.services.retained_review_captured_story_continuation import _checked
-                enum_compat = _checked(self._captured_story_continuation)['version'] == 3
-            _require(prepared.payload['response_format']['json_schema']['name']
-                     == purpose.value + ('_enum_v1' if enum_compat else ''),
-                     'router_audio_schema_selection_changed')
+                version = _checked(self._captured_story_continuation)['version']
+                enum_compat = version == 3
+                json_object = version == 4
+            if json_object:
+                _require(prepared.payload['response_format'] == {'type': 'json_object'},
+                         'router_audio_json_object_required')
+            else:
+                _require(prepared.payload['response_format']['json_schema']['name']
+                         == purpose.value + ('_enum_v1' if enum_compat else ''),
+                         'router_audio_schema_selection_changed')
             binding = None if purpose is AudioReviewPurpose.BLIND_ASR else _asr_binding(
                 policy, state['slots'].get(AudioReviewPurpose.BLIND_ASR.value), expected_narration, asr_result)
             _require(all(slot['request_sha256'] != prepared.request_sha256 for slot in state['slots'].values()),

@@ -228,6 +228,10 @@ def _bind_request(collector, parts, instruction, schema):
             'max_tokens': 8192, 'stream': False, 'modalities': ['text']}
     from app.services import retained_review_captured_story_continuation as continuation
     cap = scope.journal._captured_story_continuation
+    if cap is not None and continuation.uses_json_object_requests(cap):
+        from app.services.abacus_router_schema_compat import prepare_json_object_router_request
+        body = prepare_json_object_router_request(parts, api_key='offline-body-identity',
+            system_instruction=instruction, json_schema=schema, max_tokens=8192).payload
     if cap is not None and continuation.uses_schema_compatibility(cap):
         from app.services.abacus_router_schema_compat import prepare_compatible_router_request
         data['body'] = prepare_compatible_router_request(parts, api_key='offline-sampled-input-binding',
