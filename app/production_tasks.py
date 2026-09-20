@@ -85,6 +85,8 @@ def production_tick() -> dict:
         except Exception:
             pass  # Private derivatives never suppress an independent normal job.
         recovered = reconcile_public_retry_deliveries(linked_profiles)
+        from app.services.production_quality_holds import maintain_quality_holds
+        quality_holds = maintain_quality_holds(linked_profiles)
         dispatched = dispatch_due_productions(
             profiles,
             connections,
@@ -96,7 +98,8 @@ def production_tick() -> dict:
             maintenance = maintain_production_series(profiles, connections, prepare_series_batch.apply_async)
         except Exception:
             maintenance = {'status': 'unavailable', 'channels': {}}
-        return {**dispatched, 'public_retry_reconciliation': recovered, 'series_maintenance': maintenance}
+        return {**dispatched, 'public_retry_reconciliation': recovered,
+                'quality_holds': quality_holds, 'series_maintenance': maintenance}
     except ChannelProductionError:
         return {'status': 'blocked', 'reason': 'production_state_unavailable'}
     except Exception:
