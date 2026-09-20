@@ -1,4 +1,4 @@
-"""Observed native STOP metadata is optional, exact and never a QA grant."""
+"""Observed native stop metadata is optional, exact and never a QA grant."""
 from copy import deepcopy
 import hashlib
 import json
@@ -62,12 +62,13 @@ def test_absent_native_field_preserves_frozen_5e_result_and_evidence_bytes():
 
 
 @pytest.mark.parametrize('omit_identity', [False, True])
-def test_native_stop_preserves_exact_result_and_all_other_evidence(omit_identity):
+@pytest.mark.parametrize('native_reason', ['STOP', 'stop'])
+def test_native_stop_preserves_exact_result_and_all_other_evidence(omit_identity, native_reason):
     prepared, payload = fixture.prepare(), fixture.envelope()
     if omit_identity:
         payload.pop('id'); payload.pop('object')
     before = adapter.observe_router_response(prepared, exchange(prepared, payload))
-    payload['choices'][0]['native_finish_reason'] = 'STOP'
+    payload['choices'][0]['native_finish_reason'] = native_reason
     response = exchange(prepared, payload)
     after = adapter.observe_router_response(prepared, response)
     assert_metadata_only(before, after, response)
@@ -78,8 +79,8 @@ def test_native_stop_preserves_exact_result_and_all_other_evidence(omit_identity
 
 
 @pytest.mark.parametrize('value', [None, True, False, 0, 1, 1.0, [], {},
-    'stop', 'Stop', ' STOP', 'STOP ', 'STOP\n', 'END_TURN', 'length', 'tool_calls', fixture.KEY])
-def test_present_native_reason_requires_the_exact_observed_string(value):
+    'Stop', ' STOP', 'STOP ', 'STOP\n', 'END_TURN', 'length', 'tool_calls', fixture.KEY])
+def test_present_native_reason_requires_an_exact_observed_string(value):
     prepared, payload = fixture.prepare(), fixture.envelope()
     payload['choices'][0]['native_finish_reason'] = value
     with pytest.raises(adapter.AbacusRouterError, match='^abacus_router_response_unverified$'):
@@ -109,12 +110,13 @@ DAMAGES = ['length', 'canonical_uppercase', 'missing_finish', 'boolean_index', '
 
 
 @pytest.mark.parametrize('damage', DAMAGES)
-def test_native_stop_does_not_waive_any_existing_envelope_or_request_guard(damage):
+@pytest.mark.parametrize('native_reason', ['STOP', 'stop'])
+def test_native_stop_does_not_waive_any_existing_envelope_or_request_guard(damage, native_reason):
     prepared, payload = fixture.prepare(), fixture.envelope()
-    payload['choices'][0]['native_finish_reason'] = 'STOP'
+    payload['choices'][0]['native_finish_reason'] = native_reason
     damage_payload(payload, damage)
-    raw = (json.dumps(payload).replace('"native_finish_reason": "STOP"',
-        '"native_finish_reason": "STOP", "native_finish_reason": "STOP"').encode()
+    raw = (json.dumps(payload).replace(f'"native_finish_reason": "{native_reason}"',
+        f'"native_finish_reason": "{native_reason}", "native_finish_reason": "{native_reason}"').encode()
         if damage == 'duplicate_native' else None)
     response = exchange(prepared, payload, status=403 if damage == 'non2xx' else 200,
                         raw=raw, changed_wire=damage == 'wire')

@@ -304,7 +304,7 @@ def test_authenticated_packet_does_not_replace_request_headers_or_full_semantics
                         'natural_language', 'ending_semantics', 'bool_schema', 'extra_approval'):
                     reply = json.loads(bodies['response']); choice = reply['choices'][0]
                     result = json.loads(choice['message']['content'])
-                    if fault == 'native_finish': choice['native_finish_reason'] = 'stop'
+                    if fault == 'native_finish': choice['native_finish_reason'] = 'length'
                     elif fault == 'canonical_finish': choice['finish_reason'] = 'length'
                     elif fault == 'mixed_usage': reply['usage']['total_tokens'] = 226
                     elif fault == 'global_semantics': result['story_review']['causal_claim_supported'] = False
