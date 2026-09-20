@@ -16,12 +16,31 @@ No provider request, observer settlement or replay occurred during inspection.
 
 The official [image input reference](https://abacus.ai/help/developer-platform/route-llm/chat-completions/image-analysis)
 documents multiple base64 images. The [chat reference](https://abacus.ai/help/developer-platform/route-llm/chat-completions)
-documents both `json_schema` and `json_object` responses. A future separately
-budgeted compatibility diagnostic could test JSON Object output with the full
-original schema still enforced locally. That is a hypothesis to test, not an
-implemented fallback or verified remedy; the current request is not retried.
+documents both `json_schema` and `json_object` responses. These references do not
+identify the cause of the earlier rejection. The complete 30-frame request with
+its original rubric still requires a separately admitted compatibility check;
+the failed request is not retried or treated as approved.
 
 The [billing FAQ](https://abacus.ai/help/chatllm-ai-super-assistant/faqs/billing)
 distinguishes unlimited ChatLLM UI models from RouteLLM API usage, which consumes
-credits. Account credit balance and automatic purchasing still require account
-evidence. No unknown historical cash usage is treated as zero.
+credits. On 20 September the owner reported 15,768 remaining credits and automatic
+credit purchasing disabled. These are owner reports, not an API balance lookup;
+unknown historical cash usage remains unknown.
+
+A separate one-use diagnostic then sent a synthetic 32×32 red JPEG with JSON
+Object output and a 128-token ceiling. It received HTTP 200 and the expected JSON
+color result. The complete response was preserved privately. Observed token
+usage was 46 input and 33 output tokens; the provider did not report a credit
+charge. This confirms acceptance of that small request, not the original
+30-frame request, an identified cause of its HTTP 400, or production quality.
+
+The explicit `prepare_json_object_router_request` builder now preserves the
+entire original rubric, ordered JPEGs and validation schema in the bound request.
+It uses JSON Object output with deterministic temperature and enforces the same
+complete schema locally, including enum types, unique arrays, required fields
+and bounds. Missing, duplicated, moved or changed schema contracts are rejected.
+Default native-schema requests retain their existing bytes. There is no automatic
+fallback or provider retry, and the builder grants no sending or QA authority.
+The expired retained controller and its occupied requests remain closed. A new
+current-authority admission path and real full-rubric/audio/final QA are still
+required before production can resume.

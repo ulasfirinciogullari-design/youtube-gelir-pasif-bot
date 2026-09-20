@@ -45,6 +45,7 @@ _MAX_PARTS = 4 * MAX_IMAGES + 1
 _MAX_TOKEN_COUNTER = 1_000_000_000  # Finite protocol sanity bound, NOT a price/context estimate.
 _IDENTIFIER = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._:/-]{0,159}$')
 _BODY_FIELDS = {'model', 'messages', 'response_format', 'max_tokens', 'stream', 'modalities'}
+_JSON_OBJECT_FIELDS = (_BODY_FIELDS - {'modalities'}) | {'temperature'}
 _REQUEST_ERROR = 'abacus_router_request_invalid'
 _RESPONSE_ERROR = 'abacus_router_response_unverified'
 _SCHEMA_ERROR = 'abacus_router_schema_mismatch'
@@ -94,9 +95,14 @@ def _text(value):
 
 def _inspect_body(value):
     body = _copy_json(value)
-    _require(type(body) is dict and set(body) == _BODY_FIELDS
-             and body['model'] == MODEL and body['stream'] is False
-             and body['modalities'] == ['text'], _REQUEST_ERROR)
+    _require(type(body) is dict, _REQUEST_ERROR)
+    object_mode = body.get('response_format') == {'type': 'json_object'}
+    _require(set(body) == (_JSON_OBJECT_FIELDS if object_mode else _BODY_FIELDS)
+             and body['model'] == MODEL and body['stream'] is False, _REQUEST_ERROR)
+    if object_mode:
+        _require(type(body['temperature']) is int and body['temperature'] == 0, _REQUEST_ERROR)
+    else:
+        _require(body['modalities'] == ['text'], _REQUEST_ERROR)
     _require(type(body['max_tokens']) is int
              and 1 <= body['max_tokens'] <= MAX_OUTPUT_TOKENS, _REQUEST_ERROR)
     messages = body['messages']
@@ -133,14 +139,15 @@ def _inspect_body(value):
         metadata_parts.append({'type': 'image_url', 'image_url': {'url': _DATA_PREFIX}})
     _require(text_count > 0, _REQUEST_ERROR)
     response_format = body['response_format']
-    _require(type(response_format) is dict and set(response_format) == {'type', 'json_schema'}
-             and response_format['type'] == 'json_schema', _REQUEST_ERROR)
-    spec = response_format['json_schema']
     from app.services.abacus_router_schema_compat import SCHEMA_NAME, ENUM_SCHEMA_NAME, schema_for_body
-    _require(type(spec) is dict and set(spec) == {'name', 'strict', 'schema'}
-             and spec['name'] in ('youtube_review', SCHEMA_NAME, ENUM_SCHEMA_NAME) and spec['strict'] is True
-             and type(spec['schema']) is dict and spec['schema'].get('type') == 'object', _REQUEST_ERROR)
-    _bounded_visual_schema(spec['schema'])
+    if not object_mode:
+        _require(type(response_format) is dict and set(response_format) == {'type', 'json_schema'}
+                 and response_format['type'] == 'json_schema', _REQUEST_ERROR)
+        spec = response_format['json_schema']
+        _require(type(spec) is dict and set(spec) == {'name', 'strict', 'schema'}
+                 and spec['name'] in ('youtube_review', SCHEMA_NAME, ENUM_SCHEMA_NAME) and spec['strict'] is True
+                 and type(spec['schema']) is dict and spec['schema'].get('type') == 'object', _REQUEST_ERROR)
+        _bounded_visual_schema(spec['schema'])
     schema_for_body(body)  # A compatibility request must retain its complete authored schema.
     metadata = {**body, 'messages': [messages[0], {'role': 'user', 'content': metadata_parts}]}
     raw = _canonical(body)
