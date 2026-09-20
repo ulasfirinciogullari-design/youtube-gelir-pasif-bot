@@ -133,8 +133,8 @@ class IncludedRouterLedger:
             and type(journal['version']) is int and journal['version'] == 1
             and type(journal['requests']) is dict and len(journal['requests']) <= 7440)
         for key, row in journal['requests'].items():
-            _require(_hash(key) and type(row) is dict and set(row) == {
-                'context', 'purpose', 'request_sha256', 'reserved_at', 'outcome'})
+            fields = {'context', 'purpose', 'request_sha256', 'reserved_at', 'outcome'}
+            _require(_hash(key) and type(row) is dict and set(row) in (fields, fields | {'completion'}))
             _require(row['purpose'] in self.purposes and _hash(row['request_sha256']))
             context = row['context']
             _require(type(context) is dict and set(context) == {'channel_id', 'connection_id', 'lineage_id', 'kind'}
@@ -149,6 +149,23 @@ class IncludedRouterLedger:
                     and _date(row['reserved_at']) <= _date(out['observed_at']) <= now
                     and type(out['evidence']) is dict and type(out['encrypted_result']) is str
                     and 0 < len(out['encrypted_result']) <= 400000)
+        for key, row in journal['requests'].items():
+            if 'completion' not in row:
+                continue
+            link = row['completion']
+            _require(row['purpose'] == 'visual_review' and row['outcome'] is None
+                and type(link) is dict and set(link) == {
+                    'request_sha256', 'response_proof_sha256', 'original_failure_sha256'}
+                and all(_hash(value) for value in link.values()))
+            target_id = self.identity(row['context'], 'visual_review', link['request_sha256'])
+            target = journal['requests'].get(target_id)
+            _require(target_id != key and target is not None and 'completion' not in target
+                and target['context'] == row['context'] and target['purpose'] == 'visual_review'
+                and target['outcome'] is not None)
+            evidence = target['outcome']['evidence']
+            _require(evidence.get('request_sha256') == link['request_sha256']
+                and evidence.get('credential_sha256') == policy['credential_sha256']
+                and evidence.get('response_proof_sha256') == link['response_proof_sha256'])
         return stored, journal
 
     @staticmethod
@@ -275,7 +292,7 @@ class IncludedRouterLedger:
                 with self.client.pipeline() as pipe:
                     state, journal = self._read(pipe)
                     row = journal['requests'].get(identity)
-                    _require(row is not None and row['outcome'] is None
+                    _require(row is not None and row['outcome'] is None and 'completion' not in row
                         and row['request_sha256'] == prepared.request_sha256)
                     row['outcome'] = {'observed_at': _stamp(self.clock()),
                         'evidence': observed.evidence, 'encrypted_result': encrypted}
@@ -387,6 +404,11 @@ def _generate(prepared, purpose, observer):
     else:
         ledger = IncludedRouterLedger(foundation)
     try:
+        if purpose == 'visual_review' and type(ledger) is IncludedRouterLedger:
+            from app.services.included_visual_completion import cached_completed_review
+            completed = cached_completed_review(ledger, context, prepared)
+            if completed is not None:
+                prepared = completed
         identity, outcome = ledger.reserve(context, purpose, prepared)
     except Exception as error:
         _log_operation_failure('reservation', prepared, purpose, error)
@@ -406,10 +428,19 @@ def _generate(prepared, purpose, observer):
             observed = observer(prepared, response)
         except Exception as error:
             _log_operation_failure(stage, prepared, purpose, error)
+            captured = False
             try:
                 ledger.record_failure(identity, prepared, response, error)
+                captured = True
             except Exception as capture_error:
                 _log_operation_failure('failure_record', prepared, purpose, capture_error)
+            from app.services.abacus_router_adapter import observe_router_response
+            if (captured and stage == 'response' and purpose == 'visual_review'
+                    and observer is observe_router_response and type(ledger) is IncludedRouterLedger):
+                from app.services.included_visual_completion import from_schema_failure
+                incomplete = from_schema_failure(prepared, response, error)
+                if incomplete is not None:
+                    raise incomplete from None
             raise SpendBlocked('included_router_response_unverified') from None
         try:
             outcome = ledger.settle(identity, prepared, observed)

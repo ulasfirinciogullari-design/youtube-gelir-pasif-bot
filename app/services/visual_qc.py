@@ -1289,10 +1289,19 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
         schema = _review_json_schema(included_indices, available_moments)
         if provider == 'abacus_included':
             from app.services.production_included_router import generate_included_json
+            from app.services.included_visual_completion import IncompleteVisualReview, complete_once
             if _retained_sample_capture is not None or model_override is not None:
                 raise SpendBlocked('included_visual_scope_invalid')
-            return generate_included_json(parts, purpose='visual_review',
-                system_instruction=instruction, json_schema=schema, max_tokens=8192)
+            instruction += ('\nINCLUDED_VISUAL_REQUIRED_FIELDS_V1: Every review must contain every required '
+                'field, including explicit false values and checks that do not apply. Never omit '
+                'receiving_interface_visible, recurring_identity_continuity_applicable, or '
+                'recurring_identity_continuity_matches. Required fields: '
+                + ', '.join(schema['properties']['reviews']['items']['required']))
+            try:
+                return generate_included_json(parts, purpose='visual_review',
+                    system_instruction=instruction, json_schema=schema, max_tokens=8192)
+            except IncompleteVisualReview as incomplete:
+                return complete_once(incomplete)
         if _retained_sample_capture is not None:
             from app.services.retained_sampled_input_linkage import _bind_request
             _bind_request(_retained_sample_capture, parts, instruction, schema)
