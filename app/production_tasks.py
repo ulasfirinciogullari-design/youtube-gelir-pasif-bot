@@ -7,10 +7,12 @@ from app.services.production_reconciliation import reconcile_public_retry_delive
 from app.services.production_scheduler import maintain_production_series
 from app.services.youtube_auth import connection_status
 from app.services.youtube_automation import list_channel_profiles
+from app.services.production_spend_runtime import spending_task
 
 
 @celery.task(name='app.production_tasks.prepare_series_batch', bind=True, acks_late=False,
              autoretry_for=(), max_retries=0, soft_time_limit=110, time_limit=120)
+@spending_task
 def prepare_series_batch(self, execution_binding: dict) -> dict:
     from app.services.production_scheduler import run_series_preparation
 

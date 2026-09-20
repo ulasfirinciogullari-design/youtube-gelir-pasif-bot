@@ -122,11 +122,14 @@ def _reserve_preparation(channel_id, expected_revision, expected_connection, enq
         credential, epoch = pipe.get(credential_key), pipe.get(epoch_key)
         _require(isinstance(credential, str) and credential and pipe.sismember(index_key, channel_id)
                  and (epoch is None or isinstance(epoch, str) and re.fullmatch(r'[0-9]+', epoch)))
+        spending_context = None
         if getattr(settings, 'studio_spend_enforcement', False) is True:
             from app.services.production_spend_runtime import preflight_scheduled_production, SpendBlocked
+            from app.services.production_series_spend import prepare_dispatch_context
 
             try:
                 preflight_scheduled_production(channel_id, kind='shorts')
+                spending_context = prepare_dispatch_context(pipe, binding, profile, channel)
             except SpendBlocked as error:
                 return {'status': 'budget_blocked', 'reason_code': str(error)}
         record = {**binding, 'status': 'reserved', 'connection_id': expected_connection,
@@ -136,7 +139,11 @@ def _reserve_preparation(channel_id, expected_revision, expected_connection, enq
         raw = _json(record)
         pipe.multi()
         pipe.set(dispatch_key, raw, nx=True)
-        _require(pipe.execute()[0] is True)
+        if spending_context is not None:
+            pipe.set(*spending_context, nx=True)
+        reply = pipe.execute()
+        _require(len(reply) == (2 if spending_context is not None else 1)
+                 and all(value is True for value in reply))
     # Celery broker retries are disabled; a lost acceptance response is not
     # permission to send the same preparation task again on a subsequent tick.
     try:

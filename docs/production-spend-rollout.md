@@ -65,6 +65,14 @@ until its required routes have bounded, tested quotes and verified job context.
   or availability of every provider route. Each actual request still requires
   its quoted, credential-bound atomic reservation, including after a concurrent
   job consumes capacity between the preflight and worker execution.
+- Next-series research additionally prices the exact hosted-search request
+  before dispatch, binds it to the real scheduled Celery ID and current account,
+  and shares the existing shorts lineage ceiling and global cash/covered
+  counters. It creates no fake video ancestry or new allowance. Completed
+  hosted search must corroborate proposed source URLs; the resulting batch
+  still requires full research, critic and media/publication approval. See
+  [the research contract](series-research-budget.md) for bounded pricing,
+  current-authority checks and durable failed/unknown attempt behavior.
 - Scene creation and repair loops, audio-provider fallbacks, Omni anchor review
   and temporal/recursive visual review preserve a budget rejection as terminal.
   They must not convert it into an ordinary provider failure and continue to
@@ -111,6 +119,7 @@ endpoints and unbounded requests block. Prepaid balances are not cash discounts.
 | Route | Bounded request | USD list-rate upper bound |
 | --- | --- | --- |
 | OpenAI GPT-6 Astra (rate updated 9 September) | Tool-free plain text, explicit standard tier, at most 100,000 encoded JSON bytes, at most 16,384 output tokens | $12.50/M input reserves the implicit cache-write rate; $50/M output. Conservative input bound is encoded JSON bytes + 4,096 framing tokens |
+| OpenAI GPT-4.1 Mini series research (20 September revision) | Stateless next-series JSON, standard tier, at most two non-preview web searches, 50,000 encoded bytes and 3,600 output tokens | $0.01/search plus fixed 8,000 input-token blocks; conservative repeated-round input at $0.50/M and output at $1.60/M; maximum admitted shape $0.147824 list cost |
 | Gemini 3.1 Pro Preview | One tool-free text-only JSON candidate, optional inline schema, at most 100,000 encoded JSON bytes and 16,384 total output tokens | $2/M input and $12/M output including thinking; encoded bytes + 4,096 framing keeps the input bound below the 200,000-token price threshold |
 | Gemini 3.7 Flash text (9 September revision) | One tool-free native text JSON candidate, complete prompt/system/schema at most 100,000 encoded metadata bytes, at most 16,384 output tokens | Full 1,048,576-token input context at $0.75/M plus requested output at $3.75/M including thinking; at most $0.847872 reserved |
 | Gemini 3.7 Flash Short audio (separate 9 September revision) | Full native prosody rubric/schema and one original MP3/PCM16 WAV, at most 8 MiB and 30.08 decoded seconds, medium thinking, at most 8,192 output tokens | Same full input context and rates; at most $0.817152 reserved |

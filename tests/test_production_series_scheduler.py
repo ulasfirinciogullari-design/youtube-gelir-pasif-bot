@@ -67,8 +67,10 @@ def test_tick_queues_separate_preparation_without_model_or_media_call(fresh):
     assert enqueue.call_count == 1
 
 
-def test_missing_funding_preserves_the_daily_preparation_slot(fresh, monkeypatch):
+def test_missing_or_insufficient_funding_preserves_the_daily_preparation_slot(fresh, monkeypatch):
     from app.services import production_spend_runtime as runtime
+    from app.services import production_next_series as planning
+    from app.services.production_series_spend import prepare_dispatch_context
     from app.services.production_spend import SpendBlocked
     from test_production_dispatch_budget import setup, snapshot
 
@@ -77,8 +79,10 @@ def test_missing_funding_preserves_the_daily_preparation_slot(fresh, monkeypatch
     c.controller['settings'].studio_spend_enforcement = True
     # This existing AST harness strips app imports, including local ones.
     c.controller.update(preflight_scheduled_production=runtime.preflight_scheduled_production,
-                        SpendBlocked=SpendBlocked)
+                        SpendBlocked=SpendBlocked, prepare_dispatch_context=prepare_dispatch_context)
     monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
+    monkeypatch.setattr(planning, 'settings', SimpleNamespace(studio_spend_enforcement=True,
+                                                           openai_api_key='private-test-key'))
     monkeypatch.setattr(runtime, 'configured_ledger', lambda **kw: box.ledger)
     before = snapshot(c.client)
     assert _maintain(c, enqueue)['channels'][CHANNEL] == 'budget_blocked'
@@ -88,8 +92,10 @@ def test_missing_funding_preserves_the_daily_preparation_slot(fresh, monkeypatch
     box.ledger.initialize()
     box.ledger.initialize_funding(box.funding)
     budget_before = c.client.dump(runtime.LEDGER_KEY)
-    assert _maintain(c, enqueue)['channels'][CHANNEL] == 'preparation_queued'
-    assert enqueue.call_count == 1 and c.client.dump(runtime.LEDGER_KEY) == budget_before
+    # General capacity is no longer enough: this fixture has only100micro and
+    # no reviewed research route. The full real-SDK funded path has its own test.
+    assert _maintain(c, enqueue)['channels'][CHANNEL] == 'budget_blocked'
+    assert enqueue.call_count == 0 and c.client.dump(runtime.LEDGER_KEY) == budget_before
     c.prep['_generate'].assert_not_called()
 
 

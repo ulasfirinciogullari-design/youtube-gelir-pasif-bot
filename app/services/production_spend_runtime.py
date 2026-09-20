@@ -126,6 +126,20 @@ def _resolve_context_once(client, task_id):
             # This is deliberately not an initialization path.
             if not pipe.hexists(LEDGER_KEY, 'policy'):
                 raise SpendBlocked('spend_not_initialized')
+            from app.services.production_series_spend import CONTEXT_PREFIX, read_context
+            pipe.watch(CONTEXT_PREFIX + task_id)
+            if pipe.exists(CONTEXT_PREFIX + task_id):
+                binding = read_context(pipe, task_id)
+                field = 'binding:' + task_id
+                prior = pipe.hget(LEDGER_KEY, field)
+                if prior is not None and _object(prior) != binding:
+                    raise SpendBlocked('spend_lineage_binding_invalid')
+                pipe.multi()
+                pipe.hset(LEDGER_KEY, field, _json(binding))
+                reply = pipe.execute()
+                if len(reply) != 1 or type(reply[0]) is not int:
+                    raise SpendBlocked('spend_binding_uncertain')
+                return binding
             current, seen, nodes, expected = task_id, set(), [], None
             while current is not None:
                 if (type(current) is not str or not _JOB_ID.fullmatch(current)
@@ -264,6 +278,9 @@ def spending_scene(prepared, scene_index):
         raise SpendBlocked('spend_scene_context_missing')
     ledger = configured_ledger()
     context = resolve_context(ledger.client, _TASK_ID.get())
+    if context.get('purpose') == 'series_preparation':
+        from app.services.production_series_spend import validate_request
+        validate_request(context, provider, operation, payload, quote, funding)
     ledger.initialize_scene_plan(
         channel_id=context['channel_id'], lineage_id=context['lineage_id'], kind=context['kind'],
         connection_id=context['connection_id'], package_sha256=prepared.package_sha256,
@@ -403,11 +420,17 @@ def reserve_request(provider, operation, payload, quote, *, funding):
             raise SpendBlocked('spend_scene_context_missing')
         scene = {key: scope[key] for key in ('connection_id', 'package_sha256', 'scene_index')}
         scene['descriptor'] = descriptor
-    return ledger.reserve(
+    receipt = ledger.reserve(
         request_key=fingerprint, channel_id=context['channel_id'],
         lineage_id=context['lineage_id'], kind=context['kind'], quote=quote,
         scene=scene, funding=funding,
     )
+    if context.get('purpose') == 'series_preparation':
+        # A known profile/connection/context change after reserving stops the
+        # POST and retains the upper-bound hold. It never grants a refund/retry.
+        if resolve_context(ledger.client, _TASK_ID.get()) != context:
+            raise SpendBlocked('spend_series_request_changed')
+    return receipt
 
 
 def record_abacus_usage(payload, usage_record):

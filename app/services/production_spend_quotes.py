@@ -17,6 +17,7 @@ from app.services.production_spend import SpendBlocked, SpendQuote, usd_micro
 
 _REVISION = 'official-2026-09-08-v3'
 OPENAI_TEXT_PRICE_REVISION = 'openai-text-2026-09-09-v1'
+OPENAI_SERIES_PRICE_REVISION = 'openai-series-2026-09-20-v1'
 _VALID_FROM = datetime(2026, 9, 8, tzinfo=timezone.utc)
 _VALID_UNTIL = datetime(2026, 10, 1, tzinfo=timezone.utc)
 
@@ -367,6 +368,8 @@ def quote_http_request(url, kwargs):
 
 
 def quote_openai_response(body):
+    if type(body) is dict and body.get('model') == 'gpt-4.1-mini':
+        return quote_openai_series_search(body)
     _require(type(body) is dict and set(body) <= {
         'model', 'input', 'instructions', 'store', 'reasoning', 'text',
         'max_output_tokens', 'temperature', 'top_p', 'service_tier'})
@@ -389,3 +392,41 @@ def quote_openai_response(body):
     _fresh()
     amount = (Decimal(input_tokens) * Decimal('12.5') + Decimal(output) * 50) / 1_000_000
     return SpendQuote('openai', 'gpt-6-astra', usd_micro(amount), OPENAI_TEXT_PRICE_REVISION)
+
+
+def quote_openai_series_search(body):
+    """One bounded, stateless research response, including hosted search.
+
+    Reviewed 2026-09-20: /api/docs/pricing, /api/docs/models/gpt-4.1-mini
+    and Responses create on developers.openai.com. Non-preview search costs
+    $0.01/call and a fixed 8,000 input-token block/call for this model only.
+    Reserve all prompt/schema bytes, all search blocks and generated text at
+    every possible round (tool calls + final answer), not just the last one.
+    The 25% input cushion also covers a cache-write premium. No discounts or
+    usage-based refunds are assumed. 'low' alone is NOT a token/cost bound.
+    """
+    _require(type(body) is dict and set(body) == {
+        'model', 'input', 'store', 'tools', 'tool_choice', 'max_tool_calls',
+        'max_output_tokens', 'text', 'service_tier', 'include'})
+    _require(body['model'] == 'gpt-4.1-mini' and body['store'] is False
+        and body['service_tier'] == 'default' and body['tool_choice'] == 'required'
+        and body['tools'] == [{'type': 'web_search', 'search_context_size': 'low'}]
+        and body['include'] == ['web_search_call.action.sources'])
+    _text_bytes(body['input'], 30000)
+    calls = _integer(body['max_tool_calls'], 1, 2)
+    output = _integer(body['max_output_tokens'], 1, 3600)
+    size = _encoded_size(body)
+    _require(size <= 50000)
+    text = body['text']
+    _require(type(text) is dict and set(text) == {'format'})
+    form = text['format']
+    _require(type(form) is dict and set(form) == {'type', 'name', 'strict', 'schema'}
+        and form['type'] == 'json_schema' and form['strict'] is True
+        and form['name'] == 'pending_next_series' and type(form['schema']) is dict)
+    _fresh()
+    rounds = calls + 1
+    input_bound = (size + 4096 + 8000 * calls + output) * rounds
+    amount = ((Decimal(input_bound) * Decimal('.5')
+              + Decimal(output * rounds) * Decimal('1.6')) / 1_000_000
+              + Decimal(calls) * Decimal('.01'))
+    return SpendQuote('openai', 'gpt-4.1-mini', usd_micro(amount), OPENAI_SERIES_PRICE_REVISION)

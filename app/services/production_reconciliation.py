@@ -107,6 +107,13 @@ def reconcile_public_retry_deliveries(profiles: list[dict], *, now: float | None
                     or state.get('active_task_id') or state.get('profile_revision') != revision):
                 continue
             original_id = state.get('last_task_id')
+            from app.services.retained_schedule_continuation import resume_retained_schedule
+
+            retained = resume_retained_schedule(profile, original_id, now=now, discovery_client=client)
+            if retained['status'] != 'not_applicable':
+                channels[channel_id] = retained['status']
+                resumed += int(retained['status'] == 'resumed')
+                continue
             recovered_id = _public_leaf(client, original_id, channel_id, revision)
             resume = resume_after_public_retry
             if recovered_id is None:
