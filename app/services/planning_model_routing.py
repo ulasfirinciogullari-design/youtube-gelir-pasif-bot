@@ -44,9 +44,10 @@ def fresh_planning_route(*, enabled: bool):
     from app.config import settings
 
     model = str(getattr(settings, 'studio_fresh_plan_openai_model', 'gpt-6-astra') or '').strip()
-    if not model:
+    if not model and getattr(settings, 'studio_abacus_included_production', False) is not True:
         raise RuntimeError('STUDIO_FRESH_PLAN_OPENAI_MODEL must not be empty')
-    route = ('openai', model)
+    route = (('abacus_included', 'route-llm')
+             if getattr(settings, 'studio_abacus_included_production', False) is True else ('openai', model))
     token = _FRESH_ROUTE.set(route)
     try:
         yield {'provider': route[0], 'model': route[1]}
@@ -56,10 +57,12 @@ def fresh_planning_route(*, enabled: bool):
 
 def planning_provider(settings) -> str:
     route = _FRESH_ROUTE.get()
+    if not route and getattr(settings, 'studio_abacus_included_production', False) is True:
+        return 'abacus_included'
     provider = route[0] if route else str(
         getattr(settings, 'studio_plan_provider', 'openai') or ''
     ).strip().casefold()
-    if provider not in {'openai', 'gemini'}:
+    if provider not in {'openai', 'gemini', 'abacus_included'}:
         raise RuntimeError('STUDIO_PLAN_PROVIDER must be openai or gemini')
     return provider
 

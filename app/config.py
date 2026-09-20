@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     # media/voice review keep their existing provider contracts.
     studio_abacus_editorial_enabled: bool = False
     studio_abacus_editorial_model: str = 'claude-haiku-4-5-20251001'
+    # Existing subscription RouteLLM only; explicit durable commissioning required.
+    studio_abacus_included_production: bool = False
     # Explicit synchronous retained-Capital review only; no automatic funding,
     # production routing, fixed-model fallback or additional cash permission.
     studio_abacus_router_retained_review_enabled: bool = False
@@ -68,4 +70,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-

@@ -123,14 +123,17 @@ class CreditLedger:
         self.foundation = foundation
 
     def _watch(self, pipe):
-        pipe.watch(STATE_KEY, JOURNAL_KEY, LEDGER_KEY)
+        from app.services.production_cash_disabled import ANCHOR_KEY
+        pipe.watch(STATE_KEY, JOURNAL_KEY, LEDGER_KEY, ANCHOR_KEY)
 
     def _foundation_base(self, pipe, now):
         if self.foundation is None:
+            from app.services.production_cash_disabled import present
+            _require(not present(pipe), 'credit_foundation_required')
             _require(not pipe.hexists(LEDGER_KEY, MODE_FIELD) and not native_foundation_markers(pipe),
                      'credit_foundation_required')
             return
-        self.foundation._read_state(pipe, now.strftime('%Y-%m'), now.strftime('%Y-%m-%d'))
+        self.foundation.validate_native_credit_foundation(pipe, now=now)
         lifetime = pipe.pttl(LEDGER_KEY)
         _require(type(lifetime) is int and lifetime == -1, 'credit_foundation_expiring')
 
@@ -290,6 +293,8 @@ class CreditLedger:
                     policy, _, _, _ = self._read(pipe, self.clock())
                     result = {key: policy[key] for key in (
                         'account_sha256', 'credential_sha256', 'route', 'model', 'voice_id', 'valid_until')}
+                    if policy['version'] == 2:
+                        result['additional_models'] = list(policy['additional_models'])
                     result['policy_sha256'] = _hash(policy)
                     self._ping(pipe)
                     return result

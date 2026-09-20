@@ -192,6 +192,7 @@ def _prepare(purpose, prepared):
 
 def _request(prepared, policy):
     _require(prepared.credential_sha256 == policy['credential_sha256']
+             and prepared.language == policy['language']
              and _json(prepared.audio) == _json(policy['audio']), 'router_audio_review_request_invalid')
     if prepared.purpose is AudioReviewPurpose.PROSODY:
         from app.services.abacus_router_audio_adapter import schema_for_request

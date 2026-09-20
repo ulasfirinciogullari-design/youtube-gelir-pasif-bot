@@ -693,6 +693,17 @@ def verify_audio_prosody(
     normalized_language = normalize_supported_language(language)
     if normalized_language not in {'tr', 'en'}:
         raise ValueError('Audio prosody language is unsupported')
+    if getattr(settings, 'studio_abacus_included_production', False) is True:
+        from app.services.abacus_router_audio_adapter import read_original_mp3
+        from app.services.production_included_router import generate_included_audio
+        output = generate_included_audio(read_original_mp3(audio_path), purpose='prosody',
+            language=normalized_language, expected_narration=expected_narration)
+        validated = _validate_prosody_review(output, expected_narration,
+            audio_duration_seconds=audio_duration_seconds, transcript_evidence=transcript_evidence,
+            language=normalized_language, provider='abacus_router')
+        if validated is None:
+            raise AudioQCError('Included audio prosody evidence did not validate')
+        return validated
     language_name = 'English' if normalized_language == 'en' else 'Turkish'
     api_key = str(getattr(settings, 'gemini_api_key', '') or '').strip()
     if not api_key:
@@ -2767,6 +2778,19 @@ def verify_audio_narration(
     provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
     """Transcribe an audio master and compare it with its spoken contract."""
+    if getattr(settings, 'studio_abacus_included_production', False) is True:
+        from app.services.abacus_router_audio_adapter import read_original_mp3
+        from app.services.production_included_router import generate_included_audio
+        normalized_language = normalize_supported_language(language)
+        if normalized_language not in {'tr', 'en'}:
+            raise AudioQCError('Included audio review language is unsupported')
+        if not _tokens(expected_narration):
+            raise ValueError('Expected narration must contain at least one word')
+        output = generate_included_audio(read_original_mp3(audio_path), purpose='blind_asr',
+            language=normalized_language)
+        return _require_word_timing_evidence(compare_transcript(expected_narration, output['text'],
+            words=output['words'], language_code=output['language'], provider='abacus_router',
+            comparison_language=normalized_language), 'Abacus router')
     openai_api_key = str(getattr(settings, 'openai_api_key', '') or '')
     gemini_api_key = str(getattr(settings, 'gemini_api_key', '') or '')
     elevenlabs_api_key = str(

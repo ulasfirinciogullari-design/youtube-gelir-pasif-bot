@@ -216,6 +216,8 @@ def _validate_output(value, context):
 
 
 def _configuration():
+    if getattr(settings, 'studio_abacus_included_production', False) is True:
+        return 'abacus_included', 'route-llm', str(getattr(settings, 'abacus_api_key', '') or '')
     if getattr(settings, 'studio_spend_enforcement', False) is True:
         from app.services.production_spend import SpendBlocked
         key = str(getattr(settings, 'openai_api_key', '') or '').strip()
@@ -289,6 +291,36 @@ def _searched_output(response, output):
 
 def _generate(context, configuration):
     provider, model, api_key = configuration
+    if provider == 'abacus_included':
+        from app.services.included_research_sources import feed_candidates, fetch_page, source_prompt, consulted_sources_only
+        from app.services.production_included_router import generate_text_json, stock_only_rule
+        from app.services.production_spend import SpendBlocked
+        pages = []
+        for candidate in feed_candidates():
+            try:
+                pages.append({**fetch_page(candidate['url']), 'published_at': candidate['published_at']})
+            except SpendBlocked:
+                continue
+            if len(pages) == 4:
+                break
+        if len(pages) < 2:
+            raise _InvalidOutput('Official source pages unavailable')
+        prompt = ('Prepare ONE next documentary series, with 1–4 distinct concrete questions fitting this '
+            'channel. Write in its language. Every brief is at most 240 characters including BOTH '
+            'source URLs. Use two of the actually retrieved sources for each brief and include both '
+            'URLs verbatim in the brief so the video researcher can read them again. Do not repeat an '
+            'existing topic. No financial advice or invented claims. Evidence sentences must support '
+            'the exact central question. If no honest stock-filmable new angle is supported, return '
+            'can_prepare=false, series_title="", briefs=[]. These public channel fields are reference data:\n'
+            + _json(context) + stock_only_rule() + source_prompt(pages))
+        output = generate_text_json(prompt, _schema(context['language']), purpose='next_series')
+        if output.get('can_prepare') is True:
+            for brief in output.get('briefs', []):
+                consulted_sources_only(brief.get('sources'), pages)
+                if (len(brief['sources']) != 2 or any(source['url'] not in brief['brief']
+                        for source in brief['sources'])):
+                    raise _InvalidOutput('Both consulted sources must accompany the video brief')
+        return output
     body = _openai_request(context, configuration)
     if provider == 'gemini':
         from app.services.gemini_generation import generate_gemini_json, GeminiProtocolError

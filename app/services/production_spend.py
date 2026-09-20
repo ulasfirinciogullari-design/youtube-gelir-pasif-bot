@@ -156,6 +156,21 @@ class SpendLedger:
         month, day = _period(self.clock())
         return self._initialize(month, day, {'period:' + month: _json(_fresh_period(month))})
 
+    def initialize_cash_disabled_unknown_history(self, *, evidence_sha256, additional_monthly_limit_micro):
+        """Enable a credit foundation without claiming prior cash usage was zero."""
+        from app.services.production_cash_disabled import initialize
+        return initialize(self, evidence_sha256=evidence_sha256,
+                          additional_monthly_limit_micro=additional_monthly_limit_micro)
+
+    def validate_native_credit_foundation(self, pipe, *, now):
+        from app.services import production_cash_disabled as disabled
+        pipe.watch(LEDGER_KEY, disabled.ANCHOR_KEY)
+        if disabled.present(pipe):
+            return disabled.read(pipe, self, now=now)
+        month, day = _period(now)
+        self._read_state(pipe, month, day)
+        return None
+
     def initialize_reconciled(self, *, month, reservations, reconciliation_sha256):
         """Explicit one-time import, with no provider calls or spending permits.
 
@@ -215,10 +230,13 @@ class SpendLedger:
         return self._initialize(month, day, mapping)
 
     def _initialize(self, month, day, opening):
+        from app.services import production_cash_disabled as disabled
         policy_raw = _json(asdict(self.policy))
         try:
             with self.client.pipeline() as pipe:
-                pipe.watch(LEDGER_KEY)
+                pipe.watch(LEDGER_KEY, disabled.ANCHOR_KEY)
+                if disabled.present(pipe):
+                    raise SpendBlocked('spend_cash_disabled_history_unknown')
                 if pipe.exists(LEDGER_KEY):
                     self._read_state(pipe, month, day)
                     if ('opening_reconciliation' in opening and
@@ -238,6 +256,9 @@ class SpendLedger:
             raise SpendBlocked('spend_store_unavailable') from None
 
     def _read_state(self, reader, month, day):
+        from app.services import production_cash_disabled as disabled
+        if disabled.present(reader):
+            raise SpendBlocked('spend_cash_disabled_history_unknown')
         policy = reader.hget(LEDGER_KEY, 'policy')
         if policy is None:
             raise SpendBlocked('spend_not_initialized')
@@ -364,10 +385,18 @@ class SpendLedger:
 
     def funding_snapshot(self):
         from app.services.production_funding import funding_summary
+        from app.services import production_cash_disabled as disabled
         for _ in range(12):
             try:
                 with self.client.pipeline() as pipe:
-                    pipe.watch(LEDGER_KEY)
+                    pipe.watch(LEDGER_KEY, disabled.ANCHOR_KEY)
+                    if disabled.present(pipe):
+                        summary = disabled.summary(disabled.read(pipe, self, now=self.clock()))
+                        pipe.multi(); pipe.ping()
+                        result = pipe.execute()
+                        if type(result) is not list or len(result) != 1 or result[0] is not True:
+                            raise SpendBlocked('spend_funding_snapshot_uncertain')
+                        return summary
                     month, day = _period(self.clock())
                     self._read_state(pipe, month, day)
                     raw_policy = pipe.hget(LEDGER_KEY, 'funding_policy')
@@ -607,10 +636,19 @@ class SpendLedger:
         raise SpendBlocked('spend_store_contention')
 
     def snapshot(self):
+        from app.services import production_cash_disabled as disabled
         month, day = _period(self.clock())
         try:
             with self.client.pipeline() as pipe:
-                pipe.watch(LEDGER_KEY)
+                pipe.watch(LEDGER_KEY, disabled.ANCHOR_KEY)
+                if disabled.present(pipe):
+                    summary = disabled.summary(disabled.read(pipe, self, now=self.clock()))
+                    pipe.multi(); pipe.ping()
+                    result = pipe.execute()
+                    if type(result) is not list or len(result) != 1 or result[0] is not True:
+                        raise SpendBlocked('spend_snapshot_uncertain')
+                    return {'policy': asdict(self.policy), 'period': None,
+                            'remaining_micro': 0, **summary}
                 period = self._read_state(pipe, month, day)
                 pipe.multi()
                 pipe.ping()

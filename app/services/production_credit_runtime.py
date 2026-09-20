@@ -32,7 +32,8 @@ def paid_credit_post(sender, url, kwargs):
         ledger = CreditLedger(foundation.client, foundation=foundation, clock=foundation.clock)
         binding = ledger.binding_snapshot()
         if (binding['credential_sha256'] != prepared.credential_sha256
-                or binding['route'] != prepared.route or binding['model'] != prepared.model
+                or binding['route'] != prepared.route
+                or prepared.model not in [binding['model'], *binding.get('additional_models', [])]
                 or binding['voice_id'] != prepared.voice_id):
             raise SpendBlocked('credit_actual_binding_mismatch')
 

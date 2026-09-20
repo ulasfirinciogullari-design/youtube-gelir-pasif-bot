@@ -1270,7 +1270,7 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
                            included_indices, available_moments, model_override, thinking_level,
                            *, protocol_attempts=2, _retained_sample_capture=None):
     """Reuse an already-built frame payload; response repair has no SDK retry."""
-    if provider == 'abacus_router':
+    if provider in {'abacus_router', 'abacus_included'}:
         from app.services.abacus_router_review_runtime import generate_retained_router_review
         from app.services.production_spend import SpendBlocked
 
@@ -1287,6 +1287,12 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
             else:
                 raise SpendBlocked('abacus_router_visual_input_invalid')
         schema = _review_json_schema(included_indices, available_moments)
+        if provider == 'abacus_included':
+            from app.services.production_included_router import generate_included_json
+            if _retained_sample_capture is not None or model_override is not None:
+                raise SpendBlocked('included_visual_scope_invalid')
+            return generate_included_json(parts, purpose='visual_review',
+                system_instruction=instruction, json_schema=schema, max_tokens=8192)
         if _retained_sample_capture is not None:
             from app.services.retained_sampled_input_linkage import _bind_request
             _bind_request(_retained_sample_capture, parts, instruction, schema)
@@ -1821,6 +1827,11 @@ def review_scene_visuals(
         # Keep contradiction detection active; the router branch below records
         # its rejection without consuming a second review slot.
         _score_reason_consistency_attempts = 1
+    elif getattr(settings, 'studio_abacus_included_production', False) is True:
+        from app.services.production_spend import SpendBlocked
+        if provider_override not in (None, 'abacus_included') or gemini_model_override is not None:
+            raise SpendBlocked('included_visual_provider_override_forbidden')
+        provider = 'abacus_included'
     elif provider_override is None:
         if dedicated_provider and dedicated_provider not in {'openai', 'gemini', 'abacus'}:
             raise ValueError('STUDIO_VISUAL_QC_PROVIDER must be openai, gemini or abacus')
@@ -1829,7 +1840,7 @@ def review_scene_visuals(
         provider = provider_override.strip().casefold()
     else:
         raise ValueError('Visual review provider override must be openai, gemini or abacus')
-    strict_review_contract = provider in {'gemini', 'abacus', 'abacus_router'} or provider_override is not None or bool(dedicated_provider)
+    strict_review_contract = provider in {'gemini', 'abacus', 'abacus_router', 'abacus_included'} or provider_override is not None or bool(dedicated_provider)
     if provider == 'abacus':
         from app.services.abacus_generation import AbacusConfigurationError
         from app.services.production_spend import SpendBlocked

@@ -20,7 +20,7 @@ import re
 
 import httpx
 
-from app.services.production_credit_funding import MODEL, PROVIDER, ROUTE, VOICE_ID
+from app.services.production_credit_funding import MODEL, TURKISH_SHORT_MODEL, PROVIDER, ROUTE, VOICE_ID
 from app.services.production_spend import SpendBlocked
 
 
@@ -53,8 +53,11 @@ def _sha(value):
 def _body(body):
     code = _REQUEST_ERROR
     required = {'text', 'model_id', 'apply_text_normalization', 'voice_settings'}
+    short_turkish = type(body) is dict and body.get('model_id') == TURKISH_SHORT_MODEL
+    if short_turkish:
+        required.add('language_code')
     _require(type(body) is dict and set(body) in (required, required | {'seed'}), code)
-    _require(type(body['model_id']) is str and body['model_id'] == MODEL
+    _require(type(body['model_id']) is str and body['model_id'] in (MODEL, TURKISH_SHORT_MODEL)
              and type(body['apply_text_normalization']) is str
              and body['apply_text_normalization'] == 'on', code)
     text = body['text']
@@ -62,9 +65,14 @@ def _body(body):
     if 'seed' in body:
         _require(type(body['seed']) is int and 0 <= body['seed'] <= 4_294_967_295, code)
     settings = body['voice_settings']
-    expected = {'stability': .40, 'similarity_boost': .80, 'style': 0.0}
-    _require(type(settings) is dict and set(settings) == {*expected, 'use_speaker_boost', 'speed'}, code)
-    _require(settings['use_speaker_boost'] is True, code)
+    expected = {'stability': .50, 'similarity_boost': .75} if short_turkish else {
+        'stability': .40, 'similarity_boost': .80, 'style': 0.0}
+    extra = {'speed'} if short_turkish else {'use_speaker_boost', 'speed'}
+    _require(type(settings) is dict and set(settings) == {*expected, *extra}, code)
+    if short_turkish:
+        _require(body['language_code'] == 'tr', code)
+    else:
+        _require(settings['use_speaker_boost'] is True, code)
     for field, value in expected.items():
         _require(type(settings[field]) in (int, float) and settings[field] == value, code)
     speed = settings['speed']
@@ -82,7 +90,7 @@ class PreparedCreditRequest:
     _header_pairs: tuple
 
     def __repr__(self):
-        return '<PreparedCreditRequest elevenlabs:multilingual_v2 redacted>'
+        return '<PreparedCreditRequest elevenlabs native credits redacted>'
 
     @property
     def provider(self):
@@ -98,7 +106,7 @@ class PreparedCreditRequest:
 
     @property
     def model(self):
-        return MODEL
+        return json.loads(self._body_bytes)['model_id']
 
     @property
     def voice_id(self):

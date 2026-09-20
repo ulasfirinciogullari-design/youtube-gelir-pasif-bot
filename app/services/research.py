@@ -439,7 +439,15 @@ FACT RULES:
 - sources must be evidence records from pages actually used, never a bare URL list.
 - Every evidence sentence must directly support the {central_claim}; omit interesting but unused sources.
 '''
-    if provider == 'gemini':
+    consulted_pages = None
+    if provider == 'abacus_included':
+        from app.services.production_included_router import generate_text_json, stock_only_rule
+        from app.services.included_research_sources import research_pages, source_prompt
+        consulted_pages = research_pages(topic)
+        generated = generate_text_json(prompt + stock_only_rule() + source_prompt(consulted_pages),
+            _research_json_schema(target_scenes, exact_scene_count=exact_scene_count), purpose='research')
+        output_text = json.dumps(generated, ensure_ascii=False)
+    elif provider == 'gemini':
         generated = generate_gemini_json(
             prompt,
             api_key=str(getattr(settings, 'gemini_api_key', '') or ''),
@@ -471,6 +479,13 @@ FACT RULES:
         )
         output_text = _planning_response_text(response)
     package = _parse_json_payload(output_text)
+    if consulted_pages is not None:
+        from app.services.included_research_sources import consulted_sources_only
+        consulted_sources_only(package['sources'], consulted_pages)
+        if any(scene.get('ai_prompt') is not None for scene in package['scenes']):
+            raise RuntimeError('Included production requires a complete stock-only storyboard')
+        package['research_source_observations'] = [
+            {key: value for key, value in page.items() if key != 'text'} for page in consulted_pages]
     if (
         exact_scene_count
         and len(package['scenes']) != target_scenes

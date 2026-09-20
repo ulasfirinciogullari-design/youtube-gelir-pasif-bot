@@ -2939,17 +2939,26 @@ def _production_budget_notice() -> str:
                 detail = 'Bütçe kaydı doğrulanamadığı için yeni ücretli üretim başlatılamıyor.'
         elif status.get('enforced') is True and status.get('status') == 'active':
             funding = status.get('funding')
-            if (type(funding) is not dict or funding.get('currency') != 'USD'
+            if (type(funding) is dict and funding.get('mode') == 'cash_disabled_unknown_history'
+                    and funding.get('historical_cash_micro') is None
+                    and funding.get('cash_spending_enabled') is False
+                    and type(funding.get('new_cash_allowance_micro')) is int
+                    and funding['new_cash_allowance_micro'] == 0):
+                title = 'Ek API harcaması kapalı'
+                detail = ('Mevcut abonelik kredileri ayrı takip edilir. Önceki API faturaları '
+                          'henüz bilinmediği için yeni ek ücretli işlem başlatılmaz.')
+            elif (type(funding) is not dict or funding.get('currency') != 'USD'
                     or funding.get('accounting') != 'reserved_cash_upper_bound_not_invoice'
                     or type(funding.get('cash_remaining_micro')) is not int
                     or abs(funding['cash_remaining_micro']) > 10_000_000_000):
                 raise ValueError('invalid_budget_funding')
-            remaining = funding['cash_remaining_micro']
-            amount = f'{remaining / 1_000_000:.2f}'
-            title = 'Ek API harcaması için kalan pay: ' + amount + ' USD'
-            detail = 'Bu tutar ayrılmış harcamaları içerir; fatura toplamı değildir. Her üretim öncesinde bütçe yeniden kontrol edilir.'
-            if remaining <= 0:
-                detail = 'Yeni ek harcama payı yok. Abonelik kredileri ayrıca doğrulanır.'
+            else:
+                remaining = funding['cash_remaining_micro']
+                amount = f'{remaining / 1_000_000:.2f}'
+                title = 'Ek API harcaması için kalan pay: ' + amount + ' USD'
+                detail = 'Bu tutar ayrılmış harcamaları içerir; fatura toplamı değildir. Her üretim öncesinde bütçe yeniden kontrol edilir.'
+                if remaining <= 0:
+                    detail = 'Yeni ek harcama payı yok. Abonelik kredileri ayrıca doğrulanır.'
     except Exception:
         pass
     return ('<section class="notice" role="status" aria-label="Üretim bütçesi">'

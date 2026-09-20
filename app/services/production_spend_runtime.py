@@ -130,6 +130,8 @@ def _resolve_context_once(client, task_id):
             pipe.watch(CONTEXT_PREFIX + task_id)
             if pipe.exists(CONTEXT_PREFIX + task_id):
                 binding = read_context(pipe, task_id)
+                if binding.get('version') == 2 and binding.get('funding_mode') == 'existing_subscription_included_router':
+                    binding = {key: binding[key] for key in ('channel_id', 'connection_id', 'lineage_id', 'kind')}
                 field = 'binding:' + task_id
                 prior = pipe.hget(LEDGER_KEY, field)
                 if prior is not None and _object(prior) != binding:
@@ -642,4 +644,7 @@ def preflight_scheduled_production(channel_id, *, kind):
     """Reject an unfunded queue admission without touching a topic or ledger."""
     if not enforcement_enabled():
         raise SpendBlocked('spend_enforcement_not_enabled')
+    if getattr(settings, 'studio_abacus_included_production', False) is True:
+        from app.services.production_included_router import preflight_production
+        return preflight_production(channel_id, kind=kind)
     configured_ledger(read_timeout=2).check_dispatch_capacity(channel_id=channel_id, kind=kind)

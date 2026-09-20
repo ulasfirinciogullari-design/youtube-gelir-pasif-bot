@@ -146,7 +146,7 @@ def _batch(record, profile, channel, now):
     created = datetime.fromisoformat(record['created_at'])
     _require(created.tzinfo is not None and created.utcoffset().total_seconds() == 0
              and created.date().isoformat() == record['day'] and 0 <= created.timestamp() <= now
-             and record['provider'] in {'openai', 'gemini'}
+             and record['provider'] in {'openai', 'gemini', 'abacus_included'}
              and re.fullmatch(r'[A-Za-z0-9._-]{1,100}', str(record['model']))
              and record['channel_id'] == profile['channel_id']
              and record['connection_id'] == channel['connection_id']

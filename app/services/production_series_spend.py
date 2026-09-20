@@ -28,6 +28,14 @@ def _candidate(binding, profile, channel):
     _require(profile['channel_id'] == binding['channel_id']
              and profile['profile_revision'] == binding['profile_revision'])
     configuration = planning._configuration()
+    if configuration[:2] == ('abacus_included', 'route-llm'):
+        body = {'provider': configuration[0], 'model': configuration[1],
+                'context': planning._context(profile, channel)}
+        context = {'version': 2, 'purpose': 'series_preparation',
+            'channel_id': binding['channel_id'], 'connection_id': channel['connection_id'],
+            'lineage_id': binding['task_id'], 'kind': 'shorts', 'execution_binding': binding,
+            'request_sha256': planning._digest(body), 'funding_mode': 'existing_subscription_included_router'}
+        return context, body, None
     _require(configuration[:2] == ('openai', 'gpt-4.1-mini'), 'spend_request_not_priced')
     body = planning._openai_request(planning._context(profile, channel), configuration)
     quote = quote_openai_series_search(body)
@@ -47,6 +55,11 @@ def _capacity(pipe, context, body, quote):
     now = ledger.clock()
     month, day = _period(now)
     _require(context['execution_binding']['day'] == day, 'spend_series_context_expired')
+    if context.get('version') == 2:
+        from app.services.production_included_router import IncludedRouterLedger, enabled
+        _require(enabled() and quote is None and context['request_sha256'] == planning._digest(body))
+        IncludedRouterLedger(ledger).check_capacity(pipe, context['channel_id'])
+        return
     pipe.watch(LEDGER_KEY)
     period = ledger._read_state(pipe, month, day)
     _require(pipe.pttl(LEDGER_KEY) == -1, 'spend_store_expiring')
@@ -112,8 +125,10 @@ def read_context(pipe, task_id, *, require_pending=True):
         _require(raw is not None and pipe.get(daily_key) == raw
             and pipe.pttl(pending_key) == -1 and pipe.pttl(daily_key) == -1)
         pending = _object(raw)
-        _require(pending.get('status') == 'reserved' and pending.get('provider') == 'openai'
-            and pending.get('model') == 'gpt-4.1-mini'
+        expected_provider, expected_model = (('abacus_included', 'route-llm')
+            if stored.get('version') == 2 else ('openai', 'gpt-4.1-mini'))
+        _require(pending.get('status') == 'reserved' and pending.get('provider') == expected_provider
+            and pending.get('model') == expected_model
             and pending.get('channel_id') == channel_id and pending.get('day') == binding['day']
             and pending.get('profile_revision') == binding['profile_revision']
             and pending.get('context_sha256') == planning._digest(planning._context(profile, channel)))

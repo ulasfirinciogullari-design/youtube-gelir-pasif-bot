@@ -55,6 +55,17 @@ def test_dashboard_failure_is_visible_without_exception_or_secret(ui_modules, mo
     assert 'Bütçe durumu doğrulanamadı' in body and 'private-credential' not in body
 
 
+def test_subscription_foundation_does_not_display_unknown_cash_as_zero_balance(ui_modules, monkeypatch):
+    studio, _ = ui_modules
+    monkeypatch.setitem(sys.modules, 'app.services.production_spend_runtime',
+        types.SimpleNamespace(budget_status=lambda **_: {'enforced': True, 'status': 'active', 'funding': {
+            'mode': 'cash_disabled_unknown_history', 'historical_cash_micro': None,
+            'cash_spending_enabled': False, 'new_cash_allowance_micro': 0}}))
+    body = studio._production_budget_notice()
+    assert 'Ek API harcaması kapalı' in body and 'abonelik kredileri ayrı takip edilir' in body
+    assert 'Önceki API faturaları' in body and '0.00 USD' not in body
+
+
 def test_unauthenticated_studio_never_reads_budget(ui_modules, monkeypatch):
     studio, _ = ui_modules
     reader = Mock(side_effect=AssertionError('No unauthenticated budget access'))

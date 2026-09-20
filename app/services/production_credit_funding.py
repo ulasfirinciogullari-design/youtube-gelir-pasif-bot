@@ -28,6 +28,7 @@ from app.services.production_spend import SpendBlocked
 PROVIDER = 'elevenlabs'
 VOICE_ID = 'WtOce4YK0dDSxlVlSdBh'
 MODEL = 'eleven_multilingual_v2'
+TURKISH_SHORT_MODEL = 'eleven_flash_v2_5'
 ROUTE = 'https://api.elevenlabs.io/v1/text-to-speech/' + VOICE_ID + '/with-timestamps'
 _MAX_CREDITS = 1_000_000_000
 _MAX_INTENTS = 1024
@@ -97,13 +98,17 @@ def validate_credit_policy(policy, *, now):
     """Validate operator evidence without treating a credit count as USD money."""
     code = 'credit_policy_invalid'
     now = _clock(now)
-    _exact(policy, {'version', 'provider', 'month', 'valid_from', 'valid_until',
+    fields = {'version', 'provider', 'month', 'valid_from', 'valid_until',
                     'account_sha256', 'credential_sha256', 'evidence_sha256',
                     'reconciliation_sha256', 'route', 'model', 'voice_id',
-                    'allocation_credits', 'balance', 'cash_controls'}, code)
-    _require(type(policy['version']) is int and policy['version'] == 1
+                    'allocation_credits', 'balance', 'cash_controls'}
+    extended = type(policy) is dict and type(policy.get('version')) is int and policy['version'] == 2
+    _exact(policy, fields | ({'additional_models'} if extended else set()), code)
+    _require(type(policy['version']) is int and policy['version'] in (1, 2)
              and policy['provider'] == PROVIDER and policy['route'] == ROUTE
              and policy['model'] == MODEL and policy['voice_id'] == VOICE_ID, code)
+    if extended:
+        _require(policy['additional_models'] == [TURKISH_SHORT_MODEL], code)
     for field in ('account_sha256', 'credential_sha256', 'evidence_sha256', 'reconciliation_sha256'):
         _hash(policy[field], code)
     _require(type(policy['month']) is str and policy['month'] == now.strftime('%Y-%m'),
@@ -163,7 +168,8 @@ def _intent(intent, policy, code):
         _hash(intent[field], code)
     for field in ('root_lineage_id', 'channel_id', 'source_connection_id'):
         _require(type(intent[field]) is str and _ID.fullmatch(intent[field]) is not None, code)
-    _require(intent['route'] == policy['route'] and intent['model'] == policy['model']
+    _require(intent['route'] == policy['route']
+             and intent['model'] in [policy['model'], *policy.get('additional_models', [])]
              and intent['voice_id'] == policy['voice_id'], code)
 
 

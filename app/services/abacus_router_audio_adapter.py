@@ -84,6 +84,32 @@ _PROSODY_PREFIX = (
 _PROSODY_SUFFIX = '\n</UNTRUSTED_EXPECTED_NARRATION>'
 
 
+def _asr_contract(language):
+    _require(language in ('tr', 'en'))
+    schema = _copy_json(_ASR_SCHEMA)
+    schema['properties']['language']['enum'] = [language]
+    return ((_ASR_SYSTEM, _ASR_TEXT, schema) if language == 'tr' else (
+        _ASR_SYSTEM.replace('Turkish (tr)', 'English (en)'),
+        _ASR_TEXT.replace('Turkish', 'English'), schema))
+
+
+def _prosody_prefix(language):
+    _require(language in ('tr', 'en'))
+    return _PROSODY_PREFIX if language == 'tr' else _PROSODY_PREFIX.replace('Turkish', 'English')
+
+
+def request_language(body, purpose):
+    if purpose is AudioReviewPurpose.BLIND_ASR:
+        schema = schema_for_request(body, purpose)
+        language = schema.get('properties', {}).get('language', {}).get('enum')
+        _require(language in (['tr'], ['en']))
+        return language[0]
+    text = body['messages'][1]['content'][1]['text']
+    matches = [language for language in ('tr', 'en') if text.startswith(_prosody_prefix(language))]
+    _require(len(matches) == 1)
+    return matches[0]
+
+
 def _require(condition, code=_REQUEST_ERROR):
     if not condition:
         raise AbacusRouterAudioError(code)
@@ -188,12 +214,15 @@ def _inspect_body(value, purpose):
                  and type(spec['schema']) is dict and spec['schema'].get('type') == 'object')
         _bounded_visual_schema(spec['schema'])
     complete_schema = schema_for_request(body, purpose)
+    language = request_language(body, purpose)
     if purpose is AudioReviewPurpose.BLIND_ASR:
-        _require(messages[0]['content'] == _ASR_SYSTEM and text['text'] == _ASR_TEXT
-                 and _canonical(complete_schema) == _canonical(_ASR_SCHEMA))
+        system, instruction, schema = _asr_contract(language)
+        _require(messages[0]['content'] == system and text['text'] == instruction
+                 and _canonical(complete_schema) == _canonical(schema))
     else:
-        _require(text['text'].startswith(_PROSODY_PREFIX) and text['text'].endswith(_PROSODY_SUFFIX))
-        quoted = text['text'][len(_PROSODY_PREFIX):-len(_PROSODY_SUFFIX)]
+        prefix = _prosody_prefix(language)
+        _require(text['text'].startswith(prefix) and text['text'].endswith(_PROSODY_SUFFIX))
+        quoted = text['text'][len(prefix):-len(_PROSODY_SUFFIX)]
         expected = _json_loads(quoted)
         _text(expected)
         _require(quoted == json.dumps(expected, ensure_ascii=False))
@@ -232,6 +261,8 @@ class PreparedAudioRouterRequest:
     @property
     def audio(self): return _json_loads(self._audio_bytes)
     @property
+    def language(self): return request_language(self.payload, self.purpose)
+    @property
     def credential_sha256(self):
         key = dict(self._header_pairs)['authorization'][len('Bearer '):]
         return _sha(('abacus\0' + key).encode('ascii'))
@@ -266,10 +297,11 @@ def inspect_audio_router_request(url, kwargs, *, purpose):
 
 
 def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens, enum_compat=False,
-             *, json_object=False):
+             *, json_object=False, allow_english=False):
     try:
         _require(type(audio) is bytes and 0 < len(audio) <= MAX_AUDIO_BYTES
-                 and type(api_key) is str and language == 'tr' and type(language) is str)
+                 and type(api_key) is str and type(language) is str
+                 and (language == 'tr' or allow_english is True and language == 'en'))
         _require(type(enum_compat) is bool and type(json_object) is bool and not (enum_compat and json_object))
         schema = _copy_json(schema)
         extra = []
@@ -320,6 +352,21 @@ def prepare_json_object_blind_asr_request(audio_bytes, *, api_key, language='tr'
     """Explicit JSON Object ASR; still blind, with the full fixed local schema."""
     return _prepare(audio_bytes, api_key, _ASR_SYSTEM, _ASR_TEXT, _ASR_SCHEMA,
                     AudioReviewPurpose.BLIND_ASR, language, max_tokens, json_object=True)
+
+
+def prepare_included_blind_asr_request(audio_bytes, *, api_key, language, max_tokens=MAX_OUTPUT_TOKENS):
+    """Production TR/EN transcript without expected narration or contextual clues."""
+    system, instruction, schema = _asr_contract(language)
+    return _prepare(audio_bytes, api_key, system, instruction, schema,
+        AudioReviewPurpose.BLIND_ASR, language, max_tokens, json_object=True, allow_english=True)
+
+
+def prepare_included_prosody_request(audio_bytes, *, api_key, expected_narration,
+        system_instruction, json_schema, language, max_tokens=MAX_OUTPUT_TOKENS):
+    _text(expected_narration)
+    prompt = _prosody_prefix(language) + json.dumps(expected_narration, ensure_ascii=False) + _PROSODY_SUFFIX
+    return _prepare(audio_bytes, api_key, system_instruction, prompt, json_schema,
+        AudioReviewPurpose.PROSODY, language, max_tokens, json_object=True, allow_english=True)
 
 
 def prepare_json_object_audio_prosody_request(audio_bytes, *, api_key, expected_narration,
@@ -439,7 +486,7 @@ def _asr_timing(output, audio):
             end = word['end']
         _require_word_timing_evidence(compare_transcript(
             output['text'], output['text'], words=output['words'], provider='abacus_router',
-            comparison_language='tr'), 'Abacus router')
+            comparison_language=output['language']), 'Abacus router')
     except AbacusRouterAudioError:
         raise
     except Exception:
