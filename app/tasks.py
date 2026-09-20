@@ -4246,7 +4246,7 @@ def _fresh_scheduled_short_shots(
     paid_slots_used: int,
     full_rebuild_verified: bool = False,
 ) -> bool:
-    """Opt in an untouched root or a separately authorized full rebuild."""
+    """Keep fresh editorial checks before media or on a private full rebuild."""
     full_rebuild = full_rebuild_verified is True
     if (
         spec.get('mode') != 'production' or spec.get('format') != 'shorts'
@@ -4255,7 +4255,11 @@ def _fresh_scheduled_short_shots(
         or spec.get('production_scheduled') is not True
         or spec.get('publish_after_render') is not True
         or approved_package is not None
-        or (retry_dispatch_source_id is not None and not full_rebuild)
+        or (retry_dispatch_source_id is not None and not full_rebuild and (
+            not isinstance(retry_dispatch_source_id, str)
+            or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(retry_dispatch_source_id)
+            or retry_dispatch_source_id == task_id
+        ))
         or (full_rebuild and (
             not isinstance(retry_dispatch_source_id, str)
             or not _RECOVERED_MEDIA_SOURCE_PATTERN.fullmatch(retry_dispatch_source_id)
@@ -4265,6 +4269,9 @@ def _fresh_scheduled_short_shots(
         or type(paid_slots_used) is not int or paid_slots_used != 0
     ):
         return False
+    if retry_dispatch_source_id is not None and not full_rebuild:
+        from app.services.pre_media_editorial_retry import eligible
+        return eligible(task_id, retry_dispatch_source_id, spec)
     try:
         from app.services.studio_state import get_job
         from app.services.fresh_story_binding import fresh_scheduled_spec_matches
