@@ -30,9 +30,20 @@ unknown historical cash usage remains unknown.
 A separate one-use diagnostic then sent a synthetic 32×32 red JPEG with JSON
 Object output and a 128-token ceiling. It received HTTP 200 and the expected JSON
 color result. The complete response was preserved privately. Observed token
-usage was 46 input and 33 output tokens; the provider did not report a credit
-charge. This confirms acceptance of that small request, not the original
+usage was 46 input and 33 output tokens; no credit charge was captured by the
+diagnostic. This confirms acceptance of that small request, not the original
 30-frame request, an identified cause of its HTTP 400, or production quality.
+Reading those saved bytes also exposed a parser mismatch: the successful response
+reported `native_finish_reason: "stop"`, while the parser accepted only `"STOP"`.
+Both observed terminal spellings are now accepted, with the canonical
+`finish_reason: "stop"` still mandatory. Truncation, tool calls and other native
+finish values remain rejected. The same response also includes a nonnegative
+integer `reasoning_tokens` counter (19), which is now preserved alongside the
+three observed native token counters. No arithmetic relationship or credit/USD
+conversion is inferred. Unknown fields and malformed counters remain rejected.
+The saved response contains only the synthetic
+color result and protocol metadata; it is a regression fixture, not a new wire
+observation or a full-video quality proof.
 
 The explicit `prepare_json_object_router_request` builder now preserves the
 entire original rubric, ordered JPEGs and validation schema in the bound request.

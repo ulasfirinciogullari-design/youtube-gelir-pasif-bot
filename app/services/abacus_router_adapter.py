@@ -289,9 +289,10 @@ def _enum_match(value, schema):
 
 
 def _usage(value, max_tokens):
-    if type(value) is dict and set(value) == {'input_tokens', 'output_tokens', 'raw_input_tokens'}:
+    native_fields = {'input_tokens', 'output_tokens', 'raw_input_tokens'}
+    if type(value) is dict and set(value) in (native_fields, native_fields | {'reasoning_tokens'}):
         # Keep RouteLLM's actual counters. No reported total or relationship
-        # between raw/effective input is implied by their field names.
+        # between raw/effective input or reasoning/output is inferred.
         _require(all(type(count) is int and 0 <= count <= _MAX_TOKEN_COUNTER
                      for count in value.values()) and value['output_tokens'] <= max_tokens, _USAGE_ERROR)
         return value
@@ -385,7 +386,7 @@ def _parse_response_payload(raw, *, schema, max_tokens):
         choice = choices[0]
         if 'native_finish_reason' in choice:
             _require(type(choice['native_finish_reason']) is str
-                     and choice['native_finish_reason'] == 'STOP', _RESPONSE_ERROR)
+                     and choice['native_finish_reason'] in {'STOP', 'stop'}, _RESPONSE_ERROR)
         _require(type(choice['index']) is int and choice['index'] == 0
                  and choice['finish_reason'] == 'stop' and choice.get('logprobs') is None, _RESPONSE_ERROR)
         message = choice['message']

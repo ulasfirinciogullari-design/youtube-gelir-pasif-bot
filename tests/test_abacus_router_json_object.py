@@ -1,6 +1,7 @@
 """Explicit JSON-object transport retains all existing local QA constraints."""
 from copy import deepcopy
 import json
+from pathlib import Path
 
 import pytest
 
@@ -101,3 +102,38 @@ def test_three_formats_do_not_share_the_same_request_identity():
     object_request = compat.prepare_json_object_router_request(parts(), api_key=KEY,
         system_instruction='Full unchanged rubric. Return the whole JSON schema.', json_schema=SCHEMA)
     assert len({p.request_sha256 for p in (native, lowered, object_request)}) == 3
+
+
+@pytest.mark.parametrize('native_reason', ['stop', 'STOP'])
+def test_recorded_response_accepts_both_observed_terminal_spellings(native_reason):
+    # Saved synthetic-image response bytes are protocol evidence only. Parsing
+    # them does not construct a new wire observation or a video QA approval.
+    raw = (Path(__file__).parent / 'fixtures/abacus_json_object_red_response.json').read_bytes()
+    payload = json.loads(raw)
+    payload['choices'][0]['native_finish_reason'] = native_reason
+    schema = {'type': 'object', 'properties': {'color': {'type': 'string', 'enum': ['red']}},
+              'required': ['color'], 'additionalProperties': False}
+    parsed = adapter._parse_response_payload(adapter._canonical(payload), schema=schema, max_tokens=128)
+    assert parsed['result'] == {'color': 'red'}
+    assert parsed['usage'] == {'input_tokens': 46, 'output_tokens': 33, 'reasoning_tokens': 19,
+                               'raw_input_tokens': 46}
+
+
+@pytest.mark.parametrize('native_reason', ['length', 'tool_calls', 'end_turn', 'Stop', ' stop', 'stop ', None, False])
+def test_nonterminal_or_unobserved_native_finish_values_remain_rejected(native_reason):
+    raw = (Path(__file__).parent / 'fixtures/abacus_json_object_red_response.json').read_bytes()
+    payload = json.loads(raw); payload['choices'][0]['native_finish_reason'] = native_reason
+    schema = {'type': 'object', 'properties': {'color': {'type': 'string'}},
+              'required': ['color'], 'additionalProperties': False}
+    with pytest.raises(adapter.AbacusRouterError, match='^abacus_router_response_unverified$'):
+        adapter._parse_response_payload(adapter._canonical(payload), schema=schema, max_tokens=128)
+
+
+@pytest.mark.parametrize('reasoning_count', [-1, True, 1.2, '19', None, 1_000_000_001])
+def test_recorded_reasoning_counter_must_be_a_bounded_nonnegative_integer(reasoning_count):
+    raw = (Path(__file__).parent / 'fixtures/abacus_json_object_red_response.json').read_bytes()
+    payload = json.loads(raw); payload['usage']['reasoning_tokens'] = reasoning_count
+    schema = {'type': 'object', 'properties': {'color': {'type': 'string'}},
+              'required': ['color'], 'additionalProperties': False}
+    with pytest.raises(adapter.AbacusRouterError):
+        adapter._parse_response_payload(adapter._canonical(payload), schema=schema, max_tokens=128)
