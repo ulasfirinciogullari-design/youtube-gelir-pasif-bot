@@ -7,6 +7,7 @@ it cannot upload, release, renew a claim or modify the scheduler.
 from copy import deepcopy
 from datetime import datetime
 import os
+import re
 
 from app.services import retained_production_admission as admission
 from app.services import retained_delivery_dispatch as delivery
@@ -125,10 +126,31 @@ def _project(manifest, plan_record, public):
     return child, upload, receipt
 
 
-def _read_completed(pipe, child_id, manifest_sha256):
+def _completion_evidence(pipe, child_id, manifest_sha256):
+    """Verify permanent delivery evidence, independently of today's settings."""
+    admission._uuid(child_id)
+    _require(type(manifest_sha256) is str and re.fullmatch('[0-9a-f]{64}', manifest_sha256))
     manifest = delivery._stored(pipe, admission.MANIFEST_KEY)
     _require(manifest['child_id'] == child_id and admission._hash(manifest) == manifest_sha256
-        and os.environ.get('RAILWAY_GIT_COMMIT_SHA') == manifest['source_head_sha'])
+        and type(manifest['version']) is int and manifest['version'] == 1
+        and manifest['kind'] == 'retained_final_delivery'
+        and manifest['root_id'] == admission.continuity.ROOT_ID
+        and manifest['leaf_id'] == admission.continuity.LEAF_ID
+        and manifest['authority'] == admission._AUTHORITY
+        and type(manifest['source_head_sha']) is str
+        and re.fullmatch('[0-9a-f]{40}', manifest['source_head_sha']))
+    journal = delivery._stored(pipe, admission.JOURNAL_KEY)
+    _require(type(journal['version']) is int and journal == {
+        'version': 1, 'phase': 'claimed', 'manifest_sha256': manifest_sha256,
+        'child_sha256': admission._hash(manifest['pending_child']),
+        'leaf_sha256': admission._hash(manifest['claimed_leaf']),
+        'dispatch_sha256': admission._hash(manifest['dispatch'])})
+    pipe.watch(admission.ANCHOR_KEY)
+    _require(pipe.pttl(admission.ANCHOR_KEY) == -1
+        and pipe.get(admission.ANCHOR_KEY) == admission._hash(journal)
+        and delivery._stored(pipe, admission.CHILD_PREFIX + child_id) == {
+            'version': 1, 'root_id': admission.continuity.ROOT_ID,
+            'child_id': child_id, 'manifest_sha256': manifest_sha256})
     execution = delivery._stored(pipe, delivery.EXECUTION_KEY)
     intent = delivery._stored(pipe, delivery.DISPATCH_KEY)
     plan_record = delivery._stored(pipe, publication.PLAN_KEY)
@@ -140,6 +162,12 @@ def _read_completed(pipe, child_id, manifest_sha256):
     public = _public_receipts(pipe, manifest, plan_record, execution)
     child, upload, expected = _project(manifest, plan_record, public)
     _require(delivery._stored(pipe, COMPLETION_KEY) == expected)
+    return manifest, plan_record, child, upload, expected
+
+
+def _read_completed(pipe, child_id, manifest_sha256):
+    manifest, plan_record, child, upload, expected = _completion_evidence(pipe, child_id, manifest_sha256)
+    _require(os.environ.get('RAILWAY_GIT_COMMIT_SHA') == manifest['source_head_sha'])
     current, _ = admission._read_projection(pipe, completed_child=child, completed_upload=upload)
     _require(current == manifest)
     keys = plan_record['series_keys']
@@ -148,6 +176,37 @@ def _read_completed(pipe, child_id, manifest_sha256):
         and all(type(t) is int and t == -1 for t in (pipe.pttl(k) for k in keys[:2]))
         and pipe.zscore(studio_state.JOB_INDEX, child_id) == manifest['pending_child']['created_ts'])
     return expected
+
+
+def _read_history(pipe, child_id, manifest_sha256):
+    manifest, plan_record, child, upload, receipt = _completion_evidence(pipe, child_id, manifest_sha256)
+    _require(delivery._stored(pipe, admission.continuity._JOB + child_id) == child
+        and delivery._stored(pipe, uploads._key(child_id)) == upload)
+    series = plan_record['plan']['series']
+    keys = publication._series_keys({'series_id': series['id'], 'series_total': series['total']}, child_id)
+    _require(plan_record['series_keys'] == list(keys) and type(series['number']) is int
+        and series['number'] == 5)
+    # The individual allocation is permanent. The shared counter, profile,
+    # OAuth epoch, budget and job-list index legitimately change after delivery.
+    pipe.watch(keys[1])
+    _require(pipe.pttl(keys[1]) == -1 and pipe.get(keys[1]) == '5')
+    return receipt
+
+
+def read_retained_publication_history(client, child_id, manifest_sha256):
+    """Read a committed past publication after deployments or later episodes.
+
+    This proves what was observed at completion, not its current YouTube
+    visibility or authority to publish, spend, resume or dispatch another job.
+    The strict current-state reader remains mandatory when committing delivery.
+    """
+    try:
+        with client.pipeline() as pipe:
+            receipt = _read_history(pipe, child_id, manifest_sha256)
+            admission._read_ack(pipe)
+        return deepcopy(receipt)
+    except Exception:
+        raise RetainedCompletionError('retained_delivery_completion_unverified') from None
 
 
 def read_retained_delivery_completion(client, child_id, manifest_sha256):

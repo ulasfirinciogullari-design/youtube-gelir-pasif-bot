@@ -52,6 +52,19 @@ until its required routes have bounded, tested quotes and verified job context.
   this does not automatically resume a job when a new budget day starts.
   This depends on the job registry accepting the failure write; registry
   outages and hard worker interruption still need separate reconciliation.
+- Scheduled renders and next-series preparation now check existing budget and
+  funding capacity before reserving a topic, job, or daily preparation attempt.
+  Missing/expired funding, exhausted month/day/channel limits and disabled
+  format allowances return `budget_blocked` without changing those records.
+  A later ordinary tick may check the same unconsumed topic again, including
+  after daily capacity renews. Existing failed jobs and unknown paid requests
+  keep their original holds. The preflight uses bounded Redis reads and never
+  initializes, refunds or reserves money. Available covered allocations are
+  distinct from new cash; unused cash cannot fund a covered-only account.
+  This check detects known insufficient capacity, not the full cost of a video
+  or availability of every provider route. Each actual request still requires
+  its quoted, credential-bound atomic reservation, including after a concurrent
+  job consumes capacity between the preflight and worker execution.
 - Scene creation and repair loops, audio-provider fallbacks, Omni anchor review
   and temporal/recursive visual review preserve a budget rejection as terminal.
   They must not convert it into an ordinary provider failure and continue to

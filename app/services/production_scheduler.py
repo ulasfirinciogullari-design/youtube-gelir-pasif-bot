@@ -122,6 +122,13 @@ def _reserve_preparation(channel_id, expected_revision, expected_connection, enq
         credential, epoch = pipe.get(credential_key), pipe.get(epoch_key)
         _require(isinstance(credential, str) and credential and pipe.sismember(index_key, channel_id)
                  and (epoch is None or isinstance(epoch, str) and re.fullmatch(r'[0-9]+', epoch)))
+        if getattr(settings, 'studio_spend_enforcement', False) is True:
+            from app.services.production_spend_runtime import preflight_scheduled_production, SpendBlocked
+
+            try:
+                preflight_scheduled_production(channel_id, kind='shorts')
+            except SpendBlocked as error:
+                return {'status': 'budget_blocked', 'reason_code': str(error)}
         record = {**binding, 'status': 'reserved', 'connection_id': expected_connection,
                   'profile_sha256': _digest(profile), 'channel_sha256': _digest(_planning_channel_identity(channel)),
                   'credential_sha256': _digest(credential), 'authorization_epoch_sha256': _digest(epoch),

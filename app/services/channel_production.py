@@ -461,6 +461,13 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         duration_minutes = editorial['duration_minutes']
         if duration_minutes == 8 and getattr(settings, 'studio_spend_enforcement', False) is not True:
             return {'status': 'delivery_budget_not_enabled'}
+        if getattr(settings, 'studio_spend_enforcement', False) is True:
+            from app.services.production_spend_runtime import preflight_scheduled_production, SpendBlocked
+
+            try:
+                preflight_scheduled_production(channel_id, kind='long' if duration_minutes > 1 else 'shorts')
+            except SpendBlocked as error:
+                return {'status': 'budget_blocked', 'reason_code': str(error)}
         route = str(profile.get('route_label') or channel_id).strip()
         task_id = str(uuid5(NAMESPACE_URL, f'youtube-production:{channel_id}:{cursor}:{_prefix_digest([topic])}'))
         options = {

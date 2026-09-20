@@ -13,7 +13,7 @@ STOP_KEY = admission.PREFIX + ':stopped'
 
 
 def _completed(client, task_id, manifest_sha256):
-    receipt = completion.read_retained_delivery_completion(client, task_id, manifest_sha256)
+    receipt = completion.read_retained_publication_history(client, task_id, manifest_sha256)
     return {'status': 'complete', 'task_id': task_id, 'video_id': receipt['video_id'],
         'receipt_sha256': admission._hash(receipt), 'next_production_authorized': False}
 

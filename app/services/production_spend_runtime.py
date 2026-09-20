@@ -613,3 +613,10 @@ def budget_status(*, read_timeout=None):
                 'funding': ledger.funding_snapshot()}
     except SpendBlocked as error:
         return {'enforced': True, 'status': 'blocked', 'reason_code': str(error)}
+
+
+def preflight_scheduled_production(channel_id, *, kind):
+    """Reject an unfunded queue admission without touching a topic or ledger."""
+    if not enforcement_enabled():
+        raise SpendBlocked('spend_enforcement_not_enabled')
+    configured_ledger(read_timeout=2).check_dispatch_capacity(channel_id=channel_id, kind=kind)

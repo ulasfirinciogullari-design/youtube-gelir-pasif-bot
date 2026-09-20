@@ -310,7 +310,7 @@ def test_pipeline_binds_before_voice_and_exports_actual_render():
     assert render.lineno < export.lineno < finish.lineno
 
 
-def test_new_scheduler_contract_is_frozen_and_guard_is_required():
+def test_new_scheduler_contract_is_frozen_and_guard_is_required(monkeypatch):
     # Reuse the actual Redis/Lua scheduler fixture through its public factory.
     from test_channel_production import production, _profile, _save, CONNECTION
     module, client = production.__wrapped__()
@@ -321,8 +321,12 @@ def test_new_scheduler_contract_is_frozen_and_guard_is_required():
     assert module.reserve_due_production(profile, CONNECTION, now=1000)['status'] == 'delivery_budget_not_enabled'
     assert {key: client.dump(key) for key in client.keys('*')} == original
     module.settings.studio_spend_enforcement = True
+    from app.services import production_spend_runtime
+    funded = Mock()
+    monkeypatch.setattr(production_spend_runtime, 'preflight_scheduled_production', funded)
     reserved = module.reserve_due_production(profile, CONNECTION, now=1000)
     assert reserved['status'] == 'reserved'
+    funded.assert_called_once_with(profile['channel_id'], kind='long')
     job = json.loads(client.get(module.JOB_PREFIX + reserved['task_id']))
     assert reserved['args'][1] == job['spec']['duration_minutes'] == 8
     assert job['spec']['production_delivery'] == delivery.CONTRACT

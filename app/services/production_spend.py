@@ -622,3 +622,57 @@ class SpendLedger:
             raise
         except Exception:
             raise SpendBlocked('spend_store_unavailable') from None
+
+    def check_dispatch_capacity(self, *, channel_id, kind):
+        """Read known capacity before consuming a scheduled topic or queue slot.
+
+        This is a preflight, never a spending reservation or a guarantee that a
+        whole video is affordable. Each outgoing request still needs its exact
+        quote, account binding and atomic reservation. A later beat can recheck
+        a blocked preflight because this read creates no job or attempt fence.
+        """
+        from app.services.production_funding import funding_summary
+
+        _identifier(channel_id)
+        if type(kind) is not str or kind not in _KINDS:
+            raise SpendBlocked('spend_kind_invalid')
+        try:
+            now = self.clock()
+            month, day = _period(now)
+            with self.client.pipeline() as pipe:
+                pipe.watch(LEDGER_KEY)
+                period = self._read_state(pipe, month, day)
+                if pipe.pttl(LEDGER_KEY) != -1:
+                    raise SpendBlocked('spend_store_expiring')
+                capacities = (
+                    (self.policy.monthly_micro - period['used_micro'], 'spend_month_limit'),
+                    (self.policy.daily_micro - period['days'].get(day, 0), 'spend_day_limit'),
+                    (self.policy.channel_monthly_micro - period['channels'].get(channel_id, 0), 'spend_channel_limit'),
+                    (getattr(self.policy, kind + '_micro'), 'spend_lineage_limit'),
+                )
+                for remaining, code in capacities:
+                    if remaining <= 0:
+                        raise SpendBlocked(code)
+                raw_policy = pipe.hget(LEDGER_KEY, 'funding_policy')
+                raw_state = pipe.hget(LEDGER_KEY, 'funding_state')
+                if raw_policy is None or raw_state is None:
+                    raise SpendBlocked('spend_funding_not_initialized')
+                funding = funding_summary(_object(raw_policy), _object(raw_state), now=now)
+                available = any(
+                    (account['mode'] == 'covered_only'
+                        and account['covered_allowance_micro'] > account['covered_reserved_micro'])
+                    or (account['mode'] == 'cash_only' and funding['cash_remaining_micro'] > 0)
+                    for account in funding['providers'])
+                if not available:
+                    raise SpendBlocked('spend_funding_capacity_exhausted')
+                pipe.multi()
+                pipe.ping()
+                reply = pipe.execute()
+                if type(reply) is not list or len(reply) != 1 or reply[0] is not True:
+                    raise SpendBlocked('spend_preflight_unverified')
+        except WatchError:
+            raise SpendBlocked('spend_store_contention') from None
+        except SpendBlocked:
+            raise
+        except Exception:
+            raise SpendBlocked('spend_store_unavailable') from None

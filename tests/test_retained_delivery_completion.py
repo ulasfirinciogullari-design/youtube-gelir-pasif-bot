@@ -77,6 +77,8 @@ def test_only_public_receipts_can_complete_and_lost_ack_is_read_only(executing, 
     calls = synthetic_youtube(box, monkeypatch)
     initial = _dump(box.client)
     with pytest.raises(completion.RetainedCompletionError): completion.complete_retained_publication(value)
+    with pytest.raises(completion.RetainedCompletionError):
+        completion.read_retained_publication_history(box.client, box.child, box.manifest_sha)
     assert _dump(box.client) == initial and calls == []
     transport.publish_retained_final(value)
     before = _dump(box.client)
@@ -105,6 +107,7 @@ def test_only_public_receipts_can_complete_and_lost_ack_is_read_only(executing, 
     assert 'PRIVATE' not in str(error.value)
     running['client'] = box.client
     receipt = completion.read_retained_delivery_completion(box.client, box.child, box.manifest_sha)
+    assert completion.read_retained_publication_history(box.client, box.child, box.manifest_sha) == receipt
     assert receipt['video_id'] == 'Synthetic01'
     assert receipt['resume_authorized'] is receipt['next_production_authorized'] is False
     child = json.loads(box.client.get(admission.continuity._JOB + box.child))
@@ -136,7 +139,7 @@ def test_only_public_receipts_can_complete_and_lost_ack_is_read_only(executing, 
     box.no_new_work.assert_not_called()
 
 
-def test_actual_worker_finishes_before_queue_ack_and_duplicate_has_no_effect(admitted, monkeypatch, tmp_path):
+def test_actual_worker_finishes_before_queue_ack_and_duplicate_has_no_effect(admitted, monkeypatch, tmp_path, subtests):
     box = admitted
     calls = synthetic_youtube(box, monkeypatch)
     monkeypatch.setattr(runtime.storage, '_client',
@@ -154,6 +157,61 @@ def test_actual_worker_finishes_before_queue_ack_and_duplicate_has_no_effect(adm
     assert runtime.run_retained_delivery(box.child, box.manifest_sha, work_root=tmp_path / 'worker') == completed[0]
     assert _dump(box.client) == before and calls == ['upload', 'private_status', 'captions', 'release', 'public_status']
     assert not box.client.exists(runtime.STOP_KEY)
+    plan = json.loads(box.client.get(publication.PLAN_KEY))
+    receipt = completion.read_retained_publication_history(box.client, box.child, box.manifest_sha)
+    # These are mutable current-state records, not evidence of the old upload.
+    # Simulate another episode, a deployment and account/budget maintenance.
+    from app.services.production_spend import LEDGER_KEY
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'f' * 40)
+    for name, change in (
+        ('series_advanced', lambda: box.client.set(plan['series_keys'][0], '6')),
+        ('profile_changed', lambda: box.client.set(admission.continuity._PROFILE + admission.continuity.CHANNEL_ID, '{}')),
+        ('oauth_changed', lambda: box.client.set(admission.continuity._AUTH_EPOCH, '99')),
+        ('channel_removed', lambda: box.client.srem(admission.continuity._CHANNEL_INDEX, admission.continuity.CHANNEL_ID)),
+        ('budget_added', lambda: box.client.hset(LEDGER_KEY, mapping={'later_accounting': 'present'})),
+        ('job_index_pruned', lambda: box.client.zrem(studio_state.JOB_INDEX, box.child)),
+    ):
+        with subtests.test(history_after=name):
+            change()
+            current = _dump(box.client)
+            assert completion.read_retained_publication_history(box.client, box.child, box.manifest_sha) == receipt
+            assert runtime.run_retained_delivery(box.child, box.manifest_sha, work_root=tmp_path / 'worker') == completed[0]
+            with pytest.raises(completion.RetainedCompletionError):
+                completion.read_retained_delivery_completion(box.client, box.child, box.manifest_sha)
+            assert _dump(box.client) == current
+            assert calls == ['upload', 'private_status', 'captions', 'release', 'public_status']
+
+    historical = _dump(box.client)
+    evidence_keys = (completion.COMPLETION_KEY, admission.MANIFEST_KEY, admission.JOURNAL_KEY,
+        admission.ANCHOR_KEY, admission.CHILD_PREFIX + box.child, delivery.EXECUTION_KEY,
+        delivery.DISPATCH_KEY, publication.PLAN_KEY, transport.PUBLIC_RECEIPT_KEY,
+        youtube_publish_state._key(box.child), admission.continuity._JOB + box.child,
+        plan['series_keys'][1],
+        *(transport._key(phase, kind) for phase in transport._PHASES for kind in ('intent', 'result')))
+    for key in evidence_keys:
+        with subtests.test(history_missing=key):
+            box.client.delete(key)
+            damaged = _dump(box.client)
+            with pytest.raises(completion.RetainedCompletionError):
+                completion.read_retained_publication_history(box.client, box.child, box.manifest_sha)
+            assert _dump(box.client) == damaged
+            restore(box.client, historical)
+        with subtests.test(history_expiring=key):
+            box.client.expire(key, 600)
+            with pytest.raises(completion.RetainedCompletionError):
+                completion.read_retained_publication_history(box.client, box.child, box.manifest_sha)
+            box.client.persist(key)
+    with subtests.test(history_race=True):
+        def race(commands):
+            assert commands == ('PING',)
+            box.client.set(completion.COMPLETION_KEY, box.client.get(completion.COMPLETION_KEY))
+        raced = Intercept(box.client, before=race)
+        with pytest.raises(completion.RetainedCompletionError):
+            completion.read_retained_publication_history(raced, box.child, box.manifest_sha)
+        assert raced.executions == [('PING',)]
+        assert _dump(box.client) == historical
+    assert not box.client.exists(runtime.STOP_KEY)
+    assert calls == ['upload', 'private_status', 'captions', 'release', 'public_status']
     assert len(box.wire.calls) == box.sends and box.s3.objects == box.objects
     box.no_new_work.assert_not_called()
 
