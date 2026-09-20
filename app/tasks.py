@@ -4546,6 +4546,8 @@ def _prepare_saved_voice_retry(
             review_kwargs['verified_spoken_word_budget'] = validate_spoken_word_budget(
                 source_package['spoken_word_budget'],
             )
+        from app.services.saved_voice_review import review_options
+        review_kwargs.update(review_options(task_id, source_package, candidate['voice_result']))
         reviewed = revalidate_immutable_short_story(
             source_package,
             runtime_spec['topic'],

@@ -2253,6 +2253,7 @@ def _repair_short_stock_scenes(
     immutable_candidate_narrations: list[str] | None = None,
     immutable_original_shot_prompts: dict[int, str] | None = None,
     immutable_scene_fields: bool = False,
+    immutable_stock_routes: bool = False,
 ) -> dict:
     if type(immutable_scene_fields) is not bool:
         raise RuntimeError('Immutable scene-fields option must be a boolean')
@@ -2263,7 +2264,15 @@ def _repair_short_stock_scenes(
             raise RuntimeError('Immutable scene review requires six to twelve scenes in a 30-second Short')
         immutable_package = deepcopy(package)
         package = deepcopy(package)
-    scene_fields_locked = immutable_scene_fields or immutable_original_shot_prompts is not None
+    if type(immutable_stock_routes) is not bool:
+        raise RuntimeError('Immutable stock-routes option must be a boolean')
+    if immutable_stock_routes:
+        locked = _immutable_narration_map(package, immutable_candidate_narrations)
+        if duration_minutes != 0.5 or not 6 <= len(locked) <= 12 or any(
+            scene.get('ai_prompt') is not None for scene in package['scenes']
+        ):
+            raise RuntimeError('Saved stock review requires the complete original stock-only Short')
+    scene_fields_locked = immutable_scene_fields or immutable_stock_routes or immutable_original_shot_prompts is not None
     if duration_minutes > 0.6:
         return package
     if spoken_word_budget is not None:
@@ -3045,7 +3054,7 @@ NON-NEGOTIABLE RULES:
         can_retry_semantic = (
             semantic_repairs == 0 and attempt + 1 < maximum_writer_attempts
             if fresh_stock_planning else attempt == 0
-        ) and not immutable_scene_fields
+        ) and not immutable_scene_fields and not immutable_stock_routes
         if can_retry_semantic:
             semantic_repairs += 1
             pending_positions = sorted(critic_failures)
@@ -3196,6 +3205,7 @@ def revalidate_immutable_short_story(
     immutable_candidate_narrations: list[str],
     immutable_original_shot_prompts: dict[int, str] | None = None,
     immutable_scene_fields: bool = False,
+    immutable_stock_routes: bool = False,
     verified_spoken_word_budget: dict | None = None,
 ) -> dict:
     """Server-only voice recovery: freshly critique exact speech, never rewrite it.
@@ -3203,11 +3213,15 @@ def revalidate_immutable_short_story(
     The caller must separately bind the saved audio to these exact narrations
     and run actual audio/media QA. This function authorizes no audio reuse or
     publication by itself and does not turn a server lock into a user brief.
+    ``immutable_stock_routes`` skips rewriting saved stock queries while
+    rebuilding deterministic derived metadata from the original narration.
     ``immutable_scene_fields`` additionally freezes the complete selected
     package and returns only fresh QA metadata, with no writer or repair retry.
     """
     if type(immutable_scene_fields) is not bool:
         raise RuntimeError('Immutable scene-fields option must be a boolean')
+    if type(immutable_stock_routes) is not bool:
+        raise RuntimeError('Immutable stock-routes option must be a boolean')
     included_router_review = _retained_router_story_mode(immutable_scene_fields)
     options = dict(options or package.get('studio_options') or {})
     if included_router_review:
@@ -3232,7 +3246,7 @@ def revalidate_immutable_short_story(
         raise RuntimeError('Immutable story revalidation requires a configured independent critic')
     client = (
         OpenAI(api_key=settings.openai_api_key, timeout=90.0,
-               max_retries=0 if immutable_scene_fields or immutable_original_shot_prompts is not None else 1)
+               max_retries=0 if immutable_scene_fields or immutable_stock_routes or immutable_original_shot_prompts is not None else 1)
         if provider == 'openai' else None
     )
     out = _repair_short_stock_scenes(
@@ -3246,6 +3260,7 @@ def revalidate_immutable_short_story(
         **({'immutable_original_shot_prompts': deepcopy(immutable_original_shot_prompts)}
            if immutable_original_shot_prompts is not None else {}),
         **({'immutable_scene_fields': True} if immutable_scene_fields else {}),
+        **({'immutable_stock_routes': True} if immutable_stock_routes else {}),
     )
     _immutable_narration_map(out, list(locked.values()))
     if [scene.get('index') for scene in out['scenes']] != original_indexes:

@@ -11,7 +11,9 @@ from datetime import datetime, timezone, timedelta
 import base64
 import hashlib
 import json
+import logging
 import re
+import traceback
 
 from cryptography.fernet import Fernet
 from redis.exceptions import WatchError
@@ -360,6 +362,17 @@ def generate_included_json(parts, *, purpose, system_instruction, json_schema, m
     return _generate(prepared, purpose, observe_router_response)
 
 
+def _log_operation_failure(stage, prepared, purpose, error):
+    """Retain actionable failures without prompts, response bodies or secrets."""
+    code = str(error) if isinstance(error, SpendBlocked) else ''
+    diagnostic = {'stage': stage, 'purpose': purpose, 'request_sha256': prepared.request_sha256,
+        'error_type': type(error).__name__,
+        'code': code if re.fullmatch(r'[a-z_]{1,100}', code) else None,
+        'locations': [(frame.name, frame.lineno)
+                      for frame in traceback.extract_tb(error.__traceback__)[-5:]]}
+    logging.getLogger(__name__).warning('Included provider operation stopped: %s', _raw(diagnostic))
+
+
 def _generate(prepared, purpose, observer):
     from app.services import production_spend_runtime as runtime
     _require(runtime.enforcement_enabled() and enabled(), 'included_router_not_enabled')
@@ -373,24 +386,36 @@ def _generate(prepared, purpose, observer):
         ledger = PrepaidAudioLedger(foundation)
     else:
         ledger = IncludedRouterLedger(foundation)
-    identity, outcome = ledger.reserve(context, purpose, prepared)
+    try:
+        identity, outcome = ledger.reserve(context, purpose, prepared)
+    except Exception as error:
+        _log_operation_failure('reservation', prepared, purpose, error)
+        raise
     if outcome is None:
-        from app.services.abacus_router_review_runtime import retained_router_review_active
-        from app.services.abacus_router_audio_review_runtime import retained_audio_router_review_active
-        from app.services.production_included_transport import send_once
-        _require(not retained_router_review_active(), 'included_router_scope_conflict')
-        _require(not retained_audio_router_review_active(), 'included_router_scope_conflict')
         response = None
+        stage = 'scope'
         try:
+            from app.services.abacus_router_review_runtime import retained_router_review_active
+            from app.services.abacus_router_audio_review_runtime import retained_audio_router_review_active
+            from app.services.production_included_transport import send_once
+            _require(not retained_router_review_active(), 'included_router_scope_conflict')
+            _require(not retained_audio_router_review_active(), 'included_router_scope_conflict')
+            stage = 'transport'
             response = send_once(prepared)
+            stage = 'response'
             observed = observer(prepared, response)
         except Exception as error:
+            _log_operation_failure(stage, prepared, purpose, error)
             try:
                 ledger.record_failure(identity, prepared, response, error)
-            except Exception:
-                pass  # Occupied request survives missing failure diagnostics.
+            except Exception as capture_error:
+                _log_operation_failure('failure_record', prepared, purpose, capture_error)
             raise SpendBlocked('included_router_response_unverified') from None
-        outcome = ledger.settle(identity, prepared, observed)
+        try:
+            outcome = ledger.settle(identity, prepared, observed)
+        except Exception as error:
+            _log_operation_failure('settlement', prepared, purpose, error)
+            raise
     result = _result(prepared, outcome)
     _LAST_OBSERVED.set({'purpose': purpose, 'context': deepcopy(context), 'evidence': deepcopy(outcome['evidence'])})
     return result

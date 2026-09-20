@@ -174,7 +174,8 @@ def test_runtime_one_send_then_cached_result_with_existing_real_context(commissi
     assert len(calls) == 1
 
 
-def test_runtime_timeout_is_terminal_for_same_request(commissioned, monkeypatch):
+@pytest.mark.parametrize('scope_conflict', [False, True])
+def test_runtime_timeout_is_terminal_for_same_request(commissioned, monkeypatch, caplog, scope_conflict):
     ledger, _, _ = commissioned
     from app.services import production_included_transport as transport
     monkeypatch.setattr(runtime.settings, 'studio_spend_enforcement', True)
@@ -183,13 +184,20 @@ def test_runtime_timeout_is_terminal_for_same_request(commissioned, monkeypatch)
     monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger.foundation)
     monkeypatch.setattr(runtime, 'resolve_context', lambda client, task: deepcopy(CONTEXT))
     calls = []
+    from app.services import abacus_router_review_runtime as retained
+    monkeypatch.setattr(retained, 'retained_router_review_active', lambda: scope_conflict)
     def send(prepared):
         calls.append(prepared)
-        raise RuntimeError('Unknown provider outcome')
+        raise RuntimeError('Unknown provider outcome ' + KEY + ' PRIVATE_RESPONSE_BODY')
     monkeypatch.setattr(transport, 'send_once', send)
     kwargs = {'purpose': 'research', 'system_instruction': 'Full schema', 'json_schema': SCHEMA}
     with pytest.raises(SpendBlocked, match='response_unverified'):
         included.generate_included_json([{'type': 'text', 'text': 'Prompt'}], **kwargs)
     with pytest.raises(SpendBlocked, match='previous_outcome_unknown'):
         included.generate_included_json([{'type': 'text', 'text': 'Prompt'}], **kwargs)
-    assert len(calls) == 1
+    assert len(calls) == (0 if scope_conflict else 1)
+    assert ('"stage":"scope"' if scope_conflict else '"stage":"transport"') in caplog.text
+    assert '"stage":"reservation"' in caplog.text
+    assert KEY not in caplog.text and 'PRIVATE_RESPONSE_BODY' not in caplog.text
+    failures = list(ledger.client.scan_iter(match=included.PREFIX + 'failure:*'))
+    assert len(failures) == 1 and json.loads(ledger.client.get(failures[0]))['http_status'] is None
