@@ -20,7 +20,7 @@ HOSTS = frozenset({'www.federalreserve.gov', 'www.ecb.europa.eu', 'www.usmint.go
     'www.imf.org', 'www.worldbank.org', 'www.bep.gov', 'www.uscurrency.gov',
     'historicengland.org.uk', 'home.barclays', 'www.si.edu', 'americanhistory.si.edu',
     'ctl.mit.edu', 'ikeamuseum.com', 'www.ikea.com', 'investor.costco.com',
-    'www.lego.com', 'www.nintendo.co.jp'})
+    'www.lego.com', 'www.nintendo.co.jp', 'www.nintendo.com'})
 COMPANIONS = {
     'https://www.usmint.gov/news/media-kit/penny':
         'https://www.usmint.gov/learn/coins-and-medals/circulating-coins/penny',
@@ -30,6 +30,8 @@ COMPANIONS = {
         'https://americanhistory.si.edu/explore/exhibitions/object-project/online/refrigerators/cart',
     'https://www.uscurrency.gov/ar/denominations/bank-note-identifiers':
         'https://www.bep.gov/currency/serial-numbers',
+    'https://www.nintendo.co.jp/corporate/en/history/index.html':
+        'https://www.nintendo.com/en-gb/Hardware/Nintendo-History/Nintendo-History-625945.html',
 }
 PENNY_BACKUP_SOURCES = (
     'https://home.treasury.gov/news/featured-stories/penny-production-cessation-faqs',
