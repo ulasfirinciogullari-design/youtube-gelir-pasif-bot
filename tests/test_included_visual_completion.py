@@ -157,10 +157,7 @@ def test_link_ack_loss_never_replays_either_provider_request(case, monkeypatch, 
     monkeypatch.setattr(completion, 'link_completed_review', uncertain)
     with pytest.raises(ConnectionError): run(case)
     monkeypatch.setattr(completion, 'link_completed_review', original)
-    if commit:
-        assert run(case) == case.complete
-    else:
-        with pytest.raises(SpendBlocked, match='previous_outcome_unknown'): run(case)
+    assert run(case) == case.complete
     assert len(case.calls) == 2
 
 
@@ -221,7 +218,10 @@ def test_completion_settlement_ack_loss_is_terminal_without_new_send(case, monke
         raise SpendBlocked('included_router_settlement_uncertain')
     monkeypatch.setattr(included.IncludedRouterLedger, 'settle', uncertain)
     with pytest.raises(SpendBlocked, match='settlement_uncertain'): run(case)
-    with pytest.raises(SpendBlocked, match='previous_outcome_unknown'): run(case)
+    if commit:
+        assert run(case) == case.complete
+    else:
+        with pytest.raises(SpendBlocked, match='previous_outcome_unknown'): run(case)
     assert len(case.calls) == 2
 
 
@@ -239,3 +239,64 @@ def test_untrusted_transport_never_becomes_a_completion(case, monkeypatch, probl
     with pytest.raises(SpendBlocked, match='response_unverified'): run(case)
     with pytest.raises(SpendBlocked, match='previous_outcome_unknown'): run(case)
     assert len(case.calls) == 1
+
+
+@pytest.mark.parametrize('changed', ['channel', 'binding', 'target_removed', 'target_pending',
+                                      'partial_changed', 'target_changed'])
+def test_unlinked_completed_receipt_cannot_bypass_current_authority_or_integrity(case, monkeypatch, changed):
+    def stop_before_link(*_): raise ConnectionError('Lost ACK before link')
+    monkeypatch.setattr(completion, 'link_completed_review', stop_before_link)
+    with pytest.raises(ConnectionError): run(case)
+    client = case.ledger.client
+    if changed == 'channel':
+        client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({'id': CHANNEL,
+            'connection_id': 'other-current-connection', 'requires_reconnect': False}))
+    elif changed == 'binding':
+        from app.services.production_spend import LEDGER_KEY
+        client.hdel(LEDGER_KEY, 'binding:' + CONTEXT['lineage_id'])
+    elif changed == 'partial_changed':
+        key = next(client.scan_iter(match=included.PREFIX + 'failure:*'))
+        failure = json.loads(client.get(key))
+        payload = envelope()
+        partial = deepcopy(case.partial)
+        partial['reviews'][0]['score'] = 99
+        payload['choices'][0]['message']['content'] = json.dumps(partial)
+        raw = json.dumps(payload).encode()
+        import hashlib
+        failure['encrypted_response'] = included._cipher().encrypt(raw).decode()
+        failure['response_sha256'] = hashlib.sha256(raw).hexdigest()
+        client.set(key, included._raw(failure))
+    else:
+        record = journal(case)
+        key = next(key for key, row in record['requests'].items() if row['outcome'] is not None)
+        if changed == 'target_removed': record['requests'].pop(key)
+        elif changed == 'target_pending': record['requests'][key]['outcome'] = None
+        else: record['requests'][key]['outcome']['evidence']['parsed_result_sha256'] = '0' * 64
+        state = json.loads(client.get(included.STATE_KEY))
+        client.set(included.JOURNAL_KEY, included._raw(record))
+        client.set(included.ANCHOR_KEY, included._sha({'state': state, 'journal': record}))
+    before = dump(client)
+    with pytest.raises(SpendBlocked): run(case)
+    assert len(case.calls) == 2 and dump(client) == before
+
+
+def test_real_watch_conflict_retries_only_local_settlement_without_schema_exception_context(case, monkeypatch):
+    import sys
+    original = included.IncludedRouterLedger._ack
+    injected = []
+    def conflict(pipe, expected):
+        for command, _ in pipe.command_stack:
+            if command[0] != 'SET' or command[1] != included.JOURNAL_KEY:
+                continue
+            rows = json.loads(command[2])['requests'].values()
+            if (not injected and any(row['outcome'] is not None for row in rows)
+                    and not any('completion' in row for row in rows)):
+                assert sys.exception() is None
+                # A separate real Redis write invalidates WATCH, even with
+                # identical bytes. This is not a simulated network exception.
+                case.ledger.client.set(included.JOURNAL_KEY, case.ledger.client.get(included.JOURNAL_KEY))
+                injected.append(True)
+        return original(pipe, expected)
+    monkeypatch.setattr(included.IncludedRouterLedger, '_ack', staticmethod(conflict))
+    assert run(case) == case.complete
+    assert injected == [True] and len(case.calls) == 2

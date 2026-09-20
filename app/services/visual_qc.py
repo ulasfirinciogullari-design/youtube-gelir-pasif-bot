@@ -1301,7 +1301,10 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
                 return generate_included_json(parts, purpose='visual_review',
                     system_instruction=instruction, json_schema=schema, max_tokens=8192)
             except IncompleteVisualReview as incomplete:
-                return complete_once(incomplete)
+                pending_completion = incomplete
+            # Exit the handled exception before Redis/transport work. A new
+            # WATCH conflict must not inherit the schema exception as context.
+            return complete_once(pending_completion)
         if _retained_sample_capture is not None:
             from app.services.retained_sampled_input_linkage import _bind_request
             _bind_request(_retained_sample_capture, parts, instruction, schema)

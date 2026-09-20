@@ -127,6 +127,7 @@ def link_completed_review(ledger, context, original, repair):
     target_id = ledger.identity(context, 'visual_review', repair.request_sha256)
     with ledger.client.pipeline() as pipe:
         state, journal = ledger._read(pipe)
+        ledger._check_binding(pipe, state, context, repair)
         source, target = journal['requests'][identity], journal['requests'][target_id]
         _require(source['context'] == target['context'] == context and source['outcome'] is None
             and 'completion' not in source and target['outcome'] is not None and 'completion' not in target)
@@ -144,23 +145,48 @@ def link_completed_review(ledger, context, original, repair):
 
 
 def cached_completed_review(ledger, context, prepared):
-    from app.services.production_included_router import _result
+    """Recover only a completed deterministic receipt, never a new send permit.
+
+    EXEC may have committed a valid completion even when its acknowledgement
+    was lost before the link was written. Reconstructing that exact request
+    from the retained partial and current frames lets us adopt its existing
+    observation. An absent/uncertain target leaves the original hold closed.
+    """
+    from app.services.production_included_router import _result, _raw, _sha
     identity = ledger.identity(context, 'visual_review', prepared.request_sha256)
     with ledger.client.pipeline() as pipe:
-        _, journal = ledger._read(pipe)
+        state, journal = ledger._read(pipe)
         row = journal['requests'].get(identity)
-        if row is None or 'completion' not in row:
+        if row is None or row['outcome'] is not None:
             return None
-        _require(row['context'] == context and row['outcome'] is None)
-        digest, raw = _failure(pipe, ledger, identity, prepared)
-        _require(digest == row['completion']['original_failure_sha256'])
-        original = _partial(prepared, raw)
-        repair = completion_request(prepared, original)
-        _require(repair.request_sha256 == row['completion']['request_sha256'])
-        target = journal['requests'][ledger.identity(context, 'visual_review', repair.request_sha256)]
-        result = _result(repair, target['outcome'])
-        unchanged_original_values(original, result)
-        pipe.multi(); pipe.ping(); ledger._ack(pipe, [True])
+        _require(row['context'] == context)
+        linked = 'completion' in row
+        try:
+            digest, raw = _failure(pipe, ledger, identity, prepared)
+            original = _partial(prepared, raw)
+            repair = completion_request(prepared, original)
+            target = journal['requests'].get(ledger.identity(context, 'visual_review', repair.request_sha256))
+            _require(target is not None and target['outcome'] is not None and 'completion' not in target
+                and target['context'] == context)
+            unchanged_original_values(original, _result(repair, target['outcome']))
+        except Exception:
+            if linked:
+                raise
+            # Normal reserve() still rejects the original occupied request.
+            # Neither a malformed partial nor a missing response may resend.
+            return None
+        if linked:
+            _require(digest == row['completion']['original_failure_sha256']
+                and repair.request_sha256 == row['completion']['request_sha256'])
+            pipe.multi(); pipe.ping(); ledger._ack(pipe, [True])
+        else:
+            ledger._check_binding(pipe, state, context, repair)
+            row['completion'] = {'request_sha256': repair.request_sha256,
+                'response_proof_sha256': target['outcome']['evidence']['response_proof_sha256'],
+                'original_failure_sha256': digest}
+            pipe.multi(); pipe.set(ledger.journal_key, _raw(journal))
+            pipe.set(ledger.anchor_key, _sha({'state': state, 'journal': journal}))
+            ledger._ack(pipe, [True, True])
         return repair
 
 

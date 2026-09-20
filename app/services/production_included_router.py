@@ -214,6 +214,26 @@ class IncludedRouterLedger:
         except Exception:
             raise SpendBlocked('included_router_initialization_uncertain') from None
 
+    def _check_binding(self, pipe, state, context, prepared):
+        """Watch current authority before reserving or linking existing receipts."""
+        policy = state['policy']
+        _require(context['kind'] == 'shorts' and context['channel_id'] in policy['allowed_channels']
+            and prepared.credential_sha256 == policy['credential_sha256']
+            and prepared.endpoint == policy['endpoint'] and prepared.model == policy['model'],
+            'included_router_binding_invalid')
+        pipe.watch(LEDGER_KEY)
+        _require(pipe.hget(LEDGER_KEY, 'binding:' + context['lineage_id']) == _raw(context),
+                 'included_router_context_unbound')
+        from app.services import production_spend_runtime as runtime
+        channel_key = runtime._CHANNEL_PREFIX + context['channel_id']
+        pipe.watch(channel_key, runtime._CHANNEL_INDEX)
+        channel = runtime._object(pipe.get(channel_key))
+        _require(channel.get('id') == context['channel_id']
+            and channel.get('connection_id') == context['connection_id']
+            and channel.get('requires_reconnect') is not True
+            and pipe.sismember(runtime._CHANNEL_INDEX, context['channel_id']),
+            'included_router_channel_changed')
+
     def reserve(self, context, purpose, prepared):
         from app.services.abacus_router_adapter import PreparedRouterRequest
         from app.services.abacus_router_audio_adapter import PreparedAudioRouterRequest, PreparedPrepaidAudioRequest, AudioReviewPurpose
@@ -230,23 +250,7 @@ class IncludedRouterLedger:
                 with self.client.pipeline() as pipe:
                     state, journal = self._read(pipe)
                     policy = state['policy']
-                    _require(context['kind'] == 'shorts' and context['channel_id'] in policy['allowed_channels']
-                        and prepared.credential_sha256 == policy['credential_sha256']
-                        and prepared.endpoint == policy['endpoint'] and prepared.model == policy['model'],
-                        'included_router_binding_invalid')
-                    expected = _raw(context)
-                    pipe.watch(LEDGER_KEY)
-                    _require(pipe.hget(LEDGER_KEY, 'binding:' + context['lineage_id']) == expected,
-                             'included_router_context_unbound')
-                    from app.services import production_spend_runtime as runtime
-                    channel_key = runtime._CHANNEL_PREFIX + context['channel_id']
-                    pipe.watch(channel_key, runtime._CHANNEL_INDEX)
-                    channel = runtime._object(pipe.get(channel_key))
-                    _require(channel.get('id') == context['channel_id']
-                        and channel.get('connection_id') == context['connection_id']
-                        and channel.get('requires_reconnect') is not True
-                        and pipe.sismember(runtime._CHANNEL_INDEX, context['channel_id']),
-                        'included_router_channel_changed')
+                    self._check_binding(pipe, state, context, prepared)
                     identity = self.identity(context, purpose, prepared.request_sha256)
                     prior = journal['requests'].get(identity)
                     if prior is not None:
