@@ -2,6 +2,7 @@
 from copy import deepcopy
 from dataclasses import replace
 from datetime import datetime, timezone
+import importlib
 import json
 from types import SimpleNamespace
 from unittest.mock import Mock
@@ -31,6 +32,11 @@ def snapshot(client):
 
 @pytest.fixture
 def box(monkeypatch, installed_sdk_modules):
+    # Legacy full-suite collection installs a minimal app.config stub. Supply
+    # this fixture's broker setting before importing the real Celery task; no
+    # broker connection is made by direct task execution.
+    monkeypatch.setattr(importlib.import_module('app.config').settings,
+                        'redis_url', 'redis://synthetic', raising=False)
     class Clock(datetime):
         @classmethod
         def now(cls, tz=None):
