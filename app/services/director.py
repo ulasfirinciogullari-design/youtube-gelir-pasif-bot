@@ -2358,22 +2358,22 @@ def _repair_short_stock_scenes(
         1 if scene_fields_locked
         else 3 if fresh_stock_planning else 2
     )
-    deterministic_repairs: set[str] = set()
+    deterministic_repairs = 0
     semantic_repairs = 0
 
-    def can_retry_deterministic(attempt: int, gate: str = 'scene') -> bool:
+    def can_retry_deterministic(attempt: int) -> bool:
+        nonlocal deterministic_repairs
         if immutable_scene_fields:
             return False
         if not fresh_stock_planning:
             return attempt == 0
-        if (gate in deterministic_repairs or attempt + 1 >= maximum_writer_attempts
+        if (attempt + 1 >= maximum_writer_attempts
                 or (deterministic_repairs and critic_calls)):
             return False
-        # Before the first critic, a total-length repair can reveal a local
-        # scene defect (or vice versa). Use the remaining existing writer slot
-        # once for that different gate; repeated defects and reviewed stories
-        # retain their old limit. The three-writer ceiling never increases.
-        deterministic_repairs.add(gate)
+        # All three already-budgeted writers may establish a critic-eligible
+        # candidate. Once reviewed, retain the existing single deterministic
+        # repair and semantic limit; there is never a fourth writer.
+        deterministic_repairs += 1
         return True
 
     for attempt in range(maximum_writer_attempts):
@@ -2657,7 +2657,7 @@ NON-NEGOTIABLE RULES:
                 position: total_error
                 for position in request_positions
             }
-            if can_retry_deterministic(attempt, 'total_word_budget'):
+            if can_retry_deterministic(attempt):
                 pending_positions = list(request_positions)
                 feedback_by_position = dict(last_failures)
                 for position in request_positions:

@@ -1,4 +1,4 @@
-"""A different pre-critic defect may use the third already-budgeted writer."""
+"""Pre-critic defects may use only the three already-budgeted writers."""
 from copy import deepcopy
 
 import pytest
@@ -67,12 +67,35 @@ def test_third_failed_writer_stops_before_critic_and_cannot_start_a_fourth():
     assert error.value.planning_diagnostics['publish_eligible'] is False
 
 
-def test_repeated_total_length_failure_does_not_receive_another_retry():
+def test_repeated_total_length_failure_cannot_exceed_three_writers():
     value, first, _ = candidates()
-    client = FakeClient([first, first])
+    client = FakeClient([first, first, first])
     with pytest.raises(RuntimeError, match='fully stock-safe'):
         run(client, value)
-    assert len(client.responses.calls) == 2
+    assert len(client.responses.calls) == 3
+
+
+@pytest.mark.parametrize('verdict', ['accept', 'rejected'])
+def test_full_story_rewrite_can_finish_length_within_its_existing_three_calls(verdict):
+    value, first, _ = candidates()
+    second = generated(value)
+    for row in second['scenes'][:4]:
+        row['narration'] = ' '.join(row['narration'].split()[1:])
+    assert sum(director._word_count(row['narration']) for row in second['scenes']) == 61
+    review = reviewed(story_failures=['causal_claim_supported'] if verdict == 'rejected' else [])
+    client = FakeClient([first, second, generated(value), review])
+    if verdict == 'rejected':
+        with pytest.raises(RuntimeError) as error:
+            run(client, value)
+        assert error.value.planning_diagnostics['publish_eligible'] is False
+    else:
+        result = run(client, value)
+        assert director._word_count(result['narration']) == 65
+        assert result['stock_scene_qc']['generator_calls'] == 3
+        assert result['stock_scene_qc']['critic_calls'] == 1
+    assert len(client.responses.calls) == 4
+    assert all('61 narration words; expected 62-66' in row['validation_feedback']
+        for row in writer_context(client, 2)['stock_positions_to_rewrite'])
 
 
 @pytest.mark.parametrize('fresh', [False, None, 1, 'true'])
