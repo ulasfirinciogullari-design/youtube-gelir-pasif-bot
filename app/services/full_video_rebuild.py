@@ -36,6 +36,7 @@ from app.services.youtube_publish_state import UPLOAD_PREFIX, EXECUTION_LOCK_PRE
 
 POLICY_PREFIX = 'youtube_studio:full_video_rebuild:v1:policy:'
 SOURCE_PREFIX = 'youtube_studio:full_video_rebuild:v1:source:'
+NATIVE_CORRECTION_ROOT_PREFIX = 'youtube_studio:native_story_correction:v1:root:'
 MAX_RETRY_HOPS = 16
 _TASK = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
 _ID = re.compile(r'^[A-Za-z0-9_-]{8,128}$')
@@ -251,7 +252,7 @@ def _planning_retry_authorization(client, source, spec, cap, root_id, auth, snap
     return {'inherited_policy_sha256': _digest(policy), **retained}
 
 
-def _source(client, source_id, snapshots, *, reserved=False):
+def _source(client, source_id, snapshots, *, reserved=False, native_story_correction=None):
     source = _object(_snapshot(client, JOB_PREFIX + source_id, snapshots))
     spec = source.get('spec')
     _require(isinstance(spec, dict) and spec.get('mode') == 'production' and spec.get('format') == 'shorts'
@@ -267,7 +268,14 @@ def _source(client, source_id, snapshots, *, reserved=False):
     auth = _authorization(client, spec, root_id, snapshots)
     if used == 0:
         _require(ledger['used'] == '0', 'full_rebuild_paid_source_required')
-        auth.update(_planning_retry_authorization(client, source, spec, cap, root_id, auth, snapshots))
+        if native_story_correction is not None:
+            from app.services.native_story_correction import validate_correction
+            auth.update(validate_correction(client, source, spec, root_id, snapshots,
+                native_story_correction, reserved=reserved))
+        else:
+            auth.update(_planning_retry_authorization(client, source, spec, cap, root_id, auth, snapshots))
+    else:
+        _require(native_story_correction is None, 'native_story_correction_pre_media_only')
     auth['source_paid_ledger_sha256'] = _digest(ledger)
     if not reserved:
         _require(not source.get('retry_child_task_id') and source.get('retry_claimed') is not True)
@@ -329,6 +337,10 @@ local result = claim_existing_retry()
 if result[1] ~= 2 then return result end
 redis.call('SET', KEYS[6], ARGV[9])
 redis.call('SET', KEYS[7], ARGV[9])
+local policy = cjson.decode(ARGV[9])
+if policy['native_story_correction'] ~= nil then
+  redis.call('SET', KEYS[11], ARGV[9])
+end
 redis.call('SETEX', KEYS[8], ARGV[4], ARGV[10])
 redis.call('ZADD', KEYS[10], ARGV[11], ARGV[2])
 redis.call('EXPIRE', KEYS[10], ARGV[4])
@@ -347,6 +359,8 @@ def _keys(source_id, child_id):
 def _evaluate(client, script, source_id, child_id, token, snapshots, policy, child=None):
     now = time.time()
     keys = _keys(source_id, child_id)
+    if 'native_story_correction' in policy:
+        keys.append(NATIVE_CORRECTION_ROOT_PREFIX + policy['lineage_root_task_id'])
     return client.eval(script, len(keys), *keys, token, child_id,
                        datetime.fromtimestamp(now, timezone.utc).isoformat(), JOB_TTL_SECONDS,
                        '0', RETRY_DISPATCH_TTL_SECONDS, source_id,
@@ -389,7 +403,7 @@ def _claim_bound_full_rebuild(source_id, child_id, token, binding):
     raise FullVideoRebuildError('full_rebuild_state_changed')
 
 
-def reserve_full_video_rebuild(source_id, child_id, token):
+def reserve_full_video_rebuild(source_id, child_id, token, *, native_story_correction=None):
     """Private server call. Only the first successful reservation may enqueue."""
     try:
         _require(all(isinstance(v, str) and _TASK.fullmatch(v) for v in (source_id, child_id))
@@ -398,7 +412,8 @@ def reserve_full_video_rebuild(source_id, child_id, token):
         existing = _existing(client, source_id)
         if existing:
             return existing
-        source, spec, cap, root_id, auth = _source(client, source_id, snapshots)
+        source, spec, cap, root_id, auth = _source(client, source_id, snapshots,
+            native_story_correction=native_story_correction)
         _idle_channel(client, auth['channel_id'], snapshots)
         for prefix in (JOB_PREFIX, RETRY_CHILD_CLAIM_PREFIX, RETRY_CHILD_EXECUTION_PREFIX,
                        POLICY_PREFIX, PAID_CREATE_BUDGET_PREFIX, UPLOAD_PREFIX, EXECUTION_LOCK_PREFIX):
@@ -440,7 +455,8 @@ def _executed_full_rebuild_grant(client, task_id, source_id, runtime_spec, snaps
     _require(all(isinstance(v, str) and _TASK.fullmatch(v) for v in (task_id, source_id))
              and task_id != source_id and isinstance(runtime_spec, dict))
     policy = _object(_snapshot(client, POLICY_PREFIX + task_id, snapshots))
-    source, spec, cap, root_id, auth = _source(client, source_id, snapshots, reserved=True)
+    source, spec, cap, root_id, auth = _source(client, source_id, snapshots, reserved=True,
+        native_story_correction=policy.get('native_story_correction'))
     _require(type(policy.get('version')) is int and policy['version'] == 1 and policy.get('mode') == 'full'
              and policy.get('source_task_id') == source_id and policy.get('child_task_id') == task_id
              and policy.get('lineage_root_task_id') == root_id
@@ -489,10 +505,11 @@ def get_full_rebuild_policy(task_id, source_id, runtime_spec):
         raise FullVideoRebuildError('full_rebuild_unavailable') from None
 
 
-def dispatch_full_video_rebuild(source_id):
+def dispatch_full_video_rebuild(source_id, *, native_story_correction=None):
     """Operator entry point: reserve once, enqueue once, never retry ambiguity."""
     child_id, token = str(uuid4()), secrets.token_urlsafe(32)
-    reserved = reserve_full_video_rebuild(source_id, child_id, token)
+    reserved = reserve_full_video_rebuild(source_id, child_id, token,
+        **({'native_story_correction': native_story_correction} if native_story_correction is not None else {}))
     if not reserved['claimed']:
         return {**reserved, 'status': 'already_claimed'}
     spec = reserved['spec']

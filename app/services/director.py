@@ -89,6 +89,18 @@ _SOURCE_IDENTITY_RULE = (
     'For example, the Bureau of Engraving and Printing is not the United '
     'States Mint. Prefer omitting unnecessary spoken attribution over '
     'inventing, loosely translating or substituting the source institution.'
+    ' COST AND TIME ATTRIBUTION: keep total production cost distinct from '
+    'raw-material cost, face value, sale price and profit. A source that '
+    'combines materials, facilities and overhead does not establish that '
+    'the metal alone exceeds a coin\'s face value or that rising metal prices '
+    'alone caused the loss. For example, a stated 3.69-cent total cost of a '
+    'penny must not become a claim that its zinc and copper are worth 3.69 '
+    'cents or more than one cent. Preserve the source\'s exact metric and '
+    'scope; unsupported component-cost or causal claims fail '
+    'causal_claim_supported and adds_no_new_fact. If a source says production '
+    'has already stopped, describe that production and its reported cost in '
+    'past tense, while distinguishing the continued circulation of existing '
+    'coins. Do not present a historical cost as a new current measurement. '
 )
 _VISIBLE_MATERIAL_RULE = (
     'VISIBLE MATERIAL CLAIMS: a sourced ingredient is not automatically '
@@ -1055,9 +1067,9 @@ def _short_story_quality_issues(
 
 # Invalidate pre-explanatory-coda/source-identity approvals, including intact
 # fingerprints on the previously accepted but factually wrong narration.
-_SHORT_STORY_QC_VERSION = 5
-_STOCK_SCENE_QC_VERSION = 9
-_STORY_STOCK_CONTRACT = 'openai-story-stock-v5'
+_SHORT_STORY_QC_VERSION = 6
+_STOCK_SCENE_QC_VERSION = 10
+_STORY_STOCK_CONTRACT = 'openai-story-stock-v6'
 _ENGLISH_SHORT_SPOKEN_BUDGET = {
     'version': 1,
     'profile': 'fresh_en_30s_v1',

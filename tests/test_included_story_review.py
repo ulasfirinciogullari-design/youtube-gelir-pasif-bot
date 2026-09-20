@@ -55,6 +55,8 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
             story_failures=['causal_claim_supported'] if rejected else [])
         if len(calls) > 1 or review_only:
             assert 'ACTUAL SOURCE TEXT FOR THE INDEPENDENT CRITIC' in json.dumps(prepared.payload)
+            assert director._SOURCE_IDENTITY_RULE in prepared.payload['messages'][1]['content'][0]['text']
+            assert 'raw-material cost, face value, sale price and profit' in json.dumps(prepared.payload)
         body = envelope(); body['choices'][0]['message']['content'] = json.dumps(output)
         return response(prepared, payload=body)
     monkeypatch.setattr(transport, 'send_once', send)
