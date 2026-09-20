@@ -2425,6 +2425,16 @@ def _repair_short_stock_scenes(
                 for position in request_positions
             ],
         }
+        from app.services import countable_stock_narration
+        word_slots = countable_stock_narration.eligible(
+            plan_provider, fresh_stock_planning, spoken_word_budget is not None,
+            scenes, stock_positions, request_targets,
+        )
+        writer_schema = _stock_writer_json_schema(request_positions)
+        writer_format_rule = ''
+        if word_slots:
+            writer_schema, response_shape = countable_stock_narration.request_format(writer_schema, response_shape)
+            writer_format_rule = '- ' + countable_stock_narration.RULE + '\n'
         generation_context = {
             'requested_brief': requested_brief,
             'content_style': normalized_content_style,
@@ -2463,7 +2473,7 @@ Return ONLY JSON in exactly this shape:
 {json.dumps(response_shape, ensure_ascii=False)}
 
 NON-NEGOTIABLE RULES:
-- {documentary_writer_rule}
+{writer_format_rule}- {documentary_writer_rule}
 - {explanatory_coda_rule}
 - {stock_video_rule}
 - {fresh_candidate_metadata_rule(fresh_stock_planning)}
@@ -2516,7 +2526,7 @@ NON-NEGOTIABLE RULES:
             if plan_provider == 'abacus_included':
                 from app.services.production_included_router import generate_text_json, stock_only_rule
                 data = generate_text_json(generator_input + stock_only_rule(),
-                    _stock_writer_json_schema(request_positions), purpose='editorial')
+                    writer_schema, purpose='editorial')
             elif plan_provider == 'gemini':
                 data = generate_gemini_json(
                     generator_input,
@@ -2548,7 +2558,13 @@ NON-NEGOTIABLE RULES:
                     data = {}
 
         global_generation_error = ''
-        if not data:
+        if word_slots:
+            try:
+                data = countable_stock_narration.decode(data)
+            except ValueError as error:
+                data = {}
+                global_generation_error = str(error)
+        if not global_generation_error and not data:
             global_generation_error = 'response was not valid JSON'
         if data and set(data.keys()) != {'scenes'}:
             global_generation_error = 'response must contain exactly the scenes key'
