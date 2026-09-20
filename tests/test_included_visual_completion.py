@@ -36,7 +36,9 @@ def case(commissioned, monkeypatch):
     for row in partial['reviews']:
         for field in completion.OMITTABLE:
             row.pop(field)
-    values = [partial, complete]
+    fields = {'reviews': [{field: row[field] for field in ('scene_index', *completion.OMITTABLE)}
+                          for row in complete['reviews']]}
+    values = [partial, fields]
     calls = []
     def send(prepared):
         calls.append(prepared)
@@ -48,7 +50,7 @@ def case(commissioned, monkeypatch):
         return response(prepared, payload=payload)
     sender = Mock(side_effect=send)
     monkeypatch.setattr(transport, 'send_once', sender)
-    return SimpleNamespace(ledger=ledger, ns=ns, complete=complete, partial=partial,
+    return SimpleNamespace(ledger=ledger, ns=ns, complete=complete, partial=partial, fields=fields,
                            values=values, calls=calls, sender=sender)
 
 
@@ -69,14 +71,16 @@ def test_missing_flags_complete_once_on_exact_frames_and_reuse_actual_receipt(ca
     assert run(case) == case.complete
     initial, repair = case.calls
     assert initial.request_sha256 != repair.request_sha256
-    assert initial.payload['messages'][1] == repair.payload['messages'][1]
-    assert repair.payload['messages'][0]['content'].startswith(initial.payload['messages'][0]['content'])
+    assert initial.payload['messages'][1]['content'][:-1] == repair.payload['messages'][1]['content'][:-1]
+    assert initial.payload['messages'][0]['content'] in repair.payload['messages'][0]['content']
     assert 'INCLUDED_VISUAL_REQUIRED_FIELDS_V1' in initial.payload['messages'][0]['content']
-    assert 'VISUAL_MISSING_FIELDS_COMPLETION_V1' in repair.payload['messages'][0]['content']
+    assert 'VISUAL_MISSING_FIELDS_ONLY_V2' in repair.payload['messages'][0]['content']
     rows = list(journal(case)['requests'].values())
     assert len(rows) == 2
     source = next(row for row in rows if row['outcome'] is None)
     target = next(row for row in rows if row['outcome'] is not None)
+    assert source['completion']['format'] == 'missing_fields_v2'
+    assert included._result(repair, target['outcome']) == case.fields
     assert source['completion']['request_sha256'] == target['request_sha256'] == repair.request_sha256
     assert included._LAST_OBSERVED.get()['evidence']['request_sha256'] == repair.request_sha256
     failures = list(case.ledger.client.scan_iter(match=included.PREFIX + 'failure:*'))
@@ -96,7 +100,7 @@ def test_missing_flags_complete_once_on_exact_frames_and_reuse_actual_receipt(ca
     ('evidence_moment_indices', [0, 1])])
 def test_completion_cannot_change_any_original_judgment(case, field, value):
     # Candidate 1 is outside this request's schema and is rejected even earlier.
-    case.complete['reviews'][0][field] = value
+    case.fields['reviews'][0][field] = value
     with pytest.raises(SpendBlocked): run(case)
     assert len(case.calls) == 2 and len(journal(case)['requests']) == 2
     assert all('completion' not in row for row in journal(case)['requests'].values())
@@ -300,3 +304,31 @@ def test_real_watch_conflict_retries_only_local_settlement_without_schema_except
     monkeypatch.setattr(included.IncludedRouterLedger, '_ack', staticmethod(conflict))
     assert run(case) == case.complete
     assert injected == [True] and len(case.calls) == 2
+
+
+def test_partial_existing_flag_cannot_be_changed_by_compact_completion(case):
+    case.partial['reviews'][0]['receiving_interface_visible'] = False
+    case.fields['reviews'][0]['receiving_interface_visible'] = True
+    with pytest.raises(SpendBlocked, match='completion_unverified'): run(case)
+    with pytest.raises(SpendBlocked, match='previous_outcome_unknown'): run(case)
+    assert len(case.calls) == 2
+
+
+def test_prior_full_completion_receipt_remains_reusable_without_a_new_request(case, monkeypatch):
+    captured = []
+    real = completion.complete_once
+    def stop(original):
+        captured.append(original)
+        raise RuntimeError('Interrupted before completion')
+    monkeypatch.setattr(completion, 'complete_once', stop)
+    with pytest.raises(RuntimeError): run(case)
+    original = captured[0]
+    legacy = completion.completion_request(original.prepared, original.data, legacy=True)
+    case.values[1] = case.complete
+    from app.services.abacus_router_adapter import observe_router_response
+    assert included._generate(legacy, 'visual_review', observe_router_response) == case.complete
+    monkeypatch.setattr(completion, 'complete_once', real)
+    assert run(case) == run(case) == case.complete
+    assert len(case.calls) == 2
+    row = next(row for row in journal(case)['requests'].values() if 'completion' in row)
+    assert 'format' not in row['completion']

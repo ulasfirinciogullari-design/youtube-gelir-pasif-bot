@@ -5399,6 +5399,9 @@ def run_video_pipeline(
                 scene_visuals[scene_idx] = duration_safe_specs
         credits = broll_result['credits']
         seen_ids = broll_result['seen_ids']
+        if not recovered_generated_media and selected_recovery is None:
+            from app.services.included_stock_pool import retain_stock_pool
+            retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, phase='initial')
         # The fixed production Short uses distinct final stock clips. Keep
         # legacy preview/long-form reuse behavior unchanged.
         stock_reuse_visuals = (
@@ -5590,6 +5593,10 @@ def run_video_pipeline(
                 runway_submission_cap,
                 total_paid_create_cap,
             )
+
+        if not recovered_generated_media and selected_recovery is None:
+            from app.services.included_stock_pool import retain_stock_pool
+            retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, phase='before_generation')
 
         # Score the exact clips selected after stock retries. Paid Runway slots
         # are ranked by current evidence, never scene order or stale scores.

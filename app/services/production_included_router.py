@@ -154,9 +154,12 @@ class IncludedRouterLedger:
                 continue
             link = row['completion']
             _require(row['purpose'] == 'visual_review' and row['outcome'] is None
-                and type(link) is dict and set(link) == {
-                    'request_sha256', 'response_proof_sha256', 'original_failure_sha256'}
-                and all(_hash(value) for value in link.values()))
+                and type(link) is dict and set(link) in ({
+                    'request_sha256', 'response_proof_sha256', 'original_failure_sha256'}, {
+                    'request_sha256', 'response_proof_sha256', 'original_failure_sha256', 'format'})
+                and ('format' not in link or link['format'] == 'missing_fields_v2')
+                and all(_hash(link[field]) for field in (
+                    'request_sha256', 'response_proof_sha256', 'original_failure_sha256')))
             target_id = self.identity(row['context'], 'visual_review', link['request_sha256'])
             target = journal['requests'].get(target_id)
             _require(target_id != key and target is not None and 'completion' not in target
@@ -398,6 +401,7 @@ def _generate(prepared, purpose, observer):
     from app.services import production_spend_runtime as runtime
     _require(runtime.enforcement_enabled() and enabled(), 'included_router_not_enabled')
     _LAST_OBSERVED.set(None)
+    original_prepared, completed_data = prepared, None
     foundation = runtime.configured_ledger()
     context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
     from app.services.abacus_router_audio_adapter import PreparedPrepaidAudioRequest
@@ -412,7 +416,7 @@ def _generate(prepared, purpose, observer):
             from app.services.included_visual_completion import cached_completed_review
             completed = cached_completed_review(ledger, context, prepared)
             if completed is not None:
-                prepared = completed
+                prepared, completed_data = completed
         identity, outcome = ledger.reserve(context, purpose, prepared)
     except Exception as error:
         _log_operation_failure('reservation', prepared, purpose, error)
@@ -453,6 +457,10 @@ def _generate(prepared, purpose, observer):
             raise
     result = _result(prepared, outcome)
     _LAST_OBSERVED.set({'purpose': purpose, 'context': deepcopy(context), 'evidence': deepcopy(outcome['evidence'])})
+    if completed_data is not None:
+        from app.services.included_visual_fields import combine
+        result = combine(original_prepared, completed_data, prepared, result)
+        _LAST_OBSERVED.get()['completion_source_request_sha256'] = original_prepared.request_sha256
     return result
 
 

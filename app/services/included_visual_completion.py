@@ -29,7 +29,8 @@ def _partial(prepared, raw):
     from app.services.abacus_router_adapter import _parse_response_payload
     schema = _schema(prepared)
     item = schema['properties']['reviews']['items']
-    _require(OMITTABLE <= set(item['required']) and all(
+    _require({'score', 'reason', 'best_candidate_index', 'best_moment_index', 'retry_queries'} <= set(item['required'])
+        and OMITTABLE <= set(item['required']) and all(
         item['properties'][field] == {'type': 'boolean'} for field in OMITTABLE))
     partial_schema = deepcopy(schema)
     partial_schema['properties']['reviews']['items']['required'] = [
@@ -72,7 +73,10 @@ def from_schema_failure(prepared, response, error):
         return None
 
 
-def completion_request(prepared, data):
+def completion_request(prepared, data, *, legacy=False):
+    if not legacy:
+        from app.services.included_visual_fields import request
+        return request(prepared, data)
     from app.services.abacus_router_schema_compat import prepare_json_object_router_request, OBJECT_SCHEMA_PREFIX
     body = prepared.payload
     parts = body['messages'][1]['content']
@@ -123,6 +127,7 @@ def _failure(pipe, ledger, identity, prepared):
 def link_completed_review(ledger, context, original, repair):
     """Anchor a completed separate request; neither reservation is refunded."""
     from app.services.production_included_router import _raw, _sha, _result
+    from app.services.included_visual_fields import combine, is_compact
     identity = ledger.identity(context, 'visual_review', original.prepared.request_sha256)
     target_id = ledger.identity(context, 'visual_review', repair.request_sha256)
     with ledger.client.pipeline() as pipe:
@@ -134,11 +139,14 @@ def link_completed_review(ledger, context, original, repair):
         digest, raw = _failure(pipe, ledger, identity, original.prepared)
         _require(hashlib.sha256(raw).hexdigest() == original.response_sha256)
         actual = _partial(original.prepared, raw)
-        _require(actual == original.data and completion_request(original.prepared, actual) == repair)
-        unchanged_original_values(actual, _result(repair, target['outcome']))
+        _require(actual == original.data and completion_request(original.prepared, actual,
+            legacy=not is_compact(repair)) == repair)
+        combine(original.prepared, actual, repair, _result(repair, target['outcome']))
         source['completion'] = {'request_sha256': repair.request_sha256,
             'response_proof_sha256': target['outcome']['evidence']['response_proof_sha256'],
             'original_failure_sha256': digest}
+        if is_compact(repair):
+            source['completion']['format'] = 'missing_fields_v2'
         pipe.multi(); pipe.set(ledger.journal_key, _raw(journal))
         pipe.set(ledger.anchor_key, _sha({'state': state, 'journal': journal}))
         ledger._ack(pipe, [True, True])
@@ -153,6 +161,7 @@ def cached_completed_review(ledger, context, prepared):
     observation. An absent/uncertain target leaves the original hold closed.
     """
     from app.services.production_included_router import _result, _raw, _sha
+    from app.services.included_visual_fields import combine, is_compact
     identity = ledger.identity(context, 'visual_review', prepared.request_sha256)
     with ledger.client.pipeline() as pipe:
         state, journal = ledger._read(pipe)
@@ -164,11 +173,17 @@ def cached_completed_review(ledger, context, prepared):
         try:
             digest, raw = _failure(pipe, ledger, identity, prepared)
             original = _partial(prepared, raw)
-            repair = completion_request(prepared, original)
-            target = journal['requests'].get(ledger.identity(context, 'visual_review', repair.request_sha256))
+            formats = [row['completion'].get('format') != 'missing_fields_v2'] if linked else [True, False]
+            target = None
+            for legacy in formats:
+                repair = completion_request(prepared, original, legacy=legacy)
+                candidate = journal['requests'].get(ledger.identity(context, 'visual_review', repair.request_sha256))
+                if candidate is not None and candidate['outcome'] is not None:
+                    target = candidate
+                    break
             _require(target is not None and target['outcome'] is not None and 'completion' not in target
                 and target['context'] == context)
-            unchanged_original_values(original, _result(repair, target['outcome']))
+            combine(prepared, original, repair, _result(repair, target['outcome']))
         except Exception:
             if linked:
                 raise
@@ -184,21 +199,27 @@ def cached_completed_review(ledger, context, prepared):
             row['completion'] = {'request_sha256': repair.request_sha256,
                 'response_proof_sha256': target['outcome']['evidence']['response_proof_sha256'],
                 'original_failure_sha256': digest}
+            if is_compact(repair):
+                row['completion']['format'] = 'missing_fields_v2'
             pipe.multi(); pipe.set(ledger.journal_key, _raw(journal))
             pipe.set(ledger.anchor_key, _sha({'state': state, 'journal': journal}))
             ledger._ack(pipe, [True, True])
-        return repair
+        return repair, original
 
 
 def complete_once(original):
     from app.services import production_spend_runtime as runtime, production_included_router as included
     from app.services.abacus_router_adapter import observe_router_response
+    from app.services.included_visual_fields import combine
     repair = completion_request(original.prepared, original.data)
     # A second incomplete reply is terminal: this call is outside the caller's
     # catch, and no transport, provider or SDK retry is added.
     output = included._generate(repair, 'visual_review', observe_router_response)
-    unchanged_original_values(original.data, output)
+    result = combine(original.prepared, original.data, repair, output)
     foundation = runtime.configured_ledger()
     context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
     link_completed_review(included.IncludedRouterLedger(foundation), context, original, repair)
-    return output
+    # The last observation remains the actual small provider response, never
+    # an invented observation of the assembled full review.
+    included._LAST_OBSERVED.get()['completion_source_request_sha256'] = original.prepared.request_sha256
+    return result
