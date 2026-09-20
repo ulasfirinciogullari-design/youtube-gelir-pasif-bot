@@ -565,26 +565,20 @@ class ObservedAudioRouterResult:
     def underlying_model_verified(self): return False
 
 
-def observe_audio_router_response(prepared, response):
-    """Observe already-loaded actual HTTPX bytes; caller must bound streaming reads."""
+def _audio_json_content(content, *, prompt_only):
+    # Models without structured-output support sometimes wrap the single JSON
+    # document in Markdown. Accept only one complete fence, never extracted
+    # substrings, commentary, duplicate keys, NaN or an altered schema.
+    text = content.strip()
+    if prompt_only and text.startswith('```'):
+        match = re.fullmatch(r'```(?:json)?[ \t]*\r?\n([\s\S]+?)\r?\n```', text)
+        _require(match is not None, _RESPONSE_ERROR)
+        text = match[1]
+    return _json_loads(text)
+
+
+def _observe_audio_body(prepared, raw, *, status_code, wire_sha, captured_record_sha256=None):
     try:
-        _require(type(prepared) in (PreparedAudioRouterRequest, PreparedPrepaidAudioRequest), _RESPONSE_ERROR)
-        _require(inspect_audio_router_request(ENDPOINT, prepared.wire_kwargs(), purpose=prepared.purpose)
-                 == prepared, _RESPONSE_ERROR)
-        wire_sha = _verify_wire(prepared, response.request)
-        _require(type(response) is httpx.Response and 200 <= response.status_code < 300
-                 and not response.history and response.is_stream_consumed, _RESPONSE_ERROR)
-        raw = response.content
-        _require(type(raw) is bytes and 0 < len(raw) <= MAX_RESPONSE_BYTES, _RESPONSE_ERROR)
-        headers = _headers(response.headers, names={
-            'content-type', 'content-length', 'content-encoding', 'transfer-encoding', 'request-id', 'x-request-id'})
-        _require(headers.get('content-type', '').lower().replace(' ', '') in {
-            'application/json', 'application/json;charset=utf-8'}
-            and headers.get('content-encoding', 'identity') == 'identity', _RESPONSE_ERROR)
-        _require(not ('content-length' in headers and 'transfer-encoding' in headers), _RESPONSE_ERROR)
-        if 'content-length' in headers:
-            length = headers['content-length']
-            _require(re.fullmatch(r'[0-9]{1,9}', length) is not None and int(length) == len(raw), _RESPONSE_ERROR)
         payload = _json_loads(raw.decode('utf-8'))
         _require(type(payload) is dict and {'model', 'choices'} <= set(payload)
                  and set(payload) <= {'id', 'object', 'created', 'model', 'choices', 'usage', 'system_fingerprint'},
@@ -614,7 +608,7 @@ def observe_audio_router_response(prepared, response):
                  and message['role'] == 'assistant' and type(message['content']) is str
                  and message.get('refusal') is None and message.get('function_call') is None
                  and (message.get('tool_calls') is None or message['tool_calls'] == []), _RESPONSE_ERROR)
-        output = _json_loads(message['content'])
+        output = _audio_json_content(message['content'], prompt_only='response_format' not in prepared.payload)
         schema = schema_for_request(prepared.payload, prepared.purpose)
         _require(type(output) is dict and _matches_schema(output, schema)
                  and _unique_items_match(output, schema) and _enum_match(output, schema), _SCHEMA_ERROR)
@@ -626,13 +620,61 @@ def observe_audio_router_response(prepared, response):
             'purpose': prepared.purpose.value, 'requested_model': prepared.model, 'returned_model': payload['model'],
             'underlying_model_verified': False, 'credential_sha256': prepared.credential_sha256,
             'request_sha256': prepared.request_sha256, 'wire_body_sha256': wire_sha,
-            'response_body_sha256': _sha(raw), 'status_code': response.status_code,
+            'response_body_sha256': _sha(raw), 'status_code': status_code,
             'provider_request_id_sha256': (_sha(('abacus\0router-request\0' + payload['id']).encode('ascii'))
                                           if 'id' in payload else None),
             'audio': prepared.audio, 'parsed_result_sha256': _sha(_canonical(output)), 'usage': usage,
         }
+        if captured_record_sha256 is not None:
+            evidence.update(observation_kind='stored_encrypted_failure_v1',
+                            failure_record_sha256=captured_record_sha256,
+                            response_headers_verified=False)
         evidence['response_proof_sha256'] = _sha(_canonical(evidence))
         return ObservedAudioRouterResult(_canonical(output), _canonical(evidence))
+    except AbacusRouterAudioError:
+        raise
+    except Exception:
+        raise AbacusRouterAudioError(_RESPONSE_ERROR) from None
+
+
+def observe_stored_prepaid_audio_response(prepared, raw, *, failure_record_sha256, http_status):
+    """Parse operator-pinned captured bytes, without claiming wire/header proof.
+
+    The caller must authenticate/decrypt the original failure record, check its
+    exact permanent pending reservation, and atomically commit the observation.
+    This pure reader grants no send, retry, credit refund or quality approval.
+    """
+    _require(type(prepared) is PreparedPrepaidAudioRequest
+             and inspect_audio_router_request(ENDPOINT, prepared.wire_kwargs(), purpose=prepared.purpose) == prepared
+             and type(raw) is bytes and 0 < len(raw) <= 16384
+             and type(http_status) is int and http_status == 200
+             and type(failure_record_sha256) is str
+             and re.fullmatch(r'[0-9a-f]{64}', failure_record_sha256), _RESPONSE_ERROR)
+    return _observe_audio_body(prepared, raw, status_code=http_status, wire_sha=None,
+                               captured_record_sha256=failure_record_sha256)
+
+
+def observe_audio_router_response(prepared, response):
+    """Observe already-loaded actual HTTPX bytes; caller must bound streaming reads."""
+    try:
+        _require(type(prepared) in (PreparedAudioRouterRequest, PreparedPrepaidAudioRequest), _RESPONSE_ERROR)
+        _require(inspect_audio_router_request(ENDPOINT, prepared.wire_kwargs(), purpose=prepared.purpose)
+                 == prepared, _RESPONSE_ERROR)
+        wire_sha = _verify_wire(prepared, response.request)
+        _require(type(response) is httpx.Response and 200 <= response.status_code < 300
+                 and not response.history and response.is_stream_consumed, _RESPONSE_ERROR)
+        raw = response.content
+        _require(type(raw) is bytes and 0 < len(raw) <= MAX_RESPONSE_BYTES, _RESPONSE_ERROR)
+        headers = _headers(response.headers, names={
+            'content-type', 'content-length', 'content-encoding', 'transfer-encoding', 'request-id', 'x-request-id'})
+        _require(headers.get('content-type', '').lower().replace(' ', '') in {
+            'application/json', 'application/json;charset=utf-8'}
+            and headers.get('content-encoding', 'identity') == 'identity', _RESPONSE_ERROR)
+        _require(not ('content-length' in headers and 'transfer-encoding' in headers), _RESPONSE_ERROR)
+        if 'content-length' in headers:
+            length = headers['content-length']
+            _require(re.fullmatch(r'[0-9]{1,9}', length) is not None and int(length) == len(raw), _RESPONSE_ERROR)
+        return _observe_audio_body(prepared, raw, status_code=response.status_code, wire_sha=wire_sha)
     except AbacusRouterAudioError:
         raise
     except Exception:

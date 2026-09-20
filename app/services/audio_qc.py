@@ -1413,6 +1413,7 @@ _TURKISH_CENT_CONTEXT = frozenset({
     'euro', 'euronun', 'avro', 'avronun',
     'para', 'parası', 'paranın', 'parayı', 'paralar', 'paraları',
     'madeni', 'banknot', 'darphane', 'darphanenin',
+    'kasa', 'kasada', 'kasalar', 'kasalarda', 'kasaya', 'kasalara', 'kasadan', 'kasalardan',
     'dolaşım', 'dolaşımı', 'dolaşımda', 'dolaşımdaki', 'dolaşıma', 'dolaşımdan',
 })
 
