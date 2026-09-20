@@ -1067,9 +1067,9 @@ def _short_story_quality_issues(
 
 # Invalidate pre-explanatory-coda/source-identity approvals, including intact
 # fingerprints on the previously accepted but factually wrong narration.
-_SHORT_STORY_QC_VERSION = 6
-_STOCK_SCENE_QC_VERSION = 10
-_STORY_STOCK_CONTRACT = 'openai-story-stock-v6'
+_SHORT_STORY_QC_VERSION = 7
+_STOCK_SCENE_QC_VERSION = 11
+_STORY_STOCK_CONTRACT = 'openai-story-stock-v7'
 _ENGLISH_SHORT_SPOKEN_BUDGET = {
     'version': 1,
     'profile': 'fresh_en_30s_v1',
@@ -2698,6 +2698,7 @@ NON-NEGOTIABLE RULES:
 
         for critic_attempt in range(1 if scene_fields_locked else 2):
             critic_calls += 1
+            source_claim_review = None
             critic = {}
             story_review = None
             ending_pair = None
@@ -2714,12 +2715,31 @@ NON-NEGOTIABLE RULES:
                 critic = generate_retained_router_review(router_request.pop('parts'), **router_request)
             elif plan_provider == 'abacus_included':
                 from app.services.production_included_router import generate_text_json
-                from app.services.included_research_sources import fetch_page, source_prompt
+                from app.services.included_research_sources import fetch_page
+                from app.services import included_factual_audit
                 # The independent critic reads source text, not just evidence
                 # sentences written by the model whose story it is judging.
                 checked_sources = [fetch_page(source['url']) for source in package['sources']]
-                critic = generate_text_json(critic_input + source_prompt(checked_sources),
-                    critic_schema, purpose='story_review')
+                factual_prompt, factual_schema = included_factual_audit.request(
+                    critic_input, critic_schema, candidate_story, checked_sources)
+                reviewed = generate_text_json(factual_prompt, factual_schema, purpose='story_review')
+                critic, source_claim_review, factual_failures = included_factual_audit.validate(
+                    reviewed, candidate_story, checked_sources)
+                if factual_failures:
+                    # The complete actual response is already in the existing
+                    # request journal. Do not replace a negative finding with
+                    # the other critic's positive boolean or synthesize voice.
+                    evidence = json.dumps(factual_failures, ensure_ascii=False, separators=(',', ':'))
+                    if (allow_whole_story_repair is True and not scene_fields_locked
+                            and immutable_candidate_narrations is None
+                            and immutable_original_shot_prompts is None):
+                        repair_error = _WholeStoryRepairRequired(['causal_claim_supported'], evidence)
+                        repair_error.rejected_candidate_story = deepcopy(candidate_story)
+                        repair_error.source_claim_failures = deepcopy(factual_failures)
+                        raise repair_error
+                    from app.services.planning_diagnostics import story_planning_error
+                    raise story_planning_error('Source audit rejected unsupported narration before media',
+                        scenes=candidate_story, sources=package.get('sources'), review=reviewed)
             elif plan_provider == 'gemini':
                 try:
                     critic = generate_gemini_json(
@@ -3059,6 +3079,7 @@ NON-NEGOTIABLE RULES:
             repaired['stock_scene_qc'] = stock_scene_qc
             if plan_provider == 'abacus_included':
                 from app.services.production_included_router import seal_story_review
+                stock_scene_qc['source_claim_review'] = source_claim_review
                 stock_scene_qc['subscription_router_critic'] = seal_story_review(repaired, topic)
             return repaired
 
@@ -3791,6 +3812,10 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             }
             if fresh_scheduled is True and isinstance(getattr(exc, 'rejected_candidate_story', None), list):
                 correction_input['rejected_candidate_story'] = deepcopy(exc.rejected_candidate_story)
+            if isinstance(getattr(exc, 'source_claim_failures', None), list):
+                # Every rejected clause must reach the one existing rewrite;
+                # a short display summary is not enough to repair all scenes.
+                correction_input['source_claim_failures'] = deepcopy(exc.source_claim_failures)
             revised = _run_director(
                 client,
                 correction_input,

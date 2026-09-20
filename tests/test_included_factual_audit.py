@@ -1,0 +1,144 @@
+from copy import deepcopy
+import hashlib
+import json
+
+import pytest
+
+from app.services import included_factual_audit as audit
+
+
+TEXT = ('The total cost of producing a penny includes the costs of materials, '
+        'facilities, and overhead. Existing pennies remain legal tender. '
+        'New circulating pennies are no longer manufactured.')
+URL = 'https://home.treasury.gov/news/featured-stories/penny-production-cessation-faqs'
+PAGES = [{'url': URL, 'text': TEXT, 'text_sha256': hashlib.sha256(TEXT.encode()).hexdigest()}]
+LINES = [{'position': 0, 'narration': 'Toplam maliyet; malzemeleri, tesisleri ve genel giderleri kapsıyordu.'},
+         {'position': 1, 'narration': 'İşçilik ve tesis giderleri madeni paranın değerini çoktan aştı.'},
+         {'position': 2, 'narration': 'Yüksek harcamalar yüzünden yeni madeni paraların basımı durduruldu.'},
+         {'position': 3, 'narration': 'Mevcut sentler piyasada alışverişi aksatmadan ödemeleri tamamlıyor.'}]
+
+
+def response():
+    return {'editorial_review': {'positive': True}, 'factual_audit': {'sentences': [
+        {**line, 'assessment': 'supported' if position == 0 else 'unsupported',
+         'reason': ('The quoted total includes all listed costs together.' if position == 0 else
+                    'The cited source does not establish the additional assertion in this sentence.'),
+         'quotations': [{'source_url': URL, 'quote': TEXT.split('. ')[0] + '.'}]}
+        for position, line in enumerate(LINES)]}}
+
+
+def test_actual_negative_findings_override_a_positive_editorial_review_without_changing_evidence():
+    actual = response(); before = deepcopy(actual)
+    critic, report, failures = audit.validate(actual, LINES, PAGES)
+    assert critic == actual['editorial_review']
+    assert report['accepted'] is False
+    assert [row['position'] for row in failures] == [1, 2, 3]
+    assert report['sentences'] == actual['factual_audit']['sentences']
+    assert report['sources'][0]['excerpt_sha256'] == hashlib.sha256(TEXT.encode()).hexdigest()
+    assert actual == before
+    report['sentences'][0]['assessment'] = 'uncertain'
+    assert actual == before
+
+
+@pytest.mark.parametrize('change', [
+    'missing_sentence', 'extra_sentence', 'duplicate_position', 'bool_position', 'changed_narration',
+    'changed_quote', 'foreign_url', 'duplicate_quote', 'empty_quotes_supported', 'empty_reason',
+    'extra_field', 'unknown_verdict', 'extra_envelope', 'no_audit', 'noncontiguous_quote',
+])
+def test_forged_partial_or_ambiguous_source_assessments_are_rejected(change):
+    value = response(); rows = value['factual_audit']['sentences']; row = rows[0]
+    if change == 'missing_sentence':rows.pop()
+    elif change == 'extra_sentence':rows.append(deepcopy(rows[-1]))
+    elif change == 'duplicate_position':rows[1]['position'] = 0
+    elif change == 'bool_position':row['position'] = False
+    elif change == 'changed_narration':row['narration'] = 'A different claim was reviewed.'
+    elif change == 'changed_quote':row['quotations'][0]['quote'] = 'This quote never appeared in the source.'
+    elif change == 'foreign_url':row['quotations'][0]['source_url'] = 'https://example.org/'
+    elif change == 'duplicate_quote':row['quotations'].append(deepcopy(row['quotations'][0]))
+    elif change == 'empty_quotes_supported':row['quotations'] = []
+    elif change == 'empty_reason':row['reason'] = ''
+    elif change == 'extra_field':row['waive'] = True
+    elif change == 'unknown_verdict':row['assessment'] = 'probably'
+    elif change == 'extra_envelope':value['pass'] = True
+    elif change == 'no_audit':value.pop('factual_audit')
+    elif change == 'noncontiguous_quote':row['quotations'][0]['quote'] = 'The total cost ... Existing pennies remain legal tender.'
+    with pytest.raises(ValueError):audit.validate(value, LINES, PAGES)
+
+
+def test_no_quote_is_a_rejection_not_a_reason_to_invent_one():
+    value = response()
+    for row in value['factual_audit']['sentences']:
+        row.update(assessment='uncertain', quotations=[])
+    _, report, failures = audit.validate(value, LINES, PAGES)
+    assert not report['accepted'] and len(failures) == len(LINES)
+
+
+def test_request_contains_every_clause_complete_original_contract_and_stable_source_identity():
+    schema = {'type': 'object', 'properties': {'original': {'type': 'boolean'}}}
+    before = deepcopy(schema)
+    prompt, wrapped = audit.request('The complete original critic rubric.', schema, LINES, PAGES)
+    assert audit.MARKER in prompt and 'The complete original critic rubric.' in prompt
+    assert wrapped['properties']['editorial_review'] == schema == before
+    assert all(line['narration'] in prompt for line in LINES)
+    for phrase in ('labor', 'TOTAL', 'coin production', 'disruption', 'uncertain'):
+        assert phrase in prompt
+    changed = deepcopy(PAGES); changed[0]['retrieved_at'] = '2099-01-01'; changed[0]['body_sha256'] = 'a' * 64
+    assert audit.request('The complete original critic rubric.', schema, LINES, changed) == (prompt, wrapped)
+    assert json.dumps(wrapped)
+
+
+def test_rejection_diagnostics_preserve_scene_reasons_but_do_not_echo_source_urls_or_keys():
+    from app.services.planning_diagnostics import story_planning_error
+    actual = response()
+    actual['factual_audit']['sentences'][1]['reason'] = 'api_key=sk-this-is-private do not echo'
+    error = story_planning_error('Source audit rejected unsupported narration before media',
+        scenes=LINES, review=actual)
+    details = error.planning_diagnostics
+    assert details['candidate_kind'] == 'rejected_critic_candidate'
+    assert details['publish_eligible'] is False
+    rows = details['review']['factual_audit']['sentences']
+    assert rows[2]['assessment'] == 'unsupported'
+    assert rows[2]['reason'] == actual['factual_audit']['sentences'][2]['reason']
+    assert rows[1]['reason'] == '[credential-bearing text omitted]'
+    assert URL not in json.dumps(details) and 'sk-this' not in json.dumps(details)
+
+
+@pytest.mark.parametrize('second_passes', [True, False])
+def test_full_story_rewrite_gets_every_failure_and_stops_after_one_correction(monkeypatch, second_passes):
+    from app.services import director
+    from test_included_story_review import fixture_story
+    package, _ = fixture_story()
+    monkeypatch.setattr(director, '_studio_plan_provider', lambda: 'openai')
+    monkeypatch.setattr(director.settings, 'openai_api_key', 'test-only', raising=False)
+    monkeypatch.setattr(director, 'OpenAI', lambda **kwargs: object())
+    plans, reviews = [], []
+    failures = [{'position': i, 'assessment': 'unsupported', 'narration': line['narration'],
+        'reason': 'The exact clause exceeds its evidence. ' * 20} for i, line in enumerate(LINES)]
+    def plan(client, compact, *args, **kwargs):
+        plans.append(deepcopy(compact))
+        return {**deepcopy(package), 'qc_summary': []}
+    def review(*args, **kwargs):
+        reviews.append(kwargs)
+        if len(reviews) == 1:
+            error = director._WholeStoryRepairRequired(['causal_claim_supported'], json.dumps(failures))
+            error.source_claim_failures = deepcopy(failures)
+            raise error
+        if not second_passes:
+            raise RuntimeError('still unsupported')
+        result = deepcopy(package)
+        result['stock_scene_qc'] = {'version': director._STOCK_SCENE_QC_VERSION,
+            'story_review': {'accepted': True}, 'ending_pair_review': {'accepted': True}}
+        return result
+    monkeypatch.setattr(director, '_run_director', plan)
+    monkeypatch.setattr(director, '_repair_short_stock_scenes', review)
+    def run():
+        return director.direct_and_qc(package, 'Soğukta telefonun pili neden hızla düşer?', .5, 'tr',
+            {'mode': 'preview', 'pace': 'balanced'})
+    if second_passes:
+        run()
+    else:
+        with pytest.raises(RuntimeError, match='still unsupported'):run()
+    assert len(plans) == len(reviews) == 2
+    assert plans[1]['source_claim_failures'] == failures
+    assert len(json.dumps(plans[1]['source_claim_failures'])) > 480
+    assert reviews[1].get('allow_whole_story_repair', False) is False

@@ -29,9 +29,10 @@ def fixture_story():
     return package, env['critic_payload']
 
 
-@pytest.mark.parametrize('rejected', [False, True])
+@pytest.mark.parametrize('rejected', [False, 'editorial', 'unsupported', 'uncertain', 'quote'])
 @pytest.mark.parametrize('review_only', [False, True])
-def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(commissioned, monkeypatch, rejected, review_only):
+@pytest.mark.parametrize('allow_repair', [False, True])
+def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(commissioned, monkeypatch, rejected, review_only, allow_repair):
     ledger, _, _ = commissioned
     from app import config
     for key, value in {'studio_spend_enforcement': True, 'studio_abacus_included_production': True,
@@ -52,11 +53,24 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
     def send(prepared):
         calls.append(prepared)
         output = generated if len(calls) == 1 and not review_only else critic(stock_positions=tuple(range(6)),
-            story_failures=['causal_claim_supported'] if rejected else [])
+            story_failures=['causal_claim_supported'] if rejected == 'editorial' else [])
         if len(calls) > 1 or review_only:
             assert 'ACTUAL SOURCE TEXT FOR THE INDEPENDENT CRITIC' in json.dumps(prepared.payload)
             assert director._SOURCE_IDENTITY_RULE in prepared.payload['messages'][1]['content'][0]['text']
             assert 'raw-material cost, face value, sale price and profit' in json.dumps(prepared.payload)
+            from app.services.included_factual_audit import MARKER
+            assert MARKER in json.dumps(prepared.payload)
+            output = {'editorial_review': output, 'factual_audit': {'sentences': [
+                {'position': pos, 'narration': scene['narration'], 'assessment': 'supported',
+                 'reason': 'The retrieved evidence supports the complete specific claim.',
+                 'quotations': [{'source_url': package['sources'][0]['url'],
+                    'quote': 'ACTUAL SOURCE TEXT FOR THE INDEPENDENT CRITIC'}]}
+                for pos, scene in enumerate(package['scenes'])]}}
+            row = output['factual_audit']['sentences'][2]
+            if rejected in {'unsupported', 'uncertain'}:
+                row.update(assessment=rejected, reason='Total production cost does not support a component cost claim.')
+            elif rejected == 'quote':
+                row['quotations'][0]['quote'] = 'The model invented this quotation instead of citing retrieved text.'
         body = envelope(); body['choices'][0]['message']['content'] = json.dumps(output)
         return response(prepared, payload=body)
     monkeypatch.setattr(transport, 'send_once', send)
@@ -65,7 +79,8 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
     original = deepcopy(package)
     def run_review():
         if not review_only:
-            return director._repair_short_stock_scenes(None, package, 'Turkish', .5, topic)
+            return director._repair_short_stock_scenes(None, package, 'Turkish', .5, topic,
+                allow_whole_story_repair=allow_repair)
         from app.services.audio_checkpoint import _candidate_package
         saved = _candidate_package(package)
         # The real content-addressed loader rebuilds this exact joined field.
@@ -74,13 +89,20 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
             {'mode': 'production', 'format': 'shorts', 'content_style': 'documentary'},
             immutable_candidate_narrations=[s['narration'] for s in saved['scenes']], immutable_stock_routes=True)
     if rejected:
-        with pytest.raises(RuntimeError):
+        with pytest.raises((RuntimeError, ValueError)) as raised:
             run_review()
+        if rejected in {'unsupported', 'uncertain'} and allow_repair and not review_only:
+            assert isinstance(raised.value, director._WholeStoryRepairRequired)
+            assert raised.value.source_claim_failures[0]['position'] == 2
+            assert raised.value.source_claim_failures[0]['assessment'] == rejected
         assert 'subscription_router_critic' not in (package.get('stock_scene_qc') or {})
     else:
         result = run_review()
+        assert result['stock_scene_qc']['source_claim_review']['accepted'] is True
         assert included.story_review_matches(result, topic)
         changed = deepcopy(result); changed['scenes'][0]['narration'] += ' Invented fact.'
+        assert not included.story_review_matches(changed, topic)
+        changed = deepcopy(result); changed['stock_scene_qc']['source_claim_review']['sentences'][0]['reason'] += ' Forged.'
         assert not included.story_review_matches(changed, topic)
         assert not included.story_review_matches(result, 'Unrelated different topic')
         assert len(calls) == (1 if review_only else 2)
