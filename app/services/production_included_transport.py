@@ -6,7 +6,7 @@ The caller must reserve once before entry and keep failed requests occupied.
 import httpx
 
 from app.services.abacus_router_adapter import ENDPOINT, MAX_RESPONSE_BYTES, PreparedRouterRequest
-from app.services.abacus_router_audio_adapter import PreparedAudioRouterRequest
+from app.services.abacus_router_audio_adapter import PreparedAudioRouterRequest, PreparedPrepaidAudioRequest
 from app.services.production_spend import SpendBlocked
 
 MAX_ERROR_BYTES = 16384
@@ -18,7 +18,7 @@ def _require(value):
 
 
 def send_once(prepared):
-    _require(type(prepared) in (PreparedRouterRequest, PreparedAudioRouterRequest)
+    _require(type(prepared) in (PreparedRouterRequest, PreparedAudioRouterRequest, PreparedPrepaidAudioRequest)
              and prepared.endpoint == ENDPOINT)
     transport = httpx.HTTPTransport(retries=0, trust_env=False)
     with httpx.Client(transport=transport, trust_env=False, follow_redirects=False,

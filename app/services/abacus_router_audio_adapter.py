@@ -29,6 +29,7 @@ from app.services.whisper_transcription import _read_audio, inspect_bounded_shor
 ENDPOINT = 'https://routellm.abacus.ai/v1/chat/completions'
 OPERATION = '/v1/chat/completions'
 MODEL = 'route-llm'
+PREPAID_MODEL = 'gemini-2.5-flash'
 MAX_AUDIO_BYTES = 8 * 1024 * 1024
 MAX_DECODED_SAMPLES = 1_443_840
 MAX_OUTPUT_TOKENS = 8192
@@ -187,7 +188,8 @@ def _inspect_body(value, purpose):
     if not prompt_only:
         fields.add('response_format')
     _require(set(body) == fields
-        and body['model'] == MODEL and body['stream'] is False)
+        and body['model'] in (MODEL, PREPAID_MODEL) and body['stream'] is False)
+    _require(body['model'] == MODEL or prompt_only)
     if is_object or prompt_only:
         _require(type(body['temperature']) is int and body['temperature'] == 0)
     else:
@@ -261,7 +263,7 @@ class PreparedAudioRouterRequest:
     @property
     def operation(self): return OPERATION
     @property
-    def model(self): return MODEL
+    def model(self): return self.payload['model']
     @property
     def payload(self): return _json_loads(self._body_bytes)
     @property
@@ -277,6 +279,13 @@ class PreparedAudioRouterRequest:
         return _sha(_canonical({'version': 1, 'method': 'POST', 'endpoint': ENDPOINT, 'body': self.payload}))
     def wire_kwargs(self):
         return {'json': self.payload, 'headers': dict(self._header_pairs), 'timeout': 90.0}
+
+
+@dataclass(frozen=True, repr=False)
+class PreparedPrepaidAudioRequest(PreparedAudioRouterRequest):
+    """Separate type: old retained/included route permits cannot admit it."""
+    def __repr__(self):
+        return '<PreparedPrepaidAudioRequest abacus:gemini-2.5-flash redacted>'
 
 
 def inspect_audio_router_request(url, kwargs, *, purpose):
@@ -295,7 +304,8 @@ def inspect_audio_router_request(url, kwargs, *, purpose):
         key = auth[len('Bearer '):]
         _require(1 <= len(key) <= 4096 and all(32 < ord(char) < 127 for char in key))
         body, audio = _inspect_body(kwargs['json'], purpose)
-        return PreparedAudioRouterRequest(body, tuple(sorted(normalized.items())), audio, purpose)
+        kind = PreparedPrepaidAudioRequest if kwargs['json']['model'] == PREPAID_MODEL else PreparedAudioRouterRequest
+        return kind(body, tuple(sorted(normalized.items())), audio, purpose)
     except AbacusRouterAudioError:
         raise
     except Exception:
@@ -303,7 +313,7 @@ def inspect_audio_router_request(url, kwargs, *, purpose):
 
 
 def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens, enum_compat=False,
-             *, json_object=False, allow_english=False, prompt_json=False):
+             *, json_object=False, allow_english=False, prompt_json=False, model=MODEL):
     try:
         _require(type(audio) is bytes and 0 < len(audio) <= MAX_AUDIO_BYTES
                  and type(api_key) is str and type(language) is str
@@ -331,7 +341,7 @@ def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens
         return inspect_audio_router_request(ENDPOINT, {
             'headers': {'Authorization': 'Bearer ' + api_key, 'Content-Type': 'application/json',
                         'Accept': 'application/json'},
-            'json': {'model': MODEL, 'messages': [
+            'json': {'model': model, 'messages': [
                 {'role': 'system', 'content': system}, {'role': 'user', 'content': [
                     {'type': 'input_audio', 'input_audio': {
                         'data': base64.b64encode(audio).decode('ascii'), 'format': 'mp3'}},
@@ -396,6 +406,22 @@ def prepare_prompt_json_prosody_request(audio_bytes, *, api_key, expected_narrat
     prompt = _prosody_prefix(language) + json.dumps(expected_narration, ensure_ascii=False) + _PROSODY_SUFFIX
     return _prepare(audio_bytes, api_key, system_instruction, prompt, json_schema,
         AudioReviewPurpose.PROSODY, language, max_tokens, prompt_json=True, allow_english=True)
+
+
+def prepare_prepaid_blind_asr_request(audio_bytes, *, api_key, language, max_tokens=MAX_OUTPUT_TOKENS):
+    system, instruction, schema = _asr_contract(language)
+    return _prepare(audio_bytes, api_key, system, instruction, schema,
+        AudioReviewPurpose.BLIND_ASR, language, max_tokens, prompt_json=True,
+        allow_english=True, model=PREPAID_MODEL)
+
+
+def prepare_prepaid_prosody_request(audio_bytes, *, api_key, expected_narration,
+        system_instruction, json_schema, language, max_tokens=MAX_OUTPUT_TOKENS):
+    _text(expected_narration)
+    prompt = _prosody_prefix(language) + json.dumps(expected_narration, ensure_ascii=False) + _PROSODY_SUFFIX
+    return _prepare(audio_bytes, api_key, system_instruction, prompt, json_schema,
+        AudioReviewPurpose.PROSODY, language, max_tokens, prompt_json=True,
+        allow_english=True, model=PREPAID_MODEL)
 
 
 def prepare_json_object_audio_prosody_request(audio_bytes, *, api_key, expected_narration,
@@ -542,7 +568,7 @@ class ObservedAudioRouterResult:
 def observe_audio_router_response(prepared, response):
     """Observe already-loaded actual HTTPX bytes; caller must bound streaming reads."""
     try:
-        _require(type(prepared) is PreparedAudioRouterRequest, _RESPONSE_ERROR)
+        _require(type(prepared) in (PreparedAudioRouterRequest, PreparedPrepaidAudioRequest), _RESPONSE_ERROR)
         _require(inspect_audio_router_request(ENDPOINT, prepared.wire_kwargs(), purpose=prepared.purpose)
                  == prepared, _RESPONSE_ERROR)
         wire_sha = _verify_wire(prepared, response.request)
@@ -597,7 +623,7 @@ def observe_audio_router_response(prepared, response):
         usage = _usage(payload['usage'], prepared.payload['max_tokens']) if 'usage' in payload else None
         evidence = {
             'version': 1, 'provider': 'abacus', 'endpoint': ENDPOINT, 'operation': OPERATION,
-            'purpose': prepared.purpose.value, 'requested_model': MODEL, 'returned_model': payload['model'],
+            'purpose': prepared.purpose.value, 'requested_model': prepared.model, 'returned_model': payload['model'],
             'underlying_model_verified': False, 'credential_sha256': prepared.credential_sha256,
             'request_sha256': prepared.request_sha256, 'wire_body_sha256': wire_sha,
             'response_body_sha256': _sha(raw), 'status_code': response.status_code,

@@ -9,6 +9,7 @@ import pytest
 from app.services import abacus_router_audio_adapter as audio, audio_qc
 from app.services import production_included_router as included, production_spend_runtime as runtime
 from app.services import production_included_transport as transport
+from app.services import production_prepaid_audio as prepaid
 from app.services.production_spend import SpendBlocked
 from test_production_included_router import commissioned, client, CONTEXT
 from test_abacus_router_adapter import KEY
@@ -45,10 +46,13 @@ def test_prompt_prosody_still_preserves_failed_verdict_original_rubric_and_schem
 
 @pytest.fixture
 def live(commissioned, monkeypatch):
-    ledger, _, _ = commissioned
+    route, policy, _ = commissioned
+    from prepaid_audio_test_support import audio_policy
+    ledger = prepaid.PrepaidAudioLedger(route.foundation)
+    ledger.initialize(audio_policy(policy, ledger.clock()))
     for name, value in {'studio_spend_enforcement': True, 'studio_abacus_included_production': True,
-                        'abacus_api_key': KEY}.items():
-        monkeypatch.setattr(runtime.settings, name, value)
+                        'studio_abacus_prepaid_audio': True, 'abacus_api_key': KEY}.items():
+        monkeypatch.setattr(runtime.settings, name, value, raising=False)
     monkeypatch.setattr(runtime, 'configured_ledger', lambda **kw: ledger.foundation)
     monkeypatch.setattr(runtime, 'resolve_context', lambda *a: deepcopy(CONTEXT))
     return ledger
@@ -78,7 +82,7 @@ def test_real_sender_once_then_reuses_observed_audio_from_durable_cache(live, mo
         assert included.generate_included_audio(mp3(), purpose='blind_asr', language='tr') == ASR
     assert len(calls) == 1
     sent = json.loads(calls[0].content)
-    assert 'response_format' not in sent and sent['model'] == 'route-llm'
+    assert 'response_format' not in sent and sent['model'] == 'gemini-2.5-flash'
     assert base64.b64decode(sent['messages'][1]['content'][0]['input_audio']['data']) == mp3()
     assert live.foundation.snapshot()['cash_spending_enabled'] is False
 
@@ -94,10 +98,10 @@ def test_http_failure_records_evidence_without_refund_fallback_or_second_send(li
     with pytest.raises(SpendBlocked, match='previous_outcome_unknown'):
         included.generate_included_audio(mp3(), purpose='blind_asr', language='tr')
     assert len(calls) == 1
-    journal = json.loads(live.client.get(included.JOURNAL_KEY))
+    journal = json.loads(live.client.get(prepaid.JOURNAL_KEY))
     identity, row = next(iter(journal['requests'].items()))
     assert row['outcome'] is None
-    key = included.PREFIX + 'failure:' + identity
+    key = prepaid.PREFIX + 'failure:' + identity
     failure = json.loads(live.client.get(key))
     assert live.client.pttl(key) == -1 and failure['http_status'] == status
     assert failure['retry_allowed'] is False and included._cipher().decrypt(failure['encrypted_response'].encode()) == body
@@ -107,7 +111,7 @@ def test_http_failure_records_evidence_without_refund_fallback_or_second_send(li
 def test_credential_echo_is_not_persisted_even_encrypted(live, monkeypatch):
     calls = mock_wire(monkeypatch, lambda req: httpx.Response(400, stream=httpx.ByteStream(KEY.encode())))
     with pytest.raises(SpendBlocked):included.generate_included_audio(mp3(), purpose='blind_asr', language='tr')
-    keys=list(live.client.scan_iter(match=included.PREFIX+'failure:*'))
+    keys=list(live.client.scan_iter(match=prepaid.PREFIX+'failure:*'))
     assert len(keys)==1 and json.loads(live.client.get(keys[0]))['encrypted_response'] is None
     assert len(calls)==1
 

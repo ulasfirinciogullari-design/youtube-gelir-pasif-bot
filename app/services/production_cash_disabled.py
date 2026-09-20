@@ -16,6 +16,7 @@ FIELD = 'cash_disabled_foundation'
 _FIELDS = {'policy', FIELD}
 _NATIVE_MODE = 'native_credit_policy:elevenlabs'
 _INCLUDED_MODE = 'included_router_policy'
+_PREPAID_AUDIO_MODE = 'prepaid_audio_policy'
 
 
 def _require(value, code='cash_disabled_foundation_invalid'):
@@ -76,7 +77,7 @@ def read(pipe, foundation, *, now):
             for name in ('channel_id', 'lineage_id', 'connection_id'):
                 _identifier(binding[name])
             continue
-        _require(key in _FIELDS or key in (_NATIVE_MODE, _INCLUDED_MODE)
+        _require(key in _FIELDS or key in (_NATIVE_MODE, _INCLUDED_MODE, _PREPAID_AUDIO_MODE)
             or type(key) is str and re.fullmatch(r'native_request:[0-9a-f]{64}', key) is not None,
             'cash_disabled_conflicting_accounting')
     return stored

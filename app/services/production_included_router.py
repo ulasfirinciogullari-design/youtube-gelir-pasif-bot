@@ -103,6 +103,10 @@ def validate_policy(policy, now):
 
 
 class IncludedRouterLedger:
+    prefix, state_key, journal_key, anchor_key = PREFIX, STATE_KEY, JOURNAL_KEY, ANCHOR_KEY
+    mode_field, purposes = MODE_FIELD, PURPOSES
+    validate_policy = staticmethod(validate_policy)
+
     def __init__(self, foundation):
         self.foundation, self.client, self.clock = foundation, foundation.client, foundation.clock
 
@@ -110,18 +114,18 @@ class IncludedRouterLedger:
         now = self.clock()
         from app.services.production_cash_disabled import read
         foundation = read(pipe, self.foundation, now=now)
-        pipe.watch(STATE_KEY, JOURNAL_KEY, ANCHOR_KEY)
-        _require(all(pipe.pttl(key) == -1 for key in (STATE_KEY, JOURNAL_KEY, ANCHOR_KEY)),
+        pipe.watch(self.state_key, self.journal_key, self.anchor_key)
+        _require(all(pipe.pttl(key) == -1 for key in (self.state_key, self.journal_key, self.anchor_key)),
                  'included_router_not_commissioned')
         try:
-            stored, journal = json.loads(pipe.get(STATE_KEY)), json.loads(pipe.get(JOURNAL_KEY))
+            stored, journal = json.loads(pipe.get(self.state_key)), json.loads(pipe.get(self.journal_key))
         except (TypeError, ValueError):
             raise SpendBlocked('included_router_records_invalid') from None
         _require(type(stored) is dict and set(stored) == {'policy', 'foundation_sha256'})
-        policy = validate_policy(stored['policy'], now)
+        policy = self.validate_policy(stored['policy'], now)
         _require(stored['foundation_sha256'] == _sha(foundation))
-        _require(pipe.hget(LEDGER_KEY, MODE_FIELD) == _sha(stored)
-            and pipe.get(ANCHOR_KEY) == _sha({'state': stored, 'journal': journal}),
+        _require(pipe.hget(LEDGER_KEY, self.mode_field) == _sha(stored)
+            and pipe.get(self.anchor_key) == _sha({'state': stored, 'journal': journal}),
             'included_router_history_changed')
         _require(type(journal) is dict and set(journal) == {'version', 'requests'}
             and type(journal['version']) is int and journal['version'] == 1
@@ -129,7 +133,7 @@ class IncludedRouterLedger:
         for key, row in journal['requests'].items():
             _require(_hash(key) and type(row) is dict and set(row) == {
                 'context', 'purpose', 'request_sha256', 'reserved_at', 'outcome'})
-            _require(row['purpose'] in PURPOSES and _hash(row['request_sha256']))
+            _require(row['purpose'] in self.purposes and _hash(row['request_sha256']))
             context = row['context']
             _require(type(context) is dict and set(context) == {'channel_id', 'connection_id', 'lineage_id', 'kind'}
                 and context['channel_id'] in policy['allowed_channels'] and context['kind'] == 'shorts'
@@ -165,24 +169,26 @@ class IncludedRouterLedger:
         used = sum(row['reserved_at'][:10] == day for row in journal['requests'].values())
         _require(type(minimum_requests) is int and minimum_requests > 0
             and used + minimum_requests <= policy['max_requests_per_day'], 'included_router_daily_limit')
+        _require(len(journal['requests']) + minimum_requests <= policy.get('max_requests_total', 7440),
+                 'included_router_period_limit')
         return {'policy_sha256': _sha(policy), 'day_requests_remaining': policy['max_requests_per_day'] - used}
 
     def initialize(self, policy):
-        policy = validate_policy(policy, self.clock())
+        policy = self.validate_policy(policy, self.clock())
         from app.services.production_cash_disabled import read
         try:
             with self.client.pipeline() as pipe:
                 foundation = read(pipe, self.foundation, now=self.clock())
-                pipe.watch(STATE_KEY, JOURNAL_KEY, ANCHOR_KEY)
-                _require(pipe.exists(STATE_KEY, JOURNAL_KEY, ANCHOR_KEY) == 0
-                    and not pipe.hexists(LEDGER_KEY, MODE_FIELD), 'included_router_already_commissioned')
+                pipe.watch(self.state_key, self.journal_key, self.anchor_key)
+                _require(pipe.exists(self.state_key, self.journal_key, self.anchor_key) == 0
+                    and not pipe.hexists(LEDGER_KEY, self.mode_field), 'included_router_already_commissioned')
                 state = {'policy': policy, 'foundation_sha256': _sha(foundation)}
                 journal = {'version': 1, 'requests': {}}
                 pipe.multi()
-                pipe.set(STATE_KEY, _raw(state), nx=True)
-                pipe.set(JOURNAL_KEY, _raw(journal), nx=True)
-                pipe.set(ANCHOR_KEY, _sha({'state': state, 'journal': journal}), nx=True)
-                pipe.hset(LEDGER_KEY, MODE_FIELD, _sha(state))
+                pipe.set(self.state_key, _raw(state), nx=True)
+                pipe.set(self.journal_key, _raw(journal), nx=True)
+                pipe.set(self.anchor_key, _sha({'state': state, 'journal': journal}), nx=True)
+                pipe.hset(LEDGER_KEY, self.mode_field, _sha(state))
                 self._ack(pipe, [True, True, True, 1])
         except SpendBlocked:
             raise
@@ -191,14 +197,15 @@ class IncludedRouterLedger:
 
     def reserve(self, context, purpose, prepared):
         from app.services.abacus_router_adapter import PreparedRouterRequest
-        from app.services.abacus_router_audio_adapter import PreparedAudioRouterRequest, AudioReviewPurpose
-        _require(type(prepared) in (PreparedRouterRequest, PreparedAudioRouterRequest),
+        from app.services.abacus_router_audio_adapter import PreparedAudioRouterRequest, PreparedPrepaidAudioRequest, AudioReviewPurpose
+        audio_types = (PreparedAudioRouterRequest, PreparedPrepaidAudioRequest)
+        _require(type(prepared) in (PreparedRouterRequest, *audio_types),
                  'included_router_request_invalid')
         audio_purposes = {'blind_asr': AudioReviewPurpose.BLIND_ASR, 'prosody': AudioReviewPurpose.PROSODY}
-        _require((type(prepared) is PreparedAudioRouterRequest and audio_purposes.get(purpose) is prepared.purpose)
+        _require((type(prepared) in audio_types and audio_purposes.get(purpose) is prepared.purpose)
             or (type(prepared) is PreparedRouterRequest and purpose not in audio_purposes),
             'included_router_purpose_invalid')
-        _require(purpose in PURPOSES, 'included_router_purpose_invalid')
+        _require(purpose in self.purposes, 'included_router_purpose_invalid')
         for attempt in range(8):
             try:
                 with self.client.pipeline() as pipe:
@@ -234,10 +241,12 @@ class IncludedRouterLedger:
                         < policy['max_requests_per_lineage'], 'included_router_episode_limit')
                     _require(sum(r['reserved_at'][:10] == day for r in rows) < policy['max_requests_per_day'],
                              'included_router_daily_limit')
+                    _require(len(journal['requests']) < policy.get('max_requests_total', 7440),
+                             'included_router_period_limit')
                     journal['requests'][identity] = {'context': deepcopy(context), 'purpose': purpose,
                         'request_sha256': prepared.request_sha256, 'reserved_at': _stamp(self.clock()), 'outcome': None}
-                    pipe.multi(); pipe.set(JOURNAL_KEY, _raw(journal))
-                    pipe.set(ANCHOR_KEY, _sha({'state': state, 'journal': journal}))
+                    pipe.multi(); pipe.set(self.journal_key, _raw(journal))
+                    pipe.set(self.anchor_key, _sha({'state': state, 'journal': journal}))
                     self._ack(pipe, [True, True])
                     return identity, None
             except WatchError as error:
@@ -251,9 +260,9 @@ class IncludedRouterLedger:
 
     def settle(self, identity, prepared, observed):
         from app.services.abacus_router_adapter import ObservedRouterResult, PreparedRouterRequest
-        from app.services.abacus_router_audio_adapter import ObservedAudioRouterResult, PreparedAudioRouterRequest
+        from app.services.abacus_router_audio_adapter import ObservedAudioRouterResult, PreparedAudioRouterRequest, PreparedPrepaidAudioRequest
         _require((type(prepared) is PreparedRouterRequest and type(observed) is ObservedRouterResult
-                  or type(prepared) is PreparedAudioRouterRequest and type(observed) is ObservedAudioRouterResult)
+                  or type(prepared) in (PreparedAudioRouterRequest, PreparedPrepaidAudioRequest) and type(observed) is ObservedAudioRouterResult)
             and observed.evidence['request_sha256'] == prepared.request_sha256
             and observed.evidence['credential_sha256'] == prepared.credential_sha256)
         # Store encrypted structured output only, never request contents or keys.
@@ -268,8 +277,8 @@ class IncludedRouterLedger:
                         and row['request_sha256'] == prepared.request_sha256)
                     row['outcome'] = {'observed_at': _stamp(self.clock()),
                         'evidence': observed.evidence, 'encrypted_result': encrypted}
-                    pipe.multi(); pipe.set(JOURNAL_KEY, _raw(journal))
-                    pipe.set(ANCHOR_KEY, _sha({'state': state, 'journal': journal}))
+                    pipe.multi(); pipe.set(self.journal_key, _raw(journal))
+                    pipe.set(self.anchor_key, _sha({'state': state, 'journal': journal}))
                     self._ack(pipe, [True, True])
                     return deepcopy(row['outcome'])
             except WatchError as error:
@@ -286,7 +295,7 @@ class IncludedRouterLedger:
     def record_failure(self, identity, prepared, response, error):
         """Supplemental encrypted evidence; never settles or releases a request."""
         import httpx
-        key = PREFIX + 'failure:' + identity
+        key = self.prefix + 'failure:' + identity
         evidence = {'version': 1, 'request_sha256': prepared.request_sha256,
             'credential_sha256': prepared.credential_sha256, 'observed_at': _stamp(self.clock()),
             'error_type': type(error).__name__, 'http_status': None, 'response_sha256': None,
@@ -327,8 +336,8 @@ def _result(prepared, outcome):
     _require(evidence['request_sha256'] == prepared.request_sha256
         and evidence['credential_sha256'] == prepared.credential_sha256)
     result = json.loads(_cipher().decrypt(outcome['encrypted_result'].encode('ascii')))
-    from app.services.abacus_router_audio_adapter import PreparedAudioRouterRequest, schema_for_request, _asr_timing, AudioReviewPurpose
-    is_audio = type(prepared) is PreparedAudioRouterRequest
+    from app.services.abacus_router_audio_adapter import PreparedAudioRouterRequest, PreparedPrepaidAudioRequest, schema_for_request, _asr_timing, AudioReviewPurpose
+    is_audio = type(prepared) in (PreparedAudioRouterRequest, PreparedPrepaidAudioRequest)
     schema = schema_for_request(prepared.payload, prepared.purpose) if is_audio else schema_for_body(prepared.payload)
     _require(hashlib.sha256(_canonical(result)).hexdigest() == evidence['parsed_result_sha256']
         and _matches_schema(result, schema) and _unique_items_match(result, schema) and _enum_match(result, schema))
@@ -357,7 +366,13 @@ def _generate(prepared, purpose, observer):
     _LAST_OBSERVED.set(None)
     foundation = runtime.configured_ledger()
     context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
-    ledger = IncludedRouterLedger(foundation)
+    from app.services.abacus_router_audio_adapter import PreparedPrepaidAudioRequest
+    if type(prepared) is PreparedPrepaidAudioRequest:
+        from app.services.production_prepaid_audio import PrepaidAudioLedger, enabled as prepaid_enabled
+        _require(prepaid_enabled(), 'prepaid_audio_not_enabled')
+        ledger = PrepaidAudioLedger(foundation)
+    else:
+        ledger = IncludedRouterLedger(foundation)
     identity, outcome = ledger.reserve(context, purpose, prepared)
     if outcome is None:
         from app.services.abacus_router_review_runtime import retained_router_review_active
@@ -415,10 +430,10 @@ def generate_included_audio(audio_bytes, *, purpose, language, expected_narratio
     from app.services import abacus_router_audio_adapter as audio, audio_qc
     if purpose == 'blind_asr':
         _require(expected_narration is None, 'included_blind_asr_text_forbidden')
-        prepared = audio.prepare_prompt_json_blind_asr_request(audio_bytes,
+        prepared = audio.prepare_prepaid_blind_asr_request(audio_bytes,
             api_key=settings.abacus_api_key, language=language)
     elif purpose == 'prosody':
-        prepared = audio.prepare_prompt_json_prosody_request(audio_bytes,
+        prepared = audio.prepare_prepaid_prosody_request(audio_bytes,
             api_key=settings.abacus_api_key, language=language, expected_narration=expected_narration,
             system_instruction=audio_qc._PROSODY_SYSTEM_INSTRUCTION.replace('Turkish', 'English')
                 if language == 'en' else audio_qc._PROSODY_SYSTEM_INSTRUCTION,
@@ -437,9 +452,13 @@ def preflight_production(channel_id, *, kind):
              'included_production_voice_not_enabled')
     foundation = runtime.configured_ledger(read_timeout=2)
     ledger = IncludedRouterLedger(foundation)
+    from app.services.production_prepaid_audio import PrepaidAudioLedger, enabled as prepaid_enabled
+    _require(prepaid_enabled(), 'included_production_audio_not_enabled')
+    audio_ledger = PrepaidAudioLedger(foundation)
     credits = CreditLedger(foundation.client, foundation=foundation, clock=foundation.clock)
     with foundation.client.pipeline() as pipe:
         capacity = ledger.check_capacity(pipe, channel_id, minimum_requests=8)
+        audio_ledger.check_capacity(pipe, channel_id, minimum_requests=4)
         credits._watch(pipe)
         policy, state, _, _ = credits._read(pipe, foundation.clock())
         from app.services.production_credit_funding import credit_funding_summary

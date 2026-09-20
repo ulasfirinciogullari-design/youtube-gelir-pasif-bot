@@ -35,6 +35,7 @@ def native(box, policy, monkeypatch):
     box.ledger.initialize_cash_disabled_unknown_history(evidence_sha256='a' * 64,
         additional_monthly_limit_micro=10_000_000)
     box.settings.studio_abacus_included_production = True
+    box.settings.studio_abacus_prepaid_audio = True
     box.settings.studio_elevenlabs_native_credits = True
     box.settings.abacus_api_key = KEY
     box.settings.app_encryption_key = 'synthetic encryption secret with at least 32 characters'
@@ -56,6 +57,10 @@ def native(box, policy, monkeypatch):
         'valid_from': included._stamp(NOW), 'valid_until': included._stamp(NOW + timedelta(days=1)),
         'automatic_purchase_enabled': False, 'new_cash_allowance_micro': 0, 'historical_cash_micro': None,
         'allowed_channels': [CHANNEL], 'max_requests_per_lineage': 20, 'max_requests_per_day': 40})
+    from app.services.production_prepaid_audio import PrepaidAudioLedger
+    from prepaid_audio_test_support import audio_policy
+    base_policy = json.loads(store.get(included.STATE_KEY))['policy']
+    PrepaidAudioLedger(box.ledger).initialize(audio_policy(base_policy, NOW))
     monkeypatch.setattr(sources, 'feed_candidates', lambda: [
         {'url': url, 'published_at': included._stamp(NOW)} for url in (URL1, URL2)])
     monkeypatch.setattr(sources, 'fetch_page', lambda url: {
