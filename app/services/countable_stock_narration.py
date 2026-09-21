@@ -3,6 +3,7 @@ from copy import deepcopy
 
 
 SLOTS = tuple(f'w{index:02d}' for index in range(1, 12))
+EMPTY_TAIL = tuple(f'w{index:02d}' for index in range(12, 16))
 RULE = (
     'COUNTABLE ENGLISH NARRATION: return narration_words instead of narration. '
     'Fill w01 through w11 in spoken order with exactly one useful word per '
@@ -37,7 +38,8 @@ def request_format(schema, shape):
     row = schema['properties']['scenes']['items']
     del row['properties']['narration']
     row['properties']['narration_words'] = {
-        'type': 'object', 'properties': {slot: {'type': 'string'} for slot in SLOTS},
+        'type': 'object', 'properties': {**{slot: {'type': 'string'} for slot in SLOTS},
+            **{slot: {'type': 'null'} for slot in EMPTY_TAIL}},
         'required': list(SLOTS), 'additionalProperties': False,
     }
     row['required'] = ['narration_words' if key == 'narration' else key for key in row['required']]
@@ -62,8 +64,13 @@ def decode(value):
         if type(row) is not dict or set(row) != {'position', 'narration_words', 'visual_queries', 'ai_prompt'}:
             raise ValueError('countable narration requires only the requested scene fields')
         words = row.pop('narration_words')
-        if type(words) is not dict or set(words) != set(SLOTS):
+        if (type(words) is not dict or not set(SLOTS) <= set(words)
+                or not set(words) <= set(SLOTS + EMPTY_TAIL)
+                or any(words[slot] is not None for slot in EMPTY_TAIL if slot in words)):
             raise ValueError('countable narration requires exactly w01 through w11')
+        # Some routed models echo unused slots from a wider word object. Null
+        # slots carry no narration: never discard an actual extra spoken word.
+        words = {slot: words[slot] for slot in SLOTS}
         if any(type(word) is not str or not 1 <= len(word) <= 80
                or not word.isprintable() or any(char.isspace() for char in word)
                or _word_count(word) != 1 for word in words.values()):

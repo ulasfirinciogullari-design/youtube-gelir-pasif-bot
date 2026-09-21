@@ -2794,9 +2794,37 @@ def verify_audio_narration(
             _checkpoint_provider_evidence(response, provider='openai', model='whisper-1',
                 language=normalized_language, secret=api_key, sink=provider_evidence_sink)
             payload = _response_payload(response, 'OpenAI')
-            return _require_word_timing_evidence(compare_transcript(expected_narration, payload['text'],
+            primary = _require_word_timing_evidence(compare_transcript(expected_narration, payload['text'],
                 words=payload['words'], language_code=payload['language'], provider='openai',
                 comparison_language=normalized_language), 'OpenAI')
+            if primary['pass'] is True:
+                return primary
+            # A blind second recognizer distinguishes a synthesis defect from
+            # one recognizer's spelling error before buying another voice take.
+            # It receives only the exact audio and language, never this script.
+            from app.services.commissioning_scribe import transcribe_if_commissioned as independent_transcription
+            try:
+                secondary_key = str(getattr(settings, 'elevenlabs_api_key', '') or '')
+                secondary = independent_transcription(audio_path, api_key=secondary_key, language=normalized_language)
+                if secondary is None:
+                    return primary
+                _checkpoint_provider_evidence(secondary, provider='elevenlabs', model='scribe_v2',
+                    language=normalized_language, secret=secondary_key, sink=provider_evidence_sink)
+                second_payload = _response_payload(secondary, 'ElevenLabs')
+                review = _require_word_timing_evidence(compare_transcript(expected_narration, second_payload['text'],
+                    words=second_payload['words'], language_code=second_payload.get('language_code'),
+                    language_probability=second_payload.get('language_probability'), provider='elevenlabs',
+                    comparison_language=normalized_language), 'ElevenLabs')
+                review['independent_recognizer'] = True
+                review['primary_recognizer'] = {key: primary[key] for key in ('provider', 'pass', 'score', 'transcript')}
+                if review['pass'] is True:
+                    return review
+                primary['independent_recognizer_result'] = {key: review[key] for key in ('provider', 'pass', 'score', 'transcript')}
+            except Exception:
+                # An unavailable/unknown secondary cannot waive the original
+                # rejection. Its permanent request reservation remains spent.
+                primary['independent_recognizer_unavailable'] = True
+            return primary
         output = generate_included_audio(read_original_mp3(audio_path), purpose='blind_asr',
             language=normalized_language)
         return _require_word_timing_evidence(compare_transcript(expected_narration, output['text'],

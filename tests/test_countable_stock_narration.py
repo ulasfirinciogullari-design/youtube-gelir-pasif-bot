@@ -68,6 +68,21 @@ def test_optional_title_metadata_never_changes_package_content_or_raw_response()
     assert value == before and 'title' not in words.decode(value)
 
 
+def test_observed_null_tail_contains_no_extra_speech_and_preserves_every_authored_word():
+    value = encoded(package()); original = deepcopy(value)
+    value['scenes'][4]['narration_words'].update(w12=None, w13=None, w14=None, w15=None)
+    before = deepcopy(value)
+    assert words.decode(value) == words.decode(original)
+    assert value == before
+    schema, _ = words.request_format(director._stock_writer_json_schema(list(range(6))),
+        {'scenes': [{'position': 0, 'narration': 'example', 'visual_queries': [], 'ai_prompt': None}]})
+    from app.services.abacus_router_adapter import _matches_schema
+    assert _matches_schema(value, schema)
+    for field, content in [('w12', 'extra'), ('w12', False), ('w16', None)]:
+        changed = deepcopy(value); changed['scenes'][4]['narration_words'][field] = content
+        with pytest.raises(ValueError): words.decode(changed)
+
+
 @pytest.mark.parametrize('extra', [{'title': ''}, {'title': 1}, {'title': 'x' * 181},
     {'title': 'bad\x00title'}, {'qa_approved': True}, {'publish_eligible': True}])
 def test_only_bounded_unused_title_metadata_is_accepted(extra):

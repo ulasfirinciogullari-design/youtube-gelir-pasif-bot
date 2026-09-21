@@ -162,8 +162,13 @@ def _media_duration(path: str | Path) -> float:
     return float(out)
 
 
-def _voice_speed(target_seconds: float | None = None) -> float:
-    """Use ElevenLabs' natural speed for short Turkish previews."""
+def _voice_speed(target_seconds: float | None = None, *, language: str | None = None) -> float:
+    """Calibrate English Short delivery at synthesis, before measured fitting."""
+    if target_seconds and 0 < target_seconds <= 40 and str(language or '').lower() == 'en':
+        # The selected voice's observed 66-word take needed 1.192x post-process
+        # tempo at its default rate. A native 1.10 delivery leaves modest fitting
+        # headroom; actual transcript, duration and prosody gates still decide.
+        return 1.10
     return 1.0 if target_seconds and target_seconds <= 40 else 1.01
 
 
@@ -926,7 +931,7 @@ def synthesize_scene_sequence(
 
     work = Path('/tmp') / f'{job_id}_voice'
     work.mkdir(parents=True, exist_ok=True)
-    selected_speed = _voice_speed(target_seconds)
+    selected_speed = _voice_speed(target_seconds, language=language)
     raw_output = work / 'joined.mp3'
     removed_silence_seconds = 0.0
     compacted_boundary_pause_count = 0

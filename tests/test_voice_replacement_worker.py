@@ -156,7 +156,7 @@ def voice_sequence(tmp_path):
     namespace = dict(Path=mapped_path, VoiceScriptFitError=ScriptError,
         _selected_voice_or_raise=Mock(return_value={'voice_id': 'selected', 'name': 'Existing selected voice'}),
         _use_turkish_short_preview_profile=lambda language, seconds: language == 'tr' and seconds <= 40,
-        normalize_turkish_tts=lambda text, **_kwargs: text, _voice_speed=lambda _: 1.0,
+        normalize_turkish_tts=lambda text, **_kwargs: text, _voice_speed=lambda _, **kw: 1.0,
         _join_scene_narration=lambda spoken: (' '.join(spoken), [(0, 7)]),
         _deterministic_scene_seed=lambda *_args: 123,
         synthesize_voice_with_timestamps=provider, _media_duration=lambda _: 29.5,
