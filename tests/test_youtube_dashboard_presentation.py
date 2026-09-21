@@ -70,6 +70,7 @@ def dashboard():
         'list_channel_profiles': lambda: [], 'automated_quality_approved': shared._job_quality_approved,
         'connection_status': Mock(side_effect=lambda: {'configured': True, 'connections': deepcopy(channels), 'connection_count': len(channels)}),
         'STATE_TTL_SECONDS': 600, 'YouTubeAuthError': RuntimeError,
+        'OAuthStateError': type('OAuthStateError', (RuntimeError,), {}),
         'YouTubeAutomationError': RuntimeError, 'ProfileConflictError': RuntimeError,
         'UploadReservationError': RuntimeError,
         'create_job': forbidden, 'mark_failure': forbidden, 'save_channel_profile': forbidden,

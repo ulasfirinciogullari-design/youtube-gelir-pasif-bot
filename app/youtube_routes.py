@@ -21,6 +21,7 @@ from app.services.studio_state import (
 )
 from app.services.youtube_auth import (
     STATE_TTL_SECONDS,
+    OAuthStateError,
     YouTubeAuthError,
     build_authorization_url,
     complete_authorization,
@@ -837,8 +838,14 @@ def youtube_oauth_callback(
                 + '">Kanallara dön</a></div>',
                 status_code=400,
             ))
+        detail = ('Bağlantı oturumu sona ermiş veya başka bir bağlantı işlemiyle değişmiş. '
+            'İlgili sayfadan bağlantıyı yeniden başlat.' if isinstance(exc, OAuthStateError) else
+            'Google izni kaydedilemedi. Mevcut kanal bağlantın korunuyor. '
+            'Bağlantıyı yeniden başlatıp istenen izinleri işaretle; sorun sürerse bize bildir.')
         return _delete_oauth_binding_cookie(_shell(
-            '<div class="hero"><h1>Bağlantı kurulamadı</h1></div><div class="notice">OAuth yanıtı geçersiz, süresi dolmuş veya daha önce kullanılmış. Güvenli bağlantıyı yeniden başlat.</div><div class="actions"><a class="btn secondary" href="/studio/youtube">Geri dön</a></div>',
+            '<div class="hero"><h1>Bağlantı kurulamadı</h1></div><div class="notice">' + detail
+            + '</div><div class="actions"><a class="btn secondary" href="/studio/analytics">Performansa dön</a>'
+            '<a class="btn secondary" href="/studio/youtube">Kanallara dön</a></div>',
             status_code=400,
         ))
 

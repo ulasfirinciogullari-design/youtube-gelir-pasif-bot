@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 import hmac
 import json
+import logging
 import re
 import secrets
 from typing import Any
@@ -806,8 +807,11 @@ def complete_authorization(
     )
     flow.redirect_uri = state_payload['redirect_uri']
     try:
-        flow.fetch_token(code=code)
+        from app.services.google_oauth_scopes import fetch_google_token
+        fetch_google_token(flow, code=code, required_scopes=requested_scopes)
     except Exception as exc:
+        # Never log exception text: OAuth libraries can include token bodies.
+        logging.getLogger(__name__).warning('Google token exchange failed (%s)', type(exc).__name__)
         raise YouTubeAuthError('Google authorization exchange failed') from exc
     credentials = flow.credentials
     if not credentials or not credentials.refresh_token:

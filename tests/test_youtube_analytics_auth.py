@@ -153,3 +153,34 @@ def test_analytics_callback_links_to_performance_and_clears_browser_cookie(dashb
     assert '/studio/analytics' in response.text and 'secret-code' not in response.text
     assert response.headers['Referrer-Policy'] == 'no-referrer'
     assert 'Max-Age=0' in response.headers['set-cookie']
+
+
+def test_real_incremental_token_parser_completes_analytics_without_changing_uploads(flow, monkeypatch):
+    from test_google_oauth_scopes import offline_flow
+    original = auth.Flow
+    senders = []
+    class RealTokenFlow(original):
+        def fetch_token(self, **kwargs):
+            actual, sender = offline_flow(monkeypatch, self.scopes, sorted(set(auth.SCOPES + access.SCOPES)))
+            self.oauth2session = actual.oauth2session
+            senders.append(sender)
+            return actual.fetch_token(**kwargs)
+    monkeypatch.setattr(auth, 'Flow', RealTokenFlow)
+    before = core(flow)
+    state, _ = begin(flow)
+    assert auth.complete_authorization('offline-code', state, BINDING)['analytics_connected'] is True
+    assert core(flow) == before
+    assert len(senders) == 1 and senders[0].call_count == 1
+    assert flow.client.get(access.PREFIX + CHANNEL)
+
+
+@pytest.mark.parametrize('state_error', [False, True])
+def test_callback_error_distinguishes_session_failure_from_exchange_failure(dashboard, state_error):
+    dashboard.ns['OAuthStateError'] = auth.OAuthStateError
+    error = auth.OAuthStateError('sensitive-state') if state_error else auth.YouTubeAuthError('sensitive-token')
+    dashboard.ns['complete_authorization'] = Mock(side_effect=error)
+    response = dashboard.client.get('/studio/youtube/callback?state=synthetic&code=secret-code')
+    assert response.status_code == 400 and 'sensitive-' not in response.text and 'secret-code' not in response.text
+    assert ('oturumu sona ermiş' in response.text) == state_error
+    assert ('Google izni kaydedilemedi' in response.text) == (not state_error)
+    assert '/studio/analytics' in response.text

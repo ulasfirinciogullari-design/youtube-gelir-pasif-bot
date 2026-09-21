@@ -73,7 +73,7 @@ def test_reconnect_target_is_encrypted_and_only_matching_channel_is_replaced(rec
     assert reconnect.client.smembers(auth.CHANNEL_INDEX_KEY) == {CHANNEL, OTHER_CHANNEL}
     with pytest.raises(auth.OAuthStateError):
         auth.complete_authorization('synthetic-code', state, BINDING)
-    reconnect.fetched.assert_called_once_with(code='synthetic-code')
+    reconnect.fetched.assert_called_once_with(code='synthetic-code', timeout=20)
 
 
 @pytest.mark.parametrize('selected', [OTHER_CHANNEL, 'UCikkzCmN1ggb0Ag7eS9HDLA'])
@@ -93,7 +93,7 @@ def test_wrong_channel_never_adds_or_overwrites_connection_and_callback_cannot_r
     assert reconnect.client.sets == before_members
     with pytest.raises(auth.OAuthStateError):
         auth.complete_authorization('synthetic-code', state, BINDING)
-    reconnect.fetched.assert_called_once_with(code='synthetic-code')
+    reconnect.fetched.assert_called_once_with(code='synthetic-code', timeout=20)
 
 
 @pytest.mark.parametrize('target', [None, '', 123, '../different-channel', 'not a channel'])

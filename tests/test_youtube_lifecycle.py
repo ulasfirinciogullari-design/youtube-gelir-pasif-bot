@@ -352,7 +352,8 @@ def test_oauth_state_is_encrypted_one_use_and_channel_is_verified(monkeypatch):
             }
             return f'https://accounts.google.test/auth?state={self.state}', self.state
 
-        def fetch_token(self, *, code):
+        def fetch_token(self, *, code, timeout):
+            assert timeout == 20
             self.fetched_code = code
 
     channel_calls = []
@@ -552,7 +553,8 @@ def test_new_connect_and_disconnect_invalidate_stale_oauth_callbacks(monkeypatch
         def authorization_url(self, **_kwargs):
             return f'https://accounts.google.test/auth?state={self.state}', self.state
 
-        def fetch_token(self, *, code):
+        def fetch_token(self, *, code, timeout):
+            assert timeout == 20
             assert code == 'authorization-code'
 
     monkeypatch.setattr(youtube_auth, 'Flow', Flow)
