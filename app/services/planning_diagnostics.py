@@ -86,7 +86,9 @@ def _diagnostics(message, scenes, sources, review, *, candidate_kind):
 
 
 def story_planning_error(message, *, scenes, sources=(), review=None):
-    error = RuntimeError(message)
+    from app.services.production_failures import ProductionContentError
+
+    error = ProductionContentError(message)
     candidate_kind = ('rejected_critic_candidate' if isinstance(review, dict)
                       and ('story_review' in review or {'factual_audit', 'editorial_review'} <= set(review))
                       else 'rejected_planning_candidate_not_critic_reviewed')

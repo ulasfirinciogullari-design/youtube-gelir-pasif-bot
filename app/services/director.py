@@ -6,6 +6,7 @@ from copy import deepcopy
 from contextvars import ContextVar
 from dataclasses import dataclass
 from openai import OpenAI
+from app.services.production_failures import ProductionContentError
 from app.config import settings
 from app.services.production_spend_runtime import paid_response
 from app.services.gemini_critic import (
@@ -3756,7 +3757,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 for issue in short_editorial_issues[:12]
             ],
         }
-        raise RuntimeError(
+        raise ProductionContentError(
             'Short-preview editorial gate rejected narration before paid media: '
             + json.dumps(
                 failure_details,
@@ -3766,7 +3767,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         )
 
     if exact_scene_count and scene_count != target_scenes:
-        raise RuntimeError(
+        raise ProductionContentError(
             'User-brief scene-count gate rejected final director edit before '
             f'paid media: {scene_count} scenes; required exactly {target_scenes}'
         )
@@ -3897,7 +3898,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                     preview_ai_limit=preview_ai_limit,
                     short_editorial_issues=short_editorial_issues,
                 )
-                raise RuntimeError(
+                raise ProductionContentError(
                     'Whole-story critic repair violated a deterministic '
                     'short-preview gate before paid media: '
                     + json.dumps(
@@ -3927,7 +3928,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         ai_scene_count = sum(1 for scene in out['scenes'] if scene.get('ai_prompt'))
         short_editorial_issues = short_preview_issues(out)
         if short_editorial_issues:
-            raise RuntimeError(
+            raise ProductionContentError(
                 'Short-preview stock repair reintroduced unsafe narration: '
                 + json.dumps(
                     {
@@ -3942,7 +3943,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             )
 
     if words < min_words or words > max_words:
-        raise RuntimeError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
+        raise ProductionContentError(f'Duration gate rejected script: {words} words for requested {duration_minutes} min (target {min_words}-{max_words})')
     if not _scene_count_matches(
         scene_count,
         target_scenes,
@@ -3953,7 +3954,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             if exact_scene_count
             else f'target {target_scenes}'
         )
-        raise RuntimeError(
+        raise ProductionContentError(
             f'Scene-count gate rejected final edit: {scene_count} scenes; '
             + requirement
         )
@@ -3969,7 +3970,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     out['max_ai_scene_count'] = preview_ai_limit
     out['studio_options'] = options
     if getattr(settings, 'studio_abacus_included_production', False) is True and ai_scene_count:
-        raise RuntimeError('Included production requires genuinely available stock footage for every scene')
+        raise ProductionContentError('Included production requires genuinely available stock footage for every scene')
     if short_story_qc_required:
         stock_qc = out.get('stock_scene_qc') or {}
         story_review = stock_qc.get('story_review') or {}
@@ -3979,7 +3980,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
             or story_review.get('accepted') is not True
             or ending_review.get('accepted') is not True
         ):
-            raise RuntimeError(
+            raise ProductionContentError(
                 'Short-preview QC attestation is missing before paid media'
             )
         out['short_story_qc'] = {

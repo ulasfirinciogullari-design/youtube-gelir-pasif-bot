@@ -11,6 +11,7 @@ import time
 from concurrent.futures import as_completed
 from app.services.abacus_generation import AbacusGenerationError
 from app.services.production_spend import SpendBlocked
+from app.services.production_failures import ProductionContentError
 from app.services.production_spend_runtime import (
     SpendingThreadPoolExecutor as ThreadPoolExecutor, spending_task,
     prepare_video_scene_budget, spending_scene,
@@ -1424,10 +1425,12 @@ def _validate_paid_create_allocation(
             else sum(not bool(retained.get(int(row['scene_index']))) for row in selected_candidates)
         )
         if new_creates:
-            raise FinalVisualQualityError(
+            from app.services.production_failures import content_rejection
+
+            raise content_rejection(FinalVisualQualityError(
                 'Included production stock quality remains unresolved after bounded stock rescue; '
                 'new video generation is unavailable'
-            )
+            ), 'visual_quality_exhausted')
     if cap is None:
         return
     if recovered_generated_media and recovered_generated_media.get('version') == 6:
@@ -2014,6 +2017,9 @@ def _synthesize_voice_candidate(
     voice_replacement_request: dict | None = None,
 ) -> dict:
     """Use bounded new seeds for synthesis defects without rerunning the job."""
+    from app.services.abacus_generation import AbacusGenerationError
+    from app.services.production_spend import SpendBlocked
+
     replacement_options = {}
     maximum_attempts = MAX_AUDIO_GENERATION_ATTEMPTS
     if voice_replacement_request is not None:
@@ -2043,6 +2049,7 @@ def _synthesize_voice_candidate(
         }
         maximum_attempts = 1
     quality_errors: list[dict] = []
+    voice_transport_failed = False
     for generation_attempt in range(
         max(0, int(start_attempt)),
         maximum_attempts,
@@ -2062,7 +2069,9 @@ def _synthesize_voice_candidate(
                 **replacement_options,
             )
         except VoiceScriptFitError as exc:
-            raise FinalAudioQualityError(
+            from app.services.production_failures import content_rejection
+
+            raise content_rejection(FinalAudioQualityError(
                 'Voice script duration rejected before paid media: '
                 + json.dumps(
                     {
@@ -2072,7 +2081,7 @@ def _synthesize_voice_candidate(
                     ensure_ascii=False,
                     separators=(',', ':'),
                 )
-            ) from None
+            ), 'audio_quality_exhausted') from None
         except VoiceQualityError as exc:
             quality_errors.append({
                 'generation_attempt': generation_attempt,
@@ -2087,6 +2096,7 @@ def _synthesize_voice_candidate(
             )
             retryable = is_transient_voice_http_error(exc)
             if retryable:
+                voice_transport_failed = True
                 quality_errors.append({
                     'generation_attempt': generation_attempt,
                     'reason': (
@@ -2118,6 +2128,10 @@ def _synthesize_voice_candidate(
                     separators=(',', ':'),
                 )
             ) from None
+        except (SpendBlocked, AbacusGenerationError):
+            # An account or credit refusal is not a synthesis-quality defect.
+            # Keep its stable code and original no-replay semantics.
+            raise
         except Exception as exc:
             raise FinalAudioQualityError(
                 'Voice synthesis failed safely before paid media: '
@@ -2135,7 +2149,9 @@ def _synthesize_voice_candidate(
             '_generation_attempts_used': generation_attempt + 1,
             '_synthesis_quality_errors': quality_errors,
         }
-    raise FinalAudioQualityError(
+    from app.services.production_failures import content_rejection
+
+    raise content_rejection(FinalAudioQualityError(
         'Voice synthesis quality rejected before paid media: '
         + json.dumps(
             {
@@ -2145,7 +2161,7 @@ def _synthesize_voice_candidate(
             ensure_ascii=False,
             separators=(',', ':'),
         )
-    )
+    ), 'audio_review_unverified' if voice_transport_failed else 'audio_quality_exhausted')
 
 
 def _audio_provider_evidence_sink(task_id: str, audio_path: str | Path):
@@ -4701,6 +4717,7 @@ def _repair_voice_internal_pauses(voice_result: dict, target_seconds: float,
     bind=True,
     autoretry_for=(Exception,),
     dont_autoretry_for=(
+        ProductionContentError,
         ImmutableNarrationSceneBudgetError,
         UnsupportedLanguageError,
         SpendBlocked,
@@ -4747,7 +4764,7 @@ def plan_video_pipeline(
             # Every non-retryable planning error must also finish the stored
             # job; Celery will not deliver the advertised plan_retry stage.
             not isinstance(exc, (
-                ImmutableNarrationSceneBudgetError, UnsupportedLanguageError, SpendBlocked,
+                ProductionContentError, ImmutableNarrationSceneBudgetError, UnsupportedLanguageError, SpendBlocked,
                 AbacusGenerationError,
             ))
             and int(getattr(self.request, 'retries', 0) or 0)
@@ -4774,6 +4791,7 @@ def plan_video_pipeline(
     acks_late=False,
     autoretry_for=(Exception,),
     dont_autoretry_for=(
+        ProductionContentError,
         FinalVisualQualityError,
         FinalAudioQualityError,
         GeminiOmniContinuityReferenceError,
@@ -5304,6 +5322,8 @@ def run_video_pipeline(
                 )
             )
             if not can_regenerate:
+                from app.services.production_failures import content_rejection
+
                 try:
                     update_job(task_id, audio_qc_failure_evidence=_audio_qc_failure_evidence(
                         audio_qc_retry_history,
@@ -5311,7 +5331,7 @@ def run_video_pipeline(
                 except Exception:
                     # Diagnostic persistence must never mask or relax rejection.
                     pass
-                raise FinalAudioQualityError(
+                raise content_rejection(FinalAudioQualityError(
                     'Audio narration QA rejected before paid media: '
                     + json.dumps(
                         {
@@ -5369,7 +5389,10 @@ def run_video_pipeline(
                         ensure_ascii=False,
                         separators=(',', ':'),
                     )
-                )
+                ), 'audio_quality_exhausted' if any(
+                    gate.get('available') is True and gate.get('pass') is False
+                    for gate in (audio_qc, audio_duration_qc, audio_prosody_qc)
+                ) else 'audio_review_unverified')
             set_stage(
                 self,
                 task_id,
@@ -7554,10 +7577,12 @@ def run_video_pipeline(
                 options=options, audio_qc=audio_qc,
                 audio_duration_qc=audio_duration_qc, audio_prosody_qc=audio_prosody_qc,
             )
-            raise FinalVisualQualityError(
+            from app.services.production_failures import content_rejection
+
+            raise content_rejection(FinalVisualQualityError(
                 'Final visual quality gate rejected: '
                 + json.dumps(diagnostics, ensure_ascii=False, separators=(',', ':'))
-            )
+            ), 'visual_quality_exhausted')
 
         unresolved_scenes = [idx for idx, specs in enumerate(scene_visuals) if not any(_visual_path(s) for s in specs)]
         if unresolved_scenes:
@@ -7740,7 +7765,7 @@ def run_video_pipeline(
         else:
             duration_ok = requested_seconds * 0.70 <= actual_seconds <= requested_seconds * 1.22
         if not duration_ok:
-            raise RuntimeError(f'Final duration gate rejected render: {actual_seconds:.1f}s for requested {requested_seconds:.1f}s')
+            raise ProductionContentError(f'Final duration gate rejected render: {actual_seconds:.1f}s for requested {requested_seconds:.1f}s', code='render_quality_exhausted')
 
         if strict_short_preview_duration or (
             options.get('mode') == 'production'
@@ -7753,27 +7778,30 @@ def run_video_pipeline(
                 voice_result.get('duration_after_fit'),
             )
             if final_render_qc.get('reason') == 'final_frame_count_mismatch':
-                raise RuntimeError(
+                raise ProductionContentError(
                     'Final frame gate rejected render: '
                     f"{final_render_qc.get('actual_frames')} frames, expected "
-                    f"{final_render_qc.get('expected_frames')}"
+                    f"{final_render_qc.get('expected_frames')}",
+                    code='render_quality_exhausted',
                 )
             if final_render_qc.get('pass') is not True:
-                raise RuntimeError(
+                raise ProductionContentError(
                     'Final breathing-room gate rejected render: '
                     + json.dumps(
                         final_render_qc,
                         ensure_ascii=False,
                         separators=(',', ':'),
-                    )
+                    ),
+                    code='render_quality_exhausted',
                 )
 
         max_freeze_seconds = float(rendered.get('max_freeze_seconds') or 0)
         freeze_limit = 5.0 if options.get('mode') == 'preview' else 6.0
         if max_freeze_seconds > freeze_limit:
-            raise RuntimeError(
+            raise ProductionContentError(
                 f'Final motion gate rejected {max_freeze_seconds:.1f}s static interval '
-                f'(limit {freeze_limit:.1f}s)'
+                f'(limit {freeze_limit:.1f}s)',
+                code='render_quality_exhausted',
             )
 
         thumbnail_fields = _persist_final_thumbnail(
@@ -8070,6 +8098,7 @@ def run_video_pipeline(
         terminal_pre_media_error = isinstance(
             exc,
             (
+                ProductionContentError,
                 FinalVisualQualityError,
                 FinalAudioQualityError,
                 GeminiOmniContinuityReferenceError,

@@ -43,6 +43,43 @@ def test_uncommissioned_tick_cannot_clear_a_pause_or_initialize_a_policy(ready):
     assert _all(n.client) == before
 
 
+@pytest.mark.parametrize('code,stage,reason', [
+    ('story_quality_exhausted', 'director_qc', 'story_rejected'),
+    ('audio_quality_exhausted', 'audio_pause_recheck', 'audio_rejected'),
+    ('audio_review_unverified', 'audio_qc_retry', 'review_unverified'),
+    ('visual_quality_exhausted', 'final_visual_qc_rescue', 'stock_rejected'),
+    ('render_quality_exhausted', 'render', 'render_rejected'),
+])
+def test_terminal_worker_contract_releases_only_schedule_and_retains_exact_failure(ready, monkeypatch, code, stage, reason):
+    from app.services.production_failures import content_rejection
+
+    n = ready; commission(n)
+    monkeypatch.setattr(jobs, '_client', lambda: n.client)
+    job = deepcopy(n.job)
+    job.update(state='PROGRESS', stage=stage, failure_stage=stage)
+    _write(n.client, jobs.JOB_PREFIX + SOURCE, job)
+    failure = content_rejection(RuntimeError('Previously unseen quality rejection wording.'), code)
+    persisted = jobs.mark_failure(SOURCE, failure)
+    assert persisted['failure_classification']['code'] == code
+    # A later Celery string-only status sync cannot erase this worker evidence.
+    assert jobs.mark_failure(SOURCE, str(failure))['failure_classification'] == persisted['failure_classification']
+    before = _all(n.client)
+    result = holds.hold_failed_episode(n.profile)
+    after = _all(n.client)
+    assert result['status'] == 'held_unpublished' and result['reason'] == reason
+    record = json.loads(n.client.get(holds.HOLD_PREFIX + SOURCE))
+    assert record['publish_eligible'] is False and record['retry_dispatched'] is False
+    assert record['retained_candidates']['audio_candidate_checkpoint'] == n.job['audio_candidate_checkpoint']
+    assert record['lineage'][0]['job_sha256'] == holds._sha(n.client.get(jobs.JOB_PREFIX + SOURCE))
+    mutable = {n.state_key, holds.HOLD_PREFIX + SOURCE, n.day_key, holds.HISTORY_KEY,
+               holds.HISTORY_ANCHOR, jobs.QUALITY_HOLD_JOB_FENCE_PREFIX + SOURCE}
+    assert {k:v for k,v in after.items() if k not in mutable} == {k:v for k,v in before.items() if k not in mutable}
+    expected = dict(before[n.state_key][1]); expected.pop('paused_reason'); expected['quality_hold_task_id'] = SOURCE
+    assert n.client.hgetall(n.state_key) == expected and not n.case.calls
+    assert holds.hold_failed_episode(n.profile)['status'] == 'not_quality_paused'
+    assert _all(n.client) == after
+
+
 def test_hold_preserves_budget_unknown_requests_audio_job_cadence_and_consumed_cursor(ready):
     n = ready; commission(n); before = _all(n.client)
     assert holds.hold_failed_episode(n.profile, dry_run=True)['status'] == 'eligible_no_writes'

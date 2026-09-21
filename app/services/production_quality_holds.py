@@ -132,6 +132,12 @@ def _history(pipe):
 
 def _reason(job):
     """Identify a terminal editorial/media failure, never a delivery failure."""
+    if 'failure_classification' in job:
+        from app.services.production_failures import classified_hold_reason
+
+        return classified_hold_reason(job)
+    # Legacy records remain byte-for-byte unchanged. Their old strict adapter
+    # is only for records created before workers wrote a failure contract.
     stage, error = job.get('failure_stage'), job.get('error')
     if type(error) is not str:
         return None

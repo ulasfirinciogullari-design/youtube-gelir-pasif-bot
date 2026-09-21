@@ -824,7 +824,7 @@ class RunwayPromptTests(unittest.TestCase):
         )
         prosody_gate = source.index('audio_prosody_qc = verify_audio_prosody(')
         audio_rejection = source.index(
-            'raise FinalAudioQualityError(',
+            'raise content_rejection(FinalAudioQualityError(',
             audio_gate,
         )
         initial_runway_loop = source.index(

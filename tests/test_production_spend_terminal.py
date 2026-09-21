@@ -16,6 +16,7 @@ import pytest
 from app.services import studio_state
 from app.services.abacus_generation import AbacusConfigurationError, AbacusGenerationError
 from app.services.production_spend import LEDGER_KEY, SpendBlocked
+from app.services.production_failures import ProductionContentError
 from test_channel_production import production, _parallel_channels
 
 
@@ -31,6 +32,7 @@ ERRORS = {
 }
 ERRORS['SpendBlocked'] = SpendBlocked
 ERRORS['AbacusGenerationError'] = AbacusGenerationError
+ERRORS['ProductionContentError'] = ProductionContentError
 
 
 def _worker(pipeline, task_id, error, *, attempts=0, options=None, **overrides):
@@ -162,6 +164,21 @@ def test_ordinary_pre_media_retry_contract_is_preserved(registry, pipeline, retr
         assert stage.call_count == retries
         assert all(call.args[2] == 'plan_retry' for call in stage.call_args_list)
         mark.assert_called_once()
+    finally:
+        app.close()
+
+
+@pytest.mark.parametrize('pipeline', ['plan_video_pipeline', 'run_video_pipeline'])
+def test_exhausted_story_correction_is_recorded_once_instead_of_rebuilding_from_research(registry, pipeline):
+    error = ProductionContentError('All bounded whole-story corrections failed.')
+    app, task, fail, mark, stage = _worker(pipeline, TASK_ID, error)
+    try:
+        assert task.apply(task_id=TASK_ID, throw=False).state == 'FAILURE'
+        fail.assert_called_once()
+        mark.assert_called_once_with(TASK_ID, error)
+        stage.assert_not_called()
+        job = studio_state.get_job(TASK_ID)
+        assert job['failure_classification']['code'] == 'story_quality_exhausted'
     finally:
         app.close()
 

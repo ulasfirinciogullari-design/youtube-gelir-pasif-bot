@@ -1,0 +1,104 @@
+"""Worker failure contracts, independent of human-facing exception wording.
+
+A classification is evidence about a failed attempt, never permission to retry,
+spend or publish. The schedule still requires its complete unpublished lineage,
+funding policy and daily hold allowance before consuming a content failure.
+"""
+from dataclasses import dataclass
+import hashlib
+
+
+_STORY_STAGES = frozenset({'research', 'director_qc'})
+_AUDIO_STAGES = frozenset({'voice_and_visuals', 'audio_qc', 'audio_qc_retry', 'audio_pause_recheck'})
+_VISUAL_STAGES = frozenset({'visual_qc', 'ai_scene', 'ai_scene_generation',
+    'pre_runway_budget_rescue', 'pre_runway_stock_tournament_2',
+    'final_visual_qc', 'final_visual_qc_rescue'})
+_REVIEW_STAGES = _STORY_STAGES | _AUDIO_STAGES | _VISUAL_STAGES
+_CONTENT_CODES = {
+    'story_quality_exhausted': ('story_rejected', _STORY_STAGES),
+    'audio_quality_exhausted': ('audio_rejected', _AUDIO_STAGES),
+    'audio_review_unverified': ('review_unverified', _AUDIO_STAGES),
+    'visual_quality_exhausted': ('stock_rejected', _VISUAL_STAGES),
+    'render_quality_exhausted': ('render_rejected', frozenset({'render'})),
+}
+_REVIEW_CODES = frozenset({'included_router_response_unverified',
+    'included_router_previous_outcome_unknown', 'prepaid_audio_response_unverified',
+    'prepaid_audio_previous_outcome_unknown'})
+_SOURCE_CODES = frozenset({'included_research_unconsulted_source',
+    'included_research_primary_source_required', 'included_research_primary_source_unavailable'})
+
+
+@dataclass(frozen=True)
+class _ContentRejection:
+    code: str
+
+
+def content_rejection(error, code):
+    """Tag only an actual exhausted content gate; retain its exception type."""
+    if not isinstance(error, Exception) or code not in _CONTENT_CODES:
+        raise ValueError('Invalid content failure contract')
+    error._production_content_rejection = _ContentRejection(code)
+    return error
+
+
+class ProductionContentError(RuntimeError):
+    """An exhausted local/editorial correction must not rebuild the whole job."""
+    def __init__(self, message, *, code='story_quality_exhausted'):
+        super().__init__(message)
+        content_rejection(self, code)
+
+
+def _digest(message):
+    return hashlib.sha256(message.encode('utf-8', errors='replace')).hexdigest()
+
+
+def classify_failure(error, stage):
+    """Called at the worker's terminal handler, before Celery serializes it."""
+    from app.services.production_spend import SpendBlocked
+
+    code, category = 'unclassified_failure', 'unclassified'
+    tag = getattr(error, '_production_content_rejection', None)
+    if type(tag) is _ContentRejection and tag.code in _CONTENT_CODES:
+        if stage in _CONTENT_CODES[tag.code][1]:
+            code = tag.code
+            category = ('review_unverified' if _CONTENT_CODES[code][0] == 'review_unverified'
+                        else 'content_rejected')
+    elif type(error) is ValueError and str(error) in _SOURCE_CODES and stage == 'research':
+        code, category = str(error), 'source_unavailable'
+    elif type(error) is ValueError and str(error) == 'included_factual_audit_invalid' and stage == 'director_qc':
+        code, category = str(error), 'review_unverified'
+    elif isinstance(error, SpendBlocked):
+        # These are fixed provider protocol codes, not prose or substrings.
+        if str(error) in _REVIEW_CODES and stage in _REVIEW_STAGES:
+            code, category = str(error), 'review_unverified'
+        else:
+            code, category = 'spending_blocked', 'spending_blocked'
+    return {'version': 1, 'code': code, 'category': category, 'stage': stage,
+            'error_sha256': _digest(str(error))}
+
+
+def classified_hold_reason(job):
+    """Reject stale, malformed or wrong-stage evidence; never read prose."""
+    evidence = job.get('failure_classification')
+    if type(evidence) is not dict or set(evidence) != {
+        'version', 'code', 'category', 'stage', 'error_sha256',
+    } or type(evidence['version']) is not int or evidence['version'] != 1:
+        return None
+    error, stage = job.get('error'), job.get('failure_stage')
+    if (type(error) is not str or type(stage) is not str
+            or evidence['stage'] != stage or evidence['error_sha256'] != _digest(error)):
+        return None
+    code, category = evidence['code'], evidence['category']
+    if type(code) is not str or type(category) is not str:
+        return None
+    if code in _CONTENT_CODES:
+        reason, stages = _CONTENT_CODES[code]
+        expected_category = 'review_unverified' if reason == 'review_unverified' else 'content_rejected'
+        return reason if stage in stages and category == expected_category else None
+    if category == 'review_unverified' and code in _REVIEW_CODES and stage in _REVIEW_STAGES:
+        return 'review_unverified' if error == code else None
+    if category == 'source_unavailable' and code in _SOURCE_CODES and stage == 'research':
+        return 'research_sources_unavailable' if error == code else None
+    if category == 'review_unverified' and code == error == 'included_factual_audit_invalid' and stage == 'director_qc':
+        return 'story_rejected'
+    return None

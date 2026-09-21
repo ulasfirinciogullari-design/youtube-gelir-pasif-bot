@@ -947,17 +947,26 @@ def mark_success(task_id: str, result: dict, *, state: str = 'SUCCESS') -> dict:
 
 
 def mark_failure(task_id: str, error: Exception | str) -> dict:
+    from app.services.production_failures import classify_failure
+
     current = get_job(task_id) or {}
     failure_stage = str(
         current.get('failure_stage') or current.get('stage') or 'unknown'
     ).strip()
     if not re.fullmatch(r'[a-z0-9_]{1,64}', failure_stage):
         failure_stage = 'unknown'
+    classification = classify_failure(error, failure_stage)
+    if (type(error) is str and current.get('state') == 'FAILURE'
+            and current.get('error') == error
+            and current.get('failure_classification') is not None):
+        # A dashboard/Celery string copy is not a fresh worker verdict.
+        classification = current['failure_classification']
     return update_job(
         task_id,
         state='FAILURE',
         stage='failed',
         failure_stage=failure_stage,
+        failure_classification=classification,
         progress=100,
         message='Görev başarısız oldu.',
         error=str(error),

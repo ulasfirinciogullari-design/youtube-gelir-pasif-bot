@@ -23,6 +23,7 @@ import pytest
 from app.services import studio_state
 from app.services.abacus_generation import AbacusConfigurationError, AbacusGenerationError
 from app.services.production_spend import LEDGER_KEY, SpendBlocked
+from app.services.production_failures import ProductionContentError
 from test_channel_production import production
 
 
@@ -37,6 +38,7 @@ ERRORS = {name: type(name, (RuntimeError,), {}) for name in (
     'GeminiImageAttemptedError', 'GeminiOmniTerminalError',
     'ImmutableNarrationSceneBudgetError', 'UnsupportedLanguageError',
 )}
+ERRORS['ProductionContentError'] = ProductionContentError
 
 
 def _assigned(node, name):

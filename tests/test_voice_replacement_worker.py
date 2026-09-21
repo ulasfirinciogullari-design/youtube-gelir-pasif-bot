@@ -110,6 +110,32 @@ def test_ordinary_fresh_voice_keeps_its_existing_three_take_budget(synthesis):
     s.reservation.assert_not_called()
 
 
+@pytest.mark.parametrize('code', ['spend_day_limit', 'native_credit_previous_outcome_unknown'])
+def test_voice_does_not_hide_or_retry_a_credit_refusal_as_bad_content(synthesis, code):
+    from app.services.production_spend import SpendBlocked
+
+    s = synthesis
+    refusal = SpendBlocked(code)
+    s.provider.side_effect = refusal
+    with pytest.raises(SpendBlocked) as caught:
+        s.fn([{'narration': 'A bounded sentence.'}], 'ordinary', 30, language='en')
+    assert caught.value is refusal and s.provider.call_count == 1
+    s.namespace['time'].sleep.assert_not_called()
+
+
+@pytest.mark.parametrize('transport,expected', [(False, 'audio_rejected'), (True, 'review_unverified')])
+def test_exhausted_voice_takes_keep_quality_and_transport_outcomes_distinct(synthesis, transport, expected):
+    from app.services.production_failures import classify_failure, classified_hold_reason
+
+    s = synthesis
+    s.provider.side_effect = httpx.ReadTimeout('Temporary provider failure') if transport else QualityError('Bad take')
+    with pytest.raises(QualityError) as caught:
+        s.fn([{'narration': 'A bounded sentence.'}], 'ordinary', 30, language='en')
+    job = {'failure_stage': 'voice_and_visuals', 'error': str(caught.value),
+           'failure_classification': classify_failure(caught.value, 'voice_and_visuals')}
+    assert classified_hold_reason(job) == expected and s.provider.call_count == 3
+
+
 @pytest.mark.parametrize('kwargs', [{'language': 'en'}, {'target_seconds': 60}, {'start_attempt': 1}])
 def test_replacement_outside_explicit_short_turkish_scope_cannot_start(synthesis, kwargs):
     args = dict(target_seconds=30, language='tr', voice_replacement_request=synthesis.request)
