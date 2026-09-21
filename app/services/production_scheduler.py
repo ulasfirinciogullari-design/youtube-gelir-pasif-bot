@@ -21,7 +21,7 @@ from app.services.production_next_series import (
     PENDING_PREFIX, DAILY_PREFIX, _FLAGS, _context, _digest, _execution_guard, _execution_keys,
     _json, _object, _planning_channel_identity, _require, prepare_next_series,
 )
-from app.services.production_series_promotion import promote_ready_series
+from app.services.production_series_promotion import promote_ready_series, retire_stale_ready_batch
 
 
 MAX_LINKED_CHANNELS = 10
@@ -184,6 +184,10 @@ def maintain_production_series(profiles, connections, enqueue_preparation, *, no
                 continue
             status, pending = _pending_status(client, channel_id, datetime.fromtimestamp(now, timezone.utc).date().isoformat())
             if status == 'ready':
+                retired = retire_stale_ready_batch(channel_id, profile['profile_revision'], pending['attempt_id'], now=now)
+                if retired['status'] == 'stale_ready_archived':
+                    results[channel_id] = retired['status']
+                    continue  # A later ordinary tick can reserve a new day's preparation.
                 if remaining == 0:
                     outcome = promote_ready_series(channel_id, profile['profile_revision'], pending['attempt_id'], now=now)
                     results[channel_id] = outcome['status']

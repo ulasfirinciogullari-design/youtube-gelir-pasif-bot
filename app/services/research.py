@@ -442,10 +442,12 @@ FACT RULES:
     consulted_pages = None
     if provider == 'abacus_included':
         from app.services.production_included_router import generate_text_json, stock_only_rule
-        from app.services.included_research_sources import research_pages, source_prompt
+        from app.services.included_research_sources import research_pages, source_prompt, consulted_source_schema
         consulted_pages = research_pages(topic)
+        schema = consulted_source_schema(
+            _research_json_schema(target_scenes, exact_scene_count=exact_scene_count), consulted_pages)
         generated = generate_text_json(prompt + stock_only_rule() + source_prompt(consulted_pages),
-            _research_json_schema(target_scenes, exact_scene_count=exact_scene_count), purpose='research')
+            schema, purpose='research')
         output_text = json.dumps(generated, ensure_ascii=False)
     elif provider == 'gemini':
         generated = generate_gemini_json(

@@ -134,11 +134,15 @@ def _reason(job):
     stage, error = job.get('failure_stage'), job.get('error')
     if type(error) is not str:
         return None
+    if stage == 'research' and error in {
+        'included_research_unconsulted_source', 'included_research_primary_source_required',
+        'included_research_primary_source_unavailable'}:
+        return 'research_sources_unavailable'
     if stage == 'director_qc' and error.startswith((
         'Source audit rejected unsupported narration', 'Short-preview stock narration',
         'Short-preview story', 'Narration word-count gate', 'Scene-count gate')):
         return 'story_rejected'
-    if stage in {'audio_qc', 'visual_qc', 'ai_scene', 'pre_runway_budget_rescue'} and error in {
+    if stage in {'research', 'director_qc', 'audio_qc', 'visual_qc', 'ai_scene', 'pre_runway_budget_rescue'} and error in {
         'included_router_response_unverified', 'included_router_previous_outcome_unknown',
         'prepaid_audio_response_unverified', 'prepaid_audio_previous_outcome_unknown'}:
         return 'review_unverified'
@@ -160,6 +164,106 @@ def _reason(job):
                and 0 <= r['score'] < 86 for r in rows):
             return 'stock_rejected_before_cash_submission'
     return None
+
+
+class _SnapshotReader:
+    """Feed existing hold checks into the promotion's watched snapshot."""
+    def __init__(self, snapshot):
+        self.snapshot = snapshot
+
+    def watch(self, *keys):
+        pass  # Every actual read is captured, then WATCHed and compared at commit.
+
+    def get(self, key):
+        return self.snapshot.read(key)
+
+    def hgetall(self, key):
+        return self.snapshot.read(key, 'hash')
+
+    def pttl(self, key):
+        return self.snapshot.read(key, 'pttl')
+
+    def exists(self, *keys):
+        return sum(self.get(key) is not None for key in keys)
+
+
+def held_series_completion(snapshot, profile, channel, state, now):
+    """Prove an unpublished final disposition; never fabricate PUBLIC delivery."""
+    root = state.get('last_task_id')
+    _require(state.get('quality_hold_task_id') == root and state.get('last_result') == 'FAILURE'
+        and not state.get('paused_reason') and not state.get('active_task_id')
+        and state.get('cursor') == str(len(profile['production_topics'])))
+    return _held_episode_completion(snapshot, profile, channel, root, len(profile['production_topics']), now)
+
+
+def _held_episode_completion(snapshot, profile, channel, root, cursor, now):
+    _require(included.enabled() and runtime.enforcement_enabled())
+    reader = _SnapshotReader(snapshot)
+    policy = _read_policy(reader, datetime.fromtimestamp(now, timezone.utc))
+    _require(policy is not None and profile['channel_id'] in policy['allowed_channels'])
+    _require(type(root) is str and runtime._JOB_ID.fullmatch(root)
+        and type(cursor) is int and 1 <= cursor <= len(profile['production_topics']))
+    record_raw = reader.get(HOLD_PREFIX + root)
+    record = _object(record_raw)
+    _require(record.get('version') == 1 and record.get('status') == 'held_unpublished'
+        and record.get('publish_eligible') is False and record.get('retry_dispatched') is False
+        and record.get('channel_id') == profile['channel_id'] and record.get('root_task_id') == root
+        and record.get('connection_id') == channel['connection_id']
+        and record.get('profile_revision') == profile['profile_revision']
+        and type(record.get('cursor')) is int and record['cursor'] == cursor
+        and record.get('policy_sha256') == _sha(_raw(policy)))
+    held_at = datetime.fromisoformat(record['held_at'])
+    _require(held_at.tzinfo is not None and held_at.utcoffset().total_seconds() == 0
+        and _date(policy['valid_from']) <= held_at <= datetime.fromtimestamp(now, timezone.utc))
+    day_key = DAY_PREFIX + profile['channel_id'] + ':' + held_at.strftime('%Y-%m-%d')
+    history, day_raw = _history(reader), reader.get(day_key)
+    _require(type(day_raw) is str and history['days'].get(day_key) == _sha(day_raw)
+        and reader.pttl(day_key) == -1 and reader.pttl(HOLD_PREFIX + root) == -1)
+    day = json.loads(day_raw)
+    _require(type(day) is list and 1 <= len(day) <= policy['max_holds_per_day']
+        and len(day) == len(set(day)) and root in day)
+    spec = snapshot.object(jobs.JOB_PREFIX + root)['spec']
+    topic = profile['production_topics'][cursor - 1].strip()
+    if profile.get('channel_identity'):
+        topic += '\n\nChannel editorial direction: ' + profile['channel_identity'].strip()[:240]
+    _require(record.get('spec') == spec and spec.get('quality_threshold') == 86
+        and spec.get('production_channel_id') == profile['channel_id']
+        and spec.get('production_connection_id') == channel['connection_id']
+        and spec.get('production_profile_revision') == profile['profile_revision']
+        and spec.get('production_topic_index') == cursor - 1 and spec.get('topic') == topic
+        and spec.get('mode') == 'production' and spec.get('format') == 'shorts'
+        and spec.get('duration_minutes') == .5 and spec.get('production_scheduled') is True
+        and spec.get('publish_after_render') is True)
+    leaf, evidence = _lineage(reader, root, spec)
+    _require(record.get('leaf_task_id') == leaf['task_id'] and record.get('lineage') == evidence
+        and record.get('reason') == _reason(leaf) and _reason(leaf) is not None)
+    return {'completion_kind': 'held_unpublished', 'original_task_id': root,
+        'source_task_id': leaf['task_id'], 'lineage': [row['task_id'] for row in evidence],
+        'hold_sha256': _sha(record_raw), 'publish_eligible': False}
+
+
+def prior_held_completions(snapshot, profile, channel, now):
+    """Explain missing publication numbers with actual prior-topic hold receipts."""
+    reader = _SnapshotReader(snapshot)
+    history = _history(reader)
+    result = {}
+    for key, digest in history['days'].items():
+        if not key.startswith(DAY_PREFIX + profile['channel_id'] + ':'):
+            continue
+        day_raw = reader.get(key)
+        _require(type(day_raw) is str and _sha(day_raw) == digest and reader.pttl(key) == -1)
+        roots = json.loads(day_raw)
+        _require(type(roots) is list and len(roots) <= MAX_HOLDS_PER_DAY and len(set(roots)) == len(roots))
+        for root in roots:
+            _require(type(root) is str and runtime._JOB_ID.fullmatch(root))
+            record = _object(reader.get(HOLD_PREFIX + root))
+            _require(record.get('channel_id') == profile['channel_id'])
+            if record.get('profile_revision') != profile['profile_revision'] or record.get('connection_id') != channel['connection_id']:
+                continue
+            cursor = record.get('cursor')
+            _require(type(cursor) is int and 1 <= cursor < len(profile['production_topics']) and cursor not in result)
+            result[cursor] = _held_episode_completion(snapshot, profile, channel, root, cursor, now)
+    return [result[index] for index in sorted(result)]
 
 
 def _lineage(pipe, root, spec):

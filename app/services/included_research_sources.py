@@ -1,5 +1,6 @@
 """Read bounded public primary-source pages and official news feeds without a paid search API."""
 from datetime import datetime, timezone, timedelta
+from copy import deepcopy
 from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
 import hashlib
@@ -197,6 +198,17 @@ def consulted_sources_only(sources, pages):
     _require(all(type(source) is dict and source.get('url') in consulted for source in sources),
              'included_research_unconsulted_source')
     return sources
+
+
+def consulted_source_schema(schema, pages):
+    """Keep the two-source contract achievable before reserving a model call."""
+    urls = sorted({_url(page['url']) for page in pages})
+    _require(len(urls) >= 2, 'included_research_primary_source_unavailable')
+    constrained = deepcopy(schema)
+    sources = constrained['properties']['sources']
+    sources['items']['properties']['url']['enum'] = urls
+    sources['maxItems'] = min(sources['maxItems'], len(urls))
+    return constrained
 
 
 def source_prompt(pages):

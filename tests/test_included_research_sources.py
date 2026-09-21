@@ -65,3 +65,33 @@ def test_network_reader_rejects_private_dns_before_http(monkeypatch):
     monkeypatch.setattr(sources.socket, 'getaddrinfo', lambda *a, **kw: [(2, 1, 6, '', ('127.0.0.1', 443))])
     with pytest.raises(SpendBlocked): sources._get(URL)
     client.stream.assert_not_called()
+
+
+@pytest.mark.parametrize('page_count', [0, 1, 2])
+def test_research_requires_two_distinct_retrieved_pages_before_a_provider_call(monkeypatch, page_count):
+    from app.services import research, production_included_router as router
+    from unittest.mock import Mock
+    pages = [{'url': URL, 'text': 'Primary source material', 'text_sha256': 'a' * 64}] * page_count
+    generate = Mock(side_effect=AssertionError('A model must not invent a missing second source'))
+    monkeypatch.setattr(research, '_studio_plan_provider', lambda: 'abacus_included')
+    monkeypatch.setattr(sources, 'research_pages', lambda topic: pages)
+    monkeypatch.setattr(router, 'generate_text_json', generate)
+    with pytest.raises(SpendBlocked, match='primary_source_unavailable'):
+        research.research_and_script('A source-backed historic event ' + URL, .5, 'tr')
+    generate.assert_not_called()
+
+
+def test_source_schema_limits_model_to_observed_urls_without_changing_legacy_contract():
+    from app.services import research
+    from copy import deepcopy
+    second = 'https://www.bep.gov/currency/serial-numbers'
+    legacy = research._research_json_schema(6, exact_scene_count=True)
+    before = deepcopy(legacy)
+    result = sources.consulted_source_schema(legacy, [{'url': URL}, {'url': second}])
+    assert legacy == before
+    assert result['properties']['sources']['items']['properties']['url']['enum'] == sorted([URL, second])
+    assert result['properties']['sources']['minItems'] == result['properties']['sources']['maxItems'] == 2
+    assert 'enum' not in legacy['properties']['sources']['items']['properties']['url']
+    # Even if a model ignores the schema, the post-response check stays strict.
+    with pytest.raises(SpendBlocked, match='unconsulted_source'):
+        sources.consulted_sources_only([{'url': 'https://www.bep.gov/not-read'}], [{'url': URL}, {'url': second}])
