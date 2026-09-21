@@ -64,6 +64,46 @@ def test_normal_research_is_unchanged_and_legacy_contract_keeps_duplicate_reject
     assert stock_research_json.decode(json.dumps(result()), schema) == result()
 
 
+@pytest.mark.parametrize('claimed_count', [0, 7, 13, 1000])
+def test_untrusted_draft_word_count_never_replaces_actual_narration_or_approves_it(claimed_count):
+    data = result()
+    for scene in data['scenes']:
+        scene['word_count'] = claimed_count
+    content = json.dumps(data)
+    observed, wire, request = observe(content)
+    assert observed.result == result()
+    assert all(len(scene['narration'].split()) == 6 for scene in observed.result['scenes'])
+    assert json.loads(wire.content)['choices'][0]['message']['content'] == content
+    assert observed.evidence['response_body_sha256'] == hashlib.sha256(wire.content).hexdigest()
+    assert observed.evidence['request_sha256'] == request.request_sha256
+    assert 'approved' not in observed.result and 'accepted' not in observed.result
+
+
+@pytest.mark.parametrize('count', [-1, 1001, True, 7.0, '7', None, {}, []])
+def test_invalid_draft_word_counter_still_rejected(count):
+    data = result()
+    data['scenes'][0]['word_count'] = count
+    with pytest.raises(adapter.AbacusRouterError):
+        observe(json.dumps(data))
+
+
+@pytest.mark.parametrize('where', ['root', 'source', 'nested', 'duplicate', 'approval', 'legacy'])
+def test_word_counter_exception_is_scoped_to_unreviewed_stock_scene_metadata(where):
+    data = result()
+    schema = contract()
+    if where == 'root': data['word_count'] = 7
+    elif where == 'source': data['sources'][0]['word_count'] = 7
+    elif where == 'nested': data['scenes'][0]['nested'] = {'word_count': 7}
+    else: data['scenes'][0]['word_count'] = 7
+    if where == 'approval': data['scenes'][0]['approved'] = True
+    if where == 'legacy':
+        schema['properties']['scenes']['items']['properties']['ai_prompt'] = {'type': ['string', 'null']}
+    content = json.dumps(data)
+    if where == 'duplicate': content = content.replace('"word_count": 7', '"word_count": 7, "word_count": 7', 1)
+    with pytest.raises(adapter.AbacusRouterError):
+        observe(content, schema)
+
+
 def test_redundant_query_counts_preserve_content_and_actual_wire_without_approval():
     original = result()
     for scene in original['scenes']:

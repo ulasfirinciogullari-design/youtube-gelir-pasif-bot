@@ -6,6 +6,8 @@ An optional scene query counter may be omitted from the parsed content only
 when its integer exactly equals the actual two or three queries. Contradictory
 values and every other repeated key remain invalid. This does
 not authorize transport, settle old requests, edit narration or approve facts.
+An optional word_count is discarded as untrusted draft bookkeeping: actual
+word counts are computed from the unchanged narration by the production gates.
 """
 import json
 import math
@@ -77,6 +79,14 @@ def decode(content, schema):
                 # Retain every actual query, narration and source. The exact
                 # response bytes remain in the provider observation/proof.
                 result.pop('visual_queries_count')
+            if (len(path) == 2 and path[0] == 'scenes' and type(path[1]) is int
+                    and 'word_count' in result):
+                count = result['word_count']
+                if not (type(count) is int and 0 <= count <= 1000):
+                    raise ValueError('invalid research draft word counter')
+                # Model-authored counts are not evidence. Do not use them for
+                # length/timing acceptance or change the actual spoken words.
+                result.pop('word_count')
             return result
         if type(value) is list:
             return [visit(item, (*path, index)) for index, item in enumerate(value)]
