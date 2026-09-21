@@ -107,25 +107,18 @@ def _service(credentials):
         http=httplib2.Http(timeout=20), max_refresh_attempts=0), cache_discovery=False, static_discovery=True)
 
 
-def _public_videos(client, context, proofs, now):
-    cached = metrics._cache(client, context)
-    videos = cached.get('videos') or {}
-    ids = list(dict.fromkeys(p['video_id'] for p in proofs.values() if p['channel_id'] == context['channel_id']))
-    result = {}
-    for video in ids[:MAX_VIDEOS]:
-        row = videos.get(video) or {}
-        at = metrics._timestamp(row.get('fetched_at'))
-        if (at is not None and 0 <= now - at <= 3600 and row.get('availability') == 'available'
-                and row.get('privacy_status') == 'public' and not row.get('error')):
-            result[video] = metrics._text(row.get('title'), 100)
-    return result
-
-
 def _read(context, encrypted, titles, now):
     end = datetime.fromtimestamp(now, timezone.utc).date() - timedelta(days=3)
     start = end - timedelta(days=27)
     query = {'ids': 'channel==' + context['channel_id'], 'startDate': start.isoformat(), 'endDate': end.isoformat()}
-    service = _service(access.read_credentials(context, encrypted))
+    credentials = access.read_credentials(context, encrypted)
+    if titles is None:
+        from app.services.youtube_analytics_inventory import public_uploads
+        titles = public_uploads(credentials, context['channel_id'])
+    if not titles:
+        return {'videos': {}, 'inventory_count': 0, 'requested_start': start.isoformat(),
+            'requested_end': end.isoformat(), 'fetched_at': now, 'last_error': None}
+    service = _service(credentials)
     try:
         response = service.reports().query(**query, dimensions='video,creatorContentType',
             metrics=','.join(METRICS), filters='video==' + ','.join(titles),
@@ -142,7 +135,7 @@ def _read(context, encrypted, titles, now):
                 videos[video]['retention'] = _retention(response)
             except Exception:
                 videos[video]['retention'] = None  # Aggregate report is still useful.
-        return {'videos': videos, 'requested_start': start.isoformat(), 'requested_end': end.isoformat(),
+        return {'videos': videos, 'inventory_count': len(titles), 'requested_start': start.isoformat(), 'requested_end': end.isoformat(),
             'fetched_at': now, 'last_error': None}
     finally:
         try: service.close()
@@ -166,7 +159,7 @@ def _error(error):
     return metrics._error(error)
 
 
-def _refresh(context, proofs):
+def _refresh(context):
     if context['blocked']:
         return
     client, now = metrics._redis(), time.time()
@@ -177,13 +170,10 @@ def _refresh(context, proofs):
     attempt = metrics._timestamp(previous.get('last_attempt_at'))
     if attempt is not None and (attempt > now or now - attempt < REFRESH_SECONDS):
         return
-    titles = _public_videos(client, context, proofs, now)
-    if not titles:
-        return
     if not client.set(LOCK_PREFIX + context['channel_id'], '1', nx=True, ex=300):
         return
     try:
-        payload = _read(context, encrypted, titles, now)
+        payload = _read(context, encrypted, None, now)
     except Exception as error:
         payload = {**previous, 'last_error': _error(error)}
     payload.update(version=1, channel_id=context['channel_id'], connection_id=context['connection_id'], last_attempt_at=now)
@@ -196,11 +186,11 @@ def _refresh(context, proofs):
 
 def refresh(jobs):
     """Server observer only. One aggregate and up to two retention reads/channel."""
+    del jobs  # Published video ownership comes from the authenticated channel.
     try:
         contexts = metrics._contexts(metrics._redis())
-        proofs = metrics._proofs(jobs, contexts)
         with ThreadPoolExecutor(max_workers=3) as pool:
-            futures = [pool.submit(_refresh, context, proofs) for context in contexts]
+            futures = [pool.submit(_refresh, context) for context in contexts]
             for future in futures:
                 try: future.result()
                 except Exception: pass

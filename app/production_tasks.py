@@ -66,10 +66,8 @@ def observe_youtube_metrics() -> dict:
 @celery.task(name='app.production_tasks.observe_youtube_analytics', acks_late=False,
              autoretry_for=(), max_retries=0, soft_time_limit=250, time_limit=270)
 def observe_youtube_analytics() -> dict:
-    from app.services.studio_state import list_jobs, MAX_INDEXED_JOBS
     from app.services.youtube_analytics import refresh
-    jobs = list_jobs(limit=MAX_INDEXED_JOBS)
-    return refresh(jobs) if jobs else {'status': 'unavailable'}
+    return refresh([])
 
 
 @celery.task(name='app.production_tasks.production_tick', acks_late=False)

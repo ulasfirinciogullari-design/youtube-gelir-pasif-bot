@@ -5,7 +5,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
-from app.services import youtube_analytics as analytics, studio_analytics
+from app.services import youtube_analytics as analytics, studio_analytics, youtube_analytics_inventory as inventory
 from test_youtube_metrics import case, job, _refresh, CHANNEL, CONNECTION, VIDEO, NOW
 
 
@@ -33,9 +33,11 @@ def a(case, monkeypatch):
     query = service.reports.return_value.query.return_value.execute
     query.side_effect = [table([row()]), table([[.01, 1.1], [.1, .9], [1, .5]], True)]
     monkeypatch.setattr(analytics, '_service', Mock(return_value=service))
+    owned = Mock(return_value={VIDEO: 'Owner public video'})
+    monkeypatch.setattr(inventory, 'public_uploads', owned)
     _refresh(c)
     context = c.module._contexts(c.client)[0]
-    return SimpleNamespace(c=c, context=context, service=service, query=query, read=read_credentials)
+    return SimpleNamespace(c=c, context=context, service=service, query=query, read=read_credentials, inventory=owned)
 
 
 def grant(a):
@@ -74,7 +76,7 @@ def test_server_reads_only_public_owned_videos_and_keeps_true_metrics(a):
 
 
 @pytest.mark.parametrize('change', ['private', 'missing', 'stale', 'different_channel'])
-def test_unverified_or_old_inventory_does_not_authorize_a_report(a, change):
+def test_old_job_cache_cannot_override_current_owner_inventory(a, change):
     grant(a)
     key = a.c.module._cache_key(a.context)
     cached = json.loads(a.c.client.get(key))
@@ -83,7 +85,18 @@ def test_unverified_or_old_inventory_does_not_authorize_a_report(a, change):
     if change == 'stale': cached['videos'][VIDEO]['fetched_at'] = NOW - 3601
     if change == 'different_channel': cached['channel_id'] = 'other-channel'
     a.c.client.set(key, json.dumps(cached))
-    analytics.refresh([job()]); a.read.assert_not_called()
+    a.inventory.return_value = {}
+    analytics.refresh([job()])
+    a.inventory.assert_called_once()
+    analytics._service.assert_not_called()
+    assert analytics.dashboard()['channels'][0]['videos'] == {}
+
+
+def test_old_public_uploads_are_observed_without_any_current_connection_jobs(a):
+    grant(a)
+    analytics.refresh([])
+    assert analytics.dashboard()['channels'][0]['videos'][VIDEO]['views'] == 600
+    a.inventory.assert_called_once_with(a.read.return_value, CHANNEL)
 
 
 def test_empty_report_is_unknown_not_zero(a):
