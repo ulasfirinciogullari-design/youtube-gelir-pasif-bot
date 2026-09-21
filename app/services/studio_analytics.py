@@ -1,8 +1,23 @@
 """Owner performance view: honest empty states and separate optional consent."""
 from html import escape
+from datetime import datetime
 
 REASONS = {'needs_permission': 'İzleyici analizi izni gerekli', 'waiting': 'İlk rapor bekleniyor',
     'fresh': 'Rapor güncel', 'stale': 'Son rapor eski', 'unavailable': 'Rapor şu an okunamıyor'}
+DETAILS = {
+    'api_disabled': 'Google, bu bağlantının kullandığı projede izleyici analizi hizmetini henüz açık görmüyor. '
+        'Etkinleştirme tamamlandığında sistem kendiliğinden tekrar kontrol edecek. Kanalın yayın bağlantısı korunuyor.',
+    'api_unavailable': 'Google’dan rapor alınamadı. Sistem otomatik olarak tekrar kontrol edecek.',
+    'quota': 'Google’ın rapor okuma sınırına ulaşıldı. Sistem sonraki kontrolde tekrar deneyecek.',
+    'invalid_response': 'Gelen rapor doğrulanamadı. Önceki veriler varsa korunur; yeni bir sonuç gibi kullanılmaz.',
+}
+
+
+def _when(value):
+    try:
+        return datetime.fromisoformat(value.replace('Z', '+00:00')).strftime('%d.%m.%Y %H:%M UTC')
+    except (ValueError, TypeError, AttributeError):
+        return None
 
 
 def render(model):
@@ -15,6 +30,14 @@ def render(model):
                 + escape(channel['channel_id'], quote=True) + '"><button type="submit">'
                 'Google ile izleyici analizini bağla</button></form>')
         videos = channel.get('videos', {})
+        detail = DETAILS.get(channel.get('reason'))
+        information = '<p class="notice">' + escape(detail) + '</p>' if detail else ''
+        count_public = channel.get('inventory_count')
+        if type(count_public) is int:
+            information += '<p class="tiny">' + str(count_public) + ' yayımlanmış video kontrol edildi.</p>'
+        next_check = _when(channel.get('next_check_at'))
+        if next_check:
+            information += '<p class="tiny">Sonraki otomatik kontrol en erken: ' + next_check + '</p>'
         rows = []
         for row in videos.values():
             curve = ''
@@ -41,7 +64,7 @@ def render(model):
             interval = '<p class="tiny">İstenen dönem: ' + escape(str(channel['requested_start'])) + ' – ' + escape(str(channel['requested_end'])) + '</p>'
         sections.append('<section class="card overview-section"><div class="section-head"><h2>'
             + escape(channel['title']) + '</h2><span class="badge">' + REASONS.get(status, REASONS['unavailable'])
-            + '</span></div>' + action + interval + (''.join(rows) or '<p class="muted">Henüz doğrulanmış izleyici raporu yok.</p>')
+            + '</span></div>' + action + information + interval + (''.join(rows) or '<p class="muted">Henüz doğrulanmış izleyici raporu yok.</p>')
             + '<p class="metrics-note">' + note + '</p></section>')
     return ('<div class="hero"><div><div class="eyebrow">İZLEYİCİ ANALİZİ</div>'
         '<h1>İnsanlar ne kadar izliyor?</h1><p class="muted">İzlenme süresi, videoda kalma oranı ve kazanılan aboneler. '

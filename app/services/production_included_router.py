@@ -456,6 +456,13 @@ def _generate(prepared, purpose, observer):
             outcome = ledger.settle(identity, prepared, observed)
         except Exception as error:
             _log_operation_failure('settlement', prepared, purpose, error)
+            try:
+                # A valid provider response may have arrived even when its
+                # ledger commit fails. Keep encrypted diagnostic evidence;
+                # it neither settles the request nor authorizes another POST.
+                ledger.record_failure(identity, prepared, response, error)
+            except Exception as capture_error:
+                _log_operation_failure('failure_record', prepared, purpose, capture_error)
             raise
     result = _result(prepared, outcome)
     _LAST_OBSERVED.set({'purpose': purpose, 'context': deepcopy(context), 'evidence': deepcopy(outcome['evidence'])})

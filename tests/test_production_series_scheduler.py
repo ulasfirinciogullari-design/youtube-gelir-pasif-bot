@@ -16,7 +16,7 @@ from test_production_series_promotion import case, _load, _snapshot, _write, NOW
 @pytest.fixture
 def controller(case):
     ns = {**case.ns, **{key: case.prep[key] for key in (
-        'PENDING_PREFIX', 'DAILY_PREFIX', '_FLAGS', '_context', '_digest', '_execution_guard',
+        'PENDING_PREFIX', 'DAILY_PREFIX', 'PREPARATION_DISPATCH_PREFIX', '_FLAGS', '_context', '_digest', '_execution_guard',
         '_execution_keys', '_json', '_object', '_planning_channel_identity', '_require', 'prepare_next_series')},
         '_dispatch_profile_order': case.scheduler._dispatch_profile_order,
         'promote_ready_series': case.ns['promote_ready_series']}
@@ -388,3 +388,106 @@ def test_preparation_task_registered_no_autoretry_and_no_unconsumed_queue():
     assert 'queue' not in options
     celery = (ROOT / 'app/celery_app.py').read_text(encoding='utf-8')
     assert "'app.production_tasks'" in celery
+
+
+def uncertain(c):
+    sender = Mock()
+    binding = _queued(c, sender)
+    c.prep['_generate'].side_effect = RuntimeError('synthetic unknown provider outcome')
+    assert _execute(c, binding)['status'] == 'uncertain'
+    c.client.set('synthetic-provider-unknown-receipt', 'counted-and-never-refunded')
+    return binding
+
+
+def test_finished_unknown_plan_is_archived_before_new_days_normal_dispatch(fresh):
+    c = fresh
+    old_binding = uncertain(c)
+    old_pending = c.client.get(c.pending_key)
+    before = _snapshot(c)
+    sender = Mock()
+    assert _maintain(c, sender)['channels'][CHANNEL] == 'uncertain'
+    assert _snapshot(c) == before and sender.call_count == 0
+    tomorrow = NOW + 86400
+    result = c.controller['maintain_production_series']([c.profile], [CONNECTION], sender, now=tomorrow)
+    assert result['channels'][CHANNEL] == 'finished_uncertain_archived'
+    assert sender.call_count == 0 and c.client.get(c.pending_key) is None
+    assert all(c.client.dump(key) == value for key, value in before.items() if key != c.pending_key)
+    archives = c.client.keys('youtube_studio:next_series:v1:superseded:*')
+    record_key = next(key for key in archives if not key.endswith(':anchor'))
+    record = json.loads(c.client.get(record_key))
+    assert record['original_pending_raw'] == old_pending
+    assert record['pending_batch']['status'] == 'uncertain' and record['provider_outcome_still_unknown'] is True
+    assert c.client.get(record_key + ':anchor') == c.prep['_digest'](record)
+    c.prep['_generate'].side_effect = None
+    c.prep['_generate'].return_value = _answer()
+    for _ in range(3):
+        c.controller['maintain_production_series']([c.profile], [CONNECTION], sender, now=tomorrow)
+    assert sender.call_count == 1
+    new_binding = sender.call_args.kwargs['args'][0]
+    assert new_binding['task_id'] != old_binding['task_id'] and new_binding['day'] != old_binding['day']
+    result = c.controller['run_series_preparation'](new_binding, new_binding['task_id'], now=tomorrow)
+    assert result['status'] == 'ready'
+    assert c.prep['_generate'].call_count == 2  # One original and one new-day plan.
+    assert c.client.get(c.daily_key) == old_pending
+    assert c.client.get('synthetic-provider-unknown-receipt') == 'counted-and-never-refunded'
+
+
+@pytest.mark.parametrize('damage', ['unfinished', 'unknown_delivery', 'wrong_outcome', 'execution',
+    'daily', 'daily_missing', 'expiring', 'connection', 'profile', 'changed_pending'])
+def test_unfinished_or_changed_unknown_attempt_never_retires(fresh, damage):
+    c = fresh
+    binding = uncertain(c)
+    dispatch_key, execution_key = c.prep['_execution_keys'](binding)[:2]
+    dispatch = json.loads(c.client.get(dispatch_key))
+    if damage == 'unfinished': dispatch['status'] = 'reserved'
+    if damage == 'unknown_delivery': dispatch['status'] = 'uncertain'
+    if damage == 'wrong_outcome': dispatch['outcome'] = 'unavailable'
+    if damage == 'connection': dispatch['connection_id'] = 'other-connection'
+    if damage == 'profile': dispatch['profile_revision'] = 'other-profile'
+    c.client.set(dispatch_key, c.prep['_json'](dispatch))
+    if damage == 'execution': c.client.set(execution_key, 'a' * 32)
+    if damage == 'daily': c.client.set(c.daily_key, '{}')
+    if damage == 'daily_missing': c.client.delete(c.daily_key)
+    if damage == 'expiring': c.client.expire(c.daily_key, 600)
+    if damage == 'changed_pending':
+        pending = json.loads(c.client.get(c.pending_key)); pending['error_code'] = 'unexplained'
+        c.client.set(c.pending_key, c.prep['_json'](pending))
+    before = _snapshot(c)
+    sender = Mock()
+    result = c.controller['maintain_production_series']([c.profile], [CONNECTION], sender, now=NOW + 86400)
+    assert result['channels'][CHANNEL] == 'ineligible_or_changed'
+    assert sender.call_count == 0 and _snapshot(c) == before
+
+
+@pytest.mark.parametrize('failure', ['competing_profile', 'lost_archive_ack'])
+def test_uncertain_archive_is_atomic_and_never_enqueues_on_write_failure(fresh, monkeypatch, failure):
+    c = fresh
+    uncertain(c)
+    before = _snapshot(c)
+    original = c.client.pipeline
+    def pipeline(*args, **kwargs):
+        pipe = original(*args, **kwargs)
+        execute = pipe.execute
+        def injected():
+            if failure == 'competing_profile':
+                c.client.set(c.profile_key, json.dumps({**c.profile, 'profile_revision': 'new-owner-profile'}))
+                return execute()
+            execute()
+            raise ConnectionError('Lost archive acknowledgement')
+        pipe.execute = injected
+        return pipe
+    monkeypatch.setattr(c.client, 'pipeline', pipeline)
+    sender = Mock()
+    result = c.controller['maintain_production_series']([c.profile], [CONNECTION], sender, now=NOW + 86400)
+    assert result['channels'][CHANNEL] == 'ineligible_or_changed' and sender.call_count == 0
+    assert all(c.client.dump(key) == value for key, value in before.items()
+               if key not in (c.pending_key, c.profile_key))
+    archives = c.client.keys('youtube_studio:next_series:v1:superseded:*')
+    if failure == 'competing_profile':
+        assert not archives and c.client.dump(c.pending_key) == before[c.pending_key]
+    else:
+        assert len(archives) == 2 and c.client.get(c.pending_key) is None
+        monkeypatch.setattr(c.client, 'pipeline', original)
+        c.controller['maintain_production_series']([c.profile], [CONNECTION], sender, now=NOW + 86400)
+        c.controller['maintain_production_series']([c.profile], [CONNECTION], sender, now=NOW + 86400)
+        assert sender.call_count == 1

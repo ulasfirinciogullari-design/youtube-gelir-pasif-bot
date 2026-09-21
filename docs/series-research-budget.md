@@ -19,8 +19,9 @@ execution claim and frozen request context must still match. The planner
 checks capacity again before writing its pending/daily model attempt. A known
 budget rejection there leaves those two records unused. An already dispatched
 task remains a durable dispatch record and is never automatically resent.
-The normal daily scheduler can consider a later new attempt if no uncertain
-or ready pending batch exists.
+The normal daily scheduler can consider a later new attempt if no active or
+ready pending batch exists. A terminal uncertain batch can be retired on a
+later UTC day only through the archival checks described below.
 
 Immediately before the one HTTP request, the adapter reserves the same quoted
 upper bound and funding atomically. It rechecks current authority after that
@@ -47,7 +48,9 @@ and the output allowance at every possible round (tool calls plus final
 answer). This overcounts repeated context and output instead of assuming
 cache discounts. The maximum admitted shape reserves $0.147824 list cost;
 actual smaller requests reserve less. Reconciled cash factors, including any
-tax/surcharge bound, still apply and all providers share the owner's $10 cap.
+tax/surcharge bound, still apply under the configured shared cash ceilings.
+The owner prioritized commissioning on September 21 and will select a final
+operating budget later; explicit setup grants remain separately recorded.
 
 The [Responses limits](https://developers.openai.com/api/reference/python/resources/responses/methods/create)
 bound total processed tool calls and output. `search_context_size=low` alone
@@ -62,3 +65,25 @@ text by itself cannot create a ready batch. Even a ready batch is an editorial
 draft: research/critic, media budget and publication gates remain required.
 Synthetic HTTP/Redis tests demonstrate dispatch and accounting behavior;
 they do not establish live model quality, account access or publication.
+
+
+## Terminal planning failures on later days
+
+A completed planner can retain an uncertain provider outcome without blocking
+new planning forever. On a later UTC day, the ordinary scheduler checks the
+original pending/daily equality, permanent execution claim and terminal
+`finished` dispatch with outcome `uncertain`. It archives the exact pending
+and dispatch bytes, original claim and digest before deleting only the active
+pending pointer in one watched transaction. The original daily, execution,
+funding and provider records stay occupied and byte-for-byte intact. Unknown
+costs remain unknown. The next ordinary tick may reserve a distinct new day's
+plan through all existing authority and capacity checks; the old task/request
+is never resent. A same-day attempt, unknown worker/broker outcome, changed
+record, missing claim or expiring record cannot take this path. Archiving does
+not prepare a video, approve content, advance cadence or authorize publication.
+
+Included-provider settlement failures also retain a bounded encrypted copy of
+an already received response when possible. This is diagnostic evidence only;
+it never releases a reservation or authorizes another request. A settlement
+that succeeded before its acknowledgement was lost remains authoritative and
+is never overwritten by failure capture.

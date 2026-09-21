@@ -201,3 +201,40 @@ def test_runtime_timeout_is_terminal_for_same_request(commissioned, monkeypatch,
     assert KEY not in caplog.text and 'PRIVATE_RESPONSE_BODY' not in caplog.text
     failures = list(ledger.client.scan_iter(match=included.PREFIX + 'failure:*'))
     assert len(failures) == 1 and json.loads(ledger.client.get(failures[0]))['http_status'] is None
+
+
+@pytest.mark.parametrize('committed_before_error', [False, True])
+def test_settlement_error_keeps_received_evidence_and_never_repeats_post(commissioned, monkeypatch, committed_before_error):
+    ledger, _, prepared = commissioned
+    from app.services import production_included_transport as transport
+    monkeypatch.setattr(runtime.settings, 'studio_spend_enforcement', True)
+    monkeypatch.setattr(runtime.settings, 'studio_abacus_included_production', True)
+    monkeypatch.setattr(runtime.settings, 'abacus_api_key', KEY)
+    monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger.foundation)
+    monkeypatch.setattr(runtime, 'resolve_context', lambda client, task: deepcopy(CONTEXT))
+    calls = []
+    def send(prepared):
+        calls.append(prepared)
+        return response(prepared)
+    monkeypatch.setattr(transport, 'send_once', send)
+    original = included.IncludedRouterLedger.settle
+    def fail(self, *args):
+        if committed_before_error:
+            original(self, *args)
+        raise SpendBlocked('included_router_settlement_uncertain')
+    monkeypatch.setattr(included.IncludedRouterLedger, 'settle', fail)
+    with pytest.raises(SpendBlocked, match='settlement_uncertain'):
+        included._generate(prepared, 'research', observe_router_response)
+    records = list(ledger.client.scan_iter(match=included.PREFIX + 'failure:*'))
+    if committed_before_error:
+        assert records == []  # An already settled receipt is never overwritten.
+        assert included._generate(prepared, 'research', observe_router_response) == RESULT
+    else:
+        assert len(records) == 1
+        saved = json.loads(ledger.client.get(records[0]))
+        assert saved['http_status'] == 200 and saved['retry_allowed'] is False
+        assert included._cipher().decrypt(saved['encrypted_response'].encode()) == response(prepared).content
+        assert RESULT['reason'] not in ledger.client.get(records[0])
+        with pytest.raises(SpendBlocked, match='previous_outcome_unknown'):
+            included._generate(prepared, 'research', observe_router_response)
+    assert len(calls) == 1

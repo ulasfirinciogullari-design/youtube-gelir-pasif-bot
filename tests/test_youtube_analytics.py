@@ -174,3 +174,60 @@ def test_ui_escapes_titles_and_shows_only_needed_consent(a):
     a.c.client.delete(analytics.access.PREFIX + CHANNEL)
     html = studio_analytics.render(analytics.dashboard())
     assert '/analytics/connect/' + CHANNEL in html and 'Henüz doğrulanmış' in html
+
+
+def google_failure(reason):
+    error = RuntimeError('Private upstream message must not appear in Studio')
+    error.resp = SimpleNamespace(status=403 if reason != 'unavailable' else 503)
+    error.content = json.dumps({'error': {'errors': [{'reason': reason}]}}).encode()
+    return error
+
+
+@pytest.mark.parametrize('reason,interval', [
+    ('accessNotConfigured', analytics.RECOVERY_SECONDS),
+    ('unavailable', analytics.RECOVERY_SECONDS),
+    ('quotaExceeded', analytics.REFRESH_SECONDS),
+    ('forbidden', analytics.REFRESH_SECONDS),
+])
+def test_service_recovers_without_consent_or_immediate_retry(a, reason, interval):
+    grant(a)
+    before = snapshot(a)
+    a.query.side_effect = [google_failure(reason), table([])]
+    analytics.refresh([])
+    failed = analytics.dashboard()['channels'][0]
+    assert failed['status'] != 'fresh' and not failed['videos']
+    assert 'Private upstream' not in json.dumps(failed)
+    assert failed['next_check_at'] == a.c.module._iso(NOW + interval)
+    assert all(a.c.client.dump(key) == value for key, value in before.items())
+    # The fixture clock moves independently of FakeRedis' real TTL clock.
+    a.c.client.delete(analytics.LOCK_PREFIX + CHANNEL)
+    a.c.clock[0] = NOW + interval - 1
+    analytics.refresh([])
+    assert a.query.call_count == 1
+    a.c.clock[0] += 1
+    analytics.refresh([])
+    assert a.query.call_count == 2
+    assert analytics.dashboard()['channels'][0]['status'] == 'fresh'
+    assert a.c.client.get(analytics.access.PREFIX + CHANNEL) == 'private-analytics-grant'
+    a.c.client.delete(analytics.LOCK_PREFIX + CHANNEL)
+    a.c.clock[0] += analytics.RECOVERY_SECONDS
+    analytics.refresh([])
+    assert a.query.call_count == 2  # Success restores the normal six-hour interval.
+
+
+def test_failed_refresh_retains_old_observations_without_editorial_advice(a):
+    grant(a)
+    analytics.refresh([])
+    old = analytics.dashboard()['channels'][0]['videos']
+    a.c.clock[0] += analytics.REFRESH_SECONDS
+    a.c.client.delete(analytics.LOCK_PREFIX + CHANNEL)
+    a.query.side_effect = google_failure('accessNotConfigured')
+    analytics.refresh([])
+    value = analytics.dashboard()['channels'][0]
+    assert value['status'] == 'unavailable' and value['reason'] == 'api_disabled'
+    assert value['videos'] == old and analytics.editorial_guidance(CHANNEL) is None
+    before = snapshot(a)
+    html = studio_analytics.render(analytics.dashboard())
+    assert 'henüz açık görmüyor' in html and 'Sonraki otomatik kontrol' in html
+    assert 'Google ile izleyici analizini bağla' not in html
+    assert snapshot(a) == before

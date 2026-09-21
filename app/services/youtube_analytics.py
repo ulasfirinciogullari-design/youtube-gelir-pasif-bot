@@ -2,7 +2,8 @@
 
 No production, money, credential or publication mutation. Missing reports are
 unknown, not zero. Reports use a fixed 28-day window ending three days ago;
-Google may still return a shorter window. Refresh at most every six hours.
+Google may still return a shorter window. Successful reports refresh every six
+hours; unavailable services are checked again after fifteen minutes.
 """
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -15,6 +16,7 @@ from app.services import youtube_metrics as metrics, youtube_analytics_auth as a
 PREFIX = 'youtube_studio:analytics:report:v1:'
 LOCK_PREFIX = 'youtube_studio:analytics:refresh:v1:'
 REFRESH_SECONDS = 6 * 3600
+RECOVERY_SECONDS = 15 * 60
 STALE_SECONDS = 36 * 3600
 TTL_SECONDS = 7 * 86400
 MAX_VIDEOS = 50
@@ -159,6 +161,11 @@ def _error(error):
     return metrics._error(error)
 
 
+def _interval(previous):
+    return (RECOVERY_SECONDS if previous.get('last_error') in {'api_disabled', 'api_unavailable'}
+        else REFRESH_SECONDS)
+
+
 def _refresh(context):
     if context['blocked']:
         return
@@ -168,7 +175,7 @@ def _refresh(context):
         return  # No grant: no refresh token exchange or Google request.
     previous = _cache(client, context)
     attempt = metrics._timestamp(previous.get('last_attempt_at'))
-    if attempt is not None and (attempt > now or now - attempt < REFRESH_SECONDS):
+    if attempt is not None and (attempt > now or now - attempt < _interval(previous)):
         return
     if not client.set(LOCK_PREFIX + context['channel_id'], '1', nx=True, ex=300):
         return
@@ -207,6 +214,7 @@ def dashboard():
         for context in metrics._contexts(client):
             value = _cache(client, context)
             at = metrics._timestamp(value.get('fetched_at'))
+            attempted = metrics._timestamp(value.get('last_attempt_at'))
             has_grant = bool(client.get(access.PREFIX + context['channel_id']))
             reason = ('permission' if context['blocked'] else value.get('last_error'))
             status = ('needs_permission' if not has_grant or reason == 'permission' else
@@ -236,6 +244,11 @@ def dashboard():
                 except Exception: continue
             result['channels'].append({'channel_id': context['channel_id'], 'title': context['title'],
                 'status': status, 'reason': reason, 'fetched_at': metrics._iso(at),
+                'last_attempt_at': metrics._iso(attempted),
+                'next_check_at': metrics._iso(attempted + _interval(value))
+                    if attempted is not None and has_grant and not context['blocked'] else None,
+                'inventory_count': value.get('inventory_count')
+                    if type(value.get('inventory_count')) is int and 0 <= value['inventory_count'] <= MAX_VIDEOS else None,
                 'requested_start': value.get('requested_start'), 'requested_end': value.get('requested_end'),
                 'videos': safe if has_grant and not context['blocked'] else {}})
     except Exception:
