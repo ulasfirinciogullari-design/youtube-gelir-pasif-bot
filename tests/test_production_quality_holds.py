@@ -221,10 +221,13 @@ def test_financial_race_aborts_before_hold_or_schedule_changes(ready, monkeypatc
 def test_parallel_ticks_create_one_receipt_and_never_dispatch_a_provider(ready):
     n = ready; commission(n)
     def run(_):
-        try: return holds.hold_failed_episode(n.profile)['status']
-        except WatchError: return 'raced'
+        # Use the actual tick entry point: another commit can become visible
+        # between watched reads, before EXEC. It safely reports unavailable
+        # for that mixed snapshot without releasing another episode.
+        return holds.maintain_quality_holds([n.profile])['channels'][n.profile['channel_id']]['status']
     with ThreadPoolExecutor(max_workers=4) as executor:
         results = list(executor.map(run, range(8)))
     assert results.count('held_unpublished') == 1
+    assert set(results) <= {'held_unpublished', 'not_quality_paused', 'already_held', 'unavailable'}
     assert json.loads(n.client.get(n.day_key)) == [SOURCE]
     assert not n.case.calls

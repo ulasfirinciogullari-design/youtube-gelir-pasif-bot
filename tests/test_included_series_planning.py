@@ -134,3 +134,31 @@ def test_duplicate_topic_remains_rejected_after_url_mapping(generate):
     output = planning.generate(CONTEXT)
     repeated = {**CONTEXT, 'existing_topics': [output['briefs'][0]['brief']]}
     with pytest.raises(ValueError): series._validate_output(output, repeated)
+
+
+@pytest.mark.parametrize('title', ['Earlier choices', '  Earlier   choices  '])
+def test_repeated_series_label_uses_literal_existing_question_without_another_call(generate, title):
+    _, payload, call = generate
+    payload['series_title'] = title
+    observed = deepcopy(payload)
+    result = planning.generate(CONTEXT)
+    assert payload == observed and call.call_count == 1
+    assert result['series_title'] == payload['briefs'][0]['question']
+    assert result['briefs'][0]['brief'] == payload['briefs'][0]['question'] + ' ' + ' '.join(URLS)
+    assert series._validate_output(result, CONTEXT)['briefs'] == result['briefs']
+    # Correcting a label cannot admit a repeated topic or grant media approval.
+    repeated = {**CONTEXT, 'existing_topics': [result['briefs'][0]['brief']]}
+    with pytest.raises(ValueError): series._validate_output(result, repeated)
+    assert 'qa_approved' not in result and 'media_budget_approved' not in result
+
+
+def test_overlong_question_is_never_shortened_to_create_a_series_label(generate):
+    pages, payload, _ = generate
+    payload['series_title'] = CONTEXT['current_series_title']
+    payload['briefs'][0]['question'] = 'A' * 101
+    indexed, limit, _ = planning._contract(pages, 'en')
+    decoded = planning._decode(payload, indexed, limit, 'en')
+    before = deepcopy(decoded)
+    result = planning.label_batch(decoded, payload, CONTEXT)
+    assert result == before and decoded == before
+    with pytest.raises(ValueError): series._validate_output(result, CONTEXT)
