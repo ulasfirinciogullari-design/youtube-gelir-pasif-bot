@@ -479,7 +479,8 @@ def read_original_mp3(path):
 
 def _usage(value, max_tokens):
     native_fields = {'input_tokens', 'output_tokens', 'raw_input_tokens'}
-    if type(value) is dict and set(value) in (native_fields, native_fields | {'reasoning_tokens'}):
+    native_optional = {'reasoning_tokens', 'cache_read_input_tokens'}
+    if type(value) is dict and native_fields <= set(value) <= native_fields | native_optional:
         # The same RouteLLM endpoint reports native reasoning separately from
         # output. Keep the reported counters without inferring totals or cost.
         _require(all(type(count) is int and 0 <= count <= 1_000_000_000

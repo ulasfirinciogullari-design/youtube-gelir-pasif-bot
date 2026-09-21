@@ -185,5 +185,5 @@ def test_source_families_rotate_using_older_series_even_after_current_profile_ch
     context = {**CONTEXT, 'existing_topics': ['New current question'],
         'previous_topics': ['Old question ' + ' '.join(pair) for pair in planning.SOURCE_PAIRS[:2]]}
     pages = planning.read_planning_pages(context)
-    assert {row['url'] for row in pages} == {url for pair in planning.SOURCE_PAIRS[2:] for url in pair}
+    assert {row['url'] for row in pages} == {url for pair in planning.SOURCE_PAIRS[2:4] for url in pair}
     assert len(seen) == 4

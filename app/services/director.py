@@ -2194,9 +2194,16 @@ EDITORIAL QC RULES:
     if _studio_plan_provider() == 'abacus_included':
         from app.services.production_included_router import generate_text_json, stock_only_rule
         from app.services.director_response_indices import schema_with_indices, decode
+        from app.services import countable_stock_narration as countable
         schema = schema_with_indices(_director_json_schema(target_scenes, exact_scene_count=exact_scene_count,
             **({'delivery_family': True} if delivery_rule else {})))
-        return decode(generate_text_json(prompt + stock_only_rule(), schema, purpose='editorial'))
+        word_slots = countable.director_eligible(fresh_scheduled, language_name, duration_minutes,
+            target_scenes, min_words, max_words, compact, topic)
+        if word_slots:
+            schema = countable.director_schema(schema)
+            prompt += '\n' + countable.RULE
+        output = decode(generate_text_json(prompt + stock_only_rule(), schema, purpose='editorial'))
+        return countable.decode_director(output) if word_slots else output
     if (fresh_scheduled is True
             and getattr(settings, 'studio_abacus_editorial_enabled', False) is True):
         from app.services.abacus_generation import generate_abacus_json

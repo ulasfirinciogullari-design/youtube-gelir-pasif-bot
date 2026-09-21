@@ -79,3 +79,43 @@ def decode(value):
         if _word_count(row['narration']) != 11:
             raise ValueError('joined narration must contain exactly eleven words')
     return value
+
+
+def director_eligible(fresh, language, duration, target_scenes, min_words, max_words, compact, topic):
+    from app.services.director import _exact_narration_lock_from_brief
+
+    scenes = compact.get('scenes')
+    return (fresh is True and str(language).lower().startswith('en')
+        and duration == .5 and target_scenes == 6 and (min_words, max_words) == (62, 66)
+        and type(scenes) is list and len(scenes) == 6
+        and all(type(row) is dict and not row.get('ai_prompt') for row in scenes)
+        and _exact_narration_lock_from_brief(topic) is None)
+
+
+def director_schema(schema):
+    """Apply the same countable words to the whole-story writer and its repair."""
+    result = deepcopy(schema)
+    shape = {'scenes': []}
+    # Reuse precisely the existing eleven-word contract, retaining all other
+    # director metadata and its required fields instead of the scene-only shape.
+    converted, _ = request_format(result, shape)
+    converted['properties']['title'] = deepcopy(schema['properties']['title'])
+    converted['properties']['scenes']['items']['properties']['ai_prompt'] = {'type': 'null'}
+    return converted
+
+
+def decode_director(value):
+    result = deepcopy(value)
+    rows = result['scenes']
+    if type(rows) is not list or len(rows) != 6:
+        raise ValueError('countable director requires six scenes')
+    decoded = decode({'scenes': [
+        {'position': pos, 'narration_words': row['narration_words'],
+         'visual_queries': row['visual_queries'], 'ai_prompt': row['ai_prompt']}
+        for pos, row in enumerate(rows)]})
+    for row, observed in zip(rows, decoded['scenes'], strict=True):
+        if row.get('ai_prompt') is not None or 'narration' in row:
+            raise ValueError('countable director requires stock and one spoken representation')
+        row.pop('narration_words')
+        row['narration'] = observed['narration']
+    return result

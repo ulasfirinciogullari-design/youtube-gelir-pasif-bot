@@ -290,7 +290,8 @@ def _enum_match(value, schema):
 
 def _usage(value, max_tokens):
     native_fields = {'input_tokens', 'output_tokens', 'raw_input_tokens'}
-    if type(value) is dict and set(value) in (native_fields, native_fields | {'reasoning_tokens'}):
+    native_optional = {'reasoning_tokens', 'cache_read_input_tokens'}
+    if type(value) is dict and native_fields <= set(value) <= native_fields | native_optional:
         # Keep RouteLLM's actual counters. No reported total or relationship
         # between raw/effective input or reasoning/output is inferred.
         _require(all(type(count) is int and 0 <= count <= _MAX_TOKEN_COUNTER

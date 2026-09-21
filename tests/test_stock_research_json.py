@@ -65,10 +65,11 @@ def test_normal_research_is_unchanged_and_legacy_contract_keeps_duplicate_reject
 
 
 @pytest.mark.parametrize('claimed_count', [0, 7, 13, 1000])
-def test_untrusted_draft_word_count_never_replaces_actual_narration_or_approves_it(claimed_count):
+@pytest.mark.parametrize('field', ['word_count', 'narration_word_count'])
+def test_untrusted_draft_word_count_never_replaces_actual_narration_or_approves_it(claimed_count, field):
     data = result()
     for scene in data['scenes']:
-        scene['word_count'] = claimed_count
+        scene[field] = claimed_count
     content = json.dumps(data)
     observed, wire, request = observe(content)
     assert observed.result == result()

@@ -36,7 +36,8 @@ def _stock_research_schema(schema):
 def decode(content, schema):
     """Return existing field values; full response/schema validation is separate."""
     if not _stock_research_schema(schema):
-        return _json_loads(content)
+        from app.services.visual_review_json import decode as decode_review
+        return decode_review(content, schema)
 
     class ObjectPairs(list):
         pass
@@ -79,14 +80,16 @@ def decode(content, schema):
                 # Retain every actual query, narration and source. The exact
                 # response bytes remain in the provider observation/proof.
                 result.pop('visual_queries_count')
-            if (len(path) == 2 and path[0] == 'scenes' and type(path[1]) is int
-                    and 'word_count' in result):
-                count = result['word_count']
-                if not (type(count) is int and 0 <= count <= 1000):
-                    raise ValueError('invalid research draft word counter')
-                # Model-authored counts are not evidence. Do not use them for
-                # length/timing acceptance or change the actual spoken words.
-                result.pop('word_count')
+            if len(path) == 2 and path[0] == 'scenes' and type(path[1]) is int:
+                for field in ('word_count', 'narration_word_count'):
+                    if field not in result:
+                        continue
+                    count = result[field]
+                    if not (type(count) is int and 0 <= count <= 1000):
+                        raise ValueError('invalid research draft word counter')
+                    # Model-authored counts are not evidence. Do not use them for
+                    # length/timing acceptance or change the actual spoken words.
+                    result.pop(field)
             return result
         if type(value) is list:
             return [visit(item, (*path, index)) for index, item in enumerate(value)]

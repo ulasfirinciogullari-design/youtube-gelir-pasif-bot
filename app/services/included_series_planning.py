@@ -10,6 +10,8 @@ SOURCE_PAIRS = (
      'https://ikeamuseum.com/en/explore/the-story-of-ikea/revolutionary/'),
     ('https://historicengland.org.uk/whats-new/news/enfield-bank-listed/',
      'https://home.barclays/news/2017/06/from-the-archives-the-atm-is-50/'),
+    ('https://www.lego.com/en-us/history/articles/lego-system-in-play',
+     'https://www.lego.com/en-us/history/articles/c-automatic-binding-bricks'),
     ('https://www.ibm.com/history/upc',
      'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types'),
     ('https://www.bep.gov/currency/serial-numbers',
