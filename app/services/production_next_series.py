@@ -433,7 +433,15 @@ def prepare_next_series(profile, channel, *, now=None, execution_binding=None):
                 pipe.multi()
                 pipe.ping()
                 pipe.execute()
-            output = _generate(context, configuration)
+            generation_context = context
+            try:
+                from app.services.youtube_analytics import editorial_guidance
+                guidance = editorial_guidance(channel_id)
+                if guidance:
+                    generation_context = {**context, 'audience_feedback': guidance}
+            except Exception:
+                pass  # Optional observations never block source-backed planning.
+            output = _generate(generation_context, configuration)
             try:
                 prepared = _validate_output(output, context)
             except (ValueError, TypeError, KeyError):

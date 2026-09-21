@@ -2307,6 +2307,7 @@ def _nav(active: str) -> str:
         ('review', '/studio/history?status=previews', 'Önizlemeler'),
         ('history', '/studio/history?status=library', 'Videolar'),
         ('youtube', '/studio/youtube', 'Kanallar'),
+        ('analytics', '/studio/analytics', 'Performans'),
     ]
     items = ''.join(
         f'<a class="{"active" if key == active else ""}" href="{url}"'

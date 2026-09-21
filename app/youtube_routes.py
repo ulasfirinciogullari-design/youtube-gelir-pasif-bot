@@ -718,6 +718,7 @@ def _begin_youtube_connect(
     studio_token: str | None,
     *,
     target_channel_id: str | None = None,
+    analytics: bool = False,
 ):
     _require_auth(studio_token)
     # Starting a flow rotates the global authorization epoch, so it is a
@@ -726,6 +727,8 @@ def _begin_youtube_connect(
     browser_binding = secrets.token_urlsafe(32)
     try:
         options = {'target_channel_id': target_channel_id} if target_channel_id is not None else {}
+        if analytics:
+            options['analytics'] = True
         response = RedirectResponse(
             build_authorization_url(browser_binding, **options),
             status_code=302,
@@ -763,6 +766,22 @@ def youtube_reconnect(
     return _begin_youtube_connect(request, studio_token, target_channel_id=youtube_channel_id)
 
 
+@router.post('/studio/youtube/analytics/connect/{youtube_channel_id}')
+def youtube_analytics_connect(request: Request, youtube_channel_id: str,
+        studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    return _begin_youtube_connect(request, studio_token,
+        target_channel_id=youtube_channel_id, analytics=True)
+
+
+@router.get('/studio/analytics', response_class=HTMLResponse)
+def youtube_analytics_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    _require_auth(studio_token)
+    from app.services.youtube_analytics import dashboard
+    from app.services.studio_analytics import render
+    from app.studio import _shell as studio_shell
+    return studio_shell(render(dashboard()), active='analytics', title='İzleyici analizi · Studio')
+
+
 @router.get('/studio/youtube/callback', name='youtube_oauth_callback')
 def youtube_oauth_callback(
     request: Request,
@@ -779,7 +798,13 @@ def youtube_oauth_callback(
                 '<div class="hero"><h1>Google izni tamamlanmadı</h1></div><div class="notice">Bağlantı kurulmadı; istersen güvenli giriş akışını yeniden başlatabilirsin.</div><div class="actions"><a class="btn secondary" href="/studio/youtube">Geri dön</a></div>',
                 status_code=400,
             ))
-        complete_authorization(code, state, oauth_binding or '')
+        channel = complete_authorization(code, state, oauth_binding or '')
+        if isinstance(channel, dict) and channel.get('analytics_connected') is True:
+            return _delete_oauth_binding_cookie(_shell(
+                '<div class="hero"><h1>İzleyici analizi bağlandı</h1></div>'
+                '<div class="card">İzlenme süresi ve izleyici tutma raporları sunucuda düzenli okunacak. '
+                'İlk rapor bir sonraki saatlik kontrolde görünecek.</div><div class="actions">'
+                '<a class="btn" href="/studio/analytics">Performansa dön</a></div>'))
         # Older Studio session cookies are SameSite=Strict. Render a same-origin
         # document before navigating back so the cookie is available after the
         # cross-site Google callback without weakening CSRF protection.

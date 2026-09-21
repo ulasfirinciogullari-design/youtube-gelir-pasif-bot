@@ -21,5 +21,10 @@ celery.conf.update(
             'schedule': 300.0,
             'options': {'expires': 290},
         },
+        'owned-youtube-analytics-hourly': {
+            'task': 'app.production_tasks.observe_youtube_analytics',
+            'schedule': 3600.0,
+            'options': {'expires': 3500},
+        },
     },
 )
