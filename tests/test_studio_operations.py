@@ -91,7 +91,151 @@ def test_held_failure_remains_reviewable_without_dead_retry_or_voice_actions(ui,
     assert payload['quality_held'] is True and payload['upload_allowed'] is False
     assert payload['voice_replacement_available'] is False
     assert payload['state'] == 'FAILURE'
+    assert payload['display_status'] == 'held' and payload['display_status_label'] == 'Deneme saklandı'
+    assert 'bazı iddiaları doğrulanamadı' in payload['ui_status_message']
+    assert 'İnceleme için saklandı.' in payload['ui_status_message']
+    assert ui.ns['_console_bucket'](payload) == 'archive'
+    assert ui.ns['_history_matches'](payload, 'failed') is True
+    assert ui.ns['_history_matches'](payload, 'attention') is False
     assert ui.records[record['task_id']] == before
+    ui.forbidden.assert_not_called()
+
+
+def test_held_retry_root_and_child_do_not_look_active_or_await_owner_approval(ui):
+    from copy import deepcopy
+    from test_studio_workflow_presentation import retry_chain
+    rows = retry_chain(1)
+    for row in rows:
+        row['quality_held'] = True
+        ui.records[row['task_id']] = row
+    before = deepcopy(ui.records)
+    ui.ns['_sync_job'] = ui.ns['get_job']
+    for row in rows:
+        html = ui.client.get('/studio/job/' + row['task_id'])
+        assert html.status_code == 200 and 'Üretim planını aç' in html.text
+        assert '>Deneme saklandı</span>' in html.text
+        response = ui.client.get('/studio/api/job/' + row['task_id'])
+        payload = response.json()
+        assert payload['state'] == 'FAILURE' and payload['ui_status'] == 'failed'
+        assert payload['display_status'] == 'held' and payload['upload_allowed'] is False
+        assert ui.ns['_console_bucket'](row) == 'archive'
+        assert 'method="post"' not in ui.ns['_job_primary_action'](row)
+    assert ui.records == before
+    ui.forbidden.assert_not_called()
+
+
+CHANNEL = 'UC' + 'a' * 22
+ROOT_TASK = '10000000-0000-4000-8000-000000000001'
+RETRY_AFTER = '2026-09-22T00:00:00+00:00'
+
+
+def wait_row(**changes):
+    return {'status': 'daily_hold_limit', 'root_task_id': ROOT_TASK,
+            'profile_revision': 'current', 'retry_after': RETRY_AFTER, **changes}
+
+
+def tick_row(**changes):
+    return {'version': 1, 'observed_ts': NOW, 'status': 'checked',
+            'quality_waits': {CHANNEL: wait_row()}, **changes}
+
+
+def test_completed_tick_exposes_only_valid_bound_wait_and_no_other_worker_data():
+    client = Mock()
+    result = {'status': 'idle', 'quality_holds': {'status': 'checked', 'channels': {
+        CHANNEL: wait_row(), 'UC' + 'b' * 22: {'status': 'held_unpublished', 'secret': 'private'},
+        'UC' + 'c' * 22: wait_row(secret='private'), '<script>': wait_row()}}, 'secret': 'private'}
+    operations.record_tick('SUCCESS', result, client=client, now=NOW)
+    encoded = client.set.call_args.args[1]
+    assert 'private' not in encoded and '<script>' not in encoded
+    assert json.loads(encoded) == tick_row()
+    assert client.set.call_args.kwargs == {'ex': 86400}
+    client.get.assert_not_called()
+
+
+@pytest.mark.parametrize('age', [0, 180])
+def test_wait_requires_same_paused_root_profile_and_fresh_worker(age):
+    client = store(tick_row())
+    assert operations.read_quality_wait(CHANNEL, 'current', ROOT_TASK, client=client, now=NOW + age) == {
+        'status': 'daily_hold_limit', 'retry_after': RETRY_AFTER}
+    client.get.assert_called_once_with(operations.TICK_KEY)
+    client.set.assert_not_called()
+
+
+@pytest.mark.parametrize('damage', ['stale', 'future', 'wrong_root', 'wrong_profile', 'wrong_channel',
+    'blocked', 'yesterday', 'malformed_time', 'unknown_status', 'extra_field', 'too_many',
+    'boolean_version', 'boolean_time', 'missing', 'oversize'])
+def test_uncertain_or_obsolete_wait_never_claims_automatic_continuation(damage):
+    value, clock, channel, root, revision = tick_row(), NOW, CHANNEL, ROOT_TASK, 'current'
+    if damage == 'stale': clock += 181
+    if damage == 'future': clock -= 1
+    if damage == 'wrong_root': root = ROOT_TASK[:-1] + '2'
+    if damage == 'wrong_profile': revision = 'changed'
+    if damage == 'wrong_channel': channel = 'UC' + 'b' * 22
+    if damage == 'blocked': value['status'] = 'blocked'
+    if damage == 'yesterday': value['quality_waits'][CHANNEL]['retry_after'] = '2026-09-21T00:00:00+00:00'
+    if damage == 'malformed_time': value['quality_waits'][CHANNEL]['retry_after'] = '<script>'
+    if damage == 'unknown_status': value['quality_waits'][CHANNEL]['status'] = 'approved'
+    if damage == 'extra_field': value['quality_waits'][CHANNEL]['approved'] = True
+    if damage == 'too_many': value['quality_waits'].update({str(i): wait_row() for i in range(8)})
+    if damage == 'boolean_version': value['version'] = True
+    if damage == 'boolean_time': value['observed_ts'] = True
+    if damage == 'missing': value.pop('quality_waits')
+    if damage == 'oversize': value['unexpected'] = 'a' * operations.MAX_TICK_BYTES
+    client = store(value)
+    assert operations.read_quality_wait(channel, revision, root, client=client, now=clock) is None
+    client.set.assert_not_called()
+
+
+def test_midnight_discards_previous_wait_even_if_tick_is_still_fresh():
+    from datetime import datetime
+    midnight = datetime.fromisoformat(RETRY_AFTER).timestamp()
+    client = store(tick_row(observed_ts=midnight - 1))
+    assert operations.read_quality_wait(CHANNEL, 'current', ROOT_TASK, client=client, now=midnight) is None
+    client.set.assert_not_called()
+
+
+def test_dashboard_reports_automatic_wait_without_requesting_owner_action(ui):
+    metrics = {'channels': [{'channel_id': CHANNEL, 'title': 'Capital',
+        'production_status': 'daily_wait', 'production_wait': {
+            'status': 'daily_hold_limit', 'retry_after': RETRY_AFTER}}], 'videos': {}}
+    ui.ns['_dashboard_metrics'] = lambda _: metrics
+    ui.ns['_production_budget_notice'] = lambda: ''
+    ui.ns['_operations_status'] = lambda: ''
+    response = ui.client.get('/studio')
+    assert response.status_code == 200
+    assert 'Günlük deneme sınırı · otomatik bekleme' in response.text
+    assert '22 Eyl · 03:00 (Türkiye saati)' in response.text
+    assert 'Diğer kanallar kendi takvimine göre ilerler' in response.text
+    assert 'Otomasyon kontrol bekliyor' not in response.text
+    ui.forbidden.assert_not_called()
+
+
+@pytest.mark.parametrize('pause,enabled,expected', [
+    ('previous_render_failed', True, 'daily_wait'), ('owner_hold', True, 'paused'),
+    ('previous_render_failed', False, 'paused'), ('', True, 'scheduled')])
+def test_wait_presentation_uses_current_profile_and_job_without_changing_schedule(ui, monkeypatch, pause, enabled, expected):
+    from copy import deepcopy
+    from app.services import channel_production, youtube_metrics
+    profile = {'channel_id': CHANNEL, 'profile_revision': 'current',
+        'production_enabled': enabled, 'auto_publish': True, 'production_topics': ['one', 'two']}
+    state = {'paused_reason': pause, 'last_task_id': ROOT_TASK, 'cursor': '1', 'next_due': str(NOW + 3600)}
+    before = deepcopy(state)
+    metrics = {'channels': [{'channel_id': CHANNEL, 'production_wait': {'status': 'injected'}}], 'videos': {}}
+    monkeypatch.setattr(youtube_metrics, 'get_dashboard_metrics', lambda _: deepcopy(metrics))
+    monkeypatch.setattr(channel_production, 'get_production_state', lambda _: deepcopy(state))
+    lookup = Mock(return_value={'status': 'daily_hold_limit', 'retry_after': RETRY_AFTER})
+    monkeypatch.setattr(operations, 'read_quality_wait', lookup)
+    monkeypatch.setattr(operations, 'read_series_preparation', lambda *_: None)
+    ui.ns['list_channel_profiles'] = lambda: [deepcopy(profile)]
+    row = ui.ns['_dashboard_metrics']([])['channels'][0]
+    assert row['production_status'] == expected
+    if expected == 'daily_wait':
+        lookup.assert_called_once_with(CHANNEL, 'current', ROOT_TASK)
+        assert row['production_wait']['retry_after'] == RETRY_AFTER
+    else:
+        lookup.assert_not_called()
+        assert 'production_wait' not in row
+    assert state == before
     ui.forbidden.assert_not_called()
 
 

@@ -16,11 +16,20 @@ poll preserves an existing player and its playback position.
 
 The dashboard shows the last completed worker scheduling check, separately from
 each channel's schedule and current-profile next-series preparation state.
-The Celery post-run observer writes only an expiring status/timestamp to
+The Celery post-run observer writes an expiring status/timestamp to
 `youtube_studio:operations:v1:last_production_tick`; views read it. A signal older
 than three minutes is stale. The signal is not evidence of video quality, API
 funding, a healthy provider, or successful publication. Its absence or write failure
 never authorizes, retries, or suppresses production.
+
+When that completed tick actually reports a daily failed-episode limit, the
+same bounded record can include the channel, exact paused root, profile revision
+and next UTC midnight. The dashboard displays this as automatic waiting with the
+next check in Turkey time, separately from a problem requiring owner action.
+Only a fresh observation matching the current paused root and profile is used.
+Changed jobs, owner pauses, disabled automation, stale telemetry or the next UTC
+day discard the wait label. Midnight is a time for reconsideration, not a promise
+of production or publication; ordinary funding, source and quality gates remain.
 
 Publication, OAuth, current upload reconciliation and financial controls remain
 the existing authorities. Viewing a rejected file grants no publishing permission.
@@ -32,3 +41,7 @@ keep the owner preview and link to the current production plan. A single bounded
 read decorates loaded records in memory; held jobs are never rewritten for
 presentation. This observation grants no retry, spending or publication authority;
 the existing backend fences remain authoritative if an observation fails.
+Sealed failed attempts, including their retry parents, show “Deneme saklandı”
+and remain in failed history and playable previews rather than inflating the
+current attention count. The original FAILURE, error, media and quality evidence
+remain intact. Publication failures still require attention.

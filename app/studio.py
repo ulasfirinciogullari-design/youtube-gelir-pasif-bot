@@ -128,6 +128,7 @@ UI_STATUS_LABELS = {
     'completed': 'Tamamlandı',
     'failed': 'Başarısız',
     'unreviewed': 'Kalite onayı yok',
+    'held': 'Deneme saklandı',
 }
 CONSOLE_STATUS_LABELS = {
     'running': 'Devam ediyor',
@@ -301,6 +302,13 @@ def _review_player(job: dict, *, preload: str = 'none') -> str:
 
 
 def _review_reason(job: dict) -> str:
+    message = _failure_review_reason(job)
+    if _job_display_status(job) == 'held':
+        message += ' İnceleme için saklandı. Güncel üretim planını ana panelden görebilirsin.'
+    return message
+
+
+def _failure_review_reason(job: dict) -> str:
     if job.get('state') != 'FAILURE':
         return _job_status_message(job)
     stage = str(job.get('failure_stage') or '')
@@ -729,6 +737,7 @@ def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
         subtotals = _known_public_video_view_subtotals(model['videos'])
         for row in model['channels']:
             row.pop('production_retry', None)
+            row.pop('production_wait', None)
             row.pop('series_preparation', None)
             row.pop('known_public_video_view_subtotal', None)
             if type(row.get('view_count')) is int and row['view_count'] == 0 and row.get('channel_id') in subtotals:
@@ -758,6 +767,12 @@ def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
                 else 'exhausted' if remaining == 0 else 'scheduled'
             )
             row.update(production_status=production_status, next_due=state.get('next_due'), remaining_topics=remaining)
+            if (production_status == 'paused' and state.get('paused_reason') == 'previous_render_failed'
+                    and profile.get('production_enabled') is True and profile.get('auto_publish') is True):
+                from app.services.studio_operations import read_quality_wait
+                wait = read_quality_wait(channel_id, profile.get('profile_revision'), state.get('last_task_id'))
+                if wait:
+                    row.update(production_status='daily_wait', production_wait=wait)
             if profile.get('production_enabled') is True and remaining is not None and remaining <= 2:
                 from app.services.studio_operations import read_series_preparation
                 preparation = read_series_preparation(channel_id, profile.get('profile_revision'))
@@ -766,6 +781,7 @@ def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
             retry = _active_production_retry(profile, state, by_id)
             if retry:
                 row.update(production_status=retry['status'], production_retry=retry)
+                row.pop('production_wait', None)
     except Exception:
         # Missing schedule data cannot invent an active/healthy channel state.
         pass
@@ -988,9 +1004,15 @@ def _channel_overview(rows: list[dict]) -> str:
                            and retry.get('status') in PRODUCTION_RETRY_LABELS)
         production = (PRODUCTION_RETRY_LABELS[retry['status']] if valid_retry else {
             'active': 'Üretim sürüyor', 'scheduled': 'Takvim etkin', 'paused': 'Üretim durdu · kontrol gerekiyor',
+            'daily_wait': 'Günlük deneme sınırı · otomatik bekleme',
             'disabled': 'Otomatik üretim kapalı', 'exhausted': 'Konu listesi tamamlandı',
         }.get(row.get('production_status'), 'Üretim durumu bekleniyor'))
         schedule = [production]
+        wait = row.get('production_wait')
+        if row.get('production_status') == 'daily_wait' and isinstance(wait, dict):
+            schedule.append('Bugünkü başarısız deneme sınırına ulaşıldı.')
+            schedule.append('Yeniden kontrol: ' + _metrics_time(wait.get('retry_after')) + ' (Türkiye saati)')
+            schedule.append('Süre dolunca bağlantı, kaynak ve kalite kontrolleri yeniden uygulanır.')
         preparation = row.get('series_preparation')
         if isinstance(preparation, dict):
             note = {
@@ -1373,6 +1395,8 @@ def _job_ui_status(job: dict) -> str:
     if state == 'CANCELLED':
         return 'cancelled'
     if state == 'FAILURE':
+        if job.get('kind') == 'render' and job.get('quality_held') is True:
+            return 'failed'
         if _retry_claimed(job):
             return 'running'
         return 'repair' if job.get('repair_available') is True else 'failed'
@@ -1389,7 +1413,11 @@ def _job_display_status(job: dict) -> str:
     """Return the user-facing status shared by list, detail and polling."""
     if job.get('state') == 'CANCELLED':
         return 'cancelled'
-    if _publication_status(job) in {'failed', 'blocked', 'uncertain'} or _job_is_recent_failed_leaf(job):
+    if _publication_status(job) in {'failed', 'blocked', 'uncertain'}:
+        return 'attention'
+    if job.get('state') == 'FAILURE' and job.get('kind') == 'render' and job.get('quality_held') is True:
+        return 'held'
+    if _job_is_recent_failed_leaf(job):
         return 'attention'
     if _job_awaits_approval(job) or _job_requires_manual_qa(job):
         return 'attention'
@@ -1408,6 +1436,9 @@ def _job_status_message(job: dict) -> str:
         return 'YouTube’dan silindi veya erişilemiyor. Önceki yayın kaydı korunuyor; tekrar yükleme başlatılmaz.'
     status = _job_ui_status(job)
     display_status = _job_display_status(job)
+    if display_status == 'held':
+        return ('Bu deneme yayımlanmadı ve inceleme için saklandı. '
+                'Otomatik üretimin güncel planını ana panelden görebilirsin.')
     state = str(job.get('state') or 'PENDING').upper()
     kind = str(job.get('kind') or '')
     publication = _publication_status(job)
@@ -1923,6 +1954,8 @@ def _console_bucket(job: dict) -> str:
     if _job_is_old_storyboard(job):
         return 'archive'
     display_status = _job_display_status(job)
+    if display_status == 'held':
+        return 'archive'
     if display_status == 'attention':
         return 'attention'
     if display_status == 'running':
@@ -2623,6 +2656,8 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
         heading, detail = 'Video üzerinde çalışılıyor', 'Devam eden işin aşamasını üretim listesinden takip edebilirsin.'
     elif states & {'paused', 'retry_uncertain'}:
         heading, detail = 'Otomasyon kontrol bekliyor', 'Devam etmek için üretimdeki sorunun çözülmesi gerekiyor. Kanal durumları aşağıda.'
+    elif 'daily_wait' in states:
+        heading, detail = 'Üretim takvimi ve otomatik beklemeler', 'Günlük deneme sınırına ulaşan kanal yeni günü bekliyor. Diğer kanallar kendi takvimine göre ilerler; yeniden kontrol zamanı aşağıda.'
     elif 'scheduled' in states:
         heading, detail = 'Bir sonraki üretim planlandı', 'Başlama zamanı kanalda görünür. Üretim öncesinde bütçe ve bağlantılar yeniden kontrol edilir.'
     elif states and states <= {'disabled', 'exhausted'}:
@@ -2904,6 +2939,8 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
             '<a class="btn secondary" href="/studio/job/'
             f'{retry_presentation["task_id"]}">Güncel sonucu aç</a>'
         )
+        if record.get('quality_held') is True:
+            primary_action += '<a class="btn secondary" href="/studio">Üretim planını aç</a>'
     initial_error = _safe_ui_text(record.get('error'))
     error_hidden = '' if initial_error else ' hidden'
     progress_hidden = '' if status == 'running' else ' hidden'
@@ -2913,7 +2950,7 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     badge_label = delivery['label'] if delivery['label'] and not retry_presentation and not (delivery['key'] == 'rendered' and display_status in {'attention', 'unreviewed'}) else UI_STATUS_LABELS[display_status]
     performance = _video_performance(record) if record.get('state') == 'SUCCESS' and not retry_presentation else ''
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">Üretim durumu</div><h1>{display_title}</h1><div class="muted">Yalnızca karar vermen gereken durum ve sonraki adım burada gösterilir.</div></div></div>
+<div class="hero"><div class="hero-copy"><div class="eyebrow">Üretim durumu</div><h1>{display_title}</h1><div class="muted">Bu denemenin sonucu, varsa önizlemesi ve sonraki adım.</div></div></div>
 <article class="card job-panel" id="job-card" data-status="{display_status}">
 <div class="job-panel-head"><div class="stage" id="stage">{stage_label}{f' · %{progress}' if status == 'running' else ''}</div><span class="state {display_status}" id="state-label">{escape(badge_label)}</span></div>
 {_video_identity(record)}
@@ -2930,7 +2967,7 @@ def studio_job(task_id: str, studio_token: str | None = Cookie(default=None, ali
     script = r'''<script>
 const taskId=__TASK_ID__;let timer=null,ownerPreview=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const labels={running:'Devam ediyor',attention:'Dikkat gerekiyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız',unreviewed:'Kalite onayı yok'};
+const labels={running:'Devam ediyor',attention:'Dikkat gerekiyor',ready:'Hazır',repair:'Onarım gerekli',completed:'Tamamlandı',failed:'Başarısız',unreviewed:'Kalite onayı yok',held:'Deneme saklandı'};
 function safeExternal(value){const text=String(value||'').trim();if(!/^https?:\/\//i.test(text))return '';try{const u=new URL(text);return ['http:','https:'].includes(u.protocol)?u.href:''}catch(_){return ''}}
 function linkAction(href,label,kind='secondary',external=false){return `<a class="btn ${kind}" ${external?'target="_blank" rel="noopener noreferrer" ':''}href="${esc(href)}">${esc(label)}</a>`}
 function retryAction(label,kind){return `<form method="post" action="/studio/retry/${encodeURIComponent(taskId)}"><button class="btn ${kind}" type="submit">${esc(label)}</button></form>`}
@@ -2946,7 +2983,7 @@ async function poll(){
  const panel=document.getElementById('job-card'),progress=document.getElementById('progress'),out=document.getElementById('result'),pill=document.getElementById('state-label'),displayUi=String(j.display_status||ui);showWorkprint(j);
  panel.dataset.status=displayUi;pill.className='state '+displayUi;pill.textContent=j.delivery_label||labels[displayUi]||labels.running;
  document.getElementById('bar').style.width=p+'%';progress.setAttribute('aria-valuenow',String(p));progress.hidden=ui!=='running';document.getElementById('stage').textContent=stage+(ui==='running'?' · %'+p:'');setStatusMessage(j.ui_status_message);showTechnical(j);
- if(j.retry_presentation){const latest=j.retry_presentation;setMedia({});setAction('latest:'+latest.task_id,linkAction(`/studio/job/${encodeURIComponent(latest.task_id)}`,'Güncel sonucu aç'));return}
+ if(j.retry_presentation){const latest=j.retry_presentation;setMedia({});setAction('latest:'+latest.task_id+':'+Boolean(j.quality_held),linkAction(`/studio/job/${encodeURIComponent(latest.task_id)}`,'Güncel sonucu aç')+(j.quality_held===true?linkAction('/studio','Üretim planını aç'):''));return}
  if(j.publication_status){setMedia(['ready','completed'].includes(ui)?j.result:{},j.delivery_label||'YouTube yüklemesinin durumu doğrulanıyor.');setAction('publication-review',linkAction(j.publication_review_path||'/studio/youtube','Mevcut yüklemeyi kontrol et','repair'));if(j.publication_status==='pending')timer=setTimeout(poll,3000);return}
  if(j.quality_held===true){setMedia({});setAction('quality-held','<p>Bu deneme inceleme için saklanıyor.</p>'+linkAction('/studio','Üretim planını aç'));return}
  if(ui==='repair'){setMedia({});setAction('repair',retryAction('Sorunlu sahneyi onar','repair'));return}

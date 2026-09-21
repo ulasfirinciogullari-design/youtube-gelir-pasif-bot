@@ -210,8 +210,46 @@ def test_daily_limit_does_not_reset_any_provider_counter(ready):
     history = holds._raw({'version': 1, 'days': {n.day_key: holds._sha(value)}})
     n.client.set(holds.HISTORY_KEY, history); n.client.set(holds.HISTORY_ANCHOR, holds._sha(history))
     before = _all(n.client)
-    assert holds.hold_failed_episode(n.profile)['status'] == 'daily_hold_limit'
+    assert holds.hold_failed_episode(n.profile) == {
+        'status': 'daily_hold_limit', 'root_task_id': SOURCE,
+        'profile_revision': n.profile['profile_revision'],
+        'retry_after': (NOW + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0).isoformat()}
     assert _all(n.client) == before
+
+
+@pytest.fixture
+def overnight_ready(policy, request):
+    # Both the original funding window and the original hold policy cover
+    # midnight; this test never renews or edits commissioned accounting.
+    policy['valid_until'] = '2026-09-10T12:00:00Z'
+    n = request.getfixturevalue('ready')
+    n.hold_policy['valid_until'] = included._stamp(NOW + timedelta(hours=20))
+    return n
+
+
+def test_ordinary_maintenance_reconsiders_daily_limit_after_utc_midnight(overnight_ready):
+    n = overnight_ready; commission(n)
+    roots = ['10000000-0000-4000-8000-00000000000' + str(i) for i in range(3)]
+    value = holds._raw(roots)
+    n.client.set(n.day_key, value)
+    history = holds._raw({'version': 1, 'days': {n.day_key: holds._sha(value)}})
+    n.client.set(holds.HISTORY_KEY, history); n.client.set(holds.HISTORY_ANCHOR, holds._sha(history))
+    before = _all(n.client)
+    channel = n.profile['channel_id']
+    assert holds.maintain_quality_holds([n.profile])['channels'][channel]['status'] == 'daily_hold_limit'
+    assert _all(n.client) == before
+    tomorrow = (NOW + timedelta(days=1)).replace(hour=0, minute=1, second=0, microsecond=0)
+    n.foundation.clock = lambda: tomorrow
+    assert holds.maintain_quality_holds([n.profile])['channels'][channel]['status'] == 'held_unpublished'
+    assert n.client.get(n.day_key) == value
+    next_day_key = holds.DAY_PREFIX + channel + ':' + tomorrow.strftime('%Y-%m-%d')
+    assert json.loads(n.client.get(next_day_key)) == [SOURCE]
+    assert n.client.hget(n.state_key, 'next_due') == before[n.state_key][1]['next_due']
+    assert n.client.hget(n.state_key, 'cursor') == before[n.state_key][1]['cursor']
+    after = _all(n.client)
+    assert all(after[k] == v for k, v in before.items() if k.startswith('youtube_studio:{production_spend}:'))
+    assert json.loads(n.client.get(included.JOURNAL_KEY))['requests'] == json.loads(before[included.JOURNAL_KEY][1])['requests']
+    assert json.loads(n.client.get(holds.HOLD_PREFIX + SOURCE))['publish_eligible'] is False
 
 
 def test_expired_policy_stays_stopped_without_renewal_or_budget_writes(ready):

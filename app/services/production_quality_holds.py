@@ -387,7 +387,10 @@ def hold_failed_episode(profile, *, dry_run=False):
             and len(set(day)) == len(day) and all(type(v) is str and runtime._JOB_ID.fullmatch(v) for v in day)
             and root not in day and (day_raw is None or pipe.pttl(day_key) == -1))
         if len(day) >= policy['max_holds_per_day']:
-            return {'status': 'daily_hold_limit'}
+            return {'status': 'daily_hold_limit', 'root_task_id': root,
+                    'profile_revision': profile['profile_revision'],
+                    'retry_after': (now + timedelta(days=1)).replace(
+                        hour=0, minute=0, second=0, microsecond=0).isoformat()}
         due = float(state.get('next_due', 'nan'))
         _require(math.isfinite(due) and due >= 0)
         _funding(foundation, channel_id)

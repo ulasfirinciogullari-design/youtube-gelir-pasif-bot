@@ -98,6 +98,14 @@ authorize publication. A successful plan enters the existing promotion and
 ordinary render pipeline; its script, audio, visuals and publication must still
 pass the full independent checks. The dashboard shows the current attempt count.
 
+The separate failed-episode daily cap reports the exact paused root, profile
+revision and next UTC midnight to the completed-tick observer. This is status
+information only: it clears no pause and changes no counter, reservation or
+cadence. Ordinary maintenance reevaluates the same failed episode on a new UTC
+day, against all current eligibility and funding checks, retaining the previous
+day's receipts and unknown provider outcomes. Studio uses only a fresh matching
+observation to distinguish this automatic wait from an owner-action pause.
+
 Rollout is explicit: `STUDIO_SERIES_MULTIPLE_ATTEMPTS_ENABLED` defaults to false.
 Deploy protocol support to every worker and remove old deployments before enabling
 it on the production worker. This flag controls admission of additional attempts;
