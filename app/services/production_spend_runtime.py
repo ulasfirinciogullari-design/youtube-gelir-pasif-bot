@@ -634,8 +634,13 @@ def budget_status(*, read_timeout=None):
         return {'enforced': False, 'status': 'not_enabled'}
     try:
         ledger = configured_ledger() if read_timeout is None else configured_ledger(read_timeout=read_timeout)
-        return {'enforced': True, 'status': 'active', **ledger.snapshot(),
-                'funding': ledger.funding_snapshot()}
+        result = {'enforced': True, 'status': 'active', **ledger.snapshot(),
+                  'funding': ledger.funding_snapshot()}
+        from app.services.commissioning_audio import status as commissioning_status
+        commissioning = commissioning_status(ledger.client)
+        if commissioning is not None:
+            result['commissioning_audio'] = commissioning
+        return result
     except SpendBlocked as error:
         return {'enforced': True, 'status': 'blocked', 'reason_code': str(error)}
 

@@ -66,6 +66,18 @@ def test_subscription_foundation_does_not_display_unknown_cash_as_zero_balance(u
     assert 'Önceki API faturaları' in body and '0.00 USD' not in body
 
 
+def test_commissioning_shows_its_own_reservation_without_claiming_a_monthly_budget(ui_modules, monkeypatch):
+    studio, _ = ui_modules
+    monkeypatch.setitem(sys.modules, 'app.services.production_spend_runtime',
+        types.SimpleNamespace(budget_status=lambda **_: {'enforced': True, 'status': 'active',
+            'commissioning_audio': {'mode': 'commissioning', 'reserved_list_cost_micro_usd': 6000},
+            'funding': {'mode': 'cash_disabled_unknown_history', 'historical_cash_micro': None}}))
+    body = studio._production_budget_notice()
+    assert 'Kurulum ve test modu' in body and '0.006 USD' in body
+    assert 'fatura toplamı değildir' in body and 'kurulum tamamlandıktan sonra' in body
+    assert 'Ek API harcaması kapalı' not in body
+
+
 def test_unauthenticated_studio_never_reads_budget(ui_modules, monkeypatch):
     studio, _ = ui_modules
     reader = Mock(side_effect=AssertionError('No unauthenticated budget access'))

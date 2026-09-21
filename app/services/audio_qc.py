@@ -2787,6 +2787,16 @@ def verify_audio_narration(
             raise AudioQCError('Included audio review language is unsupported')
         if not _tokens(expected_narration):
             raise ValueError('Expected narration must contain at least one word')
+        from app.services.commissioning_audio import transcribe_if_commissioned
+        api_key = str(getattr(settings, 'openai_api_key', '') or '')
+        response = transcribe_if_commissioned(audio_path, api_key=api_key, language=normalized_language)
+        if response is not None:
+            _checkpoint_provider_evidence(response, provider='openai', model='whisper-1',
+                language=normalized_language, secret=api_key, sink=provider_evidence_sink)
+            payload = _response_payload(response, 'OpenAI')
+            return _require_word_timing_evidence(compare_transcript(expected_narration, payload['text'],
+                words=payload['words'], language_code=payload['language'], provider='openai',
+                comparison_language=normalized_language), 'OpenAI')
         output = generate_included_audio(read_original_mp3(audio_path), purpose='blind_asr',
             language=normalized_language)
         return _require_word_timing_evidence(compare_transcript(expected_narration, output['text'],

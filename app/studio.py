@@ -3113,7 +3113,16 @@ def _production_budget_notice() -> str:
                 detail = 'Bütçe kaydı doğrulanamadığı için yeni ücretli üretim başlatılamıyor.'
         elif status.get('enforced') is True and status.get('status') == 'active':
             funding = status.get('funding')
-            if (type(funding) is dict and funding.get('mode') == 'cash_disabled_unknown_history'
+            commissioning = status.get('commissioning_audio')
+            if (type(commissioning) is dict and commissioning.get('mode') == 'commissioning'
+                    and type(commissioning.get('reserved_list_cost_micro_usd')) is int
+                    and 0 <= commissioning['reserved_list_cost_micro_usd'] <= 600_000):
+                title = 'Kurulum ve test modu'
+                amount = f"{commissioning['reserved_list_cost_micro_usd'] / 1_000_000:.3f}"
+                detail = ('Otomatik ses kontrolleri için ayrılan tutar: ' + amount
+                    + ' USD; bu bir fatura toplamı değildir. Abonelik kredileri ayrı takip edilir. '
+                    'Aylık işletme bütçesini kurulum tamamlandıktan sonra belirleyeceksin.')
+            elif (type(funding) is dict and funding.get('mode') == 'cash_disabled_unknown_history'
                     and funding.get('historical_cash_micro') is None
                     and funding.get('cash_spending_enabled') is False
                     and type(funding.get('new_cash_allowance_micro')) is int

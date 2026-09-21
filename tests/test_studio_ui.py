@@ -62,6 +62,7 @@ def ui_modules(monkeypatch):
     youtube_auth_module = types.ModuleType('app.services.youtube_auth')
     youtube_auth_module.STATE_TTL_SECONDS = 600
     youtube_auth_module.YouTubeAuthError = type('YouTubeAuthError', (Exception,), {})
+    youtube_auth_module.OAuthStateError = type('OAuthStateError', (youtube_auth_module.YouTubeAuthError,), {})
     youtube_auth_module.build_authorization_url = lambda *_a, **_k: 'https://accounts.example.test/'
     youtube_auth_module.complete_authorization = lambda *_a, **_k: None
     youtube_auth_module.connection_status = lambda *_a, **_k: {'configured': False}
