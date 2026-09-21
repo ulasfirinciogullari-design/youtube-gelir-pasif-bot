@@ -132,3 +132,21 @@ changes still fail; the receipt cannot be overwritten or issued a second time.
 Promotion requires this exact later proof when the original hashes differ.
 It remains an unpublished disposition and never grants quality or upload
 approval. A lost acknowledgement is resolved by reading the existing receipt.
+
+## Source evidence and the bounded story correction
+
+The included sentence audit keeps every actual model row and exact source
+identity. In the director, an invented, foreign, duplicated or noncontiguous
+quotation becomes a negative finding, even when the model's editorial verdict
+is positive. It cannot approve a sentence. Fresh, unlocked stories can send
+those findings through the existing single whole-story correction and full
+independent review. An immutable saved story cannot be rewritten by this path;
+a failed second review stops before media. Missing rows, changed narration and
+malformed response structure still fail closed. Other audit callers retain
+strict quotation validation by default.
+
+Audit version 4 also rejects a claimed prohibition when its cited text only
+describes cost or inconvenience. The narrow negative guard cannot grant
+approval or override a negative semantic verdict. Previous audit versions
+cannot confer a current story approval. No request cap, reservation, daily
+counter or publication gate changes with this correction.

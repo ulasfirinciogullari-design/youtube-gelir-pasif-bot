@@ -94,10 +94,21 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
     if rejected:
         with pytest.raises((RuntimeError, ValueError)) as raised:
             run_review()
-        if rejected in {'unsupported', 'uncertain', 'financing'} and allow_repair and not review_only:
+        if rejected in {'unsupported', 'uncertain', 'financing', 'quote'} and allow_repair and not review_only:
             assert isinstance(raised.value, director._WholeStoryRepairRequired)
             assert raised.value.source_claim_failures[0]['position'] == 2
-            assert raised.value.source_claim_failures[0]['assessment'] == ('unsupported' if rejected == 'financing' else rejected)
+            assert raised.value.source_claim_failures[0]['assessment'] == ('unsupported' if rejected in {'financing', 'quote'} else rejected)
+        if rejected == 'quote':
+            assert len(calls) == (1 if review_only else 2)
+            if review_only or not allow_repair:
+                assert not isinstance(raised.value, director._WholeStoryRepairRequired)
+                assert 'Source audit rejected unsupported narration before media' in str(raised.value)
+                details = raised.value.planning_diagnostics
+                assert details['publish_eligible'] is False
+                assert details['review']['factual_audit']['sentences'][2]['assessment'] == 'supported'
+                finding = details['review']['validation_findings'][0]
+                assert finding['position'] == 2 and finding['assessment'] == 'unsupported'
+                assert 'contiguous' in finding['reason']
         assert 'subscription_router_critic' not in (package.get('stock_scene_qc') or {})
     else:
         result = run_review()

@@ -20,7 +20,7 @@ _REVIEW_FIELDS = frozenset({
     'queries_are_english', 'queries_match_same_action', 'common_stock_clip_feasible',
     'continues_from_previous', 'leads_to_next', 'preserves_story_role',
     'adds_no_new_fact', 'positions', 'generator_calls', 'critic_calls', 'failures',
-    'factual_audit', 'editorial_review', 'sentences', 'assessment', 'narration',
+    'factual_audit', 'editorial_review', 'sentences', 'assessment', 'narration', 'validation_findings',
 })
 
 

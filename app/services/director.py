@@ -2744,7 +2744,7 @@ NON-NEGOTIABLE RULES:
                     critic_input, critic_schema, candidate_story, checked_sources)
                 reviewed = generate_text_json(factual_prompt, factual_schema, purpose='story_review')
                 critic, source_claim_review, factual_failures = included_factual_audit.validate(
-                    reviewed, candidate_story, checked_sources)
+                    reviewed, candidate_story, checked_sources, reject_invalid_quotations=True)
                 if factual_failures:
                     # The complete actual response is already in the existing
                     # request journal. Do not replace a negative finding with
@@ -2759,7 +2759,8 @@ NON-NEGOTIABLE RULES:
                         raise repair_error
                     from app.services.planning_diagnostics import story_planning_error
                     raise story_planning_error('Source audit rejected unsupported narration before media',
-                        scenes=candidate_story, sources=package.get('sources'), review=reviewed)
+                        scenes=candidate_story, sources=package.get('sources'),
+                        review={**reviewed, 'validation_findings': source_claim_review['validation_findings']})
             elif plan_provider == 'gemini':
                 try:
                     critic = generate_gemini_json(

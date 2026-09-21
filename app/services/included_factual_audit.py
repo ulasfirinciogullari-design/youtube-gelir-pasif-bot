@@ -11,8 +11,8 @@ import json
 import re
 
 
-VERSION = 3
-MARKER = 'INCLUDED_SENTENCE_SOURCE_AUDIT_V3'
+VERSION = 4
+MARKER = 'INCLUDED_SENTENCE_SOURCE_AUDIT_V4'
 
 # A narrow negative check, not a substitute for semantic source review. A
 # chronology-only quote cannot establish an explicitly narrated financing link,
@@ -29,6 +29,10 @@ _FINANCING_EVIDENCE = re.compile(
 _TIME_METRIC = re.compile(r'\b(?:times?|durations?)\b', re.IGNORECASE)
 _REDUCTION = re.compile(r'\b(?:cut(?:s|ting)?|reduc\w*|shorten\w*|less|lower\w*|decreas\w*|fell)\b', re.IGNORECASE)
 _PERCENTAGE = re.compile(r'%|\bpercent\b|\bper\s+cent\b', re.IGNORECASE)
+_PROHIBITION = re.compile(r'\b(?:forbidden|prohibit\w*|illegal|unlawful|banned|yasak\w*)\b', re.IGNORECASE)
+_PROHIBITION_EVIDENCE = re.compile(
+    r'\b(?:forbid\w*|prohibit\w*|illegal|unlawful|banned|yasak\w*)\b|'
+    r'\bnot\s+(?:allowed|permitted|legal)\b|\bmust\s+not\b', re.IGNORECASE)
 
 
 def _quantified_time_reduction(text):
@@ -105,6 +109,9 @@ def request(critic_prompt, critic_schema, scenes, pages):
           'moving 40% faster do not establish that transaction times fell by 40%. '
           'Require the narrated metric, direction, percentage and qualifications '
           'to be supported explicitly; do not approve a silently converted measurement. '
+          'COST IS NOT PROHIBITION: a process being costly, slow or impractical does '
+          'not establish that it is forbidden, illegal or prohibited. Reject that '
+          'stronger claim unless the source explicitly states the prohibition. '
           'CHRONOLOGY IS NOT FINANCING: early product success followed by later company '
           'growth does not show that those sales funded, financed or bankrolled a later '
           'product or empire. Even two accurate quotations about the early success and '
@@ -125,7 +132,7 @@ def request(critic_prompt, critic_schema, scenes, pages):
     return prompt, schema
 
 
-def validate(response, scenes, pages):
+def validate(response, scenes, pages, *, reject_invalid_quotations=False):
     """Return detached actual review and findings; malformed evidence fails closed."""
     lines, sources = _material(scenes, pages)
     _require(type(response) is dict and set(response) == {'factual_audit', 'editorial_review'}
@@ -145,16 +152,37 @@ def validate(response, scenes, pages):
         quotes = row['quotations']
         _require(type(quotes) is list and len(quotes) <= 4
             and (bool(quotes) or row['assessment'] != 'supported'))
-        seen = set()
+        seen, invalid_quotations = set(), False
         for quote in quotes:
             _require(type(quote) is dict and set(quote) == {'source_url', 'quote'})
             url, text = quote['source_url'], _plain(quote['quote'], 12, 1400)
-            _require(type(url) is str and url in sources and text in sources[url]['text']
-                and (url, text) not in seen)
+            _require(type(url) is str)
+            exact = url in sources and text in sources[url]['text'] and (url, text) not in seen
+            if not exact:
+                _require(reject_invalid_quotations is True)
+                invalid_quotations = True
             seen.add((url, text))
-        if row['assessment'] != 'supported':
+        if invalid_quotations:
+            # Keep the actual model row intact. This is a negative finding,
+            # never a reconstructed quotation or an acceptance exception.
+            finding = {'position': row['position'], 'assessment': 'unsupported',
+                'narration': row['narration'], 'reason':
+                'At least one supplied quotation is not unique exact contiguous text '
+                'from its cited retrieved source. This sentence is not verified. '
+                + row['reason']}
+            failures.append(finding)
+            validation_findings.append(deepcopy(finding))
+        elif row['assessment'] != 'supported':
             failures.append({'position': row['position'], 'assessment': row['assessment'],
                 'reason': row['reason'], 'narration': row['narration']})
+        elif (_PROHIBITION.search(row['narration'])
+                and not any(_PROHIBITION_EVIDENCE.search(q['quote']) for q in quotes)):
+            finding = {'position': row['position'], 'assessment': 'unsupported',
+                'narration': row['narration'], 'reason':
+                'The narration asserts a prohibition, but its exact quotations do '
+                'not state one. A costly or time-consuming process is not thereby forbidden.'}
+            failures.append(finding)
+            validation_findings.append(deepcopy(finding))
         elif (_FINANCING_CLAIM.search(row['narration'])
                 and not any(_FINANCING_EVIDENCE.search(q['quote']) for q in quotes)):
             finding = {'position': row['position'], 'assessment': 'unsupported',

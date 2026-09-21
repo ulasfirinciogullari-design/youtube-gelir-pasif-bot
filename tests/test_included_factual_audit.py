@@ -45,7 +45,8 @@ def test_actual_negative_findings_override_a_positive_editorial_review_without_c
     'changed_quote', 'foreign_url', 'duplicate_quote', 'empty_quotes_supported', 'empty_reason',
     'extra_field', 'unknown_verdict', 'extra_envelope', 'no_audit', 'noncontiguous_quote',
 ])
-def test_forged_partial_or_ambiguous_source_assessments_are_rejected(change):
+@pytest.mark.parametrize('repair_evidence', [False, True])
+def test_forged_partial_or_ambiguous_source_assessments_are_rejected(change, repair_evidence):
     value = response(); rows = value['factual_audit']['sentences']; row = rows[0]
     if change == 'missing_sentence':rows.pop()
     elif change == 'extra_sentence':rows.append(deepcopy(rows[-1]))
@@ -62,7 +63,62 @@ def test_forged_partial_or_ambiguous_source_assessments_are_rejected(change):
     elif change == 'extra_envelope':value['pass'] = True
     elif change == 'no_audit':value.pop('factual_audit')
     elif change == 'noncontiguous_quote':row['quotations'][0]['quote'] = 'The total cost ... Existing pennies remain legal tender.'
-    with pytest.raises(ValueError):audit.validate(value, LINES, PAGES)
+    if repair_evidence and change in {'changed_quote', 'foreign_url', 'duplicate_quote', 'noncontiguous_quote'}:
+        before = deepcopy(value)
+        critic, report, failures = audit.validate(value, LINES, PAGES, reject_invalid_quotations=True)
+        assert critic == {'positive': True} and not report['accepted']
+        assert [item['position'] for item in failures] == [0, 1, 2, 3]
+        assert failures[0]['assessment'] == 'unsupported'
+        assert report['validation_findings'] == [failures[0]]
+        assert report['sentences'] == before['factual_audit']['sentences'] and value == before
+    else:
+        with pytest.raises(ValueError):
+            audit.validate(value, LINES, PAGES, reject_invalid_quotations=repair_evidence)
+
+
+def test_reversed_real_sentences_are_negative_evidence_not_an_accepted_quotation():
+    first = 'A "star" sheet is used to replace the imperfect sheet.'
+    second = 'Reusing an exact serial number to replace an imperfect note is costly and time consuming.'
+    text = first + ' ' + second
+    pages = [{'url': URL, 'text': text, 'text_sha256': hashlib.sha256(text.encode()).hexdigest()}]
+    lines = [{'position': 0, 'narration': 'Re-running duplicate numbers is forbidden, so presses insert special star sheets.'}]
+    actual = {'editorial_review': {'causal_claim_supported': True}, 'factual_audit': {'sentences': [
+        {**lines[0], 'assessment': 'supported', 'reason': 'The quotations describe the replacement process.',
+         'quotations': [{'source_url': URL, 'quote': second + ' ' + first}]}]}}
+    before = deepcopy(actual)
+    with pytest.raises(ValueError):audit.validate(actual, lines, pages)
+    _, report, failures = audit.validate(actual, lines, pages, reject_invalid_quotations=True)
+    assert not report['accepted'] and len(failures) == 1
+    assert 'contiguous' in failures[0]['reason']
+    assert report['sentences'] == before['factual_audit']['sentences'] and actual == before
+
+
+@pytest.mark.parametrize('claim', ['forbidden', 'prohibited', 'illegal', 'unlawful', 'banned', 'yasaktır'])
+def test_cost_does_not_establish_a_prohibition_even_with_an_exact_quote_and_positive_review(claim):
+    text = 'Reusing an exact serial number to replace an imperfect note is costly and time consuming.'
+    lines = [{'position': 0, 'narration': f'Re-running duplicate numbers is {claim}.'}]
+    pages = [{'url': URL, 'text': text, 'text_sha256': hashlib.sha256(text.encode()).hexdigest()}]
+    actual = {'editorial_review': {'causal_claim_supported': True}, 'factual_audit': {'sentences': [
+        {**lines[0], 'assessment': 'supported', 'reason': 'Compare the claimed prohibition with its source.',
+         'quotations': [{'source_url': URL, 'quote': text}]}]}}
+    before = deepcopy(actual)
+    _, report, failures = audit.validate(actual, lines, pages)
+    assert not report['accepted'] and len(failures) == 1
+    assert 'prohibition' in failures[0]['reason'] and report['validation_findings'] == failures
+    assert report['sentences'][0]['assessment'] == 'supported' and actual == before
+
+
+@pytest.mark.parametrize('assessment', ['supported', 'unsupported', 'uncertain'])
+def test_prohibition_words_do_not_override_the_independent_semantic_verdict(assessment):
+    text = 'The rule prohibits reusing the same serial number.'
+    lines = [{'position': 0, 'narration': 'Reusing that serial number is prohibited.'}]
+    pages = [{'url': URL, 'text': text, 'text_sha256': hashlib.sha256(text.encode()).hexdigest()}]
+    actual = {'editorial_review': {}, 'factual_audit': {'sentences': [
+        {**lines[0], 'assessment': assessment, 'reason': 'The exact rule and affected number must match.',
+         'quotations': [{'source_url': URL, 'quote': text}]}]}}
+    _, report, failures = audit.validate(actual, lines, pages)
+    assert report['accepted'] is (assessment == 'supported')
+    assert bool(failures) is (assessment != 'supported') and report['validation_findings'] == []
 
 
 def test_no_quote_is_a_rejection_not_a_reason_to_invent_one():
