@@ -55,6 +55,7 @@ def _digest(message):
 def classify_failure(error, stage):
     """Called at the worker's terminal handler, before Celery serializes it."""
     from app.services.production_spend import SpendBlocked
+    from billiard.exceptions import WorkerLostError
 
     code, category = 'unclassified_failure', 'unclassified'
     tag = getattr(error, '_production_content_rejection', None)
@@ -73,6 +74,8 @@ def classify_failure(error, stage):
             code, category = str(error), 'review_unverified'
         else:
             code, category = 'spending_blocked', 'spending_blocked'
+    elif type(error) is WorkerLostError and stage in _REVIEW_STAGES | {'queued', 'render', 'plan_retry'}:
+        code, category = 'worker_process_lost', 'execution_interrupted'
     return {'version': 1, 'code': code, 'category': category, 'stage': stage,
             'error_sha256': _digest(str(error))}
 
@@ -101,4 +104,6 @@ def classified_hold_reason(job):
         return 'research_sources_unavailable' if error == code else None
     if category == 'review_unverified' and code == error == 'included_factual_audit_invalid' and stage == 'director_qc':
         return 'story_rejected'
+    if category == 'execution_interrupted' and code == 'worker_process_lost' and stage in _REVIEW_STAGES | {'queued', 'render', 'plan_retry'}:
+        return 'worker_interrupted'
     return None

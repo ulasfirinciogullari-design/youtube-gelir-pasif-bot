@@ -6,6 +6,12 @@ wording no longer decides whether a newly recorded content rejection can move
 the schedule forward. Old sealed jobs retain their original strict adapter;
 invalid or changed new contracts never fall back to text matching.
 
+Spoken word counts treat ASCII and typographic apostrophes inside a word
+consistently (`Laurer's` / `Laurer’s`). Decoding joins the exact observed words;
+it never rewrites narration or changes source evidence. The six-scene English
+writer still needs 66 words and the complete independent source, editorial,
+visual and audio reviews. A valid word count is not a quality approval.
+
 | Failure | Behavior |
 | --- | --- |
 | Exhausted story correction | Save the rejected story and stop this attempt; no whole-pipeline Celery rebuild after the bounded correction loop. |
@@ -14,6 +20,7 @@ invalid or changed new contracts never fall back to text matching.
 | Final duration, frame, breathing-room or motion rejection | Finish this attempt without recreating its already paid inputs. |
 | Unknown included reviewer response | Keep its occupied provider receipt and original uncertainty; do not replay or refund it. |
 | Credit/budget refusal | Preserve the spending error through voice synthesis; no seed retry, alternate provider or content skip based on that refusal. |
+| Confirmed render child-process loss | The surviving Celery parent records a terminal, unpublished failure atomically; the minute tick can release its active slot and apply the existing guarded hold policy without a dashboard visit. |
 | Unclassified failure, credentials or publication uncertainty | Retain the stop. Neither elapsed time nor an error prefix proves a job is safe to discard or upload again. |
 
 The existing minute tick may archive an eligible unpublished failure and release
@@ -29,6 +36,15 @@ next production to start. Lost worker/broker outcomes and providers that cannot
 confirm prior submissions still need evidence-backed reconciliation; blindly
 restarting them could duplicate charges or uploads. Expiring account access and
 the owner's eventual operating budget remain separate prerequisites.
+
+Process-loss handling requires Celery's actual `WorkerLostError` for the render
+task with early acknowledgement. It compares the running job and all owner,
+retention and publication fences atomically before recording failure. A late
+notice cannot overwrite a concurrent completion or cancellation. It does not
+use elapsed time as proof, requeue an old task, retry a provider or settle an
+unknown charge. Whole-host loss without a surviving parent, a missing notice
+during a registry outage, manual termination and ambiguous uploads remain
+outside this recovery path.
 
 The owner's existing **Hemen sıradaki videoyu üret** action also supports the
 first episode of an untouched, automatically promoted series. It checks the

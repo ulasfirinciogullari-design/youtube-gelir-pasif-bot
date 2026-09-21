@@ -8,7 +8,7 @@ from app.services.production_scheduler import maintain_production_series
 from app.services.youtube_auth import connection_status
 from app.services.youtube_automation import list_channel_profiles
 from app.services.production_spend_runtime import spending_task
-from celery.signals import task_postrun
+from celery.signals import task_postrun, task_failure
 
 
 @celery.task(name='app.production_tasks.prepare_series_batch', bind=True, acks_late=False,
@@ -134,3 +134,10 @@ def observe_production_tick(sender=None, state=None, retval=None, **_kwargs):
         record_tick(state, retval)
     except Exception:
         pass  # Owner status is never part of dispatch or financial authority.
+
+
+@task_failure.connect(weak=False)
+def observe_render_worker_loss(sender=None, task_id=None, exception=None, **_kwargs):
+    from app.services.production_worker_loss import record_worker_loss
+
+    record_worker_loss(sender, task_id, exception)

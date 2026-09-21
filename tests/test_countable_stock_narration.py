@@ -76,17 +76,35 @@ def test_only_bounded_unused_title_metadata_is_accepted(extra):
     assert value == before
 
 
-@pytest.mark.parametrize('damage', ['missing', 'extra', 'phrase', 'empty', 'punctuation', 'control', 'long', 'number', 'curly'])
+@pytest.mark.parametrize('damage', ['missing', 'extra', 'phrase', 'empty', 'punctuation', 'control', 'long', 'number'])
 def test_invalid_word_fields_cannot_be_silently_padded_truncated_or_normalized(damage):
     value = encoded(package()); row = value['scenes'][0]['narration_words']
     if damage == 'missing': row.pop('w11')
     elif damage == 'extra': row['w12'] = 'extra'
     else:
         row['w01'] = {'phrase': 'two words', 'empty': '', 'punctuation': '.',
-            'control': 'word\x00', 'long': 'x' * 81, 'number': 1, 'curly': 'Nintendo’s'}[damage]
+            'control': 'word\x00', 'long': 'x' * 81, 'number': 1}[damage]
     before = deepcopy(value)
     with pytest.raises(ValueError): words.decode(value)
     assert value == before
+
+
+@pytest.mark.parametrize('word', ['Laurer’s', 'don’t', 'Nintendo‘s'])
+def test_typographic_apostrophe_is_one_observed_word_and_never_changes_the_text(word):
+    value = encoded(package()); value['scenes'][0]['narration_words']['w01'] = word
+    before = deepcopy(value)
+    result = words.decode(value)
+    assert result['scenes'][0]['narration'].startswith(word + ' ')
+    assert director._word_count(word) == 1
+    assert director._word_count(result['scenes'][0]['narration']) == 11
+    assert sum(director._word_count(row['narration']) for row in result['scenes']) == 66
+    assert value == before and not any('approved' in str(k) for k in result)
+
+
+@pytest.mark.parametrize('text,expected', [("Laurer's barcode", 2), ('Laurer’s barcode', 2),
+    ('“scan the barcode”', 3), ('first second', 2), ('can’t scan', 2), ('Ankara’nın sokakları', 2)])
+def test_spoken_budget_uses_same_count_for_ascii_and_typographic_punctuation(text, expected):
+    assert director._word_count(text) == expected
 
 
 @pytest.mark.parametrize('damage', ['provider', 'fresh_false', 'fresh_truthy', 'uncalibrated', 'scene_count', 'generated', 'locked', 'no_targets', 'null_targets', 'bad_target', 'null_scenes'])

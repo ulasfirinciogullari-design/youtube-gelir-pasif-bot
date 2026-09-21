@@ -6,7 +6,8 @@ SLOTS = tuple(f'w{index:02d}' for index in range(1, 12))
 RULE = (
     'COUNTABLE ENGLISH NARRATION: return narration_words instead of narration. '
     'Fill w01 through w11 in spoken order with exactly one useful word per '
-    'field. Attach punctuation to its word; use ASCII apostrophes. Do not put '
+    'field. Attach punctuation to its word; ASCII and typographic apostrophes '
+    'inside a word are equivalent for counting. Do not put '
     'spaces, numbers used as word labels, empty padding or multiple words in '
     'a field. The eleven words must join into one natural complete sentence. '
     'Six scenes therefore contain 66 words, within the existing 62-66-word '

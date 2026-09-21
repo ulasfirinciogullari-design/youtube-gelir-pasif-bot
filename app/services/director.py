@@ -768,7 +768,9 @@ def _json(text: str) -> dict:
 
 
 def _word_count(text: str) -> int:
-    return len(re.findall(r"\b[\wÇĞİÖŞÜçğıöşü'-]+\b", text or '', flags=re.UNICODE))
+    # Typographic apostrophes inside a name/contraction do not add a spoken
+    # word. Count the observed text without normalizing or rewriting it.
+    return len(re.findall(r"\b[\wÇĞİÖŞÜçğıöşü'’‘-]+\b", text or '', flags=re.UNICODE))
 
 
 _TURKISH_SHORT_TTS_UNSAFE_PATTERN = re.compile(
