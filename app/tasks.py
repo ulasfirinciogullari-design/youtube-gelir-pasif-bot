@@ -4841,6 +4841,7 @@ def run_video_pipeline(
     generated_asset_candidate_journal: list[dict] = []
     staged_recovered_scenes: dict[str, list[dict]] | None = None
     staged_voice_contract: dict | None = None
+    media_started = False
 
     try:
         full_rebuild_request = _prepare_full_video_rebuild(
@@ -5065,6 +5066,10 @@ def run_video_pipeline(
             else 'landscape'
         )
         set_stage(self, task_id, 'voice_and_visuals', 24, 'Anlatıcı ve görsel adaylar paralel hazırlanıyor.')
+        # Even a failed/unknown voice response is media work. A later local
+        # exception must not send the whole research/voice job through Celery
+        # again merely because no paid video-generation slot was used.
+        media_started = True
         with ThreadPoolExecutor(max_workers=2) as stage_pool:
             if selected_recovery is not None:
                 voice_future = stage_pool.submit(deepcopy, selected_recovery['voice_result'])
@@ -8130,6 +8135,10 @@ def run_video_pipeline(
             bounded_error = FinalVisualQualityError(
                 f'Full rebuild stopped without automatic restart: {type(exc).__name__}'
             )
+            mark_failure(task_id, bounded_error)
+            raise bounded_error from exc
+        if media_started and not terminal_pre_media_error:
+            bounded_error = SpendBlocked('production_media_outcome_unverified')
             mark_failure(task_id, bounded_error)
             raise bounded_error from exc
         if (

@@ -63,18 +63,19 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
             assert director._SOURCE_IDENTITY_RULE in prepared.payload['messages'][1]['content'][0]['text']
             assert 'raw-material cost, face value, sale price and profit' in json.dumps(prepared.payload)
             from app.services.included_factual_audit import MARKER
+            from app.services.included_source_passages import catalogue
+            passage = catalogue([page(package['sources'][0]['url'])])[0]
             assert MARKER in json.dumps(prepared.payload)
             output = {'editorial_review': output, 'factual_audit': {'sentences': [
                 {'position': pos, 'narration': scene['narration'], 'assessment': 'supported',
                  'reason': 'The retrieved evidence supports the complete specific claim.',
-                 'quotations': [{'source_url': package['sources'][0]['url'],
-                    'quote': 'ACTUAL SOURCE TEXT FOR THE INDEPENDENT CRITIC'}]}
+                 'quotations': [{'passage_id': passage['passage_id']}]}
                 for pos, scene in enumerate(package['scenes'])]}}
             row = output['factual_audit']['sentences'][2]
             if rejected in {'unsupported', 'uncertain'}:
                 row.update(assessment=rejected, reason='Total production cost does not support a component cost claim.')
             elif rejected == 'quote':
-                row['quotations'][0]['quote'] = 'The model invented this quotation instead of citing retrieved text.'
+                row['quotations'][0]['passage_id'] = 'invented-source-passage'
             if omit_factual_positions:
                 for factual_row in output['factual_audit']['sentences'][2:]:
                     factual_row.pop('position')
@@ -98,21 +99,16 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
     if rejected:
         with pytest.raises((RuntimeError, ValueError)) as raised:
             run_review()
-        if rejected in {'unsupported', 'uncertain', 'financing', 'quote'} and allow_repair and not review_only:
+        if rejected in {'unsupported', 'uncertain', 'financing'} and allow_repair and not review_only:
             assert isinstance(raised.value, director._WholeStoryRepairRequired)
             assert raised.value.source_claim_failures[0]['position'] == 2
             assert raised.value.source_claim_failures[0]['assessment'] == ('unsupported' if rejected in {'financing', 'quote'} else rejected)
         if rejected == 'quote':
             assert len(calls) == (1 if review_only else 2)
-            if review_only or not allow_repair:
-                assert not isinstance(raised.value, director._WholeStoryRepairRequired)
-                assert 'Source audit rejected unsupported narration before media' in str(raised.value)
-                details = raised.value.planning_diagnostics
-                assert details['publish_eligible'] is False
-                assert details['review']['factual_audit']['sentences'][2]['assessment'] == 'supported'
-                finding = details['review']['validation_findings'][0]
-                assert finding['position'] == 2 and finding['assessment'] == 'unsupported'
-                assert 'contiguous' in finding['reason']
+            from app.services.production_spend import SpendBlocked
+            assert type(raised.value) is SpendBlocked
+            assert str(raised.value) == 'included_router_response_unverified'
+            assert not isinstance(raised.value, director._WholeStoryRepairRequired)
         assert 'subscription_router_critic' not in (package.get('stock_scene_qc') or {})
     else:
         result = run_review()

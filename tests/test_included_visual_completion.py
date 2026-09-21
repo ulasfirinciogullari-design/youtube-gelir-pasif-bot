@@ -159,7 +159,7 @@ def test_link_ack_loss_never_replays_either_provider_request(case, monkeypatch, 
         if commit: original(*args)
         raise ConnectionError('Lost completion link ACK')
     monkeypatch.setattr(completion, 'link_completed_review', uncertain)
-    with pytest.raises(ConnectionError): run(case)
+    with pytest.raises(SpendBlocked, match='included_visual_completion_unverified'): run(case)
     monkeypatch.setattr(completion, 'link_completed_review', original)
     assert run(case) == case.complete
     assert len(case.calls) == 2
@@ -250,7 +250,7 @@ def test_untrusted_transport_never_becomes_a_completion(case, monkeypatch, probl
 def test_unlinked_completed_receipt_cannot_bypass_current_authority_or_integrity(case, monkeypatch, changed):
     def stop_before_link(*_): raise ConnectionError('Lost ACK before link')
     monkeypatch.setattr(completion, 'link_completed_review', stop_before_link)
-    with pytest.raises(ConnectionError): run(case)
+    with pytest.raises(SpendBlocked, match='included_visual_completion_unverified'): run(case)
     client = case.ledger.client
     if changed == 'channel':
         client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({'id': CHANNEL,

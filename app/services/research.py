@@ -77,6 +77,10 @@ def _research_json_schema(
                 'maxItems': 3,
             },
             'ai_prompt': {'type': ['string', 'null']},
+            # Optional writer self-assessment returned by some routed models.
+            # _parse_json_payload discards it; only the independent director
+            # and actual footage review can establish visual suitability.
+            'visual_queries_match_narrative': {'type': 'boolean'},
         },
         'required': ['narration', 'visual_queries', 'ai_prompt'],
         'additionalProperties': False,

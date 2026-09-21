@@ -24,6 +24,10 @@ SOURCE_PAIRS = (
      'https://about.ups.com/us/en/newsroom/press-releases/people-led/iconic-ups-brown-delivery-vehicles-receive-personal-update.html'),
     ('https://www.fedex.com/en-us/about/history.html',
      'https://www.fedex.com/en-il/about/company-info/history.html'),
+    ('https://www.aboutamazon.com/news/books-and-authors/books-are-in-our-dna',
+     'https://www.aboutamazon.com/workplace/facilities'),
+    ('https://ikeamuseum.com/en/explore/the-story-of-ikea/the-worlds-biggest-restaurant/',
+     'https://ikeamuseum.com/en/explore/the-story-of-ikea/ikea-in-stockholm/'),
 )
 EVERGREEN_SOURCES = tuple(url for pair in SOURCE_PAIRS[:2] for url in pair)
 MAX_PAGES = 6

@@ -10,6 +10,7 @@ import hashlib
 import json
 
 from app.services.production_spend import SpendBlocked
+from app.services.included_stock_pool import _local_transaction
 
 OMITTABLE = frozenset({'receiving_interface_visible',
     'recurring_identity_continuity_applicable', 'recurring_identity_continuity_matches'})
@@ -124,6 +125,7 @@ def _failure(pipe, ledger, identity, prepared):
     return hashlib.sha256(raw.encode()).hexdigest(), body
 
 
+@_local_transaction
 def link_completed_review(ledger, context, original, repair):
     """Anchor a completed separate request; neither reservation is refunded."""
     from app.services.production_included_router import _raw, _sha, _result
@@ -152,6 +154,7 @@ def link_completed_review(ledger, context, original, repair):
         ledger._ack(pipe, [True, True])
 
 
+@_local_transaction
 def cached_completed_review(ledger, context, prepared):
     """Recover only a completed deterministic receipt, never a new send permit.
 

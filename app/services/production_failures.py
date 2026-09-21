@@ -23,7 +23,8 @@ _CONTENT_CODES = {
 }
 _REVIEW_CODES = frozenset({'included_router_response_unverified',
     'included_router_previous_outcome_unknown', 'prepaid_audio_response_unverified',
-    'prepaid_audio_previous_outcome_unknown', 'included_stock_pool_unverified'})
+    'prepaid_audio_previous_outcome_unknown', 'included_stock_pool_unverified',
+    'included_visual_completion_unverified'})
 _SOURCE_CODES = frozenset({'included_research_unconsulted_source',
     'included_research_primary_source_required', 'included_research_primary_source_unavailable'})
 
@@ -68,7 +69,9 @@ def classify_failure(error, stage):
         code, category = str(error), 'review_unverified'
     elif isinstance(error, SpendBlocked):
         # These are fixed provider protocol codes, not prose or substrings.
-        if str(error) in _SOURCE_CODES and stage == 'research':
+        if str(error) == 'production_media_outcome_unverified' and stage in _AUDIO_STAGES | _VISUAL_STAGES | {'render'}:
+            code, category = str(error), 'review_unverified'
+        elif str(error) in _SOURCE_CODES and stage == 'research':
             code, category = str(error), 'source_unavailable'
         elif str(error) in _REVIEW_CODES and stage in _REVIEW_STAGES:
             code, category = str(error), 'review_unverified'
@@ -94,6 +97,9 @@ def classified_hold_reason(job):
     code, category = evidence['code'], evidence['category']
     if type(code) is not str or type(category) is not str:
         return None
+    if (code == error == 'production_media_outcome_unverified' and category == 'review_unverified'
+            and stage in _AUDIO_STAGES | _VISUAL_STAGES | {'render'}):
+        return 'review_unverified'
     # This storage-only wrapper used SpendBlocked as its error type before it
     # had its own classification. It never meant a cash/credit budget decision.
     # Preserve that terminal record; ordinary hold checks still verify the

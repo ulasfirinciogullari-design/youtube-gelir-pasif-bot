@@ -50,6 +50,7 @@ def _worker(pipeline, task_id, error, *, attempts=0, options=None, **overrides):
         _persisted_paid_create_slots=Mock(return_value=attempts),
         options=options or {'mode': 'production', 'format': 'shorts'},
         retry_dispatch_source_id=None, duration_minutes=0.5, full_rebuild_source_id=None,
+        media_started=False,
     )
     namespace.update(overrides)
     exec(compile(ast.fix_missing_locations(ast.Module(body=[function], type_ignores=[])),
@@ -164,6 +165,28 @@ def test_ordinary_pre_media_retry_contract_is_preserved(registry, pipeline, retr
         assert stage.call_count == retries
         assert all(call.args[2] == 'plan_retry' for call in stage.call_args_list)
         mark.assert_called_once()
+    finally:
+        app.close()
+
+
+@pytest.mark.parametrize('error', [RuntimeError('Local observation failed'),
+                                 ConnectionError('Unknown storage acknowledgment')])
+def test_no_whole_pipeline_replay_after_voice_even_without_a_paid_video_slot(registry, error):
+    _, client = registry
+    job = studio_state.get_job(TASK_ID)
+    job['stage'] = 'visual_qc'
+    client.set(studio_state.JOB_PREFIX + TASK_ID, json.dumps(job))
+    app, task, fail, mark, stage = _worker('run_video_pipeline', TASK_ID, error, media_started=True)
+    try:
+        result = task.apply(task_id=TASK_ID, throw=False)
+        assert result.state == 'FAILURE' and type(result.result) is SpendBlocked
+        assert str(result.result) == 'production_media_outcome_unverified'
+        fail.assert_called_once(); mark.assert_called_once(); stage.assert_not_called()
+        failed = studio_state.get_job(TASK_ID)
+        assert failed['audio_candidate_checkpoint'] == job['audio_candidate_checkpoint']
+        assert failed['failure_stage'] == 'visual_qc' and failed['state'] == 'FAILURE'
+        from app.services.production_failures import classified_hold_reason
+        assert classified_hold_reason(failed) == 'review_unverified'
     finally:
         app.close()
 
