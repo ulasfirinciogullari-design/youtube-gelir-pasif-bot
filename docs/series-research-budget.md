@@ -1,8 +1,9 @@
 # Funded next-series research
 
-With spend enforcement enabled, draft-series research uses OpenAI
-`gpt-4.1-mini` through the existing server credential. This small, separate
-route proposes at most four source-backed topics. Script, critic, media and
+An explicitly commissioned included RouteLLM subscription can fund draft-series
+research over actually retrieved primary pages. The separately priced OpenAI
+`gpt-4.1-mini` search route requires its own reconciled funding. Each planning
+request proposes at most four source-backed topics. Script, critic, media and
 narration routes keep their own configuration and funding requirements.
 No subscription is assumed to include API cash or automatic overage.
 
@@ -19,9 +20,11 @@ execution claim and frozen request context must still match. The planner
 checks capacity again before writing its pending/daily model attempt. A known
 budget rejection there leaves those two records unused. An already dispatched
 task remains a durable dispatch record and is never automatically resent.
-The normal daily scheduler can consider a later new attempt if no active or
-ready pending batch exists. A terminal uncertain batch can be retired on a
-later UTC day only through the archival checks described below.
+The normal scheduler can consider a later, distinct attempt if no active or
+ready pending batch exists. Each channel has at most three scheduled planning
+attempts per UTC day, at least thirty minutes between starts, through the
+archival and execution checks below. These limits never replace provider,
+channel or financial capacity checks.
 
 Immediately before the one HTTP request, the adapter reserves the same quoted
 upper bound and funding atomically. It rechecks current authority after that
@@ -67,20 +70,39 @@ Synthetic HTTP/Redis tests demonstrate dispatch and accounting behavior;
 they do not establish live model quality, account access or publication.
 
 
-## Terminal planning failures on later days
+## Bounded recovery after terminal planning failures
 
 A completed planner can retain an uncertain provider outcome without blocking
-new planning forever. On a later UTC day, the ordinary scheduler checks the
-original pending/daily equality, permanent execution claim and terminal
-`finished` dispatch with outcome `uncertain`. It archives the exact pending
-and dispatch bytes, original claim and digest before deleting only the active
-pending pointer in one watched transaction. The original daily, execution,
-funding and provider records stay occupied and byte-for-byte intact. Unknown
-costs remain unknown. The next ordinary tick may reserve a distinct new day's
-plan through all existing authority and capacity checks; the old task/request
-is never resent. A same-day attempt, unknown worker/broker outcome, changed
-record, missing claim or expiring record cannot take this path. Archiving does
-not prepare a video, approve content, advance cadence or authorize publication.
+new planning for the rest of the day. The ordinary scheduler checks the exact
+pending/daily equality, permanent execution claim, and terminal `finished`
+dispatch whose outcome matches the failed or uncertain pending record. It
+archives the exact pending and dispatch bytes, original claim and digest before
+deleting only the active pending pointer in one watched transaction. The original
+daily, execution, funding and provider records stay occupied and byte-for-byte
+intact. Unknown costs remain unknown; a later independent request consumes its
+own reservation even if the provider may have charged for an earlier failure.
+
+The first attempt retains the existing v1 identities. Attempts two and three
+use a v2 dispatch binding with `preparation_slot`, distinct task IDs, and
+`:attempt:2` or `:attempt:3` daily/dispatch keys. They are never new deliveries
+of the previous task. All preceding same-day attempts must be verifiably
+finished, with no gaps in their permanent history. A ready pending batch still
+blocks further planning until consumed or legitimately retired. An unresolved
+worker/broker outcome, missing claim, changed record or expiring receipt stays
+fenced. After the third failure, a new UTC day is required. Current channel,
+credential, consent, funding and capacity are checked again for every new task.
+
+Promotion reads the matching attempt's daily receipt and preserves all previous
+ones. Archiving does not prepare a video, approve content, change cadence or
+authorize publication. A successful plan enters the existing promotion and
+ordinary render pipeline; its script, audio, visuals and publication must still
+pass the full independent checks. The dashboard shows the current attempt count.
+
+Rollout is explicit: `STUDIO_SERIES_MULTIPLE_ATTEMPTS_ENABLED` defaults to false.
+Deploy protocol support to every worker and remove old deployments before enabling
+it on the production worker. This flag controls admission of additional attempts;
+all instances of the new release can consume already reserved v2 tasks, including
+during the flag rollout. No active or uncertain task needs to be cancelled.
 
 Included-provider settlement failures also retain a bounded encrypted copy of
 an already received response when possible. This is diagnostic evidence only;

@@ -73,7 +73,7 @@ def native(box, policy, monkeypatch):
     box.calls = []
     def send(prepared):
         box.calls.append(prepared)
-        assert len(json.loads(store.get(included.JOURNAL_KEY))['requests']) == 1
+        assert len(json.loads(store.get(included.JOURNAL_KEY))['requests']) == len(box.calls)
         body = envelope()
         body['choices'][0]['message']['content'] = json.dumps(box.answer)
         return response(prepared, payload=body)
@@ -117,6 +117,37 @@ def test_source_not_retrieved_cannot_become_a_series(native):
     native.answer['briefs'][0]['sources'][1]['source_id'] = 'never-retrieved'
     result = execute(enqueue(native))
     assert result['status'] != 'ready' and len(native.calls) == 1
+
+
+def test_second_scheduled_attempt_keeps_unknown_native_reservation_and_uses_new_task(native, monkeypatch):
+    from app.services import production_scheduler as scheduler
+    from unittest.mock import Mock
+    native.settings.studio_series_multiple_attempts_enabled = True
+    first = enqueue(native)
+    native.answer['language'] = 'invalid-language'
+    assert execute(first)['status'] == 'uncertain'
+    original = json.loads(native.client.get(included.JOURNAL_KEY))['requests']
+    assert len(original) == 1 and all(row['outcome'] is None for row in original.values())
+    daily = native.client.get(planning._preparation_key(planning.DAILY_PREFIX, first))
+    later = NOW + timedelta(seconds=1801)
+    native.ledger.clock = lambda: later
+    monkeypatch.setattr(scheduler, '_now', lambda value: later.timestamp() if value is None else value)
+    sender = Mock()
+    assert scheduler.maintain_production_series([native.profile], [native.channel], sender)['channels'][CHANNEL] == 'finished_uncertain_archived'
+    assert scheduler.maintain_production_series([native.profile], [native.channel], sender)['channels'][CHANNEL] == 'preparation_queued'
+    second = sender.call_args.kwargs['args'][0]
+    assert second['preparation_slot'] == 2 and second['task_id'] != first['task_id']
+    native.answer['language'] = 'en'
+    assert execute(second)['status'] == 'ready', native.errors
+    requests = json.loads(native.client.get(included.JOURNAL_KEY))['requests']
+    assert len(requests) == len(native.calls) == 2
+    assert all(requests[key] == row for key, row in original.items())
+    assert sum(row['outcome'] is None for row in requests.values()) == 1
+    assert native.client.get(planning._preparation_key(planning.DAILY_PREFIX, first)) == daily
+    assert native.ledger.snapshot()['cash_spending_enabled'] is False
+    before = snapshot(native.client)
+    assert execute(second)['status'] == 'execution_already_claimed'
+    assert snapshot(native.client) == before and len(native.calls) == 2
 
 
 def test_scheduler_can_preflight_without_holding_a_model_key(native):

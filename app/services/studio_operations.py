@@ -69,6 +69,10 @@ def read_series_preparation(channel_id, profile_revision, *, client=None, now=No
         today = datetime.fromtimestamp(time.time() if now is None else now, timezone.utc).date()
         if day > today:
             return None
-        return {'status': value['status'], 'daily_wait': value['status'] == 'failed' and day == today}
+        slot = value.get('preparation_slot', 1)
+        if type(slot) is not int or slot not in (1, 2, 3):
+            return None
+        return {'status': value['status'], 'attempt_number': slot,
+                'daily_wait': value['status'] in {'failed', 'uncertain'} and day == today and slot == 3}
     except Exception:
         return None

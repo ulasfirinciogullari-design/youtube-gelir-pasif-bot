@@ -119,7 +119,7 @@ def read_context(pipe, task_id, *, require_pending=True):
     _require(stored == expected)
     if require_pending:
         pending_key = planning.PENDING_PREFIX + channel_id
-        daily_key = planning.DAILY_PREFIX + channel_id + ':' + binding['day']
+        daily_key = planning._preparation_key(planning.DAILY_PREFIX, binding)
         pipe.watch(pending_key, daily_key)
         raw = pipe.get(pending_key)
         _require(raw is not None and pipe.get(daily_key) == raw
@@ -130,6 +130,7 @@ def read_context(pipe, task_id, *, require_pending=True):
         _require(pending.get('status') == 'reserved' and pending.get('provider') == expected_provider
             and pending.get('model') == expected_model
             and pending.get('channel_id') == channel_id and pending.get('day') == binding['day']
+            and planning._preparation_slot(pending) == planning._preparation_slot(binding)
             and pending.get('profile_revision') == binding['profile_revision']
             and pending.get('context_sha256') == planning._digest(planning._context(profile, channel)))
     return expected

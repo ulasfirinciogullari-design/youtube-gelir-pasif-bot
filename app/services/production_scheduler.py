@@ -19,12 +19,15 @@ from app.services.channel_production import (
 )
 from app.services.production_next_series import (
     PENDING_PREFIX, DAILY_PREFIX, PREPARATION_DISPATCH_PREFIX, _FLAGS, _context, _digest, _execution_guard, _execution_keys,
-    _json, _object, _planning_channel_identity, _require, prepare_next_series,
+    _json, _object, _planning_channel_identity, _preparation_binding, _preparation_key,
+    _preparation_slot, _require, prepare_next_series,
 )
 from app.services.production_series_promotion import promote_ready_series, retire_stale_ready_batch
 
 
 MAX_LINKED_CHANNELS = 10
+MAX_PREPARATIONS_PER_DAY = 3
+PREPARATION_INTERVAL_SECONDS = 1800
 
 
 def _client():
@@ -100,12 +103,80 @@ def _mark_dispatch(client, key, original, status, *, outcome=None, delivery_only
         pass  # original durable reservation still forbids another enqueue
 
 
-def retire_finished_uncertain_batch(client, channel_id, expected_revision, *, now):
-    """Let a later day's ordinary planning proceed after a finished failure.
+def _terminal_preparation(pipe, channel_id, day, slot):
+    """Read one completed attempt; never infer completion from delivery or age."""
+    identity = {'channel_id': channel_id, 'day': day}
+    if slot > 1:
+        identity['preparation_slot'] = slot
+    daily_key = _preparation_key(DAILY_PREFIX, identity)
+    dispatch_key = _preparation_key(PREPARATION_DISPATCH_PREFIX, identity)
+    pipe.watch(daily_key, dispatch_key)
+    daily_raw, dispatch_raw = pipe.get(daily_key), pipe.get(dispatch_key)
+    if dispatch_raw is None:
+        _require(daily_raw is None)
+        return None
+    dispatch = _object(dispatch_raw)
+    if dispatch.get('status') != 'finished' or dispatch.get('outcome') not in {'failed', 'uncertain', 'ready'}:
+        return {'blocked': 'preparation_already_reserved'}
+    binding = _preparation_binding(dispatch)
+    keys = _execution_keys(binding)
+    execution_key = keys[1]
+    pipe.watch(execution_key)
+    pending = _object(daily_raw)
+    _require(keys[0] == dispatch_key and binding['channel_id'] == channel_id and binding['day'] == day
+             and _preparation_slot(binding) == _preparation_slot(pending) == slot
+             and pending.get('version') == 1 and type(pending['version']) is int
+             and pending.get('status') == dispatch['outcome'] and pending.get('channel_id') == channel_id
+             and pending.get('day') == day and binding['profile_revision'] == pending.get('profile_revision')
+             and dispatch.get('connection_id') == pending.get('connection_id')
+             and isinstance(pending.get('attempt_id'), str) and re.fullmatch('[0-9a-f]{32}', pending['attempt_id'])
+             and all(type(pending.get(k)) is type(v) and pending[k] == v for k, v in _FLAGS.items())
+             and pipe.get(execution_key) == binding['token']
+             and all(pipe.pttl(key) == -1 for key in (daily_key, dispatch_key, execution_key)))
+    if pending['status'] == 'uncertain':
+        _require(pending.get('error_code') == 'model_outcome_uncertain')
+    elif pending['status'] == 'failed':
+        _require(pending.get('error_code') in {'invalid_model_output', 'no_source_backed_batch', 'editorial_context_changed'})
+    created = datetime.fromisoformat(pending['created_at'])
+    _require(created.tzinfo is not None and created.utcoffset().total_seconds() == 0
+             and created.date().isoformat() == day)
+    _require(type(dispatch.get('created_at')) in (int, float))
+    started = _now(dispatch['created_at'])
+    _require(datetime.fromtimestamp(started, timezone.utc).date().isoformat() == day)
+    return {'pending': pending, 'daily_raw': daily_raw, 'dispatch_raw': dispatch_raw,
+            'binding': binding, 'available_at': max(created.timestamp(), started) + PREPARATION_INTERVAL_SECONDS}
+
+
+def _next_preparation_slot(pipe, channel_id, day, now):
+    """Three distinct identities per UTC day; occupied or missing history fences."""
+    identities = [{'channel_id': channel_id, 'day': day,
+                   **({'preparation_slot': slot} if slot > 1 else {})}
+                  for slot in range(1, MAX_PREPARATIONS_PER_DAY + 1)]
+    all_keys = [[_preparation_key(prefix, identity) for prefix in (DAILY_PREFIX, PREPARATION_DISPATCH_PREFIX)]
+                for identity in identities]
+    pipe.watch(*(key for pair in all_keys for key in pair))
+    for slot in range(1, MAX_PREPARATIONS_PER_DAY + 1):
+        previous = _terminal_preparation(pipe, channel_id, day, slot)
+        if previous is None:
+            later = [key for pair in all_keys[slot:] for key in pair]
+            _require(not later or pipe.exists(*later) == 0)
+            return slot, None
+        if previous.get('blocked'):
+            return None, previous['blocked']
+        if getattr(settings, 'studio_series_multiple_attempts_enabled', False) is not True:
+            return None, 'daily_fenced'
+        if now < previous['available_at']:
+            return None, 'preparation_cooldown'
+    return None, 'daily_preparation_limit'
+
+
+def retire_finished_planning_failure(client, channel_id, expected_revision, *, now):
+    """Archive a finished failure before a distinct bounded planning attempt.
 
     Preserve the original daily/execution/provider records permanently. Only
     the active pending pointer is retired, after an atomic full archive. An
-    unknown broker or worker outcome, or a same-day attempt, is never retired.
+    unknown broker or worker outcome is never retired. Same-day work waits
+    thirty minutes between starts and cannot exceed three scheduled attempts.
     """
     day = datetime.fromtimestamp(now, timezone.utc).date().isoformat()
     pending_key = PENDING_PREFIX + channel_id
@@ -116,7 +187,7 @@ def retire_finished_uncertain_batch(client, channel_id, expected_revision, *, no
         _require(profile['profile_revision'] == expected_revision and remaining <= 2)
         raw = pipe.get(pending_key)
         pending = _object(raw)
-        _require(pending.get('status') == 'uncertain' and pending.get('error_code') == 'model_outcome_uncertain'
+        _require(pending.get('status') in {'uncertain', 'failed'}
                  and pending.get('channel_id') == channel_id and type(pending.get('version')) is int
                  and pending['version'] == 1
                  and all(type(pending.get(k)) is type(v) and pending[k] == v for k, v in _FLAGS.items())
@@ -124,31 +195,26 @@ def retire_finished_uncertain_batch(client, channel_id, expected_revision, *, no
                  and re.fullmatch(r'\d{4}-\d{2}-\d{2}', pending['day'])
                  and isinstance(pending.get('attempt_id'), str)
                  and re.fullmatch('[0-9a-f]{32}', pending['attempt_id']))
-        if pending['day'] >= day:
-            return 'uncertain'
-        daily_key = DAILY_PREFIX + channel_id + ':' + pending['day']
-        # Resolve only the known terminal dispatch, never assume expiry means
-        # a running/unknown worker finished or that a model call was free.
-        dispatch_key = PREPARATION_DISPATCH_PREFIX + channel_id + ':' + pending['day']
-        pipe.watch(daily_key, dispatch_key)
-        dispatch_raw = pipe.get(dispatch_key)
-        dispatch = _object(dispatch_raw)
-        binding = {k: dispatch.get(k) for k in ('version', 'channel_id', 'profile_revision', 'day', 'task_id', 'token')}
-        resolved = _execution_keys(binding)
-        execution_key = resolved[1]
+        _require(pending['day'] <= day)
+        if pending['day'] == day and getattr(settings, 'studio_series_multiple_attempts_enabled', False) is not True:
+            return pending['status']
+        slot = _preparation_slot(pending)
+        prior = _terminal_preparation(pipe, channel_id, pending['day'], slot)
+        _require(prior is not None and not prior.get('blocked') and prior['daily_raw'] == raw
+                 and pipe.pttl(pending_key) == -1)
+        if pending['day'] == day:
+            if slot >= MAX_PREPARATIONS_PER_DAY:
+                return 'daily_preparation_limit'
+            if now < prior['available_at']:
+                return pending['status']
+        binding, dispatch_raw = prior['binding'], prior['dispatch_raw']
         archive_key = 'youtube_studio:next_series:v1:superseded:' + channel_id + ':' + pending['attempt_id']
         anchor_key = archive_key + ':anchor'
-        pipe.watch(execution_key, archive_key, anchor_key)
-        _require(resolved[0] == dispatch_key and dispatch.get('status') == 'finished'
-                 and dispatch.get('outcome') == 'uncertain' and binding['channel_id'] == channel_id
-                 and binding['day'] == pending['day'] and binding['profile_revision'] == pending.get('profile_revision')
-                 and dispatch.get('connection_id') == pending.get('connection_id')
-                 and pipe.get(execution_key) == binding['token'] and pipe.get(daily_key) == raw
-                 and all(pipe.pttl(key) == -1 for key in (pending_key, daily_key, dispatch_key, execution_key))
-                 and not pipe.exists(archive_key, anchor_key))
-        archive = {'version': 1, 'reason': 'finished_uncertain_previous_day', 'retired_at': now,
+        pipe.watch(archive_key, anchor_key)
+        _require(not pipe.exists(archive_key, anchor_key))
+        archive = {'version': 1, 'reason': 'finished_planning_failure', 'retired_at': now,
             'pending_batch': pending, 'original_pending_raw': raw, 'original_dispatch_raw': dispatch_raw,
-            'original_execution_claim': binding['token'], 'provider_outcome_still_unknown': True,
+            'original_execution_claim': binding['token'], 'provider_outcome_still_unknown': pending['status'] == 'uncertain',
             'daily_and_provider_records_preserved': True, **_FLAGS}
         pipe.multi()
         pipe.set(archive_key, _json(archive), nx=True)
@@ -157,27 +223,33 @@ def retire_finished_uncertain_batch(client, channel_id, expected_revision, *, no
         reply = pipe.execute()
         _require(type(reply) is list and len(reply) == 3 and reply[0] is True
                  and reply[1] is True and type(reply[2]) is int and reply[2] == 1)
-    return 'finished_uncertain_archived'
+    return 'finished_uncertain_archived' if pending['status'] == 'uncertain' else 'finished_failure_archived'
 
 
 def _reserve_preparation(channel_id, expected_revision, expected_connection, enqueue, now):
     client = _client()
     day = datetime.fromtimestamp(now, timezone.utc).date().isoformat()
-    binding = {'version': 1, 'channel_id': channel_id, 'profile_revision': expected_revision,
-               'day': day, 'task_id': str(uuid5(NAMESPACE_URL, f'youtube-series-preparation:{channel_id}:{day}')),
-               'token': uuid4().hex}
-    keys = _execution_keys(binding)
-    dispatch_key, execution_key, credential_key, index_key, epoch_key = keys
     with client.pipeline() as pipe:
-        pipe.watch(*keys, PROFILE_PREFIX + channel_id, OAUTH_CHANNEL_PREFIX + channel_id,
+        pipe.watch(PROFILE_PREFIX + channel_id, OAUTH_CHANNEL_PREFIX + channel_id,
                    CHANNEL_STATE_PREFIX + channel_id, PENDING_PREFIX + channel_id, DAILY_PREFIX + channel_id + ':' + day)
-        if pipe.get(dispatch_key) is not None:
-            return {'status': 'preparation_already_reserved'}
+        slot, blocked = _next_preparation_slot(pipe, channel_id, day, now)
+        if blocked:
+            return {'status': blocked}
+        suffix = f':attempt:{slot}' if slot > 1 else ''
+        binding = {'version': 2 if slot > 1 else 1, 'channel_id': channel_id,
+                   'profile_revision': expected_revision, 'day': day,
+                   'task_id': str(uuid5(NAMESPACE_URL, f'youtube-series-preparation:{channel_id}:{day}' + suffix)),
+                   'token': uuid4().hex}
+        if slot > 1:
+            binding['preparation_slot'] = slot
+        keys = _execution_keys(binding)
+        dispatch_key, execution_key, credential_key, index_key, epoch_key = keys
+        pipe.watch(*keys)
         profile, channel, _, remaining = _current(pipe, channel_id)
         _require(profile['profile_revision'] == expected_revision and channel['connection_id'] == expected_connection
                  and remaining <= 2 and pipe.get(execution_key) is None)
         pending_status, _ = _pending_status(pipe, channel_id, day)
-        if pending_status != 'available':
+        if pending_status not in {'available', 'daily_fenced'}:
             return {'status': pending_status}
         credential, epoch = pipe.get(credential_key), pipe.get(epoch_key)
         _require(isinstance(credential, str) and credential and pipe.sismember(index_key, channel_id)
@@ -253,10 +325,10 @@ def maintain_production_series(profiles, connections, enqueue_preparation, *, no
                     results[channel_id] = outcome['status']
                 else:
                     results[channel_id] = 'ready_waiting_for_series_end'
-            elif status == 'uncertain':
-                results[channel_id] = retire_finished_uncertain_batch(client, channel_id,
+            elif status in {'uncertain', 'failed'}:
+                results[channel_id] = retire_finished_planning_failure(client, channel_id,
                     profile['profile_revision'], now=now)
-            elif status != 'available':
+            elif status not in {'available', 'daily_fenced'}:
                 results[channel_id] = status
             else:
                 results[channel_id] = _reserve_preparation(channel_id, profile['profile_revision'],
@@ -281,7 +353,7 @@ def run_series_preparation(binding, actual_task_id, *, now=None):
         with client.pipeline() as pipe:
             pipe.watch(*keys, PROFILE_PREFIX + channel_id, OAUTH_CHANNEL_PREFIX + channel_id,
                        CHANNEL_STATE_PREFIX + channel_id, PENDING_PREFIX + channel_id,
-                       DAILY_PREFIX + channel_id + ':' + binding['day'])
+                       _preparation_key(DAILY_PREFIX, binding))
             if pipe.get(execution_key) is not None:
                 return {'status': 'execution_already_claimed', **_FLAGS}
             profile, channel, state, remaining = _current(pipe, channel_id)

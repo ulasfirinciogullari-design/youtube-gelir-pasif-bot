@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     studio_abacus_editorial_model: str = 'claude-haiku-4-5-20251001'
     # Existing subscription RouteLLM only; explicit durable commissioning required.
     studio_abacus_included_production: bool = False
+    studio_series_multiple_attempts_enabled: bool = False
     # Fixed audio model draws existing Abacus credits; separate explicit policy.
     studio_abacus_prepaid_audio: bool = False
     # Explicit synchronous retained-Capital review only; no automatic funding,

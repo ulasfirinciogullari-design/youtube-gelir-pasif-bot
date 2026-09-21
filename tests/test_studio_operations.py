@@ -75,8 +75,8 @@ def test_real_signal_handler_observes_only_the_tick_and_never_replays_it(monkeyp
 
 
 @pytest.mark.parametrize('revision,day,status,expected', [
-    ('current','2026-09-21','failed',{'status':'failed','daily_wait':True}),
-    ('current','2026-09-20','failed',{'status':'failed','daily_wait':False}),
+    ('current','2026-09-21','failed',{'status':'failed','daily_wait':False,'attempt_number':1}),
+    ('current','2026-09-20','failed',{'status':'failed','daily_wait':False,'attempt_number':1}),
     ('old','2026-09-21','ready',None), ('current','2026-09-22','ready',None),
     ('current','invalid','failed',None), ('current','2026-09-21','injected',None)])
 def test_planner_status_is_bound_to_current_profile_and_utc_day(revision, day, status, expected):
@@ -90,6 +90,16 @@ def test_dashboard_explicitly_shows_stale_worker_and_failed_series(ui, monkeypat
     assert 'Sunucudan güncel otomasyon sinyali gelmedi' in ui.ns['_operations_status']()
     html = ui.ns['_channel_overview']([{'channel_id':'UC_fixture','title':'Margin',
         'production_status':'exhausted','remaining_topics':0,
-        'series_preparation':{'status':'failed','daily_wait':True}}])
+        'series_preparation':{'status':'failed','daily_wait':True,'attempt_number':3}}])
     assert 'Yeni konu planı hazırlanamadı' in html and 'Günlük deneme sınırı bekleniyor' in html
+    assert 'Planlama denemesi 3/3' in html
     ui.forbidden.assert_not_called()
+
+
+@pytest.mark.parametrize('slot,expected', [(1,False), (2,False), (3,True), (4,None), (True,None)])
+def test_same_day_failure_waits_for_tomorrow_only_after_third_attempt(slot, expected):
+    client = store({'channel_id':'UC_fixture','profile_revision':'current','day':'2026-09-21',
+                    'status':'uncertain','preparation_slot':slot})
+    result = operations.read_series_preparation('UC_fixture','current',client=client,now=NOW)
+    assert result is None if expected is None else result['daily_wait'] is expected
+    client.set.assert_not_called()

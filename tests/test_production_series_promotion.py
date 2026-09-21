@@ -117,7 +117,7 @@ def case(production):
     evidence = _load('app/services/source_evidence.py', {})
     prep = _load('app/services/production_next_series.py', {
         **ns, 'normalize_evidence_sources': evidence['normalize_evidence_sources']})
-    ns['_planning_channel_identity'] = prep['_planning_channel_identity']
+    ns.update({name: prep[name] for name in ('_planning_channel_identity', '_preparation_key', '_preparation_slot')})
     prep['redis'] = ns['redis']
     prep['_configuration'] = Mock(return_value=('openai', 'configured-model', 'opaque-fixture-key'))
     profile = _profile(release_mode='public', require_thumbnail=True, series_id='first-series',
@@ -467,13 +467,13 @@ def test_full_retry_receipt_requires_actual_claimed_public_descendant(case):
     assert archive['public_proof']['lineage'] == [case.source_id, child_id]
 
 
-def test_only_pure_channel_identity_helper_is_imported_from_preparation():
+def test_only_pure_identity_and_attempt_key_helpers_are_imported_from_preparation():
     path = ROOT / 'app/services/production_series_promotion.py'
     tree = ast.parse(path.read_text(encoding='utf-8'))
     imports = [n for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)
                and n.module == 'app.services.production_next_series']
-    assert len(imports) == 1
-    assert [(name.name, name.asname) for name in imports[0].names] == [('_planning_channel_identity', None)]
+    assert {(name.name, name.asname) for node in imports for name in node.names} == {
+        ('_planning_channel_identity', None), ('_preparation_key', None), ('_preparation_slot', None)}
     assert not any(name in path.read_text(encoding='utf-8') for name in ('apply_async(', 'videos.insert(', 'OpenAI('))
 
 

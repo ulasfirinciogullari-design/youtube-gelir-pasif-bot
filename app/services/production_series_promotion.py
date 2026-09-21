@@ -124,11 +124,13 @@ def _text_key(value):
 
 
 def _batch(record, profile, channel, now):
-    from app.services.production_next_series import _planning_channel_identity
+    from app.services.production_next_series import _planning_channel_identity, _preparation_slot
     fields = {'version', 'status', 'attempt_id', 'day', 'channel_id', 'connection_id',
               'profile_revision', 'context_sha256', 'profile_sha256', 'channel_sha256',
               'provider', 'model', 'created_at', 'language', 'series_title', 'briefs', *_FLAGS}
-    _require(set(record) == fields and type(record['version']) is int and record['version'] == 1
+    _preparation_slot(record)
+    _require(set(record) in (fields, fields | {'preparation_slot'})
+             and type(record['version']) is int and record['version'] == 1
              and record['status'] == 'ready' and re.fullmatch(r'[0-9a-f]{32}', str(record['attempt_id']))
              and all(type(record[k]) is type(v) and record[k] == v for k, v in _FLAGS.items()),
              'series_batch_unapproved_contract_invalid')
@@ -241,12 +243,13 @@ def retire_stale_ready_batch(channel_id, expected_profile_revision, expected_att
     except SeriesPromotionError as error:
         if str(error) != 'series_batch_context_changed':
             raise
-    daily_key = DAILY_PREFIX + channel_id + ':' + pending['day']
+    from app.services.production_next_series import _preparation_key
+    daily_key = _preparation_key(DAILY_PREFIX, pending)
     _require(snapshot.read(daily_key) == pending_raw, 'series_attempt_receipt_missing')
     # A ready payload without a matching completed attempt is never enough
     # to release an uncertain modern worker. Legacy ready/daily pairs predate
     # the dispatch ledger and remain immutable in the archived record.
-    dispatch_raw = snapshot.read(_PREPARATION_DISPATCH_PREFIX + channel_id + ':' + pending['day'])
+    dispatch_raw = snapshot.read(_preparation_key(_PREPARATION_DISPATCH_PREFIX, pending))
     if dispatch_raw is not None:
         dispatch = _object(dispatch_raw)
         _require(dispatch.get('status') == 'finished' and dispatch.get('outcome') == 'ready'
@@ -593,7 +596,8 @@ def promote_ready_series(channel_id, expected_profile_revision, expected_attempt
         pending = _object(pending_raw, limit=32768)
         _require(pending.get('attempt_id') == expected_attempt_id, 'series_batch_changed')
         new_topics = _batch(pending, profile, channel, now)
-        daily_key = DAILY_PREFIX + channel_id + ':' + pending['day']
+        from app.services.production_next_series import _preparation_key
+        daily_key = _preparation_key(DAILY_PREFIX, pending)
         _require(snapshot.read(daily_key) == pending_raw, 'series_attempt_receipt_missing')
         epoch_key, history_key = EPOCH_PREFIX + channel_id, TOPIC_HISTORY_PREFIX + channel_id
         old_epoch_raw = snapshot.read(epoch_key)

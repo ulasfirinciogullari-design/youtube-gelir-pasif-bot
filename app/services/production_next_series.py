@@ -1,7 +1,8 @@
 """Prepare one source-cited pending batch, never promote or dispatch it.
 
-Reserved/uncertain attempts are durable fences, including across UTC dates.
-Only a definitive failed output permits a fresh attempt on a later day. A
+Reserved/uncertain executions are durable fences, including across UTC dates.
+Finished attempts may be archived by the bounded scheduler before a distinct
+attempt; their daily, execution and provider records remain occupied. A
 ready batch must be handled by a separate future promotion workflow: this
 module never appends topics, rotates profiles, or resets series counters.
 """
@@ -115,10 +116,34 @@ def _planning_channel_identity(channel):
             'title': channel.get('title') or '', 'description': channel.get('description') or ''}
 
 
+def _preparation_slot(record):
+    slot = record.get('preparation_slot', 1)
+    _require(type(slot) is int and slot in (1, 2, 3)
+             and ('preparation_slot' not in record or slot != 1))
+    return slot
+
+
+def _preparation_key(prefix, record):
+    slot = _preparation_slot(record)
+    _require(isinstance(record.get('channel_id'), str) and _ID.fullmatch(record['channel_id'])
+             and isinstance(record.get('day'), str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}', record['day']))
+    return prefix + record['channel_id'] + ':' + record['day'] + (f':attempt:{slot}' if slot > 1 else '')
+
+
+def _preparation_binding(record):
+    fields = ('version', 'channel_id', 'profile_revision', 'day', 'task_id', 'token')
+    result = {key: record.get(key) for key in fields}
+    if 'preparation_slot' in record:
+        result['preparation_slot'] = record['preparation_slot']
+    _execution_keys(result)
+    return result
+
+
 def _execution_keys(binding):
-    _require(isinstance(binding, dict) and set(binding) == {
-        'version', 'channel_id', 'profile_revision', 'day', 'task_id', 'token'}
-        and type(binding['version']) is int and binding['version'] == 1
+    fields = {'version', 'channel_id', 'profile_revision', 'day', 'task_id', 'token'}
+    _require(isinstance(binding, dict) and set(binding) in (fields, fields | {'preparation_slot'})
+        and type(binding['version']) is int
+        and binding['version'] == (2 if 'preparation_slot' in binding else 1)
         and isinstance(binding['channel_id'], str) and _ID.fullmatch(binding['channel_id'])
         and isinstance(binding['profile_revision'], str) and _ID.fullmatch(binding['profile_revision'])
         and isinstance(binding['day'], str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}', binding['day'])
@@ -126,7 +151,7 @@ def _execution_keys(binding):
         and re.fullmatch(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', binding['task_id'])
         and isinstance(binding['token'], str) and re.fullmatch(r'[0-9a-f]{32}', binding['token']))
     channel_id = binding['channel_id']
-    return [PREPARATION_DISPATCH_PREFIX + channel_id + ':' + binding['day'],
+    return [_preparation_key(PREPARATION_DISPATCH_PREFIX, binding),
             PREPARATION_EXECUTION_PREFIX + binding['task_id'], OAUTH_CREDENTIAL_PREFIX + channel_id,
             OAUTH_CHANNEL_INDEX, AUTH_EPOCH_KEY]
 
@@ -327,7 +352,7 @@ def _generate(context, configuration):
 
 def _outcome(record):
     return {key: record[key] for key in ('status', 'attempt_id', 'channel_id', 'profile_revision', 'day',
-            'series_title', 'language', 'briefs', 'error_code', *_FLAGS) if key in record}
+            'preparation_slot', 'series_title', 'language', 'briefs', 'error_code', *_FLAGS) if key in record}
 
 
 def _finish(client, pending_key, daily_key, reserved, result, *, profile_key, channel_key, profile_raw, channel_raw,
@@ -366,7 +391,8 @@ def prepare_next_series(profile, channel, *, now=None, execution_binding=None):
         client = redis.Redis.from_url(settings.redis_url, decode_responses=True)
         profile_key, channel_key = PROFILE_PREFIX + channel_id, OAUTH_CHANNEL_PREFIX + channel_id
         state_key = CHANNEL_STATE_PREFIX + channel_id
-        pending_key, daily_key = PENDING_PREFIX + channel_id, DAILY_PREFIX + channel_id + ':' + day
+        pending_key = PENDING_PREFIX + channel_id
+        daily_key = _preparation_key(DAILY_PREFIX, execution_binding)
         with client.pipeline() as pipe:
             pipe.watch(profile_key, channel_key, state_key, pending_key, daily_key, *execution_keys)
             profile_raw, channel_raw = pipe.get(profile_key), pipe.get(channel_key)
@@ -415,6 +441,8 @@ def prepare_next_series(profile, channel, *, now=None, execution_binding=None):
                       'profile_revision': profile['profile_revision'], 'context_sha256': _digest(context),
                       'profile_sha256': _digest(profile), 'channel_sha256': _digest(_planning_channel_identity(channel)),
                       'provider': configuration[0], 'model': configuration[1], 'created_at': instant.isoformat(), **_FLAGS}
+            if _preparation_slot(execution_binding) > 1:
+                record['preparation_slot'] = execution_binding['preparation_slot']
             reserved = _json(record)
             pipe.multi()
             pipe.set(daily_key, reserved, nx=True)
