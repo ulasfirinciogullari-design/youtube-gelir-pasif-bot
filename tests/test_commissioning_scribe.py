@@ -118,6 +118,16 @@ def test_native_english_pace_keeps_turkish_and_long_form_defaults():
     assert _voice_speed(60, language='en') == 1.01
 
 
+def test_unavailable_primary_preserves_actionable_secondary_mismatch(box, monkeypatch):
+    activate(box); whisper_setup.commission(box.client, box.policy)
+    box.sender.side_effect = httpx.ReadTimeout('unknown')
+    monkeypatch.setattr(scribe, '_send', Mock(return_value=json.dumps(payload('Hello their.')).encode()))
+    review = audio_qc.verify_audio_narration(box.path, 'Hello there.', language='en')
+    assert review['available'] is True and review['pass'] is False
+    assert review['provider'] == 'elevenlabs'
+    assert review['mismatch_details']['unexpected_words'] == ['their']
+
+
 @pytest.mark.parametrize('first_failure', ['transport_unknown', 'missing_timing'])
 def test_second_recognizer_can_verify_when_first_provider_unavailable_without_replaying_it(box, monkeypatch, first_failure):
     activate(box); whisper_setup.commission(box.client, box.policy)

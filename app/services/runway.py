@@ -1657,6 +1657,10 @@ def generate_scene(
     aspect_ratio = str(aspect_ratio).strip()
 
     seconds = max(2, min(int(round(duration)), 10))
+    from app.services.commissioning_video import generate_if_commissioned
+    commissioned = generate_if_commissioned(prompt_text, seconds, aspect_ratio)
+    if commissioned is not None:
+        return commissioned
     if prefer_gemini_omni:
         if str(aspect_ratio).strip() != _GEMINI_OMNI_ASPECT_RATIO:
             raise ValueError('Gemini Omni preference requires 9:16 output')

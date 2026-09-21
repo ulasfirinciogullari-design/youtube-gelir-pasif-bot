@@ -153,6 +153,8 @@ _EN_YEAR_UNITS = {
     'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
     'six': 6, 'seven': 7, 'eight': 8, 'nine': 9,
 }
+_EN_DECADES = {'twenties': 20, 'thirties': 30, 'forties': 40, 'fifties': 50,
+               'sixties': 60, 'seventies': 70, 'eighties': 80, 'nineties': 90}
 _EN_CARDINAL_SMALL = {'zero': 0, **_EN_YEAR_UNITS,
     **{k: v for k, v in _EN_YEAR_CENTURIES.items() if v < 20}}
 _EN_CARDINAL_SCALES = frozenset({'thousand', 'million', 'billion', 'trillion'})
@@ -1343,6 +1345,24 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
         remainder = None
         year_context = bool(index > 0 and tokens[index - 1] in _EN_YEAR_CUES
                             and value[matches[index - 1].end():matches[index].start()].isspace())
+        # ASR writes spoken "in the nineteen-fifties" as "in the 1950s".
+        # Require the complete century, decade, and local temporal cue; never
+        # guess an age, a count of banknotes, or a bare list of numbers.
+        decade_context = year_context or bool(index > 1 and tokens[index - 1] == 'the'
+            and tokens[index - 2] in _EN_YEAR_CUES
+            and value[matches[index - 2].end():matches[index - 1].start()].isspace()
+            and value[matches[index - 1].end():matches[index].start()].isspace())
+        if (century is not None and decade_context and index + 1 < len(tokens)
+                and tokens[index + 1] in _EN_DECADES
+                and re.fullmatch(r'(?:\s+|[-\u2010\u2011])',
+                    value[matches[index].end():matches[index + 1].start()])
+                and (index + 2 == len(tokens) or (
+                    tokens[index + 2] not in _EN_NUMBER_WORDS | _EN_YEAR_NONYEAR_FOLLOWERS | set(_EN_DECADES)
+                    and not any(char.isdigit() for char in tokens[index + 2])))):
+            units.append((str(century * 100 + _EN_DECADES[tokens[index + 1]]) + 's',
+                          tuple(tokens[index:index + 2])))
+            index += 2
+            continue
         cardinal = _english_contextual_cardinal(tokens, matches, value, index, year_context)
         if cardinal is not None:
             number, count = cardinal
@@ -2827,6 +2847,10 @@ def verify_audio_narration(
                 review['independent_recognizer'] = True
                 review['primary_recognizer'] = {key: primary[key] for key in ('provider', 'pass', 'score', 'transcript')}
                 if review['pass'] is True:
+                    return review
+                if primary.get('available') is not True:
+                    # A valid negative second observation is actionable voice
+                    # evidence, not an outage of the unavailable first model.
                     return review
                 primary['independent_recognizer_result'] = {key: review[key] for key in ('provider', 'pass', 'score', 'transcript')}
             except Exception:

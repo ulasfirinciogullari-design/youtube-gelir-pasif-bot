@@ -280,6 +280,11 @@ def spending_scene(prepared, scene_index):
         raise SpendBlocked('spend_scene_context_missing')
     ledger = configured_ledger()
     context = resolve_context(ledger.client, _TASK_ID.get())
+    from app.services import commissioning_video
+    if commissioning_video.enabled_for_task():
+        with commissioning_video.scene_scope(prepared, scene_index, context, ledger):
+            yield
+        return
     if context.get('purpose') == 'series_preparation':
         from app.services.production_series_spend import validate_request
         validate_request(context, provider, operation, payload, quote, funding)

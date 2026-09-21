@@ -27,6 +27,12 @@ _REVIEW_CODES = frozenset({'included_router_response_unverified',
     'included_visual_completion_unverified'})
 _SOURCE_CODES = frozenset({'included_research_unconsulted_source',
     'included_research_primary_source_required', 'included_research_primary_source_unavailable'})
+_COMMISSIONED_VIDEO_CODES = frozenset({
+    'commissioning_video_provider_rejected', 'commissioning_video_generation_failed',
+    'commissioning_video_outcome_unverified', 'commissioning_video_poll_unavailable',
+    'commissioning_video_poll_timeout', 'commissioning_video_previous_outcome_unknown',
+    'commissioning_video_episode_capacity',
+})
 
 
 @dataclass(frozen=True)
@@ -69,7 +75,9 @@ def classify_failure(error, stage):
         code, category = str(error), 'review_unverified'
     elif isinstance(error, SpendBlocked):
         # These are fixed provider protocol codes, not prose or substrings.
-        if str(error) == 'production_media_outcome_unverified' and stage in _AUDIO_STAGES | _VISUAL_STAGES | {'render'}:
+        if str(error) in _COMMISSIONED_VIDEO_CODES and stage in _VISUAL_STAGES:
+            code, category = str(error), 'review_unverified'
+        elif str(error) == 'production_media_outcome_unverified' and stage in _AUDIO_STAGES | _VISUAL_STAGES | {'render'}:
             code, category = str(error), 'review_unverified'
         elif str(error) in _SOURCE_CODES and stage == 'research':
             code, category = str(error), 'source_unavailable'
@@ -97,6 +105,8 @@ def classified_hold_reason(job):
     code, category = evidence['code'], evidence['category']
     if type(code) is not str or type(category) is not str:
         return None
+    if code == error and code in _COMMISSIONED_VIDEO_CODES and category == 'review_unverified' and stage in _VISUAL_STAGES:
+        return 'review_unverified'
     if (code == error == 'production_media_outcome_unverified' and category == 'review_unverified'
             and stage in _AUDIO_STAGES | _VISUAL_STAGES | {'render'}):
         return 'review_unverified'

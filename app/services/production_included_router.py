@@ -155,7 +155,8 @@ class IncludedRouterLedger:
             and type(journal['requests']) is dict and len(journal['requests']) <= 7440)
         for key, row in journal['requests'].items():
             fields = {'context', 'purpose', 'request_sha256', 'reserved_at', 'outcome'}
-            _require(_hash(key) and type(row) is dict and set(row) in (fields, fields | {'completion'}))
+            optional = {'completion', 'continuation_authority_sha256'}
+            _require(_hash(key) and type(row) is dict and fields <= set(row) <= fields | optional)
             _require(row['purpose'] in self.purposes and _hash(row['request_sha256']))
             context = row['context']
             _require(type(context) is dict and set(context) == {'channel_id', 'connection_id', 'lineage_id', 'kind'}
@@ -164,6 +165,11 @@ class IncludedRouterLedger:
                 and type(context['lineage_id']) is str and re.fullmatch('[0-9a-f-]{36}', context['lineage_id']))
             _require(_date(policy['valid_from']) <= _date(row['reserved_at']) <= now)
             _require(key == self.identity(context, row['purpose'], row['request_sha256']))
+            if 'continuation_authority_sha256' in row:
+                from app.services.production_continuation import authority
+                _require(type(self) is IncludedRouterLedger
+                    and _hash(row['continuation_authority_sha256'])
+                    and authority(pipe, context['channel_id'], active=False) == row['continuation_authority_sha256'])
             if row['outcome'] is not None:
                 out = row['outcome']
                 _require(type(out) is dict and set(out) == {'observed_at', 'evidence', 'encrypted_result'}
@@ -210,11 +216,26 @@ class IncludedRouterLedger:
         _require(channel_id in policy['allowed_channels'], 'included_router_channel_not_commissioned')
         day = _stamp(self.clock())[:10]
         used = sum(row['reserved_at'][:10] == day for row in journal['requests'].values())
+        daily_limit, _ = self._daily_capacity(pipe, policy, channel_id)
         _require(type(minimum_requests) is int and minimum_requests > 0
-            and used + minimum_requests <= policy['max_requests_per_day'], 'included_router_daily_limit')
+            and used + minimum_requests <= daily_limit, 'included_router_daily_limit')
         _require(len(journal['requests']) + minimum_requests <= policy.get('max_requests_total', 7440),
                  'included_router_period_limit')
-        return {'policy_sha256': _sha(policy), 'day_requests_remaining': policy['max_requests_per_day'] - used}
+        return {'policy_sha256': _sha(policy), 'day_requests_remaining': daily_limit - used}
+
+    def _daily_capacity(self, pipe, policy, channel_id):
+        """The owner's active setup authorization supersedes a trial-day cap.
+
+        Keep original policies, every unknown request, per-episode retry
+        bounds and the bounded period journal. Prepaid model credits never
+        inherit the included RouteLLM entitlement.
+        """
+        if type(self) is IncludedRouterLedger:
+            from app.services.production_continuation import authority
+            proof = authority(pipe, channel_id)
+            if proof is not None:
+                return policy.get('max_requests_total', 7440), proof
+        return policy['max_requests_per_day'], None
 
     def initialize(self, policy):
         policy = self.validate_policy(policy, self.clock())
@@ -303,14 +324,17 @@ class IncludedRouterLedger:
                                 return old_id, deepcopy(old['outcome'])
                     day = _stamp(self.clock())[:10]
                     rows = journal['requests'].values()
+                    daily_limit, continuation_proof = self._daily_capacity(pipe, policy, context['channel_id'])
                     _require(sum(r['context']['lineage_id'] == context['lineage_id'] for r in rows)
                         < policy['max_requests_per_lineage'], 'included_router_episode_limit')
-                    _require(sum(r['reserved_at'][:10] == day for r in rows) < policy['max_requests_per_day'],
+                    _require(sum(r['reserved_at'][:10] == day for r in rows) < daily_limit,
                              'included_router_daily_limit')
                     _require(len(journal['requests']) < policy.get('max_requests_total', 7440),
                              'included_router_period_limit')
                     journal['requests'][identity] = {'context': deepcopy(context), 'purpose': purpose,
                         'request_sha256': prepared.request_sha256, 'reserved_at': _stamp(self.clock()), 'outcome': None}
+                    if continuation_proof is not None:
+                        journal['requests'][identity]['continuation_authority_sha256'] = continuation_proof
                     pipe.multi(); pipe.set(self.journal_key, _raw(journal))
                     pipe.set(self.anchor_key, _sha({'state': state, 'journal': journal}))
                     self._ack(pipe, [True, True])

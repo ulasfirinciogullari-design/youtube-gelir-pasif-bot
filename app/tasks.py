@@ -1398,7 +1398,8 @@ def _reserve_paid_create_slot(
 ) -> int:
     """Conservatively reserve one paid create before contacting a provider."""
     from app.services.production_included_router import enabled
-    if enabled():
+    from app.services.commissioning_video import enabled_for_task
+    if enabled() and not enabled_for_task():
         raise FinalVisualQualityError(
             'Included production requires approved stock; new video generation is unavailable'
         )
@@ -1417,7 +1418,8 @@ def _validate_paid_create_allocation(
 ) -> None:
     """Limit new creates while permitting reuse of already-paid clips."""
     from app.services.production_included_router import enabled
-    if enabled():
+    from app.services.commissioning_video import enabled_for_task
+    if enabled() and not enabled_for_task():
         retained = (recovered_generated_media or {}).get('scenes') or {}
         new_creates = (
             len(recovered_generated_media['repair_scene_indices'])

@@ -71,6 +71,7 @@ def _worker(case, phase):
     function = ast.parse('def scene_worker(self):\n    pass\n').body[0]
     local_state = ast.parse('''
 runway_attempts = 0
+media_started = True
 runway_scenes_used = 0
 final_runway_repair_attempts = 0
 omni_continuity_reference_image_path = None

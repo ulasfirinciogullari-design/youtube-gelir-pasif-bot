@@ -1,0 +1,247 @@
+"""Commission missing Short footage through one durable Gemini Veo request.
+
+The owner deferred the final operating budget and authorized setup production.
+This route requires both the explicit server switch and active owner authority.
+It leaves all earlier cash/native-credit records untouched. Every submission,
+including unknown results, is retained; accepted operations are only polled.
+Existing per-episode create capacity and all independent media QA still apply.
+"""
+from contextlib import contextmanager
+from contextvars import ContextVar
+from datetime import datetime, timezone
+import hashlib
+import json
+import re
+import time
+from urllib.parse import urlparse
+
+import httpx
+
+from app.config import settings
+from app.services import production_spend_runtime as runtime, production_continuation as continuation
+from app.services.included_stock_pool import _local_transaction
+from app.services.production_spend import SpendBlocked
+
+PREFIX = 'youtube_studio:commissioning:v1:video:'
+MODEL = 'veo-3.1-lite-generate-preview'
+BASE = 'https://generativelanguage.googleapis.com/v1beta'
+ROUTE = BASE + '/models/' + MODEL + ':predictLongRunning'
+_SCENE = ContextVar('commissioning_video_scene', default=None)
+_MAX_RESPONSE = 2 * 1024 * 1024
+
+
+def _require(value, code='commissioning_video_unverified'):
+    if not value:
+        raise SpendBlocked(code)
+
+
+def _raw(value):
+    return json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False)
+
+
+def _sha(value):
+    return hashlib.sha256(value).hexdigest()
+
+
+def _authority(pipe, foundation, context):
+    from app.services import production_cash_disabled as cash
+    # Once normal cash funding replaces the setup foundation, this route must
+    # not bypass the owner's subsequently selected operating budget.
+    pipe.watch(runtime.LEDGER_KEY, cash.ANCHOR_KEY)
+    if not cash.present(pipe):
+        return None
+    cash.read(pipe, foundation, now=foundation.clock())
+    _require(context.get('kind') == 'shorts' and 'purpose' not in context)
+    proof = continuation.authority(pipe, context['channel_id'])
+    if proof is None:
+        return None
+    key = runtime._CHANNEL_PREFIX + context['channel_id']
+    pipe.watch(key, runtime._CHANNEL_INDEX)
+    channel = json.loads(pipe.get(key))
+    _require(channel.get('id') == context['channel_id']
+        and channel.get('connection_id') == context['connection_id']
+        and channel.get('requires_reconnect') is not True
+        and pipe.sismember(runtime._CHANNEL_INDEX, context['channel_id']))
+    return proof
+
+
+@_local_transaction
+def enabled_for_task():
+    from app.services.production_included_router import enabled
+    if not (getattr(settings, 'studio_commissioning_video_generation', False) is True
+            and enabled() and runtime.enforcement_enabled()):
+        return False
+    foundation = runtime.configured_ledger(read_timeout=2)
+    context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
+    if context.get('kind') != 'shorts' or 'purpose' in context:
+        return False
+    with foundation.client.pipeline() as pipe:
+        proof = _authority(pipe, foundation, context)
+        pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
+    return proof is not None
+
+
+@contextmanager
+def scene_scope(prepared, scene_index, context, foundation):
+    _require(type(prepared) is runtime._PreparedVideoScenes
+        and type(scene_index) is int and 0 <= scene_index < len(prepared.generation_seconds)
+        and 1 <= len(prepared.generation_seconds) <= 6)
+    token = _SCENE.set({'context': context, 'foundation': foundation,
+        'package_sha256': prepared.package_sha256, 'scene_index': scene_index,
+        'narration_millis': prepared.narration_millis[scene_index],
+        'generation_seconds': prepared.generation_seconds[scene_index], 'aspect_ratio': prepared.aspect_ratio})
+    try:
+        yield
+    finally:
+        _SCENE.reset(token)
+
+
+def _journal(pipe, key, context):
+    pipe.watch(key)
+    raw = pipe.get(key)
+    if raw is None:
+        return {'version': 1, 'context': context, 'requests': {}}
+    _require(pipe.pttl(key) == -1 and len(raw) <= 32 * 1024 * 1024)
+    row = json.loads(raw)
+    _require(type(row) is dict and set(row) == {'version', 'context', 'requests'}
+        and row['version'] == 1 and row['context'] == context
+        and type(row['requests']) is dict and len(row['requests']) <= 6)
+    return row
+
+
+@_local_transaction
+def _reserve(scope, descriptor):
+    foundation, context = scope['foundation'], scope['context']
+    key = PREFIX + context['lineage_id']
+    identity = _sha(_raw(descriptor).encode())
+    with foundation.client.pipeline() as pipe:
+        authority = _authority(pipe, foundation, context)
+        _require(authority is not None
+            and getattr(settings, 'studio_commissioning_video_generation', False) is True)
+        journal = _journal(pipe, key, context)
+        prior = journal['requests'].get(identity)
+        if prior is not None:
+            _require(prior['request'] == descriptor and prior['authority_sha256'] == authority)
+            _require(prior['create'] is not None, 'commissioning_video_previous_outcome_unknown')
+            pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
+            return key, identity, prior
+        cap = getattr(settings, 'studio_production_short_paid_create_cap', 2)
+        _require(type(cap) is int and 2 <= cap <= 6 and len(journal['requests']) < cap,
+                 'commissioning_video_episode_capacity')
+        journal['requests'][identity] = {'request': descriptor, 'authority_sha256': authority,
+            'reserved_at': datetime.now(timezone.utc).isoformat(), 'create': None, 'result': None}
+        pipe.multi(); pipe.set(key, _raw(journal)); _require(pipe.execute() == [True])
+    return key, identity, None
+
+
+@_local_transaction
+def _observe(scope, key, identity, field, response, status, secret):
+    from app.services.youtube_auth import _encrypt_json
+    _require(field in {'create', 'result'} and 0 < len(response) <= _MAX_RESPONSE
+        and secret.encode() not in response)
+    with scope['foundation'].client.pipeline() as pipe:
+        journal = _journal(pipe, key, scope['context'])
+        row = journal['requests'][identity]
+        if row[field] is not None:
+            _require(row[field]['response_sha256'] == _sha(response)
+                and row[field]['http_status'] == status)
+            pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
+            return row[field]
+        observed = {'http_status': status, 'response_sha256': _sha(response),
+            'encrypted_response': _encrypt_json({'response': response.decode()}),
+            'observed_at': datetime.now(timezone.utc).isoformat()}
+        row[field] = observed
+        pipe.multi(); pipe.set(key, _raw(journal)); _require(pipe.execute() == [True])
+        return observed
+
+
+def _payload(observed):
+    from app.services.youtube_auth import _decrypt_json
+    raw = _decrypt_json(observed['encrypted_response'])['response'].encode()
+    _require(_sha(raw) == observed['response_sha256'])
+    _require(observed['http_status'] == 200, 'commissioning_video_provider_rejected')
+    value = json.loads(raw)
+    _require(type(value) is dict)
+    return value
+
+
+def _read_response(response):
+    raw = bytearray()
+    for chunk in response.iter_bytes():
+        raw.extend(chunk)
+        _require(len(raw) <= _MAX_RESPONSE)
+    _require(raw)
+    return bytes(raw)
+
+
+def _result(payload):
+    from app.services.runway import _GEMINI_VIDEO_HOSTS
+    _require(payload.get('done') is True and not payload.get('error'),
+             'commissioning_video_generation_failed')
+    samples = payload.get('response', {}).get('generateVideoResponse', {}).get('generatedSamples', [])
+    _require(type(samples) is list and len(samples) == 1)
+    uri = samples[0].get('video', {}).get('uri')
+    _require(type(uri) is str and 0 < len(uri) <= 8192)
+    parsed = urlparse(uri)
+    _require(parsed.scheme == 'https' and parsed.hostname in _GEMINI_VIDEO_HOSTS
+        and not parsed.username and not parsed.password and parsed.port in (None, 443))
+    return {'url': uri, 'provider': 'gemini_veo', 'provider_attempts': 1,
+            'commissioning_model': MODEL}
+
+
+def generate_if_commissioned(prompt, seconds, aspect_ratio):
+    """Return None outside a commissioned scene; never fall back after sending."""
+    scope = _SCENE.get()
+    if scope is None:
+        return None
+    _require(enabled_for_task() and type(prompt) is str and bool(prompt.strip())
+        and len(prompt.encode('utf-16-le')) // 2 <= 1000
+        and type(seconds) is int and 2 <= seconds <= 8
+        and seconds == scope['generation_seconds'] and aspect_ratio == scope['aspect_ratio'])
+    key = str(getattr(settings, 'gemini_api_key', '') or '')
+    _require(1 <= len(key) <= 4096 and all(32 < ord(c) < 127 for c in key))
+    duration = 4 if seconds <= 4 else 6 if seconds <= 6 else 8
+    body = {'instances': [{'prompt': prompt}], 'parameters': {
+        'aspectRatio': aspect_ratio, 'resolution': '720p', 'durationSeconds': duration}}
+    from app.services.production_spend_quotes import quote_http_request
+    provider, operation, quote = quote_http_request(ROUTE, {'json': body})
+    _require(provider == 'gemini' and quote.model == MODEL)
+    descriptor = {name: scope[name] for name in ('package_sha256', 'scene_index', 'narration_millis',
+                                                'generation_seconds', 'aspect_ratio')}
+    descriptor.update({'route': ROUTE, 'request_sha256': _sha(_raw(body).encode()),
+        'credential_sha256': _sha(('gemini\0' + key).encode()), 'model': MODEL,
+        'duration_seconds': duration, 'max_list_cost_micro_usd': quote.maximum_micro})
+    receipt_key, identity, prior = _reserve(scope, descriptor)
+    headers = {'x-goog-api-key': key, 'Content-Type': 'application/json'}
+    try:
+        with httpx.Client(timeout=httpx.Timeout(60, connect=10), trust_env=False, follow_redirects=False) as client:
+            if prior is None:
+                with client.stream('POST', ROUTE, headers=headers, json=body) as response:
+                    observed = _observe(scope, receipt_key, identity, 'create',
+                        _read_response(response), response.status_code, key)
+            else:
+                observed = prior['create']
+                if prior['result'] is not None:
+                    return _result(_payload(prior['result']))
+            created = _payload(observed)
+            name = created.get('name')
+            _require(type(name) is str and re.fullmatch(
+                r'models/' + re.escape(MODEL) + r'/operations/[A-Za-z0-9_-]{1,256}', name))
+            deadline = time.monotonic() + 600
+            while time.monotonic() < deadline:
+                # After acceptance only safe GETs are repeatable. A temporary
+                # polling error leaves the durable operation available to resume.
+                with client.stream('GET', BASE + '/' + name, headers=headers) as response:
+                    raw = _read_response(response)
+                    _require(response.status_code == 200, 'commissioning_video_poll_unavailable')
+                payload = json.loads(raw)
+                _require(type(payload) is dict)
+                if payload.get('done') is True:
+                    final = _observe(scope, receipt_key, identity, 'result', raw, 200, key)
+                    return _result(_payload(final))
+                time.sleep(10)
+            raise SpendBlocked('commissioning_video_poll_timeout')
+    except SpendBlocked:
+        raise
+    except Exception:
+        raise SpendBlocked('commissioning_video_outcome_unverified') from None
