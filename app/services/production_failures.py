@@ -23,7 +23,7 @@ _CONTENT_CODES = {
 }
 _REVIEW_CODES = frozenset({'included_router_response_unverified',
     'included_router_previous_outcome_unknown', 'prepaid_audio_response_unverified',
-    'prepaid_audio_previous_outcome_unknown'})
+    'prepaid_audio_previous_outcome_unknown', 'included_stock_pool_unverified'})
 _SOURCE_CODES = frozenset({'included_research_unconsulted_source',
     'included_research_primary_source_required', 'included_research_primary_source_unavailable'})
 
@@ -94,6 +94,13 @@ def classified_hold_reason(job):
     code, category = evidence['code'], evidence['category']
     if type(code) is not str or type(category) is not str:
         return None
+    # This storage-only wrapper used SpendBlocked as its error type before it
+    # had its own classification. It never meant a cash/credit budget decision.
+    # Preserve that terminal record; ordinary hold checks still verify the
+    # complete unpublished lineage and never free its provider reservations.
+    if (code == category == 'spending_blocked' and error == 'included_stock_pool_unverified'
+            and stage in _AUDIO_STAGES | _VISUAL_STAGES):
+        return 'review_unverified'
     # Before the typed terminal tag, this exact exhausted two-observation
     # failure was left unclassified. Its complete unpublished lineage still
     # has to pass the normal hold checks; no old job or provider receipt changes.

@@ -115,6 +115,49 @@ def test_upload_failure_does_not_create_a_false_checkpoint(case, monkeypatch):
     assert not list(case.ledger.client.scan_iter(match=pool.PREFIX + '*'))
 
 
+@pytest.mark.parametrize('phase', ['read', 'manifest', 'bookmark'])
+def test_definite_redis_conflict_retries_only_local_transaction_without_upload_replay(case, monkeypatch, phase):
+    original = pool._ack
+    conflicts = []
+    def race(pipe):
+        commands = [command for command, _ in pipe.command_stack]
+        match = (phase == 'read' and commands[0][0] == 'PING'
+            or phase == 'manifest' and commands[0][0] == 'SET' and commands[0][1].startswith(pool.PREFIX)
+            or phase == 'bookmark' and commands[0][0] == 'SET' and commands[0][1] == runtime._JOB_PREFIX + TASK)
+        if match and not conflicts:
+            key = runtime._JOB_PREFIX + TASK
+            job = json.loads(case.ledger.client.get(key));job['concurrent_observation'] = True
+            case.ledger.client.set(key, json.dumps(job));conflicts.append(phase)
+        original(pipe)
+    monkeypatch.setattr(pool, '_ack', race)
+    first = inputs(case, 'first', b'A', 101);run(case, first)
+    assert conflicts == [phase] and len(case.uploads) == 1
+    retry = inputs(case, 'retry', b'B', 202);run(case, retry)
+    assert len(case.uploads) == 1 and Path(retry[1][0][0]['path']).read_bytes() == b'A' * 2048
+
+
+@pytest.mark.parametrize('failure', ['lost_connection', 'caused', 'too_many_conflicts'])
+def test_ambiguous_transaction_outcomes_never_trigger_a_transport_retry(failure):
+    from redis.exceptions import WatchError
+    calls = []
+    @pool._local_transaction
+    def operation():
+        calls.append(1)
+        if failure == 'lost_connection': raise WatchError('ConnectionError while watching keys')
+        if failure == 'caused': raise WatchError('Watched variable changed.') from ConnectionError('Lost ACK')
+        raise WatchError('Watched variable changed.')
+    with pytest.raises(WatchError): operation()
+    assert len(calls) == (8 if failure == 'too_many_conflicts' else 1)
+
+
+def test_preservation_diagnostics_do_not_log_storage_messages_or_paths(case, monkeypatch, caplog):
+    def fail(*_): raise ConnectionError('PRIVATE_STORAGE_CREDENTIAL_NOT_FOR_LOGS')
+    monkeypatch.setattr(storage, 'upload_file', fail)
+    with pytest.raises(SpendBlocked): run(case, inputs(case, 'first', b'A', 101))
+    assert 'PRIVATE_STORAGE_CREDENTIAL_NOT_FOR_LOGS' not in caplog.text
+    assert 'Stock pool preservation stopped' in caplog.text and 'ConnectionError' in caplog.text
+
+
 @pytest.mark.parametrize('phase', ['before_generation', 'budget_rescue'])
 def test_each_phase_preserves_its_own_exact_pool(case, phase):
     first = inputs(case, 'initial', b'A', 101)

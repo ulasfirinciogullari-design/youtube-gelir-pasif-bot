@@ -12,6 +12,11 @@ import os
 from pathlib import Path
 import re
 import stat
+import logging
+import traceback
+from functools import wraps
+
+from redis.exceptions import WatchError
 
 from app.services.production_spend import SpendBlocked, LEDGER_KEY
 
@@ -20,6 +25,20 @@ MAX_FILE = 128 * 1024 * 1024
 MAX_TOTAL = 512 * 1024 * 1024
 MAX_MANIFEST = 512 * 1024
 PHASES = frozenset({'initial', 'before_generation', 'budget_rescue'})
+
+
+def _local_transaction(operation):
+    """Repeat only Redis's definite uncommitted CAS conflict, never transport."""
+    @wraps(operation)
+    def run(*args, **kwargs):
+        for attempt in range(8):
+            try:
+                return operation(*args, **kwargs)
+            except WatchError as error:
+                if (type(error) is not WatchError or str(error) != 'Watched variable changed.'
+                        or error.__cause__ is not None or error.__context__ is not None or attempt == 7):
+                    raise
+    return run
 SPEC_FIELDS = frozenset({'pexels_id', 'start_fraction', 'source_duration', 'source_type', 'stock_provider'})
 
 
@@ -102,6 +121,7 @@ def _bookmarks(pipe, task_id, context, key):
     return first, known
 
 
+@_local_transaction
 def _bookmark(client, task_id, context, key, encoded):
     from app.services.production_spend_runtime import _JOB_PREFIX
     digest = hashlib.sha256(encoded.encode()).hexdigest()
@@ -115,6 +135,31 @@ def _bookmark(client, task_id, context, key, encoded):
         _require(len(records) <= 24)
         job['included_stock_pools'] = records
         pipe.multi(); pipe.set(_JOB_PREFIX + task_id, _raw(job)); _ack(pipe)
+
+
+@_local_transaction
+def _read_saved(client, task_id, context, key):
+    with client.pipeline() as pipe:
+        _authority(pipe, context)
+        pipe.watch(key)
+        saved = pipe.get(key)
+        _, known = _bookmarks(pipe, task_id, context, key)
+        _require(known is None or type(saved) is str
+            and hashlib.sha256(saved.encode()).hexdigest() == known['sha256'])
+        if saved is not None:
+            _require(pipe.pttl(key) == -1 and type(saved) is str and len(saved) <= MAX_MANIFEST * 2)
+        pipe.multi(); pipe.ping(); _ack(pipe)
+    return saved
+
+
+@_local_transaction
+def _store_manifest(client, task_id, context, key, encoded):
+    with client.pipeline() as pipe:
+        _authority(pipe, context); pipe.watch(key)
+        _, known = _bookmarks(pipe, task_id, context, key)
+        _require(known is None and not pipe.exists(key))
+        pipe.multi(); pipe.set(key, encoded, nx=True)
+        _ack(pipe)
 
 
 def _download(key, output, size, digest):
@@ -178,16 +223,7 @@ def retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, 
             and type(credits) is list and type(seen_ids) is set)
         key = PREFIX + hashlib.sha256(_raw(scope).encode()).hexdigest()
         client = foundation.client
-        with client.pipeline() as pipe:
-            _authority(pipe, context)
-            pipe.watch(key)
-            saved = pipe.get(key)
-            _, known = _bookmarks(pipe, task_id, context, key)
-            _require(known is None or type(saved) is str
-                and hashlib.sha256(saved.encode()).hexdigest() == known['sha256'])
-            if saved is not None:
-                _require(pipe.pttl(key) == -1 and type(saved) is str and len(saved) <= MAX_MANIFEST * 2)
-            pipe.multi(); pipe.ping(); _ack(pipe)
+        saved = _read_saved(client, task_id, context, key)
         root = Path(work).resolve(strict=True)
         if saved is not None:
             value = _manifest(json.loads(_cipher().decrypt(saved.encode())), scope)
@@ -232,14 +268,13 @@ def retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, 
             upload_file(source, asset_key, 'video/mp4')
             _require(_digest(source) == (digest, size))
         encoded = _cipher().encrypt(_raw(value).encode()).decode()
-        with client.pipeline() as pipe:
-            _authority(pipe, context); pipe.watch(key)
-            _, known = _bookmarks(pipe, task_id, context, key)
-            _require(known is None)
-            _require(not pipe.exists(key))
-            pipe.multi(); pipe.set(key, encoded, nx=True)
-            _ack(pipe)
+        _store_manifest(client, task_id, context, key, encoded)
         _require(client.get(key) == encoded)
         _bookmark(client, task_id, context, key, encoded)
-    except Exception:
+    except Exception as error:
+        # Exception messages and local/request paths may contain sensitive
+        # details. Retain only fixed phase, exception class and code locations.
+        logging.getLogger(__name__).warning('Stock pool preservation stopped: %s', _raw({
+            'phase': phase if phase in PHASES else 'invalid', 'error_type': type(error).__name__,
+            'locations': [(frame.name, frame.lineno) for frame in traceback.extract_tb(error.__traceback__)[-5:]]}))
         raise SpendBlocked('included_stock_pool_unverified') from None
