@@ -61,7 +61,8 @@ def test_new_same_day_attempt_preserves_failed_request_and_feeds_normal_producti
     assert job['spec']['production_profile_revision'] == profile['profile_revision']
 
 
-def test_three_daily_attempts_never_replay_and_fourth_waits_for_next_day(fresh):
+@pytest.mark.parametrize('last_ready', [False, True])
+def test_three_daily_attempts_never_replay_and_fourth_waits_for_next_day(fresh, last_ready):
     c, sender = fresh, Mock()
     first = _queued(c, sender)
     c.prep['_generate'].side_effect = RuntimeError('synthetic provider failure')
@@ -73,14 +74,27 @@ def test_three_daily_attempts_never_replay_and_fourth_waits_for_next_day(fresh):
         assert tick(c, sender, now) == 'preparation_queued'
         binding = sender.call_args.kwargs['args'][0]
         assert binding['preparation_slot'] == index
-        assert execute(c, binding, now)['status'] == 'uncertain'
+        if index == 3 and last_ready:
+            c.prep['_generate'].side_effect = None
+        assert execute(c, binding, now)['status'] == ('ready' if index == 3 and last_ready else 'uncertain')
         bindings.append(binding)
     assert len({b['task_id'] for b in bindings}) == 3
+    if last_ready:
+        assert tick(c, sender, NOW + 3603) == 'promoted'
+        assert c.client.get(c.pending_key) is None
     before = _snapshot(c)
     for now in (NOW + 5404, NOW + 7000):
-        assert tick(c, sender, now) == 'daily_preparation_limit'
+        profile = json.loads(c.client.get(c.profile_key))
+        result = c.controller['maintain_production_series']([profile], [CONNECTION], sender, now=now)
+        assert result['channels'][CHANNEL] == 'daily_preparation_limit'
+        from datetime import datetime, timezone, timedelta
+        tomorrow = (datetime.fromtimestamp(now, timezone.utc) + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0).isoformat()
+        assert result['waits'] == {CHANNEL: {'status': 'daily_preparation_limit',
+            'profile_revision': profile['profile_revision'], 'retry_after': tomorrow}}
     assert sender.call_count == c.prep['_generate'].call_count == 3 and _snapshot(c) == before
-    assert tick(c, sender, NOW + 86400) == 'finished_uncertain_archived'
+    if not last_ready:
+        assert tick(c, sender, NOW + 86400) == 'finished_uncertain_archived'
     assert tick(c, sender, NOW + 86401) == 'preparation_queued'
     tomorrow = sender.call_args.kwargs['args'][0]
     assert tomorrow['version'] == 1 and 'preparation_slot' not in tomorrow

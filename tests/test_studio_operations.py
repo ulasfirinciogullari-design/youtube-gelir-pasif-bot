@@ -287,3 +287,91 @@ def test_same_day_failure_waits_for_tomorrow_only_after_third_attempt(slot, expe
     result = operations.read_series_preparation('UC_fixture','current',client=client,now=NOW)
     assert result is None if expected is None else result['daily_wait'] is expected
     client.set.assert_not_called()
+
+
+def preparation_wait():
+    return {'status': 'daily_preparation_limit', 'profile_revision': 'current', 'retry_after': RETRY_AFTER}
+
+
+def test_planning_limit_survives_promoted_pending_pointer_and_never_becomes_dispatch_authority():
+    client = Mock()
+    result = {'status': 'idle', 'series_maintenance': {'status': 'checked',
+        'channels': {CHANNEL: 'daily_preparation_limit'}, 'waits': {CHANNEL: preparation_wait()}}}
+    operations.record_tick('SUCCESS', result, client=client, now=NOW)
+    value = json.loads(client.set.call_args.args[1])
+    assert value == {'version': 1, 'observed_ts': NOW, 'status': 'checked',
+                     'preparation_waits': {CHANNEL: preparation_wait()}}
+    reader = store(value)
+    assert operations.read_preparation_wait(CHANNEL, 'current', client=reader, now=NOW) == {
+        'status': 'daily_preparation_limit', 'retry_after': RETRY_AFTER}
+    reader.get.assert_called_once_with(operations.TICK_KEY)
+    reader.set.assert_not_called()
+
+
+@pytest.mark.parametrize('damage', ['stale', 'wrong_profile', 'wrong_channel', 'midnight',
+    'blocked', 'extra_field', 'wrong_day', 'unknown_status', 'missing', 'too_many'])
+def test_planning_wait_expires_or_rejects_unbound_observations(damage):
+    value = {'version': 1, 'observed_ts': NOW, 'status': 'checked',
+             'preparation_waits': {CHANNEL: preparation_wait()}}
+    now, channel, revision = NOW, CHANNEL, 'current'
+    if damage == 'stale': now += 181
+    if damage == 'wrong_profile': revision = 'changed'
+    if damage == 'wrong_channel': channel = 'UC' + 'b' * 22
+    if damage == 'midnight':
+        from datetime import datetime
+        now = datetime.fromisoformat(RETRY_AFTER).timestamp()
+        value['observed_ts'] = now - 1
+    if damage == 'blocked': value['status'] = 'blocked'
+    if damage == 'extra_field': value['preparation_waits'][CHANNEL]['approved'] = True
+    if damage == 'wrong_day': value['preparation_waits'][CHANNEL]['retry_after'] = '2026-09-23T00:00:00+00:00'
+    if damage == 'unknown_status': value['preparation_waits'][CHANNEL]['status'] = 'approved'
+    if damage == 'missing': value.pop('preparation_waits')
+    if damage == 'too_many': value['preparation_waits'].update({str(i): preparation_wait() for i in range(10)})
+    client = store(value)
+    assert operations.read_preparation_wait(channel, revision, client=client, now=now) is None
+    client.set.assert_not_called()
+
+
+@pytest.mark.parametrize('state,status,channel_status', [('FAILURE', 'checked', 'daily_preparation_limit'),
+    ('SUCCESS', 'unavailable', 'daily_preparation_limit'), ('SUCCESS', 'checked', 'ineligible_or_changed')])
+def test_incomplete_planner_result_cannot_claim_a_timed_automatic_wait(state, status, channel_status):
+    client = Mock()
+    result = {'status': 'idle', 'series_maintenance': {'status': status,
+        'channels': {CHANNEL: channel_status}, 'waits': {CHANNEL: preparation_wait()}}}
+    operations.record_tick(state, result, client=client, now=NOW)
+    assert 'preparation_waits' not in json.loads(client.set.call_args.args[1])
+
+
+@pytest.mark.parametrize('pause,enabled,active,cursor,expected', [
+    ('', True, '', '1', 'planning_wait'), ('owner_hold', True, '', '1', 'paused'),
+    ('', False, '', '1', 'disabled'), ('', True, ROOT_TASK, '1', 'active'), ('', True, '', '0', 'scheduled')])
+def test_planning_wait_is_only_presented_for_an_exhausted_enabled_current_series(ui, monkeypatch, pause, enabled, active, cursor, expected):
+    from copy import deepcopy
+    from app.services import channel_production, youtube_metrics
+    profile = {'channel_id': CHANNEL, 'profile_revision': 'current', 'production_enabled': enabled,
+               'auto_publish': True, 'production_topics': ['one']}
+    state = {'paused_reason': pause, 'active_task_id': active, 'last_task_id': ROOT_TASK, 'cursor': cursor}
+    before = deepcopy(state)
+    monkeypatch.setattr(youtube_metrics, 'get_dashboard_metrics', lambda _: {'channels': [
+        {'channel_id': CHANNEL, 'production_wait': {'status': 'injected'}}], 'videos': {}})
+    monkeypatch.setattr(channel_production, 'get_production_state', lambda _: deepcopy(state))
+    lookup = Mock(return_value={'status': 'daily_preparation_limit', 'retry_after': RETRY_AFTER})
+    monkeypatch.setattr(operations, 'read_preparation_wait', lookup)
+    monkeypatch.setattr(operations, 'read_series_preparation', lambda *_: None)
+    ui.ns['list_channel_profiles'] = lambda: [profile]
+    row = ui.ns['_dashboard_metrics']([])['channels'][0]
+    assert row['production_status'] == expected
+    if expected == 'planning_wait':
+        lookup.assert_called_once_with(CHANNEL, 'current')
+        ui.ns['_dashboard_metrics'] = lambda _: {'channels': [row], 'videos': {}}
+        ui.ns['_production_budget_notice'] = ui.ns['_operations_status'] = lambda: ''
+        html = ui.client.get('/studio').text
+        assert 'Yeni konu planı · otomatik bekleme' in html
+        assert 'Bugünkü konu planlama sınırına ulaşıldı.' in html
+        assert '22 Eyl · 03:00 (Türkiye saati)' in html
+        assert 'Otomasyon kontrol bekliyor' not in html
+    else:
+        lookup.assert_not_called()
+        assert 'production_wait' not in row
+    assert state == before
+    ui.forbidden.assert_not_called()

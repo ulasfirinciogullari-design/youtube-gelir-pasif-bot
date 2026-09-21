@@ -139,9 +139,13 @@ def test_nonempty_inventory_without_channel_upload_proof_preserves_absence(case,
     _unlock(c)
     c.clock[0] += 301
     before = {key: c.client.dump(key) for key in c.client.keys('*')}
-    _background(c, inventory)
-    assert _google_count(c) == 1
-    assert {key: c.client.dump(key) for key in c.client.keys('*')} == before
+    key = c.module.CACHE_PREFIX + CHANNEL + ':' + CONNECTION
+    prior_videos = json.loads(c.client.get(key))['videos']
+    result = _background(c, inventory)
+    assert _google_count(c) == 2 and result['channels'][0]['status'] == 'fresh'
+    assert json.loads(c.client.get(key))['videos'] == prior_videos
+    assert all(c.client.dump(k) == value for k, value in before.items() if k != key)
+    assert c.service.videos.return_value.list.return_value.execute.call_count == 1
 
 
 def test_background_other_channel_proof_cannot_clear_prior_absence(case, monkeypatch):
@@ -151,20 +155,42 @@ def test_background_other_channel_proof_cannot_clear_prior_absence(case, monkeyp
     _unlock(c)
     c.clock[0] += 301
     original_key = c.module.CACHE_PREFIX + CHANNEL + ':' + CONNECTION
-    before = c.client.dump(original_key)
+    before = json.loads(c.client.get(original_key))
+    visibility_key = c.module.OBSERVATION_PREFIX + CHANNEL + ':' + CONNECTION
+    visibility = c.client.dump(visibility_key)
     second = {'id': 'UC_second_channel', 'connection_id': 'connection_second', 'title': 'Second channel'}
     c.client.sadd(c.auth.CHANNEL_INDEX_KEY, second['id'])
     c.client.set(c.auth.CHANNEL_PREFIX + second['id'], json.dumps(second))
     c.client.set(c.auth.CREDENTIAL_PREFIX + second['id'], 'second-encrypted-credential')
-    read = Mock(return_value={'version': 1, 'channel_id': second['id'],
-        'connection_id': second['connection_id'], 'channel': {'fetched_at': c.clock[0]},
-        'videos': {}, 'last_error': None, 'last_attempt_at': c.clock[0]})
+    original_read = c.module._read_google
+    def read_channel(context, ids, previous, now):
+        if context['channel_id'] == CHANNEL:
+            assert ids == []
+            return original_read(context, ids, previous, now)
+        return {'version': 1, 'channel_id': second['id'],
+            'connection_id': second['connection_id'], 'channel': {'fetched_at': now},
+            'videos': {}, 'last_error': None, 'last_attempt_at': now}
+    read = Mock(side_effect=read_channel)
     monkeypatch.setattr(c.module, '_read_google', read)
     _background(c, [job(source='22222222-2222-4222-8222-222222222222', video='bB123456789',
                        channel=second['id'], connection=second['connection_id'])])
-    read.assert_called_once()
-    assert read.call_args.args[0]['channel_id'] == second['id']
-    assert c.client.dump(original_key) == before
+    assert read.call_count == 2
+    assert {call.args[0]['channel_id'] for call in read.call_args_list} == {CHANNEL, second['id']}
+    assert json.loads(c.client.get(original_key))['videos'] == before['videos']
+    assert c.client.dump(visibility_key) == visibility
+
+
+def test_reconnected_channel_updates_without_adopting_old_upload_attribution(case):
+    c = case
+    records = [job(connection='old_connection')]
+    original = json.dumps(records, sort_keys=True)
+    credentials = c.client.get(c.auth.CREDENTIAL_PREFIX + CHANNEL)
+    result = _background(c, records)
+    assert result['channels'][0]['status'] == 'fresh' and result['channels'][0]['view_count'] == 1200
+    assert result['videos'] == {} and _google_count(c) == 1
+    c.service.videos.assert_not_called()
+    assert json.dumps(records, sort_keys=True) == original
+    assert c.client.get(c.auth.CREDENTIAL_PREFIX + CHANNEL) == credentials
 
 
 @pytest.mark.parametrize('status,reason,cooldown', [(403, 'quotaExceeded', 3600), (500, 'backendError', 300)])

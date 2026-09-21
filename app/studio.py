@@ -773,6 +773,12 @@ def _dashboard_metrics(jobs: list[dict], *, refresh: bool = False) -> dict:
                 wait = read_quality_wait(channel_id, profile.get('profile_revision'), state.get('last_task_id'))
                 if wait:
                     row.update(production_status='daily_wait', production_wait=wait)
+            if (production_status == 'exhausted' and profile.get('production_enabled') is True
+                    and profile.get('auto_publish') is True):
+                from app.services.studio_operations import read_preparation_wait
+                wait = read_preparation_wait(channel_id, profile.get('profile_revision'))
+                if wait:
+                    row.update(production_status='planning_wait', production_wait=wait)
             if profile.get('production_enabled') is True and remaining is not None and remaining <= 2:
                 from app.services.studio_operations import read_series_preparation
                 preparation = read_series_preparation(channel_id, profile.get('profile_revision'))
@@ -1005,12 +1011,14 @@ def _channel_overview(rows: list[dict]) -> str:
         production = (PRODUCTION_RETRY_LABELS[retry['status']] if valid_retry else {
             'active': 'Üretim sürüyor', 'scheduled': 'Takvim etkin', 'paused': 'Üretim durdu · kontrol gerekiyor',
             'daily_wait': 'Günlük deneme sınırı · otomatik bekleme',
+            'planning_wait': 'Yeni konu planı · otomatik bekleme',
             'disabled': 'Otomatik üretim kapalı', 'exhausted': 'Konu listesi tamamlandı',
         }.get(row.get('production_status'), 'Üretim durumu bekleniyor'))
         schedule = [production]
         wait = row.get('production_wait')
-        if row.get('production_status') == 'daily_wait' and isinstance(wait, dict):
-            schedule.append('Bugünkü başarısız deneme sınırına ulaşıldı.')
+        if row.get('production_status') in {'daily_wait', 'planning_wait'} and isinstance(wait, dict):
+            schedule.append('Bugünkü konu planlama sınırına ulaşıldı.' if row['production_status'] == 'planning_wait'
+                            else 'Bugünkü başarısız deneme sınırına ulaşıldı.')
             schedule.append('Yeniden kontrol: ' + _metrics_time(wait.get('retry_after')) + ' (Türkiye saati)')
             schedule.append('Süre dolunca bağlantı, kaynak ve kalite kontrolleri yeniden uygulanır.')
         preparation = row.get('series_preparation')
@@ -2656,7 +2664,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
         heading, detail = 'Video üzerinde çalışılıyor', 'Devam eden işin aşamasını üretim listesinden takip edebilirsin.'
     elif states & {'paused', 'retry_uncertain'}:
         heading, detail = 'Otomasyon kontrol bekliyor', 'Devam etmek için üretimdeki sorunun çözülmesi gerekiyor. Kanal durumları aşağıda.'
-    elif 'daily_wait' in states:
+    elif states & {'daily_wait', 'planning_wait'}:
         heading, detail = 'Üretim takvimi ve otomatik beklemeler', 'Günlük deneme sınırına ulaşan kanal yeni günü bekliyor. Diğer kanallar kendi takvimine göre ilerler; yeniden kontrol zamanı aşağıda.'
     elif 'scheduled' in states:
         heading, detail = 'Bir sonraki üretim planlandı', 'Başlama zamanı kanalda görünür. Üretim öncesinde bütçe ve bağlantılar yeniden kontrol edilir.'

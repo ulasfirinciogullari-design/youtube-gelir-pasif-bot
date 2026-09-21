@@ -6,7 +6,7 @@ decision. Unknown queue/execution outcomes remain durable no-replay fences.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import math
 import re
 from uuid import NAMESPACE_URL, uuid4, uuid5
@@ -303,7 +303,7 @@ def maintain_production_series(profiles, connections, enqueue_preparation, *, no
         ordered = _dispatch_profile_order(list(selected.values()))
     except Exception:
         return {'status': 'unavailable', 'channels': {}}
-    results = {}
+    results, waits = {}, {}
     for hint in ordered:
         channel_id = hint['channel_id']
         try:
@@ -333,9 +333,14 @@ def maintain_production_series(profiles, connections, enqueue_preparation, *, no
             else:
                 results[channel_id] = _reserve_preparation(channel_id, profile['profile_revision'],
                                                            channel['connection_id'], enqueue_preparation, now)['status']
+            if results.get(channel_id) == 'daily_preparation_limit':
+                waits[channel_id] = {'status': 'daily_preparation_limit',
+                    'profile_revision': profile['profile_revision'],
+                    'retry_after': (datetime.fromtimestamp(now, timezone.utc) + timedelta(days=1)).replace(
+                        hour=0, minute=0, second=0, microsecond=0).isoformat()}
         except Exception:
             results[channel_id] = 'ineligible_or_changed'
-    return {'status': 'checked', 'channels': results}
+    return {'status': 'checked', 'channels': results, **({'waits': waits} if waits else {})}
 
 
 def run_series_preparation(binding, actual_task_id, *, now=None):

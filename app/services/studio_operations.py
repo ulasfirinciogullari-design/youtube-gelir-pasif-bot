@@ -48,6 +48,17 @@ def _tick_value(client, instant):
     return value
 
 
+def _preparation_wait(value, instant):
+    if (type(value) is not dict or set(value) != {'status', 'profile_revision', 'retry_after'}
+            or value.get('status') != 'daily_preparation_limit'
+            or type(value.get('profile_revision')) is not str
+            or not re.fullmatch(r'[A-Za-z0-9_-]{1,128}', value['profile_revision'])):
+        return None
+    tomorrow = (datetime.fromtimestamp(instant, timezone.utc) + timedelta(days=1)).replace(
+        hour=0, minute=0, second=0, microsecond=0).isoformat()
+    return dict(value) if value.get('retry_after') == tomorrow else None
+
+
 def _client():
     return redis.Redis.from_url(settings.redis_url, decode_responses=True,
                                 socket_connect_timeout=1, socket_timeout=1,
@@ -98,6 +109,19 @@ def record_tick(state, result, *, client=None, now=None):
                             waits[channel] = wait
                 if waits:
                     value['quality_waits'] = waits
+        series = result.get('series_maintenance') if type(result) is dict else None
+        if status == 'checked' and type(series) is dict and series.get('status') == 'checked':
+            channels = series.get('waits')
+            states = series.get('channels')
+            if type(channels) is dict and len(channels) <= 10 and type(states) is dict and len(states) <= 10:
+                waits = {}
+                for channel, row in channels.items():
+                    if type(channel) is str and re.fullmatch(r'UC[A-Za-z0-9_-]{22}', channel):
+                        wait = _preparation_wait(row, instant)
+                        if wait and states.get(channel) == wait['status']:
+                            waits[channel] = wait
+                if waits:
+                    value['preparation_waits'] = waits
         (client if client is not None else _client()).set(TICK_KEY, json.dumps(value), ex=86400)
     except Exception:
         pass  # A telemetry outage must never change the completed task result.
@@ -163,3 +187,24 @@ def read_series_preparation(channel_id, profile_revision, *, client=None, now=No
                 'daily_wait': value['status'] in {'failed', 'uncertain'} and day == today and slot == 3}
     except Exception:
         return None
+
+
+def read_preparation_wait(channel_id, profile_revision, *, client=None, now=None):
+    """Fresh same-profile planning limit, including after pending was promoted."""
+    try:
+        if type(channel_id) is not str or not re.fullmatch(r'UC[A-Za-z0-9_-]{22}', channel_id):
+            return None
+        instant = time.time() if now is None else now
+        value = _tick_value(client if client is not None else _client(), instant)
+        if (value is None or value['status'] != 'checked'
+                or instant - value['observed_ts'] > FRESH_SECONDS):
+            return None
+        waits = value.get('preparation_waits')
+        if type(waits) is not dict or len(waits) > 10:
+            return None
+        wait = _preparation_wait(waits.get(channel_id), instant)
+        if wait and wait['profile_revision'] == profile_revision:
+            return {'status': wait['status'], 'retry_after': wait['retry_after']}
+    except Exception:
+        pass
+    return None

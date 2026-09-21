@@ -49,8 +49,8 @@ def publisher(source):
 
 
 @pytest.fixture
-def dashboard():
-    studio = studio_ui.__wrapped__()
+def dashboard(monkeypatch):
+    studio = studio_ui.__wrapped__(monkeypatch)
     model = {'channels': [{'channel_id': CHANNEL, 'title': 'Margin Verdict',
                           'subscriber_count': 0, 'subscriber_count_hidden': False,
                           'video_count': 0, 'view_count': None, 'status': 'fresh',

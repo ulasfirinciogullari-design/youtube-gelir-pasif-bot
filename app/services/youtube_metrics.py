@@ -455,7 +455,12 @@ def _read_google(context, ids, previous, now):
                    'view_count': _count(stats.get('viewCount')), 'video_count': _count(stats.get('videoCount')),
                    'subscriber_count_hidden': hidden if type(hidden) is bool else None,
                    'subscriber_count': None if hidden is True else _count(stats.get('subscriberCount'))}
-        videos = {}
+        # A reconnected channel can have no upload proofs for its new
+        # connection. Its channel statistics are still owned and queryable.
+        # Such a read proves nothing new about old videos or their visibility.
+        videos = previous.get('videos', {}) if not ids else {}
+        if not isinstance(videos, dict) or len(videos) > MAX_VIDEOS:
+            raise YouTubeMetricsError('invalid_response')
         if ids:
             response = service.videos().list(part='snippet,statistics,status,contentDetails', id=','.join(ids),
                 fields='items(id,snippet(channelId,title,publishedAt),statistics(viewCount,likeCount,commentCount),status/privacyStatus,contentDetails/duration)').execute(num_retries=0)
@@ -501,10 +506,6 @@ def _refresh_channel(context, proofs, *, background=False):
     previous = _cache(client, context)
     ids = list(dict.fromkeys(p['video_id'] for p in proofs.values() if p['channel_id'] == context['channel_id']))[:MAX_VIDEOS]
     if background:
-        if not ids:
-            # Another channel's jobs or unfinished jobs are not evidence that
-            # this channel's earlier video observations should be cleared.
-            return
         # Background observation shares the owner's cache and lock, but does
         # not spend quota immediately after a manual refresh or failed read.
         # The manual action retains its existing 60-second debounce contract.

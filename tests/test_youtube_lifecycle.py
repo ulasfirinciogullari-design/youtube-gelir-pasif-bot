@@ -2089,7 +2089,8 @@ def test_mutating_youtube_routes_require_exact_same_origin(monkeypatch):
     # Reuse actual presentation functions without importing the worker through
     # this test's intentionally minimal storage/Celery stubs.
     from test_studio_workflow_presentation import ui as presentation_ui
-    presentation = types.SimpleNamespace(**presentation_ui.__wrapped__().ns)
+    presentation = types.SimpleNamespace(**presentation_ui.__wrapped__(monkeypatch).ns)
+    monkeypatch.setitem(sys.modules, 'app.studio', presentation)
     presentation._dashboard_metrics = lambda _jobs: {'channels': [], 'videos': {}, 'updated_at': None}
     monkeypatch.setattr(routes, '_studio_presentation', lambda: presentation)
     form_shell = routes.youtube_home(studio_token='studio-secret')
@@ -2166,7 +2167,8 @@ def test_youtube_home_uses_server_populated_channel_id_selector(monkeypatch):
     )
 
     from test_studio_workflow_presentation import ui as presentation_ui
-    presentation = types.SimpleNamespace(**presentation_ui.__wrapped__().ns)
+    presentation = types.SimpleNamespace(**presentation_ui.__wrapped__(monkeypatch).ns)
+    monkeypatch.setitem(sys.modules, 'app.studio', presentation)
     presentation._dashboard_metrics = lambda _jobs: {'channels': [], 'videos': {}, 'updated_at': None}
     monkeypatch.setattr(routes, '_studio_presentation', lambda: presentation)
     response = routes.youtube_home(studio_token='studio-secret')

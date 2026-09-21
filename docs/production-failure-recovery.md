@@ -30,6 +30,19 @@ hold policy and daily allowance. It preserves cadence, consumed topic cursor,
 every previous provider receipt and all saved assets. The daily allowance is
 reconsidered on the next UTC day; it is not reset by the UI or a deployment.
 
+An exhausted series can also wait for the daily planning allowance after its
+last prepared batch has already been promoted. The completed minute tick now
+reports that wait with the current profile and next UTC-day boundary. Studio
+only displays a matching fresh observation on an enabled, exhausted channel;
+it expires at midnight and cannot authorize another request or hide a pause.
+
+Background channel statistics continue after reconnection even when old upload
+records have no proof for the new connection. Only the verified owned channel
+is queried in that case. Existing video observations, including absence and
+original timestamps, are preserved; the read cannot assign an old upload to
+new credentials or turn old video metrics into fresh evidence. The existing
+per-channel debounce and quota backoff still apply.
+
 This is not a claim of successful publication or uninterrupted provider service.
 Commissioning requires a real quality-approved video to become public and the
 next production to start. Lost worker/broker outcomes and providers that cannot
