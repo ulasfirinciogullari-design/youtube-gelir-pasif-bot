@@ -14,6 +14,7 @@ import re
 import stat
 import logging
 import traceback
+import sys
 from functools import wraps
 
 from redis.exceptions import WatchError
@@ -27,16 +28,25 @@ MAX_MANIFEST = 512 * 1024
 PHASES = frozenset({'initial', 'before_generation', 'budget_rescue'})
 
 
+def _uncommitted_conflict(error, caller_exception):
+    # Python attaches the caller's active exception to a new exception raised
+    # during an editorial repair. That inherited context is not a Redis
+    # transport failure. A newly chained connection/ACK error remains unsafe.
+    return (type(error) is WatchError and str(error) == 'Watched variable changed.'
+        and error.__cause__ is None
+        and (error.__context__ is None or error.__context__ is caller_exception))
+
+
 def _local_transaction(operation):
     """Repeat only Redis's definite uncommitted CAS conflict, never transport."""
     @wraps(operation)
     def run(*args, **kwargs):
+        caller_exception = sys.exc_info()[1]
         for attempt in range(8):
             try:
                 return operation(*args, **kwargs)
             except WatchError as error:
-                if (type(error) is not WatchError or str(error) != 'Watched variable changed.'
-                        or error.__cause__ is not None or error.__context__ is not None or attempt == 7):
+                if not _uncommitted_conflict(error, caller_exception) or attempt == 7:
                     raise
     return run
 SPEC_FIELDS = frozenset({'pexels_id', 'start_fraction', 'source_duration', 'source_type', 'stock_provider'})

@@ -12,7 +12,7 @@ _STORY_STAGES = frozenset({'research', 'director_qc'})
 _AUDIO_STAGES = frozenset({'voice_and_visuals', 'audio_qc', 'audio_qc_retry', 'audio_pause_recheck'})
 _VISUAL_STAGES = frozenset({'visual_qc', 'ai_scene', 'ai_scene_generation',
     'pre_runway_budget_rescue', 'pre_runway_stock_tournament_2',
-    'final_visual_qc', 'final_visual_qc_rescue'})
+    'final_visual_qc', 'final_visual_qc_ai_repair', 'final_visual_qc_rescue'})
 _REVIEW_STAGES = _STORY_STAGES | _AUDIO_STAGES | _VISUAL_STAGES
 _CONTENT_CODES = {
     'story_quality_exhausted': ('story_rejected', _STORY_STAGES),
@@ -24,7 +24,8 @@ _CONTENT_CODES = {
 _REVIEW_CODES = frozenset({'included_router_response_unverified',
     'included_router_previous_outcome_unknown', 'prepaid_audio_response_unverified',
     'prepaid_audio_previous_outcome_unknown', 'included_stock_pool_unverified',
-    'included_visual_completion_unverified'})
+    'included_visual_completion_unverified', 'included_router_settlement_uncertain',
+    'included_router_reservation_uncertain'})
 _SOURCE_CODES = frozenset({'included_research_unconsulted_source',
     'included_research_primary_source_required', 'included_research_primary_source_unavailable'})
 _COMMISSIONED_VIDEO_CODES = frozenset({
@@ -116,6 +117,13 @@ def classified_hold_reason(job):
     # complete unpublished lineage and never free its provider reservations.
     if (code == category == 'spending_blocked' and error == 'included_stock_pool_unverified'
             and stage in _AUDIO_STAGES | _VISUAL_STAGES):
+        return 'review_unverified'
+    # A previous local-recording failure is not a budget allocation decision.
+    # Keep its unknown request occupied and the original job unchanged. Only
+    # the ordinary complete-unpublished-lineage hold may advance the schedule.
+    if (code == category == 'spending_blocked' and error in {
+            'included_router_settlement_uncertain', 'included_router_reservation_uncertain'}
+            and stage in _REVIEW_STAGES):
         return 'review_unverified'
     # Before the typed terminal tag, this exact exhausted two-observation
     # failure was left unclassified. Its complete unpublished lineage still

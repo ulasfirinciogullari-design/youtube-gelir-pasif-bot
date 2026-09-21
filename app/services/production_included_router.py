@@ -14,11 +14,13 @@ import json
 import logging
 import re
 import traceback
+import sys
 
 from cryptography.fernet import Fernet
 from redis.exceptions import WatchError
 
 from app.services.production_spend import LEDGER_KEY, SpendBlocked
+from app.services.included_stock_pool import _uncommitted_conflict, _local_transaction
 
 PREFIX = 'youtube_studio:{production_spend}:included_router:v1:'
 STATE_KEY, JOURNAL_KEY, ANCHOR_KEY = (PREFIX + name for name in ('state', 'journal', 'anchor'))
@@ -280,6 +282,7 @@ class IncludedRouterLedger:
             'included_router_channel_changed')
 
     def reserve(self, context, purpose, prepared):
+        caller_exception = sys.exc_info()[1]
         from app.services.abacus_router_adapter import PreparedRouterRequest
         from app.services.abacus_router_audio_adapter import PreparedAudioRouterRequest, PreparedPrepaidAudioRequest, AudioReviewPurpose
         audio_types = (PreparedAudioRouterRequest, PreparedPrepaidAudioRequest)
@@ -340,8 +343,7 @@ class IncludedRouterLedger:
                     self._ack(pipe, [True, True])
                     return identity, None
             except WatchError as error:
-                if (type(error) is not WatchError or str(error) != 'Watched variable changed.'
-                        or error.__cause__ is not None or error.__context__ is not None or attempt == 7):
+                if not _uncommitted_conflict(error, caller_exception) or attempt == 7:
                     raise SpendBlocked('included_router_reservation_uncertain') from None
             except SpendBlocked:
                 raise
@@ -349,6 +351,7 @@ class IncludedRouterLedger:
                 raise SpendBlocked('included_router_reservation_uncertain') from None
 
     def settle(self, identity, prepared, observed):
+        caller_exception = sys.exc_info()[1]
         from app.services.abacus_router_adapter import ObservedRouterResult, PreparedRouterRequest
         from app.services.abacus_router_audio_adapter import ObservedAudioRouterResult, PreparedAudioRouterRequest, PreparedPrepaidAudioRequest
         _require((type(prepared) is PreparedRouterRequest and type(observed) is ObservedRouterResult
@@ -374,14 +377,14 @@ class IncludedRouterLedger:
             except WatchError as error:
                 # Only a definite failed EXEC may repeat this local commit.
                 # Provider transport is never repeated, even after a lost ACK.
-                if (type(error) is not WatchError or str(error) != 'Watched variable changed.'
-                        or error.__cause__ is not None or error.__context__ is not None or attempt == 7):
+                if not _uncommitted_conflict(error, caller_exception) or attempt == 7:
                     raise SpendBlocked('included_router_settlement_uncertain') from None
             except SpendBlocked:
                 raise
             except Exception:
                 raise SpendBlocked('included_router_settlement_uncertain') from None
 
+    @_local_transaction
     def record_failure(self, identity, prepared, response, error):
         """Supplemental encrypted evidence; never settles or releases a request."""
         import httpx
