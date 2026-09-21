@@ -115,7 +115,8 @@ def _read_policy(pipe, now):
         return None
     _require(type(encoded) is str and anchor == _sha(encoded)
         and pipe.pttl(POLICY_KEY) == pipe.pttl(ANCHOR_KEY) == -1)
-    return _policy(_object(encoded), now)
+    from app.services.production_quality_hold_periods import validate_time
+    return validate_time(pipe, _object(encoded), now, now=now)
 
 
 def _history(pipe):
@@ -215,6 +216,8 @@ def _held_episode_completion(snapshot, profile, channel, root, cursor, now):
     held_at = datetime.fromisoformat(record['held_at'])
     _require(held_at.tzinfo is not None and held_at.utcoffset().total_seconds() == 0
         and _date(policy['valid_from']) <= held_at <= datetime.fromtimestamp(now, timezone.utc))
+    from app.services.production_quality_hold_periods import validate_time
+    validate_time(reader, policy, held_at, now=datetime.fromtimestamp(now, timezone.utc))
     day_key = DAY_PREFIX + profile['channel_id'] + ':' + held_at.strftime('%Y-%m-%d')
     history, day_raw = _history(reader), reader.get(day_key)
     _require(type(day_raw) is str and history['days'].get(day_key) == _sha(day_raw)

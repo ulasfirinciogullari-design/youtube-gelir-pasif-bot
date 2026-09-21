@@ -292,15 +292,15 @@ def test_httpx_auth_override_is_checked_before_and_after_actual_reservation(case
         assert not case.sends
 
 
-def test_expiry_during_post_does_not_release_hold_or_send_again(case):
+def test_expiry_during_post_records_real_meter_without_sending_again(case):
     def respond(req):
         case.sends.append(req)
         case.now[0] = NOW + timedelta(days=1)
         return httpx.Response(200, content=b'complete', headers={'character-cost': '248', 'request-id': 'late-meter'})
     with httpx.Client(transport=httpx.MockTransport(respond)) as http:
-        with pytest.raises(SpendBlocked, match='credit_policy_expired'):
-            native.paid_credit_post(http.post, credit.ROUTE, request())
-        assert (state(case)['spent_credits'], state(case)['reserved_credits']) == (0, 1000)
+        response = native.paid_credit_post(http.post, credit.ROUTE, request())
+        assert response.content == b'complete'
+        assert (state(case)['spent_credits'], state(case)['reserved_credits']) == (248, 0)
         with pytest.raises(SpendBlocked):
             native.paid_credit_post(http.post, credit.ROUTE, request())
     assert len(case.sends) == 1

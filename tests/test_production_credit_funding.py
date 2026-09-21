@@ -362,16 +362,23 @@ def test_no_claim_of_usd_or_per_character_upper_bound_can_be_added(policy):
             credit.validate_credit_policy(policy | {field: value}, now=NOW)
 
 
-@pytest.mark.parametrize('when,reason', [
-    (datetime(2026, 9, 9, 12, tzinfo=timezone.utc), 'credit_policy_expired'),
-    (datetime(2026, 9, 10, tzinfo=timezone.utc), 'credit_policy_expired'),
-    (datetime(2026, 10, 1, tzinfo=timezone.utc), 'credit_period_mismatch'),
-])
-def test_late_or_wrong_period_settlement_never_releases_reserved_credits(policy, when, reason):
+def test_clock_before_opening_never_releases_reserved_credits(policy):
     held, receipt = reserve(policy, credit.initial_credit_state(policy, now=NOW))
-    with pytest.raises(SpendBlocked, match=reason):
-        settle(policy, held, observation(policy, receipt), now=when)
+    with pytest.raises(SpendBlocked, match='credit_clock_invalid'):
+        settle(policy, held, observation(policy, receipt), now=datetime(2026, 9, 9, 12, tzinfo=timezone.utc))
     assert held['reserved_credits'] == 1000
+
+
+@pytest.mark.parametrize('when', [datetime(2026, 9, 10, tzinfo=timezone.utc),
+                                 datetime(2026, 10, 1, tzinfo=timezone.utc)])
+def test_verified_late_meter_preserves_usage_without_opening_new_admission(policy, when):
+    held, receipt = reserve(policy, credit.initial_credit_state(policy, now=NOW))
+    observed = observation(policy, receipt)
+    updated, terminal = settle(policy, held, observed, now=when)
+    assert terminal == observed and updated['spent_credits'] == observed['actual_credit_cost']
+    assert updated['reserved_credits'] == 0 and held['reserved_credits'] == 1000
+    with pytest.raises(SpendBlocked):
+        reserve(policy, updated, intent(2), now=when)
 
 
 def test_evidence_expiry_cannot_extend_past_provider_credit_reset(policy):

@@ -355,6 +355,30 @@ def test_actual_normal_dispatch_failure_is_not_masked_by_maintenance(controller)
     maintenance.assert_not_called()
 
 
+def test_worker_tick_checks_native_period_before_holds_and_dispatch(controller, monkeypatch):
+    from app.services import production_credit_renewal, production_quality_hold_periods
+    ns, order = _tick(controller, Mock(return_value={'status': 'checked'}))
+    monkeypatch.setattr(production_credit_renewal, 'maintain_native_credit_period',
+        lambda: order.append('native_period') or {'status': 'current'})
+    monkeypatch.setattr(production_quality_hold_periods, 'maintain_quality_hold_period',
+        lambda: order.append('hold_period') or {'status': 'current'})
+    result = ns['production_tick']()
+    assert order == ['reconcile_active', 'native_period', 'hold_period',
+                     'reconcile_retry', 'render_dispatch', 'series_maintenance']
+    assert result['native_credit_period'] == result['quality_hold_period'] == {'status': 'current'}
+    assert result['status'] == 'queued'
+
+
+def test_maintenance_outage_does_not_skip_normal_dispatch_funding_gate(controller, monkeypatch):
+    from app.services import production_credit_renewal, production_quality_hold_periods
+    ns, order = _tick(controller, Mock(return_value={'status': 'checked'}))
+    monkeypatch.setattr(production_credit_renewal, 'maintain_native_credit_period', Mock(side_effect=RuntimeError('outage')))
+    monkeypatch.setattr(production_quality_hold_periods, 'maintain_quality_hold_period', Mock(side_effect=RuntimeError('outage')))
+    result = ns['production_tick']()
+    assert result['status'] == 'queued' and 'render_dispatch' in order
+    assert result['native_credit_period'] == result['quality_hold_period'] == {'status': 'unavailable'}
+
+
 def test_preparation_task_registered_no_autoretry_and_no_unconsumed_queue():
     tree = ast.parse((ROOT / 'app/production_tasks.py').read_text(encoding='utf-8'))
     task = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'prepare_series_batch')

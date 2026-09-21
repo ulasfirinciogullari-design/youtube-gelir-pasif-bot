@@ -22,7 +22,7 @@ from redis.exceptions import WatchError
 from app.services.production_spend import LEDGER_KEY, SpendBlocked, SpendLedger
 from app.services.production_credit_funding import (
     credit_funding_summary, initial_credit_state, reserve_credit_intent,
-    settle_credit_intent, validate_credit_policy,
+    settle_credit_intent, validate_credit_policy, validate_credit_history,
 )
 
 
@@ -124,7 +124,8 @@ class CreditLedger:
 
     def _watch(self, pipe):
         from app.services.production_cash_disabled import ANCHOR_KEY
-        pipe.watch(STATE_KEY, JOURNAL_KEY, LEDGER_KEY, ANCHOR_KEY)
+        from app.services.production_credit_periods import HISTORY_KEY, HISTORY_ANCHOR
+        pipe.watch(STATE_KEY, JOURNAL_KEY, LEDGER_KEY, ANCHOR_KEY, HISTORY_KEY, HISTORY_ANCHOR)
 
     def _foundation_base(self, pipe, now):
         if self.foundation is None:
@@ -158,23 +159,51 @@ class CreditLedger:
                 'reservation_sha256': receipt['reservation_sha256'],
                 **self._context(receipt['intent'])}
 
-    def _foundation_links(self, pipe, policy, state):
+    def _foundation_links(self, pipe, policy, state, history=()):
         if self.foundation is None:
             return
         _require(_object(pipe.hget(LEDGER_KEY, MODE_FIELD)) == self._mode(policy),
                  'credit_foundation_mismatch')
         expected = {}
-        for entry in state['intents'].values():
-            receipt, request = entry['reservation'], entry['reservation']['intent']
-            identity = self._request_field(request)
-            _require(not pipe.hexists(LEDGER_KEY, 'request:' + identity),
-                     'credit_cross_mode_request_conflict')
-            expected['native_request:' + identity] = _json(self._production_marker(policy, receipt))
+        for bound_policy, bound_state in [*((row['policy'], row['state']) for row in history), (policy, state)]:
+            for entry in bound_state['intents'].values():
+                receipt, request = entry['reservation'], entry['reservation']['intent']
+                identity = self._request_field(request)
+                _require(not pipe.hexists(LEDGER_KEY, 'request:' + identity)
+                         and 'native_request:' + identity not in expected,
+                         'credit_cross_mode_request_conflict')
+                expected['native_request:' + identity] = _json(self._production_marker(bound_policy, receipt))
         # Also reject surviving receipts absent from a rolled-back state/journal.
         # One-way lookup would incorrectly restore already committed capacity.
         _require(native_foundation_markers(pipe) == expected, 'credit_foundation_mismatch')
 
-    def _read(self, pipe, now):
+    def _validate_records(self, raw, journal, now, *, historical=False):
+        """Check a complete current or archived pair without rewriting receipts."""
+        _require(set(raw) == {'policy', 'state'} and type(journal) is dict,
+                 'credit_store_invalid')
+        policy, state = _object(raw['policy']), _object(raw['state'])
+        if historical:
+            policy = validate_credit_history(policy, state, now=now)
+        else:
+            policy = validate_credit_policy(policy, now=now)
+            credit_funding_summary(policy, state, now=now)
+        genesis = _object(journal.get('genesis'))
+        _require(set(genesis) == {'version', 'policy_sha256', 'initialized_at', 'foundation_bound'}
+                 and type(genesis['version']) is int and genesis['version'] == 1
+                 and genesis['policy_sha256'] == _hash(policy)
+                 and genesis['foundation_bound'] is (self.foundation is not None),
+                 'credit_journal_invalid')
+        try:
+            stamp = datetime.strptime(genesis['initialized_at'], '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=timezone.utc)
+        except (TypeError, ValueError):
+            raise SpendBlocked('credit_journal_invalid') from None
+        _require(stamp <= now and genesis['initialized_at'] <= state['last_updated_at'],
+                 'credit_journal_invalid')
+        initial_credit_state(policy, now=stamp)
+        _require(journal == _journal(policy, state, genesis), 'credit_journal_mismatch')
+        return policy, state, genesis, journal
+
+    def _read(self, pipe, now, *, historical=False):
         self._foundation_base(pipe, now)
         _require(pipe.hlen(STATE_KEY) == 2 and 4 <= pipe.hlen(JOURNAL_KEY) <= _MAX_FIELDS,
                  'credit_not_initialized_or_partial')
@@ -185,28 +214,10 @@ class CreditLedger:
                  'credit_store_expiring')
         raw = pipe.hgetall(STATE_KEY)
         journal = pipe.hgetall(JOURNAL_KEY)
-        _require(set(raw) == {'policy', 'state'} and type(journal) is dict,
-                 'credit_store_invalid')
-        policy = validate_credit_policy(_object(raw['policy']), now=now)
-        state = _object(raw['state'])
-        credit_funding_summary(policy, state, now=now)
-        genesis = _object(journal.get('genesis'))
-        _require(set(genesis) == {'version', 'policy_sha256', 'initialized_at', 'foundation_bound'}
-                 and type(genesis['version']) is int and genesis['version'] == 1
-                 and genesis['policy_sha256'] == _hash(policy)
-                 and genesis['foundation_bound'] is (self.foundation is not None),
-                 'credit_journal_invalid')
-        # Reusing the pure initial-state validator checks the genesis timestamp
-        # against the same evidenced policy; it never writes a fresh state.
-        try:
-            stamp = datetime.strptime(genesis['initialized_at'], '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=timezone.utc)
-        except (TypeError, ValueError):
-            raise SpendBlocked('credit_journal_invalid') from None
-        _require(stamp <= now and genesis['initialized_at'] <= state['last_updated_at'],
-                 'credit_journal_invalid')
-        initial_credit_state(policy, now=stamp)
-        _require(journal == _journal(policy, state, genesis), 'credit_journal_mismatch')
-        self._foundation_links(pipe, policy, state)
+        policy, state, genesis, journal = self._validate_records(raw, journal, now, historical=historical)
+        from app.services.production_credit_periods import read_history
+        history = read_history(self, pipe, policy, state, now)
+        self._foundation_links(pipe, policy, state, history['periods'])
         return policy, state, genesis, journal
 
     @staticmethod
@@ -235,6 +246,9 @@ class CreditLedger:
                     _require(not pipe.hexists(LEDGER_KEY, MODE_FIELD)
                              and not native_foundation_markers(pipe),
                              'credit_not_initialized_or_partial')
+                    from app.services.production_credit_periods import HISTORY_KEY, HISTORY_ANCHOR, HISTORY_FIELD
+                    _require(not pipe.exists(HISTORY_KEY, HISTORY_ANCHOR)
+                        and not pipe.hexists(LEDGER_KEY, HISTORY_FIELD), 'credit_period_history_missing')
                     state = initial_credit_state(checked, now=now)
                     genesis = {'version': 1, 'policy_sha256': _hash(checked),
                                'initialized_at': state['last_updated_at'],
@@ -313,7 +327,10 @@ class CreditLedger:
             try:
                 with self.client.pipeline() as pipe:
                     self._watch(pipe)
-                    policy, state, genesis, journal = self._read(pipe, now)
+                    policy, state, genesis, journal = self._read(
+                        pipe, now, historical=operation is settle_credit_intent)
+                    from app.services.production_credit_periods import check_prior_identity
+                    check_prior_identity(self, pipe, policy, state, now, operation, values)
                     production_field = None
                     if operation is reserve_credit_intent and self.foundation is not None:
                         request = values['intent']

@@ -79,6 +79,16 @@ def production_tick() -> dict:
         # retry receipts. Recovery still requires the existing global-idle CAS.
         reconcile_active_production()
         try:
+            from app.services.production_credit_renewal import maintain_native_credit_period
+            credit_period = maintain_native_credit_period()
+        except Exception:
+            credit_period = {'status': 'unavailable'}
+        try:
+            from app.services.production_quality_hold_periods import maintain_quality_hold_period
+            hold_period = maintain_quality_hold_period()
+        except Exception:
+            hold_period = {'status': 'unavailable'}
+        try:
             from app.services.production_delivery_runtime import maintain_delivery_families
 
             maintain_delivery_families()
@@ -99,7 +109,8 @@ def production_tick() -> dict:
         except Exception:
             maintenance = {'status': 'unavailable', 'channels': {}}
         return {**dispatched, 'public_retry_reconciliation': recovered,
-                'quality_holds': quality_holds, 'series_maintenance': maintenance}
+                'quality_holds': quality_holds, 'series_maintenance': maintenance,
+                'native_credit_period': credit_period, 'quality_hold_period': hold_period}
     except ChannelProductionError:
         return {'status': 'blocked', 'reason': 'production_state_unavailable'}
     except Exception:

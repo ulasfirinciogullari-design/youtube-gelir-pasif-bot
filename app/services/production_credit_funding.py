@@ -253,6 +253,7 @@ def _validate_state(policy, state, now):
         _require(amount <= policy['allocation_credits'], code)
         reserved_at = _timestamp(receipt['reserved_at'], code)
         _require(_timestamp(policy['valid_from'], code) <= reserved_at <= updated, code)
+        _require(reserved_at < _timestamp(policy['valid_until'], code), code)
         sequence = _integer(receipt['sequence'], code, positive=True, maximum=_MAX_INTENTS)
         _require(sequence not in ordered, code)
         ordered[sequence] = entry
@@ -294,6 +295,17 @@ def _validate_state(policy, state, now):
              and (active == 0 or spent + held == policy['allocation_credits'])
              and state['revision'] == len(state['intents']) + settled, code)
     _require(len(_canonical(state, code)) <= _MAX_STATE_BYTES, code)
+
+
+def validate_credit_history(policy, state, *, now):
+    """Validate retained debt even after expiry; this never grants admission."""
+    now = _clock(now)
+    _require(type(policy) is dict, 'credit_policy_invalid')
+    start = _timestamp(policy.get('valid_from'), 'credit_policy_invalid')
+    checked = validate_credit_policy(policy, now=start)
+    _require(start <= now, 'credit_clock_invalid')
+    _validate_state(checked, state, now)
+    return checked
 
 
 def credit_funding_summary(policy, state, *, now):
@@ -352,12 +364,13 @@ def settle_credit_intent(policy, state, *, observation, actual_account_sha256,
     This is not a provider refund, quote correction or permission to repeat a
     POST. The trusted runtime adapter must bind the actual terminal provider
     meter to this reservation; these hashes
-    alone cannot prove that it did. Missing/invalid/late observations change no
-    state. An identical settlement is idempotent, including its proof identity.
+    alone cannot prove that it did. Expiry blocks new admission, but a verified
+    response to a previously reserved request must still record its real usage.
+    Missing/invalid observations change no state. An identical settlement is
+    idempotent, including its proof identity.
     """
     now = _clock(now)
-    policy = validate_credit_policy(policy, now=now)
-    _validate_state(policy, state, now)
+    policy = validate_credit_history(policy, state, now=now)
     _actual_binding(policy, actual_account_sha256, actual_credential_sha256)
     _exact(observation, _OBSERVATION_FIELDS, 'credit_observation_invalid')
     _hash(observation['intent_id'], 'credit_observation_invalid')
