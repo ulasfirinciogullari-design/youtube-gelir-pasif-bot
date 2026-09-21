@@ -1,8 +1,8 @@
 """Bounded post-dispatch series maintenance and at-most-once preparation.
 
-No model runs in the minute tick. Preparation uses the existing consumed
-default Celery queue; dedicated worker isolation is a separate deployment
-decision. Unknown queue/execution outcomes remain durable no-replay fences.
+No model runs in the minute tick. Preparation uses the production worker's
+default Celery queue, separate from recurring control/observation jobs.
+Unknown queue/execution outcomes remain durable no-replay fences.
 """
 from __future__ import annotations
 

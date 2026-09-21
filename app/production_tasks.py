@@ -70,7 +70,8 @@ def observe_youtube_analytics() -> dict:
     return refresh([])
 
 
-@celery.task(name='app.production_tasks.production_tick', acks_late=False)
+@celery.task(name='app.production_tasks.production_tick', acks_late=False,
+             autoretry_for=(), max_retries=0, soft_time_limit=110, time_limit=120)
 def production_tick() -> dict:
     from app.tasks import run_video_pipeline
 

@@ -10,6 +10,11 @@ celery = Celery(
 celery.conf.update(
     task_acks_late=True,
     worker_prefetch_multiplier=1,
+    task_routes={
+        'app.production_tasks.production_tick': {'queue': 'production_control'},
+        'app.production_tasks.observe_youtube_metrics': {'queue': 'production_control'},
+        'app.production_tasks.observe_youtube_analytics': {'queue': 'production_control'},
+    },
     beat_schedule={
         'channel-production-every-minute': {
             'task': 'app.production_tasks.production_tick',
