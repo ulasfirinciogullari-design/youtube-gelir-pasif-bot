@@ -70,6 +70,38 @@ def test_hold_preserves_budget_unknown_requests_audio_job_cadence_and_consumed_c
     assert _all(n.client) == after
 
 
+@pytest.mark.parametrize('stage,error,eligible', [
+    ('director_qc', 'included_factual_audit_invalid', True),
+    ('audio_qc', 'included_factual_audit_invalid', False),
+    ('youtube_publish', 'included_factual_audit_invalid', False),
+    ('director_qc', 'included_factual_audit_invalid: unknown provider outcome', False),
+    ('director_qc', 'Unknown upload or payment result', False),
+])
+def test_unusable_factual_review_is_held_without_approval_replay_or_cadence_reset(ready, stage, error, eligible):
+    n = ready; commission(n)
+    job = deepcopy(n.job)
+    job.update(failure_stage=stage, error=error)
+    _write(n.client, jobs.JOB_PREFIX + SOURCE, job)
+    before = _all(n.client)
+    result = holds.maintain_quality_holds([n.profile])['channels'][n.profile['channel_id']]
+    after = _all(n.client)
+    if not eligible:
+        assert result['status'] == 'requires_review' and after == before
+        return
+    assert result['status'] == 'held_unpublished' and result['reason'] == 'story_rejected'
+    record = json.loads(n.client.get(holds.HOLD_PREFIX + SOURCE))
+    assert record['publish_eligible'] is False and record['retry_dispatched'] is False
+    assert record['lineage'][0]['job_sha256'] == holds._sha(n.client.get(jobs.JOB_PREFIX + SOURCE))
+    assert json.loads(n.client.get(n.day_key)) == [SOURCE]
+    mutable = {n.state_key, holds.HOLD_PREFIX + SOURCE, n.day_key, holds.HISTORY_KEY,
+               holds.HISTORY_ANCHOR, jobs.QUALITY_HOLD_JOB_FENCE_PREFIX + SOURCE}
+    assert {k:v for k,v in after.items() if k not in mutable} == {k:v for k,v in before.items() if k not in mutable}
+    expected = dict(before[n.state_key][1]); expected.pop('paused_reason'); expected['quality_hold_task_id'] = SOURCE
+    assert n.client.hgetall(n.state_key) == expected and not n.case.calls
+    assert holds.maintain_quality_holds([n.profile])['channels'][n.profile['channel_id']]['status'] == 'not_quality_paused'
+    assert _all(n.client) == after
+
+
 @pytest.mark.parametrize('prefix', [UPLOAD_PREFIX, EXECUTION_LOCK_PREFIX,
     'youtube_studio:blocked_public_release:v1:', 'youtube_studio:source_publication_hold:v1:',
     jobs.RENDER_CANCELLATION_PREFIX])

@@ -160,3 +160,9 @@ position only after the exact identity check. This avoids rejecting an otherwise
 complete critique solely because the provider omitted redundant indexes. It
 does not recover or refund an earlier unknown request, authorize a replay, or
 relax any factual, quotation, editorial or publication check.
+
+A terminal `included_factual_audit_invalid` at `director_qc` is an unpublished
+story rejection eligible for the same fully guarded, daily-bounded quality
+hold. This prevents an unusable independent critique from permanently blocking
+later topics. Other stages or unrecognized errors remain ineligible. This
+classification cannot retry the critique, alter accounting or approve media.

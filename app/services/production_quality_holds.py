@@ -139,6 +139,8 @@ def _reason(job):
         'included_research_unconsulted_source', 'included_research_primary_source_required',
         'included_research_primary_source_unavailable'}:
         return 'research_sources_unavailable'
+    if stage == 'director_qc' and error == 'included_factual_audit_invalid':
+        return 'story_rejected'
     if stage == 'director_qc' and error.startswith((
         'Source audit rejected unsupported narration', 'Short-preview stock narration',
         'Short-preview story', 'Narration word-count gate', 'Scene-count gate')):
