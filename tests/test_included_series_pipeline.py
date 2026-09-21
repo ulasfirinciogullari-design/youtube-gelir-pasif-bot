@@ -113,6 +113,42 @@ def test_scheduler_actual_series_task_uses_subscription_and_never_opens_cash(nat
     assert snapshot(native.client) == after and len(native.calls) == 1
 
 
+@pytest.mark.parametrize('deactivate_fourth', [False, True])
+def test_continuous_fourth_attempt_uses_actual_worker_and_ledger_without_resetting_prior_requests(native, deactivate_fourth):
+    from app.services import production_continuation as continuation, production_scheduler as scheduler
+    continuation.initialize(native.client, {'version': 1, 'kind': 'continuous_commissioning',
+        'allowed_channels': [CHANNEL], 'authorized_at': NOW.isoformat(), 'owner_evidence_sha256': 'f' * 64})
+    valid = native.answer
+    bindings = []
+    previous = {}
+    for index in range(1, 5):
+        native.answer = {'invalid_source_response': True} if index < 4 else valid
+        binding = enqueue(native)
+        assert binding.get('preparation_slot', 1) == index
+        if index == 4 and deactivate_fourth:
+            native.client.delete(continuation.ACTIVE_KEY)
+            before = snapshot(native.client)
+            assert execute(binding)['status'] == 'unavailable'
+            assert snapshot(native.client) == before and len(native.calls) == 3
+            return
+        result = execute(binding)
+        assert result['status'] == ('ready' if index == 4 else 'uncertain'), result
+        journal = json.loads(native.client.get(included.JOURNAL_KEY))['requests']
+        assert all(journal.get(key) == value for key, value in previous.items())
+        assert len(journal) == index and len(native.calls) == index
+        previous = deepcopy(journal)
+        bindings.append(binding)
+        if index < 4:
+            assert scheduler.retire_finished_planning_failure(native.client, CHANNEL,
+                native.profile['profile_revision'], now=NOW.timestamp()) == 'finished_uncertain_archived'
+    assert len({binding['task_id'] for binding in bindings}) == 4
+    before = snapshot(native.client)
+    for binding in bindings:
+        assert execute(binding)['status'] == 'execution_already_claimed'
+    assert snapshot(native.client) == before and len(native.calls) == 4
+    assert native.ledger.snapshot()['cash_spending_enabled'] is False
+
+
 def test_source_not_retrieved_cannot_become_a_series(native):
     native.answer['briefs'][0]['sources'][1]['source_id'] = 'never-retrieved'
     result = execute(enqueue(native))

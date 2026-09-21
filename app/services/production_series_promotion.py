@@ -656,6 +656,13 @@ def promote_ready_series(channel_id, expected_profile_revision, expected_attempt
                      'profile_revision': revision, 'connection_id': channel['connection_id'],
                      'dispatch_status': 'series_promoted', 'series_epoch': str(epoch),
                      'last_series_promotion': receipt_key}
+        continuation = None
+        if proof.get('completion_kind') == 'held_unpublished':
+            from app.services.production_continuation import authority
+            from app.services.production_quality_holds import _SnapshotReader
+            continuation = authority(_SnapshotReader(snapshot), channel_id)
+            if continuation:
+                new_state['next_due'] = str(now)
         archive_key = ARCHIVE_PREFIX + channel_id + ':' + str(epoch - 1) + ':' + expected_attempt_id
         _require(snapshot.read(archive_key) is None, 'series_archive_conflict')
         archive = {'version': 1, 'channel_id': channel_id, 'epoch': epoch - 1, 'archived_at': now,
@@ -664,6 +671,8 @@ def promote_ready_series(channel_id, expected_profile_revision, expected_attempt
                       else {'public_proof': proof}),
                    'authorization_epoch_sha256': _digest(authorization_epoch),
                    'credential_sha256': _digest(credential), 'previous_epoch': old_epoch}
+        if continuation:
+            archive['continuation_authority_sha256'] = continuation
         receipt = {'version': 1, 'status': 'promoted', 'channel_id': channel_id,
                    'attempt_id': expected_attempt_id, 'old_profile_revision': expected_profile_revision,
                    'new_profile_revision': revision, 'old_series_id': series_id, 'new_series_id': new_id,

@@ -1032,8 +1032,8 @@ def _channel_overview(rows: list[dict]) -> str:
             if note:
                 schedule.append(note + (' · Günlük deneme sınırı bekleniyor' if preparation.get('daily_wait') else ''))
                 attempt_number = preparation.get('attempt_number')
-                if type(attempt_number) is int and 1 <= attempt_number <= 3:
-                    schedule.append(f'Planlama denemesi {attempt_number}/3')
+                if type(attempt_number) is int and 1 <= attempt_number <= 240:
+                    schedule.append(f'Planlama denemesi {attempt_number}')
         if valid_retry and retry['status'] == 'retry_active':
             schedule.append(STAGE_LABELS.get(retry.get('stage'), 'Hazırlanıyor'))
         remaining = row.get('remaining_topics')

@@ -53,9 +53,10 @@ def _all(client):
 
 @pytest.fixture
 def case():
+    from app.services.production_failures import classify_failure
     client = fakeredis.FakeRedis(decode_responses=True)
     settings = SimpleNamespace(redis_url='redis://never-used')
-    state = _load('studio_state', {'settings': settings})
+    state = _load('studio_state', {'settings': settings, 'classify_failure': classify_failure})
     state._client = lambda: client
     ns = dict(vars(state), settings=settings)
     production = _load('channel_production', ns)

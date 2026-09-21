@@ -231,8 +231,9 @@ def _held_evidence(snapshot, profile, channel, root, cursor, now):
     _require(type(day_raw) is str and history['days'].get(day_key) == _sha(day_raw)
         and reader.pttl(day_key) == -1 and reader.pttl(HOLD_PREFIX + root) == -1)
     day = json.loads(day_raw)
-    _require(type(day) is list and 1 <= len(day) <= policy['max_holds_per_day']
-        and len(day) == len(set(day)) and root in day)
+    from app.services.production_continuation import validate_extended_hold_day
+    validate_extended_hold_day(reader, day, profile['channel_id'], policy['max_holds_per_day'], HOLD_PREFIX)
+    _require(root in day)
     spec = snapshot.object(jobs.JOB_PREFIX + root)['spec']
     topic = profile['production_topics'][cursor - 1].strip()
     if profile.get('channel_identity'):
@@ -273,7 +274,8 @@ def prior_held_completions(snapshot, profile, channel, now):
         day_raw = reader.get(key)
         _require(type(day_raw) is str and _sha(day_raw) == digest and reader.pttl(key) == -1)
         roots = json.loads(day_raw)
-        _require(type(roots) is list and len(roots) <= MAX_HOLDS_PER_DAY and len(set(roots)) == len(roots))
+        from app.services.production_continuation import validate_extended_hold_day
+        validate_extended_hold_day(reader, roots, profile['channel_id'], MAX_HOLDS_PER_DAY, HOLD_PREFIX)
         for root in roots:
             _require(type(root) is str and runtime._JOB_ID.fullmatch(root))
             record = _object(reader.get(HOLD_PREFIX + root))
@@ -389,10 +391,12 @@ def hold_failed_episode(profile, *, dry_run=False):
             or day_raw is not None and history['days'].get(day_key) == _sha(day_raw),
             'quality_hold_daily_history_changed')
         day = [] if day_raw is None else json.loads(day_raw)
-        _require(type(day) is list and len(day) <= MAX_HOLDS_PER_DAY
-            and len(set(day)) == len(day) and all(type(v) is str and runtime._JOB_ID.fullmatch(v) for v in day)
+        from app.services.production_continuation import authority, validate_extended_hold_day, MAX_DAILY_IDENTITIES
+        validate_extended_hold_day(pipe, day, channel_id, policy['max_holds_per_day'], HOLD_PREFIX)
+        continuation = authority(pipe, channel_id)
+        _require(all(type(v) is str and runtime._JOB_ID.fullmatch(v) for v in day)
             and root not in day and (day_raw is None or pipe.pttl(day_key) == -1))
-        if len(day) >= policy['max_holds_per_day']:
+        if len(day) >= (MAX_DAILY_IDENTITIES if continuation else policy['max_holds_per_day']):
             return {'status': 'daily_hold_limit', 'root_task_id': root,
                     'profile_revision': profile['profile_revision'],
                     'retry_after': (now + timedelta(days=1)).replace(
@@ -409,6 +413,9 @@ def hold_failed_episode(profile, *, dry_run=False):
             'retained_candidates': {key: leaf[key] for key in (
                 'audio_candidate_checkpoint', 'included_stock_pools', 'generated_asset_candidates',
                 'repair_checkpoint', 'qa_workprint') if leaf.get(key)}}
+        if continuation:
+            record.update(continuation_authority_sha256=continuation,
+                          previous_next_due=due, next_due=min(due, now.timestamp()))
         # Ordinary dashboard/worker writes must not change a sealed disposition.
         from app.services.production_quality_hold_revalidation import fence_record
         fences = {jobs.QUALITY_HOLD_JOB_FENCE_PREFIX + row['task_id']:
@@ -425,9 +432,13 @@ def hold_failed_episode(profile, *, dry_run=False):
         pipe.multi(); pipe.set(hold_key, _raw(record), nx=True)
         pipe.set(day_key, day_encoded)
         pipe.hdel(state_key, 'paused_reason')
-        # Preserve cadence and the already-consumed cursor. A successful hold
-        # is not a publication receipt and never changes last_public_task_id.
-        pipe.hset(state_key, 'quality_hold_task_id', root)
+        # During owner-authorized commissioning a rejected episode does not
+        # consume the wait for a successful publication. Preserve the profile's
+        # cadence, consumed cursor and public-delivery evidence.
+        update = {'quality_hold_task_id': root}
+        if continuation:
+            update['next_due'] = str(record['next_due'])
+        pipe.hset(state_key, mapping=update)
         pipe.set(HISTORY_KEY, history_encoded); pipe.set(HISTORY_ANCHOR, _sha(history_encoded))
         for key, value in fences.items():
             pipe.set(key, _raw(value), nx=True)

@@ -118,7 +118,7 @@ def _planning_channel_identity(channel):
 
 def _preparation_slot(record):
     slot = record.get('preparation_slot', 1)
-    _require(type(slot) is int and slot in (1, 2, 3)
+    _require(type(slot) is int and 1 <= slot <= 240
              and ('preparation_slot' not in record or slot != 1))
     return slot
 
@@ -159,6 +159,10 @@ def _execution_keys(binding):
 def _execution_guard(client, binding, profile, channel, state, *, require_execution=True):
     dispatch_key, execution_key, credential_key, index_key, epoch_key = _execution_keys(binding)
     record = _object(client.get(dispatch_key))
+    if _preparation_slot(binding) > 3:
+        from app.services.production_continuation import authority
+        proof = authority(client, binding['channel_id'])
+        _require(proof is not None and record.get('continuation_authority_sha256') == proof)
     credential, epoch = client.get(credential_key), client.get(epoch_key)
     _require(all(record.get(k) == v and type(record.get(k)) is type(v) for k, v in binding.items())
              and record.get('status') in {'reserved', 'dispatched', 'uncertain'}

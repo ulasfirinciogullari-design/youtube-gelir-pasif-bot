@@ -276,17 +276,21 @@ def test_dashboard_explicitly_shows_stale_worker_and_failed_series(ui, monkeypat
         'production_status':'exhausted','remaining_topics':0,
         'series_preparation':{'status':'failed','daily_wait':True,'attempt_number':3}}])
     assert 'Yeni konu planı hazırlanamadı' in html and 'Günlük deneme sınırı bekleniyor' in html
-    assert 'Planlama denemesi 3/3' in html
+    assert 'Planlama denemesi 3' in html and 'Planlama denemesi 3/3' not in html
     ui.forbidden.assert_not_called()
 
 
 @pytest.mark.parametrize('slot,expected', [(1,False), (2,False), (3,True), (4,None), (True,None)])
 def test_same_day_failure_waits_for_tomorrow_only_after_third_attempt(slot, expected):
-    client = store({'channel_id':'UC_fixture','profile_revision':'current','day':'2026-09-21',
-                    'status':'uncertain','preparation_slot':slot})
+    import fakeredis
+    client = fakeredis.FakeRedis(decode_responses=True)
+    client.set(operations.PENDING_PREFIX + 'UC_fixture', json.dumps({
+        'channel_id':'UC_fixture','profile_revision':'current','day':'2026-09-21',
+        'status':'uncertain','preparation_slot':slot}))
+    before = {key: client.dump(key) for key in client.keys('*')}
     result = operations.read_series_preparation('UC_fixture','current',client=client,now=NOW)
     assert result is None if expected is None else result['daily_wait'] is expected
-    client.set.assert_not_called()
+    assert {key: client.dump(key) for key in client.keys('*')} == before
 
 
 def preparation_wait():

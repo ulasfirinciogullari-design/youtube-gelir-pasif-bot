@@ -116,6 +116,10 @@ def _terminal_preparation(pipe, channel_id, day, slot):
         _require(daily_raw is None)
         return None
     dispatch = _object(dispatch_raw)
+    if slot > MAX_PREPARATIONS_PER_DAY:
+        from app.services.production_continuation import authority
+        proof = authority(pipe, channel_id, active=False)
+        _require(proof is not None and dispatch.get('continuation_authority_sha256') == proof)
     if dispatch.get('status') != 'finished' or dispatch.get('outcome') not in {'failed', 'uncertain', 'ready'}:
         return {'blocked': 'preparation_already_reserved'}
     binding = _preparation_binding(dispatch)
@@ -148,14 +152,17 @@ def _terminal_preparation(pipe, channel_id, day, slot):
 
 
 def _next_preparation_slot(pipe, channel_id, day, now):
-    """Three distinct identities per UTC day; occupied or missing history fences."""
+    """Distinct identities only; occupied or missing history still fences work."""
+    from app.services.production_continuation import authority, MAX_DAILY_IDENTITIES
+    continuation = authority(pipe, channel_id)
+    maximum = MAX_DAILY_IDENTITIES if continuation else MAX_PREPARATIONS_PER_DAY
     identities = [{'channel_id': channel_id, 'day': day,
                    **({'preparation_slot': slot} if slot > 1 else {})}
-                  for slot in range(1, MAX_PREPARATIONS_PER_DAY + 1)]
+                  for slot in range(1, maximum + 1)]
     all_keys = [[_preparation_key(prefix, identity) for prefix in (DAILY_PREFIX, PREPARATION_DISPATCH_PREFIX)]
                 for identity in identities]
     pipe.watch(*(key for pair in all_keys for key in pair))
-    for slot in range(1, MAX_PREPARATIONS_PER_DAY + 1):
+    for slot in range(1, maximum + 1):
         previous = _terminal_preparation(pipe, channel_id, day, slot)
         if previous is None:
             later = [key for pair in all_keys[slot:] for key in pair]
@@ -163,9 +170,9 @@ def _next_preparation_slot(pipe, channel_id, day, now):
             return slot, None
         if previous.get('blocked'):
             return None, previous['blocked']
-        if getattr(settings, 'studio_series_multiple_attempts_enabled', False) is not True:
+        if not continuation and getattr(settings, 'studio_series_multiple_attempts_enabled', False) is not True:
             return None, 'daily_fenced'
-        if now < previous['available_at']:
+        if not continuation and now < previous['available_at']:
             return None, 'preparation_cooldown'
     return None, 'daily_preparation_limit'
 
@@ -196,13 +203,15 @@ def retire_finished_planning_failure(client, channel_id, expected_revision, *, n
                  and isinstance(pending.get('attempt_id'), str)
                  and re.fullmatch('[0-9a-f]{32}', pending['attempt_id']))
         _require(pending['day'] <= day)
-        if pending['day'] == day and getattr(settings, 'studio_series_multiple_attempts_enabled', False) is not True:
+        from app.services.production_continuation import authority
+        continuation = authority(pipe, channel_id)
+        if pending['day'] == day and not continuation and getattr(settings, 'studio_series_multiple_attempts_enabled', False) is not True:
             return pending['status']
         slot = _preparation_slot(pending)
         prior = _terminal_preparation(pipe, channel_id, pending['day'], slot)
         _require(prior is not None and not prior.get('blocked') and prior['daily_raw'] == raw
                  and pipe.pttl(pending_key) == -1)
-        if pending['day'] == day:
+        if pending['day'] == day and not continuation:
             if slot >= MAX_PREPARATIONS_PER_DAY:
                 return 'daily_preparation_limit'
             if now < prior['available_at']:
@@ -268,6 +277,11 @@ def _reserve_preparation(channel_id, expected_revision, expected_connection, enq
                   'profile_sha256': _digest(profile), 'channel_sha256': _digest(_planning_channel_identity(channel)),
                   'credential_sha256': _digest(credential), 'authorization_epoch_sha256': _digest(epoch),
                   'created_at': now}
+        if slot > MAX_PREPARATIONS_PER_DAY:
+            from app.services.production_continuation import authority
+            proof = authority(pipe, channel_id)
+            _require(proof is not None)
+            record['continuation_authority_sha256'] = proof
         raw = _json(record)
         pipe.multi()
         pipe.set(dispatch_key, raw, nx=True)

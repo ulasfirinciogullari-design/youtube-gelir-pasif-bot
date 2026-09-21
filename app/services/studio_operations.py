@@ -169,7 +169,8 @@ def read_series_preparation(channel_id, profile_revision, *, client=None, now=No
         if (type(channel_id) is not str or not re.fullmatch(r'[A-Za-z0-9_-]{8,128}', channel_id)
                 or type(profile_revision) is not str or not profile_revision):
             return None
-        raw = (client if client is not None else _client()).get(PENDING_PREFIX + channel_id)
+        store = client if client is not None else _client()
+        raw = store.get(PENDING_PREFIX + channel_id)
         if type(raw) is not str or len(raw.encode()) > 32768:
             return None
         value = json.loads(raw)
@@ -181,10 +182,22 @@ def read_series_preparation(channel_id, profile_revision, *, client=None, now=No
         if day > today:
             return None
         slot = value.get('preparation_slot', 1)
-        if type(slot) is not int or slot not in (1, 2, 3):
+        if type(slot) is not int or not 1 <= slot <= 240:
             return None
+        daily_wait = value['status'] in {'failed', 'uncertain'} and day == today and slot >= 3
+        if daily_wait or slot > 3:
+            from app.services.production_continuation import authority
+            with store.pipeline() as pipe:
+                historical = authority(pipe, channel_id, active=False)
+                if slot > 3 and not historical:
+                    return None
+                continuous = authority(pipe, channel_id)
+                pipe.multi(); pipe.ping()
+                if pipe.execute() != [True]:
+                    return None
+            daily_wait = daily_wait and not continuous
         return {'status': value['status'], 'attempt_number': slot,
-                'daily_wait': value['status'] in {'failed', 'uncertain'} and day == today and slot == 3}
+                'daily_wait': daily_wait}
     except Exception:
         return None
 
