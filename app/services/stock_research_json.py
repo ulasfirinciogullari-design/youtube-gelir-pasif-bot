@@ -1,8 +1,10 @@
-"""Read a narrowly defined redundant null in stock-only research JSON.
+"""Read narrowly defined redundant metadata in stock-only research JSON.
 
 Some RouteLLM results repeat ai_prompt:null within a scene. Only that exact
 null-only field, in the authored stock research contract, may occur twice.
-Contradictory values and every other repeated key remain invalid. This does
+An optional scene query counter may be omitted from the parsed content only
+when its integer exactly equals the actual two or three queries. Contradictory
+values and every other repeated key remain invalid. This does
 not authorize transport, settle old requests, edit narration or approve facts.
 """
 import json
@@ -66,6 +68,15 @@ def decode(content, schema):
                             and result[key] is None and item is None):
                         raise ValueError('duplicate JSON key')
                 result[key] = item
+            if (len(path) == 2 and path[0] == 'scenes' and type(path[1]) is int
+                    and 'visual_queries_count' in result):
+                count, queries = result['visual_queries_count'], result.get('visual_queries')
+                if not (type(count) is int and 2 <= count <= 3
+                        and type(queries) is list and len(queries) == count):
+                    raise ValueError('research query counter disagrees with actual queries')
+                # Retain every actual query, narration and source. The exact
+                # response bytes remain in the provider observation/proof.
+                result.pop('visual_queries_count')
             return result
         if type(value) is list:
             return [visit(item, (*path, index)) for index, item in enumerate(value)]

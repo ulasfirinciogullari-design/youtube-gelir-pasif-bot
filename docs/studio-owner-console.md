@@ -25,3 +25,10 @@ never authorizes, retries, or suppresses production.
 Publication, OAuth, current upload reconciliation and financial controls remain
 the existing authorities. Viewing a rejected file grants no publishing permission.
 The console does not buy credits or renew an Abacus entitlement.
+
+An observed quality hold hides retry and voice-replacement actions for that
+sealed attempt, including a held retry child. The detail page and status poll
+keep the owner preview and link to the current production plan. A single bounded
+read decorates loaded records in memory; held jobs are never rewritten for
+presentation. This observation grants no retry, spending or publication authority;
+the existing backend fences remain authoritative if an observation fails.

@@ -64,6 +64,43 @@ def test_normal_research_is_unchanged_and_legacy_contract_keeps_duplicate_reject
     assert stock_research_json.decode(json.dumps(result()), schema) == result()
 
 
+def test_redundant_query_counts_preserve_content_and_actual_wire_without_approval():
+    original = result()
+    for scene in original['scenes']:
+        scene['visual_queries_count'] = len(scene['visual_queries'])
+    content = json.dumps(original)
+    observed, wire, request = observe(content)
+    assert observed.result == result()
+    assert json.loads(wire.content)['choices'][0]['message']['content'] == content
+    assert observed.evidence['response_body_sha256'] == hashlib.sha256(wire.content).hexdigest()
+    assert observed.evidence['request_sha256'] == request.request_sha256
+    assert 'approved' not in observed.result and 'accepted' not in observed.result
+    schema = contract()
+    schema['properties']['scenes']['items']['properties']['ai_prompt'] = {'type': ['string', 'null']}
+    with pytest.raises(adapter.AbacusRouterError):observe(content, schema)
+
+
+@pytest.mark.parametrize('count', [0, 1, 3, 4, True, 2.0, '2', None])
+def test_wrong_or_unbounded_redundant_query_counter_is_rejected(count):
+    data = result()
+    assert len(data['scenes'][0]['visual_queries']) == 2
+    data['scenes'][0]['visual_queries_count'] = count
+    with pytest.raises(adapter.AbacusRouterError):observe(json.dumps(data))
+
+
+@pytest.mark.parametrize('where', ['root', 'source', 'nested', 'duplicate', 'unrelated'])
+def test_query_counter_exception_cannot_admit_other_metadata_or_duplicate_keys(where):
+    data = result()
+    if where == 'root':data['visual_queries_count'] = 2
+    elif where == 'source':data['sources'][0]['visual_queries_count'] = 2
+    elif where == 'nested':data['scenes'][0]['nested'] = {'visual_queries_count': 2}
+    elif where == 'unrelated':data['scenes'][0]['approved'] = True
+    else:data['scenes'][0]['visual_queries_count'] = 2
+    content = json.dumps(data)
+    if where == 'duplicate':content = content.replace('"visual_queries_count": 2', '"visual_queries_count": 2, "visual_queries_count": 2', 1)
+    with pytest.raises(adapter.AbacusRouterError):observe(content)
+
+
 @pytest.mark.parametrize('replacement', [
     '"ai_prompt": null, "ai_prompt": "paid scene"',
     '"ai_prompt": "paid scene", "ai_prompt": null',

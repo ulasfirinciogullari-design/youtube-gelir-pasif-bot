@@ -55,6 +55,46 @@ def test_store_outage_never_changes_a_completed_task_result():
     assert operations.read_tick(client=client, now=NOW)['status'] == 'unavailable'
 
 
+def test_held_job_observation_batches_root_and_child_fences_without_writing():
+    from app.services.studio_state import QUALITY_HOLD_PREFIX, QUALITY_HOLD_JOB_FENCE_PREFIX
+    from test_studio_workflow_presentation import job
+    rows = [job(0), job(1), job(2), job(3, 'SUCCESS'), job(4, kind='publish')]
+    client = Mock(); client.mget.return_value = ['root hold', None, None, 'child fence', None, None]
+    assert operations.held_task_ids(rows, client=client) == {rows[0]['task_id'], rows[1]['task_id']}
+    client.mget.assert_called_once_with([prefix + row['task_id'] for row in rows[:3]
+        for prefix in (QUALITY_HOLD_PREFIX, QUALITY_HOLD_JOB_FENCE_PREFIX)])
+    assert len(client.mock_calls) == 1
+
+
+def test_hold_observation_failure_grants_no_retry_or_publication_authority():
+    from test_studio_workflow_presentation import job
+    client = Mock(); client.mget.side_effect = RuntimeError('offline')
+    assert operations.held_task_ids([job()], client=client) == set()
+    assert len(client.mock_calls) == 1
+
+
+def test_held_failure_remains_reviewable_without_dead_retry_or_voice_actions(ui, monkeypatch):
+    from copy import deepcopy
+    from test_studio_workflow_presentation import job
+    record = job(repair_available=True,
+        failure_stage='director_qc', error='included_factual_audit_invalid')
+    ui.records[record['task_id']] = record
+    before = deepcopy(record)
+    monkeypatch.setattr(operations, 'held_task_ids', lambda rows: {record['task_id']})
+    ui.ns['_sync_job'] = ui.ns['get_job']
+    html = ui.client.get('/studio/job/' + record['task_id'])
+    assert html.status_code == 200
+    assert 'Bu deneme inceleme için saklanıyor.' in html.text
+    assert 'Üretim planını aç' in html.text
+    assert f'action="/studio/retry/{record["task_id"]}"' not in html.text
+    payload = ui.client.get('/studio/api/job/' + record['task_id']).json()
+    assert payload['quality_held'] is True and payload['upload_allowed'] is False
+    assert payload['voice_replacement_available'] is False
+    assert payload['state'] == 'FAILURE'
+    assert ui.records[record['task_id']] == before
+    ui.forbidden.assert_not_called()
+
+
 def test_real_signal_handler_observes_only_the_tick_and_never_replays_it(monkeypatch):
     source = Path(__file__).resolve().parents[1] / 'app/production_tasks.py'
     tree = ast.parse(source.read_text())

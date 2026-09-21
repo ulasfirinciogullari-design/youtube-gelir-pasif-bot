@@ -19,6 +19,29 @@ def _client():
                                 retry_on_timeout=False)
 
 
+def held_task_ids(records, *, client=None):
+    """One bounded observation for presentation; never a retry permission."""
+    try:
+        from app.services.studio_state import QUALITY_HOLD_PREFIX, QUALITY_HOLD_JOB_FENCE_PREFIX
+        if type(records) is not list or len(records) > 1000:
+            return set()
+        task_ids = sorted({row['task_id'] for row in records if type(row) is dict
+            and row.get('kind') == 'render' and row.get('state') == 'FAILURE'
+            and type(row.get('task_id')) is str
+            and re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', row['task_id'])})
+        if not task_ids:
+            return set()
+        keys = [prefix + task for task in task_ids
+                for prefix in (QUALITY_HOLD_PREFIX, QUALITY_HOLD_JOB_FENCE_PREFIX)]
+        values = (client if client is not None else _client()).mget(keys)
+        if type(values) is not list or len(values) != len(keys):
+            return set()
+        return {task for index, task in enumerate(task_ids)
+                if any(value is not None for value in values[index * 2:index * 2 + 2])}
+    except Exception:
+        return set()  # Backend retry/voice guards remain authoritative on an outage.
+
+
 def record_tick(state, result, *, client=None, now=None):
     """Best effort, one bounded status record after the real worker task ends."""
     try:

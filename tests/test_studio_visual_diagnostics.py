@@ -49,10 +49,12 @@ def viewer(monkeypatch):
     get_job = Mock(return_value=job)
     namespace = {
         'settings': SimpleNamespace(factory_api_token=COOKIE, bucket='existing-private-bucket'),
-        'get_job': get_job,
+        'get_job': get_job, '_stored_get_job': get_job,
         'get_upload_record': Mock(return_value=None),
         'youtube_router': APIRouter(),
     }
+    from app.services import studio_operations
+    monkeypatch.setattr(studio_operations, 'held_task_ids', lambda rows: set())
     exec(compile(tree, str(source), 'exec'), namespace)
     body = BoundedBody(HTML)
     response = {'Body': body, 'ContentLength': len(HTML), 'ContentType': 'text/html; charset=utf-8'}

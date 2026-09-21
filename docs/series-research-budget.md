@@ -166,3 +166,12 @@ story rejection eligible for the same fully guarded, daily-bounded quality
 hold. This prevents an unusable independent critique from permanently blocking
 later topics. Other stages or unrecognized errors remain ineligible. This
 classification cannot retry the critique, alter accounting or approve media.
+
+The same explicit stock-only research decoder accepts the provider's redundant
+`visual_queries_count` scene metadata only when it is an integer equal to the
+actual two or three queries. It omits that derived counter from parsed content,
+preserving every query, narration, source and the exact raw response proof.
+Wrong counts, duplicate counters, other paths, unrelated extra fields and
+legacy schemas remain invalid. This does not settle or replay a previously
+unknown request, and the entire original research schema and independent QA
+still apply to the actual content.

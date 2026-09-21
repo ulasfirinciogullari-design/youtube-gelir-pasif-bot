@@ -27,8 +27,8 @@ from app.tasks import (
 from app.services.studio_state import (
     claim_retry_dispatch,
     create_job,
-    get_job,
-    list_jobs,
+    get_job as _stored_get_job,
+    list_jobs as _stored_list_jobs,
     mark_failure,
     mark_retry_dispatch,
     mark_success,
@@ -45,6 +45,28 @@ from app.services.youtube_automation import (
 
 router = APIRouter()
 COOKIE_NAME = 'youtube_studio_token'
+
+
+def _with_quality_hold_presentation(records):
+    from app.services.studio_operations import held_task_ids
+    held = held_task_ids(records)
+    presented = []
+    for record in records:
+        row = {key: value for key, value in record.items() if key != 'quality_held'}
+        if record.get('task_id') in held:
+            row['quality_held'] = True
+        presented.append(row)
+    return presented
+
+
+def get_job(task_id):
+    record = _stored_get_job(task_id)
+    return _with_quality_hold_presentation([record])[0] if isinstance(record, dict) else record
+
+
+def list_jobs(limit=30):
+    return _with_quality_hold_presentation(_stored_list_jobs(limit))
+
 
 STYLE_LABELS = {
     'documentary': 'Belgesel',
@@ -1676,6 +1698,7 @@ def _voice_replacement_candidate(job: dict) -> bool:
     candidate = job.get('audio_candidate_checkpoint')
     return bool(
         job.get('state') == 'FAILURE' and job.get('kind') == 'render'
+        and job.get('quality_held') is not True
         and spec.get('mode') == 'production' and spec.get('format') == 'shorts'
         and spec.get('duration_minutes') == 0.5 and spec.get('language') == 'tr'
         and str(job.get('failure_stage') or job.get('stage') or '') in {'audio_qc', 'audio_qc_retry', 'audio_pause_recheck'}
@@ -1716,6 +1739,10 @@ def _job_primary_action(job: dict, *, small: bool = True) -> str:
         else:
             label = 'Durumu aç'
         return f'<a class="btn secondary{size}" href="/studio/job/{target}" aria-label="{aria(label)}">{label}</a>'
+    if job.get('quality_held') is True:
+        target, label = (f'/studio/job/{task_id}', 'İncele') if small else ('/studio', 'Üretim planını aç')
+        return (f'<span class="meta">Bu deneme inceleme için saklanıyor.</span>'
+                f'<a class="btn secondary{size}" href="{target}" aria-label="{aria(label)}">{label}</a>')
     if status == 'repair':
         return (
             f'<form method="post" action="/studio/retry/{task_id}">'
@@ -2921,6 +2948,7 @@ async function poll(){
  document.getElementById('bar').style.width=p+'%';progress.setAttribute('aria-valuenow',String(p));progress.hidden=ui!=='running';document.getElementById('stage').textContent=stage+(ui==='running'?' · %'+p:'');setStatusMessage(j.ui_status_message);showTechnical(j);
  if(j.retry_presentation){const latest=j.retry_presentation;setMedia({});setAction('latest:'+latest.task_id,linkAction(`/studio/job/${encodeURIComponent(latest.task_id)}`,'Güncel sonucu aç'));return}
  if(j.publication_status){setMedia(['ready','completed'].includes(ui)?j.result:{},j.delivery_label||'YouTube yüklemesinin durumu doğrulanıyor.');setAction('publication-review',linkAction(j.publication_review_path||'/studio/youtube','Mevcut yüklemeyi kontrol et','repair'));if(j.publication_status==='pending')timer=setTimeout(poll,3000);return}
+ if(j.quality_held===true){setMedia({});setAction('quality-held','<p>Bu deneme inceleme için saklanıyor.</p>'+linkAction('/studio','Üretim planını aç'));return}
  if(ui==='repair'){setMedia({});setAction('repair',retryAction('Sorunlu sahneyi onar','repair'));return}
  if(ui==='failed'){setMedia({});if(j.voice_replacement_available===true)setAction('voice-replacement',linkAction(`/studio/voice-replacement/${encodeURIComponent(taskId)}`,'Sesi tek denemeyle yenile','repair'));else setAction('failed',retryAction('Aynı ayarlarla tekrar dene','danger'));return}
  if(ui==='ready'&&state==='AWAITING_APPROVAL'){setAction('storyboard',linkAction(`/studio/plan/${encodeURIComponent(taskId)}`,"Storyboard'u aç",'success'));return}
