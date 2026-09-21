@@ -276,6 +276,25 @@ class IncludedRouterLedger:
                                  'included_router_previous_outcome_unknown')
                         pipe.multi(); pipe.ping(); self._ack(pipe, [True])
                         return identity, deepcopy(prior['outcome'])
+                    if purpose == 'next_series' and type(self) is IncludedRouterLedger:
+                        # An identical, already-observed negative planning
+                        # answer cannot authorize media or publication. Reuse
+                        # it across planning attempts on this same connection
+                        # rather than buy the same refusal each minute. The
+                        # current authority, exact request, schema, ciphertext
+                        # and parsed-result hash are all checked. An occupied
+                        # current identity above still takes precedence.
+                        for old_id, old in journal['requests'].items():
+                            if (old['purpose'] != purpose or old['request_sha256'] != prepared.request_sha256
+                                    or old['outcome'] is None or any(old['context'][field] != context[field]
+                                        for field in ('channel_id', 'connection_id', 'kind'))):
+                                continue
+                            result = _result(prepared, old['outcome'])
+                            if (set(result) == {'can_prepare', 'language', 'series_title', 'briefs'}
+                                    and result['can_prepare'] is False and result['series_title'] == ''
+                                    and result['briefs'] == [] and result['language'] in ('en', 'tr')):
+                                pipe.multi(); pipe.ping(); self._ack(pipe, [True])
+                                return old_id, deepcopy(old['outcome'])
                     day = _stamp(self.clock())[:10]
                     rows = journal['requests'].values()
                     _require(sum(r['context']['lineage_id'] == context['lineage_id'] for r in rows)

@@ -187,3 +187,33 @@ def test_source_families_rotate_using_older_series_even_after_current_profile_ch
     pages = planning.read_planning_pages(context)
     assert {row['url'] for row in pages} == {url for pair in planning.SOURCE_PAIRS[2:4] for url in pair}
     assert len(seen) == 4
+
+
+def test_finished_negative_attempts_explore_every_source_family_without_a_new_topic(monkeypatch):
+    monkeypatch.setattr(sources, 'feed_candidates', lambda: [])
+    monkeypatch.setattr(sources, 'fetch_page', lambda url: page(url))
+    windows = []
+    for slot in range(len(planning.SOURCE_PAIRS)):
+        rows = planning.read_planning_pages({'source_rotation': slot})
+        assert len(rows) == 4
+        windows.append(tuple(row['url'] for row in rows))
+    assert len(set(windows)) == len(planning.SOURCE_PAIRS)
+    assert {url for window in windows for url in window} == {url for pair in planning.SOURCE_PAIRS for url in pair}
+    assert tuple(row['url'] for row in planning.read_planning_pages(
+        {'source_rotation': len(planning.SOURCE_PAIRS)})) == windows[0]
+    assert all(planning._contract([page(url) for url in window], 'en')[1] >= 20 for window in windows)
+
+
+@pytest.mark.parametrize('rotation', [True, -1, 240, '3'])
+def test_invalid_rotation_never_fetches_sources(monkeypatch, rotation):
+    fetch = Mock();monkeypatch.setattr(sources, 'fetch_page', fetch)
+    with pytest.raises(ValueError): planning.read_planning_pages({'source_rotation': rotation})
+    fetch.assert_not_called()
+
+
+def test_server_attempt_selector_is_not_part_of_paid_editorial_request(generate):
+    _, _, call = generate
+    first = planning.generate({**CONTEXT, 'source_rotation': 0})
+    request = deepcopy((call.call_args.args, call.call_args.kwargs))
+    assert planning.generate({**CONTEXT, 'source_rotation': 8}) == first
+    assert (call.call_args.args, call.call_args.kwargs) == request and 'source_rotation' not in request[0][0]

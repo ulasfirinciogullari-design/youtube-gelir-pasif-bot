@@ -16,6 +16,14 @@ SOURCE_PAIRS = (
      'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types'),
     ('https://www.bep.gov/currency/serial-numbers',
      'https://www.uscurrency.gov/denominations/bank-note-identifiers'),
+    ('https://global.toyota/en/company/vision-and-philosophy/production-system/',
+     'https://global.toyota/en/company/plant-tours/production-system/'),
+    ('https://corporate.mcdonalds.com/corpmcd/our-company/who-we-are/our-history.html',
+     'https://www.mcdonalds.com/us/en-us/about-us.html'),
+    ('https://about.ups.com/us/en/our-company/our-history.html',
+     'https://about.ups.com/us/en/newsroom/press-releases/people-led/iconic-ups-brown-delivery-vehicles-receive-personal-update.html'),
+    ('https://www.fedex.com/en-us/about/history.html',
+     'https://www.fedex.com/en-il/about/company-info/history.html'),
 )
 EVERGREEN_SOURCES = tuple(url for pair in SOURCE_PAIRS[:2] for url in pair)
 MAX_PAGES = 6
@@ -28,6 +36,13 @@ def read_planning_pages(context=None):
     # Prefer unused source families over rewriting the same unsuccessful
     # banknote/barcode question every time a new series starts.
     pairs = sorted(SOURCE_PAIRS, key=lambda pair: sum(url in topic for topic in history for url in pair))
+    # A completed negative plan is evidence that this source window did not
+    # support a new episode. The server-owned attempt slot explores the next
+    # window; unpublished topics alone cannot move the usage ranking forward.
+    rotation = context.get('source_rotation', 0)
+    _require(type(rotation) is int and 0 <= rotation < 240)
+    offset = rotation % len(pairs)
+    pairs = pairs[offset:] + pairs[:offset]
     candidates = [{'url': url, 'category': 'evergreen_primary'} for pair in pairs[:2] for url in pair]
     candidates += [{**row, 'category': 'recent_official_news'} for row in sources.feed_candidates()
                    if len(row['url']) <= 100][:2]
@@ -131,6 +146,9 @@ def label_batch(decoded, observed, context):
 def generate(context):
     from app.services.production_included_router import generate_text_json, stock_only_rule
     pages = read_planning_pages(context)
+    # Selection metadata is not editorial input or a way to defeat request
+    # deduplication when a later window contains exactly the same sources.
+    context = {key: value for key, value in context.items() if key != 'source_rotation'}
     indexed, limit, schema = _contract(pages, context['language'])
     references = [{'source_id': key, **{name: page[name] for name in (
         'url', 'text_sha256', 'text', 'category')},

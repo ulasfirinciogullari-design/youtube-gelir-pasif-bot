@@ -466,10 +466,12 @@ def prepare_next_series(profile, channel, *, now=None, execution_binding=None):
                 pipe.ping()
                 pipe.execute()
             generation_context = context
+            if configuration[0] == 'abacus_included':
+                generation_context = {**context, 'source_rotation': _preparation_slot(execution_binding) - 1}
             from app.services.production_editorial_history import recent_topics
             prior_topics = recent_topics(client, channel_id)
             if prior_topics:
-                generation_context = {**context, 'previous_topics': prior_topics}
+                generation_context = {**generation_context, 'previous_topics': prior_topics}
             try:
                 from app.services.youtube_analytics import editorial_guidance
                 guidance = editorial_guidance(channel_id)
