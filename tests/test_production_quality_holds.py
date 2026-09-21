@@ -54,7 +54,11 @@ def test_hold_preserves_budget_unknown_requests_audio_job_cadence_and_consumed_c
     assert record['publish_eligible'] is False and record['retry_dispatched'] is False
     assert record['retained_candidates']['audio_candidate_checkpoint'] == n.job['audio_candidate_checkpoint']
     assert record['spec'] == n.job['spec']
-    mutable = {n.state_key, holds.HOLD_PREFIX + SOURCE, n.day_key, holds.HISTORY_KEY, holds.HISTORY_ANCHOR}
+    mutable = {n.state_key, holds.HOLD_PREFIX + SOURCE, n.day_key, holds.HISTORY_KEY, holds.HISTORY_ANCHOR,
+               jobs.QUALITY_HOLD_JOB_FENCE_PREFIX + SOURCE}
+    fence = json.loads(n.client.get(jobs.QUALITY_HOLD_JOB_FENCE_PREFIX + SOURCE))
+    assert fence['job_sha256'] == record['lineage'][0]['job_sha256']
+    assert n.client.pttl(jobs.JOB_PREFIX + SOURCE) == -1
     assert {k: v for k, v in after.items() if k not in mutable} == {k: v for k, v in before.items() if k not in mutable}
     state = after[n.state_key][1]
     expected = dict(before[n.state_key][1]); expected.pop('paused_reason'); expected['quality_hold_task_id'] = SOURCE
@@ -190,7 +194,7 @@ def test_expired_policy_stays_stopped_without_renewal_or_budget_writes(ready):
 def test_lost_commit_reply_cannot_repeat_a_hold_or_reset_daily_usage(ready):
     n = ready; commission(n)
     def lose_commit(_number, result):
-        if type(result) is list and len(result) == 6:
+        if type(result) is list and len(result) == 8:
             raise ConnectionError('Lost acknowledgement after atomic hold')
         return result
     n.foundation.client = InterceptClient(n.client, after=lose_commit)

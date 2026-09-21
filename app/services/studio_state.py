@@ -24,6 +24,8 @@ RETRY_CHILD_EXECUTION_PREFIX = 'youtube_studio:retry_child_execution:'
 EXTERNAL_EPISODE_LEAF_PREFIX = 'youtube_studio:external_episode_delivery:v1:leaf:'
 RENDER_CANCELLATION_PREFIX = 'youtube_studio:render_cancellation:v1:'
 RETAINED_DELIVERY_CHILD_PREFIX = 'youtube_studio:retained_delivery_child:v1:'
+QUALITY_HOLD_PREFIX = 'youtube_studio:quality_hold:v1:episode:'
+QUALITY_HOLD_JOB_FENCE_PREFIX = 'youtube_studio:quality_hold:v1:job_fence:'
 _RETAINED_LINEAGE = ('aad98516-eee0-5f39-b49d-af33f01e688e',
                      '69ce7728-acce-4e5d-b30f-d5432cf7f3ac',
                      'f5315330-e927-44c7-aed7-394a331111c8')
@@ -177,6 +179,9 @@ def paid_create_budget_state(
 # deliberately uses only EXISTS for the checkpoint and claim keys; it never
 # opens the private recovery package.
 _SYNC_REPAIR_CHECKPOINT_STATE = (
+    "local task_id = string.sub(KEYS[1], " + str(len(JOB_PREFIX) + 1) + ")\n"
+    "if redis.call('EXISTS', '" + QUALITY_HOLD_PREFIX + "' .. task_id, '"
+    + QUALITY_HOLD_JOB_FENCE_PREFIX + "' .. task_id) > 0 then return 0 end\n"
     "local selected_staged = redis.call('EXISTS', '" + SELECTED_VISUAL_RECOVERY_PREFIX
     + "' .. string.sub(KEYS[1], " + str(len(JOB_PREFIX) + 1) + ")) == 1\n"
 ) + r'''
@@ -249,6 +254,8 @@ end
 
 _RETAINED_DELIVERY_FENCE = (
     "local function retained_delivery(task_id)\n"
+    " if redis.call('EXISTS', '" + QUALITY_HOLD_PREFIX + "' .. task_id, '"
+    + QUALITY_HOLD_JOB_FENCE_PREFIX + "' .. task_id) > 0 then return true end\n"
     " if redis.call('EXISTS', '" + RETAINED_DELIVERY_CHILD_PREFIX + "' .. task_id) == 1 then return true end\n"
     " if " + ' or '.join("task_id == '" + task + "'" for task in _RETAINED_LINEAGE) + " then\n"
     "  return redis.call('EXISTS', " + ', '.join("'" + key + "'" for key in _RETAINED_ROOT_KEYS) + ") > 0\n"
@@ -356,7 +363,9 @@ return 1
 '''
 
 
-_SAVE_REPAIR_CHECKPOINT = r'''
+_SAVE_REPAIR_CHECKPOINT = _RETAINED_DELIVERY_FENCE + (
+    "if retained_delivery(string.sub(KEYS[1], " + str(len(JOB_PREFIX) + 1) + ")) then return 0 end\n"
+) + r'''
 redis.call('SETEX', KEYS[2], tonumber(ARGV[2]), ARGV[1])
 redis.call('DEL', KEYS[3])
 
@@ -374,7 +383,9 @@ return 1
 '''
 
 
-_CONSUME_REPAIR_CHECKPOINT = _SELECTED_V6_CHECK + (
+_CONSUME_REPAIR_CHECKPOINT = _RETAINED_DELIVERY_FENCE + (
+    "if retained_delivery(string.sub(KEYS[1], " + str(len(JOB_PREFIX) + 1) + ")) then return nil end\n"
+) + _SELECTED_V6_CHECK + (
     "if redis.call('EXISTS', '" + SELECTED_VISUAL_RECOVERY_PREFIX
     + "' .. string.sub(KEYS[1], " + str(len(JOB_PREFIX) + 1) + ")) == 1 then return nil end\n"
 ) + r'''
@@ -641,6 +652,7 @@ def retained_delivery_blocked(task_id: str) -> bool:
 def retained_delivery_fence_keys(task_id: str) -> tuple[str, ...]:
     """Keys watched by ordinary writers before touching retained history."""
     return (RETAINED_DELIVERY_CHILD_PREFIX + task_id,
+            QUALITY_HOLD_PREFIX + task_id, QUALITY_HOLD_JOB_FENCE_PREFIX + task_id,
             *(_RETAINED_ROOT_KEYS if task_id in _RETAINED_LINEAGE else ()))
 
 
@@ -693,6 +705,15 @@ def save_job(record: dict) -> dict:
                 try:
                     with client.pipeline() as cleanup:
                         if _watch_retained_delivery(cleanup, old_id):
+                            # Keep the sealed failed job permanently, while the
+                            # recent-history index retains its original bound.
+                            retained_keys = (RETAINED_DELIVERY_CHILD_PREFIX + old_id,
+                                *(_RETAINED_ROOT_KEYS if old_id in _RETAINED_LINEAGE else ()))
+                            if (cleanup.exists(QUALITY_HOLD_JOB_FENCE_PREFIX + old_id)
+                                    and not cleanup.exists(*retained_keys)):
+                                cleanup.multi()
+                                cleanup.zrem(JOB_INDEX, old_id)
+                                cleanup.execute()
                             continue
                         cleanup.multi()
                         cleanup.delete(_job_key(old_id))

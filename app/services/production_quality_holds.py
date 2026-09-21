@@ -197,7 +197,7 @@ def held_series_completion(snapshot, profile, channel, state, now):
     return _held_episode_completion(snapshot, profile, channel, root, len(profile['production_topics']), now)
 
 
-def _held_episode_completion(snapshot, profile, channel, root, cursor, now):
+def _held_evidence(snapshot, profile, channel, root, cursor, now):
     _require(included.enabled() and runtime.enforcement_enabled())
     reader = _SnapshotReader(snapshot)
     policy = _read_policy(reader, datetime.fromtimestamp(now, timezone.utc))
@@ -238,11 +238,20 @@ def _held_episode_completion(snapshot, profile, channel, root, cursor, now):
         and spec.get('duration_minutes') == .5 and spec.get('production_scheduled') is True
         and spec.get('publish_after_render') is True)
     leaf, evidence = _lineage(reader, root, spec)
-    _require(record.get('leaf_task_id') == leaf['task_id'] and record.get('lineage') == evidence
+    _require(record.get('leaf_task_id') == leaf['task_id']
         and record.get('reason') == _reason(leaf) and _reason(leaf) is not None)
+    return record, record_raw, leaf, evidence
+
+
+def _held_episode_completion(snapshot, profile, channel, root, cursor, now):
+    record, record_raw, leaf, evidence = _held_evidence(snapshot, profile, channel, root, cursor, now)
+    revalidated = {}
+    if record.get('lineage') != evidence:
+        from app.services.production_quality_hold_revalidation import verified_revalidation
+        revalidated = verified_revalidation(snapshot, record, record_raw, leaf, evidence, now)
     return {'completion_kind': 'held_unpublished', 'original_task_id': root,
         'source_task_id': leaf['task_id'], 'lineage': [row['task_id'] for row in evidence],
-        'hold_sha256': _sha(record_raw), 'publish_eligible': False}
+        'hold_sha256': _sha(record_raw), 'publish_eligible': False, **revalidated}
 
 
 def prior_held_completions(snapshot, profile, channel, now):
@@ -389,6 +398,12 @@ def hold_failed_episode(profile, *, dry_run=False):
             'retained_candidates': {key: leaf[key] for key in (
                 'audio_candidate_checkpoint', 'included_stock_pools', 'generated_asset_candidates',
                 'repair_checkpoint', 'qa_workprint') if leaf.get(key)}}
+        # Ordinary dashboard/worker writes must not change a sealed disposition.
+        from app.services.production_quality_hold_revalidation import fence_record
+        fences = {jobs.QUALITY_HOLD_JOB_FENCE_PREFIX + row['task_id']:
+                  fence_record(root, _sha(_raw(record)), row) for row in evidence}
+        pipe.watch(*fences)
+        _require(all(pipe.get(key) is None for key in fences), 'quality_hold_fence_conflict')
         if dry_run:
             pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
             return {'status': 'eligible_no_writes', 'record': record}
@@ -403,9 +418,15 @@ def hold_failed_episode(profile, *, dry_run=False):
         # is not a publication receipt and never changes last_public_task_id.
         pipe.hset(state_key, 'quality_hold_task_id', root)
         pipe.set(HISTORY_KEY, history_encoded); pipe.set(HISTORY_ANCHOR, _sha(history_encoded))
+        for key, value in fences.items():
+            pipe.set(key, _raw(value), nx=True)
+        for row in evidence:
+            pipe.persist(jobs.JOB_PREFIX + row['task_id'])
         ack = pipe.execute()
-        _require(type(ack) is list and len(ack) == 6 and ack[0] is True and ack[1] is True
-            and ack[2] == 1 and type(ack[3]) is int and ack[4:] == [True, True], 'quality_hold_ack_unknown')
+        _require(type(ack) is list and len(ack) == 6 + 2 * len(evidence)
+            and ack[0] is True and ack[1] is True and ack[2] == 1 and type(ack[3]) is int
+            and ack[4:6] == [True, True] and all(value is True for value in ack[6:6 + len(evidence)])
+            and all(type(value) is bool for value in ack[6 + len(evidence):]), 'quality_hold_ack_unknown')
         return {'status': 'held_unpublished', 'root_task_id': root, 'leaf_task_id': leaf['task_id'], 'reason': reason}
 
 
@@ -423,6 +444,11 @@ def maintain_quality_holds(profiles):
             continue
         try:
             results[channel_id] = hold_failed_episode(profile)
+            if results[channel_id]['status'] == 'not_quality_paused':
+                from app.services.production_quality_hold_revalidation import revalidate_held_completion
+                result = revalidate_held_completion(profile)
+                if result['status'] != 'not_needed':
+                    results[channel_id] = result
         except Exception:
             results[channel_id] = {'status': 'unavailable'}
     return {'status': 'checked', 'channels': results}

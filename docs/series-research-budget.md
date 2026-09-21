@@ -109,3 +109,26 @@ an already received response when possible. This is diagnostic evidence only;
 it never releases a reservation or authorizes another request. A settlement
 that succeeded before its acknowledgement was lost remains authoritative and
 is never overwritten by failure capture.
+
+## Stable completion of rejected episodes
+
+A quality hold seals the actual failed task chain and retained media. The
+dashboard's legacy repair-state synchronization could rewrite those jobs after
+sealing, changing their raw hashes and blocking later series promotion. New
+holds atomically retain permanent job fences; ordinary progress, completion,
+retry and repair-checkpoint writers respect them. Polling returns no repair
+action without rewriting a held job. The bounded recent-history index may
+drop old entries while the sealed job remains available by its ID.
+
+For an older unfenced hold, the ordinary minute tick can append one separate
+revalidation receipt. It first rechecks the original policy, daily history,
+current channel/profile, funding, exact task chain, failed terminal state,
+same failure class, unchanged specification and identical retained candidates.
+Any active work, new child, changed media, owner hold or possible publication
+blocks the append. The original hold, job bytes, schedule, daily count and
+provider receipts remain unchanged. The new receipt seals the current job
+hashes and installs permanent fences in the same watched transaction. Future
+changes still fail; the receipt cannot be overwritten or issued a second time.
+Promotion requires this exact later proof when the original hashes differ.
+It remains an unpublished disposition and never grants quality or upload
+approval. A lost acknowledgement is resolved by reading the existing receipt.
