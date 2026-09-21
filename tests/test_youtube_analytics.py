@@ -107,6 +107,35 @@ def test_empty_report_is_unknown_not_zero(a):
     assert a.query.call_count == 1
 
 
+def test_real_lowercase_shorts_report_and_integer_duration_headers(a):
+    grant(a)
+    value = table([[VIDEO, 'shorts', 1241, 630, 216, 19, 62.419999999999995, 4]])
+    for position in (4, 5):
+        value['columnHeaders'][position]['dataType'] = 'INTEGER'
+    a.query.side_effect = [value, table([[.01, 1.02], [1, .48]], True)]
+    analytics.refresh([])
+    report = analytics.dashboard()['channels'][0]
+    assert report['status'] == 'fresh'
+    assert report['videos'][VIDEO] == {'title': 'Owner public video', 'content_type': 'SHORTS',
+        'views': 1241, 'engagedViews': 630, 'estimatedMinutesWatched': 216, 'averageViewDuration': 19,
+        'averageViewPercentage': 62.419999999999995, 'subscribersGained': 4,
+        'retention': [[.01, 1.02], [1, .48]]}
+    stored = json.loads(a.c.client.get(analytics._key(a.context)))
+    assert stored['videos'][VIDEO]['content_type'] == 'SHORTS'
+
+
+@pytest.mark.parametrize('kind', ['SHORTS', 'VIDEO_ON_DEMAND', 'LIVE_STREAM', 'STORY', 'UNSPECIFIED'])
+def test_documented_and_observed_content_type_spellings_agree(kind):
+    assert analytics._videos(table([[VIDEO, kind, 1, 1, 1, 1, 1, 0]]), [VIDEO]) == analytics._videos(
+        table([[VIDEO, kind.lower(), 1, 1, 1, 1, 1, 0]]), [VIDEO])
+
+
+@pytest.mark.parametrize('kind', ['short', ' shorts', 'Shorts', 'unknown_type', None, {}, 1])
+def test_unrecognized_content_type_cannot_become_a_shorts_observation(kind):
+    with pytest.raises(analytics.metrics.YouTubeMetricsError):
+        analytics._videos(table([[VIDEO, kind, 1, 1, 1, 1, 1, 0]]), [VIDEO])
+
+
 @pytest.mark.parametrize('damage', ['duplicate', 'foreign', 'negative', 'nan', 'boolean', 'headers', 'fractional_count', 'missing_column'])
 def test_invalid_report_never_publishes_partial_metrics(a, damage):
     grant(a); value = table([row()])
