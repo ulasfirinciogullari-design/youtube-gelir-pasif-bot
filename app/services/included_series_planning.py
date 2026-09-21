@@ -3,6 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 
 from app.services import included_research_sources as sources
+from app.services.included_source_discovery import discover_candidates
 from app.services.production_spend import SpendBlocked
 
 SOURCE_PAIRS = (
@@ -28,6 +29,10 @@ SOURCE_PAIRS = (
      'https://www.aboutamazon.com/workplace/facilities'),
     ('https://ikeamuseum.com/en/explore/the-story-of-ikea/the-worlds-biggest-restaurant/',
      'https://ikeamuseum.com/en/explore/the-story-of-ikea/ikea-in-stockholm/'),
+    ('https://www.coca-colacompany.com/about-us/history/the-history-of-the-coca-cola-contour-bottle',
+     'https://www.coca-colacompany.com/about-us/history/11-facts-about-the-coca-cola-contour-bottle'),
+    ('https://www.nintendo.co.jp/corporate/en/history/index.html',
+     'https://www.nintendo.com/en-gb/Hardware/Nintendo-History/Nintendo-History-625945.html'),
 )
 EVERGREEN_SOURCES = tuple(url for pair in SOURCE_PAIRS[:2] for url in pair)
 MAX_PAGES = 6
@@ -48,6 +53,13 @@ def read_planning_pages(context=None):
     offset = rotation % len(pairs)
     pairs = pairs[offset:] + pairs[:offset]
     candidates = [{'url': url, 'category': 'evergreen_primary'} for pair in pairs[:2] for url in pair]
+    if rotation >= len(SOURCE_PAIRS):
+        # Explore real index links after the curated source windows. Discovery
+        # supplies candidates, never source evidence or topic approval: every
+        # selected article is still fetched and independently reviewed below.
+        discovered = discover_candidates(history, rotation - len(SOURCE_PAIRS))
+        if len(discovered) == 2:
+            candidates[-2:] = discovered
     candidates += [{**row, 'category': 'recent_official_news'} for row in sources.feed_candidates()
                    if len(row['url']) <= 100][:2]
     def read(candidate):

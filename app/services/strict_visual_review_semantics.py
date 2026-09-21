@@ -430,6 +430,13 @@ def _complete_visual_request(content, *, scenes, included_indices, available_mom
     ]
     system_instruction = (
         content[0]['text']
+        + '\n\nOUTPUT FRAMING: documentary is a genre, not a landscape format. '
+        'Both portrait Shorts and landscape documentaries are supported. Honor '
+        'any explicit output-framing requirement; otherwise do not invent one '
+        'or penalize portrait footage merely because the genre is documentary. '
+        'Judge whether the required subject and action are clearly framed. '
+        'This never excuses a cropped essential detail, missing action, poor '
+        'composition or any other evidence or quality failure.'
         + '\n\nACTUAL CANDIDATE PROVENANCE CONTEXT: the ordered plan route and '
         'Authored planning route describe the original shot plan, not the origin '
         'of every candidate. The per-candidate media_provenance records below '

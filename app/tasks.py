@@ -5644,6 +5644,12 @@ def run_video_pipeline(
         generated_video_provider_records: list[dict] = []
         runway_scenes_used = 0
         runway_submission_cap = _max_runway_scenes(options, len(scenes), duration_minutes)
+        from app.services.commissioning_video import completion_capacity, completion_repairs
+        commissioning_capacity = completion_capacity(
+            options, duration_minutes, len(scenes), total_paid_create_cap, runway_attempts,
+        )
+        if commissioning_capacity is not None:
+            runway_submission_cap = commissioning_capacity
         if total_paid_create_cap is not None:
             runway_submission_cap = min(
                 runway_submission_cap,
@@ -7176,6 +7182,13 @@ def run_video_pipeline(
                 paid_create_cap=total_paid_create_cap,
             )
         )
+        if not recovered_generated_media:
+            commissioning_repairs = completion_repairs(
+                options, duration_minutes, scenes, rejected_final_scenes, final_reviews,
+                total_paid_create_cap, runway_attempts,
+            )
+            if commissioning_repairs is not None:
+                final_runway_repair_candidates = commissioning_repairs
         final_runway_repair_candidates = [
             scene_idx
             for scene_idx in final_runway_repair_candidates

@@ -81,6 +81,37 @@ def enabled_for_task():
     return proof is not None
 
 
+def completion_capacity(options, duration_minutes, scene_count, paid_cap, paid_used):
+    """Permit missing footage, within the frozen episode capacity, during setup.
+
+    The normal real-first mix is a preference, not a reason to abandon several
+    rejected scenes after producing only one. Authority is checked afresh;
+    reservations and every actual clip's quality checks remain mandatory.
+    """
+    if not (options.get('mode') == 'production' and options.get('format') == 'shorts'
+            and duration_minutes == 0.5 and type(scene_count) is int and 1 <= scene_count <= 6
+            and type(paid_cap) is int and 2 <= paid_cap <= 6
+            and type(paid_used) is int and 0 <= paid_used <= paid_cap):
+        return None
+    if not enabled_for_task():
+        return None
+    return min(scene_count, paid_cap - paid_used)
+
+
+def completion_repairs(options, duration_minutes, scenes, rejected_indices, reviews,
+                       paid_cap, paid_used):
+    capacity = completion_capacity(options, duration_minutes, len(scenes), paid_cap, paid_used)
+    if capacity is None:
+        return None
+    threshold = options.get('quality_threshold', 86)
+    _require(type(threshold) is int and 0 <= threshold <= 100)
+    eligible = {index for index in rejected_indices
+        if type(index) is int and 0 <= index < len(scenes)
+        and type(reviews.get(index)) is dict and type(reviews[index].get('score')) is int
+        and 0 <= reviews[index]['score'] < threshold}
+    return sorted(eligible, key=lambda index: (reviews[index]['score'], index))[:capacity]
+
+
 @contextmanager
 def scene_scope(prepared, scene_index, context, foundation):
     _require(type(prepared) is runtime._PreparedVideoScenes

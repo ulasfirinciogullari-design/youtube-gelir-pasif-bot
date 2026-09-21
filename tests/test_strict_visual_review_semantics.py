@@ -91,7 +91,21 @@ GOLDEN = {'openai:literal': '73b9819b6fed6fbaa106abffe1aebf9bf643f14f4650a8e3929
     + [('openai', 'partial'), ('gemini', 'partial')])
 def test_frozen_full_request_and_semantic_parity(monkeypatch, tmp_path, provider, name):
     snapshot, samples, (scenes, specs, options) = live(visual, monkeypatch, tmp_path, provider, name)
-    assert hashlib.sha256(raw(snapshot)).hexdigest() == GOLDEN[provider + ':' + name]
+    # The only intentional change to this frozen request is explicit framing
+    # guidance. Keep the old hashes to prove all images, schema, evidence,
+    # decisions and remaining rubric bytes are otherwise identical.
+    framing = ('\n\nOUTPUT FRAMING: documentary is a genre, not a landscape format. '
+        'Both portrait Shorts and landscape documentaries are supported. Honor '
+        'any explicit output-framing requirement; otherwise do not invent one '
+        'or penalize portrait footage merely because the genre is documentary. '
+        'Judge whether the required subject and action are clearly framed. '
+        'This never excuses a cropped essential detail, missing action, poor '
+        'composition or any other evidence or quality failure.')
+    baseline = deepcopy(snapshot)
+    baseline['call'] = list(baseline['call'])
+    assert baseline['call'][2].count(framing) == 1
+    baseline['call'][2] = baseline['call'][2].replace(framing, '', 1)
+    assert hashlib.sha256(raw(baseline)).hexdigest() == GOLDEN[provider + ':' + name]
     derived = pure.derive_strict_visual_review_contract(scenes, specs, samples=samples, **options)
     call = snapshot['call']
     assert derived['request']['system_instruction'] == call[2]

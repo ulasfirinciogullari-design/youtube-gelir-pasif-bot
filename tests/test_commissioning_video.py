@@ -224,3 +224,40 @@ def test_generation_outage_holds_only_unpublished_episode(stage):
         record['failure_stage'] = 'upload'
         record['failure_classification'] = classify_failure(error, 'upload')
         assert classified_hold_reason(record) is None
+
+
+OPTIONS = {'mode': 'production', 'format': 'shorts', 'quality_threshold': 86, 'visual_mix': 'real_first'}
+
+
+def test_setup_can_complete_all_failed_stock_scenes_inside_frozen_episode_cap(scene):
+    assert video.completion_capacity(OPTIONS, 0.5, 6, 6, 0) == 6
+    reviews = {i: {'score': score} for i, score in enumerate([92, 84, 52, 82, 83, 90])}
+    before = deepcopy(reviews)
+    # One generated scene already passed; four stock failures still need real
+    # replacements. Preserve the accepted scenes and all observed QA scores.
+    assert video.completion_repairs(OPTIONS, 0.5, [{}] * 6, [1, 2, 3, 4], reviews, 6, 1) == [2, 3, 4, 1]
+    assert video.completion_repairs(OPTIONS, 0.5, [{}] * 6, [1, 2, 3, 4], reviews, 6, 4) == [2, 3]
+    assert video.completion_repairs(OPTIONS, 0.5, [{}] * 6, [1, 2, 3, 4], reviews, 6, 6) == []
+    assert reviews == before and scene.requests == []
+
+
+def test_setup_completion_requires_current_owner_authority_and_preserves_normal_routing(scene):
+    scene.client.delete(continuation.ACTIVE_KEY)
+    assert video.completion_capacity(OPTIONS, 0.5, 6, 6, 0) is None
+    assert video.completion_repairs(OPTIONS, 0.5, [{}], [0], {0: {'score': 30}}, 6, 0) is None
+    assert scene.requests == []
+
+
+@pytest.mark.parametrize('changes,duration,count,cap,used', [
+    ({'mode': 'preview'}, 0.5, 6, 6, 0), ({'format': 'landscape'}, 0.5, 6, 6, 0),
+    ({}, 1, 6, 6, 0), ({}, 0.5, 7, 6, 0), ({}, 0.5, 6, 7, 0),
+    ({}, 0.5, 6, 6, -1), ({}, 0.5, 6, 6, True),
+])
+def test_completion_does_not_expand_other_formats_or_invalid_budgets(scene, changes, duration, count, cap, used):
+    assert video.completion_capacity({**OPTIONS, **changes}, duration, count, cap, used) is None
+    assert scene.requests == []
+
+
+def test_unknown_or_accepted_review_is_not_a_repair_candidate(scene):
+    reviews = {0: {'score': 92}, 1: {'score': True}, 2: {'score': -1}, 3: {'score': 40}}
+    assert video.completion_repairs(OPTIONS, 0.5, [{}] * 6, [0, 1, 2, 3, 4, 9], reviews, 6, 0) == [3]

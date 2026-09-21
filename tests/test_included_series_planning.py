@@ -15,6 +15,11 @@ CONTEXT = {'language': 'en', 'channel_identity': 'Business mini-documentaries',
     'existing_topics': ['A previously consumed subject https://www.bep.gov/currency/serial-numbers']}
 
 
+@pytest.fixture(autouse=True)
+def no_live_discovery(monkeypatch):
+    monkeypatch.setattr(planning, 'discover_candidates', lambda history, rotation: [])
+
+
 def page(url, index=0):
     return {'url': url, 'text': 'Actually retrieved primary evidence describing product identification at checkout.',
         'text_sha256': str(index) * 64, 'category': 'evergreen_primary'}
@@ -217,3 +222,33 @@ def test_server_attempt_selector_is_not_part_of_paid_editorial_request(generate)
     request = deepcopy((call.call_args.args, call.call_args.kwargs))
     assert planning.generate({**CONTEXT, 'source_rotation': 8}) == first
     assert (call.call_args.args, call.call_args.kwargs) == request and 'source_rotation' not in request[0][0]
+
+
+def test_discovered_articles_are_actually_read_and_keep_the_two_source_gate(monkeypatch):
+    links = ['https://ikeamuseum.com/en/explore/the-story-of-ikea/price-wars/',
+             'https://ikeamuseum.com/en/explore/the-story-of-ikea/more-than-low-price/']
+    discovery = Mock(return_value=[{'url': url, 'category': 'discovered_primary'} for url in links])
+    monkeypatch.setattr(planning, 'discover_candidates', discovery)
+    monkeypatch.setattr(sources, 'feed_candidates', lambda: [])
+    fetch = Mock(side_effect=lambda url: page(url))
+    monkeypatch.setattr(sources, 'fetch_page', fetch)
+    rows = planning.read_planning_pages({'source_rotation': len(planning.SOURCE_PAIRS) + 3,
+        'existing_topics': ['current question'], 'previous_topics': ['older question']})
+    discovery.assert_called_once_with(['current question', 'older question'], 3)
+    assert fetch.call_count == 4 and len(rows) == 4
+    assert [row['url'] for row in rows if row['category'] == 'discovered_primary'] == links
+    assert planning._contract(rows, 'en')[1] >= 20
+
+
+def test_unreadable_discovered_link_is_not_provided_as_evidence(monkeypatch):
+    link = 'https://ikeamuseum.com/en/explore/the-story-of-ikea/price-wars/'
+    monkeypatch.setattr(planning, 'discover_candidates', lambda *a: [
+        {'url': link, 'category': 'discovered_primary'},
+        {'url': link + 'missing/', 'category': 'discovered_primary'}])
+    monkeypatch.setattr(sources, 'feed_candidates', lambda: [])
+    def fetch(url):
+        if url.endswith('missing/'): raise SpendBlocked('unavailable')
+        return page(url)
+    monkeypatch.setattr(sources, 'fetch_page', fetch)
+    rows = planning.read_planning_pages({'source_rotation': len(planning.SOURCE_PAIRS)})
+    assert len(rows) == 3 and all(not row['url'].endswith('missing/') for row in rows)
