@@ -466,16 +466,21 @@ def prepare_next_series(profile, channel, *, now=None, execution_binding=None):
                 pipe.ping()
                 pipe.execute()
             generation_context = context
+            from app.services.production_editorial_history import recent_topics
+            prior_topics = recent_topics(client, channel_id)
+            if prior_topics:
+                generation_context = {**context, 'previous_topics': prior_topics}
             try:
                 from app.services.youtube_analytics import editorial_guidance
                 guidance = editorial_guidance(channel_id)
                 if guidance:
-                    generation_context = {**context, 'audience_feedback': guidance}
+                    generation_context = {**generation_context, 'audience_feedback': guidance}
             except Exception:
                 pass  # Optional observations never block source-backed planning.
             output = _generate(generation_context, configuration)
             try:
-                prepared = _validate_output(output, context)
+                prepared = _validate_output(output, {**context,
+                    'existing_topics': [*context['existing_topics'], *prior_topics]})
             except (ValueError, TypeError, KeyError):
                 raise _InvalidOutput('Invalid pending-series output') from None
             result = {**record, 'status': 'ready', **prepared} if prepared is not None else {

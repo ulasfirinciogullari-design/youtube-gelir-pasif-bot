@@ -118,6 +118,25 @@ def test_native_english_pace_keeps_turkish_and_long_form_defaults():
     assert _voice_speed(60, language='en') == 1.01
 
 
+@pytest.mark.parametrize('first_failure', ['transport_unknown', 'missing_timing'])
+def test_second_recognizer_can_verify_when_first_provider_unavailable_without_replaying_it(box, monkeypatch, first_failure):
+    activate(box); whisper_setup.commission(box.client, box.policy)
+    from contextlib import nullcontext
+    if first_failure == 'transport_unknown':
+        box.sender.side_effect = httpx.ReadTimeout('do not disclose credentials or repeat the request')
+    else:
+        first = _payload(); first['words'] = []
+        box.sender.return_value = nullcontext(httpx.Response(200, json=first))
+    sender = Mock(return_value=json.dumps(payload()).encode())
+    monkeypatch.setattr(scribe, '_send', sender)
+    review = audio_qc.verify_audio_narration(box.path, 'Hello there.', language='en')
+    assert review['pass'] is True and review['primary_recognizer']['pass'] is False
+    before = box.client.get(whisper_setup.JOURNAL_KEY)
+    assert audio_qc.verify_audio_narration(box.path, 'Hello there.', language='en')['pass'] is True
+    assert box.client.get(whisper_setup.JOURNAL_KEY) == before
+    assert sender.call_count == box.sender.call_count == 1
+
+
 @pytest.mark.parametrize('case', ['valid', 'redirect', 'oversized', 'invalid_json', 'missing_words', 'key_echo'])
 def test_real_transport_is_bounded_and_does_not_follow_redirects(box, monkeypatch, case):
     raw = json.dumps(payload()).encode()

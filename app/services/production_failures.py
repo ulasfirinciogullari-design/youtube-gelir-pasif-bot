@@ -94,6 +94,14 @@ def classified_hold_reason(job):
     code, category = evidence['code'], evidence['category']
     if type(code) is not str or type(category) is not str:
         return None
+    # Before the typed terminal tag, this exact exhausted two-observation
+    # failure was left unclassified. Its complete unpublished lineage still
+    # has to pass the normal hold checks; no old job or provider receipt changes.
+    if (code == 'unclassified_failure' and category == 'unclassified'
+            and stage in _AUDIO_STAGES and error ==
+            'Audio narration QA could not be verified after one bounded same-audio retry before paid media: '
+            '{"provider_attempts":[{"attempt":1,"providers":[]},{"attempt":2,"providers":[]}]}'):
+        return 'review_unverified'
     if code in _CONTENT_CODES:
         reason, stages = _CONTENT_CODES[code]
         expected_category = 'review_unverified' if reason == 'review_unverified' else 'content_rejected'

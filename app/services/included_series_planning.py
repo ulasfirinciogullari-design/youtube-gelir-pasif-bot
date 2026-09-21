@@ -5,18 +5,28 @@ import json
 from app.services import included_research_sources as sources
 from app.services.production_spend import SpendBlocked
 
-EVERGREEN_SOURCES = (
-    'https://www.ibm.com/history/upc',
-    'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types',
-    'https://www.bep.gov/currency/serial-numbers',
-    'https://www.uscurrency.gov/denominations/bank-note-identifiers',
+SOURCE_PAIRS = (
+    ('https://ikeamuseum.com/en/explore/the-story-of-ikea/flatpacks/',
+     'https://ikeamuseum.com/en/explore/the-story-of-ikea/revolutionary/'),
+    ('https://historicengland.org.uk/whats-new/news/enfield-bank-listed/',
+     'https://home.barclays/news/2017/06/from-the-archives-the-atm-is-50/'),
+    ('https://www.ibm.com/history/upc',
+     'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types'),
+    ('https://www.bep.gov/currency/serial-numbers',
+     'https://www.uscurrency.gov/denominations/bank-note-identifiers'),
 )
+EVERGREEN_SOURCES = tuple(url for pair in SOURCE_PAIRS[:2] for url in pair)
 MAX_PAGES = 6
 
 
-def read_planning_pages():
+def read_planning_pages(context=None):
     """Keep current feeds, adding dated/evergreen material suited to real footage."""
-    candidates = [{'url': url, 'category': 'evergreen_primary'} for url in EVERGREEN_SOURCES]
+    context = context or {}
+    history = [*context.get('existing_topics', []), *context.get('previous_topics', [])]
+    # Prefer unused source families over rewriting the same unsuccessful
+    # banknote/barcode question every time a new series starts.
+    pairs = sorted(SOURCE_PAIRS, key=lambda pair: sum(url in topic for topic in history for url in pair))
+    candidates = [{'url': url, 'category': 'evergreen_primary'} for pair in pairs[:2] for url in pair]
     candidates += [{**row, 'category': 'recent_official_news'} for row in sources.feed_candidates()
                    if len(row['url']) <= 100][:2]
     def read(candidate):
@@ -48,7 +58,11 @@ def _contract(pages, language):
         'required': ['source_id', 'evidence'], 'additionalProperties': False}
     brief = {'type': 'object', 'properties': {
         'question': {'type': 'string', 'minLength': 15, 'maxLength': limit},
-        'sources': {'type': 'array', 'items': source, 'minItems': 2, 'maxItems': 2}},
+        'sources': {'type': 'array', 'items': source, 'minItems': 2, 'maxItems': 2},
+        'video_plan': {'type': 'object', 'properties': {
+            'a_roll_speech_outline': {'type': 'string', 'maxLength': 1200},
+            'b_roll_footage_setting': {'type': 'string', 'maxLength': 1200}},
+            'required': ['a_roll_speech_outline', 'b_roll_footage_setting'], 'additionalProperties': False}},
         'required': ['question', 'sources'], 'additionalProperties': False}
     schema = {'type': 'object', 'properties': {'can_prepare': {'type': 'boolean'},
         'language': {'type': 'string', 'enum': [language]},
@@ -69,7 +83,13 @@ def _decode(output, indexed, limit, language):
     _require(output['briefs'] and output['series_title'].strip())
     briefs = []
     for item in output['briefs']:
-        _require(type(item) is dict and set(item) == {'question', 'sources'})
+        _require(type(item) is dict and set(item) in ({'question', 'sources'}, {'question', 'sources', 'video_plan'}))
+        # Some routed planners include a documentary production outline. Keep
+        # it only in the immutable raw observation, never as source/QA proof.
+        if 'video_plan' in item:
+            plan = item['video_plan']
+            _require(type(plan) is dict and set(plan) == {'a_roll_speech_outline', 'b_roll_footage_setting'}
+                and all(type(value) is str and len(value) <= 1200 for value in plan.values()))
         question = item['question']
         _require(type(question) is str and question == question.strip() and 15 <= len(question) <= limit
             and not any(ord(char) < 32 for char in question) and '://' not in question
@@ -108,7 +128,7 @@ def label_batch(decoded, observed, context):
 
 def generate(context):
     from app.services.production_included_router import generate_text_json, stock_only_rule
-    pages = read_planning_pages()
+    pages = read_planning_pages(context)
     indexed, limit, schema = _contract(pages, context['language'])
     references = [{'source_id': key, **{name: page[name] for name in (
         'url', 'text_sha256', 'text', 'category')},
@@ -116,8 +136,13 @@ def generate(context):
         for key, page in indexed.items()]
     prompt = ('Prepare ONE documentary series with 1–4 distinct new questions fitting this channel. '
         'Write the series title and every question in its language. Do not repeat any existing topic, '
-        'including unpublished topics already in its queue. Prefer a familiar visible object and a '
+        'including previous_topics from older series and unpublished topics already in its queue. '
+        'Changing the wording of an earlier central question does not make it a new episode. '
+        'Prefer a familiar visible object and a '
         'consequential business decision that ordinary real footage can honestly illustrate. '
+        'For current stock-only production, avoid a reveal requiring rare star banknotes, '
+        'historic prototypes, secure banknote printing facilities or invisible technical mechanisms. '
+        'Prefer sourced business trade-offs that relevant present-day activity can honestly illustrate. '
         'News must have a coherent channel-relevant angle; do not combine unrelated enforcement notices. '
         'Evergreen/historical source pages are not current news. State historical facts as historical. '
         'No financial advice, invented claims, fake archival images or earnings promises. '

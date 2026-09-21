@@ -32,7 +32,7 @@ def generate(monkeypatch):
     pages = [page(url, i) for i, url in enumerate(URLS)]
     payload = answer()
     call = Mock(side_effect=lambda *a, **kw: deepcopy(payload))
-    monkeypatch.setattr(planning, 'read_planning_pages', lambda: deepcopy(pages))
+    monkeypatch.setattr(planning, 'read_planning_pages', lambda context=None: deepcopy(pages))
     monkeypatch.setattr(router, 'generate_text_json', call)
     return pages, payload, call
 
@@ -162,3 +162,28 @@ def test_overlong_question_is_never_shortened_to_create_a_series_label(generate)
     result = planning.label_batch(decoded, payload, CONTEXT)
     assert result == before and decoded == before
     with pytest.raises(ValueError): series._validate_output(result, CONTEXT)
+
+
+def test_unused_documentary_outline_is_preserved_in_observation_without_becoming_approval(generate):
+    _, payload, call = generate
+    payload['briefs'][0]['video_plan'] = {'a_roll_speech_outline': 'Explain the sourced business trade-off.',
+        'b_roll_footage_setting': 'Modern grocery checkout.'}
+    before = deepcopy(payload)
+    output = planning.generate(CONTEXT)
+    assert payload == before and call.call_count == 1
+    assert set(output['briefs'][0]) == {'brief', 'sources'}
+    payload['briefs'][0]['video_plan']['qa_approved'] = True
+    with pytest.raises(ValueError): planning.generate(CONTEXT)
+
+
+def test_source_families_rotate_using_older_series_even_after_current_profile_changed(monkeypatch):
+    monkeypatch.setattr(sources, 'feed_candidates', lambda: [])
+    seen = []
+    def fetch(url):
+        seen.append(url);return page(url)
+    monkeypatch.setattr(sources, 'fetch_page', fetch)
+    context = {**CONTEXT, 'existing_topics': ['New current question'],
+        'previous_topics': ['Old question ' + ' '.join(pair) for pair in planning.SOURCE_PAIRS[:2]]}
+    pages = planning.read_planning_pages(context)
+    assert {row['url'] for row in pages} == {url for pair in planning.SOURCE_PAIRS[2:] for url in pair}
+    assert len(seen) == 4

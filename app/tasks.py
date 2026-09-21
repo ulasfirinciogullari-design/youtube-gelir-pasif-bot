@@ -2193,6 +2193,7 @@ def _verify_audio_narration_with_retry(
 ) -> dict:
     """Retry a transient STT outage without regenerating immutable audio."""
     from app.services.whisper_transcription import WhisperTranscriptionError
+    from app.services.production_failures import content_rejection
 
     provider_attempts = []
     evidence_options = (
@@ -2221,16 +2222,16 @@ def _verify_audio_narration_with_retry(
                 + json.dumps({'provider_attempts': provider_attempts}, separators=(',', ':'))
             )
             error.audio_qc_diagnostics = provider_attempts
-            raise error from None
+            raise content_rejection(error, 'audio_review_unverified') from None
         except WhisperTranscriptionError:
             # A reserved native request is terminal even before video creates.
             # The same audio must not trigger a provider or Celery retry.
-            raise FinalAudioQualityError(
+            raise content_rejection(FinalAudioQualityError(
                 'Reserved audio verification stopped without another paid request'
-            ) from None
-    raise FinalAudioQualityError(
+            ), 'audio_review_unverified') from None
+    raise content_rejection(FinalAudioQualityError(
         'Audio narration QA providers were unavailable before paid media'
-    )
+    ), 'audio_review_unverified')
 
 
 def _is_transient_pexels_provider_error(exc: Exception) -> bool:

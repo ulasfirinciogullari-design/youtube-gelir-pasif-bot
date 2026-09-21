@@ -117,6 +117,8 @@ def case(production):
     evidence = _load('app/services/source_evidence.py', {})
     prep = _load('app/services/production_next_series.py', {
         **ns, 'normalize_evidence_sources': evidence['normalize_evidence_sources']})
+    from app.services.production_editorial_history import recent_topics
+    prep['recent_topics'] = recent_topics
     ns.update({name: prep[name] for name in ('_planning_channel_identity', '_preparation_key', '_preparation_slot')})
     prep['redis'] = ns['redis']
     prep['_configuration'] = Mock(return_value=('openai', 'configured-model', 'opaque-fixture-key'))

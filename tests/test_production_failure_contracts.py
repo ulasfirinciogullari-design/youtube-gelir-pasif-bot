@@ -73,6 +73,20 @@ def test_string_copy_and_caller_supplied_attribute_cannot_invent_worker_content_
         assert classify_failure(candidate, 'director_qc')['category'] == 'unclassified'
 
 
+def test_legacy_exhausted_audio_observation_can_be_held_but_not_with_changed_stage_or_evidence():
+    message = ('Audio narration QA could not be verified after one bounded same-audio retry before paid media: '
+        '{"provider_attempts":[{"attempt":1,"providers":[]},{"attempt":2,"providers":[]}]}')
+    error = RuntimeError(message)
+    job = {'failure_stage': 'audio_qc', 'error': message, 'failure_classification': classify_failure(error, 'audio_qc')}
+    before = deepcopy(job)
+    assert classified_hold_reason(job) == 'review_unverified' and job == before
+    for stage in ('research', 'upload', 'publishing'):
+        altered = {**job, 'failure_stage': stage, 'failure_classification': classify_failure(error, stage)}
+        assert classified_hold_reason(altered) is None
+    job['error'] += ' extra'
+    assert classified_hold_reason(job) is None
+
+
 @pytest.mark.parametrize('error,stage,reason', [
     (SpendBlocked('included_research_primary_source_unavailable'), 'research', 'research_sources_unavailable'),
     (ValueError('included_factual_audit_invalid'), 'director_qc', 'story_rejected'),

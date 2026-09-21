@@ -2789,14 +2789,23 @@ def verify_audio_narration(
             raise ValueError('Expected narration must contain at least one word')
         from app.services.commissioning_audio import transcribe_if_commissioned
         api_key = str(getattr(settings, 'openai_api_key', '') or '')
-        response = transcribe_if_commissioned(audio_path, api_key=api_key, language=normalized_language)
-        if response is not None:
-            _checkpoint_provider_evidence(response, provider='openai', model='whisper-1',
-                language=normalized_language, secret=api_key, sink=provider_evidence_sink)
-            payload = _response_payload(response, 'OpenAI')
-            primary = _require_word_timing_evidence(compare_transcript(expected_narration, payload['text'],
-                words=payload['words'], language_code=payload['language'], provider='openai',
-                comparison_language=normalized_language), 'OpenAI')
+        primary = None
+        try:
+            response = transcribe_if_commissioned(audio_path, api_key=api_key, language=normalized_language)
+            if response is not None:
+                _checkpoint_provider_evidence(response, provider='openai', model='whisper-1',
+                    language=normalized_language, secret=api_key, sink=provider_evidence_sink)
+                payload = _response_payload(response, 'OpenAI')
+                primary = _require_word_timing_evidence(compare_transcript(expected_narration, payload['text'],
+                    words=payload['words'], language_code=payload['language'], provider='openai',
+                    comparison_language=normalized_language), 'OpenAI')
+        except Exception:
+            # Preserve every first-provider reservation. A separately admitted
+            # recognizer can inspect the same audio after an outage or malformed
+            # timing evidence; it never repeats the uncertain first request.
+            primary = {'available': False, 'pass': False, 'provider': 'openai',
+                'score': 0, 'transcript': '', 'reason': 'primary_recognizer_unavailable'}
+        if primary is not None:
             if primary['pass'] is True:
                 return primary
             # A blind second recognizer distinguishes a synthesis defect from
