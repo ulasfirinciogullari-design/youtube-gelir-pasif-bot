@@ -74,7 +74,7 @@ def test_string_copy_and_caller_supplied_attribute_cannot_invent_worker_content_
 
 
 @pytest.mark.parametrize('error,stage,reason', [
-    (ValueError('included_research_primary_source_unavailable'), 'research', 'research_sources_unavailable'),
+    (SpendBlocked('included_research_primary_source_unavailable'), 'research', 'research_sources_unavailable'),
     (ValueError('included_factual_audit_invalid'), 'director_qc', 'story_rejected'),
     (SpendBlocked('included_router_response_unverified'), 'final_visual_qc_rescue', 'review_unverified'),
     (SpendBlocked('prepaid_audio_previous_outcome_unknown'), 'audio_qc_retry', 'review_unverified'),
@@ -83,3 +83,16 @@ def test_fixed_protocol_codes_keep_original_uncertainty_without_prose_matching(e
     job = {'failure_stage': stage, 'error': str(error), 'failure_classification': classify_failure(error, stage)}
     before = deepcopy(job)
     assert classified_hold_reason(job) == reason and job == before
+
+
+@pytest.mark.parametrize('code', ['included_research_unconsulted_source',
+    'included_research_primary_source_required', 'included_research_primary_source_unavailable'])
+def test_actual_retrieved_source_guard_keeps_its_hold_contract(code):
+    from app.services.included_research_sources import _require
+
+    with pytest.raises(SpendBlocked) as caught:
+        _require(False, code)
+    error = caught.value
+    job = {'failure_stage': 'research', 'error': str(error),
+           'failure_classification': classify_failure(error, 'research')}
+    assert classified_hold_reason(job) == 'research_sources_unavailable'

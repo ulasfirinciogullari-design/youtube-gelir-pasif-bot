@@ -321,11 +321,18 @@ def _produce_now_form(profile: dict, state: dict | None) -> str:
         cursor = int(state.get('cursor', '-1'))
     except (TypeError, ValueError):
         return ''
+    promoted_start = (
+        cursor == 0 and state.get('dispatch_status') == 'series_promoted'
+        and state.get('profile_revision') == profile.get('profile_revision')
+        and type(profile.get('series_epoch')) is int and profile['series_epoch'] > 0
+        and state.get('series_epoch') == str(profile['series_epoch'])
+        and state.get('last_series_promotion') and not state.get('last_task_id')
+    )
     if not (
         profile.get('production_enabled') is True and profile.get('auto_publish') is True
         and profile.get('release_mode') == 'public' and profile.get('profile_revision')
-        and isinstance(topics, list) and 1 <= cursor < len(topics)
-        and state.get('dispatch_status') == 'finished'
+        and isinstance(topics, list) and 0 <= cursor < len(topics)
+        and (promoted_start or (cursor > 0 and state.get('dispatch_status') == 'finished'))
         and not state.get('paused_reason') and not state.get('active_task_id')
     ):
         return ''

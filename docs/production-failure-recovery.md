@@ -29,3 +29,12 @@ next production to start. Lost worker/broker outcomes and providers that cannot
 confirm prior submissions still need evidence-backed reconciliation; blindly
 restarting them could duplicate charges or uploads. Expiring account access and
 the owner's eventual operating budget remain separate prerequisites.
+
+The owner's existing **Hemen sıradaki videoyu üret** action also supports the
+first episode of an untouched, automatically promoted series. It checks the
+current promotion receipt, archived previous series, exact new profile, topic
+history and connection in the same watched transaction. Its versioned audit
+allows one advancement per profile revision. Only the next due time changes;
+the ordinary minute tick still reserves the topic and applies every funding,
+quality and publication check. An unproven initial queue, active or paused
+channel, changed receipt or second click cannot start another episode.

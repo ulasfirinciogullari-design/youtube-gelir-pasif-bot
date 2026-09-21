@@ -63,13 +63,13 @@ def classify_failure(error, stage):
             code = tag.code
             category = ('review_unverified' if _CONTENT_CODES[code][0] == 'review_unverified'
                         else 'content_rejected')
-    elif type(error) is ValueError and str(error) in _SOURCE_CODES and stage == 'research':
-        code, category = str(error), 'source_unavailable'
     elif type(error) is ValueError and str(error) == 'included_factual_audit_invalid' and stage == 'director_qc':
         code, category = str(error), 'review_unverified'
     elif isinstance(error, SpendBlocked):
         # These are fixed provider protocol codes, not prose or substrings.
-        if str(error) in _REVIEW_CODES and stage in _REVIEW_STAGES:
+        if str(error) in _SOURCE_CODES and stage == 'research':
+            code, category = str(error), 'source_unavailable'
+        elif str(error) in _REVIEW_CODES and stage in _REVIEW_STAGES:
             code, category = str(error), 'review_unverified'
         else:
             code, category = 'spending_blocked', 'spending_blocked'
