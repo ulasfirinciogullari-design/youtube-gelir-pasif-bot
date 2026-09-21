@@ -6,7 +6,7 @@ Only canonical job-bound pointers are used; object keys stay out of UI JSON.
 import re
 from uuid import UUID
 
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse, Response
 
 from app.services import qa_workprint_access, storage
 
@@ -77,6 +77,11 @@ def media_response(job, request):
                 or head.get('ContentType') != mime or head.get('ContentEncoding') not in (None, '')
                 or source.get('size') is not None and (type(source['size']) is not int or source['size'] != size)):
             raise ValueError('unverified_media')
+        if request.method == 'HEAD':
+            # A GET signature cannot authorize a redirected HEAD request.
+            # Metadata was just verified, so answer without signing a GET.
+            return Response(status_code=200, headers={**HEADERS,
+                'Content-Type': mime, 'Content-Length': str(size)})
         # Generate a fresh short-lived owner playback URL each time. Old job
         # URLs may have expired; never overwrite the original delivery record.
         url = client.generate_presigned_url('get_object', Params={

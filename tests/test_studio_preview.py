@@ -69,6 +69,18 @@ def test_final_file_ignores_expired_saved_url_and_leaves_delivery_unchanged(stor
     assert record == before
 
 
+def test_head_verifies_metadata_without_redirecting_a_get_signature(store):
+    record = audio_job()
+    before = deepcopy(record)
+    response = preview.media_response(record, request('HEAD'))
+    assert response.status_code == 200 and response.body == b''
+    assert response.headers['content-length'] == '2000'
+    assert response.headers['content-type'] == 'audio/mpeg'
+    assert response.headers['cache-control'] == 'private, no-store'
+    store.generate_presigned_url.assert_not_called()
+    assert record == before
+
+
 @pytest.mark.parametrize('field,value', [
     ('qa_approved', True), ('requires_full_qa', False), ('size', 0), ('size', True),
     ('size', preview.MAX_AUDIO_BYTES + 1), ('audio_sha256', 'wrong'),
