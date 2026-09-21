@@ -216,6 +216,9 @@ def consulted_source_schema(schema, pages):
     urls = sorted({_url(page['url']) for page in pages})
     _require(len(urls) >= 2, 'included_research_primary_source_unavailable')
     constrained = deepcopy(schema)
+    # Included research cannot request paid visual generation. The explicit
+    # null-only field also distinguishes its response contract from reviews.
+    constrained['properties']['scenes']['items']['properties']['ai_prompt'] = {'type': 'null'}
     sources = constrained['properties']['sources']
     sources['items']['properties']['url']['enum'] = urls
     sources['maxItems'] = min(sources['maxItems'], len(urls))

@@ -395,7 +395,8 @@ def _parse_response_payload(raw, *, schema, max_tokens):
                  and message['role'] == 'assistant' and type(message['content']) is str
                  and message.get('refusal') is None and message.get('function_call') is None
                  and (message.get('tool_calls') is None or message['tool_calls'] == []), _RESPONSE_ERROR)
-        output = _json_loads(message['content'])
+        from app.services.stock_research_json import decode
+        output = decode(message['content'], schema)
         _require(type(output) is dict and _matches_schema(output, schema)
                  and _unique_items_match(output, schema) and _enum_match(output, schema), _SCHEMA_ERROR)
         usage = _usage(payload['usage'], max_tokens) if 'usage' in payload else None
