@@ -61,6 +61,21 @@ def test_word_order_is_explicit_and_joining_changes_no_observed_input_or_visuals
     assert not any('approved' in str(k) for k in output)
 
 
+def test_optional_title_metadata_never_changes_package_content_or_raw_response():
+    value = encoded(package()); value['title'] = 'An unused suggested title'
+    before = deepcopy(value)
+    assert words.decode(value) == words.decode({k: v for k, v in value.items() if k != 'title'})
+    assert value == before and 'title' not in words.decode(value)
+
+
+@pytest.mark.parametrize('extra', [{'title': ''}, {'title': 1}, {'title': 'x' * 181},
+    {'title': 'bad\x00title'}, {'qa_approved': True}, {'publish_eligible': True}])
+def test_only_bounded_unused_title_metadata_is_accepted(extra):
+    value = {**encoded(package()), **extra}; before = deepcopy(value)
+    with pytest.raises(ValueError): words.decode(value)
+    assert value == before
+
+
 @pytest.mark.parametrize('damage', ['missing', 'extra', 'phrase', 'empty', 'punctuation', 'control', 'long', 'number', 'curly'])
 def test_invalid_word_fields_cannot_be_silently_padded_truncated_or_normalized(damage):
     value = encoded(package()); row = value['scenes'][0]['narration_words']
@@ -92,7 +107,8 @@ def test_legacy_saved_and_noncalibrated_routes_do_not_use_word_fields(damage):
 
 
 @pytest.mark.parametrize('reject', [False, 'factual', 'editorial', 'visual_then_accept'])
-def test_native_observed_word_fields_require_full_independent_critique(writer_commissioned, monkeypatch, reject):
+@pytest.mark.parametrize('with_title', [False, True])
+def test_native_observed_word_fields_require_full_independent_critique(writer_commissioned, monkeypatch, reject, with_title):
     ledger, _, _ = writer_commissioned
     from app import config
     for key, value in {'studio_spend_enforcement': True, 'studio_abacus_included_production': True,
@@ -114,6 +130,7 @@ def test_native_observed_word_fields_require_full_independent_critique(writer_co
         if len(calls) == 1:
             assert words.RULE in prompt
             output = encoded(value)
+            if with_title: output['title'] = 'This suggested title must never replace the existing title'
         elif len(calls) == 3 and reject == 'visual_then_accept':
             assert words.RULE not in prompt and 'narration_words' not in prompt
             output = {'scenes': [{'position': 2,
@@ -147,6 +164,7 @@ def test_native_observed_word_fields_require_full_independent_critique(writer_co
     else:
         result = run()
         assert result['narration'] == value['narration']
+        assert result['title'] == value['title']
         assert result['stock_scene_qc']['source_claim_review']['accepted'] is True
         assert included.story_review_matches(result, 'Explain the sourced membership model.')
         assert len(calls) == expected_calls

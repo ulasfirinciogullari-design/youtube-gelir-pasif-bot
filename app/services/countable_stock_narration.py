@@ -12,7 +12,10 @@ RULE = (
     'Six scenes therefore contain 66 words, within the existing 62-66-word '
     'budget. Preserve sourced meaning and every visual constraint. These '
     'fields only control writing length; the full independent source and '
-    'editorial reviews and actual audio timing checks are still required.'
+    'editorial reviews and actual audio timing checks are still required. '
+    'Preserve the exact metric and direction of any percentage: faster checkout '
+    'does not mean an identical percentage reduction in transaction time. '
+    'If that distinction cannot fit naturally, omit the number without inventing a new claim.'
 )
 
 
@@ -27,6 +30,9 @@ def eligible(provider, fresh, calibrated, scenes, stock_positions, targets):
 
 def request_format(schema, shape):
     schema, shape = deepcopy((schema, shape))
+    # Some routed writers echo the contextual title. Treat that bounded value
+    # as unused response metadata; it cannot replace the package's title.
+    schema['properties']['title'] = {'type': 'string', 'minLength': 1, 'maxLength': 180}
     row = schema['properties']['scenes']['items']
     del row['properties']['narration']
     row['properties']['narration_words'] = {
@@ -45,8 +51,12 @@ def decode(value):
     from app.services.director import _word_count
 
     value = deepcopy(value)
-    if type(value) is not dict or set(value) != {'scenes'} or type(value['scenes']) is not list:
+    if type(value) is not dict or set(value) not in ({'scenes'}, {'scenes', 'title'}) or type(value['scenes']) is not list:
         raise ValueError('countable narration requires the complete scene array')
+    if 'title' in value:
+        title = value.pop('title')
+        if type(title) is not str or not 1 <= len(title) <= 180 or not title.strip() or not title.isprintable():
+            raise ValueError('countable narration title metadata is invalid')
     for row in value['scenes']:
         if type(row) is not dict or set(row) != {'position', 'narration_words', 'visual_queries', 'ai_prompt'}:
             raise ValueError('countable narration requires only the requested scene fields')

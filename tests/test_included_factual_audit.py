@@ -86,9 +86,42 @@ def test_real_chronology_does_not_establish_a_financing_link_even_with_positive_
     _, report, failures = audit.validate(actual, lines, pages)
     assert len(failures) == 1 and failures[0]['assessment'] == 'unsupported'
     assert 'financing' in failures[0]['reason']
-    assert not report['accepted'] and report['version'] == 2
+    assert not report['accepted'] and report['version'] == audit.VERSION
     assert report['sentences'][0]['assessment'] == 'supported'  # actual response is preserved
     assert report['validation_findings'] == failures and actual == before
+
+
+@pytest.mark.parametrize('claim', [
+    'Connected registers pulled prices instantly, cutting lane transaction times forty percent.',
+    'Checkout times were reduced by 40 percent.',
+    'Customers spent 40% less time checking out.',
+])
+def test_speed_increase_cannot_become_the_same_percentage_time_reduction(claim):
+    quote = 'Checkout lines were moving 40% faster.'
+    lines = [{'position': 0, 'narration': claim}]
+    pages = [{'url': URL, 'text': quote, 'text_sha256': hashlib.sha256(quote.encode()).hexdigest()}]
+    actual = {'editorial_review': {'quantities_supported': True}, 'factual_audit': {'sentences': [
+        {**lines[0], 'assessment': 'supported', 'reason': 'The quoted metric must match the narration.',
+         'quotations': [{'source_url': URL, 'quote': quote}]}]}}
+    before = deepcopy(actual)
+    _, report, failures = audit.validate(actual, lines, pages)
+    assert not report['accepted'] and len(failures) == 1 and 'time reduction' in failures[0]['reason']
+    assert report['sentences'][0]['assessment'] == 'supported' and actual == before
+    assert report['validation_findings'] == failures
+
+
+@pytest.mark.parametrize('assessment', ['supported', 'unsupported', 'uncertain'])
+def test_explicit_time_measurement_still_requires_independent_semantic_verdict(assessment):
+    quote = 'Measured checkout transaction times were reduced by 40 percent.'
+    lines = [{'position': 0, 'narration': 'Checkout times were reduced by forty percent.'}]
+    pages = [{'url': URL, 'text': quote, 'text_sha256': hashlib.sha256(quote.encode()).hexdigest()}]
+    actual = {'editorial_review': {}, 'factual_audit': {'sentences': [
+        {**lines[0], 'assessment': assessment, 'reason': 'Assess the exact population and measurement.',
+         'quotations': [{'source_url': URL, 'quote': quote}]}]}}
+    _, report, failures = audit.validate(actual, lines, pages)
+    assert report['accepted'] is (assessment == 'supported')
+    assert bool(failures) is (assessment != 'supported')
+    assert report['validation_findings'] == []
 
 
 @pytest.mark.parametrize('assessment', ['supported', 'unsupported', 'uncertain'])

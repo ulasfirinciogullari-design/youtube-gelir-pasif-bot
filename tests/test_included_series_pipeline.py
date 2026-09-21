@@ -66,9 +66,10 @@ def native(box, policy, monkeypatch):
     monkeypatch.setattr(sources, 'fetch_page', lambda url: {
         'url': url, 'text': 'Synthetic actually retrieved source text.', 'text_sha256': 'd' * 64})
     box.answer = {'can_prepare': True, 'language': 'en', 'series_title': 'Why Money Moves',
-        'briefs': [{'brief': 'Why do central banks publish meeting decisions? ' + URL1 + ' ' + URL2,
-            'sources': [{'url': url, 'evidence': 'Synthetic source describes publication of policy decisions.'}
-                        for url in (URL1, URL2)]}]}
+        'briefs': [{'question': 'Why do central banks publish meeting decisions?',
+            # Four retrieved evergreen pages precede these two feed pages.
+            'sources': [{'source_id': key, 'evidence': 'Synthetic source describes publication of policy decisions.'}
+                        for key in ('s05', 's06')]}]}
     box.calls = []
     def send(prepared):
         box.calls.append(prepared)
@@ -98,6 +99,10 @@ def test_scheduler_actual_series_task_uses_subscription_and_never_opens_cash(nat
     result = execute(binding)
     assert result['status'] == 'ready', (result, native.errors, len(native.calls))
     assert len(native.calls) == 1
+    assert result['briefs'][0]['brief'] == native.answer['briefs'][0]['question'] + ' ' + URL1 + ' ' + URL2
+    journal = json.loads(native.client.get(included.JOURNAL_KEY))
+    observed = next(iter(journal['requests'].values()))['outcome']
+    assert json.loads(included._cipher().decrypt(observed['encrypted_result'].encode())) == native.answer
     assert result['qa_approved'] is result['publish_eligible'] is result['media_budget_approved'] is False
     assert result['requires_full_research_and_critic'] is True
     assert native.ledger.snapshot()['historical_cash_micro'] is None
@@ -109,7 +114,7 @@ def test_scheduler_actual_series_task_uses_subscription_and_never_opens_cash(nat
 
 
 def test_source_not_retrieved_cannot_become_a_series(native):
-    native.answer['briefs'][0]['sources'][1]['url'] = 'https://www.usmint.gov/not-consulted'
+    native.answer['briefs'][0]['sources'][1]['source_id'] = 'never-retrieved'
     result = execute(enqueue(native))
     assert result['status'] != 'ready' and len(native.calls) == 1
 

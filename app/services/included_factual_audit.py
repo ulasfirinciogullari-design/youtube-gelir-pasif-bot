@@ -11,8 +11,8 @@ import json
 import re
 
 
-VERSION = 2
-MARKER = 'INCLUDED_SENTENCE_SOURCE_AUDIT_V2'
+VERSION = 3
+MARKER = 'INCLUDED_SENTENCE_SOURCE_AUDIT_V3'
 
 # A narrow negative check, not a substitute for semantic source review. A
 # chronology-only quote cannot establish an explicitly narrated financing link,
@@ -26,6 +26,15 @@ _FINANCING_EVIDENCE = re.compile(
     r'\b(?:fund(?:ed|s|ing)?|financ(?:e|ed|es|ing)|bankroll(?:ed|s|ing)?|'
     r'reinvest\w*|finans\w*|fonla\w*)\b', re.IGNORECASE,
 )
+_TIME_METRIC = re.compile(r'\b(?:times?|durations?)\b', re.IGNORECASE)
+_REDUCTION = re.compile(r'\b(?:cut(?:s|ting)?|reduc\w*|shorten\w*|less|lower\w*|decreas\w*|fell)\b', re.IGNORECASE)
+_PERCENTAGE = re.compile(r'%|\bpercent\b|\bper\s+cent\b', re.IGNORECASE)
+
+
+def _quantified_time_reduction(text):
+    # A necessary English metric predicate only, never proof of entailment.
+    # In particular, "checkout lines moving 40% faster" does not supply it.
+    return bool(_TIME_METRIC.search(text) and _REDUCTION.search(text) and _PERCENTAGE.search(text))
 
 
 def _require(value):
@@ -91,6 +100,11 @@ def request(critic_prompt, critic_schema, scenes, pages):
           'A supported sentence requires at least one quotation. The reason must compare '
           'the precise claim to the cited text, not simply restate that it is supported. '
           'Check subject, time, geography, quantity, causation and qualifications separately. '
+          'PRESERVE MEASURED QUANTITIES: an increase in speed or throughput is not '
+          'the same percentage decrease in elapsed time. For example, checkout lines '
+          'moving 40% faster do not establish that transaction times fell by 40%. '
+          'Require the narrated metric, direction, percentage and qualifications '
+          'to be supported explicitly; do not approve a silently converted measurement. '
           'CHRONOLOGY IS NOT FINANCING: early product success followed by later company '
           'growth does not show that those sales funded, financed or bankrolled a later '
           'product or empire. Even two accurate quotations about the early success and '
@@ -148,6 +162,16 @@ def validate(response, scenes, pages):
                 'The narration asserts a financing relationship, but none of its exact '
                 'source quotations explicitly describes financing. Chronology, product '
                 'success and later growth do not establish that link.'}
+            failures.append(finding)
+            validation_findings.append(deepcopy(finding))
+        elif (_quantified_time_reduction(row['narration'])
+                and not any(_quantified_time_reduction(q['quote']) for q in quotes)):
+            finding = {'position': row['position'], 'assessment': 'unsupported',
+                'narration': row['narration'], 'reason':
+                'The narration quantifies a reduction in time, but none of its exact '
+                'quotations explicitly states a quantified time reduction. A percentage '
+                'increase in speed or throughput does not establish that same percentage '
+                'decrease in elapsed time. Preserve the source measurement.'}
             failures.append(finding)
             validation_findings.append(deepcopy(finding))
     report = {'version': VERSION, 'accepted': not failures, 'sentences': deepcopy(rows),
