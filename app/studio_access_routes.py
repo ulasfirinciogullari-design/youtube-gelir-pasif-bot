@@ -83,6 +83,8 @@ _SCRIPT = r'''(() => {
 })();'''
 _STYLE = '''*{box-sizing:border-box}html{color-scheme:dark;background:#0b0e15;color:#f3f5fa;font-family:system-ui,-apple-system,sans-serif}body{margin:0;min-height:100vh;padding:24px;background:radial-gradient(ellipse at 50% 0,#25203e,transparent 65%)}main{max-width:460px;margin:10vh auto;padding:34px;border:1px solid #353448;border-radius:24px;background:#131822;box-shadow:0 24px 90px #0004}.brand{color:#bbaaff;font-size:12px;letter-spacing:.12em;font-weight:750;margin:0 0 34px}.mark{display:grid;place-items:center;width:52px;height:52px;background:#2b2246;border:1px solid #5b497f;border-radius:15px;color:#c1afff;font-size:24px;margin-bottom:22px}h1{font-size:29px;letter-spacing:-.04em;line-height:1.2;margin:0 0 12px}p{line-height:1.7;color:#b9c2d2;font-size:14px}#access-status{min-height:48px}button,.back{display:block;width:100%;text-align:center;padding:14px 18px;background:#8c75f5;color:#fff;border:0;border-radius:12px;font:inherit;font-weight:650;cursor:pointer;text-decoration:none;margin:22px 0}button:hover,.back:hover{background:#a18bff}button:disabled{opacity:.55;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #d5caff;outline-offset:4px}.foot{padding-top:18px;margin-top:24px;border-top:1px solid #303342;color:#8f9bb0;font-size:12px}.foot b{color:#b8c3d5}noscript p{color:#f6d19b}@media(max-width:480px){body{padding:16px}main{margin:6vh auto;padding:26px 22px}h1{font-size:27px}}'''
 
+_STYLE += """html{color-scheme:light;background:#f4f6f8;color:#192733}body{background:#f4f6f8}main{background:#fff;border-color:#e1e6eb;box-shadow:0 12px 45px #2534440a}.brand{color:#527e70}.mark{background:#e9f2ee;border-color:#d3e4d9;color:#276759}p{color:#627180}button,.back{background:#276759}button:hover,.back:hover{background:#205547}.foot{border-color:#e1e6eb;color:#73817c}.foot b{color:#405b50}noscript p{color:#946019}"""
+
 
 def _hash(value):
     return base64.b64encode(hashlib.sha256(value.encode()).digest()).decode()
@@ -96,6 +98,7 @@ _HEADERS = {
         + "'; style-src 'sha256-" + _hash(_STYLE)
         + "'; connect-src 'self'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'",
 }
+
 
 
 def _page(*, status_code=200, error=False):

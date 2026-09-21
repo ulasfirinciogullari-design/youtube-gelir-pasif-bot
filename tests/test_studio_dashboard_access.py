@@ -76,7 +76,7 @@ def test_dashboard_shows_pause_budget_and_video_without_creation_or_dispatch(das
     body = response.text
     assert response.status_code == 200 and 'no-store' in response.headers['cache-control']
     assert '<h1>Kontrol panelin</h1>' in body and 'Otomasyon kontrol bekliyor' in body
-    assert 'BUDGET_STATUS' in body and 'Son videolar' in body and '3 konu sırada' in body
+    assert 'BUDGET_STATUS' in body and 'Son üretimler' in body and '3 konu sırada' in body
     assert 'href="/studio/create"' in body and 'id="studio-form"' not in body
     assert 'studio-secret' not in body and '<script>unsafe</script>' not in body
     assert f'href="/studio/job/{job["task_id"]}"' in body

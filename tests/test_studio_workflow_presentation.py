@@ -281,7 +281,8 @@ def test_failed_publisher_rolls_up_to_source_keeps_preview_and_existing_record_l
     ui.records.update({r['task_id']: r for r in records})
     response = ui.client.get('/studio/history?status=attention')
     assert response.status_code == 200
-    assert '<video class="ready-video"' in response.text
+    assert '<video controls playsinline' in response.text
+    assert 'https://media.example/final.mp4' in response.text
     assert 'data-status-count="attention">1</span>' in response.text
     detail = ui.client.get(f'/studio/job/{source["task_id"]}')
     assert 'Mevcut yüklemeyi kontrol et' in detail.text

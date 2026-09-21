@@ -8,6 +8,7 @@ from app.services.production_scheduler import maintain_production_series
 from app.services.youtube_auth import connection_status
 from app.services.youtube_automation import list_channel_profiles
 from app.services.production_spend_runtime import spending_task
+from celery.signals import task_postrun
 
 
 @celery.task(name='app.production_tasks.prepare_series_batch', bind=True, acks_late=False,
@@ -115,3 +116,14 @@ def production_tick() -> dict:
         return {'status': 'blocked', 'reason': 'production_state_unavailable'}
     except Exception:
         return {'status': 'blocked', 'reason': 'production_configuration_unavailable'}
+
+
+@task_postrun.connect(weak=False)
+def observe_production_tick(sender=None, state=None, retval=None, **_kwargs):
+    if getattr(sender, 'name', None) != 'app.production_tasks.production_tick':
+        return
+    try:
+        from app.services.studio_operations import record_tick
+        record_tick(state, retval)
+    except Exception:
+        pass  # Owner status is never part of dispatch or financial authority.

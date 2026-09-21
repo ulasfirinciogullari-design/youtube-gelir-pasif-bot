@@ -213,16 +213,15 @@ def _shell(
     same_origin_forms: bool = False,
     extra_css: str = '',
 ) -> HTMLResponse:
+    from app.studio import BASE_CSS, _nav
+    from app.services.studio_console_theme import CSS as console_css
     response = HTMLResponse(
         '<!doctype html><html lang="tr"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
-        '<meta name="theme-color" content="#090c11">'
-        f'<title>{escape(title)}</title><style>{CSS}{extra_css}</style></head><body>'
+        '<meta name="theme-color" content="#f4f6f8">'
+        f'<title>{escape(title)}</title><style>{BASE_CSS}{CSS}{extra_css}{console_css}</style></head><body>'
         '<a class="skip-link" href="#main-content">İçeriğe geç</a><div class="wrap">'
-        '<header class="top"><a class="brand" href="/studio">YouTube Studio</a>'
-        '<nav class="nav" aria-label="Ana menü"><a href="/studio">Genel bakış</a>'
-        '<a href="/studio/history?status=library">Videolar</a>'
-        '<a class="active" aria-current="page" href="/studio/youtube">Kanallar</a></nav></header>'
+        + _nav('youtube') +
         f'<main id="main-content" tabindex="-1">{body}</main></div>{script}</body></html>',
         status_code=status_code,
     )
@@ -573,7 +572,7 @@ def youtube_home(
     success = '<div class="notice success" role="status">YouTube kanalı başarıyla bağlandı.</div>' if connected else ''
     budget_notice = presentation._production_budget_notice()
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanallar, gerçek yayın durumu ve performans tek yerde.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{budget_notice}{overview}{sections}{account_card}'''
+<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanallar, gerçek yayın durumu ve performans tek yerde.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{budget_notice}{overview}{account_card}{sections}'''
     return _shell(body, same_origin_forms=True, script=presentation._metrics_script(), extra_css=presentation.METRICS_CSS)
 
 

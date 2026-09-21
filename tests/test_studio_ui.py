@@ -464,8 +464,9 @@ def test_storyboard_approval_counts_and_renders_as_attention_not_library(
     assert 'data-status-count="attention">1</span>' in attention
     assert 'data-status-count="library">0</span>' in attention
     assert 'data-history-status="attention"' in attention
-    assert '<article class="job" data-status="attention"' in attention
-    assert '<span class="state attention">Dikkat gerekiyor</span>' in attention
+    assert '<article class="review-card no-media"' in attention
+    assert 'data-status="attention"' in attention
+    assert '>Senaryo hazır</span>' in attention
     assert 'Storyboard hazır; devam etmek için aç.' in attention
     assert 'href="/studio/plan/approval-needed"' in attention
     assert 'Onay bekleyen storyboard' not in library
@@ -639,11 +640,12 @@ def test_same_title_attention_attempts_group_without_hiding_other_actions(
     assert studio._attention_duplicate_signature(actual_channel_a) != (
         studio._attention_duplicate_signature(actual_channel_b)
     )
-    assert body.count('<article class="job"') == 6
+    assert body.count('<article class="review-card ') == 6
     assert body.count('Aynı görünen başlık') >= 6
     assert '2 benzer deneme tek kartta toplandı.' in body
-    assert '>Kaliteyi incele</a>' in body
-    assert '>Sorunlu sahneyi onar</button>' in body
+    assert 'href="/studio/job/manual-new"' in body
+    assert '>Onarım ayrıntılarını aç</a>' in body
+    assert 'action="/studio/retry/' not in body
     assert "Storyboard'u aç</a>" in body
     assert '>Durumu aç</a>' in body
     assert 'data-status-count="attention">6</span>' in body
@@ -692,8 +694,8 @@ def test_repair_group_promotes_older_action_when_refreshed_newest_is_resolved(
     ).body.decode('utf-8')
 
     assert synced == ['repair-new']
-    assert 'action="/studio/retry/repair-old"' in body
-    assert 'action="/studio/retry/repair-new"' not in body
+    assert 'href="/studio/job/repair-old"' in body
+    assert 'href="/studio/job/repair-new"' not in body
     assert 'data-status-count="attention">1</span>' in body
     assert 'Başarısız denemeler <b>1</b>' in body
 
@@ -1693,7 +1695,7 @@ def test_library_is_quality_qualified_and_routes_manual_and_legacy_outputs(
 
     assert 'İnsan İncelemesi Gereken Video' in attention
     assert 'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.' in attention
-    assert '>Kaliteyi incele</a>' in attention
+    assert '>Videoyu aç</a>' in attention
     assert '>Gizli yükle</a>' not in attention
     assert 'Eski Kalite Kaydı Olmayan Video' not in attention
 
@@ -1701,7 +1703,7 @@ def test_library_is_quality_qualified_and_routes_manual_and_legacy_outputs(
     assert '<details class="archive-details" open>' in archive
     assert 'Eski Kalite Kaydı Olmayan Video' in archive
     assert 'Bu eski videoda açık kalite onayı yok' in archive
-    assert '>Videoyu incele</a>' in archive
+    assert '>Videoyu aç</a>' in archive
     assert '>Gizli yükle</a>' not in archive
 
     contradictory = _ready_job()
@@ -1863,7 +1865,7 @@ def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
     assert 'data-status-count="attention">0</span>' in body
     assert 'Başarısız denemeler <b>1</b>' in body
     assert 'Aynı hızlı test' not in body
-    assert failed_body.count('<article class="job"') == 1
+    assert failed_body.count('<article class="review-card ') == 1
     assert '<details class="archive-details" open>' in failed_body
     assert 'Başarısız denemeler <b>1</b>' in failed_body
     assert '1 eski başarısız deneme bu kartta toplandı.' in failed_body
@@ -1896,7 +1898,7 @@ def test_history_reconciles_only_the_visible_page(monkeypatch, ui_modules):
     ).body.decode('utf-8')
 
     assert len(synced) == studio.HISTORY_PAGE_SIZE
-    assert body.count('<article class="job"') == studio.HISTORY_PAGE_SIZE
+    assert body.count('<article class="review-card ') == studio.HISTORY_PAGE_SIZE
     assert 'Başarısız denemeler <b>500</b>' in body
 
 
@@ -1969,7 +1971,8 @@ def test_job_view_keeps_error_inside_closed_technical_details(monkeypatch, ui_mo
     assert '<details class="technical-details">' in body
     assert '<details class="technical-details" open>' not in body
     assert '<pre>' not in body
-    assert 'Yalnızca sorunlu sahne yeniden üretilecek' in body
+    assert 'Görüntüler kalite kontrolünden geçemedi' in body
+    assert '<details class="review-options">' in body
     assert '>Sorunlu sahneyi onar</button>' in body
     assert 'secret-value' not in body
     assert 'token=[gizlendi]' in body
@@ -2171,7 +2174,7 @@ def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monk
     assert '-webkit-line-clamp:2' in youtube_routes.CSS
     assert '<a class="brand" href="/studio">YouTube Studio</a>' in body
     assert 'href="/studio">Genel bakış</a>' in body
-    assert '<a href="/studio/history?status=library">Videolar</a>' in body
+    assert 'href="/studio/history?status=library">Videolar</a>' in body
     assert '🎬 YouTube Studio V2' not in body
     assert '>Yeni üretim</a>' not in body
     assert '>Geçmiş</a>' not in body
