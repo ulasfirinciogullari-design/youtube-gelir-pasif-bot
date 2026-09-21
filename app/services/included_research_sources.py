@@ -21,7 +21,16 @@ HOSTS = frozenset({'www.federalreserve.gov', 'www.ecb.europa.eu', 'www.usmint.go
     'www.imf.org', 'www.worldbank.org', 'www.bep.gov', 'www.uscurrency.gov',
     'historicengland.org.uk', 'home.barclays', 'www.si.edu', 'americanhistory.si.edu',
     'ctl.mit.edu', 'ikeamuseum.com', 'www.ikea.com', 'investor.costco.com',
-    'www.lego.com', 'www.nintendo.co.jp', 'www.nintendo.com', 'www.ibm.com', 'www.gs1us.org'})
+    'www.lego.com', 'www.nintendo.co.jp', 'www.nintendo.com', 'www.ibm.com', 'www.gs1us.org',
+    'www.okhistory.org'})
+GOLDMAN_REFERENCE = 'https://www.si.edu/object/goldmans-folding-basket-carriage%3Anmah_1216280'
+GOLDMAN_BACKUP_SOURCES = (
+    'https://www.okhistory.org/historycenter/atour',
+    'https://www.okhistory.org/publications/enc/entry?entry=GO004',
+)
+# This catalogue identifies one reviewed article with a query parameter.
+# Do not grant arbitrary queries, search endpoints or redirected destinations.
+QUERY_SOURCES = frozenset({GOLDMAN_BACKUP_SOURCES[1]})
 COMPANIONS = {
     'https://www.usmint.gov/news/media-kit/penny':
         'https://www.usmint.gov/learn/coins-and-medals/circulating-coins/penny',
@@ -55,7 +64,7 @@ def _url(value):
         parsed = urlsplit(value)
         _require(parsed.scheme == 'https' and parsed.hostname in HOSTS
             and parsed.port in (None, 443) and parsed.username is None and parsed.password is None
-            and not parsed.query and not parsed.fragment)
+            and (not parsed.query or value in QUERY_SOURCES) and not parsed.fragment)
     except ValueError:
         raise SpendBlocked('included_research_source_unavailable') from None
     return value
@@ -180,6 +189,8 @@ def research_pages(topic, *, now=None):
     pages = []
     if 'https://www.usmint.gov/news/media-kit/penny' in valid:
         valid.extend(url for url in PENNY_BACKUP_SOURCES if url not in valid)
+    if GOLDMAN_REFERENCE in valid:
+        valid.extend(url for url in GOLDMAN_BACKUP_SOURCES if url not in valid)
     for url in valid[:5]:
         try:
             pages.append(fetch_page(url, now=now))

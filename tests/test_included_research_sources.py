@@ -95,3 +95,61 @@ def test_source_schema_limits_model_to_observed_urls_without_changing_legacy_con
     # Even if a model ignores the schema, the post-response check stays strict.
     with pytest.raises(SpendBlocked, match='unconsulted_source'):
         sources.consulted_sources_only([{'url': 'https://www.bep.gov/not-read'}], [{'url': URL}, {'url': second}])
+
+
+def test_unavailable_goldman_museum_references_use_only_actually_read_official_backups(monkeypatch):
+    from app.services import research
+    reads = []
+    def fetch(url, **kwargs):
+        reads.append(url)
+        if url not in sources.GOLDMAN_BACKUP_SOURCES:
+            raise SpendBlocked('included_research_source_unavailable')
+        return {'url': url, 'text': 'Synthetic museum material for this source only.',
+                'text_sha256': hashlib.sha256(url.encode()).hexdigest()}
+    monkeypatch.setattr(sources, 'fetch_page', fetch)
+    topic = 'Goldman shopping carts introduced in 1937. ' + sources.GOLDMAN_REFERENCE
+    pages = sources.research_pages(topic)
+    assert [p['url'] for p in pages] == list(sources.GOLDMAN_BACKUP_SOURCES)
+    assert reads == [sources.GOLDMAN_REFERENCE, sources.COMPANIONS[sources.GOLDMAN_REFERENCE],
+                     *sources.GOLDMAN_BACKUP_SOURCES]
+    schema = sources.consulted_source_schema(research._research_json_schema(6, exact_scene_count=True), pages)
+    assert schema['properties']['sources']['items']['properties']['url']['enum'] == sorted(sources.GOLDMAN_BACKUP_SOURCES)
+    assert schema['properties']['sources']['minItems'] == 2
+    with pytest.raises(SpendBlocked, match='unconsulted_source'):
+        sources.consulted_sources_only([{'url': sources.GOLDMAN_REFERENCE}], pages)
+    # A shopping word without an authored reference does not trigger a search
+    # or a new topic. In particular, the existing episode brief stays intact.
+    reads.clear()
+    with pytest.raises(SpendBlocked, match='primary_source_required'):
+        sources.research_pages('A shopping cart without a cited source')
+    assert reads == []
+
+
+@pytest.mark.parametrize('url', [
+    'https://www.okhistory.org/publications/enc/entry?entry=GO005',
+    'https://www.okhistory.org/publications/enc/entry?entry=GO004&next=https://127.0.0.1',
+    'https://www.okhistory.org/publications/enc/entry?entry=GO004#extra',
+    'https://www.okhistory.org/publications/enc/entry?entry=GO004&entry=GO004',
+    'https://www.okhistory.org/historycenter/atour?entry=GO004',
+    'https://www.okhistory.org.evil.test/publications/enc/entry?entry=GO004',
+    'http://www.okhistory.org/publications/enc/entry?entry=GO004',
+])
+def test_goldman_query_exception_does_not_allow_other_queries_hosts_or_protocols(url):
+    assert sources._url(sources.GOLDMAN_BACKUP_SOURCES[1]) == sources.GOLDMAN_BACKUP_SOURCES[1]
+    with pytest.raises(SpendBlocked): sources._url(url)
+
+
+def test_one_available_cart_backup_still_cannot_start_a_model_call(monkeypatch):
+    from app.services import research, production_included_router as router
+    from unittest.mock import Mock
+    def fetch(url, **kwargs):
+        if url != sources.GOLDMAN_BACKUP_SOURCES[0]:
+            raise SpendBlocked('included_research_source_unavailable')
+        return {'url': url, 'text': 'Only one synthetic consulted source.', 'text_sha256': 'a' * 64}
+    generate = Mock(side_effect=AssertionError('one source cannot fund a research call'))
+    monkeypatch.setattr(sources, 'fetch_page', fetch)
+    monkeypatch.setattr(research, '_studio_plan_provider', lambda: 'abacus_included')
+    monkeypatch.setattr(router, 'generate_text_json', generate)
+    with pytest.raises(SpendBlocked, match='primary_source_unavailable'):
+        research.research_and_script('Goldman ' + sources.GOLDMAN_REFERENCE, .5, 'tr')
+    generate.assert_not_called()
