@@ -145,8 +145,18 @@ a failed second review stops before media. Missing rows, changed narration and
 malformed response structure still fail closed. Other audit callers retain
 strict quotation validation by default.
 
-Audit version 4 also rejects a claimed prohibition when its cited text only
+The current audit also rejects a claimed prohibition when its cited text only
 describes cost or inconvenience. The narrow negative guard cannot grant
 approval or override a negative semantic verdict. Previous audit versions
 cannot confer a current story approval. No request cap, reservation, daily
 counter or publication gate changes with this correction.
+
+Audit version 5 binds each factual assessment by the exact complete narration,
+unchanged array order and full row count. A repeated numeric position is optional;
+when supplied it must still be the correct integer. Missing, duplicated,
+reordered or changed narration remains invalid. The retained actual response
+does not gain invented index fields; negative findings use the authored scene's
+position only after the exact identity check. This avoids rejecting an otherwise
+complete critique solely because the provider omitted redundant indexes. It
+does not recover or refund an earlier unknown request, authorize a replay, or
+relax any factual, quotation, editorial or publication check.

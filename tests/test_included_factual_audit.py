@@ -129,6 +129,32 @@ def test_no_quote_is_a_rejection_not_a_reason_to_invent_one():
     assert not report['accepted'] and len(failures) == len(LINES)
 
 
+@pytest.mark.parametrize('change', ['none', 'reordered', 'missing', 'duplicated', 'changed_narration',
+                                  'missing_narration', 'wrong_position', 'bool_position'])
+def test_omitted_redundant_indexes_still_require_exact_complete_ordered_narration(change):
+    actual = response()
+    rows = actual['factual_audit']['sentences']
+    for row in rows:
+        row.pop('position')
+    if change == 'reordered':rows[1], rows[2] = rows[2], rows[1]
+    elif change == 'missing':rows.pop()
+    elif change == 'duplicated':rows[1] = deepcopy(rows[0])
+    elif change == 'changed_narration':rows[1]['narration'] += ' Another assertion.'
+    elif change == 'missing_narration':rows[1].pop('narration')
+    elif change == 'wrong_position':rows[1]['position'] = 0
+    elif change == 'bool_position':rows[1]['position'] = True
+    before = deepcopy(actual)
+    if change == 'none':
+        critic, report, failures = audit.validate(actual, LINES, PAGES)
+        assert critic == {'positive': True} and report['accepted'] is False
+        assert [row['position'] for row in failures] == [1, 2, 3]
+        assert report['sentences'] == before['factual_audit']['sentences']
+        assert all('position' not in row for row in report['sentences'])
+    else:
+        with pytest.raises(ValueError):audit.validate(actual, LINES, PAGES)
+    assert actual == before
+
+
 @pytest.mark.parametrize('verb', ['funded', 'financed', 'bankrolled', 'finanse etti', 'fonladı'])
 def test_real_chronology_does_not_establish_a_financing_link_even_with_positive_model_verdict(verb):
     text = 'The cards produced a sales boom. Years later, the company created Mario.'

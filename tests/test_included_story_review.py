@@ -32,7 +32,8 @@ def fixture_story():
 @pytest.mark.parametrize('rejected', [False, 'editorial', 'unsupported', 'uncertain', 'quote', 'financing'])
 @pytest.mark.parametrize('review_only', [False, True])
 @pytest.mark.parametrize('allow_repair', [False, True])
-def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(commissioned, monkeypatch, rejected, review_only, allow_repair):
+@pytest.mark.parametrize('omit_factual_positions', [False, True])
+def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(commissioned, monkeypatch, rejected, review_only, allow_repair, omit_factual_positions):
     ledger, _, _ = commissioned
     from app import config
     for key, value in {'studio_spend_enforcement': True, 'studio_abacus_included_production': True,
@@ -74,6 +75,9 @@ def test_actual_critic_requires_sources_and_failed_verdict_never_gets_approval(c
                 row.update(assessment=rejected, reason='Total production cost does not support a component cost claim.')
             elif rejected == 'quote':
                 row['quotations'][0]['quote'] = 'The model invented this quotation instead of citing retrieved text.'
+            if omit_factual_positions:
+                for factual_row in output['factual_audit']['sentences'][2:]:
+                    factual_row.pop('position')
         body = envelope(); body['choices'][0]['message']['content'] = json.dumps(output)
         return response(prepared, payload=body)
     monkeypatch.setattr(transport, 'send_once', send)

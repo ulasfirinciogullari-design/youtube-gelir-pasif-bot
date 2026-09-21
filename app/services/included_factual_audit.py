@@ -11,8 +11,8 @@ import json
 import re
 
 
-VERSION = 4
-MARKER = 'INCLUDED_SENTENCE_SOURCE_AUDIT_V4'
+VERSION = 5
+MARKER = 'INCLUDED_SENTENCE_SOURCE_AUDIT_V5'
 
 # A narrow negative check, not a substitute for semantic source review. A
 # chronology-only quote cannot establish an explicitly narrated financing link,
@@ -87,6 +87,9 @@ def request(critic_prompt, critic_schema, scenes, pages):
     row = _object({'position': {'type': 'integer'}, 'narration': string,
         'assessment': {'type': 'string', 'enum': ['supported', 'unsupported', 'uncertain']},
         'reason': string, 'quotations': {'type': 'array', 'items': quote}})
+    # Array order and the exact complete narration bind each assessment to
+    # its authored scene. A repeated numeric index is optional metadata.
+    row['required'].remove('position')
     schema = _object({'factual_audit': _object({'sentences': {'type': 'array', 'items': row}}),
         'editorial_review': deepcopy(critic_schema)})
     prompt = (MARKER + '\nThe rubric below contains example values, not prefilled verdicts. '
@@ -97,7 +100,9 @@ def request(critic_prompt, critic_schema, scenes, pages):
           'critic response inside editorial_review, preserving every original required check. '
           'For factual_audit, assess EVERY full narration below at its unchanged position, '
           'including implied premises of questions and every clause of a compound sentence. '
-          'Copy narration exactly. Use supported only if ALL factual content is entailed by '
+          'Return every sentence in the exact input order and copy narration exactly. '
+          'The redundant numeric position is optional; if supplied, it must match the input. '
+          'Use supported only if ALL factual content is entailed by '
           'the retrieved text. Unsupported or merely plausible inferences fail. When unsure, '
           'use uncertain. Supply short, verbatim, contiguous quotations from the retrieved '
           'pages, with the exact source_url; never invent a quote or quote the candidate. '
@@ -143,9 +148,11 @@ def validate(response, scenes, pages, *, reject_invalid_quotations=False):
     _require(type(rows) is list and len(rows) == len(lines))
     failures, validation_findings = [], []
     for line, row in zip(lines, rows):
-        _require(type(row) is dict and set(row) == {
-            'position', 'narration', 'assessment', 'reason', 'quotations'}
-            and type(row['position']) is int and row['position'] == line['position']
+        _require(type(row) is dict and set(row) in ({
+            'position', 'narration', 'assessment', 'reason', 'quotations'}, {
+            'narration', 'assessment', 'reason', 'quotations'})
+            and ('position' not in row or (
+                type(row['position']) is int and row['position'] == line['position']))
             and row['narration'] == line['narration']
             and row['assessment'] in {'supported', 'unsupported', 'uncertain'})
         _plain(row['reason'], 12, 1800)
@@ -165,7 +172,7 @@ def validate(response, scenes, pages, *, reject_invalid_quotations=False):
         if invalid_quotations:
             # Keep the actual model row intact. This is a negative finding,
             # never a reconstructed quotation or an acceptance exception.
-            finding = {'position': row['position'], 'assessment': 'unsupported',
+            finding = {'position': line['position'], 'assessment': 'unsupported',
                 'narration': row['narration'], 'reason':
                 'At least one supplied quotation is not unique exact contiguous text '
                 'from its cited retrieved source. This sentence is not verified. '
@@ -173,11 +180,11 @@ def validate(response, scenes, pages, *, reject_invalid_quotations=False):
             failures.append(finding)
             validation_findings.append(deepcopy(finding))
         elif row['assessment'] != 'supported':
-            failures.append({'position': row['position'], 'assessment': row['assessment'],
+            failures.append({'position': line['position'], 'assessment': row['assessment'],
                 'reason': row['reason'], 'narration': row['narration']})
         elif (_PROHIBITION.search(row['narration'])
                 and not any(_PROHIBITION_EVIDENCE.search(q['quote']) for q in quotes)):
-            finding = {'position': row['position'], 'assessment': 'unsupported',
+            finding = {'position': line['position'], 'assessment': 'unsupported',
                 'narration': row['narration'], 'reason':
                 'The narration asserts a prohibition, but its exact quotations do '
                 'not state one. A costly or time-consuming process is not thereby forbidden.'}
@@ -185,7 +192,7 @@ def validate(response, scenes, pages, *, reject_invalid_quotations=False):
             validation_findings.append(deepcopy(finding))
         elif (_FINANCING_CLAIM.search(row['narration'])
                 and not any(_FINANCING_EVIDENCE.search(q['quote']) for q in quotes)):
-            finding = {'position': row['position'], 'assessment': 'unsupported',
+            finding = {'position': line['position'], 'assessment': 'unsupported',
                 'narration': row['narration'], 'reason':
                 'The narration asserts a financing relationship, but none of its exact '
                 'source quotations explicitly describes financing. Chronology, product '
@@ -194,7 +201,7 @@ def validate(response, scenes, pages, *, reject_invalid_quotations=False):
             validation_findings.append(deepcopy(finding))
         elif (_quantified_time_reduction(row['narration'])
                 and not any(_quantified_time_reduction(q['quote']) for q in quotes)):
-            finding = {'position': row['position'], 'assessment': 'unsupported',
+            finding = {'position': line['position'], 'assessment': 'unsupported',
                 'narration': row['narration'], 'reason':
                 'The narration quantifies a reduction in time, but none of its exact '
                 'quotations explicitly states a quantified time reduction. A percentage '
