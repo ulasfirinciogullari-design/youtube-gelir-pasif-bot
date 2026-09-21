@@ -21,7 +21,7 @@ HOSTS = frozenset({'www.federalreserve.gov', 'www.ecb.europa.eu', 'www.usmint.go
     'www.imf.org', 'www.worldbank.org', 'www.bep.gov', 'www.uscurrency.gov',
     'historicengland.org.uk', 'home.barclays', 'www.si.edu', 'americanhistory.si.edu',
     'ctl.mit.edu', 'ikeamuseum.com', 'www.ikea.com', 'investor.costco.com',
-    'www.lego.com', 'www.nintendo.co.jp', 'www.nintendo.com'})
+    'www.lego.com', 'www.nintendo.co.jp', 'www.nintendo.com', 'www.ibm.com', 'www.gs1us.org'})
 COMPANIONS = {
     'https://www.usmint.gov/news/media-kit/penny':
         'https://www.usmint.gov/learn/coins-and-medals/circulating-coins/penny',
