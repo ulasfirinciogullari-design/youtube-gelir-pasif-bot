@@ -1552,6 +1552,13 @@ def _comparison_units(
             units.append((key, tuple(tokens[index:index + consumed])))
             index += consumed
             continue
+        from app.services.audio_ordinal_comparison import ordinal_unit
+        ordinal = ordinal_unit(tokens, index, value, matches)
+        if ordinal is not None:
+            key, consumed = ordinal
+            units.append((key, tuple(tokens[index:index + consumed])))
+            index += consumed
+            continue
         if index in join_positions:
             source = tuple(tokens[index:index + 2])
             units.append((_orthographic_fold(''.join(source)), source))
