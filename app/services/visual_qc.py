@@ -544,6 +544,13 @@ def _connection_action_required(scene: dict) -> bool:
 def _state_change_required(scene: dict) -> bool:
     """Require before/action/after proof for narrated erasure or removal."""
     narration = str(scene.get('narration') or '')
+    # An opening question asks for an explanation, not an on-camera removal.
+    # Preserve separate affirmative clauses, including those before/after it.
+    # The critic still evaluates the subject/action and any actual mechanism.
+    narration = ''.join(
+        match.group() for match in re.finditer(r'[^.!?;,]+[.!?;,]?', narration)
+        if not match.group().rstrip().endswith('?')
+    )
     # Negated actions are not promises of disappearance. Keep affirmative
     # actions elsewhere in the same sentence available to the temporal gate.
     narration = re.sub(
