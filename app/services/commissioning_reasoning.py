@@ -27,6 +27,7 @@ PRICE_UNTIL = datetime(2026, 10, 1, tzinfo=timezone.utc)
 MAX_INPUT = 1_048_576
 MAX_RESPONSE = 2 * 1024 * 1024
 MAX_LINEAGE = 80
+MAX_LONG_LINEAGE = 160  # Thirty-scene commissioning includes full retained-media rechecks.
 MAX_DAY = 1000
 UNHANDLED = object()
 VISUAL_SCHEMA_PREFIX = (
@@ -240,7 +241,8 @@ def _reserve(foundation, ledger, context, prepared, purpose, native, ceiling):
             pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
             return {'record': row, 'response_key': response_key, 'response': json.loads(response), 'send': False}
         _require(not pipe.exists(response_key) and not pipe.sismember(lineage, key_hash)
-            and not pipe.sismember(day, key_hash) and pipe.scard(lineage) < MAX_LINEAGE
+            and not pipe.sismember(day, key_hash)
+            and pipe.scard(lineage) < (MAX_LONG_LINEAGE if context['kind'] == 'long' else MAX_LINEAGE)
             and pipe.scard(day) < MAX_DAY and pipe.pttl(lineage) in (-1, -2)
             and pipe.pttl(day) in (-1, -2), 'commissioning_reasoning_capacity')
         row = {'version': 1, 'context': context, 'purpose': purpose, 'provider': 'gemini', 'model': MODEL,

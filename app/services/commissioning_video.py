@@ -217,6 +217,43 @@ def _payload(observed):
     return value
 
 
+def quota_rejected(observed):
+    """A captured HTTP rejection with no operation; never an unknown POST."""
+    if not observed or observed.get('http_status') != 429:
+        return False
+    from app.services.youtube_auth import _decrypt_json
+    raw = _decrypt_json(observed['encrypted_response'])['response'].encode()
+    _require(_sha(raw) == observed['response_sha256'])
+    value = json.loads(raw)
+    error = value.get('error') if type(value) is dict else None
+    return bool(set(value) == {'error'} and type(error) is dict
+        and type(error.get('code')) is int and error['code'] == 429
+        and error.get('status') == 'RESOURCE_EXHAUSTED')
+
+
+def _quota_cooldown(scope, descriptor):
+    """Reuse exact receipts; spare other scenes repeated requests for one hour."""
+    client = scope['foundation'].client
+    current = json.loads(client.get(PREFIX + scope['context']['lineage_id']) or '{}')
+    if _sha(_raw(descriptor).encode()) in current.get('requests', {}):
+        return False  # Accepted and ambiguous requests keep their original path.
+    now = datetime.now(timezone.utc)
+    keys = list(client.scan_iter(match=PREFIX + '*', count=128))
+    _require(len(keys) <= 2000)
+    for key in keys:
+        journal = json.loads(client.get(key))
+        for row in journal.get('requests', {}).values():
+            request, observed = row.get('request') or {}, row.get('create')
+            if (request.get('credential_sha256') != descriptor['credential_sha256']
+                    or request.get('model') != MODEL or row.get('result') is not None
+                    or not observed or observed.get('http_status') != 429):
+                continue
+            date = datetime.fromisoformat(observed['observed_at'])
+            if date.tzinfo is not None and 0 <= (now - date).total_seconds() <= 3600 and quota_rejected(observed):
+                return True
+    return False
+
+
 def _read_response(response):
     raw = bytearray()
     for chunk in response.iter_bytes():
@@ -284,12 +321,18 @@ def generate_if_commissioned(prompt, seconds, aspect_ratio):
     descriptor.update({'route': ROUTE, 'request_sha256': _sha(_raw(body).encode()),
         'credential_sha256': _sha(('gemini\0' + key).encode()), 'model': MODEL,
         'duration_seconds': duration, 'max_list_cost_micro_usd': quote.maximum_micro})
+    from app.services.content_plan_retained_completion import stock_only_scope
+    if stock_only_scope(scope):
+        raise CommissionedVideoUnavailable('commissioned_video_quota_stock_rescue')
     from app.services.content_plan_long_media_resume import continuation_identity
-    continuation_task = continuation_identity(scope)
+    from app.services.content_plan_retained_completion import continuation_identity as completion_identity
+    continuation_task = completion_identity(scope) or continuation_identity(scope)
     if continuation_task is not None:
         # This one private child follows a fully captured terminal outage.
         # Its new attempts remain in the original root's cumulative journal.
         descriptor['continuation_task_id'] = continuation_task
+    if _quota_cooldown(scope, descriptor):
+        raise CommissionedVideoUnavailable('commissioned_video_quota_stock_rescue')
     receipt_key, identity, prior = _reserve(scope, descriptor)
     headers = {'x-goog-api-key': key, 'Content-Type': 'application/json'}
     try:
@@ -302,6 +345,8 @@ def generate_if_commissioned(prompt, seconds, aspect_ratio):
                 observed = prior['create']
                 if prior['result'] is not None:
                     return _result(_payload(prior['result']))
+            if quota_rejected(observed):
+                raise CommissionedVideoUnavailable('commissioned_video_quota_rejected')
             created = _payload(observed)
             name = created.get('name')
             _require(type(name) is str and re.fullmatch(

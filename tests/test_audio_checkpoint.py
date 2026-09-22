@@ -197,6 +197,21 @@ def test_source_evidence_cannot_smuggle_credentials_or_extra_fields(candidate):
     assert 'SECRET-CREDENTIAL' not in uploaded[1][2].decode()
 
 
+def test_public_encyclopedia_selector_survives_without_admitting_credentials():
+    from app.services.audio_checkpoint import _public_sources
+    source = {'url': 'https://www.okhistory.org/publications/enc/entry?entry=GO004',
+              'evidence': 'The historical entry documents the founding of Sun Grocery Company.'}
+    assert _public_sources([source]) == [source]
+    for url in (
+        source['url'] + '&token=SECRET', source['url'] + '&entry=GO004',
+        source['url'].replace('GO004', 'secret'), source['url'].replace('entry=', '%65ntry='),
+        source['url'].replace('okhistory.org', 'example.com'), source['url'] + '#SECRET',
+        source['url'].replace('/publications/enc/entry', '/private'),
+        source['url'].replace('https://', 'http://'),
+    ):
+        assert _public_sources([{**source, 'url': url}]) == []
+
+
 @pytest.mark.parametrize('relative', [
     f'{TASK_ID}_audio_retry_1.mp3',
     f'{TASK_ID}_voice/joined.mp3',

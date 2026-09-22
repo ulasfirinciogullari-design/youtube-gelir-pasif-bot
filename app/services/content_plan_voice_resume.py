@@ -218,7 +218,7 @@ def prepare_long(task, source_id, spec, work):
     return _prepare_long_candidate(task, source_id, spec, work)
 
 
-def _prepare_long_candidate(task, source_id, spec, work):
+def _prepare_long_candidate(task, source_id, spec, work, *, restored_sources=None):
     """No authority is granted here; each private caller verifies its claim."""
     from app.services import voice_candidate_recovery as retained, longform_voice_retry as legacy
     from app.services import commissioning_longform as longform, director, voice
@@ -233,6 +233,10 @@ def _prepare_long_candidate(task, source_id, spec, work):
         'preserve_audio_bytes': True, 'content_plan_voice_source': source_id}
     legacy.preserved_voice(prepared)
     package = director._clean_package(raw_package, raw_package)
+    if restored_sources is not None:
+        # Only the private retained-completion verifier reconstructs citations
+        # from captured original editorial responses. Speech remains immutable.
+        package['sources'] = restored_sources
     package['studio_options'] = {k: v for k, v in spec.items()
         if k not in {'topic', 'duration_minutes', 'language', 'channel_id'}}
     count = director._word_count(package['narration']); target = 315 if spec['language'] == 'tr' else 360

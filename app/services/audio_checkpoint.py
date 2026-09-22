@@ -82,7 +82,8 @@ def _public_sources(value: object) -> list[dict]:
             if (
                 parsed.scheme not in {'http', 'https'} or not hostname
                 or parsed.username is not None or parsed.password is not None
-                or parsed.query or parsed.fragment or parsed.port not in (None, 80, 443)
+                or (parsed.query and not _public_entry_query(parsed))
+                or parsed.fragment or parsed.port not in (None, 80, 443)
                 or any(hostname == suffix or hostname.endswith('.' + suffix) for suffix in _NON_CITATION_HOST_SUFFIXES)
             ):
                 continue
@@ -104,6 +105,17 @@ def _public_sources(value: object) -> list[dict]:
         if len(result) == 5:
             break
     return result
+
+
+def _public_entry_query(parsed) -> bool:
+    """An encyclopedia entry selector is public source identity, not a token.
+
+    Only this documented public route and bounded identifier are retained.
+    Additional, encoded, duplicate or credential parameters remain excluded.
+    """
+    return bool(parsed.scheme == 'https' and parsed.hostname == 'www.okhistory.org'
+        and parsed.path == '/publications/enc/entry'
+        and re.fullmatch(r'entry=[A-Z]{2}[0-9]{3}', parsed.query))
 
 
 def _candidate_package(package: dict) -> dict:

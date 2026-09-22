@@ -102,6 +102,36 @@ def test_ambiguous_create_remains_reserved_and_is_never_repeated(scene):
     assert len(scene.requests) == 1
 
 
+def test_captured_quota_rejection_uses_stock_and_does_not_repeat_for_other_scenes(scene):
+    def rejected(request):
+        scene.requests.append(request)
+        return httpx.Response(429, json={'error': {'code': 429, 'status': 'RESOURCE_EXHAUSTED', 'message': 'Quota exhausted'}})
+    scene.handler = rejected
+    with pytest.raises(video.CommissionedVideoUnavailable, match='quota_rejected'):
+        generate(scene)
+    before = scene.client.get(video.PREFIX + ROOT)
+    for index in (0, 1, 2):
+        with pytest.raises(video.CommissionedVideoUnavailable, match='quota_'):
+            generate(scene, index=index)
+    assert len(scene.requests) == 1 and scene.client.get(video.PREFIX + ROOT) == before
+    record = next(iter(json.loads(before)['requests'].values()))
+    assert record['create']['http_status'] == 429 and record['result'] is None
+
+
+@pytest.mark.parametrize('status,payload', [(403, {'error': {'code': 403, 'status': 'PERMISSION_DENIED'}}),
+    (500, {'error': {'code': 500, 'status': 'INTERNAL'}}),
+    (429, {'error': {'code': 429, 'status': 'UNKNOWN'}}),
+    (429, {'name': OPERATION, 'error': {'code': 429, 'status': 'RESOURCE_EXHAUSTED'}})])
+def test_quota_fallback_does_not_guess_other_failed_or_accepted_requests(scene, status, payload):
+    def rejected(request):
+        scene.requests.append(request)
+        return httpx.Response(status, json=payload)
+    scene.handler = rejected
+    for _ in range(2):
+        with pytest.raises(SpendBlocked): generate(scene)
+    assert len(scene.requests) == 1
+
+
 @pytest.mark.parametrize('code', [13, 14])
 def test_observed_internal_failure_can_reach_scene_rescue_without_another_create(scene, monkeypatch, code):
     original = scene.handler

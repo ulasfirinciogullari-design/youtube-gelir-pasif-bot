@@ -57,6 +57,18 @@ def test_exact_queued_long_dispatch_admits_once_and_preserves_existing_receipts(
     assert included._LAST_OBSERVED.get()['context']['kind'] == 'long'
 
 
+def test_long_review_capacity_counts_the_complete_existing_lineage(long_case):
+    from test_production_included_router import request
+    ledger, prepared, sender, context, *_ = long_case
+    key = native.PREFIX + 'lineage:' + context['lineage_id']
+    ledger.client.sadd(key, *['prior-' + str(i) for i in range(native.MAX_LONG_LINEAGE - 1)])
+    assert native.generate(prepared, 'editorial', ledger, ledger.foundation, context) == RESULT
+    assert ledger.client.scard(key) == native.MAX_LONG_LINEAGE
+    with pytest.raises(SpendBlocked, match='capacity'):
+        native.generate(request('Another distinct request'), 'editorial', ledger, ledger.foundation, context)
+    sender.assert_called_once()
+
+
 def test_redis_integral_duration_roundtrip_preserves_original_long_dispatch(long_case):
     ledger, prepared, sender, context, entry, _, root = long_case
     c = ledger.client; key = plan.DISPATCH_PREFIX + entry['id']

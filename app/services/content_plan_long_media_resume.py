@@ -24,7 +24,8 @@ def operation(source):
 
 
 def registered(source):
-    return bool(plan._client().exists(DISPATCH + plan._id(source)))
+    from app.services import content_plan_retained_completion as completion
+    return bool(plan._client().exists(DISPATCH + plan._id(source)) or completion.registered(source))
 
 
 def eligible(source):
@@ -186,6 +187,9 @@ class RetainedClips(dict):
 
 
 def prepare(task, source_id, spec, work):
+    from app.services import content_plan_retained_completion as completion
+    if completion.registered(source_id):
+        return completion.prepare(task, source_id, spec, work)
     source, _ = verify_child(task, source_id, spec)
     prepared = voice._prepare_long_candidate(task, source_id, spec, work)
     prepared.pop('content_plan_voice_source'); prepared['content_plan_media_source'] = source_id
@@ -197,7 +201,7 @@ def prepare(task, source_id, spec, work):
     return prepared
 
 
-def _load_clips(source, prepared, work):
+def _load_clips(source, prepared, work, *, allow_repair=False):
     """Hash-check and probe existing private originals; never a QA approval."""
     from app import tasks
     from app.services import generated_asset_checkpoint as assets, storage
@@ -211,8 +215,10 @@ def _load_clips(source, prepared, work):
         path = _stored(store, pointer['manifest_key'], pointer['manifest_sha256'], pointer['manifest_size'],
                        work / f'retained-manifest-{ordinal}.json', assets.MAX_MANIFEST_BYTES)
         manifest = json.loads(path.read_text()); index = manifest['scene_index']; raw = manifest['raw']
-        plan._require(index == pointer['scene_index'] and type(index) is int and 0 <= index < 30 and index not in clips
-            and manifest.get('phase') == pointer.get('phase') == 'initial_generation'
+        plan._require(index == pointer['scene_index'] and type(index) is int and 0 <= index < 30
+            and (allow_repair or index not in clips)
+            and manifest.get('phase') == pointer.get('phase')
+            and manifest.get('phase') in ({'initial_generation', 'final_repair'} if allow_repair else {'initial_generation'})
             and manifest.get('qa_approved') is False and manifest.get('requires_full_qa') is True
             and manifest['source_task_id'] == source_id and manifest['package'] == canonical
             and manifest['candidate_package_sha256'] == source['audio_candidate_checkpoint']['package_sha256']
@@ -221,7 +227,7 @@ def _load_clips(source, prepared, work):
             and raw['size'] == pointer['raw_size'] and raw['synthetic_motion_only'] is False
             and raw['provider'] == 'gemini_veo' and raw['provider_attempts'] == 1)
         path = _stored(store, raw['key'], raw['sha256'], raw['size'],
-                       work / f'retained-s{index:02d}.mp4', assets.MAX_RAW_BYTES)
+                       work / f'retained-s{index:02d}-{ordinal:02d}.mp4', assets.MAX_RAW_BYTES)
         tasks._validate_recovered_generated_clip(path,
             minimum_duration=max(5., prepared['voice_result']['scene_durations'][index] + .35),
             expected_size=raw['size'], expected_sha256=raw['sha256'])
@@ -235,6 +241,10 @@ def _load_clips(source, prepared, work):
 
 def retained_cap(task, prepared):
     source = plan._id(prepared.get('content_plan_media_source')); child = jobs.get_job(task)
+    from app.services import content_plan_retained_completion as completion
+    if completion.registered(source):
+        completion.verify_child(task, source, child['spec'])
+        return 32
     verify_child(task, source, child['spec'])
     return 32
 
@@ -243,7 +253,7 @@ def install(prepared, visuals):
     if not prepared or not prepared.get('content_plan_media_source'): return []
     clips = prepared.get('retained_long_clips')
     plan._require(type(clips) is RetainedClips and clips.token is _TOKEN and len(visuals) == 30)
-    for index, clip in clips.items(): visuals[index] = [deepcopy(clip)]
+    for index, clip in clips.items(): visuals[index] = deepcopy(clip) if type(clip) is list else [deepcopy(clip)]
     return sorted(clips)
 
 
