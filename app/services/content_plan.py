@@ -27,7 +27,7 @@ EXECUTION_PREFIX = PREFIX + 'execution:'
 ACTIVE_KEY = PREFIX + 'active'
 MAX_ITEMS = 80
 CHANNEL = re.compile(r'^UC[A-Za-z0-9_-]{22}$')
-FORMATS = {'shorts': ('Shorts', .5), 'long': ('Uzun video', 3.0),
+FORMATS = {'shorts': ('Shorts', .5), 'long': ('Uzun video', 3),
            'animation': ('Animasyon pilotu', .5)}
 
 
@@ -51,6 +51,20 @@ def _raw(value):
 
 def _sha(value):
     return hashlib.sha256(_raw(value).encode()).hexdigest()
+
+
+def dispatch_spec_matches(dispatch, spec):
+    """Redis Lua encodes the integral duration 3.0 as 3; no other edits qualify.
+
+    Preserve the original dispatch and its hash. Only its exact former floating
+    point encoding is accepted alongside the actual unchanged three-minute spec.
+    """
+    if _sha(spec) == dispatch.get('spec_sha256'):
+        return True
+    return bool(type(spec.get('duration_minutes')) in (int, float)
+        and spec['duration_minutes'] == 3 and spec.get('format') == 'landscape'
+        and dispatch.get('item', {}).get('format') == 'long'
+        and _sha({**spec, 'duration_minutes': 3.0}) == dispatch.get('spec_sha256'))
 
 
 def _object(raw):
@@ -426,7 +440,7 @@ def publication_series(source, profile, *, client=None):
              and dispatch['profile_revision'] == profile.get('profile_revision') == spec.get('production_profile_revision'),
              'plan_publication_binding_changed')
     root = _object(client.get(jobs.JOB_PREFIX + dispatch['task_id']))
-    _require(_sha(root['spec']) == dispatch['spec_sha256']
+    _require(dispatch_spec_matches(dispatch, root['spec'])
              and _leaf(client, dispatch)['task_id'] == source.get('task_id'), 'plan_publication_binding_changed')
     plan = read(dispatch['channel_id'], client=client)
     _require(plan and any(row == dispatch['item'] for row in plan['items']), 'plan_publication_binding_changed')

@@ -38,7 +38,7 @@ def authorize(reader, context):
     _require(dispatch.get('task_id') == context['lineage_id']
         and dispatch.get('channel_id') == context['channel_id']
         and dispatch.get('connection_id') == context['connection_id']
-        and dispatch.get('spec_sha256') == plan._sha(spec)
+        and plan.dispatch_spec_matches(dispatch, spec)
         and dispatch['item']['format'] == 'long')
     document = plan._plan(reader.get(plan_key), context['channel_id'])
     _require(any(row == dispatch['item'] for row in document['items']))

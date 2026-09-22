@@ -4334,6 +4334,11 @@ def _fresh_scheduled_short_shots(
     ):
         return False
     if retry_dispatch_source_id is not None and not full_rebuild:
+        if spec.get('content_plan_item_id'):
+            from app.services.content_plan_research_resume import registered, verify_child
+            if registered(retry_dispatch_source_id):
+                verify_child(task_id, retry_dispatch_source_id, spec)
+                return True
         from app.services.pre_media_editorial_retry import eligible
         return eligible(task_id, retry_dispatch_source_id, spec)
     try:
@@ -4531,6 +4536,11 @@ def _prepare_saved_voice_retry(
     work: Path,
 ) -> dict | None:
     """Revalidate one same-spec UI retry without purchasing another voice."""
+    if source_task_id and runtime_spec.get('content_plan_item_id'):
+        from app.services.content_plan_research_resume import registered, verify_child
+        if registered(source_task_id):
+            verify_child(task_id, source_task_id, runtime_spec)
+            return None  # This exact root never submitted a voice or model request.
     if (source_task_id and runtime_spec.get('mode') == 'production'
             and runtime_spec.get('format') == 'landscape'
             and runtime_spec.get('duration_minutes') == 3):

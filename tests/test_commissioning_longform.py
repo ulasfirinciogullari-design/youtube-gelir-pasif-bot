@@ -57,6 +57,19 @@ def test_exact_queued_long_dispatch_admits_once_and_preserves_existing_receipts(
     assert included._LAST_OBSERVED.get()['context']['kind'] == 'long'
 
 
+def test_redis_integral_duration_roundtrip_preserves_original_long_dispatch(long_case):
+    ledger, prepared, sender, context, entry, _, root = long_case
+    c = ledger.client; key = plan.DISPATCH_PREFIX + entry['id']
+    dispatch = json.loads(c.get(key))
+    dispatch['spec_sha256'] = plan._sha({**root['spec'], 'duration_minutes': 3.0})
+    c.set(key, plan._raw(dispatch)); before = c.get(key)
+    assert type(root['spec']['duration_minutes']) is int
+    assert longform.active() is True
+    assert native.generate(prepared, 'editorial', ledger, ledger.foundation, context) == RESULT
+    sender.assert_called_once()
+    assert c.get(key) == before
+
+
 @pytest.mark.parametrize('damage', ['missing_dispatch', 'changed_script', 'previous_unpublished',
                                    'removed_item', 'short_relabelled', 'child_not_root'])
 def test_long_authority_cannot_be_inferred_or_forged(long_case, damage):
