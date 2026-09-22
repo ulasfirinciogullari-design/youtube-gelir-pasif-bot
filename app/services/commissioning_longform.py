@@ -86,7 +86,7 @@ def review_story(package, topic, language):
             'Assess every global editorial check; use false for an unsupported or uncertain claim. '
             'The factual audit below covers this exact batch; global checks concern the complete story.\n'
             + overview, schema, batch, pages)
-        response = generate_text_json(prompt, purpose='story_review', schema=contract, max_tokens=8192)
+        response = generate_text_json(prompt, purpose='story_review', schema=contract)
         editorial, evidence, failures = audit.validate(response, batch, pages)
         if failures or set(editorial) != set(checks) or any(editorial[k] is not True for k in checks):
             raise ProductionContentError('Long documentary failed independent source or editorial review')

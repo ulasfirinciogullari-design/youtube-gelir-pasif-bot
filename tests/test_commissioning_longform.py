@@ -143,9 +143,10 @@ def test_every_long_story_sentence_is_reviewed_and_last_batch_can_block(long_cas
     package = {'scenes': [{'narration': text, 'scene_number': n} for n in range(30)],
                'sources': [{'url': page['url']}], 'narration': ' '.join([text]*30)}
     seen = []
-    def review(prompt, **kwargs):
+    def review(prompt, schema, *, purpose):
+        assert purpose == 'story_review'
         batch = json.loads(prompt.split('EXACT FINAL NARRATION TO AUDIT:\n', 1)[1]); seen.extend(batch)
-        checks = kwargs['schema']['properties']['editorial_review']['required']
+        checks = schema['properties']['editorial_review']['required']
         return {'editorial_review': {check: True for check in checks}, 'factual_audit': {'sentences': [
             {**row, 'assessment': 'unsupported' if reject_last and len(seen) == 30 and i == 9 else 'supported',
              'reason': 'The retrieved passage contains the complete narrated process.',
