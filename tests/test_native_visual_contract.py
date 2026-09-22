@@ -1,4 +1,4 @@
-"""Real visual contract survives Gemini JSON mode without accepting weaker QA."""
+"""A small wire grammar still requires the complete original visual contract."""
 from copy import deepcopy
 import json
 
@@ -30,13 +30,24 @@ def visual():
     return prepared, schema, result
 
 
-def test_all_frames_rubric_and_complete_schema_are_bound_in_json_mode():
+def test_all_frames_rubric_and_complete_schema_are_bound_with_wire_shape():
     prepared, schema, _ = visual()
     original = deepcopy(prepared.payload)
     body, checked, _ = native._request(prepared, 'visual_review')
     assert checked == schema and prepared.payload == original
     assert body['generationConfig']['responseMimeType'] == 'application/json'
-    assert 'responseJsonSchema' not in body['generationConfig']
+    shape = body['generationConfig']['responseJsonSchema']
+    assert shape == native._visual_response_shape(schema) and shape != schema
+    def compare(original, wire):
+        assert wire['type'] == original['type']
+        assert set(wire) <= {'type', 'properties', 'required', 'additionalProperties', 'items'}
+        if original['type'] == 'object':
+            assert wire['required'] == original['required']
+            assert wire['additionalProperties'] is False
+            assert set(wire['properties']) == set(original['properties'])
+            for key in original['properties']:compare(original['properties'][key],wire['properties'][key])
+        elif original['type'] == 'array':compare(original['items'],wire['items'])
+    compare(schema,shape)
     assert body['systemInstruction']['parts'][0]['text'] == original['messages'][0]['content']
     parts = body['contents'][0]['parts']
     assert len([p for p in parts if 'inlineData' in p]) == 60
@@ -57,7 +68,7 @@ def test_negative_visual_verdict_is_preserved_and_reused_without_http(setup):
 
 @pytest.mark.parametrize('damage', ['duplicate_moment', 'wrong_enum', 'wrong_count',
                                    'score_overflow', 'extra_key', 'empty_reason', 'string_boolean'])
-def test_json_mode_still_rejects_every_original_visual_constraint(setup, damage):
+def test_wire_shape_still_rejects_every_original_visual_constraint(setup, damage):
     prepared, schema, result = visual()
     row = result['reviews'][0]
     boolean = next(key for key, value in schema['properties']['reviews']['items']['properties'].items()

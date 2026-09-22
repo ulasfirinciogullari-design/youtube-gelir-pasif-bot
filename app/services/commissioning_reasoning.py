@@ -88,6 +88,27 @@ def check_capacity(pipe, foundation, channel_id, *, minimum_requests=1):
             'funding_basis': 'owner_authorized_commissioning_not_subscription_credits'}
 
 
+def _visual_response_shape(schema):
+    """Constrain the wire shape without compiling every local value bound.
+
+    Gemini rejects some full review grammars. Plain JSON mode, however, can
+    omit required evidence or repeat fields. Keep every typed, required field
+    in the provider grammar; the original schema still validates all values.
+    https://ai.google.dev/gemini-api/docs/structured-output
+    """
+    kind = schema['type']
+    _require(kind in {'object', 'array', 'string', 'integer', 'number', 'boolean'},
+             'commissioning_reasoning_input_invalid')
+    shape = {'type': kind}
+    if kind == 'object':
+        shape.update(properties={key: _visual_response_shape(value)
+                                 for key, value in schema['properties'].items()},
+                     required=list(schema['required']), additionalProperties=False)
+    elif kind == 'array':
+        shape['items'] = _visual_response_shape(schema['items'])
+    return shape
+
+
 def _request(prepared, purpose):
     from app.services.abacus_router_adapter import PreparedRouterRequest
     from app.services.abacus_router_audio_adapter import PreparedPrepaidAudioRequest, AudioReviewPurpose, schema_for_request
@@ -121,11 +142,10 @@ def _request(prepared, purpose):
             'thinkingConfig': {'thinkingLevel': 'low'}, 'responseMimeType': 'application/json',
             'responseJsonSchema': deepcopy(schema)}}
     if purpose == 'visual_review':
-        # The full multi-scene grammar was rejected with INVALID_ARGUMENT by
-        # Gemini before generation. JSON mode avoids that grammar compiler;
-        # the unchanged authored schema still binds the prompt and observer.
-        # This changes the native request identity, never an old reservation.
-        native['generationConfig'].pop('responseJsonSchema')
+        # The simple grammar supplies complete typed evidence. Exact counts,
+        # scores, indices and uniqueness stay in the unchanged local schema.
+        # New request identity; never replay an older provider reservation.
+        native['generationConfig']['responseJsonSchema'] = _visual_response_shape(schema)
         parts.append({'text': VISUAL_SCHEMA_PREFIX + _raw(schema)})
     # Prepared adapters already bounded and decoded every original image/audio.
     encoded = _raw(native)
