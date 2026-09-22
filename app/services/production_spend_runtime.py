@@ -144,9 +144,12 @@ def _resolve_context_once(client, task_id):
                 if prior is not None and _object(prior) != binding:
                     raise SpendBlocked('spend_lineage_binding_invalid')
                 pipe.multi()
-                pipe.hset(LEDGER_KEY, field, _json(binding))
+                if prior is None:
+                    pipe.hset(LEDGER_KEY, field, _json(binding))
+                else:
+                    pipe.ping()
                 reply = pipe.execute()
-                if len(reply) != 1 or type(reply[0]) is not int:
+                if len(reply) != 1 or (type(reply[0]) is not int if prior is None else reply[0] is not True):
                     raise SpendBlocked('spend_binding_uncertain')
                 return binding
             current, seen, nodes, expected = task_id, set(), [], None
@@ -179,11 +182,15 @@ def _resolve_context_once(client, task_id):
                 prior = pipe.hget(LEDGER_KEY, field)
                 if prior is not None and _object(prior) != binding:
                     raise SpendBlocked('spend_lineage_binding_invalid')
-                bindings[field] = _json(binding)
+                if prior is None:
+                    bindings[field] = _json(binding)
             pipe.multi()
-            pipe.hset(LEDGER_KEY, mapping=bindings)
+            if bindings:
+                pipe.hset(LEDGER_KEY, mapping=bindings)
+            else:
+                pipe.ping()
             result = pipe.execute()
-            if len(result) != 1 or type(result[0]) is not int:
+            if len(result) != 1 or (type(result[0]) is not int if bindings else result[0] is not True):
                 raise SpendBlocked('spend_binding_uncertain')
             return binding
     except redis.exceptions.WatchError:

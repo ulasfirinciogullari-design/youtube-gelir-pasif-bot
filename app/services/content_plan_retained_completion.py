@@ -8,6 +8,7 @@ from copy import deepcopy
 import hashlib
 import json
 import secrets
+from datetime import datetime, timezone, timedelta
 from urllib.parse import urlsplit
 from uuid import uuid5, NAMESPACE_URL
 
@@ -17,9 +18,11 @@ from app.services import content_plan_voice_resume as voice, content_plan_resear
 PREFIX = plan.PREFIX + 'retained_completion:v1:'
 DISPATCH, EXECUTION, ROOT = (PREFIX + k for k in ('dispatch:', 'execution:', 'root:'))
 REVIEW_ROOT = PREFIX + 'visual_review_root:'
+RECOVERY_ROOT = PREFIX + 'availability_recovery_root:'
 SOURCE_ERROR = 'Long documentary failed independent source or editorial review'
 QUOTA_ERROR = 'commissioning_video_provider_rejected'
 VISUAL_ERROR = 'Final visual quality gate rejected: '
+LOCAL_ERROR = 'Long-form retained job stopped without automatic restart: WatchError'
 
 
 def operation(source):
@@ -40,6 +43,8 @@ def eligible(source):
                  and plan._client().exists(voice.DISPATCH + source['parent_id']))
              or (source.get('failure_stage') == 'final_visual_qc_rescue'
                  and str(source.get('error') or '').startswith(VISUAL_ERROR)
+                 and plan._client().exists(DISPATCH + source['parent_id']))
+             or (source.get('failure_stage') == 'final_visual_qc_ai_repair' and source.get('error') == LOCAL_ERROR
                  and plan._client().exists(DISPATCH + source['parent_id']))))
 
 
@@ -47,13 +52,24 @@ def _prior_completion(client, source):
     """One full visual recheck of a private completion, never a QA override."""
     parent = source['parent_id']; claim = plan._object(client.get(DISPATCH + parent))
     mode = (claim.get('evidence') or {}).get('mode')
-    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('review_of')
+    repair = bool(claim['evidence'].get('review_of'))
+    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('recovery_of')
         and claim.get('source_task_id') == parent and claim.get('task_id') == operation(parent)
         and client.get(EXECUTION + parent) == operation(parent)
-        and client.get(ROOT + claim['root_task_id']) == plan._raw(claim)
+        and client.get(_root_key(claim['root_task_id'], claim['evidence'])) == plan._raw(claim)
         and source['task_id'] == str(uuid5(NAMESPACE_URL, 'owner-plan-retained-completion-child:v1:' + parent)))
     previous = plan._object(client.get(jobs.JOB_PREFIX + parent))
     plan._require(pre.fingerprint(previous) == claim['evidence']['source_sha256'])
+    if source['error'] == LOCAL_ERROR:
+        plan._require(repair and mode == 'quota' and source.get('failure_stage') == 'final_visual_qc_ai_repair')
+        terminal = plan._object(client.get('celery-task-meta-' + source['task_id']))
+        trace = terminal.get('traceback') or ''
+        plan._require('redis.exceptions.WatchError: Watched variable changed.' in trace
+            and all(marker in trace for marker in ('in _reserve_paid_create_slot\n', 'in enabled_for_task\n',
+                'in _execute_transaction\n', 'commissioning_video.py'))
+            and 'ConnectionError' not in trace and 'TimeoutError' not in trace)
+        return claim
+    plan._require(not repair or mode == 'sources')
     diagnostic = json.loads(source['error'][len(VISUAL_ERROR):])
     rejected = diagnostic.get('rejected')
     plan._require(diagnostic.get('stage') == 'after_rescue' and diagnostic.get('total') == 30
@@ -66,11 +82,38 @@ def _prior_completion(client, source):
     plan._require(classification.get('category') == 'content_rejected'
         and classification.get('code') == 'visual_quality_exhausted'
         and classification.get('error_sha256') == hashlib.sha256(source['error'].encode()).hexdigest())
+    if repair:
+        failures = (diagnostic.get('provider_generation_failures') or {}).get('failures')
+        plan._require(type(failures) is list and failures
+            and any(row.get('exception_class') == 'CommissionedVideoUnavailable' for row in failures)
+            and all(row.get('exception_class') in {'CommissionedVideoUnavailable', 'WatchError'} for row in failures))
     return claim
 
 
 def _root_key(root, proof):
-    return (REVIEW_ROOT if proof.get('review_of') else ROOT) + root
+    return (RECOVERY_ROOT if proof.get('recovery_of') else REVIEW_ROOT if proof.get('review_of') else ROOT) + root
+
+
+def _quota_ready(client, source):
+    """Wait for the actual quota window before admitting an unused repair."""
+    from app.services import commissioning_video as video
+    created = datetime.fromisoformat(source['created_at']); now = datetime.now(timezone.utc)
+    credential = video._sha(('gemini\0' + video.settings.gemini_api_key).encode())
+    deadlines = []; keys = list(client.scan_iter(match=video.PREFIX + '*', count=128))
+    plan._require(len(keys) <= 2000)
+    for key in keys:
+        journal = plan._object(client.get(key))
+        for row in journal.get('requests', {}).values():
+            descriptor, observed = row.get('request') or {}, row.get('create')
+            if (descriptor.get('model') != video.MODEL or descriptor.get('credential_sha256') != credential
+                    or row.get('result') is not None or not observed or not video.quota_rejected(observed)):
+                continue
+            instant = datetime.fromisoformat(observed['observed_at'])
+            plan._require(instant.tzinfo is not None)
+            if instant <= created <= instant + timedelta(hours=1):
+                deadlines.append(instant + timedelta(hours=1))
+            plan._require(now > instant + timedelta(hours=1), 'plan_video_quota_waiting')
+    plan._require(deadlines and now > max(deadlines), 'plan_video_quota_waiting')
 
 
 def _metadata(source):
@@ -162,7 +205,7 @@ def checked(client, task, *, claimed=False):
     source = plan._object(client.get(jobs.JOB_PREFIX + plan._id(task))); spec = source.get('spec') or {}
     plan._require(eligible({**source, 'retry_child_task_id': None}) and source['task_id'] == task
         and voice._scope(spec) == ('long', 32) and spec.get('mode') == 'production')
-    prior = _prior_completion(client, source) if source['error'].startswith(VISUAL_ERROR) else None
+    prior = _prior_completion(client, source) if source['error'].startswith(VISUAL_ERROR) or source['error'] == LOCAL_ERROR else None
     mode = prior['evidence']['mode'] if prior else ('quota' if source['error'] == QUOTA_ERROR else 'sources')
     dispatch = plan._object(client.get(plan.DISPATCH_PREFIX + plan._id(spec['content_plan_item_id'])))
     root = dispatch['task_id']; ancestors = []; current = source
@@ -234,6 +277,10 @@ def checked(client, task, *, claimed=False):
     if prior:
         plan._require(proof['video_records'] == prior['evidence']['video_records'])
         proof.update(review_of=source['parent_id'], previous_completion_sha256=plan._sha(prior))
+        if prior['evidence'].get('review_of'):
+            proof['recovery_of'] = source['parent_id']
+            if mode == 'sources' and not claimed:
+                _quota_ready(client, source)
     return source, root, proof
 
 

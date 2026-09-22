@@ -42,8 +42,12 @@ def read(pipe, foundation, *, now):
     pipe.watch(LEDGER_KEY, ANCHOR_KEY)
     _require(all(type(ttl) is int and ttl == -1 for ttl in
                  (pipe.pttl(LEDGER_KEY), pipe.pttl(ANCHOR_KEY))), 'cash_disabled_foundation_missing')
-    stored = _object(pipe.hget(LEDGER_KEY, FIELD))
-    _require(pipe.hget(LEDGER_KEY, FIELD) == _json(stored))
+    # One watched snapshot avoids a round trip for every historical binding.
+    # Validation remains complete and EXEC still detects any intervening write.
+    fields = pipe.hgetall(LEDGER_KEY)
+    _require(type(fields) is dict and len(fields) <= 8200 and _FIELDS <= set(fields))
+    stored = _object(fields.get(FIELD))
+    _require(fields.get(FIELD) == _json(stored))
     _require(set(stored) == {'version', 'kind', 'initialized_at', 'evidence_sha256',
         'additional_monthly_limit_micro', 'historical_cash_micro', 'new_cash_allowance_micro'})
     _require(type(stored['version']) is int and stored['version'] == 1
@@ -58,20 +62,18 @@ def read(pipe, foundation, *, now):
     except (TypeError, ValueError):
         raise SpendBlocked('cash_disabled_foundation_invalid') from None
     _require(stamp <= now)
-    stored_policy = _object(pipe.hget(LEDGER_KEY, 'policy'))
+    stored_policy = _object(fields.get('policy'))
     _require(stored_policy == expected_policy and all(type(v) is int for v in stored_policy.values()))
-    _require(pipe.hget(LEDGER_KEY, 'policy') == _json(stored_policy))
+    _require(fields.get('policy') == _json(stored_policy))
     anchor = {'version': 1, 'foundation_sha256': hashlib.sha256(_json(stored).encode()).hexdigest(),
               'policy_sha256': hashlib.sha256(_json(expected_policy).encode()).hexdigest()}
     _require(pipe.get(ANCHOR_KEY) == _json(anchor), 'cash_disabled_foundation_mismatch')
     # USD periods, funding and receipts cannot coexist with unknown history.
     # Native receipt correspondence is independently checked by CreditLedger.
-    keys = pipe.hkeys(LEDGER_KEY)
-    _require(type(keys) is list and len(keys) <= 8200 and set(_FIELDS) <= set(keys))
-    for key in keys:
+    for key, value in fields.items():
         if type(key) is str and key.startswith('binding:'):
             _identifier(key[len('binding:'):])
-            binding = _object(pipe.hget(LEDGER_KEY, key))
+            binding = _object(value)
             _require(set(binding) == {'channel_id', 'lineage_id', 'connection_id', 'kind'}
                 and binding['kind'] in {'shorts', 'long', 'derived'})
             for name in ('channel_id', 'lineage_id', 'connection_id'):
