@@ -88,6 +88,9 @@ def eligible(source):
 
 
 def schedule(source, enqueue, *, client=None):
+    from app.services import content_plan_story_resume
+    if content_plan_story_resume.eligible(source):
+        return content_plan_story_resume.schedule(source, enqueue, client=client)
     from app.services import content_plan_voice_resume
     if content_plan_voice_resume.eligible(source):
         return content_plan_voice_resume.schedule(source, enqueue, client=client)
@@ -379,6 +382,9 @@ def load_visuals(manifest, source, package, media, voice, task, work):
 
 
 def run(source_id, operation_id):
+    from app.services import content_plan_story_resume
+    if operation_id == content_plan_story_resume.operation(source_id):
+        return content_plan_story_resume.run(source_id, operation_id)
     from app.services import content_plan_voice_resume
     if operation_id == content_plan_voice_resume.operation(source_id):
         return content_plan_voice_resume.run(source_id, operation_id)

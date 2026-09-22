@@ -36,3 +36,23 @@ their one-time reservation and never trigger a repeat send.
 Tests cover both ordinary worker entry paths, complete typed long-response
 validation, concurrent queue claims, ancestor vetoes, immutable-history
 preservation, corrupt/unknown transcript evidence and exact number equivalence.
+
+## Factual feedback before documentary speech
+
+All 30 documentary sentences are assessed in three batches. A completed negative
+critique now supplies its actual sentence findings and global checks to the
+editor, together with the retrieved reference passages. At most three revisions
+are allowed. Every revised draft must retain the exact scene and word budgets,
+original source set and production scope; all 30 sentences are independently
+reviewed again. Positive approval contains the final evidence and the earlier
+negative review history. Unsupported facts are never promoted to accepted facts.
+Existing synthesized or recovered speech cannot enter this rewrite path.
+
+The two pre-speech failures observed before this loop existed may each take one
+private queued continuation. Every encrypted model result must be complete and
+hash-bound, with exactly the observed four-request history: either the earlier
+authenticated grammar-recovery chain, or a fresh root with research, two
+editorial responses and its negative first factual batch. Unknown outcomes,
+additional requests, any audio/media intent or owner veto block admission.
+The child reuses completed research/editorial responses and runs the ordinary
+feedback loop before creating speech. Previous terminal records stay intact.

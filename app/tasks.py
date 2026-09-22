@@ -4537,6 +4537,10 @@ def _prepare_saved_voice_retry(
 ) -> dict | None:
     """Revalidate one same-spec UI retry without purchasing another voice."""
     if source_task_id and runtime_spec.get('content_plan_item_id'):
+        from app.services import content_plan_story_resume
+        if content_plan_story_resume.registered(source_task_id):
+            content_plan_story_resume.verify_child(task_id, source_task_id, runtime_spec)
+            return None
         from app.services import content_plan_voice_resume
         if content_plan_voice_resume.registered(source_task_id):
             content_plan_voice_resume.verify_child(task_id, source_task_id, runtime_spec)

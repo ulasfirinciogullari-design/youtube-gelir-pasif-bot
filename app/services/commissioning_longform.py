@@ -65,20 +65,16 @@ def active():
     return True
 
 
-def review_story(package, topic, language):
-    """Review every narrated sentence against retrieved sources before media."""
-    from app.services import included_factual_audit as audit, included_research_sources as sources
+def _review_once(package, topic, language, pages):
+    from app.services import included_factual_audit as audit
     from app.services.production_included_router import generate_text_json, _LAST_OBSERVED
-    from app.services.director import ProductionContentError
-    _require(active())
     scenes = package['scenes']; _require(8 <= len(scenes) <= MAX_SCENES)
-    pages = [sources.fetch_page(v['url']) for v in package['sources']]
     checks = ('accurate_complete_documentary', 'clear_question_and_payoff',
               'natural_narration_and_transitions', 'illustration_not_misrepresented_as_archive')
     schema = {'type': 'object', 'properties': {k: {'type': 'boolean'} for k in checks},
               'required': list(checks), 'additionalProperties': False}
     overview = json.dumps({'topic': topic, 'language': language, 'complete_story': scenes}, ensure_ascii=False)
-    reviews = []
+    reviews, findings = [], []
     for offset in range(0, len(scenes), 10):
         batch = [{'position': i, 'narration': row['narration']}
                  for i, row in enumerate(scenes[offset:offset + 10])]
@@ -88,12 +84,33 @@ def review_story(package, topic, language):
             + overview, schema, batch, pages)
         response = generate_text_json(prompt, purpose='story_review', schema=contract)
         editorial, evidence, failures = audit.validate(response, batch, pages)
-        if failures or set(editorial) != set(checks) or any(editorial[k] is not True for k in checks):
-            raise ProductionContentError('Long documentary failed independent source or editorial review')
+        findings.extend({**row, 'position': offset + row['position']} for row in failures)
+        _require(set(editorial) == set(checks) and all(type(editorial[k]) is bool for k in checks))
+        findings.extend({'check': key, 'reason': 'Independent whole-story editorial check was negative.'}
+                        for key in checks if editorial[key] is not True)
         reviews.append({'offset': offset, 'sentence_count': len(batch), 'source_audit': evidence,
-                        'provider_evidence': deepcopy(_LAST_OBSERVED.get())})
-    result = deepcopy(package)
-    result['longform_story_qc'] = {'version': 1, 'accepted': True, 'reviewed_scene_count': len(scenes),
-        'story_sha256': hashlib.sha256(json.dumps(scenes, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
-        'reviews': reviews}
-    return result
+                        'editorial_review': editorial, 'provider_evidence': deepcopy(_LAST_OBSERVED.get())})
+    return reviews, findings
+
+
+def review_story(package, topic, language):
+    """Repair explicit negative findings before voice; re-audit the whole draft."""
+    from app.services import included_research_sources as sources
+    from app.services.director import ProductionContentError
+    from app.services.longform_editorial_feedback import revise, repairable
+    _require(active())
+    pages = [sources.fetch_page(v['url']) for v in package['sources']]
+    candidate = deepcopy(package); history = []
+    for attempt in range(4):
+        reviews, findings = _review_once(candidate, topic, language, pages)
+        digest = hashlib.sha256(json.dumps(candidate['scenes'], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        if not findings:
+            candidate['longform_story_qc'] = {'version': 2, 'accepted': True,
+                'reviewed_scene_count': len(candidate['scenes']), 'story_sha256': digest,
+                'reviews': reviews, 'revision_history': history}
+            return candidate
+        history.append({'attempt': attempt, 'story_sha256': digest,
+                        'findings': findings, 'reviews': reviews})
+        if attempt == 3 or not repairable(candidate, language):
+            raise ProductionContentError('Long documentary failed independent source or editorial review')
+        candidate = revise(candidate, topic, language, pages, findings, attempt + 1)
