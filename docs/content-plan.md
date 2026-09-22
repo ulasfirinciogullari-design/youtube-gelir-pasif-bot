@@ -67,3 +67,9 @@ plan or edit already reserved work.
 
 No new subscription, top-up, final budget, or financial-history reset is part
 of this feature. Existing funding and provider admission run before dispatch.
+Retained recovery also preserves the preloaded worker filenames. A separately
+claimed continuation can reuse the original private package only after the
+observed terminal local filename error, with zero new paid creates and a fully
+verified parent/child chain. Unknown outcomes and quality rejections do not
+qualify. Large alternative stock pools use overlapping visual-review windows
+so every frame, candidate, and adjacent scene pair fits the request envelope.

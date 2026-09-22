@@ -114,7 +114,28 @@ def render_page(channels, selected, view, *, notice='', error=False):
         +flash+'<nav class="plan-channels" aria-label="Planlanacak kanal">'+tabs+'</nav><div class="planner-layout"><section class="planner-main">'+live
         +'<div class="plan-section-head" id="queue"><h2>Üretim sırası</h2><span>Yukarıdan aşağıya ilerler</span></div><p class="plan-refresh-note" id="plan-refresh-note" aria-live="polite"></p>'
         +queue+finished+'<p class="planner-bottom">Kaliteyi geçemeyen bir video yayımlanmış sayılmaz. Durumlar son sunucu kaydını gösterir.</p></section><aside class="planner-side">'+settings_form+create+explain+'</aside></div>')
-    script = '''<script>(()=>{const channel=CHANNEL;let busy=false;async function refresh(){if(document.hidden||busy)return;busy=true;try{const r=await fetch('/studio/api/content-plan?channel='+encodeURIComponent(channel),{cache:'no-store',credentials:'same-origin'});if(!r.ok)throw Error();const model=await r.json();for(const item of (model.items||[])){const row=document.querySelector('[data-plan-item="'+item.id+'"]');if(!row)continue;const label=row.querySelector('[data-plan-status]');label.textContent=item.label;label.className='plan-state '+item.status;if(item.task_id)for(const button of row.querySelectorAll('button'))button.disabled=true;}document.getElementById('plan-refresh-note').textContent='Durumlar güncellendi · '+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});}catch(_){document.getElementById('plan-refresh-note').textContent='Son kayıtlar gösteriliyor; bağlantı yeniden kontrol edilecek.'}finally{busy=false}}setInterval(refresh,30000);})();</script>'''.replace('CHANNEL', '"'+channel_id+'"')
+    script = '''<script>(()=>{const channel=CHANNEL;let busy=false;
+async function refresh(){
+ const main=document.querySelector('.planner-main');
+ if(document.hidden||busy||main.contains(document.activeElement))return;
+ busy=true;
+ try{
+  const r=await fetch('/studio/plan?channel='+encodeURIComponent(channel),{cache:'no-store',credentials:'same-origin'});
+  if(!r.ok)throw Error();
+  const doc=new DOMParser().parseFromString(await r.text(),'text/html');
+  const next=doc.querySelector('.planner-main');if(!next)throw Error();
+  const expanded=new Set(Array.from(main.querySelectorAll('[data-plan-item]')).filter(row=>row.querySelector('details[open]')).map(row=>row.dataset.planItem));
+  for(const row of next.querySelectorAll('[data-plan-item]'))if(expanded.has(row.dataset.planItem)){const details=row.querySelector('details');if(details)details.open=true;}
+  if(main.querySelector('.plan-completed[open]')&&next.querySelector('.plan-completed'))next.querySelector('.plan-completed').open=true;
+  main.replaceChildren(...next.childNodes);
+  const currentStats=document.querySelectorAll('.plan-stats b'),nextStats=doc.querySelectorAll('.plan-stats b');
+  if(currentStats.length===nextStats.length)currentStats.forEach((value,i)=>value.textContent=nextStats[i].textContent);
+  document.getElementById('plan-refresh-note').textContent='Canlı durum · '+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+ }catch(_){document.getElementById('plan-refresh-note').textContent='Son kayıtlar gösteriliyor; bağlantı yeniden kontrol edilecek.'}
+ finally{busy=false}
+}
+setInterval(refresh,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+})();</script>'''.replace('CHANNEL', '"'+channel_id+'"')
     return _shell(body, active='plan', title='Yayın planı · Studio', script=script)
 
 

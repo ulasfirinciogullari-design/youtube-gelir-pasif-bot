@@ -114,7 +114,7 @@ def test_retained_worker_requires_exact_private_record_and_executed_claim(case, 
     source = failed(case); task = source['task_id']; child = str(uuid4())
     record = {'source_sha256': recovery._fingerprint(source),
               'approved_package': {'scenes': ['immutable']},
-              'manifest': {'kind': 'owner_plan_retained'}}
+              'manifest': {'kind': 'owner_plan_retained', 'source_task_id': task}}
     case.client.set(recovery.RECORD + task, plan._raw(record))
     source.update(retry_child_task_id=child, retry_claimed=True)
     case.client.set(jobs.JOB_PREFIX + task, plan._raw(source))

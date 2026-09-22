@@ -16,7 +16,7 @@ from uuid import uuid4, uuid5, NAMESPACE_URL
 from app.services import content_plan as plan, studio_state as jobs
 
 LEGACY_PREFIX = plan.PREFIX + 'render_recovery:'
-PREFIX = LEGACY_PREFIX + 'v3:'
+PREFIX = LEGACY_PREFIX + 'v4:'
 DISPATCH = PREFIX + 'dispatch:'
 EXECUTION = PREFIX + 'execution:'
 RECORD = PREFIX + 'record:'
@@ -53,7 +53,7 @@ def _source(client, task, *, claimed=False):
     profile = plan._object(client.get(plan.production.PROFILE_PREFIX + dispatch['channel_id']))
     # Before the child exists this also verifies all previous public deliveries.
     leaf = plan._leaf(client, dispatch)
-    _require(not claimed or leaf.get('parent_id') == task)
+    _require(not claimed or (leaf.get('parent_id') and leaf.get('spec') == spec))
     plan.publication_series(leaf, profile, client=client)
     _require(profile.get('production_enabled') is True)
     channel = plan._object(client.get(plan.production.OAUTH_CHANNEL_PREFIX + dispatch['channel_id']))
@@ -88,12 +88,15 @@ def eligible(source):
 
 
 def schedule(source, enqueue, *, client=None):
+    from app.services import content_plan_local_resume
+    if content_plan_local_resume.eligible(source):
+        return content_plan_local_resume.schedule(source, enqueue, client=client)
     if not eligible(source):
         return 'working_or_blocked'
     client = client or plan._client(); task = source['task_id']
     if not _prior_preparation_allows(client, task):
         return 'repair_preparing_or_stopped'
-    operation = str(uuid5(NAMESPACE_URL, 'owner-plan-render-recovery:v3:' + task))
+    operation = str(uuid5(NAMESPACE_URL, 'owner-plan-render-recovery:v4:' + task))
     claim = {'version': 1, 'source_task_id': task, 'task_id': operation,
              'source_sha256': _fingerprint(source)}
     # A lost ACK cannot authorize a second queue send.
@@ -113,6 +116,24 @@ def _prior_preparation_allows(client, task):
     Preserve the old execution/dispatch/terminal evidence. Unknown, completed,
     or later failures cannot obtain a second provider request by upgrading.
     """
+    prefix = LEGACY_PREFIX + 'v3:'
+    previous = client.get(prefix + 'dispatch:' + task)
+    if previous is not None:
+        dispatch = plan._object(previous)
+        execution = client.get(prefix + 'execution:' + task)
+        status = plan._object(client.get(prefix + 'status:' + task))
+        raw = client.get('celery-task-meta-' + str(execution))
+        if (client.exists(prefix + 'record:' + task) or execution != dispatch.get('task_id')
+                or status != {'state': 'stopped', 'error_type': 'AbacusRouterError'} or raw is None):
+            return False
+        terminal = plan._object(raw); result = terminal.get('result') or {}
+        if not (terminal.get('status') == 'FAILURE' and type(result) is dict
+                and result.get('exc_type') == 'AbacusRouterError'
+                and result.get('exc_message') == ['abacus_router_request_invalid']
+                and 'File "/app/app/services/abacus_router_adapter.py", line 137, in _inspect_body' in (terminal.get('traceback') or '')
+                and 'File "/app/app/services/content_plan_stock_repair.py", line 91, in select' in (terminal.get('traceback') or '')
+                and dispatch.get('source_sha256') == _fingerprint(_source(client, task))):
+            return False
     newer = client.get(LEGACY_PREFIX + 'v2:dispatch:' + task)
     if newer is not None:
         prefix = LEGACY_PREFIX + 'v2:'
@@ -295,10 +316,22 @@ def prepare(task, work):
     return record
 
 
+def saved_record(client, task):
+    records = [client.get(prefix + 'record:' + task)
+               for prefix in (PREFIX, LEGACY_PREFIX + 'v3:')]
+    records = [plan._object(raw) for raw in records if raw is not None]
+    _require(len(records) == 1)
+    return records[0]
+
+
 def verify_child(task, source_task, runtime_spec, package, manifest):
-    client = plan._client(); source = _source(client, source_task, claimed=True)
+    from app.services import content_plan_local_resume
+    client = plan._client()
     child = plan._object(client.get(jobs.JOB_PREFIX + task))
-    record = plan._object(client.get(RECORD + source_task))
+    if child.get('parent_id') != manifest.get('source_task_id'):
+        return content_plan_local_resume.verify_child(client, task, source_task, runtime_spec, package, manifest)
+    client = plan._client(); source = _source(client, source_task, claimed=True)
+    record = saved_record(client, source_task)
     claim = client.hgetall(jobs.RETRY_CHILD_CLAIM_PREFIX + task)
     _require(record['source_sha256'] == _fingerprint(source)
         and record['approved_package'] == package and record['manifest'] == manifest
@@ -326,7 +359,7 @@ def load_visuals(manifest, source, package, media, voice, task, work):
         _require(len(entries) == 1 and not pools[index])
         row = entries[0]
         path = _stored(object_store, row['key'], row['sha256'], row['size'],
-                       work / f'plan-generated-{index}.mp4', 100 * 1024 * 1024)
+                       work / f'recovered_s{index:02d}_00.mp4', 100 * 1024 * 1024)
         spec = tasks._generated_visual_spec(path, provider=row['provider'], provider_attempts=row['provider_attempts'])
         spec.update(curated_pinned=True, preserve_start_fraction=True, generation_recovered=True,
                     recovered_from_task_id=source['task_id'])
@@ -337,6 +370,9 @@ def load_visuals(manifest, source, package, media, voice, task, work):
 
 
 def run(source_id, operation_id):
+    from app.services import content_plan_local_resume
+    if content_plan_local_resume.is_operation(operation_id, source_id):
+        return content_plan_local_resume.run(source_id, operation_id)
     from app.services import production_spend_runtime as runtime
     from app.tasks import run_video_pipeline
     client = plan._client()

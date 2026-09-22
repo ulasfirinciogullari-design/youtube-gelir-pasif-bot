@@ -1912,8 +1912,14 @@ def review_scene_visuals(
     )
     from app.services.commissioning_longform import active
     native_long = provider == 'abacus_included' and len(scenes) > GEMINI_QC_BATCH_SCENES and active()
+    # Multiple alternatives can exceed the request envelope even for a Short.
+    # Keep every candidate and all adjacent boundaries by using overlapping
+    # windows; never drop evidence to fit the transport's image limit.
+    from app.services.abacus_router_adapter import MAX_IMAGES
+    included_large = (provider == 'abacus_included'
+        and sum(min(3, len(pool)) for pool in scene_visuals[:max_scenes]) * len(MOMENT_FRACTIONS) > MAX_IMAGES)
     if (
-        (provider == 'gemini' or native_long)
+        (provider == 'gemini' or native_long or included_large)
         and min(len(scenes), max_scenes) > GEMINI_QC_BATCH_SCENES
     ):
         return _review_gemini_batches(
@@ -1931,7 +1937,7 @@ def review_scene_visuals(
                 _score_reason_consistency_attempts
             ),
             gemini_thinking_level=_gemini_thinking_level,
-            provider_override='abacus_included' if native_long else provider_override,
+            provider_override='abacus_included' if native_long or included_large else provider_override,
             temporal_response_repair_attempts=_temporal_response_repair_attempts,
         )
     frame_dir = work / 'visual_qc'
