@@ -3063,7 +3063,7 @@ def studio_qa_workprint(task_id: str, studio_token: str | None = Cookie(default=
         f'<h1>{escape(_job_title(record))}</h1></div></div>'
         '<section class="card"><div class="section-title"><h2>İnceleme taslağı</h2>'
         '<span class="badge">Yayınlanamaz</span></div>'
-        '<p class="notice">Bu çalışma kopyası görsel kalite kontrolünü geçmedi. '
+        '<p class="notice">Bu çalışma kopyası kalite kontrolünü geçmedi. '
         'Onaylı final değildir ve YouTube’a gönderilmez. Ses, sahne geçişleri ve '
         'görüntü–anlatım uyumu bu kopya üzerinden incelenebilir.</p>'
         '<div class="result-video-frame"><video class="result-video" controls playsinline '

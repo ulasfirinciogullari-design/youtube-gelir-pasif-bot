@@ -58,13 +58,17 @@ def _valid_timing(pointer: dict) -> bool:
         return False
     if pointer['version'] == 1:
         return duration == 30 and frames == 900
+    if pointer['version'] == 3:
+        # Actual failed master, including off-by-one frame and silence/motion
+        # failures. This grants private playback only; all approval flags stay false.
+        return 20 <= duration <= 45 and 600 <= frames <= 1350 and abs(duration * 30 - frames) < 1e-6
     return 30 < duration <= 40 and 900 < frames <= 1200 and abs(duration * 30 - frames) < 1e-6
 
 
 def _valid_pointer(pointer: object) -> bool:
     return bool(
         isinstance(pointer, dict) and set(pointer) == _FIELDS
-        and type(pointer.get('version')) is int and pointer['version'] in {1, 2}
+        and type(pointer.get('version')) is int and pointer['version'] in {1, 2, 3}
         and pointer.get('status') == 'qa_workprint'
         and pointer.get('qa_approved') is False
         and pointer.get('publish_eligible') is False

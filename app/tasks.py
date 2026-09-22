@@ -8161,6 +8161,11 @@ def run_video_pipeline(
                 pass  # The cloud tick retries discovery, never parent generation.
         return result
     except Exception as exc:
+        try:
+            from app.services.failed_master_workprint import checkpoint
+            checkpoint(task_id, work, options=options, duration_minutes=duration_minutes)
+        except Exception:
+            pass  # Preserve the original terminal error even if preview storage fails.
         if total_paid_create_cap is not None:
             try:
                 # Refresh the public failure count from the authoritative
