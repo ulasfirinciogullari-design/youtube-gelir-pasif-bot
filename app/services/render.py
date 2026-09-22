@@ -60,6 +60,20 @@ def _run(cmd: list[str]):
     )
 
 
+def _bounded_assembly_command(command: list[str]) -> list[str]:
+    """Keep independent 1080p decoder pools within the worker's memory budget."""
+    # Containers can see every host CPU even when their own CPU/memory quota
+    # is small. Thirty automatically threaded decoders exceeded 8 GB in a
+    # real long master. Preserve the decoded concat graph and codec quality;
+    # give each decoder, filter graph and encoder one explicit worker thread.
+    bounded = [command[0], '-filter_complex_threads', '1', '-filter_threads', '1']
+    for argument in command[1:-1]:
+        if argument == '-i':
+            bounded.extend(['-threads', '1'])
+        bounded.append(argument)
+    return [*bounded, '-threads', '1', command[-1]]
+
+
 @lru_cache(maxsize=256)
 def media_duration(path: str | Path) -> float:
     out = subprocess.check_output([
@@ -790,7 +804,7 @@ def render_video(
         str(silent_video),
     ]
     if retained_cuts is None:
-        _run(concat_command)
+        _run(_bounded_assembly_command(concat_command))
     else:
         retained._run_exact_command(retained_cuts, concat_command, phase='concat')
     silent_frames = video_frame_count(silent_video)
@@ -823,7 +837,7 @@ def render_video(
         '-t', f'{master_duration:.3f}', '-movflags', '+faststart', str(output),
     ]
     if retained_cuts is None:
-        _run(mux_command)
+        _run(_bounded_assembly_command(mux_command))
     else:
         retained._run_exact_command(retained_cuts, mux_command, phase='mux')
     final_frames = video_frame_count(output)

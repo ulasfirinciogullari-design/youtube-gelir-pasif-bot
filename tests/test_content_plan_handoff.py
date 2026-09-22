@@ -106,3 +106,39 @@ def test_prepare_handoff_reads_are_watched_and_do_not_clear_old_hold(case, monke
         assert handoff.allows_preparation(pipe, case.profile, CONNECTION, case.client.hgetall(case.state_key))
         pipe.multi(); pipe.ping(); assert pipe.execute() == [True]
     assert _snapshot(case) == before
+
+
+@pytest.mark.parametrize('current_item', [False, True])
+def test_older_public_history_does_not_block_new_plan_but_cannot_authorize_rotation_alone(case, monkeypatch, current_item):
+    previous, receipt, source = install(case, monkeypatch)
+    entry = previous['items'][0]
+    dispatch = plan._object(case.client.get(plan.DISPATCH_PREFIX + entry['id']))
+    old_revision = str(uuid4())
+    dispatch['profile_revision'] = old_revision
+    receipt['publish_plan']['profile_revision'] = old_revision
+    source['spec']['production_profile_revision'] = old_revision
+    receipt['youtube_video_id'] = 'oldervid001'
+    source['result']['youtube']['video_id'] = 'oldervid001'
+    publisher = plan._object(case.client.get(jobs.JOB_PREFIX + receipt['publish_task_id']))
+    publisher['result']['youtube_video_id'] = 'oldervid001'
+    for key, value in ((plan.DISPATCH_PREFIX + entry['id'], dispatch),
+            (UPLOAD_PREFIX + source['task_id'], receipt), (jobs.JOB_PREFIX + source['task_id'], source),
+            (jobs.JOB_PREFIX + publisher['task_id'], publisher)):
+        case.client.set(key, plan._raw(value))
+    public = plan.publication_proof(case.client, dispatch)
+    assert public
+    case.client.set(plan.COMPLETION_PREFIX + entry['id'], plan._raw(public))
+    if current_item:
+        current, _, _ = install(case, monkeypatch)
+        previous['items'].extend(current['items'])
+    case.client.set(plan.PLAN_PREFIX + CHANNEL, plan._raw(previous))
+    block_legacy(case)
+    before = _snapshot(case)
+    proof = handoff.completed(case.client, case.profile, CONNECTION, case.client.hgetall(case.state_key))
+    assert _snapshot(case) == before
+    if current_item:
+        assert proof is not None
+        assert [row['video_id'] for row in proof['public_items']] == ['oldervid001', 'planvideo01']
+        assert _run(case)['status'] == 'promoted'
+    else:
+        assert proof is None

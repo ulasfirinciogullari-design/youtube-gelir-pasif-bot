@@ -22,11 +22,13 @@ RECOVERY_ROOT = PREFIX + 'availability_recovery_root:'
 RENDER_ROOT = PREFIX + 'render_completion_root:'
 DEFERRED_ROOT = PREFIX + 'deferred_quota_root:'
 WINDOW_ROOT = PREFIX + 'cut_window_root:'
+ASSEMBLY_ROOT = PREFIX + 'assembly_memory_root:'
 SOURCE_ERROR = 'Long documentary failed independent source or editorial review'
 QUOTA_ERROR = 'commissioning_video_provider_rejected'
 VISUAL_ERROR = 'Final visual quality gate rejected: '
 LOCAL_ERROR = 'Long-form retained job stopped without automatic restart: WatchError'
 RENDER_ERROR = 'Long-form retained job stopped without automatic restart: RuntimeError'
+ASSEMBLY_ERROR = 'Long-form retained job stopped without automatic restart: CalledProcessError'
 
 
 def operation(source):
@@ -50,7 +52,7 @@ def eligible(source):
                  and plan._client().exists(DISPATCH + source['parent_id']))
              or (source.get('failure_stage') == 'final_visual_qc_ai_repair' and source.get('error') == LOCAL_ERROR
                  and plan._client().exists(DISPATCH + source['parent_id']))
-             or (source.get('failure_stage') == 'render' and source.get('error') == RENDER_ERROR
+             or (source.get('failure_stage') == 'render' and source.get('error') in {RENDER_ERROR, ASSEMBLY_ERROR}
                  and plan._client().exists(DISPATCH + source['parent_id']))))
 
 
@@ -59,9 +61,11 @@ def _prior_completion(client, source):
     parent = source['parent_id']; claim = plan._object(client.get(DISPATCH + parent))
     mode = (claim.get('evidence') or {}).get('mode')
     repair = bool(claim['evidence'].get('review_of'))
-    render_failure = source.get('failure_stage') == 'render' and source.get('error') == RENDER_ERROR
+    assembly_failure = source.get('failure_stage') == 'render' and source.get('error') == ASSEMBLY_ERROR
+    render_failure = source.get('failure_stage') == 'render' and source.get('error') in {RENDER_ERROR, ASSEMBLY_ERROR}
     deferred = bool(mode == 'sources' and claim['evidence'].get('recovery_of'))
-    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('window_of')
+    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('assembly_of')
+        and (not claim['evidence'].get('window_of') or assembly_failure)
         and (not claim['evidence'].get('render_of') or render_failure)
         and not claim['evidence'].get('deferred_of')
         and (not claim['evidence'].get('recovery_of') or render_failure or deferred)
@@ -75,6 +79,14 @@ def _prior_completion(client, source):
         plan._require(mode == 'quota' and claim['evidence'].get('recovery_of'))
         terminal = plan._object(client.get('celery-task-meta-' + source['task_id']))
         trace = terminal.get('traceback') or ''
+        if assembly_failure:
+            plan._require(claim['evidence'].get('window_of')
+                and all(marker in trace for marker in ('in render_video\n', '_run(concat_command)\n',
+                    'in _run\n', 'subprocess.CalledProcessError: Command ', 'concat=n=30:v=1:a=0',
+                    "/silent.mp4']' died with <Signals.SIGKILL: 9>.\n"))
+                and all(f"/{source['task_id']}_attempt_0/norm_{index:03d}.mp4" in trace for index in range(30))
+                and 'ConnectionError' not in trace and 'TimeoutError' not in trace)
+            return claim
         markers = (('RuntimeError: Generated clip is too short for a single-pass scene: 8.000s source for 6.867s segment\n',)
             if claim['evidence'].get('render_of') else ('in render_attempt\n',
             'RuntimeError: Normalized clip frame gate rejected segment: 150 frames for 151 frame target\n'))
@@ -114,7 +126,7 @@ def _prior_completion(client, source):
 
 
 def _root_key(root, proof):
-    return (WINDOW_ROOT if proof.get('window_of') else DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
+    return (ASSEMBLY_ROOT if proof.get('assembly_of') else WINDOW_ROOT if proof.get('window_of') else DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
             else REVIEW_ROOT if proof.get('review_of') else ROOT) + root
 
 
@@ -281,7 +293,7 @@ def checked(client, task, *, claimed=False):
     source = plan._object(client.get(jobs.JOB_PREFIX + plan._id(task))); spec = source.get('spec') or {}
     plan._require(eligible({**source, 'retry_child_task_id': None}) and source['task_id'] == task
         and voice._scope(spec) == ('long', 32) and spec.get('mode') == 'production')
-    prior = _prior_completion(client, source) if source['error'].startswith(VISUAL_ERROR) or source['error'] in {LOCAL_ERROR, RENDER_ERROR} else None
+    prior = _prior_completion(client, source) if source['error'].startswith(VISUAL_ERROR) or source['error'] in {LOCAL_ERROR, RENDER_ERROR, ASSEMBLY_ERROR} else None
     mode = prior['evidence']['mode'] if prior else ('quota' if source['error'] == QUOTA_ERROR else 'sources')
     dispatch = plan._object(client.get(plan.DISPATCH_PREFIX + plan._id(spec['content_plan_item_id'])))
     root = dispatch['task_id']; ancestors = []; current = source
@@ -363,10 +375,12 @@ def checked(client, task, *, claimed=False):
             proof['recovery_of'] = source['parent_id']
             if mode == 'sources' and not claimed:
                 _quota_ready(client, source)
-        if source['error'] == RENDER_ERROR:
+        if source['error'] in {RENDER_ERROR, ASSEMBLY_ERROR}:
             proof['render_of'] = source['parent_id']
             if prior['evidence'].get('render_of'):
                 proof['window_of'] = source['parent_id']
+            if source['error'] == ASSEMBLY_ERROR:
+                proof['assembly_of'] = source['parent_id']
     return source, root, proof
 
 

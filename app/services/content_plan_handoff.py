@@ -29,15 +29,15 @@ def completed(client, profile, channel, state):
     document = plan._plan(raw, channel_id)
     if not document['enabled'] or document['after_queue'] != 'auto_shorts' or not document['items']:
         return None
-    rows = []
+    rows = []; has_current_item = False
     for entry in document['items']:
         value = reader.get(plan.COMPLETION_PREFIX + entry['id'])
         if value is None:
             return None
         receipt = plan._object(value)
         dispatch = plan._object(reader.get(plan.DISPATCH_PREFIX + entry['id']))
-        if dispatch['profile_revision'] != profile['profile_revision']:
-            return None  # A completed older plan cannot authorize another rotation.
+        if dispatch['profile_revision'] == profile['profile_revision']:
+            has_current_item = True
         plan._require(dispatch['channel_id'] == channel_id
             and dispatch['connection_id'] == channel['connection_id'] and dispatch['item'] == entry)
         current = plan.publication_proof(reader, dispatch)
@@ -45,6 +45,11 @@ def completed(client, profile, channel, state):
             == {k:v for k,v in receipt.items() if k != 'completed_at'}, 'plan_publication_changed')
         rows.append({'item_id': entry['id'], 'completion_sha256': plan._sha(receipt),
                      'video_id': receipt['video_id']})
+    # Keep verified history when the owner extends a completed plan. At least
+    # one newly completed item must belong to this profile: old history alone
+    # cannot authorize a second rotation after the profile changes.
+    if not has_current_item:
+        return None
     active = plan._object(reader.get(plan.ACTIVE_KEY) or '{}')
     topics = profile.get('production_topics') or []
     plan._require(channel_id not in active and topics
