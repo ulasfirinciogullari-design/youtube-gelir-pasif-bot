@@ -1910,8 +1910,10 @@ def review_scene_visuals(
     documentary_sources = _documentary_broll_sources(
         content_style, evidence_sources,
     )
+    from app.services.commissioning_longform import active
+    native_long = provider == 'abacus_included' and len(scenes) > GEMINI_QC_BATCH_SCENES and active()
     if (
-        provider == 'gemini'
+        (provider == 'gemini' or native_long)
         and min(len(scenes), max_scenes) > GEMINI_QC_BATCH_SCENES
     ):
         return _review_gemini_batches(
@@ -1929,7 +1931,7 @@ def review_scene_visuals(
                 _score_reason_consistency_attempts
             ),
             gemini_thinking_level=_gemini_thinking_level,
-            provider_override=provider_override,
+            provider_override='abacus_included' if native_long else provider_override,
             temporal_response_repair_attempts=_temporal_response_repair_attempts,
         )
     frame_dir = work / 'visual_qc'

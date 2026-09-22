@@ -33,9 +33,22 @@ YouTube is optional for these new plans; a rejected optional caption remains
 visible in the publication result and does not veto an otherwise accepted
 video. Legacy and externally reviewed publication rules remain unchanged.
 
-The initial release executes Shorts. Long-video and animation entries retain
-an explicit preparation status until their separate production acceptance is
-enabled. They are not claimed runnable solely because the owner added them.
+The queue executes Shorts and three-minute landscape documentaries. Each
+documentary has thirty brief scenes, one continuous timestamped voice take,
+complete source review of every narrated sentence, full-audio transcription
+and prosody review, and overlapping visual-review batches covering every
+scene and boundary. Native provider admission checks the exact durable queue
+dispatch and its predecessors before each reservation. Long audio is a distinct
+prepared request and cannot fall back through the old Short or Abacus route.
+Private original narration, generated clips, and stock selections are retained.
+Animation remains an explicitly marked preparation format until a consistent
+character and motion production workflow is accepted.
+
+Retained-render preparation v2 compares canonical candidate packages before
+the loader's derived joined narration is added. It preserves v1 claims; only
+an observed terminal v1 local normalization failure before provider review
+may enter the corrected preparation. Unknown or later failures do not reopen.
+
 The future queue is stored durably without an expiration. Browsing performs
 only bounded reads, and every edit requires the owner session, same-origin
 proof and a matching revision. Stale browser edits cannot overwrite a newer

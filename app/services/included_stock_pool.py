@@ -226,9 +226,17 @@ def retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, 
         _require(runtime.enforcement_enabled() and runtime._TASK_ID.get() == task_id and phase in PHASES)
         foundation = runtime.configured_ledger()
         context = runtime.resolve_context(foundation.client, task_id)
-        _require(context['kind'] == 'shorts')
+        maximum = 12
+        if context['kind'] == 'long':
+            from app.services.commissioning_longform import authorize, MAX_SCENES
+            with foundation.client.pipeline() as pipe:
+                authorize(pipe, context)
+                pipe.multi(); pipe.ping(); _ack(pipe)
+            maximum = MAX_SCENES
+        else:
+            _require(context['kind'] == 'shorts')
         scope = {'version': 1, 'context': context, 'phase': phase, 'package': _candidate_package(package)}
-        _require(1 <= len(scope['package']['scenes']) <= 12 and type(scene_visuals) is list
+        _require(1 <= len(scope['package']['scenes']) <= maximum and type(scene_visuals) is list
             and len(scene_visuals) == len(scope['package']['scenes'])
             and type(credits) is list and type(seen_ids) is set)
         key = PREFIX + hashlib.sha256(_raw(scope).encode()).hexdigest()

@@ -1727,9 +1727,11 @@ def _checkpoint_generated_asset(
     options, duration_minutes, journal,
 ):
     """Record only private unapproved bytes; never change a render decision."""
+    longform = bool(options.get('content_plan_item_id') and options.get('mode') == 'production'
+                    and options.get('format') == 'landscape' and duration_minutes == 3)
     if (
-        options.get('mode') != 'production' or options.get('format') != 'shorts'
-        or duration_minutes != 0.5
+        not longform and (options.get('mode') != 'production' or options.get('format') != 'shorts'
+        or duration_minutes != 0.5)
     ):
         return
     try:
@@ -1761,7 +1763,7 @@ def _checkpoint_generated_asset(
             'requires_full_qa': True, 'attempted_count': len(journal),
             'preserved_count': sum(item['status'] == 'preserved_candidate' for item in journal),
             'failed_count': sum(item['status'] != 'preserved_candidate' for item in journal),
-            'entries': list(journal[-24:]),
+            'entries': list(journal[-(32 if longform else 24):]),
         })
     except Exception:
         # The content-addressed private manifest survives a registry outage.
@@ -5523,7 +5525,7 @@ def run_video_pipeline(
                     scenes,
                     scene_visuals,
                     work,
-                    len(scenes) if duration_minutes <= 1 else min(14, len(scenes)),
+                    len(scenes) if duration_minutes <= 1 or options.get('content_plan_item_id') else min(14, len(scenes)),
                     topic=topic,
                     story_scenes=scenes,
                     content_style=options.get('content_style', ''),

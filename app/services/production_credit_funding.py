@@ -163,7 +163,11 @@ def initial_credit_state(policy, *, now):
 
 
 def _intent(intent, policy, code):
-    _exact(intent, _INTENT_FIELDS, code)
+    fields = _INTENT_FIELDS
+    if type(intent) is dict and 'production_kind' in intent:
+        _require(intent['production_kind'] == 'long', code)
+        fields = fields | {'production_kind'}
+    _exact(intent, fields, code)
     for field in ('intent_id', 'request_sha256'):
         _hash(intent[field], code)
     for field in ('root_lineage_id', 'channel_id', 'source_connection_id'):

@@ -59,7 +59,10 @@ def _authority(pipe, foundation, context):
     if not cash.present(pipe):
         return None
     cash.read(pipe, foundation, now=foundation.clock())
-    _require(context.get('kind') == 'shorts' and 'purpose' not in context)
+    if context.get('kind') == 'long':
+        from app.services.commissioning_longform import authorize
+        authorize(pipe, context)
+    _require(context.get('kind') in {'shorts', 'long'} and 'purpose' not in context)
     proof = continuation.authority(pipe, context['channel_id'])
     if proof is None:
         return None
@@ -81,7 +84,7 @@ def enabled_for_task():
         return False
     foundation = runtime.configured_ledger(read_timeout=2)
     context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
-    if context.get('kind') != 'shorts' or 'purpose' in context:
+    if context.get('kind') not in {'shorts', 'long'} or 'purpose' in context:
         return False
     with foundation.client.pipeline() as pipe:
         proof = _authority(pipe, foundation, context)
@@ -96,6 +99,12 @@ def completion_capacity(options, duration_minutes, scene_count, paid_cap, paid_u
     rejected scenes after producing only one. Authority is checked afresh;
     reservations and every actual clip's quality checks remain mandatory.
     """
+    if options.get('content_plan_item_id') and options.get('format') == 'landscape' and duration_minutes == 3:
+        from app.services.commissioning_longform import active, MAX_SCENES
+        if active() and enabled_for_task():
+            _require(type(scene_count) is int and 1 <= scene_count <= MAX_SCENES
+                and paid_cap == MAX_SCENES and type(paid_used) is int and 0 <= paid_used <= paid_cap)
+            return min(scene_count, paid_cap - paid_used)
     if not (options.get('mode') == 'production' and options.get('format') == 'shorts'
             and duration_minutes == 0.5 and type(scene_count) is int and 1 <= scene_count <= 6
             and type(paid_cap) is int and 2 <= paid_cap <= 6
@@ -124,7 +133,11 @@ def completion_repairs(options, duration_minutes, scenes, rejected_indices, revi
 def scene_scope(prepared, scene_index, context, foundation):
     _require(type(prepared) is runtime._PreparedVideoScenes
         and type(scene_index) is int and 0 <= scene_index < len(prepared.generation_seconds)
-        and 1 <= len(prepared.generation_seconds) <= 6)
+        and 1 <= len(prepared.generation_seconds) <= (32 if context.get('kind') == 'long' else 6))
+    if context.get('kind') == 'long':
+        with foundation.client.pipeline() as pipe:
+            _require(_authority(pipe, foundation, context) is not None)
+            pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
     token = _SCENE.set({'context': context, 'foundation': foundation,
         'package_sha256': prepared.package_sha256, 'scene_index': scene_index,
         'narration_millis': prepared.narration_millis[scene_index],
@@ -144,7 +157,7 @@ def _journal(pipe, key, context):
     row = json.loads(raw)
     _require(type(row) is dict and set(row) == {'version', 'context', 'requests'}
         and row['version'] == 1 and row['context'] == context
-        and type(row['requests']) is dict and len(row['requests']) <= 6)
+        and type(row['requests']) is dict and len(row['requests']) <= (32 if context.get('kind') == 'long' else 6))
     return row
 
 
@@ -164,8 +177,8 @@ def _reserve(scope, descriptor):
             _require(prior['create'] is not None, 'commissioning_video_previous_outcome_unknown')
             pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
             return key, identity, prior
-        cap = getattr(settings, 'studio_production_short_paid_create_cap', 2)
-        _require(type(cap) is int and 2 <= cap <= 6 and len(journal['requests']) < cap,
+        cap = 32 if context.get('kind') == 'long' else getattr(settings, 'studio_production_short_paid_create_cap', 2)
+        _require(type(cap) is int and 2 <= cap <= (32 if context.get('kind') == 'long' else 6) and len(journal['requests']) < cap,
                  'commissioning_video_episode_capacity')
         journal['requests'][identity] = {'request': descriptor, 'authority_sha256': authority,
             'reserved_at': datetime.now(timezone.utc).isoformat(), 'create': None, 'result': None}

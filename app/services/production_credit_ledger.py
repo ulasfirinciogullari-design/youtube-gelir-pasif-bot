@@ -146,7 +146,7 @@ class CreditLedger:
     @staticmethod
     def _context(intent):
         return {'channel_id': intent['channel_id'], 'lineage_id': intent['root_lineage_id'],
-                'connection_id': intent['source_connection_id'], 'kind': 'shorts'}
+                'connection_id': intent['source_connection_id'], 'kind': intent.get('production_kind', 'shorts')}
 
     @staticmethod
     def _request_field(intent):
@@ -336,6 +336,9 @@ class CreditLedger:
                         request = values['intent']
                         _require(production_context == self._context(request),
                                  'credit_production_context_invalid')
+                        if (production_context or {}).get('kind') == 'long':
+                            from app.services.commissioning_longform import authorize
+                            authorize(pipe, production_context)
                         _require(_object(pipe.hget(LEDGER_KEY, 'binding:' + request['root_lineage_id']))
                                  == production_context, 'credit_production_context_invalid')
                         identity = self._request_field(request)

@@ -67,8 +67,12 @@ def transcribe_if_commissioned(path, *, api_key, language):
     foundation = runtime.configured_ledger(read_timeout=2)
     client = foundation.client
     context = runtime.resolve_context(client, runtime._TASK_ID.get())
-    _require(context['kind'] == 'shorts')
+    _require(context['kind'] in {'shorts', 'long'})
+    longform = context['kind'] == 'long'
     with client.pipeline() as pipe:
+        if longform:
+            from app.services.commissioning_longform import authorize
+            authorize(pipe, context)
         authority = continuation.authority(pipe, context['channel_id'])
         pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
     if authority is None:
@@ -76,7 +80,8 @@ def transcribe_if_commissioned(path, *, api_key, language):
     _require(type(api_key) is str and 1 <= len(api_key) <= 4096 and api_key.isascii()
         and not any(c.isspace() for c in api_key))
     raw, suffix = audio._read_audio(path)
-    snapshot = audio._snapshot_audio(raw, suffix, allow_natural_short=True)
+    snapshot = audio._snapshot_audio(raw, suffix, allow_natural_short=True,
+        **({'allow_commissioned_long': True} if longform else {}))
     fields = {'model_id': 'scribe_v2', 'language_code': {'tr': 'tur', 'en': 'eng'}[language],
         'num_speakers': '1', 'diarize': 'false', 'tag_audio_events': 'false',
         'timestamps_granularity': 'word'}
@@ -86,6 +91,8 @@ def transcribe_if_commissioned(path, *, api_key, language):
     key = PREFIX + identity
     with client.pipeline() as pipe:
         _require(continuation.authority(pipe, context['channel_id']) == authority)
+        if longform:
+            authorize(pipe, context)
         channel_key = runtime._CHANNEL_PREFIX + context['channel_id']
         pipe.watch(key, channel_key)
         channel = json.loads(pipe.get(channel_key))
@@ -99,7 +106,7 @@ def transcribe_if_commissioned(path, *, api_key, language):
             return _response(row['outcome'])
         reservation = _raw({'version': 1, 'context': context, 'request': descriptor,
             'continuation_authority_sha256': authority, 'reserved_at': datetime.now(timezone.utc).isoformat(),
-            'max_list_cost_micro_usd': MAX_LIST_COST_MICRO, 'outcome': None})
+            'max_list_cost_micro_usd': MAX_LIST_COST_MICRO * (4 if longform else 1), 'outcome': None})
         pipe.multi(); pipe.set(key, reservation, nx=True)
         _require(pipe.execute() == [True])
     try:

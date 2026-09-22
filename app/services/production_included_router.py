@@ -478,8 +478,8 @@ def _generate(prepared, purpose, observer):
     original_prepared, completed_data = prepared, None
     foundation = runtime.configured_ledger()
     context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
-    from app.services.abacus_router_audio_adapter import PreparedPrepaidAudioRequest
-    if type(prepared) is PreparedPrepaidAudioRequest:
+    from app.services.abacus_router_audio_adapter import PreparedPrepaidAudioRequest, PreparedLongformAudioRequest
+    if type(prepared) in (PreparedPrepaidAudioRequest, PreparedLongformAudioRequest):
         from app.services.production_prepaid_audio import PrepaidAudioLedger, enabled as prepaid_enabled
         _require(prepaid_enabled(), 'prepaid_audio_not_enabled')
         ledger = PrepaidAudioLedger(foundation)
@@ -489,6 +489,7 @@ def _generate(prepared, purpose, observer):
     alternative = commissioning_reasoning.generate(prepared, purpose, ledger, foundation, context)
     if alternative is not commissioning_reasoning.UNHANDLED:
         return alternative
+    _require(type(prepared) is not PreparedLongformAudioRequest, "commissioning_longform_unavailable")
     try:
         if purpose == 'visual_review' and type(ledger) is IncludedRouterLedger:
             from app.services.included_visual_completion import cached_completed_review
@@ -599,15 +600,17 @@ def observed_audio_provider():
     return 'abacus_router'
 
 
-def generate_included_audio(audio_bytes, *, purpose, language, expected_narration=None):
+def generate_included_audio(audio_bytes, *, purpose, language, expected_narration=None, longform=False):
     from app.config import settings
     from app.services import abacus_router_audio_adapter as audio, audio_qc
+    _require(type(longform) is bool and (not longform or purpose == 'prosody'))
     if purpose == 'blind_asr':
         _require(expected_narration is None, 'included_blind_asr_text_forbidden')
         prepared = audio.prepare_prepaid_blind_asr_request(audio_bytes,
             api_key=settings.abacus_api_key, language=language)
     elif purpose == 'prosody':
-        prepared = audio.prepare_prepaid_prosody_request(audio_bytes,
+        prepare = audio.prepare_longform_prosody_request if longform else audio.prepare_prepaid_prosody_request
+        prepared = prepare(audio_bytes,
             api_key=settings.abacus_api_key, language=language, expected_narration=expected_narration,
             system_instruction=audio_qc._PROSODY_SYSTEM_INSTRUCTION.replace('Turkish', 'English')
                 if language == 'en' else audio_qc._PROSODY_SYSTEM_INSTRUCTION,
@@ -620,7 +623,7 @@ def generate_included_audio(audio_bytes, *, purpose, language, expected_narratio
 def preflight_production(channel_id, *, kind):
     from app.services import production_spend_runtime as runtime
     from app.services.production_credit_ledger import CreditLedger
-    _require(enabled() and runtime.enforcement_enabled() and kind == 'shorts',
+    _require(enabled() and runtime.enforcement_enabled() and kind in {'shorts', 'long'},
              'included_production_short_only')
     _require(getattr(runtime.settings, 'studio_elevenlabs_native_credits', False) is True,
              'included_production_voice_not_enabled')
@@ -632,8 +635,10 @@ def preflight_production(channel_id, *, kind):
     credits = CreditLedger(foundation.client, foundation=foundation, clock=foundation.clock)
     with foundation.client.pipeline() as pipe:
         from app.services import commissioning_reasoning
+        _require(kind != 'long' or commissioning_reasoning.selected(), 'included_production_short_only')
         if commissioning_reasoning.selected():
-            capacity = commissioning_reasoning.check_capacity(pipe, foundation, channel_id, minimum_requests=12)
+            capacity = commissioning_reasoning.check_capacity(pipe, foundation, channel_id,
+                minimum_requests=60 if kind == 'long' else 12)
         else:
             capacity = ledger.check_capacity(pipe, channel_id, minimum_requests=8)
             audio_ledger.check_capacity(pipe, channel_id, minimum_requests=4)
@@ -641,7 +646,7 @@ def preflight_production(channel_id, *, kind):
         policy, state, _, _ = credits._read(pipe, foundation.clock())
         from app.services.production_credit_funding import credit_funding_summary
         summary = credit_funding_summary(policy, state, now=foundation.clock())
-        _require(summary['available_credits'] >= 1000 and summary['reserved_credits'] == 0,
+        _require(summary['available_credits'] >= (5000 if kind == 'long' else 1000) and summary['reserved_credits'] == 0,
                  'included_production_voice_credits_unavailable')
         pipe.multi(); pipe.ping(); ledger._ack(pipe, [True])
     return {**capacity, 'available_voice_credits': summary['available_credits'],

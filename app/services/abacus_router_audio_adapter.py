@@ -177,7 +177,9 @@ def schema_for_request(body, purpose):
     return original
 
 
-def _inspect_body(value, purpose):
+def _inspect_body(value, purpose, *, longform=False):
+    _require(type(longform) is bool and (not longform or
+        value.get("model") == PREPAID_MODEL and purpose is AudioReviewPurpose.PROSODY))
     _require(type(purpose) is AudioReviewPurpose)
     body = _copy_json(value)
     _require(type(body) is dict)
@@ -241,9 +243,10 @@ def _inspect_body(value, purpose):
     _require(len(encoded_body) <= MAX_REQUEST_BYTES)
     natural_prosody = body['model'] == PREPAID_MODEL and purpose is AudioReviewPurpose.PROSODY
     descriptor = inspect_bounded_short_audio(raw, 'audio/mpeg',
-        **({'allow_natural_short': True} if natural_prosody else {}))
+        **({'allow_commissioned_long': True} if longform else
+           {'allow_natural_short': True} if natural_prosody else {}))
     _require(descriptor['decoded_sample_rate'] == 48000
-             and 0 < descriptor['decoded_samples'] <= (NATURAL_SHORT_MAX_SAMPLES if natural_prosody else MAX_DECODED_SAMPLES)
+             and 0 < descriptor['decoded_samples'] <= (240 * 48000 if longform else NATURAL_SHORT_MAX_SAMPLES if natural_prosody else MAX_DECODED_SAMPLES)
              and descriptor['sha256'] == _sha(raw) and descriptor['bytes'] == len(raw))
     return encoded_body, _canonical(descriptor)
 
@@ -290,7 +293,14 @@ class PreparedPrepaidAudioRequest(PreparedAudioRouterRequest):
         return '<PreparedPrepaidAudioRequest abacus:gemini-2.5-flash redacted>'
 
 
-def inspect_audio_router_request(url, kwargs, *, purpose):
+@dataclass(frozen=True, repr=False)
+class PreparedLongformAudioRequest(PreparedPrepaidAudioRequest):
+    """Distinct queued documentary input; legacy Short ledgers cannot admit it."""
+    def __repr__(self):
+        return "<PreparedLongformAudioRequest native-gemini redacted>"
+
+
+def inspect_audio_router_request(url, kwargs, *, purpose, longform=False):
     """Detach one exact native audio request; never infer its purpose or authority."""
     try:
         _require(type(url) is str and url == ENDPOINT)
@@ -305,8 +315,9 @@ def inspect_audio_router_request(url, kwargs, *, purpose):
         _require(auth.startswith('Bearer '))
         key = auth[len('Bearer '):]
         _require(1 <= len(key) <= 4096 and all(32 < ord(char) < 127 for char in key))
-        body, audio = _inspect_body(kwargs['json'], purpose)
-        kind = PreparedPrepaidAudioRequest if kwargs['json']['model'] == PREPAID_MODEL else PreparedAudioRouterRequest
+        body, audio = _inspect_body(kwargs['json'], purpose, longform=longform)
+        kind = (PreparedLongformAudioRequest if longform else
+                PreparedPrepaidAudioRequest if kwargs['json']['model'] == PREPAID_MODEL else PreparedAudioRouterRequest)
         return kind(body, tuple(sorted(normalized.items())), audio, purpose)
     except AbacusRouterAudioError:
         raise
@@ -315,7 +326,7 @@ def inspect_audio_router_request(url, kwargs, *, purpose):
 
 
 def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens, enum_compat=False,
-             *, json_object=False, allow_english=False, prompt_json=False, model=MODEL):
+             *, json_object=False, allow_english=False, prompt_json=False, model=MODEL, longform=False):
     try:
         _require(type(audio) is bytes and 0 < len(audio) <= MAX_AUDIO_BYTES
                  and type(api_key) is str and type(language) is str
@@ -351,7 +362,7 @@ def _prepare(audio, api_key, system, text, schema, purpose, language, max_tokens
                 **({} if prompt_json else {'response_format': response_format}),
                 'max_tokens': max_tokens, 'stream': False,
                 **({'temperature': 0} if json_object or prompt_json else {'modalities': ['text']})}, 'timeout': 90.0,
-        }, purpose=purpose)
+        }, purpose=purpose, **({"longform": True} if longform else {}))
     except AbacusRouterAudioError:
         raise
     except Exception:
@@ -467,13 +478,25 @@ def prepare_compatible_audio_prosody_request(audio_bytes, *, api_key, expected_n
         raise AbacusRouterAudioError(_REQUEST_ERROR) from None
 
 
-def read_original_mp3(path, *, allow_natural_short=False):
+def prepare_longform_prosody_request(audio_bytes, *, api_key, expected_narration,
+        system_instruction, json_schema, language, max_tokens=MAX_OUTPUT_TOKENS):
+    from app.services.commissioning_longform import active
+    _require(active())
+    _text(expected_narration)
+    prompt = _prosody_prefix(language) + json.dumps(expected_narration, ensure_ascii=False) + _PROSODY_SUFFIX
+    return _prepare(audio_bytes, api_key, system_instruction, prompt, json_schema,
+        AudioReviewPurpose.PROSODY, language, max_tokens, prompt_json=True,
+        allow_english=True, model=PREPAID_MODEL, longform=True)
+
+
+def read_original_mp3(path, *, allow_natural_short=False, allow_commissioned_long=False):
     """One bounded no-link file snapshot, fully decoded, without altering it."""
     try:
         _require(isinstance(path, (str, Path)) and Path(path).suffix.lower() == '.mp3')
         raw, suffix = _read_audio(path)
         _require(suffix == '.mp3')
-        inspect_bounded_short_audio(raw, 'audio/mpeg', allow_natural_short=allow_natural_short)
+        inspect_bounded_short_audio(raw, 'audio/mpeg', allow_natural_short=allow_natural_short,
+            **({'allow_commissioned_long': True} if allow_commissioned_long else {}))
         return raw
     except Exception:
         raise AbacusRouterAudioError(_REQUEST_ERROR) from None

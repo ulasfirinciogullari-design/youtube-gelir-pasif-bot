@@ -111,7 +111,10 @@ def _capacity(pipe, policy, channel):
 
 
 def _check_context(pipe, policy, context, credential):
-    _require(context['kind'] == 'shorts'
+    if context['kind'] == 'long':
+        from app.services.commissioning_longform import authorize
+        authorize(pipe, context)
+    _require(context['kind'] in {'shorts', 'long'}
         and policy['channels'].get(context['channel_id']) == context['connection_id']
         and policy['credential_sha256'] == credential, 'commissioning_audio_binding_changed')
     key = runtime._CHANNEL_PREFIX + context['channel_id']
@@ -147,7 +150,7 @@ def _reserve(client, context, descriptor, credential):
                 _require(sum(row['context']['lineage_id'] == context['lineage_id'] for row in rows)
                     < policy['max_per_lineage'], 'commissioning_audio_episode_limit')
                 journal['requests'][identity] = {'context': context, 'request': descriptor,
-                    'reserved_at': now, 'max_list_cost_micro_usd': COST_MICRO, 'outcome': None}
+                    'reserved_at': now, 'max_list_cost_micro_usd': COST_MICRO * (4 if context['kind'] == 'long' else 1), 'outcome': None}
                 if proof is not None:
                     journal['requests'][identity]['continuation_authority_sha256'] = proof
                 pipe.multi(); pipe.set(JOURNAL_KEY, _raw(journal))
@@ -159,16 +162,18 @@ def _reserve(client, context, descriptor, credential):
                 raise SpendBlocked('commissioning_audio_reservation_uncertain') from None
 
 
-def _response(outcome):
+def _response(outcome, *, maximum_seconds=60):
     from app.services.youtube_auth import _decrypt_json
     raw = _decrypt_json(outcome['encrypted_response'])['response'].encode()
     _require(hashlib.sha256(raw).hexdigest() == outcome['response_sha256'])
-    whisper._json_payload(raw)
+    whisper._json_payload(raw, maximum_seconds=maximum_seconds)
     return httpx.Response(200, content=raw, headers={'Content-Type': 'application/json'})
 
 
 def _probe_response(client, context, descriptor, credential):
     """Reuse the already paid, immutable setup probe without another POST."""
+    if context['kind'] == 'long':
+        return None, None
     key = ('youtube_studio:commissioning:v1:whisper_probe:' + descriptor['audio']['sha256']
         + ':' + descriptor['fields']['language'])
     raw = client.get(key)
@@ -198,18 +203,27 @@ def transcribe_if_commissioned(path, *, api_key, language):
     quote = whisper._quote(fields)
     _require(quote.maximum_micro == COST_MICRO)
     raw, suffix = whisper._read_audio(path)
-    snapshot = whisper._snapshot_audio(raw, suffix, allow_natural_short=True)
-    descriptor = snapshot.descriptor(fields)
     context = runtime.resolve_context(client, runtime._TASK_ID.get())
+    longform = context['kind'] == 'long'
+    if longform:
+        from app.services.commissioning_longform import authorize
+        with client.pipeline() as pipe:
+            authorize(pipe, context)
+            pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
+    snapshot = whisper._snapshot_audio(raw, suffix, allow_natural_short=True,
+        **({'allow_commissioned_long': True} if longform else {}))
+    descriptor = snapshot.descriptor(fields)
+    maximum_seconds = 240 if longform else 60
     credential = _hash('openai\0' + api_key)
     identity, outcome = _reserve(client, context, descriptor, credential)
     if outcome is not None:
-        return _response(outcome)
+        return _response(outcome, maximum_seconds=maximum_seconds)
     try:
         response, source_receipt = _probe_response(client, context, descriptor, credential)
         if response is None:
             response = whisper._post_bounded(snapshot, fields,
-                {'Authorization': 'Bearer ' + api_key, 'Accept': 'application/json'})
+                {'Authorization': 'Bearer ' + api_key, 'Accept': 'application/json'},
+                **({'maximum_seconds': maximum_seconds} if longform else {}))
         from app.services.youtube_auth import _encrypt_json
         _require(api_key.encode() not in response.content)
         observed = {'response_sha256': hashlib.sha256(response.content).hexdigest(),
@@ -224,7 +238,7 @@ def transcribe_if_commissioned(path, *, api_key, language):
             row['outcome'] = observed
             pipe.multi(); pipe.set(JOURNAL_KEY, _raw(journal))
             _require(pipe.execute() == [True], 'commissioning_audio_observation_uncertain')
-        return _response(observed)
+        return _response(observed, maximum_seconds=maximum_seconds)
     except Exception:
         # Reservation remains occupied, including lost response/commit ACK.
         raise whisper.WhisperTranscriptionError('commissioning_audio_outcome_unverified') from None
@@ -241,8 +255,8 @@ def status(client):
         pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
     return {'mode': 'commissioning', 'requests': len(rows),
         'unknown_requests': sum(row['outcome'] is None for row in rows),
-        'reserved_list_cost_micro_usd': len(rows) * COST_MICRO,
-        'maximum_list_cost_micro_usd': capacity * COST_MICRO,
+        'reserved_list_cost_micro_usd': sum(row['max_list_cost_micro_usd'] for row in rows),
+        'maximum_list_cost_micro_usd': capacity * COST_MICRO * (4 if any(row['context']['kind'] == 'long' for row in rows) else 1),
         'continuous_commissioning': capacity > policy['max_requests'],
         'operating_budget_configured': False,
         'valid_until': policy['valid_until'], 'historical_cash_micro': None}

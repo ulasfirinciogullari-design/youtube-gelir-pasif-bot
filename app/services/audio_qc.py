@@ -698,8 +698,12 @@ def verify_audio_prosody(
     if getattr(settings, 'studio_abacus_included_production', False) is True:
         from app.services.abacus_router_audio_adapter import read_original_mp3
         from app.services.production_included_router import generate_included_audio, observed_audio_provider
-        output = generate_included_audio(read_original_mp3(audio_path, allow_natural_short=True), purpose='prosody',
-            language=normalized_language, expected_narration=expected_narration)
+        from app.services.commissioning_longform import active
+        longform = active()
+        extra = {'allow_commissioned_long': True} if longform else {'allow_natural_short': True}
+        output = generate_included_audio(read_original_mp3(audio_path, **extra), purpose='prosody',
+            language=normalized_language, expected_narration=expected_narration,
+            **({'longform': True} if longform else {}))
         validated = _validate_prosody_review(output, expected_narration,
             audio_duration_seconds=audio_duration_seconds, transcript_evidence=transcript_evidence,
             language=normalized_language, provider=observed_audio_provider())

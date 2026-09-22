@@ -40,6 +40,29 @@ def test_lost_recovery_queue_ack_never_replays(case):
     assert enqueue.call_count == 1
 
 
+@pytest.mark.parametrize('outcome', ['known_local', 'unknown', 'critic_failed', 'already_recorded'])
+def test_upgrade_only_resumes_observed_local_preparation_error_without_erasing_old_claims(case, outcome):
+    source = failed(case); task = source['task_id']; operation = str(uuid4())
+    legacy = recovery.LEGACY_PREFIX
+    case.client.set(legacy + 'dispatch:' + task, plan._raw({'task_id': operation,
+        'source_sha256': recovery._fingerprint(source)}))
+    case.client.set(legacy + 'execution:' + task, operation)
+    case.client.set(legacy + 'status:' + task, plan._raw({'state': 'stopped', 'error_type': 'ContentPlanError'}))
+    if outcome != 'unknown':
+        case.client.set('celery-task-meta-' + operation, plan._raw({'status': 'FAILURE',
+            'result': {'exc_type': 'ContentPlanError'}, 'traceback':
+            'File "/app/app/services/content_plan_recovery.py", line '
+            + ('140' if outcome != 'critic_failed' else '184') + ', in prepare'}))
+    if outcome == 'already_recorded': case.client.set(legacy + 'record:' + task, 'private record')
+    prior = {k:case.client.dump(k) for k in case.client.scan_iter()}
+    enqueue = Mock()
+    recovery.schedule(source, enqueue)
+    assert enqueue.call_count == (1 if outcome == 'known_local' else 0)
+    assert all(case.client.dump(k) == v for k,v in prior.items())
+    recovery.schedule(source, enqueue)
+    assert enqueue.call_count == (1 if outcome == 'known_local' else 0)
+
+
 @pytest.mark.parametrize('change', [
     {'failure_stage': 'final_visual_qc'}, {'paid_create_slots_used': 3},
     {'parent_id': 'prior-attempt'}, {'retry_child_task_id': str(uuid4())},

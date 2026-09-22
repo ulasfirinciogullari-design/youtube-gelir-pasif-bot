@@ -171,9 +171,23 @@ def test_pause_leaves_started_work_and_history_untouched(case):
 
 
 def test_unsupported_format_stays_explicit_preparation_without_spend(case):
-    long=plan.item('Uzun belgesel','Üç dakikalık kaynaklı anlatım','long')
+    long=plan.item('Animasyon pilotu','Tutarlı karakter ve devamlılık hazırlığı','animation')
     document=plan.change(OTHER,'new','add',payload=long)
     before=case.funding.call_count
     enqueue=Mock();plan.maintain([{**case.profile,'channel_id':OTHER}],enqueue)
     enqueue.assert_not_called();assert case.funding.call_count==before
     assert plan.project(document)['items'][0]['status']=='preparation'
+
+
+def test_long_documentary_dispatches_with_its_own_format_and_duration(case):
+    entry = plan.item('Banknotun yolculuğu', 'Kaynaklı üç dakikalık belgesel', 'long')
+    plan.change(OTHER, 'new', 'add', payload=entry)
+    enqueue = Mock()
+    result = plan.maintain([{**case.profile, 'channel_id': OTHER}], enqueue)
+    assert result['channels'][OTHER] == 'enqueued'
+    args = enqueue.call_args.kwargs['args']
+    assert args[1] == 3 and args[4]['format'] == 'landscape'
+    assert args[4]['content_plan_item_id'] == entry['id']
+    case.funding.assert_called_once_with(OTHER, kind='long')
+    plan.maintain([{**case.profile, 'channel_id': OTHER}], enqueue)
+    enqueue.assert_called_once()

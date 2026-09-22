@@ -15,7 +15,8 @@ from uuid import uuid4, uuid5, NAMESPACE_URL
 
 from app.services import content_plan as plan, studio_state as jobs
 
-PREFIX = plan.PREFIX + 'render_recovery:'
+LEGACY_PREFIX = plan.PREFIX + 'render_recovery:'
+PREFIX = LEGACY_PREFIX + 'v2:'
 DISPATCH = PREFIX + 'dispatch:'
 EXECUTION = PREFIX + 'execution:'
 RECORD = PREFIX + 'record:'
@@ -85,7 +86,9 @@ def schedule(source, enqueue, *, client=None):
     if not eligible(source):
         return 'working_or_blocked'
     client = client or plan._client(); task = source['task_id']
-    operation = str(uuid5(NAMESPACE_URL, 'owner-plan-render-recovery:' + task))
+    if not _prior_preparation_allows(client, task):
+        return 'repair_preparing_or_stopped'
+    operation = str(uuid5(NAMESPACE_URL, 'owner-plan-render-recovery:v2:' + task))
     claim = {'version': 1, 'source_task_id': task, 'task_id': operation,
              'source_sha256': _fingerprint(source)}
     # A lost ACK cannot authorize a second queue send.
@@ -96,6 +99,36 @@ def schedule(source, enqueue, *, client=None):
     except Exception:
         return 'repair_dispatch_uncertain'
     return 'repair_preparing'
+
+
+def _prior_preparation_allows(client, task):
+    """Only the known local v1 package-normalization error admits a new attempt.
+
+    Its worker failed before the story critic or any media/provider write.
+    Preserve the old execution/dispatch/terminal evidence. Unknown, completed,
+    or later failures cannot obtain a second provider request by upgrading.
+    """
+    old = client.get(LEGACY_PREFIX + 'dispatch:' + task)
+    if old is None:
+        return True
+    if client.exists(LEGACY_PREFIX + 'record:' + task):
+        return False
+    dispatch = plan._object(old)
+    status = plan._object(client.get(LEGACY_PREFIX + 'status:' + task))
+    if status != {'state': 'stopped', 'error_type': 'ContentPlanError'}:
+        return False
+    execution = client.get(LEGACY_PREFIX + 'execution:' + task)
+    if execution != dispatch.get('task_id'):
+        return False
+    raw = client.get('celery-task-meta-' + execution)
+    if raw is None:
+        return False
+    terminal = plan._object(raw)
+    result = terminal.get('result') or {}
+    return bool(terminal.get('status') == 'FAILURE' and type(result) is dict
+        and result.get('exc_type') == 'ContentPlanError'
+        and 'File "/app/app/services/content_plan_recovery.py", line 140, in prepare' in (terminal.get('traceback') or '')
+        and dispatch.get('source_sha256') == _fingerprint(_source(client, task)))
 
 
 def _stored(client, key, digest, size, destination, maximum):
@@ -127,6 +160,10 @@ def prepare(task, work):
     candidate = load_voice_retry_candidate(task, work.name.split('_attempt_')[0],
                                             source['audio_candidate_checkpoint'], work)
     original, voice = candidate['package'], candidate['voice_result']
+    # The loader adds the joined narration for downstream callers. Durable
+    # candidate manifests intentionally contain only the canonical package.
+    canonical = assets._candidate_package(original)
+    _require(plan._sha(canonical) == source['audio_candidate_checkpoint']['package_sha256'])
     _require(len(original['scenes']) == 6)
     object_store = storage._client(); generated = {}
     for ordinal, pointer in enumerate(journal['entries']):
@@ -137,7 +174,7 @@ def prepare(task, work):
                                 pointer['manifest_size'], work / f'generated-{ordinal}.json', assets.MAX_MANIFEST_BYTES)
         manifest = json.loads(manifest_path.read_text())
         index = manifest['scene_index']; _require(type(index) is int and 0 <= index < 6)
-        _require(manifest['source_task_id'] == task and manifest['package'] == original
+        _require(manifest['source_task_id'] == task and manifest['package'] == canonical
             and manifest['candidate_package_sha256'] == source['audio_candidate_checkpoint']['package_sha256']
             and manifest['audio']['sha256'] == candidate['audio_sha256']
             and manifest['raw']['key'] == pointer['raw_key']
@@ -158,7 +195,7 @@ def prepare(task, work):
         _require(type(encoded) is str and hashlib.sha256(encoded.encode()).hexdigest() == pointer['sha256'])
         record = json.loads(_cipher().decrypt(encoded.encode()))
         scope = record['scope']
-        _require(scope['context'] == context and scope['package'] == original
+        _require(scope['context'] == context and scope['package'] == canonical
             and record['status'] == 'unapproved_stock_pool' and record['qa_approved'] is False)
         from app.services.included_stock_pool import _manifest
         _manifest(record, scope)

@@ -274,6 +274,11 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     )
     explicit_scene_count = _explicit_scene_count_from_brief(requested_brief)
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
+    from app.services.commissioning_longform import active
+    if duration_minutes == 3 and options.get('content_plan_item_id') and active():
+        explicit_scene_count = 30
+        target_words = 315 if language == 'tr' else 360
+        min_words, max_words = target_words - 15, target_words + 15
     spoken_word_budget = _fresh_spoken_word_budget(
         duration_minutes, language, options, fresh_scheduled,
         exact_narration=(

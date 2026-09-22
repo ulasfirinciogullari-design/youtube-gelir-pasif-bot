@@ -154,24 +154,26 @@ def _mp3_layout(raw, *, max_encoded_seconds=32):
     _require(frames > 0 and offset == len(raw))
 
 
-def _snapshot_audio(raw, suffix, *, allow_natural_short=False):
+def _snapshot_audio(raw, suffix, *, allow_natural_short=False, allow_commissioned_long=False):
     try:
-        _require(type(allow_natural_short) is bool)
+        _require(type(allow_natural_short) is bool and type(allow_commissioned_long) is bool)
         maximum = NATURAL_SHORT_MAX_SAMPLES if allow_natural_short else WHISPER_MAX_SAMPLES
+        if allow_commissioned_long:
+            maximum = 240 * _SAMPLE_RATE
         _require(type(raw) is bytes and 0 < len(raw) <= WHISPER_MAX_AUDIO_BYTES)
         if suffix == '.wav':
             _wav_layout(raw, max_samples=maximum)
             demuxer, mime = 'wav', 'audio/wav'
         else:
             _require(suffix == '.mp3')
-            _mp3_layout(raw, max_encoded_seconds=42 if allow_natural_short else 32)
+            _mp3_layout(raw, max_encoded_seconds=242 if allow_commissioned_long else 42 if allow_natural_short else 32)
             demuxer, mime = 'mp3', 'audio/mpeg'
         # Decode beyond the acceptance bound, never truncate an accepted clip.
         # Only explicit commissioning/natural-prosody callers use the 40s bound.
         result = subprocess.run([
             'ffmpeg', '-v', 'error', '-nostdin', '-xerror', '-err_detect', 'explode',
             '-threads', '1', '-protocol_whitelist', 'pipe', '-f', demuxer, '-i', 'pipe:0',
-            '-map', '0:a:0', '-vn', '-sn', '-dn', '-t', '41' if allow_natural_short else '31', '-ac', '1', '-ar', str(_SAMPLE_RATE),
+            '-map', '0:a:0', '-vn', '-sn', '-dn', '-t', '241' if allow_commissioned_long else '41' if allow_natural_short else '31', '-ac', '1', '-ar', str(_SAMPLE_RATE),
             '-c:a', 'pcm_s16le', '-threads', '1', '-f', 's16le', 'pipe:1',
         ], input=raw, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=10, check=True)
         pcm = result.stdout
@@ -184,7 +186,7 @@ def _snapshot_audio(raw, suffix, *, allow_natural_short=False):
         raise SpendBlocked('spend_request_not_priced') from None
 
 
-def inspect_bounded_short_audio(raw: bytes, mime_type: str, *, allow_natural_short=False) -> dict:
+def inspect_bounded_short_audio(raw: bytes, mime_type: str, *, allow_natural_short=False, allow_commissioned_long=False) -> dict:
     """Validate complete original Short bytes without uploading or rewriting them.
 
     Both native audio reviewers use the same strict container walk and full
@@ -193,7 +195,8 @@ def inspect_bounded_short_audio(raw: bytes, mime_type: str, *, allow_natural_sho
     """
     _require(type(mime_type) is str and mime_type in {'audio/mpeg', 'audio/wav'})
     suffix = '.mp3' if mime_type == 'audio/mpeg' else '.wav'
-    return _snapshot_audio(raw, suffix, allow_natural_short=allow_natural_short).descriptor({})['audio']
+    return _snapshot_audio(raw, suffix, allow_natural_short=allow_natural_short,
+                           allow_commissioned_long=allow_commissioned_long).descriptor({})['audio']
 
 
 def _quote(fields):
@@ -208,7 +211,8 @@ def _quote(fields):
     return SpendQuote('openai', 'whisper-1', 6000, WHISPER_PRICE_REVISION)
 
 
-def _json_payload(raw):
+def _json_payload(raw, *, maximum_seconds=60):
+    _require(type(maximum_seconds) is int and maximum_seconds in (60, 240))
     def pairs(values):
         result = {}
         for key, value in values:
@@ -232,7 +236,7 @@ def _json_payload(raw):
             or type(payload.get('language')) is not str
             or not 1 <= len(payload['language'].encode('utf-8')) <= 128
             or type(payload.get('duration')) not in (int, float)
-            or not math.isfinite(payload['duration']) or not 0 <= payload['duration'] <= 60
+            or not math.isfinite(payload['duration']) or not 0 <= payload['duration'] <= maximum_seconds
             or type(payload.get('words')) is not list or len(payload['words']) > 2048):
         raise ValueError
     for item in payload['words']:
@@ -241,7 +245,7 @@ def _json_payload(raw):
                 or len(item['word'].encode('utf-8')) > 4096
                 or any(type(item[name]) not in (int, float) or not math.isfinite(item[name])
                        for name in ('start', 'end'))
-                or not 0 <= item['start'] <= item['end'] <= 60):
+                or not 0 <= item['start'] <= item['end'] <= maximum_seconds):
             raise ValueError
     if payload['text'].strip() and not payload['words']:
         raise ValueError
@@ -250,12 +254,12 @@ def _json_payload(raw):
         usage = payload['usage']
         if (type(usage) is not dict or set(usage) != {'type', 'seconds'}
                 or usage['type'] != 'duration' or type(usage['seconds']) is not int
-                or not 0 <= usage['seconds'] <= 60):
+                or not 0 <= usage['seconds'] <= maximum_seconds):
             raise ValueError
     return payload
 
 
-def _post_bounded(snapshot, fields, headers):
+def _post_bounded(snapshot, fields, headers, *, maximum_seconds=60):
     if not spending.enforcement_enabled():
         raise SpendBlocked('spend_not_enabled')
     with httpx.stream(
@@ -273,7 +277,7 @@ def _post_bounded(snapshot, fields, headers):
             chunks.append(chunk)
         raw = b''.join(chunks)
         try:
-            _json_payload(raw)
+            _json_payload(raw, maximum_seconds=maximum_seconds)
         except Exception:
             raise WhisperTranscriptionError('whisper_response_invalid') from None
         # Keep transcript evidence while discarding transport URLs/auth/cookies.

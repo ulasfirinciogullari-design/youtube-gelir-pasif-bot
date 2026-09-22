@@ -66,7 +66,14 @@ def paid_credit_post(sender, url, kwargs):
             raise SpendBlocked('credit_actual_binding_mismatch')
 
         context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
-        if context['kind'] != 'shorts':
+        if context['kind'] == 'long':
+            from app.services.commissioning_longform import authorize
+            with foundation.client.pipeline() as pipe:
+                authorize(pipe, context)
+                pipe.multi(); pipe.ping()
+                if pipe.execute() != [True]:
+                    raise SpendBlocked('credit_production_context_invalid')
+        elif context['kind'] != 'shorts':
             raise SpendBlocked('credit_production_context_invalid')
         fingerprint = runtime._request_fingerprint(
             context, prepared.provider, prepared.operation, prepared.payload,
@@ -79,6 +86,8 @@ def paid_credit_post(sender, url, kwargs):
             'source_connection_id': context['connection_id'], 'request_sha256': fingerprint,
             'route': prepared.route, 'model': prepared.model, 'voice_id': prepared.voice_id,
         }
+        if context['kind'] == 'long':
+            intent['production_kind'] = 'long'
         actual = {'actual_account_sha256': binding['account_sha256'],
                   'actual_credential_sha256': prepared.credential_sha256}
         receipt = _reserve_when_available(ledger, intent, context, actual)

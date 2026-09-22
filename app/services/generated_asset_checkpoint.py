@@ -95,15 +95,20 @@ def persist_generated_asset_candidate(
     changed, and no generation/reviewer/renderer/YouTube API is called.
     """
     try:
+        longform = bool(isinstance(options, dict) and options.get('content_plan_item_id')
+            and options.get('format') == 'landscape' and duration_minutes == 3)
+        if longform:
+            from app.services.commissioning_longform import active
+            _require(active())
         _require(isinstance(task_id, str) and str(UUID(task_id)) == task_id
                  and isinstance(options, dict) and options.get('mode') == 'production'
-                 and options.get('format') == 'shorts'
-                 and type(duration_minutes) in (int, float) and duration_minutes == 0.5
+                 and (longform or options.get('format') == 'shorts' and duration_minutes == 0.5)
+                 and type(duration_minutes) in (int, float)
                  and isinstance(package, dict) and isinstance(voice_result, dict)
                  and isinstance(visual_spec, dict) and phase in PHASES)
         clean_package = _candidate_package(package)
         count = len(clean_package['scenes'])
-        _require(6 <= count <= 12 and type(scene_index) is int and 0 <= scene_index < count)
+        _require(6 <= count <= (32 if longform else 12) and type(scene_index) is int and 0 <= scene_index < count)
         clean_voice = _candidate_voice(voice_result, count)
         full_package = {key: value for key, value in package.items()
                         if key not in {'_recovered_generated_media', '_recovered_voice'}}

@@ -67,7 +67,10 @@ def _authorize(pipe, foundation, channel_id, context=None):
     _require(channel.get('id') == channel_id and channel.get('requires_reconnect') is not True
         and pipe.sismember(runtime._CHANNEL_INDEX, channel_id))
     if context is not None:
-        _require(context['kind'] == 'shorts' and context['channel_id'] == channel_id
+        if context['kind'] == 'long':
+            from app.services.commissioning_longform import authorize
+            authorize(pipe, context)
+        _require(context['kind'] in {'shorts', 'long'} and context['channel_id'] == channel_id
             and channel.get('connection_id') == context['connection_id']
             and pipe.hget(runtime.LEDGER_KEY, 'binding:' + context['lineage_id']) == _raw(context))
     key = getattr(runtime.settings, 'gemini_api_key', '')
@@ -111,11 +114,12 @@ def _visual_response_shape(schema):
 
 def _request(prepared, purpose):
     from app.services.abacus_router_adapter import PreparedRouterRequest
-    from app.services.abacus_router_audio_adapter import PreparedPrepaidAudioRequest, AudioReviewPurpose, schema_for_request
+    from app.services.abacus_router_audio_adapter import (PreparedPrepaidAudioRequest, PreparedLongformAudioRequest,
+        AudioReviewPurpose, schema_for_request)
     from app.services.abacus_router_schema_compat import schema_for_body
     from app.services.production_included_router import PURPOSES
-    _require(purpose in PURPOSES and type(prepared) in (PreparedRouterRequest, PreparedPrepaidAudioRequest))
-    is_audio = type(prepared) is PreparedPrepaidAudioRequest
+    _require(purpose in PURPOSES and type(prepared) in (PreparedRouterRequest, PreparedPrepaidAudioRequest, PreparedLongformAudioRequest))
+    is_audio = type(prepared) in (PreparedPrepaidAudioRequest, PreparedLongformAudioRequest)
     _require((is_audio and {'prosody': AudioReviewPurpose.PROSODY,
                            'blind_asr': AudioReviewPurpose.BLIND_ASR}.get(purpose) is prepared.purpose)
         or (not is_audio and purpose not in {'prosody', 'blind_asr'}))
@@ -302,6 +306,8 @@ def generate(prepared, purpose, ledger, foundation, context):
     if not selected():
         return UNHANDLED
     _require(not retained_router_review_active() and not retained_audio_router_review_active())
+    from app.services.abacus_router_audio_adapter import PreparedLongformAudioRequest
+    _require(type(prepared) is not PreparedLongformAudioRequest or context.get('kind') == 'long')
     included._LAST_OBSERVED.set(None)
     native, schema, ceiling = _request(prepared, purpose)
     try:

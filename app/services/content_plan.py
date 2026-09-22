@@ -273,7 +273,7 @@ def project(plan, *, client=None):
                     row.update(status='running', label='Üretiliyor')
             except (ContentPlanError, ValueError, TypeError):
                 row.update(status='blocked', label='Kayıt doğrulanıyor')
-        elif entry['format'] != 'shorts':
+        elif entry['format'] == 'animation':
             row.update(status='preparation', label='Üretim hazırlığı')
         elif not plan['enabled']:
             row.update(status='paused', label='Duraklatıldı')
@@ -299,10 +299,12 @@ def _reserve(channel_id, *, now=None):
     entry = next((v for v in plan['items'] if not client.exists(COMPLETION_PREFIX + v['id'])), None)
     if entry is None:
         return {'status': 'complete'}
-    if entry['format'] != 'shorts':
+    if entry['format'] == 'animation':
         return {'status': 'format_preparation'}
     # Never reserve a queue entry on a funding failure.
-    preflight_scheduled_production(channel_id, kind='shorts')
+    kind = entry['format']
+    duration = FORMATS[kind][1]
+    preflight_scheduled_production(channel_id, kind=kind)
     key, dispatch_key = PLAN_PREFIX + channel_id, DISPATCH_PREFIX + entry['id']
     profile_key, channel_key = production.PROFILE_PREFIX + channel_id, production.OAUTH_CHANNEL_PREFIX + channel_id
     credential_key = production.OAUTH_CREDENTIAL_PREFIX + channel_id
@@ -332,7 +334,12 @@ def _reserve(channel_id, *, now=None):
         language = profile.get('default_language'); _require(language in {'tr', 'en'})
         identity = str(profile.get('channel_identity') or '').strip()[:240]
         brief = entry['brief'] + ('\n\nChannel editorial direction: ' + identity if identity else '')
-        options = {'mode': 'production', 'format': 'shorts', 'workflow': 'auto',
+        if entry['format'] == 'long':
+            brief += (f'\nProduction direction: EXACTLY 30 scenes. Each scene has 8-{12 if language == "tr" else 14} spoken words, '
+                      'one natural sentence and one concrete visual action. Maintain a continuous '
+                      'three-minute documentary arc, with an opening question and a clear final answer. '
+                      'Avoid listicle structure, generic closing advice and unaudited current claims.')
+        options = {'mode': 'production', 'format': 'landscape' if kind == 'long' else 'shorts', 'workflow': 'auto',
                    'content_style': 'documentary', 'pace': 'balanced', 'visual_mix': 'real_first',
                    'music': 'off', 'subtitles': 'sidecar', 'quality_threshold': 86,
                    'reference_url': None, 'production_scheduled': True,
@@ -341,7 +348,7 @@ def _reserve(channel_id, *, now=None):
                    'production_profile_revision': profile['profile_revision'],
                    'content_plan_item_id': entry['id']}
         route = profile.get('route_label') or channel_id
-        spec = {'topic': brief, 'duration_minutes': .5, 'language': language, 'channel_id': route, **options}
+        spec = {'topic': brief, 'duration_minutes': duration, 'language': language, 'channel_id': route, **options}
         instant = datetime.fromtimestamp(now, timezone.utc).isoformat()
         job = {'task_id': task, 'kind': 'render', 'parent_id': None, 'spec': spec, 'state': 'PENDING',
                'stage': 'queued', 'progress': 0, 'message': 'Yayın planındaki sıradaki bölüm hazırlanıyor.',
@@ -357,7 +364,7 @@ def _reserve(channel_id, *, now=None):
         _require(response[0:2] == [True, True] and len(response) == 4 and response[-1] is True,
                  'plan_dispatch_uncertain')
         return {'status': 'reserved', 'task_id': task, 'item_id': entry['id'],
-                'args': (brief, .5, language, route, options, None)}
+                'args': (brief, duration, language, route, options, None)}
 
 
 def maintain(profiles, enqueue, *, repair_enqueue=None):

@@ -3592,6 +3592,12 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         calibrated_short_words=calibrated_short_words,
         spoken_word_budget=spoken_word_budget,
     )
+    from app.services.commissioning_longform import active
+    commissioned_long = duration_minutes == 3 and options.get('content_plan_item_id') and active()
+    if commissioned_long:
+        immutable_scene_count = 30
+        target_words = 315 if language == 'tr' else 360
+        min_words, max_words = target_words - 15, target_words + 15
     exact_scene_count = immutable_scene_count is not None
     target_scenes = (
         immutable_scene_count
@@ -3655,6 +3661,11 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
     language_name = 'Turkish' if language.lower().startswith('tr') else language
 
     def short_preview_issues(candidate: dict) -> list[str]:
+        if commissioned_long:
+            limit = 12 if language == 'tr' else 14
+            return [f'Documentary scene {index + 1} must contain 8-{limit} spoken words for one continuous shot.'
+                    for index, scene in enumerate(candidate.get('scenes') or [])
+                    if not 8 <= _word_count(str(scene.get('narration') or '')) <= limit]
         if duration_minutes > 0.6:
             return []
         budget_issues = _short_preview_scene_budget_issues(
@@ -4004,4 +4015,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
 
     if delivery_requested(options, duration_minutes):
         out['delivery_plan'] = bind_delivery_plan(out)
+    if commissioned_long:
+        from app.services.commissioning_longform import review_story
+        out = review_story(out, topic, language)
     return out

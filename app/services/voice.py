@@ -923,6 +923,8 @@ def synthesize_scene_sequence(
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
     short_preview = bool(target_seconds and 0 < target_seconds <= 40)
+    from app.services.commissioning_longform import active
+    continuous_long = target_seconds == 180 and active()
     turkish_short_preview = _use_turkish_short_preview_profile(
         language,
         target_seconds,
@@ -944,7 +946,7 @@ def synthesize_scene_sequence(
     removed_silence_seconds = 0.0
     compacted_boundary_pause_count = 0
     compacted_trailing_silence = False
-    if short_preview:
+    if short_preview or continuous_long:
         narration, spans = _join_scene_narration(spoken)
         timestamp_options = {
             'speed': selected_speed,

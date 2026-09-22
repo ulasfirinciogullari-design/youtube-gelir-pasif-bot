@@ -95,7 +95,9 @@ def render_page(channels, selected, view, *, notice='', error=False):
         '<label for="after-queue">Bu sıra tamamlanınca</label><select id="after-queue" name="after_queue">'
         + ''.join(f'<option value="{key}"'+(' selected' if key == after else '')+f'>{label}</option>' for key,label in [('pause','Yeni planımı bekle'),('auto_shorts','Otomatik Shorts ile devam et')])
         + '</select><button type="submit">Ayarları kaydet</button><p class="save-note">Duraklatma yeni işleri durdurur; başlamış üretimi iptal etmez.</p></form></section>')
-    options = ''.join(f'<option value="{key}">{label}</option>' for key,(label,_) in plans.FORMATS.items())
+    format_labels = {'shorts': 'Shorts · yaklaşık 30 saniye', 'long': 'Uzun video · 3 dakika',
+                     'animation': 'Animasyon pilotu · hazırlık sırasına ekle'}
+    options = ''.join(f'<option value="{key}">{label}</option>' for key,label in format_labels.items())
     create = (f'<section class="planner-box" id="add-video"><h2>Sıraya içerik ekle</h2><form method="post" action="/studio/plan/add">{hidden}'
         '<label for="plan-title">Video başlığı veya fikir</label><input id="plan-title" name="title" maxlength="140" required placeholder="Örn. Bir banknotun gizli yolculuğu">'
         '<label for="plan-format">Format</label><select id="plan-format" name="format">'+options+'</select>'
