@@ -19,6 +19,8 @@ PREFIX = 'youtube_studio:commissioning:v1:whisper:'
 POLICY_KEY = PREFIX + 'policy'
 JOURNAL_KEY = PREFIX + 'journal'
 COST_MICRO = 6000
+# Transaction/storage capacity, not the owner's deferred operating budget.
+CONTINUOUS_REQUEST_CAPACITY = 7440
 
 
 def _require(value, code='commissioning_audio_invalid'):
@@ -83,8 +85,29 @@ def _read(pipe):
     journal = json.loads(pipe.get(JOURNAL_KEY))
     _require(type(journal) is dict and set(journal) == {'policy_sha256', 'requests'}
         and journal['policy_sha256'] == _hash(raw_policy) and type(journal['requests']) is dict
-        and len(journal['requests']) <= policy['max_requests'])
+        and len(journal['requests']) <= CONTINUOUS_REQUEST_CAPACITY)
+    from app.services.production_continuation import authority
+    old_count, proofs = 0, {}
+    for row in journal['requests'].values():
+        proof = row.get('continuation_authority_sha256')
+        if proof is None:
+            old_count += 1
+            continue
+        channel = row['context']['channel_id']
+        if channel not in proofs:
+            proofs[channel] = authority(pipe, channel, active=False)
+        _require(proofs[channel] is not None and proof == proofs[channel],
+            'commissioning_audio_continuation_unverified')
+    _require(old_count <= policy['max_requests'])
     return policy, journal
+
+
+def _capacity(pipe, policy, channel):
+    from app.services.production_continuation import authority
+    proof = authority(pipe, channel)
+    if proof is not None:
+        return CONTINUOUS_REQUEST_CAPACITY, CONTINUOUS_REQUEST_CAPACITY, proof
+    return policy['max_requests'], policy['max_per_day'], None
 
 
 def _check_context(pipe, policy, context, credential):
@@ -117,13 +140,16 @@ def _reserve(client, context, descriptor, credential):
                     return identity, previous['outcome']
                 now = _now().isoformat()
                 rows = list(journal['requests'].values())
-                _require(len(rows) < policy['max_requests'], 'commissioning_audio_setup_limit')
-                _require(sum(row['reserved_at'][:10] == now[:10] for row in rows) < policy['max_per_day'],
+                total, daily, proof = _capacity(pipe, policy, context['channel_id'])
+                _require(len(rows) < total, 'commissioning_audio_setup_limit')
+                _require(sum(row['reserved_at'][:10] == now[:10] for row in rows) < daily,
                     'commissioning_audio_daily_limit')
                 _require(sum(row['context']['lineage_id'] == context['lineage_id'] for row in rows)
                     < policy['max_per_lineage'], 'commissioning_audio_episode_limit')
                 journal['requests'][identity] = {'context': context, 'request': descriptor,
                     'reserved_at': now, 'max_list_cost_micro_usd': COST_MICRO, 'outcome': None}
+                if proof is not None:
+                    journal['requests'][identity]['continuation_authority_sha256'] = proof
                 pipe.multi(); pipe.set(JOURNAL_KEY, _raw(journal))
                 _require(pipe.execute() == [True], 'commissioning_audio_reservation_uncertain')
                 return identity, None
@@ -211,9 +237,12 @@ def status(client):
     with client.pipeline() as pipe:
         policy, journal = _read(pipe)
         rows = list(journal['requests'].values())
+        capacity = max(_capacity(pipe, policy, channel)[0] for channel in policy['channels'])
         pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
     return {'mode': 'commissioning', 'requests': len(rows),
         'unknown_requests': sum(row['outcome'] is None for row in rows),
         'reserved_list_cost_micro_usd': len(rows) * COST_MICRO,
-        'maximum_list_cost_micro_usd': policy['max_requests'] * COST_MICRO,
+        'maximum_list_cost_micro_usd': capacity * COST_MICRO,
+        'continuous_commissioning': capacity > policy['max_requests'],
+        'operating_budget_configured': False,
         'valid_until': policy['valid_until'], 'historical_cash_micro': None}

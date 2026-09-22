@@ -256,22 +256,41 @@ def retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, 
             seen_ids.clear(); seen_ids.update(value['seen_ids'])
             return
         pools, files, total = [], {}, 0
-        for row in scene_visuals:
+        selected = [[] for _ in scene_visuals]
+        candidates = [[] for _ in scene_visuals]
+        for scene_index, row in enumerate(scene_visuals):
             _require(type(row) is list and len(row) <= 3)
-            items = []
             for spec in row:
                 _require(type(spec) is dict and set(spec) == SPEC_FIELDS | {'path'})
                 source = Path(spec['path'])
                 _require(source.is_absolute() and source.suffix == '.mp4' and not source.is_symlink()
                     and source.resolve(strict=True) == source and stat.S_ISREG(source.stat().st_mode))
                 source.relative_to(root)
+                _spec({k: v for k, v in spec.items() if k != 'path'})
+                # No review has seen a fresh pool yet. An oversized stock
+                # alternative is unavailable, not a reason to lose the whole
+                # episode. Saved pools above still require their exact bytes.
+                size = source.stat().st_size
+                _require(size >= 1024)
+                if size > MAX_FILE:
+                    continue
+                candidates[scene_index].append((spec, source))
+            pools.append([])
+        # Give every scene a first candidate before retaining alternatives.
+        for candidate_index in range(3):
+            for scene_index, row in enumerate(candidates):
+                if candidate_index >= len(row):
+                    continue
+                spec, source = row[candidate_index]
                 digest, size = _digest(source)
-                total += size; _require(total <= MAX_TOTAL)
+                if total + size > MAX_TOTAL:
+                    continue
+                total += size
                 asset_key = 'included-stock-pools/v1/' + context['lineage_id'] + '/' + digest + '.mp4'
-                items.append({'spec': _spec({k: v for k, v in spec.items() if k != 'path'}),
+                pools[scene_index].append({'spec': _spec({k: v for k, v in spec.items() if k != 'path'}),
                               'sha256': digest, 'size': size, 'key': asset_key})
+                selected[scene_index].append(spec)
                 files[asset_key] = (source, digest, size)
-            pools.append(items)
         value = _manifest({'scope': scope, 'status': 'unapproved_stock_pool', 'qa_approved': False,
             'pools': pools, 'credits': deepcopy(credits), 'seen_ids': sorted(seen_ids)}, scope)
         for asset_key, (source, digest, size) in files.items():
@@ -281,6 +300,7 @@ def retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, 
         _store_manifest(client, task_id, context, key, encoded)
         _require(client.get(key) == encoded)
         _bookmark(client, task_id, context, key, encoded)
+        scene_visuals[:] = selected
     except Exception as error:
         # Exception messages and local/request paths may contain sensitive
         # details. Retain only fixed phase, exception class and code locations.

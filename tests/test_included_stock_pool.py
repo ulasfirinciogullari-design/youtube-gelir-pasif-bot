@@ -92,7 +92,7 @@ def test_unavailable_or_changed_saved_pool_never_regenerates_candidates(case, fa
     assert len(case.uploads) == 1
 
 
-@pytest.mark.parametrize('invalid', ['symlink', 'outside', 'generated', 'missing_scene', 'bad_id', 'over_cap'])
+@pytest.mark.parametrize('invalid', ['symlink', 'outside', 'generated', 'missing_scene', 'bad_id', 'truncated'])
 def test_invalid_pool_stops_before_upload_or_review(case, invalid, monkeypatch):
     data = inputs(case, 'first', b'A', 101)
     work, visuals, _, _ = data
@@ -103,7 +103,7 @@ def test_invalid_pool_stops_before_upload_or_review(case, invalid, monkeypatch):
     elif invalid == 'generated': visuals[0][0]['source_type'] = 'generated'
     elif invalid == 'missing_scene': visuals.clear()
     elif invalid == 'bad_id': visuals[0][0]['pexels_id'] = None
-    else: monkeypatch.setattr(pool, 'MAX_TOTAL', 1024)
+    else: Path(visuals[0][0]['path']).write_bytes(b'bad')
     with pytest.raises(SpendBlocked, match='stock_pool_unverified'): run(case, data)
     assert not case.uploads and not list(case.ledger.client.scan_iter(match=pool.PREFIX + '*'))
 

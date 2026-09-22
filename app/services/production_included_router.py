@@ -169,7 +169,7 @@ class IncludedRouterLedger:
             _require(key == self.identity(context, row['purpose'], row['request_sha256']))
             if 'continuation_authority_sha256' in row:
                 from app.services.production_continuation import authority
-                _require(type(self) is IncludedRouterLedger
+                _require(self._supports_continuation()
                     and _hash(row['continuation_authority_sha256'])
                     and authority(pipe, context['channel_id'], active=False) == row['continuation_authority_sha256'])
             if row['outcome'] is not None:
@@ -232,12 +232,15 @@ class IncludedRouterLedger:
         bounds and the bounded period journal. Prepaid model credits never
         inherit the included RouteLLM entitlement.
         """
-        if type(self) is IncludedRouterLedger:
+        if self._supports_continuation():
             from app.services.production_continuation import authority
             proof = authority(pipe, channel_id)
             if proof is not None:
                 return policy.get('max_requests_total', 7440), proof
         return policy['max_requests_per_day'], None
+
+    def _supports_continuation(self):
+        return type(self) is IncludedRouterLedger
 
     def initialize(self, policy):
         policy = self.validate_policy(policy, self.clock())

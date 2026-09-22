@@ -56,6 +56,11 @@ class PrepaidAudioLedger(IncludedRouterLedger):
     purposes = frozenset({'blind_asr', 'prosody'})
     validate_policy = staticmethod(validate_policy)
 
+    def _supports_continuation(self):
+        # Lift only the trial-day request ceiling under the owner's setup
+        # authority. Prepaid funding, total capacity and no-top-up checks stay.
+        return type(self) is PrepaidAudioLedger
+
     def recover_saved_response(self, context, purpose, prepared, *, failure_record_sha256):
         """Explicit local recovery of a pinned HTTP-200 diagnostic, never a resend.
 
