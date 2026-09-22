@@ -131,7 +131,18 @@ end
 if due > tonumber(ARGV[5]) then return 'not_due' end
 local claims = active_claims(redis.call('GET', KEYS[3]))
 if not claims then return 'invalid_state' end
-if #claims >= 2 then return 'active' end
+local owner_raw = redis.call('GET', KEYS[10])
+local owner_count = 0
+if owner_raw then
+  local valid_owner, owner = pcall(cjson.decode, owner_raw)
+  if not valid_owner or type(owner) ~= 'table' then return 'invalid_state' end
+  for channel_id, item in pairs(owner) do
+    if type(channel_id) ~= 'string' or type(item) ~= 'string' then return 'invalid_state' end
+    if channel_id == ARGV[7] then return 'active' end
+    owner_count = owner_count + 1
+  end
+end
+if #claims + owner_count >= 2 then return 'active' end
 for _, claim in ipairs(claims) do
   if claim['channel_id'] == ARGV[7] or claim['task_id'] == ARGV[9] then return 'active' end
 end
@@ -484,6 +495,9 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         raise ChannelProductionError('production_time_invalid')
     try:
         client = _redis()
+        from app.services.content_plan import owns_channel
+        if owns_channel(channel_id, client=client):
+            return {'status': 'owner_content_plan'}
         profile_raw = client.get(PROFILE_PREFIX + channel_id)
         persisted_profile = json.loads(profile_raw or '{}')
         if persisted_profile != profile:
@@ -544,10 +558,11 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         }
         active = json.dumps({'channel_id': channel_id, 'task_id': task_id}, sort_keys=True)
         status = client.eval(
-            _RESERVE, 9, PROFILE_PREFIX + channel_id,
+            _RESERVE, 10, PROFILE_PREFIX + channel_id,
             CHANNEL_STATE_PREFIX + channel_id, ACTIVE_KEY, JOB_PREFIX + task_id,
             OAUTH_CHANNEL_PREFIX + channel_id, OAUTH_CREDENTIAL_PREFIX + channel_id,
             OAUTH_CHANNEL_INDEX, JOB_INDEX, DISPATCH_CURSOR_KEY,
+            'youtube_studio:content_plan:v1:active',
             profile_raw, cursor, _prefix_digest(topics[:cursor]),
             _prefix_digest(topics[:cursor + 1]), now, now + interval * 3600,
             channel_id, connection_id, task_id, active,

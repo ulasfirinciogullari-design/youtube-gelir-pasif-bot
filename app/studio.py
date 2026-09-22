@@ -2375,6 +2375,7 @@ def _history_archive(
 def _nav(active: str) -> str:
     primary_links = [
         ('studio', '/studio', 'Genel bakış'),
+        ('plan', '/studio/plan', 'Yayın planı'),
         ('review', '/studio/history?status=previews', 'Önizlemeler'),
         ('history', '/studio/history?status=library', 'Videolar'),
         ('youtube', '/studio/youtube', 'Kanallar'),
@@ -2692,7 +2693,7 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     body = (
         '<div class="hero overview-hero"><div class="hero-copy"><div class="eyebrow">YOUTUBE STUDIO</div>'
         '<h1>Kontrol panelin</h1><p class="muted">Üretim, yayınlar ve bütçe. Hepsi tek yerde.</p></div>'
-        '<a class="btn" href="/studio/history?status=previews">Önizlemeleri aç</a></div>'
+        '<a class="btn" href="/studio/plan">Yayın planını aç</a></div>'
         '<div class="overview-top"><section class="automation-card" aria-label="Otomasyon durumu">'
         '<span class="section-kicker">OTOMASYON</span><h2>' + heading + '</h2><p>' + detail + '</p>'
         '<ol class="workflow-strip" aria-label="Üretim akışının aşamaları"><li>Üretim</li><li>Kalite kontrolü</li><li>Yayın</li><li>Sonraki bölüm</li></ol>'

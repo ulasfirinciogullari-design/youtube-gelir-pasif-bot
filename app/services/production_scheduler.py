@@ -260,6 +260,10 @@ def _reserve_preparation(channel_id, expected_revision, expected_connection, enq
     with client.pipeline() as pipe:
         pipe.watch(PROFILE_PREFIX + channel_id, OAUTH_CHANNEL_PREFIX + channel_id,
                    CHANNEL_STATE_PREFIX + channel_id, PENDING_PREFIX + channel_id, DAILY_PREFIX + channel_id + ':' + day)
+        from app.services.content_plan import PLAN_PREFIX, owns_channel
+        pipe.watch(PLAN_PREFIX + channel_id)
+        if owns_channel(channel_id, client=pipe):
+            return {'status': 'owner_content_plan'}
         slot, blocked = _next_preparation_slot(pipe, channel_id, day, now)
         if blocked:
             return {'status': blocked}
@@ -341,6 +345,10 @@ def maintain_production_series(profiles, connections, enqueue_preparation, *, no
         channel_id = hint['channel_id']
         try:
             client = _client()
+            from app.services.content_plan import owns_channel
+            if owns_channel(channel_id, client=client):
+                results[channel_id] = 'owner_content_plan'
+                continue
             profile, channel, _, remaining = _current(client, channel_id)
             _require(profile['profile_revision'] == hint.get('profile_revision')
                      and channel['connection_id'] == linked[channel_id].get('connection_id'))

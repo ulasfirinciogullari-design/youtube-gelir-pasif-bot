@@ -16,13 +16,15 @@ from test_production_series_promotion import case, _load, _snapshot, _write, NOW
 @pytest.fixture
 def controller(case):
     from app.services.production_continuation import authority, MAX_DAILY_IDENTITIES
+    from app.services.content_plan import owns_channel, PLAN_PREFIX
     ns = {**case.ns, **{key: case.prep[key] for key in (
         'PENDING_PREFIX', 'DAILY_PREFIX', 'PREPARATION_DISPATCH_PREFIX', '_FLAGS', '_context', '_digest', '_execution_guard',
         '_execution_keys', '_json', '_object', '_planning_channel_identity', '_preparation_binding',
         '_preparation_key', '_preparation_slot', '_require', 'prepare_next_series')},
         '_dispatch_profile_order': case.scheduler._dispatch_profile_order,
         'promote_ready_series': case.ns['promote_ready_series'],
-        'authority': authority, 'MAX_DAILY_IDENTITIES': MAX_DAILY_IDENTITIES}
+        'authority': authority, 'MAX_DAILY_IDENTITIES': MAX_DAILY_IDENTITIES,
+        'owns_channel': owns_channel, 'PLAN_PREFIX': PLAN_PREFIX}
     case.prep['authority'] = authority
     _load('app/services/production_scheduler.py', ns)
     ns['_client'] = lambda: case.client

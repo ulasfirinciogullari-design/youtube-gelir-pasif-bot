@@ -111,6 +111,8 @@ def production_tick() -> dict:
         recovered = reconcile_public_retry_deliveries(linked_profiles)
         from app.services.production_quality_holds import maintain_quality_holds
         quality_holds = maintain_quality_holds(linked_profiles)
+        from app.services.content_plan import maintain as maintain_content_plan
+        content_plan = maintain_content_plan(linked_profiles, run_video_pipeline.apply_async)
         dispatched = dispatch_due_productions(
             profiles,
             connections,
@@ -124,7 +126,8 @@ def production_tick() -> dict:
             maintenance = {'status': 'unavailable', 'channels': {}}
         return {**dispatched, 'public_retry_reconciliation': recovered,
                 'quality_holds': quality_holds, 'series_maintenance': maintenance,
-                'native_credit_period': credit_period, 'quality_hold_period': hold_period}
+                'native_credit_period': credit_period, 'quality_hold_period': hold_period,
+                'content_plan': content_plan}
     except ChannelProductionError:
         return {'status': 'blocked', 'reason': 'production_state_unavailable'}
     except Exception:

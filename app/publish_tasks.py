@@ -594,6 +594,8 @@ def publish_video_pipeline(
                 raise MetadataValidationError('Publish plan source changed')
             if publish_plan['target_channel_id'] != target_channel_id:
                 raise MetadataValidationError('Publish plan target changed')
+            from app.services.content_plan import check_publication
+            check_publication(source, publish_plan)
             title = publish_plan['title']
             description = publish_plan['description']
             tags = publish_plan['tags']
@@ -786,6 +788,12 @@ def publish_video_pipeline(
         scheduled_publish_at = None
         if release_mode in {'public', 'scheduled'}:
             editorial_error = None
+            if 'content_plan_item_id' in (source.get('spec') or {}):
+                from app.services.content_plan import check_publication
+                try:
+                    check_publication(get_job(source_task_id), publish_plan)
+                except Exception:
+                    editorial_error = 'content_plan_publication_changed'
             if editorial_candidate:
                 try:
                     # Fresh stored source/receipt/OAuth/profile and the same
@@ -809,7 +817,11 @@ def publish_video_pipeline(
                     and isinstance(youtube_response.get('status'), dict)
                     and youtube_response['status'].get('containsSyntheticMedia') is False
                 ) else None)
-                or caption_error_code
+                or (caption_error_code if not (
+                    'content_plan_item_id' in (source.get('spec') or {})
+                    and publish_plan.get('caption_required') is False
+                    and editorial_error is None
+                ) else None)
                 or thumbnail_error_code
                 or ('thumbnail_required' if require_thumbnail and not thumbnail_result else None)
             )

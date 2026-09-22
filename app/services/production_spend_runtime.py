@@ -45,6 +45,10 @@ def spending_task(function):
         token = _TASK_ID.set(getattr(self.request, 'id', None))
         try:
             if function.__name__ == 'run_video_pipeline':
+                queue_options = kwargs.get('options', args[4] if len(args) >= 5 else None)
+                if isinstance(queue_options, dict) and queue_options.get('content_plan_item_id'):
+                    from app.services.content_plan import observe_execution
+                    observe_execution(self.request)
                 from app.services.production_worker_execution import observe_start
                 observe_start(self.request)
             return function(self, *args, **kwargs)
