@@ -21,6 +21,7 @@ REVIEW_ROOT = PREFIX + 'visual_review_root:'
 RECOVERY_ROOT = PREFIX + 'availability_recovery_root:'
 RENDER_ROOT = PREFIX + 'render_completion_root:'
 DEFERRED_ROOT = PREFIX + 'deferred_quota_root:'
+WINDOW_ROOT = PREFIX + 'cut_window_root:'
 SOURCE_ERROR = 'Long documentary failed independent source or editorial review'
 QUOTA_ERROR = 'commissioning_video_provider_rejected'
 VISUAL_ERROR = 'Final visual quality gate rejected: '
@@ -60,7 +61,8 @@ def _prior_completion(client, source):
     repair = bool(claim['evidence'].get('review_of'))
     render_failure = source.get('failure_stage') == 'render' and source.get('error') == RENDER_ERROR
     deferred = bool(mode == 'sources' and claim['evidence'].get('recovery_of'))
-    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('render_of')
+    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('window_of')
+        and (not claim['evidence'].get('render_of') or render_failure)
         and not claim['evidence'].get('deferred_of')
         and (not claim['evidence'].get('recovery_of') or render_failure or deferred)
         and claim.get('source_task_id') == parent and claim.get('task_id') == operation(parent)
@@ -73,8 +75,10 @@ def _prior_completion(client, source):
         plan._require(mode == 'quota' and claim['evidence'].get('recovery_of'))
         terminal = plan._object(client.get('celery-task-meta-' + source['task_id']))
         trace = terminal.get('traceback') or ''
-        plan._require(all(marker in trace for marker in ('in render_video\n', 'in normalize_clip\n',
-            'in render_attempt\n', 'RuntimeError: Normalized clip frame gate rejected segment: 150 frames for 151 frame target\n'))
+        markers = (('RuntimeError: Generated clip is too short for a single-pass scene: 8.000s source for 6.867s segment\n',)
+            if claim['evidence'].get('render_of') else ('in render_attempt\n',
+            'RuntimeError: Normalized clip frame gate rejected segment: 150 frames for 151 frame target\n'))
+        plan._require(all(marker in trace for marker in ('in render_video\n', 'in normalize_clip\n', *markers))
             and 'ConnectionError' not in trace and 'TimeoutError' not in trace)
         return claim
     if source['error'] == LOCAL_ERROR:
@@ -110,7 +114,7 @@ def _prior_completion(client, source):
 
 
 def _root_key(root, proof):
-    return (DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
+    return (WINDOW_ROOT if proof.get('window_of') else DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
             else REVIEW_ROOT if proof.get('review_of') else ROOT) + root
 
 
@@ -361,6 +365,8 @@ def checked(client, task, *, claimed=False):
                 _quota_ready(client, source)
         if source['error'] == RENDER_ERROR:
             proof['render_of'] = source['parent_id']
+            if prior['evidence'].get('render_of'):
+                proof['window_of'] = source['parent_id']
     return source, root, proof
 
 

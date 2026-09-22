@@ -437,8 +437,10 @@ def normalize_clip(
     duration_probe = (getattr(media_duration, '__wrapped__', media_duration)
                       if _recipe_recorder is not None else media_duration)
     source_duration = max(0.1, duration_probe(input_path))
+    speed = _clip_speed(visual_spec, source_duration, duration, shot_index)
     fraction = _spec_start_fraction(visual_spec)
-    max_start = max(0.0, source_duration - duration - 0.08)
+    # The selected window must include the footage consumed at playback speed.
+    max_start = max(0.0, source_duration - duration * speed - 0.08)
     desired_center = source_duration * fraction
     start_seconds = min(
         max_start,
@@ -467,7 +469,6 @@ def normalize_clip(
             f'{center_x}:(ih-{output_height})',
         ]
     crop_xy = offsets[shot_index % len(offsets)]
-    speed = _clip_speed(visual_spec, source_duration, duration, shot_index)
     segment_frames = max(1, int(round(duration * FPS)))
     forbid_loop = _spec_forbids_loop(visual_spec)
     required_source_end = start_seconds + duration * speed + 0.04
