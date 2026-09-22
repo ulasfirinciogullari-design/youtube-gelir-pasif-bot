@@ -545,6 +545,11 @@ def build_publish_plan(
     series_id = str(profile.get('series_id') or '')
     series_total = int(profile.get('series_total') or 0)
     series_name = _one_line(profile.get('series_name'), 100)
+    series_display_receipt = None
+    if result.get('quality_disposition') == 'editorial_review_pass':
+        from app.services.editorial_series_display import get_series_display_receipt
+
+        series_display_receipt = get_series_display_receipt(source_job, profile)
     if series_id:
         series_number = reserve_series_number(
             str(profile.get('channel_id') or ''),
@@ -552,7 +557,9 @@ def build_publish_plan(
             source_task_id,
             total=series_total,
         )
-        fraction = f'{series_number}/{series_total}' if series_total else str(series_number)
+        displayed_number = (series_display_receipt['intent']['number']
+                            if series_display_receipt else series_number)
+        fraction = f'{displayed_number}/{series_total}' if series_total else str(displayed_number)
         title = _truncate_title(title, f'({fraction})')
         series_line = f'{series_name or series_id} · {fraction}'
         description = f'{series_line}\n\n{description}'
@@ -645,6 +652,17 @@ def build_publish_plan(
             editorial_review_id=result.get('editorial_review_id'),
             editorial_review_sha256=result.get('editorial_review_sha256'),
         )
+    if series_display_receipt:
+        plan['series_display'] = {
+            **{k: series_display_receipt['intent'][k] for k in ('number', 'total', 'reason', 'predecessor_video_id')},
+            'receipt_sha256': series_display_receipt['receipt_sha256'],
+        }
+    if result.get('quality_disposition') == 'editorial_review_pass':
+        from app.services.editorial_series_display import validate_series_display_plan
+
+        # Even an omitted display field must agree with the server receipt;
+        # this closes a concurrent plain-plan build around an owner correction.
+        validate_series_display_plan(source_job, plan)
     return validate_publish_plan(plan)
 
 
@@ -688,4 +706,12 @@ def validate_publish_plan(value: dict[str, Any]) -> dict[str, Any]:
         plan['publish_at'] = publish_at.astimezone(timezone.utc).isoformat()
     else:
         plan['publish_at'] = None
+    if 'series_display' in plan:
+        from app.services.studio_state import get_job
+        from app.services.editorial_series_display import validate_series_display_plan
+
+        try:
+            validate_series_display_plan(get_job(plan['source_task_id']), plan)
+        except Exception:
+            raise MetadataValidationError('Publish series display receipt is invalid') from None
     return plan
