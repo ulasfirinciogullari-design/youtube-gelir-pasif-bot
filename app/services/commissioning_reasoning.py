@@ -34,6 +34,10 @@ VISUAL_SCHEMA_PREFIX = (
     'this complete schema. Include every required field and explicit boolean; '
     'all bounds, enum values and uniqueItems constraints are validated locally.\n'
 )
+LONG_SCHEMA_PREFIX = ('GEMINI_LONG_EDITORIAL_COMPLETE_SCHEMA_V1\n'
+    'Return the complete documentary using every field and constraint below. '
+    'Exact scene counts, indices, enum values, types and all other bounds are '
+    'validated locally. Do not shorten the story or omit a scene.\n')
 
 
 def _require(condition, code='commissioning_reasoning_unverified'):
@@ -112,7 +116,29 @@ def _visual_response_shape(schema):
     return shape
 
 
-def _request(prepared, purpose):
+def _long_response_shape(schema):
+    """Bounded grammar for the observed long-director HTTP 400.
+
+    A 30-element nested bounded array was rejected. Keep all typed properties,
+    mandatory fields and string choices on the wire; enforce cardinalities and
+    numeric bounds against the unchanged full schema in the existing observer.
+    https://ai.google.dev/gemini-api/docs/structured-output#limitations
+    """
+    kind = schema['type']
+    _require(kind == ['string', 'null'] or type(kind) is str
+        and kind in {'object', 'array', 'string', 'number', 'integer', 'boolean', 'null'})
+    shape = {'type': deepcopy(kind)}
+    if kind == 'object':
+        shape.update(properties={k: _long_response_shape(v) for k, v in schema['properties'].items()},
+            required=list(schema['required']), additionalProperties=False)
+    elif kind == 'array':
+        shape['items'] = _long_response_shape(schema['items'])
+    elif kind == 'string' and 'enum' in schema:
+        shape['enum'] = deepcopy(schema['enum'])
+    return shape
+
+
+def _request(prepared, purpose, *, long_form=False):
     from app.services.abacus_router_adapter import PreparedRouterRequest
     from app.services.abacus_router_audio_adapter import (PreparedPrepaidAudioRequest, PreparedLongformAudioRequest,
         AudioReviewPurpose, schema_for_request)
@@ -151,6 +177,9 @@ def _request(prepared, purpose):
         # New request identity; never replay an older provider reservation.
         native['generationConfig']['responseJsonSchema'] = _visual_response_shape(schema)
         parts.append({'text': VISUAL_SCHEMA_PREFIX + _raw(schema)})
+    elif long_form and purpose in {'editorial', 'story_review'}:
+        native['generationConfig']['responseJsonSchema'] = _long_response_shape(schema)
+        parts.append({'text': LONG_SCHEMA_PREFIX + _raw(schema)})
     # Prepared adapters already bounded and decoded every original image/audio.
     encoded = _raw(native)
     _require(len(encoded.encode()) <= 20_000_000)
@@ -309,7 +338,7 @@ def generate(prepared, purpose, ledger, foundation, context):
     from app.services.abacus_router_audio_adapter import PreparedLongformAudioRequest
     _require(type(prepared) is not PreparedLongformAudioRequest or context.get('kind') == 'long')
     included._LAST_OBSERVED.set(None)
-    native, schema, ceiling = _request(prepared, purpose)
+    native, schema, ceiling = _request(prepared, purpose, long_form=context.get('kind') == 'long')
     try:
         reservation = _reserve(foundation, ledger, context, prepared, purpose, native, ceiling)
     except SpendBlocked:

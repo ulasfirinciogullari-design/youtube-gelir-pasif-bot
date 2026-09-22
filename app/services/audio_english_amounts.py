@@ -6,6 +6,10 @@ _SCALES = {'thousand': 1000, 'million': 1_000_000,
 _CURRENCIES = {'dollar', 'dollars', 'cent', 'cents', 'euro', 'euros',
                'pound', 'pounds', 'krona', 'kronor', 'krone', 'kroner', 'lira', 'yen'}
 _QUALIFIERS = {'danish', 'swedish', 'norwegian', 'british', 'american', 'us', 'turkish'}
+_MEASUREMENTS = {'gram', 'grams', 'kilogram', 'kilograms', 'milligram', 'milligrams',
+    'meter', 'meters', 'metre', 'metres', 'centimeter', 'centimeters', 'centimetre', 'centimetres',
+    'millimeter', 'millimeters', 'millimetre', 'millimetres', 'liter', 'liters', 'litre', 'litres',
+    'watt', 'watts', 'volt', 'volts'}
 _SPELLING_STEMS = {'tokenis', 'organis', 'recognis', 'realis', 'specialis', 'standardis',
                    'optimis', 'capitalis', 'industrialis', 'globalis',
                    'prioritis', 'modernis', 'centralis', 'decentralis', 'privatis',
@@ -61,3 +65,34 @@ def currency_amount_unit(tokens, matches, value, index, parse_small, number_word
     if number is None or not 0 <= number * scale <= 10**15:
         return None
     return '\x00english_currency_amount:' + str(number * scale), end - index
+
+
+def measurement_amount_unit(tokens, matches, value, index, parse_small, number_words):
+    """Exact whole 0..999 measurement, including 'forty-five-gram headphones'.
+
+    The unit remains a separate compared token: no unit conversion, inferred
+    plural, bare count, sign, decimal, leading zero or malformed number list.
+    """
+    def numeric(token):
+        return token in number_words or _digits(token) is not None
+    if not numeric(tokens[index]):
+        return None
+    if index and (numeric(tokens[index - 1]) or tokens[index - 1] in {'minus', 'negative', 'plus'}):
+        return None
+    if matches[index].start() and value[matches[index].start() - 1] in '+-−±':
+        return None
+    end = index
+    while end < len(tokens) and end - index < 6 and (numeric(tokens[end]) or tokens[end] == 'and'):
+        end += 1
+    if end >= len(tokens) or tokens[end] not in _MEASUREMENTS:
+        return None
+    if any(not re.fullmatch(r'(?:\s+|[-\u2010\u2011])',
+            value[matches[pos].end():matches[pos + 1].start()]) for pos in range(index, end)):
+        return None
+    words = tokens[index:end]
+    number = _digits(words[0]) if len(words) == 1 else None
+    if number is None:
+        number = parse_small(words)
+    if number is None or not 0 <= number <= 999:
+        return None
+    return '\x00english_measurement_amount:' + str(number), end - index

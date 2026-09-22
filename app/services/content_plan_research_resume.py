@@ -37,7 +37,7 @@ def eligible(source):
         and (source.get('spec') or {}).get('content_plan_item_id'))
 
 
-def _provider_free(client, task):
+def _provider_free(client, task, *, known_reasoning=()):
     from app.services import production_spend_runtime as runtime, commissioning_reasoning as native
     from app.services import production_included_router as included
     from app.services.production_credit_ledger import CreditLedger
@@ -51,7 +51,7 @@ def _provider_free(client, task):
         _, router = included.IncludedRouterLedger(foundation)._read(pipe)
         key = native.PREFIX + 'lineage:' + task
         pipe.watch(key, runtime.LEDGER_KEY)
-        plan._require(pipe.scard(key) == 0 and not pipe.hexists(runtime.LEDGER_KEY,
+        plan._require(pipe.smembers(key) == set(known_reasoning) and not pipe.hexists(runtime.LEDGER_KEY,
             'lineage:' + hashlib.sha256(task.encode()).hexdigest()))
         plan._require(not any(v['reservation']['intent']['root_lineage_id'] == task
             for v in state['intents'].values()))
