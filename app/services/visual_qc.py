@@ -1547,6 +1547,31 @@ def _repair_temporal_response(data, request, included_indices, available_moments
     return {**data, 'reviews': [replacements.get(row['scene_index'], row) for row in data['reviews']]}, audit
 
 
+def _same_rendered_selection(previous: dict, current: dict, candidates: list) -> bool:
+    """A sampled evidence frame is not a new cut of a server-pinned clip.
+
+    Candidate IDs still have to agree. Unpinned footage keeps the original
+    moment check because applying its verdict actually changes the trim.
+    Neither evidence IDs nor either review's quality gates are rewritten.
+    """
+    candidate = previous.get('best_candidate_index')
+    if (type(candidate) is not int or type(current.get('best_candidate_index')) is not int
+            or candidate != current['best_candidate_index'] or not 0 <= candidate < len(candidates)):
+        return False
+    moments = (previous.get('best_moment_index'), current.get('best_moment_index'))
+    if any(type(moment) is not int or not 0 <= moment < len(MOMENT_FRACTIONS) for moment in moments):
+        return False
+    if moments[0] == moments[1]:
+        return True
+    spec = candidates[candidate]
+    if not isinstance(spec, dict) or spec.get('preserve_start_fraction') is not True:
+        return False
+    fraction = spec.get('start_fraction')
+    return (type(spec.get('path')) is str and bool(spec['path'].strip())
+            and type(fraction) in (int, float) and math.isfinite(fraction)
+            and 0.0 <= fraction <= 0.95)
+
+
 def _review_gemini_batches(
     scenes: list[dict],
     scene_visuals: list[list[str | dict]],
@@ -1564,7 +1589,7 @@ def _review_gemini_batches(
     provider_override: str | None = None,
     temporal_response_repair_attempts: int = 1,
 ) -> dict:
-    def merge_boundary_review(previous: dict, current: dict) -> dict:
+    def merge_boundary_review(previous: dict, current: dict, candidates: list) -> dict:
         def merge_recurring_identity_fields(merged: dict) -> bool:
             applicable = bool(
                 previous.get(
@@ -1624,15 +1649,7 @@ def _review_gemini_batches(
             })
             return identity_gate_passed
 
-        previous_selection = (
-            previous.get('best_candidate_index'),
-            previous.get('best_moment_index'),
-        )
-        current_selection = (
-            current.get('best_candidate_index'),
-            current.get('best_moment_index'),
-        )
-        if previous_selection != current_selection:
+        if not _same_rendered_selection(previous, current, candidates):
             merged = dict(previous)
             merged['score'] = min(
                 int(previous.get('score', 0)),
@@ -1662,6 +1679,13 @@ def _review_gemini_batches(
         merged = dict(
             previous if previous_score <= current_score else current
         )
+        if previous.get('best_moment_index') != current.get('best_moment_index'):
+            merged['boundary_pinned_cut_review'] = {
+                'candidate_index': previous['best_candidate_index'],
+                'start_fraction': candidates[previous['best_candidate_index']]['start_fraction'],
+                'reported_best_moment_indices': [previous['best_moment_index'], current['best_moment_index']],
+                'reported_scores': [previous_score, current_score],
+            }
         merged['score'] = min(previous_score, current_score)
         if not (
             previous.get('evidence_gate_passed') is True
@@ -1766,7 +1790,7 @@ def _review_gemini_batches(
             mapped['scene_index'] = original_index
             previous = reviews_by_index.get(original_index)
             reviews_by_index[original_index] = (
-                merge_boundary_review(previous, mapped)
+                merge_boundary_review(previous, mapped, scene_visuals[original_index])
                 if previous is not None
                 else mapped
             )
@@ -2442,15 +2466,9 @@ def review_scene_visuals(
                         f'adjacent scene {neighbor_index} was missing'
                     )
                     continue
-                accepted_selection = (
-                    accepted_neighbor.get('best_candidate_index'),
-                    accepted_neighbor.get('best_moment_index'),
-                )
-                retry_selection = (
-                    retried_neighbor.get('best_candidate_index'),
-                    retried_neighbor.get('best_moment_index'),
-                )
-                if retry_selection != accepted_selection:
+                if not _same_rendered_selection(
+                    accepted_neighbor, retried_neighbor, scene_visuals[neighbor_index]
+                ):
                     neighbor_failures.append(
                         f'adjacent scene {neighbor_index} changed selection'
                     )

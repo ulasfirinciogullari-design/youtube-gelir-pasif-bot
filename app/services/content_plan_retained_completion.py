@@ -16,8 +16,10 @@ from app.services import content_plan_voice_resume as voice, content_plan_resear
 
 PREFIX = plan.PREFIX + 'retained_completion:v1:'
 DISPATCH, EXECUTION, ROOT = (PREFIX + k for k in ('dispatch:', 'execution:', 'root:'))
+REVIEW_ROOT = PREFIX + 'visual_review_root:'
 SOURCE_ERROR = 'Long documentary failed independent source or editorial review'
 QUOTA_ERROR = 'commissioning_video_provider_rejected'
+VISUAL_ERROR = 'Final visual quality gate rejected: '
 
 
 def operation(source):
@@ -35,7 +37,40 @@ def eligible(source):
         and source.get('parent_id') and not source.get('retry_child_task_id')
         and ((source.get('failure_stage') == 'final_visual_qc_ai_repair' and source.get('error') == QUOTA_ERROR)
              or (source.get('failure_stage') == 'director_qc' and source.get('error') == SOURCE_ERROR
-                 and plan._client().exists(voice.DISPATCH + source['parent_id']))))
+                 and plan._client().exists(voice.DISPATCH + source['parent_id']))
+             or (source.get('failure_stage') == 'final_visual_qc_rescue'
+                 and str(source.get('error') or '').startswith(VISUAL_ERROR)
+                 and plan._client().exists(DISPATCH + source['parent_id']))))
+
+
+def _prior_completion(client, source):
+    """One full visual recheck of a private completion, never a QA override."""
+    parent = source['parent_id']; claim = plan._object(client.get(DISPATCH + parent))
+    mode = (claim.get('evidence') or {}).get('mode')
+    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('review_of')
+        and claim.get('source_task_id') == parent and claim.get('task_id') == operation(parent)
+        and client.get(EXECUTION + parent) == operation(parent)
+        and client.get(ROOT + claim['root_task_id']) == plan._raw(claim)
+        and source['task_id'] == str(uuid5(NAMESPACE_URL, 'owner-plan-retained-completion-child:v1:' + parent)))
+    previous = plan._object(client.get(jobs.JOB_PREFIX + parent))
+    plan._require(pre.fingerprint(previous) == claim['evidence']['source_sha256'])
+    diagnostic = json.loads(source['error'][len(VISUAL_ERROR):])
+    rejected = diagnostic.get('rejected')
+    plan._require(diagnostic.get('stage') == 'after_rescue' and diagnostic.get('total') == 30
+        and type(rejected) is dict and 1 <= len(rejected) <= 30
+        and diagnostic.get('accepted') == 30 - len(rejected)
+        and all(str(int(index)) == index and 0 <= int(index) < 30 and type(row.get('score')) is int
+                and 0 <= row['score'] < 86 for index, row in rejected.items())
+        and diagnostic.get('repair_checkpoint_available') is False)
+    classification = source.get('failure_classification') or {}
+    plan._require(classification.get('category') == 'content_rejected'
+        and classification.get('code') == 'visual_quality_exhausted'
+        and classification.get('error_sha256') == hashlib.sha256(source['error'].encode()).hexdigest())
+    return claim
+
+
+def _root_key(root, proof):
+    return (REVIEW_ROOT if proof.get('review_of') else ROOT) + root
 
 
 def _metadata(source):
@@ -127,7 +162,8 @@ def checked(client, task, *, claimed=False):
     source = plan._object(client.get(jobs.JOB_PREFIX + plan._id(task))); spec = source.get('spec') or {}
     plan._require(eligible({**source, 'retry_child_task_id': None}) and source['task_id'] == task
         and voice._scope(spec) == ('long', 32) and spec.get('mode') == 'production')
-    mode = 'quota' if source['error'] == QUOTA_ERROR else 'sources'
+    prior = _prior_completion(client, source) if source['error'].startswith(VISUAL_ERROR) else None
+    mode = prior['evidence']['mode'] if prior else ('quota' if source['error'] == QUOTA_ERROR else 'sources')
     dispatch = plan._object(client.get(plan.DISPATCH_PREFIX + plan._id(spec['content_plan_item_id'])))
     root = dispatch['task_id']; ancestors = []; current = source
     while True:
@@ -135,7 +171,7 @@ def checked(client, task, *, claimed=False):
         plan._require(name not in {r['task_id'] for r in ancestors} and len(ancestors) < 12
             and current.get('kind') == 'render' and current.get('state') == 'FAILURE'
             and current.get('spec') == spec and not current.get('result')
-            and type(used) is int and 0 <= used <= 32 and (mode != 'sources' or used == 0)
+            and type(used) is int and 0 <= used <= 32 and (prior or mode != 'sources' or used == 0)
             and current.get('preview_total_paid_create_cap') == 32
             and client.hgetall(jobs.PAID_CREATE_BUDGET_PREFIX + name) == {'cap': '32', 'used': str(used)}
             and not current.get('publication_hold') and not current.get('owner_cancellation')
@@ -154,23 +190,28 @@ def checked(client, task, *, claimed=False):
             and not client.exists(jobs.RETRY_DISPATCH_PREFIX + task))
     terminal = plan._object(client.get('celery-task-meta-' + task)); failure = terminal.get('result') or {}
     plan._require(terminal.get('task_id') == task and terminal.get('status') == 'FAILURE'
-        and failure.get('exc_type') == ('SpendBlocked' if mode == 'quota' else 'ProductionContentError')
+        and failure.get('exc_type') == ('FinalVisualQualityError' if prior else
+                                      'SpendBlocked' if mode == 'quota' else 'ProductionContentError')
         and failure.get('exc_message') == [source['error']]
-        and (', in _payload\n' if mode == 'quota' else ', in review_story\n') in (terminal.get('traceback') or ''))
-    saved = source if mode == 'quota' else ancestors[1]
-    if mode == 'sources':
+        and (', in run_video_pipeline\n' if prior else ', in _payload\n' if mode == 'quota'
+             else ', in review_story\n') in (terminal.get('traceback') or ''))
+    saved = source if prior or mode == 'quota' else ancestors[1]
+    if mode == 'sources' and not prior:
         admission = plan._object(client.get(voice.DISPATCH + saved['task_id']))
         plan._require(admission.get('root_task_id') == root and admission.get('source_task_id') == saved['task_id']
             and client.get(voice.EXECUTION + saved['task_id']) == admission.get('task_id') == voice.operation(saved['task_id'])
             and source['task_id'] == str(uuid5(NAMESPACE_URL, 'owner-plan-voice-child:v1:' + saved['task_id']))
             and not source.get('audio_candidate_checkpoint') and not source.get('generated_asset_candidates'))
     transcript = voice._transcript_proof(client, saved, root)
+    if prior:
+        plan._require(prior['root_task_id'] == root
+            and prior['evidence']['transcript']['audio_sha256'] == transcript['audio_sha256'])
     media = []
     for ancestor in reversed(ancestors):
         journal = ancestor.get('generated_asset_candidates')
         if journal:
             entries = journal.get('entries') or []
-            plan._require(mode == 'quota' and journal.get('failed_count') == 0
+            plan._require((mode == 'quota' or prior) and journal.get('failed_count') == 0
                 and journal.get('attempted_count') == journal.get('preserved_count') == len(entries)
                 and 1 <= len(entries) <= ancestor['paid_create_slots_used']
                 and ancestor['audio_candidate_checkpoint']['audio_sha256'] == transcript['audio_sha256'])
@@ -189,7 +230,10 @@ def checked(client, task, *, claimed=False):
         'media_fingerprints': {r['task_id']: pre.fingerprint(r) for r in ancestors if r['task_id'] in media},
         'video_records': _video_records(client, root, ancestors, mode,
             child=source.get('retry_child_task_id') if claimed else None),
-        'restored_source': _restored_sources(client, root, saved) if mode == 'sources' else None}
+        'restored_source': _restored_sources(client, root, saved) if mode == 'sources' and not prior else None}
+    if prior:
+        plan._require(proof['video_records'] == prior['evidence']['video_records'])
+        proof.update(review_of=source['parent_id'], previous_completion_sha256=plan._sha(prior))
     return source, root, proof
 
 
@@ -200,13 +244,13 @@ def _claim(source, root, proof):
 def schedule(source, enqueue, *, client=None):
     client = client or plan._client(); task = source['task_id']
     if client.exists(DISPATCH + task): return 'retained_completion_reserved'
-    source, root, proof = checked(client, task); claim = _claim(task, root, proof)
+    source, root, proof = checked(client, task); claim = _claim(task, root, proof); root_key = _root_key(root, proof)
     from redis.exceptions import WatchError
     try:
         with client.pipeline() as pipe:
-            pipe.watch(DISPATCH + task, ROOT + root)
-            if pipe.exists(DISPATCH + task, ROOT + root): return 'retained_completion_reserved'
-            pipe.multi(); pipe.set(DISPATCH + task, plan._raw(claim), nx=True); pipe.set(ROOT + root, plan._raw(claim), nx=True)
+            pipe.watch(DISPATCH + task, root_key)
+            if pipe.exists(DISPATCH + task, root_key): return 'retained_completion_reserved'
+            pipe.multi(); pipe.set(DISPATCH + task, plan._raw(claim), nx=True); pipe.set(root_key, plan._raw(claim), nx=True)
             plan._require(pipe.execute() == [True, True])
     except WatchError: return 'retained_completion_reserved'
     try: enqueue(args=(task,), task_id=claim['task_id'], retry=False)
@@ -218,7 +262,7 @@ def verify_child(task, source_id, spec, *, client=None):
     from app.services.content_plan_local_resume import _claim as verify_retry
     client = client or plan._client(); source, root, proof = checked(client, source_id, claimed=True)
     claim = _claim(source_id, root, proof); child = plan._object(client.get(jobs.JOB_PREFIX + task))
-    plan._require(client.get(DISPATCH + source_id) == client.get(ROOT + root) == plan._raw(claim)
+    plan._require(client.get(DISPATCH + source_id) == client.get(_root_key(root, proof)) == plan._raw(claim)
         and client.get(EXECUTION + source_id) == operation(source_id)
         and child.get('task_id') == task and child.get('parent_id') == source_id and source.get('retry_child_task_id') == task
         and child.get('kind') == 'render' and child.get('spec') == spec == source['spec']
