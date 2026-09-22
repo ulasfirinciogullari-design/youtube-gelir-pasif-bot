@@ -186,7 +186,7 @@ class IncludedRouterLedger:
                 and type(link) is dict and set(link) in ({
                     'request_sha256', 'response_proof_sha256', 'original_failure_sha256'}, {
                     'request_sha256', 'response_proof_sha256', 'original_failure_sha256', 'format'})
-                and ('format' not in link or link['format'] == 'missing_fields_v2')
+                and ('format' not in link or link['format'] in {'missing_fields_v2', 'missing_fields_v3'})
                 and all(_hash(link[field]) for field in (
                     'request_sha256', 'response_proof_sha256', 'original_failure_sha256')))
             target_id = self.identity(row['context'], 'visual_review', link['request_sha256'])

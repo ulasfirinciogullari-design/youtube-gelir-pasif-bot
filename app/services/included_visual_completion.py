@@ -26,6 +26,22 @@ def _schema(prepared):
     return schema_for_body(prepared.payload)
 
 
+def boolean_fields(prepared):
+    item = _schema(prepared)['properties']['reviews']['items']
+    fields = frozenset(field for field in item['required']
+        if item['properties'][field] == {'type': 'boolean'})
+    _require(OMITTABLE <= fields and len(fields) <= 32)
+    return fields
+
+
+def completion_fields(prepared, original):
+    allowed = boolean_fields(prepared)
+    missing = set().union(*(allowed - set(row) for row in original['reviews']))
+    _require(missing)
+    # Preserve the exact V2 request bytes and existing completion receipts.
+    return OMITTABLE if missing <= OMITTABLE else frozenset(missing)
+
+
 def _partial(prepared, raw):
     from app.services.abacus_router_adapter import _parse_response_payload
     schema = _schema(prepared)
@@ -34,14 +50,15 @@ def _partial(prepared, raw):
         and OMITTABLE <= set(item['required']) and all(
         item['properties'][field] == {'type': 'boolean'} for field in OMITTABLE))
     partial_schema = deepcopy(schema)
+    allowed = boolean_fields(prepared)
     partial_schema['properties']['reviews']['items']['required'] = [
-        field for field in item['required'] if field not in OMITTABLE]
+        field for field in item['required'] if field not in allowed]
     parsed = _parse_response_payload(raw, schema=partial_schema, max_tokens=prepared.payload['max_tokens'])
     data = parsed['result']
     indices = [row['scene_index'] for row in data['reviews']]
     _require(len(indices) == len(set(indices))
         and set(indices) == set(item['properties']['scene_index']['enum']))
-    _require(any(OMITTABLE - set(row) for row in data['reviews']))
+    _require(any(allowed - set(row) for row in data['reviews']))
     return data
 
 
@@ -98,14 +115,14 @@ def completion_request(prepared, data, *, legacy=False):
         json_schema=_schema(prepared), max_tokens=body['max_tokens'])
 
 
-def unchanged_original_values(original, completed):
+def unchanged_original_values(original, completed, *, allowed=OMITTABLE):
     rows = completed.get('reviews') if type(completed) is dict else None
     _require(type(rows) is list and len(rows) == len(original['reviews']))
     by_index = {row['scene_index']: row for row in rows}
     _require(len(by_index) == len(rows))
     for row in original['reviews']:
         revised = by_index.get(row['scene_index'])
-        _require(type(revised) is dict and set(revised) - set(row) <= OMITTABLE
+        _require(type(revised) is dict and set(revised) - set(row) <= allowed
             and all(field in revised and type(revised[field]) is type(value)
                     and revised[field] == value for field, value in row.items()))
 
@@ -129,7 +146,7 @@ def _failure(pipe, ledger, identity, prepared):
 def link_completed_review(ledger, context, original, repair):
     """Anchor a completed separate request; neither reservation is refunded."""
     from app.services.production_included_router import _raw, _sha, _result
-    from app.services.included_visual_fields import combine, is_compact
+    from app.services.included_visual_fields import combine, is_compact, compact_format
     identity = ledger.identity(context, 'visual_review', original.prepared.request_sha256)
     target_id = ledger.identity(context, 'visual_review', repair.request_sha256)
     with ledger.client.pipeline() as pipe:
@@ -148,7 +165,7 @@ def link_completed_review(ledger, context, original, repair):
             'response_proof_sha256': target['outcome']['evidence']['response_proof_sha256'],
             'original_failure_sha256': digest}
         if is_compact(repair):
-            source['completion']['format'] = 'missing_fields_v2'
+            source['completion']['format'] = compact_format(repair)
         pipe.multi(); pipe.set(ledger.journal_key, _raw(journal))
         pipe.set(ledger.anchor_key, _sha({'state': state, 'journal': journal}))
         ledger._ack(pipe, [True, True])
@@ -164,7 +181,7 @@ def cached_completed_review(ledger, context, prepared):
     observation. An absent/uncertain target leaves the original hold closed.
     """
     from app.services.production_included_router import _result, _raw, _sha
-    from app.services.included_visual_fields import combine, is_compact
+    from app.services.included_visual_fields import combine, is_compact, compact_format
     identity = ledger.identity(context, 'visual_review', prepared.request_sha256)
     with ledger.client.pipeline() as pipe:
         state, journal = ledger._read(pipe)
@@ -176,7 +193,7 @@ def cached_completed_review(ledger, context, prepared):
         try:
             digest, raw = _failure(pipe, ledger, identity, prepared)
             original = _partial(prepared, raw)
-            formats = [row['completion'].get('format') != 'missing_fields_v2'] if linked else [True, False]
+            formats = [row['completion'].get('format') not in {'missing_fields_v2', 'missing_fields_v3'}] if linked else [True, False]
             target = None
             for legacy in formats:
                 repair = completion_request(prepared, original, legacy=legacy)
@@ -203,7 +220,7 @@ def cached_completed_review(ledger, context, prepared):
                 'response_proof_sha256': target['outcome']['evidence']['response_proof_sha256'],
                 'original_failure_sha256': digest}
             if is_compact(repair):
-                row['completion']['format'] = 'missing_fields_v2'
+                row['completion']['format'] = compact_format(repair)
             pipe.multi(); pipe.set(ledger.journal_key, _raw(journal))
             pipe.set(ledger.anchor_key, _sha({'state': state, 'journal': journal}))
             ledger._ack(pipe, [True, True])

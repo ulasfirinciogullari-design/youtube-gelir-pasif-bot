@@ -111,9 +111,9 @@ def test_completion_cannot_change_any_original_judgment(case, field, value):
 
 @pytest.mark.parametrize('problem', ['unrelated_missing', 'duplicate_scene', 'missing_scene',
     'wrong_scene', 'duplicate_moments', 'wrong_boolean', 'nan_score', 'full_response'])
-def test_only_three_explicit_omissions_are_eligible(case, problem):
+def test_incomplete_judgments_and_invalid_values_are_not_eligible(case, problem):
     row = case.partial['reviews'][0]
-    if problem == 'unrelated_missing': row.pop('subject_visible')
+    if problem == 'unrelated_missing': row.pop('reason')
     elif problem == 'duplicate_scene': case.partial['reviews'][1]['scene_index'] = 0
     elif problem == 'missing_scene': case.partial['reviews'].pop()
     elif problem == 'wrong_scene': row['scene_index'] = 7

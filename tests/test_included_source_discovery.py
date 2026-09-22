@@ -28,6 +28,7 @@ def test_index_parser_only_admits_observed_same_collection_articles(monkeypatch)
 
 
 def test_negative_windows_walk_the_bounded_index_and_stop_at_link_cap(monkeypatch):
+    monkeypatch.setattr(discovery, 'COLLECTIONS', (discovery.COLLECTIONS[0],))
     links = [discovery.INDEX + f'item-{i}/' for i in range(140)]
     monkeypatch.setattr(discovery.sources, '_get', lambda url: response(
         ''.join(f'<a href="{link}">item</a>' for link in links)))
