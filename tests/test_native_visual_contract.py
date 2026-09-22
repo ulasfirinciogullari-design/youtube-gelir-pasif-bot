@@ -55,7 +55,7 @@ def test_negative_visual_verdict_is_preserved_and_reused_without_http(setup):
     assert len(records(setup)) == 1
 
 
-@pytest.mark.parametrize('damage', ['missing_flag', 'duplicate_moment', 'wrong_enum', 'wrong_count',
+@pytest.mark.parametrize('damage', ['duplicate_moment', 'wrong_enum', 'wrong_count',
                                    'score_overflow', 'extra_key', 'empty_reason', 'string_boolean'])
 def test_json_mode_still_rejects_every_original_visual_constraint(setup, damage):
     prepared, schema, result = visual()

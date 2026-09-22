@@ -242,7 +242,18 @@ def _observe(reservation, response, prepared, schema):
     envelope = json.loads(raw, object_pairs_hook=_reject_duplicate_keys, parse_constant=_reject_non_finite)
     _require(type(envelope.get('modelVersion')) is str and envelope['modelVersion'].startswith(MODEL),
              'commissioning_reasoning_model_unverified')
-    output = _decode_gemini_json_response(httpx.Response(200, content=raw), schema)
+    from app.services.gemini_generation import GeminiProtocolError
+    from app.services.commissioning_visual_completion import partial, IncompleteNativeVisualReview
+    incomplete = None
+    try:
+        output = _decode_gemini_json_response(httpx.Response(200, content=raw), schema)
+    except GeminiProtocolError:
+        if reservation['record']['purpose'] != 'visual_review':
+            raise
+        incomplete = partial(prepared, raw, schema)
+        if incomplete is None:
+            raise
+        output = incomplete
     _require(_unique_items_match(output, schema) and _enum_match(output, schema),
              'commissioning_reasoning_schema_unverified')
     from app.services.abacus_router_audio_adapter import PreparedPrepaidAudioRequest, AudioReviewPurpose, _asr_timing
@@ -258,6 +269,8 @@ def _observe(reservation, response, prepared, schema):
     evidence = {**reservation['record'], 'response_sha256': response['response_sha256'],
         'parsed_result_sha256': _sha(_raw(output)), 'usage': deepcopy(usage),
         'observed_list_cost_micro_usd': cost, 'cost_basis': 'standard_list_estimate_not_invoice'}
+    if incomplete is not None:
+        raise IncompleteNativeVisualReview(incomplete, evidence)
     return output, evidence
 
 
@@ -289,9 +302,16 @@ def generate(prepared, purpose, ledger, foundation, context):
                 raise
             except Exception:
                 raise SpendBlocked('commissioning_reasoning_outcome_unknown') from None
+        from app.services.commissioning_visual_completion import IncompleteNativeVisualReview, complete
+        incomplete = None
         try:
             result, evidence = _observe(reservation, response, prepared, schema)
+        except IncompleteNativeVisualReview as missing:
+            incomplete = missing
         except Exception:
             raise SpendBlocked('commissioning_reasoning_response_unverified') from None
+        # Finish the exception handler before a distinct observed completion.
+        if incomplete is not None:
+            result, evidence = complete(incomplete, prepared, purpose, ledger, foundation, context)
     included._LAST_OBSERVED.set({'purpose': purpose, 'context': deepcopy(context), 'evidence': deepcopy(evidence)})
     return result

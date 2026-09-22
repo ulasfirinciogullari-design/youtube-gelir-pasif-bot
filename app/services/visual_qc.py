@@ -326,6 +326,18 @@ _THERMAL_LONG_TERM_CONTEXT_PATTERN = re.compile(
     flags=re.IGNORECASE,
 )
 
+# Everyday serving descriptions and named business idioms do not claim an
+# invisible heat distribution. An explicit thermal/mechanism claim elsewhere
+# in the same narration remains subject to the unchanged proof gate.
+_NON_MEASUREMENT_WARMTH_PATTERN = re.compile(
+    r'\b(?:hot|warm)\s+(?:meals?|food|coffee|tea|soup|meatballs?|dogs?|'
+    r'breakfast|lunch|dinner|drinks?|beverages?|bread|pastries)\b|'
+    r'\bwarm\s+welcome\b|\bhot\s+(?:topic|seller|market)\b|'
+    r'\bsıcak\s+(?:yemek\w*|kahve\w*|çay\w*|çorba\w*|köfte\w*|'
+    r'ekmek\w*|içecek\w*|karşılama\w*|satış\w*)\b',
+    flags=re.IGNORECASE,
+)
+
 # Rank the kinds of thermal claim that are best served by one explicit proof
 # shot in an ordered story. A senior editor does not repeat a thermal overlay
 # on every adjacent line: one strong mechanism shot establishes the fact, and
@@ -590,7 +602,7 @@ def _recurring_identity_required_indices(
 
 def _thermal_proof_priority(scene: dict) -> int:
     """Return how strongly this locked line calls for a thermal proof shot."""
-    narration = str(scene.get('narration') or '')
+    narration = _NON_MEASUREMENT_WARMTH_PATTERN.sub(' ', str(scene.get('narration') or ''))
     if not _THERMAL_CLAIM_PATTERN.search(narration):
         return -1
     if _THERMAL_LONG_TERM_CONTEXT_PATTERN.search(narration):

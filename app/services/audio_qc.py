@@ -1603,7 +1603,10 @@ def _comparison_units(
             index += 1
             continue
 
-        word_unit = _number_word_unit(tokens, index)
+        from app.services.audio_compact_turkish import compact_number_unit
+        word_unit = compact_number_unit(tokens, index, value, matches)
+        if word_unit is None:
+            word_unit = _number_word_unit(tokens, index)
         if word_unit is not None:
             number_key, consumed = word_unit
             units.append((number_key, tuple(tokens[index:index + consumed])))
