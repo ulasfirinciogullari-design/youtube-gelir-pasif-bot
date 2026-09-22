@@ -146,3 +146,33 @@ def test_provider_free_check_uses_the_same_client_and_blocks_every_prior_intent(
         resume._provider_free(case.client, task)
     assert constructions == [case.client]
     assert all(case.client.dump(k) == v for k, v in before.items())
+
+
+@pytest.mark.parametrize('change_own_lineage', [False, True])
+def test_real_watch_conflict_rereads_and_rejects_new_own_provider_intent(case, monkeypatch, change_own_lineage):
+    from app.services import production_spend_runtime as runtime, production_credit_ledger as credit
+    from app.services import production_included_router as included, commissioning_reasoning as native
+    from app.services.production_spend import SpendLedger, SpendPolicy, LEDGER_KEY
+    foundation = SpendLedger(case.client, SpendPolicy(0, 0, 0, 0, 0, 0))
+    monkeypatch.setattr(runtime, 'configured_ledger', lambda **_: foundation)
+    monkeypatch.setattr(credit.CreditLedger, '_watch', lambda *a: None)
+    monkeypatch.setattr(credit.CreditLedger, '_read', lambda *a: ({}, {'intents': {}}, {}, {}))
+    monkeypatch.setattr(included.IncludedRouterLedger, '_read', lambda *a: ({}, {'requests': {}}))
+    task = str(uuid4()); original = case.client.pipeline; transactions = []
+    def pipeline(*a, **kwargs):
+        pipe = original(*a, **kwargs); execute = pipe.execute
+        def race(*a, **kwargs):
+            transactions.append(True)
+            if len(transactions) == 1:
+                if change_own_lineage: case.client.sadd(native.PREFIX + 'lineage:' + task, 'unknown-request')
+                else: case.client.hset(LEDGER_KEY, 'another-channel', 'settled')
+            return execute(*a, **kwargs)
+        pipe.execute = race
+        return pipe
+    monkeypatch.setattr(case.client, 'pipeline', pipeline)
+    if change_own_lineage:
+        with pytest.raises(plan.ContentPlanError): resume._provider_free(case.client, task)
+        assert len(transactions) == 1
+    else:
+        resume._provider_free(case.client, task)
+        assert len(transactions) == 2

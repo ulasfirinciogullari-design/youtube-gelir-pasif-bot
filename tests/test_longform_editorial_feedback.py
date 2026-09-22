@@ -87,3 +87,10 @@ def test_existing_speech_is_never_rewritten(draft, monkeypatch, voice):
     writer = Mock(); monkeypatch.setattr(director, '_run_director', writer)
     with pytest.raises(director.ProductionContentError): longform.review_story(package, 'Banknote', 'en')
     writer.assert_not_called(); assert len(seen) == 30
+
+
+def test_explicit_immutable_voice_review_never_repairs_even_a_complete_eligible_draft(draft, monkeypatch):
+    package, _, seen = draft; writer = Mock(); monkeypatch.setattr(director, '_run_director', writer)
+    with pytest.raises(director.ProductionContentError):
+        longform.review_story(package, 'Banknote', 'en', allow_revisions=False)
+    writer.assert_not_called(); assert len(seen) == 30

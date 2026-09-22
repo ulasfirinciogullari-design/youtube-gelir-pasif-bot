@@ -4543,6 +4543,8 @@ def _prepare_saved_voice_retry(
             return None
         from app.services import content_plan_voice_resume
         if content_plan_voice_resume.registered(source_task_id):
+            if runtime_spec.get('format') == 'landscape':
+                return content_plan_voice_resume.prepare_long(task_id, source_task_id, runtime_spec, work)
             content_plan_voice_resume.verify_child(task_id, source_task_id, runtime_spec)
         from app.services import content_plan_model_resume
         if content_plan_model_resume.registered(source_task_id):
@@ -4933,12 +4935,20 @@ def run_video_pipeline(
             if approved_package is None and full_rebuild_request is None else None
         )
         if saved_voice_retry and saved_voice_retry.get('preserve_audio_bytes') is True:
-            # A verified standalone retry gets its own existing durable ledger;
-            # the legacy parent's absent preview ledger and frozen spec stay intact.
-            longform_budget = _persisted_paid_create_budget(task_id, 2)
-            if longform_budget.get('cap') != 2 or longform_budget.get('used') != 0:
-                raise FinalVisualQualityError('Long-form retry requires its fresh two-create media budget')
-            total_paid_create_cap = 2
+            # Queued and standalone retries each retain their own authorized
+            # durable cap; the legacy parent's absent ledger stays absent.
+            if saved_voice_retry.get('content_plan_voice_source'):
+                from app.services.content_plan_voice_resume import retained_long_cap
+                plan_cap = retained_long_cap(task_id, saved_voice_retry)
+                longform_budget = _persisted_paid_create_budget(task_id, plan_cap)
+                if longform_budget.get('cap') != plan_cap or longform_budget.get('used') != 0:
+                    raise FinalVisualQualityError('Queued long-form retry media budget is invalid')
+                total_paid_create_cap = plan_cap
+            else:
+                longform_budget = _persisted_paid_create_budget(task_id, 2)
+                if longform_budget.get('cap') != 2 or longform_budget.get('used') != 0:
+                    raise FinalVisualQualityError('Long-form retry requires its fresh two-create media budget')
+                total_paid_create_cap = 2
             runway_attempts = 0
         if voice_replacement_source_id is not None and (
             voice_replacement_source_id != retry_dispatch_source_id

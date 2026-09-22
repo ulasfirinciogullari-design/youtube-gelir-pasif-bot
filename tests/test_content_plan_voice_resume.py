@@ -14,10 +14,10 @@ from test_content_plan_research_resume import failed
 from test_voice_candidate_recovery import stored_candidate, SOURCE_ID
 
 
-def candidate_failure(case, monkeypatch, *, child=False):
+def candidate_failure(case, monkeypatch, *, child=False, long=False):
     from app import tasks
     from app.services import content_plan_research_resume as pre
-    source = failed(case, monkeypatch); root = source['task_id']
+    source = failed(case, monkeypatch, long=long); root = source['task_id']; cap = 32 if long else 6
     monkeypatch.setattr(jobs, '_client', lambda: case.client)
     monkeypatch.setattr(tasks.run_video_pipeline, 'apply_async', Mock())
     if child:
@@ -26,9 +26,9 @@ def candidate_failure(case, monkeypatch, *, child=False):
         source = jobs.get_job(outcome['task_id'])
     task = source['task_id']
     source.update(state='FAILURE', failure_stage='audio_qc_retry', error='Narration mismatch',
-        paid_create_slots_used=0, preview_total_paid_create_cap=6, audio_candidate_checkpoint={'private': 'pointer'})
+        paid_create_slots_used=0, preview_total_paid_create_cap=cap, audio_candidate_checkpoint={'private': 'pointer'})
     case.client.set(jobs.JOB_PREFIX + task, plan._raw(source))
-    case.client.hset(jobs.PAID_CREATE_BUDGET_PREFIX + task, mapping={'cap': '6', 'used': '0'})
+    case.client.hset(jobs.PAID_CREATE_BUDGET_PREFIX + task, mapping={'cap': str(cap), 'used': '0'})
     case.client.set('celery-task-meta-' + task, plan._raw({'task_id': task, 'status': 'FAILURE',
         'result': {'exc_type': 'FinalAudioQualityError', 'exc_message': ['Narration mismatch']}}))
     proof = {'scribe_key': 'bound-transcript', 'scribe_record_sha256': 'a' * 64,
@@ -94,6 +94,19 @@ def test_simultaneous_ticks_reserve_once_and_continue_with_original_unapproved_v
     enqueue.assert_called_once()
 
 
+def test_long_queue_retains_its_exact_duration_and_private_media_scope(case, monkeypatch):
+    from app import tasks
+    source, root = candidate_failure(case, monkeypatch, long=True); task = source['task_id']
+    recovery.schedule(source, Mock()); result = recovery.run(task, resume.operation(task)); child = result['task_id']
+    assert jobs.acquire_retry_child_execution(child, task)
+    resume.verify_child(child, task, source['spec'])
+    candidate = {'content_plan_voice_source': task}
+    assert resume.retained_long_cap(child, candidate) == 32
+    assert tasks.run_video_pipeline.apply_async.call_args.kwargs['args'][1] == 3
+    case.client.hset(jobs.PAID_CREATE_BUDGET_PREFIX + task, 'used', '1')
+    with pytest.raises(plan.ContentPlanError): resume.retained_long_cap(child, candidate)
+
+
 def proof_record(case, stored_candidate, monkeypatch):
     candidate = stored_candidate; object_store = storage._client()
     monkeypatch.setattr(storage, '_client', lambda **kwargs: object_store)
@@ -104,7 +117,8 @@ def proof_record(case, stored_candidate, monkeypatch):
                   for i, word in enumerate(words)]}
     source = {'task_id': SOURCE_ID, 'audio_candidate_checkpoint': candidate.pointer,
         'spec': {'production_channel_id': case.profile['channel_id'],
-                 'production_connection_id': 'connection-current', 'language': 'tr'}}
+                 'production_connection_id': 'connection-current', 'language': 'tr',
+                 'format': 'shorts', 'duration_minutes': .5}}
     context = {'lineage_id': SOURCE_ID, 'kind': 'shorts', 'channel_id': case.profile['channel_id'],
                'connection_id': 'connection-current'}
     request = {'audio': {'sha256': candidate.pointer['audio_sha256'], 'bytes': candidate.pointer['size']},

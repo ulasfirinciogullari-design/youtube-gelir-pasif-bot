@@ -38,6 +38,18 @@ def eligible(source):
 
 
 def _provider_free(client, task, *, known_reasoning=()):
+    from redis.exceptions import WatchError
+    # This transaction only reads and PINGs. A different channel settling its
+    # own credit intent may invalidate the snapshot; re-read, never replay work.
+    for attempt in range(5):
+        try:
+            return _provider_free_once(client, task, known_reasoning=known_reasoning)
+        except WatchError:
+            if attempt == 4:
+                raise
+
+
+def _provider_free_once(client, task, *, known_reasoning=()):
     from app.services import production_spend_runtime as runtime, commissioning_reasoning as native
     from app.services import production_included_router as included
     from app.services.production_credit_ledger import CreditLedger

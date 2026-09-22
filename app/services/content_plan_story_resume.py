@@ -15,11 +15,28 @@ from app.services import content_plan as plan, content_plan_research_resume as p
 
 PREFIX = plan.PREFIX + 'story_resume:v1:'
 DISPATCH, EXECUTION = PREFIX + 'dispatch:', PREFIX + 'execution:'
+VALIDATION_DISPATCH, VALIDATION_EXECUTION = PREFIX + 'validation_dispatch:', PREFIX + 'validation_execution:'
 ERROR = 'Long documentary failed independent source or editorial review'
 
 
 def operation(source):
     return str(uuid5(NAMESPACE_URL, 'owner-plan-story-resume:v1:' + source))
+
+
+def validation_operation(source):
+    return str(uuid5(NAMESPACE_URL, 'owner-plan-story-validation:v1:' + source))
+
+
+def _validation_failed(client, source):
+    """Only the completed read transaction conflict, before any child dispatch."""
+    terminal = plan._object(client.get('celery-task-meta-' + operation(source)) or '{}')
+    result = terminal.get('result') or {}; trace = terminal.get('traceback') or ''
+    return bool(client.get(EXECUTION + source) == operation(source)
+        and terminal.get('task_id') == operation(source) and terminal.get('status') == 'FAILURE'
+        and result.get('exc_module') == 'redis.exceptions' and result.get('exc_type') == 'WatchError'
+        and result.get('exc_message') == ['Watched variable changed.']
+        and ', in _provider_free\n' in trace and ', in checked\n' in trace
+        and ', in run\n' in trace and ', in _execute_transaction\n' in trace)
 
 
 def registered(source):
@@ -143,15 +160,18 @@ def checked(client, task, *, claimed=False):
 
 def schedule(source, enqueue, *, client=None):
     client = client or plan._client(); task = source['task_id']
-    if client.exists(DISPATCH + task):
+    validation = bool(client.exists(DISPATCH + task))
+    if validation and not _validation_failed(client, task):
         return 'story_resume_reserved'
     source, responses = checked(client, task)
     claim = {'version': 1, 'task_id': operation(task), 'source_task_id': task,
         'source_sha256': pre.fingerprint(source), 'provider_records': responses}
-    if not client.set(DISPATCH + task, plan._raw(claim), nx=True):
+    if validation:
+        plan._require(client.get(DISPATCH + task) == plan._raw(claim))
+    if not client.set((VALIDATION_DISPATCH if validation else DISPATCH) + task, plan._raw(claim), nx=True):
         return 'story_resume_reserved'
     try:
-        enqueue(args=(task,), task_id=claim['task_id'], retry=False)
+        enqueue(args=(task,), task_id=validation_operation(task) if validation else claim['task_id'], retry=False)
     except Exception:
         return 'story_resume_uncertain'
     return 'story_resume_preparing'
@@ -170,14 +190,23 @@ def verify_child(task, source_id, spec, *, client=None):
         and child.get('state') in {'PENDING', 'STARTED', 'PROGRESS'}
         and all(child.get(k) is None for k in pre.MEDIA_FIELDS))
     _claim(client, source_id, task)
+    if client.exists(VALIDATION_DISPATCH + source_id):
+        plan._require(_validation_failed(client, source_id)
+            and client.get(VALIDATION_DISPATCH + source_id) == plan._raw(claim)
+            and client.get(VALIDATION_EXECUTION + source_id) == validation_operation(source_id))
     return source
 
 
 def run(source_id, operation_id):
     from app.tasks import run_video_pipeline
     client = plan._client(); claim = plan._object(client.get(DISPATCH + source_id))
-    plan._require(claim['task_id'] == operation_id == operation(source_id))
-    if not client.set(EXECUTION + source_id, operation_id, nx=True):
+    validation = operation_id == validation_operation(source_id)
+    plan._require(claim['task_id'] == operation(source_id)
+        and operation_id == (validation_operation(source_id) if validation else operation(source_id)))
+    if validation:
+        plan._require(_validation_failed(client, source_id)
+            and client.get(VALIDATION_DISPATCH + source_id) == plan._raw(claim))
+    if not client.set((VALIDATION_EXECUTION if validation else EXECUTION) + source_id, operation_id, nx=True):
         return {'status': 'already_started'}
     source, responses = checked(client, source_id)
     plan._require(pre.fingerprint(source) == claim['source_sha256'] and responses == claim['provider_records'])

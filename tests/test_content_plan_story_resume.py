@@ -93,3 +93,36 @@ def test_child_runs_full_ordinary_long_pipeline_with_frozen_original_records(cas
     assert all(case.client.get(k) == value for k, value in old.items())
     case.client.sadd(native.PREFIX + 'lineage:' + root['task_id'], 'unknown-fifth')
     with pytest.raises(plan.ContentPlanError): tasks._prepare_saved_voice_retry(child, task, source['spec'], tmp_path)
+
+
+@pytest.mark.parametrize('terminal_kind', ['watch', 'timeout', 'unknown'])
+def test_completed_read_conflict_can_continue_once_without_erasing_the_original_claim(case, monkeypatch, terminal_kind):
+    from redis.exceptions import WatchError
+    from app.services import content_plan_research_resume as pre
+    root, _, source = criticised(case, monkeypatch, fresh=True); task = source['task_id']; queue = Mock()
+    recovery.schedule(source, queue)
+    pre._provider_free.side_effect = WatchError('Watched variable changed.')
+    with pytest.raises(WatchError): recovery.run(task, resume.operation(task))
+    pre._provider_free.side_effect = None
+    terminal = {'task_id': resume.operation(task), 'status': 'FAILURE',
+        'result': {'exc_module': 'redis.exceptions', 'exc_type': 'WatchError',
+                   'exc_message': ['Watched variable changed.']},
+        'traceback': 'File "x", line 1, in run\nFile "x", line 2, in checked\n'
+                     'File "x", line 3, in _provider_free\nFile "x", line 4, in _execute_transaction\n'}
+    if terminal_kind == 'timeout': terminal['result']['exc_type'] = 'ReadTimeout'
+    if terminal_kind != 'unknown': case.client.set('celery-task-meta-' + resume.operation(task), plan._raw(terminal))
+    before = {k: case.client.dump(k) for k in case.client.scan_iter()}
+    if terminal_kind == 'watch':
+        assert recovery.schedule(source, queue) == 'story_resume_preparing'
+        assert recovery.schedule(source, queue) == 'story_resume_reserved'
+        assert queue.call_count == 2 and queue.call_args.kwargs['task_id'] == resume.validation_operation(task)
+        assert all(case.client.dump(k) == value for k, value in before.items())
+        result = recovery.run(task, resume.validation_operation(task)); child = result['task_id']
+        assert jobs.acquire_retry_child_execution(child, task)
+        resume.verify_child(child, task, source['spec'])
+        assert recovery.run(task, resume.validation_operation(task)) == {'status': 'already_started'}
+        assert case.client.get(resume.EXECUTION + task) == resume.operation(task)
+    else:
+        assert recovery.schedule(source, queue) == 'story_resume_reserved'
+        queue.assert_called_once()
+        assert all(case.client.dump(k) == value for k, value in before.items())

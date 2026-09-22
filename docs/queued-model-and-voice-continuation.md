@@ -56,3 +56,25 @@ editorial responses and its negative first factual batch. Unknown outcomes,
 additional requests, any audio/media intent or owner veto block admission.
 The child reuses completed research/editorial responses and runs the ordinary
 feedback loop before creating speech. Previous terminal records stay intact.
+
+## Concurrent validation and retained documentary speech
+
+Provider-free admission uses a read-only watched transaction. Settling another
+channel's credit intent can conflict with that snapshot; up to five fresh reads
+are allowed. A completed legacy `WatchError` in exactly this pre-dispatch read
+may reserve one separate validation operation. Its old claim, execution and
+terminal stay untouched. Unknown/timeout outcomes and any changed own-lineage
+provider evidence still prevent continuation. No paid call is repeated here.
+
+The saved-voice admission also supports the exact queued three-minute landscape
+contract. It requires zero paid-video use in every ancestor, an exact complete
+blind transcript, the original media bytes and scene cues, and a fresh immutable
+30-scene factual review. It cannot rewrite or refit speech. The existing private
+queued cap is revalidated separately; standalone legacy retries keep their own
+two-create cap. Prosody, visual, final-media and publication checks remain mandatory.
+
+Turkish recognizer spelling `typo` is equivalent to `tipo` only immediately before
+a closed set of inflections of `baskı`. Bare terms, English, other words, values,
+units, punctuation boundaries and missing word timestamps are not accepted.
+Documentary reviews now also examine the public title, thumbnail text and
+description for unsupported or misleading claims.

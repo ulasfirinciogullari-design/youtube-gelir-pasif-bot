@@ -383,7 +383,7 @@ def load_visuals(manifest, source, package, media, voice, task, work):
 
 def run(source_id, operation_id):
     from app.services import content_plan_story_resume
-    if operation_id == content_plan_story_resume.operation(source_id):
+    if operation_id in {content_plan_story_resume.operation(source_id), content_plan_story_resume.validation_operation(source_id)}:
         return content_plan_story_resume.run(source_id, operation_id)
     from app.services import content_plan_voice_resume
     if operation_id == content_plan_voice_resume.operation(source_id):

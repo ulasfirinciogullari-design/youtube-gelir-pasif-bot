@@ -1570,6 +1570,15 @@ def _comparison_units(
     units: list[tuple[str, tuple[str, ...]]] = []
     index = 0
     while index < len(tokens):
+        # Turkish printing terminology: recognizers sometimes spell the loan
+        # word as English "typo". Require the immediately adjacent printing
+        # noun; never alias bare words or an English writing-error reference.
+        if (tokens[index] in {'tipo', 'typo'} and index + 1 < len(tokens)
+                and tokens[index + 1] in {'baskı', 'baskıyla', 'baskıya', 'baskıda', 'baskının', 'baskısı'}
+                and value[matches[index].end():matches[index + 1].start()].isspace()):
+            units.append(('\x00turkish_printing_tipo', (tokens[index],)))
+            index += 1
+            continue
         cent_noun = _turkish_cent_noun_unit(tokens, index, value, matches)
         if cent_noun is not None:
             units.append((cent_noun, (tokens[index],)))
