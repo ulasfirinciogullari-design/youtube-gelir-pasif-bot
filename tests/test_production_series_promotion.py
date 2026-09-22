@@ -176,6 +176,16 @@ def test_real_ready_batch_rotates_explicit_epoch_archives_and_ordinary_tick_star
     assert case.prep['_generate'].call_count == 1
 
 
+def test_public_disclosure_upgrade_archives_actual_true_without_editing_original_plan(case):
+    _change(case, case.keys['ledger'], ['publish_plan', 'contains_synthetic_media'], False)
+    records={name:case.client.get(case.keys[name])for name in ('source','publisher','ledger')}
+    result=_run(case)
+    assert result['status']=='promoted'
+    archive=json.loads(case.client.get(result['archive_key']))
+    assert archive['public_proof']['contains_synthetic_media'] is True
+    assert {name:case.client.get(case.keys[name])for name in records}==records
+
+
 def test_duplicate_and_concurrent_calls_promote_once_without_resetting_next_job(case):
     with ThreadPoolExecutor(max_workers=8) as pool:
         results = list(pool.map(lambda _: _run(case), range(12)))
@@ -224,7 +234,7 @@ def test_second_epoch_preserves_history_and_daily_budget_fence(case):
     ('ledger', ['release_completed_at'], None),
     ('ledger', ['publish_plan', 'series', 'number'], 1),
     ('ledger', ['publish_plan', 'series', 'total'], True),
-    ('ledger', ['publish_plan', 'contains_synthetic_media'], False),
+    ('ledger', ['publish_plan', 'contains_synthetic_media'], None),
     ('profile', ['profile_revision'], 'changed-revision'),
     ('profile', ['series_total'], 3),
     ('profile', ['production_enabled'], False),

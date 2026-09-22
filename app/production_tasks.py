@@ -103,6 +103,11 @@ def production_tick() -> dict:
             maintain_delivery_families()
         except Exception:
             pass  # Private derivatives never suppress an independent normal job.
+        try:
+            from app.services.channel_production import reconcile_publication_holds
+            reconcile_publication_holds(linked_profiles)
+        except Exception:
+            pass  # A failed recheck cannot suppress unrelated normal work.
         recovered = reconcile_public_retry_deliveries(linked_profiles)
         from app.services.production_quality_holds import maintain_quality_holds
         quality_holds = maintain_quality_holds(linked_profiles)

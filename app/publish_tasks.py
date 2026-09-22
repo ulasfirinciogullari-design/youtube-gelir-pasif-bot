@@ -391,7 +391,8 @@ def _wake_after_public_success(source_task_id: str, task_id: str, result: dict) 
             and plan.get('source_task_id') == source_task_id and plan.get('target_channel_id') == channel
             and plan.get('release_mode') == 'public' and not plan.get('publish_at')
             and type(plan.get('contains_synthetic_media')) is bool
-            and attribution.get('contains_synthetic_media') is plan['contains_synthetic_media']
+            and type(attribution.get('contains_synthetic_media')) is bool
+            and (plan['contains_synthetic_media'] is False or attribution['contains_synthetic_media'] is True)
             and attribution.get('caption_uploaded') is True
             and (plan.get('require_thumbnail') is not True or attribution.get('thumbnail_uploaded') is True)
             and all(row.get('privacy_status') == 'public' and row.get('release_status') == 'public'
@@ -402,7 +403,7 @@ def _wake_after_public_success(source_task_id: str, task_id: str, result: dict) 
             and all(key not in result or (type(result[key]) is type(expected) and result[key] == expected)
                     for key, expected in (('profile_revision', revision), ('caption_uploaded', True),
                         ('thumbnail_uploaded', attribution.get('thumbnail_uploaded')),
-                        ('contains_synthetic_media', plan['contains_synthetic_media'])))
+                        ('contains_synthetic_media', attribution['contains_synthetic_media'])))
         ):
             return
         from app.services import youtube_publish_state as publication_state

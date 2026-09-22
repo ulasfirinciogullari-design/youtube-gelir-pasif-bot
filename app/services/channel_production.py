@@ -155,21 +155,30 @@ return 'reserved'
 
 
 _RECONCILE = _ACTIVE_CLAIMS_LUA + r'''
-if redis.call('GET', KEYS[1]) ~= ARGV[1] then return 'active_changed' end
-local claims = active_claims(ARGV[1])
+local recheck_public = ARGV[7] == 'public_hold_recheck'
+local current_active = redis.call('GET', KEYS[1])
+if (current_active or '') ~= ARGV[1] then return 'active_changed' end
+local claims = active_claims(current_active)
 if not claims then return 'state_unavailable' end
 local matched
 for index, claim in ipairs(claims) do
+  if recheck_public and (claim['channel_id'] == ARGV[4] or claim['task_id'] == ARGV[2]) then return 'active' end
   if claim['task_id'] == ARGV[2] and claim['channel_id'] == ARGV[4] then matched = index end
 end
-if not matched then return 'active_changed' end
+if recheck_public then
+  if redis.call('HGET', KEYS[3], 'paused_reason') ~= 'previous_publication_blocked'
+     or redis.call('HGET', KEYS[3], 'last_task_id') ~= ARGV[2]
+     or redis.call('HGET', KEYS[3], 'last_result') ~= 'SUCCESS'
+     or redis.call('HGET', KEYS[3], 'dispatch_status') ~= 'finished'
+     or (redis.call('HGET', KEYS[3], 'active_task_id') or '') ~= '' then return 'state_unavailable' end
+elseif not matched then return 'active_changed' end
 local raw_job = redis.call('GET', KEYS[2])
 local ok, job = pcall(cjson.decode, raw_job or '')
 if not ok or type(job) ~= 'table' then return 'state_unavailable' end
 if job['task_id'] ~= ARGV[2] or job['kind'] ~= 'render' then
   return 'state_unavailable'
 end
-if redis.call('HGET', KEYS[3], 'active_task_id') ~= ARGV[2] then
+if not recheck_public and redis.call('HGET', KEYS[3], 'active_task_id') ~= ARGV[2] then
   return 'state_unavailable'
 end
 local state = job['state']
@@ -256,7 +265,9 @@ else
               and empty(record['thumbnail_error_code'])
               and (plan['require_thumbnail'] ~= true and profile['require_thumbnail'] ~= true
                    or record['thumbnail_uploaded'] == true)
-              and record['contains_synthetic_media'] == plan['contains_synthetic_media']
+              and type(record['contains_synthetic_media']) == 'boolean'
+              and record['contains_synthetic_media'] == attribution['contains_synthetic_media']
+              and (plan['contains_synthetic_media'] ~= true or record['contains_synthetic_media'] == true)
           end
           local function public_delivery(record)
             if record['idempotent_replay'] ~= true then return public_assets(record) end
@@ -271,7 +282,7 @@ else
               and empty(record['caption_error_code']) and empty(record['thumbnail_error_code'])
               and omitted_or('profile_revision', revision) and omitted_or('caption_uploaded', true)
               and omitted_or('thumbnail_uploaded', attribution['thumbnail_uploaded'])
-              and omitted_or('contains_synthetic_media', plan['contains_synthetic_media'])
+              and omitted_or('contains_synthetic_media', attribution['contains_synthetic_media'])
           end
           continue_public = type(spec) == 'table' and type(attribution) == 'table' and type(plan) == 'table'
             and type(connection) == 'string' and connection ~= '' and type(revision) == 'string' and revision ~= ''
@@ -309,6 +320,15 @@ else
       end
     end
   end
+end
+if recheck_public then
+  -- Reuse the complete public/ownership/assets proof above. Rechecking a
+  -- finished hold neither recreates a claim nor edits any publication record.
+  if reason ~= '' or not continue_public then return 'publication_still_unverified' end
+  redis.call('HDEL', KEYS[3], 'paused_reason')
+  redis.call('HSET', KEYS[3], 'next_due', ARGV[5], 'last_public_task_id', ARGV[2],
+             'last_public_continued_at', ARGV[5])
+  return 'public_hold_cleared'
 end
 if reason ~= '' then redis.call('HSET', KEYS[3], 'paused_reason', reason) end
 if continue_public and reason == '' then
@@ -383,6 +403,33 @@ def reconcile_active_production(*, now: float | None = None) -> str:
         return 'channel_paused' if 'channel_paused' in finished else 'completed'
     except Exception as exc:
         raise ChannelProductionError('production_state_unavailable') from exc
+
+
+def reconcile_publication_holds(profiles: list[dict], *, now: float | None = None) -> dict:
+    """Recheck only finished public holds; the full atomic proof stays binding."""
+    now = time.time() if now is None else now
+    if type(now) not in (int, float) or not math.isfinite(now) or now < 0:
+        raise ChannelProductionError('production_state_unavailable')
+    client, results = _redis(), {}
+    for profile in profiles:
+        channel_id = _channel_id(profile.get('channel_id'))
+        state = client.hgetall(CHANNEL_STATE_PREFIX + channel_id)
+        if (state.get('paused_reason') != 'previous_publication_blocked'
+                or state.get('last_result') != 'SUCCESS' or state.get('active_task_id')):
+            continue
+        task_id = state.get('last_task_id')
+        if not isinstance(task_id, str) or not _TASK_ID.fullmatch(task_id):
+            continue
+        raw = client.get(ACTIVE_KEY)
+        if raw is not None:
+            _decode_active_claims(raw)
+        results[channel_id] = client.eval(
+            _RECONCILE, 7, ACTIVE_KEY, JOB_PREFIX + task_id,
+            CHANNEL_STATE_PREFIX + channel_id, PROFILE_PREFIX + channel_id,
+            OAUTH_CHANNEL_PREFIX + channel_id, OAUTH_CREDENTIAL_PREFIX + channel_id, OAUTH_CHANNEL_INDEX,
+            raw or '', task_id, JOB_PREFIX, channel_id, now, PUBLICATION_UPLOAD_PREFIX, 'public_hold_recheck',
+        )
+    return results
 
 
 def _decode_active_claims(raw: str) -> list[dict]:

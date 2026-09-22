@@ -331,8 +331,14 @@ def _publication(snapshot, source, profile, channel, *, public_recovery=False, n
     _require(isinstance(video_id, str) and re.fullmatch(r'[A-Za-z0-9_-]{11}', video_id))
     binding = {'target_channel_id': channel_id, 'connection_id': channel['connection_id'],
                'profile_revision': profile['profile_revision']}
-    disclosure = plan.get('contains_synthetic_media')
-    _require(type(disclosure) is bool and (not contains_synthetic_media(source) or disclosure is True),
+    planned_disclosure = plan.get('contains_synthetic_media')
+    disclosure = attribution.get('contains_synthetic_media')
+    # The publisher may conservatively disclose more than an earlier plan.
+    # Both committed delivery records must agree on the actual boolean; a
+    # required disclosure can never be lowered to False.
+    _require(type(planned_disclosure) is bool and type(disclosure) is bool
+             and (planned_disclosure is False or disclosure is True)
+             and (not contains_synthetic_media(source) or disclosure is True),
              'series_disclosure_unverified')
     recovered = None
     if public_recovery:
@@ -348,7 +354,7 @@ def _publication(snapshot, source, profile, channel, *, public_recovery=False, n
         for key, observed in receipt_snapshots:
             _require(observed['kind'] in {'none', 'string'}
                      and snapshot.read(key) == observed['value'], 'series_state_changed')
-        _require(disclosure is True, 'series_disclosure_unverified')
+        _require(planned_disclosure is True and disclosure is True, 'series_disclosure_unverified')
     else:
         for row in (attribution, delivered):
             replay = row is delivered and row.get('idempotent_replay') is True
