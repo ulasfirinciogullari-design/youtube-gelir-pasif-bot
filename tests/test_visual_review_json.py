@@ -72,6 +72,36 @@ def test_key_repairs_are_bounded():
     with pytest.raises(ValueError, match='bound'): decoder.decode(raw, schema)
 
 
+@pytest.mark.parametrize('value', [False, True])
+def test_identical_boolean_repetition_preserves_original_judgment(value):
+    schema, data = sample()
+    data['reviews'][0]['subject_visible'] = value
+    raw = json.dumps(data)
+    field = '"subject_visible": ' + json.dumps(value)
+    assert decoder.decode(raw.replace(field, field + ', ' + field), schema) == data
+
+
+@pytest.mark.parametrize('second', ['true', '0', '0.0', 'null', '"false"'])
+def test_contradictory_or_wrong_typed_repeated_evidence_is_rejected(second):
+    schema, data = sample()
+    raw = json.dumps(data).replace('"subject_visible": false',
+        '"subject_visible": false, "subject_visible": ' + second)
+    with pytest.raises(ValueError): decoder.decode(raw, schema)
+
+
+@pytest.mark.parametrize('damage', ['third', 'score', 'nested', 'root', 'unknown'])
+def test_boolean_duplicate_exception_does_not_weaken_other_nodes(damage):
+    schema, data = sample()
+    raw = json.dumps(data)
+    if damage == 'third':
+        raw = raw.replace('"subject_visible": false', ', '.join(['"subject_visible": false'] * 3))
+    elif damage == 'score': raw = raw.replace('"score": 30', '"score": 30, "score": 30')
+    elif damage == 'nested': raw = raw.replace('"score": 30', '"score": 30, "nested":{"subject_visible":false,"subject_visible":false}')
+    elif damage == 'root': raw = raw[:-1] + ', "subject_visible":false, "subject_visible":false}'
+    else: raw = raw.replace('"subject_visible": false', '"accepted":false, "accepted":false')
+    with pytest.raises(ValueError): decoder.decode(raw, schema)
+
+
 @pytest.mark.parametrize('damage', ['missing_value', 'duplicate', 'unknown_key', 'wrong_scope', 'missing_closing_quote'])
 def test_other_json_failures_are_not_guessed_or_accepted(damage):
     schema, value = sample();raw = json.dumps(value)

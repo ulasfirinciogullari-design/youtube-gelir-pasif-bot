@@ -6,6 +6,8 @@ visual gates still validate the parsed result. Other JSON errors stay errors.
 An optional candidate_index may be discarded only when it exactly repeats the
 required integer best_candidate_index. It can never supply a missing choice.
 """
+import json
+import math
 import re
 
 from app.services.abacus_generation import _json_loads
@@ -57,6 +59,48 @@ def _quoted_keys(content, names):
     return ''.join(result)
 
 
+def _review_json(content, schema):
+    """Collapse an identical repeated boolean only at its actual scene node."""
+    class ObjectPairs(list):
+        pass
+
+    def reject_constant(value):
+        raise ValueError('non-finite number')
+
+    def finite_float(value):
+        number = float(value)
+        if not math.isfinite(number):
+            raise ValueError('non-finite number')
+        return number
+
+    row_schema = schema['properties']['reviews']['items']
+    booleans = {key for key, spec in row_schema['properties'].items() if spec == {'type': 'boolean'}}
+    remaining = 50_000
+
+    def visit(value, path):
+        nonlocal remaining
+        remaining -= 1
+        if len(path) > 32 or remaining < 0:
+            raise ValueError('visual JSON structure exceeds bound')
+        if isinstance(value, ObjectPairs):
+            result, counts = {}, {}
+            for key, item in value:
+                item = visit(item, (*path, key))
+                counts[key] = counts.get(key, 0) + 1
+                if key in result and not (len(path) == 2 and path[0] == 'reviews'
+                        and type(path[1]) is int and key in booleans and counts[key] == 2
+                        and type(result[key]) is bool and type(item) is bool and result[key] is item):
+                    raise ValueError('duplicate JSON key')
+                result[key] = item
+            return result
+        if type(value) is list:
+            return [visit(item, (*path, index)) for index, item in enumerate(value)]
+        return value
+
+    return visit(json.loads(content, object_pairs_hook=ObjectPairs,
+        parse_constant=reject_constant, parse_float=finite_float), ())
+
+
 def decode(content, schema):
     names = _review_fields(schema)
     try:
@@ -64,7 +108,7 @@ def decode(content, schema):
     except (ValueError, TypeError):
         if names is None or type(content) is not str:
             raise
-        parsed = _json_loads(_quoted_keys(content, names | {'candidate_index'}))
+        parsed = _review_json(_quoted_keys(content, names | {'candidate_index'}), schema)
     if names is None or 'candidate_index' in names or type(parsed) is not dict:
         return parsed
     rows = parsed.get('reviews')
