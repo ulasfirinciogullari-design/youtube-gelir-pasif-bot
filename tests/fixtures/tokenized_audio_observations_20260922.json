@@ -1,0 +1,3843 @@
+{
+  "source_task_id": "f354c1b9-9d87-5436-9269-ec9e72190dd1",
+  "expected": "Trading tokenised bonds promised major lenders instant wholesale digital market execution. Yet private distributed ledgers carried unacceptable credit and counterparty settlement hazards. Commercial tokens lacked the absolute safety found in central bank money. So the Eurosystem deployed Pontes as a dedicated wholesale settlement bridge. It connects distributed platforms directly to risk-free central reserves without friction. Now even monetary authorities settle their own tokenised investments through it.",
+  "observations": [
+    {
+      "payload": {
+        "duration": 30.399999618530273,
+        "language": "english",
+        "task": "transcribe",
+        "text": "Trading tokenized bonds promised major lenders instant wholesale digital market execution. Yet private distributed ledgers carried unacceptable credit and counterparty settlement hazards. Commercial tokens lacked the absolute safety found in central bank money. So the Eurosystem deployed PONTEZ as a dedicated wholesale settlement bridge. It connects distributed platforms directly to risk-free central reserves without friction. Now even monetary authorities settle their own tokenized investments through it.",
+        "usage": {
+          "seconds": 31,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.4399999976158142,
+            "start": 0.0,
+            "word": "Trading"
+          },
+          {
+            "end": 1.0800000429153442,
+            "start": 0.4399999976158142,
+            "word": "tokenized"
+          },
+          {
+            "end": 1.4600000381469727,
+            "start": 1.0800000429153442,
+            "word": "bonds"
+          },
+          {
+            "end": 1.9600000381469727,
+            "start": 1.4600000381469727,
+            "word": "promised"
+          },
+          {
+            "end": 2.5,
+            "start": 1.9600000381469727,
+            "word": "major"
+          },
+          {
+            "end": 2.819999933242798,
+            "start": 2.5,
+            "word": "lenders"
+          },
+          {
+            "end": 3.4600000381469727,
+            "start": 2.819999933242798,
+            "word": "instant"
+          },
+          {
+            "end": 3.9600000381469727,
+            "start": 3.4600000381469727,
+            "word": "wholesale"
+          },
+          {
+            "end": 4.5,
+            "start": 3.9600000381469727,
+            "word": "digital"
+          },
+          {
+            "end": 4.860000133514404,
+            "start": 4.5,
+            "word": "market"
+          },
+          {
+            "end": 5.380000114440918,
+            "start": 4.860000133514404,
+            "word": "execution"
+          },
+          {
+            "end": 6.099999904632568,
+            "start": 6.0,
+            "word": "Yet"
+          },
+          {
+            "end": 6.539999961853027,
+            "start": 6.099999904632568,
+            "word": "private"
+          },
+          {
+            "end": 7.139999866485596,
+            "start": 6.539999961853027,
+            "word": "distributed"
+          },
+          {
+            "end": 7.619999885559082,
+            "start": 7.139999866485596,
+            "word": "ledgers"
+          },
+          {
+            "end": 8.119999885559082,
+            "start": 7.619999885559082,
+            "word": "carried"
+          },
+          {
+            "end": 8.920000076293945,
+            "start": 8.119999885559082,
+            "word": "unacceptable"
+          },
+          {
+            "end": 9.359999656677246,
+            "start": 8.920000076293945,
+            "word": "credit"
+          },
+          {
+            "end": 9.720000267028809,
+            "start": 9.359999656677246,
+            "word": "and"
+          },
+          {
+            "end": 10.819999694824219,
+            "start": 9.720000267028809,
+            "word": "counterparty"
+          },
+          {
+            "end": 10.819999694824219,
+            "start": 10.819999694824219,
+            "word": "settlement"
+          },
+          {
+            "end": 11.260000228881836,
+            "start": 10.819999694824219,
+            "word": "hazards"
+          },
+          {
+            "end": 12.15999984741211,
+            "start": 12.119999885559082,
+            "word": "Commercial"
+          },
+          {
+            "end": 12.579999923706055,
+            "start": 12.15999984741211,
+            "word": "tokens"
+          },
+          {
+            "end": 12.979999542236328,
+            "start": 12.579999923706055,
+            "word": "lacked"
+          },
+          {
+            "end": 13.300000190734863,
+            "start": 12.979999542236328,
+            "word": "the"
+          },
+          {
+            "end": 13.84000015258789,
+            "start": 13.300000190734863,
+            "word": "absolute"
+          },
+          {
+            "end": 14.180000305175781,
+            "start": 13.84000015258789,
+            "word": "safety"
+          },
+          {
+            "end": 14.619999885559082,
+            "start": 14.180000305175781,
+            "word": "found"
+          },
+          {
+            "end": 14.920000076293945,
+            "start": 14.619999885559082,
+            "word": "in"
+          },
+          {
+            "end": 15.199999809265137,
+            "start": 14.920000076293945,
+            "word": "central"
+          },
+          {
+            "end": 15.460000038146973,
+            "start": 15.199999809265137,
+            "word": "bank"
+          },
+          {
+            "end": 15.739999771118164,
+            "start": 15.460000038146973,
+            "word": "money"
+          },
+          {
+            "end": 16.280000686645508,
+            "start": 16.139999389648438,
+            "word": "So"
+          },
+          {
+            "end": 16.440000534057617,
+            "start": 16.280000686645508,
+            "word": "the"
+          },
+          {
+            "end": 17.020000457763672,
+            "start": 16.440000534057617,
+            "word": "Eurosystem"
+          },
+          {
+            "end": 17.479999542236328,
+            "start": 17.020000457763672,
+            "word": "deployed"
+          },
+          {
+            "end": 17.899999618530273,
+            "start": 17.479999542236328,
+            "word": "PONTEZ"
+          },
+          {
+            "end": 18.420000076293945,
+            "start": 17.899999618530273,
+            "word": "as"
+          },
+          {
+            "end": 18.65999984741211,
+            "start": 18.420000076293945,
+            "word": "a"
+          },
+          {
+            "end": 19.079999923706055,
+            "start": 18.65999984741211,
+            "word": "dedicated"
+          },
+          {
+            "end": 19.600000381469727,
+            "start": 19.079999923706055,
+            "word": "wholesale"
+          },
+          {
+            "end": 20.0,
+            "start": 19.600000381469727,
+            "word": "settlement"
+          },
+          {
+            "end": 20.440000534057617,
+            "start": 20.0,
+            "word": "bridge"
+          },
+          {
+            "end": 21.139999389648438,
+            "start": 21.139999389648438,
+            "word": "It"
+          },
+          {
+            "end": 21.479999542236328,
+            "start": 21.139999389648438,
+            "word": "connects"
+          },
+          {
+            "end": 22.18000030517578,
+            "start": 21.479999542236328,
+            "word": "distributed"
+          },
+          {
+            "end": 22.719999313354492,
+            "start": 22.18000030517578,
+            "word": "platforms"
+          },
+          {
+            "end": 23.15999984741211,
+            "start": 22.719999313354492,
+            "word": "directly"
+          },
+          {
+            "end": 23.600000381469727,
+            "start": 23.15999984741211,
+            "word": "to"
+          },
+          {
+            "end": 23.719999313354492,
+            "start": 23.600000381469727,
+            "word": "risk"
+          },
+          {
+            "end": 23.920000076293945,
+            "start": 23.719999313354492,
+            "word": "free"
+          },
+          {
+            "end": 24.3799991607666,
+            "start": 23.920000076293945,
+            "word": "central"
+          },
+          {
+            "end": 24.760000228881836,
+            "start": 24.3799991607666,
+            "word": "reserves"
+          },
+          {
+            "end": 25.360000610351562,
+            "start": 24.760000228881836,
+            "word": "without"
+          },
+          {
+            "end": 25.739999771118164,
+            "start": 25.360000610351562,
+            "word": "friction"
+          },
+          {
+            "end": 26.3799991607666,
+            "start": 25.739999771118164,
+            "word": "Now"
+          },
+          {
+            "end": 26.68000030517578,
+            "start": 26.3799991607666,
+            "word": "even"
+          },
+          {
+            "end": 27.15999984741211,
+            "start": 26.68000030517578,
+            "word": "monetary"
+          },
+          {
+            "end": 27.719999313354492,
+            "start": 27.15999984741211,
+            "word": "authorities"
+          },
+          {
+            "end": 28.219999313354492,
+            "start": 27.719999313354492,
+            "word": "settle"
+          },
+          {
+            "end": 28.440000534057617,
+            "start": 28.219999313354492,
+            "word": "their"
+          },
+          {
+            "end": 28.780000686645508,
+            "start": 28.440000534057617,
+            "word": "own"
+          },
+          {
+            "end": 29.280000686645508,
+            "start": 28.780000686645508,
+            "word": "tokenized"
+          },
+          {
+            "end": 29.68000030517578,
+            "start": 29.280000686645508,
+            "word": "investments"
+          },
+          {
+            "end": 30.040000915527344,
+            "start": 29.68000030517578,
+            "word": "through"
+          },
+          {
+            "end": 30.139999389648438,
+            "start": 30.040000915527344,
+            "word": "it"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "duration": 31.290000915527344,
+        "language": "english",
+        "task": "transcribe",
+        "text": "Trading tokenized bonds promised major lenders instant wholesale digital market execution, yet private distributed ledgers carried unacceptable credit and counterparty settlement hazards. Commercial tokens lacked the absolute safety found in central bank money, so the eurosystem deployed Pontes as a dedicated wholesale settlement bridge. It connects distributed platforms directly to risk-free central reserves without friction. Now even monetary authorities settle their own tokenized investments through it.",
+        "usage": {
+          "seconds": 32,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.5400000214576721,
+            "start": 0.0,
+            "word": "Trading"
+          },
+          {
+            "end": 1.2400000095367432,
+            "start": 0.5400000214576721,
+            "word": "tokenized"
+          },
+          {
+            "end": 1.6799999475479126,
+            "start": 1.2400000095367432,
+            "word": "bonds"
+          },
+          {
+            "end": 2.259999990463257,
+            "start": 1.6799999475479126,
+            "word": "promised"
+          },
+          {
+            "end": 2.7799999713897705,
+            "start": 2.259999990463257,
+            "word": "major"
+          },
+          {
+            "end": 3.059999942779541,
+            "start": 2.7799999713897705,
+            "word": "lenders"
+          },
+          {
+            "end": 3.819999933242798,
+            "start": 3.059999942779541,
+            "word": "instant"
+          },
+          {
+            "end": 4.320000171661377,
+            "start": 3.819999933242798,
+            "word": "wholesale"
+          },
+          {
+            "end": 4.800000190734863,
+            "start": 4.320000171661377,
+            "word": "digital"
+          },
+          {
+            "end": 5.179999828338623,
+            "start": 4.800000190734863,
+            "word": "market"
+          },
+          {
+            "end": 5.739999771118164,
+            "start": 5.179999828338623,
+            "word": "execution"
+          },
+          {
+            "end": 6.5,
+            "start": 6.420000076293945,
+            "word": "yet"
+          },
+          {
+            "end": 7.019999980926514,
+            "start": 6.5,
+            "word": "private"
+          },
+          {
+            "end": 7.619999885559082,
+            "start": 7.019999980926514,
+            "word": "distributed"
+          },
+          {
+            "end": 8.100000381469727,
+            "start": 7.619999885559082,
+            "word": "ledgers"
+          },
+          {
+            "end": 8.640000343322754,
+            "start": 8.100000381469727,
+            "word": "carried"
+          },
+          {
+            "end": 9.420000076293945,
+            "start": 8.640000343322754,
+            "word": "unacceptable"
+          },
+          {
+            "end": 9.880000114440918,
+            "start": 9.420000076293945,
+            "word": "credit"
+          },
+          {
+            "end": 10.279999732971191,
+            "start": 9.880000114440918,
+            "word": "and"
+          },
+          {
+            "end": 11.359999656677246,
+            "start": 10.279999732971191,
+            "word": "counterparty"
+          },
+          {
+            "end": 11.359999656677246,
+            "start": 11.359999656677246,
+            "word": "settlement"
+          },
+          {
+            "end": 11.819999694824219,
+            "start": 11.359999656677246,
+            "word": "hazards"
+          },
+          {
+            "end": 12.739999771118164,
+            "start": 12.680000305175781,
+            "word": "Commercial"
+          },
+          {
+            "end": 13.180000305175781,
+            "start": 12.739999771118164,
+            "word": "tokens"
+          },
+          {
+            "end": 13.539999961853027,
+            "start": 13.180000305175781,
+            "word": "lacked"
+          },
+          {
+            "end": 13.979999542236328,
+            "start": 13.539999961853027,
+            "word": "the"
+          },
+          {
+            "end": 14.319999694824219,
+            "start": 13.979999542236328,
+            "word": "absolute"
+          },
+          {
+            "end": 14.739999771118164,
+            "start": 14.319999694824219,
+            "word": "safety"
+          },
+          {
+            "end": 15.15999984741211,
+            "start": 14.739999771118164,
+            "word": "found"
+          },
+          {
+            "end": 15.4399995803833,
+            "start": 15.15999984741211,
+            "word": "in"
+          },
+          {
+            "end": 15.760000228881836,
+            "start": 15.4399995803833,
+            "word": "central"
+          },
+          {
+            "end": 16.040000915527344,
+            "start": 15.760000228881836,
+            "word": "bank"
+          },
+          {
+            "end": 16.299999237060547,
+            "start": 16.040000915527344,
+            "word": "money"
+          },
+          {
+            "end": 16.860000610351562,
+            "start": 16.68000030517578,
+            "word": "so"
+          },
+          {
+            "end": 17.020000457763672,
+            "start": 16.860000610351562,
+            "word": "the"
+          },
+          {
+            "end": 17.6200008392334,
+            "start": 17.020000457763672,
+            "word": "eurosystem"
+          },
+          {
+            "end": 18.139999389648438,
+            "start": 17.6200008392334,
+            "word": "deployed"
+          },
+          {
+            "end": 18.579999923706055,
+            "start": 18.139999389648438,
+            "word": "Pontes"
+          },
+          {
+            "end": 18.899999618530273,
+            "start": 18.579999923706055,
+            "word": "as"
+          },
+          {
+            "end": 19.6200008392334,
+            "start": 18.899999618530273,
+            "word": "a"
+          },
+          {
+            "end": 19.6200008392334,
+            "start": 19.6200008392334,
+            "word": "dedicated"
+          },
+          {
+            "end": 20.079999923706055,
+            "start": 19.6200008392334,
+            "word": "wholesale"
+          },
+          {
+            "end": 20.520000457763672,
+            "start": 20.079999923706055,
+            "word": "settlement"
+          },
+          {
+            "end": 20.940000534057617,
+            "start": 20.520000457763672,
+            "word": "bridge"
+          },
+          {
+            "end": 21.899999618530273,
+            "start": 21.899999618530273,
+            "word": "It"
+          },
+          {
+            "end": 22.15999984741211,
+            "start": 21.899999618530273,
+            "word": "connects"
+          },
+          {
+            "end": 22.760000228881836,
+            "start": 22.15999984741211,
+            "word": "distributed"
+          },
+          {
+            "end": 23.31999969482422,
+            "start": 22.760000228881836,
+            "word": "platforms"
+          },
+          {
+            "end": 23.799999237060547,
+            "start": 23.31999969482422,
+            "word": "directly"
+          },
+          {
+            "end": 24.239999771118164,
+            "start": 23.799999237060547,
+            "word": "to"
+          },
+          {
+            "end": 24.3799991607666,
+            "start": 24.239999771118164,
+            "word": "risk"
+          },
+          {
+            "end": 24.600000381469727,
+            "start": 24.3799991607666,
+            "word": "free"
+          },
+          {
+            "end": 25.059999465942383,
+            "start": 24.600000381469727,
+            "word": "central"
+          },
+          {
+            "end": 25.420000076293945,
+            "start": 25.059999465942383,
+            "word": "reserves"
+          },
+          {
+            "end": 25.959999084472656,
+            "start": 25.420000076293945,
+            "word": "without"
+          },
+          {
+            "end": 26.34000015258789,
+            "start": 25.959999084472656,
+            "word": "friction"
+          },
+          {
+            "end": 27.079999923706055,
+            "start": 26.34000015258789,
+            "word": "Now"
+          },
+          {
+            "end": 27.440000534057617,
+            "start": 27.079999923706055,
+            "word": "even"
+          },
+          {
+            "end": 27.979999542236328,
+            "start": 27.440000534057617,
+            "word": "monetary"
+          },
+          {
+            "end": 28.579999923706055,
+            "start": 27.979999542236328,
+            "word": "authorities"
+          },
+          {
+            "end": 29.020000457763672,
+            "start": 28.579999923706055,
+            "word": "settle"
+          },
+          {
+            "end": 29.31999969482422,
+            "start": 29.020000457763672,
+            "word": "their"
+          },
+          {
+            "end": 29.6200008392334,
+            "start": 29.31999969482422,
+            "word": "own"
+          },
+          {
+            "end": 30.100000381469727,
+            "start": 29.6200008392334,
+            "word": "tokenized"
+          },
+          {
+            "end": 30.559999465942383,
+            "start": 30.100000381469727,
+            "word": "investments"
+          },
+          {
+            "end": 30.899999618530273,
+            "start": 30.559999465942383,
+            "word": "through"
+          },
+          {
+            "end": 31.079999923706055,
+            "start": 30.899999618530273,
+            "word": "it"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "duration": 30.889999389648438,
+        "language": "english",
+        "task": "transcribe",
+        "text": "Trading tokenized bonds promised major lenders instant wholesale digital market execution, yet private distributed ledgers carried unacceptable credit and counterparty settlement hazards. Commercial tokens lacked the absolute safety found in central bank money, so the Eurosystem deployed Pontes as a dedicated wholesale settlement bridge. It connects distributed platforms directly to risk-free central reserves without friction. Now even monetary authorities settle their own tokenized investments through it.",
+        "usage": {
+          "seconds": 31,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.5799999833106995,
+            "start": 0.0,
+            "word": "Trading"
+          },
+          {
+            "end": 1.2799999713897705,
+            "start": 0.5799999833106995,
+            "word": "tokenized"
+          },
+          {
+            "end": 1.6399999856948853,
+            "start": 1.2799999713897705,
+            "word": "bonds"
+          },
+          {
+            "end": 2.140000104904175,
+            "start": 1.6399999856948853,
+            "word": "promised"
+          },
+          {
+            "end": 2.619999885559082,
+            "start": 2.140000104904175,
+            "word": "major"
+          },
+          {
+            "end": 2.940000057220459,
+            "start": 2.619999885559082,
+            "word": "lenders"
+          },
+          {
+            "end": 3.700000047683716,
+            "start": 2.940000057220459,
+            "word": "instant"
+          },
+          {
+            "end": 4.119999885559082,
+            "start": 3.700000047683716,
+            "word": "wholesale"
+          },
+          {
+            "end": 4.559999942779541,
+            "start": 4.119999885559082,
+            "word": "digital"
+          },
+          {
+            "end": 4.920000076293945,
+            "start": 4.559999942779541,
+            "word": "market"
+          },
+          {
+            "end": 5.460000038146973,
+            "start": 4.920000076293945,
+            "word": "execution"
+          },
+          {
+            "end": 6.199999809265137,
+            "start": 6.119999885559082,
+            "word": "yet"
+          },
+          {
+            "end": 6.71999979019165,
+            "start": 6.199999809265137,
+            "word": "private"
+          },
+          {
+            "end": 7.300000190734863,
+            "start": 6.71999979019165,
+            "word": "distributed"
+          },
+          {
+            "end": 7.800000190734863,
+            "start": 7.300000190734863,
+            "word": "ledgers"
+          },
+          {
+            "end": 8.460000038146973,
+            "start": 7.800000190734863,
+            "word": "carried"
+          },
+          {
+            "end": 9.279999732971191,
+            "start": 8.460000038146973,
+            "word": "unacceptable"
+          },
+          {
+            "end": 9.720000267028809,
+            "start": 9.279999732971191,
+            "word": "credit"
+          },
+          {
+            "end": 10.220000267028809,
+            "start": 9.720000267028809,
+            "word": "and"
+          },
+          {
+            "end": 11.260000228881836,
+            "start": 10.220000267028809,
+            "word": "counterparty"
+          },
+          {
+            "end": 11.260000228881836,
+            "start": 11.260000228881836,
+            "word": "settlement"
+          },
+          {
+            "end": 11.720000267028809,
+            "start": 11.260000228881836,
+            "word": "hazards"
+          },
+          {
+            "end": 12.600000381469727,
+            "start": 12.300000190734863,
+            "word": "Commercial"
+          },
+          {
+            "end": 13.0,
+            "start": 12.600000381469727,
+            "word": "tokens"
+          },
+          {
+            "end": 13.34000015258789,
+            "start": 13.0,
+            "word": "lacked"
+          },
+          {
+            "end": 13.819999694824219,
+            "start": 13.34000015258789,
+            "word": "the"
+          },
+          {
+            "end": 14.140000343322754,
+            "start": 13.819999694824219,
+            "word": "absolute"
+          },
+          {
+            "end": 14.520000457763672,
+            "start": 14.140000343322754,
+            "word": "safety"
+          },
+          {
+            "end": 14.9399995803833,
+            "start": 14.520000457763672,
+            "word": "found"
+          },
+          {
+            "end": 15.199999809265137,
+            "start": 14.9399995803833,
+            "word": "in"
+          },
+          {
+            "end": 15.479999542236328,
+            "start": 15.199999809265137,
+            "word": "central"
+          },
+          {
+            "end": 15.739999771118164,
+            "start": 15.479999542236328,
+            "word": "bank"
+          },
+          {
+            "end": 16.020000457763672,
+            "start": 15.739999771118164,
+            "word": "money"
+          },
+          {
+            "end": 16.760000228881836,
+            "start": 16.5,
+            "word": "so"
+          },
+          {
+            "end": 16.940000534057617,
+            "start": 16.760000228881836,
+            "word": "the"
+          },
+          {
+            "end": 17.540000915527344,
+            "start": 16.940000534057617,
+            "word": "Eurosystem"
+          },
+          {
+            "end": 18.0,
+            "start": 17.540000915527344,
+            "word": "deployed"
+          },
+          {
+            "end": 18.399999618530273,
+            "start": 18.0,
+            "word": "Pontes"
+          },
+          {
+            "end": 18.639999389648438,
+            "start": 18.399999618530273,
+            "word": "as"
+          },
+          {
+            "end": 18.8799991607666,
+            "start": 18.639999389648438,
+            "word": "a"
+          },
+          {
+            "end": 19.280000686645508,
+            "start": 18.8799991607666,
+            "word": "dedicated"
+          },
+          {
+            "end": 19.799999237060547,
+            "start": 19.280000686645508,
+            "word": "wholesale"
+          },
+          {
+            "end": 20.239999771118164,
+            "start": 19.799999237060547,
+            "word": "settlement"
+          },
+          {
+            "end": 20.700000762939453,
+            "start": 20.239999771118164,
+            "word": "bridge"
+          },
+          {
+            "end": 21.360000610351562,
+            "start": 21.360000610351562,
+            "word": "It"
+          },
+          {
+            "end": 21.68000030517578,
+            "start": 21.360000610351562,
+            "word": "connects"
+          },
+          {
+            "end": 22.299999237060547,
+            "start": 21.68000030517578,
+            "word": "distributed"
+          },
+          {
+            "end": 22.8799991607666,
+            "start": 22.299999237060547,
+            "word": "platforms"
+          },
+          {
+            "end": 23.479999542236328,
+            "start": 22.8799991607666,
+            "word": "directly"
+          },
+          {
+            "end": 23.920000076293945,
+            "start": 23.479999542236328,
+            "word": "to"
+          },
+          {
+            "end": 24.1200008392334,
+            "start": 23.920000076293945,
+            "word": "risk"
+          },
+          {
+            "end": 24.360000610351562,
+            "start": 24.1200008392334,
+            "word": "free"
+          },
+          {
+            "end": 24.799999237060547,
+            "start": 24.360000610351562,
+            "word": "central"
+          },
+          {
+            "end": 25.1200008392334,
+            "start": 24.799999237060547,
+            "word": "reserves"
+          },
+          {
+            "end": 25.65999984741211,
+            "start": 25.1200008392334,
+            "word": "without"
+          },
+          {
+            "end": 26.040000915527344,
+            "start": 25.65999984741211,
+            "word": "friction"
+          },
+          {
+            "end": 26.739999771118164,
+            "start": 26.040000915527344,
+            "word": "Now"
+          },
+          {
+            "end": 27.059999465942383,
+            "start": 26.739999771118164,
+            "word": "even"
+          },
+          {
+            "end": 27.600000381469727,
+            "start": 27.059999465942383,
+            "word": "monetary"
+          },
+          {
+            "end": 28.18000030517578,
+            "start": 27.600000381469727,
+            "word": "authorities"
+          },
+          {
+            "end": 28.559999465942383,
+            "start": 28.18000030517578,
+            "word": "settle"
+          },
+          {
+            "end": 28.81999969482422,
+            "start": 28.559999465942383,
+            "word": "their"
+          },
+          {
+            "end": 29.219999313354492,
+            "start": 28.81999969482422,
+            "word": "own"
+          },
+          {
+            "end": 29.700000762939453,
+            "start": 29.219999313354492,
+            "word": "tokenized"
+          },
+          {
+            "end": 30.1200008392334,
+            "start": 29.700000762939453,
+            "word": "investments"
+          },
+          {
+            "end": 30.479999542236328,
+            "start": 30.1200008392334,
+            "word": "through"
+          },
+          {
+            "end": 30.65999984741211,
+            "start": 30.479999542236328,
+            "word": "it"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 30.409,
+        "language_code": "eng",
+        "language_probability": 1.0,
+        "text": "Trading tokenized bonds promised major lenders instant wholesale digital market execution. Yet private distributed ledgers carried unacceptable credit and counterparty settlement hazards. Commercial tokens lacked the absolute safety found in central bank money. So the Eurosystem deployed Pontes as a dedicated wholesale settlement bridge. It connects distributed platforms directly to risk-free central reserves without friction. Now even monetary authorities settle their own tokenized investments through it",
+        "transcription_id": "FjYhy8FZtmSg8aqb2dQM",
+        "words": [
+          {
+            "end": 0.44,
+            "logprob": -0.0007628867751918733,
+            "start": 0.1,
+            "text": "Trading",
+            "type": "word"
+          },
+          {
+            "end": 0.5,
+            "logprob": -9.929640509653836e-05,
+            "start": 0.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.06,
+            "logprob": -5.7919720145744374e-05,
+            "start": 0.5,
+            "text": "tokenized",
+            "type": "word"
+          },
+          {
+            "end": 1.12,
+            "logprob": -2.145764938177308e-06,
+            "start": 1.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.46,
+            "logprob": -2.145764938177308e-06,
+            "start": 1.12,
+            "text": "bonds",
+            "type": "word"
+          },
+          {
+            "end": 1.64,
+            "logprob": -1.4424220353248529e-05,
+            "start": 1.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.06,
+            "logprob": -1.4424220353248529e-05,
+            "start": 1.64,
+            "text": "promised",
+            "type": "word"
+          },
+          {
+            "end": 2.14,
+            "logprob": -2.3841830625315197e-06,
+            "start": 2.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.44,
+            "logprob": -2.3841830625315197e-06,
+            "start": 2.14,
+            "text": "major",
+            "type": "word"
+          },
+          {
+            "end": 2.48,
+            "logprob": -1.5497195136049413e-06,
+            "start": 2.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.94,
+            "logprob": -1.5497195136049413e-06,
+            "start": 2.48,
+            "text": "lenders",
+            "type": "word"
+          },
+          {
+            "end": 3.02,
+            "logprob": -1.2755313036905136e-05,
+            "start": 2.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.42,
+            "logprob": -1.2755313036905136e-05,
+            "start": 3.02,
+            "text": "instant",
+            "type": "word"
+          },
+          {
+            "end": 3.5,
+            "logprob": -2.3841574147809297e-05,
+            "start": 3.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.94,
+            "logprob": -2.3841574147809297e-05,
+            "start": 3.5,
+            "text": "wholesale",
+            "type": "word"
+          },
+          {
+            "end": 4.08,
+            "logprob": -1.7881377516459906e-06,
+            "start": 3.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.48,
+            "logprob": -1.7881377516459906e-06,
+            "start": 4.1,
+            "text": "digital",
+            "type": "word"
+          },
+          {
+            "end": 4.54,
+            "logprob": -2.264974000354414e-06,
+            "start": 4.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.82,
+            "logprob": -2.264974000354414e-06,
+            "start": 4.54,
+            "text": "market",
+            "type": "word"
+          },
+          {
+            "end": 4.88,
+            "logprob": -3.3378546504536644e-06,
+            "start": 4.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.46,
+            "logprob": -0.00017838585863501067,
+            "start": 4.88,
+            "text": "execution.",
+            "type": "word"
+          },
+          {
+            "end": 5.52,
+            "logprob": -1.0609570381348021e-05,
+            "start": 5.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.08,
+            "logprob": -1.0609570381348021e-05,
+            "start": 5.92,
+            "text": "Yet",
+            "type": "word"
+          },
+          {
+            "end": 6.12,
+            "logprob": -1.2159273865108844e-05,
+            "start": 6.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.56,
+            "logprob": -1.2159273865108844e-05,
+            "start": 6.12,
+            "text": "private",
+            "type": "word"
+          },
+          {
+            "end": 6.6,
+            "logprob": -0.00034683887497521937,
+            "start": 6.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.14,
+            "logprob": -0.00034683887497521937,
+            "start": 6.6,
+            "text": "distributed",
+            "type": "word"
+          },
+          {
+            "end": 7.22,
+            "logprob": -0.00018308870494365692,
+            "start": 7.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.7,
+            "logprob": -0.0001834292447061411,
+            "start": 7.22,
+            "text": "ledgers",
+            "type": "word"
+          },
+          {
+            "end": 7.8,
+            "logprob": -5.960462772236497e-07,
+            "start": 7.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.24,
+            "logprob": -5.960462772236497e-07,
+            "start": 7.8,
+            "text": "carried",
+            "type": "word"
+          },
+          {
+            "end": 8.32,
+            "logprob": -4.291525328881107e-06,
+            "start": 8.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.0,
+            "logprob": -4.291525328881107e-06,
+            "start": 8.32,
+            "text": "unacceptable",
+            "type": "word"
+          },
+          {
+            "end": 9.06,
+            "logprob": -4.768370445162873e-07,
+            "start": 9.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.44,
+            "logprob": -4.768370445162873e-07,
+            "start": 9.06,
+            "text": "credit",
+            "type": "word"
+          },
+          {
+            "end": 9.52,
+            "logprob": -1.6689286894688848e-06,
+            "start": 9.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.64,
+            "logprob": -1.6689286894688848e-06,
+            "start": 9.52,
+            "text": "and",
+            "type": "word"
+          },
+          {
+            "end": 9.72,
+            "logprob": -4.7205765440594405e-05,
+            "start": 9.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.28,
+            "logprob": -0.0001045685815673399,
+            "start": 9.72,
+            "text": "counterparty",
+            "type": "word"
+          },
+          {
+            "end": 10.4,
+            "logprob": -4.172316494077677e-06,
+            "start": 10.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.8,
+            "logprob": -4.172316494077677e-06,
+            "start": 10.4,
+            "text": "settlement",
+            "type": "word"
+          },
+          {
+            "end": 10.84,
+            "logprob": -5.8412379075889476e-06,
+            "start": 10.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.3,
+            "logprob": -5.364402653640354e-06,
+            "start": 10.84,
+            "text": "hazards.",
+            "type": "word"
+          },
+          {
+            "end": 11.7,
+            "logprob": -6.139089964563027e-05,
+            "start": 11.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.16,
+            "logprob": -6.139089964563027e-05,
+            "start": 11.7,
+            "text": "Commercial",
+            "type": "word"
+          },
+          {
+            "end": 12.22,
+            "logprob": -1.5497195136049413e-06,
+            "start": 12.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.7,
+            "logprob": -1.5497195136049413e-06,
+            "start": 12.22,
+            "text": "tokens",
+            "type": "word"
+          },
+          {
+            "end": 12.78,
+            "logprob": -0.0028059417381882668,
+            "start": 12.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.02,
+            "logprob": -0.0028059417381882668,
+            "start": 12.78,
+            "text": "lacked",
+            "type": "word"
+          },
+          {
+            "end": 13.08,
+            "logprob": -4.768370445162873e-07,
+            "start": 13.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.26,
+            "logprob": -4.768370445162873e-07,
+            "start": 13.08,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 13.36,
+            "logprob": -1.1920928244535389e-07,
+            "start": 13.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.8,
+            "logprob": -1.1920928244535389e-07,
+            "start": 13.38,
+            "text": "absolute",
+            "type": "word"
+          },
+          {
+            "end": 13.88,
+            "logprob": -1.5497195136049413e-06,
+            "start": 13.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.2,
+            "logprob": -1.5497195136049413e-06,
+            "start": 13.88,
+            "text": "safety",
+            "type": "word"
+          },
+          {
+            "end": 14.36,
+            "logprob": 0.0,
+            "start": 14.2,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.66,
+            "logprob": 0.0,
+            "start": 14.36,
+            "text": "found",
+            "type": "word"
+          },
+          {
+            "end": 14.7,
+            "logprob": -1.1920928244535389e-07,
+            "start": 14.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.8,
+            "logprob": -1.1920928244535389e-07,
+            "start": 14.7,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 14.86,
+            "logprob": -2.9682672902708873e-05,
+            "start": 14.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.18,
+            "logprob": -2.9682672902708873e-05,
+            "start": 14.86,
+            "text": "central",
+            "type": "word"
+          },
+          {
+            "end": 15.24,
+            "logprob": -1.9073468138230965e-06,
+            "start": 15.18,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.46,
+            "logprob": -1.9073468138230965e-06,
+            "start": 15.24,
+            "text": "bank",
+            "type": "word"
+          },
+          {
+            "end": 15.5,
+            "logprob": -3.6954811548639555e-06,
+            "start": 15.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.76,
+            "logprob": -0.0008770913449704191,
+            "start": 15.5,
+            "text": "money.",
+            "type": "word"
+          },
+          {
+            "end": 16.18,
+            "logprob": -4.768370445162873e-07,
+            "start": 15.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.28,
+            "logprob": -4.768370445162873e-07,
+            "start": 16.18,
+            "text": "So",
+            "type": "word"
+          },
+          {
+            "end": 16.34,
+            "logprob": -3.218599158572033e-05,
+            "start": 16.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.42,
+            "logprob": -3.218599158572033e-05,
+            "start": 16.34,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 16.5,
+            "logprob": -0.02237212099134922,
+            "start": 16.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.08,
+            "logprob": -0.022978292405605318,
+            "start": 16.5,
+            "text": "Eurosystem",
+            "type": "word"
+          },
+          {
+            "end": 17.12,
+            "logprob": -1.537788011773955e-05,
+            "start": 17.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.46,
+            "logprob": -1.537788011773955e-05,
+            "start": 17.12,
+            "text": "deployed",
+            "type": "word"
+          },
+          {
+            "end": 17.6,
+            "logprob": -0.022821173071861267,
+            "start": 17.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.26,
+            "logprob": -0.017502373084425926,
+            "start": 17.6,
+            "text": "Pontes",
+            "type": "word"
+          },
+          {
+            "end": 18.34,
+            "logprob": -2.9802276912960224e-06,
+            "start": 18.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.4,
+            "logprob": -2.9802276912960224e-06,
+            "start": 18.34,
+            "text": "as",
+            "type": "word"
+          },
+          {
+            "end": 18.46,
+            "logprob": -1.1920928244535389e-07,
+            "start": 18.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.54,
+            "logprob": -1.1920928244535389e-07,
+            "start": 18.46,
+            "text": "a",
+            "type": "word"
+          },
+          {
+            "end": 18.58,
+            "logprob": -1.1920928244535389e-07,
+            "start": 18.54,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.1,
+            "logprob": -1.1920928244535389e-07,
+            "start": 18.58,
+            "text": "dedicated",
+            "type": "word"
+          },
+          {
+            "end": 19.18,
+            "logprob": -6.556489552167477e-06,
+            "start": 19.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.64,
+            "logprob": -6.556489552167477e-06,
+            "start": 19.18,
+            "text": "wholesale",
+            "type": "word"
+          },
+          {
+            "end": 19.7,
+            "logprob": -1.9073468138230965e-06,
+            "start": 19.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.1,
+            "logprob": -1.9073468138230965e-06,
+            "start": 19.7,
+            "text": "settlement",
+            "type": "word"
+          },
+          {
+            "end": 20.14,
+            "logprob": -7.271740287251305e-06,
+            "start": 20.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.5,
+            "logprob": -6.318069714390211e-06,
+            "start": 20.14,
+            "text": "bridge.",
+            "type": "word"
+          },
+          {
+            "end": 20.5,
+            "logprob": 0.0,
+            "start": 20.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.04,
+            "logprob": 0.0,
+            "start": 20.98,
+            "text": "It",
+            "type": "word"
+          },
+          {
+            "end": 21.1,
+            "logprob": -1.6689286894688848e-06,
+            "start": 21.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.6,
+            "logprob": -1.6689286894688848e-06,
+            "start": 21.1,
+            "text": "connects",
+            "type": "word"
+          },
+          {
+            "end": 21.66,
+            "logprob": -3.075552376685664e-05,
+            "start": 21.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.22,
+            "logprob": -3.075552376685664e-05,
+            "start": 21.66,
+            "text": "distributed",
+            "type": "word"
+          },
+          {
+            "end": 22.26,
+            "logprob": -5.364403477869928e-06,
+            "start": 22.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.78,
+            "logprob": -5.364403477869928e-06,
+            "start": 22.26,
+            "text": "platforms",
+            "type": "word"
+          },
+          {
+            "end": 22.84,
+            "logprob": -2.3841855067985307e-07,
+            "start": 22.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.24,
+            "logprob": -2.3841855067985307e-07,
+            "start": 22.84,
+            "text": "directly",
+            "type": "word"
+          },
+          {
+            "end": 23.28,
+            "logprob": -4.768370445162873e-07,
+            "start": 23.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.4,
+            "logprob": -4.768370445162873e-07,
+            "start": 23.28,
+            "text": "to",
+            "type": "word"
+          },
+          {
+            "end": 23.46,
+            "logprob": -3.2186455882765586e-06,
+            "start": 23.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.94,
+            "logprob": -3.961094393566277e-05,
+            "start": 23.46,
+            "text": "risk-free",
+            "type": "word"
+          },
+          {
+            "end": 24.0,
+            "logprob": -6.6756979322235566e-06,
+            "start": 23.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.3,
+            "logprob": -6.6756979322235566e-06,
+            "start": 24.0,
+            "text": "central",
+            "type": "word"
+          },
+          {
+            "end": 24.34,
+            "logprob": -1.1920922133867862e-06,
+            "start": 24.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.94,
+            "logprob": -1.1920922133867862e-06,
+            "start": 24.34,
+            "text": "reserves",
+            "type": "word"
+          },
+          {
+            "end": 25.0,
+            "logprob": -5.960446742392378e-06,
+            "start": 24.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.36,
+            "logprob": -5.960446742392378e-06,
+            "start": 25.0,
+            "text": "without",
+            "type": "word"
+          },
+          {
+            "end": 25.42,
+            "logprob": -8.344646857949556e-07,
+            "start": 25.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.84,
+            "logprob": -9.536738111314157e-07,
+            "start": 25.42,
+            "text": "friction.",
+            "type": "word"
+          },
+          {
+            "end": 26.26,
+            "logprob": -8.344646857949556e-07,
+            "start": 25.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.4,
+            "logprob": -8.344646857949556e-07,
+            "start": 26.26,
+            "text": "Now",
+            "type": "word"
+          },
+          {
+            "end": 26.48,
+            "logprob": -0.00015841660206206143,
+            "start": 26.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.68,
+            "logprob": -0.00015841660206206143,
+            "start": 26.48,
+            "text": "even",
+            "type": "word"
+          },
+          {
+            "end": 26.74,
+            "logprob": -2.861018856492592e-06,
+            "start": 26.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.18,
+            "logprob": -2.861018856492592e-06,
+            "start": 26.74,
+            "text": "monetary",
+            "type": "word"
+          },
+          {
+            "end": 27.22,
+            "logprob": -1.1920922133867862e-06,
+            "start": 27.18,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.74,
+            "logprob": -1.1920922133867862e-06,
+            "start": 27.22,
+            "text": "authorities",
+            "type": "word"
+          },
+          {
+            "end": 28.02,
+            "logprob": -8.940656698541716e-06,
+            "start": 27.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.26,
+            "logprob": -8.940656698541716e-06,
+            "start": 28.02,
+            "text": "settle",
+            "type": "word"
+          },
+          {
+            "end": 28.28,
+            "logprob": -2.3841855067985307e-07,
+            "start": 28.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.44,
+            "logprob": -2.3841855067985307e-07,
+            "start": 28.28,
+            "text": "their",
+            "type": "word"
+          },
+          {
+            "end": 28.52,
+            "logprob": -1.0728830375228426e-06,
+            "start": 28.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.7,
+            "logprob": -1.0728830375228426e-06,
+            "start": 28.52,
+            "text": "own",
+            "type": "word"
+          },
+          {
+            "end": 28.76,
+            "logprob": -4.410734163684538e-06,
+            "start": 28.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.22,
+            "logprob": -2.609353562850932e-06,
+            "start": 28.76,
+            "text": "tokenized",
+            "type": "word"
+          },
+          {
+            "end": 29.28,
+            "logprob": -1.0490362910786644e-05,
+            "start": 29.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.8,
+            "logprob": -1.0490362910786644e-05,
+            "start": 29.28,
+            "text": "investments",
+            "type": "word"
+          },
+          {
+            "end": 29.82,
+            "logprob": -2.3841855067985307e-07,
+            "start": 29.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.04,
+            "logprob": -2.3841855067985307e-07,
+            "start": 29.82,
+            "text": "through",
+            "type": "word"
+          },
+          {
+            "end": 30.08,
+            "logprob": -1.311301275563892e-06,
+            "start": 30.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.24,
+            "logprob": -1.311301275563892e-06,
+            "start": 30.08,
+            "text": "it",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 30.8960625,
+        "language_code": "eng",
+        "language_probability": 1.0,
+        "text": "Trading tokenized bonds promised major lenders instant wholesale digital market execution. Yet private distributed ledgers carried unacceptable credit and counterparty settlement hazards. Commercial tokens lacked the absolute safety found in central bank money. So the Eurosystem deployed Pontes as a dedicated wholesale settlement bridge. It connects distributed platforms directly to risk-free central reserves without friction. Now even monetary authorities settle their own tokenized investments through it",
+        "transcription_id": "qnMKzoLi6JE76RIhq9ba",
+        "words": [
+          {
+            "end": 0.62,
+            "logprob": -0.000609927112236619,
+            "start": 0.12,
+            "text": "Trading",
+            "type": "word"
+          },
+          {
+            "end": 0.68,
+            "logprob": -0.00010394509445177391,
+            "start": 0.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.26,
+            "logprob": -6.082021455869027e-05,
+            "start": 0.68,
+            "text": "tokenized",
+            "type": "word"
+          },
+          {
+            "end": 1.32,
+            "logprob": -1.6689286894688848e-06,
+            "start": 1.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.76,
+            "logprob": -1.6689286894688848e-06,
+            "start": 1.32,
+            "text": "bonds",
+            "type": "word"
+          },
+          {
+            "end": 1.8,
+            "logprob": -0.0028347091283649206,
+            "start": 1.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.2,
+            "logprob": -0.0028347091283649206,
+            "start": 1.8,
+            "text": "promised",
+            "type": "word"
+          },
+          {
+            "end": 2.28,
+            "logprob": -4.291525328881107e-06,
+            "start": 2.2,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.56,
+            "logprob": -4.291525328881107e-06,
+            "start": 2.28,
+            "text": "major",
+            "type": "word"
+          },
+          {
+            "end": 2.62,
+            "logprob": -3.3378546504536644e-06,
+            "start": 2.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.16,
+            "logprob": -3.3378546504536644e-06,
+            "start": 2.62,
+            "text": "lenders",
+            "type": "word"
+          },
+          {
+            "end": 3.26,
+            "logprob": -3.015949550899677e-05,
+            "start": 3.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.64,
+            "logprob": -3.015949550899677e-05,
+            "start": 3.26,
+            "text": "instant",
+            "type": "word"
+          },
+          {
+            "end": 3.72,
+            "logprob": -7.867782187531702e-06,
+            "start": 3.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.12,
+            "logprob": -7.867782187531702e-06,
+            "start": 3.72,
+            "text": "wholesale",
+            "type": "word"
+          },
+          {
+            "end": 4.22,
+            "logprob": -3.266281055402942e-05,
+            "start": 4.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.54,
+            "logprob": -3.266281055402942e-05,
+            "start": 4.22,
+            "text": "digital",
+            "type": "word"
+          },
+          {
+            "end": 4.6,
+            "logprob": -9.298280929215252e-06,
+            "start": 4.54,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.9,
+            "logprob": -9.298280929215252e-06,
+            "start": 4.6,
+            "text": "market",
+            "type": "word"
+          },
+          {
+            "end": 4.96,
+            "logprob": -5.245195097813848e-06,
+            "start": 4.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.56,
+            "logprob": -0.000419672473162791,
+            "start": 4.96,
+            "text": "execution.",
+            "type": "word"
+          },
+          {
+            "end": 5.56,
+            "logprob": -1.3351351299206726e-05,
+            "start": 5.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.24,
+            "logprob": -1.3351351299206726e-05,
+            "start": 6.02,
+            "text": "Yet",
+            "type": "word"
+          },
+          {
+            "end": 6.3,
+            "logprob": -0.00026842328952625394,
+            "start": 6.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.7,
+            "logprob": -0.00026842328952625394,
+            "start": 6.3,
+            "text": "private",
+            "type": "word"
+          },
+          {
+            "end": 6.74,
+            "logprob": -0.0008687774534337223,
+            "start": 6.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.34,
+            "logprob": -0.0008687774534337223,
+            "start": 6.74,
+            "text": "distributed",
+            "type": "word"
+          },
+          {
+            "end": 7.4,
+            "logprob": -0.0001497156627010554,
+            "start": 7.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.8,
+            "logprob": -0.00015393842893120433,
+            "start": 7.4,
+            "text": "ledgers",
+            "type": "word"
+          },
+          {
+            "end": 8.16,
+            "logprob": -2.622600959512056e-06,
+            "start": 7.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.6,
+            "logprob": -2.622600959512056e-06,
+            "start": 8.16,
+            "text": "carried",
+            "type": "word"
+          },
+          {
+            "end": 8.68,
+            "logprob": -5.245195097813848e-06,
+            "start": 8.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.36,
+            "logprob": -5.245195097813848e-06,
+            "start": 8.68,
+            "text": "unacceptable",
+            "type": "word"
+          },
+          {
+            "end": 9.44,
+            "logprob": -5.960462772236497e-07,
+            "start": 9.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.9,
+            "logprob": -5.960462772236497e-07,
+            "start": 9.44,
+            "text": "credit",
+            "type": "word"
+          },
+          {
+            "end": 9.96,
+            "logprob": -1.2755313036905136e-05,
+            "start": 9.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.1,
+            "logprob": -1.2755313036905136e-05,
+            "start": 9.96,
+            "text": "and",
+            "type": "word"
+          },
+          {
+            "end": 10.18,
+            "logprob": -3.85038583772257e-05,
+            "start": 10.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.76,
+            "logprob": -5.057315926630205e-05,
+            "start": 10.18,
+            "text": "counterparty",
+            "type": "word"
+          },
+          {
+            "end": 10.88,
+            "logprob": -4.887569048150908e-06,
+            "start": 10.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.24,
+            "logprob": -4.887569048150908e-06,
+            "start": 10.88,
+            "text": "settlement",
+            "type": "word"
+          },
+          {
+            "end": 11.3,
+            "logprob": -7.986990567587782e-06,
+            "start": 11.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.76,
+            "logprob": -8.28501106298063e-06,
+            "start": 11.3,
+            "text": "hazards.",
+            "type": "word"
+          },
+          {
+            "end": 12.16,
+            "logprob": -4.637133679352701e-05,
+            "start": 11.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.6,
+            "logprob": -4.637133679352701e-05,
+            "start": 12.16,
+            "text": "Commercial",
+            "type": "word"
+          },
+          {
+            "end": 12.66,
+            "logprob": -1.9073468138230965e-06,
+            "start": 12.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.1,
+            "logprob": -1.9073468138230965e-06,
+            "start": 12.66,
+            "text": "tokens",
+            "type": "word"
+          },
+          {
+            "end": 13.16,
+            "logprob": -2.0265558760002023e-06,
+            "start": 13.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.44,
+            "logprob": -2.0265558760002023e-06,
+            "start": 13.16,
+            "text": "lacked",
+            "type": "word"
+          },
+          {
+            "end": 13.5,
+            "logprob": -7.152555099310121e-07,
+            "start": 13.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.64,
+            "logprob": -7.152555099310121e-07,
+            "start": 13.5,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 13.74,
+            "logprob": -2.0265558760002023e-06,
+            "start": 13.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.14,
+            "logprob": -2.0265558760002023e-06,
+            "start": 13.74,
+            "text": "absolute",
+            "type": "word"
+          },
+          {
+            "end": 14.22,
+            "logprob": -5.960462772236497e-07,
+            "start": 14.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.56,
+            "logprob": -5.960462772236497e-07,
+            "start": 14.22,
+            "text": "safety",
+            "type": "word"
+          },
+          {
+            "end": 14.72,
+            "logprob": -1.1920928244535389e-07,
+            "start": 14.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.96,
+            "logprob": -1.1920928244535389e-07,
+            "start": 14.72,
+            "text": "found",
+            "type": "word"
+          },
+          {
+            "end": 15.0,
+            "logprob": -1.1920928244535389e-07,
+            "start": 14.96,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.1,
+            "logprob": -1.1920928244535389e-07,
+            "start": 15.0,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 15.14,
+            "logprob": -6.472854875028133e-05,
+            "start": 15.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.48,
+            "logprob": -6.472854875028133e-05,
+            "start": 15.14,
+            "text": "central",
+            "type": "word"
+          },
+          {
+            "end": 15.52,
+            "logprob": -1.4305104514278355e-06,
+            "start": 15.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.74,
+            "logprob": -1.4305104514278355e-06,
+            "start": 15.52,
+            "text": "bank",
+            "type": "word"
+          },
+          {
+            "end": 15.8,
+            "logprob": -6.6756979322235566e-06,
+            "start": 15.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.059,
+            "logprob": -0.0005354198519095613,
+            "start": 15.8,
+            "text": "money.",
+            "type": "word"
+          },
+          {
+            "end": 16.059,
+            "logprob": -1.0728830375228426e-06,
+            "start": 16.059,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.76,
+            "logprob": -1.0728830375228426e-06,
+            "start": 16.66,
+            "text": "So",
+            "type": "word"
+          },
+          {
+            "end": 16.8,
+            "logprob": -5.3881147323409095e-05,
+            "start": 16.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.9,
+            "logprob": -5.3881147323409095e-05,
+            "start": 16.8,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 16.98,
+            "logprob": -0.0043873959220945835,
+            "start": 16.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.6,
+            "logprob": -0.062003649212419985,
+            "start": 16.98,
+            "text": "Eurosystem",
+            "type": "word"
+          },
+          {
+            "end": 17.64,
+            "logprob": -1.1086402082582936e-05,
+            "start": 17.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.02,
+            "logprob": -1.1086402082582936e-05,
+            "start": 17.64,
+            "text": "deployed",
+            "type": "word"
+          },
+          {
+            "end": 18.08,
+            "logprob": -0.004418016877025366,
+            "start": 18.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.48,
+            "logprob": -0.005997785987953345,
+            "start": 18.08,
+            "text": "Pontes",
+            "type": "word"
+          },
+          {
+            "end": 18.56,
+            "logprob": -2.861018856492592e-06,
+            "start": 18.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.62,
+            "logprob": -2.861018856492592e-06,
+            "start": 18.56,
+            "text": "as",
+            "type": "word"
+          },
+          {
+            "end": 18.68,
+            "logprob": 0.0,
+            "start": 18.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.76,
+            "logprob": 0.0,
+            "start": 18.68,
+            "text": "a",
+            "type": "word"
+          },
+          {
+            "end": 18.8,
+            "logprob": -3.576278118089249e-07,
+            "start": 18.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.32,
+            "logprob": -3.576278118089249e-07,
+            "start": 18.8,
+            "text": "dedicated",
+            "type": "word"
+          },
+          {
+            "end": 19.4,
+            "logprob": -1.0371154530730564e-05,
+            "start": 19.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.84,
+            "logprob": -1.0371154530730564e-05,
+            "start": 19.4,
+            "text": "wholesale",
+            "type": "word"
+          },
+          {
+            "end": 19.9,
+            "logprob": -4.529942543740617e-06,
+            "start": 19.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.36,
+            "logprob": -4.529942543740617e-06,
+            "start": 19.9,
+            "text": "settlement",
+            "type": "word"
+          },
+          {
+            "end": 20.4,
+            "logprob": -6.079655122448457e-06,
+            "start": 20.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.76,
+            "logprob": -5.398461715750662e-06,
+            "start": 20.4,
+            "text": "bridge.",
+            "type": "word"
+          },
+          {
+            "end": 20.76,
+            "logprob": -2.3841855067985307e-07,
+            "start": 20.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.3,
+            "logprob": -2.3841855067985307e-07,
+            "start": 21.2,
+            "text": "It",
+            "type": "word"
+          },
+          {
+            "end": 21.36,
+            "logprob": -3.576278118089249e-07,
+            "start": 21.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.74,
+            "logprob": -3.576278118089249e-07,
+            "start": 21.36,
+            "text": "connects",
+            "type": "word"
+          },
+          {
+            "end": 21.8,
+            "logprob": -1.3470558769768104e-05,
+            "start": 21.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.36,
+            "logprob": -1.3470558769768104e-05,
+            "start": 21.8,
+            "text": "distributed",
+            "type": "word"
+          },
+          {
+            "end": 22.42,
+            "logprob": -2.0265558760002023e-06,
+            "start": 22.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.98,
+            "logprob": -2.0265558760002023e-06,
+            "start": 22.42,
+            "text": "platforms",
+            "type": "word"
+          },
+          {
+            "end": 23.04,
+            "logprob": -9.536738616588991e-07,
+            "start": 22.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.6,
+            "logprob": -9.536738616588991e-07,
+            "start": 23.04,
+            "text": "directly",
+            "type": "word"
+          },
+          {
+            "end": 23.66,
+            "logprob": -2.3841855067985307e-07,
+            "start": 23.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.8,
+            "logprob": -2.3841855067985307e-07,
+            "start": 23.68,
+            "text": "to",
+            "type": "word"
+          },
+          {
+            "end": 23.86,
+            "logprob": -2.7418097943154862e-06,
+            "start": 23.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.36,
+            "logprob": -5.058737507271063e-05,
+            "start": 23.86,
+            "text": "risk-free",
+            "type": "word"
+          },
+          {
+            "end": 24.42,
+            "logprob": -8.940656698541716e-06,
+            "start": 24.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.74,
+            "logprob": -8.940656698541716e-06,
+            "start": 24.42,
+            "text": "central",
+            "type": "word"
+          },
+          {
+            "end": 24.78,
+            "logprob": -1.7881377516459906e-06,
+            "start": 24.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.24,
+            "logprob": -1.7881377516459906e-06,
+            "start": 24.78,
+            "text": "reserves",
+            "type": "word"
+          },
+          {
+            "end": 25.3,
+            "logprob": -6.9141146923357155e-06,
+            "start": 25.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.66,
+            "logprob": -6.9141146923357155e-06,
+            "start": 25.3,
+            "text": "without",
+            "type": "word"
+          },
+          {
+            "end": 25.7,
+            "logprob": -3.576278118089249e-07,
+            "start": 25.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.14,
+            "logprob": -2.397411814551257e-06,
+            "start": 25.7,
+            "text": "friction.",
+            "type": "word"
+          },
+          {
+            "end": 26.14,
+            "logprob": -2.622600959512056e-06,
+            "start": 26.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.82,
+            "logprob": -2.622600959512056e-06,
+            "start": 26.56,
+            "text": "Now",
+            "type": "word"
+          },
+          {
+            "end": 26.9,
+            "logprob": -0.01104797888547182,
+            "start": 26.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.1,
+            "logprob": -0.01104797888547182,
+            "start": 26.9,
+            "text": "even",
+            "type": "word"
+          },
+          {
+            "end": 27.16,
+            "logprob": -1.490105023549404e-05,
+            "start": 27.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.58,
+            "logprob": -1.490105023549404e-05,
+            "start": 27.16,
+            "text": "monetary",
+            "type": "word"
+          },
+          {
+            "end": 27.64,
+            "logprob": -1.0728830375228426e-06,
+            "start": 27.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.24,
+            "logprob": -1.0728830375228426e-06,
+            "start": 27.64,
+            "text": "authorities",
+            "type": "word"
+          },
+          {
+            "end": 28.32,
+            "logprob": -1.0490362910786644e-05,
+            "start": 28.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.58,
+            "logprob": -1.0490362910786644e-05,
+            "start": 28.32,
+            "text": "settle",
+            "type": "word"
+          },
+          {
+            "end": 28.62,
+            "logprob": -3.576278118089249e-07,
+            "start": 28.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.84,
+            "logprob": -3.576278118089249e-07,
+            "start": 28.62,
+            "text": "their",
+            "type": "word"
+          },
+          {
+            "end": 28.92,
+            "logprob": -1.0728830375228426e-06,
+            "start": 28.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.12,
+            "logprob": -1.0728830375228426e-06,
+            "start": 28.92,
+            "text": "own",
+            "type": "word"
+          },
+          {
+            "end": 29.18,
+            "logprob": -3.2186455882765586e-06,
+            "start": 29.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.64,
+            "logprob": -1.8941002382335782e-06,
+            "start": 29.18,
+            "text": "tokenized",
+            "type": "word"
+          },
+          {
+            "end": 29.68,
+            "logprob": -9.894321920000948e-06,
+            "start": 29.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.26,
+            "logprob": -9.894321920000948e-06,
+            "start": 29.7,
+            "text": "investments",
+            "type": "word"
+          },
+          {
+            "end": 30.28,
+            "logprob": -3.576278118089249e-07,
+            "start": 30.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.48,
+            "logprob": -3.576278118089249e-07,
+            "start": 30.3,
+            "text": "through",
+            "type": "word"
+          },
+          {
+            "end": 30.54,
+            "logprob": -1.4305104514278355e-06,
+            "start": 30.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.68,
+            "logprob": -1.4305104514278355e-06,
+            "start": 30.54,
+            "text": "it",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 31.292,
+        "language_code": "eng",
+        "language_probability": 1.0,
+        "text": "Trading tokenized bonds promised major lenders instant wholesale digital market execution. Yet private distributed ledgers carried unacceptable credit and counterparty settlement hazards. Commercial tokens lacked the absolute safety found in central bank money. So the Eurosystem deployed Pontes as a dedicated wholesale settlement bridge. It connects distributed platforms directly to risk-free central reserves without friction. Now even monetary authorities settle their own tokenized investments through it",
+        "transcription_id": "oeGVyYEKfB9MvtS5ytx8",
+        "words": [
+          {
+            "end": 0.5,
+            "logprob": -0.0006688979919999838,
+            "start": 0.12,
+            "text": "Trading",
+            "type": "word"
+          },
+          {
+            "end": 0.62,
+            "logprob": -0.0001102625101339072,
+            "start": 0.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.18,
+            "logprob": -0.0003070250354034619,
+            "start": 0.62,
+            "text": "tokenized",
+            "type": "word"
+          },
+          {
+            "end": 1.3,
+            "logprob": -9.536738616588991e-07,
+            "start": 1.18,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.66,
+            "logprob": -9.536738616588991e-07,
+            "start": 1.3,
+            "text": "bonds",
+            "type": "word"
+          },
+          {
+            "end": 1.92,
+            "logprob": -2.658331868587993e-05,
+            "start": 1.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.3,
+            "logprob": -2.658331868587993e-05,
+            "start": 1.92,
+            "text": "promised",
+            "type": "word"
+          },
+          {
+            "end": 2.42,
+            "logprob": -1.1920922133867862e-06,
+            "start": 2.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.7,
+            "logprob": -1.1920922133867862e-06,
+            "start": 2.42,
+            "text": "major",
+            "type": "word"
+          },
+          {
+            "end": 2.74,
+            "logprob": -2.264974000354414e-06,
+            "start": 2.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.14,
+            "logprob": -2.264974000354414e-06,
+            "start": 2.74,
+            "text": "lenders",
+            "type": "word"
+          },
+          {
+            "end": 3.36,
+            "logprob": -1.1086402082582936e-05,
+            "start": 3.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.78,
+            "logprob": -1.1086402082582936e-05,
+            "start": 3.36,
+            "text": "instant",
+            "type": "word"
+          },
+          {
+            "end": 3.86,
+            "logprob": -1.728519782773219e-05,
+            "start": 3.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.3,
+            "logprob": -1.728519782773219e-05,
+            "start": 3.86,
+            "text": "wholesale",
+            "type": "word"
+          },
+          {
+            "end": 4.42,
+            "logprob": -2.622600959512056e-06,
+            "start": 4.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.74,
+            "logprob": -2.622600959512056e-06,
+            "start": 4.42,
+            "text": "digital",
+            "type": "word"
+          },
+          {
+            "end": 4.84,
+            "logprob": -2.0265558760002023e-06,
+            "start": 4.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.14,
+            "logprob": -2.0265558760002023e-06,
+            "start": 4.84,
+            "text": "market",
+            "type": "word"
+          },
+          {
+            "end": 5.2,
+            "logprob": -2.50339189733495e-06,
+            "start": 5.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.84,
+            "logprob": -0.0003246706881782302,
+            "start": 5.2,
+            "text": "execution.",
+            "type": "word"
+          },
+          {
+            "end": 5.84,
+            "logprob": -3.814689989667386e-06,
+            "start": 5.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.56,
+            "logprob": -3.814689989667386e-06,
+            "start": 6.28,
+            "text": "Yet",
+            "type": "word"
+          },
+          {
+            "end": 6.6,
+            "logprob": -0.00011312322021694854,
+            "start": 6.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.02,
+            "logprob": -0.00011312322021694854,
+            "start": 6.6,
+            "text": "private",
+            "type": "word"
+          },
+          {
+            "end": 7.06,
+            "logprob": -0.0005638201837427914,
+            "start": 7.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.62,
+            "logprob": -0.0005638201837427914,
+            "start": 7.06,
+            "text": "distributed",
+            "type": "word"
+          },
+          {
+            "end": 7.7,
+            "logprob": -0.00021145492792129517,
+            "start": 7.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.119,
+            "logprob": -0.0005113795798804079,
+            "start": 7.7,
+            "text": "ledgers",
+            "type": "word"
+          },
+          {
+            "end": 8.36,
+            "logprob": -5.960462772236497e-07,
+            "start": 8.119,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.62,
+            "logprob": -5.960462772236497e-07,
+            "start": 8.36,
+            "text": "carried",
+            "type": "word"
+          },
+          {
+            "end": 8.8,
+            "logprob": -4.0531076592742465e-06,
+            "start": 8.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.44,
+            "logprob": -4.0531076592742465e-06,
+            "start": 8.8,
+            "text": "unacceptable",
+            "type": "word"
+          },
+          {
+            "end": 9.58,
+            "logprob": -1.1920928244535389e-07,
+            "start": 9.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.98,
+            "logprob": -1.1920928244535389e-07,
+            "start": 9.58,
+            "text": "credit",
+            "type": "word"
+          },
+          {
+            "end": 10.04,
+            "logprob": -3.576278118089249e-07,
+            "start": 9.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.2,
+            "logprob": -3.576278118089249e-07,
+            "start": 10.04,
+            "text": "and",
+            "type": "word"
+          },
+          {
+            "end": 10.26,
+            "logprob": -5.924526340095326e-05,
+            "start": 10.2,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.84,
+            "logprob": -4.2308268803026294e-05,
+            "start": 10.26,
+            "text": "counterparty",
+            "type": "word"
+          },
+          {
+            "end": 10.94,
+            "logprob": -3.933898824470816e-06,
+            "start": 10.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.34,
+            "logprob": -3.933898824470816e-06,
+            "start": 10.94,
+            "text": "settlement",
+            "type": "word"
+          },
+          {
+            "end": 11.4,
+            "logprob": -5.006777428206988e-06,
+            "start": 11.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.86,
+            "logprob": -5.096183940622723e-06,
+            "start": 11.4,
+            "text": "hazards.",
+            "type": "word"
+          },
+          {
+            "end": 12.26,
+            "logprob": -8.141662692651153e-05,
+            "start": 11.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.7,
+            "logprob": -8.141662692651153e-05,
+            "start": 12.26,
+            "text": "Commercial",
+            "type": "word"
+          },
+          {
+            "end": 12.8,
+            "logprob": -1.6689286894688848e-06,
+            "start": 12.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.26,
+            "logprob": -1.6689286894688848e-06,
+            "start": 12.8,
+            "text": "tokens",
+            "type": "word"
+          },
+          {
+            "end": 13.34,
+            "logprob": -1.9073468138230965e-06,
+            "start": 13.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.64,
+            "logprob": -1.9073468138230965e-06,
+            "start": 13.34,
+            "text": "lacked",
+            "type": "word"
+          },
+          {
+            "end": 13.7,
+            "logprob": -2.3841855067985307e-07,
+            "start": 13.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.8,
+            "logprob": -2.3841855067985307e-07,
+            "start": 13.7,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 13.88,
+            "logprob": -1.1920922133867862e-06,
+            "start": 13.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.28,
+            "logprob": -1.1920922133867862e-06,
+            "start": 13.88,
+            "text": "absolute",
+            "type": "word"
+          },
+          {
+            "end": 14.4,
+            "logprob": -9.536738616588991e-07,
+            "start": 14.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.78,
+            "logprob": -9.536738616588991e-07,
+            "start": 14.4,
+            "text": "safety",
+            "type": "word"
+          },
+          {
+            "end": 14.94,
+            "logprob": -1.1920928244535389e-07,
+            "start": 14.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.16,
+            "logprob": -1.1920928244535389e-07,
+            "start": 14.94,
+            "text": "found",
+            "type": "word"
+          },
+          {
+            "end": 15.2,
+            "logprob": -1.1920928244535389e-07,
+            "start": 15.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.34,
+            "logprob": -1.1920928244535389e-07,
+            "start": 15.2,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 15.4,
+            "logprob": -3.671578815556131e-05,
+            "start": 15.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.72,
+            "logprob": -3.671578815556131e-05,
+            "start": 15.4,
+            "text": "central",
+            "type": "word"
+          },
+          {
+            "end": 15.82,
+            "logprob": -4.768370445162873e-07,
+            "start": 15.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.04,
+            "logprob": -4.768370445162873e-07,
+            "start": 15.82,
+            "text": "bank",
+            "type": "word"
+          },
+          {
+            "end": 16.079,
+            "logprob": -2.9802276912960224e-06,
+            "start": 16.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.34,
+            "logprob": -0.0056107267699492995,
+            "start": 16.079,
+            "text": "money.",
+            "type": "word"
+          },
+          {
+            "end": 16.34,
+            "logprob": -2.3841855067985307e-07,
+            "start": 16.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.86,
+            "logprob": -2.3841855067985307e-07,
+            "start": 16.78,
+            "text": "So",
+            "type": "word"
+          },
+          {
+            "end": 16.9,
+            "logprob": -0.00021455370006151497,
+            "start": 16.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.98,
+            "logprob": -0.00021455370006151497,
+            "start": 16.9,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 17.06,
+            "logprob": -0.03046157956123352,
+            "start": 16.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.62,
+            "logprob": -0.10848798751831054,
+            "start": 17.06,
+            "text": "Eurosystem",
+            "type": "word"
+          },
+          {
+            "end": 17.7,
+            "logprob": -1.3112935448589269e-05,
+            "start": 17.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.08,
+            "logprob": -1.3112935448589269e-05,
+            "start": 17.7,
+            "text": "deployed",
+            "type": "word"
+          },
+          {
+            "end": 18.24,
+            "logprob": -0.006384808104485273,
+            "start": 18.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.72,
+            "logprob": -0.014137393794953823,
+            "start": 18.24,
+            "text": "Pontes",
+            "type": "word"
+          },
+          {
+            "end": 18.8,
+            "logprob": -2.264974000354414e-06,
+            "start": 18.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.9,
+            "logprob": -2.264974000354414e-06,
+            "start": 18.8,
+            "text": "as",
+            "type": "word"
+          },
+          {
+            "end": 18.96,
+            "logprob": 0.0,
+            "start": 18.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.04,
+            "logprob": 0.0,
+            "start": 18.96,
+            "text": "a",
+            "type": "word"
+          },
+          {
+            "end": 19.08,
+            "logprob": 0.0,
+            "start": 19.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.6,
+            "logprob": 0.0,
+            "start": 19.08,
+            "text": "dedicated",
+            "type": "word"
+          },
+          {
+            "end": 19.68,
+            "logprob": -1.3470558769768104e-05,
+            "start": 19.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.06,
+            "logprob": -1.3470558769768104e-05,
+            "start": 19.68,
+            "text": "wholesale",
+            "type": "word"
+          },
+          {
+            "end": 20.18,
+            "logprob": -9.536738616588991e-07,
+            "start": 20.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.6,
+            "logprob": -9.536738616588991e-07,
+            "start": 20.18,
+            "text": "settlement",
+            "type": "word"
+          },
+          {
+            "end": 20.64,
+            "logprob": -2.7418097943154862e-06,
+            "start": 20.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.96,
+            "logprob": -2.350122680841845e-06,
+            "start": 20.64,
+            "text": "bridge.",
+            "type": "word"
+          },
+          {
+            "end": 20.96,
+            "logprob": 0.0,
+            "start": 20.96,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.8,
+            "logprob": 0.0,
+            "start": 21.72,
+            "text": "It",
+            "type": "word"
+          },
+          {
+            "end": 21.84,
+            "logprob": -7.152555099310121e-07,
+            "start": 21.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.22,
+            "logprob": -7.152555099310121e-07,
+            "start": 21.84,
+            "text": "connects",
+            "type": "word"
+          },
+          {
+            "end": 22.26,
+            "logprob": -2.8729025871143676e-05,
+            "start": 22.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.76,
+            "logprob": -2.8729025871143676e-05,
+            "start": 22.26,
+            "text": "distributed",
+            "type": "word"
+          },
+          {
+            "end": 22.86,
+            "logprob": -2.145764938177308e-06,
+            "start": 22.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.4,
+            "logprob": -2.145764938177308e-06,
+            "start": 22.86,
+            "text": "platforms",
+            "type": "word"
+          },
+          {
+            "end": 23.46,
+            "logprob": -5.960462772236497e-07,
+            "start": 23.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.88,
+            "logprob": -5.960462772236497e-07,
+            "start": 23.46,
+            "text": "directly",
+            "type": "word"
+          },
+          {
+            "end": 23.94,
+            "logprob": -2.3841855067985307e-07,
+            "start": 23.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.06,
+            "logprob": -2.3841855067985307e-07,
+            "start": 23.94,
+            "text": "to",
+            "type": "word"
+          },
+          {
+            "end": 24.1,
+            "logprob": -1.6689286894688848e-06,
+            "start": 24.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.62,
+            "logprob": -1.7986265245579285e-05,
+            "start": 24.1,
+            "text": "risk-free",
+            "type": "word"
+          },
+          {
+            "end": 24.68,
+            "logprob": -8.4638240878121e-06,
+            "start": 24.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.0,
+            "logprob": -8.4638240878121e-06,
+            "start": 24.68,
+            "text": "central",
+            "type": "word"
+          },
+          {
+            "end": 25.04,
+            "logprob": -1.1920922133867862e-06,
+            "start": 25.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.56,
+            "logprob": -1.1920922133867862e-06,
+            "start": 25.04,
+            "text": "reserves",
+            "type": "word"
+          },
+          {
+            "end": 25.62,
+            "logprob": -6.6756979322235566e-06,
+            "start": 25.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.96,
+            "logprob": -6.6756979322235566e-06,
+            "start": 25.62,
+            "text": "without",
+            "type": "word"
+          },
+          {
+            "end": 26.02,
+            "logprob": -3.576278118089249e-07,
+            "start": 25.96,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.46,
+            "logprob": -5.033279093266982e-07,
+            "start": 26.02,
+            "text": "friction.",
+            "type": "word"
+          },
+          {
+            "end": 26.46,
+            "logprob": -8.344646857949556e-07,
+            "start": 26.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.14,
+            "logprob": -8.344646857949556e-07,
+            "start": 26.86,
+            "text": "Now",
+            "type": "word"
+          },
+          {
+            "end": 27.24,
+            "logprob": -0.038041528314352036,
+            "start": 27.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.5,
+            "logprob": -0.038041528314352036,
+            "start": 27.24,
+            "text": "even",
+            "type": "word"
+          },
+          {
+            "end": 27.56,
+            "logprob": -5.722029527532868e-06,
+            "start": 27.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.96,
+            "logprob": -5.722029527532868e-06,
+            "start": 27.56,
+            "text": "monetary",
+            "type": "word"
+          },
+          {
+            "end": 28.02,
+            "logprob": -7.152555099310121e-07,
+            "start": 27.96,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.62,
+            "logprob": -7.152555099310121e-07,
+            "start": 28.02,
+            "text": "authorities",
+            "type": "word"
+          },
+          {
+            "end": 28.8,
+            "logprob": -0.0007134514744393528,
+            "start": 28.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.04,
+            "logprob": -0.0007134514744393528,
+            "start": 28.8,
+            "text": "settle",
+            "type": "word"
+          },
+          {
+            "end": 29.1,
+            "logprob": -2.3841855067985307e-07,
+            "start": 29.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.26,
+            "logprob": -2.3841855067985307e-07,
+            "start": 29.1,
+            "text": "their",
+            "type": "word"
+          },
+          {
+            "end": 29.32,
+            "logprob": -7.152555099310121e-07,
+            "start": 29.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.5,
+            "logprob": -7.152555099310121e-07,
+            "start": 29.32,
+            "text": "own",
+            "type": "word"
+          },
+          {
+            "end": 29.56,
+            "logprob": -5.8412379075889476e-06,
+            "start": 29.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.06,
+            "logprob": -3.5630235086298653e-06,
+            "start": 29.56,
+            "text": "tokenized",
+            "type": "word"
+          },
+          {
+            "end": 30.1,
+            "logprob": -9.775113539944869e-06,
+            "start": 30.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.66,
+            "logprob": -9.775113539944869e-06,
+            "start": 30.1,
+            "text": "investments",
+            "type": "word"
+          },
+          {
+            "end": 30.7,
+            "logprob": -1.1920928244535389e-07,
+            "start": 30.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.88,
+            "logprob": -1.1920928244535389e-07,
+            "start": 30.7,
+            "text": "through",
+            "type": "word"
+          },
+          {
+            "end": 30.92,
+            "logprob": 0.0,
+            "start": 30.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 31.08,
+            "logprob": 0.0,
+            "start": 30.92,
+            "text": "it",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    }
+  ]
+}

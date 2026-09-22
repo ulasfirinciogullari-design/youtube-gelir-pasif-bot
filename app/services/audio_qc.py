@@ -1341,6 +1341,20 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
     index = 0
     while index < len(tokens):
         century = _EN_YEAR_CENTURIES.get(tokens[index])
+        from app.services.audio_english_amounts import currency_amount_unit
+        amount = currency_amount_unit(tokens, matches, value, index,
+                                      _english_small_cardinal, _EN_NUMBER_WORDS)
+        if amount is not None:
+            number, count = amount
+            units.append((number, tuple(tokens[index:index + count])))
+            index += count
+            continue
+        if (tuple(tokens[index:index + 2]) in {('hand', 'saw'), ('hand', 'saws')}
+                and re.fullmatch(r'(?:\s+|[-\u2010\u2011])',
+                    value[matches[index].end():matches[index + 1].start()])):
+            units.append((''.join(tokens[index:index + 2]), tuple(tokens[index:index + 2])))
+            index += 2
+            continue
         consumed = 0
         remainder = None
         year_context = bool(index > 0 and tokens[index - 1] in _EN_YEAR_CUES
@@ -1401,7 +1415,8 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
                 units.append((str(century * 100 + remainder), tuple(tokens[index:index + consumed])))
                 index += consumed
                 continue
-        units.append((tokens[index], (tokens[index],)))
+        from app.services.audio_english_amounts import spelling_key
+        units.append((spelling_key(tokens[index]), (tokens[index],)))
         index += 1
     return units
 

@@ -60,7 +60,11 @@ def stock_only_rule():
         'For sourced prices or business terms, show that actual product or activity rather than '
         'demanding a fictional handover or legible price tag. Never omit an explicit user constraint. '
         'Chronology and early sales success do not prove that those sales funded a later '
-        'product or business; omit that financing claim unless a source states it explicitly.\n')
+        'product or business; omit that financing claim unless a source states it explicitly. '
+        'Write for listening: use the company name and a clear role, such as its founder, '
+        'when an unfamiliar personal name adds no useful meaning to the explanation. '
+        'Keep identities that matter to the source-backed point or an explicit owner brief. '
+        'Prefer familiar, concise wording to stacked specialist terms.\n')
 
 
 def generate_text_json(prompt, schema, *, purpose):
