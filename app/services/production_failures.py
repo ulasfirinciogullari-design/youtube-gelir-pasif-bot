@@ -16,6 +16,7 @@ _VISUAL_STAGES = frozenset({'visual_qc', 'ai_scene', 'ai_scene_generation',
 _REVIEW_STAGES = _STORY_STAGES | _AUDIO_STAGES | _VISUAL_STAGES
 _CONTENT_CODES = {
     'story_quality_exhausted': ('story_rejected', _STORY_STAGES),
+    'story_contract_rejected': ('story_rejected', frozenset({'director_qc'})),
     'audio_quality_exhausted': ('audio_rejected', _AUDIO_STAGES),
     'audio_review_unverified': ('review_unverified', _AUDIO_STAGES),
     'visual_quality_exhausted': ('stock_rejected', _VISUAL_STAGES),
@@ -115,6 +116,13 @@ def classified_hold_reason(job):
     code, category = evidence['code'], evidence['category']
     if type(code) is not str or type(category) is not str:
         return None
+    # The old countable writer raised this exact ValueError before it had a
+    # terminal content tag. Keep the original failure and every paid receipt;
+    # only the ordinary complete-unpublished-lineage hold can advance it.
+    from app.services.countable_stock_narration import WORD_FIELD_ERROR
+    if (code == 'unclassified_failure' and category == 'unclassified'
+            and stage == 'director_qc' and error == WORD_FIELD_ERROR):
+        return 'story_rejected'
     # A competing voice prevented this attempt from reserving or sending.
     # Preserve its original failure and every occupied credit receipt. Normal
     # funding preflight blocks fresh production until the pool really settles.

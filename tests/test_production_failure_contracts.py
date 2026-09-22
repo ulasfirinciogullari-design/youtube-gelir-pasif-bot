@@ -11,6 +11,7 @@ from app.services.production_spend import SpendBlocked
 
 @pytest.mark.parametrize('code,stage,reason', [
     ('story_quality_exhausted', 'director_qc', 'story_rejected'),
+    ('story_contract_rejected', 'director_qc', 'story_rejected'),
     ('audio_quality_exhausted', 'audio_qc_retry', 'audio_rejected'),
     ('audio_quality_exhausted', 'audio_pause_recheck', 'audio_rejected'),
     ('audio_review_unverified', 'audio_qc', 'review_unverified'),
@@ -49,7 +50,8 @@ def test_changed_or_malformed_worker_evidence_cannot_authorize_continuation(chan
 
 @pytest.mark.parametrize('stage', ['upload', 'youtube_publish', 'publishing', 'unknown', 'failed'])
 @pytest.mark.parametrize('code', ['story_quality_exhausted', 'audio_quality_exhausted',
-                                  'visual_quality_exhausted', 'render_quality_exhausted'])
+                                  'visual_quality_exhausted', 'render_quality_exhausted',
+                                  'story_contract_rejected'])
 def test_no_content_code_applies_to_delivery_or_unknown_stage(stage, code):
     error = content_rejection(RuntimeError('Rejected.'), code)
     assert classified_hold_reason({'failure_stage': stage, 'error': str(error),
@@ -134,3 +136,38 @@ def test_visual_input_rejection_cannot_clear_another_stage(stage):
     job = {'error': str(error), 'failure_stage': stage,
            'failure_classification': classify_failure(error, stage)}
     assert classified_hold_reason(job) is None
+
+
+@pytest.mark.parametrize('damage', ['phrase', 'missing_slot', 'extra_word', 'missing_scene', 'dual_narration'])
+def test_actual_countable_decoder_rejects_without_leaving_an_unclassified_failure(damage):
+    from app.services import countable_stock_narration as countable
+    from test_countable_stock_narration import encoded, package
+    value=encoded(package())
+    if damage=='phrase':value['scenes'][0]['narration_words']['w01']='two words'
+    elif damage=='missing_slot':value['scenes'][0]['narration_words'].pop('w11')
+    elif damage=='extra_word':value['scenes'][0]['narration_words']['w12']='extra'
+    elif damage=='missing_scene':value['scenes'].pop()
+    else:value['scenes'][0]['narration']='second representation'
+    original=deepcopy(value)
+    with pytest.raises(countable.NarrationContractError)as caught:countable.decode_director(value)
+    assert value==original
+    error=caught.value
+    assert isinstance(error,ValueError)
+    for stage in ('director_qc','research','audio_qc','render','youtube_publish'):
+        job={'error':str(error),'failure_stage':stage,'failure_classification':classify_failure(error,stage)}
+        assert classified_hold_reason(job)==('story_rejected' if stage=='director_qc' else None)
+
+
+@pytest.mark.parametrize('damage', [None,'stage','hash','message','category','code'])
+def test_exact_legacy_word_rejection_requires_unchanged_worker_evidence(damage):
+    from app.services.countable_stock_narration import WORD_FIELD_ERROR
+    job={'error':WORD_FIELD_ERROR,'failure_stage':'director_qc',
+         'failure_classification':classify_failure(ValueError(WORD_FIELD_ERROR),'director_qc')}
+    if damage=='stage':job['failure_stage']='youtube_publish'
+    elif damage=='message':job['error']+=' changed'
+    elif damage=='hash':job['failure_classification']['error_sha256']='0'*64
+    elif damage=='category':job['failure_classification']['category']='spending_blocked'
+    elif damage=='code':job['failure_classification']['code']='spending_blocked'
+    original=deepcopy(job)
+    assert classified_hold_reason(job)==('story_rejected' if damage is None else None)
+    assert job==original

@@ -45,6 +45,7 @@ def test_uncommissioned_tick_cannot_clear_a_pause_or_initialize_a_policy(ready):
 
 @pytest.mark.parametrize('code,stage,reason', [
     ('story_quality_exhausted', 'director_qc', 'story_rejected'),
+    ('story_contract_rejected', 'director_qc', 'story_rejected'),
     ('audio_quality_exhausted', 'audio_pause_recheck', 'audio_rejected'),
     ('audio_review_unverified', 'audio_qc_retry', 'review_unverified'),
     ('visual_quality_exhausted', 'final_visual_qc_rescue', 'stock_rejected'),
@@ -78,6 +79,26 @@ def test_terminal_worker_contract_releases_only_schedule_and_retains_exact_failu
     assert n.client.hgetall(n.state_key) == expected and not n.case.calls
     assert holds.hold_failed_episode(n.profile)['status'] == 'not_quality_paused'
     assert _all(n.client) == after
+
+
+def test_legacy_countable_word_failure_is_held_without_rewriting_or_rebuying(ready):
+    from app.services.countable_stock_narration import WORD_FIELD_ERROR
+    from app.services.production_failures import classify_failure
+    n=ready;commission(n)
+    job=deepcopy(n.job)
+    job.update(failure_stage='director_qc',error=WORD_FIELD_ERROR,
+        failure_classification=classify_failure(ValueError(WORD_FIELD_ERROR),'director_qc'))
+    _write(n.client,jobs.JOB_PREFIX+SOURCE,job)
+    before=_all(n.client)
+    result=holds.hold_failed_episode(n.profile)
+    assert result['status']=='held_unpublished' and result['reason']=='story_rejected'
+    after=_all(n.client)
+    mutable={n.state_key,holds.HOLD_PREFIX+SOURCE,n.day_key,holds.HISTORY_KEY,
+             holds.HISTORY_ANCHOR,jobs.QUALITY_HOLD_JOB_FENCE_PREFIX+SOURCE}
+    assert {k:v for k,v in after.items()if k not in mutable}=={k:v for k,v in before.items()if k not in mutable}
+    assert not n.client.hget(n.state_key,'paused_reason') and not n.case.calls
+    record=json.loads(n.client.get(holds.HOLD_PREFIX+SOURCE))
+    assert record['publish_eligible']is False and record['retry_dispatched']is False
 
 
 def test_hold_preserves_budget_unknown_requests_audio_job_cadence_and_consumed_cursor(ready):

@@ -157,6 +157,8 @@ def test_native_observed_word_fields_require_full_independent_critique(writer_co
     def page(url):
         return {'url': url, 'text': 'ACTUAL RETRIEVED TEST EVIDENCE', 'text_sha256': 'd' * 64}
     monkeypatch.setattr(sources, 'fetch_page', page)
+    from app.services.included_source_passages import catalogue
+    passage = catalogue([page(value['sources'][0]['url'])])[0]
     def send(prepared):
         calls.append(prepared)
         prompt = json.dumps(prepared.payload)
@@ -181,8 +183,7 @@ def test_native_observed_word_fields_require_full_independent_critique(writer_co
                 'factual_audit': {'sentences': [{'position': pos, 'narration': s['narration'],
                     'assessment': 'unsupported' if reject == 'factual' and pos == 2 else 'supported',
                     'reason': 'Synthetic test assessment for this complete sentence.',
-                    'quotations': [{'source_url': value['sources'][0]['url'],
-                        'quote': 'ACTUAL RETRIEVED TEST EVIDENCE'}]} for pos, s in enumerate(value['scenes'])]}}
+                    'quotations': [{'passage_id': passage['passage_id']}]} for pos, s in enumerate(value['scenes'])]}}
         body = envelope(); body['choices'][0]['message']['content'] = json.dumps(output)
         return response(prepared, payload=body)
     monkeypatch.setattr(transport, 'send_once', send)
