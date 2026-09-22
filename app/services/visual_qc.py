@@ -1999,7 +1999,10 @@ def review_scene_visuals(
                 if _retained_sample_capture is not None:
                     from app.services.retained_sampled_input_linkage import _read_frame
                     frame_bytes = _read_frame(_retained_sample_capture, frame)
-                elif provider == 'gemini':
+                elif provider in {'gemini', 'abacus_included'}:
+                    # Fresh included/native requests share the router's 180 KiB
+                    # JPEG limit. Bound each sampled frame before constructing
+                    # its immutable request; do not modify retained evidence.
                     frame_bytes = _bounded_gemini_frame_bytes(frame)
                     if frame_bytes is None:
                         continue

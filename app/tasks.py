@@ -1988,11 +1988,13 @@ def _strict_short_preview_render_qc(
 
     expected_frames = int(round(requested * 30))
     expected_hold = max(0.0, requested - voice_duration)
-    # AAC priming, mux timebases and a small natural voice tail make silence
-    # detection approximate. The bounds remain tied to the fitted voice, so a
-    # genuinely excessive silent ending cannot hide behind that tolerance.
+    # The master is quantized to 30 fps while silence is measured in audio
+    # samples. Allow at most one picture frame beyond the existing natural
+    # tail/codec allowance. Keep the absolute cap and exact frame-count check.
+    # A real 29.520s take yielded 0.737s of silence on its 900-frame master;
+    # the former 0.730s bound falsely rejected that sub-frame difference.
     minimum_ending_silence = max(0.15, expected_hold - 0.12)
-    maximum_ending_silence = min(1.55, expected_hold + 0.25)
+    maximum_ending_silence = min(1.55, expected_hold + 0.25 + 1 / 30)
     if actual_frames != expected_frames:
         reason = 'final_frame_count_mismatch'
     elif not (

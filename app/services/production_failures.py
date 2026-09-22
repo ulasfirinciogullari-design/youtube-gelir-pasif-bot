@@ -31,6 +31,7 @@ _REVIEW_CODES = frozenset({'included_router_response_unverified',
     'included_router_reservation_uncertain'})
 _SOURCE_CODES = frozenset({'included_research_unconsulted_source',
     'included_research_primary_source_required', 'included_research_primary_source_unavailable'})
+_VISUAL_INPUT_CODES = frozenset({'abacus_router_request_invalid'})
 _COMMISSIONED_VIDEO_CODES = frozenset({
     'commissioning_video_provider_rejected', 'commissioning_video_generation_failed',
     'commissioning_video_outcome_unverified', 'commissioning_video_poll_unavailable',
@@ -81,6 +82,8 @@ def classify_failure(error, stage):
         # These are fixed provider protocol codes, not prose or substrings.
         if str(error) == 'credit_pool_has_uncertain_intent' and stage in _AUDIO_STAGES:
             code, category = str(error), 'review_unverified'
+        elif str(error) in _VISUAL_INPUT_CODES and stage in _VISUAL_STAGES:
+            code, category = str(error), 'review_unverified'
         elif str(error) in _COMMISSIONED_VIDEO_CODES and stage in _VISUAL_STAGES:
             code, category = str(error), 'review_unverified'
         elif str(error) == 'production_media_outcome_unverified' and stage in _AUDIO_STAGES | _VISUAL_STAGES | {'render'}:
@@ -115,6 +118,13 @@ def classified_hold_reason(job):
     # Preserve its original failure and every occupied credit receipt. Normal
     # funding preflight blocks fresh production until the pool really settles.
     if (error == 'credit_pool_has_uncertain_intent' and stage in _AUDIO_STAGES
+            and ((code == error and category == 'review_unverified')
+                 or code == category == 'spending_blocked')):
+        return 'review_unverified'
+    # The router rejected this locally before reservation/transport (for
+    # example an oversized sampled JPEG). Preserve legacy terminal evidence;
+    # the complete unpublished lineage and fresh funding still gate a hold.
+    if (error in _VISUAL_INPUT_CODES and stage in _VISUAL_STAGES
             and ((code == error and category == 'review_unverified')
                  or code == category == 'spending_blocked')):
         return 'review_unverified'

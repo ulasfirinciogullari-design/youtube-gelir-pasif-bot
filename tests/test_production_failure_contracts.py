@@ -110,3 +110,27 @@ def test_actual_retrieved_source_guard_keeps_its_hold_contract(code):
     job = {'failure_stage': 'research', 'error': str(error),
            'failure_classification': classify_failure(error, 'research')}
     assert classified_hold_reason(job) == 'research_sources_unavailable'
+
+
+@pytest.mark.parametrize('legacy', [False, True])
+@pytest.mark.parametrize('stage', ['visual_qc', 'ai_scene', 'final_visual_qc_rescue'])
+def test_local_visual_request_rejection_can_be_held_without_rewriting_job(legacy, stage):
+    from app.services.abacus_router_adapter import AbacusRouterError
+    error = AbacusRouterError('abacus_router_request_invalid')
+    evidence = classify_failure(error, stage)
+    assert evidence['category'] == 'review_unverified'
+    if legacy:
+        evidence.update(code='spending_blocked', category='spending_blocked')
+    job = {'error': str(error), 'failure_stage': stage, 'failure_classification': evidence}
+    original = deepcopy(job)
+    assert classified_hold_reason(job) == 'review_unverified' and job == original
+    job['error'] += ' changed'
+    assert classified_hold_reason(job) is None
+
+
+@pytest.mark.parametrize('stage', ['research', 'audio_qc', 'render', 'upload', 'youtube_publish'])
+def test_visual_input_rejection_cannot_clear_another_stage(stage):
+    error = SpendBlocked('abacus_router_request_invalid')
+    job = {'error': str(error), 'failure_stage': stage,
+           'failure_classification': classify_failure(error, stage)}
+    assert classified_hold_reason(job) is None

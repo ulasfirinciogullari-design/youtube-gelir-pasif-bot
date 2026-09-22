@@ -1,7 +1,28 @@
 """One same-frame completion of missing booleans in an observed Gemini result."""
 from copy import deepcopy
+import json
 
-import httpx
+def decode(raw, schema):
+    """Read a real native envelope with the existing lossless visual parser.
+
+    Only known key spelling/redundancy is normalized; conflicting duplicates,
+    scores, missing values and compact completion objects remain strict.
+    The caller retains and hashes the original provider bytes unchanged.
+    """
+    from app.services.gemini_generation import (
+        _extract_output_text, _reject_duplicate_keys, _reject_non_finite,
+        _matches_schema, GeminiProtocolError,
+    )
+    from app.services.visual_review_json import decode as visual_json
+    try:
+        envelope = json.loads(raw, object_pairs_hook=_reject_duplicate_keys,
+                              parse_constant=_reject_non_finite)
+        output = visual_json(_extract_output_text(envelope), schema)
+    except Exception:
+        raise GeminiProtocolError('Gemini returned invalid visual JSON') from None
+    if type(output) is not dict or not _matches_schema(output, schema):
+        raise GeminiProtocolError('Gemini visual output violated its schema')
+    return output
 
 
 class IncompleteNativeVisualReview(Exception):
@@ -14,7 +35,6 @@ class IncompleteNativeVisualReview(Exception):
 def partial(prepared, raw, schema):
     from app.services.visual_review_json import _review_fields
     from app.services.included_visual_completion import boolean_fields
-    from app.services.gemini_generation import _decode_gemini_json_response
     from app.services.abacus_router_adapter import _enum_match, _unique_items_match
     if _review_fields(schema) is None:
         return None  # Compact completions themselves cannot recurse.
@@ -22,7 +42,7 @@ def partial(prepared, raw, schema):
     relaxed = deepcopy(schema)
     item = relaxed['properties']['reviews']['items']
     item['required'] = [field for field in item['required'] if field not in allowed]
-    data = _decode_gemini_json_response(httpx.Response(200, content=raw), relaxed)
+    data = decode(raw, relaxed)
     indices = [row['scene_index'] for row in data['reviews']]
     if (len(indices) != len(set(indices))
             or set(indices) != set(item['properties']['scene_index']['enum'])

@@ -243,10 +243,11 @@ def _observe(reservation, response, prepared, schema):
     _require(type(envelope.get('modelVersion')) is str and envelope['modelVersion'].startswith(MODEL),
              'commissioning_reasoning_model_unverified')
     from app.services.gemini_generation import GeminiProtocolError
-    from app.services.commissioning_visual_completion import partial, IncompleteNativeVisualReview
+    from app.services.commissioning_visual_completion import partial, decode as decode_visual, IncompleteNativeVisualReview
     incomplete = None
     try:
-        output = _decode_gemini_json_response(httpx.Response(200, content=raw), schema)
+        output = (decode_visual(raw, schema) if reservation['record']['purpose'] == 'visual_review'
+                  else _decode_gemini_json_response(httpx.Response(200, content=raw), schema))
     except GeminiProtocolError:
         if reservation['record']['purpose'] != 'visual_review':
             raise
