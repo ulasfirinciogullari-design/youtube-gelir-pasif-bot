@@ -17,6 +17,7 @@ PREFIX = plan.PREFIX + 'story_resume:v1:'
 DISPATCH, EXECUTION = PREFIX + 'dispatch:', PREFIX + 'execution:'
 VALIDATION_DISPATCH, VALIDATION_EXECUTION = PREFIX + 'validation_dispatch:', PREFIX + 'validation_execution:'
 ERROR = 'Long documentary failed independent source or editorial review'
+CONTRACT_ERROR = 'Long documentary factual repair violated its production contract'
 
 
 def operation(source):
@@ -45,7 +46,7 @@ def registered(source):
 
 def eligible(source):
     return bool(source.get('state') == 'FAILURE'
-        and source.get('failure_stage') == 'director_qc' and source.get('error') == ERROR
+        and source.get('failure_stage') == 'director_qc' and source.get('error') in {ERROR, CONTRACT_ERROR}
         and (source.get('spec') or {}).get('duration_minutes') == 3
         and (source.get('spec') or {}).get('content_plan_item_id') and not source.get('retry_child_task_id'))
 
@@ -95,14 +96,81 @@ def _responses(client, root, *, grammar_retry):
     return proofs, original
 
 
+def _contract_responses(client, root):
+    """The observed first feedback draft was complete but 323, not 345-375 words.
+
+    Admit one continuation only when all ten model outcomes are captured and
+    the final response demonstrably failed the length check before any speech.
+    Nothing here accepts the draft or bypasses the independent factual review.
+    """
+    from app.services import commissioning_reasoning as native, production_included_router as included, director
+    keys = client.smembers(native.PREFIX + 'lineage:' + root)
+    plan._require(len(keys) == 10)
+    spec = plan._object(client.get(jobs.JOB_PREFIX + root))['spec']
+    context = {'lineage_id': root, 'kind': 'long', 'channel_id': spec['production_channel_id'],
+               'connection_id': spec['production_connection_id']}
+    proofs, rows = {}, []
+    for identity in keys:
+        request = plan._object(client.get(native.PREFIX + 'request:' + identity))
+        response = plan._object(client.get(native.PREFIX + 'response:' + identity))
+        plan._require(request.get('request_sha256') == response.get('request_sha256') == identity
+            and request.get('context') == context and request.get('provider') == 'gemini'
+            and request.get('model') == native.MODEL and request.get('version') == response.get('version') == 1
+            and response.get('http_status') == 200 and type(request.get('reserved_at')) is str)
+        body = included._cipher().decrypt(response['encrypted_response'].encode())
+        plan._require(hashlib.sha256(body).hexdigest() == response['response_sha256'])
+        value = json.loads(body); candidates = value.get('candidates') or []
+        plan._require(len(candidates) == 1 and candidates[0].get('finishReason') == 'STOP'
+            and value.get('usageMetadata'))
+        texts = [p['text'] for p in candidates[0]['content']['parts'] if p.get('text') and not p.get('thought')]
+        plan._require(len(texts) == 1)
+        rows.append((request['reserved_at'], request['purpose'], identity, json.loads(texts[0])))
+        proofs[identity] = {'request_sha256': plan._sha(request), 'response_sha256': plan._sha(response)}
+    rows.sort(); roles = [row[1] for row in rows]
+    plan._require(roles == ['research', 'editorial', 'editorial', 'story_review',
+        'research', 'editorial', 'story_review', 'story_review', 'story_review', 'editorial'])
+    for row in (rows[3], *rows[6:9]):
+        sentences = row[3].get('factual_audit', {}).get('sentences')
+        plan._require(type(sentences) is list and len(sentences) == 10)
+    plan._require(any(s.get('assessment') in {'unsupported', 'uncertain'}
+        for row in rows[6:9] for s in row[3]['factual_audit']['sentences']))
+    scenes = rows[-1][3].get('scenes'); plan._require(type(scenes) is list and len(scenes) == 30)
+    plan._require(spec.get('language') == 'en' and all(type(s) is dict
+        and type(s.get('narration')) is str and s['narration'].strip()
+        and s.get('ai_prompt') is None and s.get('visual_queries') for s in scenes))
+    words = director._word_count(' '.join(s['narration'] for s in scenes))
+    plan._require(300 <= words < 345)
+    original = {row[2]: proofs[row[2]] for row in rows[:4]}
+    admission = plan._object(client.get(DISPATCH + root))
+    root_job = plan._object(client.get(jobs.JOB_PREFIX + root))
+    plan._require(admission == {'version': 1, 'task_id': operation(root), 'source_task_id': root,
+        'source_sha256': pre.fingerprint(root_job), 'provider_records': original}
+        and client.get(EXECUTION + root) == operation(root))
+    if client.exists(VALIDATION_DISPATCH + root):
+        plan._require(_validation_failed(client, root)
+            and client.get(VALIDATION_DISPATCH + root) == plan._raw(admission)
+            and client.get(VALIDATION_EXECUTION + root) == validation_operation(root))
+    pre._provider_free(client, root, known_reasoning=keys)
+    return proofs, original
+
+
 def checked(client, task, *, claimed=False):
     from app.services import content_plan_model_resume as model
     from app.services.content_plan_local_resume import _claim
     from app.services.source_publication_hold import HOLD_PREFIX
     from app.services.youtube_publish_state import UPLOAD_PREFIX
     source = plan._object(client.get(jobs.JOB_PREFIX + plan._id(task)))
-    spec = source.get('spec') or {}; grammar_retry = source.get('parent_id') is not None
-    if grammar_retry:
+    spec = source.get('spec') or {}; contract_retry = source.get('error') == CONTRACT_ERROR
+    grammar_retry = source.get('parent_id') is not None and not contract_retry
+    if contract_retry:
+        root_id = plan._id(source.get('parent_id'))
+        root = plan._object(client.get(jobs.JOB_PREFIX + root_id))
+        plan._require(root.get('error') == ERROR and root.get('failure_stage') == 'director_qc'
+            and root.get('retry_child_task_id') == task
+            and task == str(uuid5(NAMESPACE_URL, 'owner-plan-story-child:v1:' + root_id)))
+        _claim(client, root_id, task)
+        lineage = (root, source)
+    elif grammar_retry:
         parent_id = plan._id(source.get('parent_id'))
         parent = plan._object(client.get(jobs.JOB_PREFIX + parent_id)); root_id = plan._id(parent.get('parent_id'))
         root = plan._object(client.get(jobs.JOB_PREFIX + root_id))
@@ -112,7 +180,7 @@ def checked(client, task, *, claimed=False):
     else:
         root_id = task; root = source; lineage = (source,)
     plan._require(source.get('task_id') == task and source.get('failure_stage') == 'director_qc'
-        and source.get('error') == ERROR and spec.get('duration_minutes') == 3
+        and source.get('error') == (CONTRACT_ERROR if contract_retry else ERROR) and spec.get('duration_minutes') == 3
         and spec.get('mode') == 'production' and spec.get('format') == 'landscape'
         and root.get('parent_id') is None)
     for job in lineage:
@@ -129,7 +197,8 @@ def checked(client, task, *, claimed=False):
     if not claimed:
         plan._require(not any(source.get(k) for k in ('retry_child_task_id', 'retry_claimed', 'repair_claimed'))
             and not client.exists(jobs.RETRY_DISPATCH_PREFIX + task))
-    proofs, original = _responses(client, root_id, grammar_retry=grammar_retry)
+    proofs, original = (_contract_responses(client, root_id) if contract_retry else
+                        _responses(client, root_id, grammar_retry=grammar_retry))
     if grammar_retry:
         _claim(client, root_id, parent_id); _claim(client, parent_id, task)
         previous = plan._object(client.get(pre.DISPATCH + root_id))
@@ -142,8 +211,9 @@ def checked(client, task, *, claimed=False):
             and client.get(model.EXECUTION + parent_id) == model.operation(parent_id))
     terminal = plan._object(client.get('celery-task-meta-' + task)); result = terminal.get('result') or {}
     plan._require(terminal.get('task_id') == task and terminal.get('status') == 'FAILURE'
-        and result.get('exc_type') == 'ProductionContentError' and result.get('exc_message') == [ERROR]
-        and ', in review_story\n' in (terminal.get('traceback') or ''))
+        and result.get('exc_type') == 'ProductionContentError' and result.get('exc_message') == [source['error']]
+        and ', in review_story\n' in (terminal.get('traceback') or '')
+        and (not contract_retry or ', in revise\n' in (terminal.get('traceback') or '')))
     dispatch = plan._object(client.get(plan.DISPATCH_PREFIX + plan._id(spec.get('content_plan_item_id'))))
     plan._require(dispatch['task_id'] == root_id and plan.dispatch_spec_matches(dispatch, spec)
         and plan._active(client).get(dispatch['channel_id']) == dispatch['item']['id'])

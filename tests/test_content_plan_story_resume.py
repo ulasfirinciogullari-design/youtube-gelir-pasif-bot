@@ -126,3 +126,88 @@ def test_completed_read_conflict_can_continue_once_without_erasing_the_original_
         assert recovery.schedule(source, queue) == 'story_resume_reserved'
         queue.assert_called_once()
         assert all(case.client.dump(k) == value for k, value in before.items())
+
+
+def shortened_revision(case, monkeypatch):
+    from test_content_plan import OTHER
+    case.profile['default_language'] = 'en'
+    case.client.set(plan.production.PROFILE_PREFIX + OTHER,
+                    plan._raw({**case.profile, 'channel_id': OTHER}))
+    root, _, _ = criticised(case, monkeypatch, fresh=True); root_id = root['task_id']
+    for i, purpose in enumerate(('research', 'editorial_draft', 'editorial', 'story_review')):
+        identity = hashlib.sha256(('completed-' + purpose).encode()).hexdigest()
+        key = native.PREFIX + 'request:' + identity; request = json.loads(case.client.get(key))
+        request['reserved_at'] = f'2026-09-22T12:19:0{i}+00:00'; case.client.set(key, plan._raw(request))
+    recovery.schedule(root, Mock()); result = recovery.run(root_id, resume.operation(root_id))
+    task = result['task_id']; assert jobs.acquire_retry_child_execution(task, root_id)
+    source = jobs.get_job(task)
+    source.update(state='FAILURE', failure_stage='director_qc', error=resume.CONTRACT_ERROR,
+                  paid_create_slots_used=0, preview_total_paid_create_cap=32)
+    case.client.set(jobs.JOB_PREFIX + task, plan._raw(source))
+    case.client.hset(jobs.PAID_CREATE_BUDGET_PREFIX + task, mapping={'cap': '32', 'used': '0'})
+    case.client.set('celery-task-meta-' + task, plan._raw({'task_id': task, 'status': 'FAILURE',
+        'result': {'exc_type': 'ProductionContentError', 'exc_message': [resume.CONTRACT_ERROR]},
+        'traceback': 'File "commissioning_longform.py", line 92, in review_story\n'
+                     'File "longform_editorial_feedback.py", line 40, in revise\n'}))
+    context = {'channel_id': source['spec']['production_channel_id'],
+        'connection_id': source['spec']['production_connection_id'], 'lineage_id': root_id, 'kind': 'long'}
+    latest = None
+    for i, purpose in enumerate(('research', 'editorial', 'story_review', 'story_review', 'story_review', 'editorial')):
+        identity = hashlib.sha256(f'feedback-{i}'.encode()).hexdigest(); latest = identity
+        request = {'version': 1, 'request_sha256': identity, 'context': context,
+            'provider': 'gemini', 'model': native.MODEL, 'purpose': purpose,
+            'reserved_at': f'2026-09-22T12:52:0{i}+00:00'}
+        value = {'factual_audit': {'sentences': [{'assessment': 'uncertain'}] * 10}}
+        if purpose == 'editorial':
+            value = {'scenes': [{'narration': ' '.join(['word'] * (11 if n < 23 else 10)),
+                'ai_prompt': None, 'visual_queries': ['ordinary stock video']} for n in range(30)]}
+        raw = plan._raw({'candidates': [{'finishReason': 'STOP', 'content': {'parts': [{'text': plan._raw(value)}]}}],
+                        'usageMetadata': {'totalTokenCount': 100}}).encode()
+        response = {'version': 1, 'request_sha256': identity, 'http_status': 200,
+            'response_sha256': hashlib.sha256(raw).hexdigest(), 'encrypted_response': included._cipher().encrypt(raw).decode()}
+        case.client.set(native.PREFIX + 'request:' + identity, plan._raw(request))
+        case.client.set(native.PREFIX + 'response:' + identity, plan._raw(response))
+        case.client.sadd(native.PREFIX + 'lineage:' + root_id, identity)
+    return root, source, latest
+
+
+@pytest.mark.parametrize('damage', [None, 'unknown', 'additional', 'original_claim', 'voice', 'cancel',
+    'word_count_valid', 'scene_missing', 'paid_ai', 'body_hash', 'wrong_terminal'])
+def test_only_captured_shortened_pre_speech_feedback_admits_one_new_child(case, monkeypatch, tmp_path, damage):
+    from app import tasks
+    root, source, latest = shortened_revision(case, monkeypatch); task = source['task_id']
+    key = native.PREFIX + 'response:' + latest
+    if damage == 'unknown': case.client.delete(key)
+    if damage == 'additional': case.client.sadd(native.PREFIX + 'lineage:' + root['task_id'], 'eleventh')
+    if damage == 'original_claim': case.client.delete(resume.DISPATCH + root['task_id'])
+    if damage == 'voice': source['audio_candidate_checkpoint'] = {'voice': 'exists'}
+    if damage == 'cancel': case.client.set(jobs.RENDER_CANCELLATION_PREFIX + root['task_id'], 'owner stopped')
+    if damage == 'wrong_terminal': case.client.delete('celery-task-meta-' + task)
+    if damage in {'word_count_valid', 'scene_missing', 'paid_ai', 'body_hash'}:
+        response = json.loads(case.client.get(key))
+        body = json.loads(included._cipher().decrypt(response['encrypted_response'].encode()))
+        part = body['candidates'][0]['content']['parts'][0]; value = json.loads(part['text'])
+        if damage == 'word_count_valid':
+            for scene in value['scenes']: scene['narration'] = ' '.join(['word'] * 12)
+        if damage == 'scene_missing': value['scenes'].pop()
+        if damage == 'paid_ai': value['scenes'][0]['ai_prompt'] = 'purchase a clip'
+        part['text'] = plan._raw(value); raw = plan._raw(body).encode()
+        response.update(response_sha256=('a' * 64 if damage == 'body_hash' else hashlib.sha256(raw).hexdigest()),
+                        encrypted_response=included._cipher().encrypt(raw).decode())
+        case.client.set(key, plan._raw(response))
+    case.client.set(jobs.JOB_PREFIX + task, plan._raw(source))
+    before = {k: case.client.dump(k) for k in case.client.scan_iter()}; queue = Mock()
+    if damage:
+        with pytest.raises((plan.ContentPlanError, TypeError, ValueError)): recovery.schedule(source, queue)
+        queue.assert_not_called()
+    else:
+        assert recovery.schedule(source, queue) == 'story_resume_preparing'
+        assert recovery.schedule(source, queue) == 'story_resume_reserved'
+        queue.assert_called_once()
+    assert all(case.client.dump(k) == value for k, value in before.items())
+    if not damage:
+        result = recovery.run(task, resume.operation(task)); child = result['task_id']
+        assert jobs.acquire_retry_child_execution(child, task)
+        assert tasks._prepare_saved_voice_retry(child, task, source['spec'], tmp_path) is None
+        assert recovery.run(task, resume.operation(task)) == {'status': 'already_started'}
+        assert tasks.run_video_pipeline.apply_async.call_args.kwargs['args'][1] == 3

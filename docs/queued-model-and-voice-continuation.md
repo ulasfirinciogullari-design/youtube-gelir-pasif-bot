@@ -78,3 +78,17 @@ a closed set of inflections of `baskı`. Bare terms, English, other words, value
 units, punctuation boundaries and missing word timestamps are not accepted.
 Documentary reviews now also examine the public title, thumbnail text and
 description for unsupported or misleading claims.
+
+Factual rewrites now use the application's measured narration length rather
+than the model's claimed word count. A shortened draft can receive two further
+length corrections with the actual revised scenes, per-scene counts, original
+source passages and all negative factual findings. Scene/media/scope changes
+still stop immediately; an out-of-range draft never reaches speech. The normal
+full-story critic runs again after a compliant correction.
+
+The observed pre-speech English length failure has one private continuation
+only if its complete ten-response sequence is preserved: the original four
+responses, a new research/draft pair, all three factual batches and the final
+30-scene, stock-only 300–344-word correction. The original claim, terminal,
+response hashes, retry chain, owner fences and zero-media ledgers are checked
+again. Unknown, extra, changed or paid outcomes cannot enter this continuation.

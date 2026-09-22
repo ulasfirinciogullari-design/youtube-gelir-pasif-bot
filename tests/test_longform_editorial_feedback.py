@@ -78,7 +78,25 @@ def test_revision_cannot_evade_duration_scene_or_media_contract(draft, monkeypat
         for row in revised['scenes']: row['narration'] = 'Too short.'
     writer = Mock(return_value=revised); monkeypatch.setattr(director, '_run_director', writer)
     with pytest.raises(director.ProductionContentError): longform.review_story(package, 'Banknote', 'en')
-    writer.assert_called_once(); assert len(seen) == 30
+    assert writer.call_count == (3 if damage == 'word_budget' else 1)
+    assert len(seen) == 30
+
+
+def test_shortened_factual_revision_is_repaired_using_its_measured_length_then_fully_reviewed(draft, monkeypatch):
+    package, page, seen = draft; original = deepcopy(package)
+    shortened = deepcopy(package)
+    for row in shortened['scenes']: row['narration'] = 'Artists carefully prepare detailed banknote designs for engravers.'
+    corrected = deepcopy(package)
+    for row in corrected['scenes']: row['narration'] = GOOD
+    writer = Mock(side_effect=[shortened, corrected]); monkeypatch.setattr(director, '_run_director', writer)
+    result = longform.review_story(package, 'Banknote', 'en')
+    compact = writer.call_args.args[1]
+    assert compact['current_word_count'] == 240 and compact['scene_word_counts'] == [8] * 30
+    assert compact['length_correction_attempt'] == 1 and '240 words' in compact['measured_length_issue']
+    assert compact['narration_quality_issues'][0]['position'] == 0
+    assert compact['retrieved_reference_data'] == [{'url': page['url'], 'text': GOOD}]
+    assert result['narration_word_count'] == 360 and result['longform_story_qc']['accepted'] is True
+    assert len(seen) == 60 and writer.call_count == 2 and package == original
 
 
 @pytest.mark.parametrize('voice', ['_recovered_voice','voice_candidate_reuse','voice_replacement','audio_candidate_checkpoint'])
