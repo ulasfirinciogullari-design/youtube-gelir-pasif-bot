@@ -1,7 +1,7 @@
 """Independent, blind Scribe review during owner-authorized commissioning.
 
 2026-09-21 official API list price: Scribe v2 $0.22/hour. Reserve $0.004
-(one rounded minute) for <=30.08 decoded seconds. This records a conservative
+(one rounded minute) for <=40.08 decoded seconds. This records a conservative
 list cost, not an invoice or the owner's deferred operating budget.
 https://elevenlabs.io/pricing/api
 https://elevenlabs.io/docs/api-reference/speech-to-text/convert
@@ -76,7 +76,7 @@ def transcribe_if_commissioned(path, *, api_key, language):
     _require(type(api_key) is str and 1 <= len(api_key) <= 4096 and api_key.isascii()
         and not any(c.isspace() for c in api_key))
     raw, suffix = audio._read_audio(path)
-    snapshot = audio._snapshot_audio(raw, suffix)
+    snapshot = audio._snapshot_audio(raw, suffix, allow_natural_short=True)
     fields = {'model_id': 'scribe_v2', 'language_code': {'tr': 'tur', 'en': 'eng'}[language],
         'num_speakers': '1', 'diarize': 'false', 'tag_audio_events': 'false',
         'timestamps_granularity': 'word'}

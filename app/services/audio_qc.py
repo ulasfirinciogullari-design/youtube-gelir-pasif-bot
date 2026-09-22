@@ -698,7 +698,7 @@ def verify_audio_prosody(
     if getattr(settings, 'studio_abacus_included_production', False) is True:
         from app.services.abacus_router_audio_adapter import read_original_mp3
         from app.services.production_included_router import generate_included_audio
-        output = generate_included_audio(read_original_mp3(audio_path), purpose='prosody',
+        output = generate_included_audio(read_original_mp3(audio_path, allow_natural_short=True), purpose='prosody',
             language=normalized_language, expected_narration=expected_narration)
         validated = _validate_prosody_review(output, expected_narration,
             audio_duration_seconds=audio_duration_seconds, transcript_evidence=transcript_evidence,

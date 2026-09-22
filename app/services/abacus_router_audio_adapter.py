@@ -24,7 +24,7 @@ from app.services.abacus_router_adapter import _canonical, _enum_match, _headers
 from app.services.abacus_visual_generation import _bounded_visual_schema, _unique_items_match
 from app.services.gemini_generation import _matches_schema
 from app.services.production_spend import SpendBlocked
-from app.services.whisper_transcription import _read_audio, inspect_bounded_short_audio
+from app.services.whisper_transcription import _read_audio, inspect_bounded_short_audio, NATURAL_SHORT_MAX_SAMPLES
 
 ENDPOINT = 'https://routellm.abacus.ai/v1/chat/completions'
 OPERATION = '/v1/chat/completions'
@@ -239,9 +239,11 @@ def _inspect_body(value, purpose):
     _require(len(_canonical(metadata)) <= MAX_METADATA_BYTES)
     encoded_body = _canonical(body)
     _require(len(encoded_body) <= MAX_REQUEST_BYTES)
-    descriptor = inspect_bounded_short_audio(raw, 'audio/mpeg')
+    natural_prosody = body['model'] == PREPAID_MODEL and purpose is AudioReviewPurpose.PROSODY
+    descriptor = inspect_bounded_short_audio(raw, 'audio/mpeg',
+        **({'allow_natural_short': True} if natural_prosody else {}))
     _require(descriptor['decoded_sample_rate'] == 48000
-             and 0 < descriptor['decoded_samples'] <= MAX_DECODED_SAMPLES
+             and 0 < descriptor['decoded_samples'] <= (NATURAL_SHORT_MAX_SAMPLES if natural_prosody else MAX_DECODED_SAMPLES)
              and descriptor['sha256'] == _sha(raw) and descriptor['bytes'] == len(raw))
     return encoded_body, _canonical(descriptor)
 
@@ -465,13 +467,13 @@ def prepare_compatible_audio_prosody_request(audio_bytes, *, api_key, expected_n
         raise AbacusRouterAudioError(_REQUEST_ERROR) from None
 
 
-def read_original_mp3(path):
+def read_original_mp3(path, *, allow_natural_short=False):
     """One bounded no-link file snapshot, fully decoded, without altering it."""
     try:
         _require(isinstance(path, (str, Path)) and Path(path).suffix.lower() == '.mp3')
         raw, suffix = _read_audio(path)
         _require(suffix == '.mp3')
-        inspect_bounded_short_audio(raw, 'audio/mpeg')
+        inspect_bounded_short_audio(raw, 'audio/mpeg', allow_natural_short=allow_natural_short)
         return raw
     except Exception:
         raise AbacusRouterAudioError(_REQUEST_ERROR) from None

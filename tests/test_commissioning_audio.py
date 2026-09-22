@@ -126,7 +126,7 @@ def test_unadmitted_requests_never_reach_provider(box, monkeypatch, damage):
         json.dumps({'id': CHANNEL, 'connection_id': 'different_connection'}))
     if damage == 'expired': monkeypatch.setattr(setup, '_now', lambda: NOW + timedelta(days=3))
     if damage == 'enforcement': box.config.studio_spend_enforcement = False
-    if damage == 'long_audio': box.path.write_bytes(_wav(31 * 48000))
+    if damage == 'long_audio': box.path.write_bytes(_wav(41 * 48000))
     if damage == 'partial_grant': box.client.delete(setup.POLICY_KEY)
     with pytest.raises(SpendBlocked): run(box)
     box.sender.assert_not_called()

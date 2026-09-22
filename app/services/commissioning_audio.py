@@ -172,7 +172,7 @@ def transcribe_if_commissioned(path, *, api_key, language):
     quote = whisper._quote(fields)
     _require(quote.maximum_micro == COST_MICRO)
     raw, suffix = whisper._read_audio(path)
-    snapshot = whisper._snapshot_audio(raw, suffix)
+    snapshot = whisper._snapshot_audio(raw, suffix, allow_natural_short=True)
     descriptor = snapshot.descriptor(fields)
     context = runtime.resolve_context(client, runtime._TASK_ID.get())
     credential = _hash('openai\0' + api_key)

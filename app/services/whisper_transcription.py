@@ -30,6 +30,7 @@ WHISPER_ROUTE = 'https://api.openai.com/v1/audio/transcriptions'
 WHISPER_PRICE_REVISION = 'whisper-short-2026-09-09-v1'
 WHISPER_MAX_AUDIO_BYTES = 8 * 1024 * 1024
 WHISPER_MAX_SAMPLES = 1_443_840  # 30.08 seconds at the measured 48 kHz rate.
+NATURAL_SHORT_MAX_SAMPLES = 1_923_840  # 40.08 seconds; still within the reserved minute.
 _SAMPLE_RATE = 48_000
 _MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 _VALID_FROM = datetime(2026, 9, 9, tzinfo=timezone.utc)
@@ -86,7 +87,7 @@ def _read_audio(path):
         raise SpendBlocked('spend_request_not_priced') from None
 
 
-def _wav_layout(raw):
+def _wav_layout(raw, *, max_samples=WHISPER_MAX_SAMPLES):
     """Accept one complete PCM16 RIFF file with exactly one actual data chunk."""
     _require(len(raw) >= 44 and raw[:4] == b'RIFF' and raw[8:12] == b'WAVE'
              and int.from_bytes(raw[4:8], 'little') + 8 == len(raw))
@@ -107,7 +108,7 @@ def _wav_layout(raw):
         elif name == b'data':
             _require(fmt is not None and data_samples is None and size > 0 and size % fmt[1] == 0)
             data_samples = size // fmt[1]
-            _require(data_samples * _SAMPLE_RATE <= WHISPER_MAX_SAMPLES * fmt[0])
+            _require(data_samples * _SAMPLE_RATE <= max_samples * fmt[0])
         else:
             _require(name in {b'LIST', b'JUNK', b'bext'} and size <= 65_536)
         if size % 2:
@@ -117,7 +118,7 @@ def _wav_layout(raw):
     _require(offset == len(raw) and data_samples is not None)
 
 
-def _mp3_layout(raw):
+def _mp3_layout(raw, *, max_encoded_seconds=32):
     """Walk every Layer III frame, excluding hidden files and trailing payloads."""
     offset = 0
     if raw.startswith(b'ID3'):
@@ -149,30 +150,32 @@ def _mp3_layout(raw):
         samples += 1152 if version == 3 else 576
         # Includes encoder delay/padding and an optional Xing header frame.
         # Longer encoded input is rejected before invoking the actual decoder.
-        _require(samples <= rate * 32)
+        _require(samples <= rate * max_encoded_seconds)
     _require(frames > 0 and offset == len(raw))
 
 
-def _snapshot_audio(raw, suffix):
+def _snapshot_audio(raw, suffix, *, allow_natural_short=False):
     try:
+        _require(type(allow_natural_short) is bool)
+        maximum = NATURAL_SHORT_MAX_SAMPLES if allow_natural_short else WHISPER_MAX_SAMPLES
         _require(type(raw) is bytes and 0 < len(raw) <= WHISPER_MAX_AUDIO_BYTES)
         if suffix == '.wav':
-            _wav_layout(raw)
+            _wav_layout(raw, max_samples=maximum)
             demuxer, mime = 'wav', 'audio/wav'
         else:
             _require(suffix == '.mp3')
-            _mp3_layout(raw)
+            _mp3_layout(raw, max_encoded_seconds=42 if allow_natural_short else 32)
             demuxer, mime = 'mp3', 'audio/mpeg'
-        # The 31s resource limit cannot truncate an accepted <=30.08s clip.
-        # Longer decoding produces >30.08s and is rejected, never submitted.
+        # Decode beyond the acceptance bound, never truncate an accepted clip.
+        # Only explicit commissioning/natural-prosody callers use the 40s bound.
         result = subprocess.run([
             'ffmpeg', '-v', 'error', '-nostdin', '-xerror', '-err_detect', 'explode',
             '-threads', '1', '-protocol_whitelist', 'pipe', '-f', demuxer, '-i', 'pipe:0',
-            '-map', '0:a:0', '-vn', '-sn', '-dn', '-t', '31', '-ac', '1', '-ar', str(_SAMPLE_RATE),
+            '-map', '0:a:0', '-vn', '-sn', '-dn', '-t', '41' if allow_natural_short else '31', '-ac', '1', '-ar', str(_SAMPLE_RATE),
             '-c:a', 'pcm_s16le', '-threads', '1', '-f', 's16le', 'pipe:1',
         ], input=raw, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=10, check=True)
         pcm = result.stdout
-        _require(len(pcm) % 2 == 0 and 0 < len(pcm) // 2 <= WHISPER_MAX_SAMPLES)
+        _require(len(pcm) % 2 == 0 and 0 < len(pcm) // 2 <= maximum)
         return _AudioSnapshot(raw, 'narration' + suffix, mime, len(pcm) // 2,
                               hashlib.sha256(pcm).hexdigest())
     except SpendBlocked:
@@ -181,7 +184,7 @@ def _snapshot_audio(raw, suffix):
         raise SpendBlocked('spend_request_not_priced') from None
 
 
-def inspect_bounded_short_audio(raw: bytes, mime_type: str) -> dict:
+def inspect_bounded_short_audio(raw: bytes, mime_type: str, *, allow_natural_short=False) -> dict:
     """Validate complete original Short bytes without uploading or rewriting them.
 
     Both native audio reviewers use the same strict container walk and full
@@ -190,7 +193,7 @@ def inspect_bounded_short_audio(raw: bytes, mime_type: str) -> dict:
     """
     _require(type(mime_type) is str and mime_type in {'audio/mpeg', 'audio/wav'})
     suffix = '.mp3' if mime_type == 'audio/mpeg' else '.wav'
-    return _snapshot_audio(raw, suffix).descriptor({})['audio']
+    return _snapshot_audio(raw, suffix, allow_natural_short=allow_natural_short).descriptor({})['audio']
 
 
 def _quote(fields):
