@@ -230,9 +230,9 @@ def _result(payload):
     from app.services.runway import _GEMINI_VIDEO_HOSTS
     error = payload.get('error')
     if (payload.get('done') is True and type(error) is dict
-            and type(error.get('code')) is int and error['code'] == 13
+            and type(error.get('code')) is int and error['code'] in {13, 14}
             and not payload.get('response')):
-        # The actual provider completed an accepted operation with INTERNAL.
+        # The actual provider completed with INTERNAL or UNAVAILABLE.
         # There is no returned clip to approve and no uncertain POST to replay.
         # Let the existing final stock rescue and full QA run for this scene.
         raise CommissionedVideoUnavailable('commissioned_video_completed_server_failure')
@@ -284,6 +284,12 @@ def generate_if_commissioned(prompt, seconds, aspect_ratio):
     descriptor.update({'route': ROUTE, 'request_sha256': _sha(_raw(body).encode()),
         'credential_sha256': _sha(('gemini\0' + key).encode()), 'model': MODEL,
         'duration_seconds': duration, 'max_list_cost_micro_usd': quote.maximum_micro})
+    from app.services.content_plan_long_media_resume import continuation_identity
+    continuation_task = continuation_identity(scope)
+    if continuation_task is not None:
+        # This one private child follows a fully captured terminal outage.
+        # Its new attempts remain in the original root's cumulative journal.
+        descriptor['continuation_task_id'] = continuation_task
     receipt_key, identity, prior = _reserve(scope, descriptor)
     headers = {'x-goog-api-key': key, 'Content-Type': 'application/json'}
     try:

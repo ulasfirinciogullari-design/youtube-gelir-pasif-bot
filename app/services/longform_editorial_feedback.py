@@ -55,4 +55,41 @@ def revise(package, topic, language, pages, findings, attempt):
                 f'Return {target - 15}-{target + 15} spoken words across exactly 30 scenes. '
                 'Use supported details and clear transitions; do not restore rejected claims, add '
                 'unsupported qualifiers, or pad with repetitive filler.')
+    if language == 'en':
+        # Counting a whole documentary is unreliable for a text generator.
+        # Emit exactly twelve individual words per scene, then measure again.
+        # This only supplies a draft; review_story still audits all sentences.
+        from app.services.production_included_router import generate_text_json
+        import json
+        slots = [f'w{i:02d}' for i in range(1, 13)]
+        schema = {'type': 'object', 'properties': {'scenes': {'type': 'array',
+            'minItems': 30, 'maxItems': 30, 'items': {'type': 'object', 'properties': {
+                'index': {'type': 'integer', 'minimum': 0, 'maximum': 29},
+                'words': {'type': 'object', 'properties': {slot: {
+                    'type': 'string', 'minLength': 1, 'maxLength': 80} for slot in slots},
+                    'required': slots, 'additionalProperties': False}},
+                'required': ['index', 'words'], 'additionalProperties': False}}},
+            'required': ['scenes'], 'additionalProperties': False}
+        response = generate_text_json('Revise the English documentary narration using only its retrieved references. '
+            'Keep each scene subject, order, and visual meaning. Each scene must be one natural twelve-word '
+            'sentence. Fill slots w01 through w12 with one word each, with punctuation attached to its word. '
+            'Never put spaces inside a word entry. Preserve all corrected facts; no unsupported qualifiers '
+            'or filler. The exact thirty sentences will receive full independent factual/editorial review.\n'
+            + json.dumps(compact, ensure_ascii=False), purpose='editorial', schema=schema)
+        rows = response['scenes']
+        if (len(rows) != 30 or [row['index'] for row in rows] != list(range(30))
+                or any(type(row['words']) is not dict or set(row['words']) != set(slots) or any(not isinstance(word, str)
+                    or any(c.isspace() for c in word) or director._word_count(word) != 1
+                    for word in row['words'].values()) for row in rows)):
+            raise director.ProductionContentError('Long documentary counted narration is invalid')
+        candidate = deepcopy(candidate)
+        for scene, row in zip(candidate['scenes'], rows):
+            scene['narration'] = ' '.join(row['words'][slot] for slot in slots)
+        candidate = director._clean_package(candidate, original)
+        count = director._word_count(candidate['narration'])
+        if count != 360:
+            raise director.ProductionContentError('Long documentary counted narration is invalid')
+        candidate.update(narration_word_count=count, target_word_range=[345, 375],
+                         target_scene_count=30, ai_scene_count=0)
+        return candidate
     raise director.ProductionContentError('Long documentary factual repair violated its production contract')

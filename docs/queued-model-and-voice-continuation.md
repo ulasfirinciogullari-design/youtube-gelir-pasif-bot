@@ -92,3 +92,20 @@ responses, a new research/draft pair, all three factual batches and the final
 30-scene, stock-only 300–344-word correction. The original claim, terminal,
 response hashes, retry chain, owner fences and zero-media ledgers are checked
 again. Unknown, extra, changed or paid outcomes cannot enter this continuation.
+
+If ordinary English length corrections still miscount, one structural draft
+uses twelve separately keyed word slots for each scene. Actual words and indices
+are measured again, producing 360 words before the normal full factual review.
+Multiword slots, missing scenes and unsupported narration still fail. The
+observed twelve-response continuation also preserves both earlier failed claims.
+
+A queued documentary interrupted by a captured terminal Veo INTERNAL/UNAVAILABLE
+result can reserve one retained-media continuation per root. All earlier
+successful creates must have complete original clips, matching voice/package
+hashes, and preserved provider responses. The original voice and clips are
+downloaded, hash-checked and probed; a fresh immutable source review and every
+ordinary audio/visual/final-render gate remain required. Retained generated
+footage stays identified as synthetic. Unknown outcomes and policy refusals
+cannot enter this route. New requests carry the private child identity in the
+original root journal, whose cumulative 32-create ceiling and earlier receipts
+remain intact. A repeated child delivery never sends again.

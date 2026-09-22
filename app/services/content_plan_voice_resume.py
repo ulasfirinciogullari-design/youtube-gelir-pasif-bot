@@ -214,9 +214,14 @@ def run(source_id, operation_id):
 
 def prepare_long(task, source_id, spec, work):
     """Recheck the original three-minute speech without editing or fitting it."""
+    verify_child(task, source_id, spec)
+    return _prepare_long_candidate(task, source_id, spec, work)
+
+
+def _prepare_long_candidate(task, source_id, spec, work):
+    """No authority is granted here; each private caller verifies its claim."""
     from app.services import voice_candidate_recovery as retained, longform_voice_retry as legacy
     from app.services import commissioning_longform as longform, director, voice
-    verify_child(task, source_id, spec)
     source = jobs.get_job(source_id)
     candidate = retained.load_voice_retry_candidate(source_id, task, source['audio_candidate_checkpoint'], work)
     raw_package, saved_voice = candidate['package'], candidate['voice_result']

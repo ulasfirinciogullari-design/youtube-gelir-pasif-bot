@@ -4537,6 +4537,9 @@ def _prepare_saved_voice_retry(
 ) -> dict | None:
     """Revalidate one same-spec UI retry without purchasing another voice."""
     if source_task_id and runtime_spec.get('content_plan_item_id'):
+        from app.services import content_plan_long_media_resume
+        if content_plan_long_media_resume.registered(source_task_id):
+            return content_plan_long_media_resume.prepare(task_id, source_task_id, runtime_spec, work)
         from app.services import content_plan_story_resume
         if content_plan_story_resume.registered(source_task_id):
             content_plan_story_resume.verify_child(task_id, source_task_id, runtime_spec)
@@ -4937,7 +4940,14 @@ def run_video_pipeline(
         if saved_voice_retry and saved_voice_retry.get('preserve_audio_bytes') is True:
             # Queued and standalone retries each retain their own authorized
             # durable cap; the legacy parent's absent ledger stays absent.
-            if saved_voice_retry.get('content_plan_voice_source'):
+            if saved_voice_retry.get('content_plan_media_source'):
+                from app.services.content_plan_long_media_resume import retained_cap
+                plan_cap = retained_cap(task_id, saved_voice_retry)
+                longform_budget = _persisted_paid_create_budget(task_id, plan_cap)
+                if longform_budget.get('cap') != plan_cap or longform_budget.get('used') != 0:
+                    raise FinalVisualQualityError('Queued retained documentary media budget is invalid')
+                total_paid_create_cap = plan_cap
+            elif saved_voice_retry.get('content_plan_voice_source'):
                 from app.services.content_plan_voice_resume import retained_long_cap
                 plan_cap = retained_long_cap(task_id, saved_voice_retry)
                 longform_budget = _persisted_paid_create_budget(task_id, plan_cap)
@@ -5526,6 +5536,8 @@ def run_video_pipeline(
         if not recovered_generated_media and selected_recovery is None:
             from app.services.included_stock_pool import retain_stock_pool
             retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, phase='initial')
+        from app.services.content_plan_long_media_resume import install as install_long_candidates
+        retained_long_indices = install_long_candidates(saved_voice_retry, scene_visuals)
         # The fixed production Short uses distinct final stock clips. Keep
         # legacy preview/long-form reuse behavior unchanged.
         stock_reuse_visuals = (
@@ -5706,10 +5718,14 @@ def run_video_pipeline(
         set_stage(self, task_id, 'ai_scene', 61, 'Güncel stok kalitesi ölçülüyor; en zor sahneler özgün görüntüye ayrılıyor.')
         runway_failure_diagnostics: list[dict] = []
         runway_failed_scenes: list[int] = []
-        runway_generated_scenes: list[int] = []
+        runway_generated_scenes: list[int] = list(retained_long_indices)
         image_motion_submission_scenes: set[int] = set()
         omni_unsafe_submission_scenes: set[int] = set()
-        generated_video_provider_records: list[dict] = []
+        generated_video_provider_records: list[dict] = [
+            {'stage': 'retained_generation', 'scene_index': index, 'provider': 'gemini_veo',
+             'provider_attempts': 0, 'source_media_type': 'video', 'retained': True}
+            for index in retained_long_indices
+        ]
         runway_scenes_used = 0
         runway_submission_cap = _max_runway_scenes(options, len(scenes), duration_minutes)
         from app.services.commissioning_video import completion_capacity, completion_repairs
@@ -5724,7 +5740,7 @@ def run_video_pipeline(
                 total_paid_create_cap,
             )
 
-        if not recovered_generated_media and selected_recovery is None:
+        if not recovered_generated_media and selected_recovery is None and not retained_long_indices:
             from app.services.included_stock_pool import retain_stock_pool
             retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids, work, phase='before_generation')
 
@@ -6305,7 +6321,7 @@ def run_video_pipeline(
                 # This is a third, distinct reviewer input. Keep its exact
                 # clips across retries just like the first two pools; an
                 # unknown review must not silently receive different frames.
-                if not recovered_generated_media and selected_recovery is None:
+                if not recovered_generated_media and selected_recovery is None and not retained_long_indices:
                     from app.services.included_stock_pool import retain_stock_pool
                     retain_stock_pool(task_id, package, scene_visuals, credits, seen_ids,
                                       work, phase='budget_rescue')

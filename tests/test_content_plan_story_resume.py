@@ -211,3 +211,31 @@ def test_only_captured_shortened_pre_speech_feedback_admits_one_new_child(case, 
         assert tasks._prepare_saved_voice_retry(child, task, source['spec'], tmp_path) is None
         assert recovery.run(task, resume.operation(task)) == {'status': 'already_started'}
         assert tasks.run_video_pipeline.apply_async.call_args.kwargs['args'][1] == 3
+
+
+def test_captured_second_length_failure_preserves_both_earlier_continuation_claims(case, monkeypatch, tmp_path):
+    from app import tasks
+    root, middle, latest = shortened_revision(case, monkeypatch); mid = middle['task_id']
+    recovery.schedule(middle, Mock()); result = recovery.run(mid, resume.operation(mid)); task = result['task_id']
+    assert jobs.acquire_retry_child_execution(task, mid)
+    source = jobs.get_job(task)
+    source.update(state='FAILURE', failure_stage='director_qc', error=resume.CONTRACT_ERROR,
+                  paid_create_slots_used=0, preview_total_paid_create_cap=32)
+    case.client.set(jobs.JOB_PREFIX + task, plan._raw(source))
+    case.client.hset(jobs.PAID_CREATE_BUDGET_PREFIX + task, mapping={'cap': '32', 'used': '0'})
+    terminal = json.loads(case.client.get('celery-task-meta-' + mid)); terminal['task_id'] = task
+    case.client.set('celery-task-meta-' + task, plan._raw(terminal))
+    for i in range(2):
+        identity = hashlib.sha256(f'length-{i}'.encode()).hexdigest()
+        request = json.loads(case.client.get(native.PREFIX + 'request:' + latest))
+        request.update(request_sha256=identity, reserved_at=f'2026-09-22T12:53:0{i}+00:00')
+        response = json.loads(case.client.get(native.PREFIX + 'response:' + latest)); response['request_sha256'] = identity
+        case.client.set(native.PREFIX + 'request:' + identity, plan._raw(request))
+        case.client.set(native.PREFIX + 'response:' + identity, plan._raw(response))
+        case.client.sadd(native.PREFIX + 'lineage:' + root['task_id'], identity)
+    before = {key: case.client.get(key) for key in (resume.DISPATCH + root['task_id'], resume.DISPATCH + mid)}
+    assert recovery.schedule(source, Mock()) == 'story_resume_preparing'
+    result = recovery.run(task, resume.operation(task)); child = result['task_id']
+    assert jobs.acquire_retry_child_execution(child, task)
+    assert tasks._prepare_saved_voice_retry(child, task, source['spec'], tmp_path) is None
+    assert all(case.client.get(key) == value for key, value in before.items())

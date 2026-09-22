@@ -105,7 +105,7 @@ def _contract_responses(client, root):
     """
     from app.services import commissioning_reasoning as native, production_included_router as included, director
     keys = client.smembers(native.PREFIX + 'lineage:' + root)
-    plan._require(len(keys) == 10)
+    plan._require(len(keys) in {10, 12})
     spec = plan._object(client.get(jobs.JOB_PREFIX + root))['spec']
     context = {'lineage_id': root, 'kind': 'long', 'channel_id': spec['production_channel_id'],
                'connection_id': spec['production_connection_id']}
@@ -128,7 +128,8 @@ def _contract_responses(client, root):
         proofs[identity] = {'request_sha256': plan._sha(request), 'response_sha256': plan._sha(response)}
     rows.sort(); roles = [row[1] for row in rows]
     plan._require(roles == ['research', 'editorial', 'editorial', 'story_review',
-        'research', 'editorial', 'story_review', 'story_review', 'story_review', 'editorial'])
+        'research', 'editorial', 'story_review', 'story_review', 'story_review', 'editorial']
+        + (['editorial', 'editorial'] if len(rows) == 12 else []))
     for row in (rows[3], *rows[6:9]):
         sentences = row[3].get('factual_audit', {}).get('sentences')
         plan._require(type(sentences) is list and len(sentences) == 10)
@@ -150,6 +151,15 @@ def _contract_responses(client, root):
         plan._require(_validation_failed(client, root)
             and client.get(VALIDATION_DISPATCH + root) == plan._raw(admission)
             and client.get(VALIDATION_EXECUTION + root) == validation_operation(root))
+    if len(rows) == 12:
+        middle_id = plan._id(root_job.get('retry_child_task_id'))
+        middle = plan._object(client.get(jobs.JOB_PREFIX + middle_id))
+        plan._require(middle.get('error') == CONTRACT_ERROR and middle.get('parent_id') == root
+            and client.get(DISPATCH + middle_id) == plan._raw({'version': 1,
+                'task_id': operation(middle_id), 'source_task_id': middle_id,
+                'source_sha256': pre.fingerprint(middle),
+                'provider_records': {row[2]: proofs[row[2]] for row in rows[:10]}})
+            and client.get(EXECUTION + middle_id) == operation(middle_id))
     pre._provider_free(client, root, known_reasoning=keys)
     return proofs, original
 
@@ -163,13 +173,17 @@ def checked(client, task, *, claimed=False):
     spec = source.get('spec') or {}; contract_retry = source.get('error') == CONTRACT_ERROR
     grammar_retry = source.get('parent_id') is not None and not contract_retry
     if contract_retry:
-        root_id = plan._id(source.get('parent_id'))
-        root = plan._object(client.get(jobs.JOB_PREFIX + root_id))
-        plan._require(root.get('error') == ERROR and root.get('failure_stage') == 'director_qc'
-            and root.get('retry_child_task_id') == task
-            and task == str(uuid5(NAMESPACE_URL, 'owner-plan-story-child:v1:' + root_id)))
-        _claim(client, root_id, task)
-        lineage = (root, source)
+        current = source; children = []
+        while current.get('parent_id') is not None:
+            plan._require(len(children) < 2 and current.get('error') == CONTRACT_ERROR)
+            parent_id = plan._id(current['parent_id']); current_id = current['task_id']
+            plan._require(current_id == str(uuid5(NAMESPACE_URL, 'owner-plan-story-child:v1:' + parent_id)))
+            _claim(client, parent_id, current_id); children.append(current)
+            current = plan._object(client.get(jobs.JOB_PREFIX + parent_id))
+            plan._require(current.get('retry_child_task_id') == current_id)
+        root = current; root_id = root['task_id']
+        plan._require(root.get('error') == ERROR and root.get('failure_stage') == 'director_qc')
+        lineage = (root, *reversed(children))
     elif grammar_retry:
         parent_id = plan._id(source.get('parent_id'))
         parent = plan._object(client.get(jobs.JOB_PREFIX + parent_id)); root_id = plan._id(parent.get('parent_id'))

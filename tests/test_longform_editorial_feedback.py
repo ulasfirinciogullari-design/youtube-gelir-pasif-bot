@@ -76,10 +76,36 @@ def test_revision_cannot_evade_duration_scene_or_media_contract(draft, monkeypat
     if damage == 'paid_ai': revised['scenes'][0]['ai_prompt'] = 'Generate this scene.'
     if damage == 'word_budget':
         for row in revised['scenes']: row['narration'] = 'Too short.'
+        critic = included.generate_text_json
+        monkeypatch.setattr(included, 'generate_text_json',
+            lambda *a, purpose, **kw: {'scenes': []} if purpose == 'editorial' else critic(*a, purpose=purpose, **kw))
     writer = Mock(return_value=revised); monkeypatch.setattr(director, '_run_director', writer)
     with pytest.raises(director.ProductionContentError): longform.review_story(package, 'Banknote', 'en')
     assert writer.call_count == (3 if damage == 'word_budget' else 1)
     assert len(seen) == 30
+
+
+@pytest.mark.parametrize('bad_word', [False, True])
+def test_counted_word_fallback_has_exact_length_and_still_requires_every_factual_review(draft, monkeypatch, bad_word):
+    package, _, seen = draft; shorter = deepcopy(package)
+    for row in shorter['scenes']: row['narration'] = 'Artists carefully prepare detailed banknote designs for engravers.'
+    writer = Mock(return_value=shorter); monkeypatch.setattr(director, '_run_director', writer)
+    critic = included.generate_text_json; counted = []
+    def generate(prompt, *, purpose, schema):
+        if purpose == 'story_review': return critic(prompt, purpose=purpose, schema=schema)
+        assert purpose == 'editorial'; counted.append(prompt)
+        rows = [{'index': i, 'words': {f'w{j:02d}': word for j, word in enumerate(GOOD.split(), 1)}} for i in range(30)]
+        if bad_word: rows[0]['words']['w01'] = 'two words'
+        return {'scenes': rows}
+    monkeypatch.setattr(included, 'generate_text_json', generate)
+    if bad_word:
+        with pytest.raises(director.ProductionContentError): longform.review_story(package, 'Banknote', 'en')
+        assert len(seen) == 30
+    else:
+        result = longform.review_story(package, 'Banknote', 'en')
+        assert result['narration_word_count'] == 360 and len(seen) == 60
+        assert result['longform_story_qc']['accepted'] is True
+    assert len(counted) == 1 and writer.call_count == 3
 
 
 def test_shortened_factual_revision_is_repaired_using_its_measured_length_then_fully_reviewed(draft, monkeypatch):

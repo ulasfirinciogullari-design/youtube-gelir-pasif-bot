@@ -102,9 +102,10 @@ def test_ambiguous_create_remains_reserved_and_is_never_repeated(scene):
     assert len(scene.requests) == 1
 
 
-def test_observed_internal_failure_can_reach_scene_rescue_without_another_create(scene, monkeypatch):
+@pytest.mark.parametrize('code', [13, 14])
+def test_observed_internal_failure_can_reach_scene_rescue_without_another_create(scene, monkeypatch, code):
     original = scene.handler
-    terminal = {'done': True, 'error': {'code': 13,
+    terminal = {'done': True, 'error': {'code': code,
         'message': 'Video generation failed due to an internal server issue.'}}
     def failed(request):
         if request.method == 'POST': return original(request)
