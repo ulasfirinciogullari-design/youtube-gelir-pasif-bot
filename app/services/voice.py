@@ -786,9 +786,16 @@ def _fit_duration(
     target_seconds: float | None,
     *,
     prior_tempo_rate: float = 1.0,
+    flexible_short: bool = False,
 ) -> tuple[list[float], float, float, float]:
     """Fit narration with bounded tempo changes; full audio QA still follows."""
     before = _media_duration(output)
+    # Fresh automatic Shorts may use their natural 30-40 second edit. Keep
+    # this take intact; the pipeline must still align the final endpoint and
+    # pass actual transcript, prosody, scene-duration and render checks.
+    if (flexible_short is True and target_seconds == 30 and prior_tempo_rate == 1.0
+            and 29.75 < before <= 39.45):
+        return scene_durations, before, before, 1.0
     after = before
     tempo_rate = 1.0
     short_preview = bool(target_seconds and 0 < target_seconds <= 40)
@@ -899,6 +906,7 @@ def synthesize_scene_sequence(
     profile_override: str | None = None,
     before_paid_request=None,
     raw_audio_sink=None,
+    flexible_short: bool = False,
 ) -> dict:
     if profile_override is not None and (
         profile_override != 'turkish_multilingual_v2'
@@ -1036,7 +1044,10 @@ def synthesize_scene_sequence(
         '-c:a', 'libmp3lame', '-b:a', '192k', str(output),
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    scene_durations, before_fit, after_fit, tempo_rate = _fit_duration(output, scene_durations, target_seconds)
+    scene_durations, before_fit, after_fit, tempo_rate = _fit_duration(
+        output, scene_durations, target_seconds,
+        **({'flexible_short': True} if flexible_short is True and profile_override is None else {}),
+    )
     reserved_tail_seconds = (
         0.50 if target_seconds and 0 < target_seconds <= 40 else 0.0
     )
@@ -1058,6 +1069,7 @@ def synthesize_scene_sequence(
         'compacted_boundary_pause_count': compacted_boundary_pause_count,
         'compacted_trailing_silence': compacted_trailing_silence,
         'content_target_seconds': (
+            after_fit if flexible_short is True and target_seconds == 30 and after_fit > 29.75 else
             float(target_seconds) - reserved_tail_seconds
             if target_seconds and target_seconds > 0
             else after_fit

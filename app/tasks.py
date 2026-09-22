@@ -1788,7 +1788,7 @@ def _effective_short_edit_target(
     requested_seconds: float,
     voice_duration_seconds: float,
 ) -> float:
-    """End an approximately thirty-second production edit after its real voice.
+    """End an automatic short edit after its real voice.
 
     This selects a frame-aligned video endpoint only. It neither edits the
     audio/scene timeline nor approves its transcript, prosody or visual quality.
@@ -1802,14 +1802,17 @@ def _effective_short_edit_target(
         or requested_seconds != 30
         or type(voice_duration_seconds) not in (int, float)
         or not math.isfinite(voice_duration_seconds)
-        or not 25.5 <= voice_duration_seconds <= 29.75
+        or not 25.5 <= voice_duration_seconds <= (
+            39.45 if options.get('production_scheduled') is True else 29.75
+        )
     ):
         return requested_seconds
     if _short_preview_voice_duration_qc(
         {'duration_after_fit': voice_duration_seconds}, requested_seconds,
     ).get('pass') is True:
         return requested_seconds
-    return min(requested_seconds, math.ceil((voice_duration_seconds + 0.55) * 30) / 30)
+    endpoint = math.ceil((voice_duration_seconds + 0.55) * 30) / 30
+    return endpoint if voice_duration_seconds > 29.75 else min(requested_seconds, endpoint)
 
 
 def _short_preview_voice_duration_qc(
@@ -2017,6 +2020,7 @@ def _synthesize_voice_candidate(
     start_attempt: int = 0,
     language: str | None = None,
     voice_replacement_request: dict | None = None,
+    flexible_short: bool = False,
 ) -> dict:
     """Use bounded new seeds for synthesis defects without rerunning the job."""
     from app.services.abacus_generation import AbacusGenerationError
@@ -2068,6 +2072,7 @@ def _synthesize_voice_candidate(
                 target_seconds,
                 generation_attempt=generation_attempt,
                 language=language,
+                **({'flexible_short': True} if flexible_short is True and voice_replacement_request is None else {}),
                 **replacement_options,
             )
         except VoiceScriptFitError as exc:
@@ -5105,6 +5110,9 @@ def run_video_pipeline(
                     task_id,
                     duration_minutes * 60,
                     language=language,
+                    **({'flexible_short': True} if options.get('production_scheduled') is True
+                       and options.get('mode') == 'production' and options.get('format') == 'shorts'
+                       and duration_minutes == 0.5 else {}),
                 )
             broll_future = (
                 stage_pool.submit(lambda: {
@@ -5414,6 +5422,9 @@ def run_video_pipeline(
                 duration_minutes * 60,
                 start_attempt=audio_generation_attempts,
                 language=language,
+                **({'flexible_short': True} if options.get('production_scheduled') is True
+                   and options.get('mode') == 'production' and options.get('format') == 'shorts'
+                   and duration_minutes == 0.5 and not saved_voice_retry and not recovered_voice else {}),
             )
             _checkpoint_audio_candidate(task_id, package, voice_result)
             audio_generation_attempts = int(
@@ -7784,7 +7795,10 @@ def run_video_pipeline(
                 voice_result.get('duration_after_fit'),
             )
         else:
-            duration_ok = requested_seconds * 0.70 <= actual_seconds <= requested_seconds * 1.22
+            duration_basis = (effective_edit_target_seconds
+                if options.get('production_scheduled') is True and options.get('format') == 'shorts'
+                and requested_seconds == 30 else requested_seconds)
+            duration_ok = duration_basis * 0.70 <= actual_seconds <= duration_basis * 1.22
         if not duration_ok:
             raise ProductionContentError(f'Final duration gate rejected render: {actual_seconds:.1f}s for requested {requested_seconds:.1f}s', code='render_quality_exhausted')
 

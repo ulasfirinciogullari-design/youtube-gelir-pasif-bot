@@ -153,7 +153,7 @@ _EN_YEAR_UNITS = {
     'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
     'six': 6, 'seven': 7, 'eight': 8, 'nine': 9,
 }
-_EN_DECADES = {'twenties': 20, 'thirties': 30, 'forties': 40, 'fifties': 50,
+_EN_DECADES = {'hundreds': 0, 'twenties': 20, 'thirties': 30, 'forties': 40, 'fifties': 50,
                'sixties': 60, 'seventies': 70, 'eighties': 80, 'nineties': 90}
 _EN_CARDINAL_SMALL = {'zero': 0, **_EN_YEAR_UNITS,
     **{k: v for k, v in _EN_YEAR_CENTURIES.items() if v < 20}}
@@ -1348,10 +1348,14 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
         # ASR writes spoken "in the nineteen-fifties" as "in the 1950s".
         # Require the complete century, decade, and local temporal cue; never
         # guess an age, a count of banknotes, or a bare list of numbers.
-        decade_context = year_context or bool(index > 1 and tokens[index - 1] == 'the'
-            and tokens[index - 2] in _EN_YEAR_CUES
-            and value[matches[index - 2].end():matches[index - 1].start()].isspace()
-            and value[matches[index - 1].end():matches[index].start()].isspace())
+        cue = index - 1
+        if cue >= 0 and tokens[cue] in {'early', 'mid', 'late'}:
+            cue -= 1
+        if cue >= 0 and tokens[cue] == 'the':
+            cue -= 1
+        decade_context = bool(cue >= 0 and tokens[cue] in _EN_YEAR_CUES
+            and all(value[matches[pos].end():matches[pos + 1].start()].isspace()
+                    for pos in range(cue, index)))
         if (century is not None and decade_context and index + 1 < len(tokens)
                 and tokens[index + 1] in _EN_DECADES
                 and re.fullmatch(r'(?:\s+|[-\u2010\u2011])',

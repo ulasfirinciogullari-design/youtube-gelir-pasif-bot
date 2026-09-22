@@ -44,6 +44,9 @@ def spending_task(function):
     def wrapped(self, *args, **kwargs):
         token = _TASK_ID.set(getattr(self.request, 'id', None))
         try:
+            if function.__name__ == 'run_video_pipeline':
+                from app.services.production_worker_execution import observe_start
+                observe_start(self.request)
             return function(self, *args, **kwargs)
         finally:
             _TASK_ID.reset(token)

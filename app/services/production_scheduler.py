@@ -120,6 +120,25 @@ def _terminal_preparation(pipe, channel_id, day, slot):
         from app.services.production_continuation import authority
         proof = authority(pipe, channel_id, active=False)
         _require(proof is not None and dispatch.get('continuation_authority_sha256') == proof)
+    if (dispatch.get('status') == 'finished' and dispatch.get('outcome') == 'unavailable'
+            and daily_raw is None):
+        # The actual worker returned before acquiring the planning/model
+        # reservation. Keep its execution and dispatch occupied, but permit
+        # the next distinct bounded slot. An unknown broker/worker outcome or
+        # an existing model reservation cannot use this path.
+        binding = _preparation_binding(dispatch)
+        keys = _execution_keys(binding)
+        pipe.watch(keys[1])
+        _require(keys[0] == dispatch_key and binding['channel_id'] == channel_id
+            and binding['day'] == day and _preparation_slot(binding) == slot
+            and pipe.get(keys[1]) == binding['token']
+            and all(pipe.pttl(key) == -1 for key in (dispatch_key, keys[1]))
+            and type(dispatch.get('created_at')) in (int, float))
+        started = _now(dispatch['created_at'])
+        _require(datetime.fromtimestamp(started, timezone.utc).date().isoformat() == day)
+        return {'binding': binding, 'dispatch_raw': dispatch_raw, 'daily_raw': None,
+            'available_at': started + PREPARATION_INTERVAL_SECONDS,
+            'worker_finished_without_planning_reservation': True}
     if dispatch.get('status') != 'finished' or dispatch.get('outcome') not in {'failed', 'uncertain', 'ready'}:
         return {'blocked': 'preparation_already_reserved'}
     binding = _preparation_binding(dispatch)
