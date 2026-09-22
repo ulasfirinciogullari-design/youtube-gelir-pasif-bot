@@ -340,6 +340,7 @@ def _tick(c, maintenance):
           'dispatch_due_productions': dispatch, 'ChannelProductionError': c.scheduler.ChannelProductionError,
           'run_video_pipeline': SimpleNamespace(apply_async=Mock()),
           'prepare_series_batch': SimpleNamespace(apply_async=Mock()),
+          'prepare_content_plan_recovery': SimpleNamespace(apply_async=Mock()),
           'maintain_production_series': lambda *a: order.append('series_maintenance') or maintenance(*a)}
     exec(compile(ast.Module(body=[tick], type_ignores=[]), str(path), 'exec'), ns)
     return ns, order

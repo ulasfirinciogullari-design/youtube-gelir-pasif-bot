@@ -1000,6 +1000,9 @@ def _curated_recovery_source(
     recovered_media: dict | None, recovered_voice: dict | None,
 ) -> dict:
     """A curated input is server-dispatched recovery, never a model option."""
+    if isinstance(manifest, dict) and manifest.get('kind') == 'owner_plan_retained':
+        from app.services.content_plan_recovery import verify_child
+        return verify_child(task_id, source_task_id, runtime_spec, approved_package, manifest)
     from app.services.studio_state import get_job
 
     if (
@@ -1033,7 +1036,11 @@ def _collect_curated_recovery_visuals(
     manifest: dict, source_job: dict, approved_package: dict,
     recovered_media: dict, recovered_voice: dict, task_id: str, work: Path,
 ) -> dict:
-    """Load the five pinned stocks and existing paid shot before any review."""
+    """Load the pinned stocks and existing paid shots before any review."""
+    if isinstance(manifest, dict) and manifest.get('kind') == 'owner_plan_retained':
+        from app.services.content_plan_recovery import load_visuals
+        return load_visuals(manifest, source_job, approved_package, recovered_media,
+                            recovered_voice, task_id, work)
     if recovered_media.get('version') == 5:
         return _collect_mixed_recovery_visuals(recovered_media, recovered_voice, work)
     try:
@@ -6925,6 +6932,8 @@ def run_video_pipeline(
                 final_review_visuals = exact_review_visuals(
                     scenes=scenes, scene_visuals=scene_visuals,
                     scene_durations=scene_durations, voice_path=voice_path, work_dir=work,
+                    **({'natural_short': True} if isinstance(curated_stock_manifest, dict)
+                       and curated_stock_manifest.get('kind') == 'owner_plan_retained' else {}),
                 )
             except Exception:
                 raise FinalVisualQualityError('Curated exact-cut review inputs could not be verified') from None

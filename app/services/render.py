@@ -148,7 +148,11 @@ def max_horizontal_letterbox_duration(
     minimum_seconds: float = 0.25,
     band_height: int = 24,
 ) -> float:
-    """Measure sustained black bands touching both horizontal frame edges."""
+    """Measure encoded black bands, not dark blue/brown scenery.
+
+    The 2% limited-range luma tolerance covers compressed black (Y=16)
+    without classifying dim full-frame footage as letterboxed.
+    """
     media_path = Path(path)
     if not media_path.is_file():
         return 0.0
@@ -160,7 +164,7 @@ def max_horizontal_letterbox_duration(
             f'[top]crop=iw:{band_height}:0:0[top_band];'
             f'[bottom]crop=iw:{band_height}:0:ih-{band_height}[bottom_band];'
             '[top_band][bottom_band]vstack=inputs=2,'
-            f'blackdetect=d={minimum_seconds:.2f}:pix_th=0.10:pic_th=0.95'
+            f'blackdetect=d={minimum_seconds:.2f}:pix_th=0.02:pic_th=0.95'
         ),
         '-an', '-f', 'null', '-',
     ], capture_output=True, text=True, check=False)

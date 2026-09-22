@@ -1,5 +1,13 @@
 # Owner editorial plan
 
+A queued six-scene Short that fails during local rendering can make one
+retained-media continuation. Every video create must have a captured provider
+result and preserved raw bytes; the original voice and selected stock pools
+must also survive with matching hashes. A fresh immutable-story review precedes
+the ordinary audio, exact-cut visual, final-render and publication checks.
+The continuation cannot buy another voice or video. Unknown sends stay occupied;
+quality rejections, cancelled jobs and historical delivery holds do not auto-retry.
+
 `/studio/plan` owns a channel's ordered next videos without editing consumed
 topics, historical series counters, old jobs or payment receipts. The owner
 can add a video or a numbered series, move future independent entries, remove

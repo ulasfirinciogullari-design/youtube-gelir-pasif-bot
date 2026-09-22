@@ -265,6 +265,10 @@ def project(plan, *, client=None):
                         row.update(status='blocked', label='Yayın kontrolü gerekli')
                 elif leaf.get('state') in {'FAILURE', 'CANCELLED'}:
                     row.update(status='blocked', label='Üretim kontrolü gerekli')
+                    from app.services.content_plan_recovery import STATUS
+                    recovery = client.get(STATUS + leaf['task_id'])
+                    if recovery and _object(recovery).get('state') == 'preparing':
+                        row.update(status='running', label='Hazır kayıtlarla onarılıyor')
                 else:
                     row.update(status='running', label='Üretiliyor')
             except (ContentPlanError, ValueError, TypeError):
@@ -356,7 +360,7 @@ def _reserve(channel_id, *, now=None):
                 'args': (brief, .5, language, route, options, None)}
 
 
-def maintain(profiles, enqueue):
+def maintain(profiles, enqueue, *, repair_enqueue=None):
     """Server tick: acknowledge exact public output, then dispatch the next item."""
     client = _client(); statuses = {}
     for profile in profiles:
@@ -371,6 +375,9 @@ def maintain(profiles, enqueue):
                 proof = publication_proof(client, dispatch)
                 if proof is None:
                     statuses[channel_id] = 'working_or_blocked'
+                    if repair_enqueue is not None:
+                        from app.services.content_plan_recovery import schedule
+                        statuses[channel_id] = schedule(_leaf(client, dispatch), repair_enqueue, client=client)
                     continue
                 with client.pipeline() as pipe:
                     pipe.watch(ACTIVE_KEY, DISPATCH_PREFIX + entry_id, COMPLETION_PREFIX + entry_id,

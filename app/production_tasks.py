@@ -112,7 +112,8 @@ def production_tick() -> dict:
         from app.services.production_quality_holds import maintain_quality_holds
         quality_holds = maintain_quality_holds(linked_profiles)
         from app.services.content_plan import maintain as maintain_content_plan
-        content_plan = maintain_content_plan(linked_profiles, run_video_pipeline.apply_async)
+        content_plan = maintain_content_plan(linked_profiles, run_video_pipeline.apply_async,
+            repair_enqueue=prepare_content_plan_recovery.apply_async)
         dispatched = dispatch_due_productions(
             profiles,
             connections,
@@ -150,3 +151,11 @@ def observe_render_worker_loss(sender=None, task_id=None, exception=None, **_kwa
     from app.services.production_worker_loss import record_worker_loss
 
     record_worker_loss(sender, task_id, exception)
+
+
+@celery.task(name='app.production_tasks.prepare_content_plan_recovery', bind=True,
+             acks_late=False, reject_on_worker_lost=False, autoretry_for=(), max_retries=0,
+             soft_time_limit=800, time_limit=900)
+def prepare_content_plan_recovery(self, source_task_id):
+    from app.services.content_plan_recovery import run
+    return run(source_task_id, self.request.id)
