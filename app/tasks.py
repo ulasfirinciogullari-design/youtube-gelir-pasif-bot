@@ -255,6 +255,9 @@ def _validated_recovered_generated_media(
         raise FinalVisualQualityError(
             'Recovered generated-media contract is malformed'
         )
+    if raw.get('version') == 7:
+        from app.services.content_plan_stock_repair import validate_media
+        return validate_media(raw, scene_count, expected_package_sha256)
     if raw.get('version') == 6:
         try:
             from app.services.selected_visual_recovery import validate_selected_visual_recovery
@@ -4978,6 +4981,10 @@ def run_video_pipeline(
             len(package.get('scenes') or []),
             package_sha256,
         )
+        if (isinstance(raw_recovered_generated_media, dict) and raw_recovered_generated_media.get('version') == 7
+                and (not isinstance(curated_stock_manifest, dict)
+                     or curated_stock_manifest.get('kind') != 'owner_plan_retained')):
+            raise FinalVisualQualityError('Stock-only recovery requires its private owner-plan dispatch')
         if (
             recovered_voice
             and not recovered_generated_media

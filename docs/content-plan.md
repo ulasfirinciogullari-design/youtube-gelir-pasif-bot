@@ -44,10 +44,21 @@ Private original narration, generated clips, and stock selections are retained.
 Animation remains an explicitly marked preparation format until a consistent
 character and motion production workflow is accepted.
 
-Retained-render preparation v2 compares canonical candidate packages before
-the loader's derived joined narration is added. It preserves v1 claims; only
-an observed terminal v1 local normalization failure before provider review
-may enter the corrected preparation. Unknown or later failures do not reopen.
+Retained-render preparation compares canonical candidate packages before
+the loader's derived joined narration is added, and restores the verified
+word-range metadata before an immutable review. Version 3 preserves all
+earlier claims; only the two observed terminal local validation failures from
+earlier versions can enter the corrected preparation. Unknown provider outcomes
+and actual critic rejections do not reopen through this upgrade.
+
+A final visual rejection may also make one stock-only continuation from the
+root's saved, authenticated stock pools and original voice. Every prior paid
+generation must already have a captured terminal response. Up to three bounded
+selection rounds review the actual normalized cuts; missing, negative, or
+duplicate selections cannot pass. The distinct stock-only contract requires
+the private queue dispatch and forbids all new voice/video generation. The
+ordinary worker repeats full QA before publication. Later correction filenames
+retain distinct raw checkpoints, preserving every previous candidate.
 
 The future queue is stored durably without an expiration. Browsing performs
 only bounded reads, and every edit requires the owner session, same-origin

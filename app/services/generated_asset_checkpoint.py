@@ -122,9 +122,12 @@ def persist_generated_asset_candidate(
         raw_path = Path(raw_path)
         expected_name = (f'runway_s{scene_index:02d}.mp4' if phase == 'initial_generation'
                          else f'runway_repair_s{scene_index:02d}.mp4')
+        expected_names = {expected_name}
+        if phase == 'final_repair':
+            expected_names.update(f'runway_repair_r{round}_s{scene_index:02d}.mp4' for round in range(2, 33))
         _require(raw_path.is_absolute() and '..' not in raw_path.parts
-                 and raw_path == work / expected_name and not raw_path.is_symlink()
-                 and raw_path.resolve(strict=True) == work / expected_name
+                 and raw_path.parent == work and raw_path.name in expected_names and not raw_path.is_symlink()
+                 and raw_path.resolve(strict=True) == raw_path
                  and stat.S_ISREG(raw_path.stat().st_mode)
                  and 1024 <= raw_path.stat().st_size <= MAX_RAW_BYTES)
         provider = visual_spec.get('generation_provider')

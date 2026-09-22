@@ -16,7 +16,7 @@ from uuid import uuid4, uuid5, NAMESPACE_URL
 from app.services import content_plan as plan, studio_state as jobs
 
 LEGACY_PREFIX = plan.PREFIX + 'render_recovery:'
-PREFIX = LEGACY_PREFIX + 'v2:'
+PREFIX = LEGACY_PREFIX + 'v3:'
 DISPATCH = PREFIX + 'dispatch:'
 EXECUTION = PREFIX + 'execution:'
 RECORD = PREFIX + 'record:'
@@ -33,7 +33,7 @@ def _source(client, task, *, claimed=False):
     source = plan._object(client.get(jobs.JOB_PREFIX + plan._id(task)))
     spec = source.get('spec') or {}
     _require(source.get('task_id') == task and source.get('kind') == 'render'
-        and source.get('state') == 'FAILURE' and source.get('failure_stage') == 'render'
+        and source.get('state') == 'FAILURE' and (source.get('failure_stage') == 'render' or _stock_failure(source))
         and source.get('parent_id') is None and not source.get('result')
         and spec.get('mode') == 'production' and spec.get('format') == 'shorts'
         and spec.get('duration_minutes') == .5 and spec.get('music') == 'off'
@@ -72,6 +72,11 @@ def _fingerprint(source):
 def eligible(source):
     """Cheap scheduling hint only; preparation independently verifies authority."""
     journal = source.get('generated_asset_candidates') or {}
+    if _stock_failure(source):
+        return bool(source.get('parent_id') is None and not source.get('retry_child_task_id')
+            and (source.get('spec') or {}).get('content_plan_item_id')
+            and source.get('audio_candidate_checkpoint') and source.get('included_stock_pools')
+            and type(source.get('paid_create_slots_used')) is int and 0 <= source['paid_create_slots_used'] <= 6)
     return bool(source.get('state') == 'FAILURE' and source.get('failure_stage') == 'render'
         and source.get('parent_id') is None and not source.get('retry_child_task_id')
         and (source.get('spec') or {}).get('content_plan_item_id')
@@ -88,7 +93,7 @@ def schedule(source, enqueue, *, client=None):
     client = client or plan._client(); task = source['task_id']
     if not _prior_preparation_allows(client, task):
         return 'repair_preparing_or_stopped'
-    operation = str(uuid5(NAMESPACE_URL, 'owner-plan-render-recovery:v2:' + task))
+    operation = str(uuid5(NAMESPACE_URL, 'owner-plan-render-recovery:v3:' + task))
     claim = {'version': 1, 'source_task_id': task, 'task_id': operation,
              'source_sha256': _fingerprint(source)}
     # A lost ACK cannot authorize a second queue send.
@@ -108,6 +113,23 @@ def _prior_preparation_allows(client, task):
     Preserve the old execution/dispatch/terminal evidence. Unknown, completed,
     or later failures cannot obtain a second provider request by upgrading.
     """
+    newer = client.get(LEGACY_PREFIX + 'v2:dispatch:' + task)
+    if newer is not None:
+        prefix = LEGACY_PREFIX + 'v2:'
+        dispatch = plan._object(newer)
+        status = plan._object(client.get(prefix + 'status:' + task))
+        execution = client.get(prefix + 'execution:' + task)
+        raw = client.get('celery-task-meta-' + str(execution))
+        if (client.exists(prefix + 'record:' + task) or execution != dispatch.get('task_id')
+                or status != {'state': 'stopped', 'error_type': 'RuntimeError'} or raw is None):
+            return False
+        terminal = plan._object(raw); result = terminal.get('result') or {}
+        if not (terminal.get('status') == 'FAILURE' and type(result) is dict
+                and result.get('exc_type') == 'RuntimeError'
+                and result.get('exc_message') == ['Fresh immutable story approval failed its final integrity check']
+                and 'File "/app/app/services/director.py", line 3376, in revalidate_immutable_short_story' in (terminal.get('traceback') or '')
+                and dispatch.get('source_sha256') == _fingerprint(_source(client, task))):
+            return False
     old = client.get(LEGACY_PREFIX + 'dispatch:' + task)
     if old is None:
         return True
@@ -131,6 +153,14 @@ def _prior_preparation_allows(client, task):
         and dispatch.get('source_sha256') == _fingerprint(_source(client, task)))
 
 
+def _stock_failure(source):
+    classification = source.get('failure_classification') or {}
+    return (source.get('state') == 'FAILURE'
+        and source.get('failure_stage') in {'final_visual_qc', 'final_visual_qc_rescue'}
+        and classification.get('category') == 'content_rejected'
+        and classification.get('code') == 'visual_quality_exhausted')
+
+
 def _stored(client, key, digest, size, destination, maximum):
     from app.services.voice_candidate_recovery import _download_bounded
     actual = _download_bounded(client, key, destination, maximum, expected_size=size)
@@ -148,13 +178,15 @@ def prepare(task, work):
     client = plan._client(); source = _source(client, task)
     _require(eligible(source)); fingerprint = _fingerprint(source)
     context = resolve_context(client, task)
-    journal = source['generated_asset_candidates']; used = journal['preserved_count']
+    stock_only = _stock_failure(source)
+    journal = source.get('generated_asset_candidates') or {}; used = source['paid_create_slots_used']
     budget = client.hgetall(jobs.PAID_CREATE_BUDGET_PREFIX + task)
     _require(budget == {'cap': str(source['preview_total_paid_create_cap']), 'used': str(used)}
-        and len(journal['entries']) == used)
+        and (stock_only or len(journal['entries']) == used == journal['preserved_count']))
     # Every charged generation has a captured result, not just a local filename.
     from app.services import commissioning_video
-    native = plan._object(client.get(commissioning_video.PREFIX + task))
+    native_raw = client.get(commissioning_video.PREFIX + task)
+    native = plan._object(native_raw) if native_raw is not None else {'context': context, 'requests': {}}
     _require(native.get('context') == context and len(native.get('requests', {})) == used
         and all(row.get('create') and row.get('result') for row in native['requests'].values()))
     candidate = load_voice_retry_candidate(task, work.name.split('_attempt_')[0],
@@ -166,7 +198,7 @@ def prepare(task, work):
     _require(plan._sha(canonical) == source['audio_candidate_checkpoint']['package_sha256'])
     _require(len(original['scenes']) == 6)
     object_store = storage._client(); generated = {}
-    for ordinal, pointer in enumerate(journal['entries']):
+    for ordinal, pointer in enumerate([] if stock_only else journal['entries']):
         _require(pointer.get('source_task_id') == task and pointer.get('status') == 'preserved_candidate'
             and pointer.get('qa_approved') is False and pointer.get('requires_full_qa') is True
             and pointer.get('audio_sha256') == candidate['audio_sha256'])
@@ -202,8 +234,11 @@ def prepare(task, work):
         pools[scope['phase']] = record
     chosen = next((pools[phase] for phase in ('budget_rescue', 'before_generation', 'initial') if phase in pools), None)
     _require(chosen is not None)
-    stocks = {}
-    for index in set(range(6)) - set(generated):
+    stocks = {}; selection = None; credits = chosen['credits']
+    if stock_only:
+        from app.services.content_plan_stock_repair import select
+        stocks, credits, selection = select(original, voice, pools, work, source['spec'])
+    for index in ([] if stock_only else set(range(6)) - set(generated)):
         # The final stock pool must already have a single selected candidate.
         _require(len(chosen['pools'][index]) == 1)
         row = deepcopy(chosen['pools'][index][0]); stocks[str(index)] = row
@@ -217,14 +252,18 @@ def prepare(task, work):
         if k not in {'topic', 'duration_minutes', 'language', 'channel_id'}}
     kwargs = ({'verified_spoken_word_budget': director.validate_spoken_word_budget(original['spoken_word_budget'])}
               if 'spoken_word_budget' in original else {})
-    reviewed = director.revalidate_immutable_short_story(deepcopy(original), spec['topic'], .5,
+    story = deepcopy(original)
+    if kwargs:
+        budget = kwargs['verified_spoken_word_budget']
+        story['target_word_range'] = [budget['minimum_words'], budget['maximum_words']]
+    reviewed = director.revalidate_immutable_short_story(story, spec['topic'], .5,
         spec['language'], options, immutable_candidate_narrations=[s['narration'] for s in original['scenes']],
         immutable_scene_fields=True, **kwargs)
     require_unchanged_voice_narration(original, reviewed)
     _require(reviewed['scenes'] == original['scenes']
         and director.short_story_package_is_approved(reviewed, spec['topic']))
     package_hash = tasks._recovery_package_sha256(reviewed)
-    media = {'version': 3, 'recovery_only': True, 'source_task_id': task,
+    media = {'version': 7 if stock_only else 3, 'recovery_only': True, 'source_task_id': task,
              'package_sha256': package_hash, 'scenes': {}}
     for index, (path, key, raw) in generated.items():
         with path.open('rb') as body:
@@ -243,7 +282,9 @@ def prepare(task, work):
     tasks._validated_recovered_voice(audio, 6, package_hash)
     reviewed.update(_recovered_generated_media=media, _recovered_voice=audio)
     manifest = {'version': 1, 'kind': 'owner_plan_retained', 'source_task_id': task,
-                'package_sha256': package_hash, 'stocks': stocks, 'credits': chosen['credits']}
+                'package_sha256': package_hash, 'stocks': stocks, 'credits': credits}
+    if stock_only:
+        manifest['stock_selection'] = selection
     record = {'version': 1, 'source_task_id': task, 'source_sha256': fingerprint,
               'approved_package': reviewed, 'manifest': manifest}
     with client.pipeline() as pipe:
