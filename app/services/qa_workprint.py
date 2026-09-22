@@ -1,4 +1,4 @@
-"""Private, unapproved 30-second workprints of an actual failed visual edit.
+"""Private, unapproved short workprints of an actual failed visual edit.
 
 Only existing task-local media, the ordinary renderer, and existing Storage are
 used. This diagnostic never changes jobs, QA, recovery contracts or publishers.
@@ -108,7 +108,7 @@ def _selected(specs: object, review: dict, work: Path) -> tuple[dict, dict]:
     return spec, provenance
 
 
-def _probe(path: Path) -> None:
+def _probe(path: Path, target_seconds: float = 30.0) -> None:
     """Check the actual local master, not a renderer's reported success flag."""
     raw = subprocess.check_output([
         'ffprobe', '-v', 'error', '-protocol_whitelist', 'file,pipe', '-count_frames',
@@ -122,9 +122,9 @@ def _probe(path: Path) -> None:
     videos = [item for item in data.get('streams', []) if item.get('codec_type') == 'video']
     audios = [item for item in data.get('streams', []) if item.get('codec_type') == 'audio']
     if (len(videos) != 1 or len(audios) != 1 or videos[0].get('width') != 1080
-            or videos[0].get('height') != 1920 or str(videos[0].get('nb_read_frames')) != '900'
+            or videos[0].get('height') != 1920 or str(videos[0].get('nb_read_frames')) != str(round(target_seconds * 30))
             or videos[0].get('avg_frame_rate') != '30/1'
-            or not math.isfinite(duration) or abs(duration - 30.0) > 0.034):
+            or not math.isfinite(duration) or abs(duration - target_seconds) > 0.034):
         raise ValueError('Invalid diagnostic master')
 
 
@@ -166,7 +166,8 @@ def persist_qa_workprint(
         if (not isinstance(task_id, str) or str(UUID(task_id)) != task_id
                 or voice_quality_passed is not True or not isinstance(options, dict)
                 or options.get('mode') != 'production' or options.get('format') != 'shorts'
-                or _number(target_seconds, 30, 30) != 30
+                or not 30 <= _number(target_seconds, 30, 40 if options.get('production_scheduled') is True else 30) <= 40
+                or abs(target_seconds * 30 - round(target_seconds * 30)) > 1e-6
                 or not isinstance(scenes, list) or not 6 <= len(scenes) <= 12
                 or not isinstance(scene_visuals, list) or len(scene_visuals) != len(scenes)
                 or not isinstance(final_reviews, dict) or set(final_reviews) != set(range(len(scenes)))
@@ -183,7 +184,7 @@ def persist_qa_workprint(
             header = incoming.read(3)
         if not (header.startswith(b'ID3') or (len(header) >= 2 and header[0] == 0xFF and header[1] & 0xE0 == 0xE0)):
             return {}
-        measured_voice = _number(media_duration(voice), 28.7, 30.08)
+        measured_voice = _number(media_duration(voice), target_seconds - 1.30, target_seconds + .08)
         durations = [_number(value, 0.1, 15) for value in scene_durations]
         if abs(sum(durations) - measured_voice) > 0.12:
             return {}
@@ -216,16 +217,16 @@ def persist_qa_workprint(
                 voice_path=voice, visual_paths=[spec[0] for spec in selected],
                 narration=narration, output_path=output, scenes=clean_scenes,
                 scene_durations=durations, scene_visual_paths=selected,
-                target_duration=30.0, output_resolution='1080x1920',
+                target_duration=target_seconds, output_resolution='1080x1920',
             )
             output = _file(output, work, MAX_VIDEO_BYTES)
-            _probe(output)
+            _probe(output) if target_seconds == 30 else _probe(output, target_seconds)
             checksum, size = _digest(output, MAX_VIDEO_BYTES)
             prefix = f'qa_workprints/{task_id}/'
             key = f'{prefix}{checksum}.mp4'
-            flags = {'version': 1, 'status': 'qa_workprint', 'qa_approved': False,
+            flags = {'version': 1 if target_seconds == 30 else 2, 'status': 'qa_workprint', 'qa_approved': False,
                      'publish_eligible': False, 'reusable': False, 'task_id': task_id}
-            metrics = {'duration_seconds': 30.0, 'frame_count': 900, 'width': 1080, 'height': 1920}
+            metrics = {'duration_seconds': target_seconds, 'frame_count': round(target_seconds * 30), 'width': 1080, 'height': 1920}
             metadata = {**flags, **metrics, 'failure_stage': 'final_visual_qc',
                         'voice': {'sha256': voice_sha, 'size': voice_size,
                                   'existing_voice_quality_passed': True},

@@ -1623,6 +1623,7 @@ def _checkpoint_qa_workprint(
     audio_qc: dict,
     audio_duration_qc: dict,
     audio_prosody_qc: dict,
+    effective_edit_target_seconds: float | None = None,
 ) -> None:
     """Keep a rejected private draft without changing its terminal outcome."""
     try:
@@ -1639,6 +1640,12 @@ def _checkpoint_qa_workprint(
         from copy import deepcopy
         from app.services.qa_workprint import persist_qa_workprint
 
+        target = duration_minutes * 60
+        if (options.get('production_scheduled') is True
+                and type(effective_edit_target_seconds) in (int, float)
+                and 30 < effective_edit_target_seconds <= 40):
+            target = effective_edit_target_seconds
+
         # Keep full candidate pools and their exact final best indices. The
         # helper understands already-collapsed selected singletons; rejected
         # multi-candidate scenes must not silently fall back to their first clip.
@@ -1648,11 +1655,12 @@ def _checkpoint_qa_workprint(
             final_reviews=deepcopy(final_reviews), voice_result=deepcopy(voice_result),
             scene_durations=deepcopy(scene_durations), narration=narration,
             options=deepcopy(options), voice_quality_passed=True,
-            target_seconds=duration_minutes * 60,
+            target_seconds=target,
         )
         pointer = fields.get('qa_workprint') if isinstance(fields, dict) else None
         if (
-            not isinstance(pointer, dict) or type(pointer.get('version')) is not int or pointer['version'] != 1
+            not isinstance(pointer, dict) or type(pointer.get('version')) is not int
+            or pointer['version'] != (1 if target == 30 else 2)
             or pointer.get('task_id') != task_id or pointer.get('status') != 'qa_workprint'
             or any(pointer.get(key) is not False for key in ('qa_approved', 'publish_eligible', 'reusable'))
         ):
@@ -7603,6 +7611,7 @@ def run_video_pipeline(
             _checkpoint_qa_workprint(
                 task_id, work,
                 duration_minutes=duration_minutes,
+                effective_edit_target_seconds=effective_edit_target_seconds,
                 scenes=scenes, scene_visuals=scene_visuals,
                 final_reviews=final_reviews, voice_result=voice_result,
                 scene_durations=scene_durations, narration=package['narration'],

@@ -6,6 +6,7 @@ before using them. Storage keys and credentials never become browser URLs.
 from __future__ import annotations
 
 import re
+import math
 from uuid import UUID
 
 from fastapi import Request
@@ -51,10 +52,19 @@ def _canonical_id(value: object) -> bool:
         return False
 
 
+def _valid_timing(pointer: dict) -> bool:
+    duration, frames = pointer.get('duration_seconds'), pointer.get('frame_count')
+    if type(duration) not in (int, float) or not math.isfinite(duration) or type(frames) is not int:
+        return False
+    if pointer['version'] == 1:
+        return duration == 30 and frames == 900
+    return 30 < duration <= 40 and 900 < frames <= 1200 and abs(duration * 30 - frames) < 1e-6
+
+
 def _valid_pointer(pointer: object) -> bool:
     return bool(
         isinstance(pointer, dict) and set(pointer) == _FIELDS
-        and type(pointer.get('version')) is int and pointer['version'] == 1
+        and type(pointer.get('version')) is int and pointer['version'] in {1, 2}
         and pointer.get('status') == 'qa_workprint'
         and pointer.get('qa_approved') is False
         and pointer.get('publish_eligible') is False
@@ -67,10 +77,9 @@ def _valid_pointer(pointer: object) -> bool:
         and 1 <= pointer['size'] <= MAX_WORKPRINT_BYTES
         and isinstance(pointer.get('etag'), str)
         and _ETAG.fullmatch(pointer['etag'])
-        and type(pointer.get('duration_seconds')) in (int, float)
-        and pointer['duration_seconds'] == 30
+        and _valid_timing(pointer)
         and all(type(pointer.get(key)) is int and pointer[key] == expected
-                for key, expected in (('frame_count', 900), ('width', 1080), ('height', 1920)))
+                for key, expected in (('width', 1080), ('height', 1920)))
         and isinstance(pointer.get('metadata_sha256'), str)
         and _SHA256.fullmatch(pointer['metadata_sha256'])
         and pointer.get('metadata_key') == f"qa_workprints/{pointer['task_id']}/{pointer['metadata_sha256']}.json"
