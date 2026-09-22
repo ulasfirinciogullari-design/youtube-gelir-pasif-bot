@@ -23,7 +23,8 @@ HOSTS = frozenset({'www.federalreserve.gov', 'www.ecb.europa.eu', 'www.usmint.go
     'ctl.mit.edu', 'ikeamuseum.com', 'www.ikea.com', 'investor.costco.com',
     'www.lego.com', 'www.nintendo.co.jp', 'www.nintendo.com', 'www.ibm.com', 'www.gs1us.org',
     'www.okhistory.org', 'global.toyota', 'corporate.mcdonalds.com', 'www.mcdonalds.com',
-    'about.ups.com', 'www.fedex.com', 'www.aboutamazon.com', 'www.coca-colacompany.com'})
+    'about.ups.com', 'www.fedex.com', 'www.aboutamazon.com', 'www.coca-colacompany.com',
+    'www.sony.com'})
 GOLDMAN_REFERENCE = 'https://www.si.edu/object/goldmans-folding-basket-carriage%3Anmah_1216280'
 GOLDMAN_BACKUP_SOURCES = (
     'https://www.okhistory.org/historycenter/atour',
@@ -43,6 +44,8 @@ COMPANIONS = {
         'https://www.bep.gov/currency/serial-numbers',
     'https://www.nintendo.co.jp/corporate/en/history/index.html':
         'https://www.nintendo.com/en-gb/Hardware/Nintendo-History/Nintendo-History-625945.html',
+    'https://www.sony.com/en/SonyInfo/CorporateInfo/History/sonyhistory-e.html':
+        'https://www.sony.com/en/SonyInfo/News/Press/199907/99-059/',
 }
 PENNY_BACKUP_SOURCES = (
     'https://home.treasury.gov/news/featured-stories/penny-production-cessation-faqs',
