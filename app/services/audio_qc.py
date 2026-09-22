@@ -1289,7 +1289,7 @@ def _english_small_cardinal(words: list[str]) -> int | None:
 
 
 def _english_contextual_cardinal(tokens, matches, value, index, year_context):
-    """Only an explicit thousand-year or a complete coefficient before a scale."""
+    """Explicit temporal numbers or a complete coefficient before a scale."""
     numeric = _EN_NUMBER_WORDS | {'and'}
     end = index
     while end < len(tokens) and end - index < 9 and tokens[end] in numeric:
@@ -1298,6 +1298,11 @@ def _english_contextual_cardinal(tokens, matches, value, index, year_context):
     if not words:
         return None
     candidates = []
+    # "in fifty-nine" and "in 59" have identical spoken values. Keep the
+    # two-digit value; never infer a century from an abbreviated year.
+    short_year = _english_small_cardinal(words) if year_context else None
+    if short_year is not None and 10 <= short_year <= 99:
+        candidates.append((short_year, len(words), True))
     if (year_context and len(words) >= 2 and words[0] in _EN_YEAR_UNITS and words[1] == 'thousand'):
         tail_words = words[2:]
         if tail_words[:1] == ['and']:
@@ -1350,7 +1355,8 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
             index += count
             continue
         if (tuple(tokens[index:index + 2]) in {
-                ('hand', 'saw'), ('hand', 'saws'), ('post', 'war'), ('pre', 'war')}
+                ('hand', 'saw'), ('hand', 'saws'), ('post', 'war'), ('pre', 'war'),
+                ('card', 'maker'), ('card', 'makers')}
                 and re.fullmatch(r'(?:\s+|[-\u2010\u2011])',
                     value[matches[index].end():matches[index + 1].start()])):
             units.append((''.join(tokens[index:index + 2]), tuple(tokens[index:index + 2])))
