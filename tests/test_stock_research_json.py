@@ -205,3 +205,25 @@ def test_null_contract_does_not_change_the_callers_legacy_research_schema():
     assert legacy == before
     assert native['properties']['scenes']['items']['properties']['ai_prompt'] == {'type': 'null'}
     assert legacy['properties']['scenes']['items']['properties']['ai_prompt'] == {'type': ['string', 'null']}
+
+
+def test_optional_narrative_match_flag_preserves_false_and_does_not_approve_draft():
+    data = result()
+    for scene in data['scenes']:
+        scene['visual_queries_match_narrative'] = False
+        scene['word_count'] = 7
+    expected = deepcopy(data)
+    for scene in expected['scenes']: scene.pop('word_count')
+    observed, _, _ = observe(json.dumps(data))
+    assert observed.result == expected
+    assert all(scene['visual_queries_match_narrative'] is False for scene in observed.result['scenes'])
+    data['scenes'][0]['visual_queries_match_narrative'] = 'false'
+    with pytest.raises(adapter.AbacusRouterError): observe(json.dumps(data))
+
+
+def test_optional_narrative_contract_cannot_admit_unknown_fields_or_types():
+    for field, spec in [('accepted', {'type': 'boolean'}),
+                        ('visual_queries_match_narrative', {'type': 'string'})]:
+        schema = contract()
+        schema['properties']['scenes']['items']['properties'][field] = spec
+        with pytest.raises(adapter.AbacusRouterError): observe(redundant_content(), schema)

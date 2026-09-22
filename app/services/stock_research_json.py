@@ -26,11 +26,15 @@ def _stock_research_schema(schema):
         return False
     scenes = properties['scenes']
     scene = scenes.get('items') or {}
+    scene_fields = scene.get('properties') or {}
+    required = {'narration', 'visual_queries', 'ai_prompt'}
+    optional = {'visual_queries_match_narrative'}
     return (scenes.get('type') == 'array' and scene.get('type') == 'object'
-            and set(scene.get('properties') or {}) == {'narration', 'visual_queries', 'ai_prompt'}
-            and set(scene.get('required') or []) == {'narration', 'visual_queries', 'ai_prompt'}
+            and required <= set(scene_fields) <= required | optional
+            and all(scene_fields[field] == {'type': 'boolean'} for field in optional & set(scene_fields))
+            and set(scene.get('required') or []) == required
             and scene.get('additionalProperties') is False
-            and scene['properties']['ai_prompt'] == {'type': 'null'})
+            and scene_fields['ai_prompt'] == {'type': 'null'})
 
 
 def decode(content, schema):
