@@ -6872,7 +6872,10 @@ def run_video_pipeline(
                     raise
                 if isinstance(exc, GeminiImageAttemptedError):
                     image_motion_submission_scenes.add(scene_idx)
-                if isinstance(exc, GeminiOmniTerminalError):
+                from app.services.commissioning_video import CommissionedVideoUnavailable
+                if isinstance(exc, (GeminiOmniTerminalError, CommissionedVideoUnavailable)):
+                    # A completed no-clip outcome may use stock but must not
+                    # re-enter another paid generation for this scene.
                     omni_unsafe_submission_scenes.add(scene_idx)
                 runway_failed_scenes.append(scene_idx)
                 runway_failure_diagnostics.append(
@@ -7408,7 +7411,8 @@ def run_video_pipeline(
                         raise
                     if isinstance(exc, GeminiImageAttemptedError):
                         image_motion_submission_scenes.add(scene_idx)
-                    if isinstance(exc, GeminiOmniTerminalError):
+                    from app.services.commissioning_video import CommissionedVideoUnavailable
+                    if isinstance(exc, (GeminiOmniTerminalError, CommissionedVideoUnavailable)):
                         omni_unsafe_submission_scenes.add(scene_idx)
                     final_runway_repair_failures.append(scene_idx)
                     runway_failure_diagnostics.append(

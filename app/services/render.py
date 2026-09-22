@@ -775,6 +775,10 @@ def render_video(
         'ffmpeg', '-y', *input_args,
         '-filter_complex', filter_complex, '-map', '[master]',
         '-frames:v', str(target_frames), '-an',
+        # FFmpeg 7 can infer a fractional rate from decoded concat inputs.
+        # Match the encoder clock to the exact CFR graph to keep its last
+        # frame (for example, all 1099 frames in a 36.633-second master).
+        '-r', str(FPS), '-enc_time_base', f'1:{FPS}',
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
         str(silent_video),
     ]

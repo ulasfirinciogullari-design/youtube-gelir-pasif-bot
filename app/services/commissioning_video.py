@@ -31,7 +31,7 @@ _MAX_RESPONSE = 2 * 1024 * 1024
 
 
 class CommissionedVideoUnavailable(RuntimeError):
-    """A durably observed completed server failure; the paid request stays used.
+    """A durably observed completed no-clip result; the paid request stays used.
 
     The ordinary scene handler may review stock alternatives. This is never a
     retry permit, an unknown-outcome classification or approval of any footage.
@@ -225,7 +225,20 @@ def _result(payload):
         raise CommissionedVideoUnavailable('commissioned_video_completed_server_failure')
     _require(payload.get('done') is True and not payload.get('error'),
              'commissioning_video_generation_failed')
-    samples = payload.get('response', {}).get('generateVideoResponse', {}).get('generatedSamples', [])
+    generated = payload.get('response', {}).get('generateVideoResponse', {})
+    samples = generated.get('generatedSamples', [])
+    reasons = generated.get('raiMediaFilteredReasons')
+    if (type(samples) is list and not samples
+            and type(generated.get('raiMediaFilteredCount')) is int
+            and generated['raiMediaFilteredCount'] == 1
+            and type(reasons) is list and 1 <= len(reasons) <= 16
+            and all(type(reason) is str and 0 < len(reason.strip()) <= 4096 for reason in reasons)):
+        # A provider filter is a completed refusal, not an unknown purchase.
+        # Keep its receipt and do not retry or rewrite the rejected request.
+        # Only the existing stock rescue can supply independently reviewed
+        # footage; this result never approves the missing generated scene.
+        raise CommissionedVideoUnavailable('commissioned_video_completed_filtered')
+    _require(not generated.get('raiMediaFilteredCount') and not reasons)
     _require(type(samples) is list and len(samples) == 1)
     uri = samples[0].get('video', {}).get('uri')
     _require(type(uri) is str and 0 < len(uri) <= 8192)

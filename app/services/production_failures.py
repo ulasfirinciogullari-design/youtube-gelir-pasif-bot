@@ -33,6 +33,7 @@ _SOURCE_CODES = frozenset({'included_research_unconsulted_source',
     'included_research_primary_source_required', 'included_research_primary_source_unavailable'})
 _VISUAL_INPUT_CODES = frozenset({'abacus_router_request_invalid'})
 _COMMISSIONED_VIDEO_CODES = frozenset({
+    'commissioning_video_unverified',
     'commissioning_video_provider_rejected', 'commissioning_video_generation_failed',
     'commissioning_video_outcome_unverified', 'commissioning_video_poll_unavailable',
     'commissioning_video_poll_timeout', 'commissioning_video_previous_outcome_unknown',
@@ -129,6 +130,12 @@ def classified_hold_reason(job):
                  or code == category == 'spending_blocked')):
         return 'review_unverified'
     if code == error and code in _COMMISSIONED_VIDEO_CODES and category == 'review_unverified' and stage in _VISUAL_STAGES:
+        return 'review_unverified'
+    # Older completed no-clip responses used this exact protocol error. Keep
+    # their original failure and occupied requests; only the normal complete
+    # unpublished-lineage hold may advance to an independently funded episode.
+    if (code == category == 'spending_blocked' and error == 'commissioning_video_unverified'
+            and stage in _VISUAL_STAGES):
         return 'review_unverified'
     if (code == error == 'production_media_outcome_unverified' and category == 'review_unverified'
             and stage in _AUDIO_STAGES | _VISUAL_STAGES | {'render'}):

@@ -91,6 +91,18 @@ def test_known_provider_failure_uses_stock_without_another_paid_attempt(rounds):
     assert rounds.ns['_retry_bad_scene'].call_count == 1
     assert rounds.ns['rejected_final_scenes'] == [1]
     rounds.critic.assert_not_called()
+    assert 1 in rounds.ns['omni_unsafe_submission_scenes']
+
+
+def test_filtered_initial_generation_fences_later_paid_scene_repair(rounds):
+    rounds.ns['selected_runway'] = [{'scene_index': 1}]
+    rounds.provider.side_effect = commissioning_video.CommissionedVideoUnavailable(
+        'commissioned_video_completed_filtered')
+    worker = _worker(rounds, 'initial_generation')
+    worker(rounds.self)
+    rounds.provider.assert_called_once()
+    assert 1 in rounds.ns['omni_unsafe_submission_scenes']
+    assert rounds.ns['scene_visuals'][1] == [{'path': 'stock-1.mp4'}]
 
 
 def test_normal_noncommissioned_policy_does_not_add_an_extra_round(rounds):

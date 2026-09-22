@@ -126,6 +126,51 @@ def test_observed_internal_failure_can_reach_scene_rescue_without_another_create
     paid_fallback.assert_not_called()
 
 
+def test_completed_filtered_clip_keeps_refusal_receipt_and_never_retries(scene, monkeypatch):
+    original = scene.handler
+    terminal = {'done': True, 'response': {'generateVideoResponse': {
+        'raiMediaFilteredCount': 1, 'raiMediaFilteredReasons': [
+            "Sorry, we can't create videos with real people's names or likenesses. "
+            'Please remove the celebrity reference and try again.']}}}
+    def filtered(request):
+        if request.method == 'POST': return original(request)
+        scene.requests.append(request)
+        return httpx.Response(200, json=terminal)
+    scene.handler = filtered
+    paid_fallback = Mock(side_effect=AssertionError('no other paid provider'))
+    monkeypatch.setattr(runway, 'RunwayML', paid_fallback)
+    for _ in range(2):
+        with pytest.raises(video.CommissionedVideoUnavailable, match='completed_filtered'):
+            generate(scene)
+    assert [r.method for r in scene.requests] == ['POST', 'GET']
+    journal = json.loads(scene.client.get(video.PREFIX + ROOT))
+    assert len(journal['requests']) == 1
+    row = next(iter(journal['requests'].values()))
+    assert video._payload(row['result']) == terminal
+    assert row['create'] is not None and row['request']['max_list_cost_micro_usd'] == 300000
+    paid_fallback.assert_not_called()
+
+
+@pytest.mark.parametrize('change', [
+    {'raiMediaFilteredCount': True}, {'raiMediaFilteredCount': '1'},
+    {'raiMediaFilteredCount': 0}, {'raiMediaFilteredCount': 2},
+    {'raiMediaFilteredReasons': []}, {'raiMediaFilteredReasons': [' ']},
+    {'raiMediaFilteredReasons': [None]}, {'generatedSamples': None},
+    {'generatedSamples': [{'video': {}}]},
+    {'generatedSamples': [{'video': {'uri': URI}}]},
+])
+def test_incomplete_or_conflicting_filter_evidence_does_not_enter_rescue(change):
+    generated = {'raiMediaFilteredCount': 1, 'raiMediaFilteredReasons': ['Filtered.'], **change}
+    with pytest.raises(SpendBlocked):
+        video._result({'done': True, 'response': {'generateVideoResponse': generated}})
+
+
+def test_unfinished_filtered_operation_is_still_unknown():
+    with pytest.raises(SpendBlocked):
+        video._result({'done': False, 'response': {'generateVideoResponse': {
+            'raiMediaFilteredCount': 1, 'raiMediaFilteredReasons': ['Filtered.']}}})
+
+
 @pytest.mark.parametrize('payload', [
     {'done': False, 'error': {'code': 13}},
     {'done': True, 'error': {'code': '13'}},
@@ -251,7 +296,8 @@ def test_lost_reservation_ack_never_repeats_or_sends(scene, monkeypatch):
 def test_generation_outage_holds_only_unpublished_episode(stage):
     from app.services.production_failures import classify_failure, classified_hold_reason
     for code in ('commissioning_video_provider_rejected', 'commissioning_video_outcome_unverified',
-                 'commissioning_video_poll_timeout', 'commissioning_video_generation_failed'):
+                 'commissioning_video_poll_timeout', 'commissioning_video_generation_failed',
+                 'commissioning_video_unverified'):
         error = SpendBlocked(code)
         record = {'error': code, 'failure_stage': stage,
                   'failure_classification': classify_failure(error, stage)}
@@ -259,6 +305,22 @@ def test_generation_outage_holds_only_unpublished_episode(stage):
         record['failure_stage'] = 'upload'
         record['failure_classification'] = classify_failure(error, 'upload')
         assert classified_hold_reason(record) is None
+
+
+def test_legacy_no_clip_failure_can_be_held_only_with_original_matching_evidence():
+    from app.services.production_failures import classify_failure, classified_hold_reason
+    code = 'commissioning_video_unverified'
+    evidence = classify_failure(SpendBlocked(code), 'ai_scene_generation')
+    evidence.update(code='spending_blocked', category='spending_blocked')
+    row = {'error': code, 'failure_stage': 'ai_scene_generation', 'failure_classification': evidence}
+    original = deepcopy(row)
+    assert classified_hold_reason(row) == 'review_unverified'
+    assert row == original
+    for changes in ({'error_sha256': '0'*64}, {'stage': 'upload'}, {'category':'unclassified'}):
+        assert classified_hold_reason({**row,'failure_classification':{**evidence,**changes}}) is None
+    for stage in ('research', 'voice_and_visuals', 'render', 'upload'):
+        other = classify_failure(SpendBlocked(code), stage)
+        assert classified_hold_reason({'error':code,'failure_stage':stage,'failure_classification':other}) is None
 
 
 OPTIONS = {'mode': 'production', 'format': 'shorts', 'quality_threshold': 86, 'visual_mix': 'real_first'}
