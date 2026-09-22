@@ -485,6 +485,10 @@ def _generate(prepared, purpose, observer):
         ledger = PrepaidAudioLedger(foundation)
     else:
         ledger = IncludedRouterLedger(foundation)
+    from app.services import commissioning_reasoning
+    alternative = commissioning_reasoning.generate(prepared, purpose, ledger, foundation, context)
+    if alternative is not commissioning_reasoning.UNHANDLED:
+        return alternative
     try:
         if purpose == 'visual_review' and type(ledger) is IncludedRouterLedger:
             from app.services.included_visual_completion import cached_completed_review
@@ -584,6 +588,17 @@ def _current_source_audit(package):
             and audit.get('validation_findings') == [])
 
 
+def observed_audio_provider():
+    from app.services import commissioning_reasoning
+    observed = _LAST_OBSERVED.get()
+    if (commissioning_reasoning.selected() and type(observed) is dict
+            and observed.get('purpose') in {'blind_asr', 'prosody'}
+            and observed.get('evidence', {}).get('provider') == 'gemini'
+            and observed['evidence'].get('model') == commissioning_reasoning.MODEL):
+        return 'gemini'
+    return 'abacus_router'
+
+
 def generate_included_audio(audio_bytes, *, purpose, language, expected_narration=None):
     from app.config import settings
     from app.services import abacus_router_audio_adapter as audio, audio_qc
@@ -616,8 +631,12 @@ def preflight_production(channel_id, *, kind):
     audio_ledger = PrepaidAudioLedger(foundation)
     credits = CreditLedger(foundation.client, foundation=foundation, clock=foundation.clock)
     with foundation.client.pipeline() as pipe:
-        capacity = ledger.check_capacity(pipe, channel_id, minimum_requests=8)
-        audio_ledger.check_capacity(pipe, channel_id, minimum_requests=4)
+        from app.services import commissioning_reasoning
+        if commissioning_reasoning.selected():
+            capacity = commissioning_reasoning.check_capacity(pipe, foundation, channel_id, minimum_requests=12)
+        else:
+            capacity = ledger.check_capacity(pipe, channel_id, minimum_requests=8)
+            audio_ledger.check_capacity(pipe, channel_id, minimum_requests=4)
         credits._watch(pipe)
         policy, state, _, _ = credits._read(pipe, foundation.clock())
         from app.services.production_credit_funding import credit_funding_summary

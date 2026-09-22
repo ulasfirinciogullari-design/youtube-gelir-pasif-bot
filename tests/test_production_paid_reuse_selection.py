@@ -235,7 +235,7 @@ def test_bounded_free_stock_rescue_and_exact_review_are_not_skipped_for_recovery
                          and isinstance(node.test, ast.Name) and node.test.id == 'rescued_final_scenes')
     calls = []
     runtime = _runtime(
-        rejected_final_scenes=[3], final_runway_repair_scenes=[],
+        rejected_final_scenes=[3], final_runway_repair_scenes=[], round_repair_scenes=[],
         final_reviews={3: {'score': 40}}, provider_outage_stock_scenes=set(),
         stock_quality_fallback_scenes=set(), terminal_manual_qa_old_best={},
         seen_ids=set(), work=Path('/tmp/mock-stock-rescue'), credits=[],

@@ -804,7 +804,7 @@ class RunwayPromptTests(unittest.TestCase):
         initial_loop = source.index('for candidate in selected_runway:')
         repair_preflight = source.index(
             '_preflight_runway_candidates_before_paid(\n'
-            '            [int(index)'
+            '                [int(index)'
         )
         repair_loop = source.index(
             'for scene_idx in final_runway_repair_candidates:'

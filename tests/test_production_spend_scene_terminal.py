@@ -49,7 +49,7 @@ def _assigned(node, name):
 def _worker(case, phase):
     """Keep both real try bodies/handlers intact, including their surrounding loop."""
     iterator = 'selected_runway' if phase == 'initial_generation' else 'final_runway_repair_candidates'
-    loop = next(node for node in OUTER.body
+    loop = next(node for node in ast.walk(OUTER)
                 if isinstance(node, ast.For) and isinstance(node.iter, ast.Name)
                 and node.iter.id == iterator)
     if phase == 'initial_generation':
@@ -60,10 +60,10 @@ def _worker(case, phase):
         between = next(node for node in OUTER.body if _assigned(node, 'final_review_visuals'))
         body = [loop, between, critic]
     else:
-        rescued = next(node for node in OUTER.body
+        rescued = next(node for node in ast.walk(OUTER)
                        if isinstance(node, ast.AnnAssign)
                        and isinstance(node.target, ast.Name) and node.target.id == 'rescued_final_scenes')
-        rescue = next(node for node in OUTER.body
+        rescue = next(node for node in ast.walk(OUTER)
                       if isinstance(node, ast.If) and isinstance(node.test, ast.Name)
                       and node.test.id == 'rescued_final_scenes')
         critic = next(node for node in rescue.body if _assigned(node, 'rescue_qc'))
@@ -74,6 +74,8 @@ runway_attempts = 0
 media_started = True
 runway_scenes_used = 0
 final_runway_repair_attempts = 0
+repair_round = 1
+round_repair_scenes = []
 omni_continuity_reference_image_path = None
 omni_continuity_anchor_scene_idx = None
 ''').body

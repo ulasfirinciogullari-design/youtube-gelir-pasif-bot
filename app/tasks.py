@@ -7220,334 +7220,365 @@ def run_video_pipeline(
         final_runway_repair_candidate_indices = set(
             final_runway_repair_candidates
         )
-        _preflight_runway_candidates_before_paid(
-            [int(index) for index in final_runway_repair_candidates],
-            scene_durations,
-            approved_package,
-        )
-        if final_runway_repair_candidates:
-            set_stage(
-                self,
-                task_id,
-                'final_visual_qc_ai_repair',
-                71,
-                'Reddedilen özgün sahnelerde hareket kanıtı hedefli olarak yenileniyor.',
-        )
-        for scene_idx in final_runway_repair_candidates:
-            review = final_reviews.get(scene_idx) or {}
-            existing_specs = list(scene_visuals[scene_idx])
-            old_best = (
-                terminal_manual_qa_old_best.get(scene_idx)
-                or (_visual_path(existing_specs[0]) if existing_specs else '')
+        # Keep accepted footage and voice while correcting only rejected scenes.
+        # Every extra round needs active commissioning authority and remaining
+        # durable create slots; unknown provider outcomes still stop immediately.
+        for repair_round in range(1, 7):
+            round_repair_scenes: list[int] = []
+            final_runway_repair_candidate_indices = set(final_runway_repair_candidates)
+            _preflight_runway_candidates_before_paid(
+                [int(index) for index in final_runway_repair_candidates],
+                scene_durations,
+                approved_package,
             )
-            repair_prompt = _runway_prompt_for_scene(
-                scenes[scene_idx],
-                review,
-                generation_aspect_ratio,
+            if final_runway_repair_candidates:
+                set_stage(
+                    self,
+                    task_id,
+                    'final_visual_qc_ai_repair',
+                    71,
+                    'Reddedilen özgün sahnelerde hareket kanıtı hedefli olarak yenileniyor.',
             )
-            if not repair_prompt:
-                continue
-            final_runway_repair_attempts += 1
-            runway_attempts = _reserve_paid_create_slot(
-                runway_attempts,
-                total_paid_create_cap,
-                task_id=task_id,
-            )
-            try:
-                generation_seconds = _runway_generation_seconds(
-                    scene_durations[scene_idx]
+            for scene_idx in final_runway_repair_candidates:
+                review = final_reviews.get(scene_idx) or {}
+                existing_specs = list(scene_visuals[scene_idx])
+                old_best = (
+                    terminal_manual_qa_old_best.get(scene_idx)
+                    or (_visual_path(existing_specs[0]) if existing_specs else '')
                 )
-                scene_continuity_reference = None
-                if (
-                    omni_continuity_reference_image_path is not None
-                    and omni_continuity_anchor_scene_idx is not None
-                    and _omni_continuity_reference_applies(
-                        scenes[omni_continuity_anchor_scene_idx],
-                        scenes[scene_idx],
+                repair_prompt = _runway_prompt_for_scene(
+                    scenes[scene_idx],
+                    review,
+                    generation_aspect_ratio,
+                )
+                if not repair_prompt:
+                    continue
+                if repair_round > 1:
+                    repair_prompt += (f'\nFresh correction candidate, revision {repair_round}. '
+                        'Preserve the required action and remove the defects identified above.')
+                final_runway_repair_attempts += 1
+                runway_attempts = _reserve_paid_create_slot(
+                    runway_attempts,
+                    total_paid_create_cap,
+                    task_id=task_id,
+                )
+                try:
+                    generation_seconds = _runway_generation_seconds(
+                        scene_durations[scene_idx]
                     )
-                ):
-                    scene_continuity_reference = (
-                        omni_continuity_reference_image_path
-                    )
-                with spending_scene(video_scene_budget, scene_idx):
-                    repair_scene = generate_scene(
-                        repair_prompt,
-                        duration=generation_seconds,
-                        allow_image_motion=(
-                            total_paid_create_cap is None
-                            and is_private_image_motion_preview
-                            and scene_idx not in image_motion_submission_scenes
-                        ),
-                        image_prompt=_image_motion_prompt_for_scene(
+                    scene_continuity_reference = None
+                    if (
+                        omni_continuity_reference_image_path is not None
+                        and omni_continuity_anchor_scene_idx is not None
+                        and _omni_continuity_reference_applies(
+                            scenes[omni_continuity_anchor_scene_idx],
                             scenes[scene_idx],
-                            review,
-                            generation_aspect_ratio,
-                        ),
-                        prefer_gemini_omni=(
-                            is_private_ai_first_omni_preview
-                        ),
-                        continuity_reference_image=(
-                            scene_continuity_reference
-                        ),
-                        aspect_ratio=generation_aspect_ratio,
-                        allow_paid_terminal_resubmit=(
-                            total_paid_create_cap is None
-                        ),
+                        )
+                    ):
+                        scene_continuity_reference = (
+                            omni_continuity_reference_image_path
+                        )
+                    with spending_scene(video_scene_budget, scene_idx):
+                        repair_scene = generate_scene(
+                            repair_prompt,
+                            duration=generation_seconds,
+                            allow_image_motion=(
+                                total_paid_create_cap is None
+                                and is_private_image_motion_preview
+                                and scene_idx not in image_motion_submission_scenes
+                            ),
+                            image_prompt=_image_motion_prompt_for_scene(
+                                scenes[scene_idx],
+                                review,
+                                generation_aspect_ratio,
+                            ),
+                            prefer_gemini_omni=(
+                                is_private_ai_first_omni_preview
+                            ),
+                            continuity_reference_image=(
+                                scene_continuity_reference
+                            ),
+                            aspect_ratio=generation_aspect_ratio,
+                            allow_paid_terminal_resubmit=(
+                                total_paid_create_cap is None
+                            ),
+                        )
+                    if repair_scene.get('provider') == 'gemini_image_motion':
+                        image_motion_submission_scenes.add(scene_idx)
+                    if is_private_ai_first_omni_preview:
+                        omni_unsafe_submission_scenes.add(scene_idx)
+                    repair_path = work / (
+                        f'runway_repair_s{scene_idx:02d}.mp4' if repair_round == 1
+                        else f'runway_repair_r{repair_round}_s{scene_idx:02d}.mp4'
                     )
-                if repair_scene.get('provider') == 'gemini_image_motion':
-                    image_motion_submission_scenes.add(scene_idx)
-                if is_private_ai_first_omni_preview:
-                    omni_unsafe_submission_scenes.add(scene_idx)
-                repair_path = work / f'runway_repair_s{scene_idx:02d}.mp4'
-                download_generated_scene(
-                    repair_scene,
-                    repair_path,
-                )
-                if (
-                    is_private_ai_first_omni_preview
-                    and omni_continuity_reference_image_path is None
-                    and _omni_continuity_reference_needed(
-                        scene_idx,
-                        scenes,
-                        final_runway_repair_candidate_indices,
-                    )
-                ):
-                    continuity_path = work / 'omni_continuity_reference.jpg'
-                    create_gemini_omni_continuity_reference(
+                    download_generated_scene(
+                        repair_scene,
                         repair_path,
-                        continuity_path,
                     )
-                    omni_continuity_reference_image_path = continuity_path
-                    omni_continuity_anchor_scene_idx = scene_idx
-                repair_spec = _generated_visual_spec(
-                    repair_path,
-                    provider=str(repair_scene['provider']),
-                    provider_attempts=int(
-                        repair_scene.get('provider_attempts') or 1
-                    ),
-                )
-                if repair_scene.get('synthetic_motion') is True:
-                    repair_spec.update({
-                        'synthetic_motion_only': True,
+                    if (
+                        is_private_ai_first_omni_preview
+                        and omni_continuity_reference_image_path is None
+                        and _omni_continuity_reference_needed(
+                            scene_idx,
+                            scenes,
+                            final_runway_repair_candidate_indices,
+                        )
+                    ):
+                        continuity_path = work / 'omni_continuity_reference.jpg'
+                        create_gemini_omni_continuity_reference(
+                            repair_path,
+                            continuity_path,
+                        )
+                        omni_continuity_reference_image_path = continuity_path
+                        omni_continuity_anchor_scene_idx = scene_idx
+                    repair_spec = _generated_visual_spec(
+                        repair_path,
+                        provider=str(repair_scene['provider']),
+                        provider_attempts=int(
+                            repair_scene.get('provider_attempts') or 1
+                        ),
+                    )
+                    if repair_scene.get('synthetic_motion') is True:
+                        repair_spec.update({
+                            'synthetic_motion_only': True,
+                            'motion_recipe_version': repair_scene.get(
+                                'motion_recipe_version'
+                            ),
+                            'source_media_type': 'image',
+                        })
+                    scene_visuals[scene_idx] = (
+                        [repair_spec, *existing_specs][:3] if repair_round == 1 else [repair_spec]
+                    )
+                    generated_checkpoint_specs.setdefault(
+                        scene_idx,
+                        [],
+                    ).append(dict(repair_spec))
+                    _checkpoint_generated_asset(
+                        task_id, work, package, voice_result, repair_spec, scene_idx,
+                        'final_repair', options, duration_minutes, generated_asset_candidate_journal,
+                    )
+                    round_repair_scenes.append(scene_idx)
+                    if scene_idx not in final_runway_repair_scenes:
+                        final_runway_repair_scenes.append(scene_idx)
+                    generated_video_provider_records.append({
+                        'stage': 'final_repair',
+                        'scene_index': scene_idx,
+                        'provider': str(repair_scene['provider']),
+                        'provider_attempts': int(
+                            repair_scene.get('provider_attempts') or 1
+                        ),
+                        'quota_fallback_from': repair_scene.get(
+                            'quota_fallback_from'
+                        ),
+                        'quota_fallback_chain': repair_scene.get(
+                            'quota_fallback_chain'
+                        ),
+                        'provider_fallback_from': repair_scene.get(
+                            'provider_fallback_from'
+                        ),
+                        'provider_request_id': repair_scene.get(
+                            'provider_request_id'
+                        ),
+                        'fallback_reason': repair_scene.get('fallback_reason'),
+                        'source_media_type': repair_scene.get(
+                            'source_media_type'
+                        ),
+                        'synthetic_motion': repair_scene.get('synthetic_motion'),
                         'motion_recipe_version': repair_scene.get(
                             'motion_recipe_version'
                         ),
-                        'source_media_type': 'image',
+                        'image_model': repair_scene.get('image_model'),
+                        'image_sha256': repair_scene.get('image_sha256'),
+                        'prompt_sha256': repair_scene.get('prompt_sha256'),
                     })
-                scene_visuals[scene_idx] = [repair_spec, *existing_specs][:3]
-                generated_checkpoint_specs.setdefault(
-                    scene_idx,
-                    [],
-                ).append(dict(repair_spec))
-                _checkpoint_generated_asset(
-                    task_id, work, package, voice_result, repair_spec, scene_idx,
-                    'final_repair', options, duration_minutes, generated_asset_candidate_journal,
-                )
-                final_runway_repair_scenes.append(scene_idx)
-                generated_video_provider_records.append({
-                    'stage': 'final_repair',
-                    'scene_index': scene_idx,
-                    'provider': str(repair_scene['provider']),
-                    'provider_attempts': int(
-                        repair_scene.get('provider_attempts') or 1
-                    ),
-                    'quota_fallback_from': repair_scene.get(
-                        'quota_fallback_from'
-                    ),
-                    'quota_fallback_chain': repair_scene.get(
-                        'quota_fallback_chain'
-                    ),
-                    'provider_fallback_from': repair_scene.get(
-                        'provider_fallback_from'
-                    ),
-                    'provider_request_id': repair_scene.get(
-                        'provider_request_id'
-                    ),
-                    'fallback_reason': repair_scene.get('fallback_reason'),
-                    'source_media_type': repair_scene.get(
-                        'source_media_type'
-                    ),
-                    'synthetic_motion': repair_scene.get('synthetic_motion'),
-                    'motion_recipe_version': repair_scene.get(
-                        'motion_recipe_version'
-                    ),
-                    'image_model': repair_scene.get('image_model'),
-                    'image_sha256': repair_scene.get('image_sha256'),
-                    'prompt_sha256': repair_scene.get('prompt_sha256'),
-                })
-                omni_unsafe_submission_scenes.discard(scene_idx)
-                visual_replacements.append({
-                    'scene_index': scene_idx,
-                    'score': int(review.get('score', 0)),
-                    'old_best': old_best,
-                    'replacement_count': 1,
-                    'stage': 'final_visual_qc_ai_repair',
-                })
-            except SpendBlocked:
-                raise
-            except Exception as exc:
-                if isinstance(exc, GeminiOmniContinuityReferenceError):
+                    omni_unsafe_submission_scenes.discard(scene_idx)
+                    visual_replacements.append({
+                        'scene_index': scene_idx,
+                        'score': int(review.get('score', 0)),
+                        'old_best': old_best,
+                        'replacement_count': 1,
+                        'stage': 'final_visual_qc_ai_repair',
+                    })
+                except SpendBlocked:
                     raise
-                if isinstance(exc, GeminiImageAttemptedError):
-                    image_motion_submission_scenes.add(scene_idx)
-                if isinstance(exc, GeminiOmniTerminalError):
-                    omni_unsafe_submission_scenes.add(scene_idx)
-                final_runway_repair_failures.append(scene_idx)
-                runway_failure_diagnostics.append(
-                    _runway_failure_diagnostic(
-                        'final_repair',
-                        scene_idx,
-                        exc,
+                except Exception as exc:
+                    if isinstance(exc, GeminiOmniContinuityReferenceError):
+                        raise
+                    if isinstance(exc, GeminiImageAttemptedError):
+                        image_motion_submission_scenes.add(scene_idx)
+                    if isinstance(exc, GeminiOmniTerminalError):
+                        omni_unsafe_submission_scenes.add(scene_idx)
+                    final_runway_repair_failures.append(scene_idx)
+                    runway_failure_diagnostics.append(
+                        _runway_failure_diagnostic(
+                            'final_repair',
+                            scene_idx,
+                            exc,
+                        )
                     )
-                )
 
-        # Give every still-rejected clip one bounded free stock rescue. AI
-        # scenes already changed above go straight back to exact-clip QC.
-        rescued_final_scenes: list[int] = list(final_runway_repair_scenes)
-        for scene_idx in rejected_final_scenes:
-            if recovered_generated_media and recovered_generated_media.get('version') in (4, 5, 6):
-                # No stock substitution or undeclared second generation after
-                # a failed exact V4 clip; retain the normal final-QA failure.
-                continue
-            if scene_idx in final_runway_repair_scenes:
-                continue
-            review = final_reviews.get(scene_idx) or {}
-            retry_queries = _final_pexels_rescue_queries(
-                scenes[scene_idx],
-                review,
-                forced_stock_fallback=(
-                    scene_idx in provider_outage_stock_scenes
-                    or scene_idx in stock_quality_fallback_scenes
-                ),
-            )
-            old_best = (
-                terminal_manual_qa_old_best.get(scene_idx)
-                or (
-                    _visual_path(scene_visuals[scene_idx][0])
-                    if scene_visuals[scene_idx]
-                    else ''
-                )
-            )
-            try:
-                replacements = _retry_bad_scene(
-                    scene_idx, retry_queries, seen_ids, work, credits,
-                    file_prefix='final_qc_rescue',
-                    minimum_duration=max(
-                        5.0,
-                        float(scene_durations[scene_idx]) + 0.35,
-                    ),
-                    allow_short_fallback=not is_bounded_short_preview,
-                    tolerate_pexels_failure=(
+            # Give every still-rejected clip one bounded free stock rescue. AI
+            # scenes already changed above go straight back to exact-clip QC.
+            rescued_final_scenes: list[int] = list(round_repair_scenes)
+            for scene_idx in rejected_final_scenes:
+                if recovered_generated_media and recovered_generated_media.get('version') in (4, 5, 6):
+                    # No stock substitution or undeclared second generation after
+                    # a failed exact V4 clip; retain the normal final-QA failure.
+                    continue
+                if scene_idx in round_repair_scenes:
+                    continue
+                review = final_reviews.get(scene_idx) or {}
+                retry_queries = _final_pexels_rescue_queries(
+                    scenes[scene_idx],
+                    review,
+                    forced_stock_fallback=(
                         scene_idx in provider_outage_stock_scenes
                         or scene_idx in stock_quality_fallback_scenes
                     ),
-                    orientation=pexels_orientation,
-                    active_scene_visuals=stock_reuse_visuals,
                 )
-            except httpx.HTTPStatusError as exc:
-                # This is optional rescue, not evidence that a rejected clip
-                # passed. Stop this run's stock searches without retrying an
-                # access failure; preserve the real reviews and reach the
-                # ordinary rejection/checkpoint/workprint branch below.
-                try:
-                    update_job(task_id, final_stock_rescue_unavailable={
-                        'provider': 'pexels',
-                        'scene_index': scene_idx,
-                        'status': 'unavailable',
-                        'http_status': exc.response.status_code,
-                    })
-                except Exception:
-                    pass  # Diagnostic storage cannot erase the QA outcome.
-                break
-            if not replacements:
-                continue
-            existing_specs = list(scene_visuals[scene_idx])
-            if scene_idx in runway_generated_scenes and existing_specs:
-                scene_visuals[scene_idx] = [existing_specs[0], *replacements, *existing_specs[1:]][:3]
-            else:
-                scene_visuals[scene_idx] = [*replacements, *existing_specs][:3]
-            rescued_final_scenes.append(scene_idx)
-            visual_replacements.append({
-                'scene_index': scene_idx,
-                'score': int(review.get('score', 0)),
-                'reason': review.get('reason'),
-                'old_best': old_best,
-                'replacement_count': len(replacements),
-                'stage': 'final_visual_qc_rescue',
-            })
-
-        if rescued_final_scenes:
-            set_stage(self, task_id, 'final_visual_qc_rescue', 74, 'Reddedilen sahneler daha kesin görüntülerle son kez denetleniyor.')
-            rescue_qc = review_scene_visuals(
-                [scenes[idx] for idx in rescued_final_scenes],
-                [scene_visuals[idx] for idx in rescued_final_scenes],
-                work / 'final_visual_qc_rescue',
-                len(rescued_final_scenes),
-                topic=topic,
-                story_scenes=scenes,
-                content_style=options.get('content_style', ''),
-                evidence_sources=package.get('sources') or [],
-            )
-            rescue_reviews = {
-                int(r.get('scene_index')): r
-                for r in (rescue_qc.get('reviews') or [])
-                if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
-            }
-            # Preserve the already-approved decisions; only replace the review
-            # for each clip that actually changed during the rescue.
-            for scene_idx in rescued_final_scenes:
-                final_reviews.pop(scene_idx, None)
-            for position, scene_idx in enumerate(rescued_final_scenes):
-                if position not in rescue_reviews:
-                    continue
-                mapped_review = dict(rescue_reviews[position])
-                mapped_review['scene_index'] = scene_idx
-                final_reviews[scene_idx] = mapped_review
-                selected_spec = _reviewed_visual_spec(
-                    scene_visuals[scene_idx],
-                    mapped_review,
-                )
-                rescued_manual_qa_pass = _manual_qa_preview_passes(
-                    options,
-                    duration_minutes,
-                    scenes[scene_idx],
-                    mapped_review,
-                    selected_spec,
-                )
-                if (
-                    int(mapped_review.get('score', 0)) >= quality_threshold
-                    or rescued_manual_qa_pass
-                ):
-                    _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
-                    mapped_review = dict(mapped_review)
-                    mapped_review['best_candidate_index'] = 0
-                    final_reviews[scene_idx] = mapped_review
-                    selected_spec = (
-                        scene_visuals[scene_idx][0]
+                old_best = (
+                    terminal_manual_qa_old_best.get(scene_idx)
+                    or (
+                        _visual_path(scene_visuals[scene_idx][0])
                         if scene_visuals[scene_idx]
-                        else None
+                        else ''
                     )
-                if rescued_manual_qa_pass:
-                    register_manual_qa_preview(
-                        scene_idx,
+                )
+                try:
+                    replacements = _retry_bad_scene(
+                        scene_idx, retry_queries, seen_ids, work, credits,
+                        file_prefix='final_qc_rescue',
+                        minimum_duration=max(
+                            5.0,
+                            float(scene_durations[scene_idx]) + 0.35,
+                        ),
+                        allow_short_fallback=not is_bounded_short_preview,
+                        tolerate_pexels_failure=(
+                            scene_idx in provider_outage_stock_scenes
+                            or scene_idx in stock_quality_fallback_scenes
+                        ),
+                        orientation=pexels_orientation,
+                        active_scene_visuals=stock_reuse_visuals,
+                    )
+                except httpx.HTTPStatusError as exc:
+                    # This is optional rescue, not evidence that a rejected clip
+                    # passed. Stop this run's stock searches without retrying an
+                    # access failure; preserve the real reviews and reach the
+                    # ordinary rejection/checkpoint/workprint branch below.
+                    try:
+                        update_job(task_id, final_stock_rescue_unavailable={
+                            'provider': 'pexels',
+                            'scene_index': scene_idx,
+                            'status': 'unavailable',
+                            'http_status': exc.response.status_code,
+                        })
+                    except Exception:
+                        pass  # Diagnostic storage cannot erase the QA outcome.
+                    break
+                if not replacements:
+                    continue
+                existing_specs = list(scene_visuals[scene_idx])
+                if scene_idx in runway_generated_scenes and existing_specs:
+                    scene_visuals[scene_idx] = [existing_specs[0], *replacements, *existing_specs[1:]][:3]
+                else:
+                    scene_visuals[scene_idx] = [*replacements, *existing_specs][:3]
+                rescued_final_scenes.append(scene_idx)
+                visual_replacements.append({
+                    'scene_index': scene_idx,
+                    'score': int(review.get('score', 0)),
+                    'reason': review.get('reason'),
+                    'old_best': old_best,
+                    'replacement_count': len(replacements),
+                    'stage': 'final_visual_qc_rescue',
+                })
+
+            if rescued_final_scenes:
+                set_stage(self, task_id, 'final_visual_qc_rescue', 74, 'Reddedilen sahneler daha kesin görüntülerle son kez denetleniyor.')
+                rescue_qc = review_scene_visuals(
+                    [scenes[idx] for idx in rescued_final_scenes],
+                    [scene_visuals[idx] for idx in rescued_final_scenes],
+                    (work / 'final_visual_qc_rescue' if repair_round == 1
+                     else work / f'final_visual_qc_rescue_r{repair_round}'),
+                    len(rescued_final_scenes),
+                    topic=topic,
+                    story_scenes=scenes,
+                    content_style=options.get('content_style', ''),
+                    evidence_sources=package.get('sources') or [],
+                )
+                rescue_reviews = {
+                    int(r.get('scene_index')): r
+                    for r in (rescue_qc.get('reviews') or [])
+                    if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
+                }
+                # Preserve the already-approved decisions; only replace the review
+                # for each clip that actually changed during the rescue.
+                for scene_idx in rescued_final_scenes:
+                    final_reviews.pop(scene_idx, None)
+                for position, scene_idx in enumerate(rescued_final_scenes):
+                    if position not in rescue_reviews:
+                        continue
+                    mapped_review = dict(rescue_reviews[position])
+                    mapped_review['scene_index'] = scene_idx
+                    final_reviews[scene_idx] = mapped_review
+                    selected_spec = _reviewed_visual_spec(
+                        scene_visuals[scene_idx],
+                        mapped_review,
+                    )
+                    rescued_manual_qa_pass = _manual_qa_preview_passes(
+                        options,
+                        duration_minutes,
+                        scenes[scene_idx],
                         mapped_review,
                         selected_spec,
                     )
-            final_visual_qc = {
-                'reviews': [final_reviews[idx] for idx in sorted(final_reviews)],
-                'moment_fractions': rescue_qc.get('moment_fractions'),
-            }
-            rejected_final_scenes = [
-                idx for idx in range(min(len(scenes), len(scene_visuals)))
-                if (
-                    idx not in final_reviews
-                    or (
-                        int(final_reviews[idx].get('score', 0))
-                        < quality_threshold
-                        and idx not in manual_qa_preview_scenes
+                    if (
+                        int(mapped_review.get('score', 0)) >= quality_threshold
+                        or rescued_manual_qa_pass
+                    ):
+                        _apply_visual_review(scene_visuals, scene_idx, mapped_review, default_fraction=0.35)
+                        mapped_review = dict(mapped_review)
+                        mapped_review['best_candidate_index'] = 0
+                        final_reviews[scene_idx] = mapped_review
+                        selected_spec = (
+                            scene_visuals[scene_idx][0]
+                            if scene_visuals[scene_idx]
+                            else None
+                        )
+                    if rescued_manual_qa_pass:
+                        register_manual_qa_preview(
+                            scene_idx,
+                            mapped_review,
+                            selected_spec,
+                        )
+                final_visual_qc = {
+                    'reviews': [final_reviews[idx] for idx in sorted(final_reviews)],
+                    'moment_fractions': rescue_qc.get('moment_fractions'),
+                }
+                rejected_final_scenes = [
+                    idx for idx in range(min(len(scenes), len(scene_visuals)))
+                    if (
+                        idx not in final_reviews
+                        or (
+                            int(final_reviews[idx].get('score', 0))
+                            < quality_threshold
+                            and idx not in manual_qa_preview_scenes
+                        )
                     )
-                )
-            ]
+                ]
+
+            if recovered_generated_media or not rejected_final_scenes:
+                break
+            additional_repairs = completion_repairs(
+                options, duration_minutes, scenes, rejected_final_scenes, final_reviews,
+                total_paid_create_cap, runway_attempts,
+            )
+            # A known provider failure can use the stock rescue above, but must
+            # not cause another paid attempt on that scene in this same job.
+            final_runway_repair_candidates = [index for index in (additional_repairs or [])
+                if index not in final_runway_repair_failures
+                and index not in omni_unsafe_submission_scenes]
+            if not final_runway_repair_candidates:
+                break
 
         visual_qc['final_reviews'] = final_visual_qc.get('reviews') or []
         if rejected_final_scenes:

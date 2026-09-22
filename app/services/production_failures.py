@@ -22,6 +22,9 @@ _CONTENT_CODES = {
     'render_quality_exhausted': ('render_rejected', frozenset({'render'})),
 }
 _REVIEW_CODES = frozenset({'included_router_response_unverified',
+    'commissioning_reasoning_response_unverified', 'commissioning_reasoning_previous_outcome_unknown',
+    'commissioning_reasoning_outcome_unknown', 'commissioning_reasoning_legacy_outcome_unknown',
+    'commissioning_reasoning_reservation_uncertain', 'commissioning_reasoning_capture_uncertain',
     'included_router_previous_outcome_unknown', 'prepaid_audio_response_unverified',
     'prepaid_audio_previous_outcome_unknown', 'included_stock_pool_unverified',
     'included_visual_completion_unverified', 'included_router_settlement_uncertain',

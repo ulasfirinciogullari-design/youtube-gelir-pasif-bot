@@ -697,12 +697,12 @@ def verify_audio_prosody(
         raise ValueError('Audio prosody language is unsupported')
     if getattr(settings, 'studio_abacus_included_production', False) is True:
         from app.services.abacus_router_audio_adapter import read_original_mp3
-        from app.services.production_included_router import generate_included_audio
+        from app.services.production_included_router import generate_included_audio, observed_audio_provider
         output = generate_included_audio(read_original_mp3(audio_path, allow_natural_short=True), purpose='prosody',
             language=normalized_language, expected_narration=expected_narration)
         validated = _validate_prosody_review(output, expected_narration,
             audio_duration_seconds=audio_duration_seconds, transcript_evidence=transcript_evidence,
-            language=normalized_language, provider='abacus_router')
+            language=normalized_language, provider=observed_audio_provider())
         if validated is None:
             raise AudioQCError('Included audio prosody evidence did not validate')
         return validated
@@ -2827,7 +2827,7 @@ def verify_audio_narration(
     """Transcribe an audio master and compare it with its spoken contract."""
     if getattr(settings, 'studio_abacus_included_production', False) is True:
         from app.services.abacus_router_audio_adapter import read_original_mp3
-        from app.services.production_included_router import generate_included_audio
+        from app.services.production_included_router import generate_included_audio, observed_audio_provider
         normalized_language = normalize_supported_language(language)
         if normalized_language not in {'tr', 'en'}:
             raise AudioQCError('Included audio review language is unsupported')
@@ -2887,8 +2887,8 @@ def verify_audio_narration(
         output = generate_included_audio(read_original_mp3(audio_path), purpose='blind_asr',
             language=normalized_language)
         return _require_word_timing_evidence(compare_transcript(expected_narration, output['text'],
-            words=output['words'], language_code=output['language'], provider='abacus_router',
-            comparison_language=normalized_language), 'Abacus router')
+            words=output['words'], language_code=output['language'], provider=observed_audio_provider(),
+            comparison_language=normalized_language), 'Independent recognizer')
     openai_api_key = str(getattr(settings, 'openai_api_key', '') or '')
     gemini_api_key = str(getattr(settings, 'gemini_api_key', '') or '')
     elevenlabs_api_key = str(
