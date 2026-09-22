@@ -94,3 +94,15 @@ def test_rejected_create_must_be_fully_known_and_bound_before_wait_or_enqueue(ca
     queue = Mock()
     with pytest.raises(Exception): recovery.schedule(source, queue)
     queue.assert_not_called()
+
+
+def test_web_can_display_captured_wait_but_cannot_admit_with_another_credential(case, monkeypatch):
+    source, root, journal = captured_quota(case, monkeypatch)
+    before = {k: case.client.dump(k) for k in case.client.scan_iter()}
+    monkeypatch.setattr(video.settings, 'gemini_api_key', 'web-service-key')
+    waiting = completion.deferred_quota(case.client, source, require_current_credential=False)
+    assert waiting['retry_at'] == '2026-09-23T07:05:00+00:00'
+    queue = Mock()
+    with pytest.raises(plan.ContentPlanError): recovery.schedule(source, queue)
+    queue.assert_not_called()
+    assert all(case.client.dump(k) == v for k, v in before.items())

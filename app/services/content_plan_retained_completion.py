@@ -114,12 +114,15 @@ def _root_key(root, proof):
             else REVIEW_ROOT if proof.get('review_of') else ROOT) + root
 
 
-def deferred_quota(client, source):
+def deferred_quota(client, source, *, require_current_credential=True):
     """One captured rejected create can wait for the next Pacific daily reset.
 
     The provider does not identify which quota was exhausted. Waiting through
     the daily boundary is a conservative retry time, not a promise of capacity.
     No accepted or ambiguous operation can authorize this new request.
+    Displaying a historical wait does not require the web service to hold the
+    worker's generation credential. Every scheduling/execution call keeps the
+    default credential check; this flag never changes a dispatch proof.
     """
     if not (source.get('state') == 'FAILURE' and source.get('failure_stage') == 'final_visual_qc_rescue'
             and str(source.get('error') or '').startswith(VISUAL_ERROR) and source.get('parent_id')):
@@ -145,7 +148,8 @@ def deferred_quota(client, source):
             continue  # The started child's durable journal retains its ordinary no-replay handling.
         plan._require(identity == video._sha(video._raw(descriptor).encode())
             and descriptor.get('model') == video.MODEL
-            and descriptor.get('credential_sha256') == video._sha(('gemini\0' + video.settings.gemini_api_key).encode())
+            and (not require_current_credential or descriptor.get('credential_sha256')
+                 == video._sha(('gemini\0' + video.settings.gemini_api_key).encode()))
             and row.get('result') is None and row.get('create') and video.quota_rejected(row['create']))
         instant = datetime.fromisoformat(row['create']['observed_at'])
         plan._require(datetime.fromisoformat(source['created_at']) <= instant
