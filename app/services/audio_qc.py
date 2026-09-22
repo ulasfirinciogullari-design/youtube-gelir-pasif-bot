@@ -1351,8 +1351,12 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
     while index < len(tokens):
         century = _EN_YEAR_CENTURIES.get(tokens[index])
         from app.services.audio_english_amounts import currency_amount_unit, measurement_amount_unit
-        amount = currency_amount_unit(tokens, matches, value, index,
-                                      _english_small_cardinal, _EN_NUMBER_WORDS)
+        from app.services.audio_english_context import contextual_unit
+        amount = contextual_unit(tokens, matches, value, index,
+                                 _english_small_cardinal, _EN_NUMBER_WORDS)
+        if amount is None:
+            amount = currency_amount_unit(tokens, matches, value, index,
+                                          _english_small_cardinal, _EN_NUMBER_WORDS)
         if amount is None:
             amount = measurement_amount_unit(tokens, matches, value, index,
                                              _english_small_cardinal, _EN_NUMBER_WORDS)
