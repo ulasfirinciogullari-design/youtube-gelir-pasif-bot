@@ -30,6 +30,14 @@ _SCENE = ContextVar('commissioning_video_scene', default=None)
 _MAX_RESPONSE = 2 * 1024 * 1024
 
 
+class CommissionedVideoUnavailable(RuntimeError):
+    """A durably observed completed server failure; the paid request stays used.
+
+    The ordinary scene handler may review stock alternatives. This is never a
+    retry permit, an unknown-outcome classification or approval of any footage.
+    """
+
+
 def _require(value, code='commissioning_video_unverified'):
     if not value:
         raise SpendBlocked(code)
@@ -207,6 +215,14 @@ def _read_response(response):
 
 def _result(payload):
     from app.services.runway import _GEMINI_VIDEO_HOSTS
+    error = payload.get('error')
+    if (payload.get('done') is True and type(error) is dict
+            and type(error.get('code')) is int and error['code'] == 13
+            and not payload.get('response')):
+        # The actual provider completed an accepted operation with INTERNAL.
+        # There is no returned clip to approve and no uncertain POST to replay.
+        # Let the existing final stock rescue and full QA run for this scene.
+        raise CommissionedVideoUnavailable('commissioned_video_completed_server_failure')
     _require(payload.get('done') is True and not payload.get('error'),
              'commissioning_video_generation_failed')
     samples = payload.get('response', {}).get('generateVideoResponse', {}).get('generatedSamples', [])
@@ -272,7 +288,7 @@ def generate_if_commissioned(prompt, seconds, aspect_ratio):
                     return _result(_payload(final))
                 time.sleep(10)
             raise SpendBlocked('commissioning_video_poll_timeout')
-    except SpendBlocked:
+    except (SpendBlocked, CommissionedVideoUnavailable):
         raise
     except Exception:
         raise SpendBlocked('commissioning_video_outcome_unverified') from None

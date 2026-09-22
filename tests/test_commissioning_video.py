@@ -102,6 +102,41 @@ def test_ambiguous_create_remains_reserved_and_is_never_repeated(scene):
     assert len(scene.requests) == 1
 
 
+def test_observed_internal_failure_can_reach_scene_rescue_without_another_create(scene, monkeypatch):
+    original = scene.handler
+    terminal = {'done': True, 'error': {'code': 13,
+        'message': 'Video generation failed due to an internal server issue.'}}
+    def failed(request):
+        if request.method == 'POST': return original(request)
+        scene.requests.append(request)
+        return httpx.Response(200, json=terminal)
+    scene.handler = failed
+    paid_fallback = Mock(side_effect=AssertionError('no other paid provider fallback'))
+    monkeypatch.setattr(runway, 'RunwayML', paid_fallback)
+    for _ in range(2):
+        with pytest.raises(video.CommissionedVideoUnavailable) as error: generate(scene)
+        assert not isinstance(error.value, SpendBlocked)
+    assert [r.method for r in scene.requests] == ['POST', 'GET']
+    journal = json.loads(scene.client.get(video.PREFIX + ROOT))
+    assert len(journal['requests']) == 1
+    row = next(iter(journal['requests'].values()))
+    assert row['create'] is not None and row['result'] is not None
+    assert video._payload(row['result']) == terminal
+    assert row['request']['max_list_cost_micro_usd'] == 300000
+    paid_fallback.assert_not_called()
+
+
+@pytest.mark.parametrize('payload', [
+    {'done': False, 'error': {'code': 13}},
+    {'done': True, 'error': {'code': '13'}},
+    {'done': True, 'error': {'code': True}},
+    {'done': True, 'error': {'code': 403}},
+    {'done': True, 'error': {'code': 13}, 'response': COMPLETE['response']},
+])
+def test_unknown_policy_or_conflicting_results_do_not_enter_stock_rescue(payload):
+    with pytest.raises(SpendBlocked): video._result(payload)
+
+
 def test_poll_failure_resumes_get_without_repeating_create(scene):
     original = scene.handler
     def unavailable(request):
