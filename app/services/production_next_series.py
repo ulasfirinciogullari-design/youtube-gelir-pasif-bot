@@ -157,6 +157,7 @@ def _execution_keys(binding):
 
 
 def _execution_guard(client, binding, profile, channel, state, *, require_execution=True):
+    import app.services.content_plan_handoff as handoff
     dispatch_key, execution_key, credential_key, index_key, epoch_key = _execution_keys(binding)
     record = _object(client.get(dispatch_key))
     if _preparation_slot(binding) > 3:
@@ -170,7 +171,7 @@ def _execution_guard(client, binding, profile, channel, state, *, require_execut
              and profile.get('channel_id') == binding['channel_id']
              and profile.get('profile_revision') == binding['profile_revision']
              and profile.get('release_mode') == 'public' and profile.get('production_enabled') is True
-             and profile.get('auto_publish') is True and not state.get('paused_reason')
+             and profile.get('auto_publish') is True and handoff.allows_preparation(client, profile, channel, state)
              and channel.get('id') == binding['channel_id'] and channel.get('requires_reconnect') is not True
              and record.get('connection_id') == channel.get('connection_id')
              and isinstance(credential, str) and credential and client.sismember(index_key, binding['channel_id'])

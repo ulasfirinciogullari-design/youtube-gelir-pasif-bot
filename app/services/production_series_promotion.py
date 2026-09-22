@@ -226,11 +226,13 @@ def retire_stale_ready_batch(channel_id, expected_profile_revision, expected_att
     state = snapshot.read(CHANNEL_STATE_PREFIX + channel_id, 'hash')
     credential = snapshot.read(OAUTH_CREDENTIAL_PREFIX + channel_id)
     snapshot.read(AUTH_EPOCH_KEY)
+    import app.services.content_plan_handoff as handoff
     _require(profile.get('channel_id') == channel_id and profile.get('profile_revision') == expected_profile_revision
         and profile.get('production_enabled') is True and profile.get('auto_publish') is True
         and profile.get('release_mode') == 'public' and channel.get('id') == channel_id
         and channel.get('requires_reconnect') is not True and isinstance(credential, str) and credential
-        and client.sismember(OAUTH_CHANNEL_INDEX, channel_id) and not state.get('paused_reason')
+        and client.sismember(OAUTH_CHANNEL_INDEX, channel_id)
+        and (not state.get('paused_reason') or handoff.snapshot_completed(snapshot, profile, channel, state))
         and state.get('profile_revision') == expected_profile_revision
         and state.get('connection_id') == channel.get('connection_id'), 'series_authorization_changed')
     pending_key = PENDING_PREFIX + channel_id
@@ -419,6 +421,10 @@ def _publication(snapshot, source, profile, channel, *, public_recovery=False, n
 
 
 def _last_public(snapshot, profile, channel, state, now):
+    import app.services.content_plan_handoff as handoff
+    completed_plan = handoff.snapshot_completed(snapshot, profile, channel, state)
+    if completed_plan is not None:
+        return completed_plan
     original_id = state.get('last_task_id')
     _require(isinstance(original_id, str) and _TASK.fullmatch(original_id))
     original = snapshot.object(JOB_PREFIX + original_id)
@@ -588,11 +594,13 @@ def promote_ready_series(channel_id, expected_profile_revision, expected_attempt
                  and isinstance(profile.get('series_name'), str)
                  and type(profile.get('production_interval_hours')) is int
                  and 6 <= profile['production_interval_hours'] <= 168, 'series_profile_invalid')
+        import app.services.content_plan_handoff as handoff
+        completed_plan = handoff.snapshot_completed(snapshot, profile, channel, state)
         _require(state.get('cursor') == str(len(topics))
                  and state.get('consumed_prefix') == _prefix_digest([t.strip() for t in topics])
                  and state.get('profile_revision') == expected_profile_revision
                  and state.get('connection_id') == channel['connection_id']
-                 and not state.get('active_task_id') and not state.get('paused_reason')
+                 and not state.get('active_task_id') and (not state.get('paused_reason') or completed_plan)
                  and state.get('dispatch_status') == 'finished', 'series_not_exhausted_or_idle')
         next_due = float(state.get('next_due', 'nan'))
         _require(math.isfinite(next_due) and next_due >= 0, 'series_schedule_invalid')
@@ -673,7 +681,8 @@ def promote_ready_series(channel_id, expected_profile_revision, expected_attempt
         _require(snapshot.read(archive_key) is None, 'series_archive_conflict')
         archive = {'version': 1, 'channel_id': channel_id, 'epoch': epoch - 1, 'archived_at': now,
                    'profile': profile, 'state': state, 'pending_batch': pending,
-                   **({'unpublished_proof': proof} if proof.get('completion_kind') == 'held_unpublished'
+                   **({'owner_plan_handoff': proof} if proof.get('completion_kind') == 'owner_plan_complete'
+                      else {'unpublished_proof': proof} if proof.get('completion_kind') == 'held_unpublished'
                       else {'public_proof': proof}),
                    'authorization_epoch_sha256': _digest(authorization_epoch),
                    'credential_sha256': _digest(credential), 'previous_epoch': old_epoch}

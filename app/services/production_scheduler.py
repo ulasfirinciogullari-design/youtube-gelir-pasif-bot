@@ -55,7 +55,8 @@ def _current(client, channel_id):
              and type(profile.get('production_interval_hours')) is int
              and 6 <= profile['production_interval_hours'] <= 168)
     cursor = int(state.get('cursor', '-1'))
-    _require(profile.get('release_mode') == 'public' and not state.get('paused_reason')
+    import app.services.content_plan_handoff as handoff
+    _require(profile.get('release_mode') == 'public' and handoff.allows_preparation(client, profile, channel, state)
              and str(cursor) == state.get('cursor') and 0 <= cursor <= len(topics)
              and state.get('consumed_prefix') == _prefix_digest(topics[:cursor])
              and state.get('profile_revision') == profile['profile_revision']

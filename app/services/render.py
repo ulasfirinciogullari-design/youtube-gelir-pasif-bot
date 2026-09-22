@@ -497,7 +497,9 @@ def normalize_clip(
             # The speed transform already zero-bases timestamps. Rewriting
             # PTS a second time after trim makes FFmpeg drop the last frame
             # for valid fractional targets such as 124/30 seconds.
-            f'fps={FPS}',
+            # Retain the final source frame through fractional EOF rounding.
+            # Exact frame count and single-pass source bounds still apply.
+            f'fps={FPS}:eof_action=pass',
             f'trim=end_frame={segment_frames}',
         ])
         if transition == 'dip' and duration >= 1.2:

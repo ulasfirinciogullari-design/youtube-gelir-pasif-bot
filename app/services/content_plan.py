@@ -283,6 +283,12 @@ def project(plan, *, client=None):
                     recovery = client.get(STATUS + leaf['task_id'])
                     if recovery and _object(recovery).get('state') == 'preparing':
                         row.update(status='running', label='Hazır kayıtlarla onarılıyor')
+                    from app.services.content_plan_retained_completion import deferred_quota
+                    waiting = deferred_quota(client, leaf)
+                    if waiting and not leaf.get('retry_child_task_id'):
+                        when = datetime.fromisoformat(waiting['retry_at']).astimezone(timezone.utc)
+                        row.update(status='waiting', label='Görüntü kotası bekleniyor · ' + when.strftime('%d.%m %H:%M UTC'),
+                                   retry_at=waiting['retry_at'], progress=0)
                 else:
                     row.update(status='running', label='Üretiliyor')
             except (ContentPlanError, ValueError, TypeError):

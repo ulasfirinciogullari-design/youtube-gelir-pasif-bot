@@ -19,10 +19,13 @@ PREFIX = plan.PREFIX + 'retained_completion:v1:'
 DISPATCH, EXECUTION, ROOT = (PREFIX + k for k in ('dispatch:', 'execution:', 'root:'))
 REVIEW_ROOT = PREFIX + 'visual_review_root:'
 RECOVERY_ROOT = PREFIX + 'availability_recovery_root:'
+RENDER_ROOT = PREFIX + 'render_completion_root:'
+DEFERRED_ROOT = PREFIX + 'deferred_quota_root:'
 SOURCE_ERROR = 'Long documentary failed independent source or editorial review'
 QUOTA_ERROR = 'commissioning_video_provider_rejected'
 VISUAL_ERROR = 'Final visual quality gate rejected: '
 LOCAL_ERROR = 'Long-form retained job stopped without automatic restart: WatchError'
+RENDER_ERROR = 'Long-form retained job stopped without automatic restart: RuntimeError'
 
 
 def operation(source):
@@ -45,6 +48,8 @@ def eligible(source):
                  and str(source.get('error') or '').startswith(VISUAL_ERROR)
                  and plan._client().exists(DISPATCH + source['parent_id']))
              or (source.get('failure_stage') == 'final_visual_qc_ai_repair' and source.get('error') == LOCAL_ERROR
+                 and plan._client().exists(DISPATCH + source['parent_id']))
+             or (source.get('failure_stage') == 'render' and source.get('error') == RENDER_ERROR
                  and plan._client().exists(DISPATCH + source['parent_id']))))
 
 
@@ -53,13 +58,25 @@ def _prior_completion(client, source):
     parent = source['parent_id']; claim = plan._object(client.get(DISPATCH + parent))
     mode = (claim.get('evidence') or {}).get('mode')
     repair = bool(claim['evidence'].get('review_of'))
-    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('recovery_of')
+    render_failure = source.get('failure_stage') == 'render' and source.get('error') == RENDER_ERROR
+    deferred = bool(mode == 'sources' and claim['evidence'].get('recovery_of'))
+    plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('render_of')
+        and not claim['evidence'].get('deferred_of')
+        and (not claim['evidence'].get('recovery_of') or render_failure or deferred)
         and claim.get('source_task_id') == parent and claim.get('task_id') == operation(parent)
         and client.get(EXECUTION + parent) == operation(parent)
         and client.get(_root_key(claim['root_task_id'], claim['evidence'])) == plan._raw(claim)
         and source['task_id'] == str(uuid5(NAMESPACE_URL, 'owner-plan-retained-completion-child:v1:' + parent)))
     previous = plan._object(client.get(jobs.JOB_PREFIX + parent))
     plan._require(pre.fingerprint(previous) == claim['evidence']['source_sha256'])
+    if render_failure:
+        plan._require(mode == 'quota' and claim['evidence'].get('recovery_of'))
+        terminal = plan._object(client.get('celery-task-meta-' + source['task_id']))
+        trace = terminal.get('traceback') or ''
+        plan._require(all(marker in trace for marker in ('in render_video\n', 'in normalize_clip\n',
+            'in render_attempt\n', 'RuntimeError: Normalized clip frame gate rejected segment: 150 frames for 151 frame target\n'))
+            and 'ConnectionError' not in trace and 'TimeoutError' not in trace)
+        return claim
     if source['error'] == LOCAL_ERROR:
         plan._require(repair and mode == 'quota' and source.get('failure_stage') == 'final_visual_qc_ai_repair')
         terminal = plan._object(client.get('celery-task-meta-' + source['task_id']))
@@ -69,6 +86,8 @@ def _prior_completion(client, source):
                 'in _execute_transaction\n', 'commissioning_video.py'))
             and 'ConnectionError' not in trace and 'TimeoutError' not in trace)
         return claim
+    if deferred:
+        plan._require(deferred_quota(client, source) is not None)
     plan._require(not repair or mode == 'sources')
     diagnostic = json.loads(source['error'][len(VISUAL_ERROR):])
     rejected = diagnostic.get('rejected')
@@ -91,7 +110,53 @@ def _prior_completion(client, source):
 
 
 def _root_key(root, proof):
-    return (RECOVERY_ROOT if proof.get('recovery_of') else REVIEW_ROOT if proof.get('review_of') else ROOT) + root
+    return (DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
+            else REVIEW_ROOT if proof.get('review_of') else ROOT) + root
+
+
+def deferred_quota(client, source):
+    """One captured rejected create can wait for the next Pacific daily reset.
+
+    The provider does not identify which quota was exhausted. Waiting through
+    the daily boundary is a conservative retry time, not a promise of capacity.
+    No accepted or ambiguous operation can authorize this new request.
+    """
+    if not (source.get('state') == 'FAILURE' and source.get('failure_stage') == 'final_visual_qc_rescue'
+            and str(source.get('error') or '').startswith(VISUAL_ERROR) and source.get('parent_id')):
+        return None
+    raw = client.get(DISPATCH + source['parent_id'])
+    if raw is None: return None
+    prior = plan._object(raw); evidence = prior.get('evidence') or {}
+    if evidence.get('mode') != 'sources' or not evidence.get('recovery_of') or evidence.get('deferred_of'):
+        return None
+    from app.services import commissioning_video as video
+    from zoneinfo import ZoneInfo
+    root = prior['root_task_id']; raw = client.get(video.PREFIX + root)
+    journal = plan._object(raw); spec = source['spec']
+    plan._require(journal.get('version') == 1 and journal.get('context') == {
+        'lineage_id': root, 'kind': 'long', 'channel_id': spec['production_channel_id'],
+        'connection_id': spec['production_connection_id']} and len(journal.get('requests', {})) >= 1)
+    matches = []
+    for identity, row in journal['requests'].items():
+        descriptor = row['request']
+        if descriptor.get('continuation_task_id') != source['task_id']:
+            plan._require(descriptor.get('continuation_task_id') == source.get('retry_child_task_id')
+                and source.get('retry_child_task_id') is not None)
+            continue  # The started child's durable journal retains its ordinary no-replay handling.
+        plan._require(identity == video._sha(video._raw(descriptor).encode())
+            and descriptor.get('model') == video.MODEL
+            and descriptor.get('credential_sha256') == video._sha(('gemini\0' + video.settings.gemini_api_key).encode())
+            and row.get('result') is None and row.get('create') and video.quota_rejected(row['create']))
+        instant = datetime.fromisoformat(row['create']['observed_at'])
+        plan._require(datetime.fromisoformat(source['created_at']) <= instant
+            <= datetime.fromisoformat(source['updated_at']))
+        matches.append((identity, row, instant))
+    plan._require(len(matches) == 1 and not evidence.get('video_records'))
+    identity, row, instant = matches[0]
+    pacific = instant.astimezone(ZoneInfo('America/Los_Angeles'))
+    reset = (pacific + timedelta(days=1)).replace(hour=0, minute=5, second=0, microsecond=0)
+    deadline = max(reset.astimezone(timezone.utc), instant + timedelta(hours=1))
+    return {'retry_at': deadline.isoformat(), 'video_records': {identity: plan._sha(row)}}
 
 
 def _quota_ready(client, source):
@@ -167,6 +232,9 @@ def _video_records(client, root, ancestors, mode, *, child=None):
     if mode == 'sources':
         if raw is not None:
             journal = plan._object(raw)
+            deferred = deferred_quota(client, ancestors[0])
+            if deferred is not None:
+                return deferred['video_records']
             plan._require(child is not None and journal.get('version') == 1
                 and journal.get('context', {}).get('lineage_id') == root
                 and all(row['request'].get('continuation_task_id') == child
@@ -205,7 +273,7 @@ def checked(client, task, *, claimed=False):
     source = plan._object(client.get(jobs.JOB_PREFIX + plan._id(task))); spec = source.get('spec') or {}
     plan._require(eligible({**source, 'retry_child_task_id': None}) and source['task_id'] == task
         and voice._scope(spec) == ('long', 32) and spec.get('mode') == 'production')
-    prior = _prior_completion(client, source) if source['error'].startswith(VISUAL_ERROR) or source['error'] == LOCAL_ERROR else None
+    prior = _prior_completion(client, source) if source['error'].startswith(VISUAL_ERROR) or source['error'] in {LOCAL_ERROR, RENDER_ERROR} else None
     mode = prior['evidence']['mode'] if prior else ('quota' if source['error'] == QUOTA_ERROR else 'sources')
     dispatch = plan._object(client.get(plan.DISPATCH_PREFIX + plan._id(spec['content_plan_item_id'])))
     root = dispatch['task_id']; ancestors = []; current = source
@@ -275,12 +343,20 @@ def checked(client, task, *, claimed=False):
             child=source.get('retry_child_task_id') if claimed else None),
         'restored_source': _restored_sources(client, root, saved) if mode == 'sources' and not prior else None}
     if prior:
-        plan._require(proof['video_records'] == prior['evidence']['video_records'])
+        deferred = deferred_quota(client, source)
+        plan._require(proof['video_records'] == (deferred['video_records'] if deferred else prior['evidence']['video_records']))
         proof.update(review_of=source['parent_id'], previous_completion_sha256=plan._sha(prior))
-        if prior['evidence'].get('review_of'):
+        if deferred:
+            if not claimed:
+                plan._require(datetime.now(timezone.utc) >= datetime.fromisoformat(deferred['retry_at']),
+                              'plan_video_quota_waiting')
+            proof.update(deferred_of=source['parent_id'], deferred_until=deferred['retry_at'])
+        elif prior['evidence'].get('review_of'):
             proof['recovery_of'] = source['parent_id']
             if mode == 'sources' and not claimed:
                 _quota_ready(client, source)
+        if source['error'] == RENDER_ERROR:
+            proof['render_of'] = source['parent_id']
     return source, root, proof
 
 
@@ -291,6 +367,9 @@ def _claim(source, root, proof):
 def schedule(source, enqueue, *, client=None):
     client = client or plan._client(); task = source['task_id']
     if client.exists(DISPATCH + task): return 'retained_completion_reserved'
+    deferred = deferred_quota(client, source)
+    if deferred and datetime.now(timezone.utc) < datetime.fromisoformat(deferred['retry_at']):
+        return 'plan_video_quota_waiting'
     source, root, proof = checked(client, task); claim = _claim(task, root, proof); root_key = _root_key(root, proof)
     from redis.exceptions import WatchError
     try:

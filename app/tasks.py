@@ -1637,10 +1637,12 @@ def _checkpoint_qa_workprint(
 ) -> None:
     """Keep a rejected private draft without changing its terminal outcome."""
     try:
+        long = (isinstance(options, dict) and options.get('format') == 'landscape'
+                and options.get('content_plan_item_id') and duration_minutes == 3)
         if (
             not isinstance(options, dict) or options.get('mode') != 'production'
-            or options.get('format') != 'shorts' or options.get('music') != 'off'
-            or type(duration_minutes) not in (int, float) or duration_minutes != 0.5
+            or (not long and options.get('format') != 'shorts') or options.get('music') != 'off'
+            or type(duration_minutes) not in (int, float) or (not long and duration_minutes != 0.5)
             or not all(
                 isinstance(gate, dict) and gate.get('available') is True and gate.get('pass') is True
                 for gate in (audio_qc, audio_duration_qc, audio_prosody_qc)
@@ -1651,7 +1653,10 @@ def _checkpoint_qa_workprint(
         from app.services.qa_workprint import persist_qa_workprint
 
         target = duration_minutes * 60
-        if (options.get('production_scheduled') is True
+        if long:
+            import math
+            target = math.ceil(sum(scene_durations) * 30) / 30
+        elif (options.get('production_scheduled') is True
                 and type(effective_edit_target_seconds) in (int, float)
                 and 30 < effective_edit_target_seconds <= 40):
             target = effective_edit_target_seconds
@@ -1670,7 +1675,7 @@ def _checkpoint_qa_workprint(
         pointer = fields.get('qa_workprint') if isinstance(fields, dict) else None
         if (
             not isinstance(pointer, dict) or type(pointer.get('version')) is not int
-            or pointer['version'] != (1 if target == 30 else 2)
+            or pointer['version'] != (4 if long else 1 if target == 30 else 2)
             or pointer.get('task_id') != task_id or pointer.get('status') != 'qa_workprint'
             or any(pointer.get(key) is not False for key in ('qa_approved', 'publish_eligible', 'reusable'))
         ):
