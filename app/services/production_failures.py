@@ -79,7 +79,9 @@ def classify_failure(error, stage):
         code, category = str(error), 'review_unverified'
     elif isinstance(error, SpendBlocked):
         # These are fixed provider protocol codes, not prose or substrings.
-        if str(error) in _COMMISSIONED_VIDEO_CODES and stage in _VISUAL_STAGES:
+        if str(error) == 'credit_pool_has_uncertain_intent' and stage in _AUDIO_STAGES:
+            code, category = str(error), 'review_unverified'
+        elif str(error) in _COMMISSIONED_VIDEO_CODES and stage in _VISUAL_STAGES:
             code, category = str(error), 'review_unverified'
         elif str(error) == 'production_media_outcome_unverified' and stage in _AUDIO_STAGES | _VISUAL_STAGES | {'render'}:
             code, category = str(error), 'review_unverified'
@@ -109,6 +111,13 @@ def classified_hold_reason(job):
     code, category = evidence['code'], evidence['category']
     if type(code) is not str or type(category) is not str:
         return None
+    # A competing voice prevented this attempt from reserving or sending.
+    # Preserve its original failure and every occupied credit receipt. Normal
+    # funding preflight blocks fresh production until the pool really settles.
+    if (error == 'credit_pool_has_uncertain_intent' and stage in _AUDIO_STAGES
+            and ((code == error and category == 'review_unverified')
+                 or code == category == 'spending_blocked')):
+        return 'review_unverified'
     if code == error and code in _COMMISSIONED_VIDEO_CODES and category == 'review_unverified' and stage in _VISUAL_STAGES:
         return 'review_unverified'
     if (code == error == 'production_media_outcome_unverified' and category == 'review_unverified'

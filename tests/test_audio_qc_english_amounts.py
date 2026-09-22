@@ -17,6 +17,8 @@ from app.services import audio_qc as qc
     ('Zero billion dollars remained.', '0 dollars remained.'),
     ('They used hand saws.', 'They used handsaws.'),
     ('They used a hand-saw.', 'They used a handsaw.'),
+    ('Postwar demand changed.', 'Post war demand changed.'),
+    ('Prewar demand changed.', 'Pre-war demand changed.'),
 ])
 def test_exact_amount_and_compound_spellings_keep_meaning(spoken, written):
     for expected, heard in ((spoken, written), (written, spoken)):
@@ -62,3 +64,28 @@ def test_actual_lego_text_preserves_name_disagreement_instead_of_approving_the_a
 def test_english_currency_spelling_does_not_apply_to_turkish_decimal_conventions():
     assert qc.compare_transcript('It cost four thousand kroner.', 'It cost 4,000 kroner.',
                                  comparison_language='tr')['pass'] is False
+
+
+@pytest.mark.parametrize('expected,heard', [
+    ('Postwar demand changed.', 'Post, war demand changed.'),
+    ('Postwar demand changed.', 'Post / war demand changed.'),
+    ('Postwar demand changed.', 'Prewar demand changed.'),
+    ('They were apart.', 'They were a part.'),
+    ('It happened sometime.', 'It happened some time.'),
+])
+def test_named_compounds_do_not_merge_punctuation_or_ambiguous_words(expected, heard):
+    assert qc.compare_transcript(expected, heard, comparison_language='en')['pass'] is False
+
+
+def test_split_postwar_retains_actual_provider_intervals_and_missing_time_still_fails():
+    heard = 'Post war demand changed.'
+    words = [{'word': word, 'start': i, 'end': i + .5} for i, word in enumerate(heard.split())]
+    before = deepcopy(words)
+    result = qc.compare_transcript('Postwar demand changed.', heard,
+        words=words, provider='openai', comparison_language='en')
+    assert result['pass'] is True and words == before
+    qc._require_word_timing_evidence(result, 'OpenAI')
+    words[1]['end'] = words[1]['start']
+    result = qc.compare_transcript('Postwar demand changed.', heard,
+        words=words, provider='openai', comparison_language='en')
+    with pytest.raises(qc.AudioQCError): qc._require_word_timing_evidence(result, 'OpenAI')

@@ -9,8 +9,36 @@ original response to the unchanged audio parser and quality checks.
 """
 from datetime import datetime, timezone
 import hashlib
+from time import monotonic, sleep
 
 from app.services.production_spend import SpendBlocked
+
+_POOL_WAIT_SECONDS = 60
+_POOL_WAIT_INTERVAL = .5
+
+
+def _reserve_when_available(ledger, intent, context, actual):
+    """Wait only for a competing reservation, before this call has sent anything.
+
+    The original atomic reservation still decides admission. An unknown prior
+    response is never released or retried; if it does not settle, waiting ends.
+    No transport or ambiguous commit exception may enter this local wait loop.
+    """
+    from app.services import production_spend_runtime as runtime
+    deadline = monotonic() + _POOL_WAIT_SECONDS
+    for attempt in range(121):
+        if attempt and runtime.resolve_context(ledger.client, runtime._TASK_ID.get()) != context:
+            raise SpendBlocked('credit_production_context_invalid')
+        try:
+            return ledger.reserve(intent=intent, production_context=context, **actual)
+        except SpendBlocked as exc:
+            if str(exc) != 'credit_pool_has_uncertain_intent':
+                raise
+            remaining = deadline - monotonic()
+            if remaining <= 0 or attempt == 120:
+                raise
+        # Leave the exception context before a new local Redis transaction.
+        sleep(min(_POOL_WAIT_INTERVAL, remaining))
 
 
 def paid_credit_post(sender, url, kwargs):
@@ -53,7 +81,7 @@ def paid_credit_post(sender, url, kwargs):
         }
         actual = {'actual_account_sha256': binding['account_sha256'],
                   'actual_credential_sha256': prepared.credential_sha256}
-        receipt = ledger.reserve(intent=intent, production_context=context, **actual)
+        receipt = _reserve_when_available(ledger, intent, context, actual)
 
         # A mutable shared HTTPX client may have drifted during reservation.
         # Stop before POST without releasing the conservative hold. Application

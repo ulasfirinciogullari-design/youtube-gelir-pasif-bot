@@ -1349,7 +1349,8 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
             units.append((number, tuple(tokens[index:index + count])))
             index += count
             continue
-        if (tuple(tokens[index:index + 2]) in {('hand', 'saw'), ('hand', 'saws')}
+        if (tuple(tokens[index:index + 2]) in {
+                ('hand', 'saw'), ('hand', 'saws'), ('post', 'war'), ('pre', 'war')}
                 and re.fullmatch(r'(?:\s+|[-\u2010\u2011])',
                     value[matches[index].end():matches[index + 1].start()])):
             units.append((''.join(tokens[index:index + 2]), tuple(tokens[index:index + 2])))

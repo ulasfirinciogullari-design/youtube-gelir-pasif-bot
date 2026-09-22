@@ -29,6 +29,11 @@ MAX_RESPONSE = 2 * 1024 * 1024
 MAX_LINEAGE = 80
 MAX_DAY = 1000
 UNHANDLED = object()
+VISUAL_SCHEMA_PREFIX = (
+    'GEMINI_VISUAL_COMPLETE_SCHEMA_V1\nReturn only a JSON object conforming to '
+    'this complete schema. Include every required field and explicit boolean; '
+    'all bounds, enum values and uniqueItems constraints are validated locally.\n'
+)
 
 
 def _require(condition, code='commissioning_reasoning_unverified'):
@@ -115,6 +120,13 @@ def _request(prepared, purpose):
         'generationConfig': {'candidateCount': 1, 'maxOutputTokens': output,
             'thinkingConfig': {'thinkingLevel': 'low'}, 'responseMimeType': 'application/json',
             'responseJsonSchema': deepcopy(schema)}}
+    if purpose == 'visual_review':
+        # The full multi-scene grammar was rejected with INVALID_ARGUMENT by
+        # Gemini before generation. JSON mode avoids that grammar compiler;
+        # the unchanged authored schema still binds the prompt and observer.
+        # This changes the native request identity, never an old reservation.
+        native['generationConfig'].pop('responseJsonSchema')
+        parts.append({'text': VISUAL_SCHEMA_PREFIX + _raw(schema)})
     # Prepared adapters already bounded and decoded every original image/audio.
     encoded = _raw(native)
     _require(len(encoded.encode()) <= 20_000_000)

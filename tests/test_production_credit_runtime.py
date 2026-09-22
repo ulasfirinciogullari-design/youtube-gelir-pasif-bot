@@ -220,7 +220,10 @@ def test_unknown_request_shape_never_reserves(case, damage):
 
 
 @pytest.mark.parametrize('failure', ['timeout', '500', 'missing_meter', 'over_meter', 'bad_request', 'redirect'])
-def test_uncertain_transport_or_meter_holds_all_and_blocks_both_replay_and_new_body(case, failure):
+def test_uncertain_transport_or_meter_holds_all_and_blocks_both_replay_and_new_body(case, failure, monkeypatch):
+    clock = [0.]
+    monkeypatch.setattr(native, 'monotonic', lambda: clock[0])
+    monkeypatch.setattr(native, 'sleep', lambda seconds: clock.__setitem__(0, clock[0] + seconds))
     sends = []
     def respond(req):
         sends.append(req)
