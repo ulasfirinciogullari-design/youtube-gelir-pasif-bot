@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "id": "puppy",
+  "name": "Puppy & Friends",
+  "name_status": "working_title",
+  "tagline": "Small wonders. Big feelings.",
+  "tagline_tr": "Küçük keşifler, büyük duygular.",
+  "audience": "children_and_family",
+  "made_for_kids": true,
+  "original_language": "en",
+  "concept": "Puppy’nin (Papi) burnunun peşinden çıktığı küçük keşifler, beklenmedik dostluklar ve ailece anlaşılabilen görsel komedi. Her macerada Papi bir karar verir, bir şey keşfeder ve çözümün parçası olur.",
+  "world": "A cozy miniature hillside village with tree-root bridges, leaf boats, moss gardens, round cottages and warm, tactile handmade materials. Ordinary discoveries feel wondrous. Physical comedy stays gentle and reversible.",
+  "visual_style": "Original tactile 3D family animation with felt-like fur, rounded clay-like environments, readable silhouettes, teal and apricot accents, soft cinematic light, uncluttered staging and expressive, natural motion.",
+  "characters": [
+    {
+      "id": "puppy",
+      "name": "Puppy",
+      "pronunciation": "Papi",
+      "role": "Başrol. Merakıyla hikâyeyi başlatır; küçük ayrıntıları koklayarak keşfeder ve arkadaşlarına yardım eder.",
+      "appearance": "Small cream-white fluffy dog based on the owner’s Puppy photographs. Warm pale biscuit cream around the forehead and ears, round dark brown nearly black eyes, short white muzzle, small dark nose with a subtle brown-pink center, two upright triangular ears, thick chest ruff, small natural dog legs and paws, feathery tail curved over the back. Always quadrupedal; no human fingers, no clothes or accessories by default.",
+      "personality": "Curious, affectionate, playful and occasionally impatient. Tilts the head when puzzled, gives small joyous hops, checks on friends, sometimes prefers a nap. These are fictional character traits, not claims about the real dog.",
+      "voice_direction": "Name is written Puppy and spoken Papi in every language. Short warm playful phrases, expressive breathing and soft dog sounds; preserve stable character voice across episodes. No real-person cloning.",
+      "reference_asset": "puppy-model-sheet-v1.png"
+    },
+    {
+      "id": "nubo",
+      "name": "Nubo",
+      "role": "Yardımcı karakter. İyi niyetli ve biraz aceleci; bazı maceralarda Papi’ye eşlik eder.",
+      "appearance": "Short round pear-shaped apricot-orange fuzzy creature. Small rounded triangular ears, cream oval face and belly, expressive dark oval eyes, subtle eyebrows, very short legs, no tail. Exactly one teal neckerchief.",
+      "personality": "Warm, enthusiastic and generous. Makes recoverable mistakes, notices others' feelings, laughs at the situation without mocking anyone.",
+      "voice_direction": "Warm, light and expressive; short natural phrases. Stable character identity across episodes. No real-person voice cloning."
+    },
+    {
+      "id": "mika",
+      "name": "Mika",
+      "role": "İlk macerada Papi’nin yol arkadaşı. Yaprakları ve araçları taşır; Papi’nin keşiflerini birlikte denerler.",
+      "appearance": "Small slim aqua-teal fuzzy creature. Two soft long leaf-shaped ears pointing upward, warm cream face, dark oval eyes, bean-shaped feet, no tail. Exactly one rounded coral crossbody satchel.",
+      "personality": "Observant, inventive and playful. Finds simple solutions, sometimes overthinks, shares credit with Nubo.",
+      "voice_direction": "Clear, bright and calm; brief phrases. Stable character identity across episodes. No real-person voice cloning."
+    }
+  ],
+  "story_rules": [
+    "Puppy is the lead in every episode; Puppy initiates the discovery and contributes to the resolution. Nubo and Mika are supporting characters.",
+    "Puppy uses paws, nose and mouth like a dog. Never give Puppy human hands, fingers or inconsistent upright anatomy.",
+    "Keep the same cream coat, face, small ears and curled feathered tail as the character reference. Clothing is absent unless an episode explicitly calls for it.",
+    "One understandable wish or small problem per episode; show it in the opening two seconds.",
+    "The comedy must work with the sound off. Dialogue adds warmth but never carries the essential clue.",
+    "Every episode delivers a small satisfying payoff. An optional final discovery links to the next episode without withholding the current answer.",
+    "Five episodes form one complete adventure. The final episode resolves the adventure.",
+    "Use kindness, curiosity, sharing, patience and inventiveness through action; avoid lectures and moralizing speeches.",
+    "No humiliation, cruelty, frightening villains, realistic danger, weapons, dangerous imitable stunts or body-image jokes.",
+    "No purchasing pressure, fake urgency, engagement bait or requests for children's personal information.",
+    "No rapid flashing, relentless cuts, deliberately distressing cliffhangers or artificially extended repetition.",
+    "Keep costumes, colors, proportions, handed props and location geography consistent with the approved reference assets.",
+    "Use universal visual ideas without stereotypes, national ranking, religious assumptions or jokes dependent on one language.",
+    "Use original or properly licensed music and sound effects. Keep music/effects and spoken voices as separate stems.",
+    "Do not describe fictional events as true documentary evidence. Any educational factual claim needs separate source review."
+  ],
+  "formats": {
+    "episode": {
+      "orientation": "9:16",
+      "target_seconds": 32,
+      "shots": 4,
+      "fps": 24,
+      "delivery_width": 1080,
+      "delivery_height": 1920
+    },
+    "compilation": {
+      "orientation": "16:9",
+      "rule": "Recompose the five episodes for landscape; do not crop off characters or label a pillarboxed Short as a new landscape production."
+    },
+    "social_teaser": {
+      "orientation": "9:16",
+      "minimum_seconds": 8,
+      "maximum_seconds": 15
+    },
+    "carousel": {
+      "orientation": "4:5",
+      "slides": 4
+    }
+  },
+  "cadence": {
+    "episodes_per_adventure": 5,
+    "planned_adventures_per_day": 1,
+    "target_ready_episodes": 10,
+    "publication_requires_delivery_checks": true
+  },
+  "language_targets": [
+    "en",
+    "tr",
+    "es",
+    "pt-BR",
+    "fr",
+    "de",
+    "ar",
+    "hi",
+    "id",
+    "ko",
+    "ja",
+    "it",
+    "nl",
+    "sv",
+    "da",
+    "nb",
+    "fi",
+    "sw",
+    "zu",
+    "bn"
+  ],
+  "first_dub_wave": [
+    "en",
+    "tr",
+    "es",
+    "pt-BR",
+    "fr",
+    "de",
+    "ar",
+    "hi",
+    "ko",
+    "ja"
+  ],
+  "localization_rules": [
+    "Keep a clean master with no language burned into the image and no platform watermark.",
+    "Time translations to the approved dialogue cue windows. Never stretch a voice blindly to fit.",
+    "Translate meaning, emotion and age suitability; avoid literal idioms and slang that exclude other regions.",
+    "Use native-language voice suitability, pronunciation and timing checks before a dub becomes ready.",
+    "Store reviewed UTF-8 SRT and WebVTT subtitles for every selected language; preserve right-to-left text and native scripts.",
+    "A configured target language is not a completed subtitle, dub or published track. Display the actual status separately.",
+    "YouTube custom audio-track upload is a Studio step until an available supported integration can perform it. Do not report an exported dub as uploaded.",
+    "Do not assume a sparse-dialogue video qualifies for YouTube automatic dubbing. Prepare our own optional dialogue tracks."
+  ],
+  "social_profiles": {
+    "suggested_handle": "puppyandfriends",
+    "availability": "not_verified",
+    "bio_en": "Small paws. Big adventures. Meet Puppy (Papi) and friends — original animated family stories. Managed by adults.",
+    "bio_tr": "Küçük patiler, büyük maceralar. Puppy (Papi) ve arkadaşlarının ailece izlenecek özgün animasyonları. Yetişkinler tarafından yönetilir.",
+    "platforms": [
+      "youtube",
+      "instagram",
+      "tiktok"
+    ],
+    "tiktok_instagram_audience": "Age-eligible viewers and parents; accounts are adult-managed. Do not direct under-age children to create social accounts."
+  },
+  "name_tr": "Puppy’nin Dünyası",
+  "lead_character": "puppy",
+  "pronunciation": "Papi"
+}

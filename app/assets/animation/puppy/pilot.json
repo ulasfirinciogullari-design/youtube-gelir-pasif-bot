@@ -1,0 +1,387 @@
+{
+  "version": 1,
+  "brand_id": "puppy",
+  "id": "the-little-light",
+  "title": "The Little Light",
+  "title_tr": "Minik Işığın Yolculuğu",
+  "logline": "Puppy (Papi), yosundaki minik ışığın kokusunu takip eder. Mika ile birlikte ışıldayan tohumu evine götürürken merakı, sabrı ve küçük yardımları bütün bahçeyi değiştirir.",
+  "language": "en",
+  "episodes": [
+    {
+      "number": 1,
+      "title": "A Light in the Moss",
+      "title_tr": "Yosundaki Işık",
+      "hook": "Papi minik bir ışığı koklamak için eğilince kabarık yelesinin gölgesi ışığı kapatır; başını kaldırınca ışık geri gelir.",
+      "payoff": "Papi tohumu burnuyla nazikçe yaprağa iter; gölgeden çıkan ışık yeniden parlar.",
+      "next_question": "Tohum neden derenin öbür kıyısına doğru eğiliyor?",
+      "shots": [
+        {
+          "id": "s01",
+          "seconds": 8,
+          "action": "Puppy lowers the fluffy muzzle to sniff a tiny glowing seed in the moss. The shadow of the cream chest ruff dims it. Puppy lifts the head; it brightens. Two small puzzled head tilts. Mika kneels beside Puppy, watching.",
+          "start_state": "The seed rests in moss. Puppy and Mika are together on the near bank.",
+          "end_state": "Mika understands the shadow and pulls a broad leaf from the satchel.",
+          "camera": "Ground-level close-up opens directly on the seed; slow reveal of the two faces.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 4.2,
+              "end": 6.0,
+              "text": "A tiny light!"
+            }
+          ]
+        },
+        {
+          "id": "s02",
+          "seconds": 8,
+          "action": "Puppy places one small dog paw beside the seed and peers down; the fluffy ruff casts a shadow again. Puppy lifts the paw and head, puzzled. Mika places a broad leaf flat beside the seed like a tiny tray. All four dog legs stay natural.",
+          "start_state": "The seed is on the moss, Mika holds the leaf.",
+          "end_state": "Puppy agrees to try Mika's leaf.",
+          "camera": "Comfortable medium two-shot; readable paws and expressions in the center.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 1.5,
+              "end": 3.5,
+              "text": "Where did it go?"
+            }
+          ]
+        },
+        {
+          "id": "s03",
+          "seconds": 8,
+          "action": "With all four paws on the ground, Puppy gently nudges the seed with the small nose onto Mika’s leaf. It glows warmly again. Puppy gives a joyful little tail wag while Mika carefully lifts the leaf.",
+          "start_state": "Leaf is beside the seed in moss.",
+          "end_state": "The glowing seed rests safely on the leaf in Mika's hands.",
+          "camera": "Close-up on Puppy’s nose gently nudging the seed, then tilt to both smiles.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 2.0,
+              "end": 3.6,
+              "text": "Gently, Papi."
+            },
+            {
+              "speaker": "puppy",
+              "start": 5.2,
+              "end": 6.8,
+              "text": "There you are!"
+            }
+          ]
+        },
+        {
+          "id": "s04",
+          "seconds": 8,
+          "action": "Mika holds the leaf in the open light. The seed tilts toward a garden across the shallow stream. Puppy mimics the tilt with a curious head turn, one ear up, then takes two eager steps toward the low root bridge. The seed stays on the leaf.",
+          "start_state": "Mika holds the leaf and seed; Puppy stands beside Mika.",
+          "end_state": "They notice the garden across the stream; the seed remains on the leaf.",
+          "camera": "Medium two-shot with the opposite garden readable behind them, slow gentle widen.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 2.7,
+              "end": 5.3,
+              "text": "It's looking for something."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "The Leaf Boat",
+      "title_tr": "Yaprak Tekne",
+      "hook": "Yaprak tekne kendi etrafında döner; Papi de kuru kıyıda merakla aynı küçük daireyi çizer.",
+      "payoff": "Papi bir yaprağı burnuyla teknenin kıçına iterek düz yol gösterir; Mika’nın hafif üflemesiyle tekne sığ suyu geçer.",
+      "next_question": "Adanın yanındaki salyangoz köprüyü neden bırakmıyor?",
+      "shots": [
+        {
+          "id": "s01",
+          "seconds": 8,
+          "action": "At the shallow stream, Mika floats the broad leaf with the glowing seed. It turns in a slow circle. Puppy walks a tiny matching circle on the dry bank, puzzled but amused.",
+          "start_state": "The seed rests on the broad leaf at the near bank.",
+          "end_state": "The leaf floats in a harmless shallow pool.",
+          "camera": "Low wide shot, no deep water or peril.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 3.0,
+              "end": 5.0,
+              "text": "Round and round!"
+            }
+          ]
+        },
+        {
+          "id": "s02",
+          "seconds": 8,
+          "action": "Puppy leans forward for an enthusiastic sniff and gives a tiny sneeze away from Mika. The harmless puff spins the leaf boat a little faster. Mika’s soft ears sway. Puppy freezes with an apologetic head tilt, then smiles.",
+          "start_state": "The leaf circles with the glowing seed safely onboard.",
+          "end_state": "The friends pause to work together.",
+          "camera": "Side view with clear separation between characters and the floating leaf.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 4.0,
+              "end": 6.2,
+              "text": "A little less?"
+            }
+          ]
+        },
+        {
+          "id": "s03",
+          "seconds": 8,
+          "action": "Puppy notices a broad leaf at the dry water edge and gently nudges it with the nose behind the tiny boat. Mika gives one gentle puff. The boat glides straight to the nearby low mossy stepping stone; Puppy watches from dry ground.",
+          "start_state": "Both stand safely on the dry bank.",
+          "end_state": "The leaf reaches the little stone island.",
+          "camera": "Track gently with the leaf, keeping the route visible.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 1.0,
+              "end": 2.4,
+              "text": "Together!"
+            }
+          ]
+        },
+        {
+          "id": "s04",
+          "seconds": 8,
+          "action": "Mika lifts the leaf and glowing seed from the stepping stone while Puppy walks around the shallow pool on a wide dry root path. They reach a low twig bridge. A friendly snail rests on it. Puppy stops politely and gives a warm head tilt; the snail blinks.",
+          "start_state": "Leaf and seed are beside the mossy stone island.",
+          "end_state": "Puppy and Mika are together on dry ground at the low bridge; Mika holds the leaf and seed.",
+          "camera": "Snail eye-level reveal with warm light.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 4.0,
+              "end": 5.6,
+              "text": "Hello there!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "A Very Slow Bridge",
+      "title_tr": "Çok Yavaş Bir Köprü",
+      "hook": "Papi salyangozun yanında sabırla oturmaya çalışır; burnuna düşen çiçek yaprağı komik bir bıyık gibi durur.",
+      "payoff": "Papi salyangozun güneşte gözünü kıstığını fark edip Mika’yı gölgeli yaprağa yönlendirir; salyangoz rahatlayıp ilerler.",
+      "next_question": "Bahçedeki beş küçük oyuktan hangisi minik ışığın evi?",
+      "shots": [
+        {
+          "id": "s01",
+          "seconds": 8,
+          "action": "Puppy sits on all-natural dog haunches beside the friendly snail on the low bridge. A loose petal settles on Puppy’s nose. Puppy goes cross-eyed at it, then notices the snail squinting in the warm sunlight. Puppy looks toward Mika and the shady leaves.",
+          "start_state": "Mika holds the leaf and seed near the twig bridge.",
+          "end_state": "Mika notices the snail squinting in the sun.",
+          "camera": "Eye-level medium framing; no intimidation.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 2.2,
+              "end": 4.0,
+              "text": "We can wait."
+            }
+          ]
+        },
+        {
+          "id": "s02",
+          "seconds": 8,
+          "action": "Puppy nudges a fallen broad leaf toward Mika with the nose. Mika picks it up and holds it like an umbrella above the snail while keeping the seed leaf safely flat on the dry moss. The snail relaxes and slowly uncurls.",
+          "start_state": "The snail is squinting; Mika has a spare leaf.",
+          "end_state": "The snail is in shade. The original seed leaf rests safely on dry moss; Mika holds the umbrella leaf.",
+          "camera": "Gentle close-up on the change in the snail's expression.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 3.0,
+              "end": 5.2,
+              "text": "A little shade."
+            }
+          ]
+        },
+        {
+          "id": "s03",
+          "seconds": 8,
+          "action": "The snail glides off the low bridge. Mika carries the umbrella leaf until it reaches natural shade. Puppy walks beside it at comically tiny patient steps, the petal still on the nose, and gives a satisfied wag.",
+          "start_state": "The snail starts leaving the bridge.",
+          "end_state": "The short low bridge is clear; the snail rests in natural shade.",
+          "camera": "Slow side tracking shot; keep motions calm and visible.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 3.5,
+              "end": 5.0,
+              "text": "Much better!"
+            }
+          ]
+        },
+        {
+          "id": "s04",
+          "seconds": 8,
+          "action": "Mika returns for the original leaf and glowing seed and carries them across the low dry bridge. Puppy trots alongside on four paws. They reach a circular garden with five shallow hollows. Puppy sniffs the first hollow and looks thoughtfully at Mika.",
+          "start_state": "Mika holds the original leaf and seed at the clear bridge.",
+          "end_state": "Puppy and Mika stand beside five garden hollows; Mika holds the original seed leaf.",
+          "camera": "Overhead view makes the five hollows instantly understandable.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 4.0,
+              "end": 6.2,
+              "text": "Which one is home?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "The Quiet Garden",
+      "title_tr": "Sessiz Bahçe",
+      "hook": "Papi oyuğu koklayınca ışığın yansıması yüzünü yumuşak maviye boyar; şaşkınlıkla burnuna bakar.",
+      "payoff": "Papi ortadaki oyuğa oturup Mika’yı çağırır; tohumun sıcak ışığı doğru yeri bulduklarını gösterir.",
+      "next_question": "Tohum yerinde ama bahçe hâlâ sessiz; eksik olan ne?",
+      "shots": [
+        {
+          "id": "s01",
+          "seconds": 8,
+          "action": "Mika holds the leaf and seed near the first garden hollow. Puppy lowers the nose beside it to sniff. A soft blue reflection colors Puppy’s cream cheeks. Puppy lifts the head with wide surprised eyes, Mika smiling beside the dog.",
+          "start_state": "The seed is on its leaf beside five shallow hollows.",
+          "end_state": "They see that the first hollow is not a match.",
+          "camera": "Close two-shot, soft color change only, never flashing.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 3.0,
+              "end": 4.3,
+              "text": "Not this one."
+            }
+          ]
+        },
+        {
+          "id": "s02",
+          "seconds": 8,
+          "action": "Mika moves the leaf and seed toward the next hollow. A soft green reflection colors Puppy’s little muzzle. Puppy crosses the eyes gently at the nose, shakes the head once, then takes a slow thoughtful sniff toward the empty center hollow.",
+          "start_state": "Mika securely holds the leaf and seed, Puppy stands beside the garden.",
+          "end_state": "They pause and look carefully instead of hurrying.",
+          "camera": "Readable medium shot with no abrupt cuts.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 4.0,
+              "end": 5.6,
+              "text": "Look closely."
+            }
+          ]
+        },
+        {
+          "id": "s03",
+          "seconds": 8,
+          "action": "Puppy sits beside the center hollow and looks up at Mika with an inviting little tail wag. Mika brings the seed close: its warm gold glow matches the circle in the soil. Mika tilts the leaf gently, settling the seed into the center while Puppy watches.",
+          "start_state": "Seed is still on the leaf; center hollow is empty.",
+          "end_state": "Seed rests in the center hollow.",
+          "camera": "Close-up on matching shapes and the gentle placement.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 3.5,
+              "end": 5.0,
+              "text": "This is home!"
+            }
+          ]
+        },
+        {
+          "id": "s04",
+          "seconds": 8,
+          "action": "Puppy and Mika sit and wait beside the planted seed. Nothing grows yet. A tiny drop falls from a nearby leaf. Puppy follows it with the nose and looks at the dry soil, then up at Mika, discovering that the garden needs a little water.",
+          "start_state": "The seed is planted in the center hollow.",
+          "end_state": "They discover the dry soil needs a little water.",
+          "camera": "Low quiet framing, let the visual discovery breathe.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 5.0,
+              "end": 6.8,
+              "text": "One more thing."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Room for One More",
+      "title_tr": "Bir Arkadaşa Daha Yer Var",
+      "hook": "Papi kocaman bir yaprağı burnuyla suya doğru sürüklerken Mika’nın minicik çiy damlasını fark eder.",
+      "payoff": "Papi küçük damlayı sabırla bekler; açan beş çiçeğin ışığında arkadaşları ve salyangoz için yer açar.",
+      "next_question": "",
+      "shots": [
+        {
+          "id": "s01",
+          "seconds": 8,
+          "action": "Puppy nudges an oversized empty curled leaf along the dry ground toward the shallow water, planning a huge drink for the garden. Mika is already beside the planted seed with one dew drop on a small leaf. Puppy notices, stops and looks back at the tiny drop.",
+          "start_state": "The planted seed waits in dry soil.",
+          "end_state": "Mika holds one small dew drop above the soil.",
+          "camera": "Wide view makes the comical size difference clear.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 2.0,
+              "end": 4.0,
+              "text": "Enough water?"
+            }
+          ]
+        },
+        {
+          "id": "s02",
+          "seconds": 8,
+          "action": "Mika tips one dew drop onto the seed. Puppy leaves the oversized empty leaf safely on the ground, returns to the garden and sits down patiently beside Mika. A soft green shoot begins to uncurl.",
+          "start_state": "One dew drop is ready above the planted seed.",
+          "end_state": "A green shoot has appeared.",
+          "camera": "Close-up of one drop, then a calm medium shot.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 1.5,
+              "end": 3.6,
+              "text": "Just a little."
+            }
+          ]
+        },
+        {
+          "id": "s03",
+          "seconds": 8,
+          "action": "The shoot unfolds into five rounded glowing flowers that softly light the garden. Puppy leans forward, nose twitching in wonder; Mika smiles. The friendly snail arrives slowly at the garden edge. Puppy notices it first and makes space.",
+          "start_state": "A green shoot stands in the center hollow.",
+          "end_state": "Five flowers glow softly; the snail is beside the garden.",
+          "camera": "Slow reveal of the full little garden, steady light with no pulses.",
+          "dialogue": [
+            {
+              "speaker": "puppy",
+              "start": 4.0,
+              "end": 5.6,
+              "text": "We did it!"
+            }
+          ]
+        },
+        {
+          "id": "s04",
+          "seconds": 8,
+          "action": "Puppy shuffles sideways on the grass to leave a comfortable space for the friendly snail. Mika sits on Puppy’s other side. The loose petal slips from Puppy’s nose onto the grass; the snail uses its shade. Puppy rests the fluffy head between the front paws with a content smile. The warm little garden is home.",
+          "start_state": "Five softly glowing flowers, Puppy and Mika and the snail together.",
+          "end_state": "All three rest together; the seed’s journey is fully resolved.",
+          "camera": "Warm intimate three-shot, finish on shared expressions without a sales message.",
+          "dialogue": [
+            {
+              "speaker": "mika",
+              "start": 2.0,
+              "end": 4.0,
+              "text": "Room for one more."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
