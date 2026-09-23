@@ -2376,6 +2376,7 @@ def _nav(active: str) -> str:
     primary_links = [
         ('studio', '/studio', 'Genel bakış'),
         ('plan', '/studio/plan', 'Yayın planı'),
+        ('animation', '/studio/animation', 'Animasyon'),
         ('review', '/studio/history?status=previews', 'Önizlemeler'),
         ('history', '/studio/history?status=library', 'Videolar'),
         ('youtube', '/studio/youtube', 'Kanallar'),
@@ -2390,6 +2391,7 @@ def _nav(active: str) -> str:
     more = (
         '<details class="nav-more"><summary>Ayarlar</summary><div class="nav-more-menu">'
         '<a href="/studio/create">Video oluştur</a>'
+        '<a href="/studio/social">Sosyal yayınlar</a>'
         '<a href="/voice-audition">Anlatıcı sesleri</a>'
         '<a href="/studio/providers/abacus">Abacus bağlantısı</a></div></details>'
     )
