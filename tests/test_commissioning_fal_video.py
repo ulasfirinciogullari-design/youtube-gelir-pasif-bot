@@ -1,5 +1,6 @@
 """Actual worker routing and durable Fal receipts; all HTTP stays offline."""
 import json
+import sys
 
 import httpx
 import pytest
@@ -19,6 +20,9 @@ CREATED = {'request_id': REQUEST_ID, 'status_url': QUEUE + '/status', 'response_
 
 @pytest.fixture
 def fal_scene(scene, monkeypatch, reviewed_date):
+    # Legacy tests replace sys.modules['app.config'] during collection. Bind
+    # dynamic imports as well as the real config module patched by scene.
+    monkeypatch.setattr(sys.modules['app.config'], 'settings', scene.config)
     scene.config.studio_video_provider = 'fal'
     scene.config.studio_fal_video_model = 'auto'
     scene.config.fal_key = KEY
