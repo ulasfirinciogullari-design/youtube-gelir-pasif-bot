@@ -281,8 +281,12 @@ def _media_failures(box, monkeypatch, subtests):
             if mode == 'silence': assert render.ending_silence_duration(output) > 1.55
             if mode == 'freeze': assert render.max_freeze_duration(output) > 6
             if mode == 'trailing_freeze':
-                assert measured and measured[-1]['open_tail_seconds'] > 6
-                assert measured[-1]['max_freeze_seconds'] > 6
+                # The ordinary renderer now rejects the open tail before the
+                # retained consumer's independent second measurement runs.
+                assert render.max_freeze_duration(output) > 6
+                independent = actual_measure(consumer._ISSUED[value], output, 30.)
+                assert independent['open_tail_seconds'] > 6
+                assert independent['max_freeze_seconds'] > 6
             with pytest.raises(consumer.RetainedRenderError): consumer.render_retained_review(value, workdir=work)
             assert consumer._ISSUED[value]['phase'] == 'failed'
     unchanged(box)

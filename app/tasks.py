@@ -7014,6 +7014,14 @@ def run_video_pipeline(
             for r in (final_visual_qc.get('reviews') or [])
             if isinstance(r, dict) and str(r.get('scene_index', '')).lstrip('-').isdigit()
         }
+        from app.services.scene_motion_review import review_long_motion
+        motion_review_options = dict(options)
+        motion_voice_duration = (media_duration(voice_path)
+            if options.get('mode') == 'production' and options.get('format') == 'landscape'
+            and duration_minutes == 3 and len(scenes) == 30 else 0.)
+        final_reviews = review_long_motion(final_reviews, scene_visuals=scene_visuals,
+            scenes=scenes, scene_durations=scene_durations, voice_duration=motion_voice_duration,
+            options=motion_review_options, duration_minutes=duration_minutes, work=work)
         manual_qa_prepass_scenes = set(manual_qa_preview_scenes)
         manual_qa_prepass_scores = dict(manual_qa_preview_scores)
         manual_qa_prepass_identities = dict(manual_qa_preview_identities)
@@ -7595,6 +7603,10 @@ def run_video_pipeline(
                         continue
                     mapped_review = dict(rescue_reviews[position])
                     mapped_review['scene_index'] = scene_idx
+                    mapped_review = review_long_motion({scene_idx: mapped_review},
+                        scene_visuals=scene_visuals, scenes=scenes, scene_durations=scene_durations,
+                        voice_duration=motion_voice_duration, options=motion_review_options,
+                        duration_minutes=duration_minutes, work=work, default_fraction=.35)[scene_idx]
                     final_reviews[scene_idx] = mapped_review
                     selected_spec = _reviewed_visual_spec(
                         scene_visuals[scene_idx],

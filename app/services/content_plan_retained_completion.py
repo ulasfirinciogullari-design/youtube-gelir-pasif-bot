@@ -7,6 +7,7 @@ Neither path approves narration, facts, visuals, rendering or publication.
 from copy import deepcopy
 import hashlib
 import json
+import re
 import secrets
 from datetime import datetime, timezone, timedelta
 from urllib.parse import urlsplit
@@ -23,12 +24,19 @@ RENDER_ROOT = PREFIX + 'render_completion_root:'
 DEFERRED_ROOT = PREFIX + 'deferred_quota_root:'
 WINDOW_ROOT = PREFIX + 'cut_window_root:'
 ASSEMBLY_ROOT = PREFIX + 'assembly_memory_root:'
+MOTION_ROOT = PREFIX + 'motion_repair_root:'
 SOURCE_ERROR = 'Long documentary failed independent source or editorial review'
 QUOTA_ERROR = 'commissioning_video_provider_rejected'
 VISUAL_ERROR = 'Final visual quality gate rejected: '
 LOCAL_ERROR = 'Long-form retained job stopped without automatic restart: WatchError'
 RENDER_ERROR = 'Long-form retained job stopped without automatic restart: RuntimeError'
 ASSEMBLY_ERROR = 'Long-form retained job stopped without automatic restart: CalledProcessError'
+
+
+def _motion_failure(source):
+    match = re.fullmatch(r'Final motion gate rejected ([0-9]+\.[0-9])s static interval \(limit 6\.0s\)',
+                         str(source.get('error') or ''))
+    return bool(source.get('failure_stage') == 'render' and match and 6 < float(match[1]) <= 240)
 
 
 def operation(source):
@@ -53,7 +61,8 @@ def eligible(source):
              or (source.get('failure_stage') == 'final_visual_qc_ai_repair' and source.get('error') == LOCAL_ERROR
                  and plan._client().exists(DISPATCH + source['parent_id']))
              or (source.get('failure_stage') == 'render' and source.get('error') in {RENDER_ERROR, ASSEMBLY_ERROR}
-                 and plan._client().exists(DISPATCH + source['parent_id']))))
+                 and plan._client().exists(DISPATCH + source['parent_id']))
+             or (_motion_failure(source) and plan._client().exists(DISPATCH + source['parent_id']))))
 
 
 def _prior_completion(client, source):
@@ -64,10 +73,12 @@ def _prior_completion(client, source):
     assembly_failure = source.get('failure_stage') == 'render' and source.get('error') == ASSEMBLY_ERROR
     render_failure = source.get('failure_stage') == 'render' and source.get('error') in {RENDER_ERROR, ASSEMBLY_ERROR}
     deferred = bool(mode == 'sources' and claim['evidence'].get('recovery_of'))
+    motion_failure = _motion_failure(source)
     plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('assembly_of')
+        and not claim['evidence'].get('motion_of')
         and (not claim['evidence'].get('window_of') or assembly_failure)
         and (not claim['evidence'].get('render_of') or render_failure)
-        and not claim['evidence'].get('deferred_of')
+        and (not claim['evidence'].get('deferred_of') or motion_failure)
         and (not claim['evidence'].get('recovery_of') or render_failure or deferred)
         and claim.get('source_task_id') == parent and claim.get('task_id') == operation(parent)
         and client.get(EXECUTION + parent) == operation(parent)
@@ -75,6 +86,14 @@ def _prior_completion(client, source):
         and source['task_id'] == str(uuid5(NAMESPACE_URL, 'owner-plan-retained-completion-child:v1:' + parent)))
     previous = plan._object(client.get(jobs.JOB_PREFIX + parent))
     plan._require(pre.fingerprint(previous) == claim['evidence']['source_sha256'])
+    if motion_failure:
+        classification = source.get('failure_classification') or {}
+        plan._require(mode == 'sources' and claim['evidence'].get('deferred_of')
+            and classification.get('category') == 'content_rejected'
+            and classification.get('code') == 'render_quality_exhausted'
+            and classification.get('stage') == 'render'
+            and classification.get('error_sha256') == hashlib.sha256(source['error'].encode()).hexdigest())
+        return claim
     if render_failure:
         plan._require(mode == 'quota' and claim['evidence'].get('recovery_of'))
         terminal = plan._object(client.get('celery-task-meta-' + source['task_id']))
@@ -126,7 +145,7 @@ def _prior_completion(client, source):
 
 
 def _root_key(root, proof):
-    return (ASSEMBLY_ROOT if proof.get('assembly_of') else WINDOW_ROOT if proof.get('window_of') else DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
+    return (MOTION_ROOT if proof.get('motion_of') else ASSEMBLY_ROOT if proof.get('assembly_of') else WINDOW_ROOT if proof.get('window_of') else DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
             else REVIEW_ROOT if proof.get('review_of') else ROOT) + root
 
 
@@ -249,7 +268,8 @@ def _restored_sources(client, root, saved_source):
 def _video_records(client, root, ancestors, mode, *, child=None):
     from app.services import commissioning_video as video
     raw = client.get(video.PREFIX + root)
-    if mode == 'sources':
+    motion_failure = _motion_failure(ancestors[0])
+    if mode == 'sources' and not motion_failure:
         if raw is not None:
             journal = plan._object(raw)
             deferred = deferred_quota(client, ancestors[0])
@@ -267,6 +287,8 @@ def _video_records(client, root, ancestors, mode, *, child=None):
     records = {}; quotas = 0; names = {r['task_id'] for r in ancestors}
     for identity, row in journal['requests'].items():
         descriptor = row['request']
+        if motion_failure and child is not None and descriptor.get('continuation_task_id') == child:
+            continue  # New ordinary repairs retain their own durable request history.
         plan._require(identity == video._sha(video._raw(descriptor).encode())
             and descriptor.get('model') == video.MODEL and row.get('create')
             and descriptor.get('continuation_task_id') in names | {None})
@@ -278,8 +300,9 @@ def _video_records(client, root, ancestors, mode, *, child=None):
             plan._require(created.get('name') and created['name'] == result.get('name') and result.get('done') is True)
             try:
                 video._result(result)
-            except video.CommissionedVideoUnavailable:
-                plan._require((result.get('error') or {}).get('code') in {13, 14})
+            except video.CommissionedVideoUnavailable as exc:
+                plan._require((result.get('error') or {}).get('code') in {13, 14}
+                    or (motion_failure and str(exc) == 'commissioned_video_completed_filtered'))
         records[identity] = plan._sha(row)
     plan._require(quotas == 1 and 1 <= len(records) <= 32
         and len(records) <= sum(r['paid_create_slots_used'] for r in ancestors))
@@ -293,7 +316,8 @@ def checked(client, task, *, claimed=False):
     source = plan._object(client.get(jobs.JOB_PREFIX + plan._id(task))); spec = source.get('spec') or {}
     plan._require(eligible({**source, 'retry_child_task_id': None}) and source['task_id'] == task
         and voice._scope(spec) == ('long', 32) and spec.get('mode') == 'production')
-    prior = _prior_completion(client, source) if source['error'].startswith(VISUAL_ERROR) or source['error'] in {LOCAL_ERROR, RENDER_ERROR, ASSEMBLY_ERROR} else None
+    motion_failure = _motion_failure(source)
+    prior = _prior_completion(client, source) if motion_failure or source['error'].startswith(VISUAL_ERROR) or source['error'] in {LOCAL_ERROR, RENDER_ERROR, ASSEMBLY_ERROR} else None
     mode = prior['evidence']['mode'] if prior else ('quota' if source['error'] == QUOTA_ERROR else 'sources')
     dispatch = plan._object(client.get(plan.DISPATCH_PREFIX + plan._id(spec['content_plan_item_id'])))
     root = dispatch['task_id']; ancestors = []; current = source
@@ -321,7 +345,7 @@ def checked(client, task, *, claimed=False):
             and not client.exists(jobs.RETRY_DISPATCH_PREFIX + task))
     terminal = plan._object(client.get('celery-task-meta-' + task)); failure = terminal.get('result') or {}
     plan._require(terminal.get('task_id') == task and terminal.get('status') == 'FAILURE'
-        and failure.get('exc_type') == ('FinalVisualQualityError' if prior else
+        and failure.get('exc_type') == ('ProductionContentError' if motion_failure else 'FinalVisualQualityError' if prior else
                                       'SpendBlocked' if mode == 'quota' else 'ProductionContentError')
         and failure.get('exc_message') == [source['error']]
         and (', in run_video_pipeline\n' if prior else ', in _payload\n' if mode == 'quota'
@@ -364,9 +388,15 @@ def checked(client, task, *, claimed=False):
         'restored_source': _restored_sources(client, root, saved) if mode == 'sources' and not prior else None}
     if prior:
         deferred = deferred_quota(client, source)
-        plan._require(proof['video_records'] == (deferred['video_records'] if deferred else prior['evidence']['video_records']))
+        if motion_failure:
+            plan._require(proof['video_records'] and all(proof['video_records'].get(key) == digest
+                for key, digest in prior['evidence']['video_records'].items()))
+        else:
+            plan._require(proof['video_records'] == (deferred['video_records'] if deferred else prior['evidence']['video_records']))
         proof.update(review_of=source['parent_id'], previous_completion_sha256=plan._sha(prior))
-        if deferred:
+        if motion_failure:
+            proof['motion_of'] = source['parent_id']
+        elif deferred:
             if not claimed:
                 plan._require(datetime.now(timezone.utc) >= datetime.fromisoformat(deferred['retry_at']),
                               'plan_video_quota_waiting')
@@ -454,7 +484,7 @@ def prepare(task, source_id, spec, work):
         for index, clip in found.items(): clips[index] = [deepcopy(clip), *clips.get(index, [])][:3]
     prepared['retained_long_clips'] = media.RetainedClips(clips, token=media._TOKEN)
     jobs.update_job(task, retained_long_media={'source_task_id': source_id, 'retained_clips': len(clips),
-        'stock_only': proof['mode'] == 'quota', 'new_tts_requests': 0, 'requires_full_qa': True,
+        'stock_only': proof['mode'] == 'quota' or bool(proof.get('motion_of')), 'new_tts_requests': 0, 'requires_full_qa': True,
         'restored_public_sources': len(restored['sources']) if restored else 0})
     return prepared
 
@@ -467,7 +497,7 @@ def stock_only_scope(scope):
     if not source or not client.exists(DISPATCH + source): return False
     _, root, proof = verify_child(task, source, child['spec'], client=client)
     plan._require(root == scope['context']['lineage_id'])
-    return proof['mode'] == 'quota'
+    return proof['mode'] == 'quota' or bool(proof.get('motion_of'))
 
 
 def continuation_identity(scope):

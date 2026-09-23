@@ -139,22 +139,27 @@ def ending_silence_duration(path: str | Path, noise_db: int = -45) -> float:
 
 
 def max_freeze_duration(path: str | Path, minimum_seconds: float = 2.0) -> float:
-    """Measure the longest near-static interval in a rendered master."""
+    """Measure near-static intervals, including an interval at the last frame."""
     completed = subprocess.run([
-        'ffmpeg', '-hide_banner', '-nostats', '-i', str(path),
-        '-map', '0:v:0', '-vf',
+        'ffmpeg', '-hide_banner', '-nostats', '-threads', '1', '-filter_threads', '1',
+        '-i', str(path), '-map', '0:v:0', '-vf',
         f'scale=320:-2,freezedetect=n=-40dB:d={minimum_seconds:.2f}',
         '-an', '-f', 'null', '-',
     ], capture_output=True, text=True, check=False)
     if completed.returncode != 0:
-        raise RuntimeError('Horizontal letterbox inspection failed')
-    durations = [
-        float(value) for value in re.findall(
-            r'lavfi\.freezedetect\.freeze_duration:\s*([0-9.]+)',
-            completed.stderr or '',
-        )
-    ]
-    return max(durations, default=0.0)
+        raise RuntimeError('Video motion inspection failed')
+    intervals, start = [], None
+    for kind, value in re.findall(
+            r'lavfi\.freezedetect\.freeze_(start|end):\s*([0-9.]+)', completed.stderr or ''):
+        instant = float(value)
+        if kind == 'start':
+            start = instant
+        elif start is not None:
+            intervals.append(max(0., instant - start))
+            start = None
+    if start is not None:
+        intervals.append(max(0., _video_timeline_duration(path) - start))
+    return max(intervals, default=0.)
 
 
 def max_horizontal_letterbox_duration(
