@@ -65,6 +65,10 @@ def generate(scope, prompt, seconds, aspect_ratio):
     from app.services.content_plan_retained_completion import stock_only_scope
     if stock_only_scope(scope):
         raise video.CommissionedVideoUnavailable('commissioned_video_quota_stock_rescue')
+    from app.services.content_plan_retained_completion import continuation_identity
+    continuation_task = continuation_identity(scope)
+    if continuation_task is not None:
+        descriptor['continuation_task_id'] = continuation_task
     journal = _Journal(scope, descriptor, secret)
     return generate_fal_video(prompt, seconds, aspect_ratio=aspect_ratio,
                               model=model, _journal=journal)

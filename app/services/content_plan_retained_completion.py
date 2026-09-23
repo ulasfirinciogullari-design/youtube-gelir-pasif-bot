@@ -27,6 +27,7 @@ WINDOW_ROOT = PREFIX + 'cut_window_root:'
 ASSEMBLY_ROOT = PREFIX + 'assembly_memory_root:'
 MOTION_ROOT = PREFIX + 'motion_repair_root:'
 INTERRUPTION_ROOT = PREFIX + 'removed_worker_root:'
+VISUAL_COMPLETION_ROOT = PREFIX + 'bounded_visual_completion_root:'
 SOURCE_ERROR = 'Long documentary failed independent source or editorial review'
 QUOTA_ERROR = 'commissioning_video_provider_rejected'
 VISUAL_ERROR = 'Final visual quality gate rejected: '
@@ -39,6 +40,13 @@ def _motion_failure(source):
     match = re.fullmatch(r'Final motion gate rejected ([0-9]+\.[0-9])s static interval \(limit 6\.0s\)',
                          str(source.get('error') or ''))
     return bool(source.get('failure_stage') == 'render' and match and 6 < float(match[1]) <= 240)
+
+
+def _post_stock_failure(source):
+    retained = source.get('retained_long_media') or {}
+    return bool(source.get('failure_stage') == 'final_visual_qc_rescue'
+        and str(source.get('error') or '').startswith(VISUAL_ERROR)
+        and retained.get('stock_only') is True and retained.get('new_tts_requests') == 0)
 
 
 def operation(source):
@@ -89,8 +97,15 @@ def _prior_completion(client, source):
     render_failure = source.get('failure_stage') == 'render' and source.get('error') in {RENDER_ERROR, ASSEMBLY_ERROR}
     deferred = bool(mode == 'sources' and claim['evidence'].get('recovery_of'))
     motion_failure = _motion_failure(source)
+    post_stock = _post_stock_failure(source)
+    if post_stock:
+        plan._require(mode == 'sources' and (claim['evidence'].get('motion_of')
+            or claim['evidence'].get('interruption_of')) and not claim['evidence'].get('visual_completion_of')
+            and (source.get('audio_candidate_checkpoint') or {}).get('audio_sha256')
+                == claim['evidence']['transcript']['audio_sha256'])
     plan._require(mode in {'quota', 'sources'} and not claim['evidence'].get('assembly_of')
-        and not claim['evidence'].get('motion_of')
+        and not claim['evidence'].get('visual_completion_of')
+        and (not claim['evidence'].get('motion_of') or post_stock)
         and (not claim['evidence'].get('window_of') or assembly_failure)
         and (not claim['evidence'].get('render_of') or render_failure)
         and (not claim['evidence'].get('deferred_of') or motion_failure)
@@ -160,7 +175,7 @@ def _prior_completion(client, source):
 
 
 def _root_key(root, proof):
-    return (INTERRUPTION_ROOT if proof.get('interruption_of') else MOTION_ROOT if proof.get('motion_of') else ASSEMBLY_ROOT if proof.get('assembly_of') else WINDOW_ROOT if proof.get('window_of') else DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
+    return (VISUAL_COMPLETION_ROOT if proof.get('visual_completion_of') else INTERRUPTION_ROOT if proof.get('interruption_of') else MOTION_ROOT if proof.get('motion_of') else ASSEMBLY_ROOT if proof.get('assembly_of') else WINDOW_ROOT if proof.get('window_of') else DEFERRED_ROOT if proof.get('deferred_of') else RENDER_ROOT if proof.get('render_of') else RECOVERY_ROOT if proof.get('recovery_of')
             else REVIEW_ROOT if proof.get('review_of') else ROOT) + root
 
 
@@ -285,7 +300,8 @@ def _video_records(client, root, ancestors, mode, *, child=None):
     raw = client.get(video.PREFIX + root)
     motion_failure = _motion_failure(ancestors[0])
     interrupted = interruption.eligible(ancestors[0])
-    if mode == 'sources' and not (motion_failure or interrupted):
+    post_stock = _post_stock_failure(ancestors[0])
+    if mode == 'sources' and not (motion_failure or interrupted or post_stock):
         if raw is not None:
             journal = plan._object(raw)
             deferred = deferred_quota(client, ancestors[0])
@@ -303,7 +319,11 @@ def _video_records(client, root, ancestors, mode, *, child=None):
     records = {}; quotas = 0; names = {r['task_id'] for r in ancestors}
     for identity, row in journal['requests'].items():
         descriptor = row['request']
-        if motion_failure and child is not None and descriptor.get('continuation_task_id') == child:
+        if (motion_failure or post_stock) and child is not None and descriptor.get('continuation_task_id') == child:
+            plan._require(identity == video._sha(video._raw(descriptor).encode()))
+            if post_stock:
+                rejected = json.loads(ancestors[0]['error'][len(VISUAL_ERROR):])['rejected']
+                plan._require(str(descriptor.get('scene_index')) in rejected)
             continue  # New ordinary repairs retain their own durable request history.
         plan._require(identity == video._sha(video._raw(descriptor).encode())
             and descriptor.get('model') == video.MODEL and row.get('create')
@@ -318,7 +338,7 @@ def _video_records(client, root, ancestors, mode, *, child=None):
                 video._result(result)
             except video.CommissionedVideoUnavailable as exc:
                 plan._require((result.get('error') or {}).get('code') in {13, 14}
-                    or ((motion_failure or interrupted) and str(exc) == 'commissioned_video_completed_filtered'))
+                    or ((motion_failure or interrupted or post_stock) and str(exc) == 'commissioned_video_completed_filtered'))
         records[identity] = plan._sha(row)
     plan._require(quotas == 1 and 1 <= len(records) <= 32
         and len(records) <= sum(r['paid_create_slots_used'] for r in ancestors))
@@ -414,7 +434,23 @@ def checked(client, task, *, claimed=False):
         else:
             plan._require(proof['video_records'] == (deferred['video_records'] if deferred else prior['evidence']['video_records']))
         proof.update(review_of=source['parent_id'], previous_completion_sha256=plan._sha(prior))
-        if interrupted:
+        if _post_stock_failure(source):
+            rejected = sorted(int(i) for i in json.loads(source['error'][len(VISUAL_ERROR):])['rejected'])
+            from app.services import commissioning_video as native_video
+            journal = plan._object(client.get(native_video.PREFIX + root))
+            # A completed provider filter is never a reason to try that scene
+            # through another route. Successful existing scenes are also kept.
+            filtered = []
+            for row in journal['requests'].values():
+                if not row.get('result') or row['request'].get('model') != native_video.MODEL:
+                    continue
+                response = native_video._payload(row['result']).get('response', {}).get('generateVideoResponse', {})
+                if response.get('raiMediaFilteredCount', 0):
+                    filtered.append(row['request'].get('scene_index'))
+            plan._require(not set(rejected) & set(filtered) and len(proof['video_records']) < 32,
+                          'plan_visual_completion_capacity_or_filter')
+            proof.update(visual_completion_of=source['parent_id'], generation_scenes=rejected)
+        elif interrupted:
             proof['interruption_of'] = source['parent_id']
             proof['interruption_sha256'] = plan._sha(interruption.proof(client, source))
         elif motion_failure:
@@ -520,6 +556,10 @@ def stock_only_scope(scope):
     if not source or not client.exists(DISPATCH + source): return False
     _, root, proof = verify_child(task, source, child['spec'], client=client)
     plan._require(root == scope['context']['lineage_id'])
+    if proof.get('visual_completion_of'):
+        # Only the recorded rejected scene indices may use the unchanged
+        # original root's remaining 32-request journal. Never a fresh cap.
+        return scope.get('scene_index') not in proof['generation_scenes']
     return proof['mode'] == 'quota' or bool(proof.get('motion_of') or proof.get('interruption_of'))
 
 
