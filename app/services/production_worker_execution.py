@@ -79,6 +79,10 @@ def record_start(request):
         raw = pipe.get(job_key)
         _require(type(raw) is str and 0 < len(raw) <= 2_000_000)
         job = json.loads(raw)
+        from app.services.content_plan_interruption import PREFIX as removed_completion
+        pipe.watch(removed_completion + task_id)
+        if pipe.exists(removed_completion + task_id):
+            raise _RecordedExecution()
         if (job.get('kind') != 'render' or job.get('parent_id') is not None
                 or (job.get('spec') or {}).get('production_scheduled') is not True):
             return
