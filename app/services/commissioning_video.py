@@ -162,7 +162,7 @@ def _journal(pipe, key, context):
 
 
 @_local_transaction
-def _reserve(scope, descriptor):
+def _reserve(scope, descriptor, *, pin_scene=False):
     foundation, context = scope['foundation'], scope['context']
     key = PREFIX + context['lineage_id']
     identity = _sha(_raw(descriptor).encode())
@@ -177,6 +177,15 @@ def _reserve(scope, descriptor):
             _require(prior['create'] is not None, 'commissioning_video_previous_outcome_unknown')
             pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
             return key, identity, prior
+        # A route/key/model change must never replace a possibly accepted Fal
+        # request, including when the operator rolls back to direct Gemini.
+        for row in journal['requests'].values():
+            previous = row['request']
+            if ((pin_scene or str(previous.get('route', '')).startswith('https://queue.fal.run/'))
+                    and previous['package_sha256'] == descriptor['package_sha256']
+                    and previous['scene_index'] == descriptor['scene_index']
+                    and row['result'] is None):
+                raise SpendBlocked('commissioning_video_existing_route_pinned')
         cap = 32 if context.get('kind') == 'long' else getattr(settings, 'studio_production_short_paid_create_cap', 2)
         _require(type(cap) is int and 2 <= cap <= (32 if context.get('kind') == 'long' else 6) and len(journal['requests']) < cap,
                  'commissioning_video_episode_capacity')
@@ -304,6 +313,10 @@ def generate_if_commissioned(prompt, seconds, aspect_ratio):
     scope = _SCENE.get()
     if scope is None:
         return None
+    from app.services.fal_video_catalog import primary_enabled
+    if primary_enabled(settings):
+        from app.services.commissioning_fal_video import generate
+        return generate(scope, prompt, seconds, aspect_ratio)
     _require(enabled_for_task() and type(prompt) is str and bool(prompt.strip())
         and len(prompt.encode('utf-16-le')) // 2 <= 1000
         and type(seconds) is int and 2 <= seconds <= 8

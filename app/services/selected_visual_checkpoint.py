@@ -39,6 +39,7 @@ _SELECTION_OPTIONAL = {'generated', 'preserve_start_fraction', 'synthetic_motion
                        'generation_provider', 'generation_provider_attempts',
                        'motion_recipe_version', 'pexels_id'}
 _PROVIDERS = {'pexels', 'runway', 'gemini_veo', 'fal', 'replicate', 'openai', 'gemini_image_motion',
+              'fal_veo_lite', 'fal_seedance_15_pro', 'fal_seedance_1_fast',
               'gemini_veo_fast', 'gemini_veo_standard', 'gemini_omni', 'fal_seedance_2_fast'}
 
 

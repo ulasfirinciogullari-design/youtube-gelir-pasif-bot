@@ -126,6 +126,10 @@ def describe_video_request(provider, operation, payload, quote):
             'aspect_ratio': params['aspectRatio'], 'resolution': params['resolution'],
             'audio': True, 'sample_count': 1, 'price_revision': checked.price_revision,
         }
+    elif provider == 'fal' and type(operation) is str and operation.startswith('/'):
+        from app.services.fal_video_catalog import describe_request, quote_request
+        checked = quote_request(operation[1:], payload)
+        descriptor = describe_request(operation[1:], payload)
     else:
         return None  # Text/voice review does not consume a video-scene allowance.
     _require(checked == quote, 'spend_quote_binding_invalid')
@@ -329,6 +333,9 @@ def quote_http_request(url, kwargs):
         _require(type(kwargs) is dict and set(kwargs) <= {'json', 'headers', 'params', 'timeout'})
         return 'elevenlabs', parsed.path, _elevenlabs_quote(url, kwargs)
     _require(type(kwargs) is dict and set(kwargs) <= {'json', 'headers', 'timeout'})
+    if parsed.hostname == 'queue.fal.run':
+        from app.services.fal_video_catalog import quote_request
+        return 'fal', parsed.path, quote_request(parsed.path[1:], kwargs.get('json'))
     if parsed.hostname == 'routellm.abacus.ai' and parsed.path == '/v1/messages':
         body = kwargs.get('json')
         messages = body.get('messages') if type(body) is dict else None

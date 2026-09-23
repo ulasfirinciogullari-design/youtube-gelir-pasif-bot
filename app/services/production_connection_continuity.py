@@ -56,6 +56,7 @@ _POINTER_FIELDS = {*_CANDIDATE_FLAGS, 'source_task_id', 'status', 'scene_index',
 _AUDIO_FIELDS = {'version', 'status', 'qa_approved', 'requires_full_qa', 'audio_key',
                  'metadata_key', 'audio_sha256', 'metadata_sha256', 'package_sha256', 'size'}
 _PROVIDERS = {'runway', 'fal_seedance_2_fast', 'gemini_omni', 'gemini_veo',
+              'fal_veo_lite', 'fal_seedance_15_pro', 'fal_seedance_1_fast',
               'gemini_veo_fast', 'gemini_veo_standard'}
 
 

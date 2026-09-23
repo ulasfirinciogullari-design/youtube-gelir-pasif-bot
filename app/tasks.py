@@ -196,6 +196,9 @@ _RECOVERED_MEDIA_KEY_PATTERN = re.compile(
 _RECOVERED_MEDIA_PROVIDERS = {
     'runway',
     'fal_seedance_2_fast',
+    'fal_veo_lite',
+    'fal_seedance_15_pro',
+    'fal_seedance_1_fast',
     'gemini_omni',
     'gemini_veo',
     'gemini_veo_fast',
