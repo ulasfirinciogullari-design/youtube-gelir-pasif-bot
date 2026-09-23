@@ -474,6 +474,13 @@ def prepare_next_series(profile, channel, *, now=None, execution_binding=None):
             if prior_topics:
                 generation_context = {**generation_context, 'previous_topics': prior_topics}
             try:
+                from app.services.audience_trends import planning_context
+                demand = planning_context(profile, client=client)
+                if demand:
+                    generation_context = {**generation_context, 'demand_signals': demand}
+            except Exception:
+                pass  # A trend feed outage cannot stop an existing series.
+            try:
                 from app.services.youtube_analytics import editorial_guidance
                 guidance = editorial_guidance(channel_id)
                 if guidance:

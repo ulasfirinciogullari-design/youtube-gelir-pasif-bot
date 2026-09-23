@@ -59,10 +59,12 @@ def paid_credit_post(sender, url, kwargs):
         foundation = runtime.configured_ledger()
         ledger = CreditLedger(foundation.client, foundation=foundation, clock=foundation.clock)
         binding = ledger.binding_snapshot()
+        from app.services.narrator_rotation import route
+        rotating = prepared.voice_id in binding.get('additional_voice_ids', [])
         if (binding['credential_sha256'] != prepared.credential_sha256
-                or binding['route'] != prepared.route
+                or (route(prepared.voice_id) if rotating else binding['route']) != prepared.route
                 or prepared.model not in [binding['model'], *binding.get('additional_models', [])]
-                or binding['voice_id'] != prepared.voice_id):
+                or (not rotating and binding['voice_id'] != prepared.voice_id)):
             raise SpendBlocked('credit_actual_binding_mismatch')
 
         context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
@@ -86,6 +88,8 @@ def paid_credit_post(sender, url, kwargs):
             'source_connection_id': context['connection_id'], 'request_sha256': fingerprint,
             'route': prepared.route, 'model': prepared.model, 'voice_id': prepared.voice_id,
         }
+        if rotating:
+            intent['voice_pool_sha256'] = binding['voice_pool_sha256']
         if context['kind'] == 'long':
             intent['production_kind'] = 'long'
         actual = {'actual_account_sha256': binding['account_sha256'],

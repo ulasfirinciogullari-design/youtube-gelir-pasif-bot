@@ -262,19 +262,36 @@ def dashboard():
     return result
 
 
-def editorial_guidance(channel_id):
+def editorial_guidance(channel_id, *, content_type='SHORTS'):
     """Observational hints only; small samples, stale or mixed formats never rank."""
     channel = next((row for row in dashboard()['channels'] if row['channel_id'] == channel_id), None)
     if not channel or channel['status'] != 'fresh':
         return None
-    eligible = [row for row in channel['videos'].values() if row['content_type'] == 'SHORTS' and _sample(row) >= 100]
+    if content_type not in {'SHORTS', 'VIDEO_ON_DEMAND'}:
+        return None
+    eligible = [row for row in channel['videos'].values() if row['content_type'] == content_type and _sample(row) >= 100]
     if len(eligible) < 3:
         return None
     ordered = sorted(eligible, key=lambda row: row['averageViewPercentage'], reverse=True)
-    return {'basis': 'observational_28_day_shorts_only_minimum_100_engaged_views_each',
+    drops = []
+    for row in eligible:
+        points = row.get('retention') or []
+        if len(points) < 3:
+            continue
+        # A measured local drop is a revision hypothesis, not causal proof.
+        first, last = max(zip(points, points[1:]), key=lambda pair: pair[0][1] - pair[1][1])
+        if first[1] - last[1] >= .1:
+            drops.append({'title': row['title'], 'from_fraction': first[0], 'to_fraction': last[0],
+                'watch_ratio_drop': round(first[1] - last[1], 3)})
+    return {'basis': ('observational_28_day_shorts_only_minimum_100_engaged_views_each' if content_type == 'SHORTS'
+            else 'observational_28_day_long_videos_only_minimum_100_views_each'),
+        'content_type': content_type,
         'sample_size': len(eligible), 'higher_retention_examples': [
             {'title': row['title'], 'average_view_percentage': row['averageViewPercentage'],
              'average_view_seconds': row['averageViewDuration']} for row in ordered[:2]],
+        'observed_drop_examples': drops[:3],
         'instruction': 'Use these as tentative format/hook inspiration, never repeat their topics. '
+            'Review pacing near observed drops; test clearer setup and earlier evidence without copying topics. '
+            'Do not infer an optimal duration or automatic ranking from these averages. '
             'This small observational sample does not establish causality or predict reach. '
             'Keep primary-source, language, stock-footage, quality and spending requirements unchanged.'}

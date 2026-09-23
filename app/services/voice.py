@@ -919,7 +919,9 @@ def synthesize_scene_sequence(
         raise VoiceScriptFitError('Voice replacement profile requires one reserved Turkish short take')
     if (before_paid_request is not None or raw_audio_sink is not None) and profile_override is None:
         raise VoiceScriptFitError('Voice replacement reservation requires an explicit profile')
-    selected = _selected_voice_or_raise()
+    from app.services.narrator_rotation import assigned as assigned_narrator
+    selected = assigned_narrator(language) if profile_override is None else None
+    selected = selected or _selected_voice_or_raise()
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
     short_preview = bool(target_seconds and 0 < target_seconds <= 40)
@@ -1058,6 +1060,7 @@ def synthesize_scene_sequence(
         'scene_durations': scene_durations,
         'spoken_texts': spoken,
         'voice_name': selected.get('name'),
+        'voice_id': voice_id,
         'voice_model': (
             ELEVENLABS_TURKISH_SHORT_MODEL_ID
             if turkish_short_preview

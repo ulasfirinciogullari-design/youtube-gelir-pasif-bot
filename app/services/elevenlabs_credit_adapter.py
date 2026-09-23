@@ -88,6 +88,7 @@ class PreparedCreditRequest:
 
     _body_bytes: bytes
     _header_pairs: tuple
+    _voice_id: str = VOICE_ID
 
     def __repr__(self):
         return '<PreparedCreditRequest elevenlabs native credits redacted>'
@@ -98,11 +99,11 @@ class PreparedCreditRequest:
 
     @property
     def operation(self):
-        return _OPERATION
+        return '/v1/text-to-speech/' + self._voice_id + '/with-timestamps'
 
     @property
     def route(self):
-        return ROUTE
+        return 'https://api.elevenlabs.io' + self.operation
 
     @property
     def model(self):
@@ -110,7 +111,7 @@ class PreparedCreditRequest:
 
     @property
     def voice_id(self):
-        return VOICE_ID
+        return self._voice_id
 
     @property
     def credential_sha256(self):
@@ -132,7 +133,9 @@ def inspect_credit_request(url, kwargs):
     No account/root authority or financially initialized state is implied.
     """
     code = _REQUEST_ERROR
-    _require(type(url) is str and url == ROUTE, code)
+    from app.services.narrator_rotation import VOICE_IDS, route
+    voice = next((voice for voice in VOICE_IDS if type(url) is str and url == route(voice)), None)
+    _require(voice is not None, code)
     _require(type(kwargs) is dict and set(kwargs) == {'json', 'headers', 'params', 'timeout'}, code)
     params = kwargs['params']
     _require(type(params) is dict and set(params) == {'output_format'}
@@ -147,7 +150,7 @@ def inspect_credit_request(url, kwargs):
              and normalized['content-type'] == 'application/json', code)
     key = normalized['xi-api-key']
     _require(1 <= len(key) <= 8192 and all(32 < ord(c) < 127 for c in key), code)
-    return PreparedCreditRequest(_body(kwargs['json']), tuple(sorted(normalized.items())))
+    return PreparedCreditRequest(_body(kwargs['json']), tuple(sorted(normalized.items())), voice)
 
 
 def _unique_headers(headers, code, *, names=None):
@@ -189,7 +192,7 @@ def _json_body(raw):
 def _verify_wire_request(prepared, request):
     code = _RESPONSE_ERROR
     _require(type(request) is httpx.Request and request.method == 'POST'
-             and str(request.url.copy_with(query=None)) == ROUTE
+             and str(request.url.copy_with(query=None)) == prepared.route
              and list(request.url.params.multi_items()) == [('output_format', _FORMAT)], code)
     headers = _unique_headers(request.headers, code)
     allowed = {'xi-api-key', 'accept', 'content-type', 'host', 'content-length',

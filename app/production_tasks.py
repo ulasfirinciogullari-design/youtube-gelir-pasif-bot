@@ -70,6 +70,44 @@ def observe_youtube_analytics() -> dict:
     return refresh([])
 
 
+@celery.task(name='app.production_tasks.observe_audience_trends', acks_late=False,
+             autoretry_for=(), max_retries=0, soft_time_limit=100, time_limit=110)
+def observe_audience_trends() -> dict:
+    try:
+        from app.services.audience_trends import refresh
+        return refresh()
+    except Exception:
+        return {'status': 'unavailable'}
+
+
+@celery.task(name='app.production_tasks.localize_published_video', bind=True,
+             acks_late=False, autoretry_for=(), max_retries=0, soft_time_limit=1150, time_limit=1200)
+@spending_task
+def localize_published_video(self, source_task_id: str) -> dict:
+    from app.services import video_localization as languages, studio_state
+    try:
+        result = languages.run(source_task_id, self.request.id)
+        studio_state.mark_success(self.request.id, result)
+        return result
+    except Exception as error:
+        from app.services.production_spend import SpendBlocked
+        code = str(error) if isinstance(error, (SpendBlocked, ValueError)) else type(error).__name__
+        if len(code) > 100 or not all(c.isalnum() or c == '_' for c in code):
+            code = 'localization_unavailable'
+        studio_state.mark_failure(self.request.id, code)
+        return {'status': 'waiting', 'reason': code}
+
+
+@celery.task(name='app.production_tasks.maintain_video_languages', acks_late=False,
+             autoretry_for=(), max_retries=0, soft_time_limit=45, time_limit=55)
+def maintain_video_languages() -> dict:
+    try:
+        from app.services.video_localization import maintain
+        return maintain()
+    except Exception:
+        return {'status': 'unavailable'}
+
+
 @celery.task(name='app.production_tasks.production_tick', acks_late=False,
              autoretry_for=(), max_retries=0, soft_time_limit=110, time_limit=120)
 def production_tick() -> dict:

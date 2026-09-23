@@ -126,6 +126,8 @@ class CreditLedger:
         from app.services.production_cash_disabled import ANCHOR_KEY
         from app.services.production_credit_periods import HISTORY_KEY, HISTORY_ANCHOR
         pipe.watch(STATE_KEY, JOURNAL_KEY, LEDGER_KEY, ANCHOR_KEY, HISTORY_KEY, HISTORY_ANCHOR)
+        from app.services.narrator_rotation import GRANT_KEY
+        pipe.watch(GRANT_KEY)
 
     def _foundation_base(self, pipe, now):
         if self.foundation is None:
@@ -310,6 +312,9 @@ class CreditLedger:
                     if policy['version'] == 2:
                         result['additional_models'] = list(policy['additional_models'])
                     result['policy_sha256'] = _hash(policy)
+                    from app.services.narrator_rotation import grant, VOICE_IDS, POOL_SHA256
+                    if grant(pipe, policy) is not None:
+                        result.update(additional_voice_ids=sorted(VOICE_IDS), voice_pool_sha256=POOL_SHA256)
                     self._ping(pipe)
                     return result
             except WatchError:
@@ -334,6 +339,9 @@ class CreditLedger:
                     production_field = None
                     if operation is reserve_credit_intent and self.foundation is not None:
                         request = values['intent']
+                        if 'voice_pool_sha256' in request:
+                            from app.services.narrator_rotation import grant
+                            _require(grant(pipe, policy) is not None, 'credit_voice_grant_missing')
                         _require(production_context == self._context(request),
                                  'credit_production_context_invalid')
                         if (production_context or {}).get('kind') == 'long':
@@ -348,6 +356,9 @@ class CreditLedger:
                         production_field = 'native_request:' + identity
                     elif production_context is not None:
                         raise SpendBlocked('credit_production_context_invalid')
+                    if (operation is reserve_credit_intent and 'voice_pool_sha256' in values['intent']
+                            and self.foundation is None):
+                        raise SpendBlocked('credit_foundation_required')
                     updated, receipt = operation(policy, state, now=now, **values)
                     if updated == state:
                         self._ping(pipe)

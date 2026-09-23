@@ -136,7 +136,7 @@ def _metadata(path, source, source_id):
     return data, ' '.join(' '.join(texts).split())
 
 
-def _probe(path, *, image=False):
+def _probe(path, *, image=False, expected_duration=30.0):
     entries = 'stream=codec_type,codec_name,width,height' if image else 'stream=codec_type,codec_name,width,height,nb_read_frames,avg_frame_rate,duration'
     command = ['ffprobe', '-v', 'error', '-protocol_whitelist', 'file,pipe']
     if not image:
@@ -155,11 +155,14 @@ def _probe(path, *, image=False):
                  and type(video.get('width')) is int and 640 <= video['width'] <= 4096
                  and type(video.get('height')) is int and 360 <= video['height'] <= 4096)
         return video
+    _require(type(expected_duration) in (int, float) and math.isfinite(expected_duration)
+             and 30 <= expected_duration <= 35)
     duration = float(video.get('duration', 'nan'))
     _require(len(streams) == 2 and len([s for s in streams if s.get('codec_type') == 'audio']) == 1
              and video.get('codec_name') == 'h264' and video.get('width') == 1080 and video.get('height') == 1920
-             and video.get('avg_frame_rate') == '30/1' and str(video.get('nb_read_frames')) == '900'
-             and math.isfinite(duration) and abs(duration - 30.0) <= .034)
+             and video.get('avg_frame_rate') == '30/1'
+             and str(video.get('nb_read_frames')) == str(round(expected_duration * 30))
+             and math.isfinite(duration) and abs(duration - expected_duration) <= .034)
     return duration
 
 
@@ -221,7 +224,14 @@ def prepare_publication_recovery_assets(source_job, *, source_task_id, work_dir)
                           {'video/mp4'}, result.get('video_sha256'))
         with Path(final['path']).open('rb') as source:
             _require(source.read(12)[4:8] == b'ftyp')
-        duration = _probe(Path(final['path']))
+        # Modern edits include the already-reviewed speech tail. Require both
+        # retained records and the real frame count to agree; legacy records
+        # without a duration still require exactly the old 30-second master.
+        expected_duration = result.get('duration', 30.0)
+        if 'duration' in result:
+            _require(isinstance(data.get('render'), dict)
+                     and data['render'].get('duration') == expected_duration)
+        duration = _probe(Path(final['path']), expected_duration=expected_duration)
         caption = _download(client, keys['caption'], work / f'captions.{language}.srt', MAX_CAPTION_BYTES,
                             {'application/x-subrip', 'application/octet-stream', 'text/plain'}, result.get('caption_sha256'))
         _caption(Path(caption['path']), duration, narration)
