@@ -24,7 +24,7 @@ HOSTS = frozenset({'www.federalreserve.gov', 'www.ecb.europa.eu', 'www.usmint.go
     'www.lego.com', 'www.nintendo.co.jp', 'www.nintendo.com', 'www.ibm.com', 'www.gs1us.org',
     'www.okhistory.org', 'global.toyota', 'corporate.mcdonalds.com', 'www.mcdonalds.com',
     'about.ups.com', 'www.fedex.com', 'www.aboutamazon.com', 'www.coca-colacompany.com',
-    'www.sony.com'})
+    'www.sony.com', 'www.apple.com', 'blog.google'})
 GOLDMAN_REFERENCE = 'https://www.si.edu/object/goldmans-folding-basket-carriage%3Anmah_1216280'
 GOLDMAN_BACKUP_SOURCES = (
     'https://www.okhistory.org/historycenter/atour',
@@ -52,7 +52,9 @@ PENNY_BACKUP_SOURCES = (
     'https://www.federalreserve.gov/faqs/what-is-the-federal-reserves-role-in-the-circulation-of-coins.htm',
 )
 FEEDS = ('https://www.federalreserve.gov/feeds/press_all.xml',
-         'https://www.ecb.europa.eu/rss/press.html')
+         'https://www.ecb.europa.eu/rss/press.html',
+         'https://www.apple.com/newsroom/rss-feed.rss',
+         'https://blog.google/rss/')
 MAX_BYTES = 1024 * 1024
 
 
@@ -169,12 +171,22 @@ def feed_candidates(*, now=None):
             _require(mime in ('application/rss+xml', 'application/xml', 'text/xml'))
             _require(b'<!DOCTYPE' not in body.upper() and b'<!ENTITY' not in body.upper())
             root = ElementTree.fromstring(body)
-            for item in root.findall('./channel/item')[:40]:
+            atom = '{http://www.w3.org/2005/Atom}'
+            items = root.findall('./channel/item') or root.findall(atom + 'entry')
+            for item in items[:40]:
                 try:
-                    url = _url((item.findtext('link') or '').strip())
-                    date = parsedate_to_datetime(item.findtext('pubDate') or '')
+                    if item.tag == atom + 'entry':
+                        links = [link for link in item.findall(atom + 'link')
+                                 if link.get('rel', 'alternate') == 'alternate']
+                        url = _url(links[0].get('href', '') if links else '')
+                        date = datetime.fromisoformat((item.findtext(atom + 'published') or
+                            item.findtext(atom + 'updated') or '').replace('Z', '+00:00'))
+                        title = _text(item.findtext(atom + 'title') or '')
+                    else:
+                        url = _url((item.findtext('link') or '').strip())
+                        date = parsedate_to_datetime(item.findtext('pubDate') or '')
+                        title = _text(item.findtext('title') or '')
                     _require(date.tzinfo is not None and now - timedelta(days=45) <= date <= now + timedelta(hours=1))
-                    title = _text(item.findtext('title') or '')
                     _require(5 <= len(title) <= 500)
                     candidates.append({'url': url, 'title': title,
                         'published_at': date.astimezone(timezone.utc).isoformat(), 'feed': feed})
@@ -183,7 +195,7 @@ def feed_candidates(*, now=None):
         except (SpendBlocked, ElementTree.ParseError):
             continue
     unique = {row['url']: row for row in candidates}
-    return sorted(unique.values(), key=lambda row: row['published_at'], reverse=True)[:8]
+    return sorted(unique.values(), key=lambda row: row['published_at'], reverse=True)[:32]
 
 
 def research_pages(topic, *, now=None):

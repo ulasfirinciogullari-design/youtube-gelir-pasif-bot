@@ -60,8 +60,12 @@ def read_planning_pages(context=None):
         discovered = discover_candidates(history, rotation - len(SOURCE_PAIRS))
         if len(discovered) == 2:
             candidates[-2:] = discovered
-    candidates += [{**row, 'category': 'recent_official_news'} for row in sources.feed_candidates()
-                   if len(row['url']) <= 100][:2]
+    news = [row for row in sources.feed_candidates() if len(row['url']) <= 100]
+    from app.services.audience_trends import terms
+    signals = (context.get('demand_signals') or {}).get('signals', [])
+    words = {w for row in signals for w in terms(row['term']) if len(w) >= 3}
+    news.sort(key=lambda row: (len(words & set(terms(row.get('title', '')))), row['published_at']), reverse=True)
+    candidates += [{**row, 'category': 'recent_official_news'} for row in news[:2]]
     def read(candidate):
         try:
             page = sources.fetch_page(candidate['url'])
@@ -180,6 +184,9 @@ def generate(context):
         'historic prototypes, secure banknote printing facilities or invisible technical mechanisms. '
         'Prefer sourced business trade-offs that relevant present-day activity can honestly illustrate. '
         'News must have a coherent channel-relevant angle; do not combine unrelated enforcement notices. '
+        'If demand_signals are provided, prefer a currently relevant question matching those observed '
+        'searches ONLY when the retrieved sources actually support it. Search interest is not evidence '
+        'for a claim and is not a measurement of YouTube views. Never manufacture a news connection. '
         'Evergreen/historical source pages are not current news. State historical facts as historical. '
         'No financial advice, invented claims, fake archival images or earnings promises. '
         f'Each question is 15–{limit} characters, with NO URLs. Select exactly TWO distinct source_ids '

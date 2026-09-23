@@ -164,6 +164,9 @@ def initial_credit_state(policy, *, now):
 
 def _intent(intent, policy, code):
     fields = _INTENT_FIELDS
+    rotating = type(intent) is dict and 'voice_pool_sha256' in intent
+    if rotating:
+        fields = fields | {'voice_pool_sha256'}
     if type(intent) is dict and 'production_kind' in intent:
         _require(intent['production_kind'] == 'long', code)
         fields = fields | {'production_kind'}
@@ -172,9 +175,13 @@ def _intent(intent, policy, code):
         _hash(intent[field], code)
     for field in ('root_lineage_id', 'channel_id', 'source_connection_id'):
         _require(type(intent[field]) is str and _ID.fullmatch(intent[field]) is not None, code)
-    _require(intent['route'] == policy['route']
-             and intent['model'] in [policy['model'], *policy.get('additional_models', [])]
-             and intent['voice_id'] == policy['voice_id'], code)
+    _require(intent['model'] in [policy['model'], *policy.get('additional_models', [])], code)
+    if rotating:
+        from app.services.narrator_rotation import POOL_SHA256, VOICE_IDS, route
+        _require(intent['voice_pool_sha256'] == POOL_SHA256 and intent['voice_id'] in VOICE_IDS, code)
+        _require(intent['route'] == route(intent['voice_id']), code)
+    else:
+        _require(intent['route'] == policy['route'] and intent['voice_id'] == policy['voice_id'], code)
 
 
 def _request_identity(intent, policy):

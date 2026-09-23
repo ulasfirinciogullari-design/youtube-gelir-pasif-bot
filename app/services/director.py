@@ -2122,6 +2122,8 @@ def _run_director(
     from app.services.production_delivery import writer_rule
 
     delivery_rule = writer_rule(options, duration_minutes)
+    from app.services.audience_strategy import writer_rule as audience_writer_rule
+    audience_rule = audience_writer_rule(options.get('production_channel_id'), duration_minutes)
     delivery_keys = ', derived_shorts' if delivery_rule else ''
     prompt = f'''You are the FINAL EDITORIAL DIRECTOR for a premium faceless YouTube video.
 Topic: {topic}
@@ -2131,6 +2133,7 @@ Studio style: {STYLE_NOTES.get(style, STYLE_NOTES['documentary'])}
 Studio pace profile: {pace_profile}
 Studio visual mix: {visual_mix}
 {documentary_rule}
+{audience_rule}
 {explanatory_coda_rule}
 {stock_video_rule}
 {spoken_budget_note}
