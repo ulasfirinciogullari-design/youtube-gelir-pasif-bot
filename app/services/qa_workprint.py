@@ -28,6 +28,7 @@ MAX_SOURCE_BYTES = 512 * 1024 * 1024
 MAX_METADATA_BYTES = 1024 * 1024
 _ETAG = re.compile(r'"[A-Za-z0-9_-]{1,128}"')
 _PROVIDERS = {'pexels', 'runway', 'gemini_veo', 'fal', 'replicate', 'openai',
+              'fal_veo_lite', 'fal_seedance_15_pro', 'fal_seedance_1_fast',
               'gemini_image_motion'}
 
 

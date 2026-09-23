@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -53,6 +55,8 @@ class Settings(BaseSettings):
     pexels_api_key: str = ''
     runwayml_api_secret: str = ''
     fal_key: str = ''
+    studio_video_provider: Literal['auto', 'legacy', 'fal'] = 'auto'
+    studio_fal_video_model: Literal['auto', 'veo_lite', 'seedance_pro', 'seedance_fast'] = 'auto'
     google_client_id: str = ''
     google_client_secret: str = ''
     google_redirect_uri: str = ''

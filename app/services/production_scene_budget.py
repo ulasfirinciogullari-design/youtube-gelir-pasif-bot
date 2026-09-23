@@ -79,6 +79,10 @@ def validate_scene_descriptor(descriptor):
         _require(model in _VEO_MODELS and seconds in {4, 6, 8}
                  and descriptor['resolution'] in {'720p', '1080p'}
                  and descriptor['audio'] is True)
+    elif provider == 'fal':
+        from app.services.fal_video_catalog import duration_for
+        _require(descriptor['resolution'] == '720p' and descriptor['audio'] is False
+                 and duration_for(model, seconds) == seconds)
     else:
         raise SpendBlocked('spend_scene_plan_invalid')
     return dict(descriptor)
@@ -108,8 +112,12 @@ def make_scene_plan(*, channel_id, lineage_id, kind, connection_id, package_sha2
         allowed, request_keys = [], set()
         for request in requests:
             descriptor = validate_scene_descriptor(request)
-            billed = (seconds if descriptor['provider'] == 'runway'
-                      else next((value for value in (4, 6, 8) if value >= seconds), None))
+            if descriptor['provider'] == 'fal':
+                from app.services.fal_video_catalog import duration_for
+                billed = duration_for(descriptor['model'], seconds)
+            else:
+                billed = (seconds if descriptor['provider'] == 'runway'
+                          else next((value for value in (4, 6, 8) if value >= seconds), None))
             _require(descriptor['duration_seconds'] == billed)
             key = _json(descriptor)
             _require(key not in request_keys)

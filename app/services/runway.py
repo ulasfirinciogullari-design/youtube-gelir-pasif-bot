@@ -1677,6 +1677,11 @@ def generate_scene(
             # raise a different type and therefore fail closed here.
             pass
 
+    from app.services.fal_video_catalog import primary_enabled, select_model
+    if primary_enabled(settings):
+        return generate_fal_video(prompt_text, seconds, aspect_ratio=aspect_ratio,
+            model=select_model(seconds, getattr(settings, 'studio_fal_video_model', 'auto')))
+
     if not settings.runwayml_api_secret:
         raise RuntimeError('RUNWAYML_API_SECRET is not configured')
 
@@ -2157,7 +2162,8 @@ def download_generated_scene(
         if not url:
             raise RuntimeError('Generated video URL is empty')
         initial_host = (urlparse(str(url)).hostname or '').lower()
-        if initial_host in _GEMINI_VIDEO_HOSTS:
+        if initial_host in _GEMINI_VIDEO_HOSTS and source_provider not in {
+                'fal_seedance_2_fast', 'fal_veo_lite', 'fal_seedance_15_pro', 'fal_seedance_1_fast'}:
             current_url = str(url)
             # Follow at most five redirects manually. The API key is attached
             # only to the exact Gemini API host and is stripped before a
@@ -2195,7 +2201,8 @@ def download_generated_scene(
                     return str(output)
             raise RuntimeError('Gemini video download redirected too many times')
 
-        if source_provider == 'fal_seedance_2_fast':
+        if source_provider in {'fal_seedance_2_fast', 'fal_veo_lite',
+                               'fal_seedance_15_pro', 'fal_seedance_1_fast'}:
             current_url = validate_fal_media_url(url)
             # Fal media carries no application secret. Follow only documented
             # Fal media hosts (and the documented legacy falserverless bucket)

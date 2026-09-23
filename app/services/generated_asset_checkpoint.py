@@ -19,6 +19,7 @@ MAX_RAW_BYTES = 100 * 1024 * 1024
 MAX_AUDIO_BYTES = 14 * 1024 * 1024
 MAX_MANIFEST_BYTES = 512 * 1024
 PROVIDERS = frozenset({'runway', 'fal_seedance_2_fast', 'gemini_omni', 'gemini_veo',
+                       'fal_veo_lite', 'fal_seedance_15_pro', 'fal_seedance_1_fast',
                        'gemini_veo_fast', 'gemini_veo_standard', 'gemini_image_motion'})
 PHASES = frozenset({'initial_generation', 'final_repair'})
 

@@ -262,6 +262,19 @@ def _quoted_video_scenes(prepared):
                 'ratio': ratio, 'duration': seconds}
         primary = quote_runway_video(body)
         allowed = []
+        from app.services.fal_video_catalog import primary_enabled
+        if primary_enabled(settings):
+            from app.services.fal_video_catalog import MODELS, build_request, quote_request, describe_request
+            for name, model in MODELS.items():
+                if name == 'veo_lite' and seconds > 8:
+                    continue
+                request = build_request(model, 'budgeted scene', seconds, prepared.aspect_ratio)
+                quote_request(model, request)
+                allowed.append(describe_request(model, request))
+            scenes.append({'scene_index': index, 'narration_millis': prepared.narration_millis[index],
+                           'generation_seconds': seconds, 'max_request_micro': primary.maximum_micro,
+                           'total_micro': primary.maximum_micro * 2, 'allowed_requests': allowed})
+            continue
         for model in ('gen4.5', 'seedance2_fast'):
             request = {**body, 'model': model}
             quote = quote_runway_video(request)
@@ -320,7 +333,7 @@ def _funding_admission(provider, operation, api_key):
     origins = {'abacus': 'https://routellm.abacus.ai',
                'gemini': 'https://generativelanguage.googleapis.com',
                'openai': 'https://api.openai.com', 'runway': 'https://api.dev.runwayml.com',
-               'elevenlabs': 'https://api.elevenlabs.io'}
+               'elevenlabs': 'https://api.elevenlabs.io', 'fal': 'https://queue.fal.run'}
     if (provider not in origins or type(api_key) is not str or not 1 <= len(api_key) <= 8192
             or any(not 32 < ord(char) < 127 for char in api_key)):
         raise SpendBlocked('spend_funding_credential_invalid')
@@ -553,13 +566,19 @@ def _native_sender_identity(sender, headers, provider):
     """Check trusted HTTPX dispatch configuration; never invoke a transport."""
     names = {'abacus': {'x-api-key', 'content-type', 'anthropic-version', 'accept'},
              'gemini': {'x-goog-api-key', 'content-type', 'accept'},
-             'elevenlabs': {'xi-api-key', 'content-type', 'accept'}}
+             'elevenlabs': {'xi-api-key', 'content-type', 'accept'},
+             'fal': {'authorization', 'content-type', 'x-fal-request-timeout'}}
     try:
         if (not callable(sender) or type(headers) is not dict
                 or any(type(key) is not str or type(value) is not str for key, value in headers.items())
                 or len({key.lower() for key in headers}) != len(headers)
                 or not {key.lower() for key in headers} <= names[provider]):
             raise SpendBlocked('spend_funding_native_headers_invalid')
+        if provider == 'fal':
+            ttl = next((value for key, value in headers.items()
+                        if key.lower() == 'x-fal-request-timeout'), None)
+            if ttl is not None and (not ttl.isascii() or not ttl.isdecimal() or not 1 <= int(ttl) <= 600):
+                raise SpendBlocked('spend_funding_native_headers_invalid')
         owner = getattr(sender, '__self__', None)
         if owner is None:
             return  # Plain application functions use their reviewed transport.
@@ -591,8 +610,14 @@ def paid_post(sender, url, **kwargs):
         provider, operation, quote = quote_http_request(url, kwargs)
         # Unsupported multipart/media payloads are rejected by the quote layer;
         # nothing reads upload streams or persists narration/image contents.
-        key_header = {'abacus': 'x-api-key', 'gemini': 'x-goog-api-key', 'elevenlabs': 'xi-api-key'}[provider]
-        funding = _funding_admission(provider, operation, _header_key(kwargs.get('headers'), key_header))
+        key_header = {'abacus': 'x-api-key', 'gemini': 'x-goog-api-key',
+                      'elevenlabs': 'xi-api-key', 'fal': 'authorization'}[provider]
+        key = _header_key(kwargs.get('headers'), key_header)
+        if provider == 'fal':
+            if type(key) is not str or not key.startswith('Key '):
+                raise SpendBlocked('spend_funding_credential_invalid')
+            key = key[4:]
+        funding = _funding_admission(provider, operation, key)
         payload = kwargs.get('json')
         if provider == 'elevenlabs':
             from datetime import datetime, timezone
