@@ -601,7 +601,8 @@ def paid_post(sender, url, **kwargs):
     """Guard a paid HTTP POST before its transport sees credentials or media."""
     if getattr(settings, 'studio_elevenlabs_native_credits', False) is True:
         from app.services.production_credit_funding import ROUTE
-        if url == ROUTE:
+        from app.services.narrator_rotation import VOICE_IDS, route
+        if url == ROUTE or any(url == route(voice) for voice in VOICE_IDS):
             from app.services.production_credit_runtime import paid_credit_post
             return paid_credit_post(sender, url, kwargs)
     if enforcement_enabled():

@@ -379,3 +379,30 @@ def test_real_meter_above_remaining_internal_share_is_recorded_and_next_post_sto
         with pytest.raises(SpendBlocked, match='credit_cross_mode_request_conflict'):
             native.paid_credit_post(http.post, credit.ROUTE, request(TEXT + ' Second request.'))
         assert len(sends) == 2 and state(case) == before
+
+
+@pytest.mark.parametrize('voice_id', sorted(__import__('app.services.narrator_rotation', fromlist=['VOICE_IDS']).VOICE_IDS))
+def test_actual_dispatcher_routes_every_commissioned_voice_to_existing_native_credits(case, monkeypatch, voice_id):
+    from app.services import narrator_rotation as rotation, production_spend_quotes
+    data = {'has_more': False, 'voices': [{'voice_id': voice, 'is_legacy': False,
+        'high_quality_base_model_ids': [credit.MODEL, credit.TURKISH_SHORT_MODEL]} for voice in rotation.VOICE_IDS]}
+    before = case.client.hget(durable.STATE_KEY, 'policy')
+    rotation.commission(case.ledger, data, observed_at=NOW)
+    monkeypatch.setattr(production_spend_quotes, 'quote_http_request',
+                        lambda *a, **k: pytest.fail('Approved narrator escaped the native credit route'))
+    url = rotation.route(voice_id)
+    runtime.paid_post(case.http.post, url, **request())
+    assert len(case.sends) == 1 and str(case.sends[0].url).startswith(url + '?')
+    assert state(case)['spent_credits'] == 248 and state(case)['reserved_credits'] == 0
+    assert case.client.hget(durable.STATE_KEY, 'policy') == before
+    with pytest.raises(SpendBlocked): runtime.paid_post(case.http.post, url, **request())
+    assert len(case.sends) == 1
+
+
+def test_rotating_voice_without_account_grant_cannot_fall_back_to_cash(case, monkeypatch):
+    from app.services import narrator_rotation as rotation, production_spend_quotes
+    monkeypatch.setattr(production_spend_quotes, 'quote_http_request',
+                        lambda *a, **k: pytest.fail('Uncommissioned voice tried cash fallback'))
+    with pytest.raises(SpendBlocked, match='credit_actual_binding_mismatch'):
+        runtime.paid_post(case.http.post, rotation.route(rotation.POOLS['en'][0][0]), **request())
+    assert not case.sends and state(case)['intents'] == {}

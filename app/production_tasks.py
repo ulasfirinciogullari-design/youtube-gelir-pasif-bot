@@ -187,6 +187,13 @@ def prepare_framecase_successor(self, plan_revision, source_task_id):
     return prepare(plan_revision, source_task_id, self.request.id)
 
 
+@celery.task(name='app.production_tasks.continue_framecase_episode', bind=True,
+             acks_late=False, autoretry_for=(), max_retries=0, soft_time_limit=7000, time_limit=7100)
+def continue_framecase_episode(self, source_task_id, attempt):
+    from app.services.framecase_recovery import run
+    return run(self, source_task_id, attempt)
+
+
 @task_postrun.connect(weak=False)
 def observe_production_tick(sender=None, state=None, retval=None, **_kwargs):
     if getattr(sender, 'name', None) != 'app.production_tasks.production_tick':

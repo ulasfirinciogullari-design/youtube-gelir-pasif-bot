@@ -148,3 +148,37 @@ def test_successor_is_ordered_five_shorts_then_one_long():
     assert rows[0]['depends_on'] == []
     assert all(rows[i]['depends_on'] == [rows[i-1]['id']] for i in range(1, 6))
     assert rows[-1]['series']['total'] == 1
+
+
+def test_recovery_delivery_is_once_and_never_replays_uncertain_voice(client, monkeypatch):
+    from app.services import framecase_recovery as recovery
+    from app.production_tasks import continue_framecase_episode
+    from unittest.mock import Mock
+    monkeypatch.setattr(plan, '_client', lambda: client)
+    enqueue = Mock(side_effect=TimeoutError('broker ACK lost'))
+    monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
+    row = source(); row.update(state='FAILURE', framecase_failure_code='framecase_RuntimeError')
+    row['spec']['framecase_animation'] = True
+    client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(row))
+    assert recovery.schedule(row) == 'continuation_dispatch_uncertain'
+    assert recovery.schedule(row) == 'continuation_preparing_or_uncertain'
+    assert enqueue.call_count == 1
+    held = deepcopy(row); held['task_id'] = str(uuid4()); held['framecase_failure_code'] = 'framecase_voice_outcome_unverified'
+    client.set(jobs.JOB_PREFIX + held['task_id'], plan._raw(held))
+    assert recovery.schedule(held) == 'held_for_verification'
+    assert enqueue.call_count == 1
+
+
+def test_actual_final_scene_windows_include_end_hold_without_losing_frames(tmp_path):
+    import subprocess
+    path = tmp_path / 'master.mp4'
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 'lavfi', '-i', 'testsrc2=size=64x96:rate=30',
+        '-frames:v', '60', '-c:v', 'libx264', '-threads', '1', str(path)], check=True, capture_output=True)
+    output = pipeline.exact_master_scenes({'path': str(path), 'frame_count': 60, 'scene_windows': [
+        {'scene_index': 0, 'start_frame': 0, 'end_frame': 27},
+        {'scene_index': 1, 'start_frame': 27, 'end_frame': 60}]}, tmp_path, 2)
+    from app.services.render import video_frame_count
+    assert [video_frame_count(row[0]['path']) for row in output] == [27, 33]
+    with pytest.raises(SpendBlocked):
+        pipeline.exact_master_scenes({'path': str(path), 'frame_count': 60, 'scene_windows': [
+            {'scene_index': 0, 'start_frame': 1, 'end_frame': 60}]}, tmp_path, 1)

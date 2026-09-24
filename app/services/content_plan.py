@@ -417,6 +417,11 @@ def maintain(profiles, enqueue, *, repair_enqueue=None):
                 proof = publication_proof(client, dispatch)
                 if proof is None:
                     statuses[channel_id] = 'working_or_blocked'
+                    leaf = _leaf(client, dispatch)
+                    if (leaf.get('spec') or {}).get('framecase_animation') is True:
+                        from app.services.framecase_recovery import schedule as framecase_schedule
+                        statuses[channel_id] = framecase_schedule(leaf)
+                        continue
                     if repair_enqueue is not None:
                         from app.services.content_plan_recovery import schedule
                         statuses[channel_id] = schedule(_leaf(client, dispatch), repair_enqueue, client=client)
