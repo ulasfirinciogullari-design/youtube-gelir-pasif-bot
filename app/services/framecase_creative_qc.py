@@ -104,11 +104,28 @@ def sample_master(rendered, work, scene_count):
     return parts
 
 
-def review_master(rendered, package, checkpoint, work):
+def reference_sample(raw, work):
+    """A bounded JPEG for comparison, not a new generated art asset."""
+    path = Path(work) / 'approved-reference.jpg'
+    path.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y',
+        '-f', 'image2pipe', '-i', 'pipe:0', '-vf', 'scale=360:-2', '-frames:v', '1',
+        '-q:v', '4', '-threads', '1', str(path)], input=raw, check=True,
+        capture_output=True, timeout=30)
+    from app.services.abacus_visual_spend_quotes import _decode_jpeg, ABACUS_VISUAL_MAX_IMAGE_BYTES
+    encoded = path.read_bytes(); _require(0 < len(encoded) <= ABACUS_VISUAL_MAX_IMAGE_BYTES)
+    _decode_jpeg(encoded)
+    return encoded
+
+
+def review_master(rendered, package, checkpoint, work, *, reference_png=None):
     from app.services.production_included_router import generate_included_json
     master_sha = hashlib.sha256(Path(rendered['path']).read_bytes()).hexdigest()
-    identity = _sha({'version': VERSION, 'master_sha256': master_sha,
-                     'package': package, 'windows': rendered.get('scene_windows')})
+    basis = {'version': VERSION, 'master_sha256': master_sha,
+             'package': package, 'windows': rendered.get('scene_windows')}
+    if reference_png is not None:
+        basis['approved_reference_sha256'] = hashlib.sha256(reference_png).hexdigest()
+    identity = _sha(basis)
     retained = checkpoint.setdefault('creative_reviews', {})
     if identity in retained:
         saved = retained[identity]
@@ -117,6 +134,7 @@ def review_master(rendered, package, checkpoint, work):
         _require(result == {k: saved[k] for k in result})
         return deepcopy(saved)
     samples = sample_master(rendered, Path(work) / ('creative-' + master_sha[:12]), len(package['scenes']))
+    reference = reference_sample(reference_png, work) if reference_png is not None else None
     reports = []
     for start in range(0, len(samples), 5):
         window = samples[max(0, start - 1):start + 5]
@@ -124,6 +142,12 @@ def review_master(rendered, package, checkpoint, work):
         parts = [{'type': 'text', 'text': json.dumps({'title': package['title'],
             'full_narration': package['narration'], 'scene_indices': indices,
             'scene_narrations': [package['scenes'][i]['narration'] for i in indices]})}]
+        if reference is not None:
+            parts.extend([{'type': 'text', 'text': 'OWNER-APPROVED SERIES REFERENCE, not a film scene. '
+                'Where Mira appears, compare her actual face/age/hair/cream coat/teal blouse to this image. '
+                'Do not classify this reference as a shot or infer its actions in the film.'},
+                {'type': 'image_url', 'image_url': {
+                    'url': 'data:image/jpeg;base64,' + base64.b64encode(reference).decode()}}])
         for index, frames, raw in window:
             parts.extend([{'type': 'text', 'text': f'Scene {index}; exact master frames {frames}, top to bottom.'},
                 {'type': 'image_url', 'image_url': {

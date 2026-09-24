@@ -191,13 +191,16 @@ def test_real_story_rejection_is_not_repeated_to_obtain_approval(monkeypatch):
 def test_omitted_fiction_notice_is_added_before_critic_without_changing_story(monkeypatch):
     from unittest.mock import Mock
     from app.services import production_included_router as router
+    from app.services import framecase_editorial_revision as revision
+    monkeypatch.setattr(revision, 'retained_source', lambda _: None)
     story = json.loads(pipeline.ASSET.read_text()); episode = story['episodes'][1]
     source = {'episode': episode, 'arc': story['episodes'], 'locked_narration': True}
     words = episode['narration'].split()
     chunks = [words[:16], words[16:32], words[32:47], words[47:]]
     draft = {'title': episode['title'], 'description': 'An original animated mystery in Bellwick.',
              'scenes': [{'narration': ' '.join(part), 'ai_prompt':
-                 'Painterly 2D animation of the clock moving backward while rain falls continuously.'}
+                 'Painterly 2D animation of the clock moving backward while rain falls continuously.',
+                 'motion_prompt': 'Mira turns her watch toward the light and studies its hands, then looks up.'}
                  for part in chunks]}
     original = deepcopy(draft)
     monkeypatch.setattr(pipeline, 'story_input', lambda _: source)
