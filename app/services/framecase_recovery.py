@@ -12,7 +12,8 @@ PREFIX = 'youtube_studio:framecase_recovery:v1:'
 MAX_CONTINUATIONS = 6
 FIX_REQUIRED = frozenset({'framecase_audio_timing_rejected', 'framecase_audio_transcript_rejected',
     'framecase_audio_prosody_rejected', 'framecase_scene_duration_invalid',
-    'framecase_final_render_rejected', 'framecase_final_timing_rejected'})
+    'framecase_final_render_rejected', 'framecase_final_timing_rejected',
+    'framecase_authored_scene_quality_rejected', 'framecase_FalVideoPolicyError'})
 
 
 def schedule(source):
@@ -33,7 +34,9 @@ def schedule(source):
     attempt = int(source.get('framecase_resume_attempt') or 0) + 1
     if attempt > MAX_CONTINUATIONS:
         return 'continuation_limit_reached'
-    if time.time() < float(source.get('framecase_retry_at') or 0):
+    fixed_build = (code in FIX_REQUIRED and source.get('framecase_failed_build')
+        and source.get('framecase_failed_build') != os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local'))
+    if not fixed_build and time.time() < float(source.get('framecase_retry_at') or 0):
         return 'retry_wait'
     operation = str(uuid5(NAMESPACE_URL, f'framecase-resume:{task}:{attempt}'))
     key = PREFIX + operation

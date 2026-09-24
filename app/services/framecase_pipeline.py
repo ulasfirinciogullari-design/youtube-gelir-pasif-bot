@@ -146,6 +146,12 @@ def prepare_package(dispatch, *, revision=0):
         + (f'\nEditorial correction attempt {revision}: the earlier draft failed validation. '
            'Recheck exact narration, shot feasibility, all numeric word and prompt limits and story logic.' if revision else ''))
     package = validate_package(generate_text_json(prompt, schema, purpose='editorial'), source, longform=longform)
+    package['fiction_review'] = review_package(package, source, longform=longform)
+    return package
+
+
+def review_package(package, source, *, longform):
+    from app.services.production_included_router import generate_text_json
     review_schema = {'type': 'object', 'properties': {
         **{k: {'type': 'boolean'} for k in CHECKS}, 'findings': {'type': 'array', 'items': {'type': 'string'}}},
         'required': [*CHECKS, 'findings'], 'additionalProperties': False}
@@ -160,8 +166,7 @@ def prepare_package(dispatch, *, revision=0):
         review_schema, purpose='story_review')
     _require(all(review.get(k) is True for k in CHECKS) and review.get('findings') == [],
              'framecase_story_review_rejected')
-    package['fiction_review'] = review
-    return package
+    return review
 
 
 def _save(client, task, checkpoint):
@@ -294,12 +299,38 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         checkpoint['audio_qc'] = {'transcript': transcript, 'prosody': prosody, 'timing': timing}
         _save(client, task, checkpoint)
     ratio = '16:9' if longform else '9:16'
-    budget = spending.prepare_video_scene_budget(_digest(package), durations, ratio)
+    from app.services import framecase_clue_insert as clue
+    journal = json.loads(client.get(commissioning_video.PREFIX + task) or '{}')
+    authored_insert = clue.eligible(dispatch, checkpoint, journal, 2)
+    if authored_insert:
+        candidate = deepcopy(checkpoint['package'])
+        candidate['scenes'][2]['ai_prompt'] = clue.CONTRACT
+        expected = deepcopy(candidate); expected.pop('fiction_review', None)
+        adapted = checkpoint.get('clue_adaptation')
+        if adapted is None:
+            candidate['fiction_review'] = review_package(candidate, story_input(dispatch), longform=False)
+            checkpoint['clue_adaptation'] = candidate; _save(client, task, checkpoint)
+        else:
+            saved = deepcopy(adapted); saved.pop('fiction_review', None)
+            _require(saved == expected and all(adapted['fiction_review'].get(k) is True for k in CHECKS))
+        package = deepcopy(checkpoint['clue_adaptation']); scenes = package['scenes']
+    # The original paid-media package and every previous receipt stay bound to
+    # the exact original hash. A local insert never obtains a new paid budget.
+    budget = spending.prepare_video_scene_budget(_digest(checkpoint['package']), durations, ratio)
     _require(budget is not None and commissioning_video.enabled_for_task())
     cap = 32 if longform else 6
     checkpoint.setdefault('clips', {}); checkpoint.setdefault('creates', [])
 
     def generate(index, revision=0, defect=''):
+        if authored_insert and index == 2:
+            _require(revision == 0, 'framecase_authored_scene_quality_rejected')
+            gallery = _restore_asset(checkpoint['clips']['1']['asset'], work / 'clue_gallery_source.mp4')
+            path = work / 'scene_02_authored.mp4'
+            proof = clue.render(gallery, path, budget.generation_seconds[index])
+            checkpoint['clips']['2'] = {'asset': _store_asset(path, task, path.name),
+                'revision': 0, 'authored_animation': proof}
+            checkpoint.pop('visual_qc', None); _save(client, task, checkpoint)
+            return
         prompt = scenes[index]['ai_prompt']
         if revision:
             prompt = prompt[:690] + f' Revision {revision}: correct this observed defect: ' + str(defect)[:190]
@@ -415,10 +446,16 @@ def run(self, topic, duration, language, route, options, **recovery):
     checkpoint = json.loads(raw) if raw else {'version': 1, 'spec_sha256': dispatch['spec_sha256']}
     try:
         _require(checkpoint['spec_sha256'] == dispatch['spec_sha256'])
+        if source.get('framecase_failure_code'):
+            history = list(source.get('framecase_failure_history') or [])
+            history.append({k: source.get(k) for k in ('framecase_failure_code',
+                'framecase_failure_trace', 'framecase_failed_build', 'updated_at')})
+            jobs.update_job(task, framecase_failure_history=history[-12:],
+                failure_stage='', error='', framecase_failure_code='', framecase_failure_trace=[])
         return _execute(self, source, dispatch, work, checkpoint, client)
     except Exception as error:
         from app.services.failed_master_workprint import persist as preserve_workprint
-        preview = preserve_workprint(task, work)
+        preview = preserve_workprint(task, work, allow_long=source['spec']['format'] == 'landscape')
         code = str(error) if isinstance(error, SpendBlocked) else 'framecase_' + type(error).__name__
         import traceback
         trace = [{'function': row.name, 'line': row.lineno}

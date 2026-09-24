@@ -41,6 +41,23 @@ def test_wrong_frame_count_master_is_preserved_without_rendering_or_quality_appr
         assert text not in json.dumps(metadata)
 
 
+def test_natural_long_failed_master_is_playable_only_for_its_queued_owner_job(master):
+    c = master.case
+    master.probe.return_value = {'duration_seconds': 144.8, 'frame_count': 4344,
+        'width': 1920, 'height': 1080}
+    before = master.path.read_bytes()
+    p = failed.persist(TASK, c.work, allow_long=True)['qa_workprint']
+    assert p['version'] == 4 and p['sha256'] == hashlib.sha256(before).hexdigest()
+    job = {'task_id': TASK, 'kind': 'render', 'state': 'FAILURE', 'qa_workprint': p,
+        'spec': {'mode': 'production', 'format': 'landscape', 'duration_minutes': 3,
+                 'content_plan_item_id': '22222222-2222-4222-8222-222222222222'}}
+    assert access.validated_pointer(job) == p
+    assert access.validated_pointer({**job, 'state': 'SUCCESS'}) is None
+    assert access.validated_pointer({**job, 'spec': {**job['spec'], 'format': 'shorts'}}) is None
+    assert not p['qa_approved'] and not p['publish_eligible'] and not p['reusable']
+    assert c.uploads[1]['Body'] == before and not c.renders
+
+
 @pytest.mark.parametrize('problem', ['missing', 'wrong_task', 'symlink', 'probe_failure', 'storage_failure'])
 def test_missing_or_unverified_master_never_creates_a_preview(master, monkeypatch, problem):
     c = master.case

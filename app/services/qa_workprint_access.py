@@ -64,7 +64,7 @@ def _valid_timing(pointer: dict) -> bool:
         # failures. This grants private playback only; all approval flags stay false.
         return 20 <= duration <= 45 and 600 <= frames <= 1350 and abs(duration * 30 - frames) < 1e-6
     if pointer['version'] == 4:
-        return 150 <= duration <= 240 and 4500 <= frames <= 7200 and abs(duration * 30 - frames) < 1e-6
+        return 120 <= duration <= 240 and 3600 <= frames <= 7200 and abs(duration * 30 - frames) < 1e-6
     return 30 < duration <= 40 and 900 < frames <= 1200 and abs(duration * 30 - frames) < 1e-6
 
 
