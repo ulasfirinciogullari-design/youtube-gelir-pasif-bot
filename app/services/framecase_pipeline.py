@@ -178,6 +178,9 @@ def prepare_package(dispatch, *, revision=0):
         'facial acting, deliberate camera movement and appropriate quiet room/prop sound. Do not ask '
         'for narration, dialogue, singing, music, writing or subtitles in generated video. Do not '
         'cram several distant locations or chronological events into one short shot. '
+        'Every limb must belong to a physically staged person; no floating anonymous hands. '
+        'Building-mounted clock hands move through their internal mechanism, not a giant arm '
+        'reaching through the dial. The protagonist can observe the clock from the street. '
         'Public description explicitly identifies this as original fictional animation. Title <=100 characters. '
         'If locked_scene_narrations is supplied, use those EXACT four narration segments, in order, '
         'without changing their words or boundaries; their existing accepted audio is being reused. '
@@ -469,10 +472,12 @@ def _execute(self, source, dispatch, work, checkpoint, client):
             invalidate_visual_review(checkpoint); _save(client, task, checkpoint)
             return
         with spending.spending_scene(budget, index):
-            reference = art.keyframe(index, scenes[index], story, cast, ratio, work, checkpoint,
+            canonical = checkpoint['package']['scenes'][index]
+            reference = art.keyframe(index, canonical, story, cast, ratio, work, checkpoint,
                                      lambda: _save(client, task, checkpoint))
+            effective_scene = art.accepted_scene(index, canonical, checkpoint)
             prompt = ('Preserve the exact drawn character identity, clothes and painterly 2D style of the '
-                'starting image. ' + scenes[index]['motion_prompt']
+                'starting image. ' + effective_scene['motion_prompt']
                 + ' Native quiet ambience only. No speech, singing, music, text, captions or style changes.')
             if revision:
                 # The observed visual defect is data; never provider moderation feedback.
@@ -494,6 +499,11 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         if (str(index) not in checkpoint['clips'] or (index == 0 and index in authored
                 and (checkpoint['clips']['0'].get('authored_animation') or {}).get('renderer') != clock.VERSION)):
             generate(index)
+
+    # Voice and paid package identity remain original. Review and export the
+    # actual independently accepted staging, including after a worker restart.
+    for index, canonical in enumerate(checkpoint['package']['scenes']):
+        scenes[index] = art.accepted_scene(index, canonical, checkpoint)
 
     def visuals():
         output = []

@@ -187,3 +187,74 @@ def test_native_ambience_keeps_real_final_frame_windows(tmp_path):
     assert result['scene_windows']==windows and render.video_frame_count(result['path'])==30
     assert abs(result['duration']-1)<.06 and result['sound_design']=='native_scene_ambience_ducked_below_narration'
     assert before==frames(result['path']) and result['path']==str(movie)
+
+
+@pytest.fixture
+def keyframes(monkeypatch,tmp_path):
+    from app.services import framecase_pipeline as pipeline
+    saved={}; generated=[]; reviews=[]; editorial=[]
+    scene={'narration':'The tower clock had been turned back sixty seconds.',
+        'ai_prompt':'The original clock shot with physical staging described for the starting image.',
+        'motion_prompt':'The minute hand moves back one notch as Mira notices the clock from below.'}
+    corrected={**scene,'ai_prompt':'Mira stands on the street, naturally looking up at the intact clock tower.'}
+    monkeypatch.setattr(art,'approved_reference',lambda:b'approved Mira')
+    monkeypatch.setattr(art,'_scope',lambda:{'context':{'lineage_id':ROOT}})
+    def generate(prompt,references,ratio,path):
+        generated.append(prompt);path.write_bytes(('candidate '+str(len(generated))).encode())
+        return {'provider_request_id':str(len(generated))}
+    def keep(path,owner,name):
+        raw=path.read_bytes();saved[name]=raw
+        return {'key':name,'sha256':hashlib.sha256(raw).hexdigest()}
+    def restore(asset,path):
+        path.write_bytes(saved[asset['key']]);return str(path)
+    def repair(*args):editorial.append(args);return deepcopy(corrected)
+    monkeypatch.setattr(art,'generate_image',generate)
+    monkeypatch.setattr(pipeline,'_store_asset',keep)
+    monkeypatch.setattr(pipeline,'_restore_asset',restore)
+    monkeypatch.setattr(art,'_repair_scene',repair)
+    monkeypatch.setattr(art,'review_keyframe',lambda *args:reviews.pop(0))
+    return SimpleNamespace(scene=scene,corrected=corrected,checkpoint={},story={'bible':'The original story bible.'},
+        generated=generated,reviews=reviews,editorial=editorial,path=tmp_path)
+
+
+def test_visible_keyframe_defect_is_repaired_once_and_old_negative_is_immutable(keyframes):
+    k=keyframes
+    k.reviews.extend([{'pass':False,'report':{'findings':['Disconnected hand through clock face.']}},
+                      {'pass':True,'report':{'findings':[]}}])
+    saved=[]
+    for _ in range(2):
+        art.keyframe(0,k.scene,k.story,b'cast','9:16',k.path,k.checkpoint,lambda:saved.append(deepcopy(k.checkpoint)))
+    assert len(k.generated)==2 and len(k.editorial)==1 and not k.reviews
+    rows=k.checkpoint['keyframes'];assert len(rows)==2
+    original=next(v for v in rows.values()if v['parent_identity']is None)
+    assert original['review']['pass']is False
+    assert art.accepted_scene(0,k.scene,k.checkpoint)==k.corrected
+    assert any(v.get('keyframe_repairs')and len(v['keyframes'])==1 for v in saved)
+    assert original==saved[1]['keyframes'][original['identity']]
+
+
+def test_failed_correction_cannot_buy_more_opinions_or_reset_its_allowance(keyframes):
+    k=keyframes;k.reviews.extend([{'pass':False,'report':{'findings':['Bad hand.']}},
+                                 {'pass':False,'report':{'findings':['Still bad hand.']}}])
+    for _ in range(2):
+        with pytest.raises(SpendBlocked,match='keyframe_quality_rejected'):
+            art.keyframe(0,k.scene,k.story,b'cast','9:16',k.path,k.checkpoint,lambda:None)
+    assert len(k.generated)==2 and len(k.editorial)==1 and not k.reviews
+    assert not k.checkpoint.get('keyframe_selections')
+
+
+def test_provider_unknown_or_refusal_never_enters_visual_repair(keyframes,monkeypatch):
+    k=keyframes
+    def failed(*args,**kwargs):raise SpendBlocked('framecase_art_create_outcome_unknown')
+    monkeypatch.setattr(art,'generate_image',failed)
+    with pytest.raises(SpendBlocked,match='create_outcome_unknown'):
+        art.keyframe(0,k.scene,k.story,b'cast','9:16',k.path,k.checkpoint,lambda:None)
+    assert not k.editorial and not k.checkpoint.get('keyframe_repairs')
+
+
+def test_repaired_scene_selection_rejects_narration_changes(keyframes):
+    k=keyframes;k.reviews.extend([{'pass':True,'report':{'findings':[]}}])
+    art.keyframe(0,k.scene,k.story,b'cast','9:16',k.path,k.checkpoint,lambda:None)
+    identity=k.checkpoint['keyframe_selections']['0']
+    k.checkpoint['keyframes'][identity]['scene']['narration']='A different story.'
+    with pytest.raises(SpendBlocked):art.accepted_scene(0,k.scene,k.checkpoint)
