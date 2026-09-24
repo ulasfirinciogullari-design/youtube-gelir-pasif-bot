@@ -197,7 +197,7 @@ class _Snapshot:
             _require(key not in self.lifetimes or self.lifetimes[key] == value, 'series_state_changed')
             self.lifetimes[key] = value
             return value
-        value = getattr(self.client, {'string': 'get', 'hash': 'hgetall', 'zset': 'zrange'}[kind])(
+        value = getattr(self.client, {'string': 'get', 'hash': 'hgetall', 'zset': 'zrange', 'set': 'smembers'}[kind])(
             key, *([0, MAX_INDEXED_JOBS] if kind == 'zset' else []))
         if key in self.values:
             _require(self.values[key] == (kind, value), 'series_state_changed')
@@ -210,7 +210,7 @@ class _Snapshot:
 
     def compare(self, pipe):
         for key, (kind, expected) in self.values.items():
-            actual = getattr(pipe, {'string': 'get', 'hash': 'hgetall', 'zset': 'zrange'}[kind])(
+            actual = getattr(pipe, {'string': 'get', 'hash': 'hgetall', 'zset': 'zrange', 'set': 'smembers'}[kind])(
                 key, *([0, MAX_INDEXED_JOBS] if kind == 'zset' else []))
             _require(actual == expected, 'series_state_changed')
         for key, lifetime in self.lifetimes.items():
@@ -239,12 +239,22 @@ def retire_stale_ready_batch(channel_id, expected_profile_revision, expected_att
     pending_raw = snapshot.read(pending_key)
     pending = _object(pending_raw, limit=32768)
     _require(pending.get('attempt_id') == expected_attempt_id and pending.get('channel_id') == channel_id)
+    reason = 'series_batch_context_changed'; duplicate_topics = []
     try:
-        _batch(pending, profile, channel, now)
-        return {'status': 'ready'}
+        topics = _batch(pending, profile, channel, now)
     except SeriesPromotionError as error:
         if str(error) != 'series_batch_context_changed':
             raise
+    else:
+        # A fully captured draft can become unusable because its topic was
+        # already consumed in an older series. Leaving it READY makes every
+        # future minute attempt the same impossible promotion. Archive only
+        # that unapproved draft, preserving the historical topic/attempt fences.
+        history = snapshot.read(TOPIC_HISTORY_PREFIX + channel_id, 'set')
+        duplicate_topics = sorted({_digest(_text_key(topic)) for topic in topics} & history)
+        if not duplicate_topics:
+            return {'status': 'ready'}
+        reason = 'series_topic_already_used'
     from app.services.production_next_series import _preparation_key
     daily_key = _preparation_key(DAILY_PREFIX, pending)
     _require(snapshot.read(daily_key) == pending_raw, 'series_attempt_receipt_missing')
@@ -259,10 +269,12 @@ def retire_stale_ready_batch(channel_id, expected_profile_revision, expected_att
     archive_key = SUPERSEDED_PREFIX + channel_id + ':' + expected_attempt_id
     _require(snapshot.read(archive_key) is None, 'series_archive_conflict')
     archive = {'version': 1, 'status': 'superseded_unapproved', 'channel_id': channel_id,
-        'reason': 'series_batch_context_changed', 'retired_at': now,
+        'reason': reason, 'retired_at': now,
         'pending_batch': pending, 'pending_sha256': _digest(pending),
         'current_profile_sha256': _digest(profile), 'current_connection_id': channel['connection_id'],
         **_FLAGS}
+    if duplicate_topics:
+        archive['duplicate_topic_sha256'] = duplicate_topics
     with client.pipeline() as pipe:
         pipe.watch(*snapshot.values, OAUTH_CHANNEL_INDEX)
         snapshot.compare(pipe)
