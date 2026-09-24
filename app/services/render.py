@@ -555,8 +555,18 @@ def normalize_clip(
             letterbox_measurements.append(value)
         return value
 
-    render_attempt(str(profile['base_scale']))
+    preserve_composition = (isinstance(visual_spec, dict)
+                            and visual_spec.get('preserve_composition') is True)
+    # Authored animation already fills the output canvas. Overscanning its
+    # designed clocks and clue labels would cut away required evidence.
+    # Existing footage retains its original reframing and bar-removal recipe.
+    scale_geometry = (f'{output_width}:{output_height}' if preserve_composition
+                      else str(profile['base_scale']))
+    render_attempt(scale_geometry)
     if measured_letterbox() > 0.25:
+        if preserve_composition:
+            raise RuntimeError(
+                'Normalized clip letterbox gate rejected composed canvas')
         # Some otherwise usable generated clips arrive with cinematic black
         # bars encoded into the picture. One bounded stronger overscan removes
         # them without paying for or looping another generated clip.

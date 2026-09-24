@@ -236,8 +236,12 @@ def exact_master_scenes(rendered, work, scene_count):
             and start == cursor and end > start)
         path = work / f'final_scene_{index:02d}.mp4'
         subprocess.run(['ffmpeg', '-y', '-v', 'error', '-threads', '1', '-filter_threads', '1',
-            '-i', rendered['path'], '-vf', f'trim=start_frame={start}:end_frame={end},setpts=PTS-STARTPTS',
-            '-an', '-c:v', 'libx264', '-threads', '1', '-preset', 'veryfast', '-crf', '18', str(path)],
+            '-i', rendered['path'], '-vf', f'trim=start_frame={start}:end_frame={end},settb=1/30,setpts=N',
+            # FFmpeg 7 can assign zero duration to the last packet of a
+            # fractional, nonzero-start cut. Explicit CFR gives EVERY selected
+            # frame its 1/30 second, including the final decoded review frame.
+            '-an', '-fps_mode', 'cfr', '-r', '30', '-enc_time_base', '1:30', '-bf', '0',
+            '-c:v', 'libx264', '-threads', '1', '-preset', 'veryfast', '-crf', '18', str(path)],
             check=True, capture_output=True, timeout=180)
         _require(video_frame_count(path) == end - start, 'framecase_review_window_invalid')
         result.append([{'path': str(path), 'generated': True, 'source_type': 'generated',
@@ -375,7 +379,8 @@ def _execute(self, source, dispatch, work, checkpoint, client):
             row = checkpoint['clips'][str(index)]
             path = _restore_asset(row['asset'], work / f'scene_{index:02d}_r{row["revision"]}.mp4')
             output.append([{'path': path, 'source_type': 'generated', 'generated': True,
-                'trim_start': 0, 'trim_start_locked': True, 'duration': durations[index]}])
+                'start_fraction': 0.0, 'preserve_start_fraction': True, 'forbid_loop': True,
+                'preserve_composition': True, 'duration': durations[index]}])
         return output
 
     while True:

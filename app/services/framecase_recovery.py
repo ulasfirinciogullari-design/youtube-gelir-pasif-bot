@@ -9,11 +9,16 @@ from app.services import content_plan as plan, studio_state as jobs
 from app.services.framecase_cadence import CHANNEL_ID
 
 PREFIX = 'youtube_studio:framecase_recovery:v1:'
-MAX_CONTINUATIONS = 6
+# Ordinary transient retries remain six. A verified changed build may resume
+# up to six additional corrections on the SAME root and original paid caps.
+# The counters, paid intents and old continuation records are never reset.
+MAX_TRANSIENT_CONTINUATIONS = 6
+MAX_CONTINUATIONS = 12
 FIX_REQUIRED = frozenset({'framecase_audio_timing_rejected', 'framecase_audio_transcript_rejected',
     'framecase_audio_prosody_rejected', 'framecase_scene_duration_invalid',
     'framecase_final_render_rejected', 'framecase_final_timing_rejected',
-    'framecase_authored_scene_quality_rejected', 'framecase_FalVideoPolicyError'})
+    'framecase_authored_scene_quality_rejected', 'framecase_FalVideoPolicyError',
+    'framecase_review_window_invalid'})
 
 
 def schedule(source):
@@ -36,6 +41,8 @@ def schedule(source):
         return 'continuation_limit_reached'
     fixed_build = (code in FIX_REQUIRED and source.get('framecase_failed_build')
         and source.get('framecase_failed_build') != os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local'))
+    if attempt > MAX_TRANSIENT_CONTINUATIONS and not fixed_build:
+        return 'continuation_limit_reached'
     if not fixed_build and time.time() < float(source.get('framecase_retry_at') or 0):
         return 'retry_wait'
     operation = str(uuid5(NAMESPACE_URL, f'framecase-resume:{task}:{attempt}'))
@@ -47,6 +54,10 @@ def schedule(source):
             return 'continuation_preparing_or_uncertain'
         record = {'version': 1, 'source_task_id': task, 'operation': operation,
             'attempt': attempt, 'spec_sha256': plan._sha(spec)}
+        if attempt > MAX_TRANSIENT_CONTINUATIONS:
+            record['correction'] = {'failure_code': code,
+                'failed_build': source['framecase_failed_build'],
+                'corrected_build': os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local')}
         pipe.multi(); pipe.set(key, plan._raw(record), nx=True)
         plan._require(pipe.execute() == [True], 'framecase_recovery_uncertain')
     from app.production_tasks import continue_framecase_episode
@@ -69,6 +80,14 @@ def run(celery_task, source_id, attempt):
         and spec.get('production_channel_id') == CHANNEL_ID
         and int(source.get('framecase_resume_attempt') or 0) == attempt - 1,
         'framecase_recovery_unverified')
+    if attempt > MAX_TRANSIENT_CONTINUATIONS:
+        correction = record.get('correction') or {}
+        plan._require(correction.get('failure_code') in FIX_REQUIRED
+            and correction.get('failure_code') == source.get('framecase_failure_code')
+            and correction.get('failed_build') == source.get('framecase_failed_build')
+            and correction.get('corrected_build') == os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local')
+            and correction.get('failed_build') != correction.get('corrected_build'),
+            'framecase_recovery_unverified')
     if not client.set(PREFIX + 'execution:' + operation, 'started', nx=True):
         return {'status': 'already_executed'}
     options = {k: v for k, v in spec.items() if k not in ('topic', 'duration_minutes', 'language', 'channel_id')}

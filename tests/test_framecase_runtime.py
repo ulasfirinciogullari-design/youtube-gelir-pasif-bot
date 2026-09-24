@@ -184,6 +184,27 @@ def test_actual_final_scene_windows_include_end_hold_without_losing_frames(tmp_p
             {'scene_index': 0, 'start_frame': 1, 'end_frame': 60}]}, tmp_path, 1)
 
 
+def test_fractional_master_review_preserves_all_four_decodable_windows(tmp_path):
+    import subprocess
+    from app.services.render import video_frame_count, media_duration
+    path = tmp_path / 'master.mp4'
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 'lavfi', '-i',
+        'testsrc2=size=64x96:rate=30:duration=22', '-f', 'lavfi', '-i',
+        'sine=frequency=440:duration=21.76', '-frames:v', '653', '-c:v', 'libx264',
+        '-threads', '1', '-c:a', 'aac', str(path)], check=True, capture_output=True)
+    before = path.read_bytes()
+    boundaries = (0, 188, 318, 510, 653)
+    windows = [{'scene_index': i, 'start_frame': a, 'end_frame': b}
+               for i, (a, b) in enumerate(zip(boundaries, boundaries[1:]))]
+    output = pipeline.exact_master_scenes({'path': str(path), 'frame_count': 653,
+        'scene_windows': windows}, tmp_path, 4)
+    for row, window in zip(output, windows):
+        count = window['end_frame'] - window['start_frame']
+        assert video_frame_count(row[0]['path']) == count
+        assert media_duration(row[0]['path']) == pytest.approx(count / 30, abs=.001)
+    assert path.read_bytes() == before
+
+
 def test_natural_complete_animation_has_no_forced_silent_padding():
     from app.tasks import _short_preview_voice_duration_qc, _strict_short_preview_render_qc
     story = json.loads(pipeline.ASSET.read_text())
@@ -222,6 +243,38 @@ def test_known_immutable_audio_failure_waits_for_actual_code_correction(client, 
     assert client.get(jobs.JOB_PREFIX + row['task_id']) == plan._raw(row)
     assert recovery.schedule(row) == 'continuation_preparing_or_uncertain'
     assert enqueue.call_count == 1
+
+
+def test_extra_continuations_require_a_new_build_and_keep_original_root(client, monkeypatch):
+    from app.services import framecase_recovery as recovery
+    from app.production_tasks import continue_framecase_episode
+    from unittest.mock import Mock
+    monkeypatch.setattr(plan, '_client', lambda: client)
+    enqueue = Mock(); monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
+    row = source(); row['spec']['framecase_animation'] = True
+    row.update(state='FAILURE', framecase_resume_attempt=6,
+        framecase_failure_code='framecase_review_window_invalid', framecase_failed_build='old')
+    client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(row))
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'old')
+    assert recovery.schedule(row) == 'waiting_for_pipeline_correction'
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'corrected')
+    transient = {**row, 'framecase_failure_code': 'framecase_RuntimeError'}
+    assert recovery.schedule(transient) == 'continuation_limit_reached'
+    enqueue.assert_not_called()
+    assert recovery.schedule(row) == 'continuation_queued'
+    assert enqueue.call_args.kwargs['args'] == (row['task_id'], 7)
+    record = json.loads(client.get(recovery.PREFIX + enqueue.call_args.kwargs['task_id']))
+    assert record['correction'] == {'failure_code': 'framecase_review_window_invalid',
+        'failed_build': 'old', 'corrected_build': 'corrected'}
+    assert client.get(jobs.JOB_PREFIX + row['task_id']) == plan._raw(row)
+    assert recovery.schedule({**row, 'framecase_resume_attempt': 12}) == 'continuation_limit_reached'
+    # A queued correction cannot execute on an unrelated deployment or acquire
+    # a fresh provider/daily budget by moving to another source.
+    monkeypatch.setattr(jobs, 'get_job', lambda _: row)
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'unrelated-build')
+    with pytest.raises(plan.ContentPlanError, match='recovery_unverified'):
+        recovery.run(SimpleNamespace(request=SimpleNamespace(id=record['operation'])), row['task_id'], 7)
+    assert not client.exists(recovery.PREFIX + 'execution:' + record['operation'])
 
 
 @pytest.mark.parametrize('nominal,measured,count', [(30, 21.216, 4), (30, 27.024, 4),
