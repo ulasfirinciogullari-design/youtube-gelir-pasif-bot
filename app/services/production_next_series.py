@@ -160,6 +160,11 @@ def _execution_guard(client, binding, profile, channel, state, *, require_execut
     import app.services.content_plan_handoff as handoff
     dispatch_key, execution_key, credential_key, index_key, epoch_key = _execution_keys(binding)
     record = _object(client.get(dispatch_key))
+    if 'daily_voice_priority_plan_sha256' in record:
+        from app.services import daily_voice_priority, content_plan
+        _require(daily_voice_priority.eligible(binding['channel_id'], client=client, pipe=client)
+            and record['daily_voice_priority_plan_sha256'] ==
+                _digest(_object(client.get(content_plan.PLAN_PREFIX + binding['channel_id']))))
     if _preparation_slot(binding) > 3:
         from app.services.production_continuation import authority
         proof = authority(client, binding['channel_id'])

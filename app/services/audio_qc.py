@@ -1388,6 +1388,18 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
         decade_context = bool(cue >= 0 and tokens[cue] in _EN_YEAR_CUES
             and all(value[matches[pos].end():matches[pos + 1].start()].isspace()
                     for pos in range(cue, index)))
+        # A lexical modifier in "during the mid-1950s" is not a negative
+        # number. Accept only an attached ASCII hyphen, a complete decade,
+        # and the same explicit temporal context used for spoken decades.
+        if (cue >= 0 and tokens[cue] in _EN_YEAR_CUES
+                and all(value[matches[pos].end():matches[pos + 1].start()].isspace()
+                        for pos in range(cue, index - 1))
+                and index > 0 and tokens[index - 1] in {'early', 'mid', 'late'}
+                and re.fullmatch(r'-[12][0-9]{2}0s', tokens[index])
+                and matches[index - 1].end() == matches[index].start()):
+            units.append((tokens[index][1:], (tokens[index],)))
+            index += 1
+            continue
         if (century is not None and decade_context and index + 1 < len(tokens)
                 and tokens[index + 1] in _EN_DECADES
                 and re.fullmatch(r'(?:\s+|[-\u2010\u2011])',

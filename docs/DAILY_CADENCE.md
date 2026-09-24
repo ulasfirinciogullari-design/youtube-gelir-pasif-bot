@@ -73,6 +73,18 @@ The final Short reservation rechecks queue and full credit history in the same
 WATCH transaction as its existing scheduling Lua. Paused or edited owner plans,
 numbered series, dependencies, started long films and other channels retain their
 normal ordering. Ordinary funding checks and daily publication limits still apply.
+
+The same exception allows the ordinary topic planner to replenish an exhausted
+Shorts queue. Preparation watches the full queue and credit history, stores the
+original plan hash, and rechecks both before worker execution and model requests.
+Owner edits, a pause, a started long film or reduced credits stop that preparation.
+Original attempt fences, source checks and terminal/public handoff proofs remain
+mandatory; no rejected video is marked published to advance the topic queue.
+
+For English narration, an attached decade modifier such as "during the mid-1950s"
+matches "during the mid 1950s" only in explicit temporal context. Real negative
+numbers, changed years, missing words and incomplete provider timings still fail.
+
 ## Rejected standalone documentaries
 
 For Capital and Margin, a conclusively failed standalone documentary can move

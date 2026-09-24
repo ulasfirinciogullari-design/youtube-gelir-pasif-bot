@@ -262,9 +262,12 @@ def _reserve_preparation(channel_id, expected_revision, expected_connection, enq
         pipe.watch(PROFILE_PREFIX + channel_id, OAUTH_CHANNEL_PREFIX + channel_id,
                    CHANNEL_STATE_PREFIX + channel_id, PENDING_PREFIX + channel_id, DAILY_PREFIX + channel_id + ':' + day)
         from app.services.content_plan import PLAN_PREFIX, owns_channel
+        from app.services import daily_voice_priority
         pipe.watch(PLAN_PREFIX + channel_id)
-        if owns_channel(channel_id, client=pipe):
+        owner_plan = owns_channel(channel_id, client=pipe)
+        if owner_plan and not daily_voice_priority.eligible(channel_id, client=client, pipe=pipe):
             return {'status': 'owner_content_plan'}
+        priority_plan_sha = _digest(_object(pipe.get(PLAN_PREFIX + channel_id))) if owner_plan else None
         slot, blocked = _next_preparation_slot(pipe, channel_id, day, now)
         if blocked:
             return {'status': blocked}
@@ -301,6 +304,8 @@ def _reserve_preparation(channel_id, expected_revision, expected_connection, enq
                   'profile_sha256': _digest(profile), 'channel_sha256': _digest(_planning_channel_identity(channel)),
                   'credential_sha256': _digest(credential), 'authorization_epoch_sha256': _digest(epoch),
                   'created_at': now}
+        if priority_plan_sha is not None:
+            record['daily_voice_priority_plan_sha256'] = priority_plan_sha
         if slot > MAX_PREPARATIONS_PER_DAY:
             from app.services.production_continuation import authority
             proof = authority(pipe, channel_id)
@@ -347,7 +352,9 @@ def maintain_production_series(profiles, connections, enqueue_preparation, *, no
         try:
             client = _client()
             from app.services.content_plan import owns_channel
-            if owns_channel(channel_id, client=client):
+            from app.services import daily_voice_priority
+            if (owns_channel(channel_id, client=client)
+                    and not daily_voice_priority.eligible(channel_id, client=client)):
                 results[channel_id] = 'owner_content_plan'
                 continue
             profile, channel, _, remaining = _current(client, channel_id)
