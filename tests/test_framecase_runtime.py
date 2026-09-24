@@ -141,6 +141,90 @@ def test_animation_never_approves_high_score_with_failed_physical_or_identity_ga
     assert pipeline.visual_gate({'reviews': [row]}, 1)[1] == [0]
 
 
+def test_story_positive_observations_require_a_new_independent_review(monkeypatch):
+    from unittest.mock import Mock
+    from app.services import production_included_router as router
+    ambiguous = {**{k: True for k in pipeline.CHECKS},
+                 'findings': ['The episode faithfully presents original fictional animation.']}
+    accepted = {**{k: True for k in pipeline.CHECKS}, 'findings': []}
+    critic = Mock(side_effect=[deepcopy(ambiguous), deepcopy(accepted)])
+    monkeypatch.setattr(router, 'generate_text_json', critic)
+    candidate = {'narration': 'The tower rang midnight twice.'}
+    result = pipeline.review_package(candidate, {'locked_narration': True}, longform=False)
+    assert result == {**accepted, 'clarification_history': [ambiguous]}
+    assert candidate == {'narration': 'The tower rang midnight twice.'}
+    assert critic.call_count == 2
+    assert all(call.kwargs['purpose'] == 'story_review' for call in critic.call_args_list)
+    assert 'previous_report' in critic.call_args_list[1].args[0]
+    assert 'The tower rang midnight twice.' in critic.call_args_list[1].args[0]
+
+
+@pytest.mark.parametrize('second_kind', ['ambiguous', 'rejected', 'unknown'])
+def test_story_clarification_is_bounded_and_cannot_overrule_rejection(monkeypatch, second_kind):
+    from unittest.mock import Mock
+    from app.services import production_included_router as router
+    ambiguous = {**{k: True for k in pipeline.CHECKS}, 'findings': ['An observation.']}
+    rejected = {**ambiguous, 'filmable_consistent_shots': False,
+                'findings': ['The clock moves in the wrong direction.']}
+    second = {'ambiguous': ambiguous, 'rejected': rejected,
+              'unknown': SpendBlocked('commissioning_reasoning_previous_outcome_unknown')}[second_kind]
+    critic = Mock(side_effect=[deepcopy(ambiguous), second])
+    monkeypatch.setattr(router, 'generate_text_json', critic)
+    with pytest.raises(SpendBlocked):
+        pipeline.review_package({'narration': 'Locked.'}, {}, longform=False)
+    assert critic.call_count == 2
+    assert ambiguous['findings'] == ['An observation.']
+
+
+def test_real_story_rejection_is_not_repeated_to_obtain_approval(monkeypatch):
+    from unittest.mock import Mock
+    from app.services import production_included_router as router
+    rejected = {**{k: True for k in pipeline.CHECKS}, 'coherent_causal_story': False,
+                'findings': ['The reveal contradicts the first episode.']}
+    critic = Mock(return_value=rejected)
+    monkeypatch.setattr(router, 'generate_text_json', critic)
+    with pytest.raises(SpendBlocked, match='story_review_rejected'):
+        pipeline.review_package({}, {}, longform=False)
+    assert critic.call_count == 1
+
+
+def test_omitted_fiction_notice_is_added_before_critic_without_changing_story(monkeypatch):
+    from unittest.mock import Mock
+    from app.services import production_included_router as router
+    story = json.loads(pipeline.ASSET.read_text()); episode = story['episodes'][1]
+    source = {'episode': episode, 'arc': story['episodes'], 'locked_narration': True}
+    words = episode['narration'].split()
+    chunks = [words[:16], words[16:32], words[32:47], words[47:]]
+    draft = {'title': episode['title'], 'description': 'An original animated mystery in Bellwick.',
+             'scenes': [{'narration': ' '.join(part), 'ai_prompt':
+                 'Painterly 2D animation of the clock moving backward while rain falls continuously.'}
+                 for part in chunks]}
+    original = deepcopy(draft)
+    monkeypatch.setattr(pipeline, 'story_input', lambda _: source)
+    writer = Mock(return_value=draft); monkeypatch.setattr(router, 'generate_text_json', writer)
+    def review(candidate, observed_source, *, longform):
+        assert candidate['description'].startswith('Original fictional animation by Framecase Stories.')
+        assert candidate['title'] == "The Bell Rang Twice | The Clock That Lied"
+        assert candidate['narration'] == episode['narration']
+        assert candidate['scenes'] == [dict(s, visual_queries=[], transition='cut', pace='balanced')
+                                       for s in original['scenes']]
+        return {**{k: True for k in pipeline.CHECKS}, 'findings': []}
+    monkeypatch.setattr(pipeline, 'review_package', review)
+    result = pipeline.prepare_package({'item': {'format': 'animation'}})
+    assert result['fiction_review']['findings'] == []
+    assert draft == original and writer.call_count == 1
+
+
+def test_fiction_metadata_keeps_limits_and_does_not_change_noncanonical_titles():
+    source = {'episode': {'number': 2, 'title': 'Canonical 2/5'}, 'arc': [{}] * 5}
+    value = {'description': 'a' * 4000, 'title': 'The suspect scored 2/5'}
+    result = pipeline.draft_public_metadata(value, source)
+    assert len(result['description']) == 4000 and result['description'].startswith('Original fictional')
+    assert result['title'] == value['title']
+    already = {'description': 'Original fiction.', 'title': 'Different'}
+    assert pipeline.draft_public_metadata(already, source) == already
+
+
 def test_successor_is_ordered_five_shorts_then_one_long():
     story = json.loads(pipeline.ASSET.read_text())
     rows = schedule.items(story)
