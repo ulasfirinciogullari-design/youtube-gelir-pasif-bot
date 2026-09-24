@@ -19,7 +19,10 @@ FIX_REQUIRED = frozenset({'framecase_audio_timing_rejected', 'framecase_audio_tr
     'framecase_final_render_rejected', 'framecase_final_timing_rejected',
     'framecase_authored_scene_quality_rejected', 'framecase_FalVideoPolicyError',
     'framecase_review_window_invalid', 'framecase_visual_quality_exhausted',
-    'framecase_art_direction_revision_required', 'framecase_creative_quality_rejected'})
+    'framecase_art_direction_revision_required', 'framecase_creative_quality_rejected',
+    'framecase_art_revision_required', 'framecase_keyframe_quality_rejected',
+    'framecase_motion_plan_invalid', 'framecase_image_episode_capacity',
+    'framecase_native_ambience_missing', 'framecase_final_mix_speech_rejected'})
 
 
 def schedule(source):
