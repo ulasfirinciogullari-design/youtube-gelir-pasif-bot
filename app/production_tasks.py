@@ -147,6 +147,13 @@ def production_tick() -> dict:
         except Exception:
             pass  # A failed recheck cannot suppress unrelated normal work.
         recovered = reconcile_public_retry_deliveries(linked_profiles)
+        try:
+            from app.services.framecase_cadence import maintain as maintain_framecase_cadence
+            maintain_framecase_cadence()
+            from app.services.framecase_schedule import maintain as maintain_framecase_schedule
+            maintain_framecase_schedule()
+        except Exception:
+            pass
         from app.services.production_quality_holds import maintain_quality_holds
         quality_holds = maintain_quality_holds(linked_profiles)
         from app.services.content_plan import maintain as maintain_content_plan
@@ -171,6 +178,13 @@ def production_tick() -> dict:
         return {'status': 'blocked', 'reason': 'production_state_unavailable'}
     except Exception:
         return {'status': 'blocked', 'reason': 'production_configuration_unavailable'}
+
+
+@celery.task(name='app.production_tasks.prepare_framecase_successor', bind=True,
+             acks_late=False, autoretry_for=(), max_retries=0, soft_time_limit=500, time_limit=550)
+def prepare_framecase_successor(self, plan_revision, source_task_id):
+    from app.services.framecase_schedule import prepare
+    return prepare(plan_revision, source_task_id, self.request.id)
 
 
 @task_postrun.connect(weak=False)

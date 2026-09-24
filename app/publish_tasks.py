@@ -186,6 +186,10 @@ def queue_automatic_publish(source_task_id: str) -> dict:
         )
         return {'status': 'metadata_blocked', 'error_code': _safe_error_code(exc)}
 
+    from app.services.framecase_cadence import publication_slot
+    if not publication_slot(source):
+        _set_source_automation(source_task_id, status='daily_limit_wait')
+        return {'status': 'daily_limit_wait'}
     task_id = str(uuid4())
     try:
         reservation, created = reserve_upload(
@@ -858,6 +862,12 @@ def publish_video_pipeline(
                     publish_at=publish_at,
                 )
                 release_started = False
+                if release_mode == 'public':
+                    from app.services.framecase_cadence import publication_completed
+                    try:
+                        publication_completed(source)
+                    except Exception:
+                        pass  # The pending slot still counts conservatively across days.
                 release_status = release_mode
                 final_privacy_status = (
                     'public' if release_mode == 'public' else 'private'

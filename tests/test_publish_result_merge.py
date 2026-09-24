@@ -11,6 +11,7 @@ import pytest
 def _merge_function(client):
     source = Path(__file__).resolve().parents[1] / 'app' / 'services' / 'studio_state.py'
     constants = {'JOB_PREFIX', 'JOB_TTL_SECONDS', '_MERGE_YOUTUBE_RESULT_FIELD',
+                 'QUALITY_HOLD_PREFIX', 'QUALITY_HOLD_JOB_FENCE_PREFIX',
                  'RETAINED_DELIVERY_CHILD_PREFIX', '_RETAINED_LINEAGE', '_RETAINED_ROOT_KEYS'}
     functions = {'_job_key', '_json_default', 'merge_youtube_result_field',
                  'retained_delivery_fence_keys'}

@@ -135,6 +135,10 @@ def test_long_prosody_carries_complete_original_audio_and_cannot_use_short_conte
 
 def test_documentary_uses_one_continuous_take_with_thirty_aligned_scenes(long_case, monkeypatch, tmp_path):
     from app.services import voice
+    # This audio-alignment fixture deliberately has no real credit account or
+    # narrator grant. Narrator assignment has separate ledger integration tests.
+    from app.services import narrator_rotation
+    monkeypatch.setattr(narrator_rotation, 'assigned', lambda language: None)
     scenes = [{'narration': 'The note passes through one careful check before returning to circulation.'}
               for _ in range(30)]
     narration = ' '.join(v['narration'] for v in scenes)

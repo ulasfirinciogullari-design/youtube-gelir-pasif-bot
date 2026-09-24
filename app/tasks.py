@@ -4881,6 +4881,13 @@ def run_video_pipeline(
     voice_replacement_source_id: str | None = None,
     full_rebuild_source_id: str | None = None,
 ):
+    if isinstance(options, dict) and options.get('framecase_animation') is True:
+        from app.services.framecase_pipeline import run
+        return run(self, topic, duration_minutes, language, channel_id, options,
+                   approved_package=approved_package, retry_dispatch_source_id=retry_dispatch_source_id,
+                   curated_stock_manifest=curated_stock_manifest,
+                   voice_replacement_source_id=voice_replacement_source_id,
+                   full_rebuild_source_id=full_rebuild_source_id)
     language = normalize_pipeline_language(language)
     task_id = self.request.id
     retry_number = int(getattr(self.request, 'retries', 0) or 0)

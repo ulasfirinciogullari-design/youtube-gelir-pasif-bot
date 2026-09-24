@@ -294,11 +294,14 @@ def project(plan, *, client=None):
             except (ContentPlanError, ValueError, TypeError):
                 row.update(status='blocked', label='Kayıt doğrulanıyor')
         elif entry['format'] == 'animation':
-            row.update(status='preparation', label='Üretim hazırlığı')
+            from app.services.framecase_cadence import CHANNEL_ID
+            if plan['channel_id'] != CHANNEL_ID:
+                row.update(status='preparation', label='Üretim hazırlığı')
         elif not plan['enabled']:
             row.update(status='paused', label='Duraklatıldı')
         rows.append(row)
-    return {**plan, 'items': rows}
+    from app.services.framecase_cadence import snapshot
+    return {**plan, 'items': rows, 'daily_cadence': snapshot(plan['channel_id'], client=client)}
 
 
 def _active(client):
@@ -319,10 +322,12 @@ def _reserve(channel_id, *, now=None):
     entry = next((v for v in plan['items'] if not client.exists(COMPLETION_PREFIX + v['id'])), None)
     if entry is None:
         return {'status': 'complete'}
-    if entry['format'] == 'animation':
+    from app.services.framecase_cadence import CHANNEL_ID as framecase_channel
+    animated = channel_id == framecase_channel and entry['format'] in {'animation', 'long'}
+    if entry['format'] == 'animation' and not animated:
         return {'status': 'format_preparation'}
     # Never reserve a queue entry on a funding failure.
-    kind = entry['format']
+    kind = 'shorts' if entry['format'] == 'animation' else entry['format']
     duration = FORMATS[kind][1]
     preflight_scheduled_production(channel_id, kind=kind)
     key, dispatch_key = PLAN_PREFIX + channel_id, DISPATCH_PREFIX + entry['id']
@@ -354,7 +359,7 @@ def _reserve(channel_id, *, now=None):
         language = profile.get('default_language'); _require(language in {'tr', 'en'})
         identity = str(profile.get('channel_identity') or '').strip()[:240]
         brief = entry['brief'] + ('\n\nChannel editorial direction: ' + identity if identity else '')
-        if entry['format'] == 'long':
+        if entry['format'] == 'long' and not animated:
             brief += (f'\nProduction direction: EXACTLY 30 scenes. Each scene has 8-{12 if language == "tr" else 14} spoken words, '
                       'one natural sentence and one concrete visual action. Maintain a continuous '
                       'three-minute documentary arc, with an opening question and a clear final answer. '
@@ -367,6 +372,8 @@ def _reserve(channel_id, *, now=None):
                    'production_connection_id': channel['connection_id'],
                    'production_profile_revision': profile['profile_revision'],
                    'content_plan_item_id': entry['id']}
+        if animated:
+            options.update(content_style='original_animation', visual_mix='ai_first', framecase_animation=True)
         route = profile.get('route_label') or channel_id
         spec = {'topic': brief, 'duration_minutes': duration, 'language': language, 'channel_id': route, **options}
         instant = datetime.fromtimestamp(now, timezone.utc).isoformat()
@@ -377,10 +384,18 @@ def _reserve(channel_id, *, now=None):
                     'connection_id': channel['connection_id'], 'profile_revision': profile['profile_revision'],
                     'spec_sha256': _sha(spec), 'reserved_at': instant}
         active[channel_id] = entry['id']
+        from app.services.framecase_cadence import production_slot
+        cadence_key = production_slot(pipe, channel_id, kind, task, now=now)
+        if cadence_key is False:
+            return {'status': 'daily_limit_wait'}
         pipe.multi(); pipe.set(dispatch_key, _raw(dispatch), nx=True)
         pipe.set(jobs.JOB_PREFIX + task, _raw(job), nx=True)
         pipe.zadd(jobs.JOB_INDEX, {task: now}); pipe.set(ACTIVE_KEY, _raw(active))
+        if cadence_key:
+            pipe.hset(cadence_key, task, kind)
         response = pipe.execute()
+        if cadence_key:
+            response = response[:-1]
         _require(response[0:2] == [True, True] and len(response) == 4 and response[-1] is True,
                  'plan_dispatch_uncertain')
         return {'status': 'reserved', 'task_id': task, 'item_id': entry['id'],

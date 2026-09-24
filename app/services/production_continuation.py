@@ -53,13 +53,17 @@ def authority(reader, channel_id, *, active=True):
     raw, anchor, pointer = (reader.get(key) for key in (AUTHORIZATION_KEY, ANCHOR_KEY, ACTIVE_KEY))
     if raw is None and anchor is None:
         _require(pointer is None)
-        return None
+        from app.services.channel_commissioning import authority as channel_authority
+        return channel_authority(reader, channel_id, active=active)
     _require(type(raw) is str and len(raw) <= 4096 and anchor == _sha(raw)
         and reader.pttl(AUTHORIZATION_KEY) == reader.pttl(ANCHOR_KEY) == -1)
     value = json.loads(raw)
     _validate(value)
     _require(pointer is None or pointer == anchor and reader.pttl(ACTIVE_KEY) == -1)
     if channel_id not in value['allowed_channels'] or active and pointer is None:
+        if channel_id not in value['allowed_channels']:
+            from app.services.channel_commissioning import authority as channel_authority
+            return channel_authority(reader, channel_id, active=active)
         return None
     return anchor
 

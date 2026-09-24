@@ -68,6 +68,8 @@ def _row(entry, position, channel, revision):
 def render_page(channels, selected, view, *, notice='', error=False):
     from app.studio import _shell
     channel_id = selected['channel_id']; revision = view['revision'] if view else 'new'
+    from app.services.framecase_cadence import CHANNEL_ID
+    framecase = channel_id == CHANNEL_ID
     rows = view['items'] if view else []
     pending = [v for v in rows if v['status'] != 'published']; published = [v for v in rows if v['status'] == 'published']
     current = pending[0] if pending else None
@@ -92,13 +94,26 @@ def render_page(channels, selected, view, *, notice='', error=False):
     finished = '<details class="plan-completed"><summary>Yayımlananları göster · ' + str(len(published)) + '</summary><ol class="plan-list">' + ''.join(_row(v, i+1, channel_id, revision) for i,v in enumerate(published)) + '</ol></details>' if published else ''
     hidden = _hidden(channel_id, revision)
     after = view['after_queue'] if view else 'pause'
+    cadence_card = ''
+    if framecase:
+        counts = ((view or {}).get('daily_cadence') or {}).get('counts') or {}
+        published_today = counts.get('published') or {}
+        cadence_card = ('<section class="planner-box"><h2>Günlük yayın sınırı</h2>'
+            '<div class="plan-stats"><div><b>' + str(published_today.get('shorts', 0)) + '/10</b><span>SHORTS</span></div>'
+            '<div><b>' + str(published_today.get('long', 0)) + '/1</b><span>UZUN VİDEO</span></div></div>'
+            '<p>Türkiye saatiyle her gün. Sınır dolduğunda sıra ertesi gün devam eder.</p>'
+            '<p>Beş bölümlük özgün animasyon → tamamlanmış uzun hikâye → yeni seri. Sunucuda otomatik ilerler.</p></section>')
     settings_form = (f'<section class="planner-box"><h2>Akış ayarları</h2><div class="plan-stats"><div><b>{len(pending)}</b><span>SIRADAKİ İÇERİK</span></div><div><b>{len(published)}</b><span>YAYIMLANDI</span></div></div>'
         f'<form method="post" action="/studio/plan/settings">{hidden}<label class="check-label"><input type="checkbox" name="enabled" value="yes"'+(' checked' if enabled else '')+'><span>Sırayı otomatik üret</span></label>'
         '<label for="after-queue">Bu sıra tamamlanınca</label><select id="after-queue" name="after_queue">'
         + ''.join(f'<option value="{key}"'+(' selected' if key == after else '')+f'>{label}</option>' for key,label in [('pause','Yeni planımı bekle'),('auto_shorts','Otomatik Shorts ile devam et')])
         + '</select><button type="submit">Ayarları kaydet</button><p class="save-note">Duraklatma yeni işleri durdurur; başlamış üretimi iptal etmez.</p></form></section>')
+    if framecase:
+        settings_form = settings_form.replace('Yeni planımı bekle', 'Yeni animasyon serisi hazırla')
     format_labels = {'shorts': 'Shorts · yaklaşık 30 saniye', 'long': 'Uzun video · 3 dakika',
                      'animation': 'Animasyon pilotu · hazırlık sırasına ekle'}
+    if framecase:
+        format_labels['animation'] = 'Animasyon Shorts · yaklaşık 30 saniye'
     options = ''.join(f'<option value="{key}">{label}</option>' for key,label in format_labels.items())
     create = (f'<section class="planner-box" id="add-video"><h2>Sıraya içerik ekle</h2><form method="post" action="/studio/plan/add">{hidden}'
         '<label for="plan-title">Video başlığı veya fikir</label><input id="plan-title" name="title" maxlength="140" required placeholder="Örn. Bir banknotun gizli yolculuğu">'
@@ -115,7 +130,7 @@ def render_page(channels, selected, view, *, notice='', error=False):
     body = ('<style>'+CSS+'</style><header class="planner-head"><div><div class="eyebrow">İÇERİK MERKEZİ</div><h1>Yayın planı</h1><p>Önce seriyi tamamla. Sonraki videonun ne olacağını sen belirle.</p></div><a class="btn" href="#add-video">+ İçerik ekle</a></header>'
         +flash+'<nav class="plan-channels" aria-label="Planlanacak kanal">'+tabs+'</nav><div class="planner-layout"><section class="planner-main">'+live
         +'<div class="plan-section-head" id="queue"><h2>Üretim sırası</h2><span>Yukarıdan aşağıya ilerler</span></div><p class="plan-refresh-note" id="plan-refresh-note" aria-live="polite"></p>'
-        +queue+finished+'<p class="planner-bottom">Kaliteyi geçemeyen bir video yayımlanmış sayılmaz. Durumlar son sunucu kaydını gösterir.</p></section><aside class="planner-side">'+settings_form+create+explain+'</aside></div>')
+        +queue+finished+'<p class="planner-bottom">Kaliteyi geçemeyen bir video yayımlanmış sayılmaz. Durumlar son sunucu kaydını gösterir.</p></section><aside class="planner-side">'+cadence_card+settings_form+create+explain+'</aside></div>')
     script = '''<script>(()=>{const channel=CHANNEL;let busy=false;
 async function refresh(){
  const main=document.querySelector('.planner-main');

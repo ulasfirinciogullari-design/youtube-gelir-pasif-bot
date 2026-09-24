@@ -114,8 +114,12 @@ def _check_context(pipe, policy, context, credential):
     if context['kind'] == 'long':
         from app.services.commissioning_longform import authorize
         authorize(pipe, context)
+    bound = policy['channels'].get(context['channel_id']) == context['connection_id']
+    if not bound and context['channel_id'] not in policy['channels']:
+        from app.services.channel_commissioning import authority
+        bound = authority(pipe, context['channel_id']) is not None
     _require(context['kind'] in {'shorts', 'long'}
-        and policy['channels'].get(context['channel_id']) == context['connection_id']
+        and bound
         and policy['credential_sha256'] == credential, 'commissioning_audio_binding_changed')
     key = runtime._CHANNEL_PREFIX + context['channel_id']
     pipe.watch(key, runtime._CHANNEL_INDEX)
