@@ -149,7 +149,8 @@ def test_real_opening_clocks_keep_the_same_second_and_one_minute_difference(tmp_
     from app.services.render import video_frame_count, media_duration
     output = tmp_path / 'opening.mp4'
     proof = clock.render(output, 5)
-    assert proof == {'renderer': clock.VERSION, 'new_provider_requests': 0, 'clock_offset_seconds': 60}
+    assert proof == {'renderer': clock.VERSION, 'new_provider_requests': 0, 'clock_offset_seconds': 60,
+                     'opening_cut_seconds': 2.2}
     assert video_frame_count(output) == 150 and media_duration(output) == pytest.approx(5, abs=.001)
     assert not visual_qc._state_change_required({'narration': 'A painting vanished from the gallery.',
         'ai_prompt': clock.CONTRACT}, content_style='original_animation')
@@ -158,6 +159,10 @@ def test_real_opening_clocks_keep_the_same_second_and_one_minute_difference(tmp_
             '-frames:v', '1', '-pix_fmt', 'rgb24', '-f', 'rawvideo', 'pipe:1'], timeout=30)
         angle = 2 * math.pi * (5 + second) / 60
         for cx, cy, scale in ((525, 398, 1.12), (285, 884, 1.62)):
+            if second >= 2.2:
+                if cx == 525:
+                    continue  # This deliberate close-up follows the complete two-clock introduction.
+                cx, cy, scale = (cx - 15) * 4/3, (cy - 264) * 4/3, scale * 4/3
             x, y = round(cx + scale * 87 * math.sin(angle)), round(cy - scale * 87 * math.cos(angle))
             colors = [pixels[(yy*720+xx)*3:(yy*720+xx)*3+3]
                 for yy in range(y-4, y+5) for xx in range(x-4, x+5)]
@@ -165,3 +170,14 @@ def test_real_opening_clocks_keep_the_same_second_and_one_minute_difference(tmp_
     # The continuous angles wrap at midnight; the clock difference is exactly
     # sixty real seconds, not a guessed generated numeral or random spin.
     assert (5 - 86345) % 86400 == 60
+
+
+def test_actual_opening_edit_has_a_motivated_closeup_and_no_long_static_hold(tmp_path):
+    from app.services import framecase_clock_insert as clock, render
+    source = tmp_path / 'opening-seven-seconds.mp4'; clock.render(source, 7)
+    edited = tmp_path / 'opening-final-cut.mp4'
+    render.normalize_clip({'path': str(source), 'generated': True, 'source_type': 'generated',
+        'start_fraction': 0, 'preserve_start_fraction': True, 'forbid_loop': True,
+        'preserve_composition': True}, edited, 188/30, 0, output_resolution='1080x1920')
+    assert render.video_frame_count(edited) == 188
+    assert render.max_freeze_duration(edited) <= 6

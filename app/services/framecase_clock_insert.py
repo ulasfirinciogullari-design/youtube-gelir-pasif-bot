@@ -11,11 +11,15 @@ import subprocess
 
 from app.services.framecase_clue_insert import _face
 
-VERSION = 'framecase_opening_clocks_v1'
+VERSION = 'framecase_opening_clocks_v2'
 CONTRACT = ('Original illustrated 2D mystery opening in midnight navy, amber, ivory and teal. '
     'A cracked brass pocket watch rests on a rain-dark stone ledge in the foreground; '
     'the large municipal clock is visible on its tower behind it. Both clock dials '
-    'have continuously moving second hands. The city reads 23:59, the independent '
+    'have continuously moving second hands. Establish both complete dials first, '
+    'then make one deliberate cut at 2.2 seconds to a closer view of the cracked '
+    'watch, emphasizing the exception in the opening line. This is a new camera '
+    'framing of the same unchanged prop, not an object jump or a repeated action. '
+    'The city reads 23:59, the independent '
     'watch reads 00:00: exactly one minute ahead throughout the shot. Stable clean '
     'dial numbers and small designed time labels make this authored clue legible. '
     'Gentle falling rain moves through the illustrated city. No person is depicted. '
@@ -88,7 +92,8 @@ def frame(t):
 <path d="M391 1103V666Q434 610 477 666V1103M570 1103V666Q613 610 656 666V1103" fill="#102431" stroke="#59706c" stroke-width="3"/>
 '''
     body += '<g transform="translate(525 398) scale(1.12)">' + _face(0, 0, watch=False) + hands(t, 86345) + '</g>'
-    body += '<text x="525" y="594" text-anchor="middle" font-family="serif" font-size="38" letter-spacing="5" fill="#e6d3ac">23:59</text>'
+    if t < 2.2:
+        body += '<text x="525" y="594" text-anchor="middle" font-family="serif" font-size="38" letter-spacing="5" fill="#e6d3ac">23:59</text>'
     for i in range(64):
         x, y = (i * 173 + 23) % 740 - 10, (i * 113 + t * 98) % 1190
         body += f'<path d="M{x:.2f} {y:.2f}l-5 19" stroke="#adc4c2" stroke-opacity=".16" stroke-width="1.2"/>'
@@ -100,6 +105,11 @@ def frame(t):
 '''
     body += '<g transform="translate(285 884) scale(1.62)">' + _face(0, 0, watch=True) + hands(t, 5) + '</g>'
     body += '<text x="285" y="1175" text-anchor="middle" font-family="serif" font-size="46" letter-spacing="5" fill="#efdab2">00:00</text></svg>'
+    if t >= 2.2:
+        # A motivated second shot isolates the narrated exception. The complete
+        # watch and its time stay inside the frame; the background tower is now
+        # partial, as established by the preceding wide comparison.
+        body = body.replace('viewBox="0 0 720 1280"', 'viewBox="15 264 540 960"', 1)
     return body
 
 
@@ -113,4 +123,5 @@ def render(output, seconds):
         '-i', str(work / 'frame_%04d.svg'), '-an', '-frames:v', str(seconds * 30),
         '-c:v', 'libx264', '-threads', '1', '-preset', 'veryfast', '-crf', '18',
         '-pix_fmt', 'yuv420p', str(output)], check=True, capture_output=True, timeout=180)
-    return {'renderer': VERSION, 'new_provider_requests': 0, 'clock_offset_seconds': 60}
+    return {'renderer': VERSION, 'new_provider_requests': 0, 'clock_offset_seconds': 60,
+            'opening_cut_seconds': 2.2}
