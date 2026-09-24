@@ -332,6 +332,58 @@ def test_known_immutable_audio_failure_waits_for_actual_code_correction(client, 
     assert enqueue.call_count == 1
 
 
+@pytest.mark.parametrize('previous_attempt', [3, 6])
+def test_exact_cut_failure_resumes_original_media_only_after_renderer_correction(client, monkeypatch, previous_attempt):
+    from app.services import framecase_recovery as recovery
+    from app.production_tasks import continue_framecase_episode
+    from unittest.mock import Mock
+    monkeypatch.setattr(plan, '_client', lambda: client)
+    enqueue = Mock(); monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
+    row = source(); row['spec']['framecase_animation'] = True
+    row.update(state='FAILURE', framecase_failure_code='framecase_RuntimeError',
+        framecase_failure_trace=[{'function': 'run'}, {'function': '_execute'},
+            {'function': 'render_video'}, {'function': 'normalize_clip'}],
+        framecase_failed_build='broken-renderer', framecase_resume_attempt=previous_attempt,
+        framecase_retry_at=recovery.time.time() + 1800)
+    raw = plan._raw(row); client.set(jobs.JOB_PREFIX + row['task_id'], raw)
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'broken-renderer')
+    assert recovery.schedule(row) == 'waiting_for_pipeline_correction'
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'corrected-renderer')
+    assert recovery.schedule({**row, 'publication_hold': {'reason': 'owner'}}) == 'held_by_owner'
+    enqueue.assert_not_called()
+    assert recovery.schedule(row) == 'continuation_queued'
+    assert enqueue.call_args.kwargs['args'] == (row['task_id'], previous_attempt + 1)
+    record = json.loads(client.get(recovery.PREFIX + enqueue.call_args.kwargs['task_id']))
+    assert record['source_task_id'] == row['task_id']
+    if previous_attempt == 6:
+        assert record['correction'] == {'failure_code': 'framecase_RuntimeError',
+            'failed_build': 'broken-renderer', 'corrected_build': 'corrected-renderer'}
+        monkeypatch.setattr(jobs, 'get_job', lambda _: row)
+        monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'unrelated-build')
+        with pytest.raises(plan.ContentPlanError, match='recovery_unverified'):
+            recovery.run(SimpleNamespace(request=SimpleNamespace(id=record['operation'])), row['task_id'], 7)
+        assert not client.exists(recovery.PREFIX + 'execution:' + record['operation'])
+    assert client.get(jobs.JOB_PREFIX + row['task_id']) == raw
+    assert enqueue.call_count == 1
+
+
+@pytest.mark.parametrize('trace', [[], [{'function': 'normalize_clip'}],
+    [{'function': 'render_video'}, {'function': 'download'}], 'invalid', [None, {}]])
+def test_unrelated_runtime_failure_keeps_transient_backoff(client, monkeypatch, trace):
+    from app.services import framecase_recovery as recovery
+    from app.production_tasks import continue_framecase_episode
+    from unittest.mock import Mock
+    monkeypatch.setattr(plan, '_client', lambda: client)
+    enqueue = Mock(); monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'different-build')
+    row = source(); row['spec']['framecase_animation'] = True
+    row.update(state='FAILURE', framecase_failure_code='framecase_RuntimeError',
+        framecase_failure_trace=trace, framecase_failed_build='old-build',
+        framecase_retry_at=recovery.time.time() + 1800)
+    assert recovery.schedule(row) == 'retry_wait'
+    enqueue.assert_not_called()
+
+
 @pytest.mark.parametrize('failure_code', ['framecase_review_window_invalid', 'framecase_visual_quality_exhausted'])
 def test_extra_continuations_require_a_new_build_and_keep_original_root(client, monkeypatch, failure_code):
     from app.services import framecase_recovery as recovery

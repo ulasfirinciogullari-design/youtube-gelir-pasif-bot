@@ -25,6 +25,18 @@ FIX_REQUIRED = frozenset({'framecase_audio_timing_rejected', 'framecase_audio_tr
     'framecase_native_ambience_missing', 'framecase_final_mix_speech_rejected'})
 
 
+def _requires_correction(source):
+    code = source.get('framecase_failure_code', '')
+    if code in FIX_REQUIRED:
+        return True
+    # A generated clip rejected while assembling its exact cut cannot be
+    # repaired by retrying the same cached media on the same renderer build.
+    trace = source.get('framecase_failure_trace') or []
+    return (code == 'framecase_RuntimeError' and isinstance(trace, list)
+        and len(trace) >= 2 and all(isinstance(row, dict) for row in trace[-2:])
+        and [row.get('function') for row in trace[-2:]] == ['render_video', 'normalize_clip'])
+
+
 def schedule(source):
     spec = source.get('spec') or {}
     if spec.get('production_channel_id') != CHANNEL_ID or spec.get('framecase_animation') is not True:
@@ -39,7 +51,7 @@ def schedule(source):
     if source.get('state') != 'FAILURE':
         return 'working_or_waiting'
     code = source.get('framecase_failure_code', '')
-    if (code in FIX_REQUIRED and source.get('framecase_failed_build')
+    if (_requires_correction(source) and source.get('framecase_failed_build')
             == os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local')):
         return 'waiting_for_pipeline_correction'
     if (not code or any(marker in code for marker in (
@@ -50,7 +62,7 @@ def schedule(source):
     attempt = int(source.get('framecase_resume_attempt') or 0) + 1
     if attempt > MAX_CONTINUATIONS:
         return 'continuation_limit_reached'
-    fixed_build = (code in FIX_REQUIRED and source.get('framecase_failed_build')
+    fixed_build = (_requires_correction(source) and source.get('framecase_failed_build')
         and source.get('framecase_failed_build') != os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local'))
     if attempt > MAX_TRANSIENT_CONTINUATIONS and not fixed_build:
         return 'continuation_limit_reached'
@@ -102,7 +114,7 @@ def run(celery_task, source_id, attempt):
         'framecase_recovery_unverified')
     if attempt > MAX_TRANSIENT_CONTINUATIONS:
         correction = record.get('correction') or {}
-        plan._require(correction.get('failure_code') in FIX_REQUIRED
+        plan._require(_requires_correction(source)
             and correction.get('failure_code') == source.get('framecase_failure_code')
             and correction.get('failed_build') == source.get('framecase_failed_build')
             and correction.get('corrected_build') == os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local')
