@@ -527,9 +527,10 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         from app.services.channel_cadence import daily_editorial
         editorial = daily_editorial(channel_id, editorial, client=client, now=now)
         duration_minutes = editorial['duration_minutes']
-        if duration_minutes == 3 and editorial.get('reason_code') == 'owner_daily_mix':
+        if duration_minutes == 3 and editorial.get('reason_code') in {'owner_daily_mix', 'owner_next_day_stock'}:
             from app.services.channel_cadence import install_daily_long
-            return install_daily_long(profile, topics[cursor:], client=client, now=now)
+            return install_daily_long(profile, topics[cursor:], client=client, now=now,
+                **({'advance': True} if editorial['reason_code'] == 'owner_next_day_stock' else {}))
         if duration_minutes == 8 and getattr(settings, 'studio_spend_enforcement', False) is not True:
             return {'status': 'delivery_budget_not_enabled'}
         if getattr(settings, 'studio_spend_enforcement', False) is True:

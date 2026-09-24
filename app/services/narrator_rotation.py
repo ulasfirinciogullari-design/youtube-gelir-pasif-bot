@@ -121,7 +121,9 @@ def assigned(language):
                         and approved is not None and pipe.pttl(assigned_key) == -1)
                     ledger._ping(pipe)
                     return {key: record[key] for key in ('voice_id', 'name')}
-                prior_voices = {entry['reservation']['intent']['voice_id'] for entry in state['intents'].values()
+                from app.services.production_credit_periods import recorded_intents
+                prior_voices = {entry['reservation']['intent']['voice_id']
+                    for entry in recorded_intents(ledger, pipe, policy, state, ledger.clock())
                     if entry['reservation']['intent']['root_lineage_id'] == context['lineage_id']}
                 if prior_voices:
                     # A root created before rotation keeps its recorded narrator.

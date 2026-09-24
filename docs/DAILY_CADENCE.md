@@ -15,6 +15,16 @@ The existing topic cursor, series numbering, source review, voice review, visual
 review and final render gates remain active. An upper limit is not a guarantee
 that six videos will pass quality review each day.
 
+Once the day's one long video and five Shorts are actually public, the next
+ordinary tick may install tomorrow's first long documentary as stock. Its
+production reservation belongs to tomorrow's Istanbul date, while publication
+waits until that date begins. The marker binds the exact queue item, daily-plan
+receipt and all six original public-delivery records. Concurrent ticks cannot
+add a second copy, and merely starting six jobs does not unlock advance stock.
+If dispatch happens after the intended day, it consumes the current day's
+allowance. The ordered queue still waits for this film's real publication before
+starting the following item; this does not create unlimited advance batches.
+
 Production reservation and job creation happen in the same Redis transaction.
 The three connected channels can each retain one queued or held assignment.
 Two render processes execute those jobs; queue ownership does not reserve a
@@ -42,6 +52,16 @@ for the next calendar day remains viewable in its job page. Financial control is
 separate: commissioning authorization does not alter existing spending receipts
 or buy subscriptions, credits or automatic topups. The owner will choose the
 final operating budget after commissioning.
+
+Existing ElevenLabs reserve credits can be reassigned once in a provider period
+by an explicit operator action using the owner's commissioning authorization.
+This requires a fresh authenticated balance, unchanged account/key/quota/reset,
+disabled overage, no unsettled voice intent and no known overspend. The complete
+previous policy, state and journal are archived under two durable anchors before
+the new covered allowance becomes available. All request identities, old charges
+and narrator assignments remain effective. Worker ticks never invoke this action.
+The next genuine provider reset restores the original allocation cap and reserve;
+the adjustment neither purchases credits nor changes cash or auto-top-up settings.
 ## Rejected standalone documentaries
 
 For Capital and Margin, a conclusively failed standalone documentary can move

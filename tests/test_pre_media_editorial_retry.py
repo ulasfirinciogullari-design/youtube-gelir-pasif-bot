@@ -109,6 +109,31 @@ def test_changed_snapshot_cannot_enable_planning(pending, monkeypatch):
     assert n.client.hget(retry.jobs.PAID_CREATE_BUDGET_PREFIX + SOURCE, 'used') == '1'
 
 
+def test_archived_paid_voice_still_blocks_pre_media_replanning(pending):
+    from app.services import production_credit_periods as periods
+    from test_production_credit_ledger import observation
+    n = pending
+    ledger = voice.CreditLedger(n.client, foundation=n.foundation, clock=n.foundation.clock)
+    p = periods.renewal_snapshot(ledger)['policy']
+    receipt = ledger.reserve(intent=intent(root_lineage_id=SOURCE, channel_id=n.context['channel_id'],
+        source_connection_id=n.context['connection_id']), **binding(p), production_context=n.context)
+    ledger.settle(observation=observation(p, receipt), **binding(p))
+    before = periods.renewal_snapshot(ledger)
+    account = {'version': 1, 'source': 'verified_GET_v1_user', 'status': 'active',
+        **{key: p[key] for key in ('account_sha256', 'credential_sha256')},
+        'observed_at': periods._stamp(n.foundation.clock()), 'response_sha256': 'a' * 64,
+        'provider_reset_at': p['balance']['provider_reset_at'], 'quota_credits': p['balance']['quota_credits'],
+        'used_credits': p['balance']['used_credits'] + 248,
+        'max_credit_limit_extension': 0, 'can_extend_character_limit': False}
+    periods.reallocate_existing_balance(ledger, account, authorization_sha256='b' * 64,
+        withheld_credits=100, allocation_cap_credits=p['allocation_credits'],
+        expected_policy_sha256=before['policy_sha256'], expected_state_sha256=before['state_sha256'])
+    assert ledger.summary()['intent_count'] == 0
+    original = _all(n.client)
+    assert run(n) is False
+    assert _all(n.client) == original
+
+
 def test_a_second_pre_media_child_keeps_the_original_root_and_checks_every_ancestor(pending):
     n = pending; j = retry.jobs
     grandchild = '33333333-3333-4333-8333-333333333333'

@@ -396,7 +396,8 @@ def _reserve(channel_id, *, now=None):
         active[channel_id] = entry['id']
         from app.services import framecase_cadence, channel_cadence
         cadence = framecase_cadence if channel_id == framecase_cadence.CHANNEL_ID else channel_cadence
-        cadence_key = cadence.production_slot(pipe, channel_id, kind, task, now=now)
+        cadence_key = cadence.production_slot(pipe, channel_id, kind, task, now=now,
+            **({'item': entry} if cadence is channel_cadence else {}))
         if cadence_key is False:
             return {'status': 'daily_limit_wait'}
         pipe.multi(); pipe.set(dispatch_key, _raw(dispatch), nx=True)

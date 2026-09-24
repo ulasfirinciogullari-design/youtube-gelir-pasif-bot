@@ -35,7 +35,9 @@ def eligible(task_id, source_id, spec):
         voice = CreditLedger(client, foundation=foundation, clock=foundation.clock)
         with client.pipeline() as pipe:
             voice._watch(pipe)
-            _, native_state, _, _ = voice._read(pipe, foundation.clock())
+            policy, native_state, _, _ = voice._read(pipe, foundation.clock())
+            from app.services.production_credit_periods import recorded_intents
+            intents = recorded_intents(voice, pipe, policy, native_state, foundation.clock())
             router_state, _ = included.IncludedRouterLedger(foundation)._read(pipe)
             current, child, lineage = task_id, None, []
             for _ in range(16):
@@ -86,7 +88,7 @@ def eligible(task_id, source_id, spec):
             context = {'channel_id': spec['production_channel_id'],
                 'connection_id': spec['production_connection_id'], 'lineage_id': current, 'kind': 'shorts'}
             if any(entry['reservation']['intent']['root_lineage_id'] == current
-                    for entry in native_state['intents'].values()):
+                    for entry in intents):
                 return False
             # Existing root identity is mandatory. A newly claimed child may
             # receive its own ordinary binding only when its first request runs.

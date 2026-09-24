@@ -59,14 +59,16 @@ def _provider_free_once(client, task, *, known_reasoning=()):
     voice = CreditLedger(client, foundation=foundation, clock=foundation.clock)
     with client.pipeline() as pipe:
         voice._watch(pipe)
-        _, state, _, _ = voice._read(pipe, foundation.clock())
+        policy, state, _, _ = voice._read(pipe, foundation.clock())
+        from app.services.production_credit_periods import recorded_intents
+        intents = recorded_intents(voice, pipe, policy, state, foundation.clock())
         _, router = included.IncludedRouterLedger(foundation)._read(pipe)
         key = native.PREFIX + 'lineage:' + task
         pipe.watch(key, runtime.LEDGER_KEY)
         plan._require(pipe.smembers(key) == set(known_reasoning) and not pipe.hexists(runtime.LEDGER_KEY,
             'lineage:' + hashlib.sha256(task.encode()).hexdigest()))
         plan._require(not any(v['reservation']['intent']['root_lineage_id'] == task
-            for v in state['intents'].values()))
+            for v in intents))
         plan._require(not any(v['context']['lineage_id'] == task for v in router['requests'].values()))
         pipe.multi(); pipe.ping(); plan._require(pipe.execute() == [True])
 

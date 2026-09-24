@@ -132,7 +132,6 @@ def test_provider_free_check_uses_the_same_client_and_blocks_every_prior_intent(
         original(self, client, **kwargs)
         constructions.append(client)
     monkeypatch.setattr(credit.CreditLedger, '__init__', initialize)
-    monkeypatch.setattr(credit.CreditLedger, '_watch', lambda *a: None)
     monkeypatch.setattr(credit.CreditLedger, '_read', lambda *a: ({}, state, {}, {}))
     monkeypatch.setattr(included.IncludedRouterLedger, '_read', lambda *a: ({}, router))
     if provider == 'voice': state['intents']['x'] = {'reservation': {'intent': {'root_lineage_id': task}}}
@@ -155,7 +154,6 @@ def test_real_watch_conflict_rereads_and_rejects_new_own_provider_intent(case, m
     from app.services.production_spend import SpendLedger, SpendPolicy, LEDGER_KEY
     foundation = SpendLedger(case.client, SpendPolicy(0, 0, 0, 0, 0, 0))
     monkeypatch.setattr(runtime, 'configured_ledger', lambda **_: foundation)
-    monkeypatch.setattr(credit.CreditLedger, '_watch', lambda *a: None)
     monkeypatch.setattr(credit.CreditLedger, '_read', lambda *a: ({}, {'intents': {}}, {}, {}))
     monkeypatch.setattr(included.IncludedRouterLedger, '_read', lambda *a: ({}, {'requests': {}}))
     task = str(uuid4()); original = case.client.pipeline; transactions = []

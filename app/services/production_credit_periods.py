@@ -38,7 +38,7 @@ def _reconciliation(policy, state, journal, history):
     return _hash({'policy': policy, 'state': state, 'journal': journal, 'history': history})
 
 
-def next_policy(policy, state, journal, history, observation, *, now):
+def next_policy(policy, state, journal, history, observation, *, now, reallocation=None):
     """Pure candidate from a fresh account read; never an estimated new balance."""
     code = 'credit_period_evidence_invalid'
     _require(type(observation) is dict and set(observation) == {
@@ -56,7 +56,8 @@ def next_policy(policy, state, journal, history, observation, *, now):
     from app.services.production_credit_funding import _hash as valid_hash
     valid_hash(observation['response_sha256'], code)
     observed, reset = _date(observation['observed_at']), _date(observation['provider_reset_at'])
-    _require(_date(policy['valid_until']) <= observed <= now <= observed + timedelta(seconds=120)
+    earliest = policy['valid_from'] if reallocation is not None else policy['valid_until']
+    _require(_date(earliest) <= observed <= now <= observed + timedelta(seconds=120)
         and reset > now, code)
     _require(state['reserved_credits'] == 0 and all(
         entry['settlement'] is not None for entry in state['intents'].values()),
@@ -65,7 +66,27 @@ def next_policy(policy, state, journal, history, observation, *, now):
     quota, used = observation['quota_credits'], observation['used_credits']
     _require(type(quota) is int and type(used) is int and 0 <= used < quota <= 1_000_000_000, code)
     previous_reset = _date(policy['balance']['provider_reset_at'])
-    if reset == previous_reset:
+    original = history['periods'][0]['policy'] if history['periods'] else policy
+    withheld = policy['balance']['withheld_credits']
+    if reallocation is not None:
+        # Explicit operator action only. This is neither a provider reset nor
+        # an automatic refill. The exact old period remains in the chain.
+        _require(type(reallocation) is dict and set(reallocation) == {
+            'version', 'source', 'authorization_sha256', 'withheld_credits', 'allocation_cap_credits'}
+            and type(reallocation['version']) is int and reallocation['version'] == 1
+            and reallocation['source'] == 'owner_authorized_existing_subscription_credits', code)
+        valid_hash(reallocation['authorization_sha256'], code)
+        withheld, ceiling = reallocation['withheld_credits'], reallocation['allocation_cap_credits']
+        _require(type(withheld) is int and 0 <= withheld < quota
+            and type(ceiling) is int and 0 < ceiling <= original['allocation_credits'], code)
+        _require(now < _date(policy['valid_until']) and reset == previous_reset
+            and quota == policy['balance']['quota_credits']
+            and used >= policy['balance']['used_credits'] + state['spent_credits'],
+            'credit_reallocation_account_unreconciled')
+        _require(not any(row.get('reallocation') is not None
+            and row['policy']['balance']['provider_reset_at'] == observation['provider_reset_at']
+            for row in history['periods']), 'credit_reallocation_already_used')
+    elif reset == previous_reset:
         # A calendar boundary is not a new provider allowance. Carry only the
         # unspent allocation, additionally bounded by the current real balance.
         end = _date(policy['valid_until'])
@@ -75,12 +96,16 @@ def next_policy(policy, state, journal, history, observation, *, now):
     else:
         _require(reset > previous_reset and observed >= previous_reset,
                  'credit_provider_period_not_renewed')
-        ceiling = (history['periods'][0]['policy']['allocation_credits']
-                   if history['periods'] else policy['allocation_credits'])
-    withheld = policy['balance']['withheld_credits']
+        ceiling = original['allocation_credits']
+        # A one-time use of existing reserve does not increase future periods.
+        withheld = original['balance']['withheld_credits']
     allocation = min(ceiling, quota - used - withheld)
     _require(allocation > 0, 'credit_period_balance_unavailable')
+    if reallocation is not None:
+        _require(allocation > policy['allocation_credits'] - state['spent_credits'],
+                 'credit_reallocation_no_additional_capacity')
     boundary = datetime(now.year + (now.month == 12), now.month % 12 + 1, 1, tzinfo=timezone.utc)
+    if reallocation is not None: boundary = min(boundary, _date(policy['valid_until']))
     candidate = deepcopy(policy)
     candidate.update(month=now.strftime('%Y-%m'), valid_from=_stamp(now),
         valid_until=_stamp(min(reset, boundary)), allocation_credits=allocation,
@@ -110,15 +135,17 @@ def read_history(ledger, pipe, policy, state, now):
         'credit_period_history_invalid')
     prefix = _empty()
     for index, row in enumerate(history['periods']):
-        _require(type(row) is dict and set(row) == {
-            'policy', 'state', 'journal', 'closed_at', 'observation', 'successor_policy_sha256'},
+        fields = {'policy', 'state', 'journal', 'closed_at', 'observation', 'successor_policy_sha256'}
+        _require(type(row) is dict and set(row) in (fields, fields | {'reallocation'})
+            and ('reallocation' not in row or row['reallocation'] is not None),
             'credit_period_history_invalid')
         closed = _date(row['closed_at'])
         _require(closed <= now, 'credit_period_history_invalid')
         old_policy, old_state, _, journal = ledger._validate_records(
             {'policy': _json(row['policy']), 'state': _json(row['state'])},
             row['journal'], closed, historical=True)
-        candidate = next_policy(old_policy, old_state, journal, prefix, row['observation'], now=closed)
+        candidate = next_policy(old_policy, old_state, journal, prefix, row['observation'], now=closed,
+                                reallocation=row.get('reallocation'))
         following = history['periods'][index + 1]['policy'] if index + 1 < len(history['periods']) else policy
         _require(candidate == following and row['successor_policy_sha256'] == _hash(following),
                  'credit_period_history_chain_changed')
@@ -162,6 +189,13 @@ def check_prior_identity(ledger, pipe, policy, state, now, operation, values):
         _require(total < 1024, 'credit_foundation_history_limit')
 
 
+def recorded_intents(ledger, pipe, policy, state, now):
+    """Complete validated history for media-free checks and narrator continuity."""
+    history = read_history(ledger, pipe, policy, state, now)
+    return [entry for prior in [*(row['state'] for row in history['periods']), state]
+            for entry in prior['intents'].values()]
+
+
 def renewal_snapshot(ledger):
     """Read expired accounting for reconciliation, never return a send permit."""
     with ledger.client.pipeline() as pipe:
@@ -174,28 +208,54 @@ def renewal_snapshot(ledger):
 
 
 def renew(ledger, observation, *, expected_policy_sha256, expected_state_sha256):
+    return _advance(ledger, observation, expected_policy_sha256=expected_policy_sha256,
+                    expected_state_sha256=expected_state_sha256)
+
+
+def reallocate_existing_balance(ledger, observation, *, authorization_sha256,
+        withheld_credits, allocation_cap_credits, expected_policy_sha256, expected_state_sha256):
+    """Operator-only, once per provider period, with fresh existing-account proof.
+
+    Never called by a worker tick or a provider request. The caller has explicit
+    owner authority to use existing subscription credits and first reconciles
+    outstanding work. No purchase, top-up, debt erasure or unknown-use release.
+    """
+    return _advance(ledger, observation, expected_policy_sha256=expected_policy_sha256,
+        expected_state_sha256=expected_state_sha256, reallocation={
+            'version': 1, 'source': 'owner_authorized_existing_subscription_credits',
+            'authorization_sha256': authorization_sha256, 'withheld_credits': withheld_credits,
+            'allocation_cap_credits': allocation_cap_credits})
+
+
+def _advance(ledger, observation, *, expected_policy_sha256, expected_state_sha256, reallocation=None):
     """One acknowledged archive-and-advance; never retry an uncertain commit."""
     _require(ledger.foundation is not None, 'credit_foundation_required')
     observation = _object(_json(observation))
+    if reallocation is not None: reallocation = _object(_json(reallocation))
     try:
         with ledger.client.pipeline() as pipe:
             ledger._watch(pipe)
             now = ledger.clock()
             policy, state, _, journal = ledger._read(pipe, now, historical=True)
+            history = read_history(ledger, pipe, policy, state, now)
             if policy['evidence_sha256'] == _hash(observation) and now < _date(policy['valid_until']):
+                _require(history['periods'] and history['periods'][-1].get('reallocation') == reallocation,
+                         'credit_period_snapshot_changed')
                 ledger._ping(pipe)
-                return {'status': 'already_renewed', 'valid_until': policy['valid_until']}
+                return {'status': 'already_reallocated' if reallocation else 'already_renewed',
+                        'valid_until': policy['valid_until']}
             _require(_hash(policy) == expected_policy_sha256 and _hash(state) == expected_state_sha256,
                      'credit_period_snapshot_changed')
-            history = read_history(ledger, pipe, policy, state, now)
             _require(len(history['periods']) < MAX_PERIODS, 'credit_period_history_limit')
-            candidate = next_policy(policy, state, journal, history, observation, now=now)
+            candidate = next_policy(policy, state, journal, history, observation, now=now,
+                                    reallocation=reallocation)
             updated = initial_credit_state(candidate, now=now)
             genesis = {'version': 1, 'policy_sha256': _hash(candidate),
                        'initialized_at': updated['last_updated_at'], 'foundation_bound': True}
             next_journal = _journal(candidate, updated, genesis)
             history['periods'].append({'policy': policy, 'state': state, 'journal': journal,
                 'closed_at': _stamp(now), 'observation': observation, 'successor_policy_sha256': _hash(candidate)})
+            if reallocation is not None: history['periods'][-1]['reallocation'] = reallocation
             encoded, digest = _json(history), _hash(history)
             first = len(history['periods']) == 1
             pipe.multi()
@@ -211,7 +271,7 @@ def renew(ledger, observation, *, expected_policy_sha256, expected_state_sha256)
             _require(type(ack) is list and len(ack) == len(expected)
                 and all(type(actual) is type(wanted) and actual == wanted for actual, wanted in zip(ack, expected)),
                 'credit_period_commit_uncertain')
-            return {'status': 'renewed', 'valid_until': candidate['valid_until'],
+            return {'status': 'reallocated' if reallocation else 'renewed', 'valid_until': candidate['valid_until'],
                     'allocation_credits': candidate['allocation_credits'], 'archived_periods': len(history['periods'])}
     except SpendBlocked:
         raise

@@ -4,10 +4,11 @@ Dates use Europe/Istanbul. Unfinished publication reservations count on every
 day until delivery is known, including across midnight and worker restarts.
 This prevents yesterday's in-flight upload from bypassing today's ceiling.
 """
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date, timedelta
 import json
 from uuid import UUID, uuid4, uuid5, NAMESPACE_URL
 from zoneinfo import ZoneInfo
+from redis.client import Pipeline
 
 from app.services import studio_state as jobs
 from app.services.included_stock_pool import _local_transaction
@@ -17,6 +18,7 @@ CHANNELS = frozenset({'UC5v9AvNtD3PTLgo6m1jROOA', 'UCgvESYtYbn2w9R2ExBOF_cw'})
 LIMITS = {'long': 1, 'shorts': 5}
 ZONE = ZoneInfo('Europe/Istanbul')
 WAITING_KEY = PREFIX + 'waiting'
+ADVANCE_PREFIX = PREFIX + 'advance:'
 
 
 def _client():
@@ -51,10 +53,55 @@ def _values(client, key):
     return value
 
 
-def production_slot(pipe, channel_id, format_kind, task_id, *, now=None):
+def _completed_day(reader, channel_id, *, now=None):
+    published = keys(channel_id, now=now)[1]
+    if isinstance(reader, Pipeline): reader.watch(published)
+    rows = _values(reader, published)
+    return rows if all(sum(v == kind for v in rows.values()) >= limit
+                       for kind, limit in LIMITS.items()) else None
+
+
+def _stock_day(reader, channel_id, item_id):
+    """Verify the advance reservation against its immutable daily plan receipt."""
+    if not item_id: return None
+    _require(str(UUID(item_id)) == item_id)
+    key = ADVANCE_PREFIX + item_id
+    if isinstance(reader, Pipeline): reader.watch(key)
+    raw = reader.get(key)
+    if raw is None: return None
+    row = json.loads(raw)
+    _require(set(row) == {'version', 'channel_id', 'item_id', 'day', 'source_day', 'item_sha256',
+                         'completed_publications'} and type(row['version']) is int and row['version'] == 1
+        and row['channel_id'] == channel_id and row['item_id'] == item_id
+        and date.fromisoformat(row['source_day']) + timedelta(days=1) == date.fromisoformat(row['day'])
+        and item_id == str(uuid5(NAMESPACE_URL, 'owner-daily-long:' + channel_id + ':' + row['day'])))
+    receipt_key = PREFIX + 'daily_plan:' + channel_id + ':' + row['day']
+    published_key = PREFIX + channel_id + ':published:' + row['source_day']
+    if isinstance(reader, Pipeline): reader.watch(receipt_key, published_key)
+    receipt = json.loads(reader.get(receipt_key) or '{}')
+    _require(receipt.get('channel_id') == channel_id and receipt.get('item_id') == item_id
+        and receipt.get('day') == row['day'] and receipt.get('advance') == row
+        and receipt.get('item_sha256') == row['item_sha256'])
+    original, current = row['completed_publications'], _values(reader, published_key)
+    _require(type(original) is dict and original
+        and all(kind in LIMITS and current.get(root) == kind for root, kind in original.items())
+        and all(sum(v == kind for v in original.values()) >= limit for kind, limit in LIMITS.items()))
+    return row
+
+
+def production_slot(pipe, channel_id, format_kind, task_id, *, now=None, item=None):
     """Read inside the caller's WATCH; the caller writes with its job commit."""
     if channel_id not in CHANNELS: return None
     _require(format_kind in LIMITS and str(UUID(task_id)) == task_id)
+    stock = _stock_day(pipe, channel_id, item['id']) if item is not None else None
+    if stock:
+        from app.services import content_plan as plan
+        _require(format_kind == 'long' and plan._sha(item) == stock['item_sha256'])
+        target = date.fromisoformat(stock['day']); today = _now(now).date()
+        _require(target <= today + timedelta(days=1))
+        # A restart after the intended date consumes today's allowance. It
+        # cannot reopen an old production day or reset the original root.
+        now = datetime.combine(max(target, today), datetime.min.time(), ZONE).timestamp()
     selected = keys(channel_id, now=now); pipe.watch(*selected)
     used = {}
     for key in selected: used.update(_values(pipe, key))
@@ -70,6 +117,11 @@ def lua_arguments(channel_id, format_kind, *, now=None):
 def daily_editorial(channel_id, fallback, *, client, now=None):
     """The new daily mix applies after an existing ordered queue has finished."""
     if channel_id not in CHANNELS: return fallback
+    if _completed_day(client, channel_id, now=now):
+        return {'version': 1, 'format': 'landscape', 'duration_minutes': 3.0,
+            'reason_code': 'owner_next_day_stock',
+            'reason': 'Günün yayınları tamamlandı; yarının ilk uzun videosu stok için hazırlanıyor.',
+            'scope_signals': ['next_day_stock']}
     used = {}
     for key in keys(channel_id, now=now): used.update(_values(client, key))
     long_form = sum(value == 'long' for value in used.values()) < LIMITS['long']
@@ -80,7 +132,7 @@ def daily_editorial(channel_id, fallback, *, client, now=None):
 
 
 @_local_transaction
-def install_daily_long(profile, topics, *, client, now=None):
+def install_daily_long(profile, topics, *, client, now=None, advance=False):
     """Use the already verified owner-plan long-form engine before five Shorts.
 
     The five source-backed Short topics and their production cursor stay in
@@ -89,7 +141,9 @@ def install_daily_long(profile, topics, *, client, now=None):
     """
     from app.services import content_plan as plan, channel_production as production
     channel = profile['channel_id']; _require(channel in CHANNELS and topics)
-    day = _now(now).date().isoformat()
+    _require(type(advance) is bool)
+    today = _now(now).date()
+    day = (today + timedelta(days=1) if advance else today).isoformat()
     item_id = str(uuid5(NAMESPACE_URL, 'owner-daily-long:' + channel + ':' + day))
     brief = ('Kaynaklı günlük belgesel; aşağıdaki konuları bağlayan tek bir soru ve tutarlı hikâye kur. '
         'İddiaları verilen kaynaklarla doğrula.\n' if profile.get('default_language') == 'tr' else
@@ -99,6 +153,8 @@ def install_daily_long(profile, topics, *, client, now=None):
     key = plan.PLAN_PREFIX + channel; receipt_key = PREFIX + 'daily_plan:' + channel + ':' + day
     with client.pipeline() as pipe:
         pipe.watch(key, receipt_key, plan.ACTIVE_KEY, production.PROFILE_PREFIX + channel)
+        daily_public = _completed_day(pipe, channel, now=now) if advance else None
+        if advance: _require(daily_public is not None)
         _require(json.loads(pipe.get(production.PROFILE_PREFIX + channel) or '{}') == profile)
         raw = pipe.get(key)
         if pipe.get(receipt_key):
@@ -124,8 +180,17 @@ def install_daily_long(profile, topics, *, client, now=None):
         audit = {'version': 1, 'channel_id': channel, 'day': day, 'item_id': item_id,
             'profile_revision': profile['profile_revision'], 'original_plan': raw,
             'completed_history': history, 'item_sha256': plan._sha(entry), 'new_revision': document['revision']}
+        stock = None
+        if advance:
+            stock = {'version': 1, 'channel_id': channel, 'item_id': item_id,
+                'day': day, 'source_day': today.isoformat(), 'item_sha256': plan._sha(entry),
+                'completed_publications': daily_public}
+            pipe.watch(ADVANCE_PREFIX + item_id)
+            _require(pipe.get(ADVANCE_PREFIX + item_id) is None)
+            audit['advance'] = stock
         pipe.multi(); pipe.set(receipt_key, plan._raw(audit), nx=True); pipe.set(key, plan._raw(document))
-        _require(pipe.execute() == [True, True])
+        if stock: pipe.set(ADVANCE_PREFIX + item_id, plan._raw(stock), nx=True)
+        _require(pipe.execute() == ([True, True, True] if stock else [True, True]))
     return {'status': 'daily_long_planned', 'item_id': item_id}
 
 
@@ -175,6 +240,10 @@ def publication_slot(source, *, client=None, now=None):
     _, day_key, pending_key = keys(channel, now=now)
     with client.pipeline() as pipe:
         pipe.watch(claim_key, day_key, pending_key)
+        stock = _stock_day(pipe, channel, source.get('spec', {}).get('content_plan_item_id'))
+        if stock and _now(now).date() < date.fromisoformat(stock['day']):
+            pipe.multi(); pipe.sadd(WAITING_KEY, source['task_id']); pipe.execute()
+            return False
         raw = pipe.get(claim_key)
         if raw:
             claim = json.loads(raw)
