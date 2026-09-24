@@ -9,6 +9,7 @@ import pytest
 from app.services import framecase_editorial_revision as revision, framecase_pipeline as pipeline
 from app.services import framecase_art as art, framecase_schedule as schedule, content_plan as plan
 from app.services import studio_state as jobs, commissioning_video as video
+from app.services import source_publication_hold as hold
 
 OTHER = 'UC5v9AvNtD3PTLgo6m1jROOA'
 
@@ -21,7 +22,12 @@ def setup(monkeypatch):
     story=json.loads(pipeline.ASSET.read_text());rows=schedule.items(story)
     document={'version':1,'channel_id':revision.CHANNEL_ID,'revision':str(uuid4()),
         'enabled':False,'after_queue':'pause','updated_at':'2026-09-24T22:00:00+00:00','items':rows}
-    source={'task_id':revision.SOURCE_ID,'state':'FAILURE','publication_hold':{'owner':True},
+    receipt={'version':1,'task_id':revision.SOURCE_ID,'request':{'expected_channel_id':revision.CHANNEL_ID},
+        'disposition':'owner_publication_hold','original_publish_after_render':True,
+        'connection_id':'original-channel','held_at':'2026-09-24T22:00:00+00:00'}
+    receipt['receipt_sha256']=hold._digest(receipt)
+    source={'task_id':revision.SOURCE_ID,'state':'FAILURE',
+        'publication_hold':{'receipt_key':hold.HOLD_PREFIX+revision.SOURCE_ID,'receipt_sha256':receipt['receipt_sha256']},
         'spec':{'production_channel_id':revision.CHANNEL_ID,'publish_after_render':False,'content_plan_item_id':rows[1]['id']}}
     voice={'asset':{'key':'original-voice.mp3','sha256':'a'*64},'spoken_texts':['one','two','three','four']}
     checkpoint={'package':{'scenes':[{'narration':text}for text in voice['spoken_texts']]},'voice':voice,
@@ -29,6 +35,7 @@ def setup(monkeypatch):
     native={'requests':{'original-denied-request':{'create':{'http_status':200},'result':{'http_status':422}}}}
     for key,value in [(plan.PLAN_PREFIX+revision.CHANNEL_ID,document),(jobs.JOB_PREFIX+revision.SOURCE_ID,source),
         (pipeline.PREFIX+'checkpoint:'+revision.SOURCE_ID,checkpoint),(video.PREFIX+revision.SOURCE_ID,native),
+        (hold.HOLD_PREFIX+revision.SOURCE_ID,receipt),(hold.UPLOAD_PREFIX+revision.SOURCE_ID,hold._fence(receipt)),
         (jobs.JOB_PREFIX+revision.PREVIEW_ID,{'state':'SUCCESS','result':{'video_sha256':revision.APPROVED_MASTER,'creative_qc':{'pass':True}}}),
         (plan.ACTIVE_KEY,{revision.CHANNEL_ID:rows[1]['id'],OTHER:rows[4]['id']}),
         (plan.COMPLETION_PREFIX+rows[0]['id'],{'original-public':'still-public'})]:
@@ -36,10 +43,13 @@ def setup(monkeypatch):
     return SimpleNamespace(client=client,document=document,source=source,checkpoint=checkpoint,native=native)
 
 
-def test_revision_archives_intent_reuses_voice_and_preserves_every_old_receipt(setup):
+@pytest.mark.parametrize('terminal_state',['FAILURE','SUCCESS'])
+def test_revision_archives_intent_reuses_voice_and_preserves_every_old_receipt(setup,terminal_state):
     s=setup;c=s.client;old=s.document['items'][1]['id']
+    s.source['state']=terminal_state;c.set(jobs.JOB_PREFIX+revision.SOURCE_ID,plan._raw(s.source))
     preserved={key:c.get(key)for key in [jobs.JOB_PREFIX+revision.SOURCE_ID,pipeline.PREFIX+'checkpoint:'+revision.SOURCE_ID,
-        video.PREFIX+revision.SOURCE_ID,plan.COMPLETION_PREFIX+s.document['items'][0]['id']]}
+        video.PREFIX+revision.SOURCE_ID,plan.COMPLETION_PREFIX+s.document['items'][0]['id'],
+        hold.HOLD_PREFIX+revision.SOURCE_ID,hold.UPLOAD_PREFIX+revision.SOURCE_ID]}
     result=revision.activate(s.document['revision'],owner_feedback=revision.OWNER_FEEDBACK,client=c)
     assert result['status']=='activated' and result['old_source_held'] and result['provider_requests']==0
     current=plan.read(revision.CHANNEL_ID,client=c)
@@ -55,7 +65,8 @@ def test_revision_archives_intent_reuses_voice_and_preserves_every_old_receipt(s
     assert {key:c.get(key)for key in before}==before
 
 
-@pytest.mark.parametrize('damage',['owner','pending_provider','changed_plan','live_source','unapproved_preview','later_started'])
+@pytest.mark.parametrize('damage',['owner','pending_provider','changed_plan','live_source','unapproved_preview',
+    'later_started','missing_tombstone','damaged_receipt','publisher_active','public_source'])
 def test_revision_never_consumes_unsafe_or_stale_editorial_state(setup,damage):
     s=setup;c=s.client;feedback=revision.OWNER_FEEDBACK;expected=s.document['revision']
     if damage=='owner':feedback='different instruction'
@@ -65,6 +76,12 @@ def test_revision_never_consumes_unsafe_or_stale_editorial_state(setup,damage):
     if damage=='live_source':s.source['state']='PROGRESS';c.set(jobs.JOB_PREFIX+revision.SOURCE_ID,plan._raw(s.source))
     if damage=='unapproved_preview':c.set(jobs.JOB_PREFIX+revision.PREVIEW_ID,plan._raw({'state':'SUCCESS','result':{}}))
     if damage=='later_started':c.set(plan.DISPATCH_PREFIX+s.document['items'][2]['id'],'preserved later dispatch')
+    if damage=='missing_tombstone':c.delete(hold.UPLOAD_PREFIX+revision.SOURCE_ID)
+    if damage=='damaged_receipt':c.set(hold.HOLD_PREFIX+revision.SOURCE_ID,'{}')
+    if damage=='publisher_active':c.set(hold.EXECUTION_LOCK_PREFIX+revision.SOURCE_ID,'active publisher')
+    if damage=='public_source':
+        s.source.update(state='SUCCESS',result={'youtube':{'video_id':'already-public'}})
+        c.set(jobs.JOB_PREFIX+revision.SOURCE_ID,plan._raw(s.source))
     before={key:c.get(key)for key in c.scan_iter()}
     with pytest.raises(plan.ContentPlanError):revision.activate(expected,owner_feedback=feedback,client=c)
     assert {key:c.get(key)for key in c.scan_iter()}==before
