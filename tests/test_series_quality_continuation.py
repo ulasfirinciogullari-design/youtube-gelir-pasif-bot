@@ -181,6 +181,50 @@ def test_old_ready_draft_is_archived_after_reconnect_without_losing_attempt_fenc
     assert not n.case.calls
 
 
+def test_completed_duplicate_ready_draft_retires_without_replaying_or_erasing_history(series):
+    n = series; holds.hold_failed_episode(n.profile)
+    topic = n.batch['briefs'][0]['brief']; fingerprint = promotion._digest(promotion._text_key(topic))
+    history_key = promotion.TOPIC_HISTORY_PREFIX + n.profile['channel_id']
+    n.client.sadd(history_key, fingerprint)
+    before = _all(n.client)
+    assert retire(n)['status'] == 'stale_ready_archived'
+    archive = json.loads(n.client.get(promotion.SUPERSEDED_PREFIX + n.profile['channel_id'] + ':' + n.attempt))
+    assert archive['reason'] == 'series_topic_already_used'
+    assert archive['duplicate_topic_sha256'] == [fingerprint]
+    assert archive['pending_batch'] == n.batch and archive['publish_eligible'] is False
+    assert n.client.get(n.pending_key) is None
+    assert all(_all(n.client)[k] == v for k, v in before.items() if k != n.pending_key)
+    assert scheduler._pending_status(n.client, n.profile['channel_id'], n.batch['day'])[0] == 'daily_fenced'
+    assert not n.case.calls
+
+
+def test_uncertain_planner_cannot_be_retired_even_when_topic_is_duplicate(series):
+    n = series; holds.hold_failed_episode(n.profile)
+    fingerprint = promotion._digest(promotion._text_key(n.batch['briefs'][0]['brief']))
+    n.client.sadd(promotion.TOPIC_HISTORY_PREFIX + n.profile['channel_id'], fingerprint)
+    _write(n.client, planning._preparation_key(planning.PREPARATION_DISPATCH_PREFIX, n.batch),
+        {'status': 'uncertain', 'channel_id': n.profile['channel_id'], 'outcome': 'unknown'})
+    before = _all(n.client)
+    with pytest.raises(promotion.SeriesPromotionError, match='series_preparation_unresolved'): retire(n)
+    assert _all(n.client) == before
+
+
+def test_duplicate_history_race_keeps_ready_batch_for_a_fresh_snapshot(series, monkeypatch):
+    n = series; holds.hold_failed_episode(n.profile)
+    fingerprint = promotion._digest(promotion._text_key(n.batch['briefs'][0]['brief']))
+    history_key = promotion.TOPIC_HISTORY_PREFIX + n.profile['channel_id']
+    n.client.sadd(history_key, fingerprint)
+    compare = promotion._Snapshot.compare
+    def raced(snapshot, pipe):
+        n.client.srem(history_key, fingerprint)
+        return compare(snapshot, pipe)
+    monkeypatch.setattr(promotion._Snapshot, 'compare', raced)
+    with pytest.raises(promotion.SeriesPromotionError, match='series_state_changed'): retire(n)
+    assert n.client.get(n.pending_key) is not None
+    assert not n.client.exists(promotion.SUPERSEDED_PREFIX + n.profile['channel_id'] + ':' + n.attempt)
+    assert not n.case.calls
+
+
 @pytest.mark.parametrize('damage', ['none', 'reserved', 'uncertain', 'daily', 'future', 'dispatch', 'manual_pause'])
 def test_current_or_unverified_ready_data_does_not_release_another_preparation(series, damage):
     n = series; holds.hold_failed_episode(n.profile)
