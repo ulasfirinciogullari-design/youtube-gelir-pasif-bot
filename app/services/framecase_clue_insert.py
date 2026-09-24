@@ -25,7 +25,7 @@ def eligible(dispatch, checkpoint, journal, index):
     from app.services.fal_video import _fal_error_types
     from app.services.youtube_auth import _decrypt_json
     series = dispatch['item'].get('series') or {}
-    if (index != 2 or dispatch['channel_id'] != CHANNEL_ID
+    if (index not in (2, 3) or dispatch['channel_id'] != CHANNEL_ID
             or series.get('id') != 'framecase_clock_that_lied_s01' or series.get('number') != 1
             or '1' not in checkpoint.get('clips', {})
             or (journal.get('context') or {}).get('lineage_id') != dispatch['task_id']):

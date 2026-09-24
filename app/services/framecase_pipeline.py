@@ -169,6 +169,29 @@ def review_package(package, source, *, longform):
     return review
 
 
+def authored_package(checkpoint, dispatch, contracts):
+    """Review a new editorial cut without changing its original paid package."""
+    candidate = deepcopy(checkpoint['package'])
+    for index, contract in contracts.items():
+        candidate['scenes'][index]['ai_prompt'] = contract
+    expected = deepcopy(candidate); expected.pop('fiction_review', None)
+    identity = _digest(expected)
+    saved = checkpoint.setdefault('authored_adaptations', {}).get(identity)
+    legacy = checkpoint.get('clue_adaptation')
+    if saved is None and legacy:
+        comparison = deepcopy(legacy); comparison.pop('fiction_review', None)
+        if comparison == expected:
+            saved = legacy
+    if saved is None:
+        candidate['fiction_review'] = review_package(candidate, story_input(dispatch), longform=False)
+        saved = candidate
+    comparison = deepcopy(saved); comparison.pop('fiction_review', None)
+    _require(comparison == expected and all(saved['fiction_review'].get(k) is True for k in CHECKS)
+        and saved['fiction_review'].get('findings') == [])
+    checkpoint['authored_adaptations'][identity] = deepcopy(saved)
+    return deepcopy(saved)
+
+
 def _save(client, task, checkpoint):
     payload = plan._raw(checkpoint)
     _require(len(payload) < 1_000_000)
@@ -299,21 +322,13 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         checkpoint['audio_qc'] = {'transcript': transcript, 'prosody': prosody, 'timing': timing}
         _save(client, task, checkpoint)
     ratio = '16:9' if longform else '9:16'
-    from app.services import framecase_clue_insert as clue
+    from app.services import framecase_clue_insert as clue, framecase_bell_insert as bell
     journal = json.loads(client.get(commissioning_video.PREFIX + task) or '{}')
-    authored_insert = clue.eligible(dispatch, checkpoint, journal, 2)
-    if authored_insert:
-        candidate = deepcopy(checkpoint['package'])
-        candidate['scenes'][2]['ai_prompt'] = clue.CONTRACT
-        expected = deepcopy(candidate); expected.pop('fiction_review', None)
-        adapted = checkpoint.get('clue_adaptation')
-        if adapted is None:
-            candidate['fiction_review'] = review_package(candidate, story_input(dispatch), longform=False)
-            checkpoint['clue_adaptation'] = candidate; _save(client, task, checkpoint)
-        else:
-            saved = deepcopy(adapted); saved.pop('fiction_review', None)
-            _require(saved == expected and all(adapted['fiction_review'].get(k) is True for k in CHECKS))
-        package = deepcopy(checkpoint['clue_adaptation']); scenes = package['scenes']
+    authored = {index: contract for index, contract in ((2, clue.CONTRACT), (3, bell.CONTRACT))
+                if clue.eligible(dispatch, checkpoint, journal, index)}
+    if authored:
+        package = authored_package(checkpoint, dispatch, authored)
+        _save(client, task, checkpoint); scenes = package['scenes']
     # The original paid-media package and every previous receipt stay bound to
     # the exact original hash. A local insert never obtains a new paid budget.
     budget = spending.prepare_video_scene_budget(_digest(checkpoint['package']), durations, ratio)
@@ -322,12 +337,15 @@ def _execute(self, source, dispatch, work, checkpoint, client):
     checkpoint.setdefault('clips', {}); checkpoint.setdefault('creates', [])
 
     def generate(index, revision=0, defect=''):
-        if authored_insert and index == 2:
+        if index in authored:
             _require(revision == 0, 'framecase_authored_scene_quality_rejected')
-            gallery = _restore_asset(checkpoint['clips']['1']['asset'], work / 'clue_gallery_source.mp4')
-            path = work / 'scene_02_authored.mp4'
-            proof = clue.render(gallery, path, budget.generation_seconds[index])
-            checkpoint['clips']['2'] = {'asset': _store_asset(path, task, path.name),
+            path = work / f'scene_{index:02d}_authored.mp4'
+            if index == 2:
+                gallery = _restore_asset(checkpoint['clips']['1']['asset'], work / 'clue_gallery_source.mp4')
+                proof = clue.render(gallery, path, budget.generation_seconds[index])
+            else:
+                proof = bell.render(path, budget.generation_seconds[index])
+            checkpoint['clips'][str(index)] = {'asset': _store_asset(path, task, path.name),
                 'revision': 0, 'authored_animation': proof}
             checkpoint.pop('visual_qc', None); _save(client, task, checkpoint)
             return
@@ -383,6 +401,9 @@ def _execute(self, source, dispatch, work, checkpoint, client):
             verdict, rejected = visual_gate(checkpoint['visual_qc'], len(scenes))
         if not rejected:
             break
+        # Correct a failed authored insert before buying any other repair.
+        # It cannot be replaced with another paid filtered-provider request.
+        _require(not set(rejected).intersection(authored), 'framecase_authored_scene_quality_rejected')
         journal = json.loads(client.get(commissioning_video.PREFIX + task) or '{}')
         _require(type(journal.get('requests')) is dict)
         used = len(journal['requests'])
