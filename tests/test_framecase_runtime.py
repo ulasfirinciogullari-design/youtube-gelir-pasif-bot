@@ -245,7 +245,8 @@ def test_known_immutable_audio_failure_waits_for_actual_code_correction(client, 
     assert enqueue.call_count == 1
 
 
-def test_extra_continuations_require_a_new_build_and_keep_original_root(client, monkeypatch):
+@pytest.mark.parametrize('failure_code', ['framecase_review_window_invalid', 'framecase_visual_quality_exhausted'])
+def test_extra_continuations_require_a_new_build_and_keep_original_root(client, monkeypatch, failure_code):
     from app.services import framecase_recovery as recovery
     from app.production_tasks import continue_framecase_episode
     from unittest.mock import Mock
@@ -253,7 +254,7 @@ def test_extra_continuations_require_a_new_build_and_keep_original_root(client, 
     enqueue = Mock(); monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
     row = source(); row['spec']['framecase_animation'] = True
     row.update(state='FAILURE', framecase_resume_attempt=6,
-        framecase_failure_code='framecase_review_window_invalid', framecase_failed_build='old')
+        framecase_failure_code=failure_code, framecase_failed_build='old')
     client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(row))
     monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'old')
     assert recovery.schedule(row) == 'waiting_for_pipeline_correction'
@@ -264,7 +265,7 @@ def test_extra_continuations_require_a_new_build_and_keep_original_root(client, 
     assert recovery.schedule(row) == 'continuation_queued'
     assert enqueue.call_args.kwargs['args'] == (row['task_id'], 7)
     record = json.loads(client.get(recovery.PREFIX + enqueue.call_args.kwargs['task_id']))
-    assert record['correction'] == {'failure_code': 'framecase_review_window_invalid',
+    assert record['correction'] == {'failure_code': failure_code,
         'failed_build': 'old', 'corrected_build': 'corrected'}
     assert client.get(jobs.JOB_PREFIX + row['task_id']) == plan._raw(row)
     assert recovery.schedule({**row, 'framecase_resume_attempt': 12}) == 'continuation_limit_reached'

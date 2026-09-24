@@ -18,7 +18,7 @@ FIX_REQUIRED = frozenset({'framecase_audio_timing_rejected', 'framecase_audio_tr
     'framecase_audio_prosody_rejected', 'framecase_scene_duration_invalid',
     'framecase_final_render_rejected', 'framecase_final_timing_rejected',
     'framecase_authored_scene_quality_rejected', 'framecase_FalVideoPolicyError',
-    'framecase_review_window_invalid'})
+    'framecase_review_window_invalid', 'framecase_visual_quality_exhausted'})
 
 
 def schedule(source):
@@ -32,7 +32,7 @@ def schedule(source):
             == os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local')):
         return 'waiting_for_pipeline_correction'
     if (not code or any(marker in code for marker in (
-            'outcome_unverified', 'outcome_unknown', 'visual_quality_exhausted',
+            'outcome_unverified', 'outcome_unknown',
             'binding_changed', 'generic_recovery_forbidden', 'pipeline_unverified'))):
         return 'held_for_verification'
     task = source['task_id']; client = plan._client()

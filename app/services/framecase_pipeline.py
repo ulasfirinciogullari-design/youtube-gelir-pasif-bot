@@ -18,6 +18,7 @@ from app.services.framecase_cadence import CHANNEL_ID
 from app.services.production_spend import SpendBlocked
 
 PREFIX = 'youtube_studio:framecase_pipeline:v1:'
+VISUAL_REVIEW_VERSION = 'original-fiction-story-context-v2'
 ASSET = Path(__file__).resolve().parents[1] / 'assets/framecase/clock_that_lied.json'
 CHECKS = ('original_general_audience_fiction', 'coherent_causal_story',
           'series_continuity', 'clear_opening_and_earned_payoff',
@@ -224,6 +225,23 @@ def visual_gate(result, scene_count, threshold=86):
     return verdict, verdict['selected_recovery_rejected_indices']
 
 
+def invalidate_visual_review(checkpoint):
+    """Retain the old, master-bound verdict before any fresh review or edit."""
+    if checkpoint.get('visual_qc') is not None:
+        previous = {'master_sha256': checkpoint.get('review_master_sha256'),
+            'version': checkpoint.get('visual_review_version', 'original-v1'),
+            'verdict': deepcopy(checkpoint['visual_qc'])}
+        checkpoint.setdefault('visual_review_history', {}).setdefault(_digest(previous), previous)
+        checkpoint.pop('visual_qc')
+
+
+def prepare_visual_review(checkpoint, master_sha):
+    """A changed edit or rubric needs fresh evidence, never a promoted verdict."""
+    if (checkpoint.get('review_master_sha256') != master_sha
+            or checkpoint.get('visual_review_version') != VISUAL_REVIEW_VERSION):
+        invalidate_visual_review(checkpoint)
+
+
 def exact_master_scenes(rendered, work, scene_count):
     """Review frames from the delivered edit, including its actual end hold."""
     from app.services.render import video_frame_count
@@ -326,10 +344,15 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         checkpoint['audio_qc'] = {'transcript': transcript, 'prosody': prosody, 'timing': timing}
         _save(client, task, checkpoint)
     ratio = '16:9' if longform else '9:16'
-    from app.services import framecase_clue_insert as clue, framecase_bell_insert as bell
+    from app.services import framecase_clue_insert as clue, framecase_bell_insert as bell, framecase_clock_insert as clock
     journal = json.loads(client.get(commissioning_video.PREFIX + task) or '{}')
     authored = {index: contract for index, contract in ((2, clue.CONTRACT), (3, bell.CONTRACT))
                 if clue.eligible(dispatch, checkpoint, journal, index)}
+    if clock.eligible(dispatch, checkpoint, journal):
+        checkpoint.setdefault('opening_animation_basis', {
+            'review_master_sha256': checkpoint.get('review_master_sha256'),
+            'visual_qc': deepcopy(checkpoint.get('visual_qc'))})
+        authored[0] = clock.CONTRACT
     if authored:
         package = authored_package(checkpoint, dispatch, authored)
         _save(client, task, checkpoint); scenes = package['scenes']
@@ -344,14 +367,19 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         if index in authored:
             _require(revision == 0, 'framecase_authored_scene_quality_rejected')
             path = work / f'scene_{index:02d}_authored.mp4'
-            if index == 2:
+            if index == 0:
+                proof = clock.render(path, budget.generation_seconds[index])
+            elif index == 2:
                 gallery = _restore_asset(checkpoint['clips']['1']['asset'], work / 'clue_gallery_source.mp4')
                 proof = clue.render(gallery, path, budget.generation_seconds[index])
             else:
                 proof = bell.render(path, budget.generation_seconds[index])
+            if str(index) in checkpoint['clips']:
+                checkpoint.setdefault('authored_replaced_clips', {}).setdefault(str(index),
+                    deepcopy(checkpoint['clips'][str(index)]))
             checkpoint['clips'][str(index)] = {'asset': _store_asset(path, task, path.name),
                 'revision': 0, 'authored_animation': proof}
-            checkpoint.pop('visual_qc', None); _save(client, task, checkpoint)
+            invalidate_visual_review(checkpoint); _save(client, task, checkpoint)
             return
         prompt = scenes[index]['ai_prompt']
         if revision:
@@ -365,12 +393,13 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         checkpoint['creates'].append({'scene_index': index, 'revision': revision, 'asset': asset,
             **{k: generated.get(k) for k in ('provider', 'provider_request_id')}})
         checkpoint['clips'][str(index)] = {'asset': asset, 'revision': revision}
-        checkpoint.pop('visual_qc', None); _save(client, task, checkpoint)
+        invalidate_visual_review(checkpoint); _save(client, task, checkpoint)
 
     for index in range(len(scenes)):
         stage('visual_generation', 38 + int(28 * index / len(scenes)),
               f'Animasyon sahnesi {index + 1}/{len(scenes)} hazırlanıyor.')
-        if str(index) not in checkpoint['clips']:
+        if (str(index) not in checkpoint['clips'] or (index == 0 and index in authored
+                and (checkpoint['clips']['0'].get('authored_animation') or {}).get('renderer') != clock.VERSION)):
             generate(index)
 
     def visuals():
@@ -391,8 +420,8 @@ def _execute(self, source, dispatch, work, checkpoint, client):
             target_duration=effective, output_resolution=render.resolution_for_mode('production', spec['format']),
             capture_scene_windows=True)
         master_sha = hashlib.sha256(Path(rendered['path']).read_bytes()).hexdigest()
-        if checkpoint.get('review_master_sha256') != master_sha:
-            checkpoint.pop('visual_qc', None)
+        prepare_visual_review(checkpoint, master_sha)
+        _save(client, task, checkpoint)
         stage('visual_qc', 78, 'Final kurgunun gerçek karelerinde hareket, karakterler ve ipuçları denetleniyor.')
         if 'visual_qc' not in checkpoint:
             exact = exact_master_scenes(rendered, work, len(scenes))
@@ -401,6 +430,7 @@ def _execute(self, source, dispatch, work, checkpoint, client):
                 topic=spec['topic'], story_scenes=scenes, content_style='original_animation')
             verdict, rejected = visual_gate(reviewed, len(scenes))
             checkpoint['visual_qc'] = verdict; checkpoint['review_master_sha256'] = master_sha
+            checkpoint['visual_review_version'] = VISUAL_REVIEW_VERSION
             _save(client, task, checkpoint)
         else:
             verdict, rejected = visual_gate(checkpoint['visual_qc'], len(scenes))
@@ -414,6 +444,8 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         used = len(journal['requests'])
         _require(used < cap, 'framecase_visual_quality_exhausted')
         index = min(rejected, key=lambda i: verdict['reviews'][i]['score'])
+        stage('visual_generation', 78,
+            f'{len(scenes) - len(rejected)}/{len(scenes)} sahne onaylandı; sahne {index + 1} düzeltiliyor.')
         generate(index, checkpoint['clips'][str(index)]['revision'] + 1, verdict['reviews'][index].get('reason'))
 
     stage('render', 78, 'Onaylı sahneler, anlatım ve altyazı final videoya birleştiriliyor.')

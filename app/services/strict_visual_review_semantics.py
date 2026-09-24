@@ -11,7 +11,7 @@ import json
 
 def normalize_strict_visual_reviews(data, *, scenes, complete_story, included_indices,
         available_moments, trusted_image_motion_candidates,
-        recurring_identity_required_indices, manufactured_replica_required_indices):
+        recurring_identity_required_indices, manufactured_replica_required_indices, content_style=''):
     from app.services.visual_qc import (
         _EVIDENCE_BOOLEAN_FIELDS, _MANUAL_QA_VISUAL_BOOLEAN_FIELDS, _IDENTITY_BOOLEAN_FIELDS,
         _normalized_evidence, _connection_action_required, _thermal_claim_required,
@@ -107,7 +107,7 @@ def normalize_strict_visual_reviews(data, *, scenes, complete_story, included_in
                 )
             ),
             state_change_required=_state_change_required(
-                scenes[scene_index]
+                scenes[scene_index], content_style=content_style
             ),
             recurring_identity_required=(
                 scene_index in recurring_identity_required_indices
@@ -207,7 +207,7 @@ def derive_strict_visual_review_contract(scenes, scene_visuals, *, samples, topi
         _trusted_image_motion_candidate, _documentary_broll_sources,
         _recurring_identity_required_indices, manufactured_replica_required,
         _thermal_claim_required, routed_open_air_cooling_temporal_required,
-        _state_change_required,
+        _state_change_required, _ORIGINAL_FICTION_RULE,
     )
     def require(value):
         if not value:
@@ -239,6 +239,8 @@ def derive_strict_visual_review_contract(scenes, scene_visuals, *, samples, topi
         previous = order
         grouped.setdefault(index, []).append(sample)
     content, gemini_parts = _rubric_content(), []
+    if content_style == 'original_animation':
+        content[0]['text'] += _ORIGINAL_FICTION_RULE
     included_indices = list(grouped)
     available_moments, trusted = {}, {}
     for index, rows in grouped.items():
@@ -271,7 +273,8 @@ def derive_strict_visual_review_contract(scenes, scene_visuals, *, samples, topi
                                           if _thermal_claim_required(scenes[index], complete_story)],
         cooling_temporal_required_indices=[index for index in included_indices
                                             if routed_open_air_cooling_temporal_required(scenes[index])],
-        state_change_required_indices=[index for index in included_indices if _state_change_required(scenes[index])],
+        state_change_required_indices=[index for index in included_indices
+            if _state_change_required(scenes[index], content_style=content_style)],
         recurring_identity_required_indices=recurring, documentary_sources=documentary_sources)
     return {'request': request, 'content': content, 'gemini_parts': gemini_parts,
         'documentary_sources': documentary_sources, 'semantic_arguments': {
@@ -279,7 +282,8 @@ def derive_strict_visual_review_contract(scenes, scene_visuals, *, samples, topi
             'included_indices': included_indices, 'available_moments': available_moments,
             'trusted_image_motion_candidates': trusted,
             'recurring_identity_required_indices': recurring,
-            'manufactured_replica_required_indices': manufactured}}
+            'manufactured_replica_required_indices': manufactured,
+            **({'content_style': content_style} if content_style == 'original_animation' else {})}}
 
 
 def _rubric_content():

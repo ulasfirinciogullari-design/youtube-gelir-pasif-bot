@@ -73,6 +73,29 @@ _TEMPORAL_PROOF_RULE = (
     'the scene and describe the missing evidence; do not fabricate proof. '
 )
 
+_ORIGINAL_FICTION_RULE = (
+    '\n\nSCOPED ORIGINAL ANIMATION STORY CONTEXT: this is an original fictional '
+    'film, not a factual demonstration. A narrator may report an earlier '
+    'disappearance while the ordered edit introduces its investigator or clue. '
+    'For a past-tense report such as a painting vanished, when the authored '
+    'shot does not depict the disappearance itself, do not invent a requirement '
+    'for a painting to magically disappear in that same shot. Its concrete '
+    'aftermath must be established by the actually supplied adjacent scene '
+    '(for example, the empty gallery frame); identify that scene in your reason. '
+    'If the sequence does not establish that event, or contradicts it, reject. '
+    'This narrow story-context rule takes precedence over same-shot literal '
+    'relevance only for such reported past events. It never excuses an absent '
+    'authored on-screen action. Moving clock hands, a visible one-minute '
+    'difference, character actions and all explicitly depicted changes must '
+    'still be proven from the supplied moments. Present-tense disappearances, '
+    'removal demonstrations and any disappearance promised by the actual shot '
+    'retain before/action/after and persistent-result requirements. Judge '
+    'story and character continuity, real object motion, readable clues, '
+    'composition and every artifact flag afresh. No static shot, morphing, '
+    'broken clock geometry, missing clue or low score earns an exception. '
+    'A previous review is not evidence or permission to approve. '
+)
+
 _DOCUMENTARY_BROLL_RULE = (
     'NARROW SOURCE-BACKED DOCUMENTARY B-ROLL SEMANTICS ARE ACTIVE: only '
     'verified historical dates, elapsed durations and scale facts such as '
@@ -541,9 +564,16 @@ def _connection_action_required(scene: dict) -> bool:
     return bool(_CONNECTION_ACTION_PATTERN.search(narration))
 
 
-def _state_change_required(scene: dict) -> bool:
+def _state_change_required(scene: dict, *, content_style: str = '') -> bool:
     """Require before/action/after proof for narrated erasure or removal."""
     narration = str(scene.get('narration') or '')
+    # Fiction can introduce a past mystery over a clue shot, followed by its
+    # visible aftermath. Do not force magical disappearance into that shot.
+    # Current actions and any authored depiction of removal remain mandatory;
+    # the independent critic still checks the actual adjacent story evidence.
+    if (content_style == 'original_animation'
+            and not _STATE_CHANGE_ACTION_PATTERN.search(str(scene.get('ai_prompt') or ''))):
+        narration = re.sub(r'\b(?:vanished|disappeared)\b', '', narration, flags=re.IGNORECASE)
     # An opening question asks for an explanation, not an on-camera removal.
     # Preserve separate affirmative clauses, including those before/after it.
     # The critic still evaluates the subject/action and any actual mechanism.
@@ -1403,7 +1433,7 @@ def _request_visual_review(provider, strict_review_contract, instruction, conten
 
 
 def _temporal_response_rows(data, included_indices, available_moments, scenes, complete_story,
-                            recurring_indices, replica_indices):
+                            recurring_indices, replica_indices, *, content_style=''):
     """Only complete, unambiguous raw review identities can be repaired."""
     rows = data.get('reviews') if isinstance(data, dict) else None
     if not isinstance(rows, list) or len(rows) != len(included_indices):
@@ -1430,7 +1460,7 @@ def _temporal_response_rows(data, included_indices, available_moments, scenes, c
             connection_required=_connection_action_required(scenes[index]),
             thermal_required=_thermal_claim_required(scenes[index], complete_story),
             cooling_temporal_required=routed_open_air_cooling_temporal_required(scenes[index]),
-            state_change_required=_state_change_required(scenes[index]),
+            state_change_required=_state_change_required(scenes[index], content_style=content_style),
             recurring_identity_required=index in recurring_indices)
         flags = _normalized_manual_qa_visual_flags(row)
         identity = _normalized_identity_gate(row, replica_required=index in replica_indices)
@@ -1443,10 +1473,10 @@ def _temporal_response_rows(data, included_indices, available_moments, scenes, c
 
 
 def _repair_temporal_response(data, request, included_indices, available_moments, scenes,
-                              complete_story, recurring_indices, replica_indices):
+                              complete_story, recurring_indices, replica_indices, *, content_style=''):
     """One same-frame response repair, never a review-score promotion."""
     arguments = (included_indices, available_moments, scenes, complete_story, recurring_indices, replica_indices)
-    original = _temporal_response_rows(data, *arguments)
+    original = _temporal_response_rows(data, *arguments, content_style=content_style)
     if original is None:
         return data, {}
     targets = {}
@@ -1484,7 +1514,7 @@ def _repair_temporal_response(data, request, included_indices, available_moments
     from app.services.production_spend import SpendBlocked
     from app.services.abacus_generation import AbacusGenerationError
     try:
-        revised = _temporal_response_rows(request(instruction), *arguments)
+        revised = _temporal_response_rows(request(instruction), *arguments, content_style=content_style)
     except (SpendBlocked, AbacusGenerationError):
         raise
     except Exception:
@@ -1970,6 +2000,8 @@ def review_scene_visuals(
         _rubric_content, _scene_evidence_text, _candidate_label, _complete_visual_request,
     )
     content = _rubric_content()
+    if content_style == 'original_animation':
+        content[0]['text'] += _ORIGINAL_FICTION_RULE
     gemini_parts: list[dict] = []
 
     included_indices: list[int] = []
@@ -2071,7 +2103,7 @@ def review_scene_visuals(
                 thermal_evidence_required_indices.append(idx)
             if routed_open_air_cooling_temporal_required(scene):
                 cooling_temporal_required_indices.append(idx)
-            if _state_change_required(scene):
+            if _state_change_required(scene, content_style=content_style):
                 state_change_required_indices.append(idx)
             available_moments[idx] = scene_available_moments
             content.extend(scene_content)
@@ -2114,7 +2146,8 @@ def review_scene_visuals(
                 included_indices, available_moments, gemini_model_override, _gemini_thinking_level,
                 protocol_attempts=1),
             included_indices, available_moments, scenes, complete_story,
-            recurring_identity_required_indices, manufactured_replica_required_indices)
+            recurring_identity_required_indices, manufactured_replica_required_indices,
+            content_style=content_style)
     from app.services.strict_visual_review_semantics import (
         normalize_strict_visual_reviews, annotate_visual_hard_gates, close_router_score_reason_conflicts,
     )
@@ -2123,7 +2156,8 @@ def review_scene_visuals(
             included_indices=included_indices, available_moments=available_moments,
             trusted_image_motion_candidates=trusted_image_motion_candidates,
             recurring_identity_required_indices=recurring_identity_required_indices,
-            manufactured_replica_required_indices=manufactured_replica_required_indices)
+            manufactured_replica_required_indices=manufactured_replica_required_indices,
+            content_style=content_style)
     else:
         reviews_by_scene: dict[int, dict] = {}
         included_set = set(included_indices)
@@ -2166,7 +2200,7 @@ def review_scene_visuals(
                     )
                 ),
                 state_change_required=_state_change_required(
-                    scenes[scene_index]
+                    scenes[scene_index], content_style=content_style
                 ),
                 recurring_identity_required=(
                     scene_index in recurring_identity_required_indices
