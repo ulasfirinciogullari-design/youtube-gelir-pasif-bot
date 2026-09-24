@@ -222,3 +222,54 @@ def test_known_immutable_audio_failure_waits_for_actual_code_correction(client, 
     assert client.get(jobs.JOB_PREFIX + row['task_id']) == plan._raw(row)
     assert recovery.schedule(row) == 'continuation_preparing_or_uncertain'
     assert enqueue.call_count == 1
+
+
+@pytest.mark.parametrize('nominal,measured,count', [(30, 21.216, 4), (30, 27.024, 4),
+                                                  (180, 148.1, 30), (180, 190.0, 30)])
+def test_animation_natural_timeline_preserves_audio_and_scene_cues(tmp_path, monkeypatch, nominal, measured, count):
+    from app.services import voice
+    from unittest.mock import Mock
+    path = tmp_path / 'voice.mp3'; path.write_bytes(b'unchanged paid response')
+    durations = [measured / count] * count
+    monkeypatch.setattr(voice, '_media_duration', lambda _: measured)
+    ffmpeg = Mock(side_effect=AssertionError('Natural narration must not be stretched'))
+    monkeypatch.setattr(voice.subprocess, 'run', ffmpeg)
+    result = voice._fit_duration(path, durations, nominal, natural_timeline=True)
+    assert result == (durations, measured, measured, 1.0)
+    assert path.read_bytes() == b'unchanged paid response'
+    ffmpeg.assert_not_called()
+
+
+def test_long_animation_has_bounded_complete_spoken_edit():
+    package = {'narration': 'word ' * 420}
+    assert pipeline.long_edit_target({'duration_after_fit': 150}, package) == 150.8
+    for seconds in (119, 240, True, float('inf')):
+        with pytest.raises(SpendBlocked):
+            pipeline.long_edit_target({'duration_after_fit': seconds}, package)
+    with pytest.raises(SpendBlocked):
+        pipeline.long_edit_target({'duration_after_fit': 120}, package)
+    with pytest.raises(SpendBlocked):
+        pipeline.long_edit_target({'duration_after_fit': 180}, {'narration': 'word ' * 70})
+
+
+def test_successor_repairs_real_editorial_findings_and_requires_fresh_review(monkeypatch):
+    from app.services import production_included_router as router
+    from unittest.mock import Mock
+    story = json.loads(pipeline.ASSET.read_text())
+    valid = {k: deepcopy(story[k]) for k in ('series_name', 'visual_bible', 'episodes')}
+    valid['visual_bible'] = ('Adult Mira Vale wears a cream raincoat and has dark wavy shoulder-length hair. '
+        'Painterly 2D navy, amber, ivory and teal; consistent brass watch, no generated text.')
+    rejected = {k: True for k in pipeline.CHECKS}; rejected['coherent_causal_story'] = False
+    accepted = {k: True for k in pipeline.CHECKS}
+    writer = Mock(side_effect=[deepcopy(valid), rejected, deepcopy(valid), accepted])
+    monkeypatch.setattr(router, 'generate_text_json', writer)
+    candidate, review, history = schedule.reviewed_story(['Previous completed case'])
+    assert review == accepted and candidate == valid
+    assert len(history) == 2 and history[0]['findings'] == ['coherent_causal_story']
+    assert 'coherent_causal_story' in writer.call_args_list[2].args[0]
+    assert [v.kwargs['purpose'] for v in writer.call_args_list] == ['editorial', 'story_review'] * 2
+    writer.reset_mock(side_effect=True)
+    writer.side_effect = [deepcopy(valid), rejected] * 3
+    with pytest.raises(plan.ContentPlanError, match='successor_story_rejected'):
+        schedule.reviewed_story(['Previous completed case'])
+    assert writer.call_count == 6
