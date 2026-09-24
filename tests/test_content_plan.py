@@ -98,6 +98,31 @@ def test_existing_scheduled_capacity_prevents_third_job(case):
     assert not case.client.exists(plan.DISPATCH_PREFIX + case.a['id'])
 
 
+def test_three_channel_assignments_do_not_block_capital_behind_two_held_channels(case):
+    # Queue ownership is not render execution: both failed/waiting assignments
+    # must survive, while the third connected channel can join the worker queue.
+    held={OTHER:str(uuid4()),'UCs93z6wf134H5_BL9pkQX4Q':str(uuid4())}
+    case.client.set(plan.ACTIVE_KEY,plan._raw(held));enqueue=Mock()
+    assert plan.maintain([case.profile],enqueue)['channels'][CHANNEL]=='enqueued'
+    enqueue.assert_called_once()
+    active=plan._active(case.client)
+    assert active=={**held,CHANNEL:case.a['id']}
+    plan.maintain([case.profile],enqueue)
+    enqueue.assert_called_once()
+    # No fourth queue assignment and no removal of the two original holds.
+    fourth='UCabcdefghijklmnopqrstuv'
+    fourth_profile={**case.profile,'channel_id':fourth}
+    case.client.set(production.PROFILE_PREFIX+fourth,plan._raw(fourth_profile))
+    case.client.set(production.OAUTH_CHANNEL_PREFIX+fourth,plan._raw({'id':fourth,'connection_id':'connection-current'}))
+    case.client.set(production.OAUTH_CREDENTIAL_PREFIX+fourth,'opaque-test-credential')
+    case.client.sadd(production.OAUTH_CHANNEL_INDEX,fourth)
+    item=plan.item('Fourth channel','Source-backed topic')
+    plan.change(fourth,'new','append',payload=[item],client=case.client)
+    assert plan.maintain([fourth_profile],enqueue)['channels'][fourth]=='capacity_wait'
+    assert plan._active(case.client)==active
+    enqueue.assert_called_once()
+
+
 def test_failed_or_private_video_never_unblocks_next_episode(case):
     enqueue = Mock(); plan.maintain([case.profile], enqueue)
     task = enqueue.call_args.kwargs['task_id']; key=jobs.JOB_PREFIX + task

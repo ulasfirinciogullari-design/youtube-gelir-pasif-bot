@@ -16,6 +16,14 @@ review and final render gates remain active. An upper limit is not a guarantee
 that six videos will pass quality review each day.
 
 Production reservation and job creation happen in the same Redis transaction.
+The three connected channels can each retain one queued or held assignment.
+Two render processes execute those jobs; queue ownership does not reserve a
+physical process. A held Margin/Framecase assignment therefore cannot prevent
+Capital from joining the queue. The legacy topic scheduler still permits at
+most two simultaneous legacy claims, and the combined queue refuses a fourth
+channel assignment. Existing holds and their original records are never removed
+to make room for another channel.
+
 Publication has its own durable root claim before upload dispatch. Outstanding
 publication claims count on subsequent days until the original delivery outcome
 is known. A retry stays under the same root. Day rollover never deletes receipts,

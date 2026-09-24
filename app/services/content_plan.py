@@ -26,6 +26,9 @@ COMPLETION_PREFIX = PREFIX + 'completion:'
 EXECUTION_PREFIX = PREFIX + 'execution:'
 ACTIVE_KEY = PREFIX + 'active'
 MAX_ITEMS = 80
+# Three connected channels may each own a queued/held item. Execution remains
+# limited to the existing two render processes; queue ownership is not a CPU slot.
+MAX_OPEN_CHANNEL_JOBS = 3
 CHANNEL = re.compile(r'^UC[A-Za-z0-9_-]{22}$')
 FORMATS = {'shorts': ('Shorts', .5), 'long': ('Uzun video', 3),
            'animation': ('Animasyon pilotu', .5)}
@@ -311,7 +314,7 @@ def project(plan, *, client=None):
 def _active(client):
     raw = client.get(ACTIVE_KEY)
     result = _object(raw) if raw else {}
-    _require(len(result) <= 2 and all(CHANNEL.fullmatch(k) for k in result))
+    _require(len(result) <= MAX_OPEN_CHANNEL_JOBS and all(CHANNEL.fullmatch(k) for k in result))
     for v in result.values():
         _id(v)
     return result
@@ -352,7 +355,8 @@ def _reserve(channel_id, *, now=None):
         active = _active(pipe)
         legacy_raw = pipe.get(production.ACTIVE_KEY)
         legacy = production._decode_active_claims(legacy_raw) if legacy_raw else []
-        if channel_id in active or any(v['channel_id'] == channel_id for v in legacy) or len(active) + len(legacy) >= 2:
+        if (channel_id in active or any(v['channel_id'] == channel_id for v in legacy)
+                or len(active) + len(legacy) >= MAX_OPEN_CHANNEL_JOBS):
             return {'status': 'capacity_wait'}
         _require(not pipe.exists(jobs.JOB_PREFIX + task), 'plan_dispatch_conflict')
         profile, channel = _object(pipe.get(profile_key)), _object(pipe.get(channel_key))

@@ -437,6 +437,33 @@ def test_one_tick_enqueues_two_channels_then_refuses_third_without_cursor_change
     assert client.get(module.ACTIVE_KEY) == before
 
 
+def test_two_held_owner_assignments_allow_one_other_legacy_channel(production):
+    module,client=production;profiles,connections=_parallel_channels(production)
+    owner_key='youtube_studio:content_plan:v1:active'
+    owners={'UCgvESYtYbn2w9R2ExBOF_cw':'11111111-1111-4111-8111-111111111111',
+        'UCs93z6wf134H5_BL9pkQX4Q':'22222222-2222-4222-8222-222222222222'}
+    client.set(owner_key,json.dumps(owners));enqueue=Mock()
+    with ThreadPoolExecutor(max_workers=6)as pool:
+        list(pool.map(lambda _:module.dispatch_due_productions(profiles,connections,enqueue,now=1000),range(6)))
+    assert enqueue.call_count==1
+    assert len(module._decode_active_claims(client.get(module.ACTIVE_KEY)))==1
+    assert json.loads(client.get(owner_key))==owners
+    assert sum(int(module.get_production_state(p['channel_id']).get('cursor',0))for p in profiles)==1
+
+
+def test_one_owner_assignment_allows_two_legacy_channels_without_increasing_render_workers(production):
+    from app.worker_runtime import commands
+    module,client=production;profiles,connections=_parallel_channels(production)
+    owner_key='youtube_studio:content_plan:v1:active'
+    owners={'UCs93z6wf134H5_BL9pkQX4Q':'22222222-2222-4222-8222-222222222222'}
+    client.set(owner_key,json.dumps(owners));enqueue=Mock()
+    result=module.dispatch_due_productions(profiles,connections,enqueue,now=1000)
+    assert result['queued_count']==enqueue.call_count==2
+    assert len(module._decode_active_claims(client.get(module.ACTIVE_KEY)))==2
+    assert json.loads(client.get(owner_key))==owners
+    assert '--concurrency=2' in commands()[0]
+
+
 def test_same_channel_waits_for_publisher_even_when_next_interval_due(production):
     module, client = production
     profiles, connections = _parallel_channels(production, 2)

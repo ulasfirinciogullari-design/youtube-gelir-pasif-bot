@@ -144,7 +144,9 @@ if owner_raw then
     owner_count = owner_count + 1
   end
 end
-if #claims + owner_count >= 2 then return 'active' end
+-- Keep the two legacy claims bound. One held owner-plan channel must not
+-- occupy both legacy channels' queue capacity. Render concurrency stays two.
+if #claims >= 2 or #claims + owner_count >= 3 then return 'active' end
 for _, claim in ipairs(claims) do
   if claim['channel_id'] == ARGV[7] or claim['task_id'] == ARGV[9] then return 'active' end
 end
