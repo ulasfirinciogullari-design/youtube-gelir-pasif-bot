@@ -16,6 +16,7 @@ PREFIX = plan.PREFIX + 'attention:v1:'
 INDEX = PREFIX + 'channel:'
 PREVOICE_ERRORS = {'included_factual_audit_invalid',
     'Long documentary failed independent source or editorial review'}
+VOICE_DURATION_ERROR = 'Voice script duration rejected before paid media: '
 
 
 def _archive(raw):
@@ -84,6 +85,11 @@ def eligible(source):
             and not source.get('audio_candidate_checkpoint') and not source.get('generated_asset_candidates'))
     retained = source.get('retained_long_media') or {}
     failure = source.get('failure_classification') or {}
+    if (source.get('failure_stage') == 'voice_and_visuals'
+            and failure.get('category') == 'content_rejected' and failure.get('code') == 'audio_quality_exhausted'
+            and str(source.get('error') or '').startswith(VOICE_DURATION_ERROR)):
+        return (source.get('paid_create_slots_used') == 0
+            and not source.get('audio_candidate_checkpoint') and not source.get('generated_asset_candidates'))
     return (source.get('failure_stage') == 'final_visual_qc_rescue'
         and failure.get('category') == 'content_rejected' and failure.get('code') == 'visual_quality_exhausted'
         and str(source.get('error') or '').startswith('Final visual quality gate rejected: ')
@@ -159,7 +165,8 @@ def isolate(source, *, client=None, observe_only=False):
             and read(plan.COMPLETION_PREFIX + item_id) is None)
         terminal_raw = read('celery-task-meta-' + task); terminal = plan._object(terminal_raw)
         result = terminal.get('result') or {}; error = source['error']
-        expected = ('FinalVisualQualityError' if source['failure_stage'] == 'final_visual_qc_rescue'
+        expected = ('FinalAudioQualityError' if source['failure_stage'] == 'voice_and_visuals'
+            else 'FinalVisualQualityError' if source['failure_stage'] == 'final_visual_qc_rescue'
             else 'ValueError' if error == 'included_factual_audit_invalid' else 'ProductionContentError')
         plan._require(terminal.get('task_id') == task and terminal.get('status') == 'FAILURE'
             and result.get('exc_type') == expected and result.get('exc_message') == [error]
@@ -169,6 +176,8 @@ def isolate(source, *, client=None, observe_only=False):
         if source['failure_stage'] == 'final_visual_qc_rescue':
             plan._require(validated_pointer(source) is not None
                 and source['failure_classification'].get('error_sha256') == hashlib.sha256(error.encode()).hexdigest())
+        if source['failure_stage'] == 'voice_and_visuals':
+            plan._require(source['failure_classification'].get('error_sha256') == hashlib.sha256(error.encode()).hexdigest())
         provider_evidence = _settled_providers(pipe, read, dispatch['task_id'])
         if observe_only:
             return {'status': 'eligible_for_attention', 'source_task_id': task,

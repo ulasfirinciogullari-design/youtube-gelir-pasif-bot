@@ -155,3 +155,38 @@ def test_large_existing_router_journal_is_preserved_and_unrelated_unknowns_do_no
     original = plan._raw(journal); c.set(included.JOURNAL_KEY, original)
     assert attention.isolate(source, client=c) == 'attention_archived'
     assert c.get(included.JOURNAL_KEY) == original
+
+
+@pytest.mark.parametrize('damage', [None, 'unknown_tts', 'changed_failure', 'different_audio_error', 'candidate'])
+def test_completed_voice_duration_failure_frees_shorts_without_retrying_tts_or_resetting_capacity(case, damage):
+    from app.services import production_credit_ledger as credit
+    c, source, doc, item, previous = case; task = source['task_id']
+    error = attention.VOICE_DURATION_ERROR + json.dumps({'generation_attempt': 0,
+        'reason': 'Narration needs 0.855x tempo to fit 180.0s; rewrite the script instead of distorting the voice'})
+    source.update(failure_stage='voice_and_visuals', error=error,
+        failure_classification={'category': 'content_rejected', 'code': 'audio_quality_exhausted',
+            'error_sha256': hashlib.sha256(error.encode()).hexdigest()})
+    intent = {'reservation': {'intent': {'root_lineage_id': task}},
+              'settlement': {'credits_used': 3210, 'terminal': True}}
+    if damage == 'unknown_tts': intent['settlement'] = None
+    if damage == 'changed_failure': source['failure_classification']['error_sha256'] = '0' * 64
+    if damage == 'different_audio_error': source['error'] = 'Voice provider response was uncertain'
+    if damage == 'candidate': source['audio_candidate_checkpoint'] = {'preserve_for_review': True}
+    c.hset(credit.STATE_KEY, 'state', plan._raw({'intents': {'original-paid-voice': intent}}))
+    c.set(jobs.JOB_PREFIX + task, plan._raw(source))
+    terminal = json.loads(c.get('celery-task-meta-' + task))
+    terminal['result'] = {'exc_type': 'FinalAudioQualityError', 'exc_message': [source['error']]}
+    c.set('celery-task-meta-' + task, plan._raw(terminal))
+    before = dump(c)
+    if damage:
+        try: assert attention.isolate(source, client=c) is None
+        except plan.ContentPlanError: pass
+        assert dump(c) == before
+    else:
+        assert attention.isolate(source, client=c) == 'attention_archived'
+        assert plan.read(CHANNEL)['items'] == [previous]
+        assert cadence.snapshot(CHANNEL, client=c)['counts']['produced']['long'] == 1
+        assert cadence.daily_editorial(CHANNEL, {}, client=c)['format'] == 'shorts'
+        assert not c.exists(plan.COMPLETION_PREFIX + item['id'])
+        for key, value in before.items():
+            if key not in {plan.PLAN_PREFIX + CHANNEL, plan.ACTIVE_KEY}: assert c.dump(key) == value

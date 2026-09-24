@@ -936,8 +936,10 @@ def synthesize_scene_sequence(
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
     short_preview = bool(target_seconds and 0 < target_seconds <= 40)
-    from app.services.commissioning_longform import active
+    from app.services.commissioning_longform import active, natural_documentary_timing
     continuous_long = target_seconds == 180 and active()
+    documentary_timing = (continuous_long and natural_timeline is False
+                          and natural_documentary_timing())
     turkish_short_preview = _use_turkish_short_preview_profile(
         language,
         target_seconds,
@@ -1059,10 +1061,20 @@ def synthesize_scene_sequence(
         '-c:a', 'libmp3lame', '-b:a', '192k', str(output),
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
+    if documentary_timing:
+        # Keep the complete performance and its alignment. The existing final
+        # long-form duration gate is 70-122% of the brief; leave room for its
+        # closing visual hold and reject thin/dense takes before buying media.
+        seconds = _media_duration(output)
+        words = len(re.findall(r"\b\w+(?:['’]\w+)*\b", ' '.join(spoken), re.UNICODE))
+        if (not math.isfinite(seconds) or not 126 <= seconds <= 219
+                or not 95 <= words * 60 / seconds <= 185):
+            raise VoiceScriptFitError('Natural documentary narration is outside the duration or speech-density window')
     scene_durations, before_fit, after_fit, tempo_rate = _fit_duration(
         output, scene_durations, target_seconds,
         **({'flexible_short': True} if flexible_short is True and profile_override is None else {}),
-        **({'natural_timeline': True} if natural_timeline is True and profile_override is None else {}),
+        **({'natural_timeline': True} if (natural_timeline is True or documentary_timing)
+           and profile_override is None else {}),
     )
     reserved_tail_seconds = (
         0.50 if target_seconds and 0 < target_seconds <= 40 else 0.0
@@ -1086,6 +1098,7 @@ def synthesize_scene_sequence(
         'compacted_boundary_pause_count': compacted_boundary_pause_count,
         'compacted_trailing_silence': compacted_trailing_silence,
         'content_target_seconds': (
+            after_fit if documentary_timing else
             after_fit if flexible_short is True and target_seconds == 30 and after_fit > 29.75 else
             float(target_seconds) - reserved_tail_seconds
             if target_seconds and target_seconds > 0

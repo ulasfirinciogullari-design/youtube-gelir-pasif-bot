@@ -67,6 +67,16 @@ def active():
     return True
 
 
+def natural_documentary_timing():
+    """The owner's daily documentaries may follow a bounded natural take."""
+    from app.services import production_spend_runtime as runtime, channel_cadence
+    if not active():
+        return False
+    context = runtime.resolve_context(runtime.configured_ledger(read_timeout=3).client,
+                                      runtime._TASK_ID.get())
+    return context['channel_id'] in channel_cadence.CHANNELS
+
+
 def _review_once(package, topic, language, pages):
     from app.services import included_factual_audit as audit
     from app.services.production_included_router import generate_text_json, _LAST_OBSERVED

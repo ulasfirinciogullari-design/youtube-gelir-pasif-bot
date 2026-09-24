@@ -46,7 +46,9 @@ final operating budget after commissioning.
 
 For Capital and Margin, a conclusively failed standalone documentary can move
 to the plan's private attention list after its retained-media repair is exhausted,
-or after a pre-speech factual/editorial rejection. Every ancestor, original
+or after a pre-speech factual/editorial rejection or a conclusively returned
+voice-duration rejection before video work. A settled voice charge stays charged;
+archiving never retries synthesis or releases its original daily reservation. Every ancestor, original
 dispatch, terminal failure and provider receipt remains intact. Unknown native
 requests, uploads, owner holds/cancellation, numbered episodes and unpublished
 dependencies keep their hold. No completion receipt is fabricated. Existing
@@ -62,3 +64,25 @@ critique can continue once under the same root and daily slot. All native model
 responses must already be captured and the native voice/cash ledgers must prove
 no media was submitted. A lost queue acknowledgement never causes another send.
 A repeated failure of that child can move to attention under the rules above.
+
+Natural long documentary timing follows the measured complete continuous voice
+for these two channels only, after the existing durable long-form authorization.
+The accepted edit window is 126–219 seconds with 95–185 spoken words per minute.
+No tempo stretch is applied to these takes; original word alignment and scene
+durations remain intact. Thin, dense or out-of-window speech still stops before
+paid video work. Transcript, source, visual and final-render checks remain mandatory.
+Other channels, Shorts, previews and retained-media retry timing keep their own rules.
+
+A completed next-series draft that repeats a previously used topic is archived
+under the same transaction that verifies topic history. Its original daily attempt
+receipt remains occupied. An uncertain planner cannot be retired; a concurrent
+topic-history change requires a fresh snapshot. A later ordinary tick prepares a
+new source-backed topic without repeatedly attempting the rejected promotion.
+
+The English transcript comparator recognizes the dictionary spelling pair
+bull's-eye / bullseye without joining across clauses or dropping sounds or words.
+See [American Heritage](https://www.ahdictionary.com/word/search.html?q=bull%27s+eye).
+A previously failed voice may use the existing one-shot retained-voice continuation
+only when the stored blind transcript and real word timings now match completely.
+The unchanged audio then still goes through normal story, audio, visual and render
+review; this lexical correction never itself grants publication or new synthesis.
