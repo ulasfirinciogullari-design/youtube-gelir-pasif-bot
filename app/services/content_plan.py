@@ -308,7 +308,9 @@ def project(plan, *, client=None):
             row.update(status='paused', label='Duraklatıldı')
         rows.append(row)
     from app.services.framecase_cadence import snapshot
-    return {**plan, 'items': rows, 'daily_cadence': snapshot(plan['channel_id'], client=client)}
+    from app.services.content_plan_attention import recent
+    return {**plan, 'items': rows, 'daily_cadence': snapshot(plan['channel_id'], client=client),
+        'attention': recent(plan['channel_id'], client=client)}
 
 
 def _active(client):
@@ -430,6 +432,15 @@ def maintain(profiles, enqueue, *, repair_enqueue=None):
                     if (leaf.get('spec') or {}).get('framecase_animation') is True:
                         from app.services.framecase_recovery import schedule as framecase_schedule
                         statuses[channel_id] = framecase_schedule(leaf)
+                        continue
+                    from app.services import content_plan_factual_resume
+                    if repair_enqueue is not None and content_plan_factual_resume.eligible(leaf):
+                        statuses[channel_id] = content_plan_factual_resume.schedule(leaf, repair_enqueue, client=client)
+                        continue
+                    from app.services.content_plan_attention import isolate
+                    isolated = isolate(leaf, client=client)
+                    if isolated is not None:
+                        statuses[channel_id] = isolated
                         continue
                     from app.services.content_plan_unstarted_resume import schedule as resume_unstarted
                     resumed = resume_unstarted(leaf, enqueue, client=client)

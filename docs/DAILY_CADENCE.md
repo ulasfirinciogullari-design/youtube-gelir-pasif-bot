@@ -42,3 +42,23 @@ for the next calendar day remains viewable in its job page. Financial control is
 separate: commissioning authorization does not alter existing spending receipts
 or buy subscriptions, credits or automatic topups. The owner will choose the
 final operating budget after commissioning.
+## Rejected standalone documentaries
+
+For Capital and Margin, a conclusively failed standalone documentary can move
+to the plan's private attention list after its retained-media repair is exhausted,
+or after a pre-speech factual/editorial rejection. Every ancestor, original
+dispatch, terminal failure and provider receipt remains intact. Unknown native
+requests, uploads, owner holds/cancellation, numbered episodes and unpublished
+dependencies keep their hold. No completion receipt is fabricated. Existing
+daily production reservations remain used, so a failed film cannot restart an
+unlimited sequence of new long videos on the same day. The next eligible Shorts
+or next day's documentary then use ordinary queue, budget and quality checks.
+
+Long documentary critics constrain copied narration to the exact source lines.
+A fully returned malformed critique gets at most one fresh assessment per batch;
+the original response stays in history and an unknown transport is never retried.
+An existing root that stopped before any speech or video after a malformed
+critique can continue once under the same root and daily slot. All native model
+responses must already be captured and the native voice/cash ledgers must prove
+no media was submitted. A lost queue acknowledgement never causes another send.
+A repeated failure of that child can move to attention under the rules above.

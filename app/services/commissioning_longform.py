@@ -86,14 +86,37 @@ def _review_once(package, topic, language, pages):
             'Assess every global editorial check; use false for an unsupported or uncertain claim. '
             'The factual audit below covers this exact batch; global checks concern the complete story.\n'
             + overview, schema, batch, pages)
-        response = generate_text_json(prompt, purpose='story_review', schema=contract)
-        editorial, evidence, failures = audit.validate(response, batch, pages)
+        # Constrain copied narration to the exact supplied sentences. The
+        # unchanged positional/text validator still rejects a reordered line.
+        contract['properties']['factual_audit']['properties']['sentences']['items'][
+            'properties']['narration']['enum'] = list(dict.fromkeys(row['narration'] for row in batch))
+        rejected_responses = []
+        for repair_attempt in range(2):
+            response = generate_text_json(prompt, purpose='story_review', schema=contract)
+            try:
+                editorial, evidence, failures = audit.validate(response, batch, pages)
+                break
+            except ValueError as error:
+                # Only a fully returned malformed assessment gets one fresh
+                # review. Transport/unknown outcomes never enter this branch.
+                if str(error) != 'included_factual_audit_invalid' or repair_attempt:
+                    raise
+                rejected_responses.append({'response': deepcopy(response),
+                    'provider_evidence': deepcopy(_LAST_OBSERVED.get())})
+                prompt += ('\nFORMAT REPAIR: the previous returned assessment did not match the '
+                    'exact sentence/evidence contract. Independently assess the SAME narration again. '
+                    'Copy each sentence byte-for-byte, in its batch order; do not correct spelling. '
+                    'Use only the supplied passage identifiers. No failed assessment grants approval. '
+                    'Prior response SHA256: ' + hashlib.sha256(json.dumps(response,
+                        sort_keys=True, ensure_ascii=False).encode()).hexdigest())
         findings.extend({**row, 'position': offset + row['position']} for row in failures)
         _require(set(editorial) == set(checks) and all(type(editorial[k]) is bool for k in checks))
         findings.extend({'check': key, 'reason': 'Independent whole-story editorial check was negative.'}
                         for key in checks if editorial[key] is not True)
         reviews.append({'offset': offset, 'sentence_count': len(batch), 'source_audit': evidence,
                         'editorial_review': editorial, 'provider_evidence': deepcopy(_LAST_OBSERVED.get())})
+        if rejected_responses:
+            reviews[-1]['rejected_responses'] = rejected_responses
     return reviews, findings
 
 

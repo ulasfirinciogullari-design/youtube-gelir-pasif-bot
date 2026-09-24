@@ -138,3 +138,37 @@ def test_explicit_immutable_voice_review_never_repairs_even_a_complete_eligible_
     with pytest.raises(director.ProductionContentError):
         longform.review_story(package, 'Banknote', 'en', allow_revisions=False)
     writer.assert_not_called(); assert len(seen) == 30
+
+
+@pytest.mark.parametrize('always_malformed', [False, True])
+def test_returned_critique_typo_gets_only_one_new_review_and_never_changes_the_narration(draft, monkeypatch, always_malformed):
+    package, page, _ = draft; original = deepcopy(package)
+    critic = included.generate_text_json; calls = []; returned = []
+    def generate(prompt, *, purpose, schema):
+        calls.append(prompt)
+        enums = schema['properties']['factual_audit']['properties']['sentences']['items']['properties']['narration']['enum']
+        assert enums and len(enums) == len(set(enums))
+        response = critic(prompt.split('\nFORMAT REPAIR:', 1)[0], purpose=purpose, schema=schema)
+        if len(calls) == 1 or always_malformed:
+            response['factual_audit']['sentences'][0]['narration'] += ' changed'
+        returned.append(deepcopy(response)); return response
+    monkeypatch.setattr(included, 'generate_text_json', generate)
+    if always_malformed:
+        with pytest.raises(ValueError, match='included_factual_audit_invalid'):
+            longform._review_once(package, 'Banknote', 'en', [page])
+        assert len(calls) == 2
+    else:
+        reviews, findings = longform._review_once(package, 'Banknote', 'en', [page])
+        assert len(calls) == 4 and len(reviews) == 3
+        assert reviews[0]['rejected_responses'][0]['response'] == returned[0]
+        assert any(row.get('assessment') == 'uncertain' for row in findings)
+        assert 'FORMAT REPAIR:' in calls[1]
+    assert package == original
+
+
+def test_unknown_review_transport_is_never_retried(draft, monkeypatch):
+    package, page, _ = draft
+    sender = Mock(side_effect=TimeoutError('unknown provider outcome'))
+    monkeypatch.setattr(included, 'generate_text_json', sender)
+    with pytest.raises(TimeoutError): longform._review_once(package, 'Banknote', 'en', [page])
+    sender.assert_called_once()

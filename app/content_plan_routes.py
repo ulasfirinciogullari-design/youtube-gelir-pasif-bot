@@ -92,6 +92,12 @@ def render_page(channels, selected, view, *, notice='', error=False):
         live = '<section class="plan-live"><span class="section-kicker">YAYIN AKIŞI</span><h2>' + ('Plan tamamlandı.' if published else 'Bir sonraki hikâyeyi planla.') + '</h2><p>Seri bölümleri, uzun videolar ve yeni fikirler aynı sırada. Üretim sunucuda devam eder.</p></section>'
     queue = '<ol class="plan-list">' + ''.join(_row(v, i + 1, channel_id, revision) for i, v in enumerate(pending)) + '</ol>' if pending else '<div class="plan-empty"><h2>Sıradaki video için yer hazır.</h2><p>Bir konu ekle veya bir serinin bölümlerini birlikte planla. Başlamamış içerikleri daha sonra yeniden sıralayabilirsin.</p></div>'
     finished = '<details class="plan-completed"><summary>Yayımlananları göster · ' + str(len(published)) + '</summary><ol class="plan-list">' + ''.join(_row(v, i+1, channel_id, revision) for i,v in enumerate(published)) + '</ol></details>' if published else ''
+    attention = (view or {}).get('attention') or []
+    attention_card = ('<section class="planner-box"><h2>İnceleme bekleyen taslaklar</h2>'
+        '<p>Bu bağımsız videolar kontrolü geçemedi. Kayıtları saklandı; günlük üretim devam ediyor.</p><ul>'
+        + ''.join('<li><a href="/studio/job/' + escape(row['task_id'], quote=True) + '">'
+            + escape(row['title']) + ' · Kaydı ve varsa videoyu aç</a></li>' for row in attention)
+        + '</ul></section>') if attention else ''
     hidden = _hidden(channel_id, revision)
     after = view['after_queue'] if view else 'pause'
     cadence_card = ''
@@ -130,7 +136,7 @@ def render_page(channels, selected, view, *, notice='', error=False):
     body = ('<style>'+CSS+'</style><header class="planner-head"><div><div class="eyebrow">İÇERİK MERKEZİ</div><h1>Yayın planı</h1><p>Önce seriyi tamamla. Sonraki videonun ne olacağını sen belirle.</p></div><a class="btn" href="#add-video">+ İçerik ekle</a></header>'
         +flash+'<nav class="plan-channels" aria-label="Planlanacak kanal">'+tabs+'</nav><div class="planner-layout"><section class="planner-main">'+live
         +'<div class="plan-section-head" id="queue"><h2>Üretim sırası</h2><span>Yukarıdan aşağıya ilerler</span></div><p class="plan-refresh-note" id="plan-refresh-note" aria-live="polite"></p>'
-        +queue+finished+'<p class="planner-bottom">Kaliteyi geçemeyen bir video yayımlanmış sayılmaz. Durumlar son sunucu kaydını gösterir.</p></section><aside class="planner-side">'+cadence_card+settings_form+create+explain+'</aside></div>')
+        +queue+attention_card+finished+'<p class="planner-bottom">Kaliteyi geçemeyen bir video yayımlanmış sayılmaz. Durumlar son sunucu kaydını gösterir.</p></section><aside class="planner-side">'+cadence_card+settings_form+create+explain+'</aside></div>')
     script = '''<script>(()=>{const channel=CHANNEL;let busy=false;
 async function refresh(){
  const main=document.querySelector('.planner-main');
