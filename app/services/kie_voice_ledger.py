@@ -200,7 +200,7 @@ def _scope(pipe, foundation, policy, scope):
     if scope.get('kind') == 'connection_probe':
         require(set(scope) == {'kind', 'language', 'voice_id'}
             and scope['language'] in {'tr', 'en'}
-            and type(scope['voice_id']) is str and re.fullmatch('[A-Za-z0-9_-]{8,80}', scope['voice_id']))
+            and type(scope['voice_id']) is str and re.fullmatch('[A-Za-z0-9_-]{4,80}', scope['voice_id']))
         return
     from app.services import production_spend_runtime as runtime
     require(scope == runtime.resolve_context(foundation.client, runtime._TASK_ID.get()),
@@ -302,12 +302,17 @@ class Journal:
 def status(client):
     with client.pipeline() as pipe:
         policy, journal, _ = _read(pipe)
+        used = _used(journal) if journal is not None else 0
         value = {'status': 'not_allocated'} if policy is None else {
             'status': 'validation_pending' if pipe.get(ACTIVE_KEY) is None else 'active',
             'accounting_unit': 'kie_microcredits', 'allocation_microcredits': policy['allocation_microcredits'],
-            'committed_microcredits': _used(journal),
-            'remaining_microcredits': max(0, policy['allocation_microcredits'] - _used(journal)),
+            'balance_observed_at': policy['balance']['observed_at'],
+            'committed_microcredits': used,
+            'remaining_microcredits': max(0, policy['allocation_microcredits'] - used),
             'requests': len(journal['requests']),
+            'failed_requests': sum(r['result'] is not None
+                and api.object_response(restore(r['result']))['data']['state'] == 'fail'
+                for r in journal['requests'].values()),
             'unknown_or_pending': sum(r['result'] is None for r in journal['requests'].values())}
         pipe.multi(); pipe.ping(); require(pipe.execute() == [True])
     return value

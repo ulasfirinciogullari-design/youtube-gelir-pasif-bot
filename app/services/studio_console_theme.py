@@ -25,3 +25,28 @@ main{padding-top:36px}.hero{margin:0 0 26px;padding:0;gap:20px}.hero h1{font-siz
 @media(max-width:1100px){.review-grid{grid-template-columns:1fr}.wrap{padding-left:228px;padding-right:24px}.overview-top{grid-template-columns:1fr}.top{width:204px}}
 @media(max-width:760px){.wrap{padding:0 18px 30px}.top{position:relative;inset:auto;width:auto;padding:16px 0 12px;display:block;border-right:0;border-bottom:1px solid var(--line);background:transparent}.brand{display:inline-block;font-size:17px;margin:0 0 12px;padding:0}.nav{flex-direction:row;gap:4px;flex-wrap:wrap}.nav>a,.nav-more>summary{font-size:12px;padding:8px 10px}.nav-more{margin:0;padding:0;border:0}.nav-more-menu{position:absolute;right:0;min-width:170px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 20px #dbe2e6}main{padding-top:24px}.hero h1{font-size:28px}.hero .muted{font-size:14px}.overview-counts{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.overview-count{display:block;padding:12px}.overview-count b{font-size:25px;display:block}.overview-count span{font-size:12px}.overview-count small{display:none}.review-tabs{gap:2px}.review-tabs a{font-size:12px;padding:8px 10px}.review-tabs b{margin-left:3px}.review-card.has-media{grid-template-columns:118px minmax(0,1fr);gap:13px;padding:13px}.review-preview video{height:210px}.review-preview{min-height:210px}.review-card h2{font-size:14px}.review-reason{font-size:12px}.review-meta{font-size:10px}.review-actions .btn{padding:8px 10px;font-size:11px}.review-summary{align-items:flex-start;gap:10px}.review-search input{min-width:0;flex:1}.channel-overview{grid-template-columns:1fr}.overview-hero>.btn{display:none}}
 '''
+
+# The fixed navigation must scroll independently on short laptop windows.
+# Keep form controls in the document flow, including at 200% browser zoom.
+CSS += r'''
+html{min-height:100%;overflow-y:auto;scroll-padding-top:20px}
+body{min-width:0;min-height:100dvh;overflow-x:clip}
+.top{max-height:100dvh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:28px 18px}
+.top .brand{margin-bottom:26px;flex-shrink:0}.top .nav{min-height:0;flex-shrink:0}
+main{min-width:0;overflow-wrap:break-word;padding-top:28px}
+.wrap{min-width:0}.hero{margin-bottom:20px}.hero h1{font-size:30px}.hero p{margin:6px 0 0}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start;max-width:1080px}
+.settings-grid>.card{margin:0}.settings-grid h2{font-size:19px}.settings-grid p{font-size:14px;line-height:1.55}
+.settings-links{display:grid;margin-top:12px}.settings-links>a{display:grid;gap:3px;padding:15px 0;border-top:1px solid var(--line)}
+.settings-links>a:first-child{border-top:0}.settings-links>a:hover b{color:var(--accent)}.settings-links span{font-size:13px;color:var(--muted)}
+.settings-grid form{margin:0}.settings-grid button{width:100%;margin-top:8px}
+.provider-panel{width:100%;max-width:680px}.provider-panel .card{padding:22px}.provider-panel form{margin:0}
+.provider-panel button{width:100%;margin-top:12px}.provider-panel .notice{margin-bottom:16px}
+.provider-panel h2{font-size:18px}.provider-panel .provider-help{font-size:13px;color:var(--muted);margin:16px 0}
+.overview-shortcuts{margin:0;padding:20px}.overview-shortcuts h2{font-size:17px}.overview-shortcuts .settings-links{margin-top:0}.overview-shortcuts .settings-links>a{padding:10px 0}
+.funding-details{margin:16px 0;border:1px solid var(--line);border-radius:12px;background:white}.funding-details>summary{padding:13px 17px;cursor:pointer;color:var(--muted);font-size:13px}.funding-details .notice{margin:0 14px 14px;border-radius:10px}
+@media(max-width:760px){.overview-top{gap:12px;margin-bottom:12px}.automation-card{padding:18px}.automation-card h2{font-size:20px;margin:6px 0}.automation-card p{font-size:13px;margin-top:5px}.operations-status{padding-top:9px;margin-top:10px}.overview-shortcuts{display:none}.overview-counts{margin:14px 0}.overview-section{margin-top:20px}}
+@media(max-height:650px) and (min-width:761px){.top{padding-top:18px;padding-bottom:18px}.top .brand{margin-bottom:16px}.nav>a{padding:9px 12px}main{padding-top:20px}.hero h1{font-size:27px}.card{padding:20px}}
+@media(max-width:1000px){.settings-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.top{max-height:none;overflow:visible;padding:15px 0 12px}.top .brand{margin-bottom:10px}.nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible}.nav>a{font-size:12px;text-align:center;padding:8px 5px;white-space:normal}.nav a:nth-child(n+4){display:block}.wrap{padding:0 14px 36px}main{padding-top:20px}.hero{margin-bottom:18px}.hero h1{font-size:27px}.settings-grid{gap:14px}.provider-panel .card{padding:18px}}
+'''

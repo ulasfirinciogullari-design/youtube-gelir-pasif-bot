@@ -2373,28 +2373,24 @@ def _history_archive(
 
 
 def _nav(active: str) -> str:
+    if active in {'providers', 'growth', 'create', 'voices'}:
+        active = 'settings'
+    elif active == 'review':
+        active = 'history'
     primary_links = [
         ('studio', '/studio', 'Genel bakış'),
         ('plan', '/studio/plan', 'Yayın planı'),
-        ('review', '/studio/history?status=previews', 'Önizlemeler'),
         ('history', '/studio/history?status=library', 'Videolar'),
         ('youtube', '/studio/youtube', 'Kanallar'),
         ('analytics', '/studio/analytics', 'Performans'),
-        ('growth', '/studio/growth', 'Büyüme'),
+        ('settings', '/studio/settings', 'Ayarlar'),
     ]
     items = ''.join(
         f'<a class="{"active" if key == active else ""}" href="{url}"'
         f'{" aria-current=page" if key == active else ""}>{label}</a>'
         for key, url, label in primary_links
     )
-    more = (
-        '<details class="nav-more"><summary>Ayarlar</summary><div class="nav-more-menu">'
-        '<a href="/studio/create">Video oluştur</a>'
-        '<a href="/voice-audition">Anlatıcı sesleri</a>'
-        '<a href="/studio/providers/abacus">Abacus bağlantısı</a> · '
-        '<a href="/studio/providers/kie">Kie.ai ses bağlantısı</a></div></details>'
-    )
-    return f'<header class="top"><a class="brand" href="/studio">YouTube Studio</a><nav class="nav" aria-label="Ana menü">{items}{more}</nav></header>'
+    return f'<header class="top"><a class="brand" href="/studio">YouTube Studio</a><nav class="nav" aria-label="Ana menü">{items}</nav></header>'
 
 
 def _shell(body: str, *, active: str = 'studio', title: str = 'YouTube Studio V2', script: str = '') -> HTMLResponse:
@@ -2664,11 +2660,11 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
     if not jobs_available:
         heading, detail = 'Durum bilgisi alınamıyor', 'Video kayıtları şu anda okunamıyor. Sayfayı biraz sonra yenileyebilirsin.'
     elif counts.get('running', 0):
-        heading, detail = 'Video üzerinde çalışılıyor', 'Devam eden işin aşamasını üretim listesinden takip edebilirsin.'
+        heading, detail = 'Üretim sürüyor', 'Devam eden videoların aşamaları aşağıda.'
     elif states & {'paused', 'retry_uncertain'}:
-        heading, detail = 'Otomasyon kontrol bekliyor', 'Devam etmek için üretimdeki sorunun çözülmesi gerekiyor. Kanal durumları aşağıda.'
+        heading, detail = 'Bir işlem gerekiyor', 'Nedeni ilgili kanalda ve kontrol bekleyen videolarda görebilirsin.'
     elif states & {'daily_wait', 'planning_wait'}:
-        heading, detail = 'Üretim takvimi ve otomatik beklemeler', 'Günlük deneme sınırına ulaşan kanal yeni günü bekliyor. Diğer kanallar kendi takvimine göre ilerler; yeniden kontrol zamanı aşağıda.'
+        heading, detail = 'Kanallar kendi takviminde', 'Sınırına ulaşan kanal yeni günü bekler. Sıradaki üretim zamanı kanal kartında.'
     elif 'scheduled' in states:
         heading, detail = 'Bir sonraki üretim planlandı', 'Başlama zamanı kanalda görünür. Üretim öncesinde bütçe ve bağlantılar yeniden kontrol edilir.'
     elif states and states <= {'disabled', 'exhausted'}:
@@ -2693,15 +2689,18 @@ def studio_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAM
             break
     empty = 'Henüz gösterilecek video yok. İlk videonu oluşturabilir veya kanal ayarlarına bakabilirsin.' if jobs_available else 'Video listesi şu anda okunamıyor.'
     body = (
-        '<div class="hero overview-hero"><div class="hero-copy"><div class="eyebrow">YOUTUBE STUDIO</div>'
-        '<h1>Kontrol panelin</h1><p class="muted">Üretim, yayınlar ve bütçe. Hepsi tek yerde.</p></div>'
+        '<div class="hero overview-hero"><div class="hero-copy">'
+        '<h1>Genel bakış</h1><p class="muted">Kanalların bugün ne yapıyor?</p></div>'
         '<a class="btn" href="/studio/plan">Yayın planını aç</a></div>'
         '<div class="overview-top"><section class="automation-card" aria-label="Otomasyon durumu">'
         '<span class="section-kicker">OTOMASYON</span><h2>' + heading + '</h2><p>' + detail + '</p>'
-        '<ol class="workflow-strip" aria-label="Üretim akışının aşamaları"><li>Üretim</li><li>Kalite kontrolü</li><li>Yayın</li><li>Sonraki bölüm</li></ol>'
         + _operations_status() + '</section>'
-        + _production_budget_notice() + '</div><nav class="overview-counts" aria-label="Video durumları">'
-        + ''.join(cards) + '</nav><section class="overview-section">' + _metrics_header(metrics)
+        + '<section class="card overview-shortcuts"><h2>Hızlı erişim</h2><div class="settings-links">'
+        '<a href="/studio/plan"><b>Sıradaki videolar</b><span>Yayın sırasını ve konuları düzenle →</span></a>'
+        '<a href="/studio/settings"><b>Bağlantılar ve bakiye</b><span>Kie.ai, yapay zekâlar ve giriş →</span></a>'
+        '</div></section></div><nav class="overview-counts" aria-label="Video durumları">'
+        + ''.join(cards) + '</nav><details class="funding-details"><summary>Bütçe ve harcama ayrıntıları</summary>'
+        + _production_budget_notice() + '</details><section class="overview-section">' + _metrics_header(metrics)
         + '<div id="channel-overview-host">' + _channel_overview(channels) + '</div></section>'
         '<section class="overview-section"><div class="overview-heading"><h2>Son üretimler</h2>'
         '<a href="/studio/history?status=library">Tüm videolar →</a></div><div class="overview-recent">'

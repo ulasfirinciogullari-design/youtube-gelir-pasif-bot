@@ -424,9 +424,11 @@ def _clip_speed(spec: str | dict, source_duration: float,
                for value in (source_duration, duration)):
         raise RuntimeError('Generated clip timing is invalid')
     full_span_speed = source_duration / duration
-    if speed < full_span_speed <= 1.20:
+    if 1.0 <= full_span_speed <= 1.20:
         # Match the emitted FFmpeg precision, rounding DOWN so a fraction of
         # a microsecond can never request footage past the real source end.
+        # The decorative 1.008–1.020x stock variation must not demand more
+        # than an otherwise sufficient generated clip's entire duration.
         return math.floor(full_span_speed * 1_000_000_000) / 1_000_000_000
     return speed
 

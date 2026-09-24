@@ -72,7 +72,8 @@ def read_balance(secret):
 def request_body(text, voice_id, *, turkish=False, speed=1.0):
     units = len(text.encode('utf-16-le')) // 2 if type(text) is str else 0
     require(1 <= units <= 5000 and text.strip(), 'kie_voice_text_limit')
-    require(type(voice_id) is str and re.fullmatch(r'[A-Za-z0-9_-]{8,80}', voice_id),
+    # Kie accepts catalog IDs and preset names such as Rachel or Adam.
+    require(type(voice_id) is str and re.fullmatch(r'[A-Za-z0-9_-]{4,80}', voice_id),
             'kie_voice_voice_invalid')
     require(type(turkish) is bool and type(speed) in (float, int) and 0.7 <= speed <= 1.2,
             'kie_voice_request_invalid')

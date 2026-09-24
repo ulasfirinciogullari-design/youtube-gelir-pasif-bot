@@ -182,3 +182,26 @@ def test_wrong_task_or_model_result_is_not_accepted(kie):
     with pytest.raises(api.KieVoiceError, match='binding_invalid'):
         generate(kie)
     assert ledger.status(kie.client)['unknown_or_pending'] == 1
+
+
+def test_documented_preset_and_refunded_failure_keep_receipts_without_replay(kie):
+    kie.scope = {**kie.scope, 'voice_id': 'Rachel'}
+    commission(kie)
+    original = kie.handler
+    def rejected(request):
+        response = original(request)
+        if request.url.path.endswith('/recordInfo'):
+            data = response.json()
+            data['data'].update(state='fail', creditsConsumed=0, resultJson=None,
+                                failCode='500', failMsg='Internal Error')
+            return httpx.Response(200, json=data)
+        return response
+    kie.handler = rejected
+    for _ in range(2):
+        with pytest.raises(api.KieVoiceError, match='generation_failed'):
+            generate(kie)
+    state = ledger.status(kie.client)
+    assert state['failed_requests'] == state['requests'] == 1
+    assert state['committed_microcredits'] == state['unknown_or_pending'] == 0
+    assert state['remaining_microcredits'] == 80_000_000
+    assert [r.method for r in kie.requests].count('POST') == 1

@@ -12,19 +12,29 @@ router = APIRouter()
 PATH = '/studio/providers/kie'
 
 
-def _page(message='', *, form=False, status_code=200):
-    body = '''<div class="hero"><div class="hero-copy"><h1>Kie.ai ses bağlantısı</h1>
-<p class="muted">Yüklediğin Kie.ai bakiyesini video seslendirmelerinde kullanmak için hesabını bağla.</p></div></div>'''
+def _page(message='', *, form=False, status_code=200, funding=None):
+    body = '''<div class="provider-panel"><div class="hero"><div class="hero-copy"><h1>Kie.ai ses bağlantısı</h1>
+<p class="muted">Video seslendirmeleri için Kie.ai hesabın.</p></div></div>'''
     if message:
         body += '<div class="notice" role="status">' + message + '</div>'
+    if isinstance(funding, dict) and type(funding.get('remaining_microcredits')) is int:
+        available = f"{funding['remaining_microcredits'] / 1_000_000:,.2f}".replace(',', ' ').rstrip('0').rstrip('.')
+        label = 'Ses ve zamanlama kontrolü bekleniyor'
+        if funding.get('requests', 0) and funding.get('failed_requests') == funding['requests']:
+            label = 'Ses denemesinde Kie.ai hata verdi. Üretim bağlantısı henüz etkin değil.'
+        if funding.get('status') == 'active':
+            label = 'Ses üretiminde etkin'
+        body += '<section class="card"><span class="section-kicker">OTOMASYONA AYRILAN KIE BAKİYESİ</span>'
+        body += '<h2>' + available + ' kredi</h2><p class="muted">' + label + '</p></section>'
+        body += '<form method="post" action="/studio/providers/kie/balance"><button class="btn secondary" type="submit">Güncel hesap bakiyesini kontrol et</button></form>'
     if form:
         body += '''<section class="card"><form method="post" action="/studio/providers/kie" autocomplete="off">
 <label class="field" for="kie-key">Kie.ai API anahtarı</label>
 <input id="kie-key" type="password" name="api_key" required minlength="16" maxlength="4096" autocomplete="off" autocapitalize="none" spellcheck="false">
 <p class="muted"><a href="https://kie.ai/api-key" target="_blank" rel="noopener noreferrer">Kie.ai anahtar sayfasını aç</a>, anahtarını kopyalayıp buraya yapıştır. Anahtarını sohbete göndermene gerek yok.</p>
 <button type="submit">Bağlantıyı kaydet</button></form></section>'''
-    body += '''<section class="card"><h2>Sonraki adım</h2><p>Bağlantı kaydedildikten sonra bakiye erişimi, Türkçe ve İngilizce sesler ve altyazı zamanlaması kontrol edilecek. Kaydetmek tek başına otomatik üretimi başlatmaz.</p></section>
-<p><a class="btn secondary" href="/studio">Studio’ya dön</a></p>'''
+    body += '''<p class="provider-help">Bağlantı kaydedildikten sonra bakiye, Türkçe ve İngilizce sesler ve altyazı zamanlaması kontrol edilir. Kaydetmek tek başına otomatik üretimi başlatmaz.</p>
+<p><a class="btn secondary" href="/studio/settings">← Ayarlar</a></p></div>'''
     response = _shell(body, active='providers', title='Kie.ai bağlantısı')
     response.status_code = status_code
     response.headers.update(_HEADERS)
@@ -46,8 +56,14 @@ async def kie_page(request: Request):
         return _auth_error(error)
     try:
         found = await run_in_threadpool(_operation, kie_credentials.present)
-        return _page('Anahtar kaydedildi. Bakiye ve ses üretimi kontrolü bekliyor.' if found else '',
-                     form=not found)
+        funding = None
+        if found:
+            from app.services.kie_voice_ledger import status
+            funding = await run_in_threadpool(_operation, status)
+        message = ('Kie.ai bağlantısı kaydedildi.' if funding and funding.get('status') != 'not_allocated'
+            else 'Anahtar kaydedildi. Bakiye ve ses üretimi kontrolü bekliyor.') if found else ''
+        return _page(message,
+                     form=not found, funding=funding)
     except Exception:
         return _page('Bağlantı durumu şu anda okunamıyor. Daha sonra yeniden aç.', status_code=503)
 
@@ -74,3 +90,25 @@ async def kie_save(request: Request):
         return _page('Kayıt sonucu doğrulanamadı. Durumu görmek için sayfayı yeniden aç.', status_code=503)
     except Exception:
         return _page('Kayıt sonucu doğrulanamadı. Durumu görmek için sayfayı yeniden aç.', status_code=503)
+
+
+def _live_balance(client):
+    from app.services.kie_voice_adapter import read_balance
+    credential = kie_credentials.read(client)
+    if credential is None:
+        raise ValueError('key_missing')
+    return read_balance(credential.api_key)['available_microcredits']
+
+
+@router.post(PATH + '/balance', response_class=HTMLResponse)
+async def kie_balance(request: Request):
+    try:
+        _authorize(request, write=True)
+    except HTTPException as error:
+        return _auth_error(error)
+    try:
+        remaining = await run_in_threadpool(_operation, _live_balance)
+        number = f'{remaining / 1_000_000:,.2f}'.replace(',', ' ').rstrip('0').rstrip('.')
+        return _page('Kie.ai hesabındaki güncel bakiye: <b>' + number + ' kredi</b>.')
+    except Exception:
+        return _page('Kie.ai bakiyesi şu anda okunamıyor. Mevcut kayıtlar korundu.', status_code=503)

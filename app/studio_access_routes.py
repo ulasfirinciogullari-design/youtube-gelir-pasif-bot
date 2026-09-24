@@ -46,7 +46,8 @@ _SCRIPT = r'''(() => {
           window.location.replace('/studio');
           return;
         }
-        message.textContent = 'Bu cihazda açık oturum bulunamadı. Sana özel gönderilen giriş bağlantısını bu tarayıcıda aç.';
+        window.location.replace('/studio/login');
+        return;
       } catch (_) {
         message.textContent = 'Oturum kontrol edilemedi. Bağlantını kontrol edip tekrar deneyebilirsin.';
       }
