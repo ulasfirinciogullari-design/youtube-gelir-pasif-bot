@@ -62,6 +62,17 @@ the new covered allowance becomes available. All request identities, old charges
 and narrator assignments remain effective. Worker ticks never invoke this action.
 The next genuine provider reset restores the original allocation cap and reserve;
 the adjustment neither purchases credits nor changes cash or auto-top-up settings.
+
+An untouched automatic daily documentary waiting solely for the larger voice
+allowance does not prevent affordable Shorts from using their ordinary queue.
+This narrow exception requires 1,000–4,999 available native credits, no uncertain
+voice reservation, exactly one unfinished automatic daily long item, its exact
+creation receipt, no dispatch/job, and an enabled plan allowing automatic Shorts.
+The original long item and every completion/spend record remain unchanged.
+The final Short reservation rechecks queue and full credit history in the same
+WATCH transaction as its existing scheduling Lua. Paused or edited owner plans,
+numbered series, dependencies, started long films and other channels retain their
+normal ordering. Ordinary funding checks and daily publication limits still apply.
 ## Rejected standalone documentaries
 
 For Capital and Margin, a conclusively failed standalone documentary can move

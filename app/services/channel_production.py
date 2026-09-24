@@ -501,7 +501,9 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
     try:
         client = _redis()
         from app.services.content_plan import owns_channel
-        if owns_channel(channel_id, client=client):
+        from app.services import daily_voice_priority
+        short_priority = owns_channel(channel_id, client=client) and daily_voice_priority.eligible(channel_id, client=client)
+        if owns_channel(channel_id, client=client) and not short_priority:
             return {'status': 'owner_content_plan'}
         profile_raw = client.get(PROFILE_PREFIX + channel_id)
         persisted_profile = json.loads(profile_raw or '{}')
@@ -525,7 +527,8 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
             topic, identity, **({'long_duration_minutes': 8} if delivery_enabled else {}),
         )
         from app.services.channel_cadence import daily_editorial
-        editorial = daily_editorial(channel_id, editorial, client=client, now=now)
+        editorial = daily_editorial(channel_id, editorial, client=client, now=now,
+            **({'defer_daily_long': True} if short_priority else {}))
         duration_minutes = editorial['duration_minutes']
         if duration_minutes == 3 and editorial.get('reason_code') in {'owner_daily_mix', 'owner_next_day_stock'}:
             from app.services.channel_cadence import install_daily_long
@@ -570,7 +573,7 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         active = json.dumps({'channel_id': channel_id, 'task_id': task_id}, sort_keys=True)
         from app.services.channel_cadence import lua_arguments
         cadence_keys = lua_arguments(channel_id, 'long' if duration_minutes > 1 else 'shorts', now=now)
-        status = client.eval(
+        reservation = (
             _RESERVE, 13, PROFILE_PREFIX + channel_id,
             CHANNEL_STATE_PREFIX + channel_id, ACTIVE_KEY, JOB_PREFIX + task_id,
             OAUTH_CHANNEL_PREFIX + channel_id, OAUTH_CREDENTIAL_PREFIX + channel_id,
@@ -582,6 +585,20 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
             json.dumps(record, ensure_ascii=False),
             str(profile.get('profile_revision') or ''), JOB_TTL_SECONDS, *cadence_keys[3:],
         )
+        if short_priority:
+            # Recheck the exact pending item and full credit history inside
+            # the transaction that creates the Short. An edit, voice send or
+            # long reservation racing this decision invalidates the commit.
+            with client.pipeline() as pipe:
+                if not daily_voice_priority.eligible(channel_id, client=client, pipe=pipe):
+                    return {'status': 'owner_content_plan'}
+                pipe.multi(); pipe.eval(*reservation)
+                reply = pipe.execute()
+                if type(reply) is not list or len(reply) != 1:
+                    raise ValueError('invalid production reservation acknowledgement')
+                status = reply[0]
+        else:
+            status = client.eval(*reservation)
         if status == 'invalid_state':
             raise ValueError('invalid production reservation state')
         if status != 'reserved':

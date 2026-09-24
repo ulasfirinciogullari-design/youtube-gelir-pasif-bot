@@ -114,9 +114,14 @@ def lua_arguments(channel_id, format_kind, *, now=None):
     return (*keys(channel_id, now=now), format_kind, LIMITS[format_kind] if channel_id in CHANNELS else 0)
 
 
-def daily_editorial(channel_id, fallback, *, client, now=None):
+def daily_editorial(channel_id, fallback, *, client, now=None, defer_daily_long=False):
     """The new daily mix applies after an existing ordered queue has finished."""
     if channel_id not in CHANNELS: return fallback
+    if defer_daily_long:
+        return {'version': 1, 'format': 'shorts', 'duration_minutes': .5,
+            'reason_code': 'owner_daily_voice_priority',
+            'reason': 'Uzun video ses kredisi bekliyor; uygun Shorts üretimi devam ediyor.',
+            'scope_signals': ['daily_shorts', 'long_waiting_for_voice_capacity']}
     if _completed_day(client, channel_id, now=now):
         return {'version': 1, 'format': 'landscape', 'duration_minutes': 3.0,
             'reason_code': 'owner_next_day_stock',

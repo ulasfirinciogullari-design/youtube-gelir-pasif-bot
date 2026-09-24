@@ -481,8 +481,8 @@ def prepare_next_series(profile, channel, *, now=None, execution_binding=None):
             except Exception:
                 pass  # A trend feed outage cannot stop an existing series.
             try:
-                from app.services.youtube_analytics import editorial_guidance
-                guidance = editorial_guidance(channel_id)
+                from app.services.youtube_analytics import editorial_guidance, pacing_guidance
+                guidance = editorial_guidance(channel_id) or pacing_guidance(channel_id)
                 if guidance:
                     generation_context = {**generation_context, 'audience_feedback': guidance}
             except Exception:

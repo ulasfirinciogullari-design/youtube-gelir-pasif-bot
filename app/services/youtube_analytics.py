@@ -262,6 +262,39 @@ def dashboard():
     return result
 
 
+def _drops(eligible):
+    """Measure local loss over 5–10% of runtime, rather than one sampled point."""
+    drops = []
+    for row in eligible:
+        points = row.get('retention') or []
+        if len(points) < 3: continue
+        windows = [(first, last) for index, first in enumerate(points) for last in points[index + 1:]
+                   if .05 - 1e-9 <= last[0] - first[0] <= .10 + 1e-9]
+        if not windows: continue
+        first, last = max(windows, key=lambda pair: pair[0][1] - pair[1][1])
+        if first[1] - last[1] >= .1:
+            drops.append({'title': row['title'], 'from_fraction': first[0], 'to_fraction': last[0],
+                'watch_ratio_drop': round(first[1] - last[1], 3)})
+    return sorted(drops, key=lambda row: row['watch_ratio_drop'], reverse=True)[:3]
+
+
+def pacing_guidance(channel_id, *, content_type='SHORTS'):
+    """A single sufficiently viewed curve can describe its own drop, not rank videos."""
+    if content_type not in {'SHORTS', 'VIDEO_ON_DEMAND'}: return None
+    channel = next((row for row in dashboard()['channels'] if row['channel_id'] == channel_id), None)
+    if not channel or channel['status'] != 'fresh': return None
+    eligible = [row for row in channel['videos'].values()
+                if row['content_type'] == content_type and _sample(row) >= 100]
+    drops = _drops(eligible)
+    if not drops: return None
+    return {'basis': 'descriptive_same_video_retention_minimum_100_relevant_views',
+        'content_type': content_type, 'sample_size': len(eligible), 'observed_drop_examples': drops,
+        'instruction': 'These measured 5–10% runtime windows describe individual videos, not a ranking '
+            'or a causal explanation. Test earlier concrete evidence and a clearer payoff near the observed '
+            'part of the story; preserve duration, facts, source checks and natural pacing. Never copy the '
+            'topic or claim a growth guarantee. Do not interpret replay ratios as unique audience percentages.'}
+
+
 def editorial_guidance(channel_id, *, content_type='SHORTS'):
     """Observational hints only; small samples, stale or mixed formats never rank."""
     channel = next((row for row in dashboard()['channels'] if row['channel_id'] == channel_id), None)
@@ -273,16 +306,7 @@ def editorial_guidance(channel_id, *, content_type='SHORTS'):
     if len(eligible) < 3:
         return None
     ordered = sorted(eligible, key=lambda row: row['averageViewPercentage'], reverse=True)
-    drops = []
-    for row in eligible:
-        points = row.get('retention') or []
-        if len(points) < 3:
-            continue
-        # A measured local drop is a revision hypothesis, not causal proof.
-        first, last = max(zip(points, points[1:]), key=lambda pair: pair[0][1] - pair[1][1])
-        if first[1] - last[1] >= .1:
-            drops.append({'title': row['title'], 'from_fraction': first[0], 'to_fraction': last[0],
-                'watch_ratio_drop': round(first[1] - last[1], 3)})
+    drops = _drops(eligible)
     return {'basis': ('observational_28_day_shorts_only_minimum_100_engaged_views_each' if content_type == 'SHORTS'
             else 'observational_28_day_long_videos_only_minimum_100_views_each'),
         'content_type': content_type,

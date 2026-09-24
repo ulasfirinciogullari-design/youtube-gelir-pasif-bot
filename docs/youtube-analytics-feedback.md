@@ -8,6 +8,22 @@ The requested period is 28 days ending three days ago. Google can return less re
 
 Next-series generation optionally receives two higher-retention Shorts examples, only when at least three Shorts each have 100 engaged views in the report. This is tentative, observational guidance, never a causal claim, revenue prediction, topic-repeat permission or quality approval. The existing authoritative planning context and daily reservation remain unchanged. Unavailable feedback does not block planning or trigger a paid replacement call.
 
+Pacing observations also measure the strongest decline across a window spanning
+5–10% of a video's running time. Looking only at adjacent 1% samples missed the
+gradual early loss present in actual channel reports. This measurement retains
+replay ratios above 1 and does not reinterpret them as unique viewers. A single
+same-format video with at least 100 relevant views can supply a descriptive pacing
+observation to the writer and next-series planner. Cross-video ranking still
+requires three qualifying videos. Sparse curves, insufficient samples, other
+formats and failed/stale reports do not provide this advice. The suggested earlier
+evidence or payoff is a hypothesis for new scripts, not a cause or reach guarantee.
+
+The distinction between appeal, engagement and satisfaction follows YouTube's
+[performance guidance](https://support.google.com/youtube/answer/16559650?hl=en)
+and [Shorts discovery guidance](https://support.google.com/youtube/answer/11914225?co=YOUTUBE._YTVideoType%3Dshorts&hl=en-GB).
+Search interest is not YouTube distribution; no universal retention threshold
+or guaranteed view count is inferred from these observations.
+
 Official contracts checked September 21, 2026:
 - https://developers.google.com/youtube/analytics/channel_reports (authorization, video reports, retention)
 - https://developers.google.com/youtube/analytics/reference/reports/query (date coverage and query contract)

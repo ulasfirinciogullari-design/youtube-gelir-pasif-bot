@@ -57,8 +57,10 @@ def writer_rule(channel, duration_minutes):
     try:
         if not read_settings(channel)['retention_enabled']:
             return ''
-        from app.services.youtube_analytics import editorial_guidance
-        feedback = editorial_guidance(channel, content_type='SHORTS' if duration_minutes <= 1 else 'VIDEO_ON_DEMAND')
+        from app.services.youtube_analytics import editorial_guidance, pacing_guidance
+        content_type = 'SHORTS' if duration_minutes <= 1 else 'VIDEO_ON_DEMAND'
+        feedback = (editorial_guidance(channel, content_type=content_type)
+                    or pacing_guidance(channel, content_type=content_type))
     except Exception:
         feedback = None
     base = ('AUDIENCE EDITING: Open with the specific visible question or consequence in the first sentence; '
