@@ -40,6 +40,7 @@ def activate(expected_plan_revision, *, owner_feedback, client=None):
     from app.services.framecase_art import VERSION, approved_reference
     from app.services.framecase_pipeline import PREFIX as cp_prefix
     from app.services.commissioning_video import PREFIX as video_prefix
+    from app.services import source_publication_hold as hold
     client = client or plan._client(); _require(owner_feedback == OWNER_FEEDBACK)
     approval = {'owner_feedback': owner_feedback, 'preview_task_id': PREVIEW_ID,
         'master_sha256': APPROVED_MASTER, 'art_direction': VERSION,
@@ -57,9 +58,26 @@ def activate(expected_plan_revision, *, owner_feedback, client=None):
         preview = json.loads(pipe.get(jobs.JOB_PREFIX + PREVIEW_ID) or '{}')
         cp_raw = pipe.get(cp_prefix + 'checkpoint:' + SOURCE_ID); cp = json.loads(cp_raw or '{}')
         native_raw = pipe.get(video_prefix + SOURCE_ID); native = json.loads(native_raw or '{}')
+        hold_key = hold.HOLD_PREFIX + SOURCE_ID
+        upload_key = hold.UPLOAD_PREFIX + SOURCE_ID
+        pipe.watch(hold_key, upload_key, hold.EXECUTION_LOCK_PREFIX + SOURCE_ID)
+        receipt = json.loads(pipe.get(hold_key) or '{}')
+        tombstone = json.loads(pipe.get(upload_key) or '{}')
         _require(document is not None and document['revision'] == expected_plan_revision and document['enabled'] is False
-            and source.get('state') == 'FAILURE' and source.get('publication_hold')
+            and source.get('task_id') == SOURCE_ID and source.get('state') in {'FAILURE', 'SUCCESS'}
             and source['spec'].get('publish_after_render') is False and source['spec'].get('production_channel_id') == CHANNEL_ID)
+        # A held render may finish successfully after the owner pauses it.
+        # The immutable upload tombstone, not render success/failure, proves
+        # that replacing this unpublished editorial version is safe.
+        _require(receipt.get('task_id') == SOURCE_ID and receipt.get('disposition') == 'owner_publication_hold'
+            and receipt.get('original_publish_after_render') is True
+            and receipt.get('request', {}).get('expected_channel_id') == CHANNEL_ID
+            and receipt.get('receipt_sha256') == hold._digest({k: v for k, v in receipt.items() if k != 'receipt_sha256'})
+            and source.get('publication_hold') == {'receipt_key': hold_key, 'receipt_sha256': receipt['receipt_sha256']}
+            and tombstone == hold._fence(receipt) and not pipe.exists(hold.EXECUTION_LOCK_PREFIX + SOURCE_ID))
+        result = source.get('result') or {}
+        _require(not result.get('youtube') and not result.get('youtube_video_id')
+            and not (result.get('youtube_automation') or {}).get('publish_task_id'))
         _require(preview.get('state') == 'SUCCESS' and preview.get('result', {}).get('video_sha256') == APPROVED_MASTER
             and preview['result'].get('creative_qc', {}).get('pass') is True)
         _require(cp.get('voice', {}).get('asset') and cp.get('audio_qc') and native.get('requests')
