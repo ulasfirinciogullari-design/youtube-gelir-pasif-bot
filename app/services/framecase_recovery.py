@@ -1,5 +1,6 @@
 """Bounded continuations reuse the exact episode's paid receipts and assets."""
 import json
+import os
 import time
 from types import SimpleNamespace
 from uuid import uuid5, NAMESPACE_URL
@@ -8,7 +9,10 @@ from app.services import content_plan as plan, studio_state as jobs
 from app.services.framecase_cadence import CHANNEL_ID
 
 PREFIX = 'youtube_studio:framecase_recovery:v1:'
-MAX_CONTINUATIONS = 3
+MAX_CONTINUATIONS = 6
+FIX_REQUIRED = frozenset({'framecase_audio_timing_rejected', 'framecase_audio_transcript_rejected',
+    'framecase_audio_prosody_rejected', 'framecase_scene_duration_invalid',
+    'framecase_final_render_rejected', 'framecase_final_timing_rejected'})
 
 
 def schedule(source):
@@ -18,6 +22,9 @@ def schedule(source):
     if source.get('state') != 'FAILURE':
         return 'working_or_waiting'
     code = source.get('framecase_failure_code', '')
+    if (code in FIX_REQUIRED and source.get('framecase_failed_build')
+            == os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local')):
+        return 'waiting_for_pipeline_correction'
     if (not code or any(marker in code for marker in (
             'outcome_unverified', 'outcome_unknown', 'visual_quality_exhausted',
             'binding_changed', 'generic_recovery_forbidden', 'pipeline_unverified'))):

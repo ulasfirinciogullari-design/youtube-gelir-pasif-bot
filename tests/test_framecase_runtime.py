@@ -182,3 +182,43 @@ def test_actual_final_scene_windows_include_end_hold_without_losing_frames(tmp_p
     with pytest.raises(SpendBlocked):
         pipeline.exact_master_scenes({'path': str(path), 'frame_count': 60, 'scene_windows': [
             {'scene_index': 0, 'start_frame': 1, 'end_frame': 60}]}, tmp_path, 1)
+
+
+def test_natural_complete_animation_has_no_forced_silent_padding():
+    from app.tasks import _short_preview_voice_duration_qc, _strict_short_preview_render_qc
+    story = json.loads(pipeline.ASSET.read_text())
+    package = {'narration': story['episodes'][0]['narration']}
+    voice = {'duration_after_fit': 21.216}
+    target = pipeline.short_edit_target(voice, package)
+    assert target == 21.766666666666666
+    assert _short_preview_voice_duration_qc(voice, target)['pass'] is True
+    assert _strict_short_preview_render_qc({'frame_count': 653,
+        'ending_silence_seconds': .69}, target, 21.216)['pass'] is True
+    assert not _strict_short_preview_render_qc({'frame_count': 900,
+        'ending_silence_seconds': 8.9}, target, 21.216)['pass']
+    for seconds in (19, 40, 0, float('nan'), True, '21.216'):
+        with pytest.raises(SpendBlocked):
+            pipeline.short_edit_target({'duration_after_fit': seconds}, package)
+    with pytest.raises(SpendBlocked):
+        pipeline.short_edit_target({'duration_after_fit': 20}, {'narration': 'word ' * 70})
+
+
+def test_known_immutable_audio_failure_waits_for_actual_code_correction(client, monkeypatch):
+    from app.services import framecase_recovery as recovery
+    from app.production_tasks import continue_framecase_episode
+    from unittest.mock import Mock
+    monkeypatch.setattr(plan, '_client', lambda: client)
+    enqueue = Mock(); monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'old-build')
+    row = source(); row.update(state='FAILURE', framecase_failure_code='framecase_audio_timing_rejected',
+        framecase_failed_build='old-build', framecase_resume_attempt=3)
+    row['spec']['framecase_animation'] = True
+    client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(row))
+    assert recovery.schedule(row) == 'waiting_for_pipeline_correction'
+    enqueue.assert_not_called()
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'fixed-build')
+    assert recovery.schedule(row) == 'continuation_queued'
+    assert enqueue.call_args.kwargs['args'] == (row['task_id'], 4)
+    assert client.get(jobs.JOB_PREFIX + row['task_id']) == plan._raw(row)
+    assert recovery.schedule(row) == 'continuation_preparing_or_uncertain'
+    assert enqueue.call_count == 1

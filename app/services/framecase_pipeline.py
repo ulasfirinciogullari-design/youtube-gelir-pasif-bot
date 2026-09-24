@@ -8,6 +8,7 @@ from copy import deepcopy
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import subprocess
 import time
@@ -217,6 +218,22 @@ def exact_master_scenes(rendered, work, scene_count):
     return result
 
 
+def short_edit_target(voice, package):
+    """A complete, naturally spoken fiction beat determines its edit length.
+
+    The 30-second plan is nominal. Do not pad a complete 62-word performance
+    with eight seconds of silence, or slow it beyond the existing tempo bound.
+    Transcript, independent prosody, exact frames and tail checks still run.
+    """
+    seconds = voice.get('duration_after_fit')
+    words = len(_words(package.get('narration', '')))
+    _require(type(seconds) in (int, float) and math.isfinite(seconds)
+        and 20 <= seconds <= 39.45 and 55 <= words <= 70
+        and 100 <= words * 60 / seconds <= 185,
+        'framecase_audio_timing_rejected')
+    return math.ceil((seconds + .55) * 30) / 30
+
+
 def _execute(self, source, dispatch, work, checkpoint, client):
     from app import tasks as common
     from app.services import production_spend_runtime as spending
@@ -249,7 +266,10 @@ def _execute(self, source, dispatch, work, checkpoint, client):
     _require(len(durations) == len(scenes) and all(0 < n <= 10 for n in durations),
              'framecase_scene_duration_invalid')
     spoken = ' '.join(voice['spoken_texts'])
-    effective = target if longform else common._effective_short_edit_target(options, 30, voice['duration_after_fit'])
+    effective = target if longform else short_edit_target(voice, package)
+    timing = common._short_preview_voice_duration_qc(voice, effective)
+    _require(timing.get('available') is True and timing.get('pass') is True,
+             'framecase_audio_timing_rejected')
     stage('audio_qc', 30, 'Gerçek seste telaffuz, anlatım ve doğal konuşma kontrol ediliyor.')
     if 'audio_qc' not in checkpoint:
         transcript = common._verify_audio_narration_with_retry(voice_path, spoken, language='en', task_id=task)
@@ -259,9 +279,6 @@ def _execute(self, source, dispatch, work, checkpoint, client):
             audio_duration_seconds=voice['duration_after_fit'], transcript_evidence=transcript, language='en')
         _require(prosody.get('available') is True and prosody.get('pass') is True,
                  'framecase_audio_prosody_rejected')
-        timing = common._short_preview_voice_duration_qc(voice, effective)
-        _require(timing.get('available') is True and timing.get('pass') is True,
-                 'framecase_audio_timing_rejected')
         checkpoint['audio_qc'] = {'transcript': transcript, 'prosody': prosody, 'timing': timing}
         _save(client, task, checkpoint)
     ratio = '16:9' if longform else '9:16'
@@ -398,7 +415,8 @@ def run(self, topic, duration, language, route, options, **recovery):
         jobs.mark_failure(task, code[:160])
         jobs.update_job(task, framecase_checkpoint_available=bool(checkpoint.get('package')),
             framecase_failure_code=code[:160], framecase_failure_trace=trace,
-            framecase_retry_at=time.time() + 120, **preview)
+            framecase_failed_build=os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local'),
+            framecase_retry_at=time.time() + min(1800, 120 * 2 ** int(source.get('framecase_resume_attempt') or 0)), **preview)
         return {'status': 'stopped', 'reason': code[:160], 'task_id': task}
     finally:
         with client.pipeline() as pipe:
