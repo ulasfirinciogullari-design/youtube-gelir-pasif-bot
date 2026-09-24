@@ -92,14 +92,14 @@ def validate_package(package, source, *, longform):
     _require(len(scenes) == count, 'framecase_scene_count_invalid')
     for scene in scenes:
         _require(type(scene) is dict and type(scene.get('narration')) is str
-            and (8 <= len(_words(scene['narration'])) <= 17 if longform
+            and (10 <= len(_words(scene['narration'])) <= 20 if longform
                  else 8 <= len(_words(scene['narration'])) <= 23)
             and type(scene.get('ai_prompt')) is str
             and 40 <= len(scene['ai_prompt'].encode('utf-16-le')) // 2 <= 960,
             'framecase_shot_invalid')
         scene.update(visual_queries=[], transition='cut', pace='balanced')
     narration = ' '.join(s['narration'].strip() for s in scenes)
-    _require((340 <= len(_words(narration)) <= 410) if longform
+    _require((380 <= len(_words(narration)) <= 460) if longform
              else 55 <= len(_words(narration)) <= 70, 'framecase_spoken_budget_invalid')
     if source['locked_narration']:
         _require(_words(narration) == _words(source['episode']['narration']),
@@ -125,8 +125,8 @@ def prepare_package(dispatch, *, revision=0):
         'scenes': {'type': 'array', 'items': scene}},
         'required': ['title', 'description', 'scenes'], 'additionalProperties': False}
     direction = (
-        'Create a standalone three-minute cinematic adaptation of the COMPLETE five-part mystery. '
-        'Exactly 30 scenes, each 8-17 spoken words, total 340-410 words. Expand motivation, clues and '
+        'Create a standalone cinematic adaptation of the COMPLETE five-part mystery, about three minutes. '
+        'Exactly 30 scenes, each 10-20 spoken words, total 380-460 words. Expand motivation, clues and '
         'visual storytelling without adding contradictions. Resolve the mystery and end naturally. '
         'Landscape composition. No recap intro, filler or requests to subscribe.' if longform else
         'Split the LOCKED episode narration verbatim, in order, into EXACTLY four contiguous scenes '
@@ -212,7 +212,8 @@ def exact_master_scenes(rendered, work, scene_count):
             '-an', '-c:v', 'libx264', '-threads', '1', '-preset', 'veryfast', '-crf', '18', str(path)],
             check=True, capture_output=True, timeout=180)
         _require(video_frame_count(path) == end - start, 'framecase_review_window_invalid')
-        result.append([{'path': str(path), 'generated': True, 'source_type': 'generated'}])
+        result.append([{'path': str(path), 'generated': True, 'source_type': 'generated',
+                        'start_fraction': 0.0, 'preserve_start_fraction': True}])
         cursor = end
     _require(cursor == rendered['frame_count'])
     return result
@@ -232,6 +233,16 @@ def short_edit_target(voice, package):
         and 100 <= words * 60 / seconds <= 185,
         'framecase_audio_timing_rejected')
     return math.ceil((seconds + .55) * 30) / 30
+
+
+def long_edit_target(voice, package):
+    seconds = voice.get('duration_after_fit')
+    words = len(_words(package.get('narration', '')))
+    _require(type(seconds) in (int, float) and math.isfinite(seconds)
+        and 120 <= seconds <= 239 and 380 <= words <= 460
+        and 100 <= words * 60 / seconds <= 185,
+        'framecase_audio_timing_rejected')
+    return math.ceil((seconds + .8) * 30) / 30
 
 
 def _execute(self, source, dispatch, work, checkpoint, client):
@@ -258,7 +269,8 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         # boundary, including unknown outcomes. An earlier pricing preflight
         # refusal has no intent and may continue after routing is repaired.
         # Never erase or replace a previous provider reservation here.
-        voice = common._synthesize_voice_candidate(scenes, task, target, language='en', flexible_short=not longform)
+        voice = common._synthesize_voice_candidate(scenes, task, target, language='en',
+                                                    natural_timeline=True)
         checkpoint['voice'] = {**voice, 'asset': _store_asset(voice['path'], task, 'voice.mp3')}
         _save(client, task, checkpoint)
     voice = deepcopy(checkpoint['voice']); voice_path = _restore_asset(voice['asset'], work / 'voice.mp3')
@@ -266,7 +278,7 @@ def _execute(self, source, dispatch, work, checkpoint, client):
     _require(len(durations) == len(scenes) and all(0 < n <= 10 for n in durations),
              'framecase_scene_duration_invalid')
     spoken = ' '.join(voice['spoken_texts'])
-    effective = target if longform else short_edit_target(voice, package)
+    effective = long_edit_target(voice, package) if longform else short_edit_target(voice, package)
     timing = common._short_preview_voice_duration_qc(voice, effective)
     _require(timing.get('available') is True and timing.get('pass') is True,
              'framecase_audio_timing_rejected')
@@ -353,9 +365,8 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         and abs(rendered['duration'] - effective) <= .1
         and type(rendered.get('max_freeze_seconds')) in (float, int)
         and rendered['max_freeze_seconds'] <= 6, 'framecase_final_render_rejected')
-    if not longform:
-        _require(common._strict_short_preview_render_qc(rendered, effective, voice['duration_after_fit']).get('pass') is True,
-                 'framecase_final_timing_rejected')
+    _require(common._strict_short_preview_render_qc(rendered, effective, voice['duration_after_fit']).get('pass') is True,
+             'framecase_final_timing_rejected')
     thumbnail = common._persist_final_thumbnail(task, work, rendered, options, 'automated_qc_pass', False)
     stage('upload', 92, 'Video, altyazı, kalite raporu ve kapak kalıcı depolamaya kaydediliyor.')
     key, caption, metadata_key = f'videos/{task}/final.mp4', f'videos/{task}/captions.en.srt', f'videos/{task}/metadata.json'

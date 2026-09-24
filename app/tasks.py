@@ -2051,6 +2051,7 @@ def _synthesize_voice_candidate(
     language: str | None = None,
     voice_replacement_request: dict | None = None,
     flexible_short: bool = False,
+    natural_timeline: bool = False,
 ) -> dict:
     """Use bounded new seeds for synthesis defects without rerunning the job."""
     from app.services.abacus_generation import AbacusGenerationError
@@ -2103,6 +2104,7 @@ def _synthesize_voice_candidate(
                 generation_attempt=generation_attempt,
                 language=language,
                 **({'flexible_short': True} if flexible_short is True and voice_replacement_request is None else {}),
+                **({'natural_timeline': True} if natural_timeline is True and voice_replacement_request is None else {}),
                 **replacement_options,
             )
         except VoiceScriptFitError as exc:

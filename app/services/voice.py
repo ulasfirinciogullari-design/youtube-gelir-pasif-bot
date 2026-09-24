@@ -787,9 +787,19 @@ def _fit_duration(
     *,
     prior_tempo_rate: float = 1.0,
     flexible_short: bool = False,
+    natural_timeline: bool = False,
 ) -> tuple[list[float], float, float, float]:
     """Fit narration with bounded tempo changes; full audio QA still follows."""
     before = _media_duration(output)
+    if natural_timeline is True:
+        # Original animation is cut to the complete measured performance.
+        # Its caller still verifies speech density, all words, prosody and
+        # the exact delivered frame/tail bounds before publication.
+        bounds = (20, 39.45) if target_seconds == 30 else (120, 239) if target_seconds == 180 else None
+        if (bounds is None or prior_tempo_rate != 1.0 or not math.isfinite(before)
+                or not bounds[0] <= before <= bounds[1]):
+            raise VoiceScriptFitError('Natural narration is outside the commissioned edit window')
+        return scene_durations, before, before, 1.0
     # Fresh automatic Shorts may use their natural 30-40 second edit. Keep
     # this take intact; the pipeline must still align the final endpoint and
     # pass actual transcript, prosody, scene-duration and render checks.
@@ -907,6 +917,7 @@ def synthesize_scene_sequence(
     before_paid_request=None,
     raw_audio_sink=None,
     flexible_short: bool = False,
+    natural_timeline: bool = False,
 ) -> dict:
     if profile_override is not None and (
         profile_override != 'turkish_multilingual_v2'
@@ -1051,6 +1062,7 @@ def synthesize_scene_sequence(
     scene_durations, before_fit, after_fit, tempo_rate = _fit_duration(
         output, scene_durations, target_seconds,
         **({'flexible_short': True} if flexible_short is True and profile_override is None else {}),
+        **({'natural_timeline': True} if natural_timeline is True and profile_override is None else {}),
     )
     reserved_tail_seconds = (
         0.50 if target_seconds and 0 < target_seconds <= 40 else 0.0
