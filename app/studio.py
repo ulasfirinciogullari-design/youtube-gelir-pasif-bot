@@ -2391,7 +2391,8 @@ def _nav(active: str) -> str:
         '<details class="nav-more"><summary>Ayarlar</summary><div class="nav-more-menu">'
         '<a href="/studio/create">Video oluştur</a>'
         '<a href="/voice-audition">Anlatıcı sesleri</a>'
-        '<a href="/studio/providers/abacus">Abacus bağlantısı</a></div></details>'
+        '<a href="/studio/providers/abacus">Abacus bağlantısı</a> · '
+        '<a href="/studio/providers/kie">Kie.ai ses bağlantısı</a></div></details>'
     )
     return f'<header class="top"><a class="brand" href="/studio">YouTube Studio</a><nav class="nav" aria-label="Ana menü">{items}{more}</nav></header>'
 
