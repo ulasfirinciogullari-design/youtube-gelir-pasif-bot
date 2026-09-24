@@ -209,7 +209,9 @@ def change(channel_id, expected_revision, action, *, payload=None, client=None):
 
 def _leaf(client, dispatch):
     root = dispatch['task_id']; current = root; seen = set(); parent = None
-    for _ in range(12):
+    # A final child can follow twelve independently authorized recovery nodes.
+    # This only bounds traversal; each recovery and paid-work limit is separate.
+    for _ in range(16):
         _require(current not in seen, 'plan_lineage_invalid'); seen.add(current)
         job = _object(client.get(jobs.JOB_PREFIX + current))
         _require(job.get('task_id') == current and job.get('parent_id') == parent
@@ -424,6 +426,11 @@ def maintain(profiles, enqueue, *, repair_enqueue=None):
                     if (leaf.get('spec') or {}).get('framecase_animation') is True:
                         from app.services.framecase_recovery import schedule as framecase_schedule
                         statuses[channel_id] = framecase_schedule(leaf)
+                        continue
+                    from app.services.content_plan_unstarted_resume import schedule as resume_unstarted
+                    resumed = resume_unstarted(leaf, enqueue, client=client)
+                    if resumed is not None:
+                        statuses[channel_id] = resumed
                         continue
                     if repair_enqueue is not None:
                         from app.services.content_plan_recovery import schedule
