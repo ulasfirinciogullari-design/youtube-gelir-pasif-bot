@@ -18,13 +18,21 @@ FIX_REQUIRED = frozenset({'framecase_audio_timing_rejected', 'framecase_audio_tr
     'framecase_audio_prosody_rejected', 'framecase_scene_duration_invalid',
     'framecase_final_render_rejected', 'framecase_final_timing_rejected',
     'framecase_authored_scene_quality_rejected', 'framecase_FalVideoPolicyError',
-    'framecase_review_window_invalid', 'framecase_visual_quality_exhausted'})
+    'framecase_review_window_invalid', 'framecase_visual_quality_exhausted',
+    'framecase_art_direction_revision_required', 'framecase_creative_quality_rejected'})
 
 
 def schedule(source):
     spec = source.get('spec') or {}
     if spec.get('production_channel_id') != CHANNEL_ID or spec.get('framecase_animation') is not True:
         return 'not_framecase'
+    if (source.get('publication_hold') or source.get('owner_cancellation')
+            or spec.get('publish_after_render') is False):
+        return 'held_by_owner'
+    client = plan._client()
+    document = plan.read(CHANNEL_ID, client=client)
+    if document is not None and document['enabled'] is False:
+        return 'plan_paused'
     if source.get('state') != 'FAILURE':
         return 'working_or_waiting'
     code = source.get('framecase_failure_code', '')
@@ -35,7 +43,7 @@ def schedule(source):
             'outcome_unverified', 'outcome_unknown',
             'binding_changed', 'generic_recovery_forbidden', 'pipeline_unverified'))):
         return 'held_for_verification'
-    task = source['task_id']; client = plan._client()
+    task = source['task_id']
     attempt = int(source.get('framecase_resume_attempt') or 0) + 1
     if attempt > MAX_CONTINUATIONS:
         return 'continuation_limit_reached'
@@ -48,8 +56,11 @@ def schedule(source):
     operation = str(uuid5(NAMESPACE_URL, f'framecase-resume:{task}:{attempt}'))
     key = PREFIX + operation
     with client.pipeline() as pipe:
-        pipe.watch(key, jobs.JOB_PREFIX + task)
+        pipe.watch(key, jobs.JOB_PREFIX + task, plan.PLAN_PREFIX + CHANNEL_ID)
         current = plan._object(pipe.get(jobs.JOB_PREFIX + task))
+        document = plan.read(CHANNEL_ID, client=pipe)
+        if document is not None and document['enabled'] is False:
+            return 'plan_paused'
         if current != source or pipe.exists(key):
             return 'continuation_preparing_or_uncertain'
         record = {'version': 1, 'source_task_id': task, 'operation': operation,
@@ -76,6 +87,12 @@ def run(celery_task, source_id, attempt):
         and type(attempt) is int and 1 <= attempt <= MAX_CONTINUATIONS and record.get('attempt') == attempt,
         'framecase_recovery_unverified')
     source = jobs.get_job(source_id); spec = source.get('spec') or {}
+    if (source.get('publication_hold') or source.get('owner_cancellation')
+            or spec.get('publish_after_render') is False):
+        return {'status': 'held_by_owner'}
+    document = plan.read(CHANNEL_ID, client=client)
+    if document is not None and document['enabled'] is False:
+        return {'status': 'plan_paused'}
     plan._require(source.get('state') == 'FAILURE' and record['spec_sha256'] == plan._sha(spec)
         and spec.get('production_channel_id') == CHANNEL_ID
         and int(source.get('framecase_resume_attempt') or 0) == attempt - 1,
