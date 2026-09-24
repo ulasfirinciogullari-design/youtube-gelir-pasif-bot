@@ -8,7 +8,7 @@ import pytest
 from app.services import commissioning_fal_video as fal_setup, fal_video, fal_video_catalog as catalog
 from app.services import commissioning_video as video, production_spend_runtime as runtime
 from app.services.production_spend import LEDGER_KEY, SpendBlocked
-from test_commissioning_video import scene, generate, ROOT, CHILD, KEY
+from test_commissioning_video import scene, generate, ROOT, CHILD, KEY, CHANNEL
 from test_commissioning_audio import box
 from test_fal_video_routing import reviewed_date
 
@@ -18,13 +18,19 @@ QUEUE = catalog.ORIGIN + '/' + catalog.MODELS['veo_lite'] + '/requests/' + REQUE
 CREATED = {'request_id': REQUEST_ID, 'status_url': QUEUE + '/status', 'response_url': QUEUE}
 
 
-@pytest.fixture
-def fal_scene(scene, monkeypatch, reviewed_date):
+@pytest.fixture(params=['veo_lite', 'auto'])
+def fal_scene(scene, monkeypatch, reviewed_date, request):
+    monkeypatch.setattr(catalog, 'COST_QUALITY_CHANNELS', frozenset({CHANNEL}))
     # Legacy tests replace sys.modules['app.config'] during collection. Bind
     # dynamic imports as well as the real config module patched by scene.
     monkeypatch.setattr(sys.modules['app.config'], 'settings', scene.config)
     scene.config.studio_video_provider = 'fal'
-    scene.config.studio_fal_video_model = 'auto'
+    scene.config.studio_fal_video_model = request.param
+    model = catalog.MODELS['seedance_pro' if request.param == 'auto' else 'veo_lite']
+    scene.expected_provider = catalog.PROVIDERS[model]
+    queue = catalog.ORIGIN + '/' + model + '/requests/' + REQUEST_ID
+    accepted = {'request_id': REQUEST_ID, 'status_url': queue + '/status', 'response_url': queue}
+    expected_cost = 130000 if request.param == 'auto' else 180000
     scene.config.fal_key = KEY
     monkeypatch.setattr(fal_setup, 'settings', scene.config)
     monkeypatch.setattr(fal_video, 'settings', scene.config)
@@ -33,12 +39,16 @@ def fal_scene(scene, monkeypatch, reviewed_date):
         scene.requests.append(request)
         rows = json.loads(scene.client.get(video.PREFIX + ROOT))['requests']
         assert rows
-        assert all(row['request']['max_list_cost_micro_usd'] == 180000 for row in rows.values())
+        assert all(row['request']['max_list_cost_micro_usd'] == expected_cost for row in rows.values())
         if request.method == 'POST':
             assert request.headers['Authorization'] == 'Key ' + KEY
             assert json.loads(request.content)['generate_audio'] is False
-            assert json.loads(request.content)['auto_fix'] is False
-            return httpx.Response(200, json=CREATED)
+            body = json.loads(request.content)
+            if scene.expected_provider == 'fal_veo_lite':
+                assert body['auto_fix'] is False and body['duration'] == '6s'
+            else:
+                assert body['enable_safety_checker'] is True and body['duration'] == '5'
+            return httpx.Response(200, json=accepted)
         if request.url.path.endswith('/status'):
             return httpx.Response(200, json={'status': 'COMPLETED', 'request_id': REQUEST_ID})
         return httpx.Response(200, json={'video': {'url': MEDIA}})
@@ -51,7 +61,7 @@ def test_worker_reuses_completed_fal_receipt_across_child_jobs(fal_scene):
     runtime.resolve_context(scene.client, ROOT)
     runtime.resolve_context(scene.client, CHILD)
     before = scene.client.hgetall(LEDGER_KEY)
-    assert generate(scene)['provider'] == 'fal_veo_lite'
+    assert generate(scene)['provider'] == scene.expected_provider
     assert generate(scene)['url'] == MEDIA
     token = runtime._TASK_ID.set(CHILD)
     try:
@@ -75,7 +85,7 @@ def test_unknown_post_and_model_switch_cannot_resubmit(fal_scene):
         generate(scene)
     with pytest.raises(SpendBlocked, match='previous_outcome_unknown'):
         generate(scene)
-    scene.config.studio_fal_video_model = 'seedance_pro'
+    scene.config.studio_fal_video_model = 'veo_lite' if scene.config.studio_fal_video_model == 'auto' else 'seedance_pro'
     with pytest.raises(SpendBlocked, match='existing_route_pinned'):
         generate(scene)
     scene.config.studio_video_provider = 'legacy'

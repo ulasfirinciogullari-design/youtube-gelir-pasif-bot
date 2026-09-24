@@ -225,7 +225,8 @@ def _load_clips(source, prepared, work, *, allow_repair=False):
             and manifest['audio']['sha256'] == prepared['source_audio_sha256']
             and raw['key'] == pointer['raw_key'] and raw['sha256'] == pointer['raw_sha256']
             and raw['size'] == pointer['raw_size'] and raw['synthetic_motion_only'] is False
-            and raw['provider'] == 'gemini_veo' and raw['provider_attempts'] == 1)
+            and raw['provider'] in {'gemini_veo', 'fal_veo_lite', 'fal_seedance_15_pro', 'fal_seedance_1_fast'}
+            and raw['provider_attempts'] == 1)
         path = _stored(store, raw['key'], raw['sha256'], raw['size'],
                        work / f'retained-s{index:02d}-{ordinal:02d}.mp4', assets.MAX_RAW_BYTES)
         tasks._validate_recovered_generated_clip(path,

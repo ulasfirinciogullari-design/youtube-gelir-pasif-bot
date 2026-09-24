@@ -57,6 +57,62 @@ def test_exact_queued_long_dispatch_admits_once_and_preserves_existing_receipts(
     assert included._LAST_OBSERVED.get()['context']['kind'] == 'long'
 
 
+@pytest.mark.parametrize('transport', [False, True])
+def test_long_authority_retries_only_definite_uncommitted_conflicts(long_case, monkeypatch, transport):
+    from redis.exceptions import WatchError
+    ledger, _, sender, *_ = long_case
+    pipe_type = type(ledger.client.pipeline()); execute = pipe_type.execute
+    authorize = longform.authorize
+    def mark_authority(pipe, context):
+        result = authorize(pipe, context)
+        pipe.is_authority_check = True
+        return result
+    monkeypatch.setattr(longform, 'authorize', mark_authority)
+    calls = []
+    def conflict(pipe, *args, **kwargs):
+        if not getattr(pipe, 'is_authority_check', False):
+            return execute(pipe, *args, **kwargs)
+        calls.append(True)
+        if len(calls) == 1:
+            pipe.reset()
+            if transport:
+                raise WatchError('ConnectionError while watching keys')
+            raise WatchError('Watched variable changed.')
+        return execute(pipe, *args, **kwargs)
+    monkeypatch.setattr(pipe_type, 'execute', conflict)
+    if transport:
+        with pytest.raises(WatchError): longform.active()
+        assert len(calls) == 1
+    else:
+        assert longform.active() is True and len(calls) == 2
+    sender.assert_not_called()
+
+
+def test_scene_scope_conflict_never_replays_body(long_case, monkeypatch):
+    from app.services import commissioning_video as video
+    from redis.exceptions import WatchError
+    ledger, _, sender, context, *_ = long_case
+    prepared = runtime.prepare_video_scene_budget('b' * 64, [5.] * 30, '16:9')
+    pipe_type = type(ledger.client.pipeline()); execute = pipe_type.execute
+    checks = []
+    def authority(pipe, *_):
+        pipe.watch('read-only-authority'); return 'verified'
+    def conflict(pipe, *args, **kwargs):
+        checks.append(True)
+        if len(checks) == 1:
+            pipe.reset(); raise WatchError('Watched variable changed.')
+        return execute(pipe, *args, **kwargs)
+    monkeypatch.setattr(video, '_authority', authority)
+    monkeypatch.setattr(pipe_type, 'execute', conflict)
+    body = Mock()
+    with pytest.raises(WatchError):
+        with video.scene_scope(prepared, 19, context, ledger.foundation):
+            body(); raise WatchError('Watched variable changed.')
+    assert len(checks) == 2
+    body.assert_called_once(); sender.assert_not_called()
+    assert video._SCENE.get() is None
+
+
 def test_long_review_capacity_counts_the_complete_existing_lineage(long_case):
     from test_production_included_router import request
     ledger, prepared, sender, context, *_ = long_case

@@ -106,6 +106,26 @@ def test_due_tick_reserves_registry_before_enqueue_and_uses_channel_brief(produc
     assert len(calls) == 1
 
 
+def test_managed_daily_ceiling_is_enforced_inside_original_atomic_dispatch(production):
+    from app.services import channel_cadence as cadence
+    from uuid import uuid4
+    module, client = production
+    channel = 'UC5v9AvNtD3PTLgo6m1jROOA'
+    connection = {**CONNECTION, 'id': channel}
+    profile = _profile(channel_id=channel)
+    _save(module, client, profile, connection)
+    produced = cadence.keys(channel, now=1000)[0]
+    client.hset(produced, mapping={**{str(uuid4()): 'shorts' for _ in range(5)}, str(uuid4()): 'long'})
+    original = client.hgetall(produced)
+    enqueue = Mock()
+    result = module.dispatch_due_productions([profile], [connection], enqueue, now=1000)
+    assert result['channels'][channel] == 'daily_limit_wait'
+    enqueue.assert_not_called()
+    assert client.hgetall(produced) == original
+    assert client.hgetall(module.CHANNEL_STATE_PREFIX + channel) == {}
+    assert not list(client.scan_iter(match=module.JOB_PREFIX + '*'))
+
+
 def test_concurrent_beats_across_three_channels_enqueue_at_most_two_global_renders(production):
     module, client = production
     profiles = [_profile(), _profile(channel_id='UC_channel_two'), _profile(channel_id='UC_channel_three')]

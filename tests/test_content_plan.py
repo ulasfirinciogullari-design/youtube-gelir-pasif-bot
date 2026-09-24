@@ -191,3 +191,20 @@ def test_long_documentary_dispatches_with_its_own_format_and_duration(case):
     case.funding.assert_called_once_with(OTHER, kind='long')
     plan.maintain([{**case.profile, 'channel_id': OTHER}], enqueue)
     enqueue.assert_called_once()
+
+
+def test_daily_long_uses_verified_owner_plan_engine_without_consuming_short_cursor(case):
+    from app.services import channel_cadence as cadence
+    profile = {**case.profile, 'channel_id': OTHER}
+    state_key = production.CHANNEL_STATE_PREFIX + OTHER
+    case.client.hset(state_key, mapping={'cursor': '0', 'consumed_prefix': 'old-value'})
+    result = cadence.install_daily_long(profile, ['A source-backed brand decision'], client=case.client)
+    enqueue = Mock()
+    assert plan.maintain([profile], enqueue)['channels'][OTHER] == 'enqueued'
+    args = enqueue.call_args.kwargs['args']
+    assert args[1] == 3 and args[4]['format'] == 'landscape'
+    assert args[4]['content_plan_item_id'] == result['item_id']
+    assert case.client.hgetall(state_key) == {'cursor': '0', 'consumed_prefix': 'old-value'}
+    assert list(case.client.hgetall(cadence.keys(OTHER)[0]).values()) == ['long']
+    plan.maintain([profile], enqueue)
+    enqueue.assert_called_once()

@@ -24,7 +24,7 @@ def _voices_active():
         return False
 
 
-def render(channels, selected, preferences, data, languages, voices_active, *, saved=False):
+def render(channels, selected, preferences, data, languages, voices_active, *, saved=False, cadence=None):
     channel = selected['channel_id']
     tabs = ''.join('<a class="btn'+(' success' if p['channel_id'] == channel else '')+'" href="/studio/growth?channel='
         + p['channel_id'] + '">' + escape(name) + '</a>' for p, name in channels)
@@ -63,6 +63,12 @@ def render(channels, selected, preferences, data, languages, voices_active, *, s
 </style><div class="hero"><div><div class="eyebrow">BÜYÜME MERKEZİ</div><h1>İlgiyi doğru hikâyeye çevir.</h1><p class="muted">Gündem, izleyici tutma, anlatıcılar ve diller tek yerde.</p></div></div>'''
     if saved:
         body += '<p class="notice success">Ayarlar kaydedildi. Yeni üretimlerde uygulanacak.</p>'
+    if cadence:
+        published = cadence['counts']['published']
+        body += ('<section class="card"><h2>Günlük yayın düzeni</h2><p><b>1 uzun video + 5 Shorts / kanal</b></p>'
+            '<p>Bugün: '+str(published['long'])+' / 1 uzun video · '+str(published['shorts'])+' / 5 Shorts</p>'
+            '<p class="growth-note">Türkiye saati. Hazır stokların ilk yayınından sonra bu düzen uygulanır. '
+            'Sınır dolunca sıradaki gün otomatik devam eder. Sunucudaki zamanlayıcı, bu ekran ve sohbet kapalıyken de çalışır.</p></section>')
     body += '<nav class="growth-tabs">'+tabs+'</nav><div class="growth-grid"><div><section class="card"><div class="section-head"><h2>Kanalına uygun güncel ilgi</h2></div><p class="tiny">'+source_note+'</p>'+stale_note
     body += cards or '<p class="muted">Şu anda kanala uygun, doğrulanmış bir trend gözlemi yok. Kaynaklı mevcut konular üretilmeye devam eder.</p>'
     body += '<p class="growth-note">Kaynak: Google Trends. Türkiye, ABD, Birleşik Krallık, Brezilya, Hindistan ve Meksika iki saatte bir taranır; haftalık gözlemler korunur. Sayılar YouTube izlenmesi değildir.</p></section>'
@@ -83,8 +89,10 @@ def growth(channel: str = '', saved: str = '', studio_token: str | None = Cookie
     selected = next((p for p, _ in channels if p['channel_id'] == channel), channels[0][0])
     try:
         client = strategy._client()
+        from app.services.channel_cadence import snapshot
         return render(channels, selected, strategy.read_settings(selected['channel_id'], client=client),
-            trends.snapshot(client=client), video_localization.dashboard(client), _voices_active(), saved=saved == '1')
+            trends.snapshot(client=client), video_localization.dashboard(client), _voices_active(), saved=saved == '1',
+            cadence=snapshot(selected['channel_id'], client=client))
     except Exception:
         raise HTTPException(status_code=503, detail='Büyüme bilgileri şu anda okunamıyor. Biraz sonra yenile.') from None
 

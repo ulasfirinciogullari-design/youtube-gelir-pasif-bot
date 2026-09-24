@@ -186,8 +186,9 @@ def queue_automatic_publish(source_task_id: str) -> dict:
         )
         return {'status': 'metadata_blocked', 'error_code': _safe_error_code(exc)}
 
-    from app.services.framecase_cadence import publication_slot
-    if not publication_slot(source):
+    from app.services import framecase_cadence, channel_cadence
+    cadence = framecase_cadence if source.get('spec', {}).get('production_channel_id') == framecase_cadence.CHANNEL_ID else channel_cadence
+    if not cadence.publication_slot(source):
         _set_source_automation(source_task_id, status='daily_limit_wait')
         return {'status': 'daily_limit_wait'}
     task_id = str(uuid4())
@@ -863,11 +864,12 @@ def publish_video_pipeline(
                 )
                 release_started = False
                 if release_mode == 'public':
-                    from app.services.framecase_cadence import publication_completed
+                    from app.services import framecase_cadence, channel_cadence
+                    cadence = framecase_cadence if source.get('spec', {}).get('production_channel_id') == framecase_cadence.CHANNEL_ID else channel_cadence
                     try:
-                        publication_completed(source)
+                        cadence.publication_completed(source)
                     except Exception:
-                        pass  # The pending slot still counts conservatively across days.
+                        pass  # The pending claim counts conservatively until readback.
                 release_status = release_mode
                 final_privacy_status = (
                     'public' if release_mode == 'public' else 'private'

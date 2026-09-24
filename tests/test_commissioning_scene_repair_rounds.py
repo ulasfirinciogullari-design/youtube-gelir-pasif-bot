@@ -18,12 +18,15 @@ def execute(case):
 
 @pytest.fixture
 def rounds(case, monkeypatch):
+    from app.services.scene_motion_review import review_long_motion
     _worker(case, 'final_repair')  # Load the production paid-slot/checkpoint helpers.
     monkeypatch.setattr(commissioning_video, 'enabled_for_task', lambda: True)
     monkeypatch.setattr(production_included_router, 'enabled', lambda: True)
     ns = case.ns
     for _ in range(3): studio_state.paid_create_budget_state(TASK_ID, 6, reserve=True)
     ns.update(self=case.self, runway_attempts=3, final_runway_repair_attempts=0,
+        review_long_motion=review_long_motion, motion_voice_duration=30,
+        motion_review_options=ns['options'],
         omni_continuity_reference_image_path=None, omni_continuity_anchor_scene_idx=None,
         final_runway_repair_candidates=[1], rejected_final_scenes=[1],
         quality_threshold=86, manual_qa_preview_scenes=set(),

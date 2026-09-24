@@ -95,6 +95,8 @@ end
 '''
 
 
+from app.services.channel_cadence import PRODUCTION_LUA
+
 _RESERVE = _ACTIVE_CLAIMS_LUA + r'''
 local profile_raw = redis.call('GET', KEYS[1])
 if profile_raw ~= ARGV[1] then return 'profile_changed' end
@@ -148,6 +150,7 @@ for _, claim in ipairs(claims) do
 end
 if (redis.call('HGET', KEYS[2], 'active_task_id') or '') ~= '' then return 'active' end
 if redis.call('EXISTS', KEYS[4]) == 1 then return 'invalid_state' end
+''' + PRODUCTION_LUA + r'''
 redis.call('HSET', KEYS[2],
   'cursor', cursor + 1, 'consumed_prefix', ARGV[4],
   'next_due', ARGV[6], 'active_task_id', ARGV[9],
@@ -519,7 +522,12 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         editorial = choose_production_editorial(
             topic, identity, **({'long_duration_minutes': 8} if delivery_enabled else {}),
         )
+        from app.services.channel_cadence import daily_editorial
+        editorial = daily_editorial(channel_id, editorial, client=client, now=now)
         duration_minutes = editorial['duration_minutes']
+        if duration_minutes == 3 and editorial.get('reason_code') == 'owner_daily_mix':
+            from app.services.channel_cadence import install_daily_long
+            return install_daily_long(profile, topics[cursor:], client=client, now=now)
         if duration_minutes == 8 and getattr(settings, 'studio_spend_enforcement', False) is not True:
             return {'status': 'delivery_budget_not_enabled'}
         if getattr(settings, 'studio_spend_enforcement', False) is True:
@@ -557,17 +565,19 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
             'result': None, 'error': None,
         }
         active = json.dumps({'channel_id': channel_id, 'task_id': task_id}, sort_keys=True)
+        from app.services.channel_cadence import lua_arguments
+        cadence_keys = lua_arguments(channel_id, 'long' if duration_minutes > 1 else 'shorts', now=now)
         status = client.eval(
-            _RESERVE, 10, PROFILE_PREFIX + channel_id,
+            _RESERVE, 13, PROFILE_PREFIX + channel_id,
             CHANNEL_STATE_PREFIX + channel_id, ACTIVE_KEY, JOB_PREFIX + task_id,
             OAUTH_CHANNEL_PREFIX + channel_id, OAUTH_CREDENTIAL_PREFIX + channel_id,
             OAUTH_CHANNEL_INDEX, JOB_INDEX, DISPATCH_CURSOR_KEY,
-            'youtube_studio:content_plan:v1:active',
+            'youtube_studio:content_plan:v1:active', *cadence_keys[:3],
             profile_raw, cursor, _prefix_digest(topics[:cursor]),
             _prefix_digest(topics[:cursor + 1]), now, now + interval * 3600,
             channel_id, connection_id, task_id, active,
             json.dumps(record, ensure_ascii=False),
-            str(profile.get('profile_revision') or ''), JOB_TTL_SECONDS,
+            str(profile.get('profile_revision') or ''), JOB_TTL_SECONDS, *cadence_keys[3:],
         )
         if status == 'invalid_state':
             raise ValueError('invalid production reservation state')

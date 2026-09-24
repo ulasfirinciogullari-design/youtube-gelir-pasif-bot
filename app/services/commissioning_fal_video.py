@@ -51,7 +51,8 @@ def generate(scope, prompt, seconds, aspect_ratio):
     secret = str(getattr(settings, 'fal_key', '') or '').strip()
     video._require(1 <= len(secret) <= 8192 and all(32 < ord(c) < 127 for c in secret),
                    'commissioning_fal_key_missing')
-    model = select_model(seconds, getattr(settings, 'studio_fal_video_model', 'auto'))
+    model = select_model(seconds, getattr(settings, 'studio_fal_video_model', 'auto'),
+        channel_id=scope['context']['channel_id'])
     body = build_request(model, prompt.strip(), seconds, aspect_ratio)
     quote = quote_request(model, body)
     descriptor = {name: scope[name] for name in ('package_sha256', 'scene_index', 'narration_millis',

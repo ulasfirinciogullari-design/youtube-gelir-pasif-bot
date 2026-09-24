@@ -8,6 +8,7 @@ import hashlib
 import json
 
 from app.services.production_spend import SpendBlocked
+from app.services.included_stock_pool import _local_transaction
 
 MAX_SECONDS = 240
 MAX_SCENES = 32
@@ -51,6 +52,7 @@ def authorize(reader, context):
     return plan._sha(dispatch)
 
 
+@_local_transaction
 def active():
     from app.services import production_spend_runtime as runtime
     if not runtime.enforcement_enabled() or not runtime._TASK_ID.get():

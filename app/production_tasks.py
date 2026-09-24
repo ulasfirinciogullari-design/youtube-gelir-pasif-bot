@@ -146,6 +146,11 @@ def production_tick() -> dict:
             reconcile_publication_holds(linked_profiles)
         except Exception:
             pass  # A failed recheck cannot suppress unrelated normal work.
+        try:
+            from app.services.channel_cadence import maintain as maintain_cadence
+            cadence = maintain_cadence()
+        except Exception:
+            cadence = {'status': 'unavailable'}
         recovered = reconcile_public_retry_deliveries(linked_profiles)
         try:
             from app.services.framecase_cadence import maintain as maintain_framecase_cadence
@@ -173,7 +178,7 @@ def production_tick() -> dict:
         return {**dispatched, 'public_retry_reconciliation': recovered,
                 'quality_holds': quality_holds, 'series_maintenance': maintenance,
                 'native_credit_period': credit_period, 'quality_hold_period': hold_period,
-                'content_plan': content_plan}
+                'content_plan': content_plan, 'daily_cadence': cadence}
     except ChannelProductionError:
         return {'status': 'blocked', 'reason': 'production_state_unavailable'}
     except Exception:

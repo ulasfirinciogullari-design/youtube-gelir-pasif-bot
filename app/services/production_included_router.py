@@ -620,6 +620,7 @@ def generate_included_audio(audio_bytes, *, purpose, language, expected_narratio
     return _generate(prepared, purpose, audio.observe_audio_router_response)
 
 
+@_local_transaction
 def preflight_production(channel_id, *, kind):
     from app.services import production_spend_runtime as runtime
     from app.services.production_credit_ledger import CreditLedger

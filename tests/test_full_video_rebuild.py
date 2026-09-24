@@ -22,6 +22,8 @@ TOKEN = 'one-shot-full-rebuild-token-1234'
 def _load(name, namespace):
     class StripImports(ast.NodeTransformer):
         def visit_ImportFrom(self, node):
+            if node.module == 'app.services.channel_cadence':
+                return node
             return None if (node.module or '').startswith('app.') else node
     path = ROOT / 'app/services' / (name + '.py')
     tree = StripImports().visit(ast.parse(path.read_text(encoding='utf-8')))

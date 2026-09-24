@@ -37,15 +37,21 @@ def primary_enabled(settings):
     return mode == 'fal' or (mode == 'auto' and bool(str(getattr(settings, 'fal_key', '') or '').strip()))
 
 
-def select_model(seconds, preference='auto'):
-    """Keep Veo's existing look; use Seedance for shots longer than Veo allows.
+COST_QUALITY_CHANNELS = frozenset({'UC5v9AvNtD3PTLgo6m1jROOA', 'UCgvESYtYbn2w9R2ExBOF_cw'})
 
-    Cheaper alternatives are explicit operator choices until their visual
-    acceptance rate has been measured. Prompt text cannot choose paid models.
+
+def select_model(seconds, preference='auto', *, channel_id=None):
+    """Use silent Seedance Pro for the owner's quality/cost trial.
+
+    Every output still needs the same independent visual and motion QA.
+    Veo and Fast remain explicit choices; no automatic second paid fallback.
+    Existing accepted requests stay pinned by the durable native journal.
     """
     _require(type(seconds) is int and 2 <= seconds <= 10)
     _require(type(preference) is str and preference in {'auto', *MODELS})
-    name = ('veo_lite' if seconds <= 8 else 'seedance_pro') if preference == 'auto' else preference
+    name = (('seedance_pro' if channel_id in COST_QUALITY_CHANNELS
+             else 'veo_lite' if seconds <= 8 else 'seedance_fast')
+            if preference == 'auto' else preference)
     model = MODELS[name]
     duration_for(model, seconds)
     return model

@@ -273,6 +273,8 @@ def project(plan, *, client=None):
                 if leaf.get('state') == 'SUCCESS':
                     row.update(status='publishing', label='Yayın bekliyor')
                     automation = (leaf.get('result') or {}).get('youtube_automation') or {}
+                    if automation.get('status') == 'daily_limit_wait':
+                        row.update(status='daily_limit_wait', label='Yarın otomatik yayımlanacak')
                     delivery = (leaf.get('result') or {}).get('youtube') or {}
                     if delivery.get('release_status') in {'blocked', 'uncertain'} or automation.get('status') in {
                             'metadata_blocked', 'profile_changed', 'connection_changed', 'quality_blocked', 'reservation_blocked'}:
@@ -384,8 +386,9 @@ def _reserve(channel_id, *, now=None):
                     'connection_id': channel['connection_id'], 'profile_revision': profile['profile_revision'],
                     'spec_sha256': _sha(spec), 'reserved_at': instant}
         active[channel_id] = entry['id']
-        from app.services.framecase_cadence import production_slot
-        cadence_key = production_slot(pipe, channel_id, kind, task, now=now)
+        from app.services import framecase_cadence, channel_cadence
+        cadence = framecase_cadence if channel_id == framecase_cadence.CHANNEL_ID else channel_cadence
+        cadence_key = cadence.production_slot(pipe, channel_id, kind, task, now=now)
         if cadence_key is False:
             return {'status': 'daily_limit_wait'}
         pipe.multi(); pipe.set(dispatch_key, _raw(dispatch), nx=True)

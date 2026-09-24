@@ -129,15 +129,22 @@ def completion_repairs(options, duration_minutes, scenes, rejected_indices, revi
     return sorted(eligible, key=lambda index: (reviews[index]['score'], index))[:capacity]
 
 
+@_local_transaction
+def _verify_scene_authority(foundation, context):
+    # Only this read-only CAS can be retried. Never replay the context body,
+    # which may already have submitted or received a paid generation request.
+    with foundation.client.pipeline() as pipe:
+        _require(_authority(pipe, foundation, context) is not None)
+        pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
+
+
 @contextmanager
 def scene_scope(prepared, scene_index, context, foundation):
     _require(type(prepared) is runtime._PreparedVideoScenes
         and type(scene_index) is int and 0 <= scene_index < len(prepared.generation_seconds)
         and 1 <= len(prepared.generation_seconds) <= (32 if context.get('kind') == 'long' else 6))
     if context.get('kind') == 'long':
-        with foundation.client.pipeline() as pipe:
-            _require(_authority(pipe, foundation, context) is not None)
-            pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
+        _verify_scene_authority(foundation, context)
     token = _SCENE.set({'context': context, 'foundation': foundation,
         'package_sha256': prepared.package_sha256, 'scene_index': scene_index,
         'narration_millis': prepared.narration_millis[scene_index],

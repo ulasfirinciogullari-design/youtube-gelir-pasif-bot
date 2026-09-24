@@ -19,10 +19,13 @@ def reviewed_date(monkeypatch):
     monkeypatch.setattr(catalog, 'datetime', Clock)
 
 
-@pytest.mark.parametrize('seconds,alias', [(2, 'veo_lite'), (5, 'veo_lite'), (8, 'veo_lite'),
+@pytest.mark.parametrize('seconds,alias', [(2, 'seedance_pro'), (5, 'seedance_pro'), (8, 'seedance_pro'),
                                           (9, 'seedance_pro'), (10, 'seedance_pro')])
-def test_auto_preserves_veo_and_covers_longer_shots(seconds, alias):
-    assert catalog.select_model(seconds) == catalog.MODELS[alias]
+def test_auto_uses_silent_pro_and_covers_longer_shots(seconds, alias):
+    assert catalog.select_model(seconds, channel_id='UC5v9AvNtD3PTLgo6m1jROOA') == catalog.MODELS[alias]
+    assert catalog.select_model(seconds, channel_id='UCgvESYtYbn2w9R2ExBOF_cw') == catalog.MODELS[alias]
+    assert catalog.select_model(seconds, channel_id='UCs93z6wf134H5_BL9pkQX4Q') == catalog.MODELS[
+        'veo_lite' if seconds <= 8 else 'seedance_fast']
 
 
 @pytest.mark.parametrize('mode,key,expected', [
