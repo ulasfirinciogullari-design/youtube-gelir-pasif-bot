@@ -109,6 +109,8 @@ def commission(foundation, probes, *, owner_evidence_sha256):
 
 
 def native_guard(pipe, root):
+    from app.services.fal_voice_production import guard_other_provider
+    guard_other_provider(pipe, root)
     key = ROOT_PREFIX + root
     pipe.watch(key)
     ledger.require(pipe.get(key) is None, 'kie_voice_root_provider_pinned')
@@ -148,6 +150,8 @@ def select(language):
     if context['channel_id'] not in ledger.CHANNELS | {framecase_kie_voice.CHANNEL_ID}:
         return None
     with foundation.client.pipeline() as pipe:
+        from app.services.fal_voice_production import guard_other_provider
+        guard_other_provider(pipe, context['lineage_id'])
         pipe.watch(ledger.ACTIVE_KEY, ROOT_PREFIX + context['lineage_id'])
         if pipe.get(ledger.ACTIVE_KEY) is None:
             ledger.require(pipe.get(ROOT_PREFIX + context['lineage_id']) is None, 'kie_voice_activation_missing')
@@ -193,6 +197,8 @@ def select(language):
 
 
 def authorize_request(pipe, foundation, policy, context, descriptor):
+    from app.services.fal_voice_production import guard_other_provider
+    guard_other_provider(pipe, context['lineage_id'])
     active = activation(pipe, policy)
     ledger.require(active is not None, 'kie_voice_validation_required')
     # The stored route binds the original root, channel, language and voice.

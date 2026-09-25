@@ -436,6 +436,10 @@ def maintain(profiles, enqueue, *, repair_enqueue=None):
                         continue
                     from app.services import content_plan_factual_resume
                     from app.services import content_plan_kie_resume
+                    from app.services import content_plan_fal_resume
+                    if repair_enqueue is not None and content_plan_fal_resume.eligible(leaf):
+                        statuses[channel_id] = content_plan_fal_resume.schedule(leaf, repair_enqueue, client=client)
+                        continue
                     if repair_enqueue is not None and content_plan_kie_resume.eligible(leaf):
                         statuses[channel_id] = content_plan_kie_resume.schedule(leaf, repair_enqueue, client=client)
                         continue
