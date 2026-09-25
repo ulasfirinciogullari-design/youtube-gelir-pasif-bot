@@ -186,6 +186,36 @@ def _batch(record, profile, channel, now):
     return topics
 
 
+def _registry_members(client, key):
+    """Read every historical entry in bounded pages without deleting history."""
+    count = client.zcard(key)
+    _require(type(count) is int and count >= 0, 'series_registry_invalid')
+    members = []
+    for offset in range(0, count, MAX_INDEXED_JOBS):
+        page = client.zrange(key, offset, min(count, offset + MAX_INDEXED_JOBS) - 1)
+        _require(len(page) == min(MAX_INDEXED_JOBS, count - offset), 'series_state_changed')
+        members.extend(page)
+    _require(len(set(members)) == count and client.zcard(key) == count, 'series_state_changed')
+    return members
+
+
+def _idle_job_projection(raw):
+    if raw is None:
+        return None
+    job = _object(raw)
+    spec = job.get('spec')
+    _require(isinstance(spec, dict), 'series_registry_invalid')
+    # Media/review payloads can be large. Retain every field that determines
+    # whether this job may block promotion, not its historical media payload.
+    selected = {key: spec[key] for key in ('production_channel_id', 'youtube_channel_id',
+        'target_channel_id', 'channel_id') if key in spec}
+    selected.update({key: True for key in ('production_delivery', 'production_derived_from') if key in spec})
+    result = job.get('result')
+    return {'task_id': job.get('task_id'), 'state': job.get('state'), 'spec': selected,
+        'result': {'delivery_manifest_key': True} if isinstance(result, dict)
+                   and 'delivery_manifest_key' in result else None}
+
+
 class _Snapshot:
     def __init__(self, client):
         self.client, self.values, self.lifetimes = client, {}, {}
@@ -197,10 +227,21 @@ class _Snapshot:
             _require(key not in self.lifetimes or self.lifetimes[key] == value, 'series_state_changed')
             self.lifetimes[key] = value
             return value
-        value = getattr(self.client, {'string': 'get', 'hash': 'hgetall', 'zset': 'zrange', 'set': 'smembers'}[kind])(
-            key, *([0, MAX_INDEXED_JOBS] if kind == 'zset' else []))
+        if kind == 'zset':
+            value = _registry_members(self.client, key)
+        elif kind == 'idle_job':
+            value = _idle_job_projection(self.client.get(key))
+        else:
+            value = getattr(self.client, {'string': 'get', 'hash': 'hgetall', 'set': 'smembers'}[kind])(key)
         if key in self.values:
-            _require(self.values[key] == (kind, value), 'series_state_changed')
+            previous_kind, previous = self.values[key]
+            if previous_kind == 'idle_job' and kind == 'string':
+                _require(previous == _idle_job_projection(value), 'series_state_changed')
+                self.values[key] = kind, value  # Full publication evidence still binds exact bytes.
+            elif previous_kind == 'string' and kind == 'idle_job':
+                _require(_idle_job_projection(previous) == value, 'series_state_changed')
+            else:
+                _require((previous_kind, previous) == (kind, value), 'series_state_changed')
         else:
             self.values[key] = kind, value
         return value
@@ -210,8 +251,12 @@ class _Snapshot:
 
     def compare(self, pipe):
         for key, (kind, expected) in self.values.items():
-            actual = getattr(pipe, {'string': 'get', 'hash': 'hgetall', 'zset': 'zrange', 'set': 'smembers'}[kind])(
-                key, *([0, MAX_INDEXED_JOBS] if kind == 'zset' else []))
+            if kind == 'zset':
+                actual = _registry_members(pipe, key)
+            elif kind == 'idle_job':
+                actual = _idle_job_projection(pipe.get(key))
+            else:
+                actual = getattr(pipe, {'string': 'get', 'hash': 'hgetall', 'set': 'smembers'}[kind])(key)
             _require(actual == expected, 'series_state_changed')
         for key, lifetime in self.lifetimes.items():
             _require(pipe.pttl(key) == lifetime, 'series_state_changed')
@@ -291,13 +336,11 @@ def _idle(snapshot, channel_id, route):
     _require(raw is None or all(c['channel_id'] != channel_id for c in _decode_active_claims(raw)),
              'series_channel_busy')
     indexed = snapshot.read(JOB_INDEX, 'zset')
-    _require(len(indexed) <= MAX_INDEXED_JOBS, 'series_registry_unbounded')
     for task_id in indexed:
         _require(isinstance(task_id, str) and _TASK.fullmatch(task_id))
-        raw = snapshot.read(JOB_PREFIX + task_id)
-        if raw is None:
+        job = snapshot.read(JOB_PREFIX + task_id, 'idle_job')
+        if job is None:
             continue
-        job = _object(raw)
         _require(job.get('task_id') == task_id and isinstance(job.get('spec'), dict))
         spec = job['spec']
         result = job.get('result')
