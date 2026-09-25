@@ -32,11 +32,14 @@ def _asr(foundation, context, digest, provider):
     return {'key':key,'identity':identity,'record_sha256':kie.sha(kie.raw(row))},json.loads(body)
 
 
-def run(journal, spoken):
+def run(journal, spoken, *, reassess=False):
     """No TTS; inspect the original immutable audio and append the verdict."""
     from app.services import production_included_router as router
     rows=journal.read()
-    if 'qualification' in rows: return rows['qualification']
+    field = 'reassessment' if reassess else 'qualification'
+    if field in rows: return rows[field]
+    if reassess:
+        api.require(rows['qualification']['pass'] is False)
     result=api.result(kie.restore(rows['result']))
     audio,media=fal_voice_media.prepared(journal,result)
     text=' '.join(spoken); language=journal.body['language_code']; seconds=media['source_seconds']
@@ -64,14 +67,17 @@ def run(journal, spoken):
         'audio_sha256':media['sha256'],'timing':timing,'audio_qc':comparison,'asr':reference,
         'prosody':prosody,'prosody_provider_evidence':observed,
         'pass':comparison.get('pass') is True and prosody is not None and prosody.get('pass') is True}
-    journal.append('qualification',qualification)
+    if reassess:
+        qualification['supersedes_qualification_sha256'] = kie.sha(kie.raw(rows['qualification']))
+    journal.append(field,qualification)
     return qualification
 
 
 def verified(journal):
     """Recompute both judgments and bind the whole prosody request to audio."""
     from app.services import abacus_router_audio_adapter as adapter, commissioning_reasoning as reasoning
-    rows=journal.read();q=rows['qualification'];g=rows['grant'];m=rows['prepared_media']
+    from app.services.fal_voice_trial import qualifying_record
+    rows=journal.read();q=qualifying_record(rows);g=rows['grant'];m=rows['prepared_media']
     api.require(q['version'] == 1 and q['pass'] is True
         and q['grant_sha256'] == kie.sha(kie.raw(g)) and q['media_sha256'] == kie.sha(kie.raw(m))
         and q['audio_sha256'] == m['sha256'] and q['body'] == journal.body
@@ -84,9 +90,12 @@ def verified(journal):
     comparison=qc._require_word_timing_evidence(qc.compare_transcript(text,payload['text'],words=payload['words'],
         provider=provider,comparison_language=language,language_code=payload.get('language_code',payload.get('language')),
         language_probability=payload.get('language_probability')),'Independent recognizer')
-    api.require(comparison['pass'] is True,'fal_voice_blind_asr_rejected')
     token=runtime._TASK_ID.set(journal.task)
     try:
+        if comparison['pass'] is not True and q['audio_qc'].get('name_pronunciation_review'):
+            from app.services import audio_proper_name_review as names
+            comparison=names.reassess(audio,text,comparison,evidence=q['audio_qc']['name_pronunciation_review'])
+        api.require(comparison['pass'] is True,'fal_voice_blind_asr_rejected')
         prepared=adapter.prepare_longform_prosody_request(audio,api_key=settings.abacus_api_key,
             language=language,expected_narration=text,json_schema=qc._PROSODY_REVIEW_SCHEMA,
             system_instruction=qc._PROSODY_SYSTEM_INSTRUCTION.replace('Turkish','English') if language=='en' else qc._PROSODY_SYSTEM_INSTRUCTION)

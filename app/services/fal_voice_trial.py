@@ -124,7 +124,7 @@ def _read(pipe, key, *, purpose='full_length_voice_validation'):
     pipe.watch(key, key + ':anchor')
     rows, hashes = pipe.hgetall(key), pipe.hgetall(key + ':anchor')
     api.require(rows and set(rows) == set(hashes) and {'grant'} <= set(rows)
-        and set(rows) <= {'grant','request','create','result','media','prepared_media','qualification'}
+        and set(rows) <= {'grant','request','create','result','media','prepared_media','qualification','reassessment'}
         and pipe.pttl(key) == pipe.pttl(key + ':anchor') == -1)
     api.require(all(kie.sha(value) == hashes[field] for field,value in rows.items()))
     decoded = {k:json.loads(v) for k,v in rows.items()}
@@ -137,6 +137,17 @@ def _read(pipe, key, *, purpose='full_length_voice_validation'):
     api.require('create' not in decoded or 'request' in decoded)
     api.require('result' not in decoded or 'create' in decoded)
     return decoded
+
+
+def qualifying_record(rows):
+    original = rows['qualification']
+    if original['pass'] is True or 'reassessment' not in rows:
+        return original
+    followup = rows['reassessment']
+    api.require(followup['supersedes_qualification_sha256'] == kie.sha(kie.raw(original))
+        and all(followup[field] == original[field] for field in (
+            'body','spoken_scenes','grant_sha256','media_sha256','audio_sha256','timing','asr')))
+    return followup
 
 
 class Journal:
@@ -194,12 +205,15 @@ class Journal:
         return rows
 
     def append(self, field, value):
-        api.require(field in {'media', 'prepared_media', 'qualification'})
+        api.require(field in {'media', 'prepared_media', 'qualification', 'reassessment'})
         encoded = kie.raw(value)
         with self.foundation.client.pipeline() as pipe:
             rows = self._read(pipe)
             api.require('result' in rows and (field == 'media' or 'media' in rows)
-                and (field != 'qualification' or 'prepared_media' in rows))
+                and (field not in {'qualification','reassessment'} or 'prepared_media' in rows))
+            if field == 'reassessment':
+                api.require('qualification' in rows and rows['qualification']['pass'] is False)
+                qualifying_record({**rows, 'reassessment':value})
             if field in rows:
                 api.require(rows[field] == value, 'fal_voice_trial_observation_conflict')
                 pipe.multi(); pipe.ping(); api.require(pipe.execute() == [True])

@@ -5277,7 +5277,9 @@ def run_video_pipeline(
         while True:
             audio_review_sha256 = (
                 _audio_qa_fingerprint(voice_path)
-                if short_form_prosody_required and not recovered_voice
+                if (short_form_prosody_required or (duration_minutes == 3
+                    and voice_result.get('voice_model') == 'fal-ai/elevenlabs/tts/turbo-v2.5'))
+                    and not recovered_voice
                 else None
             )
             audio_qc = _verify_audio_narration_with_retry(
@@ -5309,7 +5311,8 @@ def run_video_pipeline(
             if (
                 transcript_passed
                 and duration_passed
-                and short_form_prosody_required
+                and (short_form_prosody_required or (duration_minutes == 3
+                    and voice_result.get('voice_model') == 'fal-ai/elevenlabs/tts/turbo-v2.5'))
             ):
                 audio_prosody_qc = verify_audio_prosody(
                     voice_path,

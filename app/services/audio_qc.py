@@ -162,7 +162,7 @@ _EN_NUMBER_WORDS = frozenset({
     *_EN_YEAR_CENTURIES, *_EN_YEAR_TENS, *_EN_YEAR_UNITS,
     'zero', 'oh', 'hundred', *_EN_CARDINAL_SCALES, 'point',
 })
-_EN_YEAR_CUES = frozenset({'in', 'since', 'during', 'until', 'before', 'after', 'by', 'from', 'around', 'year'})
+_EN_YEAR_CUES = frozenset({'in', 'since', 'during', 'until', 'before', 'after', 'by', 'from', 'around', 'year', 'throughout'})
 _EN_YEAR_NONYEAR_FOLLOWERS = frozenset({
     '%', '‰', '$', '€', '£', '¥', '₺', 'percent', 'dollars', 'cents', 'euros', 'pounds',
 })
@@ -1375,8 +1375,12 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
             continue
         consumed = 0
         remainder = None
-        year_context = bool(index > 0 and tokens[index - 1] in _EN_YEAR_CUES
-                            and value[matches[index - 1].end():matches[index].start()].isspace())
+        year_cue = index - 1
+        if year_cue >= 0 and tokens[year_cue] in {'early', 'mid', 'late'}:
+            year_cue -= 1
+        year_context = bool(year_cue >= 0 and tokens[year_cue] in _EN_YEAR_CUES
+            and all(value[matches[p].end():matches[p + 1].start()].isspace()
+                    for p in range(year_cue, index)))
         # ASR writes spoken "in the nineteen-fifties" as "in the 1950s".
         # Require the complete century, decade, and local temporal cue; never
         # guess an age, a count of banknotes, or a bare list of numbers.
@@ -2914,17 +2918,24 @@ def verify_audio_narration(
                     comparison_language=normalized_language), 'ElevenLabs')
                 review['independent_recognizer'] = True
                 review['primary_recognizer'] = {key: primary[key] for key in ('provider', 'pass', 'score', 'transcript')}
-                if review['pass'] is True:
-                    return review
-                if primary.get('available') is not True:
-                    # A valid negative second observation is actionable voice
-                    # evidence, not an outage of the unavailable first model.
-                    return review
-                primary['independent_recognizer_result'] = {key: review[key] for key in ('provider', 'pass', 'score', 'transcript')}
             except Exception:
                 # An unavailable/unknown secondary cannot waive the original
                 # rejection. Its permanent request reservation remains spent.
                 primary['independent_recognizer_unavailable'] = True
+                return primary
+            if review['pass'] is not True and normalized_language == 'en':
+                from app.services import audio_proper_name_review as names
+                if names.candidates(expected_narration, review) is not None:
+                    # This listener has its own durable one-request receipt.
+                    # Its unknown outcome must propagate, never buy new speech.
+                    review = names.reassess(Path(audio_path).read_bytes(), expected_narration, review)
+            if review['pass'] is True:
+                return review
+            if primary.get('available') is not True:
+                # A valid negative second observation is actionable voice
+                # evidence, not an outage of the unavailable first model.
+                return review
+            primary['independent_recognizer_result'] = {key: review[key] for key in ('provider', 'pass', 'score', 'transcript')}
             return primary
         output = generate_included_audio(read_original_mp3(audio_path), purpose='blind_asr',
             language=normalized_language)

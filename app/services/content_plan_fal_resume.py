@@ -29,7 +29,7 @@ def eligible(source):
         if active is None:
             pipe.multi();pipe.ping();plan._require(pipe.execute()==[True]);return False
         rows=trial._read(pipe,trial._key(spec['language']))
-        result=rows['grant']['source_task_id']==source['task_id']and rows['qualification']['pass']is True
+        result=rows['grant']['source_task_id']==source['task_id']and trial.qualifying_record(rows)['pass']is True
         pipe.multi();pipe.ping();plan._require(pipe.execute()==[True]);return result
 
 
@@ -39,11 +39,11 @@ def checked(client,task,*,claimed=False):
     with client.pipeline()as pipe:
         active=production.activation(pipe,spec['language']);plan._require(active is not None)
         rows=trial._read(pipe,trial._key(spec['language']))
-        plan._require(rows['grant']['source_task_id']==task and rows['qualification']['pass']is True
+        plan._require(rows['grant']['source_task_id']==task and trial.qualifying_record(rows)['pass']is True
             and active['channels'].get(spec['production_channel_id'])==spec['production_connection_id'])
         pipe.multi();pipe.ping();plan._require(pipe.execute()==[True])
     foundation=runtime.configured_ledger(read_timeout=3)
-    evidence=trial.proof(foundation,task,rows['qualification']['body'],claimed=claimed)
+    evidence=trial.proof(foundation,task,trial.qualifying_record(rows)['body'],claimed=claimed)
     plan._require(all(rows['grant'][k]==v for k,v in evidence.items())
         and all(source.get(k)is None for k in pre.MEDIA_FIELDS)
         and source.get('preview_total_paid_create_cap')==32
@@ -51,8 +51,8 @@ def checked(client,task,*,claimed=False):
     if not claimed:
         plan._require(not any(source.get(k)for k in ('retry_child_task_id','retry_claimed','repair_claimed'))
             and not client.exists(jobs.RETRY_DISPATCH_PREFIX+task))
-    return source,{'original_voice_evidence':evidence,'qualified_audio_sha256':rows['qualification']['audio_sha256'],
-        'qualification_sha256':kie.sha(kie.raw(rows['qualification'])),'new_tts_requests':0}
+    return source,{'original_voice_evidence':evidence,'qualified_audio_sha256':trial.qualifying_record(rows)['audio_sha256'],
+        'qualification_sha256':kie.sha(kie.raw(trial.qualifying_record(rows))),'new_tts_requests':0}
 
 
 def schedule(source,enqueue,*,client=None):

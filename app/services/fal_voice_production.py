@@ -36,9 +36,9 @@ def activation(pipe,language):
         and value['price_revision']==PRICE_REVISION and set(value['channels'])<=kie.CHANNELS
         and len(value['channels'])==1)
     records=trial._read(pipe,trial._key(language))
-    api.require(value['qualification']['qualification_sha256']==kie.sha(kie.raw(records['qualification']))
+    api.require(value['qualification']['qualification_sha256']==kie.sha(kie.raw(trial.qualifying_record(records)))
         and value['qualification']['grant_sha256']==kie.sha(kie.raw(records['grant']))
-        and records['qualification']['pass']is True)
+        and trial.qualifying_record(records)['pass']is True)
     return value
 
 
@@ -50,7 +50,7 @@ def commission(foundation,language,*,owner_evidence_sha256):
     with foundation.client.pipeline()as pipe:
         records=trial._read(pipe,trial._key(language))
         pipe.multi();pipe.ping();api.require(pipe.execute()==[True])
-    grant=records['grant'];body=records['qualification']['body']
+    grant=records['grant'];body=trial.qualifying_record(records)['body']
     journal=trial.Journal(foundation,grant['source_task_id'],body,settings.fal_key)
     proof=qualified.verified(journal);context=grant['context']
     key=_activation_key(language)
@@ -211,8 +211,8 @@ def synthesize(text,choice,*,attempt):
     if choice['mode']=='qualified_trial':
         with f.client.pipeline()as pipe:
             rows=trial._read(pipe,trial._key(choice['language']))
-            api.require(rows['grant']['context']==choice['context']and rows['qualification']['body']==body
-                and rows['qualification']['pass']is True)
+            api.require(rows['grant']['context']==choice['context']and trial.qualifying_record(rows)['body']==body
+                and trial.qualifying_record(rows)['pass']is True)
             pipe.multi();pipe.ping();api.require(pipe.execute()==[True])
         journal=trial.Journal(f,rows['grant']['source_task_id'],body,settings.fal_key)
         result=api.result(kie.restore(rows['result']))
