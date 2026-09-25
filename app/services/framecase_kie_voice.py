@@ -1,5 +1,6 @@
 """A separate Framecase channel grant within the existing prepaid voice pool.
 
+Shorts only: a short listening check cannot qualify full-length synthesis.
 Default off. The operator rechecks the retained English listening evidence;
 this grant adds no funds, changes no prior policy and never moves native roots.
 Every film still requires its own transcript, performance and final-mix QA.
@@ -54,7 +55,8 @@ def read(pipe, policy=None, active=None):
 def authorize_context(pipe, context):
     """Only the channel's frozen, owner-enabled original-animation queue."""
     from app.services import content_plan as plan, production_spend_runtime as runtime
-    ledger.require(context['channel_id'] == CHANNEL_ID and context['kind'] in {'shorts', 'long'})
+    ledger.require(context['channel_id'] == CHANNEL_ID and context['kind'] == 'shorts',
+                   'framecase_kie_long_not_qualified')
     key = runtime._JOB_PREFIX + context['lineage_id']; pipe.watch(key)
     source = plan._object(pipe.get(key)); spec = source.get('spec') or {}
     ledger.require(source.get('task_id') == context['lineage_id'] and source.get('parent_id') is None
@@ -71,7 +73,7 @@ def authorize_context(pipe, context):
     document = plan._plan(pipe.get(plan.PLAN_PREFIX + CHANNEL_ID), CHANNEL_ID)
     ledger.require(document['enabled'] is True and dispatch.get('task_id') == context['lineage_id']
         and dispatch.get('channel_id') == CHANNEL_ID and plan.dispatch_spec_matches(dispatch, spec)
-        and dispatch['item']['format'] == ('long' if context['kind'] == 'long' else 'animation')
+        and dispatch['item']['format'] == 'animation'
         and dispatch['item'] in document['items'], 'framecase_kie_context_unverified')
 
 

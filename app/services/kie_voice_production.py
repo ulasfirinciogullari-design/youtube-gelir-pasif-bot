@@ -162,6 +162,11 @@ def select(language):
             return None
         ledger.require(connection == context['connection_id'], 'kie_voice_connection_changed')
         if context['channel_id'] == framecase_kie_voice.CHANNEL_ID:
+            if context['kind'] != 'shorts':
+                ledger.require(pipe.get(ROOT_PREFIX + context['lineage_id']) is None,
+                               'framecase_kie_long_not_qualified')
+                pipe.multi(); pipe.ping(); ledger.require(pipe.execute() == [True])
+                return None
             ledger.require(language == 'en', 'framecase_kie_language_unverified')
             framecase_kie_voice.authorize_context(pipe, context)
         ledger._binding(pipe, context['channel_id'], context['connection_id'])
@@ -202,9 +207,11 @@ def authorize_request(pipe, foundation, policy, context, descriptor):
         == context['lineage_id'] for entry in _native_intents(pipe, foundation)), 'kie_voice_root_provider_conflict')
 
 
-def capacity(pipe, foundation, channel_id):
+def capacity(pipe, foundation, channel_id, *, kind=None):
     pipe.watch(ledger.ACTIVE_KEY)
     from app.services.framecase_kie_voice import CHANNEL_ID
+    if channel_id == CHANNEL_ID and kind != 'shorts':
+        return None
     if pipe.get(ledger.ACTIVE_KEY) is None or channel_id not in ledger.CHANNELS | {CHANNEL_ID}:
         return None
     policy, journal, _ = ledger._read(pipe)

@@ -644,7 +644,7 @@ def preflight_production(channel_id, *, kind):
             capacity = ledger.check_capacity(pipe, channel_id, minimum_requests=8)
             audio_ledger.check_capacity(pipe, channel_id, minimum_requests=4)
         from app.services.kie_voice_production import capacity as kie_capacity
-        alternative = kie_capacity(pipe, foundation, channel_id)
+        alternative = kie_capacity(pipe, foundation, channel_id, kind=kind)
         if alternative is None:
             credits._watch(pipe)
             policy, state, _, _ = credits._read(pipe, foundation.clock())

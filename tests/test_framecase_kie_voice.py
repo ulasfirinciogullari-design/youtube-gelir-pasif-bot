@@ -60,7 +60,7 @@ def test_separate_grant_rechecks_listening_proof_without_new_funds_or_calls(anim
     with pytest.raises(SpendBlocked, match='already_configured'): enable(animation)
     assert production.select('en')['voice_id'] == 'Kore'
     with animation.client.pipeline() as pipe:
-        assert production.capacity(pipe, animation.foundation, grant.CHANNEL_ID)['voice_provider'] == 'kie'
+        assert production.capacity(pipe, animation.foundation, grant.CHANNEL_ID, kind='shorts')['voice_provider'] == 'kie'
 
 
 @pytest.mark.parametrize('prior', ['native_intent', 'native_narrator'])
@@ -77,20 +77,7 @@ def test_existing_native_episode_keeps_original_voice_and_receipts(animation, pr
     assert [r.method for r in animation.requests] == ['GET']
 
 
-@pytest.mark.parametrize('kind', ['shorts', 'long'])
-def test_new_animation_request_shares_original_journal_and_cannot_buy_native(animation, kind):
-    if kind == 'long':
-        animation.context['kind'] = 'long'
-        source_key = runtime._JOB_PREFIX+animation.context['lineage_id']
-        source = json.loads(animation.client.get(source_key))
-        source['spec'].update(duration_minutes=3, format='landscape')
-        item_key = plan.DISPATCH_PREFIX+source['spec']['content_plan_item_id']
-        dispatch = json.loads(animation.client.get(item_key)); dispatch['item']['format'] = 'long'
-        dispatch['spec_sha256'] = plan._sha(source['spec'])
-        document_key = plan.PLAN_PREFIX+grant.CHANNEL_ID
-        document = json.loads(animation.client.get(document_key)); document['items'] = [dispatch['item']]
-        for key, value in ((source_key, source), (item_key, dispatch), (document_key, document)):
-            animation.client.set(key, plan._raw(value))
+def test_new_animation_request_shares_original_journal_and_cannot_buy_native(animation):
     enable(animation); production.select('en')
     policy = animation.client.get(ledger.POLICY_KEY)
     body, ceiling = gemini.request_body('Mira found a clue behind the locked door.', 'Kore', language='en')
@@ -101,6 +88,21 @@ def test_new_animation_request_shares_original_journal_and_cannot_buy_native(ani
     assert [r.method for r in animation.requests].count('POST') == 1
     with animation.client.pipeline() as pipe, pytest.raises(SpendBlocked, match='provider_pinned'):
         production.native_guard(pipe, animation.context['lineage_id'])
+
+
+def test_short_qualification_cannot_admit_long_synthesis_or_claim_long_capacity(animation):
+    enable(animation); animation.context['kind'] = 'long'
+    before = animation.client.get(ledger.JOURNAL_KEY)
+    assert production.select('en') is None
+    with animation.client.pipeline() as pipe:
+        assert production.capacity(pipe, animation.foundation, grant.CHANNEL_ID, kind='long') is None
+        assert production.capacity(pipe, animation.foundation, grant.CHANNEL_ID) is None
+    body, ceiling = gemini.request_body('A complete long-form narration.', 'Kore', language='en')
+    with pytest.raises(SpendBlocked, match='long_not_qualified'):
+        api.generate(body, KEY, ledger.Journal(animation.foundation, animation.context, body, ceiling))
+    assert animation.client.get(ledger.JOURNAL_KEY) == before
+    assert not animation.client.exists(production.ROOT_PREFIX+animation.context['lineage_id'])
+    assert [r.method for r in animation.requests] == ['GET']
 
 
 def test_paid_boundary_rejects_unqualified_language_even_with_same_voice(animation):
