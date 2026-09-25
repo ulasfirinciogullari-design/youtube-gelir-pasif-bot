@@ -359,20 +359,24 @@ def test_natural_complete_animation_has_no_forced_silent_padding():
         pipeline.short_edit_target({'duration_after_fit': 20}, {'narration': 'word ' * 70})
 
 
-def test_known_immutable_audio_failure_waits_for_actual_code_correction(client, monkeypatch):
+@pytest.mark.parametrize('code', ['framecase_audio_timing_rejected', 'framecase_FinalAudioQualityError'])
+def test_known_immutable_audio_failure_waits_for_actual_code_correction(client, monkeypatch, code):
     from app.services import framecase_recovery as recovery
     from app.production_tasks import continue_framecase_episode
     from unittest.mock import Mock
     monkeypatch.setattr(plan, '_client', lambda: client)
     enqueue = Mock(); monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
     monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'old-build')
-    row = source(); row.update(state='FAILURE', framecase_failure_code='framecase_audio_timing_rejected',
-        framecase_failed_build='old-build', framecase_resume_attempt=3)
+    row = source(); row.update(state='FAILURE', framecase_failure_code=code,
+        framecase_failed_build='old-build', framecase_resume_attempt=3,
+        framecase_retry_at=recovery.time.time()+1800)
     row['spec']['framecase_animation'] = True
     client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(row))
     assert recovery.schedule(row) == 'waiting_for_pipeline_correction'
     enqueue.assert_not_called()
     monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'fixed-build')
+    assert recovery.schedule({**row, 'publication_hold': {'reason': 'owner'}}) == 'held_by_owner'
+    enqueue.assert_not_called()
     assert recovery.schedule(row) == 'continuation_queued'
     assert enqueue.call_args.kwargs['args'] == (row['task_id'], 4)
     assert client.get(jobs.JOB_PREFIX + row['task_id']) == plan._raw(row)

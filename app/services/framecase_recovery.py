@@ -22,7 +22,8 @@ FIX_REQUIRED = frozenset({'framecase_audio_timing_rejected', 'framecase_audio_tr
     'framecase_art_direction_revision_required', 'framecase_creative_quality_rejected',
     'framecase_art_revision_required', 'framecase_keyframe_quality_rejected',
     'framecase_motion_plan_invalid', 'framecase_image_episode_capacity',
-    'framecase_native_ambience_missing', 'framecase_final_mix_speech_rejected'})
+    'framecase_native_ambience_missing', 'framecase_final_mix_speech_rejected',
+    'framecase_FinalAudioQualityError'})
 
 
 def _requires_correction(source):
