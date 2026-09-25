@@ -174,3 +174,49 @@ def test_malformed_approval_is_rejected(setup, change):
     if change == 'day': approval['day'] = '2026-09-27'
     if change == 'hash': approval['items'][0]['item_sha256'] = 'invalid'
     with pytest.raises(ValueError): batch.validate(approval, DAY)
+
+
+def correction(client, approval, current, replacement, channel=C, original=None):
+    client.set(batch.replacement_key(DAY, current['id']), plan._raw({
+        'version': 1, 'channel_id': channel, 'original_item_id': original or current['id'],
+        'previous_item_sha256': plan._sha(current), 'item': replacement,
+        'previous_job_sha256': 'a' * 64, 'created_at': '2026-09-25T22:30:00+00:00'}))
+
+
+def test_correction_consumes_same_one_of_eight_slots_without_resetting_attempts(setup):
+    client, entries, approval = setup
+    original = entries[C][0]; old = admitted(client, C, original)
+    replacement = plan.item('Revised same story', 'A corrected and independently reviewed script')
+    correction(client, approval, original, replacement)
+    with pytest.raises(ValueError): cadence.publication_slot(old, client=client, now=NOW)
+    revised = admitted(client, C, replacement)
+    assert cadence.publication_slot(revised, client=client, now=NOW)
+    cadence.publication_completed(revised, client=client, now=NOW)
+    for item in entries[C][1:]:
+        source = admitted(client, C, item)
+        assert cadence.publication_slot(source, client=client, now=NOW)
+        cadence.publication_completed(source, client=client, now=NOW)
+    view = cadence.snapshot(C, client=client, now=NOW)
+    assert view['experiment'] == {'id': approval['id'], 'date': DAY, 'limit': 8,
+                                  'produced': 9, 'published': 8, 'pending': 0}
+    assert view['counts']['published']['shorts'] == 12
+    assert not cadence.publication_slot(ordinary(C), client=client, now=NOW)
+    assert client.hget(batch.produced_key(DAY, C), old['task_id']) == 'shorts'
+    assert client.get(batch.approval_key(DAY)) == plan._raw(approval)
+
+
+def test_only_two_corrections_are_allowed_and_duplicate_slots_are_rejected(setup):
+    client, entries, approval = setup
+    base = current = entries[C][0]
+    for _ in range(2):
+        replacement = plan.item('Revised', str(uuid4()))
+        correction(client, approval, current, replacement, original=base['id']); current = replacement
+    assert len(batch.resolved(client, approval)[0]['history']) == 3
+    correction(client, approval, current, plan.item('Third', 'Not allowed'), original=base['id'])
+    with pytest.raises(ValueError): batch.resolved(client, approval)
+
+
+def test_a_candidate_cannot_capture_another_experiment_slot(setup):
+    client, entries, approval = setup
+    correction(client, approval, entries[C][0], entries[C][1])
+    with pytest.raises(ValueError): batch.resolved(client, approval)

@@ -66,16 +66,60 @@ def _manifest(reader, now):
     return validate(json.loads(raw), day)
 
 
+def replacement_key(day, item_id):
+    approval_key(day)
+    _require(str(UUID(item_id)) == item_id)
+    return PREFIX + 'replacement:' + day + ':' + item_id
+
+
+def resolved(reader, value):
+    """At most two explicit editorial corrections per logical output slot.
+
+    Each amendment is a new item; no failed job, verdict or receipt is reset.
+    Only the latest item can use the slot, while all attempts stay counted.
+    """
+    from app.services import content_plan as plan
+    groups, seen = [], set()
+    for base in value['items']:
+        current = base
+        history = [current]
+        for attempt in range(3):
+            _require(current['item_id'] not in seen)
+            seen.add(current['item_id'])
+            raw = _read(reader, replacement_key(value['day'], current['item_id']))
+            if raw is None:
+                break
+            _require(attempt < 2 and type(raw) is str and 0 < len(raw) <= 32_768)
+            amendment = json.loads(raw)
+            _require(type(amendment) is dict and set(amendment) == {
+                'version', 'channel_id', 'original_item_id', 'previous_item_sha256',
+                'item', 'previous_job_sha256', 'created_at'}
+                and type(amendment['version']) is int and amendment['version'] == 1
+                and amendment['channel_id'] == base['channel_id']
+                and amendment['original_item_id'] == base['item_id']
+                and amendment['previous_item_sha256'] == current['item_sha256']
+                and (amendment['previous_job_sha256'] is None or
+                     re.fullmatch('[0-9a-f]{64}', amendment['previous_job_sha256'])))
+            item = amendment['item']; plan._validate_item(item)
+            _require(item['format'] == 'shorts' and item['series'] is None and not item['depends_on'])
+            current = {'item_id': item['id'], 'channel_id': base['channel_id'],
+                       'item_sha256': plan._sha(item)}
+            history.append(current)
+        groups.append({'base': base, 'current': current, 'history': history})
+    return groups
+
+
 def _entry(reader, channel, item_id, now):
     if channel not in COUNTS or not item_id:
         return None
     value = _manifest(reader, now)
     if value is None:
         return None
-    found = [row for row in value['items'] if row['item_id'] == item_id]
+    groups = resolved(reader, value)
+    found = [group['current'] for group in groups if any(row['item_id'] == item_id for row in group['history'])]
     if not found:
         return None
-    _require(len(found) == 1 and found[0]['channel_id'] == channel)
+    _require(len(found) == 1 and found[0]['channel_id'] == channel and found[0]['item_id'] == item_id)
     return value, found[0]
 
 
@@ -91,9 +135,10 @@ def production_slot(pipe, channel, item, task, *, now=None):
     key = produced_key(manifest['day'], channel)
     pipe.watch(key)
     used = pipe.hgetall(key)
-    allowed = {root_id(channel, r['item_id']) for r in manifest['items'] if r['channel_id'] == channel}
+    allowed = {root_id(channel, row['item_id']) for group in resolved(pipe, manifest)
+               if group['base']['channel_id'] == channel for row in group['history']}
     _require(set(used) <= allowed and all(v == 'shorts' for v in used.values())
-        and task not in used and len(used) < COUNTS[channel])
+        and task not in used and len(used) < len(allowed))
     return key
 
 
@@ -124,7 +169,10 @@ def snapshot(channel, published, pending, *, client, now=None):
     value = _manifest(client, now)
     if value is None:
         return None
-    roots = {root_id(channel, r['item_id']) for r in value['items'] if r['channel_id'] == channel}
+    groups = [group for group in resolved(client, value) if group['base']['channel_id'] == channel]
+    root_groups = [{root_id(channel, row['item_id']) for row in group['history']} for group in groups]
+    roots = set().union(*root_groups)
+    _require(all(len(group & (set(published) | set(pending))) <= 1 for group in root_groups))
     produced = client.hgetall(produced_key(value['day'], channel))
     _require(set(produced) <= roots and all(v == 'shorts' for v in produced.values()))
     return {'id': value['id'], 'date': value['day'], 'limit': COUNTS[channel],
