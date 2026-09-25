@@ -336,6 +336,9 @@ class CreditLedger:
                         pipe, now, historical=operation is settle_credit_intent)
                     from app.services.production_credit_periods import check_prior_identity
                     check_prior_identity(self, pipe, policy, state, now, operation, values)
+                    if operation is reserve_credit_intent:
+                        from app.services.kie_voice_production import native_guard
+                        native_guard(pipe, values['intent']['root_lineage_id'])
                     production_field = None
                     if operation is reserve_credit_intent and self.foundation is not None:
                         request = values['intent']

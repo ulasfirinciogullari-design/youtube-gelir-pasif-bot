@@ -64,6 +64,9 @@ def _checked(channel_id, pipe, client):
     if not runtime.enforcement_enabled(): return False
     configured = runtime.configured_ledger(read_timeout=2)
     foundation = SpendLedger(client, configured.policy, clock=configured.clock)
+    from app.services.kie_voice_production import capacity as kie_capacity
+    if kie_capacity(pipe, foundation, channel_id) is not None:
+        return False  # The untouched daily documentary now has funded narration.
     # The supplied pipeline is the same Redis database used by reservation;
     # financial reads and all queue checks join its WATCH transaction.
     credit = CreditLedger(foundation.client, foundation=foundation, clock=foundation.clock)

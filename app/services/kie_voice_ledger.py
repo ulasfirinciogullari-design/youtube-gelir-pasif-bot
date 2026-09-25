@@ -253,6 +253,9 @@ class Journal:
             # Recompute the frozen upper bound; callers cannot under-reserve.
             units = len(text.encode('utf-16-le')) // 2
             require(1 <= units <= 5000 and self.ceiling == expected_ceiling)
+            if self.scope.get('kind') != 'connection_probe':
+                from app.services.kie_voice_production import authorize_request
+                authorize_request(pipe, self.foundation, policy, self.scope, d)
             identity = sha(raw({'scope': self.scope, 'request': d}))
             prior = journal['requests'].get(identity)
             if prior is not None:
@@ -321,6 +324,7 @@ class Journal:
 def status(client):
     with client.pipeline() as pipe:
         policy, journal, _ = _read(pipe)
+        from app.services.kie_gemini_voice import rejected_style
         used = _used(journal) if journal is not None else 0
         value = {'status': 'not_allocated'} if policy is None else {
             'status': 'validation_pending' if pipe.get(ACTIVE_KEY) is None else 'active',
@@ -332,6 +336,8 @@ def status(client):
             'failed_requests': sum(r['result'] is not None
                 and api.object_response(restore(r['result']))['data']['state'] == 'fail'
                 for r in journal['requests'].values()),
-            'unknown_or_pending': sum(r['result'] is None for r in journal['requests'].values())}
+            'rejected_before_creation': sum(rejected_style(r) for r in journal['requests'].values()),
+            'unknown_or_pending': sum(r['result'] is None and not rejected_style(r)
+                for r in journal['requests'].values())}
         pipe.multi(); pipe.ping(); require(pipe.execute() == [True])
     return value

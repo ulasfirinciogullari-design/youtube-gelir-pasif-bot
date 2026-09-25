@@ -930,8 +930,11 @@ def synthesize_scene_sequence(
         raise VoiceScriptFitError('Voice replacement profile requires one reserved Turkish short take')
     if (before_paid_request is not None or raw_audio_sink is not None) and profile_override is None:
         raise VoiceScriptFitError('Voice replacement reservation requires an explicit profile')
+    from app.services import kie_voice_production
+    kie_choice = kie_voice_production.select(language) if profile_override is None else None
     from app.services.narrator_rotation import assigned as assigned_narrator
-    selected = assigned_narrator(language) if profile_override is None else None
+    selected = ({'voice_id': kie_choice['voice_id'], 'name': kie_choice['voice_id']}
+                if kie_choice else assigned_narrator(language) if profile_override is None else None)
     selected = selected or _selected_voice_or_raise()
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
@@ -980,19 +983,18 @@ def synthesize_scene_sequence(
             # Durable, one-shot reservation immediately precedes the only
             # synthesis request. An uncertain result must not be retried.
             before_paid_request(voice_id)
-        audio, alignment = synthesize_voice_with_timestamps(
-            narration,
-            voice_id,
-            **timestamp_options,
-        )
-        raw_output.write_bytes(audio)
-        raw_media_duration = _media_duration(raw_output)
-        edit_plan = _short_preview_audio_edit_plan(
-            narration,
-            spans,
-            alignment,
-            raw_media_duration,
-        )
+        if kie_choice:
+            audio, evidence = kie_voice_production.synthesize(narration, kie_choice,
+                attempt=generation_attempt, work=work)
+            raw_output.write_bytes(audio)
+            raw_media_duration = _media_duration(raw_output)
+            from app.services.word_timed_narration import edit_plan as word_edit_plan
+            edit_plan = word_edit_plan(spoken, evidence, raw_media_duration, language=language)
+        else:
+            audio, alignment = synthesize_voice_with_timestamps(narration, voice_id, **timestamp_options)
+            raw_output.write_bytes(audio)
+            raw_media_duration = _media_duration(raw_output)
+            edit_plan = _short_preview_audio_edit_plan(narration, spans, alignment, raw_media_duration)
         scene_durations, _ = _apply_short_preview_audio_edit_plan(
             raw_output,
             raw_media_duration,
@@ -1085,12 +1087,12 @@ def synthesize_scene_sequence(
         'spoken_texts': spoken,
         'voice_name': selected.get('name'),
         'voice_id': voice_id,
-        'voice_model': (
+        'voice_model': kie_choice['model'] if kie_choice else (
             ELEVENLABS_TURKISH_SHORT_MODEL_ID
             if turkish_short_preview
             else ELEVENLABS_MULTILINGUAL_V2_MODEL_ID
         ),
-        'voice_language_code': 'tr' if turkish_short_preview else None,
+        'voice_language_code': language if kie_choice else 'tr' if turkish_short_preview else None,
         'duration_before_fit': before_fit,
         'duration_after_fit': after_fit,
         'tempo_rate': tempo_rate,

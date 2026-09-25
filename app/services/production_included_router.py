@@ -643,12 +643,17 @@ def preflight_production(channel_id, *, kind):
         else:
             capacity = ledger.check_capacity(pipe, channel_id, minimum_requests=8)
             audio_ledger.check_capacity(pipe, channel_id, minimum_requests=4)
-        credits._watch(pipe)
-        policy, state, _, _ = credits._read(pipe, foundation.clock())
-        from app.services.production_credit_funding import credit_funding_summary
-        summary = credit_funding_summary(policy, state, now=foundation.clock())
-        _require(summary['available_credits'] >= (5000 if kind == 'long' else 1000) and summary['reserved_credits'] == 0,
-                 'included_production_voice_credits_unavailable')
+        from app.services.kie_voice_production import capacity as kie_capacity
+        alternative = kie_capacity(pipe, foundation, channel_id)
+        if alternative is None:
+            credits._watch(pipe)
+            policy, state, _, _ = credits._read(pipe, foundation.clock())
+            from app.services.production_credit_funding import credit_funding_summary
+            summary = credit_funding_summary(policy, state, now=foundation.clock())
+            _require(summary['available_credits'] >= (5000 if kind == 'long' else 1000) and summary['reserved_credits'] == 0,
+                     'included_production_voice_credits_unavailable')
+        else:
+            summary = {'available_credits': None}
         pipe.multi(); pipe.ping(); ledger._ack(pipe, [True])
-    return {**capacity, 'available_voice_credits': summary['available_credits'],
+    return {**capacity, **(alternative or {}), 'available_voice_credits': summary['available_credits'],
             'new_cash_allowance_micro': 0, 'historical_cash_micro': None}

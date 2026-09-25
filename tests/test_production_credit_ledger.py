@@ -77,6 +77,17 @@ def store(client, now=NOW):
     return ledger.CreditLedger(client, clock=lambda: now)
 
 
+def test_kie_root_blocks_native_reservation_without_changing_original_ledger(client, policy):
+    from app.services.kie_voice_production import ROOT_PREFIX
+    book = store(client)
+    book.initialize(policy)
+    client.set(ROOT_PREFIX + intent()['root_lineage_id'], 'permanent-kie-provider-choice')
+    before = snapshot(client)
+    with pytest.raises(SpendBlocked, match='kie_voice_root_provider_pinned'):
+        book.reserve(intent=intent(), **binding(policy))
+    assert snapshot(client) == before
+
+
 def snapshot(client):
     return {key: client.hgetall(key) for key in (ledger.STATE_KEY, ledger.JOURNAL_KEY)}
 

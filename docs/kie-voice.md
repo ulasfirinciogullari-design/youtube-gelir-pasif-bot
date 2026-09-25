@@ -48,6 +48,32 @@ text/voice/language. Accepted requests, ambiguous responses, different text,
 third attempts and further probes remain blocked. Original receipts and their
 conservative 48-credit reservations are preserved; no refund is inferred.
 
+Production uses a separate explicit activation only after the retained Turkish
+and English probe responses pass blind Whisper recognition, actual word timing,
+and the existing Gemini listening review. The operator re-evaluates the raw
+encrypted responses, binds all three proof records and the original Kie result,
+and changes no allocation. The successful 2026-09-25 checks used Fenrir in
+Turkish (11.8 seconds, 1.67 Kie credits) and Kore in English (14.08 seconds,
+1.99 credits); both transcripts matched exactly and both listening reviews
+passed. These are short connection checks, not proof of a published long film.
+
+Only new Capital/Margin roots use that activation. A permanent root record
+binds the provider, model, language and narrator. Any existing native intent or
+narrator assignment retains its original route; a matching native reservation
+also watches the Kie root key and cannot race a second provider purchase.
+Unrelated native reservations are retained. The old native policies, period
+archives, cash ledger and receipts are never rewritten to fund this route.
+
+Every accepted WAV is saved before conversion, and its complete MP3 derivative
+is content addressed and verified after storage. A retry restores those bytes
+and the original Kie task; it does not buy another voice. Blind recognition
+supplies real word boundaries for visual scene changes. This path preserves
+the entire audio performance and never invents character timestamps or treats
+forced alignment as independent recognition. The usual final transcription,
+prosody, visual quality and publication gates still apply. Daily admission can
+use the verified remaining Kie allocation for the waiting documentary while
+keeping the owner's channel limits and existing queue order.
+
 Sources reviewed 2026-09-24: [Kie Gemini contract](https://docs.kie.ai/market/google/gemini-3-1-flash-tts),
 [Kie prices](https://kie.ai/pricing), and
 [upstream model limits](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-tts-preview).
