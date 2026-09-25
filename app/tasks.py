@@ -6661,8 +6661,20 @@ def run_video_pipeline(
 
         omni_continuity_reference_image_path: Path | None = None
         omni_continuity_anchor_scene_idx: int | None = None
-        for candidate in selected_runway:
+        for candidate_number, candidate in enumerate(selected_runway, start=1):
             scene_idx = int(candidate['scene_index'])
+            try:
+                set_stage(
+                    self, task_id,
+                    'ai_scene_repair' if scene_repair_recovery else
+                    'ai_scene_recovery' if recovered_generated_media else 'ai_scene_generation',
+                    64 + int(4 * (candidate_number - 1) / len(selected_runway)),
+                    f'Özgün görüntü {candidate_number}/{len(selected_runway)} hazırlanıyor '
+                    f'(sahne {scene_idx + 1}/{len(scenes)}).',
+                )
+            except Exception:
+                # Losing a display update must not buy the same scene again.
+                pass
             if selected_recovery is not None:
                 _selected_recovery_authorization(
                     task_id, retry_dispatch_source_id,
@@ -7926,12 +7938,25 @@ def run_video_pipeline(
                                              final_visual_qc['selected_recovery_qa_inputs'])
             except Exception:
                 raise FinalVisualQualityError('Selected recovery exact render identity changed after review') from None
+        def report_render_progress(phase, completed, total):
+            if phase == 'segments':
+                progress = 76 + int(8 * completed / total)
+                message = f'Kurgu hazırlanıyor: {completed}/{total} görüntü işlendi.'
+            else:
+                progress, message = {
+                    'assembly': (86, 'Hazırlanan görüntüler tek videoda birleştiriliyor.'),
+                    'audio': (88, 'Ses eşleştiriliyor, altyazı dosyası hazırlanıyor.'),
+                    'checks': (90, 'Tamamlanan videonun süresi ve bütünlüğü denetleniyor.'),
+                }[phase]
+            set_stage(self, task_id, 'render', progress, message)
+
         set_stage(self, task_id, 'render', 76, 'Onaylı ses ve sahneler final kurguya alınıyor.')
         rendered = render_video(
             voice_path=final_audio_path,
             visual_paths=visual_specs,
             narration=package['narration'],
             output_path=work / 'final.mp4',
+            progress_callback=report_render_progress,
             scenes=scenes,
             scene_durations=scene_durations,
             scene_visual_paths=scene_visuals,

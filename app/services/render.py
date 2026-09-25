@@ -687,6 +687,15 @@ def _scene_frame_windows(timeline: list, frame_counts: list[int], total_frames: 
     return windows
 
 
+def _notify_render_progress(callback, phase, completed, total):
+    if callback is not None:
+        try:
+            callback(phase, completed, total)
+        except Exception:
+            # Display updates must never fail or restart a paid production.
+            pass
+
+
 def render_video(
     voice_path: str | Path,
     visual_paths: list[str | dict],
@@ -699,6 +708,7 @@ def render_video(
     output_resolution: str = LANDSCAPE_RESOLUTION,
     capture_scene_windows: bool = False,
     retained_cuts=None,
+    progress_callback=None,
 ) -> dict:
     if retained_cuts is not None:
         from app.services import retained_render_consumer as retained
@@ -748,6 +758,7 @@ def render_video(
             scenes=scenes, scene_durations=scene_durations, scene_visual_paths=scene_visual_paths,
             narration=narration, timeline=timeline, frame_counts=timeline_frame_counts,
             target_duration=target_duration, output_resolution=output_resolution, output_path=output_path)
+    _notify_render_progress(progress_callback, 'segments', len(normalized), len(timeline))
     for idx, (visual_spec, _shot_duration, transition, _scene_idx) in enumerate(
             timeline if retained_cuts is None else []):
         segment = work / f'norm_{idx:03d}.mp4'
@@ -761,7 +772,9 @@ def render_video(
             output_resolution,
         )
         normalized.append(segment)
+        _notify_render_progress(progress_callback, 'segments', len(normalized), len(timeline))
 
+    _notify_render_progress(progress_callback, 'assembly', len(normalized), len(timeline))
     silent_video = work / 'silent.mp4'
     voice_frames = sum(timeline_frame_counts)
     pad_frames = max(0, target_frames - voice_frames)
@@ -831,6 +844,7 @@ def render_video(
             f'{silent_frames} frames for {target_frames} frame target'
         )
 
+    _notify_render_progress(progress_callback, 'audio', len(normalized), len(timeline))
     srt = work / 'captions.srt'
     if scenes and scene_durations:
         make_scene_srt(scenes, scene_durations, voice_duration, srt)
@@ -857,6 +871,7 @@ def render_video(
         _run(_bounded_assembly_command(mux_command))
     else:
         retained._run_exact_command(retained_cuts, mux_command, phase='mux')
+    _notify_render_progress(progress_callback, 'checks', len(normalized), len(timeline))
     final_frames = video_frame_count(output)
     if final_frames != target_frames:
         raise RuntimeError(
