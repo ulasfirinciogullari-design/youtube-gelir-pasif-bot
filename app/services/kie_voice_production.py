@@ -227,9 +227,29 @@ def capacity(pipe, foundation, channel_id, *, kind=None):
     return {'voice_provider': 'kie', 'voice_model': gemini.MODEL, 'available_kie_microcredits': remaining}
 
 
+def _timing_evidence(path, text, *, language):
+    """Recover recognition on the same audio before considering a new take.
+
+    The normal speech gate reuses the immutable Whisper receipt and, only
+    when needed, admits one independently accounted blind Scribe observation.
+    Neither recognizer receives a script hint. Unknown or malformed evidence
+    cannot become a synthesis defect that purchases another voice take.
+    """
+    from app.services import audio_qc
+    review = audio_qc.verify_audio_narration(path, text, language=language)
+    ledger.require(review.get('available') is True
+        and review.get('independent_recognizer_unavailable') is not True,
+        'kie_voice_timing_outcome_unverified')
+    audio_qc._require_word_timing_evidence(review, 'Independent recognizer')
+    ledger.require(review.get('provider') in {'openai', 'elevenlabs', 'gemini'},
+                   'kie_voice_timing_provider_unverified')
+    return {'text': review['transcript'], 'words': review['word_timestamps'],
+            'language': review.get('language_code'), 'provider': review['provider']}
+
+
 def synthesize(text, choice, *, attempt, work):
     from app.services import production_spend_runtime as runtime, kie_voice_adapter as api
-    from app.services import kie_voice_media, commissioning_audio, whisper_transcription as whisper
+    from app.services import kie_voice_media
     foundation = runtime.configured_ledger(read_timeout=3)
     context = runtime.resolve_context(foundation.client, runtime._TASK_ID.get())
     ledger.require(context == choice['context'])
@@ -239,8 +259,5 @@ def synthesize(text, choice, *, attempt, work):
     result = api.generate(body, credential.api_key, journal)
     audio = kie_voice_media.mp3(foundation.client, journal.identity, result, longform=context['kind'] == 'long')
     path = work / 'kie_original.mp3'; path.write_bytes(audio)
-    response = commissioning_audio.transcribe_if_commissioned(path, api_key=settings.openai_api_key,
-        language=choice['language'])
-    ledger.require(response is not None, 'kie_voice_blind_timing_required')
-    evidence = whisper._json_payload(response.content, maximum_seconds=240 if context['kind'] == 'long' else 60)
+    evidence = _timing_evidence(path, text, language=choice['language'])
     return audio, evidence

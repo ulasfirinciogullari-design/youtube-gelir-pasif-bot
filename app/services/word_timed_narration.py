@@ -23,13 +23,13 @@ def edit_plan(spoken, evidence, media_seconds, *, language):
     narration = ' '.join(spoken)
     comparison = qc.compare_transcript(
         narration, evidence['text'], words=evidence['words'],
-        language_code=evidence.get('language'), provider='openai',
+        language_code=evidence.get('language'), provider=evidence.get('provider', 'openai'),
         comparison_language=language)
     # A captured transcript missing speech is a bounded synthesis defect.
     # Diagnose it before timestamp validity so the existing take limit can
     # recover; unknown ASR requests still fail closed before this function.
     require(comparison['pass'] is True)
-    comparison = qc._require_word_timing_evidence(comparison, 'OpenAI')
+    comparison = qc._require_word_timing_evidence(comparison, 'Independent recognizer')
     expected = qc._comparison_units(narration, language)
     scenes = [qc._comparison_units(scene, language) for scene in spoken]
     # Never split a number or combine a semantic unit across two scenes.

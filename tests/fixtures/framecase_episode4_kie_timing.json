@@ -1,0 +1,338 @@
+{
+  "source": "Captured E4 Kie take1 and its unchanged Whisper response, 2026-09-25",
+  "source_mp3_sha256": "c319f0baf51d1dffa0d2e8d2a52da1dc037222fbb2eaa18ecdf6ee3d304b582f",
+  "scenes": [
+    "The order carried the watchmaker's signature. Eli stared at it. Then he held up his bandaged hand.",
+    "He hadn't written anything all week. Mira compared the paper with the tower's receipt book. The torn edge matched a missing page.",
+    "Voss had taken it during his inspection. The forged order moved every clock backward.",
+    "But one cracked watch had never joined the city's system."
+  ],
+  "seconds": 31.008979166666666,
+  "evidence": {
+    "task": "transcribe",
+    "language": "english",
+    "duration": 31.0,
+    "text": "The order carried the watchmaker's signature. Eli stared at it. Then he held up his bandaged hand. He hadn't written anything all week. Mira compared the paper with the tower's receipt book. The torn edge matched a missing page. Voss had taken it during his inspection. The forged order moved every clock backward. But one cracked watch had never joined the city's system.",
+    "words": [
+      {
+        "word": "The",
+        "start": 0.0,
+        "end": 0.5
+      },
+      {
+        "word": "order",
+        "start": 0.5,
+        "end": 0.8199999928474426
+      },
+      {
+        "word": "carried",
+        "start": 0.8199999928474426,
+        "end": 1.3799999952316284
+      },
+      {
+        "word": "the",
+        "start": 1.3799999952316284,
+        "end": 1.6399999856948853
+      },
+      {
+        "word": "watchmaker's",
+        "start": 1.6399999856948853,
+        "end": 2.819999933242798
+      },
+      {
+        "word": "signature",
+        "start": 2.819999933242798,
+        "end": 2.819999933242798
+      },
+      {
+        "word": "Eli",
+        "start": 3.799999952316284,
+        "end": 4.019999980926514
+      },
+      {
+        "word": "stared",
+        "start": 4.019999980926514,
+        "end": 4.5
+      },
+      {
+        "word": "at",
+        "start": 4.5,
+        "end": 4.71999979019165
+      },
+      {
+        "word": "it",
+        "start": 4.71999979019165,
+        "end": 4.940000057220459
+      },
+      {
+        "word": "Then",
+        "start": 5.820000171661377,
+        "end": 5.980000019073486
+      },
+      {
+        "word": "he",
+        "start": 5.980000019073486,
+        "end": 6.300000190734863
+      },
+      {
+        "word": "held",
+        "start": 6.300000190734863,
+        "end": 6.320000171661377
+      },
+      {
+        "word": "up",
+        "start": 6.320000171661377,
+        "end": 6.559999942779541
+      },
+      {
+        "word": "his",
+        "start": 6.559999942779541,
+        "end": 6.940000057220459
+      },
+      {
+        "word": "bandaged",
+        "start": 6.940000057220459,
+        "end": 7.159999847412109
+      },
+      {
+        "word": "hand",
+        "start": 7.159999847412109,
+        "end": 7.619999885559082
+      },
+      {
+        "word": "He",
+        "start": 8.460000038146973,
+        "end": 8.5600004196167
+      },
+      {
+        "word": "hadn't",
+        "start": 8.5600004196167,
+        "end": 8.899999618530273
+      },
+      {
+        "word": "written",
+        "start": 8.899999618530273,
+        "end": 9.140000343322754
+      },
+      {
+        "word": "anything",
+        "start": 9.140000343322754,
+        "end": 9.760000228881836
+      },
+      {
+        "word": "all",
+        "start": 9.760000228881836,
+        "end": 10.220000267028809
+      },
+      {
+        "word": "week",
+        "start": 10.220000267028809,
+        "end": 10.539999961853027
+      },
+      {
+        "word": "Mira",
+        "start": 11.9399995803833,
+        "end": 11.9399995803833
+      },
+      {
+        "word": "compared",
+        "start": 11.9399995803833,
+        "end": 12.520000457763672
+      },
+      {
+        "word": "the",
+        "start": 12.520000457763672,
+        "end": 12.779999732971191
+      },
+      {
+        "word": "paper",
+        "start": 12.779999732971191,
+        "end": 12.979999542236328
+      },
+      {
+        "word": "with",
+        "start": 12.979999542236328,
+        "end": 13.239999771118164
+      },
+      {
+        "word": "the",
+        "start": 13.239999771118164,
+        "end": 13.460000038146973
+      },
+      {
+        "word": "tower's",
+        "start": 13.460000038146973,
+        "end": 14.079999923706055
+      },
+      {
+        "word": "receipt",
+        "start": 14.079999923706055,
+        "end": 14.279999732971191
+      },
+      {
+        "word": "book",
+        "start": 14.279999732971191,
+        "end": 14.579999923706055
+      },
+      {
+        "word": "The",
+        "start": 15.380000114440918,
+        "end": 15.5600004196167
+      },
+      {
+        "word": "torn",
+        "start": 15.5600004196167,
+        "end": 15.920000076293945
+      },
+      {
+        "word": "edge",
+        "start": 15.920000076293945,
+        "end": 16.3799991607666
+      },
+      {
+        "word": "matched",
+        "start": 16.3799991607666,
+        "end": 16.959999084472656
+      },
+      {
+        "word": "a",
+        "start": 16.959999084472656,
+        "end": 17.600000381469727
+      },
+      {
+        "word": "missing",
+        "start": 17.600000381469727,
+        "end": 17.600000381469727
+      },
+      {
+        "word": "page",
+        "start": 17.600000381469727,
+        "end": 18.059999465942383
+      },
+      {
+        "word": "Voss",
+        "start": 19.31999969482422,
+        "end": 19.31999969482422
+      },
+      {
+        "word": "had",
+        "start": 19.31999969482422,
+        "end": 19.68000030517578
+      },
+      {
+        "word": "taken",
+        "start": 19.68000030517578,
+        "end": 20.020000457763672
+      },
+      {
+        "word": "it",
+        "start": 20.020000457763672,
+        "end": 20.3799991607666
+      },
+      {
+        "word": "during",
+        "start": 20.3799991607666,
+        "end": 20.559999465942383
+      },
+      {
+        "word": "his",
+        "start": 20.559999465942383,
+        "end": 20.959999084472656
+      },
+      {
+        "word": "inspection",
+        "start": 20.959999084472656,
+        "end": 21.31999969482422
+      },
+      {
+        "word": "The",
+        "start": 22.420000076293945,
+        "end": 22.719999313354492
+      },
+      {
+        "word": "forged",
+        "start": 22.719999313354492,
+        "end": 23.15999984741211
+      },
+      {
+        "word": "order",
+        "start": 23.15999984741211,
+        "end": 23.520000457763672
+      },
+      {
+        "word": "moved",
+        "start": 23.520000457763672,
+        "end": 23.940000534057617
+      },
+      {
+        "word": "every",
+        "start": 23.940000534057617,
+        "end": 24.719999313354492
+      },
+      {
+        "word": "clock",
+        "start": 24.719999313354492,
+        "end": 25.059999465942383
+      },
+      {
+        "word": "backward",
+        "start": 25.059999465942383,
+        "end": 25.65999984741211
+      },
+      {
+        "word": "But",
+        "start": 25.65999984741211,
+        "end": 26.860000610351562
+      },
+      {
+        "word": "one",
+        "start": 26.860000610351562,
+        "end": 27.6200008392334
+      },
+      {
+        "word": "cracked",
+        "start": 27.6200008392334,
+        "end": 28.020000457763672
+      },
+      {
+        "word": "watch",
+        "start": 28.020000457763672,
+        "end": 28.459999084472656
+      },
+      {
+        "word": "had",
+        "start": 28.459999084472656,
+        "end": 28.959999084472656
+      },
+      {
+        "word": "never",
+        "start": 28.959999084472656,
+        "end": 29.299999237060547
+      },
+      {
+        "word": "joined",
+        "start": 29.299999237060547,
+        "end": 29.68000030517578
+      },
+      {
+        "word": "the",
+        "start": 29.68000030517578,
+        "end": 29.940000534057617
+      },
+      {
+        "word": "city's",
+        "start": 29.940000534057617,
+        "end": 30.540000915527344
+      },
+      {
+        "word": "system",
+        "start": 30.540000915527344,
+        "end": 30.540000915527344
+      }
+    ],
+    "usage": {
+      "type": "duration",
+      "seconds": 31
+    }
+  }
+}
