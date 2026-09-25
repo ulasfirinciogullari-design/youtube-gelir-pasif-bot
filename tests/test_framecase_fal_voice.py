@@ -42,7 +42,7 @@ def animation(enabled, monkeypatch):
         'item': entry, 'spec_sha256': plan._sha(spec)}
     for key, value in ((runtime._JOB_PREFIX+root, source), (plan.DISPATCH_PREFIX+entry['id'], dispatch),
             (plan.PLAN_PREFIX+channel, document), (plan.production.PROFILE_PREFIX+channel,
-                {'production_enabled': True, 'auto_publish': True, 'language': 'en'})):
+                {'production_enabled': True, 'auto_publish': True, 'default_language': 'en'})):
         client.set(key, plan._raw(value))
     active = json.loads(client.get(production._activation_key('en')))
     enabled.proof = Mock(return_value=active['qualification'])

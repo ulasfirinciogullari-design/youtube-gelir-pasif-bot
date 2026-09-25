@@ -97,7 +97,7 @@ def commission(foundation, *, owner_evidence_sha256):
         keys = (plan.PLAN_PREFIX + CHANNEL_ID, plan.production.PROFILE_PREFIX + CHANNEL_ID)
         pipe.watch(*keys); document, profile = [json.loads(pipe.get(k)) for k in keys]
         api.require(document['enabled'] is True and profile['production_enabled'] is True
-            and profile['auto_publish'] is True and profile['language'] == 'en')
+            and profile['auto_publish'] is True and profile['default_language'] == 'en')
         value = {'version': 1, 'purpose': 'framecase_qualified_long_animation_voice',
             'channel_id': CHANNEL_ID, 'connection_id': connection, 'language': 'en', 'kind': 'long',
             'activation_sha256': ledger.sha(ledger.raw(active)), 'voice': active['voice'],
