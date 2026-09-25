@@ -263,7 +263,9 @@ _NEGATIVE_REASON_MARKERS = re.compile(
 )
 _SOFT_POSITIVE_DESCRIPTION_PATTERN = re.compile(
     r'\bclearly\s+(?:shows?|depicts?|displays?)\b|'
-    r'\bshows?\b.{0,240}\bas\s+(?:stated|narrated|described)\b',
+    r'\bshows?\b.{0,240}\bas\s+(?:stated|narrated|described)\b|'
+    r'\b(?:clearly|directly|suitably|accurately)\s+(?:supports?|illustrates?|represents?)\b'
+    r'.{0,100}\b(?:narration|context|story|scene)\b',
     flags=re.IGNORECASE,
 )
 _SOFT_REASON_CRITICISM_PATTERN = re.compile(

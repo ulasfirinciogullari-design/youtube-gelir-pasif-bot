@@ -35,7 +35,7 @@ def _rescue_context(**overrides):
         'duration_minutes': 0.5, 'total_paid_create_cap': 2,
         'scene_repair_recovery': False, 'provider_outage_stock_scenes': set(),
         'recovered_generated_media': None, 'selected_recovery': None,
-        'stock_quality_fallback_scenes': set(), 'runway_submission_cap': 2,
+        'stock_quality_fallback_scenes': set(), 'runway_submission_cap': 2, 'retained_long_indices': [],
         'ranked_runway_candidates': [{'scene_index': index, 'stock_score': score} for index, score in enumerate((20, 30, 70))],
     }
     context.update(overrides)
@@ -76,7 +76,9 @@ def test_only_existing_preview_or_capped_production_short_enters_budget_rescue(o
 
 
 @pytest.mark.parametrize('rescued_score, accepted', [(92, True), (70, False)])
-def test_production_stock_rescue_must_pass_unchanged_quality_and_cap(rescued_score, accepted):
+def test_production_stock_rescue_must_pass_unchanged_quality_and_cap(rescued_score, accepted, monkeypatch):
+    from app.services import included_stock_pool
+    monkeypatch.setattr(included_stock_pool, "retain_stock_pool", Mock())
     namespace = _namespace()
     namespace.update(_rescue_context())
     sources = [{'url': 'https://www.bep.gov/currency', 'evidence': 'Verified currency composition.'}]

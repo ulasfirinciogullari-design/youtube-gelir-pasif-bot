@@ -88,6 +88,9 @@ def eligible(source):
 
 
 def schedule(source, enqueue, *, client=None):
+    from app.services import content_plan_fal_cut_resume as cut
+    if cut.eligible(source):
+        return cut.schedule(source, enqueue, client=client)
     from app.services import content_plan_fal_visual_resume as fal_visual
     if fal_visual.eligible(source):
         return fal_visual.schedule(source, enqueue, client=client)
@@ -391,6 +394,9 @@ def load_visuals(manifest, source, package, media, voice, task, work):
 
 
 def run(source_id, operation_id):
+    from app.services import content_plan_fal_cut_resume as cut
+    if operation_id == cut.operation(source_id):
+        return cut.run(source_id, operation_id)
     from app.services import content_plan_fal_visual_resume as fal_visual
     if operation_id == fal_visual.operation(source_id):
         return fal_visual.run(source_id, operation_id)

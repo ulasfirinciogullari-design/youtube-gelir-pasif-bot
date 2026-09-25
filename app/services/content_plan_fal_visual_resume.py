@@ -112,7 +112,7 @@ def _video(client, source, root):
     return {'video_records': records, 'accepted_outputs': accepted, 'unknown_requests': sorted(unknown)}
 
 
-def checked(client, task, *, claimed=False):
+def checked(client, task, *, claimed=False, _cut_child=None):
     from app.services.content_plan_local_resume import _claim
     from app.services.source_publication_hold import HOLD_PREFIX
     from app.services.youtube_publish_state import UPLOAD_PREFIX
@@ -159,7 +159,21 @@ def checked(client, task, *, claimed=False):
     profile = plan._object(client.get(plan.production.PROFILE_PREFIX + dispatch['channel_id']))
     channel = plan._object(client.get(plan.production.OAUTH_CHANNEL_PREFIX + dispatch['channel_id']))
     leaf = plan._leaf(client, dispatch)
-    plan._require(leaf['task_id'] == (source.get('retry_child_task_id') if claimed else task)
+    expected_leaf = source.get('retry_child_task_id') if claimed else task
+    if _cut_child is not None:
+        # Only the registered one-level correction of the initial-cut defect
+        # may extend this original admission; the new module verifies its proof.
+        from app.services import content_plan_fal_cut_resume as cut
+        intermediate = plan._object(client.get(jobs.JOB_PREFIX + expected_leaf))
+        child = plan._object(client.get(jobs.JOB_PREFIX + plan._id(_cut_child)))
+        plan._require(claimed and client.exists(cut.DISPATCH + expected_leaf)
+            and intermediate.get('parent_id') == task and intermediate.get('state') == 'FAILURE'
+            and intermediate.get('spec') == child.get('spec') == spec
+            and intermediate.get('retry_child_task_id') == _cut_child
+            and child.get('parent_id') == expected_leaf)
+        _claim(client, expected_leaf, _cut_child)
+        expected_leaf = _cut_child
+    plan._require(leaf['task_id'] == expected_leaf
         and plan._active(client).get(dispatch['channel_id']) == dispatch['item']['id']
         and profile.get('production_enabled') is True and profile.get('auto_publish') is True
         and channel.get('connection_id') == dispatch['connection_id'] and channel.get('requires_reconnect') is not True
@@ -237,7 +251,16 @@ def prepare(task, source_id, spec, work):
     from app.services.runway import download_generated_scene
     from app import tasks
     source, root, proof = verify_child(task, source_id, spec)
-    prepared = voice._prepare_long_candidate(task, source_id, spec, work)
+    return _prepare_assets(task, source_id, spec, work, source, root, proof)
+
+
+def _prepare_assets(task, source_id, spec, work, source, root, proof):
+    # Callers must verify their distinct immutable admission before this helper.
+    from app.services import content_plan_voice_resume as voice, content_plan_long_media_resume as media
+    from app.services import commissioning_video as video, accepted_video_outputs as outputs
+    from app.services.runway import download_generated_scene
+    from app import tasks
+    prepared = voice._prepare_long_candidate(task, source['task_id'], spec, work)
     prepared.pop('content_plan_voice_source'); prepared['content_plan_media_source'] = source_id
     clips = media._load_clips(source, prepared, work, allow_repair=True)
     journal = plan._object(plan._client().get(video.PREFIX + root))
@@ -262,6 +285,10 @@ def readonly_for_task():
     task = runtime._TASK_ID.get()
     if not task: return False
     client = plan._client(); child = plan._object(client.get(jobs.JOB_PREFIX + task)); source = child.get('parent_id')
+    from app.services import content_plan_fal_cut_resume as cut
+    if source and cut.registered(source):
+        cut.verify_child(task, source, child['spec'], client=client)
+        return True
     if not source or not client.exists(DISPATCH + source): return False
     verify_child(task, source, child['spec'], client=client)
     return True

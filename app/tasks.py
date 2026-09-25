@@ -5694,26 +5694,20 @@ def run_video_pipeline(
                 continue
 
             if not review:
-                first_spec = dict(paths[0]) if isinstance(paths[0], dict) else {'path': _visual_path(paths[0])}
-                first_spec['start_fraction'] = 0.25
-                scene_visuals[scene_idx] = [first_spec]
+                # Initial review must honor the same cut lock as final review.
+                # Retained generated clips enter here before any new generation.
+                selection = [paths]
+                _apply_visual_review(selection, 0, {'best_start_fraction': 0.25})
+                scene_visuals[scene_idx] = selection[0]
                 continue
 
             best_idx = int(review.get('best_candidate_index', 0))
             score = int(review.get('score', 0))
             best_idx = min(max(best_idx, 0), len(paths) - 1)
             best_path = _visual_path(paths[best_idx])
-            try:
-                best_fraction = float(review.get('best_start_fraction', 0.25))
-            except Exception:
-                best_fraction = 0.25
-            best_fraction = max(0.0, min(best_fraction, 0.95))
-            best_spec = (
-                dict(paths[best_idx])
-                if isinstance(paths[best_idx], dict)
-                else {'path': best_path}
-            )
-            best_spec['start_fraction'] = best_fraction
+            selection = [paths]
+            _apply_visual_review(selection, 0, review)
+            best_spec = selection[0][0]
 
             if score >= quality_threshold:
                 scene_visuals[scene_idx] = [best_spec]
