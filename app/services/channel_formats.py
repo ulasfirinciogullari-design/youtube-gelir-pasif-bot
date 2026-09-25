@@ -40,5 +40,11 @@ def daily_limits(channel_id, fallback):
     return {'long': 0, 'shorts': limits[channel_id]} if channel_id in limits else dict(fallback)
 
 
+def production_limits(channel_id, fallback):
+    """Bound retries separately: two attempts per requested public Short."""
+    limits = daily_limits(channel_id, fallback)
+    return {**limits, 'shorts': 2 * limits['shorts']} if shorts_only(channel_id) else limits
+
+
 def allows(channel_id, format_kind):
     return not shorts_only(channel_id) or format_kind == 'shorts'

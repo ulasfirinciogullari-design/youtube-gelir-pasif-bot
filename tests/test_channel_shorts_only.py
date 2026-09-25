@@ -124,13 +124,13 @@ def test_normal_scheduler_admits_short_despite_old_full_day_then_enforces_new_ca
     client.hset(old, mapping=original)
     produced = cadence.keys(channel, now=NOW)[0]
     # Leave exactly one slot: the real scheduler's Lua must take it once.
-    for _ in range(POLICY['daily_limits'][channel] - 1): client.hset(produced, str(uuid4()), 'shorts')
+    for _ in range(2 * POLICY['daily_limits'][channel] - 1): client.hset(produced, str(uuid4()), 'shorts')
     enqueue = Mock()
     result = module.dispatch_due_productions([profile], [connection], enqueue, now=NOW)
     assert result['status'] == 'queued' and enqueue.call_count == 1
     spec = enqueue.call_args.kwargs['args'][4]
     assert spec['format'] == 'shorts' and spec['production_editorial']['reason_code'] == 'owner_shorts_only'
-    assert len(client.hgetall(produced)) == POLICY['daily_limits'][channel]
+    assert len(client.hgetall(produced)) == 2 * POLICY['daily_limits'][channel]
     assert client.hgetall(old) == original
     with client.pipeline() as pipe:
         assert cadence.production_slot(pipe, channel, 'shorts', str(uuid4()), now=NOW) is False
@@ -151,16 +151,39 @@ def test_disabled_long_lua_is_not_the_legacy_zero_limit_bypass(only_shorts):
     client = fakeredis.FakeRedis(decode_responses=True)
     def execute(channel, kind):
         keys = cadence.lua_arguments(channel, kind, now=NOW)
-        args = [''] * 15
+        args = [''] * 16
         args[8] = str(uuid4()); args[13:] = list(keys[3:])
         return client.eval(cadence.PRODUCTION_LUA + "return 'reserved'", 13,
             *[f'unused:{i}' for i in range(10)], *keys[:3], *args)
     assert execute(CHANNEL, 'long') == 'format_disabled'
     assert snapshot(client) == {}
     assert execute(PEER, 'long') == 'reserved'
-    for _ in range(4): assert execute(CHANNEL, 'shorts') == 'reserved'
+    for _ in range(8): assert execute(CHANNEL, 'shorts') == 'reserved'
     before = snapshot(client)
     assert execute(CHANNEL, 'shorts') == 'daily_limit_wait' and snapshot(client) == before
+
+
+@pytest.mark.parametrize('channel', [CHANNEL, OTHER])
+def test_failed_attempt_does_not_consume_publication_target_but_pending_and_public_do(only_shorts, channel):
+    client = fakeredis.FakeRedis(decode_responses=True)
+    produced, published, pending = cadence.keys(channel, now=NOW)
+    rejected = str(uuid4()); client.hset(produced, rejected, 'shorts')
+    def execute():
+        selected = cadence.lua_arguments(channel, 'shorts', now=NOW)
+        args = [''] * 16; args[8] = str(uuid4()); args[13:] = list(selected[3:])
+        return client.eval(cadence.PRODUCTION_LUA + "return 'reserved'", 13,
+            *[f'unused:{i}' for i in range(10)], *selected[:3], *args)
+    assert execute() == 'reserved'
+    assert client.hget(produced, rejected) == 'shorts'
+    public = {str(uuid4()): 'shorts' for _ in range(POLICY['daily_limits'][channel])}
+    client.hset(pending, mapping=public)
+    before = snapshot(client)
+    assert execute() == 'daily_limit_wait' and snapshot(client) == before
+    with client.pipeline() as pipe:
+        assert cadence.production_slot(pipe, channel, 'shorts', str(uuid4()), now=NOW) is False
+    client.hset(published, mapping=public); client.delete(pending)
+    assert execute() == 'daily_limit_wait'
+    assert client.hget(produced, rejected) == 'shorts'
 
 
 def test_stale_long_plan_cannot_reach_funding_or_dispatch(case, only_shorts, monkeypatch):

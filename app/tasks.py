@@ -8009,6 +8009,16 @@ def run_video_pipeline(
                 effective_edit_target_seconds,
                 voice_result.get('duration_after_fit'),
             )
+            if (options.get('production_scheduled') is True
+                    and final_render_qc.get('reason') == 'final_ending_silence_out_of_bounds'):
+                # Qualified narration may already end in a natural pause.
+                # Measure that original file; retain exact frames and the
+                # absolute tail cap instead of extending bounds from the master.
+                from app.services.framecase_sound import narration_timing_qc
+                final_render_qc = narration_timing_qc(
+                    rendered, effective_edit_target_seconds,
+                    voice_result.get('duration_after_fit'), voice_path=final_audio_path,
+                )
             if final_render_qc.get('reason') == 'final_frame_count_mismatch':
                 raise ProductionContentError(
                     'Final frame gate rejected render: '

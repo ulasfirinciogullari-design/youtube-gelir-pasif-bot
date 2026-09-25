@@ -11,7 +11,7 @@ from zoneinfo import ZoneInfo
 from redis.client import Pipeline
 
 from app.services import studio_state as jobs
-from app.services.channel_formats import CHANNELS, shorts_only, allows, daily_limits, policy_id
+from app.services.channel_formats import CHANNELS, shorts_only, allows, daily_limits, production_limits, policy_id
 from app.services.included_stock_pool import _local_transaction
 
 PREFIX = 'youtube_studio:channel_cadence:v1:'
@@ -108,9 +108,13 @@ def production_slot(pipe, channel_id, format_kind, task_id, *, now=None, item=No
         # cannot reopen an old production day or reset the original root.
         now = datetime.combine(max(target, today), datetime.min.time(), ZONE).timestamp()
     selected = keys(channel_id, now=now); pipe.watch(*selected)
+    if shorts_only(channel_id):
+        delivered = _values(pipe, selected[1]); delivered.update(_values(pipe, selected[2]))
+        if sum(v == format_kind for v in delivered.values()) >= daily_limits(channel_id, LIMITS)[format_kind]:
+            return False
     used = {}
     for key in selected: used.update(_values(pipe, key))
-    if sum(v == format_kind for v in used.values()) >= daily_limits(channel_id, LIMITS)[format_kind]: return False
+    if sum(v == format_kind for v in used.values()) >= production_limits(channel_id, LIMITS)[format_kind]: return False
     return selected[0]
 
 
@@ -118,8 +122,10 @@ def lua_arguments(channel_id, format_kind, *, now=None):
     _require(format_kind in LIMITS)
     if not allows(channel_id, format_kind):
         # Zero already means an unmanaged channel in the historical script.
-        return (*keys(channel_id, now=now), format_kind, -1)
-    return (*keys(channel_id, now=now), format_kind, daily_limits(channel_id, LIMITS)[format_kind] if channel_id in CHANNELS else 0)
+        return (*keys(channel_id, now=now), format_kind, -1, 0)
+    return (*keys(channel_id, now=now), format_kind,
+        production_limits(channel_id, LIMITS)[format_kind] if channel_id in CHANNELS else 0,
+        daily_limits(channel_id, LIMITS)[format_kind] if shorts_only(channel_id) else 0)
 
 
 def daily_editorial(channel_id, fallback, *, client, now=None, defer_daily_long=False):
@@ -217,6 +223,19 @@ def install_daily_long(profile, topics, *, client, now=None, advance=False):
 # transaction. No reservation is consumed by not_due or capacity_wait ticks.
 PRODUCTION_LUA = r'''
 if tonumber(ARGV[15]) < 0 then return 'format_disabled' end
+if tonumber(ARGV[16] or '0') > 0 then
+  local delivered = {}
+  for _, key in ipairs({KEYS[12], KEYS[13]}) do
+    local rows = redis.call('HGETALL', key)
+    for i = 1, #rows, 2 do
+      if rows[i+1] ~= 'shorts' and rows[i+1] ~= 'long' then return 'invalid_state' end
+      delivered[rows[i]] = rows[i+1]
+    end
+  end
+  local count = 0
+  for _, value in pairs(delivered) do if value == ARGV[14] then count = count + 1 end end
+  if count >= tonumber(ARGV[16]) then return 'daily_limit_wait' end
+end
 if tonumber(ARGV[15]) > 0 then
   local used = {}
   for _, key in ipairs({KEYS[11], KEYS[12], KEYS[13]}) do
@@ -359,5 +378,6 @@ def snapshot(channel_id, *, client=None, now=None):
     if policy_id(channel_id):
         previous = _values(client, PREFIX + channel_id + ':published:' + result['date'])
         result.update(policy_id=policy_id(channel_id),
+            production_limits=production_limits(channel_id, LIMITS),
             previously_published_today={k: sum(v == k for v in previous.values()) for k in LIMITS})
     return result

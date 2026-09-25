@@ -18,6 +18,20 @@ are independent of this editorial change. Studio separates this plan's counts
 from earlier publications that day. Empty configuration retains the historical
 mixed cadence. Invalid nonempty configuration fails closed.
 
+The 4/1 limits count publications and pending uploads. Production stops once
+that target is occupied; failed attempts never count as published. New attempts
+are independently capped at twice the channel's public target (Capital8,
+Margin2), preserving every failed admission and financial receipt. This retains
+the prior aggregate ceiling of ten new Shorts attempts per day while weighting
+them toward Capital. Reaching the attempt ceiling waits until the next day;
+no unknown provider request or rejected job is replayed.
+
+Scheduled Shorts verify final silence against the original qualified voice's
+audible ending when the file-duration check rejects a natural source pause.
+The existing source-measurement helper retains exact frame counts, the minimum
+hold, the voice duration gate and the absolute1.55second tail cap. It changes no
+speech or video bytes and does not approve old rejected drafts.
+
 Daily long-form and next-day long-form stock planning,
 new long queue entries, production admission and unpublished long uploads are
 blocked. Studio offers only Shorts for those channels. Historical jobs, public
