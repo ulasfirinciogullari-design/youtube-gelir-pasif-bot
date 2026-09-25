@@ -23,10 +23,12 @@ celery.conf.update(
             'schedule': 300.0,
             'options': {'expires': 290},
         },
-        'audience-interest-every-two-hours': {
+        'audience-interest-check-every-five-minutes': {
             'task': 'app.production_tasks.observe_audience_trends',
-            'schedule': 7200.0,
-            'options': {'expires': 7000},
+            # Redis keeps the two-hour fetch window across deployments. A
+            # restarted beat must not postpone stale observations for hours.
+            'schedule': 300.0,
+            'options': {'expires': 290},
         },
         'channel-production-every-minute': {
             'task': 'app.production_tasks.production_tick',
