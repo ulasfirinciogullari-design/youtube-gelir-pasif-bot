@@ -121,13 +121,16 @@ def _read(pipe):
         and credential.record_sha256 == policy['credential_record_sha256'], 'kie_voice_key_changed')
     balance = api.object_response(restore(policy['balance']))
     require(api.microcredits(balance['data']) >= policy['allocation_microcredits'])
+    from app.services import kie_gemini_voice as gemini
+    extension = gemini.read(pipe, policy)
     for identity, row in journal['requests'].items():
         require(type(row) is dict and set(row) == {'scope', 'descriptor', 'reserved_at',
             'create', 'result'} and identity == sha(raw({'scope': row['scope'], 'request': row['descriptor']})))
         d = row['descriptor']
         require(type(d) is dict and set(d) == {'route', 'model', 'request_sha256',
             'credential_sha256', 'ceiling_microcredits', 'attempt', 'voice_id'}
-            and d['route'] == api.CREATE and d['model'] in api.RATES
+            and d['route'] == api.CREATE and (d['model'] in api.RATES
+                or (d['model'] == gemini.MODEL and extension is not None))
             and d['credential_sha256'] == credential.fingerprint
             and re.fullmatch('[0-9a-f]{64}', d['request_sha256'])
             and type(d['ceiling_microcredits']) is int and 0 < d['ceiling_microcredits'] <= 60_000_000
@@ -230,16 +233,26 @@ class Journal:
             policy, journal, credential = _read(pipe)
             require(policy is not None, 'kie_voice_funding_missing')
             _scope(pipe, self.foundation, policy, self.scope)
+            from app.services import kie_gemini_voice as gemini
+            is_gemini = self.body.get('model') == gemini.MODEL
+            if is_gemini:
+                require(gemini.read(pipe, policy) is not None, 'kie_voice_model_not_authorized')
+                text, voice, expected_ceiling, language = gemini.describe(self.body)
+                require(self.scope.get('language', language) == language)
+            else:
+                require(self.body.get('model') in api.RATES)
+                text, voice = self.body['input']['text'], self.body['input']['voice']
+                units = len(text.encode('utf-16-le')) // 2
+                expected_ceiling = ((units + 999) // 1000) * api.RATES[self.body['model']] * 1_000_000
             d = {'route': api.CREATE, 'model': self.body['model'],
                 'request_sha256': sha(raw(self.body)), 'credential_sha256': credential.fingerprint,
                 'ceiling_microcredits': self.ceiling, 'attempt': self.attempt,
-                'voice_id': self.body['input']['voice']}
+                'voice_id': voice}
             require(type(self.attempt) is int and 0 <= self.attempt <= 2
                 and type(self.ceiling) is int and 0 < self.ceiling <= 60_000_000)
             # Recompute the frozen upper bound; callers cannot under-reserve.
-            text = self.body['input']['text']
             units = len(text.encode('utf-16-le')) // 2
-            require(1 <= units <= 5000 and self.ceiling == ((units + 999) // 1000) * api.RATES[self.body['model']] * 1_000_000)
+            require(1 <= units <= 5000 and self.ceiling == expected_ceiling)
             identity = sha(raw({'scope': self.scope, 'request': d}))
             prior = journal['requests'].get(identity)
             if prior is not None:
@@ -252,8 +265,11 @@ class Journal:
                 require(not any(r['result'] is None or r['descriptor']['attempt'] == self.attempt
                     for r in same_root), 'kie_voice_previous_request_pinned')
                 if self.scope.get('kind') == 'connection_probe':
+                    probe_count = sum(r['scope'].get('kind') == 'connection_probe'
+                        and ((r['descriptor']['model'] == gemini.MODEL) is is_gemini)
+                        for r in journal['requests'].values())
                     require(units <= 400 and self.attempt == 0 and self.scope['voice_id'] == d['voice_id']
-                        and sum(r['scope'].get('kind') == 'connection_probe' for r in journal['requests'].values()) < 8,
+                        and probe_count < (gemini.SPEC['max_connection_probes'] if is_gemini else 8),
                         'kie_voice_probe_limit')
                 require(len(journal['requests']) < MAX_REQUESTS
                     and _used(journal) + self.ceiling <= policy['allocation_microcredits'], 'kie_voice_balance_exhausted')

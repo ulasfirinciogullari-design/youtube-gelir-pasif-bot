@@ -90,7 +90,8 @@ def request_body(text, voice_id, *, turkish=False, speed=1.0):
 
 def generate(body, secret, journal, *, clock=time.monotonic, sleep=time.sleep):
     """Restore prior receipts, submit once, then GET the same accepted task."""
-    require(journal is not None and body.get('model') in RATES, 'kie_voice_journal_required')
+    from app.services.kie_gemini_voice import MODEL as GEMINI
+    require(journal is not None and body.get('model') in {*RATES, GEMINI}, 'kie_voice_journal_required')
     auth = headers(secret)
     with httpx.Client(timeout=30, follow_redirects=False, trust_env=False,
                       transport=httpx.HTTPTransport(retries=0)) as client:

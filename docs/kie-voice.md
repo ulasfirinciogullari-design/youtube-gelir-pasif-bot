@@ -23,9 +23,25 @@ The separate prepaid ledger reserves an upper bound before each create request.
 Accepted task IDs and encrypted terminal responses are reused; an unknown POST
 outcome cannot trigger a replacement purchase. A provider-observed refund is
 recorded as zero usage, while a missing usage observation keeps the reservation.
-The owner connection check has a total cap of eight distinct probes. Production
+The ElevenLabs connection check has a total cap of eight distinct probes. Production
 activation remains absent until real audio, alignment and speech quality pass.
 Existing native voice allocations and all their historical receipts remain intact.
+
+An operator can separately authorize two Gemini 3.1 Flash TTS checks within the
+same original Kie allocation. This adds no credit and cannot reopen the eight
+ElevenLabs checks. Kie's reviewed rates are 140 credits per million input tokens
+and 2,800 per million audio tokens. The upstream limits of 8,192 input and
+16,384 output tokens imply a 47.02208-credit full-request bound; each request
+reserves 48 credits until the provider reports actual usage. The model extension
+is immutable, bound to the original funding policy, and has no production
+activation side effect. It accepts only the reviewed single-speaker request.
+Gemini output does not include source character timing: audio generation alone
+does not qualify this route for production. Independent speech recognition and
+verified scene/subtitle timing are still required.
+
+Sources reviewed 2026-09-24: [Kie Gemini contract](https://docs.kie.ai/market/google/gemini-3-1-flash-tts),
+[Kie prices](https://kie.ai/pricing), and
+[upstream model limits](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-tts-preview).
 
 The owner settings hub is `/studio/settings`. An authenticated, same-origin
 request can save a reusable Studio password as a salted scrypt digest. Normal
