@@ -437,7 +437,12 @@ def test_two_processes_continuing_one_prepared_receipt_cannot_both_claim(case):
             return str(error)
     with ThreadPoolExecutor(max_workers=2) as pool:
         results = list(pool.map(contend, range(2)))
-    assert sorted(results) == ['credit_dispatch_already_claimed', 'one_send_permitted']
+    assert results.count('one_send_permitted') == 1
+    # The losing WATCH reader can observe the winning atomic write between its
+    # separate reads and fail closed before reaching EXEC. Both refusals are
+    # valid; the invariant is exactly one send permit, with the full hold intact.
+    assert set(results) <= {'one_send_permitted', 'credit_dispatch_already_claimed',
+                            'credit_dispatch_mismatch'}
     assert state(case)['reserved_credits'] == 1000
 
 
@@ -490,20 +495,26 @@ def test_readonly_root_recovery_hint_requires_prepared_unclaimed_receipt(case, m
     assert dispatch.ready_for_root(ROOT) is False
 
 
-@pytest.mark.parametrize('correct_receipt', [False, True])
-def test_explicit_legacy_presend_proof_is_receipt_bound_and_single_use(case, correct_receipt):
+@pytest.mark.parametrize('damage', ['wrong_receipt', 'missing_proof', 'missing_proof_anchor', None])
+def test_explicit_legacy_presend_proof_is_receipt_bound_and_single_use(case, damage):
     from app.services import production_credit_dispatch as dispatch
     intent, context, actual = _dispatch_inputs(case)
     receipt = case.ledger.reserve(intent=intent, production_context=context, **actual)
     identity = dispatch._identity(case.ledger, case.policy, intent, context, actual)
+    proof = {'version': 1, 'kind': 'verified_legacy_pre_send', 'intent_id': intent['intent_id'],
+             'root_lineage_id': ROOT, 'reservation_sha256': receipt['reservation_sha256'],
+             'basis': 'synthetic positive runtime proof of failure before sender'}
     prepared = {**identity, 'origin': {'kind': 'verified_legacy_pre_send',
-        'reservation_sha256': receipt['reservation_sha256'] if correct_receipt else '0' * 64,
-        'evidence_sha256': sha('synthetic positive runtime proof of failure before sender')}}
+        'reservation_sha256': '0' * 64 if damage == 'wrong_receipt' else receipt['reservation_sha256'],
+        'evidence_sha256': durable._hash(proof)}}
     key, anchor = dispatch._keys(intent)
     # Test-only operator preparation, not a request/runtime auto-recovery API.
     case.client.hset(key, 'prepared', durable._json(prepared))
     case.client.hset(anchor, 'prepared', durable._hash(prepared))
-    if correct_receipt:
+    proof_key, proof_anchor = dispatch._proof_keys(intent)
+    if damage != 'missing_proof': case.client.set(proof_key, durable._json(proof))
+    if damage != 'missing_proof_anchor': case.client.set(proof_anchor, durable._hash(proof))
+    if damage is None:
         native.paid_credit_post(case.http.post, credit.ROUTE, request())
         assert len(case.sends) == 1 and state(case)['spent_credits'] == 248
         with pytest.raises(SpendBlocked):

@@ -283,6 +283,27 @@ def test_native_hold_recovery_requires_positive_unclaimed_preparation(client, mo
         assert enqueue.call_count == 1
 
 
+@pytest.mark.parametrize('changed_build', [False, True])
+def test_verified_presend_new_build_skips_old_backoff_without_new_retry_allowance(client, monkeypatch, changed_build):
+    from app.services import framecase_recovery as recovery, production_credit_dispatch as dispatch
+    from app.production_tasks import continue_framecase_episode
+    from unittest.mock import Mock
+    monkeypatch.setattr(plan, '_client', lambda: client)
+    monkeypatch.setattr(dispatch, 'ready_for_root', lambda root: True)
+    monkeypatch.setenv('RAILWAY_GIT_COMMIT_SHA', 'new' if changed_build else 'old')
+    enqueue = Mock(); monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
+    row = source(); row['spec']['framecase_animation'] = True
+    row.update(state='FAILURE', framecase_failure_code='credit_cross_mode_request_conflict',
+               framecase_failed_build='old', framecase_retry_at=recovery.time.time()+1800,
+               framecase_resume_attempt=3)
+    client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(row))
+    assert recovery.schedule(row) == ('continuation_queued' if changed_build else 'retry_wait')
+    row['framecase_resume_attempt'] = 6
+    client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(row))
+    assert recovery.schedule(row) == 'continuation_limit_reached'
+    assert enqueue.call_count == int(changed_build)
+
+
 def test_actual_final_scene_windows_include_end_hold_without_losing_frames(tmp_path):
     import subprocess
     path = tmp_path / 'master.mp4'

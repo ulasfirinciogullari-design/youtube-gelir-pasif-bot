@@ -73,7 +73,9 @@ def schedule(source):
         and source.get('framecase_failed_build') != os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local'))
     if attempt > MAX_TRANSIENT_CONTINUATIONS and not fixed_build:
         return 'continuation_limit_reached'
-    if not fixed_build and time.time() < float(source.get('framecase_retry_at') or 0):
+    verified_new_build = (verified_before_send and source.get('framecase_failed_build')
+        and source['framecase_failed_build'] != os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local'))
+    if not (fixed_build or verified_new_build) and time.time() < float(source.get('framecase_retry_at') or 0):
         return 'retry_wait'
     operation = str(uuid5(NAMESPACE_URL, f'framecase-resume:{task}:{attempt}'))
     key = PREFIX + operation

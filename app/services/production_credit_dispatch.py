@@ -30,6 +30,11 @@ def _keys(intent):
     return PREFIX + identity, PREFIX + identity + ':anchor'
 
 
+def _proof_keys(intent):
+    key = PREFIX + 'proof:' + intent['intent_id']
+    return key, key + ':anchor'
+
+
 def _identity(ledger, policy, intent, context, actual):
     from app.services.production_credit_funding import _actual_binding, _intent
     _intent(intent, policy, 'credit_dispatch_invalid')
@@ -70,6 +75,16 @@ def _records(pipe, keys, identity, entry):
             and entry is not None
             and origin['reservation_sha256'] == entry['reservation']['reservation_sha256'],
             'credit_dispatch_legacy_outcome_unverified')
+        proof_key, proof_anchor = _proof_keys(identity['intent'])
+        proof = _object(pipe.get(proof_key))
+        _require(all(pipe.pttl(key) == -1 for key in (proof_key, proof_anchor))
+            and _hash(proof) == origin['evidence_sha256'] == pipe.get(proof_anchor)
+            and type(proof.get('version')) is int and proof['version'] == 1
+            and proof.get('kind') == 'verified_legacy_pre_send'
+            and proof.get('intent_id') == identity['intent']['intent_id']
+            and proof.get('root_lineage_id') == identity['intent']['root_lineage_id']
+            and proof.get('reservation_sha256') == origin['reservation_sha256'],
+            'credit_dispatch_legacy_outcome_unverified')
     if 'claim' in records:
         claim = records['claim']
         _require(type(claim) is dict and set(claim) == {
@@ -90,7 +105,7 @@ def _records(pipe, keys, identity, entry):
 def _snapshot(ledger, pipe, intent, context, actual):
     keys = _keys(intent)
     ledger._watch(pipe)
-    pipe.watch(*keys)
+    pipe.watch(*keys, *_proof_keys(intent))
     policy, state, _, _ = ledger._read(pipe, ledger.clock())
     identity = _identity(ledger, policy, intent, context, actual)
     _require(_object(pipe.hget(LEDGER_KEY, 'binding:' + intent['root_lineage_id'])) == context,
