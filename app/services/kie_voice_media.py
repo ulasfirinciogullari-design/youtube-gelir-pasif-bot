@@ -4,10 +4,12 @@ from pathlib import Path
 import json
 import subprocess
 import tempfile
+from time import sleep as _sleep
 from urllib.parse import urlparse
 import wave
 
 import httpx
+from botocore.exceptions import ClientError, ConnectionClosedError, EndpointConnectionError, ReadTimeoutError
 
 from app.config import settings
 from app.services import kie_voice_ledger as ledger, storage, whisper_transcription as whisper
@@ -15,7 +17,26 @@ from app.services import kie_voice_ledger as ledger, storage, whisper_transcript
 MAX_BYTES = 24 * 1024 * 1024
 
 
-def _get(s3, key, bound):
+def _storage_call(operation, *args, **kwargs):
+    """Retry only idempotent private-object IO, never a paid generation call."""
+    for attempt in range(3):
+        try:
+            return operation(*args, **kwargs)
+        except ClientError as error:
+            status = error.response.get('ResponseMetadata', {}).get('HTTPStatusCode')
+            code = error.response.get('Error', {}).get('Code')
+            if (status not in {429, 500, 502, 503, 504}
+                    and code not in {'RequestTimeout', 'SlowDown', 'InternalError', 'ServiceUnavailable'}):
+                raise
+            if attempt == 2:
+                raise
+        except (ConnectionClosedError, EndpointConnectionError, ReadTimeoutError):
+            if attempt == 2:
+                raise
+        _sleep(.5 * (2 ** attempt))
+
+
+def _read_object(s3, key, bound):
     obj = s3.get_object(Bucket=settings.bucket, Key=key)
     ledger.require(0 < obj['ContentLength'] <= bound, 'kie_voice_media_invalid')
     try:
@@ -24,6 +45,10 @@ def _get(s3, key, bound):
         obj['Body'].close()
     ledger.require(len(data) == obj['ContentLength'] <= bound, 'kie_voice_media_invalid')
     return data
+
+
+def _get(s3, key, bound):
+    return _storage_call(_read_object, s3, key, bound)
 
 
 def mp3(client, identity, result, *, longform):
@@ -72,7 +97,7 @@ def mp3(client, identity, result, *, longform):
                     chunks.append(part)
                 original = b''.join(chunks)
         object_key = 'provider_audio/kie/' + identity + '/' + ledger.sha(original) + '.wav'
-        s3.put_object(Bucket=settings.bucket, Key=object_key, Body=original, ContentType='audio/wav')
+        _storage_call(s3.put_object, Bucket=settings.bucket, Key=object_key, Body=original, ContentType='audio/wav')
         ledger.require(ledger.sha(_get(s3, object_key, MAX_BYTES)) == ledger.sha(original))
         source = {'version': 1, 'request_identity': identity, 'sha256': ledger.sha(original),
             'object_key': object_key, 'result_receipt_sha256': row['result']['response_sha256']}
@@ -100,7 +125,7 @@ def mp3(client, identity, result, *, longform):
     ledger.require(abs(snapshot.samples / 48000 - seconds) < .10, 'kie_voice_conversion_duration_changed')
     original_key, mp3_key = prefix + '.wav', prefix + '-' + ledger.sha(audio) + '.mp3'
     for object_key, content, mime in ((original_key, original, 'audio/wav'), (mp3_key, audio, 'audio/mpeg')):
-        s3.put_object(Bucket=settings.bucket, Key=object_key, Body=content, ContentType=mime)
+        _storage_call(s3.put_object, Bucket=settings.bucket, Key=object_key, Body=content, ContentType=mime)
         ledger.require(ledger.sha(_get(s3, object_key, MAX_BYTES)) == ledger.sha(content))
     record = {'version': 1, 'request_identity': identity,
         'result_receipt_sha256': row['result']['response_sha256'],
