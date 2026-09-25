@@ -57,3 +57,43 @@ def test_narration_frame_mismatch_still_blocks_before_mixing(tmp_path, monkeypat
     with pytest.raises(SpendBlocked, match='framecase_final_timing_rejected'):
         sound.finish_master(narrated, [], tmp_path, target_duration=3, voice_duration=2.4)
     mixer.assert_not_called()
+
+
+def source_voice(tmp_path, audible_seconds, *, duration=2.4):
+    path = tmp_path / 'original-voice.wav'
+    subprocess.run(['ffmpeg', '-v', 'error', '-f', 'lavfi', '-i',
+        f'sine=frequency=880:duration={audible_seconds}', '-af', 'apad',
+        '-t', str(duration), str(path)], check=True, capture_output=True)
+    return path
+
+
+def test_actual_accepted_voice_pause_is_measured_without_editing_audio_or_loosening_cap(tmp_path):
+    # E4 has 0.382s of natural silence in its accepted voice, plus the 0.568s
+    # edit hold. The former file-duration allowance falsely rejected 0.945s.
+    source = source_voice(tmp_path, 2.05)
+    narrated = narration_master(tmp_path, 2.05)
+    before = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in (source, tmp_path/'final.mp4')}
+    assert _strict_short_preview_render_qc(narrated, 3, 2.4)['pass'] is False
+    result = sound.narration_timing_qc(narrated, 3, 2.4, voice_path=source)
+    assert result['pass'] is True
+    assert result['timing_basis'] == 'measured_original_voice_tail'
+    assert .34 < result['source_ending_silence_seconds'] < .36
+    assert result['maximum_ending_silence_seconds'] <= 1.55
+    assert before == {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in before}
+
+
+@pytest.mark.parametrize('audible_seconds,source_seconds,source_duration', [
+    (2.05, 2.4, 2.4),  # A truncated master cannot claim a nonexistent source pause.
+    (2.05, 1.6, 2.4),  # The master's audible ending must match the real source.
+    (2.05, 2.05, 2.8), # A different source duration cannot supply evidence.
+    (1.3, 1.3, 2.4),  # Source silence never relaxes the absolute ending cap.
+])
+def test_source_measurement_cannot_hide_bad_master_or_excessive_silence(
+        tmp_path, monkeypatch, audible_seconds, source_seconds, source_duration):
+    source = source_voice(tmp_path, source_seconds, duration=source_duration)
+    narrated = narration_master(tmp_path, audible_seconds)
+    mixer = Mock(); monkeypatch.setattr(sound, 'add_native_ambience', mixer)
+    with pytest.raises(SpendBlocked, match='framecase_final_timing_rejected'):
+        sound.finish_master(narrated, [], tmp_path, target_duration=3,
+                            voice_duration=2.4, voice_path=source)
+    mixer.assert_not_called()

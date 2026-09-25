@@ -538,7 +538,7 @@ def _execute(self, source, dispatch, work, checkpoint, client):
             capture_scene_windows=True)
         from app.services.framecase_sound import finish_master
         rendered = finish_master(rendered, selected, work, target_duration=effective,
-                                 voice_duration=voice['duration_after_fit'])
+                                 voice_duration=voice['duration_after_fit'], voice_path=voice_path)
         master_sha = hashlib.sha256(Path(rendered['path']).read_bytes()).hexdigest()
         prepare_visual_review(checkpoint, master_sha)
         _save(client, task, checkpoint)

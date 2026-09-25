@@ -1,18 +1,50 @@
 """Quiet native scene ambience under the unchanged, independently checked voice."""
 from pathlib import Path
+import hashlib
 import json
+import math
+import re
 import subprocess
 
 from app.services.production_spend import SpendBlocked
 
 
-def finish_master(rendered, selected, work, *, target_duration, voice_duration):
+def narration_timing_qc(rendered, target_duration, voice_duration, *, voice_path=None):
     from app.tasks import _strict_short_preview_render_qc
+    timing = _strict_short_preview_render_qc(rendered, target_duration, voice_duration)
+    if voice_path is None or timing.get('reason') != 'final_ending_silence_out_of_bounds':
+        return timing
+    # A qualified take can already contain a natural ending pause. Its file
+    # duration is not its last audible instant. Measure the ORIGINAL voice,
+    # never infer a longer allowance from the rejected master's own silence.
+    from app.services import render
+    duration = render.media_duration(voice_path)
+    if not math.isfinite(duration) or abs(duration - voice_duration) > .05:
+        return {**timing, 'reason': 'source_voice_duration_unverified'}
+    measured = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', str(voice_path),
+        '-map', '0:a:0', '-af', 'silencedetect=noise=-45dB:d=0.10', '-vn', '-f', 'null', '-'],
+        capture_output=True, text=True, check=True, timeout=60)
+    starts = [float(n) for n in re.findall(r'silence_start:\s*([0-9.]+)', measured.stderr)]
+    ends = [float(n) for n in re.findall(r'silence_end:\s*([0-9.]+)', measured.stderr)]
+    if not starts or not ends or not 0 < starts[-1] < ends[-1] or abs(ends[-1] - duration) > .08:
+        return timing
+    # Retain the exact frame-count test, minimum hold, natural duration gate
+    # and absolute 1.55-second tail cap. No speech or picture bytes are edited.
+    observed = _strict_short_preview_render_qc(rendered, target_duration, starts[-1])
+    return {**observed, 'timing_basis': 'measured_original_voice_tail',
+        'source_voice_sha256': hashlib.sha256(Path(voice_path).read_bytes()).hexdigest(),
+        'source_voice_duration_seconds': duration,
+        'source_audible_end_seconds': starts[-1],
+        'source_ending_silence_seconds': duration - starts[-1],
+        'file_duration_timing_qc': timing}
+
+
+def finish_master(rendered, selected, work, *, target_duration, voice_duration, voice_path=None):
     # A room tone or rain may continue after the narrator stops. Measure the
     # unchanged narration-only master before mixing, with the same strict tail
     # and frame-count bounds. The mixer verifies the copied picture frames;
     # the pipeline still transcribes the actual final mix before publication.
-    timing = _strict_short_preview_render_qc(rendered, target_duration, voice_duration)
+    timing = narration_timing_qc(rendered, target_duration, voice_duration, voice_path=voice_path)
     if timing.get('pass') is not True:
         raise SpendBlocked('framecase_final_timing_rejected')
     mixed = add_native_ambience(rendered, selected, work)
