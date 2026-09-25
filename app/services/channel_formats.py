@@ -41,9 +41,13 @@ def daily_limits(channel_id, fallback):
 
 
 def production_limits(channel_id, fallback):
-    """Bound retries separately: two attempts per requested public Short."""
+    """Bound production to three candidates per requested public Short.
+
+    Publication and pending-upload limits still stop work at the owner's
+    target. Rejected candidates retain their original day and provider rows.
+    """
     limits = daily_limits(channel_id, fallback)
-    return {**limits, 'shorts': 2 * limits['shorts']} if shorts_only(channel_id) else limits
+    return {**limits, 'shorts': 3 * limits['shorts']} if shorts_only(channel_id) else limits
 
 
 def allows(channel_id, format_kind):

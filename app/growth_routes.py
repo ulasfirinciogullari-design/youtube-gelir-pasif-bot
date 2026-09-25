@@ -77,6 +77,9 @@ def render(channels, selected, preferences, data, languages, voices_active, *, s
             + ('<p>Bugün plan değişmeden önce yayımlanan ' + str(previous) + ' video yeni plana dahil değildir.</p>' if previous else '')
             + '<p class="growth-note">Türkiye saati. '
             'Sınır dolunca sıradaki gün otomatik devam eder. Sunucudaki zamanlayıcı, bu ekran ve sohbet kapalıyken de çalışır.</p></section>')
+        if cadence.get('wait_reason') == 'production_attempt_limit':
+            body += ('<p class="notice">Yayın hedefi henüz tamamlanmadı; bugünkü üretim denemeleri sınıra ulaştı. '
+                '<a href="/studio/history?status=attention">Kontrolde kalan videoları aç</a>.</p>')
     body += '<nav class="growth-tabs">'+tabs+'</nav><div class="growth-grid"><div><section class="card"><div class="section-head"><h2>Kanalına uygun güncel ilgi</h2></div><p class="tiny">'+source_note+'</p>'+stale_note
     body += cards or '<p class="muted">Şu anda kanala uygun, doğrulanmış bir trend gözlemi yok. Kaynaklı mevcut konular üretilmeye devam eder.</p>'
     body += '<p class="growth-note">Kaynak: Google Trends. Türkiye, ABD, Birleşik Krallık, Brezilya, Hindistan ve Meksika iki saatte bir taranır; haftalık gözlemler korunur. Sayılar YouTube izlenmesi değildir.</p></section>'

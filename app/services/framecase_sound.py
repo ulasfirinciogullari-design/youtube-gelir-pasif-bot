@@ -30,7 +30,8 @@ def narration_timing_qc(rendered, target_duration, voice_duration, *, voice_path
         return timing
     # Retain the exact frame-count test, minimum hold, natural duration gate
     # and absolute 1.55-second tail cap. No speech or picture bytes are edited.
-    observed = _strict_short_preview_render_qc(rendered, target_duration, starts[-1])
+    observed = _strict_short_preview_render_qc(rendered, target_duration, voice_duration,
+        source_audible_end_seconds=starts[-1])
     return {**observed, 'timing_basis': 'measured_original_voice_tail',
         'source_voice_sha256': hashlib.sha256(Path(voice_path).read_bytes()).hexdigest(),
         'source_voice_duration_seconds': duration,

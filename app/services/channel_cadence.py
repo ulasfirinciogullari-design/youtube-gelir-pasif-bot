@@ -247,7 +247,10 @@ if tonumber(ARGV[15]) > 0 then
   end
   local count = 0
   for _, value in pairs(used) do if value == ARGV[14] then count = count + 1 end end
-  if count >= tonumber(ARGV[15]) then return 'daily_limit_wait' end
+  if count >= tonumber(ARGV[15]) then
+    if tonumber(ARGV[16] or '0') > 0 then return 'production_attempt_limit_wait' end
+    return 'daily_limit_wait'
+  end
   redis.call('HSET', KEYS[11], ARGV[9], ARGV[14])
 end
 '''
@@ -377,7 +380,12 @@ def snapshot(channel_id, *, client=None, now=None):
                    for name, rows in values.items()}}
     if policy_id(channel_id):
         previous = _values(client, PREFIX + channel_id + ':published:' + result['date'])
+        public_and_pending = {**values['published'], **values['pending']}
+        attempts = {**values['produced'], **public_and_pending}
+        publication_full = sum(v == 'shorts' for v in public_and_pending.values()) >= limits['shorts']
+        attempts_full = sum(v == 'shorts' for v in attempts.values()) >= production_limits(channel_id, LIMITS)['shorts']
         result.update(policy_id=policy_id(channel_id),
             production_limits=production_limits(channel_id, LIMITS),
+            wait_reason=('publication_limit' if publication_full else 'production_attempt_limit' if attempts_full else None),
             previously_published_today={k: sum(v == k for v in previous.values()) for k in LIMITS})
     return result

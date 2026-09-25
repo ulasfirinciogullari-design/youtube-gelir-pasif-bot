@@ -12,6 +12,7 @@ from copy import deepcopy
 from datetime import datetime, timezone
 import hashlib
 import json
+from time import sleep as _sleep
 
 import httpx
 
@@ -214,16 +215,50 @@ def _legacy_outcome(pipe, ledger, context, prepared, purpose):
     return prior['outcome']
 
 
+def _transient_server_failure(reservation, response):
+    """Only a captured, explicit server error without generated output qualifies."""
+    from app.services.production_included_router import _cipher
+    from app.services.gemini_generation import _reject_duplicate_keys, _reject_non_finite
+    try:
+        raw = _cipher().decrypt(response['encrypted_response'].encode())
+        if (response['http_status'] not in {500, 502, 503, 504}
+                or response['request_sha256'] != reservation['record']['request_sha256']
+                or _sha(raw) != response['response_sha256']):
+            return False
+        value = json.loads(raw, object_pairs_hook=_reject_duplicate_keys, parse_constant=_reject_non_finite)
+        return (type(value) is dict and set(value) == {'error'} and type(value['error']) is dict
+            and type(value['error'].get('code')) is int and value['error']['code'] == response['http_status']
+            and value['error'].get('status') in {'INTERNAL', 'UNAVAILABLE', 'DEADLINE_EXCEEDED'})
+    except Exception:
+        return False
+
+
 @_local_transaction
-def _reserve(foundation, ledger, context, prepared, purpose, native, ceiling):
-    key_hash = _sha(_raw({'endpoint': ENDPOINT, 'body': native, 'purpose': purpose,
-        'credential_sha256': _sha('gemini\0' + runtime.settings.gemini_api_key), 'context': context}))
+def _reserve(foundation, ledger, context, prepared, purpose, native, ceiling, *, transient_parent=None):
+    descriptor = {'endpoint': ENDPOINT, 'body': native, 'purpose': purpose,
+        'credential_sha256': _sha('gemini\0' + runtime.settings.gemini_api_key), 'context': context}
+    if transient_parent is not None:
+        descriptor['transient_parent_response_sha256'] = transient_parent['response']['response_sha256']
+        descriptor['transient_parent_request_sha256'] = transient_parent['record']['request_sha256']
+    key_hash = _sha(_raw(descriptor))
     request_key = PREFIX + 'request:' + key_hash
     response_key = PREFIX + 'response:' + key_hash
     lineage = PREFIX + 'lineage:' + context['lineage_id']
     day = PREFIX + 'day:' + foundation.clock().strftime('%Y-%m-%d')
     with foundation.client.pipeline() as pipe:
         proof = _authorize(pipe, foundation, context['channel_id'], context)
+        if transient_parent is not None:
+            parent = transient_parent['record']; response = transient_parent['response']
+            parent_key = PREFIX + 'request:' + parent['request_sha256']
+            parent_response_key = PREFIX + 'response:' + parent['request_sha256']
+            pipe.watch(parent_key, parent_response_key)
+            _require(pipe.pttl(parent_key) == pipe.pttl(parent_response_key) == -1
+                and pipe.get(parent_key) == _raw(parent) and pipe.get(parent_response_key) == _raw(response)
+                and parent['context'] == context and parent['authority_sha256'] == proof
+                and parent['legacy_request_sha256'] == prepared.request_sha256
+                and parent['purpose'] == purpose and parent['max_list_cost_micro_usd'] == ceiling
+                and _transient_server_failure(transient_parent, response),
+                'commissioning_reasoning_transient_parent_unverified')
         legacy = _legacy_outcome(pipe, ledger, context, prepared, purpose)
         if legacy is not None:
             pipe.multi(); pipe.ping(); _require(pipe.execute() == [True])
@@ -253,6 +288,9 @@ def _reserve(foundation, ledger, context, prepared, purpose, native, ceiling):
             'legacy_request_sha256': prepared.request_sha256,
             'reserved_at': foundation.clock().isoformat(), 'price_revision': PRICE_REVISION,
             'max_list_cost_micro_usd': ceiling, 'historical_cash_micro': None}
+        if transient_parent is not None:
+            row['transient_parent_request_sha256'] = descriptor['transient_parent_request_sha256']
+            row['transient_parent_response_sha256'] = descriptor['transient_parent_response_sha256']
         pipe.multi(); pipe.set(request_key, _raw(row), nx=True)
         pipe.sadd(lineage, key_hash); pipe.sadd(day, key_hash)
         _require(pipe.execute() == [True, 1, 1], 'commissioning_reasoning_reservation_uncertain')
@@ -353,15 +391,26 @@ def generate(prepared, purpose, ledger, foundation, context):
         result = included._result(prepared, reservation['legacy'])
         evidence = reservation['legacy']['evidence']
     else:
-        response = reservation.get('response')
-        if reservation['send']:
-            try:
-                status, raw = _send(native)
-                response = _capture(foundation, reservation, status, raw)
-            except SpendBlocked:
-                raise
-            except Exception:
-                raise SpendBlocked('commissioning_reasoning_outcome_unknown') from None
+        for attempt in range(3):
+            response = reservation.get('response')
+            if reservation['send']:
+                try:
+                    status, raw = _send(native)
+                    response = _capture(foundation, reservation, status, raw)
+                except SpendBlocked:
+                    raise
+                except Exception:
+                    raise SpendBlocked('commissioning_reasoning_outcome_unknown') from None
+            if attempt == 2 or not _transient_server_failure(reservation, response):
+                break
+            # Retain the original failed receipt. Each additional HTTP request
+            # gets a distinct immutable admission under the same day/lineage
+            # limits. Replays follow this exact chain and never resend a slot.
+            parent = {'record': reservation['record'], 'response': response}
+            _sleep(1 + attempt)
+            reservation = _reserve(foundation, ledger, context, prepared, purpose, native, ceiling,
+                transient_parent=parent)
+            _require('legacy' not in reservation)
         from app.services.commissioning_visual_completion import IncompleteNativeVisualReview, complete
         incomplete = None
         try:

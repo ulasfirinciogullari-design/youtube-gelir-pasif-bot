@@ -1590,6 +1590,23 @@ def _comparison_units(
     units: list[tuple[str, tuple[str, ...]]] = []
     index = 0
     while index < len(tokens):
+        from app.services.audio_turkish_decades import decade_unit
+        decade = decade_unit(tokens, index, value, matches)
+        if decade is not None:
+            key, consumed = decade
+            units.append((key, tuple(tokens[index:index + consumed])))
+            index += consumed
+            continue
+        # LEGO's own history confirms Ole Kirk used both surname spellings:
+        # https://www.lego.com/en-us/history/articles/a-kristiansen-or-christiansen
+        # Bind only his complete name, never arbitrary surnames or other people.
+        if (tokens[index] in {'christiansen', 'kristiansen'} and index >= 2
+                and tokens[index - 2:index] == ['ole', 'kirk']
+                and all(value[matches[i].end():matches[i + 1].start()].isspace()
+                        for i in (index - 2, index - 1))):
+            units.append(('\x00ole_kirk_surname', (tokens[index],)))
+            index += 1
+            continue
         # Turkish printing terminology: recognizers sometimes spell the loan
         # word as English "typo". Require the immediately adjacent printing
         # noun; never alias bare words or an English writing-error reference.

@@ -129,6 +129,10 @@ def render_page(channels, selected, view, *, notice='', error=False):
             + '/' + str(limit) + '</b><span>BU PLANDA BUGÜN YAYIMLANAN</span></div></div>'
             '<p>Uzun video üretimi kapalı. Bu kanal Türkiye saatiyle günde en fazla ' + str(limit) + ' Shorts yayımlar. Sınır dolunca ertesi gün otomatik devam eder.</p>'
             + ('<p>Plan değişikliğinden önce bugün yayımlanan ' + str(previous) + ' video geçmişte saklanır; yeni plana dahil değildir.</p>' if previous else '') + '</section>')
+        if cadence.get('wait_reason') == 'production_attempt_limit':
+            cadence_card += ('<section class="planner-box"><h2>Yayın hedefi henüz tamamlanmadı</h2>'
+                '<p>Bugünkü üretim denemeleri sınıra ulaştı. Kontrolü geçemeyen videolar yayımlanmadı.</p>'
+                '<a href="/studio/history?status=attention">Kontrolde kalan videoları aç</a></section>')
     format_labels = {'shorts': 'Shorts · yaklaşık 30 saniye', 'long': 'Uzun video · 3 dakika',
                      'animation': 'Animasyon pilotu · hazırlık sırasına ekle'}
     if framecase:

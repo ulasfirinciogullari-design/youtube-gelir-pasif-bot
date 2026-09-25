@@ -82,6 +82,38 @@ def test_actual_accepted_voice_pause_is_measured_without_editing_audio_or_loosen
     assert before == {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in before}
 
 
+def test_source_pause_does_not_replace_qualified_file_duration(tmp_path):
+    # Capital's accepted file was 28.872s, with speech ending at 28.567979s.
+    # The audible endpoint is valid tail evidence, not a new voice-duration
+    # candidate to reject against the 28.7s minimum. Use the same offsets on
+    # a three-second native master to exercise actual silence measurement.
+    source = source_voice(tmp_path, 1.567979, duration=1.872)
+    narrated = narration_master(tmp_path, 1.567979)
+    before = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in (source, tmp_path/'final.mp4')}
+    result = sound.narration_timing_qc(narrated, 3, 1.872, voice_path=source)
+    assert result['pass'] is True
+    assert result['timing_basis'] == 'measured_original_voice_tail'
+    assert result['source_voice_duration_seconds'] == pytest.approx(1.872, abs=.001)
+    assert 1.56 < result['source_audible_end_seconds'] < 1.58
+    assert 1.42 < result['ending_silence_seconds'] < 1.45
+    assert result['maximum_ending_silence_seconds'] == 1.55
+    assert before == {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in before}
+
+
+@pytest.mark.parametrize('audible_end', [float('nan'), float('inf'), -1, 0, True, '28', 29])
+def test_invalid_source_endpoint_cannot_supply_an_allowance(audible_end):
+    result = _strict_short_preview_render_qc({'frame_count': 900, 'ending_silence_seconds': 1.432},
+        30, 28.872, source_audible_end_seconds=audible_end)
+    assert result['pass'] is False and result['reason'] == 'final_source_timing_invalid'
+
+
+def test_original_file_duration_and_absolute_tail_cap_remain_independent_requirements():
+    for file_seconds, audible_end, silence in [(25, 24.8, 1.432), (28.872, 28.4, 1.6)]:
+        result = _strict_short_preview_render_qc({'frame_count': 900, 'ending_silence_seconds': silence},
+            30, file_seconds, source_audible_end_seconds=audible_end)
+        assert result['pass'] is False
+
+
 @pytest.mark.parametrize('audible_seconds,source_seconds,source_duration', [
     (2.05, 2.4, 2.4),  # A truncated master cannot claim a nonexistent source pause.
     (2.05, 1.6, 2.4),  # The master's audible ending must match the real source.

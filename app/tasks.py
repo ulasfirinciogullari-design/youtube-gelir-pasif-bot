@@ -1985,6 +1985,8 @@ def _strict_short_preview_render_qc(
     rendered: dict,
     requested_seconds: float,
     voice_duration_seconds: float,
+    *,
+    source_audible_end_seconds: float | None = None,
 ) -> dict:
     """Keep the fixed master and its audible ending aligned fail-closed."""
     voice_gate = _short_preview_voice_duration_qc(
@@ -2025,7 +2027,17 @@ def _strict_short_preview_render_qc(
         }
 
     expected_frames = int(round(requested * 30))
-    expected_hold = max(0.0, requested - voice_duration)
+    # The qualified file duration and its last audible sample answer different
+    # questions. A measured original pause must not turn the audible endpoint
+    # into a shorter voice candidate and fail the already-passed duration gate.
+    audible_end = voice_duration if source_audible_end_seconds is None else source_audible_end_seconds
+    if (type(audible_end) not in (int, float) or not math.isfinite(audible_end)
+            or not 0 < audible_end <= voice_duration):
+        return {'pass': False, 'reason': 'final_source_timing_invalid',
+            'expected_frames': expected_frames, 'actual_frames': actual_frames,
+            'ending_silence_seconds': ending_silence,
+            'minimum_ending_silence_seconds': None, 'maximum_ending_silence_seconds': None}
+    expected_hold = max(0.0, requested - audible_end)
     # The master is quantized to 30 fps while silence is measured in audio
     # samples. Allow at most one picture frame beyond the existing natural
     # tail/codec allowance. Keep the absolute cap and exact frame-count check.
