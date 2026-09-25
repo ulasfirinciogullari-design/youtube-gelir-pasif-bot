@@ -2517,6 +2517,14 @@ def _sync_job(task_id: str) -> dict:
     record = get_job(task_id) or {'task_id': task_id, 'spec': {}, 'state': 'PENDING', 'progress': 0}
     if record.get('state') == 'CANCELLED':
         return record  # An old Celery result is not authority to undo owner cancellation.
+    spec = record.get('spec') if isinstance(record.get('spec'), dict) else {}
+    framecase_render = (record.get('kind', 'render') == 'render'
+        and spec.get('framecase_animation') is True)
+    if (framecase_render and type(record.get('framecase_resume_attempt')) is int
+            and record['framecase_resume_attempt'] > 0):
+        # Continuations have separate Celery IDs and persist into the original
+        # source. Its first delivery's backend result is permanently stale.
+        return record
     task = AsyncResult(task_id, app=celery)
     state = task.state
 
@@ -2529,6 +2537,8 @@ def _sync_job(task_id: str) -> dict:
             record = mark_failure(task_id, error)
     elif state == 'SUCCESS':
         result = task.result if isinstance(task.result, dict) else {'result': str(task.result)}
+        if framecase_render and result.get('status') in {'stopped', 'already_running'}:
+            return record  # Completing the delivery is not completing a film.
         if result.get('task_id') is not None and result['task_id'] != task_id:
             return record
         if result.get('source_task_id') is not None:
