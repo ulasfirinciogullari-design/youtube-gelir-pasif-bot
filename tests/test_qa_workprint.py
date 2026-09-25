@@ -309,3 +309,22 @@ def test_actual_master_probe_requires_900_portrait_frames_with_audio(monkeypatch
         qa_workprint._probe(Path('fixture.mp4'))
     assert calls[0][0][calls[0][0].index('-protocol_whitelist') + 1] == 'file,pipe'
     assert calls[0][1]['timeout'] == 60
+
+
+@pytest.mark.parametrize('observer_fails', [False, True])
+def test_diagnostic_progress_keeps_identical_private_media_and_metadata(case, monkeypatch, observer_fails):
+    first = persist(case); first_uploads = deepcopy(case.uploads)
+    original = qa_workprint.render_video; events = []
+    def observer(*event):
+        events.append(event)
+        if observer_fails: raise ConnectionError('display unavailable')
+    def render(**kwargs):
+        qa_workprint._notify_render_progress(kwargs.get('progress_callback'), 'segments', 3, 6)
+        return original(**kwargs)
+    monkeypatch.setattr(qa_workprint, 'render_video', render)
+    case.uploads.clear()
+    second = persist(case, progress_callback=observer)
+    assert second == first
+    assert case.uploads == first_uploads
+    assert events == [('segments', 3, 6), ('upload', 6, 6)]
+    assert second['qa_workprint']['publish_eligible'] is False

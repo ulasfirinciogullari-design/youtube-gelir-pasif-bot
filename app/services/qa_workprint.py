@@ -18,7 +18,7 @@ from uuid import UUID
 
 from app.services import storage
 from app.services.audio_checkpoint import _local_candidate_path
-from app.services.render import media_duration, render_video
+from app.services.render import media_duration, render_video, _notify_render_progress
 from app.services.visual_allocation_checkpoint import _review, _text, _work_path
 
 
@@ -158,6 +158,7 @@ def persist_qa_workprint(
     scene_visuals: list[list[dict]], final_reviews: dict[int, dict],
     voice_result: dict, scene_durations: list[float], narration: str,
     options: dict, voice_quality_passed: bool, target_seconds: float = 30.0,
+    progress_callback=None,
 ) -> dict:
     """Return only ``qa_workprint``; unavailable diagnostics return an empty dict.
 
@@ -227,6 +228,7 @@ def persist_qa_workprint(
                 narration=narration, output_path=output, scenes=clean_scenes,
                 scene_durations=durations, scene_visual_paths=selected,
                 target_duration=target_seconds, output_resolution=resolution,
+                progress_callback=progress_callback,
             )
             output = _file(output, work, maximum_video)
             if long:
@@ -251,6 +253,7 @@ def persist_qa_workprint(
                 return {}
             metadata_sha = hashlib.sha256(payload).hexdigest()
             metadata_key = f'{prefix}{metadata_sha}.json'
+            _notify_render_progress(progress_callback, 'upload', len(selected), len(selected))
             client = storage._client()
             _put_immutable(client, metadata_key, io.BytesIO(payload), len(payload), metadata_sha, 'application/json')
             with output.open('rb') as incoming:

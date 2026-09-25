@@ -25,8 +25,8 @@ def _archive(raw):
     return value
 
 
-def _settled_providers(pipe, read, root):
-    """Do not advance while a native model or media result remains unknown."""
+def _settled_providers(pipe, read, root, *, retained_fal=None):
+    """Keep financial uncertainty reserved; only a verified terminal cut may detach."""
     from app.services import commissioning_reasoning as reasoning, commissioning_video as video
     from app.services import production_credit_ledger as credit, production_included_router as included
     key = reasoning.PREFIX + 'lineage:' + root; pipe.watch(key)
@@ -46,7 +46,15 @@ def _settled_providers(pipe, read, root):
         journal = plan._object(native_raw)
         plan._require(journal.get('context', {}).get('lineage_id') == root
             and len(journal.get('requests', {})) <= 32)
-        for row in journal['requests'].values():
+        if retained_fal is not None:
+            plan._require({key: plan._sha(row) for key, row in journal['requests'].items()}
+                          == retained_fal['video_records'])
+        unresolved = []
+        for identity, row in journal['requests'].items():
+            if (retained_fal is not None and identity in retained_fal['unknown_requests']):
+                plan._require(row.get('create') is None and row.get('result') is None)
+                unresolved.append(identity)
+                continue
             created = row.get('create') or {}; status = created.get('http_status')
             if status in {400, 422, 429}:
                 plan._require(created.get('encrypted_response') and created.get('response_sha256'))
@@ -58,6 +66,14 @@ def _settled_providers(pipe, read, root):
                 value = video._payload(result)
                 plan._require(value.get('done') is True or isinstance(value.get('video'), dict))
         evidence['native_video'] = plan._sha(native_raw)
+        if retained_fal is not None:
+            plan._require(sorted(unresolved) == retained_fal['unknown_requests'])
+            evidence['reserved_fal_unknowns'] = {
+                'request_sha256s': sorted(unresolved), 'cut_claim_sha256': retained_fal['cut_claim_sha256'],
+                'financial_status': 'unresolved_reserved', 'retry_authorized': False,
+                'refund_authorized': False, 'daily_capacity_released': False}
+    elif retained_fal is not None:
+        raise plan.ContentPlanError('plan_invalid')
     pipe.watch(credit.STATE_KEY)
     credit_state = pipe.hgetall(credit.STATE_KEY)
     if credit_state:
@@ -179,7 +195,9 @@ def isolate(source, *, client=None, observe_only=False):
                 and source['failure_classification'].get('error_sha256') == hashlib.sha256(error.encode()).hexdigest())
         if source['failure_stage'] == 'voice_and_visuals':
             plan._require(source['failure_classification'].get('error_sha256') == hashlib.sha256(error.encode()).hexdigest())
-        provider_evidence = _settled_providers(pipe, read, dispatch['task_id'])
+        from app.services.content_plan_fal_cut_resume import attention_provider_proof
+        retained_fal = attention_provider_proof(source, dispatch['task_id'], client=pipe)
+        provider_evidence = _settled_providers(pipe, read, dispatch['task_id'], retained_fal=retained_fal)
         if observe_only:
             return {'status': 'eligible_for_attention', 'source_task_id': task,
                 'lineage_records': len(original_jobs), 'captured_provider_groups': len(provider_evidence),

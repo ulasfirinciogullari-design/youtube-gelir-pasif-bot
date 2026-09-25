@@ -191,3 +191,40 @@ def prepare(task, source_id, spec, work):
         'original_source_task_id': ancestor['task_id'], 'moved_cuts': proof['moved_cuts'],
         'new_tts_requests': 0, 'new_video_requests': 0, 'requires_full_qa': True})
     return result
+
+
+def attention_provider_proof(source, root, *, client):
+    """Archive a terminal rejected correction while retaining its unknown charges.
+
+    This disposition is not a retry, refund, completion or publication grant.
+    It only prevents a fully stopped standalone film from owning the channel's
+    queue indefinitely. The ordinary attention transaction verifies its terminal
+    QA, all ancestors, owner holds, uploads, dependencies and daily reservation.
+    """
+    correction = source.get('retained_cut_correction')
+    if correction is None:
+        return None
+    task = plan._id(source['task_id']); parent = plan._id(source.get('parent_id'))
+    client.watch(DISPATCH + parent, EXECUTION + parent, ROOT + root,
+                 jobs.PAID_CREATE_BUDGET_PREFIX + task)
+    old, found_root, evidence, ancestor, previous = checked(client, parent, claimed=True)
+    claim = _claim(parent, root, evidence)
+    plan._require(found_root == root and source.get('state') == 'FAILURE'
+        and source.get('failure_stage') == 'final_visual_qc_rescue'
+        and task == str(uuid5(NAMESPACE_URL, 'owner-plan-fal-cut-child:v1:' + parent))
+        and old.get('retry_child_task_id') == task and source['spec'] == old['spec']
+        and client.get(DISPATCH + parent) == client.get(ROOT + root) == plan._raw(claim)
+        and client.get(EXECUTION + parent) == operation(parent)
+        and source.get('paid_create_slots_used') == 0
+        and client.hgetall(jobs.PAID_CREATE_BUDGET_PREFIX + task) == {'cap': '32', 'used': '0'}
+        and not source.get('generated_asset_candidates')
+        and source.get('audio_candidate_checkpoint', {}).get('audio_sha256') == previous['transcript']['audio_sha256']
+        and correction == {'version': 1, 'source_task_id': parent,
+            'original_source_task_id': ancestor['task_id'], 'moved_cuts': evidence['moved_cuts'],
+            'new_tts_requests': 0, 'new_video_requests': 0, 'requires_full_qa': True})
+    retained = source.get('retained_long_media') or {}
+    plan._require(retained.get('source_task_id') == parent and retained.get('stock_only') is True
+        and retained.get('new_tts_requests') == retained.get('new_video_requests') == 0
+        and previous['unknown_requests'] and previous['accepted_outputs'])
+    return {'cut_claim_sha256': plan._sha(claim), 'video_records': previous['video_records'],
+            'unknown_requests': previous['unknown_requests']}

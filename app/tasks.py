@@ -1664,6 +1664,24 @@ def _checkpoint_qa_workprint(
                 and 30 < effective_edit_target_seconds <= 40):
             target = effective_edit_target_seconds
 
+        def report_workprint_progress(phase, completed, total):
+            messages = {
+                'assembly': 'Kaliteye takılan videonun inceleme kopyası birleştiriliyor.',
+                'audio': 'İnceleme kopyasına mevcut anlatım ekleniyor.',
+                'checks': 'İnceleme kopyasının oynatılabilirliği doğrulanıyor.',
+                'upload': 'İzleyebilmen için inceleme kopyası kaydediliyor.',
+            }
+            message = (f'Kaliteye takılan videonun inceleme kopyası hazırlanıyor: '
+                       f'{completed}/{total} sahne.' if phase == 'segments' else messages.get(phase))
+            if message:
+                try:
+                    # Only display fields: keep the actual failed-QA stage and
+                    # its original verdict, spending and publication authority.
+                    update_job(task_id, message=message, qa_workprint_progress={
+                        'phase': phase, 'completed': completed, 'total': total})
+                except Exception:
+                    pass
+
         # Keep full candidate pools and their exact final best indices. The
         # helper understands already-collapsed selected singletons; rejected
         # multi-candidate scenes must not silently fall back to their first clip.
@@ -1673,7 +1691,7 @@ def _checkpoint_qa_workprint(
             final_reviews=deepcopy(final_reviews), voice_result=deepcopy(voice_result),
             scene_durations=deepcopy(scene_durations), narration=narration,
             options=deepcopy(options), voice_quality_passed=True,
-            target_seconds=target,
+            target_seconds=target, progress_callback=report_workprint_progress,
         )
         pointer = fields.get('qa_workprint') if isinstance(fields, dict) else None
         if (

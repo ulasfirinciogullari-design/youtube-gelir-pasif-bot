@@ -174,3 +174,102 @@ def test_server_tick_routes_proven_cut_before_editorial_disposition(failed_cut, 
         repair.assert_called_once()
     normal.assert_not_called()
     assert all(c.dump(k) == value for k, value in before.items())
+
+
+@pytest.fixture
+def rejected_correction(failed_cut):
+    from datetime import datetime, timezone
+    from test_qa_workprint_access import pointer
+    from app.services import channel_cadence as cadence
+    r = failed_cut; c = r.client; parent = r.source['task_id']
+    cut.schedule(r.source, Mock()); task = cut.run(parent, cut.operation(parent))['task_id']
+    assert jobs.acquire_retry_child_execution(task, parent)
+    _, _, proof, ancestor, _ = cut.checked(c, parent, claimed=True)
+    source = deepcopy(r.source)
+    source.update(task_id=task, parent_id=parent,
+        retained_cut_correction={'version':1,'source_task_id':parent,
+            'original_source_task_id':ancestor['task_id'],'moved_cuts':proof['moved_cuts'],
+            'new_tts_requests':0,'new_video_requests':0,'requires_full_qa':True},
+        retained_long_media={'source_task_id':parent,'stock_only':True,
+            'new_tts_requests':0,'new_video_requests':0,'requires_full_qa':True})
+    p = pointer(); old = p['task_id']
+    p.update(task_id=task, version=4, width=1920, height=1080, duration_seconds=180., frame_count=5400)
+    p['key'] = p['key'].replace(old,task); p['metadata_key'] = p['metadata_key'].replace(old,task)
+    source['qa_workprint'] = p
+    c.set(jobs.JOB_PREFIX+task,plan._raw(source))
+    c.hset(jobs.PAID_CREATE_BUDGET_PREFIX+task,mapping={'cap':'32','used':'0'})
+    terminal = plan._object(c.get('celery-task-meta-'+parent))
+    terminal.update(task_id=task,date_done=datetime.now(timezone.utc).isoformat())
+    c.set('celery-task-meta-'+task,plan._raw(terminal))
+    channel = source['spec']['production_channel_id']
+    document=plan.read(channel,client=c)
+    plan.change(channel,document['revision'],'settings',payload={'enabled':True,'after_queue':'auto_shorts'},client=c)
+    c.hset(cadence.keys(channel)[0],r.root,'long')
+    return SimpleNamespace(**{**vars(r),'source':source,'channel':channel})
+
+
+@pytest.mark.parametrize('damage', [None, 'claim', 'unknown_changed', 'known_unfinished',
+    'paid', 'live', 'missing_terminal', 'upload', 'owner_hold', 'audio', 'new_asset', 'unknown_model'])
+def test_terminal_correction_can_detach_but_never_release_unknown_charges(rejected_correction, damage):
+    from app.services import content_plan_attention as attention, channel_cadence as cadence
+    from app.services import commissioning_reasoning as reasoning
+    from app.services.youtube_publish_state import UPLOAD_PREFIX
+    r = rejected_correction; c = r.client; source = r.source; task = source['task_id']
+    if damage == 'claim': c.delete(cut.EXECUTION+source['parent_id'])
+    if damage == 'unknown_changed':
+        journal=plan._object(c.get(video.PREFIX+r.root))
+        next(row for row in journal['requests'].values() if row['result'] is None)['reserved_at']='2026-09-25T01:44:00+00:00'
+        c.set(video.PREFIX+r.root,plan._raw(journal))
+    if damage == 'known_unfinished':
+        journal=plan._object(c.get(video.PREFIX+r.root))
+        next(row for row in journal['requests'].values() if row['result'] is not None)['result']=None
+        c.set(video.PREFIX+r.root,plan._raw(journal))
+    if damage == 'paid': source['paid_create_slots_used']=1
+    if damage == 'live': source['state']='PROGRESS'
+    if damage == 'missing_terminal': c.delete('celery-task-meta-'+task)
+    if damage == 'upload': c.set(UPLOAD_PREFIX+task,plan._raw({'status':'uncertain'}))
+    if damage == 'owner_hold': source['publication_hold']={'reason':'owner'}
+    if damage == 'audio': source['audio_candidate_checkpoint']['audio_sha256']='f'*64
+    if damage == 'new_asset': source['generated_asset_candidates']={'entries':['new']}
+    if damage == 'unknown_model':
+        c.sadd(reasoning.PREFIX+'lineage:'+r.root,'unknown-model')
+        c.set(reasoning.PREFIX+'request:unknown-model',plan._raw({'context':{'lineage_id':r.root}}))
+    c.set(jobs.JOB_PREFIX+task,plan._raw(source))
+    before={k:c.dump(k)for k in c.scan_iter()};entry=source['spec']['content_plan_item_id']
+    if damage:
+        try: assert attention.isolate(source,client=c) is None
+        except (plan.ContentPlanError,ValueError,TypeError): pass
+        assert {k:c.dump(k)for k in c.scan_iter()} == before
+    else:
+        assert attention.isolate(source,client=c,observe_only=True)['state_writes']==0
+        assert {k:c.dump(k)for k in c.scan_iter()} == before
+        assert attention.isolate(source,client=c)=='attention_archived'
+        assert not plan.owns_channel(r.channel)
+        assert not c.exists(plan.COMPLETION_PREFIX+entry)
+        assert cadence.snapshot(r.channel,client=c)['counts']['produced']['long']==1
+        assert cadence.daily_editorial(r.channel,{},client=c)['format']=='shorts'
+        archive=plan._object(c.get(attention.PREFIX+entry))
+        proof=archive['provider_evidence']['reserved_fal_unknowns']
+        assert proof['financial_status']=='unresolved_reserved'
+        assert proof['retry_authorized'] is proof['refund_authorized'] is proof['daily_capacity_released'] is False
+        assert len(proof['request_sha256s'])==1
+        for key,value in before.items():
+            if key not in {plan.PLAN_PREFIX+r.channel,plan.ACTIVE_KEY}: assert c.dump(key)==value
+
+
+def test_unknown_fal_receipt_race_cannot_detach_the_terminal_film(rejected_correction, monkeypatch):
+    from redis.exceptions import WatchError
+    from app.services import content_plan_attention as attention
+    r=rejected_correction;c=r.client;source=r.source;entry=source['spec']['content_plan_item_id']
+    document=c.get(plan.PLAN_PREFIX+r.channel);active=c.get(plan.ACTIVE_KEY)
+    execute=type(c.pipeline()).execute
+    def change_before_commit(pipe,*args,**kwargs):
+        journal=plan._object(c.get(video.PREFIX+r.root))
+        next(row for row in journal['requests'].values()if row['result'] is None)['reserved_at']='2026-09-25T01:44:00+00:00'
+        c.set(video.PREFIX+r.root,plan._raw(journal))
+        return execute(pipe,*args,**kwargs)
+    monkeypatch.setattr(type(c.pipeline()),'execute',change_before_commit)
+    with pytest.raises(WatchError):attention.isolate(source,client=c)
+    assert c.get(plan.PLAN_PREFIX+r.channel)==document and c.get(plan.ACTIVE_KEY)==active
+    assert not c.exists(attention.PREFIX+entry,plan.COMPLETION_PREFIX+entry)
+    assert plan._object(c.get(jobs.JOB_PREFIX+source['task_id']))==source

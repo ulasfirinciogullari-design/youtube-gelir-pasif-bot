@@ -181,3 +181,29 @@ def test_pipeline_hook_occurs_once_only_after_final_rescue_and_before_rejection(
     hook = source.index('_checkpoint_qa_workprint(', source.index('if rejected_final_scenes:'))
     error = source.index("'Final visual quality gate rejected: '", hook)
     assert rescue < hook < error
+
+
+@pytest.mark.parametrize('observer_fails', [False, True])
+def test_workprint_progress_cannot_change_quality_or_publication_state(case, observer_fails):
+    before = deepcopy(case.job)
+    def render_and_report(*args, **kwargs):
+        report = kwargs['progress_callback']
+        for phase, completed in [('segments', 0), ('segments', 6), ('assembly', 6),
+                                  ('audio', 6), ('checks', 6), ('upload', 6)]:
+            report(phase, completed, 6)
+        return {'qa_workprint': case.pointer}
+    case.helper.side_effect = render_and_report
+    if observer_fails:
+        original = case.namespace['update_job']
+        def unavailable(task, **fields):
+            if 'message' in fields: raise ConnectionError('display unavailable')
+            original(task, **fields)
+        case.namespace['update_job'] = unavailable
+    _call(case)
+    assert case.job['qa_workprint'] == case.pointer
+    assert {k:case.job[k] for k in before} == before
+    if not observer_fails:
+        assert case.job['qa_workprint_progress'] == {'phase':'upload', 'completed':6, 'total':6}
+        assert 'kaydediliyor' in case.job['message']
+        assert any('6/6' in row.get('message','') for row in case.writes)
+        assert all(set(row) <= {'message','qa_workprint_progress','qa_workprint'} for row in case.writes)
