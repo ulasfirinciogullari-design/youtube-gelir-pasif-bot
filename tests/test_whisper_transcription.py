@@ -366,7 +366,7 @@ def test_price_review_expires_before_audio_is_read(case, monkeypatch):
     class Expired(datetime):
         @classmethod
         def now(cls, _):
-            return cls(2026, 10, 1, tzinfo=timezone.utc)
+            return whisper._VALID_UNTIL
     monkeypatch.setattr(whisper, 'datetime', Expired)
     read = Mock()
     monkeypatch.setattr(whisper, '_read_audio', read)

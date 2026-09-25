@@ -97,6 +97,64 @@ def test_timeout_keeps_reservation_and_never_sends_again(box):
     assert setup.status(box.client)['unknown_requests'] == 1
 
 
+def continuous(box):
+    from app.services import production_continuation as authority
+    authority.initialize(box.client, {'version': 1, 'kind': 'continuous_commissioning',
+        'allowed_channels': [CHANNEL], 'authorized_at': NOW.isoformat(),
+        'owner_evidence_sha256': 'f' * 64})
+    return authority
+
+
+def test_expired_grant_reuses_paid_response_but_cannot_buy_without_continuation(box, monkeypatch):
+    setup.commission(box.client, box.policy); run(box)
+    original = box.client.get(setup.POLICY_KEY); history = box.client.get(setup.JOURNAL_KEY)
+    monkeypatch.setattr(setup, '_now', lambda: NOW + timedelta(days=3))
+    assert run(box).json()['text'] == 'Hello there.'
+    assert setup.status(box.client)['legacy_grant_expired'] is True
+    box.path.write_bytes(_wav(amplitude=1))
+    with pytest.raises(SpendBlocked, match='expired'): run(box)
+    assert box.client.get(setup.POLICY_KEY) == original and box.client.get(setup.JOURNAL_KEY) == history
+    box.sender.assert_called_once()
+
+
+def test_active_continuation_after_setup_expiry_keeps_grant_all_history_and_unknowns(box, monkeypatch):
+    setup.commission(box.client, box.policy); run(box); authority = continuous(box)
+    original = box.client.get(setup.POLICY_KEY)
+    old = json.loads(box.client.get(setup.JOURNAL_KEY))['requests']
+    monkeypatch.setattr(setup, '_now', lambda: NOW + timedelta(days=3))
+    box.path.write_bytes(_wav(amplitude=1)); run(box)
+    rows = json.loads(box.client.get(setup.JOURNAL_KEY))['requests']
+    assert all(rows[k] == v for k,v in old.items()) and len(rows) == 2
+    added = next(v for k,v in rows.items() if k not in old)
+    assert added['continuation_authority_sha256'] == box.client.get(authority.ANCHOR_KEY)
+    assert box.client.get(setup.POLICY_KEY) == original and box.sender.call_count == 2
+    box.client.delete(authority.ACTIVE_KEY)
+    assert run(box).json()['text'] == 'Hello there.'  # No new request after deactivation.
+    box.path.write_bytes(_wav(amplitude=2))
+    with pytest.raises(SpendBlocked, match='expired'): run(box)
+    assert box.sender.call_count == 2
+
+
+def test_unknown_asr_cannot_be_rebought_after_expiry_or_continuation_activation(box, monkeypatch):
+    setup.commission(box.client, box.policy)
+    box.sender.side_effect = httpx.ReadTimeout('unknown')
+    with pytest.raises(whisper.WhisperTranscriptionError): run(box)
+    history = box.client.get(setup.JOURNAL_KEY); continuous(box)
+    monkeypatch.setattr(setup, '_now', lambda: NOW + timedelta(days=3))
+    with pytest.raises(SpendBlocked, match='previous_outcome_unknown'): run(box)
+    assert box.client.get(setup.JOURNAL_KEY) == history
+    box.sender.assert_called_once()
+
+
+def test_operating_budget_cannot_be_bypassed_by_continuation(box):
+    setup.commission(box.client, box.policy); continuous(box)
+    box.foundation.policy = SpendPolicy(*([1_000_000] * 6))
+    history = box.client.get(setup.JOURNAL_KEY)
+    with pytest.raises(SpendBlocked, match='zero_policy_required'): run(box)
+    assert box.client.get(setup.JOURNAL_KEY) == history
+    box.sender.assert_not_called()
+
+
 def test_verified_probe_is_imported_without_a_second_charge_or_qa_approval(box):
     setup.commission(box.client, box.policy)
     raw, suffix = whisper._read_audio(box.path)

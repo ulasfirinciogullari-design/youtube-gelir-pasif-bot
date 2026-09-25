@@ -3,7 +3,7 @@
 Separate from included Abacus credits and the final operating budget. Each
 native request is reserved before transport; unknown attempts are never resent.
 An explicit worker switch plus current channel/owner authority is mandatory.
-Standard Gemini 3.7 Flash rates reviewed 2026-09-22 at
+Standard Gemini 3.7 Flash rates rechecked 2026-09-25 at
 https://ai.google.dev/gemini-api/docs/pricing#gemini-3.7-flash :
 $0.75/M input, $3.75/M output (including thinking). Full context is a list-cost
 reservation, never a claimed invoice. Tools/search/cache purchases are absent.
@@ -23,7 +23,9 @@ PREFIX = 'youtube_studio:commissioning:v1:reasoning:'
 MODEL = 'gemini-3.7-flash'
 ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/' + MODEL + ':generateContent'
 PRICE_REVISION = 'gemini37-commissioning-2026-09-22-v1'
-PRICE_UNTIL = datetime(2026, 10, 1, tzinfo=timezone.utc)
+# The published introductory rates end December 31; do not apply them to
+# January requests. Same rates/revision preserve existing request identities.
+PRICE_UNTIL = datetime(2027, 1, 1, tzinfo=timezone.utc)
 MAX_INPUT = 1_048_576
 MAX_RESPONSE = 2 * 1024 * 1024
 MAX_LINEAGE = 80

@@ -74,8 +74,27 @@ def _foundation(pipe, foundation):
 
 
 def _binding(pipe, channel, connection):
+    if channel not in CHANNELS:
+        from app.services import framecase_kie_voice
+        require(channel == framecase_kie_voice.CHANNEL_ID, 'kie_voice_channel_not_authorized')
+        grant = framecase_kie_voice.read(pipe)
+        require(grant is not None and grant['connection_id'] == connection,
+                'kie_voice_channel_not_authorized')
+    return _connected_owner(pipe, channel, connection)
+
+
+def channel_connection(pipe, policy, channel):
+    if channel in CHANNELS:
+        return policy['channels'][channel]
+    from app.services import framecase_kie_voice
+    if channel != framecase_kie_voice.CHANNEL_ID:
+        return None
+    grant = framecase_kie_voice.read(pipe, policy)
+    return grant['connection_id'] if grant is not None else None
+
+
+def _connected_owner(pipe, channel, connection):
     from app.services import production_spend_runtime as runtime, production_continuation as continuation
-    require(channel in CHANNELS, 'kie_voice_channel_not_authorized')
     key = runtime._CHANNEL_PREFIX + channel
     pipe.watch(key, runtime._CHANNEL_INDEX)
     row = json.loads(pipe.get(key))
@@ -209,8 +228,11 @@ def _scope(pipe, foundation, policy, scope):
     require(scope == runtime.resolve_context(foundation.client, runtime._TASK_ID.get()),
         'kie_voice_runtime_scope_changed')
     require(scope.get('kind') in {'shorts', 'long'} and 'purpose' not in scope)
-    require(policy['channels'].get(scope['channel_id']) == scope['connection_id'])
+    require(channel_connection(pipe, policy, scope['channel_id']) == scope['connection_id'])
     _binding(pipe, scope['channel_id'], scope['connection_id'])
+    if scope['channel_id'] not in CHANNELS:
+        from app.services.framecase_kie_voice import authorize_context
+        authorize_context(pipe, scope)
     if scope['kind'] == 'long':
         from app.services.commissioning_longform import authorize
         authorize(pipe, scope)
@@ -239,6 +261,9 @@ class Journal:
                 require(gemini.read(pipe, policy) is not None, 'kie_voice_model_not_authorized')
                 text, voice, expected_ceiling, language = gemini.describe(self.body)
                 require(self.scope.get('language', language) == language)
+                from app.services.framecase_cadence import CHANNEL_ID as framecase_channel
+                if self.scope.get('channel_id') == framecase_channel:
+                    require(language == 'en', 'framecase_kie_language_unverified')
             else:
                 require(self.body.get('model') in api.RATES)
                 text, voice = self.body['input']['text'], self.body['input']['voice']

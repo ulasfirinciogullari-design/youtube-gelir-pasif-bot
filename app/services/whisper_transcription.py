@@ -34,7 +34,9 @@ NATURAL_SHORT_MAX_SAMPLES = 1_923_840  # 40.08 seconds; still within the reserve
 _SAMPLE_RATE = 48_000
 _MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 _VALID_FROM = datetime(2026, 9, 9, tzinfo=timezone.utc)
-_VALID_UNTIL = datetime(2026, 10, 1, tzinfo=timezone.utc)
+# Rechecked at https://developers.openai.com/api/docs/models/whisper-1 on
+# 2026-09-25: $0.006/minute, unchanged. Review again within thirty days.
+_VALID_UNTIL = datetime(2026, 10, 25, tzinfo=timezone.utc)
 _TIMEOUT = httpx.Timeout(180.0, connect=10.0)
 _FIELDS = {'model': 'whisper-1', 'response_format': 'verbose_json',
            'timestamp_granularities[]': 'word', 'temperature': '0'}

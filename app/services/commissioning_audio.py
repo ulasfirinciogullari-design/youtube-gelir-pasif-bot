@@ -40,7 +40,7 @@ def _now():
     return datetime.now(timezone.utc)
 
 
-def _validate(policy, now):
+def _validate(policy, now, *, historical=False):
     _require(type(policy) is dict and set(policy) == {'version', 'purpose', 'credential_sha256',
         'channels', 'valid_from', 'valid_until', 'max_requests', 'max_per_day', 'max_per_lineage',
         'owner_authorization_sha256', 'historical_cash_micro'})
@@ -59,7 +59,9 @@ def _validate(policy, now):
         _require(type(policy[field]) is int and 1 <= policy[field] <= cap)
     start = datetime.fromisoformat(policy['valid_from'].replace('Z', '+00:00'))
     end = datetime.fromisoformat(policy['valid_until'].replace('Z', '+00:00'))
-    _require(start <= now < end <= start + timedelta(days=7), 'commissioning_audio_expired')
+    _require(start.tzinfo is not None and end.tzinfo is not None
+        and start < end <= start + timedelta(days=7), 'commissioning_audio_invalid')
+    _require(start <= now and (historical or now < end), 'commissioning_audio_expired')
     return policy
 
 
@@ -81,7 +83,10 @@ def _read(pipe):
     _require(pipe.pttl(POLICY_KEY) == -1 and pipe.pttl(JOURNAL_KEY) == -1,
         'commissioning_audio_records_missing')
     raw_policy = pipe.get(POLICY_KEY)
-    policy = _validate(json.loads(raw_policy), _now())
+    # History and captured responses remain readable after the setup window.
+    # New requests below still need either that window or current, separately
+    # recorded owner authority. Never rewrite the original grant or journal.
+    policy = _validate(json.loads(raw_policy), _now(), historical=True)
     journal = json.loads(pipe.get(JOURNAL_KEY))
     _require(type(journal) is dict and set(journal) == {'policy_sha256', 'requests'}
         and journal['policy_sha256'] == _hash(raw_policy) and type(journal['requests']) is dict
@@ -148,6 +153,14 @@ def _reserve(client, context, descriptor, credential):
                 now = _now().isoformat()
                 rows = list(journal['requests'].values())
                 total, daily, proof = _capacity(pipe, policy, context['channel_id'])
+                _require(proof is not None or _now() < datetime.fromisoformat(
+                    policy['valid_until'].replace('Z', '+00:00')), 'commissioning_audio_expired')
+                # Installing an operating budget must disable this temporary
+                # commissioning route instead of bypassing the owner's cap.
+                from app.services import production_cash_disabled as cash
+                foundation = runtime.configured_ledger(read_timeout=2)
+                _require(cash.present(pipe), 'commissioning_audio_normal_budget_required')
+                cash.read(pipe, foundation, now=foundation.clock())
                 _require(len(rows) < total, 'commissioning_audio_setup_limit')
                 _require(sum(row['reserved_at'][:10] == now[:10] for row in rows) < daily,
                     'commissioning_audio_daily_limit')
@@ -262,5 +275,6 @@ def status(client):
         'reserved_list_cost_micro_usd': sum(row['max_list_cost_micro_usd'] for row in rows),
         'maximum_list_cost_micro_usd': capacity * COST_MICRO * (4 if any(row['context']['kind'] == 'long' for row in rows) else 1),
         'continuous_commissioning': capacity > policy['max_requests'],
+        'legacy_grant_expired': _now() >= datetime.fromisoformat(policy['valid_until'].replace('Z', '+00:00')),
         'operating_budget_configured': False,
         'valid_until': policy['valid_until'], 'historical_cash_micro': None}
