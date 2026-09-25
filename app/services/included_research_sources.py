@@ -24,7 +24,7 @@ HOSTS = frozenset({'www.federalreserve.gov', 'www.ecb.europa.eu', 'www.usmint.go
     'www.lego.com', 'www.nintendo.co.jp', 'www.nintendo.com', 'www.ibm.com', 'www.gs1us.org',
     'www.okhistory.org', 'global.toyota', 'corporate.mcdonalds.com', 'www.mcdonalds.com',
     'about.ups.com', 'www.fedex.com', 'www.aboutamazon.com', 'www.coca-colacompany.com',
-    'www.sony.com', 'www.apple.com', 'blog.google'})
+    'www.sony.com', 'www.apple.com', 'blog.google', 'www.levistrauss.com'})
 GOLDMAN_REFERENCE = 'https://www.si.edu/object/goldmans-folding-basket-carriage%3Anmah_1216280'
 GOLDMAN_BACKUP_SOURCES = (
     'https://www.okhistory.org/historycenter/atour',

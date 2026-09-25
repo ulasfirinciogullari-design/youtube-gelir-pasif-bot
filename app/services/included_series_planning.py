@@ -33,6 +33,8 @@ SOURCE_PAIRS = (
      'https://www.coca-colacompany.com/about-us/history/11-facts-about-the-coca-cola-contour-bottle'),
     ('https://www.nintendo.co.jp/corporate/en/history/index.html',
      'https://www.nintendo.com/en-gb/Hardware/Nintendo-History/Nintendo-History-625945.html'),
+    ('https://www.levistrauss.com/who-we-are/history/',
+     'https://www.levistrauss.com/2019/07/04/the-history-of-denim/'),
 )
 EVERGREEN_SOURCES = tuple(url for pair in SOURCE_PAIRS[:2] for url in pair)
 MAX_PAGES = 6
