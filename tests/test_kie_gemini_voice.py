@@ -145,3 +145,59 @@ def test_bound_covers_full_documented_input_and_audio_token_limits():
         + spec['output_token_limit'] * spec['output_credits_per_million'])
     assert actual_limit_microcredits == 47_022_080
     assert actual_limit_microcredits <= spec['maximum_microcredits']
+
+
+def seed_rejections(kie, **override):
+    setup(kie); extension(kie)
+    with kie.client.pipeline() as pipe:
+        _, journal, credential = ledger._read(pipe)
+        for language in ('tr', 'en'):
+            scope = {'kind': 'connection_probe', 'language': language, 'voice_id': 'Fenrir'}
+            body, ceiling = gemini._legacy_body('A clear business story.', 'Fenrir', language=language)
+            descriptor = {'route': api.CREATE, 'model': gemini.MODEL, 'attempt': 0,
+                'voice_id': 'Fenrir', 'request_sha256': ledger.sha(ledger.raw(body)),
+                'credential_sha256': credential.fingerprint, 'ceiling_microcredits': ceiling}
+            identity = ledger.sha(ledger.raw({'scope': scope, 'request': descriptor}))
+            response = httpx.Response(200, json={'code': 422,
+                'msg': 'The style parameter is invalid', 'data': None, **override})
+            journal['requests'][identity] = {'scope': scope, 'descriptor': descriptor,
+                'reserved_at': ledger.now().isoformat(), 'create': ledger._seal(response, KEY), 'result': None}
+        ledger._write(pipe, journal)
+    return json.loads(kie.client.get(ledger.JOURNAL_KEY))['requests']
+
+
+def repair(kie, language='tr', text='A clear business story.', attempt=1):
+    body, ceiling = gemini.request_body(text, language=language)
+    journal = ledger.Journal(kie.foundation,
+        {'kind': 'connection_probe', 'language': language, 'voice_id': 'Fenrir'}, body, ceiling, attempt=attempt)
+    return api.generate(body, KEY, journal, sleep=lambda _: None)
+
+
+def test_documented_enums_and_single_correction_preserve_all_original_reservations(kie):
+    old = seed_rejections(kie)
+    policy = kie.client.get(ledger.POLICY_KEY)
+    with pytest.raises(SpendBlocked): repair(kie)
+    gemini.commission_schema_repairs(kie.foundation, owner_evidence_sha256='c' * 64)
+    repair(kie); repair(kie); repair(kie, language='en')
+    with pytest.raises(SpendBlocked): repair(kie, attempt=2)
+    with pytest.raises(SpendBlocked): repair(kie, text='Changed paid text.')
+    with pytest.raises(SpendBlocked): request(kie, voice='Puck')
+    current = json.loads(kie.client.get(ledger.JOURNAL_KEY))['requests']
+    assert len(current) == 4 and all(current[k] == v for k, v in old.items())
+    assert kie.client.get(ledger.POLICY_KEY) == policy
+    assert ledger.status(kie.client)['committed_microcredits'] == 97_500_000
+    posts = [json.loads(r.content) for r in kie.requests if r.method == 'POST']
+    assert len(posts) == 2
+    assert all(p['input']['speakers'][0]['style'] == 'Newscaster'
+        and p['input']['speakers'][0]['pace'] == 'Natural' for p in posts)
+
+
+@pytest.mark.parametrize('override', [
+    {'code': 500}, {'msg': 'Internal error'}, {'data': {'taskId': 'accepted_12345'}},
+])
+def test_schema_correction_cannot_replay_accepted_or_ambiguous_requests(kie, override):
+    seed_rejections(kie, **override)
+    with pytest.raises(SpendBlocked):
+        gemini.commission_schema_repairs(kie.foundation, owner_evidence_sha256='c' * 64)
+    with pytest.raises(SpendBlocked): repair(kie)
+    assert not [r for r in kie.requests if r.method == 'POST']

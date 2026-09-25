@@ -39,6 +39,15 @@ Gemini output does not include source character timing: audio generation alone
 does not qualify this route for production. Independent speech recognition and
 verified scene/subtitle timing are still required.
 
+The live first Gemini checks returned an explicit 422 `style` validation error,
+with no task ID. Kie's `accent`, `style`, and `pace` fields are enumerations;
+pronunciation instructions belong in `audio_profile`. A separate, immutable
+operator record can permit one corrected submission for each of those two exact
+rejected checks. It binds the original encrypted receipts and the unchanged
+text/voice/language. Accepted requests, ambiguous responses, different text,
+third attempts and further probes remain blocked. Original receipts and their
+conservative 48-credit reservations are preserved; no refund is inferred.
+
 Sources reviewed 2026-09-24: [Kie Gemini contract](https://docs.kie.ai/market/google/gemini-3-1-flash-tts),
 [Kie prices](https://kie.ai/pricing), and
 [upstream model limits](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-tts-preview).

@@ -260,16 +260,19 @@ class Journal:
                 pipe.multi(); pipe.ping(); require(pipe.execute() == [True])
             else:
                 same_root = [r for r in journal['requests'].values() if r['scope'] == self.scope]
-                require(len(same_root) < (1 if self.scope.get('kind') == 'connection_probe' else 3),
+                schema_repair = (is_gemini and self.scope.get('kind') == 'connection_probe'
+                    and gemini.schema_repair_allowed(pipe, policy, same_root, self.body, self.attempt))
+                require(schema_repair or len(same_root) < (1 if self.scope.get('kind') == 'connection_probe' else 3),
                     'kie_voice_attempt_limit')
-                require(not any(r['result'] is None or r['descriptor']['attempt'] == self.attempt
+                require(schema_repair or not any(r['result'] is None or r['descriptor']['attempt'] == self.attempt
                     for r in same_root), 'kie_voice_previous_request_pinned')
                 if self.scope.get('kind') == 'connection_probe':
                     probe_count = sum(r['scope'].get('kind') == 'connection_probe'
                         and ((r['descriptor']['model'] == gemini.MODEL) is is_gemini)
                         for r in journal['requests'].values())
-                    require(units <= 400 and self.attempt == 0 and self.scope['voice_id'] == d['voice_id']
-                        and probe_count < (gemini.SPEC['max_connection_probes'] if is_gemini else 8),
+                    require(units <= 400 and self.scope['voice_id'] == d['voice_id']
+                        and (schema_repair or (self.attempt == 0
+                            and probe_count < (gemini.SPEC['max_connection_probes'] if is_gemini else 8))),
                         'kie_voice_probe_limit')
                 require(len(journal['requests']) < MAX_REQUESTS
                     and _used(journal) + self.ceiling <= policy['allocation_microcredits'], 'kie_voice_balance_exhausted')
