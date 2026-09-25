@@ -122,12 +122,14 @@ def render_page(channels, selected, view, *, notice='', error=False):
     if only_shorts:
         cadence = (view or {}).get('daily_cadence') or {}
         published_today = (cadence.get('counts') or {}).get('published') or {}
-        limit = daily_limits(channel_id, {})['shorts']
+        base_limit = daily_limits(channel_id, {})['shorts']
+        limit = cadence.get('display_limits', {}).get('shorts', base_limit)
         previous = sum(cadence.get('previously_published_today', {}).values())
         cadence_card = ('<section class="planner-box"><h2>Yalnız Shorts</h2>'
             '<div class="plan-stats"><div><b>' + str(published_today.get('shorts', 0))
             + '/' + str(limit) + '</b><span>BU PLANDA BUGÜN YAYIMLANAN</span></div></div>'
-            '<p>Uzun video üretimi kapalı. Bu kanal Türkiye saatiyle günde en fazla ' + str(limit) + ' Shorts yayımlar. Sınır dolunca ertesi gün otomatik devam eder.</p>'
+            '<p>Uzun video üretimi kapalı. Normal düzen Türkiye saatiyle günde ' + str(base_limit) + ' Shorts.</p>'
+            + ('<p>Bugüne özel onaylanan deneme: ' + str(cadence['experiment']['published']) + '/' + str(cadence['experiment']['limit']) + ' ek Shorts yayımlandı. Ek hak yalnız bu sıradaki onaylı videolara aittir; yarın normal düzen sürer.</p>' if cadence.get('experiment') else '<p>Sınır dolunca ertesi gün otomatik devam eder.</p>')
             + ('<p>Plan değişikliğinden önce bugün yayımlanan ' + str(previous) + ' video geçmişte saklanır; yeni plana dahil değildir.</p>' if previous else '') + '</section>')
         if cadence.get('wait_reason') == 'production_attempt_limit':
             cadence_card += ('<section class="planner-box"><h2>Yayın hedefi henüz tamamlanmadı</h2>'

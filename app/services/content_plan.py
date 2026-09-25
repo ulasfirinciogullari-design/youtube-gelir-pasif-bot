@@ -310,7 +310,9 @@ def project(plan, *, client=None):
         elif not plan['enabled']:
             row.update(status='paused', label='Duraklatıldı')
         rows.append(row)
-    from app.services.framecase_cadence import snapshot
+    from app.services import framecase_cadence, channel_cadence
+    snapshot = (channel_cadence.snapshot if plan['channel_id'] in channel_cadence.CHANNELS
+                else framecase_cadence.snapshot)
     from app.services.content_plan_attention import recent
     return {**plan, 'items': rows, 'daily_cadence': snapshot(plan['channel_id'], client=client),
         'attention': recent(plan['channel_id'], client=client)}

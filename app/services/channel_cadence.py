@@ -98,6 +98,11 @@ def production_slot(pipe, channel_id, format_kind, task_id, *, now=None, item=No
     if channel_id not in CHANNELS: return None
     _require(format_kind in LIMITS and str(UUID(task_id)) == task_id)
     if not allows(channel_id, format_kind): return False
+    if item is not None and format_kind == 'shorts':
+        from app.services import shorts_experiment
+        experiment_key = shorts_experiment.production_slot(pipe, channel_id, item, task_id, now=now)
+        if experiment_key is not None:
+            return experiment_key
     stock = _stock_day(pipe, channel_id, item['id']) if item is not None else None
     if stock:
         from app.services import content_plan as plan
@@ -294,7 +299,9 @@ def publication_slot(source, *, client=None, now=None):
                 and claim.get('kind') == format_kind and claim.get('root_task_id') == root)
             return True
         used = _values(pipe, day_key); used.update(_values(pipe, pending_key))
-        if sum(v == format_kind for v in used.values()) >= daily_limits(channel, LIMITS)[format_kind]:
+        from app.services import shorts_experiment
+        experiment = shorts_experiment.publication_allowed(pipe, source, root, now=now)
+        if not experiment and sum(v == format_kind for v in used.values()) >= daily_limits(channel, LIMITS)[format_kind]:
             # Waiting is not a financial or publication authorization.
             pipe.multi(); pipe.sadd(WAITING_KEY, source['task_id']); pipe.execute()
             return False
@@ -388,4 +395,9 @@ def snapshot(channel_id, *, client=None, now=None):
             production_limits=production_limits(channel_id, LIMITS),
             wait_reason=('publication_limit' if publication_full else 'production_attempt_limit' if attempts_full else None),
             previously_published_today={k: sum(v == k for v in previous.values()) for k in LIMITS})
+    from app.services import shorts_experiment
+    experiment = shorts_experiment.snapshot(channel_id, values['published'], values['pending'], client=client, now=now)
+    if experiment is not None:
+        result['experiment'] = experiment
+        result['display_limits'] = {**limits, 'shorts': limits['shorts'] + experiment['limit']}
     return result

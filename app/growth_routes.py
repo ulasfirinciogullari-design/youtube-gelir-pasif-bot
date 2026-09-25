@@ -67,13 +67,15 @@ def render(channels, selected, preferences, data, languages, voices_active, *, s
         published = cadence['counts']['published']
         limits = cadence['limits']
         mix = str(limits['shorts']) + ' Shorts / gün'
-        progress = str(published['shorts']) + ' / ' + str(limits['shorts']) + ' Shorts'
+        displayed = cadence.get('display_limits', limits)
+        progress = str(published['shorts']) + ' / ' + str(displayed['shorts']) + ' Shorts'
         if limits['long']:
             mix = str(limits['long']) + ' uzun video + ' + mix
             progress = str(published['long']) + ' / ' + str(limits['long']) + ' uzun video · ' + progress
         previous = sum(cadence.get('previously_published_today', {}).values())
         body += ('<section class="card"><h2>Günlük yayın düzeni</h2><p><b>' + mix + '</b></p>'
             '<p>Bu planda bugün: ' + progress + '</p>'
+            + ('<p>Bugüne özel deneme: ' + str(cadence['experiment']['published']) + '/' + str(cadence['experiment']['limit']) + ' ek Shorts. Yarın normal günlük düzen sürer.</p>' if cadence.get('experiment') else '')
             + ('<p>Bugün plan değişmeden önce yayımlanan ' + str(previous) + ' video yeni plana dahil değildir.</p>' if previous else '')
             + '<p class="growth-note">Türkiye saati. '
             'Sınır dolunca sıradaki gün otomatik devam eder. Sunucudaki zamanlayıcı, bu ekran ve sohbet kapalıyken de çalışır.</p></section>')
