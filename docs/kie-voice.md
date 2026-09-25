@@ -18,3 +18,17 @@ Verified public Kie contracts on 2026-09-24: account balance is read through
 `GET /api/v1/jobs/recordInfo?taskId=...`. Turbo 2.5 lists six Kie credits per
 1,000 characters; Multilingual v2 lists twelve. One Kie credit lists $0.005.
 The price comparison is not a provider invoice or evidence of measured quality.
+
+The separate prepaid ledger reserves an upper bound before each create request.
+Accepted task IDs and encrypted terminal responses are reused; an unknown POST
+outcome cannot trigger a replacement purchase. A provider-observed refund is
+recorded as zero usage, while a missing usage observation keeps the reservation.
+The owner connection check has a total cap of eight distinct probes. Production
+activation remains absent until real audio, alignment and speech quality pass.
+Existing native voice allocations and all their historical receipts remain intact.
+
+The owner settings hub is `/studio/settings`. An authenticated, same-origin
+request can save a reusable Studio password as a salted scrypt digest. Normal
+login at `/studio/login` is rate limited and uses a Secure, HttpOnly session
+cookie for 90 days. No password or API key is exposed in HTML or URLs. Existing
+one-time access grants remain usable for initial access and recovery.

@@ -522,8 +522,9 @@ def _execute(self, source, dispatch, work, checkpoint, client):
             work / 'final.mp4', scenes=scenes, scene_durations=durations, scene_visual_paths=selected,
             target_duration=effective, output_resolution=render.resolution_for_mode('production', spec['format']),
             capture_scene_windows=True)
-        from app.services.framecase_sound import add_native_ambience
-        rendered = add_native_ambience(rendered, selected, work)
+        from app.services.framecase_sound import finish_master
+        rendered = finish_master(rendered, selected, work, target_duration=effective,
+                                 voice_duration=voice['duration_after_fit'])
         master_sha = hashlib.sha256(Path(rendered['path']).read_bytes()).hexdigest()
         prepare_visual_review(checkpoint, master_sha)
         _save(client, task, checkpoint)
@@ -559,8 +560,6 @@ def _execute(self, source, dispatch, work, checkpoint, client):
         and abs(rendered['duration'] - effective) <= .1
         and type(rendered.get('max_freeze_seconds')) in (float, int)
         and rendered['max_freeze_seconds'] <= 6, 'framecase_final_render_rejected')
-    _require(common._strict_short_preview_render_qc(rendered, effective, voice['duration_after_fit']).get('pass') is True,
-             'framecase_final_timing_rejected')
     # Native ambience must not introduce extra speech beneath the accepted voice.
     final_audio = checkpoint.setdefault('final_audio_reviews', {})
     if master_sha not in final_audio:

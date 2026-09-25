@@ -6,6 +6,19 @@ import subprocess
 from app.services.production_spend import SpendBlocked
 
 
+def finish_master(rendered, selected, work, *, target_duration, voice_duration):
+    from app.tasks import _strict_short_preview_render_qc
+    # A room tone or rain may continue after the narrator stops. Measure the
+    # unchanged narration-only master before mixing, with the same strict tail
+    # and frame-count bounds. The mixer verifies the copied picture frames;
+    # the pipeline still transcribes the actual final mix before publication.
+    timing = _strict_short_preview_render_qc(rendered, target_duration, voice_duration)
+    if timing.get('pass') is not True:
+        raise SpendBlocked('framecase_final_timing_rejected')
+    mixed = add_native_ambience(rendered, selected, work)
+    return {**mixed, 'narration_timing_qc': timing}
+
+
 def add_native_ambience(rendered, selected, work):
     from app.services import render
     windows = rendered['scene_windows']

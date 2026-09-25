@@ -248,7 +248,7 @@ def test_job_row_omits_empty_target_metadata_and_legacy_panel_link(ui_modules):
     assert 'Seçilmedi' not in row
     assert 'Eski panel' not in nav
     assert 'href="/factory"' not in nav
-    assert 'Anlatıcı sesleri' in nav
+    assert 'href="/studio/settings"' in nav
 
 
 def test_studio_create_prioritizes_creation_and_preserves_all_form_controls(monkeypatch, ui_modules):

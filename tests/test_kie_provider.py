@@ -95,3 +95,27 @@ def test_missing_encryption_material_never_saves_plaintext(web):
     with pytest.raises(ProviderKeyCandidateError):
         credentials.save(web.client, KEY)
     assert web.client.dbsize() == 0
+
+
+def test_owner_balance_read_never_allocates_or_activates_credits(web, monkeypatch, caplog):
+    from app.services import kie_voice_adapter
+    credentials.save(web.client, KEY)
+    before = web.client.get(credentials.KEY)
+    def balance(secret):
+        assert secret == KEY
+        return {'available_microcredits': 10_080_000_000}
+    monkeypatch.setattr(kie_voice_adapter, 'read_balance', balance)
+    response = web.http.post(PATH + '/balance', headers=auth())
+    assert response.status_code == 200 and '10 080 kredi' in response.text
+    assert web.client.dbsize() == 1 and web.client.get(credentials.KEY) == before
+    safe(response, caplog)
+
+
+def test_balance_request_rejects_cross_origin_before_api_access(web, monkeypatch):
+    from app.services import kie_voice_adapter
+    def forbidden(*args):
+        pytest.fail('external API must not be called')
+    monkeypatch.setattr(kie_voice_adapter, 'read_balance', forbidden)
+    response = web.http.post(PATH + '/balance', headers=auth(origin='https://evil.invalid'))
+    assert response.status_code == 403
+    web.redis_factory.assert_not_called()

@@ -377,12 +377,13 @@ setImmediate(async()=>{
         text=True, capture_output=True, timeout=10, check=True)
     value = json.loads(result.stdout)
     assert value['events'][0] == 'fragment-cleared'
-    assert value['beforeRetry'] == 1 and len(value['calls']) == (1 if outcome == 'active' else 2)
+    assert value['beforeRetry'] == 1 and len(value['calls']) == (1 if outcome in {'active', 'expired'} else 2)
     assert ('/studio' in value['events']) == (outcome == 'active')
+    assert ('/studio/login' in value['events']) == (outcome == 'expired')
     for call in value['calls']:
         assert call['path'] == '/studio/api/session' and call['options']['method'] == 'GET'
         assert call['options']['credentials'] == 'same-origin' and call['options']['redirect'] == 'error'
         assert 'body' not in call['options']
     assert 'PRIVATE_' not in value['message']
-    if outcome != 'active':
+    if outcome not in {'active', 'expired'}:
         assert value['disabled'] is False
