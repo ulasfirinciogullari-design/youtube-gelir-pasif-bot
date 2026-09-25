@@ -18,6 +18,15 @@ PRICE_UNTIL=datetime(2026,10,25,tzinfo=timezone.utc)
 PRICE_REVISION='fal-elevenlabs-turbo-0.05-per-1000-reviewed-20260925'
 
 
+def _channel_connection(pipe, active, channel):
+    if active is None:return None
+    if channel in kie.CHANNELS:return active['channels'].get(channel)
+    from app.services import framecase_fal_voice as framecase
+    if channel != framecase.CHANNEL_ID:return None
+    grant=framecase.read(pipe,active)
+    return grant['connection_id'] if grant is not None else None
+
+
 def _activation_key(language):
     api.require(language in api.VOICES)
     return PREFIX+'activation:'+language
@@ -73,10 +82,14 @@ def commission(foundation,language,*,owner_evidence_sha256):
 
 def _authorize(pipe,foundation,context):
     from app.services import commissioning_longform,content_plan as plan,production_continuation as continuation
-    api.require(context['kind']=='long'and context['channel_id']in kie.CHANNELS)
+    from app.services import framecase_fal_voice as framecase
+    api.require(context['kind']=='long'and context['channel_id']in kie.CHANNELS|{framecase.CHANNEL_ID})
     kie._foundation(pipe,foundation)
     commissioning_longform.authorize(pipe,context)
-    kie._binding(pipe,context['channel_id'],context['connection_id'])
+    if context['channel_id']==framecase.CHANNEL_ID:
+        framecase.authorize_context(pipe,context)
+        kie._connected_owner(pipe,context['channel_id'],context['connection_id'])
+    else:kie._binding(pipe,context['channel_id'],context['connection_id'])
     keys=(plan.PLAN_PREFIX+context['channel_id'],plan.production.PROFILE_PREFIX+context['channel_id'])
     pipe.watch(*keys);document,profile=[json.loads(pipe.get(key))for key in keys]
     api.require(document['enabled']is True and profile['production_enabled']is True and profile['auto_publish']is True)
@@ -108,14 +121,15 @@ def guard_other_provider(pipe,root):
 @_local_transaction
 def select(language):
     from app.services import kie_voice_production as old,narrator_rotation as rotation
+    from app.services.framecase_cadence import CHANNEL_ID as framecase_channel
     if language not in api.VOICES or not runtime.enforcement_enabled()or not runtime._TASK_ID.get():return None
     f=runtime.configured_ledger(read_timeout=3);task=runtime._TASK_ID.get()
     context=runtime.resolve_context(f.client,task)
-    if context['kind']!='long'or context['channel_id']not in kie.CHANNELS:return None
+    if context['kind']!='long'or context['channel_id']not in kie.CHANNELS|{framecase_channel}:return None
     root=context['lineage_id'];key=ROOT_PREFIX+root
     with f.client.pipeline()as pipe:
         pipe.watch(key);encoded=pipe.get(key);active=activation(pipe,language)
-        if active is None or active['channels'].get(context['channel_id'])!=context['connection_id']:
+        if _channel_connection(pipe,active,context['channel_id'])!=context['connection_id']:
             api.require(encoded is None,'fal_voice_activation_missing')
             pipe.multi();pipe.ping();api.require(pipe.execute()==[True]);return None
         _authorize(pipe,f,context);_hold_guard(pipe,task)
@@ -143,11 +157,13 @@ def select(language):
 
 
 def capacity(pipe,foundation,channel_id,*,kind):
-    if kind!='long'or channel_id not in kie.CHANNELS:return None
+    from app.services.framecase_cadence import CHANNEL_ID as framecase_channel
+    if kind!='long'or channel_id not in kie.CHANNELS|{framecase_channel}:return None
     for language in api.VOICES:
         active=activation(pipe,language)
-        if active is None or channel_id not in active['channels']:continue
-        kie._foundation(pipe,foundation);kie._binding(pipe,channel_id,active['channels'][channel_id])
+        connection=_channel_connection(pipe,active,channel_id)
+        if connection is None:continue
+        kie._foundation(pipe,foundation);kie._connected_owner(pipe,channel_id,connection)
         api.require(datetime.now(timezone.utc)<PRICE_UNTIL,'fal_voice_price_review_due')
         return {'voice_provider':'fal','voice_model':api.MODEL,'voice_cost_basis':'commissioning_list_ceiling',
             'maximum_long_voice_list_cost_micro_usd':750000}
@@ -184,7 +200,7 @@ class Journal(trial.Journal):
             choice=json.loads(pipe.get(root_key))
             api.require(choice['context']==self.context and choice['mode']=='new_long'
                 and choice['activation_sha256']==kie.sha(kie.raw(active))
-                and active['channels'].get(self.context['channel_id'])==self.context['connection_id'])
+                and _channel_connection(pipe,active,self.context['channel_id'])==self.context['connection_id'])
             # An attempt's fixed slot cannot be changed by a child/new script.
             for attempt in range(self.attempt):
                 previous=PREFIX+'take:'+self.context['lineage_id']+':'+str(attempt)
