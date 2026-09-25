@@ -75,3 +75,37 @@ def test_only_captured_pre_speech_failure_can_continue(ready, damage):
     c.set(jobs.JOB_PREFIX + task, plan._raw(source)); before = dump(c); enqueue = Mock()
     with pytest.raises((ValueError, TypeError)): resume.schedule(source, enqueue, client=c)
     enqueue.assert_not_called(); assert dump(c) == before
+
+
+@pytest.mark.parametrize('damage', [None, 'count', 'digest', 'not_terminal', 'missing_response'])
+def test_duration_resume_requires_the_observed_last_editorial_count(ready, monkeypatch, damage):
+    import hashlib
+    from cryptography.fernet import Fernet
+    from app.services import production_included_router as router
+    c, source, _ = ready; task = source['task_id']; cipher = Fernet(Fernet.generate_key())
+    monkeypatch.setattr(router, '_cipher', lambda: cipher)
+    source['error'] = 'Duration gate rejected script: 293 words for requested 3 min (target 300-330)'
+    terminal = json.loads(c.get('celery-task-meta-' + task))
+    terminal['result']['exc_message'] = [source['error']]
+    terminal['result']['exc_type'] = 'ProductionContentError'
+    c.set('celery-task-meta-' + task, plan._raw(terminal))
+    c.set(jobs.JOB_PREFIX + task, plan._raw(source))
+    scenes = [{'narration': ' '.join(['kanıt'] * (10 if i < 23 else 9))} for i in range(30)]
+    if damage == 'count': scenes[-1]['narration'] += ' değişti'
+    body = plan._raw({'candidates': [{'finishReason': 'MAX_TOKENS' if damage == 'not_terminal' else 'STOP',
+        'content': {'parts': [{'text': json.dumps({'scenes': scenes})}]}}]}).encode()
+    identity = 'd' * 64
+    c.sadd(native.PREFIX + 'lineage:' + task, identity)
+    c.set(native.PREFIX + 'request:' + identity, plan._raw({'context': {'lineage_id': task},
+        'request_sha256': identity, 'purpose': 'editorial', 'reserved_at': '2026-09-25T01:00:00Z'}))
+    if damage != 'missing_response':
+        c.set(native.PREFIX + 'response:' + identity, plan._raw({'request_sha256': identity,
+            'http_status': 200, 'encrypted_response': cipher.encrypt(body).decode(),
+            'response_sha256': 'f' * 64 if damage == 'digest' else hashlib.sha256(body).hexdigest()}))
+    before = dump(c)
+    if damage:
+        with pytest.raises((ValueError, TypeError)): resume.checked(c, task)
+    else:
+        observed, proof = resume.checked(c, task)
+        assert observed['error'] == source['error'] and identity in proof
+    assert dump(c) == before

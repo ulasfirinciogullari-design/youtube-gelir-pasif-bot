@@ -1,4 +1,7 @@
 """One same-root continuation after a returned malformed pre-speech critique."""
+import hashlib
+import json
+import re
 import secrets
 from uuid import uuid5, NAMESPACE_URL
 
@@ -17,9 +20,11 @@ def registered(source): return bool(plan._client().exists(DISPATCH + plan._id(so
 
 def eligible(source):
     from app.services.channel_cadence import CHANNELS
+    from app.services.documentary_word_contract import duration_failure
     spec = source.get('spec') or {}
     return bool(source.get('parent_id') is None and source.get('state') == 'FAILURE'
-        and source.get('failure_stage') == 'director_qc' and source.get('error') == ERROR
+        and source.get('failure_stage') == 'director_qc'
+        and (source.get('error') == ERROR or duration_failure(source))
         and spec.get('production_channel_id') in CHANNELS and spec.get('content_plan_item_id')
         and spec.get('format') == 'landscape' and spec.get('duration_minutes') == 3
         and not source.get('retry_child_task_id'))
@@ -51,6 +56,7 @@ def checked(client, task, *, claimed=False):
     keys = client.smembers(native.PREFIX + 'lineage:' + task)
     plan._require(1 <= len(keys) <= native.MAX_LONG_LINEAGE)
     proofs = {}
+    editorial = []
     for identity in sorted(keys):
         request = plan._object(client.get(native.PREFIX + 'request:' + identity))
         response = plan._object(client.get(native.PREFIX + 'response:' + identity))
@@ -59,6 +65,25 @@ def checked(client, task, *, claimed=False):
             and request.get('request_sha256') == response.get('request_sha256') == identity
             and response.get('http_status') == 200 and response.get('encrypted_response'))
         proofs[identity] = plan._sha([request, response])
+        from app.services.documentary_word_contract import duration_failure
+        if duration_failure(source) and request['purpose'] == 'editorial':
+            from app.services.production_included_router import _cipher
+            raw = _cipher().decrypt(response['encrypted_response'].encode())
+            plan._require(hashlib.sha256(raw).hexdigest() == response['response_sha256'])
+            value = json.loads(raw); candidates = value.get('candidates') or []
+            plan._require(len(candidates) == 1 and candidates[0].get('finishReason') == 'STOP')
+            texts = [p['text'] for p in candidates[0]['content']['parts'] if p.get('text') and not p.get('thought')]
+            plan._require(len(texts) == 1)
+            editorial.append((request['reserved_at'], json.loads(texts[0])))
+    from app.services.documentary_word_contract import duration_failure
+    if duration_failure(source):
+        from app.services.director import _word_count
+        plan._require(editorial)
+        scenes = max(editorial, key=lambda row: row[0])[1].get('scenes')
+        plan._require(type(scenes) is list and len(scenes) == 30
+            and all(type(s.get('narration')) is str for s in scenes))
+        reported = int(re.match(r'Duration gate rejected script: (\d+)',source['error']).group(1))
+        plan._require(_word_count(' '.join(s['narration'] for s in scenes)) == reported)
     pre._provider_free(client, task, known_reasoning=keys)
     return source, proofs
 

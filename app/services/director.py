@@ -2198,14 +2198,22 @@ EDITORIAL QC RULES:
         from app.services.production_included_router import generate_text_json, stock_only_rule
         from app.services.director_response_indices import schema_with_indices, decode
         from app.services import countable_stock_narration as countable
+        from app.services import documentary_word_contract as documentary_words
         schema = schema_with_indices(_director_json_schema(target_scenes, exact_scene_count=exact_scene_count,
             **({'delivery_family': True} if delivery_rule else {})))
+        long_word_slots = documentary_words.eligible(options, duration_minutes, language_name,
+            target_scenes, (min_words, max_words), topic, correction)
         word_slots = countable.director_eligible(fresh_scheduled, language_name, duration_minutes,
             target_scenes, min_words, max_words, compact, topic)
-        if word_slots:
+        if long_word_slots:
+            schema = documentary_words.schema(schema)
+            prompt += '\n' + documentary_words.RULE
+        elif word_slots:
             schema = countable.director_schema(schema)
             prompt += '\n' + countable.RULE
         output = decode(generate_text_json(prompt + stock_only_rule(), schema, purpose='editorial'))
+        if long_word_slots:
+            return documentary_words.decode(output)
         return countable.decode_director(output) if word_slots else output
     if (fresh_scheduled is True
             and getattr(settings, 'studio_abacus_editorial_enabled', False) is True):

@@ -74,13 +74,14 @@ def _settled_providers(pipe, read, root):
 
 
 def eligible(source):
+    from app.services.documentary_word_contract import duration_failure
     spec = source.get('spec') or {}
     if not (source.get('kind') == 'render' and source.get('state') == 'FAILURE'
             and spec.get('production_channel_id') in cadence.CHANNELS
             and spec.get('content_plan_item_id') and spec.get('format') == 'landscape'
             and spec.get('duration_minutes') == 3 and not source.get('retry_child_task_id')):
         return False
-    if source.get('failure_stage') == 'director_qc' and source.get('error') in PREVOICE_ERRORS:
+    if source.get('failure_stage') == 'director_qc' and (source.get('error') in PREVOICE_ERRORS or duration_failure(source)):
         return (source.get('paid_create_slots_used') == 0
             and not source.get('audio_candidate_checkpoint') and not source.get('generated_asset_candidates'))
     retained = source.get('retained_long_media') or {}

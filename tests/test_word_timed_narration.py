@@ -50,3 +50,17 @@ def test_cannot_cut_a_single_asr_word_between_two_scenes():
     transcript = {'text': 'İş büyür.', 'words': [{'word': 'İş büyür.', 'start': 0, 'end': 1}]}
     with pytest.raises(VoiceQualityError):
         edit_plan(['İş', 'büyür.'], transcript, 2, language='tr')
+
+
+def test_observed_truncated_take_uses_existing_bounded_synthesis_correction():
+    transcript=evidence('The workshop changed.')
+    transcript['words'][-1].update(start=1,end=1)
+    with pytest.raises(VoiceQualityError):
+        edit_plan(['The workshop changed.','The later decision ended wooden production.'],transcript,3,language='en')
+
+
+def test_complete_text_with_bad_alignment_does_not_buy_another_take():
+    transcript=evidence('The workshop changed.')
+    transcript['words'][-1].update(start=1,end=1)
+    with pytest.raises(AudioQCError):
+        edit_plan(['The workshop changed.'],transcript,3,language='en')

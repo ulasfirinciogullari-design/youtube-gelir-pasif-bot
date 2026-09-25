@@ -70,6 +70,13 @@ def _provider_free_once(client, task, *, known_reasoning=()):
         plan._require(not any(v['reservation']['intent']['root_lineage_id'] == task
             for v in intents))
         plan._require(not any(v['context']['lineage_id'] == task for v in router['requests'].values()))
+        from app.services import kie_voice_ledger as kie
+        pipe.watch(kie.PREFIX + 'root:' + task)
+        plan._require(pipe.get(kie.PREFIX + 'root:' + task) is None)
+        if pipe.get(kie.POLICY_KEY) is not None:
+            _, kie_journal, _ = kie._read(pipe)
+            plan._require(not any(row['scope'].get('lineage_id') == task
+                for row in kie_journal['requests'].values()))
         pipe.multi(); pipe.ping(); plan._require(pipe.execute() == [True])
 
 
