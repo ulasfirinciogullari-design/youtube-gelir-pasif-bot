@@ -13,6 +13,36 @@ from test_audio_retry_duration_veto import _namespace, _run, QualityError
 OPTIONS = {'mode': 'production', 'format': 'shorts', 'production_scheduled': True}
 
 
+def test_real_qualified_take_does_not_acquire_excessive_silence_from_fixed_padding():
+    n = helpers()
+    voice, audible_end = 28.728, 28.360187
+    assert n['_short_preview_voice_duration_qc']({'duration_after_fit': voice}, 30)['pass'] is True
+    rejected = n['_strict_short_preview_render_qc'](
+        {'frame_count': 900, 'ending_silence_seconds': 1.64}, 30, voice,
+        source_audible_end_seconds=audible_end)
+    assert rejected['reason'] == 'final_ending_silence_out_of_bounds'
+    target = n['_effective_short_edit_target'](OPTIONS, 30, voice)
+    assert target == 29.3 and round(target * 30) == 879
+    rendered = {'frame_count': 879, 'ending_silence_seconds': target - audible_end}
+    assert n['_strict_short_preview_render_qc'](
+        rendered, target, voice, source_audible_end_seconds=audible_end)['pass'] is True
+    # The fix changes the timeline, never passes the old rejected artifact.
+    assert n['_strict_short_preview_render_qc'](
+        {**rendered, 'ending_silence_seconds': 1.64}, target, voice,
+        source_audible_end_seconds=audible_end)['pass'] is False
+    assert n['_strict_short_preview_render_qc'](
+        {**rendered, 'frame_count': 900}, target, voice,
+        source_audible_end_seconds=audible_end)['pass'] is False
+
+
+@pytest.mark.parametrize('seconds', [28.7, 28.728, 28.872, 29.0, 29.4])
+def test_automatic_valid_shorter_takes_use_the_same_bounded_closing_hold(seconds):
+    n = helpers()
+    target = n['_effective_short_edit_target'](OPTIONS, 30, seconds)
+    assert seconds < target < 30 and .55 - 1e-12 <= target - seconds < .584
+    assert n['_short_preview_voice_duration_qc']({'duration_after_fit': seconds}, target)['pass'] is True
+
+
 def voice_fit(seconds):
     n = helpers()
     tree = ast.parse((SOURCE.parent / 'services/voice.py').read_text())

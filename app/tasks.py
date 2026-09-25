@@ -1853,10 +1853,14 @@ def _effective_short_edit_target(
         )
     ):
         return requested_seconds
-    if _short_preview_voice_duration_qc(
+    if options.get('production_scheduled') is not True and _short_preview_voice_duration_qc(
         {'duration_after_fit': voice_duration_seconds}, requested_seconds,
     ).get('pass') is True:
         return requested_seconds
+    # Automatic edits also follow already-valid short takes. Padding a 28.728s
+    # file to 30s added 1.64s after its actual speech ended, despite valid voice
+    # QA. Select the closing hold before scene review/render; never change the
+    # original narration, captions, quality verdicts or absolute final tail cap.
     endpoint = math.ceil((voice_duration_seconds + 0.55) * 30) / 30
     return endpoint if voice_duration_seconds > 29.75 else min(requested_seconds, endpoint)
 

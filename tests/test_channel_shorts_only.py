@@ -124,13 +124,13 @@ def test_normal_scheduler_admits_short_despite_old_full_day_then_enforces_new_ca
     client.hset(old, mapping=original)
     produced = cadence.keys(channel, now=NOW)[0]
     # Leave exactly one slot: the real scheduler's Lua must take it once.
-    for _ in range(3 * POLICY['daily_limits'][channel] - 1): client.hset(produced, str(uuid4()), 'shorts')
+    for _ in range(4 * POLICY['daily_limits'][channel] - 1): client.hset(produced, str(uuid4()), 'shorts')
     enqueue = Mock()
     result = module.dispatch_due_productions([profile], [connection], enqueue, now=NOW)
     assert result['status'] == 'queued' and enqueue.call_count == 1
     spec = enqueue.call_args.kwargs['args'][4]
     assert spec['format'] == 'shorts' and spec['production_editorial']['reason_code'] == 'owner_shorts_only'
-    assert len(client.hgetall(produced)) == 3 * POLICY['daily_limits'][channel]
+    assert len(client.hgetall(produced)) == 4 * POLICY['daily_limits'][channel]
     assert client.hgetall(old) == original
     with client.pipeline() as pipe:
         assert cadence.production_slot(pipe, channel, 'shorts', str(uuid4()), now=NOW) is False
@@ -158,7 +158,7 @@ def test_disabled_long_lua_is_not_the_legacy_zero_limit_bypass(only_shorts):
     assert execute(CHANNEL, 'long') == 'format_disabled'
     assert snapshot(client) == {}
     assert execute(PEER, 'long') == 'reserved'
-    for _ in range(12): assert execute(CHANNEL, 'shorts') == 'reserved'
+    for _ in range(16): assert execute(CHANNEL, 'shorts') == 'reserved'
     before = snapshot(client)
     assert execute(CHANNEL, 'shorts') == 'production_attempt_limit_wait' and snapshot(client) == before
     state = cadence.snapshot(CHANNEL, client=client, now=NOW)
