@@ -436,7 +436,13 @@ def maintain(profiles, enqueue, *, repair_enqueue=None):
                         continue
                     from app.services import content_plan_factual_resume
                     from app.services import content_plan_kie_resume
-                    from app.services import content_plan_fal_resume
+                    from app.services import content_plan_fal_resume, content_plan_fal_cut_resume
+                    # A proven local edit defect is corrected before deciding whether
+                    # to archive the failed film. Its verifier still rejects unknown
+                    # or changed authority, and cannot generate new media.
+                    if repair_enqueue is not None and content_plan_fal_cut_resume.eligible(leaf):
+                        statuses[channel_id] = content_plan_fal_cut_resume.schedule(leaf, repair_enqueue, client=client)
+                        continue
                     if repair_enqueue is not None and content_plan_fal_resume.eligible(leaf):
                         statuses[channel_id] = content_plan_fal_resume.schedule(leaf, repair_enqueue, client=client)
                         continue

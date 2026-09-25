@@ -159,7 +159,9 @@ def _run_primary_loop(runtime, tmp_path):
         omni_continuity_reference_image_path=None,
     )
     loop = next(node for node in ast.walk(TREE) if isinstance(node, ast.For)
-                and isinstance(node.iter, ast.Name) and node.iter.id == 'selected_runway')
+                and isinstance(node.iter, ast.Call) and isinstance(node.iter.func, ast.Name)
+                and node.iter.func.id == 'enumerate' and node.iter.args
+                and isinstance(node.iter.args[0], ast.Name) and node.iter.args[0].id == 'selected_runway')
     _execute([loop], runtime)
     runtime['validated_clips'] = validated
     return downloaded

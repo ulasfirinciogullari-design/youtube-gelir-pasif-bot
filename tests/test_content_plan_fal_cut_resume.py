@@ -147,3 +147,30 @@ def test_diagnostic_metadata_is_bounded_hashed_and_never_an_approval(monkeypatch
     else:
         assert WORKPRINT({}) == {'qa_approved': False}
     if damage != 'pointer': assert body.closed
+
+
+@pytest.mark.parametrize('damage', [None, 'hold', 'unknown_changed', 'no_cut_proof'])
+def test_server_tick_routes_proven_cut_before_editorial_disposition(failed_cut, damage):
+    r = failed_cut; c = r.client; source = r.source; task = source['task_id']
+    channel = source['spec']['production_channel_id']
+    if damage == 'hold':
+        from app.services.source_publication_hold import HOLD_PREFIX
+        c.set(HOLD_PREFIX + r.root, 'held')
+    if damage == 'unknown_changed':
+        journal = plan._object(c.get(video.PREFIX + r.root))
+        next(row for row in journal['requests'].values() if row['result'] is None)['reserved_at'] = '2026-09-25T01:41:00+00:00'
+        c.set(video.PREFIX + r.root, plan._raw(journal))
+    if damage == 'no_cut_proof': r.metadata['scenes'][0]['selection']['start_fraction'] = 0.
+    before = {k: c.dump(k) for k in c.scan_iter()}
+    normal = Mock(); repair = Mock(side_effect=TimeoutError('unknown queue ACK'))
+    result = plan.maintain([{**r.profile, 'channel_id': channel}], normal, repair_enqueue=repair)
+    if damage:
+        repair.assert_not_called()
+        assert not c.exists(cut.DISPATCH + task)
+    else:
+        assert result['channels'][channel] == 'fal_cut_resume_uncertain'
+        assert plan.maintain([{**r.profile, 'channel_id': channel}], normal,
+                             repair_enqueue=repair)['channels'][channel] == 'fal_cut_resume_reserved'
+        repair.assert_called_once()
+    normal.assert_not_called()
+    assert all(c.dump(k) == value for k, value in before.items())
