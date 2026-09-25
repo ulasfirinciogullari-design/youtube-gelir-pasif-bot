@@ -359,7 +359,8 @@ def test_natural_complete_animation_has_no_forced_silent_padding():
         pipeline.short_edit_target({'duration_after_fit': 20}, {'narration': 'word ' * 70})
 
 
-@pytest.mark.parametrize('code', ['framecase_audio_timing_rejected', 'framecase_FinalAudioQualityError'])
+@pytest.mark.parametrize('code', ['framecase_audio_timing_rejected', 'framecase_FinalAudioQualityError',
+                                  'framecase_timed_edit_infeasible'])
 def test_known_immutable_audio_failure_waits_for_actual_code_correction(client, monkeypatch, code):
     from app.services import framecase_recovery as recovery
     from app.production_tasks import continue_framecase_episode

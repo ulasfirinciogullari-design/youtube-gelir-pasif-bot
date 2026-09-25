@@ -84,6 +84,19 @@ def _word_gaps(narration, evidence, seconds):
 
 
 def balanced_cuts(package, voice, transcript, effective, *, longform=False):
+    try:
+        return _balanced_cuts(package, voice, transcript, effective, longform=longform)
+    except SpendBlocked as error:
+        if longform or str(error) != 'framecase_timed_edit_infeasible':
+            raise
+    # A complete, well-performed 33-second narration cannot fit four native
+    # eight-second clips. A fifth shot stays inside the existing six-request
+    # allowance and leaves one correction slot. No accepted media is rebound:
+    # prepare() still requires an empty media journal and a fresh story review.
+    return _balanced_cuts(package, voice, transcript, effective, longform=False, shot_count=5)
+
+
+def _balanced_cuts(package, voice, transcript, effective, *, longform, shot_count=None):
     narration = package['narration']; scenes = package['scenes']
     _require(narration == ' '.join(voice['spoken_texts'])
         and narration == ' '.join(row['narration'] for row in scenes))
@@ -100,16 +113,23 @@ def balanced_cuts(package, voice, transcript, effective, *, longform=False):
     for duration in voice['scene_durations'][:-1]:
         cursor += duration; old_frames.append(cursor*30)
     _require(len(old_frames) == len(original_counts))
+    count_scenes = len(scenes) if shot_count is None else shot_count
+    _require(count_scenes == len(scenes) or not longform and count_scenes == 5)
+    if count_scenes != len(scenes):
+        original_counts = [total * i / count_scenes for i in range(1, count_scenes)]
+        old_frames = [seconds * 30 * i / count_scenes for i in range(1, count_scenes)]
     # Dynamic programming minimizes moved words, then favors sentence ends and
     # cuts close to the original edit. Every candidate is an actual silence gap.
     layer = {(0, 0): (0.0, [])}
-    for stage in range(len(scenes)-1):
-        following = len(scenes)-stage-1; next_layer = {}
+    for stage in range(count_scenes-1):
+        following = count_scenes-stage-1; next_layer = {}
         for count, position, frame in gaps:
             if not lower*following <= total-count <= upper*following:
                 continue
-            penalty = 100*(count-original_counts[stage])**2
-            penalty += 0 if re.search(r'[.!?][\"\'’”)]*\s*$', narration[:position]) else 10
+            original_shot_count = count_scenes == len(scenes)
+            penalty = (100 if original_shot_count else 1)*(count-original_counts[stage])**2
+            penalty += (0 if re.search(r'[.!?][\"\'’”)]*\s*$', narration[:position])
+                        else 10 if original_shot_count else 1000)
             penalty += ((frame-old_frames[stage])/30)**2
             choices = [(score+penalty, path+[(count, position, frame)])
                 for (old_count, old_frame), (score, path) in layer.items()
@@ -131,7 +151,7 @@ def balanced_cuts(package, voice, transcript, effective, *, longform=False):
     _, path, durations = min(endings, key=lambda row: (row[0], row[1]))
     positions = [0, *[row[1] for row in path], len(narration)]
     spoken = [narration[start:end].strip() for start, end in zip(positions, positions[1:])]
-    _require(' '.join(spoken) == narration and len(durations) == len(scenes)
+    _require(' '.join(spoken) == narration and len(durations) == count_scenes
         and abs(sum(durations)-seconds) < 1e-8 and fits(durations, effective))
     return {'scene_narrations': spoken, 'scene_durations': durations,
             'cut_frames': [row[2] for row in path], 'audio_edited': False,

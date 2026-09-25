@@ -138,3 +138,69 @@ def test_long_performance_keeps_thirty_shots_and_all_words():
     assert len(result['scene_durations']) == 30
     assert edit.fits(result['scene_durations'], effective)
     assert all(10 <= len(text.split()) <= 20 for text in result['scene_narrations'])
+
+
+@pytest.fixture
+def fifth_episode():
+    data = json.loads((Path(__file__).parent/'fixtures/framecase-episode5-accepted-narration.json').read_text())
+    package = {'title': 'The final clue', 'description': 'Original fictional animation.',
+        'narration': data['narration'],
+        'scenes': [{'narration': text,
+            'ai_prompt': 'Painterly animated Mira examines the same brass watch with deliberate hand movement.'}
+            for text in data['voice']['spoken_texts']],
+        'fiction_review': {**{key: True for key in pipeline.CHECKS}, 'findings': []}}
+    return package, data['voice'], data['transcript'], data['effective']
+
+
+def test_real_complete_33_second_performance_uses_fifth_shot_inside_original_six_request_cap(fifth_episode):
+    package, voice, transcript, effective = fifth_episode
+    original = deepcopy(fifth_episode)
+    assert voice['duration_after_fit'] == 33.24 and effective == 33.8
+    cuts = edit.balanced_cuts(package, voice, transcript, effective)
+    assert len(cuts['scene_narrations']) == len(cuts['scene_durations']) == 5
+    assert ' '.join(cuts['scene_narrations']) == package['narration']
+    assert cuts['audio_edited'] is False and edit.fits(cuts['scene_durations'], effective)
+    assert sum(cuts['scene_durations']) == pytest.approx(33.24)
+    assert all(8 <= len(text.split()) <= 23 for text in cuts['scene_narrations'])
+    assert all(text.endswith('.') for text in cuts['scene_narrations'])
+    for frame in cuts['cut_frames']:
+        assert any(left['end'] <= frame/30 <= right['start']
+            for left, right in zip(transcript['word_timestamps'], transcript['word_timestamps'][1:]))
+    assert fifth_episode == original
+
+
+def test_fifth_shot_requires_matching_review_and_is_reused_without_new_editorial_request(fifth_episode):
+    package, voice, transcript, effective = fifth_episode
+    checkpoint = {'package': deepcopy(package), 'voice': deepcopy(voice)}
+    client = fakeredis.FakeRedis(decode_responses=True)
+    source = {'locked_narration': True, 'episode': {'narration': package['narration']}}
+    def draft(segments):
+        candidate = deepcopy(package)
+        candidate['scenes'] = [{'narration': text, 'ai_prompt': package['scenes'][0]['ai_prompt']} for text in segments]
+        # Five shots are accepted only for an explicit measured re-edit.
+        with pytest.raises(SpendBlocked, match='scene_count_invalid'):
+            pipeline.validate_package(deepcopy(candidate), source, longform=False)
+        return pipeline.validate_package(candidate, source, longform=False, scene_count=5)
+    reviewer = Mock(side_effect=draft)
+    args = dict(longform=False, checkpoint=checkpoint, task='existing-episode-five', client=client, draft=reviewer)
+    result = edit.prepare(package, voice, {'transcript': transcript}, effective, **args)
+    assert len(result[0]['scenes']) == 5 and reviewer.call_count == 1
+    assert checkpoint['package'] == package and checkpoint['voice'] == voice
+    args['draft'] = Mock(side_effect=AssertionError('The reviewed five-shot edit must be retained'))
+    assert edit.prepare(package, voice, {'transcript': transcript}, effective, **args) == result
+    assert not list(client.scan_iter())
+
+
+@pytest.mark.parametrize('prior', ['image', 'video', 'clip'])
+def test_fifth_shot_cannot_rebind_any_existing_or_unknown_media(fifth_episode, prior):
+    package, voice, transcript, effective = fifth_episode
+    client = fakeredis.FakeRedis(decode_responses=True); checkpoint = {}
+    if prior == 'clip': checkpoint['clips'] = {'0': {'asset': 'retained-original'}}
+    else:
+        prefix = 'framecase_image' if prior == 'image' else 'video'
+        client.set('youtube_studio:commissioning:v1:'+prefix+':original', 'unknown-or-paid')
+    reviewer = Mock()
+    with pytest.raises(SpendBlocked, match='media_already_bound'):
+        edit.prepare(package, voice, {'transcript': transcript}, effective, longform=False,
+                     checkpoint=checkpoint, task='original', client=client, draft=reviewer)
+    reviewer.assert_not_called()

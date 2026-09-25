@@ -86,10 +86,12 @@ def story_input(dispatch):
     return stored_story(dispatch)
 
 
-def validate_package(package, source, *, longform):
+def validate_package(package, source, *, longform, scene_count=None):
     _require(type(package) is dict and type(package.get('scenes')) is list,
              'framecase_story_invalid')
-    scenes = package['scenes']; count = 30 if longform else 4
+    scenes = package['scenes']; count = (30 if longform else 4) if scene_count is None else scene_count
+    _require(type(count) is int and (count == 30 if longform else count in (4, 5)),
+             'framecase_scene_count_invalid')
     _require(len(scenes) == count, 'framecase_scene_count_invalid')
     for scene in scenes:
         _require(type(scene) is dict and type(scene.get('narration')) is str
@@ -145,6 +147,8 @@ def prepare_package(dispatch, *, revision=0, scene_narrations=None):
         _require(retained is None or scene_narrations == retained['scenes'],
                  'framecase_retained_voice_boundaries_changed')
         source['locked_scene_narrations'] = scene_narrations
+    scene_count = len(scene_narrations) if scene_narrations is not None else (30 if longform else 4)
+    _require(scene_count == 30 if longform else scene_count in (4, 5), 'framecase_scene_count_invalid')
     scene = {'type': 'object', 'properties': {
         'narration': {'type': 'string'}, 'ai_prompt': {'type': 'string'},
         'motion_prompt': {'type': 'string', 'minLength': 40, 'maxLength': 650}},
@@ -158,7 +162,7 @@ def prepare_package(dispatch, *, revision=0, scene_narrations=None):
         'Exactly 30 scenes, each 10-20 spoken words, total 380-460 words. Expand motivation, clues and '
         'visual storytelling without adding contradictions. Resolve the mystery and end naturally. '
         'Landscape composition. No recap intro, filler or requests to subscribe.' if longform else
-        'Split the LOCKED episode narration verbatim, in order, into EXACTLY four contiguous scenes '
+        f'Split the LOCKED episode narration verbatim, in order, into EXACTLY {scene_count} contiguous scenes '
         'of 8-23 words each, respecting complete sentences where possible. Never alter, add or omit a word. '
         'Compose an effective matching animated shot for each segment. Vertical composition.')
     prompt = ('You are the animation director for original general-audience mystery series Framecase Stories. '
@@ -193,7 +197,8 @@ def prepare_package(dispatch, *, revision=0, scene_narrations=None):
         + (f'\nEditorial correction attempt {revision}: the earlier draft failed validation. '
            'Recheck exact narration, shot feasibility, all numeric word and prompt limits and story logic.' if revision else ''))
     draft = generate_text_json(prompt, schema, purpose='editorial')
-    package = validate_package(draft_public_metadata(draft, source), source, longform=longform)
+    package = validate_package(draft_public_metadata(draft, source), source, longform=longform,
+                               scene_count=scene_count)
     if retained is not None:
         _require([s['narration'] for s in package['scenes']] == retained['scenes'],
                  'framecase_retained_voice_boundaries_changed')
