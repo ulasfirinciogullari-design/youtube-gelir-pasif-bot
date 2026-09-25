@@ -292,3 +292,29 @@ def readonly_for_task():
     if not source or not client.exists(DISPATCH + source): return False
     verify_child(task, source, child['spec'], client=client)
     return True
+
+
+def attention_provider_proof(source, root, *, client):
+    """Verify a failed retained-only child before detaching its editorial slot."""
+    task = plan._id(source['task_id']); parent = source.get('parent_id')
+    if not parent or not client.exists(DISPATCH + parent):
+        return None
+    client.watch(DISPATCH + parent, EXECUTION + parent, ROOT + root,
+                 jobs.PAID_CREATE_BUDGET_PREFIX + task)
+    ancestor, found_root, proof = checked(client, parent, claimed=True)
+    claim = _claim(parent, root, proof); retained = source.get('retained_long_media') or {}
+    plan._require(found_root == root and source.get('state') == 'FAILURE'
+        and source.get('failure_stage') == 'final_visual_qc_rescue'
+        and task == str(uuid5(NAMESPACE_URL, 'owner-plan-fal-visual-child:v1:' + parent))
+        and ancestor.get('retry_child_task_id') == task and source['spec'] == ancestor['spec']
+        and client.get(DISPATCH + parent) == client.get(ROOT + root) == plan._raw(claim)
+        and client.get(EXECUTION + parent) == operation(parent)
+        and source.get('paid_create_slots_used') == 0
+        and client.hgetall(jobs.PAID_CREATE_BUDGET_PREFIX + task) == {'cap': '32', 'used': '0'}
+        and not source.get('generated_asset_candidates') and not source.get('retained_cut_correction')
+        and source.get('audio_candidate_checkpoint', {}).get('audio_sha256') == proof['transcript']['audio_sha256']
+        and retained.get('source_task_id') == parent and retained.get('stock_only') is True
+        and retained.get('new_tts_requests') == retained.get('new_video_requests') == 0
+        and proof['unknown_requests'] and proof['accepted_outputs'])
+    return {'admission_sha256': plan._sha(claim), 'video_records': proof['video_records'],
+            'unknown_requests': proof['unknown_requests']}

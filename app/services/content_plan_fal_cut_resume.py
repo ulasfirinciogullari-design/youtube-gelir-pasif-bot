@@ -17,6 +17,10 @@ PREFIX = plan.PREFIX + 'fal_cut_resume:v1:'
 DISPATCH, EXECUTION, ROOT = (PREFIX + name for name in ('dispatch:', 'execution:', 'root:'))
 
 
+class NoCutCorrection(plan.ContentPlanError):
+    """The verified failed edit already preserves its original clip starts."""
+
+
 def operation(source):
     return str(uuid5(NAMESPACE_URL, 'owner-plan-fal-cut-resume:v1:' + source))
 
@@ -83,7 +87,8 @@ def _cut_proof(source, ancestor):
                 and (index, selected.get('sha256'), selected.get('size')) in preserved):
             moved.append({'scene_index': index, 'raw_sha256': selected['sha256'],
                           'observed_fraction': fraction, 'original_fraction': 0.})
-    plan._require(moved)
+    if not moved:
+        raise NoCutCorrection('plan_cut_already_preserved')
     return {'workprint_metadata_sha256': pointer['metadata_sha256'], 'moved_cuts': moved}
 
 
@@ -226,5 +231,5 @@ def attention_provider_proof(source, root, *, client):
     plan._require(retained.get('source_task_id') == parent and retained.get('stock_only') is True
         and retained.get('new_tts_requests') == retained.get('new_video_requests') == 0
         and previous['unknown_requests'] and previous['accepted_outputs'])
-    return {'cut_claim_sha256': plan._sha(claim), 'video_records': previous['video_records'],
+    return {'admission_sha256': plan._sha(claim), 'video_records': previous['video_records'],
             'unknown_requests': previous['unknown_requests']}

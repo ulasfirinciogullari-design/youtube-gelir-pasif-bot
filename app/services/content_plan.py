@@ -441,8 +441,12 @@ def maintain(profiles, enqueue, *, repair_enqueue=None):
                     # to archive the failed film. Its verifier still rejects unknown
                     # or changed authority, and cannot generate new media.
                     if repair_enqueue is not None and content_plan_fal_cut_resume.eligible(leaf):
-                        statuses[channel_id] = content_plan_fal_cut_resume.schedule(leaf, repair_enqueue, client=client)
-                        continue
+                        try:
+                            statuses[channel_id] = content_plan_fal_cut_resume.schedule(leaf, repair_enqueue, client=client)
+                        except content_plan_fal_cut_resume.NoCutCorrection:
+                            pass  # A correctly pinned terminal edit may proceed to attention.
+                        else:
+                            continue
                     if repair_enqueue is not None and content_plan_fal_resume.eligible(leaf):
                         statuses[channel_id] = content_plan_fal_resume.schedule(leaf, repair_enqueue, client=client)
                         continue

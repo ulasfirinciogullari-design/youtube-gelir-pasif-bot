@@ -273,3 +273,38 @@ def test_unknown_fal_receipt_race_cannot_detach_the_terminal_film(rejected_corre
     assert c.get(plan.PLAN_PREFIX+r.channel)==document and c.get(plan.ACTIVE_KEY)==active
     assert not c.exists(attention.PREFIX+entry,plan.COMPLETION_PREFIX+entry)
     assert plan._object(c.get(jobs.JOB_PREFIX+source['task_id']))==source
+
+
+@pytest.mark.parametrize('damage', [None, 'hold', 'unknown_changed'])
+def test_future_correctly_pinned_retained_failure_releases_queue_without_cut_retry(failed_cut, damage):
+    from datetime import datetime, timezone
+    from app.services import content_plan_attention as attention, channel_cadence as cadence
+    from test_qa_workprint_access import pointer
+    r=failed_cut;c=r.client;source=r.source;task=source['task_id'];channel=source['spec']['production_channel_id']
+    p=pointer();old=p['task_id']
+    p.update(task_id=task,version=4,width=1920,height=1080,duration_seconds=180.,frame_count=5400)
+    p['key']=p['key'].replace(old,task);p['metadata_key']=p['metadata_key'].replace(old,task)
+    source['qa_workprint']=p;r.metadata['video_sha256']=p['sha256']
+    r.metadata['scenes'][0]['selection']['start_fraction']=0.
+    document=plan.read(channel,client=c)
+    plan.change(channel,document['revision'],'settings',payload={'enabled':True,'after_queue':'auto_shorts'},client=c)
+    c.set(jobs.JOB_PREFIX+task,plan._raw(source))
+    terminal=plan._object(c.get('celery-task-meta-'+task));terminal['date_done']=datetime.now(timezone.utc).isoformat()
+    c.set('celery-task-meta-'+task,plan._raw(terminal));c.hset(cadence.keys(channel)[0],r.root,'long')
+    if damage=='hold':source['publication_hold']={'reason':'owner'};c.set(jobs.JOB_PREFIX+task,plan._raw(source))
+    if damage=='unknown_changed':
+        journal=plan._object(c.get(video.PREFIX+r.root))
+        next(row for row in journal['requests'].values()if row['result'] is None)['reserved_at']='2026-09-25T01:44:00+00:00'
+        c.set(video.PREFIX+r.root,plan._raw(journal))
+    before={key:c.dump(key)for key in c.scan_iter()};normal=Mock();repair=Mock()
+    result=plan.maintain([{**r.profile,'channel_id':channel}],normal,repair_enqueue=repair)
+    normal.assert_not_called();repair.assert_not_called();assert not c.exists(cut.DISPATCH+task)
+    if damage:assert {key:c.dump(key)for key in c.scan_iter()}==before
+    else:
+        assert result['channels'][channel]=='attention_archived'
+        assert not plan.owns_channel(channel)
+        assert cadence.snapshot(channel,client=c)['counts']['produced']['long']==1
+        archive=plan._object(c.get(attention.PREFIX+source['spec']['content_plan_item_id']))
+        assert archive['provider_evidence']['reserved_fal_unknowns']['financial_status']=='unresolved_reserved'
+        for key,value in before.items():
+            if key not in {plan.PLAN_PREFIX+channel,plan.ACTIVE_KEY}:assert c.dump(key)==value

@@ -26,7 +26,7 @@ def _archive(raw):
 
 
 def _settled_providers(pipe, read, root, *, retained_fal=None):
-    """Keep financial uncertainty reserved; only a verified terminal cut may detach."""
+    """Keep financial uncertainty reserved; only verified terminal retained work may detach."""
     from app.services import commissioning_reasoning as reasoning, commissioning_video as video
     from app.services import production_credit_ledger as credit, production_included_router as included
     key = reasoning.PREFIX + 'lineage:' + root; pipe.watch(key)
@@ -69,7 +69,7 @@ def _settled_providers(pipe, read, root, *, retained_fal=None):
         if retained_fal is not None:
             plan._require(sorted(unresolved) == retained_fal['unknown_requests'])
             evidence['reserved_fal_unknowns'] = {
-                'request_sha256s': sorted(unresolved), 'cut_claim_sha256': retained_fal['cut_claim_sha256'],
+                'request_sha256s': sorted(unresolved), 'admission_sha256': retained_fal['admission_sha256'],
                 'financial_status': 'unresolved_reserved', 'retry_authorized': False,
                 'refund_authorized': False, 'daily_capacity_released': False}
     elif retained_fal is not None:
@@ -197,6 +197,9 @@ def isolate(source, *, client=None, observe_only=False):
             plan._require(source['failure_classification'].get('error_sha256') == hashlib.sha256(error.encode()).hexdigest())
         from app.services.content_plan_fal_cut_resume import attention_provider_proof
         retained_fal = attention_provider_proof(source, dispatch['task_id'], client=pipe)
+        if retained_fal is None:
+            from app.services.content_plan_fal_visual_resume import attention_provider_proof as retained_proof
+            retained_fal = retained_proof(source, dispatch['task_id'], client=pipe)
         provider_evidence = _settled_providers(pipe, read, dispatch['task_id'], retained_fal=retained_fal)
         if observe_only:
             return {'status': 'eligible_for_attention', 'source_task_id': task,
