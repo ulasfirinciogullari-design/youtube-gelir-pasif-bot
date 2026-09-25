@@ -11,10 +11,10 @@ from zoneinfo import ZoneInfo
 from redis.client import Pipeline
 
 from app.services import studio_state as jobs
+from app.services.channel_formats import CHANNELS, shorts_only, allows, daily_limits, policy_id
 from app.services.included_stock_pool import _local_transaction
 
 PREFIX = 'youtube_studio:channel_cadence:v1:'
-CHANNELS = frozenset({'UC5v9AvNtD3PTLgo6m1jROOA', 'UCgvESYtYbn2w9R2ExBOF_cw'})
 LIMITS = {'long': 1, 'shorts': 5}
 ZONE = ZoneInfo('Europe/Istanbul')
 WAITING_KEY = PREFIX + 'waiting'
@@ -44,7 +44,11 @@ def kind(spec):
 def keys(channel_id, *, now=None):
     day = _now(now).date().isoformat()
     base = PREFIX + channel_id + ':'
-    return (base + 'produced:' + day, base + 'published:' + day, base + 'pending')
+    identity = policy_id(channel_id)
+    day_base = base + 'policy:' + identity + ':' if identity else base
+    # A new owner-approved quota epoch leaves old day receipts intact. Pending
+    # uploads stay shared across every epoch and day until their outcome is known.
+    return (day_base + 'produced:' + day, day_base + 'published:' + day, base + 'pending')
 
 
 def _values(client, key):
@@ -93,6 +97,7 @@ def production_slot(pipe, channel_id, format_kind, task_id, *, now=None, item=No
     """Read inside the caller's WATCH; the caller writes with its job commit."""
     if channel_id not in CHANNELS: return None
     _require(format_kind in LIMITS and str(UUID(task_id)) == task_id)
+    if not allows(channel_id, format_kind): return False
     stock = _stock_day(pipe, channel_id, item['id']) if item is not None else None
     if stock:
         from app.services import content_plan as plan
@@ -105,18 +110,26 @@ def production_slot(pipe, channel_id, format_kind, task_id, *, now=None, item=No
     selected = keys(channel_id, now=now); pipe.watch(*selected)
     used = {}
     for key in selected: used.update(_values(pipe, key))
-    if sum(v == format_kind for v in used.values()) >= LIMITS[format_kind]: return False
+    if sum(v == format_kind for v in used.values()) >= daily_limits(channel_id, LIMITS)[format_kind]: return False
     return selected[0]
 
 
 def lua_arguments(channel_id, format_kind, *, now=None):
     _require(format_kind in LIMITS)
-    return (*keys(channel_id, now=now), format_kind, LIMITS[format_kind] if channel_id in CHANNELS else 0)
+    if not allows(channel_id, format_kind):
+        # Zero already means an unmanaged channel in the historical script.
+        return (*keys(channel_id, now=now), format_kind, -1)
+    return (*keys(channel_id, now=now), format_kind, daily_limits(channel_id, LIMITS)[format_kind] if channel_id in CHANNELS else 0)
 
 
 def daily_editorial(channel_id, fallback, *, client, now=None, defer_daily_long=False):
     """The new daily mix applies after an existing ordered queue has finished."""
     if channel_id not in CHANNELS: return fallback
+    if shorts_only(channel_id):
+        return {'version': 1, 'format': 'shorts', 'duration_minutes': .5,
+            'reason_code': 'owner_shorts_only',
+            'reason': f"Yalnız Shorts; bu kanalda günde en fazla {daily_limits(channel_id, LIMITS)['shorts']} yayın, Türkiye saati.",
+            'scope_signals': ['daily_shorts']}
     if defer_daily_long:
         return {'version': 1, 'format': 'shorts', 'duration_minutes': .5,
             'reason_code': 'owner_daily_voice_priority',
@@ -146,6 +159,7 @@ def install_daily_long(profile, topics, *, client, now=None, advance=False):
     """
     from app.services import content_plan as plan, channel_production as production
     channel = profile['channel_id']; _require(channel in CHANNELS and topics)
+    if shorts_only(channel): return {'status': 'format_disabled'}
     _require(type(advance) is bool)
     today = _now(now).date()
     day = (today + timedelta(days=1) if advance else today).isoformat()
@@ -202,6 +216,7 @@ def install_daily_long(profile, topics, *, client, now=None, advance=False):
 # Runs after all existing eligibility checks, inside the original job/cursor
 # transaction. No reservation is consumed by not_due or capacity_wait ticks.
 PRODUCTION_LUA = r'''
+if tonumber(ARGV[15]) < 0 then return 'format_disabled' end
 if tonumber(ARGV[15]) > 0 then
   local used = {}
   for _, key in ipairs({KEYS[11], KEYS[12], KEYS[13]}) do
@@ -240,6 +255,7 @@ def publication_slot(source, *, client=None, now=None):
     """Reserve once before queuing the first upload; False means ordinary wait."""
     channel = source.get('spec', {}).get('production_channel_id')
     if channel not in CHANNELS: return True
+    if not allows(channel, source['spec'].get('format')): return False
     client = client or _client(); format_kind = kind(source['spec'])
     root = _root(client, source); claim_key = PREFIX + 'publication:' + root
     _, day_key, pending_key = keys(channel, now=now)
@@ -256,7 +272,7 @@ def publication_slot(source, *, client=None, now=None):
                 and claim.get('kind') == format_kind and claim.get('root_task_id') == root)
             return True
         used = _values(pipe, day_key); used.update(_values(pipe, pending_key))
-        if sum(v == format_kind for v in used.values()) >= LIMITS[format_kind]:
+        if sum(v == format_kind for v in used.values()) >= daily_limits(channel, LIMITS)[format_kind]:
             # Waiting is not a financial or publication authorization.
             pipe.multi(); pipe.sadd(WAITING_KEY, source['task_id']); pipe.execute()
             return False
@@ -336,6 +352,12 @@ def snapshot(channel_id, *, client=None, now=None):
     client = client or _client(); produced, published, pending = keys(channel_id, now=now)
     values = {name: _values(client, key) for name, key in
         (('produced', produced), ('published', published), ('pending', pending))}
-    return {'timezone': 'Europe/Istanbul', 'date': _now(now).date().isoformat(), 'limits': LIMITS,
+    limits = daily_limits(channel_id, LIMITS)
+    result = {'timezone': 'Europe/Istanbul', 'date': _now(now).date().isoformat(), 'limits': limits,
         'counts': {name: {k: sum(v == k for v in rows.values()) for k in LIMITS}
                    for name, rows in values.items()}}
+    if policy_id(channel_id):
+        previous = _values(client, PREFIX + channel_id + ':published:' + result['date'])
+        result.update(policy_id=policy_id(channel_id),
+            previously_published_today={k: sum(v == k for v in previous.values()) for k in LIMITS})
+    return result

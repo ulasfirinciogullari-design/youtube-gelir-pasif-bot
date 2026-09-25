@@ -177,6 +177,9 @@ def change(channel_id, expected_revision, action, *, payload=None, client=None):
             if action in {'add', 'append'}:
                 additions = [payload] if action == 'add' else payload
                 _require(type(additions) is list and 1 <= len(additions) <= MAX_ITEMS)
+                from app.services.channel_formats import allows
+                _require(all(isinstance(row, dict) and allows(channel_id, row.get('format'))
+                             for row in additions), 'plan_format_disabled')
                 plan['items'].extend(additions)
             elif action == 'settings':
                 _require(set(payload) == {'enabled', 'after_queue'} and type(payload['enabled']) is bool
@@ -331,6 +334,9 @@ def _reserve(channel_id, *, now=None):
     entry = next((v for v in plan['items'] if not client.exists(COMPLETION_PREFIX + v['id'])), None)
     if entry is None:
         return {'status': 'complete'}
+    from app.services.channel_formats import allows
+    if not allows(channel_id, entry['format']):
+        return {'status': 'format_disabled'}
     from app.services.framecase_cadence import CHANNEL_ID as framecase_channel
     animated = channel_id == framecase_channel and entry['format'] in {'animation', 'long'}
     if entry['format'] == 'animation' and not animated:

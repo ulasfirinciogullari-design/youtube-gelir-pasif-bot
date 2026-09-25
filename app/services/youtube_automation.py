@@ -490,6 +490,9 @@ def build_publish_plan(
     source_task_id = _safe_id(source_task_id, 'source_task_id')
     result = source_job.get('result') if isinstance(source_job.get('result'), dict) else {}
     spec = source_job.get('spec') if isinstance(source_job.get('spec'), dict) else {}
+    from app.services.channel_formats import allows
+    if not allows(profile.get('channel_id'), spec.get('format')):
+        raise MetadataValidationError('Owner enabled Shorts only for this channel')
     if result.get('quality_disposition') == 'editorial_review_pass':
         from app.services.external_editorial_review import validate_editorial_publication
 

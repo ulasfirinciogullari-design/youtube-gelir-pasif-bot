@@ -692,6 +692,9 @@ def budget_status(*, read_timeout=None):
 
 def preflight_scheduled_production(channel_id, *, kind):
     """Reject an unfunded queue admission without touching a topic or ledger."""
+    from app.services.channel_formats import allows
+    if not allows(channel_id, kind):
+        raise SpendBlocked('channel_format_disabled')
     if not enforcement_enabled():
         raise SpendBlocked('spend_enforcement_not_enabled')
     if getattr(settings, 'studio_abacus_included_production', False) is True:

@@ -1,5 +1,29 @@
 # Owner editorial plan
 
+The persisted `STUDIO_SHORTS_POLICY_JSON` setting selects channels whose owner
+has disabled long videos, with distinct daily Shorts ceilings. The September 25
+owner instruction is Capital Corrupt four Shorts and Margin Verdict one Short,
+including a fresh 4+1 allowance that day regardless of earlier work:
+
+```json
+{"version":1,"id":"shorts-20260925-4-1","daily_limits":{"UC5v9AvNtD3PTLgo6m1jROOA":4,"UCgvESYtYbn2w9R2ExBOF_cw":1}}
+```
+
+The same setting is persisted on web, worker and scheduler. Its stable ID selects
+a new editorial day-key namespace, preserving all old admission and publication
+rows. It must not change on restart or daily rollover: dates roll automatically
+at midnight Europe/Istanbul. Pending uploads remain shared between policies and
+days; unknown outcomes never regain capacity. Provider grants and request limits
+are independent of this editorial change. Studio separates this plan's counts
+from earlier publications that day. Empty configuration retains the historical
+mixed cadence. Invalid nonempty configuration fails closed.
+
+Daily long-form and next-day long-form stock planning,
+new long queue entries, production admission and unpublished long uploads are
+blocked. Studio offers only Shorts for those channels. Historical jobs, public
+long videos, financial reservations and daily receipts remain unchanged;
+other channels retain their own formats and cadence.
+
 A queued six-scene Short that fails during local rendering can make one
 retained-media continuation. Every video create must have a captured provider
 result and preserved raw bytes; the original voice and selected stock pools

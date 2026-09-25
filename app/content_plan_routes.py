@@ -19,6 +19,7 @@ CSS = '''
 '''
 
 ERRORS = {
+    'plan_format_disabled': 'Bu kanal yalnız Shorts üretiyor. Shorts formatını seç.',
     'plan_changed': 'Plan başka bir işlemde güncellendi. Son sırayı kontrol edip tekrar deneyebilirsin.',
     'plan_item_started': 'Üretimi başlayan bir videonun yeri değiştirilemez. Sonraki videoları düzenleyebilirsin.',
     'plan_order_invalid': 'Önce tamamlanması gereken bir bölüm var. Seri sırasını koruyarak taşı.',
@@ -67,7 +68,9 @@ def _row(entry, position, channel, revision):
 
 def render_page(channels, selected, view, *, notice='', error=False):
     from app.studio import _shell
+    from app.services.channel_formats import shorts_only, daily_limits
     channel_id = selected['channel_id']; revision = view['revision'] if view else 'new'
+    only_shorts = shorts_only(channel_id)
     from app.services.framecase_cadence import CHANNEL_ID
     framecase = channel_id == CHANNEL_ID
     rows = view['items'] if view else []
@@ -89,7 +92,7 @@ def render_page(channels, selected, view, *, notice='', error=False):
         target = '/studio/job/' + current['task_id'] if current.get('task_id') else '#queue'
         live = f'<section class="plan-live"><div class="plan-live-heading"><span class="section-kicker"><span class="live-dot"></span>{escape(subtitle.upper())}</span><span class="plan-number">{len(published):02d}<small style="font-size:12px;opacity:.55"> / {len(rows):02d}</small></span></div><h2>{escape(heading)}</h2><p>{detail}</p><div class="plan-progress"><i style="width:{min(100,max(0,int(current.get("progress")or 0))) if current["status"] not in {"blocked", "waiting"} else 0}%"></i></div><a href="{target}">Üretimi takip et →</a></section>'
     else:
-        live = '<section class="plan-live"><span class="section-kicker">YAYIN AKIŞI</span><h2>' + ('Plan tamamlandı.' if published else 'Bir sonraki hikâyeyi planla.') + '</h2><p>Seri bölümleri, uzun videolar ve yeni fikirler aynı sırada. Üretim sunucuda devam eder.</p></section>'
+        live = '<section class="plan-live"><span class="section-kicker">YAYIN AKIŞI</span><h2>' + ('Plan tamamlandı.' if published else 'Bir sonraki hikâyeyi planla.') + '</h2><p>' + ('Shorts serileri ve yeni fikirler aynı sırada.' if only_shorts else 'Seri bölümleri, uzun videolar ve yeni fikirler aynı sırada.') + ' Üretim sunucuda devam eder.</p></section>'
     queue = '<ol class="plan-list">' + ''.join(_row(v, i + 1, channel_id, revision) for i, v in enumerate(pending)) + '</ol>' if pending else '<div class="plan-empty"><h2>Sıradaki video için yer hazır.</h2><p>Bir konu ekle veya bir serinin bölümlerini birlikte planla. Başlamamış içerikleri daha sonra yeniden sıralayabilirsin.</p></div>'
     finished = '<details class="plan-completed"><summary>Yayımlananları göster · ' + str(len(published)) + '</summary><ol class="plan-list">' + ''.join(_row(v, i+1, channel_id, revision) for i,v in enumerate(published)) + '</ol></details>' if published else ''
     attention = (view or {}).get('attention') or []
@@ -116,10 +119,22 @@ def render_page(channels, selected, view, *, notice='', error=False):
         + '</select><button type="submit">Ayarları kaydet</button><p class="save-note">Duraklatma yeni işleri durdurur; başlamış üretimi iptal etmez.</p></form></section>')
     if framecase:
         settings_form = settings_form.replace('Yeni planımı bekle', 'Yeni animasyon serisi hazırla')
+    if only_shorts:
+        cadence = (view or {}).get('daily_cadence') or {}
+        published_today = (cadence.get('counts') or {}).get('published') or {}
+        limit = daily_limits(channel_id, {})['shorts']
+        previous = sum(cadence.get('previously_published_today', {}).values())
+        cadence_card = ('<section class="planner-box"><h2>Yalnız Shorts</h2>'
+            '<div class="plan-stats"><div><b>' + str(published_today.get('shorts', 0))
+            + '/' + str(limit) + '</b><span>BU PLANDA BUGÜN YAYIMLANAN</span></div></div>'
+            '<p>Uzun video üretimi kapalı. Bu kanal Türkiye saatiyle günde en fazla ' + str(limit) + ' Shorts yayımlar. Sınır dolunca ertesi gün otomatik devam eder.</p>'
+            + ('<p>Plan değişikliğinden önce bugün yayımlanan ' + str(previous) + ' video geçmişte saklanır; yeni plana dahil değildir.</p>' if previous else '') + '</section>')
     format_labels = {'shorts': 'Shorts · yaklaşık 30 saniye', 'long': 'Uzun video · 3 dakika',
                      'animation': 'Animasyon pilotu · hazırlık sırasına ekle'}
     if framecase:
         format_labels['animation'] = 'Animasyon Shorts · yaklaşık 30 saniye'
+    if only_shorts:
+        format_labels = {'shorts': format_labels['shorts']}
     options = ''.join(f'<option value="{key}">{label}</option>' for key,label in format_labels.items())
     create = (f'<section class="planner-box" id="add-video"><h2>Sıraya içerik ekle</h2><form method="post" action="/studio/plan/add">{hidden}'
         '<label for="plan-title">Video başlığı veya fikir</label><input id="plan-title" name="title" maxlength="140" required placeholder="Örn. Bir banknotun gizli yolculuğu">'

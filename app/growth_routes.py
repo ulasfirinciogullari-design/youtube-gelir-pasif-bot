@@ -65,9 +65,17 @@ def render(channels, selected, preferences, data, languages, voices_active, *, s
         body += '<p class="notice success">Ayarlar kaydedildi. Yeni üretimlerde uygulanacak.</p>'
     if cadence:
         published = cadence['counts']['published']
-        body += ('<section class="card"><h2>Günlük yayın düzeni</h2><p><b>1 uzun video + 5 Shorts / kanal</b></p>'
-            '<p>Bugün: '+str(published['long'])+' / 1 uzun video · '+str(published['shorts'])+' / 5 Shorts</p>'
-            '<p class="growth-note">Türkiye saati. Hazır stokların ilk yayınından sonra bu düzen uygulanır. '
+        limits = cadence['limits']
+        mix = str(limits['shorts']) + ' Shorts / gün'
+        progress = str(published['shorts']) + ' / ' + str(limits['shorts']) + ' Shorts'
+        if limits['long']:
+            mix = str(limits['long']) + ' uzun video + ' + mix
+            progress = str(published['long']) + ' / ' + str(limits['long']) + ' uzun video · ' + progress
+        previous = sum(cadence.get('previously_published_today', {}).values())
+        body += ('<section class="card"><h2>Günlük yayın düzeni</h2><p><b>' + mix + '</b></p>'
+            '<p>Bu planda bugün: ' + progress + '</p>'
+            + ('<p>Bugün plan değişmeden önce yayımlanan ' + str(previous) + ' video yeni plana dahil değildir.</p>' if previous else '')
+            + '<p class="growth-note">Türkiye saati. '
             'Sınır dolunca sıradaki gün otomatik devam eder. Sunucudaki zamanlayıcı, bu ekran ve sohbet kapalıyken de çalışır.</p></section>')
     body += '<nav class="growth-tabs">'+tabs+'</nav><div class="growth-grid"><div><section class="card"><div class="section-head"><h2>Kanalına uygun güncel ilgi</h2></div><p class="tiny">'+source_note+'</p>'+stale_note
     body += cards or '<p class="muted">Şu anda kanala uygun, doğrulanmış bir trend gözlemi yok. Kaynaklı mevcut konular üretilmeye devam eder.</p>'

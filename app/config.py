@@ -44,6 +44,8 @@ class Settings(BaseSettings):
     studio_elevenlabs_native_credits: bool = False
     # Staged until actual delivery/review and the spending policy are commissioned.
     studio_longform_delivery_enabled: bool = False
+    # Persisted per-service owner preference; does not rewrite historical jobs.
+    studio_shorts_policy_json: str = ''
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )

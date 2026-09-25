@@ -153,6 +153,10 @@ def queue_automatic_publish(source_task_id: str) -> dict:
             _set_source_automation(source_task_id, status='no_unique_route')
             return {'status': 'no_unique_route'}
         target_channel_id = str(profile.get('channel_id') or '')
+        from app.services.channel_formats import allows
+        if not allows(target_channel_id, spec.get('format')):
+            _set_source_automation(source_task_id, status='format_disabled')
+            return {'status': 'format_disabled'}
         channel = next(
             (
                 item
@@ -536,6 +540,9 @@ def publish_video_pipeline(
         connection_id = str(reservation.get('connection_id') or '')
         if not target_channel_id or not connection_id:
             raise RuntimeError('YouTube upload target is missing')
+        from app.services.channel_formats import allows
+        if not allows(target_channel_id, (source.get('spec') or {}).get('format')):
+            raise RuntimeError('Owner enabled Shorts only for this channel')
         credentials = load_credentials(
             target_channel_id,
             expected_connection_id=connection_id,
