@@ -51,10 +51,17 @@ def schedule(source):
     if source.get('state') != 'FAILURE':
         return 'working_or_waiting'
     code = source.get('framecase_failure_code', '')
+    verified_before_send = False
+    if code in {'credit_cross_mode_request_conflict', 'credit_dispatch_legacy_outcome_unverified',
+                'credit_dispatch_store_unavailable', 'credit_dispatch_commit_uncertain'}:
+        from app.services.production_credit_dispatch import ready_for_root
+        verified_before_send = ready_for_root(source['task_id'])
+        if not verified_before_send:
+            return 'held_for_verification'
     if (_requires_correction(source) and source.get('framecase_failed_build')
             == os.environ.get('RAILWAY_GIT_COMMIT_SHA', 'local')):
         return 'waiting_for_pipeline_correction'
-    if (not code or any(marker in code for marker in (
+    if (not code or not verified_before_send and any(marker in code for marker in (
             'outcome_unverified', 'outcome_unknown',
             'binding_changed', 'generic_recovery_forbidden', 'pipeline_unverified'))):
         return 'held_for_verification'

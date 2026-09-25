@@ -94,13 +94,28 @@ def paid_credit_post(sender, url, kwargs):
             intent['production_kind'] = 'long'
         actual = {'actual_account_sha256': binding['account_sha256'],
                   'actual_credential_sha256': prepared.credential_sha256}
-        receipt = _reserve_when_available(ledger, intent, context, actual)
+        from app.services import production_credit_dispatch as dispatch
+        dispatch.prepare(ledger, intent, context, actual)
+        try:
+            receipt = _reserve_when_available(ledger, intent, context, actual)
+        except SpendBlocked as error:
+            if str(error) not in {
+                'credit_cross_mode_request_conflict', 'credit_intent_already_reserved',
+                'credit_store_unavailable', 'credit_store_contention', 'credit_commit_uncertain',
+            }:
+                raise
+            # A lost Redis reply is not a provider outcome. A durable preparation
+            # plus an unclaimed matching hold can continue to the one-shot claim.
+            receipt = dispatch.pending_receipt(ledger, intent, context, actual)
 
         # A mutable shared HTTPX client may have drifted during reservation.
         # Stop before POST without releasing the conservative hold. Application
         # functions/custom transport code remain within the trusted-code boundary.
         wire = prepared.wire_kwargs()
         runtime._native_sender_identity(sender, wire['headers'], prepared.provider)
+        if runtime.resolve_context(foundation.client, runtime._TASK_ID.get()) != context:
+            raise SpendBlocked('credit_production_context_invalid')
+        dispatch.claim(ledger, intent, context, actual, receipt)
         response = sender(prepared.route, **wire)
         meter = observe_credit_response(prepared, response, reserved_credits=receipt['reserved_credits'])
         observed = foundation.clock()

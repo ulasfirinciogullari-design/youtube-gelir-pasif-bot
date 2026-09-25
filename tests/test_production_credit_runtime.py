@@ -290,9 +290,13 @@ def test_httpx_auth_override_is_checked_before_and_after_actual_reservation(case
     assert not case.sends and state(case)['reserved_credits'] == (1000 if after_reserve else 0)
     case.http.auth = None
     if after_reserve:
+        # The first invocation positively stopped before claiming/sending.
+        # Its existing held receipt can now make exactly its first POST.
+        native.paid_credit_post(case.http.post, credit.ROUTE, request())
+        assert len(case.sends) == 1
         with pytest.raises(SpendBlocked):
             native.paid_credit_post(case.http.post, credit.ROUTE, request())
-        assert not case.sends
+        assert len(case.sends) == 1
 
 
 def test_expiry_during_post_records_real_meter_without_sending_again(case):
@@ -330,14 +334,17 @@ def test_lost_exec_reply_never_repeats_post_or_refunds_unverified_usage(case, mo
         pipe.execute = perform
         return pipe
     monkeypatch.setattr(case.client, 'pipeline', pipeline)
-    with pytest.raises(SpendBlocked):
+    if phase == 'reserve':
+        # The durable before-send journal can recover the committed hold.
         native.paid_credit_post(case.http.post, credit.ROUTE, request())
+    else:
+        with pytest.raises(SpendBlocked):
+            native.paid_credit_post(case.http.post, credit.ROUTE, request())
     assert lost == [True]
-    expected = (0, 1000) if phase == 'reserve' else (248, 0)
-    assert (state(case)['spent_credits'], state(case)['reserved_credits']) == expected
+    assert (state(case)['spent_credits'], state(case)['reserved_credits']) == (248, 0)
     with pytest.raises(SpendBlocked):
         native.paid_credit_post(case.http.post, credit.ROUTE, request())
-    assert len(case.sends) == (0 if phase == 'reserve' else 1)
+    assert len(case.sends) == 1
 
 
 def test_exact_meter_settles_even_if_downstream_audio_json_is_invalid(case):
@@ -350,6 +357,162 @@ def test_exact_meter_settles_even_if_downstream_audio_json_is_invalid(case):
     assert response.content == b'not-json-or-audio' and state(case)['spent_credits'] == 248
     with pytest.raises(ValueError):
         response.json()
+
+
+def _dispatch_inputs(case):
+    context = runtime.resolve_context(case.client, ROOT)
+    prepared = inspect_credit_request(credit.ROUTE, request())
+    fingerprint = runtime._request_fingerprint(context, 'elevenlabs', prepared.operation, prepared.payload)
+    intent = {'intent_id': sha('elevenlabs-native-credit-v1\0' + fingerprint),
+              'root_lineage_id': ROOT, 'channel_id': CHANNEL, 'source_connection_id': CONNECTION,
+              'request_sha256': fingerprint, 'route': credit.ROUTE, 'model': credit.MODEL,
+              'voice_id': credit.VOICE_ID}
+    actual = {'actual_account_sha256': case.policy['account_sha256'],
+              'actual_credential_sha256': case.policy['credential_sha256']}
+    return intent, context, actual
+
+
+def test_worker_loss_before_send_claim_reuses_exact_reservation_once(case, monkeypatch):
+    original = durable.CreditLedger.reserve
+    def crash(self, **kwargs):
+        original(self, **kwargs)
+        raise SystemExit('simulate dead worker before a POST can be reached')
+    with monkeypatch.context() as patch:
+        patch.setattr(durable.CreditLedger, 'reserve', crash)
+        with pytest.raises(SystemExit):
+            native.paid_credit_post(case.http.post, credit.ROUTE, request())
+    held = deepcopy(state(case))
+    assert not case.sends and held['reserved_credits'] == 1000
+    native.paid_credit_post(case.http.post, credit.ROUTE, request())
+    assert len(case.sends) == 1 and state(case)['spent_credits'] == 248
+    assert len(state(case)['intents']) == 1
+    assert next(iter(state(case)['intents'].values()))['reservation'] == next(iter(held['intents'].values()))['reservation']
+    with pytest.raises(SpendBlocked):
+        native.paid_credit_post(case.http.post, credit.ROUTE, request())
+    assert len(case.sends) == 1
+
+
+@pytest.mark.parametrize('phase', ['reserve', 'claim'])
+def test_post_commit_watch_error_can_continue_only_same_unsent_invocation(case, monkeypatch, phase):
+    from redis.exceptions import WatchError
+    from app.services import production_credit_dispatch as dispatch
+    factory = case.client.pipeline
+    lost = []
+    def pipeline(*args, **kwargs):
+        pipe = factory(*args, **kwargs); execute = pipe.execute
+        def perform(*args, **kwargs):
+            commands = [item[0] for item in pipe.command_stack]
+            target = any(row[0] == 'HSET' and (
+                row[1] == durable.STATE_KEY if phase == 'reserve' else
+                str(row[1]).startswith(dispatch.PREFIX) and row[2] == 'claim') for row in commands)
+            result = execute(*args, **kwargs)
+            if target and not lost:
+                lost.append(True)
+                raise WatchError('ConnectionError after EXEC')
+            return result
+        pipe.execute = perform
+        return pipe
+    monkeypatch.setattr(case.client, 'pipeline', pipeline)
+    native.paid_credit_post(case.http.post, credit.ROUTE, request())
+    assert lost == [True] and len(case.sends) == 1 and len(state(case)['intents']) == 1
+    with pytest.raises(SpendBlocked):
+        native.paid_credit_post(case.http.post, credit.ROUTE, request())
+    assert len(case.sends) == 1
+
+
+def test_two_processes_continuing_one_prepared_receipt_cannot_both_claim(case):
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Barrier
+    from app.services import production_credit_dispatch as dispatch
+    intent, context, actual = _dispatch_inputs(case)
+    dispatch.prepare(case.ledger, intent, context, actual)
+    receipt = case.ledger.reserve(intent=intent, production_context=context, **actual)
+    barrier = Barrier(2)
+    def contend(_):
+        barrier.wait()
+        try:
+            dispatch.claim(case.ledger, intent, context, actual, receipt)
+            return 'one_send_permitted'
+        except SpendBlocked as error:
+            return str(error)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(contend, range(2)))
+    assert sorted(results) == ['credit_dispatch_already_claimed', 'one_send_permitted']
+    assert state(case)['reserved_credits'] == 1000
+
+
+@pytest.mark.parametrize('damage', ['primary', 'anchor', 'both', 'claim_rollback',
+                                  'both_claims_rollback', 'foundation_loss', 'expires'])
+def test_missing_or_rolled_back_dispatch_journal_never_replays_a_claim(case, damage):
+    from app.services import production_credit_dispatch as dispatch
+    intent, context, actual = _dispatch_inputs(case)
+    dispatch.prepare(case.ledger, intent, context, actual)
+    receipt = case.ledger.reserve(intent=intent, production_context=context, **actual)
+    dispatch.claim(case.ledger, intent, context, actual, receipt)
+    key, anchor = dispatch._keys(intent)
+    if damage == 'primary': case.client.delete(key)
+    elif damage == 'anchor': case.client.delete(anchor)
+    elif damage == 'both': case.client.delete(key, anchor)
+    elif damage == 'claim_rollback': case.client.hdel(key, 'claim')
+    elif damage == 'both_claims_rollback':
+        case.client.hdel(key, 'claim'); case.client.hdel(anchor, 'claim')
+    elif damage == 'foundation_loss':
+        case.client.hdel(LEDGER_KEY, 'native_dispatch_claim:' + intent['intent_id'])
+    else: case.client.expire(anchor, 10)
+    before = state(case)
+    with pytest.raises(SpendBlocked):
+        native.paid_credit_post(case.http.post, credit.ROUTE, request())
+    assert not case.sends and state(case) == before
+
+
+def test_legacy_reservation_cannot_be_adopted_without_positive_operator_evidence(case):
+    intent, context, actual = _dispatch_inputs(case)
+    case.ledger.reserve(intent=intent, production_context=context, **actual)
+    before = all_records(case.client)
+    with pytest.raises(SpendBlocked, match='credit_dispatch_legacy_outcome_unverified'):
+        native.paid_credit_post(case.http.post, credit.ROUTE, request())
+    assert not case.sends and all_records(case.client) == before
+
+
+def test_readonly_root_recovery_hint_requires_prepared_unclaimed_receipt(case, monkeypatch):
+    from app.services import production_credit_dispatch as dispatch
+    monkeypatch.setattr(runtime, 'configured_ledger', lambda **kwargs: case.foundation)
+    intent, context, actual = _dispatch_inputs(case)
+    assert dispatch.ready_for_root(ROOT) is False
+    dispatch.prepare(case.ledger, intent, context, actual)
+    assert dispatch.ready_for_root(ROOT) is False
+    receipt = case.ledger.reserve(intent=intent, production_context=context, **actual)
+    before = all_records(case.client)
+    assert dispatch.ready_for_root(ROOT) is True
+    assert dispatch.ready_for_root(CHILD) is False
+    assert all_records(case.client) == before
+    dispatch.claim(case.ledger, intent, context, actual, receipt)
+    assert dispatch.ready_for_root(ROOT) is False
+
+
+@pytest.mark.parametrize('correct_receipt', [False, True])
+def test_explicit_legacy_presend_proof_is_receipt_bound_and_single_use(case, correct_receipt):
+    from app.services import production_credit_dispatch as dispatch
+    intent, context, actual = _dispatch_inputs(case)
+    receipt = case.ledger.reserve(intent=intent, production_context=context, **actual)
+    identity = dispatch._identity(case.ledger, case.policy, intent, context, actual)
+    prepared = {**identity, 'origin': {'kind': 'verified_legacy_pre_send',
+        'reservation_sha256': receipt['reservation_sha256'] if correct_receipt else '0' * 64,
+        'evidence_sha256': sha('synthetic positive runtime proof of failure before sender')}}
+    key, anchor = dispatch._keys(intent)
+    # Test-only operator preparation, not a request/runtime auto-recovery API.
+    case.client.hset(key, 'prepared', durable._json(prepared))
+    case.client.hset(anchor, 'prepared', durable._hash(prepared))
+    if correct_receipt:
+        native.paid_credit_post(case.http.post, credit.ROUTE, request())
+        assert len(case.sends) == 1 and state(case)['spent_credits'] == 248
+        with pytest.raises(SpendBlocked):
+            native.paid_credit_post(case.http.post, credit.ROUTE, request())
+        assert len(case.sends) == 1
+    else:
+        with pytest.raises(SpendBlocked):
+            native.paid_credit_post(case.http.post, credit.ROUTE, request())
+        assert not case.sends and state(case)['reserved_credits'] == 1000
 
 
 def test_real_meter_above_remaining_internal_share_is_recorded_and_next_post_stops(case):

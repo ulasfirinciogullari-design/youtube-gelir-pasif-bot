@@ -256,6 +256,33 @@ def test_recovery_delivery_is_once_and_never_replays_uncertain_voice(client, mon
     assert enqueue.call_count == 1
 
 
+@pytest.mark.parametrize('ready', [False, True])
+@pytest.mark.parametrize('code', ['credit_cross_mode_request_conflict',
+                                'credit_dispatch_legacy_outcome_unverified'])
+def test_native_hold_recovery_requires_positive_unclaimed_preparation(client, monkeypatch, ready, code):
+    from app.services import framecase_recovery as recovery, production_credit_dispatch as dispatch
+    from app.production_tasks import continue_framecase_episode
+    from unittest.mock import Mock
+    monkeypatch.setattr(plan, '_client', lambda: client)
+    verify = Mock(return_value=ready)
+    monkeypatch.setattr(dispatch, 'ready_for_root', verify)
+    enqueue = Mock()
+    monkeypatch.setattr(continue_framecase_episode, 'apply_async', enqueue)
+    row = source(); row.update(state='FAILURE', framecase_failure_code=code, framecase_resume_attempt=3)
+    row['spec']['framecase_animation'] = True
+    client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(row))
+    assert recovery.schedule(row) == ('continuation_queued' if ready else 'held_for_verification')
+    verify.assert_called_once_with(row['task_id'])
+    assert enqueue.call_count == int(ready)
+    assert json.loads(client.get(jobs.JOB_PREFIX + row['task_id'])) == row
+    if ready:
+        assert enqueue.call_args.kwargs['args'] == (row['task_id'], 4)
+        limited = deepcopy(row); limited['framecase_resume_attempt'] = 6
+        client.set(jobs.JOB_PREFIX + row['task_id'], plan._raw(limited))
+        assert recovery.schedule(limited) == 'continuation_limit_reached'
+        assert enqueue.call_count == 1
+
+
 def test_actual_final_scene_windows_include_end_hold_without_losing_frames(tmp_path):
     import subprocess
     path = tmp_path / 'master.mp4'

@@ -81,6 +81,8 @@ def read(pipe, foundation, *, now):
             continue
         _require(key in _FIELDS or key in (_NATIVE_MODE, _INCLUDED_MODE, _PREPAID_AUDIO_MODE, 'native_credit_period_history',
             'narrator_rotation_grant:v1')
+            or type(key) is str and re.fullmatch(r'native_dispatch_claim:[0-9a-f]{64}', key) is not None
+                and type(value) is str and re.fullmatch(r'[0-9a-f]{64}', value) is not None
             or type(key) is str and re.fullmatch(r'native_request:[0-9a-f]{64}', key) is not None,
             'cash_disabled_conflicting_accounting')
     return stored
