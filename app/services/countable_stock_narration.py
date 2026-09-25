@@ -1,5 +1,6 @@
 """Countable fresh English writer output; never narration or QA authority."""
 from copy import deepcopy
+import re
 
 
 WORD_FIELD_ERROR = 'each narration word field must contain exactly one spoken word with attached punctuation'
@@ -21,7 +22,11 @@ RULE = (
     'field. Attach punctuation to its word; ASCII and typographic apostrophes '
     'inside a word are equivalent for counting. Do not put '
     'spaces, numbers used as word labels, empty padding or multiple words in '
-    'a field. The eleven words must join into one natural complete sentence. '
+    'a field. Compose each scene as its own natural complete eleven-word sentence, '
+    'then put that sentence into its word fields. Never divide a longer paragraph '
+    'into eleven-word chunks or carry a sentence into the next scene. Finish w11 '
+    'with sentence-ending punctuation (. ? !); punctuation alone cannot repair '
+    'an unfinished thought. Rewrite the whole sentence if it does not fit. '
     'Six scenes therefore contain 66 words, within the existing 62-66-word '
     'budget. Preserve sourced meaning and every visual constraint. These '
     'fields only control writing length; the full independent source and '
@@ -30,6 +35,15 @@ RULE = (
     'does not mean an identical percentage reduction in transaction time. '
     'If that distinction cannot fit naturally, omit the number without inventing a new claim.'
 )
+
+
+def sentence_boundary_error(narration):
+    """Reject an obvious unfinished scene; punctuation never proves grammar or facts."""
+    if not re.search(r'[.!?][\"\u201d\u2019\x27)]*$', narration):
+        return ('narration has no sentence ending: rewrite this scene as one complete '
+            'eleven-word sentence ending in . ? or !; do not continue into another '
+            'scene or merely punctuate an unfinished phrase')
+    return ''
 
 
 def eligible(provider, fresh, calibrated, scenes, stock_positions, targets):

@@ -2642,6 +2642,8 @@ NON-NEGOTIABLE RULES:
                     position,
                     rows_by_position[position],
                 )
+                if candidate and not error and word_slots:
+                    error = countable_stock_narration.sentence_boundary_error(candidate['narration'])
                 if error:
                     deterministic_errors[position] = error
                     failed_candidates[position] = {

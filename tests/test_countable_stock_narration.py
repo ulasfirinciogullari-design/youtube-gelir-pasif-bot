@@ -207,3 +207,75 @@ def test_native_observed_word_fields_require_full_independent_critique(writer_co
     journal = json.loads(ledger.client.get(included.JOURNAL_KEY))
     assert len(journal['requests']) == expected_calls and all(r['outcome'] is not None for r in journal['requests'].values())
     assert ledger.foundation.snapshot()['cash_spending_enabled'] is False
+
+
+@pytest.mark.parametrize('outcome', ['repaired', 'factual_rejection', 'still_fragmented'])
+def test_observed_incomplete_hook_uses_existing_writer_repair_before_critic(writer_commissioned, monkeypatch, outcome):
+    ledger, _, _ = writer_commissioned
+    from app import config
+    for key, value in {'studio_spend_enforcement': True, 'studio_abacus_included_production': True,
+                      'abacus_api_key': KEY, 'gemini_critic_enabled': True}.items():
+        monkeypatch.setattr(config.settings, key, value, raising=False)
+    monkeypatch.setattr(director, 'settings', config.settings)
+    monkeypatch.setattr(runtime, 'settings', config.settings)
+    monkeypatch.setattr(runtime, 'configured_ledger', lambda **kw: ledger.foundation)
+    monkeypatch.setattr(runtime, 'resolve_context', lambda *a: deepcopy(CONTEXT))
+    value = package(); before = deepcopy(value)
+    _, critic = fixture_story()
+    def page(url):
+        return {'url': url, 'text': 'ACTUAL RETRIEVED TEST EVIDENCE', 'text_sha256': 'd' * 64}
+    monkeypatch.setattr(sources, 'fetch_page', page)
+    from app.services.included_source_passages import catalogue
+    passage = catalogue([page(value['sources'][0]['url'])])[0]
+    # Exact provider-authored failure observed in the restaurant Short. The
+    # decoder must retain it verbatim, never append a word or punctuation.
+    fragment = "Why does a furniture retailer operate some of the world's busiest"
+    broken = encoded(value)
+    broken['scenes'][0]['narration_words'] = dict(zip(words.SLOTS, fragment.split(), strict=True))
+    observed = deepcopy(broken)
+    assert words.decode(broken)['scenes'][0]['narration'] == fragment and broken == observed
+    calls = []
+    def send(prepared):
+        calls.append(prepared)
+        prompt = json.dumps(prepared.payload)
+        if len(calls) == 1:
+            output = deepcopy(broken)
+        elif len(calls) == 2 or outcome == 'still_fragmented':
+            assert len(calls) <= 3 and words.RULE in prompt
+            assert 'narration has no sentence ending' in prompt
+            context = json.loads(prepared.payload['messages'][1]['content'][0]['text'].split(
+                'Story context:\n', 1)[1].split('\n\nReturn ONLY', 1)[0])
+            assert [row['position'] for row in context['stock_positions_to_rewrite']] == [0]
+            assert [row['position'] for row in context['accepted_stock_scenes_locked']] == [1, 2, 3, 4, 5]
+            output = {'scenes': [deepcopy((broken if outcome == 'still_fragmented' else encoded(value))['scenes'][0])]}
+        else:
+            assert len(calls) == 3 and words.RULE not in prompt
+            assert fragment not in prompt and all(s['narration'] in prompt for s in value['scenes'])
+            output = {'editorial_review': critic(stock_positions=tuple(range(6))),
+                'factual_audit': {'sentences': [{'position': pos, 'narration': s['narration'],
+                    'assessment': 'unsupported' if outcome == 'factual_rejection' and pos == 0 else 'supported',
+                    'reason': 'Synthetic independent source assessment after the sentence rewrite.',
+                    'quotations': [{'passage_id': passage['passage_id']}]} for pos, s in enumerate(value['scenes'])]}}
+        body = envelope(); body['choices'][0]['message']['content'] = json.dumps(output)
+        return response(prepared, payload=body)
+    monkeypatch.setattr(transport, 'send_once', send)
+    monkeypatch.setattr(director, 'run_optional_gemini_critic', lambda *a, **kw: pytest.fail('No paid fallback'))
+    def run():
+        return director._repair_short_stock_scenes(None, value, 'English', .5, 'Explain the sourced membership model.',
+            fresh_scheduled=True, spoken_word_budget=value['spoken_word_budget'])
+    if outcome == 'repaired':
+        result = run()
+        assert result['narration'] == value['narration']
+        assert included.story_review_matches(result, 'Explain the sourced membership model.')
+        assert run()['narration'] == result['narration']
+    else:
+        with pytest.raises(RuntimeError) as error:
+            run()
+        assert error.value.planning_diagnostics['publish_eligible'] is False
+    # The last deterministic attempt has identical input when the model keeps
+    # the same fragment. Its prior response must be reused, not paid for again.
+    expected_calls = 2 if outcome == 'still_fragmented' else 3
+    assert len(calls) == expected_calls and value == before and broken == observed
+    journal = json.loads(ledger.client.get(included.JOURNAL_KEY))
+    assert len(journal['requests']) == expected_calls and all(r['outcome'] is not None for r in journal['requests'].values())
+    assert ledger.foundation.snapshot()['cash_spending_enabled'] is False
