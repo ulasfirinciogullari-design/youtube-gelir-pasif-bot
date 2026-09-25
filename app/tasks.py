@@ -3901,6 +3901,11 @@ def _runway_failure_diagnostic(
         'scene_index': safe_scene_index,
         'exception_class': exception_class,
     }
+    import logging, traceback
+    logging.getLogger(__name__).warning('Scene operation stopped: %s', json.dumps({
+        **diagnostic, 'locations': [(frame.name, frame.lineno)
+            for frame in traceback.extract_tb(exc.__traceback__)[-6:]],
+    }, separators=(',', ':')))
     reason_code = str(getattr(exc, 'reason_code', '') or '').strip()
     if reason_code in {
         'bad_request',

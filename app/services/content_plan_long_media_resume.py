@@ -25,7 +25,8 @@ def operation(source):
 
 def registered(source):
     from app.services import content_plan_retained_completion as completion
-    return bool(plan._client().exists(DISPATCH + plan._id(source)) or completion.registered(source))
+    from app.services import content_plan_fal_visual_resume as fal_visual
+    return bool(plan._client().exists(DISPATCH + plan._id(source)) or completion.registered(source) or fal_visual.registered(source))
 
 
 def eligible(source):
@@ -187,6 +188,9 @@ class RetainedClips(dict):
 
 
 def prepare(task, source_id, spec, work):
+    from app.services import content_plan_fal_visual_resume as fal_visual
+    if fal_visual.registered(source_id):
+        return fal_visual.prepare(task, source_id, spec, work)
     from app.services import content_plan_retained_completion as completion
     if completion.registered(source_id):
         return completion.prepare(task, source_id, spec, work)
@@ -242,6 +246,10 @@ def _load_clips(source, prepared, work, *, allow_repair=False):
 
 def retained_cap(task, prepared):
     source = plan._id(prepared.get('content_plan_media_source')); child = jobs.get_job(task)
+    from app.services import content_plan_fal_visual_resume as fal_visual
+    if fal_visual.registered(source):
+        fal_visual.verify_child(task, source, child['spec'])
+        return 32
     from app.services import content_plan_retained_completion as completion
     if completion.registered(source):
         completion.verify_child(task, source, child['spec'])

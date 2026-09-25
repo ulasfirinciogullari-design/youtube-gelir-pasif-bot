@@ -583,6 +583,9 @@ def prepare(task, source_id, spec, work):
 
 
 def stock_only_scope(scope):
+    from app.services.content_plan_fal_visual_resume import readonly_for_task
+    if scope['context'].get('kind') == 'long' and readonly_for_task():
+        return True
     from app.services import production_spend_runtime as runtime
     task = runtime._TASK_ID.get()
     if not task or scope['context'].get('kind') != 'long': return False

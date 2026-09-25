@@ -102,6 +102,9 @@ def completion_capacity(options, duration_minutes, scene_count, paid_cap, paid_u
     if options.get('content_plan_item_id') and options.get('format') == 'landscape' and duration_minutes == 3:
         from app.services.commissioning_longform import active, MAX_SCENES
         if active() and enabled_for_task():
+            from app.services.content_plan_fal_visual_resume import readonly_for_task
+            if readonly_for_task():
+                return 0
             _require(type(scene_count) is int and 1 <= scene_count <= MAX_SCENES
                 and paid_cap == MAX_SCENES and type(paid_used) is int and 0 <= paid_used <= paid_cap)
             return min(scene_count, paid_cap - paid_used)

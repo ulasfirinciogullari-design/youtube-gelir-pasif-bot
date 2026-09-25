@@ -801,7 +801,7 @@ class RunwayPromptTests(unittest.TestCase):
             '_preflight_runway_candidates_before_paid(\n'
             '            [int(item'
         )
-        initial_loop = source.index('for candidate in selected_runway:')
+        initial_loop = source.index('for candidate_number, candidate in enumerate(selected_runway, start=1):')
         repair_preflight = source.index(
             '_preflight_runway_candidates_before_paid(\n'
             '                [int(index)'
@@ -828,7 +828,7 @@ class RunwayPromptTests(unittest.TestCase):
             audio_gate,
         )
         initial_runway_loop = source.index(
-            'for candidate in selected_runway:'
+            'for candidate_number, candidate in enumerate(selected_runway, start=1):'
         )
 
         self.assertLess(audio_gate, audio_rejection)
