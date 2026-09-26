@@ -1,4 +1,4 @@
-"""Existing VPS: refresh two public historical references without an AI call."""
+"""Existing VPS: refresh reviewed public historical references without an AI call."""
 import base64
 import json
 from pathlib import Path
@@ -24,10 +24,14 @@ def refresh():
         "try:\n result={'status':'refreshed','sources':[h.install(p._client(),v)for v in records]}\n"
         "except Exception:\n result={'status':'unavailable'}\n"
         "with os.fdopen(fd,'w')as out:out.write('SOURCE_REFRESH:'+json.dumps(result,sort_keys=True)+'\\n')\n")
+    # Send the bounded source bodies through stdin, rather than an OS-sized argv.
+    wire = base64.b64encode(zlib.compress(program.encode(), 9)).decode('ascii')
+    receiver = ('import sys,base64,zlib;exec(zlib.decompress(base64.b64decode('
+                'sys.stdin.buffer.read(' + str(len(wire)) + '))))')
     result = subprocess.run([str(CLI), 'ssh', '-i', '/home/youtube-dev/.ssh/railway-youtube-operations-ed25519',
         '-p', '2533bc40-884a-4aa3-adaf-fa2e94da9f44', '-e', '433ef374-8f84-4a3e-8970-ccb42ab2cbc0',
-        '-s', 'f01382fd-8c4c-49fe-af21-20c6a066f3e7', '--', 'python -c ' + shlex.quote(program)],
-        capture_output=True, text=True, timeout=55)
+        '-s', 'f01382fd-8c4c-49fe-af21-20c6a066f3e7', '--', 'python -c ' + shlex.quote(receiver)],
+        input=wire + '\n', capture_output=True, text=True, timeout=55)
     rows = [v.split(':', 1)[1] for v in result.stdout.splitlines() if v.startswith('SOURCE_REFRESH:')]
     if result.returncode or len(rows) != 1:
         raise RuntimeError('source_refresh_unavailable')

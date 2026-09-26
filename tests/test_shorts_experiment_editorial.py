@@ -60,6 +60,55 @@ def test_known_prevoice_brand_rejection_allows_fresh_draft_without_rewriting_fai
         assert not edit._eligible({**source, 'error': error})
 
 
+def budget_fixture(monkeypatch):
+    c, item, root, source, manifest = fixture(monkeypatch)
+    narration = ' '.join([' '.join(['word'] * 11) + '.'] * 6)
+    source['spec'].update(language='en', duration_minutes=0.5,
+        topic='Spoken narration must be exactly: "' + narration + '"')
+    source['error'] = 'Director could not produce fully stock-safe short-preview scenes: ' + json.dumps({
+        'positions': list(range(6)), 'generator_calls': 3, 'critic_calls': 0,
+        'failures': [{'position': i, 'reason': 'complete story has 66 narration words; expected 40-60'}
+                     for i in range(6)]})
+    c.set(jobs.JOB_PREFIX + root, plan._raw(source))
+    dispatch = json.loads(c.get(plan.DISPATCH_PREFIX + item['id']))
+    dispatch['spec_sha256'] = plan._sha(source['spec'])
+    c.set(plan.DISPATCH_PREFIX + item['id'], plan._raw(dispatch))
+    c.set('celery-task-meta-' + root, plan._raw({'task_id': root, 'status': 'FAILURE',
+        'result': {'exc_type': 'ProductionContentError', 'exc_message': [source['error']]}}))
+    return c, item, root, source, manifest
+
+
+def test_rejected_overlong_lock_can_be_rewritten_without_approving_or_replaying_it(monkeypatch):
+    c, item, root, source, manifest = budget_fixture(monkeypatch)
+    keys = (jobs.JOB_PREFIX + root, plan.DISPATCH_PREFIX + item['id'],
+        'celery-task-meta-' + root, batch.approval_key(DAY))
+    before = {k: c.get(k) for k in keys}
+    result = edit.replace(item['id'], plan.item('Same sourced story', 'Fresh narration draft'),
+        expected_job_sha256=plan._sha(source), client=c, now=NOW)
+    assert result['status'] == 'editorial_replaced'
+    assert all(c.get(k) == value for k, value in before.items())
+    assert c.hget(batch.produced_key(DAY, C), root) == 'shorts'
+    assert not c.exists(plan.COMPLETION_PREFIX + item['id'], jobs.JOB_PREFIX + result['new_root'])
+    assert not json.loads(c.get(edit.ARCHIVE + item['id']))['qa_approved']
+
+
+@pytest.mark.parametrize('mutation', ['wrong_count', 'mixed_failure', 'in_range', 'missing_lock',
+    'audio_exists', 'wrong_duration', 'wrong_language', 'malformed_report', 'paid_media', 'running'])
+def test_budget_amendment_rejects_unproven_or_active_failures(monkeypatch, mutation):
+    c, item, root, source, manifest = budget_fixture(monkeypatch)
+    if mutation == 'wrong_count': source['error'] = source['error'].replace('66 narration', '67 narration')
+    if mutation == 'mixed_failure': source['error'] = source['error'].replace('complete story has', 'provider uncertainty', 1)
+    if mutation == 'in_range': source['spec']['topic'] = source['spec']['topic'].replace('word word', 'word')
+    if mutation == 'missing_lock': source['spec']['topic'] = 'A draft without a frozen narration'
+    if mutation == 'audio_exists': source['audio_candidate_checkpoint'] = {'preserved': True}
+    if mutation == 'wrong_duration': source['spec']['duration_minutes'] = 1
+    if mutation == 'wrong_language': source['spec']['language'] = 'tr'
+    if mutation == 'malformed_report': source['error'] = source['error'].split(': ', 1)[0] + ': []'
+    if mutation == 'paid_media': source['paid_create_slots_used'] = 1
+    if mutation == 'running': source['state'] = 'PROGRESS'
+    assert not edit._eligible(source)
+
+
 def test_failed_draft_replacement_preserves_job_hold_and_old_production_count(monkeypatch):
     c,item,root,source,manifest=fixture(monkeypatch)
     c.set(jobs.QUALITY_HOLD_JOB_FENCE_PREFIX+root,'unchanged negative verdict')

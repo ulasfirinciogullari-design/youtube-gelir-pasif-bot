@@ -26,6 +26,8 @@ def _eligible(source):
         return False
     error = str(source.get('error') or '')
     if source.get('failure_stage') == 'director_qc':
+        if _narration_budget_rejection(source, error):
+            return True
         if error.startswith('Short-preview editorial gate rejected narration before paid media: '):
             try:
                 issues = json.loads(error.split(': ', 1)[1]).get('issues')
@@ -45,6 +47,36 @@ def _eligible(source):
             and report['duration_qc'].get('pass') is False
             and not report.get('mismatch_details', {}).get('missing_words')
             and not report.get('mismatch_details', {}).get('unexpected_words'))
+
+
+def _narration_budget_rejection(source, error):
+    """A rejected exact English draft can be rewritten before any paid media.
+
+    Verify the actual frozen narration against the existing lock budget. This
+    only authorizes a new draft; its ordinary story, voice and visual gates run.
+    """
+    from app.services import director
+    prefix = 'Director could not produce fully stock-safe short-preview scenes: '
+    spec = source.get('spec') or {}
+    if (source.get('audio_candidate_checkpoint') or not error.startswith(prefix)
+            or spec.get('language') != 'en' or spec.get('duration_minutes') != 0.5):
+        return False
+    narration = director._exact_narration_lock_from_brief(spec.get('topic') or '')
+    if not narration:
+        return False
+    actual = director._word_count(narration)
+    _, minimum, maximum = director._target_word_budget(0.5, allow_legacy_short_lock=True)
+    if minimum <= actual <= maximum:
+        return False
+    try:
+        report = json.loads(error[len(prefix):])
+    except (TypeError, ValueError):
+        return False
+    reason = f'complete story has {actual} narration words; expected {minimum}-{maximum}'
+    return (type(report) is dict and report.get('positions') == list(range(6))
+        and type(report.get('generator_calls')) is int and report['generator_calls'] == 3
+        and type(report.get('critic_calls')) is int and report['critic_calls'] == 0
+        and report.get('failures') == [{'position': i, 'reason': reason} for i in range(6)])
 
 
 def _visual_rejection(source):
