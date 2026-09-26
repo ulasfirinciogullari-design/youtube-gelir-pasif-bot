@@ -81,6 +81,23 @@ def test_unstarted_editorial_amendment_does_not_clear_another_active_item(monkey
     assert not c.exists(batch.produced_key(DAY,C))
 
 
+def test_rejected_abstract_draft_can_be_reauthored_without_approving_original(monkeypatch):
+    c,item,root,source,manifest=fixture(monkeypatch)
+    source['error']='Director could not produce fully stock-safe short-preview scenes: ' + json.dumps({
+        'positions':[0,1,2,3,4,5], 'generator_calls':3, 'critic_calls':0,
+        'failures':[{'position':3,'reason':'position 3 contains an unfilmable abstraction'}]})
+    c.set(jobs.JOB_PREFIX+root,plan._raw(source))
+    terminal={'task_id':root,'status':'FAILURE','result':{'exc_type':'ProductionContentError','exc_message':[source['error']]}}
+    c.set('celery-task-meta-'+root,plan._raw(terminal))
+    original=c.get(jobs.JOB_PREFIX+root)
+    result=edit.replace(item['id'],plan.item('Concrete scene','A phone scans a visibly stained label'),
+        expected_job_sha256=plan._sha(source),client=c,now=NOW)
+    assert result['status']=='editorial_replaced' and c.get(jobs.JOB_PREFIX+root)==original
+    assert json.loads(c.get('celery-task-meta-'+root))==terminal
+    assert c.hget(batch.produced_key(DAY,C),root)=='shorts'
+    assert not c.exists(plan.COMPLETION_PREFIX+item['id'])
+
+
 def test_observation_is_read_only_and_duplicate_operator_is_rejected(monkeypatch):
     c,item,root,source,manifest=fixture(monkeypatch)
     new=plan.item('Fixed','Reviewed new script');kwargs={'expected_job_sha256':plan._sha(source),'client':c,'now':NOW}

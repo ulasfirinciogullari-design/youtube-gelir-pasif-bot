@@ -22,7 +22,8 @@ def _eligible(source):
     error = str(source.get('error') or '')
     if source.get('failure_stage') == 'director_qc':
         return (error.startswith('Director could not produce fully stock-safe short-preview scenes: ')
-                and 'must contain one simple sentence' in error and not source.get('audio_candidate_checkpoint'))
+                and any(reason in error for reason in ('must contain one simple sentence',
+                    'contains an unfilmable abstraction')) and not source.get('audio_candidate_checkpoint'))
     if source.get('failure_stage') != 'audio_qc' or not error.startswith('Audio narration QA rejected before paid media: '):
         return False
     report = json.loads(error.split(': ', 1)[1])
