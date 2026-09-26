@@ -130,6 +130,23 @@ def test_documented_and_observed_content_type_spellings_agree(kind):
         table([[VIDEO, kind.lower(), 1, 1, 1, 1, 1, 0]]), [VIDEO])
 
 
+def test_real_camel_case_long_video_does_not_discard_channel_shorts_report(a):
+    grant(a)
+    long_video = 'B1234567890'
+    a.inventory.return_value = {VIDEO: 'Owner Short', long_video: 'Older long video'}
+    value = table([row(), [long_video, 'videoOnDemand', 52, 46, 25, 32, 18.35, 0]])
+    a.query.side_effect = [value, table([[.01, 1.02], [1, .48]], True)]
+    analytics.refresh([])
+    report = analytics.dashboard()['channels'][0]
+    assert report['status'] == 'fresh' and len(report['videos']) == 2
+    assert report['videos'][VIDEO]['content_type'] == 'SHORTS'
+    assert report['videos'][VIDEO]['engagedViews'] == 300
+    assert report['videos'][long_video]['content_type'] == 'VIDEO_ON_DEMAND'
+    assert report['videos'][long_video]['averageViewPercentage'] == 18.35
+    stored = json.loads(a.c.client.get(analytics._key(a.context)))
+    assert stored['videos'][long_video]['content_type'] == 'VIDEO_ON_DEMAND'
+
+
 @pytest.mark.parametrize('kind', ['short', ' shorts', 'Shorts', 'unknown_type', None, {}, 1])
 def test_unrecognized_content_type_cannot_become_a_shorts_observation(kind):
     with pytest.raises(analytics.metrics.YouTubeMetricsError):

@@ -27,6 +27,8 @@ _TYPES = ('STRING', 'STRING', 'INTEGER', 'INTEGER', 'FLOAT', 'FLOAT', 'FLOAT', '
 _CONTENT_TYPES = {spelling: canonical
     for canonical in ('SHORTS', 'VIDEO_ON_DEMAND', 'LIVE_STREAM', 'STORY', 'UNSPECIFIED')
     for spelling in (canonical, canonical.lower())}
+# Observed in the owner's mixed Shorts/long-video v2 aggregate response.
+_CONTENT_TYPES['videoOnDemand'] = 'VIDEO_ON_DEMAND'
 _COMMIT = '''
 if redis.call('GET', KEYS[2]) ~= ARGV[1] or redis.call('GET', KEYS[3]) ~= ARGV[2]
  or (redis.call('GET', KEYS[5]) or '0') ~= ARGV[3]
@@ -88,8 +90,8 @@ def _videos(response, ids):
         video, content_type = row[:2]
         _valid(type(video) is str and video in ids and video not in videos
             and type(content_type) is str and content_type in _CONTENT_TYPES)
-        # Actual v2 reports return lowercase values although the dimension
-        # reference documents uppercase names. Both map to one stored enum.
+        # Actual v2 reports also use lower/camel case dimension values.
+        # Only known spellings map to a canonical stored content type.
         content_type = _CONTENT_TYPES[content_type]
         values = {key: _number(value, integer=kind == 'INTEGER')
             for key, value, kind in zip(METRICS, row[2:], _TYPES[2:])}
