@@ -83,14 +83,30 @@ def _retained_recovery_stopped(read, source):
     claim = plan._object(raw['dispatch'])
     plan._require(claim == {'version': 1, 'source_task_id': root, 'task_id': operation,
         'source_sha256': recovery._fingerprint(source)}
-        and raw['execution'] == operation and raw['record'] is None
-        and plan._object(raw['status']) == {'state': 'stopped', 'error_type': 'RuntimeError'})
+        and raw['execution'] == operation and raw['record'] is None)
     raw['terminal'] = read('celery-task-meta-' + operation)
     terminal = plan._object(raw['terminal'])
+    result = terminal.get('result') or {}
+    rejected = (result.get('exc_type') == 'RuntimeError' and result.get('exc_message') == [
+        'Saved stock candidates did not pass independent exact-cut review'])
+    # Older workers used the shared validation error when every candidate in a
+    # scene failed local normalization. Require that exact terminal call site;
+    # other validation failures may mean missing or uncertain recovery evidence.
+    no_usable_cut = (result.get('exc_type') == 'ContentPlanError'
+        and result.get('exc_module') == 'app.services.content_plan'
+        and result.get('exc_message') == ['plan_stock_repair_unverified']
+        and re.search(
+            r'  File "/app/app/services/content_plan_stock_repair.py", line [0-9]+, in select\n'
+            r'    _require\(prepared\)\n'
+            r'  File "/app/app/services/content_plan_stock_repair.py", line [0-9]+, in _require\n'
+            r"    plan\._require\(value, 'plan_stock_repair_unverified'\)\n"
+            r'  File "/app/app/services/content_plan.py", line [0-9]+, in _require\n'
+            r'    raise ContentPlanError\(code\)\n'
+            r'app.services.content_plan.ContentPlanError: plan_stock_repair_unverified\n?\Z',
+            str(terminal.get('traceback') or '')) is not None)
     plan._require(terminal.get('task_id') == operation and terminal.get('status') == 'FAILURE'
-        and (terminal.get('result') or {}).get('exc_type') == 'RuntimeError'
-        and terminal['result'].get('exc_message') == [
-            'Saved stock candidates did not pass independent exact-cut review'])
+        and plan._object(raw['status']) == {'state': 'stopped', 'error_type': result.get('exc_type')}
+        and (rejected or no_usable_cut))
     return raw
 
 

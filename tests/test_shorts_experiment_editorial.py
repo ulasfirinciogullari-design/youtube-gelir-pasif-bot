@@ -205,3 +205,44 @@ def test_visual_reauthor_cannot_detach_unresolved_or_recoverable_work(monkeypatc
             expected_job_sha256=plan._sha(source), client=c, now=NOW)
     assert c.get(plan.PLAN_PREFIX + C) == before and c.get(plan.ACTIVE_KEY) == active
     assert not c.exists(edit.ARCHIVE + item['id'], batch.replacement_key(DAY, item['id']))
+
+
+@pytest.mark.parametrize('mutation', [None, 'missing_trace', 'different_guard', 'different_module',
+    'different_error', 'preparing', 'different_callsite', 'extra_trace'])
+def test_only_conclusive_local_cut_exhaustion_allows_a_fresh_story(monkeypatch, mutation):
+    from app.services import content_plan_recovery as recovery
+    c, item, root, source, operation = visual_fixture(monkeypatch)
+    trace = ('  File "/app/app/services/content_plan_stock_repair.py", line 89, in select\n'
+        '    _require(prepared)\n'
+        '  File "/app/app/services/content_plan_stock_repair.py", line 15, in _require\n'
+        "    plan._require(value, 'plan_stock_repair_unverified')\n"
+        '  File "/app/app/services/content_plan.py", line 43, in _require\n'
+        '    raise ContentPlanError(code)\n'
+        'app.services.content_plan.ContentPlanError: plan_stock_repair_unverified\n')
+    terminal = {'task_id': operation, 'status': 'FAILURE', 'traceback': trace,
+        'result': {'exc_type': 'ContentPlanError', 'exc_module': 'app.services.content_plan',
+            'exc_message': ['plan_stock_repair_unverified']}}
+    if mutation == 'missing_trace': terminal.pop('traceback')
+    if mutation == 'different_guard': terminal['traceback'] = trace.replace('_require(prepared)', '_require(all(candidates))')
+    if mutation == 'different_module': terminal['result']['exc_module'] = 'other'
+    if mutation == 'different_error': terminal['result']['exc_message'] = ['provider_uncertain']
+    if mutation == 'different_callsite': terminal['traceback'] = trace.replace('in select', 'in prepare')
+    if mutation == 'extra_trace': terminal['traceback'] += 'Another error was raised\n'
+    c.set('celery-task-meta-' + operation, plan._raw(terminal))
+    c.set(recovery.STATUS + root, plan._raw({'state': 'preparing' if mutation == 'preparing' else 'stopped',
+        'error_type': 'ContentPlanError'}))
+    before = {k: c.get(k) for k in (jobs.JOB_PREFIX + root, 'celery-task-meta-' + operation,
+        recovery.STATUS + root, plan.PLAN_PREFIX + C, plan.ACTIVE_KEY)}
+    kwargs = {'expected_job_sha256': plan._sha(source), 'client': c, 'now': NOW}
+    new = plan.item('Andon', 'A sourced factory signal story')
+    if mutation:
+        with pytest.raises(ValueError): edit.replace(item['id'], new, **kwargs)
+        assert all(c.get(k) == value for k, value in before.items())
+        assert not c.exists(edit.ARCHIVE + item['id'])
+    else:
+        result = edit.replace(item['id'], new, **kwargs)
+        assert result['status'] == 'editorial_replaced'
+        assert all(c.get(k) == before[k] for k in (jobs.JOB_PREFIX + root,
+            'celery-task-meta-' + operation, recovery.STATUS + root))
+        assert not c.exists(plan.COMPLETION_PREFIX + item['id'])
+        assert not json.loads(c.get(edit.ARCHIVE + item['id']))['qa_approved']
