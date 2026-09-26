@@ -27,9 +27,10 @@ def test_real_http_capture_preserves_body_url_and_date(monkeypatch):
     assert datetime.fromisoformat(saved['retrieved_at']).tzinfo is not None
 
 
-def test_unavailable_direct_read_uses_dated_original_and_never_relabels_it_as_fresh(monkeypatch):
+@pytest.mark.parametrize('url', cache.URLS)
+def test_unavailable_direct_read_uses_dated_original_and_never_relabels_it_as_fresh(monkeypatch, url):
     from app.services import content_plan
-    c = fakeredis.FakeRedis(decode_responses=True); value = record()
+    c = fakeredis.FakeRedis(decode_responses=True); value = record(url)
     cache.install(c, value, now=NOW)
     before = {k: c.dump(k) for k in c.scan_iter()}
     monkeypatch.setattr(content_plan, '_client', lambda: c)

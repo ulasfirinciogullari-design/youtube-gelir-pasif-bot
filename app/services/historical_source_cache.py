@@ -1,4 +1,4 @@
-"""Private, dated copies of two public historical Sony reference pages.
+"""Private, dated copies of explicitly reviewed public historical references.
 
 An operations process on the existing VPS retrieves the original bounded HTTP
 body. No route accepts user/model supplied snapshots. A cached page is source
@@ -15,6 +15,9 @@ PREFIX = 'youtube_studio:historical_sources:v1:'
 URLS = (
     'https://www.sony.com/en/SonyInfo/CorporateInfo/History/sonyhistory-e.html',
     'https://www.sony.com/en/SonyInfo/News/Press/199907/99-059/',
+    'https://www.sony.com/en/SonyInfo/CorporateInfo/History/SonyHistory/1-01.html',
+    'https://corporate.mcdonalds.com/corpmcd/our-stories/article/first-mcd-drivethru.html',
+    'https://corporate.mcdonalds.com/corpmcd/our-stories/article/mcdonalds-commitment-to-making-an-impact-inthe-community.html',
 )
 MAX_AGE = timedelta(hours=72)
 
