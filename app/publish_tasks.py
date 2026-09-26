@@ -747,7 +747,13 @@ def publish_video_pipeline(
         caption_error_code = None
         caption_key = source_result.get('caption_key')
         caption_language = language[:12]
-        if caption_key:
+        optional_plan_caption = bool('content_plan_item_id' in (source.get('spec') or {})
+                                     and publish_plan.get('caption_required') is False)
+        from app.services.youtube_quota_recovery import optional_caption_waiting
+        caption_deferred = bool(caption_key and optional_plan_caption and optional_caption_waiting())
+        if caption_deferred:
+            caption_error_code = 'youtube_caption_quota_wait'
+        if caption_key and not caption_deferred:
             set_stage(
                 self,
                 task_id,
@@ -771,8 +777,11 @@ def publish_video_pipeline(
                 )
             except Exception as exc:
                 caption_error_code = _safe_error_code(exc)
-                from app.services.youtube_quota_recovery import observe_quota
-                quota_failure = observe_quota(exc) or quota_failure
+                from app.services.youtube_quota_recovery import observe_quota, observe_optional_caption_quota
+                if optional_plan_caption:
+                    observe_optional_caption_quota(exc)
+                else:
+                    quota_failure = observe_quota(exc) or quota_failure
 
         thumbnail_result = None
         thumbnail_error_code = None

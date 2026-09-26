@@ -73,6 +73,93 @@ def waiting(*, client=None, now=None):
     return record if datetime.fromisoformat(record['retry_at']) > _now(now) else None
 
 
+def _caption_wait_key():
+    return _wait_key().replace('project_wait:', 'optional_caption_wait:')
+
+
+def optional_caption_waiting(*, client=None, now=None):
+    client = client or plan._client()
+    raw = client.get(_caption_wait_key())
+    if raw is None:
+        return None
+    record = plan._object(raw)
+    return record if datetime.fromisoformat(record['retry_at']) > _now(now) else None
+
+
+def observe_optional_caption_quota(error, *, client=None, now=None):
+    """A 400-unit optional caption rejection need not exhaust 50-unit writes.
+
+    Video inserts also have their own quota bucket. Keep real upload/release
+    rejections in the existing project backoff; never retry a rejected caption
+    before its reset just because the cheaper publication succeeded.
+    """
+    evidence = quota_error(error)
+    if evidence is None:
+        return None
+    client = client or plan._client()
+    record = {**evidence, 'operation': 'captions.insert',
+              'observed_at': _now(now).isoformat(), 'retry_at': reset_at(now)}
+    client.set(_caption_wait_key(), plan._raw(record))
+    return record
+
+
+def reclassify_optional_caption_wait(source_id, *, expected_wait_sha256,
+                                     expected_ledger_sha256, apply=False, client=None, now=None):
+    """Archive one reviewed legacy overbroad wait after verified public release.
+
+    No YouTube mutation, enqueue, quota reset or changed publisher receipt.
+    The original rejection survives verbatim in the immutable correction.
+    """
+    client = client or plan._client()
+    plan._id(source_id)
+    source, ledger, publisher, snapshots = _read(client, source_id)
+    key = _wait_key(); original = client.get(key); record = plan._object(original)
+    plan._require(isinstance(original, str)
+        and hashlib.sha256(original.encode()).hexdigest() == expected_wait_sha256
+        and plan._sha(ledger) == expected_ledger_sha256, 'caption_quota_state_changed')
+    result = publisher.get('result') or {}
+    observed = datetime.fromisoformat(record['observed_at'])
+    plan._require(record.get('http_status') == 403
+        and record.get('reasons') and set(record['reasons']) <= {'quotaExceeded', 'dailyLimitExceeded'}
+        and re.fullmatch('[0-9a-f]{64}', str(record.get('response_sha256', '')))
+        and datetime.fromisoformat(record['retry_at']) > _now(now)
+        and publisher.get('state') == 'SUCCESS' and not publisher.get('error')
+        and datetime.fromisoformat(publisher['created_at']) <= observed
+        <= datetime.fromisoformat(publisher['updated_at'])
+        and ledger.get('release_status') == ledger.get('privacy_status') == 'public'
+        and ledger.get('release_error_code') is None
+        and result.get('release_status') == result.get('privacy_status') == 'public'
+        and result.get('youtube_video_id') == ledger['youtube_video_id']
+        and result.get('caption_uploaded') is False and result.get('caption_error_code') == 'HttpError_403'
+        and result.get('thumbnail_error_code') is None and result.get('release_error_code') is None
+        and (not (ledger['publish_plan'].get('require_thumbnail') or ledger['publish_plan'].get('thumbnail_key'))
+             or result.get('thumbnail_uploaded') is True), 'caption_quota_not_isolated')
+    from app.services.blocked_public_recovery import _credentials, _service
+    binding = {'target_channel_id': ledger['target_channel_id'], 'connection_id': ledger['connection_id']}
+    service = _service(_credentials(snapshots[auth.CREDENTIAL_PREFIX + ledger['target_channel_id']], binding))
+    remote = _remote(service, {'video_id': ledger['youtube_video_id'], 'channel_id': ledger['target_channel_id']})
+    plan._require(remote.get('privacyStatus') == 'public', 'caption_quota_public_unverified')
+    receipt_key = PREFIX + 'optional_caption_correction:' + expected_wait_sha256
+    caption_key = _caption_wait_key()
+    correction = {'version': 1, 'source_task_id': source_id, 'video_id': ledger['youtube_video_id'],
+        'original_wait_raw': original, 'original_wait_sha256': expected_wait_sha256,
+        'ledger_sha256': expected_ledger_sha256, 'publisher_sha256': plan._sha(publisher),
+        'classified_operation': 'captions.insert', 'verified_public_at': _now(now).isoformat()}
+    scoped = {**record, 'operation': 'captions.insert', 'correction_key': receipt_key}
+    with client.pipeline() as pipe:
+        pipe.watch(key, caption_key, receipt_key, *snapshots)
+        plan._require(pipe.get(key) == original and not pipe.exists(caption_key, receipt_key)
+            and all(pipe.get(k) == v for k, v in snapshots.items()), 'caption_quota_state_changed')
+        if apply is not True:
+            pipe.unwatch()
+            return {'status': 'verified_optional_caption', 'receipt_key': receipt_key,
+                    'retry_at': record['retry_at'], 'writes': 0}
+        pipe.multi(); pipe.set(receipt_key, plan._raw(correction), nx=True)
+        pipe.set(caption_key, plan._raw(scoped)); pipe.delete(key)
+        plan._require(pipe.execute() == [True, True, 1])
+    return {'status': 'optional_caption_deferred', 'receipt_key': receipt_key, 'retry_at': record['retry_at']}
+
+
 def _read(client, source_id):
     snapshots = {}
     def read(key):
