@@ -133,6 +133,13 @@ def queue_automatic_publish(source_task_id: str) -> dict:
     if spec.get('production_scheduled') is True and not spec.get('production_channel_id'):
         return {'status': 'no_unique_route'}
     try:
+        if spec.get('content_plan_item_id'):
+            from app.services import youtube_quota_recovery as quota, shorts_experiment_stock as stock
+            wait = quota.waiting()
+            if wait or stock.publication_wait(source):
+                state = 'youtube_quota_wait' if wait else 'publication_order_wait'
+                _set_source_automation(source_task_id, status=state, retry_at=wait['retry_at'] if wait else None)
+                return {'status': state}
         status = connection_status()
         connections = (
             status.get('connections')
@@ -443,6 +450,7 @@ def publish_video_pipeline(
     upload_completed = False
     release_started = False
     completed_result = None
+    quota_failure = None
     try:
         reservation = get_upload_record(source_task_id)
         if not reservation:
@@ -763,6 +771,8 @@ def publish_video_pipeline(
                 )
             except Exception as exc:
                 caption_error_code = _safe_error_code(exc)
+                from app.services.youtube_quota_recovery import observe_quota
+                quota_failure = observe_quota(exc) or quota_failure
 
         thumbnail_result = None
         thumbnail_error_code = None
@@ -793,6 +803,8 @@ def publish_video_pipeline(
                 )
             except Exception as exc:
                 thumbnail_error_code = _safe_error_code(exc)
+                from app.services.youtube_quota_recovery import observe_quota
+                quota_failure = observe_quota(exc) or quota_failure
 
         release_status = 'private'
         final_privacy_status = 'private'
@@ -936,6 +948,12 @@ def publish_video_pipeline(
         }
         merge_youtube_result_field(source_task_id, 'youtube', youtube_attribution)
         mark_success(task_id, result)
+        if quota_failure and release_status == 'blocked':
+            try:
+                from app.services.youtube_quota_recovery import register
+                register(source_task_id, quota_failure)
+            except Exception:
+                pass  # Preserve the original upload and its blocked outcome.
         completed_result = result
         return result
     except Exception as exc:
@@ -959,6 +977,13 @@ def publish_video_pipeline(
             )
         )
         mark_failure(task_id, safe_error)
+        try:
+            from app.services.youtube_quota_recovery import observe_quota, register
+            evidence = observe_quota(exc)
+            if evidence and release_started:
+                register(source_task_id, evidence)
+        except Exception:
+            pass  # An unknown insert/release must never be blindly replayed.
         raise safe_error from None
     finally:
         if lock_token:

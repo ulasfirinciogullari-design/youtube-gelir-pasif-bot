@@ -287,6 +287,10 @@ def project(plan, *, client=None):
                     if delivery.get('release_status') in {'blocked', 'uncertain'} or automation.get('status') in {
                             'metadata_blocked', 'profile_changed', 'connection_changed', 'quality_blocked', 'reservation_blocked'}:
                         row.update(status='blocked', label='Yayın kontrolü gerekli')
+                    if automation.get('status') == 'youtube_quota_wait':
+                        row.update(status='waiting', label='YouTube kotası bekleniyor', retry_at=automation.get('retry_at'))
+                    elif automation.get('status') == 'publication_order_wait':
+                        row.update(status='ready', label='Hazır · Yayın sırasını bekliyor')
                 elif leaf.get('state') in {'FAILURE', 'CANCELLED'}:
                     row.update(status='blocked', label='Üretim kontrolü gerekli')
                     from app.services.content_plan_recovery import STATUS
@@ -333,7 +337,9 @@ def _reserve(channel_id, *, now=None):
     plan = read(channel_id, client=client)
     if plan is None or not plan['enabled']:
         return {'status': 'paused'}
-    entry = next((v for v in plan['items'] if not client.exists(COMPLETION_PREFIX + v['id'])), None)
+    from app.services import shorts_experiment_stock as stock
+    entry = next((v for v in plan['items'] if not client.exists(COMPLETION_PREFIX + v['id'])
+                  and stock.prepared(client, channel_id, v, now=now) is None), None)
     if entry is None:
         return {'status': 'complete'}
     from app.services.channel_formats import allows
@@ -359,7 +365,9 @@ def _reserve(channel_id, *, now=None):
             if previous['id'] == entry['id']:
                 break
             pipe.watch(COMPLETION_PREFIX + previous['id'])
-            _require(pipe.exists(COMPLETION_PREFIX + previous['id']), 'plan_previous_not_public')
+            _require(pipe.exists(COMPLETION_PREFIX + previous['id']) or (
+                stock.member(pipe, channel_id, entry, now=now)
+                and stock.prepared(pipe, channel_id, previous, now=now) is not None), 'plan_previous_not_public')
         if pipe.exists(dispatch_key):
             return {'status': 'already_dispatched'}
         active = _active(pipe)
@@ -431,6 +439,11 @@ def maintain(profiles, enqueue, *, repair_enqueue=None):
             plan = read(channel_id, client=client)
             if not plan:
                 continue
+            from app.services import shorts_experiment_stock as stock
+            current_entry = _active(client).get(channel_id)
+            if current_entry:
+                stock.release_render_capacity(client, channel_id, current_entry)
+            stock.maintain(channel_id, client=client)
             active = _active(client); entry_id = active.get(channel_id)
             if entry_id:
                 dispatch = _object(client.get(DISPATCH_PREFIX + entry_id))

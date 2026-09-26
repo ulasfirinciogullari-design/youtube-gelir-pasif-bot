@@ -383,6 +383,9 @@ def maintain():
     from app.services import production_spend_runtime as runtime, studio_state
     from app.production_tasks import localize_published_video
     client = runtime.configured_ledger(read_timeout=2).client
+    from app.services import youtube_quota_recovery as quota, shorts_experiment_stock as experiment
+    if quota.waiting(client=client) or experiment.pending(client):
+        return {'status': 'primary_publication_priority'}
     if not client.set(PREFIX + 'dispatch_throttle', '1', nx=True, ex=300):
         return {'status': 'not_due'}
     now = datetime.now(timezone.utc)
