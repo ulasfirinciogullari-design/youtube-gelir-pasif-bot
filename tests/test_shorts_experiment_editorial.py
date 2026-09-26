@@ -38,6 +38,28 @@ def fixture(monkeypatch, failed=True):
     return client,item,root,source,manifest
 
 
+def test_known_prevoice_brand_rejection_allows_fresh_draft_without_rewriting_failure(monkeypatch):
+    c, item, root, source, manifest = fixture(monkeypatch)
+    source['error'] = 'Short-preview editorial gate rejected narration before paid media: ' + json.dumps({
+        'issues': ['scene 1 uses TTS-unsafe raw term(s): IKEA']})
+    c.set(jobs.JOB_PREFIX + root, plan._raw(source))
+    terminal = {'task_id': root, 'status': 'FAILURE', 'result': {
+        'exc_type': 'ProductionContentError', 'exc_message': [source['error']]}}
+    c.set('celery-task-meta-' + root, plan._raw(terminal))
+    original = c.get(jobs.JOB_PREFIX + root)
+    result = edit.replace(item['id'], plan.item('Ikea', 'Ikea paletleri taşıyor.'),
+        expected_job_sha256=plan._sha(source), client=c, now=NOW)
+    assert result['status'] == 'editorial_replaced'
+    assert c.get(jobs.JOB_PREFIX + root) == original
+    assert c.get('celery-task-meta-' + root) == plan._raw(terminal)
+    assert c.hget(batch.produced_key(DAY, C), root) == 'shorts'
+    assert not c.exists(plan.COMPLETION_PREFIX + item['id'])
+    for error in (source['error'].replace('IKEA', 'GPS'),
+                  source['error'].replace('scene 1', 'scene 7'),
+                  'Short-preview editorial gate rejected narration before paid media: {}'):
+        assert not edit._eligible({**source, 'error': error})
+
+
 def test_failed_draft_replacement_preserves_job_hold_and_old_production_count(monkeypatch):
     c,item,root,source,manifest=fixture(monkeypatch)
     c.set(jobs.QUALITY_HOLD_JOB_FENCE_PREFIX+root,'unchanged negative verdict')

@@ -384,7 +384,7 @@ def _reserve(channel_id, *, now=None):
                  and pipe.sismember(production.OAUTH_CHANNEL_INDEX, channel_id), 'plan_channel_unavailable')
         language = profile.get('default_language'); _require(language in {'tr', 'en'})
         identity = str(profile.get('channel_identity') or '').strip()[:240]
-        brief = entry['brief'] + ('\n\nChannel editorial direction: ' + identity if identity else '')
+        brief = spoken_brief(entry['brief'], language) + ('\n\nChannel editorial direction: ' + identity if identity else '')
         if entry['format'] == 'long' and not animated:
             brief += (f'\nProduction direction: EXACTLY 30 scenes. Each scene has 8-{12 if language == "tr" else 14} spoken words, '
                       'one natural sentence and one concrete visual action. Maintain a continuous '
@@ -518,6 +518,18 @@ def maintain(profiles, enqueue, *, repair_enqueue=None):
             from app.services.production_spend import SpendBlocked
             statuses[channel_id] = str(error) if isinstance(error, (ContentPlanError, SpendBlocked)) else 'plan_unavailable'
     return {'status': 'checked', 'channels': statuses}
+
+
+def spoken_brief(brief, language):
+    """Freeze a known brand's spoken casing before writing or purchasing voice.
+
+    The queued editorial entry stays intact. Only a Turkish narration lock is
+    normalized; sources, silent directions and already frozen jobs are unchanged.
+    """
+    if language != 'tr':
+        return brief
+    pattern = r'(Spoken narration must be exactly: ")([^"\n]+)(")'
+    return re.sub(pattern, lambda match: match[1] + re.sub(r'\bIKEA\b', 'Ikea', match[2]) + match[3], brief)
 
 
 def publication_series(source, profile, *, client=None):

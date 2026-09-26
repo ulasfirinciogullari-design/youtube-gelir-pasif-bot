@@ -39,6 +39,22 @@ def case(monkeypatch):
     return SimpleNamespace(client=client, profile=profile, a=a, b=b, document=document, funding=funding)
 
 
+def test_spoken_brand_is_frozen_before_voice_without_mutating_editorial_entry(case):
+    brief = 'Spoken narration must be exactly: "IKEA bu paleti kullanıyor."\nSilent: IKEA warehouse.\nhttps://example.com/IKEA'
+    entry = plan.item('IKEA', brief)
+    document = deepcopy(case.document); document['items'] = [entry]
+    case.client.set(plan.PLAN_PREFIX + CHANNEL, plan._raw(document))
+    enqueue = Mock(); plan.maintain([case.profile], enqueue)
+    task = enqueue.call_args.kwargs['task_id']
+    source = json.loads(case.client.get(jobs.JOB_PREFIX + task))
+    frozen = json.loads(case.client.get(plan.DISPATCH_PREFIX + entry['id']))
+    assert source['spec']['topic'].startswith(brief.replace('"IKEA', '"Ikea'))
+    assert frozen['item'] == entry and plan.read(CHANNEL)['items'] == [entry]
+    assert plan.dispatch_spec_matches(frozen, source['spec'])
+    assert plan.spoken_brief(brief, 'en') == brief
+    assert plan.spoken_brief('An IKEA story', 'tr') == 'An IKEA story'
+
+
 def test_read_and_projection_do_not_dispatch_or_write(case):
     before = {key: case.client.dump(key) for key in case.client.scan_iter()}
     view = plan.project(plan.read(CHANNEL))

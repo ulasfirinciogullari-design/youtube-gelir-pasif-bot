@@ -6,6 +6,7 @@ paid requests, upload claims and ordinary daily counters are never changed.
 from copy import deepcopy
 from datetime import datetime, timezone
 import json
+import re
 from uuid import uuid4, uuid5, NAMESPACE_URL
 
 from app.services import content_plan as plan, shorts_experiment as batch, studio_state as jobs
@@ -25,6 +26,14 @@ def _eligible(source):
         return False
     error = str(source.get('error') or '')
     if source.get('failure_stage') == 'director_qc':
+        if error.startswith('Short-preview editorial gate rejected narration before paid media: '):
+            try:
+                issues = json.loads(error.split(': ', 1)[1]).get('issues')
+            except (ValueError, AttributeError):
+                return False
+            return (type(issues) is list and bool(issues) and not source.get('audio_candidate_checkpoint')
+                and all(type(issue) is str and re.fullmatch(
+                    r'scene [0-5] uses TTS-unsafe raw term\(s\): IKEA', issue) for issue in issues))
         return (error.startswith('Director could not produce fully stock-safe short-preview scenes: ')
                 and any(reason in error for reason in ('must contain one simple sentence',
                     'contains an unfilmable abstraction')) and not source.get('audio_candidate_checkpoint'))
