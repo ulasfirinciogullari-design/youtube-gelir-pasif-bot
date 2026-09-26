@@ -25,6 +25,22 @@ def _eligible(source):
     if source.get('paid_create_slots_used') != 0 or source.get('generated_asset_candidates'):
         return False
     error = str(source.get('error') or '')
+    if source.get('failure_stage') == 'voice_and_visuals':
+        prefix = 'Voice synthesis quality rejected before paid media: '
+        if source.get('audio_candidate_checkpoint') or not error.startswith(prefix):
+            return False
+        try:
+            report = json.loads(error[len(prefix):])
+        except (TypeError, ValueError):
+            return False
+        from hashlib import sha256
+        failure = source.get('failure_classification') or {}
+        return (failure.get('category') == 'content_rejected'
+            and failure.get('code') == 'audio_quality_exhausted'
+            and failure.get('error_sha256') == sha256(error.encode()).hexdigest()
+            and report == {'generation_attempts': 3, 'quality_errors': [
+                {'generation_attempt': i,
+                 'reason': 'Blind speech timing does not match the scene narration'} for i in range(3)]})
     if source.get('failure_stage') == 'director_qc':
         if _narration_budget_rejection(source, error):
             return True
@@ -219,7 +235,7 @@ def replace(item_id, new_item, *, expected_job_sha256=None, client=None, now=Non
             terminal_raw = read('celery-task-meta-' + root); terminal = plan._object(terminal_raw)
             visual_rejected = _visual_rejection(source)
             expected = ('FinalVisualQualityError' if visual_rejected else
-                'FinalAudioQualityError' if source['failure_stage'] == 'audio_qc' else 'ProductionContentError')
+                'FinalAudioQualityError' if source['failure_stage'] in {'audio_qc', 'voice_and_visuals'} else 'ProductionContentError')
             plan._require(terminal.get('task_id') == root and terminal.get('status') == 'FAILURE'
                 and (terminal.get('result') or {}).get('exc_type') == expected
                 and terminal['result'].get('exc_message') == [source['error']])

@@ -109,6 +109,47 @@ def test_budget_amendment_rejects_unproven_or_active_failures(monkeypatch, mutat
     assert not edit._eligible(source)
 
 
+@pytest.mark.parametrize('mutation', [None, 'incomplete_takes', 'unknown_error', 'wrong_evidence',
+    'preserved_voice', 'visuals_started', 'wrong_terminal', 'unknown_provider'])
+def test_conclusive_three_take_timing_failure_allows_reauthoring_but_no_replay(monkeypatch, mutation):
+    import hashlib
+    c, item, root, source, manifest = fixture(monkeypatch)
+    report = {'generation_attempts': 3, 'quality_errors': [
+        {'generation_attempt': i, 'reason': 'Blind speech timing does not match the scene narration'}
+        for i in range(3)]}
+    if mutation == 'incomplete_takes': report['quality_errors'].pop()
+    if mutation == 'unknown_error': report['quality_errors'][1]['reason'] = 'unknown network outcome'
+    source['error'] = 'Voice synthesis quality rejected before paid media: ' + json.dumps(report)
+    source['failure_stage'] = 'voice_and_visuals'
+    source['failure_classification'] = {'category': 'content_rejected', 'code': 'audio_quality_exhausted',
+        'error_sha256': hashlib.sha256(source['error'].encode()).hexdigest()}
+    if mutation == 'wrong_evidence': source['failure_classification']['error_sha256'] = 'changed'
+    if mutation == 'preserved_voice': source['audio_candidate_checkpoint'] = {'retained': True}
+    if mutation == 'visuals_started': source['paid_create_slots_used'] = 1
+    if mutation == 'unknown_provider':
+        def blocked(*args): raise ValueError('unresolved request')
+        monkeypatch.setattr(edit, '_settled', blocked)
+    c.set(jobs.JOB_PREFIX + root, plan._raw(source))
+    c.set('celery-task-meta-' + root, plan._raw({'task_id': root, 'status': 'FAILURE',
+        'result': {'exc_type': 'RuntimeError' if mutation == 'wrong_terminal' else 'FinalAudioQualityError',
+                   'exc_message': [source['error']]}}))
+    preserved = {key: c.get(key) for key in (jobs.JOB_PREFIX + root, 'celery-task-meta-' + root,
+        plan.DISPATCH_PREFIX + item['id'], batch.approval_key(DAY))}
+    kwargs = {'expected_job_sha256': plan._sha(source), 'client': c, 'now': NOW}
+    if mutation:
+        before = c.get(plan.PLAN_PREFIX + C)
+        with pytest.raises(ValueError): edit.replace(item['id'], plan.item('Rewritten', 'Natural words'), **kwargs)
+        assert c.get(plan.PLAN_PREFIX + C) == before
+        assert not c.exists(edit.ARCHIVE + item['id'], batch.replacement_key(DAY, item['id']))
+    else:
+        result = edit.replace(item['id'], plan.item('Rewritten', 'Natural words without number ambiguity'), **kwargs)
+        assert result['status'] == 'editorial_replaced'
+        assert not c.exists(jobs.JOB_PREFIX + result['new_root'], plan.COMPLETION_PREFIX + item['id'])
+        assert not json.loads(c.get(edit.ARCHIVE + item['id']))['qa_approved']
+    assert all(c.get(key) == raw for key, raw in preserved.items())
+    assert c.hget(batch.produced_key(DAY, C), root) == 'shorts'
+
+
 def test_failed_draft_replacement_preserves_job_hold_and_old_production_count(monkeypatch):
     c,item,root,source,manifest=fixture(monkeypatch)
     c.set(jobs.QUALITY_HOLD_JOB_FENCE_PREFIX+root,'unchanged negative verdict')
