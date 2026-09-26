@@ -1,4 +1,4 @@
-"""Replace a conclusively rejected pre-visual draft in its existing experiment slot.
+"""Reauthor a conclusively rejected draft in its existing experiment slot.
 
 This changes future editorial intent only. Previous jobs, negative verdicts,
 paid requests, upload claims and ordinary daily counters are never changed.
@@ -6,7 +6,7 @@ paid requests, upload claims and ordinary daily counters are never changed.
 from copy import deepcopy
 from datetime import datetime, timezone
 import json
-from uuid import uuid4
+from uuid import uuid4, uuid5, NAMESPACE_URL
 
 from app.services import content_plan as plan, shorts_experiment as batch, studio_state as jobs
 
@@ -15,9 +15,13 @@ ARCHIVE = batch.PREFIX + 'editorial_archive:'
 
 def _eligible(source):
     if not (source.get('state') == 'FAILURE' and source.get('kind') == 'render'
-            and source.get('parent_id') is None and source.get('paid_create_slots_used') == 0
+            and source.get('parent_id') is None
             and not any(source.get(key) for key in ('result', 'retry_child_task_id', 'retry_claimed',
-                'repair_claimed', 'owner_cancellation', 'publication_hold', 'generated_asset_candidates'))):
+                'repair_claimed', 'owner_cancellation', 'publication_hold'))):
+        return False
+    if _visual_rejection(source):
+        return True
+    if source.get('paid_create_slots_used') != 0 or source.get('generated_asset_candidates'):
         return False
     error = str(source.get('error') or '')
     if source.get('failure_stage') == 'director_qc':
@@ -32,6 +36,53 @@ def _eligible(source):
             and report['duration_qc'].get('pass') is False
             and not report.get('mismatch_details', {}).get('missing_words')
             and not report.get('mismatch_details', {}).get('unexpected_words'))
+
+
+def _visual_rejection(source):
+    """Negative media evidence permits a new story, never approval of old media."""
+    from app.services import content_plan_recovery as recovery
+    import hashlib
+    error = str(source.get('error') or '')
+    if not (recovery._stock_failure(source) and recovery.eligible(source)
+            and error.startswith('Final visual quality gate rejected: ')
+            and (source.get('failure_classification') or {}).get('error_sha256')
+                == hashlib.sha256(error.encode()).hexdigest()):
+        return False
+    try:
+        report = json.loads(error.split(': ', 1)[1])
+    except (ValueError, IndexError):
+        return False
+    journal = source.get('generated_asset_candidates') or {}
+    used = source.get('paid_create_slots_used')
+    return (type(used) is int and 1 <= used <= 6
+        and journal.get('attempted_count') == journal.get('preserved_count') == used
+        and len(journal.get('entries', [])) == used and journal.get('failed_count') == 0
+        and report.get('stage') == 'after_rescue' and report.get('total') == 6
+        and type(report.get('accepted')) is int and 0 <= report['accepted'] < 6
+        and len(report.get('rejected', {})) == 6 - report['accepted']
+        and report.get('repair_checkpoint_available') is False)
+
+
+def _retained_recovery_stopped(read, source):
+    """Do not detach running, uncertain, successful, or resumable retained work."""
+    from app.services import content_plan_recovery as recovery
+    root = source['task_id']
+    raw = {name: read(prefix + root) for name, prefix in (
+        ('dispatch', recovery.DISPATCH), ('execution', recovery.EXECUTION),
+        ('status', recovery.STATUS), ('record', recovery.RECORD))}
+    operation = str(uuid5(NAMESPACE_URL, 'owner-plan-render-recovery:v4:' + root))
+    claim = plan._object(raw['dispatch'])
+    plan._require(claim == {'version': 1, 'source_task_id': root, 'task_id': operation,
+        'source_sha256': recovery._fingerprint(source)}
+        and raw['execution'] == operation and raw['record'] is None
+        and plan._object(raw['status']) == {'state': 'stopped', 'error_type': 'RuntimeError'})
+    raw['terminal'] = read('celery-task-meta-' + operation)
+    terminal = plan._object(raw['terminal'])
+    plan._require(terminal.get('task_id') == operation and terminal.get('status') == 'FAILURE'
+        and (terminal.get('result') or {}).get('exc_type') == 'RuntimeError'
+        and terminal['result'].get('exc_message') == [
+            'Saved stock candidates did not pass independent exact-cut review'])
+    return raw
 
 
 def _settled(pipe, read, root):
@@ -92,7 +143,7 @@ def replace(item_id, new_item, *, expected_job_sha256=None, client=None, now=Non
             and read(cadence.PREFIX + 'publication:' + root) is None and read(UPLOAD_PREFIX + root) is None)
         pipe.watch(batch.produced_key(manifest['day'], channel))
         produced = pipe.hget(batch.produced_key(manifest['day'], channel), root)
-        evidence = {}; terminal_raw = None
+        evidence = {}; terminal_raw = None; recovery_evidence = None
         if old_job is None:
             plan._require(expected_job_sha256 is None and dispatch is None and produced is None
                           and active.get(channel) != item_id)
@@ -109,10 +160,14 @@ def replace(item_id, new_item, *, expected_job_sha256=None, client=None, now=Non
                            jobs.EXTERNAL_EPISODE_LEAF_PREFIX):
                 plan._require(read(prefix + root) is None)
             terminal_raw = read('celery-task-meta-' + root); terminal = plan._object(terminal_raw)
-            expected = 'FinalAudioQualityError' if source['failure_stage'] == 'audio_qc' else 'ProductionContentError'
+            visual_rejected = _visual_rejection(source)
+            expected = ('FinalVisualQualityError' if visual_rejected else
+                'FinalAudioQualityError' if source['failure_stage'] == 'audio_qc' else 'ProductionContentError')
             plan._require(terminal.get('task_id') == root and terminal.get('status') == 'FAILURE'
                 and (terminal.get('result') or {}).get('exc_type') == expected
                 and terminal['result'].get('exc_message') == [source['error']])
+            if visual_rejected:
+                recovery_evidence = _retained_recovery_stopped(read, source)
             evidence = _settled(pipe, read, root)
             del active[channel]
         replacement = batch.replacement_key(manifest['day'], item_id)
@@ -132,6 +187,7 @@ def replace(item_id, new_item, *, expected_job_sha256=None, client=None, now=Non
         edited.update(revision=str(uuid4()), updated_at=stamp); plan._plan(plan._raw(edited), channel)
         archive = {'version': 1, 'original_plan': original_plan, 'original_job': old_job,
             'original_dispatch': dispatch, 'original_terminal': terminal_raw, 'negative_holds': holds,
+            'retained_recovery': recovery_evidence,
             'provider_evidence': evidence, 'amendment': amendment, 'new_plan_revision': edited['revision'],
             'qa_approved': False, 'old_publish_eligible': False, 'replayed_requests': 0}
         if observe_only:

@@ -106,3 +106,80 @@ def test_observation_is_read_only_and_duplicate_operator_is_rejected(monkeypatch
     assert sorted(c.keys('*'))==before
     edit.replace(item['id'],new,**kwargs)
     with pytest.raises(ValueError):edit.replace(item['id'],new,**kwargs)
+
+
+def visual_fixture(monkeypatch):
+    import hashlib
+    from uuid import uuid5, NAMESPACE_URL
+    from app.services import content_plan_recovery as recovery
+    c, item, root, source, manifest = fixture(monkeypatch)
+    error = 'Final visual quality gate rejected: ' + json.dumps({
+        'stage': 'after_rescue', 'accepted': 5, 'total': 6,
+        'rejected': {'5': {'score': 30}}, 'repair_checkpoint_available': False})
+    source.update(error=error, failure_stage='final_visual_qc_rescue', paid_create_slots_used=6,
+        audio_candidate_checkpoint={'preserved': True}, included_stock_pools={'preserved': True},
+        generated_asset_candidates={'attempted_count': 6, 'preserved_count': 6, 'failed_count': 0,
+            'entries': [{'preserved': True}] * 6},
+        failure_classification={'category': 'content_rejected', 'code': 'visual_quality_exhausted',
+            'error_sha256': hashlib.sha256(error.encode()).hexdigest()})
+    c.set(jobs.JOB_PREFIX + root, plan._raw(source))
+    c.set('celery-task-meta-' + root, plan._raw({'task_id': root, 'status': 'FAILURE',
+        'result': {'exc_type': 'FinalVisualQualityError', 'exc_message': [error]}}))
+    operation = str(uuid5(NAMESPACE_URL, 'owner-plan-render-recovery:v4:' + root))
+    c.set(recovery.DISPATCH + root, plan._raw({'version': 1, 'source_task_id': root,
+        'task_id': operation, 'source_sha256': recovery._fingerprint(source)}))
+    c.set(recovery.EXECUTION + root, operation)
+    c.set(recovery.STATUS + root, plan._raw({'state': 'stopped', 'error_type': 'RuntimeError'}))
+    c.set('celery-task-meta-' + operation, plan._raw({'task_id': operation, 'status': 'FAILURE',
+        'result': {'exc_type': 'RuntimeError',
+            'exc_message': ['Saved stock candidates did not pass independent exact-cut review']}}))
+    return c, item, root, source, operation
+
+
+def test_exhausted_visual_and_stock_reviews_allow_new_story_but_preserve_negative_evidence(monkeypatch):
+    from app.services import content_plan_recovery as recovery
+    c, item, root, source, operation = visual_fixture(monkeypatch)
+    original = {k: c.get(k) for k in (jobs.JOB_PREFIX + root, 'celery-task-meta-' + root,
+        recovery.DISPATCH + root, recovery.EXECUTION + root, recovery.STATUS + root,
+        'celery-task-meta-' + operation)}
+    result = edit.replace(item['id'], plan.item('Rivets', 'A different sourced product mechanism'),
+        expected_job_sha256=plan._sha(source), client=c, now=NOW)
+    assert all(c.get(k) == raw for k, raw in original.items())
+    archive = json.loads(c.get(edit.ARCHIVE + item['id']))
+    assert archive['retained_recovery']['terminal'] == original['celery-task-meta-' + operation]
+    assert not archive['qa_approved'] and not archive['old_publish_eligible']
+    assert not c.exists(plan.COMPLETION_PREFIX + item['id'], jobs.JOB_PREFIX + result['new_root'])
+    assert c.hget(batch.produced_key(DAY, C), root) == 'shorts'
+
+
+@pytest.mark.parametrize('mutation', ['preparing', 'uncertain', 'missing_terminal', 'unexpected_failure',
+    'approved_recovery', 'changed_dispatch', 'missing_execution', 'missing_candidate',
+    'changed_negative_evidence', 'repair_checkpoint', 'unknown_provider'])
+def test_visual_reauthor_cannot_detach_unresolved_or_recoverable_work(monkeypatch, mutation):
+    from app.services import content_plan_recovery as recovery
+    c, item, root, source, operation = visual_fixture(monkeypatch)
+    if mutation in ('preparing', 'uncertain'):
+        c.set(recovery.STATUS + root, plan._raw({'state': mutation}))
+    if mutation == 'missing_terminal': c.delete('celery-task-meta-' + operation)
+    if mutation == 'unexpected_failure':
+        terminal = json.loads(c.get('celery-task-meta-' + operation))
+        terminal['result']['exc_message'] = ['lost provider response']
+        c.set('celery-task-meta-' + operation, plan._raw(terminal))
+    if mutation == 'approved_recovery': c.set(recovery.RECORD + root, '{}')
+    if mutation == 'changed_dispatch':
+        value = json.loads(c.get(recovery.DISPATCH + root)); value['source_sha256'] = 'changed'
+        c.set(recovery.DISPATCH + root, plan._raw(value))
+    if mutation == 'missing_execution': c.delete(recovery.EXECUTION + root)
+    if mutation == 'missing_candidate': source['generated_asset_candidates']['preserved_count'] = 5
+    if mutation == 'changed_negative_evidence': source['failure_classification']['error_sha256'] = 'changed'
+    if mutation == 'repair_checkpoint': c.set(jobs.REPAIR_CHECKPOINT_PREFIX + root, '{}')
+    if mutation == 'unknown_provider':
+        def blocked(*a): raise ValueError('unresolved request')
+        monkeypatch.setattr(edit, '_settled', blocked)
+    c.set(jobs.JOB_PREFIX + root, plan._raw(source))
+    before = c.get(plan.PLAN_PREFIX + C); active = c.get(plan.ACTIVE_KEY)
+    with pytest.raises(ValueError):
+        edit.replace(item['id'], plan.item('New', 'New source grounded story'),
+            expected_job_sha256=plan._sha(source), client=c, now=NOW)
+    assert c.get(plan.PLAN_PREFIX + C) == before and c.get(plan.ACTIVE_KEY) == active
+    assert not c.exists(edit.ARCHIVE + item['id'], batch.replacement_key(DAY, item['id']))
