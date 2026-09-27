@@ -92,6 +92,11 @@ def test_dub_files_need_owner_scope_ready_audio_and_exact_object_binding(ui, mon
     assert response.status_code == 303 and response.headers['cache-control'] == 'private, no-store'
     page = client.get('/studio/growth').text
     assert 'Ses hazır · YouTube’a henüz yüklenmedi' in page and '<audio controls' in page
+    store.set(key + ':track:hi', json.dumps({'status': 'review_required'}))
+    page = client.get('/studio/growth').text
+    assert 'Ses kontrolünü geçmedi · diğer diller kullanılabilir' in page
+    assert page.count('<audio controls') == 1
+    assert client.get('/studio/growth/dubs/' + video + '/hi').status_code == 404
     track['audio_key'] = 'different/private/audio.wav'; store.set(key + ':track:en', json.dumps(track))
     assert client.get(path).status_code == 404
     client.cookies.clear()

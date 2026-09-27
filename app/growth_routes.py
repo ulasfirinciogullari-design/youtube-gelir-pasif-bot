@@ -104,6 +104,7 @@ def render(channels, selected, preferences, data, languages, voices_active, *, s
             path = '/studio/growth/dubs/' + row['video_id'] + '/' + lang
             tracks.append('<div class="growth-step"><b>' + escape(strategy.LANGUAGES[lang]) + '</b> · '
                 + ('Ses hazır · YouTube’a henüz yüklenmedi' if ready else
+                   'Ses kontrolünü geçmedi · diğer diller kullanılabilir' if track.get('status') == 'review_required' else
                    'Ses üretildi · zamanlama ve dil kontrolünde' if track.get('status') == 'generated' else 'Hazırlanacak')
                 + ('<audio controls preload="none" style="display:block;max-width:100%;margin-top:10px" src="' + path + '"></audio>'
                     '<div class="growth-downloads"><a href="' + path + '">Dublajı indir ↓</a>'
