@@ -24,6 +24,8 @@ DAY_PREFIX = 'cost_meter:day:'
 MONTH_PREFIX = 'cost_meter:month:'
 JOB_PREFIX = 'cost_meter:job:'
 JOB_INDEX = 'cost_meter:jobs'
+# Turkey stays on UTC+3 all year; days and months follow the owner's clock.
+LOCAL_TZ = timezone(timedelta(hours=3))
 MAX_EVENTS = 5000
 MAX_INDEXED_JOBS = 2000
 _TTL_DAYS = 120
@@ -246,8 +248,9 @@ def record(entry: dict, *, client=None, now: datetime | None = None) -> None:
             event['scene'] = scene
         usd = float(entry.get('usd') or 0.0)
         client = client or _client()
-        day_key = DAY_PREFIX + now.strftime('%Y-%m-%d')
-        month_key = MONTH_PREFIX + now.strftime('%Y-%m')
+        local = now.astimezone(LOCAL_TZ)
+        day_key = DAY_PREFIX + local.strftime('%Y-%m-%d')
+        month_key = MONTH_PREFIX + local.strftime('%Y-%m')
         provider = str(entry.get('provider') or 'unknown')
         with client.pipeline(transaction=False) as pipe:
             pipe.lpush(EVENTS_KEY, json.dumps(event, ensure_ascii=False))
@@ -258,6 +261,7 @@ def record(entry: dict, *, client=None, now: datetime | None = None) -> None:
                 pipe.hincrby(key, 'calls', 1)
                 if not entry.get('priced'):
                     pipe.hincrby(key, 'unpriced_calls', 1)
+                pipe.hsetnx(key, 'first_at', event['at'])
                 pipe.expire(key, _TTL_DAYS * 86400)
             if task_id:
                 job_key = JOB_PREFIX + task_id
@@ -379,6 +383,19 @@ def video_costs(job_costs: dict, jobs: list, videos: dict) -> list[dict]:
     return rows
 
 
+def _projected_month(month: dict, local: datetime) -> float:
+    """Extrapolate from when metering started this month, not from the 1st."""
+    next_month = (local.replace(day=28) + timedelta(days=4)).replace(day=1)
+    days_in_month = (next_month - timedelta(days=1)).day
+    try:
+        started = datetime.fromisoformat(str(month.get('first_at'))).astimezone(LOCAL_TZ)
+    except (TypeError, ValueError):
+        return 0.0
+    elapsed = max((local - started).total_seconds() / 86400, 1.0)
+    remaining_days = days_in_month - local.day + (1 - (local.hour * 60 + local.minute) / 1440)
+    return month['total'] + month['total'] / elapsed * max(remaining_days, 0.0)
+
+
 def _studio_jobs() -> list:
     try:
         from app.services.studio_state import list_jobs
@@ -400,11 +417,12 @@ def summary(*, client=None, now: datetime | None = None, days: int = 14, events:
     """Everything the cost page shows, read-only."""
     now = now or datetime.now(timezone.utc)
     client = client or _client()
-    day_list = [(now - timedelta(days=offset)).strftime('%Y-%m-%d') for offset in range(days)]
+    local = now.astimezone(LOCAL_TZ)
+    day_list = [(local - timedelta(days=offset)).strftime('%Y-%m-%d') for offset in range(days)]
     with client.pipeline(transaction=False) as pipe:
         for day in day_list:
             pipe.hgetall(DAY_PREFIX + day)
-        pipe.hgetall(MONTH_PREFIX + now.strftime('%Y-%m'))
+        pipe.hgetall(MONTH_PREFIX + local.strftime('%Y-%m'))
         pipe.lrange(EVENTS_KEY, 0, max(0, events - 1))
         pipe.zrevrangebyscore(JOB_INDEX, '+inf', (now - timedelta(days=30)).timestamp(), start=0, num=400)
         raw = pipe.execute()
@@ -432,8 +450,7 @@ def summary(*, client=None, now: datetime | None = None, days: int = 14, events:
     wasted = [row for row in rows if row['status'] == 'failed']
     total_views = sum(row['views'] or 0 for row in published)
     published_cost = sum(row['total'] for row in published)
-    elapsed_days = now.day
-    projected = month['total'] / elapsed_days * 30 if elapsed_days else 0.0
+    projected = _projected_month(month, local)
     return {
         'today': daily[0], 'daily': daily, 'month': month, 'recent': recent, 'videos': rows[:60],
         'projected_month': round(projected, 2),

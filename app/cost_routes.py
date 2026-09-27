@@ -1,4 +1,5 @@
 """Owner cost page: what each paid call and each video cost, live."""
+from datetime import datetime
 from html import escape
 
 from fastapi import APIRouter, Cookie
@@ -23,6 +24,13 @@ def _usd(value) -> str:
     if value is None:
         return '—'
     return '$' + format(float(value), ',.2f')
+
+
+def _clock(value) -> str:
+    try:
+        return datetime.fromisoformat(str(value)).astimezone(cost_meter.LOCAL_TZ).strftime('%H:%M')
+    except (TypeError, ValueError):
+        return ''
 
 
 def _operation(entry: dict) -> str:
@@ -53,11 +61,11 @@ def _kpi(label: str, value: str, note: str) -> str:
 def render(data: dict):
     today, month = data['today'], data['month']
     unpriced = month.get('unpriced_calls', 0)
-    body = '''<style>
-.cost-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}.cost-kpi{padding:16px;border-radius:12px;background:#f2f7f4}.cost-kpi small{display:block;color:#667d73;font-size:12px}.cost-kpi b{font-size:26px}.cost-bar{display:grid;grid-template-columns:110px 1fr 80px;gap:10px;align-items:center;padding:6px 0;font-size:14px}.cost-bar div{background:#e5ebed;border-radius:6px;height:10px;overflow:hidden}.cost-bar i{display:block;height:100%;background:#26785c}.cost-bar b{text-align:right}.cost-table{width:100%;border-collapse:collapse;font-size:13px}.cost-table td,.cost-table th{padding:8px 6px;border-bottom:1px solid #e5ebed;text-align:left;overflow-wrap:anywhere}.cost-table td.num,.cost-table th.num{text-align:right;white-space:nowrap}.cost-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.cost-tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;white-space:nowrap}.cost-ok{background:#e3f2ea;color:#1e6b4f}.cost-wait{background:#eef1f4;color:#4d5b66}.cost-bad{background:#fbe9e7;color:#9a3b2c}.cost-scroll{overflow-x:auto}@media(max-width:900px){.cost-grid{grid-template-columns:1fr}.cost-bar{grid-template-columns:84px 1fr 70px}.cost-kpi b{font-size:22px}}
-</style><div class="hero"><div><div class="eyebrow">MALİYET</div><h1>Hangi iş ne kadara mal oldu?</h1><p class="muted">Her ücretli yapay zeka çağrısı yapıldığı anda buraya düşer. Sayfa dakikada bir yenilenir.</p></div></div>'''
+    body = """<style>
+.cost-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}.cost-kpi{padding:14px 16px;border-radius:12px;background:#f2f7f4}.cost-kpi small{display:block;color:#667d73;font-size:12px}.cost-kpi b{font-size:24px}.cost-bar{display:grid;grid-template-columns:110px 1fr 76px;gap:10px;align-items:center;padding:6px 0;font-size:14px}.cost-bar div{background:#e5ebed;border-radius:6px;height:10px;overflow:hidden}.cost-bar i{display:block;height:100%;background:#26785c}.cost-bar b{text-align:right}.cost-day{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #e5ebed;font-size:14px}.cost-day span{color:#667d73}.cost-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.cost-item{padding:12px 0;border-bottom:1px solid #e5ebed}.cost-item:last-child,.cost-day:last-child{border:0}.cost-item-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.cost-item-top a{font-weight:700;overflow-wrap:break-word;min-width:0}.cost-item-top b{white-space:nowrap}.cost-item-meta{margin-top:6px;font-size:12px;color:#667d73;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}.cost-tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;white-space:nowrap}.cost-ok{background:#e3f2ea;color:#1e6b4f}.cost-wait{background:#eef1f4;color:#4d5b66}.cost-bad{background:#fbe9e7;color:#9a3b2c}.cost-event{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:4px 10px;padding:9px 0;border-bottom:1px solid #e5ebed;font-size:13px}.cost-event:last-child{border:0}.cost-event time{color:#667d73}.cost-event small{grid-column:2/4;color:#667d73;font-size:11px;overflow-wrap:anywhere}@media(max-width:900px){.cost-grid{grid-template-columns:1fr}.cost-bar{grid-template-columns:84px 1fr 66px}.cost-kpi b{font-size:21px}}
+</style><div class="hero"><div><div class="eyebrow">MALİYET</div><h1>Hangi iş ne kadara mal oldu?</h1><p class="muted">Her ücretli yapay zeka çağrısı yapıldığı anda buraya düşer. Sayfa dakikada bir yenilenir.</p></div></div>"""
     body += ('<div class="cost-kpis">'
-             + _kpi('Bugün (UTC)', _usd(today['total']), str(today.get('calls', 0)) + ' çağrı')
+             + _kpi('Bugün', _usd(today['total']), str(today.get('calls', 0)) + ' çağrı')
              + _kpi('Bu ay', _usd(month['total']), str(month.get('calls', 0)) + ' çağrı')
              + _kpi('Ay sonu tahmini', _usd(data['projected_month']), 'bugüne kadarki hızla')
              + _kpi('Yayınlanan video başına', _usd(data.get('per_published_video')), 'ortalama maliyet')
@@ -70,35 +78,38 @@ def render(data: dict):
                  'Gerçek tarife COST_METER_PRICES_JSON ile eklenebilir.</p>')
     body += ('<div class="cost-grid"><section class="card"><h2>Bu ay servislere göre</h2>'
              + _provider_rows(month['providers'], month['total']) + '</section>'
-             '<section class="card"><h2>Son 14 gün</h2><table class="cost-table"><tr><th>Gün</th><th class="num">Çağrı</th><th class="num">Tutar</th></tr>'
-             + ''.join('<tr><td>' + escape(day['day']) + '</td><td class="num">' + str(day.get('calls', 0))
-                       + '</td><td class="num">' + _usd(day['total']) + '</td></tr>' for day in data['daily'])
-             + '</table></section></div>')
+             '<section class="card"><h2>Son 7 gün</h2>'
+             + ''.join('<div class="cost-day"><span>' + escape(day['day']) + ' · ' + str(day.get('calls', 0))
+                       + ' çağrı</span><b>' + _usd(day['total']) + '</b></div>' for day in data['daily'][:7])
+             + '</section></div>')
     video_rows = []
     for row in data.get('videos', []):
         label, tone = _STATUS.get(row['status'], ('—', 'cost-wait'))
+        views = row.get('views')
+        meta = ['<span class="cost-tag ' + tone + '">' + label + '</span>']
+        if views is not None:
+            meta.append('{:,}'.format(views).replace(',', '.') + ' izlenme')
+        if row.get('usd_per_1000_views') is not None:
+            meta.append(_usd(row['usd_per_1000_views']) + ' / 1.000 izlenme')
+        meta.append(escape(', '.join(cost_meter.PROVIDER_LABELS.get(p, p) for p in row['providers'])))
         video_rows.append(
-            '<tr><td><a href="/studio/job/' + escape(row['root_id']) + '">' + escape(row['title']) + '</a><br><span class="tiny">'
-            + escape(', '.join(cost_meter.PROVIDER_LABELS.get(p, p) for p in row['providers'])) + '</span></td>'
-            '<td><span class="cost-tag ' + tone + '">' + label + '</span></td>'
-            '<td class="num">' + ('{:,}'.format(row['views']).replace(',', '.') if row.get('views') is not None else '—')
-            + '</td><td class="num"><b>' + _usd(row['total']) + '</b></td><td class="num">'
-            + _usd(row.get('usd_per_1000_views')) + '</td></tr>')
-    body += ('<section class="card"><h2>Video başına maliyet ve sonuç</h2><div class="cost-scroll"><table class="cost-table"><tr><th>Video</th>'
-             '<th>Durum</th><th class="num">İzlenme</th><th class="num">Maliyet</th><th class="num">1.000 izlenme</th></tr>'
-             + (''.join(video_rows) or '<tr><td colspan="5" class="muted">Henüz video kaydı yok.</td></tr>')
-             + '</table></div><p class="tiny">Planlama, çekim, seslendirme ve düzeltme denemeleri aynı videonun altında toplanır. '
+            '<article class="cost-item"><div class="cost-item-top"><a href="/studio/job/' + escape(row['root_id']) + '">'
+            + escape(row['title']) + '</a><b>' + _usd(row['total']) + '</b></div><div class="cost-item-meta">'
+            + '<span>' + '</span><span>'.join(meta) + '</span></div></article>')
+    body += ('<section class="card"><h2>Video başına maliyet ve sonuç</h2>'
+             + (''.join(video_rows) or '<p class="muted">Henüz video kaydı yok.</p>')
+             + '<p class="tiny">Planlama, çekim, seslendirme ve düzeltme denemeleri aynı videonun altında toplanır. '
              'İzlenmeler Performans sayfasının son okumasından gelir.</p></section>')
     event_rows = ''.join(
-        '<tr><td>' + escape(str(event.get('at', ''))[11:19]) + '</td><td>'
+        '<div class="cost-event"><time>' + escape(_clock(event.get('at'))) + '</time><span>'
         + escape(cost_meter.PROVIDER_LABELS.get(event.get('provider'), str(event.get('provider'))))
-        + '</td><td>' + escape(_operation(event)) + '<br><span class="tiny">' + escape(str(event.get('model') or ''))
-        + (' · ' + escape(str(event['units'])) if event.get('units') else '') + '</span></td><td class="num">'
-        + _amount(event) + '</td></tr>'
+        + ' · ' + escape(_operation(event)) + '</span><b>' + _amount(event) + '</b><small>'
+        + escape(str(event.get('model') or '')) + (' · ' + escape(str(event['units'])) if event.get('units') else '')
+        + '</small></div>'
         for event in data['recent'][:60])
-    body += ('<section class="card"><h2>Canlı akış</h2><div class="cost-scroll"><table class="cost-table"><tr><th>Saat (UTC)</th><th>Servis</th><th>İşlem</th>'
-             '<th class="num">Tutar</th></tr>' + (event_rows or '<tr><td colspan="4" class="muted">Henüz ücretli çağrı yok.</td></tr>')
-             + '</table></div><p class="tiny">Tutarlar liste fiyatından hesaplanan tahmindir, fatura değildir. Metin modellerinde '
+    body += ('<section class="card"><h2>Canlı akış</h2>'
+             + (event_rows or '<p class="muted">Henüz ücretli çağrı yok.</p>')
+             + '<p class="tiny">Saatler Türkiye saatidir. Tutarlar liste fiyatından hesaplanan tahmindir, fatura değildir. Metin modellerinde '
              'servisin bildirdiği gerçek token sayısı kullanılır. Railway, ChatGPT, Abacus veya ses paketleri gibi sabit aylık '
              'abonelikler bu sayfaya girmez.</p></section>')
     return _shell(body, active='costs', title='Maliyet · Studio',
