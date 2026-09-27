@@ -58,7 +58,11 @@ def read(pipe, policy, channel):
         and record['connection_id'] == connection != record['base_connection_id']
         and record['policy_sha256'] == ledger.sha(ledger.raw(policy))
         and active is not None and record['activation_sha256'] == ledger.sha(ledger.raw(active))
-        and record['channel_sha256'] == ledger.sha(encoded_channel)
+        # This hash is the immutable commissioning snapshot. Normal upload
+        # verification refreshes channel metadata (not the OAuth generation).
+        # Identity, exact credential and current owner authority bind below.
+        and type(record['channel_sha256']) is str
+        and re.fullmatch('[0-9a-f]{64}', record['channel_sha256'])
         and type(credential) is str and bool(credential)
         and record['credential_sha256'] == ledger.sha(credential)
         and type(record['allocation_added_microcredits']) is int

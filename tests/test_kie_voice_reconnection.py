@@ -46,7 +46,7 @@ def test_owner_reconnect_keeps_funding_and_history_and_allows_only_new_roots(act
     assert [r.method for r in active.requests] == ['GET']
 
 
-@pytest.mark.parametrize('damage', ['anchor', 'ttl', 'credential', 'revoked', 'unindexed', 'authority'])
+@pytest.mark.parametrize('damage', ['anchor', 'ttl', 'credential', 'revoked', 'unindexed', 'authority', 'channel_id'])
 def test_damaged_or_revoked_reconnection_stops_before_voice_or_refund(active, damage):
     channel = reconnect(active); grant(active, channel)
     key, anchor = renewal._keys(channel, NEW)
@@ -57,6 +57,10 @@ def test_damaged_or_revoked_reconnection_stops_before_voice_or_refund(active, da
         record = json.loads(active.client.get(auth.CHANNEL_PREFIX + channel))
         record['requires_reconnect'] = True
         active.client.set(auth.CHANNEL_PREFIX + channel, json.dumps(record))
+    if damage == 'channel_id':
+        record = json.loads(active.client.get(auth.CHANNEL_PREFIX + channel))
+        record['id'] = 'UCdifferent_channel'
+        active.client.set(auth.CHANNEL_PREFIX + channel, json.dumps(record))
     if damage == 'unindexed': active.client.srem(auth.CHANNEL_INDEX_KEY, channel)
     if damage == 'authority':
         from app.services.production_continuation import ACTIVE_KEY
@@ -65,6 +69,28 @@ def test_damaged_or_revoked_reconnection_stops_before_voice_or_refund(active, da
     active.context.update(connection_id=NEW)
     with pytest.raises(SpendBlocked): production.select('tr')
     assert active.client.get(ledger.JOURNAL_KEY) == before
+    assert [r.method for r in active.requests] == ['GET']
+
+
+def test_upload_channel_verification_refresh_keeps_next_voice_authorized(active, monkeypatch):
+    channel = reconnect(active); grant(active, channel)
+    active.context.update(connection_id=NEW)
+    production.select('tr')
+    grant_keys = renewal._keys(channel, NEW)
+    preserved = {key: active.client.get(key) for key in (*grant_keys, ledger.POLICY_KEY,
+        ledger.JOURNAL_KEY, ledger.ANCHOR_KEY, ledger.ACTIVE_KEY, auth.CREDENTIAL_PREFIX + channel)}
+    # Exercise the same metadata refresh used before a real YouTube upload.
+    monkeypatch.setattr(auth, '_redis', lambda: active.client)
+    monkeypatch.setattr(auth, '_channel_from_credentials', lambda credentials: {
+        'id': channel, 'title': 'Current channel title', 'custom_url': '@current-channel',
+        'connected_at': '2026-09-27T18:07:00+00:00', 'verified_at': '2026-09-27T18:07:00+00:00'})
+    refreshed = auth.refresh_channel_info(channel, credentials=object(), expected_connection_id=NEW)
+    assert refreshed['connection_id'] == NEW
+    assert refreshed['verified_at'] == '2026-09-27T18:07:00+00:00'
+    active.context['lineage_id'] = 'cf890b6e-2ec5-4959-ae67-060d99710f46'
+    choice = production.select('tr')
+    assert choice['context']['connection_id'] == NEW
+    assert all(active.client.get(key) == value for key, value in preserved.items())
     assert [r.method for r in active.requests] == ['GET']
 
 
