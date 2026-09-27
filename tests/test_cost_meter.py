@@ -47,11 +47,44 @@ def test_unknown_model_is_visible_not_free():
     assert entry['priced'] is False and entry['usd'] == 0.0
 
 
-def test_runway_and_fal_seconds():
+def test_runway_seconds():
     assert cost_meter.estimate_runway({'model': 'gen4.5', 'duration': 5})['usd'] == pytest.approx(0.6)
-    fal = cost_meter.estimate_http('https://queue.fal.run/fal-ai/veo3.1/lite',
-                                   {'json': {'duration': '8s'}}, None)
-    assert fal['usd'] == pytest.approx(0.4)
+
+
+@pytest.mark.parametrize('model,seconds', [
+    ('veo_lite', 8), ('veo_lite', 4), ('seedance_pro', 5), ('seedance_pro', 10), ('seedance_fast', 5), ('seedance_fast', 9),
+])
+def test_fal_video_matches_the_reviewed_admission_quote(model, seconds, monkeypatch):
+    from datetime import datetime as real_datetime
+    from app.services import fal_video_catalog as catalog
+
+    class Frozen(real_datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return real_datetime(2026, 9, 27, 12, tzinfo=timezone.utc)
+
+    monkeypatch.setattr(catalog, 'datetime', Frozen)
+    name = catalog.MODELS[model]
+    body = catalog.build_request(name, 'A calm harbor at dawn', seconds, '9:16')
+    expected = catalog.quote_request(name, body).maximum_micro / 1_000_000
+    entry = cost_meter.estimate_http('https://queue.fal.run/' + name, {'json': body}, None)
+    assert entry['priced'] is True and entry['usd'] == pytest.approx(expected)
+
+
+def test_gemini_veo_uses_the_requested_resolution():
+    url = 'https://generativelanguage.googleapis.com/v1beta/models/veo-3.1-lite-generate-preview:predictLongRunning'
+    body = {'instances': [{'prompt': 'x'}], 'parameters': {'durationSeconds': 8, 'resolution': '1080p'}}
+    assert cost_meter.estimate_http(url, {'json': body}, None)['usd'] == pytest.approx(0.64)
+    body['parameters']['resolution'] = '720p'
+    assert cost_meter.estimate_http(url, {'json': body}, None)['usd'] == pytest.approx(0.40)
+
+
+def test_gemini_interactions_are_counted_unpriced():
+    url = 'https://generativelanguage.googleapis.com/v1beta/interactions'
+    image = cost_meter.estimate_http(url, {'json': {'model': 'img-model', 'response_format': {'type': 'image'}}}, None)
+    assert image == {'provider': 'gemini', 'model': 'img-model', 'operation': 'image', 'usd': 0.0, 'priced': False}
+    audio = cost_meter.estimate_http(url, {'json': {'model': 'm', 'generation_config': {'transcription_config': {}}}}, None)
+    assert audio['operation'] == 'transcription' and audio['priced'] is False
 
 
 def test_voice_providers_price_characters():
@@ -104,8 +137,23 @@ def test_abacus_without_usable_counters_is_unpriced():
     assert entry['priced'] is False and entry['usd'] == 0.0
 
 
-def test_unrelated_url_is_ignored():
-    assert cost_meter.estimate_http('https://oauth2.googleapis.com/token', {}, None) is None
+def test_unknown_paid_route_stays_visible():
+    entry = cost_meter.estimate_http('https://api.example.com/v1/render', {'json': {'model': 'x'}}, None)
+    assert entry == {'provider': 'api.example.com', 'model': 'x', 'operation': '/v1/render',
+                     'usd': 0.0, 'priced': False}
+
+
+def test_rejected_requests_are_not_spend(client):
+    url = 'https://generativelanguage.googleapis.com/v1beta/models/veo-3.1-lite-generate-preview:predictLongRunning'
+    body = {'parameters': {'durationSeconds': 8, 'resolution': '720p'}}
+    cost_meter.observe_http(url, {'json': body}, httpx.Response(429, json={'error': {}}))
+    kie = {'json': {'model': 'elevenlabs/text-to-speech-turbo-2-5', 'input': {'text': 'merhaba'}}}
+    cost_meter.observe_http('https://api.kie.ai/api/v1/jobs/createTask', kie, httpx.Response(200, json={'code': 402}))
+    assert client.llen(cost_meter.EVENTS_KEY) == 0
+    cost_meter.observe_http(url, {'json': body}, httpx.Response(200, json={'name': 'operations/1'}))
+    cost_meter.observe_http('https://api.kie.ai/api/v1/jobs/createTask', kie,
+                            httpx.Response(200, json={'code': 200, 'data': {'taskId': 'abcdefgh'}}))
+    assert client.llen(cost_meter.EVENTS_KEY) == 2
 
 
 def test_record_and_summary_group_by_day_provider_and_job(client):

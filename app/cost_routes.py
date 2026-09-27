@@ -13,6 +13,7 @@ router = APIRouter()
 _OPERATIONS = {
     'responses': 'Metin / senaryo', 'text': 'Metin / denetim', 'messages': 'Metin / denetim',
     'video': 'AI video klibi', 'text_to_video': 'AI video klibi', 'speech': 'Seslendirme',
+    'image': 'AI görsel', 'transcription': 'Ses kontrolü', 'interaction': 'Gemini işlemi',
 }
 _STATUS = {
     'published': ('Yayında', 'cost-ok'), 'running': ('Üretiliyor', 'cost-wait'),

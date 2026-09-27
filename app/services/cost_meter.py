@@ -13,7 +13,7 @@ is recorded with ``priced=False`` so gaps stay visible instead of looking free.
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-from decimal import Decimal
+from decimal import Decimal, ROUND_CEILING
 import json
 import re
 from urllib.parse import urlsplit
@@ -39,18 +39,21 @@ PRICES = {
     'gemini': {
         'gemini-3.1-pro-preview': {'input': 2.0, 'output': 12.0},
         'gemini-3.7-flash': {'input': 0.75, 'output': 3.75},
-        'veo-3.1-lite-generate-preview': {'second': 0.05},
-        'veo-3.1-fast-generate-preview': {'second': 0.10},
-        'veo-3.1-generate-preview': {'second': 0.40},
+        # production_spend_quotes._veo: 720p / 1080p per second.
+        'veo-3.1-lite-generate-preview': {'second': 0.05, 'second_1080p': 0.08},
+        'veo-3.1-fast-generate-preview': {'second': 0.10, 'second_1080p': 0.12},
+        'veo-3.1-generate-preview': {'second': 0.40, 'second_1080p': 0.40},
     },
     'runway': {
         'gen4.5': {'second': 0.12},
         'seedance2_fast': {'second': 0.29},
     },
     'fal': {
-        'fal-ai/veo3.1/lite': {'second': 0.05},
-        'fal-ai/bytedance/seedance/v1.5/pro/text-to-video': {'second': 0.052},
-        'fal-ai/bytedance/seedance/v1/pro/fast/text-to-video': {'second': 0.045},
+        # fal_video_catalog.quote_request: Veo Lite $0.03/s; Seedance bills
+        # 1280x720x24fps tokens ($1.2/M Pro, $1/M Fast), rounded up to a cent.
+        'fal-ai/veo3.1/lite': {'second': 0.03},
+        'fal-ai/bytedance/seedance/v1.5/pro/text-to-video': {'second': 0.02592, 'round_cent': True},
+        'fal-ai/bytedance/seedance/v1/pro/fast/text-to-video': {'second': 0.0216, 'round_cent': True},
         'fal-ai/elevenlabs/tts/turbo-v2.5': {'character': 0.00005},
     },
     # RouteLLM list rates, the same ones production_spend_quotes reserves.
@@ -112,13 +115,16 @@ def _unpriced(provider, model, operation):
     return {'provider': provider, 'model': model, 'operation': operation, 'usd': 0.0, 'priced': False}
 
 
-def _per_second(provider, model, seconds, operation='video'):
+def _per_second(provider, model, seconds, operation='video', *, resolution=None):
     rate = _rate(provider, model)
     if rate is None or 'second' not in rate or not seconds:
         return _unpriced(provider, model, operation)
+    per_second = rate.get('second_1080p', rate['second']) if resolution == '1080p' else rate['second']
+    amount = Decimal(str(per_second)) * seconds
+    if rate.get('round_cent'):
+        amount = amount.quantize(Decimal('0.01'), rounding=ROUND_CEILING)
     return {'provider': provider, 'model': model, 'operation': operation,
-            'usd': float(Decimal(str(rate['second'])) * seconds), 'priced': True,
-            'units': f'{seconds} sn video'}
+            'usd': float(amount), 'priced': True, 'units': f'{seconds} sn video'}
 
 
 def _per_character(provider, model, text, operation='speech'):
@@ -180,7 +186,7 @@ def _json_body(response) -> dict | None:
 
 
 def estimate_http(url: str, request_kwargs: dict, response) -> dict | None:
-    """Price a paid HTTP POST; None means the URL is not a known paid provider."""
+    """Price a paid HTTP POST; unknown routes are returned unpriced, never dropped."""
     parsed = urlsplit(url)
     host, path = parsed.hostname or '', parsed.path
     body = request_kwargs.get('json') if isinstance(request_kwargs.get('json'), dict) else {}
@@ -201,10 +207,14 @@ def estimate_http(url: str, request_kwargs: dict, response) -> dict | None:
     if host == 'generativelanguage.googleapis.com':
         match = re.fullmatch(r'/v1beta/models/([A-Za-z0-9._-]+):(generateContent|predictLongRunning)', path)
         if not match:
-            return None
+            # Interactions (images, Omni video, transcription) have no reviewed
+            # tariff here; count them so they never vanish from the totals.
+            return _unpriced('gemini', str(body.get('model') or ''), _interaction_kind(body))
         model, operation = match[1], match[2]
         if operation == 'predictLongRunning':
-            return _per_second('gemini', model, int((body.get('parameters') or {}).get('durationSeconds') or 0))
+            parameters = body.get('parameters') if isinstance(body.get('parameters'), dict) else {}
+            return _per_second('gemini', model, int(parameters.get('durationSeconds') or 0),
+                               resolution=parameters.get('resolution'))
         usage = (_json_body(response) or {}).get('usageMetadata') or {}
         if not usage:
             return _unpriced('gemini', model, 'text')
@@ -221,7 +231,30 @@ def estimate_http(url: str, request_kwargs: dict, response) -> dict | None:
             if type(usage.get(input_name)) is int and type(usage.get(output_name)) is int:
                 return _tokens('abacus', model, 'messages', usage[input_name], usage[output_name])
         return _unpriced('abacus', model, 'messages')
-    return None
+    return _unpriced(host or 'unknown', str(body.get('model') or ''), path)
+
+
+def _interaction_kind(body: dict) -> str:
+    response_format = body.get('response_format')
+    kind = response_format.get('type') if isinstance(response_format, dict) else None
+    if kind in ('image', 'video'):
+        return kind
+    config = body.get('generation_config')
+    if isinstance(config, dict) and 'transcription_config' in config:
+        return 'transcription'
+    return 'interaction'
+
+
+def accepted(url: str, response) -> bool:
+    """Only a provider's acceptance can cost money; definite rejections are not spend."""
+    status = getattr(response, 'status_code', None)
+    if type(status) is int and not 200 <= status < 300:
+        return False
+    if (urlsplit(str(url)).hostname == 'api.kie.ai'
+            and type((_json_body(response) or {}).get('code')) is int
+            and _json_body(response)['code'] != 200):
+        return False
+    return True
 
 
 _CLIENT = None
@@ -288,6 +321,8 @@ def record(entry: dict, *, client=None, now: datetime | None = None) -> None:
 
 def observe_http(url, request_kwargs, response) -> None:
     try:
+        if not accepted(url, response):
+            return
         entry = estimate_http(str(url), request_kwargs or {}, response)
         if entry is not None:
             record(entry)
