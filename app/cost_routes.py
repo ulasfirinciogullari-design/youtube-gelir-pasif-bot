@@ -17,6 +17,7 @@ _OPERATIONS = {
 _STATUS = {
     'published': ('Yayında', 'cost-ok'), 'running': ('Üretiliyor', 'cost-wait'),
     'failed': ('Başarısız', 'cost-bad'), 'unpublished': ('Hazır, yayında değil', 'cost-wait'),
+    'unknown': ('Studio kaydı yok', 'cost-wait'),
 }
 
 
@@ -38,8 +39,6 @@ def _operation(entry: dict) -> str:
 
 
 def _amount(entry: dict) -> str:
-    if entry.get('subscription'):
-        return 'abonelik'
     return _usd(entry.get('usd')) if entry.get('priced') else 'fiyat yok'
 
 

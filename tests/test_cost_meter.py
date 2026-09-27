@@ -85,11 +85,23 @@ def test_gemini_text_reads_usage_metadata():
     assert entry['usd'] == pytest.approx(0.75 + 0.75)
 
 
-def test_abacus_is_counted_as_subscription_not_dollars():
-    response = httpx.Response(200, json={'usage': {'input_tokens': 100, 'output_tokens': 50}})
+@pytest.mark.parametrize('usage', [
+    {'input_tokens': 100_000, 'output_tokens': 20_000, 'raw_input_tokens': 100_000},
+    {'prompt_tokens': 100_000, 'completion_tokens': 20_000, 'total_tokens': 120_000},
+])
+def test_abacus_prices_native_and_openai_compatible_usage(usage):
+    response = httpx.Response(200, json={'usage': usage})
     entry = cost_meter.estimate_http('https://routellm.abacus.ai/v1/messages',
                                      {'json': {'model': 'claude-haiku-4-5-20251001'}}, response)
-    assert entry['subscription'] is True and entry['priced'] is True and entry['usd'] == 0.0
+    # 100k in * $1/M + 20k out * $5/M
+    assert entry['priced'] is True and entry['usd'] == pytest.approx(0.2)
+
+
+def test_abacus_without_usable_counters_is_unpriced():
+    response = httpx.Response(200, json={'usage': {'total_tokens': 5}})
+    entry = cost_meter.estimate_http('https://routellm.abacus.ai/v1/messages',
+                                     {'json': {'model': 'claude-haiku-4-5-20251001'}}, response)
+    assert entry['priced'] is False and entry['usd'] == 0.0
 
 
 def test_unrelated_url_is_ignored():
@@ -100,6 +112,7 @@ def test_record_and_summary_group_by_day_provider_and_job(client):
     _record_for('job-1', {'provider': 'runway', 'model': 'gen4.5', 'usd': 0.6, 'priced': True})
     _record_for('job-1', {'provider': 'openai', 'model': 'x', 'usd': 0.0, 'priced': False})
     data = cost_meter.summary(now=NOW, jobs=[], videos={})
+    assert data['projected_month'] > data['month']['total']
     assert data['today']['total'] == pytest.approx(0.6)
     assert data['today']['calls'] == 2
     assert data['month']['unpriced_calls'] == 1
@@ -130,6 +143,13 @@ def test_video_family_adds_plan_render_and_repair_and_joins_views(client):
     assert data['per_published_video'] == pytest.approx(2.0)
     assert data['usd_per_1000_views'] == pytest.approx(2.0)
     assert data['wasted_total'] == pytest.approx(0.6) and data['wasted_count'] == 1
+
+
+def test_task_unknown_to_studio_is_not_shown_as_running(client):
+    _record_for('series-research', {'provider': 'openai', 'usd': 0.1, 'priced': True})
+    data = cost_meter.summary(now=NOW, jobs=[], videos={})
+    assert data['videos'][0]['status'] == 'unknown'
+    assert data['wasted_total'] == 0
 
 
 def test_finished_private_video_is_not_counted_as_waste(client):

@@ -9,7 +9,6 @@ Amounts are estimates from public list prices (``PRICES`` below, overridable
 with ``COST_METER_PRICES_JSON``). Token-billed calls use the provider's own
 usage figures when the response reports them. A call whose price is unknown
 is recorded with ``priced=False`` so gaps stay visible instead of looking free.
-Calls paid from a flat subscription are counted but add no dollars.
 """
 from __future__ import annotations
 
@@ -53,6 +52,12 @@ PRICES = {
         'fal-ai/bytedance/seedance/v1.5/pro/text-to-video': {'second': 0.052},
         'fal-ai/bytedance/seedance/v1/pro/fast/text-to-video': {'second': 0.045},
         'fal-ai/elevenlabs/tts/turbo-v2.5': {'character': 0.00005},
+    },
+    # RouteLLM list rates, the same ones production_spend_quotes reserves.
+    'abacus': {
+        'claude-haiku-4-5-20251001': {'input': 1.0, 'output': 5.0},
+        'claude-sonnet-5': {'input': 2.0, 'output': 10.0},
+        'claude-sonnet-4-6': {'input': 3.0, 'output': 15.0},
     },
     # Plan-dependent; set the account's real rate with COST_METER_PRICES_JSON.
     'elevenlabs': {'*': {'character': 0.00018}},
@@ -206,13 +211,16 @@ def estimate_http(url: str, request_kwargs: dict, response) -> dict | None:
         return _tokens('gemini', model, 'text', int(usage.get('promptTokenCount') or 0),
                        int(usage.get('candidatesTokenCount') or 0) + int(usage.get('thoughtsTokenCount') or 0))
     if host == 'routellm.abacus.ai':
-        usage = (_json_body(response) or {}).get('usage') or {}
-        entry = {'provider': 'abacus', 'model': str(body.get('model') or ''), 'operation': 'messages',
-                 'usd': 0.0, 'priced': True, 'subscription': True}
-        if usage:
-            entry['units'] = (f"{int(usage.get('input_tokens') or 0)} girdi + "
-                              f"{int(usage.get('output_tokens') or 0)} çıktı token · abonelik")
-        return entry
+        model = str(body.get('model') or '')
+        usage = (_json_body(response) or {}).get('usage')
+        usage = usage if isinstance(usage, dict) else {}
+        # RouteLLM answers with native Messages counters or the OpenAI-compatible
+        # envelope; anything else stays visibly unpriced instead of $0.
+        for input_name, output_name in (('input_tokens', 'output_tokens'),
+                                        ('prompt_tokens', 'completion_tokens')):
+            if type(usage.get(input_name)) is int and type(usage.get(output_name)) is int:
+                return _tokens('abacus', model, 'messages', usage[input_name], usage[output_name])
+        return _unpriced('abacus', model, 'messages')
     return None
 
 
@@ -361,9 +369,13 @@ def video_costs(job_costs: dict, jobs: list, videos: dict) -> list[dict]:
         family['video_title'] = family.get('video_title') or video.get('title')
     rows = []
     for family in families.values():
-        states = {str(jobs_by_id.get(task, {}).get('state') or '') for task in family['tasks']}
+        # Tasks Studio no longer lists (or never listed, like series research)
+        # say nothing about the outcome, so they never make a video look busy.
+        states = {str(jobs_by_id[task].get('state') or '') for task in family['tasks'] if task in jobs_by_id}
         if family.get('public'):
             status = 'published'
+        elif not states:
+            status = 'unknown'
         elif states & {'PENDING', 'STARTED', 'PROGRESS', 'RETRY', 'AWAITING_APPROVAL', ''}:
             status = 'running'
         elif 'SUCCESS' in states:
