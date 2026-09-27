@@ -3,7 +3,7 @@ from datetime import datetime
 from html import escape
 
 from fastapi import APIRouter, Cookie
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 from app.studio import _require_auth as _auth, _shell, COOKIE_NAME
 from app.services import cost_meter
@@ -116,13 +116,34 @@ def render(data: dict):
                   script='<script>setTimeout(function(){location.reload()},60000)</script>')
 
 
-@router.get('/studio/costs')
+_UNAVAILABLE = 'Maliyet kayıtları şu an okunamıyor.'
+
+
+def unavailable():
+    response = _shell('<div class="hero"><div><div class="eyebrow">MALİYET</div><h1>Hangi iş ne kadara mal oldu?</h1>'
+                      '</div></div><p class="notice">' + escape(_UNAVAILABLE) + ' Sayfa bir dakika içinde yeniden dener.</p>',
+                      active='costs', title='Maliyet · Studio',
+                      script='<script>setTimeout(function(){location.reload()},60000)</script>')
+    response.status_code = 503
+    return response
+
+
+# HTMLResponse lets the Studio auth handler send a signed-out browser to the login page.
+@router.get('/studio/costs', response_class=HTMLResponse)
 def costs(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
     _auth(studio_token)
-    return render(cost_meter.summary())
+    try:
+        data = cost_meter.summary()
+    except Exception:
+        return unavailable()
+    return render(data)
 
 
 @router.get('/studio/api/costs')
 def costs_api(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
     _auth(studio_token)
-    return JSONResponse(cost_meter.summary())
+    try:
+        data = cost_meter.summary()
+    except Exception:
+        return JSONResponse({'detail': _UNAVAILABLE}, status_code=503)
+    return JSONResponse(data)

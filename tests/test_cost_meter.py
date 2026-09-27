@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from types import SimpleNamespace
+from unittest.mock import Mock
 
 import fakeredis
 import httpx
@@ -253,3 +254,34 @@ def test_cost_page_renders(client):
     html = cost_routes.render(cost_meter.summary(now=NOW, jobs=jobs, videos={})).body.decode()
     assert 'Maliyet' in html and '$0.60' in html and 'AI video klibi' in html
     assert 'Test &lt;b&gt;' in html and 'Hazır, yayında değil' in html
+
+
+@pytest.fixture
+def studio_client(monkeypatch):
+    from fastapi import FastAPI, HTTPException
+    from fastapi.testclient import TestClient
+    from app import cost_routes, studio
+    monkeypatch.setattr(studio.settings, 'factory_api_token', 'studio-secret', raising=False)
+    app = FastAPI()
+    app.include_router(cost_routes.router)
+    app.add_exception_handler(HTTPException, studio.studio_auth_exception)
+    return TestClient(app, base_url='https://studio.example.test')
+
+
+def test_signed_out_browser_goes_to_login_before_any_cost_read(studio_client, monkeypatch):
+    monkeypatch.setattr(cost_meter, 'summary', Mock(side_effect=AssertionError('read before auth')))
+    page = studio_client.get('/studio/costs', headers={'accept': 'text/html'}, follow_redirects=False)
+    assert page.status_code == 303 and page.headers['location'] == '/studio/access'
+    api = studio_client.get('/studio/api/costs', headers={'accept': 'text/html'}, follow_redirects=False)
+    assert api.status_code == 401 and 'location' not in api.headers
+
+
+def test_cost_page_says_so_when_records_cannot_be_read(studio_client, monkeypatch):
+    def broken(**kwargs):
+        raise ConnectionError('redis down')
+    monkeypatch.setattr(cost_meter, 'summary', broken)
+    studio_client.cookies.set('youtube_studio_token', 'studio-secret')
+    page = studio_client.get('/studio/costs')
+    assert page.status_code == 503 and 'okunamıyor' in page.text and '/studio/costs' in page.text
+    api = studio_client.get('/studio/api/costs')
+    assert api.status_code == 503 and api.json() == {'detail': 'Maliyet kayıtları şu an okunamıyor.'}
