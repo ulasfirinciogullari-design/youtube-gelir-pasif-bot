@@ -19,8 +19,10 @@ from app.services import audience_strategy as strategy
 
 PREFIX = 'youtube_studio:localization:v1:'
 INDEX = PREFIX + 'videos'
-MAX_CAPTION_WRITES_PER_DAY = 8  # 3,200 Data API units; primary publication keeps priority.
-MAX_CAPTION_READS_PER_DAY = 12  # Shared between all optional languages, 600 units.
+MAX_CAPTION_WRITES_PER_DAY = 14  # 5,600 units, shared by every channel; never resets existing usage.
+MAX_CAPTION_READS_PER_DAY = 20  # 1,000 units. Leave room for original captions and video operations.
+MAX_CAPTION_WRITES_PER_PASS = 3
+PRIMARY_LANGUAGES = ('en', 'es', 'pt')
 LANGUAGE_NAMES = {'en': 'English', 'es': 'Spanish', 'pt': 'Portuguese', 'hi': 'Hindi', 'ar': 'Arabic'}
 _VIDEO = re.compile(r'[A-Za-z0-9_-]{11}')
 _CLOCK = r'(\d{2}):(\d{2}):(\d{2}),(\d{3})'
@@ -124,13 +126,31 @@ def _source(client, source_id):
             or client.exists(studio_state.QUALITY_HOLD_PREFIX + source_id,
                 studio_state.RENDER_CANCELLATION_PREFIX + source_id)):
         raise ValueError('localization_source_ineligible')
-    if hasattr(client, 'watch'):
-        client.watch(youtube_auth.CHANNEL_PREFIX + channel, youtube_auth.CHANNEL_INDEX_KEY)
-    info = json.loads(client.get(youtube_auth.CHANNEL_PREFIX + channel) or '{}')
-    if (info.get('connection_id') != receipt['connection_id'] or info.get('requires_reconnect') is True
-            or not client.sismember(youtube_auth.CHANNEL_INDEX_KEY, channel)):
-        raise ValueError('localization_connection_changed')
+    # The old upload remains bound to its original connection above. A fresh
+    # owner grant for this same channel may edit its captions, without changing
+    # the original job, upload receipt, or its paid-provider identity.
+    _current_connection(client, channel)
     return source, receipt
+
+
+def _current_connection(client, channel):
+    from app.services import youtube_auth
+    if hasattr(client, 'watch'):
+        client.watch(youtube_auth.CHANNEL_PREFIX + channel, youtube_auth.CREDENTIAL_PREFIX + channel,
+            youtube_auth.CHANNEL_INDEX_KEY)
+    info = json.loads(client.get(youtube_auth.CHANNEL_PREFIX + channel) or '{}')
+    connection = info.get('connection_id')
+    if (info.get('id') != channel or type(connection) is not str
+            or not re.fullmatch(r'[A-Za-z0-9_-]{8,128}', connection)
+            or info.get('requires_reconnect') is True
+            or not client.sismember(youtube_auth.CHANNEL_INDEX_KEY, channel)
+            or not client.get(youtube_auth.CREDENTIAL_PREFIX + channel)):
+        raise ValueError('localization_connection_changed')
+    return connection
+
+
+def _language_order(languages):
+    return [lang for lang in (*PRIMARY_LANGUAGES, 'hi', 'ar') if lang in languages]
 
 
 def _public(service, video, channel):
@@ -167,7 +187,8 @@ def _caption_tracks(client, service, video, now):
     return service.captions().list(part='snippet', videoId=video).execute(num_retries=0).get('items') or []
 
 
-def _caption_step(client, key, previous, record, language, service, srt, *, now, tracks=None):
+def _caption_step(client, key, previous, record, language, service, srt, *, now, tracks=None,
+                  expected_connection_id=None):
     from googleapiclient.http import MediaIoBaseUpload
     from app.services.blocked_public_recovery import _safe_http_error
     row = record['languages'][language]
@@ -207,6 +228,8 @@ def _caption_step(client, key, previous, record, language, service, srt, *, now,
         if pipe.scard(quota_key) >= MAX_CAPTION_WRITES_PER_DAY:
             return previous
         _source(pipe, record['source_task_id'])
+        if expected_connection_id is not None and _current_connection(pipe, channel) != expected_connection_id:
+            raise ValueError('localization_connection_changed')
         row.update(status='insert_reserved', caption_name=name, caption_sha256=digest,
             attempts=int(row.get('attempts', 0)) + 1, attempted_at=now.isoformat())
         encoded = _json(record)
@@ -217,6 +240,8 @@ def _caption_step(client, key, previous, record, language, service, srt, *, now,
     try:
         # Preserve owner visibility changes; this helper never publishes a video.
         _public(service, video, channel)
+        if expected_connection_id is not None and _current_connection(client, channel) != expected_connection_id:
+            raise ValueError('localization_connection_changed')
         with BytesIO(srt.encode()) as stream:
             result = service.captions().insert(part='snippet', body={'snippet': {
                 'videoId': video, 'language': language, 'name': name, 'isDraft': False}},
@@ -247,7 +272,8 @@ def run(source_id, task_id):
     previous = client.get(key); record = json.loads(previous or '{}')
     if record.get('task_id') != task_id or record.get('source_task_id') != source_id:
         raise ValueError('localization_binding_invalid')
-    credentials = youtube_auth.load_credentials(channel, expected_connection_id=receipt['connection_id'])
+    current_connection = _current_connection(client, channel)
+    credentials = youtube_auth.load_credentials(channel, expected_connection_id=current_connection)
     service = youtube._service(credentials)
     now = datetime.now(timezone.utc)
     try:
@@ -265,7 +291,9 @@ def run(source_id, task_id):
                 previous = _save(client, key, previous, record)
             enabled = strategy.read_settings(channel, client=client)['languages']
             tracks = None
-            for language, row in record['languages'].items():
+            writes_before = client.scard(PREFIX + 'quota_day:' + _quota_day(now))
+            for language in _language_order(record['languages']):
+                row = record['languages'][language]
                 if language not in enabled or row.get('status') in {'published', 'existing_caption_preserved', 'review_failed'}:
                     continue
                 if 'srt_key' not in row:
@@ -293,12 +321,14 @@ def run(source_id, task_id):
                         raise ValueError('localization_saved_caption_changed')
                 if row.get('retry_at') and datetime.fromisoformat(row['retry_at']) > now:
                     continue
+                used = client.scard(PREFIX + 'quota_day:' + _quota_day(now))
                 if (row.get('status') in {'insert_reserved', 'awaiting_processing', 'uncertain'}
-                        or client.scard(PREFIX + 'quota_day:' + _quota_day(now)) < MAX_CAPTION_WRITES_PER_DAY):
+                        or used < MAX_CAPTION_WRITES_PER_DAY and used - writes_before < MAX_CAPTION_WRITES_PER_PASS):
                     if tracks is None:
                         tracks = _caption_tracks(client, service, video, now)
                     if tracks is not None:
-                        previous = _caption_step(client, key, previous, record, language, service, srt, now=now, tracks=tracks)
+                        previous = _caption_step(client, key, previous, record, language, service, srt,
+                            now=now, tracks=tracks, expected_connection_id=current_connection)
             if (any('srt_key' in row for row in record['languages'].values())
                     and (not record.get('metadata_status') or record.get('metadata_status') == 'rejected'
                         and datetime.fromisoformat(record['metadata_retry_at']) <= now)):
@@ -311,6 +341,8 @@ def run(source_id, task_id):
                 previous = _save(client, key, previous, record)
                 try:
                     _source(client, source_id)
+                    if _current_connection(client, channel) != current_connection:
+                        raise ValueError('localization_connection_changed')
                     if additions:
                         service.videos().update(part='localizations', body={'id': video,
                             'localizations': {**localizations, **additions}}).execute(num_retries=0)
@@ -368,7 +400,7 @@ def _queue_record(client, source_id, task, targets, now):
             'created_at': now.isoformat(), 'created_ts': now.timestamp(), 'result': None, 'error': None,
             'spec': {'topic': source['result'].get('title') or '', 'duration_minutes': .5,
                 'language': source['spec']['language'], 'mode': 'production', 'format': 'shorts',
-                'production_channel_id': channel, 'production_connection_id': receipt['connection_id'],
+                'production_channel_id': channel, 'production_connection_id': _current_connection(pipe, channel),
                 'publish_after_render': False, 'localization_source_id': source_id,
                 'localization_source_duration_minutes': source['spec']['duration_minutes']}}
         pipe.multi(); pipe.set(key, _json(record), nx=True); pipe.set(job_key, _json(job), nx=True)
@@ -376,6 +408,55 @@ def _queue_record(client, source_id, task, targets, now):
         if pipe.execute()[:2] != [True, True]:
             raise ValueError('localization_queue_uncertain')
         return record
+
+
+def _candidate_sources(client, known):
+    """Read durable public uploads; recent render-job windows can miss a hit."""
+    from app.services import youtube_publish_state as publication
+    from app.services import youtube_automation as profiles
+    records = {row['source_task_id']: row for row in known}
+    uploads = []
+    for index, key in enumerate(client.scan_iter(match=publication.UPLOAD_PREFIX + '*', count=100)):
+        if index >= 500:
+            break
+        try:
+            row = json.loads(client.get(key) or '{}')
+            if row.get('status') != 'complete' or row.get('release_status') != 'public':
+                continue
+            channel = row['target_channel_id']
+            profile = json.loads(client.get(profiles.PROFILE_PREFIX + channel) or '{}')
+            if profile.get('production_enabled') is not True or profile.get('auto_publish') is not True:
+                continue
+            task = row['source_task_id']
+            if key != publication.UPLOAD_PREFIX + task:
+                continue
+            record = records.get(task, {})
+            if record.get('status') in {'complete', 'attention'}:
+                continue
+            primary = [lang for lang in strategy.read_settings(channel, client=client)['languages']
+                if lang in PRIMARY_LANGUAGES and lang != record.get('source_language')]
+            primary_done = all(record.get('languages', {}).get(lang, {}).get('status')
+                in {'published', 'existing_caption_preserved'} for lang in primary)
+            uploads.append((primary_done, row.get('release_completed_at') or '', task))
+        except (KeyError, TypeError, ValueError):
+            continue
+    # Give each new upload the three core languages before filling extra tracks
+    # on older videos. Preserve per-video uncertainty and next-check fences.
+    uploads.sort(key=lambda row: row[1], reverse=True)
+    uploads.sort(key=lambda row: row[0])
+    return [row[2] for row in uploads]
+
+
+def release_run(task_id, *, client=None):
+    """A finished worker releases only its own optional-work lease."""
+    client = client or strategy._client()
+    key = PREFIX + 'running'
+    with client.pipeline() as pipe:
+        pipe.watch(key)
+        if pipe.get(key) != task_id:
+            return False
+        pipe.multi(); pipe.delete(key)
+        return pipe.execute() == [1]
 
 
 def maintain():
@@ -390,12 +471,9 @@ def maintain():
         return {'status': 'not_due'}
     now = datetime.now(timezone.utc)
     # Older pending work remains discoverable even when primary videos leave
-    # Studio's recent-job window. Newest uploads cannot starve old languages.
+    # Studio's recent-job window. Prioritize the first three languages before completing secondary-language backlogs.
     known = dashboard(client)
-    candidates = [r['source_task_id'] for r in sorted(known, key=lambda r: r.get('checked_at') or '')]
-    candidates += [j['task_id'] for j in studio_state.list_jobs(limit=120)
-        if j.get('kind') == 'render' and j.get('state') == 'SUCCESS'
-        and j.get('created_at', '') >= '2026-09-23']
+    candidates = _candidate_sources(client, known)
     for source_id in dict.fromkeys(candidates):
         try:
             source, receipt = _source(client, source_id)
@@ -409,8 +487,8 @@ def maintain():
             if record.get('status') in {'complete', 'attention'} or (record.get('next_check_at')
                     and datetime.fromisoformat(record['next_check_at']) > now):
                 continue
-            # At most one optional language task per 25-minute interval. Durable
-            # request and caption fences still apply if execution is interrupted.
+            # One optional task at a time. A finished worker releases its lease;
+            # a lost worker retains it for 25 minutes. Request fences outlive it.
             if not client.set(PREFIX + 'running', task, nx=True, ex=1500):
                 return {'status': 'busy'}
             localize_published_video.apply_async(args=(source_id,), task_id=task)
@@ -424,4 +502,10 @@ def dashboard(client=None):
     client = client or strategy._client()
     videos = sorted(client.smembers(INDEX))[:200]
     rows = [json.loads(raw) for raw in client.mget([PREFIX + 'video:' + v for v in videos]) if raw]
+    if rows:
+        from app.services import studio_state
+        sources = client.mget([studio_state.JOB_PREFIX + r['source_task_id'] for r in rows])
+        for row, raw in zip(rows, sources):
+            result = (json.loads(raw or '{}').get('result') or {})
+            row['title'] = str(result.get('title') or (result.get('publish_metadata') or {}).get('title') or '')[:140]
     return rows

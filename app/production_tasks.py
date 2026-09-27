@@ -96,6 +96,11 @@ def localize_published_video(self, source_task_id: str) -> dict:
             code = 'localization_unavailable'
         studio_state.mark_failure(self.request.id, code)
         return {'status': 'waiting', 'reason': code}
+    finally:
+        try:
+            languages.release_run(self.request.id)
+        except Exception:
+            pass  # An uncertain lease release expires; never replay paid work.
 
 
 @celery.task(name='app.production_tasks.maintain_video_languages', acks_late=False,

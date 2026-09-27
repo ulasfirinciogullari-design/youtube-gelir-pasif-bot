@@ -221,6 +221,10 @@ def _write(pipe, journal):
 def _scope(pipe, foundation, policy, scope):
     _foundation(pipe, foundation)
     require(type(scope) is dict)
+    if scope.get('kind') == 'video_dub':
+        from app.services.video_dubbing import authorize_scope
+        authorize_scope(pipe, policy, scope)
+        return
     if scope.get('kind') == 'connection_probe':
         require(set(scope) == {'kind', 'language', 'voice_id'}
             and scope['language'] in {'tr', 'en'}
@@ -280,7 +284,10 @@ class Journal:
             # Recompute the frozen upper bound; callers cannot under-reserve.
             units = len(text.encode('utf-16-le')) // 2
             require(1 <= units <= 5000 and self.ceiling == expected_ceiling)
-            if self.scope.get('kind') != 'connection_probe':
+            if self.scope.get('kind') == 'video_dub':
+                from app.services.video_dubbing import authorize_request
+                authorize_request(pipe, policy, self.scope, d)
+            elif self.scope.get('kind') != 'connection_probe':
                 from app.services.kie_voice_production import authorize_request
                 authorize_request(pipe, self.foundation, policy, self.scope, d)
             identity = sha(raw({'scope': self.scope, 'request': d}))
@@ -292,7 +299,7 @@ class Journal:
                 same_root = [r for r in journal['requests'].values() if r['scope'] == self.scope]
                 schema_repair = (is_gemini and self.scope.get('kind') == 'connection_probe'
                     and gemini.schema_repair_allowed(pipe, policy, same_root, self.body, self.attempt))
-                require(schema_repair or len(same_root) < (1 if self.scope.get('kind') == 'connection_probe' else 3),
+                require(schema_repair or len(same_root) < (1 if self.scope.get('kind') in {'connection_probe', 'video_dub'} else 3),
                     'kie_voice_attempt_limit')
                 require(schema_repair or not any(r['result'] is None or r['descriptor']['attempt'] == self.attempt
                     for r in same_root), 'kie_voice_previous_request_pinned')

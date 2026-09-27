@@ -136,12 +136,142 @@ def test_registry_and_job_are_created_together_and_preserve_existing_accounting(
     source = {'spec': {'language': 'tr', 'duration_minutes': 3}, 'result': {'title': 'Original'}}
     receipt = {'youtube_video_id': c.record['video_id'], 'target_channel_id': 'channel', 'connection_id': 'connection'}
     monkeypatch.setattr(languages, '_source', lambda *a: (source, receipt))
+    monkeypatch.setattr(languages, '_current_connection', lambda *a: 'current-owner-connection')
     c.client.delete(c.key)
     record = languages._queue_record(c.client, 'source', 'new-task', ['en', 'es'], NOW)
     job = json.loads(c.client.get(studio_state.JOB_PREFIX + 'new-task'))
     assert record['status'] == 'queued' and job['kind'] == 'localization'
     assert job['parent_id'] is None and job['spec']['publish_after_render'] is False
+    assert job['spec']['production_connection_id'] == 'current-owner-connection'
     assert c.client.sismember(languages.INDEX, c.record['video_id'])
     original = c.client.get(studio_state.JOB_PREFIX + 'new-task')
     assert languages._queue_record(c.client, 'source', 'new-task', ['en'], NOW) == record
     assert c.client.get(studio_state.JOB_PREFIX + 'new-task') == original
+
+
+@pytest.fixture
+def renewed_source(monkeypatch):
+    from app.services import studio_state, youtube_publish_state, youtube_auth, youtube_automation
+    client = fakeredis.FakeRedis(decode_responses=True)
+    channel = 'UC5v9AvNtD3PTLgo6m1jROOA'
+    task = '11111111-1111-4111-8111-111111111111'
+    source = {'kind': 'render', 'state': 'SUCCESS', 'spec': {'production_channel_id': channel,
+        'production_connection_id': 'original-owner-connection', 'language': 'tr'},
+        'result': {'caption_key': f'videos/{task}/captions.tr.srt'}}
+    receipt = {'status': 'complete', 'release_status': 'public', 'privacy_status': 'public',
+        'youtube_video_id': 'abcdefghijk', 'target_channel_id': channel,
+        'connection_id': 'original-owner-connection'}
+    client.set(studio_state.JOB_PREFIX+task, json.dumps(source))
+    client.set(youtube_publish_state.UPLOAD_PREFIX+task, json.dumps(receipt))
+    client.set(youtube_auth.CHANNEL_PREFIX+channel, json.dumps({'id':channel,
+        'connection_id':'current-owner-connection'}))
+    client.set(youtube_auth.CREDENTIAL_PREFIX+channel, 'encrypted-current-owner-credential')
+    client.sadd(youtube_auth.CHANNEL_INDEX_KEY,channel)
+    monkeypatch.setattr(youtube_automation, 'automated_quality_approved', lambda job: True)
+    return client, channel, task, source, receipt
+
+
+def test_same_channel_renewal_keeps_original_publication_and_paid_identity(renewed_source):
+    client, channel, task, source, receipt = renewed_source
+    before={key:client.dump(key) for key in client.scan_iter()}
+    assert languages._source(client,task)==(source,receipt)
+    assert languages._current_connection(client,channel)=='current-owner-connection'
+    assert {key:client.dump(key) for key in client.scan_iter()}==before
+
+
+@pytest.mark.parametrize('damage',['other_channel','revoked','missing_credential','unindexed',
+    'changed_upload_binding','held','not_public','failed_original'])
+def test_renewal_never_authorizes_another_channel_or_ineligible_video(renewed_source,damage):
+    from app.services import studio_state,youtube_publish_state,youtube_auth
+    c,channel,task,source,receipt=renewed_source
+    key=youtube_auth.CHANNEL_PREFIX+channel
+    if damage=='other_channel':c.set(key,json.dumps({'id':'other','connection_id':'current-owner-connection'}))
+    if damage=='revoked':c.set(key,json.dumps({'id':channel,'connection_id':'current-owner-connection','requires_reconnect':True}))
+    if damage=='missing_credential':c.delete(youtube_auth.CREDENTIAL_PREFIX+channel)
+    if damage=='unindexed':c.srem(youtube_auth.CHANNEL_INDEX_KEY,channel)
+    if damage=='held':c.set(studio_state.QUALITY_HOLD_PREFIX+task,'hold')
+    if damage=='changed_upload_binding':
+        receipt['connection_id']='different-original';c.set(youtube_publish_state.UPLOAD_PREFIX+task,json.dumps(receipt))
+    if damage=='not_public':
+        receipt['release_status']='private';c.set(youtube_publish_state.UPLOAD_PREFIX+task,json.dumps(receipt))
+    if damage=='failed_original':
+        source['state']='FAILURE';c.set(studio_state.JOB_PREFIX+task,json.dumps(source))
+    before={key:c.dump(key) for key in c.scan_iter()}
+    with pytest.raises(ValueError):languages._source(c,task)
+    assert {key:c.dump(key) for key in c.scan_iter()}==before
+
+
+def test_connection_change_before_caption_reservation_never_writes(case,monkeypatch):
+    c=case
+    monkeypatch.setattr(languages,'_current_connection',lambda *a:'renewed-again')
+    before=c.client.get(c.key)
+    with pytest.raises(ValueError,match='connection_changed'):
+        languages._caption_step(c.client,c.key,c.previous,c.record,'en',c.service,SRT,now=NOW,
+            expected_connection_id='connection-used-to-load-credentials')
+    assert c.client.get(c.key)==before
+    c.service.captions.return_value.insert.assert_not_called()
+
+
+def test_durable_upload_discovery_survives_job_window_and_prioritizes_core_languages():
+    from app.services import youtube_publish_state, youtube_automation
+    c=fakeredis.FakeRedis(decode_responses=True)
+    channel='UC5v9AvNtD3PTLgo6m1jROOA';paused='UCgvESYtYbn2w9R2ExBOF_cw'
+    c.set(youtube_automation.PROFILE_PREFIX+channel,json.dumps({'production_enabled':True,'auto_publish':True}))
+    c.set(youtube_automation.PROFILE_PREFIX+paused,json.dumps({'production_enabled':False,'auto_publish':False}))
+    for task,day,ch,status in [('old-hit','24',channel,'public'),('new','27',channel,'public'),
+        ('extra','26',channel,'public'),('done','25',channel,'public'),('private','28',channel,'private'),
+        ('paused','28',paused,'public')]:
+        c.set(youtube_publish_state.UPLOAD_PREFIX+task,json.dumps({'source_task_id':task,
+            'status':'complete','release_status':status,'target_channel_id':ch,
+            'release_completed_at':'2026-09-'+day+'T12:00:00+00:00'}))
+    known=[{'source_task_id':'done','status':'complete'},
+        {'source_task_id':'extra','source_language':'tr','languages':{l:{'status':'published'} for l in languages.PRIMARY_LANGUAGES}}]
+    before={key:c.dump(key) for key in c.scan_iter()}
+    assert languages._candidate_sources(c,known)==['new','old-hit','extra']
+    assert {key:c.dump(key) for key in c.scan_iter()}==before
+
+
+def test_finished_localization_releases_only_its_own_lease():
+    c=fakeredis.FakeRedis(decode_responses=True);key=languages.PREFIX+'running'
+    c.set(key,'new-worker',ex=1500)
+    assert languages.release_run('old-worker',client=c) is False
+    assert c.get(key)=='new-worker'
+    assert languages.release_run('new-worker',client=c) is True
+    assert c.get(key) is None
+
+
+@pytest.mark.parametrize('prior_writes,expected',[(0,['en','es','pt']),(13,['en'])])
+def test_core_languages_get_first_slots_and_old_quota_reservations_stay_counted(monkeypatch,prior_writes,expected):
+    from app.services import production_spend_runtime as runtime, storage, youtube, youtube_auth
+    c=fakeredis.FakeRedis(decode_responses=True);video='abcdefghijk';key=languages.PREFIX+'video:'+video
+    record={'task_id':'translation-task','source_task_id':'source','video_id':video,'channel_id':'channel',
+        'metadata_status':'verified','metadata_additions':{},'languages':{l:{'status':'prepared',
+        'srt_key':'saved/'+l+'.srt','srt_sha256':languages._sha(SRT)} for l in ('ar','en','es','hi','pt')}}
+    c.set(key,languages._json(record))
+    now=datetime.now(timezone.utc);quota=languages.PREFIX+'quota_day:'+languages._quota_day(now)
+    if prior_writes:c.sadd(quota,*[str(i) for i in range(prior_writes)])
+    original={ 'spec':{'language':'tr'},'result':{'caption_key':'original.srt'}}
+    receipt={'youtube_video_id':video,'target_channel_id':'channel','connection_id':'old-owner'}
+    monkeypatch.setattr(runtime,'configured_ledger',lambda **k:SimpleNamespace(client=c))
+    monkeypatch.setattr(languages,'_source',lambda *a:(original,receipt))
+    monkeypatch.setattr(languages,'_current_connection',lambda *a:'current-owner')
+    monkeypatch.setattr(languages.strategy,'read_settings',lambda *a,**k:{'languages':['en','es','pt','hi','ar']})
+    monkeypatch.setattr(storage,'download_file',lambda key,path:path.write_text(SRT))
+    monkeypatch.setattr(youtube_auth,'load_credentials',lambda *a,**k:'credentials')
+    service=Mock();monkeypatch.setattr(youtube,'_service',lambda *a:service)
+    monkeypatch.setattr(languages,'_public',lambda *a:{'localizations':{}})
+    service.captions.return_value.list.return_value.execute.return_value={'items':[]}
+    inserted=[]
+    def insert(**kwargs):
+        snippet=kwargs['body']['snippet'];inserted.append(snippet['language'])
+        response={'id':'caption-'+snippet['language'],'snippet':snippet}
+        return SimpleNamespace(execute=lambda **k:response)
+    service.captions.return_value.insert.side_effect=insert
+    translate=Mock(side_effect=AssertionError('Prepared translations must not be regenerated'))
+    monkeypatch.setattr(languages,'_translate',translate)
+    result=languages.run('source','translation-task')
+    assert inserted==expected and result['status']=='in_progress'
+    assert c.scard(quota)==prior_writes+len(expected)
+    for language in expected:assert result['languages'][language]=='awaiting_processing'
+    for language in ('ar','hi'):assert result['languages'][language]=='prepared'
+    translate.assert_not_called()

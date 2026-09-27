@@ -753,35 +753,42 @@ def publish_video_pipeline(
         caption_deferred = bool(caption_key and optional_plan_caption and optional_caption_waiting())
         if caption_deferred:
             caption_error_code = 'youtube_caption_quota_wait'
-        if caption_key and not caption_deferred:
-            set_stage(
-                self,
-                task_id,
-                'youtube_caption',
-                84,
-                'Ayrı altyazı parçası YouTube’a ekleniyor.',
-            )
-            try:
-                if editorial_receipt:
-                    # Use the exact pre-insert SRT, never a second download.
-                    _verify_editorial_files(source, editorial_receipt, video_path, caption_path)
-                else:
-                    caption_path = work / f'captions.{caption_language}.srt'
-                    download_file(caption_key, caption_path)
-                caption_result = upload_caption_with_credentials(
-                    credentials,
-                    video_id,
-                    str(caption_path),
-                    caption_language,
-                    name=f'{caption_language.upper()} captions',
+        caption_after_release = optional_plan_caption and release_mode in {'public', 'scheduled'}
+
+        def upload_original_caption(*, after_release=False):
+            nonlocal caption_path, caption_result, caption_error_code, quota_failure
+            if caption_key and not caption_deferred:
+                set_stage(
+                    self,
+                    task_id,
+                    'youtube_caption',
+                    96 if after_release else 84,
+                    'Ayrı altyazı parçası YouTube’a ekleniyor.',
                 )
-            except Exception as exc:
-                caption_error_code = _safe_error_code(exc)
-                from app.services.youtube_quota_recovery import observe_quota, observe_optional_caption_quota
-                if optional_plan_caption:
-                    observe_optional_caption_quota(exc)
-                else:
-                    quota_failure = observe_quota(exc) or quota_failure
+                try:
+                    if editorial_receipt:
+                        # Use the exact pre-insert SRT, never a second download.
+                        _verify_editorial_files(source, editorial_receipt, video_path, caption_path)
+                    else:
+                        caption_path = work / f'captions.{caption_language}.srt'
+                        download_file(caption_key, caption_path)
+                    caption_result = upload_caption_with_credentials(
+                        credentials,
+                        video_id,
+                        str(caption_path),
+                        caption_language,
+                        name=f'{caption_language.upper()} captions',
+                    )
+                except Exception as exc:
+                    caption_error_code = _safe_error_code(exc)
+                    from app.services.youtube_quota_recovery import observe_quota, observe_optional_caption_quota
+                    if optional_plan_caption:
+                        observe_optional_caption_quota(exc)
+                    else:
+                        quota_failure = observe_quota(exc) or quota_failure
+
+        if not caption_after_release:
+            upload_original_caption()
 
         thumbnail_result = None
         thumbnail_error_code = None
@@ -903,6 +910,11 @@ def publish_video_pipeline(
                     'public' if release_mode == 'public' else 'private'
                 )
                 scheduled_publish_at = publish_at
+
+        # Optional sidecars must not spend the quota needed for public release.
+        # The durable public receipt above is kept even when this later call fails.
+        if caption_after_release and release_status in {'public', 'scheduled'}:
+            upload_original_caption(after_release=True)
 
         uploaded_at = datetime.now(timezone.utc).isoformat()
         youtube_url = f'https://www.youtube.com/watch?v={video_id}'

@@ -50,3 +50,28 @@ def test_invalid_or_secret_history_is_not_model_input(change):
         receipt = json.loads(client.get(epoch['receipt_key']));receipt['archive_sha256'] = promotion._digest(row)
         client.set(epoch['receipt_key'], json.dumps(receipt))
     assert history.recent_topics(client, CHANNEL) == []
+
+
+def test_queue_topics_prevent_repeats_without_sending_private_briefs_or_job_ids():
+    from app.services import content_plan as plan
+    from uuid import uuid4
+    c=fakeredis.FakeRedis(decode_responses=True)
+    archive(c,1,['Older source-backed question https://www.ibm.com/history/upc'])
+    items=[plan.item('Google cooling question','PRIVATE production instructions'),
+        plan.item('New robot question','PRIVATE paid provider task and voice settings')]
+    document={'version':1,'channel_id':CHANNEL,'revision':str(uuid4()),'enabled':True,
+        'after_queue':'auto_shorts','items':items,'updated_at':items[-1]['created_at']}
+    c.set(plan.PLAN_PREFIX+CHANNEL,plan._raw(document))
+    before={key:c.dump(key) for key in c.scan_iter()}
+    result=history.recent_topics(c,CHANNEL)
+    assert result==['New robot question','Google cooling question','Older source-backed question https://www.ibm.com/history/upc']
+    assert 'PRIVATE' not in json.dumps(result) and all(i['id'] not in json.dumps(result) for i in items)
+    assert {key:c.dump(key) for key in c.scan_iter()}==before
+
+
+def test_invalid_queue_does_not_hide_verified_archive():
+    from app.services import content_plan as plan
+    c=fakeredis.FakeRedis(decode_responses=True)
+    archive(c,1,['Verified previous question'])
+    c.set(plan.PLAN_PREFIX+CHANNEL,'{"channel_id":"someone_else","items":[]}')
+    assert history.recent_topics(c,CHANNEL)==['Verified previous question']

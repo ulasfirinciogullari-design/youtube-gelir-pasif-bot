@@ -8,7 +8,7 @@ import re
 from app.services import production_series_promotion as promotion
 
 
-def recent_topics(client, channel_id):
+def _archived_topics(client, channel_id):
     try:
         promotion._require(re.fullmatch(r'UC[A-Za-z0-9_-]{22}', channel_id))
         raw = client.get(promotion.EPOCH_PREFIX + channel_id)
@@ -43,3 +43,19 @@ def recent_topics(client, channel_id):
         return topics
     except Exception:
         return []
+
+
+def recent_topics(client, channel_id):
+    """Include the owner's queue without sending private production briefs."""
+    titles = []
+    try:
+        from app.services import content_plan
+        document = content_plan.read(channel_id, client=client)
+        for entry in reversed((document or {}).get('items', [])):
+            title = promotion._plain(entry['title'], 140)
+            for url in re.findall(r'https?://\S+', title):
+                promotion._public_url(url)
+            titles.append(title)
+    except Exception:
+        titles = []
+    return list(dict.fromkeys([*titles, *_archived_topics(client, channel_id)]))[:40]

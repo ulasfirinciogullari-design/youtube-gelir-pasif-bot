@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 import fakeredis
 import pytest
+import json
 
 from app import growth_routes as routes
 from app.config import settings
@@ -70,3 +71,28 @@ def test_external_trend_text_is_escaped(ui, monkeypatch):
     response = client.get('/studio/growth')
     assert '&lt;script&gt;bad()&lt;/script&gt;' in response.text
     assert '<script>bad()</script>' not in response.text
+
+
+def test_dub_files_need_owner_scope_ready_audio_and_exact_object_binding(ui, monkeypatch):
+    from app.services import video_dubbing as dubs, kie_voice_ledger as ledger, storage
+    client, store = ui
+    video = 'abcdefghijk'; key = dubs._key(video)
+    plan = {'version': 1, 'video_id': video, 'channel_id': CHANNEL, 'title': 'Toyota',
+            'languages': {lang: {} for lang in dubs.LANGUAGES}}
+    encoded = ledger.raw(plan); store.set(key, encoded); store.set(key + ':sha256', ledger.sha(encoded))
+    store.sadd(dubs.INDEX, video)
+    track = {'status': 'generated', 'audio_key': f'dubbing/{video}/en/' + 'a'*64 + '.wav', 'audio_sha256': 'a'*64}
+    store.set(key + ':track:en', json.dumps(track))
+    path = '/studio/growth/dubs/' + video + '/en'
+    assert client.get(path).status_code == 404
+    assert 'YouTube’a henüz yüklenmedi' not in client.get('/studio/growth').text
+    track['status'] = 'ready_for_studio'; store.set(key + ':track:en', json.dumps(track))
+    monkeypatch.setattr(storage, 'presigned_download_url', lambda key, ttl: 'https://media.example/owned.wav')
+    response = client.get(path, follow_redirects=False)
+    assert response.status_code == 303 and response.headers['cache-control'] == 'private, no-store'
+    page = client.get('/studio/growth').text
+    assert 'Ses hazır · YouTube’a henüz yüklenmedi' in page and '<audio controls' in page
+    track['audio_key'] = 'different/private/audio.wav'; store.set(key + ':track:en', json.dumps(track))
+    assert client.get(path).status_code == 404
+    client.cookies.clear()
+    assert client.get(path).status_code == 401

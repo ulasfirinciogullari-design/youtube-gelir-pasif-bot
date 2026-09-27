@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse
 
 from app.studio import _require_auth as _auth, _shell, COOKIE_NAME
 from app.content_plan_routes import _channels
-from app.services import audience_strategy as strategy, audience_trends as trends, video_localization
+from app.services import audience_strategy as strategy, audience_trends as trends, video_localization, video_dubbing
 
 router = APIRouter()
 
@@ -24,7 +24,7 @@ def _voices_active():
         return False
 
 
-def render(channels, selected, preferences, data, languages, voices_active, *, saved=False, cadence=None):
+def render(channels, selected, preferences, data, languages, voices_active, *, saved=False, cadence=None, dubs=()):
     channel = selected['channel_id']
     tabs = ''.join('<a class="btn'+(' success' if p['channel_id'] == channel else '')+'" href="/studio/growth?channel='
         + p['channel_id'] + '">' + escape(name) + '</a>' for p, name in channels)
@@ -46,15 +46,18 @@ def render(channels, selected, preferences, data, languages, voices_active, *, s
     labels = {'pending': 'Çeviri bekliyor', 'prepared': 'Altyazı hazır', 'insert_reserved': 'YouTube yanıtı kontrol ediliyor',
         'awaiting_processing': 'YouTube işliyor', 'published': 'Yayında', 'existing_caption_preserved': 'Mevcut altyazı korunuyor',
         'uncertain': 'Gönderim sonucu kontrol ediliyor', 'rejected': 'YouTube tekrar denemesi bekleniyor', 'review_failed': 'Çeviri kontrolü gerekli'}
-    for row in languages:
+    for row in sorted(languages, key=lambda row: row.get('created_at') or '', reverse=True):
         if row.get('channel_id') != channel:
             continue
         pills = ''.join('<span class="growth-pill">'+escape(strategy.LANGUAGES.get(lang, lang))+' · '
-            + escape(labels.get(item.get('status'), 'Kontrol ediliyor'))+'</span>' for lang, item in row['languages'].items())
+            + escape(labels.get(row['languages'][lang].get('status'), 'Kontrol ediliyor'))+'</span>'
+            for lang in video_localization._language_order(row['languages']))
         downloads = ''.join('<a href="/studio/growth/captions/'+row['video_id']+'/'+lang+'">'+escape(strategy.LANGUAGES[lang])+' altyazısı ↓</a>'
             for lang, item in row['languages'].items() if item.get('srt_key'))
         language_rows.append('<article class="growth-language-row"><a class="growth-video-link" href="/studio/job/'+row['source_task_id']
-            +'">Videoyu aç ↗</a><div>'+pills+'</div><div class="growth-downloads">'+downloads+'</div></article>')
+            +'">'+escape(row.get('title') or 'Videoyu aç')+' ↗</a><p class="growth-note">Başlık ve açıklama: '
+            + ('YouTube’da doğrulandı' if row.get('metadata_status') == 'verified' else 'Hazırlanıyor veya doğrulanıyor')
+            + '</p><div>'+pills+'</div><div class="growth-downloads">'+downloads+'</div></article>')
     source_note = ('Son kontrol: '+escape(str(data.get('checked_at') or '')[:16].replace('T', ' '))+' UTC'
         if data.get('checked_at') else 'İlk sunucu taraması bekleniyor.')
     stale_note = '<p class="notice">Bazı kaynaklar okunamadı; önceki gözlemler tarihleriyle korunuyor.</p>' if data.get('regions_unavailable') else ''
@@ -89,7 +92,31 @@ def render(channels, selected, preferences, data, languages, voices_active, *, s
     body += '<div><section class="card"><h2>Üretim tercihleri</h2><form method="post" action="/studio/growth/settings"><input type="hidden" name="channel_id" value="'+channel+'"><input type="hidden" name="revision" value="'+str(preferences['revision'])+'">'+settings_fields
     body += '<h3 style="margin-top:24px">Altyazı dilleri</h3>'+options+'<p class="growth-note">Orijinal dil korunur. Ek diller yayın sonrasında hazırlanır; çeviri kuyruğu ana yayını durdurmaz.</p><button class="btn success" type="submit">Tercihleri kaydet</button></form></section>'
     body += '<section class="card"><h2>Anlatıcılar</h2><p>'+('Dönüşümlü anlatım hazır.' if voices_active else 'Hesaptaki seslerin etkinleştirilmesi hazırlanıyor.')+'</p><p class="growth-note">Türkçe: Baran, Melek, Alp, Mustafa.<br>İngilizce: George, Alice, Daniel, Bella.</p><h3>Dublaj</h3><p class="growth-note">İki kanalda otomatik dublajı açtığını bildirdin. YouTube’un mevcut desteği: Türkçe → İngilizce; İngilizce → İspanyolca, Portekizce, Hintçe, Arapça. Uygunluk ve oluşan sesler video bazında YouTube Studio’dan kontrol edilir. Diğer dillerin özel ses dosyalarını YouTube’a eklemek Studio işlemi gerektirir.</p></section></div></div>'
-    body += '<section class="card"><h2>Dil kuyruğu</h2>'+(''.join(language_rows[:20]) or '<p class="muted">Yeni yayımlanan videolar burada dilleriyle birlikte görünecek.</p>')+'</section>'
+    body += '<section class="card"><h2>Altyazı ve başlık durumu</h2><p class="growth-note">Altyazılarda önce İngilizce, İspanyolca ve Portekizce; ardından Hintçe ve Arapça tamamlanır. Günlük aktarım payı dolunca hazır çeviriler korunur ve sonraki gün devam eder. Buradaki “Yayında” durumu altyazıya aittir; dublaj durumu YouTube Studio’da kontrol edilir.</p>'+(''.join(language_rows[:20]) or '<p class="muted">Yeni yayımlanan videolar burada dilleriyle birlikte görünecek.</p>')+'</section>'
+    dub_rows = []
+    for row in dubs:
+        if row['channel_id'] != channel:
+            continue
+        tracks = []
+        for lang in video_dubbing.LANGUAGES:
+            track = row['tracks'].get(lang, {})
+            ready = track.get('status') == 'ready_for_studio'
+            path = '/studio/growth/dubs/' + row['video_id'] + '/' + lang
+            tracks.append('<div class="growth-step"><b>' + escape(strategy.LANGUAGES[lang]) + '</b> · '
+                + ('Ses hazır · YouTube’a henüz yüklenmedi' if ready else
+                   'Ses üretildi · zamanlama ve dil kontrolünde' if track.get('status') == 'generated' else 'Hazırlanacak')
+                + ('<audio controls preload="none" style="display:block;max-width:100%;margin-top:10px" src="' + path + '"></audio>'
+                    '<div class="growth-downloads"><a href="' + path + '">Dublajı indir ↓</a>'
+                    '<a href="' + path + '?kind=srt">Altyazıyı indir ↓</a></div>' if ready else '') + '</div>')
+        dub_rows.append('<article class="growth-language-row"><h3>' + escape(row['title']) + '</h3>'
+            '<p class="growth-note">Türkçe orijinal ses korunur. Bu dosyalar aynı videoya eklenmek içindir.</p>'
+            + ''.join(tracks) + '<a class="btn" href="https://studio.youtube.com/video/' + row['video_id']
+            + '/translations">YouTube’da dilleri aç ↗</a></article>')
+    if dub_rows:
+        body += '<section class="card" id="dubs"><h2>Dublaj sesleri</h2><p class="growth-note">'
+        body += 'Dosyayı dinle veya indir. YouTube Studio → Diller → Dil ekle → Dublaj → Ekle yolundan aynı videoya yükle. '
+        body += 'YouTube’un oluşturduğu mevcut bir dublaj varsa önce dinle; üzerine otomatik yazılmaz. '
+        body += 'Buradaki hazır dosyalar henüz YouTube’da yayımlanmış ses değildir.</p>' + ''.join(dub_rows) + '</section>'
     return _shell(body, active='growth', title='Büyüme merkezi · Studio')
 
 
@@ -105,7 +132,7 @@ def growth(channel: str = '', saved: str = '', studio_token: str | None = Cookie
         from app.services.channel_cadence import snapshot
         return render(channels, selected, strategy.read_settings(selected['channel_id'], client=client),
             trends.snapshot(client=client), video_localization.dashboard(client), _voices_active(), saved=saved == '1',
-            cadence=snapshot(selected['channel_id'], client=client))
+            cadence=snapshot(selected['channel_id'], client=client), dubs=video_dubbing.dashboard(client))
     except Exception:
         raise HTTPException(status_code=503, detail='Büyüme bilgileri şu anda okunamıyor. Biraz sonra yenile.') from None
 
@@ -136,6 +163,34 @@ def captions(video: str, language: str, studio_token: str | None = Cookie(defaul
     item = row.get('languages', {}).get(language, {})
     key = f"videos/{row.get('source_task_id')}/languages/{language}.srt"
     if item.get('srt_key') != key or row.get('channel_id') not in {p['channel_id'] for p, _ in _channels()}:
+        raise HTTPException(status_code=404)
+    from app.services.storage import presigned_download_url
+    return RedirectResponse(presigned_download_url(key, 600), status_code=303,
+        headers={'Cache-Control': 'private, no-store', 'Referrer-Policy': 'no-referrer'})
+
+
+@router.get('/studio/growth/dubs/{video}/{language}')
+def dubbed_audio(video: str, language: str, kind: str = 'wav',
+                 studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    _auth(studio_token)
+    if not video_localization._VIDEO.fullmatch(video) or language not in video_dubbing.LANGUAGES or kind not in {'wav', 'srt'}:
+        raise HTTPException(status_code=404)
+    client = strategy._client()
+    try:
+        plan = video_dubbing._read(client, video)
+        row = json.loads(client.get(video_dubbing._key(video) + ':track:' + language) or '{}')
+        expected = f'dubbing/{video}/{language}/'
+        field = 'audio' if kind == 'wav' else 'captions'
+        key = row.get(field + '_key')
+        digest = row.get(field + '_sha256')
+        import re
+        valid = (plan['channel_id'] in {p['channel_id'] for p, _ in _channels()}
+            and row.get('status') == 'ready_for_studio' and type(digest) is str
+            and re.fullmatch('[0-9a-f]{64}', digest)
+            and key == expected + digest + '.' + kind)
+    except Exception:
+        valid = False
+    if not valid:
         raise HTTPException(status_code=404)
     from app.services.storage import presigned_download_url
     return RedirectResponse(presigned_download_url(key, 600), status_code=303,

@@ -20,6 +20,8 @@ SPEC = {'model': MODEL, 'input_token_limit': 8192, 'output_token_limit': 16384,
         'maximum_microcredits': 48_000_000, 'max_connection_probes': 2,
         'price_review_date': '2026-09-24'}
 VOICES = frozenset({'Fenrir', 'Kore', 'Puck', 'Charon'})
+DUB_LANGUAGES = {'es': 'neutral Spanish', 'pt': 'Brazilian Portuguese',
+                 'hi': 'standard Hindi', 'ar': 'Modern Standard Arabic'}
 
 
 def require(value):
@@ -46,6 +48,14 @@ def _legacy_body(text, voice='Fenrir', *, language):
 
 
 def request_body(text, voice='Fenrir', *, language):
+    if language in DUB_LANGUAGES:
+        body, ceiling = request_body(text, voice, language='tr')
+        body['input']['speakers'][0]['audio_profile'] = (
+            'A clear, confident adult documentary narrator with natural expression. Native '
+            + DUB_LANGUAGES[language] + ' pronunciation.')
+        body['input']['sample_context'] = ('Read the dialogue verbatim in ' + DUB_LANGUAGES[language]
+            + '. No introductions, commentary, music or sound effects.')
+        return body, ceiling
     body, ceiling = _legacy_body(text, voice, language=language)
     speaker = body['input']['speakers'][0]
     # These are enums in Kie's published schema, not free-form directions.
@@ -67,6 +77,12 @@ def describe(body):
         accent = speaker['accent']
         require(accent in {'Neutral', 'American (Gen)'})
         language = 'tr' if accent == 'Neutral' else 'en'
+        if accent == 'Neutral':
+            for candidate in DUB_LANGUAGES:
+                expected, _ = request_body(text, voice, language=candidate)
+                if body == expected:
+                    language = candidate
+                    break
         expected, ceiling = request_body(text, voice, language=language)
         require(body == expected)
     except (KeyError, IndexError, TypeError):

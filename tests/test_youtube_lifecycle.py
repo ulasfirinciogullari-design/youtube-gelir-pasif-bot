@@ -63,6 +63,7 @@ def _install_google_stubs() -> None:
     modules['google_auth_oauthlib.flow'].Flow = PlaceholderFlow
     modules['googleapiclient.discovery'].build = lambda *_a, **_k: None
     modules['googleapiclient.http'].MediaFileUpload = PlaceholderMediaFileUpload
+    modules['googleapiclient.http'].MediaIoBaseUpload = PlaceholderMediaFileUpload
     for name, module in modules.items():
         sys.modules.setdefault(name, module)
 
@@ -1509,9 +1510,11 @@ def test_publish_pipeline_crosses_registry_boundary_before_private_insert(
     assert events[-1] == 'release'
 
 
+@pytest.mark.parametrize('caption_mode', ['none', 'required', 'optional', 'optional_error', 'required_error'])
 def test_automated_publish_starts_private_then_releases_only_exact_qc_pass(
     monkeypatch,
     tmp_path,
+    caption_mode,
 ):
     module = _import_publish_tasks_with_stubs(monkeypatch)
     monkeypatch.setattr(module, 'Path', lambda _value: tmp_path / 'youtube_publish')
@@ -1568,6 +1571,24 @@ def test_automated_publish_starts_private_then_releases_only_exact_qc_pass(
             'manual_qa_required': False,
         },
     }
+    if caption_mode != 'none':
+        source['result']['caption_key'] = 'captions.tr.srt'
+    if caption_mode.startswith('optional'):
+        source['spec']['content_plan_item_id'] = 'optional-caption-item'
+        plan['caption_required'] = False
+        from app.services import content_plan, youtube_quota_recovery
+        monkeypatch.setattr(content_plan, 'check_publication', lambda *_a: None)
+        monkeypatch.setattr(youtube_quota_recovery, 'optional_caption_waiting', lambda: None)
+        monkeypatch.setattr(youtube_quota_recovery, 'observe_optional_caption_quota', lambda *_a: None)
+    from app.services import youtube_quota_recovery
+    monkeypatch.setattr(youtube_quota_recovery, 'observe_quota', lambda *_a: None)
+    def caption(*_a, **_k):
+        events.append('caption')
+        if caption_mode.endswith('_error'):
+            raise RuntimeError('caption error')
+        return {'id': 'caption-id'}
+    monkeypatch.setattr(module, 'upload_caption_with_credentials', caption)
+    monkeypatch.setattr(module, 'mark_release_blocked', lambda *_a: events.append('release-blocked'))
     monkeypatch.setattr(module, 'get_job', lambda *_a: source)
     monkeypatch.setattr(module, 'load_credentials', lambda *_a, **_k: object())
     monkeypatch.setattr(
@@ -1614,12 +1635,22 @@ def test_automated_publish_starts_private_then_releases_only_exact_qc_pass(
 
     result = module.publish_video_pipeline(Task(), source_id)
 
+    if caption_mode == 'required_error':
+        assert result['privacy_status'] == 'private' and result['release_status'] == 'blocked'
+        assert 'release-start' not in events
+        return
     assert result['privacy_status'] == 'public'
     assert result['release_status'] == 'public'
     assert events.index(('insert', 'private', plan['title'], plan['tags'])) < events.index(
         ('release', 'YT_AUTO_RELEASE', 'public')
     )
-    assert events[-1] == 'release-complete'
+    if caption_mode.startswith('optional'):
+        assert events.index('release-complete') < events.index('caption')
+        assert result['caption_uploaded'] is (caption_mode == 'optional')
+    else:
+        assert events[-1] == 'release-complete'
+        if caption_mode == 'required':
+            assert events.index('caption') < events.index('release-start')
 
 
 def test_public_plan_is_forced_private_when_source_quality_is_manual(monkeypatch, tmp_path):
