@@ -59,12 +59,27 @@ def read(reader, channel, *, now=None):
     return value
 
 
+def replacement_key(day, item_id):
+    batch._require(date.fromisoformat(day).isoformat() == day and str(UUID(item_id)) == item_id)
+    return PREFIX + 'replacement:' + day + ':' + item_id
+
+
+def resolved(reader, value):
+    return batch.resolved(reader, {'day': value['day'], 'items': [
+        {**row, 'channel_id': value['channel_id']} for row in value['items']]},
+        _replacement_key=replacement_key)
+
+
 def _entry(reader, channel, item_id, now):
     value = read(reader, channel, now=now)
     if value is None:
         return None
-    row = next((r for r in value['items'] if r['item_id'] == item_id), None)
-    return (value, row) if row else None
+    found = [group['current'] for group in resolved(reader, value)
+             if any(row['item_id'] == item_id for row in group['history'])]
+    if not found:
+        return None
+    batch._require(len(found) == 1 and found[0]['item_id'] == item_id)
+    return value, found[0]
 
 
 def production_slot(pipe, channel, item, task, *, now=None):
@@ -80,7 +95,8 @@ def production_slot(pipe, channel, item, task, *, now=None):
     batch._require(linked.get('connection_id') == value['connection_id']
         and profile.get('profile_revision') == value['profile_revision'])
     key = keys(channel, value['day'])[2]; pipe.watch(key)
-    used = pipe.hgetall(key); allowed = {batch.root_id(channel, r['item_id']) for r in value['items']}
+    used = pipe.hgetall(key); allowed = {batch.root_id(channel, r['item_id'])
+        for group in resolved(pipe, value) for r in group['history']}
     batch._require(set(used) <= allowed and all(v == 'shorts' for v in used.values())
         and task not in used and len(used) < len(allowed))
     return key
@@ -112,10 +128,13 @@ def snapshot(channel, published, pending, *, client, now=None):
     value = read(client, channel, now=now)
     if value is None:
         return None
-    roots = {batch.root_id(channel, row['item_id']) for row in value['items']}
+    groups = [{batch.root_id(channel, row['item_id']) for row in group['history']}
+              for group in resolved(client, value)]
+    roots = set().union(*groups)
+    batch._require(all(len(group & (set(published) | set(pending))) <= 1 for group in groups))
     produced = client.hgetall(keys(channel, value['day'])[2])
     batch._require(set(produced) <= roots and all(v == 'shorts' for v in produced.values()))
-    return {'date': value['day'], 'limit': len(roots), 'produced': len(produced),
+    return {'date': value['day'], 'limit': len(groups), 'produced': len(produced),
         'published': len(roots & set(published)), 'pending': len(roots & set(pending))}
 
 

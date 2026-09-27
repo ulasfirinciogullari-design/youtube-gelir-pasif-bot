@@ -179,22 +179,23 @@ def _settled(pipe, read, root):
     return evidence
 
 
-def replace(item_id, new_item, *, expected_job_sha256=None, client=None, now=None, observe_only=False):
+def replace(item_id, new_item, *, expected_job_sha256=None, client=None, now=None, observe_only=False, _authority=None):
     """One CAS; at most two amendments per slot, never replay a failed task."""
     from app.services import channel_cadence as cadence, channel_production as production
     from app.services.youtube_publish_state import UPLOAD_PREFIX
     from app.services.source_publication_hold import HOLD_PREFIX
+    authority = _authority or batch
     client = client or plan._client(); plan._validate_item(new_item)
     plan._require(new_item['format'] == 'shorts' and new_item['series'] is None and not new_item['depends_on'])
     with client.pipeline() as pipe:
         def read(key):
             pipe.watch(key)
             return pipe.get(key)
-        manifest = batch._manifest(pipe, now); plan._require(manifest is not None)
-        groups = batch.resolved(pipe, manifest)
+        manifest = authority._manifest(pipe, now); plan._require(manifest is not None)
+        groups = authority.resolved(pipe, manifest)
         group = next((g for g in groups if g['current']['item_id'] == item_id), None)
         plan._require(group is not None and len(group['history']) < 3)
-        row = group['current']; channel = row['channel_id']; root = batch.root_id(channel, item_id)
+        row = group['current']; channel = row['channel_id']; root = authority.root_id(channel, item_id)
         plan._require(new_item['id'] not in {r['item_id'] for g in groups for r in g['history']})
         key = plan.PLAN_PREFIX + channel; original_plan = read(key); document = plan._plan(original_plan, channel)
         plan._require(document['enabled'] and document['after_queue'] == 'auto_shorts')
@@ -214,8 +215,8 @@ def replace(item_id, new_item, *, expected_job_sha256=None, client=None, now=Non
         old_job = read(jobs.JOB_PREFIX + root); dispatch = read(plan.DISPATCH_PREFIX + item_id)
         plan._require(read(plan.COMPLETION_PREFIX + item_id) is None
             and read(cadence.PREFIX + 'publication:' + root) is None and read(UPLOAD_PREFIX + root) is None)
-        pipe.watch(batch.produced_key(manifest['day'], channel))
-        produced = pipe.hget(batch.produced_key(manifest['day'], channel), root)
+        pipe.watch(authority.produced_key(manifest['day'], channel))
+        produced = pipe.hget(authority.produced_key(manifest['day'], channel), root)
         evidence = {}; terminal_raw = None; recovery_evidence = None
         if old_job is None:
             plan._require(expected_job_sha256 is None and dispatch is None and produced is None
@@ -243,10 +244,10 @@ def replace(item_id, new_item, *, expected_job_sha256=None, client=None, now=Non
                 recovery_evidence = _retained_recovery_stopped(read, source)
             evidence = _settled(pipe, read, root)
             del active[channel]
-        replacement = batch.replacement_key(manifest['day'], item_id)
-        archive_key = ARCHIVE + item_id
+        replacement = authority.replacement_key(manifest['day'], item_id)
+        archive_key = getattr(authority, 'ARCHIVE', ARCHIVE) + item_id
         plan._require(read(replacement) is None and read(archive_key) is None)
-        new_root = batch.root_id(channel, new_item['id'])
+        new_root = authority.root_id(channel, new_item['id'])
         for prefix, identity in ((jobs.JOB_PREFIX, new_root), (plan.DISPATCH_PREFIX, new_item['id']),
                                  (plan.COMPLETION_PREFIX, new_item['id'])):
             plan._require(read(prefix + identity) is None)

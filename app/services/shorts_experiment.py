@@ -72,13 +72,14 @@ def replacement_key(day, item_id):
     return PREFIX + 'replacement:' + day + ':' + item_id
 
 
-def resolved(reader, value):
+def resolved(reader, value, *, _replacement_key=None):
     """At most two explicit editorial corrections per logical output slot.
 
     Each amendment is a new item; no failed job, verdict or receipt is reset.
     Only the latest item can use the slot, while all attempts stay counted.
     """
     from app.services import content_plan as plan
+    key_for = _replacement_key or replacement_key
     groups, seen = [], set()
     for base in value['items']:
         current = base
@@ -86,7 +87,7 @@ def resolved(reader, value):
         for attempt in range(3):
             _require(current['item_id'] not in seen)
             seen.add(current['item_id'])
-            raw = _read(reader, replacement_key(value['day'], current['item_id']))
+            raw = _read(reader, key_for(value['day'], current['item_id']))
             if raw is None:
                 break
             _require(attempt < 2 and type(raw) is str and 0 < len(raw) <= 32_768)
