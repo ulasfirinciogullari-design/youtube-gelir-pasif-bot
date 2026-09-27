@@ -318,6 +318,8 @@ class Journal:
         if self.prior is not None:
             return restore(self.prior['create'])
         response = sender(url, **kwargs)
+        from app.services import cost_meter
+        cost_meter.observe_http(url, kwargs, response)
         self._observe('create', response)
         return response
 

@@ -49,6 +49,8 @@ class Settings(BaseSettings):
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )
+    # Passive cost meter price overrides, e.g. {"elevenlabs": {"*": {"character": 0.0003}}}.
+    cost_meter_prices_json: str = ''
     gemini_critic_enabled: bool = False
     gemini_api_key: str = ''
     gemini_model: str = 'gemini-3.1-pro-preview'

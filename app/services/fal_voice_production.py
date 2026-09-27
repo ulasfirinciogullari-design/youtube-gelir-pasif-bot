@@ -216,7 +216,9 @@ class Journal(trial.Journal):
             for field,value in (('grant',grant),('request',request)):
                 encoded=kie.raw(value);pipe.hset(self.key,field,encoded);pipe.hset(self.key+':anchor',field,kie.sha(encoded))
             api.require(pipe.execute()==[1,1,1,1])
-        response=sender(url,**kwargs);self.observe('create',response);return response
+        response=sender(url,**kwargs);self.observe('create',response)
+        from app.services import cost_meter
+        cost_meter.observe_http(url,kwargs,response);return response
 
 
 def synthesize(text,choice,*,attempt):
