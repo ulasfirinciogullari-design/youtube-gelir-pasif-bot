@@ -319,6 +319,36 @@ def record(entry: dict, *, client=None, now: datetime | None = None) -> None:
         pass
 
 
+def today_total(*, client=None, now: datetime | None = None) -> float | None:
+    """Today's metered USD in Turkey time, or None when it cannot be read."""
+    try:
+        now = now or datetime.now(timezone.utc)
+        client = client or _client()
+        value = client.hget(DAY_PREFIX + now.astimezone(LOCAL_TZ).strftime('%Y-%m-%d'), 'total')
+        return float(value or 0.0)
+    except Exception:
+        return None
+
+
+def check_daily_cap(*, client=None, now: datetime | None = None) -> None:
+    """Refuse a new paid call once today's metered spend reached the cap.
+
+    Unreadable records never block production: the cap guards a budget, and a
+    Redis hiccup must not stop a channel.
+    """
+    try:
+        from app.config import settings
+        cap = float(getattr(settings, 'cost_daily_cap_usd', 0) or 0)
+    except Exception:
+        return
+    if cap <= 0:
+        return
+    spent = today_total(client=client, now=now)
+    if spent is not None and spent >= cap:
+        from app.services.production_spend import SpendBlocked
+        raise SpendBlocked('cost_daily_cap_reached')
+
+
 def observe_http(url, request_kwargs, response) -> None:
     try:
         if not accepted(url, response):

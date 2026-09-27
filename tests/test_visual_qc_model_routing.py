@@ -31,7 +31,7 @@ def _request(namespace, *, provider='openai', strict=True, **options):
     )
 
 
-def test_config_defaults_only_dedicated_visual_model_to_astra():
+def test_config_defaults_visual_model_to_gpt5():
     tree = ast.parse((SERVICES.parent / 'config.py').read_text(encoding='utf-8'))
     settings = next(node for node in tree.body
                     if isinstance(node, ast.ClassDef) and node.name == 'Settings')
@@ -39,7 +39,7 @@ def test_config_defaults_only_dedicated_visual_model_to_astra():
                 for node in settings.body if isinstance(node, ast.AnnAssign)
                 and isinstance(node.target, ast.Name)
                 and node.target.id in {'studio_visual_qc_openai_model', 'openai_model'}}
-    assert defaults == {'studio_visual_qc_openai_model': 'gpt-6-astra',
+    assert defaults == {'studio_visual_qc_openai_model': 'gpt-5',
                         'openai_model': 'gpt-5'}
 
 

@@ -285,3 +285,43 @@ def test_cost_page_says_so_when_records_cannot_be_read(studio_client, monkeypatc
     assert page.status_code == 503 and 'okunamıyor' in page.text and '/studio/costs' in page.text
     api = studio_client.get('/studio/api/costs')
     assert api.status_code == 503 and api.json() == {'detail': 'Maliyet kayıtları şu an okunamıyor.'}
+
+
+def test_daily_cap_blocks_new_paid_calls_once_reached(client, monkeypatch):
+    from app.services.production_spend import SpendBlocked
+    monkeypatch.setattr(runtime.settings, 'cost_daily_cap_usd', 1.0, raising=False)
+    monkeypatch.setattr(runtime.settings, 'studio_spend_enforcement', False, raising=False)
+    monkeypatch.setattr(runtime.settings, 'studio_elevenlabs_native_credits', False, raising=False)
+    sender = Mock(return_value=httpx.Response(200, content=b'audio'))
+    url = 'https://api.elevenlabs.io/v1/text-to-speech/v'
+    cost_meter.record({'provider': 'runway', 'usd': 0.6, 'priced': True})
+    runtime.paid_post(sender, url, json={'text': 'a', 'model_id': 'm'})
+    cost_meter.record({'provider': 'runway', 'usd': 0.6, 'priced': True})
+    with pytest.raises(SpendBlocked, match='cost_daily_cap_reached'):
+        runtime.paid_post(sender, url, json={'text': 'a', 'model_id': 'm'})
+    with pytest.raises(SpendBlocked, match='cost_daily_cap_reached'):
+        runtime.paid_response(Mock(), model='gpt-5', input='x')
+    with pytest.raises(SpendBlocked, match='cost_daily_cap_reached'):
+        runtime.paid_runway_create(Mock(), model='gen4.5', duration=5)
+    assert sender.call_count == 1
+
+
+def test_daily_cap_is_off_at_zero_and_never_blocks_on_unreadable_records(monkeypatch):
+    monkeypatch.setattr(runtime.settings, 'cost_daily_cap_usd', 0, raising=False)
+    fake = fakeredis.FakeRedis(decode_responses=True)
+    cost_meter.record({'provider': 'runway', 'usd': 50.0, 'priced': True}, client=fake)
+    cost_meter.check_daily_cap(client=fake)
+
+    def broken():
+        raise ConnectionError('down')
+    monkeypatch.setattr(runtime.settings, 'cost_daily_cap_usd', 1.0, raising=False)
+    monkeypatch.setattr(cost_meter, '_client', broken)
+    cost_meter.check_daily_cap()
+
+
+def test_new_system_defaults_are_the_cheaper_models_and_a_cap():
+    from app.config import Settings
+    fields = Settings.model_fields
+    assert fields['studio_fresh_plan_openai_model'].default == 'gpt-5'
+    assert fields['studio_visual_qc_openai_model'].default == 'gpt-5'
+    assert fields['cost_daily_cap_usd'].default == 8.0

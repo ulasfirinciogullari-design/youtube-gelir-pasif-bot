@@ -12,7 +12,9 @@ class Settings(BaseSettings):
     openai_api_key: str = ''
     openai_model: str = 'gpt-5'
     studio_plan_provider: str = 'openai'
-    studio_fresh_plan_openai_model: str = 'gpt-6-astra'
+    # gpt-5 lists at 1/8 of gpt-6-astra's input and 1/5 of its output price;
+    # set the env var back to gpt-6-astra to restore the old writer.
+    studio_fresh_plan_openai_model: str = 'gpt-5'
     abacus_api_key: str = ''
     # Only the fresh editorial refinement opts in; research and independent
     # media/voice review keep their existing provider contracts.
@@ -34,7 +36,7 @@ class Settings(BaseSettings):
     # Blank keeps existing planning-provider routing. Explicit abacus selects
     # only the bounded native Haiku picture critic and requires spending setup.
     studio_visual_qc_provider: str = ''
-    studio_visual_qc_openai_model: str = 'gpt-6-astra'
+    studio_visual_qc_openai_model: str = 'gpt-5'
     # Staged rollout: enable only after explicit ledger initialization. Missing
     # context, policy or a reviewed provider quote then blocks paid requests.
     studio_spend_enforcement: bool = False
@@ -51,6 +53,9 @@ class Settings(BaseSettings):
     )
     # Passive cost meter price overrides, e.g. {"elevenlabs": {"*": {"character": 0.0003}}}.
     cost_meter_prices_json: str = ''
+    # Stop new paid AI calls once today's metered spend (Turkey time) reaches
+    # this many USD; 0 disables the cap. Running jobs fail with SpendBlocked.
+    cost_daily_cap_usd: float = 8.0
     gemini_critic_enabled: bool = False
     gemini_api_key: str = ''
     gemini_model: str = 'gemini-3.1-pro-preview'

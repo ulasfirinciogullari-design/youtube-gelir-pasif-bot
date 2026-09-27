@@ -43,7 +43,7 @@ def fresh_planning_route(*, enabled: bool):
         return
     from app.config import settings
 
-    model = str(getattr(settings, 'studio_fresh_plan_openai_model', 'gpt-6-astra') or '').strip()
+    model = str(getattr(settings, 'studio_fresh_plan_openai_model', 'gpt-5') or '').strip()
     if not model and getattr(settings, 'studio_abacus_included_production', False) is not True:
         raise RuntimeError('STUDIO_FRESH_PLAN_OPENAI_MODEL must not be empty')
     route = (('abacus_included', 'route-llm')
