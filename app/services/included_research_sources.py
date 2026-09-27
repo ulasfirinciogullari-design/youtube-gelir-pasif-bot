@@ -26,7 +26,7 @@ HOSTS = frozenset({'www.federalreserve.gov', 'www.ecb.europa.eu', 'www.usmint.go
     'about.ups.com', 'www.fedex.com', 'www.aboutamazon.com', 'www.coca-colacompany.com',
     'www.sony.com', 'www.apple.com', 'blog.google', 'www.levistrauss.com',
     'nfc-forum.org', 'www.denso-wave.com', 'www.qrcode.com', 'www.ikeamuseum.com',
-    'www.bmwgroup.com'})
+    'www.bmwgroup.com', 'www.press.bmwgroup.com', 'www.figure.ai'})
 GOLDMAN_REFERENCE = 'https://www.si.edu/object/goldmans-folding-basket-carriage%3Anmah_1216280'
 GOLDMAN_BACKUP_SOURCES = (
     'https://www.okhistory.org/historycenter/atour',
