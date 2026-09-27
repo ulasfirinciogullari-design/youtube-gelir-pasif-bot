@@ -85,7 +85,9 @@ def _binding(pipe, channel, connection):
 
 def channel_connection(pipe, policy, channel):
     if channel in CHANNELS:
-        return policy['channels'][channel]
+        from app.services.kie_voice_reconnection import read
+        grant = read(pipe, policy, channel)
+        return grant['connection_id'] if grant is not None else policy['channels'][channel]
     from app.services import framecase_kie_voice
     if channel != framecase_kie_voice.CHANNEL_ID:
         return None

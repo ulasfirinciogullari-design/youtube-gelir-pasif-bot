@@ -103,6 +103,10 @@ def production_slot(pipe, channel_id, format_kind, task_id, *, now=None, item=No
         experiment_key = shorts_experiment.production_slot(pipe, channel_id, item, task_id, now=now)
         if experiment_key is not None:
             return experiment_key
+        from app.services import shorts_extra_release
+        extra_key = shorts_extra_release.production_slot(pipe, channel_id, item, task_id, now=now)
+        if extra_key is not None:
+            return extra_key
     stock = _stock_day(pipe, channel_id, item['id']) if item is not None else None
     if stock:
         from app.services import content_plan as plan
@@ -301,6 +305,9 @@ def publication_slot(source, *, client=None, now=None):
         used = _values(pipe, day_key); used.update(_values(pipe, pending_key))
         from app.services import shorts_experiment
         experiment = shorts_experiment.publication_allowed(pipe, source, root, now=now)
+        if not experiment:
+            from app.services import shorts_extra_release
+            experiment = shorts_extra_release.publication_allowed(pipe, source, root, now=now)
         if not experiment and sum(v == format_kind for v in used.values()) >= daily_limits(channel, LIMITS)[format_kind]:
             # Waiting is not a financial or publication authorization.
             pipe.multi(); pipe.sadd(WAITING_KEY, source['task_id']); pipe.execute()
@@ -400,4 +407,10 @@ def snapshot(channel_id, *, client=None, now=None):
     if experiment is not None:
         result['experiment'] = experiment
         result['display_limits'] = {**limits, 'shorts': limits['shorts'] + experiment['limit']}
+    from app.services import shorts_extra_release
+    extra = shorts_extra_release.snapshot(channel_id, values['published'], values['pending'], client=client, now=now)
+    if extra is not None:
+        result['extra_release'] = extra
+        display = result.get('display_limits', limits)
+        result['display_limits'] = {**display, 'shorts': display['shorts'] + extra['limit']}
     return result
