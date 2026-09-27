@@ -113,22 +113,71 @@ def authorize_scope(pipe, policy, context):
 
 def authorize_request(pipe, policy, context, descriptor):
     plan = authorize_scope(pipe, policy, context)
-    row = plan['languages'][context['language']]
+    row, attempt = narration(pipe, plan, context['language'])
+    if descriptor['attempt'] == 0:
+        row, attempt = plan['languages'][context['language']], 0
     body, ceiling = gemini.request_body(' '.join(row['sentences']), row['voice_id'], language=context['language'])
-    ledger.require(descriptor['attempt'] == 0 and descriptor['voice_id'] == row['voice_id']
+    ledger.require(descriptor['attempt'] == attempt and descriptor['voice_id'] == row['voice_id']
         and descriptor['model'] == gemini.MODEL and descriptor['request_sha256'] == ledger.sha(ledger.raw(body))
         and descriptor['ceiling_microcredits'] == ceiling, 'dub_request_changed')
+
+
+def narration(client, plan, language):
+    key = _key(plan['video_id']) + ':repair:' + language
+    if hasattr(client, 'watch'):
+        client.watch(key)
+    encoded = client.get(key)
+    if encoded is None:
+        return plan['languages'][language], 0
+    repair = json.loads(encoded)
+    ledger.require(client.pttl(key) == -1 and repair['plan_sha256'] == ledger.sha(ledger.raw(plan))
+        and repair['language'] == language and repair['purpose'] == 'one_reviewed_dub_correction', 'dub_repair_changed')
+    return repair['narration'], 1
+
+
+def commission_repair(foundation, video, language, revised, *, review_evidence_sha256, owner_evidence_sha256):
+    """One explicit correction after inspecting retained audio; no blind retry."""
+    ledger.require(language in LANGUAGES and type(revised) is dict
+        and set(revised) == {'sentences', 'voice_id'} and revised['voice_id'] in gemini.VOICES
+        and type(revised['sentences']) is list and 1 <= len(revised['sentences']) <= 10
+        and all(type(s) is str and 1 <= len(s) <= 300 and not any(c in s for c in '<>\n\x00')
+            for s in revised['sentences']), 'dub_script_invalid')
+    ledger.require(all(type(v) is str and re.fullmatch('[0-9a-f]{64}', v)
+        for v in (review_evidence_sha256, owner_evidence_sha256)), 'dub_review_evidence_missing')
+    with foundation.client.pipeline() as pipe:
+        policy, journal, _ = ledger._read(pipe); ledger._foundation(pipe, foundation)
+        plan = _read(pipe, video); authorize_scope(pipe, policy, scope(plan, language))
+        key = _key(video) + ':repair:' + language
+        track_key = _key(video) + ':track:' + language
+        pipe.watch(key, track_key)
+        previous = json.loads(pipe.get(track_key) or '{}')
+        ledger.require(not pipe.exists(key) and previous.get('status') == 'generated', 'dub_repair_not_available')
+        original = journal['requests'][previous['request_identity']]
+        ledger.require(original['scope'] == scope(plan, language) and original['descriptor']['attempt'] == 0
+            and original['result'] is not None and ledger.restore(original['result']).json()['data']['state'] == 'success',
+            'dub_original_outcome_unverified')
+        body, ceiling = gemini.request_body(' '.join(revised['sentences']), revised['voice_id'], language=language)
+        ledger.require(ledger.sha(ledger.raw(body)) != original['descriptor']['request_sha256']
+            and ledger._used(journal) + ceiling <= policy['allocation_microcredits'], 'dub_repair_funding_unavailable')
+        repair = {'purpose': 'one_reviewed_dub_correction', 'plan_sha256': ledger.sha(ledger.raw(plan)),
+            'language': language, 'narration': revised, 'original_track': previous,
+            'review_evidence_sha256': review_evidence_sha256, 'owner_evidence_sha256': owner_evidence_sha256,
+            'authorized_at': ledger.now().isoformat(), 'additional_maximum_syntheses': 1,
+            'additional_allocation_microcredits': 0}
+        pipe.multi(); pipe.set(key, ledger.raw(repair), nx=True)
+        ledger.require(pipe.execute() == [True])
+    return repair
 
 
 def generate(foundation, video, language):
     """Resume the same provider task/bytes. Never create a second paid attempt."""
     from app.services import kie_voice_adapter as api, kie_credentials, kie_voice_media
     plan = _read(foundation.client, video)
-    row = plan['languages'].get(language)
-    ledger.require(row is not None, 'dub_language_not_planned')
+    ledger.require(language in plan['languages'], 'dub_language_not_planned')
+    row, attempt = narration(foundation.client, plan, language)
     _source(foundation.client, plan)
     body, ceiling = gemini.request_body(' '.join(row['sentences']), row['voice_id'], language=language)
-    journal = ledger.Journal(foundation, scope(plan, language), body, ceiling)
+    journal = ledger.Journal(foundation, scope(plan, language), body, ceiling, attempt=attempt)
     credential = kie_credentials.read(foundation.client)
     ledger.require(credential is not None, 'kie_voice_key_missing')
     result = api.generate(body, credential.api_key, journal)
@@ -138,10 +187,18 @@ def generate(foundation, video, language):
         'plan_sha256': ledger.sha(ledger.raw(plan)), 'request_identity': journal.identity,
         'status': 'generated', 'generated_at': ledger.now().isoformat(),
         'original_key': media['original_key'], 'original_sha256': media['original_sha256'],
-        'source_seconds': media['source_seconds'], 'youtube_status': 'not_uploaded'}
+        'source_seconds': media['source_seconds'], 'youtube_status': 'not_uploaded', 'attempt': attempt}
     key = _key(video) + ':track:' + language
     if not foundation.client.set(key, ledger.raw(record), nx=True):
         previous = json.loads(foundation.client.get(key))
+        if attempt == 1 and previous['request_identity'] != journal.identity:
+            with foundation.client.pipeline() as pipe:
+                pipe.watch(key, _key(video) + ':repair:' + language)
+                repair = json.loads(pipe.get(_key(video) + ':repair:' + language))
+                ledger.require(json.loads(pipe.get(key)) == previous == repair['original_track'], 'dub_original_track_changed')
+                record['previous_request_identity'] = previous['request_identity']
+                pipe.multi(); pipe.set(key, ledger.raw(record)); ledger.require(pipe.execute() == [True])
+            return record
         ledger.require(all(previous.get(k) == record[k] for k in (
             'plan_sha256', 'request_identity', 'original_key', 'original_sha256')), 'dub_track_conflict')
         return previous

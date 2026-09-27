@@ -114,3 +114,40 @@ def test_extra_languages_require_exact_documented_body_without_weakening_origina
             gemini.describe(body)
     with pytest.raises(SpendBlocked):
         gemini.request_body('Unknown language.', language='xx')
+
+
+def test_one_explicit_reviewed_correction_preserves_first_request_and_allocation(planned):
+    case = planned
+    synthesize(case, 'hi')
+    before = json.loads(case.client.get(ledger.JOURNAL_KEY))['requests']
+    identity = next(iter(before))
+    case.client.set(dubs._key(VIDEO) + ':track:hi', json.dumps({'status': 'generated', 'request_identity': identity}))
+    revised = {'sentences': ['A clearer, faithfully corrected Hindi translation.'], 'voice_id': 'Kore'}
+    grant = dubs.commission_repair(case.foundation, VIDEO, 'hi', revised,
+        review_evidence_sha256='d'*64, owner_evidence_sha256='c'*64)
+    assert grant['additional_allocation_microcredits'] == 0
+    body, ceiling = gemini.request_body(revised['sentences'][0], 'Kore', language='hi')
+    for _ in range(2):
+        journal = ledger.Journal(case.foundation, dubs.scope(case.plan, 'hi'), body, ceiling, attempt=1)
+        api.generate(body, case.config.openai_api_key, journal, sleep=lambda _: None)
+    assert [r.method for r in case.requests].count('POST') == 2
+    current = json.loads(case.client.get(ledger.JOURNAL_KEY))['requests']
+    assert current[identity] == before[identity] and len(current) == 2
+    assert ledger.status(case.client)['allocation_microcredits'] == 1_000_000_000
+    with pytest.raises(SpendBlocked, match='repair_not_available'):
+        dubs.commission_repair(case.foundation, VIDEO, 'hi', revised,
+            review_evidence_sha256='e'*64, owner_evidence_sha256='c'*64)
+
+
+def test_unknown_original_audio_is_not_a_quality_correction(planned):
+    def fail(request):
+        planned.requests.append(request)
+        raise httpx.ReadTimeout('unknown')
+    planned.handler = fail
+    with pytest.raises(api.KieVoiceError): synthesize(planned, 'hi')
+    identity = next(iter(json.loads(planned.client.get(ledger.JOURNAL_KEY))['requests']))
+    planned.client.set(dubs._key(VIDEO) + ':track:hi', json.dumps({'status': 'generated', 'request_identity': identity}))
+    with pytest.raises(SpendBlocked, match='original_outcome_unverified'):
+        dubs.commission_repair(planned.foundation, VIDEO, 'hi', SCRIPTS['hi'],
+            review_evidence_sha256='d'*64, owner_evidence_sha256='c'*64)
+    assert [r.method for r in planned.requests].count('POST') == 1

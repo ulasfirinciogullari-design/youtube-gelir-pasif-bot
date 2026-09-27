@@ -299,7 +299,8 @@ class Journal:
                 same_root = [r for r in journal['requests'].values() if r['scope'] == self.scope]
                 schema_repair = (is_gemini and self.scope.get('kind') == 'connection_probe'
                     and gemini.schema_repair_allowed(pipe, policy, same_root, self.body, self.attempt))
-                require(schema_repair or len(same_root) < (1 if self.scope.get('kind') in {'connection_probe', 'video_dub'} else 3),
+                maximum_attempts = 1 if self.scope.get('kind') == 'connection_probe' else 2 if self.scope.get('kind') == 'video_dub' else 3
+                require(schema_repair or len(same_root) < maximum_attempts,
                     'kie_voice_attempt_limit')
                 require(schema_repair or not any(r['result'] is None or r['descriptor']['attempt'] == self.attempt
                     for r in same_root), 'kie_voice_previous_request_pinned')
