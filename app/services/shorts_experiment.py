@@ -8,9 +8,10 @@ from datetime import date
 import json
 import re
 from uuid import UUID, uuid5, NAMESPACE_URL
+from app.services import channel_ids
 
 PREFIX = 'youtube_studio:shorts_experiment:v1:'
-COUNTS = {'UC5v9AvNtD3PTLgo6m1jROOA': 8, 'UCgvESYtYbn2w9R2ExBOF_cw': 2}
+COUNTS = {channel: count for channel, count in ((channel_ids.CAPITAL, 8), (channel_ids.MARGIN, 2)) if channel}
 
 
 def _require(value):

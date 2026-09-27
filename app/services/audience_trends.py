@@ -18,6 +18,7 @@ import httpx
 import redis
 
 from app.config import settings
+from app.services import channel_ids
 
 REGIONS = ('TR', 'US', 'GB', 'BR', 'IN', 'MX')
 PREFIX = 'youtube_studio:audience_trends:v1:'
@@ -32,7 +33,7 @@ BUSINESS = ('economy', 'inflation', 'interest rate', 'federal reserve', 'ecb', '
     'google', 'amazon', 'openai', 'samsung', 'toyota', 'ikea', 'costco', 'lego',
     'nintendo', 'coca cola', 'mcdonald', 'fedex', 'starbucks', 'netflix', 'spotify',
     'electric vehicle', 'battery', 'perakende', 'lojistik', 'business')
-BUSINESS_CHANNELS = {'UC5v9AvNtD3PTLgo6m1jROOA', 'UCgvESYtYbn2w9R2ExBOF_cw'}
+BUSINESS_CHANNELS = set(channel_ids.MANAGED)
 STOP = {'the', 'and', 'how', 'why', 'with', 'this', 'that', 'what', 'from', 'into',
     'bir', 'icin', 'ile', 'nasil', 'neden', 'kanal', 'video', 'shorts', 'serisi',
     'dunya', 'dunyasi', 'world', 'everyday', 'life', 'gibi', 'olan', 'about'}

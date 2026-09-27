@@ -12,9 +12,10 @@ import math
 import re
 
 from redis.exceptions import WatchError
+from app.services import channel_ids
 
 
-CHANNEL_ID = 'UC5v9AvNtD3PTLgo6m1jROOA'
+CHANNEL_ID = channel_ids.CAPITAL
 ROOT_ID = 'aad98516-eee0-5f39-b49d-af33f01e688e'
 MIDDLE_ID = '69ce7728-acce-4e5d-b30f-d5432cf7f3ac'
 LEAF_ID = 'f5315330-e927-44c7-aed7-394a331111c8'

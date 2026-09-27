@@ -4,8 +4,9 @@ import json
 import re
 
 from app.config import settings
+from app.services import channel_ids
 
-CHANNELS = frozenset({'UC5v9AvNtD3PTLgo6m1jROOA', 'UCgvESYtYbn2w9R2ExBOF_cw'})
+CHANNELS = frozenset(channel_ids.MANAGED)
 
 
 @lru_cache(maxsize=8)

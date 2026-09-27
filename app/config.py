@@ -64,6 +64,10 @@ class Settings(BaseSettings):
     pexels_api_key: str = ''
     runwayml_api_secret: str = ''
     fal_key: str = ''
+    # Managed channels (see app/services/channel_ids.py). The separate new system
+    # sets Capital to its own test channel and leaves Margin empty (off).
+    studio_capital_channel_id: str = 'UC5v9AvNtD3PTLgo6m1jROOA'
+    studio_margin_channel_id: str = 'UCgvESYtYbn2w9R2ExBOF_cw'
     studio_video_provider: Literal['auto', 'legacy', 'fal'] = 'auto'
     studio_fal_video_model: Literal['auto', 'veo_lite', 'seedance_pro', 'seedance_fast'] = 'auto'
     google_client_id: str = ''

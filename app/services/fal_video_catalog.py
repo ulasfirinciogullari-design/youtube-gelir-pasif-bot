@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from decimal import Decimal, ROUND_CEILING
 
 from app.services.production_spend import SpendBlocked, SpendQuote, usd_micro
+from app.services import channel_ids
 
 
 PRICE_REVISION = 'fal-video-2026-09-23-v1'
@@ -37,7 +38,7 @@ def primary_enabled(settings):
     return mode == 'fal' or (mode == 'auto' and bool(str(getattr(settings, 'fal_key', '') or '').strip()))
 
 
-COST_QUALITY_CHANNELS = frozenset({'UC5v9AvNtD3PTLgo6m1jROOA', 'UCgvESYtYbn2w9R2ExBOF_cw'})
+COST_QUALITY_CHANNELS = frozenset(channel_ids.MANAGED)
 
 
 def select_model(seconds, preference='auto', *, channel_id=None):

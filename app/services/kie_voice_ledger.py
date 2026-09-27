@@ -15,11 +15,12 @@ import httpx
 from app.services import kie_credentials as credentials, kie_voice_adapter as api
 from app.services.included_stock_pool import _local_transaction
 from app.services.production_spend import SpendBlocked
+from app.services import channel_ids
 
 PREFIX = 'youtube_studio:{production_spend}:kie_voice:v1:'
 POLICY_KEY, JOURNAL_KEY, ANCHOR_KEY = (PREFIX + s for s in ('policy', 'journal', 'anchor'))
 ACTIVE_KEY = PREFIX + 'activation'
-CHANNELS = frozenset({'UC5v9AvNtD3PTLgo6m1jROOA', 'UCgvESYtYbn2w9R2ExBOF_cw'})
+CHANNELS = frozenset(channel_ids.MANAGED)
 MAX_REQUESTS = 10000
 
 
