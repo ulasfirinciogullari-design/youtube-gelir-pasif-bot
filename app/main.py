@@ -32,6 +32,7 @@ from app.studio_access_routes import router as studio_access_router
 from app.studio_settings_routes import router as studio_settings_router
 from app.content_plan_routes import router as content_plan_router
 from app.growth_routes import router as growth_router
+from app.cost_routes import router as cost_router
 
 app = FastAPI(title='YouTube 7/24 Content Factory', version='2.0.0')
 app.include_router(studio_router)
@@ -47,6 +48,7 @@ app.include_router(studio_access_router)
 app.include_router(studio_settings_router)
 app.include_router(content_plan_router)
 app.include_router(growth_router)
+app.include_router(cost_router)
 app.add_exception_handler(HTTPException, studio_auth_exception)
 
 

@@ -20,6 +20,7 @@ import httpx
 import redis
 
 from app.config import settings
+from app.services import cost_meter
 from app.services.production_spend import (
     LEDGER_KEY, SpendBlocked, SpendLedger, SpendPolicy,
 )
@@ -604,7 +605,9 @@ def paid_post(sender, url, **kwargs):
         from app.services.narrator_rotation import VOICE_IDS, route
         if url == ROUTE or any(url == route(voice) for voice in VOICE_IDS):
             from app.services.production_credit_runtime import paid_credit_post
-            return paid_credit_post(sender, url, kwargs)
+            response = paid_credit_post(sender, url, kwargs)
+            cost_meter.observe_http(url, kwargs, response)
+            return response
     if enforcement_enabled():
         from app.services.production_spend_quotes import quote_http_request
         kwargs = _freeze_native_request(kwargs)
@@ -635,7 +638,9 @@ def paid_post(sender, url, **kwargs):
         _native_sender_identity(sender, kwargs.get('headers'), provider)
         reserve_request(provider, operation, payload, quote, funding=funding)
         _native_sender_identity(sender, kwargs.get('headers'), provider)
-    return sender(url, **kwargs)
+    response = sender(url, **kwargs)
+    cost_meter.observe_http(url, kwargs, response)
+    return response
 
 
 def paid_response(client, **kwargs):
@@ -656,7 +661,9 @@ def paid_response(client, **kwargs):
         # hold; trusted callers must not mutate it concurrently during send.
         if _sdk_funding_headers(client, 'openai', expected_key=key)[1] != headers:
             raise SpendBlocked('spend_funding_sdk_identity_changed')
-    return client.responses.create(**kwargs)
+    response = client.responses.create(**kwargs)
+    cost_meter.observe_openai(kwargs, response)
+    return response
 
 
 def paid_runway_create(client, **kwargs):
@@ -670,7 +677,9 @@ def paid_runway_create(client, **kwargs):
         reserve_request('runway', 'text_to_video', kwargs, quote, funding=funding)
         if _sdk_funding_headers(client, 'runway', expected_key=key)[1] != headers:
             raise SpendBlocked('spend_funding_sdk_identity_changed')
-    return client.text_to_video.create(**kwargs)
+    task = client.text_to_video.create(**kwargs)
+    cost_meter.observe_runway(kwargs)
+    return task
 
 
 def budget_status(*, read_timeout=None):

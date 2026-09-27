@@ -2383,6 +2383,7 @@ def _nav(active: str) -> str:
         ('history', '/studio/history?status=library', 'Videolar'),
         ('youtube', '/studio/youtube', 'Kanallar'),
         ('analytics', '/studio/analytics', 'Performans'),
+        ('costs', '/studio/costs', 'Maliyet'),
         ('settings', '/studio/settings', 'Ayarlar'),
     ]
     items = ''.join(

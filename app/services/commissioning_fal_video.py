@@ -30,6 +30,8 @@ class _Journal:
             return self._restore(self.prior['create'])
         response = sender(url, **kwargs)
         self._observe('create', response)
+        from app.services import cost_meter
+        cost_meter.observe_http(url, kwargs, response)
         return response
 
     def _observe(self, field, response):
