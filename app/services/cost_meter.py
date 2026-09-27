@@ -9,10 +9,11 @@ Amounts are estimates from public list prices (``PRICES`` below, overridable
 with ``COST_METER_PRICES_JSON``). Token-billed calls use the provider's own
 usage figures when the response reports them. A call whose price is unknown
 is recorded with ``priced=False`` so gaps stay visible instead of looking free.
+Calls paid from a flat subscription are counted but add no dollars.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 import json
 import re
@@ -22,10 +23,12 @@ EVENTS_KEY = 'cost_meter:events'
 DAY_PREFIX = 'cost_meter:day:'
 MONTH_PREFIX = 'cost_meter:month:'
 JOB_PREFIX = 'cost_meter:job:'
+JOB_INDEX = 'cost_meter:jobs'
 MAX_EVENTS = 5000
+MAX_INDEXED_JOBS = 2000
 _TTL_DAYS = 120
 
-# USD list prices. Tokens are per million; seconds/characters/minutes are per unit.
+# USD list prices. Tokens are per million; seconds/characters/credits are per unit.
 PRICES = {
     'openai': {
         'gpt-6-astra': {'input': 10.0, 'cached_input': 1.0, 'output': 50.0},
@@ -39,10 +42,6 @@ PRICES = {
         'veo-3.1-fast-generate-preview': {'second': 0.10},
         'veo-3.1-generate-preview': {'second': 0.40},
     },
-    'abacus': {
-        'claude-haiku-4-5-20251001': {'input': 1.0, 'output': 5.0},
-        '*': {'input': 3.0, 'output': 15.0},
-    },
     'runway': {
         'gen4.5': {'second': 0.12},
         'seedance2_fast': {'second': 0.29},
@@ -51,9 +50,15 @@ PRICES = {
         'fal-ai/veo3.1/lite': {'second': 0.05},
         'fal-ai/bytedance/seedance/v1.5/pro/text-to-video': {'second': 0.052},
         'fal-ai/bytedance/seedance/v1/pro/fast/text-to-video': {'second': 0.045},
+        'fal-ai/elevenlabs/tts/turbo-v2.5': {'character': 0.00005},
     },
     # Plan-dependent; set the account's real rate with COST_METER_PRICES_JSON.
     'elevenlabs': {'*': {'character': 0.00018}},
+    # Kie bills credits (turbo 6, multilingual 12 per 1,000 characters).
+    'kie': {
+        'elevenlabs/text-to-speech-turbo-2-5': {'character_credits': 0.006, 'credit': 0.005},
+        'elevenlabs/text-to-speech-multilingual-v2': {'character_credits': 0.012, 'credit': 0.005},
+    },
 }
 
 PROVIDER_LABELS = {
@@ -96,33 +101,65 @@ def _get(obj, name, default=None):
     return getattr(obj, name, default)
 
 
+def _unpriced(provider, model, operation):
+    return {'provider': provider, 'model': model, 'operation': operation, 'usd': 0.0, 'priced': False}
+
+
+def _per_second(provider, model, seconds, operation='video'):
+    rate = _rate(provider, model)
+    if rate is None or 'second' not in rate or not seconds:
+        return _unpriced(provider, model, operation)
+    return {'provider': provider, 'model': model, 'operation': operation,
+            'usd': float(Decimal(str(rate['second'])) * seconds), 'priced': True,
+            'units': f'{seconds} sn video'}
+
+
+def _per_character(provider, model, text, operation='speech'):
+    characters = len(str(text or ''))
+    rate = _rate(provider, model)
+    if not characters or rate is None:
+        return _unpriced(provider, model, operation)
+    if 'character_credits' in rate:
+        credits = Decimal(str(rate['character_credits'])) * characters
+        return {'provider': provider, 'model': model, 'operation': operation,
+                'usd': float(credits * Decimal(str(rate.get('credit', 0)))), 'priced': 'credit' in rate,
+                'units': f'{characters} karakter · {float(credits):.1f} kredi'}
+    if 'character' not in rate:
+        return _unpriced(provider, model, operation)
+    return {'provider': provider, 'model': model, 'operation': operation,
+            'usd': float(Decimal(str(rate['character'])) * characters), 'priced': True,
+            'units': f'{characters} karakter'}
+
+
+def _tokens(provider, model, operation, input_tokens, output_tokens, cached=0):
+    rate = _rate(provider, model)
+    if rate is None:
+        return _unpriced(provider, model, operation)
+    return {'provider': provider, 'model': model, 'operation': operation,
+            'usd': float(_tokens_cost(rate, input_tokens, output_tokens, cached)), 'priced': True,
+            'units': f'{input_tokens} girdi + {output_tokens} çıktı token'}
+
+
 def estimate_openai_response(request: dict, response) -> dict:
     model = str(request.get('model') or _get(response, 'model') or '')
     usage = _get(response, 'usage')
-    rate = _rate('openai', model)
-    if usage is None or rate is None:
-        return {'provider': 'openai', 'model': model, 'operation': 'responses', 'usd': 0.0, 'priced': False}
+    if usage is None:
+        return _unpriced('openai', model, 'responses')
     details = _get(usage, 'input_tokens_details') or {}
-    input_tokens = int(_get(usage, 'input_tokens', 0) or 0)
-    output_tokens = int(_get(usage, 'output_tokens', 0) or 0)
-    cached = int(_get(details, 'cached_tokens', 0) or 0)
-    usd = _tokens_cost(rate, input_tokens, output_tokens, cached)
+    entry = _tokens('openai', model, 'responses', int(_get(usage, 'input_tokens', 0) or 0),
+                    int(_get(usage, 'output_tokens', 0) or 0), int(_get(details, 'cached_tokens', 0) or 0))
     searches = sum(1 for item in (_get(response, 'output') or [])
                    if _get(item, 'type') == 'web_search_call')
-    usd += Decimal(searches) * Decimal(str(rate.get('web_search_call', 0)))
-    return {'provider': 'openai', 'model': model, 'operation': 'responses', 'usd': float(usd),
-            'priced': True, 'units': f'{input_tokens} girdi + {output_tokens} çıktı token'}
+    rate = _rate('openai', model)
+    if searches and entry['priced'] and rate:
+        entry['usd'] += float(Decimal(searches) * Decimal(str(rate.get('web_search_call', 0))))
+        entry['units'] += f' · {searches} web araması'
+    return entry
 
 
 def estimate_runway(request: dict) -> dict:
-    model = str(request.get('model') or '')
-    seconds = int(request.get('duration') or 0)
-    rate = _rate('runway', model)
-    if rate is None or not seconds:
-        return {'provider': 'runway', 'model': model, 'operation': 'text_to_video', 'usd': 0.0, 'priced': False}
-    return {'provider': 'runway', 'model': model, 'operation': 'text_to_video',
-            'usd': float(Decimal(str(rate['second'])) * seconds), 'priced': True,
-            'units': f'{seconds} sn video'}
+    return _per_second('runway', str(request.get('model') or ''), int(request.get('duration') or 0),
+                       'text_to_video')
 
 
 def _json_body(response) -> dict | None:
@@ -141,70 +178,53 @@ def estimate_http(url: str, request_kwargs: dict, response) -> dict | None:
     host, path = parsed.hostname or '', parsed.path
     body = request_kwargs.get('json') if isinstance(request_kwargs.get('json'), dict) else {}
     if host == 'api.elevenlabs.io':
-        characters = len(str(body.get('text') or ''))
-        rate = _rate('elevenlabs', str(body.get('model_id') or ''))
-        model = str(body.get('model_id') or 'tts')
-        if not characters or rate is None:
-            return {'provider': 'elevenlabs', 'model': model, 'operation': path, 'usd': 0.0, 'priced': False}
-        return {'provider': 'elevenlabs', 'model': model, 'operation': path,
-                'usd': float(Decimal(str(rate['character'])) * characters), 'priced': True,
-                'units': f'{characters} karakter'}
+        return _per_character('elevenlabs', str(body.get('model_id') or 'tts'), body.get('text'))
     if host == 'queue.fal.run':
         model = path.lstrip('/')
-        rate = _rate('fal', model)
-        seconds = body.get('duration')
+        if 'text' in body and 'duration' not in body:
+            return _per_character('fal', model, body.get('text'))
         try:
-            seconds = int(str(seconds).rstrip('s'))
+            seconds = int(str(body.get('duration')).rstrip('s'))
         except Exception:
             seconds = 0
-        if rate is None or not seconds:
-            return {'provider': 'fal', 'model': model, 'operation': 'video', 'usd': 0.0, 'priced': False}
-        return {'provider': 'fal', 'model': model, 'operation': 'video',
-                'usd': float(Decimal(str(rate['second'])) * seconds), 'priced': True,
-                'units': f'{seconds} sn video'}
+        return _per_second('fal', model, seconds)
+    if host == 'api.kie.ai':
+        text = (body.get('input') or {}).get('text') if isinstance(body.get('input'), dict) else None
+        return _per_character('kie', str(body.get('model') or ''), text)
     if host == 'generativelanguage.googleapis.com':
         match = re.fullmatch(r'/v1beta/models/([A-Za-z0-9._-]+):(generateContent|predictLongRunning)', path)
         if not match:
             return None
         model, operation = match[1], match[2]
-        rate = _rate('gemini', model)
         if operation == 'predictLongRunning':
-            seconds = int((body.get('parameters') or {}).get('durationSeconds') or 0)
-            if rate is None or 'second' not in rate or not seconds:
-                return {'provider': 'gemini', 'model': model, 'operation': 'video', 'usd': 0.0, 'priced': False}
-            return {'provider': 'gemini', 'model': model, 'operation': 'video',
-                    'usd': float(Decimal(str(rate['second'])) * seconds), 'priced': True,
-                    'units': f'{seconds} sn video'}
+            return _per_second('gemini', model, int((body.get('parameters') or {}).get('durationSeconds') or 0))
         usage = (_json_body(response) or {}).get('usageMetadata') or {}
-        if rate is None or not usage:
-            return {'provider': 'gemini', 'model': model, 'operation': 'text', 'usd': 0.0, 'priced': False}
-        input_tokens = int(usage.get('promptTokenCount') or 0)
-        output_tokens = int(usage.get('candidatesTokenCount') or 0) + int(usage.get('thoughtsTokenCount') or 0)
-        return {'provider': 'gemini', 'model': model, 'operation': 'text',
-                'usd': float(_tokens_cost(rate, input_tokens, output_tokens)), 'priced': True,
-                'units': f'{input_tokens} girdi + {output_tokens} çıktı token'}
+        if not usage:
+            return _unpriced('gemini', model, 'text')
+        return _tokens('gemini', model, 'text', int(usage.get('promptTokenCount') or 0),
+                       int(usage.get('candidatesTokenCount') or 0) + int(usage.get('thoughtsTokenCount') or 0))
     if host == 'routellm.abacus.ai':
-        model = str(body.get('model') or '')
         usage = (_json_body(response) or {}).get('usage') or {}
-        rate = _rate('abacus', model)
-        if rate is None or not usage:
-            return {'provider': 'abacus', 'model': model, 'operation': 'messages', 'usd': 0.0, 'priced': False}
-        input_tokens = int(usage.get('input_tokens') or 0)
-        output_tokens = int(usage.get('output_tokens') or 0)
-        return {'provider': 'abacus', 'model': model, 'operation': 'messages',
-                'usd': float(_tokens_cost(rate, input_tokens, output_tokens)), 'priced': True,
-                'units': f'{input_tokens} girdi + {output_tokens} çıktı token'}
-    if host == 'api.kie.ai':
-        return {'provider': 'kie', 'model': str(body.get('model') or ''), 'operation': path,
-                'usd': 0.0, 'priced': False}
+        entry = {'provider': 'abacus', 'model': str(body.get('model') or ''), 'operation': 'messages',
+                 'usd': 0.0, 'priced': True, 'subscription': True}
+        if usage:
+            entry['units'] = (f"{int(usage.get('input_tokens') or 0)} girdi + "
+                              f"{int(usage.get('output_tokens') or 0)} çıktı token · abonelik")
+        return entry
     return None
 
 
+_CLIENT = None
+
+
 def _client():
-    import redis
-    from app.config import settings
-    return redis.Redis.from_url(settings.redis_url, decode_responses=True,
-                                socket_timeout=0.5, socket_connect_timeout=0.5)
+    global _CLIENT
+    if _CLIENT is None:
+        import redis
+        from app.config import settings
+        _CLIENT = redis.Redis.from_url(settings.redis_url, decode_responses=True,
+                                       socket_timeout=0.5, socket_connect_timeout=0.5)
+    return _CLIENT
 
 
 def _task_context() -> tuple[str | None, int | None]:
@@ -247,6 +267,8 @@ def record(entry: dict, *, client=None, now: datetime | None = None) -> None:
                 pipe.hsetnx(job_key, 'first_at', event['at'])
                 pipe.hset(job_key, 'last_at', event['at'])
                 pipe.expire(job_key, _TTL_DAYS * 86400)
+                pipe.zadd(JOB_INDEX, {task_id: now.timestamp()})
+                pipe.zremrangebyrank(JOB_INDEX, 0, -MAX_INDEXED_JOBS - 1)
             pipe.execute()
     except Exception:
         pass
@@ -280,7 +302,7 @@ def _hash_numbers(raw: dict) -> dict:
     for key, value in (raw or {}).items():
         if key.startswith('provider:'):
             result['providers'][key[len('provider:'):]] = round(float(value), 4)
-        elif key in ('total',):
+        elif key == 'total':
             result['total'] = round(float(value), 4)
         elif key in ('calls', 'unpriced_calls'):
             result[key] = int(value)
@@ -289,17 +311,102 @@ def _hash_numbers(raw: dict) -> dict:
     return result
 
 
-def summary(*, client=None, now: datetime | None = None, days: int = 14, events: int = 100) -> dict:
+def _root(task_id: str, jobs_by_id: dict) -> str:
+    """Oldest ancestor known to Studio, so plan, render and repairs add up per video."""
+    seen = set()
+    current = task_id
+    while current in jobs_by_id and current not in seen and len(seen) < 12:
+        seen.add(current)
+        parent = jobs_by_id[current].get('parent_id')
+        if not isinstance(parent, str) or not parent:
+            break
+        current = parent
+    return current
+
+
+def _title(job: dict | None) -> str:
+    spec = (job or {}).get('spec') or {}
+    return str(spec.get('title') or spec.get('topic') or '')[:120]
+
+
+def video_costs(job_costs: dict, jobs: list, videos: dict) -> list[dict]:
+    """Group per-task costs into one row per video family and join YouTube views."""
+    jobs_by_id = {job.get('task_id'): job for job in jobs if isinstance(job, dict) and job.get('task_id')}
+    families: dict[str, dict] = {}
+    for task_id, cost in job_costs.items():
+        root = _root(task_id, jobs_by_id)
+        family = families.setdefault(root, {'root_id': root, 'total': 0.0, 'calls': 0, 'providers': {},
+                                            'tasks': [], 'last_at': ''})
+        family['total'] += cost['total']
+        family['calls'] += cost.get('calls', 0)
+        family['tasks'].append(task_id)
+        family['last_at'] = max(family['last_at'], str(cost.get('last_at') or ''))
+        for provider, usd in cost['providers'].items():
+            family['providers'][provider] = family['providers'].get(provider, 0.0) + usd
+    for source_id, video in (videos or {}).items():
+        if not isinstance(video, dict):
+            continue
+        root = _root(source_id, jobs_by_id)
+        family = families.get(root)
+        if family is None:
+            continue
+        views = video.get('view_count')
+        if type(views) is int:
+            family['views'] = family.get('views', 0) + views
+        family['public'] = family.get('public') or video.get('privacy_status') == 'public'
+        family['video_title'] = family.get('video_title') or video.get('title')
+    rows = []
+    for family in families.values():
+        states = {str(jobs_by_id.get(task, {}).get('state') or '') for task in family['tasks']}
+        if family.get('public'):
+            status = 'published'
+        elif states & {'PENDING', 'STARTED', 'PROGRESS', 'RETRY', 'AWAITING_APPROVAL', ''}:
+            status = 'running'
+        elif 'SUCCESS' in states:
+            status = 'unpublished'  # Finished but not public (yet); not counted as waste.
+        else:
+            status = 'failed'
+        views = family.get('views')
+        rows.append({
+            'root_id': family['root_id'], 'title': family.get('video_title')
+            or _title(jobs_by_id.get(family['root_id'])) or family['root_id'][:8],
+            'total': round(family['total'], 4), 'calls': family['calls'],
+            'providers': {k: round(v, 4) for k, v in family['providers'].items()},
+            'status': status, 'views': views, 'last_at': family['last_at'],
+            'usd_per_1000_views': round(family['total'] / views * 1000, 2) if views else None,
+        })
+    rows.sort(key=lambda row: row['last_at'], reverse=True)
+    return rows
+
+
+def _studio_jobs() -> list:
+    try:
+        from app.services.studio_state import list_jobs
+        return list_jobs(500)
+    except Exception:
+        return []
+
+
+def _youtube_videos(jobs: list) -> dict:
+    try:
+        from app.services.youtube_metrics import get_dashboard_metrics
+        return get_dashboard_metrics(jobs).get('videos') or {}
+    except Exception:
+        return {}
+
+
+def summary(*, client=None, now: datetime | None = None, days: int = 14, events: int = 100,
+            jobs: list | None = None, videos: dict | None = None) -> dict:
     """Everything the cost page shows, read-only."""
     now = now or datetime.now(timezone.utc)
     client = client or _client()
-    from datetime import timedelta
     day_list = [(now - timedelta(days=offset)).strftime('%Y-%m-%d') for offset in range(days)]
     with client.pipeline(transaction=False) as pipe:
         for day in day_list:
             pipe.hgetall(DAY_PREFIX + day)
         pipe.hgetall(MONTH_PREFIX + now.strftime('%Y-%m'))
         pipe.lrange(EVENTS_KEY, 0, max(0, events - 1))
+        pipe.zrevrangebyscore(JOB_INDEX, '+inf', (now - timedelta(days=30)).timestamp(), start=0, num=400)
         raw = pipe.execute()
     daily = [{'day': day, **_hash_numbers(values)} for day, values in zip(day_list, raw[:days])]
     month = _hash_numbers(raw[days])
@@ -309,17 +416,29 @@ def summary(*, client=None, now: datetime | None = None, days: int = 14, events:
             recent.append(json.loads(item))
         except Exception:
             continue
-    task_ids = list(dict.fromkeys(e['task_id'] for e in recent if e.get('task_id')))[:30]
-    jobs = []
+    task_ids = list(raw[days + 2])
+    job_costs = {}
     if task_ids:
         with client.pipeline(transaction=False) as pipe:
             for task_id in task_ids:
                 pipe.hgetall(JOB_PREFIX + task_id)
-            job_raw = pipe.execute()
-        for task_id, values in zip(task_ids, job_raw):
-            jobs.append({'task_id': task_id, **_hash_numbers(values)})
+            for task_id, values in zip(task_ids, pipe.execute()):
+                if values:
+                    job_costs[task_id] = _hash_numbers(values)
+    jobs = _studio_jobs() if jobs is None else jobs
+    videos = _youtube_videos(jobs) if videos is None else videos
+    rows = video_costs(job_costs, jobs, videos)
+    published = [row for row in rows if row['status'] == 'published']
+    wasted = [row for row in rows if row['status'] == 'failed']
+    total_views = sum(row['views'] or 0 for row in published)
+    published_cost = sum(row['total'] for row in published)
     elapsed_days = now.day
     projected = month['total'] / elapsed_days * 30 if elapsed_days else 0.0
-    return {'today': daily[0], 'daily': daily, 'month': month, 'recent': recent,
-            'jobs': jobs, 'projected_month': round(projected, 2),
-            'checked_at': now.isoformat(timespec='seconds')}
+    return {
+        'today': daily[0], 'daily': daily, 'month': month, 'recent': recent, 'videos': rows[:60],
+        'projected_month': round(projected, 2),
+        'per_published_video': round(published_cost / len(published), 2) if published else None,
+        'usd_per_1000_views': round(published_cost / total_views * 1000, 2) if total_views else None,
+        'wasted_total': round(sum(row['total'] for row in wasted), 2), 'wasted_count': len(wasted),
+        'checked_at': now.isoformat(timespec='seconds'),
+    }
