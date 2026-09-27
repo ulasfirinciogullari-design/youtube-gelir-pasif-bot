@@ -44,6 +44,33 @@ def test_lost_dispatch_ack_never_sends_twice(captured):
     send.assert_called_once()
 
 
+def test_short_continuation_keeps_thirty_second_spec_and_failed_parent(captured, monkeypatch):
+    from app import tasks
+    from app.services import content_plan_kie_short_resume as short, channel_cadence as cadence
+    c, source, _ = captured; task = source['task_id']; send = Mock()
+    source.update(error=short.ERROR, preview_total_paid_create_cap=6)
+    source['spec'].update(format='shorts', duration_minutes=0.5)
+    c.set(jobs.JOB_PREFIX + task, plan._raw(source))
+    c.hset(jobs.PAID_CREATE_BUDGET_PREFIX + task, mapping={'cap': '6', 'used': '0'})
+    c.hset(cadence.keys(CHANNEL)[0], task, 'shorts')
+    key = plan.DISPATCH_PREFIX + source['spec']['content_plan_item_id']
+    dispatch = json.loads(c.get(key)); dispatch['spec_sha256'] = plan._sha(source['spec'])
+    c.set(key, plan._raw(dispatch))
+    terminal = json.loads(c.get('celery-task-meta-' + task))
+    terminal['result']['exc_message'] = [short.ERROR]
+    c.set('celery-task-meta-' + task, plan._raw(terminal))
+    monkeypatch.setattr(tasks.run_video_pipeline, 'apply_async', send)
+    assert resume.schedule(source, Mock(), client=c) == 'kie_voice_resume_preparing'
+    child = resume.run(task, resume.operation(task))['task_id']
+    assert send.call_args.kwargs['args'][1] == 0.5
+    assert jobs.acquire_retry_child_execution(child, task)
+    resume.verify_child(child, task, source['spec'], client=c)
+    parent = json.loads(c.get(jobs.JOB_PREFIX + task))
+    assert parent['state'] == 'FAILURE' and parent['error'] == short.ERROR
+    assert cadence.snapshot(CHANNEL, client=c)['counts']['produced']['shorts'] == 1
+    assert c.hgetall(jobs.PAID_CREATE_BUDGET_PREFIX + task) == {'cap': '6', 'used': '0'}
+
+
 @pytest.mark.parametrize('damage',['unknown_voice','changed_error','owner_hold','disabled_plan','media','unsettled_video','child','profile'])
 def test_unverified_or_changed_job_cannot_continue(captured,damage):
     c,source,observed=captured;task=source['task_id']

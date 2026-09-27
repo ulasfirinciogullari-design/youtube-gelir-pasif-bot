@@ -1646,6 +1646,12 @@ def _comparison_units(
             index += consumed
             continue
         orthographic_pair = _TURKISH_ORTHOGRAPHIC_PAIRS.get(tuple(tokens[index:index + 2]))
+        # A recognizer may spell the same Turkish compound as two words.
+        # Preserve both real word intervals; never join across punctuation,
+        # change the possessive suffix, or alias kare (square) with karo.
+        if (tuple(tokens[index:index + 2]) == ('kare', 'kodun')
+                and value[matches[index].end():matches[index + 1].start()].isspace()):
+            orthographic_pair = 'karekodun'
         if orthographic_pair is not None:
             units.append((orthographic_pair, tuple(tokens[index:index + 2])))
             index += 2

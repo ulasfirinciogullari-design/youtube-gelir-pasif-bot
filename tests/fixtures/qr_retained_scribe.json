@@ -1,0 +1,2010 @@
+{
+  "scenes": [
+    "Bu karekodun köşelerindeki üç büyük kare, neden böyle duruyor?",
+    "Okuyucu, kodun yerini ve yönünü bu işaretlerden hızla buluyor.",
+    "Denso ekibi, fabrikadaki uzun barkod taramalarını kısaltmak için çalışıyordu.",
+    "Yeni kod, bilgiyi yalnız çizgide değil, iki yönde taşıyordu.",
+    "Köşe işaretleri sayesinde, okuyucu döndürülmüş kodu da tanımayı başarıyordu.",
+    "Menüde gördüğün karelerin geçmişi, aslında fabrikadaki zaman kaybına dayanıyor."
+  ],
+  "recognitions": [
+    {
+      "audio": {
+        "bytes": 692396,
+        "decoded_pcm_sha256": "37f4ed33bb4690d24c24963a9f2acc34e35e50f72fa6221a2368f8c8cea04f6b",
+        "decoded_sample_rate": 48000,
+        "decoded_samples": 1382447,
+        "mime_type": "audio/mpeg",
+        "sha256": "9ddbfd041d2ffc1ecd057a9bbf874d59aae14e1b4548c59bd579eed560ed5f64"
+      },
+      "response": {
+        "text": "Bu kare kodun köşelerindeki üç büyük kare neden böyle duruyor? Okuyucu, kodun yerini ve yönünü bu işaretlerden hızla buluyor. Denso ekibi fabrikadaki uzun barkod taramalarını kısaltmak için çalışıyordu. Yeni kod bilgiyi yalnız çizgide değil, iki yönde taşıyordu. Köşe işaretleri sayesinde okuyucu döndürülmüş kodu da tanımayı başarıyordu. Menüde gördüğün karelerin geçmişi aslında fabrikadaki zaman kaybına dayanıyor.",
+        "words": [
+          {
+            "text": "Bu",
+            "start": 0.34,
+            "end": 0.5,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 0.5,
+            "end": 0.56,
+            "type": "spacing"
+          },
+          {
+            "text": "kare",
+            "start": 0.56,
+            "end": 0.76,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 0.76,
+            "end": 0.82,
+            "type": "spacing"
+          },
+          {
+            "text": "kodun",
+            "start": 0.82,
+            "end": 1.12,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 1.12,
+            "end": 1.16,
+            "type": "spacing"
+          },
+          {
+            "text": "köşelerindeki",
+            "start": 1.16,
+            "end": 2.0,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.0,
+            "end": 2.08,
+            "type": "spacing"
+          },
+          {
+            "text": "üç",
+            "start": 2.08,
+            "end": 2.26,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.26,
+            "end": 2.32,
+            "type": "spacing"
+          },
+          {
+            "text": "büyük",
+            "start": 2.32,
+            "end": 2.58,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.58,
+            "end": 2.64,
+            "type": "spacing"
+          },
+          {
+            "text": "kare",
+            "start": 2.64,
+            "end": 3.1,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 3.1,
+            "end": 3.18,
+            "type": "spacing"
+          },
+          {
+            "text": "neden",
+            "start": 3.18,
+            "end": 3.44,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 3.44,
+            "end": 3.48,
+            "type": "spacing"
+          },
+          {
+            "text": "böyle",
+            "start": 3.48,
+            "end": 3.72,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 3.72,
+            "end": 3.76,
+            "type": "spacing"
+          },
+          {
+            "text": "duruyor?",
+            "start": 3.76,
+            "end": 4.18,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 4.18,
+            "end": 4.18,
+            "type": "spacing"
+          },
+          {
+            "text": "Okuyucu,",
+            "start": 4.98,
+            "end": 5.44,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 5.44,
+            "end": 5.72,
+            "type": "spacing"
+          },
+          {
+            "text": "kodun",
+            "start": 5.72,
+            "end": 6.02,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.02,
+            "end": 6.1,
+            "type": "spacing"
+          },
+          {
+            "text": "yerini",
+            "start": 6.1,
+            "end": 6.4,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.4,
+            "end": 6.44,
+            "type": "spacing"
+          },
+          {
+            "text": "ve",
+            "start": 6.44,
+            "end": 6.54,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.54,
+            "end": 6.6,
+            "type": "spacing"
+          },
+          {
+            "text": "yönünü",
+            "start": 6.6,
+            "end": 6.94,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.94,
+            "end": 6.98,
+            "type": "spacing"
+          },
+          {
+            "text": "bu",
+            "start": 7.0,
+            "end": 7.1,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 7.1,
+            "end": 7.16,
+            "type": "spacing"
+          },
+          {
+            "text": "işaretlerden",
+            "start": 7.16,
+            "end": 7.94,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 7.94,
+            "end": 7.98,
+            "type": "spacing"
+          },
+          {
+            "text": "hızla",
+            "start": 8.0,
+            "end": 8.28,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 8.28,
+            "end": 8.32,
+            "type": "spacing"
+          },
+          {
+            "text": "buluyor.",
+            "start": 8.32,
+            "end": 8.74,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 8.74,
+            "end": 8.74,
+            "type": "spacing"
+          },
+          {
+            "text": "Denso",
+            "start": 9.52,
+            "end": 9.86,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 9.86,
+            "end": 9.92,
+            "type": "spacing"
+          },
+          {
+            "text": "ekibi",
+            "start": 9.92,
+            "end": 10.42,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 10.42,
+            "end": 10.5,
+            "type": "spacing"
+          },
+          {
+            "text": "fabrikadaki",
+            "start": 10.5,
+            "end": 11.16,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 11.16,
+            "end": 11.24,
+            "type": "spacing"
+          },
+          {
+            "text": "uzun",
+            "start": 11.24,
+            "end": 11.48,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 11.48,
+            "end": 11.54,
+            "type": "spacing"
+          },
+          {
+            "text": "barkod",
+            "start": 11.54,
+            "end": 11.88,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 11.88,
+            "end": 11.92,
+            "type": "spacing"
+          },
+          {
+            "text": "taramalarını",
+            "start": 11.92,
+            "end": 12.46,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 12.46,
+            "end": 12.48,
+            "type": "spacing"
+          },
+          {
+            "text": "kısaltmak",
+            "start": 12.48,
+            "end": 12.92,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 12.92,
+            "end": 12.96,
+            "type": "spacing"
+          },
+          {
+            "text": "için",
+            "start": 12.96,
+            "end": 13.14,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 13.14,
+            "end": 13.18,
+            "type": "spacing"
+          },
+          {
+            "text": "çalışıyordu.",
+            "start": 13.18,
+            "end": 13.8,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 13.8,
+            "end": 13.82,
+            "type": "spacing"
+          },
+          {
+            "text": "Yeni",
+            "start": 14.56,
+            "end": 14.76,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 14.76,
+            "end": 14.82,
+            "type": "spacing"
+          },
+          {
+            "text": "kod",
+            "start": 14.82,
+            "end": 15.3,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 15.3,
+            "end": 15.36,
+            "type": "spacing"
+          },
+          {
+            "text": "bilgiyi",
+            "start": 15.36,
+            "end": 15.76,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 15.76,
+            "end": 15.82,
+            "type": "spacing"
+          },
+          {
+            "text": "yalnız",
+            "start": 15.82,
+            "end": 16.2,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 16.2,
+            "end": 16.26,
+            "type": "spacing"
+          },
+          {
+            "text": "çizgide",
+            "start": 16.26,
+            "end": 16.62,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 16.62,
+            "end": 16.68,
+            "type": "spacing"
+          },
+          {
+            "text": "değil,",
+            "start": 16.68,
+            "end": 16.92,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 16.92,
+            "end": 17.2,
+            "type": "spacing"
+          },
+          {
+            "text": "iki",
+            "start": 17.2,
+            "end": 17.38,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 17.38,
+            "end": 17.42,
+            "type": "spacing"
+          },
+          {
+            "text": "yönde",
+            "start": 17.42,
+            "end": 17.68,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 17.68,
+            "end": 17.72,
+            "type": "spacing"
+          },
+          {
+            "text": "taşıyordu.",
+            "start": 17.72,
+            "end": 18.28,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 18.28,
+            "end": 18.28,
+            "type": "spacing"
+          },
+          {
+            "text": "Köşe",
+            "start": 19.0,
+            "end": 19.24,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 19.24,
+            "end": 19.3,
+            "type": "spacing"
+          },
+          {
+            "text": "işaretleri",
+            "start": 19.3,
+            "end": 19.84,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 19.84,
+            "end": 19.9,
+            "type": "spacing"
+          },
+          {
+            "text": "sayesinde",
+            "start": 19.9,
+            "end": 20.74,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 20.74,
+            "end": 20.82,
+            "type": "spacing"
+          },
+          {
+            "text": "okuyucu",
+            "start": 20.82,
+            "end": 21.26,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 21.26,
+            "end": 21.32,
+            "type": "spacing"
+          },
+          {
+            "text": "döndürülmüş",
+            "start": 21.32,
+            "end": 21.9,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 21.9,
+            "end": 21.94,
+            "type": "spacing"
+          },
+          {
+            "text": "kodu",
+            "start": 21.94,
+            "end": 22.1,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 22.1,
+            "end": 22.14,
+            "type": "spacing"
+          },
+          {
+            "text": "da",
+            "start": 22.14,
+            "end": 22.22,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 22.22,
+            "end": 22.28,
+            "type": "spacing"
+          },
+          {
+            "text": "tanımayı",
+            "start": 22.28,
+            "end": 22.6,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 22.6,
+            "end": 22.64,
+            "type": "spacing"
+          },
+          {
+            "text": "başarıyordu.",
+            "start": 22.64,
+            "end": 23.26,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 23.26,
+            "end": 23.26,
+            "type": "spacing"
+          },
+          {
+            "text": "Menüde",
+            "start": 24.14,
+            "end": 24.46,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 24.46,
+            "end": 24.5,
+            "type": "spacing"
+          },
+          {
+            "text": "gördüğün",
+            "start": 24.5,
+            "end": 24.92,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 24.92,
+            "end": 24.96,
+            "type": "spacing"
+          },
+          {
+            "text": "karelerin",
+            "start": 24.96,
+            "end": 25.42,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 25.42,
+            "end": 25.46,
+            "type": "spacing"
+          },
+          {
+            "text": "geçmişi",
+            "start": 25.46,
+            "end": 26.2,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 26.2,
+            "end": 26.28,
+            "type": "spacing"
+          },
+          {
+            "text": "aslında",
+            "start": 26.28,
+            "end": 26.68,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 26.68,
+            "end": 26.74,
+            "type": "spacing"
+          },
+          {
+            "text": "fabrikadaki",
+            "start": 26.74,
+            "end": 27.34,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 27.34,
+            "end": 27.4,
+            "type": "spacing"
+          },
+          {
+            "text": "zaman",
+            "start": 27.4,
+            "end": 27.66,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 27.66,
+            "end": 27.72,
+            "type": "spacing"
+          },
+          {
+            "text": "kaybına",
+            "start": 27.72,
+            "end": 28.04,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 28.04,
+            "end": 28.08,
+            "type": "spacing"
+          },
+          {
+            "text": "dayanıyor.",
+            "start": 28.08,
+            "end": 28.6,
+            "type": "word"
+          }
+        ],
+        "language_code": "tur"
+      }
+    },
+    {
+      "audio": {
+        "bytes": 719468,
+        "decoded_pcm_sha256": "ac82a873553f1842b3adc36ef26f5d1fdb3eb2ac3b8a4d593d2fac27750d86fa",
+        "decoded_sample_rate": 48000,
+        "decoded_samples": 1436591,
+        "mime_type": "audio/mpeg",
+        "sha256": "36db2c3c03fe0ba803ce3f02272f7c64462c813abfd54d30d5456e66f3c70660"
+      },
+      "response": {
+        "text": "Bu kare kodun köşelerindeki üç büyük kare neden böyle duruyor? Okuyucu, kodun yerini ve yönünü bu işaretlerden hızla buluyor. Denso ekibi fabrikadaki uzun barkod taramalarını kısaltmak için çalışıyordu. Yeni kod bilgiyi yalnız çizgide değil, iki yönde taşıyordu. Köşe işaretleri sayesinde okuyucu döndürülmüş kodu da tanımayı başarıyordu. Menüde gördüğün karelerin geçmişi aslında fabrikadaki zaman kaybına dayanıyor.",
+        "words": [
+          {
+            "text": "Bu",
+            "start": 0.34,
+            "end": 0.5,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 0.5,
+            "end": 0.56,
+            "type": "spacing"
+          },
+          {
+            "text": "kare",
+            "start": 0.56,
+            "end": 0.8,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 0.8,
+            "end": 0.86,
+            "type": "spacing"
+          },
+          {
+            "text": "kodun",
+            "start": 0.86,
+            "end": 1.14,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 1.14,
+            "end": 1.2,
+            "type": "spacing"
+          },
+          {
+            "text": "köşelerindeki",
+            "start": 1.2,
+            "end": 2.02,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.02,
+            "end": 2.1,
+            "type": "spacing"
+          },
+          {
+            "text": "üç",
+            "start": 2.1,
+            "end": 2.3,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.3,
+            "end": 2.34,
+            "type": "spacing"
+          },
+          {
+            "text": "büyük",
+            "start": 2.34,
+            "end": 2.62,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.62,
+            "end": 2.68,
+            "type": "spacing"
+          },
+          {
+            "text": "kare",
+            "start": 2.68,
+            "end": 2.92,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.92,
+            "end": 3.32,
+            "type": "spacing"
+          },
+          {
+            "text": "neden",
+            "start": 3.32,
+            "end": 3.62,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 3.62,
+            "end": 3.66,
+            "type": "spacing"
+          },
+          {
+            "text": "böyle",
+            "start": 3.66,
+            "end": 3.92,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 3.92,
+            "end": 3.98,
+            "type": "spacing"
+          },
+          {
+            "text": "duruyor?",
+            "start": 3.98,
+            "end": 4.34,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 4.34,
+            "end": 4.42,
+            "type": "spacing"
+          },
+          {
+            "text": "Okuyucu,",
+            "start": 5.12,
+            "end": 5.6,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 5.6,
+            "end": 5.9,
+            "type": "spacing"
+          },
+          {
+            "text": "kodun",
+            "start": 5.9,
+            "end": 6.24,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.24,
+            "end": 6.32,
+            "type": "spacing"
+          },
+          {
+            "text": "yerini",
+            "start": 6.32,
+            "end": 6.7,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.7,
+            "end": 6.76,
+            "type": "spacing"
+          },
+          {
+            "text": "ve",
+            "start": 6.76,
+            "end": 6.9,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.9,
+            "end": 6.98,
+            "type": "spacing"
+          },
+          {
+            "text": "yönünü",
+            "start": 6.98,
+            "end": 7.48,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 7.48,
+            "end": 7.54,
+            "type": "spacing"
+          },
+          {
+            "text": "bu",
+            "start": 7.54,
+            "end": 7.64,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 7.64,
+            "end": 7.7,
+            "type": "spacing"
+          },
+          {
+            "text": "işaretlerden",
+            "start": 7.7,
+            "end": 8.5,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 8.5,
+            "end": 8.56,
+            "type": "spacing"
+          },
+          {
+            "text": "hızla",
+            "start": 8.56,
+            "end": 8.86,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 8.86,
+            "end": 8.88,
+            "type": "spacing"
+          },
+          {
+            "text": "buluyor.",
+            "start": 8.88,
+            "end": 9.3,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 9.3,
+            "end": 9.3,
+            "type": "spacing"
+          },
+          {
+            "text": "Denso",
+            "start": 10.04,
+            "end": 10.38,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 10.38,
+            "end": 10.44,
+            "type": "spacing"
+          },
+          {
+            "text": "ekibi",
+            "start": 10.44,
+            "end": 11.0,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 11.0,
+            "end": 11.06,
+            "type": "spacing"
+          },
+          {
+            "text": "fabrikadaki",
+            "start": 11.06,
+            "end": 11.8,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 11.8,
+            "end": 11.88,
+            "type": "spacing"
+          },
+          {
+            "text": "uzun",
+            "start": 11.88,
+            "end": 12.16,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 12.16,
+            "end": 12.2,
+            "type": "spacing"
+          },
+          {
+            "text": "barkod",
+            "start": 12.2,
+            "end": 12.58,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 12.58,
+            "end": 12.62,
+            "type": "spacing"
+          },
+          {
+            "text": "taramalarını",
+            "start": 12.62,
+            "end": 13.16,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 13.16,
+            "end": 13.2,
+            "type": "spacing"
+          },
+          {
+            "text": "kısaltmak",
+            "start": 13.2,
+            "end": 13.64,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 13.64,
+            "end": 13.7,
+            "type": "spacing"
+          },
+          {
+            "text": "için",
+            "start": 13.7,
+            "end": 13.86,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 13.86,
+            "end": 13.92,
+            "type": "spacing"
+          },
+          {
+            "text": "çalışıyordu.",
+            "start": 13.92,
+            "end": 14.54,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 14.54,
+            "end": 14.54,
+            "type": "spacing"
+          },
+          {
+            "text": "Yeni",
+            "start": 15.2,
+            "end": 15.42,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 15.42,
+            "end": 15.48,
+            "type": "spacing"
+          },
+          {
+            "text": "kod",
+            "start": 15.48,
+            "end": 15.94,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 15.94,
+            "end": 16.0,
+            "type": "spacing"
+          },
+          {
+            "text": "bilgiyi",
+            "start": 16.0,
+            "end": 16.5,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 16.5,
+            "end": 16.58,
+            "type": "spacing"
+          },
+          {
+            "text": "yalnız",
+            "start": 16.58,
+            "end": 16.98,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 16.98,
+            "end": 17.04,
+            "type": "spacing"
+          },
+          {
+            "text": "çizgide",
+            "start": 17.04,
+            "end": 17.42,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 17.42,
+            "end": 17.48,
+            "type": "spacing"
+          },
+          {
+            "text": "değil,",
+            "start": 17.48,
+            "end": 17.76,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 17.76,
+            "end": 17.76,
+            "type": "spacing"
+          },
+          {
+            "text": "iki",
+            "start": 18.14,
+            "end": 18.3,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 18.3,
+            "end": 18.36,
+            "type": "spacing"
+          },
+          {
+            "text": "yönde",
+            "start": 18.36,
+            "end": 18.64,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 18.64,
+            "end": 18.7,
+            "type": "spacing"
+          },
+          {
+            "text": "taşıyordu.",
+            "start": 18.7,
+            "end": 19.26,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 19.26,
+            "end": 19.26,
+            "type": "spacing"
+          },
+          {
+            "text": "Köşe",
+            "start": 19.88,
+            "end": 20.1,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 20.1,
+            "end": 20.16,
+            "type": "spacing"
+          },
+          {
+            "text": "işaretleri",
+            "start": 20.16,
+            "end": 20.72,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 20.72,
+            "end": 20.78,
+            "type": "spacing"
+          },
+          {
+            "text": "sayesinde",
+            "start": 20.78,
+            "end": 21.62,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 21.62,
+            "end": 21.7,
+            "type": "spacing"
+          },
+          {
+            "text": "okuyucu",
+            "start": 21.7,
+            "end": 22.2,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 22.2,
+            "end": 22.26,
+            "type": "spacing"
+          },
+          {
+            "text": "döndürülmüş",
+            "start": 22.26,
+            "end": 22.84,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 22.84,
+            "end": 22.9,
+            "type": "spacing"
+          },
+          {
+            "text": "kodu",
+            "start": 22.9,
+            "end": 23.06,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 23.06,
+            "end": 23.1,
+            "type": "spacing"
+          },
+          {
+            "text": "da",
+            "start": 23.1,
+            "end": 23.18,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 23.18,
+            "end": 23.24,
+            "type": "spacing"
+          },
+          {
+            "text": "tanımayı",
+            "start": 23.24,
+            "end": 23.56,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 23.56,
+            "end": 23.6,
+            "type": "spacing"
+          },
+          {
+            "text": "başarıyordu.",
+            "start": 23.6,
+            "end": 24.24,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 24.24,
+            "end": 24.24,
+            "type": "spacing"
+          },
+          {
+            "text": "Menüde",
+            "start": 24.94,
+            "end": 25.26,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 25.26,
+            "end": 25.3,
+            "type": "spacing"
+          },
+          {
+            "text": "gördüğün",
+            "start": 25.3,
+            "end": 25.74,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 25.74,
+            "end": 25.8,
+            "type": "spacing"
+          },
+          {
+            "text": "karelerin",
+            "start": 25.8,
+            "end": 26.24,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 26.24,
+            "end": 26.28,
+            "type": "spacing"
+          },
+          {
+            "text": "geçmişi",
+            "start": 26.28,
+            "end": 27.0,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 27.0,
+            "end": 27.08,
+            "type": "spacing"
+          },
+          {
+            "text": "aslında",
+            "start": 27.08,
+            "end": 27.62,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 27.62,
+            "end": 27.68,
+            "type": "spacing"
+          },
+          {
+            "text": "fabrikadaki",
+            "start": 27.68,
+            "end": 28.3,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 28.3,
+            "end": 28.36,
+            "type": "spacing"
+          },
+          {
+            "text": "zaman",
+            "start": 28.36,
+            "end": 28.64,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 28.64,
+            "end": 28.7,
+            "type": "spacing"
+          },
+          {
+            "text": "kaybına",
+            "start": 28.7,
+            "end": 29.02,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 29.02,
+            "end": 29.06,
+            "type": "spacing"
+          },
+          {
+            "text": "dayanıyor.",
+            "start": 29.06,
+            "end": 29.62,
+            "type": "word"
+          }
+        ],
+        "language_code": "tur"
+      }
+    },
+    {
+      "audio": {
+        "bytes": 749420,
+        "decoded_pcm_sha256": "d48671ba3606cdb9378b344f17ccf099ad372b3357701397ec8a77861c6a1dc6",
+        "decoded_sample_rate": 48000,
+        "decoded_samples": 1496495,
+        "mime_type": "audio/mpeg",
+        "sha256": "dc06f9eb10823511e09f8e6c382387391aa5ed6e9cdb5401be15955fc78d6515"
+      },
+      "response": {
+        "text": "Bu karekodun köşelerindeki üç büyük karo neden böyle duruyor? Okuyucu kodun yerini ve yönünü bu işaretlerden hızla buluyor. Denso ekibi fabrikadaki uzun barkod taramalarını kısaltmak için çalışıyordu. Yeni kod bilgiyi yalnız çizgide değil iki yönde taşıyordu. Köşe işaretleri sayesinde okuyucu döndürülmüş kodu da tanımayı başarıyordu. Menüde gördüğün karelerin geçmişi aslında fabrikadaki zaman kaybına dayanıyor",
+        "words": [
+          {
+            "text": "Bu",
+            "start": 0.34,
+            "end": 0.42,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 0.42,
+            "end": 0.56,
+            "type": "spacing"
+          },
+          {
+            "text": "karekodun",
+            "start": 0.56,
+            "end": 1.16,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 1.16,
+            "end": 1.22,
+            "type": "spacing"
+          },
+          {
+            "text": "köşelerindeki",
+            "start": 1.22,
+            "end": 2.12,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.12,
+            "end": 2.2,
+            "type": "spacing"
+          },
+          {
+            "text": "üç",
+            "start": 2.2,
+            "end": 2.36,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.36,
+            "end": 2.44,
+            "type": "spacing"
+          },
+          {
+            "text": "büyük",
+            "start": 2.44,
+            "end": 2.68,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 2.68,
+            "end": 2.76,
+            "type": "spacing"
+          },
+          {
+            "text": "karo",
+            "start": 2.76,
+            "end": 3.04,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 3.04,
+            "end": 3.4,
+            "type": "spacing"
+          },
+          {
+            "text": "neden",
+            "start": 3.4,
+            "end": 3.66,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 3.66,
+            "end": 3.72,
+            "type": "spacing"
+          },
+          {
+            "text": "böyle",
+            "start": 3.72,
+            "end": 3.96,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 3.96,
+            "end": 4.019,
+            "type": "spacing"
+          },
+          {
+            "text": "duruyor?",
+            "start": 4.019,
+            "end": 4.46,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 4.46,
+            "end": 4.46,
+            "type": "spacing"
+          },
+          {
+            "text": "Okuyucu",
+            "start": 5.3,
+            "end": 5.78,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 5.78,
+            "end": 6.04,
+            "type": "spacing"
+          },
+          {
+            "text": "kodun",
+            "start": 6.04,
+            "end": 6.42,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.42,
+            "end": 6.5,
+            "type": "spacing"
+          },
+          {
+            "text": "yerini",
+            "start": 6.5,
+            "end": 6.88,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 6.88,
+            "end": 6.92,
+            "type": "spacing"
+          },
+          {
+            "text": "ve",
+            "start": 6.92,
+            "end": 7.06,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 7.06,
+            "end": 7.12,
+            "type": "spacing"
+          },
+          {
+            "text": "yönünü",
+            "start": 7.12,
+            "end": 7.52,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 7.52,
+            "end": 7.8,
+            "type": "spacing"
+          },
+          {
+            "text": "bu",
+            "start": 7.8,
+            "end": 7.9,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 7.9,
+            "end": 7.96,
+            "type": "spacing"
+          },
+          {
+            "text": "işaretlerden",
+            "start": 7.96,
+            "end": 8.86,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 8.86,
+            "end": 8.94,
+            "type": "spacing"
+          },
+          {
+            "text": "hızla",
+            "start": 8.94,
+            "end": 9.24,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 9.24,
+            "end": 9.28,
+            "type": "spacing"
+          },
+          {
+            "text": "buluyor.",
+            "start": 9.28,
+            "end": 9.7,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 9.7,
+            "end": 9.76,
+            "type": "spacing"
+          },
+          {
+            "text": "Denso",
+            "start": 10.64,
+            "end": 10.98,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 10.98,
+            "end": 11.04,
+            "type": "spacing"
+          },
+          {
+            "text": "ekibi",
+            "start": 11.04,
+            "end": 11.6,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 11.6,
+            "end": 11.68,
+            "type": "spacing"
+          },
+          {
+            "text": "fabrikadaki",
+            "start": 11.68,
+            "end": 12.4,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 12.4,
+            "end": 12.5,
+            "type": "spacing"
+          },
+          {
+            "text": "uzun",
+            "start": 12.5,
+            "end": 12.76,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 12.76,
+            "end": 12.8,
+            "type": "spacing"
+          },
+          {
+            "text": "barkod",
+            "start": 12.8,
+            "end": 13.2,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 13.2,
+            "end": 13.24,
+            "type": "spacing"
+          },
+          {
+            "text": "taramalarını",
+            "start": 13.26,
+            "end": 13.84,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 13.84,
+            "end": 13.88,
+            "type": "spacing"
+          },
+          {
+            "text": "kısaltmak",
+            "start": 13.88,
+            "end": 14.36,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 14.36,
+            "end": 14.4,
+            "type": "spacing"
+          },
+          {
+            "text": "için",
+            "start": 14.4,
+            "end": 14.6,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 14.6,
+            "end": 14.66,
+            "type": "spacing"
+          },
+          {
+            "text": "çalışıyordu.",
+            "start": 14.66,
+            "end": 15.3,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 15.3,
+            "end": 15.3,
+            "type": "spacing"
+          },
+          {
+            "text": "Yeni",
+            "start": 15.94,
+            "end": 16.16,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 16.16,
+            "end": 16.219,
+            "type": "spacing"
+          },
+          {
+            "text": "kod",
+            "start": 16.219,
+            "end": 16.42,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 16.42,
+            "end": 16.74,
+            "type": "spacing"
+          },
+          {
+            "text": "bilgiyi",
+            "start": 16.74,
+            "end": 17.2,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 17.2,
+            "end": 17.28,
+            "type": "spacing"
+          },
+          {
+            "text": "yalnız",
+            "start": 17.28,
+            "end": 17.68,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 17.68,
+            "end": 17.76,
+            "type": "spacing"
+          },
+          {
+            "text": "çizgide",
+            "start": 17.76,
+            "end": 18.16,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 18.16,
+            "end": 18.2,
+            "type": "spacing"
+          },
+          {
+            "text": "değil",
+            "start": 18.2,
+            "end": 18.46,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 18.46,
+            "end": 18.8,
+            "type": "spacing"
+          },
+          {
+            "text": "iki",
+            "start": 18.8,
+            "end": 18.98,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 18.98,
+            "end": 19.04,
+            "type": "spacing"
+          },
+          {
+            "text": "yönde",
+            "start": 19.04,
+            "end": 19.3,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 19.3,
+            "end": 19.36,
+            "type": "spacing"
+          },
+          {
+            "text": "taşıyordu.",
+            "start": 19.36,
+            "end": 19.94,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 19.94,
+            "end": 19.94,
+            "type": "spacing"
+          },
+          {
+            "text": "Köşe",
+            "start": 20.66,
+            "end": 20.9,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 20.9,
+            "end": 20.94,
+            "type": "spacing"
+          },
+          {
+            "text": "işaretleri",
+            "start": 20.94,
+            "end": 21.52,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 21.52,
+            "end": 21.58,
+            "type": "spacing"
+          },
+          {
+            "text": "sayesinde",
+            "start": 21.58,
+            "end": 22.4,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 22.4,
+            "end": 22.48,
+            "type": "spacing"
+          },
+          {
+            "text": "okuyucu",
+            "start": 22.48,
+            "end": 23.0,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 23.0,
+            "end": 23.06,
+            "type": "spacing"
+          },
+          {
+            "text": "döndürülmüş",
+            "start": 23.06,
+            "end": 23.7,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 23.7,
+            "end": 23.76,
+            "type": "spacing"
+          },
+          {
+            "text": "kodu",
+            "start": 23.76,
+            "end": 23.94,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 23.94,
+            "end": 24.0,
+            "type": "spacing"
+          },
+          {
+            "text": "da",
+            "start": 24.0,
+            "end": 24.08,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 24.08,
+            "end": 24.14,
+            "type": "spacing"
+          },
+          {
+            "text": "tanımayı",
+            "start": 24.14,
+            "end": 24.48,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 24.48,
+            "end": 24.52,
+            "type": "spacing"
+          },
+          {
+            "text": "başarıyordu.",
+            "start": 24.52,
+            "end": 25.18,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 25.18,
+            "end": 25.18,
+            "type": "spacing"
+          },
+          {
+            "text": "Menüde",
+            "start": 26.04,
+            "end": 26.36,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 26.36,
+            "end": 26.42,
+            "type": "spacing"
+          },
+          {
+            "text": "gördüğün",
+            "start": 26.42,
+            "end": 26.88,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 26.88,
+            "end": 26.96,
+            "type": "spacing"
+          },
+          {
+            "text": "karelerin",
+            "start": 26.96,
+            "end": 27.44,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 27.44,
+            "end": 27.5,
+            "type": "spacing"
+          },
+          {
+            "text": "geçmişi",
+            "start": 27.5,
+            "end": 28.24,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 28.24,
+            "end": 28.34,
+            "type": "spacing"
+          },
+          {
+            "text": "aslında",
+            "start": 28.34,
+            "end": 28.8,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 28.8,
+            "end": 28.86,
+            "type": "spacing"
+          },
+          {
+            "text": "fabrikadaki",
+            "start": 28.86,
+            "end": 29.52,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 29.52,
+            "end": 29.6,
+            "type": "spacing"
+          },
+          {
+            "text": "zaman",
+            "start": 29.6,
+            "end": 29.9,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 29.9,
+            "end": 29.94,
+            "type": "spacing"
+          },
+          {
+            "text": "kaybına",
+            "start": 29.94,
+            "end": 30.3,
+            "type": "word"
+          },
+          {
+            "text": " ",
+            "start": 30.3,
+            "end": 30.36,
+            "type": "spacing"
+          },
+          {
+            "text": "dayanıyor",
+            "start": 30.36,
+            "end": 30.84,
+            "type": "word"
+          }
+        ],
+        "language_code": "tur"
+      }
+    }
+  ]
+}

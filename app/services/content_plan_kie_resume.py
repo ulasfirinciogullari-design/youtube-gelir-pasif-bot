@@ -10,6 +10,7 @@ from uuid import uuid5, NAMESPACE_URL
 
 from app.services import content_plan as plan, studio_state as jobs
 from app.services import content_plan_research_resume as pre
+from app.services import content_plan_kie_short_resume as short
 
 PREFIX = plan.PREFIX + 'kie_voice_resume:v1:'
 DISPATCH, EXECUTION = PREFIX + 'dispatch:', PREFIX + 'execution:'
@@ -26,9 +27,10 @@ def eligible(source):
     from app.services.kie_voice_ledger import CHANNELS
     spec = source.get('spec') or {}
     return bool(source.get('parent_id') is None and source.get('state') == 'FAILURE'
-        and source.get('failure_stage') == 'voice_and_visuals' and source.get('error') == ERROR
+        and source.get('failure_stage') == 'voice_and_visuals'
         and spec.get('production_channel_id') in CHANNELS and spec.get('content_plan_item_id')
-        and spec.get('duration_minutes') == 3 and spec.get('format') == 'landscape'
+        and ((spec.get('duration_minutes') == 3 and spec.get('format') == 'landscape' and source.get('error') == ERROR)
+            or (spec.get('duration_minutes') == 0.5 and spec.get('format') == 'shorts' and source.get('error') == short.ERROR))
         and not source.get('retry_child_task_id'))
 
 
@@ -47,22 +49,28 @@ def captured_voice(client, source):
         choice = production._choice(pipe, active, context, source['spec']['language'])
         plan._require(choice is not None and context['lineage_id'] == task)
         rows = [(identity, row) for identity, row in journal['requests'].items() if row['scope'] == context]
-        plan._require(len(rows) == 1)
-        identity, row = rows[0]
-        result = kie.restore(row['result']).json()['data']
-        plan._require(row['descriptor']['attempt'] == 0 and result['state'] == 'success')
-        key = kie.PREFIX + 'media:' + identity; pipe.watch(key)
-        media = plan._object(pipe.get(key))
-        plan._require(pipe.pttl(key) == -1 and media['request_identity'] == identity
-            and media['result_receipt_sha256'] == row['result']['response_sha256'])
-        _, audio = asr._read(pipe)
-        matches = [r for r in audio['requests'].values() if r['context'] == context]
-        plan._require(len(matches) == 1 and matches[0]['outcome'] is not None
-            and matches[0]['request']['audio']['sha256'] == media['mp3_sha256'])
-        captured = matches[0]['outcome']
-        raw = youtube_auth._decrypt_json(captured['encrypted_response'])['response']
-        plan._require(kie.sha(raw) == captured['response_sha256'])
-        whisper._json_payload(raw.encode(), maximum_seconds=240)
+        if context['kind'] == 'shorts':
+            voice_proof = short.captured(pipe, source, context, choice, rows)
+        else:
+            plan._require(len(rows) == 1)
+            identity, row = rows[0]
+            result = kie.restore(row['result']).json()['data']
+            plan._require(row['descriptor']['attempt'] == 0 and result['state'] == 'success')
+            key = kie.PREFIX + 'media:' + identity; pipe.watch(key)
+            media = plan._object(pipe.get(key))
+            plan._require(pipe.pttl(key) == -1 and media['request_identity'] == identity
+                and media['result_receipt_sha256'] == row['result']['response_sha256'])
+            _, audio = asr._read(pipe)
+            matches = [r for r in audio['requests'].values() if r['context'] == context]
+            plan._require(len(matches) == 1 and matches[0]['outcome'] is not None
+                and matches[0]['request']['audio']['sha256'] == media['mp3_sha256'])
+            captured = matches[0]['outcome']
+            raw = youtube_auth._decrypt_json(captured['encrypted_response'])['response']
+            plan._require(kie.sha(raw) == captured['response_sha256'])
+            whisper._json_payload(raw.encode(), maximum_seconds=240)
+            voice_proof = {'voice_request': identity, 'voice_receipt_sha256': plan._sha(row),
+                'media_sha256': plan._sha(media), 'blind_asr_sha256': plan._sha(matches[0]),
+                'original_take_limit': 3, 'new_allocation': 0}
         plan._require(not any(r['reservation']['intent']['root_lineage_id'] == task
             for r in production._native_intents(pipe, foundation)))
         _, included_requests = included.IncludedRouterLedger(foundation)._read(pipe)
@@ -84,20 +92,19 @@ def captured_voice(client, source):
             plan._require(len(candidates) == 1 and candidates[0].get('finishReason') == 'STOP')
             reasoning[request_id] = plan._sha([request, response])
         pipe.multi(); pipe.ping(); plan._require(pipe.execute() == [True])
-    return {'voice_request': identity, 'voice_receipt_sha256': plan._sha(row),
-        'media_sha256': plan._sha(media), 'blind_asr_sha256': plan._sha(matches[0]),
-        'reasoning': reasoning, 'original_take_limit': 3, 'new_allocation': 0}
+    return {**voice_proof, 'reasoning': reasoning}
 
 
 def checked(client, task, *, claimed=False):
     from app.services.source_publication_hold import HOLD_PREFIX
     from app.services.youtube_publish_state import UPLOAD_PREFIX
     source = plan._object(client.get(jobs.JOB_PREFIX + plan._id(task)))
+    cap = 6 if source['spec'].get('format') == 'shorts' else 32
     plan._require(eligible({**source, 'retry_child_task_id': None}) and source['task_id'] == task
         and source.get('kind') == 'render' and source['spec'].get('mode') == 'production'
         and all(source.get(k) is None for k in pre.MEDIA_FIELDS)
-        and source.get('paid_create_slots_used') == 0 and source.get('preview_total_paid_create_cap') == 32
-        and client.hgetall(jobs.PAID_CREATE_BUDGET_PREFIX + task) == {'cap':'32','used':'0'}
+        and source.get('paid_create_slots_used') == 0 and source.get('preview_total_paid_create_cap') == cap
+        and client.hgetall(jobs.PAID_CREATE_BUDGET_PREFIX + task) == {'cap':str(cap),'used':'0'}
         and not source.get('publication_hold') and not source.get('owner_cancellation')
         and not client.exists(*(p + task for p in (HOLD_PREFIX, UPLOAD_PREFIX, jobs.RENDER_CANCELLATION_PREFIX,
             jobs.QUALITY_HOLD_JOB_FENCE_PREFIX, jobs.EXTERNAL_EPISODE_LEAF_PREFIX, jobs.REPAIR_CHECKPOINT_PREFIX))))
@@ -106,7 +113,7 @@ def checked(client, task, *, claimed=False):
             and not client.exists(jobs.RETRY_DISPATCH_PREFIX + task))
     terminal = plan._object(client.get('celery-task-meta-' + task)); failure = terminal.get('result') or {}
     plan._require(terminal.get('status') == 'FAILURE' and terminal.get('task_id') == task
-        and failure.get('exc_type') == 'FinalAudioQualityError' and failure.get('exc_message') == [ERROR]
+        and failure.get('exc_type') == 'FinalAudioQualityError' and failure.get('exc_message') == [source['error']]
         and ', in _synthesize_voice_candidate\n' in terminal.get('traceback',''))
     spec = source['spec']; dispatch = plan._object(client.get(plan.DISPATCH_PREFIX + spec['content_plan_item_id']))
     profile = plan._object(client.get(plan.production.PROFILE_PREFIX + spec['production_channel_id']))
@@ -159,7 +166,7 @@ def run(source_id, operation_id):
     jobs.create_job(child,source['spec'],kind='render',parent_id=source_id)
     spec=source['spec']; options={k:v for k,v in spec.items()if k not in {'topic','duration_minutes','language','channel_id'}}
     try:
-        run_video_pipeline.apply_async(args=(spec['topic'],3,spec['language'],spec['channel_id'],options,None,source_id),
+        run_video_pipeline.apply_async(args=(spec['topic'],spec['duration_minutes'],spec['language'],spec['channel_id'],options,None,source_id),
             task_id=child,retry=False)
     except Exception:
         jobs.mark_retry_dispatch(source_id,token,'uncertain')
