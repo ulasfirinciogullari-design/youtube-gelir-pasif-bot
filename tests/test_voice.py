@@ -73,6 +73,31 @@ class _FakeTimestampResponse(_FakeVoiceResponse):
         return self.payload
 
 
+_REAL_LONGFORM_LEGACY_CUES = [
+    7.409062075492956,
+    7.600263535774647,
+    7.160244101408449,
+    8.965989895211267,
+    10.765759891830985,
+    8.965989895211267,
+    8.201183008450704,
+    8.85374424338028,
+    8.03729664,
+    9.403021953802815,
+    9.403021953802815,
+    8.228498100281689,
+    7.508503941408449,
+    8.474328698591547,
+    9.348392815774647,
+    9.611722095774645,
+    6.398425636056338,
+    8.228498100281689,
+    8.71717192112676,
+    8.884046710985915,
+    8.740645354366196
+]
+
+
 class TurkishVoiceNormalizationTests(unittest.TestCase):
     def setUp(self):
         self.enterContext(patch.object(voice_module, 'settings', config_stub.settings))
@@ -342,6 +367,83 @@ class TurkishVoiceNormalizationTests(unittest.TestCase):
                     fit_existing_narration_candidate(candidate, 30.0)
             self.assertEqual(output.read_bytes(), b'raw')
         run.assert_not_called()
+
+    def test_long_form_real_21_chunk_overhang_is_corrected_only_in_visual_allocation(self):
+        original = list(_REAL_LONGFORM_LEGACY_CUES)
+        actual = 178.176
+        self.assertEqual(len(original), 21)
+        self.assertAlmostEqual(sum(original), 178.90581056901405, places=10)
+        self.assertGreater(sum(original) - actual, 0.35)
+        result = voice_module._scene_allocations_for_measured_audio(original, actual)
+        self.assertEqual(original, _REAL_LONGFORM_LEGACY_CUES)
+        self.assertEqual(sum(result), actual)
+        self.assertAlmostEqual(math.fsum(result), actual, places=12)
+        self.assertTrue(all(value > 0 for value in result))
+        for old, new in zip(original[:-1], result[:-1]):
+            self.assertAlmostEqual(new / old, actual / math.fsum(original), places=12)
+        self.assertEqual(voice_module._scene_allocations_for_measured_audio(result, actual), result)
+
+    def test_long_form_fit_binds_to_measured_final_audio_not_discrepant_chunk_sum(self):
+        actual = 178.176
+        chunks = [duration * 170.4 / actual for duration in _REAL_LONGFORM_LEGACY_CUES]
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'voice.mp3'
+            output.write_bytes(b'original pre-fit bytes')
+
+            def fake_ffmpeg(command, **_kwargs):
+                Path(command[-1]).write_bytes(b'existing fitted bytes, no additional edit')
+
+            with (
+                patch.object(voice_module, '_media_duration', side_effect=[170.4, actual]) as measure,
+                patch.object(voice_module.subprocess, 'run', side_effect=fake_ffmpeg) as run,
+                patch.object(voice_module, 'synthesize_voice_with_id') as tts,
+                patch.object(voice_module, 'synthesize_voice_with_timestamps') as aligned_tts,
+            ):
+                durations, before, after, rate = _fit_duration(output, chunks, 180)
+                self.assertEqual(output.read_bytes(), b'existing fitted bytes, no additional edit')
+        self.assertEqual((before, after, rate), (170.4, actual, 0.956229))
+        self.assertEqual(sum(durations), actual)
+        self.assertEqual(len(durations), 21)
+        self.assertEqual(measure.call_count, 2)
+        run.assert_called_once()
+        self.assertIn('atempo=0.956229', run.call_args.args[0])
+        tts.assert_not_called()
+        aligned_tts.assert_not_called()
+
+    def test_long_form_no_fit_normalizes_visual_end_without_touching_audio_or_tempo(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'retained.mp3'
+            original_bytes = b'unchanged complete retained audio'
+            output.write_bytes(original_bytes)
+            with (
+                patch.object(voice_module, '_media_duration', return_value=178.176),
+                patch.object(voice_module.subprocess, 'run') as run,
+            ):
+                durations, before, after, rate = _fit_duration(
+                    output, list(_REAL_LONGFORM_LEGACY_CUES), 180)
+            self.assertEqual(output.read_bytes(), original_bytes)
+        self.assertEqual((before, after, rate), (178.176, 178.176, 1.0))
+        self.assertEqual(sum(durations), 178.176)
+        run.assert_not_called()
+
+    def test_visual_allocation_rejects_invalid_weights_and_measurements(self):
+        for weights, duration in (([], 10), ([0], 10), ([-1, 2], 10), ([True], 10),
+                ([float('nan')], 10), ([float('inf')], 10), ([1], 0), ([1], True),
+                ([1], float('nan')), ([1], float('inf'))):
+            with self.subTest(weights=weights, duration=duration):
+                with self.assertRaises(voice_module.VoiceQualityError):
+                    voice_module._scene_allocations_for_measured_audio(weights, duration)
+
+    def test_old_inconsistent_checkpoint_still_fails_the_unchanged_loader(self):
+        from app.services import voice_candidate_recovery
+
+        raw = {'spoken_texts': ['Unchanged narration.'] * 21,
+            'scene_durations': list(_REAL_LONGFORM_LEGACY_CUES),
+            'duration_before_fit': 170.4, 'duration_after_fit': 178.176,
+            'tempo_rate': 0.956229, 'voice_profile': {}}
+        with self.assertRaisesRegex(ValueError, 'Candidate timing is inconsistent'):
+            voice_candidate_recovery._voice_result(raw, 21)
+        self.assertEqual(raw['scene_durations'], _REAL_LONGFORM_LEGACY_CUES)
 
     def test_short_preview_rejects_excessive_compression(self):
         with tempfile.TemporaryDirectory() as tmp:
