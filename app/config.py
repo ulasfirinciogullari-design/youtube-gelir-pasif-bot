@@ -55,6 +55,9 @@ class Settings(BaseSettings):
     # (at most this many times a Turkey day) instead of pausing the channel.
     studio_auto_advance_after_rejection: bool = True
     studio_auto_advance_max_per_day: int = 3
+    # Scheduled production only on the channels named by STUDIO_CAPITAL_CHANNEL_ID
+    # and STUDIO_MARGIN_CHANNEL_ID; any other connected channel has no ceiling.
+    studio_production_managed_only: bool = True
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )

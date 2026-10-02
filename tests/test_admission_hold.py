@@ -87,3 +87,27 @@ def test_held_dispatch_reserves_no_topic_and_enqueues_nothing(production, monkey
     assert {key: client.dump(key) for key in client.scan_iter('*')} == before
     monkeypatch.setattr(admission_hold, 'hold_reason', lambda **_: None)
     assert module.dispatch_due_productions([profile], [CONNECTION], enqueue, now=1000)['status'] == 'queued'
+
+
+def test_only_managed_channels_produce_when_asked(production, monkeypatch):
+    from types import SimpleNamespace
+    from app.services import channel_ids
+    module, client = production
+    profile = _profile()
+    _save(module, client, profile)
+    monkeypatch.setattr(admission_hold, 'hold_reason', lambda **_: None)
+    namespace = module.reserve_due_production.__globals__
+    monkeypatch.setitem(namespace, 'settings', SimpleNamespace(
+        **{**vars(namespace['settings']), 'studio_production_managed_only': True}))
+    assert CHANNEL not in channel_ids.MANAGED
+    assert module.reserve_due_production(profile, CONNECTION, now=1000) == {'status': 'channel_not_managed'}
+    monkeypatch.setattr(channel_ids, 'MANAGED', (*channel_ids.MANAGED, CHANNEL))
+    assert module.reserve_due_production(profile, CONNECTION, now=1000)['status'] == 'reserved'
+
+
+def test_new_system_defaults_guard_admission():
+    from app.config import Settings
+    fields = Settings.model_fields
+    assert fields['studio_production_managed_only'].default is True
+    assert fields['cost_short_admission_reserve_usd'].default == 1.5
+    assert fields['studio_hold_on_expired_video_prices'].default is True

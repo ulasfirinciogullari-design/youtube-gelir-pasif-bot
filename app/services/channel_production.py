@@ -484,6 +484,12 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
     connection_id = str(connection.get('connection_id') or '')
     if connection.get('id') != channel_id or not _ID.fullmatch(connection_id):
         return {'status': 'connection_missing'}
+    if getattr(settings, 'studio_production_managed_only', False) is True:
+        from app.services import channel_ids
+        if channel_id not in channel_ids.MANAGED:
+            # A mistyped channel id or a second connected channel would
+            # otherwise produce without any daily ceiling.
+            return {'status': 'channel_not_managed'}
     topics = profile.get('production_topics')
     interval = profile.get('production_interval_hours', 24)
     language = str(profile.get('default_language') or 'tr')
