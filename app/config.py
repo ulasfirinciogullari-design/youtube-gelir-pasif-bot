@@ -51,6 +51,10 @@ class Settings(BaseSettings):
     # Used only while STUDIO_SHORTS_POLICY_JSON is empty: the main channel makes
     # only Shorts, at most this many public ones per day (1-5); 0 = daily mix.
     studio_default_shorts_per_day: int = 5
+    # After a Short is rejected by a quality gate, go on to the next topic
+    # (at most this many times a Turkey day) instead of pausing the channel.
+    studio_auto_advance_after_rejection: bool = True
+    studio_auto_advance_max_per_day: int = 3
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )

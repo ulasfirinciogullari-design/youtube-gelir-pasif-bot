@@ -147,6 +147,11 @@ def production_tick() -> dict:
         except Exception:
             pass  # A failed recheck cannot suppress unrelated normal work.
         try:
+            from app.services.rejection_auto_advance import maintain as maintain_auto_advance
+            auto_advance = maintain_auto_advance(linked_profiles)
+        except Exception:
+            auto_advance = {'status': 'unavailable'}
+        try:
             from app.services.youtube_quota_recovery import maintain as maintain_quota_release
             quota_release = maintain_quota_release()
         except Exception:
@@ -183,7 +188,8 @@ def production_tick() -> dict:
         return {**dispatched, 'public_retry_reconciliation': recovered,
                 'quality_holds': quality_holds, 'series_maintenance': maintenance,
                 'native_credit_period': credit_period, 'quality_hold_period': hold_period,
-                'content_plan': content_plan, 'daily_cadence': cadence, 'quota_release': quota_release}
+                'content_plan': content_plan, 'daily_cadence': cadence, 'quota_release': quota_release,
+                'auto_advance': auto_advance}
     except ChannelProductionError:
         return {'status': 'blocked', 'reason': 'production_state_unavailable'}
     except Exception:
