@@ -48,6 +48,9 @@ class Settings(BaseSettings):
     studio_longform_delivery_enabled: bool = False
     # Persisted per-service owner preference; does not rewrite historical jobs.
     studio_shorts_policy_json: str = ''
+    # Used only while STUDIO_SHORTS_POLICY_JSON is empty: the main channel makes
+    # only Shorts, at most this many public ones per day (1-5); 0 = daily mix.
+    studio_default_shorts_per_day: int = 5
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )

@@ -24,7 +24,16 @@ def _parse(raw):
 
 
 def _policy():
-    return _parse(getattr(settings, 'studio_shorts_policy_json', ''))
+    raw = getattr(settings, 'studio_shorts_policy_json', '') or ''
+    if not raw.strip():
+        # Without an explicit policy the new system makes only Shorts on its
+        # main channel; the daily three-minute film needs funded spend paths
+        # that are off here and would otherwise block every Short.
+        limit = getattr(settings, 'studio_default_shorts_per_day', 0)
+        if type(limit) is int and 1 <= limit <= 5 and channel_ids.CAPITAL:
+            raw = json.dumps({'version': 1, 'id': 'default-shorts',
+                              'daily_limits': {channel_ids.CAPITAL: limit}})
+    return _parse(raw)
 
 
 def shorts_only(channel_id):

@@ -29,12 +29,12 @@ def settings(monkeypatch):
     return settings
 
 
-@pytest.mark.real_voice_admission
+@pytest.mark.new_system_defaults
 def test_ready_system_is_not_held(settings):
     assert admission_hold.hold_reason(now=NOW) is None
 
 
-@pytest.mark.real_voice_admission
+@pytest.mark.new_system_defaults
 @pytest.mark.parametrize('field', ['elevenlabs_api_key', 'elevenlabs_voice_id'])
 def test_missing_voice_holds_before_any_script_is_paid(settings, monkeypatch, field):
     monkeypatch.setattr(settings, field, '')
@@ -43,7 +43,7 @@ def test_missing_voice_holds_before_any_script_is_paid(settings, monkeypatch, fi
     assert admission_hold.hold_reason(now=NOW) is None
 
 
-@pytest.mark.real_voice_admission
+@pytest.mark.new_system_defaults
 def test_expired_video_prices_hold_new_videos(settings, monkeypatch):
     assert admission_hold.hold_reason(now=fal_video_catalog.VALID_UNTIL) == 'video_price_review_expired'
     monkeypatch.setattr(settings, 'studio_video_provider', 'legacy')
@@ -53,7 +53,7 @@ def test_expired_video_prices_hold_new_videos(settings, monkeypatch):
     assert admission_hold.hold_reason(now=fal_video_catalog.VALID_UNTIL) is None
 
 
-@pytest.mark.real_voice_admission
+@pytest.mark.new_system_defaults
 def test_new_video_waits_when_the_day_has_no_room_left(settings, monkeypatch):
     cost_meter.record({'provider': 'openai', 'usd': 6.4, 'priced': True}, now=NOW)
     assert admission_hold.hold_reason(now=NOW) is None
@@ -63,7 +63,7 @@ def test_new_video_waits_when_the_day_has_no_room_left(settings, monkeypatch):
     assert admission_hold.hold_reason(now=NOW) is None
 
 
-@pytest.mark.real_voice_admission
+@pytest.mark.new_system_defaults
 def test_unreadable_inputs_never_hold(settings, monkeypatch):
     def broken(*_args, **_kwargs):
         raise ConnectionError('down')
