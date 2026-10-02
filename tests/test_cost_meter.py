@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 from unittest.mock import Mock
 
@@ -420,3 +420,32 @@ def test_planning_task_cap_never_blocks_on_unreadable_records(monkeypatch):
     finally:
         _FRESH_ROUTE.reset(route)
         runtime._TASK_ID.reset(task)
+
+
+def test_cost_page_shows_the_daily_limit_a_hold_and_the_price_list_deadline(client, monkeypatch):
+    from app import cost_routes
+    from app.config import settings
+    from app.services import admission_hold, fal_video_catalog
+    monkeypatch.setattr(settings, 'cost_daily_cap_usd', 8.0)
+    monkeypatch.setattr(settings, 'studio_video_provider', 'fal')
+    monkeypatch.setattr(admission_hold, 'hold_reason', lambda **_: 'daily_cap_near')
+    state = cost_routes.guards(now=fal_video_catalog.VALID_UNTIL - timedelta(days=3))
+    assert state['daily_cap_usd'] == 8.0 and state['video_prices_days_left'] == 3
+    assert state['hold']['reason_code'] == 'daily_cap_near'
+    html = cost_routes.render({**cost_meter.summary(now=NOW, jobs=[], videos={}), 'guards': state}).body.decode()
+    assert 'günlük sınır $8.00' in html
+    assert 'yeni video yarın başlayacak' in html
+    assert 'Video fiyat listesi' in html and 'sona eriyor' in html
+    far = cost_routes.guards(now=fal_video_catalog.VALID_UNTIL - timedelta(days=20))
+    html = cost_routes.render({**cost_meter.summary(now=NOW, jobs=[], videos={}), 'guards': far}).body.decode()
+    assert 'sona eriyor' not in html
+
+
+def test_guard_state_never_breaks_the_page(monkeypatch):
+    from app import cost_routes
+    from app.services import admission_hold
+
+    def broken(**_kwargs):
+        raise RuntimeError('boom')
+    monkeypatch.setattr(admission_hold, 'hold_reason', broken)
+    assert 'hold' not in cost_routes.guards()

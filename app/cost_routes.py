@@ -1,5 +1,5 @@
 """Owner cost page: what each paid call and each video cost, live."""
-from datetime import datetime
+from datetime import datetime, timezone
 from html import escape
 
 from fastapi import APIRouter, Cookie
@@ -58,14 +58,52 @@ def _kpi(label: str, value: str, note: str) -> str:
             + escape(note) + '</small></div>')
 
 
+def guards(*, now: datetime | None = None) -> dict:
+    """Read-only state of the spend limits and admission holds; never raises."""
+    now = now or datetime.now(timezone.utc)
+    result = {}
+    try:
+        from app.config import settings
+        cap = float(getattr(settings, 'cost_daily_cap_usd', 0) or 0)
+        if cap > 0:
+            result['daily_cap_usd'] = cap
+        from app.services.admission_hold import REASONS, hold_reason
+        reason = hold_reason(now=now)
+        if reason:
+            result['hold'] = {'reason_code': reason, 'message': REASONS[reason]}
+        from app.services import fal_video_catalog
+        if fal_video_catalog.primary_enabled(settings):
+            result['video_prices_valid_until'] = fal_video_catalog.VALID_UNTIL.isoformat()
+            result['video_prices_days_left'] = max(0, (fal_video_catalog.VALID_UNTIL - now).days)
+    except Exception:
+        pass
+    return result
+
+
+def _guard_notices(data: dict) -> str:
+    state = data.get('guards') or {}
+    notices = []
+    if state.get('hold'):
+        notices.append(escape(state['hold']['message']))
+    days_left = state.get('video_prices_days_left')
+    if type(days_left) is int and days_left <= 7:
+        until = datetime.fromisoformat(state['video_prices_valid_until']).astimezone(cost_meter.LOCAL_TZ)
+        notices.append('Video fiyat listesi ' + until.strftime('%d.%m.%Y') + ' tarihinde sona eriyor. '
+                       'Fiyatlar yeniden kontrol edilip liste yenilenmezse o günden sonra yeni video başlatılmaz.')
+    return ''.join('<p class="notice">' + notice + '</p>' for notice in notices)
+
+
 def render(data: dict):
     today, month = data['today'], data['month']
     unpriced = month.get('unpriced_calls', 0)
+    cap = (data.get('guards') or {}).get('daily_cap_usd')
     body = """<style>
 .cost-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}.cost-kpi{padding:14px 16px;border-radius:12px;background:#f2f7f4}.cost-kpi small{display:block;color:#667d73;font-size:12px}.cost-kpi b{font-size:24px}.cost-bar{display:grid;grid-template-columns:110px 1fr 76px;gap:10px;align-items:center;padding:6px 0;font-size:14px}.cost-bar div{background:#e5ebed;border-radius:6px;height:10px;overflow:hidden}.cost-bar i{display:block;height:100%;background:#26785c}.cost-bar b{text-align:right}.cost-day{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #e5ebed;font-size:14px}.cost-day span{color:#667d73}.cost-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.cost-item{padding:12px 0;border-bottom:1px solid #e5ebed}.cost-item:last-child,.cost-day:last-child{border:0}.cost-item-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.cost-item-top a{font-weight:700;overflow-wrap:break-word;min-width:0}.cost-item-top b{white-space:nowrap}.cost-item-meta{margin-top:6px;font-size:12px;color:#667d73;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}.cost-tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;white-space:nowrap}.cost-ok{background:#e3f2ea;color:#1e6b4f}.cost-wait{background:#eef1f4;color:#4d5b66}.cost-bad{background:#fbe9e7;color:#9a3b2c}.cost-event{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:4px 10px;padding:9px 0;border-bottom:1px solid #e5ebed;font-size:13px}.cost-event:last-child{border:0}.cost-event time{color:#667d73}.cost-event small{grid-column:2/4;color:#667d73;font-size:11px;overflow-wrap:anywhere}@media(max-width:900px){.cost-grid{grid-template-columns:1fr}.cost-bar{grid-template-columns:84px 1fr 66px}.cost-kpi b{font-size:21px}}
 </style><div class="hero"><div><div class="eyebrow">MALİYET</div><h1>Hangi iş ne kadara mal oldu?</h1><p class="muted">Her ücretli yapay zeka çağrısı yapıldığı anda buraya düşer. Sayfa dakikada bir yenilenir.</p></div></div>"""
+    body += _guard_notices(data)
     body += ('<div class="cost-kpis">'
-             + _kpi('Bugün', _usd(today['total']), str(today.get('calls', 0)) + ' çağrı')
+             + _kpi('Bugün', _usd(today['total']), str(today.get('calls', 0)) + ' çağrı'
+                    + (' · günlük sınır ' + _usd(cap) if cap else ''))
              + _kpi('Bu ay', _usd(month['total']), str(month.get('calls', 0)) + ' çağrı')
              + _kpi('Ay sonu tahmini', _usd(data['projected_month']), 'bugüne kadarki hızla')
              + _kpi('Yayınlanan video başına', _usd(data.get('per_published_video')), 'ortalama maliyet')
@@ -136,7 +174,7 @@ def costs(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
         data = cost_meter.summary()
     except Exception:
         return unavailable()
-    return render(data)
+    return render({**data, 'guards': guards()})
 
 
 @router.get('/studio/api/costs')
@@ -146,4 +184,4 @@ def costs_api(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)
         data = cost_meter.summary()
     except Exception:
         return JSONResponse({'detail': _UNAVAILABLE}, status_code=503)
-    return JSONResponse(data)
+    return JSONResponse({**data, 'guards': guards()})

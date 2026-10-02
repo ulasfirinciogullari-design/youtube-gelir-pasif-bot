@@ -59,6 +59,12 @@ class Settings(BaseSettings):
     # One Short's script stage (research, director, writer, critic and their
     # repairs, across Celery retries) may spend at most this many USD; 0 = off.
     cost_planning_task_cap_usd: float = 1.5
+    # A new scheduled video starts only while today's spend leaves at least this
+    # much room under COST_DAILY_CAP_USD, so the cap never cuts one off halfway.
+    cost_short_admission_reserve_usd: float = 1.5
+    # Do not start new videos while the Fal video price review has expired:
+    # every AI clip would be refused after script, voice and checks are paid.
+    studio_hold_on_expired_video_prices: bool = True
     gemini_critic_enabled: bool = False
     gemini_api_key: str = ''
     gemini_model: str = 'gemini-3.1-pro-preview'

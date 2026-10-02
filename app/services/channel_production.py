@@ -536,6 +536,10 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
                 **({'advance': True} if editorial['reason_code'] == 'owner_next_day_stock' else {}))
         if duration_minutes == 8 and getattr(settings, 'studio_spend_enforcement', False) is not True:
             return {'status': 'delivery_budget_not_enabled'}
+        from app.services.admission_hold import hold_reason
+        held = hold_reason(now=datetime.fromtimestamp(now, timezone.utc))
+        if held:
+            return {'status': 'admission_held', 'reason_code': held}
         if getattr(settings, 'studio_spend_enforcement', False) is True:
             from app.services.production_spend_runtime import preflight_scheduled_production, SpendBlocked
 
