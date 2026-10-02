@@ -33,7 +33,11 @@ transpose, rounded **up** to the next whole cent per request. These are list
 cost reservations, not invoices or account-balance claims. Existing funding
 evidence remains responsible for taxes and other account charges.
 
-The catalog was reviewed on 23 September 2026 and expires on 1 October 2026 UTC.
+The catalog was reviewed on 23 September 2026. The same list prices were
+re-checked on the pages below on 1 and 2 October 2026 (Veo Lite 720p silent
+$0.03/s; Seedance Pro silent $1.2 and Seedance Fast $1 per million tokens),
+so revision `fal-video-2026-10-01-v2` is valid from 23 September until
+1 November 2026 UTC.
 Sources: [Veo Lite](https://fal.ai/models/fal-ai/veo3.1/lite),
 [Seedance Pro](https://fal.ai/models/fal-ai/bytedance/seedance/v1.5/pro/text-to-video),
 [Seedance Fast](https://fal.ai/models/fal-ai/bytedance/seedance/v1/pro/fast/text-to-video).
@@ -60,7 +64,7 @@ replace an unfinished shot. Old direct-Gemini requests stay pinned; restore
 their provider mode to finish them before migrating those jobs.
 
 Normal enforced production requires Fal funding evidence bound to the actual
-key, exact endpoint and `fal-video-2026-09-23-v1` price revision. New scene plans
+key, exact endpoint and current catalog price revision. New scene plans
 enumerate the reviewed Fal shapes while keeping the existing scene/family
 ceilings. Missing, expired or exhausted funding stops before HTTP dispatch.
 No automatic top-up, ledger reset or provider fallback is introduced.

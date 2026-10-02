@@ -1,6 +1,7 @@
 """Reviewed silent video profiles shared by routing, requests and spending.
 
-Sources (2026-09-23): https://fal.ai/models/<endpoint> and /api.
+Sources (2026-09-23, re-checked unchanged 2026-10-01 and 2026-10-02):
+https://fal.ai/models/<endpoint> and /api.
 Only these exact request shapes are priced. Adding a model requires reviewing
 its duration, audio, resolution, tariff and preservation contract together.
 """
@@ -11,9 +12,9 @@ from app.services.production_spend import SpendBlocked, SpendQuote, usd_micro
 from app.services import channel_ids
 
 
-PRICE_REVISION = 'fal-video-2026-09-23-v1'
+PRICE_REVISION = 'fal-video-2026-10-01-v2'
 VALID_FROM = datetime(2026, 9, 23, tzinfo=timezone.utc)
-VALID_UNTIL = datetime(2026, 10, 1, tzinfo=timezone.utc)
+VALID_UNTIL = datetime(2026, 11, 1, tzinfo=timezone.utc)
 ORIGIN = 'https://queue.fal.run'
 MODELS = {
     'veo_lite': 'fal-ai/veo3.1/lite',
