@@ -15,6 +15,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal, ROUND_CEILING
 import json
+import math
 import re
 from urllib.parse import urlsplit
 
@@ -32,9 +33,12 @@ _TTL_DAYS = 120
 # USD list prices. Tokens are per million; seconds/characters/credits are per unit.
 PRICES = {
     'openai': {
-        'gpt-6-astra': {'input': 10.0, 'cached_input': 1.0, 'output': 50.0},
-        'gpt-5': {'input': 1.25, 'cached_input': 0.125, 'output': 10.0},
+        # Responses web_search tool: $10 per 1,000 calls (docs/series-research-budget.md).
+        'gpt-6-astra': {'input': 10.0, 'cached_input': 1.0, 'output': 50.0, 'web_search_call': 0.01},
+        'gpt-5': {'input': 1.25, 'cached_input': 0.125, 'output': 10.0, 'web_search_call': 0.01},
         'gpt-4.1-mini': {'input': 0.4, 'cached_input': 0.1, 'output': 1.6, 'web_search_call': 0.01},
+        # whisper_transcription: $0.006 per audio minute.
+        'whisper-1': {'audio_second': 0.0001},
     },
     'gemini': {
         'gemini-3.1-pro-preview': {'input': 2.0, 'output': 12.0},
@@ -63,7 +67,14 @@ PRICES = {
         'claude-sonnet-4-6': {'input': 3.0, 'output': 15.0},
     },
     # Plan-dependent; set the account's real rate with COST_METER_PRICES_JSON.
-    'elevenlabs': {'*': {'character': 0.00018}},
+    # Flash and Turbo bill half a credit per character; Scribe v2 is $0.22 per
+    # audio hour (commissioning_scribe).
+    'elevenlabs': {
+        '*': {'character': 0.00018},
+        'eleven_flash_v2_5': {'character': 0.00009},
+        'eleven_turbo_v2_5': {'character': 0.00009},
+        'scribe_v2': {'audio_second': 0.22 / 3600},
+    },
     # Kie bills credits (turbo 6, multilingual 12 per 1,000 characters).
     'kie': {
         'elevenlabs/text-to-speech-turbo-2-5': {'character_credits': 0.006, 'credit': 0.005},
@@ -153,6 +164,31 @@ def _tokens(provider, model, operation, input_tokens, output_tokens, cached=0):
             'units': f'{input_tokens} girdi + {output_tokens} çıktı token'}
 
 
+def _per_audio_second(provider, model, seconds, operation='transcription'):
+    rate = _rate(provider, model)
+    if rate is None or 'audio_second' not in rate or not seconds or seconds <= 0:
+        return _unpriced(provider, model, operation)
+    seconds = math.ceil(seconds)
+    return {'provider': provider, 'model': model, 'operation': operation,
+            'usd': float(Decimal(str(rate['audio_second'])) * seconds), 'priced': True,
+            'units': f'{seconds} sn ses'}
+
+
+def _transcribed_seconds(payload: dict | None) -> float:
+    """Audio length a transcription response reports, or 0 when it reports none."""
+    payload = payload or {}
+    usage = payload.get('usage')
+    if isinstance(usage, dict) and usage.get('type') == 'duration':
+        value = usage.get('seconds')
+    else:
+        value = payload.get('duration')
+    if type(value) in (int, float) and math.isfinite(value):
+        return float(value)
+    ends = [word.get('end') for word in payload.get('words') or [] if isinstance(word, dict)]
+    ends = [end for end in ends if type(end) in (int, float) and math.isfinite(end)]
+    return float(max(ends)) if ends else 0.0
+
+
 def estimate_openai_response(request: dict, response) -> dict:
     model = str(request.get('model') or _get(response, 'model') or '')
     usage = _get(response, 'usage')
@@ -190,8 +226,15 @@ def estimate_http(url: str, request_kwargs: dict, response) -> dict | None:
     parsed = urlsplit(url)
     host, path = parsed.hostname or '', parsed.path
     body = request_kwargs.get('json') if isinstance(request_kwargs.get('json'), dict) else {}
+    form = request_kwargs.get('data') if isinstance(request_kwargs.get('data'), dict) else {}
+    if host == 'api.elevenlabs.io' and path == '/v1/speech-to-text':
+        model = str(form.get('model_id') or 'scribe')
+        return _per_audio_second('elevenlabs', model, _transcribed_seconds(_json_body(response)))
     if host == 'api.elevenlabs.io':
         return _per_character('elevenlabs', str(body.get('model_id') or 'tts'), body.get('text'))
+    if host == 'api.openai.com' and path == '/v1/audio/transcriptions':
+        model = str(form.get('model') or '')
+        return _per_audio_second('openai', model, _transcribed_seconds(_json_body(response)))
     if host == 'queue.fal.run':
         model = path.lstrip('/')
         if 'text' in body and 'duration' not in body:
@@ -347,6 +390,39 @@ def check_daily_cap(*, client=None, now: datetime | None = None) -> None:
     if spent is not None and spent >= cap:
         from app.services.production_spend import SpendBlocked
         raise SpendBlocked('cost_daily_cap_reached')
+
+
+def task_total(task_id: str, *, client=None) -> float | None:
+    """Metered USD of one task across its Celery retries, or None when unreadable."""
+    try:
+        client = client or _client()
+        return float(client.hget(JOB_PREFIX + task_id, 'total') or 0.0)
+    except Exception:
+        return None
+
+
+def check_planning_task_cap(*, client=None) -> None:
+    """Stop a Short whose script stage keeps looping before it eats the day's budget.
+
+    Applies only inside the fresh planning route, so voice, visual checks and
+    video are never cut off by it. Like the daily cap, unreadable records
+    never block.
+    """
+    try:
+        from app.config import settings
+        from app.services.planning_model_routing import _FRESH_ROUTE
+        cap = float(getattr(settings, 'cost_planning_task_cap_usd', 0) or 0)
+        if cap <= 0 or not _FRESH_ROUTE.get():
+            return
+        task_id, _ = _task_context()
+    except Exception:
+        return
+    if not task_id:
+        return
+    spent = task_total(task_id, client=client)
+    if spent is not None and spent >= cap:
+        from app.services.production_spend import SpendBlocked
+        raise SpendBlocked('cost_planning_task_cap_reached')
 
 
 def observe_http(url, request_kwargs, response) -> None:

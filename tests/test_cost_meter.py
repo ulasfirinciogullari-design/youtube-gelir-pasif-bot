@@ -325,3 +325,98 @@ def test_new_system_defaults_are_the_cheaper_models_and_a_cap():
     assert fields['studio_fresh_plan_openai_model'].default == 'gpt-5'
     assert fields['studio_visual_qc_openai_model'].default == 'gpt-5'
     assert fields['cost_daily_cap_usd'].default == 8.0
+    assert fields['cost_planning_task_cap_usd'].default == 1.5
+
+
+def test_gpt5_web_searches_are_priced():
+    response = SimpleNamespace(usage={'input_tokens': 0, 'output_tokens': 0},
+                               output=[{'type': 'web_search_call'}, {'type': 'web_search_call'}])
+    entry = cost_meter.estimate_openai_response({'model': 'gpt-5'}, response)
+    assert entry['priced'] is True and entry['usd'] == pytest.approx(0.02)
+    assert '2 web araması' in entry['units']
+
+
+def test_flash_and_turbo_voices_cost_half_a_credit_per_character():
+    text = 'a' * 1000
+    for model in ('eleven_flash_v2_5', 'eleven_turbo_v2_5'):
+        entry = cost_meter.estimate_http('https://api.elevenlabs.io/v1/text-to-speech/v/with-timestamps',
+                                         {'json': {'text': text, 'model_id': model}}, None)
+        assert entry['usd'] == pytest.approx(0.09)
+    multilingual = cost_meter.estimate_http('https://api.elevenlabs.io/v1/text-to-speech/v',
+                                            {'json': {'text': text, 'model_id': 'eleven_multilingual_v2'}}, None)
+    assert multilingual['usd'] == pytest.approx(0.18)
+
+
+def _json_response(payload):
+    return httpx.Response(200, json=payload)
+
+
+def test_whisper_is_priced_from_the_reported_audio_length():
+    url = 'https://api.openai.com/v1/audio/transcriptions'
+    request = {'data': {'model': 'whisper-1', 'response_format': 'verbose_json'}, 'files': {'file': object()}}
+    entry = cost_meter.estimate_http(url, request, _json_response({'text': 'x', 'duration': 29.4}))
+    # 30 billed seconds at $0.006 per minute.
+    assert entry['priced'] is True and entry['usd'] == pytest.approx(0.003)
+    assert entry['model'] == 'whisper-1' and entry['operation'] == 'transcription'
+    usage = cost_meter.estimate_http(url, request, _json_response({'usage': {'type': 'duration', 'seconds': 60}}))
+    assert usage['usd'] == pytest.approx(0.006)
+    unknown = cost_meter.estimate_http(url, request, _json_response({'text': 'x'}))
+    assert unknown['priced'] is False
+
+
+def test_scribe_is_priced_from_the_last_word_end():
+    url = 'https://api.elevenlabs.io/v1/speech-to-text'
+    request = {'data': {'model_id': 'scribe_v2', 'language_code': 'tur'}, 'files': {'file': object()}}
+    payload = {'text': 'a b', 'words': [{'text': 'a', 'end': 1.0}, {'text': 'b', 'end': 3599.2}]}
+    entry = cost_meter.estimate_http(url, request, _json_response(payload))
+    assert entry['priced'] is True and entry['usd'] == pytest.approx(0.22)
+    assert cost_meter.estimate_http(url, request, _json_response({'text': ''}))['priced'] is False
+
+
+def test_planning_task_cap_stops_a_looping_script_stage_only(client, monkeypatch):
+    from app.services.production_spend import SpendBlocked
+    from app.services.planning_model_routing import _FRESH_ROUTE
+    monkeypatch.setattr(runtime.settings, 'cost_daily_cap_usd', 0, raising=False)
+    monkeypatch.setattr(runtime.settings, 'cost_planning_task_cap_usd', 1.5, raising=False)
+    monkeypatch.setattr(runtime.settings, 'studio_spend_enforcement', False, raising=False)
+    sdk = Mock()
+    sdk.responses.create.return_value = SimpleNamespace(usage=None, output=[])
+    _record_for('task-a', {'provider': 'openai', 'usd': 1.6, 'priced': True})
+    task = runtime._TASK_ID.set('task-a')
+    try:
+        runtime.paid_response(sdk, model='gpt-5', input='x')  # outside planning: never capped
+        route = _FRESH_ROUTE.set(('openai', 'gpt-5'))
+        try:
+            with pytest.raises(SpendBlocked, match='cost_planning_task_cap_reached'):
+                runtime.paid_response(sdk, model='gpt-5', input='x')
+            with pytest.raises(SpendBlocked, match='cost_planning_task_cap_reached'):
+                runtime.paid_post(Mock(), 'https://generativelanguage.googleapis.com/v1beta/models/m:generateContent',
+                                  json={})
+            other = runtime._TASK_ID.set('task-b')
+            try:
+                runtime.paid_response(sdk, model='gpt-5', input='x')  # another Short is unaffected
+            finally:
+                runtime._TASK_ID.reset(other)
+            monkeypatch.setattr(runtime.settings, 'cost_planning_task_cap_usd', 0, raising=False)
+            runtime.paid_response(sdk, model='gpt-5', input='x')
+        finally:
+            _FRESH_ROUTE.reset(route)
+    finally:
+        runtime._TASK_ID.reset(task)
+    assert sdk.responses.create.call_count == 3
+
+
+def test_planning_task_cap_never_blocks_on_unreadable_records(monkeypatch):
+    from app.services.planning_model_routing import _FRESH_ROUTE
+
+    def broken():
+        raise ConnectionError('down')
+    monkeypatch.setattr(runtime.settings, 'cost_planning_task_cap_usd', 0.01, raising=False)
+    monkeypatch.setattr(cost_meter, '_client', broken)
+    task = runtime._TASK_ID.set('task-a')
+    route = _FRESH_ROUTE.set(('openai', 'gpt-5'))
+    try:
+        cost_meter.check_planning_task_cap()
+    finally:
+        _FRESH_ROUTE.reset(route)
+        runtime._TASK_ID.reset(task)

@@ -601,6 +601,7 @@ def _native_sender_identity(sender, headers, provider):
 def paid_post(sender, url, **kwargs):
     """Guard a paid HTTP POST before its transport sees credentials or media."""
     cost_meter.check_daily_cap()
+    cost_meter.check_planning_task_cap()
     if getattr(settings, 'studio_elevenlabs_native_credits', False) is True:
         from app.services.production_credit_funding import ROUTE
         from app.services.narrator_rotation import VOICE_IDS, route
@@ -646,6 +647,7 @@ def paid_post(sender, url, **kwargs):
 
 def paid_response(client, **kwargs):
     cost_meter.check_daily_cap()
+    cost_meter.check_planning_task_cap()
     if enforcement_enabled():
         from app.services.production_spend_quotes import quote_openai_response
         if str(getattr(client, 'base_url', '')).rstrip('/') != 'https://api.openai.com/v1':

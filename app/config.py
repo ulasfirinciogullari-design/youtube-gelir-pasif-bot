@@ -56,6 +56,9 @@ class Settings(BaseSettings):
     # Stop new paid AI calls once today's metered spend (Turkey time) reaches
     # this many USD; 0 disables the cap. Running jobs fail with SpendBlocked.
     cost_daily_cap_usd: float = 8.0
+    # One Short's script stage (research, director, writer, critic and their
+    # repairs, across Celery retries) may spend at most this many USD; 0 = off.
+    cost_planning_task_cap_usd: float = 1.5
     gemini_critic_enabled: bool = False
     gemini_api_key: str = ''
     gemini_model: str = 'gemini-3.1-pro-preview'
