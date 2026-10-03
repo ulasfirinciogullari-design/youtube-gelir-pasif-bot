@@ -155,6 +155,16 @@ def _scheduled_short_shot_contract(options: dict, duration_minutes: float, fresh
     )
 
 
+_SCHEDULED_SHORT_MAX_SCENES = 6
+
+
+def _scheduled_short_scene_ceiling(options: dict, duration_minutes: float, fresh_scheduled: bool) -> int | None:
+    """Shot preparation accepts at most six scenes, so never plan a seventh one."""
+    if not _scheduled_short_shot_contract(options, duration_minutes, fresh_scheduled):
+        return None
+    return _SCHEDULED_SHORT_MAX_SCENES
+
+
 def _scheduled_short_shot_writer_rule(options: dict, duration_minutes: float, fresh_scheduled: bool) -> str:
     if not _scheduled_short_shot_contract(options, duration_minutes, fresh_scheduled):
         return ''
@@ -624,12 +634,16 @@ def _director_json_schema(
     *,
     exact_scene_count: bool = False,
     delivery_family: bool = False,
+    scene_ceiling: int | None = None,
 ) -> dict:
     if exact_scene_count:
         minimum_scenes = maximum_scenes = int(target_scenes)
     else:
         minimum_scenes = max(3, int(target_scenes) - 1)
         maximum_scenes = max(minimum_scenes, int(target_scenes) + 1)
+        if scene_ceiling is not None:
+            minimum_scenes = min(minimum_scenes, scene_ceiling)
+            maximum_scenes = max(minimum_scenes, min(maximum_scenes, scene_ceiling))
     scene_schema = {
         'type': 'object',
         'properties': {
@@ -1354,12 +1368,13 @@ def _scene_count_matches(
     target: int,
     *,
     exact_scene_count: bool,
+    scene_ceiling: int | None = None,
 ) -> bool:
-    return (
-        actual == target
-        if exact_scene_count
-        else abs(actual - target) <= 1
-    )
+    if exact_scene_count:
+        return actual == target
+    if scene_ceiling is not None and actual > scene_ceiling:
+        return False
+    return abs(actual - target) <= 1
 
 
 def _target_word_budget(
@@ -1973,6 +1988,10 @@ def _run_director(
     documentary_rule = _documentary_broll_writer_rule(style)
     explanatory_coda_rule = _documentary_explanatory_coda_rule(style)
     shot_capacity_rule = _scheduled_short_shot_writer_rule(options, duration_minutes, fresh_scheduled)
+    scene_ceiling = (
+        None if exact_scene_count
+        else _scheduled_short_scene_ceiling(options, duration_minutes, fresh_scheduled)
+    )
     stock_video_rule = _fresh_documentary_stock_video_rule(style, fresh_scheduled)
     spoken_budget_note = _spoken_word_budget_note(
         _ENGLISH_SHORT_SPOKEN_BUDGET if (target_words, min_words, max_words) == (65, 62, 66) else None
@@ -2108,6 +2127,8 @@ def _run_director(
         else (
             f'Target scene budget: approximately {target_scenes} scenes, '
             'never more than one scene away.'
+            + (f' Never return more than {scene_ceiling} scenes.'
+               if scene_ceiling is not None else '')
         )
     )
     production_scene_note = (
@@ -2200,7 +2221,7 @@ EDITORIAL QC RULES:
         from app.services import countable_stock_narration as countable
         from app.services import documentary_word_contract as documentary_words
         schema = schema_with_indices(_director_json_schema(target_scenes, exact_scene_count=exact_scene_count,
-            **({'delivery_family': True} if delivery_rule else {})))
+            scene_ceiling=scene_ceiling, **({'delivery_family': True} if delivery_rule else {})))
         long_word_slots = documentary_words.eligible(options, duration_minutes, language_name,
             target_scenes, (min_words, max_words), topic, correction)
         word_slots = countable.director_eligible(fresh_scheduled, language_name, duration_minutes,
@@ -2225,6 +2246,7 @@ EDITORIAL QC RULES:
             json_schema=_director_json_schema(
                 target_scenes,
                 exact_scene_count=exact_scene_count,
+                scene_ceiling=scene_ceiling,
                 **({'delivery_family': True} if delivery_rule else {}),
             ),
             max_tokens=8192,
@@ -2240,6 +2262,7 @@ EDITORIAL QC RULES:
             json_schema=_director_json_schema(
                 target_scenes,
                 exact_scene_count=exact_scene_count,
+                scene_ceiling=scene_ceiling,
                 **({'delivery_family': True} if delivery_rule else {}),
             ),
             google_search=False,
@@ -3226,6 +3249,7 @@ def _whole_story_repair_diagnostics(
     ai_scene_count: int,
     preview_ai_limit: int | None,
     short_editorial_issues: list[str],
+    scene_ceiling: int | None = None,
 ) -> dict:
     supplied_check_names = {str(check) for check in (failed_checks or [])}
     safe_failed_checks = sorted(
@@ -3241,6 +3265,7 @@ def _whole_story_repair_diagnostics(
         scene_count,
         target_scenes,
         exact_scene_count=exact_scene_count,
+        scene_ceiling=scene_ceiling,
     ):
         failed_deterministic_gates.append('scene_count')
     if preview_ai_limit is not None and ai_scene_count > preview_ai_limit:
@@ -3617,6 +3642,10 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         if immutable_scene_count is not None
         else _target_scene_count(duration_minutes, pace_profile)
     )
+    scene_ceiling = (
+        None if exact_scene_count
+        else _scheduled_short_scene_ceiling(options, duration_minutes, fresh_scheduled)
+    )
     scenes = package.get('scenes') or []
     if provider == 'openai' and not settings.openai_api_key:
         if (
@@ -3744,6 +3773,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                 scene_count,
                 target_scenes,
                 exact_scene_count=exact_scene_count,
+                scene_ceiling=scene_ceiling,
             )
             and ai_count_ok
             and not short_editorial_issues
@@ -3912,6 +3942,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                     scene_count,
                     target_scenes,
                     exact_scene_count=exact_scene_count,
+                    scene_ceiling=scene_ceiling,
                 )
                 and (
                     preview_ai_limit is None
@@ -3931,6 +3962,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
                     ai_scene_count=ai_scene_count,
                     preview_ai_limit=preview_ai_limit,
                     short_editorial_issues=short_editorial_issues,
+                    scene_ceiling=scene_ceiling,
                 )
                 raise ProductionContentError(
                     'Whole-story critic repair violated a deterministic '
@@ -3982,6 +4014,7 @@ def direct_and_qc(package: dict, topic: str, duration_minutes: float, language: 
         scene_count,
         target_scenes,
         exact_scene_count=exact_scene_count,
+        scene_ceiling=scene_ceiling,
     ):
         requirement = (
             f'required exactly {target_scenes}'

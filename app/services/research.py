@@ -15,6 +15,7 @@ from app.services.director import (
     _fresh_documentary_stock_video_rule,
     _explicit_scene_count_from_brief,
     _story_brief_for_qc,
+    _scheduled_short_scene_ceiling,
     _scheduled_short_shot_writer_rule,
     _fresh_spoken_word_budget,
     _spoken_word_budget_note,
@@ -60,12 +61,16 @@ def _research_json_schema(
     target_scenes: int,
     *,
     exact_scene_count: bool = False,
+    scene_ceiling: int | None = None,
 ) -> dict:
     if exact_scene_count:
         minimum_scenes = maximum_scenes = int(target_scenes)
     else:
         minimum_scenes = max(3, int(target_scenes) - 1)
         maximum_scenes = max(minimum_scenes, int(target_scenes) + 1)
+        if scene_ceiling is not None:
+            minimum_scenes = min(minimum_scenes, scene_ceiling)
+            maximum_scenes = max(minimum_scenes, min(maximum_scenes, scene_ceiling))
     scene_schema = {
         'type': 'object',
         'properties': {
@@ -297,6 +302,10 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
         else _target_scene_count(duration_minutes, pace)
     )
     exact_scene_count = explicit_scene_count is not None
+    scene_ceiling = (
+        None if exact_scene_count
+        else _scheduled_short_scene_ceiling(options, duration_minutes, fresh_scheduled)
+    )
     max_ai_scenes = _max_ai_scenes(target_scenes, options, duration_minutes)
     language_name = 'Turkish' if language.lower().startswith('tr') else language
     reference_note = (
@@ -369,13 +378,16 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
         if duration_minutes > 1.1
         else ''
     )
+    fewest_scenes, most_scenes = max(3, target_scenes - 1), target_scenes + 1
+    if scene_ceiling is not None:
+        fewest_scenes, most_scenes = min(fewest_scenes, scene_ceiling), min(most_scenes, scene_ceiling)
     scene_budget_note = (
         f'USER-BRIEF HARD CONSTRAINT: Create EXACTLY {target_scenes} scenes; '
         'one fewer or one extra scene is invalid.'
         if exact_scene_count
         else (
             f'Target scene budget: approximately {target_scenes} scenes; '
-            f'return {max(3, target_scenes - 1)}-{target_scenes + 1} scenes.'
+            f'return {fewest_scenes}-{most_scenes} scenes.'
         )
     )
 
@@ -454,7 +466,8 @@ FACT RULES:
         from app.services.included_research_sources import research_pages, source_prompt, consulted_source_schema
         consulted_pages = research_pages(topic)
         schema = consulted_source_schema(
-            _research_json_schema(target_scenes, exact_scene_count=exact_scene_count), consulted_pages)
+            _research_json_schema(target_scenes, exact_scene_count=exact_scene_count,
+                                  scene_ceiling=scene_ceiling), consulted_pages)
         generated = generate_text_json(prompt + stock_only_rule() + source_prompt(consulted_pages),
             schema, purpose='research')
         output_text = json.dumps(generated, ensure_ascii=False)
@@ -469,6 +482,7 @@ FACT RULES:
             json_schema=_research_json_schema(
                 target_scenes,
                 exact_scene_count=exact_scene_count,
+                scene_ceiling=scene_ceiling,
             ),
             google_search=True,
             thinking_level=reasoning_effort,
