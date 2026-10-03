@@ -58,6 +58,11 @@ class Settings(BaseSettings):
     # Scheduled production only on the channels named by STUDIO_CAPITAL_CHANNEL_ID
     # and STUDIO_MARGIN_CHANNEL_ID; any other connected channel has no ceiling.
     studio_production_managed_only: bool = True
+    # Every service of one deployment claims its Redis with this id at start;
+    # a Redis claimed by another id, or already full of another system's jobs,
+    # stops the start. Empty disables the check.
+    studio_deployment_id: str = 'new-system'
+    studio_adopt_existing_redis: bool = False
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )
@@ -87,7 +92,7 @@ class Settings(BaseSettings):
     # sets Capital to its own test channel and leaves Margin empty (off).
     studio_capital_channel_id: str = 'UC5v9AvNtD3PTLgo6m1jROOA'
     studio_margin_channel_id: str = 'UCgvESYtYbn2w9R2ExBOF_cw'
-    studio_video_provider: Literal['auto', 'legacy', 'fal'] = 'auto'
+    studio_video_provider: Literal['auto', 'legacy', 'fal'] = 'fal'
     studio_fal_video_model: Literal['auto', 'veo_lite', 'seedance_pro', 'seedance_fast'] = 'auto'
     google_client_id: str = ''
     google_client_secret: str = ''

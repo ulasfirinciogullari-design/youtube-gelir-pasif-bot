@@ -314,8 +314,8 @@ def spending_scene(prepared, scene_index):
             yield
         return
     if context.get('purpose') == 'series_preparation':
-        from app.services.production_series_spend import validate_request
-        validate_request(context, provider, operation, payload, quote, funding)
+        # Series preparation only plans topics; it never generates scenes.
+        raise SpendBlocked('spend_series_scene_not_supported')
     ledger.initialize_scene_plan(
         channel_id=context['channel_id'], lineage_id=context['lineage_id'], kind=context['kind'],
         connection_id=context['connection_id'], package_sha256=prepared.package_sha256,

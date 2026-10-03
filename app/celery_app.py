@@ -1,4 +1,5 @@
 from celery import Celery
+from celery.signals import beat_init, worker_init
 from app.config import settings
 
 celery = Celery(
@@ -47,3 +48,11 @@ celery.conf.update(
         },
     },
 )
+
+
+@worker_init.connect(weak=False)
+@beat_init.connect(weak=False)
+def _claim_redis(**_kwargs):
+    # Never consume or schedule another deployment's tasks.
+    from app.services.deployment_guard import claim
+    claim()

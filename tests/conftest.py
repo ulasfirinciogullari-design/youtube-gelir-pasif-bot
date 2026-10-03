@@ -11,7 +11,7 @@ def _live_system_defaults(monkeypatch, request):
     # Dispatch tests run without an ElevenLabs key or voice.
     monkeypatch.setattr(admission_hold, '_voice_missing', lambda: False)
     # The live system keeps its daily long film plus Shorts mix.
-    monkeypatch.setattr(settings, 'studio_default_shorts_per_day', 0)
+    monkeypatch.setattr(settings, 'studio_default_shorts_per_day', 0, raising=False)
 
 
 def pytest_configure(config):

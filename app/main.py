@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from html import escape
 from typing import Literal
 from urllib.parse import quote
@@ -34,7 +35,15 @@ from app.content_plan_routes import router as content_plan_router
 from app.growth_routes import router as growth_router
 from app.cost_routes import router as cost_router
 
-app = FastAPI(title='YouTube 7/24 Content Factory', version='2.0.0')
+@asynccontextmanager
+async def _lifespan(_app):
+    # Never serve another deployment's jobs from its Redis.
+    from app.services.deployment_guard import claim
+    claim()
+    yield
+
+
+app = FastAPI(title='YouTube 7/24 Content Factory', version='2.0.0', lifespan=_lifespan)
 app.include_router(studio_router)
 app.include_router(external_router)
 app.include_router(editorial_router)
