@@ -449,3 +449,30 @@ def test_guard_state_never_breaks_the_page(monkeypatch):
         raise RuntimeError('boom')
     monkeypatch.setattr(admission_hold, 'hold_reason', broken)
     assert 'hold' not in cost_routes.guards()
+
+
+def test_cost_page_lists_the_settings_that_decide_cost(client, monkeypatch):
+    from app import cost_routes
+    from app.config import settings
+    monkeypatch.setattr(settings, 'studio_fresh_plan_openai_model', 'gpt-5')
+    monkeypatch.setattr(settings, 'studio_video_provider', 'fal')
+    monkeypatch.setattr(settings, 'cost_daily_cap_usd', 8.0)
+    monkeypatch.setattr(settings, 'cost_planning_task_cap_usd', 0)
+    monkeypatch.setattr(settings, 'studio_shorts_policy_json', '')
+    monkeypatch.setattr(settings, 'studio_default_shorts_per_day', 5, raising=False)
+    rows = {row['label']: row['value'] for row in cost_routes.active_settings()}
+    assert rows['Senaryo modeli'] == 'gpt-5' and rows['AI video servisi'] == 'Fal'
+    assert rows['Günlük harcama sınırı'] == '$8.00' and rows['Bir Short için senaryo sınırı'] == 'kapalı'
+    assert rows['Günlük video'] == '5 Short' and rows['Video üretilen kanal'].endswith(' kanal')
+    html = cost_routes.render({**cost_meter.summary(now=NOW, jobs=[], videos={}),
+                               'settings': cost_routes.active_settings()}).body.decode()
+    assert 'Etkin ayarlar' in html and '5 Short' in html
+    assert 'Etkin ayarlar' not in cost_routes.render(cost_meter.summary(now=NOW, jobs=[], videos={})).body.decode()
+
+
+def test_settings_list_survives_a_broken_value(monkeypatch):
+    from app import cost_routes
+    from app.services import channel_ids
+    monkeypatch.delattr(channel_ids, 'MANAGED')
+    rows = {row['label']: row['value'] for row in cost_routes.active_settings()}
+    assert rows['Video üretilen kanal'] == '—'

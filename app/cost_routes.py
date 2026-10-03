@@ -80,6 +80,60 @@ def guards(*, now: datetime | None = None) -> dict:
     return result
 
 
+_VIDEO_PROVIDERS = {'fal': 'Fal', 'legacy': 'Runway', 'auto': 'Otomatik (Fal, gerekirse Runway)'}
+
+
+def _limit(value) -> str:
+    try:
+        value = float(value or 0)
+    except (TypeError, ValueError):
+        return '—'
+    return _usd(value) if value > 0 else 'kapalı'
+
+
+def active_settings() -> list[dict]:
+    """Read-only list of the settings that decide what a video costs; never raises."""
+    rows = []
+
+    def add(label, read):
+        try:
+            rows.append({'label': label, 'value': str(read())})
+        except Exception:
+            rows.append({'label': label, 'value': '—'})
+    from app.config import settings
+    add('Senaryo modeli', lambda: getattr(settings, 'studio_fresh_plan_openai_model', '') or '—')
+    add('Görüntü kontrol modeli', lambda: getattr(settings, 'studio_visual_qc_openai_model', '') or '—')
+    add('AI video servisi', lambda: _VIDEO_PROVIDERS.get(getattr(settings, 'studio_video_provider', ''), '—'))
+    add('Günlük harcama sınırı', lambda: _limit(getattr(settings, 'cost_daily_cap_usd', 0)))
+    add('Bir Short için senaryo sınırı', lambda: _limit(getattr(settings, 'cost_planning_task_cap_usd', 0)))
+
+    def shorts_per_day():
+        if str(getattr(settings, 'studio_shorts_policy_json', '') or '').strip():
+            return 'özel plan'
+        value = getattr(settings, 'studio_default_shorts_per_day', 0)
+        return str(value) + ' Short' if type(value) is int and 1 <= value <= 5 else 'günlük karışık plan'
+    add('Günlük video', shorts_per_day)
+
+    def managed():
+        from app.services import channel_ids
+        return str(len(channel_ids.MANAGED)) + ' kanal'
+    add('Video üretilen kanal', managed)
+    add('Eski ödeme onay sistemi',
+        lambda: 'açık' if getattr(settings, 'studio_spend_enforcement', False) is True else 'kapalı')
+    return rows
+
+
+def _settings_card(data: dict) -> str:
+    rows = data.get('settings') or []
+    if not rows:
+        return ''
+    return ('<section class="card"><h2>Etkin ayarlar</h2>'
+            + ''.join('<div class="cost-day"><span>' + escape(row['label']) + '</span><b>' + escape(row['value'])
+                      + '</b></div>' for row in rows)
+            + '<p class="tiny">Bu değerler Railway ortam değişkenlerinden okunur; değiştirmek için oradaki ayar '
+            'güncellenip servis yeniden başlatılır.</p></section>')
+
+
 def _guard_notices(data: dict) -> str:
     state = data.get('guards') or {}
     notices = []
@@ -150,6 +204,7 @@ def render(data: dict):
              + '<p class="tiny">Saatler Türkiye saatidir. Tutarlar liste fiyatından hesaplanan tahmindir, fatura değildir. Metin modellerinde '
              'servisin bildirdiği gerçek token sayısı kullanılır. Railway, ChatGPT, Abacus veya ses paketleri gibi sabit aylık '
              'abonelikler bu sayfaya girmez.</p></section>')
+    body += _settings_card(data)
     return _shell(body, active='costs', title='Maliyet · Studio',
                   script='<script>setTimeout(function(){location.reload()},60000)</script>')
 
@@ -174,7 +229,7 @@ def costs(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
         data = cost_meter.summary()
     except Exception:
         return unavailable()
-    return render({**data, 'guards': guards()})
+    return render({**data, 'guards': guards(), 'settings': active_settings()})
 
 
 @router.get('/studio/api/costs')
@@ -184,4 +239,4 @@ def costs_api(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)
         data = cost_meter.summary()
     except Exception:
         return JSONResponse({'detail': _UNAVAILABLE}, status_code=503)
-    return JSONResponse({**data, 'guards': guards()})
+    return JSONResponse({**data, 'guards': guards(), 'settings': active_settings()})
