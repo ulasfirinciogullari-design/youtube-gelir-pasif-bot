@@ -3,9 +3,11 @@
 Today any failed scheduled video pauses its channel until the owner resumes
 it. Here a Short that a quality gate rejected (story, voice, stock footage or
 render) releases the pause so the next topic can start, at most a few times a
-Turkey day. Every other failure, such as a spend block, a lost worker or an
-unverified review, still pauses. Nothing is retried, published or approved
-here, and the failed job keeps every record.
+Turkey day. A Short stopped by the new system's own spend caps also moves on:
+after the per-Short script cap the next topic starts soon, after the daily cap
+it starts the next Turkey day. Every other failure, such as another spend
+block, a lost worker or an unverified review, still pauses. Nothing is retried,
+published or approved here, and the failed job keeps every record.
 """
 from datetime import datetime, timedelta, timezone
 import json
@@ -20,6 +22,8 @@ PREFIX = 'youtube_studio:auto_advance:v1:'
 _CONTENT_REJECTIONS = frozenset({'story_rejected', 'audio_rejected', 'stock_rejected', 'render_rejected'})
 _LOCAL_TZ = timezone(timedelta(hours=3))
 _DELAY_SECONDS = 600
+# Exact SpendBlocked codes from cost_meter; the job error must match them whole.
+_COST_CAP_ERRORS = frozenset({'cost_planning_task_cap_reached', 'cost_daily_cap_reached'})
 
 
 def enabled() -> bool:
@@ -34,9 +38,31 @@ def _limit() -> int:
     return value if type(value) is int and 0 <= value <= 10 else 0
 
 
+def _advance_reason(job: dict) -> str | None:
+    from app.services.production_failures import _digest, classified_hold_reason
+
+    reason = classified_hold_reason(job)
+    if reason in _CONTENT_REJECTIONS:
+        return reason
+    error, evidence = job.get('error'), job.get('failure_classification')
+    if (reason is None and error in _COST_CAP_ERRORS and isinstance(evidence, dict)
+            and evidence.get('version') == 1
+            and evidence.get('code') == evidence.get('category') == 'spending_blocked'
+            and evidence.get('stage') == job.get('failure_stage')
+            and evidence.get('error_sha256') == _digest(error)):
+        return error
+    return None
+
+
+def _next_due(reason: str, now: float) -> float:
+    if reason != 'cost_daily_cap_reached':
+        return now + _DELAY_SECONDS
+    today = datetime.fromtimestamp(now, _LOCAL_TZ).replace(hour=0, minute=0, second=0, microsecond=0)
+    return (today + timedelta(days=1)).timestamp() + _DELAY_SECONDS
+
+
 def advance(channel_id: str, *, client=None, now: float | None = None) -> str:
     """One watched transition for one channel; returns what happened."""
-    from app.services.production_failures import classified_hold_reason
 
     now = time.time() if now is None else now
     client = client or production._redis()
@@ -63,7 +89,8 @@ def advance(channel_id: str, *, client=None, now: float | None = None) -> str:
                 or spec.get('production_channel_id') != channel_id
                 or spec.get('format') != 'shorts'):
             return 'not_eligible'
-        if classified_hold_reason(job) not in _CONTENT_REJECTIONS:
+        reason = _advance_reason(job)
+        if reason is None:
             return 'needs_owner'
         if pipe.sismember(day_key, task_id):
             return 'already_advanced'
@@ -71,7 +98,7 @@ def advance(channel_id: str, *, client=None, now: float | None = None) -> str:
             return 'daily_limit'
         pipe.multi()
         pipe.hdel(state_key, 'paused_reason')
-        pipe.hset(state_key, mapping={'next_due': str(now + _DELAY_SECONDS),
+        pipe.hset(state_key, mapping={'next_due': str(_next_due(reason, now)),
                                       'auto_advanced_task_id': task_id})
         pipe.sadd(day_key, task_id)
         pipe.expire(day_key, 3 * 86400)

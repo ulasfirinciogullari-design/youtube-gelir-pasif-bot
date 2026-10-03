@@ -27,8 +27,9 @@ def client(monkeypatch):
 
 
 def _failed(client, number, *, code='story_quality_exhausted', category='content_rejected',
-            stage='director_qc', fmt='shorts', paused='previous_render_failed'):
-    task_id, error = _task(number), 'Story rejected after the last correction'
+            stage='director_qc', fmt='shorts', paused='previous_render_failed',
+            error='Story rejected after the last correction'):
+    task_id = _task(number)
     client.set(production.JOB_PREFIX + task_id, json.dumps({
         'task_id': task_id, 'kind': 'render', 'state': 'FAILURE', 'error': error, 'failure_stage': stage,
         'spec': {'production_scheduled': True, 'production_channel_id': CHANNEL, 'format': fmt},
@@ -73,6 +74,41 @@ def test_other_failures_still_wait_for_the_owner(client, case):
     _failed(client, 1, **case)
     assert advance.advance(CHANNEL, now=NOW) == 'needs_owner'
     assert client.hget(production.CHANNEL_STATE_PREFIX + CHANNEL, 'paused_reason') == 'previous_render_failed'
+
+
+def test_script_spend_cap_moves_on_to_the_next_topic_soon(client):
+    _failed(client, 1, code='spending_blocked', category='spending_blocked', stage='research',
+            error='cost_planning_task_cap_reached')
+    assert advance.advance(CHANNEL, now=NOW) == 'advanced'
+    state = client.hgetall(production.CHANNEL_STATE_PREFIX + CHANNEL)
+    assert 'paused_reason' not in state and float(state['next_due']) == NOW + 600
+
+
+def test_daily_spend_cap_moves_on_the_next_turkey_day(client):
+    _failed(client, 1, code='spending_blocked', category='spending_blocked', stage='voice',
+            error='cost_daily_cap_reached')
+    assert advance.advance(CHANNEL, now=NOW) == 'advanced'
+    due = float(client.hget(production.CHANNEL_STATE_PREFIX + CHANNEL, 'next_due'))
+    local = advance.datetime.fromtimestamp(due, advance._LOCAL_TZ)
+    assert (local.hour, local.minute) == (0, 10) and NOW < due <= NOW + 86400 + 600
+
+
+@pytest.mark.parametrize('case', [
+    {'error': 'cost_daily_cap_reached!'},
+    {'error': 'cost_daily_cap_reached', 'code': 'unclassified_failure', 'category': 'unclassified'},
+])
+def test_spend_cap_needs_the_exact_classified_code(client, case):
+    _failed(client, 1, **{'code': 'spending_blocked', 'category': 'spending_blocked', 'stage': 'voice', **case})
+    assert advance.advance(CHANNEL, now=NOW) == 'needs_owner'
+
+
+def test_spend_cap_record_with_a_stale_digest_waits_for_the_owner(client):
+    task_id = _failed(client, 1, code='spending_blocked', category='spending_blocked', stage='voice',
+                      error='cost_daily_cap_reached')
+    job = json.loads(client.get(production.JOB_PREFIX + task_id))
+    job['error'] = 'cost_planning_task_cap_reached'
+    client.set(production.JOB_PREFIX + task_id, json.dumps(job))
+    assert advance.advance(CHANNEL, now=NOW) == 'needs_owner'
 
 
 @pytest.mark.parametrize('case', [{'fmt': 'landscape'}, {'paused': 'owner_paused'}])

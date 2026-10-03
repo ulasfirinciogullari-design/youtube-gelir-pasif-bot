@@ -575,6 +575,17 @@ def test_openai_adapter_single_configured_call_strict_schema_no_retries_or_stora
     api.close.assert_called_once()
 
 
+@pytest.mark.parametrize('model,value,expected', [
+    ('gpt-5', 12000, 12000), ('gpt-4.1-mini', 12000, 3600), ('gpt-5', 100, 3600),
+    ('gpt-5', 50000, 3600), ('gpt-5', True, 3600), ('gpt-5', None, 3600),
+])
+def test_reasoning_planner_gets_output_room_only_from_a_bounded_setting(case, model, value, expected):
+    if value is not None:
+        case.ns['settings'].studio_next_series_max_output_tokens = value
+    body = case.ns['_openai_request'](case.ns['_context'](case.profile, case.channel), ('openai', model, 'NOT_REAL_KEY'))
+    assert body['max_output_tokens'] == expected
+
+
 @pytest.mark.parametrize('raw', ['{"can_prepare":true,"can_prepare":false}', '{"x":NaN}', '[]', '{bad'])
 def test_openai_completed_but_invalid_json_is_definitively_bad_output(case, raw):
     api = Mock()

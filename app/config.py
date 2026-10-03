@@ -55,6 +55,9 @@ class Settings(BaseSettings):
     # (at most this many times a Turkey day) instead of pausing the channel.
     studio_auto_advance_after_rejection: bool = True
     studio_auto_advance_max_per_day: int = 3
+    # Output room for the next-series draft on a reasoning planner model; the
+    # reviewed gpt-4.1-mini route keeps 3600. Only used tokens are billed.
+    studio_next_series_max_output_tokens: int = 12000
     # Scheduled production only on the channels named by STUDIO_CAPITAL_CHANNEL_ID
     # and STUDIO_MARGIN_CHANNEL_ID; any other connected channel has no ceiling.
     studio_production_managed_only: bool = True
@@ -73,7 +76,7 @@ class Settings(BaseSettings):
     cost_daily_cap_usd: float = 8.0
     # One Short's script stage (research, director, writer, critic and their
     # repairs, across Celery retries) may spend at most this many USD; 0 = off.
-    cost_planning_task_cap_usd: float = 1.5
+    cost_planning_task_cap_usd: float = 2.5
     # A new scheduled video starts only while today's spend leaves at least this
     # much room under COST_DAILY_CAP_USD, so the cap never cuts one off halfway.
     cost_short_admission_reserve_usd: float = 1.5

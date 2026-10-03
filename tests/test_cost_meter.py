@@ -325,7 +325,7 @@ def test_new_system_defaults_are_the_cheaper_models_and_a_cap():
     assert fields['studio_fresh_plan_openai_model'].default == 'gpt-5'
     assert fields['studio_visual_qc_openai_model'].default == 'gpt-5'
     assert fields['cost_daily_cap_usd'].default == 8.0
-    assert fields['cost_planning_task_cap_usd'].default == 1.5
+    assert fields['cost_planning_task_cap_usd'].default == 2.5
 
 
 def test_gpt5_web_searches_are_priced():
