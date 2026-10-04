@@ -21,7 +21,7 @@ OPTIONS = {'mode': 'production', 'format': 'shorts'}
 def helpers():
     names = {'_effective_short_edit_target', '_short_preview_voice_duration_qc',
              '_strict_short_preview_render_qc', '_render_target_duration',
-             '_preview_duration_within_gate'}
+             '_preview_duration_within_gate', '_burn_short_captions'}
     definitions = [node for node in TREE.body if isinstance(node, ast.FunctionDef) and node.name in names]
     namespace = {'math': math}
     exec(compile(ast.Module(body=definitions, type_ignores=[]), str(SOURCE), 'exec'), namespace)
