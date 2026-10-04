@@ -26,7 +26,8 @@ class Settings(BaseSettings):
     # unknown historical cash; deactivate when the final budget is selected.
     studio_commissioning_video_generation: bool = False
     studio_commissioning_reasoning: bool = False
-    studio_series_multiple_attempts_enabled: bool = False
+    # New system: up to three next-series attempts a day so topics do not run dry.
+    studio_series_multiple_attempts_enabled: bool = True
     # Fixed audio model draws existing Abacus credits; separate explicit policy.
     studio_abacus_prepaid_audio: bool = False
     # Explicit synchronous retained-Capital review only; no automatic funding,
@@ -55,6 +56,8 @@ class Settings(BaseSettings):
     # (at most this many times a Turkey day) instead of pausing the channel.
     studio_auto_advance_after_rejection: bool = True
     studio_auto_advance_max_per_day: int = 3
+    # ... and pause again after this many in a row with no public video.
+    studio_auto_advance_max_in_a_row: int = 3
     # Fresh scheduled Shorts: a surprising first line, an answer-first ending
     # without a spoken subscribe line, and a short title (prompt guidance only).
     studio_shorts_growth_rule: bool = True
@@ -82,6 +85,9 @@ class Settings(BaseSettings):
     # Scheduled production only on the channels named by STUDIO_CAPITAL_CHANNEL_ID
     # and STUDIO_MARGIN_CHANNEL_ID; any other connected channel has no ceiling.
     studio_production_managed_only: bool = True
+    # Never schedule videos on the live bot's Capital or Margin channel, even
+    # when STUDIO_CAPITAL_CHANNEL_ID was left at its default.
+    studio_block_live_channels: bool = True
     # Every service of one deployment claims its Redis with this id at start;
     # a Redis claimed by another id, or already full of another system's jobs,
     # stops the start. Empty disables the check.
@@ -100,7 +106,10 @@ class Settings(BaseSettings):
     cost_planning_task_cap_usd: float = 2.5
     # A new scheduled video starts only while today's spend leaves at least this
     # much room under COST_DAILY_CAP_USD, so the cap never cuts one off halfway.
-    cost_short_admission_reserve_usd: float = 1.5
+    cost_short_admission_reserve_usd: float = 3.5
+    # Output-token limit for OpenAI calls that set none, while enforcement is
+    # off (enforcement has its own); 0 = no limit.
+    cost_openai_max_output_tokens: int = 24000
     # Do not start new videos while the Fal video price review has expired:
     # every AI clip would be refused after script, voice and checks are paid.
     studio_hold_on_expired_video_prices: bool = True

@@ -19,6 +19,7 @@ def settings(monkeypatch):
     monkeypatch.setattr(settings, 'elevenlabs_api_key', 'key')
     monkeypatch.setattr(settings, 'elevenlabs_voice_id', 'voice')
     monkeypatch.setattr(settings, 'studio_video_provider', 'fal')
+    monkeypatch.setattr(settings, 'fal_key', 'fal-test-key')
     monkeypatch.setattr(settings, 'studio_hold_on_expired_video_prices', True)
     monkeypatch.setattr(settings, 'cost_daily_cap_usd', 8.0)
     monkeypatch.setattr(settings, 'cost_short_admission_reserve_usd', 1.5)
@@ -41,6 +42,18 @@ def test_missing_voice_holds_before_any_script_is_paid(settings, monkeypatch, fi
     assert admission_hold.hold_reason(now=NOW) == 'voice_not_configured'
     monkeypatch.setattr(settings, 'studio_spend_enforcement', True)
     assert admission_hold.hold_reason(now=NOW) is None
+
+
+@pytest.mark.new_system_defaults
+def test_missing_fal_key_holds_while_fal_makes_the_clips(settings, monkeypatch):
+    monkeypatch.setattr(settings, 'fal_key', ' ')
+    assert admission_hold.hold_reason(now=NOW) == 'video_not_configured'
+    assert 'FAL_KEY' in admission_hold.REASONS['video_not_configured']
+    monkeypatch.setattr(settings, 'studio_video_provider', 'legacy')
+    assert admission_hold.hold_reason(now=NOW) is None
+    monkeypatch.setattr(settings, 'studio_video_provider', 'fal')
+    monkeypatch.setattr(settings, 'studio_spend_enforcement', True)
+    assert admission_hold.hold_reason(now=NOW) != 'video_not_configured'
 
 
 @pytest.mark.new_system_defaults
@@ -109,5 +122,41 @@ def test_new_system_defaults_guard_admission():
     from app.config import Settings
     fields = Settings.model_fields
     assert fields['studio_production_managed_only'].default is True
-    assert fields['cost_short_admission_reserve_usd'].default == 1.5
+    # Room for a full script stage (2.5) plus voice, checks and two clips.
+    assert fields['cost_short_admission_reserve_usd'].default == 3.5
     assert fields['studio_hold_on_expired_video_prices'].default is True
+
+
+def test_live_channels_never_get_scheduled_videos(production, monkeypatch):
+    from types import SimpleNamespace
+    from app.services import channel_ids
+    module, client = production
+    monkeypatch.setattr(admission_hold, 'hold_reason', lambda **_: None)
+    namespace = module.reserve_due_production.__globals__
+    monkeypatch.setitem(namespace, 'settings', SimpleNamespace(
+        **{**vars(namespace['settings']), 'studio_block_live_channels': True}))
+    for live in (channel_ids.CAPITAL_DEFAULT, channel_ids.MARGIN_DEFAULT):
+        assert module.reserve_due_production(_profile(channel_id=live), {**CONNECTION, 'id': live},
+                                             now=1000) == {'status': 'live_channel_blocked'}
+    profile = _profile()
+    _save(module, client, profile)
+    assert module.reserve_due_production(profile, CONNECTION, now=1000)['status'] == 'reserved'
+
+
+def test_cost_page_says_when_the_new_channel_is_not_set(monkeypatch):
+    from app import cost_routes
+    from app.config import settings
+    from app.services import channel_ids
+    monkeypatch.setattr(settings, 'studio_block_live_channels', True)
+    monkeypatch.setattr(channel_ids, 'MANAGED', (channel_ids.CAPITAL_DEFAULT,))
+    state = cost_routes.guards(now=NOW)
+    assert state['channel_not_set'] is True
+    assert 'STUDIO_CAPITAL_CHANNEL_ID' in cost_routes._guard_notices({'guards': state})
+    monkeypatch.setattr(channel_ids, 'MANAGED', ('UC' + 'e' * 22,))
+    assert 'channel_not_set' not in cost_routes.guards(now=NOW)
+
+
+def test_new_system_blocks_live_channels_by_default():
+    from app.config import Settings
+    assert Settings.model_fields['studio_block_live_channels'].default is True
+    assert Settings.model_fields['studio_series_multiple_attempts_enabled'].default is True

@@ -23,6 +23,7 @@ def client(monkeypatch):
     monkeypatch.setattr(settings, 'studio_spend_enforcement', False)
     monkeypatch.setattr(settings, 'studio_auto_advance_after_rejection', True)
     monkeypatch.setattr(settings, 'studio_auto_advance_max_per_day', 2)
+    monkeypatch.setattr(settings, 'studio_auto_advance_max_in_a_row', 5)
     return fake
 
 
@@ -76,12 +77,35 @@ def test_other_failures_still_wait_for_the_owner(client, case):
     assert client.hget(production.CHANNEL_STATE_PREFIX + CHANNEL, 'paused_reason') == 'previous_render_failed'
 
 
-def test_script_spend_cap_moves_on_to_the_next_topic_soon(client):
+def test_script_spend_cap_waits_for_the_owner(client):
+    # A Short that hit its script cap points at a looping planner, not one bad topic.
     _failed(client, 1, code='spending_blocked', category='spending_blocked', stage='research',
             error='cost_planning_task_cap_reached')
-    assert advance.advance(CHANNEL, now=NOW) == 'advanced'
-    state = client.hgetall(production.CHANNEL_STATE_PREFIX + CHANNEL)
-    assert 'paused_reason' not in state and float(state['next_due']) == NOW + 600
+    assert advance.advance(CHANNEL, now=NOW) == 'needs_owner'
+
+
+def test_failures_in_a_row_without_a_public_video_pause_again(client, monkeypatch):
+    monkeypatch.setattr(settings, 'studio_auto_advance_max_in_a_row', 2)
+    for number, day in ((1, 0), (2, 1)):
+        _failed(client, number)
+        assert advance.advance(CHANNEL, now=NOW + day * 86400) == 'advanced'
+    _failed(client, 3)
+    assert advance.advance(CHANNEL, now=NOW + 2 * 86400) == 'too_many_in_a_row'
+    state_key = production.CHANNEL_STATE_PREFIX + CHANNEL
+    assert client.hget(state_key, 'paused_reason') == 'previous_render_failed'
+    # A video that went public after the run began resets it.
+    client.hset(state_key, 'last_public_continued_at', str(NOW + 2 * 86400 - 60))
+    assert advance.advance(CHANNEL, now=NOW + 2 * 86400) == 'advanced'
+    state = client.hgetall(state_key)
+    assert state['auto_advance_streak'] == '1' and float(state['auto_advance_streak_since']) == NOW + 2 * 86400
+
+
+@pytest.mark.parametrize('field,value', [('auto_advance_streak', 'x'), ('auto_advance_streak_since', 'nan'),
+                                         ('auto_advance_streak', '-1')])
+def test_unreadable_run_count_waits_for_the_owner(client, field, value):
+    _failed(client, 1)
+    client.hset(production.CHANNEL_STATE_PREFIX + CHANNEL, field, value)
+    assert advance.advance(CHANNEL, now=NOW) == 'too_many_in_a_row'
 
 
 def test_daily_spend_cap_moves_on_the_next_turkey_day(client):
@@ -136,3 +160,4 @@ def test_new_system_default_is_on_with_three_a_day():
     from app.config import Settings
     assert Settings.model_fields['studio_auto_advance_after_rejection'].default is True
     assert Settings.model_fields['studio_auto_advance_max_per_day'].default == 3
+    assert Settings.model_fields['studio_auto_advance_max_in_a_row'].default == 3

@@ -476,3 +476,22 @@ def test_settings_list_survives_a_broken_value(monkeypatch):
     monkeypatch.delattr(channel_ids, 'MANAGED')
     rows = {row['label']: row['value'] for row in cost_routes.active_settings()}
     assert rows['Video üretilen kanal'] == '—'
+
+
+def test_runaway_output_is_bounded_while_enforcement_is_off(monkeypatch):
+    from unittest.mock import Mock
+    from app.config import Settings
+    monkeypatch.setattr(runtime.settings, 'studio_spend_enforcement', False)
+    monkeypatch.setattr(runtime.settings, 'cost_openai_max_output_tokens', 24000, raising=False)
+    monkeypatch.setattr(runtime.cost_meter, 'check_daily_cap', lambda: None)
+    monkeypatch.setattr(runtime.cost_meter, 'check_planning_task_cap', lambda: None)
+    monkeypatch.setattr(runtime.cost_meter, 'observe_openai', lambda *_args: None)
+    client = Mock()
+    runtime.paid_response(client, model='gpt-5', input='x')
+    assert client.responses.create.call_args.kwargs['max_output_tokens'] == 24000
+    runtime.paid_response(client, model='gpt-5', input='x', max_output_tokens=5000)
+    assert client.responses.create.call_args.kwargs['max_output_tokens'] == 5000
+    monkeypatch.setattr(runtime.settings, 'cost_openai_max_output_tokens', 0)
+    runtime.paid_response(client, model='gpt-5', input='x')
+    assert 'max_output_tokens' not in client.responses.create.call_args.kwargs
+    assert Settings.model_fields['cost_openai_max_output_tokens'].default == 24000

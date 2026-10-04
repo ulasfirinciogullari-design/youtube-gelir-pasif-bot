@@ -10,6 +10,7 @@ from app.config import settings
 
 REASONS = {
     'voice_not_configured': 'Seslendirme anahtarı veya ses seçilmemiş; yeni video başlatılmıyor.',
+    'video_not_configured': 'AI video anahtarı (FAL_KEY) girilmemiş; yeni video başlatılmıyor.',
     'video_price_review_expired': 'Video fiyat listesinin süresi doldu; yenilenene kadar yeni video başlatılmıyor.',
     'daily_cap_near': 'Günlük harcama sınırına yaklaşıldı; yeni video yarın başlayacak.',
 }
@@ -25,6 +26,14 @@ def _voice_missing() -> bool:
         return True
     from app.services.voice import get_selected_voice
     return not get_selected_voice().get('voice_id')
+
+
+def _video_key_missing() -> bool:
+    # Without the key every AI scene fails after the script and voice are paid.
+    from app.services.production_spend_runtime import enforcement_enabled
+    from app.services import fal_video_catalog
+    return (not enforcement_enabled() and fal_video_catalog.primary_enabled(settings)
+            and not str(getattr(settings, 'fal_key', '') or '').strip())
 
 
 def _video_prices_expired(now: datetime) -> bool:
@@ -48,6 +57,7 @@ def hold_reason(*, now: datetime | None = None) -> str | None:
     """The first reason a new scheduled video must wait, or None."""
     now = now or datetime.now(timezone.utc)
     for reason, check in (('voice_not_configured', _voice_missing),
+                          ('video_not_configured', _video_key_missing),
                           ('video_price_review_expired', lambda: _video_prices_expired(now)),
                           ('daily_cap_near', lambda: _daily_cap_near(now))):
         try:

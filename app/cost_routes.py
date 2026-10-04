@@ -71,6 +71,10 @@ def guards(*, now: datetime | None = None) -> dict:
         reason = hold_reason(now=now)
         if reason:
             result['hold'] = {'reason_code': reason, 'message': REASONS[reason]}
+        from app.services import channel_ids
+        if (getattr(settings, 'studio_block_live_channels', False) is True
+                and {channel_ids.CAPITAL_DEFAULT, channel_ids.MARGIN_DEFAULT} & set(channel_ids.MANAGED)):
+            result['channel_not_set'] = True
         from app.services import fal_video_catalog
         if fal_video_catalog.primary_enabled(settings):
             result['video_prices_valid_until'] = fal_video_catalog.VALID_UNTIL.isoformat()
@@ -137,6 +141,9 @@ def _settings_card(data: dict) -> str:
 def _guard_notices(data: dict) -> str:
     state = data.get('guards') or {}
     notices = []
+    if state.get('channel_not_set'):
+        notices.append('Yeni kanalın kimliği (STUDIO_CAPITAL_CHANNEL_ID) girilmemiş. Canlı sistemin kanallarına '
+                       'video üretilmez; kimlik girilene kadar yeni video başlamaz.')
     if state.get('hold'):
         notices.append(escape(state['hold']['message']))
     days_left = state.get('video_prices_days_left')

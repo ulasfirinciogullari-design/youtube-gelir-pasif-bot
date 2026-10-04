@@ -484,6 +484,10 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
     connection_id = str(connection.get('connection_id') or '')
     if connection.get('id') != channel_id or not _ID.fullmatch(connection_id):
         return {'status': 'connection_missing'}
+    if getattr(settings, 'studio_block_live_channels', False) is True:
+        from app.services import channel_ids
+        if channel_id in {channel_ids.CAPITAL_DEFAULT, channel_ids.MARGIN_DEFAULT}:
+            return {'status': 'live_channel_blocked'}
     if getattr(settings, 'studio_production_managed_only', False) is True:
         from app.services import channel_ids
         if channel_id not in channel_ids.MANAGED:
