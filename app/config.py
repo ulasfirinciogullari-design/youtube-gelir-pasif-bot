@@ -55,6 +55,27 @@ class Settings(BaseSettings):
     # (at most this many times a Turkey day) instead of pausing the channel.
     studio_auto_advance_after_rejection: bool = True
     studio_auto_advance_max_per_day: int = 3
+    # Fresh scheduled Shorts: a surprising first line, an answer-first ending
+    # without a spoken subscribe line, and a short title (prompt guidance only).
+    studio_shorts_growth_rule: bool = True
+    # Research for production Shorts also reads the channel's audience feedback,
+    # and Turkish Shorts research writes to the director's 48-54 word range.
+    studio_research_audience_rule: bool = True
+    studio_research_turkish_short_budget: bool = True
+    # Publish metadata: an English video lists "Sources:" instead of
+    # "Kaynaklar:", and #Shorts goes after the topic hashtags.
+    studio_publish_metadata_v2: bool = True
+    # Translate published Shorts' titles and captions into the channel's
+    # growth languages. Off in the new system: the voice stays one language.
+    studio_localize_shorts: bool = False
+    # The next-series planner asks for broad-appeal 30-second topics on a
+    # Shorts-only channel, and trend hints follow the channel's language.
+    studio_shorts_topic_appeal: bool = True
+    # Start scheduled videos only in the audience's waking hours (Turkish:
+    # 08-23 Istanbul, English: 07-22 New York) and at least this many minutes
+    # after the last public one; 0 = no spacing.
+    studio_release_window: bool = True
+    studio_release_min_gap_minutes: int = 90
     # Output room for the next-series draft on a reasoning planner model; the
     # reviewed gpt-4.1-mini route keeps 3600. Only used tokens are billed.
     studio_next_series_max_output_tokens: int = 12000

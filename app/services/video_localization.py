@@ -384,6 +384,7 @@ def maintain():
     from app.production_tasks import localize_published_video
     client = runtime.configured_ledger(read_timeout=2).client
     from app.services import youtube_quota_recovery as quota, shorts_experiment_stock as experiment
+    from app.config import settings
     if quota.waiting(client=client) or experiment.pending(client):
         return {'status': 'primary_publication_priority'}
     if not client.set(PREFIX + 'dispatch_throttle', '1', nx=True, ex=300):
@@ -399,6 +400,11 @@ def maintain():
     for source_id in dict.fromkeys(candidates):
         try:
             source, receipt = _source(client, source_id)
+            if (source['spec'].get('format') == 'shorts'
+                    and getattr(settings, 'studio_localize_shorts', True) is not True):
+                # The voice stays in one language; foreign titles alone can
+                # show a Short to viewers who cannot follow it.
+                continue
             channel, video = receipt['target_channel_id'], receipt['youtube_video_id']
             targets = [lang for lang in strategy.read_settings(channel, client=client)['languages']
                 if lang != source['spec']['language']]

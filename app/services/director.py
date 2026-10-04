@@ -181,6 +181,36 @@ def _scheduled_short_shot_writer_rule(options: dict, duration_minutes: float, fr
         'required identity, use ellipses as omitted direction, or truncate a shot.'
     )
 
+_SHORTS_GROWTH_RULE = (
+    'SHORTS GROWTH (this fresh scheduled Short only; it takes precedence over the '
+    'generic opening suggestion and the NEW-SCRIPT ENGAGEMENT closing preference): '
+    'HOOK: the first spoken sentence lands the single most surprising '
+    'source-supported consequence, number or contrast about the visible subject '
+    'within its first 7 Turkish or 9 English words. Never open with a greeting, a '
+    'date, scene-setting or stock openers such as "Hiç merak ettiniz mi", '
+    '"Biliyor muydunuz", "Have you ever wondered" or "Did you know". The rest of '
+    'the Short explains why or how, and the final scene completes that answer. '
+    'Among true answers the sources support, prefer the most counterintuitive '
+    'one, never exaggerated beyond the evidence. Scene 0 visual_queries ask for '
+    'the most motion-rich close-up of that same subject; the first and the final '
+    'scene use transition cut. '
+    'ENDING: end on the answer itself or its most striking concrete consequence; '
+    'no spoken closing question, subscribe invitation or sign-off. '
+    'TITLE: at most 55 characters, the subject first, framed as a curiosity the '
+    'narration really answers; truthful, never a promise the video does not keep, '
+    'and not a word-for-word copy of the first spoken sentence. '
+    'These are writing preferences, not new acceptance gates.'
+)
+
+
+def shorts_growth_rule(options: dict, duration_minutes: float, fresh_scheduled: bool) -> str:
+    """New system: hook, ending and title guidance for fresh scheduled Shorts, prompt only."""
+    if (getattr(settings, 'studio_shorts_growth_rule', False) is not True
+            or not _scheduled_short_shot_contract(options, duration_minutes, fresh_scheduled)):
+        return ''
+    return _SHORTS_GROWTH_RULE
+
+
 _EXPLICIT_SCENE_COUNT_WORDS = {
     'bir': 1,
     'iki': 2,
@@ -2214,6 +2244,9 @@ EDITORIAL QC RULES:
 - Total narration word count must be between {min_words} and {max_words}.
 - qc_summary is a short list of the main editorial repairs.
 '''
+    growth_rule = shorts_growth_rule(options, duration_minutes, fresh_scheduled)
+    if growth_rule:
+        prompt += growth_rule + '\n'
     reasoning_effort = 'medium' if correction else 'low'
     if _studio_plan_provider() == 'abacus_included':
         from app.services.production_included_router import generate_text_json, stock_only_rule

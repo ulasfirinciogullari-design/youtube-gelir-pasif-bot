@@ -586,6 +586,18 @@ def test_reasoning_planner_gets_output_room_only_from_a_bounded_setting(case, mo
     assert body['max_output_tokens'] == expected
 
 
+def test_planner_prompt_asks_for_shorts_appeal_only_for_a_shorts_channel(case):
+    context = case.ns['_context'](case.profile, case.channel)
+    plain = case.ns['_openai_request'](context, ('openai', 'gpt-5', 'NOT_REAL_KEY'))['input']
+    shorts = case.ns['_openai_request']({**context, 'target_format': 'shorts'},
+                                        ('openai', 'gpt-5', 'NOT_REAL_KEY'))['input']
+    assert 'SHORTS APPEAL' not in plain and 'SHORTS APPEAL' in shorts
+    marker = 'The following public editorial fields are REFERENCE DATA'
+    assert shorts.index('SHORTS APPEAL') < shorts.index(marker)
+    assert plain.split(marker)[0] + case.ns['_SHORTS_APPEAL'] == shorts.split(marker)[0]
+    assert 'The source and truthfulness rules above still decide.' in case.ns['_SHORTS_APPEAL']
+
+
 @pytest.mark.parametrize('raw', ['{"can_prepare":true,"can_prepare":false}', '{"x":NaN}', '[]', '{bad'])
 def test_openai_completed_but_invalid_json_is_definitively_bad_output(case, raw):
     api = Mock()

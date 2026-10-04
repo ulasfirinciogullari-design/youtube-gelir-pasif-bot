@@ -183,11 +183,19 @@ def relevant(profile, *, data=None):
     return selected[:12]
 
 
+# Regions whose search interest matches a narration language.
+LANGUAGE_REGIONS = {'tr': {'TR'}, 'en': {'US', 'GB'}, 'es': {'MX'}}
+
+
 def planning_context(profile, *, client=None):
     from app.services.audience_strategy import read_settings
     if not read_settings(profile['channel_id'], client=client)['trend_enabled']:
         return None
     rows = [r for r in relevant(profile, data=snapshot(client=client)) if r['fresh']]
+    regions = LANGUAGE_REGIONS.get(profile.get('default_language'))
+    if getattr(settings, 'studio_shorts_topic_appeal', False) is True and regions:
+        # A Turkish Short gains nothing from a term only searched in Brazil.
+        rows = [r for r in rows if regions & set(r.get('regions') or ())]
     if not rows:
         return None
     return {'basis': 'observed_google_search_interest_not_youtube_views', 'signals': rows[:8],

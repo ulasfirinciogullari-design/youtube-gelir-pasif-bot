@@ -523,6 +523,10 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
             return {'status': 'paused', 'reason': state['paused_reason']}
         if cursor >= len(topics):
             return {'status': 'topics_exhausted'}
+        from app.services.release_window import wait_reason
+        waiting = wait_reason(language, state, now)
+        if waiting:
+            return {'status': 'release_waiting', 'reason_code': waiting}
         topic = topics[cursor]
         identity = str(profile.get('channel_identity') or '').strip()[:240]
         brief = topic + (f'\n\nChannel editorial direction: {identity}' if identity else '')

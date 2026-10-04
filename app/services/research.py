@@ -16,6 +16,8 @@ from app.services.director import (
     _explicit_scene_count_from_brief,
     _story_brief_for_qc,
     _scheduled_short_scene_ceiling,
+    _target_word_budget as _director_target_word_budget,
+    shorts_growth_rule,
     _scheduled_short_shot_writer_rule,
     _fresh_spoken_word_budget,
     _spoken_word_budget_note,
@@ -250,6 +252,28 @@ def _max_ai_scenes(scene_count: int, options: dict, duration_minutes: float) -> 
     return min(4, max(1, math.ceil(scene_count * 0.24)))
 
 
+def _calibrated_turkish_short(requested_brief: str, duration_minutes: float, language: str,
+                              options: dict) -> bool:
+    return (
+        getattr(settings, 'studio_research_turkish_short_budget', False) is True
+        and duration_minutes == 0.5
+        and options.get('mode') == 'production' and options.get('format') == 'shorts'
+        and str(language or '').replace('_', '-').casefold().split('-')[0] == 'tr'
+        and _exact_narration_lock_from_brief(requested_brief) is None
+    )
+
+
+def _research_growth_rules(options: dict, duration_minutes: float, fresh_scheduled: bool) -> str:
+    rules = [shorts_growth_rule(options, duration_minutes, fresh_scheduled)]
+    if (getattr(settings, 'studio_research_audience_rule', False) is True
+            and duration_minutes <= 1 and options.get('mode') == 'production'
+            and options.get('format') == 'shorts'):
+        # The angle is chosen here, so the audience feedback belongs here too.
+        from app.services.audience_strategy import writer_rule as audience_writer_rule
+        rules.append(audience_writer_rule(options.get('production_channel_id'), duration_minutes))
+    return ''.join(rule + '\n' for rule in rules if rule)
+
+
 def research_and_script(topic: str, duration_minutes: float, language: str, options: dict | None = None,
                         *, fresh_scheduled: bool = False) -> dict:
     provider = _studio_plan_provider()
@@ -296,6 +320,10 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
             spoken_word_budget['target_words'], spoken_word_budget['minimum_words'],
             spoken_word_budget['maximum_words'],
         )
+    elif _calibrated_turkish_short(requested_brief, duration_minutes, language, options):
+        # Write to the same 48-54 word range the director enforces, so a
+        # Turkish Short does not need a paid correction just to lose words.
+        target_words, min_words, max_words = _director_target_word_budget(0.5, calibrated_short_words=51)
     target_scenes = (
         explicit_scene_count
         if explicit_scene_count is not None
@@ -460,6 +488,7 @@ FACT RULES:
 - sources must be evidence records from pages actually used, never a bare URL list.
 - Every evidence sentence must directly support the {central_claim}; omit interesting but unused sources.
 '''
+    prompt += _research_growth_rules(options, duration_minutes, fresh_scheduled)
     consulted_pages = None
     if provider == 'abacus_included':
         from app.services.production_included_router import generate_text_json, stock_only_rule

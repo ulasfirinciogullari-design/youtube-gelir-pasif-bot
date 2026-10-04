@@ -131,6 +131,15 @@ def _hashtags(values: Iterable[Any] | str | None) -> list[str]:
     return _string_list(cleaned, maximum_items=15, maximum_length=60)
 
 
+def _publish_metadata_v2() -> bool:
+    # Imported here: isolated publisher tests load this module without imports.
+    try:
+        from app.config import settings as config
+    except ImportError:
+        return False
+    return getattr(config, 'studio_publish_metadata_v2', False) is True
+
+
 def _language(value: Any, fallback: str = 'tr') -> str:
     normalized = str(value or '').strip().replace('_', '-').casefold()
     if not _LANGUAGE_PATTERN.fullmatch(normalized):
@@ -579,14 +588,18 @@ def build_publish_plan(
         maximum_items=20,
         maximum_length=400,
     )
+    metadata_v2 = _publish_metadata_v2()
     if sources:
-        description += '\n\nKaynaklar:\n' + '\n'.join(sources)
+        heading = 'Sources:' if metadata_v2 and language.split('-')[0] == 'en' else 'Kaynaklar:'
+        description += '\n\n' + heading + '\n' + '\n'.join(sources)
     footer = str(profile.get('description_footer') or '').strip()
     if footer:
         description += '\n\n' + footer
     hashtag_values = [*metadata_hashtags, *_items(profile.get('hashtags'))]
     if spec.get('format') == 'shorts':
-        hashtag_values = ['Shorts', *hashtag_values]
+        # Only the first three hashtags show above the title, so the new
+        # system keeps those for the topic and adds Shorts last.
+        hashtag_values = [*hashtag_values, 'Shorts'] if metadata_v2 else ['Shorts', *hashtag_values]
     elif spec.get('format') == 'landscape':
         hashtag_values = [value for value in hashtag_values
                           if str(value).strip().lstrip('#').casefold() != 'shorts']
