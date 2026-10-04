@@ -16,7 +16,7 @@ def _live_system_defaults(monkeypatch, request):
     for name in ('studio_shorts_growth_rule', 'studio_research_audience_rule',
                  'studio_research_turkish_short_budget', 'studio_publish_metadata_v2',
                  'studio_shorts_topic_appeal', 'studio_release_window', 'studio_block_live_channels',
-                 'studio_series_multiple_attempts_enabled'):
+                 'studio_series_multiple_attempts_enabled', 'studio_shorts_burned_captions'):
         monkeypatch.setattr(settings, name, False, raising=False)
     monkeypatch.setattr(settings, 'studio_localize_shorts', True, raising=False)
     # Far-future test clocks are past the reviewed Fal price list.

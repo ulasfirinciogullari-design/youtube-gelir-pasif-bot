@@ -315,25 +315,24 @@ def _caption_chunks(narration: str, max_words: int = 7) -> list[str]:
     return chunks
 
 
-def make_scene_srt(
+def _scene_caption_cues(
     scenes: list[dict],
     scene_durations: list[float],
     total_duration: float,
-    output_path: str | Path,
-) -> str:
-    """Create a sidecar SRT. It is never burned into the master video."""
+    chunker=_caption_chunks,
+) -> list[tuple[float, float, str]]:
+    """Caption chunks inside each scene's window, weighted by their length."""
     raw_total = sum(scene_durations) or total_duration or 1.0
     scale = total_duration / raw_total if raw_total else 1.0
     cursor = 0.0
-    lines: list[str] = []
-    caption_index = 1
+    cues: list[tuple[float, float, str]] = []
 
     for scene_idx, scene in enumerate(scenes):
         if scene_idx >= len(scene_durations):
             break
         scene_duration = max(0.2, scene_durations[scene_idx] * scale)
         narration = str(scene.get('narration') or '').strip()
-        parts = _caption_chunks(narration)
+        parts = chunker(narration)
         if not parts:
             cursor += scene_duration
             continue
@@ -351,19 +350,114 @@ def make_scene_srt(
                 )
             if end <= local_cursor:
                 continue
-            lines.extend([
-                str(caption_index),
-                f'{_srt_timestamp(local_cursor)} --> {_srt_timestamp(end)}',
-                part,
-                '',
-            ])
-            caption_index += 1
+            cues.append((local_cursor, end, part))
             local_cursor = end
         cursor = scene_end
+    return cues
+
+
+def make_scene_srt(
+    scenes: list[dict],
+    scene_durations: list[float],
+    total_duration: float,
+    output_path: str | Path,
+) -> str:
+    """Create a sidecar SRT. The SRT itself is never burned into the video."""
+    lines: list[str] = []
+    for caption_index, (start, end, part) in enumerate(
+            _scene_caption_cues(scenes, scene_durations, total_duration), start=1):
+        lines.extend([
+            str(caption_index),
+            f'{_srt_timestamp(start)} --> {_srt_timestamp(end)}',
+            part,
+            '',
+        ])
 
     path = Path(output_path)
     path.write_text('\n'.join(lines), encoding='utf-8')
     return str(path)
+
+
+# Burned-in Shorts captions: bold white text with a black outline, centred
+# about two thirds down the frame, clear of the Shorts title and buttons.
+_SHORTS_CAPTION_FONT = 'DejaVu Sans'
+_SHORTS_CAPTION_FONTS_DIR = '/usr/share/fonts/truetype/dejavu'
+_ASS_HEADER = (
+    '[Script Info]\n'
+    'ScriptType: v4.00+\n'
+    'PlayResX: 1080\n'
+    'PlayResY: 1920\n'
+    'WrapStyle: 0\n'
+    'ScaledBorderAndShadow: yes\n'
+    '\n'
+    '[V4+ Styles]\n'
+    'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, '
+    'Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, '
+    'Alignment, MarginL, MarginR, MarginV, Encoding\n'
+    f'Style: Caption,{_SHORTS_CAPTION_FONT},66,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,'
+    '-1,0,0,0,100,100,0,0,1,6,2,2,110,110,640,1\n'
+    '\n'
+    '[Events]\n'
+    'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n'
+)
+
+
+def _short_caption_chunks(narration: str, max_words: int = 3) -> list[str]:
+    """Two or three words at a time, breaking after punctuation, as Shorts captions read."""
+    groups: list[list[str]] = []
+    current: list[str] = []
+    for word in narration.split():
+        current.append(word)
+        if len(current) >= max_words or word[-1] in '.,!?;:…':
+            groups.append(current)
+            current = []
+    if current:
+        groups.append(current)
+    # A lone trailing word joins the group before it.
+    if len(groups) > 1 and len(groups[-1]) == 1:
+        groups[-2].extend(groups.pop())
+    return [' '.join(group) for group in groups]
+
+
+def _ass_timestamp(seconds: float) -> str:
+    centiseconds = int(round(max(0.0, seconds) * 100))
+    hours, rest = divmod(centiseconds, 360000)
+    minutes, rest = divmod(rest, 6000)
+    whole, cents = divmod(rest, 100)
+    return f'{hours}:{minutes:02}:{whole:02}.{cents:02}'
+
+
+def _ass_text(text: str) -> str:
+    # Spoken text never carries ASS override tags or line-break escapes.
+    return ' '.join(str(text).replace('{', '(').replace('}', ')').replace('\\', ' ').split())
+
+
+def make_shorts_caption_ass(
+    scenes: list[dict],
+    scene_durations: list[float],
+    total_duration: float,
+    output_path: str | Path,
+) -> str:
+    """Short on-screen captions for a vertical Short, timed like the sidecar SRT."""
+    events = [
+        f'Dialogue: 0,{_ass_timestamp(start)},{_ass_timestamp(end)},Caption,,0,0,0,,{_ass_text(part)}'
+        for start, end, part in _scene_caption_cues(
+            scenes, scene_durations, total_duration, _short_caption_chunks)
+        if _ass_text(part)
+    ]
+    path = Path(output_path)
+    path.write_text(_ASS_HEADER + ''.join(event + '\n' for event in events), encoding='utf-8')
+    return str(path)
+
+
+def _caption_filter(ass_path: Path) -> str | None:
+    """The subtitles filter argument, or None for a path the filter cannot quote."""
+    text = str(ass_path)
+    if not re.fullmatch(r'[A-Za-z0-9_./-]+', text):
+        return None
+    fonts = (f':fontsdir={_SHORTS_CAPTION_FONTS_DIR}'
+             if Path(_SHORTS_CAPTION_FONTS_DIR).is_dir() else '')
+    return f'subtitles=filename={text}{fonts}'
 
 
 def make_srt(
@@ -709,6 +803,8 @@ def render_video(
     capture_scene_windows: bool = False,
     retained_cuts=None,
     progress_callback=None,
+    *,
+    burn_captions: bool = False,
 ) -> dict:
     if retained_cuts is not None:
         from app.services import retained_render_consumer as retained
@@ -850,6 +946,18 @@ def render_video(
         make_scene_srt(scenes, scene_durations, voice_duration, srt)
     else:
         make_srt(narration, voice_duration, srt)
+    caption_filter = None
+    if (burn_captions is True and retained_cuts is None and output_resolution == SHORTS_RESOLUTION
+            and scenes and scene_durations):
+        caption_filter = _caption_filter(make_shorts_caption_ass(
+            scenes, scene_durations, voice_duration, work / 'captions.ass'))
+    # Changing caption text hides a frozen picture, so measure the master first.
+    silent_freeze = max_freeze_duration(silent_video) if caption_filter else 0.0
+    video_args = (
+        ['-vf', caption_filter, '-r', str(FPS), '-enc_time_base', f'1:{FPS}',
+         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19']
+        if caption_filter else ['-c:v', 'copy']
+    )
 
     audio_filter = ','.join([
         'aresample=48000',
@@ -863,7 +971,7 @@ def render_video(
     mux_command = [
         'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path),
         '-map', '0:v:0', '-map', '1:a:0',
-        '-c:v', 'copy', '-frames:v', str(target_frames),
+        *video_args, '-frames:v', str(target_frames),
         '-af', audio_filter, '-c:a', 'aac', '-b:a', '192k',
         '-t', f'{master_duration:.3f}', '-movflags', '+faststart', str(output),
     ]
@@ -892,7 +1000,7 @@ def render_video(
             if capture_scene_windows and scenes and scene_durations and scene_visual_paths else []
         ),
         'ending_silence_seconds': ending_silence_duration(output),
-        'max_freeze_seconds': max_freeze_duration(output),
+        'max_freeze_seconds': max(silent_freeze, max_freeze_duration(output)),
         'shots': len(timeline),
         'unique_visuals': len({
             _spec_path(spec)
@@ -903,8 +1011,8 @@ def render_video(
         'scene_synced': bool(
             scenes and scene_durations and scene_visual_paths
         ),
-        'text_layers': 0,
-        'burned_subtitles': False,
+        'text_layers': 1 if caption_filter else 0,
+        'burned_subtitles': bool(caption_filter),
         'caption_format': 'srt',
         'srt': str(srt),
     }

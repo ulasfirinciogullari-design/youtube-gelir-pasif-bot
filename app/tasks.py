@@ -1800,6 +1800,14 @@ def _checkpoint_generated_asset(
         pass
 
 
+def _burn_short_captions(options):
+    """New system: on-screen captions for scheduled Shorts, which most people watch muted."""
+    from app.config import settings
+    return (getattr(settings, 'studio_shorts_burned_captions', False) is True
+            and options.get('production_scheduled') is True and options.get('mode') == 'production'
+            and options.get('format') == 'shorts' and not options.get('production_delivery'))
+
+
 def _persist_final_thumbnail(task_id, work, rendered, options, quality_disposition, manual_qa_required):
     """A missing cover must not buy another render or silently approve release."""
     empty = {'thumbnail_key': None, 'thumbnail_sha256': None, 'thumbnail_size': None}
@@ -7998,6 +8006,7 @@ def run_video_pipeline(
                 options.get('mode'), options.get('format'),
             ),
             **({'capture_scene_windows': True} if options.get('production_delivery') else {}),
+            **({'burn_captions': True} if _burn_short_captions(options) else {}),
         )
 
         actual_seconds = float(rendered.get('duration') or 0)
@@ -8205,7 +8214,7 @@ def run_video_pipeline(
             'runway_allocation': runway_allocation,
             'runway_failure_diagnostics': runway_failure_diagnostics,
             'caption_key': caption_key,
-            'burned_subtitles': False,
+            'burned_subtitles': rendered.get('burned_subtitles') is True,
             'render': rendered,
         }, ensure_ascii=False, indent=2), encoding='utf-8')
         upload_file(meta_path, metadata_key, 'application/json')
@@ -8233,8 +8242,8 @@ def run_video_pipeline(
             'metadata_key': metadata_key,
             'caption_key': caption_key,
             'caption_url': caption_url,
-            'burned_subtitles': False,
-            'text_layers': 0,
+            'burned_subtitles': rendered.get('burned_subtitles') is True,
+            'text_layers': 1 if rendered.get('burned_subtitles') is True else 0,
             'duration': rendered.get('duration'),
             'effective_edit_target_seconds': effective_edit_target_seconds,
             'shots': rendered.get('shots'),

@@ -79,6 +79,9 @@ class Settings(BaseSettings):
     # after the last public one; 0 = no spacing.
     studio_release_window: bool = True
     studio_release_min_gap_minutes: int = 90
+    # Burn short on-screen captions into scheduled Shorts (the sidecar caption
+    # track is still uploaded).
+    studio_shorts_burned_captions: bool = True
     # Output room for the next-series draft on a reasoning planner model; the
     # reviewed gpt-4.1-mini route keeps 3600. Only used tokens are billed.
     studio_next_series_max_output_tokens: int = 12000
