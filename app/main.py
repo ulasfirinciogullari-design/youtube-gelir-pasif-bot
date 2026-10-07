@@ -40,7 +40,24 @@ async def _lifespan(_app):
     # Never serve another deployment's jobs from its Redis.
     from app.services.deployment_guard import claim
     claim()
+    _bootstrap_owner_password()
     yield
+
+
+def _bootstrap_owner_password():
+    """A fresh deployment gets its first Studio password from settings."""
+    password = str(getattr(settings, 'studio_initial_password', '') or '')
+    if not password:
+        return 'disabled'
+    try:
+        import redis
+        from app.services import studio_password
+        client = redis.Redis.from_url(settings.redis_url, socket_timeout=5, socket_connect_timeout=5)
+        return studio_password.bootstrap(client, password)
+    except Exception:
+        import logging
+        logging.getLogger(__name__).warning('first Studio password was not saved')
+        return 'unavailable'
 
 
 app = FastAPI(title='YouTube 7/24 Content Factory', version='2.0.0', lifespan=_lifespan)

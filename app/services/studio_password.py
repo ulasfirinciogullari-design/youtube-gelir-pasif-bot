@@ -70,6 +70,16 @@ def save(client, password):
     return True
 
 
+def bootstrap(client, password):
+    """Save the deployment's first password; never replace one the owner set."""
+    if not password:
+        return 'disabled'
+    if client.exists(KEY):
+        return 'kept'
+    save(client, password)
+    return 'set'
+
+
 def login(client, password):
     # One owner account, a global bounded window: alternate IPs cannot bypass
     # the password guessing limit. Origin checks run before this function.

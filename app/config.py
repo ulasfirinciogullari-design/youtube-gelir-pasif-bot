@@ -96,6 +96,9 @@ class Settings(BaseSettings):
     # stops the start. Empty disables the check.
     studio_deployment_id: str = 'new-system'
     studio_adopt_existing_redis: bool = False
+    # First Studio password for a fresh Redis. Saved once at start when no
+    # owner password exists yet; change it later under Ayarlar -> Giris.
+    studio_initial_password: str = ''
     studio_production_short_paid_create_cap: int = Field(
         default=2, strict=True, ge=2, le=6,
     )

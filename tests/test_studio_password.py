@@ -85,3 +85,27 @@ def test_authenticated_settings_has_direct_provider_links(web):
     assert r.status_code == 200 and '/studio/providers/kie' in r.text
     assert '/voice-audition' in r.text
     assert '/studio/settings/access' in r.text and 'özel giriş bağlantısına gerek kalmadan' in r.text
+
+
+def test_first_password_from_settings_is_saved_once_and_never_replaces_the_owners(web):
+    assert password.bootstrap(web.client, '') == 'disabled' and web.client.dbsize() == 0
+    assert password.bootstrap(web.client, SECRET) == 'set'
+    assert SECRET.encode() not in web.client.get(password.KEY)
+    owner = 'owner-chosen-password-2026'
+    password.save(web.client, owner)
+    assert password.bootstrap(web.client, SECRET) == 'kept'
+    assert password.login(web.client, owner)
+    with pytest.raises(password.PasswordError, match='incorrect'):
+        password.login(web.client, SECRET)
+
+
+def test_startup_saves_the_first_password_and_survives_an_unreachable_redis(monkeypatch):
+    import app.main as main
+    saved = []
+    monkeypatch.setattr(main.settings, 'studio_initial_password', SECRET, raising=False)
+    monkeypatch.setattr(password, 'bootstrap', lambda client, value: saved.append(value) or 'set')
+    assert main._bootstrap_owner_password() == 'set' and saved == [SECRET]
+    monkeypatch.setattr(password, 'bootstrap', lambda client, value: (_ for _ in ()).throw(OSError('down')))
+    assert main._bootstrap_owner_password() == 'unavailable'
+    monkeypatch.setattr(main.settings, 'studio_initial_password', '', raising=False)
+    assert main._bootstrap_owner_password() == 'disabled'
