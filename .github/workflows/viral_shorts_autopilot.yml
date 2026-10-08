@@ -1,0 +1,93 @@
+name: YouTube Shorts Cloud Autopilot (God-Tier)
+
+on:
+  schedule:
+    # Runs automatically twice every day at 09:00 and 17:00 UTC (12:00 and 20:00 TR)
+    - cron: '0 9,17 * * *'
+  workflow_dispatch:
+    inputs:
+      campaign_id:
+        description: 'Üretilecek Kampanya / Niche'
+        required: true
+        default: 'oppenheimer_doom'
+        type: choice
+        options:
+          - 'oppenheimer_doom'
+          - 'interstellar_abyss'
+          - 'breaking_bad_danger'
+          - 'gladiator_stoic'
+          - 'shelby_power'
+          - 'godfather_rules'
+          - 'fight_club_truth'
+          - 'scarface_ascent'
+          - 'batman_shadows'
+          - 'joker_anarchy'
+          - 'wolf_greed'
+          - 'matrix_illusion'
+          - 'random_batch'
+      batch_count:
+        description: 'Üretilecek Video Sayısı (random_batch seçiliyse)'
+        required: false
+        default: '1'
+        type: string
+
+jobs:
+  produce_viral_shorts:
+    name: 🚀 60 FPS Viral Video Üretimi (Bulut Fabrikası)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: 📥 Repoyu Çek
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python 3.12 Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 🎥 FFmpeg ve Sistem Araçlarını Kur
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-liberation
+          ffmpeg -version
+
+      - name: 📦 Python Bağımlılıklarını Kur
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🎬 God-Tier Shorts Üretimini Başlat
+        run: |
+          mkdir -p output
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "⏰ Zamanlanmış Otopilot Çalışıyor: 1 Adet Rastgele Master Video Üretiliyor..."
+            python ultimate_factory.py --batch 1
+          elif [ "${{ github.event.inputs.campaign_id }}" = "random_batch" ]; then
+            echo "🎲 Rastgele Toplu Üretim: ${{ github.event.inputs.batch_count }} video"
+            python ultimate_factory.py --batch ${{ github.event.inputs.batch_count }}
+          else
+            echo "🎯 Belirli Kampanya Üretiliyor: ${{ github.event.inputs.campaign_id }}"
+            python ultimate_factory.py --id ${{ github.event.inputs.campaign_id }}
+          fi
+
+      - name: 📊 Üretim Çıktılarını Doğrula
+        run: |
+          ls -lh output/
+          python -c "
+          from pathlib import Path
+          videos = list(Path('output').glob('VIRAL_MASTER_*.mp4'))
+          print(f'✅ Üretilen Master Video Sayısı: {len(videos)}')
+          assert len(videos) > 0, 'Hiçbir video üretilemedi!'
+          "
+
+      - name: 📤 Hazır Yayın Paketini Yükle (Artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: viral-shorts-${{ github.run_id }}
+          path: |
+            output/VIRAL_MASTER_*.mp4
+            output/*_thumb.jpg
+            output/*_meta.json
+          retention-days: 30
