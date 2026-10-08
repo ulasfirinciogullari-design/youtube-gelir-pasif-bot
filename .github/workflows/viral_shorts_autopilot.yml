@@ -82,6 +82,19 @@ jobs:
           assert len(videos) > 0, 'Hiçbir video üretilemedi!'
           "
 
+      - name: 🚀 YouTube Shorts Otomatik Yayınla (Bulut Yayını)
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          if [ -n "$YOUTUBE_REFRESH_TOKEN" ]; then
+            echo "🚀 YouTube Kimlik Bilgileri Algılandı! Video Yayınlanıyor..."
+            python publish_to_youtube.py --privacy public
+          else
+            echo "ℹ️ YOUTUBE_REFRESH_TOKEN tanımlı değil. Yükleme atlandı."
+          fi
+
       - name: 📤 Hazır Yayın Paketini Yükle (Artifact)
         uses: actions/upload-artifact@v4
         with:
