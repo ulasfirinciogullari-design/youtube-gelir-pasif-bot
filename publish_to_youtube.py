@@ -77,8 +77,9 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
     description = (
         "Görünmeyen Güç, Karanlık Psikoloji ve Sinema Tarihinin Zirve Anları.\n\n"
         "#shorts #keşfet #sinema #motivasyon"
-    )
-    tags = ["shorts", "keşfet", "motivasyon", "sinema", "güç yasaları", "viral"]
+    default_lang = "tr"
+    default_audio = "tr"
+    pinned_comment = None
 
     if meta_path.exists():
         with open(meta_path, "r", encoding="utf-8") as f:
@@ -86,10 +87,14 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
             title = meta.get("title_options", [title])[0]
             description = meta.get("description", description)
             tags = meta.get("tags", tags)
+            default_lang = meta.get("defaultLanguage", "tr")
+            default_audio = meta.get("defaultAudioLanguage", "tr")
+            pinned_comment = meta.get("pinned_comment")
 
     print("\n" + "=" * 70)
     print(f"🚀 YOUTUBE SHORTS YAYINLANIYOR: {video_path.name}")
     print(f"📝 Başlık: {title}")
+    print(f"🌐 Dil: {default_lang.upper()} (Ses: {default_audio.upper()})")
     print(f"🔒 Görünürlük: {privacy_status.upper()}")
     print("=" * 70)
 
@@ -101,8 +106,8 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
             "description": description[:5000],
             "tags": tags[:30],
             "categoryId": "24", # Entertainment
-            "defaultLanguage": "tr",
-            "defaultAudioLanguage": "tr",
+            "defaultLanguage": default_lang,
+            "defaultAudioLanguage": default_audio,
         },
         "status": {
             "privacyStatus": privacy_status,
@@ -161,6 +166,26 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
         print(f"➕ Resmi Oynatma Listesine Eklendi ({playlist_id})")
     except Exception as e:
         print(f"ℹ️ Oynatma listesi notu: {e}")
+
+    # Add Pinned Discussion Engagement Comment
+    if pinned_comment:
+        try:
+            youtube.commentThreads().insert(
+                part="snippet",
+                body={
+                    "snippet": {
+                        "videoId": video_id,
+                        "topLevelComment": {
+                            "snippet": {
+                                "textOriginal": pinned_comment
+                            }
+                        }
+                    }
+                }
+            ).execute()
+            print(f"💬 Etkileşim Tartışma Yorumu Eklendi: {pinned_comment[:50]}...")
+        except Exception as e:
+            print(f"ℹ️ Yorum ekleme notu: {e}")
 
     # Add Multi-Language Global Localizations (EN, ES, DE)
     try:
