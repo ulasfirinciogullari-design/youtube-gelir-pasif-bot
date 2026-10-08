@@ -26,17 +26,21 @@ from ultimate_factory import MASTER_CAMPAIGNS
 
 BASE_DIR = Path(__file__).resolve().parent
 
-ALL_CAMPAIGNS = [c["id"] for c in MASTER_CAMPAIGNS]
+try:
+    from app.services.mega_content_vault import MEGA_CATALOG
+    ALL_CAMPAIGNS = [c["id"] for c in MEGA_CATALOG]
+except Exception:
+    ALL_CAMPAIGNS = [c["id"] for c in MASTER_CAMPAIGNS]
 
 
-def run_continuous_autopilot(max_videos: int = 10, delay_seconds: int = 120):
+def run_continuous_autopilot(max_videos: int = 10, delay_seconds: int = 120, lang: str = "auto"):
     print("=" * 70)
-    print("🚀 KESİNTİSİZ BULUT OTOPİLOTU BAŞLATILDI")
+    print("🚀 KESİNTİSİZ BULUT OTOPİLOTU BAŞLATILDI (500+ MEGA VAULT & GLOBAL DUB)")
     print(f"Hedef: Günlük limite ulaşana kadar durmaksızın üretim & yayınlama")
+    print(f"Dil Modu: {lang.upper()} (Global & Yerel Hibrit Dağıtım)")
     print(f"Maksimum Deneme: {max_videos} video | Bekleme: {delay_seconds}s")
     print("=" * 70)
 
-    # Shuffle campaigns to ensure niche variety
     campaign_queue = list(ALL_CAMPAIGNS)
     random.shuffle(campaign_queue)
 
@@ -47,17 +51,34 @@ def run_continuous_autopilot(max_videos: int = 10, delay_seconds: int = 120):
             print(f"\n🎯 Hedeflenen video sayısına ({max_videos}) ulaşıldı.")
             break
 
-        print(f"\n🎬 [{i}/{len(campaign_queue)}] Sıradaki Kampanya Üretiliyor: {campaign_id}")
+        # Determine language for this video
+        if lang == "auto":
+            # Alternate: even -> TR, odd -> EN
+            current_lang = "tr" if (uploaded_count % 2 == 0) else "en"
+        else:
+            current_lang = lang
+
+        print(f"\n🎬 [{i}/{len(campaign_queue)}] Sıradaki Kampanya ({current_lang.upper()}): {campaign_id}")
 
         # 1. Produce 60 FPS Master Video via ultimate_factory.py
-        factory_cmd = [sys.executable, str(BASE_DIR / "ultimate_factory.py"), "--id", campaign_id]
+        factory_cmd = [
+            sys.executable,
+            str(BASE_DIR / "ultimate_factory.py"),
+            "--id", campaign_id,
+            "--lang", current_lang
+        ]
         render_res = subprocess.run(factory_cmd, capture_output=True, text=True)
         if render_res.returncode != 0:
             print(f"⚠️ Render hatası ({campaign_id}): {render_res.stderr[-300:]}")
             continue
 
         # Find newly produced file
-        produced_files = sorted(OUTPUT_DIR.glob(f"VIRAL_MASTER_{campaign_id}_*.mp4"), key=lambda f: f.stat().st_mtime, reverse=True)
+        safe_slug = "".join(c if c.isalnum() else "_" for c in campaign_id.lower()).strip("_")
+        pattern = f"VIRAL_MASTER_*_{safe_slug}_*.mp4"
+        produced_files = sorted(OUTPUT_DIR.glob(pattern), key=lambda f: f.stat().st_mtime, reverse=True)
+        if not produced_files:
+            produced_files = sorted(OUTPUT_DIR.glob("VIRAL_MASTER_*.mp4"), key=lambda f: f.stat().st_mtime, reverse=True)
+
         if not produced_files:
             print(f"⚠️ Çıktı dosyası bulunamadı: {campaign_id}")
             continue
@@ -99,6 +120,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Continuous YouTube Autopilot")
     parser.add_argument("--max", type=int, default=8, help="Maksimum denenecek video sayısı")
     parser.add_argument("--delay", type=int, default=90, help="Videolar arası bekleme süresi (saniye)")
+    parser.add_argument("--lang", type=str, default="auto", choices=["auto", "tr", "en"], help="Dil modu: auto, tr veya en")
     args = parser.parse_args()
 
-    run_continuous_autopilot(max_videos=args.max, delay_seconds=args.delay)
+    run_continuous_autopilot(max_videos=args.max, delay_seconds=args.delay, lang=args.lang)
