@@ -3,39 +3,28 @@ name: YouTube Shorts Cloud Autopilot (God-Tier)
 on:
   schedule:
     # Runs automatically twice every day at 09:00 and 17:00 UTC (12:00 and 20:00 TR)
-    - cron: '0 9,17 * * *'
+    - cron: '0 */2 * * *'
   workflow_dispatch:
     inputs:
-      campaign_id:
-        description: 'Üretilecek Kampanya / Niche'
+      mode:
+        description: 'Çalışma Modu'
         required: true
-        default: 'oppenheimer_doom'
+        default: 'continuous_until_limit'
         type: choice
         options:
-          - 'oppenheimer_doom'
-          - 'interstellar_abyss'
-          - 'breaking_bad_danger'
-          - 'gladiator_stoic'
-          - 'shelby_power'
-          - 'godfather_rules'
-          - 'fight_club_truth'
-          - 'scarface_ascent'
-          - 'batman_shadows'
-          - 'joker_anarchy'
-          - 'wolf_greed'
-          - 'matrix_illusion'
-          - 'random_batch'
-      batch_count:
-        description: 'Üretilecek Video Sayısı (random_batch seçiliyse)'
+          - 'continuous_until_limit'
+          - 'single_video'
+      campaign_id:
+        description: 'Belirli Kampanya (single_video seçiliyse)'
         required: false
-        default: '1'
+        default: 'oppenheimer_doom'
         type: string
 
 jobs:
   produce_viral_shorts:
-    name: 🚀 60 FPS Viral Video Üretimi (Bulut Fabrikası)
+    name: 🚀 60 FPS Viral Video & Canlı Yayın Fabrikası
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 180
 
     steps:
       - name: 📥 Repoyu Çek
@@ -58,41 +47,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 🎬 God-Tier Shorts Üretimini Başlat
-        run: |
-          mkdir -p output
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "⏰ Zamanlanmış Otopilot Çalışıyor: 1 Adet Rastgele Master Video Üretiliyor..."
-            python ultimate_factory.py --batch 1
-          elif [ "${{ github.event.inputs.campaign_id }}" = "random_batch" ]; then
-            echo "🎲 Rastgele Toplu Üretim: ${{ github.event.inputs.batch_count }} video"
-            python ultimate_factory.py --batch ${{ github.event.inputs.batch_count }}
-          else
-            echo "🎯 Belirli Kampanya Üretiliyor: ${{ github.event.inputs.campaign_id }}"
-            python ultimate_factory.py --id ${{ github.event.inputs.campaign_id }}
-          fi
-
-      - name: 📊 Üretim Çıktılarını Doğrula
-        run: |
-          ls -lh output/
-          python -c "
-          from pathlib import Path
-          videos = list(Path('output').glob('VIRAL_MASTER_*.mp4'))
-          print(f'✅ Üretilen Master Video Sayısı: {len(videos)}')
-          assert len(videos) > 0, 'Hiçbir video üretilemedi!'
-          "
-
-      - name: 🚀 YouTube Shorts Otomatik Yayınla (Bulut Yayını)
+      - name: 🎬 Durmaksızın Üret ve Yayınla (Günlük Limite Kadar)
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
         run: |
-          if [ -n "$YOUTUBE_REFRESH_TOKEN" ]; then
-            echo "🚀 YouTube Kimlik Bilgileri Algılandı! Video Yayınlanıyor..."
-            python publish_to_youtube.py --privacy public
+          mkdir -p output
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event.inputs.mode }}" = "continuous_until_limit" ]; then
+            echo "⚡ Kesintisiz Otopilot Aktif: Günlük limite kadar durmadan üretip yayınlanıyor..."
+            python continuous_autopilot.py --max 8 --delay 90
           else
-            echo "ℹ️ YOUTUBE_REFRESH_TOKEN tanımlı değil. Yükleme atlandı."
+            echo "🎯 Tek Video Modu: ${{ github.event.inputs.campaign_id }}"
+            python ultimate_factory.py --id ${{ github.event.inputs.campaign_id }}
+            python publish_to_youtube.py --privacy public
           fi
 
       - name: 📤 Hazır Yayın Paketini Yükle (Artifact)
