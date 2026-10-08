@@ -67,51 +67,53 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         text = sentence.get("text", "").strip()
         start = float(sentence.get("start", 0.0))
         end = float(sentence.get("end", 0.0))
-        
+        speaker = sentence.get("speaker", "male")
+
+        # Dynamic color based on speaker gender
+        if speaker == "female":
+            active_highlight = "&H00C000FF"  # Neon Fuchsia / Rose for female voice
+        else:
+            active_highlight = highlight_color
+
         if not text or end <= start:
             continue
-            
+
         words = text.split()
         if not words:
             continue
-            
-        # Group words into chunks of 3-5 words maximum to avoid cluttered screens on mobile
+
+        # If already tight chunks (<= 4 words), keep single chunk to preserve microsecond sync
         max_chunk = 4
         word_chunks = [words[i:i + max_chunk] for i in range(0, len(words), max_chunk)]
-        
-        # Allocate time proportionally per chunk based on word counts
+
         total_words = len(words)
         total_duration = end - start
-        
+
         current_chunk_start = start
         for chunk in word_chunks:
             chunk_duration = total_duration * (len(chunk) / total_words)
             chunk_end = current_chunk_start + chunk_duration
-            
-            # Word-level timing inside chunk
+
             per_word_dur = chunk_duration / len(chunk)
-            
+
             for word_idx, active_word in enumerate(chunk):
                 w_start = current_chunk_start + (word_idx * per_word_dur)
                 w_end = w_start + per_word_dur
-                
-                # Build styled line where active word has highlight_color
+
                 styled_parts = []
                 for idx, w in enumerate(chunk):
                     clean_w = w.upper()
                     if idx == word_idx:
-                        # Highlight active word
-                        styled_parts.append(r"{\c" + highlight_color + r"\fscx108\fscy108}" + clean_w + r"{\rShortsStyle}")
+                        styled_parts.append(r"{\c" + active_highlight + r"\fscx110\fscy110}" + clean_w + r"{\rShortsStyle}")
                     else:
-                        # Normal word
                         styled_parts.append(r"{\c" + primary_color + r"}" + clean_w)
-                        
+
                 dialogue_text = " ".join(styled_parts)
                 start_str = _format_ass_time(w_start)
                 end_str = _format_ass_time(w_end)
-                
+
                 events.append(f"Dialogue: 0,{start_str},{end_str},ShortsStyle,,0,0,0,,{dialogue_text}")
-                
+
             current_chunk_start = chunk_end
             
     content = header + "\n".join(events) + "\n"
