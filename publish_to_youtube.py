@@ -146,6 +146,62 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
         except Exception as e:
             print(f"ℹ️ Kapak görseli notu: {e} (Kanal telefon doğrulaması gerektirebilir)")
 
+    # Add to Official Channel Playlist
+    try:
+        playlist_id = "PLNK3n7jEGHrw"
+        youtube.playlistItems().insert(
+            part="snippet",
+            body={
+                "snippet": {
+                    "playlistId": playlist_id,
+                    "resourceId": {"kind": "youtube#video", "videoId": video_id}
+                }
+            }
+        ).execute()
+        print(f"➕ Resmi Oynatma Listesine Eklendi ({playlist_id})")
+    except Exception as e:
+        print(f"ℹ️ Oynatma listesi notu: {e}")
+
+    # Add Multi-Language Global Localizations (EN, ES, DE)
+    try:
+        base_clean = title.replace("👑 ", "").replace(" #shorts", "").strip()
+        locs = {
+            "en": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": (
+                    f"{base_clean}\n\n"
+                    "Dark psychology, unwritten power laws and cinema's greatest moments.\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #powerlaws #darkpsychology #stoic #motivation #sigma"
+                )[:5000]
+            },
+            "es": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": (
+                    f"{base_clean}\n\n"
+                    "Psicología oscura, leyes del poder y momentos clave del cine.\n"
+                    "⚡ Suscríbete para análisis diarios en 60 FPS: @zirveninkanunu\n\n"
+                    "#shorts #leyesdelpoder #psicologiaoscura #motivacion #exito"
+                )[:5000]
+            },
+            "de": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": (
+                    f"{base_clean}\n\n"
+                    "Dunkle Psychologie, Gesetze der Macht und Filmgeschichte.\n"
+                    "⚡ Täglich neue 60 FPS Analysen: @zirveninkanunu\n\n"
+                    "#shorts #psychologie #macht #motivation"
+                )[:5000]
+            }
+        }
+        youtube.videos().update(
+            part="localizations",
+            body={"id": video_id, "localizations": locs}
+        ).execute()
+        print("🌍 Çoklu Dil (EN, ES, DE) Küresel SEO Eklendi!")
+    except Exception as e:
+        print(f"ℹ️ Dil yerelleştirme notu: {e}")
+
     print("=" * 70 + "\n")
     return video_url
 
