@@ -129,23 +129,61 @@ def build_authentic_short(campaign_id: str = "shelby_power") -> Path:
         str(thumb_path)
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
+    # Dynamic metadata based on campaign
+    campaign_meta_presets = {
+        "breaking_bad_danger": {
+            "title_options": [
+                "👑 Walter White | Tehlikenin Kendisi Benim (Orijinal Ses) #shorts",
+                "🔥 I Am The Danger | Walter White Heisenberg #shorts",
+                "🧪 Heisenberg | O Kapıyı Çalan Adam Benim #shorts"
+            ],
+            "description": (
+                "Bryan Cranston'ın efsanevi repliği: 'I am not in danger, Skyler. I AM THE DANGER!'\n"
+                "Walter White'ın karanlık dönüşümü. Orijinal ses ve çift dilli sinematik altyazı.\n\n"
+                "#shorts #walterwhite #heisenberg #breakingbad #bryancreanston #güç #motivasyon #dizi #sinema"
+            ),
+            "tags": ["walter white", "breaking bad", "heisenberg", "bryan cranston", "i am the danger", "dizi replikleri", "shorts", "motivasyon", "güç"],
+            "pinned_comment": "💬 \"Ben tehlikede değilim Skyler, tehlikenin ta kendisi benim.\" Heisenberg haklı mıydı, yoksa bir canavara mı dönüştü? 👇"
+        },
+        "shelby_power": {
+            "title_options": [
+                f"👑 {info['character']} | Orijinal Ses & Güç Yasası #shorts",
+                f"🔥 {info['character']} | The Cold Truth #shorts",
+                "🚬 Thomas Shelby | Korku Seni Tahmin Edilebilir Yapar #shorts"
+            ],
+            "description": (
+                f"Hollywood tarihinin en unutulmaz sahnesi. {info['character']} orijinal sesiyle.\n"
+                "İki dilli özel çeviri ve -14 LUFS sinematik miksaj.\n\n"
+                "#shorts #cillianmurphy #peakyblinders #thomasshelby #motivasyon #sinema #sigma #sessizgüç"
+            ),
+            "tags": ["thomas shelby", "peaky blinders", "cillian murphy", "orijinal ses", "dizi replikleri", "shorts", "motivasyon", "sessiz güç"],
+            "pinned_comment": "💬 \"Korku seni tahmin edilebilir yapar.\" Thomas Shelby'nin bu kuralına katılıyor musunuz? Fikrinizi yazın 👇"
+        },
+        "fight_club_truth": {
+            "title_options": [
+                "👑 Tyler Durden | Sahip Oldukların Sana Sahip Olur #shorts",
+                "🔥 Tyler Durden (Brad Pitt) | Fight Club Orijinal Ses #shorts"
+            ],
+            "description": (
+                "Brad Pitt'in zihin açan repliği. Fight Club orijinal ses ve çift dilli altyazı.\n\n"
+                "#shorts #tylerdurden #fightclub #bradpitt #özgürlük #felsefe #motivasyon"
+            ),
+            "tags": ["tyler durden", "fight club", "brad pitt", "dövüş kulübü", "özgürlük", "felsefe", "shorts"],
+            "pinned_comment": "💬 \"Sahip olduğun şeyler en sonunda sana sahip olur.\" Tyler Durden haklı mı? 👇"
+        }
+    }
+    preset = campaign_meta_presets.get(campaign_id, campaign_meta_presets["shelby_power"])
+
     # Metadata
     meta_path = final_mp4.with_name(f"{final_mp4.stem}_meta.json")
     meta = {
-        "title_options": [
-            f"👑 {info['character']} | Orijinal Ses & Güç Yasası #shorts",
-            f"🔥 {info['character']} | The Cold Truth #shorts"
-        ],
-        "description": (
-            f"Hollywood tarihinin en unutulmaz sahnesi. {info['character']} orijinal sesiyle.\n"
-            "İki dilli özel çeviri ve -14 LUFS sinematik miksaj.\n\n"
-            "#shorts #cillianmurphy #peakyblinders #thomasshelby #motivasyon #sinema #sigma"
-        ),
-        "tags": ["thomas shelby", "peaky blinders", "cillian murphy", "orijinal ses", "dizi replikleri", "shorts", "motivasyon"],
+        "title_options": preset["title_options"],
+        "description": preset["description"],
+        "tags": preset["tags"],
         "lang": "en",
         "defaultLanguage": "en",
         "defaultAudioLanguage": "en",
-        "pinned_comment": "💬 \"Korku seni tahmin edilebilir yapar.\" Thomas Shelby'nin bu sözüne katılıyor musunuz? Fikrinizi yazın!",
+        "pinned_comment": preset["pinned_comment"],
         "duration_seconds": round(total_dur, 2),
         "fps": 60.0
     }
