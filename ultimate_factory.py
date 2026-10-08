@@ -39,6 +39,7 @@ from app.services.subtitle_engine import generate_shorts_ass_subtitles
 from app.services.cinema_harvester import ensure_campaign_footage, get_video_duration
 from app.services.multi_voice_engine import generate_multi_voice_dialogue
 from app.services.video_quality_analyst import audit_short_quality, print_audit_report
+from app.services.visual_fx_engine import generate_neon_progress_bar_filter, inject_badge_into_ass
 
 try:
     from app.services.mega_content_vault import MEGA_CATALOG
@@ -474,11 +475,20 @@ def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
     temp_sub = BASE_DIR / f"temp_burn_{timestamp}.ass"
     shutil.copy(ass_file, temp_sub)
 
+    badge_title = campaign.get("theme_name", "Zirvenin Kanunu").split("-")[0].strip()
+    try:
+        inject_badge_into_ass(temp_sub, badge_title, total_audio_dur)
+    except Exception:
+        pass
+
+    prog_filter = generate_neon_progress_bar_filter(total_audio_dur)
+    vf_chain = f"subtitles='{temp_sub.name}',{prog_filter}"
+
     cmd = [
         "ffmpeg", "-y",
         "-i", str(concat_raw),
         "-i", str(master_audio),
-        "-vf", f"subtitles='{temp_sub.name}'",
+        "-vf", vf_chain,
         "-c:v", "libx264", "-preset", "medium", "-crf", "17",
         "-r", "60",
         "-fps_mode", "cfr",
