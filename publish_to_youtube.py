@@ -169,6 +169,20 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
     except Exception as e:
         print(f"ℹ️ Oynatma listesi notu: {e}")
 
+    # Add to Niche Binge-Watch Playlists
+    try:
+        from app.services.playlist_master_factory import OFFICIAL_PLAYLIST_DEFINITIONS, add_video_to_playlist, get_existing_playlists
+        ex_playlists = get_existing_playlists(youtube)
+        for pldef in OFFICIAL_PLAYLIST_DEFINITIONS:
+            if pldef["key"] != "master" and any(k in title.lower() for k in pldef["keywords"]):
+                for pl_title, pl_id in ex_playlists.items():
+                    if pldef["title"].lower()[:20] in pl_title:
+                        if add_video_to_playlist(youtube, video_id, pl_id):
+                            print(f"📁 Niş Binge-Watch Listesine Eklendi: {pldef['title'][:35]}")
+                        break
+    except Exception as pl_err:
+        pass
+
     # Add Pinned Discussion Engagement Comment
     if pinned_comment:
         try:
