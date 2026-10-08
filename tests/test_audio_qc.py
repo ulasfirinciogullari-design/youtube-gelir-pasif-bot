@@ -129,6 +129,11 @@ class _Response:
 
 class AudioQCTests(unittest.TestCase):
     def setUp(self):
+        # Another test may have imported audio_qc before our config stub. Bind
+        # the settings used by the functions, then restore them after each test.
+        settings_patcher = patch.object(audio_qc, 'settings', config_stub.settings)
+        settings_patcher.start()
+        self.addCleanup(settings_patcher.stop)
         self._real_upload_gemini_audio_file = (
             audio_qc._upload_gemini_audio_file
         )

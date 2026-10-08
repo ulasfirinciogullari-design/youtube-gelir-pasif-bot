@@ -111,7 +111,8 @@ def test_refresh_reads_only_exact_owned_channel_and_verified_ids_and_closes_serv
     c.service.videos.return_value.list.return_value.execute.assert_called_once_with(num_retries=0)
     c.service.close.assert_called_once()
     stored_keys = set(c.client.scan_iter('*'))
-    assert all(k.startswith(('oauth:', c.module.CACHE_PREFIX, c.module.LOCK_PREFIX)) for k in stored_keys)
+    assert all(k.startswith(('oauth:', c.module.CACHE_PREFIX, c.module.LOCK_PREFIX,
+                             c.module.OBSERVATION_PREFIX)) for k in stored_keys)
     assert c.client.get(c.auth.CREDENTIAL_PREFIX + CHANNEL) == 'encrypted-secret-do-not-expose'
     assert 'must-never-leak' not in json.dumps(result)
 
@@ -222,7 +223,8 @@ def test_at_most_fifty_unique_uploaded_ids_per_channel(case):
     result = _refresh(case, records)
     ids = case.service.videos.return_value.list.call_args.kwargs['id'].split(',')
     assert len(ids) == 50 and ids == [f'v{i:010d}' for i in range(50)]
-    assert len(result['videos']) == 50
+    assert len(result['videos']) == 60
+    assert sum(v['availability'] == 'unavailable' for v in result['videos'].values()) == 50
 
 
 @pytest.mark.parametrize('kind', ['wrong_channel', 'duplicate', 'unrequested'])

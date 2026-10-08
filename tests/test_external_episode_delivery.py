@@ -180,8 +180,8 @@ def test_lost_exec_response_remains_idempotent(case, monkeypatch):
 
 
 @pytest.mark.parametrize('field,value', [('cursor', '3'), ('cursor', '02'), ('cursor', '4'),
-    ('paused_reason', 'different_pause'), ('last_result', 'SUCCESS'), ('active_task_id', str(uuid4())),
-    ('last_task_id', str(uuid4())), ('consumed_prefix', 'wrong'), ('profile_revision', 'other-revision'),
+    ('paused_reason', 'different_pause'), ('last_result', 'SUCCESS'), pytest.param('active_task_id', str(uuid4()), id='active_task_id-different-task'),
+    pytest.param('last_task_id', str(uuid4()), id='last_task_id-different-task'), ('consumed_prefix', 'wrong'), ('profile_revision', 'other-revision'),
     ('connection_id', 'other-connection'), ('dispatch_status', 'uncertain')])
 def test_changed_pause_frozen_episode_or_nonterminal_state_rejects(case, field, value):
     case.client.hset(case.state_key, field, value); before = snapshot(case.client)

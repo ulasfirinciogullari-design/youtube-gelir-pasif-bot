@@ -120,6 +120,7 @@ def case(monkeypatch, tmp_path):
               _persisted_paid_create_slots=Mock(return_value=3),
               acquire_retry_child_execution=Mock(return_value=True),
               render_cancellation_requested=Mock(return_value=False),
+              retained_delivery_blocked=Mock(return_value=False),
               short_story_package_is_approved=Mock(return_value=True),
               research_and_script=Mock(side_effect=research), direct_and_qc=Mock(side_effect=director),
               _prepare_scheduled_short_shots=Mock(side_effect=compress),
@@ -184,6 +185,7 @@ def test_verified_rebuild_uses_shared_new_voice_and_fresh_broll_collection(case)
     broll = Mock(return_value=['fresh-stock-candidate'])
     reject_reuse = Mock(side_effect=AssertionError('Full rebuild cannot reuse old media'))
     ns = dict(result, ThreadPoolExecutor=ThreadPoolExecutor, scenes=case.package['scenes'],
+              selected_recovery=None,
               _synthesize_voice_candidate=synth, _collect_broll=broll,
               _fit_saved_voice_for_retry=reject_reuse, _download_recovered_voice_candidate=reject_reuse,
               _collect_curated_recovery_visuals=reject_reuse, _checkpoint_audio_candidate=Mock(),

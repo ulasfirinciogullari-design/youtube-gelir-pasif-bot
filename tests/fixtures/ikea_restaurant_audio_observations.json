@@ -1,0 +1,1289 @@
+{
+  "expected": "Why did a Swedish furniture warehouse start serving hot cooked meals? In the nineteen-fifties, IKEA opened massive stores far outside city centers. Customers traveled long distances, grew hungry, and departed before buying furniture. Founder Ingvar Kamprad observed that well-fed visitors stayed longer and shopped. In nineteen-sixty, his Älmhult store opened an on-site kitchen serving meals. Inexpensive food kept shoppers relaxed, turning quick visits into complete purchases.",
+  "observations": [
+    {
+      "payload": {
+        "duration": 29.469999313354492,
+        "language": "english",
+        "task": "transcribe",
+        "text": "Why did a Swedish furniture warehouse start serving hot-cooked meals? In the 1950s, IKEA opened massive stores far outside city centers. Customers traveled long distances, grew hungry, and departed before buying furniture. Founder Ingvar Kamprad observed that well-fed visitors stayed longer and shopped. In 1960, his Elmholtz store opened an on-site kitchen serving meals. Inexpensive food kept shoppers relaxed, turning quick visits into complete purchases.",
+        "usage": {
+          "seconds": 30,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.3199999928474426,
+            "start": 0.0,
+            "word": "Why"
+          },
+          {
+            "end": 0.5,
+            "start": 0.3199999928474426,
+            "word": "did"
+          },
+          {
+            "end": 0.7799999713897705,
+            "start": 0.5,
+            "word": "a"
+          },
+          {
+            "end": 1.159999966621399,
+            "start": 0.7799999713897705,
+            "word": "Swedish"
+          },
+          {
+            "end": 1.659999966621399,
+            "start": 1.159999966621399,
+            "word": "furniture"
+          },
+          {
+            "end": 2.0999999046325684,
+            "start": 1.659999966621399,
+            "word": "warehouse"
+          },
+          {
+            "end": 2.6600000858306885,
+            "start": 2.0999999046325684,
+            "word": "start"
+          },
+          {
+            "end": 2.940000057220459,
+            "start": 2.6600000858306885,
+            "word": "serving"
+          },
+          {
+            "end": 3.440000057220459,
+            "start": 2.940000057220459,
+            "word": "hot"
+          },
+          {
+            "end": 3.640000104904175,
+            "start": 3.440000057220459,
+            "word": "cooked"
+          },
+          {
+            "end": 4.019999980926514,
+            "start": 3.640000104904175,
+            "word": "meals"
+          },
+          {
+            "end": 4.619999885559082,
+            "start": 4.5,
+            "word": "In"
+          },
+          {
+            "end": 4.800000190734863,
+            "start": 4.619999885559082,
+            "word": "the"
+          },
+          {
+            "end": 5.880000114440918,
+            "start": 4.800000190734863,
+            "word": "1950s"
+          },
+          {
+            "end": 6.320000171661377,
+            "start": 6.059999942779541,
+            "word": "IKEA"
+          },
+          {
+            "end": 6.699999809265137,
+            "start": 6.320000171661377,
+            "word": "opened"
+          },
+          {
+            "end": 7.21999979019165,
+            "start": 6.699999809265137,
+            "word": "massive"
+          },
+          {
+            "end": 7.579999923706055,
+            "start": 7.21999979019165,
+            "word": "stores"
+          },
+          {
+            "end": 8.0600004196167,
+            "start": 7.579999923706055,
+            "word": "far"
+          },
+          {
+            "end": 8.4399995803833,
+            "start": 8.0600004196167,
+            "word": "outside"
+          },
+          {
+            "end": 8.819999694824219,
+            "start": 8.4399995803833,
+            "word": "city"
+          },
+          {
+            "end": 9.220000267028809,
+            "start": 8.819999694824219,
+            "word": "centers"
+          },
+          {
+            "end": 10.119999885559082,
+            "start": 9.899999618530273,
+            "word": "Customers"
+          },
+          {
+            "end": 10.520000457763672,
+            "start": 10.119999885559082,
+            "word": "traveled"
+          },
+          {
+            "end": 10.899999618530273,
+            "start": 10.520000457763672,
+            "word": "long"
+          },
+          {
+            "end": 11.319999694824219,
+            "start": 10.899999618530273,
+            "word": "distances"
+          },
+          {
+            "end": 11.9399995803833,
+            "start": 11.9399995803833,
+            "word": "grew"
+          },
+          {
+            "end": 12.319999694824219,
+            "start": 11.9399995803833,
+            "word": "hungry"
+          },
+          {
+            "end": 12.880000114440918,
+            "start": 12.539999961853027,
+            "word": "and"
+          },
+          {
+            "end": 13.119999885559082,
+            "start": 12.880000114440918,
+            "word": "departed"
+          },
+          {
+            "end": 13.5600004196167,
+            "start": 13.119999885559082,
+            "word": "before"
+          },
+          {
+            "end": 13.899999618530273,
+            "start": 13.5600004196167,
+            "word": "buying"
+          },
+          {
+            "end": 14.34000015258789,
+            "start": 13.899999618530273,
+            "word": "furniture"
+          },
+          {
+            "end": 15.380000114440918,
+            "start": 15.039999961853027,
+            "word": "Founder"
+          },
+          {
+            "end": 15.819999694824219,
+            "start": 15.380000114440918,
+            "word": "Ingvar"
+          },
+          {
+            "end": 16.34000015258789,
+            "start": 15.819999694824219,
+            "word": "Kamprad"
+          },
+          {
+            "end": 16.84000015258789,
+            "start": 16.34000015258789,
+            "word": "observed"
+          },
+          {
+            "end": 17.15999984741211,
+            "start": 16.84000015258789,
+            "word": "that"
+          },
+          {
+            "end": 17.5,
+            "start": 17.15999984741211,
+            "word": "well"
+          },
+          {
+            "end": 17.6200008392334,
+            "start": 17.5,
+            "word": "fed"
+          },
+          {
+            "end": 18.059999465942383,
+            "start": 17.6200008392334,
+            "word": "visitors"
+          },
+          {
+            "end": 18.459999084472656,
+            "start": 18.059999465942383,
+            "word": "stayed"
+          },
+          {
+            "end": 18.780000686645508,
+            "start": 18.459999084472656,
+            "word": "longer"
+          },
+          {
+            "end": 19.139999389648438,
+            "start": 18.780000686645508,
+            "word": "and"
+          },
+          {
+            "end": 19.459999084472656,
+            "start": 19.139999389648438,
+            "word": "shopped"
+          },
+          {
+            "end": 19.979999542236328,
+            "start": 19.760000228881836,
+            "word": "In"
+          },
+          {
+            "end": 20.81999969482422,
+            "start": 19.979999542236328,
+            "word": "1960"
+          },
+          {
+            "end": 21.31999969482422,
+            "start": 21.079999923706055,
+            "word": "his"
+          },
+          {
+            "end": 21.84000015258789,
+            "start": 21.31999969482422,
+            "word": "Elmholtz"
+          },
+          {
+            "end": 22.079999923706055,
+            "start": 21.84000015258789,
+            "word": "store"
+          },
+          {
+            "end": 22.459999084472656,
+            "start": 22.079999923706055,
+            "word": "opened"
+          },
+          {
+            "end": 22.899999618530273,
+            "start": 22.459999084472656,
+            "word": "an"
+          },
+          {
+            "end": 23.1200008392334,
+            "start": 22.899999618530273,
+            "word": "on"
+          },
+          {
+            "end": 23.1200008392334,
+            "start": 23.1200008392334,
+            "word": "site"
+          },
+          {
+            "end": 23.540000915527344,
+            "start": 23.1200008392334,
+            "word": "kitchen"
+          },
+          {
+            "end": 23.959999084472656,
+            "start": 23.540000915527344,
+            "word": "serving"
+          },
+          {
+            "end": 24.299999237060547,
+            "start": 23.959999084472656,
+            "word": "meals"
+          },
+          {
+            "end": 25.18000030517578,
+            "start": 24.860000610351562,
+            "word": "Inexpensive"
+          },
+          {
+            "end": 25.65999984741211,
+            "start": 25.18000030517578,
+            "word": "food"
+          },
+          {
+            "end": 25.920000076293945,
+            "start": 25.65999984741211,
+            "word": "kept"
+          },
+          {
+            "end": 26.31999969482422,
+            "start": 25.920000076293945,
+            "word": "shoppers"
+          },
+          {
+            "end": 26.780000686645508,
+            "start": 26.31999969482422,
+            "word": "relaxed"
+          },
+          {
+            "end": 27.34000015258789,
+            "start": 27.18000030517578,
+            "word": "turning"
+          },
+          {
+            "end": 27.739999771118164,
+            "start": 27.34000015258789,
+            "word": "quick"
+          },
+          {
+            "end": 27.979999542236328,
+            "start": 27.739999771118164,
+            "word": "visits"
+          },
+          {
+            "end": 28.260000228881836,
+            "start": 27.979999542236328,
+            "word": "into"
+          },
+          {
+            "end": 28.68000030517578,
+            "start": 28.260000228881836,
+            "word": "complete"
+          },
+          {
+            "end": 29.18000030517578,
+            "start": 28.68000030517578,
+            "word": "purchases"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 29.47425,
+        "language_code": "eng",
+        "language_probability": 1.0,
+        "text": "Why did a Swedish furniture warehouse start serving hot cooked meals? In the 1950s, IKEA opened massive stores far outside city centers. Customers traveled long distances, grew hungry, and departed before buying furniture. Founder Ingvar Kamprad observed that well-fed visitors stayed longer and shopped. In 1960, his Älmhult store opened an on-site kitchen serving meals. Inexpensive food kept shoppers relaxed, turning quick visits into complete purchases.",
+        "transcription_id": "wVnwVVzkpV5OPqAsnsBv",
+        "words": [
+          {
+            "end": 0.32,
+            "logprob": -2.145764938177308e-06,
+            "start": 0.1,
+            "text": "Why",
+            "type": "word"
+          },
+          {
+            "end": 0.36,
+            "logprob": -2.5987286790041253e-05,
+            "start": 0.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.48,
+            "logprob": -2.5987286790041253e-05,
+            "start": 0.36,
+            "text": "did",
+            "type": "word"
+          },
+          {
+            "end": 0.56,
+            "logprob": -1.1920928244535389e-07,
+            "start": 0.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.64,
+            "logprob": -1.1920928244535389e-07,
+            "start": 0.56,
+            "text": "a",
+            "type": "word"
+          },
+          {
+            "end": 0.74,
+            "logprob": -3.3378546504536644e-06,
+            "start": 0.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.14,
+            "logprob": -3.3378546504536644e-06,
+            "start": 0.74,
+            "text": "Swedish",
+            "type": "word"
+          },
+          {
+            "end": 1.26,
+            "logprob": -5.185469490243122e-05,
+            "start": 1.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.68,
+            "logprob": -5.185469490243122e-05,
+            "start": 1.26,
+            "text": "furniture",
+            "type": "word"
+          },
+          {
+            "end": 1.72,
+            "logprob": -7.152531907195225e-06,
+            "start": 1.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.16,
+            "logprob": -7.152531907195225e-06,
+            "start": 1.72,
+            "text": "warehouse",
+            "type": "word"
+          },
+          {
+            "end": 2.4,
+            "logprob": -8.344646857949556e-07,
+            "start": 2.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.62,
+            "logprob": -8.344646857949556e-07,
+            "start": 2.4,
+            "text": "start",
+            "type": "word"
+          },
+          {
+            "end": 2.7,
+            "logprob": -1.0728830375228426e-06,
+            "start": 2.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.04,
+            "logprob": -1.0728830375228426e-06,
+            "start": 2.7,
+            "text": "serving",
+            "type": "word"
+          },
+          {
+            "end": 3.12,
+            "logprob": -2.145764938177308e-06,
+            "start": 3.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.34,
+            "logprob": -2.145764938177308e-06,
+            "start": 3.12,
+            "text": "hot",
+            "type": "word"
+          },
+          {
+            "end": 3.4,
+            "logprob": -0.057920388877391815,
+            "start": 3.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.64,
+            "logprob": -0.057920388877391815,
+            "start": 3.4,
+            "text": "cooked",
+            "type": "word"
+          },
+          {
+            "end": 3.72,
+            "logprob": -2.861018856492592e-06,
+            "start": 3.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.16,
+            "logprob": -3.4570624999711677e-06,
+            "start": 3.72,
+            "text": "meals?",
+            "type": "word"
+          },
+          {
+            "end": 4.16,
+            "logprob": -3.2186455882765586e-06,
+            "start": 4.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.6,
+            "logprob": -3.2186455882765586e-06,
+            "start": 4.54,
+            "text": "In",
+            "type": "word"
+          },
+          {
+            "end": 4.64,
+            "logprob": -2.9802276912960224e-06,
+            "start": 4.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.72,
+            "logprob": -2.9802276912960224e-06,
+            "start": 4.64,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 4.76,
+            "logprob": -3.576278118089249e-07,
+            "start": 4.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.6,
+            "logprob": -2.821268887250502e-06,
+            "start": 4.76,
+            "text": "1950s,",
+            "type": "word"
+          },
+          {
+            "end": 5.98,
+            "logprob": -0.38690364360809326,
+            "start": 5.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.4,
+            "logprob": -0.38690364360809326,
+            "start": 5.98,
+            "text": "IKEA",
+            "type": "word"
+          },
+          {
+            "end": 6.48,
+            "logprob": -1.311301275563892e-06,
+            "start": 6.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.76,
+            "logprob": -1.311301275563892e-06,
+            "start": 6.48,
+            "text": "opened",
+            "type": "word"
+          },
+          {
+            "end": 6.86,
+            "logprob": -1.4305104514278355e-06,
+            "start": 6.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.24,
+            "logprob": -1.4305104514278355e-06,
+            "start": 6.86,
+            "text": "massive",
+            "type": "word"
+          },
+          {
+            "end": 7.32,
+            "logprob": -3.4570634852570947e-06,
+            "start": 7.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.74,
+            "logprob": -3.4570634852570947e-06,
+            "start": 7.32,
+            "text": "stores",
+            "type": "word"
+          },
+          {
+            "end": 7.84,
+            "logprob": -3.2186455882765586e-06,
+            "start": 7.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.039,
+            "logprob": -3.2186455882765586e-06,
+            "start": 7.84,
+            "text": "far",
+            "type": "word"
+          },
+          {
+            "end": 8.08,
+            "logprob": -1.0728830375228426e-06,
+            "start": 8.039,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.52,
+            "logprob": -1.0728830375228426e-06,
+            "start": 8.08,
+            "text": "outside",
+            "type": "word"
+          },
+          {
+            "end": 8.56,
+            "logprob": -1.5497195136049413e-06,
+            "start": 8.52,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.78,
+            "logprob": -1.5497195136049413e-06,
+            "start": 8.56,
+            "text": "city",
+            "type": "word"
+          },
+          {
+            "end": 8.84,
+            "logprob": -2.276871418871451e-05,
+            "start": 8.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.28,
+            "logprob": -2.0101438721553677e-05,
+            "start": 8.84,
+            "text": "centers.",
+            "type": "word"
+          },
+          {
+            "end": 9.64,
+            "logprob": -0.00012575789878610522,
+            "start": 9.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.14,
+            "logprob": -0.00012575789878610522,
+            "start": 9.64,
+            "text": "Customers",
+            "type": "word"
+          },
+          {
+            "end": 10.2,
+            "logprob": -0.00023123928986024112,
+            "start": 10.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.58,
+            "logprob": -0.00023123928986024112,
+            "start": 10.2,
+            "text": "traveled",
+            "type": "word"
+          },
+          {
+            "end": 10.66,
+            "logprob": 0.0,
+            "start": 10.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.84,
+            "logprob": 0.0,
+            "start": 10.66,
+            "text": "long",
+            "type": "word"
+          },
+          {
+            "end": 10.88,
+            "logprob": -7.152555099310121e-07,
+            "start": 10.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.46,
+            "logprob": -3.4212678428957587e-06,
+            "start": 10.88,
+            "text": "distances,",
+            "type": "word"
+          },
+          {
+            "end": 11.76,
+            "logprob": 0.0,
+            "start": 11.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.96,
+            "logprob": 0.0,
+            "start": 11.76,
+            "text": "grew",
+            "type": "word"
+          },
+          {
+            "end": 12.02,
+            "logprob": -1.311301275563892e-06,
+            "start": 11.96,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.36,
+            "logprob": -0.0006616489421763358,
+            "start": 12.02,
+            "text": "hungry,",
+            "type": "word"
+          },
+          {
+            "end": 12.6,
+            "logprob": -3.576278118089249e-07,
+            "start": 12.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.7,
+            "logprob": -3.576278118089249e-07,
+            "start": 12.6,
+            "text": "and",
+            "type": "word"
+          },
+          {
+            "end": 12.74,
+            "logprob": -9.059865078597795e-06,
+            "start": 12.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.2,
+            "logprob": -9.059865078597795e-06,
+            "start": 12.74,
+            "text": "departed",
+            "type": "word"
+          },
+          {
+            "end": 13.24,
+            "logprob": -3.576278118089249e-07,
+            "start": 13.2,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.58,
+            "logprob": -3.576278118089249e-07,
+            "start": 13.24,
+            "text": "before",
+            "type": "word"
+          },
+          {
+            "end": 13.62,
+            "logprob": -3.576278118089249e-07,
+            "start": 13.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.92,
+            "logprob": -3.576278118089249e-07,
+            "start": 13.62,
+            "text": "buying",
+            "type": "word"
+          },
+          {
+            "end": 13.98,
+            "logprob": -5.960462772236497e-07,
+            "start": 13.92,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.4,
+            "logprob": -5.364416495012847e-07,
+            "start": 13.98,
+            "text": "furniture.",
+            "type": "word"
+          },
+          {
+            "end": 14.4,
+            "logprob": -0.00045813556062057614,
+            "start": 14.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.22,
+            "logprob": -0.00045813556062057614,
+            "start": 14.88,
+            "text": "Founder",
+            "type": "word"
+          },
+          {
+            "end": 15.42,
+            "logprob": -0.004460029769688845,
+            "start": 15.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.74,
+            "logprob": -0.00223752501369745,
+            "start": 15.42,
+            "text": "Ingvar",
+            "type": "word"
+          },
+          {
+            "end": 15.9,
+            "logprob": -0.0010752854868769646,
+            "start": 15.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.36,
+            "logprob": -0.0004657071526058384,
+            "start": 15.9,
+            "text": "Kamprad",
+            "type": "word"
+          },
+          {
+            "end": 16.42,
+            "logprob": -4.887569048150908e-06,
+            "start": 16.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.86,
+            "logprob": -4.887569048150908e-06,
+            "start": 16.42,
+            "text": "observed",
+            "type": "word"
+          },
+          {
+            "end": 16.92,
+            "logprob": -1.1920928244535389e-07,
+            "start": 16.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.08,
+            "logprob": -1.1920928244535389e-07,
+            "start": 16.92,
+            "text": "that",
+            "type": "word"
+          },
+          {
+            "end": 17.14,
+            "logprob": -3.576278118089249e-07,
+            "start": 17.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.62,
+            "logprob": -9.040337872079363e-05,
+            "start": 17.14,
+            "text": "well-fed",
+            "type": "word"
+          },
+          {
+            "end": 17.68,
+            "logprob": -2.7418097943154862e-06,
+            "start": 17.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.12,
+            "logprob": -2.7418097943154862e-06,
+            "start": 17.68,
+            "text": "visitors",
+            "type": "word"
+          },
+          {
+            "end": 18.2,
+            "logprob": -2.264974000354414e-06,
+            "start": 18.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.48,
+            "logprob": -2.264974000354414e-06,
+            "start": 18.2,
+            "text": "stayed",
+            "type": "word"
+          },
+          {
+            "end": 18.52,
+            "logprob": -5.125986263010418e-06,
+            "start": 18.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.84,
+            "logprob": -5.125986263010418e-06,
+            "start": 18.52,
+            "text": "longer",
+            "type": "word"
+          },
+          {
+            "end": 18.88,
+            "logprob": -5.960462772236497e-07,
+            "start": 18.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.02,
+            "logprob": -5.960462772236497e-07,
+            "start": 18.88,
+            "text": "and",
+            "type": "word"
+          },
+          {
+            "end": 19.08,
+            "logprob": -3.349725011503324e-05,
+            "start": 19.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.44,
+            "logprob": -1.3351229710245605e-05,
+            "start": 19.08,
+            "text": "shopped.",
+            "type": "word"
+          },
+          {
+            "end": 19.44,
+            "logprob": -2.0265558760002023e-06,
+            "start": 19.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.94,
+            "logprob": -2.0265558760002023e-06,
+            "start": 19.86,
+            "text": "In",
+            "type": "word"
+          },
+          {
+            "end": 19.98,
+            "logprob": -1.1920928244535389e-07,
+            "start": 19.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.84,
+            "logprob": -9.298316115291527e-07,
+            "start": 19.98,
+            "text": "1960,",
+            "type": "word"
+          },
+          {
+            "end": 21.1,
+            "logprob": -1.585470999998506e-05,
+            "start": 20.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.28,
+            "logprob": -1.585470999998506e-05,
+            "start": 21.1,
+            "text": "his",
+            "type": "word"
+          },
+          {
+            "end": 21.36,
+            "logprob": -0.15568380057811737,
+            "start": 21.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.76,
+            "logprob": -0.022748709105404226,
+            "start": 21.38,
+            "text": "Älmhult",
+            "type": "word"
+          },
+          {
+            "end": 21.84,
+            "logprob": -3.4570634852570947e-06,
+            "start": 21.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.12,
+            "logprob": -3.4570634852570947e-06,
+            "start": 21.84,
+            "text": "store",
+            "type": "word"
+          },
+          {
+            "end": 22.22,
+            "logprob": -5.960462772236497e-07,
+            "start": 22.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.46,
+            "logprob": -5.960462772236497e-07,
+            "start": 22.22,
+            "text": "opened",
+            "type": "word"
+          },
+          {
+            "end": 22.52,
+            "logprob": -1.1920922133867862e-06,
+            "start": 22.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.64,
+            "logprob": -1.1920922133867862e-06,
+            "start": 22.52,
+            "text": "an",
+            "type": "word"
+          },
+          {
+            "end": 22.74,
+            "logprob": -0.048588238656520844,
+            "start": 22.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.18,
+            "logprob": -0.013889847014330112,
+            "start": 22.74,
+            "text": "on-site",
+            "type": "word"
+          },
+          {
+            "end": 23.24,
+            "logprob": -3.814689989667386e-06,
+            "start": 23.18,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.62,
+            "logprob": -3.814689989667386e-06,
+            "start": 23.24,
+            "text": "kitchen",
+            "type": "word"
+          },
+          {
+            "end": 23.68,
+            "logprob": -0.00018094333063345402,
+            "start": 23.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.98,
+            "logprob": -0.00018094333063345402,
+            "start": 23.68,
+            "text": "serving",
+            "type": "word"
+          },
+          {
+            "end": 24.02,
+            "logprob": -1.311301275563892e-06,
+            "start": 23.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.34,
+            "logprob": -1.1722239037226245e-06,
+            "start": 24.02,
+            "text": "meals.",
+            "type": "word"
+          },
+          {
+            "end": 24.36,
+            "logprob": -1.6689286894688848e-06,
+            "start": 24.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.3,
+            "logprob": -5.6774186553163666e-05,
+            "start": 24.72,
+            "text": "Inexpensive",
+            "type": "word"
+          },
+          {
+            "end": 25.38,
+            "logprob": -9.536738616588991e-07,
+            "start": 25.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.68,
+            "logprob": -9.536738616588991e-07,
+            "start": 25.38,
+            "text": "food",
+            "type": "word"
+          },
+          {
+            "end": 25.74,
+            "logprob": -1.0728830375228426e-06,
+            "start": 25.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.92,
+            "logprob": -1.0728830375228426e-06,
+            "start": 25.74,
+            "text": "kept",
+            "type": "word"
+          },
+          {
+            "end": 25.96,
+            "logprob": -9.775113539944869e-06,
+            "start": 25.92,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.32,
+            "logprob": -9.775113539944869e-06,
+            "start": 25.96,
+            "text": "shoppers",
+            "type": "word"
+          },
+          {
+            "end": 26.36,
+            "logprob": -3.3378546504536644e-06,
+            "start": 26.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.82,
+            "logprob": -1.3917195929025183e-05,
+            "start": 26.36,
+            "text": "relaxed,",
+            "type": "word"
+          },
+          {
+            "end": 27.12,
+            "logprob": -1.0728830375228426e-06,
+            "start": 26.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.38,
+            "logprob": -1.0728830375228426e-06,
+            "start": 27.12,
+            "text": "turning",
+            "type": "word"
+          },
+          {
+            "end": 27.46,
+            "logprob": -3.576278118089249e-07,
+            "start": 27.38,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.66,
+            "logprob": -3.576278118089249e-07,
+            "start": 27.46,
+            "text": "quick",
+            "type": "word"
+          },
+          {
+            "end": 27.72,
+            "logprob": -1.6689286894688848e-06,
+            "start": 27.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.02,
+            "logprob": -1.6689286894688848e-06,
+            "start": 27.72,
+            "text": "visits",
+            "type": "word"
+          },
+          {
+            "end": 28.08,
+            "logprob": -7.152555099310121e-07,
+            "start": 28.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.22,
+            "logprob": -7.152555099310121e-07,
+            "start": 28.08,
+            "text": "into",
+            "type": "word"
+          },
+          {
+            "end": 28.26,
+            "logprob": -1.1920922133867862e-06,
+            "start": 28.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.66,
+            "logprob": -1.1920922133867862e-06,
+            "start": 28.26,
+            "text": "complete",
+            "type": "word"
+          },
+          {
+            "end": 28.72,
+            "logprob": -2.5152843591058627e-05,
+            "start": 28.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.26,
+            "logprob": -9.623412661312614e-05,
+            "start": 28.72,
+            "text": "purchases.",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    }
+  ]
+}

@@ -443,11 +443,12 @@ class ShortPreviewBrollFallbackTests(unittest.TestCase):
             if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
             and node.func.id in {'review_scene_visuals', '_review_stock_tournament_round'}
         ]
-        # V5 adds one exact-retained review before any paid scene repair.
-        self.assertEqual(len(calls), 8)
-        mixed = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
-                     and node.name == '_review_mixed_retained_before_paid')
-        self.assertEqual(sum(call in set(ast.walk(mixed)) for call in calls), 1)
+        # V5 and V6 each have their own exact-cut review before paid repair.
+        self.assertEqual(len(calls), 9)
+        for name in ('_review_mixed_retained_before_paid', '_review_selected_exact'):
+            helper = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                          and node.name == name)
+            self.assertEqual(sum(call in set(ast.walk(helper)) for call in calls), 1)
         sources = [{'url': 'https://example.test/history', 'evidence': 'Verified historical fact.'}]
         for call in calls:
             with self.subTest(line=call.lineno):

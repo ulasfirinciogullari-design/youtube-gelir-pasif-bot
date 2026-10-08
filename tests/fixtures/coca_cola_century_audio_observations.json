@@ -1,0 +1,3728 @@
+{
+  "expected": "In the early nineteen hundreds, Coca-Cola faced scores of market copycats. Bottlers relied on plain cylinders, letting rivals mimic their scripted logos. Chilled paper labels also peeled away inside watery wooden ice tubs. So in nineteen fifteen, bottlers commissioned a completely unmistakable glass silhouette. Their brief demanded immediate recognition in total darkness or when shattered. Root Glass delivered distinctive ribs inspired by grooved cocoa pod sketches.",
+  "observations": [
+    {
+      "payload": {
+        "duration": 29.440000534057617,
+        "language": "english",
+        "task": "transcribe",
+        "text": "In the early 1900s, Coca-Cola faced scores of market copycats. Bottlers relied on plain cylinders, letting rivals mimic their scripted logos. Chilled paper labels also peeled away inside watery wooden ice tubs. So, in 1915, bottlers commissioned a completely unmistakable glass silhouette. Their brief demanded immediate recognition in total darkness or when shattered. Root glass delivered distinctive ribs inspired by grooved cocoa pod sketches.",
+        "usage": {
+          "seconds": 30,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.18000000715255737,
+            "start": 0.0,
+            "word": "In"
+          },
+          {
+            "end": 0.36000001430511475,
+            "start": 0.18000000715255737,
+            "word": "the"
+          },
+          {
+            "end": 0.6600000262260437,
+            "start": 0.36000001430511475,
+            "word": "early"
+          },
+          {
+            "end": 1.7599999904632568,
+            "start": 0.6600000262260437,
+            "word": "1900s"
+          },
+          {
+            "end": 2.140000104904175,
+            "start": 1.9199999570846558,
+            "word": "Coca"
+          },
+          {
+            "end": 2.319999933242798,
+            "start": 2.140000104904175,
+            "word": "Cola"
+          },
+          {
+            "end": 2.740000009536743,
+            "start": 2.319999933242798,
+            "word": "faced"
+          },
+          {
+            "end": 3.2799999713897705,
+            "start": 2.740000009536743,
+            "word": "scores"
+          },
+          {
+            "end": 3.8399999141693115,
+            "start": 3.2799999713897705,
+            "word": "of"
+          },
+          {
+            "end": 3.8399999141693115,
+            "start": 3.8399999141693115,
+            "word": "market"
+          },
+          {
+            "end": 4.760000228881836,
+            "start": 3.8399999141693115,
+            "word": "copycats"
+          },
+          {
+            "end": 5.260000228881836,
+            "start": 5.260000228881836,
+            "word": "Bottlers"
+          },
+          {
+            "end": 5.659999847412109,
+            "start": 5.260000228881836,
+            "word": "relied"
+          },
+          {
+            "end": 6.0,
+            "start": 5.659999847412109,
+            "word": "on"
+          },
+          {
+            "end": 6.340000152587891,
+            "start": 6.0,
+            "word": "plain"
+          },
+          {
+            "end": 6.840000152587891,
+            "start": 6.340000152587891,
+            "word": "cylinders"
+          },
+          {
+            "end": 7.639999866485596,
+            "start": 7.340000152587891,
+            "word": "letting"
+          },
+          {
+            "end": 8.119999885559082,
+            "start": 7.639999866485596,
+            "word": "rivals"
+          },
+          {
+            "end": 8.5,
+            "start": 8.119999885559082,
+            "word": "mimic"
+          },
+          {
+            "end": 8.9399995803833,
+            "start": 8.5,
+            "word": "their"
+          },
+          {
+            "end": 9.819999694824219,
+            "start": 8.9399995803833,
+            "word": "scripted"
+          },
+          {
+            "end": 9.819999694824219,
+            "start": 9.819999694824219,
+            "word": "logos"
+          },
+          {
+            "end": 10.520000457763672,
+            "start": 10.520000457763672,
+            "word": "Chilled"
+          },
+          {
+            "end": 10.880000114440918,
+            "start": 10.520000457763672,
+            "word": "paper"
+          },
+          {
+            "end": 11.220000267028809,
+            "start": 10.880000114440918,
+            "word": "labels"
+          },
+          {
+            "end": 11.84000015258789,
+            "start": 11.220000267028809,
+            "word": "also"
+          },
+          {
+            "end": 12.0600004196167,
+            "start": 11.84000015258789,
+            "word": "peeled"
+          },
+          {
+            "end": 12.420000076293945,
+            "start": 12.0600004196167,
+            "word": "away"
+          },
+          {
+            "end": 12.859999656677246,
+            "start": 12.420000076293945,
+            "word": "inside"
+          },
+          {
+            "end": 13.300000190734863,
+            "start": 12.859999656677246,
+            "word": "watery"
+          },
+          {
+            "end": 13.65999984741211,
+            "start": 13.300000190734863,
+            "word": "wooden"
+          },
+          {
+            "end": 14.239999771118164,
+            "start": 13.65999984741211,
+            "word": "ice"
+          },
+          {
+            "end": 14.239999771118164,
+            "start": 14.239999771118164,
+            "word": "tubs"
+          },
+          {
+            "end": 14.960000038146973,
+            "start": 14.600000381469727,
+            "word": "So"
+          },
+          {
+            "end": 15.260000228881836,
+            "start": 15.079999923706055,
+            "word": "in"
+          },
+          {
+            "end": 16.459999084472656,
+            "start": 15.260000228881836,
+            "word": "1915"
+          },
+          {
+            "end": 16.959999084472656,
+            "start": 16.6200008392334,
+            "word": "bottlers"
+          },
+          {
+            "end": 17.440000534057617,
+            "start": 16.959999084472656,
+            "word": "commissioned"
+          },
+          {
+            "end": 17.860000610351562,
+            "start": 17.440000534057617,
+            "word": "a"
+          },
+          {
+            "end": 18.299999237060547,
+            "start": 17.860000610351562,
+            "word": "completely"
+          },
+          {
+            "end": 19.18000030517578,
+            "start": 18.299999237060547,
+            "word": "unmistakable"
+          },
+          {
+            "end": 19.600000381469727,
+            "start": 19.18000030517578,
+            "word": "glass"
+          },
+          {
+            "end": 20.059999465942383,
+            "start": 19.600000381469727,
+            "word": "silhouette"
+          },
+          {
+            "end": 20.979999542236328,
+            "start": 20.739999771118164,
+            "word": "Their"
+          },
+          {
+            "end": 21.260000228881836,
+            "start": 20.979999542236328,
+            "word": "brief"
+          },
+          {
+            "end": 21.65999984741211,
+            "start": 21.260000228881836,
+            "word": "demanded"
+          },
+          {
+            "end": 22.239999771118164,
+            "start": 21.65999984741211,
+            "word": "immediate"
+          },
+          {
+            "end": 22.739999771118164,
+            "start": 22.239999771118164,
+            "word": "recognition"
+          },
+          {
+            "end": 23.1200008392334,
+            "start": 22.739999771118164,
+            "word": "in"
+          },
+          {
+            "end": 23.440000534057617,
+            "start": 23.1200008392334,
+            "word": "total"
+          },
+          {
+            "end": 23.81999969482422,
+            "start": 23.440000534057617,
+            "word": "darkness"
+          },
+          {
+            "end": 24.079999923706055,
+            "start": 23.81999969482422,
+            "word": "or"
+          },
+          {
+            "end": 24.399999618530273,
+            "start": 24.079999923706055,
+            "word": "when"
+          },
+          {
+            "end": 24.700000762939453,
+            "start": 24.399999618530273,
+            "word": "shattered"
+          },
+          {
+            "end": 25.34000015258789,
+            "start": 24.700000762939453,
+            "word": "Root"
+          },
+          {
+            "end": 25.600000381469727,
+            "start": 25.34000015258789,
+            "word": "glass"
+          },
+          {
+            "end": 26.079999923706055,
+            "start": 25.600000381469727,
+            "word": "delivered"
+          },
+          {
+            "end": 26.68000030517578,
+            "start": 26.079999923706055,
+            "word": "distinctive"
+          },
+          {
+            "end": 26.979999542236328,
+            "start": 26.68000030517578,
+            "word": "ribs"
+          },
+          {
+            "end": 27.5,
+            "start": 26.979999542236328,
+            "word": "inspired"
+          },
+          {
+            "end": 27.84000015258789,
+            "start": 27.5,
+            "word": "by"
+          },
+          {
+            "end": 28.079999923706055,
+            "start": 27.84000015258789,
+            "word": "grooved"
+          },
+          {
+            "end": 28.459999084472656,
+            "start": 28.079999923706055,
+            "word": "cocoa"
+          },
+          {
+            "end": 28.799999237060547,
+            "start": 28.459999084472656,
+            "word": "pod"
+          },
+          {
+            "end": 29.079999923706055,
+            "start": 28.799999237060547,
+            "word": "sketches"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "duration": 29.450000762939453,
+        "language": "english",
+        "task": "transcribe",
+        "text": "In the early 1900s, Coca-Cola faced scores of market copycats. Bottlers relied on plain cylinders, letting rivals mimic their scripted logos. Chilled paper labels also peeled away inside watery wooden ice tubs. So in 1915, bottlers commissioned a completely unmistakable glass silhouette. Their brief demanded immediate recognition in total darkness or when shattered. Root glass delivered distinctive ribs inspired by grooved cocoa pod sketches.",
+        "usage": {
+          "seconds": 30,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.18000000715255737,
+            "start": 0.0,
+            "word": "In"
+          },
+          {
+            "end": 0.4000000059604645,
+            "start": 0.18000000715255737,
+            "word": "the"
+          },
+          {
+            "end": 0.6800000071525574,
+            "start": 0.4000000059604645,
+            "word": "early"
+          },
+          {
+            "end": 1.8200000524520874,
+            "start": 0.6800000071525574,
+            "word": "1900s"
+          },
+          {
+            "end": 2.259999990463257,
+            "start": 1.9600000381469727,
+            "word": "Coca"
+          },
+          {
+            "end": 2.3399999141693115,
+            "start": 2.259999990463257,
+            "word": "Cola"
+          },
+          {
+            "end": 2.700000047683716,
+            "start": 2.3399999141693115,
+            "word": "faced"
+          },
+          {
+            "end": 3.059999942779541,
+            "start": 2.700000047683716,
+            "word": "scores"
+          },
+          {
+            "end": 3.4200000762939453,
+            "start": 3.059999942779541,
+            "word": "of"
+          },
+          {
+            "end": 3.619999885559082,
+            "start": 3.4200000762939453,
+            "word": "market"
+          },
+          {
+            "end": 4.480000019073486,
+            "start": 3.619999885559082,
+            "word": "copycats"
+          },
+          {
+            "end": 5.039999961853027,
+            "start": 5.039999961853027,
+            "word": "Bottlers"
+          },
+          {
+            "end": 5.420000076293945,
+            "start": 5.039999961853027,
+            "word": "relied"
+          },
+          {
+            "end": 5.71999979019165,
+            "start": 5.420000076293945,
+            "word": "on"
+          },
+          {
+            "end": 6.039999961853027,
+            "start": 5.71999979019165,
+            "word": "plain"
+          },
+          {
+            "end": 6.539999961853027,
+            "start": 6.039999961853027,
+            "word": "cylinders"
+          },
+          {
+            "end": 7.199999809265137,
+            "start": 6.900000095367432,
+            "word": "letting"
+          },
+          {
+            "end": 7.71999979019165,
+            "start": 7.199999809265137,
+            "word": "rivals"
+          },
+          {
+            "end": 8.100000381469727,
+            "start": 7.71999979019165,
+            "word": "mimic"
+          },
+          {
+            "end": 8.520000457763672,
+            "start": 8.100000381469727,
+            "word": "their"
+          },
+          {
+            "end": 9.5,
+            "start": 8.520000457763672,
+            "word": "scripted"
+          },
+          {
+            "end": 9.5,
+            "start": 9.5,
+            "word": "logos"
+          },
+          {
+            "end": 10.239999771118164,
+            "start": 10.239999771118164,
+            "word": "Chilled"
+          },
+          {
+            "end": 10.680000305175781,
+            "start": 10.239999771118164,
+            "word": "paper"
+          },
+          {
+            "end": 11.079999923706055,
+            "start": 10.680000305175781,
+            "word": "labels"
+          },
+          {
+            "end": 11.779999732971191,
+            "start": 11.079999923706055,
+            "word": "also"
+          },
+          {
+            "end": 12.020000457763672,
+            "start": 11.779999732971191,
+            "word": "peeled"
+          },
+          {
+            "end": 12.380000114440918,
+            "start": 12.020000457763672,
+            "word": "away"
+          },
+          {
+            "end": 12.819999694824219,
+            "start": 12.380000114440918,
+            "word": "inside"
+          },
+          {
+            "end": 13.279999732971191,
+            "start": 12.819999694824219,
+            "word": "watery"
+          },
+          {
+            "end": 13.65999984741211,
+            "start": 13.279999732971191,
+            "word": "wooden"
+          },
+          {
+            "end": 14.300000190734863,
+            "start": 13.65999984741211,
+            "word": "ice"
+          },
+          {
+            "end": 14.300000190734863,
+            "start": 14.300000190734863,
+            "word": "tubs"
+          },
+          {
+            "end": 14.920000076293945,
+            "start": 14.640000343322754,
+            "word": "So"
+          },
+          {
+            "end": 15.0600004196167,
+            "start": 14.920000076293945,
+            "word": "in"
+          },
+          {
+            "end": 16.299999237060547,
+            "start": 15.0600004196167,
+            "word": "1915"
+          },
+          {
+            "end": 16.780000686645508,
+            "start": 16.520000457763672,
+            "word": "bottlers"
+          },
+          {
+            "end": 17.239999771118164,
+            "start": 16.780000686645508,
+            "word": "commissioned"
+          },
+          {
+            "end": 17.579999923706055,
+            "start": 17.239999771118164,
+            "word": "a"
+          },
+          {
+            "end": 17.920000076293945,
+            "start": 17.579999923706055,
+            "word": "completely"
+          },
+          {
+            "end": 18.639999389648438,
+            "start": 17.920000076293945,
+            "word": "unmistakable"
+          },
+          {
+            "end": 19.059999465942383,
+            "start": 18.639999389648438,
+            "word": "glass"
+          },
+          {
+            "end": 19.440000534057617,
+            "start": 19.059999465942383,
+            "word": "silhouette"
+          },
+          {
+            "end": 20.299999237060547,
+            "start": 20.1200008392334,
+            "word": "Their"
+          },
+          {
+            "end": 20.559999465942383,
+            "start": 20.299999237060547,
+            "word": "brief"
+          },
+          {
+            "end": 20.940000534057617,
+            "start": 20.559999465942383,
+            "word": "demanded"
+          },
+          {
+            "end": 21.479999542236328,
+            "start": 20.940000534057617,
+            "word": "immediate"
+          },
+          {
+            "end": 21.979999542236328,
+            "start": 21.479999542236328,
+            "word": "recognition"
+          },
+          {
+            "end": 22.360000610351562,
+            "start": 21.979999542236328,
+            "word": "in"
+          },
+          {
+            "end": 22.700000762939453,
+            "start": 22.360000610351562,
+            "word": "total"
+          },
+          {
+            "end": 23.139999389648438,
+            "start": 22.700000762939453,
+            "word": "darkness"
+          },
+          {
+            "end": 23.700000762939453,
+            "start": 23.139999389648438,
+            "word": "or"
+          },
+          {
+            "end": 24.020000457763672,
+            "start": 23.700000762939453,
+            "word": "when"
+          },
+          {
+            "end": 24.34000015258789,
+            "start": 24.020000457763672,
+            "word": "shattered"
+          },
+          {
+            "end": 25.059999465942383,
+            "start": 24.34000015258789,
+            "word": "Root"
+          },
+          {
+            "end": 25.360000610351562,
+            "start": 25.059999465942383,
+            "word": "glass"
+          },
+          {
+            "end": 25.81999969482422,
+            "start": 25.360000610351562,
+            "word": "delivered"
+          },
+          {
+            "end": 26.440000534057617,
+            "start": 25.81999969482422,
+            "word": "distinctive"
+          },
+          {
+            "end": 26.81999969482422,
+            "start": 26.440000534057617,
+            "word": "ribs"
+          },
+          {
+            "end": 27.34000015258789,
+            "start": 26.81999969482422,
+            "word": "inspired"
+          },
+          {
+            "end": 27.719999313354492,
+            "start": 27.34000015258789,
+            "word": "by"
+          },
+          {
+            "end": 28.040000915527344,
+            "start": 27.719999313354492,
+            "word": "grooved"
+          },
+          {
+            "end": 28.420000076293945,
+            "start": 28.040000915527344,
+            "word": "cocoa"
+          },
+          {
+            "end": 28.799999237060547,
+            "start": 28.420000076293945,
+            "word": "pod"
+          },
+          {
+            "end": 29.059999465942383,
+            "start": 28.799999237060547,
+            "word": "sketches"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "duration": 29.469999313354492,
+        "language": "english",
+        "task": "transcribe",
+        "text": "In the early 1900s, Coca-Cola faced scores of market copycats. Bottlers relied on plain cylinders, letting rivals mimic their scripted logos. Chilled paper labels also peeled away inside watery wooden ice tubs. So, in 1915, bottlers commissioned a completely unmistakable glass silhouette. Their brief demanded immediate recognition in total darkness or when shattered. Root glass delivered distinctive ribs inspired by grooved cocoa pod sketches.",
+        "usage": {
+          "seconds": 30,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.1599999964237213,
+            "start": 0.0,
+            "word": "In"
+          },
+          {
+            "end": 0.36000001430511475,
+            "start": 0.1599999964237213,
+            "word": "the"
+          },
+          {
+            "end": 0.6399999856948853,
+            "start": 0.36000001430511475,
+            "word": "early"
+          },
+          {
+            "end": 1.7200000286102295,
+            "start": 0.6399999856948853,
+            "word": "1900s"
+          },
+          {
+            "end": 2.0799999237060547,
+            "start": 1.9600000381469727,
+            "word": "Coca"
+          },
+          {
+            "end": 2.240000009536743,
+            "start": 2.0799999237060547,
+            "word": "Cola"
+          },
+          {
+            "end": 2.6600000858306885,
+            "start": 2.240000009536743,
+            "word": "faced"
+          },
+          {
+            "end": 3.240000009536743,
+            "start": 2.6600000858306885,
+            "word": "scores"
+          },
+          {
+            "end": 3.819999933242798,
+            "start": 3.240000009536743,
+            "word": "of"
+          },
+          {
+            "end": 3.819999933242798,
+            "start": 3.819999933242798,
+            "word": "market"
+          },
+          {
+            "end": 4.460000038146973,
+            "start": 3.819999933242798,
+            "word": "copycats"
+          },
+          {
+            "end": 5.199999809265137,
+            "start": 5.199999809265137,
+            "word": "Bottlers"
+          },
+          {
+            "end": 5.599999904632568,
+            "start": 5.199999809265137,
+            "word": "relied"
+          },
+          {
+            "end": 5.900000095367432,
+            "start": 5.599999904632568,
+            "word": "on"
+          },
+          {
+            "end": 6.239999771118164,
+            "start": 5.900000095367432,
+            "word": "plain"
+          },
+          {
+            "end": 6.699999809265137,
+            "start": 6.239999771118164,
+            "word": "cylinders"
+          },
+          {
+            "end": 7.340000152587891,
+            "start": 7.239999771118164,
+            "word": "letting"
+          },
+          {
+            "end": 7.820000171661377,
+            "start": 7.340000152587891,
+            "word": "rivals"
+          },
+          {
+            "end": 8.199999809265137,
+            "start": 7.820000171661377,
+            "word": "mimic"
+          },
+          {
+            "end": 8.5600004196167,
+            "start": 8.199999809265137,
+            "word": "their"
+          },
+          {
+            "end": 9.420000076293945,
+            "start": 8.5600004196167,
+            "word": "scripted"
+          },
+          {
+            "end": 9.420000076293945,
+            "start": 9.420000076293945,
+            "word": "logos"
+          },
+          {
+            "end": 10.100000381469727,
+            "start": 10.079999923706055,
+            "word": "Chilled"
+          },
+          {
+            "end": 10.479999542236328,
+            "start": 10.100000381469727,
+            "word": "paper"
+          },
+          {
+            "end": 10.84000015258789,
+            "start": 10.479999542236328,
+            "word": "labels"
+          },
+          {
+            "end": 11.479999542236328,
+            "start": 10.84000015258789,
+            "word": "also"
+          },
+          {
+            "end": 11.699999809265137,
+            "start": 11.479999542236328,
+            "word": "peeled"
+          },
+          {
+            "end": 12.079999923706055,
+            "start": 11.699999809265137,
+            "word": "away"
+          },
+          {
+            "end": 12.65999984741211,
+            "start": 12.079999923706055,
+            "word": "inside"
+          },
+          {
+            "end": 13.119999885559082,
+            "start": 12.65999984741211,
+            "word": "watery"
+          },
+          {
+            "end": 13.460000038146973,
+            "start": 13.119999885559082,
+            "word": "wooden"
+          },
+          {
+            "end": 14.0600004196167,
+            "start": 13.460000038146973,
+            "word": "ice"
+          },
+          {
+            "end": 14.0600004196167,
+            "start": 14.0600004196167,
+            "word": "tubs"
+          },
+          {
+            "end": 14.800000190734863,
+            "start": 14.380000114440918,
+            "word": "So"
+          },
+          {
+            "end": 15.119999885559082,
+            "start": 14.9399995803833,
+            "word": "in"
+          },
+          {
+            "end": 16.3799991607666,
+            "start": 15.119999885559082,
+            "word": "1915"
+          },
+          {
+            "end": 16.860000610351562,
+            "start": 16.559999465942383,
+            "word": "bottlers"
+          },
+          {
+            "end": 17.31999969482422,
+            "start": 16.860000610351562,
+            "word": "commissioned"
+          },
+          {
+            "end": 17.68000030517578,
+            "start": 17.31999969482422,
+            "word": "a"
+          },
+          {
+            "end": 18.100000381469727,
+            "start": 17.68000030517578,
+            "word": "completely"
+          },
+          {
+            "end": 18.959999084472656,
+            "start": 18.100000381469727,
+            "word": "unmistakable"
+          },
+          {
+            "end": 19.420000076293945,
+            "start": 18.959999084472656,
+            "word": "glass"
+          },
+          {
+            "end": 19.860000610351562,
+            "start": 19.420000076293945,
+            "word": "silhouette"
+          },
+          {
+            "end": 20.600000381469727,
+            "start": 20.399999618530273,
+            "word": "Their"
+          },
+          {
+            "end": 20.959999084472656,
+            "start": 20.600000381469727,
+            "word": "brief"
+          },
+          {
+            "end": 21.399999618530273,
+            "start": 20.959999084472656,
+            "word": "demanded"
+          },
+          {
+            "end": 22.0,
+            "start": 21.399999618530273,
+            "word": "immediate"
+          },
+          {
+            "end": 22.479999542236328,
+            "start": 22.0,
+            "word": "recognition"
+          },
+          {
+            "end": 22.81999969482422,
+            "start": 22.479999542236328,
+            "word": "in"
+          },
+          {
+            "end": 23.1200008392334,
+            "start": 22.81999969482422,
+            "word": "total"
+          },
+          {
+            "end": 23.459999084472656,
+            "start": 23.1200008392334,
+            "word": "darkness"
+          },
+          {
+            "end": 23.81999969482422,
+            "start": 23.459999084472656,
+            "word": "or"
+          },
+          {
+            "end": 24.139999389648438,
+            "start": 23.81999969482422,
+            "word": "when"
+          },
+          {
+            "end": 24.440000534057617,
+            "start": 24.139999389648438,
+            "word": "shattered"
+          },
+          {
+            "end": 25.1200008392334,
+            "start": 24.440000534057617,
+            "word": "Root"
+          },
+          {
+            "end": 25.420000076293945,
+            "start": 25.1200008392334,
+            "word": "glass"
+          },
+          {
+            "end": 25.84000015258789,
+            "start": 25.420000076293945,
+            "word": "delivered"
+          },
+          {
+            "end": 26.420000076293945,
+            "start": 25.84000015258789,
+            "word": "distinctive"
+          },
+          {
+            "end": 26.81999969482422,
+            "start": 26.420000076293945,
+            "word": "ribs"
+          },
+          {
+            "end": 27.31999969482422,
+            "start": 26.81999969482422,
+            "word": "inspired"
+          },
+          {
+            "end": 27.68000030517578,
+            "start": 27.31999969482422,
+            "word": "by"
+          },
+          {
+            "end": 28.020000457763672,
+            "start": 27.68000030517578,
+            "word": "grooved"
+          },
+          {
+            "end": 28.459999084472656,
+            "start": 28.020000457763672,
+            "word": "cocoa"
+          },
+          {
+            "end": 28.799999237060547,
+            "start": 28.459999084472656,
+            "word": "pod"
+          },
+          {
+            "end": 29.059999465942383,
+            "start": 28.799999237060547,
+            "word": "sketches"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 29.458,
+        "language_code": "eng",
+        "language_probability": 1.0,
+        "text": "In the early 1900s, Coca-Cola faced scores of market copycats. Bottlers relied on plain cylinders, letting rivals mimic their scripted logos. Chilled paper labels also peeled away inside watery wooden ice tubs. So in 1915, bottlers commissioned a completely unmistakable glass silhouette. Their brief demanded immediate recognition in total darkness or when shattered. Root glass delivered distinctive ribs inspired by grooved cocoa pod sketches.",
+        "transcription_id": "Ka8BZyxew6ept7Av7YZF",
+        "words": [
+          {
+            "end": 0.18,
+            "logprob": -1.9550132492440753e-05,
+            "start": 0.1,
+            "text": "In",
+            "type": "word"
+          },
+          {
+            "end": 0.22,
+            "logprob": -5.006777428206988e-06,
+            "start": 0.18,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.28,
+            "logprob": -5.006777428206988e-06,
+            "start": 0.22,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 0.4,
+            "logprob": -3.576278118089249e-07,
+            "start": 0.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.66,
+            "logprob": -3.576278118089249e-07,
+            "start": 0.4,
+            "text": "early",
+            "type": "word"
+          },
+          {
+            "end": 0.7,
+            "logprob": -0.00772891053929925,
+            "start": 0.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.58,
+            "logprob": -3.47467985145992e-05,
+            "start": 0.72,
+            "text": "1900s,",
+            "type": "word"
+          },
+          {
+            "end": 1.84,
+            "logprob": -2.729855441430118e-05,
+            "start": 1.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.34,
+            "logprob": -0.0007071560143635401,
+            "start": 1.84,
+            "text": "Coca-Cola",
+            "type": "word"
+          },
+          {
+            "end": 2.44,
+            "logprob": -6.90197994117625e-05,
+            "start": 2.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.68,
+            "logprob": -6.90197994117625e-05,
+            "start": 2.44,
+            "text": "faced",
+            "type": "word"
+          },
+          {
+            "end": 2.78,
+            "logprob": -2.264974000354414e-06,
+            "start": 2.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.08,
+            "logprob": -2.264974000354414e-06,
+            "start": 2.78,
+            "text": "scores",
+            "type": "word"
+          },
+          {
+            "end": 3.14,
+            "logprob": 0.0,
+            "start": 3.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.24,
+            "logprob": 0.0,
+            "start": 3.14,
+            "text": "of",
+            "type": "word"
+          },
+          {
+            "end": 3.28,
+            "logprob": -1.0728830375228426e-06,
+            "start": 3.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.56,
+            "logprob": -1.0728830375228426e-06,
+            "start": 3.28,
+            "text": "market",
+            "type": "word"
+          },
+          {
+            "end": 3.66,
+            "logprob": -2.52720492426306e-05,
+            "start": 3.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.3,
+            "logprob": -0.0004995110420067147,
+            "start": 3.66,
+            "text": "copycats.",
+            "type": "word"
+          },
+          {
+            "end": 4.7,
+            "logprob": -0.045765239745378494,
+            "start": 4.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.1,
+            "logprob": -0.02288500405279592,
+            "start": 4.7,
+            "text": "Bottlers",
+            "type": "word"
+          },
+          {
+            "end": 5.14,
+            "logprob": -1.1920858014491387e-05,
+            "start": 5.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.44,
+            "logprob": -1.1920858014491387e-05,
+            "start": 5.14,
+            "text": "relied",
+            "type": "word"
+          },
+          {
+            "end": 5.48,
+            "logprob": 0.0,
+            "start": 5.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.64,
+            "logprob": 0.0,
+            "start": 5.48,
+            "text": "on",
+            "type": "word"
+          },
+          {
+            "end": 5.7,
+            "logprob": -0.00011181206355104223,
+            "start": 5.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.94,
+            "logprob": -0.00011181206355104223,
+            "start": 5.7,
+            "text": "plain",
+            "type": "word"
+          },
+          {
+            "end": 6.04,
+            "logprob": -9.536738616588991e-07,
+            "start": 5.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.62,
+            "logprob": -0.0004087106786300865,
+            "start": 6.04,
+            "text": "cylinders,",
+            "type": "word"
+          },
+          {
+            "end": 6.92,
+            "logprob": -2.264974000354414e-06,
+            "start": 6.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.26,
+            "logprob": -2.264974000354414e-06,
+            "start": 6.92,
+            "text": "letting",
+            "type": "word"
+          },
+          {
+            "end": 7.32,
+            "logprob": -5.960462772236497e-07,
+            "start": 7.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.78,
+            "logprob": -5.960462772236497e-07,
+            "start": 7.32,
+            "text": "rivals",
+            "type": "word"
+          },
+          {
+            "end": 7.86,
+            "logprob": -2.9802276912960224e-06,
+            "start": 7.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.16,
+            "logprob": -2.9802276912960224e-06,
+            "start": 7.86,
+            "text": "mimic",
+            "type": "word"
+          },
+          {
+            "end": 8.22,
+            "logprob": -4.768370445162873e-07,
+            "start": 8.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.4,
+            "logprob": -4.768370445162873e-07,
+            "start": 8.22,
+            "text": "their",
+            "type": "word"
+          },
+          {
+            "end": 8.52,
+            "logprob": -9.727005090098828e-05,
+            "start": 8.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.92,
+            "logprob": -9.727005090098828e-05,
+            "start": 8.52,
+            "text": "scripted",
+            "type": "word"
+          },
+          {
+            "end": 8.98,
+            "logprob": -1.0728830375228426e-06,
+            "start": 8.92,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.5,
+            "logprob": -1.0132784495908709e-06,
+            "start": 8.98,
+            "text": "logos.",
+            "type": "word"
+          },
+          {
+            "end": 9.5,
+            "logprob": -1.883488948806189e-05,
+            "start": 9.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.32,
+            "logprob": -0.00014339538860700225,
+            "start": 9.92,
+            "text": "Chilled",
+            "type": "word"
+          },
+          {
+            "end": 10.38,
+            "logprob": -1.311301275563892e-06,
+            "start": 10.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.68,
+            "logprob": -1.311301275563892e-06,
+            "start": 10.38,
+            "text": "paper",
+            "type": "word"
+          },
+          {
+            "end": 10.74,
+            "logprob": -7.152555099310121e-07,
+            "start": 10.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.26,
+            "logprob": -7.152555099310121e-07,
+            "start": 10.74,
+            "text": "labels",
+            "type": "word"
+          },
+          {
+            "end": 11.36,
+            "logprob": -7.152555099310121e-07,
+            "start": 11.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.72,
+            "logprob": -7.152555099310121e-07,
+            "start": 11.36,
+            "text": "also",
+            "type": "word"
+          },
+          {
+            "end": 11.78,
+            "logprob": -0.0007902836659923196,
+            "start": 11.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.04,
+            "logprob": -0.0007902836659923196,
+            "start": 11.78,
+            "text": "peeled",
+            "type": "word"
+          },
+          {
+            "end": 12.1,
+            "logprob": 0.0,
+            "start": 12.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.36,
+            "logprob": 0.0,
+            "start": 12.1,
+            "text": "away",
+            "type": "word"
+          },
+          {
+            "end": 12.42,
+            "logprob": -2.861018856492592e-06,
+            "start": 12.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.86,
+            "logprob": -2.861018856492592e-06,
+            "start": 12.42,
+            "text": "inside",
+            "type": "word"
+          },
+          {
+            "end": 12.94,
+            "logprob": -1.7523612768854946e-05,
+            "start": 12.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.3,
+            "logprob": -1.7523612768854946e-05,
+            "start": 12.94,
+            "text": "watery",
+            "type": "word"
+          },
+          {
+            "end": 13.4,
+            "logprob": -0.07070036232471466,
+            "start": 13.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.68,
+            "logprob": -0.07070036232471466,
+            "start": 13.4,
+            "text": "wooden",
+            "type": "word"
+          },
+          {
+            "end": 13.78,
+            "logprob": -2.4676019165781327e-05,
+            "start": 13.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.98,
+            "logprob": -2.4676019165781327e-05,
+            "start": 13.78,
+            "text": "ice",
+            "type": "word"
+          },
+          {
+            "end": 14.02,
+            "logprob": -0.0002919009421020746,
+            "start": 13.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.38,
+            "logprob": -0.0002346413178202056,
+            "start": 14.02,
+            "text": "tubs.",
+            "type": "word"
+          },
+          {
+            "end": 14.38,
+            "logprob": -1.0728830375228426e-06,
+            "start": 14.38,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.9,
+            "logprob": -1.0728830375228426e-06,
+            "start": 14.78,
+            "text": "So",
+            "type": "word"
+          },
+          {
+            "end": 14.94,
+            "logprob": -0.0001399419124936685,
+            "start": 14.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.02,
+            "logprob": -0.0001399419124936685,
+            "start": 14.94,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 15.06,
+            "logprob": -3.3378546504536644e-06,
+            "start": 15.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.02,
+            "logprob": -2.3603365207236495e-06,
+            "start": 15.06,
+            "text": "1915,",
+            "type": "word"
+          },
+          {
+            "end": 16.42,
+            "logprob": -0.0001370812824461609,
+            "start": 16.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.84,
+            "logprob": -7.491829774153302e-05,
+            "start": 16.42,
+            "text": "bottlers",
+            "type": "word"
+          },
+          {
+            "end": 16.88,
+            "logprob": -2.1219027985353023e-05,
+            "start": 16.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.32,
+            "logprob": -2.1219027985353023e-05,
+            "start": 16.88,
+            "text": "commissioned",
+            "type": "word"
+          },
+          {
+            "end": 17.36,
+            "logprob": -1.0728830375228426e-06,
+            "start": 17.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.4,
+            "logprob": -1.0728830375228426e-06,
+            "start": 17.36,
+            "text": "a",
+            "type": "word"
+          },
+          {
+            "end": 17.44,
+            "logprob": -2.7418097943154862e-06,
+            "start": 17.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.94,
+            "logprob": -2.7418097943154862e-06,
+            "start": 17.44,
+            "text": "completely",
+            "type": "word"
+          },
+          {
+            "end": 18.0,
+            "logprob": -0.000860320869833231,
+            "start": 17.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.7,
+            "logprob": -0.000860320869833231,
+            "start": 18.0,
+            "text": "unmistakable",
+            "type": "word"
+          },
+          {
+            "end": 18.74,
+            "logprob": -7.152555099310121e-07,
+            "start": 18.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.04,
+            "logprob": -7.152555099310121e-07,
+            "start": 18.74,
+            "text": "glass",
+            "type": "word"
+          },
+          {
+            "end": 19.1,
+            "logprob": -3.576278118089249e-07,
+            "start": 19.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.58,
+            "logprob": -4.118138163407407e-07,
+            "start": 19.1,
+            "text": "silhouette.",
+            "type": "word"
+          },
+          {
+            "end": 19.58,
+            "logprob": -2.0265558760002023e-06,
+            "start": 19.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.28,
+            "logprob": -2.0265558760002023e-06,
+            "start": 20.14,
+            "text": "Their",
+            "type": "word"
+          },
+          {
+            "end": 20.34,
+            "logprob": -3.933898824470816e-06,
+            "start": 20.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.56,
+            "logprob": -3.933898824470816e-06,
+            "start": 20.34,
+            "text": "brief",
+            "type": "word"
+          },
+          {
+            "end": 20.6,
+            "logprob": -4.768360213347478e-06,
+            "start": 20.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.98,
+            "logprob": -4.768360213347478e-06,
+            "start": 20.6,
+            "text": "demanded",
+            "type": "word"
+          },
+          {
+            "end": 21.04,
+            "logprob": -5.960462772236497e-07,
+            "start": 20.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.48,
+            "logprob": -5.960462772236497e-07,
+            "start": 21.04,
+            "text": "immediate",
+            "type": "word"
+          },
+          {
+            "end": 21.52,
+            "logprob": -1.7881377516459906e-06,
+            "start": 21.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.1,
+            "logprob": -1.7881377516459906e-06,
+            "start": 21.52,
+            "text": "recognition",
+            "type": "word"
+          },
+          {
+            "end": 22.16,
+            "logprob": -7.152555099310121e-07,
+            "start": 22.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.28,
+            "logprob": -7.152555099310121e-07,
+            "start": 22.16,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 22.36,
+            "logprob": -2.3841855067985307e-07,
+            "start": 22.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.68,
+            "logprob": -2.3841855067985307e-07,
+            "start": 22.36,
+            "text": "total",
+            "type": "word"
+          },
+          {
+            "end": 22.72,
+            "logprob": -9.536738616588991e-07,
+            "start": 22.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.22,
+            "logprob": -9.536738616588991e-07,
+            "start": 22.72,
+            "text": "darkness",
+            "type": "word"
+          },
+          {
+            "end": 23.58,
+            "logprob": -5.829164365422912e-05,
+            "start": 23.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.7,
+            "logprob": -5.829164365422912e-05,
+            "start": 23.58,
+            "text": "or",
+            "type": "word"
+          },
+          {
+            "end": 23.74,
+            "logprob": -1.1920928244535389e-07,
+            "start": 23.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.94,
+            "logprob": -1.1920928244535389e-07,
+            "start": 23.74,
+            "text": "when",
+            "type": "word"
+          },
+          {
+            "end": 24.0,
+            "logprob": -1.5139465176616795e-05,
+            "start": 23.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.42,
+            "logprob": -1.3875857848688612e-05,
+            "start": 24.0,
+            "text": "shattered.",
+            "type": "word"
+          },
+          {
+            "end": 24.84,
+            "logprob": -0.00019977481861133128,
+            "start": 24.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.02,
+            "logprob": -0.00019977481861133128,
+            "start": 24.84,
+            "text": "Root",
+            "type": "word"
+          },
+          {
+            "end": 25.08,
+            "logprob": -0.11304499208927155,
+            "start": 25.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.4,
+            "logprob": -0.11304499208927155,
+            "start": 25.08,
+            "text": "glass",
+            "type": "word"
+          },
+          {
+            "end": 25.44,
+            "logprob": -1.5497195136049413e-06,
+            "start": 25.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.86,
+            "logprob": -1.5497195136049413e-06,
+            "start": 25.44,
+            "text": "delivered",
+            "type": "word"
+          },
+          {
+            "end": 25.9,
+            "logprob": -8.821448318485636e-06,
+            "start": 25.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.44,
+            "logprob": -8.821448318485636e-06,
+            "start": 25.9,
+            "text": "distinctive",
+            "type": "word"
+          },
+          {
+            "end": 26.56,
+            "logprob": -1.597391747054644e-05,
+            "start": 26.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.86,
+            "logprob": -1.597391747054644e-05,
+            "start": 26.56,
+            "text": "ribs",
+            "type": "word"
+          },
+          {
+            "end": 26.92,
+            "logprob": -9.643566590966657e-05,
+            "start": 26.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.42,
+            "logprob": -9.643566590966657e-05,
+            "start": 26.92,
+            "text": "inspired",
+            "type": "word"
+          },
+          {
+            "end": 27.46,
+            "logprob": 0.0,
+            "start": 27.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.62,
+            "logprob": 0.0,
+            "start": 27.46,
+            "text": "by",
+            "type": "word"
+          },
+          {
+            "end": 27.7,
+            "logprob": -7.903263758635148e-05,
+            "start": 27.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.04,
+            "logprob": -8.366438331514863e-05,
+            "start": 27.7,
+            "text": "grooved",
+            "type": "word"
+          },
+          {
+            "end": 28.1,
+            "logprob": -0.013302856124937534,
+            "start": 28.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.44,
+            "logprob": -0.013302856124937534,
+            "start": 28.1,
+            "text": "cocoa",
+            "type": "word"
+          },
+          {
+            "end": 28.5,
+            "logprob": -1.8596476365928538e-05,
+            "start": 28.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.72,
+            "logprob": -1.8596476365928538e-05,
+            "start": 28.5,
+            "text": "pod",
+            "type": "word"
+          },
+          {
+            "end": 28.8,
+            "logprob": -0.00030083899036981165,
+            "start": 28.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.28,
+            "logprob": -0.010149768165623149,
+            "start": 28.8,
+            "text": "sketches.",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 29.4475,
+        "language_code": "eng",
+        "language_probability": 1.0,
+        "text": "In the early 1900s, Coca-Cola faced scores of market copycats. Bottlers relied on plain cylinders, letting rivals mimic their scripted logos. Chilled paper labels also peeled away inside watery wooden ice tubs. So in 1915, bottlers commissioned a completely unmistakable glass silhouette. Their brief demanded immediate recognition in total darkness or when shattered. Root glass delivered distinctive ribs inspired by grooved cocoa pod sketches.",
+        "transcription_id": "lYgF4ri63KoZSYqaliQG",
+        "words": [
+          {
+            "end": 0.16,
+            "logprob": -3.564294092939235e-05,
+            "start": 0.08,
+            "text": "In",
+            "type": "word"
+          },
+          {
+            "end": 0.2,
+            "logprob": -1.0609570381348021e-05,
+            "start": 0.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.3,
+            "logprob": -1.0609570381348021e-05,
+            "start": 0.2,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 0.36,
+            "logprob": -3.576278118089249e-07,
+            "start": 0.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.62,
+            "logprob": -3.576278118089249e-07,
+            "start": 0.36,
+            "text": "early",
+            "type": "word"
+          },
+          {
+            "end": 0.68,
+            "logprob": -0.0003923600015696138,
+            "start": 0.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.6,
+            "logprob": -0.00013026601121168824,
+            "start": 0.68,
+            "text": "1900s,",
+            "type": "word"
+          },
+          {
+            "end": 1.78,
+            "logprob": -1.597391747054644e-05,
+            "start": 1.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.34,
+            "logprob": -0.00021971973829850968,
+            "start": 1.78,
+            "text": "Coca-Cola",
+            "type": "word"
+          },
+          {
+            "end": 2.48,
+            "logprob": -9.190614218823612e-05,
+            "start": 2.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.74,
+            "logprob": -9.190614218823612e-05,
+            "start": 2.48,
+            "text": "faced",
+            "type": "word"
+          },
+          {
+            "end": 2.98,
+            "logprob": -5.4238757002167404e-05,
+            "start": 2.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.32,
+            "logprob": -5.4238757002167404e-05,
+            "start": 2.98,
+            "text": "scores",
+            "type": "word"
+          },
+          {
+            "end": 3.36,
+            "logprob": 0.0,
+            "start": 3.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.46,
+            "logprob": 0.0,
+            "start": 3.36,
+            "text": "of",
+            "type": "word"
+          },
+          {
+            "end": 3.52,
+            "logprob": -2.3841830625315197e-06,
+            "start": 3.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.82,
+            "logprob": -2.3841830625315197e-06,
+            "start": 3.52,
+            "text": "market",
+            "type": "word"
+          },
+          {
+            "end": 3.86,
+            "logprob": -2.8967437174287625e-05,
+            "start": 3.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.5,
+            "logprob": -0.000466195316120219,
+            "start": 3.88,
+            "text": "copycats.",
+            "type": "word"
+          },
+          {
+            "end": 4.88,
+            "logprob": -0.02126944251358509,
+            "start": 4.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.32,
+            "logprob": -0.010637582271556312,
+            "start": 4.88,
+            "text": "Bottlers",
+            "type": "word"
+          },
+          {
+            "end": 5.36,
+            "logprob": -1.1801649634435307e-05,
+            "start": 5.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.68,
+            "logprob": -1.1801649634435307e-05,
+            "start": 5.36,
+            "text": "relied",
+            "type": "word"
+          },
+          {
+            "end": 5.74,
+            "logprob": 0.0,
+            "start": 5.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.92,
+            "logprob": 0.0,
+            "start": 5.74,
+            "text": "on",
+            "type": "word"
+          },
+          {
+            "end": 5.98,
+            "logprob": -1.3232143828645349e-05,
+            "start": 5.92,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.3,
+            "logprob": -1.3232143828645349e-05,
+            "start": 5.98,
+            "text": "plain",
+            "type": "word"
+          },
+          {
+            "end": 6.36,
+            "logprob": -1.0728830375228426e-06,
+            "start": 6.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.9,
+            "logprob": -1.4947866509373852e-05,
+            "start": 6.36,
+            "text": "cylinders,",
+            "type": "word"
+          },
+          {
+            "end": 6.9,
+            "logprob": -9.536738616588991e-07,
+            "start": 6.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.68,
+            "logprob": -9.536738616588991e-07,
+            "start": 7.38,
+            "text": "letting",
+            "type": "word"
+          },
+          {
+            "end": 7.74,
+            "logprob": -5.960462772236497e-07,
+            "start": 7.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.2,
+            "logprob": -5.960462772236497e-07,
+            "start": 7.74,
+            "text": "rivals",
+            "type": "word"
+          },
+          {
+            "end": 8.28,
+            "logprob": -2.0265558760002023e-06,
+            "start": 8.2,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.56,
+            "logprob": -2.0265558760002023e-06,
+            "start": 8.28,
+            "text": "mimic",
+            "type": "word"
+          },
+          {
+            "end": 8.62,
+            "logprob": -2.3841855067985307e-07,
+            "start": 8.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.82,
+            "logprob": -2.3841855067985307e-07,
+            "start": 8.62,
+            "text": "their",
+            "type": "word"
+          },
+          {
+            "end": 8.92,
+            "logprob": -4.23184028477408e-05,
+            "start": 8.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.28,
+            "logprob": -4.23184028477408e-05,
+            "start": 8.92,
+            "text": "scripted",
+            "type": "word"
+          },
+          {
+            "end": 9.32,
+            "logprob": -1.5497195136049413e-06,
+            "start": 9.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.82,
+            "logprob": -1.589455886611783e-06,
+            "start": 9.32,
+            "text": "logos.",
+            "type": "word"
+          },
+          {
+            "end": 10.24,
+            "logprob": -2.288792165927589e-05,
+            "start": 9.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.56,
+            "logprob": -0.00012173737715264516,
+            "start": 10.24,
+            "text": "Chilled",
+            "type": "word"
+          },
+          {
+            "end": 10.62,
+            "logprob": -2.0265558760002023e-06,
+            "start": 10.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.88,
+            "logprob": -2.0265558760002023e-06,
+            "start": 10.62,
+            "text": "paper",
+            "type": "word"
+          },
+          {
+            "end": 10.92,
+            "logprob": -4.768370445162873e-07,
+            "start": 10.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.36,
+            "logprob": -4.768370445162873e-07,
+            "start": 10.92,
+            "text": "labels",
+            "type": "word"
+          },
+          {
+            "end": 11.46,
+            "logprob": -8.344646857949556e-07,
+            "start": 11.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.78,
+            "logprob": -8.344646857949556e-07,
+            "start": 11.46,
+            "text": "also",
+            "type": "word"
+          },
+          {
+            "end": 11.84,
+            "logprob": -0.0004942387458868325,
+            "start": 11.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.06,
+            "logprob": -0.0004942387458868325,
+            "start": 11.84,
+            "text": "peeled",
+            "type": "word"
+          },
+          {
+            "end": 12.14,
+            "logprob": -1.1920928244535389e-07,
+            "start": 12.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.4,
+            "logprob": -1.1920928244535389e-07,
+            "start": 12.14,
+            "text": "away",
+            "type": "word"
+          },
+          {
+            "end": 12.46,
+            "logprob": -2.264974000354414e-06,
+            "start": 12.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.9,
+            "logprob": -2.264974000354414e-06,
+            "start": 12.46,
+            "text": "inside",
+            "type": "word"
+          },
+          {
+            "end": 12.96,
+            "logprob": -1.7046782886609435e-05,
+            "start": 12.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.3,
+            "logprob": -1.7046782886609435e-05,
+            "start": 12.96,
+            "text": "watery",
+            "type": "word"
+          },
+          {
+            "end": 13.42,
+            "logprob": -0.00029202012228779495,
+            "start": 13.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.66,
+            "logprob": -0.00029202012228779495,
+            "start": 13.42,
+            "text": "wooden",
+            "type": "word"
+          },
+          {
+            "end": 13.74,
+            "logprob": -1.4781842764932662e-05,
+            "start": 13.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.92,
+            "logprob": -1.4781842764932662e-05,
+            "start": 13.74,
+            "text": "ice",
+            "type": "word"
+          },
+          {
+            "end": 13.98,
+            "logprob": -0.0012030514189973474,
+            "start": 13.92,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.32,
+            "logprob": -0.0009625603444533226,
+            "start": 13.98,
+            "text": "tubs.",
+            "type": "word"
+          },
+          {
+            "end": 14.32,
+            "logprob": -1.1920922133867862e-06,
+            "start": 14.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.0,
+            "logprob": -1.1920922133867862e-06,
+            "start": 14.72,
+            "text": "So",
+            "type": "word"
+          },
+          {
+            "end": 15.08,
+            "logprob": -0.0007098776986822486,
+            "start": 15.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.18,
+            "logprob": -0.0007098776986822486,
+            "start": 15.08,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 15.24,
+            "logprob": -2.9802276912960224e-06,
+            "start": 15.18,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.26,
+            "logprob": -4.291497623398754e-06,
+            "start": 15.24,
+            "text": "1915,",
+            "type": "word"
+          },
+          {
+            "end": 16.58,
+            "logprob": -3.397406908334233e-05,
+            "start": 16.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.02,
+            "logprob": -3.552373527782038e-05,
+            "start": 16.58,
+            "text": "bottlers",
+            "type": "word"
+          },
+          {
+            "end": 17.06,
+            "logprob": -2.7656173188006505e-05,
+            "start": 17.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.6,
+            "logprob": -2.7656173188006505e-05,
+            "start": 17.06,
+            "text": "commissioned",
+            "type": "word"
+          },
+          {
+            "end": 17.68,
+            "logprob": 0.0,
+            "start": 17.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.72,
+            "logprob": 0.0,
+            "start": 17.68,
+            "text": "a",
+            "type": "word"
+          },
+          {
+            "end": 17.76,
+            "logprob": -1.311301275563892e-06,
+            "start": 17.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.36,
+            "logprob": -1.311301275563892e-06,
+            "start": 17.76,
+            "text": "completely",
+            "type": "word"
+          },
+          {
+            "end": 18.44,
+            "logprob": -0.0003685271949507296,
+            "start": 18.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.16,
+            "logprob": -0.0003685271949507296,
+            "start": 18.44,
+            "text": "unmistakable",
+            "type": "word"
+          },
+          {
+            "end": 19.28,
+            "logprob": -1.4305104514278355e-06,
+            "start": 19.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.6,
+            "logprob": -1.4305104514278355e-06,
+            "start": 19.28,
+            "text": "glass",
+            "type": "word"
+          },
+          {
+            "end": 19.64,
+            "logprob": -4.768370445162873e-07,
+            "start": 19.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.12,
+            "logprob": -5.201858460747065e-07,
+            "start": 19.66,
+            "text": "silhouette.",
+            "type": "word"
+          },
+          {
+            "end": 20.12,
+            "logprob": -2.264974000354414e-06,
+            "start": 20.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.96,
+            "logprob": -2.264974000354414e-06,
+            "start": 20.78,
+            "text": "Their",
+            "type": "word"
+          },
+          {
+            "end": 21.0,
+            "logprob": -4.6491513785440475e-06,
+            "start": 20.96,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.24,
+            "logprob": -4.6491513785440475e-06,
+            "start": 21.0,
+            "text": "brief",
+            "type": "word"
+          },
+          {
+            "end": 21.3,
+            "logprob": -1.2636104656849056e-05,
+            "start": 21.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.74,
+            "logprob": -1.2636104656849056e-05,
+            "start": 21.3,
+            "text": "demanded",
+            "type": "word"
+          },
+          {
+            "end": 21.8,
+            "logprob": -2.3841855067985307e-07,
+            "start": 21.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.24,
+            "logprob": -2.3841855067985307e-07,
+            "start": 21.8,
+            "text": "immediate",
+            "type": "word"
+          },
+          {
+            "end": 22.3,
+            "logprob": -2.861018856492592e-06,
+            "start": 22.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.88,
+            "logprob": -2.861018856492592e-06,
+            "start": 22.3,
+            "text": "recognition",
+            "type": "word"
+          },
+          {
+            "end": 22.94,
+            "logprob": -4.887569048150908e-06,
+            "start": 22.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.04,
+            "logprob": -4.887569048150908e-06,
+            "start": 22.94,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 23.1,
+            "logprob": -3.576278118089249e-07,
+            "start": 23.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.4,
+            "logprob": -3.576278118089249e-07,
+            "start": 23.1,
+            "text": "total",
+            "type": "word"
+          },
+          {
+            "end": 23.46,
+            "logprob": -2.264974000354414e-06,
+            "start": 23.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.92,
+            "logprob": -2.264974000354414e-06,
+            "start": 23.46,
+            "text": "darkness",
+            "type": "word"
+          },
+          {
+            "end": 23.98,
+            "logprob": -5.722029527532868e-06,
+            "start": 23.92,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.08,
+            "logprob": -5.722029527532868e-06,
+            "start": 23.98,
+            "text": "or",
+            "type": "word"
+          },
+          {
+            "end": 24.12,
+            "logprob": -1.1920928244535389e-07,
+            "start": 24.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.3,
+            "logprob": -1.1920928244535389e-07,
+            "start": 24.12,
+            "text": "when",
+            "type": "word"
+          },
+          {
+            "end": 24.36,
+            "logprob": -1.2159273865108844e-05,
+            "start": 24.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.76,
+            "logprob": -1.2719549067696789e-05,
+            "start": 24.36,
+            "text": "shattered.",
+            "type": "word"
+          },
+          {
+            "end": 25.16,
+            "logprob": -0.0009957361035048962,
+            "start": 24.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.3,
+            "logprob": -0.0009957361035048962,
+            "start": 25.16,
+            "text": "Root",
+            "type": "word"
+          },
+          {
+            "end": 25.36,
+            "logprob": -0.043174151331186295,
+            "start": 25.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.62,
+            "logprob": -0.043174151331186295,
+            "start": 25.36,
+            "text": "glass",
+            "type": "word"
+          },
+          {
+            "end": 25.68,
+            "logprob": -5.364403477869928e-06,
+            "start": 25.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.1,
+            "logprob": -5.364403477869928e-06,
+            "start": 25.68,
+            "text": "delivered",
+            "type": "word"
+          },
+          {
+            "end": 26.12,
+            "logprob": -5.435795901576057e-05,
+            "start": 26.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.72,
+            "logprob": -5.435795901576057e-05,
+            "start": 26.12,
+            "text": "distinctive",
+            "type": "word"
+          },
+          {
+            "end": 26.76,
+            "logprob": -3.3854863431770355e-05,
+            "start": 26.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.02,
+            "logprob": -3.3854863431770355e-05,
+            "start": 26.76,
+            "text": "ribs",
+            "type": "word"
+          },
+          {
+            "end": 27.06,
+            "logprob": -5.9960475482512265e-05,
+            "start": 27.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.54,
+            "logprob": -5.9960475482512265e-05,
+            "start": 27.06,
+            "text": "inspired",
+            "type": "word"
+          },
+          {
+            "end": 27.58,
+            "logprob": 0.0,
+            "start": 27.54,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.74,
+            "logprob": 0.0,
+            "start": 27.58,
+            "text": "by",
+            "type": "word"
+          },
+          {
+            "end": 27.78,
+            "logprob": -6.270212179515511e-05,
+            "start": 27.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.08,
+            "logprob": -8.265956213498222e-05,
+            "start": 27.78,
+            "text": "grooved",
+            "type": "word"
+          },
+          {
+            "end": 28.14,
+            "logprob": -0.009334610775113106,
+            "start": 28.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.46,
+            "logprob": -0.009334610775113106,
+            "start": 28.14,
+            "text": "cocoa",
+            "type": "word"
+          },
+          {
+            "end": 28.52,
+            "logprob": -2.729855441430118e-05,
+            "start": 28.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.72,
+            "logprob": -2.729855441430118e-05,
+            "start": 28.52,
+            "text": "pod",
+            "type": "word"
+          },
+          {
+            "end": 28.8,
+            "logprob": -0.00018809456378221512,
+            "start": 28.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.28,
+            "logprob": -0.0039057164556450313,
+            "start": 28.8,
+            "text": "sketches.",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 29.4705,
+        "language_code": "eng",
+        "language_probability": 1.0,
+        "text": "In the early 1900s, Coca-Cola faced scores of market copycats. Bottlers relied on plain cylinders, letting rivals mimic their scripted logos. Chilled paper labels also peeled away inside watery wooden ice tubs. So in 1915, bottlers commissioned a completely unmistakable glass silhouette. Their brief demanded immediate recognition in total darkness or when shattered. Root glass delivered distinctive ribs inspired by grooved cocoa pod sketches.",
+        "transcription_id": "CL1CjQBeZIFGFUTCsjyp",
+        "words": [
+          {
+            "end": 0.16,
+            "logprob": -2.1457441107486375e-05,
+            "start": 0.08,
+            "text": "In",
+            "type": "word"
+          },
+          {
+            "end": 0.2,
+            "logprob": -1.0132738680113107e-05,
+            "start": 0.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.3,
+            "logprob": -1.0132738680113107e-05,
+            "start": 0.2,
+            "text": "the",
+            "type": "word"
+          },
+          {
+            "end": 0.36,
+            "logprob": -2.3841855067985307e-07,
+            "start": 0.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.58,
+            "logprob": -2.3841855067985307e-07,
+            "start": 0.36,
+            "text": "early",
+            "type": "word"
+          },
+          {
+            "end": 0.62,
+            "logprob": -1.2278481335670222e-05,
+            "start": 0.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.5,
+            "logprob": -5.296058812594614e-05,
+            "start": 0.62,
+            "text": "1900s,",
+            "type": "word"
+          },
+          {
+            "end": 1.76,
+            "logprob": -2.3007127310847864e-05,
+            "start": 1.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.26,
+            "logprob": -0.0001605087260638053,
+            "start": 1.76,
+            "text": "Coca-Cola",
+            "type": "word"
+          },
+          {
+            "end": 2.36,
+            "logprob": -6.854299135738984e-05,
+            "start": 2.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.62,
+            "logprob": -6.854299135738984e-05,
+            "start": 2.36,
+            "text": "faced",
+            "type": "word"
+          },
+          {
+            "end": 2.92,
+            "logprob": -8.344646857949556e-07,
+            "start": 2.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.28,
+            "logprob": -8.344646857949556e-07,
+            "start": 2.92,
+            "text": "scores",
+            "type": "word"
+          },
+          {
+            "end": 3.34,
+            "logprob": 0.0,
+            "start": 3.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.42,
+            "logprob": 0.0,
+            "start": 3.34,
+            "text": "of",
+            "type": "word"
+          },
+          {
+            "end": 3.48,
+            "logprob": -1.0728830375228426e-06,
+            "start": 3.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.8,
+            "logprob": -1.0728830375228426e-06,
+            "start": 3.48,
+            "text": "market",
+            "type": "word"
+          },
+          {
+            "end": 3.86,
+            "logprob": -1.7165990357170813e-05,
+            "start": 3.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.48,
+            "logprob": -0.0004522826695531674,
+            "start": 3.86,
+            "text": "copycats.",
+            "type": "word"
+          },
+          {
+            "end": 4.84,
+            "logprob": -0.029481690376996994,
+            "start": 4.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.26,
+            "logprob": -0.014743110159770367,
+            "start": 4.84,
+            "text": "Bottlers",
+            "type": "word"
+          },
+          {
+            "end": 5.3,
+            "logprob": -1.549708758830093e-05,
+            "start": 5.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.64,
+            "logprob": -1.549708758830093e-05,
+            "start": 5.3,
+            "text": "relied",
+            "type": "word"
+          },
+          {
+            "end": 5.68,
+            "logprob": 0.0,
+            "start": 5.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.82,
+            "logprob": 0.0,
+            "start": 5.68,
+            "text": "on",
+            "type": "word"
+          },
+          {
+            "end": 5.88,
+            "logprob": -4.0531076592742465e-06,
+            "start": 5.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.2,
+            "logprob": -4.0531076592742465e-06,
+            "start": 5.88,
+            "text": "plain",
+            "type": "word"
+          },
+          {
+            "end": 6.26,
+            "logprob": -1.0728830375228426e-06,
+            "start": 6.2,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.78,
+            "logprob": -1.6570062030041298e-06,
+            "start": 6.26,
+            "text": "cylinders,",
+            "type": "word"
+          },
+          {
+            "end": 7.1,
+            "logprob": -4.768370445162873e-07,
+            "start": 6.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.38,
+            "logprob": -4.768370445162873e-07,
+            "start": 7.1,
+            "text": "letting",
+            "type": "word"
+          },
+          {
+            "end": 7.44,
+            "logprob": -5.960462772236497e-07,
+            "start": 7.38,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.88,
+            "logprob": -5.960462772236497e-07,
+            "start": 7.44,
+            "text": "rivals",
+            "type": "word"
+          },
+          {
+            "end": 7.96,
+            "logprob": -1.1920922133867862e-06,
+            "start": 7.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.24,
+            "logprob": -1.1920922133867862e-06,
+            "start": 7.96,
+            "text": "mimic",
+            "type": "word"
+          },
+          {
+            "end": 8.28,
+            "logprob": -1.1920928244535389e-07,
+            "start": 8.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.44,
+            "logprob": -1.1920928244535389e-07,
+            "start": 8.28,
+            "text": "their",
+            "type": "word"
+          },
+          {
+            "end": 8.54,
+            "logprob": -3.2543604902457446e-05,
+            "start": 8.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.88,
+            "logprob": -3.2543604902457446e-05,
+            "start": 8.54,
+            "text": "scripted",
+            "type": "word"
+          },
+          {
+            "end": 8.92,
+            "logprob": -1.6689286894688848e-06,
+            "start": 8.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.42,
+            "logprob": -1.3907739078907373e-06,
+            "start": 8.92,
+            "text": "logos.",
+            "type": "word"
+          },
+          {
+            "end": 9.42,
+            "logprob": -1.549708758830093e-05,
+            "start": 9.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.14,
+            "logprob": -0.00013792967053762238,
+            "start": 9.82,
+            "text": "Chilled",
+            "type": "word"
+          },
+          {
+            "end": 10.2,
+            "logprob": -1.1920922133867862e-06,
+            "start": 10.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.48,
+            "logprob": -1.1920922133867862e-06,
+            "start": 10.2,
+            "text": "paper",
+            "type": "word"
+          },
+          {
+            "end": 10.54,
+            "logprob": -3.576278118089249e-07,
+            "start": 10.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.02,
+            "logprob": -3.576278118089249e-07,
+            "start": 10.54,
+            "text": "labels",
+            "type": "word"
+          },
+          {
+            "end": 11.12,
+            "logprob": -4.768370445162873e-07,
+            "start": 11.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.42,
+            "logprob": -4.768370445162873e-07,
+            "start": 11.12,
+            "text": "also",
+            "type": "word"
+          },
+          {
+            "end": 11.48,
+            "logprob": -0.0003084660565946251,
+            "start": 11.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.72,
+            "logprob": -0.0003084660565946251,
+            "start": 11.48,
+            "text": "peeled",
+            "type": "word"
+          },
+          {
+            "end": 11.76,
+            "logprob": 0.0,
+            "start": 11.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.1,
+            "logprob": 0.0,
+            "start": 11.76,
+            "text": "away",
+            "type": "word"
+          },
+          {
+            "end": 12.16,
+            "logprob": -1.7881377516459906e-06,
+            "start": 12.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.68,
+            "logprob": -1.7881377516459906e-06,
+            "start": 12.16,
+            "text": "inside",
+            "type": "word"
+          },
+          {
+            "end": 12.76,
+            "logprob": -1.728519782773219e-05,
+            "start": 12.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.1,
+            "logprob": -1.728519782773219e-05,
+            "start": 12.76,
+            "text": "watery",
+            "type": "word"
+          },
+          {
+            "end": 13.22,
+            "logprob": -0.02710120379924774,
+            "start": 13.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.44,
+            "logprob": -0.02710120379924774,
+            "start": 13.22,
+            "text": "wooden",
+            "type": "word"
+          },
+          {
+            "end": 13.54,
+            "logprob": -2.0265373677830212e-05,
+            "start": 13.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.72,
+            "logprob": -2.0265373677830212e-05,
+            "start": 13.54,
+            "text": "ice",
+            "type": "word"
+          },
+          {
+            "end": 13.78,
+            "logprob": -0.00047302976599894464,
+            "start": 13.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.12,
+            "logprob": -0.0003785668639011419,
+            "start": 13.78,
+            "text": "tubs.",
+            "type": "word"
+          },
+          {
+            "end": 14.12,
+            "logprob": -2.3841855067985307e-07,
+            "start": 14.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.88,
+            "logprob": -2.3841855067985307e-07,
+            "start": 14.54,
+            "text": "So",
+            "type": "word"
+          },
+          {
+            "end": 14.96,
+            "logprob": -0.0019286142196506262,
+            "start": 14.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.08,
+            "logprob": -0.0019286142196506262,
+            "start": 14.96,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 15.14,
+            "logprob": 0.0,
+            "start": 15.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.2,
+            "logprob": -5.722042374145531e-07,
+            "start": 15.14,
+            "text": "1915,",
+            "type": "word"
+          },
+          {
+            "end": 16.48,
+            "logprob": -0.00012242044613230973,
+            "start": 16.2,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.9,
+            "logprob": -6.872035191918258e-05,
+            "start": 16.48,
+            "text": "bottlers",
+            "type": "word"
+          },
+          {
+            "end": 16.94,
+            "logprob": -2.2649508537142538e-05,
+            "start": 16.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.42,
+            "logprob": -2.2649508537142538e-05,
+            "start": 16.94,
+            "text": "commissioned",
+            "type": "word"
+          },
+          {
+            "end": 17.46,
+            "logprob": 0.0,
+            "start": 17.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.52,
+            "logprob": 0.0,
+            "start": 17.46,
+            "text": "a",
+            "type": "word"
+          },
+          {
+            "end": 17.56,
+            "logprob": -1.5497195136049413e-06,
+            "start": 17.52,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.2,
+            "logprob": -1.5497195136049413e-06,
+            "start": 17.56,
+            "text": "completely",
+            "type": "word"
+          },
+          {
+            "end": 18.26,
+            "logprob": -0.0005304598016664386,
+            "start": 18.2,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.94,
+            "logprob": -0.0005304598016664386,
+            "start": 18.26,
+            "text": "unmistakable",
+            "type": "word"
+          },
+          {
+            "end": 19.06,
+            "logprob": -1.0728830375228426e-06,
+            "start": 18.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.42,
+            "logprob": -1.0728830375228426e-06,
+            "start": 19.06,
+            "text": "glass",
+            "type": "word"
+          },
+          {
+            "end": 19.48,
+            "logprob": -4.768370445162873e-07,
+            "start": 19.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.94,
+            "logprob": -4.3348822228753387e-07,
+            "start": 19.48,
+            "text": "silhouette.",
+            "type": "word"
+          },
+          {
+            "end": 19.94,
+            "logprob": -1.6689286894688848e-06,
+            "start": 19.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.62,
+            "logprob": -1.6689286894688848e-06,
+            "start": 20.4,
+            "text": "Their",
+            "type": "word"
+          },
+          {
+            "end": 20.66,
+            "logprob": -1.168244216387393e-05,
+            "start": 20.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.0,
+            "logprob": -1.168244216387393e-05,
+            "start": 20.66,
+            "text": "brief",
+            "type": "word"
+          },
+          {
+            "end": 21.06,
+            "logprob": -0.0001397035230183974,
+            "start": 21.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.46,
+            "logprob": -0.0001397035230183974,
+            "start": 21.06,
+            "text": "demanded",
+            "type": "word"
+          },
+          {
+            "end": 21.52,
+            "logprob": -5.960462772236497e-07,
+            "start": 21.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.0,
+            "logprob": -5.960462772236497e-07,
+            "start": 21.52,
+            "text": "immediate",
+            "type": "word"
+          },
+          {
+            "end": 22.04,
+            "logprob": -2.0265558760002023e-06,
+            "start": 22.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.62,
+            "logprob": -2.0265558760002023e-06,
+            "start": 22.04,
+            "text": "recognition",
+            "type": "word"
+          },
+          {
+            "end": 22.68,
+            "logprob": -1.1920928244535389e-07,
+            "start": 22.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.76,
+            "logprob": -1.1920928244535389e-07,
+            "start": 22.68,
+            "text": "in",
+            "type": "word"
+          },
+          {
+            "end": 22.82,
+            "logprob": -2.3841855067985307e-07,
+            "start": 22.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.08,
+            "logprob": -2.3841855067985307e-07,
+            "start": 22.82,
+            "text": "total",
+            "type": "word"
+          },
+          {
+            "end": 23.12,
+            "logprob": -1.0728830375228426e-06,
+            "start": 23.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.66,
+            "logprob": -1.0728830375228426e-06,
+            "start": 23.12,
+            "text": "darkness",
+            "type": "word"
+          },
+          {
+            "end": 23.72,
+            "logprob": -4.768360213347478e-06,
+            "start": 23.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.82,
+            "logprob": -4.768360213347478e-06,
+            "start": 23.72,
+            "text": "or",
+            "type": "word"
+          },
+          {
+            "end": 23.86,
+            "logprob": -1.1920928244535389e-07,
+            "start": 23.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.06,
+            "logprob": -1.1920928244535389e-07,
+            "start": 23.86,
+            "text": "when",
+            "type": "word"
+          },
+          {
+            "end": 24.1,
+            "logprob": -4.7205765440594405e-05,
+            "start": 24.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.5,
+            "logprob": -4.248518889653497e-05,
+            "start": 24.1,
+            "text": "shattered.",
+            "type": "word"
+          },
+          {
+            "end": 24.5,
+            "logprob": -0.0001679517881711945,
+            "start": 24.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.08,
+            "logprob": -0.0001679517881711945,
+            "start": 24.9,
+            "text": "Root",
+            "type": "word"
+          },
+          {
+            "end": 25.14,
+            "logprob": -0.31404221057891846,
+            "start": 25.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.44,
+            "logprob": -0.31404221057891846,
+            "start": 25.14,
+            "text": "glass",
+            "type": "word"
+          },
+          {
+            "end": 25.5,
+            "logprob": -3.933898824470816e-06,
+            "start": 25.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.86,
+            "logprob": -3.933898824470816e-06,
+            "start": 25.5,
+            "text": "delivered",
+            "type": "word"
+          },
+          {
+            "end": 25.9,
+            "logprob": -3.576272320060525e-06,
+            "start": 25.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.48,
+            "logprob": -3.576272320060525e-06,
+            "start": 25.9,
+            "text": "distinctive",
+            "type": "word"
+          },
+          {
+            "end": 26.54,
+            "logprob": -1.2397689715726301e-05,
+            "start": 26.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.84,
+            "logprob": -1.2397689715726301e-05,
+            "start": 26.54,
+            "text": "ribs",
+            "type": "word"
+          },
+          {
+            "end": 26.9,
+            "logprob": -9.655486064730212e-05,
+            "start": 26.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.4,
+            "logprob": -9.655486064730212e-05,
+            "start": 26.9,
+            "text": "inspired",
+            "type": "word"
+          },
+          {
+            "end": 27.44,
+            "logprob": 0.0,
+            "start": 27.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.6,
+            "logprob": 0.0,
+            "start": 27.44,
+            "text": "by",
+            "type": "word"
+          },
+          {
+            "end": 27.64,
+            "logprob": -6.675497570540756e-05,
+            "start": 27.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.02,
+            "logprob": -7.690402604306914e-05,
+            "start": 27.64,
+            "text": "grooved",
+            "type": "word"
+          },
+          {
+            "end": 28.1,
+            "logprob": -0.01901867613196373,
+            "start": 28.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.44,
+            "logprob": -0.01901867613196373,
+            "start": 28.1,
+            "text": "cocoa",
+            "type": "word"
+          },
+          {
+            "end": 28.5,
+            "logprob": -3.075552376685664e-05,
+            "start": 28.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.72,
+            "logprob": -3.075552376685664e-05,
+            "start": 28.5,
+            "text": "pod",
+            "type": "word"
+          },
+          {
+            "end": 28.8,
+            "logprob": -0.00026294111739844084,
+            "start": 28.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.3,
+            "logprob": -0.0016236908526884185,
+            "start": 28.8,
+            "text": "sketches.",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    }
+  ]
+}

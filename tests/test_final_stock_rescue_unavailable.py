@@ -48,7 +48,7 @@ def _boundary(tmp_path):
                                'reason': 'Required action missing.' if i in (1, 4) else 'Visible.',
                                'evidence_gate_passed': i not in (1, 4)} for i in range(6)},
           'rejected_final_scenes': [1, 4], 'rescued_final_scenes': [],
-          'recovered_generated_media': None, 'final_runway_repair_scenes': [],
+          'recovered_generated_media': None, 'final_runway_repair_scenes': [], 'round_repair_scenes': [],
           'provider_outage_stock_scenes': set(), 'stock_quality_fallback_scenes': set(),
           'terminal_manual_qa_old_best': {}, 'seen_ids': set(), 'credits': [],
           'scene_durations': [4.9] * 6, 'is_bounded_short_preview': True,
@@ -62,7 +62,8 @@ def _boundary(tmp_path):
           'runway_attempts': 6, 'runway_failed_scenes': [],
           'final_runway_repair_failures': [], 'runway_failure_diagnostics': [],
           '_persist_scene_repair_checkpoint': Mock(return_value=True),
-          '_checkpoint_qa_workprint': Mock(), 'duration_minutes': 0.5,
+          '_checkpoint_qa_workprint': Mock(), '_checkpoint_selected_visuals': Mock(),
+          'duration_minutes': 0.5, 'quality_threshold': 86, 'effective_edit_target_seconds': 30.0,
           'options': {'mode': 'production', 'format': 'shorts'},
           'audio_qc': {'available': True, 'pass': True},
           'audio_duration_qc': {'available': True, 'pass': True},
@@ -151,6 +152,7 @@ def test_successful_rescue_still_reaches_existing_fresh_review_input(tmp_path):
 def test_preexisting_ai_repair_remains_scheduled_for_exact_qa(tmp_path):
     ns, loop, _branch, _job, _writes = _boundary(tmp_path)
     ns['final_runway_repair_scenes'] = [1]
+    ns['round_repair_scenes'] = [1]
     ns['rescued_final_scenes'] = [1]
     ns['_download_ranked_broll_candidates'].side_effect = _http_error()
     _execute(loop, ns)

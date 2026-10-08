@@ -43,7 +43,10 @@ EPOCH_PREFIX = PRODUCTION_PREFIX + 'series_epoch:'
 ARCHIVE_PREFIX = PRODUCTION_PREFIX + 'series_archive:'
 RECEIPT_PREFIX = PRODUCTION_PREFIX + 'series_promotion:'
 TOPIC_HISTORY_PREFIX = PRODUCTION_PREFIX + 'series_topic_history:'
+SUPERSEDED_PREFIX = 'youtube_studio:next_series:v1:superseded:'
+_PREPARATION_DISPATCH_PREFIX = 'youtube_studio:next_series:v1:dispatch:'
 _PUBLIC_RESUME_PREFIX = PRODUCTION_PREFIX + 'resume_public:'
+_PUBLIC_RECOVERY_RESUME_PREFIX = PRODUCTION_PREFIX + 'resume_public_recovery:'
 _FLAGS = {'qa_approved': False, 'publish_eligible': False, 'media_budget_approved': False,
           'requires_full_research_and_critic': True, 'evidence_validation': 'source_shape_only'}
 _ID = re.compile(r'[A-Za-z0-9_-]{8,128}')
@@ -121,11 +124,13 @@ def _text_key(value):
 
 
 def _batch(record, profile, channel, now):
-    from app.services.production_next_series import _planning_channel_identity
+    from app.services.production_next_series import _planning_channel_identity, _preparation_slot
     fields = {'version', 'status', 'attempt_id', 'day', 'channel_id', 'connection_id',
               'profile_revision', 'context_sha256', 'profile_sha256', 'channel_sha256',
               'provider', 'model', 'created_at', 'language', 'series_title', 'briefs', *_FLAGS}
-    _require(set(record) == fields and type(record['version']) is int and record['version'] == 1
+    _preparation_slot(record)
+    _require(set(record) in (fields, fields | {'preparation_slot'})
+             and type(record['version']) is int and record['version'] == 1
              and record['status'] == 'ready' and re.fullmatch(r'[0-9a-f]{32}', str(record['attempt_id']))
              and all(type(record[k]) is type(v) and record[k] == v for k, v in _FLAGS.items()),
              'series_batch_unapproved_contract_invalid')
@@ -145,9 +150,10 @@ def _batch(record, profile, channel, now):
     created = datetime.fromisoformat(record['created_at'])
     _require(created.tzinfo is not None and created.utcoffset().total_seconds() == 0
              and created.date().isoformat() == record['day'] and 0 <= created.timestamp() <= now
-             and record['provider'] in {'openai', 'gemini'}
-             and re.fullmatch(r'[A-Za-z0-9._-]{1,100}', str(record['model']))
-             and record['channel_id'] == profile['channel_id']
+             and record['provider'] in {'openai', 'gemini', 'abacus_included'}
+             and re.fullmatch(r'[A-Za-z0-9._-]{1,100}', str(record['model'])),
+             'series_batch_identity_invalid')
+    _require(record['channel_id'] == profile['channel_id']
              and record['connection_id'] == channel['connection_id']
              and record['profile_revision'] == profile['profile_revision']
              and record['context_sha256'] == _digest(context)
@@ -180,15 +186,62 @@ def _batch(record, profile, channel, now):
     return topics
 
 
+def _registry_members(client, key):
+    """Read every historical entry in bounded pages without deleting history."""
+    count = client.zcard(key)
+    _require(type(count) is int and count >= 0, 'series_registry_invalid')
+    members = []
+    for offset in range(0, count, MAX_INDEXED_JOBS):
+        page = client.zrange(key, offset, min(count, offset + MAX_INDEXED_JOBS) - 1)
+        _require(len(page) == min(MAX_INDEXED_JOBS, count - offset), 'series_state_changed')
+        members.extend(page)
+    _require(len(set(members)) == count and client.zcard(key) == count, 'series_state_changed')
+    return members
+
+
+def _idle_job_projection(raw):
+    if raw is None:
+        return None
+    job = _object(raw)
+    spec = job.get('spec')
+    _require(isinstance(spec, dict), 'series_registry_invalid')
+    # Media/review payloads can be large. Retain every field that determines
+    # whether this job may block promotion, not its historical media payload.
+    selected = {key: spec[key] for key in ('production_channel_id', 'youtube_channel_id',
+        'target_channel_id', 'channel_id') if key in spec}
+    selected.update({key: True for key in ('production_delivery', 'production_derived_from') if key in spec})
+    result = job.get('result')
+    return {'task_id': job.get('task_id'), 'state': job.get('state'), 'spec': selected,
+        'result': {'delivery_manifest_key': True} if isinstance(result, dict)
+                   and 'delivery_manifest_key' in result else None}
+
+
 class _Snapshot:
     def __init__(self, client):
-        self.client, self.values = client, {}
+        self.client, self.values, self.lifetimes = client, {}, {}
 
     def read(self, key, kind='string'):
-        value = getattr(self.client, {'string': 'get', 'hash': 'hgetall', 'zset': 'zrange'}[kind])(
-            key, *([0, MAX_INDEXED_JOBS] if kind == 'zset' else []))
+        if kind == 'pttl':
+            _require(key in self.values, 'series_state_changed')
+            value = self.client.pttl(key)
+            _require(key not in self.lifetimes or self.lifetimes[key] == value, 'series_state_changed')
+            self.lifetimes[key] = value
+            return value
+        if kind == 'zset':
+            value = _registry_members(self.client, key)
+        elif kind == 'idle_job':
+            value = _idle_job_projection(self.client.get(key))
+        else:
+            value = getattr(self.client, {'string': 'get', 'hash': 'hgetall', 'set': 'smembers'}[kind])(key)
         if key in self.values:
-            _require(self.values[key] == (kind, value), 'series_state_changed')
+            previous_kind, previous = self.values[key]
+            if previous_kind == 'idle_job' and kind == 'string':
+                _require(previous == _idle_job_projection(value), 'series_state_changed')
+                self.values[key] = kind, value  # Full publication evidence still binds exact bytes.
+            elif previous_kind == 'string' and kind == 'idle_job':
+                _require(_idle_job_projection(previous) == value, 'series_state_changed')
+            else:
+                _require((previous_kind, previous) == (kind, value), 'series_state_changed')
         else:
             self.values[key] = kind, value
         return value
@@ -198,9 +251,84 @@ class _Snapshot:
 
     def compare(self, pipe):
         for key, (kind, expected) in self.values.items():
-            actual = getattr(pipe, {'string': 'get', 'hash': 'hgetall', 'zset': 'zrange'}[kind])(
-                key, *([0, MAX_INDEXED_JOBS] if kind == 'zset' else []))
+            if kind == 'zset':
+                actual = _registry_members(pipe, key)
+            elif kind == 'idle_job':
+                actual = _idle_job_projection(pipe.get(key))
+            else:
+                actual = getattr(pipe, {'string': 'get', 'hash': 'hgetall', 'set': 'smembers'}[kind])(key)
             _require(actual == expected, 'series_state_changed')
+        for key, lifetime in self.lifetimes.items():
+            _require(pipe.pttl(key) == lifetime, 'series_state_changed')
+
+
+def retire_stale_ready_batch(channel_id, expected_profile_revision, expected_attempt_id, *, now):
+    """Archive a definitively completed obsolete draft; keep every daily fence."""
+    client = redis.Redis.from_url(settings.redis_url, decode_responses=True)
+    snapshot = _Snapshot(client)
+    profile = snapshot.object(PROFILE_PREFIX + channel_id)
+    channel = snapshot.object(OAUTH_CHANNEL_PREFIX + channel_id)
+    state = snapshot.read(CHANNEL_STATE_PREFIX + channel_id, 'hash')
+    credential = snapshot.read(OAUTH_CREDENTIAL_PREFIX + channel_id)
+    snapshot.read(AUTH_EPOCH_KEY)
+    import app.services.content_plan_handoff as handoff
+    _require(profile.get('channel_id') == channel_id and profile.get('profile_revision') == expected_profile_revision
+        and profile.get('production_enabled') is True and profile.get('auto_publish') is True
+        and profile.get('release_mode') == 'public' and channel.get('id') == channel_id
+        and channel.get('requires_reconnect') is not True and isinstance(credential, str) and credential
+        and client.sismember(OAUTH_CHANNEL_INDEX, channel_id)
+        and (not state.get('paused_reason') or handoff.snapshot_completed(snapshot, profile, channel, state))
+        and state.get('profile_revision') == expected_profile_revision
+        and state.get('connection_id') == channel.get('connection_id'), 'series_authorization_changed')
+    pending_key = PENDING_PREFIX + channel_id
+    pending_raw = snapshot.read(pending_key)
+    pending = _object(pending_raw, limit=32768)
+    _require(pending.get('attempt_id') == expected_attempt_id and pending.get('channel_id') == channel_id)
+    reason = 'series_batch_context_changed'; duplicate_topics = []
+    try:
+        topics = _batch(pending, profile, channel, now)
+    except SeriesPromotionError as error:
+        if str(error) != 'series_batch_context_changed':
+            raise
+    else:
+        # A fully captured draft can become unusable because its topic was
+        # already consumed in an older series. Leaving it READY makes every
+        # future minute attempt the same impossible promotion. Archive only
+        # that unapproved draft, preserving the historical topic/attempt fences.
+        history = snapshot.read(TOPIC_HISTORY_PREFIX + channel_id, 'set')
+        duplicate_topics = sorted({_digest(_text_key(topic)) for topic in topics} & history)
+        if not duplicate_topics:
+            return {'status': 'ready'}
+        reason = 'series_topic_already_used'
+    from app.services.production_next_series import _preparation_key
+    daily_key = _preparation_key(DAILY_PREFIX, pending)
+    _require(snapshot.read(daily_key) == pending_raw, 'series_attempt_receipt_missing')
+    # A ready payload without a matching completed attempt is never enough
+    # to release an uncertain modern worker. Legacy ready/daily pairs predate
+    # the dispatch ledger and remain immutable in the archived record.
+    dispatch_raw = snapshot.read(_preparation_key(_PREPARATION_DISPATCH_PREFIX, pending))
+    if dispatch_raw is not None:
+        dispatch = _object(dispatch_raw)
+        _require(dispatch.get('status') == 'finished' and dispatch.get('outcome') == 'ready'
+            and dispatch.get('channel_id') == channel_id, 'series_preparation_unresolved')
+    archive_key = SUPERSEDED_PREFIX + channel_id + ':' + expected_attempt_id
+    _require(snapshot.read(archive_key) is None, 'series_archive_conflict')
+    archive = {'version': 1, 'status': 'superseded_unapproved', 'channel_id': channel_id,
+        'reason': reason, 'retired_at': now,
+        'pending_batch': pending, 'pending_sha256': _digest(pending),
+        'current_profile_sha256': _digest(profile), 'current_connection_id': channel['connection_id'],
+        **_FLAGS}
+    if duplicate_topics:
+        archive['duplicate_topic_sha256'] = duplicate_topics
+    with client.pipeline() as pipe:
+        pipe.watch(*snapshot.values, OAUTH_CHANNEL_INDEX)
+        snapshot.compare(pipe)
+        _require(pipe.sismember(OAUTH_CHANNEL_INDEX, channel_id), 'series_authorization_changed')
+        pipe.multi()
+        pipe.set(archive_key, _json(archive), nx=True)
+        pipe.delete(pending_key)
+        _require(pipe.execute() == [True, 1], 'series_archive_ack_unknown')
+    return {'status': 'stale_ready_archived'}
 
 
 def _idle(snapshot, channel_id, route):
@@ -208,23 +336,34 @@ def _idle(snapshot, channel_id, route):
     _require(raw is None or all(c['channel_id'] != channel_id for c in _decode_active_claims(raw)),
              'series_channel_busy')
     indexed = snapshot.read(JOB_INDEX, 'zset')
-    _require(len(indexed) <= MAX_INDEXED_JOBS, 'series_registry_unbounded')
     for task_id in indexed:
         _require(isinstance(task_id, str) and _TASK.fullmatch(task_id))
-        raw = snapshot.read(JOB_PREFIX + task_id)
-        if raw is None:
+        job = snapshot.read(JOB_PREFIX + task_id, 'idle_job')
+        if job is None:
             continue
-        job = _object(raw)
         _require(job.get('task_id') == task_id and isinstance(job.get('spec'), dict))
+        spec = job['spec']
+        result = job.get('result')
+        destination = spec.get('production_channel_id') or spec.get('youtube_channel_id') or spec.get('target_channel_id')
+        delivery_family = ('production_delivery' in spec or 'production_derived_from' in spec
+                           or isinstance(result, dict) and 'delivery_manifest_key' in result)
+        if delivery_family:
+            # A successful long master or portrait export is not a completed
+            # delivery family. Even an earlier episode can still own private
+            # candidates when the final ordinary Short becomes public. There
+            # is no commissioned family-publication receipt yet, so neither a
+            # terminal job state nor a mutable status label may authorize a
+            # profile revision change that would orphan those candidates.
+            _require(isinstance(destination, str) and destination, 'series_delivery_channel_unknown')
+            _require(destination != channel_id and spec.get('channel_id') not in {channel_id, route},
+                     'series_delivery_family_pending')
         if job.get('state') in _ACTIVE:
-            spec = job['spec']
-            destination = spec.get('production_channel_id') or spec.get('youtube_channel_id') or spec.get('target_channel_id')
             _require(isinstance(destination, str) and destination, 'series_active_channel_unknown')
             _require(destination != channel_id and spec.get('channel_id') not in {channel_id, route},
                      'series_channel_busy')
 
 
-def _publication(snapshot, source, profile, channel):
+def _publication(snapshot, source, profile, channel, *, public_recovery=False, now):
     """The same bound PUBLIC/assets proof required by production reconciliation.
 
     A prior continuation marker alone is insufficient: recheck live records and
@@ -249,23 +388,45 @@ def _publication(snapshot, source, profile, channel):
     _require(isinstance(video_id, str) and re.fullmatch(r'[A-Za-z0-9_-]{11}', video_id))
     binding = {'target_channel_id': channel_id, 'connection_id': channel['connection_id'],
                'profile_revision': profile['profile_revision']}
-    disclosure = plan.get('contains_synthetic_media')
-    _require(type(disclosure) is bool and (not contains_synthetic_media(source) or disclosure is True),
+    planned_disclosure = plan.get('contains_synthetic_media')
+    disclosure = attribution.get('contains_synthetic_media')
+    # The publisher may conservatively disclose more than an earlier plan.
+    # Both committed delivery records must agree on the actual boolean; a
+    # required disclosure can never be lowered to False.
+    _require(type(planned_disclosure) is bool and type(disclosure) is bool
+             and (planned_disclosure is False or disclosure is True)
+             and (not contains_synthetic_media(source) or disclosure is True),
              'series_disclosure_unverified')
-    for row in (attribution, delivered):
-        replay = row is delivered and row.get('idempotent_replay') is True
-        _require(all(row.get(k) == v or replay and k == 'profile_revision' and k not in row for k, v in binding.items())
-                 and row.get('privacy_status') == row.get('release_status') == 'public'
-                 and all(not row.get(k) for k in ('release_error_code', 'scheduled_publish_at',
-                                                 'caption_error_code', 'thumbnail_error_code')),
-                 'series_publication_unverified')
-        for key, expected in {'caption_uploaded': True, 'contains_synthetic_media': disclosure}.items():
-            _require(row.get(key) is expected or replay and key not in row, 'series_assets_unverified')
-        if plan.get('require_thumbnail') is True or profile.get('require_thumbnail') is True:
-            _require(row.get('thumbnail_uploaded') is True or replay and 'thumbnail_uploaded' not in row)
-        if replay:
-            _require(row.get('stage') == 'complete' and row.get('progress') == 100
-                     and ('thumbnail_uploaded' not in row or row['thumbnail_uploaded'] == attribution.get('thumbnail_uploaded')))
+    recovered = None
+    if public_recovery:
+        from app.services.production_recovery import _public_recovery_proof
+
+        receipt_snapshots = []
+        recovered = _public_recovery_proof(snapshot.client, receipt_snapshots, {
+            'source': source, 'publisher': publisher, 'ledger': ledger,
+            'profile': profile, 'channel': channel,
+        }, snapshot.read(OAUTH_CREDENTIAL_PREFIX + channel_id))
+        # The helper reads the exact receipt, assets and authorization epoch.
+        # Adopt each read into this promotion's WATCH/compare transaction.
+        for key, observed in receipt_snapshots:
+            _require(observed['kind'] in {'none', 'string'}
+                     and snapshot.read(key) == observed['value'], 'series_state_changed')
+        _require(planned_disclosure is True and disclosure is True, 'series_disclosure_unverified')
+    else:
+        for row in (attribution, delivered):
+            replay = row is delivered and row.get('idempotent_replay') is True
+            _require(all(row.get(k) == v or replay and k == 'profile_revision' and k not in row for k, v in binding.items())
+                     and row.get('privacy_status') == row.get('release_status') == 'public'
+                     and all(not row.get(k) for k in ('release_error_code', 'scheduled_publish_at',
+                                                     'caption_error_code', 'thumbnail_error_code')),
+                     'series_publication_unverified')
+            for key, expected in {'caption_uploaded': True, 'contains_synthetic_media': disclosure}.items():
+                _require(row.get(key) is expected or replay and key not in row, 'series_assets_unverified')
+            if plan.get('require_thumbnail') is True or profile.get('require_thumbnail') is True:
+                _require(row.get('thumbnail_uploaded') is True or replay and 'thumbnail_uploaded' not in row)
+            if replay:
+                _require(row.get('stage') == 'complete' and row.get('progress') == 100
+                         and ('thumbnail_uploaded' not in row or row['thumbnail_uploaded'] == attribution.get('thumbnail_uploaded')))
     _require(publisher.get('task_id') == publish_id and publisher.get('kind') == 'publish'
              and publisher.get('state') == 'SUCCESS' and publisher.get('parent_id') == task_id
              and delivered.get('task_id') == publish_id and delivered.get('source_task_id') == task_id
@@ -279,10 +440,13 @@ def _publication(snapshot, source, profile, channel):
              and ledger.get('status') == 'complete' and ledger.get('source_task_id') == task_id
              and ledger.get('publish_task_id') == publish_id and ledger.get('youtube_video_id') == video_id
              and ledger.get('target_channel_id') == channel_id and ledger.get('connection_id') == channel['connection_id']
-             and ledger.get('requested_release_mode') == ledger.get('privacy_status') == ledger.get('release_status') == 'public'
-             and ledger.get('side_effect_possible') is True and ledger.get('release_side_effect_possible') is True
-             and isinstance(ledger.get('release_completed_at'), str) and ledger['release_completed_at']
-             and not ledger.get('requested_publish_at') and not ledger.get('scheduled_publish_at') and not ledger.get('release_error_code')
+             and ledger.get('requested_release_mode') == 'public' and ledger.get('side_effect_possible') is True
+             and (recovered is not None or (
+                 ledger.get('privacy_status') == ledger.get('release_status') == 'public'
+                 and ledger.get('release_side_effect_possible') is True
+                 and isinstance(ledger.get('release_completed_at'), str) and ledger['release_completed_at']
+                 and not ledger.get('scheduled_publish_at') and not ledger.get('release_error_code')))
+             and not ledger.get('requested_publish_at')
              and plan.get('source_task_id') == task_id and plan.get('target_channel_id') == channel_id
              and plan.get('profile_revision') == profile['profile_revision'] and plan.get('release_mode') == 'public'
              and not plan.get('publish_at'), 'series_upload_unverified')
@@ -290,19 +454,32 @@ def _publication(snapshot, source, profile, channel):
     total = profile['series_total']
     _require(isinstance(series, dict) and series.get('id') == profile['series_id']
              and series.get('name') == profile['series_name'] and type(series.get('number')) is int
-             and type(series.get('total')) is int and series['number'] == series['total'] == total,
+             and type(series.get('total')) is int and series['total'] == total
+             and 1 <= series['number'] <= total,
              'series_numbering_unverified')
+    held = []
+    if series['number'] != total:
+        from app.services.production_quality_holds import prior_held_completions
+        held = prior_held_completions(snapshot, profile, channel, now)
+        _require(len(held) == total - series['number'], 'series_numbering_unverified')
     scope = channel_id + ':' + profile['series_id']
-    _require(snapshot.read(SERIES_COUNTER_PREFIX + scope) == str(total)
-             and snapshot.read(SERIES_ASSIGNMENT_PREFIX + scope + ':' + task_id) == str(total),
+    _require(snapshot.read(SERIES_COUNTER_PREFIX + scope) == str(series['number'])
+             and snapshot.read(SERIES_ASSIGNMENT_PREFIX + scope + ':' + task_id) == str(series['number']),
              'series_numbering_unverified')
     return {'source_task_id': task_id, 'publish_task_id': publish_id, 'youtube_video_id': video_id,
             **binding, 'privacy_status': 'public', 'release_status': 'public', 'caption_uploaded': True,
             'contains_synthetic_media': disclosure, 'source_sha256': _digest(source),
-            'publisher_sha256': _digest(publisher), 'upload_sha256': _digest(ledger), 'series': series}
+            'publisher_sha256': _digest(publisher), 'upload_sha256': _digest(ledger), 'series': series,
+            **({'prior_unpublished_holds': held} if held else {}),
+            **({'publication_proof': 'blocked_public_recovery',
+                'public_recovery_receipt_sha256': recovered['receipt_sha256']} if recovered is not None else {})}
 
 
 def _last_public(snapshot, profile, channel, state, now):
+    import app.services.content_plan_handoff as handoff
+    completed_plan = handoff.snapshot_completed(snapshot, profile, channel, state)
+    if completed_plan is not None:
+        return completed_plan
     original_id = state.get('last_task_id')
     _require(isinstance(original_id, str) and _TASK.fullmatch(original_id))
     original = snapshot.object(JOB_PREFIX + original_id)
@@ -324,8 +501,12 @@ def _last_public(snapshot, profile, channel, state, now):
              and spec.get('language') == profile['default_language']
              and spec.get('channel_id') == str(profile.get('route_label') or profile['channel_id']).strip(),
              'series_final_episode_changed')
+    if original.get('state') == 'FAILURE' and state.get('quality_hold_task_id') == original_id:
+        from app.services.production_quality_holds import held_series_completion
+        return held_series_completion(snapshot, profile, channel, state, now)
     source, lineage = original, [original_id]
     audit = None
+    public_recovery = False
     if original.get('state') == 'SUCCESS':
         continued_at = float(state.get('last_public_continued_at', 'nan'))
         _require(state.get('last_result') == 'SUCCESS' and state.get('last_public_task_id') == original_id
@@ -336,12 +517,15 @@ def _last_public(snapshot, profile, channel, state, now):
         # reciprocal lineage, original frozen spec or actual PUBLIC proof.
         from app.services.production_recovery import _audit_result
         raw = snapshot.read(_PUBLIC_RESUME_PREFIX + profile['channel_id'] + ':' + original_id)
+        if raw is None:
+            raw = snapshot.read(_PUBLIC_RECOVERY_RESUME_PREFIX + profile['channel_id'] + ':' + original_id)
+            public_recovery = True
         audit = _object(raw)
         target = audit.get('recovered_task_id')
         _require(isinstance(target, str) and _TASK.fullmatch(target) and target != original_id
                  and type(audit.get('continue_immediately')) is bool)
         _audit_result(raw, 'already_resumed', profile['channel_id'], original_id, target,
-                      profile['profile_revision'], 'public', False, audit.get('continue_immediately'))
+                      profile['profile_revision'], 'public', public_recovery, audit.get('continue_immediately'))
         _require(state.get('last_result') == 'FAILURE' and audit.get('cursor') == len(profile['production_topics'])
                  and audit.get('connection_id') == channel['connection_id']
                  and audit.get('resumed_at') <= now and float(state['next_due']) == audit.get('next_due'),
@@ -378,10 +562,22 @@ def _last_public(snapshot, profile, channel, state, now):
             if child_id == target:
                 break
         _require(source['task_id'] == target, 'series_retry_lineage_unbounded')
-    proof = _publication(snapshot, source, profile, channel)
+    if public_recovery:
+        from app.services.studio_state import RENDER_CANCELLATION_PREFIX
+        from app.services.source_publication_hold import HOLD_PREFIX
+
+        for task_id in lineage:
+            job = snapshot.object(JOB_PREFIX + task_id)
+            _require('publication_hold' not in job and 'owner_cancellation' not in job
+                     and snapshot.read(RENDER_CANCELLATION_PREFIX + task_id) is None
+                     and snapshot.read(HOLD_PREFIX + task_id) is None, 'series_owner_hold')
+    proof = _publication(snapshot, source, profile, channel, public_recovery=public_recovery, now=now)
     if audit is not None:
         _require(all(audit.get(k) == proof.get(k) for k in ('publish_task_id', 'youtube_video_id',
                                                           'contains_synthetic_media', 'caption_uploaded')))
+        if public_recovery:
+            _require(audit.get('public_recovery_receipt_sha256') == proof['public_recovery_receipt_sha256'],
+                     'series_public_receipt_invalid')
         proof['resume_receipt_sha256'] = _digest(audit)
     return {**proof, 'original_task_id': original_id, 'lineage': lineage}
 
@@ -412,7 +608,7 @@ def _receipt(raw, channel_id, revision, attempt_id):
 
 
 def promote_ready_series(channel_id, expected_profile_revision, expected_attempt_id, *, now=None):
-    """Promote once after exhaustion and proven PUBLIC delivery, without enqueue.
+    """Promote once after exhaustion and a proven final disposition, without enqueue.
 
     Duplicate calls describe the previous transition, not current eligibility.
     A lost transaction reply never reserves again. Another channel may remain
@@ -453,11 +649,13 @@ def promote_ready_series(channel_id, expected_profile_revision, expected_attempt
                  and isinstance(profile.get('series_name'), str)
                  and type(profile.get('production_interval_hours')) is int
                  and 6 <= profile['production_interval_hours'] <= 168, 'series_profile_invalid')
+        import app.services.content_plan_handoff as handoff
+        completed_plan = handoff.snapshot_completed(snapshot, profile, channel, state)
         _require(state.get('cursor') == str(len(topics))
                  and state.get('consumed_prefix') == _prefix_digest([t.strip() for t in topics])
                  and state.get('profile_revision') == expected_profile_revision
                  and state.get('connection_id') == channel['connection_id']
-                 and not state.get('active_task_id') and not state.get('paused_reason')
+                 and not state.get('active_task_id') and (not state.get('paused_reason') or completed_plan)
                  and state.get('dispatch_status') == 'finished', 'series_not_exhausted_or_idle')
         next_due = float(state.get('next_due', 'nan'))
         _require(math.isfinite(next_due) and next_due >= 0, 'series_schedule_invalid')
@@ -467,7 +665,8 @@ def promote_ready_series(channel_id, expected_profile_revision, expected_attempt
         pending = _object(pending_raw, limit=32768)
         _require(pending.get('attempt_id') == expected_attempt_id, 'series_batch_changed')
         new_topics = _batch(pending, profile, channel, now)
-        daily_key = DAILY_PREFIX + channel_id + ':' + pending['day']
+        from app.services.production_next_series import _preparation_key
+        daily_key = _preparation_key(DAILY_PREFIX, pending)
         _require(snapshot.read(daily_key) == pending_raw, 'series_attempt_receipt_missing')
         epoch_key, history_key = EPOCH_PREFIX + channel_id, TOPIC_HISTORY_PREFIX + channel_id
         old_epoch_raw = snapshot.read(epoch_key)
@@ -522,16 +721,28 @@ def promote_ready_series(channel_id, expected_profile_revision, expected_attempt
                        'series_total': len(new_topics), 'production_topics': new_topics,
                        'profile_revision': revision, 'series_epoch': epoch,
                        'updated_at': datetime.fromtimestamp(now, timezone.utc).isoformat()}
-        new_state = {'cursor': '0', 'consumed_prefix': _prefix_digest([]), 'next_due': str(now),
+        new_state = {'cursor': '0', 'consumed_prefix': _prefix_digest([]), 'next_due': str(max(now, next_due)),
                      'profile_revision': revision, 'connection_id': channel['connection_id'],
                      'dispatch_status': 'series_promoted', 'series_epoch': str(epoch),
                      'last_series_promotion': receipt_key}
+        continuation = None
+        if proof.get('completion_kind') == 'held_unpublished':
+            from app.services.production_continuation import authority
+            from app.services.production_quality_holds import _SnapshotReader
+            continuation = authority(_SnapshotReader(snapshot), channel_id)
+            if continuation:
+                new_state['next_due'] = str(now)
         archive_key = ARCHIVE_PREFIX + channel_id + ':' + str(epoch - 1) + ':' + expected_attempt_id
         _require(snapshot.read(archive_key) is None, 'series_archive_conflict')
         archive = {'version': 1, 'channel_id': channel_id, 'epoch': epoch - 1, 'archived_at': now,
-                   'profile': profile, 'state': state, 'pending_batch': pending, 'public_proof': proof,
+                   'profile': profile, 'state': state, 'pending_batch': pending,
+                   **({'owner_plan_handoff': proof} if proof.get('completion_kind') == 'owner_plan_complete'
+                      else {'unpublished_proof': proof} if proof.get('completion_kind') == 'held_unpublished'
+                      else {'public_proof': proof}),
                    'authorization_epoch_sha256': _digest(authorization_epoch),
                    'credential_sha256': _digest(credential), 'previous_epoch': old_epoch}
+        if continuation:
+            archive['continuation_authority_sha256'] = continuation
         receipt = {'version': 1, 'status': 'promoted', 'channel_id': channel_id,
                    'attempt_id': expected_attempt_id, 'old_profile_revision': expected_profile_revision,
                    'new_profile_revision': revision, 'old_series_id': series_id, 'new_series_id': new_id,

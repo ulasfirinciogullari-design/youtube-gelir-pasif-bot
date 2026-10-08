@@ -11,10 +11,12 @@ import pytest
 SERVICES = Path(__file__).resolve().parents[1] / 'app' / 'services'
 SOURCE = SERVICES / 'visual_qc.py'
 TREE = ast.parse(SOURCE.read_text(encoding='utf-8'))
-REVIEW = next(
-    node for node in TREE.body
-    if isinstance(node, ast.FunctionDef) and node.name == 'review_scene_visuals'
-)
+PROMPT_SOURCE = SERVICES / 'strict_visual_review_semantics.py'
+PROMPT_TREE = ast.parse(PROMPT_SOURCE.read_text(encoding='utf-8'))
+PROMPT_BUILDERS = [next(
+    node for node in PROMPT_TREE.body
+    if isinstance(node, ast.FunctionDef) and node.name == name
+) for name in ('_rubric_content', '_complete_visual_request')]
 CONSTANTS = {
     '_CURRENCY_DOCUMENT_TEXT_RULE', '_DOCUMENTARY_BROLL_RULE',
     '_DOCUMENTARY_STOCK_QUERY_HINT_RULE', '_TEMPORAL_PROOF_RULE',
@@ -64,7 +66,7 @@ def _instruction(*, style='documentary', sources=EVIDENCE, scenes=None, included
         'exact_ids_prompt': 'Return exactly the included scene IDs.',
     })
     assignments = [
-        node for node in REVIEW.body
+        node for builder in PROMPT_BUILDERS for node in builder.body
         if (
             isinstance(node, ast.AnnAssign)
             and isinstance(node.target, ast.Name)
@@ -76,7 +78,7 @@ def _instruction(*, style='documentary', sources=EVIDENCE, scenes=None, included
         )
     ]
     assert len(assignments) == 2
-    exec(compile(ast.Module(body=assignments, type_ignores=[]), str(SOURCE), 'exec'), namespace)
+    exec(compile(ast.Module(body=assignments, type_ignores=[]), str(PROMPT_SOURCE), 'exec'), namespace)
     return namespace['system_instruction']
 
 

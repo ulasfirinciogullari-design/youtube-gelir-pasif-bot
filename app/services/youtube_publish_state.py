@@ -19,7 +19,19 @@ EXECUTION_LOCK_TTL_SECONDS = 60 * 60 * 6
 _ID_PATTERN = re.compile(r'^[A-Za-z0-9_-]{8,128}$')
 _VIDEO_ID_PATTERN = re.compile(r'^[A-Za-z0-9_-]{6,128}$')
 
-_CAS_RECORD = '''
+_CHECK_RETAINED_FENCE = '''
+for i = 2, #KEYS do
+  if redis.call('EXISTS', KEYS[i]) == 1 then return 0 end
+end
+'''
+
+_CREATE_RECORD = _CHECK_RETAINED_FENCE + '''
+if redis.call('EXISTS', KEYS[1]) == 1 then return 0 end
+redis.call('SET', KEYS[1], ARGV[1], 'EX', tonumber(ARGV[2]), 'NX')
+return 1
+'''
+
+_CAS_RECORD = _CHECK_RETAINED_FENCE + '''
 local current = redis.call('GET', KEYS[1])
 if current == ARGV[1] then
   redis.call('SET', KEYS[1], ARGV[2], 'EX', tonumber(ARGV[3]))
@@ -28,7 +40,7 @@ end
 return 0
 '''
 
-_RELEASE_LOCK = '''
+_RELEASE_LOCK = _CHECK_RETAINED_FENCE + '''
 if redis.call('GET', KEYS[1]) == ARGV[1] then
   return redis.call('DEL', KEYS[1])
 end
@@ -81,6 +93,17 @@ def _decode(raw: str | None) -> dict[str, Any] | None:
     return record if isinstance(record, dict) else None
 
 
+def _guarded_keys(source_task_id, key):
+    from app.services.studio_state import retained_delivery_fence_keys
+
+    return (key, *retained_delivery_fence_keys(source_task_id))
+
+
+def _create_record(client, source_task_id, key, encoded, ttl):
+    keys = _guarded_keys(source_task_id, key)
+    return client.eval(_CREATE_RECORD, len(keys), *keys, encoded, ttl) == 1
+
+
 def get_upload_record(source_task_id: str) -> dict[str, Any] | None:
     try:
         raw = _redis().get(_key(source_task_id))
@@ -128,23 +151,13 @@ def reserve_upload(
     encoded = _encode(record)
     client = _redis()
     try:
-        if client.set(
-            key,
-            encoded,
-            ex=UPLOAD_RECORD_TTL_SECONDS,
-            nx=True,
-        ):
+        if _create_record(client, source_task_id, key, encoded, UPLOAD_RECORD_TTL_SECONDS):
             return record, True
         for _ in range(3):
             existing_raw = client.get(key)
             existing = _decode(existing_raw)
             if existing is None:
-                if client.set(
-                    key,
-                    encoded,
-                    ex=UPLOAD_RECORD_TTL_SECONDS,
-                    nx=True,
-                ):
+                if _create_record(client, source_task_id, key, encoded, UPLOAD_RECORD_TTL_SECONDS):
                     return record, True
                 continue
             # A source final has exactly one immutable channel target. A retry
@@ -159,10 +172,11 @@ def reserve_upload(
                 or existing.get('side_effect_possible')
             ):
                 return existing, False
+            guarded = _guarded_keys(source_task_id, key)
             replaced = client.eval(
                 _CAS_RECORD,
-                1,
-                key,
+                len(guarded),
+                *guarded,
                 existing_raw,
                 encoded,
                 UPLOAD_RECORD_TTL_SECONDS,
@@ -229,10 +243,11 @@ def _mutate_owned_record(
             record.update(updates)
             record['updated_at'] = _now()
             new_raw = _encode(record)
+            guarded = _guarded_keys(source_task_id, key)
             if client.eval(
                 _CAS_RECORD,
-                1,
-                key,
+                len(guarded),
+                *guarded,
                 old_raw,
                 new_raw,
                 UPLOAD_RECORD_TTL_SECONDS,
@@ -478,12 +493,8 @@ def acquire_execution_lock(source_task_id: str, publish_task_id: str) -> str:
     _safe_id(publish_task_id, 'publish_task_id')
     token = secrets.token_urlsafe(32)
     try:
-        acquired = _redis().set(
-            _lock_key(source_task_id),
-            token,
-            ex=EXECUTION_LOCK_TTL_SECONDS,
-            nx=True,
-        )
+        acquired = _create_record(_redis(), source_task_id, _lock_key(source_task_id),
+                                  token, EXECUTION_LOCK_TTL_SECONDS)
     except Exception as exc:
         raise UploadReservationError('YouTube upload lock is unavailable') from exc
     if not acquired:
@@ -493,7 +504,8 @@ def acquire_execution_lock(source_task_id: str, publish_task_id: str) -> str:
 
 def release_execution_lock(source_task_id: str, token: str) -> None:
     try:
-        _redis().eval(_RELEASE_LOCK, 1, _lock_key(source_task_id), str(token or ''))
+        keys = _guarded_keys(source_task_id, _lock_key(source_task_id))
+        _redis().eval(_RELEASE_LOCK, len(keys), *keys, str(token or ''))
     except Exception:
         # The lease expires automatically. A release outage must not turn an
         # already-completed upload into a failed/retried upload.

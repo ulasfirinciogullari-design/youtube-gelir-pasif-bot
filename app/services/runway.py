@@ -1085,6 +1085,7 @@ def _generate_gemini_omni_video(
     continuity_reference_image: str | Path | bytes | bytearray | memoryview | None = None,
 ) -> dict:
     """Submit one retry-free Omni interaction and return validated media."""
+    from app.services.production_spend import SpendBlocked
     from app.services.production_spend_runtime import paid_post
     if not settings.gemini_api_key:
         raise GeminiOmniPreAcceptanceFallbackError(
@@ -1147,6 +1148,8 @@ def _generate_gemini_omni_video(
                 headers=headers,
                 json=request_payload,
             )
+        except SpendBlocked:
+            raise
         except Exception:
             # The provider may have accepted this paid POST. Never retry it or
             # start another provider when transport acceptance is ambiguous.
@@ -1273,6 +1276,7 @@ def _select_gemini_omni_continuity_candidate(
     candidates: list[Path],
 ) -> Path:
     """Choose only a clean identity frame; never propagate generated UI."""
+    from app.services.production_spend import SpendBlocked
     if len(candidates) != 3:
         raise GeminiOmniContinuityReferenceError(
             'Gemini Omni continuity candidate count is invalid'
@@ -1329,6 +1333,8 @@ def _select_gemini_omni_continuity_candidate(
                 'required JSON.'
             ),
         )
+    except SpendBlocked:
+        raise
     except GeminiOmniContinuityReferenceError:
         raise
     except Exception as exc:
@@ -1389,6 +1395,7 @@ def create_gemini_omni_continuity_reference(
     output_path: str | Path,
 ) -> str:
     """Extract one visually clean, bounded identity-anchor frame."""
+    from app.services.production_spend import SpendBlocked
     source = Path(source_path)
     output = Path(output_path)
     if output.suffix.casefold() not in {'.jpg', '.jpeg'}:
@@ -1455,6 +1462,8 @@ def create_gemini_omni_continuity_reference(
         winner = _select_gemini_omni_continuity_candidate(candidates)
         winner.replace(output)
         return str(output)
+    except SpendBlocked:
+        raise
     except GeminiOmniContinuityReferenceError:
         raise
     except Exception as exc:
@@ -1648,6 +1657,10 @@ def generate_scene(
     aspect_ratio = str(aspect_ratio).strip()
 
     seconds = max(2, min(int(round(duration)), 10))
+    from app.services.commissioning_video import generate_if_commissioned
+    commissioned = generate_if_commissioned(prompt_text, seconds, aspect_ratio)
+    if commissioned is not None:
+        return commissioned
     if prefer_gemini_omni:
         if str(aspect_ratio).strip() != _GEMINI_OMNI_ASPECT_RATIO:
             raise ValueError('Gemini Omni preference requires 9:16 output')
@@ -1663,6 +1676,11 @@ def generate_scene(
             # Ambiguous transport and every accepted/terminal interaction
             # raise a different type and therefore fail closed here.
             pass
+
+    from app.services.fal_video_catalog import primary_enabled, select_model
+    if primary_enabled(settings):
+        return generate_fal_video(prompt_text, seconds, aspect_ratio=aspect_ratio,
+            model=select_model(seconds, getattr(settings, 'studio_fal_video_model', 'auto')))
 
     if not settings.runwayml_api_secret:
         raise RuntimeError('RUNWAYML_API_SECRET is not configured')
@@ -1789,6 +1807,7 @@ def generate_scene(
             quota_fallback_from: str | None,
             quota_fallback_chain: list[str],
         ) -> dict:
+            from app.services.production_spend import SpendBlocked
             if not allow_image_motion or not str(image_prompt or '').strip():
                 raise RuntimeError(
                     'Gemini video fallback cannot satisfy this shot duration'
@@ -1808,6 +1827,8 @@ def generate_scene(
                         aspect_ratio,
                     )
                 )
+            except SpendBlocked:
+                raise
             except Exception as exc:
                 # Preserve a narrow, content-free receipt so the caller can
                 # reserve this scene even after an ambiguous timeout or a
@@ -1996,6 +2017,9 @@ def _render_gemini_image_motion(
             '-frames:v', str(frame_count),
             '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
             '-pix_fmt', 'yuv420p', '-color_range', 'tv',
+            # libx264 may omit default limited-range signalling. Persist it
+            # in the H.264 VUI as well as the encoder/container metadata.
+            '-bsf:v', 'h264_metadata=video_full_range_flag=0',
             '-movflags', '+faststart',
             '-f', 'mp4', str(partial),
         ], capture_output=True, text=True, check=False, timeout=180)
@@ -2138,7 +2162,8 @@ def download_generated_scene(
         if not url:
             raise RuntimeError('Generated video URL is empty')
         initial_host = (urlparse(str(url)).hostname or '').lower()
-        if initial_host in _GEMINI_VIDEO_HOSTS:
+        if initial_host in _GEMINI_VIDEO_HOSTS and source_provider not in {
+                'fal_seedance_2_fast', 'fal_veo_lite', 'fal_seedance_15_pro', 'fal_seedance_1_fast'}:
             current_url = str(url)
             # Follow at most five redirects manually. The API key is attached
             # only to the exact Gemini API host and is stripped before a
@@ -2176,7 +2201,8 @@ def download_generated_scene(
                     return str(output)
             raise RuntimeError('Gemini video download redirected too many times')
 
-        if source_provider == 'fal_seedance_2_fast':
+        if source_provider in {'fal_seedance_2_fast', 'fal_veo_lite',
+                               'fal_seedance_15_pro', 'fal_seedance_1_fast'}:
             current_url = validate_fal_media_url(url)
             # Fal media carries no application secret. Follow only documented
             # Fal media hosts (and the documented legacy falserverless bucket)

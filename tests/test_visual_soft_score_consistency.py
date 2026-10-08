@@ -68,6 +68,8 @@ def _run_revalidation(initial, response, *, sources=True, authored_ai=False):
 
 
 @pytest.mark.parametrize('score, reason, retry_queries', [
+    (68, 'Retail shop owner handling toys on shelves suitably illustrates the retail context.', []),
+    (70, 'Children playing with durable plastic building bricks clearly supports the narration beat.', []),
     (68, 'Shows a hand presenting a US dollar bill clearly matching the narration context.', []),
     (70, 'Macro close-up shows hands holding and examining US dollar bills as stated.', []),
     (72, 'Clearly shows pure raw white cotton bolls and fibers in hand.', []),
@@ -117,6 +119,8 @@ def test_observed_positive_soft_rejections_trigger_only_independent_exact_media_
     {'reason': 'Clearly shows cotton; dull lighting needs improvement.'},
     {'reason': 'Shows a close-up woven flax/linen fabric texture matching the narration topic, though not raw unspun fibers.'},
     {'reason': 'This is merely an adequate candidate.'},
+    {'reason': 'Suitably illustrates the retail context but the shot is blurred.'},
+    {'reason': 'Clearly supports the narration; dull lighting needs improvement.'},
 ])
 def test_malformed_queries_criticism_hard_gates_or_intentional_caps_do_not_trigger_soft_review(override):
     namespace, _ = _run_revalidation(_review(**override), {'reviews': []})
@@ -174,9 +178,11 @@ def test_existing_hard_conflict_path_does_not_require_new_documentary_scope():
 
 
 def test_soft_rejection_prompt_requires_visible_shortfall_not_stock_bias_or_queries_alone():
+    prompt_source = SOURCE.with_name('strict_visual_review_semantics.py')
+    prompt_tree = ast.parse(prompt_source.read_text(encoding='utf-8'))
     function = next(
-        node for node in TREE.body
-        if isinstance(node, ast.FunctionDef) and node.name == 'review_scene_visuals'
+        node for node in prompt_tree.body
+        if isinstance(node, ast.FunctionDef) and node.name == '_rubric_content'
     )
     content = next(
         node for node in function.body

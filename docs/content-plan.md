@@ -1,0 +1,113 @@
+# Owner editorial plan
+
+The persisted `STUDIO_SHORTS_POLICY_JSON` setting selects channels whose owner
+has disabled long videos, with distinct daily Shorts ceilings. The September 25
+owner instruction is Capital Corrupt four Shorts and Margin Verdict one Short,
+including a fresh 4+1 allowance that day regardless of earlier work:
+
+```json
+{"version":1,"id":"shorts-20260925-4-1","daily_limits":{"UC5v9AvNtD3PTLgo6m1jROOA":4,"UCgvESYtYbn2w9R2ExBOF_cw":1}}
+```
+
+The same setting is persisted on web, worker and scheduler. Its stable ID selects
+a new editorial day-key namespace, preserving all old admission and publication
+rows. It must not change on restart or daily rollover: dates roll automatically
+at midnight Europe/Istanbul. Pending uploads remain shared between policies and
+days; unknown outcomes never regain capacity. Provider grants and request limits
+are independent of this editorial change. Studio separates this plan's counts
+from earlier publications that day. Empty configuration retains the historical
+mixed cadence. Invalid nonempty configuration fails closed.
+
+The 4/1 limits count publications and pending uploads. Production stops once
+that target is occupied; failed attempts never count as published. New attempts
+are independently capped at twice the channel's public target (Capital8,
+Margin2), preserving every failed admission and financial receipt. This retains
+the prior aggregate ceiling of ten new Shorts attempts per day while weighting
+them toward Capital. Reaching the attempt ceiling waits until the next day;
+no unknown provider request or rejected job is replayed.
+
+Scheduled Shorts verify final silence against the original qualified voice's
+audible ending when the file-duration check rejects a natural source pause.
+The existing source-measurement helper retains exact frame counts, the minimum
+hold, the voice duration gate and the absolute1.55second tail cap. It changes no
+speech or video bytes and does not approve old rejected drafts.
+
+Daily long-form and next-day long-form stock planning,
+new long queue entries, production admission and unpublished long uploads are
+blocked. Studio offers only Shorts for those channels. Historical jobs, public
+long videos, financial reservations and daily receipts remain unchanged;
+other channels retain their own formats and cadence.
+
+A queued six-scene Short that fails during local rendering can make one
+retained-media continuation. Every video create must have a captured provider
+result and preserved raw bytes; the original voice and selected stock pools
+must also survive with matching hashes. A fresh immutable-story review precedes
+the ordinary audio, exact-cut visual, final-render and publication checks.
+The continuation cannot buy another voice or video. Unknown sends stay occupied;
+quality rejections, cancelled jobs and historical delivery holds do not auto-retry.
+
+`/studio/plan` owns a channel's ordered next videos without editing consumed
+topics, historical series counters, old jobs or payment receipts. The owner
+can add a video or a numbered series, move future independent entries, remove
+unstarted entries, pause new work, and select whether an exhausted queue waits
+or returns to automatic Shorts selection. Paused and blocked plans continue to
+own their position. Series dependencies cannot be reordered past each other.
+
+The normal server minute tick consumes the plan; a browser is not a scheduler.
+An immutable reservation stores the full item, channel, connection, profile and
+job specification before one broker send. An unknown delivery is never resent.
+Owner-planned renders and the existing scheduler share the two-render capacity
+through mutually watched/atomic claims. Historical series discovery yields to
+the owner plan. An exact successful public publisher, approved source and
+matching video/channel/episode are required before a permanent completion and
+the next reservation. Failure and private upload do not complete an episode.
+
+Public metadata uses the frozen owner-plan series assignment. It cannot
+consume or reset an old series counter; this supports finishing an archived
+series and respecting an owner's corrected episode titles. Current profile and
+queue assignment are checked before upload and again before public release.
+Audio, factual and visual acceptance stay unchanged. Subtitle-file delivery to
+YouTube is optional for these new plans; a rejected optional caption remains
+visible in the publication result and does not veto an otherwise accepted
+video. Legacy and externally reviewed publication rules remain unchanged.
+
+The queue executes Shorts and three-minute landscape documentaries. Each
+documentary has thirty brief scenes, one continuous timestamped voice take,
+complete source review of every narrated sentence, full-audio transcription
+and prosody review, and overlapping visual-review batches covering every
+scene and boundary. Native provider admission checks the exact durable queue
+dispatch and its predecessors before each reservation. Long audio is a distinct
+prepared request and cannot fall back through the old Short or Abacus route.
+Private original narration, generated clips, and stock selections are retained.
+Animation remains an explicitly marked preparation format until a consistent
+character and motion production workflow is accepted.
+
+Retained-render preparation compares canonical candidate packages before
+the loader's derived joined narration is added, and restores the verified
+word-range metadata before an immutable review. Version 3 preserves all
+earlier claims; only the two observed terminal local validation failures from
+earlier versions can enter the corrected preparation. Unknown provider outcomes
+and actual critic rejections do not reopen through this upgrade.
+
+A final visual rejection may also make one stock-only continuation from the
+root's saved, authenticated stock pools and original voice. Every prior paid
+generation must already have a captured terminal response. Up to three bounded
+selection rounds review the actual normalized cuts; missing, negative, or
+duplicate selections cannot pass. The distinct stock-only contract requires
+the private queue dispatch and forbids all new voice/video generation. The
+ordinary worker repeats full QA before publication. Later correction filenames
+retain distinct raw checkpoints, preserving every previous candidate.
+
+The future queue is stored durably without an expiration. Browsing performs
+only bounded reads, and every edit requires the owner session, same-origin
+proof and a matching revision. Stale browser edits cannot overwrite a newer
+plan or edit already reserved work.
+
+No new subscription, top-up, final budget, or financial-history reset is part
+of this feature. Existing funding and provider admission run before dispatch.
+Retained recovery also preserves the preloaded worker filenames. A separately
+claimed continuation can reuse the original private package only after the
+observed terminal local filename error, with zero new paid creates and a fully
+verified parent/child chain. Unknown outcomes and quality rejections do not
+qualify. Large alternative stock pools use overlapping visual-review windows
+so every frame, candidate, and adjacent scene pair fits the request envelope.

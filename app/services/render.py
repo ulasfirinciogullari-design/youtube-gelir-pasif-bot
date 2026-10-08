@@ -60,6 +60,20 @@ def _run(cmd: list[str]):
     )
 
 
+def _bounded_assembly_command(command: list[str]) -> list[str]:
+    """Keep independent 1080p decoder pools within the worker's memory budget."""
+    # Containers can see every host CPU even when their own CPU/memory quota
+    # is small. Thirty automatically threaded decoders exceeded 8 GB in a
+    # real long master. Preserve the decoded concat graph and codec quality;
+    # give each decoder, filter graph and encoder one explicit worker thread.
+    bounded = [command[0], '-filter_complex_threads', '1', '-filter_threads', '1']
+    for argument in command[1:-1]:
+        if argument == '-i':
+            bounded.extend(['-threads', '1'])
+        bounded.append(argument)
+    return [*bounded, '-threads', '1', command[-1]]
+
+
 @lru_cache(maxsize=256)
 def media_duration(path: str | Path) -> float:
     out = subprocess.check_output([
@@ -125,22 +139,27 @@ def ending_silence_duration(path: str | Path, noise_db: int = -45) -> float:
 
 
 def max_freeze_duration(path: str | Path, minimum_seconds: float = 2.0) -> float:
-    """Measure the longest near-static interval in a rendered master."""
+    """Measure near-static intervals, including an interval at the last frame."""
     completed = subprocess.run([
-        'ffmpeg', '-hide_banner', '-nostats', '-i', str(path),
-        '-map', '0:v:0', '-vf',
+        'ffmpeg', '-hide_banner', '-nostats', '-threads', '1', '-filter_threads', '1',
+        '-i', str(path), '-map', '0:v:0', '-vf',
         f'scale=320:-2,freezedetect=n=-40dB:d={minimum_seconds:.2f}',
         '-an', '-f', 'null', '-',
     ], capture_output=True, text=True, check=False)
     if completed.returncode != 0:
-        raise RuntimeError('Horizontal letterbox inspection failed')
-    durations = [
-        float(value) for value in re.findall(
-            r'lavfi\.freezedetect\.freeze_duration:\s*([0-9.]+)',
-            completed.stderr or '',
-        )
-    ]
-    return max(durations, default=0.0)
+        raise RuntimeError('Video motion inspection failed')
+    intervals, start = [], None
+    for kind, value in re.findall(
+            r'lavfi\.freezedetect\.freeze_(start|end):\s*([0-9.]+)', completed.stderr or ''):
+        instant = float(value)
+        if kind == 'start':
+            start = instant
+        elif start is not None:
+            intervals.append(max(0., instant - start))
+            start = None
+    if start is not None:
+        intervals.append(max(0., _video_timeline_duration(path) - start))
+    return max(intervals, default=0.)
 
 
 def max_horizontal_letterbox_duration(
@@ -148,7 +167,11 @@ def max_horizontal_letterbox_duration(
     minimum_seconds: float = 0.25,
     band_height: int = 24,
 ) -> float:
-    """Measure sustained black bands touching both horizontal frame edges."""
+    """Measure encoded black bands, not dark blue/brown scenery.
+
+    The 2% limited-range luma tolerance covers compressed black (Y=16)
+    without classifying dim full-frame footage as letterboxed.
+    """
     media_path = Path(path)
     if not media_path.is_file():
         return 0.0
@@ -160,7 +183,7 @@ def max_horizontal_letterbox_duration(
             f'[top]crop=iw:{band_height}:0:0[top_band];'
             f'[bottom]crop=iw:{band_height}:0:ih-{band_height}[bottom_band];'
             '[top_band][bottom_band]vstack=inputs=2,'
-            f'blackdetect=d={minimum_seconds:.2f}:pix_th=0.10:pic_th=0.95'
+            f'blackdetect=d={minimum_seconds:.2f}:pix_th=0.02:pic_th=0.95'
         ),
         '-an', '-f', 'null', '-',
     ], capture_output=True, text=True, check=False)
@@ -401,9 +424,11 @@ def _clip_speed(spec: str | dict, source_duration: float,
                for value in (source_duration, duration)):
         raise RuntimeError('Generated clip timing is invalid')
     full_span_speed = source_duration / duration
-    if speed < full_span_speed <= 1.20:
+    if 1.0 <= full_span_speed <= 1.20:
         # Match the emitted FFmpeg precision, rounding DOWN so a fraction of
         # a microsecond can never request footage past the real source end.
+        # The decorative 1.008–1.020x stock variation must not demand more
+        # than an otherwise sufficient generated clip's entire duration.
         return math.floor(full_span_speed * 1_000_000_000) / 1_000_000_000
     return speed
 
@@ -415,8 +440,13 @@ def normalize_clip(
     shot_index: int,
     transition: str = 'cut',
     output_resolution: str = LANDSCAPE_RESOLUTION,
+    *,
+    _recipe_recorder=None,
 ) -> str:
     """Render one chosen excerpt and never loop generated action footage."""
+    if _recipe_recorder is not None and not callable(_recipe_recorder):
+        raise ValueError('Invalid normalization recipe recorder')
+    recipe_attempts, letterbox_measurements = [], []
     input_path = _spec_path(visual_spec)
     if not input_path:
         raise RuntimeError('Visual spec is missing a path')
@@ -425,9 +455,13 @@ def normalize_clip(
     output_width = int(profile['width'])
     output_height = int(profile['height'])
 
-    source_duration = max(0.1, media_duration(input_path))
+    duration_probe = (getattr(media_duration, '__wrapped__', media_duration)
+                      if _recipe_recorder is not None else media_duration)
+    source_duration = max(0.1, duration_probe(input_path))
+    speed = _clip_speed(visual_spec, source_duration, duration, shot_index)
     fraction = _spec_start_fraction(visual_spec)
-    max_start = max(0.0, source_duration - duration - 0.08)
+    # The selected window must include the footage consumed at playback speed.
+    max_start = max(0.0, source_duration - duration * speed - 0.08)
     desired_center = source_duration * fraction
     start_seconds = min(
         max_start,
@@ -456,7 +490,6 @@ def normalize_clip(
             f'{center_x}:(ih-{output_height})',
         ]
     crop_xy = offsets[shot_index % len(offsets)]
-    speed = _clip_speed(visual_spec, source_duration, duration, shot_index)
     segment_frames = max(1, int(round(duration * FPS)))
     forbid_loop = _spec_forbids_loop(visual_spec)
     required_source_end = start_seconds + duration * speed + 0.04
@@ -486,7 +519,9 @@ def normalize_clip(
             # The speed transform already zero-bases timestamps. Rewriting
             # PTS a second time after trim makes FFmpeg drop the last frame
             # for valid fractional targets such as 124/30 seconds.
-            f'fps={FPS}',
+            # Retain the final source frame through fractional EOF rounding.
+            # Exact frame count and single-pass source bounds still apply.
+            f'fps={FPS}:eof_action=pass',
             f'trim=end_frame={segment_frames}',
         ])
         if transition == 'dip' and duration >= 1.2:
@@ -496,27 +531,49 @@ def normalize_clip(
                 f'fade=t=out:st={fade_out:.3f}:d=0.16',
             ])
         filters.append('format=yuv420p')
-        _run([
+        command = [
             'ffmpeg', '-y', '-ss', f'{start_seconds:.3f}', *input_args,
             '-vf', ','.join(filters),
             '-frames:v', str(segment_frames), '-an',
             '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
             str(output_path),
-        ])
+        ]
+        executed_command = tuple(command)
+        _run(command)
         actual_frames = video_frame_count(output_path)
+        if _recipe_recorder is not None:
+            recipe_attempts.append({'argv': list(executed_command),
+                'actual_frames': actual_frames, 'scale_geometry': scale_geometry,
+                'source_crop': list(source_crop) if source_crop is not None else None})
         if actual_frames != segment_frames:
             raise RuntimeError(
                 'Normalized clip frame gate rejected segment: '
                 f'{actual_frames} frames for {segment_frames} frame target'
             )
 
-    render_attempt(str(profile['base_scale']))
-    if max_horizontal_letterbox_duration(output_path) > 0.25:
+    def measured_letterbox():
+        value = max_horizontal_letterbox_duration(output_path)
+        if _recipe_recorder is not None:
+            letterbox_measurements.append(value)
+        return value
+
+    preserve_composition = (isinstance(visual_spec, dict)
+                            and visual_spec.get('preserve_composition') is True)
+    # Authored animation already fills the output canvas. Overscanning its
+    # designed clocks and clue labels would cut away required evidence.
+    # Existing footage retains its original reframing and bar-removal recipe.
+    scale_geometry = (f'{output_width}:{output_height}' if preserve_composition
+                      else str(profile['base_scale']))
+    render_attempt(scale_geometry)
+    if measured_letterbox() > 0.25:
+        if preserve_composition:
+            raise RuntimeError(
+                'Normalized clip letterbox gate rejected composed canvas')
         # Some otherwise usable generated clips arrive with cinematic black
         # bars encoded into the picture. One bounded stronger overscan removes
         # them without paying for or looping another generated clip.
         render_attempt(str(profile['strong_scale']))
-        if max_horizontal_letterbox_duration(output_path) > 0.25:
+        if measured_letterbox() > 0.25:
             source_crop = detect_symmetric_letterbox_crop(
                 input_path,
                 start_seconds=start_seconds,
@@ -529,11 +586,18 @@ def normalize_clip(
                 render_attempt(str(profile['base_scale']), source_crop)
             if (
                 source_crop is None
-                or max_horizontal_letterbox_duration(output_path) > 0.25
+                or measured_letterbox() > 0.25
             ):
                 raise RuntimeError(
                     'Normalized clip letterbox gate rejected persistent black bars'
                 )
+    if _recipe_recorder is not None:
+        _recipe_recorder({'version': 1, 'source_duration': source_duration,
+            'duration': duration, 'shot_index': shot_index, 'transition': transition,
+            'output_resolution': output_resolution, 'fps': FPS,
+            'start_seconds': start_seconds, 'speed': speed, 'target_frames': segment_frames,
+            'forbid_loop': forbid_loop, 'attempts': recipe_attempts,
+            'letterbox_measurements': letterbox_measurements})
     return str(output_path)
 
 
@@ -601,6 +665,37 @@ def _timeline_frame_counts(
     return counts
 
 
+def _scene_frame_windows(timeline: list, frame_counts: list[int], total_frames: int) -> list[dict]:
+    """Keep exact whole-scene boundaries from the actual rendered CFR timeline."""
+    if len(timeline) != len(frame_counts) or not timeline:
+        raise ValueError('Invalid rendered scene timeline')
+    windows, cursor = [], 0
+    for row, count in zip(timeline, frame_counts):
+        index = row[3]
+        if type(index) is not int or type(count) is not int or count <= 0:
+            raise ValueError('Invalid rendered scene timeline')
+        if windows and windows[-1]['scene_index'] == index:
+            windows[-1]['end_frame'] += count
+        else:
+            if index != len(windows):
+                raise ValueError('Non-contiguous rendered scene timeline')
+            windows.append({'scene_index': index, 'start_frame': cursor, 'end_frame': cursor + count})
+        cursor += count
+    if type(total_frames) is not int or total_frames < cursor:
+        raise ValueError('Invalid rendered frame total')
+    windows[-1]['end_frame'] = total_frames
+    return windows
+
+
+def _notify_render_progress(callback, phase, completed, total):
+    if callback is not None:
+        try:
+            callback(phase, completed, total)
+        except Exception:
+            # Display updates must never fail or restart a paid production.
+            pass
+
+
 def render_video(
     voice_path: str | Path,
     visual_paths: list[str | dict],
@@ -611,7 +706,13 @@ def render_video(
     scene_visual_paths: list[list[str | dict]] | None = None,
     target_duration: float | None = None,
     output_resolution: str = LANDSCAPE_RESOLUTION,
+    capture_scene_windows: bool = False,
+    retained_cuts=None,
+    progress_callback=None,
 ) -> dict:
+    if retained_cuts is not None:
+        from app.services import retained_render_consumer as retained
+        retained._assert_renderer_entry(retained_cuts)
     if not visual_paths:
         raise RuntimeError('No visual clips were provided to renderer')
 
@@ -652,7 +753,14 @@ def render_video(
 
     normalized: list[Path] = []
     timeline_frame_counts = _timeline_frame_counts(timeline, voice_duration)
-    for idx, (visual_spec, _shot_duration, transition, _scene_idx) in enumerate(timeline):
+    if retained_cuts is not None:
+        normalized = retained._take_exact_cuts(retained_cuts, voice_path=voice_path,
+            scenes=scenes, scene_durations=scene_durations, scene_visual_paths=scene_visual_paths,
+            narration=narration, timeline=timeline, frame_counts=timeline_frame_counts,
+            target_duration=target_duration, output_resolution=output_resolution, output_path=output_path)
+    _notify_render_progress(progress_callback, 'segments', len(normalized), len(timeline))
+    for idx, (visual_spec, _shot_duration, transition, _scene_idx) in enumerate(
+            timeline if retained_cuts is None else []):
         segment = work / f'norm_{idx:03d}.mp4'
         segment_duration = timeline_frame_counts[idx] / FPS
         normalize_clip(
@@ -664,7 +772,9 @@ def render_video(
             output_resolution,
         )
         normalized.append(segment)
+        _notify_render_progress(progress_callback, 'segments', len(normalized), len(timeline))
 
+    _notify_render_progress(progress_callback, 'assembly', len(normalized), len(timeline))
     silent_video = work / 'silent.mp4'
     voice_frames = sum(timeline_frame_counts)
     pad_frames = max(0, target_frames - voice_frames)
@@ -712,13 +822,21 @@ def render_video(
         joined_label + ','.join(master_filters) + '[master]'
     )
     filter_complex = ';'.join(segment_filters)
-    _run([
+    concat_command = [
         'ffmpeg', '-y', *input_args,
         '-filter_complex', filter_complex, '-map', '[master]',
         '-frames:v', str(target_frames), '-an',
+        # FFmpeg 7 can infer a fractional rate from decoded concat inputs.
+        # Match the encoder clock to the exact CFR graph to keep its last
+        # frame (for example, all 1099 frames in a 36.633-second master).
+        '-r', str(FPS), '-enc_time_base', f'1:{FPS}',
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19',
         str(silent_video),
-    ])
+    ]
+    if retained_cuts is None:
+        _run(_bounded_assembly_command(concat_command))
+    else:
+        retained._run_exact_command(retained_cuts, concat_command, phase='concat')
     silent_frames = video_frame_count(silent_video)
     if silent_frames != target_frames:
         raise RuntimeError(
@@ -726,6 +844,7 @@ def render_video(
             f'{silent_frames} frames for {target_frames} frame target'
         )
 
+    _notify_render_progress(progress_callback, 'audio', len(normalized), len(timeline))
     srt = work / 'captions.srt'
     if scenes and scene_durations:
         make_scene_srt(scenes, scene_durations, voice_duration, srt)
@@ -741,13 +860,18 @@ def render_video(
         f'atrim=duration={master_duration:.3f}',
         'asetpts=N/SR/TB',
     ])
-    _run([
+    mux_command = [
         'ffmpeg', '-y', '-i', str(silent_video), '-i', str(voice_path),
         '-map', '0:v:0', '-map', '1:a:0',
         '-c:v', 'copy', '-frames:v', str(target_frames),
         '-af', audio_filter, '-c:a', 'aac', '-b:a', '192k',
         '-t', f'{master_duration:.3f}', '-movflags', '+faststart', str(output),
-    ])
+    ]
+    if retained_cuts is None:
+        _run(_bounded_assembly_command(mux_command))
+    else:
+        retained._run_exact_command(retained_cuts, mux_command, phase='mux')
+    _notify_render_progress(progress_callback, 'checks', len(normalized), len(timeline))
     final_frames = video_frame_count(output)
     if final_frames != target_frames:
         raise RuntimeError(
@@ -755,12 +879,18 @@ def render_video(
             f'{final_frames} frames for {target_frames} frame target'
         )
     final_duration = media_duration(output)
+    if retained_cuts is not None:
+        retained._finish_exact_cuts(retained_cuts)
 
     return {
         'path': str(output),
         'duration': final_duration,
         'frame_count': final_frames,
         'fps': FPS,
+        'scene_windows': (
+            _scene_frame_windows(timeline, timeline_frame_counts, final_frames)
+            if capture_scene_windows and scenes and scene_durations and scene_visual_paths else []
+        ),
         'ending_silence_seconds': ending_silence_duration(output),
         'max_freeze_seconds': max_freeze_duration(output),
         'shots': len(timeline),

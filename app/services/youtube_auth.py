@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 import hmac
 import json
+import logging
 import re
 import secrets
 from typing import Any
@@ -151,6 +152,18 @@ class YouTubeAuthError(RuntimeError):
 
 class OAuthConfigurationError(YouTubeAuthError):
     pass
+
+
+class YouTubeChannelMismatchError(YouTubeAuthError):
+    """Display only verified channel names; never OAuth credentials or errors."""
+
+    def __init__(self, target_id, target_title, selected_title):
+        super().__init__('youtube_oauth_channel_mismatch')
+        self.channel_mismatch = {
+            'target_id': _safe_channel_id(target_id),
+            'target_title': str(target_title or target_id)[:200],
+            'selected_title': str(selected_title or 'Farklı bir kanal')[:200],
+        }
 
 
 class OAuthStateError(YouTubeAuthError):
@@ -655,15 +668,30 @@ def _persist_connection(
         )
 
 
-def build_authorization_url(session_binding: str) -> str:
+def build_authorization_url(
+    session_binding: str,
+    *,
+    target_channel_id: str | None = None,
+    analytics: bool = False,
+) -> str:
     redirect_uri = _validate_redirect_uri(settings.google_redirect_uri)
     binding_digest = _binding_digest(session_binding)
+    if type(analytics) is not bool or analytics and target_channel_id is None:
+        raise YouTubeAuthError('Analytics authorization needs a connected channel')
+    analytics_binding = None
+    if target_channel_id is not None:
+        target_channel_id = _safe_channel_id(target_channel_id)
+        if load_credentials(target_channel_id, refresh=False) is None:
+            raise YouTubeAuthError('YouTube channel is not connected')
+        if analytics:
+            from app.services.youtube_analytics_auth import binding, SCOPES as analytics_scopes
+            analytics_binding = binding(target_channel_id)
     # Starting a new browser flow invalidates every older pending state.
     epoch = _rotate_authorization_epoch()
     state = secrets.token_urlsafe(32)
     flow = Flow.from_client_config(
         _client_config(),
-        scopes=SCOPES,
+        scopes=analytics_scopes if analytics else SCOPES,
         state=state,
         autogenerate_code_verifier=True,
     )
@@ -671,18 +699,24 @@ def build_authorization_url(session_binding: str) -> str:
     authorization_url, returned_state = flow.authorization_url(
         access_type='offline',
         include_granted_scopes='true',
-        prompt='consent',
+        prompt='consent select_account' if target_channel_id is not None else 'consent',
     )
     if returned_state != state or not flow.code_verifier:
         raise YouTubeAuthError('Google authorization could not be initialized')
-    state_payload = _encrypt_json({
+    state_record = {
         'version': 2,
         'redirect_uri': redirect_uri,
         'code_verifier': flow.code_verifier,
         'binding_digest': binding_digest,
         'authorization_epoch': epoch,
         'created_at': datetime.now(timezone.utc).isoformat(),
-    })
+    }
+    if target_channel_id is not None:
+        state_record['version'] = 3
+        state_record['target_channel_id'] = target_channel_id
+    if analytics:
+        state_record.update(version=4, purpose='analytics', analytics_binding=analytics_binding)
+    state_payload = _encrypt_json(state_record)
     try:
         stored = _redis().set(
             _state_key(state, binding_digest),
@@ -711,7 +745,8 @@ def _consume_state(state: str, session_binding: str) -> dict[str, Any]:
     if not encrypted:
         raise OAuthStateError('OAuth state expired, invalid, or already used')
     payload = _decrypt_json(encrypted)
-    if payload.get('version') != 2:
+    version = payload.get('version')
+    if type(version) is not int or version not in (2, 3, 4):
         raise OAuthStateError('OAuth state expired, invalid, or already used')
     if payload.get('redirect_uri') != _validate_redirect_uri(settings.google_redirect_uri):
         raise OAuthStateError('OAuth state expired, invalid, or already used')
@@ -727,6 +762,17 @@ def _consume_state(state: str, session_binding: str) -> dict[str, Any]:
     code_verifier = payload.get('code_verifier')
     if not isinstance(code_verifier, str) or not code_verifier:
         raise OAuthStateError('OAuth state expired, invalid, or already used')
+    if version in (3, 4):
+        target = payload.get('target_channel_id')
+        if not isinstance(target, str) or not _CHANNEL_ID_PATTERN.fullmatch(target):
+            raise OAuthStateError('OAuth reconnect target is invalid')
+    elif 'target_channel_id' in payload:
+        raise OAuthStateError('OAuth reconnect target requires version 3')
+    if version == 4:
+        from app.services.youtube_analytics_auth import validate_state
+        validate_state(payload)
+    elif 'purpose' in payload or 'analytics_binding' in payload:
+        raise OAuthStateError('Analytics authorization requires version 4')
     return payload
 
 
@@ -749,27 +795,42 @@ def complete_authorization(
     claimed_epoch = _claim_authorization_epoch(
         int(state_payload['authorization_epoch'])
     )
+    analytics = state_payload.get('version') == 4
+    if analytics:
+        from app.services.youtube_analytics_auth import SCOPES as analytics_scopes
+    requested_scopes = analytics_scopes if analytics else SCOPES
     flow = Flow.from_client_config(
         _client_config(),
-        scopes=SCOPES,
+        scopes=requested_scopes,
         state=state,
         code_verifier=state_payload['code_verifier'],
     )
     flow.redirect_uri = state_payload['redirect_uri']
     try:
-        flow.fetch_token(code=code)
+        from app.services.google_oauth_scopes import fetch_google_token
+        fetch_google_token(flow, code=code, required_scopes=requested_scopes)
     except Exception as exc:
+        # Never log exception text: OAuth libraries can include token bodies.
+        logging.getLogger(__name__).warning('Google token exchange failed (%s)', type(exc).__name__)
         raise YouTubeAuthError('Google authorization exchange failed') from exc
     credentials = flow.credentials
     if not credentials or not credentials.refresh_token:
         raise YouTubeAuthError(
             'Google did not return offline authorization; reconnect and grant access again'
         )
-    if hasattr(credentials, 'has_scopes') and not credentials.has_scopes(SCOPES):
+    if hasattr(credentials, 'has_scopes') and not credentials.has_scopes(requested_scopes):
         raise YouTubeAuthError('Required YouTube permissions were not granted')
 
     # Verify the exact authenticated channel before any token is persisted.
     channel = _channel_from_credentials(credentials)
+    target = state_payload.get('target_channel_id')
+    if target is not None and channel.get('id') != target:
+        _, stored = _read_channel_record(target)
+        raise YouTubeChannelMismatchError(target, (stored or {}).get('title'), channel.get('title'))
+    if analytics:
+        from app.services.youtube_analytics_auth import persist
+        persist(credentials, state_payload, claimed_epoch)
+        return {**channel, 'analytics_connected': True}
     channel['connection_id'] = secrets.token_urlsafe(24)
     _persist_connection(
         credentials,

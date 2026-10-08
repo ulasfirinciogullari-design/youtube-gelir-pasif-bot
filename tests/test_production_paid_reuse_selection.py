@@ -42,6 +42,7 @@ def _runtime(**changes):
         'FinalVisualQualityError': RuntimeError, 'Path': Path, 'json': json,
         'options': {'mode': 'production', 'format': 'shorts', 'quality_threshold': 86},
         'duration_minutes': 0.5, 'scene_repair_recovery': False,
+        'selected_recovery': None,
         'recovered_generated_media': {
             'version': 3, 'recovery_only': True, 'source_task_id': SOURCE_ID,
             'package_sha256': 'b' * 64,
@@ -158,7 +159,9 @@ def _run_primary_loop(runtime, tmp_path):
         omni_continuity_reference_image_path=None,
     )
     loop = next(node for node in ast.walk(TREE) if isinstance(node, ast.For)
-                and isinstance(node.iter, ast.Name) and node.iter.id == 'selected_runway')
+                and isinstance(node.iter, ast.Call) and isinstance(node.iter.func, ast.Name)
+                and node.iter.func.id == 'enumerate' and node.iter.args
+                and isinstance(node.iter.args[0], ast.Name) and node.iter.args[0].id == 'selected_runway')
     _execute([loop], runtime)
     runtime['validated_clips'] = validated
     return downloaded
@@ -203,6 +206,8 @@ def test_normal_final_gate_rejects_bad_or_missing_stock_review_after_reuse(missi
                    # This boundary isolates paid-reuse rejection. The real
                    # diagnostic hook and its guards run in their own tests.
                    _checkpoint_qa_workprint=lambda *_args, **_kwargs: None,
+                   _checkpoint_selected_visuals=lambda *_args, **_kwargs: None,
+                   effective_edit_target_seconds=30.0,
                    task_id=SOURCE_ID, work=Path('/tmp/workprint-boundary'),
                    voice_result={}, scene_durations=[5.0]*6,
                    package={'narration':'Saved narration'},
@@ -232,7 +237,7 @@ def test_bounded_free_stock_rescue_and_exact_review_are_not_skipped_for_recovery
                          and isinstance(node.test, ast.Name) and node.test.id == 'rescued_final_scenes')
     calls = []
     runtime = _runtime(
-        rejected_final_scenes=[3], final_runway_repair_scenes=[],
+        rejected_final_scenes=[3], final_runway_repair_scenes=[], round_repair_scenes=[],
         final_reviews={3: {'score': 40}}, provider_outage_stock_scenes=set(),
         stock_quality_fallback_scenes=set(), terminal_manual_qa_old_best={},
         seen_ids=set(), work=Path('/tmp/mock-stock-rescue'), credits=[],

@@ -44,7 +44,9 @@ def _immutable_boundary():
 
 
 @pytest.fixture
-def case(tmp_path, monkeypatch):
+def case(tmp_path, monkeypatch, request):
+    parameters = getattr(request, 'param', {})
+    language = parameters.get('language', 'en')
     tasks, render = _task_runtime(), _render_runtime()
     client = fakeredis.FakeRedis(decode_responses=True)
     monkeypatch.setattr(studio_state, '_client', lambda: client)
@@ -73,10 +75,13 @@ def case(tmp_path, monkeypatch):
     monkeypatch.setattr(recovery.storage, '_client', lambda: storage)
     monkeypatch.setattr(audio_checkpoint, 'upload_file', lambda path, key, kind: objects.__setitem__(key, (Path(path).read_bytes(), kind)))
     package = {'title': 'Membership fees', 'scenes': [
-        {'index': index, 'narration': f'Exact spoken scene number {index}.', 'visual_queries': ['warehouse merchandise'],
+        {'index': index, 'narration': f'Exact original spoken scene number {index} stays unchanged.', 'visual_queries': ['warehouse merchandise'],
          'ai_prompt': 'A genuine warehouse documentary shot.', 'transition': 'dip' if index == 3 else 'cut'} for index in range(6)],
         'sources': [{'url': 'https://investor.costco.com/overview/default.aspx', 'evidence': 'Official source describes the membership business.'},
                     {'url': 'https://www.costco.com/about.html', 'evidence': 'Company describes its warehouse operations.'}]}
+    if 'narrations' in parameters:
+        for scene, narration in zip(package['scenes'], parameters['narrations'], strict=True):
+            scene['narration'] = narration
     audio = b'ID3' + b'exact unchanged saved narration' * 150
     audio_path = tmp_path / f'{SOURCE}.mp3'
     audio_path.write_bytes(audio)
@@ -85,6 +90,8 @@ def case(tmp_path, monkeypatch):
              'scene_durations': durations, 'duration_before_fit': 29.1, 'duration_after_fit': 29.1,
              'tempo_rate': 1.0, 'content_target_seconds': 29.5, 'reserved_tail_seconds': .5,
              'voice_name': 'Existing approved speech', 'voice_model': 'existing', 'voice_language_code': 'en'}
+    voice['spoken_texts'] = parameters.get('spoken_texts', voice['spoken_texts'])
+    voice['voice_language_code'] = language
     audio_pointer = audio_checkpoint.persist_audio_candidate_checkpoint(SOURCE, package, voice)['audio_candidate_checkpoint']
     options = tasks._normalized_options({'mode': 'production', 'format': 'shorts', 'music': 'off',
         'publish_after_render': True, 'production_channel_id': 'frozen-channel', 'production_connection_id': 'frozen-connection',
@@ -107,7 +114,7 @@ def case(tmp_path, monkeypatch):
               'updated_at': '2026-09-07T00:00:00Z', 'parent_id': '44444444-4444-4444-8444-444444444444',
               'paid_create_slots_used': 6, 'preview_total_paid_create_cap': 6,
               'audio_candidate_checkpoint': audio_pointer, 'audio_candidate_checkpoint_error': None,
-              'spec': {'topic': 'How membership fees fund a warehouse business', 'language': 'en', 'duration_minutes': .5,
+              'spec': {'topic': 'How membership fees fund a warehouse business', 'language': language, 'duration_minutes': .5,
                        'channel_id': 'channel-profile', **options},
               'generated_asset_candidates': {**recovery._FLAGS, 'source_task_id': SOURCE, 'status': 'candidate_journal',
                                             'attempted_count': 6, 'preserved_count': 6, 'failed_count': 0, 'entries': entries}}
@@ -118,7 +125,9 @@ def case(tmp_path, monkeypatch):
     immutable = _immutable_boundary()
     def revalidate(original, topic, duration, language, opts, **kwargs):
         immutable(original, kwargs['immutable_candidate_narrations'])
-        assert language == 'en' and duration == .5
+        assert language == case_language and duration == .5
+        if kwargs.get('immutable_scene_fields') is True:
+            assert original['studio_options'] == opts
         assert kwargs['immutable_candidate_narrations'] == [scene['narration'] for scene in original['scenes']]
         assert 'short_story_qc' not in original
         return {**deepcopy(original), 'narration': ' '.join(scene['narration'] for scene in original['scenes']),
@@ -126,7 +135,9 @@ def case(tmp_path, monkeypatch):
     story = Mock(side_effect=revalidate)
     approved = Mock(side_effect=lambda value, topic: value.get('short_story_qc') == {'fresh_test': True})
     director = SimpleNamespace(revalidate_immutable_short_story=story, short_story_package_is_approved=approved)
-    monkeypatch.setattr(recovery, '_runtime', lambda: (tasks, director, SimpleNamespace(normalize_turkish_tts=lambda text, **kwargs: text)))
+    case_language = language
+    from app.services.voice import normalize_turkish_tts
+    monkeypatch.setattr(recovery, '_runtime', lambda: (tasks, director, SimpleNamespace(normalize_turkish_tts=normalize_turkish_tts)))
     render.media_duration = lambda path: 29.1
     render.normalize_clip = Mock(side_effect=lambda spec, path, *args: path.write_bytes(b'exact local cut'))
     reviews = [{'scene_index': index, 'score': 90, 'best_candidate_index': 0,
@@ -157,6 +168,75 @@ def _snapshot(case):
 
 def _save(case):
     case.client.set(studio_state.JOB_PREFIX + SOURCE, json.dumps(case.source))
+
+
+_DECIMAL_NARRATIONS = [
+    'Maliyet 3,69 sent.', 'Tutar 1,25 sent.',
+    'Üretim giderleri hesaba giriyor.', 'Mevcut paralar geçerli kalıyor.',
+    'Dolaşımdaki paralar kullanılabilir.', 'Üretim maliyeti ayrıca ölçülüyor.',
+]
+_DECIMAL_LEGACY = ['Maliyet 3, 69 sent.', 'Tutar 1, 25 sent.', *_DECIMAL_NARRATIONS[2:]]
+
+
+@pytest.mark.parametrize('case', [
+    {'language': 'tr', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': _DECIMAL_NARRATIONS},
+    {'language': 'tr', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': _DECIMAL_LEGACY},
+], indirect=True, ids=['current', 'legacy'])
+@pytest.mark.parametrize('repairs', [(), (3,)])
+def test_hash_bound_current_or_legacy_turkish_voice_reaches_fresh_review_unchanged(case, repairs):
+    before = _snapshot(case)
+    source, original_objects = deepcopy(case.source), deepcopy(case.objects)
+    receipt = _record(case, _prepare(case, repair_scene_indices=repairs))
+    package = receipt['approved_package']
+    assert _snapshot(case) == before and case.source == source
+    assert all(case.objects[key] == value for key, value in original_objects.items())
+    assert package['scenes'] == case.package['scenes']
+    assert package['_recovered_voice']['spoken_texts'] == case.voice['spoken_texts']
+    assert package['_recovered_voice']['sha256'] == _sha(case.audio)
+    assert case.objects[package['_recovered_voice']['key']][0] == case.audio
+    assert receipt['new_paid_create_requests'] == receipt['new_tts_requests'] == 0
+    assert receipt['qa_approved'] is False and receipt['requires_full_qa'] is True
+    case.story.assert_called_once()
+    case.visual.assert_called_once()
+
+
+@pytest.mark.parametrize('case', [
+    {'language': 'tr', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': spoken}
+    for spoken in [
+        ['Maliyet 3,96 sent.', *_DECIMAL_NARRATIONS[1:]],
+        ['Maliyet 3, 69 cent.', *_DECIMAL_LEGACY[1:]],
+        ['Maliyet 3,  69 sent.', *_DECIMAL_LEGACY[1:]],
+        ['Maliyet 3 69 sent.', *_DECIMAL_LEGACY[1:]],
+        ['Maliyet 3, 69 sent değil.', *_DECIMAL_LEGACY[1:]],
+        [_DECIMAL_NARRATIONS[0], *_DECIMAL_LEGACY[1:]],
+        [_DECIMAL_LEGACY[0], *_DECIMAL_NARRATIONS[1:]],
+    ]
+] + [{'language': 'en', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': _DECIMAL_LEGACY}],
+    indirect=True, ids=['wrong_number', 'changed_word', 'extra_space', 'lost_comma',
+                       'changed_meaning', 'mixed_current_first', 'mixed_legacy_first', 'other_language'])
+def test_changed_or_mixed_saved_speech_stops_before_any_review(case):
+    before, objects = _snapshot(case), deepcopy(case.objects)
+    with pytest.raises(recovery.PreservedVisualRecoveryError):
+        _prepare(case)
+    assert _snapshot(case) == before and case.objects == objects
+    case.story.assert_not_called()
+    case.visual.assert_not_called()
+    assert case.writes == []
+
+
+@pytest.mark.parametrize('case', [
+    {'language': 'tr', 'narrations': _DECIMAL_NARRATIONS, 'spoken_texts': _DECIMAL_LEGACY},
+], indirect=True)
+def test_legacy_spelling_does_not_admit_a_changed_audio_object(case):
+    key = case.source['audio_candidate_checkpoint']['audio_key']
+    raw, kind = case.objects[key]
+    case.objects[key] = raw[:-1] + bytes([raw[-1] ^ 1]), kind
+    before = _snapshot(case)
+    with pytest.raises(recovery.PreservedVisualRecoveryError):
+        _prepare(case)
+    assert _snapshot(case) == before and case.writes == []
+    case.story.assert_not_called()
+    case.visual.assert_not_called()
 
 
 def test_complete_real_preservation_journal_becomes_fresh_zero_create_v3_only(case):
@@ -215,7 +295,8 @@ def test_stripped_manifest_is_reconstructed_for_real_immutable_director_boundary
     assert _immutable_boundary()(supplied, spoken) == dict(enumerate(spoken))
     assert supplied['narration'] == ' '.join(spoken)
     assert case.story.call_args.args[4] == recovery._options(case.source)
-    assert supplied.get('studio_options') is None  # authoritative options are passed separately
+    assert supplied['studio_options'] == recovery._options(case.source)
+    assert case.story.call_args.kwargs['immutable_scene_fields'] is True
     receipt = _record(case, pointer)
     audit = _record(case, receipt['audit_pointer'])
     assert audit['package']['narration'] == receipt['approved_package']['narration'] == ' '.join(spoken)
@@ -457,8 +538,10 @@ def test_invalid_explicit_repair_request_stops_before_reads_models_or_state_muta
     case.story.assert_not_called(); case.visual.assert_not_called()
 
 
-@pytest.mark.parametrize('change', ['retained_prompt', 'retained_queries', 'repair_queries', 'narration', 'order', 'inplace'])
-def test_v4_critic_cannot_change_other_scene_fields_or_immutable_audio(case, change):
+@pytest.mark.parametrize('repairs', [(), (3,)])
+@pytest.mark.parametrize('change', ['retained_prompt', 'retained_queries', 'repair_queries', 'narration', 'order',
+                                   'inplace', 'options', 'sources', 'title', 'new_field', 'scene_index_type'])
+def test_critic_cannot_change_frozen_scene_package_fields_or_immutable_audio(case, change, repairs):
     original = case.story.side_effect
     def changed(package, *args, **kwargs):
         result = original(package, *args, **kwargs)
@@ -467,6 +550,11 @@ def test_v4_critic_cannot_change_other_scene_fields_or_immutable_audio(case, cha
         elif change == 'repair_queries': result['scenes'][3]['visual_queries'] = ['changed query']
         elif change == 'narration': result['scenes'][3]['narration'] += ' New words.'
         elif change == 'order': result['scenes'][0], result['scenes'][1] = result['scenes'][1], result['scenes'][0]
+        elif change == 'options': result['studio_options']['quality_threshold'] = 1
+        elif change == 'sources': result['sources'][0]['evidence'] += ' Another claim.'
+        elif change == 'title': result['title'] += ' Changed'
+        elif change == 'new_field': result['description'] = 'New editorial content.'
+        elif change == 'scene_index_type': result['scenes'][0]['index'] = 0.0
         else:
             package['scenes'][0]['ai_prompt'] += ' mutation in supplied candidate'
             result['scenes'] = package['scenes']
@@ -474,7 +562,8 @@ def test_v4_critic_cannot_change_other_scene_fields_or_immutable_audio(case, cha
     case.story.side_effect = changed
     before = _snapshot(case)
     with pytest.raises(recovery.PreservedVisualRecoveryError) as caught:
-        _prepare(case, repair_scene_indices=(3,), shot_prompt_overrides={3: 'Exact replacement shot.'})
+        _prepare(case, repair_scene_indices=repairs,
+                 shot_prompt_overrides={index: 'Exact replacement shot.' for index in repairs})
     assert _record(case, caught.value.diagnostic_pointer)['status'] == 'story_review_rejected_or_unavailable'
     assert _snapshot(case) == before and len(case.writes) == 1
     case.visual.assert_not_called()
@@ -548,4 +637,147 @@ def test_v4_publisher_rechecks_frozen_partition_audit_voice_and_claims(case, dam
     pointer = _rewrite_record(case, pointer, receipt)
     before = _snapshot(case)
     with pytest.raises(recovery.PreservedVisualRecoveryError): recovery.publish_preserved_visual_recovery(pointer)
+    assert _snapshot(case) == before
+
+
+def _actual_director(case, monkeypatch):
+    from app import config
+    from app.services import director, research
+
+    settings = SimpleNamespace(studio_plan_provider='gemini', gemini_api_key='mock-only',
+                               gemini_model='existing-model', openai_api_key='mock-only', openai_model='existing-openai-model',
+                               gemini_critic_enabled=False)
+    monkeypatch.setattr(director, 'settings', settings)
+    monkeypatch.setattr(research, 'settings', settings)
+    monkeypatch.setattr(config.settings, 'studio_production_short_paid_create_cap', 2)
+    writer = Mock(side_effect=AssertionError('Existing assets must not invoke a writer'))
+    monkeypatch.setattr(director, '_run_director', writer)
+    monkeypatch.setattr(director, 'OpenAI', Mock(side_effect=AssertionError('Unexpected provider')))
+
+    def response(prompt, **kwargs):
+        assert prompt.startswith('Act as an independent')
+        return json.JSONDecoder().raw_decode(prompt.split('Return ONLY JSON in exactly this shape:\n', 1)[1])[0]
+
+    model = Mock(side_effect=response)
+    monkeypatch.setattr(director, 'generate_gemini_json', model)
+    video = Mock(side_effect=AssertionError('No new generated video'))
+    voice = SimpleNamespace(generate_voice=Mock(side_effect=AssertionError('No new TTS')))
+    case.tasks.generate_scene = video
+    monkeypatch.setattr(recovery, '_runtime', lambda: (case.tasks, director, voice))
+    return SimpleNamespace(director=director, model=model, writer=writer, video=video, voice=voice)
+
+
+@pytest.mark.parametrize('repairs', [(), (3,), (1, 3, 4, 5)])
+@pytest.mark.parametrize('calibrated', [False, True])
+def test_actual_director_reviews_six_existing_assets_once_without_new_generation_cap(case, monkeypatch, repairs, calibrated):
+    if calibrated:
+        from test_preserved_english_spoken_budget import _calibrate
+        _calibrate(case)
+    actual = _actual_director(case, monkeypatch)
+    options = recovery._options(case.source)
+    overrides = {index: f'Exact replacement shot {index}; sealed parcels on the same warehouse table.' for index in repairs}
+    expected = recovery._immutable_shooting_package(case.package, overrides, options)
+    before, original = _snapshot(case), deepcopy(case.package)
+    objects_before = dict(case.objects)
+    assert actual.director.preview_authored_ai_limit(options, 6, .5) == 2
+    assert sum(bool(scene['ai_prompt']) for scene in expected['scenes']) == 6
+    with pytest.raises(RuntimeError, match='authored paid-generation limit'):
+        actual.director.revalidate_immutable_short_story(
+            expected, case.source['spec']['topic'], .5, 'en', options,
+            immutable_candidate_narrations=case.voice['spoken_texts'],
+            **({'verified_spoken_word_budget': expected['spoken_word_budget']} if calibrated else {}))
+    actual.model.assert_not_called()
+
+    pointer = _prepare(case, repair_scene_indices=repairs, shot_prompt_overrides=overrides)
+    receipt = _record(case, pointer)
+    audit = _record(case, receipt['audit_pointer'])
+    reviewed = audit['package']
+    assert recovery._story_fields(reviewed) == expected
+    assert actual.director.short_story_package_is_approved(reviewed, case.source['spec']['topic'])
+    assert reviewed['stock_scene_qc']['generator_calls'] == reviewed['stock_scene_qc']['attempts_used'] == 0
+    assert reviewed['stock_scene_qc']['critic_calls'] == 1
+    actual.model.assert_called_once()
+    request = actual.model.call_args
+    assert request.kwargs['retry_once'] is request.kwargs['google_search'] is False
+    context = json.JSONDecoder().raw_decode(request.args[0].split('\n', 2)[2])[0]
+    assert context['complete_immutable_scenes'] == expected['scenes']
+    assert context['sources'] == expected['sources']
+    actual.writer.assert_not_called(); actual.video.assert_not_called(); actual.voice.generate_voice.assert_not_called()
+    assert _snapshot(case) == before and case.package == original
+    assert all(case.objects[key] == value for key, value in objects_before.items())
+    assert receipt['new_paid_create_requests'] == receipt['new_tts_requests'] == 0
+    assert case.objects[receipt['approved_package']['_recovered_voice']['key']][0] == case.audio
+    assert case.visual.call_args.args[0] == expected['scenes']
+    assert recovery.publish_preserved_visual_recovery(pointer)['status'] == 'checkpoint_published'
+    checkpoint = json.loads(case.client.get(studio_state.REPAIR_CHECKPOINT_PREFIX + SOURCE))
+    assert checkpoint['approved_package'] == receipt['approved_package']
+    assert case.client.hgetall(studio_state.PAID_CREATE_BUDGET_PREFIX + SOURCE) == {'cap': '6', 'used': '6'}
+    actual.model.assert_called_once()
+
+
+@pytest.mark.parametrize('damage', ['negative_story', 'negative_language', 'protocol'])
+def test_actual_director_rejection_is_durable_without_writer_or_retry(case, monkeypatch, damage):
+    actual = _actual_director(case, monkeypatch)
+    response = actual.model.side_effect
+
+    def reject(prompt, **kwargs):
+        if damage == 'protocol':
+            raise actual.director.GeminiGenerationError('private provider error')
+        result = response(prompt, **kwargs)
+        key = 'natural_spoken_language' if damage == 'negative_language' else 'causal_claim_supported'
+        result['story_review'][key] = False
+        result['story_review']['reason'] = f'{key}: the supplied scene lacks the required evidence.'
+        if damage == 'negative_language':
+            result['story_review']['natural_spoken_language_evidence'] = 'Scene 0 "Exact spoken" is not natural narration.'
+        return result
+
+    actual.model.side_effect = reject
+    before = _snapshot(case)
+    with pytest.raises(recovery.PreservedVisualRecoveryError) as caught:
+        _prepare(case)
+    assert _record(case, caught.value.diagnostic_pointer)['status'] == 'story_review_rejected_or_unavailable'
+    actual.model.assert_called_once(); actual.writer.assert_not_called()
+    actual.video.assert_not_called(); actual.voice.generate_voice.assert_not_called(); case.visual.assert_not_called()
+    assert _snapshot(case) == before and len(case.writes) == 1
+
+
+@pytest.mark.parametrize('damage', ['scene', 'sources', 'scene_index_type'])
+def test_visual_reviewer_cannot_mutate_the_frozen_prepared_story(case, damage):
+    def mutate(scenes, *args, **kwargs):
+        if damage == 'scene': scenes[0]['ai_prompt'] += ' New action.'
+        elif damage == 'scene_index_type': scenes[0]['index'] = 0.0
+        else: kwargs['evidence_sources'][0]['evidence'] += ' Changed evidence.'
+        return {'reviews': case.reviews, 'missing_review_indices': []}
+    case.visual.side_effect = mutate
+    before = _snapshot(case)
+    with pytest.raises(recovery.PreservedVisualRecoveryError) as caught:
+        _prepare(case)
+    assert _record(case, caught.value.diagnostic_pointer)['status'] == 'visual_review_unavailable'
+    assert _snapshot(case) == before and len(case.writes) == 1
+
+
+@pytest.mark.parametrize('repairs', [(), (3,)])
+@pytest.mark.parametrize('damage', ['scene', 'sources', 'title', 'options', 'new_field', 'scene_index_type', 'receipt_index_type'])
+def test_rehashed_audit_and_receipt_cannot_redefine_the_frozen_published_story(case, repairs, damage):
+    pointer = _prepare(case, repair_scene_indices=repairs)
+    receipt = _record(case, pointer)
+    audit = _record(case, receipt['audit_pointer'])
+    package = receipt['approved_package']
+    if damage == 'scene': package['scenes'][0]['ai_prompt'] += ' Changed'
+    elif damage == 'sources': package['sources'][0]['evidence'] += ' New unsupported claim.'
+    elif damage == 'title': package['title'] += ' Changed'
+    elif damage == 'options': package['studio_options']['quality_threshold'] = 1
+    elif damage in {'scene_index_type', 'receipt_index_type'}: package['scenes'][0]['index'] = 0.0
+    else: package['description'] = 'New unreviewed editorial content.'
+    if damage != 'receipt_index_type':
+        audit['package'] = {key: deepcopy(value) for key, value in package.items()
+                            if key not in {'_recovered_voice', '_recovered_generated_media'}}
+    receipt['package_sha256'] = case.tasks._recovery_package_sha256(package)
+    for key in ('_recovered_voice', '_recovered_generated_media'):
+        package[key]['package_sha256'] = receipt['package_sha256']
+    receipt['audit_pointer'] = _rewrite_record(case, receipt['audit_pointer'], audit)
+    pointer = _rewrite_record(case, pointer, receipt)
+    before = _snapshot(case)
+    with pytest.raises(recovery.PreservedVisualRecoveryError):
+        recovery.publish_preserved_visual_recovery(pointer)
     assert _snapshot(case) == before
