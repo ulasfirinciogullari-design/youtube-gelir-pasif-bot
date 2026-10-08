@@ -215,6 +215,21 @@ MASTER_CAMPAIGNS = [
     }
 ]
 
+try:
+    from app.services.infinite_series_generator import MASTER_SERIES_VAULT
+    for _s in MASTER_SERIES_VAULT:
+        if not any(c["id"] == _s["id"] for c in MASTER_CAMPAIGNS):
+            MASTER_CAMPAIGNS.append({
+                "id": _s["id"],
+                "theme_name": _s.get("series_title", _s.get("theme_name")),
+                "source_clip": _s["source_clip"],
+                "category": _s["category"],
+                "scenes": _s["scenes"],
+                "localizations": _s.get("localizations"),
+            })
+except Exception as e:
+    pass
+
 
 def extract_unique_60fps_cuts_parallel(source_file: Path, target_dir: Path, total_duration: float, num_cuts: int = 14) -> list[Path]:
     """
