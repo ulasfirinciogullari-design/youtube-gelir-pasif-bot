@@ -37,6 +37,11 @@ from app.services.voice_edge import _get_audio_duration
 from app.services.subtitle_engine import generate_shorts_ass_subtitles
 from app.services.cinema_harvester import ensure_campaign_footage, get_video_duration
 
+try:
+    from app.services.mega_content_vault import MEGA_CATALOG
+except Exception:
+    MEGA_CATALOG = []
+
 CINEMA_DIR = BASE_DIR / "assets" / "cinematic"
 MUSIC_DIR = BASE_DIR / "assets" / "music"
 SFX_DIR = BASE_DIR / "assets" / "sfx"
@@ -44,7 +49,7 @@ OUTPUT_DIR = BASE_DIR / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-MASTER_CAMPAIGNS = [
+MASTER_CAMPAIGNS = list(MEGA_CATALOG) if MEGA_CATALOG else [
     {
         "id": "oppenheimer_doom",
         "theme_name": "Oppenheimer - Dünyaları Yok Eden Kıyamet Sırrı",
@@ -348,31 +353,57 @@ def mix_god_mode_soundtrack(
     return output_audio_path
 
 
-def produce_flagship_short(campaign: dict) -> Path:
-    """Produces one complete flagship 60 FPS viral Short with zero repetition."""
-    title = campaign["theme_name"]
-    source_filename = campaign["source_clip"]
+def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
+    """Produces one complete flagship 60 FPS viral Short with multi-language dubbing (TR or EN)."""
+    lang = lang.lower()
+    is_en = (lang == "en")
     
-    # 0. Ensure master 60s+ footage is present in vault
+    source_filename = campaign["source_clip"]
     source_file = ensure_campaign_footage(source_filename)
     
     timestamp = int(time.time())
     safe_slug = "".join(c if c.isalnum() else "_" for c in campaign["id"].lower()).strip("_")
-    work_dir = OUTPUT_DIR / f"work_{safe_slug}_{timestamp}"
+    work_dir = OUTPUT_DIR / f"work_{safe_slug}_{lang}_{timestamp}"
     work_dir.mkdir(parents=True, exist_ok=True)
-    
+
+    if is_en:
+        title = campaign.get("localizations", {}).get("en", {}).get("title", f"👑 {campaign['theme_name']} #shorts")
+        scenes_list = campaign.get("scenes_en", campaign["scenes"])
+        voice_model = "en-US-ChristopherNeural"
+        voice_rate = "+2%"
+        voice_pitch = "-1Hz"
+        desc = campaign.get("localizations", {}).get("en", {}).get("description", (
+            f"{title}\n\n"
+            "Dark psychology, unwritten power laws and cinema's greatest moments.\n"
+            "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+            "#shorts #powerlaws #darkpsychology #stoic #motivation #sigma"
+        ))
+        tags = ["shorts", "powerlaws", "48lawsofpower", "darkpsychology", "stoic", "thomasshelby", "sigma", "motivation", "viral"]
+        pinned_comment = campaign.get("pinned_comment_en", "👑 What is your perspective on this law? Comment below.")
+        sub_highlight = "&H0000D7FF" # Neon Gold for English edition
+    else:
+        title = campaign.get("series_title", campaign["theme_name"])
+        scenes_list = campaign["scenes"]
+        voice_model = "tr-TR-AhmetNeural"
+        voice_rate = "+3%"
+        voice_pitch = "-2Hz"
+        desc = f"{title}\n\nKaranlık psikoloji, güç yasaları ve sinemanın en çarpıcı anları.\n\n#shorts #keşfet #sinema #motivasyon"
+        tags = ["shorts", "keşfet", "motivasyon", "sinema", "dizi", "güç yasaları", "viral"]
+        pinned_comment = campaign.get("pinned_comment_tr", "👑 Sence bu yasa günlük hayatta en çok nerede çiğneniyor? Yorumlarda tartışalım.")
+        sub_highlight = "&H0000FF00" # Neon Emerald for Turkish edition
+
     print("\n" + "=" * 70)
-    print(f"  🎬 ÜRETİLİYOR: {title}")
+    print(f"  🎬 ÜRETİLİYOR [{lang.upper()} DUBLAJ]: {title}")
     print(f"  📁 Kategori: {campaign['category']} | Kaynak: {source_file.name} ({get_video_duration(source_file):.1f}s)")
     print("=" * 70)
-    
-    # 1. Turkish Voice Dubbing
-    print("[1/5] 🎙️ Karizmatik Türkçe Dublaj Tonu Sentezleniyor (-2Hz Pes / Tok)...")
-    full_text = " ".join(campaign["scenes"])
+
+    # 1. Voice Dubbing
+    print(f"[1/5] 🎙️ Karizmatik {lang.upper()} Dublaj Sentezleniyor ({voice_model})...")
+    full_text = " ".join(scenes_list)
     voice_audio = work_dir / "voice.mp3"
-    
+
     async def _tts():
-        comm = edge_tts.Communicate(full_text, "tr-TR-AhmetNeural", rate="+3%", pitch="-2Hz")
+        comm = edge_tts.Communicate(full_text, voice_model, rate=voice_rate, pitch=voice_pitch)
         submaker = edge_tts.SubMaker()
         with open(voice_audio, "wb") as f:
             async for chunk in comm.stream():
@@ -381,13 +412,13 @@ def produce_flagship_short(campaign: dict) -> Path:
                 elif chunk["type"] in ("WordBoundary", "SentenceBoundary"):
                     submaker.feed(chunk)
         return submaker
-        
+
     submaker = asyncio.run(_tts())
     total_audio_dur = _get_audio_duration(voice_audio)
     print(f"       ✅ Dublaj tamamlandı: {total_audio_dur:.2f}s")
-    
+
     # 2. Kinetic Subtitles
-    print("[2/5] ✍️ Kinetik 74pt Neon Zümrüt Altyazı Oluşturuluyor...")
+    print(f"[2/5] ✍️ Kinetik 74pt Neon Altyazı Oluşturuluyor [{lang.upper()}]...")
     raw_srt = submaker.get_srt()
     sentences = []
     blocks = re.split(r'\n\s*\n', raw_srt.strip())
@@ -401,10 +432,10 @@ def produce_flagship_short(campaign: dict) -> Path:
                     s, ms = rest.split(',')
                     return int(h)*3600 + int(mn)*60 + int(s) + int(ms)/1000.0
                 sentences.append({'text': " ".join(lines[2:]).strip(), 'start': p(m.group(1)), 'end': p(m.group(2))})
-                
+
     if not sentences:
         sentences = [{'text': full_text, 'start': 0.0, 'end': total_audio_dur}]
-        
+
     ass_file = work_dir / "subtitles.ass"
     generate_shorts_ass_subtitles(
         sentences=sentences,
@@ -412,18 +443,18 @@ def produce_flagship_short(campaign: dict) -> Path:
         font_name="Arial Black",
         font_size=74,
         primary_color="&H00FFFFFF",
-        highlight_color="&H0000FF00", # Matrix Neon Emerald
+        highlight_color=sub_highlight,
         outline_width=8,
         margin_v=860,
     )
-    print("       ✅ 74pt Kinetik Altyazı hazır.")
-    
+    print(f"       ✅ 74pt Kinetik {lang.upper()} Altyazı hazır.")
+
     # 3. Unique Non-Repeating 60 FPS Video Cuts
     num_cuts = max(14, int(total_audio_dur / 2.0))
-    print(f"[3/5] 🎞️ {num_cuts} Adet Benzersiz 60 FPS Kesim Paralel Hazırlanıyor (Sıfır Tekrar)...")
+    print(f"[3/5] 🎞️ {num_cuts} Adet Benzersiz 60 FPS Kesim Paralel Hazırlanıyor...")
     cut_files = extract_unique_60fps_cuts_parallel(source_file, work_dir, total_audio_dur, num_cuts)
     print(f"       ✅ {len(cut_files)} benzersiz kesit başarıyla hazırlandı.")
-    
+
     # 4. Multi-Layer Audio Mix
     print("[4/5] 🎵 Neuro-Acoustic Ses Tasarımı ve Miksajı...")
     master_audio = work_dir / "master_soundtrack.mp3"
@@ -433,17 +464,17 @@ def produce_flagship_short(campaign: dict) -> Path:
         total_duration=total_audio_dur,
     )
     print("       ✅ Sub-Bass, Riser ve Epik Müzik mikslendi.")
-    
+
     # 5. Master Render & Publishing Package
     print("[5/5] 🚀 Master 60 FPS Render ve Yayın Paketi Çıkarılıyor...")
-    final_mp4 = OUTPUT_DIR / f"VIRAL_MASTER_{safe_slug}_{timestamp}.mp4"
-    
+    final_mp4 = OUTPUT_DIR / f"VIRAL_MASTER_{lang.upper()}_{safe_slug}_{timestamp}.mp4"
+
     concat_list = work_dir / "concat_list.txt"
     with open(concat_list, "w", encoding="utf-8") as f:
         for c in cut_files:
             safe = str(c.resolve()).replace("\\", "/")
             f.write(f"file '{safe}'\n")
-            
+
     concat_raw = work_dir / "concat_raw.mp4"
     subprocess.run([
         "ffmpeg", "-y", "-f", "concat", "-safe", "0",
@@ -453,7 +484,7 @@ def produce_flagship_short(campaign: dict) -> Path:
         "-pix_fmt", "yuv420p",
         str(concat_raw)
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    
+
     if sys.platform == "win32":
         safe_sub = str(ass_file.resolve()).replace("\\", "/").replace(":", "\\:")
     else:
@@ -471,7 +502,7 @@ def produce_flagship_short(campaign: dict) -> Path:
         str(final_mp4)
     ]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    
+
     # Thumbnail Extraction
     thumb_path = final_mp4.with_name(f"{final_mp4.stem}_thumb.jpg")
     subprocess.run([
@@ -480,56 +511,60 @@ def produce_flagship_short(campaign: dict) -> Path:
         "-vframes", "1", "-q:v", "2",
         str(thumb_path)
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    
+
     # Metadata SEO Package
     meta_path = final_mp4.with_name(f"{final_mp4.stem}_meta.json")
     metadata = {
         "title_options": [
-            f"👑 {title} #shorts",
-            f"⚠️ %99'un Bilmediği Gerçek | {title} #shorts",
-            f"🔥 Tarihin En Büyük Sırrı: {title} #shorts"
+            title if title.endswith("#shorts") else f"{title} #shorts",
+            f"🔥 {title} #shorts" if not title.startswith("🔥") else title,
         ],
-        "description": f"{title}\n\nKaranlık psikoloji, güç yasaları ve sinemanın en çarpıcı anları.\n\n#shorts #keşfet #sinema #motivasyon",
-        "tags": ["shorts", "keşfet", "motivasyon", "sinema", "dizi", "güç yasaları", "viral"],
+        "description": desc,
+        "tags": tags,
+        "lang": lang,
+        "defaultLanguage": lang,
+        "defaultAudioLanguage": lang,
+        "pinned_comment": pinned_comment,
         "fps": 60.0,
         "duration_seconds": round(total_audio_dur, 2),
         "size_mb": round(final_mp4.stat().st_size / (1024 * 1024), 2),
     }
     with open(meta_path, "w", encoding="utf-8") as f:
         json.dump(metadata, f, ensure_ascii=False, indent=2)
-        
+
     print("\n" + "=" * 70)
-    print(f"🔥 VİRAL ŞAHESER HAZIR: {final_mp4.name}")
+    print(f"🔥 VİRAL [{lang.upper()}] ŞAHESER HAZIR: {final_mp4.name}")
     print(f"📁 Video: {final_mp4}")
     print(f"🖼️ Thumbnail: {thumb_path.name}")
     print(f"📝 Metadata: {meta_path.name}")
     print(f"⚡ 60 FPS | Süre: {total_audio_dur:.1f}s | Boyut: {metadata['size_mb']} MB")
     print("=" * 70 + "\n")
-    
+
     return final_mp4
 
 
-def run_batch_factory(count: int = 4):
+def run_batch_factory(count: int = 4, lang: str = "auto"):
     """Produces a diverse portfolio of flagship viral Shorts across top niches."""
     print("\n" + "=" * 75)
-    print("  🚀 ULTIMATE AUTONOMOUS YOUTUBE FACTORY (GOD-TIER AUTOPILOT)")
-    print(f"  🎯 Üretim Hedefi: {count} Adet Milyonluk Portföy Videosu")
+    print("  🚀 ULTIMATE AUTONOMOUS YOUTUBE FACTORY (500+ MEGA VAULT & GLOBAL DUB)")
+    print(f"  🎯 Üretim Hedefi: {count} Adet Milyonluk Portföy Videosu | Dil Modu: {lang.upper()}")
     print("  ⚡ Standart: 60 FPS, Sıfır Tekrar, Profesyonel Dublaj, Sub-Bass Vuruşları")
     print("=" * 75 + "\n")
-    
+
     campaigns = list(MASTER_CAMPAIGNS)
     random.shuffle(campaigns)
     selected = campaigns[:count]
-    
+
     results = []
     for idx, camp in enumerate(selected):
-        print(f"\n>>> [{idx+1}/{count}] Kampanya Başlatılıyor: {camp['theme_name']}")
+        chosen_lang = random.choice(["tr", "en"]) if lang == "auto" else lang
+        print(f"\n>>> [{idx+1}/{count}] Kampanya Başlatılıyor ({chosen_lang.upper()}): {camp['theme_name']}")
         try:
-            mp4 = produce_flagship_short(camp)
+            mp4 = produce_flagship_short(camp, lang=chosen_lang)
             results.append(mp4)
         except Exception as e:
             print(f">>> Hata: {e}")
-            
+
     print("\n" + "=" * 75)
     print(f"👑 TÜM PORTFÖY BAŞARIYLA ÜRETİLDİ! ({len(results)} Video Hazır)")
     print(f"📁 Klasör: {OUTPUT_DIR}")
@@ -540,10 +575,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ultimate YouTube Shorts Factory")
     parser.add_argument("--batch", type=int, default=1, help="Üretilecek video sayısı")
     parser.add_argument("--id", type=str, default=None, help="Belirli bir kampanya kimliği")
+    parser.add_argument("--lang", type=str, default="tr", choices=["tr", "en", "auto"], help="Dublaj ve altyazı dili")
     args = parser.parse_args()
-    
+
     if args.id:
         camp = next((c for c in MASTER_CAMPAIGNS if c["id"] == args.id), MASTER_CAMPAIGNS[0])
-        produce_flagship_short(camp)
+        produce_flagship_short(camp, lang=args.lang)
     else:
-        run_batch_factory(count=args.batch)
+        run_batch_factory(count=args.batch, lang=args.lang)
