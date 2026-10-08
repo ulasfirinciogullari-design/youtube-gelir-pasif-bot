@@ -43,7 +43,7 @@ def get_stream_probe(video_path: Path) -> dict:
         str(video_path)
     ]
     try:
-        out = subprocess.check_output(cmd, text=True, stderr=subprocess.DEVNULL)
+        out = subprocess.check_output(cmd, text=True, encoding="utf-8", errors="replace", stderr=subprocess.DEVNULL)
         return json.loads(out)
     except Exception as e:
         return {"error": str(e)}
@@ -57,7 +57,7 @@ def analyze_audio_loudness(video_path: Path) -> dict:
         "-f", "null", "-"
     ]
     try:
-        res = subprocess.run(cmd, capture_output=True, text=True, errors="replace")
+        res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
         mean_vol = -30.0
         max_vol = -10.0
         for line in res.stderr.splitlines():
