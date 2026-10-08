@@ -371,6 +371,106 @@ def generate_mega_campaign_catalog(total_target: int = 500) -> list[dict]:
     """Generates 500+ rich procedural episodic campaigns with full dual-language support."""
     catalog = []
     
+    # 0. Hollywood Multi-Voice Dialogue Masterpieces
+    hollywood_dialogues = [
+        {
+            "id": "breaking_bad_danger",
+            "series_title": "👑 Walter White | Tehlikenin Kendisi Benim #shorts",
+            "theme_name": "Walter White - Masumiyetin Ölümü ve Heisenberg",
+            "category": "Karanlık Psikoloji & Güç Dönüşümü",
+            "source_clip": "breaking_bad_master.mp4",
+            "scenes": [
+                "Skyler: Walter, lütfen dur... Tehlikedeyiz, kapıyı biri çalabilir!",
+                "Walter: Tehlikede olduğumu mu sanıyorsun Skyler? Asıl tehlike benim.",
+                "Birisi kapısını açıp vurulduğunda, vurulan adam ben değilim.",
+                "O kapıyı çalan adam benim.",
+                "Zayıf bir adam köşeye sıkıştığında ya pes eder ya da bir canavara dönüşür.",
+                "Ve bir kez o sınırı geçtiğinizde, geriye asla dönemezsiniz.",
+                "İşte saygının korkuyla kazanıldığı o acımasız kural...",
+            ],
+            "scenes_en": [
+                "Skyler: Walter, please stop... Someone could knock on that door, we are in danger!",
+                "Walter: Who are you talking to right now? You think I am in danger, Skyler?",
+                "Walter: I am not in danger, Skyler. I am the danger.",
+                "A guy opens his door and gets shot, and you think that of me? No.",
+                "Walter: I am the one who knocks.",
+                "When pushed into a corner, a weak man either surrenders or becomes the monster.",
+                "And that is the brutal law of power...",
+            ],
+            "localizations": {
+                "en": {
+                    "title": "👑 Walter White | I Am The Danger #shorts",
+                    "description": "I am not in danger, Skyler. I am the danger.\n\nDark psychology and power transformation.\n\n#shorts #breakingbad #walterwhite #heisenberg #sigma"
+                }
+            },
+            "pinned_comment_tr": "👑 Sence Walter White Heisenberg'e dönüştüğünde haklı mıydı? Yorumunu bırak.",
+            "pinned_comment_en": "👑 Was Walter White justified in becoming Heisenberg? Comment below.",
+        },
+        {
+            "id": "interstellar_abyss",
+            "series_title": "👑 Interstellar | Zamanın Acımasız Paradoksu #shorts",
+            "theme_name": "Interstellar - Karadelik ve Zaman Paradoksu",
+            "category": "Kozmik Dehşet & Evrenin Gizemleri",
+            "source_clip": "interstellar_master.mp4",
+            "scenes": [
+                "Brand: Cooper, o gezegendeki her saniye dünyada günlere mal olacak!",
+                "Gargantua karadeliğinin olay ufkuna yaklaştığınızda zaman parçalanır.",
+                "Sizin orada geçirdiğiniz sadece bir saat, dünyada yedi yıla eşittir.",
+                "Aileniz yaşlanıp ölürken, siz sadece tek bir nefes almış olursunuz.",
+                "Yerçekimi o kadar acımasızdır ki, uzay ve zaman birbirine düğümlenir.",
+                "İşte evrenin insan aklını aşan en korkunç doğa kanunu...",
+            ],
+            "scenes_en": [
+                "Brand: Cooper, every second on that planet costs years on Earth!",
+                "Near the event horizon of Gargantua, time itself is ripped apart.",
+                "One single hour down there equals seven full years on Earth.",
+                "While your children grow old and perish, you have barely taken a single breath.",
+                "Gravity is so immense that space and time are twisted into an abyss.",
+                "And that is the most terrifying natural law of the cosmos...",
+            ],
+            "localizations": {
+                "en": {
+                    "title": "👑 Interstellar | The Brutal Time Paradox #shorts",
+                    "description": "One hour on Miller's planet is seven years on Earth.\n\nCosmic mysteries and time dilation.\n\n#shorts #interstellar #blackhole #physics #space"
+                }
+            },
+            "pinned_comment_tr": "👑 Böyle bir gezegene gitmeyi göze alabilir miydin? Yorumunu bırak.",
+            "pinned_comment_en": "👑 Would you ever dare visit a planet with that level of time dilation? Comment below.",
+        },
+        {
+            "id": "shelby_power",
+            "series_title": "👑 Thomas Shelby | Sessiz Gücün ve Saygının Bedeli #shorts",
+            "theme_name": "Thomas Shelby - Sessiz Gücün ve Saygının Bedeli",
+            "category": "Karanlık Psikoloji & Güç Yasaları",
+            "source_clip": "peaky_master.mp4",
+            "scenes": [
+                "Kadın: Neden kimseye bir şey anlatmıyorsun Thomas?",
+                "Thomas: Bir odadaki en zayıf insan, her şeye hemen tepki veren insandır.",
+                "Saygı bağırmakla değil, gözünü bile kırpmadan sessiz kalabilmekle kazanılır.",
+                "Asla öfkeni düşmanına gösterme, çünkü öfke açık bir zayıflıktır.",
+                "Planını kimseye anlatma, sadece sonucun yarattığı fırtınayı izlet.",
+                "İşte bu yüzden zeki bir adamın asla yapmayacağı hata...",
+            ],
+            "scenes_en": [
+                "Woman: Why do you never explain yourself, Thomas?",
+                "Thomas: The weakest man in the room is always the one who reacts first.",
+                "Respect is never won through shouting, but through icy, unyielding silence.",
+                "Never display anger to your adversary; rage is an open declaration of vulnerability.",
+                "Keep your strategy buried in silence, and let only the hurricane of results speak.",
+                "And that is the fatal mistake a sovereign mind never commits...",
+            ],
+            "localizations": {
+                "en": {
+                    "title": "👑 Thomas Shelby | The Cost of Silent Power #shorts",
+                    "description": "The weakest man in the room is always the one who reacts first.\n\n#shorts #thomasshelby #peakyblinders #darkpsychology #sigma"
+                }
+            },
+            "pinned_comment_tr": "👑 Thomas Shelby'nin en sevdiğin kuralı hangisi? Yorumunu bırak.",
+            "pinned_comment_en": "👑 What is your favorite rule from Thomas Shelby? Drop your thoughts.",
+        }
+    ]
+    catalog.extend(hollywood_dialogues)
+
     # 1. Add All Primary 48 Laws of Power (Laws 1 to 20 detailed + 21 to 48 procedural)
     for law in THE_48_LAWS_OF_POWER:
         catalog.append({
