@@ -77,6 +77,8 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
     description = (
         "Görünmeyen Güç, Karanlık Psikoloji ve Sinema Tarihinin Zirve Anları.\n\n"
         "#shorts #keşfet #sinema #motivasyon"
+    )
+    tags = ["shorts", "keşfet", "motivasyon", "sinema", "güç yasaları", "viral"]
     default_lang = "tr"
     default_audio = "tr"
     pinned_comment = None
