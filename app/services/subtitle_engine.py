@@ -50,12 +50,18 @@ ScaledBorderAndShadow: yes
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: ShortsStyle,{font_name},{font_size},{primary_color},&H000000FF,{outline_color},&H90000000,-1,0,0,0,100,100,3,0,1,{outline_width},4,2,50,50,{margin_v},1
+Style: WatermarkStyle,Arial,30,&H70FFFFFF,&H000000FF,&H30000000,&H60000000,-1,0,0,0,100,100,2,0,1,2,1,8,40,40,160,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
     
     events = []
+    
+    # In-video brand stamp watermark
+    if sentences:
+        total_end = max(float(s.get("end", 0.0)) for s in sentences)
+        events.append(f"Dialogue: 0,0:00:00.00,{_format_ass_time(total_end)},WatermarkStyle,,0,0,0,,{{\\an8\\fad(600,0)}}👑 @zirveninkanunu")
     
     for sentence in sentences:
         text = sentence.get("text", "").strip()
