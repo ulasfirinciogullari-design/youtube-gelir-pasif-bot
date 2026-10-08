@@ -17,6 +17,7 @@ import json
 from pathlib import Path
 import random
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -36,6 +37,8 @@ import edge_tts
 from app.services.voice_edge import _get_audio_duration
 from app.services.subtitle_engine import generate_shorts_ass_subtitles
 from app.services.cinema_harvester import ensure_campaign_footage, get_video_duration
+from app.services.multi_voice_engine import generate_multi_voice_dialogue
+from app.services.video_quality_analyst import audit_short_quality, print_audit_report
 
 try:
     from app.services.mega_content_vault import MEGA_CATALOG
@@ -84,12 +87,22 @@ MASTER_CAMPAIGNS = list(MEGA_CATALOG) if MEGA_CATALOG else [
         "source_clip": "breaking_bad_master.mp4",
         "category": "Karanlık Psikoloji & Güç Dönüşümü",
         "scenes": [
-            "Tehlikede olduğumu mu sanıyorsun Skyler? Asıl tehlike benim.",
+            "Skyler: Walter, lütfen dur... Tehlikedeyiz, kapıyı biri çalabilir!",
+            "Walter: Tehlikede olduğumu mu sanıyorsun Skyler? Asıl tehlike benim.",
             "Birisi kapısını açıp vurulduğunda, vurulan adam ben değilim.",
             "O kapıyı çalan adam benim.",
             "Zayıf bir adam köşeye sıkıştığında ya pes eder ya da bir canavara dönüşür.",
             "Ve bir kez o sınırı geçtiğinizde, geriye asla dönemezsiniz.",
             "İşte saygının korkuyla kazanıldığı o acımasız kural...",
+        ],
+        "scenes_en": [
+            "Skyler: Walter, please stop... Someone could knock on that door, we are in danger!",
+            "Walter: Who are you talking to right now? You think I am in danger, Skyler?",
+            "Walter: I am not in danger, Skyler. I am the danger.",
+            "A guy opens his door and gets shot, and you think that of me? No.",
+            "Walter: I am the one who knocks.",
+            "When pushed into a corner, a weak man either surrenders or becomes the monster.",
+            "And that is the brutal law of power...",
         ]
     },
     {
@@ -336,7 +349,7 @@ def mix_god_mode_soundtrack(
         mix_inputs.append("[ris]")
         input_idx += 1
 
-    amix_str = f"{''.join(mix_inputs)}amix=inputs={len(mix_inputs)}:duration=first:dropout_transition=2[aout]"
+    amix_str = f"{''.join(mix_inputs)}amix=inputs={len(mix_inputs)}:duration=first:dropout_transition=2,loudnorm=I=-14:TP=-1.0:LRA=9[aout]"
     filter_complex = f"{';'.join(filter_parts)};{amix_str}"
     codec = "libmp3lame" if str(output_audio_path).lower().endswith(".mp3") else "aac"
 
@@ -397,45 +410,18 @@ def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
     print(f"  📁 Kategori: {campaign['category']} | Kaynak: {source_file.name} ({get_video_duration(source_file):.1f}s)")
     print("=" * 70)
 
-    # 1. Voice Dubbing
-    print(f"[1/5] 🎙️ Karizmatik {lang.upper()} Dublaj Sentezleniyor ({voice_model})...")
-    full_text = " ".join(scenes_list)
-    voice_audio = work_dir / "voice.mp3"
+    # 1. Multi-Voice Dynamic Dubbing (Female & Male Character Casting)
+    print(f"[1/5] 🎙️ Multi-Voice Dublaj Sentezleniyor (Erkek & Kadın Karakter Kastı)...")
+    voice_audio, sentences, total_audio_dur = generate_multi_voice_dialogue(
+        scenes=scenes_list,
+        work_dir=work_dir,
+        lang=lang,
+        enable_dual_voice=True
+    )
+    print(f"       ✅ Dublaj tamamlandı: {total_audio_dur:.2f}s (Sıfır Kayma)")
 
-    async def _tts():
-        comm = edge_tts.Communicate(full_text, voice_model, rate=voice_rate, pitch=voice_pitch)
-        submaker = edge_tts.SubMaker()
-        with open(voice_audio, "wb") as f:
-            async for chunk in comm.stream():
-                if chunk["type"] == "audio":
-                    f.write(chunk["data"])
-                elif chunk["type"] in ("WordBoundary", "SentenceBoundary"):
-                    submaker.feed(chunk)
-        return submaker
-
-    submaker = asyncio.run(_tts())
-    total_audio_dur = _get_audio_duration(voice_audio)
-    print(f"       ✅ Dublaj tamamlandı: {total_audio_dur:.2f}s")
-
-    # 2. Kinetic Subtitles
+    # 2. Kinetic Subtitles with Character Contrast
     print(f"[2/5] ✍️ Kinetik 74pt Neon Altyazı Oluşturuluyor [{lang.upper()}]...")
-    raw_srt = submaker.get_srt()
-    sentences = []
-    blocks = re.split(r'\n\s*\n', raw_srt.strip())
-    for b in blocks:
-        lines = b.strip().split('\n')
-        if len(lines) >= 3:
-            m = re.match(r'(\d+:\d+:\d+,\d+)\s*-->\s*(\d+:\d+:\d+,\d+)', lines[1])
-            if m:
-                def p(t):
-                    h, mn, rest = t.split(':')
-                    s, ms = rest.split(',')
-                    return int(h)*3600 + int(mn)*60 + int(s) + int(ms)/1000.0
-                sentences.append({'text': " ".join(lines[2:]).strip(), 'start': p(m.group(1)), 'end': p(m.group(2))})
-
-    if not sentences:
-        sentences = [{'text': full_text, 'start': 0.0, 'end': total_audio_dur}]
-
     ass_file = work_dir / "subtitles.ass"
     generate_shorts_ass_subtitles(
         sentences=sentences,
@@ -447,7 +433,7 @@ def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
         outline_width=8,
         margin_v=860,
     )
-    print(f"       ✅ 74pt Kinetik {lang.upper()} Altyazı hazır.")
+    print(f"       ✅ 74pt Kinetik {lang.upper()} Altyazı hazır (Karakter Renkleri Aktif).")
 
     # 3. Unique Non-Repeating 60 FPS Video Cuts
     num_cuts = max(14, int(total_audio_dur / 2.0))
@@ -455,17 +441,17 @@ def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
     cut_files = extract_unique_60fps_cuts_parallel(source_file, work_dir, total_audio_dur, num_cuts)
     print(f"       ✅ {len(cut_files)} benzersiz kesit başarıyla hazırlandı.")
 
-    # 4. Multi-Layer Audio Mix
-    print("[4/5] 🎵 Neuro-Acoustic Ses Tasarımı ve Miksajı...")
+    # 4. Multi-Layer Audio Mix with Loudnorm (-14 LUFS / -1.0 dB True Peak)
+    print("[4/5] 🎵 Neuro-Acoustic Ses Tasarımı ve Yayın Seviyesi Miksajı...")
     master_audio = work_dir / "master_soundtrack.mp3"
     mix_god_mode_soundtrack(
         voice_path=voice_audio,
         output_audio_path=master_audio,
         total_duration=total_audio_dur,
     )
-    print("       ✅ Sub-Bass, Riser ve Epik Müzik mikslendi.")
+    print("       ✅ Sub-Bass, Riser ve Epik Müzik mikslendi (-14 LUFS Yayın Standardı).")
 
-    # 5. Master Render & Publishing Package
+    # 5. Master Render & Publishing Package (Rock-Solid CFR Zero-Drift Sync)
     print("[5/5] 🚀 Master 60 FPS Render ve Yayın Paketi Çıkarılıyor...")
     final_mp4 = OUTPUT_DIR / f"VIRAL_MASTER_{lang.upper()}_{safe_slug}_{timestamp}.mp4"
 
@@ -485,23 +471,28 @@ def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
         str(concat_raw)
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    if sys.platform == "win32":
-        safe_sub = str(ass_file.resolve()).replace("\\", "/").replace(":", "\\:")
-    else:
-        safe_sub = str(ass_file.resolve()).replace("'", "'\\''")
+    temp_sub = BASE_DIR / f"temp_burn_{timestamp}.ass"
+    shutil.copy(ass_file, temp_sub)
+
     cmd = [
         "ffmpeg", "-y",
         "-i", str(concat_raw),
         "-i", str(master_audio),
-        "-vf", f"subtitles='{safe_sub}'",
+        "-vf", f"subtitles='{temp_sub.name}'",
         "-c:v", "libx264", "-preset", "medium", "-crf", "17",
         "-r", "60",
+        "-fps_mode", "cfr",
         "-c:a", "copy",
-        "-shortest",
+        "-t", f"{total_audio_dur:.3f}",
         "-pix_fmt", "yuv420p",
         str(final_mp4)
     ]
-    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=str(BASE_DIR))
+    if temp_sub.exists():
+        try:
+            temp_sub.unlink()
+        except Exception:
+            pass
 
     # Thumbnail Extraction
     thumb_path = final_mp4.with_name(f"{final_mp4.stem}_thumb.jpg")
@@ -531,6 +522,10 @@ def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
     }
     with open(meta_path, "w", encoding="utf-8") as f:
         json.dump(metadata, f, ensure_ascii=False, indent=2)
+
+    # 6. Automated Quality Audit
+    audit_report = audit_short_quality(final_mp4)
+    print_audit_report(audit_report)
 
     print("\n" + "=" * 70)
     print(f"🔥 VİRAL [{lang.upper()}] ŞAHESER HAZIR: {final_mp4.name}")
