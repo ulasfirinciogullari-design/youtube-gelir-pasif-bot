@@ -1,0 +1,78 @@
+{
+  "niches": {
+    "48_laws_of_power": {
+      "titles_en": [
+        "Stop Being Too Nice. Master Law 1 #shorts",
+        "The Dark Psychology Trick Most People Ignore #shorts",
+        "Why 99% Of People Break Law 4 In Every Argument #shorts",
+        "Stop Over-Explaining: The Power of Law 4 #shorts",
+        "Become Untouchable Using This 1 Brutal Rule #shorts"
+      ],
+      "titles_tr": [
+        "İnsanlara Fazla İyi Davranmayı Bırak. Güç Yasası #1 #shorts",
+        "Zeki Bir Adamın Asla Yapmayacağı En Büyük Hata #shorts",
+        "Her Zaman Gerektiğinden Daha Az Konuş: Güç Yasası #4 #shorts",
+        "Sessiz Kalarak Her Masayı Yönetmenin Psikolojisi #shorts",
+        "Düşmanını Yenmek İçin Niyetini Gizle: Güç Yasası #3 #shorts"
+      ],
+      "titles_es": [
+        "Deja De Ser Amable. Domina La Ley #1 #shorts",
+        "El Error Que Te Hace Perder Todo El Poder #shorts",
+        "La Regla De Oro Para Que Te Respeten Sin Decir Una Palabra #shorts"
+      ],
+      "titles_de": [
+        "Hör Auf Zu Nett Zu Sein. Gesetz 1 der Macht #shorts",
+        "Warum Stille Gefährlicher Als Jedes Wort Ist #shorts",
+        "Das Gesetz Der Macht Das 99% Ignorieren #shorts"
+      ],
+      "tags_en": ["48lawsofpower", "robertgreene", "darkpsychology", "powerlaws", "mindset", "sigma", "shorts"],
+      "tags_tr": ["48güçyasası", "güçyasaları", "karanlıkpsikoloji", "psikoloji", "motivasyon", "keşfet", "shorts"],
+      "tags_es": ["48leyesdelpoder", "leyesdelpoder", "psicologiaoscura", "estoicismo", "mentalidad", "shorts"],
+      "tags_de": ["48gesetzedermacht", "dunklepsychologie", "macht", "erfolg", "stoizismus", "shorts"]
+    },
+    "peaky_blinders_silent_power": {
+      "titles_en": [
+        "Why 99% Of Men Will Never Be Like Thomas Shelby #shorts",
+        "Thomas Shelby: 3 Cold Rules That Make You Untouchable #shorts",
+        "Be Quiet. Be Deadly. Lessons from Thomas Shelby #shorts",
+        "The Harsh Truth About Fear And Respect #shorts"
+      ],
+      "titles_tr": [
+        "Thomas Shelby: Sessiz Gücün ve Saygının 3 Acımasız Kuralı #shorts",
+        "Bir Odadaki En Tehlikeli Adam Neden En Sessiz Olandır? #shorts",
+        "Korku Seni Tahmin Edilebilir Yapar | Thomas Shelby #shorts",
+        "Öfkeni Asla Düşmanına Gösterme: Sessiz Otorite #shorts"
+      ],
+      "tags_en": ["thomasshelby", "peakyblinders", "cillianmurphy", "sigmarules", "alpha", "coldtruth", "shorts"],
+      "tags_tr": ["thomasshelby", "peakyblinders", "sessizgüç", "saygı", "dizireplikleri", "motivasyon", "shorts"]
+    },
+    "walter_white_dark_psychology": {
+      "titles_en": [
+        "The Moment Walter White Became The Danger #shorts",
+        "The Dark Psychology Of Walter White: How To Command Fear #shorts",
+        "I Am The One Who Knocks: The Power Transformation #shorts"
+      ],
+      "titles_tr": [
+        "Walter White: Masumiyetin Ölümü ve Heisenberg Dönüşümü #shorts",
+        "Tehlikede Değilim, Asıl Tehlike Benim | Walter White #shorts",
+        "Zayıf Bir Adam Köşeye Sıkıştığında Canavara Dönüşür #shorts"
+      ],
+      "tags_en": ["walterwhite", "breakingbad", "heisenberg", "iamthedanger", "darkpsychology", "shorts"],
+      "tags_tr": ["walterwhite", "breakingbad", "heisenberg", "asıltehlikebenim", "dizireplikleri", "shorts"]
+    },
+    "stoicism_marcus_aurelius": {
+      "titles_en": [
+        "Marcus Aurelius Wrote This At 2 AM During A War #shorts",
+        "The Stoic Rule That Makes You Mentally Unbreakable #shorts",
+        "How To Stay Emotionally Untouchable In A Chaotic World #shorts"
+      ],
+      "titles_tr": [
+        "Marcus Aurelius'un Savaş Meydanında Gece 2'de Yazdığı Söz #shorts",
+        "Zihnini Yenilmez Bir Kaleye Dönüştürmenin Stoacı Kuralı #shorts",
+        "Duygusal Olarak Dokunulmaz Olmanın Tek Yolu: Stoacılık #shorts"
+      ],
+      "tags_en": ["stoicism", "marcusaurelius", "stoicwisdom", "meditations", "discipline", "mindset", "shorts"],
+      "tags_tr": ["stoacılık", "marcusaurelius", "çelikirade", "felsefe", "motivasyon", "disiplin", "shorts"]
+    }
+  }
+}
