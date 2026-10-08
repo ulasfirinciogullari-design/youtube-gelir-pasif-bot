@@ -40,9 +40,14 @@ def run_continuous_autopilot(max_videos: int = 10, delay_seconds: int = 120, lan
     print(f"Dil Modu: {lang.upper()} (Global & Yerel Hibrit Dağıtım)")
     print(f"Maksimum Deneme: {max_videos} video | Bekleme: {delay_seconds}s")
     print("=" * 70)
+    from app.services.community_autopilot import engage_with_recent_comments
 
-    campaign_queue = list(ALL_CAMPAIGNS)
-    random.shuffle(campaign_queue)
+    # Prioritize high-velocity niches based on real-time channel analytics
+    high_priority = [c for c in ALL_CAMPAIGNS if any(k in c.lower() for k in ["shelby", "power_law", "interstellar", "stoic", "matrix", "walter"])]
+    others = [c for c in ALL_CAMPAIGNS if c not in high_priority]
+    random.shuffle(high_priority)
+    random.shuffle(others)
+    campaign_queue = high_priority + others
 
     uploaded_count = 0
 
@@ -91,6 +96,10 @@ def run_continuous_autopilot(max_videos: int = 10, delay_seconds: int = 120, lan
             video_url = upload_short(target_file, privacy_status="public")
             uploaded_count += 1
             print(f"🏆 Toplam Başarılı Yayın Sayısı: {uploaded_count}")
+            try:
+                engage_with_recent_comments(max_videos=5)
+            except Exception as comm_err:
+                print(f"ℹ️ Topluluk etkileşim notu: {comm_err}")
         except HttpError as e:
             err_str = str(e)
             if "quotaExceeded" in err_str or "uploadLimitExceeded" in err_str or "dailyLimitExceeded" in err_str:
