@@ -22,23 +22,11 @@ if sys.platform == "win32":
 
 from googleapiclient.errors import HttpError
 from publish_to_youtube import upload_short, OUTPUT_DIR
+from ultimate_factory import MASTER_CAMPAIGNS
 
 BASE_DIR = Path(__file__).resolve().parent
 
-ALL_CAMPAIGNS = [
-    "fight_club_truth",
-    "scarface_ascent",
-    "joker_anarchy",
-    "batman_shadows",
-    "matrix_illusion",
-    "wolf_greed",
-    "shelby_power",
-    "godfather_rules",
-    "oppenheimer_doom",
-    "interstellar_abyss",
-    "breaking_bad_danger",
-    "gladiator_stoic",
-]
+ALL_CAMPAIGNS = [c["id"] for c in MASTER_CAMPAIGNS]
 
 
 def run_continuous_autopilot(max_videos: int = 10, delay_seconds: int = 120):
