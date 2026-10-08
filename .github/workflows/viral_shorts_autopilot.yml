@@ -47,6 +47,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: 📥 Sinematik Kasa ve Ses Varlıklarını İndir (GitHub Releases)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p assets/cinematic assets/music assets/sfx
+          gh release download vault-v1 --dir assets/cinematic --pattern "*.mp4" --repo ${{ github.repository }} || true
+          gh release download vault-v1 --dir assets/music --pattern "*.mp3" --repo ${{ github.repository }} || true
+          gh release download vault-v1 --dir assets/sfx --pattern "*.mp3" --repo ${{ github.repository }} || true
+          echo "✅ Sinematik varlıklar indirildi:"
+          ls -la assets/cinematic/
+
       - name: 🎬 Durmaksızın Üret ve Yayınla (Günlük Limite Kadar)
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
