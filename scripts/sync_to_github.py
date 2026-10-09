@@ -152,6 +152,8 @@ def sync_core_factory_to_github():
         ("app/services/longform_cinema_compiler.py", "app/services/longform_cinema_compiler.py"),
         ("app/services/viral_topic_multiplier.py", "app/services/viral_topic_multiplier.py"),
         ("app/services/cross_link_router.py", "app/services/cross_link_router.py"),
+        ("app/services/parallel_render_swarm.py", "app/services/parallel_render_swarm.py"),
+        ("app/services/nonstop_swarm_publisher.py", "app/services/nonstop_swarm_publisher.py"),
         ("scripts/build_authentic_hollywood_short.py", "scripts/build_authentic_hollywood_short.py"),
         ("app/services/pro_audio_engine.py", "app/services/pro_audio_engine.py"),
         ("app/services/subtitle_engine.py", "app/services/subtitle_engine.py"),
