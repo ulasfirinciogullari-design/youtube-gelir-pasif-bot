@@ -162,6 +162,9 @@ def sync_core_factory_to_github():
         ("app/services/subtitle_engine.py", "app/services/subtitle_engine.py"),
         ("app/services/viral_script_master.py", "app/services/viral_script_master.py"),
         ("scripts/youtube_studio_deep_automation.py", "scripts/youtube_studio_deep_automation.py"),
+        ("app/services/self_evolving_brain.py", "app/services/self_evolving_brain.py"),
+        ("scripts/localize_channel_profile.py", "scripts/localize_channel_profile.py"),
+        ("scripts/link_related_perfect.py", "scripts/link_related_perfect.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
