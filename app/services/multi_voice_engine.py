@@ -41,46 +41,93 @@ FFMPEG_BIN = shutil.which("ffmpeg") or (
 
 VOICE_MAP = {
     "tr": {
-        "male": {"name": "tr-TR-AhmetNeural", "rate": "+3%", "pitch": "-2Hz"},
+        "male": {"name": "tr-TR-AhmetNeural", "rate": "+2%", "pitch": "-3Hz"},
+        "male_alpha": {"name": "tr-TR-AhmetNeural", "rate": "+1%", "pitch": "-3Hz"},
+        "male_sharp": {"name": "tr-TR-AhmetNeural", "rate": "+5%", "pitch": "-1Hz"},
         "female": {"name": "tr-TR-EmelNeural", "rate": "+2%", "pitch": "+0Hz"},
+        "female_dramatic": {"name": "tr-TR-EmelNeural", "rate": "+0%", "pitch": "-1Hz"},
     },
     "en": {
-        "male": {"name": "en-US-ChristopherNeural", "rate": "+2%", "pitch": "-1Hz"},
+        "male": {"name": "en-US-ChristopherNeural", "rate": "+2%", "pitch": "-2Hz"},
+        "male_alpha": {"name": "en-US-ChristopherNeural", "rate": "+1%", "pitch": "-2Hz"},
+        "male_sharp": {"name": "en-US-GuyNeural", "rate": "+4%", "pitch": "+0Hz"},
+        "male_british": {"name": "en-GB-RyanNeural", "rate": "+2%", "pitch": "-1Hz"},
         "female": {"name": "en-US-JennyNeural", "rate": "+2%", "pitch": "+0Hz"},
+        "female_dramatic": {"name": "en-GB-SoniaNeural", "rate": "+1%", "pitch": "+0Hz"},
     }
 }
 
-FEMALE_KEYWORDS = [
-    "skyler", "kadın", "kız", "anne", "kraliçe", "kadın:", "she", "woman",
-    "female", "girl", "mother", "queen", "murphy", "brand", "carrie",
-    "fısıltı", "merhamet", "korku", "aşk", "skyler:"
+MALE_ICONS = [
+    "shelby", "thomas", "tommy", "arthur", "alfie", "walter", "heisenberg",
+    "tyler", "durden", "aurelius", "marcus", "seneca", "machiavelli", "greene",
+    "vito", "corleone", "pacino", "oppenheimer", "cooper", "bateman", "bale",
+    "joker", "napoleon", "caesar", "socrates", "nietzsche", "bismarck", "epictetus",
+    "feynman", "hawking", "tars", "al pacino", "bryan cranston", "cillian murphy"
+]
+
+FEMALE_ICONS = [
+    "skyler", "polly", "grace", "tatiana", "linda", "marie", "marla",
+    "brand", "murph", "kadın", "kız", "anne", "kraliçe", "woman", "female",
+    "girl", "mother", "queen", "eva", "ada", "elena"
 ]
 
 
-def detect_speaker_gender(text: str, default_gender: str = "male") -> tuple[str, str]:
+def detect_speaker_role(
+    text: str,
+    line_index: int = 0,
+    total_lines: int = 1,
+    campaign_context: str = ""
+) -> tuple[str, str]:
     """
-    Detects if the line is spoken by a female or male character.
-    Returns: (gender, cleaned_text)
+    Foolproof character casting:
+    - Male icons (Tommy Shelby, Walter White, etc.) are STRICTLY MALE (NEVER female).
+    - Female characters (Skyler, Polly, Grace, etc.) are STRICTLY FEMALE.
+    - Dialogues alternate between Alpha Male and Sharp Male (or Female if explicitly a female character).
     """
     text_clean = text.strip()
     lower = text_clean.lower()
-    
-    # Check explicit character prefix: "Skyler: ...", "Kadın: ...", etc.
+    ctx_lower = campaign_context.lower()
+
+    # 1. Check explicit speaker prefix: "Shelby: ...", "Skyler: ...", "Polly: ...", etc.
     colon_match = re.match(r"^([a-zA-ZçğıöşüÇĞİÖŞÜ\s]+)[:\-]\s*(.+)$", text_clean)
     if colon_match:
         speaker_name = colon_match.group(1).strip().lower()
         content = colon_match.group(2).strip()
-        if any(f in speaker_name for f in FEMALE_KEYWORDS):
-            return "female", content
-        return "male", content
 
-    # Check keyword triggers
-    if any(re.search(rf"\b{re.escape(k)}\b", lower) for k in ["skyler", "kadın", "she", "woman"]):
-        # If it's a quote or female question
-        if "?" in text_clean or '"' in text_clean or "'" in text_clean:
+        # Check female speaker
+        if any(f in speaker_name for f in FEMALE_ICONS):
+            return "female", content
+
+        # Check male speaker
+        if any(m in speaker_name for m in MALE_ICONS):
+            if any(a in speaker_name for a in ["shelby", "thomas", "tommy", "walter", "heisenberg", "aurelius", "vito"]):
+                return "male_alpha", content
+            return "male_sharp", content
+
+        return "male_alpha", content
+
+    # 2. Check if text begins with quotation marks or female character cues
+    if any(re.search(rf"\b{re.escape(f)}\b", lower) for f in FEMALE_ICONS):
+        # Only use female voice if it's explicitly about/from a female speaker
+        if any(tag in lower for tag in ["skyler dedi", "kadın:", "grace:", "polly:"]):
             return "female", text_clean
 
-    return default_gender, text_clean
+    # 3. If campaign belongs to male icons (Tommy Shelby, Walter, Stoicism, Godfather)
+    is_male_dominated = any(m in ctx_lower for m in MALE_ICONS) or any(m in lower for m in MALE_ICONS)
+    if is_male_dominated:
+        # STRICT IMMUTABLE RULE: NEVER USE FEMALE VOICE FOR SHELBY / WALTER / ICONS!
+        # Alternate between Male Alpha (deep) and Male Sharp (antagonist/secondary)
+        if total_lines >= 2 and line_index % 2 == 1:
+            return "male_sharp", text_clean
+        return "male_alpha", text_clean
+
+    # 4. General dialogues with 2+ lines: alternate male voices
+    if total_lines >= 2:
+        if line_index % 2 == 1:
+            return "male_sharp", text_clean
+        return "male_alpha", text_clean
+
+    return "male_alpha", text_clean
 
 
 def get_audio_exact_duration(audio_file: Path) -> float:
@@ -188,16 +235,11 @@ async def generate_multi_voice_dialogue_async(
     current_timeline = 0.0
 
     for idx, scene_raw in enumerate(scenes):
-        # 1. Determine speaker gender
-        gender, clean_line = detect_speaker_gender(scene_raw, default_gender="male")
-        
-        # In dual voice mode: if no female keyword was found but scene is index 0 and has '?' (Question hook),
-        # we can voice the question in female voice to create dramatic inquiry!
-        if enable_dual_voice and idx == 0 and ("?" in clean_line or "kim" in clean_line.lower() or "why" in clean_line.lower()):
-            gender = "female"
-            
-        voice_cfg = voices[gender]
-        seg_file = temp_dir / f"seg_{idx:02d}_{gender}.mp3"
+        # 1. Determine dynamic character speaker role
+        role, clean_line = detect_speaker_role(scene_raw, line_index=idx, total_lines=len(scenes))
+
+        voice_cfg = voices.get(role, voices.get("male_alpha", voices.get("male")))
+        seg_file = temp_dir / f"seg_{idx:02d}_{role}.mp3"
 
         # 2. Synthesize audio segment
         await synthesize_single_line(clean_line, voice_cfg, seg_file)
@@ -208,7 +250,7 @@ async def generate_multi_voice_dialogue_async(
             dur = 1.0  # Fallback safety
 
         # 4. Generate micro-timed kinetic subtitles with speaker attribution
-        line_subs = build_micro_timed_subtitles(clean_line, current_timeline, dur, speaker=gender)
+        line_subs = build_micro_timed_subtitles(clean_line, current_timeline, dur, speaker=role)
         all_subtitles.extend(line_subs)
 
         segment_files.append(seg_file)
