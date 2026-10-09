@@ -92,6 +92,8 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
             default_lang = meta.get("defaultLanguage", "tr")
             default_audio = meta.get("defaultAudioLanguage", "tr")
             pinned_comment = meta.get("pinned_comment")
+            if pinned_comment and pinned_comment not in description:
+                description = f"💬 TARTIŞMA: {pinned_comment}\n\n" + description
 
     print("\n" + "=" * 70)
     print(f"🚀 YOUTUBE SHORTS YAYINLANIYOR: {video_path.name}")
@@ -183,6 +185,10 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
     except Exception as pl_err:
         pass
 
+    # Ensure Pinned Comment is also injected at the very top of Description as a bulletproof fallback
+    if pinned_comment and pinned_comment not in description:
+        description = f"💬 TARTIŞMA: {pinned_comment}\n\n" + description
+
     # Add Pinned Discussion Engagement Comment
     if pinned_comment:
         try:
@@ -202,6 +208,28 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
             print(f"💬 Etkileşim Tartışma Yorumu Eklendi: {pinned_comment[:50]}...")
         except Exception as e:
             print(f"ℹ️ Yorum ekleme notu: {e}")
+            # Persist to pending comments queue for automatic retry
+            try:
+                pending_file = OUTPUT_DIR / "pending_comments.json"
+                pending_data = []
+                if pending_file.exists():
+                    try:
+                        with open(pending_file, "r", encoding="utf-8") as pf:
+                            pending_data = json.load(pf)
+                    except Exception:
+                        pass
+                pending_data.append({
+                    "video_id": video_id,
+                    "video_url": video_url,
+                    "comment": pinned_comment,
+                    "title": title,
+                    "timestamp": int(time.time())
+                })
+                with open(pending_file, "w", encoding="utf-8") as pf:
+                    json.dump(pending_data, pf, ensure_ascii=False, indent=2)
+                print(f"💾 Yorum Bekleyenler Kasasına Kaydedildi ({video_id})")
+            except Exception as save_err:
+                pass
 
     # Add Multi-Language Global Localizations (EN, ES, DE)
     try:
