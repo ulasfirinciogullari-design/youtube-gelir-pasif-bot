@@ -403,7 +403,7 @@ if __name__ == "__main__":
 
     if args.login:
         asyncio.run(init_session_interactive())
-    elif args.auto-all:
+    elif args.auto_all:
         run_full_shorts_network_autopilot(headless=args.headless)
     else:
         print("Kullanım:")
