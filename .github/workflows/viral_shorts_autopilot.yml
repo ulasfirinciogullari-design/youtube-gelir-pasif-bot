@@ -2,22 +2,22 @@ name: YouTube Shorts Cloud Autopilot (God-Tier)
 
 on:
   schedule:
-    # Runs automatically twice every day at 09:00 and 17:00 UTC (12:00 and 20:00 TR)
-    - cron: '0 */2 * * *'
+    # 4 Peak Viral Hours Daily: 07:00, 11:00, 15:00, 19:00 UTC (10:00, 14:00, 18:00, 22:00 TR Time)
+    - cron: '0 7,11,15,19 * * *'
   workflow_dispatch:
     inputs:
       mode:
         description: 'Çalışma Modu'
         required: true
-        default: 'continuous_until_limit'
+        default: 'single_video'
         type: choice
         options:
-          - 'continuous_until_limit'
           - 'single_video'
+          - 'continuous_until_limit'
       campaign_id:
         description: 'Belirli Kampanya (single_video seçiliyse)'
         required: false
-        default: 'oppenheimer_doom'
+        default: 'shelby_power'
         type: string
 
 jobs:
@@ -58,16 +58,19 @@ jobs:
           echo "✅ Sinematik varlıklar indirildi:"
           ls -la assets/cinematic/
 
-      - name: 🎬 Durmaksızın Üret ve Yayınla (Günlük Limite Kadar)
+      - name: 🎬 Durmaksızın Üret ve Yayınla (Maksimum Algoritma Verimi)
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
         run: |
           mkdir -p output
-          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event.inputs.mode }}" = "continuous_until_limit" ]; then
-            echo "⚡ Kesintisiz Otopilot Aktif: Günlük limite kadar durmadan üretip yayınlanıyor..."
-            python continuous_autopilot.py --max 8 --delay 90
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "⚡ Zamanlanmış Zirve Saati: 1 Master Video üretilip organik algoritma havuzuna sunuluyor..."
+            python continuous_autopilot.py --max 1
+          elif [ "${{ github.event.inputs.mode }}" = "continuous_until_limit" ]; then
+            echo "⚡ Kesintisiz Otopilot: Günde kontrollü yayınlama..."
+            python continuous_autopilot.py --max 4 --delay 300
           else
             echo "🎯 Tek Video Modu: ${{ github.event.inputs.campaign_id }}"
             python ultimate_factory.py --id ${{ github.event.inputs.campaign_id }}
