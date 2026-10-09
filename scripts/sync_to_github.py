@@ -161,6 +161,7 @@ def sync_core_factory_to_github():
         ("app/services/pro_audio_engine.py", "app/services/pro_audio_engine.py"),
         ("app/services/subtitle_engine.py", "app/services/subtitle_engine.py"),
         ("app/services/viral_script_master.py", "app/services/viral_script_master.py"),
+        ("scripts/youtube_studio_deep_automation.py", "scripts/youtube_studio_deep_automation.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
