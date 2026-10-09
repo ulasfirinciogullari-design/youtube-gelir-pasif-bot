@@ -8,6 +8,10 @@ Injects high-retention visual hooks:
 
 from pathlib import Path
 import re
+import sys
+
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 
 def generate_neon_progress_bar_filter(total_duration: float, color: str = "0x00D7FF@0.85", height: int = 8) -> str:
@@ -73,3 +77,40 @@ def inject_badge_into_ass(ass_file: Path, badge_title: str, total_duration: floa
 
     with open(ass_file, "w", encoding="utf-8") as f:
         f.write(content)
+
+
+def generate_cinematic_vignette_filter() -> str:
+    """
+    Subtle dark vignette filter to focus the viewer's gaze strictly on center screen.
+    """
+    return "vignette=PI/4.5"
+
+
+def generate_complete_viral_filter_chain(
+    ass_filename: str,
+    duration: float,
+    enable_vignette: bool = True,
+    enable_progress_bar: bool = True
+) -> str:
+    """
+    Assembles the full Hollywood retention visual chain:
+    Crop 1080x1920 -> Vignette -> Kinetic Subtitles -> Animated Neon Bar.
+    """
+    chain = ["scale=1080:1920:force_original_aspect_ratio=increase", "crop=1080:1920"]
+
+    if enable_vignette:
+        chain.append(generate_cinematic_vignette_filter())
+
+    chain.append(f"subtitles='{ass_filename}'")
+
+    if enable_progress_bar:
+        chain.append(generate_neon_progress_bar_filter(duration))
+
+    return ",".join(chain)
+
+
+if __name__ == "__main__":
+    vf = generate_complete_viral_filter_chain("test.ass", 24.5)
+    print("🎬 Viral Video Filtre Zinciri Hazır:")
+    print(vf)
+
