@@ -1,0 +1,133 @@
+# ==============================================================================
+# 👑 ZIRVENİN KANUNU - KÜRESEL 10 DİLDE EKSİKSİZ KANAL VE İÇERİK METADATA REHBERİ
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. 🇹🇷 TÜRKÇE (Varsayılan Dil)
+# ------------------------------------------------------------------------------
+KANAL_ADI_TR = "Zirvenin Kanunu"
+KANAL_ACIKLAMA_TR = """Görünmeyen Güç, Karanlık Psikoloji ve Sinema Tarihinin Zirve Anları.
+
+Burada sıradan tavsiyeler yok. Sadece acımasız gerçekler, hayatın yazılmamış kuralları ve zirvede kalmanın bedeli var.
+Tarihin en büyük stratejistleri (Sun Tzu, Musashi, Marcus Aurelius), sinemanın unutulmaz dehaları ve evrenin akıl almaz sırları bu kanalda buluşuyor.
+
+⚡ Her gün yeni 60 FPS sinematik analizler, yüksek zeka stratejileri ve zihin açıcı anlatımlar.
+
+#psikoloji #motivasyon #sinema #güç #keşfet #felsefe"""
+
+# ------------------------------------------------------------------------------
+# 2. 🇬🇧 ENGLISH (İngilizce - Global Master)
+# ------------------------------------------------------------------------------
+KANAL_ADI_EN = "Law of the Peak | Unwritten Laws of Power"
+KANAL_ACIKLAMA_EN = """Unseen Power, Dark Psychology, and Masterpieces of Cinema History.
+
+No cliché advice here. Only ruthless truths, the unwritten rules of human nature, and the price of staying at the peak.
+From ancient battlefield strategists (Sun Tzu, Musashi, Marcus Aurelius) to cinematic masterminds and quantum cosmic enigmas.
+
+⚡ Daily 60 FPS cinematic philosophy, strategic breakdowns, and mind-expanding revelations.
+
+#psychology #motivation #cinema #power #sigma #stoicism #mindset"""
+
+# ------------------------------------------------------------------------------
+# 3. 🇩🇪 DEUTSCH (Almanca)
+# ------------------------------------------------------------------------------
+KANAL_ADI_DE = "Das Gesetz des Gipfels | Ungeschriebene Gesetze der Macht"
+KANAL_ACIKLAMA_DE = """Unsichtbare Macht, dunkle Psychologie und legendäre Momente der Kinogeschichte.
+
+Keine oberflächlichen Ratschläge. Nur ungeschönte Wahrheiten, die ungeschriebenen Gesetze des Lebens und der wahre Preis für den Erfolg an der Spitze.
+Von antiken Meisterstrategen (Sun Tzu, Musashi, Marcus Aurelius) bis hin zu genialen Filmikonen und kosmischen Mysterien.
+
+⚡ Täglich neue cineastische 60-FPS-Analysen, strategische Prinzipien und tiefgründige Einblicke.
+
+#psychologie #macht #erfolg #kino #philosophie #stoizismus"""
+
+# ------------------------------------------------------------------------------
+# 4. 🇪🇸 ESPAÑOL (İspanyolca)
+# ------------------------------------------------------------------------------
+KANAL_ADI_ES = "La Ley de la Cima | Leyes Ocultas del Poder"
+KANAL_ACIKLAMA_ES = """Poder invisible, psicología oscura y los momentos cumbre de la historia del cine.
+
+Aquí no hay clichés ni consejos vacíos. Solo verdades implacables, las leyes no escritas de la realidad y el precio de mantenerse en la cima.
+Desde los más grandes estrategas de la historia (Sun Tzu, Musashi, Marco Aurelio) hasta los enigmas del cosmos y mentes maestras del cine.
+
+⚡ Análisis cinematográficos diarios a 60 FPS, tácticas de alta psicología y reflexiones transformadoras.
+
+#psicologia #motivacion #cine #poder #exito #estoicismo"""
+
+# ------------------------------------------------------------------------------
+# 5. 🇫🇷 FRANÇAIS (Fransızca)
+# ------------------------------------------------------------------------------
+KANAL_ADI_FR = "La Loi du Sommet | Règles Secrètes du Pouvoir"
+KANAL_ACIKLAMA_FR = """Pouvoir invisible, psychologie sombre et chefs-d'œuvre de l'histoire du cinéma.
+
+Pas de discours convenus. Seulement des vérités impitoyables, les lois non écrites du monde et le prix de la domination absolue.
+Des stratèges antiques légendaires (Sun Tzu, Musashi, Marc Aurèle) aux énigmes cosmiques et génies de l'écran.
+
+⚡ Analyses quotidiennes en 60 FPS, décryptages stratégiques et leçons de puissance mentale.
+
+#psychologie #pouvoir #cinema #motivation #philosophie #stoicisme"""
+
+# ------------------------------------------------------------------------------
+# 6. 🇷🇺 РУССКИЙ (Rusça)
+# ------------------------------------------------------------------------------
+KANAL_ADI_RU = "Закон Вершины | Тайные Законы Власти"
+KANAL_ACIKLAMA_RU = """Невидимая власть, тёмная психология и культовые моменты мирового кинематографа.
+
+Никаких банальных советов. Только суровая правда, неписаные законы реальности и цена превосходства на вершине.
+От великих полководцев прошлого (Сунь-цзы, Мусаси, Марк Аврелий) до квантовых парадоксов вселенной и гениальных киногероев.
+
+⚡ Ежедневные кинематографичные разборы 60 FPS, законы власти и железная дисциплина.
+
+#психология #власть #кино #саморазвитие #философия #стоицизм"""
+
+# ------------------------------------------------------------------------------
+# 7. 🇵🇹 PORTUGUÊS (Portekizce)
+# ------------------------------------------------------------------------------
+KANAL_ADI_PT = "A Lei do Topo | Leis Ocultas do Poder"
+KANAL_ACIKLAMA_PT = """Poder invisível, psicologia obscura e os maiores clássicos do cinema mundial.
+
+Sem conselhos vazios. Apenas verdades cruas, as regras não escritas do jogo e o preço de permanecer invicto no topo.
+Dos maiores estrategistas militares (Sun Tzu, Musashi, Marco Aurélio) aos mistérios do universo e mentes implacáveis.
+
+⚡ Análises cinematográficas diárias em 60 FPS e filosofia estratégica de alto impacto.
+
+#psicologia #poder #cinema #estoicismo #motivacao #mente"""
+
+# ------------------------------------------------------------------------------
+# 8. 🇮🇹 ITALIANO (İtalyanca)
+# ------------------------------------------------------------------------------
+KANAL_ADI_IT = "La Legge del Vertice | Regole del Potere"
+KANAL_ACIKLAMA_IT = """Potere invisibile, psicologia oscura e i momenti più alti del cinema mondiale.
+
+Nessun consiglio banale. Solo verità spietate, le leggi non scritte del mondo e il prezzo del comando assoluto.
+Dai grandi maestri di strategia (Sun Tzu, Musashi, Marco Aurelio) alle profondità del cosmo e icone cinematografiche.
+
+⚡ Analisi cinematografiche quotidiane a 60 FPS e percorsi di dominio psicologico.
+
+#psicologia #potere #cinema #successo #filosofia #stoicismo"""
+
+# ------------------------------------------------------------------------------
+# 9. 🇯🇵 日本語 (Japonca)
+# ------------------------------------------------------------------------------
+KANAL_ADI_JA = "頂点の掟 | 権力と帝王学の真実"
+KANAL_ACIKLAMA_JA = """見えざる権力、ダークサイコロジー、そして映画史に刻まれた伝説的名場面。
+
+ありきたりな自己啓発はありません。冷徹な真実、人生の不文律、そして頂点に立ち続ける者だけが知る代償。
+宮本武蔵、孫子、マルクス・アウレリウスといった戦略の巨人から、宇宙の深淵と不朽の名作まで。
+
+⚡ 毎日更新：60 FPS シネマティック哲学、知略分析、至高の自己規律。
+
+#帝王学 #心理学 #映画 #成功哲学 #宮本武蔵 #武士道"""
+
+# ------------------------------------------------------------------------------
+# 10. 🇸🇦 العربية (Arapça)
+# ------------------------------------------------------------------------------
+KANAL_ADI_AR = "قانون القمة | القواعد غير المكتوبة للقوة"
+KANAL_ACIKLAMA_AR = """القوة الخفية، علم النفس المظلم، وأعظم لحظات السينما العالمية.
+
+لا نصائح تقليدية هنا. فقط الحقائق القاسية، قوانين الحياة غير المكتوبة، وثمن البقاء على القمة.
+من أعظم استراتيجيي التاريخ (صن تزو، موساشي، ماركوس أوريليوس) إلى ألغاز الكون وعقول السينما الفذة.
+
+⚡ تحليلات سينمائية يومية بدقة 60 إطار في الثانية، استراتيجيات عقلية، وبناء الهيبة الشخصية.
+
+#علم_النفس #قوة #سينما #تحفيز #هيبة #فلسفة #عقلية"""
