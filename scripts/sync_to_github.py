@@ -165,6 +165,8 @@ def sync_core_factory_to_github():
         ("app/services/self_evolving_brain.py", "app/services/self_evolving_brain.py"),
         ("scripts/localize_channel_profile.py", "scripts/localize_channel_profile.py"),
         ("scripts/link_related_perfect.py", "scripts/link_related_perfect.py"),
+        ("assets/channel_translations_master.txt", "assets/channel_translations_master.txt"),
+        ("scripts/apply_all_9_master.py", "scripts/apply_all_9_master.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
