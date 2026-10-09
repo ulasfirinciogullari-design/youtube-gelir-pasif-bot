@@ -146,6 +146,8 @@ def sync_core_factory_to_github():
         ("app/services/hype_comment_engine.py", "app/services/hype_comment_engine.py"),
         ("app/services/community_poll_master.py", "app/services/community_poll_master.py"),
         ("app/services/algorithm_beast_engine.py", "app/services/algorithm_beast_engine.py"),
+        ("app/services/multi_track_audio_packager.py", "app/services/multi_track_audio_packager.py"),
+        ("scripts/optimize_channel_seo.py", "scripts/optimize_channel_seo.py"),
         ("scripts/build_authentic_hollywood_short.py", "scripts/build_authentic_hollywood_short.py"),
         ("app/services/pro_audio_engine.py", "app/services/pro_audio_engine.py"),
         ("app/services/subtitle_engine.py", "app/services/subtitle_engine.py"),
