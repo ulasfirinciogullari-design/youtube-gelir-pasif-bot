@@ -18,3 +18,4 @@ python-multipart
 boto3
 edge-tts>=6.1.12
 yt-dlp>=2024.08.06
+fal-client>=1.0.3
