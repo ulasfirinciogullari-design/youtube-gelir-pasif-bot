@@ -58,7 +58,7 @@ def generate_with_grok(topic: str) -> dict | None:
     }
     prompt = f"Konu: {topic}\nLütfen yukarıdaki sistem talimatına göre JSON formatında 15 saniyelik sonsuz döngü metni üret."
     payload = {
-        "model": "grok-4.6",
+        "model": "grok-4.7",
         "input": prompt
     }
     try:
