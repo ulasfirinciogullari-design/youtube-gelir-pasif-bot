@@ -58,7 +58,7 @@ OUTPUT_DIR = BASE_DIR / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-MASTER_CAMPAIGNS = list(HYPERSONIC_MASTER_CAMPAIGNS) + (list(MEGA_CATALOG) if MEGA_CATALOG else [
+DEFAULT_FALLBACK_CAMPAIGNS = [
     {
         "id": "oppenheimer_doom",
         "theme_name": "Oppenheimer - Dünyaları Yok Eden Kıyamet Sırrı",
@@ -238,6 +238,8 @@ MASTER_CAMPAIGNS = list(HYPERSONIC_MASTER_CAMPAIGNS) + (list(MEGA_CATALOG) if ME
         ]
     }
 ]
+
+MASTER_CAMPAIGNS = list(HYPERSONIC_MASTER_CAMPAIGNS) + (list(MEGA_CATALOG) if MEGA_CATALOG else DEFAULT_FALLBACK_CAMPAIGNS)
 
 try:
     from app.services.infinite_series_generator import MASTER_SERIES_VAULT
