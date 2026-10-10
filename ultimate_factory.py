@@ -42,6 +42,11 @@ from app.services.video_quality_analyst import audit_short_quality, print_audit_
 from app.services.visual_fx_engine import generate_neon_progress_bar_filter, inject_badge_into_ass
 
 try:
+    from app.services.hypersonic_engine import HYPERSONIC_MASTER_CAMPAIGNS
+except Exception:
+    HYPERSONIC_MASTER_CAMPAIGNS = []
+
+try:
     from app.services.mega_content_vault import MEGA_CATALOG
 except Exception:
     MEGA_CATALOG = []
@@ -53,7 +58,7 @@ OUTPUT_DIR = BASE_DIR / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-MASTER_CAMPAIGNS = list(MEGA_CATALOG) if MEGA_CATALOG else [
+MASTER_CAMPAIGNS = list(HYPERSONIC_MASTER_CAMPAIGNS) + (list(MEGA_CATALOG) if MEGA_CATALOG else [
     {
         "id": "oppenheimer_doom",
         "theme_name": "Oppenheimer - Dünyaları Yok Eden Kıyamet Sırrı",
