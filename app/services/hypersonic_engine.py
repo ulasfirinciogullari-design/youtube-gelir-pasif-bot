@@ -224,6 +224,68 @@ HYPERSONIC_MASTER_CAMPAIGNS = [
         },
         "pinned_comment_tr": "👑 Birinin yalan söylediğini anladığında yüzüne mi vurursun, yoksa sessizce oyununu mu izlersin?",
         "pinned_comment_en": "👑 When you catch someone lying, do you call them out or play along silently?"
+    },
+    {
+        "id": "clash_shelby_vs_walter",
+        "theme_name": "Thomas Shelby vs Walter White - Masanın Sahibi Kim?",
+        "series_title": "👑 Thomas Shelby vs Walter White: Kim Daha Tehlikeli? #shorts",
+        "category": "Karanlık Karizma & Savaş",
+        "source_clip": "peaky_master.mp4",
+        "scenes": [
+            "Aynı masaya otursalar ilk kim geri adım atar bilir misin?",
+            "Walter White kimyayı ve zekayı silah olarak kullanır.",
+            "Thomas Shelby ise korkuyu ve ölümü çoktan kabullenmiştir.",
+            "Tarafını seç ve hemen yoruma yaz: Zeka mı kazanır yoksa çelik gibi bir irade mi çünkü..."
+        ],
+        "scenes_en": [
+            "If they sat at the same table, who blinks first?",
+            "Walter White weaponizes science and raw intellect.",
+            "Thomas Shelby made peace with death a long time ago.",
+            "Pick your side in the comments: pure brain or unbreakable iron will because..."
+        ],
+        "localizations": {
+            "en": {
+                "title": "👑 Thomas Shelby vs Walter White | Who Is More Dangerous? #shorts",
+                "description": (
+                    "Heisenberg vs Thomas Shelby. Who walks away alive?\n\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #thomasshelby #walterwhite #breakingbad #peakyblinders"
+                )
+            }
+        },
+        "pinned_comment_tr": "👑 Walter White diyenler '1', Thomas Shelby diyenler '2' yazsın. Bakalım masanın gerçek sahibi kim? 👇",
+        "pinned_comment_en": "👑 Type '1' for Walter White, '2' for Thomas Shelby. Let's settle who owns the room 👇"
+    },
+    {
+        "id": "law_betrayal_controversy",
+        "theme_name": "48 Güç Yasası - İkinci Şans Tuzağı",
+        "series_title": "👑 48 Güç Yasası: Asla Yapmaman Gereken Ölümcül Hata #shorts",
+        "category": "Karanlık Psikoloji & Güç",
+        "source_clip": "godfather_master.mp4",
+        "scenes": [
+            "Erkeklerin %90'ı bunu sadakat sanıyor ama aslında en büyük zayıflıktır.",
+            "Sana bir kez yalan söyleyen birine ikinci şansı vermek.",
+            "Yılan derisini değiştirir ama zehrini asla unutmaz.",
+            "Yorumlara 'KANUN' yaz, gerçeği gör. Çünkü sırtından vurulan bir adam arkasına dönerse..."
+        ],
+        "scenes_en": [
+            "90% of men think this is loyalty, but it's pure weakness.",
+            "Giving a second chance to someone who lied to you once.",
+            "A snake sheds its skin but never forgets its poison.",
+            "Type 'LAW' in the comments to see the truth. Because a betrayed man who turns around..."
+        ],
+        "localizations": {
+            "en": {
+                "title": "👑 48 Laws of Power | The Fatal Second Chance Mistake #shorts",
+                "description": (
+                    "Never trust a snake twice. Power requires ruthless boundaries.\n\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #48lawsofpower #robertgreene #powerlaws #psychology"
+                )
+            }
+        },
+        "pinned_comment_tr": "👑 İkinci bir şans vermek merhamet midir yoksa aptallık mı? Yorumlarda büyük savaş başlasın 👇",
+        "pinned_comment_en": "👑 Is giving a second chance mercy or pure foolishness? Let the debate begin 👇"
     }
 ]
 
