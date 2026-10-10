@@ -14,16 +14,23 @@ import time
 import urllib.request
 import urllib.error
 
-# Renowned ElevenLabs default voices
+# Renowned ElevenLabs voices (Native Turkish & Alpha English)
 ELEVENLABS_VOICE_MAP = {
-    "shelby": "pNInz6obpgDQGcFmaJgB",      # Deep Alpha Baritone (Adam)
-    "godfather": "VR6AewLTigWG4xSOukaG",   # Raspy Authority (Arnold)
-    "narrator": "ErXwobaYiN019PkySvjV",    # Cinematic Documentary (Antoni)
-    "stoic": "N2lVS1w4EtoT3dr4eOWO",       # Philosophical Gravitas (Callum)
-    "female_power": "21m00Tcm4TlvDq8ikWAM" # Dramatic Female (Rachel)
+    # 🇹🇷 Native Turkish Voices (Zero Foreign Accent, Deep Cinema Baritone)
+    "tr_alpha": "QftNgZhlSOYKrYbk7WR7",      # Emrullah Tuna (Deep & Full Cinema Baritone)
+    "tr_whisper": "G5sdncpgy3DkDmvKJnFb",    # Taner Torun (Intense Whispers / Karizma)
+    "tr_warm": "Mcb3pz5eWjKXcBhMLF4v",       # Ozgur (Deep Warm Male)
+
+    # 🇬🇧/🇺🇸 English Voices
+    "shelby": "JBFqnCBsd6RMkjVDRZzb",        # George (Deep British Peaky Cadence)
+    "godfather": "VR6AewLTigWG4xSOukaG",     # Raspy Authority (Arnold)
+    "narrator": "ErXwobaYiN019PkySvjV",      # Cinematic Documentary (Antoni)
+    "stoic": "N2lVS1w4EtoT3dr4eOWO",         # Philosophical Gravitas (Callum)
+    "female_power": "21m00Tcm4TlvDq8ikWAM"   # Dramatic Female (Rachel)
 }
 
-DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB" # Adam
+DEFAULT_TURKISH_VOICE_ID = "QftNgZhlSOYKrYbk7WR7" # Emrullah Tuna
+DEFAULT_VOICE_ID = "QftNgZhlSOYKrYbk7WR7"
 
 
 def get_elevenlabs_api_key() -> str | None:
