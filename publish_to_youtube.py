@@ -239,45 +239,65 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
             except Exception as save_err:
                 pass
 
-    # Add Multi-Language Global Localizations (EN, ES, DE)
+    # Add 10-Language Global Localizations (EN, ES, DE, FR, PT, IT, AR, JA, HI, RU)
     try:
         base_clean = title.replace("👑 ", "").replace(" #shorts", "").strip()
         locs = {
             "en": {
                 "title": f"👑 {base_clean} #shorts"[:100],
-                "description": (
-                    f"{base_clean}\n\n"
-                    "Dark psychology, unwritten power laws and cinema's greatest moments.\n"
-                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
-                    "#shorts #powerlaws #darkpsychology #stoic #motivation #sigma"
-                )[:5000]
+                "description": f"{base_clean}\n\nUnwritten power laws, dark psychology & cinema masters.\n⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n#shorts #powerlaws #darkpsychology #stoic #sigma"[:5000]
             },
             "es": {
                 "title": f"👑 {base_clean} #shorts"[:100],
-                "description": (
-                    f"{base_clean}\n\n"
-                    "Psicología oscura, leyes del poder y momentos clave del cine.\n"
-                    "⚡ Suscríbete para análisis diarios en 60 FPS: @zirveninkanunu\n\n"
-                    "#shorts #leyesdelpoder #psicologiaoscura #motivacion #exito"
-                )[:5000]
+                "description": f"{base_clean}\n\nLeyes del poder, psicología oscura y maestros del cine.\n⚡ Suscríbete para análisis en 60 FPS: @zirveninkanunu\n\n#shorts #leyesdelpoder #psicologiaoscura #motivacion"[:5000]
             },
             "de": {
                 "title": f"👑 {base_clean} #shorts"[:100],
-                "description": (
-                    f"{base_clean}\n\n"
-                    "Dunkle Psychologie, Gesetze der Macht und Filmgeschichte.\n"
-                    "⚡ Täglich neue 60 FPS Analysen: @zirveninkanunu\n\n"
-                    "#shorts #psychologie #macht #motivation"
-                )[:5000]
+                "description": f"{base_clean}\n\nGesetze der Macht, dunkle Psychologie und Filmgeschichte.\n⚡ Täglich neue 60 FPS Analysen: @zirveninkanunu\n\n#shorts #psychologie #macht #motivation"[:5000]
+            },
+            "fr": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": f"{base_clean}\n\nLois du pouvoir, psychologie sombre et légendes du cinéma.\n⚡ Analyses quotidiennes en 60 FPS: @zirveninkanunu\n\n#shorts #pouvoir #psychologie #motivation"[:5000]
+            },
+            "pt": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": f"{base_clean}\n\nLeis do poder, psicologia sombria e mestres do cinema.\n⚡ Inscreva-se para análises diárias em 60 FPS: @zirveninkanunu\n\n#shorts #leisdopoder #psicologia #sucesso"[:5000]
+            },
+            "it": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": f"{base_clean}\n\nLeggi del potere, psicologia oscura e maestri del cinema.\n⚡ Iscriviti per analisi in 60 FPS: @zirveninkanunu\n\n#shorts #potere #psicologia #cinema"[:5000]
+            },
+            "ar": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": f"{base_clean}\n\nقوانين القوة وعلم النفس المظلم وروائع السينما.\n⚡ اشترك للحصول على تحليلات يومية بدقة 60 إطارًا: @zirveninkanunu\n\n#shorts #علم_النفس #القوة #تحفيز"[:5000]
+            },
+            "ja": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": f"{base_clean}\n\n力の法則、ダーク心理学、そして映画の巨匠たち。\n⚡ 毎日60 FPSで分析をお届け: @zirveninkanunu\n\n#shorts #心理学 #マインドセット #映画"[:5000]
+            },
+            "hi": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": f"{base_clean}\n\nशक्ति के नियम, डार्क साइकोलॉजी और सिनेमा के महानतम क्षण।\n⚡ दैनिक 60 FPS विश्लेषण के लिए सब्सक्राइब करें: @zirveninkanunu\n\n#shorts #प्रेरणा #सफलता #माइंडसेट"[:5000]
+            },
+            "ru": {
+                "title": f"👑 {base_clean} #shorts"[:100],
+                "description": f"{base_clean}\n\nЗаконы власти, темная психология и шедевры кино.\n⚡ Подпишитесь на ежедневный разбор в 60 FPS: @zirveninkanunu\n\n#shorts #психология #власть #мотивация"[:5000]
             }
         }
         youtube.videos().update(
             part="localizations",
             body={"id": video_id, "localizations": locs}
         ).execute()
-        print("🌍 Çoklu Dil (EN, ES, DE) Küresel SEO Eklendi!")
+        print("🌍 10 Küresel Dilde (EN, ES, DE, FR, PT, IT, AR, JA, HI, RU) Yerelleştirme Mühürlendi!")
     except Exception as e:
         print(f"ℹ️ Dil yerelleştirme notu: {e}")
+
+    # Auto-engage with community comments
+    try:
+        from app.services.community_autopilot import engage_with_recent_comments
+        engage_with_recent_comments(max_videos=10)
+    except Exception as c_err:
+        pass
 
     print("=" * 70 + "\n")
     return video_url
