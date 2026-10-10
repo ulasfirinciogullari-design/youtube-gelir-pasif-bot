@@ -2,8 +2,8 @@ name: YouTube Shorts Cloud Autopilot (God-Tier)
 
 on:
   schedule:
-    # 4 Peak Viral Hours Daily: 07:00, 11:00, 15:00, 19:00 UTC (10:00, 14:00, 18:00, 22:00 TR Time)
-    - cron: '0 7,11,15,19 * * *'
+    # 6 Peak Viral Hours Daily: 05:00, 08:00, 11:00, 14:00, 17:00, 20:00 UTC (08:00, 11:00, 14:00, 17:00, 20:00, 23:00 TR Time)
+    - cron: '0 5,8,11,14,17,20 * * *'
   workflow_dispatch:
     inputs:
       mode:
@@ -84,6 +84,8 @@ jobs:
             python ultimate_factory.py --id ${{ github.event.inputs.campaign_id }}
             python publish_to_youtube.py --privacy public
           fi
+          echo "💬 İzleyici Yorum Otopilotu Çalıştırılıyor..."
+          python -c "from app.services.community_autopilot import engage_with_recent_comments; engage_with_recent_comments(max_videos=15)" || true
 
       - name: 📤 Hazır Yayın Paketini Yükle (Artifact)
         uses: actions/upload-artifact@v4
