@@ -126,6 +126,7 @@ def sync_core_factory_to_github():
     files_to_sync = [
         ("requirements.txt", "requirements.txt"),
         ("app/services/hypersonic_engine.py", "app/services/hypersonic_engine.py"),
+        ("app/services/ai_script_orchestrator.py", "app/services/ai_script_orchestrator.py"),
         ("app/services/elevenlabs_engine.py", "app/services/elevenlabs_engine.py"),
         ("app/services/fal_cinema_engine.py", "app/services/fal_cinema_engine.py"),
         ("ultimate_factory.py", "ultimate_factory.py"),
