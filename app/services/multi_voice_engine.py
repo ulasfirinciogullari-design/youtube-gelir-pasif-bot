@@ -148,7 +148,16 @@ def get_audio_exact_duration(audio_file: Path) -> float:
 
 
 async def synthesize_single_line(text: str, voice_cfg: dict, out_path: Path):
-    """Synthesizes a single line with dedicated Edge-TTS voice."""
+    """Synthesizes a single line with ElevenLabs if API key is configured, otherwise falls back to Edge-TTS."""
+    try:
+        from app.services.elevenlabs_engine import synthesize_elevenlabs_speech, get_elevenlabs_api_key
+        if get_elevenlabs_api_key():
+            ok = synthesize_elevenlabs_speech(text, out_path)
+            if ok:
+                return
+    except Exception:
+        pass
+
     comm = edge_tts.Communicate(
         text,
         voice_cfg["name"],
