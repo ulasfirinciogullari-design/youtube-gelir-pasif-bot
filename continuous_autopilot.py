@@ -27,6 +27,12 @@ from ultimate_factory import MASTER_CAMPAIGNS
 BASE_DIR = Path(__file__).resolve().parent
 
 try:
+    from app.services.hypersonic_engine import HYPERSONIC_MASTER_CAMPAIGNS
+    HYPERSONIC_IDS = [c["id"] for c in HYPERSONIC_MASTER_CAMPAIGNS]
+except Exception:
+    HYPERSONIC_IDS = []
+
+try:
     from app.services.mega_content_vault import MEGA_CATALOG
     ALL_CAMPAIGNS = [c["id"] for c in MEGA_CATALOG]
 except Exception:
@@ -35,19 +41,23 @@ except Exception:
 
 def run_continuous_autopilot(max_videos: int = 10, delay_seconds: int = 120, lang: str = "auto"):
     print("=" * 70)
-    print("🚀 KESİNTİSİZ BULUT OTOPİLOTU BAŞLATILDI (500+ MEGA VAULT & GLOBAL DUB)")
+    print("🚀 KESİNTİSİZ BULUT OTOPİLOTU BAŞLATILDI (HYPERSONIC HYPE-BREAKER ACTIVE)")
     print(f"Hedef: Günlük limite ulaşana kadar durmaksızın üretim & yayınlama")
     print(f"Dil Modu: {lang.upper()} (Global & Yerel Hibrit Dağıtım)")
     print(f"Maksimum Deneme: {max_videos} video | Bekleme: {delay_seconds}s")
     print("=" * 70)
     from app.services.community_autopilot import engage_with_recent_comments
 
+    # Prioritize Hypersonic Hype-Breaker campaigns first (15-18s infinite seamless loop)
+    hypersonic_shuffled = list(HYPERSONIC_IDS)
+    random.shuffle(hypersonic_shuffled)
+
     # Prioritize high-velocity niches based on real-time channel analytics
-    high_priority = [c for c in ALL_CAMPAIGNS if any(k in c.lower() for k in ["shelby", "power_law", "interstellar", "stoic", "matrix", "walter"])]
-    others = [c for c in ALL_CAMPAIGNS if c not in high_priority]
+    high_priority = [c for c in ALL_CAMPAIGNS if any(k in c.lower() for k in ["shelby", "power_law", "interstellar", "stoic", "matrix", "walter"]) and c not in HYPERSONIC_IDS]
+    others = [c for c in ALL_CAMPAIGNS if c not in high_priority and c not in HYPERSONIC_IDS]
     random.shuffle(high_priority)
     random.shuffle(others)
-    campaign_queue = high_priority + others
+    campaign_queue = hypersonic_shuffled + high_priority + others
 
     uploaded_count = 0
 
