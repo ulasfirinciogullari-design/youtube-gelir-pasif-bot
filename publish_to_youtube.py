@@ -95,6 +95,14 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
             if pinned_comment and pinned_comment not in description:
                 description = f"💬 TARTIŞMA: {pinned_comment}\n\n" + description
 
+    # Always ensure the master documentary funnel link is at the very top
+    funnel_header = (
+        "🎬 İLGİLİ VİDEO (1080p Full Belgesel): https://youtu.be/PY47MUbB71c\n"
+        "👑 Hollywood Trilogy | Thomas Shelby - Walter White - Tyler Durden\n\n"
+    )
+    if "PY47MUbB71c" not in description:
+        description = funnel_header + description
+
     print("\n" + "=" * 70)
     print(f"🚀 YOUTUBE SHORTS YAYINLANIYOR: {video_path.name}")
     print(f"📝 Başlık: {title}")
