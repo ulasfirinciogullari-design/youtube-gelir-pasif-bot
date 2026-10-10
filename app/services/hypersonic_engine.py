@@ -162,6 +162,68 @@ HYPERSONIC_MASTER_CAMPAIGNS = [
         },
         "pinned_comment_tr": "👑 Hakaret eden birine karşı susup gülümsemek güç müdür yoksa zayıflık mı? Dürüstçe yaz.",
         "pinned_comment_en": "👑 Is smiling in silence when insulted true strength or weakness? Answer below."
+    },
+    {
+        "id": "godfather_kiss_of_death",
+        "theme_name": "The Godfather - İhanetin Tek Cezası",
+        "series_title": "👑 The Godfather: Asla İkinci Bir Şans Verme #shorts",
+        "category": "Mafya & Soğukkanlılık",
+        "source_clip": "godfather_master.mp4",
+        "scenes": [
+            "Bu hayatta asla affetmemen gereken tek şey nedir bilir misin?",
+            "Sana bir kez ihanet eden birinin samimiyeti.",
+            "Yılan derisini değiştirir ama zehrini asla unutmaz.",
+            "Ve sırtından vurulan bir adam arkasına tekrar dönerse tek bir gerçeği anlar..."
+        ],
+        "scenes_en": [
+            "What is the single thing you must never forgive in this life?",
+            "The fake loyalty of someone who betrayed you once.",
+            "A snake sheds its skin but never loses its poison.",
+            "And if a betrayed man turns his back again, he will finally learn..."
+        ],
+        "localizations": {
+            "en": {
+                "title": "👑 The Godfather | Never Give A Second Chance #shorts",
+                "description": (
+                    "Never hate your enemies. It affects your judgment.\n\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #thegodfather #doncorleone #power #loyalty"
+                )
+            }
+        },
+        "pinned_comment_tr": "👑 İhanet eden birine ikinci bir şans vermek merhamet midir yoksa aptallık mı? Yaz bakalım.",
+        "pinned_comment_en": "👑 Is giving a second chance mercy or pure foolishness? Comment below."
+    },
+    {
+        "id": "shelby_eyes_dont_lie",
+        "theme_name": "Thomas Shelby - Yalanı Yakalamanın Tek Yolu",
+        "series_title": "👑 Thomas Shelby: Bir Yalanı Anlamanın Tek Yolu #shorts",
+        "category": "Karanlık Psikoloji & Beden Dili",
+        "source_clip": "peaky_master.mp4",
+        "scenes": [
+            "Bir insanın sana yalan söylediğini tek bir saniyede nasıl anlarsın?",
+            "Ağzından çıkan kelimeleri değil, gözlerini kaçırdığı anı izle.",
+            "Suçlu bir insan gereğinden fazla konuşur, masum olan ise gözünü bile kırpmaz.",
+            "İşte bu yüzden zeki bir adam kimseyi sorgulamaz, sadece sessizce bekler çünkü..."
+        ],
+        "scenes_en": [
+            "How do you catch a liar in less than one second?",
+            "Stop listening to their words, watch the exact moment their eyes blink.",
+            "A guilty person over-explains, a dangerous man stays completely calm.",
+            "That's why a smart man never interrogates, he just waits in silence because..."
+        ],
+        "localizations": {
+            "en": {
+                "title": "👑 Thomas Shelby | How To Catch A Liar Instantly #shorts",
+                "description": (
+                    "Lies are loud, truth is dead silent.\n\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #thomasshelby #peakyblinders #bodylanguage #darkpsychology"
+                )
+            }
+        },
+        "pinned_comment_tr": "👑 Birinin yalan söylediğini anladığında yüzüne mi vurursun, yoksa sessizce oyununu mu izlersin?",
+        "pinned_comment_en": "👑 When you catch someone lying, do you call them out or play along silently?"
     }
 ]
 
