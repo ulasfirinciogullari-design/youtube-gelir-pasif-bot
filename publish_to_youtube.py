@@ -292,6 +292,21 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
     except Exception as e:
         print(f"ℹ️ Dil yerelleştirme notu: {e}")
 
+    # Auto-add to matching playlists for binge-watching retention
+    try:
+        from app.services.playlist_master_factory import ensure_niche_playlists, add_video_to_playlist, OFFICIAL_PLAYLIST_DEFINITIONS
+        pl_map = ensure_niche_playlists()
+        if "master" in pl_map:
+            add_video_to_playlist(youtube, video_id, pl_map["master"])
+        for pldef in OFFICIAL_PLAYLIST_DEFINITIONS:
+            k = pldef["key"]
+            if k != "master" and k in pl_map:
+                if any(kw in title.lower() for kw in pldef["keywords"]):
+                    add_video_to_playlist(youtube, video_id, pl_map[k])
+        print("📁 Video İlgili Niş Binge-Watch Oynatma Listelerine Mühürlendi!")
+    except Exception as pl_err:
+        pass
+
     # Auto-engage with community comments
     try:
         from app.services.community_autopilot import engage_with_recent_comments
