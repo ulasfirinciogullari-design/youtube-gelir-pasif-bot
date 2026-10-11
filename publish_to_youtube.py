@@ -314,6 +314,13 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
     except Exception as c_err:
         pass
 
+    # Studio Browser Bridge: Link Related Video & Pin High-CTR Comment
+    try:
+        from app.services.studio_browser_bridge import auto_bridge_post_publish
+        auto_bridge_post_publish(video_id, target_related="PY47MUbB71c", pinned_comment=pinned_comment)
+    except Exception as br_err:
+        print(f"ℹ️ Studio Browser Bridge notu: {br_err}")
+
     print("=" * 70 + "\n")
     return video_url
 
