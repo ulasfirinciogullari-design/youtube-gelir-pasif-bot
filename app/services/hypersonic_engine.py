@@ -286,6 +286,130 @@ HYPERSONIC_MASTER_CAMPAIGNS = [
         },
         "pinned_comment_tr": "👑 İkinci bir şans vermek merhamet midir yoksa aptallık mı? Yorumlarda büyük savaş başlasın 👇",
         "pinned_comment_en": "👑 Is giving a second chance mercy or pure foolishness? Let the debate begin 👇"
+    },
+    {
+        "id": "clash_godfather_vs_scarface",
+        "theme_name": "Don Vito Corleone vs Tony Montana - Masanın Gerçek Patronu",
+        "series_title": "👑 Godfather vs Scarface: Zeka mı, Saf Delilik mi? #shorts",
+        "category": "Karanlık Karizma & Mafya",
+        "source_clip": "godfather_master.mp4",
+        "scenes": [
+            "İkisi aynı odaya girse ilk kurşunu kim sıkar bilir misin?",
+            "Tony Montana korkuyu tanımaz, önündeki her şeyi yakıp yıkar.",
+            "Don Vito Corleone ise asla bağırmaz, sadece parmağını şıklatır ve bitirir.",
+            "Tony diyenler 1, Vito diyenler 2 yazsın. Bakalım masanın gerçek patronu kim çünkü..."
+        ],
+        "scenes_en": [
+            "If they entered the same room, who pulls the trigger first?",
+            "Tony Montana knows no fear, destroying everything in his path.",
+            "Don Vito Corleone never shouts, he just whispers and ends empires.",
+            "Type 1 for Tony, 2 for Vito. Let's see who truly rules the table because..."
+        ],
+        "localizations": {
+            "en": {
+                "title": "👑 Godfather vs Scarface | Pure Intellect or Pure Madness? #shorts",
+                "description": (
+                    "Vito Corleone vs Tony Montana. Brains vs Raw Aggression.\n\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #godfather #scarface #alpacino #sigmamindset"
+                )
+            }
+        },
+        "pinned_comment_tr": "👑 Tony Montana diyenler '1', Don Corleone diyenler '2' yazsın. Masanın gerçek sahibi kim? 👇",
+        "pinned_comment_en": "👑 Type '1' for Tony Montana, '2' for Vito Corleone. Who owns the table? 👇"
+    },
+    {
+        "id": "clash_oppenheimer_vs_interstellar",
+        "theme_name": "Oppenheimer vs Cooper - Kıyamet mi Fedakarlık mı?",
+        "series_title": "👑 Oppenheimer vs Interstellar: En Korkunç Zeka #shorts",
+        "category": "Kozmik Bilim & Dehşet",
+        "source_clip": "interstellar_master.mp4",
+        "scenes": [
+            "Evrenin en tehlikeli aklı kim bilir misin?",
+            "Oppenheimer tek bir denklemle dünyayı yok edecek ateşi yaktı.",
+            "Cooper ise insanlığı kurtarmak için zamanı ve sevdiklerini feda etti.",
+            "Oppenheimer diyenler 'ATEŞ', Cooper diyenler 'ZAMAN' yazsın çünkü..."
+        ],
+        "scenes_en": [
+            "Who possesses the most dangerous mind in human history?",
+            "Oppenheimer ignited the atomic fire that could destroy mankind.",
+            "Cooper sacrificed time, his family, and reality to save it.",
+            "Type 'FIRE' for Oppenheimer, 'TIME' for Cooper in the comments because..."
+        ],
+        "localizations": {
+            "en": {
+                "title": "👑 Oppenheimer vs Interstellar | The Deadliest Mind in History #shorts",
+                "description": (
+                    "The creator of doom vs the traveler of black holes.\n\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #oppenheimer #interstellar #christophernolan #science"
+                )
+            }
+        },
+        "pinned_comment_tr": "👑 Oppenheimer diyenler 'ATEŞ', Cooper diyenler 'ZAMAN' yazsın. Hangisinin yükü daha ağırdı? 👇",
+        "pinned_comment_en": "👑 Type 'FIRE' for Oppenheimer, 'TIME' for Cooper. Whose burden was heavier? 👇"
+    },
+    {
+        "id": "law_toxic_friends",
+        "theme_name": "48 Güç Yasası - Dostuna Asla Güvenme",
+        "series_title": "👑 48 Güç Yasası: Dostuna Asla Güvenme #shorts",
+        "category": "Karanlık Psikoloji & Güç",
+        "source_clip": "peaky_master.mp4",
+        "scenes": [
+            "Erkeklerin %95'inin yaptığı en büyük hata nedir bilir misin?",
+            "Yıllardır tanıdığı bir insanı hala dostu sanmak.",
+            "Düşmanın ne yapacağını bilirsin ama dostun seni en zayıf anında vurur.",
+            "Yorumlara 'DOST' yaz, gerçeği öğren. Çünkü güç kazanmaya başladığında ilk kıskanan..."
+        ],
+        "scenes_en": [
+            "What is the single biggest mistake 95% of men make?",
+            "Assuming someone you've known for years is still your friend.",
+            "You expect attacks from enemies, but friends strike when your back is turned.",
+            "Type 'FRIEND' in the comments to see why. Because when you rise in power, the first to envy you is..."
+        ],
+        "localizations": {
+            "en": {
+                "title": "👑 48 Laws of Power | Never Put Too Much Trust in Friends #shorts",
+                "description": (
+                    "Friends betray, former enemies prove loyalty. The ruthless law of power.\n\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #48lawsofpower #robertgreene #darkpsychology #power"
+                )
+            }
+        },
+        "pinned_comment_tr": "👑 Seni en çok yaralayan darbe düşmanından mı geldi, yoksa en yakın dostundan mı? Dürüstçe yaz 👇",
+        "pinned_comment_en": "👑 Did your deepest wound come from an enemy or a trusted friend? Comment below 👇"
+    },
+    {
+        "id": "stoic_unshakable_calm",
+        "theme_name": "Marcus Aurelius - Hakarete Verilecek En Ölümcül Tepki",
+        "series_title": "👑 Marcus Aurelius: Hakarete En Ölümcül Cevap #shorts",
+        "category": "Stoacılık & Çelik İrade",
+        "source_clip": "gladiator_master.mp4",
+        "scenes": [
+            "Biri sana hakaret ettiğinde onu delirtmenin tek yolu nedir bilir misin?",
+            "Öfkelenmek değil, tek kelime etmeden yüzüne bakıp gülümsemek.",
+            "Öfken onun zaferidir, senin sessizliğin ise onun cehennemidir.",
+            "Sen olsan bağırır mısın yoksa güler misin? Tarafını yoruma yaz çünkü..."
+        ],
+        "scenes_en": [
+            "What is the ultimate way to destroy someone who insults you?",
+            "Not by getting angry, but by looking into their eyes and smiling in pure silence.",
+            "Your anger gives them victory, your calm silence gives them hell.",
+            "Would you yell back or smile in cold silence? Drop your answer because..."
+        ],
+        "localizations": {
+            "en": {
+                "title": "👑 Marcus Aurelius | The Deadliest Response to an Insult #shorts",
+                "description": (
+                    "Silence is the ultimate weapon against disrespect.\n\n"
+                    "⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n"
+                    "#shorts #stoicism #marcusaurelius #philosophy #ironwill"
+                )
+            }
+        },
+        "pinned_comment_tr": "👑 Biri sana saygısızlık yaptığında bağırıp çağırmak mı güçtür, yoksa tek kelime etmeden yok saymak mı? 👇",
+        "pinned_comment_en": "👑 When someone disrespects you, is screaming strength or is cold silence the ultimate power? 👇"
     }
 ]
 
