@@ -42,6 +42,11 @@ from app.services.video_quality_analyst import audit_short_quality, print_audit_
 from app.services.visual_fx_engine import generate_neon_progress_bar_filter, inject_badge_into_ass
 
 try:
+    from app.services.fal_cinema_engine import generate_fresh_ai_visual
+except Exception:
+    generate_fresh_ai_visual = None
+
+try:
     from app.services.hypersonic_engine import HYPERSONIC_MASTER_CAMPAIGNS
 except Exception:
     HYPERSONIC_MASTER_CAMPAIGNS = []
@@ -447,6 +452,45 @@ def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
     num_cuts = max(14, int(total_audio_dur / 2.0))
     print(f"[3/5] 🎞️ {num_cuts} Adet Benzersiz 60 FPS Kesim Paralel Hazırlanıyor...")
     cut_files = extract_unique_60fps_cuts_parallel(source_file, work_dir, total_audio_dur, num_cuts)
+
+    # 3.1 Fal.ai 4K Hyper-Realistic AI Scene & Thumbnail Generation
+    ai_thumb_file = None
+    if generate_fresh_ai_visual:
+        try:
+            cid = campaign.get("id", "").lower()
+            if any(k in cid for k in ["godfather", "corleone"]):
+                cat_key = "godfather"
+            elif any(k in cid for k in ["scarface", "montana"]):
+                cat_key = "scarface"
+            elif "oppenheimer" in cid:
+                cat_key = "oppenheimer"
+            elif "interstellar" in cid:
+                cat_key = "interstellar"
+            elif any(k in cid for k in ["walter", "breaking"]):
+                cat_key = "walter"
+            elif any(k in cid for k in ["marcus", "stoic", "gladiator"]):
+                cat_key = "stoic"
+            elif any(k in cid for k in ["shelby", "peaky"]):
+                cat_key = "shelby"
+            else:
+                cat_key = "power_law"
+
+            ai_img = generate_fresh_ai_visual(cat_key)
+            if ai_img and ai_img.exists():
+                ai_thumb_file = ai_img
+                ai_cut_path = work_dir / "cut_fal_ai.mp4"
+                subprocess.run([
+                    "ffmpeg", "-y", "-loop", "1", "-i", str(ai_img),
+                    "-vf", "scale=1080:1920,zoompan=z='min(zoom+0.0015,1.15)':d=120:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=60",
+                    "-t", "2.0", "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+                    str(ai_cut_path)
+                ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                if ai_cut_path.exists() and len(cut_files) >= 3:
+                    cut_files.insert(2, ai_cut_path)
+                    print(f"       🎨 Fal.ai 4K AI Sinematik Sahnesi Kurguya Enjekte Edildi! (Pozisyon: 3)")
+        except Exception as fal_e:
+            print(f"       ℹ️ Fal.ai sahne entegrasyon notu: {fal_e}")
+
     print(f"       ✅ {len(cut_files)} benzersiz kesit başarıyla hazırlandı.")
 
     # 4. Multi-Layer Audio Mix with Loudnorm (-14 LUFS / -1.0 dB True Peak)
@@ -511,14 +555,19 @@ def produce_flagship_short(campaign: dict, lang: str = "tr") -> Path:
         except Exception:
             pass
 
-    # Thumbnail Extraction
+    # Thumbnail Extraction (Fal.ai 4K AI Visual or High-Quality 60 FPS Frame)
     thumb_path = final_mp4.with_name(f"{final_mp4.stem}_thumb.jpg")
-    subprocess.run([
-        "ffmpeg", "-y", "-ss", "00:00:04.00",
-        "-i", str(final_mp4),
-        "-vframes", "1", "-q:v", "2",
-        str(thumb_path)
-    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    if ai_thumb_file and ai_thumb_file.exists():
+        shutil.copy(ai_thumb_file, thumb_path)
+        print(f"       🎨 Fal.ai 4K Özel Küçük Resim (Thumbnail) Mühürlendi: {thumb_path.name}")
+    else:
+        subprocess.run([
+            "ffmpeg", "-y", "-ss", "00:00:04.00",
+            "-i", str(final_mp4),
+            "-vframes", "1", "-q:v", "2",
+            str(thumb_path)
+        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        print(f"       📸 60 FPS Sinematik Küçük Resim Çıkarıldı: {thumb_path.name}")
 
     # Metadata SEO Package
     meta_path = final_mp4.with_name(f"{final_mp4.stem}_meta.json")
