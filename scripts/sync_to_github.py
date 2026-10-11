@@ -196,6 +196,10 @@ def sync_core_factory_to_github():
         ("scripts/deploy_chat_trex_stream.py", "scripts/deploy_chat_trex_stream.py"),
         ("scripts/finalize_tusas_draft.py", "scripts/finalize_tusas_draft.py"),
         ("scripts/publish_day01_direct_badge.py", "scripts/publish_day01_direct_badge.py"),
+        ("app/services/system_integrity_sentinel.py", "app/services/system_integrity_sentinel.py"),
+        ("scripts/produce_viral_hollywood_benchmark.py", "scripts/produce_viral_hollywood_benchmark.py"),
+        ("scripts/publish_viral_hollywood_benchmark.py", "scripts/publish_viral_hollywood_benchmark.py"),
+        ("scripts/apply_benchmark_perfect_seo.py", "scripts/apply_benchmark_perfect_seo.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
