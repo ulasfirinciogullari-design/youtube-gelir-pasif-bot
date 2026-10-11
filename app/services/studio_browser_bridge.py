@@ -24,7 +24,7 @@ if sys.platform == "win32":
         pass
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-USER_DATA_DIR = BASE_DIR / "output" / "studio_browser_session"
+USER_DATA_DIR = Path(r"C:\youtube_studio_profile")
 USER_DATA_DIR.mkdir(parents=True, exist_ok=True)
 COOKIE_FILE = BASE_DIR / "assets" / "youtube_cookies.json"
 
@@ -95,7 +95,7 @@ async def check_studio_auth_status(headless: bool = True) -> bool:
             await p.stop()
 
 
-async def interactive_login_flow(timeout_seconds: int = 300) -> bool:
+async def interactive_login_flow(timeout_seconds: int = 3600) -> bool:
     """
     Opens Google Chrome visibly on the desktop.
     The user signs into their channel account (marginverdictstudio@gmail.com) once.
