@@ -263,7 +263,7 @@ HYPERSONIC_MASTER_CAMPAIGNS = [
         "category": "Karanlık Psikoloji & Güç",
         "source_clip": "godfather_master.mp4",
         "scenes": [
-            "Erkeklerin %90'ı bunu sadakat sanıyor ama aslında en büyük zayıflıktır.",
+            "Erkeklerin yüzde doksanı bunu sadakat sanıyor ama aslında en büyük zayıflıktır.",
             "Sana bir kez yalan söyleyen birine ikinci şansı vermek.",
             "Yılan derisini değiştirir ama zehrini asla unutmaz.",
             "Yorumlara 'KANUN' yaz, gerçeği gör. Çünkü sırtından vurulan bir adam arkasına dönerse..."
@@ -356,7 +356,7 @@ HYPERSONIC_MASTER_CAMPAIGNS = [
         "category": "Karanlık Psikoloji & Güç",
         "source_clip": "peaky_master.mp4",
         "scenes": [
-            "Erkeklerin %95'inin yaptığı en büyük hata nedir bilir misin?",
+            "Erkeklerin yüzde doksan beşinin yaptığı en büyük hata nedir bilir misin?",
             "Yıllardır tanıdığı bir insanı hala dostu sanmak.",
             "Düşmanın ne yapacağını bilirsin ama dostun seni en zayıf anında vurur.",
             "Yorumlara 'DOST' yaz, gerçeği öğren. Çünkü güç kazanmaya başladığında ilk kıskanan..."
