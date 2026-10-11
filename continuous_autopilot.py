@@ -48,16 +48,22 @@ def run_continuous_autopilot(max_videos: int = 10, delay_seconds: int = 120, lan
     print("=" * 70)
     from app.services.community_autopilot import engage_with_recent_comments
 
-    # Prioritize Hypersonic Hype-Breaker campaigns first (15-18s infinite seamless loop)
-    hypersonic_shuffled = list(HYPERSONIC_IDS)
-    random.shuffle(hypersonic_shuffled)
-
-    # Prioritize high-velocity niches based on real-time channel analytics
-    high_priority = [c for c in ALL_CAMPAIGNS if any(k in c.lower() for k in ["shelby", "power_law", "interstellar", "stoic", "matrix", "walter"]) and c not in HYPERSONIC_IDS]
-    others = [c for c in ALL_CAMPAIGNS if c not in high_priority and c not in HYPERSONIC_IDS]
-    random.shuffle(high_priority)
-    random.shuffle(others)
-    campaign_queue = hypersonic_shuffled + high_priority + others
+    # Filter queue using Anti-Duplicate Guard to prevent any repeated content
+    try:
+        from app.services.anti_duplicate_guard import get_fresh_unproduced_campaigns
+        raw_pool = HYPERSONIC_MASTER_CAMPAIGNS + [c for c in MEGA_CATALOG if c.get("id") not in HYPERSONIC_IDS]
+        fresh_campaigns = get_fresh_unproduced_campaigns(raw_pool)
+        campaign_queue = [c["id"] for c in fresh_campaigns]
+        random.shuffle(campaign_queue)
+    except Exception as e:
+        print(f"ℹ️ Anti-duplicate guard entegrasyon notu: {e}")
+        hypersonic_shuffled = list(HYPERSONIC_IDS)
+        random.shuffle(hypersonic_shuffled)
+        high_priority = [c for c in ALL_CAMPAIGNS if any(k in c.lower() for k in ["shelby", "power_law", "interstellar", "stoic", "matrix", "walter"]) and c not in HYPERSONIC_IDS]
+        others = [c for c in ALL_CAMPAIGNS if c not in high_priority and c not in HYPERSONIC_IDS]
+        random.shuffle(high_priority)
+        random.shuffle(others)
+        campaign_queue = hypersonic_shuffled + high_priority + others
 
     uploaded_count = 0
 
