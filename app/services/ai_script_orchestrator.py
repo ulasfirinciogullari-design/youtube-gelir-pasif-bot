@@ -63,7 +63,7 @@ def generate_with_grok(topic: str) -> dict | None:
     }
     try:
         req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers, method="POST")
-        with urllib.request.urlopen(req, timeout=12) as resp:
+        with urllib.request.urlopen(req, timeout=25) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             output = data.get("output", [])
             if output:
@@ -93,7 +93,7 @@ def generate_with_claude(topic: str) -> dict | None:
     }
     try:
         req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers, method="POST")
-        with urllib.request.urlopen(req, timeout=12) as resp:
+        with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             raw_text = data.get("content", [{}])[0].get("text", "")
             if "{" in raw_text and "}" in raw_text:
@@ -106,21 +106,21 @@ def generate_with_claude(topic: str) -> dict | None:
 
 def get_viral_script(topic: str = "Thomas Shelby Güç Yasaları") -> dict:
     """
-    Orchestrates AI generation: Tries Claude -> Grok -> Fallback Hypersonic Catalog.
+    Orchestrates AI generation: Tries Grok 4.7 -> Claude -> Fallback Hypersonic Catalog.
     Guarantees 100% uptime with no pipeline failure.
     """
     print(f"\n🧠 [AI ORCHESTRATOR] '{topic}' için en üst düzey senaryo üretiliyor...")
-    
-    # 1. Try Claude Sonnet
-    res = generate_with_claude(topic)
-    if res and "scenes" in res:
-        print("⚡ [AI SCRIPT] Claude Sonnet tarafından üretildi!")
-        return res
 
-    # 2. Try Grok 4.6
+    # 1. Try Grok 4.7
     res = generate_with_grok(topic)
     if res and "scenes" in res:
-        print("⚡ [AI SCRIPT] Grok 4.6 tarafından üretildi!")
+        print("⚡ [AI SCRIPT] Grok 4.7 tarafından üretildi!")
+        return res
+
+    # 2. Try Claude
+    res = generate_with_claude(topic)
+    if res and "scenes" in res:
+        print("⚡ [AI SCRIPT] Claude tarafından üretildi!")
         return res
 
     # 3. High-Voltage Hypersonic Precision Fallback
