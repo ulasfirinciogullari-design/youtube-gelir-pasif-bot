@@ -175,6 +175,7 @@ def sync_core_factory_to_github():
         ("scripts/link_related_perfect.py", "scripts/link_related_perfect.py"),
         ("assets/channel_translations_master.txt", "assets/channel_translations_master.txt"),
         ("scripts/apply_all_9_master.py", "scripts/apply_all_9_master.py"),
+        ("scripts/studio_command_center.py", "scripts/studio_command_center.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
