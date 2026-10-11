@@ -125,6 +125,8 @@ def sync_core_factory_to_github():
 
     files_to_sync = [
         ("requirements.txt", "requirements.txt"),
+        ("app/services/studio_browser_bridge.py", "app/services/studio_browser_bridge.py"),
+        ("scripts/open_studio_login.py", "scripts/open_studio_login.py"),
         ("app/services/anti_duplicate_guard.py", "app/services/anti_duplicate_guard.py"),
         ("app/services/turkish_phonetics.py", "app/services/turkish_phonetics.py"),
         ("app/services/hypersonic_engine.py", "app/services/hypersonic_engine.py"),
