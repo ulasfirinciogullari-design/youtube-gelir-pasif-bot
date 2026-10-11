@@ -60,6 +60,7 @@ async def launch_stealth_context(headless: bool = False):
         user_data_dir=str(USER_DATA_DIR),
         executable_path=str(CHROME_BIN) if CHROME_BIN.exists() else None,
         headless=headless,
+        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
         viewport={"width": 1920, "height": 1080},
         ignore_default_args=["--enable-automation"],
         args=[
@@ -171,8 +172,8 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
     page = await context.new_page()
 
     try:
-        await page.goto(edit_url, wait_until="networkidle", timeout=60000)
-        await page.wait_for_timeout(3000)
+        await page.goto(edit_url, wait_until="domcontentloaded", timeout=40000)
+        await page.wait_for_timeout(2500)
 
         if "accounts.google.com" in page.url:
             print("⚠️ Oturum açık değil. Lütfen önce `interactive_login_flow()` ile giriş yapın.")
@@ -217,7 +218,7 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
             await page.wait_for_timeout(2000)
 
             # Look for dialog
-            dialog = page.locator('ytcp-video-pick-dialog, [role="dialog"]').first
+            dialog = page.locator('ytcp-video-pick-dialog').first
             if await dialog.is_visible():
                 search_input = dialog.locator('input').first
                 if await search_input.is_visible():
@@ -225,11 +226,14 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
                     await search_input.fill(target_query)
                     await page.wait_for_timeout(2500)
 
-                # Select first matching row
-                first_row = dialog.locator('ytcp-video-row, ytcp-entity-card, [role="row"]').first
-                if await first_row.is_visible():
-                    print("🎬 Hedef video seçildi.")
-                    await first_row.click()
+                # Select first matching card
+                target_card = dialog.locator('ytcp-entity-card').first
+                if not await target_card.is_visible():
+                    target_card = dialog.locator('ytcp-video-row, [role="row"]').first
+
+                if await target_card.is_visible():
+                    print("🎬 Hedef kart seçildi.")
+                    await target_card.click()
                     await page.wait_for_timeout(2000)
 
                 # Click Save button (Kaydet)
@@ -237,7 +241,7 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
                 if await save_btn.is_enabled():
                     print("💾 Kaydet butonuna basılıyor...")
                     await save_btn.click()
-                    await page.wait_for_timeout(3000)
+                    await page.wait_for_timeout(3500)
                     print(f"✅ [STUDIO BRIDGE] İlgili Video Başarıyla Kaydedildi! ({short_id} ➔ {target_query})")
                     return True
                 else:
