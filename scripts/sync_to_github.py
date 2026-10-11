@@ -173,9 +173,13 @@ def sync_core_factory_to_github():
         ("app/services/self_evolving_brain.py", "app/services/self_evolving_brain.py"),
         ("scripts/localize_channel_profile.py", "scripts/localize_channel_profile.py"),
         ("scripts/link_related_perfect.py", "scripts/link_related_perfect.py"),
-        ("assets/channel_translations_master.txt", "assets/channel_translations_master.txt"),
         ("scripts/apply_all_9_master.py", "scripts/apply_all_9_master.py"),
         ("scripts/studio_command_center.py", "scripts/studio_command_center.py"),
+        ("app/services/live_stream_engine.py", "app/services/live_stream_engine.py"),
+        ("app/services/split_screen_cinema.py", "app/services/split_screen_cinema.py"),
+        ("app/services/global_dubbing_engine.py", "app/services/global_dubbing_engine.py"),
+        ("app/services/nonstop_empire_autopilot.py", "app/services/nonstop_empire_autopilot.py"),
+        (".github/workflows/cloud_live_stream.yml", ".github/workflows/cloud_live_stream.yml"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
