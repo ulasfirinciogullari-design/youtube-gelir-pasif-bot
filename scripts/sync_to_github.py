@@ -178,8 +178,11 @@ def sync_core_factory_to_github():
         ("app/services/live_stream_engine.py", "app/services/live_stream_engine.py"),
         ("app/services/split_screen_cinema.py", "app/services/split_screen_cinema.py"),
         ("app/services/global_dubbing_engine.py", "app/services/global_dubbing_engine.py"),
-        ("app/services/nonstop_empire_autopilot.py", "app/services/nonstop_empire_autopilot.py"),
-        (".github/workflows/cloud_live_stream.yml", ".github/workflows/cloud_live_stream.yml"),
+        ("scripts/publish_master_documentary.py", "scripts/publish_master_documentary.py"),
+        ("scripts/assemble_master_documentary_video.py", "scripts/assemble_master_documentary_video.py"),
+        ("scripts/build_full_documentary_audio.py", "scripts/build_full_documentary_audio.py"),
+        ("scripts/batch_link_all_videos.py", "scripts/batch_link_all_videos.py"),
+        ("app/services/master_longform_documentary.py", "app/services/master_longform_documentary.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
