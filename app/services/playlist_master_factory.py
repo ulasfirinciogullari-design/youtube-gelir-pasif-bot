@@ -186,19 +186,27 @@ def sync_all_videos_to_playlists():
     ch = youtube.channels().list(part="contentDetails", mine=True).execute()
     uploads_id = ch["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
-    vids_resp = youtube.playlistItems().list(
-        part="snippet",
-        playlistId=uploads_id,
-        maxResults=50
-    ).execute()
+    all_items = []
+    next_token = None
+    while True:
+        vids_resp = youtube.playlistItems().list(
+            part="snippet",
+            playlistId=uploads_id,
+            maxResults=50,
+            pageToken=next_token
+        ).execute()
+        all_items.extend(vids_resp.get("items", []))
+        next_token = vids_resp.get("nextPageToken")
+        if not next_token:
+            break
 
     print("=" * 70)
-    print("🔄 VİDEOLAR NİŞ OYNATMA LİSTELERİNE DİZİLİYOR (Binge-Watch Otomasyonu)")
+    print(f"🔄 VİDEOLAR NİŞ OYNATMA LİSTELERİNE DİZİLİYOR: {len(all_items)} Video Taranıyor")
     print("=" * 70)
 
     inserted_total = 0
 
-    for it in vids_resp.get("items", []):
+    for it in all_items:
         video_id = it["snippet"]["resourceId"]["videoId"]
         title = it["snippet"]["title"]
         title_lower = title.lower()
