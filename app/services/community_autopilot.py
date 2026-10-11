@@ -1,102 +1,204 @@
 """
-Community Autopilot & Comment Engagement Engine for Zirvenin Kanunu.
-Monitors recent videos for viewer comments, automatically likes/hearts them,
-and crafts insightful channel persona responses to maximize viewer retention
-and bring them back to the channel.
+YouTube Community Tab Autopilot for 'Zirvenin Kanunu'.
+Automates viral psychological poll posting using headless Playwright and authenticated profile.
 """
 
-import json
-import os
-from pathlib import Path
-import random
+import asyncio
 import sys
-from typing import Dict, List
+import json
+from pathlib import Path
+from playwright.async_api import async_playwright
+
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-sys.path.insert(0, str(BASE_DIR))
+PROFILE_DIR = Path(r"C:\youtube_studio_profile")
+CHROME_BIN = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
 
-from publish_to_youtube import get_authenticated_service
-
-PERSONA_REPLIES = [
-    "Zirvede kalmak için sessizce strateji kuranlar her zaman kazanır. Takipte kal! 👑",
-    "Gözlemleyen ve duygularını kontrol eden insan asla kaybetmez. Yorumun için teşekkürler! 🔥",
-    "En güçlü hamleler her zaman en sessiz anlarda yapılır. Kanunu unutma! ⚡",
-    "Gücün gerçek bedelini sadece zirveye çıkanlar anlar. Harika bir bakış açısı! ♟️",
-    "Korkuyla değil, saygıyla yönetilen bir zihin asla yenilmez. Aramıza hoş geldin! 🐺",
+VIRAL_POLL_VAULT = [
+    {
+        "id": "poll_001",
+        "question": "🔥 Hangi karakterin zihni ve stratejisi daha tehlikeli?",
+        "options": [
+            "Thomas Shelby (Soğukkanlı & Sessiz Güç)",
+            "Walter White (Heisenberg Zekası)",
+            "Gustavo Fring (Kusursuz Disiplin)",
+            "Tyler Durden (Kaos & Özgürlük)"
+        ]
+    },
+    {
+        "id": "poll_002",
+        "question": "⚡ 48 Güç Yasası: İnsan ilişkilerinde yapılan en ölümcül hata hangisidir?",
+        "options": [
+            "Efendini Asla Gölgede Bırakma (1. Yasa)",
+            "Niyetini Asla Belli Etme (3. Yasa)",
+            "Dostlarına Asla Aşırı Güvenme (2. Yasa)",
+            "Her Zaman Gerektiğinden Az Konuş (4. Yasa)"
+        ]
+    },
+    {
+        "id": "poll_003",
+        "question": "🧠 Marcus Aurelius vs Friedrich Nietzsche: Zor zamanlarda hangi felsefe ayakta tutar?",
+        "options": [
+            "Stoacılık (Duygularını ve zihnini yönet)",
+            "Güç İstenci (Acıyı zafere dönüştür)",
+            "Sessiz İrade (Sadece hedefe odaklan)",
+            "Amor Fati (Kaderini Sev ve Kabul Et)"
+        ]
+    },
+    {
+        "id": "poll_004",
+        "question": "🎬 Sinema tarihinin en gerilimli ve zeka dolu yüzleşmesi hangisidir?",
+        "options": [
+            "Walter White vs Hank Schrader (Tread Lightly)",
+            "Thomas Shelby vs Alfie Solomons (Crossed the Line)",
+            "Michael Corleone vs Fredo (I know it was you)",
+            "Tyler Durden vs Anlatıcı (İlk Kural)"
+        ]
+    },
+    {
+        "id": "poll_005",
+        "question": "🌌 Evrenin ve Zihnin En Büyük Gizemi: İnsan ruhunu en çok ne sarsar?",
+        "options": [
+            "Karadeliklerin Zamanı Bükmesi (Interstellar)",
+            "Kuantum Süperpozisyonu & Sonsuz Evrenler",
+            "Bilinçaltının Karanlık Labirentleri",
+            "Sessizliğin ve Yalnızlığın Gücü"
+        ]
+    }
 ]
 
+def get_posted_poll_ids():
+    state_file = BASE_DIR / "output" / "posted_polls.json"
+    if state_file.exists():
+        try:
+            with open(state_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
 
-def engage_with_recent_comments(max_videos: int = 10):
-    """
-    Scans the latest uploaded videos, checks for viewer comments,
-    and likes/replies to new viewer feedback.
-    """
-    youtube = get_authenticated_service()
+def record_posted_poll_id(poll_id):
+    state_file = BASE_DIR / "output" / "posted_polls.json"
+    state_file.parent.mkdir(parents=True, exist_ok=True)
+    posted = get_posted_poll_ids()
+    if poll_id not in posted:
+        posted.append(poll_id)
+    with open(state_file, "w", encoding="utf-8") as f:
+        json.dump(posted, f, indent=2, ensure_ascii=False)
 
-    ch = youtube.channels().list(part="contentDetails", mine=True).execute()
-    uploads_id = ch["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+async def post_next_viral_poll(force_poll_id=None):
+    posted_ids = get_posted_poll_ids()
+    target_poll = None
+    
+    if force_poll_id:
+        target_poll = next((p for p in VIRAL_POLL_VAULT if p["id"] == force_poll_id), None)
+    else:
+        for p in VIRAL_POLL_VAULT:
+            if p["id"] not in posted_ids:
+                target_poll = p
+                break
+                
+    if not target_poll:
+        print("ℹ️ Tüm viral anketler yayınlanmış durumda. İlk ankete dönülüyor...")
+        target_poll = VIRAL_POLL_VAULT[0]
 
-    vids = youtube.playlistItems().list(part="snippet", playlistId=uploads_id, maxResults=max_videos).execute()
-
+    question = target_poll["question"]
+    options = target_poll["options"]
+    
     print("\n" + "=" * 70)
-    print("💬 TOPLULUK ETKİLEŞİM OTOPİLOTU: Yorumlar ve İzleyici Bağı Taranıyor")
+    print("🚀 YOUTUBE TOPLULUK SEKME ANKETİ YAYINLANIYOR")
+    print(f"📊 Poll ID: {target_poll['id']}")
+    print(f"❓ Soru: {question}")
+    for idx, opt in enumerate(options, 1):
+        print(f"   {idx}. {opt}")
     print("=" * 70)
 
-    engaged_count = 0
-
-    for it in vids.get("items", []):
-        video_id = it["snippet"]["resourceId"]["videoId"]
-        video_title = it["snippet"]["title"]
-
-        try:
-            threads = youtube.commentThreads().list(
-                part="snippet,replies",
-                videoId=video_id,
-                maxResults=5,
-                order="time"
-            ).execute()
-
-            for t in threads.get("items", []):
-                top_comm = t["snippet"]["topLevelComment"]["snippet"]
-                author = top_comm.get("authorDisplayName", "İzleyici")
-                text = top_comm.get("textDisplay", "")
-                comment_id = t["snippet"]["topLevelComment"]["id"]
-
-                # Skip self-comments (channel owner pinned comment)
-                if "Zirvenin Kanunu" in author or "@zirveninkanunu" in author:
-                    continue
-
-                total_replies = t["snippet"].get("totalReplyCount", 0)
-
-                # If no creator reply yet, reply!
-                if total_replies == 0:
-                    reply_text = random.choice(PERSONA_REPLIES)
-                    try:
-                        youtube.comments().insert(
-                            part="snippet",
-                            body={
-                                "snippet": {
-                                    "parentId": comment_id,
-                                    "textOriginal": f"@{author} {reply_text}"
-                                }
-                            }
-                        ).execute()
-                        print(f"✅ Yanıtlandı ({video_title[:30]}): @{author} -> '{reply_text}'")
-                        engaged_count += 1
-                    except Exception as e:
-                        print(f"⚠️ Yorum yanıtlama notu: {e}")
-
-        except Exception as e:
-            # Comments may be disabled or empty on newer videos
-            continue
-
-    if engaged_count == 0:
-        print("ℹ️ Şu anda yanıt bekleyen yeni izleyici yorumu bulunmuyor. Sabit tartışma soruları aktif!")
-    else:
-        print(f"👑 Toplam {engaged_count} yeni izleyici yorumu başarıyla yanıtlandı!")
-
-    print("=" * 70 + "\n")
-
+    async with async_playwright() as p:
+        browser = await p.chromium.launch_persistent_context(
+            user_data_dir=str(PROFILE_DIR),
+            executable_path=CHROME_BIN,
+            headless=True,
+            user_agent=USER_AGENT,
+            viewport={'width': 1920, 'height': 1080},
+            ignore_default_args=['--enable-automation'],
+            args=['--disable-blink-features=AutomationControlled']
+        )
+        page = await browser.new_page()
+        await page.goto('https://studio.youtube.com', wait_until='domcontentloaded', timeout=40000)
+        await page.wait_for_timeout(3000)
+        
+        # Click 'Oluştur'
+        create_btn = page.locator('#create-icon, button:has-text("Oluştur")').first
+        await create_btn.click()
+        await page.wait_for_timeout(1500)
+        
+        # Click 'Gönderi oluştur'
+        post_item = page.locator('tp-yt-paper-item:has-text("Gönderi oluştur")').first
+        async with page.expect_popup() as pinfo:
+            await post_item.click()
+        posts_page = await pinfo.value
+        await posts_page.wait_for_load_state('domcontentloaded')
+        await posts_page.wait_for_timeout(4000)
+        
+        # Click 'Metin anket'
+        poll_btn = posts_page.locator('button:has-text("Metin anket"), ytd-button-renderer:has-text("Metin anket")').first
+        await poll_btn.click()
+        await posts_page.wait_for_timeout(2000)
+        
+        # Fill question box
+        q_box = posts_page.locator('#contenteditable-root, #contenteditable-textarea, [placeholder*="Topluluğunuza"]').first
+        await q_box.click()
+        await posts_page.wait_for_timeout(500)
+        await posts_page.keyboard.insert_text(question)
+        await posts_page.wait_for_timeout(1000)
+        print("✍️ Anket sorusu başarıyla yazıldı.")
+        
+        # Click 'Bir seçenek daha ekle' twice to have 4 options
+        add_more_link = posts_page.locator('text="Bir seçenek daha ekle"').first
+        for i in range(2):
+            if await add_more_link.is_visible():
+                await add_more_link.click()
+                await posts_page.wait_for_timeout(1000)
+                print(f"➕ Seçenek kutusu {i+3} eklendi.")
+                
+        # Fill all available option fields
+        option_inputs = await posts_page.locator('input[placeholder="Seçenek ekle"]').all()
+        print(f"Toplam seçenek kutusu: {len(option_inputs)}")
+        
+        for idx, opt_text in enumerate(options):
+            if idx < len(option_inputs):
+                await option_inputs[idx].click()
+                await posts_page.wait_for_timeout(200)
+                await posts_page.keyboard.insert_text(opt_text)
+                await posts_page.wait_for_timeout(300)
+                print(f"   Seçenek {idx+1} girildi: {opt_text}")
+                
+        await posts_page.wait_for_timeout(2000)
+        
+        # Click 'Gönder'
+        all_send_btns = await posts_page.locator('button:has-text("Gönder")').all()
+        clicked = False
+        for btn in all_send_btns:
+            if await btn.is_visible():
+                print("🚀 Görünür 'Gönder' butonu bulundu, yayınlanıyor...")
+                await btn.click()
+                clicked = True
+                break
+                
+        if clicked:
+            await posts_page.wait_for_timeout(4000)
+            record_posted_poll_id(target_poll["id"])
+            screenshot_path = BASE_DIR / "output" / f"poll_published_{target_poll['id']}.png"
+            await posts_page.screenshot(path=str(screenshot_path))
+            print(f"🎉 Anket Başarıyla Yayınlandı! Ekran görüntüsü: {screenshot_path.name}")
+        else:
+            print("⚠️ Gönder butonu bulunamadı.")
+            
+        await browser.close()
+        return clicked
 
 if __name__ == "__main__":
-    engage_with_recent_comments()
+    asyncio.run(post_next_viral_poll())
