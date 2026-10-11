@@ -1,0 +1,39 @@
+name: 24/7 YouTube Cloud Live Stream
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration_hours:
+        description: 'Stream duration in hours (max 6 hours per job)'
+        required: false
+        default: '6'
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+        with:
+          ffmpeg-version: release
+
+      - name: Start 24/7 Live Stream to YouTube
+        env:
+          STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
+        run: |
+          echo "🔴 Initializing YouTube Live Stream from Cloud..."
+          TARGET_URL="rtmp://a.rtmp.youtube.com/live2/${STREAM_KEY:-6ks6-92vc-qxyy-at6u-fxvz}"
+          
+          # Find video to stream
+          VIDEO="output/HOLLYWOOD_TRILOGY_FULL_DOCUMENTARY_1080P.mp4"
+          if [ ! -f "$VIDEO" ]; then
+            VIDEO=$(find output -name "*.mp4" | head -n 1)
+          fi
+          
+          echo "Broadcasting video: $VIDEO"
+          ffmpeg -re -stream_loop -1 -i "$VIDEO" -c copy -f flv "$TARGET_URL"
