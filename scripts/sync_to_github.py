@@ -200,7 +200,7 @@ def sync_core_factory_to_github():
         ("scripts/produce_viral_hollywood_benchmark.py", "scripts/produce_viral_hollywood_benchmark.py"),
         ("scripts/publish_viral_hollywood_benchmark.py", "scripts/publish_viral_hollywood_benchmark.py"),
         ("scripts/apply_benchmark_perfect_seo.py", "scripts/apply_benchmark_perfect_seo.py"),
-        ("produce_benchmark_tyler_durden.py", "produce_benchmark_tyler_durden.py"),
+        ("scripts/produce_benchmark_tyler_durden.py", "scripts/produce_benchmark_tyler_durden.py"),
         ("app/services/live_dynamic_streamer.py", "app/services/live_dynamic_streamer.py"),
         ("app/services/live_voice_responder.py", "app/services/live_voice_responder.py"),
         ("scripts/upload_10_languages_studio.py", "scripts/upload_10_languages_studio.py"),
