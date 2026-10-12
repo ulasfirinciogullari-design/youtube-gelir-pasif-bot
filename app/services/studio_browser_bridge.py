@@ -169,11 +169,11 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
     print(f"\n🔗 [STUDIO BRIDGE] {short_id} için İlgili Video Bağlanıyor ➔ '{target_query}'...")
 
     p, context = await launch_stealth_context(headless=headless)
-    page = await context.new_page()
+    page = context.pages[0] if context.pages else await context.new_page()
 
     try:
-        await page.goto(edit_url, wait_until="domcontentloaded", timeout=40000)
-        await page.wait_for_timeout(2500)
+        await page.goto(edit_url, wait_until="domcontentloaded", timeout=45000)
+        await page.wait_for_timeout(3500)
 
         if "accounts.google.com" in page.url:
             print("⚠️ Oturum açık değil. Lütfen önce `interactive_login_flow()` ile giriş yapın.")
@@ -204,7 +204,7 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
 
         if not trigger:
             # Scroll down to reveal details panel options
-            await page.evaluate("window.scrollBy(0, 600)")
+            await page.evaluate("window.scrollBy(0, 500)")
             await page.wait_for_timeout(1500)
             for sel in triggers:
                 loc = page.locator(sel).first
@@ -213,40 +213,54 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
                     break
 
         if trigger:
+            curr_status = (await trigger.inner_text()).replace('\n', ' ')
+            if "HOLLYWOOD TRILOGY" in curr_status or target_query in curr_status:
+                print(f"✅ İlgili video zaten doğru bağlı: {curr_status}")
+                return True
+
             print("👉 'İlgili video' seçiciye tıklandı...")
             await trigger.click()
             await page.wait_for_timeout(2000)
 
-            # Look for dialog
-            dialog = page.locator('ytcp-video-pick-dialog').first
-            if await dialog.is_visible():
-                search_input = dialog.locator('input').first
-                if await search_input.is_visible():
-                    print(f"🔍 Hedef video aranıyor: {target_query}")
-                    await search_input.fill(target_query)
-                    await page.wait_for_timeout(2500)
+            # Search in dialog
+            search_input = page.locator('ytcp-video-pick-dialog input, div[role="dialog"] input').first
+            if await search_input.is_visible():
+                print(f"🔍 Hedef video aranıyor: {target_query}")
+                await search_input.fill(target_query)
+                await page.wait_for_timeout(2500)
 
-                # Select first matching card
-                target_card = dialog.locator('ytcp-entity-card').first
-                if not await target_card.is_visible():
-                    target_card = dialog.locator('ytcp-video-row, [role="row"]').first
-
-                if await target_card.is_visible():
-                    print("🎬 Hedef kart seçildi.")
-                    await target_card.click()
+            # Select matching card
+            card = page.locator('ytcp-video-pick-dialog-contents ytcp-entity-card, ytcp-entity-card.card').first
+            if await card.is_visible():
+                box = await card.bounding_box()
+                if box:
+                    print(f"🎯 Hedef kart bulundu ({box}), tıklanıyor...")
+                    await page.mouse.click(box['x'] + box['width'] / 2, box['y'] + box['height'] / 2)
+                else:
+                    await card.click(force=True)
+                await page.wait_for_timeout(2000)
+            else:
+                title_el = page.locator('ytcp-video-pick-dialog :has-text("HOLLYWOOD TRILOGY")').last
+                if await title_el.is_visible():
+                    await title_el.click(force=True)
                     await page.wait_for_timeout(2000)
 
-                # Click Save button (Kaydet)
-                save_btn = page.locator('#save-button, ytcp-button#save-button, button:has-text("Kaydet"), button:has-text("Save")').first
+            # Click Save button (Kaydet)
+            save_btn = page.locator('#save-button button, ytcp-button#save-button button, button:has-text("Kaydet"), #save-button').first
+            for _ in range(6):
                 if await save_btn.is_enabled():
-                    print("💾 Kaydet butonuna basılıyor...")
-                    await save_btn.click()
-                    await page.wait_for_timeout(3500)
-                    print(f"✅ [STUDIO BRIDGE] İlgili Video Başarıyla Kaydedildi! ({short_id} ➔ {target_query})")
-                    return True
-                else:
-                    print("ℹ️ Kaydet butonu aktif değil (video zaten bağlı olabilir).")
-                    return True
+                    break
+                await page.wait_for_timeout(1000)
+
+            if await save_btn.is_enabled():
+                print("💾 Kaydet butonuna basılıyor...")
+                await save_btn.click(force=True)
+                await page.wait_for_timeout(4000)
+                print(f"✅ [STUDIO BRIDGE] İlgili Video Başarıyla Kaydedildi! ({short_id} ➔ {target_query})")
+                return True
+            else:
+                print("ℹ️ Kaydet butonu aktif değil (video zaten kaydedilmiş olabilir).")
+                return True
         else:
             print("ℹ️ 'İlgili video' tetikleyici buton sayfada bulunamadı.")
             await page.screenshot(path=str(BASE_DIR / "output" / f"debug_related_{short_id}.png"))
