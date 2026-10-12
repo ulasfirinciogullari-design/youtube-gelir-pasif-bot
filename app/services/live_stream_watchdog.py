@@ -1,10 +1,10 @@
 """
 24/7 Ultra-Resilient RTMP Watchdog Streamer for 'Zirvenin Kanunu'.
+Monitors and runs the Real-Time Dynamic Stream Engine (live_dynamic_streamer.py).
 Features:
 - Primary & Backup RTMP server rotation (a.rtmp.youtube.com & b.rtmp.youtube.com).
 - 5-second graceful socket cooldown so YouTube releases the stream key lock.
-- Socket timeout parameters (-rw_timeout).
-- Full exception catching and persistent logging.
+- Full exception catching, live chat polling, and real-time AI voice response supervision.
 """
 
 import os
@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 CREDENTIALS_FILE = BASE_DIR / "output" / "live_stream_credentials.json"
 PID_FILE = BASE_DIR / "output" / "livestream_pid.txt"
 WATCHDOG_LOG = BASE_DIR / "output" / "watchdog_live.log"
-TREX_MASTER = BASE_DIR / "output" / "UNBEATABLE_TREX_60FPS_MASTER_STREAM.mp4"
+DYNAMIC_STREAMER_SCRIPT = BASE_DIR / "app" / "services" / "live_dynamic_streamer.py"
 
 def log(msg):
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -52,8 +52,8 @@ def run_resilient_stream():
     ]
 
     log("=" * 65)
-    log("🛡️ 24/7 RESILIENT LIVE STREAM WATCHDOG V2 BAŞLATILDI")
-    log(f"🎬 Video: {TREX_MASTER.name}")
+    log("🛡️ 24/7 RESILIENT LIVE STREAM WATCHDOG V3 (REAL-TIME ENGINE)")
+    log(f"🎬 Engine: {DYNAMIC_STREAMER_SCRIPT.name}")
     log(f"📡 Primary: {primary_url}")
     log(f"📡 Backup:  {backup_url}")
     log("=" * 65)
@@ -69,13 +69,8 @@ def run_resilient_stream():
         log(f"\n🚀 Canlı Yayın Oturumu #{session_idx} Başlatılıyor -> Sunucu: {server_label}")
 
         cmd = [
-            "ffmpeg",
-            "-re",
-            "-stream_loop", "-1",
-            "-i", str(TREX_MASTER),
-            "-c", "copy",
-            "-flvflags", "no_duration_filesize",
-            "-f", "flv",
+            sys.executable,
+            str(DYNAMIC_STREAMER_SCRIPT),
             target_url
         ]
 
@@ -83,39 +78,38 @@ def run_resilient_stream():
         try:
             proc = subprocess.Popen(
                 cmd,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
                 text=True,
                 encoding="utf-8",
                 errors="replace"
             )
 
-            # Record PID
+            # Record Watchdog Streamer PID
             with open(PID_FILE, "w", encoding="utf-8") as f:
                 f.write(str(proc.pid))
 
-            log(f"✅ FFmpeg aktifleşti (PID: {proc.pid})")
+            log(f"✅ Dynamic Streamer aktifleşti (PID: {proc.pid})")
 
             # Stream monitoring
             while proc.poll() is None:
-                # Read line with timeout / non-blocking
-                line = proc.stderr.readline()
+                line = proc.stdout.readline()
                 if not line:
                     time.sleep(0.1)
                     continue
-                if "Error" in line or "error" in line or "failed" in line or "-10054" in line:
-                    log(f"⚠️ [FFmpeg]: {line.strip()}")
+                line_str = line.strip()
+                if any(k in line_str for k in ["CANLI YAYIN", "GERÇEK", "İzleyici", "Ses", "🎙️", "🔊", "Error", "Hata"]):
+                    log(f"[{DYNAMIC_STREAMER_SCRIPT.name}] {line_str}")
 
             ret = proc.returncode
             uptime = time.time() - start_time
-            log(f"ℹ️ FFmpeg kapandı (Kod: {ret}, Oturum Süresi: {uptime:.1f} saniye)")
+            log(f"ℹ️ Streamer kapandı (Kod: {ret}, Oturum Süresi: {uptime:.1f} saniye)")
 
             if uptime > 60:
                 consecutive_failures = 0
             else:
                 consecutive_failures += 1
 
-            # Exponential / Cooldown sleep before reconnect
             sleep_time = 5.0 if consecutive_failures <= 2 else min(20.0, 5.0 * consecutive_failures)
             log(f"⏳ YouTube soketinin serbest bırakılması bekleniyor ({sleep_time:.1f} sn)...")
             time.sleep(sleep_time)
