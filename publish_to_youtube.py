@@ -92,6 +92,7 @@ def upload_short(video_path: Path, privacy_status: str = "public", auto_10lang: 
             default_lang = meta.get("defaultLanguage", "tr")
             default_audio = meta.get("defaultAudioLanguage", "tr")
             pinned_comment = meta.get("pinned_comment")
+            target_related = meta.get("target_related", "PY47MUbB71c")
             if pinned_comment and pinned_comment not in description:
                 description = f"💬 TARTIŞMA: {pinned_comment}\n\n" + description
 
@@ -343,7 +344,7 @@ def upload_short(video_path: Path, privacy_status: str = "public", auto_10lang: 
     # Studio Browser Bridge: Link Related Video & Pin High-CTR Comment
     try:
         from app.services.studio_browser_bridge import auto_bridge_post_publish
-        auto_bridge_post_publish(video_id, target_related="PY47MUbB71c", pinned_comment=pinned_comment)
+        auto_bridge_post_publish(video_id, target_related=target_related, pinned_comment=pinned_comment)
     except Exception as br_err:
         print(f"ℹ️ Studio Browser Bridge notu: {br_err}")
 
