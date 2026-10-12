@@ -633,6 +633,191 @@ TRILOGY_CATALOG = {
                 ]
             }
         }
+    },
+    "benchmark_shelby_blink": {
+        "video_id": "7xTXWFfqaGw",
+        "duration": 39.0,
+        "languages": {
+            "tr": {
+                "title": "Thomas Shelby Neden Asla Gözlerini Kırpmaz? (Karanlık Güç Kuralı) #shorts",
+                "desc": (
+                    "🎬 İLGİLİ VİDEO (1080p Full Belgesel): https://youtu.be/PY47MUbB71c\n"
+                    "👑 Hollywood Trilogy | Thomas Shelby - Walter White - Tyler Durden\n\n"
+                    "Peaky Blinders'ı dikkatle izlediyseniz, Thomas Shelby'nin neredeyse hiç göz kırpmadığını fark etmişsinizdir.\n\n"
+                    "Bu bir tesadüf değil; Cillian Murphy'nin bilinçli olarak uyguladığı karanlık bir psikoloji kuralıdır.\n\n"
+                    "Gerçek güç, çok konuşmakta değil; sessizlikte ve sarsılmaz bir bakışta saklıdır.\n\n"
+                    "#thomasshelby #peakyblinders #cillianmurphy #karanlıkpsikoloji #psikoloji #güçyasaları #sinema #shorts"
+                ),
+                "lines": [
+                    "Peaky Blinders'ı dikkatle izlediyseniz, Thomas Shelby'nin neredeyse hiç göz kırpmadığını fark etmişsinizdir.",
+                    "Bu bir tesadüf değil; Cillian Murphy'nin bilinçli olarak uyguladığı karanlık bir psikoloji kuralıdır.",
+                    "Göz kırpmayan bir insan, bilinçaltına avcı mesajı verir ve sarsılmaz bir hakimiyet kurar.",
+                    "Gerçek güç, çok konuşmakta değil; derin bir sessizlikte saklıdır."
+                ]
+            },
+            "en": {
+                "title": "👑 Why Thomas Shelby Never Blinks (Dark Psychology Rule) #shorts",
+                "desc": (
+                    "🎬 RELATED VIDEO (1080p Master Documentary): https://youtu.be/PY47MUbB71c\n"
+                    "👑 Hollywood Trilogy | Thomas Shelby - Walter White - Tyler Durden\n\n"
+                    "If you watched Peaky Blinders closely, you noticed Thomas Shelby rarely ever blinks.\n\n"
+                    "This is no accident; it is a calculated dark psychology technique applied by Cillian Murphy.\n\n"
+                    "An unblinking gaze signals predatory dominance and unshakeable inner control.\n\n"
+                    "True power is never loud; it lives in complete silence.\n\n"
+                    "#thomasshelby #peakyblinders #darkpsychology #48lawsofpower #cillianmurphy #stoic #shorts"
+                ),
+                "lines": [
+                    "If you watched Peaky Blinders closely, you noticed Thomas Shelby rarely ever blinks.",
+                    "This is no accident; it is a calculated dark psychology technique applied by Cillian Murphy.",
+                    "An unblinking gaze signals absolute predator dominance and unshakeable inner control.",
+                    "True power is never loud; it lives in complete silence."
+                ]
+            },
+            "es": {
+                "title": "👑 ¿Por Qué Thomas Shelby Nunca Parpadea? (Regla del Poder) #shorts",
+                "desc": (
+                    "🎬 VIDEO RELACIONADO (Documental 1080p): https://youtu.be/PY47MUbB71c\n"
+                    "👑 Trilogía Hollywood | Thomas Shelby - Walter White - Tyler Durden\n\n"
+                    "Si miras Peaky Blinders con atención, notarás que Thomas Shelby casi nunca parpadea.\n\n"
+                    "No es casualidad; es una técnica calculada de psicología oscura aplicada por Cillian Murphy.\n\n"
+                    "Una mirada fija proyecta el control de un depredador y una calma inquebrantable.\n\n"
+                    "El verdadero poder no necesita gritar; vive en el silencio.\n\n"
+                    "#thomasshelby #peakyblinders #psicologiaoscura #48leyesdelpoder #poder #shorts"
+                ),
+                "lines": [
+                    "Si observas con atención Peaky Blinders, notarás que Thomas Shelby casi nunca parpadea.",
+                    "Esto no es una coincidencia; es una técnica de psicología oscura aplicada conscientemente por Cillian Murphy.",
+                    "Una mirada fija proyecta el control de un depredador y una calma inquebrantable.",
+                    "El verdadero poder nunca es ruidoso; reside en el silencio más profundo."
+                ]
+            },
+            "pt": {
+                "title": "👑 Por Que Thomas Shelby Nunca Pisca? (Psicologia Sombria) #shorts",
+                "desc": (
+                    "🎬 VÍDEO RELACIONADO (Documentário 1080p): https://youtu.be/PY47MUbB71c\n"
+                    "👑 Trilogia Hollywood | Thomas Shelby - Walter White - Tyler Durden\n\n"
+                    "Se você prestar atenção em Peaky Blinders, verá que Thomas Shelby quase nunca pisca.\n\n"
+                    "Não é coincidência; é uma regra fria de psicologia sombria aplicada por Cillian Murphy.\n\n"
+                    "Um olhar sem piscar transmite o instinto de um predador e domínio absoluto.\n\n"
+                    "O verdadeiro poder não precisa de barulho; ele vive no silêncio.\n\n"
+                    "#thomasshelby #peakyblinders #psicologiasombria #leisdopoder #sucesso #shorts"
+                ),
+                "lines": [
+                    "Se você assistir com atenção a Peaky Blinders, perceberá que Thomas Shelby quase nunca pisca.",
+                    "Isso não é um acaso; é uma regra calculada de psicologia sombria de Cillian Murphy.",
+                    "Um olhar sem piscar transmite o instinto de um predador e domínio absoluto.",
+                    "O verdadeiro poder não precisa de barulho; ele vive no mais absoluto silêncio."
+                ]
+            },
+            "de": {
+                "title": "👑 Warum Thomas Shelby Nie Blinzelt (Dunkle Psychologie) #shorts",
+                "desc": (
+                    "🎬 ZUGEHÖRIGES VIDEO (1080p Doku): https://youtu.be/PY47MUbB71c\n"
+                    "👑 Hollywood Trilogie | Thomas Shelby - Walter White - Tyler Durden\n\n"
+                    "Wer Peaky Blinders aufmerksam schaut, bemerkt: Thomas Shelby blinzelt fast nie.\n\n"
+                    "Das ist kein Zufall; es ist eine bewusst eingesetzte Regel der dunklen Psychologie von Cillian Murphy.\n\n"
+                    "Ein unerschütterlicher Blick signalisiert absolute Dominanz und eiserne Kontrolle.\n\n"
+                    "Wahre Macht ist niemals laut; sie liegt in der Stille.\n\n"
+                    "#thomasshelby #peakyblinders #dunklepsychologie #macht #motivation #shorts"
+                ),
+                "lines": [
+                    "Wer Peaky Blinders aufmerksam verfolgt, bemerkt schnell: Thomas Shelby blinzelt fast nie.",
+                    "Das ist kein Zufall; es ist eine kalkulierte Regel dunkler Psychologie von Cillian Murphy.",
+                    "Ein unerschütterlicher Blick signalisiert absolute Dominanz und eiserne Kontrolle.",
+                    "Wahre Macht macht keinen Lärm; sie herrscht in vollkommener Stille."
+                ]
+            },
+            "fr": {
+                "title": "👑 Pourquoi Thomas Shelby Ne Cligne Jamais Des Yeux #shorts",
+                "desc": (
+                    "🎬 VIDÉO ASSOCIÉE (Documentaire 1080p): https://youtu.be/PY47MUbB71c\n"
+                    "👑 Trilogie Hollywood | Thomas Shelby - Walter White - Tyler Durden\n\n"
+                    "Si vous regardez Peaky Blinders, vous remarquerez que Thomas Shelby ne cligne presque jamais des yeux.\n\n"
+                    "Ce n'est pas un hasard; c'est une technique calculée de psychologie sombre de Cillian Murphy.\n\n"
+                    "Un regard fixe impose une domination prédatrice et une autorité imperturbable.\n\n"
+                    "Le vrai pouvoir ne fait aucun bruit; il réside dans le silence.\n\n"
+                    "#thomasshelby #peakyblinders #psychologiesombre #pouvoir #shorts"
+                ),
+                "lines": [
+                    "Si vous observez attentivement Peaky Blinders, Thomas Shelby ne cligne presque jamais des yeux.",
+                    "Ce n'est pas une coïncidence; c'est une technique de psychologie sombre voulue par Cillian Murphy.",
+                    "Un regard fixe impose une domination prédatrice et une autorité imperturbable.",
+                    "Le véritable pouvoir ne crie jamais; il réside dans le silence absolu."
+                ]
+            },
+            "it": {
+                "title": "👑 Perché Thomas Shelby Non Batte Mai Ciglio #shorts",
+                "desc": (
+                    "🎬 VIDEO CORRELATO (Documentario 1080p): https://youtu.be/PY47MUbB71c\n"
+                    "👑 Trilogia Hollywood | Thomas Shelby - Walter White - Tyler Durden\n\n"
+                    "Se guardi Peaky Blinders con attenzione, noterai che Thomas Shelby non batte quasi mai ciglio.\n\n"
+                    "Non è un caso; è una regola calcolata di psicologia oscura adottata da Cillian Murphy.\n\n"
+                    "Uno sguardo impassibile trasmette il controllo di un predatore e un potere incrollabile.\n\n"
+                    "Il vero potere non grida; vive nel silence.\n\n"
+                    "#thomasshelby #peakyblinders #psicologiaoscura #potere #shorts"
+                ),
+                "lines": [
+                    "Se guardi attentamente Peaky Blinders, noterai che Thomas Shelby non batte quasi mai ciglio.",
+                    "Non è una coincidenza; è una regola calcolata di psicologia oscura applicata da Cillian Murphy.",
+                    "Uno sguardo impassibile trasmette il controllo di un predatore e un potere incrollabile.",
+                    "Il vero potere non ha bisogno di rumore; risiede nel silenzio assoluto."
+                ]
+            },
+            "ru": {
+                "title": "👑 Почему Томас Шелби Никогда Не Моргает #shorts",
+                "desc": (
+                    "🎬 СВЯЗАННОЕ ВИДЕО (1080p Фильм): https://youtu.be/PY47MUbB71c\n"
+                    "👑 Голливудская Трилогия | Томас Шелби - Уолтер Уайт - Тайлер Дёрден\n\n"
+                    "Если вы внимательно смотрели «Острые козырьки», то заметили, что Томас Шелби почти не моргает.\n\n"
+                    "Это не случайность, а осознанный прием темной психологии Киллиана Мёрфи.\n\n"
+                    "Немигающий взгляд передает инстинкт хищника и абсолютный контроль над ситуацией.\n\n"
+                    "Истинная сила никогда не кричит; она кроется в тишине.\n\n"
+                    "#томашелби #острыекозырьки #темнаяпсихология #законывласти #shorts"
+                ),
+                "lines": [
+                    "Если внимательно смотреть «Острые козырьки», Томас Шелби практически никогда не моргает.",
+                    "Это не случайность, а тонкий прием темной психологии, созданный Киллианом Мёрфи.",
+                    "Немигающий взгляд передает инстинкт хищника и абсолютный контроль над ситуацией.",
+                    "Истинная сила никогда не бывает шумной; она рождается в могильной тишине."
+                ]
+            },
+            "ar": {
+                "title": "👑 لماذا لا يرمش توماس شيلبي أبداً؟ (علم النفس المظلم) #shorts",
+                "desc": (
+                    "🎬 الفيديو ذو الصلة (الوثائقي الكامل 1080p): https://youtu.be/PY47MUbB71c\n"
+                    "👑 ثلاثية هوليوود | توماس شيلبي - والتر وايت - تايلر ديردن\n\n"
+                    "إذا تابعت بيكي بليندرز بدقة، ستلاحظ أن توماس شيلبي لا يرمش بعينيه تقريباً.\n\n"
+                    "هذه ليست مصادفة؛ بل تقنية مدروسة في علم النفس المظلم طبقها كيليان مورفي.\n\n"
+                    "النظرة الثابتة التي لا ترمش ترسل رسالة سيطرة وافتراس تفقد الخصم توازنه.\n\n"
+                    "القوة الحقيقية لا تكمن في الصراخ؛ بل في الصمت المطبق.\n\n"
+                    "#توماس_شيلبي #بيكي_بليندرز #علم_النفس #قوانين_السطوة #shorts"
+                ),
+                "lines": [
+                    "إذا دققت النظر في بيكي بليندرز، ستلاحظ أن توماس شيلبي نادراً ما يرمش بعينيه.",
+                    "هذه ليست مجرد مصادفة؛ إنها تقنية مدروسة في علم النفس المظلم أتقنها كيليان مورفي.",
+                    "النظرة الثابتة التي لا ترمش ترسل رسالة سيطرة وافتراس تفقد الخصم توازنه.",
+                    "القوة الحقيقية لا تحتاج للصراخ؛ إنها تسكن في الصمت التام."
+                ]
+            },
+            "hi": {
+                "title": "👑 थॉमस शेल्बी कभी पलकें क्यों नहीं झपकाता? #shorts",
+                "desc": (
+                    "🎬 संबंधित वीडियो (1080p पूर्ण वृत्तचित्र): https://youtu.be/PY47MUbB71c\n"
+                    "👑 हॉलीवुड ट्रिलॉजी | थॉमस शेल्बी - वाल्टर व्हाइट - टायलर डर्डन\n\n"
+                    "अगर आपने पीकी ब्लाइंडर्स ध्यान से देखा है, तो आपने गौर किया होगा कि थॉमस शेल्बी शायद ही कभी पलक झपकाता है।\n\n"
+                    "यह कोई इत्तेफाक नहीं है; यह सिलियन मर्फी द्वारा इस्तेमाल की गई डार्क साइकोलॉजी की एक चाल है।\n\n"
+                    "बिना पलक झपकाए देखना सामने वाले के अवचेतन मन में शिकारी के प्रभुत्व का खौफ पैदा करता है।\n\n"
+                    "सच्ची ताकत कभी शोर नहीं मचाती; वह खामोशी में बसती है।\n\n"
+                    "#thomasshelby #peakyblinders #darkpsychology #power #success #shorts"
+                ),
+                "lines": [
+                    "अगर आपने पीकी ब्लाइंडर्स को ध्यान से देखा है, तो थॉमस शेल्बी शायद ही कभी पलकें झपकाता है।",
+                    "यह कोई इत्तेफाक नहीं; सिलियन मर्फी द्वारा अपनाई गई डार्क साइकोलॉजी की एक सोची-समझी तकनीक है।",
+                    "बिना पलक झपकाए देखना सामने वाले के अवचेतन मन में शिकारी के प्रभुत्व का खौफ पैदा करता है।",
+                    "असली ताकत कभी शोर नहीं मचाती; वह गहरी खामोशी में राज करती है।"
+                ]
+            }
+        }
     }
 }
 
@@ -746,7 +931,7 @@ def master_broadcast_audio_track(
     filter_complex = (
         "[0:a]volume=2.2,loudnorm=I=-14:TP=-1.0:LRA=7[v_voice];"
         "[1:a]volume=0.06,lowpass=f=5000,highpass=f=120[v_bg];"
-        "[v_voice][v_bg]amix=inputs=2:duration=first:weights=5 1:dropout_transition=0,"
+        "[v_voice][v_bg]amix=inputs=2:duration=longest:weights=5 1:dropout_transition=0,"
         "aformat=channel_layouts=stereo,loudnorm=I=-15.0:TP=-0.7:LRA=7[a_out]"
     )
 
