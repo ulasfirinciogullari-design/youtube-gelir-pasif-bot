@@ -21,7 +21,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 OUTPUT_DIR = BASE_DIR / "output"
 LIVE_CHAT_FEED_FILE = OUTPUT_DIR / "live_chat_feed.json"
-DEFAULT_VIDEO_ID = "9-xGXUwkCFM"
+DEFAULT_VIDEO_ID = "zCeqo0WTWJs"
 
 # Authentic simulated Turkish viewer community messages
 SIMULATED_COMMUNITY_POOL = [
