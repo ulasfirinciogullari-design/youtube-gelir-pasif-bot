@@ -403,13 +403,13 @@ def produce_challenge_episode(
         f"drawbox=x=30:y=65:w=1020:h=85:color=gold@0.85:t=3,"
         f"subtitles='{safe_ass_path}'[vout];"
         
-        # 5. Audio Mastering: Voice + Music Bed + Impact Sub + Cliffhanger Riser
-        f"[2:a]volume=1.0[v_voice];"
-        f"[3:a]volume=0.16[v_music];"
-        f"[4:a]volume=0.65[v_impact];"
-        f"[5:a]adelay={riser_delay_ms}|{riser_delay_ms},volume=0.45[v_riser];"
-        f"[v_voice][v_impact][v_riser]amix=inputs=3:duration=first:dropout_transition=0[v_voice_sfx];"
-        f"[v_voice_sfx][v_music]amix=inputs=2:duration=first:dropout_transition=2[aout]"
+        # 5. Hollywood Cinema Audio Mastering: Voice + Music Bed + Impact Sub + Cliffhanger Riser + EBU R128
+        f"[2:a]volume=1.35,equalizer=f=110:t=q:w=1:g=2.5,equalizer=f=3600:t=q:w=1:g=2.0[v_voice];"
+        f"[3:a]volume=0.08,lowpass=f=4200,highpass=f=90[v_music];"
+        f"[4:a]volume=0.85[v_impact];"
+        f"[5:a]adelay={riser_delay_ms}|{riser_delay_ms},volume=0.7[v_riser];"
+        f"[v_voice][v_music][v_impact][v_riser]amix=inputs=4:duration=first:dropout_transition=0,"
+        f"loudnorm=I=-14.5:TP=-0.7:LRA=7[aout]"
     )
 
     ffmpeg_cmd = [
