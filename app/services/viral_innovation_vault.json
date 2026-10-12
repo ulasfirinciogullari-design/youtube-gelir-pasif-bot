@@ -1,0 +1,114 @@
+[
+  {
+    "id": "HYPE_01_ELON_ASSISTANT",
+    "topic": "Billionaire Paradox & Ruthless Efficiency",
+    "title": "Elon Musk'ın 12 Yıllık Asistanını Kovma Sebebi ♟️ (Acımasız Kural)",
+    "tags": ["elonmusk", "psikoloji", "motivasyon", "para", "başarı", "strateji", "shorts"],
+    "music_mood": "phonk",
+    "primary_cinematic": "wolf_master.mp4",
+    "secondary_cinematic": "matrix_master.mp4",
+    "bottom_stock": "minecraft_parkour.mp4",
+    "header_badge": "🔥 ACIMASIZ ZİRVE KANUNU | DERS #01",
+    "comment_magnet": "💬 Sen olsaydın asistanı kovar mıydın, yoksa zam mı verirdin? YORUMA YAZ! 👇",
+    "pin_comment": "Elon Musk'ın yerinde olsaydın bu kararı verebilir miydin? 1: Evet, vazgeçilmez kimse yoktur. 2: Hayır, 12 yıllık vefa daha önemlidir. Görüşünü yaz, en zeki yorumu başa sabitliyorum! 👑",
+    "tweet_overlay": {
+      "author": "Elon Musk",
+      "handle": "@elonmusk",
+      "text": "Kimse şirketten daha büyük değildir. 2 haftalık test vazgeçilmez olmadığını kanıtladı.",
+      "start": 2.2,
+      "duration": 4.8,
+      "likes": "684K",
+      "retweets": "72K",
+      "views": "4.2M"
+    },
+    "sfx_cues": [
+      {"name": "ui_pop", "time": 2.2},
+      {"name": "vine_boom", "time": 7.0},
+      {"name": "cash_register", "time": 14.5},
+      {"name": "cinematic_whoosh", "time": 20.0}
+    ],
+    "meme_cues": [
+      {"name": "gigachad", "time": 18.0, "duration": 2.5}
+    ],
+    "script_tr": "Elon Musk'ın 12 yıllık sağ kolu Mary Beth Brown, bir gün odasına girdi ve ciddi bir maaş zammı istedi. Musk ne yaptı biliyor musunuz? Ona kızmadı. Tartışmadı. Sadece şunu söyledi: 'İki hafta tatile çık. Senin yaptığın tüm işleri ben yapacağım.' İki hafta boyunca Musk, asistanının tüm görevlerini üstlendi. Ve kadın geri döndüğünde Musk kararını vermişti: 'Sana zam yapamam, çünkü iki hafta boyunca yokluğunu hiç hissetmedim.' Ve onu kovdu. Acımasızca gelebilir. Ama zirvenin kanunu nettir: Eğer yokluğun hissedilmiyorsa, varlığın sadece bir yüktür. Peki sen: Vazgeçilmez olduğunu düşünüyor musun?",
+    "subtitles_ass_cues": [
+      {"start": 0.0, "end": 2.2, "text": "Elon Musk'ın 12 yıllık sağ kolu..."},
+      {"start": 2.2, "end": 5.0, "text": "Bir gün odasına girip dev bir ZAM istedi."},
+      {"start": 5.0, "end": 7.0, "text": "Musk ne yaptı dersiniz? Tartışmadı!"},
+      {"start": 7.0, "end": 10.5, "text": "'İki hafta tatile çık. İşlerini ben yapacağım.' dedi."},
+      {"start": 10.5, "end": 14.5, "text": "Ve kadın döndüğünde... Tek bir cümle kurdu:"},
+      {"start": 14.5, "end": 18.0, "text": "'Yokluğunu hiç hissetmedim. Kovuldun!'"},
+      {"start": 18.0, "end": 22.0, "text": "Acımasız ama gerçek: Zirvede vefa yoktur!"},
+      {"start": 22.0, "end": 25.5, "text": "Yokluğun fark edilmiyorsa, varlığın yüktür!"}
+    ]
+  },
+  {
+    "id": "HYPE_02_DUNNING_KRUGER",
+    "topic": "Absurd Psychology & The Intelligence Trap",
+    "title": "İnsanların %99'unun Düştüğü 'Zeka Tuzağı' 🧠 (Dunning-Kruger)",
+    "tags": ["psikoloji", "zeka", "felsefe", "manipülasyon", "insan", "shorts"],
+    "music_mood": "tension",
+    "primary_cinematic": "fight_club_master.mp4",
+    "secondary_cinematic": "joker_master.mp4",
+    "bottom_stock": "beamng_crash.mp4",
+    "header_badge": "🚨 BEYİN YAKAN GERÇEK | DERS #02",
+    "comment_magnet": "💬 Çevrende bu tuzağa düşen en az bir kişi var mı? 1: Evet / 2: Hayır. 👇",
+    "pin_comment": "En cahil insanlar neden hep en özgüvenlidir? 1: Farkındalıkları sıfır. 2: Toplum onları ödüllendiriyor. Yorumunu yaz! ♟️",
+    "stat_pill": {
+      "text": "🚨 İNSANLARIN %99'U BU TESTTE YANILIYOR",
+      "highlight_num": "%99'U",
+      "start": 1.5,
+      "duration": 4.5
+    },
+    "sfx_cues": [
+      {"name": "record_scratch", "time": 1.5},
+      {"name": "vine_boom", "time": 6.0},
+      {"name": "error_buzzer", "time": 12.0},
+      {"name": "dramatic_screech", "time": 19.0}
+    ],
+    "meme_cues": [
+      {"name": "shocked_reaction", "time": 12.5, "duration": 2.0}
+    ],
+    "script_tr": "Bir konuda ne kadar az şey bilirsen, o konuda o kadar büyük bir uzman olduğunu zannedersin. Buna psikolojide Dunning-Kruger sendromu denir. En az okuyanlar en çok konuşur, en yeteneksizler en çok özgüvene sahiptir. Çünkü cehalet, kendi sınırlarını göremeyecek kadar kördür. Gerçek bir dahi ise her zaman şüphe duyar. Sokrates ne demişti? 'Bildiğim tek şey, hiçbir şey bilmediğimdir.' Eğer bir masada herkes susarken biri bağırarak haklı olduğunu kanıtlamaya çalışıyorsa, onunla asla tartışma. Sadece gülümse ve dinle. Çünkü aptallarla tartışanlar, masadaki ikinci aptal olurlar.",
+    "subtitles_ass_cues": [
+      {"start": 0.0, "end": 2.5, "text": "Bir konuda ne kadar AZ bilirsen..."},
+      {"start": 2.5, "end": 6.0, "text": "Kendini o kadar BÜYÜK bir dahi sanırsın!"},
+      {"start": 6.0, "end": 9.5, "text": "En az okuyanlar en çok konuşur."},
+      {"start": 9.5, "end": 13.0, "text": "En yeteneksizler en yüksek özgüvene sahiptir."},
+      {"start": 13.0, "end": 17.0, "text": "Çünkü cehalet, kendi sınırlarını göremez!"},
+      {"start": 17.0, "end": 21.0, "text": "Gerçek bir kurt ise sessizce dinler ve izler."},
+      {"start": 21.0, "end": 25.0, "text": "Aptallarla tartışan, ikinci aptal olur!"}
+    ]
+  },
+  {
+    "id": "HYPE_03_THREE_SECOND_RULE",
+    "topic": "Power Dynamics & Dominant Presence",
+    "title": "Bir Odaya Girdiğinde Herkesi Sessizleştiren 3 Saniye Kuralı 👁️",
+    "tags": ["özgüven", "karizma", "shelby", "bedendili", "saygı", "shorts"],
+    "music_mood": "phonk",
+    "primary_cinematic": "peaky_master.mp4",
+    "secondary_cinematic": "godfather_master.mp4",
+    "bottom_stock": "minecraft_parkour.mp4",
+    "header_badge": "👑 KARİZMA PROTOKOLÜ | GİZLİ KURAL",
+    "comment_magnet": "💬 Bir odaya girdiğinde ilk göz kaçıran sen mi olursun, onlar mı? 👇",
+    "pin_comment": "Odaya girdiğinde gözlerini ilk kaçıran kaybeder. Katılıyor musun? 1: Evet / 2: Hayır. En keskin gözlemi sabitleyeceğim! 👑",
+    "sfx_cues": [
+      {"name": "cinematic_whoosh", "time": 0.5},
+      {"name": "sub_boom_808", "time": 4.0},
+      {"name": "vine_boom", "time": 10.0},
+      {"name": "impact_sub", "time": 18.0}
+    ],
+    "meme_cues": [
+      {"name": "gigachad", "time": 15.0, "duration": 2.5}
+    ],
+    "script_tr": "Sıradan insanlar bir odaya girdiklerinde hemen onay ararlar: Etrafa bakınır, aceleyle bir köşeye geçerler. Ama gerçek bir lider odaya girdiğinde kapıda 3 saniye durur. Acele etmez. Başını dik tutar, odadaki herkesin gözünün içine bakar ve sessizliği kendi lehine kullanır. İnsan beyni duraksayan ve acele etmeyen kişiyi anında en yüksek statüdeki lider olarak kodlar. Sessizlik bir boşluk değildir; sessizlik masadaki en ağır silahtır. Thomas Shelby'nin asla hızlı yürümemesinin sebebi budur: Zirvedeki adamların kimseye yetişecek acelesi yoktur.",
+    "subtitles_ass_cues": [
+      {"start": 0.0, "end": 2.5, "text": "Sıradan insanlar odaya girince onay arar."},
+      {"start": 2.5, "end": 6.0, "text": "Ama gerçek bir lider kapıda 3 SANİYE durur!"},
+      {"start": 6.0, "end": 10.0, "text": "Acele etmez. Odadaki gözlerin içine bakar."},
+      {"start": 10.0, "end": 14.0, "text": "İnsan beyni yavaş hareket edeni lider kodlar!"},
+      {"start": 14.0, "end": 18.0, "text": "Sessizlik en tehlikeli psikolojik silahtır."},
+      {"start": 18.0, "end": 22.0, "text": "Zirvedeki kurdun kimseye acelesi yoktur!"}
+    ]
+  }
+]
