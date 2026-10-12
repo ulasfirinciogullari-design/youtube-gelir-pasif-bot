@@ -65,7 +65,7 @@ def get_authenticated_service():
     return build("youtube", "v3", credentials=creds)
 
 
-def upload_short(video_path: Path, privacy_status: str = "public") -> str:
+def upload_short(video_path: Path, privacy_status: str = "public", auto_10lang: bool = True) -> str:
     if not video_path.exists():
         raise FileNotFoundError(f"Video bulunamadı: {video_path}")
 
@@ -241,49 +241,61 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
 
     # Add 10-Language Global Localizations (EN, ES, DE, FR, PT, IT, AR, JA, HI, RU)
     try:
-        base_clean = title.replace("👑 ", "").replace(" #shorts", "").strip()
+        from app.services.global_10_language_suite import TRILOGY_CATALOG
+        clean_title = title.replace("👑 ", "").replace(" #shorts", "").strip()
         locs = {
             "en": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nUnwritten power laws, dark psychology & cinema masters.\n⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n#shorts #powerlaws #darkpsychology #stoic #sigma"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nUnwritten power laws, dark psychology & cinema masters.\n⚡ Subscribe for daily 60 FPS analysis: @zirveninkanunu\n\n#shorts #powerlaws #darkpsychology #stoic #sigma"[:5000]
             },
             "es": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nLeyes del poder, psicología oscura y maestros del cine.\n⚡ Suscríbete para análisis en 60 FPS: @zirveninkanunu\n\n#shorts #leyesdelpoder #psicologiaoscura #motivacion"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nLeyes del poder, psicología oscura y maestros del cine.\n⚡ Suscríbete para análisis en 60 FPS: @zirveninkanunu\n\n#shorts #leyesdelpoder #psicologiaoscura #motivacion"[:5000]
             },
             "de": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nGesetze der Macht, dunkle Psychologie und Filmgeschichte.\n⚡ Täglich neue 60 FPS Analysen: @zirveninkanunu\n\n#shorts #psychologie #macht #motivation"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nGesetze der Macht, dunkle Psychologie und Filmgeschichte.\n⚡ Täglich neue 60 FPS Analysen: @zirveninkanunu\n\n#shorts #psychologie #macht #motivation"[:5000]
             },
             "fr": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nLois du pouvoir, psychologie sombre et légendes du cinéma.\n⚡ Analyses quotidiennes en 60 FPS: @zirveninkanunu\n\n#shorts #pouvoir #psychologie #motivation"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nLois du pouvoir, psychologie sombre et légendes du cinéma.\n⚡ Analyses quotidiennes en 60 FPS: @zirveninkanunu\n\n#shorts #pouvoir #psychologie #motivation"[:5000]
             },
             "pt": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nLeis do poder, psicologia sombria e mestres do cinema.\n⚡ Inscreva-se para análises diárias em 60 FPS: @zirveninkanunu\n\n#shorts #leisdopoder #psicologia #sucesso"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nLeis do poder, psicologia sombria e mestres do cinema.\n⚡ Inscreva-se para análises diárias em 60 FPS: @zirveninkanunu\n\n#shorts #leisdopoder #psicologia #sucesso"[:5000]
             },
             "it": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nLeggi del potere, psicologia oscura e maestri del cinema.\n⚡ Iscriviti per analisi in 60 FPS: @zirveninkanunu\n\n#shorts #potere #psicologia #cinema"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nLeggi del potere, psicologia oscura e maestri del cinema.\n⚡ Iscriviti per analisi in 60 FPS: @zirveninkanunu\n\n#shorts #potere #psicologia #cinema"[:5000]
             },
             "ar": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nقوانين القوة وعلم النفس المظلم وروائع السينما.\n⚡ اشترك للحصول على تحليلات يومية بدقة 60 إطارًا: @zirveninkanunu\n\n#shorts #علم_النفس #القوة #تحفيز"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nقوانين القوة وعلم النفس المظلم وروائع السينما.\n⚡ اشترك للحصول على تحليلات يومية بدقة 60 إطارًا: @zirveninkanunu\n\n#shorts #علم_النفس #القوة #تحفيز"[:5000]
             },
             "ja": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\n力の法則、ダーク心理学、そして映画の巨匠たち。\n⚡ 毎日60 FPSで分析をお届け: @zirveninkanunu\n\n#shorts #心理学 #マインドセット #映画"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\n力の法則、ダーク心理学、そして映画の巨匠たち。\n⚡ 毎日60 FPSで分析をお届け: @zirveninkanunu\n\n#shorts #心理学 #マインドセット #映画"[:5000]
             },
             "hi": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nशक्ति के नियम, डार्क साइकोलॉजी और सिनेमा के महानतम क्षण।\n⚡ दैनिक 60 FPS विश्लेषण के लिए सब्सक्राइब करें: @zirveninkanunu\n\n#shorts #प्रेरणा #सफलता #माइंडसेट"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nशक्ति के नियम, डार्क साइकोलॉजी और सिनेमा के महानतम क्षण।\n⚡ दैनिक 60 FPS विश्लेषण के लिए सब्सक्राइब करें: @zirveninkanunu\n\n#shorts #प्रेरणा #सफलता #माइंडसेट"[:5000]
             },
             "ru": {
-                "title": f"👑 {base_clean} #shorts"[:100],
-                "description": f"{base_clean}\n\nЗаконы власти, темная психология и шедевры кино.\n⚡ Подпишитесь на ежедневный разбор в 60 FPS: @zirveninkanunu\n\n#shorts #психология #власть #мотивация"[:5000]
+                "title": f"👑 {clean_title} #shorts"[:100],
+                "description": f"{clean_title}\n\nЗаконы власти, темная психология и шедевры кино.\n⚡ Подпишитесь на ежедневный разбор в 60 FPS: @zirveninkanunu\n\n#shorts #психология #власть #мотивация"[:5000]
             }
         }
+        # If catalog entry exists, use custom translations
+        for k, v in TRILOGY_CATALOG.items():
+            if v.get("video_id") == video_id or any(kw in title.lower() for kw in k.split("_")):
+                for lc, cdata in v.get("languages", {}).items():
+                    if lc != "tr":
+                        locs[lc] = {
+                            "title": cdata.get("title", locs.get(lc, {}).get("title", ""))[:100],
+                            "description": cdata.get("desc", locs.get(lc, {}).get("description", ""))[:5000]
+                        }
+                break
+
         youtube.videos().update(
             part="localizations",
             body={"id": video_id, "localizations": locs}
@@ -291,6 +303,20 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
         print("🌍 10 Küresel Dilde (EN, ES, DE, FR, PT, IT, AR, JA, HI, RU) Yerelleştirme Mühürlendi!")
     except Exception as e:
         print(f"ℹ️ Dil yerelleştirme notu: {e}")
+
+    # Studio 10-Language Multi-Audio & Subtitles Auto-Synchronization Pipeline
+    if auto_10lang:
+        try:
+            print("\n" + "=" * 70)
+            print("🌐 [10-DİL KÜRESEL STUDIO OTOMATİK SENKRONİZASYON]")
+            print(f"🎬 Video ID: {video_id} için 10 Dilde Ses Parçaları ve Altyazılar Yükleniyor...")
+            print("=" * 70)
+            from scripts.upload_10_languages_studio import sync_video_10_languages_studio
+            import asyncio
+            proof_file = asyncio.run(sync_video_10_languages_studio(video_id=video_id, headless=True))
+            print(f"✅ 10 Dilde YouTube Studio Senkronizasyonu Tamamlandı! Kanıt: {proof_file}")
+        except Exception as lang_sync_err:
+            print(f"ℹ️ 10-Dil Studio Senkronizasyon notu: {lang_sync_err}")
 
     # Auto-add to matching playlists for binge-watching retention
     try:
@@ -329,6 +355,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="YouTube Shorts Publisher")
     parser.add_argument("--file", type=str, default=None, help="Yüklenecek video dosya yolu")
     parser.add_argument("--privacy", type=str, default="public", choices=["public", "unlisted", "private"], help="Video gizlilik durumu")
+    parser.add_argument("--auto-10lang", action="store_true", default=True, help="10 Dilde otomatik altyazı ve seslendirme senkronizasyonu (varsayılan: aktif)")
+    parser.add_argument("--no-10lang", dest="auto_10lang", action="store_false", help="10 dil senkronizasyonunu devre dışı bırak")
     args = parser.parse_args()
 
     if args.file:
@@ -340,4 +368,4 @@ if __name__ == "__main__":
             raise FileNotFoundError("Yüklenecek hiçbir video bulunamadı!")
         target = videos[0]
 
-    upload_short(target, privacy_status=args.privacy)
+    upload_short(target, privacy_status=args.privacy, auto_10lang=args.auto_10lang)
