@@ -211,18 +211,18 @@ class StreamAlertEngine:
             bbox = draw.textbbox((cur_x, y), seg_text, font=font)
             cur_x = bbox[2] + 2
 
-    def trigger_alert(self, alert_type="new_sub", title=None, subtitle=None, duration=300, current_subs=29, goal_subs=100):
+    def trigger_alert(self, alert_type="new_sub", title=None, subtitle=None, duration=300, current_subs=32, goal_subs=100000):
         self.active = True
         self.alert_type = alert_type
         self.duration_frames = duration
         self.frame_timer = duration
 
         if alert_type == "milestone":
-            self.title = title or f"🚀 YENİ HEDEF: {current_subs} / {goal_subs} ABONE! TEŞEKKÜRLER! 🎉"
-            self.subtitle = subtitle or "🔥 Zirveye giden yolda birlikte büyüyoruz! Takip eden herkese sonsuz teşekkürler!"
+            self.title = title or f"🚀 YENİ HEDEF: {current_subs:,} / 100.000 ABONE! TEŞEKKÜRLER! 🎉"
+            self.subtitle = subtitle or "🔥 100K Yolunda Birlikte Büyüyoruz! Ailemize Hoş Geldin Kral!"
         else:  # "new_sub"
-            self.title = title or "👑 YENİ ZİRVE ÜYESİ KATILDI! HOŞ GELDİN!"
-            self.subtitle = subtitle or "⚡ Zirvenin Kanunu ailesine yeni bir şampiyon katıldı! Canlı desteğin için teşekkürler!"
+            self.title = title or "👑 ARAMIZA YENİ BİR KRAL KATILDI! HOŞ GELDİN!"
+            self.subtitle = subtitle or "🎯 HEDEF 100.000 ABONE | Sen de Abone Ol ve Canlı Yayında Yerini Al!"
 
         # Spawn festive fireworks & golden sparkle burst around banner
         bx1, by1 = 370, 245
@@ -443,8 +443,8 @@ class UnbeatableTRexStreamer:
         self.fonts = self._load_fonts()
         
         # Real subscriber metrics
-        self.current_subs = 29
-        self.goal_subs = 100
+        self.current_subs = 32
+        self.goal_subs = 100000
         
         # Simulation parameters
         self.frame_idx = 0
@@ -487,12 +487,12 @@ class UnbeatableTRexStreamer:
         self.cycle_length = 2700
         self.is_night = False
         
-        # Authentic Chat Headlines (Clean badges without missing font glyphs)
+        # Authentic Streamer Headlines (Zero AI mentions, pure human gamer vibe, no tofu boxes)
         self.chat_headlines = [
-            "[CANLI SOHBET] Dinozor rekorunu geçebilir misin? Senin rekorun kaç? Sohbete yaz!",
-            "[ZİRVENİN KANUNU RESMİ YAYINI] Beğen & Abone Ol, Canlı Yayın Kapanmasın!",
-            "[DÜNYA REKORU DENEMESİ] Kesintisiz 7/24 Simülasyon | Yenilmez Dinozor",
-            "[SOHBETE KATILIN] Hoş Geldiniz! Tahminlerinizi ve rekorlarınızı paylaşın!"
+            "[CANLI SOHBET] 1 Milyon rekorunu zorluyoruz! Senin rekorun kaç kral? Sohbete yaz konuşalım!",
+            "[HEDEF 100.000 ABONE] Aramıza katılmak için Abone Ol & Beğen, canlı yayın kapanmasın!",
+            "[DÜNYA REKORU DENEMESİ] T-Rex durdurulamıyor, 1 Milyon Puana doğru kesintisiz koşuyoruz!",
+            "[SOHBETE YAZ, İSMİN EKRANDA ÇIKSIN!] Canlı sohbete katıl, selamını alalım krallar!"
         ]
         
         # Pre-render base canvas templates
@@ -614,7 +614,7 @@ class UnbeatableTRexStreamer:
         draw.rectangle([(30, 20), (1890, 105)], fill=(15, 23, 42), outline=(56, 189, 248), width=3)
         self._draw_crown(draw, 230, 63, size=18, color=(250, 204, 21))
         draw.text((255, 42), "ZIRVENIN KANUNU", font=self.fonts["title"], fill=(250, 204, 21))
-        draw.text((620, 46), "|  7/24 KESİNTİSİZ DİNOZOR CANLI YAYINI", font=self.fonts["bold"], fill=(241, 245, 249))
+        draw.text((620, 46), "|  7/24 DÜNYA REKORU DENEMESİ", font=self.fonts["bold"], fill=(241, 245, 249))
 
         # Right Live Badge Container
         draw.rounded_rectangle([(1640, 38), (1865, 88)], radius=8, fill=(220, 38, 38))
@@ -639,13 +639,13 @@ class UnbeatableTRexStreamer:
         draw.rounded_rectangle([(1500, 120), (1890, 225)], radius=10, fill=(30, 41, 59), outline=(100, 116, 139), width=2)
         draw.text((1520, 130), ">> OYUN HIZI", font=self.fonts["label"], fill=(148, 163, 184))
 
-        # 3. SUBSCRIBER GOAL CONTAINER (Real channel subscribers: 29 / 100)
+        # 3. SUBSCRIBER GOAL CONTAINER (Real channel subscribers: 32 / 100.000)
         draw.rounded_rectangle([(30, 830), (1890, 905)], radius=10, fill=(15, 23, 42), outline=(250, 204, 21), width=2)
         self._draw_crown(draw, 55, 867, size=14, color=(250, 204, 21))
-        draw.text((75, 850), f"CANLI ABONE HEDEFİ: {self.current_subs} / {self.goal_subs}", font=self.fonts["bold"], fill=(250, 204, 21))
+        draw.text((75, 850), f"CANLI ABONE HEDEFİ: {self.current_subs:,} / 100.000 (100K)", font=self.fonts["bold"], fill=(250, 204, 21))
         # Base bar container
-        draw.rounded_rectangle([(600, 847), (1570, 892)], radius=8, fill=(30, 41, 59))
-        draw.text((1600, 852), "ABONE OL & KATIL! >>", font=self.fonts["bold"], fill=(241, 245, 249))
+        draw.rounded_rectangle([(600, 847), (1550, 892)], radius=8, fill=(30, 41, 59))
+        draw.text((1570, 852), "ABONE OL & AİLEYE KATIL! >>", font=self.fonts["bold"], fill=(241, 245, 249))
 
         # 4. CHAT ENGAGEMENT TICKER CONTAINER
         draw.rectangle([(0, 930), (1920, 1045)], fill=(10, 15, 30))
@@ -851,7 +851,8 @@ class UnbeatableTRexStreamer:
                 # Real viewer golden badge with crisp live dot
                 draw.ellipse([(bx1 + 18, by1 + 10), (bx1 + 28, by1 + 20)], fill=(239, 68, 68))
                 draw.ellipse([(bx1 + 21, by1 + 13), (bx1 + 25, by1 + 17)], fill=(255, 255, 255))
-                badge_title = f"CANLI İZLEYİCİ: @{author_text}"
+                clean_auth = author_text.lstrip('@')
+                badge_title = f"CANLI İZLEYİCİ: @{clean_auth}"
                 draw.text((bx1 + 34, by1 + 7), badge_title[:30], font=self.fonts["chat_author"], fill=(250, 204, 21))
 
                 # Right CANLI Pill
@@ -944,11 +945,11 @@ class UnbeatableTRexStreamer:
         draw.text((1030, 160), f"{self.obstacles_dodged:,}", font=self.fonts["score"], fill=(74, 222, 128))
         draw.text((1520, 160), f"{speed_multiplier:.1f}x NORMAL", font=self.fonts["score"], fill=(251, 146, 60))
 
-        # Real Subscriber Goal Progress Bar (29 / 100)
-        progress_ratio = min(1.0, self.current_subs / float(self.goal_subs))
-        bar_w = int(970 * progress_ratio)
+        # Real Subscriber Goal Progress Bar (32 / 100.000)
+        progress_ratio = max(0.04, min(1.0, self.current_subs / float(self.goal_subs)))
+        bar_w = max(55, int(950 * progress_ratio))
         draw.rounded_rectangle([(600, 847), (600 + bar_w, 892)], radius=8, fill=(16, 185, 129))
-        draw.text((980, 855), f"{self.current_subs} / {self.goal_subs} (%{int(progress_ratio * 100)})", font=self.fonts["label"], fill=(255, 255, 255))
+        draw.text((930, 855), f"{self.current_subs:,} / 100.000 ABONE  |  HEDEF: 100.000", font=self.fonts["label"], fill=(255, 255, 255))
 
         # Interactive Live Chat Overlay Widget
         self._draw_live_chat_widget(draw)
