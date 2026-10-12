@@ -1,6 +1,6 @@
 """
-YouTube Community Tab Autopilot for 'Zirvenin Kanunu'.
-Automates viral psychological poll posting using headless Playwright and authenticated profile.
+YouTube Community Tab Autopilot for 'Zirvenin Kanunu' (@zirveninkanunu).
+Automates viral psychological dilemma poll posting using headless Playwright and authenticated profile.
 """
 
 import asyncio
@@ -19,54 +19,64 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 VIRAL_POLL_VAULT = [
     {
-        "id": "poll_001",
-        "question": "🔥 Hangi karakterin zihni ve stratejisi daha tehlikeli?",
+        "id": "poll_enemy_forgive_or_wait",
+        "question": "Düşmanını affeder misin, yoksa doğru anı mı beklersin? ♟️",
         "options": [
-            "Thomas Shelby (Soğukkanlı & Sessiz Güç)",
-            "Walter White (Heisenberg Zekası)",
-            "Gustavo Fring (Kusursuz Disiplin)",
-            "Tyler Durden (Kaos & Özgürlük)"
-        ]
+            "Doğru anı ve zayıf anını beklerim (Stratejik Sabır)",
+            "Affederim ama asla unutmam (Soğuk Mesafe)",
+            "Affetmek zayıflıktır, tamamen yok ederim (48 Güç Yasası)",
+            "Umursamam, kendi zirveme odaklanırım (Stoacı Güç)"
+        ],
+        "category": "power_strategy",
+        "virality_score": 98
     },
     {
-        "id": "poll_002",
-        "question": "⚡ 48 Güç Yasası: İnsan ilişkilerinde yapılan en ölümcül hata hangisidir?",
+        "id": "poll_shelby_vs_corleone",
+        "question": "Thomas Shelby mi, Michael Corleone mi? Aynı masada otursalar kim kazanır? 👑",
         "options": [
-            "Efendini Asla Gölgede Bırakma (1. Yasa)",
-            "Niyetini Asla Belli Etme (3. Yasa)",
-            "Dostlarına Asla Aşırı Güvenme (2. Yasa)",
-            "Her Zaman Gerektiğinden Az Konuş (4. Yasa)"
-        ]
+            "Thomas Shelby (Soğukkanlı Zeka & Gözükaralık)",
+            "Michael Corleone (Stratejik Ağırlık & Acımasızlık)",
+            "Masadan ikisi de ortak olarak kalkar",
+            "Birbirlerini tamamen yok ederler"
+        ],
+        "category": "cinema_power",
+        "virality_score": 99
     },
     {
-        "id": "poll_003",
-        "question": "🧠 Marcus Aurelius vs Friedrich Nietzsche: Zor zamanlarda hangi felsefe ayakta tutar?",
+        "id": "poll_first_eye_contact_break",
+        "question": "Bir odaya girdiğinde bakışlarını ilk kaçıran sen mi olursun, karşı taraf mı? 👁️",
         "options": [
-            "Stoacılık (Duygularını ve zihnini yönet)",
-            "Güç İstenci (Acıyı zafere dönüştür)",
-            "Sessiz İrade (Sadece hedefe odaklan)",
-            "Amor Fati (Kaderini Sev ve Kabul Et)"
-        ]
+            "Karşı taraf (Göz temasında asla geri adım atmam)",
+            "Bazen ben (Gereksiz güç savaşına girmem)",
+            "Göz teması yerine beden dilini okurum",
+            "Umursamam, sessizce odayı tartar ve yönetirim"
+        ],
+        "category": "body_language",
+        "virality_score": 97
     },
     {
-        "id": "poll_004",
-        "question": "🎬 Sinema tarihinin en gerilimli ve zeka dolu yüzleşmesi hangisidir?",
+        "id": "poll_silence_power_or_weakness",
+        "question": "Sessizlik bir güç gösterisi midir, yoksa zayıflık mı? 🤫",
         "options": [
-            "Walter White vs Hank Schrader (Tread Lightly)",
-            "Thomas Shelby vs Alfie Solomons (Crossed the Line)",
-            "Michael Corleone vs Fredo (I know it was you)",
-            "Tyler Durden vs Anlatıcı (İlk Kural)"
-        ]
+            "En büyük güç gösterisidir (Zihni okunamayan kazanır)",
+            "Duruma göre zayıflık gibi algılanabilir",
+            "Sadece arkasında stratejik eylem varsa güçtür",
+            "Zayıfların kaçış noktasıdır"
+        ],
+        "category": "psychology",
+        "virality_score": 96
     },
     {
-        "id": "poll_005",
-        "question": "🌌 Evrenin ve Zihnin En Büyük Gizemi: İnsan ruhunu en çok ne sarsar?",
+        "id": "poll_48_laws_law_1",
+        "question": "48 Güç Yasası #1: Asla Efendini Gölgede Bırakma. Bu kurala katılıyor musun? ♟️",
         "options": [
-            "Karadeliklerin Zamanı Bükmesi (Interstellar)",
-            "Kuantum Süperpozisyonu & Sonsuz Evrenler",
-            "Bilinçaltının Karanlık Labirentleri",
-            "Sessizliğin ve Yalnızlığın Gücü"
-        ]
+            "Kesinlikle evet (Kıskançlık en ölümcül tuzaktır)",
+            "Hayır (Yetenekli olan her zaman parlamalı)",
+            "Kural doğrudur ama efendini geçme anını iyi seçmelisin",
+            "Kendi efendim benim, kimsenin gölgesinde kalmam"
+        ],
+        "category": "power_laws",
+        "virality_score": 98
     }
 ]
 
@@ -189,7 +199,7 @@ async def post_next_viral_poll(force_poll_id=None):
                 break
                 
         if clicked:
-            await posts_page.wait_for_timeout(4000)
+            await posts_page.wait_for_timeout(5000)
             record_posted_poll_id(target_poll["id"])
             screenshot_path = BASE_DIR / "output" / f"poll_published_{target_poll['id']}.png"
             await posts_page.screenshot(path=str(screenshot_path))
