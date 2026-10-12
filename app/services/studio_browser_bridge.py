@@ -164,6 +164,7 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
     """
     Automates setting the 'İlgili Video' (Related Video) on a YouTube Short.
     Funnels viewers directly to the master documentary or previous episode.
+    Includes polling wait for YouTube's initial processing (takes 30-60s after upload).
     """
     edit_url = f"https://studio.youtube.com/video/{short_id}/edit"
     print(f"\n🔗 [STUDIO BRIDGE] {short_id} için İlgili Video Bağlanıyor ➔ '{target_query}'...")
@@ -185,52 +186,52 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
             print("⚠️ 'Kimliğinizi doğrulayın' uyarısı çıktı. Görünür modda oturum onayı gerekiyor.")
             return False
 
-        # Locate Related Video trigger element
-        triggers = [
-            'ytcp-text-dropdown-trigger:has-text("İlgili video")',
-            'ytcp-dropdown-trigger:has-text("İlgili video")',
-            'button[aria-label*="İlgili video"]',
-            'button[aria-label*="Related video"]',
-            '#related-video-picker',
-            '[aria-label*="İlgili video"]',
-        ]
-
+        # YouTube takes 30-90s to classify a newly uploaded video as a Short.
+        # Poll up to 90 seconds for 'İlgili video' to appear on the side panel.
         trigger = None
-        for sel in triggers:
-            loc = page.locator(sel).first
-            if await loc.is_visible():
-                trigger = loc
-                break
-
-        if not trigger:
-            # Scroll down to reveal details panel options
-            await page.evaluate("window.scrollBy(0, 500)")
-            await page.wait_for_timeout(1500)
-            for sel in triggers:
-                loc = page.locator(sel).first
-                if await loc.is_visible():
-                    trigger = loc
+        for attempt in range(12):
+            # Check all possible selectors for the Related Video trigger
+            triggers = [
+                page.locator("div[role='button']:has-text('İlgili video')").first,
+                page.locator("ytcp-dropdown-trigger:has-text('İlgili video')").first,
+                page.locator(":has-text('İlgili video')").locator("xpath=ancestor-or-self::div[@role='button']").first,
+                page.locator('ytcp-text-dropdown-trigger:has-text("İlgili video")').first,
+                page.locator('button[aria-label*="İlgili video"]').first,
+                page.locator('button[aria-label*="Related video"]').first,
+            ]
+            for candidate in triggers:
+                if await candidate.is_visible():
+                    trigger = candidate
                     break
+            if trigger:
+                break
+            print(f"⏳ YouTube Shorts işleniyor, 'İlgili video' seçicisi bekleniyor ({attempt + 1}/12)...")
+            await page.wait_for_timeout(6000)
+            await page.reload(wait_until="domcontentloaded")
+            await page.wait_for_timeout(2000)
 
         if trigger:
             curr_status = (await trigger.inner_text()).replace('\n', ' ')
-            if "HOLLYWOOD TRILOGY" in curr_status or target_query in curr_status:
+            if target_query in curr_status:
                 print(f"✅ İlgili video zaten doğru bağlı: {curr_status}")
                 return True
 
             print("👉 'İlgili video' seçiciye tıklandı...")
             await trigger.click()
-            await page.wait_for_timeout(2000)
+            await page.wait_for_timeout(2500)
 
             # Search in dialog
-            search_input = page.locator('ytcp-video-pick-dialog input, div[role="dialog"] input').first
+            search_input = page.locator('ytcp-video-pick-dialog input, ytcp-entity-search input, div[role="dialog"] input').first
             if await search_input.is_visible():
                 print(f"🔍 Hedef video aranıyor: {target_query}")
                 await search_input.fill(target_query)
-                await page.wait_for_timeout(2500)
+                await page.wait_for_timeout(3000)
 
             # Select matching card
-            card = page.locator('ytcp-video-pick-dialog-contents ytcp-entity-card, ytcp-entity-card.card').first
+            card = page.locator('ytcp-video-pick-dialog-contents ytcp-entity-card, ytcp-entity-card, div[role="dialog"] ytcp-video-row').first
+            if not await card.is_visible():
+                card = page.locator(f'div[role="dialog"] :has-text("{target_query}")').first
+
             if await card.is_visible():
                 box = await card.bounding_box()
                 if box:
@@ -240,14 +241,14 @@ async def link_related_video_async(short_id: str, target_query: str = MASTER_DOC
                     await card.click(force=True)
                 await page.wait_for_timeout(2000)
             else:
-                title_el = page.locator('ytcp-video-pick-dialog :has-text("HOLLYWOOD TRILOGY")').last
+                title_el = page.locator('ytcp-video-pick-dialog :has-text("HOLLYWOOD TRILOGY"), ytcp-video-pick-dialog :has-text("ZİRVE")').last
                 if await title_el.is_visible():
                     await title_el.click(force=True)
                     await page.wait_for_timeout(2000)
 
             # Click Save button (Kaydet)
             save_btn = page.locator('#save-button button, ytcp-button#save-button button, button:has-text("Kaydet"), #save-button').first
-            for _ in range(6):
+            for _ in range(8):
                 if await save_btn.is_enabled():
                     break
                 await page.wait_for_timeout(1000)
@@ -398,7 +399,11 @@ async def pin_comment_async(video_id: str, comment_text: str, headless: bool = T
                         await menu_btn.click()
                         await page.wait_for_timeout(1000)
 
-                        pin_item = page.locator("[aria-label*='sabitle'], [aria-label*='Pin'], text='Başa sabitle'").first
+                        pin_item = page.locator("tp-yt-paper-item:has-text('sabitle'), tp-yt-paper-item:has-text('Pin'), ytd-menu-service-item-renderer:has-text('sabitle'), [aria-label*='sabitle'], [aria-label*='Pin']").first
+                        if not await pin_item.is_visible():
+                            pin_item = page.get_by_text("Başa sabitle").first
+                        if not await pin_item.is_visible():
+                            pin_item = page.get_by_text("Pin to top").first
                         if await pin_item.is_visible():
                             await pin_item.click()
                             await page.wait_for_timeout(1000)
