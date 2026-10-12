@@ -9,6 +9,7 @@ import os
 import sys
 import json
 import time
+import queue
 import socket
 import select
 import threading
@@ -36,10 +37,10 @@ LOG_FILE = OUTPUT_DIR / "livestream_dynamic.log"
 
 WIDTH = 1920
 HEIGHT = 1080
-FPS = 30
+FPS = 25
 SAMPLE_RATE = 44100
 CHANNELS = 2
-SAMPLES_PER_FRAME = int(SAMPLE_RATE / FPS)  # 1470 samples
+SAMPLES_PER_FRAME = int(SAMPLE_RATE / FPS)  # 1764 samples (exact integer)
 
 
 def log(msg):
@@ -102,24 +103,43 @@ class DynamicAudioMixer:
         self.voice_pos = 0
         self.current_voice_info = None
 
-        self.music_vol = 0.75
-        self.target_music_vol = 0.75
-        self.duck_speed = 0.08
+        # Professional Streamer Audio Architecture
+        # Ambient Synthwave Music: 0.22 (gentle, chill background groove)
+        # Deep Ducked Music: 0.03 (-30 dB drop during voiceover)
+        # Voice Gain: 1.45x (crisp, clear, punchy broadcast presence)
+        self.normal_music_vol = 0.22
+        self.ducked_music_vol = 0.03
+        self.music_vol = 0.22
+        self.target_music_vol = 0.22
+        self.duck_down_speed = 0.22
+        self.duck_up_speed = 0.04
+
+        self.voice_queue = queue.Queue()
+        self.gap_frames_remaining = 0
 
     def push_voice_response(self, item):
-        """Loads and activates a new voice response."""
-        try:
-            audio_path = item["audio_path"]
-            voice_arr = load_audio_file(audio_path)
-            self.active_voice_audio = voice_arr
-            self.voice_pos = 0
-            self.current_voice_info = item
-            log(f"🎙️ [AudioMixer] Canlı ses yayına girdi: '{item['reply_text']}'")
-        except Exception as e:
-            log(f"⚠️ [AudioMixer] Ses yükleme hatası: {e}")
+        """Enqueues a new voice response into the internal playback queue."""
+        self.voice_queue.put(item)
+
+    def _start_next_queued_voice(self):
+        """Pulls next queued audio item if active speech is finished."""
+        if not self.voice_queue.empty() and self.active_voice_audio is None and self.gap_frames_remaining <= 0:
+            try:
+                item = self.voice_queue.get_nowait()
+                audio_path = item["audio_path"]
+                voice_arr = load_audio_file(audio_path)
+                self.active_voice_audio = voice_arr
+                self.voice_pos = 0
+                self.current_voice_info = item
+                log(f"🎙️ [AudioMixer] Yayıncı konuşuyor: '{item['reply_text']}'")
+            except Exception as e:
+                log(f"⚠️ [AudioMixer] Ses yükleme hatası: {e}")
 
     def get_next_frame_chunk(self):
-        """Returns 1470 samples of mixed 16-bit stereo PCM bytes."""
+        """Returns 1764 samples of mixed 16-bit stereo PCM bytes at 25 FPS."""
+        # Check if new voice should start
+        self._start_next_queued_voice()
+
         # 1. Background Music slice
         end_bg = self.bg_pos + SAMPLES_PER_FRAME
         if end_bg <= self.bg_len:
@@ -134,7 +154,9 @@ class DynamicAudioMixer:
 
         # 2. Check Voice state and ducking
         if self.active_voice_audio is not None:
-            self.target_music_vol = 0.15  # Duck background music
+            self.target_music_vol = self.ducked_music_vol  # 0.03 (-30 dB deep ducking)
+            curr_duck_speed = self.duck_down_speed
+
             v_rem = len(self.active_voice_audio) - self.voice_pos
             if v_rem > 0:
                 take = min(v_rem, SAMPLES_PER_FRAME)
@@ -147,19 +169,27 @@ class DynamicAudioMixer:
                     voice_slice = np.vstack((voice_slice, pad))
                     self.active_voice_audio = None
                     self.current_voice_info = None
+                    # Natural 1.2s breathing pause (30 frames @ 25 FPS) before next queued speech
+                    self.gap_frames_remaining = 30
             else:
                 self.active_voice_audio = None
                 self.current_voice_info = None
+                self.gap_frames_remaining = 30
                 voice_slice = np.zeros((SAMPLES_PER_FRAME, CHANNELS), dtype=np.float32)
         else:
-            self.target_music_vol = 0.75  # Normal background music volume
+            if self.gap_frames_remaining > 0:
+                self.gap_frames_remaining -= 1
+
+            self.target_music_vol = self.normal_music_vol  # 0.22 (gentle ambient music)
+            curr_duck_speed = self.duck_up_speed
             voice_slice = np.zeros((SAMPLES_PER_FRAME, CHANNELS), dtype=np.float32)
 
         # Smooth volume transition
-        self.music_vol += (self.target_music_vol - self.music_vol) * self.duck_speed
+        self.music_vol += (self.target_music_vol - self.music_vol) * curr_duck_speed
 
-        # Mix: Background (ducked) + Voice (full)
-        mixed = bg_slice * self.music_vol + voice_slice * 1.05
+        # Mix: Background (ducked) + Voice (boosted loud & clear with soft saturation)
+        voice_boosted = np.tanh(voice_slice * 1.45)
+        mixed = bg_slice * self.music_vol + voice_boosted * 0.95
         np.clip(mixed, -1.0, 1.0, out=mixed)
 
         return (mixed * 32767.0).astype(np.int16).tobytes()
@@ -194,10 +224,14 @@ class LiveDynamicStreamer:
         text = msg_entry["message_text"]
         log(f"🔥 [DynamicStreamer] Gerçek izleyici mesajı tespit edildi: {author} -> '{text}'")
 
+        # Clean display name (no '@' or ugly numbers)
+        from app.services.live_voice_responder import clean_streamer_username
+        clean_name = clean_streamer_username(author)
+
         # Trigger golden celebration alert on canvas
         self.streamer.trigger_alert(
             alert_type="new_sub",
-            title=f"🔴 CANLI İZLEYİCİ: @{author}",
+            title=f"💬 {clean_name}",
             subtitle=f"⚡ {text}",
             duration=360
         )
@@ -265,11 +299,11 @@ class LiveDynamicStreamer:
             "-c:v", "libx264",
             "-preset", "veryfast",
             "-tune", "zerolatency",
-            "-b:v", "4500k",
-            "-maxrate", "5000k",
-            "-bufsize", "10000k",
+            "-b:v", "3500k",
+            "-maxrate", "4000k",
+            "-bufsize", "8000k",
             "-pix_fmt", "yuv420p",
-            "-g", "60",
+            "-g", "50",
             "-c:a", "aac",
             "-b:a", "160k",
             "-ar", str(SAMPLE_RATE),
@@ -299,12 +333,21 @@ class LiveDynamicStreamer:
                 log(f"✅ FFmpeg ses soketi bağlandı: {addr}")
                 audio_frame_interval = 1.0 / FPS
                 next_audio_time = time.perf_counter()
+                last_streamer_talk = time.time()
 
                 while self.running and proc.poll() is None:
-                    # Check for ready voice AI responses
+                    # Check for ready human streamer responses
                     voice_item = self.voice_responder.get_next_audio_response()
                     if voice_item:
                         self.mixer.push_voice_response(voice_item)
+                        last_streamer_talk = time.time()
+                    else:
+                        # Spontaneous streamer hype talk if chat is quiet for 210 seconds (3.5 mins)
+                        if (time.time() - last_streamer_talk >= 210.0 and 
+                            self.mixer.voice_queue.empty() and 
+                            self.mixer.active_voice_audio is None):
+                            threading.Thread(target=self.voice_responder.get_periodic_idle_speech, daemon=True).start()
+                            last_streamer_talk = time.time()
 
                     chunk = self.mixer.get_next_frame_chunk()
                     self.audio_conn.sendall(chunk)
