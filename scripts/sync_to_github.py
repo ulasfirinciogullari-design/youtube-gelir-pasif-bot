@@ -204,6 +204,12 @@ def sync_core_factory_to_github():
         ("app/services/live_dynamic_streamer.py", "app/services/live_dynamic_streamer.py"),
         ("app/services/live_voice_responder.py", "app/services/live_voice_responder.py"),
         ("scripts/upload_10_languages_studio.py", "scripts/upload_10_languages_studio.py"),
+        ("app/services/sound_palette_master.py", "app/services/sound_palette_master.py"),
+        ("app/services/viral_visual_fx_toolkit.py", "app/services/viral_visual_fx_toolkit.py"),
+        ("app/services/viral_innovation_vault.json", "app/services/viral_innovation_vault.json"),
+        ("scripts/produce_ultra_hype_short.py", "scripts/produce_ultra_hype_short.py"),
+        ("scripts/produce_viral_minecraft_shelby.py", "scripts/produce_viral_minecraft_shelby.py"),
+        ("scripts/produce_faceoff_shelby_walter.py", "scripts/produce_faceoff_shelby_walter.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
