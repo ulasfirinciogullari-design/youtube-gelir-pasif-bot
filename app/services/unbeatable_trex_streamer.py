@@ -523,12 +523,8 @@ class UnbeatableTRexStreamer:
         )
 
     def _init_chat_poller(self):
-        try:
-            self.chat_poller = LiveChatPoller()
-            self.chat_poller.start_background_thread()
-            self.chat_messages = get_active_chat_messages(limit=3)
-        except Exception as e:
-            self.chat_messages = get_active_chat_messages(limit=3)
+        self.chat_poller = None
+        self.chat_messages = get_active_chat_messages(limit=3)
 
     def _load_fonts(self):
         font_dir = "C:\\Windows\\Fonts"
@@ -841,33 +837,39 @@ class UnbeatableTRexStreamer:
             bx2 = wx2 - 10
 
             is_real = msg.get("is_real", False)
-            accent_col = (52, 211, 153) if is_real else (56, 189, 248)
-            author_col = (250, 204, 21) if is_real else (56, 189, 248)
-
-            # Bubble background
-            draw.rounded_rectangle([(bx1, by1), (bx2, by2)], radius=8, fill=(20, 28, 44), outline=(45, 55, 72), width=1)
-            # Left glowing accent bar
-            draw.rounded_rectangle([(bx1 + 4, by1 + 6), (bx1 + 8, by2 - 6)], radius=2, fill=accent_col)
-
-            # Line 1: Author Username
             author_text = msg.get("author_name", "İzleyici")
-            draw.text((bx1 + 18, by1 + 7), author_text, font=self.fonts["chat_author"], fill=author_col)
+            msg_txt = msg.get("message_text", "")
+            ts = msg.get("timestamp", "")
 
-            # Badge & Timestamp
             if is_real:
-                draw.rounded_rectangle([(bx1 + 330, by1 + 8), (bx1 + 395, by1 + 26)], radius=4, fill=(220, 38, 38))
-                draw.text((bx1 + 338, by1 + 9), "CANLI", font=self.fonts["chat_badge"], fill=(255, 255, 255))
+                # Glowing golden border and rich dark glass
+                draw.rounded_rectangle([(bx1 - 2, by1 - 2), (bx2 + 2, by2 + 2)], radius=9, outline=(250, 204, 21), width=2)
+                draw.rounded_rectangle([(bx1, by1), (bx2, by2)], radius=8, fill=(28, 25, 23), outline=(234, 179, 8), width=1)
+                # Left glowing golden bar
+                draw.rounded_rectangle([(bx1 + 4, by1 + 6), (bx1 + 8, by2 - 6)], radius=2, fill=(250, 204, 21))
+
+                # Real viewer golden badge with crisp live dot
+                draw.ellipse([(bx1 + 18, by1 + 10), (bx1 + 28, by1 + 20)], fill=(239, 68, 68))
+                draw.ellipse([(bx1 + 21, by1 + 13), (bx1 + 25, by1 + 17)], fill=(255, 255, 255))
+                badge_title = f"CANLI İZLEYİCİ: @{author_text}"
+                draw.text((bx1 + 34, by1 + 7), badge_title[:30], font=self.fonts["chat_author"], fill=(250, 204, 21))
+
+                # Right CANLI Pill
+                draw.rounded_rectangle([(bx1 + 325, by1 + 7), (bx1 + 395, by1 + 25)], radius=4, fill=(220, 38, 38))
+                draw.text((bx1 + 333, by1 + 8), "CANLI", font=self.fonts["chat_badge"], fill=(255, 255, 255))
             else:
+                # Standard community or system bubble
+                draw.rounded_rectangle([(bx1, by1), (bx2, by2)], radius=8, fill=(20, 28, 44), outline=(45, 55, 72), width=1)
+                draw.rounded_rectangle([(bx1 + 4, by1 + 6), (bx1 + 8, by2 - 6)], radius=2, fill=(56, 189, 248))
+                draw.text((bx1 + 18, by1 + 7), author_text, font=self.fonts["chat_author"], fill=(56, 189, 248))
                 draw.rounded_rectangle([(bx1 + 305, by1 + 8), (bx1 + 395, by1 + 26)], radius=4, fill=(45, 55, 72))
                 draw.text((bx1 + 312, by1 + 9), "TOPLULUK", font=self.fonts["chat_badge"], fill=(148, 163, 184))
 
-            ts = msg.get("timestamp", "")
             if ts:
-                draw.text((bx1 + 410, by1 + 9), ts, font=self.fonts["chat_time"], fill=(148, 163, 184))
+                draw.text((bx1 + 405, by1 + 8), ts, font=self.fonts["chat_time"], fill=(148, 163, 184))
 
             # Line 2: Message Text (rendered crisply with smart emoji support)
-            msg_txt = msg.get("message_text", "")
-            self._draw_smart_text(draw, bx1 + 18, by1 + 34, msg_txt, self.fonts["chat_msg"], self.fonts["emoji_msg"], fill_txt=(248, 250, 252), max_width=510)
+            self._draw_smart_text(draw, bx1 + 18, by1 + 34, msg_txt, self.fonts["chat_msg"], self.fonts["emoji_msg"], fill_txt=(255, 255, 255) if is_real else (226, 232, 240), max_width=510)
 
     def render_frame_pil_image(self):
         sprites = self.sprite_mgr.get_sprites_for_theme(self.is_night)
