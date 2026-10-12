@@ -86,7 +86,7 @@ def upload_short(video_path: Path, privacy_status: str = "public") -> str:
     if meta_path.exists():
         with open(meta_path, "r", encoding="utf-8") as f:
             meta = json.load(f)
-            title = meta.get("title_options", [title])[0]
+            title = meta.get("title") or meta.get("title_options", [title])[0]
             description = meta.get("description", description)
             tags = meta.get("tags", tags)
             default_lang = meta.get("defaultLanguage", "tr")
