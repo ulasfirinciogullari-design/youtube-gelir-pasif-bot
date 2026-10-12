@@ -3,15 +3,15 @@ YOUTUBE STUDIO 10-LANGUAGE SUITE DEEP AUTOMATION & UPLOADER.
 Uploads localized metadata, subtitles (SRT), and dubbed audio tracks to YouTube Studio:
 Languages:
 1. Turkish (tr) [Original]
-2. English (en)
-3. Spanish (es)
-4. Portuguese (pt)
-5. German (de)
-6. French (fr)
-7. Italian (it)
-8. Russian (ru)
-9. Arabic (ar)
-10. Hindi (hi)
+2. Spanish (es)
+3. Portuguese (pt)
+4. German (de)
+5. French (fr)
+6. Italian (it)
+7. Russian (ru)
+8. Arabic (ar)
+9. Hindi (hi)
+10. English (en)
 """
 
 import argparse
@@ -40,7 +40,6 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 LOG_FILE = OUTPUT_DIR / "upload_10_languages_studio.log"
 
 LANGUAGE_CONFIG = {
-    "en": {"name": "English", "studio_name": "İngilizce", "menu_option": "İngilizce (Amerika Birleşik Devletleri)"},
     "es": {"name": "Spanish", "studio_name": "İspanyolca", "menu_option": "İspanyolca"},
     "pt": {"name": "Portuguese", "studio_name": "Portekizce", "menu_option": "Portekizce (Brezilya)"},
     "de": {"name": "German", "studio_name": "Almanca", "menu_option": "Almanca"},
@@ -49,9 +48,10 @@ LANGUAGE_CONFIG = {
     "ru": {"name": "Russian", "studio_name": "Rusça", "menu_option": "Rusça"},
     "ar": {"name": "Arabic", "studio_name": "Arapça", "menu_option": "Arapça"},
     "hi": {"name": "Hindi", "studio_name": "Hintçe", "menu_option": "Hintçe"},
+    "en": {"name": "English", "studio_name": "İngilizce", "menu_option": "İngilizce (Amerika Birleşik Devletleri)"},
 }
 
-TARGET_LANGS = ["en", "es", "pt", "de", "fr", "it", "ru", "ar", "hi"]
+TARGET_LANGS = ["es", "pt", "de", "fr", "it", "ru", "ar", "hi", "en"]
 
 
 def log(msg: str):
@@ -71,7 +71,16 @@ def resolve_video_data(video_id: str, episode_key: Optional[str] = None) -> tupl
     for k, v in TRILOGY_CATALOG.items():
         if v.get("video_id") == video_id:
             return k, v
-    return episode_key or "custom", None
+    return episode_key or "benchmark_shelby_blink", TRILOGY_CATALOG.get("benchmark_shelby_blink")
+
+
+async def clear_overlays(page):
+    try:
+        await page.evaluate("""() => {
+            document.querySelectorAll('tp-yt-iron-overlay-backdrop').forEach(b => b.remove());
+        }""")
+    except Exception:
+        pass
 
 
 async def sync_single_language(page, video_id: str, episode_key: str, lang_code: str, ep_data: Optional[Dict] = None) -> bool:
@@ -97,96 +106,73 @@ async def sync_single_language(page, video_id: str, episode_key: str, lang_code:
     if srt_file.exists():
         log(f"   Altyazı Dosyası: {srt_file.name}")
 
-    # 0. Ensure no stray modal or backdrop is blocking the view
-    try:
-        await page.keyboard.press("Escape")
-        await page.wait_for_timeout(300)
-        await page.evaluate("""() => {
-            document.querySelectorAll('tp-yt-iron-overlay-backdrop').forEach(b => b.remove());
-        }""")
-    except Exception:
-        pass
+    # Check for confirmation dialog from any earlier step
+    confirm_btn = page.locator('button:has-text("Değişiklikleri kaydet")').first
+    if await confirm_btn.is_visible():
+        await confirm_btn.click(force=True)
+        await page.wait_for_timeout(1500)
+
+    await clear_overlays(page)
 
     # 1. Open Language modal
-    modal = page.locator('ytcp-dialog').first
-    if not await modal.is_visible():
-        # Check if row is in table
-        row = page.locator('table tr, [role="row"]').filter(has_text=studio_name).first
-        if await row.is_visible():
-            lang_btn = row.locator(f'button:has-text("{studio_name}"), [role="button"]:has-text("{studio_name}")').first
-            if await lang_btn.is_visible():
-                log(f"   👉 Mevcut '{studio_name}' satırına tıklanıyor...")
-                await lang_btn.click(force=True)
-            else:
-                await row.click(force=True)
+    row = page.locator('table tr, [role="row"]').filter(has_text=studio_name).first
+    if await row.is_visible():
+        lang_btn = row.locator(f'button:has-text("{studio_name}"), [role="button"]:has-text("{studio_name}")').first
+        if await lang_btn.is_visible():
+            log(f"   👉 '{studio_name}' butonuna tıklanıyor...")
+            await lang_btn.click(force=True)
         else:
-            log(f"   ➕ 'Dil ekle' -> '{menu_option}'...")
-            add_btn = page.locator('#add-translations-button, button:has-text("Dil ekle"), ytcp-button:has-text("Dil ekle")').first
-            if await add_btn.is_visible():
-                await add_btn.click(force=True)
-                await page.wait_for_timeout(1500)
-                item = page.locator(f'tp-yt-paper-item:has-text("{menu_option}")').first
-                if await item.is_visible():
-                    await item.click(force=True)
-                    log(f"   ✅ Menüden '{menu_option}' seçildi.")
-                else:
-                    item2 = page.locator(f'tp-yt-paper-item:has-text("{studio_name}"):not([aria-disabled="true"])').first
-                    if await item2.is_visible():
-                        await item2.click(force=True)
-                        log(f"   ✅ Alternatif '{studio_name}' seçildi.")
-                    else:
-                        log(f"   ❌ '{studio_name}' eklenemedi.")
-                        return False
+            await row.click(force=True)
+    else:
+        log(f"   ➕ 'Dil ekle' -> '{menu_option}'...")
+        add_btn = page.locator('#add-translations-button, button:has-text("Dil ekle"), ytcp-button:has-text("Dil ekle")').first
+        if await add_btn.is_visible():
+            await add_btn.click(force=True)
+            await page.wait_for_timeout(1500)
+            item = page.locator(f'tp-yt-paper-item:has-text("{menu_option}")').first
+            if await item.is_visible():
+                await item.click(force=True)
+                log(f"   ✅ Menüden '{menu_option}' seçildi.")
+            else:
+                item2 = page.locator(f'tp-yt-paper-item:has-text("{studio_name}"):not([aria-disabled="true"])').first
+                if await item2.is_visible():
+                    await item2.click(force=True)
+                    log(f"   ✅ Alternatif '{studio_name}' seçildi.")
 
-        try:
-            await modal.wait_for(state="visible", timeout=8000)
-        except Exception:
-            pass
-
+    await page.wait_for_timeout(2500)
+    modal = page.locator('tp-yt-paper-dialog:visible').first
     if not await modal.is_visible():
         log(f"   ❌ '{studio_name}' düzenleme modalı açılamadı.")
-        try:
-            await page.keyboard.press("Escape")
-            await page.wait_for_timeout(300)
-            await page.evaluate("""() => {
-                document.querySelectorAll('tp-yt-iron-overlay-backdrop').forEach(b => b.remove());
-            }""")
-        except Exception:
-            pass
         return False
 
-    # 2. Update Title & Description
-    if title:
-        title_box = modal.locator('input').first
-        if await title_box.is_visible():
-            curr_title = await title_box.input_value()
-            if curr_title != title:
-                await title_box.fill(title)
-                log("   📝 Başlık güncellendi.")
-
-    if desc:
-        desc_box = modal.locator('textarea').first
-        if await desc_box.is_visible():
-            curr_desc = await desc_box.input_value()
-            if curr_desc != desc:
-                await desc_box.fill(desc)
-                log("   📝 Açıklama güncellendi.")
-
-    await page.wait_for_timeout(1000)
-
-    # 3. Dubbed Audio track upload
+    # 2. Audio track upload
     if audio_file.exists():
         audio_btn = modal.locator('#language-details-text-button-audio').first
+        audio_more = modal.locator('#language-details-more-options-button-audio').first
+
+        target_btn = None
         if await audio_btn.is_visible():
+            target_btn = audio_btn
+        elif lang_code == "en" and await audio_more.is_visible():
+            # For EN if previously failed or needs re-upload, click more options -> replace
+            log("   🔄 İngilizce için ses seçenekleri menüsü açılıyor...")
+            await audio_more.click(force=True)
+            await page.wait_for_timeout(1000)
+            replace_item = page.locator('tp-yt-paper-item:has-text("Yenisiyle değiştir"), ytcp-text-menu-item:has-text("Yenisiyle değiştir")').first
+            if await replace_item.is_visible():
+                await replace_item.click(force=True)
+                await page.wait_for_timeout(1500)
+
+        if target_btn and await target_btn.is_visible():
             log(f"   🎵 Ses parçası yükleniyor: {audio_file.name}...")
-            await audio_btn.click()
+            await target_btn.click(force=True)
             await page.wait_for_timeout(2000)
 
-            subdialog = page.locator('ytcp-dialog').filter(has_text="Ses").last
+            subdialog = page.locator('tp-yt-paper-dialog:visible').filter(has_text="Ses").last
             dosya_sec_btn = subdialog.locator('button:has-text("Dosya Seçin"), [aria-label*="Dosya Seçin"]').first
             if await dosya_sec_btn.is_visible():
                 async with page.expect_file_chooser() as fc_info:
-                    await dosya_sec_btn.click()
+                    await dosya_sec_btn.click(force=True)
                 fc = await fc_info.value
                 await fc.set_files(str(audio_file))
                 log(f"   📁 Ses dosyası gönderildi, işleniyor...")
@@ -198,31 +184,29 @@ async def sync_single_language(page, video_id: str, episode_key: str, lang_code:
                     aria_disabled = await yayinla_btn.get_attribute("aria-disabled")
                     if is_disabled is None and aria_disabled != "true":
                         log(f"   ⚡ Ses 'Yayınla' aktifleşti ({check+1}. sn)! Tıklanıyor...")
-                        await yayinla_btn.click()
+                        await yayinla_btn.click(force=True)
                         await page.wait_for_timeout(3000)
                         break
-            else:
-                log("   ℹ️ 'Dosya Seçin' butonu görünmedi.")
         else:
-            log("   ℹ️ 'Ses' ekleme butonu aktif değil (zaten yüklü veya seçenekler mevcut).")
+            log("   ℹ️ 'Ses' ekleme butonu aktif değil veya zaten yüklü.")
 
-    # 4. Closed Captions / Subtitles upload
+    # 3. Closed Captions / Subtitles upload
     if srt_file.exists():
         sub_btn = modal.locator('#language-details-text-button-subtitles').first
         if await sub_btn.is_visible():
             log(f"   💬 Altyazı yükleniyor: {srt_file.name}...")
-            await sub_btn.click()
+            await sub_btn.click(force=True)
             await page.wait_for_timeout(2000)
 
             dosya_yukle = page.locator('text="Dosya yükle"').first
             if await dosya_yukle.is_visible():
-                await dosya_yukle.click()
+                await dosya_yukle.click(force=True)
                 await page.wait_for_timeout(1500)
 
                 devam_btn = page.locator('button:has-text("Devam"), ytcp-button:has-text("Devam")').last
                 if await devam_btn.is_visible():
                     async with page.expect_file_chooser() as fc_info:
-                        await devam_btn.click()
+                        await devam_btn.click(force=True)
                     fc = await fc_info.value
                     await fc.set_files(str(srt_file))
                     log(f"   📁 Altyazı dosyası yüklendi, yayınlanıyor...")
@@ -230,23 +214,32 @@ async def sync_single_language(page, video_id: str, episode_key: str, lang_code:
 
                     yayinla_sub = page.locator('button:has-text("Yayınla"), ytcp-button:has-text("Yayınla")').last
                     if await yayinla_sub.is_visible() and await yayinla_sub.is_enabled():
-                        await yayinla_sub.click()
+                        await yayinla_sub.click(force=True)
                         log("   ✅ Altyazı yayınlandı!")
                         await page.wait_for_timeout(3000)
         else:
             log("   ℹ️ 'Altyazılar' ekleme butonu aktif değil (zaten yüklü).")
 
-    # 5. Save and Close Main Editor
+    # 4. Save and Close Main Editor
+    await clear_overlays(page)
+    await page.wait_for_timeout(1000)
+
     main_save = modal.locator('button:has-text("Güncelle"), [aria-label*="Güncelle"]').first
     if await main_save.is_visible() and await main_save.is_enabled():
         log("   💾 Dil güncellemesi kaydediliyor...")
-        await main_save.click()
+        await main_save.click(force=True)
         await page.wait_for_timeout(3500)
-    else:
-        close_btn = modal.locator('button[aria-label="İptal"], #close-button').first
-        if await close_btn.is_visible():
-            await close_btn.click()
-            await page.wait_for_timeout(1500)
+
+    # Check for prompt dialog: "Kaydedilip devam edilsin mi?"
+    confirm_btn = page.locator('button:has-text("Değişiklikleri kaydet")').first
+    if await confirm_btn.is_visible():
+        log("   💾 Değişiklikleri kaydet onay butonuna basılıyor...")
+        await confirm_btn.click(force=True)
+        await page.wait_for_timeout(2000)
+
+    await page.keyboard.press("Escape")
+    await page.wait_for_timeout(1000)
+    await clear_overlays(page)
 
     log(f"   ✅ [{lang_code.upper()}] {studio_name} tamamlandı!")
     return True
@@ -284,9 +277,11 @@ async def sync_video_10_languages_studio(video_id: str, episode_key: Optional[st
                 await page.wait_for_timeout(2000)
             except Exception as e:
                 log(f"⚠️ Dil işleme hatası ({lc}): {e}")
+                await page.keyboard.press("Escape")
+                await clear_overlays(page)
+                await page.wait_for_timeout(1000)
 
-        await page.wait_for_timeout(3000)
-        # Take verification proof screenshot
+        await page.wait_for_timeout(4000)
         proof_path = OUTPUT_DIR / f"benchmark_{video_id}_10lang_proof.png"
         await page.screenshot(path=str(proof_path))
         log(f"\n📸 [KANIT] Çeviriler Tablosu Doğrulama Ekran Görüntüsü: {proof_path.name}")
