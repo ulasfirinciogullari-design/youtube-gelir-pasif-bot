@@ -1,5 +1,5 @@
 """
-Community Tab Viral Poll Master for Zirvenin Kanunu.
+Community Tab Viral Poll Master for Zirvenin Kanunu (@zirveninkanunu).
 Automates high-conversion community feed polls designed to appear on the
 YouTube Home Feeds of non-subscribers to drive 10,000+ votes and organic subscribers.
 """
@@ -14,55 +14,76 @@ if sys.stdout and hasattr(sys.stdout, "reconfigure"):
 
 VIRAL_COMMUNITY_POLLS = [
     {
-        "id": "poll_shelby_vs_walter",
-        "question": "🔥 Hangi karakterin zihni ve stratejisi daha tehlikeli?",
+        "id": "poll_enemy_forgive_or_wait",
+        "question": "Düşmanını affeder misin, yoksa doğru anı mı beklersin? ♟️",
         "options": [
-            "Thomas Shelby (Soğukkanlı & Sessiz Güç)",
-            "Walter White / Heisenberg (Zeka & Öfke)",
-            "Gustavo Fring (Kusursuz Disiplin)",
-            "Tyler Durden (Kaos & Özgürlük)"
+            "Doğru anı ve zayıf anını beklerim (Stratejik Sabır)",
+            "Affederim ama asla unutmam (Soğuk Mesafe)",
+            "Affetmek zayıflıktır, tamamen yok ederim (48 Güç Yasası)",
+            "Umursamam, kendi zirveme odaklanırım (Stoacı Güç)"
         ],
-        "category": "cinema_power"
+        "category": "power_strategy",
+        "virality_score": 98
     },
     {
-        "id": "poll_48_laws_deadliest",
-        "question": "♟️ 48 Güç Yasası arasından çiğnenmesi EN TEHLİKELİ olan yasa hangisi?",
+        "id": "poll_shelby_vs_corleone",
+        "question": "Thomas Shelby mi, Michael Corleone mi? Aynı masada otursalar kim kazanır? 👑",
         "options": [
-            "1. Yasa: Efendini asla gölgede bırakma",
-            "2. Yasa: Dostlarına fazla güvenme, düşmanlarını kullan",
-            "15. Yasa: Düşmanını tamamen yok et",
-            "38. Yasa: İstediğin gibi düşün, çoğunluk gibi davran"
+            "Thomas Shelby (Soğukkanlı Zeka & Gözükaralık)",
+            "Michael Corleone (Stratejik Ağırlık & Acımasızlık)",
+            "Masadan ikisi de ortak olarak kalkar",
+            "Birbirlerini tamamen yok ederler"
         ],
-        "category": "power_laws"
+        "category": "cinema_power",
+        "virality_score": 99
     },
     {
-        "id": "poll_stoic_mindset",
-        "question": "🏛️ Bir erkeği hayatta yenilmez yapan en önemli güç nedir?",
+        "id": "poll_first_eye_contact_break",
+        "question": "Bir odaya girdiğinde bakışlarını ilk kaçıran sen mi olursun, karşı taraf mı? 👁️",
         "options": [
-            "Duygusal kontrol (Hiçbir şeye öfkelenmemek)",
-            "Finansal bağımsızlık (Kimseye muhtaç olmamak)",
-            "Stratejik sessizlik (Planlarını kimseye açmamak)",
-            "Sınırsız cesaret ve acımasızlık"
+            "Karşı taraf (Göz temasında asla geri adım atmam)",
+            "Bazen ben (Gereksiz güç savaşına girmem)",
+            "Göz teması yerine beden dilini okurum",
+            "Umursamam, sessizce odayı tartar ve yönetirim"
         ],
-        "category": "stoicism"
+        "category": "body_language",
+        "virality_score": 97
     },
     {
-        "id": "poll_oppenheimer_destiny",
-        "question": "🌌 İnsanlığın geleceğini en çok hangi tehdit belirleyecek?",
+        "id": "poll_silence_power_or_weakness",
+        "question": "Sessizlik bir güç gösterisi midir, yoksa zayıflık mı? 🤫",
         "options": [
-            "Yapay zeka ve nükleer teknoloji",
-            "Zaman ve uzayın bilinmeyen sınırları",
-            "İnsanın doyumsuz güç arzusu",
-            "Fermi Paradoksu (Yalnız değiliz)"
+            "En büyük güç gösterisidir (Zihni okunamayan kazanır)",
+            "Duruma göre zayıflık gibi algılanabilir",
+            "Sadece arkasında stratejik eylem varsa güçtür",
+            "Zayıfların kaçış noktasıdır"
         ],
-        "category": "cosmic"
+        "category": "psychology",
+        "virality_score": 96
+    },
+    {
+        "id": "poll_48_laws_law_1",
+        "question": "48 Güç Yasası #1: Asla Efendini Gölgede Bırakma. Bu kurala katılıyor musun? ♟️",
+        "options": [
+            "Kesinlikle evet (Kıskançlık en ölümcül tuzaktır)",
+            "Hayır (Yetenekli olan her zaman parlamalı)",
+            "Kural doğrudur ama efendini geçme anını iyi seçmelisin",
+            "Kendi efendim benim, kimsenin gölgesinde kalmam"
+        ],
+        "category": "power_laws",
+        "virality_score": 98
     }
 ]
 
 
+def get_all_polls():
+    """Returns the complete viral poll suite."""
+    return VIRAL_COMMUNITY_POLLS
+
+
 def get_next_community_poll():
     """Returns the most engaging community poll."""
-    return random.choice(VIRAL_COMMUNITY_POLLS)
+    return VIRAL_COMMUNITY_POLLS[0]
 
 
 def format_community_post_payload(poll: dict) -> dict:
