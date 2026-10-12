@@ -140,6 +140,299 @@ class Particle:
         self.color = color
 
 
+class SparkleParticle:
+    """Sparkling firework & celebration particle for live alerts."""
+    def __init__(self, x, y, vx, vy, life, size, color, p_type="sparkle"):
+        self.x = float(x)
+        self.y = float(y)
+        self.vx = float(vx)
+        self.vy = float(vy)
+        self.life = int(life)
+        self.max_life = int(life)
+        self.size = float(size)
+        self.color = color
+        self.p_type = p_type
+
+
+class StreamAlertEngine:
+    """
+    High-engagement Live Stream Alert Engine for 'Zirvenin Kanunu'.
+    Features glowing golden subscriber banners, milestone celebrations,
+    radiant fireworks particles, and pulse animations.
+    """
+    def __init__(self):
+        self.active = False
+        self.alert_type = "new_sub"  # "new_sub" or "milestone"
+        self.title = ""
+        self.subtitle = ""
+        self.duration_frames = 300
+        self.frame_timer = 0
+        self.particles = []
+        self.last_auto_trigger = 0
+        self.auto_trigger_interval = 1200  # Trigger periodic hype every 20 seconds (1200 frames @ 60 FPS)
+
+    @staticmethod
+    def _is_emoji(char):
+        cp = ord(char)
+        return (
+            0x1F300 <= cp <= 0x1FAFF or
+            0x2600 <= cp <= 0x27BF or
+            0xFE00 <= cp <= 0xFE0F or
+            0x1F900 <= cp <= 0x1F9FF or
+            0x1F600 <= cp <= 0x1F64F or
+            0x1F680 <= cp <= 0x1F6FF
+        )
+
+    @classmethod
+    def _draw_smart_text_overlay(cls, draw, x, y, text, font_txt, font_emj, fill_txt=(254, 240, 138, 255), max_width=780):
+        cur_x = x
+        segments = []
+        curr_seg = []
+        curr_is_emj = None
+        for ch in text:
+            emj = cls._is_emoji(ch)
+            if curr_is_emj is None:
+                curr_is_emj = emj
+                curr_seg.append(ch)
+            elif emj == curr_is_emj:
+                curr_seg.append(ch)
+            else:
+                segments.append((''.join(curr_seg), curr_is_emj))
+                curr_seg = [ch]
+                curr_is_emj = emj
+        if curr_seg:
+            segments.append((''.join(curr_seg), curr_is_emj))
+
+        for seg_text, seg_is_emj in segments:
+            font = font_emj if seg_is_emj else font_txt
+            if cur_x - x > max_width:
+                break
+            draw.text((cur_x, y), seg_text, font=font, fill=fill_txt)
+            bbox = draw.textbbox((cur_x, y), seg_text, font=font)
+            cur_x = bbox[2] + 2
+
+    def trigger_alert(self, alert_type="new_sub", title=None, subtitle=None, duration=300, current_subs=29, goal_subs=100):
+        self.active = True
+        self.alert_type = alert_type
+        self.duration_frames = duration
+        self.frame_timer = duration
+
+        if alert_type == "milestone":
+            self.title = title or f"🚀 YENİ HEDEF: {current_subs} / {goal_subs} ABONE! TEŞEKKÜRLER! 🎉"
+            self.subtitle = subtitle or "🔥 Zirveye giden yolda birlikte büyüyoruz! Takip eden herkese sonsuz teşekkürler!"
+        else:  # "new_sub"
+            self.title = title or "👑 YENİ ZİRVE ÜYESİ KATILDI! HOŞ GELDİN!"
+            self.subtitle = subtitle or "⚡ Zirvenin Kanunu ailesine yeni bir şampiyon katıldı! Canlı desteğin için teşekkürler!"
+
+        # Spawn festive fireworks & golden sparkle burst around banner
+        bx1, by1 = 370, 245
+        bx2, by2 = 1270, 345
+        golden_colors = [
+            (255, 215, 0),    # Pure gold
+            (254, 240, 138),  # Bright yellow gold
+            (245, 158, 11),   # Amber
+            (251, 191, 36),   # Sun gold
+            (255, 255, 255),  # Pure diamond white
+            (56, 189, 248)    # Neon cyan
+        ]
+
+        # Initial celebration burst
+        for _ in range(85):
+            side = random.choice(["top", "bottom", "left", "right", "center"])
+            if side == "left":
+                px = random.uniform(bx1 - 25, bx1 + 35)
+                py = random.uniform(by1, by2)
+                vx = random.uniform(-9.5, -2.5)
+                vy = random.uniform(-6.0, 4.0)
+            elif side == "right":
+                px = random.uniform(bx2 - 35, bx2 + 25)
+                py = random.uniform(by1, by2)
+                vx = random.uniform(2.5, 9.5)
+                vy = random.uniform(-6.0, 4.0)
+            elif side == "top":
+                px = random.uniform(bx1, bx2)
+                py = random.uniform(by1 - 15, by1 + 10)
+                vx = random.uniform(-4.5, 4.5)
+                vy = random.uniform(-11.5, -3.5)
+            elif side == "bottom":
+                px = random.uniform(bx1, bx2)
+                py = random.uniform(by2 - 10, by2 + 15)
+                vx = random.uniform(-4.0, 4.0)
+                vy = random.uniform(2.0, 8.0)
+            else:
+                px = random.uniform(bx1 + 100, bx2 - 100)
+                py = random.uniform(by1, by2)
+                ang = random.uniform(0, 2 * math.pi)
+                spd = random.uniform(4.0, 10.0)
+                vx = math.cos(ang) * spd
+                vy = math.sin(ang) * spd
+
+            life = random.randint(25, 60)
+            size = random.uniform(3.0, 8.5)
+            p_type = random.choice(["star", "sparkle", "star", "firework"])
+            self.particles.append(SparkleParticle(px, py, vx, vy, life, size, random.choice(golden_colors), p_type))
+
+    def update(self, frame_idx, current_subs=29, goal_subs=100):
+        # Periodic auto-trigger to continually engage viewers and hype chat
+        if not self.active and (frame_idx - self.last_auto_trigger >= self.auto_trigger_interval):
+            self.last_auto_trigger = frame_idx
+            cycle_choice = (frame_idx // self.auto_trigger_interval) % 2
+            if cycle_choice == 1:
+                self.trigger_alert("milestone", current_subs=current_subs, goal_subs=goal_subs)
+            else:
+                self.trigger_alert("new_sub", current_subs=current_subs, goal_subs=goal_subs)
+
+        if self.active:
+            self.frame_timer -= 1
+            if self.frame_timer <= 0:
+                self.active = False
+            else:
+                # Continuous subtle sparkles during alert active state
+                bx1, by1 = 370, 245
+                bx2, by2 = 1270, 345
+                golden_colors = [(255, 215, 0), (254, 240, 138), (245, 158, 11), (255, 255, 255)]
+                for _ in range(3):
+                    px = random.uniform(bx1 - 10, bx2 + 10)
+                    py = random.uniform(by1 - 10, by2 + 10)
+                    vx = random.uniform(-2.5, 2.5)
+                    vy = random.uniform(-3.5, 1.0)
+                    self.particles.append(SparkleParticle(
+                        px, py, vx, vy,
+                        life=random.randint(18, 35),
+                        size=random.uniform(2.5, 6.0),
+                        color=random.choice(golden_colors),
+                        p_type=random.choice(["star", "sparkle"])
+                    ))
+
+        # Update active celebration particles
+        alive = []
+        for p in self.particles:
+            p.x += p.vx
+            p.y += p.vy
+            p.vy += 0.16  # Soft gravity
+            p.vx *= 0.96  # Drag
+            p.life -= 1
+            if p.life > 0:
+                alive.append(p)
+        self.particles = alive
+
+    def render(self, frame_image, fonts, frame_idx):
+        if not self.active and not self.particles:
+            return frame_image
+
+        overlay = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
+        draw_ov = ImageDraw.Draw(overlay)
+
+        # 1. Particles (drawn with fading alpha)
+        for p in self.particles:
+            alpha = int(255 * (p.life / float(p.max_life)))
+            r, g, b = p.color[:3]
+            rgba = (r, g, b, alpha)
+            x, y, s = p.x, p.y, p.size
+
+            if p.p_type == "star":
+                # 4-point diamond glint star
+                pts = [
+                    (x, y - s),
+                    (x + s * 0.35, y - s * 0.35),
+                    (x + s, y),
+                    (x + s * 0.35, y + s * 0.35),
+                    (x, y + s),
+                    (x - s * 0.35, y + s * 0.35),
+                    (x - s, y),
+                    (x - s * 0.35, y - s * 0.35),
+                ]
+                draw_ov.polygon(pts, fill=rgba)
+            elif p.p_type == "firework":
+                # Radiant circular spark with cross glints
+                draw_ov.ellipse([(x - s, y - s), (x + s, y + s)], fill=rgba)
+                draw_ov.line([(x - s * 1.6, y), (x + s * 1.6, y)], fill=rgba, width=1)
+                draw_ov.line([(x, y - s * 1.6), (x, y + s * 1.6)], fill=rgba, width=1)
+            else:
+                # Disc spark
+                draw_ov.ellipse([(x - s, y - s), (x + s, y + s)], fill=rgba)
+
+        # 2. Alert Banner (if active)
+        if self.active:
+            pulse = math.sin(frame_idx * 0.15)
+            p_offset = int(3 * pulse)
+
+            bx1, by1 = 370 - p_offset, 245 - p_offset
+            bx2, by2 = 1270 + p_offset, 345 + p_offset
+
+            # Glowing golden halo layers
+            glow_col = (250, 204, 21) if self.alert_type != "milestone" else (56, 189, 248)
+
+            # Outer pulsing glow halos
+            draw_ov.rounded_rectangle([(bx1 - 12, by1 - 12), (bx2 + 12, by2 + 12)], radius=18, fill=(glow_col[0], glow_col[1], glow_col[2], 30))
+            draw_ov.rounded_rectangle([(bx1 - 7, by1 - 7), (bx2 + 7, by2 + 7)], radius=16, fill=(glow_col[0], glow_col[1], glow_col[2], 65))
+            draw_ov.rounded_rectangle([(bx1 - 3, by1 - 3), (bx2 + 3, by2 + 3)], radius=14, fill=(glow_col[0], glow_col[1], glow_col[2], 110))
+
+            # Main Banner Container (Rich dark glass slate)
+            draw_ov.rounded_rectangle([(bx1, by1), (bx2, by2)], radius=14, fill=(13, 20, 36, 245), outline=(glow_col[0], glow_col[1], glow_col[2], 255), width=3)
+            # Inner metallic highlight border
+            draw_ov.rounded_rectangle([(bx1 + 3, by1 + 3), (bx2 - 3, by2 - 3)], radius=12, outline=(254, 240, 138, 140), width=1)
+
+            # Top glint highlight line
+            draw_ov.line([(bx1 + 30, by1 + 2), (bx2 - 30, by1 + 2)], fill=(255, 255, 255, 190), width=2)
+
+            # Left Emblem Badge Container (Golden metallic shield)
+            emblem_x1, emblem_y1 = bx1 + 14, by1 + 12
+            emblem_x2, emblem_y2 = bx1 + 86, by2 - 12
+            draw_ov.rounded_rectangle([(emblem_x1, emblem_y1), (emblem_x2, emblem_y2)], radius=10, fill=(245, 158, 11, 240), outline=(254, 240, 138, 255), width=2)
+
+            # Icon in emblem
+            cx = (emblem_x1 + emblem_x2) // 2
+            cy = (emblem_y1 + emblem_y2) // 2
+            if self.alert_type == "milestone":
+                draw_ov.text((cx - 16, cy - 20), "🚀", font=fonts["alert_icon"], fill=(255, 255, 255, 255))
+            else:
+                # Custom polished golden crown emblem
+                crown_sz = 18
+                crown_pts = [
+                    (cx - crown_sz, cy + crown_sz // 2),
+                    (cx - crown_sz, cy - crown_sz // 3),
+                    (cx - crown_sz // 2, cy + 2),
+                    (cx, cy - crown_sz),
+                    (cx + crown_sz // 2, cy + 2),
+                    (cx + crown_sz, cy - crown_sz // 3),
+                    (cx + crown_sz, cy + crown_sz // 2)
+                ]
+                draw_ov.polygon(crown_pts, fill=(255, 255, 255, 255), outline=(217, 119, 6, 255))
+                # Jewels on peaks
+                for px, py in [(cx - crown_sz, cy - crown_sz // 3), (cx, cy - crown_sz), (cx + crown_sz, cy - crown_sz // 3)]:
+                    draw_ov.ellipse([(px - 3, py - 3), (px + 3, py + 3)], fill=(254, 240, 138, 255))
+
+            # Right Live Alert Pill Tag
+            tag_text = "CANLI YAYIN ALARMI" if self.alert_type != "milestone" else "ABONE HEDEFİ"
+            tag_w = 145
+            draw_ov.rounded_rectangle([(bx1 + 100, by1 + 10), (bx1 + 100 + tag_w, by1 + 30)], radius=5, fill=(220, 38, 38, 240))
+            draw_ov.text((bx1 + 110, by1 + 12), tag_text, font=fonts["alert_badge"], fill=(255, 255, 255, 255))
+
+            # Pulsing Live Dot inside tag
+            dot_pulse = (frame_idx // 10) % 2
+            draw_ov.ellipse([(bx1 + 100 + tag_w - 14 - dot_pulse, by1 + 16 - dot_pulse), (bx1 + 100 + tag_w - 6 + dot_pulse, by1 + 24 + dot_pulse)], fill=(255, 255, 255, 240))
+
+            # Channel Handle Badge
+            draw_ov.rounded_rectangle([(bx1 + 255, by1 + 10), (bx1 + 395, by1 + 30)], radius=5, fill=(30, 41, 59, 220), outline=(100, 116, 139, 200), width=1)
+            draw_ov.text((bx1 + 263, by1 + 12), "@zirveninkanunu", font=fonts["alert_badge"], fill=(250, 204, 21, 255))
+
+            # Title Text (Rendered crisply with smart emoji support)
+            self._draw_smart_text_overlay(draw_ov, bx1 + 100, by1 + 34, self.title, fonts["alert_title"], fonts["alert_emoji"], fill_txt=(254, 240, 138, 255), max_width=770)
+
+            # Subtitle Text (Rendered crisply with smart emoji support)
+            self._draw_smart_text_overlay(draw_ov, bx1 + 100, by1 + 68, self.subtitle, fonts["alert_sub"], fonts["alert_emoji_sub"], fill_txt=(226, 232, 240, 255), max_width=770)
+
+        # Composite RGBA overlay onto base frame
+        if frame_image.mode != "RGBA":
+            frame_rgba = frame_image.convert("RGBA")
+        else:
+            frame_rgba = frame_image
+
+        composited = Image.alpha_composite(frame_rgba, overlay)
+        return composited.convert("RGB")
+
+
 class UnbeatableTRexStreamer:
     """
     High-retention 60 FPS invincible T-Rex simulation stream engine.
@@ -212,6 +505,23 @@ class UnbeatableTRexStreamer:
         self.last_chat_refresh = 0
         self._init_chat_poller()
 
+        # Stream Alert & Milestone Animation Engine
+        self.alert_engine = StreamAlertEngine()
+        self.prev_subs = self.current_subs
+
+    def trigger_alert(self, alert_type="new_sub", title=None, subtitle=None, duration=300, current_subs=None, goal_subs=None):
+        """Triggers a celebratory golden subscriber or milestone alert."""
+        c_subs = current_subs if current_subs is not None else self.current_subs
+        g_subs = goal_subs if goal_subs is not None else self.goal_subs
+        self.alert_engine.trigger_alert(
+            alert_type=alert_type,
+            title=title,
+            subtitle=subtitle,
+            duration=duration,
+            current_subs=c_subs,
+            goal_subs=g_subs
+        )
+
     def _init_chat_poller(self):
         try:
             self.chat_poller = LiveChatPoller()
@@ -237,7 +547,13 @@ class UnbeatableTRexStreamer:
             "chat_badge": ImageFont.truetype(f"{font_dir}\\segoeuib.ttf", 11),
             "emoji_title": ImageFont.truetype(f"{font_dir}\\seguiemj.ttf", 20),
             "emoji_cta": ImageFont.truetype(f"{font_dir}\\seguiemj.ttf", 15),
-            "emoji_msg": ImageFont.truetype(f"{font_dir}\\seguiemj.ttf", 15)
+            "emoji_msg": ImageFont.truetype(f"{font_dir}\\seguiemj.ttf", 15),
+            "alert_title": ImageFont.truetype(f"{font_dir}\\segoeuib.ttf", 25),
+            "alert_sub": ImageFont.truetype(f"{font_dir}\\segoeui.ttf", 16),
+            "alert_badge": ImageFont.truetype(f"{font_dir}\\segoeuib.ttf", 11),
+            "alert_emoji": ImageFont.truetype(f"{font_dir}\\seguiemj.ttf", 25),
+            "alert_emoji_sub": ImageFont.truetype(f"{font_dir}\\seguiemj.ttf", 16),
+            "alert_icon": ImageFont.truetype(f"{font_dir}\\seguiemj.ttf", 34)
         }
 
     def _draw_crown(self, draw, cx, cy, size=18, color=(250, 204, 21)):
@@ -469,6 +785,17 @@ class UnbeatableTRexStreamer:
                 alive.append(p)
         self.particles = alive
 
+        # Monitor subscriber counter milestones & live alerts
+        if self.current_subs != self.prev_subs:
+            if self.current_subs in [30, 40, 50, 75, 100]:
+                self.trigger_alert(alert_type="milestone", current_subs=self.current_subs, goal_subs=self.goal_subs)
+            else:
+                self.trigger_alert(alert_type="new_sub", current_subs=self.current_subs, goal_subs=self.goal_subs)
+            self.prev_subs = self.current_subs
+
+        # Update dynamic celebration particles & alert timer
+        self.alert_engine.update(self.frame_idx, self.current_subs, self.goal_subs)
+
     def _draw_live_chat_widget(self, draw):
         """
         Renders the Live Chat Overlay Widget on the right side of the canvas.
@@ -629,6 +956,9 @@ class UnbeatableTRexStreamer:
         active_headline = self.chat_headlines[headline_idx]
         draw.text((50, 965), active_headline, font=self.fonts["title"], fill=(255, 255, 255))
 
+        # Dynamic Alert Overlay Engine (Golden celebration badges & fireworks)
+        frame = self.alert_engine.render(frame, self.fonts, self.frame_idx)
+
         return frame
 
     def render_frame_pil(self):
@@ -740,9 +1070,39 @@ def render_test_frame(output_path=OUTPUT_DIR / "test_live_chat_overlay.jpg"):
     return output_path
 
 
+def render_alert_test_frame(output_path='output/test_stream_subscriber_alert.jpg'):
+    """
+    Renders a single high-definition test frame (1920x1080) with an active golden celebration alert banner,
+    golden particle fireworks, and dynamic subscriber milestone graphics.
+    """
+    output_path = Path(output_path)
+    if not output_path.is_absolute():
+        output_path = BASE_DIR / output_path
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    streamer = UnbeatableTRexStreamer()
+    # Advance 40 frames to populate scene physics and ground motion
+    for _ in range(40):
+        streamer.update_physics_and_ai()
+
+    # Trigger golden subscriber celebration alert
+    streamer.trigger_alert(alert_type="new_sub", duration=300)
+
+    # Advance 15 frames so fireworks particles blossom outward
+    for _ in range(15):
+        streamer.update_physics_and_ai()
+
+    frame_img = streamer.render_frame_pil_image()
+    frame_img.save(output_path, "JPEG", quality=95)
+    print(f"✅ Test canlı yayın abone ve hedef alarm karesi kaydedildi: {output_path}")
+    return output_path
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--test-frame":
         render_test_frame()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--test-alert":
+        render_alert_test_frame()
     else:
         dur = 300 # 5 minutes seamless loop
         render_unbeatable_trex_master(MASTER_ASSET_PATH, duration_seconds=dur)
