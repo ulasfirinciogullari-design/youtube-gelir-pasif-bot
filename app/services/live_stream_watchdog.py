@@ -63,8 +63,12 @@ def run_resilient_stream():
 
     while True:
         session_idx += 1
-        target_url = urls[(session_idx - 1) % len(urls)]
-        server_label = "PRIMARY (A)" if (session_idx - 1) % 2 == 0 else "BACKUP (B)"
+        if consecutive_failures >= 3:
+            target_url = f"{backup_url}/{stream_key}"
+            server_label = "BACKUP (B)"
+        else:
+            target_url = f"{primary_url}/{stream_key}"
+            server_label = "PRIMARY (A)"
 
         log(f"\n🚀 Canlı Yayın Oturumu #{session_idx} Başlatılıyor -> Sunucu: {server_label}")
 
