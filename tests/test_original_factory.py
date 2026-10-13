@@ -1,0 +1,175 @@
+import json
+import shutil
+import subprocess
+from pathlib import Path
+
+import pytest
+
+import original_factory
+from app.services import original_script, original_visuals
+from app.services.original_script import ScriptError, validate_script, write_script
+
+HAS_FFMPEG = shutil.which("ffmpeg") is not None and shutil.which("ffprobe") is not None
+
+
+def _scene(text, source="ai"):
+    return {"text": text, "visual": "ancient roman study at night, oil lamp", "stock_query": "oil lamp", "source": source}
+
+
+VALID_SCRIPT = {
+    "title": "İmparator neden notlarını kimseye göstermedi?",
+    "scenes": [
+        _scene("Dünyanın en güçlü adamı her gece gizlice kendine mektup yazıyordu."),
+        _scene("Marcus Aurelius bu notları yayımlamak için değil, kendini düzeltmek için yazdı.", "stock"),
+        _scene("Sayfalarda zafer yok; öfke, sabır ve ölüm üzerine sert hatırlatmalar var."),
+        _scene("Kendine, başkalarının hatalarına değil kendi tepkine bakmasını söylüyordu."),
+        _scene("Bugün Düşünceler adıyla okunan bu notlar, aslında bir imparatorun iç sesiydi."),
+        _scene("Peki sen kimse görmeyecek olsa kendine ne yazardın?"),
+    ],
+    "description": "Marcus Aurelius'un Düşünceler'i neden yazdığını anlatıyoruz.",
+    "tags": ["marcus aurelius", "stoacılık"],
+    "pinned_comment": "Kendine yazacağın tek cümle ne olurdu?",
+    "en_title": "Why the emperor hid his notes",
+    "en_description": "Why Marcus Aurelius wrote Meditations.",
+}
+
+
+def test_validate_script_normalizes_and_strips_hashtags():
+    raw = json.loads(json.dumps(VALID_SCRIPT))
+    raw["title"] += " #shorts"
+    script = validate_script(raw)
+    assert script["title"] == VALID_SCRIPT["title"]
+    assert len(script["scenes"]) == 6
+    assert script["scenes"][1]["source"] == "stock"
+
+
+def test_validate_script_rejects_film_characters():
+    raw = json.loads(json.dumps(VALID_SCRIPT))
+    raw["scenes"][0]["text"] = "Thomas Shelby bir odaya girdiğinde herkes susardı."
+    with pytest.raises(ScriptError, match="shelby"):
+        validate_script(raw)
+
+
+def test_validate_script_rejects_wrong_scene_count():
+    raw = json.loads(json.dumps(VALID_SCRIPT))
+    raw["scenes"] = raw["scenes"][:3]
+    with pytest.raises(ScriptError, match="scene count"):
+        validate_script(raw)
+
+
+def test_write_script_falls_through_providers():
+    calls = []
+
+    def unconfigured(prompt):
+        calls.append("none")
+        return None
+
+    def broken(prompt):
+        calls.append("broken")
+        return "not json"
+
+    def good(prompt):
+        calls.append("good")
+        return "```json\n" + json.dumps(VALID_SCRIPT, ensure_ascii=False) + "\n```"
+
+    script, provider = write_script("konu", providers=[("a", unconfigured), ("b", broken), ("c", good)])
+    assert provider == "c"
+    assert calls == ["none", "broken", "broken", "good"]
+    assert script["title"] == VALID_SCRIPT["title"]
+
+
+def test_write_script_raises_when_nothing_valid():
+    with pytest.raises(ScriptError):
+        write_script("konu", providers=[("a", lambda p: None)])
+
+
+def test_pick_topic_skips_published_ids():
+    topics = [{"id": "zk-001", "topic": "a"}, {"id": "zk-002", "topic": "b"}]
+    assert original_factory.pick_topic(topics, {"zk-001"})["id"] == "zk-002"
+    with pytest.raises(SystemExit):
+        original_factory.pick_topic(topics, {"zk-001", "zk-002"})
+
+
+def test_topic_file_is_valid():
+    topics = original_factory.load_topics()
+    ids = [t["id"] for t in topics]
+    assert len(ids) == len(set(ids)) >= 30
+    assert all(original_factory.MARKER_RE.fullmatch(f"Seri: {i}") for i in ids)
+
+
+class _FakeRequest:
+    def __init__(self, payload):
+        self.payload = payload
+
+    def execute(self):
+        return self.payload
+
+
+class _FakeYouTube:
+    def channels(self):
+        return self
+
+    def playlistItems(self):
+        return self
+
+    def list(self, **kwargs):
+        if "mine" in kwargs:
+            return _FakeRequest({"items": [{"contentDetails": {"relatedPlaylists": {"uploads": "UU1"}}}]})
+        return _FakeRequest({"items": [
+            {"snippet": {"description": "metin\n\nSeri: zk-001"}},
+            {"snippet": {"description": "eski film videosu"}},
+        ]})
+
+
+def test_published_topic_ids_reads_description_markers():
+    assert original_factory.published_topic_ids(_FakeYouTube()) == {"zk-001"}
+
+
+def test_split_duration_keeps_segments_short():
+    parts = original_visuals.split_duration(7.0)
+    assert len(parts) == 3 and abs(sum(parts) - 7.0) < 1e-9
+
+
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_full_render_with_offline_assets(tmp_path, monkeypatch):
+    def fake_tts(text, out):
+        seconds = 0.35 * len(text.split())
+        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", f"sine=frequency=180:duration={seconds:.2f}",
+                        "-c:a", "libmp3lame", "-b:a", "96k", str(out)],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return out
+
+    def fake_flux(prompt, count, dest_dir, tag):
+        paths = []
+        for i in range(count):
+            p = dest_dir / f"flux_{tag}_{i}.jpg"
+            subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "testsrc2=size=768x1344", "-frames:v", "1", str(p)],
+                           check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            paths.append(p)
+        return paths
+
+    def fake_pexels(query, count, dest_dir, used_ids):
+        p = dest_dir / "pexels_fake.mp4"
+        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "testsrc=size=720x1280:rate=30", "-t", "5", str(p)],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return [p]
+
+    monkeypatch.setattr(original_visuals, "generate_flux_images", fake_flux)
+    monkeypatch.setattr(original_visuals, "fetch_pexels_videos", fake_pexels)
+    monkeypatch.setattr(original_factory, "OUTPUT_DIR", tmp_path)
+
+    topic = {"id": "zk-001", "topic": "test"}
+    result = original_factory.produce(topic, validate_script(VALID_SCRIPT), "test", synthesize=fake_tts)
+
+    probe = json.loads(subprocess.check_output(
+        ["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", str(result["video"])], text=True))
+    video = next(s for s in probe["streams"] if s["codec_type"] == "video")
+    assert (video["width"], video["height"]) == (1080, 1920)
+    assert video["r_frame_rate"] == "60/1"
+    assert any(s["codec_type"] == "audio" for s in probe["streams"])
+    assert result["thumbnail"].exists()
+    meta = result["meta"]
+    assert meta["description"].endswith("Seri: zk-001")
+    assert meta["contains_synthetic_media"] is True
+    assert meta["stock_videos"] >= 1
+    assert abs(float(probe["format"]["duration"]) - meta["duration_seconds"]) < 0.3

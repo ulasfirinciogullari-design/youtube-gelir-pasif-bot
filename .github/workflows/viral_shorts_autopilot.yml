@@ -2,29 +2,35 @@ name: YouTube Shorts Cloud Autopilot (God-Tier)
 
 on:
   schedule:
-    # 6 Peak Viral Hours Daily: 05:00, 08:00, 11:00, 14:00, 17:00, 20:00 UTC (08:00, 11:00, 14:00, 17:00, 20:00, 23:00 TR Time)
-    - cron: '0 5,8,11,14,17,20 * * *'
+    # 4 runs a day: 08:00, 13:00, 17:00, 21:00 TR time. Each upload costs ~1,700 of the
+    # 10,000 daily YouTube API units, so 4 leaves headroom for retries.
+    - cron: '0 5,10,14,18 * * *'
   workflow_dispatch:
     inputs:
-      mode:
-        description: 'Çalışma Modu'
+      privacy:
+        description: 'Görünürlük'
         required: true
-        default: 'single_video'
+        default: 'private'
         type: choice
         options:
-          - 'single_video'
-          - 'continuous_until_limit'
-      campaign_id:
-        description: 'Belirli Kampanya (single_video seçiliyse)'
+          - 'private'
+          - 'unlisted'
+          - 'public'
+      topic_id:
+        description: 'Belirli konu (boş = sıradaki, ör. zk-003)'
         required: false
-        default: 'shelby_power'
+        default: ''
         type: string
 
+concurrency:
+  group: shorts-autopilot
+  cancel-in-progress: false
+
 jobs:
-  produce_viral_shorts:
-    name: 🚀 60 FPS Viral Video & Canlı Yayın Fabrikası
+  produce_original_short:
+    name: 🎬 Özgün Short Üret ve Yayınla
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 60
 
     steps:
       - name: 📥 Repoyu Çek
@@ -36,63 +42,46 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
 
-      - name: 🎥 FFmpeg ve Sistem Araçlarını Kur
+      - name: 🎥 FFmpeg ve Fontları Kur
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends ffmpeg fonts-liberation
-          ffmpeg -version
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-liberation fonts-dejavu-core
+          ffmpeg -version | head -1
 
       - name: 📦 Python Bağımlılıklarını Kur
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 📥 Sinematik Kasa ve Ses Varlıklarını İndir (GitHub Releases)
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          mkdir -p assets/cinematic assets/music assets/sfx
-          gh release download vault-v1 --dir assets/cinematic --pattern "*.mp4" --repo ${{ github.repository }} || true
-          gh release download vault-v1 --dir assets/music --pattern "*.mp3" --repo ${{ github.repository }} || true
-          gh release download vault-v1 --dir assets/sfx --pattern "*.mp3" --repo ${{ github.repository }} || true
-          echo "✅ Sinematik varlıklar indirildi:"
-          ls -la assets/cinematic/
-
-      - name: 🎬 Durmaksızın Üret ve Yayınla (Maksimum Algoritma Verimi)
+      - name: 🎬 Özgün Short Üret ve Yayınla
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           FAL_KEY: ${{ secrets.FAL_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
-          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
-          GROK_BASE_URL: ${{ secrets.GROK_BASE_URL }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          PRIVACY: ${{ github.event_name == 'schedule' && (vars.PUBLISH_PRIVACY || 'public') || github.event.inputs.privacy }}
+          TOPIC_ID: ${{ github.event.inputs.topic_id }}
         run: |
           mkdir -p output
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "⚡ Zamanlanmış Zirve Saati: 1 Master Video üretilip organik algoritma havuzuna sunuluyor..."
-            python continuous_autopilot.py --max 1
-          elif [ "${{ github.event.inputs.mode }}" = "continuous_until_limit" ]; then
-            echo "⚡ Kesintisiz Otopilot: Günde kontrollü yayınlama..."
-            python continuous_autopilot.py --max 4 --delay 300
-          else
-            echo "🎯 Tek Video Modu: ${{ github.event.inputs.campaign_id }}"
-            python ultimate_factory.py --id ${{ github.event.inputs.campaign_id }}
-            python publish_to_youtube.py --privacy public
-          fi
-          echo "💬 İzleyici Yorum Otopilotu Çalıştırılıyor..."
-          python -c "from app.services.community_autopilot import engage_with_recent_comments; engage_with_recent_comments(max_videos=15)" || true
+          ARGS="--privacy $PRIVACY"
+          if [ -n "$TOPIC_ID" ]; then ARGS="$ARGS --topic-id $TOPIC_ID"; fi
+          echo "⚡ Görünürlük: $PRIVACY ${TOPIC_ID:+| Konu: $TOPIC_ID}"
+          python original_factory.py $ARGS
 
-      - name: 📤 Hazır Yayın Paketini Yükle (Artifact)
+      - name: 📤 Yayın Paketini Sakla (Artifact)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: viral-shorts-${{ github.run_id }}
+          name: original-short-${{ github.run_id }}
           path: |
-            output/VIRAL_MASTER_*.mp4
-            output/*_thumb.jpg
-            output/*_meta.json
-          retention-days: 30
+            output/ORIGINAL_*.mp4
+            output/ORIGINAL_*_thumb.jpg
+            output/ORIGINAL_*_meta.json
+          retention-days: 14
+          if-no-files-found: warn
