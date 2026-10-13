@@ -217,8 +217,13 @@ def sync_core_factory_to_github():
         ("scripts/produce_kolpacino_sequential_master.py", "scripts/produce_kolpacino_sequential_master.py"),
         ("scripts/generate_sequential_kolpacino_thumbnail.py", "scripts/generate_sequential_kolpacino_thumbnail.py"),
         ("scripts/render_clean_footer_playwright.py", "scripts/render_clean_footer_playwright.py"),
-        ("scripts/produce_viral_comment_review_short.py", "scripts/produce_viral_comment_review_short.py"),
-        ("scripts/produce_real_viral_comment_short.py", "scripts/produce_real_viral_comment_short.py"),
+        ("app/services/multi_sector_viral_factory.py", "app/services/multi_sector_viral_factory.py"),
+        ("app/services/studio_browser_bridge.py", "app/services/studio_browser_bridge.py"),
+        ("publish_to_youtube.py", "publish_to_youtube.py"),
+        ("scripts/produce_tyler_single_comment_master.py", "scripts/produce_tyler_single_comment_master.py"),
+        ("scripts/produce_cakir_viral_master.py", "scripts/produce_cakir_viral_master.py"),
+        ("scripts/produce_kedi_viral_master.py", "scripts/produce_kedi_viral_master.py"),
+        ("scripts/verify_dlF4a2xvJAs_comments.py", "scripts/verify_dlF4a2xvJAs_comments.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
