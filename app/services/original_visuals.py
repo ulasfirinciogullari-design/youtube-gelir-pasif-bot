@@ -1,9 +1,10 @@
 """
 Low-cost original visuals for Shorts.
 
-Every scene is illustrated with either a free Pexels stock video (licensed for
-commercial use, PEXELS_API_KEY) or a Fal Flux Schnell image (~$0.003 each,
-FAL_KEY) animated with a slow camera move. No AI video, no film footage.
+Every scene is illustrated with either a free stock video (Pexels with
+PEXELS_API_KEY, else Pixabay with PIXABAY_API_KEY; both licensed for commercial
+use) or a Fal Flux Schnell image (~$0.003 each, FAL_KEY) animated with a slow
+camera move. No AI video, no film footage.
 Scenes are cut into segments of at most ~2.8 s so the edit keeps moving.
 """
 
@@ -33,13 +34,31 @@ def _download(url: str, dest: Path, headers: dict | None = None, timeout: int = 
     return dest
 
 
+def _pick_rendition(files: list[dict]) -> dict | None:
+    """Smallest portrait file that is full HD (then >= 1280 px tall), else the
+    smallest landscape file that still survives a 9:16 crop (>= 1080, then 720 px)."""
+    files = [f for f in files if f.get("link")]
+    for min_height in (HEIGHT, 1280):
+        portrait = [f for f in files if (f.get("height") or 0) > (f.get("width") or 0) and (f.get("height") or 0) >= min_height]
+        if portrait:
+            return min(portrait, key=lambda f: f["height"])
+    for min_height in (1080, 720):
+        landscape = [f for f in files if (f.get("height") or 0) >= min_height]
+        if landscape:
+            return min(landscape, key=lambda f: f["height"])
+    return None
+
+
 def _pick_pexels_file(video: dict) -> dict | None:
-    files = [f for f in video.get("video_files", []) if f.get("file_type") == "video/mp4" and f.get("link")]
-    portrait = [f for f in files if (f.get("height") or 0) > (f.get("width") or 0) and (f.get("height") or 0) >= 1280]
-    if portrait:
-        return min(portrait, key=lambda f: f["height"])
-    landscape = [f for f in files if (f.get("height") or 0) >= 720]
-    return min(landscape, key=lambda f: f["height"]) if landscape else None
+    return _pick_rendition([f for f in video.get("video_files", []) if f.get("file_type") == "video/mp4"])
+
+
+def _pick_pixabay_file(hit: dict) -> dict | None:
+    renditions = (hit.get("videos") or {}).values()
+    return _pick_rendition([
+        {"link": r.get("url"), "width": r.get("width"), "height": r.get("height")}
+        for r in renditions if isinstance(r, dict) and r.get("url") and r.get("size")
+    ])
 
 
 def fetch_pexels_videos(query: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
@@ -76,6 +95,52 @@ def fetch_pexels_videos(query: str, count: int, dest_dir: Path, used_ids: set) -
         used_ids.add(video.get("id"))
         results.append(dest)
     return results
+
+
+def fetch_pixabay_videos(query: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+    key = os.environ.get("PIXABAY_API_KEY")
+    if not key or not query or count <= 0:
+        return []
+    params = urllib.parse.urlencode({"key": key, "q": query[:100], "per_page": 20, "safesearch": "true"})
+    req = urllib.request.Request(f"https://pixabay.com/api/videos/?{params}", headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            hits = json.loads(resp.read().decode("utf-8")).get("hits", [])
+    except Exception as e:
+        print(f"ℹ️ Pixabay arama notu ({query}): {e}")
+        return []
+
+    # Vertical clips first: they need no crop.
+    hits.sort(key=lambda h: not any(
+        (r.get("height") or 0) > (r.get("width") or 0) for r in (h.get("videos") or {}).values() if isinstance(r, dict)
+    ))
+    results = []
+    for hit in hits:
+        if len(results) >= count:
+            break
+        uid = f"pixabay:{hit.get('id')}"
+        if uid in used_ids or (hit.get("duration") or 0) < 3:
+            continue
+        chosen = _pick_pixabay_file(hit)
+        if not chosen:
+            continue
+        dest = dest_dir / f"pixabay_{hit['id']}.mp4"
+        try:
+            _download(chosen["link"], dest, timeout=120)
+        except Exception as e:
+            print(f"ℹ️ Pixabay indirme notu ({hit.get('id')}): {e}")
+            continue
+        used_ids.add(uid)
+        results.append(dest)
+    return results
+
+
+def fetch_stock_videos(query: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+    """Pexels first, Pixabay for whatever is still missing. Either key may be absent."""
+    found = fetch_pexels_videos(query, count, dest_dir, used_ids)
+    if len(found) < count:
+        found += fetch_pixabay_videos(query, count - len(found), dest_dir, used_ids)
+    return found
 
 
 def generate_flux_images(prompt: str, count: int, dest_dir: Path, tag: str) -> list[Path]:
@@ -167,11 +232,11 @@ def collect_scene_assets(scene: dict, count: int, assets_dir: Path, tag: str, us
     """Returns up to `count` (kind, path) assets, trying the scene's preferred source first."""
     assets: list[tuple[str, Path]] = []
     if scene.get("source") == "stock":
-        assets += [("video", p) for p in fetch_pexels_videos(scene.get("stock_query", ""), count, assets_dir, used_ids)]
+        assets += [("video", p) for p in fetch_stock_videos(scene.get("stock_query", ""), count, assets_dir, used_ids)]
     if len(assets) < count:
         assets += [("image", p) for p in generate_flux_images(scene["visual"], count - len(assets), assets_dir, tag)]
     if len(assets) < count and scene.get("source") != "stock":
-        assets += [("video", p) for p in fetch_pexels_videos(scene.get("stock_query", ""), count - len(assets), assets_dir, used_ids)]
+        assets += [("video", p) for p in fetch_stock_videos(scene.get("stock_query", ""), count - len(assets), assets_dir, used_ids)]
     return assets
 
 

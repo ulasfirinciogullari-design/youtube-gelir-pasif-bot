@@ -2,7 +2,7 @@
 ORIGINAL LOW-COST SHORTS FACTORY (Zirvenin Kanunu).
 
 One run = one original Short, end to end:
-topic queue -> LLM script -> free edge-tts narration -> Pexels stock / Flux images
+topic queue -> LLM script -> free edge-tts narration -> Pexels/Pixabay stock / Flux images
 -> kinetic subtitles + sound design -> 1080x1920 60 FPS render -> YouTube upload.
 
 No film footage, no film characters. Typical paid spend is a few Flux images

@@ -130,6 +130,68 @@ def test_split_duration_keeps_segments_short():
     assert len(parts) == 3 and abs(sum(parts) - 7.0) < 1e-9
 
 
+def _pixabay_hit(vid, width, height, duration=12):
+    def rendition(w, h):
+        return {"url": f"https://cdn.example/{vid}_{h}.mp4", "width": w, "height": h, "size": 1000}
+    return {"id": vid, "duration": duration, "videos": {
+        "large": rendition(width * 2, height * 2), "medium": rendition(width, height),
+        "small": rendition(width * 2 // 3, height * 2 // 3), "tiny": {"url": "", "width": 0, "height": 0, "size": 0},
+    }}
+
+
+def test_fetch_pixabay_videos_prefers_vertical_and_skips_used(tmp_path, monkeypatch):
+    payload = {"hits": [
+        _pixabay_hit(1, 1920, 1080),
+        _pixabay_hit(2, 1080, 1920),
+        _pixabay_hit(3, 1920, 1080, duration=2),
+        _pixabay_hit(4, 1920, 1080),
+    ]}
+    seen_urls, downloaded = [], []
+
+    class _Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self):
+            return json.dumps(payload).encode("utf-8")
+
+    def fake_urlopen(req, timeout=0):
+        seen_urls.append(req.full_url)
+        return _Resp()
+
+    def fake_download(url, dest, headers=None, timeout=60):
+        downloaded.append(url)
+        dest.write_bytes(b"x")
+        return dest
+
+    monkeypatch.setenv("PIXABAY_API_KEY", "test-key")
+    monkeypatch.setattr(original_visuals.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(original_visuals, "_download", fake_download)
+
+    used = {"pixabay:4"}
+    paths = original_visuals.fetch_pixabay_videos("chess board", 3, tmp_path, used)
+
+    assert "q=chess+board" in seen_urls[0] and "safesearch=true" in seen_urls[0]
+    # Vertical clip first at its 1920 px rendition, then the landscape clip at 1080p (not 4K);
+    # the 2-second clip and the already used clip are skipped.
+    assert downloaded == ["https://cdn.example/2_1920.mp4", "https://cdn.example/1_1080.mp4"]
+    assert [p.name for p in paths] == ["pixabay_2.mp4", "pixabay_1.mp4"]
+    assert used == {"pixabay:4", "pixabay:2", "pixabay:1"}
+
+
+def test_fetch_stock_videos_falls_back_to_pixabay(tmp_path, monkeypatch):
+    calls = []
+    monkeypatch.setattr(original_visuals, "fetch_pexels_videos",
+                        lambda q, n, d, u: calls.append(("pexels", n)) or [])
+    monkeypatch.setattr(original_visuals, "fetch_pixabay_videos",
+                        lambda q, n, d, u: calls.append(("pixabay", n)) or [d / "a.mp4"] * n)
+    assert len(original_visuals.fetch_stock_videos("ruins", 2, tmp_path, set())) == 2
+    assert calls == [("pexels", 2), ("pixabay", 2)]
+
+
 @pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
 def test_full_render_with_offline_assets(tmp_path, monkeypatch):
     def fake_tts(text, out):

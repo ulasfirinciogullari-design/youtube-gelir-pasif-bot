@@ -100,7 +100,7 @@ yeniden giriş isterse hesap sahibi bağlantıyı yenilemelidir.
 
 `original_factory.py`, Zirvenin Kanunu için film görüntüsü kullanmadan özgün
 Shorts üretir: konu listesinden sıradaki konu → LLM senaryosu → edge-tts
-anlatım → Pexels stok video veya Fal Flux görselleri → altyazı, ses tasarımı ve
+anlatım → Pexels/Pixabay stok video veya Fal Flux görselleri → altyazı, ses tasarımı ve
 1080x1920 60 FPS render → YouTube yüklemesi. AI video üretilmez; ücretli kısım
 birkaç Flux görseli (görsel başı ~0,003 $) ve tek bir kısa LLM çağrısıdır.
 
@@ -109,9 +109,9 @@ birkaç Flux görseli (görsel başı ~0,003 $) ve tek bir kısa LLM çağrısı
   konuyu seçer. Konu bitince iş hata verip durur.
 - Senaryo sağlayıcı sırası: `GEMINI_API_KEY` (ücretsiz katman) → Anthropic
   uyumlu uç → OpenAI uyumlu uç. Geçerli senaryo çıkmazsa video yüklenmez.
-- Görseller: `PEXELS_API_KEY` varsa stok video, yoksa ya da sonuç çıkmazsa
-  `FAL_KEY` ile Flux görseli. AI görsel kullanılan videolarda YouTube'un
-  sentetik içerik bildirimi açılır.
+- Görseller: stok video önce `PEXELS_API_KEY`, sonra `PIXABAY_API_KEY` ile
+  aranır (hangisi tanımlıysa); stok çıkmazsa `FAL_KEY` ile Flux görseli. AI
+  görsel kullanılan videolarda YouTube'un sentetik içerik bildirimi açılır.
 - Zamanlanmış yüklemelerin görünürlüğü `PUBLISH_PRIVACY` repo değişkeniyle
   (varsayılan `public`), elle çalıştırmalar workflow girdisiyle seçilir.
 
