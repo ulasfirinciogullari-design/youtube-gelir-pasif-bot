@@ -212,6 +212,7 @@ def sync_core_factory_to_github():
         ("scripts/produce_faceoff_shelby_walter.py", "scripts/produce_faceoff_shelby_walter.py"),
         ("app/services/comment_video_engine.py", "app/services/comment_video_engine.py"),
         ("scripts/produce_viral_comment_review_short.py", "scripts/produce_viral_comment_review_short.py"),
+        ("scripts/produce_real_viral_comment_short.py", "scripts/produce_real_viral_comment_short.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
