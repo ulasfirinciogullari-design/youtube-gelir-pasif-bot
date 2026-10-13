@@ -73,6 +73,12 @@ class ScriptError(RuntimeError):
     pass
 
 
+class ProviderHTTPError(ScriptError):
+    def __init__(self, code: int, message: str):
+        super().__init__(message)
+        self.code = code
+
+
 def build_prompt(topic: str) -> str:
     return PROMPT_TEMPLATE.format(
         topic=topic.strip(),
@@ -103,7 +109,53 @@ def _post_json(url: str, payload: dict, headers: dict, timeout: int = 60) -> dic
         # The body usually names the real problem (unknown model, bad key, wrong path).
         parts = urllib.parse.urlsplit(url)
         detail = " ".join(e.read().decode("utf-8", "replace").split())[:300]
-        raise ScriptError(f"HTTP {e.code} from {parts.netloc}{parts.path}: {detail}") from e
+        raise ProviderHTTPError(e.code, f"HTTP {e.code} from {parts.netloc}{parts.path}: {detail}") from e
+
+
+# Reseller keys often only unlock part of the catalog ("model is not available for
+# this group"). When the configured model is refused, the endpoint's own model list
+# is printed and the first usable match from this list is tried instead.
+MODEL_PREFERENCE = ["claude-sonnet", "gpt-5", "gpt-4.1", "gpt-4o", "claude", "gemini", "grok", "deepseek", "qwen"]
+NON_CHAT_MARKERS = ("embed", "image", "tts", "whisper", "audio", "realtime", "moderation", "dall-e", "transcribe")
+_model_overrides: dict[str, str] = {}
+
+
+def _available_models(models_url: str, headers: dict) -> list[str]:
+    req = urllib.request.Request(models_url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read().decode("utf-8")).get("data", [])
+    except Exception as e:
+        print(f"ℹ️ Model listesi alınamadı ({urllib.parse.urlsplit(models_url).netloc}): {e}")
+        return []
+    return [m["id"] for m in data if isinstance(m, dict) and m.get("id")]
+
+
+def pick_fallback_model(available: list[str], must_contain: str = "") -> str | None:
+    usable = [m for m in available if must_contain in m.lower() and not any(x in m.lower() for x in NON_CHAT_MARKERS)]
+    for preferred in MODEL_PREFERENCE:
+        for model in usable:
+            if preferred in model.lower():
+                return model
+    return usable[0] if usable else None
+
+
+def _post_with_model_fallback(provider: str, model: str, send, models_url: str, headers: dict, must_contain: str = ""):
+    """send(model) -> response dict. Retries once with a model the endpoint does offer."""
+    model = _model_overrides.get(provider, model)
+    try:
+        return send(model)
+    except ProviderHTTPError as e:
+        if e.code not in (400, 403, 404) or "model" not in str(e).lower():
+            raise
+        available = _available_models(models_url, headers)
+        print(f"ℹ️ {provider}: {model} bu uçta açık değil. Açık modeller: {', '.join(available[:40]) or 'liste yok'}")
+        fallback = pick_fallback_model(available, must_contain)
+        if not fallback or fallback == model:
+            raise
+        print(f"ℹ️ {provider}: yerine {fallback} kullanılıyor")
+        _model_overrides[provider] = fallback
+        return send(fallback)
 
 
 def _call_gemini(prompt: str) -> str | None:
@@ -131,10 +183,15 @@ def _call_anthropic(prompt: str) -> str | None:
     base = os.environ.get("ANTHROPIC_BASE_URL", "https://api.anthropic.com").rstrip("/")
     base = base[:-3] if base.endswith("/v1") else base  # the path below already adds /v1
     model = os.environ.get("ANTHROPIC_SCRIPT_MODEL", "claude-sonnet-4-6")
-    data = _post_json(
-        f"{base}/v1/messages",
-        {"model": model, "max_tokens": 2000, "messages": [{"role": "user", "content": prompt}]},
-        {"Authorization": f"Bearer {token}", "x-api-key": token, "anthropic-version": "2023-06-01"},
+    headers = {"Authorization": f"Bearer {token}", "x-api-key": token, "anthropic-version": "2023-06-01"}
+    data = _post_with_model_fallback(
+        "anthropic", model,
+        lambda m: _post_json(
+            f"{base}/v1/messages",
+            {"model": m, "max_tokens": 2000, "messages": [{"role": "user", "content": prompt}]},
+            headers,
+        ),
+        f"{base}/v1/models", headers, must_contain="claude",
     )
     return "".join(block.get("text", "") for block in data.get("content", []))
 
@@ -145,10 +202,15 @@ def _call_openai(prompt: str) -> str | None:
         return None
     base = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
     model = os.environ.get("OPENAI_SCRIPT_MODEL", "gpt-5-mini")
-    data = _post_json(
-        f"{base}/chat/completions",
-        {"model": model, "messages": [{"role": "user", "content": prompt}]},
-        {"Authorization": f"Bearer {key}"},
+    headers = {"Authorization": f"Bearer {key}"}
+    data = _post_with_model_fallback(
+        "openai", model,
+        lambda m: _post_json(
+            f"{base}/chat/completions",
+            {"model": m, "messages": [{"role": "user", "content": prompt}]},
+            headers,
+        ),
+        f"{base}/models", headers,
     )
     return data.get("choices", [{}])[0].get("message", {}).get("content", "")
 

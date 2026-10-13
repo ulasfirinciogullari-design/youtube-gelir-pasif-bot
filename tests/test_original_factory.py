@@ -92,12 +92,55 @@ def test_provider_http_error_reports_body(monkeypatch):
         raise urllib.error.HTTPError(req.full_url, 404, "Not Found", {}, body)
 
     monkeypatch.setattr(original_script.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(original_script, "_model_overrides", {})
     monkeypatch.setenv("ANTHROPIC_AUTH_TOKEN", "t")
     monkeypatch.setenv("ANTHROPIC_BASE_URL", "https://reseller.example/v1")
     with pytest.raises(ScriptError) as err:
         original_script._call_anthropic("prompt")
     assert "reseller.example/v1/messages" in str(err.value)
     assert "model claude-x not found" in str(err.value)
+
+
+def test_refused_model_falls_back_to_one_the_endpoint_offers(monkeypatch):
+    import io
+    import urllib.error
+    sent_models = []
+
+    class _Resp(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+    def fake_urlopen(req, timeout=0):
+        if req.full_url.endswith("/v1/models"):
+            return _Resp(json.dumps({"data": [
+                {"id": "text-embedding-3-large"}, {"id": "gpt-5.4"}, {"id": "claude-haiku-4-5"},
+            ]}).encode())
+        model = json.loads(req.data)["model"]
+        sent_models.append(model)
+        if model == "claude-sonnet-4-6":
+            body = io.BytesIO(b'{"error":{"message":"Model \\"claude-sonnet-4-6\\" is not available for this group"}}')
+            raise urllib.error.HTTPError(req.full_url, 404, "Not Found", {}, body)
+        return _Resp(json.dumps({"content": [{"type": "text", "text": "ok"}]}).encode())
+
+    monkeypatch.setattr(original_script.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(original_script, "_model_overrides", {})
+    monkeypatch.setenv("ANTHROPIC_AUTH_TOKEN", "t")
+    monkeypatch.setenv("ANTHROPIC_BASE_URL", "https://reseller.example")
+    monkeypatch.delenv("ANTHROPIC_SCRIPT_MODEL", raising=False)
+
+    assert original_script._call_anthropic("prompt") == "ok"
+    assert original_script._call_anthropic("prompt") == "ok"
+    # The anthropic endpoint only takes Claude models; the second call reuses the fallback.
+    assert sent_models == ["claude-sonnet-4-6", "claude-haiku-4-5", "claude-haiku-4-5"]
+
+
+def test_pick_fallback_model_prefers_chat_models():
+    available = ["text-embedding-3", "gpt-image-1", "deepseek-v4", "gpt-5.4-mini"]
+    assert original_script.pick_fallback_model(available) == "gpt-5.4-mini"
+    assert original_script.pick_fallback_model(available, must_contain="claude") is None
 
 
 def test_pick_topic_skips_published_ids():
