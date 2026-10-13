@@ -20,7 +20,7 @@ import urllib.request
 MIN_SCENES = 5
 MAX_SCENES = 8
 MIN_WORDS = 55
-MAX_WORDS = 125
+MAX_WORDS = 95  # ~40 s with tr-TR-AhmetNeural at +6%; the first real run hit 48.6 s
 MAX_SCENE_CHARS = 230
 
 # Film/series characters and quotes the old catalog was built on. A script that
