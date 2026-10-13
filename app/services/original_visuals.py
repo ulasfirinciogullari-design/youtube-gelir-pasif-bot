@@ -8,6 +8,11 @@ video, no film footage. Scenes are cut into segments of at most ~2.5 s (1.6 s
 for the stock-footage curiosity series, like the reference Shorts) so the edit
 keeps moving.
 
+Stock search only returns real footage (no animation). For the curiosity series
+every clip must also carry the topic's subject in its tags (a cat video shows
+cats, never mountains or skeletons), and Gemini looks at the candidates'
+thumbnails to give each sentence the clips that show it (clip_matcher.py).
+
 IMAGE_MODEL picks the Flux model: fal-ai/flux/schnell (default, $0.003 per
 image) or fal-ai/flux/dev (sharper, $0.025 per image). Images are 720x1280 so
 each is billed as one megapixel. Every prompt of a video ends with the same
@@ -18,6 +23,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import subprocess
 import urllib.parse
 import urllib.request
@@ -31,6 +37,12 @@ DEFAULT_STYLE = (
     "Cinematic vertical composition, dramatic natural lighting, rich detail, film grain"
 )
 USER_AGENT = "Mozilla/5.0 (zirvenin-kanunu original shorts)"
+MAX_CANDIDATES = 48  # thumbnails shown to Gemini per video
+# Words that say nothing about what a clip shows; they do not count when ranking clips by their tags.
+STOPWORDS = {
+    "a", "an", "the", "of", "in", "on", "at", "and", "with", "from", "to", "its", "is", "up",
+    "slow", "motion", "close", "closeup", "view", "shot", "video", "footage",
+}
 
 ENCODE_ARGS = [
     "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
@@ -72,7 +84,8 @@ def _pick_pixabay_file(hit: dict) -> dict | None:
     ])
 
 
-def fetch_pexels_videos(query: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+def fetch_pexels_videos(query: str, count: int, dest_dir: Path, used_ids: set,
+                        subject: list[str] | None = None) -> list[Path]:
     key = os.environ.get("PEXELS_API_KEY")
     if not key or not query or count <= 0:
         return []
@@ -94,6 +107,8 @@ def fetch_pexels_videos(query: str, count: int, dest_dir: Path, used_ids: set) -
             break
         if video.get("id") in used_ids or (video.get("duration") or 0) < 3:
             continue
+        if not matches_subject(video.get("url", ""), subject):  # Pexels has no tags; its page slug names the scene
+            continue
         chosen = _pick_pexels_file(video)
         if not chosen:
             continue
@@ -108,11 +123,46 @@ def fetch_pexels_videos(query: str, count: int, dest_dir: Path, used_ids: set) -
     return results
 
 
-def search_pixabay(query: str, per_page: int = 20) -> list[dict]:
+def _words(text: str) -> set[str]:
+    return set(re.findall(r"[a-z]+", (text or "").lower()))
+
+
+def _forms(word: str) -> set[str]:
+    forms = {word, word + "s", word + "es"}
+    if word.endswith("y"):
+        forms.add(word[:-1] + "ies")
+    return forms
+
+
+def matches_subject(tags: str, subject: list[str] | None) -> bool:
+    """True when the tags name the topic's subject: any term, and every word of a multi-word term
+    ("polar bear" needs both words, so a brown bear does not pass). No subject means no filter."""
+    terms = [t.lower().split() for t in subject or [] if t and t.strip()]
+    if not terms:
+        return True
+    words = _words(tags)
+    return any(all(_forms(part) & words for part in term) for term in terms)
+
+
+def tag_score(tags: str, query: str) -> int:
+    """How many content words of the query the tags share (prefix match, so jumping ~ jump)."""
+    words = _words(tags)
+    wanted = [w for w in _words(query) if w not in STOPWORDS and len(w) > 2]
+    return sum(1 for w in wanted if any(t.startswith(w[:4]) or (len(t) > 2 and w.startswith(t[:4])) for t in words))
+
+
+def _is_vertical(hit: dict) -> bool:
+    return any((r.get("height") or 0) > (r.get("width") or 0)
+               for r in (hit.get("videos") or {}).values() if isinstance(r, dict))
+
+
+def search_pixabay(query: str, per_page: int = 50, video_type: str = "film") -> list[dict]:
+    """video_type=film leaves out animations: CGI clocks and skeletons looked random next to real footage."""
     key = os.environ.get("PIXABAY_API_KEY")
     if not key or not query:
         return []
-    params = urllib.parse.urlencode({"key": key, "q": query[:100], "per_page": per_page, "safesearch": "true"})
+    params = urllib.parse.urlencode({"key": key, "q": query[:100], "per_page": per_page, "safesearch": "true",
+                                     "video_type": video_type})
     req = urllib.request.Request(f"https://pixabay.com/api/videos/?{params}", headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
@@ -122,51 +172,63 @@ def search_pixabay(query: str, per_page: int = 20) -> list[dict]:
         return []
 
 
-def fetch_pixabay_videos(query: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+def pixabay_candidates(query: str, used_ids: set, subject: list[str] | None = None, limit: int = 50) -> list[dict]:
+    """Usable clips for a query, best first: real footage of at least 3 s, not used yet, tagged with the
+    subject, ranked by how many query words their tags share, vertical clips first among equals."""
+    hits = [
+        h for h in search_pixabay(query)
+        if h.get("type", "film") == "film" and (h.get("duration") or 0) >= 3
+        and f"pixabay:{h.get('id')}" not in used_ids and matches_subject(h.get("tags", ""), subject)
+        and _pick_pixabay_file(h)
+    ]
+    hits.sort(key=lambda h: (-tag_score(h.get("tags", ""), query), not _is_vertical(h)))
+    return hits[:limit]
+
+
+def download_pixabay_hit(hit: dict, dest_dir: Path, used_ids: set) -> Path | None:
+    chosen = _pick_pixabay_file(hit)
+    if not chosen:
+        return None
+    dest = dest_dir / f"pixabay_{hit['id']}.mp4"
+    try:
+        _download(chosen["link"], dest, timeout=120)
+    except Exception as e:
+        print(f"ℹ️ Pixabay indirme notu ({hit.get('id')}): {e}")
+        return None
+    used_ids.add(f"pixabay:{hit.get('id')}")
+    return dest
+
+
+def fetch_pixabay_videos(query: str, count: int, dest_dir: Path, used_ids: set,
+                         subject: list[str] | None = None) -> list[Path]:
     if count <= 0:
         return []
-    hits = search_pixabay(query)
-
-    # Vertical clips first: they need no crop.
-    hits.sort(key=lambda h: not any(
-        (r.get("height") or 0) > (r.get("width") or 0) for r in (h.get("videos") or {}).values() if isinstance(r, dict)
-    ))
     results = []
-    for hit in hits:
+    for hit in pixabay_candidates(query, used_ids, subject):
         if len(results) >= count:
             break
-        uid = f"pixabay:{hit.get('id')}"
-        if uid in used_ids or (hit.get("duration") or 0) < 3:
-            continue
-        chosen = _pick_pixabay_file(hit)
-        if not chosen:
-            continue
-        dest = dest_dir / f"pixabay_{hit['id']}.mp4"
-        try:
-            _download(chosen["link"], dest, timeout=120)
-        except Exception as e:
-            print(f"ℹ️ Pixabay indirme notu ({hit.get('id')}): {e}")
-            continue
-        used_ids.add(uid)
-        results.append(dest)
+        path = download_pixabay_hit(hit, dest_dir, used_ids)
+        if path:
+            results.append(path)
     return results
 
 
-def fetch_stock_videos(query: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+def fetch_stock_videos(query: str, count: int, dest_dir: Path, used_ids: set,
+                       subject: list[str] | None = None) -> list[Path]:
     """Pexels first, Pixabay for whatever is still missing. Either key may be absent."""
-    found = fetch_pexels_videos(query, count, dest_dir, used_ids)
+    found = fetch_pexels_videos(query, count, dest_dir, used_ids, subject=subject)
     if len(found) < count:
-        found += fetch_pixabay_videos(query, count - len(found), dest_dir, used_ids)
+        found += fetch_pixabay_videos(query, count - len(found), dest_dir, used_ids, subject=subject)
     return found
 
 
-def stock_queries(query: str, fallback: str = "") -> list[str]:
-    """The scene's query, then the topic's general hint, then the query cut to its first two words.
+def stock_queries(query: str, fallback: str = "", subject: list[str] | None = None) -> list[str]:
+    """The scene's query, the topic's general hint, the query cut to its first two words, then each subject term.
 
     Long model-written queries ("a curious cat landing on its feet") often return
     nothing on Pixabay, while two plain words almost always do."""
     words = query.split()
-    candidates = [query, fallback, " ".join(words[:2]) if len(words) > 2 else ""]
+    candidates = [query, fallback, " ".join(words[:2]) if len(words) > 2 else "", *(subject or [])]
     out: list[str] = []
     for q in candidates:
         q = " ".join(q.split())
@@ -175,13 +237,63 @@ def stock_queries(query: str, fallback: str = "") -> list[str]:
     return out
 
 
-def fetch_stock_with_fallbacks(query: str, fallback: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+def fetch_stock_with_fallbacks(query: str, fallback: str, count: int, dest_dir: Path, used_ids: set,
+                               subject: list[str] | None = None) -> list[Path]:
     found: list[Path] = []
-    for q in stock_queries(query, fallback):
+    for q in stock_queries(query, fallback, subject):
         if len(found) >= count:
             break
-        found += fetch_stock_videos(q, count - len(found), dest_dir, used_ids)
+        found += fetch_stock_videos(q, count - len(found), dest_dir, used_ids, subject=subject)
     return found
+
+
+def collect_matched_stock(scenes: list[dict], plans: list[list[float]], assets_dir: Path, used_ids: set,
+                          subject: list[str] | None = None, fallback_query: str = "", topic: str = "",
+                          match=None) -> tuple[list[list[tuple[str, Path]]], str]:
+    """Stock-only scenes. Gathers on-subject Pixabay candidates for every scene, lets Gemini pick from their
+    thumbnails the clips that show each sentence, and downloads only those. A scene Gemini found nothing for
+    stays empty and later reuses the video's other (also on-subject) clips. Without Gemini the clips come
+    in keyword order. Returns (assets per scene, how they were matched)."""
+    from app.services import clip_matcher
+
+    pool: list[dict] = []
+    seen: set = set()
+
+    def add(hits: list[dict]) -> None:
+        for h in hits:
+            if len(pool) < MAX_CANDIDATES and h.get("id") not in seen:
+                seen.add(h.get("id"))
+                pool.append(h)
+
+    for scene in scenes:
+        query = scene.get("stock_query", "")
+        hits = pixabay_candidates(query, used_ids, subject, limit=6)
+        if len(hits) < 3 and len(query.split()) > 2:
+            hits += pixabay_candidates(" ".join(query.split()[:2]), used_ids, subject, limit=6)
+        add(hits)
+    for q in [fallback_query, *(subject or [])]:
+        if q:
+            add(pixabay_candidates(q, used_ids, subject, limit=12))
+
+    wanted = [len(plan) for plan in plans]
+    picks = None
+    if pool:
+        try:
+            picks = (match or clip_matcher.match_clips)(topic, scenes, wanted, pool)
+        except Exception as e:  # matching is an upgrade; keyword order still gives on-subject clips
+            print(f"ℹ️ Görüntü eşleştirme notu: {str(e)[:200]}")
+
+    scene_assets: list[list[tuple[str, Path]]] = []
+    for idx, (scene, want) in enumerate(zip(scenes, wanted)):
+        if picks is not None:
+            paths = [download_pixabay_hit(pool[i], assets_dir, used_ids) for i in picks[idx]]
+            assets = [("video", p) for p in paths if p]
+            print(f"       Sahne {idx + 1}: {len(assets)} eşleşen klip")
+        else:
+            assets = [("video", p) for p in fetch_stock_with_fallbacks(
+                scene.get("stock_query", ""), fallback_query, want, assets_dir, used_ids, subject)]
+        scene_assets.append(assets)
+    return scene_assets, "gemini" if picks is not None else "anahtar kelime"
 
 
 def image_model() -> str:
@@ -276,21 +388,12 @@ def split_duration(duration: float, max_len: float = MAX_SEGMENT_SECONDS) -> lis
 
 
 def collect_scene_assets(scene: dict, count: int, assets_dir: Path, tag: str, used_ids: set,
-                         style: str = DEFAULT_STYLE, ai_only: bool = False,
-                         stock_only: bool = False, fallback_query: str = "") -> list[tuple[str, Path]]:
+                         style: str = DEFAULT_STYLE, ai_only: bool = False) -> list[tuple[str, Path]]:
     """Returns up to `count` (kind, path) assets, trying the scene's preferred source first.
 
     ai_only skips stock video unless no image can be generated: keyword stock
-    footage rarely matches a film character's world and made those videos look random.
-    stock_only is the opposite, for topics real footage can show: every query
-    fallback is tried first, and a Flux image is drawn only when a scene found no clip at all."""
+    footage rarely matches a film character's world and made those videos look random."""
     assets: list[tuple[str, Path]] = []
-    if stock_only:
-        assets += [("video", p) for p in fetch_stock_with_fallbacks(
-            scene.get("stock_query", ""), fallback_query, count, assets_dir, used_ids)]
-        if not assets:
-            assets += [("image", p) for p in generate_flux_images(scene["visual"], count, assets_dir, tag, style)]
-        return assets
     if scene.get("source") == "stock" and not ai_only:
         assets += [("video", p) for p in fetch_stock_videos(scene.get("stock_query", ""), count, assets_dir, used_ids)]
     if len(assets) < count:
@@ -302,10 +405,14 @@ def collect_scene_assets(scene: dict, count: int, assets_dir: Path, tag: str, us
 
 def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Path,
                        style: str = DEFAULT_STYLE, ai_only: bool = False, stock_only: bool = False,
-                       segment_seconds: float = MAX_SEGMENT_SECONDS, fallback_query: str = "") -> dict:
+                       segment_seconds: float = MAX_SEGMENT_SECONDS, fallback_query: str = "",
+                       subject: list[str] | None = None, topic: str = "") -> dict:
     """
     Renders one clip per segment and returns
-    {"segments": [Path], "cut_times": [float], "ai_images": int, "stock_videos": int, "thumbnail": Path | None}.
+    {"segments": [Path], "cut_times": [float], "ai_images": int, "stock_videos": int, "thumbnail": Path | None,
+     "clip_match": str | None}.
+    stock_only (curiosity series): real footage only, matched to each sentence; Flux images are drawn
+    only if no clip at all could be found for the video.
     Raises RuntimeError if no scene could be illustrated at all.
     """
     assets_dir = work_dir / "assets"
@@ -323,11 +430,21 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
     motion = 0
 
     plans = [split_duration(d, segment_seconds) for d in durations]
-    scene_assets = []
-    for idx, (scene, plan) in enumerate(zip(scenes, plans)):
-        assets = collect_scene_assets(scene, len(plan), assets_dir, f"s{idx:02d}", used_ids, style, ai_only,
-                                      stock_only, fallback_query)
-        scene_assets.append(assets)
+    clip_match = None
+    if stock_only:
+        scene_assets, clip_match = collect_matched_stock(scenes, plans, assets_dir, used_ids, subject,
+                                                         fallback_query, topic)
+        if not any(scene_assets):
+            scene_assets = [
+                [("image", p) for p in generate_flux_images(scene["visual"], len(plan), assets_dir, f"s{idx:02d}", style)]
+                for idx, (scene, plan) in enumerate(zip(scenes, plans))
+            ]
+    else:
+        scene_assets = [
+            collect_scene_assets(scene, len(plan), assets_dir, f"s{idx:02d}", used_ids, style, ai_only)
+            for idx, (scene, plan) in enumerate(zip(scenes, plans))
+        ]
+    for assets in scene_assets:
         bank += assets
     if not bank:
         raise RuntimeError("no stock video or AI image could be fetched for any scene")
@@ -358,4 +475,5 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
         "ai_images": ai_images,
         "stock_videos": stock_videos,
         "thumbnail": thumbnail,
+        "clip_match": clip_match,
     }

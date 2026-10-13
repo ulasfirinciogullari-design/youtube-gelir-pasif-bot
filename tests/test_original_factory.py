@@ -337,7 +337,7 @@ def test_fetch_pixabay_videos_prefers_vertical_and_skips_used(tmp_path, monkeypa
     used = {"pixabay:4"}
     paths = original_visuals.fetch_pixabay_videos("chess board", 3, tmp_path, used)
 
-    assert "q=chess+board" in seen_urls[0] and "safesearch=true" in seen_urls[0]
+    assert "q=chess+board" in seen_urls[0] and "safesearch=true" in seen_urls[0] and "video_type=film" in seen_urls[0]
     # Vertical clip first at its 1920 px rendition, then the landscape clip at 1080p (not 4K);
     # the 2-second clip and the already used clip are skipped.
     assert downloaded == ["https://cdn.example/2_1920.mp4", "https://cdn.example/1_1080.mp4"]
@@ -348,9 +348,9 @@ def test_fetch_pixabay_videos_prefers_vertical_and_skips_used(tmp_path, monkeypa
 def test_fetch_stock_videos_falls_back_to_pixabay(tmp_path, monkeypatch):
     calls = []
     monkeypatch.setattr(original_visuals, "fetch_pexels_videos",
-                        lambda q, n, d, u: calls.append(("pexels", n)) or [])
+                        lambda q, n, d, u, subject=None: calls.append(("pexels", n)) or [])
     monkeypatch.setattr(original_visuals, "fetch_pixabay_videos",
-                        lambda q, n, d, u: calls.append(("pixabay", n)) or [d / "a.mp4"] * n)
+                        lambda q, n, d, u, subject=None: calls.append(("pixabay", n)) or [d / "a.mp4"] * n)
     assert len(original_visuals.fetch_stock_videos("ruins", 2, tmp_path, set())) == 2
     assert calls == [("pexels", 2), ("pixabay", 2)]
 
@@ -373,7 +373,7 @@ def test_full_render_with_offline_assets(tmp_path, monkeypatch):
             paths.append(p)
         return paths
 
-    def fake_pexels(query, count, dest_dir, used_ids):
+    def fake_pexels(query, count, dest_dir, used_ids, subject=None):
         p = dest_dir / "pexels_fake.mp4"
         subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "testsrc=size=720x1280:rate=30", "-t", "5", str(p)],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

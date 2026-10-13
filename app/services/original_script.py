@@ -139,6 +139,7 @@ bir bilgi videosu olarak anlatıyoruz (Keşif Vakti, Full Asfalt gibi kanalları
 
 Konu: {topic}
 Görüntü ipucu: {stock_hint}
+Ana özne (İngilizce stok etiketi): {subject}
 
 Bu konu için 25-40 saniyelik bir Shorts senaryosu yaz. Merakı canlı tutan, enerjik ve samimi bir anlatıcı gibi konuş;
 cümleler akıcı olsun, ders anlatır gibi değil arkadaşına şaşırtıcı bir şey anlatır gibi.
@@ -148,12 +149,17 @@ Anlatım kuralları:
   "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
 - Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
 - Akış: kanca, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran bir örnek veya sayı, akılda kalan bir final cümlesi.
-- Sadece bilimsel olarak doğrulanmış bilgileri kullan. Tartışmalı bir konuysa bunu açıkça söyle. Emin olmadığın sayı yazma.
+- Sadece bilimsel olarak doğrulanmış bilgileri kullan. Tartışmalı bir konuysa bunu açıkça söyle.
+- Sayı (süre, yüzde, ölçü, yıl) yalnızca ansiklopedilerde geçen, kesin bilinen bir değerse kullan.
+  Emin değilsen sayı verme, "saniyenin altında", "çok kısa sürede" gibi söyle.
 - Anlatımda emoji kullanma, metin seslendirilecek.
 
 Görsel kuralları:
-- Her sahne gerçek bir stok videoyla gösterilecek. "stock_query": Pixabay'de kesin bulunacak 2-3 basit İngilizce kelime
-  (ör. "cat jumping", "lightning storm", "person yawning"). Soyut kavram yazma; kameraya çekilebilecek somut bir şey yaz.
+- Her sahne gerçek bir stok videoyla gösterilecek ve görüntü o cümleyi birebir göstermeli. Bu yüzden her cümle, ana özneyi
+  ekranda gösterebileceğimiz somut bir anla anlatılsın (zıplarken, düşerken, uyurken, yakın plan gözleri...).
+  Soyut bir bilgiyi bile öznenin görülebilen bir hâline bağla; özne dışında bir şey (bilim insanı, laboratuvar, grafik) gösterme.
+- "stock_query": Pixabay'de kesin bulunacak 2-3 basit İngilizce kelime ve ana özne kelimelerinden birini içersin
+  (ör. "cat jumping", "kitten sleeping", "cat eyes"). Soyut kavram yazma; kameraya çekilebilecek somut bir şey yaz.
 - "visual": stok video bulunamazsa üretilecek fotogerçekçi İngilizce görsel tarifi (somut nesne, mekân, ışık). Yazı, logo yok.
 - "source": her sahnede "stock".
 
@@ -192,6 +198,7 @@ def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str]
         template = CHARACTER_PROMPT_TEMPLATE if character else PROMPT_TEMPLATE
     return template.format(
         stock_hint=(character or {}).get("stock_hint", ""),
+        subject=", ".join((character or {}).get("subject") or []) or "konunun ana öznesi",
         topic=topic.strip(),
         character=(character or {}).get("character", ""),
         work=(character or {}).get("work", ""),

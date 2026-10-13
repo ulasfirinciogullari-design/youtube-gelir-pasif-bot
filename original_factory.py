@@ -192,7 +192,8 @@ soruları gerçek stok videolarla anlatıyor. Konu tek cümlelik bir soru olsun,
 ve kameraya çekilebilecek somut bir şeyle ilgili olsun (soyut kavram değil).
 Daha önce işlenenler (bunları ve benzerlerini tekrar etme):
 {used}
-Sadece şu JSON'u döndür: {{"topic": "...", "stock_hint": "Pixabay'de bulunacak 2-3 basit İngilizce kelime"}}"""
+Sadece şu JSON'u döndür: {{"topic": "...", "stock_hint": "Pixabay'de bulunacak 2-3 basit İngilizce kelime",
+"subject": ["videoda görünecek ana özne için 1-4 tekil İngilizce isim, ör. cat, kitten"]}}"""
 
 
 def invent_merak_topic(used: list[str]) -> dict:
@@ -202,7 +203,14 @@ def invent_merak_topic(used: list[str]) -> dict:
     topic = str(data.get("topic") or "").strip()
     if len(topic) < 15:
         raise SystemExit("Merak konuları bitti ve yeni konu üretilemedi (GEMINI_API_KEY gerekli).")
-    return {"topic": topic, "stock_hint": " ".join(str(data.get("stock_hint") or "").split())[:60]}
+    hint = " ".join(str(data.get("stock_hint") or "").split())[:60]
+    subject = [str(w).strip().lower() for w in data.get("subject") or [] if str(w).strip()][:4]
+    return {"topic": topic, "stock_hint": hint, "subject": subject or hint.split()[:1]}
+
+
+def topic_subject(topic: dict) -> list[str] | None:
+    """English nouns every curiosity clip must be tagged with (the first stock hint word if none were given)."""
+    return topic.get("subject") or (topic.get("stock_hint") or "").split()[:1] or None
 
 
 INVENTORS = {"story": "invent_topic", "karakter": "invent_character_topic", "merak": "invent_merak_topic"}
@@ -440,7 +448,9 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     cfg = SERIES[series]
     visuals = build_visual_track(scenes, durations, work_dir, cfg["style"], cfg["ai_only"],
                                  stock_only=cfg.get("stock_only", False), segment_seconds=cfg.get("cut", 2.5),
-                                 fallback_query=topic.get("stock_hint", ""))
+                                 fallback_query=topic.get("stock_hint", ""),
+                                 subject=topic_subject(topic) if cfg.get("stock_only") else None,
+                                 topic=topic["topic"])
 
     print("[3/4] 🎵 Ses tasarımı ve altyazı")
     subs = work_dir / "subtitles.ass"
@@ -493,6 +503,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "music": (pick_music(topic["id"], series) or Path("-")).name,
         "ai_images": visuals["ai_images"],
         "stock_videos": visuals["stock_videos"],
+        "clip_match": visuals.get("clip_match"),
         "contains_synthetic_media": visuals["ai_images"] > 0,
     }
     meta_path = final_mp4.with_name(f"{final_mp4.stem}_meta.json")
@@ -597,7 +608,8 @@ def main(argv=None) -> int:
         examples = film_title_examples(DATA_DIR) or examples
     elif series == "merak":
         # The channel's top titles and competitor rules come from history/film videos; the prompt has its own examples.
-        character, examples, rules = {**topic, "stock_hint": topic.get("stock_hint", "")}, [], None
+        character = {**topic, "stock_hint": topic.get("stock_hint", ""), "subject": topic_subject(topic)}
+        examples, rules = [], None
     script, provider = write_script(topic["topic"], style_examples=examples, rules=rules, character=character)
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 

@@ -211,26 +211,120 @@ def test_merak_script_validates_and_still_refuses_film_references():
         validate_script(bad, topic)
 
 
-def test_merak_scenes_use_stock_with_query_fallbacks(tmp_path, monkeypatch):
-    from app.services import original_visuals
-    queries, images = [], []
+def _hit(vid, tags, type_="film", duration=10, vertical=False, thumb=True):
+    w, h = (1080, 1920) if vertical else (1920, 1080)
+    rendition = {"url": f"https://cdn.example/{vid}.mp4", "width": w, "height": h, "size": 1000}
+    if thumb:
+        rendition["thumbnail"] = f"https://cdn.example/{vid}.jpg"
+    return {"id": vid, "tags": tags, "type": type_, "duration": duration, "videos": {"medium": rendition}}
 
-    def fake_stock(query, count, dest, used):
-        queries.append(query)
-        return [tmp_path / "hint.mp4"] * count if query == "cat jumping" else []
+
+def test_stock_clips_must_show_the_subject():
+    from app.services.original_visuals import matches_subject, tag_score
+    cat = ["cat", "kitten"]
+    assert matches_subject("cat, pet, animal", cat) and matches_subject("kittens, cute", cat)
+    assert not matches_subject("mountain, landscape, nature", cat)
+    assert not matches_subject("skeleton, human, anatomy, spine", cat)
+    assert not matches_subject("clock, time, watch", cat)
+    assert matches_subject("polar, bear, arctic", ["polar bear"]) and not matches_subject("bear, brown, forest", ["polar bear"])
+    assert matches_subject("anything", None)
+    assert tag_score("cat, jumping, pet", "cat jumping slow motion") == 2
+    assert tag_score("cat, sleeping", "cat jumping") == 1
+
+
+def test_pixabay_candidates_drop_animation_and_off_topic_clips(monkeypatch):
+    from app.services import original_visuals
+    hits = [
+        _hit(1, "mountain, hills, landscape"),
+        _hit(2, "cat, sleeping, pet"),
+        _hit(3, "cat, jumping, garden", vertical=True),
+        _hit(4, "cat, cartoon", type_="animation"),
+        _hit(5, "cat, jumping", duration=2),
+        _hit(6, "kitten, jump, play"),
+    ]
+    monkeypatch.setattr(original_visuals, "search_pixabay", lambda q, **kw: hits)
+    found = original_visuals.pixabay_candidates("cat jumping", {"pixabay:6"}, ["cat", "kitten"])
+    assert [h["id"] for h in found] == [3, 2]
+
+
+def test_merak_falls_back_to_subject_queries(tmp_path, monkeypatch):
+    from app.services import original_visuals
+    queries = []
+
+    def fake_stock(query, count, dest, used, subject=None):
+        queries.append((query, tuple(subject or ())))
+        return [tmp_path / "c.mp4"] * count if query == "cat" else []
 
     monkeypatch.setattr(original_visuals, "fetch_stock_videos", fake_stock)
-    monkeypatch.setattr(original_visuals, "generate_flux_images",
-                        lambda prompt, count, dest, tag, style: images.append(tag) or [tmp_path / f"{tag}.jpg"] * count)
-    scene = {"visual": "a cat in the air", "stock_query": "a fluffy cat turning mid air", "source": "stock"}
-    assets = original_visuals.collect_scene_assets(scene, 2, tmp_path, "s00", set(), stock_only=True,
-                                                   fallback_query="cat jumping")
-    assert queries == ["a fluffy cat turning mid air", "cat jumping"]
-    assert [k for k, _ in assets] == ["video", "video"] and images == []
-    # Nothing found anywhere: one generated image set keeps the scene from going blank.
-    assets = original_visuals.collect_scene_assets({"visual": "x", "stock_query": "zzz qqq www"}, 1, tmp_path, "s01",
-                                                   set(), stock_only=True, fallback_query="nothing")
-    assert queries[-3:] == ["zzz qqq www", "nothing", "zzz qqq"] and assets == [("image", tmp_path / "s01.jpg")]
+    found = original_visuals.fetch_stock_with_fallbacks("a fluffy cat turning", "cat jumping", 2, tmp_path, set(),
+                                                        ["cat", "kitten"])
+    assert [q for q, _ in queries] == ["a fluffy cat turning", "cat jumping", "a fluffy", "cat"]
+    assert all(subj == ("cat", "kitten") for _, subj in queries) and len(found) == 2
+
+
+def test_matched_stock_downloads_only_the_clips_gemini_picked(tmp_path, monkeypatch):
+    from app.services import original_visuals
+    pool_hits = [_hit(i, "cat, pet") for i in range(1, 9)]
+    monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: pool_hits[:limit])
+    downloaded = []
+
+    def fake_download(hit, dest_dir, used):
+        downloaded.append(hit["id"])
+        used.add(f"pixabay:{hit['id']}")
+        return dest_dir / f"pixabay_{hit['id']}.mp4"
+
+    monkeypatch.setattr(original_visuals, "download_pixabay_hit", fake_download)
+    scenes = [{"text": "Kedi zıplıyor.", "stock_query": "cat jumping"}, {"text": "Kedi uyuyor.", "stock_query": "cat sleeping"},
+              {"text": "Kedi yere iniyor.", "stock_query": "cat landing"}]
+    seen = {}
+
+    def fake_match(topic, sc, wanted, pool):
+        seen.update(topic=topic, wanted=wanted, pool=len(pool))
+        return [[4, 0], [6], []]
+
+    assets, how = original_visuals.collect_matched_stock(scenes, [[1.6, 1.6], [1.6], [1.6]], tmp_path, set(), ["cat"],
+                                                         "cat jumping", "Kediler neden ayakta düşer?", match=fake_match)
+    assert how == "gemini" and seen == {"topic": "Kediler neden ayakta düşer?", "wanted": [2, 1, 1], "pool": 8}
+    assert downloaded == [5, 1, 7] and [len(a) for a in assets] == [2, 1, 0]
+
+    # No Gemini answer: keyword order, still on-subject.
+    calls = []
+    monkeypatch.setattr(original_visuals, "fetch_stock_with_fallbacks",
+                        lambda q, fb, n, d, u, subject=None: calls.append((q, n, tuple(subject))) or [d / "k.mp4"] * n)
+    assets, how = original_visuals.collect_matched_stock(scenes, [[1.6, 1.6], [1.6], [1.6]], tmp_path, set(), ["cat"],
+                                                         "cat jumping", "Kedi", match=lambda *a: None)
+    assert how == "anahtar kelime" and calls[0] == ("cat jumping", 2, ("cat",)) and [len(a) for a in assets] == [2, 1, 1]
+
+
+def test_clip_matcher_reads_gemini_picks():
+    from app.services import clip_matcher
+    candidates = [_hit(i, "cat") for i in range(1, 6)] + [_hit(6, "cat", thumb=False)]
+    scenes = [{"text": "Kedi zıplıyor.", "stock_query": "cat jumping"}, {"text": "Kedi uyuyor.", "stock_query": "cat sleeping"}]
+    sent = []
+
+    def fake_call(parts):
+        sent.append(parts)
+        # scene 1 asks for clip 2 twice and an unknown clip; scene 2 repeats clip 2 and asks for the thumbless clip 6
+        return json.dumps({"scenes": [{"scene": 1, "clips": [2, 2, 99, 4, 5]}, {"scene": 2, "clips": [2, 6, 3]},
+                                      {"scene": 7, "clips": [1]}]})
+
+    picks = clip_matcher.match_clips("Kediler", scenes, [2, 2], candidates, call=fake_call,
+                                     fetch=lambda url: (b"\xff\xd8\xff", "image/jpeg") if url else None)
+    assert picks == [[1, 3], [2]]
+    images = [p for p in sent[0] if "inlineData" in p]
+    assert len(images) == 5 and "Kedi zıplıyor." in sent[0][0]["text"] and "(2 aday)" in sent[0][0]["text"]
+    assert clip_matcher.match_clips("Kediler", scenes, [2, 2], candidates, call=lambda parts: None,
+                                    fetch=lambda url: (b"\xff\xd8\xff", "image/jpeg")) is None
+    assert clip_matcher.match_clips("Kediler", scenes, [2, 2], candidates, call=fake_call, fetch=lambda url: None) is None
+
+
+def test_merak_prompt_names_the_subject_and_topics_have_one():
+    topics = original_factory.load_topics(original_factory.MERAK_TOPICS_FILE)
+    assert all(t["subject"] and all(re.fullmatch(r"[a-z ]+", w) for w in t["subject"]) for t in topics)
+    prompt = build_prompt(topics[0]["topic"], None, None, topics[0])
+    assert "Ana özne (İngilizce stok etiketi): cat, kitten" in prompt and "birebir göstermeli" in prompt
+    assert original_factory.topic_subject({"stock_hint": "octopus swimming"}) == ["octopus"]
+    assert original_factory.topic_subject({"stock_hint": "", "subject": ["owl"]}) == ["owl"]
 
 
 def test_merak_series_cuts_faster_and_runs_out_into_gemini_topics(tmp_path, monkeypatch):
