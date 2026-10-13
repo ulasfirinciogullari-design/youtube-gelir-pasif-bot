@@ -96,3 +96,64 @@ def test_film_title_examples_come_from_the_old_clips(tmp_path):
         "Thomas Shelby vs Walter White: Kim Daha Tehlikeli?", "Thomas Shelby: Odanın En Tehlikeli Adamı",
     ]
     assert original_factory.film_title_examples(tmp_path / "yok") == []
+
+
+def test_character_prompt_carries_the_visual_world():
+    topic = original_factory.load_topics(original_factory.CHARACTER_TOPICS_FILE)[0]
+    prompt = build_prompt(topic["topic"], None, None, topic)
+    assert "Görsel dünya: 1919 Birmingham" in prompt and '"source": her sahnede "ai"' in prompt
+
+
+def test_character_scenes_use_generated_images_only(tmp_path, monkeypatch):
+    from app.services import original_visuals
+    calls = []
+    monkeypatch.setattr(original_visuals, "fetch_stock_videos", lambda *a: calls.append("stock") or [tmp_path / "s.mp4"])
+    monkeypatch.setattr(original_visuals, "generate_flux_images",
+                        lambda prompt, count, dest, tag, style: calls.append(style) or [tmp_path / f"{tag}.jpg"] * count)
+    scene = {"visual": "a man in a cap", "stock_query": "street", "source": "stock"}
+    assets = original_visuals.collect_scene_assets(scene, 2, tmp_path, "s00", set(), "noir style", ai_only=True)
+    assert [k for k, _ in assets] == ["image", "image"] and calls == ["noir style"]
+    original_visuals.collect_scene_assets(scene, 1, tmp_path, "s01", set())
+    assert calls[-1] == "stock"
+
+
+def test_image_model_comes_from_the_environment(monkeypatch):
+    from app.services import original_visuals
+    monkeypatch.delenv("IMAGE_MODEL", raising=False)
+    assert original_visuals.image_model() == "fal-ai/flux/schnell"
+    monkeypatch.setenv("IMAGE_MODEL", "fal-ai/flux/dev")
+    assert original_visuals.image_model() == "fal-ai/flux/dev"
+    monkeypatch.setenv("IMAGE_MODEL", "https://evil.example/model")
+    assert original_visuals.image_model() == "fal-ai/flux/schnell"
+
+
+def test_music_and_effects_come_from_the_generated_library(tmp_path):
+    (tmp_path / "music").mkdir()
+    (tmp_path / "sfx").mkdir()
+    for name in ("story_1", "karakter_1", "karakter_2"):
+        (tmp_path / "music" / f"{name}.mp3").write_bytes(b"ID3")
+    assert original_factory.pick_music("fk-001", "karakter", tmp_path).name.startswith("karakter_")
+    assert original_factory.pick_music("zk-001", "story", tmp_path).name == "story_1.mp3"
+    assert original_factory.sfx("whoosh", tmp_path) is None  # the old sine-wave synths are not used any more
+    (tmp_path / "sfx" / "whoosh.mp3").write_bytes(b"ID3")
+    assert original_factory.sfx("whoosh", tmp_path).name == "whoosh.mp3"
+
+
+def test_reference_analysis_reads_links_and_builds_a_spec():
+    from app.services import reference_analysis as ra
+    text = ("https://www.youtube.com/shorts/D4RVfi_5l30 , https://www.youtube.com/shorts/msrST6TrWn8,"
+            "https://youtu.be/sMGpFnFu9gk https://www.youtube.com/watch?v=k951xfBlETg&t=3 D4RVfi_5l30")
+    assert ra.extract_ids(text) == ["D4RVfi_5l30", "msrST6TrWn8", "sMGpFnFu9gk", "k951xfBlETg"]
+
+    def watch(video_id, prompt):
+        if video_id == "msrST6TrWn8":
+            raise RuntimeError("video unavailable")
+        return json.dumps({"visual_source": "AI görsel", "avg_shot_seconds": 1.5, "music": "dark phonk"})
+
+    prompts = []
+    result = ra.analyze_references(["D4RVfi_5l30", "msrST6TrWn8"], watch=watch,
+                                   call=lambda p: prompts.append(p) or json.dumps({"gaps": ["kesmeler yavaş"]}))
+    assert result["spec"] == {"gaps": ["kesmeler yavaş"]}
+    assert "error" in result["videos"][1] and "dark phonk" in prompts[0] and "ElevenLabs Türkçe" in prompts[0]
+    report = ra.format_report(result)
+    assert "1.5 sn/kesme" in report and "analiz edilemedi" in report and "kesmeler yavaş" in report

@@ -19,6 +19,7 @@ import argparse
 import asyncio
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -45,6 +46,9 @@ GENERATED_TOPICS_FILE = "generated_topics.json"
 DNA_REFRESH_DAYS = 7  # one competitor scan (~650 API units) a week
 MUSIC_DIR = BASE_DIR / "assets" / "music"
 SFX_DIR = BASE_DIR / "assets" / "sfx"
+# Music and sound effects generated once with ElevenLabs (scripts/build_audio_library.py) live on the
+# channel-data branch. The old assets/sfx files are sine-wave synths and are no longer mixed in.
+AUDIO_LIBRARY = DATA_DIR / "audio"
 
 VOICE = {"name": "tr-TR-AhmetNeural", "rate": "+6%", "pitch": "-2Hz"}
 MARKER_PREFIX = "Seri: "
@@ -53,10 +57,14 @@ BASE_TAGS = ["shorts", "psikoloji", "tarih", "güç", "karar verme", "zirvenin k
 BASE_HASHTAGS = "#shorts #psikoloji #tarih #keşfet"
 SERIES = {
     "story": {"topics": TOPICS_FILE, "prefix": "zk", "format": "story",
-              "tags": BASE_TAGS, "hashtags": BASE_HASHTAGS},
+              "tags": BASE_TAGS, "hashtags": BASE_HASHTAGS, "ai_only": False,
+              "style": "cinematic historical drama film still, 35mm, dramatic chiaroscuro lighting, rich textures, "
+                       "muted earth tones and deep shadows, photorealistic, highly detailed"},
     "karakter": {"topics": CHARACTER_TOPICS_FILE, "prefix": "fk", "format": "character",
                  "tags": ["shorts", "film", "dizi", "karakter analizi", "psikoloji", "zirvenin kanunu"],
-                 "hashtags": "#shorts #film #dizi #psikoloji"},
+                 "hashtags": "#shorts #film #dizi #psikoloji", "ai_only": True,
+                 "style": "cinematic crime drama film still, anamorphic 35mm, moody low-key lighting, volumetric haze, "
+                          "teal and amber color grade, photorealistic, highly detailed, faces turned away or in shadow"},
 }
 HOOK_SECONDS = 2.2
 voice_usage = {"elevenlabs": 0, "edge-tts": 0}
@@ -275,11 +283,18 @@ def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_li
 # Sound design and render
 # ---------------------------------------------------------------------------
 
-def pick_music(seed: str) -> Path | None:
-    tracks = sorted(MUSIC_DIR.glob("*.mp3"))
+def pick_music(seed: str, series: str = "story", library: Path | None = None) -> Path | None:
+    """A track from the generated library for this series, else any library track, else the old assets."""
+    music = (library or AUDIO_LIBRARY) / "music"
+    tracks = sorted(music.glob(f"{series}_*.mp3")) or sorted(music.glob("*.mp3")) or sorted(MUSIC_DIR.glob("*.mp3"))
     if not tracks:
         return None
     return tracks[int(hashlib.md5(seed.encode("utf-8")).hexdigest(), 16) % len(tracks)]
+
+
+def sfx(name: str, library: Path | None = None) -> Path | None:
+    path = (library or AUDIO_LIBRARY) / "sfx" / f"{name}.mp3"
+    return path if path.exists() else None
 
 
 def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[float], music: Path | None) -> Path:
@@ -299,14 +314,14 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
     if music and music.exists():
         fade = max(0.5, duration - 1.5)
         add(music, f"volume=0.11,afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m", loop=True)
-    impact, whoosh, riser = SFX_DIR / "impact_sub.mp3", SFX_DIR / "whoosh_synth.mp3", SFX_DIR / "riser_cinematic.mp3"
-    if impact.exists():
-        add(impact, "volume=0.6", "imp")
-    if whoosh.exists():
+    impact, whoosh, riser = sfx("impact"), sfx("whoosh"), sfx("riser")
+    if impact:
+        add(impact, "volume=0.5", "imp")
+    if whoosh:
         for i, t in enumerate(scene_cuts[:10]):
-            ms = max(0, int((t - 0.15) * 1000))
-            add(whoosh, f"volume=0.3,adelay={ms}|{ms}", f"w{i}")
-    if riser.exists() and duration > 8:
+            ms = max(0, int((t - 0.2) * 1000))
+            add(whoosh, f"volume=0.22,adelay={ms}|{ms}", f"w{i}")
+    if riser and duration > 8:
         ms = int((duration - 2.5) * 1000)
         add(riser, f"volume=0.28,adelay={ms}|{ms}", "ris")
 
@@ -385,7 +400,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         scene_cuts.append(round(t, 3))
 
     print(f"[2/4] 🎞️ Görseller ({duration:.1f}s)")
-    visuals = build_visual_track(scenes, durations, work_dir)
+    visuals = build_visual_track(scenes, durations, work_dir, SERIES[series]["style"], SERIES[series]["ai_only"])
 
     print("[3/4] 🎵 Ses tasarımı ve altyazı")
     subs = work_dir / "subtitles.ass"
@@ -394,7 +409,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         highlight_color="&H0000D7FF", outline_width=8, margin_v=860,
     )
     add_hook_overlay(subs, script.get("hook_text", ""))
-    audio = mix_soundtrack(voice, work_dir / "soundtrack.m4a", duration, scene_cuts, pick_music(topic["id"]))
+    audio = mix_soundtrack(voice, work_dir / "soundtrack.m4a", duration, scene_cuts, pick_music(topic["id"], series))
 
     print("[4/4] 🚀 Render")
     final_mp4 = OUTPUT_DIR / f"ORIGINAL_{topic['id']}_{stamp}.mp4"
@@ -434,6 +449,8 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "pinned_comment": script["pinned_comment"],
         "scenes": scenes,
         "duration_seconds": round(duration, 2),
+        "image_model": os.environ.get("IMAGE_MODEL") or "fal-ai/flux/schnell",
+        "music": (pick_music(topic["id"], series) or Path("-")).name,
         "ai_images": visuals["ai_images"],
         "stock_videos": visuals["stock_videos"],
         "contains_synthetic_media": visuals["ai_images"] > 0,

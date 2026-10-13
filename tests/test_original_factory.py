@@ -364,7 +364,7 @@ def test_full_render_with_offline_assets(tmp_path, monkeypatch):
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         return out
 
-    def fake_flux(prompt, count, dest_dir, tag):
+    def fake_flux(prompt, count, dest_dir, tag, style=None):
         paths = []
         for i in range(count):
             p = dest_dir / f"flux_{tag}_{i}.jpg"

@@ -9,7 +9,8 @@
       "Tommy Shelby",
       "Shelby",
       "Cillian Murphy"
-    ]
+    ],
+    "look": "1919 Birmingham slums, a man in a tweed newsboy cap and dark wool three-piece suit with a long overcoat, cigarette smoke, rain-soaked cobblestones, coal foundry fires, smoky pub interior, black horses"
   },
   {
     "id": "fk-002",
@@ -20,7 +21,8 @@
       "Walter White",
       "Heisenberg",
       "Bryan Cranston"
-    ]
+    ],
+    "look": "New Mexico desert and suburban Albuquerque, a bald middle-aged man in a khaki jacket and black pork pie hat seen from behind, chemistry lab glassware, yellow hazmat suits, an old RV in the desert, harsh sunlight"
   },
   {
     "id": "fk-003",
@@ -31,7 +33,8 @@
       "Tyler Durden",
       "Brad Pitt",
       "Edward Norton"
-    ]
+    ],
+    "look": "late 1990s grungy city, a dim basement lit by one hanging bulb, a man in a red leather jacket seen from behind, bars of pink soap, a crumbling house, urban decay at night"
   },
   {
     "id": "fk-004",
@@ -42,7 +45,8 @@
       "Vito Corleone",
       "Corleone",
       "Marlon Brando"
-    ]
+    ],
+    "look": "1940s New York, dark wood study with venetian blinds and amber light, an older man in a black tuxedo with a red rose on the lapel seen from behind, a hand stroking a cat, a Sicilian village"
   },
   {
     "id": "fk-005",
@@ -53,7 +57,8 @@
       "Michael Corleone",
       "Corleone",
       "Al Pacino"
-    ]
+    ],
+    "look": "1940s-1950s New York and Sicily, a young man in a dark suit seen from behind, an old Italian restaurant table, a candlelit church, a cold lake house in winter"
   },
   {
     "id": "fk-006",
@@ -63,7 +68,8 @@
     "names": [
       "Tony Montana",
       "Al Pacino"
-    ]
+    ],
+    "look": "1980s Miami, pink and blue neon, palm trees, a man in a white suit seen from behind, an opulent mansion with a grand staircase, cigar smoke, stacks of cash"
   },
   {
     "id": "fk-007",
@@ -75,7 +81,8 @@
       "Heath Ledger",
       "Batman",
       "Christian Bale"
-    ]
+    ],
+    "look": "a grim modern city at night, a figure in a purple coat seen from behind, scattered playing cards, two passenger ferries on a black river, burning piles of money, an interrogation room"
   },
   {
     "id": "fk-008",
@@ -85,7 +92,8 @@
     "names": [
       "Patrick Bateman",
       "Christian Bale"
-    ]
+    ],
+    "look": "1980s Manhattan, a sleek white minimalist apartment, embossed business cards on a glossy table, a corporate boardroom, skyscrapers at dusk, a man in a sharp suit seen from behind"
   },
   {
     "id": "fk-009",
@@ -95,7 +103,8 @@
     "names": [
       "Jordan Belfort",
       "Leonardo DiCaprio"
-    ]
+    ],
+    "look": "1990s stock brokerage floor in chaos, a ballpoint pen in a hand, ringing phones, expensive suits, a luxury yacht, money everywhere"
   },
   {
     "id": "fk-010",
@@ -106,7 +115,8 @@
       "Polat Alemdar",
       "Polat",
       "Necati Şaşmaz"
-    ]
+    ],
+    "look": "Istanbul at night, a man in a long black coat and dark sunglasses seen from behind, a smoky meeting room with a long table, the Bosphorus bridge, black cars"
   },
   {
     "id": "fk-011",
@@ -116,7 +126,8 @@
     "names": [
       "Cooper",
       "Matthew McConaughey"
-    ]
+    ],
+    "look": "dusty farmland, a spacecraft cockpit, a gigantic ocean wave on a water planet, a black hole with a glowing accretion disk, an astronaut suit"
   },
   {
     "id": "fk-012",
@@ -128,7 +139,8 @@
       "Morpheus",
       "Keanu Reeves",
       "Laurence Fishburne"
-    ]
+    ],
+    "look": "green digital rain, red and blue pills on an open palm, a black leather trench coat, reflective sunglasses, a rainy rooftop, a dystopian machine world"
   },
   {
     "id": "fk-013",
@@ -139,7 +151,8 @@
       "Maximus",
       "Maximus Decimus Meridius",
       "Russell Crowe"
-    ]
+    ],
+    "look": "a Roman arena full of sand and dust, gladiator armor and helmet, a hand brushing a wheat field, Roman legions in the mist"
   },
   {
     "id": "fk-014",
@@ -151,7 +164,8 @@
       "Tommy Shelby",
       "Shelby",
       "Cillian Murphy"
-    ]
+    ],
+    "look": "1919 Birmingham slums, a man in a tweed newsboy cap and dark wool three-piece suit with a long overcoat, cigarette smoke, rain-soaked cobblestones, coal foundry fires, smoky pub interior, black horses"
   },
   {
     "id": "fk-015",
@@ -162,7 +176,8 @@
       "Gus Fring",
       "Gustavo Fring",
       "Giancarlo Esposito"
-    ]
+    ],
+    "look": "a fast food restaurant kitchen, a man in a manager uniform and glasses seen from behind, a sterile underground industrial lab, a spotless office"
   },
   {
     "id": "fk-016",
@@ -175,7 +190,8 @@
       "Anthony Hopkins",
       "Clarice Starling",
       "Jodie Foster"
-    ]
+    ],
+    "look": "a dark stone prison cell behind thick glass, a long eerie corridor, candlelight, pencil drawings of a city on the wall"
   },
   {
     "id": "fk-017",
@@ -186,7 +202,8 @@
       "Tywin Lannister",
       "Tywin",
       "Charles Dance"
-    ]
+    ],
+    "look": "a medieval castle hall, red and gold lion banners, a war council table covered with maps, cold stone light"
   },
   {
     "id": "fk-018",
@@ -197,7 +214,8 @@
       "Tyrion Lannister",
       "Tyrion",
       "Peter Dinklage"
-    ]
+    ],
+    "look": "a medieval castle, a wine goblet, books by candlelight, a short man in a red and gold noble doublet seen from behind, a crowded trial hall"
   },
   {
     "id": "fk-019",
@@ -207,7 +225,8 @@
     "names": [
       "Rocky Balboa",
       "Sylvester Stallone"
-    ]
+    ],
+    "look": "1970s Philadelphia streets, an old boxing gym, a grey sweatsuit, stone museum steps at dawn, a boxing ring under hard lights"
   },
   {
     "id": "fk-020",
@@ -218,7 +237,8 @@
       "Ezel",
       "Ezel Bayraktar",
       "Kenan İmirzalıoğlu"
-    ]
+    ],
+    "look": "Istanbul, a man in a dark coat seen from behind, a prison cell, rain on a ferry deck, a card table with old friends"
   },
   {
     "id": "fk-021",
@@ -230,7 +250,8 @@
       "Sméagol",
       "Smeagol",
       "Andy Serkis"
-    ]
+    ],
+    "look": "a dark cave, a golden ring glowing on wet stone, misty mountains, a gaunt pale creature as a silhouette in shadow"
   },
   {
     "id": "fk-022",
@@ -241,7 +262,8 @@
       "Harvey Dent",
       "Two-Face",
       "Aaron Eckhart"
-    ]
+    ],
+    "look": "a city courthouse, a silver coin spinning in the air, a scarred coin, a rainy night, a hospital corridor"
   },
   {
     "id": "fk-023",
@@ -253,7 +275,8 @@
       "Sherlock",
       "Benedict Cumberbatch",
       "Robert Downey"
-    ]
+    ],
+    "look": "Victorian London in fog, a cluttered study with a fireplace, a magnifying glass, pipe smoke, a deerstalker hat, gaslit streets"
   },
   {
     "id": "fk-024",
@@ -265,7 +288,8 @@
       "Tommy Shelby",
       "Shelby",
       "Cillian Murphy"
-    ]
+    ],
+    "look": "1919 Birmingham slums, a man in a tweed newsboy cap and dark wool three-piece suit with a long overcoat, cigarette smoke, rain-soaked cobblestones, coal foundry fires, smoky pub interior, black horses"
   },
   {
     "id": "fk-025",
@@ -277,7 +301,8 @@
       "Memati",
       "Polat",
       "Gürkan Uygun"
-    ]
+    ],
+    "look": "Istanbul streets at night, a burly man in a leather jacket seen from behind, black cars, a smoky back room"
   },
   {
     "id": "fk-026",
@@ -288,7 +313,8 @@
       "Walter White",
       "Heisenberg",
       "Bryan Cranston"
-    ]
+    ],
+    "look": "New Mexico desert and suburban Albuquerque, a bald middle-aged man in a khaki jacket and black pork pie hat seen from behind, chemistry lab glassware, yellow hazmat suits, an old RV in the desert, harsh sunlight"
   },
   {
     "id": "fk-027",
@@ -299,7 +325,8 @@
       "Tyler Durden",
       "Brad Pitt",
       "Edward Norton"
-    ]
+    ],
+    "look": "late 1990s grungy city, a dim basement lit by one hanging bulb, a man in a red leather jacket seen from behind, bars of pink soap, a crumbling house, urban decay at night"
   },
   {
     "id": "fk-028",
@@ -310,7 +337,8 @@
       "Arthur Fleck",
       "Joker",
       "Joaquin Phoenix"
-    ]
+    ],
+    "look": "a grimy early-1980s city, a long outdoor staircase at night, a clown makeup kit by a mirror, a subway car, a rundown apartment"
   },
   {
     "id": "fk-029",
@@ -320,7 +348,8 @@
     "names": [
       "Light Yagami",
       "Kira"
-    ]
+    ],
+    "look": "Tokyo at night, a plain black notebook on a student desk under a lamp, a red apple, rain on a window, a lone student seen from behind"
   },
   {
     "id": "fk-030",
@@ -330,6 +359,7 @@
     "names": [
       "Sergio Marquina",
       "Álvaro Morte"
-    ]
+    ],
+    "look": "a national mint interior, people in red jumpsuits and white masks, an old hangar full of blueprints, a chess board, rain on glass"
   }
 ]

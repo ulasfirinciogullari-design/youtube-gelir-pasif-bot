@@ -3,9 +3,14 @@ Low-cost original visuals for Shorts.
 
 Every scene is illustrated with either a free stock video (Pexels with
 PEXELS_API_KEY, else Pixabay with PIXABAY_API_KEY; both licensed for commercial
-use) or a Fal Flux Schnell image (~$0.003 each, FAL_KEY) animated with a slow
-camera move. No AI video, no film footage.
-Scenes are cut into segments of at most ~2.5 s so the edit keeps moving.
+use) or a Fal Flux image (FAL_KEY) animated with a slow camera move. No AI
+video, no film footage. Scenes are cut into segments of at most ~2.5 s so the
+edit keeps moving.
+
+IMAGE_MODEL picks the Flux model: fal-ai/flux/schnell (default, $0.003 per
+image) or fal-ai/flux/dev (sharper, $0.025 per image). Images are 720x1280 so
+each is billed as one megapixel. Every prompt of a video ends with the same
+style line, so the pictures read as one film instead of a random collage.
 """
 
 import json
@@ -19,6 +24,11 @@ import urllib.request
 FPS = 60
 WIDTH, HEIGHT = 1080, 1920
 MAX_SEGMENT_SECONDS = 2.5
+IMAGE_SIZE = {"width": 720, "height": 1280}  # 9:16 and under one billed megapixel
+DEFAULT_IMAGE_MODEL = "fal-ai/flux/schnell"
+DEFAULT_STYLE = (
+    "Cinematic vertical composition, dramatic natural lighting, rich detail, film grain"
+)
 USER_AGENT = "Mozilla/5.0 (zirvenin-kanunu original shorts)"
 
 ENCODE_ARGS = [
@@ -149,25 +159,27 @@ def fetch_stock_videos(query: str, count: int, dest_dir: Path, used_ids: set) ->
     return found
 
 
-def generate_flux_images(prompt: str, count: int, dest_dir: Path, tag: str) -> list[Path]:
+def image_model() -> str:
+    model = (os.environ.get("IMAGE_MODEL") or DEFAULT_IMAGE_MODEL).strip()
+    return model if model.startswith("fal-ai/") else DEFAULT_IMAGE_MODEL
+
+
+def generate_flux_images(prompt: str, count: int, dest_dir: Path, tag: str, style: str = DEFAULT_STYLE) -> list[Path]:
     key = os.environ.get("FAL_KEY")
     if not key or not prompt or count <= 0:
         return []
-    full_prompt = (
-        f"{prompt}. Cinematic vertical composition, dramatic natural lighting, rich detail, "
-        "film grain, no text, no letters, no watermark, no logo"
-    )
+    full_prompt = f"{prompt.rstrip('. ')}. {style}, no text, no letters, no watermark, no logo"
     results = []
     while len(results) < count:
         batch = min(4, count - len(results))
         payload = {
             "prompt": full_prompt,
-            "image_size": {"width": 768, "height": 1344},
+            "image_size": IMAGE_SIZE,
             "num_images": batch,
             "enable_safety_checker": True,
         }
         req = urllib.request.Request(
-            "https://fal.run/fal-ai/flux/schnell",
+            f"https://fal.run/{image_model()}",
             data=json.dumps(payload).encode("utf-8"),
             headers={"Authorization": f"Key {key}", "Content-Type": "application/json"},
             method="POST",
@@ -202,6 +214,10 @@ def _motion_expr(motion: int, frames: int) -> tuple[str, str, str]:
     return "1.14", center_x, f"(ih-ih/zoom)*(1-{p})"  # tilt up
 
 
+# One grade for every segment so stock clips and images sit in the same look.
+GRADE = "eq=contrast=1.08:saturation=0.92:gamma=0.97,vignette=angle=PI/5"
+
+
 def render_image_segment(image: Path, out: Path, duration: float, motion: int) -> Path:
     frames = max(2, round(duration * FPS))
     z, x, y = _motion_expr(motion, frames)
@@ -209,7 +225,7 @@ def render_image_segment(image: Path, out: Path, duration: float, motion: int) -
         f"scale={WIDTH * 2}:{HEIGHT * 2}:force_original_aspect_ratio=increase,"
         f"crop={WIDTH * 2}:{HEIGHT * 2},"
         f"zoompan=z='{z}':x='{x}':y='{y}':d={frames}:s={WIDTH}x{HEIGHT}:fps={FPS},"
-        "eq=contrast=1.06:saturation=1.05,setsar=1"
+        f"{GRADE},setsar=1"
     )
     cmd = ["ffmpeg", "-y", "-i", str(image), "-vf", vf, "-frames:v", str(frames), *ENCODE_ARGS, str(out)]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -219,7 +235,7 @@ def render_image_segment(image: Path, out: Path, duration: float, motion: int) -
 def render_video_segment(video: Path, out: Path, duration: float, offset: float) -> Path:
     vf = (
         f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,crop={WIDTH}:{HEIGHT},"
-        f"fps={FPS},eq=contrast=1.06:saturation=1.05,setsar=1"
+        f"fps={FPS},{GRADE},setsar=1"
     )
     cmd = [
         "ffmpeg", "-y", "-stream_loop", "-1", "-ss", f"{offset:.2f}", "-i", str(video),
@@ -234,19 +250,24 @@ def split_duration(duration: float, max_len: float = MAX_SEGMENT_SECONDS) -> lis
     return [duration / count] * count
 
 
-def collect_scene_assets(scene: dict, count: int, assets_dir: Path, tag: str, used_ids: set) -> list[tuple[str, Path]]:
-    """Returns up to `count` (kind, path) assets, trying the scene's preferred source first."""
+def collect_scene_assets(scene: dict, count: int, assets_dir: Path, tag: str, used_ids: set,
+                         style: str = DEFAULT_STYLE, ai_only: bool = False) -> list[tuple[str, Path]]:
+    """Returns up to `count` (kind, path) assets, trying the scene's preferred source first.
+
+    ai_only skips stock video unless no image can be generated: keyword stock
+    footage rarely matches a film character's world and made those videos look random."""
     assets: list[tuple[str, Path]] = []
-    if scene.get("source") == "stock":
+    if scene.get("source") == "stock" and not ai_only:
         assets += [("video", p) for p in fetch_stock_videos(scene.get("stock_query", ""), count, assets_dir, used_ids)]
     if len(assets) < count:
-        assets += [("image", p) for p in generate_flux_images(scene["visual"], count - len(assets), assets_dir, tag)]
-    if len(assets) < count and scene.get("source") != "stock":
+        assets += [("image", p) for p in generate_flux_images(scene["visual"], count - len(assets), assets_dir, tag, style)]
+    if len(assets) < count and (scene.get("source") != "stock" or ai_only):
         assets += [("video", p) for p in fetch_stock_videos(scene.get("stock_query", ""), count - len(assets), assets_dir, used_ids)]
     return assets
 
 
-def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Path) -> dict:
+def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Path,
+                       style: str = DEFAULT_STYLE, ai_only: bool = False) -> dict:
     """
     Renders one clip per segment and returns
     {"segments": [Path], "cut_times": [float], "ai_images": int, "stock_videos": int, "thumbnail": Path | None}.
@@ -269,7 +290,7 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
     plans = [split_duration(d) for d in durations]
     scene_assets = []
     for idx, (scene, plan) in enumerate(zip(scenes, plans)):
-        assets = collect_scene_assets(scene, len(plan), assets_dir, f"s{idx:02d}", used_ids)
+        assets = collect_scene_assets(scene, len(plan), assets_dir, f"s{idx:02d}", used_ids, style, ai_only)
         scene_assets.append(assets)
         bank += assets
     if not bank:

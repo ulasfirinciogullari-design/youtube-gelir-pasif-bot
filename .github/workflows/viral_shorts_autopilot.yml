@@ -17,7 +17,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil)'
+        description: 'İş (video = Short üret, rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = ElevenLabs müzik/efekt kütüphanesini üret, referans = video_ids alanındaki örnek Shorts'ları analiz et)'
         required: true
         default: 'video'
         type: choice
@@ -25,6 +25,16 @@ on:
           - 'video'
           - 'rapor'
           - 'temizlik'
+          - 'ses'
+          - 'referans'
+      gorsel:
+        description: 'AI görsel kalitesi (ucuz = Flux Schnell ~0,003 $/görsel, kaliteli = Flux Dev ~0,025 $/görsel)'
+        required: false
+        default: 'ucuz'
+        type: choice
+        options:
+          - 'ucuz'
+          - 'kaliteli'
       format:
         description: 'Format (karisik = tarih ve film karakteri sırayla, story = tarih hikâyesi, karakter = film/dizi karakteri, comedy = komik dublaj)'
         required: true
@@ -41,7 +51,7 @@ on:
         default: ''
         type: string
       video_ids:
-        description: 'Sadece temizlik: virgülle ayrılmış video id listesi'
+        description: 'Temizlik veya referans: virgülle ayrılmış video id/link listesi'
         required: false
         default: ''
         type: string
@@ -118,11 +128,20 @@ jobs:
           TASK: ${{ github.event.inputs.task || 'video' }}
           VIDEO_IDS: ${{ github.event.inputs.video_ids }}
           CLEANUP_ACTION: ${{ github.event.inputs.cleanup_action || 'private' }}
+          IMAGE_MODEL: ${{ (github.event.inputs.gorsel || vars.IMAGE_QUALITY) == 'kaliteli' && 'fal-ai/flux/dev' || 'fal-ai/flux/schnell' }}
         run: |
           mkdir -p output
           if [ "$TASK" = "rapor" ]; then
             python channel_tools.py report
             exit 0
+          fi
+          if [ "$TASK" = "referans" ]; then
+            python channel_tools.py referans --ids "$VIDEO_IDS"
+            exit $?
+          fi
+          if [ "$TASK" = "ses" ]; then
+            python scripts/build_audio_library.py
+            exit $?
           fi
           if [ "$TASK" = "temizlik" ]; then
             python channel_tools.py cleanup --action "$CLEANUP_ACTION" --ids "$VIDEO_IDS"
@@ -142,7 +161,7 @@ jobs:
         run: |
           [ -e channel-data/.git ] || { echo "Kanal hafızası klasörü hazırlanamadı, yedek atlandı"; exit 0; }
           mkdir -p channel-data/history
-          for f in metrics.json channel_audit.json competitor_dna.json; do
+          for f in metrics.json channel_audit.json competitor_dna.json reference_style.json; do
             [ -f "output/$f" ] && cp "output/$f" channel-data/
           done
           cp output/ORIGINAL_*_meta.json output/COMEDY_*_meta.json channel-data/history/ 2>/dev/null || true
@@ -171,5 +190,6 @@ jobs:
             output/metrics.json
             output/channel_audit.json
             output/competitor_dna.json
+            output/reference_style.json
           retention-days: 14
           if-no-files-found: warn

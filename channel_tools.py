@@ -4,6 +4,7 @@ Channel tools for Zirvenin Kanunu, run from the autopilot workflow.
   python channel_tools.py report            # cleanup candidates + competitor scan, changes nothing
   python channel_tools.py cleanup --action private --ids ID1,ID2
   python channel_tools.py cleanup --action delete --ids ID1,ID2
+  python channel_tools.py referans --ids URL1,URL2  # Gemini breaks down reference Shorts
 
 Cleanup touches only the ids it is given; pick them from a report first.
 """
@@ -84,6 +85,19 @@ def cleanup(youtube, ids: list[str], action: str) -> int:
     return 0 if all("hata" not in r for r in results) else 1
 
 
+def references(youtube, text: str) -> int:
+    from app.services.reference_analysis import analyze_references, extract_ids, format_report
+
+    ids = extract_ids(text)
+    if not ids:
+        print("Referans için video linki verilmedi.")
+        return 1
+    result = analyze_references(ids, youtube)
+    (OUTPUT_DIR / "reference_style.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    _summary(format_report(result))
+    return 0 if result["spec"] else 1
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Zirvenin Kanunu channel tools")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -92,6 +106,8 @@ def main(argv=None) -> int:
     clean = sub.add_parser("cleanup")
     clean.add_argument("--action", choices=["private", "delete"], default="private")
     clean.add_argument("--ids", default="", help="Virgülle ayrılmış video id listesi")
+    ref = sub.add_parser("referans")
+    ref.add_argument("--ids", default="", help="Virgülle ayrılmış Shorts linkleri veya id'leri")
     args = parser.parse_args(argv)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -99,6 +115,8 @@ def main(argv=None) -> int:
     youtube = get_authenticated_service()
     if args.command == "report":
         return report(youtube, force_scan=args.scan)
+    if args.command == "referans":
+        return references(youtube, args.ids)
     ids = [i.strip() for i in args.ids.replace("\n", ",").split(",") if i.strip()]
     return cleanup(youtube, ids, args.action)
 

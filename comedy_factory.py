@@ -84,8 +84,8 @@ def mix_dub(clip: Path, line_files: list[Path], placed: list[dict], total: float
         ms = int(line["start"] * 1000)
         filters.append(f"[{n}:a]highpass=f=70,volume=1.15,adelay={ms}|{ms}[l{n}]")
         labels.append(f"[l{n}]")
-    pop = story.SFX_DIR / "impact_sub.mp3"
-    if pop.exists():
+    pop = story.sfx("impact")
+    if pop:
         n = sum(1 for a in inputs if a == "-i")
         inputs += ["-i", str(pop)]
         filters.append(f"[{n}:a]volume=0.45[pop]")

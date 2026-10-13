@@ -84,8 +84,9 @@ Anlatım kuralları:
 - Abartılı vaat, "sigma", "zengin olursun" gibi ifadeler yok. Sakin ama vurucu bir anlatım.
 
 Görsel kuralları:
-- Her sahne için İngilizce görsel tarifi yaz: gerçek kişilerin yüzünü birebir canlandırma; silüet, el, göz, nesne,
-  mekân ve dönem atmosferi kullan. Dramatik ışık, sinematik kadraj. Görselde yazı, logo, filigran olmasın.
+- Her sahne için İngilizce görsel tarifi yaz: o cümlede anlatılan anı gösteren somut bir film karesi (kim, nerede, ne yapıyor,
+  kadraj ve ışık). Ardışık sahneler aynı dönem ve mekânda tutarlı olsun. Gerçek kişilerin yüzünü birebir canlandırma;
+  silüet, el, göz, nesne, mekân ve dönem atmosferi kullan. Görselde yazı, logo, filigran olmasın.
 - "stock_query": stok video aramak için 2-4 İngilizce kelime (ör. "ancient rome ruins", "chess board closeup").
 - "source": sahne gerçek bir mekân veya nesneyle iyi anlatılıyorsa "stock", dönem veya sembolik bir sahne gerekiyorsa "ai".
 
@@ -117,12 +118,13 @@ Anlatım kuralları:
 - Anlatımda emoji kullanma, metin seslendirilecek. "Sigma", "zengin olursun" gibi ifadeler yok.
 
 Görsel kuralları:
-- Her sahne için İngilizce görsel tarifi yaz. Görsel tarifinde karakter, oyuncu, film veya dizi adı ASLA geçmesin.
-- Kimsenin yüzü net görünmesin: arkadan çekim, silüet, gölgede kalan yüz, eller, nesneler, mekân ve dönem atmosferi kullan
-  (ör. "a man in a 1920s flat cap seen from behind on a foggy industrial street"). Dramatik ışık, sinematik kadraj.
-  Görselde yazı, logo, filigran olmasın.
-- "stock_query": stok video aramak için 2-4 İngilizce kelime (ör. "foggy industrial street", "whiskey glass closeup").
-- "source": sahne gerçek bir mekân veya nesneyle iyi anlatılıyorsa "stock", dönem veya sembolik bir sahne gerekiyorsa "ai".
+- Görsel dünya: {look}
+- Her sahne için İngilizce görsel tarifi yaz: o cümlede anlatılan anı bu dünyada somut olarak gösteren tek bir film karesi.
+  Genel tarif yazma ("a dark room" değil); kim, nerede, ne yapıyor, kadraj (close-up, wide, over-the-shoulder) ve ışık nereden geliyor yaz.
+  Ardışık sahneler aynı filmden kareler gibi tutarlı olsun: aynı dönem, aynı kıyafet, aynı mekânlar.
+- Görsel tarifinde karakter, oyuncu, film veya dizi adı ASLA geçmesin. Kimsenin yüzü net görünmesin: arkadan çekim, silüet,
+  gölgede kalan yüz, eller, nesneler. Görselde yazı, logo, filigran olmasın.
+- "stock_query": 2-4 İngilizce kelime. "source": her sahnede "ai".
 
 Başlık ve kanca:
 - "title": en fazla 60 karakter; karakterin adını içeren, merak uyandıran tek cümle ve sonunda tek bir uygun emoji.
@@ -157,6 +159,7 @@ def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str]
         topic=topic.strip(),
         character=(character or {}).get("character", ""),
         work=(character or {}).get("work", ""),
+        look=(character or {}).get("look") or "karakterin filmdeki/dizideki dönemi, kıyafeti ve mekânları",
         style_examples=style,
         min_words=MIN_WORDS,
         max_words=MAX_WORDS,
