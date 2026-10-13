@@ -224,6 +224,8 @@ def sync_core_factory_to_github():
         ("scripts/produce_cakir_viral_master.py", "scripts/produce_cakir_viral_master.py"),
         ("scripts/produce_kedi_viral_master.py", "scripts/produce_kedi_viral_master.py"),
         ("scripts/verify_dlF4a2xvJAs_comments.py", "scripts/verify_dlF4a2xvJAs_comments.py"),
+        ("app/services/branding_badge_renderer.py", "app/services/branding_badge_renderer.py"),
+        ("scripts/produce_shelby_single_card_master.py", "scripts/produce_shelby_single_card_master.py"),
         ("scripts/sync_to_github.py", "scripts/sync_to_github.py"),
     ]
 
