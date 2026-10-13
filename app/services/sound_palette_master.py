@@ -289,15 +289,15 @@ def build_audio_mix_command(
     output_path: Path,
     sfx_cues: Optional[List[Tuple[str, float]]] = None,
     mood: str = "phonk",
-    music_volume: float = 0.12,
+    music_volume: float = 0.035,
     music_track: Optional[Path] = None,
     total_duration: Optional[float] = None,
 ) -> List[str]:
     """
-    Assembles a complete FFmpeg command array to mix:
-      - 0: Voice narration (base level 1.0)
-      - 1: Looped background music (ducked volume, end fade-out)
-      - 2..N: Sound effect cues inserted at specified timestamps via adelay.
+    Assembles a broadcast-grade FFmpeg command adhering to SordumDede/Wandays standard:
+      - Voice is upfront, loud, and crystal clear (volume=2.0, EQ enhanced, unmasked)
+      - Background music is dialed down to a whisper bed (default volume=0.035, lowpass filtered)
+      - Sidechain compression automatically ducks music whenever voice speaks.
     """
     output_path.parent.mkdir(parents=True, exist_ok=True)
     bg_music = music_track or get_music_by_mood(mood)
@@ -314,23 +314,28 @@ def build_audio_mix_command(
         except Exception:
             dur = 30.0
 
-    # Build inputs and filter graph
+    # Build inputs and filter graph: Split voice into main and sidechain trigger
     cmd_inputs: List[str] = ["ffmpeg", "-y", "-i", str(voice_path)]
-    filter_chains: List[str] = ["[0:a]aformat=channel_layouts=stereo,volume=1.0[v]"]
-    mix_labels: List[str] = ["[v]"]
+    filter_chains: List[str] = [
+        "[0:a]volume=2.0,highpass=f=80,equalizer=f=3000:t=q:w=1:g=2.5,asplit=2[v_main][v_sc]"
+    ]
+    mix_labels: List[str] = ["[v_main]"]
     
     current_idx = 1
-    # 1. Background Music input (stream_loop -1)
+    # 1. Background Music input with sidechain ducking & lowpass filter
     if bg_music and bg_music.exists():
         cmd_inputs.extend(["-stream_loop", "-1", "-i", str(bg_music)])
         fade_start = max(1.0, dur - 2.0)
-        vol = max(0.02, min(music_volume, 0.5))
+        vol = max(0.015, min(music_volume, 0.08))
         filter_chains.append(
             f"[{current_idx}:a]aformat=channel_layouts=stereo,"
-            f"volume={vol:.2f},atrim=0:{dur:.2f},asetpts=N/SR/TB,"
-            f"afade=t=in:st=0:d=0.5,afade=t=out:st={fade_start:.2f}:d=2.0[m]"
+            f"volume={vol:.3f},lowpass=f=2800,atrim=0:{dur:.2f},asetpts=N/SR/TB,"
+            f"afade=t=in:st=0:d=0.5,afade=t=out:st={fade_start:.2f}:d=2.0[m_raw]"
         )
-        mix_labels.append("[m]")
+        filter_chains.append(
+            "[m_raw][v_sc]sidechaincompress=threshold=0.03:ratio=10:attack=10:release=250[m_ducked]"
+        )
+        mix_labels.append("[m_ducked]")
         current_idx += 1
 
     # 2. SFX Cues
@@ -378,7 +383,7 @@ def mix_multitrack_audio(
     output_path: Path,
     sfx_cues: Optional[List[Tuple[str, float]]] = None,
     mood: str = "phonk",
-    music_volume: float = 0.12,
+    music_volume: float = 0.035,
     music_track: Optional[Path] = None,
     total_duration: Optional[float] = None,
 ) -> Path:
