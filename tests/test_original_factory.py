@@ -147,6 +147,23 @@ def test_pick_fallback_model_prefers_chat_models():
     assert original_script.pick_fallback_model(["gpt-image-2", "gpt-image-2.5-flare"]) is None
 
 
+def test_synthesize_line_prefers_elevenlabs_with_context(tmp_path, monkeypatch):
+    from app.services import elevenlabs_engine
+    calls = []
+
+    def fake_eleven(text, out, previous_text="", next_text=""):
+        calls.append((text, previous_text, next_text))
+        out.write_bytes(b"x" * 2000)
+        return True
+
+    monkeypatch.setattr(elevenlabs_engine, "get_elevenlabs_api_key", lambda: "key")
+    monkeypatch.setattr(elevenlabs_engine, "synthesize_elevenlabs_speech", fake_eleven)
+    monkeypatch.setitem(original_factory.voice_usage, "elevenlabs", 0)
+    out = original_factory.synthesize_line("orta", tmp_path / "a.mp3", previous_text="önce", next_text="sonra")
+    assert out.exists() and calls == [("orta", "önce", "sonra")]
+    assert original_factory.voice_usage["elevenlabs"] == 1
+
+
 def test_pick_topic_skips_published_ids():
     topics = [{"id": "zk-001", "topic": "a"}, {"id": "zk-002", "topic": "b"}]
     assert original_factory.pick_topic(topics, {"zk-001"})["id"] == "zk-002"
@@ -340,7 +357,7 @@ def test_fetch_stock_videos_falls_back_to_pixabay(tmp_path, monkeypatch):
 
 @pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
 def test_full_render_with_offline_assets(tmp_path, monkeypatch):
-    def fake_tts(text, out):
+    def fake_tts(text, out, **context):
         seconds = 0.35 * len(text.split())
         subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", f"sine=frequency=180:duration={seconds:.2f}",
                         "-c:a", "libmp3lame", "-b:a", "96k", str(out)],

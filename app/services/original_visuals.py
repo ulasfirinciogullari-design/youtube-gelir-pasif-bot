@@ -5,7 +5,7 @@ Every scene is illustrated with either a free stock video (Pexels with
 PEXELS_API_KEY, else Pixabay with PIXABAY_API_KEY; both licensed for commercial
 use) or a Fal Flux Schnell image (~$0.003 each, FAL_KEY) animated with a slow
 camera move. No AI video, no film footage.
-Scenes are cut into segments of at most ~2 s so the edit keeps moving.
+Scenes are cut into segments of at most ~2.5 s so the edit keeps moving.
 """
 
 import json
@@ -18,7 +18,7 @@ import urllib.request
 
 FPS = 60
 WIDTH, HEIGHT = 1080, 1920
-MAX_SEGMENT_SECONDS = 2.0
+MAX_SEGMENT_SECONDS = 2.5
 USER_AGENT = "Mozilla/5.0 (zirvenin-kanunu original shorts)"
 
 ENCODE_ARGS = [

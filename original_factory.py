@@ -41,6 +41,7 @@ MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3})")
 BASE_TAGS = ["shorts", "psikoloji", "tarih", "güç", "karar verme", "zirvenin kanunu"]
 BASE_HASHTAGS = "#shorts #psikoloji #tarih #keşfet"
 HOOK_SECONDS = 2.2
+voice_usage = {"elevenlabs": 0, "edge-tts": 0}
 
 
 # ---------------------------------------------------------------------------
@@ -87,7 +88,17 @@ async def _edge_tts(text: str, out: Path):
     await comm.save(str(out))
 
 
-def synthesize_line(text: str, out: Path, attempts: int = 3) -> Path:
+def synthesize_line(text: str, out: Path, previous_text: str = "", next_text: str = "", attempts: int = 3) -> Path:
+    """ElevenLabs (Turkish baritone "Alp") when ELEVENLABS_API_KEY is set, otherwise or on failure edge-tts."""
+    try:
+        from app.services.elevenlabs_engine import get_elevenlabs_api_key, synthesize_elevenlabs_speech
+        if get_elevenlabs_api_key() and synthesize_elevenlabs_speech(
+            text, out, previous_text=previous_text, next_text=next_text
+        ) and out.exists() and out.stat().st_size > 1000:
+            voice_usage["elevenlabs"] += 1
+            return out
+    except Exception as e:
+        print(f"ℹ️ ElevenLabs notu: {e}")
     try:
         from app.services.turkish_phonetics import normalize_turkish_tts_text
         text = normalize_turkish_tts_text(text)
@@ -98,6 +109,7 @@ def synthesize_line(text: str, out: Path, attempts: int = 3) -> Path:
         try:
             asyncio.run(_edge_tts(text, out))
             if out.exists() and out.stat().st_size > 1000:
+                voice_usage["edge-tts"] += 1
                 return out
         except Exception as e:
             last_error = e
@@ -113,7 +125,11 @@ def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_li
     voice_dir.mkdir(parents=True, exist_ok=True)
     files, durations, subtitles, timeline = [], [], [], 0.0
     for idx, scene in enumerate(scenes):
-        seg = synthesize(scene["text"], voice_dir / f"line_{idx:02d}.mp3")
+        seg = synthesize(
+            scene["text"], voice_dir / f"line_{idx:02d}.mp3",
+            previous_text=scenes[idx - 1]["text"] if idx else "",
+            next_text=scenes[idx + 1]["text"] if idx + 1 < len(scenes) else "",
+        )
         dur = _probe_duration(seg)
         subtitles += build_micro_timed_subtitles(scene["text"], timeline, dur, speaker="male_alpha")
         files.append(seg)
@@ -236,6 +252,8 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     print(f"[1/4] 🎙️ Seslendirme: {len(scenes)} sahne")
     voice, durations, subtitle_events = build_narration(scenes, work_dir, synthesize=synthesize)
     duration = sum(durations)
+    engines = ", ".join(f"{name} x{n}" for name, n in voice_usage.items() if n) or "test"
+    print(f"       Ses motoru: {engines}")
     scene_cuts, t = [], 0.0
     for d in durations[:-1]:
         t += d
@@ -282,6 +300,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "topic_id": topic["id"],
         "topic": topic["topic"],
         "script_provider": provider,
+        "voice_engine": engines,
         "title": full_title,
         "hook_text": script.get("hook_text", ""),
         "description": description,

@@ -17,11 +17,11 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-MIN_SCENES = 6
-MAX_SCENES = 10
+MIN_SCENES = 5
+MAX_SCENES = 8
 MIN_WORDS = 55
-MAX_WORDS = 95  # ~40 s with tr-TR-AhmetNeural at +6%; the first real run hit 48.6 s
-MAX_SCENE_CHARS = 160
+MAX_WORDS = 95  # ~40 s of narration; the first real run hit 48.6 s at 125 words
+MAX_SCENE_CHARS = 230
 MAX_HOOK_CHARS = 40
 EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]+")
 
@@ -42,18 +42,16 @@ kısa, vurucu hikâyeler olarak anlatıyor.
 
 Konu: {topic}
 
-Bu konuyu 25-40 saniyelik, izleyiciyi ilk saniyede yakalayan bir mini hikâyeye çevir.
+Bu konu için 25-40 saniyelik bir Shorts senaryosu yaz. Bir belgesel anlatıcısı gibi akıcı, kendinden emin
+ve vurucu konuş; cümleler birbirine bağlansın, kesik kesik olmasın.
 
-Hikâye kuralları:
-- Giriş yapma, izleyiciyi doğrudan anın içine at. İlk cümle en fazla 10 kelime olsun ve gerilim ya da
-  merak yaratsın (ör. "Odadaki herkes onun öleceğini düşünüyordu."). "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
-- Şimdiki zamanla anlat ("giriyor", "bakıyor", "fark ediyor"), sahne şu an oluyormuş gibi.
-- Ortada beklenmedik bir dönüş olsun; sonda kısa ve vurucu bir ders ya da soru kalsın.
-- Mümkünse son cümle ilk cümleye bağlansın ki video başa sardığında akış sürsün.
-- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne tek kısa cümle (en fazla 15 kelime).
+Anlatım kuralları:
+- İlk cümle en fazla 12 kelimelik, merak uyandıran bir kanca olsun. "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
+- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 akıcı cümle.
+- Hikâyeyi bir an veya olay üzerinden anlat, ortada bir dönüş olsun, son cümle izleyiciye düşündürücü bir soru veya ders bıraksın.
 - Sadece doğruluğu iyi bilinen, kaynaklarda yer alan bilgileri kullan. Emin olmadığın tarih, sayı veya alıntıyı yazma.
 - Film, dizi veya kurgu karakterlerinden ve repliklerinden hiç bahsetme. Anlatımda emoji kullanma, metin seslendirilecek.
-- "Sigma", "zengin olursun" gibi abartılı vaatler yok.
+- Abartılı vaat, "sigma", "zengin olursun" gibi ifadeler yok. Sakin ama vurucu bir anlatım.
 
 Görsel kuralları:
 - Her sahne için İngilizce görsel tarifi yaz: gerçek kişilerin yüzünü birebir canlandırma; silüet, el, göz, nesne,
