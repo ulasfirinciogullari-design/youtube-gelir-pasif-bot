@@ -344,3 +344,22 @@ def test_hook_banner_stays_for_the_whole_video(tmp_path):
     original_factory.add_hook_overlay(ass, "KEDİLER NEDEN AYAKTA DÜŞER?", 31.4)
     events = ass.read_text(encoding="utf-8").split("[Events]")[1]
     assert "Dialogue: 1,0:00:00.00,0:00:31.40,HookStyle" in events
+
+
+def test_stock_scene_with_fewer_clips_plays_each_clip_once(tmp_path, monkeypatch):
+    from app.services import original_visuals
+    clips = [tmp_path / "a.mp4", tmp_path / "b.mp4", tmp_path / "c.mp4"]
+    monkeypatch.setattr(original_visuals, "collect_matched_stock",
+                        lambda *a, **kw: ([[("video", clips[0])], [("video", clips[1]), ("video", clips[2])]], "gemini"))
+    rendered = []
+
+    def fake_render(video, out, duration, offset):
+        rendered.append((video.name, round(duration, 2)))
+        return out
+
+    monkeypatch.setattr(original_visuals, "render_video_segment", fake_render)
+    scenes = [{"text": "a", "visual": "a"}, {"text": "b", "visual": "b"}]
+    result = original_visuals.build_visual_track(scenes, [4.8, 3.2], tmp_path, stock_only=True, segment_seconds=1.6)
+    # 4.8 s would be three cuts, but only one clip matched: it plays once for the whole scene.
+    assert rendered == [("a.mp4", 4.8), ("b.mp4", 1.6), ("c.mp4", 1.6)]
+    assert result["clip_match"] == "gemini" and result["cut_times"] == [4.8, 6.4]

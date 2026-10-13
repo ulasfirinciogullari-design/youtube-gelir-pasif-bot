@@ -277,6 +277,7 @@ def collect_matched_stock(scenes: list[dict], plans: list[list[float]], assets_d
 
     wanted = [len(plan) for plan in plans]
     picks = None
+    print(f"       Aday klip: {len(pool)}")
     if pool:
         try:
             picks = (match or clip_matcher.match_clips)(topic, scenes, wanted, pool)
@@ -453,6 +454,10 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
         if not assets:
             # Reuse earlier material with a different camera move rather than leave a gap.
             assets = [bank[(idx + k) % len(bank)] for k in range(len(plan))]
+        elif stock_only and len(assets) < len(plan):
+            # Fewer matching clips than cuts: each clip plays once, longer. Cutting one clip into
+            # overlapping pieces made the picture jump back and forth.
+            plan = [sum(plan) / len(assets)] * len(assets)
         for seg_idx, seg_dur in enumerate(plan):
             kind, path = assets[seg_idx % len(assets)]
             out = seg_dir / f"seg_{idx:02d}_{seg_idx:02d}.mp4"

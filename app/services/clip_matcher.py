@@ -26,12 +26,13 @@ Sahneler (her biri, ekranda o cümle okunurken gösterilecek):
 
 Aşağıda numaralı aday videoların birer karesi var. Her sahne için o cümlede anlatılan şeyi gösteren adayları seç.
 Kurallar:
-- Önce cümleyi birebir gösteren adayları seç (ör. "kedi havada dönüyor" cümlesi için havada veya zıplarken bir kedi).
-- Birebir gösteren aday yoksa, konunun öznesini cümleye en yakın hâliyle gösteren tek bir aday seç.
-- Konuyla ilgisiz bir adayı (manzara, saat, insan iskeleti, alakasız nesne vb.) asla seçme.
+- Her sahne için parantezde yazan sayıda FARKLI aday seç; video hızlı kesmelerle bu adaylar arasında geçecek.
+- Önce cümleyi birebir gösteren adaylar (ör. "kedi havada dönüyor" için havada veya zıplarken bir kedi), sonra cümledeki
+  hareketi veya durumu en yakın gösteren, aynı özneye ait adaylar gelsin.
+- Cümleyle çelişen adayı seçme (cümle zıplamayı anlatırken uyuyan kedi gibi). Konuyla ilgisiz bir adayı (manzara, saat,
+  insan iskeleti, alakasız nesne vb.) asla seçme. Uygun aday yetmiyorsa daha az seç.
 - Yazı, logo, filigran, çizim/animasyon olan veya bulanık adayları seçme.
-- Bir aday yalnızca bir sahnede kullanılabilir. Her sahne için en fazla parantezde yazan sayıda aday seç,
-  en uygun olandan başlayarak sırala.
+- Bir aday yalnızca bir sahnede kullanılabilir. Adayları en uygun olandan başlayarak sırala.
 Sadece şu JSON'u döndür: {{"scenes": [{{"scene": 1, "clips": [4, 9]}}]}}"""
 
 
