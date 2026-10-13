@@ -382,6 +382,7 @@ def test_full_render_with_offline_assets(tmp_path, monkeypatch):
     monkeypatch.setattr(original_visuals, "generate_flux_images", fake_flux)
     monkeypatch.setattr(original_visuals, "fetch_pexels_videos", fake_pexels)
     monkeypatch.setattr(original_factory, "OUTPUT_DIR", tmp_path)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)  # SEO pack falls back to the script offline
 
     topic = {"id": "zk-001", "topic": "test"}
     result = original_factory.produce(topic, validate_script(VALID_SCRIPT), "test", synthesize=fake_tts)

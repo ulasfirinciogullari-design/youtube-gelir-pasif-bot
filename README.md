@@ -133,3 +133,17 @@ planlı 9:16 kadraja, altyazı ve kanca yazısıyla birlikte yerleştirir.
   `CONTENT_FORMAT` repo değişkeniyle (`comedy` / `story`) seçilir.
 
 Yerelde yüklemeden denemek için: `python comedy_factory.py --no-upload`
+
+### Keşfet paketi, kanal raporu ve hafıza
+
+- Her yüklemede Gemini tek çağrıda uzun Türkçe açıklama, 500 karakter sınırına
+  sığan 20-25 etiket, hashtag'ler ve başlık/açıklamanın 18 dile çevirisini
+  (YouTube localizations) hazırlar (`app/services/seo_pack.py`).
+- Workflow'u `task=rapor` ile elle çalıştırmak hiçbir şeyi değiştirmeden kanal
+  temizlik adaylarını (eski film klibi yüklemeleri, tekrar başlıklar, izlenmeyen
+  videolar) ve rakip kanal analizini (Gemini ile "DNA", boşluklar, bizim
+  kurallarımız, yeni konu fikirleri) çıkarır. `task=temizlik` sadece
+  `video_ids` ile verilen videoları gizler (`private`) veya siler (`delete`).
+- Metrikler, rakip analizi, üretilen konular ve her videonun meta kaydı
+  `channel-data` dalında saklanır; senaryo yazarı rakip kurallarını oradan okur
+  ve konu listesi bitince önce rakip boşluklarından, sonra Gemini'den yeni konu alır.

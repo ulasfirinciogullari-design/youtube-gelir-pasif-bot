@@ -120,6 +120,7 @@ def test_produce_comedy_offline(tmp_path, monkeypatch):
         return out
 
     monkeypatch.setattr(comedy_factory, "OUTPUT_DIR", tmp_path)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     script = validate_comedy_script(json.loads(json.dumps(VALID)), 12.0)
     hit = {"id": 777, "user": "someone", "pageURL": "https://pixabay.com/videos/x-777/"}
     result = comedy_factory.produce_comedy(hit, "cat", script, clip, synthesize=fake_tts)
@@ -130,7 +131,8 @@ def test_produce_comedy_offline(tmp_path, monkeypatch):
     assert (video["width"], video["height"]) == (1080, 1920) and video["r_frame_rate"] == "60/1"
     assert any(s["codec_type"] == "audio" for s in probe["streams"])
     meta = result["meta"]
-    assert meta["description"].endswith("Seri: kd-777") and "Pixabay / someone" in meta["description"]
+    assert meta["description"].endswith("Seri: kd-777") and "Pixabay" not in meta["description"]
+    assert meta["localizations"]["en"]["description"].endswith("Seri: kd-777")
     assert meta["category_id"] == "23" and meta["contains_synthetic_media"] is False
     # Two characters get two different voices; the cat keeps its voice across lines.
     assert voices[0] == voices[1] != voices[2]

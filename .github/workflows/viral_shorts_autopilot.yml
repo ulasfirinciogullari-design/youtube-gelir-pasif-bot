@@ -16,23 +16,48 @@ on:
           - 'private'
           - 'unlisted'
           - 'public'
-      format:
-        description: 'Format (comedy = komik dublaj, story = özgün tarih hikâyesi)'
+      task:
+        description: 'İş (video = Short üret, rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil)'
         required: true
-        default: 'comedy'
+        default: 'video'
         type: choice
         options:
-          - 'comedy'
+          - 'video'
+          - 'rapor'
+          - 'temizlik'
+      format:
+        description: 'Format (story = özgün tarih hikâyesi, comedy = komik dublaj)'
+        required: true
+        default: 'story'
+        type: choice
+        options:
           - 'story'
+          - 'comedy'
       topic_id:
         description: 'Sadece story formatında: belirli konu (boş = sıradaki, ör. zk-003)'
         required: false
         default: ''
         type: string
+      video_ids:
+        description: 'Sadece temizlik: virgülle ayrılmış video id listesi'
+        required: false
+        default: ''
+        type: string
+      cleanup_action:
+        description: 'Sadece temizlik: private = gizliye al (geri alınabilir), delete = kalıcı sil'
+        required: false
+        default: 'private'
+        type: choice
+        options:
+          - 'private'
+          - 'delete'
 
 concurrency:
   group: shorts-autopilot
   cancel-in-progress: false
+
+permissions:
+  contents: write  # the channel-data branch keeps metrics, competitor DNA, generated topics and history
 
 jobs:
   produce_original_short:
@@ -61,6 +86,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: 🧠 Kanal Hafızasını Getir
+        run: |
+          if git ls-remote --exit-code --heads origin channel-data >/dev/null 2>&1; then
+            git fetch origin channel-data:refs/remotes/origin/channel-data
+            git worktree add -B channel-data channel-data origin/channel-data
+          else
+            git worktree add --orphan -b channel-data channel-data
+          fi
+          ls channel-data
+
       - name: 🎬 Özgün Short Üret ve Yayınla
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
@@ -77,9 +112,20 @@ jobs:
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           PRIVACY: ${{ github.event_name == 'schedule' && (vars.PUBLISH_PRIVACY || 'public') || github.event.inputs.privacy }}
           TOPIC_ID: ${{ github.event.inputs.topic_id }}
-          CONTENT_FORMAT: ${{ github.event.inputs.format || vars.CONTENT_FORMAT || 'comedy' }}
+          CONTENT_FORMAT: ${{ github.event.inputs.format || vars.CONTENT_FORMAT || 'story' }}
+          TASK: ${{ github.event.inputs.task || 'video' }}
+          VIDEO_IDS: ${{ github.event.inputs.video_ids }}
+          CLEANUP_ACTION: ${{ github.event.inputs.cleanup_action || 'private' }}
         run: |
           mkdir -p output
+          if [ "$TASK" = "rapor" ]; then
+            python channel_tools.py report
+            exit 0
+          fi
+          if [ "$TASK" = "temizlik" ]; then
+            python channel_tools.py cleanup --action "$CLEANUP_ACTION" --ids "$VIDEO_IDS"
+            exit $?
+          fi
           echo "⚡ Format: $CONTENT_FORMAT | Görünürlük: $PRIVACY ${TOPIC_ID:+| Konu: $TOPIC_ID}"
           if [ "$CONTENT_FORMAT" = "story" ]; then
             ARGS="--privacy $PRIVACY"
@@ -88,6 +134,22 @@ jobs:
           else
             python comedy_factory.py --privacy "$PRIVACY"
           fi
+
+      - name: 💾 Kanal Hafızasını Yedekle
+        if: always()
+        run: |
+          [ -e channel-data/.git ] || { echo "Kanal hafızası klasörü hazırlanamadı, yedek atlandı"; exit 0; }
+          mkdir -p channel-data/history
+          for f in metrics.json channel_audit.json competitor_dna.json; do
+            [ -f "output/$f" ] && cp "output/$f" channel-data/
+          done
+          cp output/*_meta.json channel-data/history/ 2>/dev/null || true
+          cd channel-data
+          git add -A
+          if git diff --cached --quiet; then echo "Yeni veri yok"; exit 0; fi
+          git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -qm "Kanal verisi: run ${{ github.run_id }}"
+          git push origin channel-data
 
       - name: 📤 Yayın Paketini Sakla (Artifact)
         if: always()
@@ -102,5 +164,7 @@ jobs:
             output/COMEDY_*_thumb.jpg
             output/COMEDY_*_meta.json
             output/metrics.json
+            output/channel_audit.json
+            output/competitor_dna.json
           retention-days: 14
           if-no-files-found: warn

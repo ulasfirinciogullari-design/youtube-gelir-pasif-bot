@@ -26,6 +26,7 @@ if str(BASE_DIR) not in sys.path:
 
 import original_factory as story
 from app.services.channel_metrics import report_channel
+from app.services.seo_pack import build_seo_pack
 from app.services.comedy_dub import (
     ClipUnusable, ScriptError, candidate_clips, download_clip, place_lines, write_comedy_script,
 )
@@ -164,14 +165,11 @@ def produce_comedy(hit: dict, query: str, script: dict, clip: Path, synthesize=s
     )
 
     title = script["title"]
-    credit = f"Görüntü: Pixabay / {hit.get('user', 'Pixabay')}"
-    description = "\n\n".join(part for part in [
-        script["description"],
-        f"💬 {script['pinned_comment']}" if script["pinned_comment"] else "",
-        credit,
-        BASE_HASHTAGS,
-        f"{story.MARKER_PREFIX}{topic_id}",
-    ] if part)
+    # Pixabay's license needs no credit line, and Ulaş found it cheapened the description.
+    seo = build_seo_pack(
+        title, f"Komik hayvan dublajı ({query})", " ".join(p["text"] for p in placed), script,
+        BASE_TAGS, BASE_HASHTAGS, f"{story.MARKER_PREFIX}{topic_id}",
+    )
     meta = {
         "topic_id": topic_id,
         "format": "comedy",
@@ -180,12 +178,12 @@ def produce_comedy(hit: dict, query: str, script: dict, clip: Path, synthesize=s
         "query": query,
         "title": f"{title} #shorts" if len(title) <= 92 else title[:100],
         "hook_text": script["hook_text"],
-        "description": description,
-        "tags": list(dict.fromkeys(script["tags"] + BASE_TAGS))[:30],
+        "description": seo["description"],
+        "tags": seo["tags"],
+        "localizations": seo["localizations"],
+        "seo_engine": seo["seo_engine"],
         "category_id": "23",
         "pinned_comment": script["pinned_comment"],
-        "en_title": script["en_title"],
-        "en_description": script["en_description"],
         "lines": placed,
         "voice_engine": engines,
         "duration_seconds": round(total, 2),

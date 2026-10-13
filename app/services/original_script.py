@@ -90,12 +90,14 @@ class ProviderHTTPError(ScriptError):
         self.code = code
 
 
-def build_prompt(topic: str, examples: list[str] | None = None) -> str:
+def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str] | None = None) -> str:
     style = ""
     if examples:
         style = "- Kanalda en çok izlenen başlıklar bunlar; tarzını örnek al ama kopyalama:\n" + "".join(
             f"  - {t}\n" for t in examples
         )
+    if rules:
+        style += "- Rakip kanallardan ayrışmak için bu kurallara da uy:\n" + "".join(f"  - {r}\n" for r in rules[:8])
     return PROMPT_TEMPLATE.format(
         topic=topic.strip(),
         style_examples=style,
@@ -297,9 +299,9 @@ def validate_script(script: dict) -> dict:
 
 
 def write_script(topic: str, providers=None, attempts_per_provider: int = 2,
-                 style_examples: list[str] | None = None) -> tuple[dict, str]:
+                 style_examples: list[str] | None = None, rules: list[str] | None = None) -> tuple[dict, str]:
     """Returns (validated_script, provider_name). Raises ScriptError if all providers fail."""
-    prompt = build_prompt(topic, style_examples)
+    prompt = build_prompt(topic, style_examples, rules)
     errors = []
     for name, call in providers or PROVIDERS:
         for attempt in range(1, attempts_per_provider + 1):

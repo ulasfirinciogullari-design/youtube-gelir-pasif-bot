@@ -27,11 +27,16 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 from app.services.channel_metrics import list_series_videos, report_channel
+from app.services.competitor_scan import load_dna
+from app.services.seo_pack import build_seo_pack
 from app.services.original_script import write_script
 from app.services.original_visuals import build_visual_track
 
 OUTPUT_DIR = BASE_DIR / "output"
 TOPICS_FILE = BASE_DIR / "app" / "services" / "original_topics_tr.json"
+# The workflow checks out the channel-data branch here: metrics, competitor DNA, generated topics, history.
+DATA_DIR = BASE_DIR / "channel-data"
+GENERATED_TOPICS_FILE = "generated_topics.json"
 MUSIC_DIR = BASE_DIR / "assets" / "music"
 SFX_DIR = BASE_DIR / "assets" / "sfx"
 
@@ -68,6 +73,61 @@ def pick_topic(topics: list[dict], published: set[str], topic_id: str | None = N
         if topic["id"] not in published:
             return topic
     raise SystemExit("Konu listesi bitti: app/services/original_topics_tr.json dosyasına yeni konular ekleyin.")
+
+
+def load_generated_topics(data_dir: Path = DATA_DIR) -> list[dict]:
+    path = data_dir / GENERATED_TOPICS_FILE
+    if not path.exists():
+        return []
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except ValueError:
+        return []
+
+
+def next_topic_id(topics: list[dict], published: set[str]) -> str:
+    numbers = [int(i.split("-")[1]) for i in [t["id"] for t in topics] + list(published)
+               if re.fullmatch(r"zk-\d+", i)]
+    return f"zk-{max(numbers, default=0) + 1:03d}"
+
+
+INVENT_PROMPT = """"Zirvenin Kanunu" Türkçe Shorts kanalı için daha önce işlenmemiş TEK yeni konu öner.
+Kanal tarihten gerçek insanların gerilimli anlarını, dahice hamlelerini ve psikoloji deneylerini anlatıyor.
+Konu tek cümlelik merak uyandıran bir soru olsun, kaynaklarda iyi bilinen gerçek bir olaya dayansın.
+Daha önce işlenenler (bunları ve benzerlerini tekrar etme):
+{used}
+Sadece şu JSON'u döndür: {{"topic": "..."}}"""
+
+
+def invent_topic(used: list[str]) -> str:
+    from app.services.original_script import _call_gemini, _extract_json
+    raw = _call_gemini(INVENT_PROMPT.format(used="\n".join(f"- {u}" for u in used[-80:])))
+    topic = str(_extract_json(raw).get("topic") or "").strip() if raw else ""
+    if len(topic) < 15:
+        raise SystemExit("Konu listesi bitti ve yeni konu üretilemedi (GEMINI_API_KEY gerekli).")
+    return topic
+
+
+def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | None = None,
+                 data_dir: Path = DATA_DIR, invent=invent_topic) -> dict:
+    """Next unused topic from the list; when the list runs out, a competitor gap idea or a Gemini topic."""
+    generated = load_generated_topics(data_dir)
+    topics = load_topics() + generated
+    try:
+        return pick_topic(topics, published, topic_id)
+    except SystemExit:
+        if topic_id:
+            raise
+    used = [t["topic"] for t in topics]
+    idea = next((i for i in (dna or {}).get("topic_ideas", []) if i not in used), None)
+    topic = {"id": next_topic_id(topics, published), "topic": idea or invent(used),
+             "source": "rakip boşluğu" if idea else "gemini"}
+    data_dir.mkdir(parents=True, exist_ok=True)
+    (data_dir / GENERATED_TOPICS_FILE).write_text(
+        json.dumps(generated + [topic], ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"🆕 Konu listesi bitti, yeni konu üretildi ({topic['source']}).")
+    return topic
 
 
 # ---------------------------------------------------------------------------
@@ -293,13 +353,11 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
 
     title = script["title"]
     full_title = f"{title} #shorts" if len(title) <= 92 else title[:100]
-    description = "\n\n".join(part for part in [
-        script["description"],
-        f"💬 {script['pinned_comment']}" if script["pinned_comment"] else "",
-        BASE_HASHTAGS,
-        f"{MARKER_PREFIX}{topic['id']}",
-    ] if part)
-    tags = list(dict.fromkeys(script["tags"] + BASE_TAGS))[:30]
+    seo = build_seo_pack(
+        title, topic["topic"], " ".join(s["text"] for s in script["scenes"]), script,
+        BASE_TAGS, BASE_HASHTAGS, f"{MARKER_PREFIX}{topic['id']}",
+    )
+    print(f"       SEO: {seo['seo_engine']} | {len(seo['tags'])} etiket | {len(seo['localizations'])} dil")
     meta = {
         "topic_id": topic["id"],
         "topic": topic["topic"],
@@ -307,11 +365,11 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "voice_engine": engines,
         "title": full_title,
         "hook_text": script.get("hook_text", ""),
-        "description": description,
-        "tags": tags,
+        "description": seo["description"],
+        "tags": seo["tags"],
+        "localizations": seo["localizations"],
+        "seo_engine": seo["seo_engine"],
         "pinned_comment": script["pinned_comment"],
-        "en_title": script["en_title"],
-        "en_description": script["en_description"],
         "scenes": scenes,
         "duration_seconds": round(duration, 2),
         "ai_images": visuals["ai_images"],
@@ -351,11 +409,8 @@ def upload(youtube, result: dict, privacy: str) -> str:
         },
     }
     parts = "snippet,status"
-    if meta.get("en_title"):
-        body["localizations"] = {"en": {
-            "title": f"{meta['en_title']} #shorts"[:100],
-            "description": f"{meta.get('en_description', '')}\n\n{MARKER_PREFIX}{meta['topic_id']}"[:5000],
-        }}
+    if meta.get("localizations"):
+        body["localizations"] = meta["localizations"]
         parts += ",localizations"
 
     media = MediaFileUpload(str(result["video"]), chunksize=4 * 1024 * 1024, resumable=True, mimetype="video/mp4")
@@ -401,10 +456,11 @@ def main(argv=None) -> int:
     else:
         examples = []
 
-    topic = pick_topic(load_topics(), published, args.topic_id)
+    dna = load_dna(DATA_DIR, OUTPUT_DIR)
+    topic = choose_topic(published, args.topic_id, dna)
     print(f"🎯 Konu {topic['id']}: {topic['topic']}")
 
-    script, provider = write_script(topic["topic"], style_examples=examples)
+    script, provider = write_script(topic["topic"], style_examples=examples, rules=dna.get("our_rules"))
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 
     result = produce(topic, script, provider)
