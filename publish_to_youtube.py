@@ -198,7 +198,8 @@ def upload_short(video_path: Path, privacy_status: str = "public", auto_10lang: 
     if pinned_comment and pinned_comment not in description:
         description = f"💬 TARTIŞMA: {pinned_comment}\n\n" + description
 
-    # Add Pinned Discussion Engagement Comment
+    # Add Pinned Discussion Engagement Comment (Guaranteed Single Comment)
+    comment_posted_via_api = False
     if pinned_comment:
         try:
             youtube.commentThreads().insert(
@@ -214,9 +215,10 @@ def upload_short(video_path: Path, privacy_status: str = "public", auto_10lang: 
                     }
                 }
             ).execute()
-            print(f"💬 Etkileşim Tartışma Yorumu Eklendi: {pinned_comment[:50]}...")
+            comment_posted_via_api = True
+            print(f"💬 Etkileşim Tartışma Yorumu Eklendi (API): {pinned_comment[:50]}...")
         except Exception as e:
-            print(f"ℹ️ Yorum ekleme notu: {e}")
+            print(f"ℹ️ Yorum ekleme API notu: {e}")
             # Persist to pending comments queue for automatic retry
             try:
                 pending_file = OUTPUT_DIR / "pending_comments.json"
@@ -341,10 +343,15 @@ def upload_short(video_path: Path, privacy_status: str = "public", auto_10lang: 
     except Exception as c_err:
         pass
 
-    # Studio Browser Bridge: Link Related Video & Pin High-CTR Comment
+    # Studio Browser Bridge: Link Related Video & Pin High-CTR Comment (Guaranteed Single Comment)
     try:
         from app.services.studio_browser_bridge import auto_bridge_post_publish
-        auto_bridge_post_publish(video_id, target_related=target_related, pinned_comment=pinned_comment)
+        auto_bridge_post_publish(
+            video_id,
+            target_related=target_related,
+            pinned_comment=pinned_comment,
+            already_posted=comment_posted_via_api
+        )
     except Exception as br_err:
         print(f"ℹ️ Studio Browser Bridge notu: {br_err}")
 
