@@ -1,6 +1,19 @@
 {
   "videos": [
     {
+      "video_id": "nUW1eW5Vxl4",
+      "title": "İmparatorun en mahrem sırrı nasıl ortaya çıktı? 🤫 #shorts",
+      "published_at": "2026-10-13T20:05:09Z",
+      "topic_id": "zk-001",
+      "privacy": "private",
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "seconds": 40,
+      "reasons": [],
+      "age_days": 0.0
+    },
+    {
       "video_id": "hoTw3_Tb1Q8",
       "title": "Marcus Aurelius'un Saklı Bilgeliği #shorts",
       "published_at": "2026-10-13T19:46:49Z",
@@ -10,9 +23,7 @@
       "likes": 0,
       "comments": 0,
       "seconds": 49,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.0
     },
     {
@@ -21,13 +32,11 @@
       "published_at": "2026-10-13T19:46:02Z",
       "topic_id": "",
       "privacy": "public",
-      "views": 3,
+      "views": 4,
       "likes": 0,
       "comments": 0,
       "seconds": 36,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.0
     },
     {
@@ -54,7 +63,7 @@
       "comments": 0,
       "seconds": 41,
       "reasons": [],
-      "age_days": 0.0
+      "age_days": 0.1
     },
     {
       "video_id": "WjPmbQualnA",
@@ -67,7 +76,7 @@
       "comments": 1,
       "seconds": 26,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 0.1
     },
@@ -82,7 +91,7 @@
       "comments": 1,
       "seconds": 25,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 0.2
     },
@@ -96,9 +105,7 @@
       "likes": 4,
       "comments": 1,
       "seconds": 21,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.2
     },
     {
@@ -107,12 +114,12 @@
       "published_at": "2026-10-13T14:17:39Z",
       "topic_id": "",
       "privacy": "public",
-      "views": 772,
+      "views": 811,
       "likes": 11,
       "comments": 1,
       "seconds": 23,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 0.2
     },
@@ -122,12 +129,12 @@
       "published_at": "2026-10-13T13:57:22Z",
       "topic_id": "",
       "privacy": "public",
-      "views": 1208,
+      "views": 1226,
       "likes": 29,
       "comments": 1,
       "seconds": 30,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 0.3
     },
@@ -142,7 +149,7 @@
       "comments": 1,
       "seconds": 38,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 0.3
     },
@@ -157,7 +164,7 @@
       "comments": 1,
       "seconds": 25,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "tekrar başlık"
       ],
       "age_days": 0.3
@@ -173,7 +180,7 @@
       "comments": 0,
       "seconds": 1627,
       "reasons": [
-        "eski film klibi botu",
+        "canlı yayın kaydı",
         "tekrar başlık"
       ],
       "age_days": 0.4
@@ -189,7 +196,7 @@
       "comments": 1,
       "seconds": 25,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 0.5
     },
@@ -204,9 +211,9 @@
       "comments": 1,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
-      "age_days": 0.5
+      "age_days": 0.6
     },
     {
       "video_id": "D-Z_iR7k37A",
@@ -218,9 +225,7 @@
       "likes": 8,
       "comments": 1,
       "seconds": 18,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.6
     },
     {
@@ -233,9 +238,7 @@
       "likes": 12,
       "comments": 2,
       "seconds": 40,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.6
     },
     {
@@ -248,9 +251,7 @@
       "likes": 16,
       "comments": 0,
       "seconds": 42,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.8
     },
     {
@@ -263,10 +264,8 @@
       "likes": 0,
       "comments": 0,
       "seconds": 43,
-      "reasons": [
-        "eski film klibi botu"
-      ],
-      "age_days": 0.8
+      "reasons": [],
+      "age_days": 0.9
     },
     {
       "video_id": "_Aw3xI5EDfc",
@@ -279,7 +278,7 @@
       "comments": 2,
       "seconds": 26,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 0.9
     },
@@ -294,7 +293,7 @@
       "comments": 2,
       "seconds": 38,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "tekrar başlık"
       ],
       "age_days": 0.9
@@ -309,9 +308,7 @@
       "likes": 0,
       "comments": 2,
       "seconds": 34,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.9
     },
     {
@@ -324,9 +321,7 @@
       "likes": 0,
       "comments": 2,
       "seconds": 34,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.9
     },
     {
@@ -339,9 +334,7 @@
       "likes": 0,
       "comments": 2,
       "seconds": 22,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.9
     },
     {
@@ -354,9 +347,7 @@
       "likes": 0,
       "comments": 3,
       "seconds": 31,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 0.9
     },
     {
@@ -370,7 +361,7 @@
       "comments": 0,
       "seconds": 0,
       "reasons": [
-        "eski film klibi botu"
+        "canlı yayın kaydı"
       ],
       "age_days": 0.9
     },
@@ -385,10 +376,10 @@
       "comments": 0,
       "seconds": 37050,
       "reasons": [
-        "eski film klibi botu",
+        "canlı yayın kaydı",
         "tekrar başlık"
       ],
-      "age_days": 0.9
+      "age_days": 1.0
     },
     {
       "video_id": "up7HtLq5fk4",
@@ -396,12 +387,12 @@
       "published_at": "2026-10-12T20:50:29Z",
       "topic_id": "",
       "privacy": "public",
-      "views": 1194,
+      "views": 1201,
       "likes": 20,
       "comments": 0,
       "seconds": 37,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 1.0
     },
@@ -411,14 +402,14 @@
       "published_at": "2026-10-12T16:34:41Z",
       "topic_id": "",
       "privacy": "public",
-      "views": 1136,
-      "likes": 25,
+      "views": 1155,
+      "likes": 27,
       "comments": 2,
       "seconds": 39,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
-      "age_days": 1.1
+      "age_days": 1.2
     },
     {
       "video_id": "reGyMTFBXkY",
@@ -431,7 +422,7 @@
       "comments": 2,
       "seconds": 35,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 1.2
     },
@@ -446,7 +437,7 @@
       "comments": 0,
       "seconds": 38,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 1.2
     },
@@ -460,9 +451,7 @@
       "likes": 16,
       "comments": 7,
       "seconds": 36,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 1.2
     },
     {
@@ -475,9 +464,7 @@
       "likes": 0,
       "comments": 2,
       "seconds": 36,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 1.4
     },
     {
@@ -491,7 +478,7 @@
       "comments": 0,
       "seconds": 5907,
       "reasons": [
-        "eski film klibi botu"
+        "canlı yayın kaydı"
       ],
       "age_days": 1.4
     },
@@ -505,9 +492,7 @@
       "likes": 16,
       "comments": 0,
       "seconds": 41,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 1.4
     },
     {
@@ -521,7 +506,7 @@
       "comments": 0,
       "seconds": 13736,
       "reasons": [
-        "eski film klibi botu",
+        "canlı yayın kaydı",
         "tekrar başlık"
       ],
       "age_days": 1.7
@@ -536,9 +521,7 @@
       "likes": 0,
       "comments": 0,
       "seconds": 31,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 1.9
     },
     {
@@ -551,9 +534,7 @@
       "likes": 0,
       "comments": 0,
       "seconds": 41,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 1.9
     },
     {
@@ -567,7 +548,7 @@
       "comments": 0,
       "seconds": 26,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 1.9
     },
@@ -582,7 +563,7 @@
       "comments": 0,
       "seconds": 16364,
       "reasons": [
-        "eski film klibi botu"
+        "canlı yayın kaydı"
       ],
       "age_days": 2.0
     },
@@ -597,7 +578,7 @@
       "comments": 0,
       "seconds": 22,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 2.0
     },
@@ -611,9 +592,7 @@
       "likes": 11,
       "comments": 0,
       "seconds": 24,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 2.1
     },
     {
@@ -626,9 +605,7 @@
       "likes": 7,
       "comments": 0,
       "seconds": 21,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 2.1
     },
     {
@@ -641,9 +618,7 @@
       "likes": 2,
       "comments": 0,
       "seconds": 22,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 2.1
     },
     {
@@ -656,9 +631,7 @@
       "likes": 0,
       "comments": 0,
       "seconds": 188,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 2.2
     },
     {
@@ -671,10 +644,8 @@
       "likes": 20,
       "comments": 2,
       "seconds": 13,
-      "reasons": [
-        "eski film klibi botu"
-      ],
-      "age_days": 2.2
+      "reasons": [],
+      "age_days": 2.3
     },
     {
       "video_id": "8xgOTZNh750",
@@ -686,10 +657,8 @@
       "likes": 16,
       "comments": 6,
       "seconds": 17,
-      "reasons": [
-        "eski film klibi botu"
-      ],
-      "age_days": 2.3
+      "reasons": [],
+      "age_days": 2.4
     },
     {
       "video_id": "YoKEOy28BvQ",
@@ -702,7 +671,7 @@
       "comments": 5,
       "seconds": 13,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "tekrar başlık"
       ],
       "age_days": 2.4
@@ -718,7 +687,7 @@
       "comments": 3,
       "seconds": 15,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 2.4
     },
@@ -733,7 +702,7 @@
       "comments": 3,
       "seconds": 17,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 2.4
     },
@@ -748,7 +717,6 @@
       "comments": 5,
       "seconds": 17,
       "reasons": [
-        "eski film klibi botu",
         "tekrar başlık"
       ],
       "age_days": 2.4
@@ -764,7 +732,7 @@
       "comments": 2,
       "seconds": 13,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 2.9
     },
@@ -774,12 +742,12 @@
       "published_at": "2026-10-10T23:12:05Z",
       "topic_id": "",
       "privacy": "public",
-      "views": 1735,
+      "views": 1721,
       "likes": 18,
       "comments": 1,
       "seconds": 18,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 2.9
     },
@@ -789,12 +757,12 @@
       "published_at": "2026-10-10T22:52:05Z",
       "topic_id": "",
       "privacy": "public",
-      "views": 1124,
+      "views": 1126,
       "likes": 10,
       "comments": 2,
       "seconds": 14,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 2.9
     },
@@ -808,9 +776,7 @@
       "likes": 10,
       "comments": 1,
       "seconds": 16,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 2.9
     },
     {
@@ -824,7 +790,7 @@
       "comments": 1,
       "seconds": 20,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "tekrar başlık"
       ],
       "age_days": 3.0
@@ -840,7 +806,7 @@
       "comments": 1,
       "seconds": 20,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 3.2
     },
@@ -854,9 +820,7 @@
       "likes": 7,
       "comments": 1,
       "seconds": 34,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 3.3
     },
     {
@@ -870,7 +834,7 @@
       "comments": 0,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi",
         "tekrar başlık"
       ],
@@ -887,7 +851,7 @@
       "comments": 1,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi",
         "tekrar başlık"
       ],
@@ -904,7 +868,6 @@
       "comments": 0,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -920,7 +883,7 @@
       "comments": 1,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -936,7 +899,6 @@
       "comments": 1,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -952,7 +914,6 @@
       "comments": 2,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -968,7 +929,7 @@
       "comments": 1,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -984,7 +945,6 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -1000,7 +960,6 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -1016,7 +975,6 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -1032,7 +990,7 @@
       "comments": 1,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -1048,7 +1006,6 @@
       "comments": 1,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -1064,7 +1021,6 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -1075,12 +1031,12 @@
       "published_at": "2026-10-09T15:09:13Z",
       "topic_id": "",
       "privacy": "public",
-      "views": 4,
+      "views": 5,
       "likes": 0,
       "comments": 0,
       "seconds": 73,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.2
@@ -1096,7 +1052,7 @@
       "comments": 0,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi",
         "tekrar başlık"
       ],
@@ -1113,7 +1069,7 @@
       "comments": 1,
       "seconds": 27,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi",
         "tekrar başlık"
       ],
@@ -1130,7 +1086,7 @@
       "comments": 1,
       "seconds": 23,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.3
@@ -1146,7 +1102,7 @@
       "comments": 1,
       "seconds": 27,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi",
         "tekrar başlık"
       ],
@@ -1163,7 +1119,7 @@
       "comments": 1,
       "seconds": 37,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.3
@@ -1179,7 +1135,7 @@
       "comments": 1,
       "seconds": 41,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.3
@@ -1195,7 +1151,6 @@
       "comments": 1,
       "seconds": 46,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.3
@@ -1211,7 +1166,7 @@
       "comments": 1,
       "seconds": 44,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.3
@@ -1227,7 +1182,7 @@
       "comments": 0,
       "seconds": 27,
       "reasons": [
-        "eski film klibi botu",
+        "İngilizce eski içerik",
         "izlenmedi"
       ],
       "age_days": 4.7
@@ -1242,9 +1197,7 @@
       "likes": 8,
       "comments": 1,
       "seconds": 33,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 4.7
     },
     {
@@ -1258,7 +1211,7 @@
       "comments": 0,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 4.7
     },
@@ -1272,9 +1225,7 @@
       "likes": 7,
       "comments": 1,
       "seconds": 34,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 4.7
     },
     {
@@ -1288,7 +1239,7 @@
       "comments": 0,
       "seconds": 29,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 4.7
     },
@@ -1302,9 +1253,7 @@
       "likes": 6,
       "comments": 0,
       "seconds": 34,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 4.7
     },
     {
@@ -1318,7 +1267,8 @@
       "comments": 0,
       "seconds": 32,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)",
+        "İngilizce eski içerik"
       ],
       "age_days": 4.7
     },
@@ -1333,9 +1283,9 @@
       "comments": 0,
       "seconds": 40,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
-      "age_days": 4.7
+      "age_days": 4.8
     },
     {
       "video_id": "oOZLeIYnoPM",
@@ -1348,7 +1298,7 @@
       "comments": 1,
       "seconds": 37,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 4.8
     },
@@ -1363,7 +1313,6 @@
       "comments": 1,
       "seconds": 41,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.8
@@ -1378,9 +1327,7 @@
       "likes": 14,
       "comments": 1,
       "seconds": 46,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 4.8
     },
     {
@@ -1394,7 +1341,7 @@
       "comments": 1,
       "seconds": 23,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
       "age_days": 4.8
@@ -1410,10 +1357,10 @@
       "comments": 1,
       "seconds": 27,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
-      "age_days": 4.8
+      "age_days": 4.9
     },
     {
       "video_id": "L8Eze1G3OFw",
@@ -1426,10 +1373,10 @@
       "comments": 2,
       "seconds": 27,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi"
       ],
-      "age_days": 4.8
+      "age_days": 4.9
     },
     {
       "video_id": "N_pAiGBHJ8g",
@@ -1442,7 +1389,7 @@
       "comments": 1,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu",
+        "İngilizce eski içerik",
         "izlenmedi"
       ],
       "age_days": 4.9
@@ -1458,7 +1405,6 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.9
@@ -1474,7 +1420,8 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
+        "İngilizce eski içerik",
         "izlenmedi"
       ],
       "age_days": 4.9
@@ -1490,7 +1437,6 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.9
@@ -1506,7 +1452,7 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
+        "İngilizce eski içerik",
         "izlenmedi"
       ],
       "age_days": 4.9
@@ -1522,7 +1468,7 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
+        "film/dizi klibi (telif riski)",
         "izlenmedi",
         "tekrar başlık"
       ],
@@ -1539,7 +1485,6 @@
       "comments": 1,
       "seconds": 34,
       "reasons": [
-        "eski film klibi botu",
         "izlenmedi"
       ],
       "age_days": 4.9
@@ -1555,7 +1500,7 @@
       "comments": 1,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 4.9
     },
@@ -1569,9 +1514,7 @@
       "likes": 1,
       "comments": 1,
       "seconds": 36,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 4.9
     },
     {
@@ -1585,7 +1528,7 @@
       "comments": 1,
       "seconds": 23,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 4.9
     },
@@ -1599,9 +1542,7 @@
       "likes": 17,
       "comments": 1,
       "seconds": 33,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 4.9
     },
     {
@@ -1615,7 +1556,7 @@
       "comments": 1,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 4.9
     },
@@ -1630,7 +1571,7 @@
       "comments": 1,
       "seconds": 29,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 4.9
     },
@@ -1645,7 +1586,7 @@
       "comments": 1,
       "seconds": 28,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 4.9
     },
@@ -1660,7 +1601,7 @@
       "comments": 1,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 4.9
     },
@@ -1675,7 +1616,7 @@
       "comments": 1,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "film/dizi klibi (telif riski)"
       ],
       "age_days": 4.9
     },
@@ -1689,9 +1630,7 @@
       "likes": 5,
       "comments": 1,
       "seconds": 32,
-      "reasons": [
-        "eski film klibi botu"
-      ],
+      "reasons": [],
       "age_days": 4.9
     },
     {
@@ -1705,7 +1644,7 @@
       "comments": 0,
       "seconds": 32,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 16.9
     },
@@ -1720,7 +1659,7 @@
       "comments": 0,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 16.9
     },
@@ -1735,7 +1674,7 @@
       "comments": 0,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 17.0
     },
@@ -1750,7 +1689,7 @@
       "comments": 0,
       "seconds": 32,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 17.5
     },
@@ -1765,9 +1704,9 @@
       "comments": 0,
       "seconds": 39,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
-      "age_days": 17.9
+      "age_days": 18.0
     },
     {
       "video_id": "9_ubS2CGcVI",
@@ -1780,9 +1719,9 @@
       "comments": 0,
       "seconds": 39,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
-      "age_days": 18.4
+      "age_days": 18.5
     },
     {
       "video_id": "qAyQa84-g60",
@@ -1795,7 +1734,7 @@
       "comments": 0,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 18.9
     },
@@ -1810,7 +1749,7 @@
       "comments": 0,
       "seconds": 35,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 18.9
     },
@@ -1825,7 +1764,7 @@
       "comments": 0,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 19.7
     },
@@ -1840,7 +1779,7 @@
       "comments": 0,
       "seconds": 32,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 19.7
     },
@@ -1855,7 +1794,7 @@
       "comments": 0,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 19.7
     },
@@ -1870,7 +1809,7 @@
       "comments": 0,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 21.3
     },
@@ -1885,7 +1824,7 @@
       "comments": 0,
       "seconds": 33,
       "reasons": [
-        "eski film klibi botu",
+        "İngilizce eski içerik",
         "izlenmedi"
       ],
       "age_days": 21.4
@@ -1901,7 +1840,7 @@
       "comments": 0,
       "seconds": 32,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 21.6
     },
@@ -1916,7 +1855,7 @@
       "comments": 0,
       "seconds": 32,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 21.6
     },
@@ -1931,7 +1870,7 @@
       "comments": 0,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu",
+        "İngilizce eski içerik",
         "izlenmedi"
       ],
       "age_days": 21.6
@@ -1947,7 +1886,7 @@
       "comments": 0,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 36.3
     },
@@ -1962,7 +1901,7 @@
       "comments": 1,
       "seconds": 31,
       "reasons": [
-        "eski film klibi botu"
+        "İngilizce eski içerik"
       ],
       "age_days": 37.8
     }
@@ -1974,72 +1913,59 @@
     "YhxvrpoPPyM",
     "C8tiQLmg8Mo",
     "bAZsT8umKfo",
-    "-B3cdS07Z9c",
+    "dQFlIb7kRfQ",
     "mcjAB-IzW1I",
     "R1L1RNUNb7g",
     "cDzCHF9JjD8",
     "rZoy93qv-9Y",
     "LxRE9VsO59w",
-    "PY47MUbB71c",
-    "vJuCABvC8sg",
     "N_pAiGBHJ8g",
-    "TqbObyhYFBo",
     "agvBpL1dYio",
-    "xCETmLanPWA",
+    "PY47MUbB71c",
     "DTUS4WPhTso",
-    "-vqPZgMEXJE",
-    "Xzx63RlEbgc",
-    "fmfYkv5m4iI",
-    "4DotMDpYJ3M",
-    "Y9Y4ruMQf58",
     "L8Eze1G3OFw",
-    "sHWQEoeVbzA",
     "89_cqk7nNyw",
     "6Wj-x_l9qQE",
     "SXA5QfsKGGs",
     "iQAVINhYlJY",
-    "rkaIeO_4uz0",
-    "dQFlIb7kRfQ",
     "h0xkSSiDtmA",
-    "xyfllXPikRU",
     "B41V5yaL21s",
     "zCeqo0WTWJs",
     "YG5F_i1wMlk",
-    "qrWWqWJudAU",
     "JsYP-J8i7ng",
     "Eqj1OWsZ6rs",
+    "mZ_JFzyKw1o",
     "vHQjkkaXBT8",
     "YoKEOy28BvQ",
-    "Kf8W1Ku6JL4",
     "dlub7t1MNqQ",
-    "hoTw3_Tb1Q8",
     "WjPmbQualnA",
-    "VbxeZzpizwE",
-    "50e7EiU0O_0",
-    "nWYGJOWRuAM",
-    "94A245Rm2G4",
-    "Q2xc0hS-PD0",
-    "wpaYvTl8Mw8",
+    "-B3cdS07Z9c",
     "G1wvd3kK4U8",
-    "iFdWgrnk3ik",
+    "vJuCABvC8sg",
+    "TqbObyhYFBo",
+    "xCETmLanPWA",
+    "-vqPZgMEXJE",
     "_Aw3xI5EDfc",
+    "Xzx63RlEbgc",
     "4NTZfsb8igk",
-    "EpbZExirHRA",
+    "fmfYkv5m4iI",
+    "4DotMDpYJ3M",
+    "Y9Y4ruMQf58",
+    "sHWQEoeVbzA",
     "gS_MHw3kvOo",
+    "rkaIeO_4uz0",
+    "xyfllXPikRU",
+    "qrWWqWJudAU",
     "9-xGXUwkCFM",
     "wtW-bHvXbUQ",
     "xRDsroSrNvY",
     "NZbGVsNQwHw",
-    "okHgX2IF8Lc",
     "Em5mFtHpna8",
     "9_ubS2CGcVI",
     "jf64dps5Jcg",
-    "hPav5pau1OA",
     "60qx9j-4QAM",
     "XOzAOtiIRbU",
-    "RRAN-r3Z8m8",
     "qAyQa84-g60",
-    "9YDe6hf8xxM",
     "P-dS3yngptk",
     "LARaqjB3_K0",
     "boAkySAVOU8",
@@ -2049,50 +1975,81 @@
     "_PjyOet0Ma0",
     "RWyX6GpMRow",
     "0tKaK9DuNx4",
-    "mZ_JFzyKw1o",
     "EPkMQ_yNfDc",
-    "Pp0W-cfaQsU",
-    "asCvGcVPaPA",
     "RUyMb5fCIl4",
-    "vfYOn52Xnx4",
     "MXewJNnRszI",
-    "BxeZA1f29bE",
     "oOZLeIYnoPM",
-    "dlF4a2xvJAs",
-    "nSxz31RL-ho",
-    "K38rqvuk5VM",
-    "rujHZFOO0nI",
-    "8xgOTZNh750",
     "v2K2Njo1omA",
-    "Go1brUNX40k",
     "Q7OCJ6CFSYY",
     "5ECisPprBLc",
-    "SvZP7KQpAeg",
+    "Kf8W1Ku6JL4",
     "nX_JJiubp18",
     "FN7wJXSEjRc",
-    "4VN_YmNMd6s",
     "ttnTksT5RFo",
-    "rQhHAZDGhEM",
     "reGyMTFBXkY",
     "KZmpDSVZ1ss",
-    "oaYEpHoMdDo",
-    "D-Z_iR7k37A",
-    "9HitiEuUUJY",
     "BcupYtJ8ccw",
+    "9HitiEuUUJY",
     "j8wwIEc24j8",
-    "7xTXWFfqaGw",
     "qC3rlBHh2GY",
-    "up7HtLq5fk4",
-    "-SqRHo1GrF8",
+    "7xTXWFfqaGw",
     "80YGOUFosks",
+    "up7HtLq5fk4",
     "p53mohEqkU0",
     "6GGn-kpiJ90",
-    "POxMph9Fv2o",
     "Bjygmw4Wel0",
     "SgsK7rcVhQ8",
     "pyJfd__63GE",
-    "5OxXiByHSj4",
     "67Rz3p75HFU",
     "RcE17gXbfOE"
+  ],
+  "junk": [
+    "s434nMpPGNE",
+    "M809H2jtIo8",
+    "vK2zZQvNP6Q",
+    "YhxvrpoPPyM",
+    "C8tiQLmg8Mo",
+    "bAZsT8umKfo",
+    "dQFlIb7kRfQ",
+    "mcjAB-IzW1I",
+    "R1L1RNUNb7g",
+    "cDzCHF9JjD8",
+    "rZoy93qv-9Y",
+    "LxRE9VsO59w",
+    "N_pAiGBHJ8g",
+    "agvBpL1dYio",
+    "PY47MUbB71c",
+    "DTUS4WPhTso",
+    "L8Eze1G3OFw",
+    "89_cqk7nNyw",
+    "6Wj-x_l9qQE",
+    "SXA5QfsKGGs",
+    "iQAVINhYlJY",
+    "h0xkSSiDtmA",
+    "B41V5yaL21s",
+    "zCeqo0WTWJs",
+    "YG5F_i1wMlk",
+    "JsYP-J8i7ng",
+    "Eqj1OWsZ6rs",
+    "vHQjkkaXBT8",
+    "YoKEOy28BvQ",
+    "dlub7t1MNqQ",
+    "-B3cdS07Z9c",
+    "vJuCABvC8sg",
+    "TqbObyhYFBo",
+    "xCETmLanPWA",
+    "-vqPZgMEXJE",
+    "Xzx63RlEbgc",
+    "fmfYkv5m4iI",
+    "4DotMDpYJ3M",
+    "Y9Y4ruMQf58",
+    "sHWQEoeVbzA",
+    "gS_MHw3kvOo",
+    "rkaIeO_4uz0",
+    "xyfllXPikRU",
+    "qrWWqWJudAU",
+    "9-xGXUwkCFM",
+    "xRDsroSrNvY",
+    "Kf8W1Ku6JL4"
   ]
 }
