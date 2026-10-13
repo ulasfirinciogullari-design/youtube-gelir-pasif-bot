@@ -17,7 +17,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = ElevenLabs müzik/efekt kütüphanesini üret, referans = video_ids alanındaki örnek Shorts'ları analiz et)'
+        description: 'İş (video = Short üret, rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = ElevenLabs müzik/efekt kütüphanesini üret, referans = video_ids alanındaki örnek Shorts videolarını analiz et)'
         required: true
         default: 'video'
         type: choice
