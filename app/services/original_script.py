@@ -17,11 +17,13 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-MIN_SCENES = 5
-MAX_SCENES = 8
+MIN_SCENES = 6
+MAX_SCENES = 10
 MIN_WORDS = 55
 MAX_WORDS = 95  # ~40 s with tr-TR-AhmetNeural at +6%; the first real run hit 48.6 s
-MAX_SCENE_CHARS = 230
+MAX_SCENE_CHARS = 160
+MAX_HOOK_CHARS = 40
+EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]+")
 
 # Film/series characters and quotes the old catalog was built on. A script that
 # leans on them is rejected so the channel stays clear of copyright claims.
@@ -35,28 +37,39 @@ BANNED_REFERENCES = [
 ]
 
 PROMPT_TEMPLATE = """Sen "Zirvenin Kanunu" adlı Türkçe YouTube Shorts kanalının baş senaristisin.
-Kanal; güç, karar verme ve insan psikolojisini tarihten gerçek olaylar ve bilimsel
-deneylerle anlatıyor.
+Kanal; tarihten gerçek insanların gerilimli anlarını, dahice hamlelerini ve psikoloji deneylerini
+kısa, vurucu hikâyeler olarak anlatıyor.
 
 Konu: {topic}
 
-Bu konu için 25-40 saniyelik bir Shorts senaryosu yaz.
+Bu konuyu 25-40 saniyelik, izleyiciyi ilk saniyede yakalayan bir mini hikâyeye çevir.
 
-Kurallar:
-- İlk cümle en fazla 12 kelimelik, merak uyandıran bir kanca olsun. "Biliyor muydun" ile başlama.
-- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
+Hikâye kuralları:
+- Giriş yapma, izleyiciyi doğrudan anın içine at. İlk cümle en fazla 10 kelime olsun ve gerilim ya da
+  merak yaratsın (ör. "Odadaki herkes onun öleceğini düşünüyordu."). "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
+- Şimdiki zamanla anlat ("giriyor", "bakıyor", "fark ediyor"), sahne şu an oluyormuş gibi.
+- Ortada beklenmedik bir dönüş olsun; sonda kısa ve vurucu bir ders ya da soru kalsın.
+- Mümkünse son cümle ilk cümleye bağlansın ki video başa sardığında akış sürsün.
+- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne tek kısa cümle (en fazla 15 kelime).
 - Sadece doğruluğu iyi bilinen, kaynaklarda yer alan bilgileri kullan. Emin olmadığın tarih, sayı veya alıntıyı yazma.
-- Film, dizi veya kurgu karakterlerinden ve onların repliklerinden hiç bahsetme.
-- Abartılı vaat, "sigma", "zengin olursun" gibi ifadeler yok. Sakin ama vurucu bir anlatım.
-- Son cümle izleyiciye düşündürücü bir soru veya ders bıraksın.
-- Her sahne için görsel tarifini İngilizce yaz: gerçek kişilerin yüzünü birebir canlandırma; sembolik sahneler,
-  silüetler, mekânlar, nesneler, dönem atmosferi kullan. Görselde yazı, logo, filigran olmasın.
+- Film, dizi veya kurgu karakterlerinden ve repliklerinden hiç bahsetme. Anlatımda emoji kullanma, metin seslendirilecek.
+- "Sigma", "zengin olursun" gibi abartılı vaatler yok.
+
+Görsel kuralları:
+- Her sahne için İngilizce görsel tarifi yaz: gerçek kişilerin yüzünü birebir canlandırma; silüet, el, göz, nesne,
+  mekân ve dönem atmosferi kullan. Dramatik ışık, sinematik kadraj. Görselde yazı, logo, filigran olmasın.
 - "stock_query": stok video aramak için 2-4 İngilizce kelime (ör. "ancient rome ruins", "chess board closeup").
 - "source": sahne gerçek bir mekân veya nesneyle iyi anlatılıyorsa "stock", dönem veya sembolik bir sahne gerekiyorsa "ai".
 
+Başlık ve kanca:
+- "title": en fazla 60 karakter; sahneyi şimdiki zamanla anlatan, merak uyandıran tek cümle ve sonunda tek bir uygun emoji.
+  Örnekler: "Şifreli mesajı bir bakışta çözüyor 🧐", "Ordusu kaçarken tek başına geri dönüyor 😳". #shorts yazma.
+- "hook_text": videonun ilk 2 saniyesinde ekranın üstünde duracak 2-4 kelimelik büyük yazı, emoji yok (ör. "KİMSE FARK ETMEDİ").
+{style_examples}
 Sadece şu JSON'u döndür, başka hiçbir şey yazma:
 {{
-  "title": "En fazla 70 karakterlik Türkçe başlık, emoji ve #shorts olmadan",
+  "title": "Türkçe başlık + tek emoji",
+  "hook_text": "2-4 kelimelik kanca yazısı",
   "scenes": [
     {{"text": "Türkçe anlatım", "visual": "English image prompt", "stock_query": "english keywords", "source": "ai"}}
   ],
@@ -79,9 +92,15 @@ class ProviderHTTPError(ScriptError):
         self.code = code
 
 
-def build_prompt(topic: str) -> str:
+def build_prompt(topic: str, examples: list[str] | None = None) -> str:
+    style = ""
+    if examples:
+        style = "- Kanalda en çok izlenen başlıklar bunlar; tarzını örnek al ama kopyalama:\n" + "".join(
+            f"  - {t}\n" for t in examples
+        )
     return PROMPT_TEMPLATE.format(
         topic=topic.strip(),
+        style_examples=style,
         min_words=MIN_WORDS,
         max_words=MAX_WORDS,
         min_scenes=MIN_SCENES,
@@ -237,7 +256,7 @@ def validate_script(script: dict) -> dict:
     for raw in script.get("scenes") or []:
         if not isinstance(raw, dict):
             continue
-        text = " ".join(str(raw.get("text") or "").split())
+        text = " ".join(EMOJI_RE.sub("", str(raw.get("text") or "")).split())
         visual = " ".join(str(raw.get("visual") or "").split())
         if not text or not visual:
             continue
@@ -262,9 +281,14 @@ def validate_script(script: dict) -> dict:
     if hits:
         raise ScriptError(f"script references fiction/film: {', '.join(hits)}")
 
+    hook = " ".join(re.sub(r"[{}\\]", "", EMOJI_RE.sub("", str(script.get("hook_text") or ""))).split())
+    if not hook or len(hook) > MAX_HOOK_CHARS:
+        hook = " ".join(EMOJI_RE.sub("", title).split()[:4])
+
     tags = [str(t).strip().lstrip("#") for t in (script.get("tags") or []) if str(t).strip()]
     return {
         "title": title,
+        "hook_text": hook,
         "scenes": scenes,
         "description": str(script.get("description") or "").strip(),
         "tags": tags[:15],
@@ -274,9 +298,10 @@ def validate_script(script: dict) -> dict:
     }
 
 
-def write_script(topic: str, providers=None, attempts_per_provider: int = 2) -> tuple[dict, str]:
+def write_script(topic: str, providers=None, attempts_per_provider: int = 2,
+                 style_examples: list[str] | None = None) -> tuple[dict, str]:
     """Returns (validated_script, provider_name). Raises ScriptError if all providers fail."""
-    prompt = build_prompt(topic)
+    prompt = build_prompt(topic, style_examples)
     errors = []
     for name, call in providers or PROVIDERS:
         for attempt in range(1, attempts_per_provider + 1):

@@ -191,7 +191,89 @@ def test_published_topic_ids_reads_description_markers():
 
 def test_split_duration_keeps_segments_short():
     parts = original_visuals.split_duration(7.0)
-    assert len(parts) == 3 and abs(sum(parts) - 7.0) < 1e-9
+    assert max(parts) <= original_visuals.MAX_SEGMENT_SECONDS
+    assert abs(sum(parts) - 7.0) < 1e-9
+
+
+def test_validate_script_hook_text_and_emoji_cleanup():
+    raw = json.loads(json.dumps(VALID_SCRIPT))
+    raw["title"] = "Şifreli mesajı bir bakışta çözüyor 🧐"
+    raw["scenes"][0]["text"] += " 🔥"
+    raw["hook_text"] = "Kimse {fark} etmedi 😳"
+    script = validate_script(raw)
+    assert script["title"].endswith("🧐")
+    assert "🔥" not in script["scenes"][0]["text"]
+    assert script["hook_text"] == "Kimse fark etmedi"
+
+    raw.pop("hook_text")
+    assert validate_script(raw)["hook_text"] == "Şifreli mesajı bir bakışta"
+
+
+def test_add_hook_overlay_inserts_style_and_event(tmp_path):
+    from app.services.subtitle_engine import generate_shorts_ass_subtitles
+
+    ass = tmp_path / "s.ass"
+    generate_shorts_ass_subtitles([{"text": "bir iki üç", "start": 0.0, "end": 2.0}], ass)
+    original_factory.add_hook_overlay(ass, "kimse fark etmedi")
+    content = ass.read_text(encoding="utf-8")
+    header, events = content.split("[Events]")
+    assert "Style: HookStyle," in header
+    assert "HookStyle,,0,0,0,,{\\fad" in events and events.rstrip().endswith("KİMSE FARK ETMEDİ")
+    assert "@zirveninkanunu" in events and "👑" not in content
+
+
+def test_build_prompt_includes_style_examples():
+    prompt = original_script.build_prompt("konu", ["Ordusu kaçarken geri dönüyor 😳"])
+    assert "Ordusu kaçarken geri dönüyor 😳" in prompt
+    assert "Kanalda en çok izlenen" not in original_script.build_prompt("konu")
+
+
+class _MetricsYouTube(_FakeYouTube):
+    def __init__(self):
+        self.items = [
+            {"snippet": {"description": "a\n\nSeri: zk-001", "title": "Eski başlık 🧐",
+                         "publishedAt": "2026-10-10T08:00:00Z", "resourceId": {"videoId": "v1"}}},
+            {"snippet": {"description": "b\n\nSeri: zk-002", "title": "Yeni başlık 😳",
+                         "publishedAt": "2026-10-12T08:00:00Z", "resourceId": {"videoId": "v2"}}},
+            {"snippet": {"description": "film videosu", "title": "x",
+                         "publishedAt": "2026-10-01T08:00:00Z", "resourceId": {"videoId": "v3"}}},
+        ]
+
+    def videos(self):
+        return self
+
+    def list(self, **kwargs):
+        if "mine" in kwargs:
+            return super().list(**kwargs)
+        if kwargs.get("part") == "statistics,status":
+            return _FakeRequest({"items": [
+                {"id": "v1", "statistics": {"viewCount": "720", "likeCount": "30"}, "status": {"privacyStatus": "public"}},
+                {"id": "v2", "statistics": {"viewCount": "480", "likeCount": "40"}, "status": {"privacyStatus": "public"}},
+            ]})
+        return _FakeRequest({"items": self.items})
+
+
+def test_channel_metrics_rank_and_report(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+    from app.services import channel_metrics
+
+    yt = _MetricsYouTube()
+    videos = channel_metrics.list_series_videos(yt, original_factory.MARKER_RE)
+    assert [v["video_id"] for v in videos] == ["v1", "v2"]
+    channel_metrics.add_statistics(yt, videos)
+    now = datetime(2026, 10, 13, 8, tzinfo=timezone.utc)
+    ranked = channel_metrics.rank_videos(videos, now)
+    # v1: 720 views / 72 h = 10/h, v2: 480 views / 24 h = 20/h
+    assert [v["video_id"] for v in ranked] == ["v2", "v1"]
+    report = channel_metrics.format_report(videos, "not")
+    assert "| zk-002 | Yeni başlık 😳 | public | 480 | 40 |" in report and "_not_" in report
+
+    monkeypatch.setattr(channel_metrics, "add_retention", lambda v: None)
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(tmp_path / "summary.md"))
+    published, examples = channel_metrics.report_channel(yt, original_factory.MARKER_RE, tmp_path)
+    assert published == {"zk-001", "zk-002"}
+    assert examples == []  # fewer than 3 rankable videos: no style examples yet
+    assert (tmp_path / "metrics.json").exists() and "zk-001" in (tmp_path / "summary.md").read_text(encoding="utf-8")
 
 
 def _pixabay_hit(vid, width, height, duration=12):
@@ -296,6 +378,7 @@ def test_full_render_with_offline_assets(tmp_path, monkeypatch):
     assert result["thumbnail"].exists()
     meta = result["meta"]
     assert meta["description"].endswith("Seri: zk-001")
+    assert meta["hook_text"]
     assert meta["contains_synthetic_media"] is True
     assert meta["stock_videos"] >= 1
     assert abs(float(probe["format"]["duration"]) - meta["duration_seconds"]) < 0.3

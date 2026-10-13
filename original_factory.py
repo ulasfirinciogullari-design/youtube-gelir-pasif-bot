@@ -26,6 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
+from app.services.channel_metrics import list_series_videos, report_channel
 from app.services.original_script import write_script
 from app.services.original_visuals import build_visual_track
 
@@ -39,6 +40,7 @@ MARKER_PREFIX = "Seri: "
 MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3})")
 BASE_TAGS = ["shorts", "psikoloji", "tarih", "güç", "karar verme", "zirvenin kanunu"]
 BASE_HASHTAGS = "#shorts #psikoloji #tarih #keşfet"
+HOOK_SECONDS = 2.2
 
 
 # ---------------------------------------------------------------------------
@@ -52,21 +54,7 @@ def load_topics(path: Path = TOPICS_FILE) -> list[dict]:
 
 def published_topic_ids(youtube, max_pages: int = 10) -> set[str]:
     """Reads 'Seri: <id>' markers from the channel's uploaded video descriptions."""
-    channels = youtube.channels().list(part="contentDetails", mine=True).execute().get("items", [])
-    if not channels:
-        return set()
-    uploads = channels[0]["contentDetails"]["relatedPlaylists"]["uploads"]
-    found, token = set(), None
-    for _ in range(max_pages):
-        page = youtube.playlistItems().list(
-            playlistId=uploads, part="snippet", maxResults=50, pageToken=token
-        ).execute()
-        for item in page.get("items", []):
-            found.update(MARKER_RE.findall(item.get("snippet", {}).get("description", "")))
-        token = page.get("nextPageToken")
-        if not token:
-            break
-    return found
+    return {v["topic_id"] for v in list_series_videos(youtube, MARKER_RE, max_pages)}
 
 
 def pick_topic(topics: list[dict], published: set[str], topic_id: str | None = None) -> dict:
@@ -191,6 +179,24 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
     return out
 
 
+def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float = HOOK_SECONDS) -> None:
+    """Big hook line at the top of the frame for the first seconds, popping in."""
+    from app.services.subtitle_engine import _format_ass_time, _upper_tr
+
+    text = re.sub(r"[{}\\]", "", hook_text or "").strip()
+    if not text:
+        return
+    content = ass_path.read_text(encoding="utf-8")
+    style = (
+        "Style: HookStyle,Arial Black,96,&H0000D7FF,&H000000FF,&H00000000,&H90000000,"
+        "-1,0,0,0,100,100,2,0,1,9,3,8,70,70,290,1\n"
+    )
+    content = content.replace("\n[Events]", f"{style}\n[Events]", 1)
+    pop = r"{\fad(0,250)\fscx125\fscy125\t(0,180,\fscx100\fscy100)}"
+    content += f"Dialogue: 1,0:00:00.00,{_format_ass_time(seconds)},HookStyle,,0,0,0,,{pop}{_upper_tr(text)}\n"
+    ass_path.write_text(content, encoding="utf-8")
+
+
 def render_final(segments: list[Path], audio: Path, subtitles_file: Path, duration: float, work_dir: Path, final_mp4: Path) -> Path:
     from app.services.visual_fx_engine import generate_neon_progress_bar_filter
 
@@ -244,6 +250,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         sentences=subtitle_events, output_path=subs, font_name="Arial Black", font_size=74,
         highlight_color="&H0000D7FF", outline_width=8, margin_v=860,
     )
+    add_hook_overlay(subs, script.get("hook_text", ""))
     audio = mix_soundtrack(voice, work_dir / "soundtrack.m4a", duration, scene_cuts, pick_music(topic["id"]))
 
     print("[4/4] 🚀 Render")
@@ -276,6 +283,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "topic": topic["topic"],
         "script_provider": provider,
         "title": full_title,
+        "hook_text": script.get("hook_text", ""),
         "description": description,
         "tags": tags,
         "pinned_comment": script["pinned_comment"],
@@ -365,13 +373,15 @@ def main(argv=None) -> int:
     if not args.no_upload:
         from publish_to_youtube import get_authenticated_service
         youtube = get_authenticated_service()
-        published = published_topic_ids(youtube)
+        published, examples = report_channel(youtube, MARKER_RE, OUTPUT_DIR)
         print(f"📋 Kanalda yayınlanmış konu sayısı: {len(published)}")
+    else:
+        examples = []
 
     topic = pick_topic(load_topics(), published, args.topic_id)
     print(f"🎯 Konu {topic['id']}: {topic['topic']}")
 
-    script, provider = write_script(topic["topic"])
+    script, provider = write_script(topic["topic"], style_examples=examples)
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 
     result = produce(topic, script, provider)

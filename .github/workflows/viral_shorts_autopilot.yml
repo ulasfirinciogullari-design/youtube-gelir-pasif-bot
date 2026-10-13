@@ -84,5 +84,6 @@ jobs:
             output/ORIGINAL_*.mp4
             output/ORIGINAL_*_thumb.jpg
             output/ORIGINAL_*_meta.json
+            output/metrics.json
           retention-days: 14
           if-no-files-found: warn
