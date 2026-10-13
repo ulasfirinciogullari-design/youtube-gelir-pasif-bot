@@ -115,8 +115,12 @@ def _post_json(url: str, payload: dict, headers: dict, timeout: int = 60) -> dic
 # Reseller keys often only unlock part of the catalog ("model is not available for
 # this group"). When the configured model is refused, the endpoint's own model list
 # is printed and the first usable match from this list is tried instead.
-MODEL_PREFERENCE = ["claude-sonnet", "gpt-5", "gpt-4.1", "gpt-4o", "claude", "gemini", "grok", "deepseek", "qwen"]
-NON_CHAT_MARKERS = ("embed", "image", "tts", "whisper", "audio", "realtime", "moderation", "dall-e", "transcribe")
+MODEL_PREFERENCE = [
+    "claude-sonnet", "gpt-5", "gpt-4.1", "gpt-4o", "claude", "gemini", "grok", "deepseek-v4-pro", "deepseek", "qwen",
+]
+NON_CHAT_MARKERS = (
+    "embed", "image", "tts", "whisper", "audio", "realtime", "moderation", "dall-e", "transcribe", "vision", "expires",
+)
 _model_overrides: dict[str, str] = {}
 
 
@@ -131,8 +135,9 @@ def _available_models(models_url: str, headers: dict) -> list[str]:
     return [m["id"] for m in data if isinstance(m, dict) and m.get("id")]
 
 
-def pick_fallback_model(available: list[str], must_contain: str = "") -> str | None:
-    usable = [m for m in available if must_contain in m.lower() and not any(x in m.lower() for x in NON_CHAT_MARKERS)]
+def pick_fallback_model(available: list[str], prefer: str = "") -> str | None:
+    usable = [m for m in available if not any(x in m.lower() for x in NON_CHAT_MARKERS)]
+    usable = [m for m in usable if prefer and prefer in m.lower()] or usable
     for preferred in MODEL_PREFERENCE:
         for model in usable:
             if preferred in model.lower():
@@ -140,7 +145,7 @@ def pick_fallback_model(available: list[str], must_contain: str = "") -> str | N
     return usable[0] if usable else None
 
 
-def _post_with_model_fallback(provider: str, model: str, send, models_url: str, headers: dict, must_contain: str = ""):
+def _post_with_model_fallback(provider: str, model: str, send, models_url: str, headers: dict, prefer: str = ""):
     """send(model) -> response dict. Retries once with a model the endpoint does offer."""
     model = _model_overrides.get(provider, model)
     try:
@@ -150,7 +155,7 @@ def _post_with_model_fallback(provider: str, model: str, send, models_url: str, 
             raise
         available = _available_models(models_url, headers)
         print(f"ℹ️ {provider}: {model} bu uçta açık değil. Açık modeller: {', '.join(available[:40]) or 'liste yok'}")
-        fallback = pick_fallback_model(available, must_contain)
+        fallback = pick_fallback_model(available, prefer)
         if not fallback or fallback == model:
             raise
         print(f"ℹ️ {provider}: yerine {fallback} kullanılıyor")
@@ -191,7 +196,7 @@ def _call_anthropic(prompt: str) -> str | None:
             {"model": m, "max_tokens": 2000, "messages": [{"role": "user", "content": prompt}]},
             headers,
         ),
-        f"{base}/v1/models", headers, must_contain="claude",
+        f"{base}/v1/models", headers, prefer="claude",
     )
     return "".join(block.get("text", "") for block in data.get("content", []))
 

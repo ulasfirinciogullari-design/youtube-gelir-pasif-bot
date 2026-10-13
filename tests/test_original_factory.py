@@ -133,14 +133,18 @@ def test_refused_model_falls_back_to_one_the_endpoint_offers(monkeypatch):
 
     assert original_script._call_anthropic("prompt") == "ok"
     assert original_script._call_anthropic("prompt") == "ok"
-    # The anthropic endpoint only takes Claude models; the second call reuses the fallback.
+    # Claude models are preferred on the Messages endpoint; the second call reuses the fallback.
     assert sent_models == ["claude-sonnet-4-6", "claude-haiku-4-5", "claude-haiku-4-5"]
 
 
 def test_pick_fallback_model_prefers_chat_models():
     available = ["text-embedding-3", "gpt-image-1", "deepseek-v4", "gpt-5.4-mini"]
     assert original_script.pick_fallback_model(available) == "gpt-5.4-mini"
-    assert original_script.pick_fallback_model(available, must_contain="claude") is None
+    assert original_script.pick_fallback_model(available, prefer="claude") == "gpt-5.4-mini"
+    # What the reseller key offered on the first real run: no Claude, only DeepSeek.
+    reseller = ["deepseek-flash", "deepseek-v4-flash-vision-exp", "deepseek-v4.1-flash-expires-on-0910", "deepseek-v4-pro"]
+    assert original_script.pick_fallback_model(reseller, prefer="claude") == "deepseek-v4-pro"
+    assert original_script.pick_fallback_model(["gpt-image-2", "gpt-image-2.5-flare"]) is None
 
 
 def test_pick_topic_skips_published_ids():
