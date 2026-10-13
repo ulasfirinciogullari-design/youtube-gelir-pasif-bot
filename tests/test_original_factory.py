@@ -83,6 +83,23 @@ def test_write_script_raises_when_nothing_valid():
         write_script("konu", providers=[("a", lambda p: None)])
 
 
+def test_provider_http_error_reports_body(monkeypatch):
+    import io
+    import urllib.error
+
+    def fake_urlopen(req, timeout=0):
+        body = io.BytesIO(b'{"error": {"message": "model claude-x not found"}}')
+        raise urllib.error.HTTPError(req.full_url, 404, "Not Found", {}, body)
+
+    monkeypatch.setattr(original_script.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setenv("ANTHROPIC_AUTH_TOKEN", "t")
+    monkeypatch.setenv("ANTHROPIC_BASE_URL", "https://reseller.example/v1")
+    with pytest.raises(ScriptError) as err:
+        original_script._call_anthropic("prompt")
+    assert "reseller.example/v1/messages" in str(err.value)
+    assert "model claude-x not found" in str(err.value)
+
+
 def test_pick_topic_skips_published_ids():
     topics = [{"id": "zk-001", "topic": "a"}, {"id": "zk-002", "topic": "b"}]
     assert original_factory.pick_topic(topics, {"zk-001"})["id"] == "zk-002"

@@ -14,6 +14,7 @@ import json
 import os
 import re
 import urllib.error
+import urllib.parse
 import urllib.request
 
 MIN_SCENES = 5
@@ -95,8 +96,14 @@ def _post_json(url: str, payload: dict, headers: dict, timeout: int = 60) -> dic
         headers={"Content-Type": "application/json", **headers},
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        # The body usually names the real problem (unknown model, bad key, wrong path).
+        parts = urllib.parse.urlsplit(url)
+        detail = " ".join(e.read().decode("utf-8", "replace").split())[:300]
+        raise ScriptError(f"HTTP {e.code} from {parts.netloc}{parts.path}: {detail}") from e
 
 
 def _call_gemini(prompt: str) -> str | None:
@@ -122,6 +129,7 @@ def _call_anthropic(prompt: str) -> str | None:
     if not token:
         return None
     base = os.environ.get("ANTHROPIC_BASE_URL", "https://api.anthropic.com").rstrip("/")
+    base = base[:-3] if base.endswith("/v1") else base  # the path below already adds /v1
     model = os.environ.get("ANTHROPIC_SCRIPT_MODEL", "claude-sonnet-4-6")
     data = _post_json(
         f"{base}/v1/messages",
