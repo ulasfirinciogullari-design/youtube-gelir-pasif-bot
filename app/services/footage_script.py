@@ -27,6 +27,7 @@ from app.services.original_script import (
 )
 
 MIN_COVERAGE = 6  # out of 10; below this a topic is skipped when the run picked it itself
+WORDS_PER_SHOT = 4  # ~1.6 s of narration: the reference Shorts cut about this often
 MIN_POOL = 12
 MAX_POOL = 40
 FRAME_HEIGHT = 200
@@ -59,8 +60,10 @@ Anlatım kuralları:
 - Anlatımda emoji kullanma, metin seslendirilecek.
 
 Görüntü kuralları:
-- "clips": o sahnede sırayla gösterilecek 1-3 aday, her biri {{"n": aday numarası, "kare": cümleye en uyan kare (1, 2 ya da 3)}}.
-  Uzun cümlelere 2-3, kısa cümlelere 1-2 aday ver. Bir aday yalnızca bir sahnede kullanılabilir.
+- Video her 1,5 saniyede bir kesilecek. Bu yüzden her sahneye 2 ya da 3 FARKLI aday ver (8 kelimeden uzun sahnelere 3),
+  hepsi o cümleyi göstersin; aynı anın farklı çekimleri de olur. Sadece 5 kelimeden kısa sahnelere tek aday verebilirsin.
+- "clips": o sahnede sırayla gösterilecek adaylar, her biri {{"n": aday numarası, "kare": cümleye en uyan kare (1, 2 ya da 3)}}.
+  Bir aday yalnızca bir sahnede kullanılabilir.
 - Yazı, logo, filigran olan, bulanık veya konuyla ilgisiz adayları kullanma.
 - "visual": o sahnede ekranda görünen şeyin kısa İngilizce tarifi.
 - "coverage": adayların bu konuyu ne kadar iyi gösterebildiği, 1-10. Konunun ana sorusunu gösteren aday yoksa 5'in altında ver.
@@ -75,7 +78,8 @@ Sadece şu JSON'u döndür, başka hiçbir şey yazma:
   "title": "Türkçe başlık + tek emoji",
   "hook_text": "3-7 kelimelik kanca yazısı",
   "scenes": [
-    {{"text": "Türkçe anlatım", "visual": "what is on screen", "clips": [{{"n": 4, "kare": 2}}, {{"n": 11, "kare": 1}}]}}
+    {{"text": "Türkçe anlatım", "visual": "what is on screen",
+      "clips": [{{"n": 4, "kare": 2}}, {{"n": 11, "kare": 1}}, {{"n": 17, "kare": 3}}]}}
   ],
   "description": "2-3 cümlelik Türkçe açıklama",
   "tags": ["8-12 Türkçe etiket"],
@@ -101,8 +105,10 @@ def plan_queries(topic: str, subject: list[str], hint: str = "", call=_call_gemi
 
 
 def gather_pool(queries: list[str], subject: list[str], used_ids: set, limit: int = MAX_POOL) -> list[dict]:
-    """On-subject candidates from every query, interleaved so each search contributes its best clips."""
-    lists = [original_visuals.pixabay_candidates(q, used_ids, subject, limit=10) for q in queries]
+    """On-subject candidates from every query, interleaved so each search contributes its best clips.
+    Each hit remembers the search that found it (`_query`), which later helps fill a scene with similar shots."""
+    lists = [[{**h, "_query": q} for h in original_visuals.pixabay_candidates(q, used_ids, subject, limit=10)]
+             for q in queries]
     pool, seen = [], set()
     for rank in range(10):
         for hits in lists:
@@ -142,6 +148,11 @@ def contact_sheet(hit: dict, work_dir: Path) -> tuple[bytes, str] | None:
     return fetch_thumbnail(pixabay_thumbnail(hit))
 
 
+def wanted_shots(scene: dict) -> int:
+    """How many different clips a scene's narration needs for the reference Shorts' ~1.5 s cuts (1-3)."""
+    return min(3, max(1, round(len(scene["text"].split()) / WORDS_PER_SHOT)))
+
+
 def resolve_clips(scenes: list[dict], shown: int) -> list[dict]:
     """Keeps clip numbers that exist and are not used by an earlier scene; every scene must keep at least one."""
     taken: set[int] = set()
@@ -154,6 +165,30 @@ def resolve_clips(scenes: list[dict], shown: int) -> list[dict]:
         if not refs:
             raise ScriptError(f"sahne {i} için kullanılabilir video yok")
         scene["clips"] = refs
+    return scenes
+
+
+def thin_scenes(scenes: list[dict]) -> list[int]:
+    """Scenes (from 1) long enough for several cuts that got a single clip: one long shot per sentence
+    made the lightning sample (2026-10-13) feel slow next to the reference Shorts."""
+    return [i for i, scene in enumerate(scenes, start=1) if len(scene["clips"]) < min(2, wanted_shots(scene))]
+
+
+def fill_clips(scenes: list[dict], pool: list[dict]) -> list[dict]:
+    """Tops up scenes that got fewer clips than cuts with unused clips most like the ones Gemini chose:
+    same search first, then tags sharing the most words with the scene's on-screen description."""
+    taken = {ref["n"] for scene in scenes for ref in scene["clips"]}
+    for scene in scenes:
+        queries = {pool[ref["n"] - 1].get("_query") for ref in scene["clips"]}
+        while len(scene["clips"]) < wanted_shots(scene):
+            free = [n for n in range(1, len(pool) + 1) if n not in taken]
+            if not free:
+                break
+            best = max(free, key=lambda n: (pool[n - 1].get("_query") in queries,
+                                            original_visuals.tag_score(pool[n - 1].get("tags", ""), scene["visual"]),
+                                            -n))
+            taken.add(best)
+            scene["clips"].append({"n": best, "kare": 2})
     return scenes
 
 
@@ -181,11 +216,18 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
         parts.append({"text": f"Aday {n} ({int(hit.get('duration') or 0)} sn):"})
         parts.append({"inlineData": {"mimeType": mime, "data": base64.b64encode(data).decode("ascii")}})
 
+    clips = [hit for hit, _ in shown]
+
+    def finish(script: dict, coverage: int) -> dict:
+        fill_clips(script["scenes"], clips)
+        return {"script": script, "pool": clips, "coverage": coverage, "queries": queries}
+
+    thin_answer = None  # a usable script whose scenes were too thin; kept in case the retry fails
     for attempt in range(1, attempts + 1):
         try:
             raw = call(parts, temperature=0.7)
             if not raw:
-                return None
+                break
             data = _extract_json(raw)
             script = validate_script(data, {**topic, "stock_hint": topic.get("stock_hint", "")})
             script["scenes"] = resolve_clips(script["scenes"], len(shown))
@@ -193,8 +235,15 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
                 coverage = int(data.get("coverage") or 0)
             except (TypeError, ValueError):
                 coverage = 0
-            return {"script": script, "pool": [hit for hit, _ in shown], "coverage": coverage, "queries": queries}
         except (ScriptError, ValueError, KeyError, IndexError, urllib.error.URLError, TimeoutError) as e:
-            print(f"ℹ️ Görüntüye göre senaryo denemesi reddedildi (#{attempt}): {str(e)[:200]}")
-            parts = parts[:1] + [{"text": f"Önceki yanıtın reddedildi: {str(e)[:200]}. Kurallara uyarak yeniden yaz."}] + parts[1:]
-    return None
+            note = str(e)[:200]
+        else:
+            thin = thin_scenes(script["scenes"])
+            if not thin or attempt == attempts:
+                return finish(script, coverage)
+            thin_answer = thin_answer or (script, coverage)
+            note = (f"{', '.join(map(str, thin))}. sahneye tek video verilmiş. Video 1,5 saniyede bir kesilecek, "
+                    f"5 kelimeden uzun her sahneye 2-3 farklı video ver")
+        print(f"ℹ️ Görüntüye göre senaryo denemesi reddedildi (#{attempt}): {note}")
+        parts = parts[:1] + [{"text": f"Önceki yanıtın reddedildi: {note}. Kurallara uyarak yeniden yaz."}] + parts[1:]
+    return finish(*thin_answer) if thin_answer else None

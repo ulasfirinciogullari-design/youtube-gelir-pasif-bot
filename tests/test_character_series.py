@@ -381,12 +381,12 @@ FOOTAGE_REPLY = {
 }
 
 
-def test_footage_first_script_names_clips_for_every_scene(tmp_path, monkeypatch):
+def _footage_run(tmp_path, monkeypatch, replies):
     from app.services import footage_script, original_visuals
     hits = {"cat jumping": [_hit(i, "cat", duration=12) for i in range(1, 11)],
             "cat landing": [_hit(i, "cat", duration=12) for i in range(5, 15)]}
     monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: hits[q][:limit])
-    replies, prompts = [json.dumps({"scenes": []}), json.dumps(FOOTAGE_REPLY)], []
+    replies, prompts = [r if isinstance(r, str) else json.dumps(r) for r in replies], []
 
     def fake_call(parts, temperature=0.2):
         prompts.append(parts)
@@ -397,17 +397,63 @@ def test_footage_first_script_names_clips_for_every_scene(tmp_path, monkeypatch)
         topic, tmp_path, call=fake_call, plan=lambda t, s, h: ["cat jumping", "cat landing"],
         sheet=lambda hit, d: (b"\xff\xd8\xff", "image/jpeg"),
     )
+    return result, prompts
+
+
+def test_footage_first_script_names_clips_for_every_scene(tmp_path, monkeypatch):
+    from app.services import footage_script
+    result, prompts = _footage_run(tmp_path, monkeypatch, [{"scenes": []}, FOOTAGE_REPLY])
     # Both searches contribute in turn and the 6 clips they share appear once.
     assert result["coverage"] == 8 and [h["id"] for h in result["pool"][:6]] == [1, 5, 2, 6, 3, 7]
     assert len(result["pool"]) == 14
     scenes = result["script"]["scenes"]
     # Clip 3 is taken by scene 1, so scene 2 keeps only clip 1; frame 9 is clamped to 3; clip 99 does not exist.
     assert scenes[0]["clips"] == [{"n": 3, "kare": 2}, {"n": 5, "kare": 3}]
-    assert scenes[1]["clips"] == [{"n": 1, "kare": 2}] and scenes[5]["clips"] == [{"n": 7, "kare": 2}]
+    assert scenes[1]["clips"][0] == {"n": 1, "kare": 2} and scenes[5]["clips"][0] == {"n": 7, "kare": 2}
+    # The last attempt is kept even with single-clip scenes; unused clips top them up to one per ~4 words.
+    assert [len(s["clips"]) for s in scenes] == [2, 2, 2, 2, 3, 3]
+    assert len({ref["n"] for s in scenes for ref in s["clips"]}) == 14
     # The first reply was rejected and the retry tells Gemini why.
     assert len(prompts) == 2 and "reddedildi" in prompts[1][1]["text"]
     assert sum(1 for p in prompts[0] if "inlineData" in p) == 14 and "Aday 1 (12 sn):" in prompts[0][1]["text"]
     assert footage_script.frame_time(12, 1) == pytest.approx(1.2) and footage_script.frame_time(12, 3) == pytest.approx(7.6)
+
+
+RICH_FOOTAGE_REPLY = {**FOOTAGE_REPLY, "scenes": [
+    {**scene, "clips": clips} for scene, clips in zip(FOOTAGE_REPLY["scenes"], [
+        [1, 2], [3, 4], [5, 6], [7, 8], [9, 10, 11], [12, 13, 14]])
+]}
+
+
+def test_footage_first_asks_again_when_a_sentence_gets_a_single_clip(tmp_path, monkeypatch):
+    result, prompts = _footage_run(tmp_path, monkeypatch, [FOOTAGE_REPLY, RICH_FOOTAGE_REPLY])
+    assert len(prompts) == 2 and "2, 3, 4, 5, 6. sahneye tek video" in prompts[1][1]["text"]
+    assert [[ref["n"] for ref in s["clips"]] for s in result["script"]["scenes"]] == [
+        [1, 2], [3, 4], [5, 6], [7, 8], [9, 10, 11], [12, 13, 14]]
+
+
+def test_footage_first_keeps_the_thin_script_when_the_retry_fails(tmp_path, monkeypatch):
+    result, prompts = _footage_run(tmp_path, monkeypatch, [FOOTAGE_REPLY, "{}"])
+    assert len(prompts) == 2 and result["coverage"] == 8
+    assert [len(s["clips"]) for s in result["script"]["scenes"]] == [2, 2, 2, 2, 3, 3]
+
+
+def test_extra_clips_come_from_the_same_search_then_from_matching_tags():
+    from app.services.footage_script import fill_clips, wanted_shots
+    pool = [{"_query": "lightning strike", "tags": "lightning"}, {"_query": "storm clouds", "tags": "storm, clouds"},
+            {"_query": "lightning strike", "tags": "lightning, night"}, {"_query": "rain", "tags": "rain, window"},
+            {"_query": "night sky", "tags": "lightning, bolt, night, sky"},
+            {"_query": "rain", "tags": "storm, rain, clouds, dark"}]
+    scenes = [{"text": "Bir şimşek havayı saniyenin altında güneşten sıcak yapar.", "visual": "lightning bolt at night",
+               "clips": [{"n": 1, "kare": 2}]},
+              {"text": "Ardından gök gürültüsü gelir.", "visual": "dark storm clouds", "clips": [{"n": 4, "kare": 1}]},
+              {"text": "Bulutlar karardıkça gökyüzü gürler, yağmur da hemen arkasından başlar.",
+               "visual": "dark storm clouds rolling", "clips": [{"n": 2, "kare": 2}]}]
+    assert [wanted_shots(s) for s in scenes] == [2, 1, 2]
+    fill_clips(scenes, pool)
+    # Scene 1 takes the other "lightning strike" clip over a better-tagged one from another search, scene 2 is
+    # short enough for one shot, and scene 3 gets the clip whose tags share most words with what is on screen.
+    assert [[ref["n"] for ref in s["clips"]] for s in scenes] == [[1, 3], [4], [2, 6]]
 
 
 def test_footage_first_gives_up_without_enough_footage(tmp_path, monkeypatch):
