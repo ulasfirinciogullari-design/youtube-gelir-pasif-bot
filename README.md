@@ -117,7 +117,23 @@ birkaç Flux görseli (görsel başı ~0,003 $) ve tek bir kısa LLM çağrısı
 
 Yerelde yüklemeden denemek için: `python original_factory.py --no-upload --topic-id zk-001`
 
-### Komik dublaj formatı (varsayılan)
+### Film karakteri serisi
+
+`--series karakter`, ünlü film ve dizi karakterlerinin (Thomas Shelby, Walter
+White, Polat Alemdar...) bir kararını veya kuralını kendi anlatımımızla
+yorumlar ve gerçek bir psikoloji ilkesine bağlar. Film sahnesi, replik kaydı,
+film müziği veya oyuncu görüntüsü kullanılmaz.
+
+- Konular: `app/services/character_topics_tr.json`, kodlar `fk-001` gibi.
+  Liste bitince Gemini yeni karakter konusu üretir.
+- Anlatımda karakter adı geçebilir; görsel tariflerinden karakter ve oyuncu
+  adları silinir ve yüzler silüet/arkadan çekim olarak istenir, böylece Flux
+  gerçek bir oyuncuyu çizmez.
+- Başlık örnekleri kanalın eski film kliplerinin en çok izlenen başlıklarından alınır.
+- `--series karisik` (zamanlanmış çalışmaların varsayılanı) son yüklemeye
+  bakıp tarih hikâyesi ile karakter videosunu sırayla üretir.
+
+### Komik dublaj formatı
 
 `comedy_factory.py`, Pixabay'deki ücretsiz hayvan kliplerinden (ticari kullanım
 serbest, kaynak gösterme zorunlu değil ama açıklamaya yazılır) birini seçer,
@@ -130,7 +146,8 @@ planlı 9:16 kadraja, altyazı ve kanca yazısıyla birlikte yerleştirir.
   isteğe bağlı `ELEVENLABS_API_KEY`.
 - Klip ya da senaryo çıkmazsa o çalışma özgün hikâye formatına döner.
 - Format, workflow girdisi `format` ile (elle çalıştırma) veya
-  `CONTENT_FORMAT` repo değişkeniyle (`comedy` / `story`) seçilir.
+  `CONTENT_FORMAT` repo değişkeniyle (`karisik` / `story` / `karakter` / `comedy`)
+  seçilir; varsayılan `karisik`.
 
 Yerelde yüklemeden denemek için: `python comedy_factory.py --no-upload`
 

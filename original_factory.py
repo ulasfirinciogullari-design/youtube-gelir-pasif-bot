@@ -5,8 +5,11 @@ One run = one original Short, end to end:
 topic queue -> LLM script -> free edge-tts narration -> Pexels/Pixabay stock / Flux images
 -> kinetic subtitles + sound design -> 1080x1920 60 FPS render -> YouTube upload.
 
-No film footage, no film characters. Typical paid spend is a few Flux images
-(~$0.003 each) plus one short LLM call; rendering runs on free GitHub Actions.
+Two series: history stories (zk-NNN) and film/series character commentary
+(fk-NNN). Neither uses film footage; character videos are our own narration
+over stock video and faceless generated images. "karisik" alternates the two.
+Typical paid spend is a few Flux images (~$0.003 each) plus one short LLM call;
+rendering runs on free GitHub Actions.
 
 The channel itself is the queue state: every upload carries "Seri: <topic id>"
 in its description, and the next run picks the first topic not seen there.
@@ -27,7 +30,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 from app.services.channel_metrics import list_series_videos, report_channel
-from app.services.channel_memory import record_upload, used_topic_ids
+from app.services.channel_memory import load_uploads, record_upload, used_topic_ids
 from app.services.competitor_scan import dna_age_days, load_dna, run_scan
 from app.services.seo_pack import build_seo_pack
 from app.services.original_script import write_script
@@ -35,6 +38,7 @@ from app.services.original_visuals import build_visual_track
 
 OUTPUT_DIR = BASE_DIR / "output"
 TOPICS_FILE = BASE_DIR / "app" / "services" / "original_topics_tr.json"
+CHARACTER_TOPICS_FILE = BASE_DIR / "app" / "services" / "character_topics_tr.json"
 # The workflow checks out the channel-data branch here: metrics, competitor DNA, generated topics, history.
 DATA_DIR = BASE_DIR / "channel-data"
 GENERATED_TOPICS_FILE = "generated_topics.json"
@@ -47,6 +51,13 @@ MARKER_PREFIX = "Seri: "
 MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3,})")
 BASE_TAGS = ["shorts", "psikoloji", "tarih", "güç", "karar verme", "zirvenin kanunu"]
 BASE_HASHTAGS = "#shorts #psikoloji #tarih #keşfet"
+SERIES = {
+    "story": {"topics": TOPICS_FILE, "prefix": "zk", "format": "story",
+              "tags": BASE_TAGS, "hashtags": BASE_HASHTAGS},
+    "karakter": {"topics": CHARACTER_TOPICS_FILE, "prefix": "fk", "format": "character",
+                 "tags": ["shorts", "film", "dizi", "karakter analizi", "psikoloji", "zirvenin kanunu"],
+                 "hashtags": "#shorts #film #dizi #psikoloji"},
+}
 HOOK_SECONDS = 2.2
 voice_usage = {"elevenlabs": 0, "edge-tts": 0}
 
@@ -63,6 +74,31 @@ def load_topics(path: Path = TOPICS_FILE) -> list[dict]:
 def published_topic_ids(youtube, max_pages: int = 10) -> set[str]:
     """Reads 'Seri: <id>' markers from the channel's uploaded video descriptions."""
     return {v["topic_id"] for v in list_series_videos(youtube, MARKER_RE, max_pages)}
+
+
+def pick_series(requested: str, data_dir: Path = DATA_DIR, topic_id: str | None = None) -> str:
+    """story / karakter as asked; karisik alternates with whatever the last upload was."""
+    if topic_id:
+        return "karakter" if topic_id.startswith("fk-") else "story"
+    if requested in SERIES:
+        return requested
+    formats = [u.get("format") for u in load_uploads(data_dir) if u.get("format") in ("story", "character")]
+    return "karakter" if not formats or formats[-1] == "story" else "story"
+
+
+def film_title_examples(data_dir: Path = DATA_DIR, limit: int = 5) -> list[str]:
+    """The old film-clip uploads were the channel's most watched; their titles guide the character series."""
+    from app.services.channel_audit import is_film_clip
+    try:
+        videos = json.loads((data_dir / "channel_audit.json").read_text(encoding="utf-8")).get("videos", [])
+    except (OSError, ValueError, AttributeError):
+        return []
+    titles = []
+    for v in sorted(videos, key=lambda v: -int(v.get("views") or 0)):
+        title = " ".join(re.sub(r"#\w+", "", str(v.get("title", ""))).replace("👑", "").split())
+        if is_film_clip(title) and title not in titles:
+            titles.append(title)
+    return titles[:limit]
 
 
 def pick_topic(topics: list[dict], published: set[str], topic_id: str | None = None) -> dict:
@@ -87,10 +123,10 @@ def load_generated_topics(data_dir: Path = DATA_DIR) -> list[dict]:
         return []
 
 
-def next_topic_id(topics: list[dict], published: set[str]) -> str:
+def next_topic_id(topics: list[dict], published: set[str], prefix: str = "zk") -> str:
     numbers = [int(i.split("-")[1]) for i in [t["id"] for t in topics] + list(published)
-               if re.fullmatch(r"zk-\d+", i)]
-    return f"zk-{max(numbers, default=0) + 1:03d}"
+               if re.fullmatch(rf"{prefix}-\d+", i)]
+    return f"{prefix}-{max(numbers, default=0) + 1:03d}"
 
 
 INVENT_PROMPT = """"Zirvenin Kanunu" Türkçe Shorts kanalı için daha önce işlenmemiş TEK yeni konu öner.
@@ -110,19 +146,42 @@ def invent_topic(used: list[str]) -> str:
     return topic
 
 
+INVENT_CHARACTER_PROMPT = """"Zirvenin Kanunu" Türkçe Shorts kanalının film/dizi karakteri serisi için TEK yeni konu öner.
+Seri, Türkiye'de çok izlenen film ve dizilerdeki ünlü karakterlerin bir kararını, kuralını veya psikolojisini yorumluyor.
+Konu tek cümlelik merak uyandıran bir soru olsun ve filmde/dizide gerçekten olan, iyi bilinen bir şeye dayansın.
+Daha önce işlenenler (bunları tekrar etme):
+{used}
+Sadece şu JSON'u döndür: {{"topic": "...", "character": "karakterin adı", "work": "film veya dizinin Türkçe adı"}}"""
+
+
+def invent_character_topic(used: list[str]) -> dict:
+    from app.services.original_script import _call_gemini, _extract_json
+    raw = _call_gemini(INVENT_CHARACTER_PROMPT.format(used="\n".join(f"- {u}" for u in used[-80:])))
+    data = _extract_json(raw) if raw else {}
+    topic, character = str(data.get("topic") or "").strip(), str(data.get("character") or "").strip()
+    if len(topic) < 15 or not character:
+        raise SystemExit("Karakter konuları bitti ve yeni konu üretilemedi (GEMINI_API_KEY gerekli).")
+    return {"topic": topic, "character": character, "work": str(data.get("work") or "").strip(), "names": [character]}
+
+
 def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | None = None,
-                 data_dir: Path = DATA_DIR, invent=invent_topic) -> dict:
-    """Next unused topic from the list; when the list runs out, a competitor gap idea or a Gemini topic."""
+                 data_dir: Path = DATA_DIR, invent=None, series: str = "story") -> dict:
+    """Next unused topic of the series; when its list runs out, a competitor gap idea (history only) or a Gemini topic."""
+    cfg = SERIES[series]
     generated = load_generated_topics(data_dir)
-    topics = load_topics() + generated
+    topics = load_topics(cfg["topics"]) + [t for t in generated if t["id"].startswith(cfg["prefix"] + "-")]
     try:
         return pick_topic(topics, published, topic_id)
     except SystemExit:
         if topic_id:
             raise
     used = [t["topic"] for t in topics]
-    idea = next((i for i in (dna or {}).get("topic_ideas", []) if i not in used), None)
-    topic = {"id": next_topic_id(topics, published), "topic": idea or invent(used),
+    ideas = (dna or {}).get("topic_ideas", []) if series == "story" else []
+    idea = next((i for i in ideas if i not in used), None)
+    invent = invent or (invent_topic if series == "story" else invent_character_topic)
+    fresh = idea or invent(used)
+    topic = {"id": next_topic_id(topics, published, cfg["prefix"]),
+             **(fresh if isinstance(fresh, dict) else {"topic": fresh}),
              "source": "rakip boşluğu" if idea else "gemini"}
     data_dir.mkdir(parents=True, exist_ok=True)
     (data_dir / GENERATED_TOPICS_FILE).write_text(
@@ -307,7 +366,7 @@ def render_final(segments: list[Path], audio: Path, subtitles_file: Path, durati
 # Production
 # ---------------------------------------------------------------------------
 
-def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line) -> dict:
+def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line, series: str = "story") -> dict:
     from app.services.subtitle_engine import generate_shorts_ass_subtitles
 
     stamp = int(time.time())
@@ -357,12 +416,13 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     full_title = f"{title} #shorts" if len(title) <= 92 else title[:100]
     seo = build_seo_pack(
         title, topic["topic"], " ".join(s["text"] for s in script["scenes"]), script,
-        BASE_TAGS, BASE_HASHTAGS, f"{MARKER_PREFIX}{topic['id']}",
+        SERIES[series]["tags"], SERIES[series]["hashtags"], f"{MARKER_PREFIX}{topic['id']}",
     )
     print(f"       SEO: {seo['seo_engine']} | {len(seo['tags'])} etiket | {len(seo['localizations'])} dil")
     meta = {
         "topic_id": topic["id"],
         "topic": topic["topic"],
+        "series": series,
         "script_provider": provider,
         "voice_engine": engines,
         "title": full_title,
@@ -443,7 +503,9 @@ def upload(youtube, result: dict, privacy: str) -> str:
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Original low-cost Shorts factory")
     parser.add_argument("--privacy", default="private", choices=["private", "unlisted", "public"])
-    parser.add_argument("--topic-id", default=None, help="Belirli bir konu (ör. zk-003)")
+    parser.add_argument("--topic-id", default=None, help="Belirli bir konu (ör. zk-003 veya fk-002)")
+    parser.add_argument("--series", default="story", choices=["story", "karakter", "karisik"],
+                        help="story = tarih hikâyesi, karakter = film/dizi karakteri, karisik = sırayla ikisi")
     parser.add_argument("--no-upload", action="store_true", help="Sadece üret, YouTube'a yükleme")
     args = parser.parse_args(argv)
 
@@ -466,16 +528,21 @@ def main(argv=None) -> int:
             dna = run_scan(youtube, OUTPUT_DIR, examples)
         except Exception as e:  # a stale analysis is better than a skipped upload
             print(f"ℹ️ Rakip analizi yenilenemedi: {str(e)[:200]}")
-    topic = choose_topic(published, args.topic_id, dna)
-    print(f"🎯 Konu {topic['id']}: {topic['topic']}")
+    series = pick_series(args.series, DATA_DIR, args.topic_id)
+    topic = choose_topic(published, args.topic_id, dna, series=series)
+    print(f"🎯 Seri {series} | konu {topic['id']}: {topic['topic']}")
 
-    script, provider = write_script(topic["topic"], style_examples=examples, rules=dna.get("our_rules"))
+    character = topic if series == "karakter" else None
+    if character:
+        examples = film_title_examples(DATA_DIR) or examples
+    script, provider = write_script(topic["topic"], style_examples=examples, rules=dna.get("our_rules"),
+                                    character=character)
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 
-    result = produce(topic, script, provider)
+    result = produce(topic, script, provider, series=series)
     if youtube is not None:
         video_id = upload(youtube, result, args.privacy)
-        record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], "story")
+        record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], SERIES[series]["format"])
     return 0
 
 

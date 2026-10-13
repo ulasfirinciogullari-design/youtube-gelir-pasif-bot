@@ -194,7 +194,7 @@ def test_story_prompt_carries_competitor_rules():
 
 
 def test_choose_topic_extends_the_list_when_it_runs_out(tmp_path, monkeypatch):
-    monkeypatch.setattr(original_factory, "load_topics", lambda: [{"id": "zk-001", "topic": "Eski konu"}])
+    monkeypatch.setattr(original_factory, "load_topics", lambda path=None: [{"id": "zk-001", "topic": "Eski konu"}])
     dna = {"topic_ideas": ["Eski konu", "Fatih neden gemileri karadan yürüttü?"]}
     topic = original_factory.choose_topic({"zk-001"}, dna=dna, data_dir=tmp_path, invent=lambda used: 1 / 0)
     assert topic == {"id": "zk-002", "topic": "Fatih neden gemileri karadan yürüttü?", "source": "rakip boşluğu"}

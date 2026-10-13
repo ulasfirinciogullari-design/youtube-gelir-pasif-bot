@@ -2,8 +2,13 @@
 Original Shorts script writer for Zirvenin Kanunu.
 
 Turns one topic from the topic queue into a short, factual, hook-first narration
-with a visual brief per scene. No film characters, quotes or footage: every
-scene is illustrated later with licensed stock video or a generated image.
+with a visual brief per scene. Every scene is illustrated later with licensed
+stock video or a generated image; no film footage is ever used.
+
+Two series share the writer: history stories (no fiction at all) and character
+commentary, which may talk about a film or series character but never quotes
+scenes at length and never names a character or actor in an image prompt, so
+the generated pictures cannot imitate an actor.
 
 Providers are tried cheapest first: Gemini (free tier) -> Anthropic-compatible
 endpoint -> OpenAI-compatible endpoint. The first script that passes validation
@@ -36,6 +41,31 @@ BANNED_REFERENCES = [
     "kolpacino", "çakır", "polat alemdar", "kurtlar vadisi", "patrick bateman",
 ]
 
+# Names that would make the image model draw a real actor. Character scripts are
+# scrubbed of these (plus the topic's own names) in every image prompt.
+LIKENESS_NAMES = [
+    "thomas shelby", "tommy shelby", "walter white", "heisenberg", "tyler durden", "joker", "batman",
+    "corleone", "tony montana", "jordan belfort", "morpheus", "maximus", "polat alemdar", "patrick bateman",
+    "cillian murphy", "bryan cranston", "brad pitt", "edward norton", "marlon brando", "al pacino",
+    "heath ledger", "joaquin phoenix", "christian bale", "leonardo dicaprio", "russell crowe",
+    "matthew mcconaughey", "keanu reeves", "anthony hopkins", "necati şaşmaz", "kenan imirzalıoğlu",
+]
+
+JSON_SPEC = """Sadece şu JSON'u döndür, başka hiçbir şey yazma:
+{{
+  "title": "Türkçe başlık + tek emoji",
+  "hook_text": "2-4 kelimelik kanca yazısı",
+  "scenes": [
+    {{"text": "Türkçe anlatım", "visual": "English image prompt", "stock_query": "english keywords", "source": "ai"}}
+  ],
+  "description": "2-3 cümlelik Türkçe açıklama",
+  "tags": ["8-12 Türkçe etiket"],
+  "pinned_comment": "İzleyiciyi tartışmaya çağıran tek bir soru",
+  "en_title": "English title, max 70 chars",
+  "en_description": "1-2 sentence English description"
+}}
+"""
+
 PROMPT_TEMPLATE = """Sen "Zirvenin Kanunu" adlı Türkçe YouTube Shorts kanalının baş senaristisin.
 Kanal; tarihten gerçek insanların gerilimli anlarını, dahice hamlelerini ve psikoloji deneylerini
 kısa, vurucu hikâyeler olarak anlatıyor.
@@ -64,20 +94,42 @@ Başlık ve kanca:
   Örnekler: "Şifreli mesajı bir bakışta çözüyor 🧐", "Ordusu kaçarken tek başına geri dönüyor 😳". #shorts yazma.
 - "hook_text": videonun ilk 2 saniyesinde ekranın üstünde duracak 2-4 kelimelik büyük yazı, emoji yok (ör. "KİMSE FARK ETMEDİ").
 {style_examples}
-Sadece şu JSON'u döndür, başka hiçbir şey yazma:
-{{
-  "title": "Türkçe başlık + tek emoji",
-  "hook_text": "2-4 kelimelik kanca yazısı",
-  "scenes": [
-    {{"text": "Türkçe anlatım", "visual": "English image prompt", "stock_query": "english keywords", "source": "ai"}}
-  ],
-  "description": "2-3 cümlelik Türkçe açıklama",
-  "tags": ["8-12 Türkçe etiket"],
-  "pinned_comment": "İzleyiciyi tartışmaya çağıran tek bir soru",
-  "en_title": "English title, max 70 chars",
-  "en_description": "1-2 sentence English description"
-}}
-"""
+""" + JSON_SPEC
+
+CHARACTER_PROMPT_TEMPLATE = """Sen "Zirvenin Kanunu" adlı Türkçe YouTube Shorts kanalının baş senaristisin.
+Bu seride ünlü film ve dizi karakterlerinin kararlarını, kurallarını ve psikolojisini kendi yorumumuzla anlatıyoruz.
+Film sahnesi, replik kaydı veya oyuncu görüntüsü kullanmıyoruz; videoyu bizim anlatımımız ve özgün görseller taşıyor.
+
+Konu: {topic}
+Karakter: {character} ({work})
+
+Bu konu için 25-40 saniyelik bir Shorts senaryosu yaz. Bir belgesel anlatıcısı gibi akıcı, kendinden emin
+ve vurucu konuş; cümleler birbirine bağlansın, kesik kesik olmasın.
+
+Anlatım kuralları:
+- İlk cümle en fazla 12 kelimelik, merak uyandıran bir kanca olsun ve karakterin adı ilk iki cümlede geçsin.
+- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 akıcı cümle.
+- Karakterin bilinen bir tavrını veya kararını anlat, sonra bunu gerçek bir psikoloji ilkesi, deney veya tarihten bir örnekle bağla.
+  Son cümle izleyiciye düşündürücü bir soru veya ders bıraksın.
+- Sahneyi baştan anlatma, yorumla: karakter ne yaptı, neden işe yaradı, gerçek hayatta ne anlama gelir.
+- Sadece filmde veya dizide gerçekten olan, iyi bilinen şeyleri anlat. Emin olmadığın sahne, sezon, sayı veya replik uydurma.
+- Replikleri birebir alıntılama; en fazla birkaç kelimelik meşhur bir ifadeyi anabilirsin, gerisini kendi cümlelerinle anlat.
+- Anlatımda emoji kullanma, metin seslendirilecek. "Sigma", "zengin olursun" gibi ifadeler yok.
+
+Görsel kuralları:
+- Her sahne için İngilizce görsel tarifi yaz. Görsel tarifinde karakter, oyuncu, film veya dizi adı ASLA geçmesin.
+- Kimsenin yüzü net görünmesin: arkadan çekim, silüet, gölgede kalan yüz, eller, nesneler, mekân ve dönem atmosferi kullan
+  (ör. "a man in a 1920s flat cap seen from behind on a foggy industrial street"). Dramatik ışık, sinematik kadraj.
+  Görselde yazı, logo, filigran olmasın.
+- "stock_query": stok video aramak için 2-4 İngilizce kelime (ör. "foggy industrial street", "whiskey glass closeup").
+- "source": sahne gerçek bir mekân veya nesneyle iyi anlatılıyorsa "stock", dönem veya sembolik bir sahne gerekiyorsa "ai".
+
+Başlık ve kanca:
+- "title": en fazla 60 karakter; karakterin adını içeren, merak uyandıran tek cümle ve sonunda tek bir uygun emoji.
+  Örnekler: "Thomas Shelby odaya girince neden susuyor? 🤫", "Walter White'ı korkutucu yapan tek alışkanlık 😳". #shorts yazma.
+- "hook_text": videonun ilk 2 saniyesinde ekranın üstünde duracak 2-4 kelimelik büyük yazı, emoji yok (ör. "ASLA ÖZÜR DİLEMEZ").
+{style_examples}
+""" + JSON_SPEC
 
 
 class ScriptError(RuntimeError):
@@ -90,7 +142,9 @@ class ProviderHTTPError(ScriptError):
         self.code = code
 
 
-def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str] | None = None) -> str:
+def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str] | None = None,
+                 character: dict | None = None) -> str:
+    """character = {"character": ..., "work": ...} switches to the character commentary series."""
     style = ""
     if examples:
         style = "- Kanalda en çok izlenen başlıklar bunlar; tarzını örnek al ama kopyalama:\n" + "".join(
@@ -98,8 +152,11 @@ def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str]
         )
     if rules:
         style += "- Rakip kanallardan ayrışmak için bu kurallara da uy:\n" + "".join(f"  - {r}\n" for r in rules[:8])
-    return PROMPT_TEMPLATE.format(
+    template = CHARACTER_PROMPT_TEMPLATE if character else PROMPT_TEMPLATE
+    return template.format(
         topic=topic.strip(),
+        character=(character or {}).get("character", ""),
+        work=(character or {}).get("work", ""),
         style_examples=style,
         min_words=MIN_WORDS,
         max_words=MAX_WORDS,
@@ -242,8 +299,19 @@ def _call_openai(prompt: str) -> str | None:
 PROVIDERS = [("gemini", _call_gemini), ("anthropic", _call_anthropic), ("openai", _call_openai)]
 
 
-def validate_script(script: dict) -> dict:
-    """Normalizes a model reply and raises ScriptError if it is not publishable."""
+def scrub_names(text: str, names) -> str:
+    """Replaces character/actor names in an image prompt so the model cannot draw a real actor."""
+    for name in sorted({n.strip() for n in names if n and n.strip()}, key=len, reverse=True):
+        text = re.sub(rf"(?<!\w){re.escape(name)}(?:'s)?(?!\w)", "a lone figure", text, flags=re.IGNORECASE)
+    return " ".join(text.split())
+
+
+def validate_script(script: dict, character: dict | None = None) -> dict:
+    """Normalizes a model reply and raises ScriptError if it is not publishable.
+
+    History scripts may not mention fiction at all. Character scripts may, but
+    their image prompts are scrubbed of every character and actor name."""
+    likeness = LIKENESS_NAMES + list((character or {}).get("names", [])) + [(character or {}).get("character", "")]
     if not isinstance(script, dict):
         raise ScriptError("script is not an object")
 
@@ -258,6 +326,8 @@ def validate_script(script: dict) -> dict:
             continue
         text = " ".join(EMOJI_RE.sub("", str(raw.get("text") or "")).split())
         visual = " ".join(str(raw.get("visual") or "").split())
+        if character:
+            visual = scrub_names(visual, likeness)
         if not text or not visual:
             continue
         if len(text) > MAX_SCENE_CHARS:
@@ -278,7 +348,7 @@ def validate_script(script: dict) -> dict:
 
     narration = " ".join([title] + [s["text"] for s in scenes]).lower()
     hits = [name for name in BANNED_REFERENCES if name in narration]
-    if hits:
+    if hits and not character:
         raise ScriptError(f"script references fiction/film: {', '.join(hits)}")
 
     hook = " ".join(re.sub(r"[{}\\]", "", EMOJI_RE.sub("", str(script.get("hook_text") or ""))).split())
@@ -299,9 +369,10 @@ def validate_script(script: dict) -> dict:
 
 
 def write_script(topic: str, providers=None, attempts_per_provider: int = 2,
-                 style_examples: list[str] | None = None, rules: list[str] | None = None) -> tuple[dict, str]:
+                 style_examples: list[str] | None = None, rules: list[str] | None = None,
+                 character: dict | None = None) -> tuple[dict, str]:
     """Returns (validated_script, provider_name). Raises ScriptError if all providers fail."""
-    prompt = build_prompt(topic, style_examples, rules)
+    prompt = build_prompt(topic, style_examples, rules, character)
     errors = []
     for name, call in providers or PROVIDERS:
         for attempt in range(1, attempts_per_provider + 1):
@@ -309,7 +380,7 @@ def write_script(topic: str, providers=None, attempts_per_provider: int = 2,
                 raw = call(prompt)
                 if raw is None:
                     break  # provider not configured
-                return validate_script(_extract_json(raw)), name
+                return validate_script(_extract_json(raw), character), name
             except (ScriptError, ValueError, KeyError, IndexError, urllib.error.URLError, TimeoutError) as e:
                 errors.append(f"{name}#{attempt}: {e}")
                 print(f"ℹ️ Senaryo denemesi reddedildi ({name} #{attempt}): {e}")

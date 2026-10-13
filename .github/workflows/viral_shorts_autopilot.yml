@@ -26,15 +26,17 @@ on:
           - 'rapor'
           - 'temizlik'
       format:
-        description: 'Format (story = özgün tarih hikâyesi, comedy = komik dublaj)'
+        description: 'Format (karisik = tarih ve film karakteri sırayla, story = tarih hikâyesi, karakter = film/dizi karakteri, comedy = komik dublaj)'
         required: true
-        default: 'story'
+        default: 'karisik'
         type: choice
         options:
+          - 'karisik'
           - 'story'
+          - 'karakter'
           - 'comedy'
       topic_id:
-        description: 'Sadece story formatında: belirli konu (boş = sıradaki, ör. zk-003)'
+        description: 'Belirli konu (boş = sıradaki, ör. zk-003 veya fk-002)'
         required: false
         default: ''
         type: string
@@ -112,7 +114,7 @@ jobs:
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           PRIVACY: ${{ github.event_name == 'schedule' && (vars.PUBLISH_PRIVACY || 'public') || github.event.inputs.privacy }}
           TOPIC_ID: ${{ github.event.inputs.topic_id }}
-          CONTENT_FORMAT: ${{ github.event.inputs.format || vars.CONTENT_FORMAT || 'story' }}
+          CONTENT_FORMAT: ${{ github.event.inputs.format || vars.CONTENT_FORMAT || 'karisik' }}
           TASK: ${{ github.event.inputs.task || 'video' }}
           VIDEO_IDS: ${{ github.event.inputs.video_ids }}
           CLEANUP_ACTION: ${{ github.event.inputs.cleanup_action || 'private' }}
@@ -127,12 +129,12 @@ jobs:
             exit $?
           fi
           echo "⚡ Format: $CONTENT_FORMAT | Görünürlük: $PRIVACY ${TOPIC_ID:+| Konu: $TOPIC_ID}"
-          if [ "$CONTENT_FORMAT" = "story" ]; then
-            ARGS="--privacy $PRIVACY"
+          if [ "$CONTENT_FORMAT" = "comedy" ]; then
+            python comedy_factory.py --privacy "$PRIVACY"
+          else
+            ARGS="--privacy $PRIVACY --series $CONTENT_FORMAT"
             if [ -n "$TOPIC_ID" ]; then ARGS="$ARGS --topic-id $TOPIC_ID"; fi
             python original_factory.py $ARGS
-          else
-            python comedy_factory.py --privacy "$PRIVACY"
           fi
 
       - name: 💾 Kanal Hafızasını Yedekle
