@@ -22,20 +22,23 @@ COMEDY_QUERIES = [
     "funny cat", "cat", "kitten", "funny dog", "dog", "puppy", "goat", "parrot", "duck", "hamster",
     "squirrel", "raccoon", "cow", "horse", "monkey", "penguin", "sheep", "chicken", "llama", "rabbit",
 ]
-MIN_CLIP_SECONDS = 7
+# The first real run took a 9 s clip; five voiced lines ran to 14.8 s and the clip looped.
+MIN_CLIP_SECONDS = 12
 MAX_CLIP_SECONDS = 35
 MAX_PREVIEW_BYTES = 18 * 1024 * 1024
 MIN_LINES, MAX_LINES = 2, 8
 MAX_LINE_WORDS = 14
 MAX_SPEAKERS = 3
+WORDS_PER_SECOND = 2.0  # budget given to the model; ElevenLabs Turkish reads ~2.5 words/s plus pauses
+MAX_WORDS_SLACK = 1.15  # validation allows a little overshoot before asking again
 
 PROMPT_TEMPLATE = """Türkçe bir YouTube Shorts komik dublaj kanalı için yazıyorsun. Ekteki {duration:.1f} saniyelik
 klibi izle ve klipteki hayvan(lar)ın iç sesini komik Türkçe repliklerle yaz.
 
 Kurallar:
 - Klipte gerçekten olan hareketlere göre yaz. Her repliğin "start" değeri, o hareketin başladığı saniye olsun.
-- {min_lines}-{max_lines} replik, her biri en fazla 12 kelime. Konuşma hızı saniyede yaklaşık 2,5 kelime;
-  replikler klibe sığsın ve üst üste binmesin.
+- {min_lines}-{max_lines} replik, her biri en fazla 12 kelime, hepsi toplam en fazla {max_words} kelime.
+  Replikler klibin içinde bitsin ve üst üste binmesin; son replik en geç {last_start:.1f}. saniyede başlasın.
 - Türk internet mizahı: ev hali, misafir, diyet, pazartesi, anne-baba, iş yeri gibi herkesin bildiği durumlar.
   En komik replik en sonda olsun.
 - Küfür, hakaret, siyaset, din ve cinsellik yok. Gerçek kişilerden, markalardan, film ve dizilerden bahsetme.
@@ -104,8 +107,19 @@ def download_clip(hit: dict, dest_dir: Path) -> tuple[Path, Path]:
     return preview, render
 
 
+def word_budget(duration: float) -> int:
+    return max(8, int(duration * WORDS_PER_SECOND))
+
+
+def line_budget(duration: float) -> int:
+    return max(MIN_LINES, min(MAX_LINES, int(duration // 2.5)))
+
+
 def build_prompt(duration: float) -> str:
-    return PROMPT_TEMPLATE.format(duration=duration, min_lines=MIN_LINES, max_lines=MAX_LINES)
+    return PROMPT_TEMPLATE.format(
+        duration=duration, min_lines=MIN_LINES, max_lines=line_budget(duration),
+        max_words=word_budget(duration), last_start=max(0.0, duration - 3.0),
+    )
 
 
 def _call_gemini_video(prompt: str, video: Path) -> str:
@@ -159,6 +173,9 @@ def validate_comedy_script(script: dict, duration: float) -> dict:
         raise ScriptError(f"line count {len(lines)} out of range")
     if len({line["speaker"] for line in lines}) > MAX_SPEAKERS:
         raise ScriptError("too many speakers")
+    words = sum(len(line["text"].split()) for line in lines)
+    if words > word_budget(duration) * MAX_WORDS_SLACK:
+        raise ScriptError(f"{words} words do not fit a {duration:.1f}s clip")
 
     spoken = " ".join([title] + [line["text"] for line in lines]).lower()
     hits = [name for name in BANNED_REFERENCES if name in spoken]

@@ -28,7 +28,7 @@ VALID = {
 
 
 def test_validate_comedy_script_sorts_clamps_and_cleans():
-    script = validate_comedy_script(json.loads(json.dumps(VALID)), duration=6.0)
+    script = validate_comedy_script(json.loads(json.dumps(VALID)), duration=12.0)
     assert script["title"] == "Misafir sevmeyen kedinin iç sesi 😂"
     assert [line["start"] for line in script["lines"]] == [0.4, 3.0, 5.5]
     assert script["lines"][1]["speaker"] == "kedi" and "🙄" not in script["lines"][1]["text"]
@@ -36,33 +36,43 @@ def test_validate_comedy_script_sorts_clamps_and_cleans():
 
     raw = json.loads(json.dumps(VALID))
     raw["lines"][2]["start"] = 30
-    assert validate_comedy_script(raw, duration=6.0)["lines"][-1]["start"] == 5.5
+    assert validate_comedy_script(raw, duration=12.0)["lines"][-1]["start"] == 11.5
 
 
 def test_validate_comedy_script_rejections():
     raw = json.loads(json.dumps(VALID))
     raw["usable"] = False
     with pytest.raises(ClipUnusable):
-        validate_comedy_script(raw, 6.0)
+        validate_comedy_script(raw, 12.0)
 
     raw = json.loads(json.dumps(VALID))
     raw["lines"] = raw["lines"][:1]
     with pytest.raises(ScriptError, match="line count"):
-        validate_comedy_script(raw, 6.0)
+        validate_comedy_script(raw, 12.0)
 
     raw = json.loads(json.dumps(VALID))
     raw["lines"][0]["text"] = "Thomas Shelby gibi bakıyorum şu an."
     with pytest.raises(ScriptError, match="shelby"):
-        validate_comedy_script(raw, 6.0)
+        validate_comedy_script(raw, 12.0)
+
+
+def test_script_must_fit_the_clip():
+    raw = json.loads(json.dumps(VALID))
+    raw["lines"].append({"start": 6.0, "speaker": "kedi", "text": "Bir de üstüne mama kabını boş bırakmışlar, ben bu evde nasıl yaşayayım."})
+    validate_comedy_script(json.loads(json.dumps(raw)), 20.0)
+    with pytest.raises(ScriptError, match="do not fit"):
+        validate_comedy_script(raw, 12.0)
+    prompt = comedy_dub.build_prompt(12.0)
+    assert "toplam en fazla 24 kelime" in prompt and "2-4 replik" in prompt and "9.0. saniyede" in prompt
 
 
 def test_write_comedy_script_retries_then_gives_up(tmp_path):
     preview = tmp_path / "p.mp4"
     preview.write_bytes(b"x")
     replies = iter(["not json", json.dumps(VALID, ensure_ascii=False)])
-    assert write_comedy_script(preview, 6.0, call=lambda p, v: next(replies))["lines"]
+    assert write_comedy_script(preview, 12.0, call=lambda p, v: next(replies))["lines"]
     with pytest.raises(ScriptError):
-        write_comedy_script(preview, 6.0, call=lambda p, v: "nope")
+        write_comedy_script(preview, 12.0, call=lambda p, v: "nope")
 
 
 def test_candidate_clips_skips_used_and_wrong_length():
@@ -110,7 +120,7 @@ def test_produce_comedy_offline(tmp_path, monkeypatch):
         return out
 
     monkeypatch.setattr(comedy_factory, "OUTPUT_DIR", tmp_path)
-    script = validate_comedy_script(json.loads(json.dumps(VALID)), 6.0)
+    script = validate_comedy_script(json.loads(json.dumps(VALID)), 12.0)
     hit = {"id": 777, "user": "someone", "pageURL": "https://pixabay.com/videos/x-777/"}
     result = comedy_factory.produce_comedy(hit, "cat", script, clip, synthesize=fake_tts)
 
