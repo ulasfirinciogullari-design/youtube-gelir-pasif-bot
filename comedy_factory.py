@@ -151,7 +151,7 @@ def produce_comedy(hit: dict, query: str, script: dict, clip: Path, synthesize=s
         sentences=events, output_path=subs, font_name="Arial Black", font_size=70,
         highlight_color="&H0000D7FF", outline_width=8, margin_v=470,
     )
-    story.add_hook_overlay(subs, script["hook_text"])
+    story.add_hook_overlay(subs, script["hook_text"], total)
 
     print("[3/4] 🎵 Ses miksajı")
     audio = mix_dub(clip, files, placed, total, work_dir / "soundtrack.m4a")

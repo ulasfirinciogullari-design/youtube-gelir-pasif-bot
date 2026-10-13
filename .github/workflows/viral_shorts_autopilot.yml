@@ -36,17 +36,18 @@ on:
           - 'ucuz'
           - 'kaliteli'
       format:
-        description: 'Format (karisik = tarih ve film karakteri sırayla, story = tarih hikâyesi, karakter = film/dizi karakteri, comedy = komik dublaj)'
+        description: 'Format (karisik = merak, karakter ve tarih sırayla, merak = gerçek görüntülü bilgi videosu, story = tarih hikâyesi, karakter = film/dizi karakteri, comedy = komik dublaj)'
         required: true
         default: 'karisik'
         type: choice
         options:
           - 'karisik'
+          - 'merak'
           - 'story'
           - 'karakter'
           - 'comedy'
       topic_id:
-        description: 'Belirli konu (boş = sıradaki, ör. zk-003 veya fk-002)'
+        description: 'Belirli konu (boş = sıradaki, ör. mk-001, zk-003 veya fk-002)'
         required: false
         default: ''
         type: string

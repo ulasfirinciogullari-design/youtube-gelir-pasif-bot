@@ -130,8 +130,23 @@ film müziği veya oyuncu görüntüsü kullanılmaz.
   adları silinir ve yüzler silüet/arkadan çekim olarak istenir, böylece Flux
   gerçek bir oyuncuyu çizmez.
 - Başlık örnekleri kanalın eski film kliplerinin en çok izlenen başlıklarından alınır.
+
+### Merak serisi (gerçek görüntü)
+
+`--series merak`, Ulaş'ın örnek gösterdiği Shorts videolarının tarzında
+(Keşif Vakti, Full Asfalt) bilim, hayvanlar, insan vücudu ve psikoloji
+sorularını enerjik bir anlatımla ve konuyla birebir eşleşen ücretsiz stok
+videolarla anlatır. Yapay görsel yalnızca bir sahne için hiç stok video
+bulunamazsa kullanılır.
+
+- Konular: `app/services/merak_topics_tr.json`, kodlar `mk-001` gibi; her
+  konunun `stock_hint` alanı, sahne araması boş dönerse kullanılan genel aramadır.
+  Liste bitince Gemini yeni konu üretir.
+- Kurgu: en uzun çekim 1,6 sn (diğer serilerde 2,5 sn, çünkü her çekim ücretli bir görsel).
+- Bütün serilerde: kanca sorusu video boyunca ekranın üstünde beyaz, kalın
+  kenarlı yazı olarak durur; altyazı alt üçte birde; müzik sesi %9.
 - `--series karisik` (zamanlanmış çalışmaların varsayılanı) son yüklemeye
-  bakıp tarih hikâyesi ile karakter videosunu sırayla üretir.
+  bakıp merak, karakter ve tarih videolarını sırayla üretir.
 
 ### Komik dublaj formatı
 
@@ -146,7 +161,7 @@ planlı 9:16 kadraja, altyazı ve kanca yazısıyla birlikte yerleştirir.
   isteğe bağlı `ELEVENLABS_API_KEY`.
 - Klip ya da senaryo çıkmazsa o çalışma özgün hikâye formatına döner.
 - Format, workflow girdisi `format` ile (elle çalıştırma) veya
-  `CONTENT_FORMAT` repo değişkeniyle (`karisik` / `story` / `karakter` / `comedy`)
+  `CONTENT_FORMAT` repo değişkeniyle (`karisik` / `merak` / `story` / `karakter` / `comedy`)
   seçilir; varsayılan `karisik`.
 
 Yerelde yüklemeden denemek için: `python comedy_factory.py --no-upload`

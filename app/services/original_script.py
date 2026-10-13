@@ -133,6 +133,38 @@ Başlık ve kanca:
 {style_examples}
 """ + JSON_SPEC
 
+MERAK_PROMPT_TEMPLATE = """Sen "Zirvenin Kanunu" adlı Türkçe YouTube Shorts kanalının baş senaristisin.
+Bu seride bilim, hayvanlar, insan vücudu ve insan psikolojisi hakkında merak edilen soruları kısa, enerjik ve şaşırtıcı
+bir bilgi videosu olarak anlatıyoruz (Keşif Vakti, Full Asfalt gibi kanalların tarzı). Görüntüler gerçek stok videolardan gelecek.
+
+Konu: {topic}
+Görüntü ipucu: {stock_hint}
+
+Bu konu için 25-40 saniyelik bir Shorts senaryosu yaz. Merakı canlı tutan, enerjik ve samimi bir anlatıcı gibi konuş;
+cümleler akıcı olsun, ders anlatır gibi değil arkadaşına şaşırtıcı bir şey anlatır gibi.
+
+Anlatım kuralları:
+- İlk cümle en fazla 12 kelimelik, şaşırtıcı bir iddia veya soru olsun (ör. "Bu kedi bilim insanlarını 200 yıl şaşırttı.").
+  "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
+- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
+- Akış: kanca, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran bir örnek veya sayı, akılda kalan bir final cümlesi.
+- Sadece bilimsel olarak doğrulanmış bilgileri kullan. Tartışmalı bir konuysa bunu açıkça söyle. Emin olmadığın sayı yazma.
+- Anlatımda emoji kullanma, metin seslendirilecek.
+
+Görsel kuralları:
+- Her sahne gerçek bir stok videoyla gösterilecek. "stock_query": Pixabay'de kesin bulunacak 2-3 basit İngilizce kelime
+  (ör. "cat jumping", "lightning storm", "person yawning"). Soyut kavram yazma; kameraya çekilebilecek somut bir şey yaz.
+- "visual": stok video bulunamazsa üretilecek fotogerçekçi İngilizce görsel tarifi (somut nesne, mekân, ışık). Yazı, logo yok.
+- "source": her sahnede "stock".
+
+Başlık ve kanca:
+- "title": en fazla 60 karakter; merak uyandıran soru veya şaşırtıcı iddia ve sonunda tek bir uygun emoji.
+  Örnekler: "Kediler fizik kurallarına nasıl karşı geliyor? 🐱", "Bu yüzden uçak camları yuvarlak ✈️". #shorts yazma.
+- "hook_text": video boyunca ekranın üstünde duracak 3-7 kelimelik büyük yazı, emoji yok
+  (ör. "KEDİLER NEDEN HEP AYAKTA DÜŞER?").
+{style_examples}
+""" + JSON_SPEC
+
 
 class ScriptError(RuntimeError):
     pass
@@ -154,8 +186,12 @@ def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str]
         )
     if rules:
         style += "- Rakip kanallardan ayrışmak için bu kurallara da uy:\n" + "".join(f"  - {r}\n" for r in rules[:8])
-    template = CHARACTER_PROMPT_TEMPLATE if character else PROMPT_TEMPLATE
+    if character and character.get("stock_hint") is not None:
+        template = MERAK_PROMPT_TEMPLATE
+    else:
+        template = CHARACTER_PROMPT_TEMPLATE if character else PROMPT_TEMPLATE
     return template.format(
+        stock_hint=(character or {}).get("stock_hint", ""),
         topic=topic.strip(),
         character=(character or {}).get("character", ""),
         work=(character or {}).get("work", ""),
@@ -309,6 +345,10 @@ def scrub_names(text: str, names) -> str:
     return " ".join(text.split())
 
 
+def _is_character(topic: dict | None) -> bool:
+    return bool(topic) and bool(topic.get("character"))
+
+
 def validate_script(script: dict, character: dict | None = None) -> dict:
     """Normalizes a model reply and raises ScriptError if it is not publishable.
 
@@ -329,7 +369,7 @@ def validate_script(script: dict, character: dict | None = None) -> dict:
             continue
         text = " ".join(EMOJI_RE.sub("", str(raw.get("text") or "")).split())
         visual = " ".join(str(raw.get("visual") or "").split())
-        if character:
+        if _is_character(character):
             visual = scrub_names(visual, likeness)
         if not text or not visual:
             continue
@@ -351,7 +391,7 @@ def validate_script(script: dict, character: dict | None = None) -> dict:
 
     narration = " ".join([title] + [s["text"] for s in scenes]).lower()
     hits = [name for name in BANNED_REFERENCES if name in narration]
-    if hits and not character:
+    if hits and not _is_character(character):
         raise ScriptError(f"script references fiction/film: {', '.join(hits)}")
 
     hook = " ".join(re.sub(r"[{}\\]", "", EMOJI_RE.sub("", str(script.get("hook_text") or ""))).split())

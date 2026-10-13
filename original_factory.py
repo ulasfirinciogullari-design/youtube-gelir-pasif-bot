@@ -5,11 +5,12 @@ One run = one original Short, end to end:
 topic queue -> LLM script -> free edge-tts narration -> Pexels/Pixabay stock / Flux images
 -> kinetic subtitles + sound design -> 1080x1920 60 FPS render -> YouTube upload.
 
-Two series: history stories (zk-NNN) and film/series character commentary
-(fk-NNN). Neither uses film footage; character videos are our own narration
-over stock video and faceless generated images. "karisik" alternates the two.
+Three series: curiosity facts over real stock footage (mk-NNN, the style of
+the reference Shorts Ulaş picked), history stories (zk-NNN) and film/series
+character commentary (fk-NNN). None uses film footage; character videos are our
+own narration over faceless generated images. "karisik" rotates the three.
 Typical paid spend is a few Flux images (~$0.003 each) plus one short LLM call;
-rendering runs on free GitHub Actions.
+curiosity videos use free stock footage only. Rendering runs on free GitHub Actions.
 
 The channel itself is the queue state: every upload carries "Seri: <topic id>"
 in its description, and the next run picks the first topic not seen there.
@@ -40,6 +41,7 @@ from app.services.original_visuals import build_visual_track
 OUTPUT_DIR = BASE_DIR / "output"
 TOPICS_FILE = BASE_DIR / "app" / "services" / "original_topics_tr.json"
 CHARACTER_TOPICS_FILE = BASE_DIR / "app" / "services" / "character_topics_tr.json"
+MERAK_TOPICS_FILE = BASE_DIR / "app" / "services" / "merak_topics_tr.json"
 # The workflow checks out the channel-data branch here: metrics, competitor DNA, generated topics, history.
 DATA_DIR = BASE_DIR / "channel-data"
 GENERATED_TOPICS_FILE = "generated_topics.json"
@@ -55,7 +57,13 @@ MARKER_PREFIX = "Seri: "
 MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3,})")
 BASE_TAGS = ["shorts", "psikoloji", "tarih", "güç", "karar verme", "zirvenin kanunu"]
 BASE_HASHTAGS = "#shorts #psikoloji #tarih #keşfet"
+# cut = longest shot in seconds. The reference Shorts cut every ~1.5 s; the AI-image series stay at 2.5 s
+# because every extra shot is one more paid image.
 SERIES = {
+    "merak": {"topics": MERAK_TOPICS_FILE, "prefix": "mk", "format": "merak",
+              "tags": ["shorts", "bilim", "merak", "bilgi", "ilginç bilgiler", "zirvenin kanunu"],
+              "hashtags": "#shorts #bilim #merak #keşfet", "ai_only": False, "stock_only": True, "cut": 1.6,
+              "style": "photorealistic documentary photograph, natural light, sharp detail, true to life colors"},
     "story": {"topics": TOPICS_FILE, "prefix": "zk", "format": "story",
               "tags": BASE_TAGS, "hashtags": BASE_HASHTAGS, "ai_only": False,
               "style": "cinematic historical drama film still, 35mm, dramatic chiaroscuro lighting, rich textures, "
@@ -66,7 +74,9 @@ SERIES = {
                  "style": "cinematic crime drama film still, anamorphic 35mm, moody low-key lighting, volumetric haze, "
                           "teal and amber color grade, photorealistic, highly detailed, faces turned away or in shadow"},
 }
-HOOK_SECONDS = 2.2
+ROTATION = ["merak", "karakter", "story"]  # order "karisik" walks through
+MUSIC_VOLUME = 0.09  # the reference Shorts keep music well under the voice
+SUBTITLE_MARGIN_V = 620  # lower third, above the Shorts title/channel overlay
 voice_usage = {"elevenlabs": 0, "edge-tts": 0}
 
 
@@ -85,13 +95,17 @@ def published_topic_ids(youtube, max_pages: int = 10) -> set[str]:
 
 
 def pick_series(requested: str, data_dir: Path = DATA_DIR, topic_id: str | None = None) -> str:
-    """story / karakter as asked; karisik alternates with whatever the last upload was."""
+    """The series asked for; karisik takes the one after the last upload's in ROTATION."""
     if topic_id:
-        return "karakter" if topic_id.startswith("fk-") else "story"
+        prefix = topic_id.split("-")[0]
+        return next((name for name, cfg in SERIES.items() if cfg["prefix"] == prefix), "story")
     if requested in SERIES:
         return requested
-    formats = [u.get("format") for u in load_uploads(data_dir) if u.get("format") in ("story", "character")]
-    return "karakter" if not formats or formats[-1] == "story" else "story"
+    by_format = {SERIES[name]["format"]: name for name in ROTATION}
+    last = [by_format[u["format"]] for u in load_uploads(data_dir) if u.get("format") in by_format]
+    if not last:
+        return ROTATION[0]
+    return ROTATION[(ROTATION.index(last[-1]) + 1) % len(ROTATION)]
 
 
 def film_title_examples(data_dir: Path = DATA_DIR, limit: int = 5) -> list[str]:
@@ -172,6 +186,28 @@ def invent_character_topic(used: list[str]) -> dict:
     return {"topic": topic, "character": character, "work": str(data.get("work") or "").strip(), "names": [character]}
 
 
+INVENT_MERAK_PROMPT = """"Zirvenin Kanunu" Türkçe Shorts kanalının merak serisi için TEK yeni konu öner.
+Seri bilim, hayvanlar, insan vücudu, günlük hayattaki nesneler ve insan psikolojisi hakkında herkesin merak ettiği
+soruları gerçek stok videolarla anlatıyor. Konu tek cümlelik bir soru olsun, cevabı bilimsel olarak net bilinsin
+ve kameraya çekilebilecek somut bir şeyle ilgili olsun (soyut kavram değil).
+Daha önce işlenenler (bunları ve benzerlerini tekrar etme):
+{used}
+Sadece şu JSON'u döndür: {{"topic": "...", "stock_hint": "Pixabay'de bulunacak 2-3 basit İngilizce kelime"}}"""
+
+
+def invent_merak_topic(used: list[str]) -> dict:
+    from app.services.original_script import _call_gemini, _extract_json
+    raw = _call_gemini(INVENT_MERAK_PROMPT.format(used="\n".join(f"- {u}" for u in used[-80:])))
+    data = _extract_json(raw) if raw else {}
+    topic = str(data.get("topic") or "").strip()
+    if len(topic) < 15:
+        raise SystemExit("Merak konuları bitti ve yeni konu üretilemedi (GEMINI_API_KEY gerekli).")
+    return {"topic": topic, "stock_hint": " ".join(str(data.get("stock_hint") or "").split())[:60]}
+
+
+INVENTORS = {"story": "invent_topic", "karakter": "invent_character_topic", "merak": "invent_merak_topic"}
+
+
 def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | None = None,
                  data_dir: Path = DATA_DIR, invent=None, series: str = "story") -> dict:
     """Next unused topic of the series; when its list runs out, a competitor gap idea (history only) or a Gemini topic."""
@@ -186,7 +222,7 @@ def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | N
     used = [t["topic"] for t in topics]
     ideas = (dna or {}).get("topic_ideas", []) if series == "story" else []
     idea = next((i for i in ideas if i not in used), None)
-    invent = invent or (invent_topic if series == "story" else invent_character_topic)
+    invent = invent or globals()[INVENTORS[series]]
     fresh = idea or invent(used)
     topic = {"id": next_topic_id(topics, published, cfg["prefix"]),
              **(fresh if isinstance(fresh, dict) else {"topic": fresh}),
@@ -313,7 +349,7 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
 
     if music and music.exists():
         fade = max(0.5, duration - 1.5)
-        add(music, f"volume=0.11,afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m", loop=True)
+        add(music, f"volume={MUSIC_VOLUME},afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m", loop=True)
     impact, whoosh, riser = sfx("impact"), sfx("whoosh"), sfx("riser")
     if impact:
         add(impact, "volume=0.5", "imp")
@@ -335,8 +371,9 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
     return out
 
 
-def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float = HOOK_SECONDS) -> None:
-    """Big hook line at the top of the frame for the first seconds, popping in."""
+def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float) -> None:
+    """The hook question stays at the top of the frame for the whole video, like a title banner:
+    every reference Short does this, so a viewer who joins mid-video still knows the question."""
     from app.services.subtitle_engine import _format_ass_time, _upper_tr
 
     text = re.sub(r"[{}\\]", "", hook_text or "").strip()
@@ -344,8 +381,8 @@ def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float = HOOK_SECON
         return
     content = ass_path.read_text(encoding="utf-8")
     style = (
-        "Style: HookStyle,Arial Black,96,&H0000D7FF,&H000000FF,&H00000000,&H90000000,"
-        "-1,0,0,0,100,100,2,0,1,9,3,8,70,70,290,1\n"
+        "Style: HookStyle,Arial Black,78,&H00FFFFFF,&H000000FF,&H00000000,&H90000000,"
+        "-1,0,0,0,100,100,1,0,1,8,3,8,60,60,250,1\n"
     )
     content = content.replace("\n[Events]", f"{style}\n[Events]", 1)
     pop = r"{\fad(0,250)\fscx125\fscy125\t(0,180,\fscx100\fscy100)}"
@@ -400,15 +437,18 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         scene_cuts.append(round(t, 3))
 
     print(f"[2/4] 🎞️ Görseller ({duration:.1f}s)")
-    visuals = build_visual_track(scenes, durations, work_dir, SERIES[series]["style"], SERIES[series]["ai_only"])
+    cfg = SERIES[series]
+    visuals = build_visual_track(scenes, durations, work_dir, cfg["style"], cfg["ai_only"],
+                                 stock_only=cfg.get("stock_only", False), segment_seconds=cfg.get("cut", 2.5),
+                                 fallback_query=topic.get("stock_hint", ""))
 
     print("[3/4] 🎵 Ses tasarımı ve altyazı")
     subs = work_dir / "subtitles.ass"
     generate_shorts_ass_subtitles(
         sentences=subtitle_events, output_path=subs, font_name="Arial Black", font_size=74,
-        highlight_color="&H0000D7FF", outline_width=8, margin_v=860,
+        highlight_color="&H0000D7FF", outline_width=8, margin_v=SUBTITLE_MARGIN_V,
     )
-    add_hook_overlay(subs, script.get("hook_text", ""))
+    add_hook_overlay(subs, script.get("hook_text", ""), duration)
     audio = mix_soundtrack(voice, work_dir / "soundtrack.m4a", duration, scene_cuts, pick_music(topic["id"], series))
 
     print("[4/4] 🚀 Render")
@@ -521,8 +561,9 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Original low-cost Shorts factory")
     parser.add_argument("--privacy", default="private", choices=["private", "unlisted", "public"])
     parser.add_argument("--topic-id", default=None, help="Belirli bir konu (ör. zk-003 veya fk-002)")
-    parser.add_argument("--series", default="story", choices=["story", "karakter", "karisik"],
-                        help="story = tarih hikâyesi, karakter = film/dizi karakteri, karisik = sırayla ikisi")
+    parser.add_argument("--series", default="story", choices=[*SERIES, "karisik"],
+                        help="merak = gerçek görüntülü bilgi, story = tarih hikâyesi, karakter = film/dizi karakteri, "
+                             "karisik = sırayla üçü")
     parser.add_argument("--no-upload", action="store_true", help="Sadece üret, YouTube'a yükleme")
     args = parser.parse_args(argv)
 
@@ -549,11 +590,15 @@ def main(argv=None) -> int:
     topic = choose_topic(published, args.topic_id, dna, series=series)
     print(f"🎯 Seri {series} | konu {topic['id']}: {topic['topic']}")
 
-    character = topic if series == "karakter" else None
-    if character:
+    rules = dna.get("our_rules")
+    character = None
+    if series == "karakter":
+        character = topic
         examples = film_title_examples(DATA_DIR) or examples
-    script, provider = write_script(topic["topic"], style_examples=examples, rules=dna.get("our_rules"),
-                                    character=character)
+    elif series == "merak":
+        # The channel's top titles and competitor rules come from history/film videos; the prompt has its own examples.
+        character, examples, rules = {**topic, "stock_hint": topic.get("stock_hint", "")}, [], None
+    script, provider = write_script(topic["topic"], style_examples=examples, rules=rules, character=character)
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 
     result = produce(topic, script, provider, series=series)

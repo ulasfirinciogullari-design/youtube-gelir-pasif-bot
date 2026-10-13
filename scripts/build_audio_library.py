@@ -26,6 +26,12 @@ API = "https://api.elevenlabs.io/v1"
 MUSIC_SECONDS = 50  # longer than any Short; the mix loops and fades it
 
 MUSIC = {
+    "merak_1": "Instrumental light curious electronic background for a fun science fact video: plucky synth arpeggio, "
+               "soft claps, gentle bass, playful and bright, low energy so a voice stays on top, no vocals, 110 bpm",
+    "merak_2": "Instrumental intriguing discovery underscore: ticking light percussion, airy pads, soft marimba motif, "
+               "slight suspense that opens into wonder, no vocals, 100 bpm",
+    "merak_3": "Instrumental upbeat light pizzicato strings and glockenspiel, quirky and cheerful, sparse arrangement "
+               "for narration, no vocals, 115 bpm",
     "story_1": "Instrumental cinematic documentary underscore for a true historical story: low cello ostinato, "
                "soft taiko pulse, distant wordless choir pad, slowly building tension, no vocals, 85 bpm",
     "story_2": "Instrumental mysterious ancient world ambience: breathy duduk melody, frame drum, deep drones, "

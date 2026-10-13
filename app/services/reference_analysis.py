@@ -59,10 +59,11 @@ Bu videoların ortak özelliklerinden bizim için somut bir üretim şartnamesi 
 }}"""
 
 OUR_PIPELINE = (
-    "LLM senaryo (25-40 sn, 5-8 sahne, belgesel anlatıcı), ElevenLabs Türkçe erkek sesi, sahne başına 2,5 sn'lik "
-    "parçalar halinde Pixabay stok video veya Flux AI görseli + yavaş zoom/pan, kelime kelime sarı vurgulu kalın beyaz "
-    "altyazı ekranın alt-ortasında, ilk 2 sn ekranın üstünde 2-4 kelimelik kanca yazısı, arkada 4 parçalık genel bir "
-    "müzik kütüphanesi ve sentetik whoosh/vuruş efektleri. Karakter serisinde oyuncu yüzü ve film sahnesi yok."
+    "LLM senaryo (25-40 sn, 5-8 sahne), ElevenLabs Türkçe erkek sesi. Merak serisinde en fazla 1,6 sn'lik Pexels/Pixabay "
+    "stok video kesmeleri; tarih ve karakter serilerinde 2,5 sn'lik Flux AI görselleri + yavaş zoom/pan. Kelime kelime "
+    "sarı vurgulu kalın beyaz altyazı alt üçte birde, kanca sorusu video boyunca ekranın üstünde, seri başına ElevenLabs "
+    "ile üretilmiş enstrümantal müzik (sesin altında, %9) ve whoosh/vuruş/yükselme efektleri. Karakter serisinde oyuncu "
+    "yüzü ve film sahnesi yok."
 )
 
 

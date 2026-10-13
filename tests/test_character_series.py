@@ -1,4 +1,5 @@
 import json
+import re
 
 import pytest
 
@@ -50,15 +51,18 @@ def test_character_script_keeps_the_name_in_narration_but_not_in_images():
         validate_script(json.loads(json.dumps(CHARACTER_SCRIPT)))
 
 
-def test_karisik_alternates_with_the_last_upload(tmp_path):
-    assert original_factory.pick_series("karisik", tmp_path) == "karakter"
+def test_karisik_rotates_after_the_last_upload(tmp_path):
+    assert original_factory.pick_series("karisik", tmp_path) == "merak"
     channel_memory.record_upload(tmp_path, "v1", "zk-001", "Tarih", "story")
     channel_memory.record_upload(tmp_path, "v2", "kd-1", "Penguen", "comedy")
+    assert original_factory.pick_series("karisik", tmp_path) == "merak"
+    channel_memory.record_upload(tmp_path, "v3", "mk-001", "Kedi", "merak")
     assert original_factory.pick_series("karisik", tmp_path) == "karakter"
-    channel_memory.record_upload(tmp_path, "v3", "fk-001", "Shelby", "character")
+    channel_memory.record_upload(tmp_path, "v4", "fk-001", "Shelby", "character")
     assert original_factory.pick_series("karisik", tmp_path) == "story"
     assert original_factory.pick_series("story", tmp_path) == "story"
     assert original_factory.pick_series("karisik", tmp_path, topic_id="fk-004") == "karakter"
+    assert original_factory.pick_series("karisik", tmp_path, topic_id="mk-007") == "merak"
 
 
 def test_character_topics_run_out_into_gemini_topics(tmp_path, monkeypatch):
@@ -157,3 +161,92 @@ def test_reference_analysis_reads_links_and_builds_a_spec():
     assert "error" in result["videos"][1] and "dark phonk" in prompts[0] and "ElevenLabs Türkçe" in prompts[0]
     report = ra.format_report(result)
     assert "1.5 sn/kesme" in report and "analiz edilemedi" in report and "kesmeler yavaş" in report
+
+
+MERAK_SCRIPT = {
+    "title": "Kediler neden hep dört ayak üstüne düşer? 🐱",
+    "hook_text": "KEDİLER NEDEN AYAKTA DÜŞER?",
+    "scenes": [
+        {"text": "Bu kedi bilim insanlarını yıllarca şaşırttı.", "visual": "a cat mid-air", "stock_query": "cat jumping"},
+        {"text": "Bir kedi baş aşağı düşerken bile yere ayakları üstüne iner.", "visual": "a cat falling",
+         "stock_query": "cat falling", "source": "stock"},
+        {"text": "Sırrı, iç kulağındaki denge organında saklı.", "visual": "a cat ear close-up", "stock_query": "cat ear"},
+        {"text": "Kedi önce başını çevirir, ardından gövdesini bir yay gibi büker.", "visual": "a cat stretching",
+         "stock_query": "cat stretching"},
+        {"text": "Bu hareket yarım saniyeden kısa sürer ve hiçbir fizik kuralını bozmaz, sadece çok iyi kullanır.", "visual": "a cat landing",
+         "stock_query": "cat landing"},
+        {"text": "Yani kedi düşerken havada kendi kendini çevirir. Peki sen bunu biliyor muydun?",
+         "visual": "a cat looking at camera", "stock_query": "cat looking"},
+    ],
+    "description": "Kedilerin düşerken nasıl döndüğünü anlatıyoruz.",
+    "tags": ["kedi", "bilim"],
+    "pinned_comment": "Senin kedin hiç düştü mü?",
+    "en_title": "Why cats always land on their feet",
+    "en_description": "The cat righting reflex.",
+}
+
+
+def test_merak_topics_are_valid_and_have_stock_hints():
+    topics = original_factory.load_topics(original_factory.MERAK_TOPICS_FILE)
+    ids = [t["id"] for t in topics]
+    assert len(topics) >= 30 and len(set(ids)) == len(ids)
+    assert all(re.fullmatch(r"mk-\d{3}", i) for i in ids)
+    assert all(t["topic"].strip() and 1 <= len(t["stock_hint"].split()) <= 4 for t in topics)
+
+
+def test_merak_prompt_asks_for_real_stock_footage():
+    topic = original_factory.load_topics(original_factory.MERAK_TOPICS_FILE)[0]
+    prompt = build_prompt(topic["topic"], None, None, topic)
+    assert f"Görüntü ipucu: {topic['stock_hint']}" in prompt and '"source": her sahnede "stock"' in prompt
+    assert "Karakter:" not in prompt and "doğrulanmış" in prompt
+
+
+def test_merak_script_validates_and_still_refuses_film_references():
+    topic = {"topic": "Kediler neden ayakta düşer?", "stock_hint": "cat jumping"}
+    script = validate_script(json.loads(json.dumps(MERAK_SCRIPT)), topic)
+    assert len(script["scenes"]) == 6 and script["scenes"][0]["visual"] == "a cat mid-air"
+    bad = json.loads(json.dumps(MERAK_SCRIPT))
+    bad["scenes"][0]["text"] = "Thomas Shelby bile kedilerin bu hareketine şaşırırdı."
+    with pytest.raises(ScriptError, match="shelby"):
+        validate_script(bad, topic)
+
+
+def test_merak_scenes_use_stock_with_query_fallbacks(tmp_path, monkeypatch):
+    from app.services import original_visuals
+    queries, images = [], []
+
+    def fake_stock(query, count, dest, used):
+        queries.append(query)
+        return [tmp_path / "hint.mp4"] * count if query == "cat jumping" else []
+
+    monkeypatch.setattr(original_visuals, "fetch_stock_videos", fake_stock)
+    monkeypatch.setattr(original_visuals, "generate_flux_images",
+                        lambda prompt, count, dest, tag, style: images.append(tag) or [tmp_path / f"{tag}.jpg"] * count)
+    scene = {"visual": "a cat in the air", "stock_query": "a fluffy cat turning mid air", "source": "stock"}
+    assets = original_visuals.collect_scene_assets(scene, 2, tmp_path, "s00", set(), stock_only=True,
+                                                   fallback_query="cat jumping")
+    assert queries == ["a fluffy cat turning mid air", "cat jumping"]
+    assert [k for k, _ in assets] == ["video", "video"] and images == []
+    # Nothing found anywhere: one generated image set keeps the scene from going blank.
+    assets = original_visuals.collect_scene_assets({"visual": "x", "stock_query": "zzz qqq www"}, 1, tmp_path, "s01",
+                                                   set(), stock_only=True, fallback_query="nothing")
+    assert queries[-3:] == ["zzz qqq www", "nothing", "zzz qqq"] and assets == [("image", tmp_path / "s01.jpg")]
+
+
+def test_merak_series_cuts_faster_and_runs_out_into_gemini_topics(tmp_path, monkeypatch):
+    assert original_factory.SERIES["merak"]["cut"] < original_factory.SERIES["story"].get("cut", 2.5)
+    from app.services.original_visuals import split_duration
+    assert len(split_duration(10.0, 1.6)) == 7
+    monkeypatch.setattr(original_factory, "load_topics", lambda path=None: [{"id": "mk-001", "topic": "Kedi", "stock_hint": "cat"}])
+    topic = original_factory.choose_topic({"mk-001"}, data_dir=tmp_path, series="merak",
+                                          invent=lambda used: {"topic": "Ahtapotun neden üç kalbi var?", "stock_hint": "octopus"})
+    assert topic["id"] == "mk-002" and topic["stock_hint"] == "octopus"
+
+
+def test_hook_banner_stays_for_the_whole_video(tmp_path):
+    from app.services.subtitle_engine import generate_shorts_ass_subtitles
+    ass = tmp_path / "s.ass"
+    generate_shorts_ass_subtitles([{"text": "bir iki", "start": 0.0, "end": 31.0}], ass)
+    original_factory.add_hook_overlay(ass, "KEDİLER NEDEN AYAKTA DÜŞER?", 31.4)
+    events = ass.read_text(encoding="utf-8").split("[Events]")[1]
+    assert "Dialogue: 1,0:00:00.00,0:00:31.40,HookStyle" in events

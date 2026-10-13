@@ -4,8 +4,9 @@ Low-cost original visuals for Shorts.
 Every scene is illustrated with either a free stock video (Pexels with
 PEXELS_API_KEY, else Pixabay with PIXABAY_API_KEY; both licensed for commercial
 use) or a Fal Flux image (FAL_KEY) animated with a slow camera move. No AI
-video, no film footage. Scenes are cut into segments of at most ~2.5 s so the
-edit keeps moving.
+video, no film footage. Scenes are cut into segments of at most ~2.5 s (1.6 s
+for the stock-footage curiosity series, like the reference Shorts) so the edit
+keeps moving.
 
 IMAGE_MODEL picks the Flux model: fal-ai/flux/schnell (default, $0.003 per
 image) or fal-ai/flux/dev (sharper, $0.025 per image). Images are 720x1280 so
@@ -159,6 +160,30 @@ def fetch_stock_videos(query: str, count: int, dest_dir: Path, used_ids: set) ->
     return found
 
 
+def stock_queries(query: str, fallback: str = "") -> list[str]:
+    """The scene's query, then the topic's general hint, then the query cut to its first two words.
+
+    Long model-written queries ("a curious cat landing on its feet") often return
+    nothing on Pixabay, while two plain words almost always do."""
+    words = query.split()
+    candidates = [query, fallback, " ".join(words[:2]) if len(words) > 2 else ""]
+    out: list[str] = []
+    for q in candidates:
+        q = " ".join(q.split())
+        if q and q.lower() not in [o.lower() for o in out]:
+            out.append(q)
+    return out
+
+
+def fetch_stock_with_fallbacks(query: str, fallback: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+    found: list[Path] = []
+    for q in stock_queries(query, fallback):
+        if len(found) >= count:
+            break
+        found += fetch_stock_videos(q, count - len(found), dest_dir, used_ids)
+    return found
+
+
 def image_model() -> str:
     model = (os.environ.get("IMAGE_MODEL") or DEFAULT_IMAGE_MODEL).strip()
     return model if model.startswith("fal-ai/") else DEFAULT_IMAGE_MODEL
@@ -251,12 +276,21 @@ def split_duration(duration: float, max_len: float = MAX_SEGMENT_SECONDS) -> lis
 
 
 def collect_scene_assets(scene: dict, count: int, assets_dir: Path, tag: str, used_ids: set,
-                         style: str = DEFAULT_STYLE, ai_only: bool = False) -> list[tuple[str, Path]]:
+                         style: str = DEFAULT_STYLE, ai_only: bool = False,
+                         stock_only: bool = False, fallback_query: str = "") -> list[tuple[str, Path]]:
     """Returns up to `count` (kind, path) assets, trying the scene's preferred source first.
 
     ai_only skips stock video unless no image can be generated: keyword stock
-    footage rarely matches a film character's world and made those videos look random."""
+    footage rarely matches a film character's world and made those videos look random.
+    stock_only is the opposite, for topics real footage can show: every query
+    fallback is tried first, and a Flux image is drawn only when a scene found no clip at all."""
     assets: list[tuple[str, Path]] = []
+    if stock_only:
+        assets += [("video", p) for p in fetch_stock_with_fallbacks(
+            scene.get("stock_query", ""), fallback_query, count, assets_dir, used_ids)]
+        if not assets:
+            assets += [("image", p) for p in generate_flux_images(scene["visual"], count, assets_dir, tag, style)]
+        return assets
     if scene.get("source") == "stock" and not ai_only:
         assets += [("video", p) for p in fetch_stock_videos(scene.get("stock_query", ""), count, assets_dir, used_ids)]
     if len(assets) < count:
@@ -267,7 +301,8 @@ def collect_scene_assets(scene: dict, count: int, assets_dir: Path, tag: str, us
 
 
 def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Path,
-                       style: str = DEFAULT_STYLE, ai_only: bool = False) -> dict:
+                       style: str = DEFAULT_STYLE, ai_only: bool = False, stock_only: bool = False,
+                       segment_seconds: float = MAX_SEGMENT_SECONDS, fallback_query: str = "") -> dict:
     """
     Renders one clip per segment and returns
     {"segments": [Path], "cut_times": [float], "ai_images": int, "stock_videos": int, "thumbnail": Path | None}.
@@ -287,10 +322,11 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
     timeline = 0.0
     motion = 0
 
-    plans = [split_duration(d) for d in durations]
+    plans = [split_duration(d, segment_seconds) for d in durations]
     scene_assets = []
     for idx, (scene, plan) in enumerate(zip(scenes, plans)):
-        assets = collect_scene_assets(scene, len(plan), assets_dir, f"s{idx:02d}", used_ids, style, ai_only)
+        assets = collect_scene_assets(scene, len(plan), assets_dir, f"s{idx:02d}", used_ids, style, ai_only,
+                                      stock_only, fallback_query)
         scene_assets.append(assets)
         bank += assets
     if not bank:

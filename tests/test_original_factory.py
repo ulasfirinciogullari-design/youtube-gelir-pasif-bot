@@ -231,7 +231,7 @@ def test_add_hook_overlay_inserts_style_and_event(tmp_path):
 
     ass = tmp_path / "s.ass"
     generate_shorts_ass_subtitles([{"text": "bir iki üç", "start": 0.0, "end": 2.0}], ass)
-    original_factory.add_hook_overlay(ass, "kimse fark etmedi")
+    original_factory.add_hook_overlay(ass, "kimse fark etmedi", 2.0)
     content = ass.read_text(encoding="utf-8")
     header, events = content.split("[Events]")
     assert "Style: HookStyle," in header
