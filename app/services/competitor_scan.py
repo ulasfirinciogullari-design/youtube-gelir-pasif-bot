@@ -27,7 +27,19 @@ NICHE_QUERIES = [
 ]
 TOP_CHANNELS = 6
 RECENT_UPLOADS = 30
+MIN_TURKISH_SHARE = 0.3  # search's relevanceLanguage is only a hint; the first scan pulled in a Korean channel
 DNA_FILE = "competitor_dna.json"
+TURKISH_CHARS = set("çğıöşüÇĞİÖŞÜ")
+# Gemini sometimes answers with Turkish keys; map them back so the report and prompts can read them.
+DNA_KEYS = {
+    "hooks": ("hooks", "kancalar", "kanca_kaliplari", "kanca_kalıpları"),
+    "title_formulas": ("title_formulas", "başlık_formülleri", "baslik_formulleri"),
+    "topics": ("topics", "konular"),
+    "length": ("length", "video_süresi", "süre"),
+    "cadence": ("cadence", "yayın_sıklığı"),
+    "strengths": ("strengths", "güçlü_yanlar"),
+    "weaknesses": ("weaknesses", "zayıf_yanlar"),
+}
 
 ANALYSIS_PROMPT = """Bir Türkçe YouTube Shorts kanalının ("Zirvenin Kanunu": tarihten gerçek insanların gerilimli anları,
 dahice hamleleri ve psikoloji; belgesel tonunda Türkçe anlatım) rakip analizini yapıyorsun.
@@ -41,9 +53,11 @@ Rakip kanalların verisi (JSON):
 Her rakip kanalın DNA'sını çıkar: hangi kanca kalıplarıyla açıyor, başlık formülleri, konu seçimi, video süresi,
 yayın sıklığı, ses/anlatım tarzı (başlıklardan çıkarılabildiği kadarıyla), güçlü ve zayıf yanları.
 Sonra bizim için: rakiplerin dolduramadığı boşluklar, onları kopyalamadan ayrışmamızı sağlayacak senaryo kuralları
-ve rakiplerin işlemediği 12 yeni konu önerisi (her biri tek cümlelik soru, gerçek ve doğrulanabilir tarih/psikoloji).
+ve rakiplerin işlemediği 12 yeni konu önerisi. Her konu tek cümlelik bir soru olsun ve belirli bir gerçek kişi,
+yer ve dönem içersin (ör. "Fatih Sultan Mehmet 1453'te gemileri neden karadan yürüttü?"); "bir komutan",
+"bir imparator" gibi genel konular yazma. Sadece kaynaklarda iyi bilinen olaylar.
 
-Sadece şu JSON'u döndür:
+JSON anahtarlarını aynen aşağıdaki gibi İngilizce yaz. Sadece şu JSON'u döndür:
 {{
   "channels": [{{"name": "...", "dna": {{"hooks": ["..."], "title_formulas": ["..."], "topics": ["..."],
     "length": "...", "cadence": "...", "strengths": ["..."], "weaknesses": ["..."]}}}}],
@@ -132,6 +146,25 @@ def title_features(titles: list[str]) -> dict:
     }
 
 
+def turkish_share(titles: list[str]) -> float:
+    return sum(bool(set(t) & TURKISH_CHARS) for t in titles) / len(titles) if titles else 0.0
+
+
+def normalize_dna(dna: dict) -> dict:
+    if not isinstance(dna, dict):
+        return {}
+    return {key: next((dna[a] for a in aliases if a in dna), [] if key not in ("length", "cadence") else "")
+            for key, aliases in DNA_KEYS.items()}
+
+
+def dna_age_days(dna: dict, now: datetime | None = None) -> float | None:
+    try:
+        scanned = datetime.fromisoformat(dna["scanned_at"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    return ((now or datetime.now(timezone.utc)) - scanned).total_seconds() / 86400
+
+
 def channel_profile(channel: dict, uploads: list[dict], now: datetime) -> dict:
     dates = sorted(u["published_at"] for u in uploads if u.get("published_at"))
     weeks = 1.0
@@ -186,7 +219,8 @@ def analyze(profiles: list[dict], our_titles: list[str], call=_call_gemini_text)
         return {}
     data = _extract_json(raw)
     return {
-        "channels": [c for c in data.get("channels", []) if isinstance(c, dict)][:TOP_CHANNELS],
+        "channels": [{"name": str(c.get("name", "")), "dna": normalize_dna(c.get("dna"))}
+                     for c in data.get("channels", []) if isinstance(c, dict)][:TOP_CHANNELS],
         "gaps": [str(g) for g in data.get("gaps", [])][:10],
         "our_rules": [str(r) for r in data.get("our_rules", [])][:8],
         "topic_ideas": [str(t) for t in data.get("topic_ideas", [])][:15],
@@ -239,6 +273,9 @@ def run_scan(youtube, output_dir: Path, our_titles: list[str], queries: list[str
         if not channel or not channel["uploads"]:
             continue
         uploads = recent_uploads(youtube, channel["uploads"])
+        if turkish_share([u["title"] for u in uploads]) < MIN_TURKISH_SHARE:
+            print(f"ℹ️ {channel['name']} Türkçe bir kanal değil, atlandı.")
+            continue
         profile = channel_profile(channel, uploads, now)
         profile["niche_hits"], profile["niche_views"] = hits, views
         profiles.append(profile)

@@ -81,11 +81,12 @@ def clean_tags(tags: list, limit: int = MAX_TAG_TOTAL) -> list[str]:
     seen, out, total = set(), [], 0
     for raw in tags:
         tag = " ".join(re.sub(r"[<>#,\"]", " ", EMOJI_RE.sub("", str(raw))).split())
-        if not tag or len(tag) > MAX_TAG_CHARS or tag.lower() in seen:
+        key = tag.lower().replace(" ", "")  # "MarcusAurelius" repeats "Marcus Aurelius"
+        if not tag or len(tag) > MAX_TAG_CHARS or key in seen:
             continue
         if total + _tag_cost(tag) > limit or len(out) >= MAX_TAGS:
             break
-        seen.add(tag.lower())
+        seen.add(key)
         out.append(tag)
         total += _tag_cost(tag)
     return out
@@ -150,6 +151,8 @@ def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_ta
             print(f"ℹ️ SEO paketi zayıf geldi (açıklama {len(description)} karakter, {len(localizations)} dil); "
                   "senaryonun açıklaması kullanılıyor.")
 
+    if pack["seo_engine"] == "gemini":
+        pinned = ""  # the Gemini description already ends with its own call to comment
     pack["description"] = "\n\n".join(part for part in [pack["description"], pinned, pack["hashtags"], marker] if part)
     for item in pack["localizations"].values():
         item["description"] = f"{item['description']}\n\n#shorts\n\n{marker}"

@@ -27,7 +27,8 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 from app.services.channel_metrics import list_series_videos, report_channel
-from app.services.competitor_scan import load_dna
+from app.services.channel_memory import record_upload, used_topic_ids
+from app.services.competitor_scan import dna_age_days, load_dna, run_scan
 from app.services.seo_pack import build_seo_pack
 from app.services.original_script import write_script
 from app.services.original_visuals import build_visual_track
@@ -37,6 +38,7 @@ TOPICS_FILE = BASE_DIR / "app" / "services" / "original_topics_tr.json"
 # The workflow checks out the channel-data branch here: metrics, competitor DNA, generated topics, history.
 DATA_DIR = BASE_DIR / "channel-data"
 GENERATED_TOPICS_FILE = "generated_topics.json"
+DNA_REFRESH_DAYS = 7  # one competitor scan (~650 API units) a week
 MUSIC_DIR = BASE_DIR / "assets" / "music"
 SFX_DIR = BASE_DIR / "assets" / "sfx"
 
@@ -452,11 +454,18 @@ def main(argv=None) -> int:
         from publish_to_youtube import get_authenticated_service
         youtube = get_authenticated_service()
         published, examples = report_channel(youtube, MARKER_RE, OUTPUT_DIR)
+        published |= used_topic_ids(DATA_DIR)
         print(f"📋 Kanalda yayınlanmış konu sayısı: {len(published)}")
     else:
         examples = []
 
     dna = load_dna(DATA_DIR, OUTPUT_DIR)
+    dna_age = dna_age_days(dna)
+    if youtube is not None and (dna_age is None or dna_age >= DNA_REFRESH_DAYS):
+        try:
+            dna = run_scan(youtube, OUTPUT_DIR, examples)
+        except Exception as e:  # a stale analysis is better than a skipped upload
+            print(f"ℹ️ Rakip analizi yenilenemedi: {str(e)[:200]}")
     topic = choose_topic(published, args.topic_id, dna)
     print(f"🎯 Konu {topic['id']}: {topic['topic']}")
 
@@ -465,7 +474,8 @@ def main(argv=None) -> int:
 
     result = produce(topic, script, provider)
     if youtube is not None:
-        upload(youtube, result, args.privacy)
+        video_id = upload(youtube, result, args.privacy)
+        record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], "story")
     return 0
 
 

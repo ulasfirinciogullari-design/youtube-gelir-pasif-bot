@@ -18,10 +18,13 @@ BASE_DIR = Path(__file__).resolve().parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-from app.services.channel_audit import apply_cleanup, audit_channel
-from app.services.competitor_scan import run_scan
+from app.services.channel_audit import apply_cleanup, audit_channel, junk_ids
+from app.services.channel_memory import our_video_ids
+from app.services.competitor_scan import dna_age_days, load_dna, run_scan
 
 OUTPUT_DIR = BASE_DIR / "output"
+DATA_DIR = BASE_DIR / "channel-data"
+SCAN_EVERY_DAYS = 6
 
 
 def _summary(text: str) -> None:
@@ -32,15 +35,22 @@ def _summary(text: str) -> None:
             f.write(text)
 
 
-def report(youtube) -> int:
-    videos, flagged, text = audit_channel(youtube)
+def report(youtube, force_scan: bool = False) -> int:
+    ours = our_video_ids(DATA_DIR)
+    videos, flagged, text = audit_channel(youtube, keep_ids=ours)
     (OUTPUT_DIR / "channel_audit.json").write_text(
-        json.dumps({"videos": videos, "candidates": [v["video_id"] for v in flagged]}, ensure_ascii=False, indent=2),
+        json.dumps({"videos": videos, "candidates": [v["video_id"] for v in flagged], "junk": junk_ids(flagged)},
+                   ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
     _summary(text)
-    our_titles = [v["title"] for v in sorted(videos, key=lambda v: -v.get("views", 0)) if v.get("topic_id")]
-    run_scan(youtube, OUTPUT_DIR, our_titles)
+    age = dna_age_days(load_dna(DATA_DIR))
+    if force_scan or age is None or age >= SCAN_EVERY_DAYS:
+        our_titles = [v["title"] for v in sorted(videos, key=lambda v: -v.get("views", 0))
+                      if v.get("topic_id") or v["video_id"] in ours]
+        run_scan(youtube, OUTPUT_DIR, our_titles)
+    else:
+        print(f"Rakip analizi {age:.1f} gün önce yapıldı; {SCAN_EVERY_DAYS} günü geçince yenilenecek.")
     return 0
 
 
@@ -56,7 +66,8 @@ def cleanup(youtube, ids: list[str], action: str) -> int:
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Zirvenin Kanunu channel tools")
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("report")
+    rep = sub.add_parser("report")
+    rep.add_argument("--scan", action="store_true", help="Rakip analizini güncel olsa da yenile")
     clean = sub.add_parser("cleanup")
     clean.add_argument("--action", choices=["private", "delete"], default="private")
     clean.add_argument("--ids", default="", help="Virgülle ayrılmış video id listesi")
@@ -66,7 +77,7 @@ def main(argv=None) -> int:
     from publish_to_youtube import get_authenticated_service
     youtube = get_authenticated_service()
     if args.command == "report":
-        return report(youtube)
+        return report(youtube, force_scan=args.scan)
     ids = [i.strip() for i in args.ids.replace("\n", ",").split(",") if i.strip()]
     return cleanup(youtube, ids, args.action)
 

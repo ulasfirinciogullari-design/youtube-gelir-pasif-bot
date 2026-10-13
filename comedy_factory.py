@@ -25,6 +25,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 import original_factory as story
+from app.services.channel_memory import record_upload, used_topic_ids
 from app.services.channel_metrics import report_channel
 from app.services.seo_pack import build_seo_pack
 from app.services.comedy_dub import (
@@ -233,6 +234,7 @@ def main(argv=None) -> int:
         from publish_to_youtube import get_authenticated_service
         youtube = get_authenticated_service()
         published, _ = report_channel(youtube, story.MARKER_RE, OUTPUT_DIR)
+        published |= used_topic_ids(story.DATA_DIR)
 
     seed = datetime.now(timezone.utc).strftime("%Y%m%d%H")
     found = find_clip_and_script(published, OUTPUT_DIR / f"clips_{seed}", seed)
@@ -245,7 +247,8 @@ def main(argv=None) -> int:
     print(f"🧠 Dublaj senaryosu: {script['title']}")
     result = produce_comedy(hit, query, script, clip)
     if youtube is not None:
-        story.upload(youtube, result, args.privacy)
+        video_id = story.upload(youtube, result, args.privacy)
+        record_upload(story.DATA_DIR, video_id, result["meta"]["topic_id"], result["meta"]["title"], "comedy")
     return 0
 
 

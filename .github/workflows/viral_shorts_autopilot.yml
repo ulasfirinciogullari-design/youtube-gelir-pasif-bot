@@ -143,13 +143,16 @@ jobs:
           for f in metrics.json channel_audit.json competitor_dna.json; do
             [ -f "output/$f" ] && cp "output/$f" channel-data/
           done
-          cp output/*_meta.json channel-data/history/ 2>/dev/null || true
+          cp output/ORIGINAL_*_meta.json output/COMEDY_*_meta.json channel-data/history/ 2>/dev/null || true
           cd channel-data
           git add -A
           if git diff --cached --quiet; then echo "Yeni veri yok"; exit 0; fi
           git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit -qm "Kanal verisi: run ${{ github.run_id }}"
-          git push origin channel-data
+          # Someone (or a manual seed) may have pushed since this run fetched the branch.
+          git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            pull --rebase -q origin channel-data || true
+          git push origin HEAD:channel-data
 
       - name: 📤 Yayın Paketini Sakla (Artifact)
         if: always()

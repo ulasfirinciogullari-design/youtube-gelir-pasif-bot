@@ -1,25 +1,36 @@
 """
 Channel housekeeping for Zirvenin Kanunu.
 
-`audit_channel` lists every upload with its numbers and flags the ones worth
-removing: uploads of the old film-clip bot (no "Seri:" marker, so a copyright
-risk), repeats of the same title, and public videos nobody watched. It only
-reports. `apply_cleanup` changes videos, and only the ids it is given.
+`audit_channel` lists every upload with its numbers and sorts the ones worth
+removing by reason: film and series clips (copyright and "reused content"
+risk), live stream recordings, old English uploads, repeats of the same title,
+and public videos nobody watched. It only reports. `apply_cleanup` changes
+videos, and only the ids it is given.
 """
 
 from datetime import datetime, timezone
 import re
 
 from app.services.channel_metrics import _age_hours
+from app.services.original_script import BANNED_REFERENCES, EMOJI_RE
 
 LOW_VIEWS = 50
 MIN_AGE_DAYS = 3
+LIVE_SECONDS = 15 * 60
 MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3,})")
-EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF☀-➿️‍]+")
+FILM_NAMES = BANNED_REFERENCES + [
+    "oppenheimer", "gladyatör", "gladiator", "maximus", "the matrix", "matrix illusion", "don corleone",
+    "cillian murphy", "hollywood", "şafak sezer", "hedef ben miyim tayfun", "polat", "minecraft",
+]
+ENGLISH_WORDS = {"why", "how", "the", "before", "part", "law", "of", "and", "its", "with", "decisions", "code"}
+TURKISH_CHARS = set("çğıöşüÇĞİÖŞÜ")
 
-REASON_LEGACY = "eski film klibi botu"
+REASON_FILM = "film/dizi klibi (telif riski)"
+REASON_LIVE = "canlı yayın kaydı"
+REASON_ENGLISH = "İngilizce eski içerik"
 REASON_REPEAT = "tekrar başlık"
 REASON_UNWATCHED = "izlenmedi"
+JUNK_REASONS = {REASON_LIVE, REASON_REPEAT, REASON_UNWATCHED}
 
 
 def list_uploads(youtube, max_pages: int = 20) -> list[dict]:
@@ -80,18 +91,40 @@ def normalize_title(title: str) -> str:
     return " ".join(re.sub(r"[^\w\s]", " ", text).split())[:45]
 
 
-def flag_candidates(videos: list[dict], now: datetime | None = None) -> list[dict]:
-    """Adds "reasons" to each video and returns the ones that have any, worst first."""
+def is_film_clip(title: str) -> bool:
+    low = title.lower()
+    return any(name in low for name in FILM_NAMES)
+
+
+def is_english(title: str) -> bool:
+    words = re.findall(r"[a-zA-Z']+", EMOJI_RE.sub("", title).lower())
+    return not (set(title) & TURKISH_CHARS) and len(words) >= 3 and any(w in ENGLISH_WORDS for w in words)
+
+
+def flag_candidates(videos: list[dict], now: datetime | None = None, keep_ids: frozenset = frozenset()) -> list[dict]:
+    """Adds "reasons" to each video and returns the ones that have any, worst first.
+
+    Our own series videos (a "Seri:" marker, or listed in keep_ids because a Studio edit removed the
+    marker) are never flagged.
+    """
     now = now or datetime.now(timezone.utc)
     groups: dict[str, list[dict]] = {}
     for video in videos:
         video["reasons"] = []
         video["age_days"] = round((_age_hours(video.get("published_at", ""), now) or 0) / 24, 1)
-        if not video.get("topic_id"):
-            video["reasons"].append(REASON_LEGACY)
+        if video.get("topic_id") or video.get("video_id") in keep_ids:
+            continue
+        title = video.get("title", "")
+        if is_film_clip(title):
+            video["reasons"].append(REASON_FILM)
+        # str.lower() turns "CANLI" into "canli", so match both spellings.
+        if video.get("seconds", 0) >= LIVE_SECONDS or re.search(r"\bcanl[ıi]\b", title.lower()):
+            video["reasons"].append(REASON_LIVE)
+        if is_english(title):
+            video["reasons"].append(REASON_ENGLISH)
         if video.get("privacy") == "public" and video["age_days"] >= MIN_AGE_DAYS and video.get("views", 0) < LOW_VIEWS:
             video["reasons"].append(REASON_UNWATCHED)
-        groups.setdefault(normalize_title(video.get("title", "")), []).append(video)
+        groups.setdefault(normalize_title(title), []).append(video)
     for group in groups.values():
         if len(group) < 2:
             continue
@@ -103,12 +136,24 @@ def flag_candidates(videos: list[dict], now: datetime | None = None) -> list[dic
     return sorted(flagged, key=lambda v: (-len(v["reasons"]), v.get("views", 0)))
 
 
+def junk_ids(flagged: list[dict]) -> list[str]:
+    """Clear junk: repeats, live recordings and public videos nobody watched."""
+    return [v["video_id"] for v in flagged if JUNK_REASONS & set(v["reasons"])]
+
+
 def format_audit(videos: list[dict], flagged: list[dict]) -> str:
     public = [v for v in videos if v.get("privacy") == "public"]
+    counts: dict[str, int] = {}
+    for v in flagged:
+        for reason in v["reasons"]:
+            counts[reason] = counts.get(reason, 0) + 1
     lines = [
         "### Kanal temizlik raporu",
         "",
         f"Toplam {len(videos)} video, {len(public)} herkese açık, {len(flagged)} aday.",
+        "",
+        *[f"- {reason}: {n}" for reason, n in sorted(counts.items(), key=lambda kv: -kv[1])],
+        f"- Kesin çöp (tekrar, izlenmeyen, canlı yayın): {len(junk_ids(flagged))}",
         "",
         "| Video | Başlık | Görünürlük | Yaş (gün) | Süre | İzlenme | Beğeni | Neden |",
         "|---|---|---|---|---|---|---|---|",
@@ -127,9 +172,9 @@ def format_audit(videos: list[dict], flagged: list[dict]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def audit_channel(youtube) -> tuple[list[dict], list[dict], str]:
+def audit_channel(youtube, keep_ids: frozenset = frozenset()) -> tuple[list[dict], list[dict], str]:
     videos = add_details(youtube, list_uploads(youtube))
-    flagged = flag_candidates(videos)
+    flagged = flag_candidates(videos, keep_ids=keep_ids)
     return videos, flagged, format_audit(videos, flagged)
 
 

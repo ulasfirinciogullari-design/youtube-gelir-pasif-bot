@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import pytest
 
 import original_factory
-from app.services import channel_audit, competitor_scan, seo_pack
+from app.services import channel_audit, channel_memory, competitor_scan, seo_pack
 from app.services.original_script import build_prompt
 
 NOW = datetime(2026, 10, 20, tzinfo=timezone.utc)
@@ -80,8 +80,9 @@ def _video(video_id, views, privacy="public", seconds=30, title="", channel="UC_
 
 
 def test_clean_tags_respects_youtube_limit():
-    tags = seo_pack.clean_tags(["#Seneca", "seneca", "x" * 31, "<roma>"] + [f"etiket numarasi {i}" for i in range(60)])
-    assert tags[:2] == ["Seneca", "roma"]
+    tags = seo_pack.clean_tags(["#Seneca", "seneca", "x" * 31, "<roma>", "Marcus Aurelius", "MarcusAurelius"]
+                               + [f"etiket numarasi {i}" for i in range(60)])
+    assert tags[:3] == ["Seneca", "roma", "Marcus Aurelius"] and "MarcusAurelius" not in tags
     assert sum(seo_pack._tag_cost(t) for t in tags) <= seo_pack.MAX_TAG_TOTAL
     assert all(len(t) <= 30 for t in tags)
 
@@ -98,7 +99,7 @@ def test_seo_pack_uses_gemini_answer():
                                    call=lambda prompt: json.dumps(answer, ensure_ascii=False))
     assert pack["seo_engine"] == "gemini" and len(pack["localizations"]) == 18
     assert pack["description"].endswith("#shorts #tarih #stoacılık #roma\n\nSeri: zk-003")
-    assert "💬 Sen olsan ne yapardın?" in pack["description"]
+    assert "💬" not in pack["description"]  # the Gemini description carries its own call to comment
     assert pack["localizations"]["ja"]["title"].endswith("#shorts")
     assert pack["localizations"]["de"]["description"].endswith("Seri: zk-003")
     assert pack["tags"][:3] == ["seneca", "nero", "stoicism"] and "shorts" in pack["tags"]
@@ -111,29 +112,37 @@ def test_seo_pack_falls_back_to_script(call):
     pack = seo_pack.build_seo_pack("Başlık", "konu", "metin", SCRIPT, ["shorts"], "#shorts", "Seri: zk-003", call=call)
     assert pack["seo_engine"] == "script"
     assert pack["description"].startswith("Kısa açıklama.") and pack["description"].endswith("Seri: zk-003")
+    assert "💬 Sen olsan ne yapardın?" in pack["description"]
     assert list(pack["localizations"]) == ["en"]
 
 
-def test_audit_flags_legacy_repeats_and_unwatched():
+def test_audit_sorts_candidates_by_reason_and_spares_our_videos():
     uploads = {"UU_OURS": [
-        _upload("a", "Joker'in en sert sahnesi 🔥 #shorts", "2026-10-09T00:00:00Z"),
-        _upload("b", "Joker'in en sert sahnesi 🔥", "2026-10-10T00:00:00Z"),
+        _upload("a", "Walter White 'Ben Tehlikeyim' 🔥 #shorts", "2026-10-09T00:00:00Z"),
+        _upload("b", "Walter White 'Ben Tehlikeyim' 🔥", "2026-10-10T00:00:00Z"),
         _upload("c", "Seneca'nın stratejisi", "2026-10-13T00:00:00Z", "zk-003"),
         _upload("d", "Epiktetos ve özgürlük", "2026-10-19T12:00:00Z", "zk-004"),
-        _upload("e", "Marcus Aurelius", "2026-10-13T00:00:00Z", "zk-001"),
+        _upload("e", "Marcus Aurelius'un Saklı Bilgeliği", "2026-10-13T00:00:00Z"),  # marker removed in Studio
+        _upload("f", "🔴 CANLI: 1.000.000 PUANA ULAŞABİLECEK Mİ?", "2026-10-18T00:00:00Z"),
+        _upload("g", "Why IKEA Put Furniture in Flat Boxes (1/4)", "2026-09-10T00:00:00Z"),
+        _upload("h", "48 Güç Yasası: Dostuna Asla Güvenme", "2026-10-12T00:00:00Z"),
     ]}
-    videos = {v["id"]: v for v in [_video("a", 900), _video("b", 12), _video("c", 5000),
-                                   _video("d", 3), _video("e", 4)]}
+    videos = {v["id"]: v for v in [_video("a", 900), _video("b", 12), _video("c", 5000), _video("d", 3),
+                                   _video("e", 4), _video("f", 10, seconds=0), _video("g", 1248), _video("h", 981)]}
     yt = FakeYouTube(uploads, videos)
     listed = channel_audit.add_details(yt, channel_audit.list_uploads(yt))
-    flagged = channel_audit.flag_candidates(listed, now=NOW)
+    flagged = channel_audit.flag_candidates(listed, now=NOW, keep_ids=frozenset({"e"}))
     reasons = {v["video_id"]: v["reasons"] for v in flagged}
     assert reasons == {
-        "b": ["eski film klibi botu", "izlenmedi", "tekrar başlık"],
-        "a": ["eski film klibi botu"],
-        "e": ["izlenmedi"],
+        "b": ["film/dizi klibi (telif riski)", "izlenmedi", "tekrar başlık"],
+        "a": ["film/dizi klibi (telif riski)"],
+        "f": ["canlı yayın kaydı"],
+        "g": ["İngilizce eski içerik"],
     }
-    assert "| b |" in channel_audit.format_audit(listed, flagged)
+    assert set(channel_audit.junk_ids(flagged)) == {"b", "f"}
+    report = channel_audit.format_audit(listed, flagged)
+    assert "| b |" in report and "- film/dizi klibi (telif riski): 2" in report
+    assert "Kesin çöp (tekrar, izlenmeyen, canlı yayın): 2" in report
 
 
 def test_cleanup_hides_keeping_status_fields_and_deletes():
@@ -154,11 +163,15 @@ def test_competitor_scan_profiles_rivals_and_saves_dna(tmp_path):
     videos = {f"r{i}": _video(f"r{i}", 1000 * (i + 1), seconds=40, title=f"Sezar'ın son sözü {i}? 😱", channel="UC_R",
                               published=f"2026-10-{10 + i:02d}T00:00:00Z") for i in range(4)}
     videos["mine"] = _video("mine", 10, channel="UC_OURS")
+    videos["k0"] = _video("k0", 99999, title="자기 관리하는 사람이 진짜 무서운 이유 #shorts", channel="UC_K")
     channels = {"UC_R": {"id": "UC_R", "snippet": {"title": "Rakip Tarih"},
                          "statistics": {"subscriberCount": "12000", "videoCount": "300"},
-                         "contentDetails": {"relatedPlaylists": {"uploads": "UU_R"}}}}
-    yt = FakeYouTube({"UU_R": rival_uploads}, videos, search={"stoacılık": ["r0", "r3", "mine"]}, channels=channels)
-    answer = {"channels": [{"name": "Rakip Tarih", "dna": {"hooks": ["soru"], "weaknesses": ["kaynak yok"]}}],
+                         "contentDetails": {"relatedPlaylists": {"uploads": "UU_R"}}},
+                "UC_K": {"id": "UC_K", "snippet": {"title": "관계의 결"}, "statistics": {"subscriberCount": "40400"},
+                         "contentDetails": {"relatedPlaylists": {"uploads": "UU_K"}}}}
+    uploads = {"UU_R": rival_uploads, "UU_K": [{"contentDetails": {"videoId": "k0"}}]}
+    yt = FakeYouTube(uploads, videos, search={"stoacılık": ["r0", "r3", "mine", "k0"]}, channels=channels)
+    answer = {"channels": [{"name": "Rakip Tarih", "dna": {"kancalar": ["soru"], "zayıf_yanlar": ["kaynak yok"]}}],
               "gaps": ["Osmanlı diplomasisi"], "our_rules": ["Her videoda bir tarih ve yer söyle"],
               "topic_ideas": ["Fatih neden gemileri karadan yürüttü?"]}
     result = competitor_scan.run_scan(yt, tmp_path, ["Seneca'nın stratejisi"], queries=["stoacılık"],
@@ -168,7 +181,11 @@ def test_competitor_scan_profiles_rivals_and_saves_dna(tmp_path):
     assert profile["niche_hits"] == 2 and profile["niche_views"] == 5000
     assert profile["median_views"] == 2500 and profile["avg_seconds"] == 40
     assert profile["title_features"]["question_pct"] == 100 and profile["title_features"]["emoji_pct"] == 100
-    assert competitor_scan.load_dna(tmp_path)["our_rules"] == ["Her videoda bir tarih ve yer söyle"]
+    dna = competitor_scan.load_dna(tmp_path)
+    assert dna["our_rules"] == ["Her videoda bir tarih ve yer söyle"]
+    assert dna["channels"][0]["dna"]["hooks"] == ["soru"] and dna["channels"][0]["dna"]["weaknesses"] == ["kaynak yok"]
+    assert 0 <= competitor_scan.dna_age_days(dna) < 0.01
+    assert competitor_scan.dna_age_days({}) is None
 
 
 def test_story_prompt_carries_competitor_rules():
@@ -189,3 +206,13 @@ def test_choose_topic_extends_the_list_when_it_runs_out(tmp_path, monkeypatch):
 
     # A generated topic that is not on the channel yet is picked before inventing another.
     assert original_factory.choose_topic({"zk-001", "zk-002"}, data_dir=tmp_path)["id"] == "zk-003"
+
+
+def test_upload_record_keeps_topics_and_videos(tmp_path):
+    channel_memory.record_upload(tmp_path, "v1", "zk-001", "Başlık", "story")
+    channel_memory.record_upload(tmp_path, "v2", "kd-9", "Penguen", "comedy")
+    channel_memory.record_upload(tmp_path, "v1", "zk-001", "Başlık (yeniden)", "story")
+    assert channel_memory.used_topic_ids(tmp_path) == {"zk-001", "kd-9"}
+    assert channel_memory.our_video_ids(tmp_path) == frozenset({"v1", "v2"})
+    assert [u["title"] for u in channel_memory.load_uploads(tmp_path)] == ["Penguen", "Başlık (yeniden)"]
+    assert channel_memory.load_uploads(tmp_path / "missing") == []
