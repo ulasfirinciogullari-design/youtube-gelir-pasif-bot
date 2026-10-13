@@ -142,11 +142,18 @@ bulunamazsa kullanılır.
 - Konular: `app/services/merak_topics_tr.json`, kodlar `mk-001` gibi; her
   konunun `stock_hint` alanı, sahne araması boş dönerse kullanılan genel aramadır.
   Liste bitince Gemini yeni konu üretir.
-- Görüntü konuyla ve cümleyle birebir eşleşir: Pixabay'den yalnızca gerçek çekim
-  (animasyon değil) ve etiketlerinde konunun öznesi (`subject`, ör. `cat`, `kitten`)
-  geçen klipler alınır; sonra Gemini adayların küçük resimlerine bakıp her cümleye
-  o cümleyi gösteren klipleri seçer (`app/services/clip_matcher.py`). Gemini
-  yanıt vermezse klipler anahtar kelime sırasıyla, yine özne filtresiyle seçilir.
+- Senaryo görüntüye göre yazılır (`app/services/footage_script.py`): Pixabay'den
+  yalnızca gerçek çekim (animasyon değil) ve etiketlerinde konunun öznesi
+  (`subject`, ör. `cat`, `kitten`) geçen 40'a kadar klip toplanır, her klibin üç
+  karesi Gemini'ye gösterilir ve Gemini anlatımı bu kliplerde gerçekten görünen
+  şeylere göre yazar; her sahne için hangi klibin hangi anının gösterileceğini de
+  seçer. Görüntünün konuyu ne kadar karşıladığını 10 üzerinden puanlar; 6'nın
+  altındaki konular atlanır ve `channel-data/skipped_topics.json`'a yazılır
+  (konu elle `topic_id` ile istenirse yine de yapılır).
+- Bu yol çalışmazsa eski yola dönülür: önce senaryo, sonra Gemini adayların küçük
+  resimlerinden her cümleye uygun klibi seçer (`app/services/clip_matcher.py`).
+- Ses efektleri vurgu içindir: hafif bir whoosh sadece kancadan sonra ve son
+  sahneye geçerken çalar.
 - Kurgu: en uzun çekim 1,6 sn (diğer serilerde 2,5 sn, çünkü her çekim ücretli bir görsel).
 - Bütün serilerde: kanca sorusu video boyunca ekranın üstünde beyaz, kalın
   kenarlı yazı olarak durur; altyazı alt üçte birde; müzik sesi %9.

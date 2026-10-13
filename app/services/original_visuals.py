@@ -38,6 +38,7 @@ DEFAULT_STYLE = (
 )
 USER_AGENT = "Mozilla/5.0 (zirvenin-kanunu original shorts)"
 MAX_CANDIDATES = 48  # thumbnails shown to Gemini per video
+MIN_SHOT_SECONDS = 1.2  # a stock scene gets one shot per matched clip, but no shot shorter than this
 # Words that say nothing about what a clip shows; they do not count when ranking clips by their tags.
 STOPWORDS = {
     "a", "an", "the", "of", "in", "on", "at", "and", "with", "from", "to", "its", "is", "up",
@@ -247,6 +248,25 @@ def fetch_stock_with_fallbacks(query: str, fallback: str, count: int, dest_dir: 
     return found
 
 
+def assigned_stock(scenes: list[dict], pool: list[dict], assets_dir: Path, used_ids: set) -> list[list[tuple]]:
+    """Downloads the clips a footage-first script named for each scene. Each asset carries the start time
+    of the frame the script was written to, so the shot shows that moment rather than the clip's first second."""
+    from app.services.footage_script import frame_time
+
+    scene_assets = []
+    for scene in scenes:
+        assets = []
+        for ref in scene.get("clips") or []:
+            hit = pool[ref["n"] - 1]
+            path = download_pixabay_hit(hit, assets_dir, used_ids)
+            if path:
+                duration = float(hit.get("duration") or 0)
+                start = min(max(0.0, frame_time(duration, ref.get("kare", 2)) - 0.4), max(0.0, duration - 2.6))
+                assets.append(("video", path, round(start, 2)))
+        scene_assets.append(assets)
+    return scene_assets
+
+
 def collect_matched_stock(scenes: list[dict], plans: list[list[float]], assets_dir: Path, used_ids: set,
                           subject: list[str] | None = None, fallback_query: str = "", topic: str = "",
                           match=None) -> tuple[list[list[tuple[str, Path]]], str]:
@@ -407,13 +427,14 @@ def collect_scene_assets(scene: dict, count: int, assets_dir: Path, tag: str, us
 def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Path,
                        style: str = DEFAULT_STYLE, ai_only: bool = False, stock_only: bool = False,
                        segment_seconds: float = MAX_SEGMENT_SECONDS, fallback_query: str = "",
-                       subject: list[str] | None = None, topic: str = "") -> dict:
+                       subject: list[str] | None = None, topic: str = "", clip_pool: list[dict] | None = None) -> dict:
     """
     Renders one clip per segment and returns
     {"segments": [Path], "cut_times": [float], "ai_images": int, "stock_videos": int, "thumbnail": Path | None,
      "clip_match": str | None}.
     stock_only (curiosity series): real footage only, matched to each sentence; Flux images are drawn
-    only if no clip at all could be found for the video.
+    only if no clip at all could be found for the video. With clip_pool the scenes already name their
+    clips (footage-first script) and only those are downloaded.
     Raises RuntimeError if no scene could be illustrated at all.
     """
     assets_dir = work_dir / "assets"
@@ -432,9 +453,12 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
 
     plans = [split_duration(d, segment_seconds) for d in durations]
     clip_match = None
-    if stock_only:
+    if stock_only and clip_pool and all(scene.get("clips") for scene in scenes):
+        scene_assets, clip_match = assigned_stock(scenes, clip_pool, assets_dir, used_ids), "senaryo görüntüye göre"
+    elif stock_only:
         scene_assets, clip_match = collect_matched_stock(scenes, plans, assets_dir, used_ids, subject,
                                                          fallback_query, topic)
+    if stock_only:
         if not any(scene_assets):
             scene_assets = [
                 [("image", p) for p in generate_flux_images(scene["visual"], len(plan), assets_dir, f"s{idx:02d}", style)]
@@ -454,19 +478,22 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
         if not assets:
             # Reuse earlier material with a different camera move rather than leave a gap.
             assets = [bank[(idx + k) % len(bank)] for k in range(len(plan))]
-        elif stock_only and len(assets) < len(plan):
-            # Fewer matching clips than cuts: each clip plays once, longer. Cutting one clip into
-            # overlapping pieces made the picture jump back and forth.
-            plan = [sum(plan) / len(assets)] * len(assets)
+        elif stock_only:
+            # One shot per matched clip, each played once: cutting one clip into overlapping pieces
+            # made the picture jump back and forth.
+            total = sum(plan)
+            shots = max(1, min(len(assets), int(total // MIN_SHOT_SECONDS)))
+            plan = [total / shots] * shots
         for seg_idx, seg_dur in enumerate(plan):
-            kind, path = assets[seg_idx % len(assets)]
+            kind, path, *start = assets[seg_idx % len(assets)]
             out = seg_dir / f"seg_{idx:02d}_{seg_idx:02d}.mp4"
             if kind == "image":
                 render_image_segment(path, out, seg_dur, motion)
                 ai_images += 1
                 thumbnail = thumbnail or path
             else:
-                render_video_segment(path, out, seg_dur, offset=0.3 + 0.7 * (seg_idx % 3))
+                offset = start[0] if start and start[0] is not None else 0.3 + 0.7 * (seg_idx % 3)
+                render_video_segment(path, out, seg_dur, offset=offset)
                 stock_videos += 1
             motion += 1
             if segments:

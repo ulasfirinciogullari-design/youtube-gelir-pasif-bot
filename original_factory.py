@@ -76,6 +76,11 @@ SERIES = {
 }
 ROTATION = ["merak", "karakter", "story"]  # order "karisik" walks through
 MUSIC_VOLUME = 0.09  # the reference Shorts keep music well under the voice
+# Sound effects stay accents: Ulaş found a whoosh on every scene change loud and tiring.
+WHOOSH_VOLUME = 0.07
+IMPACT_VOLUME = 0.3
+RISER_VOLUME = 0.15
+SKIPPED_TOPICS_FILE = "skipped_topics.json"  # curiosity topics free footage could not show
 SUBTITLE_MARGIN_V = 620  # lower third, above the Shorts title/channel overlay
 voice_usage = {"elevenlabs": 0, "edge-tts": 0}
 
@@ -213,6 +218,55 @@ def topic_subject(topic: dict) -> list[str] | None:
     return topic.get("subject") or (topic.get("stock_hint") or "").split()[:1] or None
 
 
+def skipped_topic_ids(data_dir: Path = DATA_DIR) -> set[str]:
+    try:
+        return {t["id"] for t in json.loads((data_dir / SKIPPED_TOPICS_FILE).read_text(encoding="utf-8"))}
+    except (OSError, ValueError, KeyError, TypeError):
+        return set()
+
+
+def skip_topic(data_dir: Path, topic: dict, coverage: int) -> None:
+    path = data_dir / SKIPPED_TOPICS_FILE
+    try:
+        skipped = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        skipped = []
+    skipped.append({"id": topic["id"], "topic": topic["topic"], "coverage": coverage,
+                    "date": time.strftime("%Y-%m-%d")})
+    data_dir.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(skipped, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def merak_script(topic: dict, published: set[str], explicit: bool, dna: dict | None = None,
+                 data_dir: Path = DATA_DIR, footage=None, fallback=None, max_skips: int = 2):
+    """Footage-first script for a curiosity topic: (topic, script, provider, clip_pool).
+
+    A topic the run picked itself is skipped (and remembered) when free footage covers it poorly;
+    one asked for by id is made anyway. Without a footage script the script-first flow is used."""
+    from app.services import footage_script
+
+    footage = footage or footage_script.write_footage_script
+    for _ in range(max_skips + 1):
+        try:
+            result = footage(topic, OUTPUT_DIR / f"previews_{topic['id']}")
+        except Exception as e:  # never lose the run over the upgrade
+            print(f"ℹ️ Görüntüye göre senaryo yazılamadı: {str(e)[:200]}")
+            result = None
+        if result is None:
+            break
+        coverage = result["coverage"]
+        print(f"🎞️ Görüntü kapsamı: {coverage}/10")
+        if coverage >= footage_script.MIN_COVERAGE or explicit:
+            return topic, result["script"], "gemini (görüntüye göre)", result["pool"]
+        print(f"⏭️ {topic['id']} atlandı: stok görüntü konuyu yeterince göstermiyor.")
+        skip_topic(data_dir, topic, coverage)
+        published = published | {topic["id"]}
+        topic = choose_topic(published, None, dna, data_dir, series="merak")
+    character = {**topic, "stock_hint": topic.get("stock_hint", ""), "subject": topic_subject(topic)}
+    script, provider = (fallback or write_script)(topic["topic"], style_examples=[], rules=None, character=character)
+    return topic, script, provider, None
+
+
 INVENTORS = {"story": "invent_topic", "karakter": "invent_character_topic", "merak": "invent_merak_topic"}
 
 
@@ -342,7 +396,8 @@ def sfx(name: str, library: Path | None = None) -> Path | None:
 
 
 def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[float], music: Path | None) -> Path:
-    """Voice + ducked music + sub hit on the hook + whoosh on scene changes + riser into the ending."""
+    """Voice + low music + a soft hit on the hook, a quiet whoosh only after the hook and into the last
+    scene, and a riser into the ending."""
     inputs = ["-i", str(voice)]
     filters = ["[0:a]highpass=f=70,acompressor=threshold=-16dB:ratio=3:attack=5:release=60,volume=1.1[v]"]
     labels = ["[v]"]
@@ -360,14 +415,14 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
         add(music, f"volume={MUSIC_VOLUME},afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m", loop=True)
     impact, whoosh, riser = sfx("impact"), sfx("whoosh"), sfx("riser")
     if impact:
-        add(impact, "volume=0.5", "imp")
+        add(impact, f"volume={IMPACT_VOLUME}", "imp")
     if whoosh:
-        for i, t in enumerate(scene_cuts[:10]):
+        for i, t in enumerate(sorted({scene_cuts[0], scene_cuts[-1]}) if scene_cuts else []):
             ms = max(0, int((t - 0.2) * 1000))
-            add(whoosh, f"volume=0.22,adelay={ms}|{ms}", f"w{i}")
+            add(whoosh, f"volume={WHOOSH_VOLUME},adelay={ms}|{ms}", f"w{i}")
     if riser and duration > 8:
         ms = int((duration - 2.5) * 1000)
-        add(riser, f"volume=0.28,adelay={ms}|{ms}", "ris")
+        add(riser, f"volume={RISER_VOLUME},adelay={ms}|{ms}", "ris")
 
     mix = f"{''.join(labels)}amix=inputs={len(labels)}:duration=first:normalize=0,loudnorm=I=-14:TP=-1.0:LRA=9[aout]"
     cmd = [
@@ -426,7 +481,8 @@ def render_final(segments: list[Path], audio: Path, subtitles_file: Path, durati
 # Production
 # ---------------------------------------------------------------------------
 
-def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line, series: str = "story") -> dict:
+def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line, series: str = "story",
+            clip_pool: list[dict] | None = None) -> dict:
     from app.services.subtitle_engine import generate_shorts_ass_subtitles
 
     stamp = int(time.time())
@@ -450,7 +506,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
                                  stock_only=cfg.get("stock_only", False), segment_seconds=cfg.get("cut", 2.5),
                                  fallback_query=topic.get("stock_hint", ""),
                                  subject=topic_subject(topic) if cfg.get("stock_only") else None,
-                                 topic=topic["topic"])
+                                 topic=topic["topic"], clip_pool=clip_pool)
 
     print("[3/4] 🎵 Ses tasarımı ve altyazı")
     subs = work_dir / "subtitles.ass"
@@ -585,7 +641,7 @@ def main(argv=None) -> int:
         from publish_to_youtube import get_authenticated_service
         youtube = get_authenticated_service()
         published, examples = report_channel(youtube, MARKER_RE, OUTPUT_DIR)
-        published |= used_topic_ids(DATA_DIR)
+        published |= used_topic_ids(DATA_DIR) | skipped_topic_ids(DATA_DIR)
         print(f"📋 Kanalda yayınlanmış konu sayısı: {len(published)}")
     else:
         examples = []
@@ -601,19 +657,20 @@ def main(argv=None) -> int:
     topic = choose_topic(published, args.topic_id, dna, series=series)
     print(f"🎯 Seri {series} | konu {topic['id']}: {topic['topic']}")
 
-    rules = dna.get("our_rules")
-    character = None
-    if series == "karakter":
-        character = topic
-        examples = film_title_examples(DATA_DIR) or examples
-    elif series == "merak":
-        # The channel's top titles and competitor rules come from history/film videos; the prompt has its own examples.
-        character = {**topic, "stock_hint": topic.get("stock_hint", ""), "subject": topic_subject(topic)}
-        examples, rules = [], None
-    script, provider = write_script(topic["topic"], style_examples=examples, rules=rules, character=character)
+    clip_pool = None
+    if series == "merak":
+        # Channel top titles and competitor rules come from history/film videos, so the merak prompts use their own.
+        topic, script, provider, clip_pool = merak_script(topic, published, bool(args.topic_id), dna)
+    else:
+        character = None
+        if series == "karakter":
+            character = topic
+            examples = film_title_examples(DATA_DIR) or examples
+        script, provider = write_script(topic["topic"], style_examples=examples, rules=dna.get("our_rules"),
+                                        character=character)
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 
-    result = produce(topic, script, provider, series=series)
+    result = produce(topic, script, provider, series=series, clip_pool=clip_pool)
     if youtube is not None:
         video_id = upload(youtube, result, args.privacy)
         record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], SERIES[series]["format"])

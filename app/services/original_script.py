@@ -352,6 +352,18 @@ def scrub_names(text: str, names) -> str:
     return " ".join(text.split())
 
 
+def _clip_refs(value) -> list[dict]:
+    """Footage-first scripts name their clips per scene: [{"n": candidate number, "kare": best frame 1-3}]."""
+    refs = []
+    for item in value if isinstance(value, list) else []:
+        number, frame = (item.get("n"), item.get("kare", 2)) if isinstance(item, dict) else (item, 2)
+        try:
+            refs.append({"n": int(number), "kare": min(3, max(1, int(frame)))})
+        except (TypeError, ValueError):
+            continue
+    return refs[:4]
+
+
 def _is_character(topic: dict | None) -> bool:
     return bool(topic) and bool(topic.get("character"))
 
@@ -383,12 +395,15 @@ def validate_script(script: dict, character: dict | None = None) -> dict:
         if len(text) > MAX_SCENE_CHARS:
             raise ScriptError("scene narration too long")
         source = str(raw.get("source") or "ai").strip().lower()
-        scenes.append({
+        scene = {
             "text": text,
             "visual": visual,
             "stock_query": " ".join(str(raw.get("stock_query") or "").split())[:80],
             "source": source if source in ("ai", "stock") else "ai",
-        })
+        }
+        if _clip_refs(raw.get("clips")):
+            scene["clips"] = _clip_refs(raw.get("clips"))
+        scenes.append(scene)
     if not MIN_SCENES <= len(scenes) <= MAX_SCENES:
         raise ScriptError(f"scene count {len(scenes)} out of range")
 

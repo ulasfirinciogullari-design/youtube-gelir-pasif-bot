@@ -363,3 +363,133 @@ def test_stock_scene_with_fewer_clips_plays_each_clip_once(tmp_path, monkeypatch
     # 4.8 s would be three cuts, but only one clip matched: it plays once for the whole scene.
     assert rendered == [("a.mp4", 4.8), ("b.mp4", 1.6), ("c.mp4", 1.6)]
     assert result["clip_match"] == "gemini" and result["cut_times"] == [4.8, 6.4]
+
+
+FOOTAGE_REPLY = {
+    "coverage": 8,
+    "title": "Kediler neden hep ayakta düşer? 🐱",
+    "hook_text": "KEDİLER NEDEN AYAKTA DÜŞER?",
+    "scenes": [
+        {"text": s["text"], "visual": s["visual"], "clips": clips}
+        for s, clips in zip(MERAK_SCRIPT["scenes"], [
+            [{"n": 3, "kare": 2}, {"n": 5, "kare": 9}], [{"n": 3, "kare": 1}, {"n": 1}], [2], [{"n": 4, "kare": 3}],
+            [{"n": 6, "kare": 1}], [{"n": 7, "kare": 2}, {"n": 99}],
+        ])
+    ],
+    "description": "Kedilerin düşerken nasıl döndüğünü anlatıyoruz.",
+    "tags": ["kedi"], "pinned_comment": "Senin kedin hiç düştü mü?", "en_title": "Cats", "en_description": "Cats.",
+}
+
+
+def test_footage_first_script_names_clips_for_every_scene(tmp_path, monkeypatch):
+    from app.services import footage_script, original_visuals
+    hits = {"cat jumping": [_hit(i, "cat", duration=12) for i in range(1, 11)],
+            "cat landing": [_hit(i, "cat", duration=12) for i in range(5, 15)]}
+    monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: hits[q][:limit])
+    replies, prompts = [json.dumps({"scenes": []}), json.dumps(FOOTAGE_REPLY)], []
+
+    def fake_call(parts, temperature=0.2):
+        prompts.append(parts)
+        return replies.pop(0)
+
+    topic = {"id": "mk-001", "topic": "Kediler neden ayakta düşer?", "stock_hint": "cat jumping", "subject": ["cat"]}
+    result = footage_script.write_footage_script(
+        topic, tmp_path, call=fake_call, plan=lambda t, s, h: ["cat jumping", "cat landing"],
+        sheet=lambda hit, d: (b"\xff\xd8\xff", "image/jpeg"),
+    )
+    # Both searches contribute in turn and the 6 clips they share appear once.
+    assert result["coverage"] == 8 and [h["id"] for h in result["pool"][:6]] == [1, 5, 2, 6, 3, 7]
+    assert len(result["pool"]) == 14
+    scenes = result["script"]["scenes"]
+    # Clip 3 is taken by scene 1, so scene 2 keeps only clip 1; frame 9 is clamped to 3; clip 99 does not exist.
+    assert scenes[0]["clips"] == [{"n": 3, "kare": 2}, {"n": 5, "kare": 3}]
+    assert scenes[1]["clips"] == [{"n": 1, "kare": 2}] and scenes[5]["clips"] == [{"n": 7, "kare": 2}]
+    # The first reply was rejected and the retry tells Gemini why.
+    assert len(prompts) == 2 and "reddedildi" in prompts[1][1]["text"]
+    assert sum(1 for p in prompts[0] if "inlineData" in p) == 14 and "Aday 1 (12 sn):" in prompts[0][1]["text"]
+    assert footage_script.frame_time(12, 1) == pytest.approx(1.2) and footage_script.frame_time(12, 3) == pytest.approx(7.6)
+
+
+def test_footage_first_gives_up_without_enough_footage(tmp_path, monkeypatch):
+    from app.services import footage_script, original_visuals
+    monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: [_hit(1, "cat")])
+    topic = {"id": "mk-001", "topic": "Kedi", "subject": ["cat"]}
+    assert footage_script.write_footage_script(topic, tmp_path, call=lambda p, temperature=0.2: "{}",
+                                               plan=lambda t, s, h: ["cat"]) is None
+
+
+def test_assigned_clips_start_at_the_frame_the_script_was_written_to(tmp_path, monkeypatch):
+    from app.services import original_visuals
+    pool = [_hit(i, "cat", duration=12) for i in range(1, 5)]
+    monkeypatch.setattr(original_visuals, "download_pixabay_hit",
+                        lambda hit, d, used: d / f"pixabay_{hit['id']}.mp4")
+    rendered = []
+    monkeypatch.setattr(original_visuals, "render_video_segment",
+                        lambda video, out, duration, offset: rendered.append((video.name, round(duration, 2), offset)) or out)
+    scenes = [{"text": "a", "visual": "a", "clips": [{"n": 2, "kare": 3}, {"n": 4, "kare": 1}]},
+              {"text": "b", "visual": "b", "clips": [{"n": 1, "kare": 2}]}]
+    result = original_visuals.build_visual_track(scenes, [3.0, 2.0], tmp_path, stock_only=True, segment_seconds=1.6,
+                                                 clip_pool=pool)
+    # Frames of a 12 s clip sit at 1.2, 4.4 and 7.6 s; each shot starts 0.4 s before its frame.
+    assert rendered == [("pixabay_2.mp4", 1.5, 7.2), ("pixabay_4.mp4", 1.5, 0.8), ("pixabay_1.mp4", 2.0, 4.0)]
+    assert result["clip_match"] == "senaryo görüntüye göre"
+
+
+def test_whoosh_plays_only_after_the_hook_and_into_the_last_scene(tmp_path, monkeypatch):
+    lib = tmp_path / "audio"
+    (lib / "sfx").mkdir(parents=True)
+    for name in ("whoosh", "impact", "riser"):
+        (lib / "sfx" / f"{name}.mp3").write_bytes(b"ID3")
+    monkeypatch.setattr(original_factory, "AUDIO_LIBRARY", lib)
+    commands = []
+    monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
+    original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0, 14.0, 20.0, 26.0], None)
+    graph = commands[0][commands[0].index("-filter_complex") + 1]
+    assert graph.count("volume=0.07,adelay") == 2 and "adelay=3800|3800" in graph and "adelay=25800|25800" in graph
+    assert "volume=0.3[imp]" in graph and "volume=0.15,adelay" in graph
+
+
+def test_merak_script_skips_topics_free_footage_cannot_show(tmp_path, monkeypatch):
+    topics = [{"id": f"mk-00{i}", "topic": f"Konu {i}", "stock_hint": "cat", "subject": ["cat"]} for i in (1, 2, 3)]
+    monkeypatch.setattr(original_factory, "load_topics", lambda path=None: topics)
+    coverage = {"mk-001": 3, "mk-002": 8}
+
+    def footage(topic, work_dir):
+        return {"coverage": coverage[topic["id"]], "script": {"title": topic["topic"]}, "pool": ["clip"]}
+
+    topic, script, provider, pool = original_factory.merak_script(topics[0], set(), False, data_dir=tmp_path,
+                                                                  footage=footage)
+    assert topic["id"] == "mk-002" and pool == ["clip"] and "görüntüye göre" in provider
+    assert original_factory.skipped_topic_ids(tmp_path) == {"mk-001"}
+    # Asked for by id: made even with weak footage.
+    topic, *_ = original_factory.merak_script(topics[0], set(), True, data_dir=tmp_path, footage=footage)
+    assert topic["id"] == "mk-001"
+    # No footage script at all: the script-first flow takes over.
+    topic, script, provider, pool = original_factory.merak_script(
+        topics[2], set(), False, data_dir=tmp_path, footage=lambda t, d: None,
+        fallback=lambda topic, **kw: ({"title": "eski yol"}, "gemini"))
+    assert pool is None and script == {"title": "eski yol"} and topic["id"] == "mk-003"
+
+
+def test_audio_library_replaces_only_the_requested_series(tmp_path, monkeypatch):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_audio_library", original_factory.BASE_DIR / "scripts" / "build_audio_library.py")
+    lib = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lib)
+    monkeypatch.setattr(lib, "LIBRARY", tmp_path)
+    (tmp_path / "music").mkdir()
+    (tmp_path / "sfx").mkdir()
+    for name in ("merak_1", "story_1"):
+        (tmp_path / "music" / f"{name}.mp3").write_bytes(b"old")
+    for name in lib.SFX:
+        (tmp_path / "sfx" / f"{name}.mp3").write_bytes(b"old")
+    made = []
+    monkeypatch.setattr(lib, "generate", lambda path, key, payloads, dest: made.append(dest.name) or "yazıldı")
+    monkeypatch.setattr(lib, "credits_used", lambda key: 0)
+    import app.services.elevenlabs_engine as eleven
+    monkeypatch.setattr(eleven, "get_elevenlabs_api_key", lambda: "k")
+    assert lib.main(["merak", "--replace"]) == 0
+    assert made == ["merak_1.mp3", "merak_2.mp3", "merak_3.mp3"]
+    made.clear()
+    lib.main(["--replace"])  # no series: only missing tracks, never the whole library
+    assert "merak_1.mp3" not in made and "story_1.mp3" not in made and "story_2.mp3" in made

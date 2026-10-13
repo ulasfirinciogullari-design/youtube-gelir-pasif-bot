@@ -8,8 +8,9 @@ ElevenLabs plan's credits (the Creator plan allows commercial use) and writes
 them to channel-data/audio/, which the workflow commits to the channel-data
 branch. Files that already exist are kept, so a re-run only fills gaps.
 
-  python scripts/build_audio_library.py            # every series
-  python scripts/build_audio_library.py merak      # only that series' music (plus the effects)
+  python scripts/build_audio_library.py                    # fill in missing tracks of every series
+  python scripts/build_audio_library.py merak              # only that series' music (plus the effects)
+  python scripts/build_audio_library.py merak --replace    # regenerate that series' music after a prompt change
 """
 
 import json
@@ -27,12 +28,17 @@ API = "https://api.elevenlabs.io/v1"
 MUSIC_SECONDS = 50  # longer than any Short; the mix loops and fades it
 
 MUSIC = {
-    "merak_1": "Instrumental light curious electronic background for a fun science fact video: plucky synth arpeggio, "
-               "soft claps, gentle bass, playful and bright, low energy so a voice stays on top, no vocals, 110 bpm",
-    "merak_2": "Instrumental intriguing discovery underscore: ticking light percussion, airy pads, soft marimba motif, "
-               "slight suspense that opens into wonder, no vocals, 100 bpm",
-    "merak_3": "Instrumental upbeat light pizzicato strings and glockenspiel, quirky and cheerful, sparse arrangement "
-               "for narration, no vocals, 115 bpm",
+    # Second take (2026-10-13): Ulaş found the first curiosity tracks "basit". These ask for a fuller,
+    # produced sound like the electronic beds of Keşif Vakti and Full Asfalt.
+    "merak_1": "Polished modern instrumental for a viral science facts Short: punchy lo-fi hip-hop drums with crisp snares, "
+               "warm Rhodes chords, plucky synth lead with a catchy curious hook, deep round bass, subtle vinyl texture, "
+               "steady head-nodding groove, full professional mix, no vocals, 92 bpm",
+    "merak_2": "Upbeat curious electronic explainer track like popular YouTube fact channels: bouncy synth bass, playful "
+               "marimba and pizzicato motif, tight claps and shakers, small filter-sweep risers every 8 bars, bright and "
+               "energetic layered arrangement, professional mix, no vocals, 118 bpm",
+    "merak_3": "Cinematic mystery-to-wonder underscore for a nature documentary Short: ticking percussion, pulsing low synth, "
+               "evolving string ostinato, glassy piano motif, gradual build with soft taiko hits that opens into a wide "
+               "uplifting chord near the end, rich layered production, no vocals, 100 bpm",
     "story_1": "Instrumental cinematic documentary underscore for a true historical story: low cello ostinato, "
                "soft taiko pulse, distant wordless choir pad, slowly building tension, no vocals, 85 bpm",
     "story_2": "Instrumental mysterious ancient world ambience: breathy duduk melody, frame drum, deep drones, "
@@ -101,7 +107,9 @@ def main(argv=None) -> int:
     from app.services.elevenlabs_engine import get_elevenlabs_api_key
 
     args = sys.argv[1:] if argv is None else argv
-    series = args[0] if args and any(n.startswith(f"{args[0]}_") for n in MUSIC) else None
+    names = [a for a in args if not a.startswith("--")]
+    series = names[0] if names and any(n.startswith(f"{names[0]}_") for n in MUSIC) else None
+    replace = "--replace" in args and series is not None  # never regenerate the whole library by accident
 
     key = get_elevenlabs_api_key()
     if not key:
@@ -116,7 +124,7 @@ def main(argv=None) -> int:
         if series and not name.startswith(f"{series}_"):
             continue
         dest = LIBRARY / "music" / f"{name}.mp3"
-        if dest.exists():
+        if dest.exists() and not replace:
             results.append(f"müzik {name}: zaten var")
             continue
         status = generate("/music?output_format=mp3_44100_128", key, [

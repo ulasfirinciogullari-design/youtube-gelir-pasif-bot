@@ -68,16 +68,17 @@ def fetch_thumbnail(url: str | None) -> tuple[bytes, str] | None:
     return (data, mime) if mime else None
 
 
-def _call_gemini_parts(parts: list[dict]) -> str | None:
+def _call_gemini_parts(parts: list[dict], temperature: float = 0.2) -> str | None:
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         return None
     model = os.environ.get("GEMINI_SCRIPT_MODEL", "gemini-2.5-flash")
     data = _post_json(
         f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-        {"contents": [{"parts": parts}], "generationConfig": {"responseMimeType": "application/json", "temperature": 0.2}},
+        {"contents": [{"parts": parts}],
+         "generationConfig": {"responseMimeType": "application/json", "temperature": temperature}},
         {"x-goog-api-key": key},
-        timeout=180,
+        timeout=240,
     )
     out = data.get("candidates", [{}])[0].get("content", {}).get("parts", [])
     return "".join(p.get("text", "") for p in out)

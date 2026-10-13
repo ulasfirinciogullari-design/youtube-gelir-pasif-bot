@@ -17,7 +17,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = ElevenLabs müzik/efekt kütüphanesini üret, referans = video_ids alanındaki örnek Shorts videolarını analiz et)'
+        description: 'İş (video = Short üret, rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et)'
         required: true
         default: 'video'
         type: choice
@@ -141,7 +141,7 @@ jobs:
             exit $?
           fi
           if [ "$TASK" = "ses" ]; then
-            python scripts/build_audio_library.py "$CONTENT_FORMAT"  # karisik = every series
+            python scripts/build_audio_library.py "$CONTENT_FORMAT" --replace  # karisik = only fill missing tracks
             exit $?
           fi
           if [ "$TASK" = "temizlik" ]; then
