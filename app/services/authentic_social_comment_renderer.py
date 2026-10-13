@@ -592,60 +592,60 @@ class AuthenticSocialCommentRenderer:
 
 
 def get_kolpacino_comments() -> List[SocialComment]:
-    """Returns the 5 witty, niche, authentic Kolpaçino scene comments."""
+    """Returns the witty, niche, authentic Kolpaçino scene comments with organic internet handles."""
     return [
-        # Card 1: YouTube Dark Mode - The Classic Cat Avatar & Legendary Observation
+        # Card 1: YouTube Dark Mode - sabri_magduru & Cat Avatar
         SocialComment(
             platform="youtube",
-            author_name="Emrecan Yılmaz",
-            handle="@emrecanyilmaz",
+            author_name="sabri_magduru",
+            handle="@user-kd9sm2pl",
             timestamp="3 gün önce",
-            text="Sabri abi adamın evini barkını yıktı, arabasını yaktı, üstüne 'kusura bakma ben onun adına özür diliyorum' diyor delirmemek elde değil ahsdhashd 😂",
+            text="Sabri abi adamın evini barkını yıktı, arabasını yaktı, üstüne 'onun adına özür diliyorum' diyor delirmemek elde değil ahahah 😂",
             metrics={"likes": "842"},
             avatar_file="avatar_cat.jpg",
             output_filename="real_social_c1.png"
         ),
-        # Card 2: TikTok Dark Mode - Tayfun's Nodding
+        # Card 2: TikTok Dark Mode - mertcanxd & Tayfun's Nodding
         SocialComment(
             platform="tiktok",
-            author_name="Selin Arslan",
-            handle="@selin.arslan",
+            author_name="mertcanxd",
+            handle="@kedi_seven_biri",
             timestamp="1g önce",
             text="Tayfun arkada kurbanlık koyun gibi 'Evet abi' diye kafa sallıyor ya, adamdaki rahatlık kimsede yok 😭💀",
             metrics={"likes": "1.8K"},
             avatar_file="avatar_chill_girl.jpg",
             output_filename="real_social_c2.png"
         ),
-        # Card 3: X (Twitter) Dark Mode - Ricochet calculation
+        # Card 3: X (Twitter) Dark Mode - Kral Baba & Aging 15 Years
         SocialComment(
             platform="x",
-            author_name="Burak Yılmaz",
-            handle="@burak_tweet",
+            author_name="Kral Baba",
+            handle="@kral_baba_34",
             timestamp="4s",
-            text="Merminin sekme açısını Sabri abiye anlatsan 'sağlık olsun kardeşim' der yine Özgür'ün kafasına sıktırır amk ♟️🔥",
+            text="Özgür'ün hayatı: Sabri abiyle iki gün takılıp on beş yıl yaşlanmak amk 💀🔥",
             verified=True,
             metrics={"retweets": "185", "likes": "3.2K", "views": "94K"},
             avatar_file="avatar_street_guy.jpg",
             output_filename="real_social_c3.png"
         ),
-        # Card 4: Instagram Dark Mode - Aging 15 years
+        # Card 4: Instagram Dark Mode - patates_puresi
         SocialComment(
             platform="instagram",
-            author_name="Damla Demir",
-            handle="@damla_demir",
+            author_name="patates_seven_adam",
+            handle="@patates_puresi",
             timestamp="2g",
-            text="Özgür'ün hayatı: Sabri abiyle 2 gün takılıp 15 yıl yaşlanmak ahahah 💀",
+            text="Abi adam 'beni bir oyuna getirirsen bileyim yani' derkenki o çaresizlik beni benden alıyor ahahah 🎯😂",
             metrics={"likes": "1.4K beğenme"},
             avatar_file="avatar_funny_dog.jpg",
             output_filename="real_social_c4.png"
         ),
-        # Card 5: YouTube Dark Mode - Resignation quote
+        # Card 5: YouTube Dark Mode - user-dj4ls82
         SocialComment(
             platform="youtube",
-            author_name="Onur Aksoy",
-            handle="@onur_aksoy",
+            author_name="Ali",
+            handle="@user-dj4ls82",
             timestamp="4 gün önce",
-            text="Abi adam 'beni bir oyuna getirirsen bileyim yani' derkenki o kabullenmişlik çaresizliği beni benden alıyor 😂🎯",
+            text="Merminin sekme açısını Sabri abiye anlatsan 'sağlık olsun kardeşim' der yine Özgür'e sıktırır amk 💀🎯",
             metrics={"likes": "620"},
             avatar_file="avatar_car.jpg",
             output_filename="real_social_c5.png"
