@@ -127,23 +127,25 @@ def render_master():
     )
 
     # Audio Filter complex:
-    # 5:a -> voice (volume=1.45)
-    # 6:a -> music (ducked volume=0.10, lowpass=4500)
-    # 7:a -> ui_pop at 2.0s
-    # 8:a -> vine boom 1 at 7.5s, vine boom 2 at 26.5s
-    # 9:a -> cash register at 16.5s
-    # 10:a -> whoosh at 32.8s
+    # SordumDede / Wandays Broadcast Audio Standard:
+    # 5:a -> voice (volume=2.0, highpass 80Hz, presence boost @ 3kHz, split for sidechain)
+    # 6:a -> music (ducked volume=0.035, lowpass 2800Hz, sidechain compressed against voice)
+    # 7:a -> ui_pop (volume=0.45)
+    # 8:a -> vine boom 1 at 7.5s, vine boom 2 at 26.5s (volume=0.45)
+    # 9:a -> cash register at 16.5s (volume=0.40)
+    # 10:a -> whoosh at 32.8s (volume=0.45)
     audio_filter = (
-        "[5:a]volume=1.45[voice];"
-        "[6:a]volume=0.10,lowpass=f=4500,highpass=f=100[music];"
-        "[7:a]adelay=2000|2000,volume=0.9[sfx_pop];"
-        "[8:a]adelay=7500|7500,volume=0.85[sfx_boom1];"
-        "[8:a]adelay=26500|26500,volume=0.85[sfx_boom2];"
-        "[9:a]adelay=16500|16500,volume=0.80[sfx_cash];"
-        "[10:a]adelay=32800|32800,volume=0.75[sfx_whoosh];"
-        "[voice][music][sfx_pop][sfx_boom1][sfx_boom2][sfx_cash][sfx_whoosh]"
+        "[5:a]volume=2.0,highpass=f=80,equalizer=f=3000:t=q:w=1:g=2.5,asplit=2[voice_main][voice_sc];"
+        "[6:a]volume=0.035,lowpass=f=2800,highpass=f=100[music_raw];"
+        "[music_raw][voice_sc]sidechaincompress=threshold=0.03:ratio=10:attack=10:release=250[music_ducked];"
+        "[7:a]adelay=2000|2000,volume=0.45[sfx_pop];"
+        "[8:a]adelay=7500|7500,volume=0.45[sfx_boom1];"
+        "[8:a]adelay=26500|26500,volume=0.45[sfx_boom2];"
+        "[9:a]adelay=16500|16500,volume=0.40[sfx_cash];"
+        "[10:a]adelay=32800|32800,volume=0.45[sfx_whoosh];"
+        "[voice_main][music_ducked][sfx_pop][sfx_boom1][sfx_boom2][sfx_cash][sfx_whoosh]"
         "amix=inputs=7:duration=first:dropout_transition=0,"
-        "loudnorm=I=-15:TP=-0.7:LRA=7[a_master]"
+        "loudnorm=I=-13:TP=-0.8:LRA=5[a_master]"
     )
 
     filter_complex = f"{video_filter};{audio_filter}"
