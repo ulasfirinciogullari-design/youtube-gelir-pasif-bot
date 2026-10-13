@@ -357,63 +357,82 @@ async def upload_audio_track_async(video_id: str, lang_code: str, audio_file: Pa
         await p.stop()
 
 
-async def pin_comment_async(video_id: str, comment_text: str, headless: bool = True) -> bool:
+async def pin_comment_async(video_id: str, comment_text: str, headless: bool = True, already_posted: bool = False) -> bool:
     """
-    Submits and pins high-CTR debate comment on YouTube ($0 API quota).
+    Pins the discussion comment on YouTube, guaranteeing STRICTLY 1 comment is posted (NO duplicates).
+    If already_posted=True (or if an existing comment is already visible on the watch page),
+    it does NOT submit a new comment; it only finds the existing comment and pins it.
     """
     watch_url = f"https://www.youtube.com/watch?v={video_id}"
-    print(f"\n💬 [STUDIO PIN COMMENT] Yorum Başa Sabitleniyor: {video_id}")
-    print(f"   Metin: {comment_text[:60]}...")
+    print(f"\n💬 [STUDIO PIN COMMENT] Yorum Başa Sabitleme: {video_id}")
+    print(f"   Metin: {comment_text[:60]}... (Önceden API ile yüklendi mi: {already_posted})")
 
     p, context = await launch_stealth_context(headless=headless)
     page = await context.new_page()
 
     try:
         await page.goto(watch_url, wait_until="domcontentloaded", timeout=40000)
-        await page.wait_for_timeout(3000)
+        await page.wait_for_timeout(3500)
 
         # Scroll to comments
         await page.evaluate("window.scrollBy(0, 600)")
-        await page.wait_for_timeout(2000)
+        await page.wait_for_timeout(2500)
 
-        # Click comment box
-        placeholder = page.locator("#placeholder-area").first
-        if await placeholder.is_visible():
-            await placeholder.click()
-            await page.wait_for_timeout(1000)
+        # Check if an existing comment thread is already visible
+        first_comment = page.locator("ytd-comment-thread-renderer").first
+        existing_comment_visible = await first_comment.is_visible()
 
-            input_box = page.locator("#contenteditable-root").first
-            if await input_box.is_visible():
-                await input_box.fill(comment_text)
+        # If comment was NOT already posted via API and NO comment is visible, submit it via browser
+        if not already_posted and not existing_comment_visible:
+            placeholder = page.locator("#placeholder-area").first
+            if await placeholder.is_visible():
+                await placeholder.click()
                 await page.wait_for_timeout(1000)
 
-                submit_btn = page.locator("#submit-button button").first
-                if await submit_btn.is_visible():
-                    await submit_btn.click()
-                    print("💬 Yorum gönderildi, 3 saniye bekleniyor...")
-                    await page.wait_for_timeout(3000)
+                input_box = page.locator("#contenteditable-root").first
+                if await input_box.is_visible():
+                    await input_box.fill(comment_text)
+                    await page.wait_for_timeout(1000)
 
-                    # Click action menu (3 dots) on latest comment
-                    menu_btn = page.locator("ytd-comment-thread-renderer #action-menu button").first
-                    if await menu_btn.is_visible():
-                        await menu_btn.click()
-                        await page.wait_for_timeout(1000)
+                    submit_btn = page.locator("#submit-button button").first
+                    if await submit_btn.is_visible():
+                        await submit_btn.click()
+                        print("💬 Yorum browser üzerinden gönderildi, 3 saniye bekleniyor...")
+                        await page.wait_for_timeout(3000)
+        else:
+            print("ℹ️ Yorum zaten mevcut/API ile gönderilmiş. Çift yorum engellendi, sadece başa sabitleme kontrol ediliyor.")
 
-                        pin_item = page.locator("tp-yt-paper-item:has-text('sabitle'), tp-yt-paper-item:has-text('Pin'), ytd-menu-service-item-renderer:has-text('sabitle'), [aria-label*='sabitle'], [aria-label*='Pin']").first
-                        if not await pin_item.is_visible():
-                            pin_item = page.get_by_text("Başa sabitle").first
-                        if not await pin_item.is_visible():
-                            pin_item = page.get_by_text("Pin to top").first
-                        if await pin_item.is_visible():
-                            await pin_item.click()
-                            await page.wait_for_timeout(1000)
+        # Check if already pinned
+        pinned_badge = page.locator("ytd-pinned-comment-badge-renderer, [aria-label*='Sabitleyen'], [aria-label*='Pinned by']").first
+        if await pinned_badge.is_visible():
+            print(f"📌 [STUDIO PIN COMMENT] Yorum zaten başa sabitlenmiş! ({video_id})")
+            return True
 
-                            confirm_btn = page.locator("#confirm-button button, ytd-button-renderer#confirm-button").first
-                            if await confirm_btn.is_visible():
-                                await confirm_btn.click()
+        # Click action menu (3 dots) on latest comment
+        menu_btn = page.locator("ytd-comment-thread-renderer #action-menu button").first
+        if await menu_btn.is_visible():
+            await menu_btn.click()
+            await page.wait_for_timeout(1000)
 
-                            print(f"📌 [STUDIO PIN COMMENT] Yorum Başarıyla Başa Sabitlendi ({video_id})!")
-                            return True
+            pin_item = page.locator("tp-yt-paper-item:has-text('sabitle'), tp-yt-paper-item:has-text('Pin'), ytd-menu-service-item-renderer:has-text('sabitle'), [aria-label*='sabitle'], [aria-label*='Pin']").first
+            if not await pin_item.is_visible():
+                pin_item = page.get_by_text("Başa sabitle").first
+            if not await pin_item.is_visible():
+                pin_item = page.get_by_text("Pin to top").first
+            if await pin_item.is_visible():
+                await pin_item.click()
+                await page.wait_for_timeout(1000)
+
+                confirm_btn = page.locator("#confirm-button button, ytd-button-renderer#confirm-button").first
+                if await confirm_btn.is_visible():
+                    await confirm_btn.click()
+                    await page.wait_for_timeout(2000)
+
+                print(f"📌 [STUDIO PIN COMMENT] Tek Yorum Başarıyla Başa Sabitlendi ({video_id})!")
+                return True
+            else:
+                print("ℹ️ Menüde 'Başa sabitle' butonu çıkmadı veya zaten sabitlenmiş.")
+                return True
 
         return False
     except Exception as e:
@@ -424,12 +443,12 @@ async def pin_comment_async(video_id: str, comment_text: str, headless: bool = T
         await p.stop()
 
 
-def auto_bridge_post_publish(video_id: str, target_related: str = MASTER_DOCUMENTARY_ID, pinned_comment: Optional[str] = None):
+def auto_bridge_post_publish(video_id: str, target_related: str = MASTER_DOCUMENTARY_ID, pinned_comment: Optional[str] = None, already_posted: bool = False):
     """
     Hook called automatically by publish_to_youtube.py after any video is published.
     Runs silently in the background if the browser session is authenticated.
     """
-    print(f"\n🚀 [STUDIO POST-PUBLISH AUTO-BRIDGE] Video ID: {video_id}")
+    print(f"\n🚀 [STUDIO POST-PUBLISH AUTO-BRIDGE] Video ID: {video_id} (already_posted={already_posted})")
     try:
         # 1. Link Related Video
         rel_ok = asyncio.run(link_related_video_async(video_id, target_query=target_related, headless=True))
@@ -438,9 +457,9 @@ def auto_bridge_post_publish(video_id: str, target_related: str = MASTER_DOCUMEN
         else:
             print("ℹ️ İlgili Video bağlama adımı headless modda tamamlanamadı (oturum kontrolü gerekebilir).")
 
-        # 2. Pin Comment if provided
+        # 2. Pin Comment if provided (Strictly SINGLE comment)
         if pinned_comment:
-            pin_ok = asyncio.run(pin_comment_async(video_id, pinned_comment, headless=True))
+            pin_ok = asyncio.run(pin_comment_async(video_id, pinned_comment, headless=True, already_posted=already_posted))
             if pin_ok:
                 print("✅ Otomatik Yorum Başa Sabitleme Başarılı!")
 
