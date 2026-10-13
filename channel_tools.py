@@ -13,6 +13,7 @@ import json
 import os
 from pathlib import Path
 import sys
+import urllib.request
 
 BASE_DIR = Path(__file__).resolve().parent
 if str(BASE_DIR) not in sys.path:
@@ -35,7 +36,27 @@ def _summary(text: str) -> None:
             f.write(text)
 
 
+def elevenlabs_plan() -> str:
+    """One line on the ElevenLabs plan: free-plan speech carries no commercial rights."""
+    from app.services.elevenlabs_engine import get_elevenlabs_api_key
+
+    key = get_elevenlabs_api_key()
+    if not key:
+        return "ElevenLabs anahtarı yok; ses edge-tts ile üretiliyor."
+    request = urllib.request.Request("https://api.elevenlabs.io/v1/user/subscription", headers={"xi-api-key": key})
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            sub = json.loads(response.read().decode("utf-8"))
+    except Exception as e:
+        return f"ElevenLabs planı okunamadı ({str(e)[:120]})."
+    tier = str(sub.get("tier", "?"))
+    rights = "yok (ücretsiz plan)" if tier == "free" else "var"
+    return (f"ElevenLabs planı: {tier} | kredi {sub.get('character_count', '?')}/{sub.get('character_limit', '?')} | "
+            f"anında klon: {'evet' if sub.get('can_use_instant_voice_cloning') else 'hayır'} | ticari kullanım hakkı: {rights}")
+
+
 def report(youtube, force_scan: bool = False) -> int:
+    _summary(f"{elevenlabs_plan()}\n\n")
     ours = our_video_ids(DATA_DIR)
     videos, flagged, text = audit_channel(youtube, keep_ids=ours)
     (OUTPUT_DIR / "channel_audit.json").write_text(
