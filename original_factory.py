@@ -37,7 +37,7 @@ SFX_DIR = BASE_DIR / "assets" / "sfx"
 
 VOICE = {"name": "tr-TR-AhmetNeural", "rate": "+6%", "pitch": "-2Hz"}
 MARKER_PREFIX = "Seri: "
-MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3})")
+MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3,})")
 BASE_TAGS = ["shorts", "psikoloji", "tarih", "güç", "karar verme", "zirvenin kanunu"]
 BASE_HASHTAGS = "#shorts #psikoloji #tarih #keşfet"
 HOOK_SECONDS = 2.2
@@ -82,18 +82,22 @@ def _probe_duration(path: Path) -> float:
     return float(out)
 
 
-async def _edge_tts(text: str, out: Path):
+async def _edge_tts(text: str, out: Path, voice: dict | None = None):
     import edge_tts
-    comm = edge_tts.Communicate(text, VOICE["name"], rate=VOICE["rate"], pitch=VOICE["pitch"])
+    voice = voice or VOICE
+    comm = edge_tts.Communicate(text, voice["name"], rate=voice["rate"], pitch=voice["pitch"])
     await comm.save(str(out))
 
 
-def synthesize_line(text: str, out: Path, previous_text: str = "", next_text: str = "", attempts: int = 3) -> Path:
-    """ElevenLabs (Turkish baritone "Alp") when ELEVENLABS_API_KEY is set, otherwise or on failure edge-tts."""
+def synthesize_line(text: str, out: Path, previous_text: str = "", next_text: str = "", attempts: int = 3,
+                    voice_id: str | None = None, edge_voice: dict | None = None) -> Path:
+    """ElevenLabs (default: Turkish baritone "Alp") when ELEVENLABS_API_KEY is set, otherwise or on failure edge-tts."""
     try:
-        from app.services.elevenlabs_engine import get_elevenlabs_api_key, synthesize_elevenlabs_speech
+        from app.services.elevenlabs_engine import (
+            DEFAULT_TURKISH_VOICE_ID, get_elevenlabs_api_key, synthesize_elevenlabs_speech,
+        )
         if get_elevenlabs_api_key() and synthesize_elevenlabs_speech(
-            text, out, previous_text=previous_text, next_text=next_text
+            text, out, voice_id=voice_id or DEFAULT_TURKISH_VOICE_ID, previous_text=previous_text, next_text=next_text
         ) and out.exists() and out.stat().st_size > 1000:
             voice_usage["elevenlabs"] += 1
             return out
@@ -107,7 +111,7 @@ def synthesize_line(text: str, out: Path, previous_text: str = "", next_text: st
     last_error = None
     for attempt in range(attempts):
         try:
-            asyncio.run(_edge_tts(text, out))
+            asyncio.run(_edge_tts(text, out, edge_voice))
             if out.exists() and out.stat().st_size > 1000:
                 voice_usage["edge-tts"] += 1
                 return out
@@ -336,7 +340,7 @@ def upload(youtube, result: dict, privacy: str) -> str:
             "title": meta["title"][:100],
             "description": meta["description"][:5000],
             "tags": meta["tags"],
-            "categoryId": "27",
+            "categoryId": meta.get("category_id", "27"),
             "defaultLanguage": "tr",
             "defaultAudioLanguage": "tr",
         },

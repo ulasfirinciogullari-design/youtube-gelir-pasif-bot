@@ -97,18 +97,24 @@ def fetch_pexels_videos(query: str, count: int, dest_dir: Path, used_ids: set) -
     return results
 
 
-def fetch_pixabay_videos(query: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+def search_pixabay(query: str, per_page: int = 20) -> list[dict]:
     key = os.environ.get("PIXABAY_API_KEY")
-    if not key or not query or count <= 0:
+    if not key or not query:
         return []
-    params = urllib.parse.urlencode({"key": key, "q": query[:100], "per_page": 20, "safesearch": "true"})
+    params = urllib.parse.urlencode({"key": key, "q": query[:100], "per_page": per_page, "safesearch": "true"})
     req = urllib.request.Request(f"https://pixabay.com/api/videos/?{params}", headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
-            hits = json.loads(resp.read().decode("utf-8")).get("hits", [])
+            return json.loads(resp.read().decode("utf-8")).get("hits", [])
     except Exception as e:
         print(f"ℹ️ Pixabay arama notu ({query}): {e}")
         return []
+
+
+def fetch_pixabay_videos(query: str, count: int, dest_dir: Path, used_ids: set) -> list[Path]:
+    if count <= 0:
+        return []
+    hits = search_pixabay(query)
 
     # Vertical clips first: they need no crop.
     hits.sort(key=lambda h: not any(

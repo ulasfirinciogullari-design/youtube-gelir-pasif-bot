@@ -16,8 +16,16 @@ on:
           - 'private'
           - 'unlisted'
           - 'public'
+      format:
+        description: 'Format (comedy = komik dublaj, story = özgün tarih hikâyesi)'
+        required: true
+        default: 'comedy'
+        type: choice
+        options:
+          - 'comedy'
+          - 'story'
       topic_id:
-        description: 'Belirli konu (boş = sıradaki, ör. zk-003)'
+        description: 'Sadece story formatında: belirli konu (boş = sıradaki, ör. zk-003)'
         required: false
         default: ''
         type: string
@@ -69,12 +77,17 @@ jobs:
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           PRIVACY: ${{ github.event_name == 'schedule' && (vars.PUBLISH_PRIVACY || 'public') || github.event.inputs.privacy }}
           TOPIC_ID: ${{ github.event.inputs.topic_id }}
+          CONTENT_FORMAT: ${{ github.event.inputs.format || vars.CONTENT_FORMAT || 'comedy' }}
         run: |
           mkdir -p output
-          ARGS="--privacy $PRIVACY"
-          if [ -n "$TOPIC_ID" ]; then ARGS="$ARGS --topic-id $TOPIC_ID"; fi
-          echo "⚡ Görünürlük: $PRIVACY ${TOPIC_ID:+| Konu: $TOPIC_ID}"
-          python original_factory.py $ARGS
+          echo "⚡ Format: $CONTENT_FORMAT | Görünürlük: $PRIVACY ${TOPIC_ID:+| Konu: $TOPIC_ID}"
+          if [ "$CONTENT_FORMAT" = "story" ]; then
+            ARGS="--privacy $PRIVACY"
+            if [ -n "$TOPIC_ID" ]; then ARGS="$ARGS --topic-id $TOPIC_ID"; fi
+            python original_factory.py $ARGS
+          else
+            python comedy_factory.py --privacy "$PRIVACY"
+          fi
 
       - name: 📤 Yayın Paketini Sakla (Artifact)
         if: always()
@@ -85,6 +98,9 @@ jobs:
             output/ORIGINAL_*.mp4
             output/ORIGINAL_*_thumb.jpg
             output/ORIGINAL_*_meta.json
+            output/COMEDY_*.mp4
+            output/COMEDY_*_thumb.jpg
+            output/COMEDY_*_meta.json
             output/metrics.json
           retention-days: 14
           if-no-files-found: warn

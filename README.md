@@ -116,3 +116,20 @@ birkaç Flux görseli (görsel başı ~0,003 $) ve tek bir kısa LLM çağrısı
   (varsayılan `public`), elle çalıştırmalar workflow girdisiyle seçilir.
 
 Yerelde yüklemeden denemek için: `python original_factory.py --no-upload --topic-id zk-001`
+
+### Komik dublaj formatı (varsayılan)
+
+`comedy_factory.py`, Pixabay'deki ücretsiz hayvan kliplerinden (ticari kullanım
+serbest, kaynak gösterme zorunlu değil ama açıklamaya yazılır) birini seçer,
+Gemini'ye klibi izletip zamanlı ve komik bir Türkçe iç ses yazdırır, her
+karaktere ayrı bir ElevenLabs sesi verir (yoksa edge-tts), klibi bulanık arka
+planlı 9:16 kadraja, altyazı ve kanca yazısıyla birlikte yerleştirir.
+
+- Her klip bir kez kullanılır: açıklamaya `Seri: kd-<pixabay id>` yazılır.
+- Gerekenler: `PIXABAY_API_KEY`, `GEMINI_API_KEY` (veya `GEMINI_API`),
+  isteğe bağlı `ELEVENLABS_API_KEY`.
+- Klip ya da senaryo çıkmazsa o çalışma özgün hikâye formatına döner.
+- Format, workflow girdisi `format` ile (elle çalıştırma) veya
+  `CONTENT_FORMAT` repo değişkeniyle (`comedy` / `story`) seçilir.
+
+Yerelde yüklemeden denemek için: `python comedy_factory.py --no-upload`

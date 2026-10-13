@@ -151,7 +151,7 @@ def test_synthesize_line_prefers_elevenlabs_with_context(tmp_path, monkeypatch):
     from app.services import elevenlabs_engine
     calls = []
 
-    def fake_eleven(text, out, previous_text="", next_text=""):
+    def fake_eleven(text, out, voice_id=None, previous_text="", next_text=""):
         calls.append((text, previous_text, next_text))
         out.write_bytes(b"x" * 2000)
         return True
