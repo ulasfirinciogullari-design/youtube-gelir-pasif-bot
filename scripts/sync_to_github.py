@@ -214,6 +214,8 @@ def sync_core_factory_to_github():
         ("app/services/turn_based_reaction_engine.py", "app/services/turn_based_reaction_engine.py"),
         ("app/services/authentic_social_comment_renderer.py", "app/services/authentic_social_comment_renderer.py"),
         ("scripts/produce_kolpacino_turnbased_master.py", "scripts/produce_kolpacino_turnbased_master.py"),
+        ("scripts/produce_kolpacino_sequential_master.py", "scripts/produce_kolpacino_sequential_master.py"),
+        ("scripts/generate_sequential_kolpacino_thumbnail.py", "scripts/generate_sequential_kolpacino_thumbnail.py"),
         ("scripts/render_clean_footer_playwright.py", "scripts/render_clean_footer_playwright.py"),
         ("scripts/produce_viral_comment_review_short.py", "scripts/produce_viral_comment_review_short.py"),
         ("scripts/produce_real_viral_comment_short.py", "scripts/produce_real_viral_comment_short.py"),
