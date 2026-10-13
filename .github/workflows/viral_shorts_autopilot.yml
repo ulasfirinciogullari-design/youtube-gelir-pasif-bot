@@ -141,7 +141,7 @@ jobs:
             exit $?
           fi
           if [ "$TASK" = "ses" ]; then
-            python scripts/build_audio_library.py
+            python scripts/build_audio_library.py "$CONTENT_FORMAT"  # karisik = every series
             exit $?
           fi
           if [ "$TASK" = "temizlik" ]; then

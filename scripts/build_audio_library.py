@@ -8,7 +8,8 @@ ElevenLabs plan's credits (the Creator plan allows commercial use) and writes
 them to channel-data/audio/, which the workflow commits to the channel-data
 branch. Files that already exist are kept, so a re-run only fills gaps.
 
-  python scripts/build_audio_library.py
+  python scripts/build_audio_library.py            # every series
+  python scripts/build_audio_library.py merak      # only that series' music (plus the effects)
 """
 
 import json
@@ -96,8 +97,11 @@ def generate(path: str, key: str, payloads: list[dict], dest: Path) -> str:
     return f"hata ({last})"
 
 
-def main() -> int:
+def main(argv=None) -> int:
     from app.services.elevenlabs_engine import get_elevenlabs_api_key
+
+    args = sys.argv[1:] if argv is None else argv
+    series = args[0] if args and any(n.startswith(f"{args[0]}_") for n in MUSIC) else None
 
     key = get_elevenlabs_api_key()
     if not key:
@@ -109,6 +113,8 @@ def main() -> int:
     results = []
 
     for name, prompt in MUSIC.items():
+        if series and not name.startswith(f"{series}_"):
+            continue
         dest = LIBRARY / "music" / f"{name}.mp3"
         if dest.exists():
             results.append(f"müzik {name}: zaten var")
