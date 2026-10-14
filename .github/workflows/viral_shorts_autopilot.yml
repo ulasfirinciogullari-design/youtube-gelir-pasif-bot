@@ -153,7 +153,7 @@ jobs:
             # A sample to inspect without filling the channel with private test videos.
             ARGS="--no-upload --series $CONTENT_FORMAT"
             if [ -n "$TOPIC_ID" ]; then ARGS="$ARGS --topic-id $TOPIC_ID"; fi
-            python original_factory.py $ARGS
+            KEEP_AUDIO=1 python original_factory.py $ARGS
             exit $?
           fi
           echo "⚡ Format: $CONTENT_FORMAT | Görünürlük: $PRIVACY ${TOPIC_ID:+| Konu: $TOPIC_ID}"
@@ -173,8 +173,10 @@ jobs:
           for f in metrics.json channel_audit.json competitor_dna.json reference_style.json; do
             [ -f "output/$f" ] && cp "output/$f" channel-data/
           done
-          # The storyboard (one frame a second) lets a session that cannot open YouTube see the video.
-          cp output/ORIGINAL_*_meta.json output/ORIGINAL_*_story.jpg output/COMEDY_*_meta.json channel-data/history/ 2>/dev/null || true
+          # The storyboard (one frame a second) lets a session that cannot open YouTube see the video; a no-upload
+          # sample also leaves its narration and mix (_voice.mp3, _mix.mp3) to be measured.
+          cp output/ORIGINAL_*_meta.json output/ORIGINAL_*_story.jpg output/ORIGINAL_*_voice.mp3 output/ORIGINAL_*_mix.mp3 \
+            output/COMEDY_*_meta.json channel-data/history/ 2>/dev/null || true
           cd channel-data
           git add -A
           if git diff --cached --quiet; then echo "Yeni veri yok"; exit 0; fi

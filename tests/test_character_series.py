@@ -160,22 +160,27 @@ def test_music_follows_the_mood_the_script_picked(tmp_path):
     assert pick("mk-028", "merak", tmp_path, mood="belgesel").name in {"merak_1.mp3", "merak_2.mp3"}
 
 
-def test_music_sits_the_same_distance_under_the_narration_whatever_its_own_level(tmp_path):
+def test_narration_is_brought_to_one_level_and_the_music_sits_under_it(tmp_path):
     def tone(name, source):
         path = tmp_path / name
         subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", source, "-t", "6", str(path)],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         return path
 
-    voice = tone("voice.wav", "sine=frequency=220,volume=4")
-    spoken = original_factory.loudness(voice, chain=original_factory.VOICE_CHAIN)
-    for music in (tone("loud.wav", "sine=frequency=880,volume=6"), tone("quiet.wav", "sine=frequency=880,volume=0.5")):
-        bed = original_factory.loudness(music, chain=f"volume={original_factory.music_gain(voice, music, 6.0)}")
-        assert abs(spoken - bed - original_factory.MUSIC_UNDER_VOICE) < 0.5
-    # Nothing to measure: the old fixed level.
+    f = original_factory
+    music = tone("music.wav", "sine=frequency=880,volume=6")
+    # A quiet voice (like the ElevenLabs narration) and a loud one end up at the same level, the music the same
+    # distance under each.
+    for voice in (tone("quiet.wav", "sine=frequency=220,volume=0.2"), tone("loud.wav", "sine=frequency=220,volume=6")):
+        lift, level = f.mix_levels(voice, music, 6.0)
+        assert abs(f.loudness(voice, chain=f"volume={lift}") - f.VOICE_LUFS) < 0.5
+        processed = f.loudness(voice, chain=f.voice_chain(lift))
+        assert abs(processed - f.loudness(music, chain=f"volume={level}") - f.MUSIC_UNDER_VOICE) < 0.5
+    # Nothing to measure: the old fixed levels.
     silent = tone("silent.wav", "anullsrc=r=44100:cl=mono")
-    assert original_factory.loudness(silent) is None
-    assert original_factory.music_gain(voice, silent, 6.0) == original_factory.MUSIC_VOLUME
+    assert f.loudness(silent) is None
+    assert f.mix_levels(silent, music, 6.0) == (1.0, f.MUSIC_VOLUME)
+    assert f.mix_levels(voice, silent, 6.0)[1] == f.MUSIC_VOLUME
 
 
 def test_music_is_mixed_at_the_measured_level_and_leaves_room_for_the_voice(tmp_path, monkeypatch):
@@ -184,11 +189,12 @@ def test_music_is_mixed_at_the_measured_level_and_leaves_room_for_the_voice(tmp_
     monkeypatch.setattr(original_factory, "AUDIO_LIBRARY", lib)
     track = tmp_path / "merak_3.mp3"
     track.write_bytes(b"ID3")
-    monkeypatch.setattr(original_factory, "music_gain", lambda voice, music, duration: 0.0123)
+    monkeypatch.setattr(original_factory, "mix_levels", lambda voice, music, duration: (2.5, 0.0123))
     commands = []
     monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0], track)
     graph = commands[-1][commands[-1].index("-filter_complex") + 1]
+    assert graph.startswith("[0:a]highpass=f=70,volume=2.5,acompressor=")
     assert "[1:a]volume=0.0123,equalizer=f=2500:t=o:w=2:g=-4,afade=t=in:d=0.4" in graph
 
 
@@ -682,7 +688,7 @@ def test_whoosh_plays_only_after_the_hook_and_into_the_last_scene(tmp_path, monk
     commands = []
     monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0, 14.0, 20.0, 26.0], None)
-    graph = commands[0][commands[0].index("-filter_complex") + 1]
+    graph = commands[-1][commands[-1].index("-filter_complex") + 1]
     assert graph.count("volume=0.07,adelay") == 2 and "adelay=3800|3800" in graph and "adelay=25800|25800" in graph
     assert "volume=0.3[imp]" in graph and "volume=0.15,adelay" in graph
 

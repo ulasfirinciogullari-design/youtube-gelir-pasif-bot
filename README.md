@@ -173,9 +173,12 @@ bulunamazsa kullanılır.
 - Bütün serilerde: kanca sorusu video boyunca ekranın üstünde beyaz, kalın
   kenarlı yazı olarak durur; altyazı alt üçte birde. Yazı tipi Montserrat Black
   (iş akışı `fonts-montserrat` paketini kurar).
-- Müzik: anlatımın ve müziğin ses yüksekliği ölçülür, müzik her parçada anlatımın
-  20 LU altına ayarlanır ve konuşmanın en net duyulduğu bantta (2,5 kHz) biraz
-  kısılır; ölçülemezse eski sabit %9 kullanılır. Merak senaryosunu yazan model
+- Ses seviyeleri ölçülerek ayarlanır: anlatım önce standart seviyeye (-16 LUFS)
+  getirilir (ElevenLabs sesi -38 LUFS civarında geliyordu, bu yüzden eski sabit %9
+  müzik anlatımla neredeyse eşit duyuluyordu), müzik anlatımın 15 LU altına
+  ayarlanır ve konuşmanın en net duyulduğu bantta (2,5 kHz) biraz kısılır;
+  ölçülemezse eski sabit seviyeler kullanılır. `deneme` işi anlatımı ve son miksi
+  `_voice.mp3` / `_mix.mp3` olarak kanal hafızasına da bırakır. Merak senaryosunu yazan model
   videonun havasını da seçer: `belgesel` (vahşi doğa, uzay, gizem) `merak_3`,
   `eğlenceli` (komik, sevimli) `merak_2`, `sakin` (vücut, psikoloji, gündelik
   bilim) `merak_1` parçasını çalar. Seçilen hava meta dosyasında `music_mood`.
