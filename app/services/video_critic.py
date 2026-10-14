@@ -69,8 +69,11 @@ def critique(video: Path, scratch: Path | None = None, reference_id: str = REFER
     """
     try:
         small = shrink(video, (scratch or video.parent) / f"{video.stem}_critic.mp4")
+        # Each video is named right before it: unlabelled, Gemini once critiqued the reference cat video as ours.
         raw = call([
+            {"text": "1. video (REFERANS):"},
             {"fileData": {"fileUri": f"https://www.youtube.com/watch?v={reference_id}"}},
+            {"text": "2. video (BİZİM ürettiğimiz, eleştirilecek olan):"},
             {"inlineData": {"mimeType": "video/mp4", "data": base64.b64encode(small.read_bytes()).decode("ascii")}},
             {"text": CRITIC_PROMPT},
         ])

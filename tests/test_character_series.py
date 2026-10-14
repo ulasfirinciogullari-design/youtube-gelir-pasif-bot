@@ -172,14 +172,13 @@ def test_narration_is_brought_to_one_level_and_the_music_sits_under_it(tmp_path)
     # A quiet voice (like the ElevenLabs narration) and a loud one end up at the same level, the music the same
     # distance under each.
     for voice in (tone("quiet.wav", "sine=frequency=220,volume=0.2"), tone("loud.wav", "sine=frequency=220,volume=6")):
-        lift, level = f.mix_levels(voice, music, 6.0)
-        assert abs(f.loudness(voice, chain=f"volume={lift}") - f.VOICE_LUFS) < 0.5
-        processed = f.loudness(voice, chain=f.voice_chain(lift))
-        assert abs(processed - f.loudness(music, chain=f"volume={level}") - f.MUSIC_UNDER_VOICE) < 0.5
+        chain, level = f.mix_levels(voice, music, 6.0)
+        assert abs(f.loudness(voice, chain=chain) - f.VOICE_LUFS) < 0.5
+        assert abs(f.loudness(music, chain=f"volume={level}") - (f.VOICE_LUFS - f.MUSIC_UNDER_VOICE)) < 0.5
     # Nothing to measure: the old fixed levels.
     silent = tone("silent.wav", "anullsrc=r=44100:cl=mono")
     assert f.loudness(silent) is None
-    assert f.mix_levels(silent, music, 6.0) == (1.0, f.MUSIC_VOLUME)
+    assert f.mix_levels(silent, music, 6.0) == (f.voice_chain(1.0), f.MUSIC_VOLUME)
     assert f.mix_levels(voice, silent, 6.0)[1] == f.MUSIC_VOLUME
 
 
@@ -189,12 +188,13 @@ def test_music_is_mixed_at_the_measured_level_and_leaves_room_for_the_voice(tmp_
     monkeypatch.setattr(original_factory, "AUDIO_LIBRARY", lib)
     track = tmp_path / "merak_3.mp3"
     track.write_bytes(b"ID3")
-    monkeypatch.setattr(original_factory, "mix_levels", lambda voice, music, duration: (2.5, 0.0123))
+    monkeypatch.setattr(original_factory, "mix_levels",
+                        lambda voice, music, duration: (original_factory.voice_chain(2.5, 0.8), 0.0123))
     commands = []
     monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0], track)
     graph = commands[-1][commands[-1].index("-filter_complex") + 1]
-    assert graph.startswith("[0:a]highpass=f=70,volume=2.5,acompressor=")
+    assert graph.startswith("[0:a]highpass=f=70,volume=2.5,acompressor=") and "release=60,volume=0.8[v]" in graph
     assert "[1:a]volume=0.0123,equalizer=f=2500:t=o:w=2:g=-4,afade=t=in:d=0.4" in graph
 
 
@@ -689,8 +689,10 @@ def test_whoosh_plays_only_after_the_hook_and_into_the_last_scene(tmp_path, monk
     monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0, 14.0, 20.0, 26.0], None)
     graph = commands[-1][commands[-1].index("-filter_complex") + 1]
-    assert graph.count("volume=0.07,adelay") == 2 and "adelay=3800|3800" in graph and "adelay=25800|25800" in graph
-    assert "volume=0.3[imp]" in graph and "volume=0.15,adelay" in graph
+    f = original_factory
+    assert graph.count(f"volume={f.WHOOSH_VOLUME},adelay") == 2 and "adelay=3800|3800" in graph
+    assert "adelay=25800|25800" in graph
+    assert f"volume={f.IMPACT_VOLUME}[imp]" in graph and f"volume={f.RISER_VOLUME},adelay" in graph
 
 
 def test_key_facts_pop_up_in_the_middle_of_the_frame(tmp_path):
@@ -721,11 +723,12 @@ def test_pop_sounds_under_each_key_fact(tmp_path, monkeypatch):
     commands = []
     monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0], None, [2.25, 5.25])
-    assert "volume=0.35" not in commands[-1][commands[-1].index("-filter_complex") + 1]  # no pop.mp3 yet
+    pop = f"volume={original_factory.POP_VOLUME},adelay"
+    assert pop not in commands[-1][commands[-1].index("-filter_complex") + 1]  # no pop.mp3 yet
     (lib / "sfx" / "pop.mp3").write_bytes(b"ID3")
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0], None, [2.25, 5.25])
     graph = commands[-1][commands[-1].index("-filter_complex") + 1]
-    assert "volume=0.35,adelay=2250|2250" in graph and "volume=0.35,adelay=5250|5250" in graph
+    assert f"{pop}=2250|2250" in graph and f"{pop}=5250|5250" in graph
 
 
 def test_merak_script_skips_topics_free_footage_cannot_show(tmp_path, monkeypatch):

@@ -79,23 +79,24 @@ SERIES = {
                           "teal and amber color grade, photorealistic, highly detailed, faces turned away or in shadow"},
 }
 ROTATION = ["merak", "karakter", "story"]  # order "karisik" walks through
-# Levels are set from measured loudness. The ElevenLabs narration came out near -38 LUFS, about as loud as the music
-# at the old fixed 9% and far below the effects; Ulaş found the music "biraz yüksek" (2026-10-14). The narration is now
-# brought to a standard level, so the fixed effect levels mean the same under any voice, and the music is set under it.
+# Levels are set from measured loudness. The ElevenLabs narration comes out near -38 LUFS (peaks at -18 dBFS), so at
+# the old fixed 9% the music was as loud as the narration and every effect far louder; Ulaş found the music "biraz
+# yüksek" (2026-10-14). The narration is now brought to VOICE_LUFS, the music set under it, and the effect levels
+# below are relative to that narration (loudest 400 ms of each effect against the narration's typical 400 ms).
 VOICE_LUFS = -16.0
-VOICE_COMPRESSOR = "acompressor=threshold=-16dB:ratio=3:attack=5:release=60,volume=1.1"
-MUSIC_UNDER_VOICE = 15  # LU; the reference Shorts keep music low and steady under the narrator
+VOICE_COMPRESSOR = "acompressor=threshold=-16dB:ratio=3:attack=5:release=60"
+MUSIC_UNDER_VOICE = 12  # LU; the reference Shorts keep music low and steady under the narrator
 MUSIC_VOLUME = 0.09  # only when the loudness cannot be measured
 VOICE_BAND_DIP = "equalizer=f=2500:t=o:w=2:g=-4"  # the music steps back where speech is clearest
 # The curiosity script names a mood and gets that mood's track; the owl Short had drawn the bouncy marimba one.
 MOOD_TRACKS = {"merak": {"belgesel": "merak_3", "eglenceli": "merak_2", "sakin": "merak_1"}}
 # Sound effects stay accents: Ulaş found a whoosh on every scene change loud and tiring.
-WHOOSH_VOLUME = 0.07
+WHOOSH_VOLUME = 0.1  # about 14 LU under the narration
 LINE_PAUSE_SECONDS = 0.15  # breath between sentences once each line's own leading/trailing silence is cut
 END_PAUSE_SECONDS = 0.6  # the last sentence rings out under the music
-IMPACT_VOLUME = 0.3
-RISER_VOLUME = 0.15
-POP_VOLUME = 0.35  # a soft pop under each on-screen key fact
+IMPACT_VOLUME = 0.18  # the hit on the hook, just under the narration
+RISER_VOLUME = 0.13  # about 6 LU under the narration, into the ending
+POP_VOLUME = 0.5  # a soft pop under each on-screen key fact, about 8 LU under the narration
 CALLOUT_DELAY = 0.25  # a key fact appears just after its sentence starts
 CALLOUT_SECONDS = 1.6
 CALLOUT_SIZE = 118
@@ -456,26 +457,32 @@ def loudness(path: Path, seconds: float | None = None, chain: str = "") -> float
     return float(found[-1]) if found and float(found[-1]) > -70 else None
 
 
-def voice_chain(lift: float) -> str:
-    return f"highpass=f=70,volume={lift},{VOICE_COMPRESSOR}"
+def voice_chain(lift: float, makeup: float = 1.1) -> str:
+    """Narration: lifted into the compressor's range, compressed, then made up to its final level."""
+    return f"highpass=f=70,volume={lift},{VOICE_COMPRESSOR},volume={makeup}"
 
 
-def mix_levels(voice: Path, music: Path | None, duration: float) -> tuple[float, float]:
-    """(narration gain, music gain): the narration brought to VOICE_LUFS, and the part of the track that plays set
-    MUSIC_UNDER_VOICE LU under the processed narration. What cannot be measured keeps the old fixed levels."""
+def _gain(target: float, measured: float, low: float, high: float, digits: int = 3) -> float:
+    return round(min(high, max(low, 10 ** ((target - measured) / 20))), digits)
+
+
+def mix_levels(voice: Path, music: Path | None, duration: float) -> tuple[str, float]:
+    """(narration filter chain, music gain): the narration at VOICE_LUFS after compression, and the part of the
+    track that plays MUSIC_UNDER_VOICE LU under it. What cannot be measured keeps the old fixed levels."""
     spoken = loudness(voice)
     if spoken is None:
-        return 1.0, MUSIC_VOLUME
-    lift = round(min(30.0, max(0.1, 10 ** ((VOICE_LUFS - spoken) / 20))), 3)
-    bed = loudness(music, duration) if music and music.exists() else None
-    processed = loudness(voice, chain=voice_chain(lift)) if bed is not None else None
-    if processed is None:
-        return lift, MUSIC_VOLUME
-    level = round(min(0.5, max(0.001, 10 ** ((processed - MUSIC_UNDER_VOICE - bed) / 20))), 4)
-    print(f"       Ses seviyesi: anlatım {spoken:.1f} LUFS ölçüldü, {processed:.1f} LUFS'a getirildi; müzik "
-          f"{processed - bed - 20 * math.log10(level):.1f} LU altında (eski ayarda "
+        return voice_chain(1.0), MUSIC_VOLUME
+    lift = _gain(VOICE_LUFS, spoken, 0.1, 30.0)
+    compressed = loudness(voice, chain=voice_chain(lift, 1.0))
+    chain = voice_chain(lift, 1.0 if compressed is None else _gain(VOICE_LUFS, compressed, 0.25, 4.0))
+    bed = loudness(music, duration) if music and music.exists() and compressed is not None else None
+    if bed is None:
+        return chain, MUSIC_VOLUME
+    level = _gain(VOICE_LUFS - MUSIC_UNDER_VOICE, bed, 0.001, 0.5, 4)
+    print(f"       Ses seviyesi: anlatım {spoken:.1f} LUFS ölçüldü, {VOICE_LUFS:.0f} LUFS'a getirildi; müzik "
+          f"{VOICE_LUFS - bed - 20 * math.log10(level):.1f} LU altında (eski ayarda "
           f"{spoken - bed - 20 * math.log10(MUSIC_VOLUME):.1f} LU altındaydı)")
-    return lift, level
+    return chain, level
 
 
 def sfx(name: str, library: Path | None = None) -> Path | None:
@@ -487,9 +494,9 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
                    accents: list[float] | None = None) -> Path:
     """Voice + music well under it + a soft hit on the hook, a quiet whoosh only after the hook and into the last
     scene, a soft pop under each on-screen key fact (`accents`) and a riser into the ending."""
-    lift, level = mix_levels(voice, music, duration)
+    narration, level = mix_levels(voice, music, duration)
     inputs = ["-i", str(voice)]
-    filters = [f"[0:a]{voice_chain(lift)}[v]"]
+    filters = [f"[0:a]{narration}[v]"]
     labels = ["[v]"]
 
     def add(path: Path, chain: str, label: str, loop: bool = False):

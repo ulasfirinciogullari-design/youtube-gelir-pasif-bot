@@ -27,10 +27,12 @@ def test_critic_compares_our_short_with_the_reference(tmp_path):
              "strengths": ["Net görüntü", "  "]}
     sent = []
     result = video_critic.critique(video, work, call=lambda parts: sent.append(parts) or json.dumps(reply), shrink=_shrunk)
-    # The reference goes first as a YouTube link, then our preview inline, then the instructions.
-    assert sent[0][0] == {"fileData": {"fileUri": "https://www.youtube.com/watch?v=k951xfBlETg"}}
-    assert sent[0][1]["inlineData"] == {"mimeType": "video/mp4", "data": base64.b64encode(b"small-mp4").decode()}
-    assert "Sınırlarımız" in sent[0][2]["text"]
+    # The reference goes first as a YouTube link, then our preview inline, each named right before it, then the
+    # instructions.
+    assert "REFERANS" in sent[0][0]["text"] and "BİZİM" in sent[0][2]["text"]
+    assert sent[0][1] == {"fileData": {"fileUri": "https://www.youtube.com/watch?v=k951xfBlETg"}}
+    assert sent[0][3]["inlineData"] == {"mimeType": "video/mp4", "data": base64.b64encode(b"small-mp4").decode()}
+    assert "Sınırlarımız" in sent[0][4]["text"]
     # The preview stays in the work folder, out of the upload globs next to the video.
     assert (work / "ORIGINAL_mk-028_1_critic.mp4").exists() and not (tmp_path / "ORIGINAL_mk-028_1_critic.mp4").exists()
     assert result["score"] == 10 and len(result["issues"]) == 8 and result["strengths"] == ["Net görüntü"]
