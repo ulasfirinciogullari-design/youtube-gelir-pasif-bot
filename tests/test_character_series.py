@@ -1,5 +1,7 @@
 import json
 import re
+import shutil
+import subprocess
 
 import pytest
 
@@ -697,10 +699,44 @@ def test_audio_library_replaces_only_the_requested_series(tmp_path, monkeypatch)
     made = []
     monkeypatch.setattr(lib, "generate", lambda path, key, payloads, dest: made.append(dest.name) or "yazıldı")
     monkeypatch.setattr(lib, "credits_used", lambda key: 0)
+    monkeypatch.setattr(lib, "is_silent", lambda path: path.name == "pop.mp3")
     import app.services.elevenlabs_engine as eleven
     monkeypatch.setattr(eleven, "get_elevenlabs_api_key", lambda: "k")
     assert lib.main(["merak", "--replace"]) == 0
-    assert made == ["merak_1.mp3", "merak_2.mp3", "merak_3.mp3"]
+    # The silent pop counts as missing and is made again; the other effects are kept.
+    assert made == ["merak_1.mp3", "merak_2.mp3", "merak_3.mp3", "pop.mp3"]
     made.clear()
     lib.main(["--replace"])  # no series: only missing tracks, never the whole library
     assert "merak_1.mp3" not in made and "story_1.mp3" not in made and "story_2.mp3" in made
+
+
+def test_audio_library_tries_again_when_a_sound_comes_back_silent(tmp_path, monkeypatch):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_audio_library", original_factory.BASE_DIR / "scripts" / "build_audio_library.py")
+    lib = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lib)
+    replies = [b"ID3 quiet", b"ID3 loud"]
+    sent = []
+    monkeypatch.setattr(lib, "_request", lambda path, key, payload=None: sent.append(payload) or replies.pop(0))
+    monkeypatch.setattr(lib, "peak_db", lambda path: -46.4 if path.read_bytes() == b"ID3 quiet" else -0.5)
+    dest = tmp_path / "pop.mp3"
+    assert lib.generate("/sound-generation", "k", [{"text": "pop", "duration_seconds": 1.0}, {"text": "pop"}],
+                        dest).startswith("yazıldı")
+    assert dest.read_bytes() == b"ID3 loud" and sent[1] == {"text": "pop"}
+    replies[:] = [b"ID3 quiet"]
+    assert lib.generate("/sound-generation", "k", [{"text": "pop"}], dest) == "hata (sessiz dosya döndü)"
+    assert not dest.exists()
+
+
+@pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="ffmpeg not installed")
+def test_audio_library_hears_the_difference_between_a_pop_and_silence(tmp_path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_audio_library", original_factory.BASE_DIR / "scripts" / "build_audio_library.py")
+    lib = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lib)
+    for name, volume in (("loud", "1.0"), ("quiet", "0.004")):
+        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "sine=frequency=900:duration=0.3", "-af", f"volume={volume}",
+                        str(tmp_path / f"{name}.mp3")], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    assert not lib.is_silent(tmp_path / "loud.mp3") and lib.is_silent(tmp_path / "quiet.mp3")
+    (tmp_path / "broken.mp3").write_bytes(b"old")
+    assert lib.peak_db(tmp_path / "broken.mp3") is None and not lib.is_silent(tmp_path / "broken.mp3")
