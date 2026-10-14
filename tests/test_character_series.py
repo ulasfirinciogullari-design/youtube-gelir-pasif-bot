@@ -433,9 +433,22 @@ RICH_FOOTAGE_REPLY = {**FOOTAGE_REPLY, "scenes": [
 
 def test_footage_first_asks_again_when_a_sentence_gets_a_single_clip(tmp_path, monkeypatch):
     result, prompts = _footage_run(tmp_path, monkeypatch, [FOOTAGE_REPLY, RICH_FOOTAGE_REPLY])
-    assert len(prompts) == 2 and "2, 3, 4, 5, 6. sahneye tek video" in prompts[1][1]["text"]
+    assert len(prompts) == 2 and "2, 3, 4, 5, 6. sahnede yeterli video yok" in prompts[1][1]["text"]
     assert [[ref["n"] for ref in s["clips"]] for s in result["script"]["scenes"]] == [
         [1, 2], [3, 4], [5, 6], [7, 8], [9, 10, 11], [12, 13, 14]]
+
+
+def test_a_scene_whose_clips_went_to_earlier_scenes_is_filled_not_thrown_away(tmp_path, monkeypatch):
+    # Scene 5 names only clips that scenes 1-4 already took, in both answers (the owl sample, 2026-10-14).
+    taken = {**RICH_FOOTAGE_REPLY, "scenes": [
+        {**scene, "clips": clips} for scene, clips in zip(RICH_FOOTAGE_REPLY["scenes"], [
+            [1, 2], [3, 4], [5, 6], [7, 8], [1, 3], [12, 13, 14]])
+    ]}
+    result, prompts = _footage_run(tmp_path, monkeypatch, [taken, taken])
+    assert len(prompts) == 2 and "5. sahnede yeterli video yok" in prompts[1][1]["text"]
+    clips = [[ref["n"] for ref in s["clips"]] for s in result["script"]["scenes"]]
+    assert clips[4] and not set(clips[4]) & {n for i, c in enumerate(clips) if i != 4 for n in c}
+    assert len(clips[4]) == 3  # topped up to one clip per ~4 words with clips nobody used
 
 
 def test_footage_first_keeps_the_thin_script_when_the_retry_fails(tmp_path, monkeypatch):

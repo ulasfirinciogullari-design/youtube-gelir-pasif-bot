@@ -166,6 +166,8 @@ Görsel kuralları:
   (ör. "cat jumping", "kitten sleeping", "cat eyes"). Soyut kavram yazma; kameraya çekilebilecek somut bir şey yaz.
 - "visual": stok video bulunamazsa üretilecek fotogerçekçi İngilizce görsel tarifi (somut nesne, mekân, ışık). Yazı, logo yok.
 - "source": her sahnede "stock".
+- "callout": o sahnede ekranın ortasında büyük harflerle beliren 1-3 kelimelik anahtar bilgi ya da birimiyle bir sayı
+  (ör. "270 DERECE", "14 OMUR"). Cümledeki bilgiyle birebir aynı olsun. Sadece en çarpıcı 3-4 sahneye koy, diğerlerinde "" bırak.
 
 Başlık ve kanca:
 - "title": en fazla 60 karakter; merak uyandıran soru veya şaşırtıcı iddia ve sonunda tek bir uygun emoji.

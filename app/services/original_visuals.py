@@ -327,7 +327,7 @@ def assigned_stock(scenes: list[dict], pool: list[dict], assets_dir: Path, used_
 def collect_matched_stock(scenes: list[dict], plans: list[list[float]], assets_dir: Path, used_ids: set,
                           subject: list[str] | None = None, fallback_query: str = "", topic: str = "",
                           match=None) -> tuple[list[list[tuple[str, Path]]], str]:
-    """Stock-only scenes. Gathers on-subject Pixabay candidates for every scene, lets Gemini pick from their
+    """Stock-only scenes. Gathers on-subject Pexels and Pixabay candidates for every scene, lets Gemini pick from their
     thumbnails the clips that show each sentence, and downloads only those. A scene Gemini found nothing for
     stays empty and later reuses the video's other (also on-subject) clips. Without Gemini the clips come
     in keyword order. Returns (assets per scene, how they were matched)."""
@@ -338,19 +338,19 @@ def collect_matched_stock(scenes: list[dict], plans: list[list[float]], assets_d
 
     def add(hits: list[dict]) -> None:
         for h in hits:
-            if len(pool) < MAX_CANDIDATES and h.get("id") not in seen:
-                seen.add(h.get("id"))
+            if len(pool) < MAX_CANDIDATES and hit_key(h) not in seen:
+                seen.add(hit_key(h))
                 pool.append(h)
 
     for scene in scenes:
         query = scene.get("stock_query", "")
-        hits = pixabay_candidates(query, used_ids, subject, limit=6)
+        hits = pexels_candidates(query, used_ids, subject, limit=3) + pixabay_candidates(query, used_ids, subject, limit=6)
         if len(hits) < 3 and len(query.split()) > 2:
             hits += pixabay_candidates(" ".join(query.split()[:2]), used_ids, subject, limit=6)
         add(hits)
     for q in [fallback_query, *(subject or [])]:
         if q:
-            add(pixabay_candidates(q, used_ids, subject, limit=12))
+            add(pexels_candidates(q, used_ids, subject, limit=6) + pixabay_candidates(q, used_ids, subject, limit=12))
 
     wanted = [len(plan) for plan in plans]
     picks = None
@@ -431,6 +431,9 @@ def _motion_expr(motion: int, frames: int) -> tuple[str, str, str]:
 
 # One grade for every segment so stock clips and images sit in the same look.
 GRADE = "eq=contrast=1.08:saturation=0.92:gamma=0.97,vignette=angle=PI/5"
+# Every stock shot slowly pushes in, as edited Shorts do: the video critic (2026-10-14) found our tripod shots static.
+# Scaling to an even size each frame and cropping the centre keeps the move smooth (zoompan wobbles on video).
+PUSH_IN_PER_SECOND = 0.035
 
 
 def render_image_segment(image: Path, out: Path, duration: float, motion: int) -> Path:
@@ -448,9 +451,11 @@ def render_image_segment(image: Path, out: Path, duration: float, motion: int) -
 
 
 def render_video_segment(video: Path, out: Path, duration: float, offset: float) -> Path:
+    zoom = f"(1+{PUSH_IN_PER_SECOND}*t)"
     vf = (
-        f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,crop={WIDTH}:{HEIGHT},"
-        f"fps={FPS},{GRADE},setsar=1"
+        f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,crop={WIDTH}:{HEIGHT},fps={FPS},"
+        f"scale=w='2*trunc({WIDTH // 2}*{zoom})':h='2*trunc({HEIGHT // 2}*{zoom})':eval=frame,crop={WIDTH}:{HEIGHT},"
+        f"{GRADE},setsar=1"
     )
     cmd = [
         "ffmpeg", "-y", "-stream_loop", "-1", "-ss", f"{offset:.2f}", "-i", str(video),
@@ -528,7 +533,7 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
 
     plans = [split_duration(d, segment_seconds) for d in durations]
     clip_match = None
-    if stock_only and clip_pool and all(scene.get("clips") for scene in scenes):
+    if stock_only and clip_pool and any(scene.get("clips") for scene in scenes):
         scene_assets, clip_match = assigned_stock(scenes, clip_pool, assets_dir, used_ids), "senaryo görüntüye göre"
     elif stock_only:
         scene_assets, clip_match = collect_matched_stock(scenes, plans, assets_dir, used_ids, subject,

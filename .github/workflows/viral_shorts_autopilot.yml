@@ -17,12 +17,13 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et)'
+        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et)'
         required: true
         default: 'video'
         type: choice
         options:
           - 'video'
+          - 'deneme'
           - 'rapor'
           - 'temizlik'
           - 'ses'
@@ -146,6 +147,13 @@ jobs:
           fi
           if [ "$TASK" = "temizlik" ]; then
             python channel_tools.py cleanup --action "$CLEANUP_ACTION" --ids "$VIDEO_IDS"
+            exit $?
+          fi
+          if [ "$TASK" = "deneme" ]; then
+            # A sample to inspect without filling the channel with private test videos.
+            ARGS="--no-upload --series $CONTENT_FORMAT"
+            if [ -n "$TOPIC_ID" ]; then ARGS="$ARGS --topic-id $TOPIC_ID"; fi
+            python original_factory.py $ARGS
             exit $?
           fi
           echo "⚡ Format: $CONTENT_FORMAT | Görünürlük: $PRIVACY ${TOPIC_ID:+| Konu: $TOPIC_ID}"

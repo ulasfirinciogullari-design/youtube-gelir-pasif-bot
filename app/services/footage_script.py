@@ -182,23 +182,23 @@ def wanted_shots(scene: dict) -> int:
 
 
 def resolve_clips(scenes: list[dict], shown: int) -> list[dict]:
-    """Keeps clip numbers that exist and are not used by an earlier scene; every scene must keep at least one."""
+    """Keeps clip numbers that exist and are not used by an earlier scene. A scene can end up with none
+    (Gemini gave its clips to an earlier scene); like a thin scene it is asked about again, then filled.
+    Rejecting the whole script for it sent the owl sample (2026-10-14) back to the old script-first flow."""
     taken: set[int] = set()
-    for i, scene in enumerate(scenes, start=1):
+    for scene in scenes:
         refs = []
         for ref in scene.get("clips") or []:
             if 1 <= ref["n"] <= shown and ref["n"] not in taken:
                 taken.add(ref["n"])
                 refs.append(ref)
-        if not refs:
-            raise ScriptError(f"sahne {i} için kullanılabilir video yok")
         scene["clips"] = refs
     return scenes
 
 
 def thin_scenes(scenes: list[dict]) -> list[int]:
-    """Scenes (from 1) long enough for several cuts that got a single clip: one long shot per sentence
-    made the lightning sample (2026-10-13) feel slow next to the reference Shorts."""
+    """Scenes (from 1) without a clip of their own, or long enough for several cuts with a single clip: one long
+    shot per sentence made the lightning sample (2026-10-13) feel slow next to the reference Shorts."""
     return [i for i, scene in enumerate(scenes, start=1) if len(scene["clips"]) < min(2, wanted_shots(scene))]
 
 
@@ -269,13 +269,16 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
     subject = list(topic.get("subject") or [])
     queries = plan(topic["topic"], subject, topic.get("stock_hint", ""))
     pool = gather_pool(queries, subject, used_ids)
-    print(f"       Görüntü havuzu: {len(pool)} aday ({len(queries)} arama)")
+    pexels = sum(1 for h in pool if h.get("source") == "pexels")
+    print(f"       Görüntü havuzu: {len(pool)} aday ({pexels} Pexels, {len(pool) - pexels} Pixabay; {len(queries)} arama)")
     if len(pool) < MIN_POOL:
         return None
     work_dir.mkdir(parents=True, exist_ok=True)
     with ThreadPoolExecutor(max_workers=6) as ex:
         sheets = list(ex.map(lambda h: sheet(h, work_dir), pool))
     shown = [(hit, image) for hit, image in zip(pool, sheets) if image]
+    if len(shown) < len(pool):
+        print(f"       Kare alınamayan aday: {len(pool) - len(shown)}")
     if len(shown) < MIN_POOL:
         return None
 
@@ -314,8 +317,9 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
             if not thin or attempt == attempts:
                 return finish(script, coverage)
             thin_answer = thin_answer or (script, coverage)
-            note = (f"{', '.join(map(str, thin))}. sahneye tek video verilmiş. Video 1,5 saniyede bir kesilecek, "
-                    f"5 kelimeden uzun her sahneye 2-3 farklı video ver")
+            note = (f"{', '.join(map(str, thin))}. sahnede yeterli video yok (tek video var ya da videoları başka sahnede "
+                    f"kullanılmış; bir video yalnızca bir sahnede sayılır). Video 1,5 saniyede bir kesilecek, "
+                    f"5 kelimeden uzun her sahneye kendine ait 2-3 farklı video ver")
         print(f"ℹ️ Görüntüye göre senaryo denemesi reddedildi (#{attempt}): {note}")
         parts = parts[:1] + [{"text": f"Önceki yanıtın reddedildi: {note}. Kurallara uyarak yeniden yaz."}] + parts[1:]
     return finish(*thin_answer) if thin_answer else None
