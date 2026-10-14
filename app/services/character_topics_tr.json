@@ -1,0 +1,365 @@
+[
+  {
+    "id": "fk-001",
+    "topic": "Thomas Shelby bir pazarlıkta neden hep en son konuşur ve bu sessizlik karşısındakini neden zayıflatır?",
+    "character": "Thomas Shelby",
+    "work": "Peaky Blinders",
+    "names": [
+      "Thomas Shelby",
+      "Tommy Shelby",
+      "Shelby",
+      "Cillian Murphy"
+    ],
+    "look": "1919 Birmingham slums, a man in a tweed newsboy cap and dark wool three-piece suit with a long overcoat, cigarette smoke, rain-soaked cobblestones, coal foundry fires, smoky pub interior, black horses"
+  },
+  {
+    "id": "fk-002",
+    "topic": "Sıradan bir kimya öğretmeni olan Walter White'ı korkutucu bir adama dönüştüren şey neydi: para mı, gurur mu?",
+    "character": "Walter White",
+    "work": "Breaking Bad",
+    "names": [
+      "Walter White",
+      "Heisenberg",
+      "Bryan Cranston"
+    ],
+    "look": "New Mexico desert and suburban Albuquerque, a bald middle-aged man in a khaki jacket and black pork pie hat seen from behind, chemistry lab glassware, yellow hazmat suits, an old RV in the desert, harsh sunlight"
+  },
+  {
+    "id": "fk-003",
+    "topic": "Tyler Durden'ın \"sahip olduğun şeyler sonunda sana sahip olur\" fikri tüketim psikolojisine göre haklı mı?",
+    "character": "Tyler Durden",
+    "work": "Dövüş Kulübü",
+    "names": [
+      "Tyler Durden",
+      "Brad Pitt",
+      "Edward Norton"
+    ],
+    "look": "late 1990s grungy city, a dim basement lit by one hanging bulb, a man in a red leather jacket seen from behind, bars of pink soap, a crumbling house, urban decay at night"
+  },
+  {
+    "id": "fk-004",
+    "topic": "Don Vito Corleone neden hiç sesini yükseltmeden herkese istediğini yaptırabiliyordu?",
+    "character": "Vito Corleone",
+    "work": "Baba",
+    "names": [
+      "Vito Corleone",
+      "Corleone",
+      "Marlon Brando"
+    ],
+    "look": "1940s New York, dark wood study with venetian blinds and amber light, an older man in a black tuxedo with a red rose on the lapel seen from behind, a hand stroking a cat, a Sicilian village"
+  },
+  {
+    "id": "fk-005",
+    "topic": "Aile işine hiç bulaşmak istemeyen savaş kahramanı Michael Corleone nasıl en acımasız Corleone oldu?",
+    "character": "Michael Corleone",
+    "work": "Baba",
+    "names": [
+      "Michael Corleone",
+      "Corleone",
+      "Al Pacino"
+    ],
+    "look": "1940s-1950s New York and Sicily, a young man in a dark suit seen from behind, an old Italian restaurant table, a candlelit church, a cold lake house in winter"
+  },
+  {
+    "id": "fk-006",
+    "topic": "Tony Montana her şeye sahip olduğunda neden en yalnız adama dönüştü?",
+    "character": "Tony Montana",
+    "work": "Yaralı Yüz",
+    "names": [
+      "Tony Montana",
+      "Al Pacino"
+    ],
+    "look": "1980s Miami, pink and blue neon, palm trees, a man in a white suit seen from behind, an opulent mansion with a grand staircase, cigar smoke, stacks of cash"
+  },
+  {
+    "id": "fk-007",
+    "topic": "Kara Şövalye'deki Joker'in iki feribot deneyi insanlar hakkında neyi kanıtlamaya çalışıyordu?",
+    "character": "Joker",
+    "work": "Kara Şövalye",
+    "names": [
+      "Joker",
+      "Heath Ledger",
+      "Batman",
+      "Christian Bale"
+    ],
+    "look": "a grim modern city at night, a figure in a purple coat seen from behind, scattered playing cards, two passenger ferries on a black river, burning piles of money, an interrogation room"
+  },
+  {
+    "id": "fk-008",
+    "topic": "Patrick Bateman bir kartvizit yüzünden neden terler? Statü kaygısının karanlık yüzü",
+    "character": "Patrick Bateman",
+    "work": "Amerikan Sapığı",
+    "names": [
+      "Patrick Bateman",
+      "Christian Bale"
+    ],
+    "look": "1980s Manhattan, a sleek white minimalist apartment, embossed business cards on a glossy table, a corporate boardroom, skyscrapers at dusk, a man in a sharp suit seen from behind"
+  },
+  {
+    "id": "fk-009",
+    "topic": "\"Bana bu kalemi sat\" sorusu satış psikolojisinin hangi temel kuralını gösteriyor?",
+    "character": "Jordan Belfort",
+    "work": "Para Avcısı",
+    "names": [
+      "Jordan Belfort",
+      "Leonardo DiCaprio"
+    ],
+    "look": "1990s stock brokerage floor in chaos, a ballpoint pen in a hand, ringing phones, expensive suits, a luxury yacht, money everywhere"
+  },
+  {
+    "id": "fk-010",
+    "topic": "Polat Alemdar masada neden bu kadar az konuşur ve bu neden bir güç gösterisidir?",
+    "character": "Polat Alemdar",
+    "work": "Kurtlar Vadisi",
+    "names": [
+      "Polat Alemdar",
+      "Polat",
+      "Necati Şaşmaz"
+    ],
+    "look": "Istanbul at night, a man in a long black coat and dark sunglasses seen from behind, a smoky meeting room with a long table, the Bosphorus bridge, black cars"
+  },
+  {
+    "id": "fk-011",
+    "topic": "Yıldızlararası'nda Miller gezegenindeki bir saatin Dünya'da yedi yıl etmesi bilimsel olarak mümkün mü?",
+    "character": "Cooper",
+    "work": "Yıldızlararası",
+    "names": [
+      "Cooper",
+      "Matthew McConaughey"
+    ],
+    "look": "dusty farmland, a spacecraft cockpit, a gigantic ocean wave on a water planet, a black hole with a glowing accretion disk, an astronaut suit"
+  },
+  {
+    "id": "fk-012",
+    "topic": "Matrix'teki kırmızı hap ve mavi hap seçimi insanın rahatsız edici gerçeklerden kaçışı hakkında ne söylüyor?",
+    "character": "Neo",
+    "work": "Matrix",
+    "names": [
+      "Neo",
+      "Morpheus",
+      "Keanu Reeves",
+      "Laurence Fishburne"
+    ],
+    "look": "green digital rain, red and blue pills on an open palm, a black leather trench coat, reflective sunglasses, a rainy rooftop, a dystopian machine world"
+  },
+  {
+    "id": "fk-013",
+    "topic": "Gladyatör'de ailesini ve rütbesini kaybeden Maximus'u ayakta tutan şey neydi?",
+    "character": "Maximus",
+    "work": "Gladyatör",
+    "names": [
+      "Maximus",
+      "Maximus Decimus Meridius",
+      "Russell Crowe"
+    ],
+    "look": "a Roman arena full of sand and dust, gladiator armor and helmet, a hand brushing a wheat field, Roman legions in the mist"
+  },
+  {
+    "id": "fk-014",
+    "topic": "Thomas Shelby neden neredeyse hiç özür dilemez? Özür ve güç algısının psikolojisi",
+    "character": "Thomas Shelby",
+    "work": "Peaky Blinders",
+    "names": [
+      "Thomas Shelby",
+      "Tommy Shelby",
+      "Shelby",
+      "Cillian Murphy"
+    ],
+    "look": "1919 Birmingham slums, a man in a tweed newsboy cap and dark wool three-piece suit with a long overcoat, cigarette smoke, rain-soaked cobblestones, coal foundry fires, smoky pub interior, black horses"
+  },
+  {
+    "id": "fk-015",
+    "topic": "Gus Fring iki ayrı hayatı yıllarca kimseye belli etmeden nasıl yönetti?",
+    "character": "Gus Fring",
+    "work": "Breaking Bad",
+    "names": [
+      "Gus Fring",
+      "Gustavo Fring",
+      "Giancarlo Esposito"
+    ],
+    "look": "a fast food restaurant kitchen, a man in a manager uniform and glasses seen from behind, a sterile underground industrial lab, a spotless office"
+  },
+  {
+    "id": "fk-016",
+    "topic": "Hannibal Lecter bilgi vermek için neden karşılığında hep bir itiraf ister?",
+    "character": "Hannibal Lecter",
+    "work": "Kuzuların Sessizliği",
+    "names": [
+      "Hannibal Lecter",
+      "Hannibal",
+      "Anthony Hopkins",
+      "Clarice Starling",
+      "Jodie Foster"
+    ],
+    "look": "a dark stone prison cell behind thick glass, a long eerie corridor, candlelight, pencil drawings of a city on the wall"
+  },
+  {
+    "id": "fk-017",
+    "topic": "Tywin Lannister ailesinin adını korumak için neden her şeyi göze alıyordu?",
+    "character": "Tywin Lannister",
+    "work": "Game of Thrones",
+    "names": [
+      "Tywin Lannister",
+      "Tywin",
+      "Charles Dance"
+    ],
+    "look": "a medieval castle hall, red and gold lion banners, a war council table covered with maps, cold stone light"
+  },
+  {
+    "id": "fk-018",
+    "topic": "Tyrion Lannister küçümsendiği her ortamda zekâsını nasıl silaha çevirdi?",
+    "character": "Tyrion Lannister",
+    "work": "Game of Thrones",
+    "names": [
+      "Tyrion Lannister",
+      "Tyrion",
+      "Peter Dinklage"
+    ],
+    "look": "a medieval castle, a wine goblet, books by candlelight, a short man in a red and gold noble doublet seen from behind, a crowded trial hall"
+  },
+  {
+    "id": "fk-019",
+    "topic": "Rocky Balboa'nın \"önemli olan darbe alıp ilerleyebilmek\" fikri dayanıklılık bilimine uyuyor mu?",
+    "character": "Rocky Balboa",
+    "work": "Rocky",
+    "names": [
+      "Rocky Balboa",
+      "Sylvester Stallone"
+    ],
+    "look": "1970s Philadelphia streets, an old boxing gym, a grey sweatsuit, stone museum steps at dawn, a boxing ring under hard lights"
+  },
+  {
+    "id": "fk-020",
+    "topic": "Ezel'in yıllar süren intikam planı sabır ve öfke kontrolü hakkında ne öğretiyor?",
+    "character": "Ezel",
+    "work": "Ezel",
+    "names": [
+      "Ezel",
+      "Ezel Bayraktar",
+      "Kenan İmirzalıoğlu"
+    ],
+    "look": "Istanbul, a man in a dark coat seen from behind, a prison cell, rain on a ferry deck, a card table with old friends"
+  },
+  {
+    "id": "fk-021",
+    "topic": "Gollum'un yüzüğe olan takıntısı bağımlılığın beyinde çalışma şekline nasıl benziyor?",
+    "character": "Gollum",
+    "work": "Yüzüklerin Efendisi",
+    "names": [
+      "Gollum",
+      "Sméagol",
+      "Smeagol",
+      "Andy Serkis"
+    ],
+    "look": "a dark cave, a golden ring glowing on wet stone, misty mountains, a gaunt pale creature as a silhouette in shadow"
+  },
+  {
+    "id": "fk-022",
+    "topic": "Harvey Dent kararlarını neden bir yazı turaya bırakmaya başladı?",
+    "character": "Harvey Dent",
+    "work": "Kara Şövalye",
+    "names": [
+      "Harvey Dent",
+      "Two-Face",
+      "Aaron Eckhart"
+    ],
+    "look": "a city courthouse, a silver coin spinning in the air, a scarred coin, a rainy night, a hospital corridor"
+  },
+  {
+    "id": "fk-023",
+    "topic": "Sherlock Holmes'un ilk bakışta insanları okuma yöntemi gerçek hayatta işe yarar mı?",
+    "character": "Sherlock Holmes",
+    "work": "Sherlock Holmes",
+    "names": [
+      "Sherlock Holmes",
+      "Sherlock",
+      "Benedict Cumberbatch",
+      "Robert Downey"
+    ],
+    "look": "Victorian London in fog, a cluttered study with a fireplace, a magnifying glass, pipe smoke, a deerstalker hat, gaslit streets"
+  },
+  {
+    "id": "fk-024",
+    "topic": "Thomas Shelby'nin savaştan getirdiği travma kararlarını nasıl şekillendiriyor?",
+    "character": "Thomas Shelby",
+    "work": "Peaky Blinders",
+    "names": [
+      "Thomas Shelby",
+      "Tommy Shelby",
+      "Shelby",
+      "Cillian Murphy"
+    ],
+    "look": "1919 Birmingham slums, a man in a tweed newsboy cap and dark wool three-piece suit with a long overcoat, cigarette smoke, rain-soaked cobblestones, coal foundry fires, smoky pub interior, black horses"
+  },
+  {
+    "id": "fk-025",
+    "topic": "Memati Baş'ın Polat'a sarsılmaz sadakati dostluk psikolojisi hakkında ne söylüyor?",
+    "character": "Memati Baş",
+    "work": "Kurtlar Vadisi",
+    "names": [
+      "Memati Baş",
+      "Memati",
+      "Polat",
+      "Gürkan Uygun"
+    ],
+    "look": "Istanbul streets at night, a burly man in a leather jacket seen from behind, black cars, a smoky back room"
+  },
+  {
+    "id": "fk-026",
+    "topic": "Walter White kendi yalanlarına nasıl inandı? Kendini kandırmanın psikolojisi",
+    "character": "Walter White",
+    "work": "Breaking Bad",
+    "names": [
+      "Walter White",
+      "Heisenberg",
+      "Bryan Cranston"
+    ],
+    "look": "New Mexico desert and suburban Albuquerque, a bald middle-aged man in a khaki jacket and black pork pie hat seen from behind, chemistry lab glassware, yellow hazmat suits, an old RV in the desert, harsh sunlight"
+  },
+  {
+    "id": "fk-027",
+    "topic": "Dövüş Kulübü'nün ilk kuralı gizliliğin bir gruba verdiği gücü nasıl anlatıyor?",
+    "character": "Tyler Durden",
+    "work": "Dövüş Kulübü",
+    "names": [
+      "Tyler Durden",
+      "Brad Pitt",
+      "Edward Norton"
+    ],
+    "look": "late 1990s grungy city, a dim basement lit by one hanging bulb, a man in a red leather jacket seen from behind, bars of pink soap, a crumbling house, urban decay at night"
+  },
+  {
+    "id": "fk-028",
+    "topic": "Joker filmindeki Arthur Fleck'in hikâyesi toplumun görmezden geldiği insanlar hakkında ne söylüyor?",
+    "character": "Arthur Fleck",
+    "work": "Joker",
+    "names": [
+      "Arthur Fleck",
+      "Joker",
+      "Joaquin Phoenix"
+    ],
+    "look": "a grimy early-1980s city, a long outdoor staircase at night, a clown makeup kit by a mirror, a subway car, a rundown apartment"
+  },
+  {
+    "id": "fk-029",
+    "topic": "Death Note'taki Light Yagami'yi adalet arayan bir öğrenciden diktatöre çeviren şey neydi?",
+    "character": "Light Yagami",
+    "work": "Death Note",
+    "names": [
+      "Light Yagami",
+      "Kira"
+    ],
+    "look": "Tokyo at night, a plain black notebook on a student desk under a lamp, a red apple, rain on a window, a lone student seen from behind"
+  },
+  {
+    "id": "fk-030",
+    "topic": "La Casa de Papel'deki Profesör polisi neden hep bir adım önden okuyabiliyordu? Planlamanın gücü",
+    "character": "Profesör",
+    "work": "La Casa de Papel",
+    "names": [
+      "Sergio Marquina",
+      "Álvaro Morte"
+    ],
+    "look": "a national mint interior, people in red jumpsuits and white masks, an old hangar full of blueprints, a chess board, rain on glass"
+  }
+]

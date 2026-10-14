@@ -19,6 +19,11 @@ def _format_ass_time(seconds: float) -> str:
     return f"{h}:{m:02d}:{s:02d}.{cs:02d}"
 
 
+def _upper_tr(word: str) -> str:
+    """Turkish-aware uppercase: str.upper() turns 'i' into 'I' instead of 'İ'."""
+    return word.replace("i", "İ").replace("ı", "I").upper()
+
+
 def generate_shorts_ass_subtitles(
     sentences: list[dict],
     output_path: str | Path,
@@ -58,10 +63,11 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     
     events = []
     
-    # In-video brand stamp watermark
+    # In-video brand stamp watermark. Plain text only: the render fonts have no emoji
+    # glyphs, so the old crown showed up as an unknown-character box.
     if sentences:
         total_end = max(float(s.get("end", 0.0)) for s in sentences)
-        events.append(f"Dialogue: 0,0:00:00.00,{_format_ass_time(total_end)},WatermarkStyle,,0,0,0,,{{\\an8\\fad(600,0)}}👑 @zirveninkanunu")
+        events.append(f"Dialogue: 0,0:00:00.00,{_format_ass_time(total_end)},WatermarkStyle,,0,0,0,,{{\\an8\\fad(600,0)}}@zirveninkanunu")
     
     for sentence in sentences:
         text = sentence.get("text", "").strip()
@@ -102,7 +108,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
                 styled_parts = []
                 for idx, w in enumerate(chunk):
-                    clean_w = w.upper()
+                    clean_w = _upper_tr(w)
                     if idx == word_idx:
                         styled_parts.append(r"{\c" + active_highlight + r"\fscx110\fscy110}" + clean_w + r"{\rShortsStyle}")
                     else:

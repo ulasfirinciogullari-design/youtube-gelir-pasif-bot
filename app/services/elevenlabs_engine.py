@@ -60,7 +60,9 @@ def synthesize_elevenlabs_speech(
     text: str,
     output_path: Path,
     voice_id: str = DEFAULT_VOICE_ID,
-    model_id: str = "eleven_multilingual_v2"
+    model_id: str = "eleven_multilingual_v2",
+    previous_text: str = "",
+    next_text: str = "",
 ) -> bool:
     api_key = get_elevenlabs_api_key()
     if not api_key:
@@ -82,6 +84,11 @@ def synthesize_elevenlabs_speech(
             "use_speaker_boost": True
         }
     }
+    # Neighbouring lines keep intonation continuous when a script is voiced line by line.
+    if previous_text:
+        payload["previous_text"] = normalize_turkish_tts_text(previous_text)
+    if next_text:
+        payload["next_text"] = normalize_turkish_tts_text(next_text)
     
     req = urllib.request.Request(
         url,
