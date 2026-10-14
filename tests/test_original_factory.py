@@ -206,6 +206,29 @@ def test_published_topic_ids_reads_description_markers():
     assert original_factory.published_topic_ids(_FakeYouTube()) == {"zk-001"}
 
 
+def test_shots_dissolve_into_each_other_centred_on_the_cut():
+    graph, label = original_visuals.crossfade_graph([2.0, 1.5, 3.0])
+    assert graph == ("[0:v][1:v]xfade=transition=fade:duration=0.300:offset=1.850[xf1];"
+                     "[xf1][2:v]xfade=transition=fade:duration=0.300:offset=3.350[xf2]")
+    assert label == "[xf2]"
+    # A very short shot gets a shorter dissolve so two dissolves never overlap.
+    assert "duration=0.200:offset=0.300" in original_visuals.crossfade_graph([0.4, 2.0])[0]
+    assert original_visuals.crossfade_graph([3.0]) == ("", "[0:v]")
+
+
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_narration_lines_lose_their_own_silence_and_get_a_short_pause(tmp_path):
+    line = tmp_path / "line.mp3"
+    subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono:d=0.4",
+                    "-f", "lavfi", "-i", "sine=frequency=220:duration=1:sample_rate=44100",
+                    "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono:d=0.5",
+                    "-filter_complex", "[0][1][2]concat=n=3:v=0:a=1", "-c:a", "libmp3lame", str(line)],
+                   check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    out = original_factory.tighten_line(line, tmp_path / "line.wav", 0.15)
+    # 0.9 s of silence around a 1 s tone becomes 30 ms on each side plus the 0.15 s pause.
+    assert out.suffix == ".wav" and abs(original_factory._probe_duration(out) - 1.21) < 0.05
+
+
 def test_split_duration_keeps_segments_short():
     parts = original_visuals.split_duration(7.0)
     assert max(parts) <= original_visuals.MAX_SEGMENT_SECONDS

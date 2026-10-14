@@ -361,7 +361,9 @@ def test_stock_scene_with_fewer_clips_plays_each_clip_once(tmp_path, monkeypatch
     scenes = [{"text": "a", "visual": "a"}, {"text": "b", "visual": "b"}]
     result = original_visuals.build_visual_track(scenes, [4.8, 3.2], tmp_path, stock_only=True, segment_seconds=1.6)
     # 4.8 s would be three cuts, but only one clip matched: it plays once for the whole scene.
-    assert rendered == [("a.mp4", 4.8), ("b.mp4", 1.6), ("c.mp4", 1.6)]
+    # Every file runs a little past its slot so it can dissolve into the next shot.
+    assert result["durations"] == [4.8, 1.6, 1.6]
+    assert rendered == [("a.mp4", 5.15), ("b.mp4", 1.95), ("c.mp4", 1.95)]
     assert result["clip_match"] == "gemini" and result["cut_times"] == [4.8, 6.4]
 
 
@@ -381,7 +383,7 @@ FOOTAGE_REPLY = {
 }
 
 
-def _footage_run(tmp_path, monkeypatch, replies):
+def _footage_run(tmp_path, monkeypatch, replies, check=lambda script, topic: []):
     from app.services import footage_script, original_visuals
     hits = {"cat jumping": [_hit(i, "cat", duration=12) for i in range(1, 11)],
             "cat landing": [_hit(i, "cat", duration=12) for i in range(5, 15)]}
@@ -395,7 +397,7 @@ def _footage_run(tmp_path, monkeypatch, replies):
     topic = {"id": "mk-001", "topic": "Kediler neden ayakta düşer?", "stock_hint": "cat jumping", "subject": ["cat"]}
     result = footage_script.write_footage_script(
         topic, tmp_path, call=fake_call, plan=lambda t, s, h: ["cat jumping", "cat landing"],
-        sheet=lambda hit, d: (b"\xff\xd8\xff", "image/jpeg"),
+        sheet=lambda hit, d: (b"\xff\xd8\xff", "image/jpeg"), check=check,
     )
     return result, prompts
 
@@ -438,6 +440,43 @@ def test_footage_first_keeps_the_thin_script_when_the_retry_fails(tmp_path, monk
     assert [len(s["clips"]) for s in result["script"]["scenes"]] == [2, 2, 2, 2, 3, 3]
 
 
+def test_finished_footage_script_goes_through_the_fact_check(tmp_path, monkeypatch):
+    checked = []
+
+    def check(script, topic):
+        checked.append(topic)
+        script["scenes"][0]["text"] = "Bu kedi bilim insanlarını uzun yıllar şaşırttı."
+        return ["1. sahne: süre belirsiz"]
+
+    result, _ = _footage_run(tmp_path, monkeypatch, [RICH_FOOTAGE_REPLY], check=check)
+    assert checked == ["Kediler neden ayakta düşer?"]
+    assert result["script"]["scenes"][0]["text"] == "Bu kedi bilim insanlarını uzun yıllar şaşırttı."
+
+
+def test_fact_check_swaps_in_corrected_sentences_only():
+    from app.services.footage_script import check_facts
+    script = validate_script(json.loads(json.dumps(MERAK_SCRIPT)), {"topic": "Kedi", "stock_hint": "cat"})
+    original = [s["text"] for s in script["scenes"]]
+    fixed = "Bu hareket bir saniyeden kısa sürer ve hiçbir fizik kuralını bozmaz, sadece çok iyi kullanır."
+    reply = {"fixes": [
+        {"scene": 5, "text": fixed, "why": "yarım saniye kesin bir ölçüm değil"},
+        {"scene": 9, "text": "olmayan sahne"}, {"scene": 2, "text": ""}, {"scene": "x", "text": "bozuk"},
+        {"scene": 3, "text": "çok uzun " * 60}, {"scene": 1, "text": "Kısa."},  # too long / too few words left
+    ]}
+    prompts = []
+    notes = check_facts(script, "Kediler neden ayakta düşer?", call=lambda p: prompts.append(p) or json.dumps(reply))
+    assert notes == ["5. sahne: yarım saniye kesin bir ölçüm değil"]
+    assert [s["text"] for s in script["scenes"]] == original[:4] + [fixed] + original[5:]
+    assert "1. Bu kedi bilim insanlarını yıllarca şaşırttı." in prompts[0]
+    # No answer or a failed call leaves the script as it was.
+    assert check_facts(script, "Kedi", call=lambda p: None) == []
+
+    def broken(prompt):
+        raise ScriptError("HTTP 429")
+
+    assert check_facts(script, "Kedi", call=broken) == [] and script["scenes"][4]["text"] == fixed
+
+
 def test_extra_clips_come_from_the_same_search_then_from_matching_tags():
     from app.services.footage_script import fill_clips, wanted_shots
     pool = [{"_query": "lightning strike", "tags": "lightning"}, {"_query": "storm clouds", "tags": "storm, clouds"},
@@ -477,7 +516,8 @@ def test_assigned_clips_start_at_the_frame_the_script_was_written_to(tmp_path, m
     result = original_visuals.build_visual_track(scenes, [3.0, 2.0], tmp_path, stock_only=True, segment_seconds=1.6,
                                                  clip_pool=pool)
     # Frames of a 12 s clip sit at 1.2, 4.4 and 7.6 s; each shot starts 0.4 s before its frame.
-    assert rendered == [("pixabay_2.mp4", 1.5, 7.2), ("pixabay_4.mp4", 1.5, 0.8), ("pixabay_1.mp4", 2.0, 4.0)]
+    assert rendered == [("pixabay_2.mp4", 1.85, 7.2), ("pixabay_4.mp4", 1.85, 0.8), ("pixabay_1.mp4", 2.35, 4.0)]
+    assert result["durations"] == [1.5, 1.5, 2.0]
     assert result["clip_match"] == "senaryo görüntüye göre"
 
 

@@ -39,6 +39,11 @@ DEFAULT_STYLE = (
 USER_AGENT = "Mozilla/5.0 (zirvenin-kanunu original shorts)"
 MAX_CANDIDATES = 48  # thumbnails shown to Gemini per video
 MIN_SHOT_SECONDS = 1.2  # a stock scene gets one shot per matched clip, but no shot shorter than this
+# Shots dissolve into each other instead of hard cuts: Ulaş found the cuts between clips choppy (2026-10-14).
+# Every segment is rendered this much (plus a frame-rounding margin) longer than its slot so the dissolve has
+# picture on both sides.
+XFADE_SECONDS = 0.3
+SEGMENT_TAIL = XFADE_SECONDS + 0.05
 # Words that say nothing about what a clip shows; they do not count when ranking clips by their tags.
 STOPWORDS = {
     "a", "an", "the", "of", "in", "on", "at", "and", "with", "from", "to", "its", "is", "up",
@@ -403,6 +408,22 @@ def render_video_segment(video: Path, out: Path, duration: float, offset: float)
     return out
 
 
+def crossfade_graph(durations: list[float], fade: float = XFADE_SECONDS) -> tuple[str, str]:
+    """A filter_complex chain over inputs 0..n-1 that dissolves each segment into the next, centred on the cut,
+    so a new shot is fully on screen a moment after its sentence starts. Returns (graph, output label).
+    Each input must be at least `fade` longer than its slot in `durations`."""
+    if len(durations) < 2:
+        return "", "[0:v]"
+    fade = min(fade, min(durations) / 2)
+    chain, prev, cut = [], "[0:v]", 0.0
+    for i in range(1, len(durations)):
+        cut += durations[i - 1]
+        label = f"[xf{i}]"
+        chain.append(f"{prev}[{i}:v]xfade=transition=fade:duration={fade:.3f}:offset={cut - fade / 2:.3f}{label}")
+        prev = label
+    return ";".join(chain), prev
+
+
 def split_duration(duration: float, max_len: float = MAX_SEGMENT_SECONDS) -> list[float]:
     count = max(1, math.ceil(duration / max_len))
     return [duration / count] * count
@@ -430,8 +451,9 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
                        subject: list[str] | None = None, topic: str = "", clip_pool: list[dict] | None = None) -> dict:
     """
     Renders one clip per segment and returns
-    {"segments": [Path], "cut_times": [float], "ai_images": int, "stock_videos": int, "thumbnail": Path | None,
-     "clip_match": str | None}.
+    {"segments": [Path], "durations": [float], "cut_times": [float], "ai_images": int, "stock_videos": int,
+     "thumbnail": Path | None, "clip_match": str | None}.
+    "durations" are the segments' slots on the timeline; each file runs SEGMENT_TAIL longer for the dissolve.
     stock_only (curiosity series): real footage only, matched to each sentence; Flux images are drawn
     only if no clip at all could be found for the video. With clip_pool the scenes already name their
     clips (footage-first script) and only those are downloaded.
@@ -445,6 +467,7 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
     used_ids: set = set()
     bank: list[tuple[str, Path]] = []
     segments: list[Path] = []
+    slots: list[float] = []
     cut_times: list[float] = []
     ai_images = stock_videos = 0
     thumbnail = None
@@ -488,21 +511,23 @@ def build_visual_track(scenes: list[dict], durations: list[float], work_dir: Pat
             kind, path, *start = assets[seg_idx % len(assets)]
             out = seg_dir / f"seg_{idx:02d}_{seg_idx:02d}.mp4"
             if kind == "image":
-                render_image_segment(path, out, seg_dur, motion)
+                render_image_segment(path, out, seg_dur + SEGMENT_TAIL, motion)
                 ai_images += 1
                 thumbnail = thumbnail or path
             else:
                 offset = start[0] if start and start[0] is not None else 0.3 + 0.7 * (seg_idx % 3)
-                render_video_segment(path, out, seg_dur, offset=offset)
+                render_video_segment(path, out, seg_dur + SEGMENT_TAIL, offset=offset)
                 stock_videos += 1
             motion += 1
             if segments:
                 cut_times.append(round(timeline, 3))
             segments.append(out)
+            slots.append(seg_dur)
             timeline += seg_dur
 
     return {
         "segments": segments,
+        "durations": slots,
         "cut_times": cut_times,
         "ai_images": ai_images,
         "stock_videos": stock_videos,

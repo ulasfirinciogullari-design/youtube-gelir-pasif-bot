@@ -9,9 +9,9 @@ write the narration around what the clips actually show, naming for every scene
 the clips and the frame that fits the sentence. Gemini also rates how well the
 footage covers the topic, so a topic the library cannot show can be skipped.
 
-One text call plans the searches and one vision call writes the script, both on
-the Gemini free tier. Any failure returns None and the caller falls back to the
-script-first flow.
+One text call plans the searches, one vision call writes the script and one more
+text call re-reads it as a science editor, all on the Gemini free tier. Any
+failure returns None and the caller falls back to the script-first flow.
 """
 
 import base64
@@ -23,7 +23,8 @@ import urllib.error
 from app.services import original_visuals
 from app.services.clip_matcher import _call_gemini_parts, fetch_thumbnail, pixabay_thumbnail
 from app.services.original_script import (
-    MAX_SCENES, MAX_WORDS, MIN_SCENES, MIN_WORDS, ScriptError, _call_gemini, _extract_json, validate_script,
+    EMOJI_RE, MAX_SCENE_CHARS, MAX_SCENES, MAX_WORDS, MIN_SCENES, MIN_WORDS, ScriptError, _call_gemini, _extract_json,
+    validate_script,
 )
 
 MIN_COVERAGE = 6  # out of 10; below this a topic is skipped when the run picked it itself
@@ -54,9 +55,11 @@ Anlatım kuralları:
 - İlk cümle en fazla 12 kelimelik, şaşırtıcı bir iddia veya soru olsun. "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
 - Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
 - Akış: kanca, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran örnek, akılda kalan bir final cümlesi.
+- Son sahne izleyicinin aklında kalacak somut bir bilgi, kendisinin deneyebileceği bir şey veya şaşırtıcı bir sonuç olsun;
+  "doğa muhteşem", "fizik kurallarıyla açıklanıyor" gibi genel bir lafla bitirme.
 - Enerjik ve samimi konuş; yeri gelince ekrana gönderme yap ("şu kediye bakın", "gördüğünüz gibi").
-- Sadece bilimsel olarak doğrulanmış bilgiler. Sayı (süre, yüzde, ölçü) yalnızca ansiklopedilerde geçen, kesin bilinen
-  bir değerse kullan; emin değilsen sayı verme.
+- Sadece bilimsel olarak doğrulanmış bilgiler. Sayı ve karşılaştırma (süre, yüzde, ölçü, "milyon kat", "iki katı") yalnızca
+  ansiklopedilerde geçen, kesin bilinen bir değerse kullan; emin değilsen sayı verme.
 - Anlatımda emoji kullanma, metin seslendirilecek.
 
 Görüntü kuralları:
@@ -70,7 +73,8 @@ Görüntü kuralları:
 
 Başlık ve kanca:
 - "title": en fazla 60 karakter; merak uyandıran soru veya şaşırtıcı iddia ve sonunda tek bir uygun emoji. #shorts yazma.
-- "hook_text": video boyunca ekranın üstünde duracak 3-7 kelimelik büyük yazı, emoji yok.
+- "hook_text": konunun sorusunu soran 3-7 kelimelik büyük yazı (ör. "KEDİLER NEDEN HEP AYAKTA DÜŞER?"); video boyunca
+  ekranın üstünde durur, emoji yok.
 
 Sadece şu JSON'u döndür, başka hiçbir şey yazma:
 {{
@@ -87,6 +91,18 @@ Sadece şu JSON'u döndür, başka hiçbir şey yazma:
   "en_title": "English title, max 70 chars",
   "en_description": "1-2 sentence English description"
 }}"""
+
+
+FACT_PROMPT = """Bir bilim editörüsün. Aşağıdaki Türkçe Shorts anlatımı yayına girmeden önce son kez kontrol ediliyor.
+Konu: {topic}
+
+{scenes}
+
+Her cümleyi tek tek kontrol et: yanlış, abartılı veya yanıltıcı bir bilgi (sayı, oran, karşılaştırma, neden-sonuç) var mı?
+Örnek: "kalp günde 1 milyon kez atar" yanlıştır, yaklaşık 100 bin kezdir.
+Hatalı her cümle için düzeltilmiş halini yaz: aynı konuyu ve aynı görüntüyü anlatan, yaklaşık aynı uzunlukta, sadece hatalı
+kısmı değiştiren bir cümle. Doğru cümleleri listeye koyma; hata yoksa boş liste döndür.
+Sadece şu JSON'u döndür: {{"fixes": [{{"scene": 3, "text": "düzeltilmiş cümle", "why": "kısa gerekçe"}}]}}"""
 
 
 def plan_queries(topic: str, subject: list[str], hint: str = "", call=_call_gemini) -> list[str]:
@@ -192,8 +208,39 @@ def fill_clips(scenes: list[dict], pool: list[dict]) -> list[dict]:
     return scenes
 
 
+def _ask_editor(prompt: str) -> str | None:
+    return _call_gemini_parts([{"text": prompt}], temperature=0.1)
+
+
+def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
+    """Has Gemini re-read the narration as a science editor and swaps in its corrected sentences; returns why.
+    A wrong claim ("sound is millions of times slower than light", 2026-10-13 sample) got past the writing prompt.
+    A fix that is empty, too long or would push the narration out of its word range is ignored."""
+    scenes = script["scenes"]
+    try:
+        raw = call(FACT_PROMPT.format(topic=topic, scenes="\n".join(f"{i}. {s['text']}" for i, s in enumerate(scenes, 1))))
+        fixes = (_extract_json(raw).get("fixes") or []) if raw else []
+    except (ScriptError, ValueError, urllib.error.URLError, TimeoutError) as e:
+        print(f"ℹ️ Bilgi kontrolü yapılamadı: {str(e)[:200]}")
+        return []
+    notes = []
+    for fix in fixes if isinstance(fixes, list) else []:
+        try:
+            i = int(fix.get("scene")) - 1
+        except (AttributeError, TypeError, ValueError):
+            continue
+        text = " ".join(EMOJI_RE.sub("", str(fix.get("text") or "")).split())
+        if not 0 <= i < len(scenes) or not text or len(text) > MAX_SCENE_CHARS or text == scenes[i]["text"]:
+            continue
+        words = sum(len(s["text"].split()) for s in scenes) - len(scenes[i]["text"].split()) + len(text.split())
+        if MIN_WORDS <= words <= MAX_WORDS:
+            scenes[i]["text"] = text
+            notes.append(f"{i + 1}. sahne: {' '.join(str(fix.get('why') or '').split())[:150]}")
+    return notes
+
+
 def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = None, call=_call_gemini_parts,
-                         plan=plan_queries, sheet=contact_sheet, attempts: int = 2) -> dict | None:
+                         plan=plan_queries, sheet=contact_sheet, check=check_facts, attempts: int = 2) -> dict | None:
     """Returns {"script", "pool", "coverage", "queries"}; scene clip numbers index `pool` from 1. None on failure."""
     used_ids = used_ids if used_ids is not None else set()
     subject = list(topic.get("subject") or [])
@@ -219,6 +266,8 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
     clips = [hit for hit, _ in shown]
 
     def finish(script: dict, coverage: int) -> dict:
+        for note in check(script, topic["topic"]):
+            print(f"       Bilgi düzeltmesi: {note}")
         fill_clips(script["scenes"], clips)
         return {"script": script, "pool": clips, "coverage": coverage, "queries": queries}
 

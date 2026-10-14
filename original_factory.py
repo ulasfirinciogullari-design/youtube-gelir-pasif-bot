@@ -78,6 +78,8 @@ ROTATION = ["merak", "karakter", "story"]  # order "karisik" walks through
 MUSIC_VOLUME = 0.09  # the reference Shorts keep music well under the voice
 # Sound effects stay accents: Ulaş found a whoosh on every scene change loud and tiring.
 WHOOSH_VOLUME = 0.07
+LINE_PAUSE_SECONDS = 0.15  # breath between sentences once each line's own leading/trailing silence is cut
+END_PAUSE_SECONDS = 0.6  # the last sentence rings out under the music
 IMPACT_VOLUME = 0.3
 RISER_VOLUME = 0.15
 SKIPPED_TOPICS_FILE = "skipped_topics.json"  # curiosity topics free footage could not show
@@ -348,6 +350,23 @@ def synthesize_line(text: str, out: Path, previous_text: str = "", next_text: st
     raise RuntimeError(f"seslendirme başarısız: {last_error}")
 
 
+def tighten_line(src: Path, out: Path, pause: float) -> Path:
+    """The line as 44.1 kHz mono WAV without the silence the TTS engine leaves before and after it, followed by
+    a fixed `pause`. Each sentence is voiced separately, and those silences made the narration stop and restart
+    at every scene change (Ulaş, 2026-10-14: "geçişler arasında kopma"). If trimming fails the line is kept whole."""
+    trim = "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.03"
+    for chain in (f"{trim},areverse,{trim},areverse,apad=pad_dur={pause:.2f}", "anull"):
+        try:
+            subprocess.run(["ffmpeg", "-y", "-i", str(src), "-af", chain, "-ar", "44100", "-ac", "1",
+                            "-c:a", "pcm_s16le", str(out)],
+                           check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            if chain == "anull" or _probe_duration(out) >= pause + 0.3:
+                return out
+        except (subprocess.CalledProcessError, ValueError):
+            continue
+    raise RuntimeError(f"seslendirme dosyası okunamadı: {src.name}")
+
+
 def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_line) -> tuple[Path, list[float], list[dict]]:
     """Returns (voice_track, per_scene_durations, subtitle_events)."""
     from app.services.multi_voice_engine import build_micro_timed_subtitles
@@ -356,11 +375,13 @@ def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_li
     voice_dir.mkdir(parents=True, exist_ok=True)
     files, durations, subtitles, timeline = [], [], [], 0.0
     for idx, scene in enumerate(scenes):
-        seg = synthesize(
+        raw = synthesize(
             scene["text"], voice_dir / f"line_{idx:02d}.mp3",
             previous_text=scenes[idx - 1]["text"] if idx else "",
             next_text=scenes[idx + 1]["text"] if idx + 1 < len(scenes) else "",
         )
+        last = idx + 1 == len(scenes)
+        seg = tighten_line(raw, voice_dir / f"line_{idx:02d}.wav", END_PAUSE_SECONDS if last else LINE_PAUSE_SECONDS)
         dur = _probe_duration(seg)
         subtitles += build_micro_timed_subtitles(scene["text"], timeline, dur, speaker="male_alpha")
         files.append(seg)
@@ -453,21 +474,32 @@ def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float) -> None:
     ass_path.write_text(content, encoding="utf-8")
 
 
-def render_final(segments: list[Path], audio: Path, subtitles_file: Path, duration: float, work_dir: Path, final_mp4: Path) -> Path:
+def render_final(segments: list[Path], audio: Path, subtitles_file: Path, duration: float, work_dir: Path,
+                 final_mp4: Path, slots: list[float] | None = None) -> Path:
+    """With `slots` (each segment's place on the timeline) the shots dissolve into each other;
+    without them they are joined with hard cuts."""
+    from app.services.original_visuals import crossfade_graph
     from app.services.visual_fx_engine import generate_neon_progress_bar_filter
 
-    concat_list = work_dir / "segments.txt"
-    concat_list.write_text("".join(f"file '{s.resolve()}'\n" for s in segments), encoding="utf-8")
-    raw = work_dir / "visual_raw.mp4"
-    subprocess.run(
-        ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_list), "-c", "copy", str(raw)],
-        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-    )
-    vf = f"subtitles={subtitles_file.name},{generate_neon_progress_bar_filter(duration)}"
+    overlay = f"subtitles={subtitles_file.name},{generate_neon_progress_bar_filter(duration)}"
+    if slots and len(slots) == len(segments) > 1:
+        inputs = [arg for s in segments for arg in ("-i", str(s.resolve()))]
+        graph, label = crossfade_graph(slots)
+        audio_index = len(segments)
+    else:
+        concat_list = work_dir / "segments.txt"
+        concat_list.write_text("".join(f"file '{s.resolve()}'\n" for s in segments), encoding="utf-8")
+        raw = work_dir / "visual_raw.mp4"
+        subprocess.run(
+            ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_list), "-c", "copy", str(raw)],
+            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        inputs, graph, label, audio_index = ["-i", str(raw.resolve())], "", "[0:v]", 1
+    graph = f"{graph};{label}{overlay}[vout]" if graph else f"{label}{overlay}[vout]"
     subprocess.run(
         [
-            "ffmpeg", "-y", "-i", str(raw.resolve()), "-i", str(audio.resolve()), "-vf", vf,
-            "-map", "0:v:0", "-map", "1:a:0",
+            "ffmpeg", "-y", *inputs, "-i", str(audio.resolve()), "-filter_complex", graph,
+            "-map", "[vout]", "-map", f"{audio_index}:a:0",
             "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-r", "60", "-fps_mode", "cfr",
             "-pix_fmt", "yuv420p", "-c:a", "copy", "-t", f"{duration:.3f}", "-movflags", "+faststart",
             str(final_mp4.resolve()),
@@ -519,7 +551,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
 
     print("[4/4] 🚀 Render")
     final_mp4 = OUTPUT_DIR / f"ORIGINAL_{topic['id']}_{stamp}.mp4"
-    render_final(visuals["segments"], audio, subs, duration, work_dir, final_mp4)
+    render_final(visuals["segments"], audio, subs, duration, work_dir, final_mp4, visuals.get("durations"))
 
     thumb = final_mp4.with_name(f"{final_mp4.stem}_thumb.jpg")
     if visuals["thumbnail"]:

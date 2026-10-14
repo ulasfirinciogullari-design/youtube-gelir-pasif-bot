@@ -146,15 +146,22 @@ bulunamazsa kullanılır.
   yalnızca gerçek çekim (animasyon değil) ve etiketlerinde konunun öznesi
   (`subject`, ör. `cat`, `kitten`) geçen 40'a kadar klip toplanır, her klibin üç
   karesi Gemini'ye gösterilir ve Gemini anlatımı bu kliplerde gerçekten görünen
-  şeylere göre yazar; her sahne için hangi klibin hangi anının gösterileceğini de
-  seçer. Görüntünün konuyu ne kadar karşıladığını 10 üzerinden puanlar; 6'nın
-  altındaki konular atlanır ve `channel-data/skipped_topics.json`'a yazılır
-  (konu elle `topic_id` ile istenirse yine de yapılır).
+  şeylere göre yazar; her cümleye 2-3 farklı klip ve her klibin hangi anının
+  gösterileceğini de seçer (tek klip verirse bir kez geri gönderilir, eksik kalan
+  sahneler aynı aramadan veya etiketi en yakın kliplerle tamamlanır). Görüntünün
+  konuyu ne kadar karşıladığını 10 üzerinden puanlar; 6'nın altındaki konular
+  atlanır ve `channel-data/skipped_topics.json`'a yazılır (konu elle `topic_id`
+  ile istenirse yine de yapılır). Biten senaryoyu Gemini bir kez de bilim editörü
+  gibi okur; yanlış veya abartılı bir sayı ya da karşılaştırma varsa o cümleyi
+  düzeltir.
 - Bu yol çalışmazsa eski yola dönülür: önce senaryo, sonra Gemini adayların küçük
   resimlerinden her cümleye uygun klibi seçer (`app/services/clip_matcher.py`).
 - Ses efektleri vurgu içindir: hafif bir whoosh sadece kancadan sonra ve son
   sahneye geçerken çalar.
 - Kurgu: en uzun çekim 1,6 sn (diğer serilerde 2,5 sn, çünkü her çekim ücretli bir görsel).
+- Bütün serilerde çekimler sert kesme yerine 0,3 sn'lik yumuşak geçişle birbirine
+  karışır; her cümlenin seslendirmesindeki baştaki ve sondaki sessizlik kesilir,
+  cümleler arasında 0,15 sn nefes payı kalır, böylece anlatım tek parça gibi akar.
 - Bütün serilerde: kanca sorusu video boyunca ekranın üstünde beyaz, kalın
   kenarlı yazı olarak durur; altyazı alt üçte birde; müzik sesi %9.
 - `--series karisik` (zamanlanmış çalışmaların varsayılanı) son yüklemeye

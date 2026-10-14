@@ -149,8 +149,10 @@ Anlatım kuralları:
   "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
 - Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
 - Akış: kanca, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran bir örnek veya sayı, akılda kalan bir final cümlesi.
+- Son sahne izleyicinin aklında kalacak somut bir bilgi, kendisinin deneyebileceği bir şey veya şaşırtıcı bir sonuç olsun;
+  "doğa muhteşem", "bilim her şeyi açıklar" gibi genel bir lafla bitirme.
 - Sadece bilimsel olarak doğrulanmış bilgileri kullan. Tartışmalı bir konuysa bunu açıkça söyle.
-- Sayı (süre, yüzde, ölçü, yıl) yalnızca ansiklopedilerde geçen, kesin bilinen bir değerse kullan.
+- Sayı ve karşılaştırma (süre, yüzde, ölçü, yıl, "milyon kat") yalnızca ansiklopedilerde geçen, kesin bilinen bir değerse kullan.
   Emin değilsen sayı verme, "saniyenin altında", "çok kısa sürede" gibi söyle.
 - Anlatımda emoji kullanma, metin seslendirilecek.
 
@@ -166,7 +168,7 @@ Görsel kuralları:
 Başlık ve kanca:
 - "title": en fazla 60 karakter; merak uyandıran soru veya şaşırtıcı iddia ve sonunda tek bir uygun emoji.
   Örnekler: "Kediler fizik kurallarına nasıl karşı geliyor? 🐱", "Bu yüzden uçak camları yuvarlak ✈️". #shorts yazma.
-- "hook_text": video boyunca ekranın üstünde duracak 3-7 kelimelik büyük yazı, emoji yok
+- "hook_text": konunun sorusunu soran 3-7 kelimelik büyük yazı; video boyunca ekranın üstünde durur, emoji yok
   (ör. "KEDİLER NEDEN HEP AYAKTA DÜŞER?").
 {style_examples}
 """ + JSON_SPEC
