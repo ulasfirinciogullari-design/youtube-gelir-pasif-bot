@@ -98,9 +98,9 @@ def test_seo_pack_uses_gemini_answer():
     pack = seo_pack.build_seo_pack("Başlık 🧐", "konu", "metin", SCRIPT, ["shorts"], "#shorts #tarih", "Seri: zk-003",
                                    call=lambda prompt: json.dumps(answer, ensure_ascii=False))
     assert pack["seo_engine"] == "gemini" and len(pack["localizations"]) == 18
-    assert pack["description"].endswith("#shorts #tarih #stoacılık #roma\n\nSeri: zk-003")
+    assert pack["description"].endswith("#stoacılık #roma #shorts #tarih\n\nSeri: zk-003")
     assert "💬" not in pack["description"]  # the Gemini description carries its own call to comment
-    assert pack["localizations"]["ja"]["title"].endswith("#shorts")
+    assert pack["localizations"]["ja"]["title"] == "Title in ja 🧐"
     assert pack["localizations"]["de"]["description"].endswith("Seri: zk-003")
     assert pack["tags"][:3] == ["seneca", "nero", "stoicism"] and "shorts" in pack["tags"]
 

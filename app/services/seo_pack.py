@@ -6,6 +6,8 @@ One Gemini call turns the finished script into a fuller Turkish description,
 title and description in 18 more languages (snippet localizations), so the
 video can surface in searches outside Turkey. Without Gemini, or when its
 answer does not validate, the script's own description and tags are used.
+The curiosity series gets its own prompt: the history prompt's fixed
+"Bugün için ders" line and subscribe call ended up in every merak Short.
 """
 
 import os
@@ -21,7 +23,10 @@ LANGUAGES = {
 MAX_TAG_TOTAL = 480  # YouTube rejects more than 500 characters of tags
 MAX_TAG_CHARS = 30
 MAX_TAGS = 30
-MIN_LOCALIZATIONS = 10
+# YouTube's own advice is that tags mainly help with commonly misspelled words, and Turkish viewers often type without
+# Turkish letters ("baykus"), so the most specific Turkish tags also go in folded, in whatever budget is left.
+FOLDED_TAGS = 5
+TURKISH_FOLD = str.maketrans("çğıöşüâîûÇĞİÖŞÜÂÎÛ", "cgiosuaiuCGIOSUAIU")
 
 PROMPT_TEMPLATE = """Bir Türkçe YouTube Shorts videosunun arama ve keşfet paketini hazırlıyorsun.
 
@@ -47,9 +52,41 @@ Sadece şu JSON'u döndür:
 {{"description": "...", "hashtags": ["#..."], "tags": ["..."], "localizations": {{"en": {{"title": "...", "description": "..."}}}}}}
 """
 
+# The owl Short carried the history template's "Bugün için ders: ..." line and 15 of its 30 tags were English. A fixed
+# line in every description is the "generic template" signal of YouTube's inauthentic-content policy, so the curiosity
+# description is built only from this video's own question, facts and numbers.
+MERAK_PROMPT_TEMPLATE = """Bir Türkçe YouTube Shorts merak videosunun arama ve keşfet paketini hazırlıyorsun.
 
-def build_prompt(title: str, topic: str, narration: str) -> str:
-    return PROMPT_TEMPLATE.format(
+Video başlığı: {title}
+Konu: {topic}
+Seslendirilen metin: {narration}
+
+Kurallar:
+- "description": Türkçe, 3 kısa paragraf, aralarında boş satır:
+  1) İnsanların arama kutusuna yazacağı haliyle videonun sorusu, tek cümle (ör. "Baykuşlar başını nasıl 270 derece
+     çevirir?").
+  2) Cevap, 2-3 cümle. Seslendirilen metindeki sayıları ve adları aynen kullan; metinde olmayan bilgi ekleme.
+  3) Bu videoya özel, iki seçenekli bir soru (ör. "Sence insan boynu kaç derece döner: 90 mı 180 mi?").
+  Ders çıkaran ya da abone olmaya, beğenmeye, kanalı takip etmeye çağıran, her videoda aynı kalan kalıp cümleler
+  yazma. Kaynak, telif, görüntü veya yapay zekâ bilgisi yazma. Hashtag yazma.
+- "hashtags": 3-5 Türkçe hashtag, # ile başlasın: önce videodaki canlı ya da nesne (ör. #baykuş), sonra konu
+  (ör. #hayvanlar). #shorts yazma.
+- "tags": 20-25 arama etiketi, en az %80'i Türkçe. Önce en özel olanlar: videodaki canlı ya da nesnenin adı,
+  anlatılan olgu, insanların yazacağı soru kalıpları (ör. "baykuş boynu", "baykuş kafasını nasıl çevirir").
+  Sonra genel olanlar (hayvanlar, bilim, ilginç bilgiler). İngilizce en fazla 4 etiket, sadece canlının ya da
+  olgunun adı. Her biri en fazla 30 karakter, # yok.
+- "localizations": şu dil kodlarının her biri için {{"title": "...", "description": "..."}}: {languages}.
+  Başlık o dilde doğal ve merak uyandıran bir cümle, en fazla 90 karakter, sonunda Türkçe başlıktaki emoji.
+  Açıklama o dilde 2-3 cümle. Çeviri kokmasın, o dilin YouTube izleyicisine yazılmış gibi olsun.
+
+Sadece şu JSON'u döndür:
+{{"description": "...", "hashtags": ["#..."], "tags": ["..."], "localizations": {{"en": {{"title": "...", "description": "..."}}}}}}
+"""
+
+
+def build_prompt(title: str, topic: str, narration: str, series: str = "story") -> str:
+    template = MERAK_PROMPT_TEMPLATE if series == "merak" else PROMPT_TEMPLATE
+    return template.format(
         title=title, topic=topic, narration=narration, languages=", ".join(LANGUAGES),
     )
 
@@ -77,7 +114,15 @@ def _tag_cost(tag: str) -> int:
     return len(tag) + (2 if " " in tag else 0) + 1
 
 
-def clean_tags(tags: list, limit: int = MAX_TAG_TOTAL) -> list[str]:
+def fold_turkish(text: str) -> str:
+    return text.translate(TURKISH_FOLD)
+
+
+def clean_tags(tags: list, limit: int = MAX_TAG_TOTAL, fold: int = 0) -> list[str]:
+    """Tags in order within YouTube's limit; then ASCII copies of the first `fold` tags with Turkish letters.
+
+    The folded copies only take what the real tags left of the character budget, and MAX_TAGS (our own cap,
+    not YouTube's) does not count them, so they never push out a tag but still fit after a full list."""
     seen, out, total = set(), [], 0
     for raw in tags:
         tag = " ".join(re.sub(r"[<>#,\"]", " ", EMOJI_RE.sub("", str(raw))).split())
@@ -89,16 +134,31 @@ def clean_tags(tags: list, limit: int = MAX_TAG_TOTAL) -> list[str]:
         seen.add(key)
         out.append(tag)
         total += _tag_cost(tag)
+    for tag in [fold_turkish(t) for t in out if fold_turkish(t) != t][:fold]:
+        key = tag.lower().replace(" ", "")
+        if key not in seen and total + _tag_cost(tag) <= limit:
+            seen.add(key)
+            out.append(tag)
+            total += _tag_cost(tag)
     return out
 
 
-def clean_hashtags(hashtags: list, base: str) -> str:
+def _hashtag_words(items) -> list[str]:
     out = []
-    for raw in base.split() + [str(h) for h in hashtags or []]:
-        word = re.sub(r"[^\w]", "", raw)
+    for raw in items:
+        word = re.sub(r"[^\w]", "", str(raw))
         if word and f"#{word}".lower() not in {h.lower() for h in out}:
             out.append(f"#{word}")
-    return " ".join(out[:8])
+    return out
+
+
+def clean_hashtags(hashtags: list, base: str, limit: int = 8) -> str:
+    """Topical hashtags first: YouTube shows the first three above the title, and #baykuş tells a viewer more
+    than #shorts. The base ones follow, so #shorts stays in every description."""
+    base_words = _hashtag_words(base.split())
+    known = {h.lower() for h in base_words}
+    topical = [h for h in _hashtag_words(hashtags or []) if h.lower() not in known]
+    return " ".join((topical[:max(3, limit - len(base_words))] + base_words)[:limit])
 
 
 def clean_localizations(raw: dict) -> dict:
@@ -117,7 +177,7 @@ def clean_localizations(raw: dict) -> dict:
 
 
 def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_tags: list[str],
-                   base_hashtags: str, marker: str, call=_call_gemini_text) -> dict:
+                   base_hashtags: str, marker: str, call=_call_gemini_text, series: str = "story") -> dict:
     """Returns {"description", "tags", "localizations", "seo_engine"} ready for the upload body."""
     pinned = f"💬 {script['pinned_comment']}" if script.get("pinned_comment") else ""
     fallback_localizations = {}
@@ -126,12 +186,12 @@ def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_ta
     pack = {
         "description": script.get("description", ""),
         "hashtags": clean_hashtags([], base_hashtags),
-        "tags": clean_tags(list(script.get("tags", [])) + base_tags),
+        "tags": clean_tags(list(script.get("tags", [])) + base_tags, fold=FOLDED_TAGS),
         "localizations": fallback_localizations,
         "seo_engine": "script",
     }
     try:
-        raw = call(build_prompt(title, topic, narration))
+        raw = call(build_prompt(title, topic, narration, series))
         data = _extract_json(raw) if raw else None
     except Exception as e:  # SEO is a bonus; never block an upload on it
         print(f"ℹ️ SEO paketi notu: {str(e)[:200]}")
@@ -139,12 +199,15 @@ def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_ta
     if isinstance(data, dict):
         description = str(data.get("description") or "").strip()
         localizations = clean_localizations(data.get("localizations"))
-        if len(description) >= 120 and len(localizations) >= MIN_LOCALIZATIONS:
+        # The long 18-language answer often comes back with only some languages; a good Turkish description and
+        # tags are worth keeping anyway, and the script's English stays when Gemini left English out.
+        if len(description) >= 120:
             pack.update(
                 description=description,
                 hashtags=clean_hashtags(data.get("hashtags"), base_hashtags),
-                tags=clean_tags(list(data.get("tags") or []) + list(script.get("tags", [])) + base_tags),
-                localizations=localizations,
+                tags=clean_tags(list(data.get("tags") or []) + list(script.get("tags", [])) + base_tags,
+                                fold=FOLDED_TAGS),
+                localizations={**fallback_localizations, **localizations},
                 seo_engine="gemini",
             )
         else:
@@ -155,7 +218,8 @@ def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_ta
         pinned = ""  # the Gemini description already ends with its own call to comment
     pack["description"] = "\n\n".join(part for part in [pack["description"], pinned, pack["hashtags"], marker] if part)
     for item in pack["localizations"].values():
+        # Titles carry no #shorts: YouTube has not needed it to classify a Short since 15 Oct 2024.
         item["description"] = f"{item['description']}\n\n#shorts\n\n{marker}"
-        item["title"] = f"{item['title']} #shorts" if len(item["title"]) <= 92 else item["title"][:100]
+        item["title"] = item["title"][:100]
     del pack["hashtags"]
     return pack

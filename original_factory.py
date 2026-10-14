@@ -805,10 +805,10 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     storyboard(final_mp4, final_mp4.with_name(f"{final_mp4.stem}_story.jpg"), duration)
 
     title = script["title"]
-    full_title = f"{title} #shorts" if len(title) <= 92 else title[:100]
+    full_title = title[:100]  # YouTube has not needed "#shorts" in the title to classify a Short since 15 Oct 2024
     seo = build_seo_pack(
         title, topic["topic"], " ".join(s["text"] for s in script["scenes"]), script,
-        SERIES[series]["tags"], SERIES[series]["hashtags"], f"{MARKER_PREFIX}{topic['id']}",
+        SERIES[series]["tags"], SERIES[series]["hashtags"], f"{MARKER_PREFIX}{topic['id']}", series=series,
     )
     print(f"       SEO: {seo['seo_engine']} | {len(seo['tags'])} etiket | {len(seo['localizations'])} dil")
     meta = {
@@ -934,7 +934,7 @@ def main(argv=None) -> int:
     dna_age = dna_age_days(dna)
     if youtube is not None and (dna_age is None or dna_age >= DNA_REFRESH_DAYS):
         try:
-            dna = run_scan(youtube, OUTPUT_DIR, examples)
+            dna = run_scan(youtube, OUTPUT_DIR, examples, series=args.series if args.series in SERIES else "merak")
         except Exception as e:  # a stale analysis is better than a skipped upload
             print(f"ℹ️ Rakip analizi yenilenemedi: {str(e)[:200]}")
     series = pick_series(args.series, DATA_DIR, args.topic_id)

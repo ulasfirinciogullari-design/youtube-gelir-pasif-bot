@@ -397,7 +397,7 @@ def test_merak_prompt_names_the_subject_and_topics_have_one():
     topics = original_factory.load_topics(original_factory.MERAK_TOPICS_FILE)
     assert all(t["subject"] and all(re.fullmatch(r"[a-z ]+", w) for w in t["subject"]) for t in topics)
     prompt = build_prompt(topics[0]["topic"], None, None, topics[0])
-    assert "Ana özne (İngilizce stok etiketi): cat, kitten" in prompt and "birebir göstermeli" in prompt
+    assert "Ana özne (İngilizce stok etiketi): dog, puppy" in prompt and "birebir göstermeli" in prompt
     assert original_factory.topic_subject({"stock_hint": "octopus swimming"}) == ["octopus"]
     assert original_factory.topic_subject({"stock_hint": "", "subject": ["owl"]}) == ["owl"]
 
