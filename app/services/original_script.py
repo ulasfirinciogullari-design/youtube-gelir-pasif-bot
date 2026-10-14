@@ -18,6 +18,7 @@ wins; if none does, the run stops instead of uploading a weak video.
 import json
 import os
 import re
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -30,6 +31,13 @@ MAX_SCENE_CHARS = 230
 MAX_HOOK_CHARS = 40
 MAX_CALLOUT_CHARS = 24
 MAX_CALLOUTS = 4  # on-screen key facts; more than a few per Short stops being an accent
+# Background music for a curiosity Short: the script writer names the mood, original_factory plays that mood's track.
+MOODS = ("belgesel", "eglenceli", "sakin")
+MOOD_RULE = """- "mood": videonun havasına uyan arka plan müziği, tam olarak şu üç kelimeden biri:
+  "belgesel" (vahşi doğa, hayvanların yetenekleri, okyanus, uzay, gizemli olaylar: sinematik, merak ve hayranlık),
+  "eğlenceli" (komik ya da sevimli hayvan davranışları, gündelik tuhaflıklar, yemek: neşeli ve hoplayan),
+  "sakin" (insan vücudu, psikoloji, gündelik bilim ve teknoloji: sakin, meraklı lo-fi).
+"""
 EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]+")
 
 # Film/series characters and quotes the old catalog was built on. A script that
@@ -174,7 +182,7 @@ Başlık ve kanca:
   Örnekler: "Kediler fizik kurallarına nasıl karşı geliyor? 🐱", "Bu yüzden uçak camları yuvarlak ✈️". #shorts yazma.
 - "hook_text": konunun sorusunu soran 3-7 kelimelik büyük yazı; video boyunca ekranın üstünde durur, emoji yok
   (ör. "KEDİLER NEDEN HEP AYAKTA DÜŞER?").
-{style_examples}
+""" + MOOD_RULE + """{style_examples}
 """ + JSON_SPEC
 
 
@@ -370,6 +378,13 @@ def _clip_refs(value) -> list[dict]:
     return refs[:4]
 
 
+def clean_mood(value) -> str:
+    """One of MOODS whatever the spelling ("EĞLENCELİ" -> "eglenceli"); "" when the reply named none of them."""
+    text = unicodedata.normalize("NFKD", str(value or "").strip().lower())
+    text = "".join(c for c in text if not unicodedata.combining(c)).replace("ı", "i")
+    return text if text in MOODS else ""
+
+
 def clean_callout(value) -> str:
     """An on-screen key fact ("270 DERECE"): no emoji or subtitle control characters, short enough for one line."""
     text = re.sub(r"\{[^}]*\}", "", EMOJI_RE.sub("", str(value or "")))  # whole override blocks like {\b1}
@@ -446,6 +461,7 @@ def validate_script(script: dict, character: dict | None = None) -> dict:
         "pinned_comment": str(script.get("pinned_comment") or "").strip(),
         "en_title": str(script.get("en_title") or "").strip()[:90],
         "en_description": str(script.get("en_description") or "").strip(),
+        "mood": clean_mood(script.get("mood")),
     }
 
 

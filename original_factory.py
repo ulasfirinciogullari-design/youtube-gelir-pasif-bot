@@ -79,7 +79,14 @@ SERIES = {
                           "teal and amber color grade, photorealistic, highly detailed, faces turned away or in shadow"},
 }
 ROTATION = ["merak", "karakter", "story"]  # order "karisik" walks through
-MUSIC_VOLUME = 0.09  # the reference Shorts keep music well under the voice
+# The reference Shorts keep music well under the voice. A fixed volume left each track at its own loudness and Ulaş
+# still found the music "biraz yüksek" (2026-10-14), so the bed is now set against the measured narration.
+MUSIC_UNDER_VOICE = 20  # LU between the narration and the music
+MUSIC_VOLUME = 0.09  # only when the loudness cannot be measured
+VOICE_CHAIN = "highpass=f=70,acompressor=threshold=-16dB:ratio=3:attack=5:release=60,volume=1.1"
+VOICE_BAND_DIP = "equalizer=f=2500:t=o:w=2:g=-4"  # the music steps back where speech is clearest
+# The curiosity script names a mood and gets that mood's track; the owl Short had drawn the bouncy marimba one.
+MOOD_TRACKS = {"merak": {"belgesel": "merak_3", "eglenceli": "merak_2", "sakin": "merak_1"}}
 # Sound effects stay accents: Ulaş found a whoosh on every scene change loud and tiring.
 WHOOSH_VOLUME = 0.07
 LINE_PAUSE_SECONDS = 0.15  # breath between sentences once each line's own leading/trailing silence is cut
@@ -419,13 +426,44 @@ def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_li
 # Sound design and render
 # ---------------------------------------------------------------------------
 
-def pick_music(seed: str, series: str = "story", library: Path | None = None) -> Path | None:
-    """A track from the generated library for this series, else any library track, else the old assets."""
+def pick_music(seed: str, series: str = "story", library: Path | None = None, mood: str = "") -> Path | None:
+    """The track of the script's mood; else one picked by topic from the series' tracks, any library track or the
+    old assets."""
     music = (library or AUDIO_LIBRARY) / "music"
+    fitting = MOOD_TRACKS.get(series, {}).get(mood)
+    if fitting and (music / f"{fitting}.mp3").exists():
+        return music / f"{fitting}.mp3"
     tracks = sorted(music.glob(f"{series}_*.mp3")) or sorted(music.glob("*.mp3")) or sorted(MUSIC_DIR.glob("*.mp3"))
     if not tracks:
         return None
     return tracks[int(hashlib.md5(seed.encode("utf-8")).hexdigest(), 16) % len(tracks)]
+
+
+def loudness(path: Path, seconds: float | None = None, chain: str = "") -> float | None:
+    """Integrated loudness in LUFS of the first `seconds` after `chain` (ffmpeg ebur128); None for silence or errors."""
+    limit = ["-t", f"{seconds:.3f}"] if seconds else []
+    try:
+        result = subprocess.run(
+            ["ffmpeg", "-hide_banner", "-nostats", *limit, "-i", str(path), "-af", ",".join(filter(None, [chain, "ebur128"])),
+             "-f", "null", "-"],
+            capture_output=True, text=True, timeout=120,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    found = re.findall(r"I:\s+(-?\d+(?:\.\d+)?) LUFS", result.stderr)
+    return float(found[-1]) if found and float(found[-1]) > -70 else None
+
+
+def music_gain(voice: Path, music: Path, duration: float) -> float:
+    """Volume that puts the part of the track that plays MUSIC_UNDER_VOICE LU under the processed narration."""
+    spoken, bed = loudness(voice, chain=VOICE_CHAIN), loudness(music, duration)
+    if spoken is None or bed is None:
+        print("       Müzik seviyesi ölçülemedi; sabit seviye kullanıldı")
+        return MUSIC_VOLUME
+    gain = round(min(0.5, max(0.001, 10 ** ((spoken - MUSIC_UNDER_VOICE - bed) / 20))), 4)
+    print(f"       Ses seviyesi: anlatım {spoken:.1f} LUFS, müzik anlatımın {spoken - bed - 20 * math.log10(gain):.1f} LU "
+          f"altında (eski sabit seviyede {spoken - bed - 20 * math.log10(MUSIC_VOLUME):.1f} LU altındaydı)")
+    return gain
 
 
 def sfx(name: str, library: Path | None = None) -> Path | None:
@@ -435,10 +473,10 @@ def sfx(name: str, library: Path | None = None) -> Path | None:
 
 def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[float], music: Path | None,
                    accents: list[float] | None = None) -> Path:
-    """Voice + low music + a soft hit on the hook, a quiet whoosh only after the hook and into the last
+    """Voice + music well under it + a soft hit on the hook, a quiet whoosh only after the hook and into the last
     scene, a soft pop under each on-screen key fact (`accents`) and a riser into the ending."""
     inputs = ["-i", str(voice)]
-    filters = ["[0:a]highpass=f=70,acompressor=threshold=-16dB:ratio=3:attack=5:release=60,volume=1.1[v]"]
+    filters = [f"[0:a]{VOICE_CHAIN}[v]"]
     labels = ["[v]"]
 
     def add(path: Path, chain: str, label: str, loop: bool = False):
@@ -451,7 +489,8 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
 
     if music and music.exists():
         fade = max(0.5, duration - 1.5)
-        add(music, f"volume={MUSIC_VOLUME},afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m", loop=True)
+        level = music_gain(voice, music, duration)
+        add(music, f"volume={level},{VOICE_BAND_DIP},afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m", loop=True)
     impact, whoosh, riser = sfx("impact"), sfx("whoosh"), sfx("riser")
     if impact:
         add(impact, f"volume={IMPACT_VOLUME}", "imp")
@@ -613,8 +652,10 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     )
     add_hook_overlay(subs, script.get("hook_text", ""), duration)
     accents = add_callouts(subs, scenes, durations)
-    audio = mix_soundtrack(voice, work_dir / "soundtrack.m4a", duration, scene_cuts, pick_music(topic["id"], series),
-                           accents)
+    mood = script.get("mood", "")
+    music = pick_music(topic["id"], series, mood=mood)
+    print(f"       Müzik: {(music or Path('-')).name}{f' ({mood})' if mood else ''}")
+    audio = mix_soundtrack(voice, work_dir / "soundtrack.m4a", duration, scene_cuts, music, accents)
 
     print("[4/4] 🚀 Render")
     final_mp4 = OUTPUT_DIR / f"ORIGINAL_{topic['id']}_{stamp}.mp4"
@@ -657,7 +698,8 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "scenes": scenes,
         "duration_seconds": round(duration, 2),
         "image_model": os.environ.get("IMAGE_MODEL") or "fal-ai/flux/schnell",
-        "music": (pick_music(topic["id"], series) or Path("-")).name,
+        "music": (music or Path("-")).name,
+        "music_mood": mood,
         "ai_images": visuals["ai_images"],
         "stock_videos": visuals["stock_videos"],
         "clip_match": visuals.get("clip_match"),

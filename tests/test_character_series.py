@@ -145,6 +145,53 @@ def test_music_and_effects_come_from_the_generated_library(tmp_path):
     assert original_factory.sfx("whoosh", tmp_path).name == "whoosh.mp3"
 
 
+def test_music_follows_the_mood_the_script_picked(tmp_path):
+    (tmp_path / "music").mkdir()
+    for n in (1, 2, 3):
+        (tmp_path / "music" / f"merak_{n}.mp3").write_bytes(b"ID3")
+    pick = original_factory.pick_music
+    # By its id alone the owl Short drew the bouncy marimba track; a wildlife topic now gets the documentary one.
+    assert pick("mk-028", "merak", tmp_path).name == "merak_2.mp3"
+    assert pick("mk-028", "merak", tmp_path, mood="belgesel").name == "merak_3.mp3"
+    assert pick("mk-028", "merak", tmp_path, mood="eglenceli").name == "merak_2.mp3"
+    assert pick("mk-028", "merak", tmp_path, mood="sakin").name == "merak_1.mp3"
+    # A mood whose track is missing from the library still gets a track of the series.
+    (tmp_path / "music" / "merak_3.mp3").unlink()
+    assert pick("mk-028", "merak", tmp_path, mood="belgesel").name in {"merak_1.mp3", "merak_2.mp3"}
+
+
+def test_music_sits_the_same_distance_under_the_narration_whatever_its_own_level(tmp_path):
+    def tone(name, source):
+        path = tmp_path / name
+        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", source, "-t", "6", str(path)],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return path
+
+    voice = tone("voice.wav", "sine=frequency=220,volume=4")
+    spoken = original_factory.loudness(voice, chain=original_factory.VOICE_CHAIN)
+    for music in (tone("loud.wav", "sine=frequency=880,volume=6"), tone("quiet.wav", "sine=frequency=880,volume=0.5")):
+        bed = original_factory.loudness(music, chain=f"volume={original_factory.music_gain(voice, music, 6.0)}")
+        assert abs(spoken - bed - original_factory.MUSIC_UNDER_VOICE) < 0.5
+    # Nothing to measure: the old fixed level.
+    silent = tone("silent.wav", "anullsrc=r=44100:cl=mono")
+    assert original_factory.loudness(silent) is None
+    assert original_factory.music_gain(voice, silent, 6.0) == original_factory.MUSIC_VOLUME
+
+
+def test_music_is_mixed_at_the_measured_level_and_leaves_room_for_the_voice(tmp_path, monkeypatch):
+    lib = tmp_path / "audio"
+    (lib / "sfx").mkdir(parents=True)
+    monkeypatch.setattr(original_factory, "AUDIO_LIBRARY", lib)
+    track = tmp_path / "merak_3.mp3"
+    track.write_bytes(b"ID3")
+    monkeypatch.setattr(original_factory, "music_gain", lambda voice, music, duration: 0.0123)
+    commands = []
+    monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
+    original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0], track)
+    graph = commands[-1][commands[-1].index("-filter_complex") + 1]
+    assert "[1:a]volume=0.0123,equalizer=f=2500:t=o:w=2:g=-4,afade=t=in:d=0.4" in graph
+
+
 def test_reference_analysis_reads_links_and_builds_a_spec():
     from app.services import reference_analysis as ra
     text = ("https://www.youtube.com/shorts/D4RVfi_5l30 , https://www.youtube.com/shorts/msrST6TrWn8,"

@@ -171,8 +171,14 @@ bulunamazsa kullanılır.
   karışır; her cümlenin seslendirmesindeki baştaki ve sondaki sessizlik kesilir,
   cümleler arasında 0,15 sn nefes payı kalır, böylece anlatım tek parça gibi akar.
 - Bütün serilerde: kanca sorusu video boyunca ekranın üstünde beyaz, kalın
-  kenarlı yazı olarak durur; altyazı alt üçte birde; müzik sesi %9. Yazı tipi
-  Montserrat Black (iş akışı `fonts-montserrat` paketini kurar).
+  kenarlı yazı olarak durur; altyazı alt üçte birde. Yazı tipi Montserrat Black
+  (iş akışı `fonts-montserrat` paketini kurar).
+- Müzik: anlatımın ve müziğin ses yüksekliği ölçülür, müzik her parçada anlatımın
+  20 LU altına ayarlanır ve konuşmanın en net duyulduğu bantta (2,5 kHz) biraz
+  kısılır; ölçülemezse eski sabit %9 kullanılır. Merak senaryosunu yazan model
+  videonun havasını da seçer: `belgesel` (vahşi doğa, uzay, gizem) `merak_3`,
+  `eğlenceli` (komik, sevimli) `merak_2`, `sakin` (vücut, psikoloji, gündelik
+  bilim) `merak_1` parçasını çalar. Seçilen hava meta dosyasında `music_mood`.
 - Zamanlanmış çalışmalar varsayılan olarak merak videosu üretir (Ulaş'ın seçtiği
   format). `--series karisik` son yüklemeye bakıp merak, karakter ve tarih
   videolarını sırayla üretir.

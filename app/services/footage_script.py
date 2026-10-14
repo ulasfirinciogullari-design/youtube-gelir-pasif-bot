@@ -24,7 +24,7 @@ from app.services import original_visuals
 from app.services.clip_matcher import _call_gemini_parts, fetch_thumbnail, pixabay_thumbnail
 from app.services.original_script import (
     EMOJI_RE, MAX_SCENE_CHARS, MAX_SCENES, MAX_WORDS, MIN_SCENES, MIN_WORDS, ScriptError, _call_gemini, _extract_json,
-    clean_callout, validate_script,
+    MOOD_RULE, clean_callout, validate_script,
 )
 
 MIN_COVERAGE = 6  # out of 10; below this a topic is skipped when the run picked it itself
@@ -80,10 +80,11 @@ Başlık ve kanca:
 - "title": en fazla 60 karakter; merak uyandıran soru veya şaşırtıcı iddia ve sonunda tek bir uygun emoji. #shorts yazma.
 - "hook_text": konunun sorusunu soran 3-7 kelimelik büyük yazı (ör. "KEDİLER NEDEN HEP AYAKTA DÜŞER?"); video boyunca
   ekranın üstünde durur, emoji yok.
-
+""" + MOOD_RULE + """
 Sadece şu JSON'u döndür, başka hiçbir şey yazma:
 {{
   "coverage": 8,
+  "mood": "belgesel",
   "title": "Türkçe başlık + tek emoji",
   "hook_text": "3-7 kelimelik kanca yazısı",
   "scenes": [

@@ -43,6 +43,14 @@ def test_validate_script_normalizes_and_strips_hashtags():
     assert script["scenes"][1]["source"] == "stock"
 
 
+def test_validate_script_keeps_the_music_mood():
+    from app.services.original_script import clean_mood
+    assert [clean_mood(v) for v in ("EĞLENCELİ", "Belgesel", " sakin ", "epik", None)] == [
+        "eglenceli", "belgesel", "sakin", "", ""]
+    assert validate_script({**VALID_SCRIPT, "mood": "Eğlenceli"})["mood"] == "eglenceli"
+    assert validate_script(VALID_SCRIPT)["mood"] == ""
+
+
 def test_validate_script_rejects_film_characters():
     raw = json.loads(json.dumps(VALID_SCRIPT))
     raw["scenes"][0]["text"] = "Thomas Shelby bir odaya girdiğinde herkes susardı."
@@ -446,5 +454,6 @@ def test_full_render_with_offline_assets(tmp_path, monkeypatch):
     assert meta["description"].endswith("Seri: zk-001")
     assert meta["hook_text"]
     assert meta["contains_synthetic_media"] is True
+    assert meta["music"].endswith(".mp3") and meta["music_mood"] == ""
     assert meta["stock_videos"] >= 1
     assert abs(float(probe["format"]["duration"]) - meta["duration_seconds"]) < 0.3
