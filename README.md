@@ -178,7 +178,9 @@ bulunamazsa kullanılır.
   müzik anlatımla neredeyse eşit, efektler ondan çok daha yüksek duyuluyordu),
   müzik anlatımın 12 LU altına ayarlanır ve konuşmanın en net duyulduğu bantta
   (2,5 kHz) biraz kısılır; efektler anlatımın altında kalır (kanca vuruşu ~2 LU,
-  pop ~8 LU, riser ~6 LU, whoosh ~14 LU altında). Ölçülemezse eski sabit
+  pop ~8 LU, riser ~6 LU, whoosh ~14 LU altında). Sessiz bir girişle açılan parça
+  (`merak_3` ilk 8 saniyede neredeyse duyulmuyor) girişi atlanarak başlatılır,
+  ama Short bitmeden parça bitmeyecek kadar erken. Ölçülemezse eski sabit
   seviyeler kullanılır. `deneme` işi anlatımı ve son miksi
   `_voice.mp3` / `_mix.mp3` olarak kanal hafızasına da bırakır. Merak senaryosunu yazan model
   videonun havasını da seçer: `belgesel` (vahşi doğa, uzay, gizem) `merak_3`,

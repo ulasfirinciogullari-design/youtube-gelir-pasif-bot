@@ -88,6 +88,7 @@ VOICE_COMPRESSOR = "acompressor=threshold=-16dB:ratio=3:attack=5:release=60"
 MUSIC_UNDER_VOICE = 12  # LU; the reference Shorts keep music low and steady under the narrator
 MUSIC_VOLUME = 0.09  # only when the loudness cannot be measured
 VOICE_BAND_DIP = "equalizer=f=2500:t=o:w=2:g=-4"  # the music steps back where speech is clearest
+MUSIC_INTRO_LU = 8  # a track is playing once its 3 s loudness is within this of its loud parts
 # The curiosity script names a mood and gets that mood's track; the owl Short had drawn the bouncy marimba one.
 MOOD_TRACKS = {"merak": {"belgesel": "merak_3", "eglenceli": "merak_2", "sakin": "merak_1"}}
 # Sound effects stay accents: Ulaş found a whoosh on every scene change loud and tiring.
@@ -442,19 +443,41 @@ def pick_music(seed: str, series: str = "story", library: Path | None = None, mo
     return tracks[int(hashlib.md5(seed.encode("utf-8")).hexdigest(), 16) % len(tracks)]
 
 
-def loudness(path: Path, seconds: float | None = None, chain: str = "") -> float | None:
-    """Integrated loudness in LUFS of the first `seconds` after `chain` (ffmpeg ebur128); None for silence or errors."""
-    limit = ["-t", f"{seconds:.3f}"] if seconds else []
+def loudness(path: Path, seconds: float | None = None, chain: str = "", start: float = 0.0) -> float | None:
+    """Integrated loudness in LUFS of `seconds` from `start` after `chain` (ffmpeg ebur128); None for silence or
+    errors."""
+    window = (["-ss", f"{start:.2f}"] if start else []) + (["-t", f"{seconds:.3f}"] if seconds else [])
     try:
         result = subprocess.run(
-            ["ffmpeg", "-hide_banner", "-nostats", *limit, "-i", str(path), "-af", ",".join(filter(None, [chain, "ebur128"])),
-             "-f", "null", "-"],
+            ["ffmpeg", "-hide_banner", "-nostats", *window, "-i", str(path), "-af",
+             ",".join(filter(None, [chain, "ebur128"])), "-f", "null", "-"],
             capture_output=True, text=True, timeout=120,
         )
     except (OSError, subprocess.SubprocessError):
         return None
     found = re.findall(r"I:\s+(-?\d+(?:\.\d+)?) LUFS", getattr(result, "stderr", None) or "")
     return float(found[-1]) if found and float(found[-1]) > -70 else None
+
+
+def music_start(music: Path, duration: float) -> float:
+    """Where in the track the Short starts: past a quiet intro (merak_3 opens near -34 LUFS and takes about 8 s to
+    arrive, which left the hook without music), yet early enough that the track never runs out mid-Short."""
+    try:
+        result = subprocess.run(
+            ["ffmpeg", "-hide_banner", "-nostats", "-v", "verbose", "-i", str(music), "-af", "ebur128=framelog=verbose",
+             "-f", "null", "-"],
+            capture_output=True, text=True, timeout=120,
+        )
+        frames = [(float(t), float(s)) for t, s in
+                  re.findall(r"t:\s*(\d+(?:\.\d+)?)\s.*?S:\s*(-?\d+(?:\.\d+)?)", result.stderr) if float(t) >= 3.0]
+        latest = _probe_duration(music) - duration - 1.0
+    except (OSError, subprocess.SubprocessError, ValueError, AttributeError, TypeError):
+        return 0.0
+    if not frames or latest <= 0:
+        return 0.0
+    loud = sorted(level for _, level in frames)[int(len(frames) * 0.9)]
+    first = next(t for t, level in frames if level >= loud - MUSIC_INTRO_LU)  # end of the first 3 s window that plays
+    return round(min(latest, 0.0 if first == frames[0][0] else first - 1.5), 1)
 
 
 def voice_chain(lift: float, makeup: float = 1.1) -> str:
@@ -466,16 +489,17 @@ def _gain(target: float, measured: float, low: float, high: float, digits: int =
     return round(min(high, max(low, 10 ** ((target - measured) / 20))), digits)
 
 
-def mix_levels(voice: Path, music: Path | None, duration: float) -> tuple[str, float]:
+def mix_levels(voice: Path, music: Path | None, duration: float, start: float = 0.0) -> tuple[str, float]:
     """(narration filter chain, music gain): the narration at VOICE_LUFS after compression, and the part of the
-    track that plays MUSIC_UNDER_VOICE LU under it. What cannot be measured keeps the old fixed levels."""
+    track that plays (from `start`) MUSIC_UNDER_VOICE LU under it. What cannot be measured keeps the old fixed
+    levels."""
     spoken = loudness(voice)
     if spoken is None:
         return voice_chain(1.0), MUSIC_VOLUME
     lift = _gain(VOICE_LUFS, spoken, 0.1, 30.0)
     compressed = loudness(voice, chain=voice_chain(lift, 1.0))
     chain = voice_chain(lift, 1.0 if compressed is None else _gain(VOICE_LUFS, compressed, 0.25, 4.0))
-    bed = loudness(music, duration) if music and music.exists() and compressed is not None else None
+    bed = loudness(music, duration, start=start) if music and music.exists() and compressed is not None else None
     if bed is None:
         return chain, MUSIC_VOLUME
     level = _gain(VOICE_LUFS - MUSIC_UNDER_VOICE, bed, 0.001, 0.5, 4)
@@ -494,7 +518,8 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
                    accents: list[float] | None = None) -> Path:
     """Voice + music well under it + a soft hit on the hook, a quiet whoosh only after the hook and into the last
     scene, a soft pop under each on-screen key fact (`accents`) and a riser into the ending."""
-    narration, level = mix_levels(voice, music, duration)
+    start = music_start(music, duration) if music and music.exists() else 0.0
+    narration, level = mix_levels(voice, music, duration, start)
     inputs = ["-i", str(voice)]
     filters = [f"[0:a]{narration}[v]"]
     labels = ["[v]"]
@@ -509,7 +534,11 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
 
     if music and music.exists():
         fade = max(0.5, duration - 1.5)
-        add(music, f"volume={level},{VOICE_BAND_DIP},afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m", loop=True)
+        skip = f"atrim=start={start},asetpts=PTS-STARTPTS," if start else ""
+        add(music, f"{skip}volume={level},{VOICE_BAND_DIP},afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m",
+            loop=True)
+        if start:
+            print(f"       Müzik {start:.1f}. saniyesinden başlıyor (sessiz giriş atlandı)")
     impact, whoosh, riser = sfx("impact"), sfx("whoosh"), sfx("riser")
     if impact:
         add(impact, f"volume={IMPACT_VOLUME}", "imp")

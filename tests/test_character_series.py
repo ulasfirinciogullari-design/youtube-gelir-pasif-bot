@@ -189,13 +189,31 @@ def test_music_is_mixed_at_the_measured_level_and_leaves_room_for_the_voice(tmp_
     track = tmp_path / "merak_3.mp3"
     track.write_bytes(b"ID3")
     monkeypatch.setattr(original_factory, "mix_levels",
-                        lambda voice, music, duration: (original_factory.voice_chain(2.5, 0.8), 0.0123))
+                        lambda voice, music, duration, start: (original_factory.voice_chain(2.5, 0.8), 0.0123))
+    monkeypatch.setattr(original_factory, "music_start", lambda music, duration: 7.5)
     commands = []
     monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0], track)
     graph = commands[-1][commands[-1].index("-filter_complex") + 1]
     assert graph.startswith("[0:a]highpass=f=70,volume=2.5,acompressor=") and "release=60,volume=0.8[v]" in graph
-    assert "[1:a]volume=0.0123,equalizer=f=2500:t=o:w=2:g=-4,afade=t=in:d=0.4" in graph
+    assert "[1:a]atrim=start=7.5,asetpts=PTS-STARTPTS,volume=0.0123,equalizer=f=2500:t=o:w=2:g=-4,afade=t=in" in graph
+
+
+def test_music_starts_past_a_quiet_intro_but_never_runs_out(tmp_path):
+    def track(name, intro_seconds, seconds):
+        path = tmp_path / name
+        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", f"sine=frequency=440:duration={intro_seconds},volume=0.01",
+                        "-f", "lavfi", "-i", f"sine=frequency=440:duration={seconds},volume=4",
+                        "-filter_complex", "[0][1]concat=n=2:v=0:a=1", str(path)],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return path
+
+    # Like merak_3: near silence for 8 s, then the track plays; the Short starts about where it arrives.
+    assert 6.0 <= original_factory.music_start(track("intro.wav", 8, 40), 20.0) <= 8.5
+    # No intro to skip; and a Short as long as the rest of the track starts early enough to finish inside it.
+    assert original_factory.music_start(track("steady.wav", 0.1, 40), 20.0) == 0.0
+    assert original_factory.music_start(track("intro.wav", 8, 40), 44.0) == 3.0
+    assert original_factory.music_start(tmp_path / "missing.mp3", 20.0) == 0.0
 
 
 def test_reference_analysis_reads_links_and_builds_a_spec():
