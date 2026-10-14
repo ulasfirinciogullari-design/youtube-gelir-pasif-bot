@@ -450,9 +450,42 @@ def render_image_segment(image: Path, out: Path, duration: float, motion: int) -
     return out
 
 
+BAR_MIN = 0.04  # a black band thinner than this share of the frame is left alone
+
+
+def black_bars(video: Path, start: float = 0.0) -> str | None:
+    """A crop filter that removes black bands baked into a clip, or None. A "vertical" Pexels clip showed its
+    picture between thick black bands under the hook banner (owl sample, 2026-10-14). cropdetect keeps the
+    union of the picture over two seconds, so a dark scene that moves is not cut; only even bands on two
+    opposite sides count, and at least half of the frame must remain."""
+    try:
+        log = subprocess.run(
+            ["ffmpeg", "-hide_banner", "-ss", f"{start:.2f}", "-i", str(video), "-t", "2",
+             "-vf", "cropdetect=limit=24:round=2:reset=0,showinfo", "-f", "null", "-"],
+            capture_output=True, text=True, timeout=60,
+        ).stderr
+    except (OSError, subprocess.SubprocessError):
+        return None
+    crops, size = re.findall(r"crop=(\d+):(\d+):(\d+):(\d+)", log), re.search(r" s:(\d+)x(\d+) ", log)
+    if not crops or not size:
+        return None
+    w, h, x, y = map(int, crops[-1])
+    iw, ih = map(int, size.groups())
+    top, bottom, left, right = y, ih - y - h, x, iw - x - w
+    if w * h < iw * ih / 2:
+        return None
+    if min(top, bottom) >= BAR_MIN * ih and abs(top - bottom) <= 0.03 * ih and max(left, right) < BAR_MIN * iw:
+        return f"crop={iw}:{h}:0:{y}"
+    if min(left, right) >= BAR_MIN * iw and abs(left - right) <= 0.03 * iw and max(top, bottom) < BAR_MIN * ih:
+        return f"crop={w}:{ih}:{x}:0"
+    return None
+
+
 def render_video_segment(video: Path, out: Path, duration: float, offset: float) -> Path:
     zoom = f"(1+{PUSH_IN_PER_SECOND}*t)"
+    bars = black_bars(video, offset)
     vf = (
+        (f"{bars}," if bars else "") +
         f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,crop={WIDTH}:{HEIGHT},fps={FPS},"
         f"scale=w='2*trunc({WIDTH // 2}*{zoom})':h='2*trunc({HEIGHT // 2}*{zoom})':eval=frame,crop={WIDTH}:{HEIGHT},"
         f"{GRADE},setsar=1"

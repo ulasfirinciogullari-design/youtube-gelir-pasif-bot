@@ -231,6 +231,25 @@ def test_narration_lines_lose_their_own_silence_and_get_a_short_pause(tmp_path, 
     assert out.suffix == ".wav" and abs(original_factory._probe_duration(out) - expected) < 0.05
 
 
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_black_bands_baked_into_a_clip_are_cropped(tmp_path):
+    def clip(name, size, pad):
+        path = tmp_path / f"{name}.mp4"
+        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", f"testsrc2=size={size}:rate=30", "-t", "3", "-vf", pad,
+                        "-c:v", "libx264", "-pix_fmt", "yuv420p", str(path)],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return path
+
+    # A "vertical" clip with its picture between black bands, and a square picture inside a landscape frame.
+    assert original_visuals.black_bars(clip("letterbox", "1080x1440", "pad=1080:1920:0:240:black")) == "crop=1080:1440:0:240"
+    assert original_visuals.black_bars(clip("pillarbox", "1080x1080", "pad=1440:1080:180:0:black")) == "crop=1080:1080:180:0"
+    # A full picture, a dark one and a single uneven band stay as they are.
+    assert original_visuals.black_bars(clip("full", "1080x1920", "null")) is None
+    assert original_visuals.black_bars(clip("dark", "1080x1920", "eq=brightness=-0.6")) is None
+    assert original_visuals.black_bars(clip("one", "1080x1440", "pad=1080:1920:0:480:black")) is None
+    assert original_visuals.black_bars(tmp_path / "missing.mp4") is None
+
+
 def test_split_duration_keeps_segments_short():
     parts = original_visuals.split_duration(7.0)
     assert max(parts) <= original_visuals.MAX_SEGMENT_SECONDS
