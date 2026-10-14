@@ -173,7 +173,8 @@ jobs:
           for f in metrics.json channel_audit.json competitor_dna.json reference_style.json; do
             [ -f "output/$f" ] && cp "output/$f" channel-data/
           done
-          cp output/ORIGINAL_*_meta.json output/COMEDY_*_meta.json channel-data/history/ 2>/dev/null || true
+          # The storyboard (one frame a second) lets a session that cannot open YouTube see the video.
+          cp output/ORIGINAL_*_meta.json output/ORIGINAL_*_story.jpg output/COMEDY_*_meta.json channel-data/history/ 2>/dev/null || true
           cd channel-data
           git add -A
           if git diff --cached --quiet; then echo "Yeni veri yok"; exit 0; fi

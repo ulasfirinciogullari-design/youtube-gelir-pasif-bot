@@ -21,6 +21,7 @@ import argparse
 import asyncio
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -95,6 +96,7 @@ SUBTITLE_MARGIN_V = 620  # lower third, above the Shorts title/channel overlay
 # The heavy rounded face of popular Shorts captions; the workflow installs fonts-montserrat. Arial Black was never on
 # the runner, so the text fell back to a plain sans font, as it still would without Montserrat.
 FONT = "Montserrat Black"
+STORYBOARD_SECONDS = 1.0  # one frame per second: a key fact (1.6 s on screen) always shows up
 voice_usage = {"elevenlabs": 0, "edge-tts": 0}
 
 
@@ -520,6 +522,22 @@ def add_callouts(ass_path: Path, scenes: list[dict], durations: list[float]) -> 
     return times
 
 
+def storyboard(video: Path, out: Path, duration: float, every: float = STORYBOARD_SECONDS) -> Path | None:
+    """One small frame per `every` seconds, tiled eight to a row into a JPEG that goes to the channel history.
+    The cloud sessions that build these Shorts can open neither YouTube nor the run's artifacts; this is how
+    they see a finished video."""
+    cols = 8
+    rows = max(1, math.ceil(math.ceil(duration / every) / cols))
+    try:
+        subprocess.run(["ffmpeg", "-y", "-i", str(video), "-vf", f"fps=1/{every},scale=160:284,tile={cols}x{rows}",
+                        "-frames:v", "1", "-q:v", "5", str(out)],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        print(f"ℹ️ Kare özeti çıkarılamadı: {e}")
+        return None
+    return out
+
+
 def render_final(segments: list[Path], audio: Path, subtitles_file: Path, duration: float, work_dir: Path,
                  final_mp4: Path, slots: list[float] | None = None) -> Path:
     """With `slots` (each segment's place on the timeline) the shots dissolve into each other;
@@ -613,6 +631,8 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
             ["ffmpeg", "-y", "-ss", "0.8", "-i", str(final_mp4), "-vframes", "1", "-q:v", "2", str(thumb)],
             check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )
+
+    storyboard(final_mp4, final_mp4.with_name(f"{final_mp4.stem}_story.jpg"), duration)
 
     title = script["title"]
     full_title = f"{title} #shorts" if len(title) <= 92 else title[:100]

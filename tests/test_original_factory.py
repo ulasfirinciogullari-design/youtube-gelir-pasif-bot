@@ -421,6 +421,8 @@ def test_full_render_with_offline_assets(tmp_path, monkeypatch):
     assert video["r_frame_rate"] == "60/1"
     assert any(s["codec_type"] == "audio" for s in probe["streams"])
     assert result["thumbnail"].exists()
+    story = result["video"].with_name(f"{result['video'].stem}_story.jpg")
+    assert story.exists() and story.stat().st_size > 1000
     meta = result["meta"]
     assert meta["description"].endswith("Seri: zk-001")
     assert meta["hook_text"]
