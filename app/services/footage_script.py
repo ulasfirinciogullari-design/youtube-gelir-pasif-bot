@@ -24,7 +24,7 @@ from app.services import original_visuals
 from app.services.clip_matcher import _call_gemini_parts, fetch_thumbnail, pixabay_thumbnail
 from app.services.original_script import (
     EMOJI_RE, MAX_SCENE_CHARS, MAX_SCENES, MAX_WORDS, MIN_SCENES, MIN_WORDS, ScriptError, _call_gemini, _extract_json,
-    validate_script,
+    clean_callout, validate_script,
 )
 
 MIN_COVERAGE = 6  # out of 10; below this a topic is skipped when the run picked it itself
@@ -58,6 +58,8 @@ Anlatım kuralları:
 - Son sahne izleyicinin aklında kalacak somut bir bilgi, kendisinin deneyebileceği bir şey veya şaşırtıcı bir sonuç olsun;
   "doğa muhteşem", "fizik kurallarıyla açıklanıyor" gibi genel bir lafla bitirme.
 - Enerjik ve samimi konuş; yeri gelince ekrana gönderme yap ("şu kediye bakın", "gördüğünüz gibi").
+- Ders anlatır gibi değil: "Açıklayalım", "Bunun nedeni şudur" gibi kalıplar yok. Kısa, vurucu cümleler kur; her bir iki
+  cümlede yeni bir şaşırtıcı bilgi ver ve ortada bir dönüş yap ("Ama asıl şaşırtıcı olan..." gibi).
 - Sadece bilimsel olarak doğrulanmış bilgiler. Sayı ve karşılaştırma (süre, yüzde, ölçü, "milyon kat", "iki katı") yalnızca
   ansiklopedilerde geçen, kesin bilinen bir değerse kullan; emin değilsen sayı verme.
 - Anlatımda emoji kullanma, metin seslendirilecek.
@@ -69,6 +71,9 @@ Görüntü kuralları:
   Bir aday yalnızca bir sahnede kullanılabilir.
 - Yazı, logo, filigran olan, bulanık veya konuyla ilgisiz adayları kullanma.
 - "visual": o sahnede ekranda görünen şeyin kısa İngilizce tarifi.
+- "callout": o sahnede ekranın ortasında büyük harflerle beliren 1-3 kelimelik anahtar bilgi ya da birimiyle bir sayı
+  (ör. "270 DERECE", "14 OMUR", "SANİYEDE 340 METRE"). Cümledeki bilgiyle birebir aynı olsun. Sadece en çarpıcı 3-4 sahneye
+  koy, diğer sahnelerde "" bırak.
 - "coverage": adayların bu konuyu ne kadar iyi gösterebildiği, 1-10. Konunun ana sorusunu gösteren aday yoksa 5'in altında ver.
 
 Başlık ve kanca:
@@ -82,7 +87,7 @@ Sadece şu JSON'u döndür, başka hiçbir şey yazma:
   "title": "Türkçe başlık + tek emoji",
   "hook_text": "3-7 kelimelik kanca yazısı",
   "scenes": [
-    {{"text": "Türkçe anlatım", "visual": "what is on screen",
+    {{"text": "Türkçe anlatım", "visual": "what is on screen", "callout": "270 DERECE",
       "clips": [{{"n": 4, "kare": 2}}, {{"n": 11, "kare": 1}}, {{"n": 17, "kare": 3}}]}}
   ],
   "description": "2-3 cümlelik Türkçe açıklama",
@@ -98,11 +103,14 @@ Konu: {topic}
 
 {scenes}
 
-Her cümleyi tek tek kontrol et: yanlış, abartılı veya yanıltıcı bir bilgi (sayı, oran, karşılaştırma, neden-sonuç) var mı?
+Köşeli parantezdeki "ekranda" yazıları o sahnede ekrana büyük harflerle çıkacak.
+Her cümleyi ve ekran yazısını tek tek kontrol et: yanlış, abartılı veya yanıltıcı bir bilgi (sayı, oran, karşılaştırma,
+neden-sonuç) var mı?
 Örnek: "kalp günde 1 milyon kez atar" yanlıştır, yaklaşık 100 bin kezdir.
-Hatalı her cümle için düzeltilmiş halini yaz: aynı konuyu ve aynı görüntüyü anlatan, yaklaşık aynı uzunlukta, sadece hatalı
-kısmı değiştiren bir cümle. Doğru cümleleri listeye koyma; hata yoksa boş liste döndür.
-Sadece şu JSON'u döndür: {{"fixes": [{{"scene": 3, "text": "düzeltilmiş cümle", "why": "kısa gerekçe"}}]}}"""
+Hatalı her sahne için düzeltilmiş halini yaz: aynı konuyu ve aynı görüntüyü anlatan, yaklaşık aynı uzunlukta, sadece hatalı
+kısmı değiştiren bir cümle; sahnenin ekran yazısı varsa onun doğru halini de "callout" olarak ver. Doğru sahneleri listeye
+koyma; hata yoksa boş liste döndür.
+Sadece şu JSON'u döndür: {{"fixes": [{{"scene": 3, "text": "düzeltilmiş cümle", "callout": "", "why": "kısa gerekçe"}}]}}"""
 
 
 def plan_queries(topic: str, subject: list[str], hint: str = "", call=_call_gemini) -> list[str]:
@@ -121,15 +129,18 @@ def plan_queries(topic: str, subject: list[str], hint: str = "", call=_call_gemi
 
 
 def gather_pool(queries: list[str], subject: list[str], used_ids: set, limit: int = MAX_POOL) -> list[dict]:
-    """On-subject candidates from every query, interleaved so each search contributes its best clips.
-    Each hit remembers the search that found it (`_query`), which later helps fill a scene with similar shots."""
-    lists = [[{**h, "_query": q} for h in original_visuals.pixabay_candidates(q, used_ids, subject, limit=10)]
-             for q in queries]
+    """On-subject candidates from every query and both libraries, interleaved so each search contributes
+    its best clips; Pexels' vertical HD clips come first within a rank. Each hit remembers the search that
+    found it (`_query`), which later helps fill a scene with similar shots."""
+    lists = []
+    for q in queries:
+        for search in (original_visuals.pexels_candidates, original_visuals.pixabay_candidates):
+            lists.append([{**h, "_query": q} for h in search(q, used_ids, subject, limit=10)])
     pool, seen = [], set()
     for rank in range(10):
         for hits in lists:
-            if rank < len(hits) and hits[rank].get("id") not in seen and len(pool) < limit:
-                seen.add(hits[rank].get("id"))
+            if rank < len(hits) and original_visuals.hit_key(hits[rank]) not in seen and len(pool) < limit:
+                seen.add(original_visuals.hit_key(hits[rank]))
                 pool.append(hits[rank])
     return pool
 
@@ -149,7 +160,8 @@ def contact_sheet(hit: dict, work_dir: Path) -> tuple[bytes, str] | None:
     preview = _preview_rendition(hit)
     duration = float(hit.get("duration") or 0)
     if preview and duration >= 1:
-        src, out = work_dir / f"preview_{hit['id']}.mp4", work_dir / f"sheet_{hit['id']}.jpg"
+        name = original_visuals.hit_key(hit).replace(":", "_")
+        src, out = work_dir / f"preview_{name}.mp4", work_dir / f"sheet_{name}.jpg"
         try:
             original_visuals._download(preview["url"], src, timeout=60)
             subprocess.run(
@@ -217,8 +229,10 @@ def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
     A wrong claim ("sound is millions of times slower than light", 2026-10-13 sample) got past the writing prompt.
     A fix that is empty, too long or would push the narration out of its word range is ignored."""
     scenes = script["scenes"]
+    lines = "\n".join(f"{i}. {s['text']}" + (f" [ekranda: {s['callout']}]" if s.get("callout") else "")
+                      for i, s in enumerate(scenes, 1))
     try:
-        raw = call(FACT_PROMPT.format(topic=topic, scenes="\n".join(f"{i}. {s['text']}" for i, s in enumerate(scenes, 1))))
+        raw = call(FACT_PROMPT.format(topic=topic, scenes=lines))
         fixes = (_extract_json(raw).get("fixes") or []) if raw else []
     except (ScriptError, ValueError, urllib.error.URLError, TimeoutError) as e:
         print(f"ℹ️ Bilgi kontrolü yapılamadı: {str(e)[:200]}")
@@ -230,11 +244,20 @@ def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
         except (AttributeError, TypeError, ValueError):
             continue
         text = " ".join(EMOJI_RE.sub("", str(fix.get("text") or "")).split())
-        if not 0 <= i < len(scenes) or not text or len(text) > MAX_SCENE_CHARS or text == scenes[i]["text"]:
+        if not 0 <= i < len(scenes) or not text or len(text) > MAX_SCENE_CHARS:
+            continue
+        had = scenes[i].get("callout", "")
+        callout = clean_callout(fix.get("callout")) if had else ""  # the editor corrects key facts, never adds them
+        if text == scenes[i]["text"] and callout == had:
             continue
         words = sum(len(s["text"].split()) for s in scenes) - len(scenes[i]["text"].split()) + len(text.split())
         if MIN_WORDS <= words <= MAX_WORDS:
             scenes[i]["text"] = text
+            # A corrected sentence never keeps an on-screen number the editor did not confirm.
+            if callout:
+                scenes[i]["callout"] = callout
+            else:
+                scenes[i].pop("callout", None)
             notes.append(f"{i + 1}. sahne: {' '.join(str(fix.get('why') or '').split())[:150]}")
     return notes
 

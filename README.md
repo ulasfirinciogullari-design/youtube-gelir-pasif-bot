@@ -142,8 +142,9 @@ bulunamazsa kullanılır.
 - Konular: `app/services/merak_topics_tr.json`, kodlar `mk-001` gibi; her
   konunun `stock_hint` alanı, sahne araması boş dönerse kullanılan genel aramadır.
   Liste bitince Gemini yeni konu üretir.
-- Senaryo görüntüye göre yazılır (`app/services/footage_script.py`): Pixabay'den
-  yalnızca gerçek çekim (animasyon değil) ve etiketlerinde konunun öznesi
+- Senaryo görüntüye göre yazılır (`app/services/footage_script.py`): Pexels'ten
+  dikey Full HD klipler (önce bunlar) ve Pixabay'den gerçek çekimler (animasyon
+  değil) aranır; etiketinde ya da Pexels sayfa adında konunun öznesi
   (`subject`, ör. `cat`, `kitten`) geçen 40'a kadar klip toplanır, her klibin üç
   karesi Gemini'ye gösterilir ve Gemini anlatımı bu kliplerde gerçekten görünen
   şeylere göre yazar; her cümleye 2-3 farklı klip ve her klibin hangi anının
@@ -153,7 +154,14 @@ bulunamazsa kullanılır.
   atlanır ve `channel-data/skipped_topics.json`'a yazılır (konu elle `topic_id`
   ile istenirse yine de yapılır). Biten senaryoyu Gemini bir kez de bilim editörü
   gibi okur; yanlış veya abartılı bir sayı ya da karşılaştırma varsa o cümleyi
-  düzeltir.
+  ve ekran yazısını düzeltir.
+- En çarpıcı 3-4 cümlenin anahtar bilgisi ("270 DERECE") ekranın ortasında büyük
+  sarı yazıyla belirir, altında hafif bir pop sesi çalar (`pop.mp3`, `ses` görevi
+  eksikse üretir). Anlatım 1,1 kat hızda okunur.
+- Video bittiğinde Gemini onu Ulaş'ın referans Short'larından biriyle
+  (`k951xfBlETg`) karşılaştırır (`app/services/video_critic.py`): 10 üzerinden puan
+  ve etkisine göre sıralı sorunlar loga ve meta dosyasına (`critique`) yazılır;
+  yükleme bunu beklemez.
 - Bu yol çalışmazsa eski yola dönülür: önce senaryo, sonra Gemini adayların küçük
   resimlerinden her cümleye uygun klibi seçer (`app/services/clip_matcher.py`).
 - Ses efektleri vurgu içindir: hafif bir whoosh sadece kancadan sonra ve son
@@ -163,7 +171,8 @@ bulunamazsa kullanılır.
   karışır; her cümlenin seslendirmesindeki baştaki ve sondaki sessizlik kesilir,
   cümleler arasında 0,15 sn nefes payı kalır, böylece anlatım tek parça gibi akar.
 - Bütün serilerde: kanca sorusu video boyunca ekranın üstünde beyaz, kalın
-  kenarlı yazı olarak durur; altyazı alt üçte birde; müzik sesi %9.
+  kenarlı yazı olarak durur; altyazı alt üçte birde; müzik sesi %9. Yazı tipi
+  Montserrat Black (iş akışı `fonts-montserrat` paketini kurar).
 - Zamanlanmış çalışmalar varsayılan olarak merak videosu üretir (Ulaş'ın seçtiği
   format). `--series karisik` son yüklemeye bakıp merak, karakter ve tarih
   videolarını sırayla üretir.

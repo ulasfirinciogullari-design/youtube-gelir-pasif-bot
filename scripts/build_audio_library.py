@@ -56,6 +56,8 @@ SFX = {
     "whoosh": ("Fast clean cinematic whoosh transition, airy swish, short", 1.0),
     "impact": ("Deep cinematic boom impact with a long sub bass tail", 2.0),
     "riser": ("Short cinematic tension riser building up, ends abruptly", 3.0),
+    # Under the big on-screen key facts of the curiosity series (2026-10-14).
+    "pop": ("Short bright soft pop for a text box appearing on screen, clean and punchy, no reverb", 0.5),
 }
 
 

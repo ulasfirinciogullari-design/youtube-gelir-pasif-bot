@@ -383,11 +383,13 @@ FOOTAGE_REPLY = {
 }
 
 
-def _footage_run(tmp_path, monkeypatch, replies, check=lambda script, topic: []):
+def _footage_run(tmp_path, monkeypatch, replies, check=lambda script, topic: [], pexels=None):
     from app.services import footage_script, original_visuals
     hits = {"cat jumping": [_hit(i, "cat", duration=12) for i in range(1, 11)],
             "cat landing": [_hit(i, "cat", duration=12) for i in range(5, 15)]}
     monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: hits[q][:limit])
+    monkeypatch.setattr(original_visuals, "pexels_candidates",
+                        lambda q, used, subject=None, limit=15: (pexels or {}).get(q, [])[:limit])
     replies, prompts = [r if isinstance(r, str) else json.dumps(r) for r in replies], []
 
     def fake_call(parts, temperature=0.2):
@@ -477,6 +479,93 @@ def test_fact_check_swaps_in_corrected_sentences_only():
     assert check_facts(script, "Kedi", call=broken) == [] and script["scenes"][4]["text"] == fixed
 
 
+def test_fact_check_corrects_the_key_facts_on_screen_too():
+    from app.services.footage_script import check_facts
+    raw = json.loads(json.dumps(MERAK_SCRIPT))
+    for i, callout in ((1, "300 METRE"), (2, "İÇ KULAK"), (3, "YAY GİBİ")):
+        raw["scenes"][i]["callout"] = callout
+    script = validate_script(raw, {"topic": "Kedi", "stock_hint": "cat"})
+    second, third = script["scenes"][1]["text"], script["scenes"][2]["text"]
+    reply = {"fixes": [
+        {"scene": 2, "text": second, "callout": "340 METRE", "why": "ses saniyede 340 metre gider"},
+        {"scene": 3, "text": "Sırrı, kulağının derinindeki denge organında saklı.", "why": "ifade"},
+        {"scene": 4, "text": script["scenes"][3]["text"], "callout": "YAY GİBİ", "why": "aynı"},
+        {"scene": 5, "text": "Bu hareket bir saniyeden kısa sürer ve hiçbir fizik kuralını bozmaz, sadece çok iyi kullanır.",
+         "callout": "1 SANİYE", "why": "yarım saniye kesin değil"},
+    ]}
+    prompts = []
+    notes = check_facts(script, "Kedi", call=lambda p: prompts.append(p) or json.dumps(reply))
+    assert "2. Bir kedi baş aşağı düşerken bile yere ayakları üstüne iner. [ekranda: 300 METRE]" in prompts[0]
+    scenes = script["scenes"]
+    # Only the number on screen changed; a rewritten sentence drops a key fact the editor did not confirm;
+    # an unchanged scene is skipped; and the editor cannot add a key fact to a scene that had none.
+    assert scenes[1]["text"] == second and scenes[1]["callout"] == "340 METRE"
+    assert scenes[2]["text"] != third and "callout" not in scenes[2]
+    assert scenes[3]["callout"] == "YAY GİBİ" and "callout" not in scenes[4]
+    assert [n.split(":")[0] for n in notes] == ["2. sahne", "3. sahne", "5. sahne"]
+
+
+def test_key_facts_are_cleaned_and_kept_to_a_few():
+    raw = json.loads(json.dumps(MERAK_SCRIPT))
+    callouts = ["270 DERECE 🦉", "{\\b1}14 OMUR", "BU ÇOK UZUN BİR EKRAN YAZISI OLURDU", "7 OMUR", "BÜYÜK GÖZLER", "SON"]
+    for scene, callout in zip(raw["scenes"], callouts):
+        scene["callout"] = callout
+    scenes = validate_script(raw, {"topic": "Baykuş", "stock_hint": "owl"})["scenes"]
+    # Emoji and subtitle control characters go, a callout too long for the screen is dropped, at most four stay.
+    assert [s.get("callout") for s in scenes] == ["270 DERECE", "14 OMUR", None, "7 OMUR", "BÜYÜK GÖZLER", None]
+
+
+def _pexels_video(vid, slug, duration=12, files=None):
+    files = files if files is not None else [
+        {"file_type": "video/mp4", "quality": "sd", "width": 540, "height": 960, "link": f"https://px.example/{vid}-sd.mp4"},
+        {"file_type": "video/mp4", "quality": "hd", "width": 1080, "height": 1920, "link": f"https://px.example/{vid}-hd.mp4"},
+        {"file_type": "video/mp4", "quality": "uhd", "width": 2160, "height": 3840, "link": f"https://px.example/{vid}-4k.mp4"},
+    ]
+    return {"id": vid, "duration": duration, "url": f"https://www.pexels.com/video/{slug}-{vid}/",
+            "image": f"https://images.example/{vid}.jpg", "video_files": files}
+
+
+def test_pexels_videos_join_the_pool_in_pixabay_shape(tmp_path, monkeypatch):
+    from app.services import clip_matcher, footage_script, original_visuals
+    videos = [
+        _pexels_video(11, "an-owl-turning-its-head"),
+        _pexels_video(12, "close-up-video-of-a-bird"),  # the slug does not name the subject
+        _pexels_video(13, "owl-in-the-dark", duration=2),  # too short
+        _pexels_video(14, "owl-on-a-branch"),  # already used in an earlier Short
+        _pexels_video(15, "owl-blinking", files=[{"file_type": "video/mp4", "width": 360, "height": 640,
+                                                    "link": "https://px.example/15.mp4"}]),  # too small for 1080p
+        _pexels_video(16, "snowy-owl-flying"),
+    ]
+    monkeypatch.setattr(original_visuals, "search_pexels", lambda q, per_page=15: videos)
+    found = original_visuals.pexels_candidates("owl", {"pexels:14"}, ["owl"])
+    assert [h["id"] for h in found] == [11, 16]
+    hit = found[0]
+    assert hit["source"] == "pexels" and hit["tags"] == "an, owl, turning, its, head"
+    # The full HD rendition is rendered, the smallest one previewed, and Pexels' still is the fallback thumbnail.
+    assert original_visuals._pick_pixabay_file(hit)["link"] == "https://px.example/11-hd.mp4"
+    assert footage_script._preview_rendition(hit)["url"] == "https://px.example/11-sd.mp4"
+    assert clip_matcher.pixabay_thumbnail(hit) == "https://images.example/11.jpg"
+    downloaded = []
+    monkeypatch.setattr(original_visuals, "_download", lambda url, dest, timeout=60: downloaded.append(url) or dest)
+    used = set()
+    assert original_visuals.download_pixabay_hit(hit, tmp_path, used) == tmp_path / "pexels_11.mp4"
+    assert used == {"pexels:11"} and downloaded == ["https://px.example/11-hd.mp4"]
+
+
+def test_footage_pool_offers_pexels_first_and_keeps_the_libraries_apart(monkeypatch):
+    from app.services import footage_script, original_visuals
+    pexels = {"owl": [{**_hit(i, "owl", vertical=True), "source": "pexels"} for i in (5, 6)],
+              "owl head": [{**_hit(7, "owl", vertical=True), "source": "pexels"}]}
+    pixabay = {"owl": [_hit(i, "owl") for i in (5, 8)], "owl head": [_hit(8, "owl"), _hit(9, "owl")]}
+    monkeypatch.setattr(original_visuals, "pexels_candidates", lambda q, used, subject=None, limit=15: pexels[q][:limit])
+    monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: pixabay[q][:limit])
+    pool = footage_script.gather_pool(["owl", "owl head"], ["owl"], set())
+    # Pexels clip 5 and Pixabay clip 5 are different videos; Pixabay clip 8 turns up in both searches but once here.
+    assert [original_visuals.hit_key(h) for h in pool] == [
+        "pexels:5", "pixabay:5", "pexels:7", "pixabay:8", "pexels:6", "pixabay:9"]
+    assert [h["_query"] for h in pool] == ["owl", "owl", "owl head", "owl head", "owl", "owl head"]
+
+
 def test_extra_clips_come_from_the_same_search_then_from_matching_tags():
     from app.services.footage_script import fill_clips, wanted_shots
     pool = [{"_query": "lightning strike", "tags": "lightning"}, {"_query": "storm clouds", "tags": "storm, clouds"},
@@ -498,6 +587,7 @@ def test_extra_clips_come_from_the_same_search_then_from_matching_tags():
 def test_footage_first_gives_up_without_enough_footage(tmp_path, monkeypatch):
     from app.services import footage_script, original_visuals
     monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: [_hit(1, "cat")])
+    monkeypatch.setattr(original_visuals, "pexels_candidates", lambda q, used, subject=None, limit=15: [])
     topic = {"id": "mk-001", "topic": "Kedi", "subject": ["cat"]}
     assert footage_script.write_footage_script(topic, tmp_path, call=lambda p, temperature=0.2: "{}",
                                                plan=lambda t, s, h: ["cat"]) is None
@@ -533,6 +623,41 @@ def test_whoosh_plays_only_after_the_hook_and_into_the_last_scene(tmp_path, monk
     graph = commands[0][commands[0].index("-filter_complex") + 1]
     assert graph.count("volume=0.07,adelay") == 2 and "adelay=3800|3800" in graph and "adelay=25800|25800" in graph
     assert "volume=0.3[imp]" in graph and "volume=0.15,adelay" in graph
+
+
+def test_key_facts_pop_up_in_the_middle_of_the_frame(tmp_path):
+    from app.services.subtitle_engine import generate_shorts_ass_subtitles
+    ass = tmp_path / "s.ass"
+    generate_shorts_ass_subtitles([{"text": "bir iki", "start": 0.0, "end": 9.0}], ass)
+    scenes = [{"text": "a"}, {"text": "b", "callout": "270 derece"}, {"text": "c", "callout": "SANİYEDE 340 METRE"},
+              {"text": "d", "callout": "KISA"}, {"text": "e", "callout": "14 {OMUR}"}]
+    times = original_factory.add_callouts(ass, scenes, [2.0, 3.0, 1.8, 0.9, 2.4])
+    # A scene too short for a pop (0.9 s) gets none; the rest appear 0.25 s in and stay up to 1.6 s.
+    assert times == [2.25, 5.25, 7.95]
+    content = ass.read_text(encoding="utf-8")
+    styles, events = content.split("[Events]")
+    assert "Style: CalloutStyle,Montserrat Black,118," in styles
+    lines = [line for line in events.splitlines() if "CalloutStyle" in line]
+    assert lines[0].startswith("Dialogue: 2,0:00:02.25,0:00:03.85,CalloutStyle")
+    assert lines[0].endswith("270 DERECE") and "\\fs118\\pos(540,860)" in lines[0]
+    # A long key fact gets a smaller font so it stays on one line; it never outlasts its scene.
+    assert "\\fs92\\pos" in lines[1] and lines[1].split(",")[2] == "0:00:06.70"
+    assert lines[2].endswith("}14 OMUR") and len(lines) == 3
+    assert original_factory.add_callouts(ass, [{"text": "a"}], [3.0]) == []
+
+
+def test_pop_sounds_under_each_key_fact(tmp_path, monkeypatch):
+    lib = tmp_path / "audio"
+    (lib / "sfx").mkdir(parents=True)
+    monkeypatch.setattr(original_factory, "AUDIO_LIBRARY", lib)
+    commands = []
+    monkeypatch.setattr(original_factory.subprocess, "run", lambda cmd, **kw: commands.append(cmd))
+    original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0], None, [2.25, 5.25])
+    assert "volume=0.35" not in commands[-1][commands[-1].index("-filter_complex") + 1]  # no pop.mp3 yet
+    (lib / "sfx" / "pop.mp3").write_bytes(b"ID3")
+    original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0], None, [2.25, 5.25])
+    graph = commands[-1][commands[-1].index("-filter_complex") + 1]
+    assert "volume=0.35,adelay=2250|2250" in graph and "volume=0.35,adelay=5250|5250" in graph
 
 
 def test_merak_script_skips_topics_free_footage_cannot_show(tmp_path, monkeypatch):

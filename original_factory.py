@@ -38,6 +38,7 @@ from app.services.competitor_scan import dna_age_days, load_dna, run_scan
 from app.services.seo_pack import build_seo_pack
 from app.services.original_script import write_script
 from app.services.original_visuals import build_visual_track
+from app.services.video_critic import critique, format_critique
 
 OUTPUT_DIR = BASE_DIR / "output"
 TOPICS_FILE = BASE_DIR / "app" / "services" / "original_topics_tr.json"
@@ -64,6 +65,7 @@ SERIES = {
     "merak": {"topics": MERAK_TOPICS_FILE, "prefix": "mk", "format": "merak",
               "tags": ["shorts", "bilim", "merak", "bilgi", "ilginç bilgiler", "zirvenin kanunu"],
               "hashtags": "#shorts #bilim #merak #keşfet", "ai_only": False, "stock_only": True, "cut": 1.6,
+              "tempo": 1.1,  # the reference explainers talk fast; Ulaş still found the sample "basit" at 1.0
               "style": "photorealistic documentary photograph, natural light, sharp detail, true to life colors"},
     "story": {"topics": TOPICS_FILE, "prefix": "zk", "format": "story",
               "tags": BASE_TAGS, "hashtags": BASE_HASHTAGS, "ai_only": False,
@@ -83,8 +85,16 @@ LINE_PAUSE_SECONDS = 0.15  # breath between sentences once each line's own leadi
 END_PAUSE_SECONDS = 0.6  # the last sentence rings out under the music
 IMPACT_VOLUME = 0.3
 RISER_VOLUME = 0.15
+POP_VOLUME = 0.35  # a soft pop under each on-screen key fact
+CALLOUT_DELAY = 0.25  # a key fact appears just after its sentence starts
+CALLOUT_SECONDS = 1.6
+CALLOUT_SIZE = 118
+CALLOUT_LINE_CHARS = 14  # characters that fit one line at CALLOUT_SIZE; longer key facts get a smaller font
 SKIPPED_TOPICS_FILE = "skipped_topics.json"  # curiosity topics free footage could not show
 SUBTITLE_MARGIN_V = 620  # lower third, above the Shorts title/channel overlay
+# The heavy rounded face of popular Shorts captions; the workflow installs fonts-montserrat. Arial Black was never on
+# the runner, so the text fell back to a plain sans font, as it still would without Montserrat.
+FONT = "Montserrat Black"
 voice_usage = {"elevenlabs": 0, "edge-tts": 0}
 
 
@@ -351,12 +361,14 @@ def synthesize_line(text: str, out: Path, previous_text: str = "", next_text: st
     raise RuntimeError(f"seslendirme başarısız: {last_error}")
 
 
-def tighten_line(src: Path, out: Path, pause: float) -> Path:
-    """The line as 44.1 kHz mono WAV without the silence the TTS engine leaves before and after it, followed by
-    a fixed `pause`. Each sentence is voiced separately, and those silences made the narration stop and restart
-    at every scene change (Ulaş, 2026-10-14: "geçişler arasında kopma"). If trimming fails the line is kept whole."""
+def tighten_line(src: Path, out: Path, pause: float, tempo: float = 1.0) -> Path:
+    """The line as 44.1 kHz mono WAV without the silence the TTS engine leaves before and after it, sped up by
+    `tempo` (pitch kept) and followed by a fixed `pause`. Each sentence is voiced separately, and those silences
+    made the narration stop and restart at every scene change (Ulaş, 2026-10-14: "geçişler arasında kopma").
+    If trimming fails the line is kept whole."""
     trim = "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.03"
-    for chain in (f"{trim},areverse,{trim},areverse,apad=pad_dur={pause:.2f}", "anull"):
+    speed = f",atempo={tempo:.3f}" if abs(tempo - 1.0) > 1e-3 else ""
+    for chain in (f"{trim},areverse,{trim},areverse{speed},apad=pad_dur={pause:.2f}", f"anull{speed}"):
         try:
             subprocess.run(["ffmpeg", "-y", "-i", str(src), "-af", chain, "-ar", "44100", "-ac", "1",
                             "-c:a", "pcm_s16le", str(out)],
@@ -368,7 +380,8 @@ def tighten_line(src: Path, out: Path, pause: float) -> Path:
     raise RuntimeError(f"seslendirme dosyası okunamadı: {src.name}")
 
 
-def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_line) -> tuple[Path, list[float], list[dict]]:
+def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_line,
+                    tempo: float = 1.0) -> tuple[Path, list[float], list[dict]]:
     """Returns (voice_track, per_scene_durations, subtitle_events)."""
     from app.services.multi_voice_engine import build_micro_timed_subtitles
 
@@ -382,7 +395,8 @@ def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_li
             next_text=scenes[idx + 1]["text"] if idx + 1 < len(scenes) else "",
         )
         last = idx + 1 == len(scenes)
-        seg = tighten_line(raw, voice_dir / f"line_{idx:02d}.wav", END_PAUSE_SECONDS if last else LINE_PAUSE_SECONDS)
+        seg = tighten_line(raw, voice_dir / f"line_{idx:02d}.wav", END_PAUSE_SECONDS if last else LINE_PAUSE_SECONDS,
+                           tempo)
         dur = _probe_duration(seg)
         subtitles += build_micro_timed_subtitles(scene["text"], timeline, dur, speaker="male_alpha")
         files.append(seg)
@@ -417,9 +431,10 @@ def sfx(name: str, library: Path | None = None) -> Path | None:
     return path if path.exists() else None
 
 
-def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[float], music: Path | None) -> Path:
+def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[float], music: Path | None,
+                   accents: list[float] | None = None) -> Path:
     """Voice + low music + a soft hit on the hook, a quiet whoosh only after the hook and into the last
-    scene, and a riser into the ending."""
+    scene, a soft pop under each on-screen key fact (`accents`) and a riser into the ending."""
     inputs = ["-i", str(voice)]
     filters = ["[0:a]highpass=f=70,acompressor=threshold=-16dB:ratio=3:attack=5:release=60,volume=1.1[v]"]
     labels = ["[v]"]
@@ -442,6 +457,10 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
         for i, t in enumerate(sorted({scene_cuts[0], scene_cuts[-1]}) if scene_cuts else []):
             ms = max(0, int((t - 0.2) * 1000))
             add(whoosh, f"volume={WHOOSH_VOLUME},adelay={ms}|{ms}", f"w{i}")
+    pop = sfx("pop")
+    for i, t in enumerate((accents or []) if pop else []):
+        ms = max(0, int(t * 1000))
+        add(pop, f"volume={POP_VOLUME},adelay={ms}|{ms}", f"p{i}")
     if riser and duration > 8:
         ms = int((duration - 2.5) * 1000)
         add(riser, f"volume={RISER_VOLUME},adelay={ms}|{ms}", "ris")
@@ -466,13 +485,39 @@ def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float) -> None:
         return
     content = ass_path.read_text(encoding="utf-8")
     style = (
-        "Style: HookStyle,Arial Black,78,&H00FFFFFF,&H000000FF,&H00000000,&H90000000,"
+        f"Style: HookStyle,{FONT},78,&H00FFFFFF,&H000000FF,&H00000000,&H90000000,"
         "-1,0,0,0,100,100,1,0,1,8,3,8,60,60,250,1\n"
     )
     content = content.replace("\n[Events]", f"{style}\n[Events]", 1)
     pop = r"{\fad(0,250)\fscx125\fscy125\t(0,180,\fscx100\fscy100)}"
     content += f"Dialogue: 1,0:00:00.00,{_format_ass_time(seconds)},HookStyle,,0,0,0,,{pop}{_upper_tr(text)}\n"
     ass_path.write_text(content, encoding="utf-8")
+
+
+def add_callouts(ass_path: Path, scenes: list[dict], durations: list[float]) -> list[float]:
+    """Each scene's key fact ("270 DERECE") pops up big in the middle of the frame for a moment, like the numbers
+    and keywords the reference explainers put on screen. Returns when each appears, for the pop sound."""
+    from app.services.subtitle_engine import _format_ass_time, _upper_tr
+
+    events, times, start = [], [], 0.0
+    pop = r"\pos(540,860)\frz-3\fad(60,160)\fscx30\fscy30\t(0,140,\fscx112\fscy112)\t(140,240,\fscx100\fscy100)"
+    for scene, dur in zip(scenes, durations):
+        text = re.sub(r"[{}\\]", "", scene.get("callout") or "").strip()
+        if text and dur > 1.0:
+            begin = start + min(CALLOUT_DELAY, dur / 4)
+            end = min(start + dur - 0.1, begin + CALLOUT_SECONDS)
+            size = CALLOUT_SIZE if len(text) <= CALLOUT_LINE_CHARS else max(
+                64, round(CALLOUT_SIZE * CALLOUT_LINE_CHARS / len(text)))
+            events.append(f"Dialogue: 2,{_format_ass_time(begin)},{_format_ass_time(end)},CalloutStyle,,0,0,0,,"
+                          f"{{\\fs{size}{pop}}}{_upper_tr(text)}\n")
+            times.append(round(begin, 3))
+        start += dur
+    if events:
+        style = (f"Style: CalloutStyle,{FONT},{CALLOUT_SIZE},&H0000D7FF,&H000000FF,&H00000000,&H90000000,"
+                 "-1,0,0,0,100,100,1,0,1,10,4,5,60,60,0,1\n")
+        content = ass_path.read_text(encoding="utf-8").replace("\n[Events]", f"{style}\n[Events]", 1)
+        ass_path.write_text(content + "".join(events), encoding="utf-8")
+    return times
 
 
 def render_final(segments: list[Path], audio: Path, subtitles_file: Path, duration: float, work_dir: Path,
@@ -523,8 +568,10 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     work_dir.mkdir(parents=True, exist_ok=True)
     scenes = script["scenes"]
 
+    cfg = SERIES[series]
     print(f"[1/4] 🎙️ Seslendirme: {len(scenes)} sahne")
-    voice, durations, subtitle_events = build_narration(scenes, work_dir, synthesize=synthesize)
+    voice, durations, subtitle_events = build_narration(scenes, work_dir, synthesize=synthesize,
+                                                        tempo=cfg.get("tempo", 1.0))
     duration = sum(durations)
     engines = ", ".join(f"{name} x{n}" for name, n in voice_usage.items() if n) or "test"
     print(f"       Ses motoru: {engines}")
@@ -534,7 +581,6 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         scene_cuts.append(round(t, 3))
 
     print(f"[2/4] 🎞️ Görseller ({duration:.1f}s)")
-    cfg = SERIES[series]
     visuals = build_visual_track(scenes, durations, work_dir, cfg["style"], cfg["ai_only"],
                                  stock_only=cfg.get("stock_only", False), segment_seconds=cfg.get("cut", 2.5),
                                  fallback_query=topic.get("stock_hint", ""),
@@ -544,11 +590,13 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     print("[3/4] 🎵 Ses tasarımı ve altyazı")
     subs = work_dir / "subtitles.ass"
     generate_shorts_ass_subtitles(
-        sentences=subtitle_events, output_path=subs, font_name="Arial Black", font_size=74,
+        sentences=subtitle_events, output_path=subs, font_name=FONT, font_size=74,
         highlight_color="&H0000D7FF", outline_width=8, margin_v=SUBTITLE_MARGIN_V,
     )
     add_hook_overlay(subs, script.get("hook_text", ""), duration)
-    audio = mix_soundtrack(voice, work_dir / "soundtrack.m4a", duration, scene_cuts, pick_music(topic["id"], series))
+    accents = add_callouts(subs, scenes, durations)
+    audio = mix_soundtrack(voice, work_dir / "soundtrack.m4a", duration, scene_cuts, pick_music(topic["id"], series),
+                           accents)
 
     print("[4/4] 🚀 Render")
     final_mp4 = OUTPUT_DIR / f"ORIGINAL_{topic['id']}_{stamp}.mp4"
@@ -603,6 +651,14 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         print_audit_report(audit_short_quality(final_mp4))
     except Exception as e:
         print(f"ℹ️ Kalite raporu notu: {e}")
+
+    if series == "merak" and os.environ.get("GEMINI_API_KEY"):
+        # A Gemini editor compares the finished Short with a reference Short; it never blocks the upload.
+        verdict = critique(final_mp4, work_dir)
+        if verdict:
+            print(format_critique(verdict))
+            meta["critique"] = verdict
+            meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"✅ Hazır: {final_mp4.name} | {duration:.1f}s | AI görsel: {visuals['ai_images']} | stok video: {visuals['stock_videos']}")
     return {"video": final_mp4, "thumbnail": thumb, "meta": meta}

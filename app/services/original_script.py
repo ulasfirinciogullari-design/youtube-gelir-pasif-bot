@@ -28,6 +28,8 @@ MIN_WORDS = 55
 MAX_WORDS = 95  # ~40 s of narration; the first real run hit 48.6 s at 125 words
 MAX_SCENE_CHARS = 230
 MAX_HOOK_CHARS = 40
+MAX_CALLOUT_CHARS = 24
+MAX_CALLOUTS = 4  # on-screen key facts; more than a few per Short stops being an accent
 EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]+")
 
 # Film/series characters and quotes the old catalog was built on. A script that
@@ -366,6 +368,13 @@ def _clip_refs(value) -> list[dict]:
     return refs[:4]
 
 
+def clean_callout(value) -> str:
+    """An on-screen key fact ("270 DERECE"): no emoji or subtitle control characters, short enough for one line."""
+    text = re.sub(r"\{[^}]*\}", "", EMOJI_RE.sub("", str(value or "")))  # whole override blocks like {\b1}
+    text = " ".join(re.sub(r"[{}\\]", "", text).split())
+    return text if len(text) <= MAX_CALLOUT_CHARS else ""
+
+
 def _is_character(topic: dict | None) -> bool:
     return bool(topic) and bool(topic.get("character"))
 
@@ -405,6 +414,9 @@ def validate_script(script: dict, character: dict | None = None) -> dict:
         }
         if _clip_refs(raw.get("clips")):
             scene["clips"] = _clip_refs(raw.get("clips"))
+        callout = clean_callout(raw.get("callout"))
+        if callout and sum(1 for s in scenes if s.get("callout")) < MAX_CALLOUTS:
+            scene["callout"] = callout
         scenes.append(scene)
     if not MIN_SCENES <= len(scenes) <= MAX_SCENES:
         raise ScriptError(f"scene count {len(scenes)} out of range")

@@ -191,17 +191,69 @@ def pixabay_candidates(query: str, used_ids: set, subject: list[str] | None = No
     return hits[:limit]
 
 
+def hit_key(hit: dict) -> str:
+    """Library-qualified id ("pixabay:123", "pexels:456"): the two libraries' ids can collide."""
+    return f"{hit.get('source', 'pixabay')}:{hit.get('id')}"
+
+
+def search_pexels(query: str, per_page: int = 15) -> list[dict]:
+    """Portrait Full HD videos only: Pexels has many clips shot vertically, which stay sharp in a Short,
+    while a landscape clip loses two thirds of its width to the 9:16 crop."""
+    key = os.environ.get("PEXELS_API_KEY")
+    if not key or not query:
+        return []
+    params = urllib.parse.urlencode({"query": query[:100], "orientation": "portrait", "size": "medium",
+                                     "per_page": per_page})
+    req = urllib.request.Request(f"https://api.pexels.com/videos/search?{params}",
+                                 headers={"Authorization": key, "User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.loads(resp.read().decode("utf-8")).get("videos", [])
+    except Exception as e:
+        print(f"ℹ️ Pexels arama notu ({query}): {e}")
+        return []
+
+
+def pexels_hit(video: dict) -> dict | None:
+    """A Pexels video in the shape of a Pixabay hit, so both libraries share one candidate pool.
+    Pexels has no tags; the words of its page slug ("/video/owl-turning-its-head-855433/") stand in."""
+    files = [f for f in video.get("video_files", []) if f.get("file_type") == "video/mp4" and f.get("link")]
+    if not files or not video.get("id"):
+        return None
+    renditions = {
+        f"file{i}": {"url": f["link"], "width": f.get("width"), "height": f.get("height"),
+                     "size": (f.get("width") or 0) * (f.get("height") or 0)}
+        for i, f in enumerate(files)
+    }
+    smallest = min(renditions.values(), key=lambda r: r["size"])
+    if video.get("image"):
+        smallest["thumbnail"] = video["image"]
+    slug = urllib.parse.urlsplit(video.get("url") or "").path
+    tags = ", ".join(w for w in re.findall(r"[a-z]+", slug.lower()) if w != "video")
+    return {"id": video["id"], "source": "pexels", "type": "film", "tags": tags,
+            "duration": video.get("duration") or 0, "videos": renditions}
+
+
+def pexels_candidates(query: str, used_ids: set, subject: list[str] | None = None, limit: int = 15) -> list[dict]:
+    """Usable Pexels clips for a query in Pexels' own relevance order: at least 3 s, unused, subject in the slug."""
+    hits = [pexels_hit(v) for v in search_pexels(query) if (v.get("duration") or 0) >= 3]
+    return [h for h in hits if h and hit_key(h) not in used_ids and matches_subject(h["tags"], subject)
+            and _pick_pixabay_file(h)][:limit]
+
+
 def download_pixabay_hit(hit: dict, dest_dir: Path, used_ids: set) -> Path | None:
+    """Downloads a pool clip from either library (Pexels hits are reshaped by pexels_hit)."""
     chosen = _pick_pixabay_file(hit)
     if not chosen:
         return None
-    dest = dest_dir / f"pixabay_{hit['id']}.mp4"
+    source = hit.get("source", "pixabay")
+    dest = dest_dir / f"{source}_{hit['id']}.mp4"
     try:
         _download(chosen["link"], dest, timeout=120)
     except Exception as e:
-        print(f"ℹ️ Pixabay indirme notu ({hit.get('id')}): {e}")
+        print(f"ℹ️ {source.capitalize()} indirme notu ({hit.get('id')}): {e}")
         return None
-    used_ids.add(f"pixabay:{hit.get('id')}")
+    used_ids.add(hit_key(hit))
     return dest
 
 

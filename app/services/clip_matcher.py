@@ -42,7 +42,8 @@ def pixabay_thumbnail(hit: dict) -> str | None:
         thumb = (videos.get(size) or {}).get("thumbnail")
         if thumb:
             return thumb
-    return None
+    # Pexels hits (original_visuals.pexels_hit) name their renditions file0, file1, ...
+    return next((r["thumbnail"] for r in videos.values() if isinstance(r, dict) and r.get("thumbnail")), None)
 
 
 def _image_type(data: bytes) -> str | None:

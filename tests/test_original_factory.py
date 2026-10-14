@@ -217,16 +217,18 @@ def test_shots_dissolve_into_each_other_centred_on_the_cut():
 
 
 @pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
-def test_narration_lines_lose_their_own_silence_and_get_a_short_pause(tmp_path):
+@pytest.mark.parametrize("tempo, expected", [(1.0, 1.21), (1.1, 1.11)])
+def test_narration_lines_lose_their_own_silence_and_get_a_short_pause(tmp_path, tempo, expected):
     line = tmp_path / "line.mp3"
     subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono:d=0.4",
                     "-f", "lavfi", "-i", "sine=frequency=220:duration=1:sample_rate=44100",
                     "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono:d=0.5",
                     "-filter_complex", "[0][1][2]concat=n=3:v=0:a=1", "-c:a", "libmp3lame", str(line)],
                    check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    out = original_factory.tighten_line(line, tmp_path / "line.wav", 0.15)
-    # 0.9 s of silence around a 1 s tone becomes 30 ms on each side plus the 0.15 s pause.
-    assert out.suffix == ".wav" and abs(original_factory._probe_duration(out) - 1.21) < 0.05
+    out = original_factory.tighten_line(line, tmp_path / "line.wav", 0.15, tempo)
+    # 0.9 s of silence around a 1 s tone becomes 30 ms on each side plus the 0.15 s pause;
+    # the curiosity series' tempo 1.1 plays those 1.06 s of speech in 0.96 s and keeps the pause.
+    assert out.suffix == ".wav" and abs(original_factory._probe_duration(out) - expected) < 0.05
 
 
 def test_split_duration_keeps_segments_short():
@@ -408,7 +410,9 @@ def test_full_render_with_offline_assets(tmp_path, monkeypatch):
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)  # SEO pack falls back to the script offline
 
     topic = {"id": "zk-001", "topic": "test"}
-    result = original_factory.produce(topic, validate_script(VALID_SCRIPT), "test", synthesize=fake_tts)
+    script = validate_script(VALID_SCRIPT)
+    script["scenes"][1]["callout"] = "GİZLİ NOTLAR"  # the key-fact pop-up must survive the real subtitle render
+    result = original_factory.produce(topic, script, "test", synthesize=fake_tts)
 
     probe = json.loads(subprocess.check_output(
         ["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", str(result["video"])], text=True))

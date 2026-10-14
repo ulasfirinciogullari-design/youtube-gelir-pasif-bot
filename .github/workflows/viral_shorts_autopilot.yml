@@ -91,7 +91,7 @@ jobs:
       - name: 🎥 FFmpeg ve Fontları Kur
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends ffmpeg fonts-liberation fonts-dejavu-core
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-liberation fonts-dejavu-core fonts-montserrat
           ffmpeg -version | head -1
 
       - name: 📦 Python Bağımlılıklarını Kur
@@ -116,7 +116,7 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           FAL_KEY: ${{ secrets.FAL_KEY }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXEL_API_KEY }}  # Ulaş saved it as PEXEL_API_KEY
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
