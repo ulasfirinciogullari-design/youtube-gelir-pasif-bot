@@ -36,13 +36,13 @@ on:
           - 'ucuz'
           - 'kaliteli'
       format:
-        description: 'Format (karisik = merak, karakter ve tarih sırayla, merak = gerçek görüntülü bilgi videosu, story = tarih hikâyesi, karakter = film/dizi karakteri, comedy = komik dublaj)'
+        description: 'Format (merak = gerçek görüntülü bilgi videosu, kanalın ana formatı; karisik = merak, karakter ve tarih sırayla, story = tarih hikâyesi, karakter = film/dizi karakteri, comedy = komik dublaj)'
         required: true
-        default: 'karisik'
+        default: 'merak'
         type: choice
         options:
-          - 'karisik'
           - 'merak'
+          - 'karisik'
           - 'story'
           - 'karakter'
           - 'comedy'
@@ -125,7 +125,7 @@ jobs:
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           PRIVACY: ${{ github.event_name == 'schedule' && (vars.PUBLISH_PRIVACY || 'public') || github.event.inputs.privacy }}
           TOPIC_ID: ${{ github.event.inputs.topic_id }}
-          CONTENT_FORMAT: ${{ github.event.inputs.format || vars.CONTENT_FORMAT || 'karisik' }}
+          CONTENT_FORMAT: ${{ github.event.inputs.format || vars.CONTENT_FORMAT || 'merak' }}  # Ulaş chose the curiosity format (2026-10-13)
           TASK: ${{ github.event.inputs.task || 'video' }}
           VIDEO_IDS: ${{ github.event.inputs.video_ids }}
           CLEANUP_ACTION: ${{ github.event.inputs.cleanup_action || 'private' }}

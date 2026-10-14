@@ -240,7 +240,7 @@ def main(argv=None) -> int:
     found = find_clip_and_script(published, OUTPUT_DIR / f"clips_{seed}", seed)
     if not found:
         print("↩️ Komik dublaj bu sefer çıkmadı, özgün hikâye formatına geçiliyor.")
-        story_args = ["--privacy", args.privacy] + (["--no-upload"] if args.no_upload else [])
+        story_args = ["--privacy", args.privacy, "--series", "story"] + (["--no-upload"] if args.no_upload else [])
         return story.main(story_args)
 
     hit, query, script, clip = found

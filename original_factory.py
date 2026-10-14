@@ -8,7 +8,8 @@ topic queue -> LLM script -> free edge-tts narration -> Pexels/Pixabay stock / F
 Three series: curiosity facts over real stock footage (mk-NNN, the style of
 the reference Shorts Ulaş picked), history stories (zk-NNN) and film/series
 character commentary (fk-NNN). None uses film footage; character videos are our
-own narration over faceless generated images. "karisik" rotates the three.
+own narration over faceless generated images. Curiosity is the default (Ulaş's
+pick, 2026-10-13); "karisik" rotates the three.
 Typical paid spend is a few Flux images (~$0.003 each) plus one short LLM call;
 curiosity videos use free stock footage only. Rendering runs on free GitHub Actions.
 
@@ -660,7 +661,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Original low-cost Shorts factory")
     parser.add_argument("--privacy", default="private", choices=["private", "unlisted", "public"])
     parser.add_argument("--topic-id", default=None, help="Belirli bir konu (ör. zk-003 veya fk-002)")
-    parser.add_argument("--series", default="story", choices=[*SERIES, "karisik"],
+    parser.add_argument("--series", default="merak", choices=[*SERIES, "karisik"],
                         help="merak = gerçek görüntülü bilgi, story = tarih hikâyesi, karakter = film/dizi karakteri, "
                              "karisik = sırayla üçü")
     parser.add_argument("--no-upload", action="store_true", help="Sadece üret, YouTube'a yükleme")

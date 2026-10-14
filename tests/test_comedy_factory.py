@@ -100,7 +100,7 @@ def test_main_falls_back_to_story_format(monkeypatch):
     monkeypatch.setattr(comedy_factory, "candidate_clips", lambda published, seed: iter([]))
     monkeypatch.setattr(comedy_factory.story, "main", lambda argv: calls.append(argv) or 0)
     assert comedy_factory.main(["--no-upload", "--privacy", "unlisted"]) == 0
-    assert calls == [["--privacy", "unlisted", "--no-upload"]]
+    assert calls == [["--privacy", "unlisted", "--series", "story", "--no-upload"]]
 
 
 @pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")

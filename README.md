@@ -164,8 +164,9 @@ bulunamazsa kullanılır.
   cümleler arasında 0,15 sn nefes payı kalır, böylece anlatım tek parça gibi akar.
 - Bütün serilerde: kanca sorusu video boyunca ekranın üstünde beyaz, kalın
   kenarlı yazı olarak durur; altyazı alt üçte birde; müzik sesi %9.
-- `--series karisik` (zamanlanmış çalışmaların varsayılanı) son yüklemeye
-  bakıp merak, karakter ve tarih videolarını sırayla üretir.
+- Zamanlanmış çalışmalar varsayılan olarak merak videosu üretir (Ulaş'ın seçtiği
+  format). `--series karisik` son yüklemeye bakıp merak, karakter ve tarih
+  videolarını sırayla üretir.
 
 ### Komik dublaj formatı
 
@@ -180,8 +181,8 @@ planlı 9:16 kadraja, altyazı ve kanca yazısıyla birlikte yerleştirir.
   isteğe bağlı `ELEVENLABS_API_KEY`.
 - Klip ya da senaryo çıkmazsa o çalışma özgün hikâye formatına döner.
 - Format, workflow girdisi `format` ile (elle çalıştırma) veya
-  `CONTENT_FORMAT` repo değişkeniyle (`karisik` / `merak` / `story` / `karakter` / `comedy`)
-  seçilir; varsayılan `karisik`.
+  `CONTENT_FORMAT` repo değişkeniyle (`merak` / `karisik` / `story` / `karakter` / `comedy`)
+  seçilir; varsayılan `merak`.
 
 Yerelde yüklemeden denemek için: `python comedy_factory.py --no-upload`
 
