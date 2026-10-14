@@ -117,6 +117,35 @@ birkaç Flux görseli (görsel başı ~0,003 $) ve tek bir kısa LLM çağrısı
 
 Yerelde yüklemeden denemek için: `python original_factory.py --no-upload --topic-id zk-001`
 
+### Zamanlama ve sıra kontrolü
+
+GitHub saat başı zamanlamaları geciktiriyor ya da hiç çalıştırmıyor (çalışmalar
+3,6 saate kadar geç başladı; 2026-10-14'te 11:00 ve 14:00 UTC çalışmaları hiç
+başlamadı). Bu yüzden iş akışı her slotun (08:00, 13:00, 17:00, 21:00 TR) 3
+saatlik penceresinde :07 ve :37'de uyanır ve önce `scripts/slot_gate.py`
+("🚦 Sıra Kontrolü" adımı) çalışır. Kurulumlardan önce çalıştığı için atlanan bir
+tur birkaç saniye sürer. Short ancak şunların hepsi tutarsa üretilir:
+
+- slot en fazla 3 saat önce başladı ve o slotta herkese açık / liste dışı yükleme yok;
+- son herkese açık / liste dışı yükleme en az 2,5 saat önce (arka arkaya
+  yüklemeler erişimi düşürüyor);
+- 07:00 UTC kota sıfırlamasından beri 5'ten az yükleme var (gizliler dahil);
+- bu slotta başka bir zamanlanmış çalışma yükleme adımını başarıyla bitirmedi
+  ve 3'ten az çalışma hata verdi.
+
+Gizli yüklemeler (`uploads.json` kaydındaki `privacy` alanı) slotu doldurmaz;
+`PUBLISH_PRIVACY=private` iken aynı slotta ikinci yüklemeyi yalnızca Actions
+geçmişi kontrolü engeller. Elle çalıştırmalar kontrolsüz devam eder. Kararın
+gerekçeleri adımın logunda yazar; yerelde denemek için:
+`python scripts/slot_gate.py --now 2026-10-15T10:07:00Z`
+
+Anlatıcı sesi denemeleri: `task=sesornek` aynı kısa metni farklı anlatıcı
+sesleriyle seslendirip `channel-data/history/voice_samples/` altına koyar.
+`task=deneme` ile `ses` girdisine bir ElevenLabs voice id yazılırsa o deneme o
+sesle seslendirilir (`<voice id>:eleven_v3` modeli de değiştirir). Kalıcı ayarlar
+`ELEVENLABS_VOICE_ID`, `ELEVENLABS_MODEL`, `ELEVENLABS_SPEED`, `ELEVENLABS_STYLE`
+ve `ELEVENLABS_STABILITY` repo değişkenleridir (boş = varsayılan).
+
 ### Film karakteri serisi
 
 `--series karakter`, ünlü film ve dizi karakterlerinin (Thomas Shelby, Walter

@@ -819,7 +819,10 @@ def upload(youtube, result: dict, privacy: str) -> str:
         youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(result["thumbnail"]), mimetype="image/jpeg")).execute()
     except Exception as e:
         print(f"ℹ️ Kapak görseli notu: {e}")
-    if meta.get("pinned_comment"):
+    if meta.get("pinned_comment") and privacy == "private":
+        # Commenting on a private video returns 403 and still spends 50 quota units.
+        print("ℹ️ Video gizli, yorum atlandı")
+    elif meta.get("pinned_comment"):
         try:
             youtube.commentThreads().insert(part="snippet", body={"snippet": {
                 "videoId": video_id,
@@ -879,7 +882,8 @@ def main(argv=None) -> int:
     result = produce(topic, script, provider, series=series, clip_pool=clip_pool)
     if youtube is not None:
         video_id = upload(youtube, result, args.privacy)
-        record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], SERIES[series]["format"])
+        record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], SERIES[series]["format"],
+                      privacy=args.privacy)
     return 0
 
 
