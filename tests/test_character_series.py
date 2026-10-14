@@ -160,6 +160,7 @@ def test_music_follows_the_mood_the_script_picked(tmp_path):
     assert pick("mk-028", "merak", tmp_path, mood="belgesel").name in {"merak_1.mp3", "merak_2.mp3"}
 
 
+@pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="ffmpeg not installed")
 def test_narration_is_brought_to_one_level_and_the_music_sits_under_it(tmp_path):
     def tone(name, source):
         path = tmp_path / name
@@ -199,6 +200,7 @@ def test_music_is_mixed_at_the_measured_level_and_leaves_room_for_the_voice(tmp_
     assert "[1:a]atrim=start=7.5,asetpts=PTS-STARTPTS,volume=0.0123,equalizer=f=2500:t=o:w=2:g=-4,afade=t=in" in graph
 
 
+@pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="ffmpeg not installed")
 def test_music_starts_past_a_quiet_intro_but_never_runs_out(tmp_path):
     def track(name, intro_seconds, seconds):
         path = tmp_path / name
