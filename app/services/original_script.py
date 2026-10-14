@@ -38,6 +38,24 @@ MOOD_RULE = """- "mood": videonun havasına uyan arka plan müziği, tam olarak 
   "eğlenceli" (komik ya da sevimli hayvan davranışları, gündelik tuhaflıklar, yemek: neşeli ve hoplayan),
   "sakin" (insan vücudu, psikoloji, gündelik bilim ve teknoloji: sakin, meraklı lo-fi).
 """
+# First and last line of a curiosity Short, shared by the footage-first and script-first prompts.
+# 11 of 14 merak openers were questions, and the public owl Short (Tepqt4MN0lE) asked the same question three
+# times (title, banner, first line) over a static owl; the 5.67M-view reference k951xfBlETg opens on the action
+# with a claim about what is on screen. The banner stays a question, so the spoken line has to say something else.
+OPENING_RULE = """- İlk cümle soru OLMASIN ("?" yok); en fazla 8 kelimelik bir iddia olsun: ekranda görüneni
+  göstersin ("Bu baykuş...") ve bir sayı ya da şaşırtıcı bir çelişki içersin (ör. "Bu baykuş boynunu kırmadan 270 derece
+  döner."). "Biliyor muydun", "Merhaba", "Bugün" ile başlama. İlk sahneye mutlaka "callout" koy ve ona iddiayı hareket
+  hâlinde gösteren görüntüyü seç.
+- "hook_text" yine konunun sorusunu soran yazı olsun ama ilk cümleyi tekrarlamasın: soruyu başka bir açıdan, başka
+  kelimelerle sorsun (ör. ilk cümle "Bu baykuş boynunu kırmadan 270 derece döner." ise "BOYNU NEDEN KIRILMIYOR?").
+"""
+# 9 of 14 merak scripts ended on a summary connector ("Yani...", "Bu sayede..."). Since 31 Mar 2025 a Shorts
+# replay counts as a view, so the last line should run back into the first instead of closing the video.
+ENDING_RULE = """- Son cümle şaşırtıcı sonucu ya da izleyicinin kendisinin deneyebileceği somut bir şeyi versin
+  ve video yeniden başladığında ilk cümleye bağlansın, ikisi tek cümle gibi okunsun (ör. son: "...ve işte bu yüzden" →
+  ilk: "Bu baykuş boynunu kırmadan 270 derece döner."). Asıl cevap ondan önce verilmiş olsun. Son cümleye "Yani",
+  "Böylece", "Kısacası", "Bu sayede", "Sonuç olarak", "Özetle" ile başlama; "doğa muhteşem" gibi genel bir lafla bitirme.
+"""
 EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]+")
 
 # Film/series characters and quotes the old catalog was built on. A script that
@@ -155,13 +173,9 @@ Bu konu için 25-40 saniyelik bir Shorts senaryosu yaz. Merakı canlı tutan, en
 cümleler akıcı olsun, ders anlatır gibi değil arkadaşına şaşırtıcı bir şey anlatır gibi.
 
 Anlatım kuralları:
-- İlk cümle en fazla 12 kelimelik, şaşırtıcı bir iddia veya soru olsun (ör. "Bu kedi bilim insanlarını 200 yıl şaşırttı.").
-  "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
-- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
-- Akış: kanca, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran bir örnek veya sayı, akılda kalan bir final cümlesi.
-- Son sahne izleyicinin aklında kalacak somut bir bilgi, kendisinin deneyebileceği bir şey veya şaşırtıcı bir sonuç olsun;
-  "doğa muhteşem", "bilim her şeyi açıklar" gibi genel bir lafla bitirme.
-- Sadece bilimsel olarak doğrulanmış bilgileri kullan. Tartışmalı bir konuysa bunu açıkça söyle.
+""" + OPENING_RULE + """- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
+- Akış: ekrandaki iddia, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran bir örnek veya sayı, başa bağlanan son cümle.
+""" + ENDING_RULE + """- Sadece bilimsel olarak doğrulanmış bilgileri kullan. Tartışmalı bir konuysa bunu açıkça söyle.
 - Sayı ve karşılaştırma (süre, yüzde, ölçü, yıl, "milyon kat") yalnızca ansiklopedilerde geçen, kesin bilinen bir değerse kullan.
   Emin değilsen sayı verme, "saniyenin altında", "çok kısa sürede" gibi söyle.
 - Anlatımda emoji kullanma, metin seslendirilecek.

@@ -475,6 +475,7 @@ def _footage_run(tmp_path, monkeypatch, replies, check=lambda script, topic: [],
     result = footage_script.write_footage_script(
         topic, tmp_path, call=fake_call, plan=lambda t, s, h: ["cat jumping", "cat landing"],
         sheet=lambda hit, d: (b"\xff\xd8\xff", "image/jpeg"), check=check,
+        attempts=2,  # these tests are about clips; the third attempt and the hook rules are in test_hook_rules.py
     )
     return result, prompts
 
