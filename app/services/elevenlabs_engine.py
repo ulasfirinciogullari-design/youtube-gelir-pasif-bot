@@ -35,6 +35,21 @@ ELEVENLABS_VOICE_MAP = {
 DEFAULT_TURKISH_VOICE_ID = "HV5rAif1q1ITHdvxqyMw" # Alp - Deep & Cinematic Baritone
 DEFAULT_VOICE_ID = "HV5rAif1q1ITHdvxqyMw"
 
+# The narrator is the critic's most-cited problem ("monoton, enerjisiz ve yavaş", 14 voice issues in 8 critiques,
+# 2026-10-14), and until now the model and settings were fixed in code, so nothing could be compared. The repo
+# Variables ELEVENLABS_MODEL / ELEVENLABS_STABILITY / ELEVENLABS_STYLE / ELEVENLABS_SPEED now change them without a
+# code change; unset (or empty) variables keep exactly the request below.
+DEFAULT_MODEL_ID = "eleven_multilingual_v2"
+DEFAULT_STABILITY = 0.32
+DEFAULT_STYLE = 0.45
+SPEED_RANGE = (0.7, 1.2)  # what ElevenLabs accepts for voice_settings.speed
+# Models that read previous_text/next_text. eleven_v3 does not stitch lines that way and refuses them, and a refused
+# line falls back to edge-tts, so an unknown model gets no context rather than a failed line.
+CONTEXT_MODELS = ("eleven_multilingual_v2", "eleven_turbo_v2", "eleven_flash_v2", "eleven_monolingual_v1")
+# eleven_v3 takes only these stability steps (Creative, Natural, Robust); any other value is snapped to the nearest.
+V3_STABILITY_STEPS = (0.0, 0.5, 1.0)
+last_error: dict = {}  # code and message of the last refused request (voice_samples adds a library voice on 404)
+
 
 def get_elevenlabs_api_key() -> str | None:
     key = os.environ.get("ELEVENLABS_API_KEY")
@@ -56,14 +71,44 @@ def get_elevenlabs_api_key() -> str | None:
     return None
 
 
+def _env_number(name: str, low: float, high: float) -> float | None:
+    raw = os.environ.get(name, "").strip().replace(",", ".")  # "1,1" is how a Turkish owner writes 1.1
+    if not raw:
+        return None
+    try:
+        value = float(raw)
+    except ValueError:
+        print(f"ℹ️ {name}={raw!r} sayı değil, yok sayıldı")
+        return None
+    return round(min(high, max(low, value)), 3)
+
+
+def voice_config(model_id: str | None = None, stability: float | None = None, style: float | None = None,
+                 speed: float | None = None) -> dict:
+    """The model and whichever voice settings were set: explicit arguments first (scripts/voice_samples.py compares
+    settings side by side), then the repo Variables. Settings left out keep their defaults; speed is then not sent."""
+    config = {"model": model_id or os.environ.get("ELEVENLABS_MODEL", "").strip() or DEFAULT_MODEL_ID}
+    for name, value, (low, high) in (("speed", speed, SPEED_RANGE), ("style", style, (0.0, 1.0)),
+                                     ("stability", stability, (0.0, 1.0))):
+        value = _env_number(f"ELEVENLABS_{name.upper()}", low, high) if value is None else \
+            round(min(high, max(low, float(value))), 3)
+        if value is not None:
+            config[name] = value
+    return config
+
+
 def synthesize_elevenlabs_speech(
     text: str,
     output_path: Path,
     voice_id: str = DEFAULT_VOICE_ID,
-    model_id: str = "eleven_multilingual_v2",
+    model_id: str | None = None,
     previous_text: str = "",
     next_text: str = "",
+    stability: float | None = None,
+    style: float | None = None,
+    speed: float | None = None,
 ) -> bool:
+    last_error.clear()
     api_key = get_elevenlabs_api_key()
     if not api_key:
         return False
@@ -74,21 +119,31 @@ def synthesize_elevenlabs_speech(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     
+    config = voice_config(model_id, stability, style, speed)
+    model = config["model"]
+    settings = {
+        # Lower stability = Rich emotional human cadence, zero robotic drone
+        "stability": config.get("stability", DEFAULT_STABILITY),
+        "similarity_boost": 0.75,
+        "style": config.get("style", DEFAULT_STYLE),  # Higher style = Cinema trailer dramatic tension
+        "use_speaker_boost": True
+    }
+    if model.startswith("eleven_v3"):
+        settings["stability"] = min(V3_STABILITY_STEPS, key=lambda step: abs(step - settings["stability"]))
+    if "speed" in config:
+        # Native speed changes the delivery itself; ffmpeg atempo only time-stretches a flat read.
+        settings["speed"] = config["speed"]
     payload = {
         "text": clean_text,
-        "model_id": model_id,
-        "voice_settings": {
-            "stability": 0.32,         # Lower stability = Rich emotional human cadence, zero robotic drone
-            "similarity_boost": 0.75,
-            "style": 0.45,             # Higher style = Cinema trailer dramatic tension
-            "use_speaker_boost": True
-        }
+        "model_id": model,
+        "voice_settings": settings
     }
     # Neighbouring lines keep intonation continuous when a script is voiced line by line.
-    if previous_text:
-        payload["previous_text"] = normalize_turkish_tts_text(previous_text)
-    if next_text:
-        payload["next_text"] = normalize_turkish_tts_text(next_text)
+    if model.startswith(CONTEXT_MODELS):
+        if previous_text:
+            payload["previous_text"] = normalize_turkish_tts_text(previous_text)
+        if next_text:
+            payload["next_text"] = normalize_turkish_tts_text(next_text)
     
     req = urllib.request.Request(
         url,
@@ -109,7 +164,9 @@ def synthesize_elevenlabs_speech(
     except urllib.error.HTTPError as e:
         err = e.read().decode("utf-8", errors="ignore")
         print(f"⚠️ ElevenLabs API Hatası ({e.code}): {err}")
+        last_error.update(code=e.code, message=err)
         return False
     except Exception as e:
         print(f"⚠️ ElevenLabs Bağlantı Hatası: {e}")
+        last_error.update(code=None, message=str(e))
         return False

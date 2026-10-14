@@ -749,7 +749,7 @@ def test_pop_sounds_under_each_key_fact(tmp_path, monkeypatch):
     (lib / "sfx" / "pop.mp3").write_bytes(b"ID3")
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0], None, [2.25, 5.25])
     graph = commands[-1][commands[-1].index("-filter_complex") + 1]
-    assert f"{pop}=2250|2250" in graph and f"{pop}=5250|5250" in graph
+    assert f"{pop}=2220|2220" in graph and f"{pop}=5220|5220" in graph  # 30 ms ahead of each key fact
 
 
 def test_merak_script_skips_topics_free_footage_cannot_show(tmp_path, monkeypatch):
