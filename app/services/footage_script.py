@@ -32,6 +32,9 @@ MIN_COVERAGE = 6  # out of 10; below this a topic is skipped when the run picked
 WORDS_PER_SHOT = 4  # ~1.6 s of narration: the reference Shorts cut about this often
 MIN_POOL = 12
 MAX_POOL = 40
+# Tags of clips shot in a zoo. The polar bear Short (Q7Fdwf2i1KI, 2026-10-15) was all painted walls and concrete pens;
+# such clips now come after every wild one and fill the pool only when the wild ones run out.
+CAPTIVE_TAGS = {"zoo", "zoos", "captivity", "captive", "cage", "caged", "enclosure"}
 FRAME_HEIGHT = 200
 # Ulaş approved the fastest Short so far (Tepqt4MN0lE, 24.6 s), the critic keeps calling the narration slow and the
 # channel's shorter Shorts did better, so a merak script aims for 22-30 s (~2.7 words/s). validate_script keeps
@@ -96,6 +99,8 @@ Görüntü kuralları:
 - Yazı, logo, filigran olan, bulanık veya konuyla ilgisiz adayları kullanma.
 - Ana özne ekranda büyük ve net görünsün. Öznenin uzakta nokta gibi kaldığı ya da karede hiç görünmediği (boş deniz,
   boş gökyüzü, uzak manzara) adayları kullanma; yakın çekimleri tercih et.
+- Hayvanat bahçesinde çekildiği belli olan (kafes, çit, boyalı duvar, beton havuz) adayları, doğal ortamda çekilmiş aday
+  varken kullanma.
 - "visual": o sahnede ekranda görünen şeyin kısa İngilizce tarifi.
 - "callout": o sahnede ekranın ortasında büyük harflerle beliren 1-3 kelimelik anahtar bilgi ya da birimiyle bir sayı
   (ör. "270 DERECE", "14 OMUR", "SANİYEDE 340 METRE"). Cümledeki bilgiyle birebir aynı olsun. Sadece en çarpıcı 3-4 sahneye
@@ -160,18 +165,25 @@ def plan_queries(topic: str, subject: list[str], hint: str = "", call=_call_gemi
 def gather_pool(queries: list[str], subject: list[str], used_ids: set, limit: int = MAX_POOL) -> list[dict]:
     """On-subject candidates from every query and both libraries, interleaved so each search contributes
     its best clips; Pexels' vertical HD clips come first within a rank. Each hit remembers the search that
-    found it (`_query`), which later helps fill a scene with similar shots."""
+    found it (`_query`), which later helps fill a scene with similar shots. Zoo clips come after all wild ones."""
     lists = []
     for q in queries:
         for search in (original_visuals.pexels_candidates, original_visuals.pixabay_candidates):
-            lists.append([{**h, "_query": q} for h in search(q, used_ids, subject, limit=10)])
+            # Wild clips first before each search keeps its best 10, so a page of zoo hits cannot push them out.
+            hits = sorted(search(q, used_ids, subject), key=is_captive)[:10]
+            lists.append([{**h, "_query": q} for h in hits])
     pool, seen = [], set()
     for rank in range(10):
         for hits in lists:
-            if rank < len(hits) and original_visuals.hit_key(hits[rank]) not in seen and len(pool) < limit:
+            if rank < len(hits) and original_visuals.hit_key(hits[rank]) not in seen:
                 seen.add(original_visuals.hit_key(hits[rank]))
                 pool.append(hits[rank])
-    return pool
+    pool.sort(key=is_captive)  # stable: the interleaved order holds within wild and within zoo clips
+    return pool[:limit]
+
+
+def is_captive(hit: dict) -> bool:
+    return bool(original_visuals._words(hit.get("tags", "")) & CAPTIVE_TAGS)
 
 
 def frame_time(duration: float, frame: int) -> float:

@@ -655,6 +655,27 @@ def test_footage_pool_offers_pexels_first_and_keeps_the_libraries_apart(monkeypa
     assert [h["_query"] for h in pool] == ["owl", "owl", "owl head", "owl head", "owl", "owl head"]
 
 
+def test_zoo_clips_come_after_every_wild_one(monkeypatch):
+    from app.services import footage_script, original_visuals
+    pexels = [{**_hit(i, tags, vertical=True), "source": "pexels"}
+              for i, tags in ((1, "polar, bear, in, a, zoo"), (2, "polar, bear, walking, on, ice"))]
+    pixabay = [_hit(3, "polar bear, captivity, enclosure"), _hit(4, "polar bear, arctic, snow")]
+    monkeypatch.setattr(original_visuals, "pexels_candidates", lambda q, used, subject=None, limit=15: pexels[:limit])
+    monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: pixabay[:limit])
+    pool = footage_script.gather_pool(["polar bear"], ["polar bear"], set())
+    assert [original_visuals.hit_key(h) for h in pool] == ["pexels:2", "pixabay:4", "pexels:1", "pixabay:3"]
+    # A wild clip behind ten zoo clips in one search still makes the pool.
+    pexels[:] = [{**_hit(10 + i, "polar, bear, zoo", vertical=True), "source": "pexels"} for i in range(10)] + [
+        {**_hit(30, "polar, bear, swimming", vertical=True), "source": "pexels"}]
+    pool = footage_script.gather_pool(["polar bear"], ["polar bear"], set())
+    assert [original_visuals.hit_key(h) for h in pool][:2] == ["pexels:30", "pixabay:4"]
+    pexels[:] = [{**_hit(i, tags, vertical=True), "source": "pexels"}
+                 for i, tags in ((1, "polar, bear, in, a, zoo"), (2, "polar, bear, walking, on, ice"))]
+    # Zoo clips still fill the pool when there is room, and a full pool keeps the wild ones.
+    assert [original_visuals.hit_key(h) for h in footage_script.gather_pool(["polar bear"], ["polar bear"], set(), limit=2)] == [
+        "pexels:2", "pixabay:4"]
+
+
 def test_extra_clips_come_from_the_same_search_then_from_matching_tags():
     from app.services.footage_script import fill_clips, wanted_shots
     pool = [{"_query": "lightning strike", "tags": "lightning"}, {"_query": "storm clouds", "tags": "storm, clouds"},
