@@ -120,7 +120,7 @@ def decide(now: datetime, uploads: list[dict], runs: list[dict] | None, run_id=N
     slot = slot_start(now)
     reasons = [f"Slot {_clock(slot)}, {_duration(now - slot)} önce başladı"]
     if now - slot > WINDOW:
-        reasons.append(f"⛔ Slot pencere dışında ({_duration(WINDOW)} geçti); sıradaki slot beklenecek")
+        reasons.append(f"⛔ Slot pencere dışında (pencere {_duration(WINDOW)}); sıradaki slot beklenecek")
         return False, reasons
 
     go = True

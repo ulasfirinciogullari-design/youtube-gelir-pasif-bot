@@ -1,6 +1,7 @@
 import importlib.util
 from datetime import datetime, timezone
 import json
+import re
 import sys
 import types
 
@@ -148,6 +149,33 @@ def test_fetch_runs_reads_this_workflows_scheduled_runs_and_their_steps(monkeypa
     assert runs[0]["steps"][1] == {"name": slot_gate.PRODUCE_STEP, "conclusion": "success"}
     assert runs[1]["steps"] == []
     assert not slot_gate.decide(at("10:37"), [], runs, run_id="8")[0]
+
+
+def test_workflow_matches_the_gate():
+    # The lost-record guard matches the produce step by name and the windows assume the cron hours, so a rename
+    # or a cron edit must fail here instead of silently switching the guard off.
+    workflow = (original_factory.BASE_DIR / ".github" / "workflows" / slot_gate.WORKFLOW_FILE).read_text(encoding="utf-8")
+    steps = workflow.split("\n      - name: ")[1:]
+    names = [block.splitlines()[0].strip() for block in steps]
+    assert slot_gate.PRODUCE_STEP in names
+    gate = names.index("🚦 Sıra Kontrolü")
+    assert "id: gate" in steps[gate] and "python3 scripts/slot_gate.py" in steps[gate]
+    assert names[:gate] == ["📥 Repoyu Çek", "🧠 Kanal Hafızasını Getir"]
+    for name, block in zip(names[gate + 1:], steps[gate + 1:]):
+        assert "if: " in block and "steps.gate.outputs.go == 'true'" in block, name
+
+    cron = re.search(r"cron: '([^']+)'", workflow).group(1).split()
+    minutes = [int(m) for m in cron[0].split(",")]
+    hours = set()
+    for part in cron[1].split(","):
+        first, _, last = part.partition("-")
+        hours.update(range(int(first), int(last or first) + 1))
+    window_hours = int(slot_gate.WINDOW.total_seconds() // 3600)
+    assert hours == {h + i for h in slot_gate.SLOTS_UTC for i in range(window_hours)}
+    for hour in hours:
+        for minute in minutes:
+            tick = at(f"{hour:02d}:{minute:02d}")
+            assert tick - slot_gate.slot_start(tick) <= slot_gate.WINDOW
 
 
 def _clear_event(monkeypatch):
