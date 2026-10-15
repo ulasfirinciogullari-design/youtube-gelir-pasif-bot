@@ -73,6 +73,11 @@ SAMPLE_SETS = ("karsilastirma", "maliyet")
 # informative). Costs at 24 Shorts a day, ~480 characters and ~30 s of speech each (prices of 2026-10-15): Alp
 # ~345k ElevenLabs credits a month; Gemini ~540k audio tokens a month at ~$9-10 (Flash) or ~$20 (Pro) a million.
 GEMINI_VOICES = (("Fenrir", "heyecanlı"), ("Puck", "neşeli"), ("Charon", "bilgilendirici"))
+# Gemini speaks ~2 words a second even when asked for a fast pace, Alp ~3.2 (first cost samples, 2026-10-15); played
+# at their own pace the Gemini voices would lose on speed alone, so they are brought to Alp's pace (atempo keeps the
+# pitch; past ~1.6x it starts to sound processed).
+TARGET_WORDS_PER_SECOND = 3.2
+MAX_SPEED_UP = 1.6
 
 
 class VoiceError(RuntimeError):
@@ -133,11 +138,11 @@ def maliyet_plan(default_voice_id: str | None = None) -> list[dict]:
     for name, mood in GEMINI_VOICES:
         plan.append({"slug": f"gemini_{slug(name)}", "label": f"Gemini {name} ({mood})", "engine": "gemini",
                      "tier": "flash", "voice_name": name, "voice_id": name, "model": None, **other,
-                     "cost": "~$5/ay"})
+                     "match_pace": True, "cost": "~$5/ay"})
     name = GEMINI_VOICES[0][0]
     plan.append({"slug": f"gemini_pro_{slug(name)}", "label": f"Gemini Pro {name} (daha kaliteli model)",
                  "engine": "gemini", "tier": "pro", "voice_name": name, "voice_id": name, "model": None, **other,
-                 "cost": "~$11/ay"})
+                 "match_pace": True, "cost": "~$11/ay"})
     # An all edge-tts Short keeps the series speed-up (original_factory.narration_tempo).
     plan.append({"slug": "edge_ahmet", "label": "Microsoft Ahmet (kredi bitince devreye giren yedek ses)",
                  "engine": "edge", "voice_name": "Ahmet", "voice_id": factory.VOICE["name"], "model": "edge-tts",
@@ -241,6 +246,13 @@ def voice_not_found(error: Exception) -> bool:
     return getattr(error, "code", None) == 404 or "voice_not_found" in text or "voice not found" in text
 
 
+def speed_up_to_pace(words: int, seconds: float) -> float:
+    """The atempo that brings a narration of `words` in `seconds` to TARGET_WORDS_PER_SECOND (never slows it)."""
+    if not seconds or not words:
+        return 1.0
+    return round(min(MAX_SPEED_UP, max(1.0, TARGET_WORDS_PER_SECOND * seconds / words)), 3)
+
+
 def make_sample(sample: dict, number: int, out_dir: Path) -> dict:
     """Voices, tightens and levels one sample; its index.json entry. Raises VoiceError when ElevenLabs refuses."""
     scenes = [{"text": f"{sample['tags'][i]} {line}" if i in sample["tags"] else line} for i, line in enumerate(LINES)]
@@ -267,15 +279,18 @@ def make_sample(sample: dict, number: int, out_dir: Path) -> dict:
             raise VoiceError(error.get("code"), error.get("message") or "ses dosyası dönmedi")
         return out
 
+    words = sum(len(line.split()) for line in LINES)
     with tempfile.TemporaryDirectory(prefix="voice_sample_") as tmp:
         voice, durations, _ = factory.build_narration(scenes, Path(tmp), synthesize=voice_line, tempo=sample["tempo"])
-        chain, _ = factory.mix_levels(voice, None, sum(durations))
+        speed_up = speed_up_to_pace(words, sum(durations)) if sample.get("match_pace") else 1.0
+        chain, _ = factory.mix_levels(voice, None, sum(durations) / speed_up)
+        if speed_up > 1.0:
+            chain = f"atempo={speed_up},{chain}"
         dest = out_dir / f"{number}_{sample['slug']}.mp3"
         subprocess.run(["ffmpeg", "-y", "-i", str(voice), "-af", chain, "-ac", "1", "-ar", "44100",
                         "-c:a", "libmp3lame", "-b:a", "128k", str(dest)],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     duration = factory._probe_duration(dest)
-    words = sum(len(line.split()) for line in LINES)
     level = factory.loudness(dest)
     return {**({"note": sample["note"]} if sample.get("note") else {}),
         **({"cost_24_a_day": sample["cost"]} if sample.get("cost") else {}),
@@ -286,7 +301,8 @@ def make_sample(sample: dict, number: int, out_dir: Path) -> dict:
         "voice_id": sample["voice_id"],
         "model": sample["model"],
         "settings": {"stability": sample["stability"], "style": sample["style"], "speed": sample["speed"],
-                     "atempo": sample["tempo"], "tags": {str(i + 1): tag for i, tag in sample["tags"].items()}},
+                     "atempo": sample["tempo"], "tags": {str(i + 1): tag for i, tag in sample["tags"].items()},
+                     **({"speed_up_after": speed_up} if speed_up > 1.0 else {})},
         "source": sample.get("source", "ses haritası"),
         "characters": sum(len(scene["text"]) for scene in scenes),
         "duration_seconds": round(duration, 2),
@@ -303,6 +319,8 @@ def describe(settings: dict) -> str:
         parts.append(f"hız {settings['speed']}")
     if settings.get("atempo", 1.0) != 1.0:
         parts.append(f"ffmpeg {settings['atempo']}x")
+    if settings.get("speed_up_after"):
+        parts.append(f"sonradan {settings['speed_up_after']}x hızlandırıldı")
     if settings.get("tags"):
         parts.append("etiket " + " ".join(settings["tags"].values()))
     return ", ".join(parts) or "-"

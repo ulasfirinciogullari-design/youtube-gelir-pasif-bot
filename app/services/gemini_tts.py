@@ -38,7 +38,7 @@ A fast nature and science fact video for a Turkish audience on a phone. Every se
 
 ### PERFORMANCE
 Style: energetic, excited, confident, punchy, full of wonder
-Pace: fast
+Pace: very fast, rapid and urgent, like a hyped short-video narrator
 Accent: native Istanbul Turkish
 
 #### TRANSCRIPT

@@ -561,6 +561,9 @@ def test_cost_samples_put_cheaper_narrators_next_to_todays_alp():
     assert plan[-1]["engine"] == "edge" and plan[-1]["tempo"] == original_factory.SERIES["merak"]["tempo"]
     assert all(s.get("cost") for s in plan)
     assert all(vs.repo_variables(s) == {} for s in plan[2:])  # these need a code change, not a repo Variable
+    assert [s.get("match_pace", False) for s in plan] == [False, False, True, True, True, True, False]
+    assert vs.speed_up_to_pace(31, 16.0) == 1.6  # capped: ~2 words a second would need 1.65x
+    assert vs.speed_up_to_pace(31, 12.4) == 1.28 and vs.speed_up_to_pace(31, 9.0) == 1.0
 
 
 def test_gemini_tts_picks_the_newest_model_of_the_tier():
@@ -659,6 +662,8 @@ def test_cost_samples_go_on_when_elevenlabs_is_out_of_credits(tmp_path, monkeypa
     assert "pro ses modeli bulunamadı" in index["skipped"][2]["reason"]
     assert index["samples"][0]["model"] == "gemini-x-flash-tts" and index["samples"][0]["cost_24_a_day"] == "~$5/ay"
     assert index["samples"][3]["transcript"] == "yazı: 4_edge_ahmet.mp3"
+    # The tone lines (0.8 s each) say 31 words in ~4 s, already faster than Alp, so nothing is sped up.
+    assert all("speed_up_after" not in sample["settings"] for sample in index["samples"])
     assert "Maliyet (günde 24)" in capsys.readouterr().out
 
 
