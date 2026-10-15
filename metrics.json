@@ -1,13 +1,25 @@
 [
   {
+    "video_id": "QNDnZbnqPmI",
+    "topic_id": "mk-002",
+    "title": "Biri esneyince neden sen de esnersin? 🥱 #shorts",
+    "published_at": "2026-10-14T21:32:01Z",
+    "privacy": "public",
+    "views": 608,
+    "likes": 9,
+    "comments": 1,
+    "views_per_hour": 49.95
+  },
+  {
     "video_id": "6GSVlmFIAmM",
     "topic_id": "mk-019",
     "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
     "published_at": "2026-10-14T19:12:05Z",
     "privacy": "public",
-    "views": 173,
-    "likes": 4,
-    "comments": 1
+    "views": 1044,
+    "likes": 17,
+    "comments": 1,
+    "views_per_hour": 71.97
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -15,9 +27,10 @@
     "title": "Baykuşlar başlarını neden 270 derece döndürüyor? 🦉 #shorts",
     "published_at": "2026-10-14T14:46:47Z",
     "privacy": "public",
-    "views": 1198,
-    "likes": 11,
-    "comments": 0
+    "views": 1347,
+    "likes": 12,
+    "comments": 0,
+    "views_per_hour": 71.17
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -25,9 +38,9 @@
     "title": "Şimşek neden önce, gök gürültüsü sonra gelir? ⚡ #shorts",
     "published_at": "2026-10-13T23:38:57Z",
     "privacy": "public",
-    "views": 263,
+    "views": 304,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 12.07
+    "views_per_hour": 8.93
   }
 ]
