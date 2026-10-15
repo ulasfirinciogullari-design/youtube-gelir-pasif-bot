@@ -26,8 +26,10 @@ ORDINALS = {
 
 
 LARGE_UNITS = ((10**9, "milyar"), (10**6, "milyon"), (1000, "bin"))
-# A number written with thousand dots ("10.000", "1.500.000"), optionally with a suffix ("100.000'den").
-GROUPED_NUMBER_RE = re.compile(r"(?<![\d.,])(\d{1,3}(?:\.\d{3})+)(?![\d]|[.,]\d)(?:'([a-zA-ZçğıöşüÇĞİÖŞÜ]+))?")
+# A number written with thousand dots ("10.000", "1.500.000"), optionally with a suffix ("100.000'den"). A leading
+# zero makes it a decimal ("0.001 saniye"), which stays as written.
+GROUPED_DIGITS = r"[1-9]\d{0,2}(?:\.\d{3})+"
+GROUPED_NUMBER_RE = re.compile(rf"(?<![\d.,%])({GROUPED_DIGITS})(?![\d]|[.,]\d)(?:'([a-zA-ZçğıöşüÇĞİÖŞÜ]+))?")
 
 
 def number_to_turkish(n: int) -> str:
@@ -77,15 +79,10 @@ def normalize_turkish_tts_text(text: str) -> str:
 
     # 1. Percentage patterns: %90'ı, %95'inin, %50, %100'ü
     def replace_percent(match):
-        num_val = int(match.group(1))
-        num_word = number_to_turkish(num_val)
-        suffix = match.group(2) or ""
-        suffix = suffix.lstrip("'")
-        if suffix:
-            return f"yüzde {num_word}{suffix}"
-        return f"yüzde {num_word}"
+        num_word = number_to_turkish(int(match.group(1).replace(".", "")))
+        return f"yüzde {_with_suffix(num_word, match.group(2) or '')}"
 
-    result = re.sub(r"%(\d+)(?:'([a-zA-ZçğıöşüÇĞİÖŞÜ]+))?", replace_percent, result)
+    result = re.sub(rf"%({GROUPED_DIGITS}(?![.,]?\d)|\d+(?![\d]|[.,]\d))(?:'([a-zA-ZçğıöşüÇĞİÖŞÜ]+))?", replace_percent, result)
 
     # 2. Numbers with thousand dots, before the ordinals: "10.000 metrede" had become "onuncu000 metrede" and was
     #    read digit by digit (plane Short WADWjFRfYYw, 2026-10-15).

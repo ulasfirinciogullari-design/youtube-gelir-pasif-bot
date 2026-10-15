@@ -16,6 +16,8 @@ from app.services.turkish_phonetics import normalize_turkish_tts_text, number_to
     ("1.001 gece", "bin bir gece"),
     ("Tam 14.000'i", "Tam on dört bini"),
     ("Sayı 3.014'ü geçti", "Sayı üç bin on dördü geçti"),
+    ("Fiyatı %1.000 arttı", "Fiyatı yüzde bin arttı"),
+    ("%14'ü", "yüzde on dördü"),
 ])
 def test_numbers_with_thousand_dots_are_spelled_out(text, spoken):
     assert normalize_turkish_tts_text(text) == spoken
@@ -27,8 +29,10 @@ def test_numbers_with_thousand_dots_are_spelled_out(text, spoken):
     ("Yarışı 5. bitirdi", "Yarışı beşinci bitirdi"),
     ("Bu 2.5 saniye sürer", "Bu 2.5 saniye sürer"),
     ("Pi sayısı 3.14 ile başlar", "Pi sayısı 3.14 ile başlar"),
+    ("Sadece 0.001 saniye sürer", "Sadece 0.001 saniye sürer"),  # a decimal, not a thousand
     ("1950'lerde kare camlar", "1950'lerde kare camlar"),
     ("%90'ı suyla dolu", "yüzde doksanı suyla dolu"),
+    ("Faiz %2.5 oldu", "Faiz %2.5 oldu"),
 ])
 def test_ordinals_and_other_numbers_are_left_whole(text, spoken):
     assert normalize_turkish_tts_text(text) == spoken
