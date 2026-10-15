@@ -1,0 +1,149 @@
+{
+  "created": "2026-10-15 00:29 UTC",
+  "script": [
+    "Bu baykuş boynunu kırmadan 270 derece döner.",
+    "Bizim boynumuzda 7 omur var, baykuşta tam 14.",
+    "Ama asıl sır, kafasına kan taşıyan damarlarda.",
+    "Başı arkaya dönükken bile beynine kan gitmeye devam eder."
+  ],
+  "samples": [
+    {
+      "file": "1_alp_simdiki.mp3",
+      "label": "Alp, Short'lardaki şimdiki ses (1,1x hızlandırılmış)",
+      "voice_name": "Alp",
+      "voice_id": "HV5rAif1q1ITHdvxqyMw",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.32,
+        "style": 0.45,
+        "speed": null,
+        "atempo": 1.1,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 10.16,
+      "words_per_second": 3.05,
+      "lufs": -16.4,
+      "repo_variables": {}
+    },
+    {
+      "file": "2_alp_hizli_enerjik.mp3",
+      "label": "Alp, kendi hızıyla 1,15 ve daha enerjik",
+      "voice_name": "Alp",
+      "voice_id": "HV5rAif1q1ITHdvxqyMw",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.35,
+        "style": 0.6,
+        "speed": 1.15,
+        "atempo": 1.0,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 9.3,
+      "words_per_second": 3.33,
+      "lufs": -16.4,
+      "repo_variables": {
+        "ELEVENLABS_SPEED": "1.15",
+        "ELEVENLABS_STYLE": "0.6",
+        "ELEVENLABS_STABILITY": "0.35"
+      }
+    },
+    {
+      "note": "Duygu etiketleri şimdilik sadece bu örnekte var; Short senaryoları etiket yazmıyor.",
+      "file": "3_alp_v3_duygulu.mp3",
+      "label": "Alp, eleven_v3 ve duygu etiketleri",
+      "voice_name": "Alp",
+      "voice_id": "HV5rAif1q1ITHdvxqyMw",
+      "model": "eleven_v3",
+      "settings": {
+        "stability": 0.5,
+        "style": 0.45,
+        "speed": null,
+        "atempo": 1.1,
+        "tags": {
+          "1": "[excited]",
+          "3": "[surprised]"
+        }
+      },
+      "source": "ses haritası",
+      "characters": 214,
+      "duration_seconds": 12.7,
+      "words_per_second": 2.44,
+      "lufs": -16.4,
+      "repo_variables": {
+        "ELEVENLABS_MODEL": "eleven_v3",
+        "ELEVENLABS_STABILITY": "0.5"
+      }
+    },
+    {
+      "file": "4_taner_torun.mp3",
+      "label": "Taner Torun, şimdiki ayarlar",
+      "voice_name": "Taner Torun",
+      "voice_id": "G5sdncpgy3DkDmvKJnFb",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.32,
+        "style": 0.45,
+        "speed": null,
+        "atempo": 1.1,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 19.93,
+      "words_per_second": 1.56,
+      "lufs": -16.4,
+      "repo_variables": {
+        "ELEVENLABS_VOICE_ID": "G5sdncpgy3DkDmvKJnFb"
+      }
+    },
+    {
+      "file": "5_emrullah_tuna.mp3",
+      "label": "Emrullah Tuna, şimdiki ayarlar",
+      "voice_name": "Emrullah Tuna",
+      "voice_id": "QftNgZhlSOYKrYbk7WR7",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.32,
+        "style": 0.45,
+        "speed": null,
+        "atempo": 1.1,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 12.04,
+      "words_per_second": 2.57,
+      "lufs": -16.4,
+      "repo_variables": {
+        "ELEVENLABS_VOICE_ID": "QftNgZhlSOYKrYbk7WR7"
+      }
+    },
+    {
+      "file": "6_ozgur.mp3",
+      "label": "Özgür, şimdiki ayarlar",
+      "voice_name": "Özgür",
+      "voice_id": "Mcb3pz5eWjKXcBhMLF4v",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.32,
+        "style": 0.45,
+        "speed": null,
+        "atempo": 1.1,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 12.56,
+      "words_per_second": 2.47,
+      "lufs": -16.5,
+      "repo_variables": {
+        "ELEVENLABS_VOICE_ID": "Mcb3pz5eWjKXcBhMLF4v"
+      }
+    }
+  ],
+  "skipped": []
+}
