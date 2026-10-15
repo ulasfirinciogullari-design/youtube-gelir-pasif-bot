@@ -1,11 +1,21 @@
 [
   {
+    "video_id": "WADWjFRfYYw",
+    "topic_id": "mk-004",
+    "title": "Uçak Camları Neden Yuvarlak Olmak Zorunda? 🪟",
+    "published_at": "2026-10-15T14:51:33Z",
+    "privacy": "public",
+    "views": 741,
+    "likes": 4,
+    "comments": 1
+  },
+  {
     "video_id": "Z1LGmwcsd8Q",
     "topic_id": "mk-003",
     "title": "İnsan kendini neden gıdıklayamaz? 🧠 #shorts",
     "published_at": "2026-10-15T09:46:53Z",
     "privacy": "public",
-    "views": 783,
+    "views": 1149,
     "likes": 7,
     "comments": 1
   },
@@ -15,10 +25,10 @@
     "title": "Biri esneyince neden sen de esnersin? 🥱 #shorts",
     "published_at": "2026-10-14T21:32:01Z",
     "privacy": "public",
-    "views": 919,
+    "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 53.31
+    "views_per_hour": 43.66
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -26,10 +36,10 @@
     "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
     "published_at": "2026-10-14T19:12:05Z",
     "privacy": "public",
-    "views": 1064,
+    "views": 1066,
     "likes": 18,
     "comments": 1,
-    "views_per_hour": 54.36
+    "views_per_hour": 45.5
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -37,10 +47,10 @@
     "title": "Baykuşlar başlarını neden 270 derece döndürüyor? 🦉 #shorts",
     "published_at": "2026-10-14T14:46:47Z",
     "privacy": "public",
-    "views": 1382,
+    "views": 1399,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 57.6
+    "views_per_hour": 50.23
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -48,9 +58,9 @@
     "title": "Şimşek neden önce, gök gürültüsü sonra gelir? ⚡ #shorts",
     "published_at": "2026-10-13T23:38:57Z",
     "privacy": "public",
-    "views": 308,
+    "views": 318,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 7.87
+    "views_per_hour": 7.4
   }
 ]
