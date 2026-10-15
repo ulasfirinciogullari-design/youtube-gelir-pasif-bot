@@ -1,0 +1,322 @@
+{
+  "topic_id": "mk-004",
+  "topic": "Uçak camları neden kare değil de yuvarlaktır?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x7",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_multilingual_v2",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Uçak Camları Neden Yuvarlak Olmak Zorunda? 🪟",
+  "hook_text": "CAMLAR NEDEN YUVARLAK?",
+  "description": "Uçak camları neden yuvarlak olmak zorunda?\n\n1950'lerde kare camlar, köşelerde oluşan aşırı gerilim yüzünden uçak gövdelerini parçalamıştı. Bu felaketler, mühendisleri basıncı eşit dağıtan yuvarlak pencereler tasarlamaya iterek uçuş güvenliğini artırdı.\n\nSence modern uçaklarda kare camlar kullanılsaydı ne olurdu: Uçuşlar daha mı ucuz olurdu, yoksa çok mu tehlikeli?\n\n#uçak #havacılık #ilginçbilgiler #uçuşgüvenliği #shorts #bilim #merak #keşfet\n\nSeri: mk-004",
+  "tags": [
+    "uçak camları",
+    "uçak penceresi",
+    "neden yuvarlak",
+    "uçak camları yuvarlak",
+    "uçak güvenliği",
+    "uçak tasarımı",
+    "1950'ler uçak",
+    "kare camlar",
+    "yuvarlak camlar",
+    "basınç dağılımı",
+    "uçak bilgileri",
+    "havacılık tarihi",
+    "uçak mühendisliği",
+    "uçak",
+    "havacılık",
+    "bilim",
+    "teknoloji",
+    "ilginç bilgiler",
+    "meraklı bilgiler",
+    "plane windows",
+    "aircraft safety",
+    "aviation",
+    "round windows",
+    "uçuş güvenliği",
+    "uçak kazaları",
+    "Mühendislik",
+    "Zirvenin Kanunu",
+    "Shorts",
+    "Basınç",
+    "Yuvarlak Cam",
+    "ucak camlari",
+    "ucak penceresi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why must airplane windows be round? 🪟",
+      "description": "In the 1950s, square windows caused aircraft bodies to break apart due to extreme stress at their corners. This led engineers to design round windows that distribute pressure evenly, significantly enhancing flight safety. What do you think would happen if modern planes used square windows: would flights be cheaper, or much more dangerous?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "es": {
+      "title": "¿Por qué las ventanas de los aviones son redondas? 🪟",
+      "description": "En los años 50, las ventanas cuadradas provocaron fallos estructurales en los aviones por la tensión excesiva en sus esquinas. Para evitar desastres, los ingenieros diseñaron ventanas redondas que distribuyen la presión uniformemente, haciendo los vuelos mucho más seguros. ¿Crees que si los aviones modernos tuvieran ventanas cuadradas, los vuelos serían más baratos o mucho más peligrosos?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "pt": {
+      "title": "Por que as janelas dos aviões são redondas? 🪟",
+      "description": "Nos anos 50, janelas quadradas causavam falhas catastróficas em aviões devido ao estresse excessivo nos cantos. Engenheiros desenvolveram janelas redondas para distribuir a pressão de forma igual, aumentando drasticamente a segurança de voo. Se os aviões modernos usassem janelas quadradas, você acha que os voos seriam mais baratos ou muito mais perigosos?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "de": {
+      "title": "Warum sind Flugzeugfenster immer rund? 🪟",
+      "description": "In den 1950er Jahren zerbrachen Flugzeuge aufgrund der extremen Belastung an den Ecken von quadratischen Fenstern. Ingenieure entwickelten daraufhin runde Fenster, die den Druck gleichmäßig verteilen und die Flugsicherheit erheblich verbesserten. Was denkst du, wenn moderne Flugzeuge eckige Fenster hätten: Wären Flüge billiger oder viel gefährlicher?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "fr": {
+      "title": "Pourquoi les hublots d'avion sont-ils ronds? 🪟",
+      "description": "Dans les années 1950, les fenêtres carrées causaient la rupture des fuselages d'avion à cause de la tension excessive dans les coins. Les ingénieurs ont alors conçu des hublots ronds qui répartissent la pression uniformément, améliorant considérablement la sécurité des vols. À votre avis, si les avions modernes utilisaient des hublots carrés, les vols seraient-ils moins chers ou bien plus dangereux?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "it": {
+      "title": "Perché i finestrini degli aerei sono rotondi? 🪟",
+      "description": "Negli anni '50, i finestrini quadrati causavano la rottura delle fusoliere degli aerei a causa dello stress eccessivo negli angoli. Gli ingegneri progettarono finestrini rotondi per distribuire la pressione in modo uniforme, aumentando notevolmente la sicurezza dei voli. Se gli aerei moderni usassero finestrini quadrati, pensi che i voli sarebbero più economici o molto più pericolosi?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "ru": {
+      "title": "Почему иллюминаторы самолетов всегда круглые? 🪟",
+      "description": "В 1950-х годах квадратные окна приводили к разрушению корпусов самолетов из-за чрезмерного напряжения в углах. Инженеры разработали круглые иллюминаторы, равномерно распределяющие давление, что значительно повысило безопасность полетов. Как вы думаете, если бы современные самолеты использовали квадратные окна: полеты стали бы дешевле или намного опаснее?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "ar": {
+      "title": "لماذا يجب أن تكون نوافذ الطائرات مستديرة؟ 🪟",
+      "description": "في خمسينيات القرن الماضي، تسببت النوافذ المربعة في تفكك هياكل الطائرات بسبب الضغط المفرط في الزوايا. لذلك، صمم المهندسون نوافذ مستديرة توزع الضغط بالتساوي، مما عزز سلامة الطيران بشكل كبير. برأيك، لو استخدمت الطائرات الحديثة نوافذ مربعة: هل ستكون الرحلات أرخص أم أكثر خطورة بكثير؟\n\n#shorts\n\nSeri: mk-004"
+    },
+    "hi": {
+      "title": "हवाई जहाज़ की खिड़कियाँ गोल क्यों होती हैं? 🪟",
+      "description": "1950 के दशक में, चौकोर खिड़कियों के कोनों पर अत्यधिक तनाव के कारण हवाई जहाज़ के ढांचे टूट जाते थे। इंजीनियरों ने गोल खिड़कियां डिज़ाइन कीं जो दबाव को समान रूप से वितरित करती हैं, जिससे उड़ान सुरक्षा में काफी सुधार हुआ। आपके अनुसार, यदि आधुनिक विमानों में चौकोर खिड़कियां इस्तेमाल होतीं तो क्या होता: क्या उड़ानें सस्ती होतीं, या बहुत अधिक खतरनाक?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "id": {
+      "title": "Mengapa jendela pesawat harus berbentuk bulat? 🪟",
+      "description": "Pada tahun 1950-an, jendela persegi menyebabkan badan pesawat pecah karena tekanan ekstrem di sudut-sudutnya. Insinyur kemudian merancang jendela bulat yang mendistribusikan tekanan secara merata, sangat meningkatkan keselamatan penerbangan. Menurut Anda, jika pesawat modern menggunakan jendela persegi: apakah penerbangan akan lebih murah, atau justru jauh lebih berbahaya?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "ja": {
+      "title": "飛行機の窓はなぜ丸い必要があるの？ 🪟",
+      "description": "1950年代、四角い窓は角に集中する過度の応力により、航空機の胴体を破壊する原因となりました。エンジニアは圧力を均等に分散する丸い窓を設計し、飛行の安全性を大幅に向上させました。もし現代の飛行機が四角い窓を使っていたら、フライトは安くなると思いますか、それともはるかに危険になると思いますか？\n\n#shorts\n\nSeri: mk-004"
+    },
+    "ko": {
+      "title": "비행기 창문은 왜 둥근 모양일까요? 🪟",
+      "description": "1950년대에는 사각형 창문의 모서리에 과도한 압력이 집중되어 비행기 동체가 파손되는 사고가 있었습니다. 엔지니어들은 압력을 균등하게 분산시키는 둥근 창문을 설계하여 비행 안전을 크게 향상시켰습니다. 현대 비행기에 사각형 창문이 사용된다면, 비행이 더 저렴해질까요 아니면 훨씬 위험해질까요?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "pl": {
+      "title": "Dlaczego okna w samolotach muszą być okrągłe? 🪟",
+      "description": "W latach 50. kwadratowe okna powodowały pękanie kadłubów samolotów z powodu nadmiernych naprężeń w rogach. Inżynierowie zaprojektowali okrągłe okna, które równomiernie rozkładają ciśnienie, znacznie zwiększając bezpieczeństwo lotów. Co by się stało, gdyby współczesne samoloty używały kwadratowych okien: czy loty byłyby tańsze, czy znacznie bardziej niebezpieczne?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "nl": {
+      "title": "Waarom moeten vliegtuigramen rond zijn? 🪟",
+      "description": "In de jaren 50 zorgden vierkante ramen ervoor dat vliegtuigrompen uit elkaar vielen door extreme spanning in de hoeken. Ingenieurs ontwierpen ronde ramen die de druk gelijkmatig verdelen, wat de vliegveiligheid aanzienlijk verbeterde. Wat denk jij, als moderne vliegtuigen vierkante ramen zouden gebruiken: zouden vluchten goedkoper zijn, of veel gevaarlijker?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "uk": {
+      "title": "Чому вікна літаків мають бути круглими? 🪟",
+      "description": "У 1950-х роках квадратні вікна призводили до руйнування фюзеляжів літаків через надмірну напругу в кутах. Інженери розробили круглі вікна, які рівномірно розподіляють тиск, значно підвищивши безпеку польотів. Як ви вважаєте, якби сучасні літаки використовували квадратні вікна: польоти були б дешевшими чи набагато небезпечнішими?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "vi": {
+      "title": "Tại sao cửa sổ máy bay phải có hình tròn? 🪟",
+      "description": "Vào những năm 1950, cửa sổ vuông đã khiến thân máy bay bị vỡ do ứng suất cực lớn tại các góc. Các kỹ sư đã thiết kế cửa sổ tròn phân phối áp suất đều, giúp tăng cường đáng kể an toàn bay. Bạn nghĩ điều gì sẽ xảy ra nếu máy bay hiện đại sử dụng cửa sổ vuông: chuyến bay sẽ rẻ hơn hay nguy hiểm hơn nhiều?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "az": {
+      "title": "Təyyarə pəncərələri niyə dairəvi olmalıdır? 🪟",
+      "description": "1950-ci illərdə kvadrat pəncərələr künclərdə yaranan həddindən artıq gərginlik səbəbindən təyyarə gövdələrinin parçalanmasına səbəb olmuşdu. Mühəndislər təzyiqi bərabər paylayan dairəvi pəncərələr dizayn etdilər ki, bu da uçuş təhlükəsizliyini əhəmiyyətli dərəcədə artırdı. Sizcə, müasir təyyarələrdə kvadrat pəncərələr istifadə edilsəydi nə olardı: uçuşlar daha ucuz, yoxsa daha təhlükəli olardı?\n\n#shorts\n\nSeri: mk-004"
+    },
+    "ro": {
+      "title": "De ce ferestrele avioanelor trebuie să fie rotunde? 🪟",
+      "description": "În anii 1950, ferestrele pătrate au cauzat ruperea fuselajelor avioanelor din cauza tensiunii excesive din colțuri. Inginerii au proiectat ferestre rotunde care distribuie presiunea uniform, îmbunătățind semnificativ siguranța zborului. Crezi că, dacă avioanele moderne ar folosi ferestre pătrate: zborurile ar fi mai ieftine sau mult mai periculoase?\n\n#shorts\n\nSeri: mk-004"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence modern uçaklarda kare camlar kullanılsaydı ne olurdu: Uçuşlar daha mı ucuz olurdu, yoksa çok mu tehlikeli?",
+  "scenes": [
+    {
+      "text": "Bu devasa uçaklar, 10.000 metrede güvenle süzülür.",
+      "visual": "A large airplane flying high in the sky among clouds.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 23,
+          "kare": 2
+        },
+        {
+          "n": 24,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        }
+      ],
+      "callout": "10.000 METRE"
+    },
+    {
+      "text": "Peki, bu makinelerin camları neden kare değil de hep yuvarlak?",
+      "visual": "View from inside an airplane window, showing its round shape and clouds outside.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 29,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "1950'lerde kare camlar, köşelerde oluşan aşırı gerilim nedeniyle uçakların gövdelerini parçaladı.",
+      "visual": "Close-up shots of an airplane wing and engine, representing the aircraft's structure.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 2
+        },
+        {
+          "n": 34,
+          "kare": 2
+        },
+        {
+          "n": 38,
+          "kare": 2
+        }
+      ],
+      "callout": "KÖŞE GERİLİMİ"
+    },
+    {
+      "text": "Bu felaketler, uçuş güvenliğinin ne kadar kritik olduğunu gösterdi ve havacılıkta köklü bir tasarım değişikliğini zorunlu kıldı.",
+      "visual": "Multiple airplanes on an airport tarmac, conveying scale and past issues.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 16,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Mühendisler, basıncı eşit dağıtan yuvarlak pencereler tasarladı.",
+      "visual": "View from an airplane window, showing its round shape and even light distribution.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 31,
+          "kare": 2
+        },
+        {
+          "n": 32,
+          "kare": 2
+        },
+        {
+          "n": 39,
+          "kare": 2
+        }
+      ],
+      "callout": "EŞİT BASINÇ"
+    },
+    {
+      "text": "Bu akıllıca tasarım, uçuş güvenliğini artırarak gökyüzünü herkes için açtı.",
+      "visual": "Airplane wing flying over clouds or a scenic landscape, implying safe and smooth flight.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 2
+        },
+        {
+          "n": 11,
+          "kare": 2
+        }
+      ],
+      "callout": "GÜVENLİ UÇUŞ"
+    },
+    {
+      "text": "İşte bu yüzden, camların yuvarlak olması hayati önem taşır.",
+      "visual": "A final shot of an airplane wing flying over beautiful scenery, reinforcing the importance.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 14,
+          "kare": 2
+        },
+        {
+          "n": 20,
+          "kare": 2
+        },
+        {
+          "n": 36,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 26.64,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 17,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Karmaşık fiziksel kavramları açıklayan dinamik grafik ve animasyon eksikliği.",
+        "fix": "'Köşe gerilimi' veya 'basınç dağılımı' gibi kavramları açıklamak için basit oklar, daireler, vurgu çizgileri gibi temel grafik öğelerini stok videoların üzerine ekle. Metinlerin ekrana giriş/çıkışını dinamikleştir ve anahtar kelimeleri renk"
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka anlatımının enerjisiz ve monoton olması.",
+        "fix": "Daha dinamik ve doğal tonlamalı bir yapay zeka sesi seçmeye çalış. Ses hızını ve tonlamasını ayarlayarak anlatıma daha fazla canlılık kat."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video akışının yavaş ve geçişlerin basit olması.",
+        "fix": "Video klipler arasındaki geçişleri hızlandır, daha sık kesimler kullan. Önemli anlarda hafif yakınlaştırma veya kaydırma efektleri ekleyerek dinamizmi artır."
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektlerinin hiç kullanılmaması.",
+        "fix": "Metinlerin ekrana gelmesi, uçak hareketleri veya önemli anlar için ücretsiz kütüphanelerden uygun, hafif ses efektleri (örn. 'whoosh', 'ding') ekle."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kancanın (hook) daha az etkileyici olması ve bilginin şaşırtıcılığının yeterince vurgulanmaması.",
+        "fix": "Başlangıç cümlesini daha merak uyandırıcı veya dramatik hale getir (örn. 'Uçak camlarının neden kare olmadığını biliyor musunuz? Bu basit tasarım farkı, havacılık tarihini değiştirdi!'). 1950'lerdeki kazaların ciddiyetini daha çarpıcı bir d"
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görsel çeşitliliğin ve konuya özel, açıklayıcı stok çekimlerin azlığı.",
+        "fix": "Stok videolar arasında daha metaforik veya soyut görseller arayarak 'gerilim' veya 'basınç' gibi kavramları destekle. Farklı açılardan ve durumlardan daha fazla pencere veya uçak gövdesi detayı gösteren klipler bul."
+      }
+    ],
+    "strengths": [
+      "Bilgilendirici",
+      "Kısa",
+      "Net bir soruya odaklanıyor"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
