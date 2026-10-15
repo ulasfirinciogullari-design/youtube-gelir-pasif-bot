@@ -1,0 +1,329 @@
+{
+  "topic_id": "mk-005",
+  "topic": "Yunuslar boğulmadan nasıl uyur?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x7",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_multilingual_v2",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
+  "hook_text": "YUNUSLAR NASIL UYUMALI?",
+  "description": "Yunuslar boğulmadan nasıl uyur?\n\nYunuslar, beyinlerinin sadece yarısıyla uyur. Bir gözleri açık kalır ve diğer yarım beyinleri etrafı gözetler, böylece uyurken bile nefes almak için yüzeye çıkabilir ve tehlikelerden kaçabilirler.\n\nSence bir yunus uyurken beyin fonksiyonlarının yüzde kaçını kullanır: %10 mu %50 mi?\n\n#yunus #hayvanlar #denizcanlıları #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-005",
+  "tags": [
+    "yunus",
+    "yunuslar",
+    "yunus nasıl uyur",
+    "yunus uyku",
+    "yunus boğulmadan uyur",
+    "yunusların uyku düzeni",
+    "yunus beyni",
+    "tek beyinle uyku",
+    "bilinçli nefes",
+    "deniz memelileri",
+    "okyanus hayvanları",
+    "ilginç hayvan bilgileri",
+    "hayvanlar alemi",
+    "vahşi yaşam",
+    "bilim",
+    "doğa",
+    "keşfet",
+    "merak",
+    "bilgi",
+    "eğlenceli bilgiler",
+    "dolphin",
+    "dolphins sleep",
+    "unihemispheric sleep",
+    "marine mammals",
+    "uyku",
+    "hayvanlar",
+    "deniz",
+    "okyanus",
+    "shorts",
+    "belgesel",
+    "yunus nasil uyur",
+    "yunus bogulmadan uyur",
+    "yunuslarin uyku duzeni"
+  ],
+  "localizations": {
+    "en": {
+      "title": "How do dolphins sleep without drowning? 🐬",
+      "description": "Dolphins consciously manage every breath. So, how can they sleep underwater without drowning? They sleep with only half of their brain, keeping one eye open to monitor their surroundings. This allows them to breathe and stay safe even while resting.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "es": {
+      "title": "¿Cómo duermen los delfines sin ahogarse? 🐬",
+      "description": "Los delfines gestionan conscientemente cada respiración. Entonces, ¿cómo logran dormir bajo el agua sin ahogarse? La respuesta es sorprendente: duermen con solo la mitad de su cerebro, manteniendo un ojo abierto para vigilar. Así pueden subir a la superficie a respirar y evitar peligros mientras descansan.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "pt": {
+      "title": "Como os golfinhos dormem sem se afogar? 🐬",
+      "description": "Golfinhos controlam cada respiração conscientemente. Como eles conseguem dormir debaixo d'água sem se afogar? A resposta é que eles dormem com apenas metade do cérebro, mantendo um olho aberto para monitorar o ambiente. Isso os permite respirar na superfície e evitar perigos mesmo dormindo.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "de": {
+      "title": "Wie schlafen Delfine, ohne zu ertrinken? 🐬",
+      "description": "Delfine steuern jeden Atemzug bewusst. Wie können sie dann unter Wasser schlafen, ohne zu ertrinken? Sie schlafen nur mit einer Gehirnhälfte, wobei ein Auge offen bleibt, um die Umgebung zu überwachen. So können sie auch im Schlaf regelmäßig zum Atmen an die Oberfläche kommen und Gefahren entgehen.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "fr": {
+      "title": "Comment les dauphins dorment-ils sans se noyer? 🐬",
+      "description": "Les dauphins gèrent consciemment chaque respiration. Alors, comment peuvent-ils dormir sous l'eau sans se noyer? Ils dorment avec seulement la moitié de leur cerveau, gardant un œil ouvert pour surveiller les environs. Cela leur permet de remonter à la surface pour respirer et d'éviter les dangers même en dormant.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "it": {
+      "title": "Come dormono i delfini senza annegare? 🐬",
+      "description": "I delfini controllano consapevolmente ogni respiro. Come fanno a dormire sott'acqua senza annegare? La risposta è che dormono con una sola metà del cervello, tenendo un occhio aperto per monitorare l'ambiente. In questo modo possono risalire in superficie per respirare e sfuggire ai pericoli anche mentre riposano.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ru": {
+      "title": "Как дельфины спят, не утонув? 🐬",
+      "description": "Дельфины сознательно управляют каждым вдохом. Как же они могут спать под водой, не утонув? Ответ удивителен: они спят только половиной мозга! Один глаз остается открытым, а другая половина мозга следит за окружением, позволяя им дышать и избегать опасностей даже во сне.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ar": {
+      "title": "كيف تنام الدلافين دون أن تغرق؟ 🐬",
+      "description": "تدير الدلافين كل نفس بوعي. فكيف تنام تحت الماء دون أن تغرق؟ إنها تنام بنصف دماغها فقط، مع إبقاء عين واحدة مفتوحة لمراقبة محيطها. هذا يسمح لها بالصعود للتنفس وتجنب المخاطر حتى أثناء النوم.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "hi": {
+      "title": "डॉल्फ़िन बिना डूबे कैसे सोती हैं? 🐬",
+      "description": "डॉल्फ़िन हर सांस को होशपूर्वक लेती हैं। तो, वे पानी के नीचे बिना डूबे कैसे सो सकती हैं? वे अपने दिमाग के केवल आधे हिस्से से सोती हैं, एक आंख खुली रखती हैं और अपने परिवेश पर नज़र रखती हैं। इससे उन्हें सोते समय भी सांस लेने और खतरों से बचने में मदद मिलती है।\n\n#shorts\n\nSeri: mk-005"
+    },
+    "id": {
+      "title": "Bagaimana lumba-lumba tidur tanpa tenggelam? 🐬",
+      "description": "Lumba-lumba mengelola setiap napas secara sadar. Jadi, bagaimana mereka bisa tidur di bawah air tanpa tenggelam? Mereka tidur hanya dengan separuh otaknya, dengan satu mata tetap terbuka untuk mengawasi lingkungan. Ini memungkinkan mereka untuk bernapas dan menghindari bahaya bahkan saat tidur.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ja": {
+      "title": "イルカは溺れずにどうやって眠るの？ 🐬",
+      "description": "イルカは意識的に呼吸を管理します。では、水中で溺れずにどうやって眠れるのでしょうか？彼らは脳の半分だけで眠り、片目を覚まし、周囲を監視しています。これにより、眠りながらも定期的に水面に浮上して呼吸し、潜在的な危険から簡単に逃れることができます。\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ko": {
+      "title": "돌고래는 물에 빠지지 않고 어떻게 잠을 잘까? 🐬",
+      "description": "돌고래는 모든 호흡을 의식적으로 조절합니다. 그렇다면 물속에서 익사하지 않고 어떻게 잠을 잘 수 있을까요? 놀랍게도 돌고래는 뇌의 절반만으로 잠을 잡니다! 한쪽 눈은 뜨고 다른 뇌 반구는 주변을 살피며, 잠자는 동안에도 규칙적으로 수면 위로 올라와 숨을 쉬고 위험을 피할 수 있습니다.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "pl": {
+      "title": "Jak delfiny śpią, nie tonąc? 🐬",
+      "description": "Delfiny świadomie kontrolują każdy oddech. Jak więc mogą spać pod wodą, nie tonąc? Śpią tylko jedną połową mózgu, trzymając jedno oko otwarte, by monitorować otoczenie. Dzięki temu mogą regularnie wypływać na powierzchnię, by zaczerpnąć powietrza i unikać zagrożeń nawet podczas snu.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "nl": {
+      "title": "Hoe slapen dolfijnen zonder te verdrinken? 🐬",
+      "description": "Dolfijnen beheren elke ademhaling bewust. Hoe kunnen ze dan onder water slapen zonder te verdrinken? Ze slapen met slechts de helft van hun hersenen, waarbij één oog open blijft om de omgeving in de gaten te houden. Zo kunnen ze zelfs tijdens het slapen ademhalen aan de oppervlakte en gevaren ontwijken.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "uk": {
+      "title": "Як дельфіни сплять, не потонувши? 🐬",
+      "description": "Дельфіни свідомо контролюють кожен вдих. Тож як вони можуть спати під водою, не потонувши? Вони сплять лише половиною свого мозку, залишаючи одне око відкритим, щоб спостерігати за оточенням. Це дозволяє їм регулярно виринати на поверхню для дихання та легко уникати потенційних небезпек навіть під час сну.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "vi": {
+      "title": "Cá heo ngủ thế nào mà không bị chết đuối? 🐬",
+      "description": "Cá heo tự ý thức quản lý từng hơi thở. Vậy làm thế nào chúng có thể ngủ dưới nước mà không bị chết đuối? Chúng ngủ chỉ với một nửa bộ não, giữ một mắt mở để quan sát xung quanh. Điều này giúp chúng thở và tránh nguy hiểm ngay cả khi đang nghỉ ngơi.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "az": {
+      "title": "Delfinlər boğulmadan necə yatır? 🐬",
+      "description": "Delfinlər hər nəfəsini şüurlu şəkildə idarə edir. Bəs su altında boğulmadan necə yata bilərlər? Cavab inanılmazdır: Delfinlər beyninin yalnız yarısı ilə yatır! Bir gözləri açıq qalır və digər yarım beyinləri ətrafı nəzarətdə saxlayır. Bu sayədə yuxuda olarkən belə nəfəs almaq üçün səthə çıxır və təhlükələrdən asanlıqla qaça bilirlər.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ro": {
+      "title": "Cum dorm delfinii fără să se înece? 🐬",
+      "description": "Delfinii își gestionează conștient fiecare respirație. Cum pot dormi sub apă fără să se înece? Ei dorm doar cu o jumătate de creier, ținând un ochi deschis pentru a monitoriza împrejurimile. Acest lucru le permite să iasă la suprafață pentru a respira și să evite pericolele chiar și în timpul somnului.\n\n#shorts\n\nSeri: mk-005"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bir yunus uyurken beyin fonksiyonlarının yüzde kaçını kullanır: %10 mu %50 mi?",
+  "scenes": [
+    {
+      "text": "Bu yunuslar her nefes alışverişini bilinçli olarak yönetir.",
+      "visual": "A dolphin surfaces for air, showing its blowhole and part of its body above water.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 1
+        },
+        {
+          "n": 15,
+          "kare": 2
+        }
+      ],
+      "callout": "BİLİNÇLİ NEFES"
+    },
+    {
+      "text": "Peki, su altında boğulmadan nasıl uyuyabilirler?",
+      "visual": "Dolphins swimming calmly and slowly underwater in an aquarium, appearing relaxed.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 33,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Cevap inanılmaz: Yunuslar beyinlerinin sadece yarısıyla uyur!",
+      "visual": "Aerial view of multiple dolphins swimming together in clear blue ocean water.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 30,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 26,
+          "kare": 2
+        }
+      ],
+      "callout": "YARIM BEYİN"
+    },
+    {
+      "text": "Bir gözleri açık kalır ve diğer yarım beyinleri etrafı gözetler.",
+      "visual": "Dolphins swimming underwater in a group, some close to the camera, moving steadily.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 1
+        },
+        {
+          "n": 16,
+          "kare": 1
+        },
+        {
+          "n": 3,
+          "kare": 1
+        }
+      ],
+      "callout": "TEK GÖZ AÇIK"
+    },
+    {
+      "text": "Bu sayede uyurken bile düzenli olarak yüzeye çıkarak nefes alırlar.",
+      "visual": "Dolphins surfacing near a boat, some jumping slightly out of the water to breathe.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 13,
+          "kare": 1
+        },
+        {
+          "n": 20,
+          "kare": 3
+        }
+      ]
+    },
+    {
+      "text": "Aynı zamanda, potansiyel tehlikelerden de kolayca kaçabilirler.",
+      "visual": "Dolphins swimming swiftly and jumping in open ocean water near a boat, showing agility.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 7,
+          "kare": 3
+        },
+        {
+          "n": 28,
+          "kare": 3
+        }
+      ],
+      "callout": "TEHLİKE ALGILAMA"
+    },
+    {
+      "text": "İşte bu özel uyku düzeni, onların okyanusta hayatta kalmasının anahtarıdır.",
+      "visual": "Aerial view of dolphins swimming gracefully in the ocean, showcasing their natural habitat.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 11,
+          "kare": 2
+        },
+        {
+          "n": 37,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 20.28,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 14,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton, enerjisiz ve yavaş.",
+        "fix": "Yapay zeka sesinin hızını artır, daha dinamik ve vurgulu bir ton seçerek insan konuşmasına yakın bir enerji yakala."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video kurgusu yavaş ve sahneler arası geçişler basit.",
+        "fix": "Daha sık ve hızlı kesmeler kullanarak videonun temposunu artır. Sahneler arası geçişleri daha akıcı ve dinamik hale getir (örneğin, hızlı zoom veya basit wipe efektleri)."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik ve bilgiyi görselleştiren grafikler eksik.",
+        "fix": "Anahtar kelimeler için basit metin animasyonları (giriş/çıkış) kullan. 'Yarım beyin' veya 'tek göz açık' gibi kavramları gösteren basit oklar veya vurgular ekle."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler yeterince çeşitli değil ve anahtar bilgileri doğrudan görselleştirmekte yetersiz.",
+        "fix": "'Tek göz açık' veya 'yarım beyin' gibi kavramları daha iyi anlatan, daha spesifik ve dinamik stok görüntüler ara. Yunusların nefes almak için yüzeye çıktığı anları daha net gösteren görüntüler kullan."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği enerjisiz ve hiç ses efekti kullanılmamış.",
+        "fix": "Daha ritmik, merak uyandıran ve videonun temposuna uygun bir müzik seç. Metin animasyonları veya önemli anlar için hafif ses efektleri (örneğin, whoosh, pop) ekle."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca cümlesi ('Yunuslar Nasıl Uyumalı?') doğal değil ve daha merak uyandırıcı olabilir.",
+        "fix": "Kancayı 'Yunuslar Nasıl Uyur?' gibi daha doğrudan ve etkili bir soruyla değiştir. Bilginin şaşırtıcılığını anlatıcının tonlamasıyla da destekle."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazıların font ve renk seçimi daha modern ve videoya entegre olabilir.",
+        "fix": "Daha modern ve videonun genel estetiğine uygun bir font seç. Renk paletini videonun tonlarıyla uyumlu hale getir (örneğin, mavi tonlarında bir video için beyaz veya açık mavi vurgulu metinler)."
+      }
+    ],
+    "strengths": [
+      "Bilgi ilgi çekici ve öğretici",
+      "Video yapısı ve akışı net",
+      "Konuyla ilgili stok videolar kullanılmış",
+      "Kısa ve öz"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

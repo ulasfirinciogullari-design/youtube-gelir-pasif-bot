@@ -1,11 +1,21 @@
 [
   {
+    "video_id": "Q7Fdwf2i1KI",
+    "topic_id": "mk-025",
+    "title": "Kutup Ayılarının Kürkü Aslında Beyaz Değil! 😮",
+    "published_at": "2026-10-15T18:43:11Z",
+    "privacy": "public",
+    "views": 755,
+    "likes": 10,
+    "comments": 1
+  },
+  {
     "video_id": "WADWjFRfYYw",
     "topic_id": "mk-004",
     "title": "Uçak Camları Neden Yuvarlak Olmak Zorunda? 🪟",
     "published_at": "2026-10-15T14:51:33Z",
     "privacy": "public",
-    "views": 741,
+    "views": 996,
     "likes": 4,
     "comments": 1
   },
@@ -15,9 +25,10 @@
     "title": "İnsan kendini neden gıdıklayamaz? 🧠 #shorts",
     "published_at": "2026-10-15T09:46:53Z",
     "privacy": "public",
-    "views": 1149,
+    "views": 1151,
     "likes": 7,
-    "comments": 1
+    "comments": 1,
+    "views_per_hour": 85.58
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -28,7 +39,7 @@
     "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 43.66
+    "views_per_hour": 35.84
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -36,10 +47,10 @@
     "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
     "published_at": "2026-10-14T19:12:05Z",
     "privacy": "public",
-    "views": 1066,
-    "likes": 18,
+    "views": 1095,
+    "likes": 19,
     "comments": 1,
-    "views_per_hour": 45.5
+    "views_per_hour": 39.07
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -47,10 +58,10 @@
     "title": "Baykuşlar başlarını neden 270 derece döndürüyor? 🦉 #shorts",
     "published_at": "2026-10-14T14:46:47Z",
     "privacy": "public",
-    "views": 1399,
+    "views": 1443,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 50.23
+    "views_per_hour": 44.47
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -58,9 +69,9 @@
     "title": "Şimşek neden önce, gök gürültüsü sonra gelir? ⚡ #shorts",
     "published_at": "2026-10-13T23:38:57Z",
     "privacy": "public",
-    "views": 318,
+    "views": 369,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 7.4
+    "views_per_hour": 7.76
   }
 ]
