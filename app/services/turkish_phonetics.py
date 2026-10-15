@@ -25,15 +25,39 @@ ORDINALS = {
 }
 
 
+LARGE_UNITS = ((10**9, "milyar"), (10**6, "milyon"), (1000, "bin"))
+# A number written with thousand dots ("10.000", "1.500.000"), optionally with a suffix ("100.000'den").
+GROUPED_NUMBER_RE = re.compile(r"(?<![\d.,])(\d{1,3}(?:\.\d{3})+)(?![\d]|[.,]\d)(?:'([a-zA-ZçğıöşüÇĞİÖŞÜ]+))?")
+
+
 def number_to_turkish(n: int) -> str:
-    """Converts integers (0-100) to spoken Turkish words."""
+    """Converts a non-negative integer to spoken Turkish words ("10000" -> "on bin", "1500" -> "bin beş yüz")."""
     if n in NUMBER_WORDS:
         return NUMBER_WORDS[n]
     if n < 100:
         tens = (n // 10) * 10
         ones = n % 10
         return f"{NUMBER_WORDS.get(tens, '')} {NUMBER_WORDS.get(ones, '')}".strip()
+    if n < 1000:
+        hundreds, rest = divmod(n, 100)
+        head = "yüz" if hundreds == 1 else f"{NUMBER_WORDS[hundreds]} yüz"
+        return f"{head} {number_to_turkish(rest)}" if rest else head
+    for value, name in LARGE_UNITS:
+        if n >= value:
+            count, rest = divmod(n, value)
+            head = "bin" if value == 1000 and count == 1 else f"{number_to_turkish(count)} {name}"
+            return f"{head} {number_to_turkish(rest)}" if rest else head
     return str(n)
+
+
+def _with_suffix(words: str, suffix: str) -> str:
+    """Attaches a written suffix to the spoken number: "on bin" + "den" -> "on binden"; "dört" softens before a
+    vowel ("on dört" + "ü" -> "on dördü")."""
+    if not suffix:
+        return words
+    if words.endswith("dört") and suffix[0].lower() in "aeıioöuü":
+        words = words[:-1] + "d"
+    return words + suffix
 
 
 def normalize_turkish_tts_text(text: str) -> str:
@@ -63,11 +87,17 @@ def normalize_turkish_tts_text(text: str) -> str:
 
     result = re.sub(r"%(\d+)(?:'([a-zA-ZçğıöşüÇĞİÖŞÜ]+))?", replace_percent, result)
 
-    # 2. Ordinal numbers
-    for ord_num, ord_word in ORDINALS.items():
-        result = re.sub(rf"\b{re.escape(ord_num)}", ord_word, result)
+    # 2. Numbers with thousand dots, before the ordinals: "10.000 metrede" had become "onuncu000 metrede" and was
+    #    read digit by digit (plane Short WADWjFRfYYw, 2026-10-15).
+    result = GROUPED_NUMBER_RE.sub(
+        lambda m: _with_suffix(number_to_turkish(int(m.group(1).replace(".", ""))), m.group(2) or ""), result)
 
-    # 3. Clean up repetitive punctuation that causes robotic pauses
+    # 3. Ordinal numbers: a whole number followed by a dot and a word ("1. Dünya Savaşı"), never part of a longer
+    #    number or a sentence-final count ("Baykuşta tam 14.").
+    for ord_num, ord_word in ORDINALS.items():
+        result = re.sub(rf"(?<![\d.,]){re.escape(ord_num)}(?=\s+[^\W\d])", ord_word, result)
+
+    # 4. Clean up repetitive punctuation that causes robotic pauses
     result = re.sub(r"\.{4,}", "...", result)
     result = re.sub(r"\s+", " ", result).strip()
 
