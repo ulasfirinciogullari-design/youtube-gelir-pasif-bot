@@ -1,0 +1,220 @@
+{
+  "topic_id": "mk-006",
+  "topic": "Ahtapotun neden üç kalbi ve mavi kanı vardır?",
+  "series": "merak",
+  "script_provider": "gemini",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_multilingual_v2"
+  },
+  "title": "Ahtapotun kanı neden mavi renkte? 💙",
+  "hook_text": "AHTAPOT NEDEN ÜÇ KALPLİ?",
+  "description": "Ahtapotun kanı neden mavi renkte?\n\nAhtapotun üç kalbi vardır. İki kalp kanı solungaçlara pompalarken, üçüncü kalp ise vücuduna dağıtır. Kanının rengini veren, demir yerine bakır içeren hemocyanin adlı pigmenttir.\n\nSizce ahtapotların en ilginç özelliği üç kalbe sahip olmaları mı, yoksa mavi kanları mı?\n\n#ahtapot #denizcanlıları #biyoloji #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-006",
+  "tags": [
+    "ahtapot",
+    "ahtapot kanı",
+    "ahtapotun kalbi",
+    "ahtapot mavi kan",
+    "ahtapot neden mavi kanlı",
+    "ahtapotun üç kalbi",
+    "ahtapot nasıl yaşar",
+    "hemocyanin",
+    "bakır kan",
+    "deniz canlıları",
+    "okyanus",
+    "biyoloji",
+    "bilim",
+    "ilginç bilgiler",
+    "merak uyandıran",
+    "doğa",
+    "hayvanlar alemi",
+    "derin deniz",
+    "oksijen taşıma",
+    "octopus",
+    "blue blood",
+    "marine life",
+    "shorts",
+    "zirveninkanunu",
+    "üç kalp",
+    "mavi kan",
+    "merak",
+    "bilgi",
+    "ahtapot kani",
+    "ahtapot neden mavi kanli",
+    "ahtapotun uc kalbi",
+    "ahtapot nasil yasar",
+    "bakir kan"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why is octopus blood blue? 💙",
+      "description": "Octopuses have three hearts and blue blood. Find out how their unique biology allows them to thrive in the deepest parts of the ocean. Which of their features do you find most fascinating: their three hearts or their blue blood?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "es": {
+      "title": "¿Por qué la sangre del pulpo es azul? 💙",
+      "description": "Los pulpos tienen tres corazones y sangre azul. Descubre cómo esta fascinante criatura marina utiliza sus corazones y por qué su sangre es tan especial. ¿Qué característica te parece más intrigante: sus tres corazones o su sangre azul?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "pt": {
+      "title": "Por que o sangue do polvo é azul? 💙",
+      "description": "Polvos têm três corações e sangue azul. Entenda como essa adaptação incrível permite que eles sobrevivam nas profundezas do oceano. Qual característica você acha mais interessante: seus três corações ou o sangue azul?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "de": {
+      "title": "Warum ist das Blut des Kraken blau? 💙",
+      "description": "Kraken besitzen drei Herzen und blaues Blut. Erfahre, wie diese einzigartige Biologie ihnen hilft, in den Tiefen des Ozeans zu überleben. Was findest du faszinierender: ihre drei Herzen oder ihr blaues Blut?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "fr": {
+      "title": "Pourquoi le sang de la pieuvre est-il bleu? 💙",
+      "description": "Les pieuvres ont trois cœurs et du sang bleu. Découvrez comment cette créature fascinante utilise ses cœurs et pourquoi son sang est si unique. Quelle caractéristique trouvez-vous la plus intrigante : leurs trois cœurs ou leur sang bleu?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "it": {
+      "title": "Perché il sangue del polpo è blu? 💙",
+      "description": "I polpi hanno tre cuori e sangue blu. Scopri come questa straordinaria creatura marina si adatta agli ambienti più profondi e freddi. Cosa ti affascina di più: i loro tre cuori o il loro sangue blu?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "ru": {
+      "title": "Почему кровь осьминога синяя? 💙",
+      "description": "У осьминогов три сердца и синяя кровь. Узнайте, как эта уникальная особенность помогает им выживать в холодных глубинах океана. Что вам кажется более удивительным: три сердца или синяя кровь?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "ar": {
+      "title": "لماذا دم الأخطبوط أزرق؟ 💙",
+      "description": "الأخطبوط يمتلك ثلاثة قلوب ودماً أزرق. اكتشف كيف تساعده هذه الخصائص الفريدة على العيش في أعماق المحيطات الباردة. برأيك، ما هي الميزة الأكثر إثارة للاهتمام: قلوبه الثلاثة أم دمه الأزرق؟\n\n#shorts\n\nSeri: mk-006"
+    },
+    "hi": {
+      "title": "ऑक्टोपस का खून नीला क्यों होता है? 💙",
+      "description": "ऑक्टोपस के तीन दिल और नीला खून होता है। जानिए कैसे यह अनोखा जीव गहरे समुद्र में जीवित रहता है। आपको ऑक्टोपस की कौन सी विशेषता सबसे दिलचस्प लगती है: उसके तीन दिल या उसका नीला खून?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "id": {
+      "title": "Mengapa darah gurita berwarna biru? 💙",
+      "description": "Gurita memiliki tiga hati dan darah biru. Temukan bagaimana biologi unik ini memungkinkan mereka bertahan hidup di kedalaman laut. Fitur mana yang paling menarik menurut Anda: tiga hatinya atau darah birunya?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "ja": {
+      "title": "タコの血はなぜ青い？ 💙",
+      "description": "タコには3つの心臓と青い血があります。この驚くべき生物がどのように深海の環境に適応しているのかを探ります。タコのどの特徴が最も興味深いと思いますか？3つの心臓ですか、それとも青い血ですか？\n\n#shorts\n\nSeri: mk-006"
+    },
+    "ko": {
+      "title": "문어 피는 왜 파란색일까요? 💙",
+      "description": "문어는 세 개의 심장과 푸른 피를 가지고 있습니다. 이 독특한 생물이 어떻게 심해에서 살아남는지 알아보세요. 문어의 어떤 특징이 가장 흥미롭다고 생각하시나요: 세 개의 심장 아니면 푸른 피?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "pl": {
+      "title": "Dlaczego krew ośmiornicy jest niebieska? 💙",
+      "description": "Ośmiornice mają trzy serca i niebieską krew. Dowiedz się, jak ta niezwykła biologia pozwala im przetrwać w głębinach oceanu. Co uważasz za bardziej fascynujące: ich trzy serca czy niebieską krew?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "nl": {
+      "title": "Waarom is het bloed van een octopus blauw? 💙",
+      "description": "Octopussen hebben drie harten en blauw bloed. Ontdek hoe deze unieke biologie hen helpt te overleven in de diepste delen van de oceaan. Wat vind je fascinerender: hun drie harten of hun blauwe bloed?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "uk": {
+      "title": "Чому кров восьминога синя? 💙",
+      "description": "Восьминоги мають три серця і синю кров. Дізнайтеся, як ця унікальна біологія допомагає їм виживати в холодних глибинах океану. Що вам здається більш дивовижним: три серця чи синя кров?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "vi": {
+      "title": "Tại sao máu bạch tuộc có màu xanh? 💙",
+      "description": "Bạch tuộc có ba trái tim và máu xanh. Khám phá cách sinh học độc đáo này giúp chúng tồn tại ở những nơi sâu nhất của đại dương. Bạn thấy đặc điểm nào của bạch tuộc thú vị hơn: ba trái tim hay máu xanh?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "az": {
+      "title": "Səkkizayaqlının qanı niyə mavidir? 💙",
+      "description": "Səkkizayaqlının üç ürəyi və mavi qanı var. Bu unikal canlıların okeanın dərinliklərində necə yaşadığını öyrənin. Sizcə, onların üç ürəyi yoxsa mavi qanı daha maraqlıdır?\n\n#shorts\n\nSeri: mk-006"
+    },
+    "ro": {
+      "title": "De ce este sângele caracatiței albastru? 💙",
+      "description": "Caracatițele au trei inimi și sânge albastru. Află cum această biologie unică le permite să supraviețuiască în cele mai adânci părți ale oceanului. Ce ți se pare mai fascinant: cele trei inimi sau sângele albastru?\n\n#shorts\n\nSeri: mk-006"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sizce ahtapotların başka hangi gizemli özellikleri var?",
+  "scenes": [
+    {
+      "text": "Bu ahtapotun üç kalbi var.",
+      "visual": "A vibrant octopus gracefully swimming in clear blue ocean water, its body slightly pulsating.",
+      "stock_query": "octopus swimming graceful",
+      "source": "stock",
+      "callout": "ÜÇ KALP"
+    },
+    {
+      "text": "Peki, bu sıra dışı canlı, kalplerini nasıl kullanıyor?",
+      "visual": "A close-up of an octopus's intelligent eye and moving tentacles, conveying curiosity and complexity.",
+      "stock_query": "octopus moving tentacles curious",
+      "source": "stock"
+    },
+    {
+      "text": "İki kalp kanı solungaçlara pompalarken, üçüncü kalp ise vücuduna dağıtır.",
+      "visual": "An octopus gently expanding and contracting its mantle, suggesting the rhythmic action of its internal organs.",
+      "stock_query": "octopus mantle movement gills",
+      "source": "stock",
+      "callout": "İKİ GİL KALP"
+    },
+    {
+      "text": "Kanının rengini veren ise demir yerine bakır içeren hemocyanin adlı pigmenttir.",
+      "visual": "Extreme close-up on the iridescent skin of an octopus, subtly shifting colors to hint at its unique internal chemistry.",
+      "stock_query": "octopus close up skin iridescent",
+      "source": "stock",
+      "callout": "MAVİ KAN"
+    },
+    {
+      "text": "Bu mavi kan, soğuk ve oksijen oranı düşük derin denizlerde daha verimli oksijen taşır.",
+      "visual": "An octopus moving gracefully in a dimly lit, deep-sea environment, surrounded by minimal marine life.",
+      "stock_query": "octopus deep sea environment dark",
+      "source": "stock",
+      "callout": "DERİN OKYANUS"
+    },
+    {
+      "text": "Bu sayede, okyanusun en derin ve oksijensiz yerlerinde bile hızla dolaşabilir.",
+      "visual": "An octopus propelling itself rapidly through the water, demonstrating its agility and power.",
+      "stock_query": "octopus fast movement agile",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 20.28,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "",
+  "ai_images": 0,
+  "stock_videos": 13,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 3,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Bilgiyi görselleştiren açıklayıcı grafik ve animasyon eksikliği",
+        "fix": "Ahtapotun üç kalbini veya kan akışını gösteren basit stok animasyonlar, oklar veya şekiller gibi görsel öğeler ekleyerek bilginin anlaşılırlığını artırın. Metinleri sadece tekrar etmek yerine, görsel olarak destekleyici hale getirin."
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka anlatıcının enerjisiz ve monoton hızı",
+        "fix": "Yapay zeka sesinin hızını artırın ve daha enerjik, vurgulu bir ton seçmeye çalışın. Kısa video formatında dinleyiciyi daha çok içine çekecek bir anlatım ritmi yakalayın."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Yavaş ve basit video geçişleri, dinamizm eksikliği",
+        "fix": "Video kliplerin süresini kısaltarak daha hızlı ve dinamik kesmeler kullanın. Anlatıcının ritmine uygun, daha akıcı ve etkileyici geçişler yaparak videonun temposunu artırın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görsel çeşitliliğin ve konuya özel çekimlerin azlığı",
+        "fix": "Ahtapotun farklı davranışlarını (avlanma, kamuflaj, hareket) gösteren daha çeşitli stok videolar bulun. Anlatılan bilgiyle (örn. solungaçlar, derin deniz ortamı) daha doğrudan ilişkili görseller seçerek videoyu zenginleştirin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kancanın görsel olarak yeterince çarpıcı olmaması",
+        "fix": "Videonun başlangıcında 'Ahtapot neden üç kalpli?' sorusunu destekleyecek, ahtapotun en ilginç veya şaşırtıcı bir özelliğini gösteren daha dikkat çekici bir görsel kullanın."
+      },
+      {
+        "area": "ses",
+        "problem": "Müzik ve ses efektlerinin eksikliği/monotonluğu",
+        "fix": "Daha dinamik, videonun akışına ve anlatılan konuya göre değişen bir fon müziği seçin. Uygun yerlere (örn. su sesi, hafif bir kalp atışı efekti) basit ses efektleri ekleyerek videonun atmosferini güçlendirin."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazıların çoğunlukla anlatımı tekrar etmesi",
+        "fix": "Yazıları anlatılan bilgiyi özetlemek, anahtar kelimeleri vurgulamak veya ek bilgi vermek için kullanın. Metinlerin ekranda kalma süresini ve boyutunu optimize ederek görsel yorgunluğu azaltın."
+      }
+    ],
+    "strengths": [
+      "Bilgi içeriği ilgi çekici",
+      "Video süresi kısa ve öz"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
