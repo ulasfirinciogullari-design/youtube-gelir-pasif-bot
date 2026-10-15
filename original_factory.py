@@ -282,14 +282,25 @@ def merak_script(topic: dict, published: set[str], explicit: bool, dna: dict | N
                  data_dir: Path = DATA_DIR, footage=None, fallback=None, max_skips: int = 2):
     """Footage-first script for a curiosity topic: (topic, script, provider, clip_pool).
 
-    A topic the run picked itself is skipped (and remembered) when free footage covers it poorly;
-    one asked for by id is made anyway. Without a footage script the script-first flow is used."""
+    A topic the run picked itself is skipped (and remembered) when free footage covers it poorly or the libraries
+    hold too few clips for it; one asked for by id is made anyway. Without a footage script the script-first flow
+    is used."""
     from app.services import footage_script
 
     footage = footage or footage_script.write_footage_script
     for _ in range(max_skips + 1):
         try:
             result = footage(topic, OUTPUT_DIR / f"previews_{topic['id']}")
+        except footage_script.ThinFootage as e:
+            if explicit:
+                print(f"ℹ️ Görüntüye göre senaryo yazılamadı: {e}")
+                result = None
+            else:  # the script-first flow would only fill the gaps with off-subject clips
+                print(f"⏭️ {topic['id']} atlandı: ücretsiz stokta konuyu gösteren video az ({e}).")
+                skip_topic(data_dir, topic, 0)
+                published = published | {topic["id"]}
+                topic = choose_topic(published, None, dna, data_dir, series="merak")
+                continue
         except Exception as e:  # never lose the run over the upgrade
             print(f"ℹ️ Görüntüye göre senaryo yazılamadı: {str(e)[:200]}")
             result = None

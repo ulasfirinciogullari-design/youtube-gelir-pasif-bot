@@ -338,9 +338,20 @@ def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
     return notes
 
 
+class ThinFootage(Exception):
+    """Free libraries hold too few on-subject clips for the topic. Unlike a failed Gemini call this says something
+    about the topic itself: the octopus sample (2026-10-15) found 11 clips, fell back to the script-first flow and
+    left three scenes without a matching clip."""
+
+    def __init__(self, found: int):
+        super().__init__(f"{found} uygun video bulundu, en az {MIN_POOL} gerekiyor")
+        self.found = found
+
+
 def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = None, call=_call_gemini_parts,
                          plan=plan_queries, sheet=contact_sheet, check=check_facts, attempts: int = 3) -> dict | None:
-    """Returns {"script", "pool", "coverage", "queries"}; scene clip numbers index `pool` from 1. None on failure.
+    """Returns {"script", "pool", "coverage", "queries"}; scene clip numbers index `pool` from 1. None on failure;
+    raises ThinFootage when the libraries hold too few clips for the topic.
 
     An answer with thin scenes or hook problems is asked about again; after the last attempt the best answer
     is used, so these never send the run to the weaker script-first flow. None only when no answer parsed."""
@@ -351,7 +362,7 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
     pexels = sum(1 for h in pool if h.get("source") == "pexels")
     print(f"       Görüntü havuzu: {len(pool)} aday ({pexels} Pexels, {len(pool) - pexels} Pixabay; {len(queries)} arama)")
     if len(pool) < MIN_POOL:
-        return None
+        raise ThinFootage(len(pool))
     work_dir.mkdir(parents=True, exist_ok=True)
     with ThreadPoolExecutor(max_workers=6) as ex:
         sheets = list(ex.map(lambda h: sheet(h, work_dir), pool))
@@ -359,7 +370,7 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
     if len(shown) < len(pool):
         print(f"       Kare alınamayan aday: {len(pool) - len(shown)}")
     if len(shown) < MIN_POOL:
-        return None
+        raise ThinFootage(len(shown))
 
     parts: list[dict] = [{"text": SCRIPT_PROMPT.format(
         topic=topic["topic"], min_words=MIN_WORDS, max_words=MERAK_MAX_WORDS,
