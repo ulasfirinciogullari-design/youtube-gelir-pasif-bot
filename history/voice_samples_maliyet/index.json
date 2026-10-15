@@ -1,5 +1,5 @@
 {
-  "created": "2026-10-15 23:34 UTC",
+  "created": "2026-10-15 23:41 UTC",
   "script": [
     "Bu baykuş boynunu kırmadan 270 derece döner.",
     "Bizim boynumuzda 7 omur var, baykuşta tam 14.",
@@ -24,14 +24,15 @@
       },
       "source": "ses haritası",
       "characters": 192,
-      "duration_seconds": 10.08,
-      "words_per_second": 3.07,
+      "duration_seconds": 9.64,
+      "words_per_second": 3.22,
       "lufs": -16.5,
       "repo_variables": {
         "ELEVENLABS_SPEED": "1.15",
         "ELEVENLABS_STYLE": "0.6",
         "ELEVENLABS_STABILITY": "0.35"
-      }
+      },
+      "transcript": "Bu baykuş boynunu kırmadan iki yüz yetmiş derece döner. Bizim boynumuzda yedi omur var. Baykuşta tam on dört. Ama asıl sır kafasına kan taşıyan damarlardır. Başı arkaya dönükken bile beynine kan gitmeye devam eder."
     },
     {
       "cost_24_a_day": "yaklaşık yarısı (karakter başına 0,5 kredi)",
@@ -50,15 +51,16 @@
       },
       "source": "ses haritası",
       "characters": 192,
-      "duration_seconds": 9.9,
-      "words_per_second": 3.13,
+      "duration_seconds": 9.14,
+      "words_per_second": 3.39,
       "lufs": -16.4,
       "repo_variables": {
         "ELEVENLABS_MODEL": "eleven_flash_v2_5",
         "ELEVENLABS_SPEED": "1.15",
         "ELEVENLABS_STYLE": "0.6",
         "ELEVENLABS_STABILITY": "0.35"
-      }
+      },
+      "transcript": "Bu baykuş boynunu kırmadan iki yüz yetmiş derece döner. Bizim boynumuzda yedi omur var, baykuşta tam on dört. Ama asıl sır kafasına kan taşıyan damarlarda. Başı arkaya dönükken bile beynine kan gitmeye devam eder."
     },
     {
       "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir.",
@@ -78,10 +80,11 @@
       },
       "source": "ses haritası",
       "characters": 192,
-      "duration_seconds": 35.79,
-      "words_per_second": 0.87,
+      "duration_seconds": 16.04,
+      "words_per_second": 1.93,
       "lufs": -16.5,
-      "repo_variables": {}
+      "repo_variables": {},
+      "transcript": "Bu baykuş boynunu kırmadan iki yüz yetmiş derece döner. Sizin boynunuzda yedi omur var, baykuşta tam on dört. Ama asıl sır kafasına kan taşıyan damarlarda. Başı arkaya dönükken bile beynine kan gitmeye devam eder."
     },
     {
       "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir.",
@@ -101,10 +104,11 @@
       },
       "source": "ses haritası",
       "characters": 192,
-      "duration_seconds": 35.16,
-      "words_per_second": 0.88,
-      "lufs": -16.5,
-      "repo_variables": {}
+      "duration_seconds": 15.44,
+      "words_per_second": 2.01,
+      "lufs": -16.4,
+      "repo_variables": {},
+      "transcript": "Bu baykuş boynunu kırmadan iki yüz yetmiş derece döner. Bizim boynumuzda yedi omur var. Baykuşta tam on dört. Ama asıl sır kafasına kan taşıyan damarlarda. Başı arkaya dönükken bile beynine kan gitmeye devam eder."
     },
     {
       "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir.",
@@ -124,10 +128,11 @@
       },
       "source": "ses haritası",
       "characters": 192,
-      "duration_seconds": 35.5,
-      "words_per_second": 0.87,
+      "duration_seconds": 16.33,
+      "words_per_second": 1.9,
       "lufs": -16.4,
-      "repo_variables": {}
+      "repo_variables": {},
+      "transcript": "Bu baykuş boynunu kırmadan 270 derece döner.\nBizim boynumuzda yedi omur var. Baykuşta tam on dört.\nAma asıl sır kafasına kan taşıyan damarlarda.\nBaşı arkaya dönükken bile beynine kan gitmeye devam eder."
     },
     {
       "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir.",
@@ -147,10 +152,11 @@
       },
       "source": "ses haritası",
       "characters": 192,
-      "duration_seconds": 14.89,
-      "words_per_second": 2.08,
-      "lufs": -16.5,
-      "repo_variables": {}
+      "duration_seconds": 13.92,
+      "words_per_second": 2.23,
+      "lufs": -16.4,
+      "repo_variables": {},
+      "transcript": "Bu baykuş boynunu kırmadan iki yüz yetmiş derece döner. Bizim boynumuzda yedi omur var. Baykuşta tam on dört. Ama asıl sır kafasına kan taşıyan damarlarda. Başı arkaya dönükken bile beynine kan gitmeye devam eder."
     },
     {
       "note": "Şu an ElevenLabs hata verince Short'lar bu sesle çıkıyor.",
@@ -173,7 +179,8 @@
       "duration_seconds": 11.86,
       "words_per_second": 2.61,
       "lufs": -16.4,
-      "repo_variables": {}
+      "repo_variables": {},
+      "transcript": "Bu baykuş boynunu kırmadan iki yüz yetmiş derece döner. Bizim boynumuzda yedi omur var. Baykuşta tam on dördüncü. Ama asıl sır kafasına kan taşıyan damarlarda. Başı arkaya dönükken bile beynine kan gitmeye devam eder."
     }
   ],
   "skipped": []
