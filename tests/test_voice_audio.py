@@ -543,3 +543,117 @@ def test_voice_samples_fill_six_slots_and_skip_voices_that_fail(tmp_path, monkey
         assert sample["words_per_second"] > 0 and sample["characters"] >= 190
     report = capsys.readouterr().out
     assert "### Ses örnekleri" in report and "Harcanan ElevenLabs kredisi: 600 karakter" in report
+
+
+def test_cost_samples_put_cheaper_narrators_next_to_todays_alp():
+    vs = _voice_samples()
+    plan = vs.maliyet_plan()
+    assert [s["slug"] for s in plan] == ["alp_simdiki", "alp_flash", "gemini_fenrir", "gemini_puck", "gemini_charon",
+                                         "gemini_pro_fenrir", "edge_ahmet"]
+    today, flash = plan[:2]
+    # Sample 1 is the Short as it sounds now (the workflow defaults), so only the engine differs further down.
+    assert vs.repo_variables(today) == vs.repo_variables(vs.sample_plan()[1])
+    assert flash["model"] == "eleven_flash_v2_5" and vs.repo_variables(flash) == {
+        **vs.repo_variables(today), "ELEVENLABS_MODEL": "eleven_flash_v2_5"}
+    assert [(s["engine"], s["tier"], s["voice_name"]) for s in plan[2:6]] == [
+        ("gemini", "flash", "Fenrir"), ("gemini", "flash", "Puck"), ("gemini", "flash", "Charon"),
+        ("gemini", "pro", "Fenrir")]
+    assert plan[-1]["engine"] == "edge" and plan[-1]["tempo"] == original_factory.SERIES["merak"]["tempo"]
+    assert all(s.get("cost") for s in plan)
+    assert all(vs.repo_variables(s) == {} for s in plan[2:])  # these need a code change, not a repo Variable
+
+
+def test_gemini_tts_picks_the_newest_model_of_the_tier():
+    from app.services import gemini_tts
+    names = ["gemini-2.5-flash", "gemini-2.5-flash-preview-tts", "gemini-3.1-flash-tts-preview",
+             "gemini-2.5-pro-preview-tts", "gemini-3-pro-image-preview"]
+    assert gemini_tts.pick_model(names) == "gemini-3.1-flash-tts-preview"
+    assert gemini_tts.pick_model(names, "pro") == "gemini-2.5-pro-preview-tts"
+    assert gemini_tts.pick_model(["gemini-2.5-pro-preview-tts"]) == "gemini-2.5-pro-preview-tts"
+    assert gemini_tts.pick_model(["gemini-3.1-flash-tts-preview"], "pro") is None
+    assert gemini_tts.pick_model(["gemini-2.5-flash"]) is None
+
+
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_gemini_tts_sends_the_style_and_the_spoken_numbers(tmp_path, monkeypatch):
+    import base64
+    from app.services import gemini_tts
+    pcm = b"\x00\x10" * 24000  # one second of 24 kHz mono PCM
+    requests = []
+
+    class Reply:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self):
+            part = {"inlineData": {"mimeType": "audio/L16;rate=24000", "data": base64.b64encode(pcm).decode()}}
+            return json.dumps({"candidates": [{"content": {"parts": [part]}}]}).encode()
+
+    def fake_urlopen(req, timeout=None):
+        requests.append(req)
+        return Reply()
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    out = tmp_path / "line.mp3"
+    assert gemini_tts.synthesize("Uçak 10.000 metrede uçar.", out, voice="Fenrir", model="gemini-x-flash-tts", key="k")
+    req = requests[0]
+    assert req.full_url.endswith("/models/gemini-x-flash-tts:generateContent")
+    assert req.headers["X-goog-api-key"] == "k"
+    body = _payload(req)
+    assert body["contents"][0]["parts"][0]["text"] == f"{gemini_tts.STYLE_PROMPT} Uçak on bin metrede uçar."
+    assert body["generationConfig"]["responseModalities"] == ["AUDIO"]
+    assert body["generationConfig"]["speechConfig"]["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] == "Fenrir"
+    assert abs(original_factory._probe_duration(out) - 1.0) < 0.1 and not out.with_suffix(".pcm").exists()
+
+
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_cost_samples_go_on_when_elevenlabs_is_out_of_credits(tmp_path, monkeypatch, capsys):
+    vs = _voice_samples()
+    tone = tmp_path / "tone.mp3"
+    subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "aevalsrc=0.02*sin(2*PI*180*t):s=44100:d=0.8",
+                    "-c:a", "libmp3lame", str(tone)], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    eleven_calls, gemini_calls, edge_calls = [], [], []
+
+    def no_credits(text, out, voice_id=None, model_id=None, **kw):
+        eleven_calls.append(model_id)
+        eleven.last_error.update(code=401, message='{"detail": {"status": "quota_exceeded"}}')
+        return False
+
+    def fake_gemini(text, out, voice, model, key, style=None):
+        gemini_calls.append((voice, model))
+        shutil.copy(tone, out)
+        return True
+
+    def fake_edge(text, out, edge_only=False, **kw):
+        assert edge_only
+        edge_calls.append(text)
+        shutil.copy(tone, out)
+        return out
+
+    monkeypatch.setattr(vs.shutil, "which", lambda name: f"/usr/bin/{name}")
+    monkeypatch.setattr(eleven, "get_elevenlabs_api_key", lambda: "k" * 20)
+    monkeypatch.setattr(eleven, "synthesize_elevenlabs_speech", no_credits)
+    monkeypatch.setattr(vs, "_api", lambda *a, **kw: {})
+    monkeypatch.setattr(vs.gemini_tts, "get_api_key", lambda: "g" * 20)
+    monkeypatch.setattr(vs.gemini_tts, "resolve_model",
+                        lambda key, tier="flash": "gemini-x-flash-tts" if tier == "flash" else None)
+    monkeypatch.setattr(vs.gemini_tts, "synthesize", fake_gemini)
+    monkeypatch.setattr(vs.factory, "synthesize_line", fake_edge)
+    out = tmp_path / "voice_samples_maliyet"
+    assert vs.main(["--set", "maliyet", "--out", str(out)]) == 0
+
+    index = json.loads((out / "index.json").read_text(encoding="utf-8"))
+    assert [s["file"] for s in index["samples"]] == ["1_gemini_fenrir.mp3", "2_gemini_puck.mp3",
+                                                      "3_gemini_charon.mp3", "4_edge_ahmet.mp3"]
+    assert eleven_calls == ["eleven_multilingual_v2"]  # flash was not asked once the credits were gone
+    assert {voice for voice, _ in gemini_calls} == {"Fenrir", "Puck", "Charon"}
+    assert len(gemini_calls) == 3 * len(vs.LINES) and len(edge_calls) == len(vs.LINES)
+    assert [s["label"] for s in index["skipped"]] == ["Alp, Short'lardaki şimdiki ses",
+                                                      "Alp, eleven_flash_v2_5 (yarı kredi)",
+                                                      "Gemini Pro Fenrir (daha kaliteli model)"]
+    assert "pro ses modeli bulunamadı" in index["skipped"][2]["reason"]
+    assert index["samples"][0]["model"] == "gemini-x-flash-tts" and index["samples"][0]["cost_24_a_day"] == "~$5/ay"
+    assert "Maliyet (günde 24)" in capsys.readouterr().out
