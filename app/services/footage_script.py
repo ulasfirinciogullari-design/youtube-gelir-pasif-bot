@@ -169,7 +169,9 @@ def gather_pool(queries: list[str], subject: list[str], used_ids: set, limit: in
     lists = []
     for q in queries:
         for search in (original_visuals.pexels_candidates, original_visuals.pixabay_candidates):
-            lists.append([{**h, "_query": q} for h in search(q, used_ids, subject, limit=10)])
+            # Wild clips first before each search keeps its best 10, so a page of zoo hits cannot push them out.
+            hits = sorted(search(q, used_ids, subject), key=is_captive)[:10]
+            lists.append([{**h, "_query": q} for h in hits])
     pool, seen = [], set()
     for rank in range(10):
         for hits in lists:
