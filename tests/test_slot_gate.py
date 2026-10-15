@@ -79,6 +79,30 @@ def test_daily_quota_counts_every_privacy_since_the_reset():
     assert slot_gate.decide(at("10:07"), early + tests[3:], [])[0]
 
 
+
+def test_quota_day_follows_pacific_daylight_saving():
+    utc = lambda *a: datetime(*a, tzinfo=timezone.utc)
+    # Summer (PDT): the reset is at 07:00 UTC.
+    assert slot_gate.quota_day_start(utc(2026, 10, 15, 7, 7)) == utc(2026, 10, 15, 7)
+    assert slot_gate.quota_day_start(utc(2026, 10, 15, 6, 59)) == utc(2026, 10, 14, 7)
+    # Winter (PST): the reset is at 08:00 UTC, so a 07:07 tick is still in the previous quota day.
+    assert slot_gate.quota_day_start(utc(2026, 12, 1, 7, 7)) == utc(2026, 11, 30, 8)
+    assert slot_gate.quota_day_start(utc(2026, 12, 1, 8, 0)) == utc(2026, 12, 1, 8)
+    # The day daylight saving ends (2026-11-01) started at midnight PDT.
+    assert slot_gate.quota_day_start(utc(2026, 11, 2, 7, 30)) == utc(2026, 11, 1, 7)
+    winter = [upload(utc(2026, 11, 30, h, 15), "private") for h in (10, 14, 18, 22)] + [
+        upload(utc(2026, 12, 1, 7, 20), "private")]
+    go, reasons = slot_gate.decide(utc(2026, 12, 1, 7, 37), winter, [])
+    assert not go
+    assert any(r.startswith("⛔ Kota") for r in reasons)
+    assert slot_gate.decide(utc(2026, 12, 1, 7, 37), winter[1:], [])[0]
+
+
+def test_quota_day_without_a_time_zone_database_assumes_the_winter_reset(monkeypatch):
+    monkeypatch.setattr(slot_gate, "PACIFIC", None)
+    assert slot_gate.quota_day_start(at("07:30", day=15)) == at("08:00", day=14)
+    assert slot_gate.quota_day_start(at("08:00", day=15)) == at("08:00", day=15)
+
 def test_private_upload_neither_fills_the_slot_nor_delays_it():
     go, reasons = slot_gate.decide(at("10:37"), [upload(at("05:20")), upload(at("10:15"), "private")], [])
     assert go, reasons

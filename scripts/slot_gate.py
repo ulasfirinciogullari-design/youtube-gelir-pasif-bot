@@ -39,6 +39,7 @@ import os
 from pathlib import Path
 import sys
 import urllib.request
+from zoneinfo import ZoneInfo
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 if str(BASE_DIR) not in sys.path:
@@ -48,9 +49,16 @@ DATA_DIR = BASE_DIR / "channel-data"
 SLOTS_UTC = (5, 10, 14, 18)  # 08:00, 13:00, 17:00, 21:00 TR
 WINDOW = timedelta(hours=3)
 MIN_GAP = timedelta(hours=2, minutes=30)
-# YouTube's daily quota resets at midnight Pacific time. An upload costs ~1,600 of the 10,000 daily
-# units and Ulaş's PC uploader shares the quota, so 5 a day leaves room for it.
-QUOTA_RESET_UTC = 7
+# YouTube's daily quota resets at midnight Pacific time: 07:00 UTC in summer, 08:00 UTC in winter.
+# An upload costs ~1,600 of the 10,000 daily units and Ulaş's PC uploader shares the quota, so 5 a day
+# leaves room for it.
+try:
+    PACIFIC = ZoneInfo("America/Los_Angeles")
+except Exception:  # no time zone database on the runner
+    PACIFIC = None
+# Without the database assume the later, winter reset: counting an extra hour of uploads can only skip
+# a tick, never authorize an upload the quota cannot take.
+QUOTA_RESET_UTC_FALLBACK = 8
 MAX_PER_QUOTA_DAY = 5
 MAX_FAILED_RUNS = 3
 PRODUCE_STEP = "🎬 Özgün Short Üret ve Yayınla"
@@ -83,8 +91,11 @@ def slot_start(now: datetime) -> datetime:
 
 
 def quota_day_start(now: datetime) -> datetime:
+    """The latest midnight Pacific time at or before now, in UTC."""
     now = _utc(now)
-    reset = now.replace(hour=QUOTA_RESET_UTC, minute=0, second=0, microsecond=0)
+    if PACIFIC is not None:
+        return _utc(now.astimezone(PACIFIC).replace(hour=0, minute=0, second=0, microsecond=0))
+    reset = now.replace(hour=QUOTA_RESET_UTC_FALLBACK, minute=0, second=0, microsecond=0)
     return reset if reset <= now else reset - timedelta(days=1)
 
 
