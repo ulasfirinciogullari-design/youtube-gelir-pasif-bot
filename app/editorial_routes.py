@@ -11,6 +11,9 @@ from app.services.external_editorial_review import (
     create_editorial_review, EditorialReviewError, EDITORIAL_REVIEW_FAILURE_CODES,
     MAX_REFERENCE_VIDEO_BYTES,
 )
+from app.services.editorial_series_display import (
+    create_series_display_receipt, validate_series_display_intent, SeriesDisplayError,
+)
 
 
 router = APIRouter()
@@ -19,7 +22,7 @@ MAX_REVIEW_EVIDENCE_BYTES = 1024 * 1024
 MAX_REVIEW_REQUEST_BYTES = 24 * 1024 * 1024
 
 
-def _review_and_queue(task_id, evidence_pack, reference_video=None):
+def _review_and_queue(task_id, evidence_pack, reference_video=None, series_display=None):
     from app.services.studio_state import get_job
     from app.publish_tasks import queue_automatic_publish
 
@@ -29,6 +32,8 @@ def _review_and_queue(task_id, evidence_pack, reference_video=None):
         # Ephemeral comparison input only: never put reference bytes in the
         # evidence pack, returned response, job or publication metadata.
         create_editorial_review(task_id, evidence_pack, reference_video=reference_video)
+    if series_display is not None:
+        create_series_display_receipt(task_id, series_display)
     source = get_job(task_id)
     result = source.get('result') or {}
     # This uses the existing immutable reservation / private-first publisher.
@@ -64,9 +69,13 @@ async def review_external_master(task_id: str, request: Request,
         payload.extend(chunk)
     try:
         value = _object(bytes(payload), limit=MAX_REVIEW_REQUEST_BYTES)
-        if set(value) not in ({'evidence_pack'}, {'evidence_pack', 'reviewed_reference_video'}) or type(value['evidence_pack']) is not dict:
+        if ('evidence_pack' not in value or set(value) - {'evidence_pack', 'reviewed_reference_video', 'series_display'}
+                or type(value['evidence_pack']) is not dict):
             raise ExternalArtifactValidationError('editorial_schema_invalid')
         _object(value['evidence_pack'], limit=MAX_REVIEW_EVIDENCE_BYTES)
+        series_display = None
+        if 'series_display' in value:
+            series_display = validate_series_display_intent(value['series_display'])
         reference_video = None
         if 'reviewed_reference_video' in value:
             encoded = value['reviewed_reference_video']
@@ -82,9 +91,13 @@ async def review_external_master(task_id: str, request: Request,
     except (ValueError, UnicodeError):
         raise HTTPException(status_code=422, detail='editorial_schema_invalid') from None
     try:
+        if series_display is not None:
+            return await run_in_threadpool(_review_and_queue, task_id, value['evidence_pack'], reference_video, series_display)
         if reference_video is not None:
             return await run_in_threadpool(_review_and_queue, task_id, value['evidence_pack'], reference_video)
         return await run_in_threadpool(_review_and_queue, task_id, value['evidence_pack'])
+    except SeriesDisplayError:
+        raise HTTPException(status_code=409, detail='editorial_series_display_invalid_or_unavailable') from None
     except EditorialReviewError as exc:
         phase = getattr(exc, 'phase', None)
         detail = phase if type(phase) is str and phase in EDITORIAL_REVIEW_FAILURE_CODES else 'editorial_review_not_eligible'
