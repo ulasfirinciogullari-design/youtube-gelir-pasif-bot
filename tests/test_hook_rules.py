@@ -118,6 +118,22 @@ def test_an_ending_that_sums_up_is_sent_back():
     assert hook_problems(script) == []
 
 
+
+def test_an_ending_on_praise_is_sent_back():
+    # The dolphin sample's real last line (2026-10-15).
+    for last, word in (("İnanılmaz bir dengeyle hem uyur hem de su altında hayatta kalmayı başarırlar.", "inanılmaz"),
+                       ("Gözleri yuvasında dönmez. Muhteşem bir tasarım, değil mi?", "muhteşem")):
+        script = _owl()
+        script["scenes"][-1]["text"] = last
+        assert hook_problems(script) == [
+            f'son cümle "{word}" gibi genel bir övgüyle başlamasın, somut bir bilgiyle bitip ilk cümleye bağlansın']
+    # Praise later in the sentence is fine, and a summary opener is reported once.
+    script = _owl()
+    script["scenes"][-1]["text"] = "Kan akışı hiç durmaz, inanılmaz ama işte bu yüzden"
+    assert hook_problems(script) == []
+    script["scenes"][-1]["text"] = "Yani inanılmaz bir boyun."
+    assert len(hook_problems(script)) == 1
+
 def test_a_banner_repeating_the_first_line_is_sent_back():
     script = _owl()
     script["scenes"][0] = {"text": "Bu baykuş başını 270 derece çevirir.", "callout": "270 DERECE"}
@@ -198,6 +214,7 @@ def test_prompts_ask_for_a_short_script_that_opens_on_a_claim_and_loops(tmp_path
     assert "22-30 saniyelik" in prompt and "25-40" not in prompt and f"Toplam {MIN_WORDS}-80 kelime" in prompt
     assert OPENING_RULE in prompt and ENDING_RULE in prompt and "12 kelimelik" not in prompt
     assert "90 mı 180 mi?" in prompt and "yorumlarda buluşalım" in prompt
+    assert "Ana özne ekranda büyük ve net görünsün" in prompt  # the dolphin sample's second half was empty sea
     # The script-first fallback for the same series follows the same opening and ending.
     merak = build_prompt(TOPIC["topic"], None, None, TOPIC)
     assert OPENING_RULE in merak and ENDING_RULE in merak and "12 kelimelik" not in merak

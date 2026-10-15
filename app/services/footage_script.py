@@ -47,6 +47,9 @@ BANNED_PHRASES = ("biliyor muydun", "merhaba", "açıklayalım", "bunun nedeni �
 # A last line opening with one of these summed the video up ("Yani...", 9 of 14 scripts) instead of looping back.
 # The owl Short's own ending was the longer form "Bu adaptasyon sayesinde...", so "bu ... sayesinde" counts as well.
 SUMMARY_OPENERS = ("yani", "böylece", "kısacası", "bu sayede", "sonuç olarak", "özetle")
+# A last line opening on praise closed the video on a platitude instead of a fact (dolphin sample, 2026-10-15: "İnanılmaz
+# bir dengeyle hem uyur hem de..."). Matched from the start of the first word, so "Muhteşem" and "Harikadır" count.
+PRAISE_OPENERS = ("inanılmaz", "muhteşem", "harika", "mükemmel", "müthiş", "şaşırtıcı")
 # Question and filler words a banner may share with the first line without repeating it.
 HOOK_STOPWORDS = {"neden", "nasıl", "ne", "niye", "niçin", "bu", "şu", "o", "bir", "ve", "ile", "mi", "mı", "mu", "mü",
                   "da", "de", "ki", "en", "çok", "kadar", "hep", "her"}
@@ -54,7 +57,8 @@ HOOK_STOPWORDS = {"neden", "nasıl", "ne", "niye", "niçin", "bu", "şu", "o", "
 QUERY_PROMPT = """Pixabay'de stok video arayacağım. Konu: {topic}
 Videoda görünecek ana özne: {subject}
 Bu konuyu anlatan bir Shorts videosu için gerekecek görüntüleri bulacak 8 farklı arama yaz. Her biri 2-3 basit İngilizce
-kelime olsun ve ana öznelerden birini içersin (ör. "cat jumping", "cat landing", "kitten playing").
+kelime olsun ve ana öznelerden birini içersin (ör. "cat jumping", "cat landing", "kitten playing"). En az 3'ü öznenin
+ekranı dolduracağı yakın çekim arasın (ör. "cat face close", "owl eyes close up").
 Sadece şu JSON'u döndür: {{"queries": ["..."]}}"""
 
 SCRIPT_PROMPT = """Sen "Zirvenin Kanunu" adlı Türkçe YouTube Shorts kanalının baş senaristisin. Bu seride bilim, hayvanlar,
@@ -85,6 +89,8 @@ Görüntü kuralları:
 - "clips": o sahnede sırayla gösterilecek adaylar, her biri {{"n": aday numarası, "kare": cümleye en uyan kare (1, 2 ya da 3)}}.
   Bir aday yalnızca bir sahnede kullanılabilir.
 - Yazı, logo, filigran olan, bulanık veya konuyla ilgisiz adayları kullanma.
+- Ana özne ekranda büyük ve net görünsün. Öznenin uzakta nokta gibi kaldığı ya da karede hiç görünmediği (boş deniz,
+  boş gökyüzü, uzak manzara) adayları kullanma; yakın çekimleri tercih et.
 - "visual": o sahnede ekranda görünen şeyin kısa İngilizce tarifi.
 - "callout": o sahnede ekranın ortasında büyük harflerle beliren 1-3 kelimelik anahtar bilgi ya da birimiyle bir sayı
   (ör. "270 DERECE", "14 OMUR", "SANİYEDE 340 METRE"). Cümledeki bilgiyle birebir aynı olsun. Sadece en çarpıcı 3-4 sahneye
@@ -272,6 +278,10 @@ def hook_problems(script: dict) -> list[str]:
     if opener:
         problems.append(f'son cümle "{opener}" ile başlamasın, '
                         'özetlemeden ilk cümleye bağlanan şaşırtıcı bir sonuçla bitsin')
+    praise = next((w for w in _words(last_sentence)[:1] if w.startswith(PRAISE_OPENERS)), None)
+    if praise and not opener:
+        problems.append(f'son cümle "{praise}" gibi genel bir övgüyle başlamasın, '
+                        'somut bir bilgiyle bitip ilk cümleye bağlansın')
     words = sum(len(scene["text"].split()) for scene in scenes)
     if words > MERAK_MAX_WORDS:
         problems.append(f"anlatım {words} kelime, en fazla {MERAK_MAX_WORDS} kelime olsun")
