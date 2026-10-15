@@ -9,10 +9,12 @@ replaces Alp: scripts/voice_samples.py --set maliyet voices the same lines with 
 The models are previews whose names change, so the newest flash TTS model the key can call is looked up at run
 time; GEMINI_TTS_MODEL pins one.
 
-The direction goes in labelled sections before a "#### TRANSCRIPT" header: gemini-3.8-flash-tts read a one-line
-instruction aloud with every line (each line came out ~9 s long, first sample run 2026-10-15), and the 3.x flash
-models are known to speak headers with apostrophes ("DIRECTOR'S") too. A line that still comes back far longer than
-its words take to say is voiced again without any direction.
+Gemini 3.8 and later take the transcript alone in `text`, the delivery in `speech_metadata.style` and the voice in
+`voiceConfig.voice`, and return a WAV unless raw PCM is asked for (ai.google.dev speech-generation docs): written into
+the text, a one-line instruction was read aloud with every line (each line ~9 s, first sample run 2026-10-15). The
+older models (2.5, 3.1 preview) only read direction from the text, so it goes there in labelled sections before a
+"#### TRANSCRIPT" header. A line that still comes back far longer than its words take to say is voiced again without
+any direction.
 """
 
 import base64
@@ -43,6 +45,9 @@ Accent: native Istanbul Turkish
 
 #### TRANSCRIPT
 """
+STYLE = ("energetic, excited and confident Turkish documentary narrator of viral YouTube Shorts, full of wonder, "
+         "very fast and punchy pace, native Istanbul accent")
+METADATA_VERSION = 3.8  # the first models with speech_metadata.style
 SECONDS_PER_WORD_MAX = 0.6  # a line much slower than this has the direction (or something else) read into it
 TRANSCRIBE_MODEL = "gemini-2.5-flash"
 PCM_RATE = 24000  # Gemini returns raw 16-bit mono PCM at 24 kHz
@@ -88,9 +93,18 @@ def resolve_model(key: str, tier: str = "flash") -> str | None:
         return None
 
 
-def request_body(text: str, voice: str, direction: str = DIRECTION) -> dict:
+def request_body(text: str, voice: str, model: str = "", direction: bool = True) -> dict:
+    if _version(model) >= METADATA_VERSION:
+        return {
+            "contents": [{"parts": [{"text": text, **({"speech_metadata": {"style": STYLE}} if direction else {})}]}],
+            "generationConfig": {
+                "responseModalities": ["AUDIO"],
+                "speechConfig": {"voiceConfig": {"voice": voice}},
+                "responseFormat": {"audio": {"mimeType": "AUDIO_L16", "sampleRate": PCM_RATE}},
+            },
+        }
     return {
-        "contents": [{"parts": [{"text": f"{direction}{text}"}]}],
+        "contents": [{"parts": [{"text": f"{DIRECTION if direction else ''}{text}"}]}],
         "generationConfig": {
             "responseModalities": ["AUDIO"],
             "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}},
@@ -120,7 +134,7 @@ def duration(path: Path) -> float:
         return 0.0
 
 
-def synthesize(text: str, out: Path, voice: str, model: str, key: str, direction: str = DIRECTION) -> bool:
+def synthesize(text: str, out: Path, voice: str, model: str, key: str, direction: bool = True) -> bool:
     """Writes `text` spoken by the Gemini voice to `out` (any ffmpeg audio format). False on failure, with the
     reason in last_error."""
     from app.services.turkish_phonetics import normalize_turkish_tts_text
@@ -130,15 +144,15 @@ def synthesize(text: str, out: Path, voice: str, model: str, key: str, direction
         return False
     if direction and duration(Path(out)) > max_seconds(text):
         print(f"ℹ️ Gemini satırı fazla uzun okudu ({duration(Path(out)):.1f} sn), yönlendirmesiz yeniden deneniyor")
-        return _voice(text, Path(out), voice, model, key, "")
+        return _voice(text, Path(out), voice, model, key, False)
     return True
 
 
-def _voice(text: str, out: Path, voice: str, model: str, key: str, direction: str) -> bool:
+def _voice(text: str, out: Path, voice: str, model: str, key: str, direction: bool) -> bool:
     last_error.clear()
     req = urllib.request.Request(
         f"{API}/models/{model}:generateContent",
-        data=json.dumps(request_body(text, voice, direction)).encode("utf-8"),
+        data=json.dumps(request_body(text, voice, model, direction)).encode("utf-8"),
         headers={"x-goog-api-key": key, "Content-Type": "application/json"},
         method="POST",
     )
@@ -160,11 +174,17 @@ def _voice(text: str, out: Path, voice: str, model: str, key: str, direction: st
     if not pcm:
         last_error.update(code=None, message="yanıtta ses yok")
         return False
-    raw = out.with_suffix(".pcm")
+    # A WAV (a model that ignored responseFormat) is read with its header, so the header never plays as a click.
+    wav = pcm[:4] == b"RIFF"
+    raw = out.with_name(f"{out.stem}_gemini.{'wav' if wav else 'pcm'}")
     raw.write_bytes(pcm)
+    source = [] if wav else ["-f", "s16le", "-ar", str(PCM_RATE), "-ac", "1"]
     try:
-        subprocess.run(["ffmpeg", "-y", "-f", "s16le", "-ar", str(PCM_RATE), "-ac", "1", "-i", str(raw), str(out)],
+        subprocess.run(["ffmpeg", "-y", *source, "-i", str(raw), str(out)],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError:
+        last_error.update(code=None, message="Gemini sesi dönüştürülemedi")
+        return False
     finally:
         raw.unlink(missing_ok=True)
     return out.exists() and out.stat().st_size > 1000

@@ -577,40 +577,81 @@ def test_gemini_tts_picks_the_newest_model_of_the_tier():
     assert gemini_tts.pick_model(["gemini-2.5-flash"]) is None
 
 
-@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
-def test_gemini_tts_sends_the_style_and_the_spoken_numbers(tmp_path, monkeypatch):
-    import base64
-    from app.services import gemini_tts
-    pcm = b"\x00\x10" * 24000  # one second of 24 kHz mono PCM
-    requests = []
+class _GeminiReply:
+    def __init__(self, audio: bytes):
+        self.audio = audio
 
-    class Reply:
-        def __enter__(self):
-            return self
+    def __enter__(self):
+        return self
 
-        def __exit__(self, *exc):
-            return False
+    def __exit__(self, *exc):
+        return False
 
-        def read(self):
-            part = {"inlineData": {"mimeType": "audio/L16;rate=24000", "data": base64.b64encode(pcm).decode()}}
-            return json.dumps({"candidates": [{"content": {"parts": [part]}}]}).encode()
+    def read(self):
+        import base64
+        part = {"inlineData": {"mimeType": "audio/L16;rate=24000", "data": base64.b64encode(self.audio).decode()}}
+        return json.dumps({"candidates": [{"content": {"parts": [part]}}]}).encode()
+
+
+def _pcm(seconds: float) -> bytes:
+    return b"\x00\x10" * int(24000 * seconds)  # 24 kHz mono 16-bit, what Gemini sends
+
+
+def _gemini_calls(monkeypatch, *replies):
+    replies, requests = list(replies), []
 
     def fake_urlopen(req, timeout=None):
         requests.append(req)
-        return Reply()
+        return _GeminiReply(replies.pop(0))
 
     monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    return requests
+
+
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_gemini_3_8_gets_the_bare_transcript_and_the_style_apart(tmp_path, monkeypatch):
+    from app.services import gemini_tts
+    requests = _gemini_calls(monkeypatch, _pcm(1))
     out = tmp_path / "line.mp3"
-    assert gemini_tts.synthesize("Uçak 10.000 metrede uçar.", out, voice="Fenrir", model="gemini-x-flash-tts", key="k")
+    assert gemini_tts.synthesize("Uçak 10.000 metrede uçar.", out, voice="Fenrir", model="gemini-3.8-flash-tts", key="k")
     req = requests[0]
-    assert req.full_url.endswith("/models/gemini-x-flash-tts:generateContent")
+    assert req.full_url.endswith("/models/gemini-3.8-flash-tts:generateContent")
     assert req.headers["X-goog-api-key"] == "k"
     body = _payload(req)
-    assert body["contents"][0]["parts"][0]["text"] == f"{gemini_tts.DIRECTION}Uçak on bin metrede uçar."
-    assert body["contents"][0]["parts"][0]["text"].endswith("#### TRANSCRIPT\nUçak on bin metrede uçar.")
-    assert body["generationConfig"]["responseModalities"] == ["AUDIO"]
-    assert body["generationConfig"]["speechConfig"]["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] == "Fenrir"
-    assert abs(original_factory._probe_duration(out) - 1.0) < 0.1 and not out.with_suffix(".pcm").exists()
+    assert body["contents"][0]["parts"] == [{"text": "Uçak on bin metrede uçar.",
+                                              "speech_metadata": {"style": gemini_tts.STYLE}}]
+    config = body["generationConfig"]
+    assert config["responseModalities"] == ["AUDIO"]
+    assert config["speechConfig"] == {"voiceConfig": {"voice": "Fenrir"}}
+    assert config["responseFormat"] == {"audio": {"mimeType": "AUDIO_L16", "sampleRate": 24000}}
+    assert abs(original_factory._probe_duration(out) - 1.0) < 0.1 and [f.name for f in tmp_path.iterdir()] == ["line.mp3"]
+
+
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_older_gemini_models_read_the_direction_from_the_text(tmp_path, monkeypatch):
+    from app.services import gemini_tts
+    requests = _gemini_calls(monkeypatch, _pcm(1))
+    assert gemini_tts.synthesize("Bu baykuş döner.", tmp_path / "line.mp3", voice="Fenrir",
+                                 model="gemini-2.5-pro-preview-tts", key="k")
+    body = _payload(requests[0])
+    text = body["contents"][0]["parts"][0]["text"]
+    assert text == f"{gemini_tts.DIRECTION}Bu baykuş döner." and text.endswith("#### TRANSCRIPT\nBu baykuş döner.")
+    assert body["generationConfig"]["speechConfig"] == {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": "Fenrir"}}}
+    assert "responseFormat" not in body["generationConfig"]
+
+
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_a_wav_from_gemini_is_read_with_its_header(tmp_path, monkeypatch):
+    from app.services import gemini_tts
+    wav = tmp_path / "reply.wav"
+    subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "1", "-c:a", "pcm_s16le",
+                    str(wav)], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    _gemini_calls(monkeypatch, wav.read_bytes())
+    out = tmp_path / "line.wav"
+    assert gemini_tts.synthesize("Bu baykuş döner.", out, voice="Puck", model="gemini-3.8-flash-tts", key="k")
+    # Read as headerless PCM, the 44-byte header would have become a click at the start.
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(out), "-f", "s16le", "-"], capture_output=True).stdout
+    assert raw[:200] == b"\x00" * 200
 
 
 @pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
@@ -669,33 +710,13 @@ def test_cost_samples_go_on_when_elevenlabs_is_out_of_credits(tmp_path, monkeypa
 
 @pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
 def test_a_gemini_line_read_with_its_direction_is_voiced_again_without_it(tmp_path, monkeypatch):
-    # gemini-3.8-flash-tts read the one-line instruction aloud with every line (~9 s for an 8-word line).
-    import base64
+    # gemini-3.8-flash-tts read a one-line instruction aloud with every line (~9 s for an 8-word line).
     from app.services import gemini_tts
-    seconds = [10, 1]
-    requests = []
-
-    class Reply:
-        def __init__(self, length):
-            self.length = length
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *exc):
-            return False
-
-        def read(self):
-            pcm = b"\x00\x10" * 24000 * self.length
-            part = {"inlineData": {"data": base64.b64encode(pcm).decode()}}
-            return json.dumps({"candidates": [{"content": {"parts": [part]}}]}).encode()
-
-    def fake_urlopen(req, timeout=None):
-        requests.append(_payload(req)["contents"][0]["parts"][0]["text"])
-        return Reply(seconds.pop(0))
-
-    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    requests = _gemini_calls(monkeypatch, _pcm(10), _pcm(1))
     out = tmp_path / "line.mp3"
-    assert gemini_tts.synthesize("Bu baykuş boynunu kırmadan döner.", out, voice="Puck", model="m", key="k")
-    assert requests == [f"{gemini_tts.DIRECTION}Bu baykuş boynunu kırmadan döner.", "Bu baykuş boynunu kırmadan döner."]
+    assert gemini_tts.synthesize("Bu baykuş boynunu kırmadan döner.", out, voice="Puck", model="gemini-3.8-flash-tts",
+                                 key="k")
+    parts = [_payload(req)["contents"][0]["parts"] for req in requests]
+    assert parts == [[{"text": "Bu baykuş boynunu kırmadan döner.", "speech_metadata": {"style": gemini_tts.STYLE}}],
+                     [{"text": "Bu baykuş boynunu kırmadan döner."}]]
     assert gemini_tts.duration(out) < 2
