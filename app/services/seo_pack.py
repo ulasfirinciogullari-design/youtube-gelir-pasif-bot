@@ -66,7 +66,9 @@ Kurallar:
   1) İnsanların arama kutusuna yazacağı haliyle videonun sorusu, tek cümle (ör. "Baykuşlar başını nasıl 270 derece
      çevirir?").
   2) Cevap, 2-3 cümle. Seslendirilen metindeki sayıları ve adları aynen kullan; metinde olmayan bilgi ekleme.
-  3) Bu videoya özel, iki seçenekli bir soru (ör. "Sence insan boynu kaç derece döner: 90 mı 180 mi?").
+  3) Videonun yorum sorusu: {question}
+     İki seçenekliyse aynen yaz; değilse ya da yoksa bu videoya özel, iki seçenekli bir soru yaz (ör. "Sence
+     insan boynu kaç derece döner: 90 mı 180 mi?").
   Ders çıkaran ya da abone olmaya, beğenmeye, kanalı takip etmeye çağıran, her videoda aynı kalan kalıp cümleler
   yazma. Kaynak, telif, görüntü veya yapay zekâ bilgisi yazma. Hashtag yazma.
 - "hashtags": 3-5 Türkçe hashtag, # ile başlasın: önce videodaki canlı ya da nesne (ör. #baykuş), sonra konu
@@ -84,10 +86,13 @@ Sadece şu JSON'u döndür:
 """
 
 
-def build_prompt(title: str, topic: str, narration: str, series: str = "story") -> str:
+def build_prompt(title: str, topic: str, narration: str, series: str = "story", question: str = "") -> str:
+    """`question` is the video's own comment question; the curiosity description ends on it (the history one
+    ignores it), so the description and the pinned comment ask the same thing."""
     template = MERAK_PROMPT_TEMPLATE if series == "merak" else PROMPT_TEMPLATE
     return template.format(
         title=title, topic=topic, narration=narration, languages=", ".join(LANGUAGES),
+        question=question.strip() or "(yok)",
     )
 
 
@@ -116,6 +121,14 @@ def _tag_cost(tag: str) -> int:
 
 def fold_turkish(text: str) -> str:
     return text.translate(TURKISH_FOLD)
+
+
+def _as_list(value, sep: str | None = None) -> list:
+    """A list field of Gemini's answer as a list. A single string is split (list() of it would make one tag or
+    hashtag per letter, and the letters would now lead the hashtags above the title); anything else is dropped."""
+    if isinstance(value, str):
+        return value.replace(",", " ").split() if sep is None else value.split(sep)
+    return list(value) if isinstance(value, (list, tuple)) else []
 
 
 def clean_tags(tags: list, limit: int = MAX_TAG_TOTAL, fold: int = 0) -> list[str]:
@@ -157,7 +170,7 @@ def clean_hashtags(hashtags: list, base: str, limit: int = 8) -> str:
     than #shorts. The base ones follow, so #shorts stays in every description."""
     base_words = _hashtag_words(base.split())
     known = {h.lower() for h in base_words}
-    topical = [h for h in _hashtag_words(hashtags or []) if h.lower() not in known]
+    topical = [h for h in _hashtag_words(_as_list(hashtags)) if h.lower() not in known]
     return " ".join((topical[:max(3, limit - len(base_words))] + base_words)[:limit])
 
 
@@ -191,7 +204,7 @@ def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_ta
         "seo_engine": "script",
     }
     try:
-        raw = call(build_prompt(title, topic, narration, series))
+        raw = call(build_prompt(title, topic, narration, series, str(script.get("pinned_comment") or "")))
         data = _extract_json(raw) if raw else None
     except Exception as e:  # SEO is a bonus; never block an upload on it
         print(f"ℹ️ SEO paketi notu: {str(e)[:200]}")
@@ -205,7 +218,7 @@ def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_ta
             pack.update(
                 description=description,
                 hashtags=clean_hashtags(data.get("hashtags"), base_hashtags),
-                tags=clean_tags(list(data.get("tags") or []) + list(script.get("tags", [])) + base_tags,
+                tags=clean_tags(_as_list(data.get("tags"), ",") + list(script.get("tags", [])) + base_tags,
                                 fold=FOLDED_TAGS),
                 localizations={**fallback_localizations, **localizations},
                 seo_engine="gemini",

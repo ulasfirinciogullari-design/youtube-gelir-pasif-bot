@@ -2,7 +2,10 @@
 
 import json
 import subprocess
+import sys
 from types import SimpleNamespace
+
+import pytest
 
 import original_factory
 from app.services import competitor_scan, seo_pack, subtitle_engine
@@ -101,11 +104,52 @@ def test_competitor_scan_searches_the_series_niche(tmp_path):
     assert yt.queries == competitor_scan.MERAK_QUERIES
 
 
+class _ScanReached(BaseException):
+    """main() catches every Exception around the scan; a BaseException stops the run right there."""
+
+
+@pytest.mark.parametrize("requested,scanned", [("karisik", "merak"), ("merak", "merak"), ("story", "story"),
+                                               ("karakter", "karakter")])
+def test_main_scans_the_requested_series_niche(tmp_path, monkeypatch, requested, scanned):
+    scans = []
+
+    def run_scan(*args, **kwargs):
+        scans.append(kwargs.get("series"))
+        raise _ScanReached
+
+    monkeypatch.setitem(sys.modules, "publish_to_youtube", SimpleNamespace(get_authenticated_service=object))
+    monkeypatch.setattr(original_factory, "OUTPUT_DIR", tmp_path / "output")
+    monkeypatch.setattr(original_factory, "DATA_DIR", tmp_path / "data")
+    monkeypatch.setattr(original_factory, "report_channel", lambda *a, **k: (set(), []))
+    monkeypatch.setattr(original_factory, "load_dna", lambda *a, **k: {})  # no analysis yet: the scan is due
+    monkeypatch.setattr(original_factory, "run_scan", run_scan)
+    with pytest.raises(_ScanReached):
+        original_factory.main(["--series", requested])
+    assert scans == [scanned]
+
+
 def test_merak_prompt_drops_the_history_template():
     merak = seo_pack.build_prompt("Başlık", "Baykuşlar başını neden çevirebilir?", "metin", "merak")
     assert "Bugün için ders" not in merak and "abone" in merak  # only as "do not ask to subscribe"
     assert "iki seçenekli" in merak and "%80'i Türkçe" in merak
+    assert "Videonun yorum sorusu: (yok)" in merak
     assert "Bugün için ders:" in seo_pack.build_prompt("Başlık", "konu", "metin")
+    assert "yorum sorusu" not in seo_pack.build_prompt("Başlık", "konu", "metin", "story", "Sence A mı B mi?")
+
+
+def test_seo_pack_survives_list_fields_answered_as_one_string():
+    answer = {**OWL_ANSWER, "hashtags": "#baykuş #hayvanlar, #gece", "tags": "baykuş boynu, gece kuşu"}
+    pack = seo_pack.build_seo_pack(
+        OWL_SCRIPT["title"], "konu", "metin", OWL_SCRIPT, MERAK["tags"], MERAK["hashtags"], "Seri: mk-028",
+        call=lambda prompt: json.dumps(answer, ensure_ascii=False), series="merak")
+    assert pack["description"].split("\n\n")[-2].split()[:3] == ["#baykuş", "#hayvanlar", "#gece"]
+    assert pack["tags"][:3] == ["baykuş boynu", "gece kuşu", "baykuş"]
+    answer = {**OWL_ANSWER, "hashtags": 7, "tags": None}
+    pack = seo_pack.build_seo_pack(
+        OWL_SCRIPT["title"], "konu", "metin", OWL_SCRIPT, MERAK["tags"], MERAK["hashtags"], "Seri: mk-028",
+        call=lambda prompt: json.dumps(answer, ensure_ascii=False), series="merak")
+    assert pack["seo_engine"] == "gemini" and pack["tags"][:2] == ["baykuş", "boyun"]
+    assert pack["description"].split("\n\n")[-2] == MERAK["hashtags"]
 
 
 def test_merak_seo_pack_keeps_a_good_description_with_few_languages():
@@ -115,6 +159,7 @@ def test_merak_seo_pack_keeps_a_good_description_with_few_languages():
         MERAK["hashtags"], "Seri: mk-028",
         call=lambda prompt: prompts.append(prompt) or json.dumps(OWL_ANSWER, ensure_ascii=False), series="merak")
     assert "Bugün için ders" not in prompts[0]
+    assert f"Videonun yorum sorusu: {OWL_SCRIPT['pinned_comment']}" in prompts[0]  # the video's own question
     assert pack["seo_engine"] == "gemini"
     assert set(pack["localizations"]) == {"en", "de", "nl", "az"}  # the script's English fills the gap
     assert pack["description"].startswith("Baykuşlar başını nasıl 270 derece çevirir?")
