@@ -4,22 +4,24 @@ Slot gate for the scheduled Shorts runs.
 GitHub drops or delays top-of-hour cron events: scheduled runs on main started
 up to 3.6 h late, and on 2026-10-14 the 11:00 and 14:00 UTC slots never ran
 while the 18:00 UTC slot had still not started at 19:00 UTC. The workflow
-therefore ticks at :07 and :37 through each slot's 3 h window, and this script,
+therefore ticks at :07 and :37 of each hourly slot, and this script,
 the first step after the channel-data checkout, decides whether a tick should
 actually produce a Short. A dropped or failed run simply leaves its slot open
 and the next tick tries again, so no separate retry loop is needed.
 
 A scheduled tick goes ahead only when all of these hold:
-  - the latest slot (05/10/14/18 UTC = 08/13/17/21 TR) started at most 3 h ago;
+  - the latest slot (every hour 05-20 UTC = 08:00-23:00 TR, 16 a day; Ulaş
+    asked for 15-20 a day on 2026-10-15) started at most 1 h ago;
   - no public or unlisted upload has happened since that slot started;
-  - the newest public or unlisted upload is at least 2.5 h old. Bursts kill
-    reach: in channel_audit.json, Shorts with no upload in the previous 2 h had
-    a median of 950 views, those with 6+ uploads a median of 10;
-  - fewer than 5 uploads of any privacy happened since the last quota reset;
+  - the newest public or unlisted upload is at least 35 min old, so a late run
+    does not put two Shorts back to back. Bursts kill reach: in
+    channel_audit.json, Shorts with no upload in the previous 2 h had a median
+    of 950 views, those with 6+ uploads a median of 10;
+  - fewer than 20 uploads of any privacy happened since the last quota reset;
   - no scheduled run since the slot already got through the produce step (an
     upload whose uploads.json record was lost when the channel-data push failed);
-  - fewer than 3 scheduled runs since the slot failed (a broken run is not
-    retried every half hour until the next slot).
+  - fewer than 2 scheduled runs since the slot failed (a broken run is not
+    retried again in the same slot).
 
 Private uploads (Ulaş's test runs) neither fill a slot nor delay the next one,
 but they do spend quota. Manual runs (workflow_dispatch) always go ahead.
@@ -46,12 +48,13 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 DATA_DIR = BASE_DIR / "channel-data"
-SLOTS_UTC = (5, 10, 14, 18)  # 08:00, 13:00, 17:00, 21:00 TR
-WINDOW = timedelta(hours=3)
-MIN_GAP = timedelta(hours=2, minutes=30)
+SLOTS_UTC = tuple(range(5, 21))  # every hour from 08:00 to 23:00 TR
+WINDOW = timedelta(hours=1)
+MIN_GAP = timedelta(minutes=35)
 # YouTube's daily quota resets at midnight Pacific time: 07:00 UTC in summer, 08:00 UTC in winter.
-# An upload costs ~1,600 of the 10,000 daily units and Ulaş's PC uploader shares the quota, so 5 a day
-# leaves room for it.
+# Since June 2026 videos.insert has its own bucket of 100 calls a day; the thumbnail and the pinned comment
+# take ~100 of the shared 10,000 units per Short. Ulaş's PC uploader uses the same project, so 20 a day
+# leaves it room.
 try:
     PACIFIC = ZoneInfo("America/Los_Angeles")
 except Exception:  # no time zone database on the runner
@@ -59,8 +62,8 @@ except Exception:  # no time zone database on the runner
 # Without the database assume the later, winter reset: counting an extra hour of uploads can only skip
 # a tick, never authorize an upload the quota cannot take.
 QUOTA_RESET_UTC_FALLBACK = 8
-MAX_PER_QUOTA_DAY = 5
-MAX_FAILED_RUNS = 3
+MAX_PER_QUOTA_DAY = 20
+MAX_FAILED_RUNS = 2
 PRODUCE_STEP = "🎬 Özgün Short Üret ve Yayınla"
 WORKFLOW_FILE = "viral_shorts_autopilot.yml"
 API = "https://api.github.com"
@@ -83,7 +86,7 @@ def _utc(moment: datetime) -> datetime:
 
 
 def slot_start(now: datetime) -> datetime:
-    """The latest slot start at or before now; before 05:00 UTC that is yesterday's 18:00."""
+    """The latest slot start at or before now; before 05:00 UTC that is yesterday's last slot."""
     now = _utc(now)
     today = now.replace(minute=0, second=0, microsecond=0)
     starts = [today.replace(hour=h) for h in SLOTS_UTC if today.replace(hour=h) <= now]
