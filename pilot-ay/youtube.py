@@ -165,6 +165,13 @@ def episodes(yt, state, report):
             STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=1))  # never lose an upload id
             log(f"{ep['id']}: yüklendi ({rec['privacy']}) {rec['url']}")
         vid = rec["video_id"]
+        want = ep.get("privacy", "private")
+        if rec.get("privacy") != want:  # e.g. private -> public once Ulaş approves the episode
+            yt.call("PUT", "videos?part=status", json={"id": vid, "status": {
+                "privacyStatus": want, "selfDeclaredMadeForKids": False, "containsSyntheticMedia": False,
+                "embeddable": True, "license": "youtube", "publicStatsViewable": True}})
+            rec["privacy"] = want
+            log(f"{ep['id']}: görünürlük -> {want}")
         if not rec.get("playlist") and ep.get("playlist") in state.get("playlists", {}):
             yt.call("POST", "playlistItems?part=snippet", json={"snippet": {
                 "playlistId": state["playlists"][ep["playlist"]],
@@ -186,6 +193,12 @@ def episodes(yt, state, report):
             st = v[0]["status"]
             rec["status"] = {k: st.get(k) for k in ("uploadStatus", "privacyStatus", "rejectionReason", "failureReason")
                              if st.get(k)}
+            if st.get("privacyStatus") != rec["privacy"]:
+                # YouTube keeps uploads from unaudited API projects private whatever we ask for
+                rec["locked"] = f"istenen {rec['privacy']}, YouTube'daki {st.get('privacyStatus')}"
+                log(f"{ep['id']}: YouTube görünürlüğü değiştirmedi ({rec['locked']})")
+            else:
+                rec.pop("locked", None)
         report.setdefault("episodes", {})[ep["id"]] = rec
 
 
