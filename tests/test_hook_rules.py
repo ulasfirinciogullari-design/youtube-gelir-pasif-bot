@@ -126,13 +126,33 @@ def test_an_ending_on_praise_is_sent_back():
         script = _owl()
         script["scenes"][-1]["text"] = last
         assert hook_problems(script) == [
-            f'son cümle "{word}" gibi genel bir övgüyle başlamasın, somut bir bilgiyle bitip ilk cümleye bağlansın']
+            f'son cümle "{word}" gibi genel bir lafla bitmesin, somut bir bilgiyle bitip ilk cümleye bağlansın']
     # Praise later in the sentence is fine, and a summary opener is reported once.
     script = _owl()
     script["scenes"][-1]["text"] = "Kan akışı hiç durmaz, inanılmaz ama işte bu yüzden"
     assert hook_problems(script) == []
     script["scenes"][-1]["text"] = "Yani inanılmaz bir boyun."
     assert len(hook_problems(script)) == 1
+
+
+def test_a_loop_connector_followed_by_a_summary_is_sent_back():
+    # The plane Short's real last line (WADWjFRfYYw, 2026-10-15).
+    script = _owl()
+    script["scenes"][-1]["text"] = "İşte bu yüzden, camların yuvarlak olması hayati önem taşır."
+    assert hook_problems(script) == [
+        'son cümle "işte bu yüzden" ile başlamasın, özetlemeden ilk cümleye bağlanan şaşırtıcı bir sonuçla bitsin']
+    for last in ("Bu nedenle baykuşlar avını hiç kaçırmaz.", "Gözleri dönmez. Bu yüzden başını çevirir."):
+        script["scenes"][-1]["text"] = last
+        assert len(hook_problems(script)) == 1
+    # The connector alone at the end is the loop the rule asks for.
+    for last in ("Gözleri yuvasında hiç dönmediği için başını çevirmek zorunda, ve işte bu yüzden",
+                 "Gözleri dönmez. İşte bu yüzden."):
+        script["scenes"][-1]["text"] = last
+        assert hook_problems(script) == []
+    # A last sentence about how important something is says nothing new.
+    script["scenes"][-1]["text"] = "Bu damarlar baykuşun hayatta kalması için çok önemli."
+    assert hook_problems(script) == [
+        'son cümle "çok önemli" gibi genel bir lafla bitmesin, somut bir bilgiyle bitip ilk cümleye bağlansın']
 
 def test_a_banner_repeating_the_first_line_is_sent_back():
     script = _owl()

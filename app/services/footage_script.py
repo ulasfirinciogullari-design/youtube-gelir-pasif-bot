@@ -50,6 +50,11 @@ SUMMARY_OPENERS = ("yani", "böylece", "kısacası", "bu sayede", "sonuç olarak
 # A last line opening on praise closed the video on a platitude instead of a fact (dolphin sample, 2026-10-15: "İnanılmaz
 # bir dengeyle hem uyur hem de..."). Matched from the start of the first word, so "Muhteşem" and "Harikadır" count.
 PRAISE_OPENERS = ("inanılmaz", "muhteşem", "harika", "mükemmel", "müthiş", "şaşırtıcı")
+# The loop connector belongs at the very end ("...ve işte bu yüzden" -> first line). The plane Short (WADWjFRfYYw,
+# 2026-10-15) opened its last sentence with it and summed up instead: "İşte bu yüzden, camların yuvarlak olması hayati
+# önem taşır." A connector followed by more words, or a last sentence on how important something is, counts as a summary.
+REASON_OPENERS = ("işte bu yüzden", "bu yüzden", "işte bu nedenle", "bu nedenle")
+IMPORTANCE_PHRASES = ("önem taşır", "hayati önem", "ne kadar önemli", "çok önemli")
 # Question and filler words a banner may share with the first line without repeating it.
 HOOK_STOPWORDS = {"neden", "nasıl", "ne", "niye", "niçin", "bu", "şu", "o", "bir", "ve", "ile", "mi", "mı", "mu", "mü",
                   "da", "de", "ki", "en", "çok", "kadar", "hep", "her"}
@@ -245,6 +250,8 @@ def _summary_opener(text: str) -> str | None:
     words = _words(text)
     line = " ".join(words) + " "
     opener = next((o for o in SUMMARY_OPENERS if line.startswith(o + " ")), None)
+    if not opener:  # the connector alone ("İşte bu yüzden.") is the loop, not a summary
+        opener = next((o for o in REASON_OPENERS if line.startswith(o + " ") and len(words) > len(o.split())), None)
     if not opener and words[:1] == ["bu"] and "sayesinde" in words[1:5]:
         opener = " ".join(words[:words.index("sayesinde") + 1])
     return opener
@@ -279,8 +286,10 @@ def hook_problems(script: dict) -> list[str]:
         problems.append(f'son cümle "{opener}" ile başlamasın, '
                         'özetlemeden ilk cümleye bağlanan şaşırtıcı bir sonuçla bitsin')
     praise = next((w for w in _words(last_sentence)[:1] if w.startswith(PRAISE_OPENERS)), None)
+    said_last = " " + " ".join(_words(last_sentence)) + " "
+    praise = praise or next((p for p in IMPORTANCE_PHRASES if f" {p}" in said_last), None)
     if praise and not opener:
-        problems.append(f'son cümle "{praise}" gibi genel bir övgüyle başlamasın, '
+        problems.append(f'son cümle "{praise}" gibi genel bir lafla bitmesin, '
                         'somut bir bilgiyle bitip ilk cümleye bağlansın')
     words = sum(len(scene["text"].split()) for scene in scenes)
     if words > MERAK_MAX_WORDS:
