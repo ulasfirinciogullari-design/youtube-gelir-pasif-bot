@@ -62,6 +62,7 @@ def ui_modules(monkeypatch):
     youtube_auth_module = types.ModuleType('app.services.youtube_auth')
     youtube_auth_module.STATE_TTL_SECONDS = 600
     youtube_auth_module.YouTubeAuthError = type('YouTubeAuthError', (Exception,), {})
+    youtube_auth_module.OAuthStateError = type('OAuthStateError', (youtube_auth_module.YouTubeAuthError,), {})
     youtube_auth_module.build_authorization_url = lambda *_a, **_k: 'https://accounts.example.test/'
     youtube_auth_module.complete_authorization = lambda *_a, **_k: None
     youtube_auth_module.connection_status = lambda *_a, **_k: {'configured': False}
@@ -247,10 +248,10 @@ def test_job_row_omits_empty_target_metadata_and_legacy_panel_link(ui_modules):
     assert 'Seçilmedi' not in row
     assert 'Eski panel' not in nav
     assert 'href="/factory"' not in nav
-    assert 'Anlatıcı sesleri' in nav
+    assert 'href="/studio/settings"' in nav
 
 
-def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkeypatch, ui_modules):
+def test_studio_create_prioritizes_creation_and_preserves_all_form_controls(monkeypatch, ui_modules):
     studio, _ = ui_modules
     monkeypatch.setattr(studio.settings, 'factory_api_token', 'studio-secret')
     monkeypatch.setattr(studio, 'get_selected_voice', lambda: {'name': 'Doğal ses'})
@@ -261,12 +262,12 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     )
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [_ready_job()])
 
-    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    body = studio.studio_create(studio_token='studio-secret').body.decode('utf-8')
 
     assert '<a class="skip-link" href="#main-content">' in body
     assert '<main id="main-content" tabindex="-1">' in body
     assert 'aria-label="Ana menü"' in body
-    assert 'aria-current=page' in body
+    assert 'href="/studio">Genel bakış</a>' in body
     assert '<details class="control-details">' in body
     assert '<summary><span>Ayarlar</span>' in body
     for field in (
@@ -309,7 +310,7 @@ def test_studio_home_prioritizes_creation_and_preserves_all_form_controls(monkey
     assert 'tamamlanan' not in archive_summary.casefold()
 
 
-def test_studio_home_uses_status_cards_without_a_duplicate_job_queue(
+def test_studio_create_uses_status_cards_without_a_duplicate_job_queue(
     monkeypatch,
     ui_modules,
 ):
@@ -357,7 +358,7 @@ def test_studio_home_uses_status_cards_without_a_duplicate_job_queue(
         lambda task_id: synced.append(task_id) or by_id[task_id],
     )
 
-    body = studio.studio_home(
+    body = studio.studio_create(
         studio_token='studio-secret',
     ).body.decode('utf-8')
     assert '<article class="job' not in body
@@ -464,8 +465,9 @@ def test_storyboard_approval_counts_and_renders_as_attention_not_library(
     assert 'data-status-count="attention">1</span>' in attention
     assert 'data-status-count="library">0</span>' in attention
     assert 'data-history-status="attention"' in attention
-    assert '<article class="job" data-status="attention"' in attention
-    assert '<span class="state attention">Dikkat gerekiyor</span>' in attention
+    assert '<article class="review-card no-media"' in attention
+    assert 'data-status="attention"' in attention
+    assert '>Senaryo hazır</span>' in attention
     assert 'Storyboard hazır; devam etmek için aç.' in attention
     assert 'href="/studio/plan/approval-needed"' in attention
     assert 'Onay bekleyen storyboard' not in library
@@ -639,11 +641,12 @@ def test_same_title_attention_attempts_group_without_hiding_other_actions(
     assert studio._attention_duplicate_signature(actual_channel_a) != (
         studio._attention_duplicate_signature(actual_channel_b)
     )
-    assert body.count('<article class="job"') == 6
+    assert body.count('<article class="review-card ') == 6
     assert body.count('Aynı görünen başlık') >= 6
     assert '2 benzer deneme tek kartta toplandı.' in body
-    assert '>Kaliteyi incele</a>' in body
-    assert '>Sorunlu sahneyi onar</button>' in body
+    assert 'href="/studio/job/manual-new"' in body
+    assert '>Onarım ayrıntılarını aç</a>' in body
+    assert 'action="/studio/retry/' not in body
     assert "Storyboard'u aç</a>" in body
     assert '>Durumu aç</a>' in body
     assert 'data-status-count="attention">6</span>' in body
@@ -692,8 +695,8 @@ def test_repair_group_promotes_older_action_when_refreshed_newest_is_resolved(
     ).body.decode('utf-8')
 
     assert synced == ['repair-new']
-    assert 'action="/studio/retry/repair-old"' in body
-    assert 'action="/studio/retry/repair-new"' not in body
+    assert 'href="/studio/job/repair-old"' in body
+    assert 'href="/studio/job/repair-new"' not in body
     assert 'data-status-count="attention">1</span>' in body
     assert 'Başarısız denemeler <b>1</b>' in body
 
@@ -1076,7 +1079,7 @@ def test_dashboard_failure_only_state_stays_out_of_action_queue(
         ],
     )
 
-    body = studio.studio_home(
+    body = studio.studio_create(
         studio_token='studio-secret',
     ).body.decode('utf-8')
     assert '<article class="job' not in body
@@ -1095,7 +1098,7 @@ def test_dashboard_failure_only_state_stays_out_of_action_queue(
     assert 'tamamlanan' not in archive_body.casefold()
 
 
-def test_studio_home_names_fal_as_optional_when_runway_is_ready(
+def test_studio_create_names_fal_as_optional_when_runway_is_ready(
     monkeypatch,
     ui_modules,
 ):
@@ -1114,16 +1117,17 @@ def test_studio_home_names_fal_as_optional_when_runway_is_ready(
     )
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
 
-    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    body = studio.studio_create(studio_token='studio-secret').body.decode('utf-8')
 
-    assert 'Fal video isteğe bağlı · üretim çalışır' in body
+    assert 'Fal video isteğe bağlı' in body
+    assert 'isteğe bağlı · üretim çalışır' not in body
     assert 'Fal video<span class="tiny" style="margin-left:auto">İsteğe bağlı' in body
     assert '<span class="health-dot green"' in body
     assert '<span class="dot amber"' in body
     assert '3/4' in body
 
 
-def test_studio_home_keeps_runway_required_when_only_fal_is_ready(
+def test_studio_create_keeps_runway_required_when_only_fal_is_ready(
     monkeypatch,
     ui_modules,
 ):
@@ -1142,7 +1146,7 @@ def test_studio_home_keeps_runway_required_when_only_fal_is_ready(
     )
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
 
-    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    body = studio.studio_create(studio_token='studio-secret').body.decode('utf-8')
 
     assert 'Runway ayarı eksik' in body
     assert 'Runway<span class="tiny" style="margin-left:auto">Eksik' in body
@@ -1152,7 +1156,7 @@ def test_studio_home_keeps_runway_required_when_only_fal_is_ready(
     assert '3/4' in body
 
 
-def test_studio_home_uses_a_simple_topic_input_and_collapsed_guidance(
+def test_studio_create_uses_a_simple_topic_input_and_collapsed_guidance(
     monkeypatch,
     ui_modules,
 ):
@@ -1162,7 +1166,7 @@ def test_studio_home_uses_a_simple_topic_input_and_collapsed_guidance(
     monkeypatch.setattr(studio, '_service_statuses', lambda: [('OpenAI', True)])
     monkeypatch.setattr(studio, 'list_jobs', lambda _limit: [])
 
-    body = studio.studio_home(studio_token='studio-secret').body.decode('utf-8')
+    body = studio.studio_create(studio_token='studio-secret').body.decode('utf-8')
     main_input, advanced = body.split('<details class="control-details">', 1)
 
     assert '<label class="field" for="topic">Video konusu</label>' in main_input
@@ -1692,7 +1696,7 @@ def test_library_is_quality_qualified_and_routes_manual_and_legacy_outputs(
 
     assert 'İnsan İncelemesi Gereken Video' in attention
     assert 'Videoyu kontrol et; onaylanmadan YouTube’a yüklenmez.' in attention
-    assert '>Kaliteyi incele</a>' in attention
+    assert '>Videoyu aç</a>' in attention
     assert '>Gizli yükle</a>' not in attention
     assert 'Eski Kalite Kaydı Olmayan Video' not in attention
 
@@ -1700,7 +1704,7 @@ def test_library_is_quality_qualified_and_routes_manual_and_legacy_outputs(
     assert '<details class="archive-details" open>' in archive
     assert 'Eski Kalite Kaydı Olmayan Video' in archive
     assert 'Bu eski videoda açık kalite onayı yok' in archive
-    assert '>Videoyu incele</a>' in archive
+    assert '>Videoyu aç</a>' in archive
     assert '>Gizli yükle</a>' not in archive
 
     contradictory = _ready_job()
@@ -1862,7 +1866,7 @@ def test_history_default_explains_running_first_and_uses_same_collapsed_counts(
     assert 'data-status-count="attention">0</span>' in body
     assert 'Başarısız denemeler <b>1</b>' in body
     assert 'Aynı hızlı test' not in body
-    assert failed_body.count('<article class="job"') == 1
+    assert failed_body.count('<article class="review-card ') == 1
     assert '<details class="archive-details" open>' in failed_body
     assert 'Başarısız denemeler <b>1</b>' in failed_body
     assert '1 eski başarısız deneme bu kartta toplandı.' in failed_body
@@ -1895,7 +1899,7 @@ def test_history_reconciles_only_the_visible_page(monkeypatch, ui_modules):
     ).body.decode('utf-8')
 
     assert len(synced) == studio.HISTORY_PAGE_SIZE
-    assert body.count('<article class="job"') == studio.HISTORY_PAGE_SIZE
+    assert body.count('<article class="review-card ') == studio.HISTORY_PAGE_SIZE
     assert 'Başarısız denemeler <b>500</b>' in body
 
 
@@ -1968,7 +1972,8 @@ def test_job_view_keeps_error_inside_closed_technical_details(monkeypatch, ui_mo
     assert '<details class="technical-details">' in body
     assert '<details class="technical-details" open>' not in body
     assert '<pre>' not in body
-    assert 'Yalnızca sorunlu sahne yeniden üretilecek' in body
+    assert 'Görüntüler kalite kontrolünden geçemedi' in body
+    assert '<details class="review-options">' in body
     assert '>Sorunlu sahneyi onar</button>' in body
     assert 'secret-value' not in body
     assert 'token=[gizlendi]' in body
@@ -2169,8 +2174,8 @@ def test_ready_videos_use_two_line_title_details_and_labeled_private_action(monk
     assert '🔒 İlk yükleme daima gizli' in body
     assert '-webkit-line-clamp:2' in youtube_routes.CSS
     assert '<a class="brand" href="/studio">YouTube Studio</a>' in body
-    assert '<a href="/studio">Yeni video</a>' in body
-    assert '<a href="/studio/history?status=library">Videolar</a>' in body
+    assert 'href="/studio">Genel bakış</a>' in body
+    assert 'href="/studio/history?status=library">Videolar</a>' in body
     assert '🎬 YouTube Studio V2' not in body
     assert '>Yeni üretim</a>' not in body
     assert '>Geçmiş</a>' not in body

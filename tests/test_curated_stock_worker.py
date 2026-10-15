@@ -202,7 +202,12 @@ def test_trailing_server_argument_defaults_to_none_and_is_not_read_from_options(
 
 
 def test_exact_proxy_is_used_only_for_final_critic_not_the_real_renderer():
-    review = assignment('final_visual_qc').value
+    review = next(node.value for node in ast.walk(TREE) if isinstance(node, ast.Assign)
+                  and any(isinstance(target, ast.Name) and target.id == 'final_visual_qc'
+                          for target in node.targets)
+                  and isinstance(node.value, ast.Call)
+                  and isinstance(node.value.func, ast.Name)
+                  and node.value.func.id == 'review_scene_visuals')
     assert isinstance(review, ast.Call) and ast.unparse(review.args[1]) == 'final_review_visuals'
     render = assignment('rendered').value
     assert next(ast.unparse(k.value) for k in render.keywords if k.arg == 'scene_visual_paths') == 'scene_visuals'
@@ -213,6 +218,7 @@ def test_noncurated_dispatch_still_selects_the_legacy_collector():
     legacy, curated = Mock(), Mock()
     pool = SimpleNamespace(submit=lambda function, *args, **kwargs: function(*args, **kwargs))
     ns = {'curated_source_job': None, 'stage_pool': pool, '_collect_broll': legacy,
+          'selected_recovery': None,
           '_collect_curated_recovery_visuals': curated, 'scenes': [], 'work': Path('/tmp'),
           'strict_short_preview_duration': False, 'pexels_orientation': 'portrait'}
     execute([assignment('broll_future')], ns)

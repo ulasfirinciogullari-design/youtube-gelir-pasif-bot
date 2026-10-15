@@ -9,7 +9,7 @@ services:
       - redis
   worker:
     build: .
-    command: celery -A app.celery_app.celery worker --loglevel=INFO --concurrency=4
+    command: python -m app.worker_runtime
     env_file: .env
     depends_on:
       - redis

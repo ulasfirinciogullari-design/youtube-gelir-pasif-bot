@@ -34,8 +34,10 @@ def viewer(monkeypatch):
            'result': {}, 'qa_workprint': pointer}
     get_job = Mock(return_value=job)
     namespace = {'settings': SimpleNamespace(factory_api_token=COOKIE, bucket='private-bucket'),
-                 'get_job': get_job, 'get_upload_record': Mock(return_value=None),
+                 'get_job': get_job, '_stored_get_job': get_job, 'get_upload_record': Mock(return_value=None),
                  'youtube_router': APIRouter()}
+    from app.services import studio_operations
+    monkeypatch.setattr(studio_operations, 'held_task_ids', lambda rows: set())
     exec(compile(tree, str(source), 'exec'), namespace)
     namespace['_sync_job'] = Mock(return_value=job)
     access = ModuleType('app.services.qa_workprint_access')

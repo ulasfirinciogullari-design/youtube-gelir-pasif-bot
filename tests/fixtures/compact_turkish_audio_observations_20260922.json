@@ -1,0 +1,3228 @@
+{
+  "source_task_id": "9ea74d1b-0e6a-5d39-adb3-907ff3319674",
+  "expected": "Kredi kartı manyetik şeridinin patentini geliştiren şirket neden almadı? Mühendisler sistemi tasarlarken asıl amaç banka işlemlerini hızlandırmaktı. Patent alınsaydı standartlaşma gecikecek, bankalar yeni altyapıdan çekinecekti. Teknoloji serbest bırakılarak tüm küresel bankacılığın ortak standardı yapıldı. Geliştirmeye harcanan her bir dolar, bilgisayar satışında binbeşyüz dolar kazandırdı. Bazen bir standardı paylaşmak, tek başına saklamaktan çok daha kârlıdır.",
+  "observations": [
+    {
+      "payload": {
+        "duration": 35.93000030517578,
+        "language": "turkish",
+        "task": "transcribe",
+        "text": "Kredi kartı manyetik şeridinin patentini geliştiren şirket neden almadı? Mühendisler. Sistemi tasarlarken asıl amaç banka işlemlerini hızlandırmaktı. Patent alınsaydı standartlaşma gecikecek, bankalar yeni altyapıdan çekinecekti. Teknoloji serbest bırakılarak tüm küresel bankacılığın ortak standardı yapıldı. Geliştirmeye harcanan her bir dolar, bilgisayar satışında 1500 dolar kazandırdı. Bazen bir standardı paylaşmak, tek başına saklamaktan çok daha karlıdır.",
+        "usage": {
+          "seconds": 36,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.4399999976158142,
+            "start": 0.0,
+            "word": "Kredi"
+          },
+          {
+            "end": 0.8399999737739563,
+            "start": 0.4399999976158142,
+            "word": "kartı"
+          },
+          {
+            "end": 1.3600000143051147,
+            "start": 0.8399999737739563,
+            "word": "manyetik"
+          },
+          {
+            "end": 1.8600000143051147,
+            "start": 1.3600000143051147,
+            "word": "şeridinin"
+          },
+          {
+            "end": 2.4200000762939453,
+            "start": 1.8600000143051147,
+            "word": "patentini"
+          },
+          {
+            "end": 3.0,
+            "start": 2.4200000762939453,
+            "word": "geliştiren"
+          },
+          {
+            "end": 3.5199999809265137,
+            "start": 3.0,
+            "word": "şirket"
+          },
+          {
+            "end": 4.0,
+            "start": 3.5199999809265137,
+            "word": "neden"
+          },
+          {
+            "end": 4.360000133514404,
+            "start": 4.0,
+            "word": "almadı"
+          },
+          {
+            "end": 5.78000020980835,
+            "start": 5.139999866485596,
+            "word": "Mühendisler"
+          },
+          {
+            "end": 7.199999809265137,
+            "start": 7.139999866485596,
+            "word": "Sistemi"
+          },
+          {
+            "end": 8.119999885559082,
+            "start": 7.199999809265137,
+            "word": "tasarlarken"
+          },
+          {
+            "end": 8.680000305175781,
+            "start": 8.119999885559082,
+            "word": "asıl"
+          },
+          {
+            "end": 9.359999656677246,
+            "start": 8.680000305175781,
+            "word": "amaç"
+          },
+          {
+            "end": 9.800000190734863,
+            "start": 9.359999656677246,
+            "word": "banka"
+          },
+          {
+            "end": 10.420000076293945,
+            "start": 9.800000190734863,
+            "word": "işlemlerini"
+          },
+          {
+            "end": 11.5,
+            "start": 10.420000076293945,
+            "word": "hızlandırmaktı"
+          },
+          {
+            "end": 12.319999694824219,
+            "start": 12.180000305175781,
+            "word": "Patent"
+          },
+          {
+            "end": 13.279999732971191,
+            "start": 12.319999694824219,
+            "word": "alınsaydı"
+          },
+          {
+            "end": 14.34000015258789,
+            "start": 13.279999732971191,
+            "word": "standartlaşma"
+          },
+          {
+            "end": 14.960000038146973,
+            "start": 14.34000015258789,
+            "word": "gecikecek"
+          },
+          {
+            "end": 15.979999542236328,
+            "start": 15.600000381469727,
+            "word": "bankalar"
+          },
+          {
+            "end": 16.34000015258789,
+            "start": 15.979999542236328,
+            "word": "yeni"
+          },
+          {
+            "end": 17.020000457763672,
+            "start": 16.34000015258789,
+            "word": "altyapıdan"
+          },
+          {
+            "end": 18.040000915527344,
+            "start": 17.020000457763672,
+            "word": "çekinecekti"
+          },
+          {
+            "end": 18.959999084472656,
+            "start": 18.6200008392334,
+            "word": "Teknoloji"
+          },
+          {
+            "end": 19.440000534057617,
+            "start": 18.959999084472656,
+            "word": "serbest"
+          },
+          {
+            "end": 20.540000915527344,
+            "start": 19.440000534057617,
+            "word": "bırakılarak"
+          },
+          {
+            "end": 20.84000015258789,
+            "start": 20.540000915527344,
+            "word": "tüm"
+          },
+          {
+            "end": 21.360000610351562,
+            "start": 20.84000015258789,
+            "word": "küresel"
+          },
+          {
+            "end": 22.100000381469727,
+            "start": 21.360000610351562,
+            "word": "bankacılığın"
+          },
+          {
+            "end": 22.940000534057617,
+            "start": 22.100000381469727,
+            "word": "ortak"
+          },
+          {
+            "end": 23.579999923706055,
+            "start": 22.940000534057617,
+            "word": "standardı"
+          },
+          {
+            "end": 24.020000457763672,
+            "start": 23.579999923706055,
+            "word": "yapıldı"
+          },
+          {
+            "end": 25.219999313354492,
+            "start": 24.020000457763672,
+            "word": "Geliştirmeye"
+          },
+          {
+            "end": 25.739999771118164,
+            "start": 25.219999313354492,
+            "word": "harcanan"
+          },
+          {
+            "end": 26.100000381469727,
+            "start": 25.739999771118164,
+            "word": "her"
+          },
+          {
+            "end": 26.420000076293945,
+            "start": 26.100000381469727,
+            "word": "bir"
+          },
+          {
+            "end": 26.68000030517578,
+            "start": 26.420000076293945,
+            "word": "dolar"
+          },
+          {
+            "end": 27.700000762939453,
+            "start": 27.200000762939453,
+            "word": "bilgisayar"
+          },
+          {
+            "end": 28.299999237060547,
+            "start": 27.700000762939453,
+            "word": "satışında"
+          },
+          {
+            "end": 29.260000228881836,
+            "start": 28.299999237060547,
+            "word": "1500"
+          },
+          {
+            "end": 29.68000030517578,
+            "start": 29.260000228881836,
+            "word": "dolar"
+          },
+          {
+            "end": 30.780000686645508,
+            "start": 29.68000030517578,
+            "word": "kazandırdı"
+          },
+          {
+            "end": 31.3799991607666,
+            "start": 31.139999389648438,
+            "word": "Bazen"
+          },
+          {
+            "end": 31.719999313354492,
+            "start": 31.3799991607666,
+            "word": "bir"
+          },
+          {
+            "end": 32.2400016784668,
+            "start": 31.719999313354492,
+            "word": "standardı"
+          },
+          {
+            "end": 32.97999954223633,
+            "start": 32.2400016784668,
+            "word": "paylaşmak"
+          },
+          {
+            "end": 33.439998626708984,
+            "start": 33.34000015258789,
+            "word": "tek"
+          },
+          {
+            "end": 33.84000015258789,
+            "start": 33.439998626708984,
+            "word": "başına"
+          },
+          {
+            "end": 34.58000183105469,
+            "start": 33.84000015258789,
+            "word": "saklamaktan"
+          },
+          {
+            "end": 34.900001525878906,
+            "start": 34.58000183105469,
+            "word": "çok"
+          },
+          {
+            "end": 35.15999984741211,
+            "start": 34.900001525878906,
+            "word": "daha"
+          },
+          {
+            "end": 35.63999938964844,
+            "start": 35.15999984741211,
+            "word": "karlıdır"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "duration": 35.97999954223633,
+        "language": "turkish",
+        "task": "transcribe",
+        "text": "Kredi kartı manyetik şeridinin patentini geliştiren şirket neden almadı? Mühendisler. Sistemi tasarlarken asıl amaç banka işlemlerini hızlandırmaktı. Patent alınsaydı standartlaşma gecikecek, bankalar yeni altyapıdan çekinecekti. Teknoloji serbest bırakılarak tüm küresel bankacılığın ortak standardı yapıldı. Geliştirmeye harcanan her bir dolar, bilgisayar satışında 1500 dolar kazandırdı. Bazen bir standardı paylaşmak, tek başına saklamaktan çok daha karlıdır.",
+        "usage": {
+          "seconds": 36,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.4399999976158142,
+            "start": 0.0,
+            "word": "Kredi"
+          },
+          {
+            "end": 0.7799999713897705,
+            "start": 0.4399999976158142,
+            "word": "kartı"
+          },
+          {
+            "end": 1.2999999523162842,
+            "start": 0.7799999713897705,
+            "word": "manyetik"
+          },
+          {
+            "end": 1.7999999523162842,
+            "start": 1.2999999523162842,
+            "word": "şeridinin"
+          },
+          {
+            "end": 2.4000000953674316,
+            "start": 1.7999999523162842,
+            "word": "patentini"
+          },
+          {
+            "end": 2.9200000762939453,
+            "start": 2.4000000953674316,
+            "word": "geliştiren"
+          },
+          {
+            "end": 3.4600000381469727,
+            "start": 2.9200000762939453,
+            "word": "şirket"
+          },
+          {
+            "end": 3.9600000381469727,
+            "start": 3.4600000381469727,
+            "word": "neden"
+          },
+          {
+            "end": 4.28000020980835,
+            "start": 3.9600000381469727,
+            "word": "almadı"
+          },
+          {
+            "end": 5.639999866485596,
+            "start": 4.980000019073486,
+            "word": "Mühendisler"
+          },
+          {
+            "end": 6.920000076293945,
+            "start": 6.860000133514404,
+            "word": "Sistemi"
+          },
+          {
+            "end": 7.78000020980835,
+            "start": 6.920000076293945,
+            "word": "tasarlarken"
+          },
+          {
+            "end": 8.260000228881836,
+            "start": 7.78000020980835,
+            "word": "asıl"
+          },
+          {
+            "end": 8.960000038146973,
+            "start": 8.260000228881836,
+            "word": "amaç"
+          },
+          {
+            "end": 9.399999618530273,
+            "start": 8.960000038146973,
+            "word": "banka"
+          },
+          {
+            "end": 9.979999542236328,
+            "start": 9.399999618530273,
+            "word": "işlemlerini"
+          },
+          {
+            "end": 11.039999961853027,
+            "start": 9.979999542236328,
+            "word": "hızlandırmaktı"
+          },
+          {
+            "end": 11.920000076293945,
+            "start": 11.760000228881836,
+            "word": "Patent"
+          },
+          {
+            "end": 12.699999809265137,
+            "start": 11.920000076293945,
+            "word": "alınsaydı"
+          },
+          {
+            "end": 13.84000015258789,
+            "start": 12.699999809265137,
+            "word": "standartlaşma"
+          },
+          {
+            "end": 14.460000038146973,
+            "start": 13.84000015258789,
+            "word": "gecikecek"
+          },
+          {
+            "end": 15.460000038146973,
+            "start": 15.239999771118164,
+            "word": "bankalar"
+          },
+          {
+            "end": 15.800000190734863,
+            "start": 15.460000038146973,
+            "word": "yeni"
+          },
+          {
+            "end": 16.459999084472656,
+            "start": 15.800000190734863,
+            "word": "altyapıdan"
+          },
+          {
+            "end": 17.68000030517578,
+            "start": 16.459999084472656,
+            "word": "çekinecekti"
+          },
+          {
+            "end": 18.34000015258789,
+            "start": 18.020000457763672,
+            "word": "Teknoloji"
+          },
+          {
+            "end": 18.780000686645508,
+            "start": 18.34000015258789,
+            "word": "serbest"
+          },
+          {
+            "end": 19.920000076293945,
+            "start": 18.780000686645508,
+            "word": "bırakılarak"
+          },
+          {
+            "end": 20.200000762939453,
+            "start": 19.920000076293945,
+            "word": "tüm"
+          },
+          {
+            "end": 20.700000762939453,
+            "start": 20.200000762939453,
+            "word": "küresel"
+          },
+          {
+            "end": 21.440000534057617,
+            "start": 20.700000762939453,
+            "word": "bankacılığın"
+          },
+          {
+            "end": 22.200000762939453,
+            "start": 21.440000534057617,
+            "word": "ortak"
+          },
+          {
+            "end": 22.780000686645508,
+            "start": 22.200000762939453,
+            "word": "standardı"
+          },
+          {
+            "end": 23.239999771118164,
+            "start": 22.780000686645508,
+            "word": "yapıldı"
+          },
+          {
+            "end": 24.420000076293945,
+            "start": 23.239999771118164,
+            "word": "Geliştirmeye"
+          },
+          {
+            "end": 24.979999542236328,
+            "start": 24.420000076293945,
+            "word": "harcanan"
+          },
+          {
+            "end": 25.280000686645508,
+            "start": 24.979999542236328,
+            "word": "her"
+          },
+          {
+            "end": 25.600000381469727,
+            "start": 25.280000686645508,
+            "word": "bir"
+          },
+          {
+            "end": 25.899999618530273,
+            "start": 25.600000381469727,
+            "word": "dolar"
+          },
+          {
+            "end": 27.020000457763672,
+            "start": 26.459999084472656,
+            "word": "bilgisayar"
+          },
+          {
+            "end": 27.639999389648438,
+            "start": 27.020000457763672,
+            "word": "satışında"
+          },
+          {
+            "end": 28.68000030517578,
+            "start": 27.639999389648438,
+            "word": "1500"
+          },
+          {
+            "end": 29.059999465942383,
+            "start": 28.68000030517578,
+            "word": "dolar"
+          },
+          {
+            "end": 30.020000457763672,
+            "start": 29.059999465942383,
+            "word": "kazandırdı"
+          },
+          {
+            "end": 30.860000610351562,
+            "start": 30.579999923706055,
+            "word": "Bazen"
+          },
+          {
+            "end": 31.219999313354492,
+            "start": 30.860000610351562,
+            "word": "bir"
+          },
+          {
+            "end": 31.780000686645508,
+            "start": 31.219999313354492,
+            "word": "standardı"
+          },
+          {
+            "end": 32.619998931884766,
+            "start": 31.780000686645508,
+            "word": "paylaşmak"
+          },
+          {
+            "end": 33.18000030517578,
+            "start": 33.060001373291016,
+            "word": "tek"
+          },
+          {
+            "end": 33.58000183105469,
+            "start": 33.18000030517578,
+            "word": "başına"
+          },
+          {
+            "end": 34.560001373291016,
+            "start": 33.58000183105469,
+            "word": "saklamaktan"
+          },
+          {
+            "end": 34.900001525878906,
+            "start": 34.560001373291016,
+            "word": "çok"
+          },
+          {
+            "end": 35.18000030517578,
+            "start": 34.900001525878906,
+            "word": "daha"
+          },
+          {
+            "end": 35.68000030517578,
+            "start": 35.18000030517578,
+            "word": "karlıdır"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "duration": 35.790000915527344,
+        "language": "turkish",
+        "task": "transcribe",
+        "text": "Kredi kartı manyetik şeridinin patentini geliştiren şirket neden almadı? Mühendisler sistemi tasarlarken asıl amaç banka işlemlerini hızlandırmaktı. Patent alınsaydı standartlaşma gecikecek, bankalar yeni altyapıdan çekinecekti. Teknoloji serbest bırakılarak tüm küresel bankacılığın ortak standardı yapıldı. Geliştirmeye harcanan her bir dolar bilgisayar satışında 1500 dolar kazandırdı. Bazen bir standardı paylaşmak tek başına saklamaktan çok daha karlıdır.",
+        "usage": {
+          "seconds": 36,
+          "type": "duration"
+        },
+        "words": [
+          {
+            "end": 0.46000000834465027,
+            "start": 0.0,
+            "word": "Kredi"
+          },
+          {
+            "end": 0.8199999928474426,
+            "start": 0.46000000834465027,
+            "word": "kartı"
+          },
+          {
+            "end": 1.2999999523162842,
+            "start": 0.8199999928474426,
+            "word": "manyetik"
+          },
+          {
+            "end": 1.8200000524520874,
+            "start": 1.2999999523162842,
+            "word": "şeridinin"
+          },
+          {
+            "end": 2.4600000381469727,
+            "start": 1.8200000524520874,
+            "word": "patentini"
+          },
+          {
+            "end": 3.0199999809265137,
+            "start": 2.4600000381469727,
+            "word": "geliştiren"
+          },
+          {
+            "end": 3.5799999237060547,
+            "start": 3.0199999809265137,
+            "word": "şirket"
+          },
+          {
+            "end": 4.059999942779541,
+            "start": 3.5799999237060547,
+            "word": "neden"
+          },
+          {
+            "end": 4.460000038146973,
+            "start": 4.059999942779541,
+            "word": "almadı"
+          },
+          {
+            "end": 5.760000228881836,
+            "start": 5.159999847412109,
+            "word": "Mühendisler"
+          },
+          {
+            "end": 6.159999847412109,
+            "start": 5.760000228881836,
+            "word": "sistemi"
+          },
+          {
+            "end": 7.059999942779541,
+            "start": 6.159999847412109,
+            "word": "tasarlarken"
+          },
+          {
+            "end": 7.619999885559082,
+            "start": 7.059999942779541,
+            "word": "asıl"
+          },
+          {
+            "end": 8.359999656677246,
+            "start": 7.619999885559082,
+            "word": "amaç"
+          },
+          {
+            "end": 8.819999694824219,
+            "start": 8.359999656677246,
+            "word": "banka"
+          },
+          {
+            "end": 9.4399995803833,
+            "start": 8.819999694824219,
+            "word": "işlemlerini"
+          },
+          {
+            "end": 10.520000457763672,
+            "start": 9.4399995803833,
+            "word": "hızlandırmaktı"
+          },
+          {
+            "end": 11.359999656677246,
+            "start": 11.220000267028809,
+            "word": "Patent"
+          },
+          {
+            "end": 12.300000190734863,
+            "start": 11.359999656677246,
+            "word": "alınsaydı"
+          },
+          {
+            "end": 13.399999618530273,
+            "start": 12.300000190734863,
+            "word": "standartlaşma"
+          },
+          {
+            "end": 14.0600004196167,
+            "start": 13.399999618530273,
+            "word": "gecikecek"
+          },
+          {
+            "end": 15.15999984741211,
+            "start": 14.800000190734863,
+            "word": "bankalar"
+          },
+          {
+            "end": 15.600000381469727,
+            "start": 15.15999984741211,
+            "word": "yeni"
+          },
+          {
+            "end": 16.299999237060547,
+            "start": 15.600000381469727,
+            "word": "altyapıdan"
+          },
+          {
+            "end": 17.559999465942383,
+            "start": 16.299999237060547,
+            "word": "çekinecekti"
+          },
+          {
+            "end": 18.219999313354492,
+            "start": 17.8799991607666,
+            "word": "Teknoloji"
+          },
+          {
+            "end": 18.65999984741211,
+            "start": 18.219999313354492,
+            "word": "serbest"
+          },
+          {
+            "end": 19.799999237060547,
+            "start": 18.65999984741211,
+            "word": "bırakılarak"
+          },
+          {
+            "end": 20.100000381469727,
+            "start": 19.799999237060547,
+            "word": "tüm"
+          },
+          {
+            "end": 20.6200008392334,
+            "start": 20.100000381469727,
+            "word": "küresel"
+          },
+          {
+            "end": 21.360000610351562,
+            "start": 20.6200008392334,
+            "word": "bankacılığın"
+          },
+          {
+            "end": 22.079999923706055,
+            "start": 21.360000610351562,
+            "word": "ortak"
+          },
+          {
+            "end": 22.68000030517578,
+            "start": 22.079999923706055,
+            "word": "standardı"
+          },
+          {
+            "end": 23.1200008392334,
+            "start": 22.68000030517578,
+            "word": "yapıldı"
+          },
+          {
+            "end": 24.31999969482422,
+            "start": 23.899999618530273,
+            "word": "Geliştirmeye"
+          },
+          {
+            "end": 24.8799991607666,
+            "start": 24.31999969482422,
+            "word": "harcanan"
+          },
+          {
+            "end": 25.18000030517578,
+            "start": 24.8799991607666,
+            "word": "her"
+          },
+          {
+            "end": 25.479999542236328,
+            "start": 25.18000030517578,
+            "word": "bir"
+          },
+          {
+            "end": 25.739999771118164,
+            "start": 25.479999542236328,
+            "word": "dolar"
+          },
+          {
+            "end": 26.780000686645508,
+            "start": 25.739999771118164,
+            "word": "bilgisayar"
+          },
+          {
+            "end": 27.3799991607666,
+            "start": 26.780000686645508,
+            "word": "satışında"
+          },
+          {
+            "end": 28.479999542236328,
+            "start": 27.3799991607666,
+            "word": "1500"
+          },
+          {
+            "end": 28.8799991607666,
+            "start": 28.479999542236328,
+            "word": "dolar"
+          },
+          {
+            "end": 29.739999771118164,
+            "start": 28.8799991607666,
+            "word": "kazandırdı"
+          },
+          {
+            "end": 30.700000762939453,
+            "start": 30.0,
+            "word": "Bazen"
+          },
+          {
+            "end": 31.0,
+            "start": 30.700000762939453,
+            "word": "bir"
+          },
+          {
+            "end": 31.540000915527344,
+            "start": 31.0,
+            "word": "standardı"
+          },
+          {
+            "end": 32.2599983215332,
+            "start": 31.540000915527344,
+            "word": "paylaşmak"
+          },
+          {
+            "end": 32.91999816894531,
+            "start": 32.2599983215332,
+            "word": "tek"
+          },
+          {
+            "end": 33.31999969482422,
+            "start": 32.91999816894531,
+            "word": "başına"
+          },
+          {
+            "end": 34.380001068115234,
+            "start": 33.31999969482422,
+            "word": "saklamaktan"
+          },
+          {
+            "end": 34.63999938964844,
+            "start": 34.380001068115234,
+            "word": "çok"
+          },
+          {
+            "end": 35.0,
+            "start": 34.63999938964844,
+            "word": "daha"
+          },
+          {
+            "end": 35.540000915527344,
+            "start": 35.0,
+            "word": "karlıdır"
+          }
+        ]
+      },
+      "provider": "openai"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 35.9803125,
+        "language_code": "tur",
+        "language_probability": 1.0,
+        "text": "Kredi kartı manyetik şeridinin patentini geliştiren şirket neden almadı? Mühendisler. Sistemi tasarlarken asıl amaç banka işlemlerini hızlandırmaktı. Patent alınsaydı standartlaşma gecikecek, bankalar yeni altyapıdan çekinecekti. Teknoloji serbest bırakılarak tüm küresel bankacılığın ortak standardı yapıldı. Geliştirmeye harcanan her bir dolar, bilgisayar satışında bin beş yüz dolar kazandırdı. Bazen bir standardı paylaşmak tek başına saklamaktan çok daha kârlıdır.",
+        "transcription_id": "9MPZWXB5xMCL6vEqmYS8",
+        "words": [
+          {
+            "end": 0.3,
+            "logprob": -0.001079189986921847,
+            "start": 0.08,
+            "text": "Kredi",
+            "type": "word"
+          },
+          {
+            "end": 0.38,
+            "logprob": -0.0007294139941222966,
+            "start": 0.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.68,
+            "logprob": -0.0005835311952978372,
+            "start": 0.38,
+            "text": "kartı",
+            "type": "word"
+          },
+          {
+            "end": 0.8,
+            "logprob": -0.00019369633810129017,
+            "start": 0.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.22,
+            "logprob": -0.0003082807452301495,
+            "start": 0.8,
+            "text": "manyetik",
+            "type": "word"
+          },
+          {
+            "end": 1.3,
+            "logprob": -9.48860906646587e-05,
+            "start": 1.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.84,
+            "logprob": -0.0014972959284528366,
+            "start": 1.3,
+            "text": "şeridinin",
+            "type": "word"
+          },
+          {
+            "end": 1.88,
+            "logprob": -0.0006133820279501379,
+            "start": 1.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.38,
+            "logprob": -0.00040939818878390116,
+            "start": 1.88,
+            "text": "patentini",
+            "type": "word"
+          },
+          {
+            "end": 2.44,
+            "logprob": -0.001214005402289331,
+            "start": 2.38,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.0,
+            "logprob": -0.0007376060922979378,
+            "start": 2.44,
+            "text": "geliştiren",
+            "type": "word"
+          },
+          {
+            "end": 3.04,
+            "logprob": -3.0397906812140718e-05,
+            "start": 3.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.44,
+            "logprob": -3.0397906812140718e-05,
+            "start": 3.04,
+            "text": "şirket",
+            "type": "word"
+          },
+          {
+            "end": 3.62,
+            "logprob": -7.629365427419543e-06,
+            "start": 3.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.9,
+            "logprob": -7.629365427419543e-06,
+            "start": 3.62,
+            "text": "neden",
+            "type": "word"
+          },
+          {
+            "end": 3.98,
+            "logprob": -0.0003014348621945828,
+            "start": 3.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.34,
+            "logprob": -0.00012285663732265157,
+            "start": 3.98,
+            "text": "almadı?",
+            "type": "word"
+          },
+          {
+            "end": 4.82,
+            "logprob": -0.00010477947944309562,
+            "start": 4.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.6,
+            "logprob": -0.013011385703671033,
+            "start": 4.82,
+            "text": "Mühendisler.",
+            "type": "word"
+          },
+          {
+            "end": 5.6,
+            "logprob": -0.03009345382452011,
+            "start": 5.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.9,
+            "logprob": -0.03009345382452011,
+            "start": 6.5,
+            "text": "Sistemi",
+            "type": "word"
+          },
+          {
+            "end": 7.0,
+            "logprob": -2.4199192921514623e-05,
+            "start": 6.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.92,
+            "logprob": -0.00015715995571306186,
+            "start": 7.0,
+            "text": "tasarlarken",
+            "type": "word"
+          },
+          {
+            "end": 7.98,
+            "logprob": -2.6940935640595853e-05,
+            "start": 7.92,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.22,
+            "logprob": -5.19139866810292e-05,
+            "start": 7.98,
+            "text": "asıl",
+            "type": "word"
+          },
+          {
+            "end": 8.28,
+            "logprob": -3.123234637314454e-05,
+            "start": 8.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.58,
+            "logprob": -3.123234637314454e-05,
+            "start": 8.3,
+            "text": "amaç",
+            "type": "word"
+          },
+          {
+            "end": 8.98,
+            "logprob": -0.0005698964232578874,
+            "start": 8.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.34,
+            "logprob": -0.0004559171386063099,
+            "start": 8.98,
+            "text": "banka",
+            "type": "word"
+          },
+          {
+            "end": 9.38,
+            "logprob": -0.0009345216676592827,
+            "start": 9.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.0,
+            "logprob": -0.0006799122148053852,
+            "start": 9.38,
+            "text": "işlemlerini",
+            "type": "word"
+          },
+          {
+            "end": 10.06,
+            "logprob": -5.435795901576057e-05,
+            "start": 10.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.0,
+            "logprob": -0.0006625857437020007,
+            "start": 10.06,
+            "text": "hızlandırmaktı.",
+            "type": "word"
+          },
+          {
+            "end": 11.5,
+            "logprob": -0.0002426806604489684,
+            "start": 11.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.94,
+            "logprob": -0.0002426806604489684,
+            "start": 11.5,
+            "text": "Patent",
+            "type": "word"
+          },
+          {
+            "end": 11.98,
+            "logprob": -0.01027496624737978,
+            "start": 11.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.64,
+            "logprob": -0.004614861962585969,
+            "start": 12.0,
+            "text": "alınsaydı",
+            "type": "word"
+          },
+          {
+            "end": 12.98,
+            "logprob": -0.011539734899997711,
+            "start": 12.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.78,
+            "logprob": -0.0075091782312553665,
+            "start": 12.98,
+            "text": "standartlaşma",
+            "type": "word"
+          },
+          {
+            "end": 13.86,
+            "logprob": -0.0004993622424080968,
+            "start": 13.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.5,
+            "logprob": -0.0001641136075704708,
+            "start": 13.86,
+            "text": "gecikecek,",
+            "type": "word"
+          },
+          {
+            "end": 14.5,
+            "logprob": -1.1920922133867862e-06,
+            "start": 14.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.44,
+            "logprob": -4.827958150599443e-06,
+            "start": 14.92,
+            "text": "bankalar",
+            "type": "word"
+          },
+          {
+            "end": 15.54,
+            "logprob": -1.6689286894688848e-06,
+            "start": 15.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.8,
+            "logprob": -1.6689286894688848e-06,
+            "start": 15.54,
+            "text": "yeni",
+            "type": "word"
+          },
+          {
+            "end": 15.88,
+            "logprob": -0.007612504996359348,
+            "start": 15.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.42,
+            "logprob": -0.001694691578131824,
+            "start": 15.88,
+            "text": "altyapıdan",
+            "type": "word"
+          },
+          {
+            "end": 16.52,
+            "logprob": -0.0007120219524949789,
+            "start": 16.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.26,
+            "logprob": -0.0011605449119258537,
+            "start": 16.52,
+            "text": "çekinecekti.",
+            "type": "word"
+          },
+          {
+            "end": 17.76,
+            "logprob": -0.0029721155297011137,
+            "start": 17.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.28,
+            "logprob": -0.0009993676597635688,
+            "start": 17.76,
+            "text": "Teknoloji",
+            "type": "word"
+          },
+          {
+            "end": 18.4,
+            "logprob": -8.344646857949556e-07,
+            "start": 18.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.84,
+            "logprob": -1.924376176378116e-06,
+            "start": 18.4,
+            "text": "serbest",
+            "type": "word"
+          },
+          {
+            "end": 18.86,
+            "logprob": -0.0002087136817863211,
+            "start": 18.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.5,
+            "logprob": -0.0002558436707741666,
+            "start": 18.86,
+            "text": "bırakılarak",
+            "type": "word"
+          },
+          {
+            "end": 19.94,
+            "logprob": -2.8132995794294402e-05,
+            "start": 19.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.1,
+            "logprob": -2.8132995794294402e-05,
+            "start": 19.94,
+            "text": "tüm",
+            "type": "word"
+          },
+          {
+            "end": 20.2,
+            "logprob": -5.960446742392378e-06,
+            "start": 20.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.64,
+            "logprob": -6.897084988720183e-06,
+            "start": 20.2,
+            "text": "küresel",
+            "type": "word"
+          },
+          {
+            "end": 20.74,
+            "logprob": -0.0001656871900195256,
+            "start": 20.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.44,
+            "logprob": -0.0003860959964185895,
+            "start": 20.74,
+            "text": "bankacılığın",
+            "type": "word"
+          },
+          {
+            "end": 21.78,
+            "logprob": -8.22540732769994e-06,
+            "start": 21.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.12,
+            "logprob": -8.22540732769994e-06,
+            "start": 21.78,
+            "text": "ortak",
+            "type": "word"
+          },
+          {
+            "end": 22.2,
+            "logprob": -0.001064806361682713,
+            "start": 22.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.8,
+            "logprob": -0.0009465077891937944,
+            "start": 22.2,
+            "text": "standardı",
+            "type": "word"
+          },
+          {
+            "end": 22.84,
+            "logprob": -0.0015370947076007724,
+            "start": 22.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.26,
+            "logprob": -0.000581655696805683,
+            "start": 22.84,
+            "text": "yapıldı.",
+            "type": "word"
+          },
+          {
+            "end": 23.76,
+            "logprob": -0.00012373158824630082,
+            "start": 23.26,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.38,
+            "logprob": -0.0017627790436260209,
+            "start": 23.76,
+            "text": "Geliştirmeye",
+            "type": "word"
+          },
+          {
+            "end": 24.42,
+            "logprob": -1.1920928244535389e-07,
+            "start": 24.38,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.02,
+            "logprob": -0.0001393596502881067,
+            "start": 24.42,
+            "text": "harcanan",
+            "type": "word"
+          },
+          {
+            "end": 25.06,
+            "logprob": -2.3841855067985307e-07,
+            "start": 25.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.24,
+            "logprob": -2.3841855067985307e-07,
+            "start": 25.06,
+            "text": "her",
+            "type": "word"
+          },
+          {
+            "end": 25.3,
+            "logprob": -0.0008144637104123831,
+            "start": 25.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.44,
+            "logprob": -0.0008144637104123831,
+            "start": 25.3,
+            "text": "bir",
+            "type": "word"
+          },
+          {
+            "end": 25.52,
+            "logprob": -0.00024279984063468874,
+            "start": 25.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.9,
+            "logprob": -0.047063579428746984,
+            "start": 25.52,
+            "text": "dolar,",
+            "type": "word"
+          },
+          {
+            "end": 25.9,
+            "logprob": -9.536738616588991e-07,
+            "start": 25.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.94,
+            "logprob": -1.0013575320044765e-06,
+            "start": 26.38,
+            "text": "bilgisayar",
+            "type": "word"
+          },
+          {
+            "end": 27.04,
+            "logprob": -0.00016902448260225356,
+            "start": 26.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.96,
+            "logprob": -0.0001156245416495949,
+            "start": 27.04,
+            "text": "satışında",
+            "type": "word"
+          },
+          {
+            "end": 28.0,
+            "logprob": -9.667406266089529e-05,
+            "start": 27.96,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.16,
+            "logprob": -9.667406266089529e-05,
+            "start": 28.0,
+            "text": "bin",
+            "type": "word"
+          },
+          {
+            "end": 28.26,
+            "logprob": -0.00033945043105632067,
+            "start": 28.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.48,
+            "logprob": -0.00033945043105632067,
+            "start": 28.26,
+            "text": "beş",
+            "type": "word"
+          },
+          {
+            "end": 28.52,
+            "logprob": -0.0015215021558105946,
+            "start": 28.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.66,
+            "logprob": -0.0015215021558105946,
+            "start": 28.52,
+            "text": "yüz",
+            "type": "word"
+          },
+          {
+            "end": 28.74,
+            "logprob": -1.7762025890988298e-05,
+            "start": 28.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.02,
+            "logprob": -1.7762025890988298e-05,
+            "start": 28.74,
+            "text": "dolar",
+            "type": "word"
+          },
+          {
+            "end": 29.12,
+            "logprob": -5.411955135059543e-05,
+            "start": 29.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.88,
+            "logprob": -0.00027522559254901,
+            "start": 29.12,
+            "text": "kazandırdı.",
+            "type": "word"
+          },
+          {
+            "end": 30.36,
+            "logprob": -0.0001037067049765028,
+            "start": 29.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.8,
+            "logprob": -2.9038264619885014e-05,
+            "start": 30.36,
+            "text": "Bazen",
+            "type": "word"
+          },
+          {
+            "end": 30.92,
+            "logprob": -2.0265373677830212e-05,
+            "start": 30.8,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 31.08,
+            "logprob": -2.0265373677830212e-05,
+            "start": 30.92,
+            "text": "bir",
+            "type": "word"
+          },
+          {
+            "end": 31.18,
+            "logprob": -0.0009226117981597781,
+            "start": 31.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 31.82,
+            "logprob": -0.0008201391125655593,
+            "start": 31.18,
+            "text": "standardı",
+            "type": "word"
+          },
+          {
+            "end": 31.88,
+            "logprob": -1.1920922133867862e-06,
+            "start": 31.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 32.46,
+            "logprob": -1.5497194757093287e-06,
+            "start": 31.88,
+            "text": "paylaşmak",
+            "type": "word"
+          },
+          {
+            "end": 32.94,
+            "logprob": -0.6326157450675964,
+            "start": 32.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 33.14,
+            "logprob": -0.6326157450675964,
+            "start": 32.94,
+            "text": "tek",
+            "type": "word"
+          },
+          {
+            "end": 33.16,
+            "logprob": -0.00015186110977083445,
+            "start": 33.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 33.52,
+            "logprob": -0.00015186110977083445,
+            "start": 33.16,
+            "text": "başına",
+            "type": "word"
+          },
+          {
+            "end": 33.58,
+            "logprob": -3.576278118089249e-07,
+            "start": 33.52,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 34.34,
+            "logprob": -0.0001390269631232596,
+            "start": 33.58,
+            "text": "saklamaktan",
+            "type": "word"
+          },
+          {
+            "end": 34.62,
+            "logprob": -3.6954811548639555e-06,
+            "start": 34.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 34.78,
+            "logprob": -3.6954811548639555e-06,
+            "start": 34.62,
+            "text": "çok",
+            "type": "word"
+          },
+          {
+            "end": 34.84,
+            "logprob": -5.185469490243122e-05,
+            "start": 34.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 35.04,
+            "logprob": -5.185469490243122e-05,
+            "start": 34.84,
+            "text": "daha",
+            "type": "word"
+          },
+          {
+            "end": 35.14,
+            "logprob": -0.14324453473091125,
+            "start": 35.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 35.72,
+            "logprob": -0.0807330415591423,
+            "start": 35.14,
+            "text": "kârlıdır.",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 35.9335,
+        "language_code": "tur",
+        "language_probability": 1.0,
+        "text": "Kredi kartı manyetik şeridinin patentini geliştiren şirket neden almadı? Mühendisler sistemi tasarlarken asıl amaç banka işlemlerini hızlandırmaktı. Patent alınsaydı standartlaşma gecikecek, bankalar yeni altyapıdan çekinecekti. Teknoloji serbest bırakılarak tüm küresel bankacılığın ortak standardı yapıldı. Geliştirmeye harcanan her bir dolar bilgisayar satışında bin beş yüz dolar kazandırdı. Bazen bir standardı paylaşmak tek başına saklamaktan çok daha kârlıdır.",
+        "transcription_id": "tTUl6xHiRcp8zqWEkkAI",
+        "words": [
+          {
+            "end": 0.32,
+            "logprob": -0.0006043005967512726,
+            "start": 0.08,
+            "text": "Kredi",
+            "type": "word"
+          },
+          {
+            "end": 0.4,
+            "logprob": -0.0004558716027531773,
+            "start": 0.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.7,
+            "logprob": -0.00036505490975287104,
+            "start": 0.4,
+            "text": "kartı",
+            "type": "word"
+          },
+          {
+            "end": 0.84,
+            "logprob": -0.0002668739762157202,
+            "start": 0.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.28,
+            "logprob": -0.00038591810152865946,
+            "start": 0.84,
+            "text": "manyetik",
+            "type": "word"
+          },
+          {
+            "end": 1.36,
+            "logprob": -0.00010775939153973013,
+            "start": 1.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.88,
+            "logprob": -0.0004632530374995743,
+            "start": 1.36,
+            "text": "şeridinin",
+            "type": "word"
+          },
+          {
+            "end": 1.92,
+            "logprob": -0.0007340597221627831,
+            "start": 1.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.42,
+            "logprob": -0.00048981024853371,
+            "start": 1.92,
+            "text": "patentini",
+            "type": "word"
+          },
+          {
+            "end": 2.5,
+            "logprob": -0.0013631823239848018,
+            "start": 2.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.02,
+            "logprob": -0.0008267307843198068,
+            "start": 2.5,
+            "text": "geliştiren",
+            "type": "word"
+          },
+          {
+            "end": 3.12,
+            "logprob": -3.45700973412022e-05,
+            "start": 3.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.52,
+            "logprob": -3.45700973412022e-05,
+            "start": 3.12,
+            "text": "şirket",
+            "type": "word"
+          },
+          {
+            "end": 3.72,
+            "logprob": -2.5748875486897305e-05,
+            "start": 3.52,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.98,
+            "logprob": -2.5748875486897305e-05,
+            "start": 3.72,
+            "text": "neden",
+            "type": "word"
+          },
+          {
+            "end": 4.059,
+            "logprob": -0.00018952481332235038,
+            "start": 3.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.4,
+            "logprob": -0.00012056294274641135,
+            "start": 4.059,
+            "text": "almadı?",
+            "type": "word"
+          },
+          {
+            "end": 4.9,
+            "logprob": -7.545663538621739e-05,
+            "start": 4.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.6,
+            "logprob": -0.002924992608973427,
+            "start": 4.9,
+            "text": "Mühendisler",
+            "type": "word"
+          },
+          {
+            "end": 5.6,
+            "logprob": -0.30152130126953125,
+            "start": 5.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.24,
+            "logprob": -0.30152130126953125,
+            "start": 6.82,
+            "text": "sistemi",
+            "type": "word"
+          },
+          {
+            "end": 7.28,
+            "logprob": -3.886147169396281e-05,
+            "start": 7.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.3,
+            "logprob": -0.00012544476538261568,
+            "start": 7.28,
+            "text": "tasarlarken",
+            "type": "word"
+          },
+          {
+            "end": 8.36,
+            "logprob": -6.651657167822123e-05,
+            "start": 8.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.64,
+            "logprob": -0.00011628066567936912,
+            "start": 8.38,
+            "text": "asıl",
+            "type": "word"
+          },
+          {
+            "end": 8.7,
+            "logprob": -1.4781842764932662e-05,
+            "start": 8.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.0,
+            "logprob": -1.4781842764932662e-05,
+            "start": 8.7,
+            "text": "amaç",
+            "type": "word"
+          },
+          {
+            "end": 9.38,
+            "logprob": -0.00019929806876461953,
+            "start": 9.0,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.72,
+            "logprob": -0.00015946229686818468,
+            "start": 9.38,
+            "text": "banka",
+            "type": "word"
+          },
+          {
+            "end": 9.78,
+            "logprob": -0.0007508557755500078,
+            "start": 9.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.44,
+            "logprob": -0.0005463370205440945,
+            "start": 9.78,
+            "text": "işlemlerini",
+            "type": "word"
+          },
+          {
+            "end": 10.48,
+            "logprob": -3.325883881188929e-05,
+            "start": 10.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.42,
+            "logprob": -0.0021147095455053963,
+            "start": 10.48,
+            "text": "hızlandırmaktı.",
+            "type": "word"
+          },
+          {
+            "end": 11.92,
+            "logprob": -0.0003846143954433501,
+            "start": 11.42,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.32,
+            "logprob": -0.0003846143954433501,
+            "start": 11.92,
+            "text": "Patent",
+            "type": "word"
+          },
+          {
+            "end": 12.38,
+            "logprob": -0.01482681930065155,
+            "start": 12.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.04,
+            "logprob": -0.0066749748768617995,
+            "start": 12.38,
+            "text": "alınsaydı",
+            "type": "word"
+          },
+          {
+            "end": 13.52,
+            "logprob": -0.03425821661949158,
+            "start": 13.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.3,
+            "logprob": -0.021322180328962322,
+            "start": 13.52,
+            "text": "standartlaşma",
+            "type": "word"
+          },
+          {
+            "end": 14.36,
+            "logprob": -0.0037263259291648865,
+            "start": 14.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.98,
+            "logprob": -0.0011341933907260682,
+            "start": 14.36,
+            "text": "gecikecek,",
+            "type": "word"
+          },
+          {
+            "end": 14.98,
+            "logprob": -1.4305104514278355e-06,
+            "start": 14.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.94,
+            "logprob": -4.053104191825696e-06,
+            "start": 15.4,
+            "text": "bankalar",
+            "type": "word"
+          },
+          {
+            "end": 16.1,
+            "logprob": -1.6689286894688848e-06,
+            "start": 15.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.34,
+            "logprob": -1.6689286894688848e-06,
+            "start": 16.1,
+            "text": "yeni",
+            "type": "word"
+          },
+          {
+            "end": 16.42,
+            "logprob": -0.02975747548043728,
+            "start": 16.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.98,
+            "logprob": -0.00619107661950693,
+            "start": 16.42,
+            "text": "altyapıdan",
+            "type": "word"
+          },
+          {
+            "end": 17.08,
+            "logprob": -0.0010159813100472093,
+            "start": 16.98,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.84,
+            "logprob": -0.002200560748974567,
+            "start": 17.08,
+            "text": "çekinecekti.",
+            "type": "word"
+          },
+          {
+            "end": 18.36,
+            "logprob": -0.0018703126115724444,
+            "start": 17.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.9,
+            "logprob": -0.0006282853610173333,
+            "start": 18.36,
+            "text": "Teknoloji",
+            "type": "word"
+          },
+          {
+            "end": 19.02,
+            "logprob": -1.4305104514278355e-06,
+            "start": 18.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.5,
+            "logprob": -3.4740915810159223e-06,
+            "start": 19.02,
+            "text": "serbest",
+            "type": "word"
+          },
+          {
+            "end": 19.52,
+            "logprob": -0.0005578630371019244,
+            "start": 19.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.16,
+            "logprob": -0.0005345971916209568,
+            "start": 19.52,
+            "text": "bırakılarak",
+            "type": "word"
+          },
+          {
+            "end": 20.56,
+            "logprob": -2.4318398573086597e-05,
+            "start": 20.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.74,
+            "logprob": -2.4318398573086597e-05,
+            "start": 20.56,
+            "text": "tüm",
+            "type": "word"
+          },
+          {
+            "end": 20.84,
+            "logprob": -5.245195097813848e-06,
+            "start": 20.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.28,
+            "logprob": -5.245195097813848e-06,
+            "start": 20.84,
+            "text": "küresel",
+            "type": "word"
+          },
+          {
+            "end": 21.38,
+            "logprob": -0.00012063252506777644,
+            "start": 21.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.1,
+            "logprob": -0.000323846148148732,
+            "start": 21.38,
+            "text": "bankacılığın",
+            "type": "word"
+          },
+          {
+            "end": 22.5,
+            "logprob": -3.6954811548639555e-06,
+            "start": 22.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.86,
+            "logprob": -3.6954811548639555e-06,
+            "start": 22.5,
+            "text": "ortak",
+            "type": "word"
+          },
+          {
+            "end": 22.96,
+            "logprob": -0.0018458010163158178,
+            "start": 22.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.58,
+            "logprob": -0.0016407517509264835,
+            "start": 22.96,
+            "text": "standardı",
+            "type": "word"
+          },
+          {
+            "end": 23.62,
+            "logprob": -0.001556019764393568,
+            "start": 23.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.04,
+            "logprob": -0.0005895870485801424,
+            "start": 23.62,
+            "text": "yapıldı.",
+            "type": "word"
+          },
+          {
+            "end": 24.52,
+            "logprob": -0.00017987063620239496,
+            "start": 24.04,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.18,
+            "logprob": -0.0011571980036630218,
+            "start": 24.52,
+            "text": "Geliştirmeye",
+            "type": "word"
+          },
+          {
+            "end": 25.24,
+            "logprob": -1.0728830375228426e-06,
+            "start": 25.18,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.84,
+            "logprob": -6.895633099190945e-05,
+            "start": 25.24,
+            "text": "harcanan",
+            "type": "word"
+          },
+          {
+            "end": 25.88,
+            "logprob": -7.152555099310121e-07,
+            "start": 25.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.06,
+            "logprob": -7.152555099310121e-07,
+            "start": 25.88,
+            "text": "her",
+            "type": "word"
+          },
+          {
+            "end": 26.14,
+            "logprob": -0.00033778208307921886,
+            "start": 26.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.28,
+            "logprob": -0.00033778208307921886,
+            "start": 26.14,
+            "text": "bir",
+            "type": "word"
+          },
+          {
+            "end": 26.36,
+            "logprob": -0.00013243274588603526,
+            "start": 26.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.68,
+            "logprob": -0.00013243274588603526,
+            "start": 26.36,
+            "text": "dolar",
+            "type": "word"
+          },
+          {
+            "end": 26.68,
+            "logprob": -0.07892444729804993,
+            "start": 26.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.62,
+            "logprob": -0.04735519289934018,
+            "start": 27.06,
+            "text": "bilgisayar",
+            "type": "word"
+          },
+          {
+            "end": 27.72,
+            "logprob": -0.0001674750237725675,
+            "start": 27.62,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.56,
+            "logprob": -0.00014480198862858943,
+            "start": 27.72,
+            "text": "satışında",
+            "type": "word"
+          },
+          {
+            "end": 28.6,
+            "logprob": -0.00014780859055463225,
+            "start": 28.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.76,
+            "logprob": -0.00014780859055463225,
+            "start": 28.6,
+            "text": "bin",
+            "type": "word"
+          },
+          {
+            "end": 28.84,
+            "logprob": -0.0002493547508493066,
+            "start": 28.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.08,
+            "logprob": -0.0002493547508493066,
+            "start": 28.84,
+            "text": "beş",
+            "type": "word"
+          },
+          {
+            "end": 29.14,
+            "logprob": -0.0016038662288337946,
+            "start": 29.08,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.28,
+            "logprob": -0.0016038662288337946,
+            "start": 29.14,
+            "text": "yüz",
+            "type": "word"
+          },
+          {
+            "end": 29.34,
+            "logprob": -3.790783375734463e-05,
+            "start": 29.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.64,
+            "logprob": -3.790783375734463e-05,
+            "start": 29.34,
+            "text": "dolar",
+            "type": "word"
+          },
+          {
+            "end": 29.72,
+            "logprob": -0.00011693747364915907,
+            "start": 29.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.44,
+            "logprob": -0.0002494599132153946,
+            "start": 29.72,
+            "text": "kazandırdı.",
+            "type": "word"
+          },
+          {
+            "end": 30.9,
+            "logprob": -0.00013076403411105275,
+            "start": 30.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 31.34,
+            "logprob": -4.9994309665635225e-05,
+            "start": 30.9,
+            "text": "Bazen",
+            "type": "word"
+          },
+          {
+            "end": 31.42,
+            "logprob": -3.397406908334233e-05,
+            "start": 31.34,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 31.54,
+            "logprob": -3.397406908334233e-05,
+            "start": 31.42,
+            "text": "bir",
+            "type": "word"
+          },
+          {
+            "end": 31.66,
+            "logprob": -0.0006942722829990089,
+            "start": 31.54,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 32.28,
+            "logprob": -0.000617210391055778,
+            "start": 31.66,
+            "text": "standardı",
+            "type": "word"
+          },
+          {
+            "end": 32.32,
+            "logprob": -1.4305104514278355e-06,
+            "start": 32.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 32.9,
+            "logprob": -2.145764407638732e-06,
+            "start": 32.32,
+            "text": "paylaşmak",
+            "type": "word"
+          },
+          {
+            "end": 33.22,
+            "logprob": -0.10021111369132996,
+            "start": 32.9,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 33.4,
+            "logprob": -0.10021111369132996,
+            "start": 33.22,
+            "text": "tek",
+            "type": "word"
+          },
+          {
+            "end": 33.44,
+            "logprob": -2.6940935640595853e-05,
+            "start": 33.4,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 33.78,
+            "logprob": -2.6940935640595853e-05,
+            "start": 33.44,
+            "text": "başına",
+            "type": "word"
+          },
+          {
+            "end": 33.84,
+            "logprob": -5.960462772236497e-07,
+            "start": 33.78,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 34.56,
+            "logprob": -0.00034051858325896814,
+            "start": 33.84,
+            "text": "saklamaktan",
+            "type": "word"
+          },
+          {
+            "end": 34.62,
+            "logprob": -8.344646857949556e-07,
+            "start": 34.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 34.82,
+            "logprob": -8.344646857949556e-07,
+            "start": 34.62,
+            "text": "çok",
+            "type": "word"
+          },
+          {
+            "end": 34.86,
+            "logprob": -3.635817120084539e-05,
+            "start": 34.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 35.02,
+            "logprob": -3.635817120084539e-05,
+            "start": 34.86,
+            "text": "daha",
+            "type": "word"
+          },
+          {
+            "end": 35.1,
+            "logprob": -0.07943492382764816,
+            "start": 35.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 35.66,
+            "logprob": -0.01148803140697257,
+            "start": 35.1,
+            "text": "kârlıdır.",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    },
+    {
+      "payload": {
+        "audio_duration_secs": 35.797,
+        "language_code": "tur",
+        "language_probability": 1.0,
+        "text": "Kredi kartı manyetik şeridinin patentini geliştiren şirket neden almadı? Mühendisler sistemi tasarlarken asıl amaç banka işlemlerini hızlandırmaktı. Patent alınsaydı standartlaşma gecikecek, bankalar yeni altyapıdan çekinecekti. Teknoloji serbest bırakılarak tüm küresel bankacılığın ortak standardı yapıldı. Geliştirmeye harcanan her bir dolar, bilgisayar satışında bin beş yüz dolar kazandırdı. Bazen bir standardı paylaşmak tek başına saklamaktan çok daha kârlıdır.",
+        "transcription_id": "8iR6JsXpAbl3MyH82ezi",
+        "words": [
+          {
+            "end": 0.32,
+            "logprob": -0.0007290537003427743,
+            "start": 0.08,
+            "text": "Kredi",
+            "type": "word"
+          },
+          {
+            "end": 0.4,
+            "logprob": -0.0005709686665795743,
+            "start": 0.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 0.7,
+            "logprob": -0.000457537871261593,
+            "start": 0.4,
+            "text": "kartı",
+            "type": "word"
+          },
+          {
+            "end": 0.8,
+            "logprob": -0.0002203936892328784,
+            "start": 0.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.24,
+            "logprob": -0.0003355112348799594,
+            "start": 0.8,
+            "text": "manyetik",
+            "type": "word"
+          },
+          {
+            "end": 1.32,
+            "logprob": -0.00011503035057103261,
+            "start": 1.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 1.88,
+            "logprob": -0.0008390989589517833,
+            "start": 1.32,
+            "text": "şeridinin",
+            "type": "word"
+          },
+          {
+            "end": 1.92,
+            "logprob": -0.0005596501869149506,
+            "start": 1.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 2.44,
+            "logprob": -0.0003734180158971867,
+            "start": 1.92,
+            "text": "patentini",
+            "type": "word"
+          },
+          {
+            "end": 2.5,
+            "logprob": -0.002046754118055105,
+            "start": 2.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.06,
+            "logprob": -0.0012379228784993757,
+            "start": 2.5,
+            "text": "geliştiren",
+            "type": "word"
+          },
+          {
+            "end": 3.18,
+            "logprob": -5.781483559985645e-05,
+            "start": 3.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 3.58,
+            "logprob": -5.781483559985645e-05,
+            "start": 3.18,
+            "text": "şirket",
+            "type": "word"
+          },
+          {
+            "end": 3.76,
+            "logprob": -1.5139465176616795e-05,
+            "start": 3.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.059,
+            "logprob": -1.5139465176616795e-05,
+            "start": 3.76,
+            "text": "neden",
+            "type": "word"
+          },
+          {
+            "end": 4.14,
+            "logprob": -0.00036638224264606833,
+            "start": 4.059,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 4.5,
+            "logprob": -0.0001242477259698457,
+            "start": 4.14,
+            "text": "almadı?",
+            "type": "word"
+          },
+          {
+            "end": 5.0,
+            "logprob": -0.00013279033009894192,
+            "start": 4.5,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 5.66,
+            "logprob": -0.00059910129691461,
+            "start": 5.0,
+            "text": "Mühendisler",
+            "type": "word"
+          },
+          {
+            "end": 5.8,
+            "logprob": -0.006084490567445755,
+            "start": 5.66,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 6.16,
+            "logprob": -0.006084490567445755,
+            "start": 5.8,
+            "text": "sistemi",
+            "type": "word"
+          },
+          {
+            "end": 6.24,
+            "logprob": -5.411955135059543e-05,
+            "start": 6.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.24,
+            "logprob": -0.00010155954772595909,
+            "start": 6.24,
+            "text": "tasarlarken",
+            "type": "word"
+          },
+          {
+            "end": 7.3,
+            "logprob": -8.272782724816352e-05,
+            "start": 7.24,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.56,
+            "logprob": -5.3403907259053085e-05,
+            "start": 7.3,
+            "text": "asıl",
+            "type": "word"
+          },
+          {
+            "end": 7.62,
+            "logprob": -3.3854863431770355e-05,
+            "start": 7.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 7.94,
+            "logprob": -3.3854863431770355e-05,
+            "start": 7.62,
+            "text": "amaç",
+            "type": "word"
+          },
+          {
+            "end": 8.4,
+            "logprob": -0.0008256602450273931,
+            "start": 7.94,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 8.74,
+            "logprob": -0.0006605758797320505,
+            "start": 8.4,
+            "text": "banka",
+            "type": "word"
+          },
+          {
+            "end": 8.8,
+            "logprob": -0.0010551605373620987,
+            "start": 8.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 9.44,
+            "logprob": -0.0007677471093384983,
+            "start": 8.8,
+            "text": "işlemlerini",
+            "type": "word"
+          },
+          {
+            "end": 9.5,
+            "logprob": -3.7788631743751466e-05,
+            "start": 9.44,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 10.46,
+            "logprob": -0.0011459499780736829,
+            "start": 9.5,
+            "text": "hızlandırmaktı.",
+            "type": "word"
+          },
+          {
+            "end": 10.98,
+            "logprob": -0.0002775999018922448,
+            "start": 10.46,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 11.38,
+            "logprob": -0.0002775999018922448,
+            "start": 10.98,
+            "text": "Patent",
+            "type": "word"
+          },
+          {
+            "end": 11.44,
+            "logprob": -0.04600662738084793,
+            "start": 11.38,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 12.1,
+            "logprob": -0.020495203707671154,
+            "start": 11.44,
+            "text": "alınsaydı",
+            "type": "word"
+          },
+          {
+            "end": 12.58,
+            "logprob": -0.021131375804543495,
+            "start": 12.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 13.36,
+            "logprob": -0.013200480141676962,
+            "start": 12.58,
+            "text": "standartlaşma",
+            "type": "word"
+          },
+          {
+            "end": 13.44,
+            "logprob": -0.0005651307292282581,
+            "start": 13.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 14.06,
+            "logprob": -0.0002385410437000246,
+            "start": 13.44,
+            "text": "gecikecek,",
+            "type": "word"
+          },
+          {
+            "end": 14.06,
+            "logprob": -1.7881377516459906e-06,
+            "start": 14.06,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.12,
+            "logprob": -3.993500854448939e-06,
+            "start": 14.54,
+            "text": "bankalar",
+            "type": "word"
+          },
+          {
+            "end": 15.32,
+            "logprob": -3.4570634852570947e-06,
+            "start": 15.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 15.6,
+            "logprob": -3.4570634852570947e-06,
+            "start": 15.32,
+            "text": "yeni",
+            "type": "word"
+          },
+          {
+            "end": 15.68,
+            "logprob": -0.004622488282620907,
+            "start": 15.6,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 16.3,
+            "logprob": -0.0012542345696601842,
+            "start": 15.68,
+            "text": "altyapıdan",
+            "type": "word"
+          },
+          {
+            "end": 16.36,
+            "logprob": -0.0006797387031838298,
+            "start": 16.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 17.14,
+            "logprob": -0.001761023161312399,
+            "start": 16.36,
+            "text": "çekinecekti.",
+            "type": "word"
+          },
+          {
+            "end": 17.64,
+            "logprob": -0.002499910071492195,
+            "start": 17.14,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.16,
+            "logprob": -0.0008416479452838151,
+            "start": 17.64,
+            "text": "Teknoloji",
+            "type": "word"
+          },
+          {
+            "end": 18.28,
+            "logprob": -4.410734163684538e-06,
+            "start": 18.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 18.72,
+            "logprob": -3.184585498924467e-06,
+            "start": 18.28,
+            "text": "serbest",
+            "type": "word"
+          },
+          {
+            "end": 18.74,
+            "logprob": -0.00031013446277938783,
+            "start": 18.72,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 19.38,
+            "logprob": -0.00038156818482093513,
+            "start": 18.74,
+            "text": "bırakılarak",
+            "type": "word"
+          },
+          {
+            "end": 19.84,
+            "logprob": -3.361645576660521e-05,
+            "start": 19.38,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.02,
+            "logprob": -3.361645576660521e-05,
+            "start": 19.84,
+            "text": "tüm",
+            "type": "word"
+          },
+          {
+            "end": 20.12,
+            "logprob": -4.0531076592742465e-06,
+            "start": 20.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 20.56,
+            "logprob": -6.01153526856381e-06,
+            "start": 20.12,
+            "text": "küresel",
+            "type": "word"
+          },
+          {
+            "end": 20.64,
+            "logprob": -0.00017188502533826977,
+            "start": 20.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 21.36,
+            "logprob": -0.00023211080125899267,
+            "start": 20.64,
+            "text": "bankacılığın",
+            "type": "word"
+          },
+          {
+            "end": 21.68,
+            "logprob": -1.3708974620385561e-05,
+            "start": 21.36,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.02,
+            "logprob": -1.3708974620385561e-05,
+            "start": 21.68,
+            "text": "ortak",
+            "type": "word"
+          },
+          {
+            "end": 22.08,
+            "logprob": -0.001364015624858439,
+            "start": 22.02,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 22.68,
+            "logprob": -0.0012125378060419381,
+            "start": 22.08,
+            "text": "standardı",
+            "type": "word"
+          },
+          {
+            "end": 22.72,
+            "logprob": -0.001783329644240439,
+            "start": 22.68,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 23.16,
+            "logprob": -0.0006700152139060833,
+            "start": 22.72,
+            "text": "yapıldı.",
+            "type": "word"
+          },
+          {
+            "end": 23.64,
+            "logprob": -0.0002967870968859643,
+            "start": 23.16,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.3,
+            "logprob": -0.001065549289099484,
+            "start": 23.64,
+            "text": "Geliştirmeye",
+            "type": "word"
+          },
+          {
+            "end": 24.34,
+            "logprob": -1.1920928244535389e-07,
+            "start": 24.3,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 24.82,
+            "logprob": -0.00010637926237411222,
+            "start": 24.34,
+            "text": "harcanan",
+            "type": "word"
+          },
+          {
+            "end": 24.96,
+            "logprob": -1.5497195136049413e-06,
+            "start": 24.82,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.12,
+            "logprob": -1.5497195136049413e-06,
+            "start": 24.96,
+            "text": "her",
+            "type": "word"
+          },
+          {
+            "end": 25.2,
+            "logprob": -0.01820240542292595,
+            "start": 25.12,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.32,
+            "logprob": -0.01820240542292595,
+            "start": 25.2,
+            "text": "bir",
+            "type": "word"
+          },
+          {
+            "end": 25.42,
+            "logprob": -0.004451603628695011,
+            "start": 25.32,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 25.74,
+            "logprob": -0.08273527600492041,
+            "start": 25.42,
+            "text": "dolar,",
+            "type": "word"
+          },
+          {
+            "end": 25.74,
+            "logprob": -2.7418097943154862e-06,
+            "start": 25.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 26.7,
+            "logprob": -2.551075476731057e-06,
+            "start": 26.18,
+            "text": "bilgisayar",
+            "type": "word"
+          },
+          {
+            "end": 26.78,
+            "logprob": -0.00019464982324279845,
+            "start": 26.7,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.76,
+            "logprob": -0.00012154301091666437,
+            "start": 26.78,
+            "text": "satışında",
+            "type": "word"
+          },
+          {
+            "end": 27.8,
+            "logprob": -0.008703158237040043,
+            "start": 27.76,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 27.96,
+            "logprob": -0.008703158237040043,
+            "start": 27.8,
+            "text": "bin",
+            "type": "word"
+          },
+          {
+            "end": 28.06,
+            "logprob": -0.004420746583491564,
+            "start": 27.96,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.28,
+            "logprob": -0.004420746583491564,
+            "start": 28.06,
+            "text": "beş",
+            "type": "word"
+          },
+          {
+            "end": 28.32,
+            "logprob": -0.001321038813330233,
+            "start": 28.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.48,
+            "logprob": -0.001321038813330233,
+            "start": 28.32,
+            "text": "yüz",
+            "type": "word"
+          },
+          {
+            "end": 28.56,
+            "logprob": -2.1457441107486375e-05,
+            "start": 28.48,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 28.84,
+            "logprob": -2.1457441107486375e-05,
+            "start": 28.56,
+            "text": "dolar",
+            "type": "word"
+          },
+          {
+            "end": 28.96,
+            "logprob": -6.437094270950183e-05,
+            "start": 28.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 29.74,
+            "logprob": -0.00020163343825433086,
+            "start": 28.96,
+            "text": "kazandırdı.",
+            "type": "word"
+          },
+          {
+            "end": 30.22,
+            "logprob": -0.0002366024418734014,
+            "start": 29.74,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.64,
+            "logprob": -5.094444240967277e-05,
+            "start": 30.22,
+            "text": "Bazen",
+            "type": "word"
+          },
+          {
+            "end": 30.72,
+            "logprob": -6.556489552167477e-06,
+            "start": 30.64,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 30.86,
+            "logprob": -6.556489552167477e-06,
+            "start": 30.72,
+            "text": "bir",
+            "type": "word"
+          },
+          {
+            "end": 30.96,
+            "logprob": -0.0016166010173037648,
+            "start": 30.86,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 31.56,
+            "logprob": -0.0014370316639416261,
+            "start": 30.96,
+            "text": "standardı",
+            "type": "word"
+          },
+          {
+            "end": 31.6,
+            "logprob": -2.3841830625315197e-06,
+            "start": 31.56,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 32.22,
+            "logprob": -3.4173261459121327e-06,
+            "start": 31.6,
+            "text": "paylaşmak",
+            "type": "word"
+          },
+          {
+            "end": 32.22,
+            "logprob": -0.474079966545105,
+            "start": 32.22,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 32.88,
+            "logprob": -0.474079966545105,
+            "start": 32.68,
+            "text": "tek",
+            "type": "word"
+          },
+          {
+            "end": 32.9,
+            "logprob": -8.427741704508662e-05,
+            "start": 32.88,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 33.28,
+            "logprob": -8.427741704508662e-05,
+            "start": 32.9,
+            "text": "başına",
+            "type": "word"
+          },
+          {
+            "end": 33.32,
+            "logprob": -2.3841855067985307e-07,
+            "start": 33.28,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 34.1,
+            "logprob": -0.00020568901989680523,
+            "start": 33.32,
+            "text": "saklamaktan",
+            "type": "word"
+          },
+          {
+            "end": 34.42,
+            "logprob": -1.6689286894688848e-06,
+            "start": 34.1,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 34.58,
+            "logprob": -1.6689286894688848e-06,
+            "start": 34.42,
+            "text": "çok",
+            "type": "word"
+          },
+          {
+            "end": 34.66,
+            "logprob": -7.390948667307384e-06,
+            "start": 34.58,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 34.84,
+            "logprob": -7.390948667307384e-06,
+            "start": 34.66,
+            "text": "daha",
+            "type": "word"
+          },
+          {
+            "end": 34.96,
+            "logprob": -0.14333616197109222,
+            "start": 34.84,
+            "text": " ",
+            "type": "spacing"
+          },
+          {
+            "end": 35.58,
+            "logprob": -0.07479255527808466,
+            "start": 34.96,
+            "text": "kârlıdır.",
+            "type": "word"
+          }
+        ]
+      },
+      "provider": "elevenlabs"
+    }
+  ]
+}

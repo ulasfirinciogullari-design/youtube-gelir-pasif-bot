@@ -110,6 +110,7 @@ def test_actual_saved_voice_pipeline_supplies_effective_target_before_fit(tmp_pa
                  and any(isinstance(item.optional_vars, ast.Name)
                          and item.optional_vars.id == 'stage_pool' for item in node.items))
     n.update(ThreadPoolExecutor=ThreadPoolExecutor, options=dict(OPTIONS), duration_minutes=.5,
+             selected_recovery=None,
              saved_voice_retry={'voice_result': voice}, voice_replacement_request=None,
              recovered_voice=None, curated_source_job=None, scenes=[{}] * 6, language='tr',
              task_id='child', package={'scenes': [{}] * 6}, work=tmp_path,
@@ -155,6 +156,7 @@ def test_actual_renderer_call_and_strict_gate_share_effective_target(tmp_path):
     render = Mock(return_value={'duration': target, 'frame_count': 803, 'ending_silence_seconds': target - 26.208})
     durations = [4.368] * 6
     n.update(options=dict(OPTIONS), duration_minutes=.5, effective_edit_target_seconds=target,
+             selected_recovery=None,
              self=SimpleNamespace(), task_id='child', set_stage=Mock(), render_video=render,
              final_audio_path='same-candidate.mp3', visual_specs=['clips'],
              package={'narration': 'Same immutable narration.'}, work=tmp_path, scenes=[{}] * 6,

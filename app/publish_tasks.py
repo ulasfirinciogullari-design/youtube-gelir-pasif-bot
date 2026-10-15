@@ -133,6 +133,13 @@ def queue_automatic_publish(source_task_id: str) -> dict:
     if spec.get('production_scheduled') is True and not spec.get('production_channel_id'):
         return {'status': 'no_unique_route'}
     try:
+        if spec.get('content_plan_item_id'):
+            from app.services import youtube_quota_recovery as quota, shorts_experiment_stock as stock
+            wait = quota.waiting()
+            if wait or stock.publication_wait(source):
+                state = 'youtube_quota_wait' if wait else 'publication_order_wait'
+                _set_source_automation(source_task_id, status=state, retry_at=wait['retry_at'] if wait else None)
+                return {'status': state}
         status = connection_status()
         connections = (
             status.get('connections')
@@ -153,6 +160,10 @@ def queue_automatic_publish(source_task_id: str) -> dict:
             _set_source_automation(source_task_id, status='no_unique_route')
             return {'status': 'no_unique_route'}
         target_channel_id = str(profile.get('channel_id') or '')
+        from app.services.channel_formats import allows
+        if not allows(target_channel_id, spec.get('format')):
+            _set_source_automation(source_task_id, status='format_disabled')
+            return {'status': 'format_disabled'}
         channel = next(
             (
                 item
@@ -186,6 +197,11 @@ def queue_automatic_publish(source_task_id: str) -> dict:
         )
         return {'status': 'metadata_blocked', 'error_code': _safe_error_code(exc)}
 
+    from app.services import framecase_cadence, channel_cadence
+    cadence = framecase_cadence if source.get('spec', {}).get('production_channel_id') == framecase_cadence.CHANNEL_ID else channel_cadence
+    if not cadence.publication_slot(source):
+        _set_source_automation(source_task_id, status='daily_limit_wait')
+        return {'status': 'daily_limit_wait'}
     task_id = str(uuid4())
     try:
         reservation, created = reserve_upload(
@@ -391,7 +407,8 @@ def _wake_after_public_success(source_task_id: str, task_id: str, result: dict) 
             and plan.get('source_task_id') == source_task_id and plan.get('target_channel_id') == channel
             and plan.get('release_mode') == 'public' and not plan.get('publish_at')
             and type(plan.get('contains_synthetic_media')) is bool
-            and attribution.get('contains_synthetic_media') is plan['contains_synthetic_media']
+            and type(attribution.get('contains_synthetic_media')) is bool
+            and (plan['contains_synthetic_media'] is False or attribution['contains_synthetic_media'] is True)
             and attribution.get('caption_uploaded') is True
             and (plan.get('require_thumbnail') is not True or attribution.get('thumbnail_uploaded') is True)
             and all(row.get('privacy_status') == 'public' and row.get('release_status') == 'public'
@@ -402,7 +419,7 @@ def _wake_after_public_success(source_task_id: str, task_id: str, result: dict) 
             and all(key not in result or (type(result[key]) is type(expected) and result[key] == expected)
                     for key, expected in (('profile_revision', revision), ('caption_uploaded', True),
                         ('thumbnail_uploaded', attribution.get('thumbnail_uploaded')),
-                        ('contains_synthetic_media', plan['contains_synthetic_media'])))
+                        ('contains_synthetic_media', attribution['contains_synthetic_media'])))
         ):
             return
         from app.services import youtube_publish_state as publication_state
@@ -433,6 +450,7 @@ def publish_video_pipeline(
     upload_completed = False
     release_started = False
     completed_result = None
+    quota_failure = None
     try:
         reservation = get_upload_record(source_task_id)
         if not reservation:
@@ -530,6 +548,9 @@ def publish_video_pipeline(
         connection_id = str(reservation.get('connection_id') or '')
         if not target_channel_id or not connection_id:
             raise RuntimeError('YouTube upload target is missing')
+        from app.services.channel_formats import allows
+        if not allows(target_channel_id, (source.get('spec') or {}).get('format')):
+            raise RuntimeError('Owner enabled Shorts only for this channel')
         credentials = load_credentials(
             target_channel_id,
             expected_connection_id=connection_id,
@@ -593,6 +614,8 @@ def publish_video_pipeline(
                 raise MetadataValidationError('Publish plan source changed')
             if publish_plan['target_channel_id'] != target_channel_id:
                 raise MetadataValidationError('Publish plan target changed')
+            from app.services.content_plan import check_publication
+            check_publication(source, publish_plan)
             title = publish_plan['title']
             description = publish_plan['description']
             tags = publish_plan['tags']
@@ -724,7 +747,13 @@ def publish_video_pipeline(
         caption_error_code = None
         caption_key = source_result.get('caption_key')
         caption_language = language[:12]
-        if caption_key:
+        optional_plan_caption = bool('content_plan_item_id' in (source.get('spec') or {})
+                                     and publish_plan.get('caption_required') is False)
+        from app.services.youtube_quota_recovery import optional_caption_waiting
+        caption_deferred = bool(caption_key and optional_plan_caption and optional_caption_waiting())
+        if caption_deferred:
+            caption_error_code = 'youtube_caption_quota_wait'
+        if caption_key and not caption_deferred:
             set_stage(
                 self,
                 task_id,
@@ -748,6 +777,11 @@ def publish_video_pipeline(
                 )
             except Exception as exc:
                 caption_error_code = _safe_error_code(exc)
+                from app.services.youtube_quota_recovery import observe_quota, observe_optional_caption_quota
+                if optional_plan_caption:
+                    observe_optional_caption_quota(exc)
+                else:
+                    quota_failure = observe_quota(exc) or quota_failure
 
         thumbnail_result = None
         thumbnail_error_code = None
@@ -778,6 +812,8 @@ def publish_video_pipeline(
                 )
             except Exception as exc:
                 thumbnail_error_code = _safe_error_code(exc)
+                from app.services.youtube_quota_recovery import observe_quota
+                quota_failure = observe_quota(exc) or quota_failure
 
         release_status = 'private'
         final_privacy_status = 'private'
@@ -785,6 +821,12 @@ def publish_video_pipeline(
         scheduled_publish_at = None
         if release_mode in {'public', 'scheduled'}:
             editorial_error = None
+            if 'content_plan_item_id' in (source.get('spec') or {}):
+                from app.services.content_plan import check_publication
+                try:
+                    check_publication(get_job(source_task_id), publish_plan)
+                except Exception:
+                    editorial_error = 'content_plan_publication_changed'
             if editorial_candidate:
                 try:
                     # Fresh stored source/receipt/OAuth/profile and the same
@@ -808,7 +850,11 @@ def publish_video_pipeline(
                     and isinstance(youtube_response.get('status'), dict)
                     and youtube_response['status'].get('containsSyntheticMedia') is False
                 ) else None)
-                or caption_error_code
+                or (caption_error_code if not (
+                    'content_plan_item_id' in (source.get('spec') or {})
+                    and publish_plan.get('caption_required') is False
+                    and editorial_error is None
+                ) else None)
                 or thumbnail_error_code
                 or ('thumbnail_required' if require_thumbnail and not thumbnail_result else None)
             )
@@ -845,6 +891,13 @@ def publish_video_pipeline(
                     publish_at=publish_at,
                 )
                 release_started = False
+                if release_mode == 'public':
+                    from app.services import framecase_cadence, channel_cadence
+                    cadence = framecase_cadence if source.get('spec', {}).get('production_channel_id') == framecase_cadence.CHANNEL_ID else channel_cadence
+                    try:
+                        cadence.publication_completed(source)
+                    except Exception:
+                        pass  # The pending claim counts conservatively until readback.
                 release_status = release_mode
                 final_privacy_status = (
                     'public' if release_mode == 'public' else 'private'
@@ -904,6 +957,12 @@ def publish_video_pipeline(
         }
         merge_youtube_result_field(source_task_id, 'youtube', youtube_attribution)
         mark_success(task_id, result)
+        if quota_failure and release_status == 'blocked':
+            try:
+                from app.services.youtube_quota_recovery import register
+                register(source_task_id, quota_failure)
+            except Exception:
+                pass  # Preserve the original upload and its blocked outcome.
         completed_result = result
         return result
     except Exception as exc:
@@ -927,6 +986,13 @@ def publish_video_pipeline(
             )
         )
         mark_failure(task_id, safe_error)
+        try:
+            from app.services.youtube_quota_recovery import observe_quota, register
+            evidence = observe_quota(exc)
+            if evidence and release_started:
+                register(source_task_id, evidence)
+        except Exception:
+            pass  # An unknown insert/release must never be blindly replayed.
         raise safe_error from None
     finally:
         if lock_token:

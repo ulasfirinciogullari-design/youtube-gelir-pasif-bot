@@ -16,6 +16,29 @@ TRANSCRIPT = (
     'Shoppers assembled the pieces at home, slashing shipping costs.'
 )
 EXPECTED = TRANSCRIPT.replace('In 1953,', 'In nineteen fifty-three,')
+# American Heritage lists bull's-eye, bull's eye and bullseye as spellings of
+# the same spoken word: https://www.ahdictionary.com/word/search.html?q=bull%27s+eye
+
+
+@pytest.mark.parametrize('written', ["bull's-eye", 'bull’s eye', 'bulls-eye', 'bullseye'])
+def test_bullseye_dictionary_spellings_keep_exact_english_spoken_units(written):
+    for expected, heard in [(written, 'bullseye'), ('bullseye', written)]:
+        result = qc.compare_transcript('The ' + expected + ' barcode used circles.',
+            'The ' + heard + ' barcode used circles.', comparison_language='en')
+        assert result['pass'] is True and result['score'] == 100
+
+
+@pytest.mark.parametrize('heard', ['bull eye', 'bulls eyes', 'bulls, eye', 'bulls. Eye',
+                                  'bulls--eye', 'blue eye', 'bullseye not'])
+def test_bullseye_rule_never_erases_a_missing_sound_clause_or_added_word(heard):
+    assert qc.compare_transcript('The bullseye barcode used circles.',
+        'The ' + heard + ' barcode used circles.', comparison_language='en')['pass'] is False
+
+
+def test_bullseye_rule_is_not_applied_to_turkish_comparison():
+    assert qc.compare_transcript('bulls eye', 'bullseye', comparison_language='tr')['pass'] is False
+
+
 # Retained Gemini evidence for source834df410-4790-5d77-8d5f-d9f9f88e4afb.
 # Evidence SHA256:0f39464f10d6c3a315a249a751a26d45bcea5e933bed690a9741460a89e50c58.
 # These are the original57 text/time tuples, not interpolated test timings.

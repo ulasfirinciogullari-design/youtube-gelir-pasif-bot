@@ -77,6 +77,10 @@ def _research_json_schema(
                 'maxItems': 3,
             },
             'ai_prompt': {'type': ['string', 'null']},
+            # Optional writer self-assessment returned by some routed models.
+            # _parse_json_payload discards it; only the independent director
+            # and actual footage review can establish visual suitability.
+            'visual_queries_match_narrative': {'type': 'boolean'},
         },
         'required': ['narration', 'visual_queries', 'ai_prompt'],
         'additionalProperties': False,
@@ -248,6 +252,13 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
         raise RuntimeError('OPENAI_API_KEY is not configured')
 
     options = dict(options or {})
+    from app.services.production_delivery import writer_rule
+
+    delivery_rule = writer_rule(options, duration_minutes, select_cuts=False)
+    if delivery_rule:
+        # The original research brief includes the reusable mini-story structure;
+        # the final director selects and binds the exact whole-scene ranges.
+        topic = topic + '\n\n' + delivery_rule
     shot_capacity_rule = _scheduled_short_shot_writer_rule(options, duration_minutes, fresh_scheduled)
     shot_aspect = '9:16' if shot_capacity_rule else '16:9'
     style = str(options.get('content_style') or 'documentary')
@@ -263,6 +274,11 @@ def research_and_script(topic: str, duration_minutes: float, language: str, opti
     )
     explicit_scene_count = _explicit_scene_count_from_brief(requested_brief)
     target_words, min_words, max_words = _target_word_budget(duration_minutes)
+    from app.services.commissioning_longform import active
+    if duration_minutes == 3 and options.get('content_plan_item_id') and active():
+        explicit_scene_count = 30
+        target_words = 315 if language == 'tr' else 360
+        min_words, max_words = target_words - 15, target_words + 15
     spoken_word_budget = _fresh_spoken_word_budget(
         duration_minutes, language, options, fresh_scheduled,
         exact_narration=(
@@ -432,7 +448,17 @@ FACT RULES:
 - sources must be evidence records from pages actually used, never a bare URL list.
 - Every evidence sentence must directly support the {central_claim}; omit interesting but unused sources.
 '''
-    if provider == 'gemini':
+    consulted_pages = None
+    if provider == 'abacus_included':
+        from app.services.production_included_router import generate_text_json, stock_only_rule
+        from app.services.included_research_sources import research_pages, source_prompt, consulted_source_schema
+        consulted_pages = research_pages(topic)
+        schema = consulted_source_schema(
+            _research_json_schema(target_scenes, exact_scene_count=exact_scene_count), consulted_pages)
+        generated = generate_text_json(prompt + stock_only_rule() + source_prompt(consulted_pages),
+            schema, purpose='research')
+        output_text = json.dumps(generated, ensure_ascii=False)
+    elif provider == 'gemini':
         generated = generate_gemini_json(
             prompt,
             api_key=str(getattr(settings, 'gemini_api_key', '') or ''),
@@ -464,6 +490,13 @@ FACT RULES:
         )
         output_text = _planning_response_text(response)
     package = _parse_json_payload(output_text)
+    if consulted_pages is not None:
+        from app.services.included_research_sources import consulted_sources_only
+        consulted_sources_only(package['sources'], consulted_pages)
+        if any(scene.get('ai_prompt') is not None for scene in package['scenes']):
+            raise RuntimeError('Included production requires a complete stock-only storyboard')
+        package['research_source_observations'] = [
+            {key: value for key, value in page.items() if key != 'text'} for page in consulted_pages]
     if (
         exact_scene_count
         and len(package['scenes']) != target_scenes

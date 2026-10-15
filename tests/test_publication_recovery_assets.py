@@ -265,6 +265,24 @@ def test_actual_final_must_be_the_30_second_portrait_master(case, field, value):
     case.process.run.assert_not_called()
 
 
+def test_approved_speech_tail_matches_both_retained_records_and_actual_frames(case):
+    case.source['result']['duration'] = 30.5
+    case.metadata['render'] = {'duration': 30.5}
+    case.objects[BASE + 'metadata.json'][0] = json.dumps(case.metadata).encode()
+    case.video_probe['streams'][0].update(duration='30.500000', nb_read_frames='915')
+    assert prepare(case)['final']['sha256']
+
+
+@pytest.mark.parametrize('duration,frames,stored', [(30.5, '900', 30.5), (30.5, '915', 30.0),
+    (30.5, '915', None), (1000, '30000', 1000)])
+def test_tail_cannot_change_without_matching_approved_metadata_and_bounded_real_master(case, duration, frames, stored):
+    case.source['result']['duration'] = duration
+    case.metadata['render'] = {'duration': stored}
+    case.objects[BASE + 'metadata.json'][0] = json.dumps(case.metadata).encode()
+    case.video_probe['streams'][0].update(duration=str(duration), nb_read_frames=frames)
+    failure(case)
+
+
 def test_authored_jpeg_is_preserved_byte_for_byte_without_frame_extraction(case):
     case.source['result']['thumbnail_key'] = BASE + 'thumbnail.jpg'
     case.objects[BASE + 'thumbnail.jpg'] = [JPEG, 'image/jpeg']

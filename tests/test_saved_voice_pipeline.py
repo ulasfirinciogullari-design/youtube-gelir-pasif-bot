@@ -26,6 +26,8 @@ def recovery(monkeypatch):
     budget_validator = Mock(side_effect=lambda value: copy.deepcopy(value))
     unchanged = Mock()
     fitting = Mock(return_value=voice)
+    review_options = Mock(return_value={})
+    monkeypatch.setitem(sys.modules, 'app.services.saved_voice_review', SimpleNamespace(review_options=review_options))
     monkeypatch.setitem(sys.modules, 'app.services.studio_state', SimpleNamespace(get_job=lambda job_id: source if job_id == source_id else child))
     monkeypatch.setitem(sys.modules, 'app.services.voice_candidate_recovery', SimpleNamespace(load_voice_retry_candidate=loader, require_unchanged_voice_narration=unchanged))
     monkeypatch.setitem(sys.modules, 'app.services.director', SimpleNamespace(revalidate_immutable_short_story=reviewer, validate_spoken_word_budget=budget_validator))
@@ -45,6 +47,25 @@ def test_same_spec_claim_revalidates_exact_text_and_marks_zero_new_tts(recovery)
     r.reviewer.assert_called_once_with(r.package, r.spec['topic'], 0.5, 'tr', {k:v for k,v in r.spec.items() if k not in {'topic','duration_minutes','language','channel_id'}}, immutable_candidate_narrations=['First sentence.', 'Final sentence.'])
     r.unchanged.assert_called_once_with(r.package, r.reviewer.return_value)
     assert r.namespace['update_job'].call_args.kwargs['voice_candidate_reuse']['new_tts_requests'] == 0
+
+
+def test_included_retry_preserves_candidate_before_fresh_immutable_review(recovery):
+    r = recovery
+    order = []
+    def preserve(task, package, voice):
+        assert task == r.child_id and package == r.package and voice is r.voice
+        order.append('saved')
+        return {'immutable_stock_routes': True}
+    def reject(*args, **kwargs):
+        assert kwargs['immutable_stock_routes'] is True and order == ['saved']
+        order.append('reviewed')
+        raise RuntimeError('Independent review rejected the story')
+    r.review_options.side_effect = preserve
+    r.reviewer.side_effect = reject
+    with pytest.raises(QualityError):
+        r.namespace['_prepare_saved_voice_retry'](r.child_id, r.source_id, r.spec, Path('/tmp/work'))
+    assert order == ['saved', 'reviewed']
+    r.namespace['short_story_package_is_approved'].assert_not_called()
 
 
 @pytest.mark.parametrize('change', ['parent', 'retry_child', 'topic', 'channel', 'profile', 'kind', 'state', 'checkpoint'])

@@ -4,7 +4,9 @@ from botocore.config import Config
 from app.config import settings
 
 
-def _client():
+def _client(*, single_attempt: bool = False):
+    if type(single_attempt) is not bool:
+        raise ValueError('Invalid storage retry policy')
     missing = [
         name for name, value in {
             'BUCKET': settings.bucket,
@@ -22,7 +24,8 @@ def _client():
         aws_access_key_id=settings.access_key_id,
         aws_secret_access_key=settings.secret_access_key,
         region_name=settings.region or 'auto',
-        config=Config(signature_version='s3v4', s3={'addressing_style': 'virtual'}),
+        config=Config(signature_version='s3v4', s3={'addressing_style': 'virtual'},
+                      **({'retries': {'total_max_attempts': 1}} if single_attempt else {})),
     )
 
 

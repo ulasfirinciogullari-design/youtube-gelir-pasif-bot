@@ -57,6 +57,16 @@ def test_actual_public_completion_kicks_only_after_persisted_success_unlock_and_
     assert len(b.inserts) == len(b.releases) == 1
 
 
+def test_conservative_disclosure_upgrade_still_wakes_after_actual_public_commit(event_case):
+    b=event_case
+    b.record['publish_plan']['contains_synthetic_media']=False
+    result=b.run()
+    assert result['contains_synthetic_media'] is True and result['release_status']=='public'
+    assert b.source['result']['youtube']['contains_synthetic_media'] is True
+    assert b.record['publish_plan']['contains_synthetic_media'] is False
+    assert len(b.kicks)==1 and len(b.inserts)==len(b.releases)==1
+
+
 def test_genuine_compact_public_replay_kicks_without_a_second_insert(event_case):
     b = event_case
     b.run()

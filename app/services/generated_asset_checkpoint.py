@@ -19,6 +19,7 @@ MAX_RAW_BYTES = 100 * 1024 * 1024
 MAX_AUDIO_BYTES = 14 * 1024 * 1024
 MAX_MANIFEST_BYTES = 512 * 1024
 PROVIDERS = frozenset({'runway', 'fal_seedance_2_fast', 'gemini_omni', 'gemini_veo',
+                       'fal_veo_lite', 'fal_seedance_15_pro', 'fal_seedance_1_fast',
                        'gemini_veo_fast', 'gemini_veo_standard', 'gemini_image_motion'})
 PHASES = frozenset({'initial_generation', 'final_repair'})
 
@@ -95,15 +96,20 @@ def persist_generated_asset_candidate(
     changed, and no generation/reviewer/renderer/YouTube API is called.
     """
     try:
+        longform = bool(isinstance(options, dict) and options.get('content_plan_item_id')
+            and options.get('format') == 'landscape' and duration_minutes == 3)
+        if longform:
+            from app.services.commissioning_longform import active
+            _require(active())
         _require(isinstance(task_id, str) and str(UUID(task_id)) == task_id
                  and isinstance(options, dict) and options.get('mode') == 'production'
-                 and options.get('format') == 'shorts'
-                 and type(duration_minutes) in (int, float) and duration_minutes == 0.5
+                 and (longform or options.get('format') == 'shorts' and duration_minutes == 0.5)
+                 and type(duration_minutes) in (int, float)
                  and isinstance(package, dict) and isinstance(voice_result, dict)
                  and isinstance(visual_spec, dict) and phase in PHASES)
         clean_package = _candidate_package(package)
         count = len(clean_package['scenes'])
-        _require(6 <= count <= 12 and type(scene_index) is int and 0 <= scene_index < count)
+        _require(6 <= count <= (32 if longform else 12) and type(scene_index) is int and 0 <= scene_index < count)
         clean_voice = _candidate_voice(voice_result, count)
         full_package = {key: value for key, value in package.items()
                         if key not in {'_recovered_generated_media', '_recovered_voice'}}
@@ -117,9 +123,12 @@ def persist_generated_asset_candidate(
         raw_path = Path(raw_path)
         expected_name = (f'runway_s{scene_index:02d}.mp4' if phase == 'initial_generation'
                          else f'runway_repair_s{scene_index:02d}.mp4')
+        expected_names = {expected_name}
+        if phase == 'final_repair':
+            expected_names.update(f'runway_repair_r{round}_s{scene_index:02d}.mp4' for round in range(2, 33))
         _require(raw_path.is_absolute() and '..' not in raw_path.parts
-                 and raw_path == work / expected_name and not raw_path.is_symlink()
-                 and raw_path.resolve(strict=True) == work / expected_name
+                 and raw_path.parent == work and raw_path.name in expected_names and not raw_path.is_symlink()
+                 and raw_path.resolve(strict=True) == raw_path
                  and stat.S_ISREG(raw_path.stat().st_mode)
                  and 1024 <= raw_path.stat().st_size <= MAX_RAW_BYTES)
         provider = visual_spec.get('generation_provider')

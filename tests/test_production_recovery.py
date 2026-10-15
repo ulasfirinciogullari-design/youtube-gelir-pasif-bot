@@ -42,6 +42,8 @@ def recovery():
         'JOB_PREFIX': 'youtube_studio:job:',
         'RETRY_CHILD_CLAIM_PREFIX': 'youtube_studio:retry_child_claim:',
         'RETRY_DISPATCH_PREFIX': 'youtube_studio:retry_dispatch:',
+        'RENDER_CANCELLATION_PREFIX': 'youtube_studio:render_cancellation:v1:',
+        'HOLD_PREFIX': 'youtube_studio:source_publication_hold:v1:',
         'UPLOAD_PREFIX': 'youtube_studio:youtube_upload:v2:',
         '_prefix_digest': _digest,
     }

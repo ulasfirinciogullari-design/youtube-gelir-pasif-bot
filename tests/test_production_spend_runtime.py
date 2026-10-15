@@ -10,6 +10,11 @@ from unittest.mock import Mock
 import fakeredis
 import pytest
 
+from spending_test_support import (
+    fake_sdk_client, initialize_test_funding, initialize_test_scene,
+    real_sdk_imports, TEST_KEY,
+)
+
 from app.services.production_spend import LEDGER_KEY, SpendBlocked, SpendLedger, SpendPolicy
 from app.services import production_spend_runtime as runtime
 from app.services import production_spend_quotes as quotes
@@ -35,21 +40,26 @@ def job(client, task_id=ROOT, parent_id=None, *, channel=CHANNEL, duration=0.5):
 
 @pytest.fixture
 def case(monkeypatch):
-    client = fakeredis.FakeRedis(decode_responses=True)
-    policy = SpendPolicy(10_000_000, 4_000_000, 8_000_000, 1_000_000, 8_000_000, 500_000)
-    ledger = SpendLedger(client, policy, clock=lambda: datetime(2026, 9, 8, tzinfo=timezone.utc))
-    ledger.initialize()
-    monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
-    monkeypatch.setattr(runtime, 'configured_ledger', lambda: ledger)
-    monkeypatch.setattr(quotes, '_fresh', lambda: None)
-    client.sadd(runtime._CHANNEL_INDEX, CHANNEL)
-    client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({
-        'id': CHANNEL, 'connection_id': 'connection_AAAAA'}))
-    job(client)
-    token = runtime._TASK_ID.set(ROOT)
-    yield client, ledger
-    runtime._TASK_ID.reset(token)
-
+    # This fixture is imported by other test modules; keep SDK isolation local
+    # rather than depending on a fixture registered only in this module.
+    with real_sdk_imports():
+        client = fakeredis.FakeRedis(decode_responses=True)
+        policy = SpendPolicy(10_000_000, 4_000_000, 8_000_000, 1_000_000, 8_000_000, 500_000)
+        ledger = SpendLedger(client, policy, clock=lambda: datetime(2026, 9, 8, tzinfo=timezone.utc))
+        ledger.initialize()
+        monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=True))
+        monkeypatch.setattr(runtime, 'configured_ledger', lambda **_: ledger)
+        monkeypatch.setattr(quotes, '_fresh', lambda: None)
+        initialize_test_funding(ledger)
+        client.sadd(runtime._CHANNEL_INDEX, CHANNEL)
+        client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({
+            'id': CHANNEL, 'connection_id': 'connection_AAAAA'}))
+        job(client)
+        token = runtime._TASK_ID.set(ROOT)
+        scene_token = initialize_test_scene(ledger, channel=CHANNEL, root=ROOT)
+        yield client, ledger
+        runtime._TASK_ID.reset(token)
+        runtime._SCENE.reset(scene_token)
 
 def test_real_adapter_reserves_before_post_and_blocks_duplicate(case):
     client, ledger = case
@@ -57,9 +67,9 @@ def test_real_adapter_reserves_before_post_and_blocks_duplicate(case):
         assert ledger.snapshot()['period']['used_micro'] == 300_000
         return 'accepted'
     sender = Mock(side_effect=post)
-    assert runtime.paid_post(sender, URL, json=video()) == 'accepted'
+    assert runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'}) == 'accepted'
     with pytest.raises(SpendBlocked, match='already_reserved'):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     assert sender.call_count == 1
     # Private prompts, keys and media never enter the persisted ledger.
     assert 'a real moving scene' not in json.dumps(client.hgetall(LEDGER_KEY))
@@ -69,9 +79,9 @@ def test_provider_timeout_is_not_refunded_or_replayed(case):
     _, ledger = case
     sender = Mock(side_effect=TimeoutError('unknown provider outcome'))
     with pytest.raises(TimeoutError):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     with pytest.raises(SpendBlocked, match='already_reserved'):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     assert sender.call_count == 1
     assert ledger.snapshot()['period']['used_micro'] == 300_000
 
@@ -79,12 +89,12 @@ def test_provider_timeout_is_not_refunded_or_replayed(case):
 def test_new_retry_task_cannot_repeat_identical_create(case):
     client, _ = case
     sender = Mock()
-    runtime.paid_post(sender, URL, json=video())
+    runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     job(client, CHILD, ROOT)
     token = runtime._TASK_ID.set(CHILD)
     try:
         with pytest.raises(SpendBlocked, match='already_reserved'):
-            runtime.paid_post(sender, URL, json=video())
+            runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     finally:
         runtime._TASK_ID.reset(token)
     assert sender.call_count == 1
@@ -94,12 +104,12 @@ def test_different_repairs_still_share_original_allowance(case):
     client, ledger = case
     sender = Mock()
     for i in range(3):
-        runtime.paid_post(sender, URL, json=video(f'scene {i}'))
+        runtime.paid_post(sender, URL, json=video(f'scene {i}'), headers={'x-goog-api-key': 'private-test-key'})
     job(client, CHILD, ROOT)
     token = runtime._TASK_ID.set(CHILD)
     try:
         with pytest.raises(SpendBlocked, match='lineage_limit'):
-            runtime.paid_post(sender, URL, json=video('repaired scene'))
+            runtime.paid_post(sender, URL, json=video('repaired scene'), headers={'x-goog-api-key': 'private-test-key'})
     finally:
         runtime._TASK_ID.reset(token)
     assert ledger.snapshot()['period']['used_micro'] == 900_000
@@ -108,8 +118,7 @@ def test_different_repairs_still_share_original_allowance(case):
 
 def test_more_expensive_runway_fallback_uses_actual_quoted_cost(case):
     _, ledger = case
-    client = Mock(base_url='https://api.dev.runwayml.com/')
-    client.with_options.return_value = client
+    client = fake_sdk_client('https://api.dev.runwayml.com/')
     runtime.paid_runway_create(client, model='gen4.5', prompt_text='scene',
                                ratio='720:1280', duration=5)
     with pytest.raises(SpendBlocked, match='lineage_limit'):
@@ -117,7 +126,12 @@ def test_more_expensive_runway_fallback_uses_actual_quoted_cost(case):
                                    ratio='720:1280', duration=5, audio=False)
     assert ledger.snapshot()['period']['used_micro'] == 600_000
     assert client.text_to_video.create.call_count == 1
-    client.with_options.assert_called_once_with(max_retries=0)
+    assert client.with_options.call_count == 2
+    for call in client.with_options.call_args_list:
+        assert call.kwargs == {
+            'max_retries': 0, 'api_key': TEST_KEY,
+            'set_default_headers': {'Authorization': 'Bearer ' + TEST_KEY},
+        }
 
 
 @pytest.mark.parametrize('url,kwargs', [
@@ -139,7 +153,7 @@ def test_missing_context_blocks_before_transport(case):
     token = runtime._TASK_ID.set(None)
     try:
         with pytest.raises(SpendBlocked, match='context_missing'):
-            runtime.paid_post(sender, URL, json=video())
+            runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     finally:
         runtime._TASK_ID.reset(token)
     sender.assert_not_called()
@@ -178,7 +192,7 @@ def test_missing_ledger_is_never_bootstrapped(case):
     client.delete(LEDGER_KEY)
     sender = Mock()
     with pytest.raises(SpendBlocked, match='not_initialized'):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     sender.assert_not_called()
     assert not client.exists(LEDGER_KEY)
 
@@ -194,7 +208,7 @@ def test_zero_allowance_prevents_any_paid_request(case, monkeypatch):
     client.set(runtime._CHANNEL_PREFIX + CHANNEL, json.dumps({'id': CHANNEL, 'connection_id': 'connection_AAAAA'}))
     sender = Mock()
     with pytest.raises(SpendBlocked, match='month_limit'):
-        runtime.paid_post(sender, URL, json=video())
+        runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'})
     sender.assert_not_called()
 
 
@@ -203,7 +217,7 @@ def test_parallel_requests_inherit_context_and_cannot_overspend(case):
     sender = Mock()
     def call(i):
         try:
-            runtime.paid_post(sender, URL, json=video(f'parallel {i}'))
+            runtime.paid_post(sender, URL, json=video(f'parallel {i}'), headers={'x-goog-api-key': 'private-test-key'})
             return True
         except SpendBlocked:
             return False
@@ -225,10 +239,12 @@ def test_task_scope_is_reset_even_after_error(case):
 
 
 def test_openai_text_request_caps_output_and_disables_sdk_retries(case):
-    client = Mock(base_url='https://api.openai.com/v1/')
-    client.with_options.return_value = client
+    client = fake_sdk_client('https://api.openai.com/v1/')
     runtime.paid_response(client, model='gpt-6-astra', input='a short script')
-    client.with_options.assert_called_once_with(max_retries=0)
+    client.with_options.assert_called_once_with(
+        max_retries=0, api_key=TEST_KEY,
+        set_default_headers={'Authorization': 'Bearer ' + TEST_KEY},
+    )
     assert client.responses.create.call_args.kwargs['max_output_tokens'] == 8192
     assert client.responses.create.call_args.kwargs['store'] is False
 
@@ -239,7 +255,7 @@ def test_openai_text_request_caps_output_and_disables_sdk_retries(case):
     {'service_tier': 'priority'}, {'model': 'unknown'}, {'max_output_tokens': 999999},
 ])
 def test_unbounded_openai_variants_block_before_sdk(case, change):
-    client = Mock(base_url='https://api.openai.com/v1/')
+    client = fake_sdk_client('https://api.openai.com/v1/')
     kwargs = {'model': 'gpt-6-astra', 'input': 'script', 'store': False, **change}
     with pytest.raises(SpendBlocked):
         runtime.paid_response(client, **kwargs)
@@ -250,7 +266,7 @@ def test_flag_off_retains_existing_provider_contract_without_redis(monkeypatch):
     monkeypatch.setattr(runtime, 'settings', SimpleNamespace(studio_spend_enforcement=False))
     monkeypatch.setattr(runtime, 'configured_ledger', Mock(side_effect=AssertionError))
     sender = Mock(return_value='legacy')
-    assert runtime.paid_post(sender, URL, json=video()) == 'legacy'
+    assert runtime.paid_post(sender, URL, json=video(), headers={'x-goog-api-key': 'private-test-key'}) == 'legacy'
     client = Mock()
     runtime.paid_response(client, model='legacy', input='unchanged')
     client.responses.create.assert_called_once_with(model='legacy', input='unchanged')
@@ -278,7 +294,8 @@ def test_catalog_expires_instead_of_silently_reusing_stale_price(monkeypatch):
 def test_all_current_provider_create_sites_use_the_guard():
     services = Path(__file__).parents[1] / 'app' / 'services'
     names = ('director', 'research', 'visual_qc', 'runway', 'fal_video', 'gemini_generation',
-             'gemini_critic', 'voice', 'audio_design', 'audio_qc', 'production_next_series')
+             'gemini_critic', 'voice', 'audio_design', 'audio_qc', 'production_next_series',
+             'abacus_generation', 'abacus_visual_generation', 'whisper_transcription')
     free_post_functions = {'ensure_shared_voice_added', '_upload_gemini_audio_file'}
     unguarded = []
     for name in names:
@@ -295,6 +312,80 @@ def test_all_current_provider_create_sites_use_the_guard():
                 if sdk_create or direct_post:
                     unguarded.append((name, function.name, node.lineno))
     assert not unguarded, unguarded
+
+    # Abacus uses a bounded streamed POST, so checking only `.post` misses its
+    # transport. Its sole transport reference must remain a paid_post argument.
+    abacus = ast.parse((services / 'abacus_generation.py').read_text(encoding='utf-8'))
+    parents = {child: parent for parent in ast.walk(abacus)
+               for child in ast.iter_child_nodes(parent)}
+    def containing_function(node):
+        while node in parents:
+            node = parents[node]
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                return node.name
+        return None
+
+    streams = [node for node in ast.walk(abacus) if isinstance(node, ast.Call)
+               and isinstance(node.func, ast.Attribute) and node.func.attr == 'stream']
+    assert len(streams) == 1
+    assert containing_function(streams[0]) == '_post_bounded'
+    assert isinstance(streams[0].func.value, ast.Name)
+    assert streams[0].func.value.id == 'httpx'
+    assert streams[0].args and isinstance(streams[0].args[0], ast.Constant)
+    assert streams[0].args[0].value == 'POST'
+    guarded = [node for node in ast.walk(abacus) if isinstance(node, ast.Call)
+               and isinstance(node.func, ast.Name) and node.func.id == 'paid_post'
+               and node.args and isinstance(node.args[0], ast.Name)
+               and node.args[0].id == '_post_bounded']
+    assert len(guarded) == 1
+    assert containing_function(guarded[0]) == 'generate_abacus_json'
+    transport_references = [node for node in ast.walk(abacus)
+                            if (isinstance(node, ast.Name) and node.id == '_post_bounded')
+                            or (isinstance(node, ast.Attribute) and node.attr == '_post_bounded')]
+    assert transport_references == [guarded[0].args[0]]
+
+    # The image adapter reuses that same transport only as the guarded call's
+    # sender; importing it must not introduce a direct create or another stream.
+    visual = ast.parse((services / 'abacus_visual_generation.py').read_text())
+    visual_guarded = [node for node in ast.walk(visual) if isinstance(node, ast.Call)
+                      and isinstance(node.func, ast.Attribute) and node.func.attr == 'paid_post'
+                      and node.args and isinstance(node.args[0], ast.Name)
+                      and node.args[0].id == '_post_bounded']
+    assert len(visual_guarded) == 1
+    assert [node for node in ast.walk(visual) if isinstance(node, ast.Name)
+            and node.id == '_post_bounded'] == [visual_guarded[0].args[0]]
+    assert not [node for node in ast.walk(visual) if isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute) and node.func.attr == 'stream']
+
+    # Multipart audio has its own immutable byte descriptor and funding gate.
+    # Its sole stream is private, and its sole caller reserves unconditionally
+    # before entering the transport try block. Real send ordering is also
+    # exercised by the Whisper/audio-QC integration tests.
+    whisper = ast.parse((services / 'whisper_transcription.py').read_text())
+    parents = {child: parent for parent in ast.walk(whisper)
+               for child in ast.iter_child_nodes(parent)}
+    streams = [node for node in ast.walk(whisper) if isinstance(node, ast.Call)
+               and isinstance(node.func, ast.Attribute) and node.func.attr == 'stream']
+    assert len(streams) == 1 and containing_function(streams[0]) == '_post_bounded'
+    assert isinstance(streams[0].func.value, ast.Name) and streams[0].func.value.id == 'httpx'
+    assert isinstance(streams[0].args[0], ast.Constant) and streams[0].args[0].value == 'POST'
+    calls = [node for node in ast.walk(whisper) if isinstance(node, ast.Call)
+             and isinstance(node.func, ast.Name) and node.func.id == '_post_bounded']
+    assert len(calls) == 1 and containing_function(calls[0]) == 'transcribe_whisper_bounded'
+    helper = next(node for node in whisper.body if isinstance(node, ast.FunctionDef)
+                  and node.name == 'transcribe_whisper_bounded')
+    reserve = [node.value for node in helper.body if isinstance(node, ast.Expr)
+               and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Attribute)
+               and node.value.func.attr == 'reserve_request']
+    assert len(reserve) == 1 and reserve[0].lineno < calls[0].lineno
+    assert [node for node in ast.walk(whisper) if isinstance(node, ast.Name)
+            and node.id == '_post_bounded'] == [calls[0].func]
+    audio = ast.parse((services / 'audio_qc.py').read_text())
+    parents = {child: parent for parent in ast.walk(audio)
+               for child in ast.iter_child_nodes(parent)}
+    entry = [node for node in ast.walk(audio) if isinstance(node, ast.Call)
+             and isinstance(node.func, ast.Name) and node.func.id == 'transcribe_whisper_bounded']
+    assert len(entry) == 1 and containing_function(entry[0]) == '_verify_with_openai'
 
 
 @pytest.mark.parametrize('kwargs', [
@@ -314,7 +405,7 @@ def test_unpriced_transport_options_block(case, kwargs):
 ])
 def test_sdk_proxy_cannot_use_official_endpoint_quote(case, adapter, kwargs):
     _, ledger = case
-    client = Mock(base_url='https://example.com/other-billing/')
+    client = fake_sdk_client('https://example.com/other-billing/')
     with pytest.raises(SpendBlocked, match='endpoint_not_priced'):
         adapter(client, **kwargs)
     client.with_options.assert_not_called()
@@ -328,8 +419,7 @@ def test_actual_runway_fallback_cannot_outgrow_original_budget(case, monkeypatch
     class RejectedCapacity(Exception):
         pass
     monkeypatch.setattr(runway, 'RateLimitError', RejectedCapacity)
-    client = Mock(base_url='https://api.dev.runwayml.com/')
-    client.with_options.return_value = client
+    client = fake_sdk_client('https://api.dev.runwayml.com/')
     client.text_to_video.create.side_effect = RejectedCapacity()
     with pytest.raises(SpendBlocked, match='lineage_limit'):
         runway._create_text_to_video_task(client, 'scene', 5, '9:16')
@@ -343,7 +433,8 @@ def test_actual_gemini_json_preserves_budget_refusal_without_retry(case, monkeyp
     sender = Mock()
     monkeypatch.setattr(gemini_generation.httpx, 'post', sender)
     with pytest.raises(SpendBlocked, match='request_not_priced'):
-        gemini_generation.generate_gemini_json('script', api_key='test-only', retry_once=True)
+        gemini_generation.generate_gemini_json(
+            'script', api_key='test-only', model='unreviewed-model', retry_once=True)
     sender.assert_not_called()
 
 

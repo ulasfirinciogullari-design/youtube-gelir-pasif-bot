@@ -114,7 +114,7 @@ def test_only_fresh_successful_owner_api_absence_is_evidence(case, damage):
 
 
 @pytest.mark.parametrize('field,value', [('cursor', '4'), ('cursor', '03'), ('paused_reason', ''),
-    ('last_result', 'SUCCESS'), ('active_task_id', str(uuid4())), ('last_task_id', str(uuid4())),
+    ('last_result', 'SUCCESS'), pytest.param('active_task_id', str(uuid4()), id='active_task_id-different-task'), pytest.param('last_task_id', str(uuid4()), id='last_task_id-different-task'),
     ('connection_id', 'other-connection'), ('profile_revision', 'other-revision')])
 def test_current_scheduler_snapshot_must_be_terminal_paused_and_exact(case, field, value):
     case.client.hset(case.state_key, field, value); before = snapshot(case.client)

@@ -88,3 +88,28 @@ def test_actual_timestamp_failures_are_not_repaired_by_spelling_equivalence():
         words=[{'word': 'Amerikan', 'start': 0, 'end': .2}, {'word': 'sentleri', 'start': .2, 'end': .5}], provider='openai')
     assert result['pass'] is True
     assert result['mismatch_details']['timestamp_sequence_match'] is False
+
+
+@pytest.mark.parametrize('context', ['kasada', 'kasalarda', 'kasaya', 'kasalara', 'kasadan', 'kasalardan'])
+def test_currency_spelling_with_local_cash_register_cue(context):
+    expected = f'Eldeki sentler {context} dönüyor.'
+    heard = f'Eldeki centler {context} dönüyor.'
+    words = [{'word': word, 'start': i * .4, 'end': (i + 1) * .4}
+             for i, word in enumerate(heard.split())]
+    before = deepcopy(words)
+    result = qc.compare_transcript(expected, heard, words=words, provider='abacus_router')
+    assert result['pass'] is True and result['score'] == 100
+    assert result['transcript'] == heard and words == before
+    qc._require_word_timing_evidence(result, 'Abacus router')
+
+
+@pytest.mark.parametrize('expected,heard', [
+    ('Sentler kasalarda dönüyor.', 'Centleri kasalarda dönüyor.'),
+    ('İki sent kasada kaldı.', 'Üç cent kasada kaldı.'),
+    ('Kasalarda üç sent var.', 'Kasalarda üç dolar var.'),
+    ('Kasa kapandı. Sentler döndü.', 'Kasa kapandı. Centler döndü.'),
+    ('Sentler kasabanın sözcüğü.', 'Centler kasabanın sözcüğü.'),
+    ('Kasada sentetik bir madde.', 'Kasada centetik bir madde.'),
+])
+def test_register_context_never_changes_amount_suffix_or_word_root(expected, heard):
+    assert qc.compare_transcript(expected, heard)['pass'] is False

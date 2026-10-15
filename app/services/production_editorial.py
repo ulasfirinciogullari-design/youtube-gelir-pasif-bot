@@ -49,13 +49,15 @@ def _positive_scope(value: str) -> str:
     )
 
 
-def choose_production_editorial(topic: str, channel_identity: str = '') -> dict:
-    """Prefer 30s Shorts; spend three minutes only on explicit broader scope.
+def choose_production_editorial(topic: str, channel_identity: str = '', *, long_duration_minutes: int = 3) -> dict:
+    """Prefer 30s Shorts; select an explicitly bounded broader format.
 
     This does not research facts or promise coverage/quality. Unrecognized or
-    ambiguous briefs stay short. It never chooses five-to-thirty-minute jobs,
-    changes the brief, or modifies an existing job or its paid-media ledger.
+    ambiguous briefs stay short. Three minutes remains the legacy default;
+    eight minutes requires the new delivery policy. No existing job is edited.
     """
+    if type(long_duration_minutes) is not int or long_duration_minutes not in {3, 8}:
+        raise ValueError('Invalid scheduled long-form duration')
     if (
         not isinstance(topic, str) or not topic.strip() or len(topic) > 240
         or not isinstance(channel_identity, str) or len(channel_identity) > 240
@@ -85,8 +87,11 @@ def choose_production_editorial(topic: str, channel_identity: str = '') -> dict:
             if comparison else 'En az üç başlıklı ayrıntılı açıklama için 3 dakikalık yatay video.'
         )
         signals = dimensions
+    if format_name == 'landscape' and long_duration_minutes == 8:
+        duration = 8.0
+        reason = 'Kaynaklı uzun video ve aynı anlatımdan üç bağımsız Shorts: 8 dakikalık üretim paketi.'
     return {
-        'version': 1,
+        'version': 2 if duration == 8 else 1,
         'format': format_name,
         'duration_minutes': duration,
         'reason_code': reason_code,

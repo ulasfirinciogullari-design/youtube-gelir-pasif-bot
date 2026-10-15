@@ -105,6 +105,18 @@ def test_start_now_form_preserves_profile_revision_and_posts_only(ui):
     assert 'Hemen sıradaki videoyu üret' in html
 
 
+def test_newly_promoted_first_episode_has_start_control_but_unproven_initial_queue_does_not(ui):
+    profile = {**_profile(), 'series_epoch': 1}
+    state = {'cursor': '0', 'dispatch_status': 'series_promoted', 'profile_revision': 'revision-one',
+             'series_epoch': '1', 'last_series_promotion': 'server-promotion-receipt'}
+    assert 'Hemen sıradaki videoyu üret' in ui.ns['_produce_now_form'](profile, state)
+    for field, value in [('paused_reason', 'owner_paused'), ('active_task_id', 'active'),
+                         ('last_task_id', 'prior'), ('series_epoch', '2'),
+                         ('profile_revision', 'changed'), ('last_series_promotion', None)]:
+        assert ui.ns['_produce_now_form'](profile, {**state, field: value}) == ''
+    assert ui.ns['_produce_now_form'](profile, {'cursor': '0', 'dispatch_status': 'finished'}) == ''
+
+
 def _invoke(ui, route):
     if route == 'youtube_release_existing':
         return ui.ns[route]('source-123', object(), expected_video_id='video-123',

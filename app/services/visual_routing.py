@@ -19,6 +19,11 @@ def preview_total_paid_create_cap(
     duration_minutes: float,
 ) -> int | None:
     """Return server policy; the worker additionally freezes the per-task cap."""
+    if (options.get('mode') == 'production' and options.get('format') == 'landscape'
+            and options.get('content_plan_item_id') and duration_minutes == 3):
+        from app.services.commissioning_longform import active, MAX_SCENES
+        if active():
+            return MAX_SCENES
     bounded_mode = (
         options.get('mode') == 'preview'
         or (

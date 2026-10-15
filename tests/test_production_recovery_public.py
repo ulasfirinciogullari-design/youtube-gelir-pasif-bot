@@ -248,7 +248,7 @@ def test_lost_atomic_reply_is_reconciled_without_delaying_again(case, monkeypatc
     ('ledger', ['release_status'], 'uncertain'), ('ledger', ['release_status'], 'blocked'),
     ('ledger', ['privacy_status'], 'private'), ('ledger', ['release_side_effect_possible'], False),
     ('ledger', ['release_completed_at'], None), ('ledger', ['release_error_code'], 'uncertain'),
-    ('ledger', ['publish_plan', 'contains_synthetic_media'], False),
+    ('ledger', ['publish_plan', 'contains_synthetic_media'], None),
     ('ledger', ['publish_plan', 'contains_synthetic_media'], None),
     ('ledger', ['publish_plan', 'release_mode'], 'private'),
     ('ledger', ['publish_plan', 'profile_revision'], 'changed'),
@@ -378,6 +378,43 @@ def test_current_thumbnail_requirement_also_applies(case):
             lambda job: job['result']['youtube'].update(thumbnail_uploaded=False))
     with pytest.raises(module.ProductionRecoveryError, match='assets_unverified'):
         _run(case)
+
+
+def test_publisher_can_strengthen_stock_plan_after_lua_round_trip(case):
+    module, client, data = case
+    # Match the observed production Redis cjson representation. Fakeredis's
+    # Lua implementation preserves [] and cannot reproduce that conversion.
+    _change(client, module.JOB_PREFIX + data.recovered_id,
+            lambda job: job['result'].update(runway_scenes_used=0,
+                video_generation_provider_records={}, runway_success_scene_indices={},
+                final_runway_repair_scene_indices={}))
+    _change(client, module.UPLOAD_PREFIX + data.recovered_id,
+            lambda record: record['publish_plan'].update(contains_synthetic_media=False))
+    before = _snapshot(client)
+    result = _run(case)
+    assert result['status'] == 'resumed' and result['contains_synthetic_media'] is True
+    after = _snapshot(client)
+    for changed in (data.state_key, data.audit_key):
+        before.pop(changed, None); after.pop(changed, None)
+    assert after == before  # No source, plan, publication or provider rewriting.
+
+
+@pytest.mark.parametrize('damage', ['publisher_false', 'source_false', 'source_missing', 'source_string'])
+def test_strengthened_disclosure_requires_matching_positive_delivery_proof(case, damage):
+    module, client, data = case
+    _change(client, module.UPLOAD_PREFIX + data.recovered_id,
+            lambda record: record['publish_plan'].update(contains_synthetic_media=False))
+    if damage == 'publisher_false':
+        _change(client, module.JOB_PREFIX + data.publish_id,
+                lambda job: job['result'].update(contains_synthetic_media=False))
+    else:
+        value = {'source_false': False, 'source_missing': None, 'source_string': 'true'}[damage]
+        _change(client, module.JOB_PREFIX + data.recovered_id,
+                lambda job: job['result']['youtube'].update(contains_synthetic_media=value))
+    before = _snapshot(client)
+    with pytest.raises(module.ProductionRecoveryError, match='disclosure_unverified'):
+        _run(case)
+    assert _snapshot(client) == before
 
 
 def test_public_audit_with_wrong_mode_cannot_be_reused(case):

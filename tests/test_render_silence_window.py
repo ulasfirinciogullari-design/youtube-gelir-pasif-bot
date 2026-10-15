@@ -44,11 +44,10 @@ def test_aac_padding_outside_the_master_is_not_counted_as_final_hold(monkeypatch
     probe = _mock_measurement(monkeypatch)
     measured = render.ending_silence_duration('master.mp4')
     assert measured == pytest.approx(1.519)
-    assert _gate(30.016 - 28.481)['pass'] is False
     result = _gate(measured)
     assert result['pass'] is True
     assert result['minimum_ending_silence_seconds'] == 1.152
-    assert result['maximum_ending_silence_seconds'] == 1.522
+    assert result['maximum_ending_silence_seconds'] == 1.55
     assert result['expected_frames'] == result['actual_frames'] == 900
     command = probe.call_args.args[0]
     assert command[command.index('-select_streams') + 1] == 'v:0'
@@ -136,6 +135,24 @@ def test_native_no_editlist_aac_exposes_padding_without_changing_the_master(tmp_
     measured = render.ending_silence_duration(master)
     assert measured == pytest.approx(timeline - starts[-1])
     assert raw_silence - measured == pytest.approx(ends[-1] - timeline)
-    assert _gate(raw_silence)['reason'] == 'final_ending_silence_out_of_bounds'
+    # Padding remains excluded from the measured value even when both values
+    # fall inside the separate editorial allowance for a sub-frame difference.
     assert _gate(measured)['pass'] is True
     assert master.read_bytes() == before
+
+
+@pytest.mark.parametrize('silence,passed', [(.737, True), (.763, True), (.764, False),
+                                        (1.0, False), (0.0, False)])
+def test_real_margin_master_has_only_one_frame_of_timing_tolerance(silence, passed):
+    # Actual saved terminal metrics of 8f0f3347: 900 frames, voice 29.520s,
+    # measured closing silence 0.737s. No provider/audio request is repeated.
+    result = _gate(silence, voice_duration=29.520)
+    assert result['pass'] is passed
+    assert result['minimum_ending_silence_seconds'] == .36
+    assert result['maximum_ending_silence_seconds'] == .763
+    assert _gate(silence, voice_duration=29.520, frames=899)['pass'] is False
+
+
+def test_subframe_tolerance_never_extends_absolute_silence_cap():
+    assert _gate(1.55, voice_duration=28.7)['pass'] is True
+    assert _gate(1.55001, voice_duration=28.7)['pass'] is False

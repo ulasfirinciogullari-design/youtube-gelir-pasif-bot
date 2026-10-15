@@ -22,6 +22,8 @@ TOKEN = 'one-shot-full-rebuild-token-1234'
 def _load(name, namespace):
     class StripImports(ast.NodeTransformer):
         def visit_ImportFrom(self, node):
+            if node.module == 'app.services.channel_cadence':
+                return node
             return None if (node.module or '').startswith('app.') else node
     path = ROOT / 'app/services' / (name + '.py')
     tree = StripImports().visit(ast.parse(path.read_text(encoding='utf-8')))
@@ -53,9 +55,10 @@ def _all(client):
 
 @pytest.fixture
 def case():
+    from app.services.production_failures import classify_failure
     client = fakeredis.FakeRedis(decode_responses=True)
     settings = SimpleNamespace(redis_url='redis://never-used')
-    state = _load('studio_state', {'settings': settings})
+    state = _load('studio_state', {'settings': settings, 'classify_failure': classify_failure})
     state._client = lambda: client
     ns = dict(vars(state), settings=settings)
     production = _load('channel_production', ns)

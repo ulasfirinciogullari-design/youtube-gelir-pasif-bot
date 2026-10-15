@@ -301,7 +301,12 @@ def test_full_final_QA_rejects_bad_stock_saved_or_new_scene_and_never_uses_proxy
         runtime['final_reviews'] = {i: {'score': 92 if i != index else 40} for i in range(6)}
         _execute([_named_assignment('rejected_final_scenes')], runtime)
         assert runtime['rejected_final_scenes'] == [index]
-    review = _named_assignment('final_visual_qc').value
+    review = next(node.value for node in ast.walk(TREE) if isinstance(node, ast.Assign)
+                  and any(isinstance(target, ast.Name) and target.id == 'final_visual_qc'
+                          for target in node.targets)
+                  and isinstance(node.value, ast.Call)
+                  and isinstance(node.value.func, ast.Name)
+                  and node.value.func.id == 'review_scene_visuals')
     assert ast.unparse(review.args[1]) == 'final_review_visuals'
     rendered = _named_assignment('rendered').value
     assert next(ast.unparse(k.value) for k in rendered.keywords if k.arg == 'scene_visual_paths') == 'scene_visuals'

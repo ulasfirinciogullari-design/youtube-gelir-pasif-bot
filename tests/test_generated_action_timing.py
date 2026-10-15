@@ -42,11 +42,30 @@ def test_only_locked_genuine_zero_start_action_can_change_speed(changes):
 @pytest.mark.parametrize('source,target,index,expected', [
     (6, 5, 5, 1.2), (6.00001, 5, 5, 1.02),
     (8, 5, 5, 1.02), (5, 6, 5, 1.02),
-    (5.04, 5, 0, 1.008), (5, 5, 0, 1.008),
+    (5.04, 5, 0, 1.008), (5, 5, 0, 1.0),
+    (6, 179 / 30, 1, 1.005586592), (6.016, 178 / 30, 1, 1.013932584),
     (6, 155 / 30, 0, 1.161290322),
 ])
 def test_fit_is_bounded_and_never_slows_or_rescues_a_short_source(source, target, index, expected):
     assert render._clip_speed(generated(), source, target, index) == pytest.approx(expected)
+
+
+@pytest.mark.parametrize('frames',[179,180])
+@pytest.mark.skipif(not shutil.which('ffmpeg') or not shutil.which('ffprobe'), reason='ffmpeg required')
+def test_real_nearly_full_length_generated_cut_uses_available_frames_without_stock_speedup(tmp_path,frames):
+    source=tmp_path/'native-six-second-action.mp4'
+    subprocess.run(['ffmpeg','-v','error','-f','lavfi','-i','testsrc2=s=180x320:r=24:d=6',
+        '-an','-c:v','libx264','-threads','1','-preset','ultrafast',str(source)],
+        check=True,capture_output=True,timeout=30)
+    before=hashlib.sha256(source.read_bytes()).hexdigest()
+    duration=frames/30
+    assert duration*1.014>render.media_duration(source)  # Reproduces the former rejection.
+    output=tmp_path/'exact-cut.mp4'
+    render.normalize_clip(generated(source),output,duration,1,output_resolution='1080x1920')
+    assert render.video_frame_count(output)==frames
+    assert render.media_duration(output)==pytest.approx(duration,abs=.001)
+    assert render.max_freeze_duration(output)<.2
+    assert hashlib.sha256(source.read_bytes()).hexdigest()==before
 
 
 @pytest.mark.parametrize('source,target', [(float('nan'), 5), (6, 0), (float('inf'), 5)])

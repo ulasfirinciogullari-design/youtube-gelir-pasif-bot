@@ -77,3 +77,14 @@ def test_local_normalization_error_does_not_become_provider_or_raw_fallback(case
     monkeypatch.setattr(review.render,'normalize_clip',fail)
     with pytest.raises(RuntimeError,match='^Curated exact-cut review preparation unavailable$'):
         review.exact_review_visuals(**args)
+
+
+def test_natural_saved_short_keeps_all_its_audio_and_exact_scene_frames(case, monkeypatch):
+    args, calls = case
+    monkeypatch.setattr(review.render, 'media_duration', lambda path: 31.584)
+    with pytest.raises(RuntimeError):
+        review.exact_review_visuals(**args)
+    assert not calls
+    result = review.exact_review_visuals(**args, natural_short=True)
+    assert len(result) == 6
+    assert sum(round(call[2] * 30) for call in calls) == round(31.584 * 30)

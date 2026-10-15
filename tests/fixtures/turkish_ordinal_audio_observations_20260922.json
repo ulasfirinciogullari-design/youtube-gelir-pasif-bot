@@ -1,0 +1,5908 @@
+{
+  "cases": [
+    {
+      "source_task_id": "75e7b4e2-4ff7-5301-9984-1efef98ca577",
+      "expected": "Yirminci yüzyıl başında içecek üreticileri düz cam şişeler kullanıyordu. Rakip firmalar etiketleri kopyalayıp müşterileri kolayca yanıltabiliyordu. Ortaklar, karanlıkta dokunulduğunda bile tanınacak benzersiz bir form istedi. Tasarımcılar kakaonun oluklu meyvesinden esinlenerek kavisli hatlar çizdi. Patentlenen bu silüet, kırılsa dahi markayı ele veriyordu. Sizce özgün ambalaj içeceğin lezzetinin önüne geçebilir mi?",
+      "observations": [
+        {
+          "payload": {
+            "duration": 28.969999313354492,
+            "language": "turkish",
+            "task": "transcribe",
+            "text": "20. yüzyıl başında içecek üreticileri düz cam şişeler kullanıyordu. Rakip firmalar etiketleri kopyalayıp müşterileri kolayca yanıltabiliyordu. Ortaklar karanlıkta dokunulduğunda bile tanınılacak, benzersiz bir form istedi. Tasarımcılar kakaonun oluklu meyvesinden esinlenerek kavisli hatlar çizdi. Patentlenen bu silüet kırılsa dahi markayı ele veriyordu. Sizce özgün ambalaj içeceğin lezzetinin önüne geçebilir mi?",
+            "usage": {
+              "seconds": 29,
+              "type": "duration"
+            },
+            "words": [
+              {
+                "end": 0.3400000035762787,
+                "start": 0.0,
+                "word": "20"
+              },
+              {
+                "end": 0.8399999737739563,
+                "start": 0.5199999809265137,
+                "word": "yüzyıl"
+              },
+              {
+                "end": 1.3600000143051147,
+                "start": 0.8399999737739563,
+                "word": "başında"
+              },
+              {
+                "end": 1.8200000524520874,
+                "start": 1.3600000143051147,
+                "word": "içecek"
+              },
+              {
+                "end": 2.4600000381469727,
+                "start": 1.8200000524520874,
+                "word": "üreticileri"
+              },
+              {
+                "end": 2.880000114440918,
+                "start": 2.4600000381469727,
+                "word": "düz"
+              },
+              {
+                "end": 3.1600000858306885,
+                "start": 2.880000114440918,
+                "word": "cam"
+              },
+              {
+                "end": 3.559999942779541,
+                "start": 3.1600000858306885,
+                "word": "şişeler"
+              },
+              {
+                "end": 4.320000171661377,
+                "start": 3.559999942779541,
+                "word": "kullanıyordu"
+              },
+              {
+                "end": 5.159999847412109,
+                "start": 5.059999942779541,
+                "word": "Rakip"
+              },
+              {
+                "end": 5.71999979019165,
+                "start": 5.159999847412109,
+                "word": "firmalar"
+              },
+              {
+                "end": 6.5,
+                "start": 5.71999979019165,
+                "word": "etiketleri"
+              },
+              {
+                "end": 7.28000020980835,
+                "start": 6.5,
+                "word": "kopyalayıp"
+              },
+              {
+                "end": 7.860000133514404,
+                "start": 7.28000020980835,
+                "word": "müşterileri"
+              },
+              {
+                "end": 8.4399995803833,
+                "start": 7.860000133514404,
+                "word": "kolayca"
+              },
+              {
+                "end": 9.420000076293945,
+                "start": 8.4399995803833,
+                "word": "yanıltabiliyordu"
+              },
+              {
+                "end": 10.579999923706055,
+                "start": 10.119999885559082,
+                "word": "Ortaklar"
+              },
+              {
+                "end": 11.239999771118164,
+                "start": 10.579999923706055,
+                "word": "karanlıkta"
+              },
+              {
+                "end": 11.800000190734863,
+                "start": 11.239999771118164,
+                "word": "dokunulduğunda"
+              },
+              {
+                "end": 12.100000381469727,
+                "start": 11.800000190734863,
+                "word": "bile"
+              },
+              {
+                "end": 12.760000228881836,
+                "start": 12.100000381469727,
+                "word": "tanınılacak"
+              },
+              {
+                "end": 13.619999885559082,
+                "start": 13.220000267028809,
+                "word": "benzersiz"
+              },
+              {
+                "end": 13.920000076293945,
+                "start": 13.619999885559082,
+                "word": "bir"
+              },
+              {
+                "end": 14.15999984741211,
+                "start": 13.920000076293945,
+                "word": "form"
+              },
+              {
+                "end": 14.520000457763672,
+                "start": 14.15999984741211,
+                "word": "istedi"
+              },
+              {
+                "end": 15.899999618530273,
+                "start": 15.279999732971191,
+                "word": "Tasarımcılar"
+              },
+              {
+                "end": 16.6200008392334,
+                "start": 15.899999618530273,
+                "word": "kakaonun"
+              },
+              {
+                "end": 17.059999465942383,
+                "start": 16.6200008392334,
+                "word": "oluklu"
+              },
+              {
+                "end": 17.65999984741211,
+                "start": 17.059999465942383,
+                "word": "meyvesinden"
+              },
+              {
+                "end": 18.700000762939453,
+                "start": 17.65999984741211,
+                "word": "esinlenerek"
+              },
+              {
+                "end": 19.239999771118164,
+                "start": 18.700000762939453,
+                "word": "kavisli"
+              },
+              {
+                "end": 19.760000228881836,
+                "start": 19.239999771118164,
+                "word": "hatlar"
+              },
+              {
+                "end": 20.15999984741211,
+                "start": 19.760000228881836,
+                "word": "çizdi"
+              },
+              {
+                "end": 21.579999923706055,
+                "start": 21.0,
+                "word": "Patentlenen"
+              },
+              {
+                "end": 21.899999618530273,
+                "start": 21.579999923706055,
+                "word": "bu"
+              },
+              {
+                "end": 22.280000686645508,
+                "start": 21.899999618530273,
+                "word": "silüet"
+              },
+              {
+                "end": 22.8799991607666,
+                "start": 22.280000686645508,
+                "word": "kırılsa"
+              },
+              {
+                "end": 23.200000762939453,
+                "start": 22.8799991607666,
+                "word": "dahi"
+              },
+              {
+                "end": 23.600000381469727,
+                "start": 23.200000762939453,
+                "word": "markayı"
+              },
+              {
+                "end": 23.8799991607666,
+                "start": 23.600000381469727,
+                "word": "ele"
+              },
+              {
+                "end": 24.34000015258789,
+                "start": 23.8799991607666,
+                "word": "veriyordu"
+              },
+              {
+                "end": 25.399999618530273,
+                "start": 24.979999542236328,
+                "word": "Sizce"
+              },
+              {
+                "end": 25.959999084472656,
+                "start": 25.399999618530273,
+                "word": "özgün"
+              },
+              {
+                "end": 26.440000534057617,
+                "start": 25.959999084472656,
+                "word": "ambalaj"
+              },
+              {
+                "end": 26.979999542236328,
+                "start": 26.440000534057617,
+                "word": "içeceğin"
+              },
+              {
+                "end": 27.6200008392334,
+                "start": 26.979999542236328,
+                "word": "lezzetinin"
+              },
+              {
+                "end": 27.979999542236328,
+                "start": 27.6200008392334,
+                "word": "önüne"
+              },
+              {
+                "end": 28.479999542236328,
+                "start": 27.979999542236328,
+                "word": "geçebilir"
+              },
+              {
+                "end": 28.700000762939453,
+                "start": 28.479999542236328,
+                "word": "mi"
+              }
+            ]
+          },
+          "provider": "openai"
+        },
+        {
+          "payload": {
+            "duration": 29.459999084472656,
+            "language": "turkish",
+            "task": "transcribe",
+            "text": "20. yüzyıl başında içecek üreticileri düz cam şişeler kullanıyordu. Rakip firmalar etiketleri kopyalayıp müşterileri kolayca yanıltabiliyordu. Ortaklar karanlıkta dokunulduğunda bile tanınılacak benzersiz bir form istedi. Tasarımcılar kakaonun oluklu meyvesinden esinlenerek kavisli hatlar çizdi. Patentlenen bu silüet kırılsa dahi markayı ele veriyordu. Sizce özgün ambalaj içeceğin lezzetinin önüne geçebilir mi?",
+            "usage": {
+              "seconds": 30,
+              "type": "duration"
+            },
+            "words": [
+              {
+                "end": 0.36000001430511475,
+                "start": 0.0,
+                "word": "20"
+              },
+              {
+                "end": 0.9200000166893005,
+                "start": 0.5600000023841858,
+                "word": "yüzyıl"
+              },
+              {
+                "end": 1.5,
+                "start": 0.9200000166893005,
+                "word": "başında"
+              },
+              {
+                "end": 1.9600000381469727,
+                "start": 1.5,
+                "word": "içecek"
+              },
+              {
+                "end": 2.680000066757202,
+                "start": 1.9600000381469727,
+                "word": "üreticileri"
+              },
+              {
+                "end": 3.2799999713897705,
+                "start": 2.680000066757202,
+                "word": "düz"
+              },
+              {
+                "end": 3.5799999237060547,
+                "start": 3.2799999713897705,
+                "word": "cam"
+              },
+              {
+                "end": 4.019999980926514,
+                "start": 3.5799999237060547,
+                "word": "şişeler"
+              },
+              {
+                "end": 4.860000133514404,
+                "start": 4.019999980926514,
+                "word": "kullanıyordu"
+              },
+              {
+                "end": 5.639999866485596,
+                "start": 5.519999980926514,
+                "word": "Rakip"
+              },
+              {
+                "end": 6.199999809265137,
+                "start": 5.639999866485596,
+                "word": "firmalar"
+              },
+              {
+                "end": 6.980000019073486,
+                "start": 6.199999809265137,
+                "word": "etiketleri"
+              },
+              {
+                "end": 7.880000114440918,
+                "start": 6.980000019073486,
+                "word": "kopyalayıp"
+              },
+              {
+                "end": 8.520000457763672,
+                "start": 7.880000114440918,
+                "word": "müşterileri"
+              },
+              {
+                "end": 9.079999923706055,
+                "start": 8.520000457763672,
+                "word": "kolayca"
+              },
+              {
+                "end": 10.020000457763672,
+                "start": 9.079999923706055,
+                "word": "yanıltabiliyordu"
+              },
+              {
+                "end": 11.300000190734863,
+                "start": 10.84000015258789,
+                "word": "Ortaklar"
+              },
+              {
+                "end": 12.020000457763672,
+                "start": 11.300000190734863,
+                "word": "karanlıkta"
+              },
+              {
+                "end": 12.65999984741211,
+                "start": 12.020000457763672,
+                "word": "dokunulduğunda"
+              },
+              {
+                "end": 12.960000038146973,
+                "start": 12.65999984741211,
+                "word": "bile"
+              },
+              {
+                "end": 13.619999885559082,
+                "start": 12.960000038146973,
+                "word": "tanınılacak"
+              },
+              {
+                "end": 14.359999656677246,
+                "start": 13.619999885559082,
+                "word": "benzersiz"
+              },
+              {
+                "end": 14.640000343322754,
+                "start": 14.359999656677246,
+                "word": "bir"
+              },
+              {
+                "end": 14.880000114440918,
+                "start": 14.640000343322754,
+                "word": "form"
+              },
+              {
+                "end": 15.220000267028809,
+                "start": 14.880000114440918,
+                "word": "istedi"
+              },
+              {
+                "end": 16.540000915527344,
+                "start": 15.9399995803833,
+                "word": "Tasarımcılar"
+              },
+              {
+                "end": 17.260000228881836,
+                "start": 16.540000915527344,
+                "word": "kakaonun"
+              },
+              {
+                "end": 17.65999984741211,
+                "start": 17.260000228881836,
+                "word": "oluklu"
+              },
+              {
+                "end": 18.31999969482422,
+                "start": 17.65999984741211,
+                "word": "meyvesinden"
+              },
+              {
+                "end": 19.18000030517578,
+                "start": 18.31999969482422,
+                "word": "esinlenerek"
+              },
+              {
+                "end": 19.959999084472656,
+                "start": 19.18000030517578,
+                "word": "kavisli"
+              },
+              {
+                "end": 20.459999084472656,
+                "start": 19.959999084472656,
+                "word": "hatlar"
+              },
+              {
+                "end": 20.84000015258789,
+                "start": 20.459999084472656,
+                "word": "çizdi"
+              },
+              {
+                "end": 22.059999465942383,
+                "start": 21.5,
+                "word": "Patentlenen"
+              },
+              {
+                "end": 22.360000610351562,
+                "start": 22.059999465942383,
+                "word": "bu"
+              },
+              {
+                "end": 22.920000076293945,
+                "start": 22.360000610351562,
+                "word": "silüet"
+              },
+              {
+                "end": 23.420000076293945,
+                "start": 22.920000076293945,
+                "word": "kırılsa"
+              },
+              {
+                "end": 23.760000228881836,
+                "start": 23.420000076293945,
+                "word": "dahi"
+              },
+              {
+                "end": 24.139999389648438,
+                "start": 23.760000228881836,
+                "word": "markayı"
+              },
+              {
+                "end": 24.420000076293945,
+                "start": 24.139999389648438,
+                "word": "ele"
+              },
+              {
+                "end": 24.899999618530273,
+                "start": 24.420000076293945,
+                "word": "veriyordu"
+              },
+              {
+                "end": 25.899999618530273,
+                "start": 25.540000915527344,
+                "word": "Sizce"
+              },
+              {
+                "end": 26.420000076293945,
+                "start": 25.899999618530273,
+                "word": "özgün"
+              },
+              {
+                "end": 26.8799991607666,
+                "start": 26.420000076293945,
+                "word": "ambalaj"
+              },
+              {
+                "end": 27.399999618530273,
+                "start": 26.8799991607666,
+                "word": "içeceğin"
+              },
+              {
+                "end": 28.040000915527344,
+                "start": 27.399999618530273,
+                "word": "lezzetinin"
+              },
+              {
+                "end": 28.420000076293945,
+                "start": 28.040000915527344,
+                "word": "önüne"
+              },
+              {
+                "end": 28.959999084472656,
+                "start": 28.420000076293945,
+                "word": "geçebilir"
+              },
+              {
+                "end": 29.18000030517578,
+                "start": 28.959999084472656,
+                "word": "mi"
+              }
+            ]
+          },
+          "provider": "openai"
+        },
+        {
+          "payload": {
+            "duration": 32.060001373291016,
+            "language": "turkish",
+            "task": "transcribe",
+            "text": "Yirminci yüzyıl başında içecek üreticileri düz cam şişeler kullanıyordu. Rakip firmalar etiketleri kopyalayıp müşterileri kolayca yanıltabiliyordu. Ortaklar Karanlıkta dokunulduğunda bile tanınılacak benzersiz bir form istedi. Tasarımcılar kakaonun oluklu meyvesinden esinlenerek kavisli hatlar çizdi. Patentlenen bu silüet kırılsa dahi markayı ele veriyordu. Sizce özgün ambalaj içeceğin lezzetinin önüne geçebilir mi?",
+            "usage": {
+              "seconds": 33,
+              "type": "duration"
+            },
+            "words": [
+              {
+                "end": 0.5199999809265137,
+                "start": 0.0,
+                "word": "Yirminci"
+              },
+              {
+                "end": 0.9200000166893005,
+                "start": 0.5199999809265137,
+                "word": "yüzyıl"
+              },
+              {
+                "end": 1.3600000143051147,
+                "start": 0.9200000166893005,
+                "word": "başında"
+              },
+              {
+                "end": 1.840000033378601,
+                "start": 1.3600000143051147,
+                "word": "içecek"
+              },
+              {
+                "end": 2.5199999809265137,
+                "start": 1.840000033378601,
+                "word": "üreticileri"
+              },
+              {
+                "end": 3.0799999237060547,
+                "start": 2.5199999809265137,
+                "word": "düz"
+              },
+              {
+                "end": 3.380000114440918,
+                "start": 3.0799999237060547,
+                "word": "cam"
+              },
+              {
+                "end": 3.819999933242798,
+                "start": 3.380000114440918,
+                "word": "şişeler"
+              },
+              {
+                "end": 4.639999866485596,
+                "start": 3.819999933242798,
+                "word": "kullanıyordu"
+              },
+              {
+                "end": 5.559999942779541,
+                "start": 5.440000057220459,
+                "word": "Rakip"
+              },
+              {
+                "end": 6.079999923706055,
+                "start": 5.559999942779541,
+                "word": "firmalar"
+              },
+              {
+                "end": 6.880000114440918,
+                "start": 6.079999923706055,
+                "word": "etiketleri"
+              },
+              {
+                "end": 7.760000228881836,
+                "start": 6.880000114440918,
+                "word": "kopyalayıp"
+              },
+              {
+                "end": 8.399999618530273,
+                "start": 7.760000228881836,
+                "word": "müşterileri"
+              },
+              {
+                "end": 9.0,
+                "start": 8.399999618530273,
+                "word": "kolayca"
+              },
+              {
+                "end": 9.9399995803833,
+                "start": 9.0,
+                "word": "yanıltabiliyordu"
+              },
+              {
+                "end": 11.319999694824219,
+                "start": 10.680000305175781,
+                "word": "Ortaklar"
+              },
+              {
+                "end": 13.0,
+                "start": 11.84000015258789,
+                "word": "Karanlıkta"
+              },
+              {
+                "end": 13.699999809265137,
+                "start": 13.0,
+                "word": "dokunulduğunda"
+              },
+              {
+                "end": 14.020000457763672,
+                "start": 13.699999809265137,
+                "word": "bile"
+              },
+              {
+                "end": 14.720000267028809,
+                "start": 14.020000457763672,
+                "word": "tanınılacak"
+              },
+              {
+                "end": 15.539999961853027,
+                "start": 14.720000267028809,
+                "word": "benzersiz"
+              },
+              {
+                "end": 15.819999694824219,
+                "start": 15.539999961853027,
+                "word": "bir"
+              },
+              {
+                "end": 16.059999465942383,
+                "start": 15.819999694824219,
+                "word": "form"
+              },
+              {
+                "end": 16.440000534057617,
+                "start": 16.059999465942383,
+                "word": "istedi"
+              },
+              {
+                "end": 18.139999389648438,
+                "start": 17.360000610351562,
+                "word": "Tasarımcılar"
+              },
+              {
+                "end": 18.860000610351562,
+                "start": 18.139999389648438,
+                "word": "kakaonun"
+              },
+              {
+                "end": 19.299999237060547,
+                "start": 18.860000610351562,
+                "word": "oluklu"
+              },
+              {
+                "end": 19.899999618530273,
+                "start": 19.299999237060547,
+                "word": "meyvesinden"
+              },
+              {
+                "end": 20.940000534057617,
+                "start": 19.899999618530273,
+                "word": "esinlenerek"
+              },
+              {
+                "end": 21.540000915527344,
+                "start": 20.940000534057617,
+                "word": "kavisli"
+              },
+              {
+                "end": 22.0,
+                "start": 21.540000915527344,
+                "word": "hatlar"
+              },
+              {
+                "end": 22.3799991607666,
+                "start": 22.0,
+                "word": "çizdi"
+              },
+              {
+                "end": 23.68000030517578,
+                "start": 23.1200008392334,
+                "word": "Patentlenen"
+              },
+              {
+                "end": 23.979999542236328,
+                "start": 23.68000030517578,
+                "word": "bu"
+              },
+              {
+                "end": 24.3799991607666,
+                "start": 23.979999542236328,
+                "word": "silüet"
+              },
+              {
+                "end": 25.360000610351562,
+                "start": 24.3799991607666,
+                "word": "kırılsa"
+              },
+              {
+                "end": 26.020000457763672,
+                "start": 25.360000610351562,
+                "word": "dahi"
+              },
+              {
+                "end": 26.399999618530273,
+                "start": 26.020000457763672,
+                "word": "markayı"
+              },
+              {
+                "end": 26.65999984741211,
+                "start": 26.399999618530273,
+                "word": "ele"
+              },
+              {
+                "end": 27.139999389648438,
+                "start": 26.65999984741211,
+                "word": "veriyordu"
+              },
+              {
+                "end": 28.280000686645508,
+                "start": 27.139999389648438,
+                "word": "Sizce"
+              },
+              {
+                "end": 29.020000457763672,
+                "start": 28.280000686645508,
+                "word": "özgün"
+              },
+              {
+                "end": 29.5,
+                "start": 29.020000457763672,
+                "word": "ambalaj"
+              },
+              {
+                "end": 30.0,
+                "start": 29.5,
+                "word": "içeceğin"
+              },
+              {
+                "end": 30.6200008392334,
+                "start": 30.0,
+                "word": "lezzetinin"
+              },
+              {
+                "end": 31.020000457763672,
+                "start": 30.6200008392334,
+                "word": "önüne"
+              },
+              {
+                "end": 31.540000915527344,
+                "start": 31.020000457763672,
+                "word": "geçebilir"
+              },
+              {
+                "end": 31.719999313354492,
+                "start": 31.540000915527344,
+                "word": "mi"
+              }
+            ]
+          },
+          "provider": "openai"
+        },
+        {
+          "payload": {
+            "audio_duration_secs": 29.4600625,
+            "language_code": "tur",
+            "language_probability": 1.0,
+            "text": "20. yüzyıl başında içecek üreticileri düz cam şişeler kullanıyordu. Rakip firmalar etiketleri kopyalayıp müşterileri kolayca yanıltabiliyordu. Ortaklar karanlıkta dokunulduğunda bile tanınacak benzersiz bir form istedi. Tasarımcılar kakaonun oluklu meyvesinden esinlenerek kavisli hatlar çizdi. Patentlenen bu silüet kırılsa dahi markayı ele veriyordu. Sizce özgün ambalaj içeceğin lezzetinin önüne geçebilir mi?",
+            "transcription_id": "6paB4xf4MlpTh9OT3hwG",
+            "words": [
+              {
+                "end": 0.36,
+                "logprob": -0.006130136315505297,
+                "start": 0.18,
+                "text": "20.",
+                "type": "word"
+              },
+              {
+                "end": 0.56,
+                "logprob": -0.006422119215130806,
+                "start": 0.36,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 0.88,
+                "logprob": -0.004283955931896344,
+                "start": 0.56,
+                "text": "yüzyıl",
+                "type": "word"
+              },
+              {
+                "end": 0.96,
+                "logprob": -0.00021228920377325267,
+                "start": 0.88,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.56,
+                "logprob": -0.00021228920377325267,
+                "start": 0.96,
+                "text": "başında",
+                "type": "word"
+              },
+              {
+                "end": 1.62,
+                "logprob": -0.0002840353990904987,
+                "start": 1.56,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.98,
+                "logprob": -0.0007370658956157664,
+                "start": 1.62,
+                "text": "içecek",
+                "type": "word"
+              },
+              {
+                "end": 2.02,
+                "logprob": -3.397406908334233e-05,
+                "start": 1.98,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.66,
+                "logprob": -5.1594523855866015e-05,
+                "start": 2.02,
+                "text": "üreticileri",
+                "type": "word"
+              },
+              {
+                "end": 3.04,
+                "logprob": -0.001039322349242866,
+                "start": 2.66,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.22,
+                "logprob": -0.001039322349242866,
+                "start": 3.04,
+                "text": "düz",
+                "type": "word"
+              },
+              {
+                "end": 3.32,
+                "logprob": -7.152555099310121e-07,
+                "start": 3.22,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.52,
+                "logprob": -7.152555099310121e-07,
+                "start": 3.32,
+                "text": "cam",
+                "type": "word"
+              },
+              {
+                "end": 3.58,
+                "logprob": -9.011816291604191e-05,
+                "start": 3.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 4.019,
+                "logprob": -7.571163470337134e-05,
+                "start": 3.58,
+                "text": "şişeler",
+                "type": "word"
+              },
+              {
+                "end": 4.14,
+                "logprob": -4.887569048150908e-06,
+                "start": 4.019,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 4.9,
+                "logprob": -0.00039964955277145445,
+                "start": 4.14,
+                "text": "kullanıyordu.",
+                "type": "word"
+              },
+              {
+                "end": 5.28,
+                "logprob": -0.0005208089714869857,
+                "start": 4.9,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.64,
+                "logprob": -0.0003136297904347884,
+                "start": 5.28,
+                "text": "Rakip",
+                "type": "word"
+              },
+              {
+                "end": 5.66,
+                "logprob": -2.0861407392658293e-05,
+                "start": 5.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 6.14,
+                "logprob": -1.2159235438957694e-05,
+                "start": 5.66,
+                "text": "firmalar",
+                "type": "word"
+              },
+              {
+                "end": 6.34,
+                "logprob": -0.00035398892941884696,
+                "start": 6.14,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.0,
+                "logprob": -0.00014174519001244334,
+                "start": 6.34,
+                "text": "etiketleri",
+                "type": "word"
+              },
+              {
+                "end": 7.04,
+                "logprob": -5.9602869441732764e-05,
+                "start": 7.0,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.64,
+                "logprob": -0.0005793107464114655,
+                "start": 7.04,
+                "text": "kopyalayıp",
+                "type": "word"
+              },
+              {
+                "end": 7.94,
+                "logprob": -0.0020261728204786777,
+                "start": 7.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.56,
+                "logprob": -0.0011359618041420947,
+                "start": 7.94,
+                "text": "müşterileri",
+                "type": "word"
+              },
+              {
+                "end": 8.6,
+                "logprob": -2.3841855067985307e-07,
+                "start": 8.56,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 9.02,
+                "logprob": -1.0353996373169139e-05,
+                "start": 8.6,
+                "text": "kolayca",
+                "type": "word"
+              },
+              {
+                "end": 9.06,
+                "logprob": -0.000301673193462193,
+                "start": 9.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 10.02,
+                "logprob": -0.00011382404655331116,
+                "start": 9.06,
+                "text": "yanıltabiliyordu.",
+                "type": "word"
+              },
+              {
+                "end": 10.64,
+                "logprob": -9.500529267825186e-05,
+                "start": 10.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 11.22,
+                "logprob": -0.0007746599694655742,
+                "start": 10.64,
+                "text": "Ortaklar",
+                "type": "word"
+              },
+              {
+                "end": 11.38,
+                "logprob": -0.0551014244556427,
+                "start": 11.22,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 11.9,
+                "logprob": -0.028109307400870875,
+                "start": 11.38,
+                "text": "karanlıkta",
+                "type": "word"
+              },
+              {
+                "end": 11.98,
+                "logprob": -2.038458114839159e-05,
+                "start": 11.9,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.7,
+                "logprob": -0.0001867140729570695,
+                "start": 11.98,
+                "text": "dokunulduğunda",
+                "type": "word"
+              },
+              {
+                "end": 12.72,
+                "logprob": -1.1920928244535389e-07,
+                "start": 12.7,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.92,
+                "logprob": -1.1920928244535389e-07,
+                "start": 12.72,
+                "text": "bile",
+                "type": "word"
+              },
+              {
+                "end": 12.96,
+                "logprob": -0.022488219663500786,
+                "start": 12.92,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 13.6,
+                "logprob": -0.014508036896586418,
+                "start": 12.96,
+                "text": "tanınacak",
+                "type": "word"
+              },
+              {
+                "end": 13.72,
+                "logprob": -0.0004978132783435285,
+                "start": 13.6,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.36,
+                "logprob": -0.0007301071180134184,
+                "start": 13.72,
+                "text": "benzersiz",
+                "type": "word"
+              },
+              {
+                "end": 14.4,
+                "logprob": -1.5497195136049413e-06,
+                "start": 14.36,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.52,
+                "logprob": -1.5497195136049413e-06,
+                "start": 14.4,
+                "text": "bir",
+                "type": "word"
+              },
+              {
+                "end": 14.64,
+                "logprob": -6.556489552167477e-06,
+                "start": 14.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.86,
+                "logprob": -6.556489552167477e-06,
+                "start": 14.64,
+                "text": "form",
+                "type": "word"
+              },
+              {
+                "end": 14.9,
+                "logprob": -7.414542778860778e-05,
+                "start": 14.86,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.28,
+                "logprob": -6.367243305963452e-05,
+                "start": 14.9,
+                "text": "istedi.",
+                "type": "word"
+              },
+              {
+                "end": 15.76,
+                "logprob": -0.00022837892174720764,
+                "start": 15.28,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.48,
+                "logprob": -0.0003902596662707462,
+                "start": 15.76,
+                "text": "Tasarımcılar",
+                "type": "word"
+              },
+              {
+                "end": 16.66,
+                "logprob": -0.008407200686633587,
+                "start": 16.48,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.26,
+                "logprob": -0.004302613873726102,
+                "start": 16.66,
+                "text": "kakaonun",
+                "type": "word"
+              },
+              {
+                "end": 17.3,
+                "logprob": -0.00019894051365554333,
+                "start": 17.26,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.64,
+                "logprob": -0.0002755402996020469,
+                "start": 17.3,
+                "text": "oluklu",
+                "type": "word"
+              },
+              {
+                "end": 17.68,
+                "logprob": -1.1324817933200393e-05,
+                "start": 17.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.4,
+                "logprob": -1.8758847380178683e-05,
+                "start": 17.68,
+                "text": "meyvesinden",
+                "type": "word"
+              },
+              {
+                "end": 18.46,
+                "logprob": -6.318072337307967e-06,
+                "start": 18.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.14,
+                "logprob": -1.0186888919799292e-05,
+                "start": 18.46,
+                "text": "esinlenerek",
+                "type": "word"
+              },
+              {
+                "end": 19.46,
+                "logprob": -2.5629668016335927e-05,
+                "start": 19.14,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.92,
+                "logprob": -1.0268943307372475e-05,
+                "start": 19.46,
+                "text": "kavisli",
+                "type": "word"
+              },
+              {
+                "end": 19.98,
+                "logprob": -6.198863957251888e-06,
+                "start": 19.92,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 20.38,
+                "logprob": -1.0669164566934342e-05,
+                "start": 19.98,
+                "text": "hatlar",
+                "type": "word"
+              },
+              {
+                "end": 20.48,
+                "logprob": -3.099436753473128e-06,
+                "start": 20.38,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 20.84,
+                "logprob": -7.708812631790352e-06,
+                "start": 20.48,
+                "text": "çizdi.",
+                "type": "word"
+              },
+              {
+                "end": 21.32,
+                "logprob": -0.0009737040963955224,
+                "start": 20.84,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.04,
+                "logprob": -0.0007800280264663426,
+                "start": 21.32,
+                "text": "Patentlenen",
+                "type": "word"
+              },
+              {
+                "end": 22.12,
+                "logprob": -8.4638240878121e-06,
+                "start": 22.04,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.18,
+                "logprob": -8.4638240878121e-06,
+                "start": 22.12,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 22.28,
+                "logprob": -1.4185804502631072e-05,
+                "start": 22.18,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.7,
+                "logprob": -0.05240997667032351,
+                "start": 22.28,
+                "text": "silüet",
+                "type": "word"
+              },
+              {
+                "end": 22.98,
+                "logprob": -0.010433297604322433,
+                "start": 22.7,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.36,
+                "logprob": -0.004700476518207454,
+                "start": 22.98,
+                "text": "kırılsa",
+                "type": "word"
+              },
+              {
+                "end": 23.42,
+                "logprob": -2.7418097943154862e-06,
+                "start": 23.36,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.66,
+                "logprob": -2.6524031682129134e-06,
+                "start": 23.42,
+                "text": "dahi",
+                "type": "word"
+              },
+              {
+                "end": 23.72,
+                "logprob": -2.1457441107486375e-05,
+                "start": 23.66,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.16,
+                "logprob": -1.328318765964858e-05,
+                "start": 23.72,
+                "text": "markayı",
+                "type": "word"
+              },
+              {
+                "end": 24.22,
+                "logprob": -1.0490362910786644e-05,
+                "start": 24.16,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.36,
+                "logprob": -1.0490362910786644e-05,
+                "start": 24.22,
+                "text": "ele",
+                "type": "word"
+              },
+              {
+                "end": 24.42,
+                "logprob": -1.7404405298293568e-05,
+                "start": 24.36,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.96,
+                "logprob": -6.297547154190397e-05,
+                "start": 24.42,
+                "text": "veriyordu.",
+                "type": "word"
+              },
+              {
+                "end": 25.48,
+                "logprob": -2.9801878554280847e-05,
+                "start": 24.96,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.94,
+                "logprob": -1.797649455284045e-05,
+                "start": 25.48,
+                "text": "Sizce",
+                "type": "word"
+              },
+              {
+                "end": 26.02,
+                "logprob": -0.00020585325546562672,
+                "start": 25.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.42,
+                "logprob": -0.0001500721962656826,
+                "start": 26.02,
+                "text": "özgün",
+                "type": "word"
+              },
+              {
+                "end": 26.52,
+                "logprob": -5.960462772236497e-07,
+                "start": 26.42,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.88,
+                "logprob": -7.663400294534637e-06,
+                "start": 26.52,
+                "text": "ambalaj",
+                "type": "word"
+              },
+              {
+                "end": 26.92,
+                "logprob": -0.04300973191857338,
+                "start": 26.88,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 27.36,
+                "logprob": -0.010892200476348535,
+                "start": 26.94,
+                "text": "içeceğin",
+                "type": "word"
+              },
+              {
+                "end": 27.42,
+                "logprob": -1.9073468138230965e-06,
+                "start": 27.36,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.06,
+                "logprob": -0.00019397888954699737,
+                "start": 27.42,
+                "text": "lezzetinin",
+                "type": "word"
+              },
+              {
+                "end": 28.12,
+                "logprob": -8.702239938429557e-06,
+                "start": 28.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.42,
+                "logprob": -8.702239938429557e-06,
+                "start": 28.12,
+                "text": "önüne",
+                "type": "word"
+              },
+              {
+                "end": 28.48,
+                "logprob": -7.033323527139146e-06,
+                "start": 28.42,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.0,
+                "logprob": -1.3470548158996584e-05,
+                "start": 28.48,
+                "text": "geçebilir",
+                "type": "word"
+              },
+              {
+                "end": 29.1,
+                "logprob": -6.663577369181439e-05,
+                "start": 29.0,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.2,
+                "logprob": -4.676829030358931e-05,
+                "start": 29.1,
+                "text": "mi?",
+                "type": "word"
+              }
+            ]
+          },
+          "provider": "elevenlabs"
+        },
+        {
+          "payload": {
+            "audio_duration_secs": 28.9710625,
+            "language_code": "tur",
+            "language_probability": 1.0,
+            "text": "20. yüzyıl başında içecek üreticileri düz cam şişeler kullanıyordu. Rakip firmalar etiketleri kopyalayıp müşterileri kolayca yanıltabiliyordu. Ortaklar karanlıkta dokunulduğunda bile tanınacak benzersiz bir form istedi. Tasarımcılar kakaonun oluklu meyvesinden esinlenerek kavisli hatlar çizdi. Patentlenen bu silüet kırılsa dahi markayı ele veriyordu. Sizce özgün ambalaj içeceğin lezzetinin önüne geçebilir mi?",
+            "transcription_id": "wbg9jZ6Hv9ejmeTDNTYu",
+            "words": [
+              {
+                "end": 0.34,
+                "logprob": -0.016640129183845904,
+                "start": 0.18,
+                "text": "20.",
+                "type": "word"
+              },
+              {
+                "end": 0.52,
+                "logprob": -0.002230895683169365,
+                "start": 0.34,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 0.8,
+                "logprob": -0.001490085063475514,
+                "start": 0.52,
+                "text": "yüzyıl",
+                "type": "word"
+              },
+              {
+                "end": 0.88,
+                "logprob": -0.0002712835557758808,
+                "start": 0.8,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.4,
+                "logprob": -0.0002712835557758808,
+                "start": 0.88,
+                "text": "başında",
+                "type": "word"
+              },
+              {
+                "end": 1.46,
+                "logprob": -0.00021395778458099812,
+                "start": 1.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.84,
+                "logprob": -0.0003333692390394087,
+                "start": 1.46,
+                "text": "içecek",
+                "type": "word"
+              },
+              {
+                "end": 1.88,
+                "logprob": -6.23445157543756e-05,
+                "start": 1.84,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.46,
+                "logprob": -6.088154193341986e-05,
+                "start": 1.9,
+                "text": "üreticileri",
+                "type": "word"
+              },
+              {
+                "end": 2.64,
+                "logprob": -7.855583680793643e-05,
+                "start": 2.46,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.82,
+                "logprob": -7.855583680793643e-05,
+                "start": 2.64,
+                "text": "düz",
+                "type": "word"
+              },
+              {
+                "end": 2.9,
+                "logprob": -5.960462772236497e-07,
+                "start": 2.82,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.1,
+                "logprob": -5.960462772236497e-07,
+                "start": 2.9,
+                "text": "cam",
+                "type": "word"
+              },
+              {
+                "end": 3.16,
+                "logprob": -7.343022298300639e-05,
+                "start": 3.1,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.56,
+                "logprob": -2.637852016310457e-05,
+                "start": 3.16,
+                "text": "şişeler",
+                "type": "word"
+              },
+              {
+                "end": 3.66,
+                "logprob": -5.722029527532868e-06,
+                "start": 3.56,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 4.32,
+                "logprob": -0.0006612246372172264,
+                "start": 3.66,
+                "text": "kullanıyordu.",
+                "type": "word"
+              },
+              {
+                "end": 4.86,
+                "logprob": -0.00048565989709459245,
+                "start": 4.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.16,
+                "logprob": -0.00029234961148176807,
+                "start": 4.86,
+                "text": "Rakip",
+                "type": "word"
+              },
+              {
+                "end": 5.2,
+                "logprob": -3.4450891689630225e-05,
+                "start": 5.16,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.66,
+                "logprob": -1.9669230368890567e-05,
+                "start": 5.2,
+                "text": "firmalar",
+                "type": "word"
+              },
+              {
+                "end": 5.86,
+                "logprob": -0.011081461794674397,
+                "start": 5.66,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 6.52,
+                "logprob": -0.0022831397571280833,
+                "start": 5.86,
+                "text": "etiketleri",
+                "type": "word"
+              },
+              {
+                "end": 6.58,
+                "logprob": -4.649054244509898e-05,
+                "start": 6.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.28,
+                "logprob": -0.0005468995369369622,
+                "start": 6.58,
+                "text": "kopyalayıp",
+                "type": "word"
+              },
+              {
+                "end": 7.3,
+                "logprob": -0.0006999903125688434,
+                "start": 7.28,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.9,
+                "logprob": -0.0004136189924214374,
+                "start": 7.3,
+                "text": "müşterileri",
+                "type": "word"
+              },
+              {
+                "end": 7.96,
+                "logprob": -4.768370445162873e-07,
+                "start": 7.9,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.4,
+                "logprob": -6.130704654034551e-06,
+                "start": 7.96,
+                "text": "kolayca",
+                "type": "word"
+              },
+              {
+                "end": 8.42,
+                "logprob": -0.00032944019767455757,
+                "start": 8.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 9.42,
+                "logprob": -0.00011040739930061082,
+                "start": 8.42,
+                "text": "yanıltabiliyordu.",
+                "type": "word"
+              },
+              {
+                "end": 9.92,
+                "logprob": -0.00012110930401831865,
+                "start": 9.42,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 10.5,
+                "logprob": -0.00035945355921285227,
+                "start": 9.92,
+                "text": "Ortaklar",
+                "type": "word"
+              },
+              {
+                "end": 10.62,
+                "logprob": -0.25207266211509705,
+                "start": 10.5,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 11.1,
+                "logprob": -0.12651909777194986,
+                "start": 10.62,
+                "text": "karanlıkta",
+                "type": "word"
+              },
+              {
+                "end": 11.16,
+                "logprob": -1.1920858014491387e-05,
+                "start": 11.1,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 11.82,
+                "logprob": -0.00020768987386483268,
+                "start": 11.16,
+                "text": "dokunulduğunda",
+                "type": "word"
+              },
+              {
+                "end": 11.86,
+                "logprob": -1.1920928244535389e-07,
+                "start": 11.82,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.08,
+                "logprob": -1.1920928244535389e-07,
+                "start": 11.86,
+                "text": "bile",
+                "type": "word"
+              },
+              {
+                "end": 12.1,
+                "logprob": -0.018980076536536217,
+                "start": 12.08,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.74,
+                "logprob": -0.011070949620463781,
+                "start": 12.1,
+                "text": "tanınacak",
+                "type": "word"
+              },
+              {
+                "end": 12.98,
+                "logprob": -0.0006791430641897023,
+                "start": 12.74,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 13.64,
+                "logprob": -0.0025725687802251843,
+                "start": 12.98,
+                "text": "benzersiz",
+                "type": "word"
+              },
+              {
+                "end": 13.66,
+                "logprob": -2.264974000354414e-06,
+                "start": 13.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 13.78,
+                "logprob": -2.264974000354414e-06,
+                "start": 13.66,
+                "text": "bir",
+                "type": "word"
+              },
+              {
+                "end": 13.9,
+                "logprob": -9.179073458653875e-06,
+                "start": 13.78,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.14,
+                "logprob": -9.179073458653875e-06,
+                "start": 13.9,
+                "text": "form",
+                "type": "word"
+              },
+              {
+                "end": 14.18,
+                "logprob": -0.0001003691868390888,
+                "start": 14.14,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.58,
+                "logprob": -8.606479136931609e-05,
+                "start": 14.18,
+                "text": "istedi.",
+                "type": "word"
+              },
+              {
+                "end": 15.1,
+                "logprob": -0.00023529145983047783,
+                "start": 14.58,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.86,
+                "logprob": -0.0004030011061028442,
+                "start": 15.1,
+                "text": "Tasarımcılar",
+                "type": "word"
+              },
+              {
+                "end": 15.98,
+                "logprob": -0.005450270138680935,
+                "start": 15.86,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.52,
+                "logprob": -0.0028433925399369286,
+                "start": 15.98,
+                "text": "kakaonun",
+                "type": "word"
+              },
+              {
+                "end": 16.68,
+                "logprob": -0.00011812942830147222,
+                "start": 16.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.04,
+                "logprob": -0.00012718268256624773,
+                "start": 16.68,
+                "text": "oluklu",
+                "type": "word"
+              },
+              {
+                "end": 17.1,
+                "logprob": -9.179073458653875e-06,
+                "start": 17.04,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.72,
+                "logprob": -3.254262605878466e-05,
+                "start": 17.1,
+                "text": "meyvesinden",
+                "type": "word"
+              },
+              {
+                "end": 17.76,
+                "logprob": -3.933898824470816e-06,
+                "start": 17.72,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.46,
+                "logprob": -6.708196617017331e-06,
+                "start": 17.76,
+                "text": "esinlenerek",
+                "type": "word"
+              },
+              {
+                "end": 18.78,
+                "logprob": -2.8013790142722428e-05,
+                "start": 18.46,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.22,
+                "logprob": -8.49784555612132e-06,
+                "start": 18.78,
+                "text": "kavisli",
+                "type": "word"
+              },
+              {
+                "end": 19.26,
+                "logprob": -1.2516897186287679e-05,
+                "start": 19.22,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.68,
+                "logprob": -1.019233968690969e-05,
+                "start": 19.26,
+                "text": "hatlar",
+                "type": "word"
+              },
+              {
+                "end": 19.78,
+                "logprob": -3.6954811548639555e-06,
+                "start": 19.68,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 20.16,
+                "logprob": -1.0112819078737326e-05,
+                "start": 19.78,
+                "text": "çizdi.",
+                "type": "word"
+              },
+              {
+                "end": 20.82,
+                "logprob": -0.0005946775199845433,
+                "start": 20.16,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 21.62,
+                "logprob": -0.00044399659170515156,
+                "start": 20.82,
+                "text": "Patentlenen",
+                "type": "word"
+              },
+              {
+                "end": 21.64,
+                "logprob": -4.529942543740617e-06,
+                "start": 21.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 21.7,
+                "logprob": -4.529942543740617e-06,
+                "start": 21.64,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 21.8,
+                "logprob": -1.2993727978027891e-05,
+                "start": 21.7,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.24,
+                "logprob": -0.04214860494672242,
+                "start": 21.8,
+                "text": "silüet",
+                "type": "word"
+              },
+              {
+                "end": 22.46,
+                "logprob": -0.017167653888463974,
+                "start": 22.24,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.84,
+                "logprob": -0.007849954863948889,
+                "start": 22.46,
+                "text": "kırılsa",
+                "type": "word"
+              },
+              {
+                "end": 22.88,
+                "logprob": -1.1920922133867862e-06,
+                "start": 22.84,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.06,
+                "logprob": -1.2814990100196155e-06,
+                "start": 22.88,
+                "text": "dahi",
+                "type": "word"
+              },
+              {
+                "end": 23.18,
+                "logprob": -2.3007127310847864e-05,
+                "start": 23.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.62,
+                "logprob": -1.4577439027821778e-05,
+                "start": 23.18,
+                "text": "markayı",
+                "type": "word"
+              },
+              {
+                "end": 23.66,
+                "logprob": -6.556489552167477e-06,
+                "start": 23.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.82,
+                "logprob": -6.556489552167477e-06,
+                "start": 23.66,
+                "text": "ele",
+                "type": "word"
+              },
+              {
+                "end": 23.86,
+                "logprob": -1.3351351299206726e-05,
+                "start": 23.82,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.4,
+                "logprob": -3.051696857028219e-05,
+                "start": 23.86,
+                "text": "veriyordu.",
+                "type": "word"
+              },
+              {
+                "end": 24.92,
+                "logprob": -9.059865078597795e-06,
+                "start": 24.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.46,
+                "logprob": -5.578970171882247e-06,
+                "start": 24.92,
+                "text": "Sizce",
+                "type": "word"
+              },
+              {
+                "end": 25.56,
+                "logprob": -6.16293036728166e-05,
+                "start": 25.46,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.94,
+                "logprob": -6.992570270085708e-05,
+                "start": 25.56,
+                "text": "özgün",
+                "type": "word"
+              },
+              {
+                "end": 26.02,
+                "logprob": -3.576278118089249e-07,
+                "start": 25.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.44,
+                "logprob": -8.361616226336213e-06,
+                "start": 26.02,
+                "text": "ambalaj",
+                "type": "word"
+              },
+              {
+                "end": 26.48,
+                "logprob": -0.08895166963338852,
+                "start": 26.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.94,
+                "logprob": -0.02240468958163433,
+                "start": 26.5,
+                "text": "içeceğin",
+                "type": "word"
+              },
+              {
+                "end": 27.0,
+                "logprob": -2.9802276912960224e-06,
+                "start": 26.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 27.64,
+                "logprob": -0.0002211686647569877,
+                "start": 27.0,
+                "text": "lezzetinin",
+                "type": "word"
+              },
+              {
+                "end": 27.7,
+                "logprob": -1.4305104514278355e-06,
+                "start": 27.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 27.96,
+                "logprob": -1.4305104514278355e-06,
+                "start": 27.7,
+                "text": "önüne",
+                "type": "word"
+              },
+              {
+                "end": 28.02,
+                "logprob": -9.179073458653875e-06,
+                "start": 27.96,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.52,
+                "logprob": -9.258545105694793e-06,
+                "start": 28.02,
+                "text": "geçebilir",
+                "type": "word"
+              },
+              {
+                "end": 28.6,
+                "logprob": -8.535020606359467e-05,
+                "start": 28.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.7,
+                "logprob": -5.805249187081548e-05,
+                "start": 28.6,
+                "text": "mi?",
+                "type": "word"
+              }
+            ]
+          },
+          "provider": "elevenlabs"
+        },
+        {
+          "payload": {
+            "audio_duration_secs": 32.0666875,
+            "language_code": "tur",
+            "language_probability": 1.0,
+            "text": "20. yüzyıl başında içecek üreticileri düz cam şişeler kullanıyordu. Rakip firmalar etiketleri kopyalayıp müşterileri kolayca yanıltabiliyordu. Ortaklar, karanlıkta dokunulduğunda bile tanınacak benzersiz bir form istedi. Tasarımcılar kakaonun oluklu meyvesinden esinlenerek kavisli hatlar çizdi. Patentlenen bu silüet kırılsa dahi markayı ele veriyordu. Sizce özgün ambalaj içeceğin lezzetinin önüne geçebilir mi?",
+            "transcription_id": "wa6wuSW9flrceNnvZq9K",
+            "words": [
+              {
+                "end": 0.4,
+                "logprob": -0.04502309423863456,
+                "start": 0.2,
+                "text": "20.",
+                "type": "word"
+              },
+              {
+                "end": 0.58,
+                "logprob": -0.006779762916266918,
+                "start": 0.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 0.88,
+                "logprob": -0.004524093715190247,
+                "start": 0.58,
+                "text": "yüzyıl",
+                "type": "word"
+              },
+              {
+                "end": 0.94,
+                "logprob": -0.00015341058315243572,
+                "start": 0.88,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.4,
+                "logprob": -0.00015341058315243572,
+                "start": 0.94,
+                "text": "başında",
+                "type": "word"
+              },
+              {
+                "end": 1.46,
+                "logprob": -0.0002369599969824776,
+                "start": 1.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.86,
+                "logprob": -0.0011464058140215154,
+                "start": 1.46,
+                "text": "içecek",
+                "type": "word"
+              },
+              {
+                "end": 1.9,
+                "logprob": -5.0424259825376794e-05,
+                "start": 1.86,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.52,
+                "logprob": -5.384847827372141e-05,
+                "start": 1.9,
+                "text": "üreticileri",
+                "type": "word"
+              },
+              {
+                "end": 2.84,
+                "logprob": -0.0017075256910175085,
+                "start": 2.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.02,
+                "logprob": -0.0017075256910175085,
+                "start": 2.84,
+                "text": "düz",
+                "type": "word"
+              },
+              {
+                "end": 3.12,
+                "logprob": -3.576278118089249e-07,
+                "start": 3.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.32,
+                "logprob": -3.576278118089249e-07,
+                "start": 3.12,
+                "text": "cam",
+                "type": "word"
+              },
+              {
+                "end": 3.38,
+                "logprob": -0.00010477947944309562,
+                "start": 3.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.82,
+                "logprob": -6.711209269789313e-05,
+                "start": 3.4,
+                "text": "şişeler",
+                "type": "word"
+              },
+              {
+                "end": 3.94,
+                "logprob": -4.172316494077677e-06,
+                "start": 3.82,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 4.66,
+                "logprob": -0.000498395333474596,
+                "start": 3.94,
+                "text": "kullanıyordu.",
+                "type": "word"
+              },
+              {
+                "end": 5.22,
+                "logprob": -0.0003466005437076092,
+                "start": 4.66,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.54,
+                "logprob": -0.0002086755813252239,
+                "start": 5.22,
+                "text": "Rakip",
+                "type": "word"
+              },
+              {
+                "end": 5.58,
+                "logprob": -2.13382354559144e-05,
+                "start": 5.54,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 6.04,
+                "logprob": -1.323211085946241e-05,
+                "start": 5.58,
+                "text": "firmalar",
+                "type": "word"
+              },
+              {
+                "end": 6.22,
+                "logprob": -0.00022206225548870862,
+                "start": 6.04,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 6.84,
+                "logprob": -9.361931915918831e-05,
+                "start": 6.22,
+                "text": "etiketleri",
+                "type": "word"
+              },
+              {
+                "end": 6.94,
+                "logprob": -4.565611743601039e-05,
+                "start": 6.84,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.52,
+                "logprob": -0.0004727404299615046,
+                "start": 6.94,
+                "text": "kopyalayıp",
+                "type": "word"
+              },
+              {
+                "end": 7.82,
+                "logprob": -0.0008609164506196976,
+                "start": 7.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.44,
+                "logprob": -0.0004963579065753782,
+                "start": 7.82,
+                "text": "müşterileri",
+                "type": "word"
+              },
+              {
+                "end": 8.5,
+                "logprob": -3.576278118089249e-07,
+                "start": 8.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.96,
+                "logprob": -1.1767428036689256e-05,
+                "start": 8.5,
+                "text": "kolayca",
+                "type": "word"
+              },
+              {
+                "end": 9.0,
+                "logprob": -0.0004086851258762181,
+                "start": 8.96,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 9.94,
+                "logprob": -0.00015321266223241656,
+                "start": 9.0,
+                "text": "yanıltabiliyordu.",
+                "type": "word"
+              },
+              {
+                "end": 10.56,
+                "logprob": -0.0001618731184862554,
+                "start": 9.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 11.2,
+                "logprob": -0.009920928918290883,
+                "start": 10.56,
+                "text": "Ortaklar,",
+                "type": "word"
+              },
+              {
+                "end": 11.2,
+                "logprob": -6.353653589030728e-05,
+                "start": 11.2,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.96,
+                "logprob": -0.00028537421530359095,
+                "start": 12.34,
+                "text": "karanlıkta",
+                "type": "word"
+              },
+              {
+                "end": 13.0,
+                "logprob": -2.3364747903542593e-05,
+                "start": 12.96,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 13.72,
+                "logprob": -0.00013095224208622573,
+                "start": 13.0,
+                "text": "dokunulduğunda",
+                "type": "word"
+              },
+              {
+                "end": 13.76,
+                "logprob": -1.1920928244535389e-07,
+                "start": 13.72,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 13.98,
+                "logprob": -1.1920928244535389e-07,
+                "start": 13.76,
+                "text": "bile",
+                "type": "word"
+              },
+              {
+                "end": 14.0,
+                "logprob": -0.13865754008293152,
+                "start": 13.98,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.68,
+                "logprob": -0.08362556404123704,
+                "start": 14.0,
+                "text": "tanınacak",
+                "type": "word"
+              },
+              {
+                "end": 14.9,
+                "logprob": -0.00040165462996810675,
+                "start": 14.68,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.52,
+                "logprob": -0.0019486633698559469,
+                "start": 14.9,
+                "text": "benzersiz",
+                "type": "word"
+              },
+              {
+                "end": 15.58,
+                "logprob": -1.5497195136049413e-06,
+                "start": 15.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.7,
+                "logprob": -1.5497195136049413e-06,
+                "start": 15.58,
+                "text": "bir",
+                "type": "word"
+              },
+              {
+                "end": 15.82,
+                "logprob": -1.2397689715726301e-05,
+                "start": 15.7,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.04,
+                "logprob": -1.2397689715726301e-05,
+                "start": 15.82,
+                "text": "form",
+                "type": "word"
+              },
+              {
+                "end": 16.079,
+                "logprob": -2.3841574147809297e-05,
+                "start": 16.04,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.5,
+                "logprob": -2.0486724671237816e-05,
+                "start": 16.079,
+                "text": "istedi.",
+                "type": "word"
+              },
+              {
+                "end": 17.18,
+                "logprob": -0.00016080040950328112,
+                "start": 16.5,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.88,
+                "logprob": -0.0004538972177859553,
+                "start": 17.18,
+                "text": "Tasarımcılar",
+                "type": "word"
+              },
+              {
+                "end": 17.88,
+                "logprob": -0.5485871434211731,
+                "start": 17.88,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.86,
+                "logprob": -0.27437789807299673,
+                "start": 18.24,
+                "text": "kakaonun",
+                "type": "word"
+              },
+              {
+                "end": 18.92,
+                "logprob": -5.519237674889155e-05,
+                "start": 18.86,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.26,
+                "logprob": -0.00021455882680735763,
+                "start": 18.92,
+                "text": "oluklu",
+                "type": "word"
+              },
+              {
+                "end": 19.32,
+                "logprob": -4.0531076592742465e-06,
+                "start": 19.26,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.94,
+                "logprob": -2.6669335180816812e-05,
+                "start": 19.32,
+                "text": "meyvesinden",
+                "type": "word"
+              },
+              {
+                "end": 19.98,
+                "logprob": -1.1920858014491387e-05,
+                "start": 19.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 20.7,
+                "logprob": -1.2809455669908361e-05,
+                "start": 19.98,
+                "text": "esinlenerek",
+                "type": "word"
+              },
+              {
+                "end": 21.04,
+                "logprob": -4.494089080253616e-05,
+                "start": 20.7,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 21.5,
+                "logprob": -1.1869668794263686e-05,
+                "start": 21.04,
+                "text": "kavisli",
+                "type": "word"
+              },
+              {
+                "end": 21.54,
+                "logprob": -1.3828182090946939e-05,
+                "start": 21.5,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 21.92,
+                "logprob": -1.1861252005473943e-05,
+                "start": 21.54,
+                "text": "hatlar",
+                "type": "word"
+              },
+              {
+                "end": 22.02,
+                "logprob": -6.079655122448457e-06,
+                "start": 21.92,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.38,
+                "logprob": -6.298201697063632e-06,
+                "start": 22.02,
+                "text": "çizdi.",
+                "type": "word"
+              },
+              {
+                "end": 22.94,
+                "logprob": -0.00047958316281437874,
+                "start": 22.38,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.7,
+                "logprob": -0.0004503899571401152,
+                "start": 22.94,
+                "text": "Patentlenen",
+                "type": "word"
+              },
+              {
+                "end": 23.72,
+                "logprob": -2.0265558760002023e-06,
+                "start": 23.7,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.8,
+                "logprob": -2.0265558760002023e-06,
+                "start": 23.72,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 23.9,
+                "logprob": -2.4318398573086597e-05,
+                "start": 23.8,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.32,
+                "logprob": -0.07168379411173949,
+                "start": 23.9,
+                "text": "silüet",
+                "type": "word"
+              },
+              {
+                "end": 24.34,
+                "logprob": -0.22664768993854523,
+                "start": 24.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.3,
+                "logprob": -0.09757872464518057,
+                "start": 24.86,
+                "text": "kırılsa",
+                "type": "word"
+              },
+              {
+                "end": 25.36,
+                "logprob": -3.3378546504536644e-06,
+                "start": 25.3,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.62,
+                "logprob": -4.4107338226240245e-06,
+                "start": 25.36,
+                "text": "dahi",
+                "type": "word"
+              },
+              {
+                "end": 26.0,
+                "logprob": -1.2040065485052764e-05,
+                "start": 25.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.4,
+                "logprob": -7.95291966174513e-06,
+                "start": 26.0,
+                "text": "markayı",
+                "type": "word"
+              },
+              {
+                "end": 26.44,
+                "logprob": -6.6756979322235566e-06,
+                "start": 26.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.62,
+                "logprob": -6.6756979322235566e-06,
+                "start": 26.46,
+                "text": "ele",
+                "type": "word"
+              },
+              {
+                "end": 26.66,
+                "logprob": -7.629365427419543e-06,
+                "start": 26.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 27.22,
+                "logprob": -2.9110305956692172e-05,
+                "start": 26.66,
+                "text": "veriyordu.",
+                "type": "word"
+              },
+              {
+                "end": 27.76,
+                "logprob": -7.271740287251305e-06,
+                "start": 27.22,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.52,
+                "logprob": -4.458411592622724e-06,
+                "start": 27.76,
+                "text": "Sizce",
+                "type": "word"
+              },
+              {
+                "end": 28.6,
+                "logprob": -0.00011419598013162613,
+                "start": 28.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.0,
+                "logprob": -9.338405507151038e-05,
+                "start": 28.6,
+                "text": "özgün",
+                "type": "word"
+              },
+              {
+                "end": 29.1,
+                "logprob": -8.344646857949556e-07,
+                "start": 29.0,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.5,
+                "logprob": -8.429735934052068e-06,
+                "start": 29.1,
+                "text": "ambalaj",
+                "type": "word"
+              },
+              {
+                "end": 29.54,
+                "logprob": -0.04859539121389389,
+                "start": 29.5,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.96,
+                "logprob": -0.012345979590435263,
+                "start": 29.54,
+                "text": "içeceğin",
+                "type": "word"
+              },
+              {
+                "end": 30.0,
+                "logprob": -2.622600959512056e-06,
+                "start": 29.96,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 30.66,
+                "logprob": -0.00031135005206124334,
+                "start": 30.0,
+                "text": "lezzetinin",
+                "type": "word"
+              },
+              {
+                "end": 30.72,
+                "logprob": -1.6689286894688848e-06,
+                "start": 30.66,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 30.98,
+                "logprob": -1.6689286894688848e-06,
+                "start": 30.72,
+                "text": "önüne",
+                "type": "word"
+              },
+              {
+                "end": 31.04,
+                "logprob": -4.172316494077677e-06,
+                "start": 30.98,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 31.56,
+                "logprob": -1.7285154929898756e-05,
+                "start": 31.04,
+                "text": "geçebilir",
+                "type": "word"
+              },
+              {
+                "end": 31.64,
+                "logprob": -6.651657167822123e-05,
+                "start": 31.56,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 31.76,
+                "logprob": -4.517884508459247e-05,
+                "start": 31.64,
+                "text": "mi?",
+                "type": "word"
+              }
+            ]
+          },
+          "provider": "elevenlabs"
+        }
+      ]
+    },
+    {
+      "source_task_id": "774a844a-067a-5044-8b12-9d1cac7826db",
+      "expected": "Market raflarında içecekler neden çoğunlukla altılı paketlerle satılır? Yirminci yüzyıl başında şişeler tek tek alınıp sokakta içilirdi. Fakat 1920'lerde ev buzdolapları yaygınlaşınca tüketim alışkanlığı hızla değişti. Coca-Cola şişeleri eve taşımak amacıyla 1923'te karton ambalajı sundu. Tek elle taşınan bu ağırlık, evde stoklamayı kolaylaştırdı. Buzdolabına giren bu tasarım, bir asırdır perakendenin standardı.",
+      "observations": [
+        {
+          "payload": {
+            "duration": 32.7400016784668,
+            "language": "turkish",
+            "task": "transcribe",
+            "text": "Market raflarında içecekler neden çoğunlukla altılı paketlerle satılır? 20. yüzyıl başında şişeler tek tek alınıp sokakta içilirdi. Fakat 1920'lerde ev buzdolapları yaygınlaşınca tüketim alışkanlığı hızla değişti. Coca-Cola şişeleri eve taşımak amacıyla 1923'te karton ambalajı sundu. Tek elle taşınan bu ağırlık evde stoklamayı kolaylaştırdı. Buzdolabına giren bu tasarım bir asırdır perakendinin standardı.",
+            "usage": {
+              "seconds": 33,
+              "type": "duration"
+            },
+            "words": [
+              {
+                "end": 0.6000000238418579,
+                "start": 0.0,
+                "word": "Market"
+              },
+              {
+                "end": 1.0,
+                "start": 0.6000000238418579,
+                "word": "raflarında"
+              },
+              {
+                "end": 1.7599999904632568,
+                "start": 1.0,
+                "word": "içecekler"
+              },
+              {
+                "end": 2.140000104904175,
+                "start": 1.7599999904632568,
+                "word": "neden"
+              },
+              {
+                "end": 2.859999895095825,
+                "start": 2.140000104904175,
+                "word": "çoğunlukla"
+              },
+              {
+                "end": 3.3399999141693115,
+                "start": 2.859999895095825,
+                "word": "altılı"
+              },
+              {
+                "end": 4.019999980926514,
+                "start": 3.3399999141693115,
+                "word": "paketlerle"
+              },
+              {
+                "end": 4.480000019073486,
+                "start": 4.019999980926514,
+                "word": "satılır"
+              },
+              {
+                "end": 5.239999771118164,
+                "start": 5.039999961853027,
+                "word": "20"
+              },
+              {
+                "end": 5.78000020980835,
+                "start": 5.420000076293945,
+                "word": "yüzyıl"
+              },
+              {
+                "end": 6.21999979019165,
+                "start": 5.78000020980835,
+                "word": "başında"
+              },
+              {
+                "end": 6.71999979019165,
+                "start": 6.21999979019165,
+                "word": "şişeler"
+              },
+              {
+                "end": 7.199999809265137,
+                "start": 6.71999979019165,
+                "word": "tek"
+              },
+              {
+                "end": 7.360000133514404,
+                "start": 7.199999809265137,
+                "word": "tek"
+              },
+              {
+                "end": 7.800000190734863,
+                "start": 7.360000133514404,
+                "word": "alınıp"
+              },
+              {
+                "end": 8.380000114440918,
+                "start": 7.800000190734863,
+                "word": "sokakta"
+              },
+              {
+                "end": 8.899999618530273,
+                "start": 8.380000114440918,
+                "word": "içilirdi"
+              },
+              {
+                "end": 10.0,
+                "start": 9.760000228881836,
+                "word": "Fakat"
+              },
+              {
+                "end": 11.0600004196167,
+                "start": 10.0,
+                "word": "1920"
+              },
+              {
+                "end": 11.479999542236328,
+                "start": 11.0600004196167,
+                "word": "lerde"
+              },
+              {
+                "end": 12.199999809265137,
+                "start": 11.479999542236328,
+                "word": "ev"
+              },
+              {
+                "end": 12.9399995803833,
+                "start": 12.199999809265137,
+                "word": "buzdolapları"
+              },
+              {
+                "end": 14.279999732971191,
+                "start": 12.9399995803833,
+                "word": "yaygınlaşınca"
+              },
+              {
+                "end": 14.699999809265137,
+                "start": 14.279999732971191,
+                "word": "tüketim"
+              },
+              {
+                "end": 15.399999618530273,
+                "start": 14.699999809265137,
+                "word": "alışkanlığı"
+              },
+              {
+                "end": 15.859999656677246,
+                "start": 15.399999618530273,
+                "word": "hızla"
+              },
+              {
+                "end": 16.760000228881836,
+                "start": 15.859999656677246,
+                "word": "değişti"
+              },
+              {
+                "end": 17.18000030517578,
+                "start": 17.0,
+                "word": "Coca"
+              },
+              {
+                "end": 17.31999969482422,
+                "start": 17.18000030517578,
+                "word": "Cola"
+              },
+              {
+                "end": 17.860000610351562,
+                "start": 17.31999969482422,
+                "word": "şişeleri"
+              },
+              {
+                "end": 18.260000228881836,
+                "start": 17.860000610351562,
+                "word": "eve"
+              },
+              {
+                "end": 18.739999771118164,
+                "start": 18.260000228881836,
+                "word": "taşımak"
+              },
+              {
+                "end": 19.260000228881836,
+                "start": 18.739999771118164,
+                "word": "amacıyla"
+              },
+              {
+                "end": 21.399999618530273,
+                "start": 20.440000534057617,
+                "word": "1923'te"
+              },
+              {
+                "end": 21.959999084472656,
+                "start": 21.399999618530273,
+                "word": "karton"
+              },
+              {
+                "end": 22.639999389648438,
+                "start": 21.959999084472656,
+                "word": "ambalajı"
+              },
+              {
+                "end": 22.979999542236328,
+                "start": 22.639999389648438,
+                "word": "sundu"
+              },
+              {
+                "end": 23.639999389648438,
+                "start": 23.579999923706055,
+                "word": "Tek"
+              },
+              {
+                "end": 23.899999618530273,
+                "start": 23.639999389648438,
+                "word": "elle"
+              },
+              {
+                "end": 24.479999542236328,
+                "start": 23.899999618530273,
+                "word": "taşınan"
+              },
+              {
+                "end": 24.719999313354492,
+                "start": 24.479999542236328,
+                "word": "bu"
+              },
+              {
+                "end": 25.239999771118164,
+                "start": 24.719999313354492,
+                "word": "ağırlık"
+              },
+              {
+                "end": 26.0,
+                "start": 25.239999771118164,
+                "word": "evde"
+              },
+              {
+                "end": 26.520000457763672,
+                "start": 26.0,
+                "word": "stoklamayı"
+              },
+              {
+                "end": 27.899999618530273,
+                "start": 26.520000457763672,
+                "word": "kolaylaştırdı"
+              },
+              {
+                "end": 28.6200008392334,
+                "start": 28.15999984741211,
+                "word": "Buzdolabına"
+              },
+              {
+                "end": 28.860000610351562,
+                "start": 28.6200008392334,
+                "word": "giren"
+              },
+              {
+                "end": 29.260000228881836,
+                "start": 28.860000610351562,
+                "word": "bu"
+              },
+              {
+                "end": 29.6200008392334,
+                "start": 29.260000228881836,
+                "word": "tasarım"
+              },
+              {
+                "end": 30.219999313354492,
+                "start": 29.6200008392334,
+                "word": "bir"
+              },
+              {
+                "end": 30.84000015258789,
+                "start": 30.219999313354492,
+                "word": "asırdır"
+              },
+              {
+                "end": 31.68000030517578,
+                "start": 30.84000015258789,
+                "word": "perakendinin"
+              },
+              {
+                "end": 32.41999816894531,
+                "start": 31.68000030517578,
+                "word": "standardı"
+              }
+            ]
+          },
+          "provider": "openai"
+        },
+        {
+          "payload": {
+            "duration": 32.619998931884766,
+            "language": "turkish",
+            "task": "transcribe",
+            "text": "Market raflarında içecekler neden çoğunlukla altılı paketlerle satılır? 20. yüzyıl başında şişeler tek tek alınıp sokakta içilirdi. Fakat 1920'lerde ev buzdolapları yaygınlaşınca tüketim alışkanlığı hızla değişti. Coca-Cola şişeleri eve taşımak amacıyla 1923'de karton ambalajı sundu. Tek elle taşınan bu ağırlık evde stoklamayı kolaylaştırdı. Buzdolabına giren bu tasarım bir asırdır perakendinin standardı.",
+            "usage": {
+              "seconds": 33,
+              "type": "duration"
+            },
+            "words": [
+              {
+                "end": 0.6399999856948853,
+                "start": 0.0,
+                "word": "Market"
+              },
+              {
+                "end": 1.0399999618530273,
+                "start": 0.6399999856948853,
+                "word": "raflarında"
+              },
+              {
+                "end": 1.8200000524520874,
+                "start": 1.0399999618530273,
+                "word": "içecekler"
+              },
+              {
+                "end": 2.200000047683716,
+                "start": 1.8200000524520874,
+                "word": "neden"
+              },
+              {
+                "end": 2.9000000953674316,
+                "start": 2.200000047683716,
+                "word": "çoğunlukla"
+              },
+              {
+                "end": 3.380000114440918,
+                "start": 2.9000000953674316,
+                "word": "altılı"
+              },
+              {
+                "end": 4.119999885559082,
+                "start": 3.380000114440918,
+                "word": "paketlerle"
+              },
+              {
+                "end": 4.559999942779541,
+                "start": 4.119999885559082,
+                "word": "satılır"
+              },
+              {
+                "end": 5.440000057220459,
+                "start": 5.21999979019165,
+                "word": "20"
+              },
+              {
+                "end": 5.940000057220459,
+                "start": 5.619999885559082,
+                "word": "yüzyıl"
+              },
+              {
+                "end": 6.400000095367432,
+                "start": 5.940000057220459,
+                "word": "başında"
+              },
+              {
+                "end": 6.980000019073486,
+                "start": 6.400000095367432,
+                "word": "şişeler"
+              },
+              {
+                "end": 7.480000019073486,
+                "start": 6.980000019073486,
+                "word": "tek"
+              },
+              {
+                "end": 7.679999828338623,
+                "start": 7.480000019073486,
+                "word": "tek"
+              },
+              {
+                "end": 8.079999923706055,
+                "start": 7.679999828338623,
+                "word": "alınıp"
+              },
+              {
+                "end": 8.640000343322754,
+                "start": 8.079999923706055,
+                "word": "sokakta"
+              },
+              {
+                "end": 9.15999984741211,
+                "start": 8.640000343322754,
+                "word": "içilirdi"
+              },
+              {
+                "end": 10.0600004196167,
+                "start": 10.020000457763672,
+                "word": "Fakat"
+              },
+              {
+                "end": 11.380000114440918,
+                "start": 10.0600004196167,
+                "word": "1920"
+              },
+              {
+                "end": 11.819999694824219,
+                "start": 11.380000114440918,
+                "word": "lerde"
+              },
+              {
+                "end": 12.520000457763672,
+                "start": 11.819999694824219,
+                "word": "ev"
+              },
+              {
+                "end": 13.239999771118164,
+                "start": 12.520000457763672,
+                "word": "buzdolapları"
+              },
+              {
+                "end": 14.5600004196167,
+                "start": 13.239999771118164,
+                "word": "yaygınlaşınca"
+              },
+              {
+                "end": 15.020000457763672,
+                "start": 14.5600004196167,
+                "word": "tüketim"
+              },
+              {
+                "end": 15.65999984741211,
+                "start": 15.020000457763672,
+                "word": "alışkanlığı"
+              },
+              {
+                "end": 16.079999923706055,
+                "start": 15.65999984741211,
+                "word": "hızla"
+              },
+              {
+                "end": 16.8799991607666,
+                "start": 16.079999923706055,
+                "word": "değişti"
+              },
+              {
+                "end": 17.360000610351562,
+                "start": 17.18000030517578,
+                "word": "Coca"
+              },
+              {
+                "end": 17.479999542236328,
+                "start": 17.360000610351562,
+                "word": "Cola"
+              },
+              {
+                "end": 18.020000457763672,
+                "start": 17.479999542236328,
+                "word": "şişeleri"
+              },
+              {
+                "end": 18.3799991607666,
+                "start": 18.020000457763672,
+                "word": "eve"
+              },
+              {
+                "end": 18.8799991607666,
+                "start": 18.3799991607666,
+                "word": "taşımak"
+              },
+              {
+                "end": 19.600000381469727,
+                "start": 18.8799991607666,
+                "word": "amacıyla"
+              },
+              {
+                "end": 21.600000381469727,
+                "start": 19.600000381469727,
+                "word": "1923'de"
+              },
+              {
+                "end": 22.100000381469727,
+                "start": 21.600000381469727,
+                "word": "karton"
+              },
+              {
+                "end": 22.719999313354492,
+                "start": 22.100000381469727,
+                "word": "ambalajı"
+              },
+              {
+                "end": 23.059999465942383,
+                "start": 22.719999313354492,
+                "word": "sundu"
+              },
+              {
+                "end": 23.700000762939453,
+                "start": 23.639999389648438,
+                "word": "Tek"
+              },
+              {
+                "end": 23.899999618530273,
+                "start": 23.700000762939453,
+                "word": "elle"
+              },
+              {
+                "end": 24.420000076293945,
+                "start": 23.899999618530273,
+                "word": "taşınan"
+              },
+              {
+                "end": 24.68000030517578,
+                "start": 24.420000076293945,
+                "word": "bu"
+              },
+              {
+                "end": 25.18000030517578,
+                "start": 24.68000030517578,
+                "word": "ağırlık"
+              },
+              {
+                "end": 25.81999969482422,
+                "start": 25.18000030517578,
+                "word": "evde"
+              },
+              {
+                "end": 26.34000015258789,
+                "start": 25.81999969482422,
+                "word": "stoklamayı"
+              },
+              {
+                "end": 27.760000228881836,
+                "start": 26.34000015258789,
+                "word": "kolaylaştırdı"
+              },
+              {
+                "end": 28.520000457763672,
+                "start": 27.760000228881836,
+                "word": "Buzdolabına"
+              },
+              {
+                "end": 28.780000686645508,
+                "start": 28.520000457763672,
+                "word": "giren"
+              },
+              {
+                "end": 29.139999389648438,
+                "start": 28.780000686645508,
+                "word": "bu"
+              },
+              {
+                "end": 29.760000228881836,
+                "start": 29.139999389648438,
+                "word": "tasarım"
+              },
+              {
+                "end": 30.139999389648438,
+                "start": 29.760000228881836,
+                "word": "bir"
+              },
+              {
+                "end": 30.700000762939453,
+                "start": 30.139999389648438,
+                "word": "asırdır"
+              },
+              {
+                "end": 31.520000457763672,
+                "start": 30.700000762939453,
+                "word": "perakendinin"
+              },
+              {
+                "end": 32.279998779296875,
+                "start": 31.520000457763672,
+                "word": "standardı"
+              }
+            ]
+          },
+          "provider": "openai"
+        },
+        {
+          "payload": {
+            "duration": 32.86000061035156,
+            "language": "turkish",
+            "task": "transcribe",
+            "text": "Market raflarında içecekler neden çoğunlukla altılı paketlerle satılır? 20. yüzyıl başında şişeler tek tek alınıp sokakta içilirdi. Fakat 1920'lerde ev buzdolapları yaygınlaşınca tüketim alışkanlığı hızla değişti. Coca-Cola şişeleri eve taşımak amacıyla 1923'te karton ambalajı sundu. Tek elle taşınan bu ağırlık evde stoklamayı kolaylaştırdı. Buzdolabına giren bu tasarım bir asırdır perakendenin standardı.",
+            "usage": {
+              "seconds": 33,
+              "type": "duration"
+            },
+            "words": [
+              {
+                "end": 0.47999998927116394,
+                "start": 0.0,
+                "word": "Market"
+              },
+              {
+                "end": 1.0399999618530273,
+                "start": 0.47999998927116394,
+                "word": "raflarında"
+              },
+              {
+                "end": 1.840000033378601,
+                "start": 1.0399999618530273,
+                "word": "içecekler"
+              },
+              {
+                "end": 2.2200000286102295,
+                "start": 1.840000033378601,
+                "word": "neden"
+              },
+              {
+                "end": 2.880000114440918,
+                "start": 2.2200000286102295,
+                "word": "çoğunlukla"
+              },
+              {
+                "end": 3.319999933242798,
+                "start": 2.880000114440918,
+                "word": "altılı"
+              },
+              {
+                "end": 4.039999961853027,
+                "start": 3.319999933242798,
+                "word": "paketlerle"
+              },
+              {
+                "end": 4.480000019073486,
+                "start": 4.039999961853027,
+                "word": "satılır"
+              },
+              {
+                "end": 5.320000171661377,
+                "start": 5.079999923706055,
+                "word": "20"
+              },
+              {
+                "end": 5.800000190734863,
+                "start": 5.5,
+                "word": "yüzyıl"
+              },
+              {
+                "end": 6.340000152587891,
+                "start": 5.800000190734863,
+                "word": "başında"
+              },
+              {
+                "end": 7.0,
+                "start": 6.340000152587891,
+                "word": "şişeler"
+              },
+              {
+                "end": 7.5,
+                "start": 7.0,
+                "word": "tek"
+              },
+              {
+                "end": 7.679999828338623,
+                "start": 7.5,
+                "word": "tek"
+              },
+              {
+                "end": 8.100000381469727,
+                "start": 7.679999828338623,
+                "word": "alınıp"
+              },
+              {
+                "end": 8.640000343322754,
+                "start": 8.100000381469727,
+                "word": "sokakta"
+              },
+              {
+                "end": 9.15999984741211,
+                "start": 8.640000343322754,
+                "word": "içilirdi"
+              },
+              {
+                "end": 10.479999542236328,
+                "start": 9.920000076293945,
+                "word": "Fakat"
+              },
+              {
+                "end": 11.539999961853027,
+                "start": 10.479999542236328,
+                "word": "1920"
+              },
+              {
+                "end": 11.960000038146973,
+                "start": 11.539999961853027,
+                "word": "lerde"
+              },
+              {
+                "end": 12.699999809265137,
+                "start": 11.960000038146973,
+                "word": "ev"
+              },
+              {
+                "end": 13.399999618530273,
+                "start": 12.699999809265137,
+                "word": "buzdolapları"
+              },
+              {
+                "end": 14.600000381469727,
+                "start": 13.399999618530273,
+                "word": "yaygınlaşınca"
+              },
+              {
+                "end": 15.0600004196167,
+                "start": 14.600000381469727,
+                "word": "tüketim"
+              },
+              {
+                "end": 15.720000267028809,
+                "start": 15.0600004196167,
+                "word": "alışkanlığı"
+              },
+              {
+                "end": 16.15999984741211,
+                "start": 15.720000267028809,
+                "word": "hızla"
+              },
+              {
+                "end": 16.639999389648438,
+                "start": 16.15999984741211,
+                "word": "değişti"
+              },
+              {
+                "end": 17.459999084472656,
+                "start": 17.280000686645508,
+                "word": "Coca"
+              },
+              {
+                "end": 17.6200008392334,
+                "start": 17.459999084472656,
+                "word": "Cola"
+              },
+              {
+                "end": 18.15999984741211,
+                "start": 17.6200008392334,
+                "word": "şişeleri"
+              },
+              {
+                "end": 18.600000381469727,
+                "start": 18.15999984741211,
+                "word": "eve"
+              },
+              {
+                "end": 19.079999923706055,
+                "start": 18.600000381469727,
+                "word": "taşımak"
+              },
+              {
+                "end": 19.559999465942383,
+                "start": 19.079999923706055,
+                "word": "amacıyla"
+              },
+              {
+                "end": 21.559999465942383,
+                "start": 19.559999465942383,
+                "word": "1923'te"
+              },
+              {
+                "end": 22.1200008392334,
+                "start": 21.559999465942383,
+                "word": "karton"
+              },
+              {
+                "end": 22.780000686645508,
+                "start": 22.1200008392334,
+                "word": "ambalajı"
+              },
+              {
+                "end": 23.360000610351562,
+                "start": 22.780000686645508,
+                "word": "sundu"
+              },
+              {
+                "end": 23.760000228881836,
+                "start": 23.700000762939453,
+                "word": "Tek"
+              },
+              {
+                "end": 24.0,
+                "start": 23.760000228881836,
+                "word": "elle"
+              },
+              {
+                "end": 24.559999465942383,
+                "start": 24.0,
+                "word": "taşınan"
+              },
+              {
+                "end": 24.84000015258789,
+                "start": 24.559999465942383,
+                "word": "bu"
+              },
+              {
+                "end": 25.3799991607666,
+                "start": 24.84000015258789,
+                "word": "ağırlık"
+              },
+              {
+                "end": 26.100000381469727,
+                "start": 25.3799991607666,
+                "word": "evde"
+              },
+              {
+                "end": 26.639999389648438,
+                "start": 26.100000381469727,
+                "word": "stoklamayı"
+              },
+              {
+                "end": 27.860000610351562,
+                "start": 26.639999389648438,
+                "word": "kolaylaştırdı"
+              },
+              {
+                "end": 28.68000030517578,
+                "start": 27.860000610351562,
+                "word": "Buzdolabına"
+              },
+              {
+                "end": 28.959999084472656,
+                "start": 28.68000030517578,
+                "word": "giren"
+              },
+              {
+                "end": 29.31999969482422,
+                "start": 28.959999084472656,
+                "word": "bu"
+              },
+              {
+                "end": 29.760000228881836,
+                "start": 29.31999969482422,
+                "word": "tasarım"
+              },
+              {
+                "end": 30.399999618530273,
+                "start": 29.760000228881836,
+                "word": "bir"
+              },
+              {
+                "end": 30.959999084472656,
+                "start": 30.399999618530273,
+                "word": "asırdır"
+              },
+              {
+                "end": 32.0,
+                "start": 30.959999084472656,
+                "word": "perakendenin"
+              },
+              {
+                "end": 32.540000915527344,
+                "start": 32.0,
+                "word": "standardı"
+              }
+            ]
+          },
+          "provider": "openai"
+        },
+        {
+          "payload": {
+            "audio_duration_secs": 32.740125,
+            "language_code": "tur",
+            "language_probability": 1.0,
+            "text": "Market raflarında içecekler neden çoğunlukla altılı paketlerle satılır? 20. yüzyıl başında şişeler tek tek alınıp sokakta içilirdi. Fakat 1920'lerde ev buzdolapları yaygınlaşınca tüketim alışkanlığı hızla değişti. Coca Cola şişeleri eve taşımak amacıyla 1923'te karton ambalajı sundu. Tek elle taşınan bu ağırlık evde stoklamayı kolaylaştırdı. Buzdolabına giren bu tasarım bir asırdır perakendenin standardı.",
+            "transcription_id": "0tgCjLu6F1jZc2IObV87",
+            "words": [
+              {
+                "end": 0.42,
+                "logprob": -0.0009505997295491397,
+                "start": 0.08,
+                "text": "Market",
+                "type": "word"
+              },
+              {
+                "end": 0.5,
+                "logprob": -0.0003058442671317607,
+                "start": 0.42,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.02,
+                "logprob": -0.0005308871273882687,
+                "start": 0.5,
+                "text": "raflarında",
+                "type": "word"
+              },
+              {
+                "end": 1.06,
+                "logprob": -2.8371408916427754e-05,
+                "start": 1.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.64,
+                "logprob": -0.00016159427221080277,
+                "start": 1.06,
+                "text": "içecekler",
+                "type": "word"
+              },
+              {
+                "end": 1.78,
+                "logprob": -9.65590606938349e-06,
+                "start": 1.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.18,
+                "logprob": -9.65590606938349e-06,
+                "start": 1.78,
+                "text": "neden",
+                "type": "word"
+              },
+              {
+                "end": 2.24,
+                "logprob": -2.5629668016335927e-05,
+                "start": 2.18,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.9,
+                "logprob": -9.102919717633995e-05,
+                "start": 2.24,
+                "text": "çoğunlukla",
+                "type": "word"
+              },
+              {
+                "end": 3.0,
+                "logprob": -3.397406908334233e-05,
+                "start": 2.9,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.34,
+                "logprob": -5.84105455345707e-05,
+                "start": 3.0,
+                "text": "altılı",
+                "type": "word"
+              },
+              {
+                "end": 3.36,
+                "logprob": -0.00010263393050990999,
+                "start": 3.34,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.94,
+                "logprob": -8.034358506847639e-05,
+                "start": 3.36,
+                "text": "paketlerle",
+                "type": "word"
+              },
+              {
+                "end": 4.04,
+                "logprob": -2.5033637939486653e-05,
+                "start": 3.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 4.48,
+                "logprob": -1.8328231135456008e-05,
+                "start": 4.04,
+                "text": "satılır?",
+                "type": "word"
+              },
+              {
+                "end": 5.08,
+                "logprob": -0.00273913168348372,
+                "start": 4.48,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.26,
+                "logprob": -0.06738327443417565,
+                "start": 5.08,
+                "text": "20.",
+                "type": "word"
+              },
+              {
+                "end": 5.42,
+                "logprob": -0.001855796086601913,
+                "start": 5.26,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.7,
+                "logprob": -0.0012383894818412955,
+                "start": 5.42,
+                "text": "yüzyıl",
+                "type": "word"
+              },
+              {
+                "end": 5.76,
+                "logprob": -9.512448741588742e-05,
+                "start": 5.7,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 6.24,
+                "logprob": -9.512448741588742e-05,
+                "start": 5.76,
+                "text": "başında",
+                "type": "word"
+              },
+              {
+                "end": 6.28,
+                "logprob": -0.00013422065239865333,
+                "start": 6.24,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 6.74,
+                "logprob": -4.4666820355944636e-05,
+                "start": 6.28,
+                "text": "şişeler",
+                "type": "word"
+              },
+              {
+                "end": 6.92,
+                "logprob": -1.6689286894688848e-06,
+                "start": 6.74,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.12,
+                "logprob": -1.6689286894688848e-06,
+                "start": 6.92,
+                "text": "tek",
+                "type": "word"
+              },
+              {
+                "end": 7.16,
+                "logprob": -1.0490362910786644e-05,
+                "start": 7.12,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.32,
+                "logprob": -1.0490362910786644e-05,
+                "start": 7.16,
+                "text": "tek",
+                "type": "word"
+              },
+              {
+                "end": 7.4,
+                "logprob": -7.986703712958843e-05,
+                "start": 7.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.72,
+                "logprob": -0.00011711387924033072,
+                "start": 7.4,
+                "text": "alınıp",
+                "type": "word"
+              },
+              {
+                "end": 7.84,
+                "logprob": -4.184158387943171e-05,
+                "start": 7.72,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.32,
+                "logprob": -2.692382310799855e-05,
+                "start": 7.84,
+                "text": "sokakta",
+                "type": "word"
+              },
+              {
+                "end": 8.38,
+                "logprob": -0.00016389934171456844,
+                "start": 8.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.92,
+                "logprob": -0.00021205676219122123,
+                "start": 8.38,
+                "text": "içilirdi.",
+                "type": "word"
+              },
+              {
+                "end": 9.66,
+                "logprob": -6.663577369181439e-05,
+                "start": 8.92,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 10.0,
+                "logprob": -6.663577369181439e-05,
+                "start": 9.66,
+                "text": "Fakat",
+                "type": "word"
+              },
+              {
+                "end": 10.14,
+                "logprob": -6.9141146923357155e-06,
+                "start": 10.0,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 11.44,
+                "logprob": -0.0007145201022296987,
+                "start": 10.14,
+                "text": "1920'lerde",
+                "type": "word"
+              },
+              {
+                "end": 11.98,
+                "logprob": -3.576214658096433e-05,
+                "start": 11.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.1,
+                "logprob": -3.576214658096433e-05,
+                "start": 11.98,
+                "text": "ev",
+                "type": "word"
+              },
+              {
+                "end": 12.22,
+                "logprob": -0.002969976281747222,
+                "start": 12.1,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.94,
+                "logprob": -0.0006837648448936307,
+                "start": 12.22,
+                "text": "buzdolapları",
+                "type": "word"
+              },
+              {
+                "end": 13.0,
+                "logprob": -9.417489309271332e-06,
+                "start": 12.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 13.9,
+                "logprob": -9.873880543846799e-05,
+                "start": 13.0,
+                "text": "yaygınlaşınca",
+                "type": "word"
+              },
+              {
+                "end": 14.32,
+                "logprob": -0.0004980515805073082,
+                "start": 13.9,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.68,
+                "logprob": -0.000355785188728776,
+                "start": 14.32,
+                "text": "tüketim",
+                "type": "word"
+              },
+              {
+                "end": 14.72,
+                "logprob": -2.3841855067985307e-07,
+                "start": 14.68,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.44,
+                "logprob": -4.084409208231095e-05,
+                "start": 14.72,
+                "text": "alışkanlığı",
+                "type": "word"
+              },
+              {
+                "end": 15.48,
+                "logprob": -0.00019929806876461953,
+                "start": 15.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.8,
+                "logprob": -0.00011957884125877172,
+                "start": 15.48,
+                "text": "hızla",
+                "type": "word"
+              },
+              {
+                "end": 15.88,
+                "logprob": -0.00014840454969089478,
+                "start": 15.8,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.36,
+                "logprob": -9.285715167006714e-05,
+                "start": 15.88,
+                "text": "değişti.",
+                "type": "word"
+              },
+              {
+                "end": 16.86,
+                "logprob": -0.00016151554882526398,
+                "start": 16.36,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.06,
+                "logprob": -0.00016151554882526398,
+                "start": 16.86,
+                "text": "Coca",
+                "type": "word"
+              },
+              {
+                "end": 17.12,
+                "logprob": -0.10118639469146729,
+                "start": 17.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.32,
+                "logprob": -0.10118639469146729,
+                "start": 17.12,
+                "text": "Cola",
+                "type": "word"
+              },
+              {
+                "end": 17.38,
+                "logprob": -0.00011729506513802335,
+                "start": 17.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.0,
+                "logprob": -0.003752937855210803,
+                "start": 17.38,
+                "text": "şişeleri",
+                "type": "word"
+              },
+              {
+                "end": 18.04,
+                "logprob": -7.986990567587782e-06,
+                "start": 18.0,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.2,
+                "logprob": -7.986990567587782e-06,
+                "start": 18.04,
+                "text": "eve",
+                "type": "word"
+              },
+              {
+                "end": 18.28,
+                "logprob": -5.054346183896996e-05,
+                "start": 18.2,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.68,
+                "logprob": -5.35737649767855e-05,
+                "start": 18.28,
+                "text": "taşımak",
+                "type": "word"
+              },
+              {
+                "end": 18.74,
+                "logprob": -9.727005090098828e-05,
+                "start": 18.68,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.26,
+                "logprob": -9.727005090098828e-05,
+                "start": 18.74,
+                "text": "amacıyla",
+                "type": "word"
+              },
+              {
+                "end": 19.64,
+                "logprob": -3.099436753473128e-06,
+                "start": 19.26,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 21.1,
+                "logprob": -1.4866793986608887e-05,
+                "start": 19.64,
+                "text": "1923'te",
+                "type": "word"
+              },
+              {
+                "end": 21.5,
+                "logprob": -6.806619057897478e-05,
+                "start": 21.1,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 21.88,
+                "logprob": -4.537746038598319e-05,
+                "start": 21.5,
+                "text": "karton",
+                "type": "word"
+              },
+              {
+                "end": 22.0,
+                "logprob": -4.768370445162873e-07,
+                "start": 21.88,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.48,
+                "logprob": -0.000766827651574431,
+                "start": 22.0,
+                "text": "ambalajı",
+                "type": "word"
+              },
+              {
+                "end": 22.58,
+                "logprob": -0.00038842763751745224,
+                "start": 22.48,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.92,
+                "logprob": -0.00025897162655870903,
+                "start": 22.58,
+                "text": "sundu.",
+                "type": "word"
+              },
+              {
+                "end": 23.44,
+                "logprob": -3.3378044463461265e-05,
+                "start": 22.92,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.62,
+                "logprob": -3.3378044463461265e-05,
+                "start": 23.44,
+                "text": "Tek",
+                "type": "word"
+              },
+              {
+                "end": 23.68,
+                "logprob": -5.1377883210079744e-05,
+                "start": 23.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.92,
+                "logprob": -5.1377883210079744e-05,
+                "start": 23.68,
+                "text": "elle",
+                "type": "word"
+              },
+              {
+                "end": 23.96,
+                "logprob": -7.068861305015162e-05,
+                "start": 23.92,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.4,
+                "logprob": -4.592814674911746e-05,
+                "start": 23.96,
+                "text": "taşınan",
+                "type": "word"
+              },
+              {
+                "end": 24.52,
+                "logprob": -9.059865078597795e-06,
+                "start": 24.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.64,
+                "logprob": -9.059865078597795e-06,
+                "start": 24.52,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 24.72,
+                "logprob": -6.6756979322235566e-06,
+                "start": 24.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.18,
+                "logprob": -5.074893676594781e-06,
+                "start": 24.72,
+                "text": "ağırlık",
+                "type": "word"
+              },
+              {
+                "end": 25.18,
+                "logprob": -0.0019320646533742547,
+                "start": 25.18,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.9,
+                "logprob": -0.0009662707452093855,
+                "start": 25.66,
+                "text": "evde",
+                "type": "word"
+              },
+              {
+                "end": 25.98,
+                "logprob": -0.000812915270216763,
+                "start": 25.9,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.56,
+                "logprob": -0.0003508432291710051,
+                "start": 25.98,
+                "text": "stoklamayı",
+                "type": "word"
+              },
+              {
+                "end": 26.58,
+                "logprob": -4.768370445162873e-07,
+                "start": 26.56,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 27.44,
+                "logprob": -0.00016270053865596878,
+                "start": 26.58,
+                "text": "kolaylaştırdı.",
+                "type": "word"
+              },
+              {
+                "end": 28.02,
+                "logprob": -0.0006081400788389146,
+                "start": 27.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.6,
+                "logprob": -0.000273510062297336,
+                "start": 28.02,
+                "text": "Buzdolabına",
+                "type": "word"
+              },
+              {
+                "end": 28.66,
+                "logprob": -1.728519782773219e-05,
+                "start": 28.6,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.92,
+                "logprob": -1.1658596486086026e-05,
+                "start": 28.66,
+                "text": "giren",
+                "type": "word"
+              },
+              {
+                "end": 29.0,
+                "logprob": -9.536738616588991e-07,
+                "start": 28.92,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.08,
+                "logprob": -9.536738616588991e-07,
+                "start": 29.0,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 29.18,
+                "logprob": -9.775113539944869e-06,
+                "start": 29.08,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.62,
+                "logprob": -9.775113539944869e-06,
+                "start": 29.18,
+                "text": "tasarım",
+                "type": "word"
+              },
+              {
+                "end": 30.04,
+                "logprob": -0.00026925752172246575,
+                "start": 29.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 30.2,
+                "logprob": -0.00026925752172246575,
+                "start": 30.04,
+                "text": "bir",
+                "type": "word"
+              },
+              {
+                "end": 30.3,
+                "logprob": -2.4914430468925275e-05,
+                "start": 30.2,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 30.76,
+                "logprob": -0.00018284810591597176,
+                "start": 30.3,
+                "text": "asırdır",
+                "type": "word"
+              },
+              {
+                "end": 30.88,
+                "logprob": -6.6756979322235566e-06,
+                "start": 30.76,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 31.66,
+                "logprob": -0.0009488484631283711,
+                "start": 30.88,
+                "text": "perakendenin",
+                "type": "word"
+              },
+              {
+                "end": 31.76,
+                "logprob": -0.0021347845904529095,
+                "start": 31.66,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 32.46,
+                "logprob": -0.008701550588011742,
+                "start": 31.76,
+                "text": "standardı.",
+                "type": "word"
+              }
+            ]
+          },
+          "provider": "elevenlabs"
+        },
+        {
+          "payload": {
+            "audio_duration_secs": 32.8669375,
+            "language_code": "tur",
+            "language_probability": 1.0,
+            "text": "Market raflarında içecekler neden çoğunlukla altılı paketlerle satılır? 20'nci yüzyıl başında şişeler tek tek alınıp sokakta içilirdi. Fakat 1920'lerde ev buzdolapları yaygınlaşınca tüketim alışkanlığı hızla değişti. Coca Cola şişeleri eve taşımak amacıyla 1923'te karton ambalajı sundu. Tek elle taşınan bu ağırlık evde stoklamayı kolaylaştırdı. Buzdolabına giren bu tasarım bir asırdır perakendenin standardı.",
+            "transcription_id": "4tNIsB0exw1QgP8dGK2j",
+            "words": [
+              {
+                "end": 0.44,
+                "logprob": -0.0007457336178049445,
+                "start": 0.08,
+                "text": "Market",
+                "type": "word"
+              },
+              {
+                "end": 0.52,
+                "logprob": -0.0003883084573317319,
+                "start": 0.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.06,
+                "logprob": -0.0003583342331694439,
+                "start": 0.52,
+                "text": "raflarında",
+                "type": "word"
+              },
+              {
+                "end": 1.1,
+                "logprob": -3.683499380713329e-05,
+                "start": 1.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.68,
+                "logprob": -0.00016575250179408208,
+                "start": 1.1,
+                "text": "içecekler",
+                "type": "word"
+              },
+              {
+                "end": 1.86,
+                "logprob": -5.364403477869928e-06,
+                "start": 1.68,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.26,
+                "logprob": -5.364403477869928e-06,
+                "start": 1.86,
+                "text": "neden",
+                "type": "word"
+              },
+              {
+                "end": 2.3,
+                "logprob": -3.1470757676288486e-05,
+                "start": 2.26,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.9,
+                "logprob": -0.00014391561999218538,
+                "start": 2.3,
+                "text": "çoğunlukla",
+                "type": "word"
+              },
+              {
+                "end": 3.0,
+                "logprob": -3.766942609217949e-05,
+                "start": 2.9,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.28,
+                "logprob": -0.00011127297511848155,
+                "start": 3.0,
+                "text": "altılı",
+                "type": "word"
+              },
+              {
+                "end": 3.36,
+                "logprob": -0.00012778419477399439,
+                "start": 3.28,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.96,
+                "logprob": -8.958103899203707e-05,
+                "start": 3.36,
+                "text": "paketlerle",
+                "type": "word"
+              },
+              {
+                "end": 4.059,
+                "logprob": -3.6954195820726454e-05,
+                "start": 3.96,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 4.52,
+                "logprob": -2.445233326398011e-05,
+                "start": 4.059,
+                "text": "satılır?",
+                "type": "word"
+              },
+              {
+                "end": 4.52,
+                "logprob": -0.023674895986914635,
+                "start": 4.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.44,
+                "logprob": -0.09165173918154206,
+                "start": 5.12,
+                "text": "20'nci",
+                "type": "word"
+              },
+              {
+                "end": 5.46,
+                "logprob": -0.001073261140845716,
+                "start": 5.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.74,
+                "logprob": -0.0007178121321279226,
+                "start": 5.46,
+                "text": "yüzyıl",
+                "type": "word"
+              },
+              {
+                "end": 5.82,
+                "logprob": -0.00014220656885299832,
+                "start": 5.74,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 6.5,
+                "logprob": -0.00014220656885299832,
+                "start": 5.82,
+                "text": "başında",
+                "type": "word"
+              },
+              {
+                "end": 6.56,
+                "logprob": -0.0003013156820088625,
+                "start": 6.5,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.02,
+                "logprob": -9.14716212199502e-05,
+                "start": 6.56,
+                "text": "şişeler",
+                "type": "word"
+              },
+              {
+                "end": 7.2,
+                "logprob": -1.7881377516459906e-06,
+                "start": 7.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.38,
+                "logprob": -1.7881377516459906e-06,
+                "start": 7.2,
+                "text": "tek",
+                "type": "word"
+              },
+              {
+                "end": 7.46,
+                "logprob": -1.9907753085135482e-05,
+                "start": 7.38,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.62,
+                "logprob": -1.9907753085135482e-05,
+                "start": 7.46,
+                "text": "tek",
+                "type": "word"
+              },
+              {
+                "end": 7.74,
+                "logprob": -0.00010477947944309562,
+                "start": 7.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.02,
+                "logprob": -0.00015505516784723264,
+                "start": 7.74,
+                "text": "alınıp",
+                "type": "word"
+              },
+              {
+                "end": 8.14,
+                "logprob": -4.303362584323622e-05,
+                "start": 8.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.6,
+                "logprob": -2.8524593030202334e-05,
+                "start": 8.14,
+                "text": "sokakta",
+                "type": "word"
+              },
+              {
+                "end": 8.64,
+                "logprob": -6.949660019017756e-05,
+                "start": 8.6,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 9.18,
+                "logprob": -8.173201007998109e-05,
+                "start": 8.64,
+                "text": "içilirdi.",
+                "type": "word"
+              },
+              {
+                "end": 9.82,
+                "logprob": -0.0002806984703056514,
+                "start": 9.18,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 10.16,
+                "logprob": -0.0002806984703056514,
+                "start": 9.82,
+                "text": "Fakat",
+                "type": "word"
+              },
+              {
+                "end": 10.54,
+                "logprob": -6.079655122448457e-06,
+                "start": 10.16,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 11.94,
+                "logprob": -0.0015108056580487527,
+                "start": 10.54,
+                "text": "1920'lerde",
+                "type": "word"
+              },
+              {
+                "end": 12.5,
+                "logprob": -2.4676019165781327e-05,
+                "start": 11.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.62,
+                "logprob": -2.4676019165781327e-05,
+                "start": 12.5,
+                "text": "ev",
+                "type": "word"
+              },
+              {
+                "end": 12.72,
+                "logprob": -0.0017540559638291597,
+                "start": 12.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 13.4,
+                "logprob": -0.0003815508262808483,
+                "start": 12.72,
+                "text": "buzdolapları",
+                "type": "word"
+              },
+              {
+                "end": 13.44,
+                "logprob": -1.07287787614041e-05,
+                "start": 13.4,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.28,
+                "logprob": -6.144486059593664e-05,
+                "start": 13.44,
+                "text": "yaygınlaşınca",
+                "type": "word"
+              },
+              {
+                "end": 14.64,
+                "logprob": -0.0007651500636711717,
+                "start": 14.28,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.02,
+                "logprob": -0.0005466038793510311,
+                "start": 14.64,
+                "text": "tüketim",
+                "type": "word"
+              },
+              {
+                "end": 15.06,
+                "logprob": -3.576278118089249e-07,
+                "start": 15.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.74,
+                "logprob": -2.345120477994814e-05,
+                "start": 15.06,
+                "text": "alışkanlığı",
+                "type": "word"
+              },
+              {
+                "end": 15.8,
+                "logprob": -0.00017045476124621928,
+                "start": 15.74,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.1,
+                "logprob": -0.00010227285674773157,
+                "start": 15.8,
+                "text": "hızla",
+                "type": "word"
+              },
+              {
+                "end": 16.18,
+                "logprob": -0.00011777184408856556,
+                "start": 16.1,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.64,
+                "logprob": -7.372661182714069e-05,
+                "start": 16.18,
+                "text": "değişti.",
+                "type": "word"
+              },
+              {
+                "end": 17.14,
+                "logprob": -0.00018559163436293602,
+                "start": 16.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.34,
+                "logprob": -0.00018559163436293602,
+                "start": 17.14,
+                "text": "Coca",
+                "type": "word"
+              },
+              {
+                "end": 17.42,
+                "logprob": -0.011763490736484528,
+                "start": 17.34,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.62,
+                "logprob": -0.011763490736484528,
+                "start": 17.42,
+                "text": "Cola",
+                "type": "word"
+              },
+              {
+                "end": 17.7,
+                "logprob": -0.00033945043105632067,
+                "start": 17.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.34,
+                "logprob": -0.004862680821474896,
+                "start": 17.7,
+                "text": "şişeleri",
+                "type": "word"
+              },
+              {
+                "end": 18.4,
+                "logprob": -8.22540732769994e-06,
+                "start": 18.34,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.54,
+                "logprob": -8.22540732769994e-06,
+                "start": 18.4,
+                "text": "eve",
+                "type": "word"
+              },
+              {
+                "end": 18.62,
+                "logprob": -3.6238969187252223e-05,
+                "start": 18.54,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.02,
+                "logprob": -3.9610269498423024e-05,
+                "start": 18.62,
+                "text": "taşımak",
+                "type": "word"
+              },
+              {
+                "end": 19.08,
+                "logprob": -7.259582343976945e-05,
+                "start": 19.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.58,
+                "logprob": -7.259582343976945e-05,
+                "start": 19.08,
+                "text": "amacıyla",
+                "type": "word"
+              },
+              {
+                "end": 19.86,
+                "logprob": -5.602820692729438e-06,
+                "start": 19.58,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 21.32,
+                "logprob": -4.359369363880562e-05,
+                "start": 19.86,
+                "text": "1923'te",
+                "type": "word"
+              },
+              {
+                "end": 21.64,
+                "logprob": -9.333651541965082e-05,
+                "start": 21.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.04,
+                "logprob": -6.226408004058233e-05,
+                "start": 21.64,
+                "text": "karton",
+                "type": "word"
+              },
+              {
+                "end": 22.16,
+                "logprob": -4.768370445162873e-07,
+                "start": 22.04,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.6,
+                "logprob": -0.0008356309383259486,
+                "start": 22.16,
+                "text": "ambalajı",
+                "type": "word"
+              },
+              {
+                "end": 22.7,
+                "logprob": -0.00023910524032544345,
+                "start": 22.6,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.04,
+                "logprob": -0.00015940349355029562,
+                "start": 22.7,
+                "text": "sundu.",
+                "type": "word"
+              },
+              {
+                "end": 23.56,
+                "logprob": -2.13382354559144e-05,
+                "start": 23.04,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.74,
+                "logprob": -2.13382354559144e-05,
+                "start": 23.56,
+                "text": "Tek",
+                "type": "word"
+              },
+              {
+                "end": 23.78,
+                "logprob": -8.67805938469246e-05,
+                "start": 23.74,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.02,
+                "logprob": -8.67805938469246e-05,
+                "start": 23.78,
+                "text": "elle",
+                "type": "word"
+              },
+              {
+                "end": 24.06,
+                "logprob": -8.177422569133341e-05,
+                "start": 24.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.52,
+                "logprob": -4.560445368692204e-05,
+                "start": 24.06,
+                "text": "taşınan",
+                "type": "word"
+              },
+              {
+                "end": 24.6,
+                "logprob": -2.264974000354414e-06,
+                "start": 24.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.74,
+                "logprob": -2.264974000354414e-06,
+                "start": 24.6,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 24.84,
+                "logprob": -1.8358061424805783e-05,
+                "start": 24.74,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.3,
+                "logprob": -1.3453498792971783e-05,
+                "start": 24.84,
+                "text": "ağırlık",
+                "type": "word"
+              },
+              {
+                "end": 25.76,
+                "logprob": -0.0006310140597634017,
+                "start": 25.3,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.06,
+                "logprob": -0.0003156262391570408,
+                "start": 25.76,
+                "text": "evde",
+                "type": "word"
+              },
+              {
+                "end": 26.1,
+                "logprob": -0.0004332319076638669,
+                "start": 26.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.68,
+                "logprob": -0.0001783352928214299,
+                "start": 26.1,
+                "text": "stoklamayı",
+                "type": "word"
+              },
+              {
+                "end": 26.7,
+                "logprob": -3.576278118089249e-07,
+                "start": 26.68,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 27.58,
+                "logprob": -0.0002099785317847745,
+                "start": 26.7,
+                "text": "kolaylaştırdı.",
+                "type": "word"
+              },
+              {
+                "end": 28.04,
+                "logprob": -0.0004601611872203648,
+                "start": 27.58,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.64,
+                "logprob": -0.00020450542398913802,
+                "start": 28.04,
+                "text": "Buzdolabına",
+                "type": "word"
+              },
+              {
+                "end": 28.7,
+                "logprob": -7.986990567587782e-06,
+                "start": 28.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.0,
+                "logprob": -9.41748894547345e-06,
+                "start": 28.7,
+                "text": "giren",
+                "type": "word"
+              },
+              {
+                "end": 29.1,
+                "logprob": -4.768370445162873e-07,
+                "start": 29.0,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.16,
+                "logprob": -4.768370445162873e-07,
+                "start": 29.1,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 29.24,
+                "logprob": -1.549708758830093e-05,
+                "start": 29.16,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.72,
+                "logprob": -1.549708758830093e-05,
+                "start": 29.24,
+                "text": "tasarım",
+                "type": "word"
+              },
+              {
+                "end": 30.18,
+                "logprob": -0.0005679901223629713,
+                "start": 29.72,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 30.34,
+                "logprob": -0.0005679901223629713,
+                "start": 30.18,
+                "text": "bir",
+                "type": "word"
+              },
+              {
+                "end": 30.44,
+                "logprob": -4.494089080253616e-05,
+                "start": 30.34,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 30.88,
+                "logprob": -8.808887689935676e-05,
+                "start": 30.44,
+                "text": "asırdır",
+                "type": "word"
+              },
+              {
+                "end": 31.0,
+                "logprob": -5.483612312673358e-06,
+                "start": 30.88,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 31.8,
+                "logprob": -0.0009237418239915011,
+                "start": 31.0,
+                "text": "perakendenin",
+                "type": "word"
+              },
+              {
+                "end": 31.9,
+                "logprob": -0.0014329414116218686,
+                "start": 31.8,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 32.58,
+                "logprob": -0.01912102783098817,
+                "start": 31.9,
+                "text": "standardı.",
+                "type": "word"
+              }
+            ]
+          },
+          "provider": "elevenlabs"
+        },
+        {
+          "payload": {
+            "audio_duration_secs": 32.6248125,
+            "language_code": "tur",
+            "language_probability": 1.0,
+            "text": "Market raflarında içecekler neden çoğunlukla altılı paketlerle satılır? 20'nci yüzyıl başında şişeler tek tek alınıp sokakta içilirdi. Fakat 1920'lerde ev buzdolapları yaygınlaşınca tüketim alışkanlığı hızla değişti. Coca Cola şişeleri eve taşımak amacıyla 1923'te karton ambalajı sundu. Tek elle taşınan bu ağırlık evde stoklamayı kolaylaştırdı. Buzdolabına giren bu tasarım bir asırdır perakendenin standardı.",
+            "transcription_id": "HwmKdMdNSSTl0DfAhGAy",
+            "words": [
+              {
+                "end": 0.44,
+                "logprob": -0.0007407305529341102,
+                "start": 0.08,
+                "text": "Market",
+                "type": "word"
+              },
+              {
+                "end": 0.5,
+                "logprob": -0.0003408804477658123,
+                "start": 0.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.06,
+                "logprob": -0.00041483003296889366,
+                "start": 0.5,
+                "text": "raflarında",
+                "type": "word"
+              },
+              {
+                "end": 1.1,
+                "logprob": -3.504691630951129e-05,
+                "start": 1.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 1.68,
+                "logprob": -0.00010306606615510343,
+                "start": 1.1,
+                "text": "içecekler",
+                "type": "word"
+              },
+              {
+                "end": 1.84,
+                "logprob": -9.775113539944869e-06,
+                "start": 1.68,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.24,
+                "logprob": -9.775113539944869e-06,
+                "start": 1.84,
+                "text": "neden",
+                "type": "word"
+              },
+              {
+                "end": 2.3,
+                "logprob": -3.5523738915799186e-05,
+                "start": 2.24,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 2.94,
+                "logprob": -0.00011354072541962524,
+                "start": 2.3,
+                "text": "çoğunlukla",
+                "type": "word"
+              },
+              {
+                "end": 3.04,
+                "logprob": -3.7431014789035544e-05,
+                "start": 2.94,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 3.34,
+                "logprob": -6.317859697446693e-05,
+                "start": 3.04,
+                "text": "altılı",
+                "type": "word"
+              },
+              {
+                "end": 3.42,
+                "logprob": -8.11782301752828e-05,
+                "start": 3.34,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 4.04,
+                "logprob": -6.019865941198077e-05,
+                "start": 3.42,
+                "text": "paketlerle",
+                "type": "word"
+              },
+              {
+                "end": 4.12,
+                "logprob": -1.883488948806189e-05,
+                "start": 4.04,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 4.6,
+                "logprob": -1.0594648642836546e-05,
+                "start": 4.12,
+                "text": "satılır?",
+                "type": "word"
+              },
+              {
+                "end": 5.24,
+                "logprob": -0.008679758757352829,
+                "start": 4.6,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.56,
+                "logprob": -0.09896357322092204,
+                "start": 5.24,
+                "text": "20'nci",
+                "type": "word"
+              },
+              {
+                "end": 5.62,
+                "logprob": -0.002193070948123932,
+                "start": 5.56,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 5.86,
+                "logprob": -0.001463517543470516,
+                "start": 5.62,
+                "text": "yüzyıl",
+                "type": "word"
+              },
+              {
+                "end": 5.94,
+                "logprob": -0.00016020445036701858,
+                "start": 5.86,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 6.42,
+                "logprob": -0.00016020445036701858,
+                "start": 5.94,
+                "text": "başında",
+                "type": "word"
+              },
+              {
+                "end": 6.48,
+                "logprob": -0.0003649522550404072,
+                "start": 6.42,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.0,
+                "logprob": -0.00011190142108067189,
+                "start": 6.48,
+                "text": "şişeler",
+                "type": "word"
+              },
+              {
+                "end": 7.2,
+                "logprob": -1.311301275563892e-06,
+                "start": 7.0,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.36,
+                "logprob": -1.311301275563892e-06,
+                "start": 7.2,
+                "text": "tek",
+                "type": "word"
+              },
+              {
+                "end": 7.46,
+                "logprob": -1.4662635294371285e-05,
+                "start": 7.36,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 7.62,
+                "logprob": -1.4662635294371285e-05,
+                "start": 7.46,
+                "text": "tek",
+                "type": "word"
+              },
+              {
+                "end": 7.72,
+                "logprob": -7.378782902378589e-05,
+                "start": 7.62,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.06,
+                "logprob": -0.00023086493698916874,
+                "start": 7.72,
+                "text": "alınıp",
+                "type": "word"
+              },
+              {
+                "end": 8.119,
+                "logprob": -2.777537883957848e-05,
+                "start": 8.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 8.58,
+                "logprob": -2.7502907739420023e-05,
+                "start": 8.119,
+                "text": "sokakta",
+                "type": "word"
+              },
+              {
+                "end": 8.64,
+                "logprob": -0.00013171759201213717,
+                "start": 8.58,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 9.18,
+                "logprob": -0.00014712171256784737,
+                "start": 8.64,
+                "text": "içilirdi.",
+                "type": "word"
+              },
+              {
+                "end": 9.68,
+                "logprob": -2.3603161025675945e-05,
+                "start": 9.18,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 10.04,
+                "logprob": -2.3603161025675945e-05,
+                "start": 9.68,
+                "text": "Fakat",
+                "type": "word"
+              },
+              {
+                "end": 10.38,
+                "logprob": -5.125986263010418e-06,
+                "start": 10.04,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 11.82,
+                "logprob": -0.0010035791281516992,
+                "start": 10.38,
+                "text": "1920'lerde",
+                "type": "word"
+              },
+              {
+                "end": 12.3,
+                "logprob": -1.1801649634435307e-05,
+                "start": 11.82,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 12.44,
+                "logprob": -1.1801649634435307e-05,
+                "start": 12.3,
+                "text": "ev",
+                "type": "word"
+              },
+              {
+                "end": 12.54,
+                "logprob": -0.003099163994193077,
+                "start": 12.44,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 13.24,
+                "logprob": -0.0005905069369589455,
+                "start": 12.56,
+                "text": "buzdolapları",
+                "type": "word"
+              },
+              {
+                "end": 13.28,
+                "logprob": -5.8412379075889476e-06,
+                "start": 13.24,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.18,
+                "logprob": -4.9414340747506896e-05,
+                "start": 13.28,
+                "text": "yaygınlaşınca",
+                "type": "word"
+              },
+              {
+                "end": 14.6,
+                "logprob": -0.0008609164506196976,
+                "start": 14.18,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 14.96,
+                "logprob": -0.0006149743816661969,
+                "start": 14.6,
+                "text": "tüketim",
+                "type": "word"
+              },
+              {
+                "end": 15.02,
+                "logprob": -2.3841855067985307e-07,
+                "start": 14.96,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 15.66,
+                "logprob": -2.3158675410493082e-05,
+                "start": 15.02,
+                "text": "alışkanlığı",
+                "type": "word"
+              },
+              {
+                "end": 15.72,
+                "logprob": -0.0001793938863556832,
+                "start": 15.66,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.02,
+                "logprob": -0.00010763633181340993,
+                "start": 15.72,
+                "text": "hızla",
+                "type": "word"
+              },
+              {
+                "end": 16.079,
+                "logprob": -0.0003045333724003285,
+                "start": 16.02,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 16.54,
+                "logprob": -0.00019045256700955804,
+                "start": 16.079,
+                "text": "değişti.",
+                "type": "word"
+              },
+              {
+                "end": 17.02,
+                "logprob": -0.00043132537393830717,
+                "start": 16.54,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.22,
+                "logprob": -0.00043132537393830717,
+                "start": 17.02,
+                "text": "Coca",
+                "type": "word"
+              },
+              {
+                "end": 17.3,
+                "logprob": -0.034233566373586655,
+                "start": 17.22,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 17.48,
+                "logprob": -0.034233566373586655,
+                "start": 17.3,
+                "text": "Cola",
+                "type": "word"
+              },
+              {
+                "end": 17.54,
+                "logprob": -0.00034314466756768525,
+                "start": 17.48,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.14,
+                "logprob": -0.004866354460318689,
+                "start": 17.54,
+                "text": "şişeleri",
+                "type": "word"
+              },
+              {
+                "end": 18.2,
+                "logprob": -8.821448318485636e-06,
+                "start": 18.14,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.32,
+                "logprob": -8.821448318485636e-06,
+                "start": 18.2,
+                "text": "eve",
+                "type": "word"
+              },
+              {
+                "end": 18.4,
+                "logprob": -4.4225667807040736e-05,
+                "start": 18.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 18.8,
+                "logprob": -4.8175693629153625e-05,
+                "start": 18.4,
+                "text": "taşımak",
+                "type": "word"
+              },
+              {
+                "end": 18.86,
+                "logprob": -7.390703103737906e-05,
+                "start": 18.8,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 19.38,
+                "logprob": -7.390703103737906e-05,
+                "start": 18.86,
+                "text": "amacıyla",
+                "type": "word"
+              },
+              {
+                "end": 19.74,
+                "logprob": -9.894321920000948e-06,
+                "start": 19.38,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 21.32,
+                "logprob": -0.00040719217085032663,
+                "start": 19.74,
+                "text": "1923'te",
+                "type": "word"
+              },
+              {
+                "end": 21.68,
+                "logprob": -0.00012718822108581662,
+                "start": 21.32,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.06,
+                "logprob": -8.50703022858094e-05,
+                "start": 21.68,
+                "text": "karton",
+                "type": "word"
+              },
+              {
+                "end": 22.12,
+                "logprob": -5.960462772236497e-07,
+                "start": 22.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.54,
+                "logprob": -0.0005960490799026275,
+                "start": 22.12,
+                "text": "ambalajı",
+                "type": "word"
+              },
+              {
+                "end": 22.66,
+                "logprob": -0.0003491030656732619,
+                "start": 22.54,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 22.98,
+                "logprob": -0.00023472218693498803,
+                "start": 22.66,
+                "text": "sundu.",
+                "type": "word"
+              },
+              {
+                "end": 23.5,
+                "logprob": -3.313963316031732e-05,
+                "start": 22.98,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.66,
+                "logprob": -3.313963316031732e-05,
+                "start": 23.5,
+                "text": "Tek",
+                "type": "word"
+              },
+              {
+                "end": 23.72,
+                "logprob": -8.916457591112703e-05,
+                "start": 23.66,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 23.92,
+                "logprob": -8.916457591112703e-05,
+                "start": 23.72,
+                "text": "elle",
+                "type": "word"
+              },
+              {
+                "end": 23.96,
+                "logprob": -7.86750388215296e-05,
+                "start": 23.92,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.38,
+                "logprob": -4.74777105279957e-05,
+                "start": 23.96,
+                "text": "taşınan",
+                "type": "word"
+              },
+              {
+                "end": 24.44,
+                "logprob": -2.622600959512056e-06,
+                "start": 24.38,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 24.52,
+                "logprob": -2.622600959512056e-06,
+                "start": 24.44,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 24.7,
+                "logprob": -1.1205610462639015e-05,
+                "start": 24.52,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.1,
+                "logprob": -8.719262301123568e-06,
+                "start": 24.7,
+                "text": "ağırlık",
+                "type": "word"
+              },
+              {
+                "end": 25.5,
+                "logprob": -0.005951184779405594,
+                "start": 25.1,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 25.72,
+                "logprob": -0.0029759500174577624,
+                "start": 25.5,
+                "text": "evde",
+                "type": "word"
+              },
+              {
+                "end": 25.82,
+                "logprob": -0.001167807262390852,
+                "start": 25.72,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 26.38,
+                "logprob": -0.0004968767643731553,
+                "start": 25.82,
+                "text": "stoklamayı",
+                "type": "word"
+              },
+              {
+                "end": 26.42,
+                "logprob": -4.768370445162873e-07,
+                "start": 26.38,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 27.28,
+                "logprob": -0.00015460813157882773,
+                "start": 26.42,
+                "text": "kolaylaştırdı.",
+                "type": "word"
+              },
+              {
+                "end": 27.88,
+                "logprob": -0.00027926836628466845,
+                "start": 27.28,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.48,
+                "logprob": -0.00021256733319835968,
+                "start": 27.88,
+                "text": "Buzdolabına",
+                "type": "word"
+              },
+              {
+                "end": 28.54,
+                "logprob": -1.3947389561508317e-05,
+                "start": 28.48,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.82,
+                "logprob": -1.5663977865187918e-05,
+                "start": 28.54,
+                "text": "giren",
+                "type": "word"
+              },
+              {
+                "end": 28.92,
+                "logprob": -1.4305104514278355e-06,
+                "start": 28.82,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 28.98,
+                "logprob": -1.4305104514278355e-06,
+                "start": 28.92,
+                "text": "bu",
+                "type": "word"
+              },
+              {
+                "end": 29.06,
+                "logprob": -2.312633478140924e-05,
+                "start": 28.98,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 29.5,
+                "logprob": -2.312633478140924e-05,
+                "start": 29.06,
+                "text": "tasarım",
+                "type": "word"
+              },
+              {
+                "end": 29.92,
+                "logprob": -0.00281200441531837,
+                "start": 29.5,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 30.06,
+                "logprob": -0.00281200441531837,
+                "start": 29.94,
+                "text": "bir",
+                "type": "word"
+              },
+              {
+                "end": 30.16,
+                "logprob": -4.076874756719917e-05,
+                "start": 30.06,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 30.64,
+                "logprob": -0.00012820216475769745,
+                "start": 30.16,
+                "text": "asırdır",
+                "type": "word"
+              },
+              {
+                "end": 30.74,
+                "logprob": -7.390948667307384e-06,
+                "start": 30.64,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 31.5,
+                "logprob": -0.0010268531844606816,
+                "start": 30.74,
+                "text": "perakendenin",
+                "type": "word"
+              },
+              {
+                "end": 31.62,
+                "logprob": -0.001551496796309948,
+                "start": 31.5,
+                "text": " ",
+                "type": "spacing"
+              },
+              {
+                "end": 32.32,
+                "logprob": -0.06450163945555687,
+                "start": 31.62,
+                "text": "standardı.",
+                "type": "word"
+              }
+            ]
+          },
+          "provider": "elevenlabs"
+        }
+      ]
+    }
+  ]
+}

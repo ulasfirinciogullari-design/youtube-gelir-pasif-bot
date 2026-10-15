@@ -110,6 +110,32 @@ def test_ordinary_fresh_voice_keeps_its_existing_three_take_budget(synthesis):
     s.reservation.assert_not_called()
 
 
+@pytest.mark.parametrize('code', ['spend_day_limit', 'native_credit_previous_outcome_unknown'])
+def test_voice_does_not_hide_or_retry_a_credit_refusal_as_bad_content(synthesis, code):
+    from app.services.production_spend import SpendBlocked
+
+    s = synthesis
+    refusal = SpendBlocked(code)
+    s.provider.side_effect = refusal
+    with pytest.raises(SpendBlocked) as caught:
+        s.fn([{'narration': 'A bounded sentence.'}], 'ordinary', 30, language='en')
+    assert caught.value is refusal and s.provider.call_count == 1
+    s.namespace['time'].sleep.assert_not_called()
+
+
+@pytest.mark.parametrize('transport,expected', [(False, 'audio_rejected'), (True, 'review_unverified')])
+def test_exhausted_voice_takes_keep_quality_and_transport_outcomes_distinct(synthesis, transport, expected):
+    from app.services.production_failures import classify_failure, classified_hold_reason
+
+    s = synthesis
+    s.provider.side_effect = httpx.ReadTimeout('Temporary provider failure') if transport else QualityError('Bad take')
+    with pytest.raises(QualityError) as caught:
+        s.fn([{'narration': 'A bounded sentence.'}], 'ordinary', 30, language='en')
+    job = {'failure_stage': 'voice_and_visuals', 'error': str(caught.value),
+           'failure_classification': classify_failure(caught.value, 'voice_and_visuals')}
+    assert classified_hold_reason(job) == expected and s.provider.call_count == 3
+
+
 @pytest.mark.parametrize('kwargs', [{'language': 'en'}, {'target_seconds': 60}, {'start_attempt': 1}])
 def test_replacement_outside_explicit_short_turkish_scope_cannot_start(synthesis, kwargs):
     args = dict(target_seconds=30, language='tr', voice_replacement_request=synthesis.request)
@@ -130,7 +156,7 @@ def voice_sequence(tmp_path):
     namespace = dict(Path=mapped_path, VoiceScriptFitError=ScriptError,
         _selected_voice_or_raise=Mock(return_value={'voice_id': 'selected', 'name': 'Existing selected voice'}),
         _use_turkish_short_preview_profile=lambda language, seconds: language == 'tr' and seconds <= 40,
-        normalize_turkish_tts=lambda text, **_kwargs: text, _voice_speed=lambda _: 1.0,
+        normalize_turkish_tts=lambda text, **_kwargs: text, _voice_speed=lambda _, **kw: 1.0,
         _join_scene_narration=lambda spoken: (' '.join(spoken), [(0, 7)]),
         _deterministic_scene_seed=lambda *_args: 123,
         synthesize_voice_with_timestamps=provider, _media_duration=lambda _: 29.5,
@@ -195,6 +221,7 @@ def test_english_short_failed_naturalness_cannot_reach_media_or_new_tts():
     prosody = Mock(return_value={'available': True, 'pass': False, 'reason': 'choppy_phrase_grouping', 'issues': []})
     blocked = Mock(side_effect=AssertionError('No edit or new TTS for saved English audio'))
     n = dict(language='en', duration_minutes=.5, recovered_voice=False, saved_voice_retry=True,
+             selected_recovery=None,
              options={'mode': 'preview', 'format': 'shorts'},
              _effective_short_edit_target=_function('app/tasks.py', '_effective_short_edit_target', {}),
              voice_result={'path': '/tmp/existing.mp3', 'duration_after_fit': 29.5}, voice_path='/tmp/existing.mp3',

@@ -52,19 +52,27 @@ def _number(value) -> float:
 
 def _prior_result(raw: str, channel_id: str, revision: str) -> dict:
     audit = _object(raw)
+    promoted = type(audit.get('version')) is int and audit['version'] == 2
+    promotion_fields = {'promotion_receipt_key', 'promotion_receipt_sha256'} if promoted else set()
     _require(
         set(audit) == {
             'version', 'channel_id', 'profile_revision', 'connection_id', 'cursor',
             'consumed_prefix', 'next_topic_sha256', 'previous_next_due', 'next_due', 'requested_at',
-        }
-        and type(audit.get('version')) is int and audit['version'] == 1
+        } | promotion_fields
+        and type(audit.get('version')) is int and audit['version'] in {1, 2}
         and audit.get('channel_id') == channel_id and audit.get('profile_revision') == revision
         and isinstance(audit.get('connection_id'), str) and _ID.fullmatch(audit['connection_id'])
-        and type(audit.get('cursor')) is int and audit['cursor'] > 0
+        and type(audit.get('cursor')) is int and (audit['cursor'] == 0 if promoted else audit['cursor'] > 0)
         and all(isinstance(audit.get(key), str) and _SHA256.fullmatch(audit[key])
                 for key in ('consumed_prefix', 'next_topic_sha256')),
         'schedule_audit_invalid',
     )
+    if promoted:
+        prefix = PRODUCTION_PREFIX + 'series_promotion:' + channel_id + ':'
+        key = audit['promotion_receipt_key']
+        _require(type(key) is str and key.startswith(prefix) and re.fullmatch('[0-9a-f]{32}', key[len(prefix):])
+                 and type(audit['promotion_receipt_sha256']) is str and _SHA256.fullmatch(audit['promotion_receipt_sha256']),
+                 'schedule_audit_invalid')
     old_due = _number(audit['previous_next_due'])
     due = _number(audit['next_due'])
     requested = _number(audit['requested_at'])
@@ -84,7 +92,8 @@ def expedite_next_production(
 
     This does not assert public-delivery proof, change cadence, enable a profile,
     clear a pause, reserve a topic, enqueue a job or touch any spending ledger.
-    The caller must complete any required prior publication before invoking it.
+    The caller must complete any required prior publication, or supply an
+    untouched promoted series whose original completion and archive are proven.
     Ordinary scheduler reservation and all subsequent QA/publish checks remain.
     """
     _require(isinstance(channel_id, str) and _ID.fullmatch(channel_id), 'schedule_channel_invalid')
@@ -122,7 +131,7 @@ def expedite_next_production(
             )
             _require(
                 bool(state) and not state.get('paused_reason') and not state.get('active_task_id')
-                and state.get('dispatch_status') == 'finished',
+                and state.get('dispatch_status') in {'finished', 'series_promoted'},
                 'schedule_channel_not_idle',
             )
             active_raw = pipe.get(ACTIVE_KEY)
@@ -131,6 +140,7 @@ def expedite_next_production(
             connection_id = connection.get('connection_id')
             _require(
                 connection.get('id') == channel_id
+                and connection.get('requires_reconnect') is not True
                 and isinstance(connection_id, str) and _ID.fullmatch(connection_id)
                 and state.get('connection_id') == connection_id
                 and pipe.type(credentials_key) == 'string' and pipe.strlen(credentials_key) > 0
@@ -146,19 +156,28 @@ def expedite_next_production(
             topics = [topic.strip() for topic in topics]
             _require(len(set(topics)) == len(topics), 'schedule_topics_invalid')
             cursor = int(state.get('cursor', ''))
-            _require(str(cursor) == state.get('cursor') and 1 <= cursor < len(topics),
+            _require(str(cursor) == state.get('cursor') and 0 <= cursor < len(topics),
                      'schedule_no_next_topic')
             prefix = _prefix_digest(topics[:cursor])
             _require(state.get('consumed_prefix') == prefix, 'schedule_consumed_topics_changed')
-            _require(isinstance(state.get('last_task_id'), str) and _TASK_ID.fullmatch(state['last_task_id']),
-                     'schedule_state_invalid')
+            promotion_evidence = {}
+            if cursor == 0:
+                from app.services.production_promoted_start import promotion_start_evidence
+
+                promotion_evidence = promotion_start_evidence(pipe, profile, state, connection)
+            else:
+                _require(state.get('dispatch_status') == 'finished'
+                         and isinstance(state.get('last_task_id'), str) and _TASK_ID.fullmatch(state['last_task_id']),
+                         'schedule_state_invalid')
             previous_due = _number(float(state.get('next_due', '')))
             due = min(previous_due, now)
             audit = {
-                'version': 1, 'channel_id': channel_id, 'profile_revision': expected_profile_revision,
+                'version': 2 if promotion_evidence else 1,
+                'channel_id': channel_id, 'profile_revision': expected_profile_revision,
                 'connection_id': connection_id, 'cursor': cursor, 'consumed_prefix': prefix,
                 'next_topic_sha256': hashlib.sha256(topics[cursor].encode('utf-8')).hexdigest(),
                 'previous_next_due': previous_due, 'next_due': due, 'requested_at': now,
+                **promotion_evidence,
             }
             pipe.multi()
             pipe.set(audit_key, json.dumps(audit, ensure_ascii=False, sort_keys=True), nx=True)

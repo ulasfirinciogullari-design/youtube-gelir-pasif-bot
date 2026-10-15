@@ -1,4 +1,4 @@
-"""Fresh planning gets one format repair AND one real feasibility correction."""
+"""Fresh planning shares three writers and bounds reviewed-story correction."""
 from copy import deepcopy
 import json
 from unittest.mock import Mock
@@ -95,11 +95,11 @@ def test_format_retry_after_semantic_rejection_preserves_actual_reviewed_narrati
     assert 'guarantees unlimited profit' not in client.responses.calls[4]['input']
 
 
-def test_two_deterministic_failures_exhaust_only_one_deterministic_retry():
-    client = FakeClient(['{invalid', '{invalid'])
+def test_repeated_deterministic_failures_exhaust_the_existing_three_writer_limit():
+    client = FakeClient(['{invalid', '{invalid', '{invalid'])
     with pytest.raises(RuntimeError, match='fully stock-safe'):
         run(client)
-    assert len(client.responses.calls) == 2
+    assert len(client.responses.calls) == 3
     assert all('tools' not in call for call in client.responses.calls)
 
 

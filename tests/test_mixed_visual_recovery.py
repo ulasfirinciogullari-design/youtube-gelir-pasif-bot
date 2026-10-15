@@ -97,7 +97,9 @@ def _actual_director_stock_result(package, queries):
     assert len(derived) == 3
     stock_positions = [index for index, scene in enumerate(package['scenes'])
                        if not str(scene.get('ai_prompt') or '').strip()]
-    namespace = {'package': deepcopy(package), 'scenes': deepcopy(package['scenes']),
+    # This fixture exercises the legacy stock writer, whose fields are editable.
+    namespace = {'immutable_scene_fields': False,
+                 'package': deepcopy(package), 'scenes': deepcopy(package['scenes']),
                  'stock_positions': stock_positions, 'accepted_rows': {index: {
                      'narration': package['scenes'][index]['narration'], 'visual_queries': deepcopy(
                          queries[index] if isinstance(queries, dict) else queries if index == 5

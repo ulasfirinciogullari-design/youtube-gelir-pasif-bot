@@ -153,6 +153,8 @@ _EN_YEAR_UNITS = {
     'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
     'six': 6, 'seven': 7, 'eight': 8, 'nine': 9,
 }
+_EN_DECADES = {'hundreds': 0, 'twenties': 20, 'thirties': 30, 'forties': 40, 'fifties': 50,
+               'sixties': 60, 'seventies': 70, 'eighties': 80, 'nineties': 90}
 _EN_CARDINAL_SMALL = {'zero': 0, **_EN_YEAR_UNITS,
     **{k: v for k, v in _EN_YEAR_CENTURIES.items() if v < 20}}
 _EN_CARDINAL_SCALES = frozenset({'thousand', 'million', 'billion', 'trillion'})
@@ -160,7 +162,7 @@ _EN_NUMBER_WORDS = frozenset({
     *_EN_YEAR_CENTURIES, *_EN_YEAR_TENS, *_EN_YEAR_UNITS,
     'zero', 'oh', 'hundred', *_EN_CARDINAL_SCALES, 'point',
 })
-_EN_YEAR_CUES = frozenset({'in', 'since', 'during', 'until', 'before', 'after', 'by', 'from', 'around', 'year'})
+_EN_YEAR_CUES = frozenset({'in', 'since', 'during', 'until', 'before', 'after', 'by', 'from', 'around', 'year', 'throughout'})
 _EN_YEAR_NONYEAR_FOLLOWERS = frozenset({
     '%', '‰', '$', '€', '£', '¥', '₺', 'percent', 'dollars', 'cents', 'euros', 'pounds',
 })
@@ -560,8 +562,11 @@ def _validate_prosody_review(
     audio_duration_seconds: float | None,
     transcript_evidence: dict[str, Any] | None,
     language: str = 'tr',
+    provider: str = 'gemini',
 ) -> dict[str, Any] | None:
     """Bind a model review to trusted transcript timing or reject it."""
+    if type(provider) is not str or provider not in {'gemini', 'abacus_router'}:
+        return None
     if not isinstance(output, dict):
         return None
     passed = output.get('pass')
@@ -655,7 +660,7 @@ def _validate_prosody_review(
     result = {
         'available': True,
         'pass': passed,
-        'provider': 'gemini',
+        'provider': provider,
         'reason': None if passed else normalized_issues[0]['code'],
         'scores': {field: scores[field] for field in _PROSODY_SCORE_FIELDS},
         'issues': normalized_issues,
@@ -690,6 +695,21 @@ def verify_audio_prosody(
     normalized_language = normalize_supported_language(language)
     if normalized_language not in {'tr', 'en'}:
         raise ValueError('Audio prosody language is unsupported')
+    if getattr(settings, 'studio_abacus_included_production', False) is True:
+        from app.services.abacus_router_audio_adapter import read_original_mp3
+        from app.services.production_included_router import generate_included_audio, observed_audio_provider
+        from app.services.commissioning_longform import active
+        longform = active()
+        extra = {'allow_commissioned_long': True} if longform else {'allow_natural_short': True}
+        output = generate_included_audio(read_original_mp3(audio_path, **extra), purpose='prosody',
+            language=normalized_language, expected_narration=expected_narration,
+            **({'longform': True} if longform else {}))
+        validated = _validate_prosody_review(output, expected_narration,
+            audio_duration_seconds=audio_duration_seconds, transcript_evidence=transcript_evidence,
+            language=normalized_language, provider=observed_audio_provider())
+        if validated is None:
+            raise AudioQCError('Included audio prosody evidence did not validate')
+        return validated
     language_name = 'English' if normalized_language == 'en' else 'Turkish'
     api_key = str(getattr(settings, 'gemini_api_key', '') or '').strip()
     if not api_key:
@@ -1273,7 +1293,7 @@ def _english_small_cardinal(words: list[str]) -> int | None:
 
 
 def _english_contextual_cardinal(tokens, matches, value, index, year_context):
-    """Only an explicit thousand-year or a complete coefficient before a scale."""
+    """Explicit temporal numbers or a complete coefficient before a scale."""
     numeric = _EN_NUMBER_WORDS | {'and'}
     end = index
     while end < len(tokens) and end - index < 9 and tokens[end] in numeric:
@@ -1282,6 +1302,11 @@ def _english_contextual_cardinal(tokens, matches, value, index, year_context):
     if not words:
         return None
     candidates = []
+    # "in fifty-nine" and "in 59" have identical spoken values. Keep the
+    # two-digit value; never infer a century from an abbreviated year.
+    short_year = _english_small_cardinal(words) if year_context else None
+    if short_year is not None and 10 <= short_year <= 99:
+        candidates.append((short_year, len(words), True))
     if (year_context and len(words) >= 2 and words[0] in _EN_YEAR_UNITS and words[1] == 'thousand'):
         tail_words = words[2:]
         if tail_words[:1] == ['and']:
@@ -1325,10 +1350,71 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
     index = 0
     while index < len(tokens):
         century = _EN_YEAR_CENTURIES.get(tokens[index])
+        from app.services.audio_english_amounts import currency_amount_unit, measurement_amount_unit
+        from app.services.audio_english_context import contextual_unit
+        amount = contextual_unit(tokens, matches, value, index,
+                                 _english_small_cardinal, _EN_NUMBER_WORDS)
+        if amount is None:
+            amount = currency_amount_unit(tokens, matches, value, index,
+                                          _english_small_cardinal, _EN_NUMBER_WORDS)
+        if amount is None:
+            amount = measurement_amount_unit(tokens, matches, value, index,
+                                             _english_small_cardinal, _EN_NUMBER_WORDS)
+        if amount is not None:
+            number, count = amount
+            units.append((number, tuple(tokens[index:index + count])))
+            index += count
+            continue
+        if (tuple(tokens[index:index + 2]) in {
+                ('hand', 'saw'), ('hand', 'saws'), ('post', 'war'), ('pre', 'war'),
+                ('card', 'maker'), ('card', 'makers'), ('bulls', 'eye')}
+                and re.fullmatch(r'(?:\s+|[-\u2010\u2011])',
+                    value[matches[index].end():matches[index + 1].start()])):
+            units.append((''.join(tokens[index:index + 2]), tuple(tokens[index:index + 2])))
+            index += 2
+            continue
         consumed = 0
         remainder = None
-        year_context = bool(index > 0 and tokens[index - 1] in _EN_YEAR_CUES
-                            and value[matches[index - 1].end():matches[index].start()].isspace())
+        year_cue = index - 1
+        if year_cue >= 0 and tokens[year_cue] in {'early', 'mid', 'late'}:
+            year_cue -= 1
+        year_context = bool(year_cue >= 0 and tokens[year_cue] in _EN_YEAR_CUES
+            and all(value[matches[p].end():matches[p + 1].start()].isspace()
+                    for p in range(year_cue, index)))
+        # ASR writes spoken "in the nineteen-fifties" as "in the 1950s".
+        # Require the complete century, decade, and local temporal cue; never
+        # guess an age, a count of banknotes, or a bare list of numbers.
+        cue = index - 1
+        if cue >= 0 and tokens[cue] in {'early', 'mid', 'late'}:
+            cue -= 1
+        if cue >= 0 and tokens[cue] == 'the':
+            cue -= 1
+        decade_context = bool(cue >= 0 and tokens[cue] in _EN_YEAR_CUES
+            and all(value[matches[pos].end():matches[pos + 1].start()].isspace()
+                    for pos in range(cue, index)))
+        # A lexical modifier in "during the mid-1950s" is not a negative
+        # number. Accept only an attached ASCII hyphen, a complete decade,
+        # and the same explicit temporal context used for spoken decades.
+        if (cue >= 0 and tokens[cue] in _EN_YEAR_CUES
+                and all(value[matches[pos].end():matches[pos + 1].start()].isspace()
+                        for pos in range(cue, index - 1))
+                and index > 0 and tokens[index - 1] in {'early', 'mid', 'late'}
+                and re.fullmatch(r'-[12][0-9]{2}0s', tokens[index])
+                and matches[index - 1].end() == matches[index].start()):
+            units.append((tokens[index][1:], (tokens[index],)))
+            index += 1
+            continue
+        if (century is not None and decade_context and index + 1 < len(tokens)
+                and tokens[index + 1] in _EN_DECADES
+                and re.fullmatch(r'(?:\s+|[-\u2010\u2011])',
+                    value[matches[index].end():matches[index + 1].start()])
+                and (index + 2 == len(tokens) or (
+                    tokens[index + 2] not in _EN_NUMBER_WORDS | _EN_YEAR_NONYEAR_FOLLOWERS | set(_EN_DECADES)
+                    and not any(char.isdigit() for char in tokens[index + 2])))):
+            units.append((str(century * 100 + _EN_DECADES[tokens[index + 1]]) + 's',
+                          tuple(tokens[index:index + 2])))
+            index += 2
+            continue
         cardinal = _english_contextual_cardinal(tokens, matches, value, index, year_context)
         if cardinal is not None:
             number, count = cardinal
@@ -1363,7 +1449,8 @@ def _english_year_comparison_units(text: str) -> list[tuple[str, tuple[str, ...]
                 units.append((str(century * 100 + remainder), tuple(tokens[index:index + consumed])))
                 index += consumed
                 continue
-        units.append((tokens[index], (tokens[index],)))
+        from app.services.audio_english_amounts import spelling_key
+        units.append((spelling_key(tokens[index]), (tokens[index],)))
         index += 1
     return units
 
@@ -1399,6 +1486,7 @@ _TURKISH_CENT_CONTEXT = frozenset({
     'euro', 'euronun', 'avro', 'avronun',
     'para', 'parası', 'paranın', 'parayı', 'paralar', 'paraları',
     'madeni', 'banknot', 'darphane', 'darphanenin',
+    'kasa', 'kasada', 'kasalar', 'kasalarda', 'kasaya', 'kasalara', 'kasadan', 'kasalardan',
     'dolaşım', 'dolaşımı', 'dolaşımda', 'dolaşımdaki', 'dolaşıma', 'dolaşımdan',
 })
 
@@ -1502,6 +1590,32 @@ def _comparison_units(
     units: list[tuple[str, tuple[str, ...]]] = []
     index = 0
     while index < len(tokens):
+        from app.services.audio_turkish_decades import decade_unit
+        decade = decade_unit(tokens, index, value, matches)
+        if decade is not None:
+            key, consumed = decade
+            units.append((key, tuple(tokens[index:index + consumed])))
+            index += consumed
+            continue
+        # LEGO's own history confirms Ole Kirk used both surname spellings:
+        # https://www.lego.com/en-us/history/articles/a-kristiansen-or-christiansen
+        # Bind only his complete name, never arbitrary surnames or other people.
+        if (tokens[index] in {'christiansen', 'kristiansen'} and index >= 2
+                and tokens[index - 2:index] == ['ole', 'kirk']
+                and all(value[matches[i].end():matches[i + 1].start()].isspace()
+                        for i in (index - 2, index - 1))):
+            units.append(('\x00ole_kirk_surname', (tokens[index],)))
+            index += 1
+            continue
+        # Turkish printing terminology: recognizers sometimes spell the loan
+        # word as English "typo". Require the immediately adjacent printing
+        # noun; never alias bare words or an English writing-error reference.
+        if (tokens[index] in {'tipo', 'typo'} and index + 1 < len(tokens)
+                and tokens[index + 1] in {'baskı', 'baskıyla', 'baskıya', 'baskıda', 'baskının', 'baskısı'}
+                and value[matches[index].end():matches[index + 1].start()].isspace()):
+            units.append(('\x00turkish_printing_tipo', (tokens[index],)))
+            index += 1
+            continue
         cent_noun = _turkish_cent_noun_unit(tokens, index, value, matches)
         if cent_noun is not None:
             units.append((cent_noun, (tokens[index],)))
@@ -1510,6 +1624,13 @@ def _comparison_units(
         cent_amount = _turkish_cent_amount_unit(tokens, index, value, matches)
         if cent_amount is not None:
             key, consumed = cent_amount
+            units.append((key, tuple(tokens[index:index + consumed])))
+            index += consumed
+            continue
+        from app.services.audio_ordinal_comparison import ordinal_unit
+        ordinal = ordinal_unit(tokens, index, value, matches)
+        if ordinal is not None:
+            key, consumed = ordinal
             units.append((key, tuple(tokens[index:index + consumed])))
             index += consumed
             continue
@@ -1541,7 +1662,10 @@ def _comparison_units(
             index += 1
             continue
 
-        word_unit = _number_word_unit(tokens, index)
+        from app.services.audio_compact_turkish import compact_number_unit
+        word_unit = compact_number_unit(tokens, index, value, matches)
+        if word_unit is None:
+            word_unit = _number_word_unit(tokens, index)
         if word_unit is not None:
             number_key, consumed = word_unit
             units.append((number_key, tuple(tokens[index:index + consumed])))
@@ -2268,25 +2392,40 @@ def _verify_with_openai(
     *,
     provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
+    from app.services.production_spend import SpendBlocked
+    from app.services.production_spend_runtime import enforcement_enabled
+    from app.services.whisper_transcription import (
+        WhisperTranscriptionError, transcribe_whisper_bounded,
+    )
+    enforced = enforcement_enabled()
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
-        with path.open('rb') as audio_file:
-            response = paid_post(httpx.post,
-                OPENAI_AUDIO_TRANSCRIPTIONS_URL,
-                headers=_openai_headers(api_key),
-                data={
-                    'model': 'whisper-1',
-                    'language': language_codes['openai'],
-                    'response_format': 'verbose_json',
-                    'timestamp_granularities[]': 'word',
-                    'temperature': '0',
-                },
-                files={
-                    'file': (path.name, audio_file, content_type),
-                },
-                timeout=_SPEECH_TO_TEXT_TIMEOUT,
+        if enforced:
+            response = transcribe_whisper_bounded(
+                path, api_key=api_key, language=language_codes['openai'],
             )
+        else:
+            with path.open('rb') as audio_file:
+                response = paid_post(httpx.post,
+                    OPENAI_AUDIO_TRANSCRIPTIONS_URL,
+                    headers=_openai_headers(api_key),
+                    data={
+                        'model': 'whisper-1',
+                        'language': language_codes['openai'],
+                        'response_format': 'verbose_json',
+                        'timestamp_granularities[]': 'word',
+                        'temperature': '0',
+                    },
+                    files={
+                        'file': (path.name, audio_file, content_type),
+                    },
+                    timeout=_SPEECH_TO_TEXT_TIMEOUT,
+                )
+    except (SpendBlocked, WhisperTranscriptionError):
+        raise
     except Exception:
+        if enforced:
+            raise WhisperTranscriptionError('whisper_transport_failed') from None
         raise AudioQCError(
             'OpenAI speech-to-text transport failed'
         ) from None
@@ -2296,18 +2435,23 @@ def _verify_with_openai(
         language=language_codes['openai'], secret=api_key,
         sink=provider_evidence_sink,
     )
-    payload = _response_payload(response, 'OpenAI')
-    return _require_word_timing_evidence(
-        compare_transcript(
-            expected_narration,
-            payload['text'],
-            language_code=payload.get('language'),
-            words=payload.get('words'),
-            provider='openai',
-            comparison_language=language_codes['openai'],
-        ),
-        'OpenAI',
-    )
+    try:
+        payload = _response_payload(response, 'OpenAI')
+        return _require_word_timing_evidence(
+            compare_transcript(
+                expected_narration,
+                payload['text'],
+                language_code=payload.get('language'),
+                words=payload.get('words'),
+                provider='openai',
+                comparison_language=language_codes['openai'],
+            ),
+            'OpenAI',
+        )
+    except AudioQCError:
+        if enforced:
+            raise WhisperTranscriptionError('whisper_response_invalid') from None
+        raise
 
 
 def _validated_gemini_upload_url(value: Any) -> str:
@@ -2623,6 +2767,7 @@ def _verify_with_gemini(
             },
         },
     }
+    from app.services.production_spend import SpendBlocked
     try:
         for attempt in range(_GEMINI_INTERACTION_ATTEMPTS):
             try:
@@ -2635,6 +2780,8 @@ def _verify_with_gemini(
                     json=request_body,
                     timeout=_SPEECH_TO_TEXT_TIMEOUT,
                 )
+            except SpendBlocked:
+                raise
             except httpx.TransportError:
                 if attempt + 1 < _GEMINI_INTERACTION_ATTEMPTS:
                     time.sleep(_GEMINI_INTERACTION_RETRY_DELAY_SECONDS)
@@ -2687,6 +2834,7 @@ def _verify_with_elevenlabs(
     *,
     provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
+    from app.services.production_spend import SpendBlocked
     content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
     try:
         with path.open('rb') as audio_file:
@@ -2705,6 +2853,8 @@ def _verify_with_elevenlabs(
                 },
                 timeout=_SPEECH_TO_TEXT_TIMEOUT,
             )
+    except SpendBlocked:
+        raise
     except Exception:
         raise AudioQCError(
             'ElevenLabs speech-to-text transport failed'
@@ -2738,6 +2888,77 @@ def verify_audio_narration(
     provider_evidence_sink: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
     """Transcribe an audio master and compare it with its spoken contract."""
+    if getattr(settings, 'studio_abacus_included_production', False) is True:
+        from app.services.abacus_router_audio_adapter import read_original_mp3
+        from app.services.production_included_router import generate_included_audio, observed_audio_provider
+        normalized_language = normalize_supported_language(language)
+        if normalized_language not in {'tr', 'en'}:
+            raise AudioQCError('Included audio review language is unsupported')
+        if not _tokens(expected_narration):
+            raise ValueError('Expected narration must contain at least one word')
+        from app.services.commissioning_audio import transcribe_if_commissioned
+        api_key = str(getattr(settings, 'openai_api_key', '') or '')
+        primary = None
+        try:
+            response = transcribe_if_commissioned(audio_path, api_key=api_key, language=normalized_language)
+            if response is not None:
+                _checkpoint_provider_evidence(response, provider='openai', model='whisper-1',
+                    language=normalized_language, secret=api_key, sink=provider_evidence_sink)
+                payload = _response_payload(response, 'OpenAI')
+                primary = _require_word_timing_evidence(compare_transcript(expected_narration, payload['text'],
+                    words=payload['words'], language_code=payload['language'], provider='openai',
+                    comparison_language=normalized_language), 'OpenAI')
+        except Exception:
+            # Preserve every first-provider reservation. A separately admitted
+            # recognizer can inspect the same audio after an outage or malformed
+            # timing evidence; it never repeats the uncertain first request.
+            primary = {'available': False, 'pass': False, 'provider': 'openai',
+                'score': 0, 'transcript': '', 'reason': 'primary_recognizer_unavailable'}
+        if primary is not None:
+            if primary['pass'] is True:
+                return primary
+            # A blind second recognizer distinguishes a synthesis defect from
+            # one recognizer's spelling error before buying another voice take.
+            # It receives only the exact audio and language, never this script.
+            from app.services.commissioning_scribe import transcribe_if_commissioned as independent_transcription
+            try:
+                secondary_key = str(getattr(settings, 'elevenlabs_api_key', '') or '')
+                secondary = independent_transcription(audio_path, api_key=secondary_key, language=normalized_language)
+                if secondary is None:
+                    return primary
+                _checkpoint_provider_evidence(secondary, provider='elevenlabs', model='scribe_v2',
+                    language=normalized_language, secret=secondary_key, sink=provider_evidence_sink)
+                second_payload = _response_payload(secondary, 'ElevenLabs')
+                review = _require_word_timing_evidence(compare_transcript(expected_narration, second_payload['text'],
+                    words=second_payload['words'], language_code=second_payload.get('language_code'),
+                    language_probability=second_payload.get('language_probability'), provider='elevenlabs',
+                    comparison_language=normalized_language), 'ElevenLabs')
+                review['independent_recognizer'] = True
+                review['primary_recognizer'] = {key: primary[key] for key in ('provider', 'pass', 'score', 'transcript')}
+            except Exception:
+                # An unavailable/unknown secondary cannot waive the original
+                # rejection. Its permanent request reservation remains spent.
+                primary['independent_recognizer_unavailable'] = True
+                return primary
+            if review['pass'] is not True and normalized_language == 'en':
+                from app.services import audio_proper_name_review as names
+                if names.candidates(expected_narration, review) is not None:
+                    # This listener has its own durable one-request receipt.
+                    # Its unknown outcome must propagate, never buy new speech.
+                    review = names.reassess(Path(audio_path).read_bytes(), expected_narration, review)
+            if review['pass'] is True:
+                return review
+            if primary.get('available') is not True:
+                # A valid negative second observation is actionable voice
+                # evidence, not an outage of the unavailable first model.
+                return review
+            primary['independent_recognizer_result'] = {key: review[key] for key in ('provider', 'pass', 'score', 'transcript')}
+            return primary
+        output = generate_included_audio(read_original_mp3(audio_path), purpose='blind_asr',
+            language=normalized_language)
+        return _require_word_timing_evidence(compare_transcript(expected_narration, output['text'],
+            words=output['words'], language_code=output['language'], provider=observed_audio_provider(),
+            comparison_language=normalized_language), 'Independent recognizer')
     openai_api_key = str(getattr(settings, 'openai_api_key', '') or '')
     gemini_api_key = str(getattr(settings, 'gemini_api_key', '') or '')
     elevenlabs_api_key = str(

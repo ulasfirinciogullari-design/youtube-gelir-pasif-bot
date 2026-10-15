@@ -221,6 +221,7 @@ def _validate_queue_url(
     *,
     request_id: str,
     suffix: str,
+    model: str = FAL_SEEDANCE_FAST_MODEL,
 ) -> str:
     """Accept only the exact Fal queue URL for this model and request."""
     value = str(candidate or '').strip()
@@ -233,14 +234,22 @@ def _validate_queue_url(
             'Fal video returned an untrusted queue URL',
             request_id=request_id,
         ) from exc
-    expected_path = f'/{FAL_SEEDANCE_FAST_MODEL}/requests/{request_id}{suffix}'
+    # Fal can return either the endpoint path or its application's queue path.
+    # Both must identify this exact accepted request on the official host.
+    from app.services.fal_video_catalog import PROVIDERS
+    if model != FAL_SEEDANCE_FAST_MODEL and model not in PROVIDERS:
+        raise FalVideoProtocolError('Fal video model is not configured')
+    expected_paths = {
+        f'/{model}/requests/{request_id}{suffix}',
+        f'/{"/".join(model.split("/")[:2])}/requests/{request_id}{suffix}',
+    }
     if (
         parsed.scheme != 'https'
         or host != _FAL_QUEUE_HOST
         or parsed.username is not None
         or parsed.password is not None
         or port not in {None, 443}
-        or parsed.path != expected_path
+        or parsed.path not in expected_paths
         or parsed.params
         or parsed.query
         or parsed.fragment
@@ -289,6 +298,8 @@ def _completed_error(
     payload: dict,
     request_id: str,
 ) -> FalVideoError | None:
+    if not isinstance(payload, dict):
+        return None
     error_types = _fal_error_types(payload)
     if not payload.get('error') and not error_types:
         return None
@@ -310,7 +321,8 @@ def _completed_error(
     )
 
 
-def _parse_video_result(payload: object, request_id: str) -> dict:
+def _parse_video_result(payload: object, request_id: str, *,
+                        model: str = FAL_SEEDANCE_FAST_MODEL) -> dict:
     if not isinstance(payload, dict):
         raise FalVideoProtocolError(
             'Fal video returned a malformed result',
@@ -345,9 +357,11 @@ def _parse_video_result(payload: object, request_id: str) -> dict:
             'Fal video returned an untrusted media URL',
             request_id=request_id,
         ) from exc
+    from app.services.fal_video_catalog import PROVIDERS
+    provider = 'fal_seedance_2_fast' if model == FAL_SEEDANCE_FAST_MODEL else PROVIDERS[model]
     return {
         'url': url,
-        'provider': 'fal_seedance_2_fast',
+        'provider': provider,
         'provider_attempts': 1,
         'provider_request_id': request_id,
     }
@@ -358,11 +372,20 @@ def generate_fal_video(
     seconds: int,
     *,
     aspect_ratio: str = '16:9',
+    model: str = FAL_SEEDANCE_FAST_MODEL,
+    _journal=None,
 ) -> dict:
-    """Submit one Seedance Fast job, poll it, and return trusted media metadata."""
+    """Submit one reviewed video job; accepted or unknown creates never retry.
+
+    The historical fallback keeps its Seedance 2 contract. Explicit Fal routing
+    supplies one of the reviewed cheaper models. A commissioning journal can
+    restore an accepted request without another submission.
+    """
     api_key = str(getattr(settings, 'fal_key', '') or '').strip()
     if not api_key:
         raise FalVideoNotConfiguredError('FAL_KEY is not configured')
+    if len(api_key) > 8192 or any(not 32 < ord(char) < 127 for char in api_key):
+        raise FalVideoNotConfiguredError('FAL_KEY is invalid')
     prompt_text = str(prompt or '').strip()
     if not prompt_text:
         raise ValueError('Fal video prompt is empty')
@@ -373,7 +396,7 @@ def generate_fal_video(
         raise ValueError('Fal video aspect ratio must be 16:9 or 9:16')
 
     duration = _seedance_duration(seconds)
-    submit_url = f'{_FAL_QUEUE_ORIGIN}/{FAL_SEEDANCE_FAST_MODEL}'
+    submit_url = f'{_FAL_QUEUE_ORIGIN}/{model}'
     headers = {
         'Authorization': f'Key {api_key}',
         'Content-Type': 'application/json',
@@ -390,14 +413,20 @@ def generate_fal_video(
         'generate_audio': False,
         'bitrate_mode': 'standard',
     }
+    if model != FAL_SEEDANCE_FAST_MODEL:
+        from app.services.fal_video_catalog import build_request, quote_request
+        request_body = build_request(model, prompt_text, seconds, aspect_ratio)
+        quote_request(model, request_body)
 
     with httpx.Client(
         timeout=httpx.Timeout(30.0, connect=10.0),
         follow_redirects=False,
+        trust_env=False,
     ) as client:
         try:
             # Never retry this paid POST. A timeout may hide an accepted job.
-            created = paid_post(client.post,
+            submit = paid_post if _journal is None else _journal.submit
+            created = submit(client.post,
                 submit_url,
                 headers=headers,
                 json=request_body,
@@ -423,11 +452,11 @@ def generate_fal_video(
             )
 
         default_status_url = (
-            f'{_FAL_QUEUE_ORIGIN}/{FAL_SEEDANCE_FAST_MODEL}/requests/'
+            f'{_FAL_QUEUE_ORIGIN}/{model}/requests/'
             f'{request_id}/status'
         )
         default_result_url = (
-            f'{_FAL_QUEUE_ORIGIN}/{FAL_SEEDANCE_FAST_MODEL}/requests/'
+            f'{_FAL_QUEUE_ORIGIN}/{model}/requests/'
             f'{request_id}'
         )
         status_url = _validate_queue_url(
@@ -438,6 +467,7 @@ def generate_fal_video(
             ) or default_status_url,
             request_id=request_id,
             suffix='/status',
+            model=model,
         )
         raw_response_url = (
             created_payload.get('response_url')
@@ -450,6 +480,7 @@ def generate_fal_video(
                     raw_response_url,
                     request_id=request_id,
                     suffix='/response',
+                    model=model,
                 )
             except FalVideoProtocolError:
                 # The REST docs also document the canonical request URL as the
@@ -458,9 +489,20 @@ def generate_fal_video(
                     raw_response_url,
                     request_id=request_id,
                     suffix='',
+                    model=model,
                 )
         else:
             result_url = default_result_url
+
+        if _journal is not None:
+            saved = _journal.result_response()
+            if saved is not None:
+                if not 200 <= saved.status_code < 300:
+                    _raise_accepted_request_error(saved, request_id)
+                error = _completed_error(_safe_json(saved), request_id)
+                if error is not None:
+                    raise error
+                return _parse_video_result(_safe_json(saved), request_id, model=model)
 
         deadline = time.monotonic() + _FAL_MAX_WAIT_SECONDS
         read_failures = 0
@@ -508,6 +550,8 @@ def generate_fal_video(
                 )
             terminal_error = _completed_error(status_payload, request_id)
             if terminal_error is not None:
+                if _journal is not None:
+                    _journal.observe_result(status_response)
                 raise terminal_error
 
             for result_attempt in range(_FAL_MAX_STATUS_READ_FAILURES):
@@ -533,10 +577,18 @@ def generate_fal_video(
                     type(result_status) is not int
                     or not 200 <= result_status < 300
                 ):
+                    if _journal is not None and result_status in {400, 401, 403, 404, 422}:
+                        _journal.observe_result(result_response)
                     _raise_accepted_request_error(result_response, request_id)
+                if _journal is not None:
+                    _journal.observe_result(result_response)
+                terminal_error = _completed_error(_safe_json(result_response), request_id)
+                if terminal_error is not None:
+                    raise terminal_error
                 return _parse_video_result(
                     _safe_json(result_response),
                     request_id,
+                    model=model,
                 )
 
     raise FalVideoTransientError(

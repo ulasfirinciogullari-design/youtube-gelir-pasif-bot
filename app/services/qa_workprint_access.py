@@ -6,6 +6,7 @@ before using them. Storage keys and credentials never become browser URLs.
 from __future__ import annotations
 
 import re
+import math
 from uuid import UUID
 
 from fastapi import Request
@@ -16,6 +17,7 @@ from app.services import storage
 
 
 MAX_WORKPRINT_BYTES = 64 * 1024 * 1024
+MAX_LONG_WORKPRINT_BYTES = 192 * 1024 * 1024
 CHUNK_BYTES = 64 * 1024
 _SHA256 = re.compile(r'^[0-9a-f]{64}$')
 _ETAG = re.compile(r'^"[A-Za-z0-9_-]{1,128}"$')
@@ -51,10 +53,25 @@ def _canonical_id(value: object) -> bool:
         return False
 
 
+def _valid_timing(pointer: dict) -> bool:
+    duration, frames = pointer.get('duration_seconds'), pointer.get('frame_count')
+    if type(duration) not in (int, float) or not math.isfinite(duration) or type(frames) is not int:
+        return False
+    if pointer['version'] == 1:
+        return duration == 30 and frames == 900
+    if pointer['version'] == 3:
+        # Actual failed master, including off-by-one frame and silence/motion
+        # failures. This grants private playback only; all approval flags stay false.
+        return 20 <= duration <= 45 and 600 <= frames <= 1350 and abs(duration * 30 - frames) < 1e-6
+    if pointer['version'] == 4:
+        return 120 <= duration <= 240 and 3600 <= frames <= 7200 and abs(duration * 30 - frames) < 1e-6
+    return 30 < duration <= 40 and 900 < frames <= 1200 and abs(duration * 30 - frames) < 1e-6
+
+
 def _valid_pointer(pointer: object) -> bool:
     return bool(
         isinstance(pointer, dict) and set(pointer) == _FIELDS
-        and type(pointer.get('version')) is int and pointer['version'] == 1
+        and type(pointer.get('version')) is int and pointer['version'] in {1, 2, 3, 4}
         and pointer.get('status') == 'qa_workprint'
         and pointer.get('qa_approved') is False
         and pointer.get('publish_eligible') is False
@@ -64,13 +81,13 @@ def _valid_pointer(pointer: object) -> bool:
         and _SHA256.fullmatch(pointer['sha256'])
         and pointer.get('key') == f"qa_workprints/{pointer['task_id']}/{pointer['sha256']}.mp4"
         and type(pointer.get('size')) is int
-        and 1 <= pointer['size'] <= MAX_WORKPRINT_BYTES
+        and 1 <= pointer['size'] <= (MAX_LONG_WORKPRINT_BYTES if pointer['version'] == 4 else MAX_WORKPRINT_BYTES)
         and isinstance(pointer.get('etag'), str)
         and _ETAG.fullmatch(pointer['etag'])
-        and type(pointer.get('duration_seconds')) in (int, float)
-        and pointer['duration_seconds'] == 30
+        and _valid_timing(pointer)
         and all(type(pointer.get(key)) is int and pointer[key] == expected
-                for key, expected in (('frame_count', 900), ('width', 1080), ('height', 1920)))
+                for key, expected in ((('width', 1920), ('height', 1080)) if pointer['version'] == 4
+                                     else (('width', 1080), ('height', 1920))))
         and isinstance(pointer.get('metadata_sha256'), str)
         and _SHA256.fullmatch(pointer['metadata_sha256'])
         and pointer.get('metadata_key') == f"qa_workprints/{pointer['task_id']}/{pointer['metadata_sha256']}.json"
@@ -90,6 +107,11 @@ def validated_pointer(job: object, task_id: str | None = None) -> dict | None:
     pointer = job.get('qa_workprint')
     if not _valid_pointer(pointer) or pointer['task_id'] != job['task_id']:
         return None
+    if pointer['version'] == 4:
+        spec = job.get('spec') or {}
+        if (spec.get('mode') != 'production' or spec.get('format') != 'landscape'
+                or spec.get('duration_minutes') != 3 or not _canonical_id(spec.get('content_plan_item_id'))):
+            return None
     return dict(pointer)
 
 

@@ -14,7 +14,7 @@ from app.services.visual_allocation_checkpoint import _work_path
 
 def exact_review_visuals(*, scenes: list[dict], scene_visuals: list[list[dict]],
                          scene_durations: list[float], voice_path: str | Path,
-                         work_dir: str | Path) -> list[list[dict]]:
+                         work_dir: str | Path, natural_short: bool = False) -> list[list[dict]]:
     """Normalize each pinned raw shot exactly once for independent final QA."""
     try:
         requested_work = Path(work_dir)
@@ -43,7 +43,7 @@ def exact_review_visuals(*, scenes: list[dict], scene_visuals: list[list[dict]],
         if voice != work / 'recovered_voice.mp3' or voice.resolve(strict=True) != voice:
             raise ValueError('Invalid exact-cut voice path')
         duration = float(render.media_duration(voice))
-        if not math.isfinite(duration) or not 28.7 <= duration <= 30.08:
+        if type(natural_short) is not bool or not math.isfinite(duration) or not 28.7 <= duration <= (40 if natural_short else 30.08):
             raise ValueError('Invalid exact-cut voice duration')
         timeline = render._scene_timeline(
             scenes, scene_visuals, scene_durations, duration,

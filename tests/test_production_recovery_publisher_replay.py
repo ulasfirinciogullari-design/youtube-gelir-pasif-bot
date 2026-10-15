@@ -43,6 +43,18 @@ def test_actual_completed_retry_redelivery_resumes_without_rewriting_any_proof(c
     assert _snapshot(client) == unchanged
 
 
+@pytest.mark.parametrize('include_flag', [True, False])
+def test_compact_replay_accepts_proven_stronger_publisher_disclosure(case, include_flag):
+    module, client, data = case
+    _change(client, module.UPLOAD_PREFIX + data.recovered_id,
+            lambda record: record['publish_plan'].update(contains_synthetic_media=False))
+    _compact(case)
+    if include_flag:
+        _change(client, module.JOB_PREFIX + data.publish_id,
+                lambda job: job['result'].update(contains_synthetic_media=True))
+    assert _run(case)['contains_synthetic_media'] is True
+
+
 def test_actual_tick_continues_next_frozen_topic_once_after_compact_retry_delivery(case):
     module, client, data = case
     _compact(case)
@@ -122,7 +134,7 @@ def test_compact_result_never_hides_explicit_contradictions(case, field, value):
     ('ledger', ['youtube_video_id'], 'OtherVideo0'),
     ('ledger', ['target_channel_id'], 'UC_wrong_channel'), ('ledger', ['connection_id'], 'changed'),
     ('ledger', ['publish_plan', 'profile_revision'], 'changed'),
-    ('ledger', ['publish_plan', 'contains_synthetic_media'], False),
+    ('ledger', ['publish_plan', 'contains_synthetic_media'], None),
     ('profile', ['profile_revision'], 'changed'), ('profile', ['release_mode'], 'private'),
 ])
 def test_compact_delivery_still_requires_full_source_ledger_and_current_profile(case, target, path, value):
