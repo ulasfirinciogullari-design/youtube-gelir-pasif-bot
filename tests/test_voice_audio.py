@@ -265,6 +265,30 @@ def test_a_short_never_switches_narrator_mid_video(light_produce, monkeypatch):
     assert seen["tempo"][-2:] == [1.0, 1.1]
 
 
+def test_an_all_edge_tts_short_keeps_the_series_speed(light_produce, monkeypatch):
+    # ELEVENLABS_SPEED is set, so the first pass leaves the speed-up to ElevenLabs, but the credits are gone before
+    # the first line: the edge-tts narration must not play at 1.0x.
+    seen, run = light_produce
+    calls = []
+
+    def no_credits(text, out, edge_only=False, **kw):
+        calls.append("edge-only" if edge_only else "edge-tts")
+        original_factory.voice_usage["edge-tts"] += 1
+        return out
+
+    monkeypatch.setenv("ELEVENLABS_SPEED", "1.15")
+    meta = run(no_credits)["meta"]
+    assert seen["tempo"] == [1.0, 1.1]
+    assert calls == ["edge-tts", "edge-tts", "edge-only", "edge-only"]
+    assert meta["voice_engine"] == "edge-tts x2"
+    assert meta["voice"] == {"voice_id": "tr-TR-AhmetNeural", "model": "edge-tts"}
+    # Without ELEVENLABS_SPEED the first pass already has the series speed: no second pass.
+    calls.clear()
+    monkeypatch.delenv("ELEVENLABS_SPEED")
+    run(no_credits)
+    assert seen["tempo"] == [1.0, 1.1, 1.1] and calls == ["edge-tts", "edge-tts"]
+
+
 def test_the_mixed_narration_is_kept_when_edge_tts_fails_too(tmp_path, monkeypatch):
     passes = []
 
@@ -413,6 +437,36 @@ def test_voice_samples_explain_a_missing_key(monkeypatch, capsys, tmp_path):
     assert "ELEVENLABS_API_KEY yok" in capsys.readouterr().out
 
 
+def test_voice_samples_stop_when_the_credits_are_gone(tmp_path, monkeypatch, capsys):
+    # Every voice would be refused the same way, and each library voice would first be added to the account.
+    vs = _voice_samples()
+    calls, api = [], []
+
+    def no_credits(text, out, voice_id=None, **kw):
+        calls.append(voice_id)
+        eleven.last_error.update(code=401, message='{"detail": {"status": "quota_exceeded"}}')
+        return False
+
+    def fake_api(path, key, payload=None, timeout=60):
+        api.append(path)
+        return {}
+
+    monkeypatch.setattr(vs.shutil, "which", lambda name: f"/usr/bin/{name}")  # refused before any ffmpeg call
+    monkeypatch.setattr(eleven, "get_elevenlabs_api_key", lambda: "k" * 20)
+    monkeypatch.setattr(eleven, "synthesize_elevenlabs_speech", no_credits)
+    monkeypatch.setattr(vs, "_api", fake_api)
+    for name in VOICE_VARIABLES[1:]:
+        monkeypatch.setenv(name, "")
+    out = tmp_path / "voice_samples"
+    out.mkdir()
+    (out / "1_alp_simdiki.mp3").write_bytes(b"ID3")
+    assert vs.main(["--out", str(out)]) == 1
+    assert calls == [eleven.DEFAULT_TURKISH_VOICE_ID]  # one line asked, no other voice tried
+    assert not any(path.startswith(("/shared-voices", "/voices/add")) for path in api)
+    assert (out / "1_alp_simdiki.mp3").exists() and not (out / "index.json").exists()  # the last set stays
+    assert "kredisi bitmiş" in capsys.readouterr().out
+
+
 @pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
 def test_voice_samples_fill_six_slots_and_skip_voices_that_fail(tmp_path, monkeypatch, capsys):
     vs = _voice_samples()
@@ -422,7 +476,7 @@ def test_voice_samples_fill_six_slots_and_skip_voices_that_fail(tmp_path, monkey
     for name in VOICE_VARIABLES[1:]:
         monkeypatch.setenv(name, "1.2")  # the repo Variables must not leak into the samples
     calls, api = [], []
-    refused = {"G5sdncpgy3DkDmvKJnFb": (401, "quota_exceeded"), "Mcb3pz5eWjKXcBhMLF4v": (500, "server error"),
+    refused = {"G5sdncpgy3DkDmvKJnFb": (400, "voice_not_ready"), "Mcb3pz5eWjKXcBhMLF4v": (500, "server error"),
                "shared_a": (404, '{"detail": {"status": "voice_not_found"}}')}
 
     def fake_speech(text, out, voice_id=None, model_id=None, previous_text="", next_text="", stability=None,

@@ -246,7 +246,8 @@ veya tanımsız değişken bugünkü ayarı korur ve istek bugünküyle birebir 
 | `ELEVENLABS_STABILITY` | Düşük = daha canlı, yüksek = daha düz (0-1) | 0,32 |
 
 - `ELEVENLABS_SPEED` verilince anlatım ayrıca ffmpeg ile hızlandırılmaz (hız iki kez
-  uygulanmasın diye). Sayılar `1,15` veya `1.15` diye yazılabilir.
+  uygulanmasın diye); ElevenLabs hiçbir cümleyi okuyamazsa edge-tts anlatımı yine
+  1,1x hızla hazırlanır. Sayılar `1,15` veya `1.15` diye yazılabilir.
 - `eleven_v3` komşu cümleleri (`previous_text`/`next_text`) kabul etmediği için ona
   gönderilmez; kararlılık bu modelin kabul ettiği 0 / 0,5 / 1 adımlarına yuvarlanır.
 - Meta dosyasındaki `voice` alanı kullanılan ses kimliğini, modeli ve ayarlanmış
@@ -266,7 +267,8 @@ veya tanımsız değişken bugünkü ayarı korur ve istek bugünküyle birebir 
   çok kullanılan enerjik Türkçe anlatıcılar. Her örnek Short'taki gibi kırpılır ve aynı
   seviyeye (-16 LUFS) getirilir, böylece yalnız ses karşılaştırılır. `index.json` her örneğin
   süresini, saniyedeki kelime sayısını ve beğenilirse girilecek repo Variables değerlerini
-  (`repo_variables`) yazar; çalışma özeti harcanan krediyi gösterir.
+  (`repo_variables`) yazar; çalışma özeti harcanan krediyi gösterir. Kredi biterse veya
+  anahtar geçersizse kalan sesler denenmez; hiç örnek çıkmazsa önceki örnekler kalır.
 
 ### Komik dublaj formatı
 

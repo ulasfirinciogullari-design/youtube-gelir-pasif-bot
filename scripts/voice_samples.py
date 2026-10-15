@@ -60,6 +60,7 @@ ENERGETIC_WORDS = ("energetic", "enerjik", "upbeat", "excited", "heyecan", "dyna
                    "hype", "confident", "intense")
 SETTING_VARIABLES = (("model", "ELEVENLABS_MODEL"), ("speed", "ELEVENLABS_SPEED"), ("style", "ELEVENLABS_STYLE"),
                      ("stability", "ELEVENLABS_STABILITY"))
+ACCOUNT_ERRORS = ("quota_exceeded", "invalid_api_key")  # ElevenLabs' detail.status for these refusals
 
 
 class VoiceError(RuntimeError):
@@ -183,6 +184,13 @@ def credits(key: str) -> tuple[int, int] | None:
         return int(data.get("character_count")), int(data.get("character_limit"))
     except Exception:
         return None
+
+
+def account_error(error: Exception) -> bool:
+    """A refusal no other voice gets past (credits used up, a wrong key). The run stops there: otherwise it would go
+    on through some thirty library voices, adding each one it has not seen to the account before being refused."""
+    text = str(getattr(error, "message", "") or error).lower()
+    return any(status in text for status in ACCOUNT_ERRORS)
 
 
 def voice_not_found(error: Exception) -> bool:
@@ -309,6 +317,9 @@ def main(argv=None) -> int:
             reason = str(e)[:200]
             print(f"ℹ️ {sample['label']} atlandı: {reason}")
             skipped.append({"label": sample["label"], "voice_id": sample["voice_id"], "reason": reason})
+            if account_error(e):
+                print("❌ ElevenLabs kredisi bitmiş veya anahtar geçersiz; kalan sesler denenmedi.")
+                break
 
     after = credits(key)
     spent = (f"{after[0] - before[0]} karakter (bu ay kalan: {after[1] - after[0]})" if before and after
@@ -317,7 +328,8 @@ def main(argv=None) -> int:
     if not made:  # the last set and its index stay as they were
         print("❌ Hiç ses örneği üretilemedi (ElevenLabs anahtarı, kredisi veya bağlantısı kontrol edilmeli).")
         return 1
-    index = {"created": time.strftime("%Y-%m-%d %H:%M"), "script": LINES, "samples": made, "skipped": skipped}
+    index = {"created": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()), "script": LINES, "samples": made,
+             "skipped": skipped}
     (out_dir / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
     keep = {m["file"] for m in made}
     for old in out_dir.glob("*.mp3"):  # the new set replaces the last one, so no stale sample is compared

@@ -461,20 +461,29 @@ def narrate(scenes: list[dict], work_dir: Path, synthesize=synthesize_line, temp
     """build_narration with one narrator per Short, plus how many lines each engine voiced in it. When ElevenLabs
     stops mid-script (credits run out, an API error) the rest falls back to edge-tts and the narrator would switch
     mid-video, so every line is voiced again with edge-tts alone (at `edge_tempo`, since ElevenLabs' own speed no
-    longer applies). If that fails too, the mixed narration is kept rather than losing the run."""
+    longer applies). The same goes for a Short ElevenLabs voiced none of while `tempo` left the speed-up to it: its
+    edge-tts narration would otherwise play unsped, slower than before. If that fails too, the first narration is
+    kept rather than losing the run."""
+    edge_tempo = tempo if edge_tempo is None else edge_tempo
     before = dict(voice_usage)
     result = build_narration(scenes, work_dir, synthesize=synthesize, tempo=tempo)
     used = {name: n - before.get(name, 0) for name, n in voice_usage.items()}
-    if not (used.get("elevenlabs") and used.get("edge-tts")):
+    mixed = bool(used.get("elevenlabs") and used.get("edge-tts"))
+    unsped = bool(used.get("edge-tts") and not used.get("elevenlabs") and abs(edge_tempo - tempo) > 1e-3)
+    if not (mixed or unsped):
         return (*result, used)
-    print(f"⚠️ {used['edge-tts']} cümle ElevenLabs yerine edge-tts ile okundu (kredi bitmiş olabilir); anlatıcı video "
-          "ortasında değişmesin diye bütün cümleler edge-tts ile yeniden seslendiriliyor.")
+    if mixed:
+        print(f"⚠️ {used['edge-tts']} cümle ElevenLabs yerine edge-tts ile okundu (kredi bitmiş olabilir); anlatıcı "
+              "video ortasında değişmesin diye bütün cümleler edge-tts ile yeniden seslendiriliyor.")
+    else:
+        print(f"⚠️ ElevenLabs hiçbir cümleyi okumadı (kredi bitmiş olabilir); edge-tts anlatımı {edge_tempo:g}x hızla "
+              "yeniden hazırlanıyor.")
     before = dict(voice_usage)
     try:
-        result = build_narration(scenes, work_dir / "edge_only", tempo=tempo if edge_tempo is None else edge_tempo,
+        result = build_narration(scenes, work_dir / "edge_only", tempo=edge_tempo,
                                  synthesize=functools.partial(synthesize, edge_only=True))
-    except Exception as e:  # a mixed narrator is better than a skipped upload
-        print(f"ℹ️ edge-tts ile yeniden seslendirilemedi, karışık anlatım kaldı: {str(e)[:200]}")
+    except Exception as e:  # a mixed or unsped narration is better than a skipped upload
+        print(f"ℹ️ edge-tts ile yeniden seslendirilemedi, ilk anlatım kaldı: {str(e)[:200]}")
         return (*result, used)
     return (*result, {name: n - before.get(name, 0) for name, n in voice_usage.items()})
 
