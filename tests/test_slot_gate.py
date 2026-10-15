@@ -55,32 +55,33 @@ def test_too_soon_after_the_last_public_upload():
     assert slot_gate.decide(at("14:07"), [upload(at("13:14"))], [])[0]
 
 
-def test_sixteen_hourly_slots_from_eight_to_eleven_pm_turkish_time():
-    assert slot_gate.SLOTS_UTC == tuple(range(5, 21))
+def test_a_slot_every_hour_around_the_clock():
+    assert slot_gate.SLOTS_UTC == tuple(range(24))
     assert slot_gate.slot_start(at("13:37")) == at("13:00")
+    assert slot_gate.slot_start(at("00:20")) == at("00:00")
 
 
-def test_a_slot_older_than_the_window_is_given_up():
-    go, reasons = slot_gate.decide(at("21:30"), [upload(at("05:10"))], [])
+def test_a_slot_older_than_the_window_is_given_up(monkeypatch):
+    # With a slot every hour no tick is ever outside a window; the check still guards a sparser schedule.
+    monkeypatch.setattr(slot_gate, "SLOTS_UTC", (5, 10, 14, 18))
+    go, reasons = slot_gate.decide(at("17:30"), [upload(at("05:10"))], [])
     assert not go
     assert any("pencere dışında" in r for r in reasons)
-    # The last tick inside the window still counts.
-    assert slot_gate.decide(at("20:37"), [], [])[0]
+    assert slot_gate.slot_start(at("03:00")) == at("18:00", day=13)
 
 
-def test_early_morning_belongs_to_yesterdays_evening_slot():
-    assert slot_gate.slot_start(at("03:00")) == at("20:00", day=13)
-    go, reasons = slot_gate.decide(at("03:00"), [], [])
-    assert not go
-    assert any("pencere dışında" in r for r in reasons)
+def test_night_ticks_produce_too():
+    assert slot_gate.slot_start(at("03:07")) == at("03:00")
+    go, reasons = slot_gate.decide(at("03:07"), [upload(at("02:12"))], [])
+    assert go, reasons
 
 
 def test_daily_quota_counts_every_privacy_since_the_reset():
-    tests = [upload(at(f"{7 + m // 60:02d}:{m % 60:02d}"), "private") for m in range(5, 185, 9)]
-    assert len(tests) == 20
+    tests = [upload(at(f"{7 + m // 60:02d}:{m % 60:02d}"), "private") for m in range(5, 185, 6)]
+    assert len(tests) == 30
     go, reasons = slot_gate.decide(at("10:07"), tests, [])
     assert not go
-    assert any("Kota" in r and "20 yükleme" in r for r in reasons)
+    assert any("Kota" in r and "30 yükleme" in r for r in reasons)
     assert slot_gate.decide(at("10:07"), tests[1:], [])[0]
     # Uploads before 07:00 UTC belong to the previous quota day.
     early = [upload(at(t), "private") for t in ("06:00", "06:20", "06:40")]
@@ -98,9 +99,9 @@ def test_quota_day_follows_pacific_daylight_saving():
     assert slot_gate.quota_day_start(utc(2026, 12, 1, 8, 0)) == utc(2026, 12, 1, 8)
     # The day daylight saving ends (2026-11-01) started at midnight PDT.
     assert slot_gate.quota_day_start(utc(2026, 11, 2, 7, 30)) == utc(2026, 11, 1, 7)
-    winter = [upload(utc(2026, 11, 30, 8 + m // 60, m % 60), "private") for m in range(15, 15 + 19 * 45, 45)] + [
+    winter = [upload(utc(2026, 11, 30, 8 + m // 60, m % 60), "private") for m in range(15, 15 + 29 * 30, 30)] + [
         upload(utc(2026, 12, 1, 7, 20), "private")]
-    assert len(winter) == 20
+    assert len(winter) == 30
     go, reasons = slot_gate.decide(utc(2026, 12, 1, 7, 37), winter, [])
     assert not go
     assert any(r.startswith("⛔ Kota") for r in reasons)
@@ -200,8 +201,8 @@ def test_workflow_matches_the_gate():
 
     cron = re.search(r"cron: '([^']+)'", workflow).group(1).split()
     minutes = [int(m) for m in cron[0].split(",")]
-    hours = set()
-    for part in cron[1].split(","):
+    hours = set(range(24)) if cron[1] == "*" else set()
+    for part in cron[1].split(",") if cron[1] != "*" else []:
         first, _, last = part.partition("-")
         hours.update(range(int(first), int(last or first) + 1))
     window_hours = int(slot_gate.WINDOW.total_seconds() // 3600)
