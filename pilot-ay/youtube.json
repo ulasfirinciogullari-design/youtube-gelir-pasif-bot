@@ -1,0 +1,27 @@
+{
+ "channel": {
+  "expect_title": "ya olsayd",
+  "description": "Ay bir gün yok olsaydı? Dünya dönmeyi bıraksaydı? Herkes aynı anda zıplasaydı?\n\nYa Olsaydı?, bilimin en çılgın sorularını Profesör Pi ve meraklı robot Bit ile animasyonlu, kısa ve eğlenceli videolarla cevaplıyor. Her videodaki bilgiler gerçek ve kaynaklı.\n\nSeriler:\n- Ya Olsaydı?: Hayali senaryolar, gerçek bilim\n- Ne Kadar Büyük?: Dev rakamlar, görsel karşılaştırmalar\n- 1 Gün Boyunca: Vücudun ve dünyanın sınırları\n\nSıradaki soruyu sen seç: yorumlara yaz!\nHer gün yeni bir soru.",
+  "keywords": ["ya olsaydı", "bilim", "bilim animasyonu", "uzay", "astronomi", "fizik", "dünya", "ay", "merak", "ilginç bilgiler", "eğitim", "animasyon", "ne olurdu", "türkçe bilim"],
+  "country": "TR",
+  "language": "tr",
+  "banner": "brand/banner.jpg"
+ },
+ "playlists": [
+  {"title": "Ya Olsaydı?", "description": "Hayali senaryolar, gerçek bilim. Profesör Pi ve Bit en çılgın \"ya olsaydı?\" sorularını cevaplıyor."},
+  {"title": "Ne Kadar Büyük?", "description": "Dev rakamları gözünün önüne getiren görsel karşılaştırmalar."},
+  {"title": "1 Gün Boyunca", "description": "Bir gün boyunca vücudunda ve dünyada neler oluyor? Sınırları zorlayan sorular."}
+ ],
+ "episodes": [
+  {
+   "id": "ay",
+   "playlist": "Ya Olsaydı?",
+   "video": "out/pilot_sesli.mp4",
+   "thumbnail": "brand/kapak.jpg",
+   "privacy": "private",
+   "title": "Ay Bir Anda Yok Olsaydı Ne Olurdu?",
+   "description": "Ay bir gece aniden yok olsaydı Dünya'da neler değişirdi? Profesör Pi ile robot Bit anlatıyor.\n\nVideodaki bilgiler ve kaynakları:\n• Gelgitlerin büyük kısmını Ay yapar, Güneş'in etkisi Ay'ınkinin yarısından az: https://science.nasa.gov/moon/tides/\n• Mercanlar toplu yumurtlama zamanını Ay ışığına göre ayarlar (eLife, 2015): https://elifesciences.org/articles/09991\n• Ay, Dünya'nın eksen eğikliğini dengede tutar (Laskar ve ark., Nature, 1993): https://perso.imcce.fr/jacques-laskar/pdf/Laskar_Joutel_Robutel_1993.pdf\n• Ay her yıl yaklaşık 3,8 santim uzaklaşıyor (NASA, Apollo lazer ölçümleri): https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving/\n\nSıradaki soruyu sen seç: yorumlara yaz!\nAbone ol, her gün yeni bir \"ya olsaydı?\" sorusu.\n\n#yaolsaydı #bilim #animasyon",
+   "tags": ["ya olsaydı", "bilim", "animasyon", "uzay", "ilginç bilgiler", "merak", "eğitim", "ay", "ay yok olsaydı", "gelgit", "astronomi"]
+  }
+ ]
+}

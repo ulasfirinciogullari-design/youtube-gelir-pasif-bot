@@ -1,6 +1,7 @@
 name: YA OLSAYDI pilot
 
-# Separate from Zirvenin Kanunu: lives only on the ya-olsaydi branch and never uploads to YouTube.
+# Separate from Zirvenin Kanunu: lives only on the ya-olsaydi branch and talks only to the Ya Olsaydı? channel
+# (YA_YT_* secrets). Videos go up private; making them public is a separate, approved step.
 on:
   push:
     branches: [ya-olsaydi]
@@ -43,10 +44,19 @@ jobs:
       - name: Animasyonu kaydet
         run: cd pilot-ay && node render.js out/pilot_sesli.mp4 out/timings.json out/mix.mp3
 
+      - name: YouTube (kanal kontrolü, listeler, gizli yükleme)
+        continue-on-error: true
+        env:
+          YA_YT_CLIENT_ID: ${{ secrets.YA_YT_CLIENT_ID }}
+          YA_YT_CLIENT_SECRET: ${{ secrets.YA_YT_CLIENT_SECRET }}
+          YA_YT_REFRESH_TOKEN: ${{ secrets.YA_YT_REFRESH_TOKEN }}
+        run: python pilot-ay/youtube.py
+
       - name: Sonucu dala yaz
         run: |
           git config user.name "ya-olsaydi-bot"
           git config user.email "ya-olsaydi-bot@users.noreply.github.com"
           git add pilot-ay/out pilot-ay/audio
+          git add pilot-ay/youtube_state.json 2>/dev/null || true
           git commit -m "Pilot render ${GITHUB_SHA::7} [skip ci]" || echo "değişiklik yok"
           git push origin HEAD:ya-olsaydi
