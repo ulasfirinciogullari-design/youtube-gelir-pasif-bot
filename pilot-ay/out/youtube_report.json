@@ -6,14 +6,7 @@
   "subscribers": "0",
   "videos": "0"
  },
- "channel_filled": [
-  "description",
-  "keywords",
-  "country",
-  "defaultLanguage",
-  "banner",
-  "kitle: çocuklara özel değil"
- ],
+ "channel_filled": [],
  "playlists": {
   "Ya Olsaydı?": "PLdqEnBOYj8wQ",
   "Ne Kadar Büyük?": "PLeHWw6dhPXaw",
@@ -25,11 +18,11 @@
    "url": "https://youtube.com/shorts/-7OxhWXxc8w",
    "privacy": "private",
    "playlist": "Ya Olsaydı?",
-   "thumbnail_error": "POST thumbnails/set -> 403: The authenticated user doesn't have permissions to upload and set custom video thumbnails. [forbidden]",
    "status": {
-    "uploadStatus": "uploaded",
+    "uploadStatus": "processed",
     "privacyStatus": "private"
-   }
+   },
+   "thumbnail": true
   }
  }
 }
