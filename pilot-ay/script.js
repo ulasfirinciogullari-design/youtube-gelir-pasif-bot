@@ -63,13 +63,13 @@ window.VOICES = {
   "pitch": 1.0
  },
  "bit": {
-  "voice_id": "HV5rAif1q1ITHdvxqyMw",
-  "name": "Alp",
+  "voice_id": "A2XgcJ6lQVEFeIaIUyrc",
+  "name": "Damla",
   "model": "eleven_multilingual_v2",
-  "stability": 0.35,
+  "stability": 0.4,
   "similarity_boost": 0.8,
-  "style": 0.6,
-  "speed": 1.15,
-  "pitch": 1.26
+  "style": 0.5,
+  "speed": 1.1,
+  "pitch": 1.1
  }
 };

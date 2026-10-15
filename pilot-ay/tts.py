@@ -182,7 +182,7 @@ def main():
     mix = voice + fx + m
     mix = np.clip(mix / max(1.0, np.max(np.abs(mix)) / 0.97), -1, 1)
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-",
-                    "-af", "alimiter=limit=0.95", "-c:a", "libmp3lame", "-b:a", "192k", str(OUT / "mix.mp3")],
+                    "-af", "loudnorm=I=-14:TP=-1.0:LRA=11,alimiter=limit=0.95", "-c:a", "libmp3lame", "-b:a", "192k", str(OUT / "mix.mp3")],
                    input=mix.astype(np.float32).tobytes(), check=True)
     (OUT / "timings.json").write_text(json.dumps(timings, ensure_ascii=False, indent=1))
     print(f"Ses hazır: {total:.1f} sn, {sum(len(l['text']) for l in script)} karakter anlatım")
