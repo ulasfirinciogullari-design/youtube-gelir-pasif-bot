@@ -142,12 +142,14 @@ jobs:
           FAL_KEY: ${{ secrets.FAL_KEY }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           # Narrator settings as repo variables; an unset variable arrives as an empty string, which
-          # the Python side treats as unset.
+          # the Python side treats as unset. Speed, style and stability default to voice sample 2
+          # ("Alp, kendi hızıyla 1,15 ve daha enerjik"): the critic called the 1.1x sped-up narration
+          # monotone on every Short, and the native speed reads livelier at no extra cost.
           ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
           ELEVENLABS_MODEL: ${{ vars.ELEVENLABS_MODEL }}
-          ELEVENLABS_SPEED: ${{ vars.ELEVENLABS_SPEED }}
-          ELEVENLABS_STYLE: ${{ vars.ELEVENLABS_STYLE }}
-          ELEVENLABS_STABILITY: ${{ vars.ELEVENLABS_STABILITY }}
+          ELEVENLABS_SPEED: ${{ vars.ELEVENLABS_SPEED || '1.15' }}
+          ELEVENLABS_STYLE: ${{ vars.ELEVENLABS_STYLE || '0.6' }}
+          ELEVENLABS_STABILITY: ${{ vars.ELEVENLABS_STABILITY || '0.35' }}
           SES: ${{ github.event.inputs.ses }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXEL_API_KEY }}  # Ulaş saved it as PEXEL_API_KEY
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}

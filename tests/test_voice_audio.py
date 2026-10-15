@@ -411,6 +411,16 @@ def test_voice_sample_plan_compares_one_change_at_a_time():
     assert sum(len(line) for line in vs.LINES) < 200  # ElevenLabs spend per sample stays small
 
 
+
+def test_scheduled_shorts_default_to_voice_sample_2():
+    # Ulaş picks a narrator by ear from the samples; the workflow carries the pick so he never edits repo settings.
+    vs = _voice_samples()
+    workflow = (original_factory.BASE_DIR / ".github" / "workflows" / "viral_shorts_autopilot.yml").read_text(
+        encoding="utf-8")
+    defaults = dict(re.findall(r"(ELEVENLABS_\w+): \$\{\{ vars\.\1 \|\| '([^']+)' \}\}", workflow))
+    assert defaults == vs.repo_variables(vs.sample_plan()[1])
+    assert "ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}" in workflow
+
 def test_shared_voices_prefer_energetic_narrators_most_cloned_first():
     vs = _voice_samples()
     voices = [
