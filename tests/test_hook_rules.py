@@ -86,6 +86,14 @@ def test_real_filler_openers_are_flagged_in_any_scene(filler, phrase):
     assert note in hook_problems(script)
 
 
+def test_suffixed_forms_of_a_banned_opener_are_flagged():
+    for text, phrase in (("Biliyor muydunuz, bu baykuş boynunu 270 derece çevirir.", "biliyor muydun"),
+                         ("Merhabalar, bu baykuş boynunu 270 derece çevirir.", "merhaba")):
+        script = _owl()
+        script["scenes"][0]["text"] = text
+        assert f'"{phrase}" kalıbını kullanma' in hook_problems(script)
+
+
 def test_turkish_lowercasing_keeps_dotless_i():
     assert tr_lower("KIRILMIYOR İNANILMAZ") == "kırılmıyor inanılmaz"
 
@@ -96,6 +104,14 @@ def test_an_ending_that_sums_up_is_sent_back():
         script["scenes"][-1]["text"] = f"{opener} baykuş başını çevirmek zorunda, çünkü gözleri yuvasında dönmez."
         problems = hook_problems(script)
         assert len(problems) == 1 and f'"{tr_lower(opener)}" ile başlamasın' in problems[0]
+    # The owl Short's real ending, and a summing-up second sentence in the last scene.
+    for last, opener in (("Bu adaptasyon sayesinde avlarını kaçırmaz, çevrelerini her zaman kontrol altında tutarlar.",
+                          "bu adaptasyon sayesinde"),
+                         ("Gözleri yuvasında dönmez. Yani başını çevirmek zorunda.", "yani")):
+        script = _owl()
+        script["scenes"][-1]["text"] = last
+        assert hook_problems(script) == [
+            f'son cümle "{opener}" ile başlamasın, özetlemeden ilk cümleye bağlanan şaşırtıcı bir sonuçla bitsin']
     # Inside the sentence the word is fine.
     script = _owl()
     script["scenes"][-1]["text"] = "Gözleri yuvasında dönmez, yani başını çevirmek zorunda ve işte bu yüzden"

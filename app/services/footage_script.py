@@ -40,10 +40,12 @@ MERAK_MAX_WORDS = 80
 MAX_OPENING_WORDS = 9  # the prompt asks for at most 8; one word of slack before the opener is sent back
 HOOK_REPEAT_SHARE = 0.6  # share of the banner's content words that may not reappear in the spoken first line
 # Fillers that slipped through in real merak scripts ("İnanılmaz değil mi?", "İşte şaşırtıcı gerçek!",
-# "Açıklayalım.", 2026-10) and the openers and lecture phrases the prompt already forbids.
+# "Açıklayalım.", 2026-10) and the openers and lecture phrases the prompt already forbids. They match from the
+# start of a word, so suffixed forms ("Biliyor muydunuz", "Merhabalar") count too.
 BANNED_PHRASES = ("biliyor muydun", "merhaba", "açıklayalım", "bunun nedeni şudur", "inanılmaz değil mi",
                   "işte şaşırtıcı gerçek")
 # A last line opening with one of these summed the video up ("Yani...", 9 of 14 scripts) instead of looping back.
+# The owl Short's own ending was the longer form "Bu adaptasyon sayesinde...", so "bu ... sayesinde" counts as well.
 SUMMARY_OPENERS = ("yani", "böylece", "kısacası", "bu sayede", "sonuç olarak", "özetle")
 # Question and filler words a banner may share with the first line without repeating it.
 HOOK_STOPWORDS = {"neden", "nasıl", "ne", "niye", "niçin", "bu", "şu", "o", "bir", "ve", "ile", "mi", "mı", "mu", "mü",
@@ -232,6 +234,16 @@ def _content_prefixes(text: str) -> list[str]:
     return [w[:5] for w in _words(text) if w not in HOOK_STOPWORDS]
 
 
+def _summary_opener(text: str) -> str | None:
+    """The summing-up connector a line opens with ("yani", "bu adaptasyon sayesinde"), or None."""
+    words = _words(text)
+    line = " ".join(words) + " "
+    opener = next((o for o in SUMMARY_OPENERS if line.startswith(o + " ")), None)
+    if not opener and words[:1] == ["bu"] and "sayesinde" in words[1:5]:
+        opener = " ".join(words[:words.index("sayesinde") + 1])
+    return opener
+
+
 def hook_problems(script: dict) -> list[str]:
     """What breaks the opening and ending rules, each as a short note Gemini can be asked to fix.
 
@@ -250,12 +262,13 @@ def hook_problems(script: dict) -> list[str]:
     if not scenes[0].get("callout"):
         problems.append("ilk sahneye iddiadaki sayıyı ya da anahtar bilgiyi gösteren bir callout koy")
     said = [" " + " ".join(_words(scene["text"])) + " " for scene in scenes]
-    problems += [f'"{phrase}" kalıbını kullanma' for phrase in BANNED_PHRASES if any(f" {phrase} " in s for s in said)]
+    problems += [f'"{phrase}" kalıbını kullanma' for phrase in BANNED_PHRASES if any(f" {phrase}" in s for s in said)]
     banner, spoken = _content_prefixes(script.get("hook_text", "")), {w[:5] for w in _words(first)}
     if banner and sum(1 for w in banner if w in spoken) / len(banner) >= HOOK_REPEAT_SHARE:
         problems.append("hook_text ilk cümleyi tekrarlıyor, soruyu başka bir açıdan ve başka kelimelerle sor")
-    ending = " ".join(_words(last)) + " "
-    opener = next((o for o in SUMMARY_OPENERS if ending.startswith(o + " ")), None)
+    # The rule is about the last sentence, and a last scene can hold two ("Gözleri dönmez. Yani...").
+    last_sentence = re.split(r"(?<=[.!?…])\s+", last.strip())[-1]
+    opener = _summary_opener(last) or _summary_opener(last_sentence)
     if opener:
         problems.append(f'son cümle "{opener}" ile başlamasın, '
                         'özetlemeden ilk cümleye bağlanan şaşırtıcı bir sonuçla bitsin')

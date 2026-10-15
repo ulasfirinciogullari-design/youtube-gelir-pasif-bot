@@ -54,7 +54,8 @@ OPENING_RULE = """- İlk cümle soru OLMASIN ("?" yok); en fazla 8 kelimelik bir
 ENDING_RULE = """- Son cümle şaşırtıcı sonucu ya da izleyicinin kendisinin deneyebileceği somut bir şeyi versin
   ve video yeniden başladığında ilk cümleye bağlansın, ikisi tek cümle gibi okunsun (ör. son: "...ve işte bu yüzden" →
   ilk: "Bu baykuş boynunu kırmadan 270 derece döner."). Asıl cevap ondan önce verilmiş olsun. Son cümleye "Yani",
-  "Böylece", "Kısacası", "Bu sayede", "Sonuç olarak", "Özetle" ile başlama; "doğa muhteşem" gibi genel bir lafla bitirme.
+  "Böylece", "Kısacası", "Bu sayede" (ya da "Bu adaptasyon sayesinde" gibi), "Sonuç olarak", "Özetle" ile başlama;
+  "doğa muhteşem" gibi genel bir lafla bitirme.
 """
 EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]+")
 
