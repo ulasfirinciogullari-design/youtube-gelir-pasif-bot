@@ -59,4 +59,5 @@ jobs:
           git add pilot-ay/out pilot-ay/audio
           git add pilot-ay/youtube_state.json 2>/dev/null || true
           git commit -m "Pilot render ${GITHUB_SHA::7} [skip ci]" || echo "değişiklik yok"
+          git pull --rebase origin ya-olsaydi
           git push origin HEAD:ya-olsaydi
