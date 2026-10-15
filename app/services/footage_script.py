@@ -17,6 +17,7 @@ failure returns None and the caller falls back to the script-first flow.
 import base64
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+import re
 import subprocess
 import urllib.error
 
@@ -24,7 +25,7 @@ from app.services import original_visuals
 from app.services.clip_matcher import _call_gemini_parts, fetch_thumbnail, pixabay_thumbnail
 from app.services.original_script import (
     EMOJI_RE, MAX_SCENE_CHARS, MAX_SCENES, MAX_WORDS, MIN_SCENES, MIN_WORDS, ScriptError, _call_gemini, _extract_json,
-    MOOD_RULE, clean_callout, validate_script,
+    ENDING_RULE, MOOD_RULE, OPENING_RULE, clean_callout, validate_script,
 )
 
 MIN_COVERAGE = 6  # out of 10; below this a topic is skipped when the run picked it itself
@@ -32,11 +33,32 @@ WORDS_PER_SHOT = 4  # ~1.6 s of narration: the reference Shorts cut about this o
 MIN_POOL = 12
 MAX_POOL = 40
 FRAME_HEIGHT = 200
+# Ulaş approved the fastest Short so far (Tepqt4MN0lE, 24.6 s), the critic keeps calling the narration slow and the
+# channel's shorter Shorts did better, so a merak script aims for 22-30 s (~2.7 words/s). validate_script keeps
+# MAX_WORDS as the hard limit; going over this one is only a reason to ask again (hook_problems).
+MERAK_MAX_WORDS = 80
+MAX_OPENING_WORDS = 9  # the prompt asks for at most 8; one word of slack before the opener is sent back
+HOOK_REPEAT_SHARE = 0.6  # share of the banner's content words that may not reappear in the spoken first line
+# Fillers that slipped through in real merak scripts ("İnanılmaz değil mi?", "İşte şaşırtıcı gerçek!",
+# "Açıklayalım.", 2026-10) and the openers and lecture phrases the prompt already forbids. They match from the
+# start of a word, so suffixed forms ("Biliyor muydunuz", "Merhabalar") count too.
+BANNED_PHRASES = ("biliyor muydun", "merhaba", "açıklayalım", "bunun nedeni şudur", "inanılmaz değil mi",
+                  "işte şaşırtıcı gerçek")
+# A last line opening with one of these summed the video up ("Yani...", 9 of 14 scripts) instead of looping back.
+# The owl Short's own ending was the longer form "Bu adaptasyon sayesinde...", so "bu ... sayesinde" counts as well.
+SUMMARY_OPENERS = ("yani", "böylece", "kısacası", "bu sayede", "sonuç olarak", "özetle")
+# A last line opening on praise closed the video on a platitude instead of a fact (dolphin sample, 2026-10-15: "İnanılmaz
+# bir dengeyle hem uyur hem de..."). Matched from the start of the first word, so "Muhteşem" and "Harikadır" count.
+PRAISE_OPENERS = ("inanılmaz", "muhteşem", "harika", "mükemmel", "müthiş", "şaşırtıcı")
+# Question and filler words a banner may share with the first line without repeating it.
+HOOK_STOPWORDS = {"neden", "nasıl", "ne", "niye", "niçin", "bu", "şu", "o", "bir", "ve", "ile", "mi", "mı", "mu", "mü",
+                  "da", "de", "ki", "en", "çok", "kadar", "hep", "her"}
 
 QUERY_PROMPT = """Pixabay'de stok video arayacağım. Konu: {topic}
 Videoda görünecek ana özne: {subject}
 Bu konuyu anlatan bir Shorts videosu için gerekecek görüntüleri bulacak 8 farklı arama yaz. Her biri 2-3 basit İngilizce
-kelime olsun ve ana öznelerden birini içersin (ör. "cat jumping", "cat landing", "kitten playing").
+kelime olsun ve ana öznelerden birini içersin (ör. "cat jumping", "cat landing", "kitten playing"). En az 3'ü öznenin
+ekranı dolduracağı yakın çekim arasın (ör. "cat face close", "owl eyes close up").
 Sadece şu JSON'u döndür: {{"queries": ["..."]}}"""
 
 SCRIPT_PROMPT = """Sen "Zirvenin Kanunu" adlı Türkçe YouTube Shorts kanalının baş senaristisin. Bu seride bilim, hayvanlar,
@@ -45,19 +67,16 @@ insan vücudu ve psikoloji hakkında merak edilen soruları gerçek stok videola
 Konu: {topic}
 
 Aşağıda numaralı aday videolar var. Her adaydan soldan sağa üç kare görüyorsun: 1 = başı, 2 = ortası, 3 = sonu.
-Önce bütün adaylara bak, sonra SADECE bu adaylarla gösterilebilecek 25-40 saniyelik bir senaryo yaz.
+Önce bütün adaylara bak, sonra SADECE bu adaylarla gösterilebilecek 22-30 saniyelik bir senaryo yaz.
 
 En önemli kural: Her sahnede söylenen cümle, o sahnenin videolarında görünen şeyle birebir örtüşsün. İzleyici cümleyi
 duyarken anlatılanı ekranda görmeli. Videolarda olmayan bir anı anlatma; konuyu, videolarda gerçekten görünen hareketler
 ve ayrıntılar üzerinden açıkla (ör. düşen kedi görüntüsü yoksa zıplayan ve yere inen kediyi anlat).
 
 Anlatım kuralları:
-- İlk cümle en fazla 12 kelimelik, şaşırtıcı bir iddia veya soru olsun. "Biliyor muydun", "Merhaba", "Bugün" ile başlama.
-- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
-- Akış: kanca, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran örnek, akılda kalan bir final cümlesi.
-- Son sahne izleyicinin aklında kalacak somut bir bilgi, kendisinin deneyebileceği bir şey veya şaşırtıcı bir sonuç olsun;
-  "doğa muhteşem", "fizik kurallarıyla açıklanıyor" gibi genel bir lafla bitirme.
-- Enerjik ve samimi konuş; yeri gelince ekrana gönderme yap ("şu kediye bakın", "gördüğünüz gibi").
+""" + OPENING_RULE + """- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
+- Akış: ekrandaki iddia, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran örnek, başa bağlanan son cümle.
+""" + ENDING_RULE + """- Enerjik ve samimi konuş; yeri gelince ekrana gönderme yap ("şu kediye bakın", "gördüğünüz gibi").
 - Ders anlatır gibi değil: "Açıklayalım", "Bunun nedeni şudur" gibi kalıplar yok. Kısa, vurucu cümleler kur; her bir iki
   cümlede yeni bir şaşırtıcı bilgi ver ve ortada bir dönüş yap ("Ama asıl şaşırtıcı olan..." gibi).
 - Sadece bilimsel olarak doğrulanmış bilgiler. Sayı ve karşılaştırma (süre, yüzde, ölçü, "milyon kat", "iki katı") yalnızca
@@ -70,6 +89,8 @@ Görüntü kuralları:
 - "clips": o sahnede sırayla gösterilecek adaylar, her biri {{"n": aday numarası, "kare": cümleye en uyan kare (1, 2 ya da 3)}}.
   Bir aday yalnızca bir sahnede kullanılabilir.
 - Yazı, logo, filigran olan, bulanık veya konuyla ilgisiz adayları kullanma.
+- Ana özne ekranda büyük ve net görünsün. Öznenin uzakta nokta gibi kaldığı ya da karede hiç görünmediği (boş deniz,
+  boş gökyüzü, uzak manzara) adayları kullanma; yakın çekimleri tercih et.
 - "visual": o sahnede ekranda görünen şeyin kısa İngilizce tarifi.
 - "callout": o sahnede ekranın ortasında büyük harflerle beliren 1-3 kelimelik anahtar bilgi ya da birimiyle bir sayı
   (ör. "270 DERECE", "14 OMUR", "SANİYEDE 340 METRE"). Cümledeki bilgiyle birebir aynı olsun. Sadece en çarpıcı 3-4 sahneye
@@ -80,6 +101,8 @@ Başlık ve kanca:
 - "title": en fazla 60 karakter; merak uyandıran soru veya şaşırtıcı iddia ve sonunda tek bir uygun emoji. #shorts yazma.
 - "hook_text": konunun sorusunu soran 3-7 kelimelik büyük yazı (ör. "KEDİLER NEDEN HEP AYAKTA DÜŞER?"); video boyunca
   ekranın üstünde durur, emoji yok.
+- "pinned_comment": bu videonun şaşırtıcı bilgisine bağlı, iki seçenekli bir tahmin sorusu (ör. "Sence insan boynu kaç
+  derece döner: 90 mı 180 mi?"). Sadece bu videoya özgü olsun; "yorumlarda buluşalım" gibi genel bir çağrı yazma.
 """ + MOOD_RULE + """
 Sadece şu JSON'u döndür, başka hiçbir şey yazma:
 {{
@@ -93,7 +116,7 @@ Sadece şu JSON'u döndür, başka hiçbir şey yazma:
   ],
   "description": "2-3 cümlelik Türkçe açıklama",
   "tags": ["8-12 Türkçe etiket"],
-  "pinned_comment": "İzleyiciyi tartışmaya çağıran tek bir soru",
+  "pinned_comment": "Videonun bilgisine bağlı iki seçenekli tahmin sorusu",
   "en_title": "English title, max 70 chars",
   "en_description": "1-2 sentence English description"
 }}"""
@@ -203,6 +226,68 @@ def thin_scenes(scenes: list[dict]) -> list[int]:
     return [i for i, scene in enumerate(scenes, start=1) if len(scene["clips"]) < min(2, wanted_shots(scene))]
 
 
+def tr_lower(text: str) -> str:
+    """Turkish lowercase: Python's lower() turns "I" into "i" and "İ" into "i" plus a combining dot."""
+    return str(text or "").replace("I", "ı").replace("İ", "i").lower()
+
+
+def _words(text: str) -> list[str]:
+    return re.findall(r"\w+", tr_lower(text))
+
+
+def _content_prefixes(text: str) -> list[str]:
+    """Words that carry meaning, cut to 5 letters so Turkish suffixes still match (boynu / boynunu)."""
+    return [w[:5] for w in _words(text) if w not in HOOK_STOPWORDS]
+
+
+def _summary_opener(text: str) -> str | None:
+    """The summing-up connector a line opens with ("yani", "bu adaptasyon sayesinde"), or None."""
+    words = _words(text)
+    line = " ".join(words) + " "
+    opener = next((o for o in SUMMARY_OPENERS if line.startswith(o + " ")), None)
+    if not opener and words[:1] == ["bu"] and "sayesinde" in words[1:5]:
+        opener = " ".join(words[:words.index("sayesinde") + 1])
+    return opener
+
+
+def hook_problems(script: dict) -> list[str]:
+    """What breaks the opening and ending rules, each as a short note Gemini can be asked to fix.
+
+    11 of 14 merak first lines were questions, filler openers got through ("İnanılmaz değil mi?"), only 4 of 14
+    first scenes had a key fact on screen, the owl Short's banner repeated its first line, and 9 of 14 endings
+    summed up ("Yani..."). None of this makes a script unusable, so it only ever leads to another attempt."""
+    scenes = script.get("scenes") or []
+    if not scenes:
+        return []
+    first, last = scenes[0]["text"], scenes[-1]["text"]
+    problems = []
+    if "?" in first:
+        problems.append("ilk cümle soru olmasın, ekrandakini gösteren ve sayı ya da çelişki içeren bir iddia olsun")
+    if len(first.split()) > MAX_OPENING_WORDS:
+        problems.append(f"ilk cümle {len(first.split())} kelime, en fazla {MAX_OPENING_WORDS - 1} kelime olsun")
+    if not scenes[0].get("callout"):
+        problems.append("ilk sahneye iddiadaki sayıyı ya da anahtar bilgiyi gösteren bir callout koy")
+    said = [" " + " ".join(_words(scene["text"])) + " " for scene in scenes]
+    problems += [f'"{phrase}" kalıbını kullanma' for phrase in BANNED_PHRASES if any(f" {phrase}" in s for s in said)]
+    banner, spoken = _content_prefixes(script.get("hook_text", "")), {w[:5] for w in _words(first)}
+    if banner and sum(1 for w in banner if w in spoken) / len(banner) >= HOOK_REPEAT_SHARE:
+        problems.append("hook_text ilk cümleyi tekrarlıyor, soruyu başka bir açıdan ve başka kelimelerle sor")
+    # The rule is about the last sentence, and a last scene can hold two ("Gözleri dönmez. Yani...").
+    last_sentence = re.split(r"(?<=[.!?…])\s+", last.strip())[-1]
+    opener = _summary_opener(last) or _summary_opener(last_sentence)
+    if opener:
+        problems.append(f'son cümle "{opener}" ile başlamasın, '
+                        'özetlemeden ilk cümleye bağlanan şaşırtıcı bir sonuçla bitsin')
+    praise = next((w for w in _words(last_sentence)[:1] if w.startswith(PRAISE_OPENERS)), None)
+    if praise and not opener:
+        problems.append(f'son cümle "{praise}" gibi genel bir övgüyle başlamasın, '
+                        'somut bir bilgiyle bitip ilk cümleye bağlansın')
+    words = sum(len(scene["text"].split()) for scene in scenes)
+    if words > MERAK_MAX_WORDS:
+        problems.append(f"anlatım {words} kelime, en fazla {MERAK_MAX_WORDS} kelime olsun")
+    return problems
+
+
 def fill_clips(scenes: list[dict], pool: list[dict]) -> list[dict]:
     """Tops up scenes that got fewer clips than cuts with unused clips most like the ones Gemini chose:
     same search first, then tags sharing the most words with the scene's on-screen description."""
@@ -263,9 +348,23 @@ def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
     return notes
 
 
+class ThinFootage(Exception):
+    """Free libraries hold too few on-subject clips for the topic. Unlike a failed Gemini call this says something
+    about the topic itself: the octopus sample (2026-10-15) found 11 clips, fell back to the script-first flow and
+    left three scenes without a matching clip."""
+
+    def __init__(self, found: int):
+        super().__init__(f"{found} uygun video bulundu, en az {MIN_POOL} gerekiyor")
+        self.found = found
+
+
 def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = None, call=_call_gemini_parts,
-                         plan=plan_queries, sheet=contact_sheet, check=check_facts, attempts: int = 2) -> dict | None:
-    """Returns {"script", "pool", "coverage", "queries"}; scene clip numbers index `pool` from 1. None on failure."""
+                         plan=plan_queries, sheet=contact_sheet, check=check_facts, attempts: int = 3) -> dict | None:
+    """Returns {"script", "pool", "coverage", "queries"}; scene clip numbers index `pool` from 1. None on failure;
+    raises ThinFootage when the libraries hold too few clips for the topic.
+
+    An answer with thin scenes or hook problems is asked about again; after the last attempt the best answer
+    is used, so these never send the run to the weaker script-first flow. None only when no answer parsed."""
     used_ids = used_ids if used_ids is not None else set()
     subject = list(topic.get("subject") or [])
     queries = plan(topic["topic"], subject, topic.get("stock_hint", ""))
@@ -273,7 +372,7 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
     pexels = sum(1 for h in pool if h.get("source") == "pexels")
     print(f"       Görüntü havuzu: {len(pool)} aday ({pexels} Pexels, {len(pool) - pexels} Pixabay; {len(queries)} arama)")
     if len(pool) < MIN_POOL:
-        return None
+        raise ThinFootage(len(pool))
     work_dir.mkdir(parents=True, exist_ok=True)
     with ThreadPoolExecutor(max_workers=6) as ex:
         sheets = list(ex.map(lambda h: sheet(h, work_dir), pool))
@@ -281,10 +380,11 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
     if len(shown) < len(pool):
         print(f"       Kare alınamayan aday: {len(pool) - len(shown)}")
     if len(shown) < MIN_POOL:
-        return None
+        raise ThinFootage(len(shown))
 
     parts: list[dict] = [{"text": SCRIPT_PROMPT.format(
-        topic=topic["topic"], min_words=MIN_WORDS, max_words=MAX_WORDS, min_scenes=MIN_SCENES, max_scenes=MAX_SCENES,
+        topic=topic["topic"], min_words=MIN_WORDS, max_words=MERAK_MAX_WORDS,
+        min_scenes=MIN_SCENES, max_scenes=MAX_SCENES,
     )}]
     for n, (hit, (data, mime)) in enumerate(shown, start=1):
         parts.append({"text": f"Aday {n} ({int(hit.get('duration') or 0)} sn):"})
@@ -298,10 +398,11 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
         fill_clips(script["scenes"], clips)
         return {"script": script, "pool": clips, "coverage": coverage, "queries": queries}
 
-    thin_answer = None  # a usable script whose scenes were too thin; kept in case the retry fails
+    best = None  # (rank, attempt, script, coverage): the best usable answer so far, in case no retry is clean
+    request = parts
     for attempt in range(1, attempts + 1):
         try:
-            raw = call(parts, temperature=0.7)
+            raw = call(request, temperature=0.7)
             if not raw:
                 break
             data = _extract_json(raw)
@@ -315,12 +416,21 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
             note = str(e)[:200]
         else:
             thin = thin_scenes(script["scenes"])
-            if not thin or attempt == attempts:
+            problems = hook_problems(script)
+            if not thin and not problems:
                 return finish(script, coverage)
-            thin_answer = thin_answer or (script, coverage)
-            note = (f"{', '.join(map(str, thin))}. sahnede yeterli video yok (tek video var ya da videoları başka sahnede "
-                    f"kullanılmış; bir video yalnızca bir sahnede sayılır). Video 1,5 saniyede bir kesilecek, "
-                    f"5 kelimeden uzun her sahneye kendine ait 2-3 farklı video ver")
+            # Missing footage weighs more than a weak opener: a thin scene shows one shot for several seconds.
+            rank = (bool(thin), len(thin), len(problems))
+            if best is None or rank < best[0]:
+                best = (rank, attempt, script, coverage)
+            notes = [f"{', '.join(map(str, thin))}. sahnede yeterli video yok (tek video var ya da videoları başka "
+                     f"sahnede kullanılmış; bir video yalnızca bir sahnede sayılır). Video 1,5 saniyede bir kesilecek, "
+                     f"5 kelimeden uzun her sahneye kendine ait 2-3 farklı video ver"] if thin else []
+            note = "; ".join(notes + problems)
         print(f"ℹ️ Görüntüye göre senaryo denemesi reddedildi (#{attempt}): {note}")
-        parts = parts[:1] + [{"text": f"Önceki yanıtın reddedildi: {note}. Kurallara uyarak yeniden yaz."}] + parts[1:]
-    return finish(*thin_answer) if thin_answer else None
+        # One note about the latest answer only; stacking every earlier note would keep listing problems it fixed.
+        request = parts[:1] + [{"text": f"Önceki yanıtın reddedildi: {note}. Kurallara uyarak yeniden yaz."}] + parts[1:]
+    if best is None:
+        return None
+    print(f"ℹ️ Kurallara tam uyan senaryo gelmedi; en iyi deneme (#{best[1]}) kullanılıyor")
+    return finish(best[2], best[3])

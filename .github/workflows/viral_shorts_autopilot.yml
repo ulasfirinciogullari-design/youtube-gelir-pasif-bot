@@ -2,9 +2,13 @@ name: YouTube Shorts Cloud Autopilot (God-Tier)
 
 on:
   schedule:
-    # 4 runs a day: 08:00, 13:00, 17:00, 21:00 TR time. Each upload costs ~1,700 of the
-    # 10,000 daily YouTube API units, so 4 leaves headroom for retries.
-    - cron: '0 5,10,14,18 * * *'
+    # 4 Shorts a day in slots starting 08:00, 13:00, 17:00, 21:00 TR time (05/10/14/18 UTC). GitHub
+    # delays or drops top-of-hour cron events (runs started up to 3.6 h late; on 2026-10-14 the 11:00
+    # and 14:00 UTC slots never ran), so the workflow ticks at :07 and :37 through each slot's 3 h
+    # window and the "🚦 Sıra Kontrolü" step (scripts/slot_gate.py) lets a tick produce only while its
+    # slot is empty, 2.5 h after the last public upload and under the daily quota. A skipped tick
+    # costs a few seconds. Each upload costs ~1,600 of the 10,000 daily YouTube API units.
+    - cron: '7,37 5-7,10-12,14-16,18-20 * * *'
   workflow_dispatch:
     inputs:
       privacy:
@@ -17,7 +21,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et)'
+        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy)'
         required: true
         default: 'video'
         type: choice
@@ -28,6 +32,7 @@ on:
           - 'temizlik'
           - 'ses'
           - 'referans'
+          - 'sesornek'
       gorsel:
         description: 'AI görsel kalitesi (ucuz = Flux Schnell ~0,003 $/görsel, kaliteli = Flux Dev ~0,025 $/görsel)'
         required: false
@@ -65,6 +70,11 @@ on:
         options:
           - 'private'
           - 'delete'
+      ses:
+        description: 'Sadece deneme: anlatıcı sesi (ElevenLabs voice id; model değiştirmek için sonuna :eleven_v3 gibi ekle; boş = varsayılan)'
+        required: false
+        default: ''
+        type: string
 
 concurrency:
   group: shorts-autopilot
@@ -72,6 +82,7 @@ concurrency:
 
 permissions:
   contents: write  # the channel-data branch keeps metrics, competitor DNA, generated topics and history
+  actions: read  # the slot gate checks this workflow's earlier runs in the same slot
 
 jobs:
   produce_original_short:
@@ -83,23 +94,6 @@ jobs:
       - name: 📥 Repoyu Çek
         uses: actions/checkout@v4
 
-      - name: 🐍 Python 3.12 Kur
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-
-      - name: 🎥 FFmpeg ve Fontları Kur
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends ffmpeg fonts-liberation fonts-dejavu-core fonts-montserrat
-          ffmpeg -version | head -1
-
-      - name: 📦 Python Bağımlılıklarını Kur
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
       - name: 🧠 Kanal Hafızasını Getir
         run: |
           if git ls-remote --exit-code --heads origin channel-data >/dev/null 2>&1; then
@@ -110,13 +104,53 @@ jobs:
           fi
           ls channel-data
 
+      # Runs on the runner's system Python before setup-python, apt and pip, so a skipped tick costs
+      # seconds. Manual runs always get go=true; the reasons for a scheduled tick are printed here.
+      - name: 🚦 Sıra Kontrolü
+        id: gate
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: python3 scripts/slot_gate.py
+
+      - name: 🐍 Python 3.12 Kur
+        if: steps.gate.outputs.go == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 🎥 FFmpeg ve Fontları Kur
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-liberation fonts-dejavu-core fonts-montserrat
+          ffmpeg -version | head -1
+
+      - name: 📦 Python Bağımlılıklarını Kur
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: 🎬 Özgün Short Üret ve Yayınla
+        if: steps.gate.outputs.go == 'true'
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           FAL_KEY: ${{ secrets.FAL_KEY }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          # Narrator settings as repo variables; an unset variable arrives as an empty string, which
+          # the Python side treats as unset. Speed, style and stability default to voice sample 2
+          # ("Alp, kendi hızıyla 1,15 ve daha enerjik"): the critic called the 1.1x sped-up narration
+          # monotone on every Short, and the native speed reads livelier at no extra cost.
+          ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
+          ELEVENLABS_MODEL: ${{ vars.ELEVENLABS_MODEL }}
+          ELEVENLABS_SPEED: ${{ vars.ELEVENLABS_SPEED || '1.15' }}
+          ELEVENLABS_STYLE: ${{ vars.ELEVENLABS_STYLE || '0.6' }}
+          ELEVENLABS_STABILITY: ${{ vars.ELEVENLABS_STABILITY || '0.35' }}
+          SES: ${{ github.event.inputs.ses }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXEL_API_KEY }}  # Ulaş saved it as PEXEL_API_KEY
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
@@ -149,8 +183,18 @@ jobs:
             python channel_tools.py cleanup --action "$CLEANUP_ACTION" --ids "$VIDEO_IDS"
             exit $?
           fi
+          if [ "$TASK" = "sesornek" ]; then
+            # The backup step commits the samples to the channel-data branch.
+            python scripts/voice_samples.py --out channel-data/history/voice_samples
+            exit $?
+          fi
           if [ "$TASK" = "deneme" ]; then
             # A sample to inspect without filling the channel with private test videos.
+            if [ -n "$SES" ]; then
+              # Try a narrator on this sample only: "<voice id>" or "<voice id>:<model>".
+              export ELEVENLABS_VOICE_ID="${SES%%:*}"
+              if [[ "$SES" == *:* ]]; then export ELEVENLABS_MODEL="${SES#*:}"; fi
+            fi
             ARGS="--no-upload --series $CONTENT_FORMAT"
             if [ -n "$TOPIC_ID" ]; then ARGS="$ARGS --topic-id $TOPIC_ID"; fi
             KEEP_AUDIO=1 python original_factory.py $ARGS
@@ -166,7 +210,7 @@ jobs:
           fi
 
       - name: 💾 Kanal Hafızasını Yedekle
-        if: always()
+        if: always() && steps.gate.outputs.go == 'true'
         run: |
           [ -e channel-data/.git ] || { echo "Kanal hafızası klasörü hazırlanamadı, yedek atlandı"; exit 0; }
           mkdir -p channel-data/history
@@ -188,7 +232,7 @@ jobs:
           git push origin HEAD:channel-data
 
       - name: 📤 Yayın Paketini Sakla (Artifact)
-        if: always()
+        if: always() && steps.gate.outputs.go == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: original-short-${{ github.run_id }}

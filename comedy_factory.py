@@ -248,7 +248,8 @@ def main(argv=None) -> int:
     result = produce_comedy(hit, query, script, clip)
     if youtube is not None:
         video_id = story.upload(youtube, result, args.privacy)
-        record_upload(story.DATA_DIR, video_id, result["meta"]["topic_id"], result["meta"]["title"], "comedy")
+        record_upload(story.DATA_DIR, video_id, result["meta"]["topic_id"], result["meta"]["title"], "comedy",
+                      privacy=args.privacy)
     return 0
 
 

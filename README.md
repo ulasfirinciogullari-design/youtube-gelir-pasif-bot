@@ -117,6 +117,35 @@ birkaç Flux görseli (görsel başı ~0,003 $) ve tek bir kısa LLM çağrısı
 
 Yerelde yüklemeden denemek için: `python original_factory.py --no-upload --topic-id zk-001`
 
+### Zamanlama ve sıra kontrolü
+
+GitHub saat başı zamanlamaları geciktiriyor ya da hiç çalıştırmıyor (çalışmalar
+3,6 saate kadar geç başladı; 2026-10-14'te 11:00 ve 14:00 UTC çalışmaları hiç
+başlamadı). Bu yüzden iş akışı her slotun (08:00, 13:00, 17:00, 21:00 TR) 3
+saatlik penceresinde :07 ve :37'de uyanır ve önce `scripts/slot_gate.py`
+("🚦 Sıra Kontrolü" adımı) çalışır. Kurulumlardan önce çalıştığı için atlanan bir
+tur birkaç saniye sürer. Short ancak şunların hepsi tutarsa üretilir:
+
+- slot en fazla 3 saat önce başladı ve o slotta herkese açık / liste dışı yükleme yok;
+- son herkese açık / liste dışı yükleme en az 2,5 saat önce (arka arkaya
+  yüklemeler erişimi düşürüyor);
+- 07:00 UTC kota sıfırlamasından beri 5'ten az yükleme var (gizliler dahil);
+- bu slotta başka bir zamanlanmış çalışma yükleme adımını başarıyla bitirmedi
+  ve 3'ten az çalışma hata verdi.
+
+Gizli yüklemeler (`uploads.json` kaydındaki `privacy` alanı) slotu doldurmaz;
+`PUBLISH_PRIVACY=private` iken aynı slotta ikinci yüklemeyi yalnızca Actions
+geçmişi kontrolü engeller. Elle çalıştırmalar kontrolsüz devam eder. Kararın
+gerekçeleri adımın logunda yazar; yerelde denemek için:
+`python scripts/slot_gate.py --now 2026-10-15T10:07:00Z`
+
+Anlatıcı sesi denemeleri: `task=sesornek` aynı kısa metni farklı anlatıcı
+sesleriyle seslendirip `channel-data/history/voice_samples/` altına koyar.
+`task=deneme` ile `ses` girdisine bir ElevenLabs voice id yazılırsa o deneme o
+sesle seslendirilir (`<voice id>:eleven_v3` modeli de değiştirir). Kalıcı ayarlar
+`ELEVENLABS_VOICE_ID`, `ELEVENLABS_MODEL`, `ELEVENLABS_SPEED`, `ELEVENLABS_STYLE`
+ve `ELEVENLABS_STABILITY` repo değişkenleridir (boş = varsayılan).
+
 ### Film karakteri serisi
 
 `--series karakter`, ünlü film ve dizi karakterlerinin (Thomas Shelby, Walter
@@ -156,8 +185,10 @@ bulunamazsa kullanılır.
   gibi okur; yanlış veya abartılı bir sayı ya da karşılaştırma varsa o cümleyi
   ve ekran yazısını düzeltir.
 - En çarpıcı 3-4 cümlenin anahtar bilgisi ("270 DERECE") ekranın ortasında büyük
-  sarı yazıyla belirir, altında hafif bir pop sesi çalar (`pop.mp3`, `ses` görevi
-  eksikse üretir). Anlatım 1,1 kat hızda okunur.
+  sarı yazıyla belirir, yazıdan 30 ms önce bir pop sesi çalar (`pop.mp3`, `ses` görevi
+  eksikse üretir). İlk sahnenin anahtar bilgisi kanca vuruşuyla birlikte ilk karede
+  belirir. Anlatım 1,1 kat hızda okunur (`ELEVENLABS_SPEED` verilmişse sesin kendi
+  hızıyla, ayrıca hızlandırılmadan; bkz. Anlatıcı sesi).
 - Video bittiğinde Gemini onu Ulaş'ın referans Short'larından biriyle
   (`k951xfBlETg`) karşılaştırır (`app/services/video_critic.py`): 10 üzerinden puan
   ve etkisine göre sıralı sorunlar loga ve meta dosyasına (`critique`) yazılır;
@@ -170,6 +201,14 @@ bulunamazsa kullanılır.
 - Bütün serilerde çekimler sert kesme yerine 0,3 sn'lik yumuşak geçişle birbirine
   karışır; her cümlenin seslendirmesindeki baştaki ve sondaki sessizlik kesilir,
   cümleler arasında 0,15 sn nefes payı kalır, böylece anlatım tek parça gibi akar.
+  ElevenLabs'in cümle içinde bıraktığı uzun duraklamalar da kısaltılır: ~0,27 sn'den
+  uzun her duraklama ~0,27 sn'ye iner (baykuş Short'unda 10 duraklama 31 sn'ye ~3,6 sn
+  ekliyordu; aynı anlatım 28,5 sn'ye indi, kelimeler kısalmadı).
+- Video son kelimeyle biter: son cümleden sonra 0,2 sn kalır ve müzik 0,3 sn'de
+  kısılır (eskiden 0,6 sn + 1,5 sn'lik sönüş yeniden başlamayı belli ediyordu). Short
+  tekrar başladığında doğrudan açılış vuruşuna bağlanır; 31 Mart 2025'ten beri tekrar
+  izlemeler de görüntülenme sayılıyor. Riser yine sona doğru yükselip tekrarın açılış
+  vuruşuna oturur.
 - Bütün serilerde: kanca sorusu video boyunca ekranın üstünde beyaz, kalın
   kenarlı yazı olarak durur; altyazı alt üçte birde. Yazı tipi Montserrat Black
   (iş akışı `fonts-montserrat` paketini kurar).
@@ -178,7 +217,8 @@ bulunamazsa kullanılır.
   müzik anlatımla neredeyse eşit, efektler ondan çok daha yüksek duyuluyordu),
   müzik anlatımın 12 LU altına ayarlanır ve konuşmanın en net duyulduğu bantta
   (2,5 kHz) biraz kısılır; efektler anlatımın altında kalır (kanca vuruşu ~2 LU,
-  pop ~8 LU, riser ~6 LU, whoosh ~14 LU altında). Sessiz bir girişle açılan parça
+  pop ~4 LU, riser ~6 LU, whoosh ~14 LU altında; pop ~8 LU altındayken eleştirmen
+  hiç efekt duymamıştı). Sessiz bir girişle açılan parça
   (`merak_3` ilk 8 saniyede neredeyse duyulmuyor) girişi atlanarak başlatılır,
   ama Short bitmeden parça bitmeyecek kadar erken. Ölçülemezse eski sabit
   seviyeler kullanılır. `deneme` işi anlatımı ve son miksi
@@ -189,6 +229,46 @@ bulunamazsa kullanılır.
 - Zamanlanmış çalışmalar varsayılan olarak merak videosu üretir (Ulaş'ın seçtiği
   format). `--series karisik` son yüklemeye bakıp merak, karakter ve tarih
   videolarını sırayla üretir.
+
+### Anlatıcı sesi (ElevenLabs)
+
+Anlatım her cümle ayrı okunarak ElevenLabs ile seslendirilir (anahtar yoksa veya
+hata verirse edge-tts). Ses, model ve ayarlar kod değişmeden repo Variables ile
+değiştirilir (GitHub → Settings → Secrets and variables → Actions → Variables); boş
+veya tanımsız değişken bugünkü ayarı korur ve istek bugünküyle birebir aynı kalır.
+
+| Variable | Ne değiştirir | Boşken |
+|---|---|---|
+| `ELEVENLABS_VOICE_ID` | Anlatıcı sesi | Alp (`HV5rAif1q1ITHdvxqyMw`) |
+| `ELEVENLABS_MODEL` | Model, ör. `eleven_v3`, `eleven_turbo_v2_5` | `eleven_multilingual_v2` |
+| `ELEVENLABS_SPEED` | Sesin kendi konuşma hızı (0,7-1,2) | gönderilmez, ffmpeg ile 1,1x |
+| `ELEVENLABS_STYLE` | Vurgu ve duygu (0-1) | 0,45 |
+| `ELEVENLABS_STABILITY` | Düşük = daha canlı, yüksek = daha düz (0-1) | 0,32 |
+
+- `ELEVENLABS_SPEED` verilince anlatım ayrıca ffmpeg ile hızlandırılmaz (hız iki kez
+  uygulanmasın diye); ElevenLabs hiçbir cümleyi okuyamazsa edge-tts anlatımı yine
+  1,1x hızla hazırlanır. Sayılar `1,15` veya `1.15` diye yazılabilir.
+- `eleven_v3` komşu cümleleri (`previous_text`/`next_text`) kabul etmediği için ona
+  gönderilmez; kararlılık bu modelin kabul ettiği 0 / 0,5 / 1 adımlarına yuvarlanır.
+- Meta dosyasındaki `voice` alanı kullanılan ses kimliğini, modeli ve ayarlanmış
+  değerleri yazar (`voice_engine`'in hemen ardından).
+- Bir Short'un bazı cümleleri ElevenLabs, bazıları edge-tts ile okunursa (ör. kredi
+  video ortasında biterse), anlatıcı video ortasında değişmesin diye bütün cümleler
+  edge-tts ile yeniden okunur.
+- `deneme` işinde `ses` girdisi sesi yalnız o çalışma için değiştirir: `ses_kimliği`
+  veya `ses_kimliği:model` (ör. `QftNgZhlSOYKrYbk7WR7` ya da
+  `HV5rAif1q1ITHdvxqyMw:eleven_v3`).
+- `sesornek` işi (`python scripts/voice_samples.py --out channel-data/history/voice_samples`)
+  aynı dört cümlelik baykuş senaryosunu en çok 6 ses/ayarla okutur (örnek başı ~190
+  karakter): `1_alp_simdiki.mp3` (bugünkü ses), `2_alp_hizli_enerjik.mp3` (kendi hızıyla
+  1,15, stil 0,6, kararlılık 0,35), `3_alp_v3_duygulu.mp3` (`eleven_v3`, `[excited]` ve
+  `[surprised]` etiketleri), sonra bugünkü ayarlarla diğer Türkçe sesler: ses haritasındakiler
+  (Taner Torun, Emrullah Tuna, Özgür), yer kalırsa ElevenLabs'in paylaşılan kütüphanesinden en
+  çok kullanılan enerjik Türkçe anlatıcılar. Her örnek Short'taki gibi kırpılır ve aynı
+  seviyeye (-16 LUFS) getirilir, böylece yalnız ses karşılaştırılır. `index.json` her örneğin
+  süresini, saniyedeki kelime sayısını ve beğenilirse girilecek repo Variables değerlerini
+  (`repo_variables`) yazar; çalışma özeti harcanan krediyi gösterir. Kredi biterse veya
+  anahtar geçersizse kalan sesler denenmez; hiç örnek çıkmazsa önceki örnekler kalır.
 
 ### Komik dublaj formatı
 

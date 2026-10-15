@@ -25,6 +25,28 @@ from app.services.original_script import EMOJI_RE, _extract_json, _post_json
 NICHE_QUERIES = [
     "stoacılık", "tarihin ilginç olayları", "psikoloji bilgileri", "güç kanunları", "felsefe shorts", "tarihi kişilikler",
 ]
+# The curiosity series became the channel's main format (Ulaş, 2026-10-13), but the scan of 2026-10-13 still searched
+# the history queries above and profiled philosophy, finance and Korean channels. The merak scan searches the
+# curiosity niche, whose closest benchmarks are real animal footage (a cat at 5.67M views, two dogs at 5.8M and 4.18M).
+MERAK_QUERIES = [
+    "ilginç bilgiler", "hayvanlar hakkında ilginç bilgiler", "bunu biliyor muydun", "bilim shorts", "vücudumuz hakkında",
+]
+# What the analysis is told about our channel and how its topic ideas must look, per series.
+CHANNEL_BRIEFS = {
+    "merak": (
+        "bilim, hayvanlar, insan vücudu ve psikoloji hakkında herkesin merak ettiği sorular; gerçek stok videolar "
+        "üzerinde hızlı, belgesel tonunda Türkçe anlatım",
+        'Her konu tek cümlelik bir soru olsun, cevabı bilimsel olarak net bilinsin ve kameraya çekilebilecek somut '
+        'bir canlı ya da nesneyle ilgili olsun (ör. "Baykuşlar başlarını neden bu kadar geriye çevirebilir?"); '
+        'soyut kavram yazma. Sadece kaynaklarda iyi bilinen, doğrulanmış bilgiler.',
+    ),
+    "story": (
+        "tarihten gerçek insanların gerilimli anları, dahice hamleleri ve psikoloji; belgesel tonunda Türkçe anlatım",
+        'Her konu tek cümlelik bir soru olsun ve belirli bir gerçek kişi, yer ve dönem içersin (ör. "Fatih Sultan '
+        'Mehmet 1453\'te gemileri neden karadan yürüttü?"); "bir komutan", "bir imparator" gibi genel konular yazma. '
+        'Sadece kaynaklarda iyi bilinen olaylar.',
+    ),
+}
 TOP_CHANNELS = 6
 RECENT_UPLOADS = 30
 MIN_TURKISH_SHARE = 0.3  # search's relevanceLanguage is only a hint; the first scan pulled in a Korean channel
@@ -41,8 +63,7 @@ DNA_KEYS = {
     "weaknesses": ("weaknesses", "zayıf_yanlar"),
 }
 
-ANALYSIS_PROMPT = """Bir Türkçe YouTube Shorts kanalının ("Zirvenin Kanunu": tarihten gerçek insanların gerilimli anları,
-dahice hamleleri ve psikoloji; belgesel tonunda Türkçe anlatım) rakip analizini yapıyorsun.
+ANALYSIS_PROMPT = """Bir Türkçe YouTube Shorts kanalının ("Zirvenin Kanunu": {channel}) rakip analizini yapıyorsun.
 
 Bizim başlıklarımız:
 {ours}
@@ -53,9 +74,7 @@ Rakip kanalların verisi (JSON):
 Her rakip kanalın DNA'sını çıkar: hangi kanca kalıplarıyla açıyor, başlık formülleri, konu seçimi, video süresi,
 yayın sıklığı, ses/anlatım tarzı (başlıklardan çıkarılabildiği kadarıyla), güçlü ve zayıf yanları.
 Sonra bizim için: rakiplerin dolduramadığı boşluklar, onları kopyalamadan ayrışmamızı sağlayacak senaryo kuralları
-ve rakiplerin işlemediği 12 yeni konu önerisi. Her konu tek cümlelik bir soru olsun ve belirli bir gerçek kişi,
-yer ve dönem içersin (ör. "Fatih Sultan Mehmet 1453'te gemileri neden karadan yürüttü?"); "bir komutan",
-"bir imparator" gibi genel konular yazma. Sadece kaynaklarda iyi bilinen olaylar.
+ve rakiplerin işlemediği 12 yeni konu önerisi. {idea_rule}
 
 JSON anahtarlarını aynen aşağıdaki gibi İngilizce yaz. Sadece şu JSON'u döndür:
 {{
@@ -66,6 +85,11 @@ JSON anahtarlarını aynen aşağıdaki gibi İngilizce yaz. Sadece şu JSON'u d
   "topic_ideas": ["12 konu"]
 }}
 """
+
+
+def niche_queries(series: str) -> list[str]:
+    """The curiosity niche for merak; the film-character series has no niche of its own and keeps the history one."""
+    return MERAK_QUERIES if series == "merak" else NICHE_QUERIES
 
 
 def search_shorts(youtube, query: str, published_after: str, max_results: int = 25) -> list[str]:
@@ -209,8 +233,10 @@ def _call_gemini_text(prompt: str) -> str | None:
     return "".join(p.get("text", "") for p in parts)
 
 
-def analyze(profiles: list[dict], our_titles: list[str], call=_call_gemini_text) -> dict:
+def analyze(profiles: list[dict], our_titles: list[str], call=_call_gemini_text, series: str = "merak") -> dict:
+    channel, idea_rule = CHANNEL_BRIEFS.get(series, CHANNEL_BRIEFS["story"])
     prompt = ANALYSIS_PROMPT.format(
+        channel=channel, idea_rule=idea_rule,
         ours="\n".join(f"- {t}" for t in our_titles[:15]) or "- (henüz yok)",
         data=json.dumps(profiles, ensure_ascii=False, indent=1),
     )
@@ -251,14 +277,16 @@ def format_report(profiles: list[dict], dna: dict) -> str:
 
 
 def run_scan(youtube, output_dir: Path, our_titles: list[str], queries: list[str] | None = None,
-             call=_call_gemini_text) -> dict:
+             call=_call_gemini_text, series: str = "merak") -> dict:
+    """Scans the series' niche; `queries` overrides the niche's own searches."""
     now = datetime.now(timezone.utc)
+    queries = queries or niche_queries(series)
     after = (now - timedelta(days=90)).strftime("%Y-%m-%dT%H:%M:%SZ")
     mine = youtube.channels().list(part="id", mine=True).execute().get("items", [])
     our_id = mine[0]["id"] if mine else ""
 
     ids: list[str] = []
-    for query in queries or NICHE_QUERIES:
+    for query in queries:
         try:
             ids += search_shorts(youtube, query, after)
         except Exception as e:
@@ -281,11 +309,12 @@ def run_scan(youtube, output_dir: Path, our_titles: list[str], queries: list[str
         profiles.append(profile)
 
     try:
-        dna = analyze(profiles, our_titles, call=call)
+        dna = analyze(profiles, our_titles, call=call, series=series)
     except Exception as e:
         print(f"ℹ️ Rakip analizi notu: {str(e)[:200]}")
         dna = {}
-    result = {"scanned_at": now.isoformat(), "queries": queries or NICHE_QUERIES, "profiles": profiles, **dna}
+    # "series" says which niche the rules and topic ideas describe; the story factory reads the same file.
+    result = {"scanned_at": now.isoformat(), "series": series, "queries": queries, "profiles": profiles, **dna}
     (output_dir / DNA_FILE).write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     report = format_report(profiles, dna)
     print(report)

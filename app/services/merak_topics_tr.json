@@ -1,35 +1,22 @@
 [
   {
-    "id": "mk-001",
-    "topic": "Kediler yüksekten düşünce neden hep ayaklarının üzerine düşer?",
-    "stock_hint": "cat jumping",
+    "id": "mk-019",
+    "topic": "Köpekler konuştuğumuzda neden kafalarını yana eğer?",
+    "stock_hint": "dog head tilt",
     "subject": [
-      "cat",
-      "kitten"
-    ]
+      "dog",
+      "puppy"
+    ],
+    "kategori": "hayvan"
   },
   {
-    "id": "mk-002",
-    "topic": "Esneme neden bulaşıcıdır, birini esnerken görünce neden biz de esneriz?",
-    "stock_hint": "person yawning",
+    "id": "mk-006",
+    "topic": "Ahtapotun neden üç kalbi ve mavi kanı vardır?",
+    "stock_hint": "octopus",
     "subject": [
-      "yawn",
-      "yawning",
-      "tired",
-      "sleepy"
-    ]
-  },
-  {
-    "id": "mk-003",
-    "topic": "İnsan kendini neden gıdıklayamaz?",
-    "stock_hint": "laughing people",
-    "subject": [
-      "tickle",
-      "tickling",
-      "laugh",
-      "laughing",
-      "laughter"
-    ]
+      "octopus"
+    ],
+    "kategori": "hayvan"
   },
   {
     "id": "mk-004",
@@ -41,7 +28,17 @@
       "plane",
       "airliner",
       "aviation"
-    ]
+    ],
+    "kategori": "bilim"
+  },
+  {
+    "id": "mk-025",
+    "topic": "Kutup ayılarının kürkü gerçekten beyaz mı?",
+    "stock_hint": "polar bear",
+    "subject": [
+      "polar bear"
+    ],
+    "kategori": "hayvan"
   },
   {
     "id": "mk-005",
@@ -49,15 +46,170 @@
     "stock_hint": "dolphins swimming",
     "subject": [
       "dolphin"
-    ]
+    ],
+    "kategori": "hayvan"
   },
   {
-    "id": "mk-006",
-    "topic": "Ahtapotun neden üç kalbi ve mavi kanı vardır?",
-    "stock_hint": "octopus",
+    "id": "mk-002",
+    "topic": "Esneme neden bulaşıcıdır, birini esnerken görünce neden biz de esneriz?",
+    "stock_hint": "person yawning",
     "subject": [
-      "octopus"
-    ]
+      "yawn",
+      "yawning",
+      "tired",
+      "sleepy"
+    ],
+    "kategori": "vücut"
+  },
+  {
+    "id": "mk-014",
+    "topic": "Kediler neden mırlar, mırlamanın gerçek sebebi ne?",
+    "stock_hint": "cat purring",
+    "subject": [
+      "cat",
+      "kitten"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-015",
+    "topic": "Flamingolar neden pembedir?",
+    "stock_hint": "flamingo",
+    "subject": [
+      "flamingo"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-037",
+    "topic": "Mısır mezarlarında bulunan 3000 yıllık bal neden hâlâ bozulmamıştı?",
+    "stock_hint": "honey dripping",
+    "subject": [
+      "honey"
+    ],
+    "kategori": "doğa"
+  },
+  {
+    "id": "mk-033",
+    "topic": "Islak bir köpek üzerindeki suyun %70'ini 4 saniyede nasıl silker?",
+    "stock_hint": "dog shaking water",
+    "subject": [
+      "dog",
+      "puppy"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-031",
+    "topic": "Zürafalar başını eğip su içerken neden bayılmaz?",
+    "stock_hint": "giraffe",
+    "subject": [
+      "giraffe"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-040",
+    "topic": "Kayıtta kendi sesimizi neden yabancı ve tuhaf buluruz?",
+    "stock_hint": "microphone recording",
+    "subject": [
+      "microphone",
+      "podcast",
+      "singer"
+    ],
+    "kategori": "vücut"
+  },
+  {
+    "id": "mk-032",
+    "topic": "Kolibriler havada nasıl asılı kalıp geri geri uçabilir?",
+    "stock_hint": "hummingbird",
+    "subject": [
+      "hummingbird"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-036",
+    "topic": "Bazı köpekbalıkları yüzmeyi bırakırsa neden boğulur?",
+    "stock_hint": "shark swimming",
+    "subject": [
+      "shark"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-039",
+    "topic": "Telefon titremediği halde neden titredi sanırız?",
+    "stock_hint": "smartphone in hand",
+    "subject": [
+      "smartphone",
+      "phone",
+      "cellphone"
+    ],
+    "kategori": "psikoloji"
+  },
+  {
+    "id": "mk-034",
+    "topic": "Zebraların çizgileri aslında ne işe yarıyor?",
+    "stock_hint": "zebra",
+    "subject": [
+      "zebra"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-035",
+    "topic": "Devenin hörgücünde gerçekten su mu var, yoksa yağ mı?",
+    "stock_hint": "camel desert",
+    "subject": [
+      "camel"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-038",
+    "topic": "Sivrisinekler neden bazı insanları diğerlerinden daha çok ısırır?",
+    "stock_hint": "mosquito",
+    "subject": [
+      "mosquito"
+    ],
+    "kategori": "vücut"
+  },
+  {
+    "id": "mk-030",
+    "topic": "Fil hafızası gerçek mi, filler gerçekten hiç unutmaz mı?",
+    "stock_hint": "elephants",
+    "subject": [
+      "elephant"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-024",
+    "topic": "Penguenler buzların üstünde donmadan nasıl yaşar?",
+    "stock_hint": "penguins",
+    "subject": [
+      "penguin"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-011",
+    "topic": "Soğan doğrarken neden gözlerimiz yaşarır?",
+    "stock_hint": "cutting onion",
+    "subject": [
+      "onion"
+    ],
+    "kategori": "vücut"
+  },
+  {
+    "id": "mk-022",
+    "topic": "Bukalemunlar rengini gerçekte nasıl değiştirir?",
+    "stock_hint": "chameleon",
+    "subject": [
+      "chameleon"
+    ],
+    "kategori": "hayvan"
   },
   {
     "id": "mk-007",
@@ -68,47 +220,8 @@
       "honeycomb",
       "beehive",
       "hive"
-    ]
-  },
-  {
-    "id": "mk-008",
-    "topic": "Deniz suyu neden tuzlu da nehir suyu tatlı?",
-    "stock_hint": "ocean waves",
-    "subject": [
-      "sea",
-      "ocean",
-      "wave",
-      "river"
-    ]
-  },
-  {
-    "id": "mk-009",
-    "topic": "Gökyüzü neden mavi, gün batımı neden turuncu?",
-    "stock_hint": "sunset sky",
-    "subject": [
-      "sky",
-      "sunset",
-      "sunrise"
-    ]
-  },
-  {
-    "id": "mk-010",
-    "topic": "Şimşeği neden önce görür, gök gürültüsünü sonra duyarız?",
-    "stock_hint": "lightning storm",
-    "subject": [
-      "lightning",
-      "thunder",
-      "thunderstorm",
-      "storm"
-    ]
-  },
-  {
-    "id": "mk-011",
-    "topic": "Soğan doğrarken neden gözlerimiz yaşarır?",
-    "stock_hint": "cutting onion",
-    "subject": [
-      "onion"
-    ]
+    ],
+    "kategori": "hayvan"
   },
   {
     "id": "mk-012",
@@ -119,78 +232,30 @@
       "goose bumps",
       "shiver",
       "shivering"
-    ]
+    ],
+    "kategori": "vücut"
   },
   {
-    "id": "mk-013",
-    "topic": "Uçaklar haritada neden düz değil de kavisli bir rotayla uçar?",
-    "stock_hint": "airplane flying",
+    "id": "mk-021",
+    "topic": "Karıncalar kilometrelerce yürüyüp yuvalarını nasıl bulur?",
+    "stock_hint": "ants walking",
     "subject": [
-      "airplane",
-      "aircraft",
-      "plane",
-      "airliner",
-      "globe"
-    ]
+      "ant"
+    ],
+    "kategori": "hayvan"
   },
   {
-    "id": "mk-014",
-    "topic": "Kediler neden mırlar, mırlamanın gerçek sebebi ne?",
-    "stock_hint": "cat purring",
+    "id": "mk-026",
+    "topic": "Müzik dinlerken neden bazen tüylerimiz ürperir?",
+    "stock_hint": "concert crowd",
     "subject": [
-      "cat",
-      "kitten"
-    ]
-  },
-  {
-    "id": "mk-015",
-    "topic": "Flamingolar neden pembedir?",
-    "stock_hint": "flamingo",
-    "subject": [
-      "flamingo"
-    ]
-  },
-  {
-    "id": "mk-016",
-    "topic": "Markette neden hep yanlış kuyruğu seçtiğimizi düşünürüz?",
-    "stock_hint": "supermarket queue",
-    "subject": [
-      "supermarket",
-      "queue",
-      "cashier",
-      "checkout",
-      "grocery"
-    ]
-  },
-  {
-    "id": "mk-017",
-    "topic": "Yarım kalan işleri neden aklımızdan çıkaramayız? Zeigarnik etkisi",
-    "stock_hint": "office work desk",
-    "subject": [
-      "office",
-      "desk",
-      "laptop",
-      "notebook"
-    ]
-  },
-  {
-    "id": "mk-018",
-    "topic": "Hıçkırık neden olur ve neden kendiliğinden geçer?",
-    "stock_hint": "drinking water",
-    "subject": [
-      "hiccup",
-      "drink",
-      "drinking"
-    ]
-  },
-  {
-    "id": "mk-019",
-    "topic": "Köpekler konuştuğumuzda neden kafalarını yana eğer?",
-    "stock_hint": "dog head tilt",
-    "subject": [
-      "dog",
-      "puppy"
-    ]
+      "concert",
+      "music",
+      "headphones",
+      "musician",
+      "orchestra"
+    ],
+    "kategori": "vücut"
   },
   {
     "id": "mk-020",
@@ -202,23 +267,104 @@
       "edge",
       "skyscraper",
       "rooftop"
-    ]
+    ],
+    "kategori": "psikoloji"
   },
   {
-    "id": "mk-021",
-    "topic": "Karıncalar kilometrelerce yürüyüp yuvalarını nasıl bulur?",
-    "stock_hint": "ants walking",
+    "id": "mk-029",
+    "topic": "Kalabalıkta biri yardım isteyince neden çoğu kişi kıpırdamaz?",
+    "stock_hint": "crowd street",
     "subject": [
-      "ant"
-    ]
+      "crowd",
+      "pedestrian",
+      "people"
+    ],
+    "kategori": "psikoloji"
   },
   {
-    "id": "mk-022",
-    "topic": "Bukalemunlar rengini gerçekte nasıl değiştirir?",
-    "stock_hint": "chameleon",
+    "id": "mk-003",
+    "topic": "İnsan kendini neden gıdıklayamaz?",
+    "stock_hint": "laughing people",
     "subject": [
-      "chameleon"
-    ]
+      "tickle",
+      "tickling",
+      "laugh",
+      "laughing",
+      "laughter"
+    ],
+    "kategori": "vücut"
+  },
+  {
+    "id": "mk-016",
+    "topic": "Markette neden hep yanlış kuyruğu seçtiğimizi düşünürüz?",
+    "stock_hint": "supermarket queue",
+    "subject": [
+      "supermarket",
+      "queue",
+      "cashier",
+      "checkout",
+      "grocery"
+    ],
+    "kategori": "psikoloji"
+  },
+  {
+    "id": "mk-017",
+    "topic": "Yarım kalan işleri neden aklımızdan çıkaramayız? Zeigarnik etkisi",
+    "stock_hint": "office work desk",
+    "subject": [
+      "office",
+      "desk",
+      "laptop",
+      "notebook"
+    ],
+    "kategori": "psikoloji"
+  },
+  {
+    "id": "mk-013",
+    "topic": "Uçaklar haritada neden düz değil de kavisli bir rotayla uçar?",
+    "stock_hint": "airplane flying",
+    "subject": [
+      "airplane",
+      "aircraft",
+      "plane",
+      "airliner",
+      "globe"
+    ],
+    "kategori": "bilim"
+  },
+  {
+    "id": "mk-009",
+    "topic": "Gökyüzü neden mavi, gün batımı neden turuncu?",
+    "stock_hint": "sunset sky",
+    "subject": [
+      "sky",
+      "sunset",
+      "sunrise"
+    ],
+    "kategori": "doğa"
+  },
+  {
+    "id": "mk-008",
+    "topic": "Deniz suyu neden tuzlu da nehir suyu tatlı?",
+    "stock_hint": "ocean waves",
+    "subject": [
+      "sea",
+      "ocean",
+      "wave",
+      "river"
+    ],
+    "kategori": "doğa"
+  },
+  {
+    "id": "mk-018",
+    "topic": "Hıçkırık neden olur ve neden kendiliğinden geçer?",
+    "stock_hint": "drinking water",
+    "subject": [
+      "hiccup",
+      "drink",
+      "drinking"
+    ],
+    "kategori": "vücut"
   },
   {
     "id": "mk-023",
@@ -231,35 +377,8 @@
       "sleeping",
       "tired",
       "yawn"
-    ]
-  },
-  {
-    "id": "mk-024",
-    "topic": "Penguenler buzların üstünde donmadan nasıl yaşar?",
-    "stock_hint": "penguins",
-    "subject": [
-      "penguin"
-    ]
-  },
-  {
-    "id": "mk-025",
-    "topic": "Kutup ayılarının kürkü gerçekten beyaz mı?",
-    "stock_hint": "polar bear",
-    "subject": [
-      "polar bear"
-    ]
-  },
-  {
-    "id": "mk-026",
-    "topic": "Müzik dinlerken neden bazen tüylerimiz ürperir?",
-    "stock_hint": "concert crowd",
-    "subject": [
-      "concert",
-      "music",
-      "headphones",
-      "musician",
-      "orchestra"
-    ]
+    ],
+    "kategori": "vücut"
   },
   {
     "id": "mk-027",
@@ -271,7 +390,30 @@
       "bed",
       "dream",
       "dreaming"
-    ]
+    ],
+    "kategori": "psikoloji"
+  },
+  {
+    "id": "mk-001",
+    "topic": "Kediler yüksekten düşünce neden hep ayaklarının üzerine düşer?",
+    "stock_hint": "cat jumping",
+    "subject": [
+      "cat",
+      "kitten"
+    ],
+    "kategori": "hayvan"
+  },
+  {
+    "id": "mk-010",
+    "topic": "Şimşeği neden önce görür, gök gürültüsünü sonra duyarız?",
+    "stock_hint": "lightning storm",
+    "subject": [
+      "lightning",
+      "thunder",
+      "thunderstorm",
+      "storm"
+    ],
+    "kategori": "doğa"
   },
   {
     "id": "mk-028",
@@ -279,24 +421,7 @@
     "stock_hint": "owl",
     "subject": [
       "owl"
-    ]
-  },
-  {
-    "id": "mk-029",
-    "topic": "Kalabalıkta biri yardım isteyince neden çoğu kişi kıpırdamaz?",
-    "stock_hint": "crowd street",
-    "subject": [
-      "crowd",
-      "pedestrian",
-      "people"
-    ]
-  },
-  {
-    "id": "mk-030",
-    "topic": "Fil hafızası gerçek mi, filler gerçekten hiç unutmaz mı?",
-    "stock_hint": "elephants",
-    "subject": [
-      "elephant"
-    ]
+    ],
+    "kategori": "hayvan"
   }
 ]

@@ -19,6 +19,7 @@ in its description, and the next run picks the first topic not seen there.
 
 import argparse
 import asyncio
+import functools
 import hashlib
 import json
 import math
@@ -94,11 +95,25 @@ MOOD_TRACKS = {"merak": {"belgesel": "merak_3", "eglenceli": "merak_2", "sakin":
 # Sound effects stay accents: Ulaş found a whoosh on every scene change loud and tiring.
 WHOOSH_VOLUME = 0.1  # about 14 LU under the narration
 LINE_PAUSE_SECONDS = 0.15  # breath between sentences once each line's own leading/trailing silence is cut
-END_PAUSE_SECONDS = 0.6  # the last sentence rings out under the music
+# The joins were already 0.15 s, but ElevenLabs pauses inside its sentences too: in the owl Short 1791989319 ten
+# pauses of 0.25-0.65 s added about 3.6 s to its 31 s, and the critic keeps calling the narrator "yavaş". ffmpeg 6.1
+# cuts any pause longer than stop_duration + stop_silence (+ its 20 ms window) to that length, so a 0.65 s pause
+# becomes about 0.27 s and shorter ones stay. The threshold is absolute because it runs on the raw line, which sits
+# near -38 LUFS before mix_levels lifts it. On that Short's narration it cut 31.0 s to 28.5 s; the time above
+# -50 dB fell by 0.11 s (breath tails) and above -40 dB by 0.01 s, so it shortens pauses, not words. -55 dB left most
+# pauses alone; keeping 0.12-0.17 s instead of 0.27 s shaved twice as much off the breath tails.
+MIDLINE_PAUSE_CAP = "silenceremove=stop_periods=-1:stop_duration=0.15:stop_threshold=-50dB:stop_silence=0.1:detection=rms"
+# The Short ends on its last word and loops straight into the opening impact. Since 31 Mar 2025 a replay counts as a
+# view; 0.6 s of ring-out and a 1.5 s music fade showed the restart. The riser still lands on the replay's impact.
+END_PAUSE_SECONDS = 0.2
+MUSIC_FADE_OUT_SECONDS = 0.3
 IMPACT_VOLUME = 0.18  # the hit on the hook, just under the narration
 RISER_VOLUME = 0.13  # about 6 LU under the narration, into the ending
-POP_VOLUME = 0.5  # a soft pop under each on-screen key fact, about 8 LU under the narration
-CALLOUT_DELAY = 0.25  # a key fact appears just after its sentence starts
+# A pop under each on-screen key fact, about 4 LU under the narration. At 0.5 (about 8 LU under) the critic wrote
+# that the Short used no sound effects at all (2026-10-14).
+POP_VOLUME = 0.8
+POP_LEAD_SECONDS = 0.03  # the pop's attack lands just before its key fact appears
+CALLOUT_DELAY = 0.25  # a key fact appears just after its sentence starts (the first scene's at frame 1)
 CALLOUT_SECONDS = 1.6
 CALLOUT_SIZE = 118
 CALLOUT_LINE_CHARS = 14  # characters that fit one line at CALLOUT_SIZE; longer key facts get a smaller font
@@ -267,14 +282,25 @@ def merak_script(topic: dict, published: set[str], explicit: bool, dna: dict | N
                  data_dir: Path = DATA_DIR, footage=None, fallback=None, max_skips: int = 2):
     """Footage-first script for a curiosity topic: (topic, script, provider, clip_pool).
 
-    A topic the run picked itself is skipped (and remembered) when free footage covers it poorly;
-    one asked for by id is made anyway. Without a footage script the script-first flow is used."""
+    A topic the run picked itself is skipped (and remembered) when free footage covers it poorly or the libraries
+    hold too few clips for it; one asked for by id is made anyway. Without a footage script the script-first flow
+    is used."""
     from app.services import footage_script
 
     footage = footage or footage_script.write_footage_script
     for _ in range(max_skips + 1):
         try:
             result = footage(topic, OUTPUT_DIR / f"previews_{topic['id']}")
+        except footage_script.ThinFootage as e:
+            if explicit:
+                print(f"ℹ️ Görüntüye göre senaryo yazılamadı: {e}")
+                result = None
+            else:  # the script-first flow would only fill the gaps with off-subject clips
+                print(f"⏭️ {topic['id']} atlandı: ücretsiz stokta konuyu gösteren video az ({e}).")
+                skip_topic(data_dir, topic, 0)
+                published = published | {topic["id"]}
+                topic = choose_topic(published, None, dna, data_dir, series="merak")
+                continue
         except Exception as e:  # never lose the run over the upgrade
             print(f"ℹ️ Görüntüye göre senaryo yazılamadı: {str(e)[:200]}")
             result = None
@@ -293,6 +319,13 @@ def merak_script(topic: dict, published: set[str], explicit: bool, dna: dict | N
     return topic, script, provider, None
 
 
+def dna_fits(dna: dict | None, series: str) -> bool:
+    """Whether the competitor DNA was scanned for this series' niche. Scans before 2026-10-15 carry no "series"
+    and profiled the history/film niche that story and karakter share; merak scans curiosity channels."""
+    scanned = (dna or {}).get("series") or "story"
+    return (scanned == "merak") == (series == "merak")
+
+
 INVENTORS = {"story": "invent_topic", "karakter": "invent_character_topic", "merak": "invent_merak_topic"}
 
 
@@ -308,7 +341,8 @@ def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | N
         if topic_id:
             raise
     used = [t["topic"] for t in topics]
-    ideas = (dna or {}).get("topic_ideas", []) if series == "story" else []
+    # The weekly scan profiles one niche; since the merak scan, its topic ideas describe curiosity channels.
+    ideas = (dna or {}).get("topic_ideas", []) if series == "story" and dna_fits(dna, series) else []
     idea = next((i for i in ideas if i not in used), None)
     invent = invent or globals()[INVENTORS[series]]
     fresh = idea or invent(used)
@@ -342,20 +376,34 @@ async def _edge_tts(text: str, out: Path, voice: dict | None = None):
     await comm.save(str(out))
 
 
+def narrator_voice_id() -> str:
+    """The ElevenLabs narrator: the ELEVENLABS_VOICE_ID repo variable (a 'deneme' run's 'ses' input sets it too), else
+    the Turkish baritone "Alp"."""
+    from app.services.elevenlabs_engine import DEFAULT_TURKISH_VOICE_ID
+    return os.environ.get("ELEVENLABS_VOICE_ID", "").strip() or DEFAULT_TURKISH_VOICE_ID
+
+
+def narration_tempo(series_tempo: float) -> float:
+    """The ffmpeg speed-up of the narration. With ELEVENLABS_SPEED set the voice already speaks faster on its own, so
+    it is not sped up twice."""
+    from app.services.elevenlabs_engine import voice_config
+    return 1.0 if "speed" in voice_config() else series_tempo
+
+
 def synthesize_line(text: str, out: Path, previous_text: str = "", next_text: str = "", attempts: int = 3,
-                    voice_id: str | None = None, edge_voice: dict | None = None) -> Path:
-    """ElevenLabs (default: Turkish baritone "Alp") when ELEVENLABS_API_KEY is set, otherwise or on failure edge-tts."""
-    try:
-        from app.services.elevenlabs_engine import (
-            DEFAULT_TURKISH_VOICE_ID, get_elevenlabs_api_key, synthesize_elevenlabs_speech,
-        )
-        if get_elevenlabs_api_key() and synthesize_elevenlabs_speech(
-            text, out, voice_id=voice_id or DEFAULT_TURKISH_VOICE_ID, previous_text=previous_text, next_text=next_text
-        ) and out.exists() and out.stat().st_size > 1000:
-            voice_usage["elevenlabs"] += 1
-            return out
-    except Exception as e:
-        print(f"ℹ️ ElevenLabs notu: {e}")
+                    voice_id: str | None = None, edge_voice: dict | None = None, edge_only: bool = False) -> Path:
+    """ElevenLabs (narrator_voice_id) when ELEVENLABS_API_KEY is set, otherwise or on failure edge-tts.
+    `edge_only` skips ElevenLabs, for re-voicing a Short whose ElevenLabs lines stopped mid-script."""
+    if not edge_only:
+        try:
+            from app.services.elevenlabs_engine import get_elevenlabs_api_key, synthesize_elevenlabs_speech
+            if get_elevenlabs_api_key() and synthesize_elevenlabs_speech(
+                text, out, voice_id=voice_id or narrator_voice_id(), previous_text=previous_text, next_text=next_text
+            ) and out.exists() and out.stat().st_size > 1000:
+                voice_usage["elevenlabs"] += 1
+                return out
+        except Exception as e:
+            print(f"ℹ️ ElevenLabs notu: {e}")
     try:
         from app.services.turkish_phonetics import normalize_turkish_tts_text
         text = normalize_turkish_tts_text(text)
@@ -375,18 +423,19 @@ def synthesize_line(text: str, out: Path, previous_text: str = "", next_text: st
 
 
 def tighten_line(src: Path, out: Path, pause: float, tempo: float = 1.0) -> Path:
-    """The line as 44.1 kHz mono WAV without the silence the TTS engine leaves before and after it, sped up by
-    `tempo` (pitch kept) and followed by a fixed `pause`. Each sentence is voiced separately, and those silences
-    made the narration stop and restart at every scene change (Ulaş, 2026-10-14: "geçişler arasında kopma").
-    If trimming fails the line is kept whole."""
+    """The line as 44.1 kHz mono WAV without the silence the TTS engine leaves before and after it, its inner pauses
+    capped (MIDLINE_PAUSE_CAP), sped up by `tempo` (pitch kept) and followed by a fixed `pause`. Each sentence is
+    voiced separately, and those silences made the narration stop and restart at every scene change (Ulaş,
+    2026-10-14: "geçişler arasında kopma"). If trimming fails the line is kept whole."""
     trim = "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.03"
+    cap = f",{MIDLINE_PAUSE_CAP}" if MIDLINE_PAUSE_CAP else ""
     speed = f",atempo={tempo:.3f}" if abs(tempo - 1.0) > 1e-3 else ""
-    for chain in (f"{trim},areverse,{trim},areverse{speed},apad=pad_dur={pause:.2f}", f"anull{speed}"):
+    for chain in (f"{trim},areverse,{trim},areverse{cap}{speed},apad=pad_dur={pause:.2f}", f"anull{speed}"):
         try:
             subprocess.run(["ffmpeg", "-y", "-i", str(src), "-af", chain, "-ar", "44100", "-ac", "1",
                             "-c:a", "pcm_s16le", str(out)],
                            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            if chain == "anull" or _probe_duration(out) >= pause + 0.3:
+            if chain.startswith("anull") or _probe_duration(out) >= pause + 0.3:
                 return out
         except (subprocess.CalledProcessError, ValueError):
             continue
@@ -424,6 +473,47 @@ def build_narration(scenes: list[dict], work_dir: Path, synthesize=synthesize_li
         check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
     )
     return voice, durations, subtitles
+
+
+def narrate(scenes: list[dict], work_dir: Path, synthesize=synthesize_line, tempo: float = 1.0,
+            edge_tempo: float | None = None) -> tuple[Path, list[float], list[dict], dict]:
+    """build_narration with one narrator per Short, plus how many lines each engine voiced in it. When ElevenLabs
+    stops mid-script (credits run out, an API error) the rest falls back to edge-tts and the narrator would switch
+    mid-video, so every line is voiced again with edge-tts alone (at `edge_tempo`, since ElevenLabs' own speed no
+    longer applies). The same goes for a Short ElevenLabs voiced none of while `tempo` left the speed-up to it: its
+    edge-tts narration would otherwise play unsped, slower than before. If that fails too, the first narration is
+    kept rather than losing the run."""
+    edge_tempo = tempo if edge_tempo is None else edge_tempo
+    before = dict(voice_usage)
+    result = build_narration(scenes, work_dir, synthesize=synthesize, tempo=tempo)
+    used = {name: n - before.get(name, 0) for name, n in voice_usage.items()}
+    mixed = bool(used.get("elevenlabs") and used.get("edge-tts"))
+    unsped = bool(used.get("edge-tts") and not used.get("elevenlabs") and abs(edge_tempo - tempo) > 1e-3)
+    if not (mixed or unsped):
+        return (*result, used)
+    if mixed:
+        print(f"⚠️ {used['edge-tts']} cümle ElevenLabs yerine edge-tts ile okundu (kredi bitmiş olabilir); anlatıcı "
+              "video ortasında değişmesin diye bütün cümleler edge-tts ile yeniden seslendiriliyor.")
+    else:
+        print(f"⚠️ ElevenLabs hiçbir cümleyi okumadı (kredi bitmiş olabilir); edge-tts anlatımı {edge_tempo:g}x hızla "
+              "yeniden hazırlanıyor.")
+    before = dict(voice_usage)
+    try:
+        result = build_narration(scenes, work_dir / "edge_only", tempo=edge_tempo,
+                                 synthesize=functools.partial(synthesize, edge_only=True))
+    except Exception as e:  # a mixed or unsped narration is better than a skipped upload
+        print(f"ℹ️ edge-tts ile yeniden seslendirilemedi, ilk anlatım kaldı: {str(e)[:200]}")
+        return (*result, used)
+    return (*result, {name: n - before.get(name, 0) for name, n in voice_usage.items()})
+
+
+def voice_meta(used: dict) -> dict:
+    """Which narrator the Short has, for meta: the ElevenLabs voice, model and the settings that were set, or the
+    edge-tts voice when no ElevenLabs line made it in."""
+    if used.get("edge-tts") and not used.get("elevenlabs"):
+        return {"voice_id": VOICE["name"], "model": "edge-tts"}
+    from app.services.elevenlabs_engine import voice_config
+    return {"voice_id": narrator_voice_id(), **voice_config()}
 
 
 # ---------------------------------------------------------------------------
@@ -533,10 +623,10 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
         labels.append(f"[{label}]")
 
     if music and music.exists():
-        fade = max(0.5, duration - 1.5)
+        fade = max(0.5, duration - MUSIC_FADE_OUT_SECONDS)
         skip = f"atrim=start={start},asetpts=PTS-STARTPTS," if start else ""
-        add(music, f"{skip}volume={level},{VOICE_BAND_DIP},afade=t=in:d=0.4,afade=t=out:st={fade:.2f}:d=1.5", "m",
-            loop=True)
+        add(music, f"{skip}volume={level},{VOICE_BAND_DIP},afade=t=in:d=0.4,"
+                   f"afade=t=out:st={fade:.2f}:d={MUSIC_FADE_OUT_SECONDS:g}", "m", loop=True)
         if start:
             print(f"       Müzik {start:.1f}. saniyesinden başlıyor (sessiz giriş atlandı)")
     impact, whoosh, riser = sfx("impact"), sfx("whoosh"), sfx("riser")
@@ -548,7 +638,7 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
             add(whoosh, f"volume={WHOOSH_VOLUME},adelay={ms}|{ms}", f"w{i}")
     pop = sfx("pop")
     for i, t in enumerate((accents or []) if pop else []):
-        ms = max(0, int(t * 1000))
+        ms = max(0, round((t - POP_LEAD_SECONDS) * 1000))
         add(pop, f"volume={POP_VOLUME},adelay={ms}|{ms}", f"p{i}")
     if riser and duration > 8:
         ms = int((duration - 2.5) * 1000)
@@ -590,10 +680,12 @@ def add_callouts(ass_path: Path, scenes: list[dict], durations: list[float]) -> 
 
     events, times, start = [], [], 0.0
     pop = r"\pos(540,860)\frz-3\fad(60,160)\fscx30\fscy30\t(0,140,\fscx112\fscy112)\t(140,240,\fscx100\fscy100)"
-    for scene, dur in zip(scenes, durations):
+    for idx, (scene, dur) in enumerate(zip(scenes, durations)):
         text = re.sub(r"[{}\\]", "", scene.get("callout") or "").strip()
         if text and dur > 1.0:
-            begin = start + min(CALLOUT_DELAY, dur / 4)
+            # The first scene's key fact is on screen at frame 1 with the impact hit: viewers decide to swipe in the
+            # first 1-2 s, and the 5.67M-view reference pops KEDİ / 200 / ŞAŞIRTAN from 0:00.
+            begin = start + (min(CALLOUT_DELAY, dur / 4) if idx else 0.0)
             end = min(start + dur - 0.1, begin + CALLOUT_SECONDS)
             size = CALLOUT_SIZE if len(text) <= CALLOUT_LINE_CHARS else max(
                 64, round(CALLOUT_SIZE * CALLOUT_LINE_CHARS / len(text)))
@@ -675,10 +767,11 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
 
     cfg = SERIES[series]
     print(f"[1/4] 🎙️ Seslendirme: {len(scenes)} sahne")
-    voice, durations, subtitle_events = build_narration(scenes, work_dir, synthesize=synthesize,
-                                                        tempo=cfg.get("tempo", 1.0))
+    voice, durations, subtitle_events, used = narrate(scenes, work_dir, synthesize=synthesize,
+                                                      tempo=narration_tempo(cfg.get("tempo", 1.0)),
+                                                      edge_tempo=cfg.get("tempo", 1.0))
     duration = sum(durations)
-    engines = ", ".join(f"{name} x{n}" for name, n in voice_usage.items() if n) or "test"
+    engines = ", ".join(f"{name} x{n}" for name, n in used.items() if n) or "test"
     print(f"       Ses motoru: {engines}")
     scene_cuts, t = [], 0.0
     for d in durations[:-1]:
@@ -731,10 +824,10 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     storyboard(final_mp4, final_mp4.with_name(f"{final_mp4.stem}_story.jpg"), duration)
 
     title = script["title"]
-    full_title = f"{title} #shorts" if len(title) <= 92 else title[:100]
+    full_title = title[:100]  # YouTube has not needed "#shorts" in the title to classify a Short since 15 Oct 2024
     seo = build_seo_pack(
         title, topic["topic"], " ".join(s["text"] for s in script["scenes"]), script,
-        SERIES[series]["tags"], SERIES[series]["hashtags"], f"{MARKER_PREFIX}{topic['id']}",
+        SERIES[series]["tags"], SERIES[series]["hashtags"], f"{MARKER_PREFIX}{topic['id']}", series=series,
     )
     print(f"       SEO: {seo['seo_engine']} | {len(seo['tags'])} etiket | {len(seo['localizations'])} dil")
     meta = {
@@ -743,6 +836,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "series": series,
         "script_provider": provider,
         "voice_engine": engines,
+        "voice": voice_meta(used),
         "title": full_title,
         "hook_text": script.get("hook_text", ""),
         "description": seo["description"],
@@ -819,7 +913,10 @@ def upload(youtube, result: dict, privacy: str) -> str:
         youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(str(result["thumbnail"]), mimetype="image/jpeg")).execute()
     except Exception as e:
         print(f"ℹ️ Kapak görseli notu: {e}")
-    if meta.get("pinned_comment"):
+    if meta.get("pinned_comment") and privacy == "private":
+        # Commenting on a private video returns 403 and still spends 50 quota units.
+        print("ℹ️ Video gizli, yorum atlandı")
+    elif meta.get("pinned_comment"):
         try:
             youtube.commentThreads().insert(part="snippet", body={"snippet": {
                 "videoId": video_id,
@@ -856,7 +953,7 @@ def main(argv=None) -> int:
     dna_age = dna_age_days(dna)
     if youtube is not None and (dna_age is None or dna_age >= DNA_REFRESH_DAYS):
         try:
-            dna = run_scan(youtube, OUTPUT_DIR, examples)
+            dna = run_scan(youtube, OUTPUT_DIR, examples, series=args.series if args.series in SERIES else "merak")
         except Exception as e:  # a stale analysis is better than a skipped upload
             print(f"ℹ️ Rakip analizi yenilenemedi: {str(e)[:200]}")
     series = pick_series(args.series, DATA_DIR, args.topic_id)
@@ -872,14 +969,16 @@ def main(argv=None) -> int:
         if series == "karakter":
             character = topic
             examples = film_title_examples(DATA_DIR) or examples
-        script, provider = write_script(topic["topic"], style_examples=examples, rules=dna.get("our_rules"),
+        script, provider = write_script(topic["topic"], style_examples=examples,
+                                        rules=dna.get("our_rules") if dna_fits(dna, series) else None,
                                         character=character)
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 
     result = produce(topic, script, provider, series=series, clip_pool=clip_pool)
     if youtube is not None:
         video_id = upload(youtube, result, args.privacy)
-        record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], SERIES[series]["format"])
+        record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], SERIES[series]["format"],
+                      privacy=args.privacy)
     return 0
 
 

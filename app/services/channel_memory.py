@@ -26,17 +26,22 @@ def load_uploads(data_dir: Path) -> list[dict]:
     return [u for u in data if isinstance(u, dict)] if isinstance(data, list) else []
 
 
-def record_upload(data_dir: Path, video_id: str, topic_id: str, title: str, content_format: str) -> None:
+def record_upload(data_dir: Path, video_id: str, topic_id: str, title: str, content_format: str,
+                  *, privacy: str = "") -> None:
     data_dir = Path(data_dir)
     data_dir.mkdir(parents=True, exist_ok=True)
     uploads = [u for u in load_uploads(data_dir) if u.get("video_id") != video_id]
-    uploads.append({
+    record = {
         "video_id": video_id,
         "topic_id": topic_id,
         "title": title,
         "format": content_format,
         "uploaded_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-    })
+    }
+    if privacy:
+        # scripts/slot_gate.py lets a private test upload neither fill a schedule slot nor delay the next one.
+        record["privacy"] = privacy
+    uploads.append(record)
     (data_dir / UPLOADS_FILE).write_text(json.dumps(uploads, ensure_ascii=False, indent=2), encoding="utf-8")
 
 

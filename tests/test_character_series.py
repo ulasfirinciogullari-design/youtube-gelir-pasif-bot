@@ -397,7 +397,7 @@ def test_merak_prompt_names_the_subject_and_topics_have_one():
     topics = original_factory.load_topics(original_factory.MERAK_TOPICS_FILE)
     assert all(t["subject"] and all(re.fullmatch(r"[a-z ]+", w) for w in t["subject"]) for t in topics)
     prompt = build_prompt(topics[0]["topic"], None, None, topics[0])
-    assert "Ana özne (İngilizce stok etiketi): cat, kitten" in prompt and "birebir göstermeli" in prompt
+    assert "Ana özne (İngilizce stok etiketi): dog, puppy" in prompt and "birebir göstermeli" in prompt
     assert original_factory.topic_subject({"stock_hint": "octopus swimming"}) == ["octopus"]
     assert original_factory.topic_subject({"stock_hint": "", "subject": ["owl"]}) == ["owl"]
 
@@ -475,6 +475,7 @@ def _footage_run(tmp_path, monkeypatch, replies, check=lambda script, topic: [],
     result = footage_script.write_footage_script(
         topic, tmp_path, call=fake_call, plan=lambda t, s, h: ["cat jumping", "cat landing"],
         sheet=lambda hit, d: (b"\xff\xd8\xff", "image/jpeg"), check=check,
+        attempts=2,  # these tests are about clips; the third attempt and the hook rules are in test_hook_rules.py
     )
     return result, prompts
 
@@ -677,8 +678,10 @@ def test_footage_first_gives_up_without_enough_footage(tmp_path, monkeypatch):
     monkeypatch.setattr(original_visuals, "pixabay_candidates", lambda q, used, subject=None, limit=50: [_hit(1, "cat")])
     monkeypatch.setattr(original_visuals, "pexels_candidates", lambda q, used, subject=None, limit=15: [])
     topic = {"id": "mk-001", "topic": "Kedi", "subject": ["cat"]}
-    assert footage_script.write_footage_script(topic, tmp_path, call=lambda p, temperature=0.2: "{}",
-                                               plan=lambda t, s, h: ["cat"]) is None
+    with pytest.raises(footage_script.ThinFootage) as thin:
+        footage_script.write_footage_script(topic, tmp_path, call=lambda p, temperature=0.2: "{}",
+                                            plan=lambda t, s, h: ["cat"])
+    assert thin.value.found == 1
 
 
 def test_assigned_clips_start_at_the_frame_the_script_was_written_to(tmp_path, monkeypatch):
@@ -748,7 +751,7 @@ def test_pop_sounds_under_each_key_fact(tmp_path, monkeypatch):
     (lib / "sfx" / "pop.mp3").write_bytes(b"ID3")
     original_factory.mix_soundtrack(tmp_path / "v.m4a", tmp_path / "o.m4a", 30.0, [4.0, 9.0], None, [2.25, 5.25])
     graph = commands[-1][commands[-1].index("-filter_complex") + 1]
-    assert f"{pop}=2250|2250" in graph and f"{pop}=5250|5250" in graph
+    assert f"{pop}=2220|2220" in graph and f"{pop}=5220|5220" in graph  # 30 ms ahead of each key fact
 
 
 def test_merak_script_skips_topics_free_footage_cannot_show(tmp_path, monkeypatch):
@@ -771,6 +774,28 @@ def test_merak_script_skips_topics_free_footage_cannot_show(tmp_path, monkeypatc
         topics[2], set(), False, data_dir=tmp_path, footage=lambda t, d: None,
         fallback=lambda topic, **kw: ({"title": "eski yol"}, "gemini"))
     assert pool is None and script == {"title": "eski yol"} and topic["id"] == "mk-003"
+
+
+def test_merak_script_skips_a_topic_the_libraries_have_too_few_clips_for(tmp_path, monkeypatch):
+    from app.services import footage_script
+    topics = [{"id": f"mk-00{i}", "topic": f"Konu {i}", "stock_hint": "cat", "subject": ["cat"]} for i in (1, 2)]
+    monkeypatch.setattr(original_factory, "load_topics", lambda path=None: topics)
+
+    def footage(topic, work_dir):
+        if topic["id"] == "mk-001":
+            raise footage_script.ThinFootage(11)
+        return {"coverage": 8, "script": {"title": topic["topic"]}, "pool": ["clip"]}
+
+    topic, script, provider, pool = original_factory.merak_script(topics[0], set(), False, data_dir=tmp_path,
+                                                                  footage=footage)
+    # The octopus sample (2026-10-15) went script-first instead and left scenes without a matching clip.
+    assert topic["id"] == "mk-002" and pool == ["clip"]
+    assert original_factory.skipped_topic_ids(tmp_path) == {"mk-001"}
+    # Asked for by id: the script-first flow still makes it.
+    topic, script, provider, pool = original_factory.merak_script(
+        topics[0], set(), True, data_dir=tmp_path / "explicit", footage=footage,
+        fallback=lambda topic, **kw: ({"title": "eski yol"}, "gemini"))
+    assert topic["id"] == "mk-001" and pool is None and script == {"title": "eski yol"}
 
 
 def test_audio_library_replaces_only_the_requested_series(tmp_path, monkeypatch):
