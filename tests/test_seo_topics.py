@@ -220,3 +220,13 @@ def test_produce_title_has_no_shorts_hashtag(tmp_path, monkeypatch):
     assert result["meta"]["title"] == OWL_SCRIPT["title"] and "#shorts" not in result["meta"]["title"]
     assert seo_calls[0]["series"] == "merak"
     assert "#shorts" in result["meta"]["description"]
+
+
+def test_competitor_dna_is_only_used_for_the_niche_it_scanned():
+    import original_factory as f
+
+    old = {"our_rules": ["tarih kuralı"], "topic_ideas": ["Sezar"]}  # before scans recorded their series
+    merak = {"series": "merak", "our_rules": ["merak kuralı"], "topic_ideas": ["Ahtapot"]}
+    assert f.dna_fits(old, "story") and f.dna_fits(old, "karakter") and not f.dna_fits(old, "merak")
+    assert f.dna_fits(merak, "merak") and not f.dna_fits(merak, "story") and not f.dna_fits(merak, "karakter")
+    assert f.dna_fits(None, "story") and not f.dna_fits({}, "merak")

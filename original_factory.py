@@ -308,6 +308,13 @@ def merak_script(topic: dict, published: set[str], explicit: bool, dna: dict | N
     return topic, script, provider, None
 
 
+def dna_fits(dna: dict | None, series: str) -> bool:
+    """Whether the competitor DNA was scanned for this series' niche. Scans before 2026-10-15 carry no "series"
+    and profiled the history/film niche that story and karakter share; merak scans curiosity channels."""
+    scanned = (dna or {}).get("series") or "story"
+    return (scanned == "merak") == (series == "merak")
+
+
 INVENTORS = {"story": "invent_topic", "karakter": "invent_character_topic", "merak": "invent_merak_topic"}
 
 
@@ -323,7 +330,8 @@ def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | N
         if topic_id:
             raise
     used = [t["topic"] for t in topics]
-    ideas = (dna or {}).get("topic_ideas", []) if series == "story" else []
+    # The weekly scan profiles one niche; since the merak scan, its topic ideas describe curiosity channels.
+    ideas = (dna or {}).get("topic_ideas", []) if series == "story" and dna_fits(dna, series) else []
     idea = next((i for i in ideas if i not in used), None)
     invent = invent or globals()[INVENTORS[series]]
     fresh = idea or invent(used)
@@ -950,7 +958,8 @@ def main(argv=None) -> int:
         if series == "karakter":
             character = topic
             examples = film_title_examples(DATA_DIR) or examples
-        script, provider = write_script(topic["topic"], style_examples=examples, rules=dna.get("our_rules"),
+        script, provider = write_script(topic["topic"], style_examples=examples,
+                                        rules=dna.get("our_rules") if dna_fits(dna, series) else None,
                                         character=character)
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 
