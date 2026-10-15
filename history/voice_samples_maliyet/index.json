@@ -1,0 +1,180 @@
+{
+  "created": "2026-10-15 23:34 UTC",
+  "script": [
+    "Bu baykuş boynunu kırmadan 270 derece döner.",
+    "Bizim boynumuzda 7 omur var, baykuşta tam 14.",
+    "Ama asıl sır, kafasına kan taşıyan damarlarda.",
+    "Başı arkaya dönükken bile beynine kan gitmeye devam eder."
+  ],
+  "samples": [
+    {
+      "cost_24_a_day": "~$99/ay (ElevenLabs Pro)",
+      "file": "1_alp_simdiki.mp3",
+      "label": "Alp, Short'lardaki şimdiki ses",
+      "engine": "elevenlabs",
+      "voice_name": "Alp",
+      "voice_id": "HV5rAif1q1ITHdvxqyMw",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.35,
+        "style": 0.6,
+        "speed": 1.15,
+        "atempo": 1.0,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 10.08,
+      "words_per_second": 3.07,
+      "lufs": -16.5,
+      "repo_variables": {
+        "ELEVENLABS_SPEED": "1.15",
+        "ELEVENLABS_STYLE": "0.6",
+        "ELEVENLABS_STABILITY": "0.35"
+      }
+    },
+    {
+      "cost_24_a_day": "yaklaşık yarısı (karakter başına 0,5 kredi)",
+      "file": "2_alp_flash.mp3",
+      "label": "Alp, eleven_flash_v2_5 (yarı kredi)",
+      "engine": "elevenlabs",
+      "voice_name": "Alp",
+      "voice_id": "HV5rAif1q1ITHdvxqyMw",
+      "model": "eleven_flash_v2_5",
+      "settings": {
+        "stability": 0.35,
+        "style": 0.6,
+        "speed": 1.15,
+        "atempo": 1.0,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 9.9,
+      "words_per_second": 3.13,
+      "lufs": -16.4,
+      "repo_variables": {
+        "ELEVENLABS_MODEL": "eleven_flash_v2_5",
+        "ELEVENLABS_SPEED": "1.15",
+        "ELEVENLABS_STYLE": "0.6",
+        "ELEVENLABS_STABILITY": "0.35"
+      }
+    },
+    {
+      "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir.",
+      "cost_24_a_day": "~$5/ay",
+      "file": "3_gemini_fenrir.mp3",
+      "label": "Gemini Fenrir (heyecanlı)",
+      "engine": "gemini",
+      "voice_name": "Fenrir",
+      "voice_id": "Fenrir",
+      "model": "gemini-3.8-flash-tts",
+      "settings": {
+        "stability": null,
+        "style": null,
+        "speed": null,
+        "atempo": 1.0,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 35.79,
+      "words_per_second": 0.87,
+      "lufs": -16.5,
+      "repo_variables": {}
+    },
+    {
+      "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir.",
+      "cost_24_a_day": "~$5/ay",
+      "file": "4_gemini_puck.mp3",
+      "label": "Gemini Puck (neşeli)",
+      "engine": "gemini",
+      "voice_name": "Puck",
+      "voice_id": "Puck",
+      "model": "gemini-3.8-flash-tts",
+      "settings": {
+        "stability": null,
+        "style": null,
+        "speed": null,
+        "atempo": 1.0,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 35.16,
+      "words_per_second": 0.88,
+      "lufs": -16.5,
+      "repo_variables": {}
+    },
+    {
+      "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir.",
+      "cost_24_a_day": "~$5/ay",
+      "file": "5_gemini_charon.mp3",
+      "label": "Gemini Charon (bilgilendirici)",
+      "engine": "gemini",
+      "voice_name": "Charon",
+      "voice_id": "Charon",
+      "model": "gemini-3.8-flash-tts",
+      "settings": {
+        "stability": null,
+        "style": null,
+        "speed": null,
+        "atempo": 1.0,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 35.5,
+      "words_per_second": 0.87,
+      "lufs": -16.4,
+      "repo_variables": {}
+    },
+    {
+      "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir.",
+      "cost_24_a_day": "~$11/ay",
+      "file": "6_gemini_pro_fenrir.mp3",
+      "label": "Gemini Pro Fenrir (daha kaliteli model)",
+      "engine": "gemini",
+      "voice_name": "Fenrir",
+      "voice_id": "Fenrir",
+      "model": "gemini-2.5-pro-preview-tts",
+      "settings": {
+        "stability": null,
+        "style": null,
+        "speed": null,
+        "atempo": 1.0,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 14.89,
+      "words_per_second": 2.08,
+      "lufs": -16.5,
+      "repo_variables": {}
+    },
+    {
+      "note": "Şu an ElevenLabs hata verince Short'lar bu sesle çıkıyor.",
+      "cost_24_a_day": "ücretsiz",
+      "file": "7_edge_ahmet.mp3",
+      "label": "Microsoft Ahmet (kredi bitince devreye giren yedek ses)",
+      "engine": "edge",
+      "voice_name": "Ahmet",
+      "voice_id": "tr-TR-AhmetNeural",
+      "model": "edge-tts",
+      "settings": {
+        "stability": null,
+        "style": null,
+        "speed": null,
+        "atempo": 1.1,
+        "tags": {}
+      },
+      "source": "ses haritası",
+      "characters": 192,
+      "duration_seconds": 11.86,
+      "words_per_second": 2.61,
+      "lufs": -16.4,
+      "repo_variables": {}
+    }
+  ],
+  "skipped": []
+}
