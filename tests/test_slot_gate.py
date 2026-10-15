@@ -46,15 +46,22 @@ def test_filled_slot_waits_for_the_next_one():
 
 
 def test_too_soon_after_the_last_public_upload():
-    # A late 10:00 run uploaded at 13:30; the 14:00 slot waits until 2.5 h have passed.
-    go, reasons = slot_gate.decide(at("14:07"), [upload(at("13:30"))], [])
+    # A late 13:00 run uploaded at 13:50; the 14:00 slot waits until 35 min have passed.
+    go, reasons = slot_gate.decide(at("14:07"), [upload(at("13:50"))], [])
     assert not go
-    assert any("2 sa 30 dk" in r for r in reasons)
-    assert slot_gate.decide(at("16:07"), [upload(at("13:30"))], [])[0]
+    assert any("35 dk" in r for r in reasons)
+    assert slot_gate.decide(at("14:37"), [upload(at("13:50"))], [])[0]
+    # An on-time run of the previous slot leaves the next slot's first tick free.
+    assert slot_gate.decide(at("14:07"), [upload(at("13:14"))], [])[0]
+
+
+def test_sixteen_hourly_slots_from_eight_to_eleven_pm_turkish_time():
+    assert slot_gate.SLOTS_UTC == tuple(range(5, 21))
+    assert slot_gate.slot_start(at("13:37")) == at("13:00")
 
 
 def test_a_slot_older_than_the_window_is_given_up():
-    go, reasons = slot_gate.decide(at("17:30"), [upload(at("05:10"))], [])
+    go, reasons = slot_gate.decide(at("21:30"), [upload(at("05:10"))], [])
     assert not go
     assert any("pencere dışında" in r for r in reasons)
     # The last tick inside the window still counts.
@@ -62,17 +69,18 @@ def test_a_slot_older_than_the_window_is_given_up():
 
 
 def test_early_morning_belongs_to_yesterdays_evening_slot():
-    assert slot_gate.slot_start(at("03:00")) == at("18:00", day=13)
+    assert slot_gate.slot_start(at("03:00")) == at("20:00", day=13)
     go, reasons = slot_gate.decide(at("03:00"), [], [])
     assert not go
     assert any("pencere dışında" in r for r in reasons)
 
 
 def test_daily_quota_counts_every_privacy_since_the_reset():
-    tests = [upload(at(t), "private") for t in ("07:30", "08:00", "08:30", "09:00", "09:30")]
+    tests = [upload(at(f"{7 + m // 60:02d}:{m % 60:02d}"), "private") for m in range(5, 185, 9)]
+    assert len(tests) == 20
     go, reasons = slot_gate.decide(at("10:07"), tests, [])
     assert not go
-    assert any("Kota" in r and "5 yükleme" in r for r in reasons)
+    assert any("Kota" in r and "20 yükleme" in r for r in reasons)
     assert slot_gate.decide(at("10:07"), tests[1:], [])[0]
     # Uploads before 07:00 UTC belong to the previous quota day.
     early = [upload(at(t), "private") for t in ("06:00", "06:20", "06:40")]
@@ -90,8 +98,9 @@ def test_quota_day_follows_pacific_daylight_saving():
     assert slot_gate.quota_day_start(utc(2026, 12, 1, 8, 0)) == utc(2026, 12, 1, 8)
     # The day daylight saving ends (2026-11-01) started at midnight PDT.
     assert slot_gate.quota_day_start(utc(2026, 11, 2, 7, 30)) == utc(2026, 11, 1, 7)
-    winter = [upload(utc(2026, 11, 30, h, 15), "private") for h in (10, 14, 18, 22)] + [
+    winter = [upload(utc(2026, 11, 30, 8 + m // 60, m % 60), "private") for m in range(15, 15 + 19 * 45, 45)] + [
         upload(utc(2026, 12, 1, 7, 20), "private")]
+    assert len(winter) == 20
     go, reasons = slot_gate.decide(utc(2026, 12, 1, 7, 37), winter, [])
     assert not go
     assert any(r.startswith("⛔ Kota") for r in reasons)
@@ -130,13 +139,14 @@ def test_only_earlier_scheduled_runs_in_this_slot_count():
     assert go, reasons
 
 
-def test_three_failed_runs_stop_retrying_until_the_next_slot():
-    failed = [run(100 + i, at(t), "failure", produced="failure") for i, t in enumerate(("10:07", "10:37", "11:07"))]
-    go, reasons = slot_gate.decide(at("11:37"), [], failed)
+def test_two_failed_runs_stop_retrying_until_the_next_slot():
+    # GitHub starts ticks late, so a third tick can still land inside the slot.
+    failed = [run(100 + i, at(t), "failure", produced="failure") for i, t in enumerate(("10:07", "10:37"))]
+    go, reasons = slot_gate.decide(at("10:52"), [], failed)
     assert not go
-    assert any("3 çalışma hata verdi" in r for r in reasons)
-    assert slot_gate.decide(at("11:37"), [], failed[:2])[0]
-    assert slot_gate.decide(at("14:07"), [], failed)[0]
+    assert any("2 çalışma hata verdi" in r for r in reasons)
+    assert slot_gate.decide(at("10:52"), [], failed[:1])[0]
+    assert slot_gate.decide(at("11:07"), [], failed)[0]
 
 
 def test_without_the_actions_history_the_uploads_still_decide():
