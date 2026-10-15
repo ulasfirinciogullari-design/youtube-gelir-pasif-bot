@@ -398,6 +398,8 @@ def main(argv=None) -> int:
         print(f"🎙️ {len(made) + 1}. örnek: {sample['label']}", flush=True)
         try:
             made.append(try_sample(sample, len(made) + 1, out_dir, key))
+            if cost_set and gemini_tts.get_api_key():  # proof the voice read the lines and nothing else
+                made[-1]["transcript"] = gemini_tts.transcribe(out_dir / made[-1]["file"], gemini_tts.get_api_key())
         except Exception as e:  # one refused voice never stops the others
             reason = str(e)[:200]
             print(f"ℹ️ {sample['label']} atlandı: {reason}")

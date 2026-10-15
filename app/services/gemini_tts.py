@@ -8,6 +8,11 @@ replaces Alp: scripts/voice_samples.py --set maliyet voices the same lines with 
 
 The models are previews whose names change, so the newest flash TTS model the key can call is looked up at run
 time; GEMINI_TTS_MODEL pins one.
+
+The direction goes in labelled sections before a "#### TRANSCRIPT" header: gemini-3.8-flash-tts read a one-line
+instruction aloud with every line (each line came out ~9 s long, first sample run 2026-10-15), and the 3.x flash
+models are known to speak headers with apostrophes ("DIRECTOR'S") too. A line that still comes back far longer than
+its words take to say is voiced again without any direction.
 """
 
 import base64
@@ -21,9 +26,25 @@ import urllib.error
 import urllib.request
 
 API = "https://generativelanguage.googleapis.com/v1beta"
-# Gemini follows a reading instruction given before the text (Google's examples write it in English, which keeps it
-# from being read aloud); without one it reads the line slowly and flat.
-STYLE_PROMPT = "Say in Turkish, like an energetic, fast-talking documentary narrator of a viral YouTube Short:"
+# Without direction Gemini reads the line slowly and flat.
+DIRECTION = """Synthesize speech for the transcript at the end. The sections before it are direction: Do NOT speak them.
+Speak ONLY the lines under #### TRANSCRIPT, in Turkish.
+
+# AUDIO PROFILE: Kerem A.
+"An energetic Turkish narrator of viral YouTube Shorts about amazing facts"
+
+## SCENE:
+A fast nature and science fact video for a Turkish audience on a phone. Every sentence must hook the viewer.
+
+### PERFORMANCE
+Style: energetic, excited, confident, punchy, full of wonder
+Pace: fast
+Accent: native Istanbul Turkish
+
+#### TRANSCRIPT
+"""
+SECONDS_PER_WORD_MAX = 0.6  # a line much slower than this has the direction (or something else) read into it
+TRANSCRIBE_MODEL = "gemini-2.5-flash"
 PCM_RATE = 24000  # Gemini returns raw 16-bit mono PCM at 24 kHz
 RETRY_SECONDS = (20, 40)  # preview models have low per-minute limits; a 429 usually clears within a minute
 last_error: dict = {}
@@ -67,9 +88,9 @@ def resolve_model(key: str, tier: str = "flash") -> str | None:
         return None
 
 
-def request_body(text: str, voice: str, style: str = STYLE_PROMPT) -> dict:
+def request_body(text: str, voice: str, direction: str = DIRECTION) -> dict:
     return {
-        "contents": [{"parts": [{"text": f"{style} {text}".strip()}]}],
+        "contents": [{"parts": [{"text": f"{direction}{text}"}]}],
         "generationConfig": {
             "responseModalities": ["AUDIO"],
             "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}},
@@ -86,16 +107,38 @@ def audio_from_response(data: dict) -> bytes | None:
     return None
 
 
-def synthesize(text: str, out: Path, voice: str, model: str, key: str, style: str = STYLE_PROMPT) -> bool:
+def max_seconds(text: str) -> float:
+    return 1.0 + SECONDS_PER_WORD_MAX * len(text.split())
+
+
+def duration(path: Path) -> float:
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+                         capture_output=True, text=True).stdout.strip()
+    try:
+        return float(out)
+    except ValueError:
+        return 0.0
+
+
+def synthesize(text: str, out: Path, voice: str, model: str, key: str, direction: str = DIRECTION) -> bool:
     """Writes `text` spoken by the Gemini voice to `out` (any ffmpeg audio format). False on failure, with the
     reason in last_error."""
     from app.services.turkish_phonetics import normalize_turkish_tts_text
 
     text = normalize_turkish_tts_text(text)  # "10.000" is read as a year or digit by digit otherwise
+    if not _voice(text, Path(out), voice, model, key, direction):
+        return False
+    if direction and duration(Path(out)) > max_seconds(text):
+        print(f"ℹ️ Gemini satırı fazla uzun okudu ({duration(Path(out)):.1f} sn), yönlendirmesiz yeniden deneniyor")
+        return _voice(text, Path(out), voice, model, key, "")
+    return True
+
+
+def _voice(text: str, out: Path, voice: str, model: str, key: str, direction: str) -> bool:
     last_error.clear()
     req = urllib.request.Request(
         f"{API}/models/{model}:generateContent",
-        data=json.dumps(request_body(text, voice, style)).encode("utf-8"),
+        data=json.dumps(request_body(text, voice, direction)).encode("utf-8"),
         headers={"x-goog-api-key": key, "Content-Type": "application/json"},
         method="POST",
     )
@@ -117,7 +160,6 @@ def synthesize(text: str, out: Path, voice: str, model: str, key: str, style: st
     if not pcm:
         last_error.update(code=None, message="yanıtta ses yok")
         return False
-    out = Path(out)
     raw = out.with_suffix(".pcm")
     raw.write_bytes(pcm)
     try:
@@ -126,3 +168,22 @@ def synthesize(text: str, out: Path, voice: str, model: str, key: str, style: st
     finally:
         raw.unlink(missing_ok=True)
     return out.exists() and out.stat().st_size > 1000
+
+
+def transcribe(audio: Path, key: str, model: str = TRANSCRIBE_MODEL) -> str | None:
+    """What a narration actually says, word for word, to check a voice reads the script and nothing else."""
+    body = {"contents": [{"parts": [
+        {"inlineData": {"mimeType": "audio/mpeg", "data": base64.b64encode(Path(audio).read_bytes()).decode()}},
+        {"text": "Bu Türkçe ses kaydında söylenenleri kelimesi kelimesine yaz. Yalnızca duyduğunu yaz, başka hiçbir "
+                 "şey ekleme. Sayıları duyduğun gibi yazıyla yaz."},
+    ]}]}
+    req = urllib.request.Request(f"{API}/models/{model}:generateContent", data=json.dumps(body).encode("utf-8"),
+                                 headers={"x-goog-api-key": key, "Content-Type": "application/json"}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        parts = data["candidates"][0]["content"]["parts"]
+        return " ".join(p.get("text", "") for p in parts).strip() or None
+    except Exception as e:
+        print(f"ℹ️ Ses yazıya dökülemedi: {str(e)[:200]}")
+        return None

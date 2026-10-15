@@ -603,7 +603,8 @@ def test_gemini_tts_sends_the_style_and_the_spoken_numbers(tmp_path, monkeypatch
     assert req.full_url.endswith("/models/gemini-x-flash-tts:generateContent")
     assert req.headers["X-goog-api-key"] == "k"
     body = _payload(req)
-    assert body["contents"][0]["parts"][0]["text"] == f"{gemini_tts.STYLE_PROMPT} Uçak on bin metrede uçar."
+    assert body["contents"][0]["parts"][0]["text"] == f"{gemini_tts.DIRECTION}Uçak on bin metrede uçar."
+    assert body["contents"][0]["parts"][0]["text"].endswith("#### TRANSCRIPT\nUçak on bin metrede uçar.")
     assert body["generationConfig"]["responseModalities"] == ["AUDIO"]
     assert body["generationConfig"]["speechConfig"]["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] == "Fenrir"
     assert abs(original_factory._probe_duration(out) - 1.0) < 0.1 and not out.with_suffix(".pcm").exists()
@@ -622,7 +623,7 @@ def test_cost_samples_go_on_when_elevenlabs_is_out_of_credits(tmp_path, monkeypa
         eleven.last_error.update(code=401, message='{"detail": {"status": "quota_exceeded"}}')
         return False
 
-    def fake_gemini(text, out, voice, model, key, style=None):
+    def fake_gemini(text, out, voice, model, key, direction=None):
         gemini_calls.append((voice, model))
         shutil.copy(tone, out)
         return True
@@ -641,6 +642,7 @@ def test_cost_samples_go_on_when_elevenlabs_is_out_of_credits(tmp_path, monkeypa
     monkeypatch.setattr(vs.gemini_tts, "resolve_model",
                         lambda key, tier="flash": "gemini-x-flash-tts" if tier == "flash" else None)
     monkeypatch.setattr(vs.gemini_tts, "synthesize", fake_gemini)
+    monkeypatch.setattr(vs.gemini_tts, "transcribe", lambda audio, key: f"yazı: {Path(audio).name}")
     monkeypatch.setattr(vs.factory, "synthesize_line", fake_edge)
     out = tmp_path / "voice_samples_maliyet"
     assert vs.main(["--set", "maliyet", "--out", str(out)]) == 0
@@ -656,4 +658,39 @@ def test_cost_samples_go_on_when_elevenlabs_is_out_of_credits(tmp_path, monkeypa
                                                       "Gemini Pro Fenrir (daha kaliteli model)"]
     assert "pro ses modeli bulunamadı" in index["skipped"][2]["reason"]
     assert index["samples"][0]["model"] == "gemini-x-flash-tts" and index["samples"][0]["cost_24_a_day"] == "~$5/ay"
+    assert index["samples"][3]["transcript"] == "yazı: 4_edge_ahmet.mp3"
     assert "Maliyet (günde 24)" in capsys.readouterr().out
+
+
+@pytest.mark.skipif(not HAS_FFMPEG, reason="ffmpeg not installed")
+def test_a_gemini_line_read_with_its_direction_is_voiced_again_without_it(tmp_path, monkeypatch):
+    # gemini-3.8-flash-tts read the one-line instruction aloud with every line (~9 s for an 8-word line).
+    import base64
+    from app.services import gemini_tts
+    seconds = [10, 1]
+    requests = []
+
+    class Reply:
+        def __init__(self, length):
+            self.length = length
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self):
+            pcm = b"\x00\x10" * 24000 * self.length
+            part = {"inlineData": {"data": base64.b64encode(pcm).decode()}}
+            return json.dumps({"candidates": [{"content": {"parts": [part]}}]}).encode()
+
+    def fake_urlopen(req, timeout=None):
+        requests.append(_payload(req)["contents"][0]["parts"][0]["text"])
+        return Reply(seconds.pop(0))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    out = tmp_path / "line.mp3"
+    assert gemini_tts.synthesize("Bu baykuş boynunu kırmadan döner.", out, voice="Puck", model="m", key="k")
+    assert requests == [f"{gemini_tts.DIRECTION}Bu baykuş boynunu kırmadan döner.", "Bu baykuş boynunu kırmadan döner."]
+    assert gemini_tts.duration(out) < 2
