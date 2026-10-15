@@ -1,0 +1,320 @@
+{
+  "topic_id": "mk-005",
+  "topic": "Yunuslar boğulmadan nasıl uyur?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x7",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_multilingual_v2"
+  },
+  "title": "Yunuslar Boğulmadan Nasıl Uyur? Akıllara durgunluk veren yöntem! 🐬",
+  "hook_text": "SU ALTINDA NASIL UYURLAR?",
+  "description": "Yunuslar boğulmadan nasıl uyur?\n\nYunuslar, beyinlerinin sadece yarısıyla uyur. Tek taraflı uyku denen bu yöntemle, aktif olan yarım küre onları düzenli olarak yüzeye çıkıp nefes almaya yönlendirir ve etraflarındaki tehlikeleri algılamalarını sağlar. Bu sayede 8 saate kadar dinlenebilirler.\n\nSence yunuslar uyurken gözlerini tamamen kapatır mı: Evet mi Hayır mı?\n\n#yunus #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-005",
+  "tags": [
+    "yunus",
+    "yunuslar",
+    "yunus nasıl uyur",
+    "yunuslar nasıl uyur",
+    "yunus uyku",
+    "tek taraflı uyku",
+    "yunusların uykusu",
+    "yunus boğulmadan",
+    "yunus nefes alma",
+    "yunus beyni",
+    "deniz canlıları",
+    "su altı yaşamı",
+    "hayvanlar alemi",
+    "bilim",
+    "doğa",
+    "ilginç bilgiler",
+    "merak ettikleriniz",
+    "hayvan bilgileri",
+    "belgesel",
+    "shorts video",
+    "dolphin",
+    "dolphin sleep",
+    "unihemispheric sleep",
+    "deniz memelileri",
+    "şaşırtıcı gerçekler",
+    "uyku",
+    "hayvanlar",
+    "deniz",
+    "shorts",
+    "merak",
+    "yunus nasil uyur",
+    "yunuslar nasil uyur"
+  ],
+  "localizations": {
+    "en": {
+      "title": "How Do Dolphins Sleep Without Drowning? An Incredible Method! 🐬",
+      "description": "Ever wondered how dolphins manage to sleep underwater without drowning? They use a fascinating technique called unihemispheric sleep, resting one half of their brain while the other remains active. This allows them to surface for air and stay alert to their surroundings for up to 8 hours.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "es": {
+      "title": "¿Cómo Duermen los Delfines Sin Ahogarse? ¡Un Método Asombroso! 🐬",
+      "description": "¿Te has preguntado cómo los delfines logran dormir bajo el agua sin ahogarse? Utilizan una técnica asombrosa donde solo la mitad de su cerebro descansa, mientras la otra se mantiene activa. Esto les permite subir a la superficie para respirar y estar atentos a los peligros hasta por 8 horas.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "pt": {
+      "title": "Como os Golfinhos Dormem Sem se Afogar? Um Método Incrível! 🐬",
+      "description": "Já se perguntou como os golfinhos conseguem dormir debaixo d'água sem se afogar? Eles usam uma técnica incrível de sono uni-hemisférico, onde metade do cérebro descansa enquanto a outra permanece ativa. Isso os permite subir para respirar e ficar alertas por até 8 horas.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "de": {
+      "title": "Wie schlafen Delfine, ohne zu ertrinken? Eine unglaubliche Methode! 🐬",
+      "description": "Hast du dich jemals gefragt, wie Delfine unter Wasser schlafen, ohne zu ertrinken? Sie nutzen eine erstaunliche Technik, bei der nur eine Gehirnhälfte ruht, während die andere aktiv bleibt. So können sie zum Atmen an die Oberfläche kommen und bis zu 8 Stunden lang wachsam bleiben.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "fr": {
+      "title": "Comment les dauphins dorment-ils sans se noyer? Une méthode incroyable! 🐬",
+      "description": "Vous êtes-vous déjà demandé comment les dauphins dorment sous l'eau sans se noyer? Ils utilisent une méthode fascinante appelée sommeil uni-hémisphérique, où une moitié de leur cerveau se repose tandis que l'autre reste active. Cela leur permet de remonter à la surface pour respirer et de rester vigilants jusqu'à 8 heures.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "it": {
+      "title": "Come dormono i delfini senza annegare? Un metodo incredibile! 🐬",
+      "description": "Ti sei mai chiesto come fanno i delfini a dormire sott'acqua senza annegare? Usano una tecnica sorprendente, dormendo con solo metà del cervello alla volta. Questo permette loro di salire in superficie per respirare e di rimanere vigili per un massimo di 8 ore.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ru": {
+      "title": "Как дельфины спят, не утонув? Удивительный метод! 🐬",
+      "description": "Задумывались ли вы, как дельфины умудряются спать под водой, не задыхаясь? Они используют удивительную технику, при которой спит только половина их мозга, а другая остается активной. Это позволяет им регулярно всплывать на поверхность для дыхания и оставаться настороже до 8 часов.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ar": {
+      "title": "كيف تنام الدلافين دون أن تغرق؟ طريقة لا تصدق! 🐬",
+      "description": "هل تساءلت يومًا كيف تتمكن الدلافين من النوم تحت الماء دون أن تغرق؟ إنها تستخدم طريقة مذهلة حيث ينام نصف دماغها بينما يبقى النصف الآخر نشطًا. هذا يسمح لها بالصعود إلى السطح للتنفس والبقاء متيقظة للمخاطر لمدة تصل إلى 8 ساعات.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "hi": {
+      "title": "डॉल्फ़िन बिना डूबे कैसे सोती हैं? एक अविश्वसनीय तरीका! 🐬",
+      "description": "क्या आपने कभी सोचा है कि डॉल्फ़िन पानी के नीचे बिना डूबे कैसे सोती हैं? वे एक अद्भुत तकनीक का उपयोग करती हैं जहाँ उनका आधा दिमाग सोता है जबकि दूसरा सक्रिय रहता है। यह उन्हें सांस लेने के लिए सतह पर आने और 8 घंटे तक सतर्क रहने की अनुमति देता है।\n\n#shorts\n\nSeri: mk-005"
+    },
+    "id": {
+      "title": "Bagaimana Lumba-lumba Tidur Tanpa Tenggelam? Metode Luar Biasa! 🐬",
+      "description": "Pernahkah Anda bertanya-tanya bagaimana lumba-lumba bisa tidur di bawah air tanpa tenggelam? Mereka menggunakan metode unik di mana hanya separuh otak mereka yang beristirahat sementara yang lain tetap aktif. Ini memungkinkan mereka untuk naik ke permukaan untuk bernapas dan tetap waspada hingga 8 jam.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ja": {
+      "title": "イルカはどうやって溺れずに眠るの？驚きの方法！ 🐬",
+      "description": "イルカが水中で溺れずに眠る方法を知っていますか？彼らは片方の脳だけを休ませ、もう片方を活動させたままにする驚くべき方法を使います。これにより、呼吸のために水面に上がり、周囲の危険を察知しながら最長8時間休息できます。\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ko": {
+      "title": "돌고래는 물에 빠지지 않고 어떻게 잠을 잘까요? 놀라운 방법! 🐬",
+      "description": "돌고래가 물속에서 익사하지 않고 어떻게 잠을 자는지 궁금한 적이 있나요? 그들은 뇌의 절반만 잠들고 나머지 절반은 활동하는 놀라운 방법을 사용합니다. 이를 통해 수면으로 올라와 숨을 쉬고 주변 위험을 감지하며 최대 8시간 동안 휴식을 취할 수 있습니다.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "pl": {
+      "title": "Jak delfiny śpią, nie tonąc? Niesamowita metoda! 🐬",
+      "description": "Czy zastanawiałeś się kiedyś, jak delfiny śpią pod wodą, nie tonąc? Używają niesamowitej techniki, gdzie jedna połowa ich mózgu odpoczywa, a druga pozostaje aktywna. Dzięki temu mogą wypływać na powierzchnię, by zaczerpnąć powietrza i pozostawać czujne nawet przez 8 godzin.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "nl": {
+      "title": "Hoe slapen dolfijnen zonder te verdrinken? Een ongelooflijke methode! 🐬",
+      "description": "Heb je je ooit afgevraagd hoe dolfijnen onder water slapen zonder te verdrinken? Ze gebruiken een fascinerende techniek waarbij slechts de helft van hun hersenen rust, terwijl de andere actief blijft. Dit stelt hen in staat om naar de oppervlakte te komen voor adem en tot wel 8 uur alert te blijven.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "uk": {
+      "title": "Як дельфіни сплять, не потонувши? Дивовижний метод! 🐬",
+      "description": "Чи замислювалися ви, як дельфіни примудряються спати під водою, не задихаючись? Вони використовують дивовижну техніку, де спить лише половина їхнього мозку, а інша залишається активною. Це дозволяє їм регулярно спливати на поверхню для дихання та залишатися насторожі до 8 годин.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "vi": {
+      "title": "Cá heo ngủ thế nào mà không bị chết đuối? Phương pháp đáng kinh ngạc! 🐬",
+      "description": "Bạn có bao giờ tự hỏi cá heo ngủ dưới nước mà không bị chết đuối như thế nào không? Chúng sử dụng một kỹ thuật đáng kinh ngạc, ngủ với một nửa bộ não trong khi nửa còn lại vẫn hoạt động. Điều này giúp chúng nổi lên để thở và cảnh giác với nguy hiểm trong tối đa 8 giờ.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "az": {
+      "title": "Delfinlər boğulmadan necə yatır? Heyrətamiz üsul! 🐬",
+      "description": "Heç düşünmüsünüzmü ki, delfinlər su altında boğulmadan necə yatır? Onlar beyninin yalnız yarısı ilə yatan heyrətamiz bir üsuldan istifadə edirlər. Bu, onlara nəfəs almaq üçün səthə çıxmağa və 8 saata qədər ətrafdakı təhlükələrə qarşı ayıq qalmağa imkan verir.\n\n#shorts\n\nSeri: mk-005"
+    },
+    "ro": {
+      "title": "Cum dorm delfinii fără să se înece? O metodă incredibilă! 🐬",
+      "description": "Te-ai întrebat vreodată cum reușesc delfinii să doarmă sub apă fără să se înece? Ei folosesc o tehnică uimitoare, dormind cu doar jumătate din creierul lor activ. Acest lucru le permite să iasă la suprafață pentru a respira și să rămână vigilenți până la 8 ore.\n\n#shorts\n\nSeri: mk-005"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence yunuslar uyurken gözlerini tamamen kapatır mı: Evet mi Hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu yunuslar, beyinlerinin sadece yarısıyla uyur!",
+      "visual": "Dolphins swimming calmly in an aquarium.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 11,
+          "kare": 2
+        },
+        {
+          "n": 12,
+          "kare": 2
+        },
+        {
+          "n": 20,
+          "kare": 2
+        }
+      ],
+      "callout": "YARIM BEYİN"
+    },
+    {
+      "text": "Peki, su altında nefes almadan nasıl boğulmuyorlar?",
+      "visual": "Multiple dolphins swimming underwater in an aquarium.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 18,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Tek taraflı uyku denen bu yöntemle, bir beyinleri hep aktif kalır.",
+      "visual": "Dolphins swimming calmly underwater or from an aerial view.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 30,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 2
+        }
+      ],
+      "callout": "TEK TARAFLI UYKU"
+    },
+    {
+      "text": "Aktif olan yarım küre, onları düzenli olarak yüzeye çıkıp nefes almaya yönlendirir.",
+      "visual": "Dolphins surfacing to breathe, showing head or blowhole.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 3,
+          "kare": 2
+        },
+        {
+          "n": 28,
+          "kare": 2
+        }
+      ],
+      "callout": "NEFES ALMA"
+    },
+    {
+      "text": "Böylece uyanık kalır, etraflarındaki tehlikeleri de algılayabilirler.",
+      "visual": "Dolphins swimming in open water, appearing alert.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 14,
+          "kare": 2
+        },
+        {
+          "n": 37,
+          "kare": 2
+        }
+      ],
+      "callout": "7/24 GÖREVDE"
+    },
+    {
+      "text": "Bu özel adaptasyon sayesinde, 8 saate kadar bu şekilde dinlenebilirler.",
+      "visual": "Aerial view of dolphins swimming calmly in the ocean.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 6,
+          "kare": 2
+        },
+        {
+          "n": 15,
+          "kare": 2
+        },
+        {
+          "n": 32,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "İnanılmaz bir dengeyle hem uyur hem de su altında hayatta kalmayı başarırlar.",
+      "visual": "Dolphins swimming gracefully in the open ocean.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 7,
+          "kare": 1
+        },
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 13,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 23.02,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 16,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "görüntü",
+        "problem": "Karmaşık bilginin (yarım beyin uykusu, nefes alma) görselleştirilmemesi, sadece genel yunus görüntüleri kullanılması.",
+        "fix": "Beynin yarı aktif halini veya nefes alma mekanizmasını temsil eden soyut veya sembolik stok videolar (örn. beynin iki yarısını gösteren grafik, yüzeye çıkan yunusların nefes alışı) ve basit metin/şekil animasyonları kullanılmalı."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video kliplerin süresi uzun ve geçişler yavaş, genel dinamizm eksikliği.",
+        "fix": "Kliplerin süresi kısaltılarak daha hızlı ve dinamik bir kurgu sağlanmalı, anlatıcının vurgularına uygun ani görsel değişiklikler eklenmeli."
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka anlatıcının sesi monoton ve enerjisiz.",
+        "fix": "Yapay zeka sesinin hızı artırılmalı ve tonlaması daha enerjik olacak şekilde ayarlanmalı (eğer platform izin veriyorsa)."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Yunus görüntülerinde çeşitlilik eksikliği ve tekrar.",
+        "fix": "Farklı açılardan, ışık koşullarından veya davranışlardan (uyuyan, yüzen, yüzeye çıkan) daha çeşitli yunus videoları kullanılmalı."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar sadece metin olarak kalıyor, görselle entegre değil.",
+        "fix": "Yazılar, ilgili görsellerin üzerine daha yaratıcı yerleştirilmeli ve basit animasyonlarla (belirme/kaybolma) dinamizm katılmalı."
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektleri (örn. yunus sesleri, su sesleri) kullanılmaması.",
+        "fix": "Konuya uygun basit ses efektleri eklenerek videonun sürükleyiciliği artırılmalı."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilginin şaşırtıcılığı ve önemi yeterince vurgulanmıyor.",
+        "fix": "\"İnanılmaz bir dengeyle\" gibi ifadeler daha güçlü vurgulanmalı ve bu adaptasyonun önemini anlatan kısa bir ek cümle eklenebilir."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz bilgi sunumu.",
+      "Net ve anlaşılır dil kullanımı.",
+      "İyi bir kanca (soru ile başlama)."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
