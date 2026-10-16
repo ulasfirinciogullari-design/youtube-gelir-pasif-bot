@@ -1,0 +1,745 @@
+{
+ "title": "1 Günde Kaç Kez Nefes Alırsın?",
+ "bar": {
+  "hi": "1 GÜNDE",
+  "rest": "KAÇ KEZ NEFES?"
+ },
+ "summary": "Günde kaç bin kez nefes aldığınızı ve akciğerlerinizden geçen hava miktarını hiç düşündünüz mü? Üstelik şu an bile sadece tek bir burun deliğinizden nefes aldığınızı öğrenince çok şaşıracaksınız!",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "Günde kaç kez nefes alıyoruz Pi?",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "🫁",
+    "label": "NEFES SAYISI"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sağlıklı bir insan günde ortalama 20.000 kez nefes alır.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🫁",
+    "value": "20.000",
+    "unit": "kez",
+    "label": "GÜNLÜK NEFES",
+    "key": "20.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ciddi misin? Ne kadar hava eder bu?",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "😮",
+    "do": "shake",
+    "key": "Ciddi",
+    "label": "İNANILMAZ"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu her gün ciğerlerine yaklaşık 11.000 litre hava çekmek demek.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "💨",
+    "value": "11.000",
+    "unit": "litre",
+    "label": "GÜNLÜK HAVA",
+    "key": "11.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Oksijen toplayan hava keseciklerinin alanı yaklaşık 70 metrekaredir.",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "AKCİĞER ALANI",
+    "from": 0,
+    "to": 70,
+    "unit": "m²",
+    "e": "🫁",
+    "key": "70"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Vay canına, kocaman bir daire gibi!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🏠",
+    "do": "grow",
+    "key": "kocaman",
+    "label": "DEV YÜZEY"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dahası var, soluduğun havanın yaklaşık %75'ini tek bir burun deliğinden çekersin.",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "👃",
+     "label": "BASKIN DELİK %75"
+    },
+    "right": {
+     "e": "💤",
+     "label": "DİNLENEN %25"
+    },
+    "key": "%75"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Burnun her 2 saatte bir taraf değiştirir, şu an bile biri tıkalıdır!",
+   "v": {
+    "t": "timeline",
+    "bg": "body",
+    "steps": [
+     {
+      "when": "2 SAAT",
+      "e": "👃",
+      "label": "SAĞ DELİK"
+     },
+     {
+      "when": "DÖNGÜ",
+      "e": "🔄",
+      "label": "DEĞİŞİM"
+     },
+     {
+      "when": "2 SAAT",
+      "e": "👃",
+      "label": "SOL DELİK"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Hemen deniyorum!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "👃",
+    "do": "pulse",
+    "key": "deniyorum",
+    "label": "NAZAL DÖNGÜ"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "✨"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Dinlenme halindeki sağlıklı bir yetişkin dakikada 12 ila 20 kez, yani günde ortalama yaklaşık 20.000 kez nefes alır.",
+   "source": "American Lung Association",
+   "url": "https://www.lung.org"
+  },
+  {
+   "text": "Bir yetişkin günlük aktiviteleri sırasında ciğerlerine yaklaşık 11.000 litre hava çeker.",
+   "source": "U.S. EPA",
+   "url": "https://www.epa.gov"
+  },
+  {
+   "text": "Akciğerlerde gaz değişimini sağlayan yaklaşık 300 milyon alveolün toplam yüzey alanı 70 metrekareden fazladır.",
+   "source": "National Institutes of Health (NIH)",
+   "url": "https://www.ncbi.nlm.nih.gov"
+  },
+  {
+   "text": "Nazal döngü sebebiyle burundan alınan havanın yaklaşık yüzde 75'i tek delikten girer ve baskın delik ortalama her 2 saatte bir değişir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com"
+  }
+ ],
+ "tags": [
+  "nefes",
+  "akciğer",
+  "insan vücudu",
+  "biyoloji",
+  "solunum sistemi",
+  "burun döngüsü",
+  "human body",
+  "breathing",
+  "lungs",
+  "respiratory system",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#nefes",
+  "#insanvücudu",
+  "#bilim"
+ ],
+ "cover": 1,
+ "sources": [],
+ "i18n": {
+  "en": {
+   "title": "How Many Times Do You Breathe in 1 Day?",
+   "summary": "Have you ever wondered how many thousands of times you breathe a day and how much air passes through your lungs? You will be shocked to learn that right now, you are mostly breathing through only one nostril!",
+   "facts": [
+    "A healthy adult at rest breathes 12 to 20 times per minute, which is roughly 20,000 times a day on average.",
+    "During daily activities, an adult inhales about 11,000 liters of air into their lungs.",
+    "The total surface area of the approximately 300 million alveoli responsible for gas exchange in the lungs is over 70 square meters.",
+    "Due to the nasal cycle, about 75 percent of the air inhaled through the nose enters via a single nostril, and the dominant side switches roughly every 2 hours."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántas veces respiras en 1 día?",
+   "summary": "¿Alguna vez has pensado cuántos miles de veces respiras al día y la cantidad de aire que pasa por tus pulmones? ¡Te sorprenderá saber que ahora mismo estás respirando prácticamente por una sola fosa nasal!",
+   "facts": [
+    "Un adulto sano en reposo respira de 12 a 20 veces por minuto, es decir, un promedio de unas 20.000 veces al día.",
+    "Un adulto inhala aproximadamente 11.000 litros de aire en sus pulmones durante sus actividades diarias.",
+    "La superficie total de los aproximadamente 300 millones de alvéolos que permiten el intercambio de gases en los pulmones supera los 70 metros cuadrados.",
+    "Debido al ciclo nasal, alrededor del 75 por ciento del aire inhalado entra por un solo orificio nasal, y el lado dominante cambia aproximadamente cada 2 horas."
+   ]
+  },
+  "pt": {
+   "title": "Quantas vezes você respira em 1 dia?",
+   "summary": "Você já pensou em quantas milhares de vezes respira por dia e na quantidade de ar que passa pelos seus pulmões? Vai ficar chocado ao descobrir que, agora mesmo, você está respirando quase todo o ar por apenas uma narina!",
+   "facts": [
+    "Um adulto saudável em repouso respira de 12 a 20 vezes por minuto, o que equivale a uma média de cerca de 20.000 vezes por dia.",
+    "Um adulto inala aproximadamente 11.000 litros de ar nos pulmões durante as suas atividades diárias.",
+    "A área de superfície total dos cerca de 300 milhões de alvéolos que realizam as trocas gasosas nos pulmões ultrapassa 70 metros quadrados.",
+    "Devido ao ciclo nasal, cerca de 75 por cento do ar que entra pelo nariz passa por uma única narina, e a narina dominante muda em média a cada 2 horas."
+   ]
+  },
+  "ar": {
+   "title": "كم مرة تتنفس في اليوم الواحد؟",
+   "summary": "هل تساءلت يوماً كم ألف مرة تتنفس يومياً وما هي كمية الهواء التي تمر عبر رئتيك؟ ستندهش حين تعلم أنك تتنفس في هذه اللحظة بالذات من فتحة أنف واحدة فقط تقريباً!",
+   "facts": [
+    "يتنفس الشخص البالغ السليم في وضع الراحة من 12 إلى 20 مرة في الدقيقة، أي ما يقارب 20,000 مرة يومياً في المتوسط.",
+    "يستنشق الشخص البالغ نحو 11,000 لتر من الهواء إلى رئتيه خلال أنشطته اليومية.",
+    "تتجاوز المساحة السطحية الإجمالية لنحو 300 مليون حويصلة هوائية مسؤولة عن تبادل الغازات في الرئتين 70 متراً مربعاً.",
+    "بسبب الدورة الأنفية، يدخل نحو 75 في المئة من الهواء المستنشق عبر فتحة أنف واحدة، وتتبدل الفتحة السائدة كل ساعتين تقريباً."
+   ]
+  },
+  "hi": {
+   "title": "आप 1 दिन में कितनी बार सांस लेते हैं?",
+   "summary": "क्या आपने कभी सोचा है कि आप एक दिन में कितनी हज़ार बार सांस लेते हैं और आपके फेफड़ों से कितनी हवा गुज़रती है? यह जानकर आप दंग रह जाएंगे कि अभी भी आप मुख्य रूप से केवल एक नथुने से सांस ले रहे हैं!",
+   "facts": [
+    "आराम की स्थिति में एक स्वस्थ वयस्क प्रति मिनट 12 से 20 बार, यानी औसतन दिन में लगभग 20,000 बार सांस लेता है।",
+    "एक वयस्क अपनी दैनिक गतिविधियों के दौरान अपने फेफड़ों में लगभग 11,000 लीटर हवा खींचता है।",
+    "फेफड़ों में गैसों के आदान-प्रदान के लिए जिम्मेदार लगभग 300 मिलियन एल्वियोली का कुल सतही क्षेत्रफल 70 वर्ग मीटर से अधिक होता है।",
+    "नेज़ल साइकिल के कारण, नाक से अंदर ली जाने वाली लगभग 75 प्रतिशत हवा केवल एक नथुने से प्रवेश करती है और प्रमुख नथुना औसतन हर 2 घंटे में बदलता है।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Kali Anda Bernapas dalam 1 Hari?",
+   "summary": "Pernahkah Anda memikirkan berapa ribu kali Anda bernapas dalam sehari dan berapa banyak udara yang melewati paru-paru Anda? Anda akan terkejut mengetahui bahwa saat ini pun Anda sebenarnya bernapas dominan lewat satu lubang hidung saja!",
+   "facts": [
+    "Orang dewasa yang sehat saat istirahat bernapas 12 hingga 20 kali per menit, atau rata-rata sekitar 20.000 kali sehari.",
+    "Seorang dewasa menghirup sekitar 11.000 liter udara ke dalam paru-parunya selama aktivitas sehari-hari.",
+    "Total luas permukaan dari sekitar 300 juta alveoli yang memfasilitasi pertukaran gas di paru-paru lebih dari 70 meter persegi.",
+    "Karena siklus hidung, sekitar 75 persen udara yang dihirup masuk melalui satu lubang hidung saja, dan sisi yang dominan berganti rata-rata setiap 2 jam."
+   ]
+  },
+  "fr": {
+   "title": "Combien de fois respirez-vous en 1 jour ?",
+   "summary": "Vous êtes-vous déjà demandé combien de milliers de fois vous respirez par jour et quel volume d'air traverse vos poumons ? Vous serez stupéfait d'apprendre qu'en ce moment même, vous ne respirez principalement que par une seule narine !",
+   "facts": [
+    "Un adulte en bonne santé au repos respire de 12 à 20 fois par minute, soit en moyenne environ 20 000 fois par jour.",
+    "Au cours de ses activités quotidiennes, un adulte inhale environ 11 000 litres d'air dans ses poumons.",
+    "La surface totale des quelque 300 millions d'alvéoles assurant les échanges gazeux dans les poumons dépasse 70 mètres carrés.",
+    "En raison du cycle nasal, environ 75 pour cent de l'air inhalé par le nez entre par une seule narine, et la narine dominante change en moyenne toutes les 2 heures."
+   ]
+  },
+  "de": {
+   "title": "Wie oft atmest du an 1 Tag?",
+   "summary": "Hast du dich jemals gefragt, wie viele tausend Male du am Tag atmest und wie viel Luft durch deine Lungen strömt? Du wirst überrascht sein zu erfahren, dass du selbst jetzt gerade fast nur durch ein einziges Nasenloch atmest!",
+   "facts": [
+    "Ein gesunder Erwachsener im Ruhezustand atmet 12 bis 20 Mal pro Minute, also durchschnittlich etwa 20.000 Mal am Tag.",
+    "Ein Erwachsener zieht bei seinen täglichen Aktivitäten rund 11.000 Liter Luft in die Lungen.",
+    "Die Gesamtoberfläche der rund 300 Millionen Alveolen, die für den Gasaustausch in den Lungen sorgen, beträgt mehr als 70 Quadratmeter.",
+    "Aufgrund des Nasenzyklus strömen etwa 75 Prozent der eingeatmeten Luft durch ein einziges Nasenloch, und das dominierende Loch wechselt durchschnittlich alle 2 Stunden."
+   ]
+  },
+  "ru": {
+   "title": "Сколько раз вы дышите за 1 день?",
+   "summary": "Задумывались ли вы, сколько тысяч раз в день вы дышите и какой объем воздуха проходит через ваши легкие? Вы удивитесь, узнав, что прямо сейчас дышите преимущественно только одной ноздрей!",
+   "facts": [
+    "Здоровый взрослый человек в состоянии покоя делает от 12 до 20 вдохов в минуту, то есть в среднем около 20 000 вдохов в день.",
+    "В течение повседневной активности взрослый человек вдыхает в легкие около 11 000 литров воздуха.",
+    "Общая площадь поверхности около 300 миллионов альвеол, обеспечивающих газообмен в легких, превышает 70 квадратных метров.",
+    "Из-за носового цикла около 75 процентов вдыхаемого через нос воздуха проходит через одну ноздрю, а ведущая ноздря меняется в среднем каждые 2 часа."
+   ]
+  },
+  "az": {
+   "title": "1 gündə neçə dəfə nəfəs alırsınız?",
+   "summary": "Gündə neçə min dəfə nəfəs aldığınızı və ağciyərlərinizdən keçən havanın həcmini heç düşünmüsünüzmü? Üstəlik, elə indi belə yalnız tək bir burun dəliyinizdən nəfəs aldığınızı öyrənəndə çox təəccüblənəcəksiniz!",
+   "facts": [
+    "Sakit vəziyyətdə olan sağlam bir yetkin dəqiqədə 12-dən 20-yə qədər, yəni gündə orta hesabla təxminən 20.000 dəfə nəfəs alır.",
+    "Bir yetkin gündəlik fəaliyyətləri zamanı ciyərlərinə təxminən 11.000 litr hava çəkir.",
+    "Ağciyərlərdə qaz mübadiləsini təmin edən təxminən 300 milyon alveolun ümumi səth sahəsi 70 kvadratmetrdən çoxdur.",
+    "Burun dövrü səbəbilə burundan alınan havanın təxminən 75 faizi tək dəlikdən daxil olur və dominant dəlik orta hesabla hər 2 saatdan bir dəyişir."
+   ]
+  }
+ },
+ "id": "g002",
+ "series": "1 Gün Boyunca",
+ "q": "1 günde kaç kez nefes alırsın?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 2.161,
+   "words": [
+    {
+     "w": "Günde",
+     "t0": 0.35,
+     "t1": 0.605
+    },
+    {
+     "w": "kaç",
+     "t0": 0.6519999999999999,
+     "t1": 0.8140000000000001
+    },
+    {
+     "w": "kez",
+     "t0": 0.872,
+     "t1": 1.012
+    },
+    {
+     "w": "nefes",
+     "t0": 1.0699999999999998,
+     "t1": 1.314
+    },
+    {
+     "w": "alıyoruz",
+     "t0": 1.3599999999999999,
+     "t1": 1.755
+    },
+    {
+     "w": "Pi?",
+     "t0": 1.8130000000000002,
+     "t1": 2.161
+    }
+   ]
+  },
+  {
+   "t0": 2.5535827664399093,
+   "t1": 5.525582766439909,
+   "words": [
+    {
+     "w": "Sağlıklı",
+     "t0": 2.5535827664399093,
+     "t1": 2.9835827664399095
+    },
+    {
+     "w": "bir",
+     "t0": 3.0175827664399093,
+     "t1": 3.1335827664399094
+    },
+    {
+     "w": "insan",
+     "t0": 3.180582766439909,
+     "t1": 3.4245827664399093
+    },
+    {
+     "w": "günde",
+     "t0": 3.4595827664399095,
+     "t1": 3.7035827664399092
+    },
+    {
+     "w": "ortalama",
+     "t0": 3.7725827664399096,
+     "t1": 4.19058276643991
+    },
+    {
+     "w": "20.000",
+     "t0": 4.2375827664399095,
+     "t1": 4.585582766439909
+    },
+    {
+     "w": "kez",
+     "t0": 4.6205827664399095,
+     "t1": 4.771582766439909
+    },
+    {
+     "w": "nefes",
+     "t0": 4.817582766439909,
+     "t1": 5.04958276643991
+    },
+    {
+     "w": "alır.",
+     "t0": 5.0965827664399095,
+     "t1": 5.525582766439909
+    }
+   ]
+  },
+  {
+   "t0": 5.905736961451247,
+   "t1": 7.763736961451247,
+   "words": [
+    {
+     "w": "Ciddi",
+     "t0": 5.905736961451247,
+     "t1": 6.160736961451247
+    },
+    {
+     "w": "misin?",
+     "t0": 6.207736961451246,
+     "t1": 6.451736961451247
+    },
+    {
+     "w": "Ne",
+     "t0": 6.485736961451247,
+     "t1": 6.578736961451247
+    },
+    {
+     "w": "kadar",
+     "t0": 6.6257369614512465,
+     "t1": 6.834736961451247
+    },
+    {
+     "w": "hava",
+     "t0": 6.869736961451247,
+     "t1": 7.043736961451247
+    },
+    {
+     "w": "eder",
+     "t0": 7.089736961451247,
+     "t1": 7.3227369614512465
+    },
+    {
+     "w": "bu?",
+     "t0": 7.368736961451247,
+     "t1": 7.763736961451247
+    }
+   ]
+  },
+  {
+   "t0": 8.153673469387755,
+   "t1": 11.636673469387755,
+   "words": [
+    {
+     "w": "Bu",
+     "t0": 8.153673469387755,
+     "t1": 8.292673469387754
+    },
+    {
+     "w": "her",
+     "t0": 8.327673469387754,
+     "t1": 8.466673469387755
+    },
+    {
+     "w": "gün",
+     "t0": 8.536673469387754,
+     "t1": 8.675673469387755
+    },
+    {
+     "w": "ciğerlerine",
+     "t0": 8.722673469387754,
+     "t1": 9.233673469387755
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 9.256673469387755,
+     "t1": 9.663673469387755
+    },
+    {
+     "w": "11.000",
+     "t0": 9.744673469387754,
+     "t1": 10.173673469387754
+    },
+    {
+     "w": "litre",
+     "t0": 10.220673469387755,
+     "t1": 10.475673469387754
+    },
+    {
+     "w": "hava",
+     "t0": 10.522673469387755,
+     "t1": 10.696673469387754
+    },
+    {
+     "w": "çekmek",
+     "t0": 10.742673469387755,
+     "t1": 11.044673469387755
+    },
+    {
+     "w": "demek.",
+     "t0": 11.091673469387755,
+     "t1": 11.636673469387755
+    }
+   ]
+  },
+  {
+   "t0": 11.836673469387755,
+   "t1": 16.109673469387754,
+   "words": [
+    {
+     "w": "Oksijen",
+     "t0": 11.836673469387755,
+     "t1": 12.242673469387755
+    },
+    {
+     "w": "toplayan",
+     "t0": 12.289673469387754,
+     "t1": 12.660673469387755
+    },
+    {
+     "w": "hava",
+     "t0": 12.730673469387755,
+     "t1": 12.951673469387755
+    },
+    {
+     "w": "keseciklerinin",
+     "t0": 12.986673469387755,
+     "t1": 13.694673469387755
+    },
+    {
+     "w": "alanı",
+     "t0": 13.740673469387755,
+     "t1": 14.054673469387755
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 14.309673469387754,
+     "t1": 14.785673469387755
+    },
+    {
+     "w": "70",
+     "t0": 14.855673469387755,
+     "t1": 15.133673469387755
+    },
+    {
+     "w": "metrekaredir.",
+     "t0": 15.203673469387756,
+     "t1": 16.109673469387754
+    }
+   ]
+  },
+  {
+   "t0": 16.489673469387753,
+   "t1": 19.043673469387752,
+   "words": [
+    {
+     "w": "Vay",
+     "t0": 16.489673469387753,
+     "t1": 16.733673469387753
+    },
+    {
+     "w": "canına,",
+     "t0": 16.791673469387753,
+     "t1": 17.29067346938775
+    },
+    {
+     "w": "kocaman",
+     "t0": 17.406673469387755,
+     "t1": 17.893673469387753
+    },
+    {
+     "w": "bir",
+     "t0": 17.951673469387753,
+     "t1": 18.091673469387754
+    },
+    {
+     "w": "daire",
+     "t0": 18.114673469387753,
+     "t1": 18.509673469387753
+    },
+    {
+     "w": "gibi!",
+     "t0": 18.555673469387752,
+     "t1": 19.043673469387752
+    }
+   ]
+  },
+  {
+   "t0": 19.428018140589568,
+   "t1": 24.351018140589566,
+   "words": [
+    {
+     "w": "Dahası",
+     "t0": 19.428018140589568,
+     "t1": 19.823018140589568
+    },
+    {
+     "w": "var,",
+     "t0": 19.858018140589568,
+     "t1": 20.101018140589566
+    },
+    {
+     "w": "soluduğun",
+     "t0": 20.206018140589567,
+     "t1": 20.68201814058957
+    },
+    {
+     "w": "havanın",
+     "t0": 20.74001814058957,
+     "t1": 21.06501814058957
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 21.12301814058957,
+     "t1": 21.564018140589567
+    },
+    {
+     "w": "%75'ini",
+     "t0": 21.622018140589567,
+     "t1": 22.56301814058957
+    },
+    {
+     "w": "tek",
+     "t0": 22.60901814058957,
+     "t1": 22.77201814058957
+    },
+    {
+     "w": "bir",
+     "t0": 22.84101814058957,
+     "t1": 22.92301814058957
+    },
+    {
+     "w": "burun",
+     "t0": 22.94601814058957,
+     "t1": 23.16701814058957
+    },
+    {
+     "w": "deliğinden",
+     "t0": 23.201018140589568,
+     "t1": 23.58501814058957
+    },
+    {
+     "w": "çekersin.",
+     "t0": 23.643018140589568,
+     "t1": 24.351018140589566
+    }
+   ]
+  },
+  {
+   "t0": 24.55101814058957,
+   "t1": 28.17401814058957,
+   "words": [
+    {
+     "w": "Burnun",
+     "t0": 24.55101814058957,
+     "t1": 24.88801814058957
+    },
+    {
+     "w": "her",
+     "t0": 24.93401814058957,
+     "t1": 25.050018140589568
+    },
+    {
+     "w": "2",
+     "t0": 25.09701814058957,
+     "t1": 25.22401814058957
+    },
+    {
+     "w": "saatte",
+     "t0": 25.259018140589568,
+     "t1": 25.573018140589568
+    },
+    {
+     "w": "bir",
+     "t0": 25.61901814058957,
+     "t1": 25.71201814058957
+    },
+    {
+     "w": "taraf",
+     "t0": 25.736018140589568,
+     "t1": 25.97901814058957
+    },
+    {
+     "w": "değiştirir,",
+     "t0": 26.02601814058957,
+     "t1": 26.57101814058957
+    },
+    {
+     "w": "şu",
+     "t0": 26.79201814058957,
+     "t1": 26.94301814058957
+    },
+    {
+     "w": "an",
+     "t0": 26.989018140589568,
+     "t1": 27.047018140589568
+    },
+    {
+     "w": "bile",
+     "t0": 27.10601814058957,
+     "t1": 27.268018140589568
+    },
+    {
+     "w": "biri",
+     "t0": 27.303018140589568,
+     "t1": 27.454018140589568
+    },
+    {
+     "w": "tıkalıdır!",
+     "t0": 27.489018140589568,
+     "t1": 28.17401814058957
+    }
+   ]
+  },
+  {
+   "t0": 28.55401814058957,
+   "t1": 29.52901814058957,
+   "words": [
+    {
+     "w": "Hemen",
+     "t0": 28.55401814058957,
+     "t1": 28.85601814058957
+    },
+    {
+     "w": "deniyorum!",
+     "t0": 28.91401814058957,
+     "t1": 29.52901814058957
+    }
+   ]
+  },
+  {
+   "t0": 29.740548752834467,
+   "t1": 32.340548752834465,
+   "words": [
+    {
+     "w": "Sıradaki",
+     "t0": 29.740548752834467,
+     "t1": 30.274548752834466
+    },
+    {
+     "w": "soruyu",
+     "t0": 30.320548752834465,
+     "t1": 30.634548752834466
+    },
+    {
+     "w": "sen",
+     "t0": 30.69254875283447,
+     "t1": 30.912548752834468
+    },
+    {
+     "w": "seç!",
+     "t0": 30.970548752834468,
+     "t1": 31.260548752834467
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 31.342548752834468,
+     "t1": 31.806548752834466
+    },
+    {
+     "w": "yaz.",
+     "t0": 31.853548752834467,
+     "t1": 32.340548752834465
+    }
+   ]
+  }
+ ]
+}

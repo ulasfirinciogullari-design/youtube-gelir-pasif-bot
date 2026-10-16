@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1159",
+    "views": "1164",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "219",
+    "views": "259",
     "reason": null
    }
   },
@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "27",
+    "views": "33",
     "reason": null
    }
   },
@@ -146,7 +146,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "9",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "3",
+    "views": "7",
     "reason": null
    }
   },
@@ -234,6 +234,36 @@
    "at": 1792174297.5472274,
    "chars": 562,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "0",
+    "reason": null
+   }
+  },
+  {
+   "id": "g002",
+   "video_id": "RLuGUU-xaYE",
+   "url": "https://youtube.com/shorts/RLuGUU-xaYE",
+   "title": "1 Günde Kaç Kez Nefes Alırsın?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Times Do You Breathe in 1 Day?",
+    "es": "¿Cuántas veces respiras en 1 día?",
+    "pt": "Quantas vezes você respira em 1 dia?",
+    "ar": "كم مرة تتنفس في اليوم الواحد؟",
+    "hi": "आप 1 दिन में कितनी बार सांस लेते हैं?",
+    "id": "Berapa Kali Anda Bernapas dalam 1 Hari?",
+    "fr": "Combien de fois respirez-vous en 1 jour ?",
+    "de": "Wie oft atmest du an 1 Tag?",
+    "ru": "Сколько раз вы дышите за 1 день?",
+    "az": "1 gündə neçə dəfə nəfəs alırsınız?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792177833.0068278,
+   "chars": 518,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -249,7 +279,8 @@
   "o0002",
   "y002",
   "n002",
-  "y003"
+  "y003",
+  "g002"
  ],
  "extra": [
   {
@@ -330,6 +361,14 @@
    "url": "https://youtube.com/shorts/bqFeef1QL08",
    "duration": 37.9,
    "chars": 562
+  },
+  {
+   "finished": "2026-10-16T19:10:34+00:00",
+   "mod": "saatlik",
+   "title": "1 Günde Kaç Kez Nefes Alırsın?",
+   "url": "https://youtube.com/shorts/RLuGUU-xaYE",
+   "duration": 34.0,
+   "chars": 518
   }
  ],
  "yorumlar": {

@@ -1,15 +1,15 @@
 {
- "started": "2026-10-16T18:07:12+00:00",
+ "started": "2026-10-16T19:06:54+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "credits_before": [
-  973,
+  1198,
   613902
  ],
  "topic": {
-  "id": "y003",
-  "series": "Ya Olsaydı?",
-  "q": "Oksijen 5 saniyeliğine yok olsaydı ne olurdu?"
+  "id": "g002",
+  "series": "1 Gün Boyunca",
+  "q": "1 günde kaç kez nefes alırsın?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
@@ -17,20 +17,8 @@
   "ok": false,
   "fixes": [
    {
-    "line": 3,
-    "why": "%21'lik ani basınç düşüşü (yaklaşık 21 kPa) şiddetli barotravma ve ağrı yaratsa da sağlıklı kulak zarının yırtılma eşiği genellikle 35 kPa üzerindedir; zarların doğrudan patlayacağını kesin söylemek abartıdır."
-   },
-   {
-    "line": 5,
-    "why": "Ozon tabakası kalksa bile 5 saniyelik UV maruziyeti teni anında kavurmaz veya yakmaz; güneş yanığının oluşması dakikalar sürer."
-   },
-   {
-    "line": 6,
-    "why": "Oksijen betonu bir arada tutan bir bağlayıcı değildir (beton çimento hidratasyonuyla tutunur) ve oksijensiz ortamda beton toza dönüşmez; bu yaygın bir internet efsanesidir."
-   },
-   {
-    "line": 7,
-    "why": "Yer kabuğunun %46'sı oksijen olsa da bu oksijen minerallere kimyasal olarak bağlıdır; havadaki serbest oksijenin kaybolmasıyla zemin çökmez, bu etki sadece tüm oksijen atomlarının yok olması halinde geçerlidir."
+    "line": 4,
+    "why": "Akciğerdeki hava keseciklerinin (alveoller) toplam yüzey alanı kesin bir değer olmayıp kişiden kişiye değişir; kesin (tam) değil, ortalama 70 ila 100 metrekare civarında bir tahmindir."
    }
   ]
  },
@@ -39,28 +27,22 @@
  ],
  "chunks": 0,
  "grounded": true,
- "chars": 562,
- "duration": 37.9,
- "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+ "chars": 518,
+ "duration": 34.0,
+ "title": "1 Günde Kaç Kez Nefes Alırsın?",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "9",
-  "videos": "8"
+  "videos": "9"
  },
- "url": "https://youtube.com/shorts/bqFeef1QL08",
+ "url": "https://youtube.com/shorts/RLuGUU-xaYE",
  "recent_status": {
-  "g001": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "2",
-   "reason": null
-  },
   "o0002": {
    "upload": "processed",
    "privacy": "public",
-   "views": "0",
+   "views": "9",
    "reason": null
   },
   "y002": {
@@ -72,10 +54,16 @@
   "n002": {
    "upload": "processed",
    "privacy": "public",
-   "views": "3",
+   "views": "7",
    "reason": null
   },
   "y003": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  },
+  "g002": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -83,12 +71,12 @@
   }
  },
  "credits_after": [
-  1109,
+  1322,
   613902
  ],
  "log": [
-  "Konu: y003 Oksijen 5 saniyeliğine yok olsaydı ne olurdu? (Ya Olsaydı?)",
+  "Konu: g002 1 günde kaç kez nefes alırsın? (1 Gün Boyunca)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T18:11:39+00:00"
+ "finished": "2026-10-16T19:10:34+00:00"
 }
