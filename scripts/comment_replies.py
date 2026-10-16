@@ -71,7 +71,8 @@ For each comment decide "reply" or "skip". Reply rules:
   open with a stock phrase like "Harika yorum, teşekkürler!" or "Thanks for your comment!"; start with the
   interesting part. At most one emoji. No hashtags, no links, no @names, never ask for likes or subscriptions.
 - Facts must be exact (search when unsure). If a comment states something false, correct it kindly with the
-  real fact. A question: answer it correctly and briefly; if science does not know, say so. Asked for a
+  real fact, but only when a search confirms it; about a film scene or anything you cannot confirm, do not
+  argue, just pick up what they noticed. A question: answer it correctly and briefly; if science does not know, say so. Asked for a
   source: name it (a study, a scientist, an institution), without a link.
 - A video idea: give one surprising real fact about it and say it is a good idea, but never promise a video or
   a date. Put the idea in "idea" as a short Turkish question.
