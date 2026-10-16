@@ -11,6 +11,9 @@ running it again with what the callback page shows after consent (the link's sta
 token. The state is signed with TIKTOK_CLIENT_SECRET, so only a code from our own link is accepted, and a login that
 left out video.upload is refused. The branch is public, so the token is saved encrypted with a key derived from the
 same secret, which only the repository secrets hold.
+
+A Short published before a draft was due can still be sent: `python -m app.services.tiktok share --youtube-id ID`
+takes the video from the publishing run's artifact, inside GitHub Actions (the artifact is kept 14 days).
 """
 
 import argparse
@@ -18,6 +21,7 @@ import base64
 from datetime import datetime, timedelta, timezone
 import hashlib
 import hmac
+import io
 import json
 import os
 from pathlib import Path
@@ -28,6 +32,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 
 AUTH_URL = "https://www.tiktok.com/v2/auth/authorize/"
 API = "https://open.tiktokapis.com/v2"
@@ -48,6 +53,12 @@ CHUNK_SIZE = 10 * 1024 * 1024
 STATUS_WAITS = (5, 10, 15, 30)  # seconds before each status check
 DONE_STATUSES = ("SEND_TO_USER_INBOX", "PUBLISH_COMPLETE", "FAILED")
 FIXED_HASHTAGS = ("#keşfet", "#bilgi")
+GITHUB_API = "https://api.github.com/repos"
+SHORTS_WORKFLOW = "viral_shorts_autopilot.yml"
+ARTIFACT_PREFIX = "original-short-"
+UPLOADS_FILE = "uploads.json"
+# The run that uploaded a Short started at most this long before the upload.
+MAX_RUN_LEAD = timedelta(hours=2)
 MAX_TAG_HASHTAGS = 4
 
 
@@ -226,8 +237,9 @@ def load_drafts(data_dir: Path) -> list[dict]:
     return [d for d in data if isinstance(d, dict)] if isinstance(data, list) else []
 
 
-def skip_reason(drafts: list[dict], now: datetime) -> str | None:
-    """Why no draft should go out now, or None. Failed sends count toward neither limit."""
+def skip_reason(drafts: list[dict], now: datetime, spacing: bool = True) -> str | None:
+    """Why no draft should go out now, or None. Failed sends count toward neither limit. A Short sent by hand
+    (spacing=False) only has to fit TikTok's daily cap."""
     sent = []
     for draft in drafts:
         if str(draft.get("status", "")).startswith(("FAILED", "error")):
@@ -239,14 +251,15 @@ def skip_reason(drafts: list[dict], now: datetime) -> str | None:
     today = [t for t in sent if now - t < timedelta(hours=24)]
     if len(today) >= MAX_DRAFTS_PER_DAY:
         return f"son 24 saatte {len(today)} taslak gönderildi (TikTok sınırı {MAX_DRAFTS_PER_DAY})"
-    if sent and now - max(sent) < timedelta(hours=MIN_HOURS_BETWEEN):
+    if spacing and sent and now - max(sent) < timedelta(hours=MIN_HOURS_BETWEEN):
         hours = (now - max(sent)).total_seconds() / 3600
         return f"son taslak {hours:.1f} saat önce gönderildi, {MIN_HOURS_BETWEEN} saat bekleniyor"
     return None
 
 
 def share(result: dict, youtube_id: str, data_dir: Path, env=os.environ, now: datetime | None = None,
-          access_for=fresh_access, upload=upload_draft, status=draft_status, sleep=time.sleep) -> dict | None:
+          access_for=fresh_access, upload=upload_draft, status=draft_status, sleep=time.sleep,
+          spacing: bool = True) -> dict | None:
     """Sends a published Short to TikTok as a draft when one is due. Never raises: TikTok must not fail the run."""
     client_key, secret = env.get("TIKTOK_CLIENT_KEY", ""), env.get("TIKTOK_CLIENT_SECRET", "")
     if not client_key or not secret:
@@ -257,7 +270,7 @@ def share(result: dict, youtube_id: str, data_dir: Path, env=os.environ, now: da
         return None
     now = now or datetime.now(timezone.utc)
     drafts = load_drafts(data_dir)
-    reason = skip_reason(drafts, now)
+    reason = skip_reason(drafts, now, spacing=spacing)
     if reason:
         print(f"ℹ️ TikTok taslağı atlandı: {reason}")
         return None
@@ -284,6 +297,86 @@ def share(result: dict, youtube_id: str, data_dir: Path, env=os.environ, now: da
     else:
         print(f"📱 TikTok taslağı gönderildi ({entry['status']}): {entry['caption']}")
     return entry
+
+
+def _github(url: str, token: str, raw: bool = False):
+    req = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json"})
+    # The artifact link redirects to blob storage, which must not get the GitHub token.
+    req.add_unredirected_header("Authorization", f"Bearer {token}")
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        body = resp.read()
+    return body if raw else json.loads(body)
+
+
+def _unpack(archive: bytes, out_dir: Path, topic_id: str) -> tuple[Path, dict] | None:
+    """The Short on this topic and its meta from a publishing run's artifact zip; other files are left out."""
+    with zipfile.ZipFile(io.BytesIO(archive)) as z:
+        names = {Path(n).name: n for n in z.namelist()}
+        metas = [b for b in names if re.fullmatch(r"(ORIGINAL|COMEDY)_[\w-]+_meta\.json", b)]
+        for base in metas:
+            video = base.removesuffix("_meta.json") + ".mp4"
+            meta = json.loads(z.read(names[base]).decode("utf-8"))
+            if video not in names or meta.get("topic_id") != topic_id:
+                continue
+            out_dir.mkdir(parents=True, exist_ok=True)
+            (out_dir / video).write_bytes(z.read(names[video]))
+            return out_dir / video, meta
+    return None
+
+
+def find_short(upload: dict, out_dir: Path, repo: str, token: str, get=_github) -> tuple[Path, dict] | None:
+    """Downloads the uploaded Short from the artifact of the run that published it: the newest successful Shorts
+    run that started before the upload and whose meta has the same topic."""
+    uploaded_at = datetime.fromisoformat(upload["uploaded_at"])
+    # Only the runs that started in the window before the upload: a day of hourly Shorts and skipped ticks is
+    # more than one page of runs, a window of MAX_RUN_LEAD fits in one.
+    stamp = lambda t: t.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    window = urllib.parse.quote(f"{stamp(uploaded_at - MAX_RUN_LEAD)}..{stamp(uploaded_at)}")
+    runs = get(f"{GITHUB_API}/{repo}/actions/workflows/{SHORTS_WORKFLOW}/runs?status=success&per_page=100"
+               f"&created={window}", token)["workflow_runs"]
+    for run in sorted(runs, key=lambda r: r["created_at"], reverse=True):
+        started = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
+        if started > uploaded_at:
+            continue
+        if uploaded_at - started > MAX_RUN_LEAD:
+            break
+        artifacts = get(f"{GITHUB_API}/{repo}/actions/runs/{run['id']}/artifacts", token)["artifacts"]
+        for artifact in artifacts:
+            if artifact["name"] != f"{ARTIFACT_PREFIX}{run['id']}" or artifact.get("expired"):
+                continue
+            found = _unpack(get(artifact["archive_download_url"], token, raw=True), Path(out_dir),
+                            upload.get("topic_id", ""))
+            if found:
+                return found
+    return None
+
+
+def share_existing(youtube_id: str, data_dir: Path, out_dir: Path, env=os.environ, find=find_short, **kwargs) -> int:
+    """Sends an already published Short to TikTok as a draft right away, without waiting for the spacing."""
+    data_dir = Path(data_dir)
+    try:
+        uploads = json.loads((data_dir / UPLOADS_FILE).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        uploads = []
+    upload = next((u for u in uploads if isinstance(u, dict) and u.get("video_id") == youtube_id), None)
+    if upload is None:
+        print(f"❌ {youtube_id} kanal hafızasında (uploads.json) yok")
+        return 1
+    for draft in load_drafts(data_dir):
+        if draft.get("youtube_id") == youtube_id and not str(draft.get("status", "")).startswith(("FAILED", "error")):
+            print(f"ℹ️ {youtube_id} zaten TikTok'a gönderilmiş ({draft.get('status')})")
+            return 0
+    try:
+        found = find(upload, Path(out_dir), env.get("GITHUB_REPOSITORY", ""), env.get("GITHUB_TOKEN", ""))
+    except (urllib.error.URLError, OSError, ValueError, KeyError, zipfile.BadZipFile) as e:
+        print(f"❌ Videonun yayın paketi indirilemedi: {e}")
+        return 1
+    if found is None:
+        print(f"❌ {youtube_id} için yayın paketi bulunamadı (paketler 14 gün saklanıyor)")
+        return 1
+    video, meta = found
+    entry = share({"video": video, "meta": meta}, youtube_id, data_dir, env=env, spacing=False, **kwargs)
+    return 0 if entry and not entry["status"].startswith(("FAILED", "error")) else 1
 
 
 def login(data_dir: Path, code: str, env=os.environ, exchange=exchange_code, name_of=account_name) -> int:
@@ -324,11 +417,15 @@ def login(data_dir: Path, code: str, env=os.environ, exchange=exchange_code, nam
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(description="TikTok login for the Zirvenin Kanunu drafts")
-    parser.add_argument("command", choices=["login"])
+    parser = argparse.ArgumentParser(description="TikTok login and drafts by hand for Zirvenin Kanunu")
+    parser.add_argument("command", choices=["login", "share"])
     parser.add_argument("--code", default="", help="İzin sayfasının gösterdiği metin (boş = izin linki üret)")
+    parser.add_argument("--youtube-id", default="", help="share: TikTok'a taslak olarak gidecek yayındaki Short")
     parser.add_argument("--data", default="channel-data", help="Kanal hafızası klasörü")
+    parser.add_argument("--out", default="output/tiktok", help="share: yayın paketinin açılacağı klasör")
     args = parser.parse_args(argv)
+    if args.command == "share":
+        return share_existing(args.youtube_id.strip(), Path(args.data), Path(args.out))
     return login(Path(args.data), args.code)
 
 
