@@ -394,7 +394,7 @@ def sources(ep, extra_chunks=()):
         ok, final = page_ok(url)
         if ok and good_domain(final) and urlsplit(final).path.strip("/"):
             seen.add(host)
-            found.append(final.split("#")[0])
+            found.append(final.split("#")[0].split("?")[0] if "?rsource" in final or "utm_" in final else final.split("#")[0])
         if len(found) >= 4:
             break
     return found
