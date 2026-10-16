@@ -12,7 +12,7 @@ import pytest
 
 from app.services import footage_script, original_visuals
 from app.services.footage_script import MERAK_MAX_WORDS, MERAK_MIN_WORDS, hook_problems, tr_lower
-from app.services.original_script import ENDING_RULE, OPENING_RULE, build_prompt, validate_script
+from app.services.original_script import ENDING_RULE, OPENING_RULE, build_prompt, validate_script, write_script
 
 TOPIC = {"id": "mk-099", "topic": "Baykuşlar başlarını nasıl bu kadar çevirebiliyor?", "stock_hint": "owl",
          "subject": ["owl"]}
@@ -256,3 +256,27 @@ def test_prompts_ask_for_a_short_script_that_opens_on_a_claim_and_loops(tmp_path
     merak = build_prompt(TOPIC["topic"], None, None, TOPIC)
     assert OPENING_RULE in merak and ENDING_RULE in merak and "12 kelimelik" not in merak
     assert OPENING_RULE not in build_prompt("Seneca neden servetini geri verdi?")
+
+
+def test_the_script_first_fallback_writes_a_15_20_second_short_too():
+    # The first Short after the 15-20 s change (flamingos, 2026-10-16) came from this fallback: 70 words, 22 s.
+    merak = build_prompt(TOPIC["topic"], None, None, TOPIC)
+    assert "15-20 saniyelik" in merak and "25-40" not in merak and "Toplam 40-55 kelime, 4-6 sahne" in merak
+    assert "25-40 saniyelik" in build_prompt("Seneca neden servetini geri verdi?")
+    long_reply = _reply()
+    long_reply["scenes"][4]["text"] += " Üstelik bu kanallar boynun her iki yanında da vardır ve kan akışını hiç kesmez."
+    replies, prompts = iter([long_reply, _reply()]), []
+
+    def gemini(prompt):
+        prompts.append(prompt)
+        return json.dumps(next(replies), ensure_ascii=False)
+
+    def words(script):
+        return sum(len(scene["text"].split()) for scene in script["scenes"])
+
+    script, provider = write_script(TOPIC["topic"], providers=[("g", gemini)], character=TOPIC)
+    assert provider == "g" and len(prompts) == 2 and words(script) == 51
+    # When no attempt fits, the shortest valid one is used rather than none.
+    script, _ = write_script(TOPIC["topic"], providers=[("g", lambda p: json.dumps(long_reply, ensure_ascii=False))],
+                             character=TOPIC)
+    assert words(script) > MERAK_MAX_WORDS

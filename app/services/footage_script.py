@@ -24,8 +24,8 @@ import urllib.error
 from app.services import original_visuals
 from app.services.clip_matcher import _call_gemini_parts, fetch_thumbnail, pixabay_thumbnail
 from app.services.original_script import (
-    EMOJI_RE, MAX_SCENE_CHARS, MAX_WORDS, ScriptError, _call_gemini, _extract_json,
-    ENDING_RULE, MOOD_RULE, OPENING_RULE, clean_callout, validate_script,
+    EMOJI_RE, MAX_SCENE_CHARS, MERAK_MAX_SCENES, MERAK_MAX_WORDS, MERAK_MIN_SCENES, MERAK_MIN_WORDS,
+    ScriptError, _call_gemini, _extract_json, ENDING_RULE, MOOD_RULE, OPENING_RULE, clean_callout, validate_script,
 )
 
 MIN_COVERAGE = 6  # out of 10; below this a topic is skipped when the run picked it itself
@@ -36,14 +36,6 @@ MAX_POOL = 40
 # such clips now come after every wild one and fill the pool only when the wild ones run out.
 CAPTIVE_TAGS = {"zoo", "zoos", "captivity", "captive", "cage", "caged", "enclosure"}
 FRAME_HEIGHT = 200
-# Every public merak Short stopped near 1,000 views (2026-10-16): the feed shows a Short to a first group and only
-# goes on when they watch it through. A 15-20 s Short (~3.3 words/s with Alp at speed 1.15) is watched through and
-# replayed more often than the 22-30 s ones were. validate_script keeps MAX_WORDS as the hard limit and
-# MERAK_MIN_WORDS as the floor; going over MERAK_MAX_WORDS is only a reason to ask again (hook_problems).
-MERAK_MIN_WORDS = 38
-MERAK_MAX_WORDS = 55
-MERAK_MIN_SCENES = 4
-MERAK_MAX_SCENES = 6
 MAX_OPENING_WORDS = 9  # the prompt asks for at most 8; one word of slack before the opener is sent back
 HOOK_REPEAT_SHARE = 0.6  # share of the banner's content words that may not reappear in the spoken first line
 # Fillers that slipped through in real merak scripts ("İnanılmaz değil mi?", "İşte şaşırtıcı gerçek!",
