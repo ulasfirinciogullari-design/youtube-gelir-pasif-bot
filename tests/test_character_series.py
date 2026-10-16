@@ -617,6 +617,11 @@ def test_fact_check_swaps_in_corrected_sentences_only():
     # A fix that would leave the 15-20 s narration under its floor is ignored (49 words -> 33).
     short = {"scenes": [dict(s) for s in script["scenes"][:5]]}
     assert check_facts(short, "Kedi", call=lambda p: json.dumps({"fixes": [{"scene": 5, "text": "Kısa."}]})) == []
+    # Nor may a fix push it past MERAK_MAX_WORDS (47 -> 56), or lengthen one that is already past it (59 -> 68).
+    longer = fixed + " Bunu yüksek hızlı kameralarla çekilen görüntüler defalarca açıkça gösterdi."
+    assert check_facts(short, "Kedi", call=lambda p: json.dumps({"fixes": [{"scene": 5, "text": longer}]})) == []
+    assert check_facts(script, "Kedi", call=lambda p: json.dumps({"fixes": [{"scene": 5, "text": longer}]})) == []
+    assert script["scenes"][4]["text"] == fixed
     # No answer or a failed call leaves the script as it was.
     assert check_facts(script, "Kedi", call=lambda p: None) == []
 

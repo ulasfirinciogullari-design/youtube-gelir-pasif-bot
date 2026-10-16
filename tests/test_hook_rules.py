@@ -129,7 +129,8 @@ def test_an_ending_that_sums_up_is_sent_back():
 def test_an_ending_on_praise_is_sent_back():
     # The dolphin sample's real last line (2026-10-15).
     for last, word in (("İnanılmaz bir dengeyle hem uyur hem de su altında hayatta kalmayı başarırlar.", "inanılmaz"),
-                       ("Gözleri yuvasında dönmez. Muhteşem bir tasarım.", "muhteşem")):
+                       ("Gözleri yuvasında dönmez. Muhteşem bir tasarım.", "muhteşem"),
+                       ("Sizi anlamak için başlarını yana çeviriyorlar, işte bu!", "işte bu")):
         script = _owl()
         script["scenes"][-1]["text"] = last
         assert hook_problems(script) == [
@@ -178,6 +179,12 @@ def test_a_long_opener_and_a_long_script_are_sent_back():
     assert words > MERAK_MAX_WORDS
     assert problems == ["ilk cümle 10 kelime, en fazla 8 kelime olsun",
                         f"anlatım {words} kelime, en fazla {MERAK_MAX_WORDS} kelime olsun"]
+
+
+def test_more_than_six_scenes_are_sent_back():
+    script = _owl()
+    script["scenes"][4:5] = [{"text": "Damarlar orada kayar."}, {"text": "Kan ceplerde birikip beyni besler."}]
+    assert hook_problems(script) == ["7 sahne var, en fazla 6 sahne olsun"]
 
 
 def _hit(vid):

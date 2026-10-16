@@ -64,6 +64,8 @@ PRAISE_OPENERS = ("inanılmaz", "muhteşem", "harika", "mükemmel", "müthiş", 
 # önem taşır." A connector followed by more words, or a last sentence on how important something is, counts as a summary.
 REASON_OPENERS = ("işte bu yüzden", "bu yüzden", "işte bu nedenle", "bu nedenle")
 IMPORTANCE_PHRASES = ("önem taşır", "hayati önem", "ne kadar önemli", "çok önemli")
+# The first 15-20 s test Short (dog head tilt, 2026-10-16) closed on "...başlarını yana çeviriyorlar, işte bu!".
+EMPTY_ENDINGS = ("işte bu", "işte böyle", "bu kadar")
 # Question and filler words a banner may share with the first line without repeating it.
 HOOK_STOPWORDS = {"neden", "nasıl", "ne", "niye", "niçin", "bu", "şu", "o", "bir", "ve", "ile", "mi", "mı", "mu", "mü",
                   "da", "de", "ki", "en", "çok", "kadar", "hep", "her"}
@@ -308,12 +310,15 @@ def hook_problems(script: dict) -> list[str]:
     praise = next((w for w in _words(last_sentence)[:1] if w.startswith(PRAISE_OPENERS)), None)
     said_last = " " + " ".join(_words(last_sentence)) + " "
     praise = praise or next((p for p in IMPORTANCE_PHRASES if f" {p}" in said_last), None)
+    praise = praise or next((p for p in EMPTY_ENDINGS if said_last.endswith(f" {p} ")), None)
     if praise and not opener:
         problems.append(f'son cümle "{praise}" gibi genel bir lafla bitmesin, '
                         'somut bir bilgiyle bitip ilk cümleye bağlansın')
     words = sum(len(scene["text"].split()) for scene in scenes)
     if words > MERAK_MAX_WORDS:
         problems.append(f"anlatım {words} kelime, en fazla {MERAK_MAX_WORDS} kelime olsun")
+    if len(scenes) > MERAK_MAX_SCENES:
+        problems.append(f"{len(scenes)} sahne var, en fazla {MERAK_MAX_SCENES} sahne olsun")
     return problems
 
 
@@ -342,7 +347,8 @@ def _ask_editor(prompt: str) -> str | None:
 def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
     """Has Gemini re-read the narration as a science editor and swaps in its corrected sentences; returns why.
     A wrong claim ("sound is millions of times slower than light", 2026-10-13 sample) got past the writing prompt.
-    A fix that is empty, too long or would push the narration out of its word range is ignored."""
+    A fix that is empty, too long or would push the narration out of its word range is ignored; a narration already
+    past MERAK_MAX_WORDS (the best of several attempts) may be corrected but never made longer."""
     scenes = script["scenes"]
     lines = "\n".join(f"{i}. {s['text']}" + (f" [ekranda: {s['callout']}]" if s.get("callout") else "")
                       for i, s in enumerate(scenes, 1))
@@ -353,6 +359,7 @@ def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
         print(f"ℹ️ Bilgi kontrolü yapılamadı: {str(e)[:200]}")
         return []
     notes = []
+    longest = max(MERAK_MAX_WORDS, sum(len(s["text"].split()) for s in scenes))
     for fix in fixes if isinstance(fixes, list) else []:
         try:
             i = int(fix.get("scene")) - 1
@@ -366,7 +373,7 @@ def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
         if text == scenes[i]["text"] and callout == had:
             continue
         words = sum(len(s["text"].split()) for s in scenes) - len(scenes[i]["text"].split()) + len(text.split())
-        if MERAK_MIN_WORDS <= words <= MAX_WORDS:
+        if MERAK_MIN_WORDS <= words <= longest:
             scenes[i]["text"] = text
             # A corrected sentence never keeps an on-screen number the editor did not confirm.
             if callout:
