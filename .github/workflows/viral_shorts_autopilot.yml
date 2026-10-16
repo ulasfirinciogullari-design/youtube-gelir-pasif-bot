@@ -21,7 +21,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla)'
+        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla, yorum = yeni yorumlara yazılacak cevapları kanal hafızasına yaz ama gönderme; gerçek cevapları Yorum Cevaplayıcı iş akışı gönderir)'
         required: true
         default: 'video'
         type: choice
@@ -34,6 +34,7 @@ on:
           - 'referans'
           - 'sesornek'
           - 'tiktok'
+          - 'yorum'
       gorsel:
         description: 'AI görsel kalitesi (ucuz = Flux Schnell ~0,003 $/görsel, kaliteli = Flux Dev ~0,025 $/görsel)'
         required: false
@@ -215,6 +216,11 @@ jobs:
               exit $?
             fi
             python -m app.services.tiktok login --code "$KOD" --data channel-data
+            exit $?
+          fi
+          if [ "$TASK" = "yorum" ]; then
+            # A preview: the replies land in channel-data/comment_report.json, nothing is posted.
+            python scripts/comment_replies.py --data channel-data --deneme
             exit $?
           fi
           if [ "$TASK" = "sesornek" ]; then

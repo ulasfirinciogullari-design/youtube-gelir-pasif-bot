@@ -1,0 +1,69 @@
+name: Yorum Cevaplayıcı
+
+# Answers new comments on the channel every hour in the channel's voice, also when nobody is online
+# (scripts/comment_replies.py; Ulaş asked for it on 2026-10-16). GitHub drops most cron ticks, so the hourly
+# watch (slot_heartbeat.yml) starts this workflow at :45 too; a run that finds nothing new ends in seconds.
+# At most ZK_YORUM_GUNLUK replies a day (default 30, 1,500 of the 10,000 YouTube units shared with Ya
+# Olsaydı?). To stop it: Settings > Secrets and variables > Actions > Variables, add ZK_YORUM_KAPALI = 1.
+
+on:
+  workflow_dispatch:
+    inputs:
+      deneme:
+        description: 'Deneme: cevapları kanal hafızasına (comment_report.json) yaz, YouTube''a gönderme'
+        type: boolean
+        default: false
+  schedule:
+    - cron: '50 * * * *'
+
+concurrency:
+  group: comment-replies
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # comment_replies.json on the channel-data branch remembers what was answered
+
+jobs:
+  reply:
+    name: 💬 Yorumlara Cevap Ver
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Repoyu Çek
+        uses: actions/checkout@v4
+
+      - name: 🧠 Kanal Hafızasını Getir
+        run: |
+          git fetch origin channel-data:refs/remotes/origin/channel-data
+          git worktree add -B channel-data channel-data origin/channel-data
+
+      - name: 💬 Yeni Yorumlara Cevap Ver
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
+          ZK_YORUM_GUNLUK: ${{ vars.ZK_YORUM_GUNLUK }}
+          ZK_YORUM_KAPALI: ${{ vars.ZK_YORUM_KAPALI }}
+          ZK_YORUM_MODEL: ${{ vars.ZK_YORUM_MODEL }}
+          DENEME: ${{ inputs.deneme }}
+        run: |
+          if [ "$DENEME" = "true" ]; then set -- --deneme; fi
+          python3 scripts/comment_replies.py --data channel-data "$@"
+
+      - name: 💾 Kanal Hafızasını Yedekle
+        if: always()
+        run: |
+          cd channel-data
+          git add -A
+          if git diff --cached --quiet; then echo "Yeni veri yok"; exit 0; fi
+          git config user.name "zirve-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -qm "Yorum cevapları: run ${{ github.run_id }}"
+          # The Shorts workflow pushes to the same branch; it never touches comment_replies.json or comment_report.json.
+          for attempt in 1 2 3 4; do
+            git pull --rebase -q origin channel-data && git push -q origin HEAD:channel-data && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1
