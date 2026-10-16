@@ -412,6 +412,61 @@ def test_merak_series_cuts_faster_and_runs_out_into_gemini_topics(tmp_path, monk
     assert topic["id"] == "mk-002" and topic["stock_hint"] == "octopus"
 
 
+def _views(topic_id, views, hours_ago, privacy="public"):
+    from datetime import datetime, timedelta, timezone
+    published = (datetime.now(timezone.utc) - timedelta(hours=hours_ago)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return {"video_id": f"v{topic_id}", "topic_id": topic_id, "title": f"Başlık {topic_id}", "published_at": published,
+            "privacy": privacy, "views": views}
+
+
+MERAK_LIST = [{"id": "mk-001", "topic": "Kedi", "kategori": "hayvan"}, {"id": "mk-002", "topic": "Esneme", "kategori": "vücut"},
+              {"id": "mk-003", "topic": "Gıdıklanma", "kategori": "vücut"}, {"id": "mk-004", "topic": "Şimşek", "kategori": "doğa"},
+              {"id": "mk-005", "topic": "Yunus", "kategori": "hayvan"}, {"id": "mk-006", "topic": "Hıçkırık", "kategori": "vücut"},
+              {"id": "mk-007", "topic": "Rüya", "kategori": "psikoloji"}]
+
+
+def test_the_next_merak_topic_comes_from_the_best_watched_category(tmp_path, monkeypatch, capsys):
+    # Ulaş, 2026-10-16: "izlenmeleri artırmak için neler yapabiliriz". Every merak Short stopped near 1,000 views.
+    monkeypatch.setattr(original_factory, "load_topics", lambda path=None: [dict(t) for t in MERAK_LIST])
+    metrics = [_views("mk-001", 900, 30), _views("mk-005", 1000, 20),   # hayvan: median 950
+               _views("mk-002", 1400, 40), _views("mk-003", 1200, 15),  # vücut: median 1300
+               _views("mk-004", 5000, 30),                              # doğa: one Short says nothing yet
+               _views("mk-099", 9000, 3),                               # too young to judge
+               _views("zk-001", 9000, 50), _views("mk-098", 9000, 50, privacy="private")]
+    published = {"mk-001", "mk-002", "mk-003", "mk-004", "mk-005"}
+    assert original_factory.category_scores(metrics, MERAK_LIST) == {"hayvan": 950, "vücut": 1300}
+    topic = original_factory.choose_topic(published, data_dir=tmp_path, series="merak", metrics=metrics)
+    assert topic["id"] == "mk-006"  # vücut, ahead of psikoloji (no data, counts as average) though later in the list
+    assert "📈 Konu türleri, ortanca izlenme: vücut 1300, hayvan 950" in capsys.readouterr().out
+    # Without statistics, or with a topic asked for by id, the list order holds.
+    assert original_factory.choose_topic(published - {"mk-005"}, data_dir=tmp_path, series="merak")["id"] == "mk-005"
+    assert original_factory.choose_topic(published, "mk-007", data_dir=tmp_path, series="merak", metrics=metrics)["id"] == "mk-007"
+
+
+def test_an_invented_merak_topic_is_modelled_on_the_most_watched_titles(tmp_path, monkeypatch):
+    monkeypatch.setattr(original_factory, "load_topics", lambda path=None: [dict(t) for t in MERAK_LIST[:2]])
+    prompts = []
+
+    def fake_gemini(prompt, **kw):
+        prompts.append(prompt)
+        return json.dumps({"topic": "Ahtapotun neden üç kalbi var?", "stock_hint": "octopus", "subject": ["octopus"],
+                           "kategori": "Hayvan"})
+
+    monkeypatch.setattr("app.services.original_script._call_gemini", fake_gemini)
+    metrics = [_views("mk-001", 900, 30), _views("mk-002", 1400, 40), _views("mk-099", 9000, 3)]
+    topic = original_factory.choose_topic({"mk-001", "mk-002"}, data_dir=tmp_path, series="merak", metrics=metrics)
+    assert topic["id"] == "mk-003" and topic["kategori"] == "hayvan" and topic["subject"] == ["octopus"]
+    assert "en çok izlenen merak videoları" in prompts[0]
+    assert prompts[0].index("Başlık mk-002 (1400 izlenme)") < prompts[0].index("Başlık mk-001 (900 izlenme)")
+    assert "mk-099" not in prompts[0]
+    # No statistics yet: the prompt asks without examples, and an unknown category is left out.
+    fake = lambda prompt, **kw: prompts.append(prompt) or json.dumps({"topic": "Kar taneleri neden altıgen olur?",
+                                                                       "stock_hint": "snow", "kategori": "uzay"})
+    monkeypatch.setattr("app.services.original_script._call_gemini", fake)
+    topic = original_factory.invent_merak_topic(["Kedi"])
+    assert "en çok izlenen" not in prompts[-1] and "kategori" not in topic
+
+
 def test_hook_banner_stays_for_the_whole_video(tmp_path):
     from app.services.subtitle_engine import generate_shorts_ass_subtitles
     ass = tmp_path / "s.ass"
@@ -552,13 +607,16 @@ def test_fact_check_swaps_in_corrected_sentences_only():
     reply = {"fixes": [
         {"scene": 5, "text": fixed, "why": "yarım saniye kesin bir ölçüm değil"},
         {"scene": 9, "text": "olmayan sahne"}, {"scene": 2, "text": ""}, {"scene": "x", "text": "bozuk"},
-        {"scene": 3, "text": "çok uzun " * 60}, {"scene": 1, "text": "Kısa."},  # too long / too few words left
+        {"scene": 3, "text": "çok uzun " * 60},  # too long
     ]}
     prompts = []
     notes = check_facts(script, "Kediler neden ayakta düşer?", call=lambda p: prompts.append(p) or json.dumps(reply))
     assert notes == ["5. sahne: yarım saniye kesin bir ölçüm değil"]
     assert [s["text"] for s in script["scenes"]] == original[:4] + [fixed] + original[5:]
     assert "1. Bu kedi bilim insanlarını yıllarca şaşırttı." in prompts[0]
+    # A fix that would leave the 15-20 s narration under its floor is ignored (49 words -> 33).
+    short = {"scenes": [dict(s) for s in script["scenes"][:5]]}
+    assert check_facts(short, "Kedi", call=lambda p: json.dumps({"fixes": [{"scene": 5, "text": "Kısa."}]})) == []
     # No answer or a failed call leaves the script as it was.
     assert check_facts(script, "Kedi", call=lambda p: None) == []
 

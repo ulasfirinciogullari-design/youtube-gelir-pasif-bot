@@ -26,6 +26,7 @@ import math
 import os
 from pathlib import Path
 import re
+import statistics
 import subprocess
 import sys
 import time
@@ -236,22 +237,80 @@ INVENT_MERAK_PROMPT = """"Zirvenin Kanunu" Türkçe Shorts kanalının merak ser
 Seri bilim, hayvanlar, insan vücudu, günlük hayattaki nesneler ve insan psikolojisi hakkında herkesin merak ettiği
 soruları gerçek stok videolarla anlatıyor. Konu tek cümlelik bir soru olsun, cevabı bilimsel olarak net bilinsin
 ve kameraya çekilebilecek somut bir şeyle ilgili olsun (soyut kavram değil).
-Daha önce işlenenler (bunları ve benzerlerini tekrar etme):
+{best}Daha önce işlenenler (bunları ve benzerlerini tekrar etme):
 {used}
 Sadece şu JSON'u döndür: {{"topic": "...", "stock_hint": "Pixabay'de bulunacak 2-3 basit İngilizce kelime",
-"subject": ["videoda görünecek ana özne için 1-4 tekil İngilizce isim, ör. cat, kitten"]}}"""
+"subject": ["videoda görünecek ana özne için 1-4 tekil İngilizce isim, ör. cat, kitten"],
+"kategori": "hayvan, vücut, psikoloji, doğa ya da bilim"}}"""
+MERAK_CATEGORIES = ("hayvan", "vücut", "psikoloji", "doğa", "bilim")
 
 
-def invent_merak_topic(used: list[str]) -> dict:
+def invent_merak_topic(used: list[str], best: list[str] | None = None) -> dict:
+    """A new curiosity topic; `best` (the channel's most watched merak titles) steers it towards what held viewers."""
     from app.services.original_script import _call_gemini, _extract_json
-    raw = _call_gemini(INVENT_MERAK_PROMPT.format(used="\n".join(f"- {u}" for u in used[-80:])))
+    lead = ("Bu kanalda en çok izlenen merak videoları bunlar; izleyicinin sevdiği türden ama farklı bir konu öner:\n"
+            + "\n".join(f"- {b}" for b in best) + "\n") if best else ""
+    raw = _call_gemini(INVENT_MERAK_PROMPT.format(best=lead, used="\n".join(f"- {u}" for u in used[-80:])))
     data = _extract_json(raw) if raw else {}
     topic = str(data.get("topic") or "").strip()
     if len(topic) < 15:
         raise SystemExit("Merak konuları bitti ve yeni konu üretilemedi (GEMINI_API_KEY gerekli).")
     hint = " ".join(str(data.get("stock_hint") or "").split())[:60]
     subject = [str(w).strip().lower() for w in data.get("subject") or [] if str(w).strip()][:4]
-    return {"topic": topic, "stock_hint": hint, "subject": subject or hint.split()[:1]}
+    kind = str(data.get("kategori") or "").strip().lower()
+    return {"topic": topic, "stock_hint": hint, "subject": subject or hint.split()[:1],
+            **({"kategori": kind} if kind in MERAK_CATEGORIES else {})}
+
+
+# Ulaş, 2026-10-16: "izlenmeleri artırmak için neler yapabiliriz". Every public merak Short had stopped near 1,000
+# views, so the next topic comes from the kind that held viewers best: categories are ranked by the median views of
+# their Shorts old enough to judge, and one with fewer than two such Shorts counts as average, so it is still tried.
+MIN_SHORTS_PER_CATEGORY = 2
+
+
+def load_metrics(data_dir: Path = DATA_DIR) -> list[dict]:
+    """This run's channel statistics (report_channel writes them), else the last run's copy in the channel memory."""
+    for path in (OUTPUT_DIR / "metrics.json", data_dir / "metrics.json"):
+        try:
+            videos = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if isinstance(videos, list):
+            return videos
+    return []
+
+
+def judged_merak_videos(metrics: list[dict] | None) -> list[dict]:
+    """Public merak Shorts old enough for their views to say how the feed took them."""
+    from datetime import datetime, timezone
+    from app.services.channel_metrics import MIN_AGE_HOURS_FOR_RANKING, _age_hours
+    now = datetime.now(timezone.utc)
+    return [v for v in metrics or [] if isinstance(v, dict) and v.get("privacy") == "public"
+            and str(v.get("topic_id", "")).startswith(SERIES["merak"]["prefix"] + "-")
+            and (_age_hours(str(v.get("published_at", "")), now) or 0) >= MIN_AGE_HOURS_FOR_RANKING]
+
+
+def category_scores(metrics: list[dict] | None, topics: list[dict]) -> dict[str, float]:
+    kinds = {t["id"]: t.get("kategori") for t in topics}
+    views: dict[str, list[int]] = {}
+    for video in judged_merak_videos(metrics):
+        kind = kinds.get(video["topic_id"])
+        if kind:
+            views.setdefault(kind, []).append(int(video.get("views") or 0))
+    return {kind: statistics.median(v) for kind, v in views.items() if len(v) >= MIN_SHORTS_PER_CATEGORY}
+
+
+def rank_topics(topics: list[dict], scores: dict[str, float]) -> list[dict]:
+    """Topics of the best watched categories first; the list order holds within a category."""
+    if not scores:
+        return topics
+    average = statistics.median(scores.values())
+    return sorted(topics, key=lambda t: -scores.get(t.get("kategori"), average))
+
+
+def best_merak_titles(metrics: list[dict] | None, count: int = 5) -> list[str]:
+    best = sorted(judged_merak_videos(metrics), key=lambda v: int(v.get("views") or 0), reverse=True)[:count]
+    return [f"{v.get('title', '')} ({int(v.get('views') or 0)} izlenme)" for v in best]
 
 
 def topic_subject(topic: dict) -> list[str] | None:
@@ -279,7 +338,8 @@ def skip_topic(data_dir: Path, topic: dict, coverage: int) -> None:
 
 
 def merak_script(topic: dict, published: set[str], explicit: bool, dna: dict | None = None,
-                 data_dir: Path = DATA_DIR, footage=None, fallback=None, max_skips: int = 2):
+                 data_dir: Path = DATA_DIR, footage=None, fallback=None, max_skips: int = 2,
+                 metrics: list[dict] | None = None):
     """Footage-first script for a curiosity topic: (topic, script, provider, clip_pool).
 
     A topic the run picked itself is skipped (and remembered) when free footage covers it poorly or the libraries
@@ -299,7 +359,7 @@ def merak_script(topic: dict, published: set[str], explicit: bool, dna: dict | N
                 print(f"⏭️ {topic['id']} atlandı: ücretsiz stokta konuyu gösteren video az ({e}).")
                 skip_topic(data_dir, topic, 0)
                 published = published | {topic["id"]}
-                topic = choose_topic(published, None, dna, data_dir, series="merak")
+                topic = choose_topic(published, None, dna, data_dir, series="merak", metrics=metrics)
                 continue
         except Exception as e:  # never lose the run over the upgrade
             print(f"ℹ️ Görüntüye göre senaryo yazılamadı: {str(e)[:200]}")
@@ -313,7 +373,7 @@ def merak_script(topic: dict, published: set[str], explicit: bool, dna: dict | N
         print(f"⏭️ {topic['id']} atlandı: stok görüntü konuyu yeterince göstermiyor.")
         skip_topic(data_dir, topic, coverage)
         published = published | {topic["id"]}
-        topic = choose_topic(published, None, dna, data_dir, series="merak")
+        topic = choose_topic(published, None, dna, data_dir, series="merak", metrics=metrics)
     character = {**topic, "stock_hint": topic.get("stock_hint", ""), "subject": topic_subject(topic)}
     script, provider = (fallback or write_script)(topic["topic"], style_examples=[], rules=None, character=character)
     return topic, script, provider, None
@@ -330,11 +390,22 @@ INVENTORS = {"story": "invent_topic", "karakter": "invent_character_topic", "mer
 
 
 def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | None = None,
-                 data_dir: Path = DATA_DIR, invent=None, series: str = "story") -> dict:
-    """Next unused topic of the series; when its list runs out, a competitor gap idea (history only) or a Gemini topic."""
+                 data_dir: Path = DATA_DIR, invent=None, series: str = "story",
+                 metrics: list[dict] | None = None) -> dict:
+    """Next unused topic of the series; when its list runs out, a competitor gap idea (history only) or a Gemini topic.
+    With the channel's statistics a merak topic comes from the best watched category, and an invented one is
+    modelled on the most watched titles."""
     cfg = SERIES[series]
     generated = load_generated_topics(data_dir)
     topics = load_topics(cfg["topics"]) + [t for t in generated if t["id"].startswith(cfg["prefix"] + "-")]
+    if series == "merak" and metrics:
+        scores = category_scores(metrics, topics)
+        topics = rank_topics(topics, scores)
+        if scores and not topic_id:
+            print("📈 Konu türleri, ortanca izlenme: "
+                  + ", ".join(f"{kind} {views:.0f}" for kind, views in sorted(scores.items(), key=lambda kv: -kv[1])))
+        if invent is None:
+            invent = functools.partial(invent_merak_topic, best=best_merak_titles(metrics))
     try:
         return pick_topic(topics, published, topic_id)
     except SystemExit:
@@ -957,13 +1028,15 @@ def main(argv=None) -> int:
         except Exception as e:  # a stale analysis is better than a skipped upload
             print(f"ℹ️ Rakip analizi yenilenemedi: {str(e)[:200]}")
     series = pick_series(args.series, DATA_DIR, args.topic_id)
-    topic = choose_topic(published, args.topic_id, dna, series=series)
+    metrics = load_metrics()
+    topic = choose_topic(published, args.topic_id, dna, series=series, metrics=metrics)
     print(f"🎯 Seri {series} | konu {topic['id']}: {topic['topic']}")
 
     clip_pool = None
     if series == "merak":
         # Channel top titles and competitor rules come from history/film videos, so the merak prompts use their own.
-        topic, script, provider, clip_pool = merak_script(topic, published, bool(args.topic_id), dna)
+        topic, script, provider, clip_pool = merak_script(topic, published, bool(args.topic_id), dna,
+                                                          metrics=metrics)
     else:
         character = None
         if series == "karakter":
