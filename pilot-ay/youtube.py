@@ -63,6 +63,14 @@ def keywords(words):
     return " ".join(f'"{w}"' if " " in w else w for w in words)
 
 
+def same(key, a, b):
+    """YouTube re-formats keywords (quotes, spacing), so compare those as word sets."""
+    if key == "keywords":
+        norm = lambda v: sorted((q or w).lower() for q, w in re.findall(r'"([^"]+)"|(\S+)', v or ""))
+        return norm(a) == norm(b)
+    return a == b
+
+
 def digest(obj):
     return hashlib.sha256(json.dumps(obj, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
 
@@ -104,13 +112,14 @@ def fill_channel(yt, ch, state, report):
     c = CONF["channel"]
     changed, problems = [], report.setdefault("warnings", [])
     cur = {k: v for k, v in ch.get("brandingSettings", {}).get("channel", {}).items() if k in WRITABLE}
+    report["channel_now"] = {k: cur.get(k) for k in ("keywords", "country", "defaultLanguage")}
     ours = state.setdefault("channel_set", {})
     want = {}
     for key, val in (("description", c["description"]["tr"]), ("keywords", keywords(c["keywords"])),
                      ("country", c["country"]), ("defaultLanguage", c["language"])):
-        if cur.get(key) and cur.get(key) != ours.get(key):
+        if cur.get(key) and not same(key, cur.get(key), ours.get(key)):
             continue  # edited in Studio
-        if cur.get(key) != val:
+        if not same(key, cur.get(key), val):
             want[key] = val
     bs = {"channel": {**cur, **want}}  # only writable fields: sending back read-only ones is refused
     if not state.get("banner") and not ch.get("brandingSettings", {}).get("image", {}).get("bannerExternalUrl"):
@@ -142,14 +151,17 @@ def fill_channel(yt, ch, state, report):
     # channel name and description in every language (needs defaultLanguage, set above)
     loc = {l: {"title": c["title"][l], "description": c["description"][l]} for l in LANGS}
     if state.get("channel_l10n") != digest(loc):
-        try:
-            yt.call("PUT", "channels?part=localizations", json={"id": ch["id"], "localizations": loc})
-            state["channel_l10n"] = digest(loc)
-            changed.append(f"çeviriler ({len(loc)} dil)")
-            log(f"Kanal adı ve açıklaması {len(loc)} dile çevrildi")
-        except RuntimeError as e:
-            problems.append(str(e))
-            log(f"Kanal çevirileri yüklenemedi: {e}")
+        for attempt, body in (("ad ve açıklama", loc),
+                              ("sadece açıklama", {l: {"description": v["description"]} for l, v in loc.items()})):
+            try:
+                yt.call("PUT", "channels?part=localizations", json={"id": ch["id"], "localizations": body})
+                state["channel_l10n"] = digest(loc)
+                changed.append(f"çeviriler: {attempt} ({len(loc)} dil)")
+                log(f"Kanal çevirileri ({attempt}) {len(loc)} dile yüklendi")
+                break
+            except RuntimeError as e:
+                problems.append(f"{attempt}: {e}")
+                log(f"Kanal çevirileri ({attempt}) yüklenemedi: {e}")
     if not state.get("watermark") and c.get("watermark"):
         meta = {"timing": {"type": "offsetFromStart", "offsetMs": 0},
                 "position": {"type": "corner", "cornerPosition": "topRight"}}
@@ -368,7 +380,13 @@ def episodes(yt, state, report):
                 rec["thumbnail_error"] = str(e)
                 log(f"{ep['id']}: kapak konamadı (kanal telefonla doğrulanmamış olabilir): {e}")
         if ep.get("timings"):
-            captions(yt, ep, rec)
+            try:
+                captions(yt, ep, rec)
+                rec.pop("captions_error", None)
+            except RuntimeError as e:
+                rec["captions_error"] = str(e)
+                report.setdefault("warnings", []).append(f"{ep['id']} altyazı: {e}")
+                log(f"{ep['id']}: altyazı yüklenemedi: {e}")
     # titles, descriptions and translations last: related-video links depend on every episode's final privacy
     for ep in CONF["episodes"]:
         rec = done.get(ep["id"])
