@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       deneme:
-        description: 'Deneme: cevapları kanal hafızasına (comment_report.json) yaz, YouTube''a gönderme'
+        description: 'Deneme: cevapları kanal hafızasına (comment_preview.json) yaz, YouTube''a gönderme'
         type: boolean
         default: false
   schedule:
@@ -61,9 +61,14 @@ jobs:
           git config user.name "zirve-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -qm "Yorum cevapları: run ${{ github.run_id }}"
-          # The Shorts workflow pushes to the same branch; it never touches comment_replies.json or comment_report.json.
+          # The Shorts workflow pushes to the same branch but never writes comment_replies.json or
+          # comment_report.json (its "yorum" preview writes comment_preview.json), so a rebase cannot conflict.
           for attempt in 1 2 3 4; do
-            git pull --rebase -q origin channel-data && git push -q origin HEAD:channel-data && exit 0
+            if git pull --rebase -q origin channel-data; then
+              git push -q origin HEAD:channel-data && exit 0
+            else
+              git rebase --abort 2>/dev/null || true
+            fi
             sleep $((attempt * 5))
           done
           exit 1

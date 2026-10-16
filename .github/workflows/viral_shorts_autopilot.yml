@@ -219,7 +219,7 @@ jobs:
             exit $?
           fi
           if [ "$TASK" = "yorum" ]; then
-            # A preview: the replies land in channel-data/comment_report.json, nothing is posted.
+            # A preview: the replies land in channel-data/comment_preview.json, nothing is posted.
             python scripts/comment_replies.py --data channel-data --deneme
             exit $?
           fi

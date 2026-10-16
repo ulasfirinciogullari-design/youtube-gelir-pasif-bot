@@ -13,7 +13,8 @@ short reply per comment in the commenter's language or skips it (spam, links, in
 reply costs 50 of the 10,000 daily units Zirvenin Kanunu shares with Ya Olsaydı?, so at most ZK_YORUM_GUNLUK
 (default 30) go out in 24 hours, and at most PER_PERSON to one person. Answered and skipped ids live in
 channel-data/comment_replies.json, so nothing is answered twice; the last run that had something to answer
-writes its details to channel-data/comment_report.json. ZK_YORUM_KAPALI (any value) turns it off.
+writes its details to channel-data/comment_report.json (a preview to comment_preview.json). ZK_YORUM_KAPALI
+(any value) turns it off.
 
 Standard library only, like the watch, so the workflow needs no pip install.
 
@@ -40,12 +41,14 @@ GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models"
 MODELS = ("gemini-2.5-flash", "gemini-flash-latest")  # ZK_YORUM_MODEL goes first when set
 STATE_FILE = "comment_replies.json"
 REPORT_FILE = "comment_report.json"
+PREVIEW_FILE = "comment_preview.json"  # --deneme writes here, so a preview never touches the responder's files
 DAILY = 30  # 30 replies = 1,500 of the 10,000 units a day shared with Ya Olsaydı?
 PER_RUN = 10
 PER_PERSON = 3  # replies to one person in 24 h, so a chat under one of our replies cannot run on forever
 MAX_AGE_DAYS = 14
 KEEP_DAYS = 60
 MAX_REPLY = 260
+MAX_PAGES = 10  # pages of 100 replies read from one thread
 DAY = 86400
 LINK = re.compile(r"https?://|www\.|\b[\w-]+\.(com|net|org|io|ly|me|tv|gg|co|xyz|tr)\b|@\w", re.I)
 MENTION = re.compile(r"@([\w.\-]+)\s*")  # YouTube starts a reply to a reply with the other person's @handle
@@ -100,7 +103,10 @@ Answer with ONLY JSON: {{"items": [{{"id": "comment id", "action": "reply" or "s
 class ApiError(RuntimeError):
     def __init__(self, status: int, text: str):
         super().__init__(f"{status}: {text}")
+        self.status = status
         self.quota = "quota" in text.lower()
+        # Worth another try next run: rate limits and Google's own failures, not a deleted or closed comment.
+        self.transient = self.quota or status == 429 or status >= 500 or "ratelimit" in text.lower()
 
 
 def _request(url: str, body=None, form=None, headers=None, timeout: float = 60.0) -> dict:
@@ -153,8 +159,15 @@ class YouTube:
                                              "textFormat": "plainText"}).get("items") or []
 
     def replies(self, thread_id: str) -> list[dict]:
-        return self._call("comments", {"part": "snippet", "parentId": thread_id, "maxResults": 100,
-                                       "textFormat": "plainText"}).get("items") or []
+        """The thread's replies, 100 a page (1 unit a page)."""
+        items, params = [], {"part": "snippet", "parentId": thread_id, "maxResults": 100, "textFormat": "plainText"}
+        for _ in range(MAX_PAGES):
+            data = self._call("comments", params)
+            items += data.get("items") or []
+            if not data.get("nextPageToken"):
+                break
+            params = {**params, "pageToken": data["nextPageToken"]}
+        return items
 
     def videos(self, ids: list[str]) -> dict:
         """Title and description of up to 50 videos (1 unit), for comments on videos older than uploads.json."""
@@ -415,8 +428,8 @@ def run(yt, ask, state: dict, videos: dict, report: dict, now: float, dry: bool 
                 reply_id = yt.reply(c["parent"], reply)
             except ApiError as e:
                 row["result"] = f"gönderilemedi: {e}"[:300]
-                if e.quota:
-                    report["stopped"] = "YouTube kotası doldu"
+                if e.transient:  # the rest waits for the next run
+                    report["stopped"] = "YouTube kotası doldu" if e.quota else f"YouTube geçici hata verdi ({e.status})"
                     break
                 close(c["id"], "gönderilemedi")  # a deleted or closed comment: do not try again
                 continue
@@ -480,7 +493,8 @@ def main(argv=None, env=None) -> int:
         state_path.write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
     if report.get("error") or report.get("items") or args.deneme:
         report["finished"] = _iso(time.time())
-        (data / REPORT_FILE).write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+        (data / (PREVIEW_FILE if args.deneme else REPORT_FILE)).write_text(
+            json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     sent = sum(1 for row in report.get("items", []) if row.get("result") == "gönderildi")
     print(report.get("skipped") or f"💬 Yorumlar: {report.get('new', 0)} yeni, {sent} cevap gönderildi")
     return 0

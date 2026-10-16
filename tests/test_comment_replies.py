@@ -221,11 +221,14 @@ def test_a_dry_run_posts_nothing_and_changes_nothing():
                                 "reply": "cevap t1", "result": "deneme, gönderilmedi"}]
 
 
-def test_quota_error_stops_the_run_and_a_gone_comment_is_not_retried():
+def test_quota_or_a_passing_error_stops_the_run_and_a_gone_comment_is_not_retried():
     threads = [thread("t1", "a", "Bir", hours_ago=1), thread("t2", "b", "İki", hours_ago=2)]
     full = FakeYouTube(threads=threads, fail=comment_replies.ApiError(403, '{"reason": "quotaExceeded"}'))
     state, report = go(full)
     assert report["stopped"] == "YouTube kotası doldu" and state["done"] == {}
+    for status, text in ((503, "backendError"), (429, "Too Many Requests"), (403, "rateLimitExceeded")):
+        state, report = go(FakeYouTube(threads=threads, fail=comment_replies.ApiError(status, text)))
+        assert report["stopped"] == f"YouTube geçici hata verdi ({status})" and state["done"] == {}
     gone = FakeYouTube(threads=threads[:1], fail=comment_replies.ApiError(404, "commentNotFound"))
     state, _ = go(gone)
     assert state["done"]["t1"][1:] == ["s", "gönderilemedi"]
@@ -267,6 +270,8 @@ def test_api_calls():
         calls.append({"url": url, "body": body, "form": form, "headers": headers})
         if "oauth2" in url:
             return {"access_token": "tok"}
+        if "parentId=long" in url:
+            return {"items": [{"id": "b"}]} if "pageToken=p2" in url else {"items": [{"id": "a"}], "nextPageToken": "p2"}
         if "/channels?" in url:
             return {"items": [{"id": CH, "snippet": {"customUrl": "@ZirveninKanunu"}}]}
         return {"id": "new-reply", "items": []}
@@ -279,6 +284,7 @@ def test_api_calls():
     assert "allThreadsRelatedToChannelId=UCzirve" in calls[-1]["url"] and "maxResults=100" in calls[-1]["url"]
     yt.replies("t1")
     assert "comments?part=snippet&parentId=t1" in calls[-1]["url"]
+    assert [r["id"] for r in yt.replies("long")] == ["a", "b"]
     yt.videos(["a", "b"])
     assert "videos?part=snippet&id=a%2Cb" in calls[-1]["url"]
     assert yt.reply("t1", "Merhaba") == "new-reply"
@@ -305,6 +311,9 @@ def test_main_never_fails_and_reports_why(tmp_path, capsys):
     report = json.loads((tmp_path / comment_replies.REPORT_FILE).read_text(encoding="utf-8"))
     assert report["error"] == "RuntimeError: GEMINI_API_KEY yok"
     assert json.loads((tmp_path / comment_replies.STATE_FILE).read_text(encoding="utf-8")) == {}
+    preview = tmp_path / "preview"
+    assert comment_replies.main(["--data", str(preview), "--deneme"], env={}) == 0
+    assert sorted(p.name for p in preview.iterdir()) == [comment_replies.PREVIEW_FILE]  # no state, no report
     off = tmp_path / "off"
     assert comment_replies.main(["--data", str(off)], env={"ZK_YORUM_KAPALI": "1"}) == 0
     assert "ZK_YORUM_KAPALI" in capsys.readouterr().out
@@ -322,3 +331,4 @@ def test_workflows_run_it_hourly_and_offer_a_preview():
     shorts = (workflows / "viral_shorts_autopilot.yml").read_text(encoding="utf-8")
     assert "- 'yorum'" in shorts
     assert "python scripts/comment_replies.py --data channel-data --deneme" in shorts
+    assert "git rebase --abort" in own  # a failed rebase must not wedge the retries
