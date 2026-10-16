@@ -1,0 +1,287 @@
+{
+  "topic_id": "mk-020",
+  "topic": "Yüksek bir yerden bakınca neden atlama dürtüsü hissederiz?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Yüksekten Bakınca Neden Atlama İsteği Hissederiz? 😱",
+  "hook_text": "YÜKSEKLİK NEDEN ÇEKER?",
+  "description": "Yüksekten bakınca neden atlama isteği hissederiz?\n\nAslında bu, beynimizin bir güvenlik alarmıdır. Beyin, tehlikeli yüksekliği algılayıp düşmeyi önleyici bir uyarı sinyali gönderir ve biz bu sinyali yanlışlıkla \"atlama isteği\" sanırız. Bu his, hayatta kalma içgüdümüzün bir parçasıdır.\n\nSence bu dürtü, atlama isteği mi yoksa hayatta kalma sinyali mi? A) Atlama isteği B) Hayatta kalma sinyali\n\n#Atlamaİsteği #YüksektenBakmak #Beyin #Psikoloji #shorts #bilim #merak #keşfet\n\nSeri: mk-020",
+  "tags": [
+    "yüksekten atlama isteği",
+    "atlama dürtüsü",
+    "yükseklik hissi",
+    "atlama hissi neden",
+    "yüksekten bakınca",
+    "call of the void",
+    "le vide",
+    "beyin güvenlik",
+    "hayatta kalma içgüdüsü",
+    "akrofobi",
+    "yüksekten korkma",
+    "merak videosu",
+    "psikoloji",
+    "insan beyni",
+    "ilginç bilgiler",
+    "bilim",
+    "neden",
+    "gerçekler",
+    "bilimsel gerçekler",
+    "beyin sırları",
+    "psikolojik gerçekler",
+    "insan vücudu",
+    "merak",
+    "keşfet",
+    "Yüksekten Atlama",
+    "Beyin",
+    "İçgüdü",
+    "Merak Edilenler",
+    "Zirvenin Kanunu",
+    "Shorts",
+    "yuksekten atlama istegi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why do we feel the urge to jump from high places? 😱",
+      "description": "It's a strange sensation: standing at a height and feeling a sudden urge to jump. This isn't a desire to fall, but your brain's safety alarm. It's a survival instinct, misread as an urge to jump.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "es": {
+      "title": "¿Por qué sentimos ganas de saltar desde lugares altos? 😱",
+      "description": "Es una sensación extraña: estar en un lugar alto y sentir un impulso repentino de saltar. No es un deseo de caer, sino la alarma de seguridad de tu cerebro. Es un instinto de supervivencia, malinterpretado como ganas de saltar.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "pt": {
+      "title": "Por que sentimos vontade de saltar de lugares altos? 😱",
+      "description": "É uma sensação estranha: estar em um lugar alto e sentir um impulso repentino de saltar. Não é um desejo de cair, mas o alarme de segurança do seu cérebro. É um instinto de sobrevivência, mal interpretado como vontade de saltar.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "de": {
+      "title": "Warum verspüren wir den Drang, von hohen Orten zu springen? 😱",
+      "description": "Es ist ein seltsames Gefühl: Man steht in der Höhe und verspürt plötzlich den Drang zu springen. Das ist kein Wunsch zu fallen, sondern der Sicherheitsalarm Ihres Gehirns. Es ist ein Überlebensinstinkt, der fälschlicherweise als Sprungdrang missverstanden wird.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "fr": {
+      "title": "Pourquoi ressentons-nous l'envie de sauter des endroits hauts ? 😱",
+      "description": "C'est une sensation étrange : se tenir en hauteur et ressentir une envie soudaine de sauter. Ce n'est pas un désir de tomber, mais l'alarme de sécurité de votre cerveau. C'est un instinct de survie, mal interprété comme une envie de sauter.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "it": {
+      "title": "Perché sentiamo il desiderio di saltare da luoghi alti? 😱",
+      "description": "È una sensazione strana: stare in alto e sentire un'improvvisa voglia di saltare. Questo non è un desiderio di cadere, ma l'allarme di sicurezza del tuo cervello. È un istinto di sopravvivenza, scambiato per un impulso a saltare.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "ru": {
+      "title": "Почему с высоты нас тянет прыгнуть? 😱",
+      "description": "Странное ощущение: стоишь на высоте и вдруг чувствуешь непреодолимое желание прыгнуть. Это не желание упасть, а сигнал тревоги вашего мозга. Это инстинкт выживания, ошибочно принятый за желание прыгнуть.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "ar": {
+      "title": "لماذا نشعر برغبة في القفز من الأماكن المرتفعة؟ 😱",
+      "description": "إنه شعور غريب: أن تقف في مكان مرتفع وتشعر برغبة مفاجئة في القفز. هذا ليس رغبة في السقوط، بل هو إنذار أمان من دماغك. إنها غريزة بقاء، يتم تفسيرها بالخطأ على أنها رغبة في القفز.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "hi": {
+      "title": "ऊँचाई से नीचे कूदने की इच्छा क्यों होती है? 😱",
+      "description": "ऊँचाई पर खड़े होकर अचानक नीचे कूदने की अजीब इच्छा महसूस होती है। यह गिरने की इच्छा नहीं, बल्कि आपके दिमाग का सुरक्षा अलार्म है। यह अस्तित्व की प्रवृत्ति है, जिसे गलती से कूदने की इच्छा समझ लिया जाता है।\n\n#shorts\n\nSeri: mk-020"
+    },
+    "id": {
+      "title": "Mengapa kita merasa ingin melompat dari tempat tinggi? 😱",
+      "description": "Sungguh aneh rasanya: berdiri di tempat tinggi dan tiba-tiba merasa ingin melompat. Ini bukan keinginan untuk jatuh, melainkan alarm keamanan otak Anda. Ini adalah naluri bertahan hidup, yang salah diartikan sebagai keinginan untuk melompat.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "ja": {
+      "title": "高所から飛び降りたくなる衝動はなぜ？ 😱",
+      "description": "高い場所に立つと、突然飛び降りたくなる奇妙な衝動を感じます。これは落下したいという願望ではなく、脳の安全アラームです。生き残り本能の一部であり、誤って飛び降りたい衝動と解釈されるのです。\n\n#shorts\n\nSeri: mk-020"
+    },
+    "ko": {
+      "title": "높은 곳에서 뛰어내리고 싶은 충동은 왜 생길까요? 😱",
+      "description": "높은 곳에 서 있으면 갑자기 뛰어내리고 싶은 이상한 충동을 느낍니다. 이것은 떨어지고 싶은 욕구가 아니라 뇌의 안전 경보입니다. 생존 본능의 일부이며, 뛰어내리고 싶은 충동으로 오해되는 것입니다.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "pl": {
+      "title": "Dlaczego czujemy ochotę, by skoczyć z wysokości? 😱",
+      "description": "To dziwne uczucie: stoisz na wysokości i nagle czujesz pragnienie, by skoczyć. To nie chęć upadku, lecz alarm bezpieczeństwa twojego mózgu. To instynkt przetrwania, błędnie interpretowany jako chęć skoku.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "nl": {
+      "title": "Waarom voelen we de drang om van grote hoogten te springen? 😱",
+      "description": "Het is een vreemd gevoel: op grote hoogte staan en plotseling de drang voelen om te springen. Dit is geen verlangen om te vallen, maar het veiligheidsalarm van je hersenen. Het is een overlevingsinstinct, verkeerd geïnterpreteerd als een springdrang.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "uk": {
+      "title": "Чому ми відчуваємо бажання стрибнути з висоти? 😱",
+      "description": "Це дивне відчуття: стоїш на висоті і раптом відчуваєш непереборне бажання стрибнути. Це не бажання впасти, а сигнал тривоги вашого мозку. Це інстинкт виживання, помилково прийнятий за бажання стрибнути.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "vi": {
+      "title": "Tại sao chúng ta cảm thấy muốn nhảy từ nơi cao? 😱",
+      "description": "Thật kỳ lạ: đứng trên cao và bỗng cảm thấy muốn nhảy xuống. Đây không phải là mong muốn rơi, mà là chuông báo an toàn của não bạn. Đó là bản năng sinh tồn, bị hiểu lầm là muốn nhảy.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "az": {
+      "title": "Yüksəklikdən baxarkən niyə tullanmaq istəyi hiss edirik? 😱",
+      "description": "Qəribə bir hissdir: yüksəkdə durarkən qəfildən tullanmaq istəyi hiss etmək. Bu, düşmək arzusu deyil, beyninizin təhlükəsizlik siqnalıdır. Bu, sağ qalma instinktimizin bir hissəsidir, yanlışlıqla tullanmaq istəyi kimi qəbul edilir.\n\n#shorts\n\nSeri: mk-020"
+    },
+    "ro": {
+      "title": "De ce simțim nevoia să sărim de la înălțime? 😱",
+      "description": "E o senzație ciudată: stai la înălțime și simți o dorință bruscă de a sări. Aceasta nu este o dorință de a cădea, ci alarma de siguranță a creierului tău. Este un instinct de supraviețuire, interpretat greșit ca o dorință de a sări.\n\n#shorts\n\nSeri: mk-020"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bu dürtü, atlama isteği mi yoksa hayatta kalma sinyali mi? A) Atlama isteği B) Hayatta kalma sinyali",
+  "scenes": [
+    {
+      "text": "Yüksekten bakınca aniden garip bir dürtü hissederiz.",
+      "visual": "Person's feet on a high edge, looking down at the ground/ocean.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 18,
+          "kare": 1
+        }
+      ],
+      "callout": "ANİ DÜRTÜ"
+    },
+    {
+      "text": "Peki bu aşağı atlama isteği nereden geliyor?",
+      "visual": "Wide shots of high ocean cliffs.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 1
+        },
+        {
+          "n": 16,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Aslında bu, beynimizin bir güvenlik alarmı.",
+      "visual": "Nighttime city skylines with illuminated buildings.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 1
+        },
+        {
+          "n": 13,
+          "kare": 2
+        }
+      ],
+      "callout": "GÜVENLİK ALARMI"
+    },
+    {
+      "text": "Beyin, tehlikeli yüksekliği algılayıp düşmeyi önleyici bir uyarı sinyali gönderir.",
+      "visual": "Aerial view looking straight down on city buildings, view looking down a cliff with a waterfall.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 6,
+          "kare": 1
+        },
+        {
+          "n": 22,
+          "kare": 2
+        }
+      ],
+      "callout": "TEHLİKE UYARISI"
+    },
+    {
+      "text": "Biz bu sinyali, yanlışlıkla \"atlama isteği\" sanırız.",
+      "visual": "Cliff edge with a bird flying, a building precariously perched on a mountain.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 14,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Bu his, aslında hayatta kalma içgüdümüzün bir parçasıdır.",
+      "visual": "Wide shot of natural cliffs and green landscape, a mountain peak with historical ruins.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 27,
+          "kare": 2
+        },
+        {
+          "n": 32,
+          "kare": 2
+        }
+      ],
+      "callout": "HAYATTA KALMA"
+    }
+  ],
+  "duration_seconds": 14.38,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 7,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton ve yavaş, enerji eksikliği var.",
+        "fix": "Yapay zeka sesinin hızını artırın ve daha dinamik bir ton seçmeye çalışın (varsa). Kelimeler arası duraklamaları kısaltın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler tekrarlayıcı ve konuyu görsel olarak yeterince açıklayıcı değil.",
+        "fix": "Daha çeşitli ve konuyu doğrudan anlatan stok videolar bulun (örn: beyin aktivitesini veya sinyal göndermeyi metaforik olarak gösteren görüntüler). Farklı açılardan ve tiplerde yükseklik görüntüleri kullanın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik, bazen çok fazla metin aynı anda görünüyor ve görsel açıklayıcı grafikler eksik.",
+        "fix": "Anahtar kelimeleri vurgulayarak daha az metin kullanın. Metinlerin ekrana giriş/çıkışını animasyonlarla dinamikleştirin. Beynin sinyalini veya tehlikeyi anlatan basit grafikler (oklar, uyarı işaretleri) ekleyin."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kurgu hızı referansa göre yavaş ve geçişler basit kesimlerden ibaret.",
+        "fix": "Anlatıcının hızına uygun olarak daha hızlı kesimler yapın. Videoyu daha dinamik hale getirmek için aksiyon odaklı veya hızlı geçişler kullanın (otomatik kurgu araçlarında varsa)."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca yeterince merak uyandırıcı değil ve bilginin şaşırtıcılığı tam olarak vurgulanmıyor.",
+        "fix": "Kancayı daha çarpıcı hale getirin (örn: 'Yüksekten bakınca neden atlama hissi gelir? Beyninizin size oynadığı bir oyun olabilir mi?'). Bilgiyi daha kısa ve öz sunarak akışı hızlandırın."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve videonun enerjisini yükseltmiyor; ses efektleri eksik.",
+        "fix": "Daha enerjik ve videonun gizemli/bilimsel havasına uygun bir arka plan müziği seçin. Geçişlere veya anahtar kelimelerin vurgulandığı anlara basit ses efektleri (vınlama, tıklama) ekleyin."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Bazı stok videoların kalitesi düşük veya filigran içeriyor.",
+        "fix": "Yalnızca yüksek çözünürlüklü ve filigransız stok videolar kullanmaya özen gösterin. Pexels ve Pixabay'de yüksek kaliteli seçenekler mevcut."
+      },
+      {
+        "area": "yazı",
+        "problem": "Vurgulanan kelimelerin renkleri tutarsız (bazen sarı, bazen değil).",
+        "fix": "Vurgulama rengini (sarı gibi) tüm videoda tutarlı bir şekilde kullanın."
+      }
+    ],
+    "strengths": [
+      "Konu ilgi çekici",
+      "Bilgi akışı mantıklı",
+      "Kısa format"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
