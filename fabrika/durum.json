@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1162",
+    "views": "1159",
     "reason": null
    }
   },
@@ -146,7 +146,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "6",
+    "views": "0",
     "reason": null
    }
   },
@@ -176,7 +176,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "1",
     "reason": null
    }
   },
@@ -204,6 +204,36 @@
    "at": 1792170628.7529263,
    "chars": 574,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "3",
+    "reason": null
+   }
+  },
+  {
+   "id": "y003",
+   "video_id": "bqFeef1QL08",
+   "url": "https://youtube.com/shorts/bqFeef1QL08",
+   "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If Oxygen Disappeared for 5 Seconds?",
+    "es": "¿Qué Pasaría si el Oxígeno Desapareciera 5 Segundos?",
+    "pt": "E se o Oxigênio Desaparecesse por 5 Segundos?",
+    "ar": "ماذا لو اختفى الأكسجين لمدة 5 ثوانٍ؟",
+    "hi": "क्या हो अगर ऑक्सीजन 5 सेकंड के लिए गायब हो जाए?",
+    "id": "Apa Jadinya Jika Oksigen Hilang Selama 5 Detik?",
+    "fr": "Et Si l'Oxygène Disparaissait Pendant 5 Secondes ?",
+    "de": "Was Wäre, Wenn Sauerstoff für 5 Sekunden Verschwindet?",
+    "ru": "Что Если Кислород Исчезнет на 5 Секунд?",
+    "az": "Oksigen 5 Saniyəlik Yox Olsaydı Nə Baş Verərdi?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792174297.5472274,
+   "chars": 562,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -218,7 +248,8 @@
   "g001",
   "o0002",
   "y002",
-  "n002"
+  "n002",
+  "y003"
  ],
  "extra": [
   {
@@ -291,6 +322,14 @@
    "url": "https://youtube.com/shorts/4GSDZD52uI0",
    "duration": 38.6,
    "chars": 574
+  },
+  {
+   "finished": "2026-10-16T18:11:39+00:00",
+   "mod": "saatlik",
+   "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/bqFeef1QL08",
+   "duration": 37.9,
+   "chars": 562
   }
  ],
  "yorumlar": {
