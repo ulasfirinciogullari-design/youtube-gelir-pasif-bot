@@ -21,7 +21,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy)'
+        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla)'
         required: true
         default: 'video'
         type: choice
@@ -33,6 +33,7 @@ on:
           - 'ses'
           - 'referans'
           - 'sesornek'
+          - 'tiktok'
       gorsel:
         description: 'AI görsel kalitesi (ucuz = Flux Schnell ~0,003 $/görsel, kaliteli = Flux Dev ~0,025 $/görsel)'
         required: false
@@ -70,6 +71,11 @@ on:
         options:
           - 'private'
           - 'delete'
+      kod:
+        description: 'Sadece tiktok: TikTok izin sayfasının gösterdiği kod (boş = izin linki üret)'
+        required: false
+        default: ''
+        type: string
       ses:
         description: 'Sadece deneme: anlatıcı sesi (ElevenLabs voice id; model değiştirmek için sonuna :eleven_v3 gibi ekle; boş = varsayılan)'
         required: false
@@ -155,6 +161,9 @@ jobs:
           SES: ${{ github.event.inputs.ses }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY || secrets.PEXEL_API_KEY }}  # Ulaş saved it as PEXEL_API_KEY
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          KOD: ${{ github.event.inputs.kod }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
@@ -183,6 +192,11 @@ jobs:
           fi
           if [ "$TASK" = "temizlik" ]; then
             python channel_tools.py cleanup --action "$CLEANUP_ACTION" --ids "$VIDEO_IDS"
+            exit $?
+          fi
+          if [ "$TASK" = "tiktok" ]; then
+            # The consent link or the encrypted token lands in channel-data; the backup step commits it.
+            python -m app.services.tiktok login --code "$KOD" --data channel-data
             exit $?
           fi
           if [ "$TASK" = "sesornek" ]; then
