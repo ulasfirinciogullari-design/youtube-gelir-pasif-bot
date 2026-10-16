@@ -4,12 +4,12 @@
   "voice_id": "CwhRBWXzGAHq8TQ4Fs17",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "middle_aged",
-   "descriptive": "classy",
    "language": "en",
-   "use_case": "conversational",
-   "accent": "american"
+   "descriptive": "classy",
+   "gender": "male",
+   "use_case": "conversational"
   },
   "description": "Easy going and perfect for casual conversations."
  },
@@ -18,12 +18,12 @@
   "voice_id": "EXAVITQu4vr4xnSDxMaL",
   "category": "premade",
   "labels": {
-   "gender": "female",
+   "accent": "american",
    "age": "young",
-   "descriptive": "professional",
    "language": "en",
-   "use_case": "entertainment_tv",
-   "accent": "american"
+   "descriptive": "professional",
+   "gender": "female",
+   "use_case": "entertainment_tv"
   },
   "description": "Young adult woman with a confident and warm, mature quality and a reassuring, professional tone."
  },
@@ -32,12 +32,12 @@
   "voice_id": "FGY2WhTYpPnrIDTdsKH5",
   "category": "premade",
   "labels": {
-   "gender": "female",
+   "accent": "american",
    "age": "young",
-   "descriptive": "sassy",
    "language": "en",
-   "use_case": "social_media",
-   "accent": "american"
+   "descriptive": "sassy",
+   "gender": "female",
+   "use_case": "social_media"
   },
   "description": "This young adult female voice delivers sunny enthusiasm with a quirky attitude."
  },
@@ -46,12 +46,12 @@
   "voice_id": "IKne3meq5aSn9XLyUdCD",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "australian",
    "age": "young",
-   "descriptive": "hyped",
    "language": "en",
-   "use_case": "conversational",
-   "accent": "australian"
+   "descriptive": "hyped",
+   "gender": "male",
+   "use_case": "conversational"
   },
   "description": "A young Australian male with a confident and energetic voice."
  },
@@ -60,12 +60,12 @@
   "voice_id": "JBFqnCBsd6RMkjVDRZzb",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "british",
    "age": "middle_aged",
-   "descriptive": "mature",
    "language": "en",
-   "use_case": "narrative_story",
-   "accent": "british"
+   "descriptive": "mature",
+   "gender": "male",
+   "use_case": "narrative_story"
   },
   "description": "Warm resonance that instantly captivates listeners."
  },
@@ -74,11 +74,11 @@
   "voice_id": "N2lVS1w4EtoT3dr4eOWO",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "middle_aged",
    "language": "en",
-   "use_case": "characters_animation",
-   "accent": "american"
+   "gender": "male",
+   "use_case": "characters_animation"
   },
   "description": "Deceptively gravelly, yet unsettling edge."
  },
@@ -87,12 +87,12 @@
   "voice_id": "SAz9YHcvj6GT2YYXdXww",
   "category": "premade",
   "labels": {
-   "gender": "neutral",
+   "accent": "american",
    "age": "middle_aged",
-   "descriptive": "calm",
    "language": "en",
-   "use_case": "conversational",
-   "accent": "american"
+   "descriptive": "calm",
+   "gender": "neutral",
+   "use_case": "conversational"
   },
   "description": "A relaxed, neutral voice ready for narrations or conversational projects."
  },
@@ -101,12 +101,12 @@
   "voice_id": "SOYHLrjzK2X1ezoPC6cr",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "young",
-   "descriptive": "rough",
    "language": "en",
-   "use_case": "characters_animation",
-   "accent": "american"
+   "descriptive": "rough",
+   "gender": "male",
+   "use_case": "characters_animation"
   },
   "description": "An animated warrior ready to charge forward."
  },
@@ -115,12 +115,12 @@
   "voice_id": "TX3LPaxmHKxFdv7VOQHJ",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "young",
-   "descriptive": "confident",
    "language": "en",
-   "use_case": "social_media",
-   "accent": "american"
+   "descriptive": "confident",
+   "gender": "male",
+   "use_case": "social_media"
   },
   "description": "A young adult with energy and warmth - suitable for reels and shorts."
  },
@@ -129,12 +129,12 @@
   "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
   "category": "premade",
   "labels": {
-   "gender": "female",
+   "accent": "british",
    "age": "middle_aged",
-   "descriptive": "professional",
    "language": "en",
-   "use_case": "informative_educational",
-   "accent": "british"
+   "descriptive": "professional",
+   "gender": "female",
+   "use_case": "informative_educational"
   },
   "description": "Clear and engaging, friendly woman with a British accent suitable for e-learning."
  },
@@ -143,12 +143,12 @@
   "voice_id": "XrExE9yKIg1WjnnlVkGX",
   "category": "premade",
   "labels": {
-   "gender": "female",
+   "accent": "american",
    "age": "middle_aged",
-   "descriptive": "upbeat",
    "language": "en",
-   "use_case": "informative_educational",
-   "accent": "american"
+   "descriptive": "upbeat",
+   "gender": "female",
+   "use_case": "informative_educational"
   },
   "description": "A professional woman with a pleasing alto pitch. Suitable for many use cases."
  },
@@ -157,12 +157,12 @@
   "voice_id": "bIHbv24MWmeRgasZH58o",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "young",
-   "descriptive": "chill",
    "language": "en",
-   "use_case": "conversational",
-   "accent": "american"
+   "descriptive": "chill",
+   "gender": "male",
+   "use_case": "conversational"
   },
   "description": "Conversational and laid back."
  },
@@ -171,12 +171,12 @@
   "voice_id": "cgSgspJ2msm6clMCkdW9",
   "category": "premade",
   "labels": {
-   "gender": "female",
+   "accent": "american",
    "age": "young",
-   "descriptive": "cute",
    "language": "en",
-   "use_case": "conversational",
-   "accent": "american"
+   "descriptive": "cute",
+   "gender": "female",
+   "use_case": "conversational"
   },
   "description": "Young and popular, this playful American female voice is perfect for trendy content."
  },
@@ -185,12 +185,12 @@
   "voice_id": "cjVigY5qzO86Huf0OWal",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "middle_aged",
-   "descriptive": "classy",
    "language": "en",
-   "use_case": "conversational",
-   "accent": "american"
+   "descriptive": "classy",
+   "gender": "male",
+   "use_case": "conversational"
   },
   "description": "A smooth tenor pitch from a man in his 40s - perfect for agentic use cases."
  },
@@ -199,12 +199,12 @@
   "voice_id": "hpp4J3VqNfWAUOO0d1Us",
   "category": "premade",
   "labels": {
-   "gender": "female",
+   "accent": "american",
    "age": "middle_aged",
-   "descriptive": "professional",
    "language": "en",
-   "use_case": "informative_educational",
-   "accent": "american"
+   "descriptive": "professional",
+   "gender": "female",
+   "use_case": "informative_educational"
   },
   "description": "This voice is warm, bright, and professional, characterized by a Standard American accent and a polished, narrative quality. It features a medium-high pitch with crisp diction and a deliberate, rhythmic pace that makes it highly intelligible and engaging for long-form listening."
  },
@@ -213,12 +213,12 @@
   "voice_id": "iP95p4xoKVk53GoZ742B",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "middle_aged",
-   "descriptive": "casual",
    "language": "en",
-   "use_case": "conversational",
-   "accent": "american"
+   "descriptive": "casual",
+   "gender": "male",
+   "use_case": "conversational"
   },
   "description": "Natural and real, this down-to-earth voice is great across many use-cases."
  },
@@ -227,12 +227,12 @@
   "voice_id": "nPczCjzI2devNBz1zQrb",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "middle_aged",
-   "descriptive": "classy",
    "language": "en",
-   "use_case": "social_media",
-   "accent": "american"
+   "descriptive": "classy",
+   "gender": "male",
+   "use_case": "social_media"
   },
   "description": "Middle-aged man with a resonant and comforting tone. Great for narrations and advertisements."
  },
@@ -241,12 +241,12 @@
   "voice_id": "onwK4e9ZLuTAKqWW03F9",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "british",
    "age": "middle_aged",
-   "descriptive": "formal",
    "language": "en",
-   "use_case": "informative_educational",
-   "accent": "british"
+   "descriptive": "formal",
+   "gender": "male",
+   "use_case": "informative_educational"
   },
   "description": "A strong voice perfect for delivering a professional broadcast or news story."
  },
@@ -255,12 +255,12 @@
   "voice_id": "pFZP5JQG7iQjIQuC4Bku",
   "category": "premade",
   "labels": {
-   "gender": "female",
+   "accent": "british",
    "age": "middle_aged",
-   "descriptive": "confident",
    "language": "en",
-   "use_case": "informative_educational",
-   "accent": "british"
+   "descriptive": "confident",
+   "gender": "female",
+   "use_case": "informative_educational"
   },
   "description": "Velvety British female voice delivers news and narrations with warmth and clarity."
  },
@@ -269,11 +269,11 @@
   "voice_id": "pNInz6obpgDQGcFmaJgB",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "middle_aged",
    "language": "en",
-   "use_case": "social_media",
-   "accent": "american"
+   "gender": "male",
+   "use_case": "social_media"
   },
   "description": "A bright tenor pitch that immediately cuts through. The delivery is brash and openly confident, speaking with unwavering certainty and a slightly aggressive self-assurance."
  },
@@ -282,12 +282,12 @@
   "voice_id": "pqHfZKP75CvOlQylNhV4",
   "category": "premade",
   "labels": {
-   "gender": "male",
+   "accent": "american",
    "age": "old",
-   "descriptive": "crisp",
    "language": "en",
-   "use_case": "advertisement",
-   "accent": "american"
+   "descriptive": "crisp",
+   "gender": "male",
+   "use_case": "advertisement"
   },
   "description": "Friendly and comforting voice ready to narrate your stories."
  },
@@ -302,71 +302,29 @@
   "description": "Private professional clone of the channel owner Ulaş, from his own long Turkish recording. Awaiting owner voice verification and likeness evaluation."
  },
  {
-  "name": "Alp - Deep & Cinematic Baritone",
-  "voice_id": "HV5rAif1q1ITHdvxqyMw",
+  "name": "Nisa - Encouraging, Friendly and Soft",
+  "voice_id": "bj1uMlYGikistcXNmFoh",
   "category": "professional",
   "labels": {
    "accent": "standard",
-   "age": "middle_aged",
-   "use_case": "narrative_story",
-   "descriptive": "deep",
    "language": "tr",
-   "gender": "male"
+   "use_case": "entertainment_tv",
+   "gender": "female",
+   "descriptive": "pleasant",
+   "age": "young"
   },
-  "description": "A professional-grade, deep, dark, middle-aged male baritone voice. Perfectly calibrated for heavy documentaries, corporate narrations, movie trailers, and high-quality audiobooks. Delivers a cold, authoritative tone with flawless phonetics. Built for absolute retention."
- },
- {
-  "name": "Amelia - Warm, Friendly and Articulate",
-  "voice_id": "1Iy00CVh3yqYLlZBmEFo",
-  "category": "professional",
-  "labels": {
-   "accent": "istanbul",
-   "age": "middle_aged",
-   "use_case": "narrative_story",
-   "descriptive": "casual",
-   "language": "tr",
-   "gender": "female"
-  },
-  "description": "Warm, friendly, and articulate Turkish voice. Perfect for storytelling, educational videos, and English vocabulary lessons. The tone is clear, confident, and emotionally engaging — designed to help listeners learn and connect effortlessly."
- },
- {
-  "name": "BARAN - Warm, narrative & professional tone ",
-  "voice_id": "teHLF0hAua8Ry47noJ1t",
-  "category": "professional",
-  "labels": {
-   "descriptive": "wise",
-   "use_case": "narrative_story",
-   "age": "middle_aged",
-   "accent": "istanbul",
-   "gender": "male",
-   "language": "tr"
-  },
-  "description": "A confident, warm, and articulate voice with a natural professional tone in English & Turkish. Clear pronunciation and balanced pacing make it ideal for corporate narration, e-learning, product explainers, podcasts, and brand communication.The delivery feels authentic and engaging rather than scripted, helping complex ideas sound simple, credible, and human.Well-suited for audiences who value clarity, trust, and a polished yet approachable presence."
- },
- {
-  "name": "Emin - Epic Historical Narrative",
-  "voice_id": "j9K9HnBcmgA6xNWqjlX0",
-  "category": "professional",
-  "labels": {
-   "descriptive": "deep",
-   "use_case": "narrative_story",
-   "language": "tr",
-   "accent": "istanbul",
-   "gender": "male",
-   "age": "old"
-  },
-  "description": "This recording is designed for voice cloning, crafted to capture and reproduce every nuance, tone, and emotion of my voice."
+  "description": "Young female voice that can be used for Turkish promotions and news messages. It can also be used to read advertising texts."
  },
  {
   "name": "Burcu - Young and Inviting Storyteller",
   "voice_id": "ZgndNiUCwSn9oAFrs6rJ",
   "category": "professional",
   "labels": {
+   "accent": "istanbul",
+   "gender": "female",
    "language": "tr",
    "use_case": "informative_educational",
    "descriptive": "formal",
-   "accent": "istanbul",
-   "gender": "female",
    "age": "middle_aged"
   },
   "description": "Professional female voice in her late 30s, born and raised in Istanbul-Türkiye. Trained for voice-over acting. Ideal for corporate, educational, narrated content and more."
@@ -376,124 +334,166 @@
   "voice_id": "QftNgZhlSOYKrYbk7WR7",
   "category": "professional",
   "labels": {
-   "age": "middle_aged",
    "accent": "istanbul",
    "gender": "male",
-   "descriptive": "calm",
    "language": "tr",
-   "use_case": "narrative_story"
+   "use_case": "narrative_story",
+   "descriptive": "calm",
+   "age": "middle_aged"
   },
   "description": "A deep, deep, and trustworthy Turkish male voice. Ideal for documentaries, commercials, poetry, news,  content, podcasts, and educational videos. "
- },
- {
-  "name": "Melek - Dynamic, Energetic and Soft",
-  "voice_id": "xgYIZvUB5h2eFY3HUFNj",
-  "category": "professional",
-  "labels": {
-   "age": "young",
-   "use_case": "social_media",
-   "language": "tr",
-   "accent": "istanbul",
-   "gender": "female",
-   "descriptive": "confident"
-  },
-  "description": "This sound offers listeners a warm and friendly atmosphere. While its fluid and elegant tones leave a sweet melody on the ears, the emotional depth felt in every note attracts the attention of the listeners. This voice, blended with simplicity and sincerity, tells something in every word and attracts people."
- },
- {
-  "name": "Nazlı - Haber - News",
-  "voice_id": "I8PntRGWO35zIGM4lnWO",
-  "category": "professional",
-  "labels": {
-   "age": "middle_aged",
-   "use_case": "informative_educational",
-   "language": "tr",
-   "accent": "istanbul",
-   "gender": "female",
-   "descriptive": "serious"
-  },
-  "description": "A professional Turkish female voice with a clear, neutral, and fluent news delivery. Ideal for breaking news, bulletins, economy updates, and current affairs. Maintains clarity and precision even at fast pacing, ensuring a clean and highly understandable broadcast style."
- },
- {
-  "name": "Nisa - Encouraging, Friendly and Soft",
-  "voice_id": "bj1uMlYGikistcXNmFoh",
-  "category": "professional",
-  "labels": {
-   "age": "young",
-   "accent": "standard",
-   "use_case": "entertainment_tv",
-   "descriptive": "pleasant",
-   "language": "tr",
-   "gender": "female"
-  },
-  "description": "Young female voice that can be used for Turkish promotions and news messages. It can also be used to read advertising texts."
  },
  {
   "name": "Yunus - Charismatic Turkish Male",
   "voice_id": "Q5n6GDIjpN0pLOlycRFT",
   "category": "professional",
   "labels": {
-   "age": "young",
-   "use_case": "conversational",
-   "descriptive": "confident",
    "accent": "istanbul",
+   "language": "tr",
+   "use_case": "conversational",
    "gender": "male",
-   "language": "tr"
+   "descriptive": "confident",
+   "age": "young"
   },
   "description": "A 25-year-old charismatic Turkish male voice with a clear Istanbul accent. Confident, natural, and expressive tone suitable for narration, ads, content creation, podcasts, and storytelling."
  },
  {
-  "name": "Damla - Energetic YouTuber",
-  "voice_id": "A2XgcJ6lQVEFeIaIUyrc",
+  "name": "Nazlı - Haber - News",
+  "voice_id": "I8PntRGWO35zIGM4lnWO",
   "category": "professional",
   "labels": {
-   "age": "young",
    "accent": "istanbul",
+   "language": "tr",
    "gender": "female",
-   "descriptive": "hyped",
-   "language": "tr",
-   "use_case": "social_media"
+   "use_case": "informative_educational",
+   "descriptive": "serious",
+   "age": "middle_aged"
   },
-  "description": "High-energy, engaging voice perfect for videos, vlogs, and fast-paced content. Keeps viewers hooked with a dynamic and enthusiastic tone"
- },
- {
-  "name": "Taner TORUN - Zihne Fısıldayan Adam",
-  "voice_id": "G5sdncpgy3DkDmvKJnFb",
-  "category": "professional",
-  "labels": {
-   "age": "middle_aged",
-   "accent": "istanbul",
-   "gender": "male",
-   "descriptive": "deep",
-   "language": "tr",
-   "use_case": "advertisement"
-  },
-  "description": "The Man Who Whispers to the Mind\nProfessional hypnotic educational Turkish voice — emotional, calm and magnetic.\nDesigned for meditative narration, subconscious programming, and deep learning sessions."
+  "description": "A professional Turkish female voice with a clear, neutral, and fluent news delivery. Ideal for breaking news, bulletins, economy updates, and current affairs. Maintains clarity and precision even at fast pacing, ensuring a clean and highly understandable broadcast style."
  },
  {
   "name": "OzgurBABAL - Deep Warm Turkish Voice",
   "voice_id": "Mcb3pz5eWjKXcBhMLF4v",
   "category": "professional",
   "labels": {
-   "language": "tr",
    "use_case": "advertisement",
-   "descriptive": "deep",
-   "accent": "standard",
    "gender": "male",
+   "accent": "standard",
+   "language": "tr",
+   "descriptive": "deep",
    "age": "middle_aged"
   },
   "description": "20+ years of professional voiceover experience. A deep, warm, authoritative, and engaging male voice. Perfect for commercials, corporate videos, audiobooks, e-learning, content, and documentaries."
+ },
+ {
+  "name": "Emin - Epic Historical Narrative",
+  "voice_id": "j9K9HnBcmgA6xNWqjlX0",
+  "category": "professional",
+  "labels": {
+   "accent": "istanbul",
+   "language": "tr",
+   "use_case": "narrative_story",
+   "gender": "male",
+   "age": "old",
+   "descriptive": "deep"
+  },
+  "description": "This recording is designed for voice cloning, crafted to capture and reproduce every nuance, tone, and emotion of my voice."
+ },
+ {
+  "name": "Alp - Deep & Cinematic Baritone",
+  "voice_id": "HV5rAif1q1ITHdvxqyMw",
+  "category": "professional",
+  "labels": {
+   "accent": "standard",
+   "gender": "male",
+   "use_case": "narrative_story",
+   "language": "tr",
+   "descriptive": "deep",
+   "age": "middle_aged"
+  },
+  "description": "A professional-grade, deep, dark, middle-aged male baritone voice. Perfectly calibrated for heavy documentaries, corporate narrations, movie trailers, and high-quality audiobooks. Delivers a cold, authoritative tone with flawless phonetics. Built for absolute retention."
+ },
+ {
+  "name": "BARAN - Warm, narrative & professional tone ",
+  "voice_id": "teHLF0hAua8Ry47noJ1t",
+  "category": "professional",
+  "labels": {
+   "use_case": "narrative_story",
+   "gender": "male",
+   "language": "tr",
+   "accent": "istanbul",
+   "age": "middle_aged",
+   "descriptive": "wise"
+  },
+  "description": "A confident, warm, and articulate voice with a natural professional tone in English & Turkish. Clear pronunciation and balanced pacing make it ideal for corporate narration, e-learning, product explainers, podcasts, and brand communication.The delivery feels authentic and engaging rather than scripted, helping complex ideas sound simple, credible, and human.Well-suited for audiences who value clarity, trust, and a polished yet approachable presence."
+ },
+ {
+  "name": "Taner TORUN - Zihne Fısıldayan Adam",
+  "voice_id": "G5sdncpgy3DkDmvKJnFb",
+  "category": "professional",
+  "labels": {
+   "accent": "istanbul",
+   "language": "tr",
+   "gender": "male",
+   "use_case": "advertisement",
+   "age": "middle_aged",
+   "descriptive": "deep"
+  },
+  "description": "The Man Who Whispers to the Mind\nProfessional hypnotic educational Turkish voice — emotional, calm and magnetic.\nDesigned for meditative narration, subconscious programming, and deep learning sessions."
+ },
+ {
+  "name": "Amelia - Warm, Friendly and Articulate",
+  "voice_id": "1Iy00CVh3yqYLlZBmEFo",
+  "category": "professional",
+  "labels": {
+   "use_case": "narrative_story",
+   "language": "tr",
+   "accent": "istanbul",
+   "gender": "female",
+   "descriptive": "casual",
+   "age": "middle_aged"
+  },
+  "description": "Warm, friendly, and articulate Turkish voice. Perfect for storytelling, educational videos, and English vocabulary lessons. The tone is clear, confident, and emotionally engaging — designed to help listeners learn and connect effortlessly."
+ },
+ {
+  "name": "Melek - Dynamic, Energetic and Soft",
+  "voice_id": "xgYIZvUB5h2eFY3HUFNj",
+  "category": "professional",
+  "labels": {
+   "use_case": "social_media",
+   "language": "tr",
+   "gender": "female",
+   "accent": "istanbul",
+   "age": "young",
+   "descriptive": "confident"
+  },
+  "description": "This sound offers listeners a warm and friendly atmosphere. While its fluid and elegant tones leave a sweet melody on the ears, the emotional depth felt in every note attracts the attention of the listeners. This voice, blended with simplicity and sincerity, tells something in every word and attracts people."
+ },
+ {
+  "name": "Damla - Energetic YouTuber",
+  "voice_id": "A2XgcJ6lQVEFeIaIUyrc",
+  "category": "professional",
+  "labels": {
+   "use_case": "social_media",
+   "gender": "female",
+   "language": "tr",
+   "accent": "istanbul",
+   "descriptive": "hyped",
+   "age": "young"
+  },
+  "description": "High-energy, engaging voice perfect for videos, vlogs, and fast-paced content. Keeps viewers hooked with a dynamic and enthusiastic tone"
  },
  {
   "name": "Mustafa Silici - Calm, Warm, Intimate",
   "voice_id": "WtOce4YK0dDSxlVlSdBh",
   "category": "professional",
   "labels": {
-   "descriptive": "professional",
-   "use_case": "social_media",
-   "language": "tr",
    "accent": "tr-istanbul",
+   "language": "tr",
    "gender": "male",
-   "age": "middle_aged"
+   "use_case": "social_media",
+   "age": "middle_aged",
+   "descriptive": "professional"
   },
   "description": "A calm, warm Turkish male voice with intimate, trustworthy delivery, natural pacing, and clear Istanbul diction. Best for social storytelling, premium brand content, wellness, podcasts, heartfelt reels, and conversational experiences."
  }
