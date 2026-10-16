@@ -234,3 +234,17 @@ def test_workflow_keeps_one_watch_with_write_access_and_time_to_hand_over():
     # The last check can come up to an hour before RUN_FOR ends; the job must outlive RUN_FOR and stay under 6 h.
     assert slot_heartbeat.RUN_FOR + timedelta(minutes=10) <= timedelta(minutes=timeout) <= timedelta(hours=6)
     assert "python3 scripts/slot_heartbeat.py" in workflow
+
+
+def test_shorts_workflow_treats_watch_runs_like_cron_ticks():
+    # Gated again when the job starts (a late cron run may have filled the slot meanwhile) and published with
+    # the repository's PUBLISH_PRIVACY and CONTENT_FORMAT instead of manual-run inputs.
+    workflow = (original_factory.BASE_DIR / ".github" / "workflows" / slot_heartbeat.SHORTS_WORKFLOW).read_text(
+        encoding="utf-8")
+    watch_run = f"github.actor == '{slot_heartbeat.BOT}'"
+    env = dict(re.findall(r"^\s+([A-Z_]+): (\$\{\{.*\}\})", workflow, re.M))
+    assert env["EVENT_NAME"] == ("${{ (github.event_name == 'schedule' || " + watch_run
+                                 + ") && 'schedule' || github.event_name }}")
+    assert env["PRIVACY"].startswith("${{ (github.event_name == 'schedule' || " + watch_run + ") && (vars.PUBLISH_PRIVACY")
+    assert env["CONTENT_FORMAT"].startswith(f"${{{{ github.actor != '{slot_heartbeat.BOT}' && github.event.inputs.format")
+    assert set(slot_heartbeat.SHORTS_INPUTS) == {"task"}

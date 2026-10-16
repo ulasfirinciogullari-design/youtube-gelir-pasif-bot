@@ -13,9 +13,9 @@ a broken chain restarts with the next cron tick or hand dispatch.
 A check starts a Short only when all of these hold:
   - no run of the Shorts workflow is queued or in progress (a cron tick or a hand dispatch is already on it);
   - slot_gate.decide() says go, with this watch's own dispatches in the slot counted like scheduled ticks:
-    they skip the workflow's own gate (manual runs always go ahead), so one that got through the produce
-    step fills the slot and two failures leave it for the next one.
-Any API error means no dispatch for that check.
+    one that got through the produce step fills the slot and two failures leave it for the next one.
+Any API error means no dispatch for that check. The Shorts workflow runs the gate once more when the
+dispatched job starts, because a late cron run can be queued between this check and the dispatch.
 
 The repository is public, so the waiting runner costs no Actions minutes. Standard library only.
 
@@ -38,7 +38,9 @@ CHECK_MINUTES = (25, 45)  # the Claude dispatcher fires at :20, so :25 finds its
 RUN_FOR = timedelta(hours=5, minutes=40)
 SHORTS_WORKFLOW = slot_gate.WORKFLOW_FILE
 WATCH_WORKFLOW = "slot_heartbeat.yml"
-SHORTS_INPUTS = {"task": "video", "privacy": "public", "format": "merak"}
+# Privacy and format follow the repository settings (PUBLISH_PRIVACY, CONTENT_FORMAT) as for a cron tick: the
+# Shorts workflow treats runs whose actor is BOT like scheduled ones and gates them again when they start.
+SHORTS_INPUTS = {"task": "video"}
 BOT = "github-actions[bot]"  # the actor of every run started with the job's GITHUB_TOKEN
 HANDOVER_ATTEMPTS = 3
 
