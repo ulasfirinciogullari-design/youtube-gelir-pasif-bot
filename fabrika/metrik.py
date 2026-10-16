@@ -7,7 +7,9 @@ and where the views came from (Shorts feed, search, channel page...). YouTube fi
 one to three days, so the newest episodes show up later. Without the permission it only records which
 permissions the key has, so a missing re-authorisation is visible in the file.
 """
+import hashlib
 import json
+import os
 import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -36,6 +38,28 @@ def report(access, **params):
     return [dict(zip(names, row)) for row in d.get("rows", [])]
 
 
+def key_info():
+    """Access token plus what Google says about the key: a key made while the app was in Testing comes back with
+    refresh_token_expires_in (it dies after 7 days); a published app's key has no such field. `parmak_izi` is the
+    first 8 hex digits of the key's SHA-256, enough to see that the secret was replaced, useless for anything else."""
+    rt = os.environ.get("YA_YT_REFRESH_TOKEN", "").strip()
+    r = requests.post(Y.TOKEN_URL, timeout=30, data={
+        "client_id": os.environ.get("YA_YT_CLIENT_ID", "").strip(),
+        "client_secret": os.environ.get("YA_YT_CLIENT_SECRET", "").strip(),
+        "refresh_token": rt, "grant_type": "refresh_token"})
+    if not r.ok:
+        raise RuntimeError(f"anahtar reddedildi ({r.status_code}): {r.text[:300]}")
+    d = r.json()
+    info = {"parmak_izi": hashlib.sha256(rt.encode()).hexdigest()[:8]}
+    if "refresh_token_expires_in" in d:
+        days = int(d["refresh_token_expires_in"]) / 86400
+        info["bitis"] = (datetime.now(timezone.utc) + timedelta(days=days)).isoformat(timespec="minutes")
+        info["kalan_gun"] = round(days, 1)
+    else:
+        info["bitis"] = "Google süre bildirmedi"
+    return d["access_token"], info
+
+
 def scopes(access):
     r = requests.get("https://oauth2.googleapis.com/tokeninfo", params={"access_token": access}, timeout=30)
     return sorted(s.rsplit("/", 1)[-1] for s in r.json().get("scope", "").split()) if r.ok else []
@@ -44,9 +68,9 @@ def scopes(access):
 def main():
     out = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     try:
-        access = Y.token()
-        if not access:
+        if not os.environ.get("YA_YT_REFRESH_TOKEN"):
             raise RuntimeError("YA_YT_* anahtarları yok")
+        access, out["anahtar"] = key_info()
         out["scopes"] = scopes(access)
         if "yt-analytics.readonly" not in out["scopes"]:
             out["skipped"] = "anahtarda yt-analytics.readonly izni yok, OAuth yeniden yapılmalı"
