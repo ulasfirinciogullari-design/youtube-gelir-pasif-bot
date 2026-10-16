@@ -2,7 +2,7 @@ name: YA OLSAYDI fabrika (elle)
 
 # A manual factory run from this branch: push a change to fabrika/tetik.txt whose first word is
 # deneme (video kept in fabrika/deneme/, no upload), zorla (upload now), yorum (answer new comments now)
-# or yorumdeneme (write comment replies into fabrika/yorum_rapor.json, post nothing). The hourly run lives on main
+# yorumdeneme (write comment replies into fabrika/yorum_rapor.json, post nothing) or metrik (fabrika/metrikler.json). The hourly run lives on main
 # (.github/workflows/ya_olsaydi_saatlik.yml) and runs the same fabrika/calistir.sh from this branch.
 on:
   push:

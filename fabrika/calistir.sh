@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs one factory tick on GitHub Actions: comment replies -> gate -> tools -> episode -> commit the outcome.
-# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme
+# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik
 set -uo pipefail
 MOD="${1:-saatlik}"
 cd "$(dirname "$0")/.."
@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 push() {
   git config user.name "ya-olsaydi-bot"
   git config user.email "ya-olsaydi-bot@users.noreply.github.com"
-  git add fabrika/durum.json fabrika/rapor.json fabrika/yorum_rapor.json 2>/dev/null || true
+  git add fabrika/durum.json fabrika/rapor.json fabrika/yorum_rapor.json fabrika/metrikler.json 2>/dev/null || true
   git add fabrika/bolumler fabrika/ses fabrika/deneme 2>/dev/null || true
   git commit -q -m "$1 [skip ci]" || { echo "değişiklik yok"; return 0; }
   for i in 1 2 3; do
@@ -17,8 +17,15 @@ push() {
   done
 }
 
+if [ "$MOD" = "metrik" ]; then
+  pip install -q requests
+  out=$(python3 fabrika/metrik.py | tail -n 1); echo "$out"
+  push "$out"; exit 0
+fi
+
 case "$MOD" in saatlik|yorum|yorumdeneme)
   pip install -q requests
+  [ "$MOD" = "saatlik" ] && python3 fabrika/metrik.py
   flag=""; [ "$MOD" = "yorumdeneme" ] && flag="--deneme"
   python3 fabrika/yorum.py $flag | tee fabrika/_yorum.out
   out=$(tail -n 1 fabrika/_yorum.out)
