@@ -1,0 +1,285 @@
+{
+  "topic_id": "mk-030",
+  "topic": "Fil hafızası gerçek mi, filler gerçekten hiç unutmaz mı?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Filler Neden Asla Unutmaz? 🐘",
+  "hook_text": "FİL HAFIZASI EFSANE Mİ?",
+  "description": "Filler neden asla unutmaz?\n\nFiller, su kaynaklarının yerini onlarca yıl sonra bile hatırlayabilir. Su kaynaklarını, tehlikeli bölgeleri ve aile üyelerini yıllarca hatırlamaları hayatta kalmaları için çok önemli. Hatta bir fil, 23 yıl sonra eski bakıcısını bile tanıyabilir.\n\nSence filler en çok neyi hatırlar: Yiyecek mi, Yüzleri mi?\n\n#fil #filhafızası #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-030",
+  "tags": [
+    "fil",
+    "fil hafızası",
+    "filler unutur mu",
+    "fil neden unutmaz",
+    "fil hafızası gerçek mi",
+    "fil ne kadar hatırlar",
+    "hayvan hafızası",
+    "fil bakıcısını tanır mı",
+    "filler hakkında bilgiler",
+    "fil gerçekleri",
+    "hayvanlar alemi",
+    "doğa belgeseli",
+    "hayvanlar",
+    "bilim",
+    "ilginç bilgiler",
+    "shorts",
+    "merak",
+    "eğitici",
+    "bilgi",
+    "neden",
+    "elephant",
+    "elephant memory",
+    "animal memory",
+    "filler",
+    "belgesel",
+    "bilimsel gerçekler",
+    "doğa",
+    "vahşi yaşam",
+    "merak ettikleriniz",
+    "keşif vakti",
+    "fil hafizasi",
+    "fil hafizasi gercek mi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Elephants Never Forget? 🐘",
+      "description": "Do elephants truly never forget?\nThese magnificent creatures can remember water sources for decades and even recognize their former caretakers after 23 years. Their incredible memory is vital for their survival in the wild.\nWhat do you think elephants remember most: Food or Faces?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "es": {
+      "title": "¿Por qué los elefantes nunca olvidan? 🐘",
+      "description": "¿Es verdad que los elefantes tienen una memoria prodigiosa?\nPueden recordar fuentes de agua durante décadas y hasta reconocer a sus cuidadores después de 23 años. Esta increíble capacidad es crucial para su supervivencia.\n¿Qué crees que recuerdan más los elefantes: comida o caras?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "pt": {
+      "title": "Por que os elefantes nunca esquecem? 🐘",
+      "description": "A memória dos elefantes é realmente lendária?\nEsses animais conseguem lembrar a localização de fontes de água por décadas e até reconhecem seus antigos cuidadores após 23 anos. Essa habilidade é vital para sua sobrevivência.\nNa sua opinião, o que os elefantes lembram mais: Comida ou Rostos?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "de": {
+      "title": "Warum vergessen Elefanten nie? 🐘",
+      "description": "Vergessen Elefanten wirklich nie etwas?\nSie können Wasserquellen jahrzehntelang erinnern und sogar ihre ehemaligen Pfleger nach 23 Jahren wiedererkennen. Dieses erstaunliche Gedächtnis ist entscheidend für ihr Überleben.\nWas denkst du, erinnern sich Elefanten am besten an: Futter oder Gesichter?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "fr": {
+      "title": "Pourquoi les éléphants n'oublient jamais ? 🐘",
+      "description": "La mémoire des éléphants est-elle un mythe ou une réalité ?\nCes géants peuvent se souvenir des points d'eau pendant des décennies et même reconnaître leurs anciens soigneurs après 23 ans. Cette capacité est essentielle à leur survie.\nSelon toi, de quoi les éléphants se souviennent-ils le plus : de la nourriture ou des visages ?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "it": {
+      "title": "Perché gli elefanti non dimenticano mai? 🐘",
+      "description": "È vero che gli elefanti non dimenticano mai?\nSono capaci di ricordare le fonti d'acqua per decenni e possono riconoscere i loro ex custodi anche dopo 23 anni. Questa memoria incredibile è vitale per la loro sopravvivenza.\nSecondo te, gli elefanti ricordano di più: il cibo o i volti?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "ru": {
+      "title": "Почему слоны никогда ничего не забывают? 🐘",
+      "description": "Правда ли, что слоны обладают феноменальной памятью?\nОни могут помнить источники воды десятилетиями и даже узнавать своих бывших смотрителей спустя 23 года. Эта невероятная способность жизненно важна для их выживания.\nКак вы думаете, что слоны помнят лучше всего: еду или лица?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "ar": {
+      "title": "لماذا لا تنسى الفيلة أبدًا؟ 🐘",
+      "description": "هل ذاكرة الفيل الأسطورية حقيقية؟\nيمكن لهذه المخلوقات الرائعة أن تتذكر مصادر المياه لعقود، بل وتتعرف على مقدمي الرعاية السابقين بعد 23 عامًا. هذه الذاكرة المذهلة ضرورية لبقائها.\nفي رأيك، ماذا تتذكر الفيلة أكثر: الطعام أم الوجوه؟\n\n#shorts\n\nSeri: mk-030"
+    },
+    "hi": {
+      "title": "हाथी कभी क्यों नहीं भूलते? 🐘",
+      "description": "क्या हाथियों की याददाश्त वाकई इतनी अच्छी होती है?\nये जानवर दशकों तक पानी के स्रोतों को याद रख सकते हैं और 23 साल बाद भी अपने पुराने रखवालों को पहचान सकते हैं। यह अद्भुत याददाश्त उनके अस्तित्व के लिए महत्वपूर्ण है।\nआपके अनुसार, हाथी सबसे ज़्यादा क्या याद रखते हैं: खाना या चेहरे?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "id": {
+      "title": "Mengapa Gajah Tidak Pernah Lupa? 🐘",
+      "description": "Benarkah gajah memiliki daya ingat yang luar biasa?\nMereka bisa mengingat sumber air selama puluhan tahun dan bahkan mengenali penjaga lamanya setelah 23 tahun. Memori luar biasa ini sangat penting untuk kelangsungan hidup mereka.\nMenurutmu, apa yang paling diingat gajah: Makanan atau Wajah?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "ja": {
+      "title": "なぜゾウは決して忘れないのか？ 🐘",
+      "description": "ゾウの記憶力は本当にすごいのでしょうか？\n彼らは何十年も水源の場所を覚え、23年後に以前の飼育員を認識することさえできます。この驚異的な記憶力は、彼らの生存にとって非常に重要です。\nゾウが最も覚えているのは何だと思いますか？食べ物ですか、それとも顔ですか？\n\n#shorts\n\nSeri: mk-030"
+    },
+    "ko": {
+      "title": "코끼리는 왜 절대 잊지 않을까요? 🐘",
+      "description": "코끼리 기억력은 정말 전설적일까요?\n이들은 수십 년 동안 수원지를 기억하고, 심지어 23년 후에도 이전 사육사를 알아볼 수 있습니다. 이 놀라운 기억력은 생존에 매우 중요합니다.\n코끼리가 가장 잘 기억하는 것은 무엇이라고 생각하세요? 음식일까요, 아니면 얼굴일까요?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "pl": {
+      "title": "Dlaczego słonie nigdy nie zapominają? 🐘",
+      "description": "Czy to prawda, że słonie nigdy niczego nie zapominają?\nPotrafią pamiętać źródła wody przez dziesięciolecia, a nawet rozpoznać swoich dawnych opiekunów po 23 latach. Ta niezwykła pamięć jest kluczowa dla ich przetrwania.\nCo Twoim zdaniem słonie pamiętają najlepiej: jedzenie czy twarze?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "nl": {
+      "title": "Waarom olifanten nooit vergeten? 🐘",
+      "description": "Vergeten olifanten werkelijk nooit iets?\nZe kunnen waterbronnen tientallen jaren onthouden en herkennen zelfs hun oude verzorgers na 23 jaar. Dit ongelooflijke geheugen is van vitaal belang voor hun overleving.\nWat denken jullie dat olifanten het best onthouden: voedsel of gezichten?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "uk": {
+      "title": "Чому слони ніколи не забувають? 🐘",
+      "description": "Чи правда, що слони мають феноменальну пам'ять?\nВони можуть пам'ятати джерела води десятиліттями і навіть впізнавати своїх колишніх доглядачів через 23 роки. Ця неймовірна здатність є життєво важливою для їхнього виживання.\nЯк ви думаєте, що слони пам'ятають найкраще: їжу чи обличчя?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "vi": {
+      "title": "Tại sao voi không bao giờ quên? 🐘",
+      "description": "Trí nhớ của loài voi có thật sự phi thường đến vậy?\nChúng có thể nhớ vị trí nguồn nước hàng thập kỷ và thậm chí nhận ra người chăm sóc cũ sau 23 năm. Khả năng ghi nhớ này rất quan trọng cho sự sống còn của chúng.\nBạn nghĩ voi nhớ nhất điều gì: Thức ăn hay Khuôn mặt?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "az": {
+      "title": "Fillər niyə heç vaxt unutmur? 🐘",
+      "description": "Fillərin yaddaşı həqiqətənmi bu qədər güclüdür?\nOnlar su mənbələrini onilliklər boyu xatırlaya, hətta 23 il sonra köhnə baxıcılarını tanıya bilərlər. Bu inanılmaz yaddaş onların sağ qalması üçün çox vacibdir.\nSizcə, fillər ən çox nəyi xatırlayır: Yeməyi, yoxsa Üzləri?\n\n#shorts\n\nSeri: mk-030"
+    },
+    "ro": {
+      "title": "De ce elefanții nu uită niciodată? 🐘",
+      "description": "Este adevărat că elefanții nu uită niciodată?\nEi pot reține locația surselor de apă zeci de ani și chiar își recunosc foștii îngrijitori după 23 de ani. Această memorie incredibilă este vitală pentru supraviețuirea lor.\nCe crezi că rețin elefanții cel mai bine: mâncarea sau fețele?\n\n#shorts\n\nSeri: mk-030"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence filler en çok neyi hatırlar: Yiyecek mi, Yüzleri mi?",
+  "scenes": [
+    {
+      "text": "Bu filler, su kaynaklarının yerini onlarca yıl sonra bile hatırlayabilir.",
+      "visual": "A herd of elephants walking in a dry, open savanna.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 1
+        },
+        {
+          "n": 14,
+          "kare": 2
+        },
+        {
+          "n": 40,
+          "kare": 3
+        }
+      ],
+      "callout": "ONLARCA YIL SONRA"
+    },
+    {
+      "text": "Fillerin bu inanılmaz hafızası hayatta kalmaları için çok önemli.",
+      "visual": "Elephants, including calves, walking in a natural, grassy landscape.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 30,
+          "kare": 1
+        },
+        {
+          "n": 31,
+          "kare": 2
+        },
+        {
+          "n": 28,
+          "kare": 3
+        }
+      ]
+    },
+    {
+      "text": "Çünkü su kaynaklarının yerini, tehlikeli bölgeleri ve aile üyelerini yıllarca hatırlarlar.",
+      "visual": "Elephants interacting socially, a mother and calf, and an elephant foraging in bushes.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 1
+        },
+        {
+          "n": 37,
+          "kare": 2
+        },
+        {
+          "n": 8,
+          "kare": 1
+        }
+      ],
+      "callout": "SU KAYNAKLARI"
+    },
+    {
+      "text": "Hatta bir fil, 23 yıl sonra eski bakıcısını bile tanıyabilir.",
+      "visual": "Elephants interacting with people, one putting a garland on a person.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 11,
+          "kare": 1
+        },
+        {
+          "n": 36,
+          "kare": 2
+        },
+        {
+          "n": 1,
+          "kare": 2
+        }
+      ],
+      "callout": "23 YIL SONRA"
+    },
+    {
+      "text": "Gerçek fil hafızası, efsanelerden çok daha fazlası.",
+      "visual": "Elephants walking gracefully in a vast, natural environment.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 15,
+          "kare": 1
+        },
+        {
+          "n": 23,
+          "kare": 2
+        },
+        {
+          "n": 10,
+          "kare": 3
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 16.06,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının sesi monoton ve enerjisiz, yapay zeka olduğu çok belli.",
+        "fix": "Daha dinamik ve doğal tonlamalara sahip bir yapay zeka sesi modeli seçin. Hız ve vurgu ayarlarını kullanarak daha insan benzeri bir akış sağlayın."
+      },
+      {
+        "area": "ekrandaki yazılar ve grafikler",
+        "problem": "Bilgiyi destekleyen açıklayıcı grafikler veya animasyonlar eksik.",
+        "fix": "Anahtar bilgileri (örneğin, su kaynaklarının yerini hatırlama, tehlikeli bölgeler) görsel olarak desteklemek için basit animasyonlu oklar, vurgular veya harita benzeri grafikler ekleyin. Ücretsiz stok grafik öğeleri kullanılabilir."
+      },
+      {
+        "area": "ekrandaki yazılar ve grafikler",
+        "problem": "Ekrandaki yazılar statik, bazen çok uzun ve dinamik değil.",
+        "fix": "Yazıları daha kısa, anahtar kelimelerle sınırlayın. Yazıların anlatıcıyla senkronize olarak dinamik bir şekilde (örneğin, belirginleşerek, kayarak) ekrana gelip gitmesini sağlayın. Önemli kelimeleri farklı renk veya boyutla vurgulayın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Kullanılan stok görüntüler konuyu genel olarak yansıtsa da, anlatılan spesifik bilgileri (örneğin, 23 yıl sonra bakıcıyı tanıma) doğrudan ve etkileyici bir şekilde görselleştirmekte yetersiz kalıyor.",
+        "fix": "Pexels veya Pixabay gibi platformlarda daha spesifik ve anlatılan olayı doğrudan gösteren görüntüler arayın (örneğin, bir filin su kaynağı bulması, bir insanla etkileşimi). Farklı açılardan (yakın çekim, orta çekim) ve çeşitli eylemleri gös"
+      },
+      {
+        "area": "kurgu ve geçişler",
+        "problem": "Kurgu hızı referans videoya göre daha yavaş ve geçişler basit.",
+        "fix": "Kesmeleri daha sık ve dinamik hale getirin, anlatıcının vurgularına ve cümle sonlarına daha iyi denk getirin. Otomatik kurgu araçlarının sunduğu en dinamik geçiş seçeneklerini kullanın veya hızlı kesmelerle akışı hızlandırın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca (hook) yeterince merak uyandırıcı değil ve bilginin şaşırtıcılığı daha iyi vurgulanabilir.",
+        "fix": "Giriş cümlesini daha çarpıcı hale getirin, fil hafızasının bilinen bir efsaneden öte, bilimsel olarak ne kadar inanılmaz olduğunu vurgulayın. Özellikle '23 yıl sonra bakıcıyı tanıma' gibi en şaşırtıcı bilgiyi daha erken veya daha etkili bir"
+      },
+      {
+        "area": "ses",
+        "problem": "Video boyunca ses efektleri (SFX) kullanılmamış.",
+        "fix": "Yazıların ekrana gelmesi veya önemli anlar için hafif ses efektleri (whoosh, pop) ekleyin. Arka plan müziğine ek olarak, fil sesleri veya doğal ortam sesleri gibi ambiyans efektleri kullanarak videoyu daha sürükleyici hale getirin."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz bir formatta bilgi sunuyor.",
+      "Mesajı net ve anlaşılır."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

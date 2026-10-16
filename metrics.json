@@ -1,5 +1,15 @@
 [
   {
+    "video_id": "4gAkxCV7MaA",
+    "topic_id": "mk-035",
+    "title": "Devenin hörgücünde gerçekten ne var? 🤔",
+    "published_at": "2026-10-16T09:36:29Z",
+    "privacy": "public",
+    "views": 1,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "C0nA-448ifg",
     "topic_id": "mk-034",
     "title": "Zebraların Sırrı: Çizgiler Neden Var? 🦓",
@@ -15,8 +25,8 @@
     "title": "Köpekbalıkları Neden Durursa Boğulur? 🦈",
     "published_at": "2026-10-16T07:26:41Z",
     "privacy": "public",
-    "views": 39,
-    "likes": 1,
+    "views": 489,
+    "likes": 3,
     "comments": 1
   },
   {
@@ -25,8 +35,8 @@
     "title": "Kolibriler havada nasıl asılı kalır? 😮",
     "published_at": "2026-10-16T06:25:04Z",
     "privacy": "public",
-    "views": 544,
-    "likes": 6,
+    "views": 638,
+    "likes": 10,
     "comments": 1
   },
   {
@@ -35,7 +45,7 @@
     "title": "Zürafalar Neden Bayılmaz? İnanılmaz Bir Adaptasyon! 🦒",
     "published_at": "2026-10-16T05:28:03Z",
     "privacy": "public",
-    "views": 1072,
+    "views": 1366,
     "likes": 6,
     "comments": 1
   },
@@ -45,7 +55,7 @@
     "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
     "published_at": "2026-10-16T04:39:13Z",
     "privacy": "public",
-    "views": 1129,
+    "views": 1311,
     "likes": 5,
     "comments": 2
   },
@@ -55,8 +65,8 @@
     "title": "Flamingolar neden bu kadar pembeler? 💖",
     "published_at": "2026-10-16T01:43:10Z",
     "privacy": "public",
-    "views": 1416,
-    "likes": 11,
+    "views": 1499,
+    "likes": 12,
     "comments": 1
   },
   {
@@ -65,7 +75,7 @@
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 1078,
+    "views": 1080,
     "likes": 11,
     "comments": 1
   },
@@ -85,10 +95,10 @@
     "title": "Kutup Ayılarının Kürkü Aslında Beyaz Değil! 😮",
     "published_at": "2026-10-15T18:43:11Z",
     "privacy": "public",
-    "views": 1021,
+    "views": 1023,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 68.84
+    "views_per_hour": 65.35
   },
   {
     "video_id": "WADWjFRfYYw",
@@ -96,10 +106,10 @@
     "title": "Uçak Camları Neden Yuvarlak Olmak Zorunda? 🪟",
     "published_at": "2026-10-15T14:51:33Z",
     "privacy": "public",
-    "views": 997,
+    "views": 998,
     "likes": 4,
     "comments": 1,
-    "views_per_hour": 53.34
+    "views_per_hour": 51.14
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -107,10 +117,10 @@
     "title": "İnsan kendini neden gıdıklayamaz? 🧠 #shorts",
     "published_at": "2026-10-15T09:46:53Z",
     "privacy": "public",
-    "views": 1162,
+    "views": 1163,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 48.89
+    "views_per_hour": 47.29
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -121,7 +131,7 @@
     "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 25.57
+    "views_per_hour": 25.0
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -129,10 +139,10 @@
     "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
     "published_at": "2026-10-14T19:12:05Z",
     "privacy": "public",
-    "views": 1101,
+    "views": 1105,
     "likes": 18,
     "comments": 1,
-    "views_per_hour": 28.71
+    "views_per_hour": 28.21
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -143,7 +153,7 @@
     "views": 1477,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 34.53
+    "views_per_hour": 33.88
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -154,6 +164,6 @@
     "views": 381,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 6.58
+    "views_per_hour": 6.49
   }
 ]
