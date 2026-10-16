@@ -1,0 +1,38 @@
+{
+ "started": "2026-10-16T21:38:26+00:00",
+ "deneme": true,
+ "threads": 66,
+ "reply_threads_read": 7,
+ "new": 3,
+ "quiet": 5,
+ "sent_last_24h": 0,
+ "room": 10,
+ "model": "gemini-2.5-flash",
+ "items": [
+  {
+   "id": "Ugyt440YW6MborsRWUZ4AaABAg",
+   "kind": "comment",
+   "video": "up7HtLq5fk4",
+   "comment": "Saate bakması gerektiğindede bomba ne zaman patlıycak diye mesela pantolnuna taktktıiı saate bakıyprdu bir sahnede",
+   "reply": "O sahneyi hatırladım! Gerçekten ilginç bir detaydı, dikkatli bir gözlem olmuş. 🤔",
+   "result": "deneme, gönderilmedi"
+  },
+  {
+   "id": "Ugx4yuxzNIkQmVj4bkd4AaABAg",
+   "kind": "comment",
+   "video": "kdEbtK5fwQQ",
+   "comment": "░░░░░░▄▄ ░░░░░█░░█ ▄▄▄▄▄█░░█▄▄▄ ▓▓▓▓█░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ███▀▀▀███████ ╱╱┏╮╱╱╱╱╱╱╱╱╱╱ ╱╱┃┃╱╱┳╱┓┳╭┛┳┓ ▉━╯┗━╮┃╱┃┣┻╮┣╱ ▉┈┈┈┈┃┻┛┛┻",
+   "result": "atlandı",
+   "why": "Gibberish/ASCII art comment."
+  },
+  {
+   "id": "Ugy9r-eDkqcVbdPr_yV4AaABAg.AbowSuOLN8NAbsGGmykls5",
+   "kind": "answer",
+   "video": "ttnTksT5RFo",
+   "comment": "1",
+   "reply": "@GörkemTemel-e6w Tony Montana'nın masanın gerçek sahibi olduğunu düşünüyorsun yani! Kararlı bir seçim. Peki sence onu bu kadar güçlü yapan neydi? 💪",
+   "result": "deneme, gönderilmedi"
+  }
+ ],
+ "finished": "2026-10-16T21:38:34+00:00"
+}
