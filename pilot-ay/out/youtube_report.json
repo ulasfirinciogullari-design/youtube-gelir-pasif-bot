@@ -6,5 +6,16 @@
   "subscribers": "0",
   "videos": "0"
  },
- "error": "PUT channels -> 400: Precondition check failed. [failedPrecondition]"
+ "warnings": [
+  "PUT channels?part=localizations -> 400: Precondition check failed. [failedPrecondition]"
+ ],
+ "channel_filled": [
+  "filigran"
+ ],
+ "playlists": {
+  "Ya Olsaydı?": "PLdqEnBOYj8wQ",
+  "Ne Kadar Büyük?": "PLeHWw6dhPXaw",
+  "1 Gün Boyunca": "PLcawGSnylmhU"
+ },
+ "error": "GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]"
 }

@@ -17,7 +17,8 @@
     "uploadStatus": "processed",
     "privacyStatus": "private"
    },
-   "thumbnail": true
+   "thumbnail": true,
+   "captions": {}
   }
  },
  "channel_set": {
@@ -26,5 +27,11 @@
   "country": "TR",
   "defaultLanguage": "tr"
  },
- "handle": "@yaolsaydibilim"
+ "handle": "@yaolsaydibilim",
+ "watermark": true,
+ "playlist_meta": {
+  "Ya Olsaydı?": "ccc9e94e5e53819a",
+  "Ne Kadar Büyük?": "f66b17a8114926f5",
+  "1 Gün Boyunca": "68fa837d88d602ec"
+ }
 }
