@@ -379,7 +379,28 @@ def validate(ep):
     return probs
 
 
-def sources(ep, extra_chunks=()):
+def find_sources(ep):
+    """Fallback when the writer named only home pages: a search pass that looks up article pages for the
+    facts. -> (url, title) candidates from its grounding results and from the URLs it names."""
+    facts = "\n".join(f"- {f['text']}" for f in ep.get("facts", []))
+    prompt = ("Search the web and find 3 specific pages (an article or fact sheet, not a home page) on reputable "
+              "science sites (NASA, ESA, NOAA, NIH, universities, Britannica, National Geographic, Smithsonian, "
+              f"Space.com, Live Science) that support these facts from a video titled '{ep['title']}':\n{facts}\n"
+              'Answer with ONLY JSON: {"urls": ["https://...", "https://...", "https://..."]}')
+    try:
+        text, chunks = call(prompt, search=True, temperature=0.2)
+    except GeminiError as e:
+        log(f"Kaynak araması yapılamadı: {e}")
+        return []
+    cands = [(c.get("uri", ""), c.get("title", "")) for c in chunks]
+    try:
+        cands += [(u, "") for u in parse_json(text).get("urls", []) if isinstance(u, str)]
+    except (json.JSONDecodeError, ValueError, AttributeError):
+        pass
+    return cands
+
+
+def sources(ep, extra_chunks=(), search_more=True):
     """Up to 4 working source links: the search results the writer used, else the URLs it named."""
     found, seen = [], set()
     cands = [(c.get("uri", ""), c.get("title", "")) for c in list(ep.get("_chunks") or []) + list(extra_chunks)]
@@ -397,4 +418,8 @@ def sources(ep, extra_chunks=()):
             found.append(final.split("#")[0].split("?")[0] if "?rsource" in final or "utm_" in final else final.split("#")[0])
         if len(found) >= 4:
             break
+    if not found and search_more:
+        more = [{"uri": u, "title": t} for u, t in find_sources(ep)]
+        if more:
+            return sources({"facts": []}, more, search_more=False)
     return found
