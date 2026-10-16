@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "259",
+    "views": "263",
     "reason": null
    }
   },
@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "33",
+    "views": "40",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "7",
+    "views": "8",
     "reason": null
    }
   },
@@ -264,6 +264,36 @@
    "at": 1792177833.0068278,
    "chars": 518,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "0",
+    "reason": null
+   }
+  },
+  {
+   "id": "y004",
+   "video_id": "-PC7chCMp_s",
+   "url": "https://youtube.com/shorts/-PC7chCMp_s",
+   "title": "Kara Deliğe Düşseydin Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If You Fell into a Black Hole?",
+    "es": "¿Qué pasaría si cayeras en un agujero negro?",
+    "pt": "E se você caísse em um buraco negro?",
+    "ar": "ماذا يحدث لو سقطت في ثقب أسود؟",
+    "hi": "क्या होगा अगर आप ब्लैक होल में गिर जाएं?",
+    "id": "Apa yang Terjadi Jika Jatuh ke Lubang Hitam?",
+    "fr": "Que se passerait-il si tu tombais dans un trou noir ?",
+    "de": "Was passiert, wenn du in ein Schwarzes Loch fällst?",
+    "ru": "Что будет, если упасть в черную дыру?",
+    "az": "Qara Dəliyə Düşsəydiniz Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792181397.3084002,
+   "chars": 538,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -280,7 +310,8 @@
   "y002",
   "n002",
   "y003",
-  "g002"
+  "g002",
+  "y004"
  ],
  "extra": [
   {
@@ -369,6 +400,14 @@
    "url": "https://youtube.com/shorts/RLuGUU-xaYE",
    "duration": 34.0,
    "chars": 518
+  },
+  {
+   "finished": "2026-10-16T20:09:58+00:00",
+   "mod": "saatlik",
+   "title": "Kara Deliğe Düşseydin Ne Olurdu?",
+   "url": "https://youtube.com/shorts/-PC7chCMp_s",
+   "duration": 37.3,
+   "chars": 538
   }
  ],
  "yorumlar": {

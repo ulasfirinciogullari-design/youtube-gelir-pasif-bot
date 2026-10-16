@@ -1,0 +1,758 @@
+{
+ "title": "Kara Deliğe Düşseydin Ne Olurdu?",
+ "bar": {
+  "hi": "KARA DELİĞE",
+  "rest": "DÜŞSEYDİN?"
+ },
+ "summary": "Bir kara deliğin içine düşseniz vücudunuza tam olarak ne olurdu? Spagettileşmeden zamanın donmasına, evrenin en gizemli sınırına yolculuk başlıyor.",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "Bir kara deliğe düşseydik ne olurdu?",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "🕳️",
+    "label": "KARA DELİK"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ayakların başına göre daha sert çekilir, spagetti gibi uzayıp kopardın.",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🍝",
+    "do": "grow",
+    "key": "spagetti",
+    "label": "SPAGETTİLEŞME"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Hepsi bu mu?",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🍝",
+    "do": "pulse",
+    "key": "Hepsi",
+    "label": "SPAGETTİLEŞME"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama Güneş’in 4 milyon katı bir dev delikte, olay ufkunu tek parça geçersin.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "e": "☀️",
+     "label": "GÜNEŞ",
+     "value": 1
+    },
+    "b": {
+     "b": "blackhole",
+     "label": "DEV KARA DELİK",
+     "value": 4000000
+    },
+    "mode": "bar",
+    "key": "4 milyon"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Hiç hissetmeden mi?",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🧍",
+    "do": "float",
+    "key": "hissetmeden",
+    "label": "SERBEST DÜŞÜŞ"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Evet! Dışarıdan bakana göreyse o sınırda donup kalır, asla içeri girmezsin.",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "🧊",
+     "label": "DIŞARIDAN: DONMA"
+    },
+    "right": {
+     "e": "🕳️",
+     "label": "İÇERİDEN: DÜŞÜŞ"
+    },
+    "key": "donup"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İçerideysen kaçış yok; saniyede 300.000 km hızındaki ışık bile hapsolur.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⚡",
+    "value": "300.000",
+    "unit": "km/sn",
+    "label": "IŞIK HIZI",
+    "key": "300.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstelik zaman ve mekan yer değiştirir; merkez bir nokta değil, yarın gibi kaçınılmaz bir an olur.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "blackhole",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "approach",
+    "target": 0,
+    "key": "merkez",
+    "label": "TEKİLLİK"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Zamanın içinde sıkışmak gibi!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "⏳",
+    "do": "shake",
+    "key": "Zamanın",
+    "label": "KAÇIŞSIZ GELECEK"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🚀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Yıldız kütleli kara deliklerde ayak ve baş arasındaki çekim farkı insanı olay ufkuna ulaşmadan yüzlerce kilometre uzakta spagetti gibi uzatıp parçalar.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/universe/black-holes/"
+  },
+  {
+   "text": "Güneş'in yaklaşık 4,3 milyon katı kütleye sahip süper kütleli kara deliklerin olay ufkundaki gelgit kuvveti zayıf olduğundan bir insan sınırı tek parça geçebilir.",
+   "source": "Astronomy Magazine",
+   "url": "https://www.astronomy.com"
+  },
+  {
+   "text": "Genel Görelilik teorisine göre olay ufkunu geçtikten sonra kaçış hızı saniyede yaklaşık 300.000 kilometre olan ışık hızını aşar ve merkezdeki tekillik kaçınılmaz bir geleceğe dönüşür.",
+   "source": "ESA",
+   "url": "https://www.esa.int"
+  }
+ ],
+ "tags": [
+  "kara delik",
+  "kara deliğe düşmek",
+  "spagettileşme",
+  "olay ufku",
+  "tekillik",
+  "zaman genişlemesi",
+  "genel görelilik",
+  "uzay",
+  "fizik",
+  "black hole",
+  "spaghettification",
+  "event horizon",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#karadelik",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 7,
+ "sources": [
+  "https://science.nasa.gov/universe/black-holes/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If You Fell into a Black Hole?",
+   "summary": "What would actually happen to your body if you fell into a black hole? From spaghettification to freezing time, a journey to the universe's most mysterious boundary begins.",
+   "facts": [
+    "In stellar-mass black holes, the gravitational difference between your head and feet stretches and tears you apart like spaghetti hundreds of kilometers before reaching the event horizon.",
+    "In supermassive black holes roughly 4.3 million times the mass of the Sun, tidal forces at the event horizon are so weak that a human could cross the boundary in one piece.",
+    "According to general relativity, once you cross the event horizon, the escape velocity exceeds the speed of light—about 300,000 kilometers per second—making the central singularity an inevitable future."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si cayeras en un agujero negro?",
+   "summary": "¿Qué le ocurriría exactamente a tu cuerpo si cayeras en un agujero negro? De la espaguetización a la congelación del tiempo, comienza el viaje al límite más misterioso del universo.",
+   "facts": [
+    "En los agujeros negros de masa estelar, la diferencia gravitatoria entre la cabeza y los pies te estira como un espagueti y te desgarra a cientos de kilómetros antes de alcanzar el horizonte de sucesos.",
+    "En los agujeros negros supermasivos con una masa de unas 4,3 millones de veces la del Sol, las fuerzas de marea en el horizonte de sucesos son tan débiles que un ser humano podría cruzar la frontera de una sola pieza.",
+    "Según la relatividad general, tras cruzar el horizonte de sucesos, la velocidad de escape supera la de la luz (unos 300.000 kilómetros por segundo), convirtiendo la singularidad central en un futuro inevitable."
+   ]
+  },
+  "pt": {
+   "title": "E se você caísse em um buraco negro?",
+   "summary": "O que aconteceria exatamente com o seu corpo se você caísse em um buraco negro? Da espaguetificação ao congelamento do tempo, começa a jornada até a fronteira mais misteriosa do universo.",
+   "facts": [
+    "Em buracos negros de massa estelar, a diferença gravitacional entre a cabeça e os pés estica e despedaça uma pessoa como espaguete a centenas de quilômetros antes do horizonte de eventos.",
+    "Em buracos negros supermassivos com cerca de 4,3 milhões de vezes a massa do Sol, as forças de maré no horizonte de eventos são tão fracas que uma pessoa poderia cruzar a fronteira inteira.",
+    "De acordo com a relatividade geral, após cruzar o horizonte de eventos, a velocidade de escape supera a velocidade da luz (cerca de 300.000 quilômetros por segundo), tornando a singularidade central um futuro inevitável."
+   ]
+  },
+  "ar": {
+   "title": "ماذا يحدث لو سقطت في ثقب أسود؟",
+   "summary": "ما الذي سيحدث لجسدك بالضبط إذا سقطت داخل ثقب أسود؟ من التشتت كالمعكرونة إلى تجمد الزمن، تبدأ الرحلة إلى أغمض حدود الكون.",
+   "facts": [
+    "في الثقوب السوداء النجمية، يؤدي فارق الجاذبية بين الرأس والقدمين إلى مدك مثل المعكرونة وتمزيقك على بعد مئات الكيلومترات قبل الوصول إلى أفق الحدث.",
+    "في الثقوب السوداء فائقة الكتلة التي تبلغ كتلتها حوالي 4.3 مليون ضعف كتلة الشمس، تكون قوى المد والجزر ضعيفة عند أفق الحدث، مما يسمح للإنسان بعبور الحدود كقطعة واحدة.",
+    "وفقاً للنسبية العامة، بعد عبور أفق الحدث، تتجاوز سرعة الهروب سرعة الضوء البالغة حوالي 300,000 كيلومتر في الثانية، لتصبح النقطة المفردة في المركز مستقبلاً لا مفر منه."
+   ]
+  },
+  "hi": {
+   "title": "क्या होगा अगर आप ब्लैक होल में गिर जाएं?",
+   "summary": "अगर आप किसी ब्लैक होल में गिर जाएं तो आपके शरीर का क्या होगा? स्पैगेटीफिकेशन से लेकर समय के ठहरने तक, ब्रह्मांड की सबसे रहस्यमयी सीमा की यात्रा शुरू होती है।",
+   "facts": [
+    "तारकीय द्रव्यमान वाले ब्लैक होल में सिर और पैरों के बीच गुरुत्वाकर्षण का अंतर इंसान को घटना क्षितिज तक पहुंचने से सैकड़ों किलोमीटर पहले ही स्पेगेटी की तरह खींचकर टुकड़ों में बांट देता है।",
+    "सूर्य के द्रव्यमान से लगभग 4.3 मिलियन गुना बड़े सुपरमैसिव ब्लैक होल के घटना क्षितिज पर ज्वारीय बल इतना कमजोर होता है कि कोई इंसान बिना टूटे इस सीमा को पार कर सकता है।",
+    "सामान्य सापेक्षता के अनुसार, घटना क्षितिज पार करने के बाद पलायन वेग प्रकाश की गति (लगभग 300,000 किलोमीटर प्रति सेकंड) से अधिक हो जाता है और केंद्र में मौजूद विलक्षणता एक अनिवार्य भविष्य बन जाती है।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi Jika Jatuh ke Lubang Hitam?",
+   "summary": "Apa yang sebenarnya akan terjadi pada tubuh Anda jika jatuh ke dalam lubang hitam? Dari spagetiifikasi hingga berhentinya waktu, perjalanan menuju batas paling misterius di alam semesta dimulai.",
+   "facts": [
+    "Pada lubang hitam bermassa bintang, perbedaan gravitasi antara kepala dan kaki akan meregangkan tubuh seperti spageti dan mencabik-cabiknya ratusan kilometer sebelum mencapai cakrawala peristiwa.",
+    "Pada lubang hitam supermasif bermassa sekitar 4,3 juta kali massa Matahari, gaya pasang surut di cakrawala peristiwa cukup lemah sehingga manusia dapat melintasi perbatasan dalam keadaan utuh.",
+    "Menurut relativitas umum, setelah melintasi cakrawala peristiwa, kecepatan lepas melebihi kecepatan cahaya yaitu sekitar 300.000 kilometer per detik, menjadikan singularitas di pusat sebagai masa depan yang tak terelakkan."
+   ]
+  },
+  "fr": {
+   "title": "Que se passerait-il si tu tombais dans un trou noir ?",
+   "summary": "Que se passerait-il exactement pour votre corps si vous tombiez dans un trou noir ? De la spaghettification au temps qui se fige, voyage vers la frontière la plus mystérieuse de l'univers.",
+   "facts": [
+    "Dans les trous noirs de masse stellaire, la différence gravitationnelle entre la tête et les pieds étire et déchiquette une personne comme un spaghetti à des centaines de kilomètres avant l'horizon des événements.",
+    "Dans les trous noirs supermassifs d'environ 4,3 millions de fois la masse du Soleil, les forces de marée à l'horizon des événements sont si faibles qu'un être humain pourrait franchir la frontière en un seul morceau.",
+    "Selon la relativité générale, après avoir franchi l'horizon des événements, la vitesse de libération dépasse la vitesse de la lumière (environ 300 000 kilomètres par seconde), faisant de la singularité centrale un futur inéluctable."
+   ]
+  },
+  "de": {
+   "title": "Was passiert, wenn du in ein Schwarzes Loch fällst?",
+   "summary": "Was genau würde mit deinem Körper passieren, wenn du in ein Schwarzes Loch stürzt? Von der Spaghettisierung bis zum Stillstand der Zeit: Die Reise zur geheimnisvollsten Grenze des Universums beginnt.",
+   "facts": [
+    "Bei stellaren Schwarzen Löchern dehnt der Schwerkraftunterschied zwischen Kopf und Füßen den Körper wie Spaghetti und zerreißt ihn Hunderte Kilometer vor dem Ereignishorizont.",
+    "Bei supermassereichen Schwarzen Löchern mit etwa 4,3 Millionen Sonnenmassen sind die Gezeitenkräfte am Ereignishorizont so schwach, dass ein Mensch die Grenze unversehrt überqueren könnte.",
+    "Nach der Allgemeinen Relativitätstheorie übersteigt die Fluchtgeschwindigkeit hinter dem Ereignishorizont die Lichtgeschwindigkeit von rund 300.000 Kilometern pro Sekunde, wodurch die zentrale Singularität zu einer unausweichlichen Zukunft wird."
+   ]
+  },
+  "ru": {
+   "title": "Что будет, если упасть в черную дыру?",
+   "summary": "Что именно произойдет с вашим телом, если вы упадете в черную дыру? От спагеттификации до застывания времени — путешествие к самой загадочной границе Вселенной начинается.",
+   "facts": [
+    "В черных дырах звездной массы гравитационная разница между головой и ногами растягивает человека в спагетти и разрывает за сотни километров до горизонта событий.",
+    "В сверхмассивных черных дырах с массой около 4,3 миллиона масс Солнца приливные силы на горизонте событий настолько слабы, что человек может пересечь границу целиком.",
+    "Согласно общей теории относительности, после пересечения горизонта событий скорость убегания превышает скорость света (около 300 000 км/с), а сингулярность в центре становится неизбежным будущим."
+   ]
+  },
+  "az": {
+   "title": "Qara Dəliyə Düşsəydiniz Nə Olardı?",
+   "summary": "Qara dəliyin içinə düşsəniz, bədəninizə dəqiq nə baş verərdi? Spaqettiləşmədən zamanın donmasına qədər, kainatın ən sirli sərhədinə səyahət başlayır.",
+   "facts": [
+    "Ulduz kütləli qara dəliklərdə baş və ayaq arasındakı cazibə fərqi insanı hadisə üfüqünə çatmamış yüzlərlə kilometr uzaqlıqda spaqetti kimi uzadıb parçalayır.",
+    "Günəşdən təxminən 4,3 milyon dəfə böyük kütləyə malik ifrat kütləli qara dəliklərin hadisə üfüqündəki qabarma qüvvəsi zəif olduğundan insan bu sərhədi bütöv keçə bilər.",
+    "Ümumi Nisbilik nəzəriyyəsinə görə, hadisə üfüqünü keçdikdən sonra qaçış sürəti saniyədə təxminən 300.000 kilometr olan işıq sürətini aşır və mərkəzdəki təkillik qaçılmaz gələcəyə çevrilir."
+   ]
+  }
+ },
+ "id": "y004",
+ "series": "Ya Olsaydı?",
+ "q": "Bir kara deliğe düşseydin ne olurdu?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 2.3,
+   "words": [
+    {
+     "w": "Bir",
+     "t0": 0.35,
+     "t1": 0.501
+    },
+    {
+     "w": "kara",
+     "t0": 0.5589999999999999,
+     "t1": 0.733
+    },
+    {
+     "w": "deliğe",
+     "t0": 0.78,
+     "t1": 1.0230000000000001
+    },
+    {
+     "w": "düşseydik",
+     "t0": 1.0699999999999998,
+     "t1": 1.5110000000000001
+    },
+    {
+     "w": "ne",
+     "t0": 1.592,
+     "t1": 1.638
+    },
+    {
+     "w": "olurdu?",
+     "t0": 1.685,
+     "t1": 2.3
+    }
+   ]
+  },
+  {
+   "t0": 2.693764172335601,
+   "t1": 6.687764172335601,
+   "words": [
+    {
+     "w": "Ayakların",
+     "t0": 2.693764172335601,
+     "t1": 3.181764172335601
+    },
+    {
+     "w": "başına",
+     "t0": 3.2277641723356014,
+     "t1": 3.5067641723356013
+    },
+    {
+     "w": "göre",
+     "t0": 3.552764172335601,
+     "t1": 3.715764172335601
+    },
+    {
+     "w": "daha",
+     "t0": 3.7617641723356012,
+     "t1": 3.9247641723356015
+    },
+    {
+     "w": "sert",
+     "t0": 3.970764172335601,
+     "t1": 4.156764172335601
+    },
+    {
+     "w": "çekilir,",
+     "t0": 4.179764172335601,
+     "t1": 4.5977641723356015
+    },
+    {
+     "w": "spagetti",
+     "t0": 4.818764172335602,
+     "t1": 5.306764172335601
+    },
+    {
+     "w": "gibi",
+     "t0": 5.3527641723356005,
+     "t1": 5.526764172335602
+    },
+    {
+     "w": "uzayıp",
+     "t0": 5.573764172335601,
+     "t1": 5.909764172335601
+    },
+    {
+     "w": "kopardın.",
+     "t0": 5.967764172335601,
+     "t1": 6.687764172335601
+    }
+   ]
+  },
+  {
+   "t0": 7.067764172335602,
+   "t1": 7.996764172335602,
+   "words": [
+    {
+     "w": "Hepsi",
+     "t0": 7.067764172335602,
+     "t1": 7.415764172335602
+    },
+    {
+     "w": "bu",
+     "t0": 7.462764172335602,
+     "t1": 7.555764172335602
+    },
+    {
+     "w": "mu?",
+     "t0": 7.601764172335602,
+     "t1": 7.996764172335602
+    }
+   ]
+  },
+  {
+   "t0": 8.388580498866215,
+   "t1": 13.125580498866215,
+   "words": [
+    {
+     "w": "Ama",
+     "t0": 8.388580498866215,
+     "t1": 8.585580498866214
+    },
+    {
+     "w": "Güneş’in",
+     "t0": 8.643580498866216,
+     "t1": 9.050580498866216
+    },
+    {
+     "w": "4",
+     "t0": 9.119580498866215,
+     "t1": 9.352580498866216
+    },
+    {
+     "w": "milyon",
+     "t0": 9.410580498866215,
+     "t1": 9.712580498866215
+    },
+    {
+     "w": "katı",
+     "t0": 9.758580498866216,
+     "t1": 9.967580498866216
+    },
+    {
+     "w": "bir",
+     "t0": 10.014580498866215,
+     "t1": 10.141580498866215
+    },
+    {
+     "w": "dev",
+     "t0": 10.199580498866215,
+     "t1": 10.397580498866215
+    },
+    {
+     "w": "delikte,",
+     "t0": 10.455580498866215,
+     "t1": 10.977580498866216
+    },
+    {
+     "w": "olay",
+     "t0": 11.175580498866214,
+     "t1": 11.395580498866215
+    },
+    {
+     "w": "ufkunu",
+     "t0": 11.453580498866215,
+     "t1": 11.825580498866215
+    },
+    {
+     "w": "tek",
+     "t0": 11.871580498866216,
+     "t1": 12.045580498866215
+    },
+    {
+     "w": "parça",
+     "t0": 12.104580498866216,
+     "t1": 12.359580498866215
+    },
+    {
+     "w": "geçersin.",
+     "t0": 12.405580498866215,
+     "t1": 13.125580498866215
+    }
+   ]
+  },
+  {
+   "t0": 13.505580498866216,
+   "t1": 14.898580498866217,
+   "words": [
+    {
+     "w": "Hiç",
+     "t0": 13.505580498866216,
+     "t1": 13.691580498866216
+    },
+    {
+     "w": "hissetmeden",
+     "t0": 13.749580498866216,
+     "t1": 14.469580498866216
+    },
+    {
+     "w": "mi?",
+     "t0": 14.538580498866216,
+     "t1": 14.898580498866217
+    }
+   ]
+  },
+  {
+   "t0": 15.293403628117916,
+   "t1": 20.030403628117917,
+   "words": [
+    {
+     "w": "Evet!",
+     "t0": 15.293403628117916,
+     "t1": 15.746403628117916
+    },
+    {
+     "w": "Dışarıdan",
+     "t0": 15.966403628117916,
+     "t1": 16.443403628117917
+    },
+    {
+     "w": "bakana",
+     "t0": 16.489403628117916,
+     "t1": 16.814403628117915
+    },
+    {
+     "w": "göreyse",
+     "t0": 16.861403628117916,
+     "t1": 17.337403628117915
+    },
+    {
+     "w": "o",
+     "t0": 17.499403628117918,
+     "t1": 17.581403628117915
+    },
+    {
+     "w": "sınırda",
+     "t0": 17.627403628117918,
+     "t1": 17.952403628117917
+    },
+    {
+     "w": "donup",
+     "t0": 17.998403628117916,
+     "t1": 18.219403628117917
+    },
+    {
+     "w": "kalır,",
+     "t0": 18.277403628117916,
+     "t1": 18.591403628117916
+    },
+    {
+     "w": "asla",
+     "t0": 18.707403628117916,
+     "t1": 18.985403628117915
+    },
+    {
+     "w": "içeri",
+     "t0": 19.043403628117915,
+     "t1": 19.287403628117918
+    },
+    {
+     "w": "girmezsin.",
+     "t0": 19.322403628117918,
+     "t1": 20.030403628117917
+    }
+   ]
+  },
+  {
+   "t0": 20.230403628117916,
+   "t1": 24.967403628117914,
+   "words": [
+    {
+     "w": "İçerideysen",
+     "t0": 20.230403628117916,
+     "t1": 20.869403628117915
+    },
+    {
+     "w": "kaçış",
+     "t0": 20.927403628117915,
+     "t1": 21.205403628117917
+    },
+    {
+     "w": "yok;",
+     "t0": 21.275403628117914,
+     "t1": 21.542403628117917
+    },
+    {
+     "w": "saniyede",
+     "t0": 21.797403628117916,
+     "t1": 22.285403628117916
+    },
+    {
+     "w": "300.000",
+     "t0": 22.354403628117915,
+     "t1": 22.796403628117915
+    },
+    {
+     "w": "km",
+     "t0": 22.819403628117914,
+     "t1": 23.272403628117914
+    },
+    {
+     "w": "hızındaki",
+     "t0": 23.318403628117917,
+     "t1": 23.724403628117916
+    },
+    {
+     "w": "ışık",
+     "t0": 23.782403628117915,
+     "t1": 24.015403628117916
+    },
+    {
+     "w": "bile",
+     "t0": 24.073403628117916,
+     "t1": 24.212403628117915
+    },
+    {
+     "w": "hapsolur.",
+     "t0": 24.258403628117915,
+     "t1": 24.967403628117914
+    }
+   ]
+  },
+  {
+   "t0": 25.167403628117917,
+   "t1": 30.879403628117917,
+   "words": [
+    {
+     "w": "Üstelik",
+     "t0": 25.167403628117917,
+     "t1": 25.562403628117917
+    },
+    {
+     "w": "zaman",
+     "t0": 25.620403628117916,
+     "t1": 25.887403628117916
+    },
+    {
+     "w": "ve",
+     "t0": 25.933403628117915,
+     "t1": 25.99140362811792
+    },
+    {
+     "w": "mekan",
+     "t0": 26.04940362811792,
+     "t1": 26.36340362811792
+    },
+    {
+     "w": "yer",
+     "t0": 26.433403628117915,
+     "t1": 26.54940362811792
+    },
+    {
+     "w": "değiştirir;",
+     "t0": 26.618403628117917,
+     "t1": 27.257403628117917
+    },
+    {
+     "w": "merkez",
+     "t0": 27.617403628117916,
+     "t1": 27.977403628117916
+    },
+    {
+     "w": "bir",
+     "t0": 28.02340362811792,
+     "t1": 28.13940362811792
+    },
+    {
+     "w": "nokta",
+     "t0": 28.186403628117915,
+     "t1": 28.441403628117918
+    },
+    {
+     "w": "değil,",
+     "t0": 28.499403628117918,
+     "t1": 28.789403628117917
+    },
+    {
+     "w": "yarın",
+     "t0": 29.091403628117916,
+     "t1": 29.335403628117916
+    },
+    {
+     "w": "gibi",
+     "t0": 29.370403628117916,
+     "t1": 29.556403628117916
+    },
+    {
+     "w": "kaçınılmaz",
+     "t0": 29.602403628117916,
+     "t1": 30.136403628117918
+    },
+    {
+     "w": "bir",
+     "t0": 30.194403628117918,
+     "t1": 30.299403628117915
+    },
+    {
+     "w": "an",
+     "t0": 30.345403628117918,
+     "t1": 30.39240362811792
+    },
+    {
+     "w": "olur.",
+     "t0": 30.461403628117917,
+     "t1": 30.879403628117917
+    }
+   ]
+  },
+  {
+   "t0": 31.25951247165533,
+   "t1": 33.02451247165533,
+   "words": [
+    {
+     "w": "Zamanın",
+     "t0": 31.25951247165533,
+     "t1": 31.68951247165533
+    },
+    {
+     "w": "içinde",
+     "t0": 31.73551247165533,
+     "t1": 32.03751247165533
+    },
+    {
+     "w": "sıkışmak",
+     "t0": 32.07251247165533,
+     "t1": 32.50151247165533
+    },
+    {
+     "w": "gibi!",
+     "t0": 32.54851247165533,
+     "t1": 33.02451247165533
+    }
+   ]
+  },
+  {
+   "t0": 33.23744897959184,
+   "t1": 35.69844897959184,
+   "words": [
+    {
+     "w": "Sıradaki",
+     "t0": 33.23744897959184,
+     "t1": 33.64344897959184
+    },
+    {
+     "w": "soruyu",
+     "t0": 33.67844897959184,
+     "t1": 33.98044897959184
+    },
+    {
+     "w": "sen",
+     "t0": 34.03844897959184,
+     "t1": 34.23544897959184
+    },
+    {
+     "w": "seç!",
+     "t0": 34.30544897959184,
+     "t1": 34.63044897959184
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 34.68844897959184,
+     "t1": 35.16444897959184
+    },
+    {
+     "w": "yaz.",
+     "t0": 35.19944897959184,
+     "t1": 35.69844897959184
+    }
+   ]
+  }
+ ]
+}

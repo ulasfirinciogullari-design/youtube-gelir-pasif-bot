@@ -1,50 +1,36 @@
 {
- "started": "2026-10-16T19:06:54+00:00",
+ "started": "2026-10-16T20:07:24+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "credits_before": [
-  1198,
+  1411,
   613902
  ],
  "topic": {
-  "id": "g002",
-  "series": "1 Gün Boyunca",
-  "q": "1 günde kaç kez nefes alırsın?"
+  "id": "y004",
+  "series": "Ya Olsaydı?",
+  "q": "Bir kara deliğe düşseydin ne olurdu?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
  "fact_check": {
-  "ok": false,
-  "fixes": [
-   {
-    "line": 4,
-    "why": "Akciğerdeki hava keseciklerinin (alveoller) toplam yüzey alanı kesin bir değer olmayıp kişiden kişiye değişir; kesin (tam) değil, ortalama 70 ila 100 metrekare civarında bir tahmindir."
-   }
-  ]
+  "ok": true,
+  "fixes": []
  },
- "warnings": [
-  "çalışan kaynak linki bulunamadı"
- ],
  "chunks": 0,
  "grounded": true,
- "chars": 518,
- "duration": 34.0,
- "title": "1 Günde Kaç Kez Nefes Alırsın?",
+ "chars": 538,
+ "duration": 37.3,
+ "title": "Kara Deliğe Düşseydin Ne Olurdu?",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "9",
-  "videos": "9"
+  "videos": "10"
  },
- "url": "https://youtube.com/shorts/RLuGUU-xaYE",
+ "url": "https://youtube.com/shorts/-PC7chCMp_s",
  "recent_status": {
-  "o0002": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "9",
-   "reason": null
-  },
   "y002": {
    "upload": "processed",
    "privacy": "public",
@@ -54,7 +40,7 @@
   "n002": {
    "upload": "processed",
    "privacy": "public",
-   "views": "7",
+   "views": "8",
    "reason": null
   },
   "y003": {
@@ -64,6 +50,12 @@
    "reason": null
   },
   "g002": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  },
+  "y004": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -71,12 +63,12 @@
   }
  },
  "credits_after": [
-  1322,
+  1542,
   613902
  ],
  "log": [
-  "Konu: g002 1 günde kaç kez nefes alırsın? (1 Gün Boyunca)",
+  "Konu: y004 Bir kara deliğe düşseydin ne olurdu? (Ya Olsaydı?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T19:10:34+00:00"
+ "finished": "2026-10-16T20:09:58+00:00"
 }
