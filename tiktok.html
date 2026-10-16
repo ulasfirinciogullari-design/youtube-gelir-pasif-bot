@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok Taslakları</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .draft { border: 1px solid rgba(127,127,127,.3); border-radius: 10px; padding: 14px; margin: 14px 0; }
+  .draft p { margin: 6px 0; } .when { font-size: .9rem; }
+</style>
+</head>
+<body><main>
+<h1>TikTok taslakları</h1>
+<p class="muted">TikTok'taki taslağı paylaşırken açıklama olarak bunu yapıştır. En yenisi en üstte.</p>
+<div id="list"><p class="muted">Yükleniyor...</p></div>
+<script>
+  var SRC = "https://raw.githubusercontent.com/ulasfirinciogullari-design/youtube-gelir-pasif-bot/channel-data/tiktok.json";
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+  fetch(SRC + "?t=" + Date.now()).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (drafts) {
+      var list = document.getElementById("list"); list.textContent = "";
+      var ok = drafts.filter(function (d) { return !/^(FAILED|error)/.test(d.status || ""); }).reverse().slice(0, 15);
+      if (!ok.length) { list.appendChild(el("p", "muted", "Henüz taslak yok.")); return; }
+      ok.forEach(function (d) {
+        var box = el("div", "draft");
+        box.appendChild(el("p", "muted when", new Date(d.sent_at).toLocaleString("tr-TR")));
+        box.appendChild(el("p", "", d.caption));
+        var b = el("button", "", "Açıklamayı kopyala");
+        b.onclick = function () { navigator.clipboard.writeText(d.caption).then(function () { b.textContent = "Kopyalandı"; }); };
+        box.appendChild(b);
+        list.appendChild(box);
+      });
+    })
+    .catch(function () { document.getElementById("list").innerHTML = "<p class='muted'>Henüz taslak yok.</p>"; });
+</script>
+</main></body>
+</html>
