@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instagram izni</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body><main>
+<h1 id="title">Instagram izni</h1>
+<p id="msg">Bu sayfayı Instagram izninden sonra açılınca kullanacaksın.</p>
+<span class="code" id="code" hidden></span>
+<p><button id="copy" hidden>Kodu kopyala</button></p>
+<p class="muted" id="hint" hidden>Kodu kopyalayıp sohbete yapıştır. Kod birkaç dakika geçerli.</p>
+<script>
+  var q = new URLSearchParams(location.search);
+  var code = q.get("code"), err = q.get("error");
+  if (code) {
+    document.getElementById("title").textContent = "İzin verildi";
+    document.getElementById("msg").textContent = "Bu kodu kopyalayıp sohbete yapıştır:";
+    var el = document.getElementById("code"); el.textContent = code; el.hidden = false;
+    var b = document.getElementById("copy"); b.hidden = false;
+    document.getElementById("hint").hidden = false;
+    b.onclick = function () {
+      navigator.clipboard.writeText(code).then(function () { b.textContent = "Kopyalandı"; });
+    };
+  } else if (err) {
+    document.getElementById("title").textContent = "İzin verilmedi";
+    document.getElementById("msg").textContent = "Instagram şunu söyledi: " + err + " " + (q.get("error_description") || "");
+  }
+</script>
+</main></body>
+</html>
