@@ -412,13 +412,14 @@ def test_voice_sample_plan_compares_one_change_at_a_time():
 
 
 
-def test_scheduled_shorts_default_to_voice_sample_2():
+def test_scheduled_shorts_default_to_alp_flash():
     # Ulaş picks a narrator by ear from the samples; the workflow carries the pick so he never edits repo settings.
+    # Voice sample 2 (Alp at his own 1.15 speed, livelier) on eleven_flash_v2_5, "Alp Flash" of the cost samples.
     vs = _voice_samples()
     workflow = (original_factory.BASE_DIR / ".github" / "workflows" / "viral_shorts_autopilot.yml").read_text(
         encoding="utf-8")
     defaults = dict(re.findall(r"(ELEVENLABS_\w+): \$\{\{ vars\.\1 \|\| '([^']+)' \}\}", workflow))
-    assert defaults == vs.repo_variables(vs.sample_plan()[1])
+    assert defaults == {**vs.repo_variables(vs.sample_plan()[1]), "ELEVENLABS_MODEL": "eleven_flash_v2_5"}
     assert "ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}" in workflow
 
 def test_shared_voices_prefer_energetic_narrators_most_cloned_first():

@@ -144,9 +144,11 @@ jobs:
           # Narrator settings as repo variables; an unset variable arrives as an empty string, which
           # the Python side treats as unset. Speed, style and stability default to voice sample 2
           # ("Alp, kendi hızıyla 1,15 ve daha enerjik"): the critic called the 1.1x sped-up narration
-          # monotone on every Short, and the native speed reads livelier at no extra cost.
+          # monotone on every Short, and the native speed reads livelier at no extra cost. The model is
+          # eleven_flash_v2_5, half a credit a character: Ulaş picked "Alp Flash" by ear from the cost
+          # samples (2026-10-15) so 24 Shorts a day fit the credits.
           ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
-          ELEVENLABS_MODEL: ${{ vars.ELEVENLABS_MODEL }}
+          ELEVENLABS_MODEL: ${{ vars.ELEVENLABS_MODEL || 'eleven_flash_v2_5' }}
           ELEVENLABS_SPEED: ${{ vars.ELEVENLABS_SPEED || '1.15' }}
           ELEVENLABS_STYLE: ${{ vars.ELEVENLABS_STYLE || '0.6' }}
           ELEVENLABS_STABILITY: ${{ vars.ELEVENLABS_STABILITY || '0.35' }}
