@@ -39,6 +39,7 @@ from app.services.channel_metrics import list_series_videos, report_channel
 from app.services.channel_memory import load_uploads, record_upload, used_topic_ids
 from app.services.competitor_scan import dna_age_days, load_dna, run_scan
 from app.services.seo_pack import build_seo_pack
+from app.services import tiktok
 from app.services.original_script import write_script
 from app.services.original_visuals import build_visual_track
 from app.services.video_critic import critique, format_critique
@@ -1052,6 +1053,8 @@ def main(argv=None) -> int:
         video_id = upload(youtube, result, args.privacy)
         record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], SERIES[series]["format"],
                       privacy=args.privacy)
+        if args.privacy == "public":
+            tiktok.share(result, video_id, DATA_DIR)
     return 0
 
 
