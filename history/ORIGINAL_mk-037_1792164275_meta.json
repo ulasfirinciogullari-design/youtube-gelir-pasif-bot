@@ -1,0 +1,280 @@
+{
+  "topic_id": "mk-037",
+  "topic": "Mısır mezarlarında bulunan 3000 yıllık bal neden hâlâ bozulmamıştı?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "3000 Yıllık Bal Neden Çürümüyor? 🍯",
+  "hook_text": "BAL NEDEN BOZULMAZ?",
+  "description": "3000 yıllık bal neden bozulmaz?\n\nBu 3000 yıllık balın bozulmamasının sırrı ne? Balın içinde çok az su ve yüksek asidik ortam bulunur. Ayrıca arılar, bal yaparken doğal bir antiseptik olan hidrojen peroksit oluşumunu sağlayan bir enzim ekler.\n\nSence balın bozulmamasında en büyük etken düşük su oranı mı, yoksa asidik yapısı mı?\n\n#bal #gıdalar #mısır #shorts #bilim #merak #keşfet\n\nSeri: mk-037",
+  "tags": [
+    "bal neden bozulmaz",
+    "3000 yıllık bal",
+    "mısır balı",
+    "balın sırrı",
+    "bozulmayan bal",
+    "balın özellikleri",
+    "hidrojen peroksit bal",
+    "arılar bal",
+    "bal asidik",
+    "bal su oranı",
+    "gıdaların bozulması",
+    "bal tarihi",
+    "mısır mezarları bal",
+    "ilginç bilgiler",
+    "bilim",
+    "bilimsel gerçekler",
+    "nasıl çalışır",
+    "merak ettikleriniz",
+    "doğa",
+    "honey",
+    "ancient honey",
+    "why honey doesn't spoil",
+    "honey properties",
+    "bal",
+    "mısır",
+    "shorts",
+    "arı",
+    "gıdalar",
+    "bozulmayan yemek",
+    "zirvenin kanunu",
+    "3000 yillik bal",
+    "misir bali"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why doesn't 3000-year-old honey spoil? 🍯",
+      "description": "Discover the amazing secret of ancient honey that never goes bad! Learn why this natural wonder, found in Egyptian tombs, remains perfectly preserved for thousands of years. It's all thanks to its unique composition and the bees' special touch.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "es": {
+      "title": "¿Por qué la miel de 3000 años no se echa a perder? 🍯",
+      "description": "La miel de 3000 años encontrada en tumbas egipcias sigue siendo comestible. Descubre los secretos de este alimento único que desafía el paso del tiempo, gracias a su bajo contenido de agua y propiedades antibacterianas.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "pt": {
+      "title": "Por que o mel de 3000 anos não estraga? 🍯",
+      "description": "O mel encontrado em tumbas egípcias com 3000 anos ainda está perfeito. Descubra o mistério por trás da durabilidade do mel, um alimento com baixo teor de água e propriedades antissépticas naturais.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "de": {
+      "title": "Warum verdirbt 3000 Jahre alter Honig nicht? 🍯",
+      "description": "Erfahre, warum 3000 Jahre alter Honig, der in ägyptischen Gräbern gefunden wurde, immer noch perfekt ist. Das Geheimnis liegt im geringen Wassergehalt und den antibakteriellen Eigenschaften, die Bienen hinzufügen.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "fr": {
+      "title": "Pourquoi le miel vieux de 3000 ans ne pourrit-il pas ? 🍯",
+      "description": "Le miel découvert dans des tombes égyptiennes, vieux de 3000 ans, est toujours intact. Découvrez les propriétés uniques du miel qui lui permettent de se conserver si longtemps, notamment sa faible teneur en eau et son acidité.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "it": {
+      "title": "Perché il miele di 3000 anni non va a male? 🍯",
+      "description": "Il miele di 3000 anni trovato nelle tombe egizie è ancora commestibile. Scopri il segreto di questo alimento straordinario che resiste al tempo grazie al suo basso contenuto d'acqua e alle sue proprietà antisettiche naturali.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "ru": {
+      "title": "Почему 3000-летний мед не портится? 🍯",
+      "description": "Узнайте, почему мед, найденный в египетских гробницах возрастом 3000 лет, до сих пор не испортился. Секрет кроется в уникальном составе меда: низком содержании воды и природных антисептических свойствах, добавляемых пчелами.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "ar": {
+      "title": "لماذا لا يفسد العسل البالغ من العمر 3000 عام؟ 🍯",
+      "description": "اكتشف سر العسل الذي عُثر عليه في المقابر المصرية، والذي بقي صالحًا للأكل لمدة 3000 عام! يرجع ذلك إلى محتواه المنخفض من الماء وبيئته الحمضية العالية، بالإضافة إلى إنزيم خاص تضيفه النحل.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "hi": {
+      "title": "3000 साल पुराना शहद खराब क्यों नहीं होता? 🍯",
+      "description": "मिस्र के मकबरों में मिला 3000 साल पुराना शहद आज भी खराब नहीं हुआ है। जानिए इस अद्भुत प्राकृतिक उत्पाद का रहस्य क्या है, जिसमें पानी की मात्रा कम और अम्लीय वातावरण होता है।\n\n#shorts\n\nSeri: mk-037"
+    },
+    "id": {
+      "title": "Mengapa madu berusia 3000 tahun tidak membusuk? 🍯",
+      "description": "Madu berusia 3000 tahun yang ditemukan di makam Mesir kuno masih utuh! Temukan rahasia di balik ketahanan madu, berkat kadar air yang rendah, sifat asam, dan enzim khusus dari lebah.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "ja": {
+      "title": "なぜ3000年前のハチミツは腐らないのか？ 🍯",
+      "description": "エジプトの墓から発見された3000年前のハチミツは、なぜ今でも食べられるのでしょうか？その秘密は、ハチミツの低い水分量と高い酸性度、そしてミツバチが加える特別な酵素にあります。\n\n#shorts\n\nSeri: mk-037"
+    },
+    "ko": {
+      "title": "3000년 된 꿀이 썩지 않는 이유는? 🍯",
+      "description": "이집트 무덤에서 발견된 3000년 된 꿀이 아직도 상하지 않은 이유를 알아보세요! 꿀의 낮은 수분 함량, 높은 산성 환경, 그리고 벌이 첨가하는 특별한 효소가 그 비결입니다.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "pl": {
+      "title": "Dlaczego miód sprzed 3000 lat nie psuje się? 🍯",
+      "description": "Miód znaleziony w egipskich grobowcach, mający 3000 lat, nadal jest jadalny! Odkryj sekrety długowieczności miodu, dzięki niskiej zawartości wody i naturalnym właściwościom antyseptycznym.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "nl": {
+      "title": "Waarom bederft 3000 jaar oude honing niet? 🍯",
+      "description": "Honing van 3000 jaar oud, gevonden in Egyptische graven, is nog steeds perfect eetbaar. Ontdek het geheim achter de houdbaarheid van honing, dankzij het lage watergehalte en de natuurlijke antibacteriële eigenschappen.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "uk": {
+      "title": "Чому мед віком 3000 років не псується? 🍯",
+      "description": "Дізнайтеся, чому мед, знайдений у єгипетських гробницях і якому 3000 років, досі не зіпсувався. Секрет у його низькому вмісті води, високій кислотності та унікальних ферментах, які додають бджоли.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "vi": {
+      "title": "Tại sao mật ong 3000 năm tuổi không bị hỏng? 🍯",
+      "description": "Mật ong 3000 năm tuổi được tìm thấy trong lăng mộ Ai Cập vẫn còn nguyên vẹn! Khám phá bí mật đằng sau khả năng bảo quản tuyệt vời của mật ong, nhờ hàm lượng nước thấp và tính axit đặc trưng.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "az": {
+      "title": "3000 illik bal niyə xarab olmur? 🍯",
+      "description": "Misir qəbirlərində tapılan 3000 illik bal hələ də niyə təzədir? Balın tərkibindəki az su, yüksək turşuluq və arıların əlavə etdiyi xüsusi fermentlər onun min illər boyu xarab olmamasının sirridir.\n\n#shorts\n\nSeri: mk-037"
+    },
+    "ro": {
+      "title": "De ce mierea veche de 3000 de ani nu se strică? 🍯",
+      "description": "Mierea veche de 3000 de ani, descoperită în mormintele egiptene, este încă perfect comestibilă. Află secretul din spatele durabilității mierii, datorită conținutului scăzut de apă și proprietăților antiseptice naturale.\n\n#shorts\n\nSeri: mk-037"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence balın bozulmamasında en büyük etken düşük su oranı mı, yoksa asidik yapısı mı?",
+  "scenes": [
+    {
+      "text": "Bu 3000 yıllık bal hiç bozulmuyor.",
+      "visual": "Close-up of golden honey in a jar, being poured or displayed.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 2
+        },
+        {
+          "n": 13,
+          "kare": 2
+        }
+      ],
+      "callout": "3000 YILLIK"
+    },
+    {
+      "text": "Peki, diğer gıdalar çürürken bal neden bozulmaz?",
+      "visual": "Beekeeper holding a frame full of active bees and honeycomb.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 17,
+          "kare": 2
+        },
+        {
+          "n": 27,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Balın içinde çok az su ve yüksek asidik ortam var.",
+      "visual": "Close-up of thick honey dripping from a dipper or spoon.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 10,
+          "kare": 2
+        },
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 28,
+          "kare": 2
+        }
+      ],
+      "callout": "DÜŞÜK SU"
+    },
+    {
+      "text": "Arılar, bal yaparken doğal bir antiseptik olan hidrojen peroksit oluşumunu sağlayan bir enzim ekler.",
+      "visual": "A bee collecting nectar from a vibrant flower in a field.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 16,
+          "kare": 2
+        },
+        {
+          "n": 21,
+          "kare": 2
+        }
+      ],
+      "callout": "ANTİSEPTİK"
+    },
+    {
+      "text": "Tüm bunlar, balı binlerce yıl taze tutan eşsiz bir gıda yapar.",
+      "visual": "Honey in a small glass jar, possibly with a honey dipper, in a pleasant setting.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 11,
+          "kare": 2
+        },
+        {
+          "n": 35,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 13.89,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı ve enerjisi düşük, monoton.",
+        "fix": "Yapay zeka sesinin hızını artırın ve daha dinamik, vurgulu bir ton seçin. Metni daha kısa cümlelere bölerek akıcılığı artırın."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video akışı yavaş, sahneler gereğinden uzun kalıyor ve geçişler basit.",
+        "fix": "Her sahnenin süresini 1-2 saniyeye kadar kısaltın. Anlatımla senkronize, hızlı kesmeler kullanın. Otomatik kurgu araçlarında daha hızlı geçiş seçenekleri varsa değerlendirin."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntü çeşitliliği az ve '3000 yıllık bal' gibi kancayı destekleyen görsel eksikliği var.",
+        "fix": "Kancayı destekleyecek daha çarpıcı veya tarihi çağrışım yapan görseller bulun (örneğin, eski bir kavanoz, arkeolojik kazıdan bal görüntüsü). Balın özelliklerini anlatan kısımlarda daha net, yakın çekim ve açıklayıcı görseller kullanın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik, çok fazla metin aynı anda gösteriliyor ve görseli kapatabiliyor.",
+        "fix": "Yazıları daha kısa tutun ve sadece anahtar kelimeleri vurgulayın. Yazıların ekranda kalma süresini kısaltın ve dinamik giriş/çıkış animasyonları kullanın. Yazıların konumunu görseli kapatmayacak şekilde ayarlayın."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği yeterince sürükleyici değil ve ses efektleri kullanılmamış.",
+        "fix": "Daha enerjik, ritmik ve videonun 'bilgi aktarımı' temasına uygun bir arka plan müziği seçin. Anahtar anlarda (arı vızıldaması, bal damlaması gibi) hafif ses efektleri eklemeyi deneyin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca görsel olarak yeterince desteklenmiyor ve bilginin şaşırtıcılığı sunum eksikliği nedeniyle tam hissedilemiyor.",
+        "fix": "Kancayı daha güçlü bir görselle birleştirin. Bilgiyi sunarken, 'neden' sorusunu daha dramatik bir şekilde ortaya koyun ve cevabı adım adım, basit görsel ipuçları veya metin vurgularıyla açıklayın."
+      }
+    ],
+    "strengths": [
+      "Bilgilendirici içerik",
+      "Net başlık"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
