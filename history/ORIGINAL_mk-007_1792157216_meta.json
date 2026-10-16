@@ -1,0 +1,283 @@
+{
+  "topic_id": "mk-007",
+  "topic": "Arılar peteklerini neden hep altıgen yapar?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Arılar Neden Hep Altıgen Petek Yapar? 🐝",
+  "hook_text": "ARILAR NEDEN ALTI GEN?",
+  "description": "Arılar peteklerini neden hep altıgen yapar?\n\nArılar peteklerini en az balmumuyla en fazla bal depolama alanı sunan altıgen şeklinde inşa eder. Bu mükemmel yapı aynı zamanda balın ağırlığını taşıyacak kadar güçlüdür.\n\nSence arılar, peteklerini yaparken altıgen mi, yoksa kare mi daha çok balmumu harcar?\n\n#arı #petek #altıgen #doğa #shorts #bilim #merak #keşfet\n\nSeri: mk-007",
+  "tags": [
+    "arı",
+    "arı peteği",
+    "altıgen petek",
+    "arılar neden altıgen yapar",
+    "arı petek yapısı",
+    "bal peteği",
+    "arı mühendisliği",
+    "doğadaki mühendislik",
+    "altıgen şekil",
+    "bal depolama",
+    "balmumu verimliliği",
+    "doğa harikası",
+    "arılar hakkında",
+    "ilginç bilgiler arı",
+    "neden altıgen",
+    "hayvanlar alemi",
+    "bilimsel gerçekler",
+    "doğa olayları",
+    "merak edilenler",
+    "bilgi",
+    "eğitim",
+    "keşfet",
+    "bees",
+    "honeycomb",
+    "hexagon",
+    "arılar",
+    "petek",
+    "altıgen",
+    "bilim",
+    "doğa",
+    "ari",
+    "ari petegi",
+    "altigen petek",
+    "arilar neden altigen yapar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Bees Always Build Hexagonal Honeycombs? 🐝",
+      "description": "Ever wondered why bees meticulously construct their honeycombs in a hexagonal shape? This geometric marvel allows them to store the most honey using the least amount of beeswax, creating a structure strong enough to support the weight of the honey.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "es": {
+      "title": "¿Por qué las abejas siempre construyen panales hexagonales? 🐝",
+      "description": "¿Te has preguntado por qué las abejas construyen sus panales con una forma hexagonal perfecta? Esta forma les permite almacenar la mayor cantidad de miel con la menor cera, creando una estructura increíblemente fuerte.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "pt": {
+      "title": "Por que as abelhas fazem favos hexagonais? 🐝",
+      "description": "Já se perguntou por que as abelhas constroem seus favos sempre em forma de hexágono? Essa geometria perfeita permite que elas armazenem a maior quantidade de mel com o mínimo de cera, além de ser uma estrutura forte e eficiente.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "de": {
+      "title": "Warum bauen Bienen immer sechseckige Waben? 🐝",
+      "description": "Haben Sie sich jemals gefragt, warum Bienen ihre Waben immer sechseckig bauen? Diese Form ermöglicht es ihnen, mit der geringsten Menge Wachs den meisten Honig zu lagern und eine Struktur zu schaffen, die stark genug ist, um das Gewicht des Honigs zu tragen.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "fr": {
+      "title": "Pourquoi les abeilles construisent-elles des alvéoles hexagonales? 🐝",
+      "description": "Vous êtes-vous déjà demandé pourquoi les abeilles construisent leurs alvéoles en forme d'hexagone ? Cette géométrie incroyable leur permet de stocker un maximum de miel avec un minimum de cire, tout en assurant une structure solide.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "it": {
+      "title": "Perché le api costruiscono favi esagonali? 🐝",
+      "description": "Ti sei mai chiesto perché le api costruiscono i loro favi sempre a forma esagonale? Questa geometria perfetta permette loro di immagazzinare la massima quantità di miele usando la minor cera possibile, creando una struttura incredibilmente robusta.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "ru": {
+      "title": "Почему пчёлы всегда строят шестиугольные соты? 🐝",
+      "description": "Задумывались ли вы, почему пчёлы всегда строят свои соты в форме шестиугольника? Эта удивительная геометрия позволяет им хранить максимум мёда, используя минимум воска, при этом создавая очень прочную структуру.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "ar": {
+      "title": "لماذا تبني النحل خلاياها سداسية الشكل دائمًا؟ 🐝",
+      "description": "هل تساءلت يومًا لماذا تبني النحل خلاياها دائمًا بشكل سداسي؟ يتيح لها هذا الشكل الهندسي المذهل تخزين أكبر قدر من العسل بأقل كمية من الشمع، مما يخلق هيكلاً قويًا بما يكفي لتحمل وزن العسل.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "hi": {
+      "title": "मधुमक्खियाँ हमेशा षटकोणीय छत्ते क्यों बनाती हैं? 🐝",
+      "description": "क्या आपने कभी सोचा है कि मधुमक्खियाँ अपने छत्ते हमेशा षटकोणीय आकार में क्यों बनाती हैं? यह ज्यामितीय आकार उन्हें कम से कम मोम का उपयोग करके सबसे अधिक शहद स्टोर करने की अनुमति देता है, जिससे शहद का वजन सहने के लिए पर्याप्त मजबूत संरचना बनती है।\n\n#shorts\n\nSeri: mk-007"
+    },
+    "id": {
+      "title": "Mengapa Lebah Selalu Membuat Sarang Madu Berbentuk Heksagonal? 🐝",
+      "description": "Pernahkah Anda bertanya-tanya mengapa lebah selalu membangun sarang madunya dalam bentuk heksagonal? Bentuk geometris ini memungkinkan mereka menyimpan madu terbanyak dengan lilin paling sedikit, menciptakan struktur yang cukup kuat untuk menopang berat madu.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "ja": {
+      "title": "なぜミツバチは常に六角形の巣を作るの？ 🐝",
+      "description": "ミツバチがなぜ六角形の巣を作るのか、不思議に思ったことはありませんか？ この完璧な形は、最小限の蜜蝋で最大限の蜂蜜を蓄えることを可能にし、蜂蜜の重さに耐える十分な強度を持つ構造を作り出します。\n\n#shorts\n\nSeri: mk-007"
+    },
+    "ko": {
+      "title": "벌은 왜 항상 육각형 벌집을 만들까요? 🐝",
+      "description": "벌들이 왜 항상 육각형 모양의 벌집을 만드는지 궁금했던 적이 있으신가요? 이 완벽한 기하학적 형태는 최소한의 밀랍으로 가장 많은 꿀을 저장할 수 있게 해주며, 꿀의 무게를 지탱할 만큼 튼튼한 구조를 만듭니다.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "pl": {
+      "title": "Dlaczego pszczoły zawsze budują sześciokątne plastry miodu? 🐝",
+      "description": "Czy zastanawiałeś się kiedyś, dlaczego pszczoły budują swoje plastry miodu w kształcie sześciokąta? Ta idealna geometria pozwala im przechowywać najwięcej miodu, zużywając najmniej wosku, tworząc jednocześnie bardzo wytrzymałą strukturę.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "nl": {
+      "title": "Waarom bouwen bijen altijd zeshoekige honingraten? 🐝",
+      "description": "Heb je je ooit afgevraagd waarom bijen hun honingraten altijd in een zeshoekige vorm bouwen? Deze perfecte geometrie stelt hen in staat om de meeste honing op te slaan met de minste hoeveelheid bijenwas, en creëert een structuur die sterk genoeg is om het gewicht van de honing te dragen.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "uk": {
+      "title": "Чому бджоли завжди будують шестикутні стільники? 🐝",
+      "description": "Чи замислювалися ви, чому бджоли завжди будують свої стільники у формі шестикутника? Ця ідеальна геометрія дозволяє їм зберігати максимум меду, використовуючи мінімум воску, створюючи при цьому міцну та ефективну структуру.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "vi": {
+      "title": "Tại sao ong luôn xây tổ hình lục giác? 🐝",
+      "description": "Bạn có bao giờ tự hỏi tại sao ong luôn xây tổ của chúng theo hình lục giác không? Hình dạng hình học hoàn hảo này cho phép chúng lưu trữ nhiều mật ong nhất với lượng sáp ít nhất, tạo ra một cấu trúc đủ mạnh để chịu được trọng lượng của mật ong.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "az": {
+      "title": "Arılar niyə həmişə altıbucaqlı pətəklər qurur? 🐝",
+      "description": "Heç düşünmüsünüzmü ki, arılar pətəklərini niyə həmişə altıbucaqlı formada qururlar? Bu mükəmməl həndəsi forma onlara ən az mumla ən çox bal saxlamağa imkan verir və balın ağırlığını daşıya biləcək qədər güclü bir quruluş yaradır.\n\n#shorts\n\nSeri: mk-007"
+    },
+    "ro": {
+      "title": "De ce construiesc albinele faguri hexagonali? 🐝",
+      "description": "Te-ai întrebat vreodată de ce albinele își construiesc fagurii întotdeauna în formă hexagonală? Această geometrie perfectă le permite să depoziteze cea mai mare cantitate de miere cu cea mai mică ceară, creând o structură incredibil de rezistentă.\n\n#shorts\n\nSeri: mk-007"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence arılar, peteklerini yaparken altıgen mi, yoksa kare mi daha çok balmumu harcar?",
+  "scenes": [
+    {
+      "text": "Arılar peteklerini, şaşırtıcı bir verimlilikle altıgen yapar.",
+      "visual": "Close-up of bees on hexagonal honeycomb.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 20,
+          "kare": 1
+        },
+        {
+          "n": 38,
+          "kare": 2
+        },
+        {
+          "n": 11,
+          "kare": 1
+        }
+      ],
+      "callout": "ALTI GEN"
+    },
+    {
+      "text": "Peki neden kare veya yuvarlak değil de tam altıgen?",
+      "visual": "Wider shot of a hexagonal honeycomb frame.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 23,
+          "kare": 1
+        },
+        {
+          "n": 31,
+          "kare": 2
+        },
+        {
+          "n": 40,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Altıgen şekil, en az balmumuyla en fazla bal depolama alanı sunar.",
+      "visual": "Close-up of hexagonal cells, some with honey, a bee in one.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 1
+        },
+        {
+          "n": 16,
+          "kare": 2
+        },
+        {
+          "n": 25,
+          "kare": 1
+        }
+      ],
+      "callout": "MAKSİMUM DEPOLAMA"
+    },
+    {
+      "text": "Bu mükemmel yapı, balın ağırlığını taşıyacak kadar da güçlüdür.",
+      "visual": "Beekeeper holding a frame full of bees and comb.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 3
+        },
+        {
+          "n": 12,
+          "kare": 1
+        }
+      ],
+      "callout": "MÜKEMMEL YAPI"
+    },
+    {
+      "text": "Arılar, doğanın en pratik mühendisleridir işte bu yüzden.",
+      "visual": "Bees flying around and entering/exiting a wooden hive.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 1
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 1
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 14.38,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı ve enerjisi düşük, monoton bir yapay zeka sesi kullanılmış.",
+        "fix": "Daha enerjik ve doğal tınlayan bir yapay zeka sesi seçilmeli, konuşma hızı artırılarak dinamizm sağlanmalı."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Görüntü geçişleri yavaş ve video genelinde dinamizm eksikliği var.",
+        "fix": "Klip süreleri kısaltılarak daha hızlı ve keskin geçişler (jump cut) kullanılmalı. Her 1-2 saniyede bir yeni görüntüye geçiş hedeflenmeli."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar uzun, statik ve görsel bilgiyi destekleyici grafikler (ok, vurgu) eksik.",
+        "fix": "Yazılar 1-3 kelimeye indirilmeli, daha hızlı görünüp kaybolmalı. Otomatik kurgu aracı izin veriyorsa, bilgiyi pekiştirmek için basit oklar veya vurgu şekilleri eklenmeli."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görsel çeşitlilik az, çoğunlukla benzer yakın çekimler kullanılmış ve bazı görüntüler anlatılanla tam örtüşmüyor.",
+        "fix": "Daha çeşitli stok görüntüler (geniş açılar, farklı arı aktiviteleri) bulunmalı. Anlatılan kelimeyi veya kavramı doğrudan görselleştiren klipler tercih edilmeli."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği enerjisiz ve videoda hiç ses efekti kullanılmamış.",
+        "fix": "Daha dinamik ve ilgi çekici bir arka plan müziği seçilmeli. Anahtar anlarda (yazı belirmesi, önemli bilgi) hafif ses efektleri eklenmeli."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca yeterince merak uyandırıcı değil ve bilginin şaşırtıcılığı yeterince vurgulanmıyor.",
+        "fix": "Kancayı daha çarpıcı hale getirmek için 'neden' sorusunu daha dramatik bir şekilde soran veya 'şaşırtıcı bir gerçek' vaat eden ifadeler kullanılmalı."
+      },
+      {
+        "area": "yazı",
+        "problem": "Sarı yazı rengi, bazı arka planlarda okunabilirliği düşürüyor.",
+        "fix": "Yazı rengi, arka planla daha iyi kontrast sağlayacak şekilde (örneğin beyaz, siyah çerçeveli veya gölgeli) ayarlanmalı."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz bilgi sunumu.",
+      "Eğitici içerik."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
