@@ -159,7 +159,7 @@ const VIS = {
       let opt = {};
       if (hit) {
         if (d === 'vanish' || d === 'explode') { r *= 1 - eo(prog(t, kt, kt + .4)); }
-        if (d === 'grow') r *= 1 + .7 * eio(p);
+        if (d === 'grow') r = Math.min(r * (1 + .7 * eio(p)), Math.max(r, 330));
         if (d === 'shrink') r *= 1 - .65 * eio(p);
         if (d === 'shake') { const s = prog(t, kt, kt + .2) * 14; x += Math.sin(t * 60) * s; y += Math.cos(t * 47) * s; }
         if (d === 'approach' || d === 'recede') {
@@ -291,8 +291,10 @@ const VIS = {
     ctx.fillStyle = col; const h = (y0 - y1) * clamp(frac); rr(x - 40, y0 - h, 80, h + 20, 40); ctx.fill();
     circle(x, y0 + 40, 70, col);
     if (V.e) emoji(V.e, 760, 520, 200);
-    const sv = (Math.abs(to - from) < 10 && (to % 1 || from % 1)) ? v.toFixed(1).replace('.', ',') : Math.round(v).toString();
-    text(sv + (V.unit ? ' ' + V.unit : ''), 760, 780, 130, hot ? C.yellow : '#bfe9ff', 900, 'center', 18);
+    const dec = Math.max(...[V.from, V.to].map(x => (String(x).split(/[.,]/)[1] || '').length));
+    const sv = fmtNum(Math.abs(v), Math.min(dec, 2)), sign = v < 0 ? '-' : '';
+    const shown = V.unit === '%' ? sign + '%' + sv : sign + sv + (V.unit ? ' ' + V.unit : '');
+    fitText(shown, 760, 780, 130, 560, hot ? C.yellow : '#bfe9ff', 18);
     if (V.label) pill(V.label.toLocaleUpperCase('tr'), 760, 960, 50, col, C.white, back(prog(lt, .1, .5)), 520);
   },
   question(V, L, t, lt) {
