@@ -1,0 +1,302 @@
+{
+ "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu?",
+ "bar": {
+  "hi": "DÜNYA DURSA",
+  "rest": "NE OLURDU?"
+ },
+ "summary": "Dünya bir anda dönmeyi kesseydi başımıza neler gelirdi hiç düşündünüz mü? Saatte binlerce kilometrelik fırtınalardan altı aylık gecelere, duran bir gezegenin akılalmaz gerçeklerini keşfedin.",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "Dünya bir anda dönmeyi bıraksa ne olur?",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "🌍",
+    "label": "DÜNYA DURURSA"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ekvatorda saatte 1.670 kilometre hızla doğuya fırlardık.",
+   "v": {
+    "t": "number",
+    "bg": "city",
+    "e": "💨",
+    "value": "1.670",
+    "unit": "km/saat",
+    "label": "SAVRULMA HIZI",
+    "key": "1.670"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Uçarak mı? Bu kadar mı?",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "😱",
+    "do": "shake",
+    "key": "kadar",
+    "label": "HER ŞEY UÇUYOR"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Atmosfer durmaz, süpersonik rüzgarlar yeryüzündeki her yapıyı dümdüz ederdi.",
+   "v": {
+    "t": "icon",
+    "bg": "storm",
+    "e": "🌪️",
+    "do": "spin",
+    "key": "süpersonik",
+    "label": "DEV FIRTINA"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Binalar bile mi?",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🏢",
+    "do": "fall",
+    "key": "Binalar",
+    "label": "YIKILAN ŞEHİRLER"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Merkezkaç bitince okyanuslar kutuplara çekilir, ekvatorda devasa bir kara kalırdı.",
+   "v": {
+    "t": "split",
+    "bg": "ocean",
+    "left": {
+     "e": "🌊",
+     "label": "ŞİMDİKİ SULAR"
+    },
+    "right": {
+     "e": "🧭",
+     "label": "KUTUP DENİZİ"
+    },
+    "key": "okyanuslar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstelik 1 gün 1 yıl sürerdi: tam 6 ay kavurucu gündüz, 6 ay dondurucu gece.",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "6 AY",
+      "e": "☀️",
+      "label": "KAVURUCU GÜN"
+     },
+     {
+      "when": "6 AY",
+      "e": "🥶",
+      "label": "DONMUŞ GECE"
+     }
+    ],
+    "key": "gündüz"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "pi: Gezegenin dönüşü durunca dinamo etkisi çöker, manyetik kalkanımız zamanla yok olurdu.",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🛡️",
+    "do": "vanish",
+    "key": "kalkanımız",
+    "label": "MANYETİK KALKAN"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "İyi ki hızla dönüyoruz!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "spin",
+    "target": 0,
+    "key": "dönüyoruz",
+    "label": "DÖNEN DÜNYA"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "✨"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Dünya'nın kendi ekseni etrafındaki dönüş hızı ekvator çizgisinde yaklaşık 1.670 km/saat hızındadır.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/"
+  },
+  {
+   "text": "Dönüş durduğunda merkezkaç kuvveti yok olacağı için tüm okyanus suları kutuplara toplanır ve ekvator devasa bir kıtaya dönüşür.",
+   "source": "Esri",
+   "url": "https://www.esri.com/news/arcuser/0610/nospin.html"
+  },
+  {
+   "text": "Kendi ekseninde dönmeyen bir Dünya'da Güneş etrafındaki tur nedeniyle 1 tam gün 1 yıla eşitlenir; 6 ay gündüz ve 6 ay gece yaşanır.",
+   "source": "Smithsonian National Air and Space Museum",
+   "url": "https://airandspace.si.edu/"
+  },
+  {
+   "text": "Dönüş hareketi durduğunda sıvı dış çekirdeğin dinamo etkisi kesintiye uğrayarak koruyucu manyetik kalkanın çökmesine yol açabilir.",
+   "source": "ESA",
+   "url": "https://www.esa.int/"
+  }
+ ],
+ "tags": [
+  "dünya dönmeyi bıraksaydı",
+  "dünyanın dönüşü",
+  "eylemsizlik",
+  "dünya durursa ne olur",
+  "merkezkaç kuvveti",
+  "astronomi",
+  "fizik",
+  "manyetik alan",
+  "uzay bilimi",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#dünyanınsırrı",
+  "#bilim",
+  "#yaolsaydı"
+ ],
+ "cover": 1,
+ "sources": [
+  "https://science.howstuffworks.com/science-vs-myth/what-if/what-if-earth-stopped-spinning.htm",
+  "https://science.nasa.gov/",
+  "https://www.esri.com/about/newsroom/arcuser/what-would-happen-if-earth-stopped-spinning?rsource=https%3A%2F%2Fwww.esri.com%2Fnews%2Farcuser%2F0610%2Fnospin.html",
+  "https://airandspace.si.edu/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If the Earth Stopped Spinning?",
+   "summary": "Have you ever wondered what would happen if the Earth suddenly stopped spinning? From storms raging at thousands of kilometers per hour to six-month nights, discover the unbelievable realities of a halted planet.",
+   "facts": [
+    "Earth's rotational speed around its axis is approximately 1,670 km/h at the equator.",
+    "If rotation stopped, the disappearance of centrifugal force would cause oceans to rush to the poles, turning the equator into a massive continent.",
+    "On a non-spinning Earth, due to its orbit around the Sun, 1 full day would equal 1 year, resulting in 6 months of daylight and 6 months of night.",
+    "Stopping the rotation could disrupt the dynamo effect of the liquid outer core, potentially collapsing our protective magnetic shield."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si la Tierra dejara de girar?",
+   "summary": "¿Alguna vez te has preguntado qué pasaría si la Tierra dejara de girar de golpe? Desde tormentas de miles de kilómetros por hora hasta noches de seis meses, descubre la increíble realidad de un planeta detenido.",
+   "facts": [
+    "La velocidad de rotación de la Tierra sobre su propio eje es de aproximadamente 1.670 km/h en el ecuador.",
+    "Al detenerse el giro, la desaparición de la fuerza centrífuga desplazaría los océanos hacia los polos, convirtiendo el ecuador en un continente gigante.",
+    "En una Tierra que no rota, debido a su órbita alrededor del Sol, 1 día completo equivaldría a 1 año, con 6 meses de día y 6 meses de noche.",
+    "El cese de la rotación interrumpiría el efecto dinamo del núcleo externo líquido, lo que podría provocar el colapso del escudo magnético protector."
+   ]
+  },
+  "pt": {
+   "title": "E se a Terra parasse de girar?",
+   "summary": "Já pensou no que aconteceria se a Terra parasse de girar de repente? De tempestades a milhares de quilômetros por hora a noites de seis meses, descubra as realidades impressionantes de um planeta imóvel.",
+   "facts": [
+    "A velocidade de rotação da Terra em torno de seu próprio eixo é de aproximadamente 1.670 km/h na linha do equador.",
+    "Ao cessar a rotação, a força centrífuga desapareceria e os oceanos migrariam para os polos, transformando o equador em um megacontinente.",
+    "Em uma Terra estática, devido à translação ao redor do Sol, 1 dia inteiro equivaleria a 1 ano, com 6 meses de luz solar e 6 meses de escuridão.",
+    "A parada no giro interromperia o efeito dínamo do núcleo externo líquido, podendo causar o colapso do escudo magnético protetor."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو توقفت الأرض عن الدوران؟",
+   "summary": "هل تساءلت يوماً عما سيحدث لو توقفت الأرض فجأة عن الدوران؟ من عواصف بسرعة آلاف الكيلومترات في الساعة إلى ليل يدوم ستة أشهر، اكتشف الحقائق المذهلة لكوكب متوقف.",
+   "facts": [
+    "تبلغ سرعة دوران الأرض حول محورها حوالي 1670 كم/ساعة عند خط الاستواء.",
+    "عندما يتوقف الدوران، ستختفي قوة الطرد المركزي مما يؤدي إلى تجمع مياه المحيطات عند القطبين وتحول خط الاستواء إلى قارة عملاقة.",
+    "على كوكب لا يدور حول نفسه، فإن دورانه حول الشمس يجعل اليوم الكامل يعادل سنة كاملة؛ 6 أشهر نهار و6 أشهر ليل.",
+    "قد يؤدي توقف الحركة الدورانية إلى تعطيل تأثير الدينامو في اللب الخارجي السائل، مما قد يتسبب في انهيار الدرع المغناطيسي الواقي."
+   ]
+  },
+  "hi": {
+   "title": "क्या होगा अगर पृथ्वी घूमना बंद कर दे?",
+   "summary": "क्या आपने कभी सोचा है कि अगर पृथ्वी अचानक घूमना बंद कर दे तो क्या होगा? हजारों किलोमीटर प्रति घंटे के तूफानों से लेकर छह महीने लंबी रातों तक, एक थमे हुए ग्रह की हैरान करने वाली सच्चाइयों को जानें।",
+   "facts": [
+    "भूमध्य रेखा पर पृथ्वी की अपनी धुरी पर घूमने की गति लगभग 1,670 किमी/घंटा है।",
+    "घूर्णन रुकने पर अपकेंद्रीय बल खत्म हो जाएगा, जिससे महासागर ध्रुवों की ओर खिंच जाएंगे और भूमध्य रेखा एक विशाल महाद्वीप बन जाएगी।",
+    "बिना घूर्णन वाली पृथ्वी पर सूर्य की परिक्रमा के कारण 1 पूरा दिन 1 साल के बराबर होगा; 6 महीने दिन और 6 महीने रात रहेगी।",
+    "घूर्णन रुकने से तरल बाहरी कोर का डायनेमो प्रभाव बाधित हो सकता है, जिससे सुरक्षात्मक चुंबकीय ढाल नष्ट हो सकती है।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi jika Bumi Berhenti Berputar?",
+   "summary": "Pernahkah Anda membayangkan apa yang akan terjadi jika Bumi tiba-tiba berhenti berputar? Dari badai berkecepatan ribuan kilometer per jam hingga malam selama enam bulan, temukan kenyataan luar biasa dari planet yang berhenti.",
+   "facts": [
+    "Kecepatan rotasi Bumi pada porosnya sekitar 1.670 km/jam di garis khatulistiwa.",
+    "Saat rotasi berhenti, hilangnya gaya sentrifugal akan membuat lautan berkumpul di kutub, mengubah khatulistiwa menjadi benua raksasa.",
+    "Di Bumi yang tidak berotasi, revolusi mengelilingi Matahari akan membuat 1 hari penuh setara dengan 1 tahun; 6 bulan siang dan 6 bulan malam.",
+    "Terhentinya rotasi dapat mengganggu efek dinamo pada inti luar cair, yang berpotensi meruntuhkan perisai magnetik pelindung."
+   ]
+  },
+  "fr": {
+   "title": "Et si la Terre s'arrêtait de tourner ?",
+   "summary": "Vous êtes-vous déjà demandé ce qui se passerait si la Terre s'arrêtait soudainement de tourner ? D'ouragans à des milliers de kilomètres par heure à des nuits de six mois, découvrez les vérités fascinantes d'une planète figée.",
+   "facts": [
+    "La vitesse de rotation de la Terre sur son axe est d'environ 1 670 km/h au niveau de l'équateur.",
+    "À l'arrêt de la rotation, la disparition de la force centrifuge repousserait les océans vers les pôles, transformant l'équateur en un continent gigantesque.",
+    "Sur une Terre sans rotation, en raison de son orbite autour du Soleil, 1 jour complet équivaudrait à 1 an, avec 6 mois de jour et 6 mois de nuit.",
+    "L'arrêt de la rotation perturberait l'effet dynamo du noyau externe liquide, risquant d'anéantir notre bouclier magnétique protecteur."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn die Erde aufhört sich zu drehen?",
+   "summary": "Haben Sie sich je gefragt, was passieren würde, wenn die Erde plötzlich aufhörte sich zu drehen? Von Stürmen mit Tausenden Kilometern pro Stunde bis hin zu sechsmonatigen Nächten – entdecken Sie die unglaublichen Fakten eines stillstehenden Planeten.",
+   "facts": [
+    "Die Rotationsgeschwindigkeit der Erde um die eigene Achse beträgt am Äquator rund 1.670 km/h.",
+    "Bei einem Stillstand würde die Fliehkraft entfallen, sodass die Ozeane zu den Polen fließen und der Äquator zu einem riesigen Kontinent wird.",
+    "Auf einer stillstehenden Erde entspräche 1 voller Tag durch den Umlauf um die Sonne genau 1 Jahr: 6 Monate Tag und 6 Monate Nacht.",
+    "Das Stoppen der Rotation könnte den Dynamo-Effekt des flüssigen äußeren Kerns unterbrechen und das schützende Magnetfeld zum Zusammenbruch bringen."
+   ]
+  },
+  "ru": {
+   "title": "Что будет, если Земля перестанет вращаться?",
+   "summary": "Задумывались ли вы, что произойдет, если Земля внезапно перестанет вращаться? От ураганов со скоростью тысячи километров в час до полугодовых ночей — откройте для себя невероятную реальность остановившейся планеты.",
+   "facts": [
+    "Скорость вращения Земли вокруг своей оси на экваторе составляет около 1 670 км/ч.",
+    "При остановке вращения исчезнет центробежная сила, из-за чего океаны уйдут к полюсам, а экватор превратится в гигантский континент.",
+    "Без осевого вращения из-за движения вокруг Солнца 1 полный день станет равен 1 году: 6 месяцев дня и 6 месяцев ночи.",
+    "Остановка вращения нарушит эффект динамо в жидком внешнем ядре, что может привести к коллапсу защитного магнитного щита."
+   ]
+  },
+  "az": {
+   "title": "Yer fırlanmağı dayandırsaydı nə olardı?",
+   "summary": "Yerin qəfil fırlanmağı dayandıracağı təqdirdə başımıza nələrin gələcəyini heç düşünmüsünüz? Saatda minlərlə kilometrlik fırtınalardan altı aylıq gecələrə qədər dayanan bir planetin ağlasığmaz həqiqətlərini kəşf edin.",
+   "facts": [
+    "Yerin öz oxu ətrafında fırlanma sürəti ekvator xəttində təxminən 1.670 km/saat təşkil edir.",
+    "Fırlanma dayandıqda mərkəzdənqaçma qüvvəsi yox olacağı üçün bütün okean suları qütblərə toplanar və ekvator nəhəng bir qitəyə çevrilər.",
+    "Öz oxu ətrafında fırlanmayan Yerdə Günəş ətrafındakı dövrə görə 1 tam gün 1 ilə bərabər olar; 6 ay gündüz və 6 ay gecə yaşanar.",
+    "Fırlanma hərəkəti dayandıqda maye xarici nüvənin dinamo effekti pozularaq qoruyucu maqnit qalxanının çökməsinə səbəb ola bilər."
+   ]
+  }
+ },
+ "id": "y001",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya dönmeyi bıraksaydı ne olurdu?"
+}
