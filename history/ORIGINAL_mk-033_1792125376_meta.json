@@ -1,0 +1,272 @@
+{
+  "topic_id": "mk-033",
+  "topic": "Islak bir köpek üzerindeki suyun %70'ini 4 saniyede nasıl silker?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
+  "hook_text": "KÖPEKLER NEDEN HIZLI KURUR?",
+  "description": "Köpekler saniyeler içinde nasıl kurur?\n\nIslak köpekler, suyun %70'ini sadece 4 saniyede silkerler. Hızlı dönüşlerle oluşturdukları merkezkaç kuvvetiyle suyu vücutlarından fırlatırlar ve gevşek derileri de daha fazla suyun ayrılmasına yardımcı olur. Küçük köpekler saniyede 6-7 kez dönerken, büyük ırklar 4-5 kez sallanır.\n\nSence bir köpek, bir sallanmada kaç litre su atar: 0.5 mi 1.5 mi?\n\n#köpek #hayvanlar #doğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-033",
+  "tags": [
+    "köpek",
+    "köpekler",
+    "ıslak köpek",
+    "köpek nasıl kurur",
+    "köpek suyu silker",
+    "köpek hızlı kuruma",
+    "merkezkaç kuvveti",
+    "köpek derisi",
+    "köpek sallanma",
+    "hipotermi köpek",
+    "köpekler neden kurur",
+    "köpekler nasıl hızlı kurur",
+    "ıslak köpek su atma",
+    "hayvanlar",
+    "hayvan bilgileri",
+    "ilginç bilgiler",
+    "bilim",
+    "doğa",
+    "belgesel",
+    "merak ettikleriniz",
+    "bilimsel gerçekler",
+    "dog",
+    "wet dog",
+    "dog shake",
+    "shorts",
+    "köpekler nasıl kurur",
+    "hayvanlar alemi",
+    "keşif vakti",
+    "zirvenin kanunu",
+    "merak",
+    "kopek",
+    "kopekler"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Dogs Dry So Fast in Seconds? 💧",
+      "description": "Have you ever wondered why dogs dry almost instantly after getting wet? They can shake off 70% of the water from their bodies in just 4 seconds! This incredible ability, thanks to centrifugal force and loose skin, protects them from hypothermia.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "es": {
+      "title": "¿Por qué los perros se secan tan rápido en segundos? 💧",
+      "description": "¿Alguna vez te has preguntado cómo los perros logran secarse tan rápido? ¡Pueden eliminar el 70% del agua de su cuerpo en solo 4 segundos! Esta asombrosa habilidad los protege de la hipotermia.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "pt": {
+      "title": "Por que os cães secam tão rápido em segundos? 💧",
+      "description": "Você já se perguntou como os cães conseguem secar tão rapidamente? Eles podem se livrar de 70% da água do corpo em apenas 4 segundos! Essa habilidade incrível os protege da hipotermia.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "de": {
+      "title": "Warum trocknen Hunde in Sekundenschnelle? 💧",
+      "description": "Haben Sie sich jemals gefragt, wie Hunde nach dem Nasswerden so schnell trocknen? Sie können 70% des Wassers in nur 4 Sekunden abschütteln! Diese erstaunliche Fähigkeit schützt sie vor Unterkühlung.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "fr": {
+      "title": "Pourquoi les chiens sèchent-ils si vite en quelques secondes ? 💧",
+      "description": "Vous êtes-vous déjà demandé comment les chiens parviennent à sécher si rapidement? Ils peuvent se débarrasser de 70% de l'eau de leur corps en seulement 4 secondes! Cette capacité étonnante les protège de l'hypothermie.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "it": {
+      "title": "Perché i cani si asciugano così velocemente in pochi secondi? 💧",
+      "description": "Ti sei mai chiesto perché i cani si asciugano quasi istantaneamente dopo essersi bagnati? Possono scrollarsi di dosso il 70% dell'acqua dal loro corpo in soli 4 secondi! Questa incredibile abilità li protegge dall'ipotermia.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "ru": {
+      "title": "Почему собаки высыхают за секунды? 💧",
+      "description": "Вы когда-нибудь задумывались, почему собаки высыхают так быстро? Они могут стряхнуть 70% воды со своего тела всего за 4 секунды! Эта удивительная способность защищает их от переохлаждения.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "ar": {
+      "title": "لماذا تجف الكلاب بهذه السرعة في ثوانٍ؟ 💧",
+      "description": "هل تساءلت يومًا لماذا تجف الكلاب بسرعة مذهلة بعد أن تبتل؟ يمكنها التخلص من 70% من الماء من أجسامها في 4 ثوانٍ فقط! هذه القدرة المدهشة تحميهم من انخفاض حرارة الجسم.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "hi": {
+      "title": "कुत्ते इतनी जल्दी सेकंडों में क्यों सूख जाते हैं? 💧",
+      "description": "क्या आपने कभी सोचा है कि कुत्ते गीले होने के बाद इतनी तेज़ी से क्यों सूख जाते हैं? वे अपने शरीर से 70% पानी सिर्फ 4 सेकंड में झाड़ सकते हैं! यह अद्भुत क्षमता उन्हें हाइपोथर्मिया से बचाती है।\n\n#shorts\n\nSeri: mk-033"
+    },
+    "id": {
+      "title": "Mengapa Anjing Cepat Kering dalam Hitungan Detik? 💧",
+      "description": "Pernahkah Anda bertanya-tanya mengapa anjing bisa kering hampir seketika setelah basah? Mereka dapat menggoyangkan 70% air dari tubuhnya hanya dalam 4 detik! Kemampuan luar biasa ini melindungi mereka dari hipotermia.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "ja": {
+      "title": "なぜ犬は数秒でこんなに早く乾くの？ 💧",
+      "description": "犬が濡れた後、なぜこんなに早く乾くのか不思議に思ったことはありませんか？彼らは体の70%の水をたった4秒で振り落とすことができます！この驚くべき能力は、低体温症から彼らを守ります。\n\n#shorts\n\nSeri: mk-033"
+    },
+    "ko": {
+      "title": "개는 왜 몇 초 만에 이렇게 빨리 마를까? 💧",
+      "description": "개는 왜 물에 젖은 후 그렇게 빨리 마르는지 궁금해한 적이 있나요? 그들은 몸의 70%에 달하는 물을 단 4초 만에 털어낼 수 있습니다! 이 놀라운 능력은 저체온증으로부터 그들을 보호합니다.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "pl": {
+      "title": "Dlaczego psy schną tak szybko w kilka sekund? 💧",
+      "description": "Czy zastanawiałeś się kiedyś, dlaczego psy schną prawie natychmiast po zmoczeniu? Potrafią strząsnąć 70% wody ze swojego ciała w zaledwie 4 sekundy! Ta niesamowita umiejętność chroni je przed hipotermią.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "nl": {
+      "title": "Waarom drogen honden zo snel in seconden? 💧",
+      "description": "Heb je je ooit afgevraagd waarom honden na een natte vacht zo snel drogen? Ze kunnen 70% van het water in slechts 4 seconden van hun lichaam schudden! Dit ongelooflijke vermogen beschermt ze tegen onderkoeling.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "uk": {
+      "title": "Чому собаки висихають так швидко за секунди? 💧",
+      "description": "Ви коли-небудь замислювалися, чому собаки висихають майже миттєво після намокання? Вони можуть струсити 70% води зі свого тіла всього за 4 секунди! Ця дивовижна здатність захищає їх від переохолодження.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "vi": {
+      "title": "Tại sao chó khô nhanh chỉ trong vài giây? 💧",
+      "description": "Bạn có bao giờ tự hỏi tại sao chó lại khô gần như ngay lập tức sau khi bị ướt không? Chúng có thể rũ bỏ 70% lượng nước trên cơ thể chỉ trong 4 giây! Khả năng đáng kinh ngạc này giúp chúng tránh hạ thân nhiệt.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "az": {
+      "title": "İtlər niyə saniyələr içində bu qədər tez quruyur? 💧",
+      "description": "Heç düşünmüsünüzmü, itlər islandıqdan sonra niyə bu qədər tez quruyur? Onlar bədənlərindəki suyun 70%-ni cəmi 4 saniyədə silkələyə bilirlər! Bu heyrətamiz qabiliyyət onları hipotermiyadan qoruyur.\n\n#shorts\n\nSeri: mk-033"
+    },
+    "ro": {
+      "title": "De ce se usucă câinii atât de repede în câteva secunde? 💧",
+      "description": "Te-ai întrebat vreodată de ce câinii se usucă aproape instantaneu după ce se udă? Ei pot scutura 70% din apă de pe corpul lor în doar 4 secunde! Această abilitate incredibilă îi protejează de hipotermie.\n\n#shorts\n\nSeri: mk-033"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bir köpek, bir sallanmada kaç litre su atar: 0.5 mi 1.5 mi?",
+  "scenes": [
+    {
+      "text": "Bu köpek, suyun %70'ini 4 saniyede silker.",
+      "visual": "A wet dog violently shaking off water.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 11,
+          "kare": 2
+        },
+        {
+          "n": 39,
+          "kare": 2
+        },
+        {
+          "n": 34,
+          "kare": 3
+        }
+      ],
+      "callout": "4 SANİYEDE %70"
+    },
+    {
+      "text": "Hızlı dönüşler oluşturdukları merkezkaç kuvvetiyle suyu vücutlarından fırlatırlar.",
+      "visual": "A dog shaking, water droplets flying around its body.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 3
+        },
+        {
+          "n": 3,
+          "kare": 3
+        },
+        {
+          "n": 5,
+          "kare": 3
+        }
+      ],
+      "callout": "MERKEZKAÇ KUVVETİ"
+    },
+    {
+      "text": "Gevşek derileri, sallanma sırasında daha fazla suyun ayrılmasına yardımcı olur.",
+      "visual": "Wet dogs with visible loose skin, or skin rippling.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 20,
+          "kare": 1
+        },
+        {
+          "n": 9,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Küçük köpekler saniyede 6-7 kez dönerken, büyük ırklar 4-5 kez sallanır.",
+      "visual": "A small dog and a large dog, or different dog breeds.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 16,
+          "kare": 3
+        },
+        {
+          "n": 33,
+          "kare": 2
+        }
+      ],
+      "callout": "FARKLI HIZLAR"
+    },
+    {
+      "text": "Bu yetenek, onları hipotermiden korur ve işte bu yüzden.",
+      "visual": "A dog looking content and healthy.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 10,
+          "kare": 2
+        },
+        {
+          "n": 12,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 15.95,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 6,
+    "issues": [
+      {
+        "area": "görüntü",
+        "problem": "Fiziksel mekanizmayı görsel olarak açıklayan grafikler ve yavaş çekimler eksik, metinler ise çok uzun ve görseli boğuyor.",
+        "fix": "Köpeklerin su silkelemesini gösteren yavaş çekim stok videolar bul. Merkezkaç kuvvetini ve gevşek derinin suyu nasıl attığını göstermek için basit grafik katmanları (oklar, daireler) ekle. Karmaşık cümleleri daha kısa, vurucu ifadelere böl "
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi yavaş ve enerjisiz, genel ses tasarımı zayıf.",
+        "fix": "Senaryoyu daha kısa cümleler ve daha etkileyici ifadelerle yaz. Mümkünse yapay zeka sesinin hız ve ton ayarlarıyla oyna veya daha dinamik bir ses tonu olan yapay zeka sesi seç. Su sıçraması veya köpek silkelemesi gibi anlarda uygun ses efek"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video akışı yavaş ve kesmeler dinamik değil, izleyiciyi yeterince tutmuyor.",
+        "fix": "Kesmelerin hızını artır, özellikle yeni bilgiler sunulurken. Görsel ilgiyi canlı tutmak için farklı köpek ırkları veya silkeleme eylemleri arasında hızlı geçişler kullan. Her görselin konuşulan metni doğrudan desteklediğinden emin ol."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Bazı görseller konuya tam uygun değil veya açıklayıcılık açısından etkisi düşük.",
+        "fix": "Köpeklerin su silkelemesini, yüzmesini veya kurulanmasını dinamik bir şekilde gösteren stok görüntülere öncelik ver. Tüm görsellerin köpeklerin neden hızlı kuruduğunu açıklamaya doğrudan katkıda bulunduğundan emin ol. Özellikle son klip gib"
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca yeterince şaşırtıcı değil ve sunulan bilgi 'vay be' etkisi yaratmıyor.",
+        "fix": "Köpeklerin kuruma sürecinin *verimliliğini* senaryoda daha dramatik bir şekilde vurgula. Örneğin, '4 saniyede suyun %70'ini atabilen köpekler, doğanın mühendislik harikası!' gibi ifadelerle bilginin şaşırtıcılığını artır."
+      }
+    ],
+    "strengths": [
+      "Konu net ve anlaşılır.",
+      "Genel video süresi kısa ve öz.",
+      "Kullanılan stok videoların kalitesi iyi."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

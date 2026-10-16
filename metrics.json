@@ -1,12 +1,22 @@
 [
   {
+    "video_id": "9RAohHZ0ur4",
+    "topic_id": "mk-015",
+    "title": "Flamingolar neden bu kadar pembeler? 💖",
+    "published_at": "2026-10-16T01:43:10Z",
+    "privacy": "public",
+    "views": 420,
+    "likes": 4,
+    "comments": 1
+  },
+  {
     "video_id": "LZUWW_pFBIw",
     "topic_id": "mk-014",
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 0,
-    "likes": 0,
+    "views": 511,
+    "likes": 5,
     "comments": 1
   },
   {
@@ -15,8 +25,8 @@
     "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
     "published_at": "2026-10-15T23:19:42Z",
     "privacy": "public",
-    "views": 0,
-    "likes": 0,
+    "views": 273,
+    "likes": 1,
     "comments": 1
   },
   {
@@ -25,7 +35,7 @@
     "title": "Kutup Ayılarının Kürkü Aslında Beyaz Değil! 😮",
     "published_at": "2026-10-15T18:43:11Z",
     "privacy": "public",
-    "views": 980,
+    "views": 1015,
     "likes": 10,
     "comments": 1
   },
@@ -35,9 +45,10 @@
     "title": "Uçak Camları Neden Yuvarlak Olmak Zorunda? 🪟",
     "published_at": "2026-10-15T14:51:33Z",
     "privacy": "public",
-    "views": 996,
+    "views": 997,
     "likes": 4,
-    "comments": 1
+    "comments": 1,
+    "views_per_hour": 72.64
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -45,10 +56,10 @@
     "title": "İnsan kendini neden gıdıklayamaz? 🧠 #shorts",
     "published_at": "2026-10-15T09:46:53Z",
     "privacy": "public",
-    "views": 1156,
+    "views": 1158,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 72.95
+    "views_per_hour": 61.59
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -59,7 +70,7 @@
     "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 32.78
+    "views_per_hour": 29.66
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -67,10 +78,10 @@
     "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
     "published_at": "2026-10-14T19:12:05Z",
     "privacy": "public",
-    "views": 1096,
-    "likes": 19,
+    "views": 1100,
+    "likes": 18,
     "comments": 1,
-    "views_per_hour": 36.02
+    "views_per_hour": 32.95
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -78,10 +89,10 @@
     "title": "Baykuşlar başlarını neden 270 derece döndürüyor? 🦉 #shorts",
     "published_at": "2026-10-14T14:46:47Z",
     "privacy": "public",
-    "views": 1462,
+    "views": 1464,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 41.95
+    "views_per_hour": 38.73
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -89,9 +100,9 @@
     "title": "Şimşek neden önce, gök gürültüsü sonra gelir? ⚡ #shorts",
     "published_at": "2026-10-13T23:38:57Z",
     "privacy": "public",
-    "views": 369,
+    "views": 381,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 7.38
+    "views_per_hour": 7.2
   }
 ]
