@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "944",
+    "views": "1078",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "15",
+    "views": "140",
     "reason": null
    }
   },
@@ -84,6 +84,36 @@
    "at": 1792152274.2658043,
    "chars": 537,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "1",
+    "reason": null
+   }
+  },
+  {
+   "id": "g001",
+   "video_id": "53rXVX6QpA0",
+   "url": "https://youtube.com/shorts/53rXVX6QpA0",
+   "title": "Kalbin 1 Günde Kaç Kez Atar?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Times Does Your Heart Beat in a Day?",
+    "es": "¿Cuántas veces late tu corazón en un día?",
+    "pt": "Quantas vezes seu coração bate em 1 dia?",
+    "ar": "كم مرة ينبض قلبك في اليوم الواحد؟",
+    "hi": "आपका दिल 1 दिन में कितनी बार धड़कता है?",
+    "id": "Berapa Kali Jantungmu Berdetak dalam Sehari?",
+    "fr": "Combien de fois votre cœur bat-il par jour ?",
+    "de": "Wie oft schlägt dein Herz an einem Tag?",
+    "ru": "Сколько раз бьётся сердце за один день?",
+    "az": "Ürəyiniz 1 gündə neçə dəfə döyünür?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792158109.2484956,
+   "chars": 534,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -94,7 +124,8 @@
  "used": [
   "y001",
   "n001",
-  "o0001"
+  "o0001",
+  "g001"
  ],
  "extra": [
   {
@@ -129,6 +160,14 @@
    "url": "https://youtube.com/shorts/HdSKbp0rIz8",
    "duration": 36.1,
    "chars": 537
+  },
+  {
+   "finished": "2026-10-16T13:41:50+00:00",
+   "mod": "saatlik",
+   "title": "Kalbin 1 Günde Kaç Kez Atar?",
+   "url": "https://youtube.com/shorts/53rXVX6QpA0",
+   "duration": 37.5,
+   "chars": 534
   }
  ],
  "yorumlar": {

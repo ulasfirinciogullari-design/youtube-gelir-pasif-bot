@@ -1,0 +1,773 @@
+{
+ "title": "Kalbin 1 Günde Kaç Kez Atar?",
+ "bar": {
+  "hi": "KALBİN",
+  "rest": "1 GÜNDE KAÇ ATAR?"
+ },
+ "summary": "Kalbinizin sadece bir günde kaç kez çarptığını ve ne kadar kan pompaladığını hiç merak ettiniz mi? Günlük atış sayıları ve kalbin gizli dinlenme süresi sizi çok şaşırtacak.",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "Kalbimiz 1 günde kaç kez atar?",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "🫀",
+    "label": "GÜNLÜK KALP"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sağlıklı bir yetişkinin kalbi, günde yaklaşık 100.000 kez çarpar.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🫀",
+    "value": "100.000",
+    "unit": "atış",
+    "label": "GÜNLÜK ATIŞ",
+    "key": "100.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sadece bu mu?",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "🤔",
+    "do": "shake",
+    "key": "Sadece",
+    "label": "BU KADAR MI?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Her gün vücuduna yaklaşık 7.500 litre kan pompalar; koca bir havuzu doldurur!",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "POMPALANAN KAN",
+    "from": 0,
+    "to": 7500,
+    "unit": "litre",
+    "e": "🩸",
+    "key": "7.500"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "İnanılmaz!",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "😲",
+    "do": "grow",
+    "key": "İnanılmaz",
+    "label": "DEV HAVUZ"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "O kan, vücudundaki yaklaşık 100.000 kilometrelik dev damar ağını dolaşır.",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "e": "🫀",
+     "label": "DAMAR AĞI",
+     "value": 100000
+    },
+    "b": {
+     "e": "🌍",
+     "label": "DÜNYA ÇEVRESİ",
+     "value": 40075
+    },
+    "mode": "bar",
+    "key": "100.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu damarlar uç uca eklense, Dünya'nın çevresini 2,5 kez turlar!",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "e": "🫀",
+     "label": "DAMAR AĞI",
+     "value": 100000
+    },
+    "b": {
+     "e": "🌍",
+     "label": "DÜNYA ÇEVRESİ",
+     "value": 40075
+    },
+    "mode": "bar",
+    "key": "2,5"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Peki bu kalp hiç yorulmaz mı?",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "⚡",
+    "do": "pulse",
+    "key": "yorulmaz",
+    "label": "HİÇ DURMADAN?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İki atış arasındaki gevşeme anlarını toplarsan, kalp günde yaklaşık 14 saat dinlenir!",
+   "v": {
+    "t": "timeline",
+    "bg": "body",
+    "steps": [
+     {
+      "when": "KASILMA",
+      "e": "🫀",
+      "label": "10 SAAT ÇALIŞMA"
+     },
+     {
+      "when": "GEVŞEME",
+      "e": "💤",
+      "label": "14 SAAT DİNLENME"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Benden çok uyuyormuş!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "😴",
+    "do": "float",
+    "key": "uyuyormuş",
+    "label": "KALBİN UYKUSU"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "💬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Sağlıklı bir insan kalbi günde ortalama 100.000 kez atar.",
+   "source": "American Heart Association",
+   "url": "https://www.heart.org"
+  },
+  {
+   "text": "Kalp 24 saat içinde vücuda yaklaşık 7.500 litre kan pompalar.",
+   "source": "Cleveland Clinic",
+   "url": "https://my.clevelandclinic.org"
+  },
+  {
+   "text": "İnsan vücudundaki toplam kan damarı uzunluğu yaklaşık 100.000 kilometredir.",
+   "source": "British Heart Foundation",
+   "url": "https://www.bhf.org.uk"
+  },
+  {
+   "text": "Kalp döngüsünün büyük bölümü diyastol yani gevşeme evresinde geçer; bu dinlenmeler günde yaklaşık 14 saate denk gelir.",
+   "source": "Lumen Learning & Guyton and Hall Textbook of Medical Physiology",
+   "url": ""
+  }
+ ],
+ "tags": [
+  "kalp atışı",
+  "kalp kaç kez atar",
+  "kalp sağlığı",
+  "insan vücudu",
+  "kan dolaşımı",
+  "damar sistemi",
+  "kalp nasıl çalışır",
+  "1 gün boyunca",
+  "biyoloji",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science",
+  "heartbeat"
+ ],
+ "hashtags": [
+  "#kalpatışı",
+  "#insanvücudu",
+  "#bilim"
+ ],
+ "cover": 1,
+ "sources": [],
+ "i18n": {
+  "en": {
+   "title": "How Many Times Does Your Heart Beat in a Day?",
+   "summary": "Have you ever wondered how many times your heart beats in just one day and how much blood it pumps? The daily beat counts and the heart's hidden rest time will amaze you.",
+   "facts": [
+    "A healthy human heart beats an average of 100,000 times a day.",
+    "The heart pumps approximately 7,500 liters of blood through the body in 24 hours.",
+    "The total length of blood vessels in the human body is about 100,000 kilometers.",
+    "Most of the cardiac cycle is spent in diastole, or relaxation; these pauses add up to about 14 hours of rest per day."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántas veces late tu corazón en un día?",
+   "summary": "¿Alguna vez te has preguntado cuántas veces late tu corazón en un solo día y cuánta sangre bombea? La cantidad diaria de latidos y el tiempo de descanso oculto del corazón te sorprenderán.",
+   "facts": [
+    "El corazón de una persona sana late un promedio de 100.000 veces al día.",
+    "En 24 horas, el corazón bombea aproximadamente 7.500 litros de sangre a través del cuerpo.",
+    "La longitud total de los vasos sanguíneos del cuerpo humano es de unos 100.000 kilómetros.",
+    "La mayor parte del ciclo cardíaco transcurre en diástole o relajación; estos descansos equivalen a unas 14 horas al día."
+   ]
+  },
+  "pt": {
+   "title": "Quantas vezes seu coração bate em 1 dia?",
+   "summary": "Você já se perguntou quantas vezes seu coração bate em apenas um dia e quanto sangue ele bombeia? A contagem diária de batimentos e o descanso oculto do coração vão surpreender você.",
+   "facts": [
+    "O coração de um adulto saudável bate em média 100.000 vezes por dia.",
+    "O coração bombeia cerca de 7.500 litros de sangue pelo corpo em 24 horas.",
+    "O comprimento total dos vasos sanguíneos no corpo humano é de cerca de 100.000 quilômetros.",
+    "A maior parte do ciclo cardíaco ocorre na diástole, a fase de relaxamento; essas pausas somam cerca de 14 horas de descanso por dia."
+   ]
+  },
+  "ar": {
+   "title": "كم مرة ينبض قلبك في اليوم الواحد؟",
+   "summary": "هل تساءلت يوماً كم مرة ينبض قلبك في يوم واحد فقط وكمية الدم التي يضخها؟ سيصدمك عدد النبضات اليومية وفترة الراحة الخفية للقلب.",
+   "facts": [
+    "ينبض قلب الإنسان السليم في المتوسط نحو 100,000 مرة في اليوم.",
+    "يضخ القلب ما يقارب 7,500 لتر من الدم في جميع أنحاء الجسم خلال 24 ساعة.",
+    "يبلغ إجمالي طول الأوعية الدموية في جسم الإنسان نحو 100,000 كيلومتر.",
+    "يقضي القلب معظم دورته في مرحلة الانبساط أو الاسترخاء؛ وتصل فترات الراحة هذه إلى نحو 14 ساعة يومياً."
+   ]
+  },
+  "hi": {
+   "title": "आपका दिल 1 दिन में कितनी बार धड़कता है?",
+   "summary": "क्या आपने कभी सोचा है कि आपका दिल सिर्फ एक दिन में कितनी बार धड़कता है और कितना खून पंप करता है? धड़कनों की दैनिक संख्या और दिल का छुपा हुआ आराम आपको हैरान कर देगा।",
+   "facts": [
+    "एक स्वस्थ इंसान का दिल दिन में औसतन 100,000 बार धड़कता है।",
+    "दिल 24 घंटों में शरीर में लगभग 7,500 लीटर खून पंप करता है।",
+    "मानव शरीर में रक्त वाहिकाओं की कुल लंबाई लगभग 100,000 किलोमीटर होती है।",
+    "कार्डियक चक्र का अधिकांश समय डायस्टोल यानी विश्राम अवस्था में बीतता है; यह आराम दिन में लगभग 14 घंटे के बराबर होता है।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Kali Jantungmu Berdetak dalam Sehari?",
+   "summary": "Pernahkah Anda bertanya-tanya berapa kali jantung Anda berdetak dalam sehari dan berapa banyak darah yang dipompanya? Jumlah detak harian dan waktu istirahat rahasia jantung akan mengejutkan Anda.",
+   "facts": [
+    "Jantung manusia yang sehat berdetak rata-rata 100.000 kali per hari.",
+    "Jantung memompa sekitar 7.500 liter darah ke seluruh tubuh dalam 24 jam.",
+    "Total panjang pembuluh darah dalam tubuh manusia sekitar 100.000 kilometer.",
+    "Sebagian besar siklus jantung dihabiskan dalam fase diastol atau relaksasi; jeda ini setara dengan sekitar 14 jam istirahat per hari."
+   ]
+  },
+  "fr": {
+   "title": "Combien de fois votre cœur bat-il par jour ?",
+   "summary": "Vous êtes-vous déjà demandé combien de fois votre cœur bat en une seule journée et quelle quantité de sang il pompe ? Le nombre de battements quotidiens et le temps de repos secret du cœur vont vous étonner.",
+   "facts": [
+    "Le cœur d'une personne en bonne santé bat en moyenne 100 000 fois par jour.",
+    "Le cœur pompe environ 7 500 litres de sang dans le corps en 24 heures.",
+    "La longueur totale des vaisseaux sanguins dans le corps humain est d'environ 100 000 kilomètres.",
+    "La majeure partie du cycle cardiaque se passe en diastole, la phase de relâchement ; ces pauses équivalent à environ 14 heures de repos par jour."
+   ]
+  },
+  "de": {
+   "title": "Wie oft schlägt dein Herz an einem Tag?",
+   "summary": "Hast du dich jemals gefragt, wie oft dein Herz an nur einem Tag schlägt und wie viel Blut es pumpt? Die tägliche Schlagzahl und die geheime Ruhezeit des Herzens werden dich überraschen.",
+   "facts": [
+    "Ein gesundes menschliches Herz schlägt durchschnittlich 100.000 Mal am Tag.",
+    "Das Herz pumpt in 24 Stunden rund 7.500 Liter Blut durch den Körper.",
+    "Die Gesamtlänge der Blutgefäße im menschlichen Körper beträgt etwa 100.000 Kilometer.",
+    "Der Großteil des Herzzyklus entfällt auf die Diastole, also die Entspannungsphase; diese Pausen summieren sich auf etwa 14 Stunden Ruhe pro Tag."
+   ]
+  },
+  "ru": {
+   "title": "Сколько раз бьётся сердце за один день?",
+   "summary": "Вы когда-нибудь задумывались, сколько раз бьётся ваше сердце всего за один день и сколько крови оно перекачивает? Суточное число ударов и скрытое время отдыха сердца вас удивят.",
+   "facts": [
+    "Здоровое человеческое сердце бьётся в среднем 100 000 раз в день.",
+    "За 24 часа сердце перекачивает по организму около 7 500 литров крови.",
+    "Общая протяжённость кровеносных сосудов в теле человека составляет около 100 000 километров.",
+    "Большая часть сердечного цикла приходится на диастолу, то есть фазу расслабления; этот отдых в сумме составляет около 14 часов в день."
+   ]
+  },
+  "az": {
+   "title": "Ürəyiniz 1 gündə neçə dəfə döyünür?",
+   "summary": "Ürəyinizin cəmi bir gündə neçə dəfə döyündüyünü və nə qədər qan vurduğunu heç düşünmüsünüzmü? Gündəlik döyüntü sayı və ürəyin gizli dincəlmə vaxtı sizi çox təəccübləndirəcək.",
+   "facts": [
+    "Sağlam insan ürəyi gündə orta hesabla 100.000 dəfə döyünür.",
+    "Ürək 24 saat ərzində bədənə təxminən 7.500 litr qan vurur.",
+    "İnsan bədənindəki qan damarlarının ümumi uzunluğu təxminən 100.000 kilometrdir.",
+    "Ürək dövranının böyük hissəsi diastola, yəni boşalma mərhələsində keçir; bu dincəlmələr gündə təxminən 14 saata bərabərdir."
+   ]
+  }
+ },
+ "id": "g001",
+ "series": "1 Gün Boyunca",
+ "q": "Kalbin 1 günde kaç kez atar?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 2.254,
+   "words": [
+    {
+     "w": "Kalbimiz",
+     "t0": 0.35,
+     "t1": 0.838
+    },
+    {
+     "w": "1",
+     "t0": 0.896,
+     "t1": 1.0
+    },
+    {
+     "w": "günde",
+     "t0": 1.0230000000000001,
+     "t1": 1.244
+    },
+    {
+     "w": "kaç",
+     "t0": 1.302,
+     "t1": 1.5219999999999998
+    },
+    {
+     "w": "kez",
+     "t0": 1.58,
+     "t1": 1.7200000000000002
+    },
+    {
+     "w": "atar?",
+     "t0": 1.778,
+     "t1": 2.254
+    }
+   ]
+  },
+  {
+   "t0": 2.643492063492064,
+   "t1": 6.405492063492064,
+   "words": [
+    {
+     "w": "Sağlıklı",
+     "t0": 2.643492063492064,
+     "t1": 3.0844920634920636
+    },
+    {
+     "w": "bir",
+     "t0": 3.1314920634920638,
+     "t1": 3.235492063492064
+    },
+    {
+     "w": "yetişkinin",
+     "t0": 3.2824920634920636,
+     "t1": 3.735492063492064
+    },
+    {
+     "w": "kalbi,",
+     "t0": 3.7934920634920637,
+     "t1": 4.222492063492064
+    },
+    {
+     "w": "günde",
+     "t0": 4.385492063492064,
+     "t1": 4.652492063492064
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 4.687492063492064,
+     "t1": 5.116492063492064
+    },
+    {
+     "w": "100.000",
+     "t0": 5.163492063492064,
+     "t1": 5.465492063492064
+    },
+    {
+     "w": "kez",
+     "t0": 5.511492063492064,
+     "t1": 5.6624920634920635
+    },
+    {
+     "w": "çarpar.",
+     "t0": 5.720492063492063,
+     "t1": 6.405492063492064
+    }
+   ]
+  },
+  {
+   "t0": 6.785492063492065,
+   "t1": 7.853492063492064,
+   "words": [
+    {
+     "w": "Sadece",
+     "t0": 6.785492063492065,
+     "t1": 7.273492063492064
+    },
+    {
+     "w": "bu",
+     "t0": 7.331492063492065,
+     "t1": 7.435492063492065
+    },
+    {
+     "w": "mu?",
+     "t0": 7.482492063492065,
+     "t1": 7.853492063492064
+    }
+   ]
+  },
+  {
+   "t0": 8.243950113378686,
+   "t1": 12.562950113378687,
+   "words": [
+    {
+     "w": "Her",
+     "t0": 8.243950113378686,
+     "t1": 8.394950113378686
+    },
+    {
+     "w": "gün",
+     "t0": 8.452950113378686,
+     "t1": 8.568950113378685
+    },
+    {
+     "w": "vücuduna",
+     "t0": 8.603950113378685,
+     "t1": 8.951950113378686
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 8.986950113378686,
+     "t1": 9.369950113378685
+    },
+    {
+     "w": "7.500",
+     "t0": 9.416950113378686,
+     "t1": 10.008950113378686
+    },
+    {
+     "w": "litre",
+     "t0": 10.043950113378687,
+     "t1": 10.263950113378685
+    },
+    {
+     "w": "kan",
+     "t0": 10.310950113378686,
+     "t1": 10.449950113378685
+    },
+    {
+     "w": "pompalar;",
+     "t0": 10.496950113378686,
+     "t1": 11.006950113378686
+    },
+    {
+     "w": "koca",
+     "t0": 11.204950113378686,
+     "t1": 11.436950113378686
+    },
+    {
+     "w": "bir",
+     "t0": 11.494950113378685,
+     "t1": 11.575950113378685
+    },
+    {
+     "w": "havuzu",
+     "t0": 11.598950113378686,
+     "t1": 11.842950113378686
+    },
+    {
+     "w": "doldurur!",
+     "t0": 11.877950113378686,
+     "t1": 12.562950113378687
+    }
+   ]
+  },
+  {
+   "t0": 12.942950113378686,
+   "t1": 13.824950113378685,
+   "words": [
+    {
+     "w": "İnanılmaz!",
+     "t0": 12.942950113378686,
+     "t1": 13.824950113378685
+    }
+   ]
+  },
+  {
+   "t0": 14.216396825396826,
+   "t1": 18.581396825396826,
+   "words": [
+    {
+     "w": "O",
+     "t0": 14.216396825396826,
+     "t1": 14.309396825396826
+    },
+    {
+     "w": "kan,",
+     "t0": 14.379396825396826,
+     "t1": 14.727396825396825
+    },
+    {
+     "w": "vücudundaki",
+     "t0": 14.947396825396826,
+     "t1": 15.574396825396827
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 15.621396825396825,
+     "t1": 16.062396825396824
+    },
+    {
+     "w": "100.000",
+     "t0": 16.108396825396827,
+     "t1": 16.433396825396827
+    },
+    {
+     "w": "kilometrelik",
+     "t0": 16.480396825396827,
+     "t1": 17.060396825396825
+    },
+    {
+     "w": "dev",
+     "t0": 17.130396825396826,
+     "t1": 17.304396825396825
+    },
+    {
+     "w": "damar",
+     "t0": 17.350396825396825,
+     "t1": 17.606396825396825
+    },
+    {
+     "w": "ağını",
+     "t0": 17.641396825396825,
+     "t1": 17.873396825396824
+    },
+    {
+     "w": "dolaşır.",
+     "t0": 17.919396825396827,
+     "t1": 18.581396825396826
+    }
+   ]
+  },
+  {
+   "t0": 18.78174829931973,
+   "t1": 23.75074829931973,
+   "words": [
+    {
+     "w": "Bu",
+     "t0": 18.78174829931973,
+     "t1": 18.90974829931973
+    },
+    {
+     "w": "damarlar",
+     "t0": 18.94474829931973,
+     "t1": 19.40874829931973
+    },
+    {
+     "w": "uç",
+     "t0": 19.512748299319732,
+     "t1": 19.68774829931973
+    },
+    {
+     "w": "uca",
+     "t0": 19.73374829931973,
+     "t1": 19.88474829931973
+    },
+    {
+     "w": "eklense,",
+     "t0": 19.954748299319732,
+     "t1": 20.63974829931973
+    },
+    {
+     "w": "Dünya'nın",
+     "t0": 20.80174829931973,
+     "t1": 21.28974829931973
+    },
+    {
+     "w": "çevresini",
+     "t0": 21.34774829931973,
+     "t1": 21.91674829931973
+    },
+    {
+     "w": "2,5",
+     "t0": 21.99774829931973,
+     "t1": 22.81074829931973
+    },
+    {
+     "w": "kez",
+     "t0": 22.87974829931973,
+     "t1": 23.04274829931973
+    },
+    {
+     "w": "turlar!",
+     "t0": 23.088748299319732,
+     "t1": 23.75074829931973
+    }
+   ]
+  },
+  {
+   "t0": 24.130818594104312,
+   "t1": 25.802818594104313,
+   "words": [
+    {
+     "w": "Peki",
+     "t0": 24.130818594104312,
+     "t1": 24.351818594104312
+    },
+    {
+     "w": "bu",
+     "t0": 24.38581859410431,
+     "t1": 24.467818594104312
+    },
+    {
+     "w": "kalp",
+     "t0": 24.51381859410431,
+     "t1": 24.73481859410431
+    },
+    {
+     "w": "hiç",
+     "t0": 24.78081859410431,
+     "t1": 24.93181859410431
+    },
+    {
+     "w": "yorulmaz",
+     "t0": 25.00181859410431,
+     "t1": 25.477818594104313
+    },
+    {
+     "w": "mı?",
+     "t0": 25.523818594104313,
+     "t1": 25.802818594104313
+    }
+   ]
+  },
+  {
+   "t0": 26.19596598639456,
+   "t1": 31.350965986394563,
+   "words": [
+    {
+     "w": "İki",
+     "t0": 26.19596598639456,
+     "t1": 26.40496598639456
+    },
+    {
+     "w": "atış",
+     "t0": 26.43996598639456,
+     "t1": 26.65996598639456
+    },
+    {
+     "w": "arasındaki",
+     "t0": 26.71796598639456,
+     "t1": 27.228965986394563
+    },
+    {
+     "w": "gevşeme",
+     "t0": 27.286965986394563,
+     "t1": 27.669965986394562
+    },
+    {
+     "w": "anlarını",
+     "t0": 27.69296598639456,
+     "t1": 28.06496598639456
+    },
+    {
+     "w": "toplarsan,",
+     "t0": 28.11096598639456,
+     "t1": 28.74996598639456
+    },
+    {
+     "w": "kalp",
+     "t0": 28.97096598639456,
+     "t1": 29.213965986394562
+    },
+    {
+     "w": "günde",
+     "t0": 29.283965986394563,
+     "t1": 29.550965986394562
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 29.573965986394562,
+     "t1": 30.01496598639456
+    },
+    {
+     "w": "14",
+     "t0": 30.09696598639456,
+     "t1": 30.42196598639456
+    },
+    {
+     "w": "saat",
+     "t0": 30.45696598639456,
+     "t1": 30.676965986394563
+    },
+    {
+     "w": "dinlenir!",
+     "t0": 30.71196598639456,
+     "t1": 31.350965986394563
+    }
+   ]
+  },
+  {
+   "t0": 31.730965986394562,
+   "t1": 33.07796598639456,
+   "words": [
+    {
+     "w": "Benden",
+     "t0": 31.730965986394562,
+     "t1": 32.078965986394564
+    },
+    {
+     "w": "çok",
+     "t0": 32.12596598639456,
+     "t1": 32.310965986394564
+    },
+    {
+     "w": "uyuyormuş!",
+     "t0": 32.36996598639456,
+     "t1": 33.07796598639456
+    }
+   ]
+  },
+  {
+   "t0": 33.28894784580499,
+   "t1": 35.88894784580499,
+   "words": [
+    {
+     "w": "Sıradaki",
+     "t0": 33.28894784580499,
+     "t1": 33.76494784580499
+    },
+    {
+     "w": "soruyu",
+     "t0": 33.799947845804994,
+     "t1": 34.11294784580499
+    },
+    {
+     "w": "sen",
+     "t0": 34.15994784580499,
+     "t1": 34.37994784580499
+    },
+    {
+     "w": "seç!",
+     "t0": 34.46094784580499,
+     "t1": 34.79794784580499
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 34.878947845804994,
+     "t1": 35.37894784580499
+    },
+    {
+     "w": "yaz.",
+     "t0": 35.424947845804994,
+     "t1": 35.88894784580499
+    }
+   ]
+  }
+ ]
+}

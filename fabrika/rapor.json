@@ -1,16 +1,15 @@
 {
- "started": "2026-10-16T12:02:02+00:00",
+ "started": "2026-10-16T13:38:07+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "credits_before": [
-  107745,
-  121782
+  147,
+  613902
  ],
  "topic": {
-  "id": "o0001",
-  "series": "Ya Olsaydı?",
-  "q": "Güneş patlasaydı ne olurdu?",
-  "oneri": true
+  "id": "g001",
+  "series": "1 Gün Boyunca",
+  "q": "Kalbin 1 günde kaç kez atar?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
@@ -19,37 +18,46 @@
   "fixes": [
    {
     "line": 6,
-    "why": "Güneş patladığında Dünya soğuyup donmaz; gece tarafı da atmosferdeki aşırı ısı transferi ve birkaç saat içinde ulaşan plazma şok dalgasıyla kavrulur (-73 °C değeri ise Güneş'in aniden yok olduğu senaryoda bile birkaç saatte değil, yaklaşık 1 yılda gerçekleşir)."
+    "why": "Kan günde 100.000 km yol katetmez; Dünya'nın çevresini 2,5 kez dolaşabilen mesafe, vücuttaki tüm damarların uç uca eklendiğindeki tahmini toplam uzunluğudur."
    }
   ]
  },
- "chunks": 2,
+ "warnings": [
+  "çalışan kaynak linki bulunamadı"
+ ],
+ "chunks": 0,
  "grounded": true,
- "chars": 537,
- "duration": 36.1,
- "title": "Güneş Bir Anda Patlasaydı Ne Olurdu?",
+ "chars": 534,
+ "duration": 37.5,
+ "title": "Kalbin 1 Günde Kaç Kez Atar?",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "7",
-  "videos": "3"
+  "videos": "4"
  },
- "url": "https://youtube.com/shorts/HdSKbp0rIz8",
+ "url": "https://youtube.com/shorts/53rXVX6QpA0",
  "recent_status": {
   "y001": {
    "upload": "processed",
    "privacy": "public",
-   "views": "944",
+   "views": "1078",
    "reason": null
   },
   "n001": {
    "upload": "processed",
    "privacy": "public",
-   "views": "15",
+   "views": "140",
    "reason": null
   },
   "o0001": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1",
+   "reason": null
+  },
+  "g001": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -57,12 +65,12 @@
   }
  },
  "credits_after": [
-  107880,
-  121782
+  276,
+  613902
  ],
  "log": [
-  "Konu: o0001 Güneş patlasaydı ne olurdu? (Ya Olsaydı?)",
+  "Konu: g001 Kalbin 1 günde kaç kez atar? (1 Gün Boyunca)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T12:04:35+00:00"
+ "finished": "2026-10-16T13:41:50+00:00"
 }
