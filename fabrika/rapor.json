@@ -1,15 +1,15 @@
 {
- "started": "2026-10-16T16:07:35+00:00",
+ "started": "2026-10-16T17:07:12+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "credits_before": [
-  554,
+  752,
   613902
  ],
  "topic": {
-  "id": "y002",
-  "series": "Ya Olsaydı?",
-  "q": "Güneş bir anda sönseydi ne olurdu?"
+  "id": "n002",
+  "series": "Ne Kadar Büyük?",
+  "q": "Mavi balina ne kadar büyük?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
@@ -17,29 +17,20 @@
   "ok": true,
   "fixes": []
  },
- "warnings": [
-  "çalışan kaynak linki bulunamadı"
- ],
  "chunks": 0,
  "grounded": true,
- "chars": 475,
- "duration": 33.4,
- "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
+ "chars": 574,
+ "duration": 38.6,
+ "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
-  "subscribers": "8",
-  "videos": "6"
+  "subscribers": "9",
+  "videos": "7"
  },
- "url": "https://youtube.com/shorts/xMYUnZVVITU",
+ "url": "https://youtube.com/shorts/4GSDZD52uI0",
  "recent_status": {
-  "n001": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "212",
-   "reason": null
-  },
   "o0001": {
    "upload": "processed",
    "privacy": "public",
@@ -49,7 +40,7 @@
   "g001": {
    "upload": "processed",
    "privacy": "public",
-   "views": "0",
+   "views": "2",
    "reason": null
   },
   "o0002": {
@@ -59,6 +50,12 @@
    "reason": null
   },
   "y002": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  },
+  "n002": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -66,12 +63,12 @@
   }
  },
  "credits_after": [
-  669,
+  892,
   613902
  ],
  "log": [
-  "Konu: y002 Güneş bir anda sönseydi ne olurdu? (Ya Olsaydı?)",
+  "Konu: n002 Mavi balina ne kadar büyük? (Ne Kadar Büyük?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T16:10:31+00:00"
+ "finished": "2026-10-16T17:10:31+00:00"
 }

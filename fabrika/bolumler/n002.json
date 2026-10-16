@@ -1,0 +1,825 @@
+{
+ "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
+ "bar": {
+  "hi": "BALİNA",
+  "rest": "NE KADAR BÜYÜK?"
+ },
+ "summary": "Dünyanın gelmiş geçmiş en büyük canlısı olan mavi balinanın dudak uçuklatan boyutlarını keşfedin. Dili bir fil ağırlığında olan bu dev hakkında en şaşırtıcı gerçekler burada!",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "Mavi balina gerçekten ne kadar büyük?",
+   "v": {
+    "t": "question",
+    "bg": "ocean",
+    "e": "🐋",
+    "label": "Ne Kadar Büyük?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dünya tarihinde yaşamış en büyük canlı; boyu 30 metreyi buluyor.",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "🐋",
+    "value": "30",
+    "unit": "metre",
+    "label": "Toplam Boy",
+    "key": "30"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Dinozorlardan bile mi büyük?",
+   "v": {
+    "t": "icon",
+    "bg": "ocean",
+    "e": "🦖",
+    "do": "shake",
+    "key": "Dinozorlardan",
+    "label": "Dinozorlar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Evet! Yaklaşık 190 ton ağırlığıyla 30 filin toplamına denk.",
+   "v": {
+    "t": "compare",
+    "bg": "ocean",
+    "a": {
+     "e": "🐋",
+     "label": "Mavi Balina",
+     "value": 190
+    },
+    "b": {
+     "e": "🐘",
+     "label": "30 Fil",
+     "value": 190
+    },
+    "mode": "size",
+    "key": "190"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sadece dili bile 2,7 ton; yani tek başına bir fil kadar ağır.",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "👅",
+    "value": "2,7",
+    "unit": "ton",
+    "label": "Dil Ağırlığı",
+    "key": "2,7"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "İnanılmaz! Kalbi de dev gibidir o zaman?",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "❤️",
+    "do": "pulse",
+    "key": "Kalbi",
+    "label": "Dev Kalp"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kalbi 180 kg ağırlığında ve atışı 3 kilometre öteden duyulabiliyor.",
+   "v": {
+    "t": "meter",
+    "bg": "underwater",
+    "label": "Ses Mesafesi",
+    "from": 0,
+    "to": 3,
+    "unit": "km",
+    "e": "🔊",
+    "key": "kilometre"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Fakat en garibi, bu devin boğazı bir futbol topu kadar dar.",
+   "v": {
+    "t": "compare",
+    "bg": "underwater",
+    "a": {
+     "e": "🐋",
+     "label": "Mavi Balina",
+     "value": 30
+    },
+    "b": {
+     "e": "⚽",
+     "label": "Futbol Topu",
+     "value": 0.22
+    },
+    "mode": "bar",
+    "key": "boğazı"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yani bir insanı yutamaz mı?",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "😱",
+    "do": "shake",
+    "key": "yutamaz",
+    "label": "İnsan Yutamaz"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asla! Yalnızca minik karides benzeri krillerle beslenir.",
+   "v": {
+    "t": "icons",
+    "bg": "underwater",
+    "items": [
+     {
+      "e": "🦐",
+      "label": "Krill"
+     },
+     {
+      "e": "🌊",
+      "label": "Plankton"
+     },
+     {
+      "e": "🐋",
+      "label": "Mavi Balina"
+     }
+    ],
+    "key": "krillerle"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "ocean",
+    "e": "✨"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Mavi balinalar yaklaşık 30 metre uzunluğa ve 190 tona varan ağırlığa ulaşarak tarihin en büyük hayvanı unvanını taşır.",
+   "source": "NOAA Fisheries",
+   "url": "https://www.fisheries.noaa.gov/species/blue-whale"
+  },
+  {
+   "text": "Bir mavi balinanın dili yaklaşık 2,7 ton ağırlığındadır ve tek bir yetişkin Asya filine denk gelir.",
+   "source": "Encyclopaedia Britannica",
+   "url": "https://www.britannica.com/animal/blue-whale"
+  },
+  {
+   "text": "Royal Ontario Müzesinde korunan gerçek bir mavi balina kalbi yaklaşık 180 kg ağırlığındadır ve atışı su altında 3 kilometre uzaktan duyulabilir.",
+   "source": "Royal Ontario Museum",
+   "url": ""
+  },
+  {
+   "text": "Devasa gövdesine rağmen bir mavi balinanın boğaz çapı bir futbol topundan daha geniş değildir.",
+   "source": "Smithsonian Institution",
+   "url": ""
+  }
+ ],
+ "tags": [
+  "mavi balina",
+  "balina",
+  "hayvanlar alemi",
+  "okyanus",
+  "deniz biyolojisi",
+  "en büyük canlı",
+  "ölçek",
+  "blue whale",
+  "whale facts",
+  "ocean giants",
+  "marine biology",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#mavibalina",
+  "#okyanus",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://www.fisheries.noaa.gov/species/blue-whale"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Big Is the Blue Whale Really?",
+   "summary": "Discover the mind-blowing size of the blue whale, the largest creature ever to exist. Here are the most astonishing facts about this giant whose tongue weighs as much as an elephant!",
+   "facts": [
+    "Blue whales can reach about 30 meters in length and up to 190 tons in weight, holding the title of the largest animal in history.",
+    "A blue whale's tongue weighs approximately 2.7 tons, which equals a single adult Asian elephant.",
+    "A real blue whale heart preserved at the Royal Ontario Museum weighs around 180 kg, and its beat can be heard 3 kilometers away underwater.",
+    "Despite its massive body, a blue whale's throat is no wider than a soccer ball."
+   ]
+  },
+  "es": {
+   "title": "¿Qué tan grande es realmente la ballena azul?",
+   "summary": "Descubre el asombroso tamaño de la ballena azul, el ser vivo más grande de todos los tiempos. ¡Aquí tienes los datos más sorprendentes sobre este gigante cuya lengua pesa tanto como un elefante!",
+   "facts": [
+    "Las ballenas azules alcanzan unos 30 metros de longitud y hasta 190 toneladas de peso, ostentando el título del animal más grande de la historia.",
+    "La lengua de una ballena azul pesa cerca de 2,7 toneladas, equivalente a un elefante asiático adulto.",
+    "Un corazón real de ballena azul conservado en el Museo Real de Ontario pesa unos 180 kg y su latido se puede escuchar a 3 kilómetros bajo el agua.",
+    "A pesar de su cuerpo colosal, la garganta de una ballena azul no es más ancha que un balón de fútbol."
+   ]
+  },
+  "pt": {
+   "title": "Qual é o tamanho real da baleia-azul?",
+   "summary": "Descubra o tamanho impressionante da baleia-azul, o maior ser vivo de todos os tempos. Veja aqui os fatos mais surpreendentes sobre esse gigante cuja língua pesa tanto quanto um elefante!",
+   "facts": [
+    "As baleias-azuis podem atingir cerca de 30 metros de comprimento e até 190 toneladas, ostentando o título de maior animal da história.",
+    "A língua de uma baleia-azul pesa cerca de 2,7 toneladas, o equivalente a um elefante-asiático adulto.",
+    "O coração real de uma baleia-azul preservado no Museu Real de Ontário pesa cerca de 180 kg e seus batimentos podem ser ouvidos a 3 quilômetros de distância debaixo d'água.",
+    "Apesar do corpo colossal, a garganta de uma baleia-azul não é mais larga do que uma bola de futebol."
+   ]
+  },
+  "ar": {
+   "title": "كم يبلغ حجم الحوت الأزرق في الحقيقة؟",
+   "summary": "اكتشف الحجم المذهل للحوت الأزرق، أكبر كائن حي على مر العصور. إليك أكثر الحقائق إثارة للدهشة حول هذا العملاق الذي يزن لسانه وزن فيل كامل!",
+   "facts": [
+    "تصل الحيتان الزرقاء إلى طول يقارب 30 متراً ووزن يصل إلى 190 طناً، لتحمل بذلك لقب أكبر حيوان في التاريخ.",
+    "يزن لسان الحوت الأزرق حوالي 2.7 طن، وهو ما يعادل وزن فيل آسيوي بالغ.",
+    "يزن قلب حوت أزرق حقيقي محفوظ في متحف أونتاريو الملكي نحو 180 كجم، ويمكن سماع نبضاته تحت الماء من مسافة 3 كيلومترات.",
+    "على الرغم من جسده الضخم، فإن قطر حلق الحوت الأزرق ليس أوسع من كرة قدم."
+   ]
+  },
+  "hi": {
+   "title": "नीली व्हेल वास्तव में कितनी बड़ी होती है?",
+   "summary": "दुनिया के सबसे बड़े जीव नीली व्हेल के चौंका देने वाले आकार को जानें। एक हाथी जितनी भारी जीभ वाले इस विशाल जीव के सबसे हैरान करने वाले तथ्य यहाँ हैं!",
+   "facts": [
+    "नीली व्हेल लगभग 30 मीटर तक लंबी और 190 टन तक वजनी हो सकती है, जो इतिहास के सबसे बड़े जानवर का खिताब रखती है।",
+    "नीली व्हेल की जीभ का वजन लगभग 2.7 टन होता है, जो एक वयस्क एशियाई हाथी के बराबर है।",
+    "रॉयल ओंटारियो संग्रहालय में संरक्षित नीली व्हेल का असली दिल लगभग 180 किलोग्राम का है और इसकी धड़कन पानी के नीचे 3 किलोमीटर दूर से सुनी जा सकती है।",
+    "अपने विशालकाय शरीर के बावजूद, नीली व्हेल का गला एक फुटबॉल से ज्यादा चौड़ा नहीं होता है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Besar Sebenarnya Paus Biru?",
+   "summary": "Temukan ukuran luar biasa dari paus biru, makhluk terbesar yang pernah ada di bumi. Inilah fakta paling mencengangkan tentang raksasa yang lidahnya seberat gajah ini!",
+   "facts": [
+    "Paus biru dapat mencapai panjang sekitar 30 meter dan berat hingga 190 ton, menjadikannya hewan terbesar sepanjang sejarah.",
+    "Lidah paus biru berbobot sekitar 2,7 ton, setara dengan berat seekor gajah Asia dewasa.",
+    "Jantung asli paus biru yang diawetkan di Royal Ontario Museum memiliki berat sekitar 180 kg dan detaknya dapat terdengar dari jarak 3 kilometer di bawah air.",
+    "Meski tubuhnya sangat masif, diameter tenggorokan paus biru tidak lebih besar dari bola sepak."
+   ]
+  },
+  "fr": {
+   "title": "Quelle est la taille réelle de la baleine bleue ?",
+   "summary": "Découvrez les dimensions vertigineuses de la baleine bleue, la plus grande créature de tous les temps. Voici les faits les plus surprenants sur ce géant dont la langue pèse autant qu'un éléphant !",
+   "facts": [
+    "Les baleines bleues peuvent atteindre environ 30 mètres de long et peser jusqu'à 190 tonnes, ce qui en fait le plus grand animal de l'histoire.",
+    "La langue d'une baleine bleue pèse environ 2,7 tonnes, soit l'équivalent d'un éléphant d'Asie adulte.",
+    "Un véritable cœur de baleine bleue conservé au Musée royal de l'Ontario pèse environ 180 kg et ses battements s'entendent à 3 kilomètres sous l'eau.",
+    "Malgré son corps gigantesque, la gorge d'une baleine bleue n'est pas plus large qu'un ballon de football."
+   ]
+  },
+  "de": {
+   "title": "Wie groß ist der Blauwal wirklich?",
+   "summary": "Entdecken Sie die atemberaubende Größe des Blauwals, des größten Lebewesens aller Zeiten. Hier sind die erstaunlichsten Fakten über diesen Riesen, dessen Zunge so viel wiegt wie ein Elefant!",
+   "facts": [
+    "Blauwale erreichen eine Länge von etwa 30 Metern und ein Gewicht von bis zu 190 Tonnen, womit sie das größte Tier der Erdgeschichte sind.",
+    "Die Zunge eines Blauwals wiegt etwa 2,7 Tonnen, was dem Gewicht eines ausgewachsenen asiatischen Elefanten entspricht.",
+    "Das im Royal Ontario Museum konservierte echte Blauwalherz wiegt etwa 180 kg, und sein Schlag ist unter Wasser noch aus 3 Kilometern Entfernung zu hören.",
+    "Trotz seines gigantischen Körpers ist der Hals eines Blauwals nicht breiter als ein Fußball."
+   ]
+  },
+  "ru": {
+   "title": "Каких размеров синий кит на самом деле?",
+   "summary": "Узнайте о поразительных размерах синего кита — самого крупного существа в истории планеты. Самые удивительные факты о гиганте, чей язык весит как целый слон!",
+   "facts": [
+    "Синие киты могут достигать около 30 метров в длину и весить до 190 тонн, являясь крупнейшими животными в истории Земли.",
+    "Язык синего кита весит около 2,7 тонны, что сопоставимо с весом взрослого азиатского слона.",
+    "Настоящее сердце синего кита, хранящееся в Королевском музее Онтарио, весит около 180 кг, а его стук под водой слышен на расстоянии 3 километров.",
+    "Несмотря на исполинские размеры, глотка синего кита диаметром не больше футбольного мяча."
+   ]
+  },
+  "az": {
+   "title": "Mavi balina əslində nə qədər böyükdür?",
+   "summary": "Bütün dövrlərin ən böyük canlısı olan mavi balinanın heyrətamiz ölçülərini kəşf edin. Dili bir fil ağırlığında olan bu nəhəng haqqında ən təəccüblü faktlar buradadır!",
+   "facts": [
+    "Mavi balinalar təxminən 30 metr uzunluğa və 190 tona qədər çəkiyə çataraq tarixin ən böyük heyvanı titulunu daşıyır.",
+    "Mavi balinanın dili təxminən 2,7 ton ağırlığındadır və bu, bir yetkin Asiya filinin çəkisinə bərabərdir.",
+    "Royal Ontario Muzeyində qorunan həqiqi mavi balina ürəyinin çəkisi təxminən 180 kq-dır və onun döyüntüsü suyun altında 3 kilometr uzaqlıqdan eşidilə bilir.",
+    "Nəhəng bədəninə baxmayaraq, mavi balinanın boğazının diametri futbol topundan daha geniş deyil."
+   ]
+  }
+ },
+ "id": "n002",
+ "series": "Ne Kadar Büyük?",
+ "q": "Mavi balina ne kadar büyük?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 2.579,
+   "words": [
+    {
+     "w": "Mavi",
+     "t0": 0.35,
+     "t1": 0.617
+    },
+    {
+     "w": "balina",
+     "t0": 0.663,
+     "t1": 0.942
+    },
+    {
+     "w": "gerçekten",
+     "t0": 1.0,
+     "t1": 1.557
+    },
+    {
+     "w": "ne",
+     "t0": 1.6149999999999998,
+     "t1": 1.697
+    },
+    {
+     "w": "kadar",
+     "t0": 1.7429999999999999,
+     "t1": 2.01
+    },
+    {
+     "w": "büyük?",
+     "t0": 2.057,
+     "t1": 2.579
+    }
+   ]
+  },
+  {
+   "t0": 2.9676870748299318,
+   "t1": 6.775687074829932,
+   "words": [
+    {
+     "w": "Dünya",
+     "t0": 2.9676870748299318,
+     "t1": 3.257687074829932
+    },
+    {
+     "w": "tarihinde",
+     "t0": 3.3156870748299316,
+     "t1": 3.756687074829932
+    },
+    {
+     "w": "yaşamış",
+     "t0": 3.7916870748299316,
+     "t1": 4.186687074829932
+    },
+    {
+     "w": "en",
+     "t0": 4.291687074829932,
+     "t1": 4.419687074829932
+    },
+    {
+     "w": "büyük",
+     "t0": 4.4656870748299315,
+     "t1": 4.674687074829932
+    },
+    {
+     "w": "canlı;",
+     "t0": 4.709687074829931,
+     "t1": 5.092687074829932
+    },
+    {
+     "w": "boyu",
+     "t0": 5.255687074829932,
+     "t1": 5.475687074829931
+    },
+    {
+     "w": "30",
+     "t0": 5.533687074829931,
+     "t1": 5.765687074829932
+    },
+    {
+     "w": "metreyi",
+     "t0": 5.812687074829932,
+     "t1": 6.114687074829932
+    },
+    {
+     "w": "buluyor.",
+     "t0": 6.149687074829932,
+     "t1": 6.775687074829932
+    }
+   ]
+  },
+  {
+   "t0": 7.155759637188208,
+   "t1": 8.780759637188208,
+   "words": [
+    {
+     "w": "Dinozorlardan",
+     "t0": 7.155759637188208,
+     "t1": 7.921759637188208
+    },
+    {
+     "w": "bile",
+     "t0": 7.9687596371882075,
+     "t1": 8.142759637188208
+    },
+    {
+     "w": "mi",
+     "t0": 8.165759637188208,
+     "t1": 8.223759637188207
+    },
+    {
+     "w": "büyük?",
+     "t0": 8.281759637188207,
+     "t1": 8.780759637188208
+    }
+   ]
+  },
+  {
+   "t0": 9.17235827664399,
+   "t1": 13.16635827664399,
+   "words": [
+    {
+     "w": "Evet!",
+     "t0": 9.17235827664399,
+     "t1": 9.62535827664399
+    },
+    {
+     "w": "Yaklaşık",
+     "t0": 9.985358276643991,
+     "t1": 10.43835827664399
+    },
+    {
+     "w": "190",
+     "t0": 10.48435827664399,
+     "t1": 10.96035827664399
+    },
+    {
+     "w": "ton",
+     "t0": 11.01835827664399,
+     "t1": 11.158358276643991
+    },
+    {
+     "w": "ağırlığıyla",
+     "t0": 11.21635827664399,
+     "t1": 11.69235827664399
+    },
+    {
+     "w": "30",
+     "t0": 11.76135827664399,
+     "t1": 11.99435827664399
+    },
+    {
+     "w": "filin",
+     "t0": 12.02835827664399,
+     "t1": 12.22635827664399
+    },
+    {
+     "w": "toplamına",
+     "t0": 12.26135827664399,
+     "t1": 12.690358276643991
+    },
+    {
+     "w": "denk.",
+     "t0": 12.73735827664399,
+     "t1": 13.16635827664399
+    }
+   ]
+  },
+  {
+   "t0": 13.36635827664399,
+   "t1": 17.917358276643988,
+   "words": [
+    {
+     "w": "Sadece",
+     "t0": 13.36635827664399,
+     "t1": 13.79635827664399
+    },
+    {
+     "w": "dili",
+     "t0": 13.854358276643989,
+     "t1": 14.02835827664399
+    },
+    {
+     "w": "bile",
+     "t0": 14.063358276643989,
+     "t1": 14.306358276643989
+    },
+    {
+     "w": "2,7",
+     "t0": 14.46935827664399,
+     "t1": 15.281358276643989
+    },
+    {
+     "w": "ton;",
+     "t0": 15.32835827664399,
+     "t1": 15.58335827664399
+    },
+    {
+     "w": "yani",
+     "t0": 16.14035827664399,
+     "t1": 16.38435827664399
+    },
+    {
+     "w": "tek",
+     "t0": 16.43135827664399,
+     "t1": 16.55835827664399
+    },
+    {
+     "w": "başına",
+     "t0": 16.61635827664399,
+     "t1": 16.89535827664399
+    },
+    {
+     "w": "bir",
+     "t0": 16.93035827664399,
+     "t1": 17.02335827664399
+    },
+    {
+     "w": "fil",
+     "t0": 17.04635827664399,
+     "t1": 17.16235827664399
+    },
+    {
+     "w": "kadar",
+     "t0": 17.22035827664399,
+     "t1": 17.42935827664399
+    },
+    {
+     "w": "ağır.",
+     "t0": 17.47635827664399,
+     "t1": 17.917358276643988
+    }
+   ]
+  },
+  {
+   "t0": 18.2974693877551,
+   "t1": 20.4344693877551,
+   "words": [
+    {
+     "w": "İnanılmaz!",
+     "t0": 18.2974693877551,
+     "t1": 18.8434693877551
+    },
+    {
+     "w": "Kalbi",
+     "t0": 18.8894693877551,
+     "t1": 19.1684693877551
+    },
+    {
+     "w": "de",
+     "t0": 19.2034693877551,
+     "t1": 19.2614693877551
+    },
+    {
+     "w": "dev",
+     "t0": 19.3194693877551,
+     "t1": 19.4824693877551
+    },
+    {
+     "w": "gibidir",
+     "t0": 19.5404693877551,
+     "t1": 19.8184693877551
+    },
+    {
+     "w": "o",
+     "t0": 19.865469387755102,
+     "t1": 19.8884693877551
+    },
+    {
+     "w": "zaman?",
+     "t0": 19.9344693877551,
+     "t1": 20.4344693877551
+    }
+   ]
+  },
+  {
+   "t0": 20.81871655328798,
+   "t1": 25.462716553287983,
+   "words": [
+    {
+     "w": "Kalbi",
+     "t0": 20.81871655328798,
+     "t1": 21.19071655328798
+    },
+    {
+     "w": "180",
+     "t0": 21.22471655328798,
+     "t1": 21.874716553287982
+    },
+    {
+     "w": "kg",
+     "t0": 21.93371655328798,
+     "t1": 22.316716553287982
+    },
+    {
+     "w": "ağırlığında",
+     "t0": 22.38571655328798,
+     "t1": 22.94371655328798
+    },
+    {
+     "w": "ve",
+     "t0": 23.00171655328798,
+     "t1": 23.10571655328798
+    },
+    {
+     "w": "atışı",
+     "t0": 23.15271655328798,
+     "t1": 23.46571655328798
+    },
+    {
+     "w": "3",
+     "t0": 23.53571655328798,
+     "t1": 23.662716553287982
+    },
+    {
+     "w": "kilometre",
+     "t0": 23.720716553287982,
+     "t1": 24.17371655328798
+    },
+    {
+     "w": "öteden",
+     "t0": 24.20871655328798,
+     "t1": 24.51071655328798
+    },
+    {
+     "w": "duyulabiliyor.",
+     "t0": 24.55671655328798,
+     "t1": 25.462716553287983
+    }
+   ]
+  },
+  {
+   "t0": 25.662716553287982,
+   "t1": 28.495716553287984,
+   "words": [
+    {
+     "w": "Fakat",
+     "t0": 25.662716553287982,
+     "t1": 25.941716553287982
+    },
+    {
+     "w": "en",
+     "t0": 26.01071655328798,
+     "t1": 26.08071655328798
+    },
+    {
+     "w": "garibi,",
+     "t0": 26.13871655328798,
+     "t1": 26.44071655328798
+    },
+    {
+     "w": "bu",
+     "t0": 26.46371655328798,
+     "t1": 26.53371655328798
+    },
+    {
+     "w": "devin",
+     "t0": 26.56871655328798,
+     "t1": 26.811716553287983
+    },
+    {
+     "w": "boğazı",
+     "t0": 26.846716553287983,
+     "t1": 27.113716553287983
+    },
+    {
+     "w": "bir",
+     "t0": 27.159716553287982,
+     "t1": 27.241716553287983
+    },
+    {
+     "w": "futbol",
+     "t0": 27.264716553287982,
+     "t1": 27.55471655328798
+    },
+    {
+     "w": "topu",
+     "t0": 27.589716553287982,
+     "t1": 27.77571655328798
+    },
+    {
+     "w": "kadar",
+     "t0": 27.79871655328798,
+     "t1": 28.01971655328798
+    },
+    {
+     "w": "dar.",
+     "t0": 28.07771655328798,
+     "t1": 28.495716553287984
+    }
+   ]
+  },
+  {
+   "t0": 28.875716553287983,
+   "t1": 30.779716553287983,
+   "words": [
+    {
+     "w": "Yani",
+     "t0": 28.875716553287983,
+     "t1": 29.142716553287983
+    },
+    {
+     "w": "bir",
+     "t0": 29.188716553287982,
+     "t1": 29.363716553287983
+    },
+    {
+     "w": "insanı",
+     "t0": 29.421716553287983,
+     "t1": 29.781716553287982
+    },
+    {
+     "w": "yutamaz",
+     "t0": 29.839716553287982,
+     "t1": 30.349716553287983
+    },
+    {
+     "w": "mı?",
+     "t0": 30.454716553287984,
+     "t1": 30.779716553287983
+    }
+   ]
+  },
+  {
+   "t0": 31.17254195011338,
+   "t1": 34.33054195011338,
+   "words": [
+    {
+     "w": "Asla!",
+     "t0": 31.17254195011338,
+     "t1": 31.64854195011338
+    },
+    {
+     "w": "Yalnızca",
+     "t0": 31.75254195011338,
+     "t1": 32.18254195011338
+    },
+    {
+     "w": "minik",
+     "t0": 32.24054195011338,
+     "t1": 32.43754195011338
+    },
+    {
+     "w": "karides",
+     "t0": 32.47254195011338,
+     "t1": 32.797541950113384
+    },
+    {
+     "w": "benzeri",
+     "t0": 32.855541950113384,
+     "t1": 33.19254195011338
+    },
+    {
+     "w": "krillerle",
+     "t0": 33.227541950113384,
+     "t1": 33.65654195011338
+    },
+    {
+     "w": "beslenir.",
+     "t0": 33.69154195011338,
+     "t1": 34.33054195011338
+    }
+   ]
+  },
+  {
+   "t0": 34.71054195011338,
+   "t1": 36.93954195011338,
+   "words": [
+    {
+     "w": "Sıradaki",
+     "t0": 34.71054195011338,
+     "t1": 35.093541950113384
+    },
+    {
+     "w": "soruyu",
+     "t0": 35.11654195011338,
+     "t1": 35.36054195011338
+    },
+    {
+     "w": "sen",
+     "t0": 35.41854195011338,
+     "t1": 35.61654195011338
+    },
+    {
+     "w": "seç!",
+     "t0": 35.68554195011338,
+     "t1": 35.95354195011338
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 35.98754195011338,
+     "t1": 36.45254195011338
+    },
+    {
+     "w": "yaz.",
+     "t0": 36.48754195011338,
+     "t1": 36.93954195011338
+    }
+   ]
+  }
+ ]
+}

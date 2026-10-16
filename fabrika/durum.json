@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1129",
+    "views": "1162",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "212",
+    "views": "219",
     "reason": null
    }
   },
@@ -116,7 +116,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "2",
     "reason": null
    }
   },
@@ -174,6 +174,36 @@
    "at": 1792167029.9306889,
    "chars": 475,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "0",
+    "reason": null
+   }
+  },
+  {
+   "id": "n002",
+   "video_id": "4GSDZD52uI0",
+   "url": "https://youtube.com/shorts/4GSDZD52uI0",
+   "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Big Is the Blue Whale Really?",
+    "es": "¿Qué tan grande es realmente la ballena azul?",
+    "pt": "Qual é o tamanho real da baleia-azul?",
+    "ar": "كم يبلغ حجم الحوت الأزرق في الحقيقة؟",
+    "hi": "नीली व्हेल वास्तव में कितनी बड़ी होती है?",
+    "id": "Seberapa Besar Sebenarnya Paus Biru?",
+    "fr": "Quelle est la taille réelle de la baleine bleue ?",
+    "de": "Wie groß ist der Blauwal wirklich?",
+    "ru": "Каких размеров синий кит на самом деле?",
+    "az": "Mavi balina əslində nə qədər böyükdür?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792170628.7529263,
+   "chars": 574,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -187,7 +217,8 @@
   "o0001",
   "g001",
   "o0002",
-  "y002"
+  "y002",
+  "n002"
  ],
  "extra": [
   {
@@ -252,6 +283,14 @@
    "url": "https://youtube.com/shorts/xMYUnZVVITU",
    "duration": 33.4,
    "chars": 475
+  },
+  {
+   "finished": "2026-10-16T17:10:31+00:00",
+   "mod": "saatlik",
+   "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
+   "url": "https://youtube.com/shorts/4GSDZD52uI0",
+   "duration": 38.6,
+   "chars": 574
   }
  ],
  "yorumlar": {
