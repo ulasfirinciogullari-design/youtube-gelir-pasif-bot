@@ -24,7 +24,7 @@ import urllib.error
 from app.services import original_visuals
 from app.services.clip_matcher import _call_gemini_parts, fetch_thumbnail, pixabay_thumbnail
 from app.services.original_script import (
-    EMOJI_RE, MAX_SCENE_CHARS, MAX_SCENES, MAX_WORDS, MIN_SCENES, MIN_WORDS, ScriptError, _call_gemini, _extract_json,
+    EMOJI_RE, MAX_SCENE_CHARS, MAX_WORDS, ScriptError, _call_gemini, _extract_json,
     ENDING_RULE, MOOD_RULE, OPENING_RULE, clean_callout, validate_script,
 )
 
@@ -36,17 +36,23 @@ MAX_POOL = 40
 # such clips now come after every wild one and fill the pool only when the wild ones run out.
 CAPTIVE_TAGS = {"zoo", "zoos", "captivity", "captive", "cage", "caged", "enclosure"}
 FRAME_HEIGHT = 200
-# Ulaş approved the fastest Short so far (Tepqt4MN0lE, 24.6 s), the critic keeps calling the narration slow and the
-# channel's shorter Shorts did better, so a merak script aims for 22-30 s (~2.7 words/s). validate_script keeps
-# MAX_WORDS as the hard limit; going over this one is only a reason to ask again (hook_problems).
-MERAK_MAX_WORDS = 80
+# Every public merak Short stopped near 1,000 views (2026-10-16): the feed shows a Short to a first group and only
+# goes on when they watch it through. A 15-20 s Short (~3.3 words/s with Alp at speed 1.15) is watched through and
+# replayed more often than the 22-30 s ones were. validate_script keeps MAX_WORDS as the hard limit and
+# MERAK_MIN_WORDS as the floor; going over MERAK_MAX_WORDS is only a reason to ask again (hook_problems).
+MERAK_MIN_WORDS = 38
+MERAK_MAX_WORDS = 55
+MERAK_MIN_SCENES = 4
+MERAK_MAX_SCENES = 6
 MAX_OPENING_WORDS = 9  # the prompt asks for at most 8; one word of slack before the opener is sent back
 HOOK_REPEAT_SHARE = 0.6  # share of the banner's content words that may not reappear in the spoken first line
 # Fillers that slipped through in real merak scripts ("İnanılmaz değil mi?", "İşte şaşırtıcı gerçek!",
 # "Açıklayalım.", 2026-10) and the openers and lecture phrases the prompt already forbids. They match from the
 # start of a word, so suffixed forms ("Biliyor muydunuz", "Merhabalar") count too.
-BANNED_PHRASES = ("biliyor muydun", "merhaba", "açıklayalım", "bunun nedeni şudur", "inanılmaz değil mi",
-                  "işte şaşırtıcı gerçek")
+# "değil mi" also caught the cat Short's second line, a sentence that only asked the viewer to agree
+# ("Genellikle mırlamayı mutlulukla ilişkilendiririz, değil mi?", LZUWW_pFBIw).
+BANNED_PHRASES = ("biliyor muydun", "merhaba", "açıklayalım", "bunun nedeni şudur", "değil mi",
+                  "işte şaşırtıcı gerçek", "hepimiz biliriz")
 # A last line opening with one of these summed the video up ("Yani...", 9 of 14 scripts) instead of looping back.
 # The owl Short's own ending was the longer form "Bu adaptasyon sayesinde...", so "bu ... sayesinde" counts as well.
 SUMMARY_OPENERS = ("yani", "böylece", "kısacası", "bu sayede", "sonuç olarak", "özetle")
@@ -58,6 +64,8 @@ PRAISE_OPENERS = ("inanılmaz", "muhteşem", "harika", "mükemmel", "müthiş", 
 # önem taşır." A connector followed by more words, or a last sentence on how important something is, counts as a summary.
 REASON_OPENERS = ("işte bu yüzden", "bu yüzden", "işte bu nedenle", "bu nedenle")
 IMPORTANCE_PHRASES = ("önem taşır", "hayati önem", "ne kadar önemli", "çok önemli")
+# The first 15-20 s test Short (dog head tilt, 2026-10-16) closed on "...başlarını yana çeviriyorlar, işte bu!".
+EMPTY_ENDINGS = ("işte bu", "işte böyle", "bu kadar")
 # Question and filler words a banner may share with the first line without repeating it.
 HOOK_STOPWORDS = {"neden", "nasıl", "ne", "niye", "niçin", "bu", "şu", "o", "bir", "ve", "ile", "mi", "mı", "mu", "mü",
                   "da", "de", "ki", "en", "çok", "kadar", "hep", "her"}
@@ -75,7 +83,7 @@ insan vücudu ve psikoloji hakkında merak edilen soruları gerçek stok videola
 Konu: {topic}
 
 Aşağıda numaralı aday videolar var. Her adaydan soldan sağa üç kare görüyorsun: 1 = başı, 2 = ortası, 3 = sonu.
-Önce bütün adaylara bak, sonra SADECE bu adaylarla gösterilebilecek 22-30 saniyelik bir senaryo yaz.
+Önce bütün adaylara bak, sonra SADECE bu adaylarla gösterilebilecek 15-20 saniyelik bir senaryo yaz.
 
 En önemli kural: Her sahnede söylenen cümle, o sahnenin videolarında görünen şeyle birebir örtüşsün. İzleyici cümleyi
 duyarken anlatılanı ekranda görmeli. Videolarda olmayan bir anı anlatma; konuyu, videolarda gerçekten görünen hareketler
@@ -84,6 +92,8 @@ ve ayrıntılar üzerinden açıkla (ör. düşen kedi görüntüsü yoksa zıpl
 Anlatım kuralları:
 """ + OPENING_RULE + """- Toplam {min_words}-{max_words} kelime, {min_scenes}-{max_scenes} sahne. Her sahne 1-2 kısa cümle.
 - Akış: ekrandaki iddia, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran örnek, başa bağlanan son cümle.
+- Her cümle yeni bir bilgi versin. İzleyiciden onay isteyen ("..., değil mi?") ya da herkesin bildiğini tekrar eden
+  ("Hepimiz biliriz ki...", "Genellikle ... düşünürüz") dolgu cümle yazma; video kısa, her kelime işe yarasın.
 """ + ENDING_RULE + """- Enerjik ve samimi konuş; yeri gelince ekrana gönderme yap ("şu kediye bakın", "gördüğünüz gibi").
 - Ders anlatır gibi değil: "Açıklayalım", "Bunun nedeni şudur" gibi kalıplar yok. Kısa, vurucu cümleler kur; her bir iki
   cümlede yeni bir şaşırtıcı bilgi ver ve ortada bir dönüş yap ("Ama asıl şaşırtıcı olan..." gibi).
@@ -300,12 +310,15 @@ def hook_problems(script: dict) -> list[str]:
     praise = next((w for w in _words(last_sentence)[:1] if w.startswith(PRAISE_OPENERS)), None)
     said_last = " " + " ".join(_words(last_sentence)) + " "
     praise = praise or next((p for p in IMPORTANCE_PHRASES if f" {p}" in said_last), None)
+    praise = praise or next((p for p in EMPTY_ENDINGS if said_last.endswith(f" {p} ")), None)
     if praise and not opener:
         problems.append(f'son cümle "{praise}" gibi genel bir lafla bitmesin, '
                         'somut bir bilgiyle bitip ilk cümleye bağlansın')
     words = sum(len(scene["text"].split()) for scene in scenes)
     if words > MERAK_MAX_WORDS:
         problems.append(f"anlatım {words} kelime, en fazla {MERAK_MAX_WORDS} kelime olsun")
+    if len(scenes) > MERAK_MAX_SCENES:
+        problems.append(f"{len(scenes)} sahne var, en fazla {MERAK_MAX_SCENES} sahne olsun")
     return problems
 
 
@@ -334,7 +347,8 @@ def _ask_editor(prompt: str) -> str | None:
 def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
     """Has Gemini re-read the narration as a science editor and swaps in its corrected sentences; returns why.
     A wrong claim ("sound is millions of times slower than light", 2026-10-13 sample) got past the writing prompt.
-    A fix that is empty, too long or would push the narration out of its word range is ignored."""
+    A fix that is empty, too long or would push the narration out of its word range is ignored; a narration already
+    past MERAK_MAX_WORDS (the best of several attempts) may be corrected but never made longer."""
     scenes = script["scenes"]
     lines = "\n".join(f"{i}. {s['text']}" + (f" [ekranda: {s['callout']}]" if s.get("callout") else "")
                       for i, s in enumerate(scenes, 1))
@@ -345,6 +359,7 @@ def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
         print(f"ℹ️ Bilgi kontrolü yapılamadı: {str(e)[:200]}")
         return []
     notes = []
+    longest = max(MERAK_MAX_WORDS, sum(len(s["text"].split()) for s in scenes))
     for fix in fixes if isinstance(fixes, list) else []:
         try:
             i = int(fix.get("scene")) - 1
@@ -358,7 +373,7 @@ def check_facts(script: dict, topic: str, call=_ask_editor) -> list[str]:
         if text == scenes[i]["text"] and callout == had:
             continue
         words = sum(len(s["text"].split()) for s in scenes) - len(scenes[i]["text"].split()) + len(text.split())
-        if MIN_WORDS <= words <= MAX_WORDS:
+        if MERAK_MIN_WORDS <= words <= longest:
             scenes[i]["text"] = text
             # A corrected sentence never keeps an on-screen number the editor did not confirm.
             if callout:
@@ -404,8 +419,8 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
         raise ThinFootage(len(shown))
 
     parts: list[dict] = [{"text": SCRIPT_PROMPT.format(
-        topic=topic["topic"], min_words=MIN_WORDS, max_words=MERAK_MAX_WORDS,
-        min_scenes=MIN_SCENES, max_scenes=MAX_SCENES,
+        topic=topic["topic"], min_words=MERAK_MIN_WORDS + 2, max_words=MERAK_MAX_WORDS,
+        min_scenes=MERAK_MIN_SCENES, max_scenes=MERAK_MAX_SCENES,
     )}]
     for n, (hit, (data, mime)) in enumerate(shown, start=1):
         parts.append({"text": f"Aday {n} ({int(hit.get('duration') or 0)} sn):"})
@@ -427,7 +442,8 @@ def write_footage_script(topic: dict, work_dir: Path, used_ids: set | None = Non
             if not raw:
                 break
             data = _extract_json(raw)
-            script = validate_script(data, {**topic, "stock_hint": topic.get("stock_hint", "")})
+            script = validate_script(data, {**topic, "stock_hint": topic.get("stock_hint", "")},
+                                     min_words=MERAK_MIN_WORDS, min_scenes=MERAK_MIN_SCENES)
             script["scenes"] = resolve_clips(script["scenes"], len(shown))
             try:
                 coverage = int(data.get("coverage") or 0)

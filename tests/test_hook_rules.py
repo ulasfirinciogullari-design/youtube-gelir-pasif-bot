@@ -11,20 +11,20 @@ import json
 import pytest
 
 from app.services import footage_script, original_visuals
-from app.services.footage_script import MERAK_MAX_WORDS, hook_problems, tr_lower
-from app.services.original_script import ENDING_RULE, MIN_WORDS, OPENING_RULE, build_prompt, validate_script
+from app.services.footage_script import MERAK_MAX_WORDS, MERAK_MIN_WORDS, hook_problems, tr_lower
+from app.services.original_script import ENDING_RULE, OPENING_RULE, build_prompt, validate_script
 
 TOPIC = {"id": "mk-099", "topic": "Baykuşlar başlarını nasıl bu kadar çevirebiliyor?", "stock_hint": "owl",
          "subject": ["owl"]}
 
-# 64 words; the last line runs back into the first when the Short replays.
+# 51 words, a 15-20 s Short; the last line runs back into the first when the Short replays.
 OWL_SCENES = [
     ("Bu baykuş boynunu kırmadan 270 derece döner.", "270 DERECE"),
-    ("Bizim boynumuz bu hareketi denese damarlarımız sıkışır, beynimize giden kan durur.", ""),
+    ("Bizim boynumuz bunu denese beynimize giden kan durur.", ""),
     ("Baykuşun boynunda bizdekinin iki katı, tam on dört omur var.", "14 OMUR"),
-    ("Ama asıl şaşırtıcı olan, boyun damarlarının etrafındaki geniş kemik kanalları.", ""),
-    ("Damarlar bu kanallarda rahatça kayar, kan da küçük ceplerde birikip beyni beslemeye devam eder.", ""),
-    ("Gözleri yuvasında hiç dönmediği için başını çevirmek zorunda, ve işte bu yüzden", ""),
+    ("Ama asıl sır, damarlarının etrafındaki geniş kemik kanalları.", ""),
+    ("Damarlar orada kayar, kan ceplerde birikip beyni besler.", ""),
+    ("Gözleri dönmediği için başını çevirmek zorunda, ve işte bu yüzden", ""),
 ]
 OWL_QUESTION = "Baykuşlar başlarını neden bu kadar geriye çevirebiliyor?"  # the public owl Short's first line
 
@@ -57,7 +57,7 @@ def _reply(first=None, first_callout=None, last=None, thin=False) -> dict:
 def test_a_claim_opener_with_a_key_fact_and_a_looping_end_passes():
     # The banner shares only "boynu" with the first line (1 of 2 content words), so it asks from another angle.
     assert hook_problems(_owl()) == []
-    assert hook_problems(validate_script(_reply(), TOPIC)) == []
+    assert hook_problems(validate_script(_reply(), TOPIC, min_words=MERAK_MIN_WORDS, min_scenes=4)) == []
 
 
 def test_the_owl_question_opener_is_sent_back():
@@ -70,7 +70,7 @@ def test_the_owl_question_opener_is_sent_back():
 
 
 @pytest.mark.parametrize("filler, phrase", [
-    ("İnanılmaz değil mi?", "inanılmaz değil mi"),
+    ("İnanılmaz değil mi?", "değil mi"),
     ("İşte şaşırtıcı gerçek!", "işte şaşırtıcı gerçek"),
     ("Açıklayalım.", "açıklayalım"),
 ])
@@ -84,6 +84,13 @@ def test_real_filler_openers_are_flagged_in_any_scene(filler, phrase):
     assert note in hook_problems(script)
     script["scenes"][0]["text"] = filler.replace("i", "İ").replace("ı", "I").upper()  # shouted Turkish
     assert note in hook_problems(script)
+
+
+def test_a_line_that_only_asks_the_viewer_to_agree_is_sent_back():
+    # The cat Short's second line (LZUWW_pFBIw, 2026-10-16) said nothing new in a 22 s video.
+    script = _owl()
+    script["scenes"][1]["text"] = "Genellikle mırlamayı mutlulukla ilişkilendiririz, değil mi?"
+    assert hook_problems(script) == ['"değil mi" kalıbını kullanma']
 
 
 def test_suffixed_forms_of_a_banned_opener_are_flagged():
@@ -122,7 +129,8 @@ def test_an_ending_that_sums_up_is_sent_back():
 def test_an_ending_on_praise_is_sent_back():
     # The dolphin sample's real last line (2026-10-15).
     for last, word in (("İnanılmaz bir dengeyle hem uyur hem de su altında hayatta kalmayı başarırlar.", "inanılmaz"),
-                       ("Gözleri yuvasında dönmez. Muhteşem bir tasarım, değil mi?", "muhteşem")):
+                       ("Gözleri yuvasında dönmez. Muhteşem bir tasarım.", "muhteşem"),
+                       ("Sizi anlamak için başlarını yana çeviriyorlar, işte bu!", "işte bu")):
         script = _owl()
         script["scenes"][-1]["text"] = last
         assert hook_problems(script) == [
@@ -167,8 +175,16 @@ def test_a_long_opener_and_a_long_script_are_sent_back():
     script["scenes"][0]["text"] = "Bu baykuş boynunu hiçbir yerini kırmadan tam 270 derece döndürebilir."
     script["scenes"][4]["text"] += " Üstelik bu kanallar boynun her iki yanında da vardır ve kan akışını hiç kesmez."
     problems = hook_problems(script)
+    words = sum(len(scene["text"].split()) for scene in script["scenes"])
+    assert words > MERAK_MAX_WORDS
     assert problems == ["ilk cümle 10 kelime, en fazla 8 kelime olsun",
-                        f"anlatım 81 kelime, en fazla {MERAK_MAX_WORDS} kelime olsun"]
+                        f"anlatım {words} kelime, en fazla {MERAK_MAX_WORDS} kelime olsun"]
+
+
+def test_more_than_six_scenes_are_sent_back():
+    script = _owl()
+    script["scenes"][4:5] = [{"text": "Damarlar orada kayar."}, {"text": "Kan ceplerde birikip beyni besler."}]
+    assert hook_problems(script) == ["7 sahne var, en fazla 6 sahne olsun"]
 
 
 def _hit(vid):
@@ -230,8 +246,9 @@ def test_no_parsable_answer_still_gives_up(tmp_path, monkeypatch):
 def test_prompts_ask_for_a_short_script_that_opens_on_a_claim_and_loops(tmp_path, monkeypatch):
     _, prompts = _run(tmp_path, monkeypatch, [_reply()])
     prompt = prompts[0][0]["text"]
-    assert MERAK_MAX_WORDS == 80
-    assert "22-30 saniyelik" in prompt and "25-40" not in prompt and f"Toplam {MIN_WORDS}-80 kelime" in prompt
+    assert (MERAK_MIN_WORDS, MERAK_MAX_WORDS) == (38, 55)
+    assert "15-20 saniyelik" in prompt and "22-30" not in prompt and "Toplam 40-55 kelime, 4-6 sahne" in prompt
+    assert '"..., değil mi?"' in prompt  # no sentence that only asks the viewer to agree
     assert OPENING_RULE in prompt and ENDING_RULE in prompt and "12 kelimelik" not in prompt
     assert "90 mı 180 mi?" in prompt and "yorumlarda buluşalım" in prompt
     assert "Ana özne ekranda büyük ve net görünsün" in prompt  # the dolphin sample's second half was empty sea

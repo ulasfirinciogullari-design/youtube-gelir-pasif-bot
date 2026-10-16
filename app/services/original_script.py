@@ -412,8 +412,10 @@ def _is_character(topic: dict | None) -> bool:
     return bool(topic) and bool(topic.get("character"))
 
 
-def validate_script(script: dict, character: dict | None = None) -> dict:
-    """Normalizes a model reply and raises ScriptError if it is not publishable.
+def validate_script(script: dict, character: dict | None = None, min_words: int = MIN_WORDS,
+                    min_scenes: int = MIN_SCENES) -> dict:
+    """Normalizes a model reply and raises ScriptError if it is not publishable. The shorter curiosity Shorts pass
+    their own lower bounds.
 
     History scripts may not mention fiction at all. Character scripts may, but
     their image prompts are scrubbed of every character and actor name."""
@@ -451,11 +453,11 @@ def validate_script(script: dict, character: dict | None = None) -> dict:
         if callout and sum(1 for s in scenes if s.get("callout")) < MAX_CALLOUTS:
             scene["callout"] = callout
         scenes.append(scene)
-    if not MIN_SCENES <= len(scenes) <= MAX_SCENES:
+    if not min_scenes <= len(scenes) <= MAX_SCENES:
         raise ScriptError(f"scene count {len(scenes)} out of range")
 
     words = sum(len(s["text"].split()) for s in scenes)
-    if not MIN_WORDS <= words <= MAX_WORDS:
+    if not min_words <= words <= MAX_WORDS:
         raise ScriptError(f"narration word count {words} out of range")
 
     narration = " ".join([title] + [s["text"] for s in scenes]).lower()
