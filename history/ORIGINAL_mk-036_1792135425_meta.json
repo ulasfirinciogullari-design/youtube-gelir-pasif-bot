@@ -1,0 +1,303 @@
+{
+  "topic_id": "mk-036",
+  "topic": "Bazı köpekbalıkları yüzmeyi bırakırsa neden boğulur?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Köpekbalıkları Neden Durursa Boğulur? 🦈",
+  "hook_text": "NEDEN SÜREKLİ YÜZÜYORLAR?",
+  "description": "Köpekbalıkları neden yüzmeyi bırakınca boğulur?\n\nBazı köpekbalığı türleri nefes almak için sürekli hareket etmek zorundadır. Ağızlarından giren su solungaçlarından geçerek onlara oksijen sağlar. Bu tip köpekbalıkları durduğunda su akışı kesilir ve boğulma tehlikesi yaşarlar.\n\nSence tüm köpekbalıkları yüzmeyi bırakınca boğulur mu: Evet mi Hayır mı?\n\n#köpekbalığı #denizcanlıları #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-036",
+  "tags": [
+    "köpekbalığı",
+    "köpekbalığı boğulması",
+    "köpekbalıkları neden boğulur",
+    "köpekbalığı nefes alma",
+    "köpekbalığı solungaçları",
+    "köpekbalığı yüzmek zorunda mı",
+    "köpekbalığı uyurken",
+    "deniz canlıları",
+    "deniz hayvanları",
+    "su altı yaşamı",
+    "merak edilenler",
+    "bilimsel gerçekler",
+    "ilginç bilgiler",
+    "hayvanlar alemi",
+    "doğa",
+    "canlılar dünyası",
+    "bilim",
+    "eğlenceli bilgiler",
+    "kısa bilgiler",
+    "belgesel",
+    "shark",
+    "sharks",
+    "shark breathing",
+    "marine life",
+    "hayvanlar",
+    "deniz",
+    "okyanus",
+    "nefes alma",
+    "solungaç"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Sharks Drown If They Stop Swimming? 🦈",
+      "description": "Ever wondered why some sharks can't stop swimming? They need constant movement for water to pass through their gills, providing oxygen. If they stop, the water flow cuts off, leading to suffocation.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "es": {
+      "title": "¿Por qué algunos tiburones se ahogan si dejan de nadar? 🦈",
+      "description": "¿Sabías que algunas especies de tiburones deben nadar continuamente para respirar? El agua que entra por su boca y pasa por sus branquias les proporciona oxígeno. Si se detienen, el flujo de agua se interrumpe y corren el riesgo de asfixiarse.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "pt": {
+      "title": "Por que alguns tubarões se afogam se pararem de nadar? 🦈",
+      "description": "Você sabia que certas espécies de tubarões precisam nadar sem parar para respirar? A água que entra pela boca e passa pelas guelras fornece oxigênio. Se eles pararem, o fluxo de água é interrompido e correm risco de sufocamento.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "de": {
+      "title": "Warum ersticken Haie, wenn sie aufhören zu schwimmen? 🦈",
+      "description": "Hast du dich jemals gefragt, warum manche Haie nicht aufhören können zu schwimmen? Sie brauchen ständige Bewegung, damit Wasser durch ihre Kiemen strömt und sie mit Sauerstoff versorgt. Wenn sie anhalten, stoppt der Wasserfluss und sie ersticken.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "fr": {
+      "title": "Pourquoi certains requins se noient s'ils arrêtent de nager ? 🦈",
+      "description": "Saviez-vous que certaines espèces de requins doivent nager sans cesse pour respirer ? L'eau qui entre par leur bouche et passe par leurs branchies leur fournit de l'oxygène. S'ils s'arrêtent, le flux d'eau est interrompu et ils risquent de suffoquer.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "it": {
+      "title": "Perché alcuni squali affogano se smettono di nuotare? 🦈",
+      "description": "Ti sei mai chiesto perché alcune specie di squali non possono smettere di nuotare? Hanno bisogno di movimento costante affinché l'acqua passi attraverso le loro branchie, fornendo ossigeno. Se si fermano, il flusso d'acqua si interrompe e rischiano di soffocare.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "ru": {
+      "title": "Почему акулы тонут, если перестают плавать? 🦈",
+      "description": "Задумывались ли вы, почему некоторые акулы не могут перестать плавать? Им необходимо постоянное движение, чтобы вода проходила через их жабры, обеспечивая кислород. Если они останавливаются, поток воды прекращается, и они задыхаются.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "ar": {
+      "title": "لماذا تغرق بعض أسماك القرش إذا توقفت عن السباحة؟ 🦈",
+      "description": "هل تساءلت يومًا لماذا لا تستطيع بعض أسماك القرش التوقف عن السباحة؟ إنها تحتاج إلى حركة مستمرة ليمر الماء عبر خياشيمها، مما يوفر الأكسجين. إذا توقفت، يتوقف تدفق الماء، مما يؤدي إلى الاختناق.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "hi": {
+      "title": "शार्क तैरना बंद कर दें तो क्यों डूब जाती हैं? 🦈",
+      "description": "क्या आपने कभी सोचा है कि कुछ शार्क तैरना बंद क्यों नहीं कर सकतीं? उन्हें अपनी गलफड़ों से पानी गुजारने के लिए लगातार हलचल की ज़रूरत होती है, जिससे ऑक्सीजन मिलती है। अगर वे रुक जाती हैं, तो पानी का प्रवाह बंद हो जाता है और वे डूबने लगती हैं।\n\n#shorts\n\nSeri: mk-036"
+    },
+    "id": {
+      "title": "Mengapa Hiu Tenggelam Jika Berhenti Berenang? 🦈",
+      "description": "Pernahkah Anda bertanya-tanya mengapa beberapa hiu tidak bisa berhenti berenang? Mereka membutuhkan gerakan konstan agar air melewati insang mereka, menyediakan oksigen. Jika mereka berhenti, aliran air terputus, menyebabkan mereka tercekik.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "ja": {
+      "title": "サメは泳ぎをやめると窒息するってホント？ 🦈",
+      "description": "なぜ一部のサメは泳ぎ続ける必要があるか知っていますか？彼らはエラを通して水が流れ、酸素を供給するために常に動き続ける必要があります。もし止まってしまうと、水の流れが止まり、窒息してしまうのです。\n\n#shorts\n\nSeri: mk-036"
+    },
+    "ko": {
+      "title": "상어는 왜 헤엄을 멈추면 질식할까요? 🦈",
+      "description": "일부 상어는 왜 계속 헤엄쳐야 하는지 궁금했나요? 그들은 아가미를 통해 물이 흐르고 산소를 공급받기 위해 끊임없이 움직여야 합니다. 멈추면 물의 흐름이 끊겨 질식하게 됩니다.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "pl": {
+      "title": "Dlaczego rekiny toną, jeśli przestaną pływać? 🦈",
+      "description": "Czy zastanawiałeś się kiedyś, dlaczego niektóre rekiny nie mogą przestać pływać? Potrzebują stałego ruchu, aby woda przepływała przez ich skrzela, dostarczając tlen. Jeśli się zatrzymają, przepływ wody ustaje, co prowadzi do uduszenia.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "nl": {
+      "title": "Waarom stikken haaien als ze stoppen met zwemmen? 🦈",
+      "description": "Heb je je ooit afgevraagd waarom sommige haaien niet kunnen stoppen met zwemmen? Ze hebben constante beweging nodig zodat water door hun kieuwen stroomt en zuurstof levert. Als ze stoppen, wordt de waterstroom afgesneden en stikken ze.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "uk": {
+      "title": "Чому акули тонуть, якщо припиняють плавати? 🦈",
+      "description": "Чи замислювалися ви, чому деякі акули не можуть припиняти плавати? Їм потрібен постійний рух, щоб вода проходила через їхні зябра, забезпечуючи кисень. Якщо вони зупиняються, потік води припиняється, і вони задихаються.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "vi": {
+      "title": "Tại sao cá mập chết đuối nếu ngừng bơi? 🦈",
+      "description": "Bạn có bao giờ tự hỏi tại sao một số loài cá mập không thể ngừng bơi? Chúng cần di chuyển liên tục để nước đi qua mang, cung cấp oxy. Nếu chúng dừng lại, dòng nước sẽ bị cắt, dẫn đến ngạt thở.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "az": {
+      "title": "Niyə bəzi köpəkbalıqları üzməyi dayandırsa boğulur? 🦈",
+      "description": "Heç düşünmüsünüzmü, bəzi köpəkbalıqları niyə üzməyi dayandıra bilməz? Onlar oksigen təmin etmək üçün suyun qəlsəmələrindən keçməsi üçün davamlı hərəkətə ehtiyac duyurlar. Dayansalar, su axını kəsilir və boğulma təhlükəsi yaranır.\n\n#shorts\n\nSeri: mk-036"
+    },
+    "ro": {
+      "title": "De ce se îneacă unii rechini dacă se opresc din înot? 🦈",
+      "description": "Te-ai întrebat vreodată de ce unii rechini nu pot înceta să înoate? Ei au nevoie de mișcare constantă pentru ca apa să treacă prin branhii, furnizând oxigen. Dacă se opresc, fluxul de apă se întrerupe, ducând la sufocare.\n\n#shorts\n\nSeri: mk-036"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence tüm köpekbalıkları yüzmeyi bırakınca boğulur mu: Evet mi Hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu köpekbalığı türleri, uyurken bile yüzmek zorundalar.",
+      "visual": "Sharks swimming in an aquarium, showing continuous movement.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 1
+        },
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 4,
+          "kare": 2
+        }
+      ],
+      "callout": "SÜREKLİ HAREKET"
+    },
+    {
+      "text": "Peki, bazı köpekbalıkları yüzmeyi bırakınca neden boğulur?",
+      "visual": "A shark swimming towards the camera, mouth slightly open.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 23,
+          "kare": 2
+        },
+        {
+          "n": 32,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Ağızlarından giren su, solungaçlarından geçerek oksijen sağlar.",
+      "visual": "Close-up shots of a shark's head, mouth, and gills.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 20,
+          "kare": 3
+        },
+        {
+          "n": 33,
+          "kare": 2
+        }
+      ],
+      "callout": "SU AKIŞI"
+    },
+    {
+      "text": "Yani nefes almak için sürekli hareket etmeleri şart.",
+      "visual": "Multiple sharks swimming actively in the water.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 11,
+          "kare": 2
+        },
+        {
+          "n": 29,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Bu tip köpekbalıkları durduğunda su akışı kesilir ve boğulma tehlikesi yaşarlar.",
+      "visual": "Sharks swimming over a reef and in open water, emphasizing continuous movement.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 10,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        }
+      ],
+      "callout": "OKSİJENSİZLİK"
+    },
+    {
+      "text": "Oksijen için bu sürekli yüzme, onların hayatta kalmaları için temel bir gerekliliktir.",
+      "visual": "A shark swimming gracefully in the water.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 26,
+          "kare": 2
+        },
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 7,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 17.34,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "görüntü",
+        "problem": "Görsel anlatım eksikliği; köpekbalığının solunum mekanizmasını açıklayan dinamik veya açıklayıcı görüntüler yerine sadece yüzen köpekbalıkları gösteriliyor.",
+        "fix": "Pexels/Pixabay'de suyun ağızdan girip solungaçlardan çıktığını gösteren (veya bunu ima eden) daha spesifik stok videolar arayın. Gerekirse, su akışını sembolize eden basit, soyut su hareketleri veya akışkanlık videoları kullanın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar sadece metni vurguluyor, bilginin görsel olarak anlaşılmasına yardımcı olacak grafiksel öğeler (oklar, diyagramlar) içermiyor.",
+        "fix": "Su akışını ve oksijen değişimini görselleştirmek için basit animasyonlu oklar veya çizgiler ekleyin. Metinlerin görünümünü daha dinamik hale getirmek için hafif animasyonlar (örn. hızlı fade-in, yukarıdan aşağıya kayma) kullanın."
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka seslendirmesi doğal bir enerji ve akıcılıktan yoksun, bazen monoton veya robotik tınlıyor.",
+        "fix": "Yapay zeka sesinin hızını, tonlamasını ve duraklamalarını daha doğal bir insan konuşmasına yakın olacak şekilde dikkatlice ayarlayın. Cümleleri daha kısa parçalara bölerek doğal nefes alma ve vurgu noktaları oluşturun. Farklı AI ses seçenek"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video geçişleri basit kesimlerden ibaret, referans videodaki gibi hızlı, dinamik ve akıcı geçişler kullanılmıyor.",
+        "fix": "Daha hızlı ve ritmik kesimler uygulayın. Geçişlerde çok kısa süreli (0.1-0.2 saniye) yumuşak geçişler (cross-dissolve) veya hızlı zoom-in/out efektleri kullanarak videoya dinamizm katın."
+      },
+      {
+        "area": "ses",
+        "problem": "Videoda aksiyonları veya önemli anları vurgulayacak ses efektleri (SFX) bulunmuyor.",
+        "fix": "Su sesi, hafif bir 'whoosh' veya metinlerin ekrana gelmesiyle eşleşen kısa bir 'click' gibi ince ses efektleri ekleyerek videonun etkileşimini artırın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Köpekbalıklarının neden sürekli yüzmek zorunda olduğu bilgisi ilgi çekici olsa da, solunum sürecinin detayları görsel olarak yeterince açıklanmadığı için şaşırtıcılık potansiyeli tam kullanılamıyor.",
+        "fix": "Bilginin 'nasıl' kısmını daha anlaşılır kılmak için, görsel olarak desteklenebilecek ek bir cümle veya benzetme ekleyin (örn. 'bir sünger gibi suyu süzerek oksijen alırlar')."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Farklı stok videolar arasında renk tonu, parlaklık veya genel görsel stil tutarsızlıkları olabiliyor.",
+        "fix": "Kullanılan tüm stok videoların renk ayarlarını (parlaklık, kontrast, doygunluk) birbirine yakın olacak şekilde düzenleyerek görsel bütünlüğü sağlayın."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz bilgi aktarımı",
+      "Net soru ile başlangıç",
+      "Mantıksal akış"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

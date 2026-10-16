@@ -1,11 +1,21 @@
 [
   {
+    "video_id": "LSRR_tONJdo",
+    "topic_id": "mk-032",
+    "title": "Kolibriler havada nasıl asılı kalır? 😮",
+    "published_at": "2026-10-16T06:25:04Z",
+    "privacy": "public",
+    "views": 0,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "IKsp_tXE4EI",
     "topic_id": "mk-031",
     "title": "Zürafalar Neden Bayılmaz? İnanılmaz Bir Adaptasyon! 🦒",
     "published_at": "2026-10-16T05:28:03Z",
     "privacy": "public",
-    "views": 0,
+    "views": 4,
     "likes": 0,
     "comments": 1
   },
@@ -15,8 +25,8 @@
     "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
     "published_at": "2026-10-16T04:39:13Z",
     "privacy": "public",
-    "views": 0,
-    "likes": 0,
+    "views": 728,
+    "likes": 5,
     "comments": 1
   },
   {
@@ -25,8 +35,8 @@
     "title": "Flamingolar neden bu kadar pembeler? 💖",
     "published_at": "2026-10-16T01:43:10Z",
     "privacy": "public",
-    "views": 845,
-    "likes": 8,
+    "views": 1156,
+    "likes": 10,
     "comments": 1
   },
   {
@@ -35,7 +45,7 @@
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 755,
+    "views": 1029,
     "likes": 9,
     "comments": 1
   },
@@ -45,8 +55,8 @@
     "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
     "published_at": "2026-10-15T23:19:42Z",
     "privacy": "public",
-    "views": 604,
-    "likes": 9,
+    "views": 707,
+    "likes": 10,
     "comments": 1
   },
   {
@@ -57,7 +67,8 @@
     "privacy": "public",
     "views": 1015,
     "likes": 10,
-    "comments": 1
+    "comments": 1,
+    "views_per_hour": 80.26
   },
   {
     "video_id": "WADWjFRfYYw",
@@ -68,7 +79,7 @@
     "views": 997,
     "likes": 4,
     "comments": 1,
-    "views_per_hour": 64.36
+    "views_per_hour": 60.4
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -76,10 +87,10 @@
     "title": "İnsan kendini neden gıdıklayamaz? 🧠 #shorts",
     "published_at": "2026-10-15T09:46:53Z",
     "privacy": "public",
-    "views": 1158,
+    "views": 1162,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 56.3
+    "views_per_hour": 53.83
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -90,7 +101,7 @@
     "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 28.06
+    "views_per_hour": 27.22
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -98,10 +109,10 @@
     "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
     "published_at": "2026-10-14T19:12:05Z",
     "privacy": "public",
-    "views": 1100,
+    "views": 1101,
     "likes": 18,
     "comments": 1,
-    "views_per_hour": 31.3
+    "views_per_hour": 30.44
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -109,10 +120,10 @@
     "title": "Baykuşlar başlarını neden 270 derece döndürüyor? 🦉 #shorts",
     "published_at": "2026-10-14T14:46:47Z",
     "privacy": "public",
-    "views": 1464,
+    "views": 1477,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 37.0
+    "views_per_hour": 36.39
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -123,6 +134,6 @@
     "views": 381,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 6.97
+    "views_per_hour": 6.84
   }
 ]
