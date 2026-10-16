@@ -6,23 +6,5 @@
   "subscribers": "0",
   "videos": "0"
  },
- "channel_filled": [],
- "playlists": {
-  "Ya Olsaydı?": "PLdqEnBOYj8wQ",
-  "Ne Kadar Büyük?": "PLeHWw6dhPXaw",
-  "1 Gün Boyunca": "PLcawGSnylmhU"
- },
- "episodes": {
-  "ay": {
-   "video_id": "-7OxhWXxc8w",
-   "url": "https://youtube.com/shorts/-7OxhWXxc8w",
-   "privacy": "private",
-   "playlist": "Ya Olsaydı?",
-   "status": {
-    "uploadStatus": "processed",
-    "privacyStatus": "private"
-   },
-   "thumbnail": true
-  }
- }
+ "error": "PUT channels -> 400: Precondition check failed. [failedPrecondition]"
 }

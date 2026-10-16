@@ -22,8 +22,9 @@
  },
  "channel_set": {
   "description": "Ay bir gün yok olsaydı? Dünya dönmeyi bıraksaydı? Herkes aynı anda zıplasaydı?\n\nYa Olsaydı?, bilimin en çılgın sorularını Profesör Pi ve meraklı robot Bit ile animasyonlu, kısa ve eğlenceli videolarla cevaplıyor. Her videodaki bilgiler gerçek ve kaynaklı.\n\nSeriler:\n- Ya Olsaydı?: Hayali senaryolar, gerçek bilim\n- Ne Kadar Büyük?: Dev rakamlar, görsel karşılaştırmalar\n- 1 Gün Boyunca: Vücudun ve dünyanın sınırları\n\nSıradaki soruyu sen seç: yorumlara yaz!\nHer gün yeni bir soru.",
-  "keywords": "\"ya olsaydı\" bilim \"bilim animasyonu\" uzay astronomi fizik dünya ay merak \"ilginç bilgiler\" eğitim animasyon \"ne olurdu\" \"türkçe bilim\"",
+  "keywords": "\"ya olsaydı\" bilim \"bilim animasyonu\" uzay astronomi fizik dünya ay merak \"ilginç bilgiler\" eğitim animasyon \"ne olurdu\" \"türkçe bilim\" \"what if\" science \"science animation\" space astronomy",
   "country": "TR",
   "defaultLanguage": "tr"
- }
+ },
+ "handle": "@yaolsaydibilim"
 }
