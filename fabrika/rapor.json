@@ -1,42 +1,43 @@
 {
- "started": "2026-10-16T05:08:00+00:00",
+ "started": "2026-10-16T05:23:47+00:00",
  "mod": "zorla",
  "gate": "zorla",
  "credits_before": [
-  106778,
+  106888,
   121782
  ],
  "topic": {
-  "id": "y001",
-  "series": "Ya Olsaydı?",
-  "q": "Dünya dönmeyi bıraksaydı ne olurdu?"
+  "id": "n001",
+  "series": "Ne Kadar Büyük?",
+  "q": "Güneş gerçekte ne kadar büyük?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
  "fact_check": {
-  "ok": false,
-  "fixes": [
-   {
-    "line": 7,
-    "why": "Manyetik alan dönme durunca bir anda yok olmaz (sönmesi binlerce yıl alır) ve yüzeyi ölümcül kozmik radyasyondan koruyan asıl kalkan manyetik alan değil, atmosferin kendisidir."
-   }
-  ]
+  "ok": true,
+  "fixes": []
  },
  "chunks": 0,
  "grounded": true,
- "chars": 499,
- "duration": 34.6,
- "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
+ "chars": 556,
+ "duration": 37.5,
+ "title": "Güneş Gerçekte Ne Kadar Büyük?",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "2",
-  "videos": "1"
+  "videos": "2"
  },
- "url": "https://youtube.com/shorts/8KoJ0-4fHyY",
+ "url": "https://youtube.com/shorts/yHElVXfvdsw",
  "recent_status": {
   "y001": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  },
+  "n001": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -44,12 +45,12 @@
   }
  },
  "credits_after": [
-  106888,
+  107100,
   121782
  ],
  "log": [
-  "Konu: y001 Dünya dönmeyi bıraksaydı ne olurdu? (Ya Olsaydı?)",
+  "Konu: n001 Güneş gerçekte ne kadar büyük? (Ne Kadar Büyük?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T05:10:36+00:00"
+ "finished": "2026-10-16T05:25:56+00:00"
 }

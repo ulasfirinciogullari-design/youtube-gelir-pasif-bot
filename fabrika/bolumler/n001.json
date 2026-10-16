@@ -1,0 +1,736 @@
+{
+ "title": "Güneş Gerçekte Ne Kadar Büyük?",
+ "bar": {
+  "hi": "GÜNEŞ",
+  "rest": "NE KADAR BÜYÜK?"
+ },
+ "summary": "Gökyüzündeki o parlak daire aslında aklımızın alamayacağı kadar devasa bir fırın. Güneş'in akılalmaz boyutunu Dünya ile yan yana koyarak test ettik.",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "Güneş gerçekte ne kadar büyük?",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "☀️",
+    "label": "Ne Kadar Büyük?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gökyüzünde küçük görünür ama içine yaklaşık 1,3 milyon Dünya sığabilir.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🌍",
+    "value": "1,3 milyon",
+    "unit": "Dünya",
+    "label": "Güneş Hacmi",
+    "key": "1,3"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "1,3 milyon mu? Ciddi misin?",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🌍",
+    "value": "1,3 milyon",
+    "unit": "Dünya",
+    "label": "Güneş Hacmi",
+    "key": "milyon"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çapı Dünya'nın 109 katı; yan yana 109 gezegen dizerdin.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "sun",
+     "label": "Güneş",
+     "value": 109
+    },
+    "b": {
+     "b": "earth",
+     "label": "Dünya",
+     "value": 1
+    },
+    "mode": "size",
+    "key": "109"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Peki ya kütlesi?",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "⚖️",
+    "do": "pulse",
+    "key": "kütlesi",
+    "label": "Güneş Kütlesi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Tüm Güneş Sistemi kütlesinin %99,86'sı sadece Güneş'e ait.",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Sistem Kütlesi",
+    "from": 0,
+    "to": 99.86,
+    "unit": "%",
+    "e": "☀️",
+    "key": "%99,86"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş bir basketbol topu olsa, Dünya sadece 2 milimetrelik bir susam tanesi olurdu.",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "🏀",
+     "label": "Güneş"
+    },
+    "right": {
+     "e": "⚪",
+     "label": "Dünya"
+    },
+    "key": "basketbol"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Biz sadece bir toz zerresiyiz!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "😱",
+    "do": "shake",
+    "key": "zerresiyiz",
+    "label": "Şaşkınlık"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Buna rağmen Güneş, evrendeki dev yıldızların yanında minik bir sarı cüce sayılıyor.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "xs",
+      "at": "l"
+     },
+     {
+      "b": "star",
+      "size": "xl",
+      "at": "r"
+     }
+    ],
+    "do": "grow",
+    "target": 1,
+    "key": "cüce",
+    "label": "Kırmızı Dev"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🤖"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Güneş'in hacmi o kadar büyüktür ki içine yaklaşık 1,3 milyon adet Dünya sığabilir.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/sun/facts/"
+  },
+  {
+   "text": "Güneş Sistemi'ndeki toplam kütlenin yaklaşık %99,86'sını tek başına Güneş oluşturur.",
+   "source": "Natural History Museum",
+   "url": "https://www.nhm.ac.uk/discover/the-sun-factfile.html"
+  },
+  {
+   "text": "Güneş'in çapı yaklaşık 1.392.700 kilometredir ve Dünya'nın çapının yaklaşık 109 katıdır.",
+   "source": "Stanford Solar Center",
+   "url": "https://solar-center.stanford.edu/vitalstats.html"
+  }
+ ],
+ "tags": [
+  "güneş",
+  "güneş ne kadar büyük",
+  "güneş sistemi",
+  "dünya",
+  "uzay",
+  "astronomi",
+  "how big is the sun",
+  "sun scale",
+  "solar system",
+  "size comparison",
+  "evren",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#güneş",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://science.nasa.gov/sun/facts/",
+  "https://solar-center.stanford.edu/vitalstats.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Big Is the Sun Really?",
+   "summary": "That bright circle in the sky is actually a furnace so massive it boggles the mind. We tested the Sun's unbelievable size by comparing it side-by-side with Earth.",
+   "facts": [
+    "The volume of the Sun is so large that about 1.3 million Earths could fit inside it.",
+    "The Sun alone makes up about 99.86% of the total mass in the Solar System.",
+    "The diameter of the Sun is about 1,392,700 kilometers, which is roughly 109 times the diameter of Earth."
+   ]
+  },
+  "es": {
+   "title": "¿Qué tan grande es el Sol realmente?",
+   "summary": "Ese círculo brillante en el cielo es en realidad un horno colosal que desafía nuestra imaginación. Comparamos el increíble tamaño del Sol frente a la Tierra.",
+   "facts": [
+    "El volumen del Sol es tan inmenso que en su interior podrían caber aproximadamente 1,3 millones de Tierras.",
+    "El Sol concentra por sí solo cerca del 99,86% de la masa total de todo el sistema solar.",
+    "El diámetro del Sol es de aproximadamente 1.392.700 kilómetros, lo que equivale a unas 109 veces el diámetro de la Tierra."
+   ]
+  },
+  "pt": {
+   "title": "Qual é o tamanho real do Sol?",
+   "summary": "Aquele círculo brilhante no céu é, na verdade, uma fornalha colossal inimaginável. Testamos o tamanho inacreditável do Sol colocando-o lado a lado com a Terra.",
+   "facts": [
+    "O volume do Sol é tão grande que cerca de 1,3 milhão de Terras poderiam caber dentro dele.",
+    "O Sol sozinho compõe aproximadamente 99,86% de toda a massa do Sistema Solar.",
+    "O diâmetro do Sol é de cerca de 1.392.700 quilômetros, o que equivale a aproximadamente 109 vezes o diâmetro da Terra."
+   ]
+  },
+  "ar": {
+   "title": "ما هو الحجم الحقيقي للشمس؟",
+   "summary": "تلك الدائرة المضيئة في السماء هي في الواقع فرن عملاق يفوق خيالنا. اختبرنا الحجم المذهل للشمس بمقارنتها جنباً إلى جنب مع كوكب الأرض.",
+   "facts": [
+    "حجم الشمس هائل لدرجة أنه يمكن أن يتسع لنحو 1.3 مليون كوكب مثل الأرض بداخلها.",
+    "تشكل الشمس وحدها ما يقرب من 99.86% من إجمالي كتلة النظام الشمسي.",
+    "يبلغ قطر الشمس حوالي 1,392,700 كيلومتر، وهو ما يعادل تقريباً 109 أضعاف قطر الأرض."
+   ]
+  },
+  "hi": {
+   "title": "सूरज असल में कितना बड़ा है?",
+   "summary": "आसमान में दिखने वाला वह चमकता गोला असल में हमारी कल्पना से परे एक विशाल भट्टी है। हमने सूर्य के अकल्पनीय आकार की तुलना पृथ्वी से करके इसे परखा।",
+   "facts": [
+    "सूर्य का आयतन इतना विशाल है कि इसके अंदर लगभग 1.3 मिलियन पृथ्वियां समा सकती हैं।",
+    "अकेले सूर्य में ही सौर मंडल के कुल द्रव्यमान का लगभग 99.86% हिस्सा मौजूद है।",
+    "सूर्य का व्यास लगभग 1,392,700 किलोमीटर है, जो पृथ्वी के व्यास का लगभग 109 गुना है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Besar Matahari Sebenarnya?",
+   "summary": "Lingkaran terang di langit itu sebenarnya adalah tungku raksasa di luar nalar kita. Kami menguji ukuran Matahari yang luar biasa ini dengan membandingkannya langsung dengan Bumi.",
+   "facts": [
+    "Volume Matahari begitu besar hingga sekitar 1,3 juta Bumi dapat muat di dalamnya.",
+    "Matahari sendiri menyumbang sekitar 99,86% dari total massa di Tata Surya.",
+    "Diameter Matahari sekitar 1.392.700 kilometer, atau kira-kira 109 kali diameter Bumi."
+   ]
+  },
+  "fr": {
+   "title": "Quelle est la taille réelle du Soleil ?",
+   "summary": "Ce cercle lumineux dans le ciel est en réalité une fournaise si colossale qu'elle dépasse l'entendement. Nous avons comparé la taille vertigineuse du Soleil à celle de la Terre.",
+   "facts": [
+    "Le volume du Soleil est si gigantesque qu'environ 1,3 million de Terres pourraient y entrer.",
+    "Le Soleil représente à lui seul environ 99,86 % de la masse totale du système solaire.",
+    "Le diamètre du Soleil est d'environ 1 392 700 kilomètres, soit environ 109 fois celui de la Terre."
+   ]
+  },
+  "de": {
+   "title": "Wie groß ist die Sonne wirklich?",
+   "summary": "Dieser helle Kreis am Himmel ist in Wirklichkeit ein Ofen von unvorstellbaren Ausmaßen. Wir haben die unglaubliche Größe der Sonne im direkten Vergleich mit der Erde getestet.",
+   "facts": [
+    "Das Volumen der Sonne ist so gewaltig, dass etwa 1,3 Millionen Erden in sie hineinpassen würden.",
+    "Die Sonne allein macht etwa 99,86 % der gesamten Masse des Sonnensystems aus.",
+    "Der Durchmesser der Sonne beträgt etwa 1.392.700 Kilometer, was ungefähr dem 109-fachen Durchmesser der Erde entspricht."
+   ]
+  },
+  "ru": {
+   "title": "Насколько на самом деле велико Солнце?",
+   "summary": "Этот яркий круг на небе — на самом деле колоссальная печь, масштабы которой трудно вообразить. Мы сравнили невероятные размеры Солнца рядом с Землей.",
+   "facts": [
+    "Объем Солнца настолько огромен, что внутри него могло бы поместиться около 1,3 миллиона планет размером с Землю.",
+    "На долю одного лишь Солнца приходится около 99,86% всей массы Солнечной системы.",
+    "Диаметр Солнца составляет около 1 392 700 километров, что примерно в 109 раз больше диаметра Земли."
+   ]
+  },
+  "az": {
+   "title": "Günəş əslində nə qədər böyükdür?",
+   "summary": "Göydəki o parlaq dairə əslində ağlasığmaz dərəcədə nəhəng bir sobaya bənzəyir. Günəşin ağlasığmaz ölçüsünü Yer ilə yanaşı qoyaraq yoxladıq.",
+   "facts": [
+    "Günəşin həcmi o qədər böyükdür ki, içinə təxminən 1,3 milyon Yer kürəsi sığa bilər.",
+    "Günəş Sistemi ümumi kütləsinin təxminən 99,86%-ni təkcə Günəş təşkil edir.",
+    "Günəşin diametri təxminən 1.392.700 kilometrdir və Yerin diametrindən təxminən 109 dəfə böyükdür."
+   ]
+  }
+ },
+ "id": "n001",
+ "series": "Ne Kadar Büyük?",
+ "q": "Güneş gerçekte ne kadar büyük?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 2.208,
+   "words": [
+    {
+     "w": "Güneş",
+     "t0": 0.35,
+     "t1": 0.6519999999999999
+    },
+    {
+     "w": "gerçekte",
+     "t0": 0.71,
+     "t1": 1.232
+    },
+    {
+     "w": "ne",
+     "t0": 1.279,
+     "t1": 1.3719999999999999
+    },
+    {
+     "w": "kadar",
+     "t0": 1.407,
+     "t1": 1.7080000000000002
+    },
+    {
+     "w": "büyük?",
+     "t0": 1.766,
+     "t1": 2.208
+    }
+   ]
+  },
+  {
+   "t0": 2.601995464852608,
+   "t1": 7.291995464852608,
+   "words": [
+    {
+     "w": "Gökyüzünde",
+     "t0": 2.601995464852608,
+     "t1": 3.147995464852608
+    },
+    {
+     "w": "küçük",
+     "t0": 3.193995464852608,
+     "t1": 3.449995464852608
+    },
+    {
+     "w": "görünür",
+     "t0": 3.483995464852608,
+     "t1": 3.831995464852608
+    },
+    {
+     "w": "ama",
+     "t0": 3.8789954648526077,
+     "t1": 4.075995464852608
+    },
+    {
+     "w": "içine",
+     "t0": 4.273995464852608,
+     "t1": 4.586995464852608
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 4.621995464852608,
+     "t1": 5.062995464852608
+    },
+    {
+     "w": "1,3",
+     "t0": 5.109995464852608,
+     "t1": 5.805995464852608
+    },
+    {
+     "w": "milyon",
+     "t0": 5.875995464852608,
+     "t1": 6.1659954648526085
+    },
+    {
+     "w": "Dünya",
+     "t0": 6.211995464852608,
+     "t1": 6.502995464852608
+    },
+    {
+     "w": "sığabilir.",
+     "t0": 6.583995464852608,
+     "t1": 7.291995464852608
+    }
+   ]
+  },
+  {
+   "t0": 7.672426303854875,
+   "t1": 9.948426303854875,
+   "words": [
+    {
+     "w": "1,3",
+     "t0": 7.672426303854875,
+     "t1": 8.357426303854876
+    },
+    {
+     "w": "milyon",
+     "t0": 8.438426303854875,
+     "t1": 8.740426303854875
+    },
+    {
+     "w": "mu?",
+     "t0": 8.787426303854875,
+     "t1": 9.008426303854876
+    },
+    {
+     "w": "Ciddi",
+     "t0": 9.170426303854875,
+     "t1": 9.414426303854874
+    },
+    {
+     "w": "misin?",
+     "t0": 9.460426303854875,
+     "t1": 9.948426303854875
+    }
+   ]
+  },
+  {
+   "t0": 10.338299319727891,
+   "t1": 14.75029931972789,
+   "words": [
+    {
+     "w": "Çapı",
+     "t0": 10.338299319727891,
+     "t1": 10.62829931972789
+    },
+    {
+     "w": "Dünya'nın",
+     "t0": 10.66329931972789,
+     "t1": 11.116299319727892
+    },
+    {
+     "w": "109",
+     "t0": 11.162299319727891,
+     "t1": 11.603299319727892
+    },
+    {
+     "w": "katı;",
+     "t0": 11.65029931972789,
+     "t1": 11.998299319727892
+    },
+    {
+     "w": "yan",
+     "t0": 12.254299319727892,
+     "t1": 12.47429931972789
+    },
+    {
+     "w": "yana",
+     "t0": 12.53229931972789,
+     "t1": 12.78829931972789
+    },
+    {
+     "w": "109",
+     "t0": 12.927299319727892,
+     "t1": 13.391299319727892
+    },
+    {
+     "w": "gezegen",
+     "t0": 13.426299319727892,
+     "t1": 13.902299319727891
+    },
+    {
+     "w": "dizerdin.",
+     "t0": 14.007299319727892,
+     "t1": 14.75029931972789
+    }
+   ]
+  },
+  {
+   "t0": 15.130299319727891,
+   "t1": 16.33729931972789,
+   "words": [
+    {
+     "w": "Peki",
+     "t0": 15.130299319727891,
+     "t1": 15.385299319727892
+    },
+    {
+     "w": "ya",
+     "t0": 15.43229931972789,
+     "t1": 15.52529931972789
+    },
+    {
+     "w": "kütlesi?",
+     "t0": 15.571299319727892,
+     "t1": 16.33729931972789
+    }
+   ]
+  },
+  {
+   "t0": 16.732090702947847,
+   "t1": 21.609090702947846,
+   "words": [
+    {
+     "w": "Tüm",
+     "t0": 16.732090702947847,
+     "t1": 16.906090702947846
+    },
+    {
+     "w": "Güneş",
+     "t0": 16.964090702947846,
+     "t1": 17.185090702947846
+    },
+    {
+     "w": "Sistemi",
+     "t0": 17.220090702947846,
+     "t1": 17.55609070294785
+    },
+    {
+     "w": "kütlesinin",
+     "t0": 17.591090702947845,
+     "t1": 18.091090702947845
+    },
+    {
+     "w": "%99,86'sı",
+     "t0": 18.137090702947848,
+     "t1": 20.088090702947845
+    },
+    {
+     "w": "sadece",
+     "t0": 20.14609070294785,
+     "t1": 20.529090702947848
+    },
+    {
+     "w": "Güneş'e",
+     "t0": 20.575090702947847,
+     "t1": 20.982090702947847
+    },
+    {
+     "w": "ait.",
+     "t0": 21.063090702947846,
+     "t1": 21.609090702947846
+    }
+   ]
+  },
+  {
+   "t0": 21.80909070294785,
+   "t1": 26.40609070294785,
+   "words": [
+    {
+     "w": "Güneş",
+     "t0": 21.80909070294785,
+     "t1": 22.076090702947848
+    },
+    {
+     "w": "bir",
+     "t0": 22.122090702947848,
+     "t1": 22.227090702947848
+    },
+    {
+     "w": "basketbol",
+     "t0": 22.273090702947847,
+     "t1": 22.715090702947847
+    },
+    {
+     "w": "topu",
+     "t0": 22.761090702947847,
+     "t1": 22.95809070294785
+    },
+    {
+     "w": "olsa,",
+     "t0": 22.99309070294785,
+     "t1": 23.36409070294785
+    },
+    {
+     "w": "Dünya",
+     "t0": 23.46909070294785,
+     "t1": 23.759090702947848
+    },
+    {
+     "w": "sadece",
+     "t0": 23.82909070294785,
+     "t1": 24.200090702947847
+    },
+    {
+     "w": "2",
+     "t0": 24.270090702947847,
+     "t1": 24.433090702947847
+    },
+    {
+     "w": "milimetrelik",
+     "t0": 24.46709070294785,
+     "t1": 24.96709070294785
+    },
+    {
+     "w": "bir",
+     "t0": 25.01309070294785,
+     "t1": 25.09409070294785
+    },
+    {
+     "w": "susam",
+     "t0": 25.11809070294785,
+     "t1": 25.39609070294785
+    },
+    {
+     "w": "tanesi",
+     "t0": 25.45409070294785,
+     "t1": 25.74509070294785
+    },
+    {
+     "w": "olurdu.",
+     "t0": 25.779090702947848,
+     "t1": 26.40609070294785
+    }
+   ]
+  },
+  {
+   "t0": 26.786641723356013,
+   "t1": 28.690641723356013,
+   "words": [
+    {
+     "w": "Biz",
+     "t0": 26.786641723356013,
+     "t1": 26.949641723356013
+    },
+    {
+     "w": "sadece",
+     "t0": 26.983641723356012,
+     "t1": 27.41364172335601
+    },
+    {
+     "w": "bir",
+     "t0": 27.47164172335601,
+     "t1": 27.55264172335601
+    },
+    {
+     "w": "toz",
+     "t0": 27.575641723356014,
+     "t1": 27.819641723356014
+    },
+    {
+     "w": "zerresiyiz!",
+     "t0": 27.86664172335601,
+     "t1": 28.690641723356013
+    }
+   ]
+  },
+  {
+   "t0": 29.080179138322,
+   "t1": 33.213179138322,
+   "words": [
+    {
+     "w": "Buna",
+     "t0": 29.080179138322,
+     "t1": 29.289179138321998
+    },
+    {
+     "w": "rağmen",
+     "t0": 29.347179138321998,
+     "t1": 29.649179138321998
+    },
+    {
+     "w": "Güneş,",
+     "t0": 29.719179138321998,
+     "t1": 30.067179138321997
+    },
+    {
+     "w": "evrendeki",
+     "t0": 30.090179138322,
+     "t1": 30.601179138322
+    },
+    {
+     "w": "dev",
+     "t0": 30.659179138322,
+     "t1": 30.798179138322
+    },
+    {
+     "w": "yıldızların",
+     "t0": 30.856179138322,
+     "t1": 31.344179138321998
+    },
+    {
+     "w": "yanında",
+     "t0": 31.379179138321998,
+     "t1": 31.646179138321997
+    },
+    {
+     "w": "minik",
+     "t0": 31.692179138321997,
+     "t1": 31.913179138322
+    },
+    {
+     "w": "bir",
+     "t0": 31.971179138322,
+     "t1": 32.040179138321996
+    },
+    {
+     "w": "sarı",
+     "t0": 32.064179138322,
+     "t1": 32.249179138322
+    },
+    {
+     "w": "cüce",
+     "t0": 32.273179138322,
+     "t1": 32.470179138321996
+    },
+    {
+     "w": "sayılıyor.",
+     "t0": 32.516179138322,
+     "t1": 33.213179138322
+    }
+   ]
+  },
+  {
+   "t0": 33.59333106575964,
+   "t1": 35.915331065759645,
+   "words": [
+    {
+     "w": "Sıradaki",
+     "t0": 33.59333106575964,
+     "t1": 34.034331065759645
+    },
+    {
+     "w": "soruyu",
+     "t0": 34.06933106575964,
+     "t1": 34.31333106575964
+    },
+    {
+     "w": "sen",
+     "t0": 34.35933106575964,
+     "t1": 34.522331065759644
+    },
+    {
+     "w": "seç!",
+     "t0": 34.59133106575964,
+     "t1": 34.87033106575964
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 34.90433106575964,
+     "t1": 35.40433106575964
+    },
+    {
+     "w": "yaz.",
+     "t0": 35.45033106575964,
+     "t1": 35.915331065759645
+    }
+   ]
+  }
+ ]
+}
