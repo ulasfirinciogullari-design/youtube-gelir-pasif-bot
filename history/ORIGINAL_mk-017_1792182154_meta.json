@@ -1,0 +1,218 @@
+{
+  "topic_id": "mk-017",
+  "topic": "Yarım kalan işleri neden aklımızdan çıkaramayız? Zeigarnik etkisi",
+  "series": "merak",
+  "script_provider": "gemini",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Yarım kalan işler aklımızı neden kurcalar? 🤯",
+  "hook_text": "BİTMEMİŞ İŞLER AKILDAN ÇIKMIYOR MU?",
+  "description": "Yarım kalan işler aklımızı neden kurcalar?\n\nYapılan araştırmalara göre, bitmemiş işler bitenlerden %90 daha fazla hatırlanır. Tamamlanmayan bir iş, zihnimizde sürekli bir döngüye girer, kendini hatırlatır. Buna Zeigarnik etkisi deniyor!\n\nSence yarım kalan işler seni daha çok motive mi eder yoksa sadece rahatsız mı eder? 👇\n\n#ZeigarnikEtkisi #Psikoloji #Beyin #MeraklıBilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-017",
+  "tags": [
+    "Zeigarnik etkisi",
+    "yarım kalan işler",
+    "bitmemiş işler",
+    "aklımız neden kurcalar",
+    "neden unutamayız",
+    "yarım kalan iş sendromu",
+    "psikolojik etkiler",
+    "beyin nasıl çalışır",
+    "unutma nedenleri",
+    "hafıza teknikleri",
+    "dikkat dağınıklığı",
+    "işleri bitirme",
+    "verimlilik",
+    "merak uyandıran bilgiler",
+    "ilginç gerçekler",
+    "bilimsel gerçekler",
+    "psikoloji gerçekleri",
+    "kısa bilgiler",
+    "bilim",
+    "psikoloji",
+    "beyin",
+    "hafıza",
+    "Zeigarnik effect",
+    "memory",
+    "psychology",
+    "brain",
+    "shorts",
+    "merak",
+    "dikkat",
+    "odaklanma"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why do unfinished tasks bother our minds? 🤯",
+      "description": "Why do unfinished tasks keep nagging at our minds?\n\nStudies show that employees remember unfinished tasks 90% more than completed ones. An incomplete task enters a continuous loop in our minds, constantly reminding itself. This is called the Zeigarnik effect!\n\nDo unfinished tasks motivate you more, or do they just bother you? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "es": {
+      "title": "¿Por qué las tareas incompletas nos obsesionan? 🤯",
+      "description": "¿Por qué las tareas incompletas siguen rondando nuestra mente?\n\nSe ha demostrado que los empleados recuerdan las tareas sin terminar un 90% más que las completadas. Una tarea incompleta entra en un bucle continuo en nuestra mente, recordándose constantemente. ¡Esto se llama el efecto Zeigarnik!\n\n¿Las tareas sin terminar te motivan más o simplemente te molestan? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "pt": {
+      "title": "Por que tarefas inacabadas nos incomodam tanto? 🤯",
+      "description": "Por que as tarefas inacabadas continuam a nos atormentar?\n\nEstudos mostram que os funcionários se lembram de tarefas incompletas 90% mais do que as concluídas. Uma tarefa incompleta entra em um ciclo contínuo em nossa mente, lembrando-se constantemente. Isso é chamado de efeito Zeigarnik!\n\nAs tarefas inacabadas te motivam mais ou apenas te incomodam? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "de": {
+      "title": "Warum beschäftigen uns unerledigte Aufgaben so sehr? 🤯",
+      "description": "Warum nagen unerledigte Aufgaben ständig an unseren Gedanken?\n\nStudien zeigen, dass Mitarbeiter sich an unvollendete Aufgaben zu 90% mehr erinnern als an abgeschlossene. Eine unvollständige Aufgabe gerät in unserem Geist in eine Dauerschleife und erinnert sich ständig selbst. Das nennt man den Zeigarnik-Effekt!\n\nMotivieren dich unerledigte Aufgaben mehr, oder stören sie dich einfach nur? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "fr": {
+      "title": "Pourquoi les tâches inachevées nous obsèdent-elles ? 🤯",
+      "description": "Pourquoi les tâches inachevées continuent-elles de nous hanter?\n\nDes études montrent que les employés se souviennent 90% plus des tâches inachevées que des tâches terminées. Une tâche incomplète entre dans une boucle continue dans notre esprit, se rappelant constamment. C'est l'effet Zeigarnik !\n\nLes tâches inachevées te motivent-elles plus, ou te dérangent-elles simplement ? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "it": {
+      "title": "Perché i compiti incompiuti ci assillano? 🤯",
+      "description": "Perché i compiti incompiuti continuano a tormentarci?\n\nStudi dimostrano che i dipendenti ricordano i compiti incompiuti il 90% in più rispetto a quelli completati. Un compito incompleto entra in un ciclo continuo nella nostra mente, ricordandosi costantemente. Questo è chiamato l'effetto Zeigarnik!\n\nI compiti incompiuti ti motivano di più o ti infastidiscono soltanto? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "ru": {
+      "title": "Почему незавершенные дела не дают покоя? 🤯",
+      "description": "Почему незавершенные дела продолжают нас беспокоить?\n\nИсследования показывают, что сотрудники помнят незавершенные задачи на 90% лучше, чем завершенные. Незаконченное дело входит в постоянный цикл в нашем сознании, постоянно напоминая о себе. Это называется эффектом Зейгарник!\n\nНезавершенные дела мотивируют вас больше или просто раздражают? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "ar": {
+      "title": "لماذا تشغل المهام غير المكتملة عقولنا؟ 🤯",
+      "description": "لماذا تستمر المهام غير المكتملة في إزعاج عقولنا؟\n\nتظهر الدراسات أن الموظفين يتذكرون المهام غير المكتملة بنسبة 90% أكثر من المهام المكتملة. تدخل المهمة غير المكتملة في حلقة مستمرة في أذهاننا، وتذكر نفسها باستمرار. وهذا ما يسمى بتأثير زيجارنيك!\n\nهل المهام غير المكتملة تحفزك أكثر أم أنها تزعجك فقط؟ 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "hi": {
+      "title": "अधूरे काम हमारे दिमाग को क्यों परेशान करते हैं? 🤯",
+      "description": "अधूरे काम हमारे दिमाग को क्यों परेशान करते रहते हैं?\n\nअध्ययनों से पता चलता है कि कर्मचारी अधूरे कामों को पूरे किए गए कामों की तुलना में 90% अधिक याद रखते हैं। एक अधूरा काम हमारे दिमाग में एक निरंतर चक्र में प्रवेश करता है, जो लगातार खुद को याद दिलाता रहता है। इसे ज़ीगार्निक प्रभाव कहा जाता है!\n\nक्या अधूरे काम आपको अधिक प्रेरित करते हैं, या वे आपको सिर्फ परेशान करते हैं? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "id": {
+      "title": "Mengapa tugas yang belum selesai mengganggu pikiran kita? 🤯",
+      "description": "Mengapa tugas yang belum selesai terus mengganggu pikiran kita?\n\nStudi menunjukkan bahwa karyawan mengingat tugas yang belum selesai 90% lebih banyak daripada yang sudah selesai. Tugas yang belum selesai masuk ke dalam lingkaran berulang di pikiran kita, terus-menerus mengingatkan diri sendiri. Ini disebut efek Zeigarnik!\n\nApakah tugas yang belum selesai lebih memotivasi Anda, atau hanya mengganggu? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "ja": {
+      "title": "なぜ未完了のタスクは頭から離れないのか？ 🤯",
+      "description": "なぜ未完了のタスクは私たちの心を悩ませ続けるのでしょうか？\n\n研究によると、従業員は完了したタスクよりも未完了のタスクを90%多く覚えています。未完了のタスクは私たちの心の中で絶えずループし、繰り返し自分自身を思い出させます。これはツァイガルニク効果と呼ばれます！\n\n未完了のタスクはあなたをよりやる気にさせますか、それともただ煩わせるだけですか？ 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "ko": {
+      "title": "왜 미완성 작업은 우리 마음을 괴롭힐까요? 🤯",
+      "description": "왜 미완성 작업은 계속해서 우리 마음을 괴롭힐까요?\n\n연구에 따르면, 직원들은 완료된 작업보다 미완성 작업을 90% 더 많이 기억합니다. 미완성 작업은 우리 마음속에서 끊임없이 반복되며, 스스로를 계속해서 상기시킵니다. 이것이 바로 자이가르닉 효과입니다!\n\n미완성 작업이 당신에게 더 큰 동기 부여가 되나요, 아니면 단지 귀찮게만 하나요? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "pl": {
+      "title": "Dlaczego niedokończone zadania nas dręczą? 🤯",
+      "description": "Dlaczego niedokończone zadania ciągle nas męczą?\n\nBadania pokazują, że pracownicy pamiętają niedokończone zadania o 90% bardziej niż te ukończone. Niekompletne zadanie wchodzi w ciągłą pętlę w naszych umysłach, nieustannie przypominając o sobie. To nazywa się efektem Zeigarnik!\n\nCzy niedokończone zadania bardziej cię motywują, czy tylko irytują? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "nl": {
+      "title": "Waarom blijven onafgemaakte taken in ons hoofd hangen? 🤯",
+      "description": "Waarom blijven onafgemaakte taken ons bezighouden?\n\nStudies tonen aan dat werknemers onafgemaakte taken 90% meer onthouden dan voltooide taken. Een onvolledige taak komt in een continue lus in onze gedachten terecht, waardoor deze zichzelf voortdurend herinnert. Dit wordt het Zeigarnik-effect genoemd!\n\nMotiveren onafgemaakte taken je meer, of storen ze je alleen maar? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "uk": {
+      "title": "Чому незавершені справи турбують наш розум? 🤯",
+      "description": "Чому незавершені справи продовжують турбувати наш розум?\n\nДослідження показують, що працівники пам'ятають незавершені завдання на 90% більше, ніж завершені. Незавершена справа входить у безперервний цикл у нашій свідомості, постійно нагадуючи про себе. Це називається ефектом Зейгарнік!\n\nЧи незавершені справи мотивують вас більше, чи просто дратують? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "vi": {
+      "title": "Tại sao những việc chưa hoàn thành cứ luẩn quẩn trong đầu? 🤯",
+      "description": "Tại sao những việc chưa hoàn thành cứ luẩn quẩn trong đầu chúng ta?\n\nCác nghiên cứu cho thấy nhân viên nhớ các nhiệm vụ chưa hoàn thành nhiều hơn 90% so với các nhiệm vụ đã hoàn thành. Một nhiệm vụ chưa hoàn thành đi vào một vòng lặp liên tục trong tâm trí chúng ta, liên tục nhắc nhở bản thân. Đây được gọi là hiệu ứng Zeigarnik!\n\nNhững việc chưa hoàn thành thúc đẩy bạn nhiều hơn, hay chỉ làm bạn khó chịu? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "az": {
+      "title": "Niyə yarımçıq işlər beynimizi narahat edir? 🤯",
+      "description": "Niyə yarımçıq işlər ağlımızı narahat etməyə davam edir?\n\nAraşdırmalar göstərir ki, işçilər bitməmiş işləri tamamlanmış işlərdən 90% daha çox xatırlayırlar. Tamamlanmamış bir iş zehnimizdə davamlı bir dövrəyə girir, özünü daim xatırladır. Buna Zeigarnik effekti deyilir!\n\nYarımçıq işlər sizi daha çox motivasiya edir, yoxsa sadəcə narahat edir? 👇\n\n#shorts\n\nSeri: mk-017"
+    },
+    "ro": {
+      "title": "De ce ne macină sarcinile neterminate? 🤯",
+      "description": "De ce sarcinile neterminate continuă să ne deranjeze mintea?\n\nStudiile arată că angajații își amintesc sarcinile neterminate cu 90% mai mult decât cele finalizate. O sarcină incompletă intră într-un ciclu continuu în mintea noastră, amintindu-se constant. Acesta este efectul Zeigarnik!\n\nSarcinile neterminate te motivează mai mult sau te deranjează doar? 👇\n\n#shorts\n\nSeri: mk-017"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Senin de aklından çıkmayan yarım kalmış bir iş var mı? 👇",
+  "scenes": [
+    {
+      "text": "Bu çalışan, bitmemiş işleri bitenlerden %90 daha fazla hatırlar.",
+      "visual": "A person, likely a woman, looking stressed or deep in thought at an office desk with a laptop and notebook.",
+      "stock_query": "stressed office worker at desk, woman thinking laptop",
+      "source": "stock",
+      "callout": "90% DAHA FAZLA"
+    },
+    {
+      "text": "Tamamlanmayan bir iş, zihnimizde sürekli bir döngüye girer, kendini hatırlatır.",
+      "visual": "A person's hands reviewing a to-do list on a notebook or looking at an unfinished document on a laptop screen.",
+      "stock_query": "person looking at to-do list, unfinished project on desk",
+      "source": "stock"
+    },
+    {
+      "text": "Buna Zeigarnik etkisi deniyor! Beynimiz eksik bilgiyi tamamlama eğiliminde.",
+      "visual": "A person at an office desk, suddenly looking up with a look of realization or understanding, as if an idea just clicked.",
+      "stock_query": "person having an idea at desk, man with sudden realization office",
+      "source": "stock",
+      "callout": "ZEIGARNIK ETKİSİ"
+    },
+    {
+      "text": "Bir görevi yarıda kesersen, zihnin ona takılı kalır. Bitirene kadar!",
+      "visual": "A person looking slightly frustrated or focused on a laptop screen, perhaps with many open tabs or a complex task.",
+      "stock_query": "person looking frustrated at laptop, woman struggling with work",
+      "source": "stock"
+    },
+    {
+      "text": "İşte bu yüzden o e-postayı göndermeyi unutmak imkânsız hale gelir.",
+      "visual": "A person smiling with satisfaction while closing a laptop or crossing off an item on a physical to-do list.",
+      "stock_query": "person completing task on laptop, woman crossing off item from list",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.56,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka anlatıcının enerjisi ve hızı düşük, monoton bir tonda ilerliyor.",
+        "fix": "Yapay zeka sesinin tonunu, hızını ve vurgularını daha dinamik ve enerjik olacak şekilde ayarlayın. Cümle sonlarında veya önemli kelimelerde tonlamayı artırın."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video akışı yavaş ve geçişler basit (sert kesmeler). Görsel tempo düşük, bir slayt gösterisi gibi hissettiriyor.",
+        "fix": "Daha hızlı ve dinamik kesmeler kullanın. Her 1-2 saniyede bir görsel değiştirin. Geçişlerde hafif zoom in/out veya hızlı kaydırma efektleri gibi basit ama etkili geçişler deneyin (otomatik kurgu yazılımı izin veriyorsa)."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Stok videolar konuyla genel olarak uyumlu olsa da, 'bitmemiş işler' veya 'Zeigarnik etkisi' gibi soyut kavramları görsel olarak yeterince ilgi çekici veya metaforik bir şekilde anlatmıyor. Tekrarlayan ofis/stres görüntüleri var.",
+        "fix": "Daha yaratıcı stok videolar arayın. Örneğin, bir puzzle'ın eksik parçası, yarım kalmış bir çizim, bir labirentte kaybolmuş bir figür gibi metaforik görseller kullanın. Bir görevin tamamlanma sürecini gösteren (başlangıç, orta, bitiş) farklı"
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği çok genel ve enerjisiz. Videonun temposunu ve duygusunu desteklemiyor. Ses efektleri hiç yok.",
+        "fix": "Daha dinamik, hafif gerilimli veya merak uyandıran bir arka plan müziği seçin. Önemli bilgi noktalarında veya geçişlerde kısa ses efektleri (örneğin, 'ding' sesi, hafif bir whoosh) ekleyin."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar bazen anlatıcının söylediğini tekrar ediyor ve çok fazla kelime içeriyor. Sarı vurgular rastgele duruyor. Bilgiyi görselleştirmek için grafik veya animasyon eksikliği var.",
+        "fix": "Yazıları daha kısa, anahtar kelimelerle sınırlı tutun. Anlatıcının söylediğini destekleyici veya özetleyici olsun. Sarı vurguyu sadece en önemli anahtar kelimeler için kullanın ve tutarlı olun. Metinleri animasyonlu giriş/çıkışlarla daha di"
+      },
+      {
+        "area": "senaryo",
+        "problem": "'%90 daha fazla' gibi iddiaların kaynağı veya bağlamı belirtilmiyor, bu da güvenilirliği azaltıyor. Bilginin 'şaşırtıcılık' potansiyeli tam kullanılmıyor.",
+        "fix": "'Bilimsel araştırmalar gösteriyor ki...' veya 'Yapılan bir çalışmaya göre...' gibi ifadelerle iddialara güvenilirlik katın. Bilginin neden şaşırtıcı olduğunu daha net vurgulayın."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Görsel ve işitsel ritim arasında uyumsuzluk var. Anlatıcı hızlı konuşurken görsel yavaş kalabiliyor.",
+        "fix": "Anlatıcının hızına göre görsel değişimleri senkronize edin. Hızlı konuşulan yerlerde daha hızlı kesmeler, yavaş ve vurgulu yerlerde daha uzun süreli veya daha etkileyici görseller kullanın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca ('Bitmemiş işler akıldan çıkmıyor mu?') relatable olsa da, referanstaki gibi anında bir 'Vay be!' etkisi yaratmıyor.",
+        "fix": "Kancayı daha merak uyandırıcı veya şaşırtıcı hale getirin. Örneğin, 'Beyninizin sizi kandırdığını biliyor muydunuz?' veya 'Bitmemiş işler neden sizi uyutmuyor?' gibi daha doğrudan ve iddialı bir soruyla başlayın."
+      }
+    ],
+    "strengths": [
+      "Konu ilgi çekici",
+      "Bilgi akışı mantıklı",
+      "Yazılar okunabilir"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

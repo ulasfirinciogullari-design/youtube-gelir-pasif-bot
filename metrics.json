@@ -1,5 +1,15 @@
 [
   {
+    "video_id": "2tSSw4llUPI",
+    "topic_id": "mk-016",
+    "title": "Markette neden hep yanlış kuyruktasın? 🤯",
+    "published_at": "2026-10-16T19:26:09Z",
+    "privacy": "public",
+    "views": 0,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "Jpafg3bo5_0",
     "topic_id": "mk-029",
     "title": "Kalabalıkta Neden Kimse Yardım Etmez? 🤯",
@@ -25,7 +35,7 @@
     "title": "Telefonun Titremediği Halde Neden Titrediğini Sanırız? 👻",
     "published_at": "2026-10-16T16:25:58Z",
     "privacy": "public",
-    "views": 1,
+    "views": 3,
     "likes": 0,
     "comments": 1
   },
@@ -35,7 +45,7 @@
     "title": "3000 Yıllık Bal Neden Çürümüyor? 🍯",
     "published_at": "2026-10-16T15:27:29Z",
     "privacy": "public",
-    "views": 0,
+    "views": 4,
     "likes": 0,
     "comments": 1
   },
@@ -65,7 +75,7 @@
     "title": "Bukalemunlar Renklerini Nasıl Değiştirir? 🎨",
     "published_at": "2026-10-16T12:30:50Z",
     "privacy": "public",
-    "views": 4,
+    "views": 8,
     "likes": 0,
     "comments": 1
   },
@@ -75,7 +85,7 @@
     "title": "Penguenler Buz Üstünde Nasıl Yaşar? 🐧",
     "published_at": "2026-10-16T11:26:33Z",
     "privacy": "public",
-    "views": 963,
+    "views": 1013,
     "likes": 4,
     "comments": 1
   },
@@ -85,7 +95,7 @@
     "title": "Filler Neden Asla Unutmaz? 🐘",
     "published_at": "2026-10-16T10:26:34Z",
     "privacy": "public",
-    "views": 1153,
+    "views": 1215,
     "likes": 5,
     "comments": 1
   },
@@ -95,7 +105,7 @@
     "title": "Devenin hörgücünde gerçekten ne var? 🤔",
     "published_at": "2026-10-16T09:36:29Z",
     "privacy": "public",
-    "views": 1115,
+    "views": 1129,
     "likes": 6,
     "comments": 1
   },
@@ -105,7 +115,7 @@
     "title": "Zebraların Sırrı: Çizgiler Neden Var? 🦓",
     "published_at": "2026-10-16T08:26:09Z",
     "privacy": "public",
-    "views": 1312,
+    "views": 1368,
     "likes": 10,
     "comments": 1
   },
@@ -115,9 +125,10 @@
     "title": "Köpekbalıkları Neden Durursa Boğulur? 🦈",
     "published_at": "2026-10-16T07:26:41Z",
     "privacy": "public",
-    "views": 1059,
+    "views": 1070,
     "likes": 9,
-    "comments": 1
+    "comments": 1,
+    "views_per_hour": 82.82
   },
   {
     "video_id": "LSRR_tONJdo",
@@ -125,10 +136,10 @@
     "title": "Kolibriler havada nasıl asılı kalır? 😮",
     "published_at": "2026-10-16T06:25:04Z",
     "privacy": "public",
-    "views": 977,
+    "views": 986,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 75.4
+    "views_per_hour": 70.7
   },
   {
     "video_id": "IKsp_tXE4EI",
@@ -136,10 +147,10 @@
     "title": "Zürafalar Neden Bayılmaz? İnanılmaz Bir Adaptasyon! 🦒",
     "published_at": "2026-10-16T05:28:03Z",
     "privacy": "public",
-    "views": 2868,
+    "views": 3092,
     "likes": 16,
     "comments": 1,
-    "views_per_hour": 206.22
+    "views_per_hour": 207.56
   },
   {
     "video_id": "kdEbtK5fwQQ",
@@ -147,10 +158,10 @@
     "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
     "published_at": "2026-10-16T04:39:13Z",
     "privacy": "public",
-    "views": 1930,
+    "views": 2004,
     "likes": 11,
     "comments": 2,
-    "views_per_hour": 131.1
+    "views_per_hour": 127.56
   },
   {
     "video_id": "9RAohHZ0ur4",
@@ -158,10 +169,10 @@
     "title": "Flamingolar neden bu kadar pembeler? 💖",
     "published_at": "2026-10-16T01:43:10Z",
     "privacy": "public",
-    "views": 2017,
+    "views": 2155,
     "likes": 15,
     "comments": 1,
-    "views_per_hour": 114.24
+    "views_per_hour": 115.58
   },
   {
     "video_id": "LZUWW_pFBIw",
@@ -169,10 +180,10 @@
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 1160,
+    "views": 1147,
     "likes": 18,
     "comments": 1,
-    "views_per_hour": 60.53
+    "views_per_hour": 56.91
   },
   {
     "video_id": "OFWm_FYPo1s",
@@ -180,10 +191,10 @@
     "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
     "published_at": "2026-10-15T23:19:42Z",
     "privacy": "public",
-    "views": 963,
+    "views": 971,
     "likes": 13,
     "comments": 1,
-    "views_per_hour": 48.04
+    "views_per_hour": 46.16
   },
   {
     "video_id": "Q7Fdwf2i1KI",
@@ -194,7 +205,7 @@
     "views": 1029,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 41.74
+    "views_per_hour": 40.13
   },
   {
     "video_id": "WADWjFRfYYw",
@@ -202,10 +213,10 @@
     "title": "Uçak Camları Neden Yuvarlak Olmak Zorunda? 🪟",
     "published_at": "2026-10-15T14:51:33Z",
     "privacy": "public",
-    "views": 999,
+    "views": 1000,
     "likes": 3,
     "comments": 1,
-    "views_per_hour": 35.03
+    "views_per_hour": 33.89
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -213,10 +224,10 @@
     "title": "İnsan kendini neden gıdıklayamaz? 🧠 #shorts",
     "published_at": "2026-10-15T09:46:53Z",
     "privacy": "public",
-    "views": 1174,
+    "views": 1175,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 34.95
+    "views_per_hour": 33.98
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -224,10 +235,10 @@
     "title": "Biri esneyince neden sen de esnersin? 🥱 #shorts",
     "published_at": "2026-10-14T21:32:01Z",
     "privacy": "public",
-    "views": 1054,
+    "views": 1073,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 22.99
+    "views_per_hour": 22.91
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -235,10 +246,10 @@
     "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
     "published_at": "2026-10-14T19:12:05Z",
     "privacy": "public",
-    "views": 1121,
-    "likes": 21,
+    "views": 1122,
+    "likes": 22,
     "comments": 1,
-    "views_per_hour": 23.27
+    "views_per_hour": 22.82
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -246,10 +257,10 @@
     "title": "Baykuşlar başlarını neden 270 derece döndürüyor? 🦉 #shorts",
     "published_at": "2026-10-14T14:46:47Z",
     "privacy": "public",
-    "views": 1552,
+    "views": 1569,
     "likes": 13,
     "comments": 0,
-    "views_per_hour": 29.51
+    "views_per_hour": 29.28
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -257,9 +268,9 @@
     "title": "Şimşek neden önce, gök gürültüsü sonra gelir? ⚡ #shorts",
     "published_at": "2026-10-13T23:38:57Z",
     "privacy": "public",
-    "views": 382,
+    "views": 381,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 5.64
+    "views_per_hour": 5.54
   }
 ]
