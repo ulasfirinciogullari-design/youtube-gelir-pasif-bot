@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 import re
+import time
 from pathlib import Path
 
 import requests
@@ -150,12 +151,14 @@ def fill_channel(yt, ch, state, report):
             log(f"Kitle ayarı API'den yapılamadı, Studio'dan elle yapılmalı: {e}")
     # channel name and description in every language (needs defaultLanguage, set above)
     loc = {l: {"title": c["title"][l], "description": c["description"][l]} for l in LANGS}
-    if state.get("channel_l10n") != digest(loc):
+    if state.get("channel_l10n") != digest(loc) and time.time() > state.get("channel_l10n_retry_after", 0):
+        state["channel_l10n_retry_after"] = time.time() + 24 * 3600  # YouTube rate-limits channel edits; try again tomorrow
         same_name = {l: {"title": ch["snippet"]["title"], "description": v["description"]} for l, v in loc.items()}
         for attempt, body in (("ad ve açıklama", loc), ("sadece açıklama", same_name)):
             try:
                 yt.call("PUT", "channels?part=localizations", json={"id": ch["id"], "localizations": body})
                 state["channel_l10n"] = digest(loc)
+                state.pop("channel_l10n_retry_after", None)
                 changed.append(f"çeviriler: {attempt} ({len(loc)} dil)")
                 log(f"Kanal çevirileri ({attempt}) {len(loc)} dile yüklendi")
                 break
