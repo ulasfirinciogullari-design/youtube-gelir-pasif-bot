@@ -1,0 +1,47 @@
+name: YA OLSAYDI saatlik bölüm
+
+# The Ya Olsaydı? channel, separate from Zirvenin Kanunu: one new episode an hour, and every tick answers
+# new comments (fabrika/yorum.py). Its code and state live on
+# the ya-olsaydi branch; this file only wakes it up, because GitHub runs scheduled workflows from main only.
+# Two ticks an hour because GitHub delays or drops cron events; fabrika/uret.py --kapi lets one tick per
+# hour produce, so a skipped tick costs a few seconds.
+on:
+  schedule:
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ya-olsaydi
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bolum:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ya-olsaydi
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Yorumları cevapla, bölüm üret ve yükle
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
+          YA_YT_CLIENT_ID: ${{ secrets.YA_YT_CLIENT_ID }}
+          YA_YT_CLIENT_SECRET: ${{ secrets.YA_YT_CLIENT_SECRET }}
+          YA_YT_REFRESH_TOKEN: ${{ secrets.YA_YT_REFRESH_TOKEN }}
+          YO_TTS_MODEL: ${{ vars.YO_TTS_MODEL }}
+          YO_GEMINI_MODEL: ${{ vars.YO_GEMINI_MODEL }}
+          YO_GUNLUK: ${{ vars.YO_GUNLUK }}
+          YO_DURDUR: ${{ vars.YO_DURDUR }}
+          YO_YORUM_GUNLUK: ${{ vars.YO_YORUM_GUNLUK }}
+          YO_YORUM_KAPALI: ${{ vars.YO_YORUM_KAPALI }}
+        run: bash fabrika/calistir.sh saatlik
