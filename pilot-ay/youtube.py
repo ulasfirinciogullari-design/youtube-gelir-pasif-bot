@@ -151,8 +151,8 @@ def fill_channel(yt, ch, state, report):
     # channel name and description in every language (needs defaultLanguage, set above)
     loc = {l: {"title": c["title"][l], "description": c["description"][l]} for l in LANGS}
     if state.get("channel_l10n") != digest(loc):
-        for attempt, body in (("ad ve açıklama", loc),
-                              ("sadece açıklama", {l: {"description": v["description"]} for l, v in loc.items()})):
+        same_name = {l: {"title": ch["snippet"]["title"], "description": v["description"]} for l, v in loc.items()}
+        for attempt, body in (("ad ve açıklama", loc), ("sadece açıklama", same_name)):
             try:
                 yt.call("PUT", "channels?part=localizations", json={"id": ch["id"], "localizations": body})
                 state["channel_l10n"] = digest(loc)
