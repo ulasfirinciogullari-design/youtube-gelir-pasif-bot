@@ -1,5 +1,15 @@
 [
   {
+    "video_id": "IKsp_tXE4EI",
+    "topic_id": "mk-031",
+    "title": "Zürafalar Neden Bayılmaz? İnanılmaz Bir Adaptasyon! 🦒",
+    "published_at": "2026-10-16T05:28:03Z",
+    "privacy": "public",
+    "views": 0,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "kdEbtK5fwQQ",
     "topic_id": "mk-033",
     "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
@@ -25,8 +35,8 @@
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 720,
-    "likes": 8,
+    "views": 755,
+    "likes": 9,
     "comments": 1
   },
   {
@@ -35,8 +45,8 @@
     "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
     "published_at": "2026-10-15T23:19:42Z",
     "privacy": "public",
-    "views": 426,
-    "likes": 2,
+    "views": 604,
+    "likes": 9,
     "comments": 1
   },
   {
@@ -58,7 +68,7 @@
     "views": 997,
     "likes": 4,
     "comments": 1,
-    "views_per_hour": 68.64
+    "views_per_hour": 64.36
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -69,7 +79,7 @@
     "views": 1158,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 59.07
+    "views_per_hour": 56.3
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -80,7 +90,7 @@
     "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 28.92
+    "views_per_hour": 28.06
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -91,7 +101,7 @@
     "views": 1100,
     "likes": 18,
     "comments": 1,
-    "views_per_hour": 32.18
+    "views_per_hour": 31.3
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -102,7 +112,7 @@
     "views": 1464,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 37.92
+    "views_per_hour": 37.0
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -113,6 +123,6 @@
     "views": 381,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 7.09
+    "views_per_hour": 6.97
   }
 ]

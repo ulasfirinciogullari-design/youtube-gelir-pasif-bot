@@ -1,0 +1,286 @@
+{
+  "topic_id": "mk-032",
+  "topic": "Kolibriler havada nasıl asılı kalıp geri geri uçabilir?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kolibriler havada nasıl asılı kalır? 😮",
+  "hook_text": "KOLİBRİLER NASIL UÇAR?",
+  "description": "Kolibriler havada nasıl asılı kalır?\n\nKolibriler saniyede 80 kez kanat çırparak havada sabit kalır. Kanatlarını tıpkı bir helikopter gibi, sekiz çizer gibi hareket ettirerek her yöne anında hareket edebilir ve geri uçabilirler.\n\nSence kolibrinin kanatları saniyede kaç kez çırpar: 20 mi 80 mi?\n\n#kolibri #kuşlar #hayvanlaralemi #doğa #shorts #bilim #merak #keşfet\n\nSeri: mk-032",
+  "tags": [
+    "kolibri",
+    "kolibri uçuşu",
+    "kolibri nasıl uçar",
+    "kolibri havada asılı kalır",
+    "kolibri geri uçar",
+    "kolibri kanat çırpma",
+    "kolibri kanatları",
+    "kuş uçuşu",
+    "havada asılı kalma",
+    "geri geri uçan kuş",
+    "hayvanlar",
+    "bilim",
+    "doğa",
+    "ilginç bilgiler",
+    "merak ettikleriniz",
+    "kısa video",
+    "bilgi",
+    "hummingbird",
+    "hummingbird flight",
+    "how hummingbirds fly",
+    "hovering bird",
+    "hayvanlar alemi",
+    "kuşlar",
+    "doğa belgeseli",
+    "uçuş",
+    "shorts",
+    "zirveninkanunu",
+    "biyoloji",
+    "kanatlar",
+    "helikopter",
+    "kolibri ucusu",
+    "kolibri nasil ucar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "How do hummingbirds hover in mid-air? 😮",
+      "description": "Have you ever wondered how hummingbirds manage to stay perfectly still in the air? They achieve this incredible feat by flapping their wings an astonishing 80 times per second! Their unique figure-eight wing motion, similar to a helicopter, allows them to move in any direction instantly, including flying backward.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "es": {
+      "title": "¿Cómo se mantienen los colibríes suspendidos en el aire? 😮",
+      "description": "Los colibríes son maestros del vuelo estacionario. Consiguen esta increíble habilidad batiendo sus alas 80 veces por segundo. Mueven sus alas como un helicóptero, en forma de ocho, lo que les permite moverse en cualquier dirección al instante e incluso volar hacia atrás.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "pt": {
+      "title": "Como os beija-flores conseguem pairar no ar? 😮",
+      "description": "Os beija-flores são verdadeiros acrobatas aéreos. Eles batem as asas 80 vezes por segundo para se manterem parados no ar. Com um movimento único em forma de oito, como um helicóptero, conseguem voar para trás e se mover em qualquer direção instantaneamente.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "de": {
+      "title": "Wie können Kolibris in der Luft schweben? 😮",
+      "description": "Kolibris sind faszinierende Flieger. Sie schweben in der Luft, indem sie ihre Flügel erstaunliche 80 Mal pro Sekunde schlagen. Ihre einzigartige, achtförmige Flügelbewegung, ähnlich einem Helikopter, ermöglicht es ihnen, sich blitzschnell in jede Richtung zu bewegen und sogar rückwärts zu fliegen.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "fr": {
+      "title": "Comment les colibris restent-ils immobiles en l'air ? 😮",
+      "description": "Les colibris sont des maîtres du vol stationnaire. Ils battent leurs ailes 80 fois par seconde pour rester parfaitement immobiles dans l'air. Leurs ailes effectuent un mouvement unique en forme de huit, comme celles d'un hélicoptère, leur permettant de se déplacer instantanément dans toutes les directions, y compris en arrière.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "it": {
+      "title": "Come fanno i colibrì a rimanere sospesi in aria? 😮",
+      "description": "I colibrì sono veri e propri acrobati del cielo. Riescono a rimanere perfettamente immobili in aria battendo le ali ben 80 volte al secondo. Il loro movimento alare unico, a forma di otto, simile a quello di un elicottero, permette loro di muoversi istantaneamente in ogni direzione e persino di volare all'indietro.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "ru": {
+      "title": "Как колибри зависают в воздухе? 😮",
+      "description": "Колибри — удивительные птицы. Они зависают в воздухе, совершая 80 взмахов крыльями в секунду. Уникальное восьмеркообразное движение их крыльев, похожее на вертолет, позволяет им мгновенно перемещаться в любом направлении и даже летать назад.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "ar": {
+      "title": "كيف تبقى طيور الطنان معلقة في الهواء؟ 😮",
+      "description": "طيور الطنان هي طيور مذهلة! إنها ترفرف بأجنحتها 80 مرة في الثانية لتبقى ثابتة في الهواء. حركة أجنحتها الفريدة التي تشبه الرقم ثمانية، مثل المروحية، تمكنها من التحرك في أي اتجاه على الفور وحتى الطيران إلى الخلف.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "hi": {
+      "title": "हमिंगबर्ड हवा में कैसे टिके रहते हैं? 😮",
+      "description": "हमिंगबर्ड हवा में स्थिर रहने के लिए प्रति सेकंड 80 बार अपने पंख फड़फड़ाते हैं। उनके पंखों की अनूठी, हेलीकॉप्टर जैसी, आठ के आकार की गति उन्हें तुरंत किसी भी दिशा में जाने और पीछे की ओर भी उड़ने में सक्षम बनाती है।\n\n#shorts\n\nSeri: mk-032"
+    },
+    "id": {
+      "title": "Bagaimana kolibri bisa melayang di udara? 😮",
+      "description": "Kolibri adalah penerbang yang luar biasa! Mereka melayang di udara dengan mengepakkan sayap 80 kali per detik. Gerakan sayap mereka yang unik seperti angka delapan, mirip helikopter, memungkinkan mereka bergerak ke segala arah secara instan dan bahkan terbang mundur.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "ja": {
+      "title": "ハチドリはどうやって空中に静止するの？ 😮",
+      "description": "ハチドリは空中で静止するために、1秒間に80回も羽ばたきます。ヘリコプターのように8の字を描く独自の羽ばたき方で、あらゆる方向に瞬時に移動し、後ろ向きに飛ぶことさえ可能です。\n\n#shorts\n\nSeri: mk-032"
+    },
+    "ko": {
+      "title": "벌새는 어떻게 공중에 멈춰 있을까요? 😮",
+      "description": "벌새는 공중에 정지하기 위해 초당 80번 날개를 퍼덕입니다. 헬리콥터처럼 팔자 모양으로 움직이는 독특한 날개 덕분에 벌새는 어떤 방향으로든 즉시 이동할 수 있으며, 심지어 뒤로도 날 수 있습니다.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "pl": {
+      "title": "Jak kolibry zawisają w powietrzu? 😮",
+      "description": "Kolibry to mistrzowie latania! Zawisają w powietrzu, machając skrzydłami aż 80 razy na sekundę. Ich unikalny, ósemkowy ruch skrzydeł, podobny do śmigłowca, pozwala im błyskawicznie poruszać się w każdym kierunku, a nawet latać do tyłu.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "nl": {
+      "title": "Hoe kolibries in de lucht blijven zweven? 😮",
+      "description": "Kolibries zijn ongelooflijke vliegers! Ze zweven in de lucht door hun vleugels wel 80 keer per seconde te slaan. Hun unieke, achtvormige vleugelbeweging, vergelijkbaar met een helikopter, stelt ze in staat om direct in elke richting te bewegen en zelfs achteruit te vliegen.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "uk": {
+      "title": "Як колібрі зависають у повітрі? 😮",
+      "description": "Колібрі — справжні повітряні акробати! Вони зависають у повітрі, роблячи 80 помахів крилами за секунду. Унікальний рух їхніх крил у формі вісімки, подібний до гелікоптера, дозволяє їм миттєво рухатися в будь-якому напрямку і навіть літати назад.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "vi": {
+      "title": "Chim ruồi lơ lửng giữa không trung như thế nào? 😮",
+      "description": "Chim ruồi là những nghệ sĩ bay lượn tuyệt vời! Chúng vỗ cánh 80 lần mỗi giây để giữ mình lơ lửng trong không trung. Chuyển động cánh độc đáo hình số tám, giống như trực thăng, cho phép chúng di chuyển tức thì theo mọi hướng và thậm chí bay lùi.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "az": {
+      "title": "Kolibrilər havada necə dayana bilir? 😮",
+      "description": "Kolibrilər inanılmaz quşlardır! Onlar havada dayanmaq üçün saniyədə 80 dəfə qanad çalırlar. Unikal səkkiz rəqəmi şəklində qanad hərəkəti, helikopterə bənzər şəkildə, onlara dərhal istənilən istiqamətə hərəkət etməyə və hətta geriyə uçmağa imkan verir.\n\n#shorts\n\nSeri: mk-032"
+    },
+    "ro": {
+      "title": "Cum reușesc colibrii să planeze în aer? 😮",
+      "description": "Colibrii sunt adevărați maeștri ai zborului. Ei reușesc să se mențină perfecți imobili în aer bătând din aripi de 80 de ori pe secundă. Mișcarea lor unică a aripilor, în formă de opt, similară cu cea a unui elicopter, le permite să se deplaseze instantaneu în orice direcție și chiar să zboare înapoi.\n\n#shorts\n\nSeri: mk-032"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence kolibrinin kanatları saniyede kaç kez çırpar: 20 mi 80 mi?",
+  "scenes": [
+    {
+      "text": "Bu kolibri saniyede 80 kez kanat çırpar.",
+      "visual": "Hummingbird hovering, wings flapping fast at a flower and feeder.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 1
+        },
+        {
+          "n": 40,
+          "kare": 2
+        },
+        {
+          "n": 11,
+          "kare": 2
+        }
+      ],
+      "callout": "80 KEZ/SANİYE"
+    },
+    {
+      "text": "Bu sayede havada sabit kalır ve kanatlarını tersine çevirerek geri uçabilir.",
+      "visual": "Hummingbird hovering at a flower and feeder, showing wing flexibility.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 7,
+          "kare": 1
+        },
+        {
+          "n": 39,
+          "kare": 2
+        }
+      ],
+      "callout": "KANAT TERS ÇEVİRME"
+    },
+    {
+      "text": "Kanatlarını tıpkı bir helikopter gibi, sekiz çizer gibi hareket ettirir.",
+      "visual": "Multiple hummingbirds flying dynamically around flowers and feeders.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 28,
+          "kare": 2
+        },
+        {
+          "n": 34,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Bu özel uçuşla her yöne anında hareket edip, çiçeklerden nektar toplar.",
+      "visual": "Hummingbird feeding nectar from a red flower and a banana flower.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 23,
+          "kare": 2
+        },
+        {
+          "n": 37,
+          "kare": 2
+        },
+        {
+          "n": 2,
+          "kare": 2
+        }
+      ],
+      "callout": "NEKTAR TOPLAR"
+    },
+    {
+      "text": "İşte bu, kolibrileri havada gerçek bir akrobat yapar.",
+      "visual": "Hummingbird hovering gracefully in foliage and at a feeder.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 18,
+          "kare": 2
+        },
+        {
+          "n": 21,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 14.82,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Konuyu açıklayıcı görsel grafiklerin (oklar, hareket yönleri, vücut bölümleri) eksikliği.",
+        "fix": "Stok videolar üzerine basit animasyonlu oklar, dönme işaretleri veya kanat hareketini gösteren şematik çizgiler ekle. (Ücretsiz araçlarla basit animasyonlar eklenebilir.)"
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka seslendirmesi monoton ve enerjisiz, izleyiciyi yeterince sürüklemiyor.",
+        "fix": "Yapay zeka sesinin hızını ve tonlamasını daha dinamik ve merak uyandırıcı olacak şekilde ayarla, vurgulu kelimelerde tonu yükselt/alçalt."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kurgu hızı ve geçişler basit, anlatılan bilgiyi görsel olarak desteklemiyor. Özellikle kanat hareketlerini açıklarken daha dinamik kurgu eksik.",
+        "fix": "Anlatıcının vurguladığı anlarda daha hızlı kesmeler kullan, kanat çırpma veya ters çevirme gibi aksiyonları gösteren videolarda daha kısa ve etkili geçişler yap."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Seçilen stok videolar, kolibrinin kanat hareketlerinin (ters çevirme, sekiz çizme) mekaniğini yeterince detaylı veya yavaş çekimle göstermiyor.",
+        "fix": "Kolibrinin kanat hareketlerini daha net gösteren (yavaş çekim, farklı açılar) stok videoları bulmaya öncelik ver."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik, uzun süre kalıyor ve bazen görüntüyü fazla kapatıyor; anahtar kelimeler yeterince vurgulanmıyor.",
+        "fix": "Yazıları daha kısa süreli, dinamik giriş/çıkış animasyonlarıyla kullan. Anahtar kelimeleri farklı renk veya boyutta vurgula."
+      },
+      {
+        "area": "ses",
+        "problem": "Video boyunca ses efektleri (kanat sesi, vızıltı vb.) kullanılmamış, bu da videonun etkisini azaltıyor.",
+        "fix": "Kolibrinin kanat çırpma sesleri veya genel doğa sesleri gibi uygun ses efektlerini videoya ekle."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Giriş kancası yeterince merak uyandırıcı değil ve bilginin şaşırtıcılığı sunumla tam desteklenmiyor.",
+        "fix": "Başlangıcı daha çarpıcı bir soru veya iddia ile güçlendir. Örneğin: 'Kolibriler yer çekimine meydan okuyan tek kuşlar mı?' gibi."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve videonun enerjisini veya merak duygusunu yeterince desteklemiyor.",
+        "fix": "Daha dinamik, hafif bir macera veya keşif temalı müzik seçerek videonun genel atmosferini güçlendir."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz bilgi sunumu",
+      "Konuyla ilgili genel olarak iyi stok video kullanımı"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
