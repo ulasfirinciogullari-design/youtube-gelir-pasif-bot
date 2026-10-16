@@ -84,6 +84,9 @@ def test_drafts_keep_tiktoks_daily_cap_and_spacing():
     assert tiktok.skip_reason([sent(5)], NOW) is None
     assert "TikTok sınırı" in tiktok.skip_reason([sent(h) for h in (4.5, 9, 13.5, 18, 22.5)], NOW)
     assert tiktok.skip_reason([sent(h) for h in (4.5, 9, 13.5, 18, 25)], NOW) is None
+    # A Short sent by hand skips the spacing but not TikTok's cap.
+    assert tiktok.skip_reason([sent(2)], NOW, spacing=False) is None
+    assert "TikTok sınırı" in tiktok.skip_reason([sent(h) for h in (1, 9, 13.5, 18, 22.5)], NOW, spacing=False)
     # A failed send uses neither the cap nor the spacing.
     assert tiktok.skip_reason([sent(1, "error: HTTP 500"), sent(2, "FAILED (file_format_check_failed)")], NOW) is None
 
@@ -172,3 +175,77 @@ def test_a_login_without_the_upload_permission_is_refused(tmp_path, capsys):
 def test_comedy_shorts_are_offered_to_tiktok_too():
     source = (Path(__file__).resolve().parents[1] / "comedy_factory.py").read_text()
     assert "tiktok.share(result, video_id, story.DATA_DIR)" in source
+
+
+def _artifact(topic_id, extra=()):
+    import io
+    import zipfile
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr(f"ORIGINAL_{topic_id}_1.mp4", b"video")
+        z.writestr(f"ORIGINAL_{topic_id}_1_meta.json", json.dumps({**META, "topic_id": topic_id}))
+        z.writestr(f"ORIGINAL_{topic_id}_1_thumb.jpg", b"jpg")
+        z.writestr("metrics.json", "{}")
+        for name in extra:
+            z.writestr(name, b"x")
+    return buf.getvalue()
+
+
+def test_a_published_short_is_found_in_the_artifact_of_the_run_that_uploaded_it(tmp_path):
+    upload = {"video_id": "UUHZ6p74pug", "topic_id": "mk-022", "uploaded_at": "2026-10-16T12:30:39+00:00"}
+    runs = [{"id": 3, "created_at": "2026-10-16T13:25:00Z"},   # started after the upload
+            {"id": 2, "created_at": "2026-10-16T12:25:02Z"},   # the publishing run
+            {"id": 1, "created_at": "2026-10-16T12:20:00Z"}]   # a sample run on another topic
+    zips = {"z2": _artifact("mk-022"), "z1": _artifact("mk-021")}
+    calls = []
+
+    def get(url, token, raw=False):
+        calls.append(url)
+        if url.endswith("per_page=100"):
+            return {"workflow_runs": runs}
+        if url.endswith("/artifacts"):
+            run = url.split("/runs/")[1].split("/")[0]
+            return {"artifacts": [{"name": f"original-short-{run}", "archive_download_url": f"z{run}"}]}
+        return zips[url]
+
+    video, meta = tiktok.find_short(upload, tmp_path, "o/r", "tok", get=get)
+    assert video.read_bytes() == b"video" and meta["topic_id"] == "mk-022"
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["ORIGINAL_mk-022_1.mp4"]
+    assert not any("/runs/3/" in c for c in calls)
+    # Only the publishing run's own topic counts: a different topic is not sent.
+    assert tiktok.find_short({**upload, "topic_id": "mk-099"}, tmp_path / "x", "o/r", "tok", get=get) is None
+
+
+def test_an_existing_short_is_sent_at_once_but_only_once(tmp_path, capsys):
+    (tmp_path / tiktok.TOKEN_FILE).write_bytes(b"x")
+    (tmp_path / tiktok.UPLOADS_FILE).write_text(json.dumps([
+        {"video_id": "UUHZ6p74pug", "topic_id": "mk-022", "uploaded_at": "2026-10-16T12:30:39+00:00"}]))
+    # A draft an hour ago would hold back an automatic share, not this one.
+    (tmp_path / tiktok.DRAFTS_FILE).write_text(json.dumps([
+        {"youtube_id": "old", "sent_at": (NOW - timedelta(hours=1)).isoformat(), "status": "SEND_TO_USER_INBOX"}]))
+    video = tmp_path / "v.mp4"
+    video.write_bytes(b"x")
+    found = []
+
+    def find(upload, out_dir, repo, token):
+        found.append((upload["topic_id"], repo, token))
+        return video, {**META, "topic_id": "mk-022"}
+
+    env = {**ENV, "GITHUB_REPOSITORY": "o/r", "GITHUB_TOKEN": "gh"}
+    kwargs = dict(env=env, find=find, now=NOW, access_for=lambda d, k, s, now: "acc",
+                  upload=lambda v, a: "p9", status=lambda p, a: "SEND_TO_USER_INBOX", sleep=lambda s: None)
+    assert tiktok.share_existing("UUHZ6p74pug", tmp_path, tmp_path / "out", **kwargs) == 0
+    assert found == [("mk-022", "o/r", "gh")]
+    drafts = json.loads((tmp_path / tiktok.DRAFTS_FILE).read_text(encoding="utf-8"))
+    assert drafts[-1]["youtube_id"] == "UUHZ6p74pug" and drafts[-1]["publish_id"] == "p9"
+    assert tiktok.share_existing("UUHZ6p74pug", tmp_path, tmp_path / "out", **kwargs) == 0
+    assert len(found) == 1 and "zaten" in capsys.readouterr().out
+    assert tiktok.share_existing("nope", tmp_path, tmp_path / "out", **kwargs) == 1
+
+
+def test_the_workflow_sends_an_existing_short_when_given_its_id():
+    workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/viral_shorts_autopilot.yml").read_text()
+    assert ('python -m app.services.tiktok share --youtube-id "$VIDEO_IDS" --data channel-data --out output/tiktok'
+            in workflow)
+    assert "GITHUB_TOKEN: ${{ github.token }}  # task tiktok" in workflow

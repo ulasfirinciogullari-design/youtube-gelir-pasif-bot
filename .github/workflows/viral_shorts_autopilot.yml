@@ -59,7 +59,7 @@ on:
         default: ''
         type: string
       video_ids:
-        description: 'Temizlik veya referans: virgülle ayrılmış video id/link listesi'
+        description: 'Temizlik veya referans: virgülle ayrılmış video id/link listesi; tiktok: taslak olarak gidecek tek Short id'
         required: false
         default: ''
         type: string
@@ -174,6 +174,7 @@ jobs:
           TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
           TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
           KOD: ${{ github.event.inputs.kod }}
+          GITHUB_TOKEN: ${{ github.token }}  # task tiktok with video_ids downloads the Short's artifact
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
@@ -206,7 +207,13 @@ jobs:
             exit $?
           fi
           if [ "$TASK" = "tiktok" ]; then
-            # The consent link or the encrypted token lands in channel-data; the backup step commits it.
+            # With a YouTube id in video_ids, that published Short goes to TikTok as a draft now, taken from
+            # its run's artifact. Otherwise this is the login: the consent link or the encrypted token lands
+            # in channel-data. The backup step commits either.
+            if [ -n "$VIDEO_IDS" ]; then
+              python -m app.services.tiktok share --youtube-id "$VIDEO_IDS" --data channel-data --out output/tiktok
+              exit $?
+            fi
             python -m app.services.tiktok login --code "$KOD" --data channel-data
             exit $?
           fi
