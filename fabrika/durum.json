@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "944",
     "reason": null
    }
   },
@@ -54,6 +54,36 @@
    "at": 1792128355.257287,
    "chars": 556,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "15",
+    "reason": null
+   }
+  },
+  {
+   "id": "o0001",
+   "video_id": "HdSKbp0rIz8",
+   "url": "https://youtube.com/shorts/HdSKbp0rIz8",
+   "title": "Güneş Bir Anda Patlasaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If the Sun Suddenly Exploded?",
+    "es": "¿Qué pasaría si el Sol explotara de repente?",
+    "pt": "E se o Sol explodisse de repente?",
+    "ar": "ماذا سيحدث لو انفجرت الشمس فجأة؟",
+    "hi": "क्या होगा अगर सूरज अचानक फट जाए?",
+    "id": "Apa yang Terjadi Jika Matahari Tiba-Tiba Meledak?",
+    "fr": "Que se passerait-il si le Soleil explosait ?",
+    "de": "Was wäre, wenn die Sonne plötzlich explodieren würde?",
+    "ru": "Что, если Солнце внезапно взорвется?",
+    "az": "Günəş bir anda partlasaydı nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792152274.2658043,
+   "chars": 537,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -63,7 +93,8 @@
  ],
  "used": [
   "y001",
-  "n001"
+  "n001",
+  "o0001"
  ],
  "extra": [
   {
@@ -90,6 +121,14 @@
    "url": "https://youtube.com/shorts/yHElVXfvdsw",
    "duration": 37.5,
    "chars": 556
+  },
+  {
+   "finished": "2026-10-16T12:04:35+00:00",
+   "mod": "saatlik",
+   "title": "Güneş Bir Anda Patlasaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/HdSKbp0rIz8",
+   "duration": 36.1,
+   "chars": 537
   }
  ],
  "yorumlar": {

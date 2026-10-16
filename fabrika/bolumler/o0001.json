@@ -1,0 +1,750 @@
+{
+ "title": "Güneş Bir Anda Patlasaydı Ne Olurdu?",
+ "bar": {
+  "hi": "GÜNEŞ",
+  "rest": "PATLASAYDI?"
+ },
+ "summary": "Güneş ansızın patlasa ilk sekiz dakika bunu neden hiç anlamazdık? Dünya'nın uzaydaki karanlık yolculuğunu ve yıldızımızın gerçek kaderini keşfedin.",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "Güneş aniden patlasaydı ne olurdu?",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "☀️",
+    "label": "Güneş patlarsa?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İlk 8 dakika 20 saniye hiçbir şey fark etmezdik.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⏱️",
+    "value": "8,3",
+    "unit": "dakika",
+    "label": "Gecikme süresi",
+    "key": "dakika"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Nasıl yani?",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "earth": "earth",
+      "b": "earth",
+      "size": "s",
+      "at": "r"
+     }
+    ],
+    "do": "none",
+    "target": 0,
+    "key": "Nasıl",
+    "label": "Normal yörünge"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Işık ve kütleçekimi bize yaklaşık 150 milyon kilometreden ancak bu sürede ulaşır.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "📏",
+    "value": "150.000.000",
+    "unit": "km",
+    "label": "Güneş mesafesi",
+    "key": "milyon"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "500 saniye sonra gündüz olan taraf kavrulur, Dünya yörüngeden fırlayıp uzayda savrulurdu.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "r"
+     }
+    ],
+    "do": "explode",
+    "target": 0,
+    "key": "fırlayıp",
+    "label": "Yörüngeden kaçış"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Gece olan yerler kurtulur mu?",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🌍",
+    "do": "shake",
+    "key": "kurtulur",
+    "label": "Karanlık taraf"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sadece birkaç saat! Ardından atmosferin taşıdığı aşırı ısı ve şok dalgası orayı da yok ederdi.",
+   "v": {
+    "t": "meter",
+    "bg": "ice",
+    "label": "Sıcaklık düşüşü",
+    "from": 15,
+    "to": -73,
+    "unit": "°C",
+    "e": "❄️",
+    "key": "çakılırdı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürprizse şu: Güneş asla patlayamaz, çünkü süpernova için kütlesi en az 8 kat yetersiz!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "sun",
+     "label": "Güneş",
+     "value": 1
+    },
+    "b": {
+     "b": "star",
+     "label": "Gereken kütle",
+     "value": 8
+    },
+    "mode": "size",
+    "key": "yetersiz"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🚀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Güneş ışığının ve kütleçekim dalgalarının yaklaşık 150 milyon kilometre mesafedeki Dünya'ya ulaşması yaklaşık 8 dakika 20 saniye sürer.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov"
+  },
+  {
+   "text": "Bir yıldızın süpernova patlamasıyla yok olabilmesi için Güneş kütlesinin en az yaklaşık 8 katına sahip olması gerekir.",
+   "source": "ESA",
+   "url": "https://www.esa.int"
+  },
+  {
+   "text": "Güneş ısı kaynağı olmadan Dünya yüzeyi haftalar ve aylar içinde -73 °C seviyelerine kadar soğur.",
+   "source": "Popular Science",
+   "url": "https://www.popsci.com"
+  }
+ ],
+ "tags": [
+  "güneş patlaması",
+  "güneş",
+  "astronomi",
+  "uzay",
+  "dünya",
+  "süpernova",
+  "kütleçekim",
+  "fizik",
+  "güneş sistemi",
+  "sun explodes",
+  "astronomy",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#GüneşPatlaması",
+  "#UzayBilimi",
+  "#YaOlsaydı"
+ ],
+ "cover": 4,
+ "sources": [
+  "https://archive.imascientist.org.uk/hafniumj15-zone/question/if-the-sun-was-to-explode-and-die-how-secondsminutes-would-humans-live-for-after-if-any/index.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If the Sun Suddenly Exploded?",
+   "summary": "If the Sun suddenly exploded, why wouldn't we notice for the first eight minutes? Discover Earth's dark journey through space and the true fate of our star.",
+   "facts": [
+    "It takes about 8 minutes and 20 seconds for sunlight and gravitational waves to reach Earth across a distance of roughly 150 million kilometers.",
+    "For a star to end in a supernova explosion, it must have at least about 8 times the mass of the Sun.",
+    "Without the Sun's heat source, Earth's surface would drop to around -73 °C within weeks and months."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si el Sol explotara de repente?",
+   "summary": "Si el Sol explotara de repente, ¿por qué no nos daríamos cuenta durante los primeros ocho minutos? Descubre el oscuro viaje de la Tierra por el espacio y el verdadero destino de nuestra estrella.",
+   "facts": [
+    "La luz solar y las ondas gravitacionales tardan unos 8 minutos y 20 segundos en llegar a la Tierra, a una distancia aproximada de 150 millones de kilómetros.",
+    "Para que una estrella muera en una explosión de supernova, debe tener al menos unas 8 veces la masa del Sol.",
+    "Sin la fuente de calor del Sol, la superficie de la Tierra se enfriaría hasta unos -73 °C en cuestión de semanas y meses."
+   ]
+  },
+  "pt": {
+   "title": "E se o Sol explodisse de repente?",
+   "summary": "Se o Sol explodisse de repente, por que não perceberíamos nos primeiros oito minutos? Descubra a jornada sombria da Terra pelo espaço e o verdadeiro destino da nossa estrela.",
+   "facts": [
+    "A luz solar e as ondas gravitacionais levam cerca de 8 minutos e 20 segundos para alcançar a Terra a uma distância de aproximadamente 150 milhões de quilômetros.",
+    "Para que uma estrela acabe em uma explosão de supernova, ela precisa ter pelo menos cerca de 8 vezes a massa do Sol.",
+    "Sem a fonte de calor do Sol, a superfície da Terra esfriaria para cerca de -73 °C ao longo de semanas e meses."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لو انفجرت الشمس فجأة؟",
+   "summary": "لو انفجرت الشمس فجأة، فلماذا لن ندرك ذلك خلال الدقائق الثماني الأولى؟ اكتشف رحلة الأرض المظلمة في الفضاء والمصير الحقيقي لنجمنا.",
+   "facts": [
+    "يستغرق ضوء الشمس وموجات الجاذبية حوالي 8 دقائق و20 ثانية للوصول إلى الأرض على مسافة تقدر بنحو 150 مليون كيلومتر.",
+    "لكي ينتهي نجم بانفجار مستعر أعظم، يجب أن تبلغ كتلته حوالي 8 أضعاف كتلة الشمس على الأقل.",
+    "من دون مصدر حرارة الشمس، ستنخفض درجة حرارة سطح الأرض إلى ما يقارب -73 درجة مئوية خلال أسابيع وأشهر."
+   ]
+  },
+  "hi": {
+   "title": "क्या होगा अगर सूरज अचानक फट जाए?",
+   "summary": "अगर सूरज अचानक फट जाए, तो पहले आठ मिनट तक हमें इसका पता क्यों नहीं चलेगा? अंतरिक्ष में पृथ्वी की अंधेरी यात्रा और हमारे तारे के वास्तविक भाग्य को जानें।",
+   "facts": [
+    "लगभग 150 मिलियन किलोमीटर की दूरी से सूर्य के प्रकाश और गुरुत्वाकर्षण तरंगों को पृथ्वी तक पहुँचने में लगभग 8 मिनट 20 सेकंड का समय लगता है।",
+    "सुपरनोवा विस्फोट में नष्ट होने के लिए किसी तारे का द्रव्यमान सूर्य के द्रव्यमान से कम से कम लगभग 8 गुना होना चाहिए।",
+    "सूर्य के ताप स्रोत के बिना, पृथ्वी की सतह हफ्तों और महीनों के भीतर लगभग -73 °C तक ठंडी हो जाएगी।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi Jika Matahari Tiba-Tiba Meledak?",
+   "summary": "Jika Matahari tiba-tiba meledak, mengapa kita tidak akan menyadarinya selama delapan menit pertama? Temukan perjalanan gelap Bumi di luar angkasa dan nasib sejati bintang kita.",
+   "facts": [
+    "Cahaya matahari dan gelombang gravitasi membutuhkan waktu sekitar 8 menit 20 detik untuk mencapai Bumi yang berjarak sekitar 150 juta kilometer.",
+    "Agar sebuah bintang dapat hancur dalam ledakan supernova, ia harus memiliki setidaknya sekitar 8 kali massa Matahari.",
+    "Tanpa sumber panas Matahari, permukaan Bumi akan mendingin hingga mencapai sekitar -73 °C dalam hitungan minggu dan bulan."
+   ]
+  },
+  "fr": {
+   "title": "Que se passerait-il si le Soleil explosait ?",
+   "summary": "Si le Soleil explosait soudainement, pourquoi ne nous en rendrions-nous pas compte pendant les huit premières minutes ? Découvrez le sombre voyage de la Terre dans l'espace et le destin réel de notre étoile.",
+   "facts": [
+    "Il faut environ 8 minutes et 20 secondes à la lumière du Soleil et aux ondes gravitationnelles pour atteindre la Terre, située à environ 150 millions de kilomètres.",
+    "Pour qu'une étoile disparaisse dans une explosion de supernova, elle doit avoir une masse d'au moins 8 fois environ celle du Soleil.",
+    "Sans la source de chaleur du Soleil, la surface de la Terre se refroidirait jusqu'à environ -73 °C en l'espace de quelques semaines et mois."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn die Sonne plötzlich explodieren würde?",
+   "summary": "Warum würden wir die ersten acht Minuten gar nichts merken, wenn die Sonne plötzlich explodierte? Entdecken Sie die finstere Reise der Erde durchs All und das wahre Schicksal unseres Sterns.",
+   "facts": [
+    "Es dauert etwa 8 Minuten und 20 Sekunden, bis Sonnenlicht und Gravitationswellen die rund 150 Millionen Kilometer entfernte Erde erreichen.",
+    "Damit ein Stern in einer Supernova-Explosion vergeht, muss er mindestens etwa die 8-fache Masse der Sonne besitzen.",
+    "Ohne die Wärmequelle der Sonne würde die Erdoberfläche innerhalb von Wochen und Monaten auf etwa -73 °C abkühlen."
+   ]
+  },
+  "ru": {
+   "title": "Что, если Солнце внезапно взорвется?",
+   "summary": "Если Солнце внезапно взорвется, почему мы не заметим этого в первые восемь минут? Узнайте о темном путешествии Земли в космосе и истинной судьбе нашей звезды.",
+   "facts": [
+    "Солнечному свету и гравитационным волнам требуется около 8 минут и 20 секунд, чтобы достичь Земли на расстоянии примерно 150 миллионов километров.",
+    "Чтобы звезда погибла в результате вспышки сверхновой, ее масса должна быть как минимум примерно в 8 раз больше массы Солнца.",
+    "Без солнечного тепла поверхность Земли за считанные недели и месяцы остынет примерно до -73 °C."
+   ]
+  },
+  "az": {
+   "title": "Günəş bir anda partlasaydı nə olardı?",
+   "summary": "Günəş qəfil partlasa, ilk səkkiz dəqiqə bunu niyə heç anlamazdıq? Yerin kosmosdakı qaranlıq səyahətini və ulduzumuzun əsl taleyini kəşf edin.",
+   "facts": [
+    "Günəş işığının və qravitasiya dalğalarının təxminən 150 milyon kilometr məsafədəki Yerə çatması təxminən 8 dəqiqə 20 saniyə çəkir.",
+    "Bir ulduzun fövqəlyeni partlayışı ilə məhv olması üçün Günəş kütləsindən ən azı təxminən 8 dəfə böyük kütləyə sahib olması lazımdır.",
+    "Günəş istilik mənbəyi olmadan Yerin səthi həftələr və aylar ərzində -73 °C səviyyəsinə qədər soyuyar."
+   ]
+  }
+ },
+ "id": "o0001",
+ "series": "Ya Olsaydı?",
+ "q": "Güneş patlasaydı ne olurdu?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 2.533,
+   "words": [
+    {
+     "w": "Güneş",
+     "t0": 0.35,
+     "t1": 0.6399999999999999
+    },
+    {
+     "w": "aniden",
+     "t0": 0.71,
+     "t1": 1.105
+    },
+    {
+     "w": "patlasaydı",
+     "t0": 1.1629999999999998,
+     "t1": 1.79
+    },
+    {
+     "w": "ne",
+     "t0": 1.8359999999999999,
+     "t1": 1.9180000000000001
+    },
+    {
+     "w": "olurdu?",
+     "t0": 1.976,
+     "t1": 2.533
+    }
+   ]
+  },
+  {
+   "t0": 2.924580498866213,
+   "t1": 5.8035804988662125,
+   "words": [
+    {
+     "w": "İlk",
+     "t0": 2.924580498866213,
+     "t1": 3.0875804988662128
+    },
+    {
+     "w": "8",
+     "t0": 3.1685804988662127,
+     "t1": 3.400580498866213
+    },
+    {
+     "w": "dakika",
+     "t0": 3.446580498866213,
+     "t1": 3.760580498866213
+    },
+    {
+     "w": "20",
+     "t0": 3.806580498866213,
+     "t1": 4.0855804988662126
+    },
+    {
+     "w": "saniye",
+     "t0": 4.120580498866213,
+     "t1": 4.387580498866213
+    },
+    {
+     "w": "hiçbir",
+     "t0": 4.433580498866213,
+     "t1": 4.7235804988662125
+    },
+    {
+     "w": "şey",
+     "t0": 4.758580498866213,
+     "t1": 4.863580498866213
+    },
+    {
+     "w": "fark",
+     "t0": 4.897580498866213,
+     "t1": 5.106580498866213
+    },
+    {
+     "w": "etmezdik.",
+     "t0": 5.153580498866213,
+     "t1": 5.8035804988662125
+    }
+   ]
+  },
+  {
+   "t0": 6.183854875283446,
+   "t1": 7.1588548752834456,
+   "words": [
+    {
+     "w": "Nasıl",
+     "t0": 6.183854875283446,
+     "t1": 6.520854875283446
+    },
+    {
+     "w": "yani?",
+     "t0": 6.555854875283446,
+     "t1": 7.1588548752834456
+    }
+   ]
+  },
+  {
+   "t0": 7.538854875283446,
+   "t1": 11.764854875283447,
+   "words": [
+    {
+     "w": "Işık",
+     "t0": 7.538854875283446,
+     "t1": 7.805854875283447
+    },
+    {
+     "w": "ve",
+     "t0": 7.8638548752834465,
+     "t1": 7.933854875283446
+    },
+    {
+     "w": "kütleçekimi",
+     "t0": 7.979854875283446,
+     "t1": 8.582854875283447
+    },
+    {
+     "w": "bize",
+     "t0": 8.629854875283446,
+     "t1": 8.861854875283447
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 8.884854875283446,
+     "t1": 9.291854875283446
+    },
+    {
+     "w": "150",
+     "t0": 9.337854875283446,
+     "t1": 9.651854875283446
+    },
+    {
+     "w": "milyon",
+     "t0": 9.685854875283447,
+     "t1": 9.883854875283447
+    },
+    {
+     "w": "kilometreden",
+     "t0": 9.929854875283446,
+     "t1": 10.440854875283446
+    },
+    {
+     "w": "ancak",
+     "t0": 10.486854875283447,
+     "t1": 10.719854875283445
+    },
+    {
+     "w": "bu",
+     "t0": 10.765854875283447,
+     "t1": 10.835854875283447
+    },
+    {
+     "w": "sürede",
+     "t0": 10.870854875283445,
+     "t1": 11.137854875283447
+    },
+    {
+     "w": "ulaşır.",
+     "t0": 11.171854875283447,
+     "t1": 11.764854875283447
+    }
+   ]
+  },
+  {
+   "t0": 11.964886621315193,
+   "t1": 17.212886621315192,
+   "words": [
+    {
+     "w": "500",
+     "t0": 11.964886621315193,
+     "t1": 12.324886621315192
+    },
+    {
+     "w": "saniye",
+     "t0": 12.347886621315194,
+     "t1": 12.672886621315193
+    },
+    {
+     "w": "sonra",
+     "t0": 12.707886621315193,
+     "t1": 12.951886621315193
+    },
+    {
+     "w": "gündüz",
+     "t0": 13.032886621315193,
+     "t1": 13.299886621315192
+    },
+    {
+     "w": "olan",
+     "t0": 13.357886621315194,
+     "t1": 13.531886621315193
+    },
+    {
+     "w": "taraf",
+     "t0": 13.578886621315194,
+     "t1": 13.810886621315193
+    },
+    {
+     "w": "kavrulur,",
+     "t0": 13.880886621315193,
+     "t1": 14.425886621315193
+    },
+    {
+     "w": "Dünya",
+     "t0": 14.623886621315194,
+     "t1": 14.925886621315193
+    },
+    {
+     "w": "yörüngeden",
+     "t0": 14.994886621315192,
+     "t1": 15.505886621315193
+    },
+    {
+     "w": "fırlayıp",
+     "t0": 15.575886621315194,
+     "t1": 15.935886621315193
+    },
+    {
+     "w": "uzayda",
+     "t0": 16.016886621315194,
+     "t1": 16.364886621315193
+    },
+    {
+     "w": "savrulurdu.",
+     "t0": 16.411886621315194,
+     "t1": 17.212886621315192
+    }
+   ]
+  },
+  {
+   "t0": 17.592886621315195,
+   "t1": 19.450886621315195,
+   "words": [
+    {
+     "w": "Gece",
+     "t0": 17.592886621315195,
+     "t1": 17.847886621315194
+    },
+    {
+     "w": "olan",
+     "t0": 17.905886621315194,
+     "t1": 18.161886621315194
+    },
+    {
+     "w": "yerler",
+     "t0": 18.231886621315194,
+     "t1": 18.556886621315194
+    },
+    {
+     "w": "kurtulur",
+     "t0": 18.614886621315193,
+     "t1": 19.055886621315196
+    },
+    {
+     "w": "mu?",
+     "t0": 19.113886621315196,
+     "t1": 19.450886621315195
+    }
+   ]
+  },
+  {
+   "t0": 19.839893424036283,
+   "t1": 25.040893424036284,
+   "words": [
+    {
+     "w": "Sadece",
+     "t0": 19.839893424036283,
+     "t1": 20.211893424036283
+    },
+    {
+     "w": "birkaç",
+     "t0": 20.269893424036283,
+     "t1": 20.559893424036282
+    },
+    {
+     "w": "saat!",
+     "t0": 20.582893424036282,
+     "t1": 20.918893424036284
+    },
+    {
+     "w": "Ardından",
+     "t0": 21.220893424036284,
+     "t1": 21.661893424036283
+    },
+    {
+     "w": "atmosferin",
+     "t0": 21.719893424036282,
+     "t1": 22.23089342403628
+    },
+    {
+     "w": "taşıdığı",
+     "t0": 22.265893424036285,
+     "t1": 22.590893424036285
+    },
+    {
+     "w": "aşırı",
+     "t0": 22.648893424036284,
+     "t1": 22.938893424036284
+    },
+    {
+     "w": "ısı",
+     "t0": 22.962893424036285,
+     "t1": 23.113893424036284
+    },
+    {
+     "w": "ve",
+     "t0": 23.171893424036284,
+     "t1": 23.240893424036283
+    },
+    {
+     "w": "şok",
+     "t0": 23.287893424036284,
+     "t1": 23.438893424036284
+    },
+    {
+     "w": "dalgası",
+     "t0": 23.496893424036283,
+     "t1": 23.867893424036282
+    },
+    {
+     "w": "orayı",
+     "t0": 23.937893424036282,
+     "t1": 24.181893424036282
+    },
+    {
+     "w": "da",
+     "t0": 24.204893424036285,
+     "t1": 24.250893424036285
+    },
+    {
+     "w": "yok",
+     "t0": 24.297893424036282,
+     "t1": 24.424893424036284
+    },
+    {
+     "w": "ederdi.",
+     "t0": 24.48389342403628,
+     "t1": 25.040893424036284
+    }
+   ]
+  },
+  {
+   "t0": 25.241163265306124,
+   "t1": 31.743163265306123,
+   "words": [
+    {
+     "w": "Asıl",
+     "t0": 25.241163265306124,
+     "t1": 25.566163265306123
+    },
+    {
+     "w": "sürprizse",
+     "t0": 25.671163265306124,
+     "t1": 26.147163265306123
+    },
+    {
+     "w": "şu:",
+     "t0": 26.216163265306125,
+     "t1": 26.565163265306126
+    },
+    {
+     "w": "Güneş",
+     "t0": 26.820163265306125,
+     "t1": 27.134163265306125
+    },
+    {
+     "w": "asla",
+     "t0": 27.215163265306124,
+     "t1": 27.482163265306124
+    },
+    {
+     "w": "patlayamaz,",
+     "t0": 27.540163265306123,
+     "t1": 28.283163265306122
+    },
+    {
+     "w": "çünkü",
+     "t0": 28.481163265306122,
+     "t1": 28.864163265306125
+    },
+    {
+     "w": "süpernova",
+     "t0": 28.968163265306124,
+     "t1": 29.549163265306124
+    },
+    {
+     "w": "için",
+     "t0": 29.583163265306123,
+     "t1": 29.769163265306123
+    },
+    {
+     "w": "kütlesi",
+     "t0": 29.827163265306126,
+     "t1": 30.187163265306125
+    },
+    {
+     "w": "en",
+     "t0": 30.210163265306125,
+     "t1": 30.280163265306122
+    },
+    {
+     "w": "az",
+     "t0": 30.350163265306122,
+     "t1": 30.419163265306125
+    },
+    {
+     "w": "8",
+     "t0": 30.466163265306122,
+     "t1": 30.744163265306124
+    },
+    {
+     "w": "kat",
+     "t0": 30.803163265306125,
+     "t1": 30.919163265306125
+    },
+    {
+     "w": "yetersiz!",
+     "t0": 30.977163265306125,
+     "t1": 31.743163265306123
+    }
+   ]
+  },
+  {
+   "t0": 32.123163265306125,
+   "t1": 34.49116326530613,
+   "words": [
+    {
+     "w": "Sıradaki",
+     "t0": 32.123163265306125,
+     "t1": 32.541163265306125
+    },
+    {
+     "w": "soruyu",
+     "t0": 32.57616326530613,
+     "t1": 32.843163265306124
+    },
+    {
+     "w": "sen",
+     "t0": 32.901163265306124,
+     "t1": 33.09816326530613
+    },
+    {
+     "w": "seç!",
+     "t0": 33.15616326530613,
+     "t1": 33.446163265306126
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 33.49316326530612,
+     "t1": 33.992163265306125
+    },
+    {
+     "w": "yaz.",
+     "t0": 34.01516326530613,
+     "t1": 34.49116326530613
+    }
+   ]
+  }
+ ]
+}
