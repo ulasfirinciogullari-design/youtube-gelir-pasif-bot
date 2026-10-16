@@ -8,7 +8,7 @@
  },
  "warnings": [
   "ad ve açıklama: PUT channels?part=localizations -> 400: Precondition check failed. [failedPrecondition]",
-  "sadece açıklama: PUT channels?part=localizations -> 400: Request contains an invalid argument. [badRequest]",
+  "sadece açıklama: PUT channels?part=localizations -> 429: Resource has been exhausted (e.g. check quota). [rateLimitExceeded]",
   "ay altyazı: GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]"
  ],
  "channel_now": {
