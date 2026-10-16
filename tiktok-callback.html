@@ -10,13 +10,15 @@
 <p id="msg">Bu sayfayı TikTok izninden sonra açılınca kullanacaksın.</p>
 <span class="code" id="code" hidden></span>
 <p><button id="copy" hidden>Kodu kopyala</button></p>
-<p class="muted" id="hint" hidden>Kodu kopyalayıp sohbete yapıştır. Kod birkaç dakika geçerli.</p>
+<p class="muted" id="hint" hidden>Kopyala düğmesi metnin tamamını alır. Kod birkaç dakika geçerli.</p>
 <script>
   var q = new URLSearchParams(location.search);
   var code = q.get("code"), err = q.get("error");
+  // The state from our own link goes first, so the login task can tell the code came from it.
+  if (code) code = (q.get("state") || "") + " " + code;
   if (code) {
     document.getElementById("title").textContent = "İzin verildi";
-    document.getElementById("msg").textContent = "Bu kodu kopyalayıp sohbete yapıştır:";
+    document.getElementById("msg").textContent = "Bu metnin tamamını kopyalayıp sohbete yapıştır:";
     var el = document.getElementById("code"); el.textContent = code; el.hidden = false;
     var b = document.getElementById("copy"); b.hidden = false;
     document.getElementById("hint").hidden = false;
