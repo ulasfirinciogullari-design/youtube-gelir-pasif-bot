@@ -1,0 +1,288 @@
+{
+  "topic_id": "mk-034",
+  "topic": "Zebraların çizgileri aslında ne işe yarıyor?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Zebraların Sırrı: Çizgiler Neden Var? 🦓",
+  "hook_text": "ÇİZGİLER NE İŞE YARAR?",
+  "description": "Zebraların çizgileri ne işe yarar?\n\nZebraların çizgileri düşünüldüğü gibi kamuflaj değil, avcıları şaşırtarak kurtulmalarını sağlar. Bir grup zebra koşarken çizgiler avcıların tek bir hayvanı hedeflemesini zorlaştırır. Ayrıca at sinekleri ve çeçe sinekleri çizgili yüzeylere konmayı sevmez.\n\nSence bir zebranın çizgileri hangi canlıyı daha çok şaşırtır: aslanı mı yoksa bir sineği mi?\n\n#zebra #hayvanlar #doğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-034",
+  "tags": [
+    "zebra çizgileri",
+    "zebralar neden çizgili",
+    "zebra ne işe yarar",
+    "zebra kamuflaj",
+    "zebra desenleri",
+    "at sineği",
+    "çeçe sineği",
+    "yırtıcılardan korunma",
+    "hayvanlar alemi",
+    "vahşi yaşam",
+    "doğa belgeseli",
+    "bilimsel gerçekler",
+    "ilginç bilgiler",
+    "hayvan sırları",
+    "hayvan davranışları",
+    "zebra",
+    "zebra stripes",
+    "animal facts",
+    "wildlife",
+    "natura",
+    "çizgiler",
+    "hayvanlar",
+    "doğa",
+    "bilim",
+    "shorts",
+    "belgesel",
+    "afrika",
+    "kamuflaj",
+    "korunma",
+    "merak",
+    "zebra cizgileri",
+    "zebralar neden cizgili",
+    "zebra ne ise yarar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "The Secret of Zebras: Why Do They Have Stripes? 🦓",
+      "description": "Ever wondered about zebra stripes? They're not for camouflage! These patterns confuse predators and deter disease-carrying flies like horseflies and tsetse flies.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "es": {
+      "title": "El Secreto de las Cebras: ¿Por Qué Tienen Rayas? 🦓",
+      "description": "¿Te has preguntado por qué las cebras tienen rayas? No es para camuflaje. Estos patrones confunden a los depredadores y repelen moscas como las tábanos y las tsé-tsé.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "pt": {
+      "title": "O Segredo das Zebras: Por Que Elas Têm Listras? 🦓",
+      "description": "Já se perguntou sobre as listras das zebras? Elas não servem para camuflagem! Esses padrões confundem predadores e afastam moscas como mutucas e tsé-tsé.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "de": {
+      "title": "Das Geheimnis der Zebras: Wozu dienen die Streifen? 🦓",
+      "description": "Hast du dich je gefragt, wofür Zebrastreifen gut sind? Sie dienen nicht der Tarnung! Diese Muster verwirren Raubtiere und schrecken Fliegen wie Bremsen und Tsetsefliegen ab.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "fr": {
+      "title": "Le Secret des Zèbres : Pourquoi ont-ils des rayures ? 🦓",
+      "description": "Vous êtes-vous déjà demandé à quoi servent les rayures des zèbres ? Elles ne sont pas là pour le camouflage ! Ces motifs confondent les prédateurs et repoussent les mouches comme les taons et les mouches tsé-tsé.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "it": {
+      "title": "Il Segreto delle Zebre: Perché Hanno le Strisce? 🦓",
+      "description": "Ti sei mai chiesto a cosa servono le strisce delle zebre? Non sono per mimetismo! Questi motivi confondono i predatori e tengono lontane mosche come tafani e mosche tse-tse.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "ru": {
+      "title": "Секрет Зебр: Зачем Им Полосы? 🦓",
+      "description": "Задумывались, зачем зебрам полосы? Это не камуфляж! Эти узоры сбивают с толку хищников и отпугивают мух, таких как слепни и цеце.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "ar": {
+      "title": "سر الحمر الوحشية: لماذا لديها خطوط؟ 🦓",
+      "description": "هل تساءلت يومًا عن خطوط الحمر الوحشية؟ إنها ليست للتمويه! هذه الأنماط تربك الحيوانات المفترسة وتطرد الذباب الناقل للأمراض مثل ذباب الخيل وذباب التسي تسي.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "hi": {
+      "title": "ज़ेबरा का रहस्य: उनकी धारियाँ क्यों होती हैं? 🦓",
+      "description": "क्या आपने कभी सोचा है कि ज़ेबरा की धारियाँ क्यों होती हैं? वे छलावरण के लिए नहीं हैं! ये पैटर्न शिकारियों को भ्रमित करते हैं और घोड़े की मक्खियों और सीसी मक्खियों जैसे कीटों को दूर रखते हैं।\n\n#shorts\n\nSeri: mk-034"
+    },
+    "id": {
+      "title": "Rahasia Zebra: Mengapa Mereka Punya Garis? 🦓",
+      "description": "Pernahkah Anda bertanya-tanya tentang garis-garis zebra? Itu bukan untuk kamuflase! Pola ini membingungkan predator dan mengusir lalat penyakit seperti lalat kuda dan lalat tsetse.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "ja": {
+      "title": "シマウマの秘密：なぜ縞模様があるの？ 🦓",
+      "description": "シマウマの縞模様について疑問に思ったことはありますか？あれはカモフラージュのためではありません！これらのパターンは捕食者を混乱させ、アブやツェツェバエなどの病気を運ぶハエを寄せ付けません。\n\n#shorts\n\nSeri: mk-034"
+    },
+    "ko": {
+      "title": "얼룩말의 비밀: 줄무늬는 왜 있을까? 🦓",
+      "description": "얼룩말의 줄무늬에 대해 궁금해하신 적 있나요? 위장이 목적이 아닙니다! 이 무늬들은 포식자를 혼란시키고 등에나 체체파리와 같은 질병을 옮기는 파리를 쫓아냅니다.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "pl": {
+      "title": "Sekret Zebr: Dlaczego Mają Paski? 🦓",
+      "description": "Zastanawiałeś się kiedyś, po co zebrze paski? To nie kamuflaż! Te wzory mylą drapieżniki i odstraszają muchy, takie jak gzy i muchy tse-tse.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "nl": {
+      "title": "Het Geheim van Zebra's: Waarom Hebben Ze Strepen? 🦓",
+      "description": "Heb je je ooit afgevraagd waarom zebra's strepen hebben? Het is niet voor camouflage! Deze patronen verwarren roofdieren en weren ziekteverwekkende vliegen zoals horzels en tseetsee-vliegen.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "uk": {
+      "title": "Секрет Зебр: Навіщо Їм Смуги? 🦓",
+      "description": "Чи замислювалися ви, навіщо зебрам смуги? Це не камуфляж! Ці візерунки збивають з пантелику хижаків і відлякують мух, таких як гедзі та цеце.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "vi": {
+      "title": "Bí Mật Của Ngựa Vằn: Tại Sao Chúng Có Sọc? 🦓",
+      "description": "Bạn có bao giờ tự hỏi về các sọc của ngựa vằn chưa? Chúng không phải để ngụy trang đâu! Những hoa văn này làm kẻ săn mồi bối rối và xua đuổi ruồi mang bệnh như ruồi trâu và ruồi xê xê.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "az": {
+      "title": "Zebraların Sirri: Zolaqlar Niyə Var? 🦓",
+      "description": "Zebraların zolaqları haqqında heç düşünmüsünüzmü? Onlar kamuflyaj üçün deyil! Bu naxışlar yırtıcıları çaşdırır və at milçəkləri, çeçe milçəkləri kimi xəstəlik daşıyan həşəratları uzaqlaşdırır.\n\n#shorts\n\nSeri: mk-034"
+    },
+    "ro": {
+      "title": "Secretul Zebrelor: De Ce Au Dungi? 🦓",
+      "description": "Te-ai întrebat vreodată de ce zebrele au dungi? Nu sunt pentru camuflaj! Aceste modele derutează prădătorii și alungă muștele purtătoare de boli, cum ar fi tăunii și muștele țețe.\n\n#shorts\n\nSeri: mk-034"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bir zebranın çizgileri hangi canlıyı daha çok şaşırtır: aslanı mı yoksa bir sineği mi?",
+  "scenes": [
+    {
+      "text": "Bu zebraların çizgileri, düşünüldüğü gibi kamuflaj değil.",
+      "visual": "Zebras grazing in a grassy field with other animals.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 19,
+          "kare": 1
+        },
+        {
+          "n": 24,
+          "kare": 1
+        }
+      ],
+      "callout": "KAMUFLAJ DEĞİL"
+    },
+    {
+      "text": "Aslında bu desenler, avcıları şaşırtarak kurtulmalarını sağlıyor.",
+      "visual": "A large group of zebras in a wide savanna.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 30,
+          "kare": 1
+        },
+        {
+          "n": 18,
+          "kare": 2
+        }
+      ],
+      "callout": "AVCI ŞAŞIRTIR"
+    },
+    {
+      "text": "Bir grup zebra koşarken, çizgiler avcıların tek bir hayvanı hedeflemesini zorlaştırır.",
+      "visual": "A herd of zebras running across an open field.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 23,
+          "kare": 2
+        },
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 2
+        }
+      ],
+      "callout": "HEDEFLEME ZORLAŞIR"
+    },
+    {
+      "text": "Ayrıca, at sinekleri ve çeçe sinekleri çizgili yüzeylere konmayı sevmez.",
+      "visual": "Close-up views of zebras showing their distinct stripes.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 14,
+          "kare": 1
+        },
+        {
+          "n": 5,
+          "kare": 2
+        }
+      ],
+      "callout": "SİNEKLER SEVMEZ"
+    },
+    {
+      "text": "Bu desenler, yırtıcılardan ve hastalıklı böceklerden koruyarak zebraların hayatını kurtarır.",
+      "visual": "Zebras in their natural habitat, walking and drinking.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 10,
+          "kare": 2
+        },
+        {
+          "n": 29,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 16.51,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı ve enerjisi düşük, monoton bir tonda ilerliyor.",
+        "fix": "Yapay zeka sesinin hızını artırın ve daha dinamik, vurgulu bir ton seçerek izleyiciyi daha fazla içine çekin. Referans videodaki gibi hızlı ve akıcı bir anlatım tercih edin."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kurgu hızı yavaş ve geçişler basit, videonun genel enerjisini düşürüyor.",
+        "fix": "Daha hızlı kesmeler kullanın, her sahneyi kısa tutarak (1-2 saniye) dinamizmi artırın. Görsel akışı hızlandırmak için yumuşak geçişler (hızlı fade, zoom) ekleyin."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntülerde çeşitlilik ve dinamizm eksikliği var, çoğu geniş ve statik çekimler.",
+        "fix": "Pexels/Pixabay'den daha dinamik açılar, yakın çekimler, hareketli kamera (zoom, pan) içeren videolar bulun. Konuyu daha iyi anlatan spesifik aksiyonları (koşan zebra, sinekler) gösteren klipler kullanın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik, çok yer kaplıyor ve görsel açıklamalar (oklar, vurgular) eksik.",
+        "fix": "Metinleri daha kısa ve vurucu hale getirin, anahtar kelimeleri vurgulayın. Bilgiyi destekleyen basit animasyonlu oklar, daireler veya vurgular ekleyin. Metinlerin ekranda kalma süresini kısaltın ve dinamik giriş/çıkış efektleri kullanın."
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektleri kullanılmamış, bu da videonun etkileşimini azaltıyor.",
+        "fix": "Videodaki aksiyonları (koşan zebra, sinek vızıltısı) destekleyecek uygun ses efektleri ekleyerek görsel deneyimi zenginleştirin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilgi sunumu biraz liste şeklinde, 'neden' sorusuna odaklanmak yerine doğrudan cevapları sıralıyor.",
+        "fix": "Bilgiyi bir problem-çözüm veya merak uyandıran bir hikaye formatında sunun. Örneğin, 'Zebraların çizgileri neden var? Düşündüğünüz gibi kamuflaj değil, aslında...' gibi bir akış daha ilgi çekici olabilir."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği videonun enerjisini yeterince desteklemiyor.",
+        "fix": "Daha enerjik, ritmik ve videonun genel temposuna uygun bir arka plan müziği seçin. Müziğin videonun akışına katkıda bulunmasını sağlayın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca (hook) yeterince güçlü değil, daha fazla merak uyandırabilir.",
+        "fix": "Kancayı daha iddialı veya şaşırtıcı bir ifadeyle güçlendirin. Örneğin, 'Zebraların çizgileri hakkında bildiğiniz her şey yanlış olabilir!' gibi bir girişle izleyicinin dikkatini daha çok çekin."
+      }
+    ],
+    "strengths": [
+      "Video kısa ve konuya odaklı.",
+      "Sunulan bilgiler ilgi çekici ve öğretici."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
