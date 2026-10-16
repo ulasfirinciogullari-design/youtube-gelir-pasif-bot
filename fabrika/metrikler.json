@@ -1,0 +1,11 @@
+{
+ "at": "2026-10-16T21:21:11+00:00",
+ "scopes": [
+  "youtube",
+  "youtube.force-ssl",
+  "youtube.upload",
+  "yt-analytics.readonly"
+ ],
+ "videos": {},
+ "days": []
+}
