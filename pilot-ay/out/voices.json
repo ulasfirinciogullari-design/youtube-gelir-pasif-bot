@@ -296,8 +296,8 @@
   "voice_id": "TJcdBnZRSDUZOVN1SNC2",
   "category": "professional",
   "labels": {
-   "language": "tr",
-   "accent": "tr-standard"
+   "accent": "tr-standard",
+   "language": "tr"
   },
   "description": "Private professional clone of the channel owner Ulaş, from his own long Turkish recording. Awaiting owner voice verification and likeness evaluation."
  },
@@ -306,12 +306,12 @@
   "voice_id": "HV5rAif1q1ITHdvxqyMw",
   "category": "professional",
   "labels": {
-   "descriptive": "deep",
    "language": "tr",
    "use_case": "narrative_story",
-   "gender": "male",
+   "accent": "standard",
    "age": "middle_aged",
-   "accent": "standard"
+   "descriptive": "deep",
+   "gender": "male"
   },
   "description": "A professional-grade, deep, dark, middle-aged male baritone voice. Perfectly calibrated for heavy documentaries, corporate narrations, movie trailers, and high-quality audiobooks. Delivers a cold, authoritative tone with flawless phonetics. Built for absolute retention."
  },
@@ -362,12 +362,12 @@
   "voice_id": "QftNgZhlSOYKrYbk7WR7",
   "category": "professional",
   "labels": {
-   "descriptive": "calm",
+   "accent": "istanbul",
+   "use_case": "narrative_story",
    "language": "tr",
    "gender": "male",
-   "use_case": "narrative_story",
-   "age": "middle_aged",
-   "accent": "istanbul"
+   "descriptive": "calm",
+   "age": "middle_aged"
   },
   "description": "A deep, deep, and trustworthy Turkish male voice. Ideal for documentaries, commercials, poetry, news,  content, podcasts, and educational videos. "
  },
@@ -418,12 +418,12 @@
   "voice_id": "bj1uMlYGikistcXNmFoh",
   "category": "professional",
   "labels": {
-   "descriptive": "pleasant",
-   "language": "tr",
-   "use_case": "entertainment_tv",
    "gender": "female",
+   "use_case": "entertainment_tv",
+   "accent": "standard",
    "age": "young",
-   "accent": "standard"
+   "descriptive": "pleasant",
+   "language": "tr"
   },
   "description": "Young female voice that can be used for Turkish promotions and news messages. It can also be used to read advertising texts."
  },

@@ -21,11 +21,11 @@
   "ay": {
    "video_id": "-7OxhWXxc8w",
    "url": "https://youtube.com/shorts/-7OxhWXxc8w",
-   "privacy": "private",
+   "privacy": "public",
    "playlist": "Ya Olsaydı?",
    "status": {
     "uploadStatus": "processed",
-    "privacyStatus": "private"
+    "privacyStatus": "public"
    },
    "thumbnail": true,
    "captions": {
