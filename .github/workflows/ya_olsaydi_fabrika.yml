@@ -1,7 +1,8 @@
 name: YA OLSAYDI fabrika (elle)
 
 # A manual factory run from this branch: push a change to fabrika/tetik.txt whose first word is
-# deneme (video kept in fabrika/deneme/, no upload) or zorla (upload now). The hourly run lives on main
+# deneme (video kept in fabrika/deneme/, no upload), zorla (upload now), yorum (answer new comments now)
+# or yorumdeneme (write comment replies into fabrika/yorum_rapor.json, post nothing). The hourly run lives on main
 # (.github/workflows/ya_olsaydi_saatlik.yml) and runs the same fabrika/calistir.sh from this branch.
 on:
   push:
@@ -36,4 +37,6 @@ jobs:
           YA_YT_REFRESH_TOKEN: ${{ secrets.YA_YT_REFRESH_TOKEN }}
           YO_TTS_MODEL: ${{ vars.YO_TTS_MODEL }}
           YO_GEMINI_MODEL: ${{ vars.YO_GEMINI_MODEL }}
+          YO_YORUM_GUNLUK: ${{ vars.YO_YORUM_GUNLUK }}
+          YO_YORUM_KAPALI: ${{ vars.YO_YORUM_KAPALI }}
         run: bash fabrika/calistir.sh "$(head -c 20 fabrika/tetik.txt | awk '{print $1}')"

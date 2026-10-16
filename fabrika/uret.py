@@ -66,6 +66,7 @@ def pick_topic(state):
     series = order[len(state.get("episodes", [])) % len(order)]
     used = set(state.get("used", [])) | set(state.get("skipped", []))
     pool = [t for t in conf["topics"] + state.get("extra", []) if t["series"] == series and t["id"] not in used]
+    pool.sort(key=lambda t: not t.get("oneri"))  # viewers' ideas from the comments go first (fabrika/yorum.py)
     if not pool:
         known = [t["q"] for t in conf["topics"] + state.get("extra", [])]
         new = yazar.new_topics(series, known)
