@@ -7,7 +7,7 @@ Kodla çizilen animasyon kanalı. Zirvenin Kanunu'ndan ayrı tutulur: bu dal `ma
 - `pilot-ay/tts.py` — ElevenLabs ses (kelime zamanlarıyla), efekt, müzik; `audio/` önbelleği kredi harcamadan tekrar kullanır
 - `pilot-ay/render.js` — Playwright ile kareleri kaydedip ffmpeg ile videoya çevirir
 - `pilot-ay/brand.html`, `brand.js` — profil, banner, filigran ve kapak görselleri (`brand/`)
-- `pilot-ay/youtube.json` — kanal açıklaması, listeler, bölüm başlıkları ve kaynaklı açıklamalar
-- `pilot-ay/youtube.py` — kanalı doğrular, boş ayarları doldurur, listeleri açar, bölümleri gizli yükler; yapılanlar `youtube_state.json`'da, rapor `out/youtube_report.json`'da
+- `pilot-ay/youtube.json` — kanal, listeler ve bölümler için Türkçe + 10 dilde başlık ve açıklama, kaynaklar, etiketler, İngilizce altyazı satırları
+- `pilot-ay/youtube.py` — kanalı doğrular, ayarları ve çevirileri günceller (Studio'da elle değiştirileni ellemez), listeleri açar, bölümleri gizli yükler, açıklamaya ilgili videoları ekler, Türkçe ve İngilizce altyazı yükler; yapılanlar `youtube_state.json`'da, rapor `out/youtube_report.json`'da
 
 Her push iş akışını çalıştırır; çıktı `pilot-ay/out/` klasörüne `[skip ci]` commit'iyle yazılır.

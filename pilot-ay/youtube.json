@@ -1,27 +1,385 @@
 {
+ "languages": [
+  "en",
+  "es",
+  "pt",
+  "ar",
+  "hi",
+  "id",
+  "fr",
+  "de",
+  "ru",
+  "az"
+ ],
+ "captions": [
+  "tr",
+  "en"
+ ],
  "channel": {
   "expect_title": "ya olsayd",
-  "description": "Ay bir gün yok olsaydı? Dünya dönmeyi bıraksaydı? Herkes aynı anda zıplasaydı?\n\nYa Olsaydı?, bilimin en çılgın sorularını Profesör Pi ve meraklı robot Bit ile animasyonlu, kısa ve eğlenceli videolarla cevaplıyor. Her videodaki bilgiler gerçek ve kaynaklı.\n\nSeriler:\n- Ya Olsaydı?: Hayali senaryolar, gerçek bilim\n- Ne Kadar Büyük?: Dev rakamlar, görsel karşılaştırmalar\n- 1 Gün Boyunca: Vücudun ve dünyanın sınırları\n\nSıradaki soruyu sen seç: yorumlara yaz!\nHer gün yeni bir soru.",
-  "keywords": ["ya olsaydı", "bilim", "bilim animasyonu", "uzay", "astronomi", "fizik", "dünya", "ay", "merak", "ilginç bilgiler", "eğitim", "animasyon", "ne olurdu", "türkçe bilim"],
+  "title": {
+   "tr": "Ya Olsaydı?",
+   "en": "What If?",
+   "es": "¿Qué Pasaría Si?",
+   "pt": "E Se?",
+   "ar": "ماذا لو؟",
+   "hi": "क्या होता अगर?",
+   "id": "Bagaimana Jika?",
+   "fr": "Et si ?",
+   "de": "Was wäre, wenn?",
+   "ru": "А что, если?",
+   "az": "Bəs Olsaydı?"
+  },
+  "description": {
+   "tr": "Ay bir gün yok olsaydı? Dünya dönmeyi bıraksaydı? Herkes aynı anda zıplasaydı?\n\nYa Olsaydı?, bilimin en çılgın sorularını Profesör Pi ve meraklı robot Bit ile animasyonlu, kısa ve eğlenceli videolarla cevaplıyor. Her videodaki bilgiler gerçek ve kaynaklı.\n\nSeriler:\n- Ya Olsaydı?: Hayali senaryolar, gerçek bilim\n- Ne Kadar Büyük?: Dev rakamlar, görsel karşılaştırmalar\n- 1 Gün Boyunca: Vücudun ve dünyanın sınırları\n\nSıradaki soruyu sen seç: yorumlara yaz!\nHer gün yeni bir soru.",
+   "en": "What if the Moon vanished one day? What if the Earth stopped spinning? What if everyone jumped at the same time?\n\nOn What If?, Professor Pi and his curious robot Bit answer science's wildest questions in short, fun animated videos. Every fact is real and sourced.\n\nSeries:\n- What If?: imaginary scenarios, real science\n- How Big Is It?: huge numbers, visual comparisons\n- For 1 Day: the limits of the body and the world\n\nThe videos are in Turkish; turn on subtitles (CC) to watch in your language.\nPick the next question: write it in the comments!\nA new question every day.",
+   "es": "¿Y si la Luna desapareciera un día? ¿Y si la Tierra dejara de girar? ¿Y si todos saltáramos a la vez?\n\nEn ¿Qué Pasaría Si?, el Profesor Pi y su curioso robot Bit responden las preguntas más locas de la ciencia con videos animados, cortos y divertidos. Todos los datos son reales y tienen fuentes.\n\nSeries:\n- ¿Qué Pasaría Si?: escenarios imaginarios, ciencia real\n- ¿Qué Tan Grande Es?: cifras enormes, comparaciones visuales\n- Durante 1 Día: los límites del cuerpo y del mundo\n\nLos videos están en turco; activa los subtítulos (CC) para verlos en tu idioma.\nElige la próxima pregunta: ¡escríbela en los comentarios!\nUna pregunta nueva cada día.",
+   "pt": "E se a Lua sumisse um dia? E se a Terra parasse de girar? E se todo mundo pulasse ao mesmo tempo?\n\nNo E Se?, o Professor Pi e seu robô curioso Bit respondem as perguntas mais malucas da ciência em vídeos animados, curtos e divertidos. Todos os fatos são reais e têm fontes.\n\nSéries:\n- E Se?: cenários imaginários, ciência real\n- Quão Grande É?: números gigantes, comparações visuais\n- Por 1 Dia: os limites do corpo e do mundo\n\nOs vídeos são em turco; ative as legendas (CC) para assistir no seu idioma.\nEscolha a próxima pergunta: escreva nos comentários!\nUma pergunta nova todo dia.",
+   "ar": "ماذا لو اختفى القمر يومًا ما؟ ماذا لو توقفت الأرض عن الدوران؟ ماذا لو قفز الجميع في الوقت نفسه؟\n\nفي قناة ماذا لو؟ يجيب البروفيسور باي وروبوته الفضولي بِت عن أغرب أسئلة العلم في فيديوهات متحركة قصيرة وممتعة. كل المعلومات حقيقية وموثقة بالمصادر.\n\nالسلاسل:\n- ماذا لو؟: سيناريوهات خيالية وعلم حقيقي\n- ما مدى ضخامته؟: أرقام هائلة ومقارنات مرئية\n- لمدة يوم واحد: حدود الجسم والعالم\n\nالفيديوهات باللغة التركية؛ فعّل الترجمة (CC) للمشاهدة بلغتك.\nاختر السؤال التالي: اكتبه في التعليقات!\nسؤال جديد كل يوم.",
+   "hi": "अगर एक दिन चाँद गायब हो जाए तो? अगर धरती घूमना बंद कर दे तो? अगर सब लोग एक साथ कूदें तो?\n\nक्या होता अगर? में प्रोफ़ेसर पाई और उनका जिज्ञासु रोबोट बिट विज्ञान के सबसे अनोखे सवालों के जवाब छोटे और मज़ेदार एनिमेटेड वीडियो में देते हैं। हर जानकारी सच्ची है और स्रोत के साथ है।\n\nसीरीज़:\n- क्या होता अगर?: काल्पनिक हालात, असली विज्ञान\n- यह कितना बड़ा है?: विशाल संख्याएँ, दृश्य तुलना\n- 1 दिन तक: शरीर और दुनिया की सीमाएँ\n\nवीडियो तुर्की भाषा में हैं; अपनी भाषा में देखने के लिए सबटाइटल (CC) चालू करें।\nअगला सवाल आप चुनें: कमेंट में लिखें!\nहर दिन एक नया सवाल।",
+   "id": "Bagaimana jika Bulan menghilang suatu hari? Bagaimana jika Bumi berhenti berputar? Bagaimana jika semua orang melompat bersamaan?\n\nDi Bagaimana Jika?, Profesor Pi dan robot penasarannya, Bit, menjawab pertanyaan sains paling gila lewat video animasi yang singkat dan seru. Semua fakta nyata dan ada sumbernya.\n\nSeri:\n- Bagaimana Jika?: skenario khayalan, sains nyata\n- Seberapa Besar?: angka raksasa, perbandingan visual\n- Selama 1 Hari: batas tubuh dan dunia\n\nVideo berbahasa Turki; nyalakan subtitle (CC) untuk menonton dalam bahasamu.\nPilih pertanyaan berikutnya: tulis di kolom komentar!\nPertanyaan baru setiap hari.",
+   "fr": "Et si la Lune disparaissait un jour ? Et si la Terre arrêtait de tourner ? Et si tout le monde sautait en même temps ?\n\nDans Et si ?, le Professeur Pi et son robot curieux Bit répondent aux questions les plus folles de la science en vidéos animées, courtes et amusantes. Chaque info est vraie et sourcée.\n\nSéries :\n- Et si ? : scénarios imaginaires, vraie science\n- Quelle est sa taille ? : chiffres géants, comparaisons visuelles\n- Pendant 1 jour : les limites du corps et du monde\n\nLes vidéos sont en turc ; active les sous-titres (CC) pour les regarder dans ta langue.\nChoisis la prochaine question : écris-la en commentaire !\nUne nouvelle question chaque jour.",
+   "de": "Was wäre, wenn der Mond eines Tages verschwände? Wenn die Erde aufhörte, sich zu drehen? Wenn alle Menschen gleichzeitig springen würden?\n\nBei Was wäre, wenn? beantworten Professor Pi und sein neugieriger Roboter Bit die verrücktesten Fragen der Wissenschaft in kurzen, witzigen Animationsvideos. Jede Info ist echt und belegt.\n\nSerien:\n- Was wäre, wenn?: ausgedachte Szenarien, echte Wissenschaft\n- Wie groß ist das?: riesige Zahlen, anschauliche Vergleiche\n- 1 Tag lang: die Grenzen von Körper und Welt\n\nDie Videos sind auf Türkisch; schalte Untertitel (CC) ein, um sie in deiner Sprache zu sehen.\nWähle die nächste Frage: schreib sie in die Kommentare!\nJeden Tag eine neue Frage.",
+   "ru": "А что, если однажды исчезнет Луна? Если Земля перестанет вращаться? Если все люди подпрыгнут одновременно?\n\nНа канале «А что, если?» профессор Пи и любопытный робот Бит отвечают на самые безумные вопросы науки в коротких и весёлых мультфильмах. Все факты настоящие и с источниками.\n\nСерии:\n- А что, если?: выдуманные сценарии, настоящая наука\n- Насколько это велико?: огромные числа, наглядные сравнения\n- В течение 1 дня: пределы тела и мира\n\nВидео на турецком; включи субтитры (CC), чтобы смотреть на своём языке.\nВыбери следующий вопрос: напиши его в комментариях!\nКаждый день новый вопрос.",
+   "az": "Bəs Ay bir gün yox olsaydı? Dünya fırlanmağı dayandırsaydı? Hamı eyni anda tullansaydı?\n\nBəs Olsaydı? kanalında Professor Pi və maraqlı robot Bit elmin ən çılğın suallarını qısa və əyləncəli animasiya videoları ilə cavablandırır. Bütün məlumatlar həqiqidir və mənbəlidir.\n\nSeriyalar:\n- Bəs Olsaydı?: xəyali ssenarilər, real elm\n- Nə Qədər Böyükdür?: nəhəng rəqəmlər, vizual müqayisələr\n- 1 Gün Ərzində: bədənin və dünyanın sərhədləri\n\nVideolar türk dilindədir; öz dilində izləmək üçün altyazıları (CC) aç.\nNövbəti sualı sən seç: şərhlərə yaz!\nHər gün yeni bir sual."
+  },
+  "keywords": [
+   "ya olsaydı",
+   "bilim",
+   "bilim animasyonu",
+   "uzay",
+   "astronomi",
+   "fizik",
+   "dünya",
+   "ay",
+   "merak",
+   "ilginç bilgiler",
+   "eğitim",
+   "animasyon",
+   "ne olurdu",
+   "türkçe bilim",
+   "what if",
+   "science",
+   "science animation",
+   "space",
+   "astronomy"
+  ],
   "country": "TR",
   "language": "tr",
   "banner": "brand/banner.jpg"
  },
+ "labels": {
+  "tr": {
+   "facts": "Videodaki bilgiler ve kaynakları:",
+   "related": "İlgili videolar:",
+   "all": "Tüm bölümler:",
+   "cta": "Sıradaki soruyu sen seç: yorumlara yaz!",
+   "subscribe": "Abone ol, her gün yeni bir \"ya olsaydı?\" sorusu:",
+   "hashtags": "#yaolsaydı #bilim #animasyon",
+   "note": ""
+  },
+  "en": {
+   "facts": "Facts in this video and their sources:",
+   "related": "Related videos:",
+   "all": "All episodes:",
+   "cta": "Pick the next question: write it in the comments!",
+   "subscribe": "Subscribe for a new \"what if?\" question every day:",
+   "hashtags": "#whatif #science #animation",
+   "note": "The video is in Turkish. Turn on subtitles (CC) to watch in English."
+  },
+  "es": {
+   "facts": "Datos del video y sus fuentes:",
+   "related": "Videos relacionados:",
+   "all": "Todos los episodios:",
+   "cta": "Elige la próxima pregunta: ¡escríbela en los comentarios!",
+   "subscribe": "Suscríbete: una nueva pregunta \"¿qué pasaría si?\" cada día:",
+   "hashtags": "#quépasaríasi #ciencia #animación",
+   "note": "El video está en turco. Activa los subtítulos (CC) y elige Traducir automáticamente → Español."
+  },
+  "pt": {
+   "facts": "Fatos do vídeo e suas fontes:",
+   "related": "Vídeos relacionados:",
+   "all": "Todos os episódios:",
+   "cta": "Escolha a próxima pergunta: escreva nos comentários!",
+   "subscribe": "Inscreva-se: uma nova pergunta \"e se?\" todo dia:",
+   "hashtags": "#ese #ciência #animação",
+   "note": "O vídeo está em turco. Ative as legendas (CC) e escolha Traduzir automaticamente → Português."
+  },
+  "ar": {
+   "facts": "المعلومات الواردة في الفيديو ومصادرها:",
+   "related": "فيديوهات ذات صلة:",
+   "all": "جميع الحلقات:",
+   "cta": "اختر السؤال التالي: اكتبه في التعليقات!",
+   "subscribe": "اشترك ليصلك كل يوم سؤال جديد من نوع \"ماذا لو؟\":",
+   "hashtags": "#ماذا_لو #علوم #رسوم_متحركة",
+   "note": "الفيديو باللغة التركية. فعّل الترجمة (CC) واختر الترجمة التلقائية ← العربية."
+  },
+  "hi": {
+   "facts": "वीडियो में दी गई जानकारी और उसके स्रोत:",
+   "related": "संबंधित वीडियो:",
+   "all": "सभी एपिसोड:",
+   "cta": "अगला सवाल आप चुनें: कमेंट में लिखें!",
+   "subscribe": "सब्सक्राइब करें, हर दिन एक नया \"क्या होता अगर?\" सवाल:",
+   "hashtags": "#क्याहोताअगर #विज्ञान #एनिमेशन",
+   "note": "यह वीडियो तुर्की भाषा में है। सबटाइटल (CC) चालू करें और ऑटो-ट्रांसलेट → हिन्दी चुनें।"
+  },
+  "id": {
+   "facts": "Fakta dalam video ini dan sumbernya:",
+   "related": "Video terkait:",
+   "all": "Semua episode:",
+   "cta": "Pilih pertanyaan berikutnya: tulis di kolom komentar!",
+   "subscribe": "Subscribe untuk pertanyaan \"bagaimana jika?\" baru setiap hari:",
+   "hashtags": "#bagaimanajika #sains #animasi",
+   "note": "Video ini berbahasa Turki. Nyalakan subtitle (CC) lalu pilih Terjemahkan otomatis → Indonesia."
+  },
+  "fr": {
+   "facts": "Les infos de la vidéo et leurs sources :",
+   "related": "Vidéos liées :",
+   "all": "Tous les épisodes :",
+   "cta": "Choisis la prochaine question : écris-la en commentaire !",
+   "subscribe": "Abonne-toi pour une nouvelle question « et si ? » chaque jour :",
+   "hashtags": "#etsi #science #animation",
+   "note": "La vidéo est en turc. Active les sous-titres (CC) puis Traduire automatiquement → Français."
+  },
+  "de": {
+   "facts": "Fakten aus dem Video und ihre Quellen:",
+   "related": "Ähnliche Videos:",
+   "all": "Alle Folgen:",
+   "cta": "Wähle die nächste Frage: schreib sie in die Kommentare!",
+   "subscribe": "Abonnieren für jeden Tag eine neue „Was wäre, wenn?“-Frage:",
+   "hashtags": "#waswärewenn #wissenschaft #animation",
+   "note": "Das Video ist auf Türkisch. Schalte Untertitel (CC) ein und wähle Automatisch übersetzen → Deutsch."
+  },
+  "ru": {
+   "facts": "Факты из видео и их источники:",
+   "related": "Похожие видео:",
+   "all": "Все выпуски:",
+   "cta": "Выбери следующий вопрос: напиши его в комментариях!",
+   "subscribe": "Подпишись: каждый день новый вопрос «а что, если?»:",
+   "hashtags": "#ачтоесли #наука #анимация",
+   "note": "Видео на турецком. Включи субтитры (CC) и выбери Перевести → Русский."
+  },
+  "az": {
+   "facts": "Videodakı məlumatlar və mənbələri:",
+   "related": "Əlaqəli videolar:",
+   "all": "Bütün bölümlər:",
+   "cta": "Növbəti sualı sən seç: şərhlərə yaz!",
+   "subscribe": "Abunə ol, hər gün yeni bir \"bəs olsaydı?\" sualı:",
+   "hashtags": "#bəsolsaydı #elm #animasiya",
+   "note": "Video türk dilindədir. Altyazıları (CC) aç və Avtomatik tərcümə → Azərbaycan dilini seç."
+  }
+ },
  "playlists": [
-  {"title": "Ya Olsaydı?", "description": "Hayali senaryolar, gerçek bilim. Profesör Pi ve Bit en çılgın \"ya olsaydı?\" sorularını cevaplıyor."},
-  {"title": "Ne Kadar Büyük?", "description": "Dev rakamları gözünün önüne getiren görsel karşılaştırmalar."},
-  {"title": "1 Gün Boyunca", "description": "Bir gün boyunca vücudunda ve dünyada neler oluyor? Sınırları zorlayan sorular."}
+  {
+   "title": {
+    "tr": "Ya Olsaydı?",
+    "en": "What If?",
+    "es": "¿Qué Pasaría Si?",
+    "pt": "E Se?",
+    "ar": "ماذا لو؟",
+    "hi": "क्या होता अगर?",
+    "id": "Bagaimana Jika?",
+    "fr": "Et si ?",
+    "de": "Was wäre, wenn?",
+    "ru": "А что, если?",
+    "az": "Bəs Olsaydı?"
+   },
+   "description": {
+    "tr": "Hayali senaryolar, gerçek bilim. Profesör Pi ve Bit en çılgın \"ya olsaydı?\" sorularını cevaplıyor.",
+    "en": "Imaginary scenarios, real science. Professor Pi and Bit answer the wildest \"what if?\" questions.",
+    "es": "Escenarios imaginarios, ciencia real. El Profesor Pi y Bit responden las preguntas \"¿qué pasaría si?\" más locas.",
+    "pt": "Cenários imaginários, ciência real. O Professor Pi e Bit respondem às perguntas \"e se?\" mais malucas.",
+    "ar": "سيناريوهات خيالية وعلم حقيقي. البروفيسور باي وبِت يجيبان عن أغرب أسئلة \"ماذا لو؟\".",
+    "hi": "काल्पनिक हालात, असली विज्ञान। प्रोफ़ेसर पाई और बिट सबसे अनोखे \"क्या होता अगर?\" सवालों के जवाब देते हैं।",
+    "id": "Skenario khayalan, sains nyata. Profesor Pi dan Bit menjawab pertanyaan \"bagaimana jika?\" paling gila.",
+    "fr": "Scénarios imaginaires, vraie science. Le Professeur Pi et Bit répondent aux questions « et si ? » les plus folles.",
+    "de": "Ausgedachte Szenarien, echte Wissenschaft. Professor Pi und Bit beantworten die verrücktesten „Was wäre, wenn?“-Fragen.",
+    "ru": "Выдуманные сценарии, настоящая наука. Профессор Пи и Бит отвечают на самые безумные вопросы «а что, если?».",
+    "az": "Xəyali ssenarilər, real elm. Professor Pi və Bit ən çılğın \"bəs olsaydı?\" suallarını cavablandırır."
+   }
+  },
+  {
+   "title": {
+    "tr": "Ne Kadar Büyük?",
+    "en": "How Big Is It?",
+    "es": "¿Qué Tan Grande Es?",
+    "pt": "Quão Grande É?",
+    "ar": "ما مدى ضخامته؟",
+    "hi": "यह कितना बड़ा है?",
+    "id": "Seberapa Besar?",
+    "fr": "Quelle est sa taille ?",
+    "de": "Wie groß ist das?",
+    "ru": "Насколько это велико?",
+    "az": "Nə Qədər Böyükdür?"
+   },
+   "description": {
+    "tr": "Dev rakamları gözünün önüne getiren görsel karşılaştırmalar.",
+    "en": "Visual comparisons that bring giant numbers to life.",
+    "es": "Comparaciones visuales que dan vida a cifras gigantes.",
+    "pt": "Comparações visuais que dão vida a números gigantes.",
+    "ar": "مقارنات مرئية تجعل الأرقام الهائلة سهلة التخيل.",
+    "hi": "दृश्य तुलनाएँ जो विशाल संख्याओं को आँखों के सामने ले आती हैं।",
+    "id": "Perbandingan visual yang membuat angka raksasa mudah dibayangkan.",
+    "fr": "Des comparaisons visuelles qui rendent les chiffres géants concrets.",
+    "de": "Anschauliche Vergleiche, die riesige Zahlen greifbar machen.",
+    "ru": "Наглядные сравнения, которые помогают представить огромные числа.",
+    "az": "Nəhəng rəqəmləri göz önündə canlandıran vizual müqayisələr."
+   }
+  },
+  {
+   "title": {
+    "tr": "1 Gün Boyunca",
+    "en": "For 1 Day",
+    "es": "Durante 1 Día",
+    "pt": "Por 1 Dia",
+    "ar": "لمدة يوم واحد",
+    "hi": "1 दिन तक",
+    "id": "Selama 1 Hari",
+    "fr": "Pendant 1 jour",
+    "de": "1 Tag lang",
+    "ru": "В течение 1 дня",
+    "az": "1 Gün Ərzində"
+   },
+   "description": {
+    "tr": "Bir gün boyunca vücudunda ve dünyada neler oluyor? Sınırları zorlayan sorular.",
+    "en": "What happens in your body and in the world over a single day? Questions that push the limits.",
+    "es": "¿Qué pasa en tu cuerpo y en el mundo en un solo día? Preguntas que llevan todo al límite.",
+    "pt": "O que acontece no seu corpo e no mundo em um único dia? Perguntas que testam os limites.",
+    "ar": "ماذا يحدث في جسمك وفي العالم خلال يوم واحد؟ أسئلة تختبر الحدود.",
+    "hi": "एक ही दिन में आपके शरीर और दुनिया में क्या होता है? सीमाओं को परखने वाले सवाल।",
+    "id": "Apa yang terjadi di tubuhmu dan di dunia dalam satu hari? Pertanyaan yang menguji batas.",
+    "fr": "Que se passe-t-il dans ton corps et dans le monde en une seule journée ? Des questions qui repoussent les limites.",
+    "de": "Was passiert an einem einzigen Tag in deinem Körper und auf der Welt? Fragen, die an Grenzen gehen.",
+    "ru": "Что происходит с твоим телом и с миром за один день? Вопросы на пределе возможного.",
+    "az": "Bir gün ərzində bədənində və dünyada nələr baş verir? Sərhədləri zorlayan suallar."
+   }
+  }
  ],
  "episodes": [
   {
    "id": "ay",
    "playlist": "Ya Olsaydı?",
    "video": "out/pilot_sesli.mp4",
+   "timings": "out/timings.json",
    "thumbnail": "brand/kapak.jpg",
    "privacy": "private",
-   "title": "Ay Bir Anda Yok Olsaydı Ne Olurdu?",
-   "description": "Ay bir gece aniden yok olsaydı Dünya'da neler değişirdi? Profesör Pi ile robot Bit anlatıyor.\n\nVideodaki bilgiler ve kaynakları:\n• Gelgitlerin büyük kısmını Ay yapar, Güneş'in etkisi Ay'ınkinin yarısından az: https://science.nasa.gov/moon/tides/\n• Mercanlar toplu yumurtlama zamanını Ay ışığına göre ayarlar (eLife, 2015): https://elifesciences.org/articles/09991\n• Ay, Dünya'nın eksen eğikliğini dengede tutar (Laskar ve ark., Nature, 1993): https://perso.imcce.fr/jacques-laskar/pdf/Laskar_Joutel_Robutel_1993.pdf\n• Ay her yıl yaklaşık 3,8 santim uzaklaşıyor (NASA, Apollo lazer ölçümleri): https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving/\n\nSıradaki soruyu sen seç: yorumlara yaz!\nAbone ol, her gün yeni bir \"ya olsaydı?\" sorusu.\n\n#yaolsaydı #bilim #animasyon",
-   "tags": ["ya olsaydı", "bilim", "animasyon", "uzay", "ilginç bilgiler", "merak", "eğitim", "ay", "ay yok olsaydı", "gelgit", "astronomi"]
+   "title": {
+    "tr": "Ay Bir Anda Yok Olsaydı Ne Olurdu?",
+    "en": "What If the Moon Suddenly Disappeared?",
+    "es": "¿Qué Pasaría Si la Luna Desapareciera de Repente?",
+    "pt": "E Se a Lua Desaparecesse de Repente?",
+    "ar": "ماذا لو اختفى القمر فجأة؟",
+    "hi": "अगर चाँद अचानक गायब हो जाए तो क्या होगा?",
+    "id": "Bagaimana Jika Bulan Tiba-tiba Menghilang?",
+    "fr": "Et si la Lune disparaissait soudainement ?",
+    "de": "Was wäre, wenn der Mond plötzlich verschwände?",
+    "ru": "Что, если Луна внезапно исчезнет?",
+    "az": "Ay Birdən Yox Olsaydı Nə Olardı?"
+   },
+   "summary": {
+    "tr": "Ay bir gece aniden yok olsaydı Dünya'da neler değişirdi? Profesör Pi ile robot Bit anlatıyor.",
+    "en": "If the Moon vanished one night, what would change on Earth? Professor Pi and robot Bit explain.",
+    "es": "Si la Luna desapareciera una noche, ¿qué cambiaría en la Tierra? Lo explican el Profesor Pi y el robot Bit.",
+    "pt": "Se a Lua sumisse numa noite, o que mudaria na Terra? O Professor Pi e o robô Bit explicam.",
+    "ar": "لو اختفى القمر فجأة في إحدى الليالي، ماذا سيتغير على الأرض؟ يشرح البروفيسور باي والروبوت بِت.",
+    "hi": "अगर एक रात अचानक चाँद गायब हो जाए, तो धरती पर क्या बदलेगा? प्रोफ़ेसर पाई और रोबोट बिट बताते हैं।",
+    "id": "Jika Bulan tiba-tiba menghilang suatu malam, apa yang berubah di Bumi? Profesor Pi dan robot Bit menjelaskan.",
+    "fr": "Si la Lune disparaissait d'un coup une nuit, qu'est-ce qui changerait sur Terre ? Le Professeur Pi et le robot Bit expliquent.",
+    "de": "Wenn der Mond in einer Nacht plötzlich verschwände, was würde sich auf der Erde ändern? Professor Pi und Roboter Bit erklären es.",
+    "ru": "Если Луна внезапно исчезнет однажды ночью, что изменится на Земле? Объясняют профессор Пи и робот Бит.",
+    "az": "Ay bir gecə birdən yox olsaydı, Dünyada nələr dəyişərdi? Professor Pi və robot Bit izah edir."
+   },
+   "facts": [
+    {
+     "url": "https://science.nasa.gov/moon/tides/",
+     "tr": "Gelgitlerin büyük kısmını Ay yapar, Güneş'in etkisi Ay'ınkinin yarısından az (NASA)",
+     "en": "The Moon drives most of Earth's tides; the Sun's pull is less than half of the Moon's (NASA)",
+     "es": "La Luna causa la mayor parte de las mareas; la fuerza del Sol es menos de la mitad de la lunar (NASA)",
+     "pt": "A Lua causa a maior parte das marés; a força do Sol é menos da metade da lunar (NASA)",
+     "ar": "القمر مسؤول عن معظم المد والجزر، وقوة الشمس أقل من نصف قوة القمر (ناسا)",
+     "hi": "धरती के ज़्यादातर ज्वार-भाटे चाँद की वजह से होते हैं; सूरज का असर चाँद के आधे से भी कम है (NASA)",
+     "id": "Sebagian besar pasang surut disebabkan Bulan; gaya Matahari kurang dari separuh gaya Bulan (NASA)",
+     "fr": "La Lune cause l'essentiel des marées ; la force du Soleil fait moins de la moitié de celle de la Lune (NASA)",
+     "de": "Der Mond verursacht den Großteil der Gezeiten; die Kraft der Sonne ist weniger als halb so groß (NASA)",
+     "ru": "Большую часть приливов создаёт Луна; сила Солнца меньше половины лунной (NASA)",
+     "az": "Qabarma-çəkilmələrin böyük hissəsini Ay yaradır; Günəşin təsiri Ayınkının yarısından azdır (NASA)"
+    },
+    {
+     "url": "https://elifesciences.org/articles/09991",
+     "tr": "Mercanlar toplu yumurtlama zamanını Ay ışığına göre ayarlar (eLife, 2015)",
+     "en": "Corals time their mass spawning to moonlight (eLife, 2015)",
+     "es": "Los corales sincronizan su desove masivo con la luz de la Luna (eLife, 2015)",
+     "pt": "Os corais sincronizam a desova em massa com a luz da Lua (eLife, 2015)",
+     "ar": "تضبط الشعاب المرجانية موعد تكاثرها الجماعي على ضوء القمر (eLife، 2015)",
+     "hi": "मूंगे (कोरल) अपना सामूहिक प्रजनन चाँदनी के हिसाब से तय करते हैं (eLife, 2015)",
+     "id": "Karang mengatur waktu pemijahan massal berdasarkan cahaya Bulan (eLife, 2015)",
+     "fr": "Les coraux calent leur ponte de masse sur la lumière de la Lune (eLife, 2015)",
+     "de": "Korallen richten ihr Massenlaichen nach dem Mondlicht aus (eLife, 2015)",
+     "ru": "Кораллы приурочивают массовый нерест к лунному свету (eLife, 2015)",
+     "az": "Mərcanlar kütləvi kürü tökmə vaxtını Ay işığına görə tənzimləyir (eLife, 2015)"
+    },
+    {
+     "url": "https://perso.imcce.fr/jacques-laskar/pdf/Laskar_Joutel_Robutel_1993.pdf",
+     "tr": "Ay, Dünya'nın eksen eğikliğini dengede tutar (Laskar ve ark., Nature, 1993)",
+     "en": "The Moon stabilizes the tilt of Earth's axis (Laskar et al., Nature, 1993)",
+     "es": "La Luna estabiliza la inclinación del eje de la Tierra (Laskar et al., Nature, 1993)",
+     "pt": "A Lua estabiliza a inclinação do eixo da Terra (Laskar et al., Nature, 1993)",
+     "ar": "القمر يحافظ على استقرار ميل محور الأرض (Laskar وآخرون، Nature، 1993)",
+     "hi": "चाँद धरती की धुरी के झुकाव को स्थिर रखता है (Laskar व अन्य, Nature, 1993)",
+     "id": "Bulan menjaga kemiringan sumbu Bumi tetap stabil (Laskar dkk., Nature, 1993)",
+     "fr": "La Lune stabilise l'inclinaison de l'axe de la Terre (Laskar et al., Nature, 1993)",
+     "de": "Der Mond stabilisiert die Neigung der Erdachse (Laskar et al., Nature, 1993)",
+     "ru": "Луна стабилизирует наклон земной оси (Laskar и др., Nature, 1993)",
+     "az": "Ay Yerin oxunun mailliyini sabit saxlayır (Laskar və b., Nature, 1993)"
+    },
+    {
+     "url": "https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving/",
+     "tr": "Ay her yıl yaklaşık 3,8 santim uzaklaşıyor (NASA, Apollo lazer ölçümleri)",
+     "en": "The Moon moves about 3.8 cm farther away every year (NASA, Apollo laser ranging)",
+     "es": "La Luna se aleja unos 3,8 cm cada año (NASA, medición láser de Apolo)",
+     "pt": "A Lua se afasta cerca de 3,8 cm por ano (NASA, medição a laser da Apollo)",
+     "ar": "يبتعد القمر عنا نحو 3.8 سم كل عام (ناسا، قياسات الليزر من مهمات أبولو)",
+     "hi": "चाँद हर साल लगभग 3.8 सेमी दूर जा रहा है (NASA, अपोलो लेज़र माप)",
+     "id": "Bulan menjauh sekitar 3,8 cm setiap tahun (NASA, pengukuran laser Apollo)",
+     "fr": "La Lune s'éloigne d'environ 3,8 cm par an (NASA, télémétrie laser Apollo)",
+     "de": "Der Mond entfernt sich jedes Jahr um etwa 3,8 cm (NASA, Apollo-Laserentfernungsmessung)",
+     "ru": "Луна удаляется примерно на 3,8 см в год (NASA, лазерная локация «Аполлонов»)",
+     "az": "Ay hər il təxminən 3,8 sm uzaqlaşır (NASA, Apollo lazer ölçmələri)"
+    }
+   ],
+   "tags": [
+    "ya olsaydı",
+    "ay yok olsaydı",
+    "ay",
+    "bilim",
+    "astronomi",
+    "uzay",
+    "gelgit",
+    "animasyon",
+    "ilginç bilgiler",
+    "merak",
+    "eğitim",
+    "what if",
+    "what if the moon disappeared",
+    "moon",
+    "science",
+    "space",
+    "animation"
+   ],
+   "subtitles": {
+    "en": [
+     "Professor, what would happen if the Moon suddenly vanished?",
+     "You'd notice on the very first night. The sky would be much darker.",
+     "Is that all?",
+     "No. The Moon makes most of the tides. Without it, tides would shrink to a third.",
+     "Even corals time their spawning by moonlight. Their calendar would break.",
+     "What about the Earth?",
+     "That's the real danger. The Moon keeps Earth's axis steady. Without it, the axis could wobble much more over time, and the seasons would go haywire.",
+     "So the Moon is our balance?",
+     "Exactly. And the Moon moves 3.8 centimeters away from us every year.",
+     "You pick the next question! Write it in the comments."
+    ]
+   }
   }
  ]
 }
