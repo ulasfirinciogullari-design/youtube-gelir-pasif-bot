@@ -1,6 +1,6 @@
 {
- "started": "2026-10-16T09:39:35+00:00",
- "deneme": true,
+ "started": "2026-10-16T09:40:28+00:00",
+ "deneme": false,
  "threads": 3,
  "new": 1,
  "quiet": 2,
@@ -12,16 +12,13 @@
    "id": "UgypMdIQNONBpTOwYhx4AaABAg",
    "video": "yHElVXfvdsw",
    "comment": "Peki bize en yakın yıldız partlasaydı nolurdu? ???",
-   "reply": "Bize en yakın yıldız olan Güneş, süpernova gibi patlamak için fazla küçük; vakti gelince bir kırmızı deve dönüşecek. Bu ilginç senaryoyu video listemize aldık.\n— Profesör Pi 🔭",
-   "result": "deneme, gönderilmedi",
-   "topic": {
-    "q": "Güneş patlasaydı ne olurdu?",
-    "series": "Ya Olsaydı?"
-   }
+   "reply": "Bize en yakın yıldız Güneş ve süpernova patlaması yapamayacak kadar küçük; zamanı gelince şişip kızıl dev olacak. Bu merak uyandıran soruyu video listemize ekledim.\n— Profesör Pi 🔭",
+   "topic": "Güneş patlasaydı ne olurdu?",
+   "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T09:39:53+00:00"
+ "finished": "2026-10-16T09:40:44+00:00"
 }

@@ -65,7 +65,14 @@
   "y001",
   "n001"
  ],
- "extra": [],
+ "extra": [
+  {
+   "id": "o0001",
+   "series": "Ya Olsaydı?",
+   "q": "Güneş patlasaydı ne olurdu?",
+   "oneri": true
+  }
+ ],
  "fail_streak": 0,
  "runs": [
   {
@@ -84,5 +91,32 @@
    "duration": 37.5,
    "chars": 556
   }
- ]
+ ],
+ "yorumlar": {
+  "done": {
+   "Ugw5Q9YzSjxuiZ0ieHV4AaABAg": [
+    1792143629,
+    "s",
+    "aynı kişinin aynı yorumu, bir kez cevaplandı"
+   ],
+   "UgwCCXk6gBQzUw9ndaF4AaABAg": [
+    1792143629,
+    "s",
+    "aynı kişinin aynı yorumu, bir kez cevaplandı"
+   ],
+   "UgypMdIQNONBpTOwYhx4AaABAg": [
+    1792143644,
+    "r",
+    "UgypMdIQNONBpTOwYhx4AaABAg.Ac0dP4SCSRDAc0jpth7RIE"
+   ]
+  },
+  "son": [
+   {
+    "at": 1792143644,
+    "video": "yHElVXfvdsw",
+    "comment": "Peki bize en yakın yıldız partlasaydı nolurdu? ???",
+    "reply": "Bize en yakın yıldız Güneş ve süpernova patlaması yapamayacak kadar küçük; zamanı gelince şişip kızıl dev olacak. Bu merak uyandıran soruyu video listemize ekledim.\n— Profesör Pi 🔭"
+   }
+  ]
+ }
 }
