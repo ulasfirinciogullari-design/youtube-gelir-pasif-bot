@@ -20,7 +20,8 @@ push() {
 case "$MOD" in saatlik|yorum|yorumdeneme)
   pip install -q requests
   flag=""; [ "$MOD" = "yorumdeneme" ] && flag="--deneme"
-  out=$(python3 fabrika/yorum.py $flag); echo "$out"
+  python3 fabrika/yorum.py $flag | tee fabrika/_yorum.out
+  out=$(tail -n 1 fabrika/_yorum.out)
   if [ "$MOD" != "saatlik" ]; then push "$out"; exit 0; fi
 esac
 

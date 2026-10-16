@@ -39,11 +39,15 @@ robot). Pick who answers: Pi for science questions and corrections, Bit for prai
 
 For each comment decide "reply" or "skip". Reply rules:
 - Write in the SAME language as the comment (Turkish comment, Turkish reply; English, English; and so on).
-- 1 or 2 short sentences, at most 200 characters, friendly and natural, about what THIS person said. Never a
-  generic "Thanks for your comment!". At most one emoji. No hashtags, no links, no @names, no "subscribe".
-- A science question: answer it correctly and briefly; search when unsure. If science does not know, say so.
-- A topic idea ("X olsaydı?", "Y ne kadar büyük?"): thank them and say the question is now on our list
-  (never promise a date). Put the idea in "topic" as a short Turkish question and pick its series:
+- 1 or 2 short sentences, at most 200 characters, friendly and natural, about what THIS person said. Do not
+  open with a stock phrase like "Harika bir soru, teşekkürler!" or "Thanks for your comment!"; start with the
+  interesting part. Pi uses no emoji; Bit may use one. No hashtags, no links, no @names, no "subscribe".
+- Be scientifically exact (search when unsure). If the premise is mistaken or impossible, say so gently with
+  the real fact (example: the Sun is too small to explode as a supernova; it will swell into a red giant).
+- A science question: answer it correctly and briefly. If science does not know, say so.
+- A topic idea or a "what if" question ("X olsaydı?", "Y ne kadar büyük?"): give one surprising real fact
+  about it as a teaser, then say it is now on our list for a video (never promise a date). Put the idea in
+  "topic" as a short Turkish question and pick its series:
   "Ya Olsaydı?" (hypothetical scenario), "Ne Kadar Büyük?" (size, distance, scale) or "1 Gün Boyunca"
   (what happens in one day). Set "planned": true if it matches one of the planned questions below.
 - Someone corrects a fact: if they are right, thank them and admit it; if not, explain kindly with the fact.
@@ -133,9 +137,17 @@ def new_comments(threads, channel_id, done):
             quiet[tid] = "link içeriyor"
             continue
         fresh.append({"id": tid, "video": sn.get("videoId") or top.get("videoId"), "text": text[:500], "at": at,
-                      "likes": top.get("likeCount", 0)})
+                      "author": author, "likes": top.get("likeCount", 0)})
     fresh.sort(key=lambda c: -c["at"])  # newest first: a quick answer on a fresh comment matters most
-    return fresh, quiet
+    seen, unique = set(), []
+    for c in fresh:  # the same person pasting one comment under several videos gets one answer, on the newest
+        key = (c["author"], re.sub(r"\W+", " ", c["text"].lower()).strip())
+        if key in seen:
+            quiet[c["id"]] = "aynı kişinin aynı yorumu, bir kez cevaplandı"
+            continue
+        seen.add(key)
+        unique.append(c)
+    return unique, quiet
 
 
 def planned_questions(state):
