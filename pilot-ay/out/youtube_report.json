@@ -6,11 +6,6 @@
   "subscribers": "0",
   "videos": "0"
  },
- "warnings": [
-  "ad ve açıklama: PUT channels?part=localizations -> 400: Precondition check failed. [failedPrecondition]",
-  "sadece açıklama: PUT channels?part=localizations -> 429: Resource has been exhausted (e.g. check quota). [rateLimitExceeded]",
-  "ay altyazı: GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]"
- ],
  "channel_now": {
   "keywords": "\"ya olsaydı\" bilim \"bilim animasyonu\" uzay astronomi fizik dünya ay merak \"ilginç bilgiler\" eğitim animasyon \"ne olurdu\" \"türkçe bilim\" \"what if\" science \"science animation\" space astronomy",
   "country": "TR",
@@ -22,6 +17,9 @@
   "Ne Kadar Büyük?": "PLeHWw6dhPXaw",
   "1 Gün Boyunca": "PLcawGSnylmhU"
  },
+ "warnings": [
+  "ay altyazı: GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]"
+ ],
  "episodes": {
   "ay": {
    "video_id": "-7OxhWXxc8w",
