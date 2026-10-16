@@ -82,7 +82,7 @@ concurrency:
 
 permissions:
   contents: write  # the channel-data branch keeps metrics, competitor DNA, generated topics and history
-  actions: read  # the slot gate checks this workflow's earlier runs in the same slot
+  actions: write  # the slot gate checks this workflow's earlier runs; the watch step restarts slot_heartbeat.yml
 
 jobs:
   produce_original_short:
@@ -106,12 +106,22 @@ jobs:
 
       # Runs on the runner's system Python before setup-python, apt and pip, so a skipped tick costs
       # seconds. Manual runs always get go=true; the reasons for a scheduled tick are printed here.
+      # Runs the hourly watch dispatched (actor github-actions[bot]) are gated like cron ticks: a late cron
+      # run can fill the slot while the watch's run waits in the concurrency group.
       - name: 🚦 Sıra Kontrolü
         id: gate
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          EVENT_NAME: ${{ github.event_name }}
+          EVENT_NAME: ${{ (github.event_name == 'schedule' || github.actor == 'github-actions[bot]') && 'schedule' || github.event_name }}
         run: python3 scripts/slot_gate.py
+
+      # GitHub drops most cron ticks, so the hourly watch (slot_heartbeat.yml) starts the Shorts. Every run,
+      # skipped ticks included, restarts the watch when no run of it is queued or in progress.
+      - name: 🫀 Nöbeti Kontrol Et
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/slot_heartbeat.py --ensure
 
       - name: 🐍 Python 3.12 Kur
         if: steps.gate.outputs.go == 'true'
@@ -160,9 +170,10 @@ jobs:
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
-          PRIVACY: ${{ github.event_name == 'schedule' && (vars.PUBLISH_PRIVACY || 'public') || github.event.inputs.privacy }}
+          # The watch's runs (actor github-actions[bot]) publish with the repository settings, like cron ticks.
+          PRIVACY: ${{ (github.event_name == 'schedule' || github.actor == 'github-actions[bot]') && (vars.PUBLISH_PRIVACY || 'public') || github.event.inputs.privacy }}
           TOPIC_ID: ${{ github.event.inputs.topic_id }}
-          CONTENT_FORMAT: ${{ github.event.inputs.format || vars.CONTENT_FORMAT || 'merak' }}  # Ulaş chose the curiosity format (2026-10-13)
+          CONTENT_FORMAT: ${{ github.actor != 'github-actions[bot]' && github.event.inputs.format || vars.CONTENT_FORMAT || 'merak' }}  # Ulaş chose the curiosity format (2026-10-13)
           TASK: ${{ github.event.inputs.task || 'video' }}
           VIDEO_IDS: ${{ github.event.inputs.video_ids }}
           CLEANUP_ACTION: ${{ github.event.inputs.cleanup_action || 'private' }}

@@ -196,7 +196,11 @@ def test_workflow_matches_the_gate():
     gate = names.index("🚦 Sıra Kontrolü")
     assert "id: gate" in steps[gate] and "python3 scripts/slot_gate.py" in steps[gate]
     assert names[:gate] == ["📥 Repoyu Çek", "🧠 Kanal Hafızasını Getir"]
-    for name, block in zip(names[gate + 1:], steps[gate + 1:]):
+    # The watch restart runs on skipped ticks too: it is a few API calls and must never fail the job.
+    watch = names.index("🫀 Nöbeti Kontrol Et")
+    assert watch == gate + 1
+    assert "continue-on-error: true" in steps[watch] and "scripts/slot_heartbeat.py --ensure" in steps[watch]
+    for name, block in zip(names[watch + 1:], steps[watch + 1:]):
         assert "if: " in block and "steps.gate.outputs.go == 'true'" in block, name
 
     cron = re.search(r"cron: '([^']+)'", workflow).group(1).split()
