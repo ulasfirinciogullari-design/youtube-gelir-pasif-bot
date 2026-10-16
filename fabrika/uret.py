@@ -59,6 +59,26 @@ def gate(state, mod):
     return True, "saat boş"
 
 
+# Words every question shares; the rest name its subject (Güneş, kara delik, oksijen...).
+COMMON = {w[:5] for w in ("olurdu olsaydı olur olsa olmasaydı kadar gerçekte büyük günde boyunca nasıl neler bütün "
+                          "bir anda hiç yok kaç kez saniyeliğine dakika saniye yerinde görürdük etrafında gibi "
+                          "atar olsun olmaz insan insanlar").split()}
+
+
+def subjects(text):
+    """Subject word stems of a title or question (first 5 letters, Turkish-aware lowercase)."""
+    t = text.replace("I", "ı").replace("İ", "i").lower()
+    words = [w.split("'")[0].split("’")[0] for w in t.split()]
+    return {w[:5] for w in ("".join(ch for ch in w if ch.isalpha()) for w in words) if len(w) >= 4} - COMMON
+
+
+def varied(pool, state, last=3):
+    """First topic that does not share a subject with the last few episodes (4 Sun episodes in a row
+    happened on 2026-10-16); falls back to the first one when every topic overlaps."""
+    recent = set().union(*[subjects(e.get("title", "")) for e in state.get("episodes", [])[-last:]] or [set()])
+    return next((t for t in pool if not subjects(t["q"]) & recent), pool[0])
+
+
 def pick_topic(state):
     import yazar
     conf = json.loads(TOPICS.read_text(encoding="utf-8"))
@@ -75,7 +95,7 @@ def pick_topic(state):
             state.setdefault("extra", []).append({"id": f"x{base + i + 1:04d}", "series": series, "q": q})
         pool = [t for t in state["extra"] if t["series"] == series and t["id"] not in used]
         yazar.log(f"{series} için {len(new)} yeni konu üretildi")
-    return pool[0]
+    return varied(pool, state)
 
 
 def write_episode(topic, state, report):
