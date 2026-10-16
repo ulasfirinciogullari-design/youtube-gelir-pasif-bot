@@ -69,7 +69,8 @@ def main():
         out["error"] = f"{type(e).__name__}: {e}"[:600]
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     n = len(out.get("videos", {}))
-    print(f"Metrikler: {n} video" + (f", {out.get('skipped') or out.get('error')}" if not n else ""))
+    why = out.get("skipped") or out.get("error") or ("YouTube henüz veri vermedi (1-3 gün gecikme)" if not n else "")
+    print(f"Metrikler: {n} video" + (f", {why}" if why else ""))
 
 
 if __name__ == "__main__":
