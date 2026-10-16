@@ -1,0 +1,7 @@
+{
+ "checked_at": "2026-10-16T21:49:35+00:00",
+ "ok": true,
+ "scope": "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.readonly",
+ "refresh_token_expires_in": 1514,
+ "expires_at": "2026-10-16T22:14:49+00:00"
+}
