@@ -5,6 +5,7 @@ Channel tools for Zirvenin Kanunu, run from the autopilot workflow.
   python channel_tools.py cleanup --action private --ids ID1,ID2
   python channel_tools.py cleanup --action delete --ids ID1,ID2
   python channel_tools.py referans --ids URL1,URL2  # Gemini breaks down reference Shorts
+  python channel_tools.py durum --ids ID1,ID2       # YouTube's status fields for each video, changes nothing
 
 Cleanup touches only the ids it is given; pick them from a report first.
 """
@@ -98,6 +99,30 @@ def references(youtube, text: str) -> int:
     return 0 if result["spec"] else 1
 
 
+def status(youtube, ids: list[str]) -> int:
+    """What YouTube reports about each video (processing, privacy, restrictions, counts), printed and saved to
+    channel-data/video_status.json, which the backup step commits."""
+    parts = "status,statistics,contentDetails,processingDetails,snippet"
+    items = youtube.videos().list(part=parts, id=",".join(ids[:50])).execute().get("items", [])
+    found = {item["id"]: item for item in items}
+    report = {}
+    for video_id in ids[:50]:
+        item = found.get(video_id)
+        if item is None:
+            print(f"{video_id}: YouTube bu videoyu döndürmedi (silinmiş, gizli ya da başka kanalın)")
+            report[video_id] = None
+            continue
+        report[video_id] = {"title": item["snippet"].get("title", ""),
+                            "published_at": item["snippet"].get("publishedAt", ""),
+                            **{key: item.get(key) for key in ("status", "statistics", "contentDetails",
+                                                              "processingDetails")}}
+        print(f"--- {video_id}")
+        print(json.dumps(report[video_id], ensure_ascii=False, indent=1))
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    (DATA_DIR / "video_status.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    return 0
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Zirvenin Kanunu channel tools")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -108,6 +133,8 @@ def main(argv=None) -> int:
     clean.add_argument("--ids", default="", help="Virgülle ayrılmış video id listesi")
     ref = sub.add_parser("referans")
     ref.add_argument("--ids", default="", help="Virgülle ayrılmış Shorts linkleri veya id'leri")
+    stat = sub.add_parser("durum")
+    stat.add_argument("--ids", default="", help="Virgülle ayrılmış video id listesi")
     args = parser.parse_args(argv)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -118,6 +145,8 @@ def main(argv=None) -> int:
     if args.command == "referans":
         return references(youtube, args.ids)
     ids = [i.strip() for i in args.ids.replace("\n", ",").split(",") if i.strip()]
+    if args.command == "durum":
+        return status(youtube, ids)
     return cleanup(youtube, ids, args.action)
 
 

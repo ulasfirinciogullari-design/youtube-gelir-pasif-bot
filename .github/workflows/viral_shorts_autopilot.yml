@@ -34,6 +34,7 @@ on:
           - 'referans'
           - 'sesornek'
           - 'tiktok'
+          - 'durum'
       gorsel:
         description: 'AI görsel kalitesi (ucuz = Flux Schnell ~0,003 $/görsel, kaliteli = Flux Dev ~0,025 $/görsel)'
         required: false
@@ -193,6 +194,10 @@ jobs:
           if [ "$TASK" = "rapor" ]; then
             python channel_tools.py report
             exit 0
+          fi
+          if [ "$TASK" = "durum" ]; then
+            python channel_tools.py durum --ids "$VIDEO_IDS"
+            exit $?
           fi
           if [ "$TASK" = "referans" ]; then
             python channel_tools.py referans --ids "$VIDEO_IDS"
