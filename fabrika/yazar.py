@@ -339,7 +339,7 @@ def validate(ep):
         if l.get("who") not in ("pi", "bit") or not str(l.get("text", "")).strip():
             probs.append(f"satır {i}: konuşan ya da metin yok")
             continue
-        l["text"] = re.sub(r"\s+", " ", l["text"]).strip()
+        l["text"] = re.sub(r"^\s*(pi|bit|prof\w*\.? ?pi)\s*:\s*", "", re.sub(r"\s+", " ", l["text"]).strip(), flags=re.I)
         l["v"], p = clean_visual(l.get("v"), i, len(lines))
         probs += p
     if lines and lines[-1].get("text") != CTA:
@@ -386,13 +386,13 @@ def sources(ep, extra_chunks=()):
     cands = [(resolve(u), t) for u, t in cands if u]
     cands += [(f.get("url", ""), f.get("source", "")) for f in ep.get("facts", [])]
     for url, _ in cands:
-        if not url.startswith("http") or not good_domain(url):
-            continue
+        if not url.startswith("http") or not good_domain(url) or urlsplit(url).path.strip("/") == "":
+            continue  # a bare home page is not a source
         host = urlsplit(url).netloc.lower().removeprefix("www.")
         if host in seen:
             continue
         ok, final = page_ok(url)
-        if ok and good_domain(final):
+        if ok and good_domain(final) and urlsplit(final).path.strip("/"):
             seen.add(host)
             found.append(final.split("#")[0])
         if len(found) >= 4:

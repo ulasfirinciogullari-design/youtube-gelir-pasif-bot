@@ -107,7 +107,7 @@ def fact_check(ep, report):
     fixes = [f for f in res.get("fixes", []) if isinstance(f, dict) and isinstance(f.get("line"), int)
              and 0 <= f["line"] < len(ep["lines"]) - 1 and str(f.get("text", "")).strip()]
     for f in fixes:
-        ep["lines"][f["line"]]["text"] = " ".join(str(f["text"]).split())
+        ep["lines"][f["line"]]["text"] = " ".join(str(f["text"]).split())  # validate() strips a "pi:" prefix
     report["fact_check"] = {"ok": res.get("ok"), "fixes": [{"line": f["line"], "why": f.get("why", "")} for f in fixes]}
     if fixes:
         probs = yazar.validate(ep)
@@ -236,6 +236,10 @@ def main():
     finally:
         report["log"] = yazar.LOG[-60:]
         report["finished"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        runs = state.setdefault("runs", [])
+        runs.append({k: report.get(k) for k in ("finished", "mod", "title", "url", "skipped", "error", "duration", "chars")
+                     if report.get(k)})
+        state["runs"] = runs[-60:]
         save(state)
         REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     if report.get("error"):
