@@ -1,0 +1,288 @@
+{
+  "topic_id": "mk-035",
+  "topic": "Devenin hörgücünde gerçekten su mu var, yoksa yağ mı?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Devenin hörgücünde gerçekten ne var? 🤔",
+  "hook_text": "HÖRGÜÇTE SU MU YAĞ MI?",
+  "description": "Devenin hörgücünde gerçekten ne var?\n\nAslında hörgüçleri yağ depolar, su değil! Bu yağ, acil enerji kaynağı olarak kullanılır ve metabolik su üretir. Çölün kalbinde 3 hafta susuz kalmalarını bu sağlar.\n\nSence bir deve susuzluğa kaç gün dayanabilir: 15 mi 25 mi?\n\n#deve #develer #hörgüç #çöl #shorts #bilim #merak #keşfet\n\nSeri: mk-035",
+  "tags": [
+    "deve",
+    "deve hörgücü",
+    "deve hörgücünde ne var",
+    "deve hörgücü su mu yağ mı",
+    "develer",
+    "çöl hayvanları",
+    "deve nasıl yaşar",
+    "deve su",
+    "deve yağ",
+    "hörgüç",
+    "hörgüç ne işe yarar",
+    "hayvan bilgileri",
+    "ilginç hayvanlar",
+    "bilim",
+    "hayatta kalma",
+    "çöl",
+    "çölde yaşam",
+    "merak edilenler",
+    "doğa",
+    "belgesel",
+    "camel",
+    "camel hump",
+    "desert animals",
+    "animals",
+    "hayvanlar",
+    "keşif",
+    "adaptasyon",
+    "merak",
+    "ilginç bilgiler",
+    "Zirvenin Kanunu",
+    "deve horgucu",
+    "deve horgucunde ne var",
+    "deve horgucu su mu yag mi",
+    "col hayvanlari"
+  ],
+  "localizations": {
+    "en": {
+      "title": "What's really inside a camel's hump? 🤔",
+      "description": "Many believe a camel's hump stores water, but it actually contains fat! This fat serves as an emergency energy source and produces metabolic water, enabling them to survive 3 weeks in the desert.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "es": {
+      "title": "¿Qué hay realmente en la joroba de un camello? 🤔",
+      "description": "¿Crees que las jorobas de los camellos guardan agua? En realidad, almacenan grasa, que utilizan como fuente de energía y para producir agua metabólica, permitiéndoles sobrevivir 3 semanas en el desierto.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "pt": {
+      "title": "O que realmente tem na corcova de um camelo? 🤔",
+      "description": "Muitos pensam que a corcova de um camelo guarda água, mas na verdade ela armazena gordura! Essa gordura é usada como energia e produz água metabólica, ajudando-os a sobreviver 3 semanas no deserto.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "de": {
+      "title": "Was steckt wirklich im Höcker eines Kamels? 🤔",
+      "description": "Viele glauben, Kamele speichern Wasser in ihren Höckern. Doch tatsächlich enthalten sie Fett! Dieses Fett dient als Energiereserve und produziert Stoffwechselwasser, wodurch sie 3 Wochen in der Wüste überleben können.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "fr": {
+      "title": "Qu'y a-t-il vraiment dans la bosse d'un chameau ? 🤔",
+      "description": "On pense souvent que la bosse d'un chameau contient de l'eau, mais c'est en fait de la graisse ! Cette graisse est une source d'énergie vitale et produit de l'eau métabolique, leur permettant de survivre 3 semaines dans le désert.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "it": {
+      "title": "Cosa c'è davvero nella gobba di un cammello? 🤔",
+      "description": "Molti credono che la gobba di un cammello contenga acqua, ma in realtà è piena di grasso! Questo grasso fornisce energia e produce acqua metabolica, essenziale per sopravvivere 3 settimane nel deserto.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "ru": {
+      "title": "Что на самом деле внутри горба верблюда? 🤔",
+      "description": "Многие думают, что горб верблюда хранит воду, но на самом деле там жир! Этот жир служит источником энергии и производит метаболическую воду, помогая им выживать 3 недели в пустыне.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "ar": {
+      "title": "ماذا يوجد حقًا في سنام الجمل؟ 🤔",
+      "description": "هل تعلم أن سنام الجمل لا يخزن الماء بل الدهون؟ هذه الدهون توفر مصدر طاقة طارئ وتنتج ماءً أيضيًا، مما يسمح للجمل بالبقاء 3 أسابيع بدون ماء في الصحراء.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "hi": {
+      "title": "ऊँट के कूबड़ में असल में क्या होता है? 🤔",
+      "description": "कई लोग सोचते हैं कि ऊँट के कूबड़ में पानी होता है, पर इसमें वास्तव में वसा होती है! यह वसा ऊर्जा का स्रोत है और मेटाबॉलिक पानी बनाती है, जिससे ऊँट रेगिस्तान में 3 सप्ताह तक बिना पानी के रह पाते हैं.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "id": {
+      "title": "Apa sebenarnya isi punuk unta? 🤔",
+      "description": "Banyak yang mengira punuk unta menyimpan air, padahal isinya lemak! Lemak ini berfungsi sebagai sumber energi darurat dan menghasilkan air metabolik, memungkinkan unta bertahan 3 minggu di gurun.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "ja": {
+      "title": "ラクダのこぶの中身、本当は何？ 🤔",
+      "description": "ラクダのこぶには水ではなく脂肪が蓄えられています！この脂肪は緊急時のエネルギー源となり、代謝水を生成することで、ラクダは砂漠で3週間も水なしで生き延びることができます。\n\n#shorts\n\nSeri: mk-035"
+    },
+    "ko": {
+      "title": "낙타 혹 속에는 정말 무엇이 있을까? 🤔",
+      "description": "낙타 혹은 물이 아닌 지방을 저장합니다! 이 지방은 비상 에너지원으로 사용되며 대사수를 생성하여, 낙타가 사막에서 3주 동안 물 없이 생존할 수 있게 돕습니다.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "pl": {
+      "title": "Co naprawdę kryje się w garbie wielbłąda? 🤔",
+      "description": "Wiele osób myśli, że garby wielbłądów przechowują wodę, ale tak naprawdę zawierają tłuszcz! Ten tłuszcz to awaryjne źródło energii, produkujące wodę metaboliczną, co pozwala im przetrwać 3 tygodnie na pustyni.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "nl": {
+      "title": "Wat zit er echt in de bult van een kameel? 🤔",
+      "description": "Veel mensen denken dat de bult van een kameel water opslaat, maar het bevat eigenlijk vet! Dit vet dient als noodenergiebron en produceert metabolisch water, waardoor ze 3 weken in de woestijn kunnen overleven.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "uk": {
+      "title": "Що насправді всередині горба верблюда? 🤔",
+      "description": "Багато хто вважає, що горб верблюда зберігає воду, але насправді там жир! Цей жир слугує аварійним джерелом енергії та виробляє метаболічну воду, допомагаючи верблюдам виживати 3 тижні в пустелі.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "vi": {
+      "title": "Trong bướu lạc đà thực sự có gì? 🤔",
+      "description": "Nhiều người nghĩ bướu lạc đà chứa nước, nhưng thực tế nó chứa mỡ! Lớp mỡ này là nguồn năng lượng dự trữ và tạo ra nước trao đổi chất, giúp lạc đà sống sót 3 tuần mà không cần nước giữa sa mạc.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "az": {
+      "title": "Dəvənin donqarında əslində nə var? 🤔",
+      "description": "Çoxları dəvə donqarında su olduğunu düşünür, amma əslində orada yağ var! Bu yağ təcili enerji mənbəyi kimi istifadə olunur və metabolik su əmələ gətirərək dəvələrin səhrada 3 həftə susuz qalmasına kömək edir.\n\n#shorts\n\nSeri: mk-035"
+    },
+    "ro": {
+      "title": "Ce se află cu adevărat în cocoașa unei cămile? 🤔",
+      "description": "Mulți cred că o cocoașă de cămilă stochează apă, dar de fapt conține grăsime! Această grăsime servește ca sursă de energie de urgență și produce apă metabolică, permițându-le să supraviețuiască 3 săptămâni în deșert.\n\n#shorts\n\nSeri: mk-035"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bir deve susuzluğa kaç gün dayanabilir: 15 mi 25 mi?",
+  "scenes": [
+    {
+      "text": "Bu develer, çölün kalbinde 3 hafta susuz kalabilir.",
+      "visual": "A camel in a dry, desert-like environment.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 40,
+          "kare": 1
+        },
+        {
+          "n": 28,
+          "kare": 2
+        }
+      ],
+      "callout": "3 HAFTA SUSUZ"
+    },
+    {
+      "text": "Peki, hörgüçlerinde gerçekten su mu saklıyorlar?",
+      "visual": "Close-up of a camel showing its hump.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 15,
+          "kare": 2
+        },
+        {
+          "n": 39,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Aslında hörgüçleri yağ depolar, su değil!",
+      "visual": "Camels with visible humps, some close-up.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 1
+        },
+        {
+          "n": 31,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        }
+      ],
+      "callout": "YAĞ DEPOSU"
+    },
+    {
+      "text": "Bu yağ, acil enerji kaynağı olarak kullanılır ve metabolik su üretir.",
+      "visual": "Camels moving or journeying in a desert landscape.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 24,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Çölün zorlu koşullarında uzun süre hayatta kalmalarını işte bu sağlar.",
+      "visual": "Camels or a vast desert landscape, emphasizing harsh conditions.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 12,
+          "kare": 2
+        },
+        {
+          "n": 34,
+          "kare": 2
+        },
+        {
+          "n": 36,
+          "kare": 2
+        }
+      ],
+      "callout": "ÇÖLDE HAYAT"
+    }
+  ],
+  "duration_seconds": 12.55,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 8,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Konuyu açıklayıcı grafik veya animasyon eksikliği. Yazılar statik ve vurgusuz.",
+        "fix": "Pexels/Pixabay'den 'fat to water conversion diagram', 'camel hump cross-section' gibi anahtar kelimelerle basit şematik görseller bulunup eklenebilir. Yazıların ekrana gelme animasyonları (örn. fade-in, scale-up) ve anahtar kelimelerde renk"
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka anlatıcının hızı ve enerjisi düşük, monoton.",
+        "fix": "Yapay zeka sesinin hızı artırılmalı ve tonlaması daha dinamik, vurgulu olacak şekilde ayarlanmalı. Özellikle kanca ve şaşırtıcı bilgi anlarında ses tonu yükseltilmeli."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kurgu yavaş, görsel değişimler seyrek ve geçişler basit.",
+        "fix": "Her 2-3 saniyede bir görsel değişimi hedeflenmeli. Metindeki anahtar kelimelerle görsel eşleşmesi artırılmalı. Basit ama hızlı kesmeler kullanılmalı, gereksiz uzun sahnelerden kaçınılmalı."
+      },
+      {
+        "area": "ses",
+        "problem": "Videoda ses efektleri (whoosh, pop vb.) kullanılmamış.",
+        "fix": "Yazıların ekrana gelmesi, görsel değişimler veya önemli kelimelerin vurgulanması sırasında kısa, dikkat çekici ses efektleri kullanılmalı."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler genel develer ve çöl manzaralarıyla sınırlı, hörgücün işlevini detaylandıran spesifik görseller eksik.",
+        "fix": "Pexels/Pixabay'de hörgüçlerin zamanla küçülmesini gösteren (eğer varsa) veya develerin su içme anlarını vurgulayan daha spesifik videolar aranabilir."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği yeterince dinamik ve merak uyandırıcı değil.",
+        "fix": "Daha tempolu, videonun akışına ve içeriğine uygun, merak uyandıran bir arka plan müziği seçilmeli."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazıların kalma süresi bazen gereğinden uzun.",
+        "fix": "Yazılar, okunabilecekleri en kısa sürede ekranda tutulmalı ve hızlıca yenileriyle değiştirilerek dinamizm artırılmalı."
+      }
+    ],
+    "strengths": [
+      "Bilgi akışı mantıklı ve anlaşılır.",
+      "Kanca (soru) merak uyandırıcı.",
+      "Konu (develerin hörgüçleri) yaygın bir yanlış anlaşılmayı düzelttiği için ilgi çekici."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

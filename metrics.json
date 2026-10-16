@@ -1,12 +1,22 @@
 [
   {
+    "video_id": "C0nA-448ifg",
+    "topic_id": "mk-034",
+    "title": "Zebraların Sırrı: Çizgiler Neden Var? 🦓",
+    "published_at": "2026-10-16T08:26:09Z",
+    "privacy": "public",
+    "views": 0,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "vsmgJqjZ8CQ",
     "topic_id": "mk-036",
     "title": "Köpekbalıkları Neden Durursa Boğulur? 🦈",
     "published_at": "2026-10-16T07:26:41Z",
     "privacy": "public",
-    "views": 3,
-    "likes": 0,
+    "views": 39,
+    "likes": 1,
     "comments": 1
   },
   {
@@ -15,8 +25,8 @@
     "title": "Kolibriler havada nasıl asılı kalır? 😮",
     "published_at": "2026-10-16T06:25:04Z",
     "privacy": "public",
-    "views": 0,
-    "likes": 0,
+    "views": 544,
+    "likes": 6,
     "comments": 1
   },
   {
@@ -25,8 +35,8 @@
     "title": "Zürafalar Neden Bayılmaz? İnanılmaz Bir Adaptasyon! 🦒",
     "published_at": "2026-10-16T05:28:03Z",
     "privacy": "public",
-    "views": 756,
-    "likes": 4,
+    "views": 1072,
+    "likes": 6,
     "comments": 1
   },
   {
@@ -35,8 +45,8 @@
     "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
     "published_at": "2026-10-16T04:39:13Z",
     "privacy": "public",
-    "views": 879,
-    "likes": 6,
+    "views": 1129,
+    "likes": 5,
     "comments": 2
   },
   {
@@ -45,7 +55,7 @@
     "title": "Flamingolar neden bu kadar pembeler? 💖",
     "published_at": "2026-10-16T01:43:10Z",
     "privacy": "public",
-    "views": 1241,
+    "views": 1416,
     "likes": 11,
     "comments": 1
   },
@@ -55,8 +65,8 @@
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 1029,
-    "likes": 9,
+    "views": 1078,
+    "likes": 11,
     "comments": 1
   },
   {
@@ -65,8 +75,8 @@
     "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
     "published_at": "2026-10-15T23:19:42Z",
     "privacy": "public",
-    "views": 800,
-    "likes": 10,
+    "views": 947,
+    "likes": 11,
     "comments": 1
   },
   {
@@ -78,7 +88,7 @@
     "views": 1021,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 74.83
+    "views_per_hour": 68.84
   },
   {
     "video_id": "WADWjFRfYYw",
@@ -89,7 +99,7 @@
     "views": 997,
     "likes": 4,
     "comments": 1,
-    "views_per_hour": 56.96
+    "views_per_hour": 53.34
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -100,7 +110,7 @@
     "views": 1162,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 51.46
+    "views_per_hour": 48.89
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -111,7 +121,7 @@
     "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 26.44
+    "views_per_hour": 25.57
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -122,7 +132,7 @@
     "views": 1101,
     "likes": 18,
     "comments": 1,
-    "views_per_hour": 29.63
+    "views_per_hour": 28.71
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -133,7 +143,7 @@
     "views": 1477,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 35.52
+    "views_per_hour": 34.53
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -144,6 +154,6 @@
     "views": 381,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 6.72
+    "views_per_hour": 6.58
   }
 ]
