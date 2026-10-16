@@ -22,7 +22,9 @@ STATE = HERE / "durum.json"
 REPORT = HERE / "rapor.json"
 TOPICS = HERE / "konular.json"
 WORK = HERE / "_is"
-DAILY = int(os.environ.get("YO_GUNLUK") or 24)
+DAILY = int(os.environ.get("YO_GUNLUK") or 6)
+# Turkish prime time (UTC+3): 09, 12, 15, 18, 20, 22. Ulaş cut 24/day to 6/day on 2026-10-16 (views too thin).
+SLOTS = [int(h) for h in (os.environ.get("YO_SAATLER") or "6,9,12,15,17,19").split(",") if h.strip()]
 GAP_MIN = 35
 MIN_CREDITS = 12000
 
@@ -48,6 +50,8 @@ def gate(state, mod):
     eps = state.get("episodes", [])
     t = now()
     hour = t - t % 3600
+    if int(t // 3600 % 24) not in SLOTS:
+        return False, f"yayın saati değil (UTC {SLOTS})"
     if any(e.get("at", 0) >= hour for e in eps):
         return False, "bu saatin bölümü yüklendi"
     if eps and t - eps[-1].get("at", 0) < GAP_MIN * 60:
@@ -146,7 +150,7 @@ def render(ep, timings_path, mix, out_video, out_cover):
                    check=True)
     dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
                                 str(out_video)], capture_output=True, text=True, check=True).stdout.strip())
-    if not 18 <= dur <= 80:
+    if not 14 <= dur <= 60:
         raise RuntimeError(f"video süresi beklenmedik: {dur:.1f} sn")
     return dur
 

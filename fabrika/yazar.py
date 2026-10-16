@@ -167,7 +167,7 @@ VISUAL FOR EACH LINE ("v"). Pick the type that SHOWS what the line says. Fields:
 BG is one of: space, sky, sunset, night, ocean, underwater, desert, forest, ice, lab, body, city, volcano, storm.
 EMOJI is exactly ONE standard emoji (never text, never 📅 or 📆, no flags). LABEL is 1-3 Turkish words, max 18 characters.
 "key" is one word copied from that line's text: the moment the visual's change, label or number appears.
-Consecutive lines may reuse the exact same "v" to keep one scene going. Vary the types: use at least 5 different types per episode, at least one "number" or "compare" with a real figure.
+Consecutive lines may reuse the exact same "v" to keep one scene going. Vary the types: use at least 4 different types per episode, at least one "number" or "compare" with a real figure.
 """
 
 RULES = """
@@ -175,13 +175,16 @@ You write one episode of "YA OLSAYDI?", a Turkish YouTube Shorts science channel
 - "bit": a small curious flying robot. Asks, reacts, speaks for the viewer. Short lines.
 - "pi": Profesör Pi, a calm, witty scientist. Explains in short, clear spoken Turkish.
 
-Script pattern (8-11 lines, 380-560 characters of speech in total, about 35-45 seconds):
-1. Hook (bit): asks the episode question in a few words, same meaning as the title.
-2. pi: the obvious first effect, in one or two sentences.
-3. bit: a short push such as "Sadece bu mu?" / "Bu kadar mı?" / "Ciddi misin?".
-4-8. pi: 2-3 surprising, specific facts, each with a real number. One idea per line. bit may react in between.
-9. pi: an unexpected twist or the most surprising fact as the payoff; bit reacts in a few words.
-Last line (bit), exactly: "Sıradaki soruyu sen seç! Yorumlara yaz."
+Script pattern (6-8 lines, 230-360 characters of speech in total, about 20-28 seconds; viewers swipe away fast):
+1. Hook, first 2 seconds (pi or bit): the most shocking consequence or number of the whole story, said straight.
+   The question itself is already on screen, so never open by repeating or asking it.
+   Good: "Dünya dursaydı, sen saatte 1.670 kilometreyle fırlardın." Bad: "Dünya dursaydı ne olurdu?"
+2-5. Escalating, specific facts, one idea and one real number per line, each one bigger or weirder than the last.
+   bit reacts at most twice, with a specific, funny line about THIS fact (never a stock reaction like
+   "Ciddi misin?", "Nasıl yani?", "Sadece bu mu?", "Bu kadar mı?", "Vay be!").
+6. The twist or payoff: the most unexpected fact, ideally one that makes people rewatch or argue.
+Last line (bit): one short question to the viewer about this topic, ending with "Yorumlara yaz!",
+e.g. "Sen ilk 8 dakikada ne yapardın? Yorumlara yaz!" (max 60 characters).
 
 Writing rules:
 - Natural spoken Turkish, short sentences, no filler ("hepimiz biliriz", "işte bu", "değil mi?" endings), no greetings, no "merhaba".
@@ -330,11 +333,23 @@ def clean_visual(v, i, n):
     return v, probs
 
 
+STOCK = {"ciddi misin", "nasıl yani", "sadece bu mu", "bu kadar mı", "vay be", "inanılmaz", "gerçekten mi",
+         "ne diyorsun", "olamaz", "vay canına"}
+
+
+def _same(a, b):
+    """True when a line only restates the title (same words, maybe without 'Pi' or punctuation)."""
+    norm = lambda t: set(re.sub(r"[^\wçğıöşü ]", " ", t.replace("I", "ı").replace("İ", "i").lower()).split()) - {"pi"}
+    x, y = norm(a), norm(b)
+    share = len(x & y) / len(x) if x else 0
+    return share >= 0.75 or (a.strip().endswith("?") and share >= 0.5)
+
+
 def validate(ep):
     probs = []
     lines = ep.get("lines") or []
-    if not 7 <= len(lines) <= 13:
-        probs.append(f"{len(lines)} replik (8-11 olmalı)")
+    if not 5 <= len(lines) <= 9:
+        probs.append(f"{len(lines)} replik (6-8 olmalı)")
     for i, l in enumerate(lines):
         if l.get("who") not in ("pi", "bit") or not str(l.get("text", "")).strip():
             probs.append(f"satır {i}: konuşan ya da metin yok")
@@ -342,20 +357,21 @@ def validate(ep):
         l["text"] = re.sub(r"^\s*(pi|bit|prof\w*\.? ?pi)\s*:\s*", "", re.sub(r"\s+", " ", l["text"]).strip(), flags=re.I)
         l["v"], p = clean_visual(l.get("v"), i, len(lines))
         probs += p
-    if lines and lines[-1].get("text") != CTA:
-        if "yorum" in lines[-1].get("text", "").lower():
-            lines[-1]["text"] = CTA
-        else:
-            lines.append({"who": "bit", "text": CTA, "v": {"t": "outro", "bg": "space"}})
+    if lines and "yorum" not in lines[-1].get("text", "").lower():
+        lines.append({"who": "bit", "text": CTA, "v": {"t": "outro", "bg": "space"}})
+    stock = [l["text"] for l in lines if isinstance(l.get("text"), str)
+             and re.sub(r"[^\wçğıöşü ]", "", l["text"].lower()).strip() in STOCK]
+    if stock:
+        probs.append("kalıp tepki kullanılmış: " + ", ".join(stock))
+    if lines and len(lines) > 1 and _same(lines[0].get("text", ""), ep.get("title", "")):
+        probs.append("ilk replik başlığı tekrar ediyor, en çarpıcı bilgiyle başlamalı")
     if lines:
         lines[-1]["who"] = "bit"
         if lines[-1]["v"].get("t") != "outro":
             lines[-1]["v"] = {"t": "outro", "bg": lines[-1]["v"].get("bg", "space")}
-        if lines[0].get("who") != "bit":
-            probs.append("ilk replik Bit'in sorusu olmalı")
     chars = sum(len(l.get("text", "")) for l in lines)
-    if not 330 <= chars <= 620:
-        probs.append(f"toplam {chars} karakter (380-560 olmalı)")
+    if not 200 <= chars <= 400:
+        probs.append(f"toplam {chars} karakter (230-360 olmalı)")
     title = str(ep.get("title", "")).strip()
     if not title or len(title) > 70:
         probs.append("başlık yok ya da çok uzun")
@@ -364,7 +380,7 @@ def validate(ep):
         probs.append("ekran başlığı (bar) bozuk")
     types = {l["v"]["t"] for l in lines if isinstance(l.get("v"), dict)}
     if len(types) < 4:
-        probs.append(f"sadece {len(types)} görsel türü (en az 5)")
+        probs.append(f"sadece {len(types)} görsel türü (en az 4)")
     if not ({"number", "compare", "meter"} & types):
         probs.append("rakam gösteren görsel yok")
     if not 2 <= len(ep.get("facts") or []) <= 6:
