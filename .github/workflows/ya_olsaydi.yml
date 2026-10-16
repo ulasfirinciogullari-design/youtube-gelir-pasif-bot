@@ -42,7 +42,15 @@ jobs:
         run: python pilot-ay/tts.py pilot-ay/out
 
       - name: Animasyonu kaydet
-        run: cd pilot-ay && node render.js out/pilot_sesli.mp4 out/timings.json out/mix.mp3
+        # same drawing, script, voices and mix -> same video: skip the render so the 10 MB file is not re-committed
+        run: |
+          cd pilot-ay
+          h=$(cat anim.html script.js render.js fonts.css out/timings.json out/mix.mp3 | sha256sum | cut -c1-16)
+          if [ -f out/pilot_sesli.mp4 ] && [ "$(cat out/render.hash 2>/dev/null)" = "$h" ]; then
+            echo "Görüntü ve ses değişmedi, kayıt atlandı"
+          else
+            node render.js out/pilot_sesli.mp4 out/timings.json out/mix.mp3 && echo "$h" > out/render.hash
+          fi
 
       - name: YouTube (kanal kontrolü, listeler, gizli yükleme)
         continue-on-error: true
